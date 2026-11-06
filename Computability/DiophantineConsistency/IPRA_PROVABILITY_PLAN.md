@@ -1778,6 +1778,10 @@ then checked the scalar and first-index window conclusions under the full
 explicit positivity, mask, transport and four norm hypotheses. Deriving
 those hypotheses from a concrete seed/source zero and transferring the
 windows to the signed cuts remain open.
+A [gap/tau ring-transport attempt](research/nine-sharing-sign33-gap-tau-ring-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-gap-tau-ring-failure-frontier-independent/README.md),
+failed because `ModelArithmetic` was unavailable in the combined `open`
+command; its cascading errors and `sorryAx` are not proof evidence.
 An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/README.md),
 [independently inspected](reviews/nine-sharing-gate-model-draft-independent/README.md),
 separates signed-pair algebra and conditional trace replay from generated
