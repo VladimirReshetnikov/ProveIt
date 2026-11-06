@@ -1858,7 +1858,10 @@ A [five-witness assembly](research/nine-sharing-sign33-five-witnesses-check/READ
 [independently audited](reviews/nine-sharing-sign33-five-witnesses-terminal-frontier-independent/README.md),
 then constructs five model-natural representatives under the explicit window,
 positivity and norm hypotheses. Their identification with the concrete 33-seed
-cuts and recovery of the hypotheses from source zeros remain open.
+cuts remain open. A [current-source witness client](research/nine-sharing-sign33-current-five-witnesses-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-current-five-witnesses-terminal-frontier-independent/README.md),
+subsequently derives those five representatives from a shifted current-source
+zero. The remaining 33-seed witness and gate assembly is separate.
 An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/README.md),
 [independently inspected](reviews/nine-sharing-gate-model-draft-independent/README.md),
 separates signed-pair algebra and conditional trace replay from generated
