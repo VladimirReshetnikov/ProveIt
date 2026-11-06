@@ -2096,7 +2096,10 @@ checks the next three positive cuts under the same conditions. The source-zero
 witness construction remains incomplete. A [third forward-cut client](research/nine-sharing-sign33-forward-group02-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-forward-group02-terminal-frontier-independent/README.md),
 checks the next three positive cuts for arbitrary representatives. The inherited
-initial-stage numeric outer exit remains uncaptured.
+initial-stage numeric outer exit remains uncaptured. A [fourth positive-cut
+client](research/nine-sharing-sign33-forward-group03-positive-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-forward-group03-positive-terminal-frontier-independent/README.md),
+checks the two positive cuts in group 03; its source-dependent norm is excluded.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
