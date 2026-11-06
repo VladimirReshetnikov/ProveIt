@@ -1,0 +1,5 @@
+# Independent prelaunch review: d18 to d34 prefix path
+
+The proposed path extends the checked d18→d27 path with seven snoc steps, yielding sixteen `castSucc` maps and preserving every Fin 18 entry at d34. The named source has the seven successive d28–d34 snoc definitions. This source-level review does not establish elaboration success.
+
+The retained author record reports failed preflight session 33244 and diagnostic session 44669, both exit 1 at the producer check. Comparison with retained source confirms the survey mistakenly looked up the output object; the only survey correction selects the d18→d27 producer, and the only runner changes repin that survey before and after execution. The independent checker pins all new bytes, verifies path and lookup counts, and reruns the corrected no-Lean preflight. The survey reruns the d18→d27 terminal audit and pins its object; the runner binds that direct producer. No launch blocker was found within this point-in-time scope. This is one path, not full recipe semantics, JSON binding or a complete dynamic provider trace.

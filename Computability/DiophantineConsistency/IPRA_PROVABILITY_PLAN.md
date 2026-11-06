@@ -190,8 +190,11 @@ A [recipe-specific client](research/nine-seed38-jones-prefix-path18-20-check/REA
 checks the path from `d18` to `d20` and preservation of every `d18` lookup.
 A [longer path client](research/nine-seed38-jones-prefix-path18-27-check/README.md),
 [independently audited](reviews/nine-seed38-jones-prefix-path18-27-terminal-frontier-independent/README.md),
-extends that preservation to `d27`. Further paths and full semantic
-composition remain separate.
+extends that preservation to `d27`. A [further path client](research/nine-seed38-jones-prefix-path18-34-check/README.md),
+[independently audited](reviews/nine-seed38-jones-prefix-path18-34-terminal-frontier-independent/README.md),
+extends it to `d34`. Its first no-Lean preflight failed because it selected the
+output object as provider; the corrected provider survey passed review. Further
+paths and full semantic composition remain separate.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
