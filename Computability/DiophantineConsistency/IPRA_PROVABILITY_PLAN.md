@@ -1838,6 +1838,11 @@ A [membership-term retry](research/nine-sharing-sign33-first-cut-retry01/README.
 [independently audited](reviews/nine-sharing-sign33-first-cut-retry01-terminal-frontier-independent/README.md),
 then checks the first `q²` cut under the stated port-0 cast and the same
 seed valuation. The other 23 residual links remain separate.
+A [24-row batch inventory](research/nine-sharing-sign33-residual-batch-plan/README.md),
+[independently audited](reviews/nine-sharing-sign33-residual-batch-plan-frontier-independent/README.md),
+records the residual order, syntactically occurring ports, signed-cut
+orientations and Fin34-to-Fin33 positions for a proposed bounded proof. It
+is an external inventory, not a proof of minimal casts or graph equivalence.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
