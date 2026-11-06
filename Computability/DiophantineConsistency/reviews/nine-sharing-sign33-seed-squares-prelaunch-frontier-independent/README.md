@@ -1,0 +1,5 @@
+# Independent prelaunch review: sign33 square-sum bridge
+
+No launch blocker found. The checker pins the source, manifest and runner, verifies the one direct import and four theorem statements with three requested reports, and reruns the no-Lean preflight. The runner checks the retained syntax object and direct provider guards, replays external syntax parsers, and binds the observed syntax dependency to the producer. Full postflight occurs only on success; observations are point-in-time and monitoring is sampled.
+
+The proposed principal theorem, under the stated `ORingStructure` and IΣ₁-model hypotheses, equates zero of the symbolic-port seed with zero of each first-plus-remaining residual under the same model valuation. It does not identify model values for ports, connect residuals to graph gates or the current source equation, or establish an iPRA endpoint. The source-to-JSON checks are external. No Lean run was made in this review; this checker is prelaunch-only because the runner requires a fresh output path.

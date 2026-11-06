@@ -1816,6 +1816,11 @@ A [normalization and degree build](research/nine-sharing-sign33-seed-degree-norm
 then checked total degree at most four and the required normalization under
 the stated positive first-port assumption. Its compile recorded two
 unused-simp warnings. This is not an exact degree or a source-zero bridge.
+A [generic square-sum client](research/nine-sharing-sign33-seed-squares-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-seed-squares-terminal-frontier-independent/README.md),
+checks that a 33-seed zero is equivalent to all 24 residuals vanishing at the
+same valuation, for arbitrary symbolic integer ports in the indicated IΣ₁
+models. It does not identify those residuals with the concrete source gates.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign

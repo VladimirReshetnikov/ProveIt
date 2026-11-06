@@ -1,0 +1,5 @@
+# Independent terminal review: sign33 square-sum bridge
+
+The retained state records successful dependency and Lean compilation checks; the author's separate observation records session 54762 exit 0. The checker verifies the source and object, both logs, three axiom reports, direct syntax-provider binding, 100 guard slots and 1,056 overlay links, and reruns the external syntax AST comparison. No Lean replay was performed; the outer observation is not an independent raw terminal transcript. All three reports are `[propext, Classical.choice, Quot.sound]`; the compile log contains no warnings.
+
+For arbitrary symbolic integer ports and one model valuation, under the stated ordered-ring structure and IΣ₁-model hypotheses, the checked seed-zero iff says each first-plus-remaining residual is zero under that same valuation. Port-cast equalities, residual-to-gate identities, the current-source bridge and sign33 iPRA endpoint remain outside its scope. JSON/source comparison remains external; provider checks are point-in-time and resource monitoring is sampled.
