@@ -1676,6 +1676,11 @@ An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 uses the maintained first-index theorem directly and derives the sign
 implications from explicit bounds. Their natural-to-ring transfer, port casts
 and connection to the seed norms remain open.
+A [standalone ordered-ring client](research/sign33-ordered-ring-standalone-check/README.md),
+[independently audited](reviews/sign33-ordered-ring-terminal-root/README.md),
+checks the three conditional lemmas that imply those five signs from the
+explicit intermediate inequalities and auxiliary norm. It does not derive
+their hypotheses for model solutions or construct the 33 witnesses.
 An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/README.md),
 [independently inspected](reviews/nine-sharing-gate-model-draft-independent/README.md),
 separates signed-pair algebra and conditional trace replay from generated
