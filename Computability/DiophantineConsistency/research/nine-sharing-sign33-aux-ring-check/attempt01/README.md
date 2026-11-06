@@ -1,0 +1,5 @@
+# Auxiliary sign diagnostic failed on unavailable tactic
+
+Author-observed outer session `18554` returned numeric exit 1. Retained state SHA-256 `04db4f4557dfa2b196268b1cd03125693d459fcfe09ccab56d2b2712ad027116`; pre-run producer survey `839c8edadeeb8e589e5b0159865398ae62ec2954563bb62adfdc7f363077cc2e`. The outer record is an author observation, not an independently observed transcript.
+
+Lean exited 1 with no monitor stop. Its compile log SHA-256 `a13a5b8e1e270ec179ba4d7ade6542ce3a6594dbb6f379c1f638cb714ea0c0e6` reports `linear_combination` as an unknown tactic and records the resulting unsolved ring identity and final sign goal. The mapped auxiliary equation and absdiff-square rewrite appear in the goal state, but no theorem is established. The emitted axiom report includes `sorryAx` from the failed declaration and is not proof evidence; no successful object was recorded. Final candidate guard and post-success producer survey were not reached. Point-observation and inherited-provider limitations remain as in the parent README.

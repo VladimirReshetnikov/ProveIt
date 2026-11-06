@@ -1,0 +1,5 @@
+# Independent prelaunch review: auxiliary norm ring sign
+
+**Pass for bounded launch.** The proposed theorem explicitly assumes `0<S`, `0<y` and `S*S*(absdiff x z)*(absdiff x z)+y*y=1+S*S*y*y` for model values. It proposes the ring sign `(ι x-ι z)^2-(ι y)^2≤0`, using the checked local absdiff-square identity, the mapped auxiliary norm and the checked ordered-ring lemma. The algebraic direction and assumptions match that lemma; Lean elaboration remains untested. It does not identify these values with the concrete current graph, derive the premises from a source zero, or establish the sign33 witness bridge.
+
+`check.py` pins source, runner, manifest and survey, verifies exact hypotheses/conclusion and both selected direct producer hashes, target absence and a fresh no-Lean preflight. The runner binds candidate direct dependencies/guards and repeats the survey after success. Provider checks are point-in-time, resource monitoring sampled, and the inherited initial-agreement numeric outer exit unavailable. No theorem or iPRA endpoint follows from this review. Preflight requires a fresh output path and refuses after launch.
