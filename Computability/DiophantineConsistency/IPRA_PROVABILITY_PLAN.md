@@ -1851,6 +1851,10 @@ A [first three-row residual client](research/nine-sharing-sign33-residual-batch0
 [independently audited](reviews/nine-sharing-sign33-residual-batch00-terminal-frontier-independent/README.md),
 checks the `q²`, `q³` and `X` cut identities at one seed-zero valuation under
 the stated port-0 cast. The other 21 residual links remain separate.
+A [second residual client](research/nine-sharing-sign33-residual-batch01-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-residual-batch01-terminal-frontier-independent/README.md),
+checks the `Y`, `E` and `kY` cut identities at the same kind of valuation
+without port-cast hypotheses. Eighteen residual links remain separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
