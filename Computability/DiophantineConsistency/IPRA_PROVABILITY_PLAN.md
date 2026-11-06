@@ -1608,7 +1608,11 @@ A [fixed-current-port norm client](research/nine-sharing-norm38-fixed-port-norms
 subsequently checked that a Carrier65 zero gives all five unit norms for
 positive ring inputs at the current symbolic ports. It uses the local
 irreducibility setup of an earlier checked completion. The source-to-seed
-composition remains separate.
+composition has since been checked by a [fixed-current client](research/nine-sharing-norm38-current-source-to-seed/README.md),
+[independently audited](reviews/nine-sharing-norm38-current-source-to-seed-terminal-independent/README.md):
+given the four explicit model port casts, it constructs a 38-witness seed zero
+from a source-expression zero at shifted inputs. Discharging the concrete casts,
+combining the existential directions and the iPRA transfer remain separate.
 A [forward-constructor gate build](research/nine-sharing-norm38-forward-gates-draft/README.md),
 [independently audited](reviews/nine-sharing-norm38-forward-gates-terminal-independent/README.md),
 checks all 60 gate conditions and their conjunction for the generated witness
