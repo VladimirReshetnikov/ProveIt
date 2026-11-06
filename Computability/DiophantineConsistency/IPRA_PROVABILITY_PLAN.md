@@ -57,6 +57,10 @@ A [scope-proof attempt](research/nine-seed38-jones-compact-scoped-check/README.m
 failed because Lean could not synthesize a `Decidable` instance for the
 named target. Its `sorryAx` report is from the failed declaration;
 no scopedness proof or semantic equality was produced.
+A [target-unfolding retry](research/nine-seed38-jones-compact-scoped-retry01/README.md),
+[independently audited](reviews/nine-seed38-jones-compact-scoped-retry01-terminal-frontier-independent/README.md),
+then proved the Lean recipe's Boolean scope property without axioms. This is
+not a semantic equality or verified JSON binding.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
