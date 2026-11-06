@@ -2049,7 +2049,12 @@ client](research/nine-sharing-sign33-five-norms-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-five-norms-terminal-frontier-independent/README.md),
 checks that the same `AllCuts` hypothesis implies the five ring-value norms
 for that lift. Its individual stages record 17 warnings; the assembly has none.
-The source-zero bridge remains separate.
+A [replay-to-source-value client](research/nine-sharing-sign33-lift-source-value-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-lift-source-value-terminal-frontier-independent/README.md),
+then checks that `AllCuts` implies zero `Carrier65` value at the corresponding
+shifted inputs and model ports. Transfer to source syntax and construction of
+33 witnesses from a source zero remain separate; the inherited initial-stage
+numeric outer exit remains uncaptured.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign

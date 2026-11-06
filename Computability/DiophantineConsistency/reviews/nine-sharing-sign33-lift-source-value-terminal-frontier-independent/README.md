@@ -1,0 +1,5 @@
+# Independent terminal review: lifted AllCuts to Carrier65 value
+
+The retained state records successful dependency scans and Lean compilations for both stages; the author observation says session 93721 exited 0. The checker validates source, objects and logs, both reports, all six direct producer bindings including the first local object, 400 guard slots, 1,213 overlay links and matching before/after surveys. No Lean replay was performed; the author observation is not an independent raw terminal transcript. Both reports list `[propext, Classical.choice, Quot.sound]` and the logs have no warnings.
+
+The final theorem proves that AllCuts for the given model-natural ports and valuation implies zero Carrier65 value in the model's difference ring, with the first fourteen source inputs shifted as `v(j+1)+1`. It is one direction, not a fixed-port source-syntax theorem, converse, or iPRA endpoint. The initial-agreement producer's numeric outer exit was not captured, an inherited evidence limitation. Provider observations are point-in-time and monitoring is sampled.
