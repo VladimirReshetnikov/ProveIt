@@ -65,6 +65,10 @@ not a semantic equality or verified JSON binding.
 [independently audited](reviews/nine-seed38-jones-compact-semantics-cut-terminal-frontier-independent/README.md),
 now check earlier/last DAG-node lookups and the symbolic range/star sum
 evaluation rules. They do not yet prove the concrete recipe's meaning.
+A [first concrete node attempt](research/nine-seed38-jones-compact-first-node-check/README.md),
+[independently audited](reviews/nine-seed38-jones-compact-first-node-failure-frontier-independent/README.md),
+hit the sampled 4-GiB session-RSS stop with an empty compile log; it produced
+no theorem. The precise cause of the memory use remains unknown.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
