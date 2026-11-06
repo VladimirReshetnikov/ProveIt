@@ -1825,6 +1825,11 @@ A [generic square-sum client](research/nine-sharing-sign33-seed-squares-check/RE
 checks that a 33-seed zero is equivalent to all 24 residuals vanishing at the
 same valuation, for arbitrary symbolic integer ports in the indicated IΣ₁
 models. It does not identify those residuals with the concrete source gates.
+A [first residual-to-cut attempt](research/nine-sharing-sign33-first-cut-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-first-cut-terminal-frontier-independent/README.md),
+failed on a list-membership proof after the first declaration's clean axiom
+report; the failed module produced no object and its second `sorryAx` report
+is not proof evidence.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
