@@ -171,6 +171,11 @@ A [seventh dependent-node build](research/nine-seed38-jones-dependent07-staged-c
 [independently audited](reviews/nine-seed38-jones-dependent07-staged-terminal-frontier-independent/README.md),
 checks the short-prefix `I`, `A0`, `A1`, `V0`, and `V1` equations and their
 required carries. Later nodes and full recipe semantics remain separate.
+The [final local-node build](research/nine-seed38-jones-dependent08-staged-check/README.md),
+[independently audited](reviews/nine-seed38-jones-dependent08-staged-terminal-frontier-independent/README.md),
+checks the immediate-prefix equations for nodes `d40` through `d45`. Carrying
+their dependencies and composing the full-recipe semantic equality remain
+separate, as does binding the human-readable text to Lean.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
