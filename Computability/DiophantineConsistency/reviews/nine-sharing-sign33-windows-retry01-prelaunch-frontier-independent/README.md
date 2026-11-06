@@ -1,0 +1,5 @@
+# Independent prelaunch review: windows name-resolution retry
+
+**Pass for bounded launch.** The sole source change adds `open DiophantineConsistency.ArithmeticPellHalfIndex (absdiff)`; the theorem and proof are otherwise byte-identical. This resolves the missing name observed in the frozen failure, using the definition `(x-y)+(y-x)` from the existing provider. Lean elaboration remains untested. The runner diff changes the output path, manifest pin, prior failure check and scope only; direct producer guards, monitor and resource limits remain unchanged.
+
+`check.py` verifies exact file pins, complete one-line source delta, pinned prior failure, unchanged survey, two selected direct producers, absence of target collision, and the fresh no-Lean preflight. Provider checks are point-in-time, and inherited ancestry includes an uncaptured numeric outer exit. This does not establish the windows theorem, derive its hypotheses from a concrete zero, or establish the sign33 bridge. Preflight requires a fresh output path and will refuse after launch.

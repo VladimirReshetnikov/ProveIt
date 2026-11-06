@@ -1768,6 +1768,12 @@ A [scalar and first-index window attempt](research/nine-sharing-sign33-windows-c
 [independently audited](reviews/nine-sharing-sign33-windows-failure-frontier-independent/README.md),
 failed because the `absdiff` identifier was not in scope. It produced no
 successful object; the reported `sorryAx` is a failed-declaration artifact.
+A [namespace-only retry](research/nine-sharing-sign33-windows-retry01/README.md),
+[independently audited](reviews/nine-sharing-sign33-windows-retry01-terminal-frontier-independent/README.md),
+then checked the scalar and first-index window conclusions under the full
+explicit positivity, mask, transport and four norm hypotheses. Deriving
+those hypotheses from a concrete seed/source zero and transferring the
+windows to the signed cuts remain open.
 An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/README.md),
 [independently inspected](reviews/nine-sharing-gate-model-draft-independent/README.md),
 separates signed-pair algebra and conditional trace replay from generated
