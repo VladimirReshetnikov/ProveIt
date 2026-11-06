@@ -2009,8 +2009,10 @@ checks targets 48–53, including the gap equality at the ring-value level. Its
 compile records 18 simp/tactic warnings. A [signed-tau client](research/nine-sharing-sign33-ring-gates07-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-ring-gates07-terminal-frontier-independent/README.md),
 checks targets 54–59, including the tau equality at the ring-value level. Its
-compile records 17 simp/tactic warnings. The remaining 21 gate equations, five
-norms and source-zero bridge are separate.
+compile records 17 simp/tactic warnings. An [inline-gate client](research/nine-sharing-sign33-ring-gates08-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-ring-gates08-terminal-frontier-independent/README.md),
+checks targets 60–65 and records 17 simp/tactic warnings. The remaining 15 gate
+equations, five norms and source-zero bridge are separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
