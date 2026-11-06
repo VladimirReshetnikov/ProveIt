@@ -1,0 +1,5 @@
+# Independent terminal review: sign33 normalization and degree
+
+The retained three-stage state reports successful dependency and Lean compilation checks; the separate author observation records session 56200 exit 0. The checker verifies all three source/object hashes, logs, five axiom reports, producer dependencies, 300 direct guard slots and 1,056 overlay links, and reruns the external syntax AST comparison. No Lean replay was performed; the author record is not an independent raw terminal transcript. Normalize and weighted logs each contain one unused-simp-argument warning; degree has no warnings.
+
+The first-residual theorem reports `[propext, Quot.sound]`; the other four report `[propext, Classical.choice, Quot.sound]`. The proved bounds give total degree at most four for symbolic ports and nonzero seed at zero witnesses for arbitrary distinguished input under `0 < p 0`. These do not establish exact degree, positivity for concrete ports, JSON/source equality inside Lean, a source-model zero bridge, or an iPRA endpoint. Provider checks are point-in-time and resource monitoring is sampled.

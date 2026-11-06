@@ -1806,6 +1806,11 @@ A [syntax-only Lean check](research/nine-sharing-sign33-seed-syntax-check/README
 [independently audited](reviews/nine-sharing-sign33-seed-syntax-terminal-frontier-independent/README.md),
 then compiled those definitions. The JSON comparison remains external, and no
 source-zero bridge or iPRA endpoint for this candidate follows yet.
+A [normalization and degree build](research/nine-sharing-sign33-seed-degree-normalize-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-seed-degree-normalize-terminal-frontier-independent/README.md),
+then checked total degree at most four and the required normalization under
+the stated positive first-port assumption. Its compile recorded two
+unused-simp warnings. This is not an exact degree or a source-zero bridge.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
