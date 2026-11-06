@@ -1,0 +1,63 @@
+/tmp/nine-sharing-sign33-current-core-cuts-check-20261106/src/DiophantineConsistency/Sign33CurrentCoreCuts.lean:45:70: error: unsolved goals
+V : Type
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+v : Fin 14 → V
+hz : ObjectCurrentEquation2011.InternalZero ObjectCurrentEquation2011.naturalExpression v
+w : Fin 14 → V := fun j => v j + 1
+d : Carrier65.Core (DiffRing V) := Carrier65.core ModelThirteenCarrier.ringPorts fun j => ι (w j)
+hwin :
+  have w := fun j => v j + 1;
+  have q := ↑CurrentMasks2011.beta * w 0 + 1;
+  have E := w 8 * q * (w 7 * q ^ 3);
+  have r :=
+    ((q - 1) * (q - w 1) + w 2) * (q ^ 2 - 1) +
+      (↑CurrentMasks2011.lowPort + q * ↑(CurrentMasks2011.highPort + CurrentMasks2011.beta)) * w 0;
+  have c := (w 10 + w 11) * (w 7 * q ^ 3) + w 10;
+  0 < q - w 1 - w 2 ∧ r + 2 < E ∧ 2 * r < c
+hgap : 0 < q w - w 1 - w 2
+ha : w 2 < q w - w 1
+hFq : w 1 < q w
+eq_q : (Carrier65.core ModelThirteenCarrier.ringPorts fun j => ι (w j)).q = ι (q w)
+left✝² : (Carrier65.core ModelThirteenCarrier.ringPorts fun j => ι (w j)).Y = ι (Y w)
+eq_E : (Carrier65.core ModelThirteenCarrier.ringPorts fun j => ι (w j)).E = ι (X w * Y w)
+left✝¹ : (Carrier65.core ModelThirteenCarrier.ringPorts fun j => ι (w j)).a = ι (X w * Y w + Y w)
+eq_c : (Carrier65.core ModelThirteenCarrier.ringPorts fun j => ι (w j)).c = ι ((w 10 + w 11) * Y w + w 10)
+left✝ :
+  (Carrier65.core ModelThirteenCarrier.ringPorts fun j => ι (w j)).delta =
+    ι (ArithmeticPellRecurrence.delta (X w * Y w + Y w))
+eq_rank : (Carrier65.core ModelThirteenCarrier.ringPorts fun j => ι (w j)).rank = ι (rank w)
+gap tau inner val negative : V
+hgap' : ι gap = (ι (q w) - 1) * (ι (q w) - ι (w 1)) + ι (w 2)
+htau : ι tau = ι (X w * Y w) * ι (w 9) + ι (w 10 + w 11) - ι (rank w)
+hinner : ι inner = ι ((w 10 + w 11) * Y w + w 10) * ι (w 6) - ι (rank w)
+hval :
+  ι val = ι (w 4) * ι (w 4) * (ι ((w 10 + w 11) * Y w + w 10) * ι (w 6) - ι (rank w)) - ι ((w 10 + w 11) * Y w + w 10)
+hnegative :
+  ι negative =
+    ι (w 12) * ι (w 12) -
+      (ι (w 4 * w 4 * ((w 10 + w 11) * Y w + w 10) * w 6) - ι (w 4 * w 4 * rank w + ((w 10 + w 11) * Y w + w 10))) *
+        (ι (w 4 * w 4 * ((w 10 + w 11) * Y w + w 10) * w 6) - ι (w 4 * w 4 * rank w + ((w 10 + w 11) * Y w + w 10)))
+⊢ ι (X w * Y w) * (ι (v 9) + ι 1) + (ι (w 10) + ι (w 11)) - ι (rank w) =
+    ι (X w * Y w) * (ι (v 9) + ι 1) + ι (w 10 + w 11) - ι (rank w)
+/tmp/nine-sharing-sign33-current-core-cuts-check-20261106/src/DiophantineConsistency/Sign33CurrentCoreCuts.lean:56:4: error: Type mismatch: After simplification, term
+  hgap'
+ has type
+  ι gap = (ι (q w) - 1) * (ι (q w) - ι (w 1)) + ι (w 2)
+but is expected to have type
+  ι gap =
+    ((Carrier65.core ModelThirteenCarrier.ringPorts fun j => ι (v j + 1)).q - 1) *
+        ((Carrier65.core ModelThirteenCarrier.ringPorts fun j => ι (v j + 1)).q - ι (v 1 + 1)) +
+      ι (v 2 + 1)
+/tmp/nine-sharing-sign33-current-core-cuts-check-20261106/src/DiophantineConsistency/Sign33CurrentCoreCuts.lean:58:4: error: Type mismatch: After simplification, term
+  hinner
+ has type
+  ι inner = ι ((w 10 + w 11) * Y w + w 10) * ι (w 6) - ι (rank w)
+but is expected to have type
+  ι inner =
+    (Carrier65.core ModelThirteenCarrier.ringPorts fun j => ι (v j + 1)).c * ι (v 6 + 1) -
+      (Carrier65.core ModelThirteenCarrier.ringPorts fun j => ι (v j + 1)).rank
+'DiophantineConsistency.Sign33CurrentCoreCuts.five_core_representatives_of_current_zero' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]

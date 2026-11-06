@@ -1,0 +1,5 @@
+# Carrier65 cut binding failed on local rewrites
+
+Author-observed outer session `38633` returned numeric exit 1. Retained state SHA-256 `3dbc059a13d3ec74be121ce9092cc2be86416842af9a8e018626063a5f83acc2`; pre-run producer survey `3c14a08aab4c2d6316b0647a9d5952881fccfe5732c3fdde01a26b1f64bd165e`. The outer record is an author observation, not an independently observed transcript.
+
+Lean exited 1 with no monitor stop. Its compile log SHA-256 `9bd918689cf72a986d532da9a357b4013df2af5de962cf925a599105c3c58396` records an unsolved tau equality involving the image of an addition, plus gap and inner goals where local invariant rewrites did not match the expanded shifted-coordinate expressions. The emitted axiom report includes `sorryAx` from the failed declaration and is not proof evidence; no successful object was recorded. Final candidate guard and post-success producer survey were not reached. Point-observation and inherited-provider limitations remain as in the parent README; in particular no external seed graph binding is established.
