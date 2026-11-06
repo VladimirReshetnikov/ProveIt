@@ -201,6 +201,10 @@ recipe equality. The [final path client](research/nine-seed38-jones-prefix-path1
 [independently audited](reviews/nine-seed38-jones-prefix-path18-45-terminal-frontier-independent/README.md),
 extends preservation to `d45` and the checked recipe for every `d18` entry.
 Later-born values and full semantic composition remain separate.
+An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
+describes checkpoint paths and substitution in dependency order; it is a plan,
+not a Lean proof or evidence that the complete composition fits the resource
+limits.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
