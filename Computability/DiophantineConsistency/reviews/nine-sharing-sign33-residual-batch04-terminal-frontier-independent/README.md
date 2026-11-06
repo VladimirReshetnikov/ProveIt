@@ -1,0 +1,5 @@
+# Independent terminal review: sign33 gap/tau/second norm
+
+The retained state records successful dependency and Lean compilation checks; the author observation says session 65291 exited 0. The checker validates source/object, logs, all four reports, direct square-sum provider binding, 100 guard slots, 1,174 overlay links and identical before/after surveys. No Lean replay was performed; the author observation is not an independent raw terminal transcript. All reports are `[propext, Classical.choice, Quot.sound]`; the log contains one unused-simp-argument warning.
+
+Under the stated IΣ₁-model and p0/p2/p3 cast hypotheses, seed zero entails the positive-orientation gap/tau cuts at full coordinates 26–27 and the second norm under one valuation. The third row alone has no cast assumptions. The source header incorrectly says “no model port casts”; the author recorded an erratum and the checked theorem statements include the casts. This does not prove other rows, signed-witness existence, graph replay, source-model equivalence or an iPRA endpoint. JSON/source matching remains external; provider observations are point-in-time and monitoring is sampled.
