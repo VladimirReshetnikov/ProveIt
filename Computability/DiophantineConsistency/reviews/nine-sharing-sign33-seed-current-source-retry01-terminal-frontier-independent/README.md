@@ -1,0 +1,5 @@
+# Independent terminal review: current seed to source zero
+
+The retained state records successful dependency scans and Lean compilations for both factored stages; the author observation says session 82810 exited 0. The checker validates source, objects and logs, both reports, all seven direct producer bindings including the first local object, 450 guard slots, 1,218 overlay links and matching before/after surveys. No Lean replay was performed; the author observation is not an independent raw terminal transcript. Both reports list `[propext, Classical.choice, Quot.sound]` and the logs have no warnings.
+
+The final theorem proves current 33-seed zero implies current source zero for the same Fin 34 valuation and fourteen shifted source inputs in an IΣ₁ model, without explicit external port-cast assumptions. It is one direction, not a converse or an iPRA endpoint. The initial-agreement producer's numeric outer exit was not captured, an inherited evidence limitation. Provider observations are point-in-time and monitoring is sampled.

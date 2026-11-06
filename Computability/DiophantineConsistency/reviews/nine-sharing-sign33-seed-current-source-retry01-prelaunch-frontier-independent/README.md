@@ -1,0 +1,5 @@
+# Independent prelaunch review: factored current seed-to-source retry
+
+The candidate first wraps the successfully compiled generic theorem with four separate model-natural port variables and cast assumptions, then applies the four checked current-port projections. The final seed-zero hypothesis and fourteen shifted source coordinates agree with the failed first attempt; the fourth natural port is `highPort + beta` once. This is a one-way implication in IΣ₁ models, not a converse or an iPRA endpoint.
+
+The checker pins sources, runner, manifest and provider survey, verifies all cast arguments and the unchanged conclusion, and reruns the no-Lean preflight. The survey explicitly excludes the failed current-specialization row from the earlier attempt and the failed port-assembly row, while authenticating successful producer rows. The runner guards selected direct imports and the first new local object. No launch blocker was found within this point-in-time scope. Lean elaboration/resource behavior, complete transitive/dynamic ancestry, and the inherited initial-agreement numeric outer-exit gap remain limitations.

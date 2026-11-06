@@ -2070,9 +2070,11 @@ casts and the shifted coordinates. A [two-stage seed composition attempt](resear
 [independently audited](reviews/nine-sharing-sign33-seed-current-source-failure-frontier-independent/README.md),
 compiled the generic seed-zero implication, but the current-port stage failed
 with a Lean interpreter memory exception under `-M2800`; it produced no
-current-port object. Current-port specialization and construction of 33
-witnesses from a source zero remain separate; the inherited initial-stage
-numeric outer exit remains uncaptured.
+current-port object. A [factored retry](research/nine-sharing-sign33-seed-current-source-retry01/README.md),
+[independently audited](reviews/nine-sharing-sign33-seed-current-source-retry01-terminal-frontier-independent/README.md),
+then checks that current-port 33-seed zero implies source-expression zero at
+the same shifted inputs. Constructing 33 witnesses from a source zero remains
+separate; the inherited initial-stage numeric outer exit remains uncaptured.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
