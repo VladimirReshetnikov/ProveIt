@@ -1810,8 +1810,12 @@ A [namespace-only retry](research/nine-sharing-sign33-windows-retry01/README.md)
 [independently audited](reviews/nine-sharing-sign33-windows-retry01-terminal-frontier-independent/README.md),
 then checked the scalar and first-index window conclusions under the full
 explicit positivity, mask, transport and four norm hypotheses. Deriving
-those hypotheses from a concrete seed/source zero and transferring the
-windows to the signed cuts remain open.
+those hypotheses and transferring the windows to the signed cuts remain
+separate. A [current-source window client](research/nine-sharing-sign33-current-windows-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-current-windows-terminal-frontier-independent/README.md),
+then derives the three natural windows from a shifted current-source zero,
+using the once-shifted high port. Binding them to the concrete seed cuts
+remains open.
 A [gap/tau ring-transport attempt](research/nine-sharing-sign33-gap-tau-ring-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-gap-tau-ring-failure-frontier-independent/README.md),
 failed because `ModelArithmetic` was unavailable in the combined `open`
