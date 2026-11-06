@@ -1,0 +1,7 @@
+# Sign33 negative auxiliary cut and final two norms checked
+
+Author-observed outer session `79102` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `cb55da080e2fec69cb082e9deaa5d9e6f03dfbd106e9fa22107cc3626d7fd69c`; before and after provider surveys both hash to `9dbd8f5b4ec20b051457792a6534a4705acddaf9ee1e193e500a7ad259f37720`. The outer record is an author observation, not an independently observed transcript.
+
+`Sign33ResidualBatch07` compiled in 3.184 seconds; object SHA-256 `b31aafb38c8892ae24e459edc57b1a7cd32ea932392bc6733fecdc12a2e16c40` at `/tmp/nine-sharing-sign33-residual-batch07-check-20261106/lib/DiophantineConsistency/Sign33ResidualBatch07.olean`, compile log `0da5b65ee7a7a38260ce1dd706b8a38b0c329303a052f15a22d0293ee9d3b2ed`. All four axiom reports list `[propext, Classical.choice, Quot.sound]`. Three unused-simp linter warnings were retained. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Peak sampled session RSS was 2,156,650,496 bytes and minimum sampled available host memory was 18,963,689,472 bytes; sampling has the stated limitations.
+
+For arbitrary symbolic p, seed zero implies the y²−V² cut and final two norm equations on the same full valuation without any port cast. No assembly, chronological graph replay, Lean proof of external JSON binding, source-zero bridge or sign33 iPRA endpoint is established. Inherited provider and numeric-exit limitations remain as in the parent README.
