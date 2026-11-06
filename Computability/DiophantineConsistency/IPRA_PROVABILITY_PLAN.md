@@ -1830,6 +1830,10 @@ A [first residual-to-cut attempt](research/nine-sharing-sign33-first-cut-check/R
 failed on a list-membership proof after the first declaration's clean axiom
 report; the failed module produced no object and its second `sorryAx` report
 is not proof evidence.
+A [membership-term retry](research/nine-sharing-sign33-first-cut-retry01/README.md),
+[independently audited](reviews/nine-sharing-sign33-first-cut-retry01-terminal-frontier-independent/README.md),
+then checks the first `q²` cut under the stated port-0 cast and the same
+seed valuation. The other 23 residual links remain separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
