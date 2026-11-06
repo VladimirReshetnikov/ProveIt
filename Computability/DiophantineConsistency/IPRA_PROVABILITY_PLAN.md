@@ -81,6 +81,10 @@ A [three-prefix attempt](research/nine-seed38-jones-prefix-group01-check/README.
 failed on `Fin.last` versus numeral-index rewrites for two entries. The first
 declaration had a clean report, but the failed module produced no object or
 successful final survey.
+A [targeted index retry](research/nine-seed38-jones-prefix-group01-retry01/README.md),
+[independently audited](reviews/nine-seed38-jones-prefix-group01-retry01-terminal-frontier-independent/README.md),
+then checked the short-prefix values for `B`, `q` and `N`. Their preservation
+to full-recipe entries and the full semantic equality remain separate.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),

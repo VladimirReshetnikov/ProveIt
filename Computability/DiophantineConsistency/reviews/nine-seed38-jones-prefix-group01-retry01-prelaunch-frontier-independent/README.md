@@ -1,0 +1,5 @@
+# Independent prelaunch review: prefix-group Fin.last retry
+
+**Pass for bounded launch.** The complete source delta changes only the two intermediate proof `change` expressions from explicit `⟨1,...⟩` and `⟨2,...⟩` indices to `Fin.last 1` and `Fin.last 2`, matching the already-stated prefix_B and prefix_q theorem forms. The three theorem statements and remaining proofs are unchanged. This directly targets the prior two rewrite errors; Lean elaboration/resource fit remain untested.
+
+`check.py` pins source, runner, manifest and survey, verifies the full two-line delta and retained failed state/log, replays the direct prefix provider audit and runs fresh no-Lean preflight. The runner preserves direct provider guards/resource limits, pins the failed run and uses a fresh output path. Provider observations are point-in-time, resources sampled and inherited initial-agreement numeric outer exit unavailable. A successful result would establish three short-prefix values only, not full recipe semantics or JSON binding. Preflight requires a fresh output path and refuses after launch.
