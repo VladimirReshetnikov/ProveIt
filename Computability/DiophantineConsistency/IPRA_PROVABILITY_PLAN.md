@@ -1843,6 +1843,10 @@ A [24-row batch inventory](research/nine-sharing-sign33-residual-batch-plan/READ
 records the residual order, syntactically occurring ports, signed-cut
 orientations and Fin34-to-Fin33 positions for a proposed bounded proof. It
 is an external inventory, not a proof of minimal casts or graph equivalence.
+A [first three-row residual client](research/nine-sharing-sign33-residual-batch00-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-residual-batch00-terminal-frontier-independent/README.md),
+checks the `q²`, `q³` and `X` cut identities at one seed-zero valuation under
+the stated port-0 cast. The other 21 residual links remain separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign

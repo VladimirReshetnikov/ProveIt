@@ -1,0 +1,7 @@
+# First three sign33 residual cuts checked
+
+Author-observed outer session `87174` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `580b48eb8714eb4ee78ac24d87c4114fb0ce368ec1b625978480dd7be6f1f1a7`; before and after provider surveys both hash to `9dbd8f5b4ec20b051457792a6534a4705acddaf9ee1e193e500a7ad259f37720`. The outer record is an author observation, not an independently observed transcript.
+
+`Sign33ResidualBatch00` compiled in 2.85 seconds; object SHA-256 `b50a018d85c5d6939cfc6025bcac5612d01b2e3c2570d3780725a708ebe92cc7` at `/tmp/nine-sharing-sign33-residual-batch00-check-20261106/lib/DiophantineConsistency/Sign33ResidualBatch00.olean`, compile log `ea54636cbc78f0071f944541edfdc3a25500b0b808e05d84041e39bdf40d6ce6`. All three reports list `[propext, Classical.choice, Quot.sound]`, with no warnings. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Peak sampled session RSS was 2,162,884,608 bytes and minimum sampled available host memory was 18,986,000,384 bytes; sampling has the stated limitations.
+
+Under the explicit p0 cast, the checked theorem derives the q², q³ and X cuts from seed zero on the same full valuation. No remaining residual/static identities, chronological graph replay, Lean proof of external JSON binding, source-zero bridge or sign33 iPRA endpoint is established. Inherited provider and numeric-exit limitations remain as in the parent README.
