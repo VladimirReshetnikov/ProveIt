@@ -205,7 +205,10 @@ A [later checkpoint client](research/nine-seed38-jones-checkpoint27-34-check/REA
 [independently audited](reviews/nine-seed38-jones-checkpoint27-34-terminal-frontier-independent/README.md),
 checks the `d27` to `d34` path, preservation of every `d27` lookup and one
 concrete `phi` substitution. Further substitutions and full semantics remain
-separate.
+separate. A [subsequent checkpoint client](research/nine-seed38-jones-checkpoint34-41-check/README.md),
+[independently audited](reviews/nine-seed38-jones-checkpoint34-41-terminal-frontier-independent/README.md),
+checks the `d34` to `d41` path, every `d34` lookup and the symbolic `N` value
+at `d41`; full semantic composition remains separate.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
 not a Lean proof or evidence that the complete composition fits the resource
