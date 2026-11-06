@@ -1,0 +1,14 @@
+import hashlib,json,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+D=Path(__file__).resolve().parents[2];p=D/'research/nine-sharing-sign33-current-core-cuts-retry01';old=D/'research/nine-sharing-sign33-current-core-cuts-check'
+def sha(x):return hashlib.sha256(Path(x).read_bytes()).hexdigest()
+pins={'run.py':'b41adebec2fd5506253f2d0c7e4efdb0c4808ddbbb85d23d5b270ec5e82fd086','provider_survey.py':'8ae637087e541d93a14d8d792c62f7a615f530bccbc663eb8c0a66809e654868','source-manifest.json':'c1dd513bc6d03798fb93c699083acc77ebcb02084e82216e1eaf93674950fbcc','src/DiophantineConsistency/Sign33CurrentCoreCuts.lean':'a84564331e016e1a7b2b2086521daed5376978ef2a561b0aec108fdcd6d0d446'}
+for k,h in pins.items():assert sha(p/k)==h,k
+before=(old/'src/DiophantineConsistency/Sign33CurrentCoreCuts.lean').read_text();after=(p/'src/DiophantineConsistency/Sign33CurrentCoreCuts.lean').read_text()
+for a,b in [('    rw [eq_E, eq_rank, map_add]','    rw [eq_E, eq_rank]\n    simp only [map_add]'),("  · simpa only [eq_q] using hgap'","  · change ι gap = (d.q-1)*(d.q-ι (w 1))+ι (w 2)\n    rw [eq_q]\n    exact hgap'"),('  · simpa only [eq_c, eq_rank] using hinner','  · change ι inner = d.c*ι (w 6)-d.rank\n    rw [eq_c, eq_rank]\n    exact hinner')]:assert before.count(a)==1;before=before.replace(a,b)
+assert before==after and sha(old/'provider_survey.py')==sha(p/'provider_survey.py') and sha(old/'attempt01/state.json')=='3dbc059a13d3ec74be121ce9092cc2be86416842af9a8e018626063a5f83acc2' and sha(old/'attempt01/Sign33CurrentCoreCuts-compile.txt')=='9bd918689cf72a986d532da9a357b4013df2af5de962cf925a599105c3c58396'
+imports=json.loads((p/'source-manifest.json').read_text())['rows'][0]['imports'];assert imports==['DiophantineConsistency.Sign33CurrentFiveWitnesses','DiophantineConsistency.Sign33CurrentWindows','DiophantineConsistency.ModelThirteenCoreInvariants'];s=json.loads(subprocess.check_output([sys.executable,'-I','-S','-B',str(p/'provider_survey.py')],timeout=60));assert s['status']=='PASS_POINT_PRODUCER_SURVEY' and all(k in s['selected'] for k in imports) and 'DiophantineConsistency/Sign33CurrentCoreCuts.olean' not in s['links']
+for k,h in zip(imports,['ab27659865533dcc9a8548478c7ba4286192ef265401f82e8dc732cee0b7d28a','a2fd0bcecb4cea0625245a5d4bd2949848fe5b39a2f6932f6de095283894e521','3a4a7d8b04de145836ef2ccdfdd6cdf84cfc4c728caf5a4ec64785eb85c1a467']):assert s['selected'][k]['sha256']==h
+r=json.loads(subprocess.check_output([sys.executable,'-I','-S','-B',str(p/'run.py'),'--preflight'],timeout=60));assert r['status']=='PASS_NO_LEAN_PREFLIGHT' and r['stage_count']==1
+print(json.dumps({'status':'PASS_PRELAUNCH_ONLY','pins':pins,'direct_producers':{k:s['selected'][k] for k in imports},'overlay_links':len(s['links']),'scope':'Three local proof rewrites; no Lean theorem or graph/seed binding.'},indent=2,sort_keys=True))

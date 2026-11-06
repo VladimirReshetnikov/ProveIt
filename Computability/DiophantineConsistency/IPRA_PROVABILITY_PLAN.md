@@ -1873,6 +1873,11 @@ A [carrier-cut binding attempt](research/nine-sharing-sign33-current-core-cuts-c
 [independently audited](reviews/nine-sharing-sign33-current-core-cuts-failure-frontier-independent/README.md),
 failed on three local map-add and expression-matching goals; it produced no
 binding theorem. The external seed indices and graph remain separate.
+A [normalization retry](research/nine-sharing-sign33-current-core-cuts-retry01/README.md),
+[independently audited](reviews/nine-sharing-sign33-current-core-cuts-retry01-terminal-frontier-independent/README.md),
+then checks the five representative equalities against the current
+Carrier65 core fields. The external 33-seed graph and remaining coordinate
+assembly are still unbound in Lean.
 An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/README.md),
 [independently inspected](reviews/nine-sharing-gate-model-draft-independent/README.md),
 separates signed-pair algebra and conditional trace replay from generated

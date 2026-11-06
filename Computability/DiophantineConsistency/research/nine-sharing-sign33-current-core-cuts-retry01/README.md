@@ -1,0 +1,11 @@
+# Source-to-core-cuts rewrite retry checked
+
+The [prior core-cuts diagnostic](../nine-sharing-sign33-current-core-cuts-check/attempt01/README.md) failed on three local rewrite goals. This retry keeps the theorem statement and source-zero premise unchanged. It replaces the tau proof's one-shot `map_add` rewrite with `simp only [map_add]`, and explicitly changes the gap and inner goals to the local `d,w` formulations before applying their already established core invariants. The theorem compiled; see [attempt01](attempt01/README.md). It binds five representatives to Carrier65 core fields; the external sign33 seed graph, a 33-coordinate seed witness, a zero bridge and iPRA endpoint remain separate.
+
+The external candidate's corresponding cut labels 26, 27, 29, 30 and 33 are zero-based indices in its full 34-coordinate tuple, with index 0 the unused distinguished input. Thus their zero-based 33-witness indices are 25, 26, 28, 29 and 32. This metadata is externally checked and not a Lean graph binding.
+
+The runner pins the prior failed state and log, uses a fresh output directory, and retains the previous source-built provider survey, direct dependency/guard checks and resource limits. Full guard and producer-survey rechecks occur only after success. Provider observations are point-in-time, resource monitoring is sampled, and deeper transitive/dynamic ancestry remains inherited, including an uncaptured numeric outer exit of an earlier initial-agreement provider.
+
+Candidate source SHA-256 `a84564331e016e1a7b2b2086521daed5376978ef2a561b0aec108fdcd6d0d446`, manifest `c1dd513bc6d03798fb93c699083acc77ebcb02084e82216e1eaf93674950fbcc`, survey `8ae637087e541d93a14d8d792c62f7a615f530bccbc663eb8c0a66809e654868`, runner `b41adebec2fd5506253f2d0c7e4efdb0c4808ddbbb85d23d5b270ec5e82fd086`. Author no-Lean preflight session 78642 exited 0; independent prelaunch review and a coordinated Lean slot preceded the successful run. Limits remained `-M2800`, 120 seconds per call, sampled 4-GiB session RSS and 10-GiB available-host-memory floor with a 5-GB free-space precheck.
+
+The [independent terminal audit](../../reviews/nine-sharing-sign33-current-core-cuts-retry01-terminal-frontier-independent/README.md) checked all five Carrier65 field equalities and provider observations without replaying Lean.
