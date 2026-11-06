@@ -7,10 +7,12 @@ This is the 121x8801 counterpart of Compact44's `CleanGeometry`,
 `CleanMaskClasses`, `CleanModelSupport` and
 `FixedGraphSupportCarry.graph_support_carry_facts`.
 
-`Bad x` is the hull of the support `E`: `x ≤ 1064` or `x ∈ {1095, 1096, 2195,
-3296}`. Compact44's hull omits `1096`, which is the second anchor here. The
-clause-target shift `1102` maps no hull element into the hull modulo `8801`
-(`finite_disjoint`, checked by `omega`).
+`Bad x` is `x ≤ 1065` or `x ∈ {1095, 1096, 2195, 3296}`. That is the hull of
+the support `E`, plus the cell `1065`. With `1065` included, both cyclic
+predecessors of a safe cell avoid the dummy `1063` (`Mixed121Source`).
+Compact44's set also uses `≤ 1065`, but omits `1096`, the second anchor here.
+The clause-target shift `1102` maps no element of the set into the set modulo
+`8801` (`finite_disjoint`, checked by `omega`).
 
 `graph_support_carry` is the next link of the `LeafFacts` halting chain. It
 gives the `CarryInput` of `Mixed121Carry` together with three facts about the
@@ -28,7 +30,7 @@ open ArithmeticBinaryCarry ArithmeticRepunit ArithmeticWindowDigits ArithmeticCy
 open CompactHeterogeneousCarry CompactGenericAlignedMass Mixed121Rotation Mixed121Flatten
 open CompactListMask ArithmeticMaskConstants
 
-def BadNat (x : ℕ) : Prop := x≤1064 ∨ x=1095 ∨ x=1096 ∨ x=2195 ∨ x=3296
+def BadNat (x : ℕ) : Prop := x≤1065 ∨ x=1095 ∨ x=1096 ∨ x=2195 ∨ x=3296
 
 theorem finite_disjoint (x : ℕ) (hx : x<8801) :
     ¬ (BadNat x ∧ BadNat ((x+1102)%8801)) := by
@@ -46,11 +48,11 @@ theorem support_subset_bad (j : ℕ) (hj : j ∈ Mixed121Ports.maskSupport) : Ba
 
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-def Bad (x : V) : Prop := x≤1064 ∨ x=1095 ∨ x=1096 ∨ x=2195 ∨ x=3296
+def Bad (x : V) : Prop := x≤1065 ∨ x=1095 ∨ x=1096 ∨ x=2195 ∨ x=3296
 
 theorem bad_cast (j : ℕ) : Bad (j:V) ↔ BadNat j := by
   unfold Bad BadNat
-  exact_mod_cast (Iff.rfl : (j≤1064 ∨ j=1095 ∨ j=1096 ∨ j=2195 ∨ j=3296) ↔ _)
+  exact_mod_cast (Iff.rfl : (j≤1065 ∨ j=1095 ∨ j=1096 ∨ j=2195 ∨ j=3296) ↔ _)
 
 theorem model_disjoint (x : V) (hx : x<8801) :
     ¬ (Bad x ∧ Bad ((x+1102)%8801)) := by
