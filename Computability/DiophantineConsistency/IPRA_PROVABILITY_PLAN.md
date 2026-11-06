@@ -1618,12 +1618,15 @@ cast hypothesis. Combining the existential directions and the iPRA transfer
 remain separate. A [conditional existential composition](research/nine-sharing-norm38-current-existential-iff-draft/README.md),
 [independently audited](reviews/nine-sharing-norm38-current-existential-iff-terminal-independent/README.md),
 checks both seed/source and nine-variable/source existential equivalences
-under an explicit universal port-cast assumption. The cast-free composition
-and iPRA transfer are still to be checked.
+under an explicit universal port-cast assumption. A [cast-free composition](research/nine-sharing-norm38-current-castfree-iff-draft/README.md),
+[independently audited](reviews/nine-sharing-norm38-current-castfree-iff-terminal-independent/README.md),
+then checks both equivalences in IΣ₁ models for the actual current symbolic
+ports and shifted source coordinates. The iPRA transfer remains separate.
 An [iPRA endpoint draft](research/nine-sharing-norm38-ipra-endpoint-draft/README.md)
 has passed a [source-only review](reviews/nine-sharing-norm38-ipra-endpoint-draft-independent/README.md);
-it follows the existing all-model bridge and native/standard transfer pattern,
-but its cast-free provider and the endpoint itself remain uncompiled.
+it follows the existing all-model bridge and native/standard transfer pattern.
+Its cast-free provider has since been checked, but the endpoint itself remains
+uncompiled.
 A [forward-constructor gate build](research/nine-sharing-norm38-forward-gates-draft/README.md),
 [independently audited](reviews/nine-sharing-norm38-forward-gates-terminal-independent/README.md),
 checks all 60 gate conditions and their conjunction for the generated witness
