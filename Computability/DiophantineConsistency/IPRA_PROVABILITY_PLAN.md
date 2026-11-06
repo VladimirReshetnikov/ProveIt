@@ -129,6 +129,11 @@ A [rank composition attempt](research/nine-seed38-jones-prefix-rank-composition-
 failed on a `Fin` zero-index presentation mismatch after the substantive
 rewrites. It produced no object; the failed declaration's `sorryAx` is not
 proof evidence.
+A [zero-index retry](research/nine-seed38-jones-prefix-rank-composition-retry01/README.md),
+[independently audited](reviews/nine-seed38-jones-prefix-rank-composition-retry01-terminal-frontier-independent/README.md),
+then identifies `d11` with `rankCode` applied to symbolic `d10` entries.
+Replacing those entries by their concrete symbolic values and full recipe
+semantics remain separate.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
