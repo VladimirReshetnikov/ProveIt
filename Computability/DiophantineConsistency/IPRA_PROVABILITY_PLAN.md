@@ -194,7 +194,10 @@ extends that preservation to `d27`. A [further path client](research/nine-seed38
 [independently audited](reviews/nine-seed38-jones-prefix-path18-34-terminal-frontier-independent/README.md),
 extends it to `d34`. Its first no-Lean preflight failed because it selected the
 output object as provider; the corrected provider survey passed review. Further
-paths and full semantic composition remain separate.
+paths and full semantic composition remain separate. A [next path client](research/nine-seed38-jones-prefix-path18-41-check/README.md),
+[independently audited](reviews/nine-seed38-jones-prefix-path18-41-terminal-frontier-independent/README.md),
+extends this lookup preservation to `d41`; it does not establish the full
+recipe equality.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),

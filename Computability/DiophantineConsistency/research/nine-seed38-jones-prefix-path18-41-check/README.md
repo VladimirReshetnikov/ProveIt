@@ -1,0 +1,11 @@
+# Prepared concrete d18 to d41 path check
+
+The guarded client checks the [source-only 23-snoc path](../nine-seed38-jones-prefix-path18-41-draft/README.md) and its generic lookup application. The theorem is limited to `d18` and `d41`; it does not prove full-recipe semantics or JSON/document binding.
+
+The survey reruns the independent d18-to-d34 terminal audit and pins the source and exact prior-path object. The runner matches its direct dependency and guard against that object by hash and real path, and repeats source/provider checks after success. Point observations do not establish complete dynamic or transitive ancestry; sampled monitoring can miss transient spikes or escaped descendants. An earlier initial-agreement producer's numeric outer exit was not captured.
+
+No-Lean preflight actual session 79472 exited 0 and reported `PASS_NO_LEAN_PREFLIGHT`; the [record](preflight-author-record.json) is author-recorded rather than an independent raw transcript. The [independent prelaunch review](../../reviews/nine-seed38-jones-prefix-path18-41-prelaunch-frontier-independent/README.md) passed. Limits were `-M2800`, 120 seconds per invocation, sampled 4-GiB session RSS and 10-GiB available-host-memory stops, and a 5-GB free-disk precheck.
+
+Actual outer session 10243 exited 0, as did the dependency scan and Lean compile. The concrete path reported no axioms; its lookup reported `[propext, Classical.choice, Quot.sound]`, without warnings. State SHA-256 `170ada4c0c55dc453f1b7247744909bf3af54e6fe2fbb5c15156a4882115eddd`, object `b245318d9c4049b569f3199955d2df27a31cdcfd49a1205ca2f8475801e32fa9`, and author-recorded outer exit `00c94bcf22bc19c0770a246a2b4a549edc8832ede163712f67138d1e5867c5d3`. The object remains temporary; the outer record is not an independent raw transcript. The [independent terminal audit](../../reviews/nine-seed38-jones-prefix-path18-41-terminal-frontier-independent/README.md) passed without replaying Lean.
+
+SHA-256: source `2dff4ff4b5b7b8bdeb10a03410b51857a47d50c966efcaa0d4fdb98da30e31bb`; runner `964007b336c0b7b38bf49c4ec0f4b98c837ac7cfaa75ee880e4a49fca13b06b8`; survey `6308b46eb6c03fa54cd13c1fc5d0ea1635ef56f84aaf8daea715ba1a94d9f411`; manifest `8cdfc79d3c7abbf76cb60500ac043354524a04e8c18a09a66aefc7acfd041347`.
