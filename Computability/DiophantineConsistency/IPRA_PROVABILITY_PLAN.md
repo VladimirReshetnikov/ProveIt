@@ -188,7 +188,10 @@ checks generic lookup preservation along a snoc path and a two-snoc example.
 A [recipe-specific client](research/nine-seed38-jones-prefix-path18-20-check/README.md),
 [independently audited](reviews/nine-seed38-jones-prefix-path18-20-terminal-frontier-independent/README.md),
 checks the path from `d18` to `d20` and preservation of every `d18` lookup.
-Longer paths and full semantic composition remain separate.
+A [longer path client](research/nine-seed38-jones-prefix-path18-27-check/README.md),
+[independently audited](reviews/nine-seed38-jones-prefix-path18-27-terminal-frontier-independent/README.md),
+extends that preservation to `d27`. Further paths and full semantic
+composition remain separate.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
