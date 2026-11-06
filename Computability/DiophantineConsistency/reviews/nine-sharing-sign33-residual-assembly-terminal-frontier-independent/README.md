@@ -1,0 +1,5 @@
+# Independent terminal review: sign33 eight-batch assembly
+
+The retained state records successful dependency and Lean compilation checks; the author observation says session 22755 exited 0. The checker validates source/object, logs, the axiom report, all eight direct batch-provider bindings, 450 guard slots, 1,182 overlay links and identical before/after surveys. No Lean replay was performed; the author observation is not an independent raw terminal transcript. The report is `[propext, Classical.choice, Quot.sound]`, with no warnings. The independent prelaunch review separately compares all eight assembled fields to their batch conclusions.
+
+Under the stated IΣ₁-model hypotheses and all four explicit port casts, `InternalZero` of the sign33 seed implies all 24 grouped cut/norm consequences for the same valuation. This is one direction: it does not provide signed-witness existence, chronological graph replay, the source-equation equivalence or an iPRA endpoint. JSON/source matching remains external; provider observations are point-in-time and monitoring is sampled.

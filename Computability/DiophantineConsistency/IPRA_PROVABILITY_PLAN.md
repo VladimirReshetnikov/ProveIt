@@ -1913,8 +1913,11 @@ An [eighth residual client](research/nine-sharing-sign33-residual-batch07-check/
 [independently audited](reviews/nine-sharing-sign33-residual-batch07-terminal-frontier-independent/README.md),
 checks the negative-oriented `y²−V²` cut and final two norms without port
 casts. Its compile records three unused-simp warnings. All 24 row consequences
-are now checked separately; their same-valuation assembly, source graph bridge
-and iPRA transfer remain open.
+are now checked separately. An [eight-batch assembly](research/nine-sharing-sign33-residual-assembly-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-residual-assembly-terminal-frontier-independent/README.md),
+then checks that a seed zero implies all 24 grouped conditions at the same
+valuation under all four port casts. The reverse direction, source graph
+bridge and iPRA transfer remain open.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
