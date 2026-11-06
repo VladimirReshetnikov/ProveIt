@@ -1958,7 +1958,10 @@ checks agreement of a ring-value assignment and reference on completed nodes
 when both satisfy the same topological gate equations. A [first gate client](research/nine-sharing-sign33-ring-gates00-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-ring-gates00-terminal-frontier-independent/README.md),
 checks ring-value gate targets 21–23 from the lifted valuation and static
-conditions. The remaining gate equations are separate.
+conditions. A [second gate client](research/nine-sharing-sign33-ring-gates01-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-ring-gates01-terminal-frontier-independent/README.md),
+checks targets 24–26 under the same grouped conditions. The remaining 54 gate
+equations, five norms and source-zero bridge are separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
