@@ -1,0 +1,5 @@
+# Independent terminal review: inner/V model-to-ring signs
+
+**Pass for retained Lean evidence**, without Lean replay. Author-observed outer session 56073 exited 0; it is not an independent raw process transcript. The theorem assumes `0<c`, `0<T`, `0<f`, `0<i`, `2*r<c`, and the exact strong norm `f*f=1+delta a*(i*c*c)*(i*c*c)` in the indicated IΣ₁ model. It derives the two displayed inner/V inequalities in the difference ring. It does not derive those premises from a concrete source zero or construct sign33 witnesses. The axiom report is `[propext, Classical.choice, Quot.sound]` with no warnings.
+
+`check.py` verifies exact source, state, object and both logs, the strong-norm and ordered-ring direct producer bindings, all 150 direct guard slots, 1,165 overlay links, equal before/after surveys and a fresh point-in-time producer survey. Both child invocations exited 0 without sampled monitor stop/error. Provider checks are point observations; the initial-agreement ancestor's numeric outer exit is unavailable. No sign33 bridge or iPRA endpoint follows here.

@@ -1804,6 +1804,11 @@ A [second targeted retry](research/nine-sharing-sign33-gap-tau-ring-retry02/READ
 checks the two gap/tau signs in the difference ring under explicit natural
 window and positivity hypotheses. It does not yet bind the rank expression or
 recover those hypotheses from a source zero.
+An [inner/V transport client](research/nine-sharing-sign33-inner-v-ring-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-inner-v-ring-terminal-frontier-independent/README.md),
+checks the other two signs from the explicit positive-input, half-window and
+strong-norm hypotheses. Source-zero premise recovery and the final auxiliary
+sign/33-witness bridge remain separate.
 An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/README.md),
 [independently inspected](reviews/nine-sharing-gate-model-draft-independent/README.md),
 separates signed-pair algebra and conditional trace replay from generated
