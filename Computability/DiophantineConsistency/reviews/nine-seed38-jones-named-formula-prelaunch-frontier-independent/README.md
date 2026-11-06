@@ -1,0 +1,7 @@
+# Independent prelaunch review: named-formula ring semantics
+
+**Pass for bounded launch.** The candidate source is byte-identical to the independently manually reviewed source draft. Its proposed theorem specializes the existing commutative-ring `ModelJonesSyntax` evaluation results to the current seed, index bound zero and `Fin.cons 1` nine-coordinate valuation. It uses `RefinedPair.value` on the resulting fields. Its elaboration, actual resource fit and axiom report remain untested.
+
+`check.py` checks source, manifest, survey and runner hashes, draft identity and theorem anchors; reruns the point-in-time survey and Lean-free preflight; and verifies the exact two direct selected producer object hashes and seed aggregator/syntax routes. The survey replays the pinned independently reviewed endpoint, Jones, and seed terminal audits. The runner binds both direct candidate dependencies and guards to the selected exact hashes and paths, checks collision absence, and repeats guards and provider checks on success. Prior initial-agreement numeric outer exit remains unavailable; resource and provider observations are sampled/point-in-time, not a complete dynamic dependency trace.
+
+This check would establish evaluation of its Lean symbolic right-hand side only. Lean does not read `FORMULA.md`; no machine-checked text serialization, literal equation, operation count or exact degree follows. The preflight requires a fresh output path and will refuse after launch.

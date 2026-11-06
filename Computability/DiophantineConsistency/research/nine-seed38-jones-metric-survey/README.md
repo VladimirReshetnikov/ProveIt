@@ -1,0 +1,29 @@
+# Size survey for the 38-witness Jones expression
+
+The expression under investigation is exactly the symbolic definition in [`Norm38IPRAEndpoint.lean`](../nine-sharing-norm38-ipra-endpoint-check/src/DiophantineConsistency/Norm38IPRAEndpoint.lean):
+
+```
+ExecutableJones.expression (SharingSeed38.seed CurrentWindowCarry2011.ports) 0 : Expr (Fin 9)
+```
+
+The independently reviewed [Jones client](../../reviews/nine-sharing-seed38-current-jones-terminal-independent/README.md) checks the seed's total-degree upper bound of four and its normalization, and the Jones/seed zero correspondence. The independently reviewed [cast-free model client](../../reviews/nine-sharing-norm38-current-castfree-iff-terminal-independent/README.md) connects that expression's natural zeros to the current source's shifted zeros in IΣ₁ models. The seed has one distinguished coordinate and 38 witness coordinates. **The seed's degree bound and witness count are not the total degree or operation count of the nine-variable output.** The 406/414-operation folded circuits elsewhere are different constructions and have no established identity with this exact expression.
+
+## Candidate degree-bound calculation
+
+[`check.py`](check.py) implements a conservative, manually transcribed degree recurrence for the pinned [`ExecutableJonesCore.lean`](../../Lean/DiophantineConsistency/ExecutableJonesCore.lean) and [`JonesSyntaxCore.lean`](../../Lean/DiophantineConsistency/JonesSyntaxCore.lean) definitions. `Expr.pow` in [`Representation.lean`](../../Lean/DiophantineConsistency/Representation.lean) uses multiplication, so the standard rules `deg(a±b) ≤ max(deg a,deg b)` and `deg(a*b) ≤ deg a+deg b` apply. Every closed coefficient expression, including the seed-dependent encodings `indexZ` and `indexY`, is assigned degree zero; the nine remaining syntax variables receive degree one, and `removeInput` replaces the distinguished input with one. This applies to fixed coefficients without computing their values or sizes. Zero constants and cancellation are handled conservatively.
+
+For `ν=38`, the recurrence uses `L = 5^39`, bounds `eExpression` by `5L` using natural subtraction `L-expo(k) ≤ L`, bounds the prefix `lExpression` by `L`, and bounds `lamExpression` by `5(4L-1)`. It propagates these bounds through `rankCode`, every `RingVars` field, and `RefinedPair.value`. The resulting **external upper bound** is `291404 · 5^39 + 860 = 530060788150876760482788085938360`. The [independent transcription audit](../../reviews/nine-seed38-jones-metric-transcription-frontier-independent/README.md) matched the source definitions and independently checked the affine recurrence. This is a manually audited external bound, not a Lean theorem or parser-verified proof of source semantics. No exact degree or noncancellation is asserted; exactness requires a nonzero leading homogeneous coefficient or modular witness for the actual fixed tuple.
+
+The script checks the displayed closed form for eight smaller `ν` values as an arithmetic control. Those checks do not validate transcription or prove the formula for arbitrary `ν`. Its retained output was generated before independent review and therefore retains status `CANDIDATE_EXTERNAL_UPPER_BOUND_PENDING_INDEPENDENT_TRANSCRIPTION_REVIEW`; the separate audit records the subsequent pass. Checker SHA-256 `dfac7692bf4f283063418c092799cf681d307abf46c80ea71bd0f496f9d2543e`, output SHA-256 `66dd437f22625371b2b0d9cdfb89458d2f16969c771bd8decfcd102a8f2c6239`; actual no-Lean command exited 0:
+
+```
+python3 -I -S -B check.py
+```
+
+## Operation and coefficient conventions
+
+There is no audited operation count for this exact output. The expression language is a tree of integer constants, variables, binary addition, subtraction and multiplication; it has no primitive power node. The source's finite `starSum` is defined through enumeration of `5^40` bounded vectors, with `binom(43,4)` satisfying the sum-four filter, and `lamExpression` is a literal range of `4·5^39` summands. These are source-construction sizes, not the count of live operations in an optimized DAG. Producing or expanding the full tree is not a practical prerequisite to symbolic bound calculation. A meaningful count must explicitly choose raw tree versus a named shared straight-line DAG, whether powers use repeated multiplication or a justified addition chain, and whether fixed integer leaves and their construction are free. A DAG optimizer must prove that its output denotes this exact `Expr` after input removal, account for every shared node, and preserve the intended coordinate order.
+
+The Jones `pCoefficient` values are factorial-weighted coefficients extracted from the seed's syntax; `indexZ` and `indexY` are closed integer/natural recipes built from them. No expanded Jones coefficients, bit lengths for these two encodings, or serialized literal nine-equation payloads are established here. A circuit that treats `indexZ`, `indexY` and the four source ports as free leaves has a different cost convention from one that includes their computation or bit storage. The source tuple's [Lean byte-list theorem](../current2011-four-port-byte-tuple/README.md) and external payload comparisons do not by themselves bind or export the derived Jones coefficient integers.
+
+The remaining binding work is to connect a complete, version-pinned representation of the final nine-variable expression—not just the seed or a separately folded graph—to the checked `ExecutableJones.expression` definition. That may be a compact symbolic DAG with a checked interpretation, avoiding expansion of the coding sums and large coefficients. An independently checked total-degree bound would still be a bound for that exact expression only if the transcription and provider/source links are verified. All source/object ancestry and sampled-observation limits of the existing clients remain; this survey does not run Lean or claim a new iPRA endpoint.

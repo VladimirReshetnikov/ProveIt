@@ -1,0 +1,7 @@
+# Independent prelaunch review: norm38 iPRA endpoint
+
+**Pass for bounded launch; source and provider checks only.** `check.py` reproduces the exact source/runner pins, the previously reviewed draft source identity, four declared direct imports and their selected producer records, the absence of a target-object collision, and the Lean-free preflight. Its captured output is `result.json`. The source review is `../nine-sharing-norm38-ipra-endpoint-draft-independent/`.
+
+The survey checks the successful cast-free producer and two current14 producer rows, and the successful `IPRAExpressionNative` row from a larger build whose later sibling failed. It also checks their correspondence to the earlier checked consumer. The runner binds all four candidate direct dependency and guard observations to survey hashes and realpaths and repeats the survey after compilation. Its source, guard and overlay checks are point-in-time checks, not a complete transitive or dynamic dependency trace; the initial-agreement ancestor's numeric outer exit was not captured. Monitored memory is sampled.
+
+The source proposes a natural shifted-source bridge followed by native, standard and translated iPRA endpoint statements. It has not been compiled in this run. This review establishes no end-to-end endpoint, literal equation/coefficient binding, operation count or exact degree. The runner preflight requires a fresh output path and will refuse once the output exists; `result.json` records the prelaunch pass.

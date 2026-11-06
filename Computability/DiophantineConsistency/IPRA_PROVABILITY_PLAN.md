@@ -10,6 +10,32 @@ repaired on that snapshot, and the 14-variable endpoint rechecked on the
 repaired parent; source-current and inherited external-ancestry qualifications
 remain as described below.
 
+A [nine-natural-coordinate Jones expression built from the 38-witness seed](research/nine-sharing-norm38-ipra-endpoint-check/README.md)
+now has [independently audited Lean endpoints](reviews/nine-sharing-norm38-ipra-endpoint-terminal-frontier-independent/README.md)
+for the native and standard iPRA mapped-refutation equivalences and the
+standard mapped Gödel–Gentzen consistency equivalence. The checked expression
+is symbolic, `ExecutableJones.expression (SharingSeed38.seed
+CurrentWindowCarry2011.ports) 0`; the coordinates range over the naturals,
+including zero. This does not yet bind an exported literal equation or PDF,
+or establish the final expression's operation count or exact degree. The retained
+initial-agreement ancestor has successful Lean child exits but no captured
+numeric outer exit; its inherited provider and point-observation limits remain.
+An [external degree survey](research/nine-seed38-jones-metric-survey/README.md),
+[independently reviewed by manual transcription and affine propagation](reviews/nine-seed38-jones-metric-transcription-frontier-independent/README.md),
+gives the conservative upper bound `291404·5^39 + 860` for that symbolic
+nine-variable expression. This is not a Lean degree theorem, an exact degree,
+an operation count, or a literal-export binding.
+A [compact named-formula draft](research/nine-seed38-jones-named-formula-draft/FORMULA.md)
+has passed an [independent manual transcription review](reviews/nine-seed38-jones-named-formula-frontier-independent/README.md).
+A [Lean evaluation specialization](research/nine-seed38-jones-named-formula-check/README.md),
+[independently audited](reviews/nine-seed38-jones-named-formula-terminal-frontier-independent/README.md),
+checks the associated symbolic ring evaluation. The human document has not
+been machine-bound to the checked expression.
+A [45-named-node macro-DAG prototype](research/nine-seed38-jones-compact-macro-prototype/README.md)
+has passed an [independent manual recipe audit](reviews/nine-seed38-jones-compact-macro-frontier-independent/README.md).
+This counts named nodes, not arithmetic operations; its semantics and JSON
+serialization are not yet proved equal to the checked Lean expression.
+
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
 of their positive-model bridges and native, standard and equality-only iPRA
@@ -1614,12 +1640,18 @@ given the four explicit model port casts, it constructs a 38-witness seed zero
 from a source-expression zero at shifted inputs. A [four-cast specialization](research/nine-sharing-norm38-current-source-cast-instantiation/README.md),
 [independently audited](reviews/nine-sharing-norm38-current-source-cast-instantiation-terminal-independent/README.md),
 then checks this construction for the actual current model ports without a
-cast hypothesis. Combining the existential directions and the iPRA transfer
-remain separate. A [conditional existential composition](research/nine-sharing-norm38-current-existential-iff-draft/README.md),
+cast hypothesis. A [conditional existential composition](research/nine-sharing-norm38-current-existential-iff-draft/README.md),
 [independently audited](reviews/nine-sharing-norm38-current-existential-iff-terminal-independent/README.md),
 checks both seed/source and nine-variable/source existential equivalences
-under an explicit universal port-cast assumption. The cast-free composition
-and iPRA transfer are still to be checked.
+under an explicit universal port-cast assumption. A [cast-free composition](research/nine-sharing-norm38-current-castfree-iff-draft/README.md),
+[independently audited](reviews/nine-sharing-norm38-current-castfree-iff-terminal-independent/README.md),
+then checks both equivalences in IΣ₁ models for the actual current symbolic
+ports and shifted source coordinates.
+An [iPRA endpoint draft](research/nine-sharing-norm38-ipra-endpoint-draft/README.md)
+has passed a [source-only review](reviews/nine-sharing-norm38-ipra-endpoint-draft-independent/README.md);
+it follows the existing all-model bridge and native/standard transfer pattern.
+Its cast-free provider and a [guarded endpoint client](research/nine-sharing-norm38-ipra-endpoint-check/README.md)
+have since compiled and passed an [independent terminal audit](reviews/nine-sharing-norm38-ipra-endpoint-terminal-frontier-independent/README.md).
 A [forward-constructor gate build](research/nine-sharing-norm38-forward-gates-draft/README.md),
 [independently audited](reviews/nine-sharing-norm38-forward-gates-terminal-independent/README.md),
 checks all 60 gate conditions and their conjunction for the generated witness
@@ -1704,8 +1736,8 @@ checks that the nine-natural-variable expression has a zero iff some
 indicated IΣ₁ model. A [one-way Jones/source client](research/nine-sharing-norm38-current-nine-source-draft/README.md),
 [independently audited](reviews/nine-sharing-norm38-current-nine-source-terminal-independent/README.md),
 then checks that a zero of this expression yields a zero of the current source
-expression at the shifted first fourteen seed coordinates. The converse and
-iPRA transfer remain separate.
+expression at the shifted first fourteen seed coordinates. The later cast-free
+equivalence and iPRA endpoint are described above.
 A separate [conditional composition draft](research/nine-sharing-norm38-compose-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-compose-draft-independent/README.md),
 assembles the prospective seed/current equivalence from explicit extraction
@@ -1727,6 +1759,29 @@ A [standalone ordered-ring client](research/sign33-ordered-ring-standalone-check
 checks the three conditional lemmas that imply those five signs from the
 explicit intermediate inequalities and auxiliary norm. It does not derive
 their hypotheses for model solutions or construct the 33 witnesses.
+A [model strong-norm client](research/nine-sharing-sign33-strong-f-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-strong-f-failure-frontier-independent/README.md),
+failed on the final `1+1 ≤ f` versus `2 ≤ f` numeral normalization. It
+produced no object; the resulting `sorryAx` report is not proof evidence.
+A [targeted numeral retry](research/nine-sharing-sign33-strong-f-retry01/README.md),
+[independently audited](reviews/nine-sharing-sign33-strong-f-retry01-terminal-frontier-independent/README.md),
+then checked that the strong norm and the four stated positivity/equality
+hypotheses imply `2 ≤ f` in IΣ₁ models. Its compile has one linter suggestion;
+the remaining sign transports and 33-witness zero bridge are still open.
+A [scalar and first-index window attempt](research/nine-sharing-sign33-windows-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-windows-failure-frontier-independent/README.md),
+failed because the `absdiff` identifier was not in scope. It produced no
+successful object; the reported `sorryAx` is a failed-declaration artifact.
+A [namespace-only retry](research/nine-sharing-sign33-windows-retry01/README.md),
+[independently audited](reviews/nine-sharing-sign33-windows-retry01-terminal-frontier-independent/README.md),
+then checked the scalar and first-index window conclusions under the full
+explicit positivity, mask, transport and four norm hypotheses. Deriving
+those hypotheses from a concrete seed/source zero and transferring the
+windows to the signed cuts remain open.
+A [gap/tau ring-transport attempt](research/nine-sharing-sign33-gap-tau-ring-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-gap-tau-ring-failure-frontier-independent/README.md),
+failed because `ModelArithmetic` was unavailable in the combined `open`
+command; its cascading errors and `sorryAx` are not proof evidence.
 An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/README.md),
 [independently inspected](reviews/nine-sharing-gate-model-draft-independent/README.md),
 separates signed-pair algebra and conditional trace replay from generated
