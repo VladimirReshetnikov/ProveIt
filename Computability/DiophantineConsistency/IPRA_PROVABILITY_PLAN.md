@@ -102,6 +102,10 @@ A [fifth preservation client](research/nine-seed38-jones-prefix-group05-check/RE
 [independently audited](reviews/nine-seed38-jones-prefix-group05-terminal-frontier-independent/README.md),
 checks the `q` and `N` values at prefix `d10`; it does not yet identify the
 rank node or complete the recipe semantics.
+A [sixth staged preservation client](research/nine-seed38-jones-prefix-group06-staged-check/README.md),
+[independently audited](reviews/nine-seed38-jones-prefix-group06-staged-terminal-frontier-independent/README.md),
+carries seven further opaque values to `d10`; the rank-node evaluation and
+full recipe semantics remain open.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
