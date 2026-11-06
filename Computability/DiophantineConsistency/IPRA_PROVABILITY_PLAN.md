@@ -2093,8 +2093,10 @@ checks its first three cut equations for arbitrary representatives; its compile
 records five unused-simp warnings. A [second forward-cut client](research/nine-sharing-sign33-forward-group01-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-forward-group01-terminal-frontier-independent/README.md),
 checks the next three positive cuts under the same conditions. The source-zero
-witness construction remains incomplete; the inherited initial-stage numeric
-outer exit remains uncaptured.
+witness construction remains incomplete. A [third forward-cut client](research/nine-sharing-sign33-forward-group02-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-forward-group02-terminal-frontier-independent/README.md),
+checks the next three positive cuts for arbitrary representatives. The inherited
+initial-stage numeric outer exit remains uncaptured.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
