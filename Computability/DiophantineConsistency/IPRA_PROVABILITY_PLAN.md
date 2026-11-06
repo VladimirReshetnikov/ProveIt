@@ -61,6 +61,10 @@ A [target-unfolding retry](research/nine-seed38-jones-compact-scoped-retry01/REA
 [independently audited](reviews/nine-seed38-jones-compact-scoped-retry01-terminal-frontier-independent/README.md),
 then proved the Lean recipe's Boolean scope property without axioms. This is
 not a semantic equality or verified JSON binding.
+[Generic macro evaluation cuts](research/nine-seed38-jones-compact-semantics-cut-check/README.md),
+[independently audited](reviews/nine-seed38-jones-compact-semantics-cut-terminal-frontier-independent/README.md),
+now check earlier/last DAG-node lookups and the symbolic range/star sum
+evaluation rules. They do not yet prove the concrete recipe's meaning.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
