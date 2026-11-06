@@ -1,0 +1,5 @@
+# Generated first-entry preservation draft
+
+This source-only candidate chains the checked generic `snoc_previous` lemma 44 times over the separately checked named prefixes, then composes `recipe_eq_named` and `first_prefix_value`. It proposes that entry zero of the **actual full recipe** evaluates to symbolic `indexY + 1 + a₀`, without reducing the discarded node values, fixed coefficient or finite sums. `generate.py` pins the prefix source and checks that its 44-step output is reproduced exactly. Both proofs and axiom reports remain untested until a guarded Lean check succeeds.
+
+The 44 steps are preservation rewrites, not operation-count claims. A success would establish only the first recipe entry, not the other nodes, overall semantic equality, verified JSON serialization, or human-document binding. The earlier direct `rfl` attempt hit the sampled session-RSS guard; this proof is materially different because it uses the checked `snoc_previous` equations and named prefixes, though its resource behavior remains untested.

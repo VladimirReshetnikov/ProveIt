@@ -1,0 +1,12 @@
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+D=Path(__file__).resolve().parents[2];p=D/'research/nine-seed38-jones-first-preservation-check';draft=D/'research/nine-seed38-jones-first-preservation-draft/Norm38FirstPreservation.lean'
+def sha(x):return hashlib.sha256(Path(x).read_bytes()).hexdigest()
+pins={'run.py':'99b9dfbad984ccce93bb08ed25103b670cdd29d7ff47fea01443153586224379','provider_preflight.py':'29c46df481e6ecf49137510fe26982d616f238eaad00ec998f9e62cc9e76e69d','source-manifest.json':'76c63767c65af1c7a15379fa0fd57a42a9032e95cc3096e3d78edb7b76de1667','src/DiophantineConsistency/Norm38FirstPreservation.lean':'e164df6d225df13f13a69be44f52796dbdfb3bc0e3d193c1995ae175259b9de7'}
+for k,h in pins.items():assert sha(p/k)==h,k
+assert sha(draft)==pins['src/DiophantineConsistency/Norm38FirstPreservation.lean'];t=draft.read_text();steps=[int(x) for x in re.findall(r'exact Norm38MacroCuts\.snoc_previous a d(\d+) _ ⟨0, by decide⟩',t)];assert steps==list(range(44,0,-1));changes=[int(x) for x in re.findall(r'change \(Dag\.snoc d(\d+) _\).values a \(Fin.castSucc ⟨0, by decide⟩\) = _',t)];assert changes==steps
+for x in ['d45.values a ⟨0, by decide⟩ = d1.values a ⟨0, by decide⟩','Norm38MacroRecipe.recipe.values a ⟨0, by decide⟩','((indexY Norm38MacroLanguage.seed 0 : Nat) : R) + ((1 : Int) : R) + a ⟨0, by decide⟩','rw [Norm38MacroPrefixes.recipe_eq_named, d45_first_eq_d1]','Norm38MacroPrefixFirst.first_prefix_value a','#print axioms d45_first_eq_d1','#print axioms recipe_first_value']:assert x in t,x
+imports=json.loads((p/'source-manifest.json').read_text())['rows'][0]['imports'];assert imports==['DiophantineConsistency.Norm38MacroPrefixFirst'];s=json.loads(subprocess.check_output([sys.executable,'-I','-S','-B',str(p/'provider_preflight.py')],timeout=300));assert s['status']=='PASS_POINT_IN_TIME_PROVIDER_SURVEY' and s['selected'][imports[0]]['sha256']=='a69ba5536b935e388c616cc6c624ecb8da8aaef052b3350bc09d327dd8272c9a'
+r=json.loads(subprocess.check_output([sys.executable,'-I','-S','-B',str(p/'run.py'),'--preflight'],timeout=300));assert r['status']=='PASS_NO_LEAN_PREFLIGHT' and r['stage_count']==1
+print(json.dumps({'status':'PASS_PRELAUNCH_ONLY','pins':pins,'preservation_steps':len(steps),'direct_producer':s['selected'][imports[0]],'scope':'Proposed actual recipe first-entry value only; no full graph semantic equality or JSON binding.'},indent=2,sort_keys=True))
