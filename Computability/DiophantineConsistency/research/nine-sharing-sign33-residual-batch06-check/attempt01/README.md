@@ -1,0 +1,7 @@
+# Sign33 V, normalized S and S² residual cuts checked
+
+Author-observed outer session `57740` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `38aab91c79cf582e9c8910eb4998dd6ce6bfa72ff729de468e1061c5b019dc8e`; before and after provider surveys both hash to `9dbd8f5b4ec20b051457792a6534a4705acddaf9ee1e193e500a7ad259f37720`. The outer record is an author observation, not an independently observed transcript.
+
+`Sign33ResidualBatch06` compiled in 4.541 seconds; object SHA-256 `3cf0a657954b0c53bb61c11e2a090069a63567f610826a0be23885b320ec2722` at `/tmp/nine-sharing-sign33-residual-batch06-check-20261106/lib/DiophantineConsistency/Sign33ResidualBatch06.olean`, compile log `427fca3769c847832bca6855a1a64a15a3ecd7ffba975dacdee789effe9187ac`. All four axiom reports list `[propext, Classical.choice, Quot.sound]`. Three unused-simp linter warnings were retained. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Peak sampled session RSS was 2,156,040,192 bytes and minimum sampled available host memory was 18,994,061,312 bytes; sampling has the stated limitations.
+
+For arbitrary symbolic p, seed zero implies the V, normalized S and S² cuts on the same full valuation without any port cast. No remaining residual/static identities, chronological graph replay, Lean proof of external JSON binding, source-zero bridge or sign33 iPRA endpoint is established. Inherited provider and numeric-exit limitations remain as in the parent README.

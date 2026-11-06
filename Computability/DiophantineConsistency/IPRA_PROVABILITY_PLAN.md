@@ -1895,6 +1895,10 @@ A [sixth residual client](research/nine-sharing-sign33-residual-batch05-check/RE
 [independently audited](reviews/nine-sharing-sign33-residual-batch05-terminal-frontier-independent/README.md),
 checks the transport relation, `f²` and positive `cT−r` cut. Its combined
 theorem assumes all four port casts; six residual links remain separate.
+A [seventh residual client](research/nine-sharing-sign33-residual-batch06-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-residual-batch06-terminal-frontier-independent/README.md),
+checks the positive `V`, normalized `S` and `S²` cuts without port casts.
+Its compile records three unused-simp warnings; three residual links remain.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
