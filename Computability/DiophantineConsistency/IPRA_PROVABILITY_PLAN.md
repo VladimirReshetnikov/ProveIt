@@ -1802,8 +1802,10 @@ conditional candidate, not a completed reduction or iPRA endpoint.
 A [generated Lean syntax draft](research/nine-sharing-sign33-seed-syntax-draft/README.md),
 [independently source-audited](reviews/nine-sharing-sign33-seed-syntax-frontier-independent/README.md),
 matches the 24 external residual ASTs and their Fin34 coordinate convention.
-It is not yet Lean-compiled and establishes no source-zero bridge or iPRA
-endpoint for the 33-witness candidate.
+A [syntax-only Lean check](research/nine-sharing-sign33-seed-syntax-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-seed-syntax-terminal-frontier-independent/README.md),
+then compiled those definitions. The JSON comparison remains external, and no
+source-zero bridge or iPRA endpoint for this candidate follows yet.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign

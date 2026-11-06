@@ -1,0 +1,5 @@
+# Sign33 seed syntax accepted by Lean
+
+Author-observed outer session `62408` returned numeric exit 0 and the runner reported PASS. Retained state SHA-256 `7aa987d9f52c5b890e6df924baaa1a723789f2c5fd057491872cac1ca24c3d13`. The outer record is an author observation, not an independently observed transcript.
+
+`SharingSeed33Syntax` compiled in 11.634 seconds. Its object SHA-256 `d8d70064be0d7fa609b92a8b51648b6e817096886e0671f37d64271f05e21be0` is at `/tmp/nine-sharing-sign33-seed-syntax-check-20261106/lib/DiophantineConsistency/SharingSeed33Syntax.olean`; the compile log is empty (SHA-256 `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`). No axiom reports were requested; this module contains definitions, not a model theorem. Candidate direct guard, overlay links, source pins and both external source parsers were rechecked on success. No monitor stop, sampled descendant or monitor error was recorded. Acceptance of these definitions does not prove the external JSON/source relationship inside Lean, seed degree, normalization, current-source bridge or iPRA endpoint. Point-observation and inherited-provider limitations remain as in the parent README.
