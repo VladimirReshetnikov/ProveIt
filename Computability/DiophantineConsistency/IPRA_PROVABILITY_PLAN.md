@@ -120,6 +120,10 @@ A [generic rank-code link](research/nine-seed38-jones-rankcode-link-check/README
 checks the `rankRaw`/`rankCode` identity after the explicit `B=b^5`
 substitution. The actual-prefix substitution and full semantics remain
 separate.
+A [prefix power client](research/nine-seed38-jones-prefix-b-power-check/README.md),
+[independently audited](reviews/nine-seed38-jones-prefix-b-power-terminal-frontier-independent/README.md),
+checks `B=b^5` at the actual `d10` prefix. Its composition with the rank
+identity and the full recipe semantics remain separate.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
