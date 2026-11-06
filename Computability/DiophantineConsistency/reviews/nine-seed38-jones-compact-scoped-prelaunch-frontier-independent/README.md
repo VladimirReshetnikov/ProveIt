@@ -1,0 +1,5 @@
+# Independent prelaunch review: macro recipe scoping
+
+**Pass for bounded launch.** The candidate proposes exactly `recipe_well_scoped : Norm38MacroRecipe.WellScopedTarget` by `decide` and requests an axiom report. The target is the recipe's boolean range/star binder-scope check; the typed DAG already restricts references to prior `Fin n` entries. This does not claim the recipe's semantic equality to the endpoint or verify JSON translation. Compilation and resource fit remain untested.
+
+`check.py` pins the source, manifest, runner and provider survey, checks the theorem target and absence of any semantic theorem, replays the exact independently audited recipe producer and runs the fresh Lean-free preflight. The runner binds its direct dependency and guard to the exact recipe object hash/realpath and rechecks provider/source/guard observations after success. Provider checks are point-in-time, monitoring sampled, and the initial-agreement ancestor's numeric outer exit unavailable. Preflight requires a fresh output path and refuses after launch.

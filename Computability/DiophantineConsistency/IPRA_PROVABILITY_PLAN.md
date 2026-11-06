@@ -52,6 +52,11 @@ A [generated-recipe elaboration client](research/nine-seed38-jones-compact-recip
 [independently audited](reviews/nine-seed38-jones-compact-recipe-terminal-frontier-independent/README.md),
 subsequently compiled the 45-node data and two proposition definitions. Those
 propositions are not proved, and the JSON translator remains unverified.
+A [scope-proof attempt](research/nine-seed38-jones-compact-scoped-check/README.md),
+[independently audited](reviews/nine-seed38-jones-compact-scoped-failure-frontier-independent/README.md),
+failed because Lean could not synthesize a `Decidable` instance for the
+named target. Its `sorryAx` report is from the failed declaration;
+no scopedness proof or semantic equality was produced.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
