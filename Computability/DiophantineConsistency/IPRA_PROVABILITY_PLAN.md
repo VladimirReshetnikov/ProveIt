@@ -1813,6 +1813,12 @@ An [inner/V transport client](research/nine-sharing-sign33-inner-v-ring-check/RE
 checks the other two signs from the explicit positive-input, half-window and
 strong-norm hypotheses. Source-zero premise recovery and the final auxiliary
 sign/33-witness bridge remain separate.
+A [P72/sign33 provider survey](research/sign33-p72-provider-mismatch/README.md),
+[independently audited](reviews/sign33-p72-provider-mismatch-frontier-independent/README.md),
+records one differing `ModelDifferenceRing` object among 1,007 overlapping
+paths. The initially reported half-index mismatch was a mistaken comparison
+to a different module; the correct half-index objects match. The differing
+bytes are not a proof of semantic incompatibility.
 An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/README.md),
 [independently inspected](reviews/nine-sharing-gate-model-draft-independent/README.md),
 separates signed-pair algebra and conditional trace replay from generated
