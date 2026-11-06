@@ -1603,6 +1603,12 @@ A [further norm split](research/nine-sharing-norm38-unit-norms-split/README.md),
 [independently audited](reviews/nine-sharing-norm38-unit-norms-split-terminal-independent/README.md),
 also timed out without output on the first, generic-input stage; its shifted
 stage and final survey were not reached. The timeout's cause is not known.
+A [fixed-current-port norm client](research/nine-sharing-norm38-fixed-port-norms/README.md),
+[independently audited](reviews/nine-sharing-norm38-fixed-port-norms-terminal-independent/README.md),
+subsequently checked that a Carrier65 zero gives all five unit norms for
+positive ring inputs at the current symbolic ports. It uses the local
+irreducibility setup of an earlier checked completion. The source-to-seed
+composition remains separate.
 A [forward-constructor gate build](research/nine-sharing-norm38-forward-gates-draft/README.md),
 [independently audited](reviews/nine-sharing-norm38-forward-gates-terminal-independent/README.md),
 checks all 60 gate conditions and their conjunction for the generated witness
