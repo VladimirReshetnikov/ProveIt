@@ -1520,6 +1520,11 @@ A [smaller reference-base retry](research/nine-sharing-norm38-reference-base-ret
 [independently audited](reviews/nine-sharing-norm38-reference-base-terminal-independent/README.md),
 then checked topology of the actual 60-gate list from its 21 initial nodes.
 Reference gate equations, carrier fields and the model bridge remain open.
+A [batched reference-gate build](research/nine-sharing-norm38-reference-gates-batched-check/README.md),
+[independently audited](reviews/nine-sharing-norm38-reference-gates-batched-terminal-independent/README.md),
+subsequently checked all 60 reference equations and their universal assembly
+over arbitrary commutative rings. Initial static/reference agreement and the
+resulting source-equation bridge remain open.
 A [separate field client](research/nine-sharing-norm38-reference-fields01-check/README.md),
 [independently audited](reviews/nine-sharing-norm38-reference-fields01-terminal-independent/README.md),
 checks that reference nodes 61 and 44 equal the original P and Q fields over
