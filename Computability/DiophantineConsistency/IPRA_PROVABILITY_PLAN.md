@@ -1795,6 +1795,11 @@ has 24 quadratic residuals. Its forward construction requires five sign
 implications for every relevant model solution, with nontrivial port and
 natural-subtraction transports; these remain unproved. It is therefore a
 conditional candidate, not a completed reduction or iPRA endpoint.
+A [generated Lean syntax draft](research/nine-sharing-sign33-seed-syntax-draft/README.md),
+[independently source-audited](reviews/nine-sharing-sign33-seed-syntax-frontier-independent/README.md),
+matches the 24 external residual ASTs and their Fin34 coordinate convention.
+It is not yet Lean-compiled and establishes no source-zero bridge or iPRA
+endpoint for the 33-witness candidate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign

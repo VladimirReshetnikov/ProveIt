@@ -1,0 +1,5 @@
+# Independent source review: generated sign33 seed syntax
+
+**Pass for external AST transcription only.** An independently written parser translates the generated Lean arithmetic through Python's AST, then compares every one of the 24 ordered residual trees with the pinned sign33 JSON. It checks 34 total coordinates, unused distinguished coordinate 0, witness indices 1–33, fixed symbolic port order beta/K0/MC/MF, the four positive and one negative signed-cut metadata, and residual syntactic degree at most two. It also independently simplifies the first residual at zero witnesses to `-(beta+1)^2` and checks the squared-sum and zero-witness wrappers. The author's separate checker is rerun and its retained result reproduced.
+
+This is an external source-transcription check, not a Lean parser or compilation. It does not certify actual numeric port bytes, the current-source model bridge, a 33-witness solution equivalence, exact polynomial degree or an iPRA endpoint. `result.json` records the check.
