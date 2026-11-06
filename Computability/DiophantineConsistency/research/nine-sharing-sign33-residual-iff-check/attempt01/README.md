@@ -1,0 +1,7 @@
+# Same-valuation sign33 residual iff checked
+
+Author-observed outer session `67314` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `675b8c15e4f4e084ba650bc49590384612292c45b1f2cbc345a72e5ae399a36b`; before and after provider surveys both hash to `ceac796e60595bfd90e19fc5ce60edd4b8524ae4a9222dbbc4e6ae034877e6d0`. The outer record is an author observation, not an independently observed transcript.
+
+`Sign33ResidualIff` compiled in 3.177 seconds; object SHA-256 `33eb8b457ea09983d4591856171a37bd8e625dd4cf2d712dbcd621290b5fe204` at `/tmp/nine-sharing-sign33-residual-iff-check-20261106/lib/DiophantineConsistency/Sign33ResidualIff.olean`, compile log `a8ec3fe5cbafafcd041b798b7051934df975e0f742346110b597f255d997af47`. Its axiom report lists `[propext, Classical.choice, Quot.sound]`, with no warnings. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Peak sampled session RSS was 2,153,312,256 bytes and minimum sampled available host memory was 18,975,076,352 bytes; sampling has the stated limitations.
+
+Under the explicitly stated p0–p3 casts, seed zero is equivalent to all eight residual-condition fields on the same full valuation. No source-equation graph replay, Lean proof of external JSON binding, source-zero bridge or sign33 iPRA endpoint is established. Inherited provider and numeric-exit limitations remain as in the parent README.

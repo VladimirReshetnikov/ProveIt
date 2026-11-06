@@ -1924,8 +1924,11 @@ then checks that a seed zero implies all 24 grouped conditions at the same
 valuation under all four port casts. A [nine-stage converse](research/nine-sharing-sign33-residual-converse-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-residual-converse-terminal-frontier-independent/README.md),
 checks the reverse implication under the same hypotheses. Its group logs
-contain 24 unused cast-variable warnings; the final stage has none. A checked
-combined iff, source graph bridge and iPRA transfer remain separate.
+contain 24 unused cast-variable warnings; the final stage has none. An
+[iff composition](research/nine-sharing-sign33-residual-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-residual-iff-terminal-frontier-independent/README.md),
+then checks the biconditional at the same valuation under those casts. The
+source graph bridge and iPRA transfer remain separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
