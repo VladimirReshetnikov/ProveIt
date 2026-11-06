@@ -139,6 +139,10 @@ A [symbolic-value client](research/nine-seed38-jones-prefix-rank-symbolic-check/
 then substitutes the checked short-prefix values into that `d11` rank
 identity, retaining the large sums symbolically. Full-recipe semantic equality
 remains open.
+A [live-entry carry build](research/nine-seed38-jones-live18-staged-check/README.md),
+[independently audited](reviews/nine-seed38-jones-live18-staged-terminal-frontier-independent/README.md),
+checks eleven prior values preserved through `d18`; the twelfth live input is
+already the last node there. These are carry equalities only.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
