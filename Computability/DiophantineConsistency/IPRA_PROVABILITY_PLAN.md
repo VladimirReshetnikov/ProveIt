@@ -1532,8 +1532,14 @@ A [split initial-agreement build](research/nine-sharing-norm38-reference-initial
 [independently audited](reviews/nine-sharing-norm38-reference-initial-split-terminal-independent/README.md),
 subsequently recorded successful Lean scans and compiles for all eight stages
 and the initial-agreement axiom report. The author's observed PASS output did
-not retain a numeric outer exit; no such exit is inferred. The later terminal
-agreement and source/seed bridge remain separate.
+not retain a numeric outer exit; no such exit is inferred. A subsequent
+[terminal-agreement client](research/nine-sharing-norm38-reference-terminals-check/README.md),
+[independently audited](reviews/nine-sharing-norm38-reference-terminals-terminal-independent/README.md),
+checks that the static gate constraints identify all six required terminal
+values with their reference nodes in IΣ₁ models. Its author observed outer
+exit 0; the inherited initial producer's numeric outer exit remains uncaptured.
+Composition with the conditional carrier theorem and the source/seed bridge
+remain separate.
 A [separate field client](research/nine-sharing-norm38-reference-fields01-check/README.md),
 [independently audited](reviews/nine-sharing-norm38-reference-fields01-terminal-independent/README.md),
 checks that reference nodes 61 and 44 equal the original P and Q fields over
@@ -1567,7 +1573,8 @@ A [qualified-name retry](research/nine-sharing-norm38-static-carrier-retry02/REA
 [independently audited](reviews/nine-sharing-norm38-static-carrier-retry02-terminal-independent/README.md),
 then checked that agreement of the six static terminals with their reference
 nodes, together with the five static norms, implies a Carrier65 zero in an
-IΣ₁ model. The terminal-agreement hypotheses remain to be derived.
+IΣ₁ model. A later client checks the terminal-agreement hypotheses from the
+static gate constraints, but their composition remains to be checked.
 A [forward-bridge draft](research/nine-sharing-norm38-forward-bridge-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-forward-bridge-independent/README.md),
 proposes constructing seed witnesses from an original zero under explicit
