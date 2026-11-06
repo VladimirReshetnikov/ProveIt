@@ -147,6 +147,10 @@ A [dependent-node client](research/nine-seed38-jones-dependent01-staged-check/RE
 [independently audited](reviews/nine-seed38-jones-dependent01-staged-terminal-frontier-independent/README.md),
 checks the short-prefix `U` and `Y` equations using the `d18` live values.
 Later nodes and full recipe semantics remain separate.
+A [second dependent-node build](research/nine-seed38-jones-dependent02-staged-check/README.md),
+[independently audited](reviews/nine-seed38-jones-dependent02-staged-terminal-frontier-independent/README.md),
+checks the short-prefix `M`, `P`, and `K` equations and their required carries.
+Later nodes and full recipe semantics remain separate.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
