@@ -2020,8 +2020,12 @@ compile records 17 simp/tactic warnings. An [inline-gate client](research/nine-s
 checks targets 60–65 and records 17 simp/tactic warnings. A [further signed
 client](research/nine-sharing-sign33-ring-gates09-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-ring-gates09-terminal-frontier-independent/README.md),
-checks targets 66–71 and records ten simp/tactic warnings. The remaining nine
-gate equations, five norms and source-zero bridge are separate.
+checks targets 66–71 and records ten simp/tactic warnings. A [fifth signed-cut
+client](research/nine-sharing-sign33-ring-gates10-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-ring-gates10-terminal-frontier-independent/README.md),
+checks targets 72–77, including the negative fifth-pair orientation. Its compile
+records 12 simp/tactic warnings. The remaining three gate equations, five
+norms and source-zero bridge are separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
