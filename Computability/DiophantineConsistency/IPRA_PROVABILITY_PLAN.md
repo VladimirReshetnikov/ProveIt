@@ -2063,9 +2063,13 @@ then checks that `AllCuts` implies zero `Carrier65` value at the corresponding
 shifted inputs and model ports. A [source-syntax client](research/nine-sharing-sign33-allcuts-source-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-allcuts-source-terminal-frontier-independent/README.md),
 transfers this implication to the source expression under four explicit port
-casts and the shifted coordinates. Composition with seed zero, current-port
-specialization and construction of 33 witnesses from a source zero remain
-separate; the inherited initial-stage numeric outer exit remains uncaptured.
+casts and the shifted coordinates. A [two-stage seed composition attempt](research/nine-sharing-sign33-seed-current-source-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-seed-current-source-failure-frontier-independent/README.md),
+compiled the generic seed-zero implication, but the current-port stage failed
+with a Lean interpreter memory exception under `-M2800`; it produced no
+current-port object. Current-port specialization and construction of 33
+witnesses from a source zero remain separate; the inherited initial-stage
+numeric outer exit remains uncaptured.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
