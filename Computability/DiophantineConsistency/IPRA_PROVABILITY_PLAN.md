@@ -31,6 +31,10 @@ A [Lean evaluation specialization](research/nine-seed38-jones-named-formula-chec
 [independently audited](reviews/nine-seed38-jones-named-formula-terminal-frontier-independent/README.md),
 checks the associated symbolic ring evaluation. The human document has not
 been machine-bound to the checked expression.
+A [45-named-node macro-DAG prototype](research/nine-seed38-jones-compact-macro-prototype/README.md)
+has passed an [independent manual recipe audit](reviews/nine-seed38-jones-compact-macro-frontier-independent/README.md).
+This counts named nodes, not arithmetic operations; its semantics and JSON
+serialization are not yet proved equal to the checked Lean expression.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
