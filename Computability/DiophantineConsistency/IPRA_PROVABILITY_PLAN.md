@@ -134,6 +134,11 @@ A [zero-index retry](research/nine-seed38-jones-prefix-rank-composition-retry01/
 then identifies `d11` with `rankCode` applied to symbolic `d10` entries.
 Replacing those entries by their concrete symbolic values and full recipe
 semantics remain separate.
+A [symbolic-value client](research/nine-seed38-jones-prefix-rank-symbolic-check/README.md),
+[independently audited](reviews/nine-seed38-jones-prefix-rank-symbolic-terminal-frontier-independent/README.md),
+then substitutes the checked short-prefix values into that `d11` rank
+identity, retaining the large sums symbolically. Full-recipe semantic equality
+remains open.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
