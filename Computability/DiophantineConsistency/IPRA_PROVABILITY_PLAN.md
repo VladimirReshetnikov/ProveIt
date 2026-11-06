@@ -159,6 +159,10 @@ A [fourth dependent-node build](research/nine-seed38-jones-dependent04-staged-ch
 [independently audited](reviews/nine-seed38-jones-dependent04-staged-terminal-frontier-independent/README.md),
 checks the short-prefix `J`, `Q`, and `D` equations and their required carries.
 Later nodes and full recipe semantics remain separate.
+A [fifth dependent-node build](research/nine-seed38-jones-dependent05-staged-check/README.md),
+[independently audited](reviews/nine-seed38-jones-dependent05-staged-terminal-frontier-independent/README.md),
+checks the short-prefix `E` and `F` equations and their required carries. Later
+nodes and full recipe semantics remain separate.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
