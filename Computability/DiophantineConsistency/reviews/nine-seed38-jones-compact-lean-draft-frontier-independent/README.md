@@ -1,0 +1,7 @@
+# Independent source review: compact macro quotation draft
+
+**Pass for source transcription, not a Lean proof.** An independent decoder in `check.py` parses each of the 45 generated Lean `Dag.snoc` entries back to the pinned JSON AST and compares every constructor, integer, exponent, input, binder and earlier-node reference. It verifies source hashes, index sequence `0,…,44`, output at `Fin.last 44`, and reproducible quotation. The decoder is ordinary Python and not a verified parser.
+
+The drafted language's natural subtraction is `Nat.sub`; `expo`, `indexZ`, `indexY` and `pCoefficient` point to the exact current seed definitions. Range/star evaluation updates the nearest respective binder; `Fin.snoc` appends each computed value after earlier entries. The actual recipe has one scoped star-vector name and one scoped range-index name. The `WellScopedTarget` and `SemanticTarget` declarations are unproved propositions, not proofs. The source-only draft used reserved identifier `prefix` and failed its first guarded parse; its binder-only corrected language has since compiled in a separate independently audited packet. This review has not compiled the generated recipe or proven either target.
+
+A Lean evaluator theorem for the quoted data and a precise JSON-to-quoted-source trust boundary remain necessary. These checks do not bind human Markdown/PDF bytes, expand coefficient values, or count binary operations.

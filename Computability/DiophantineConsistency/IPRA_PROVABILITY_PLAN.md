@@ -37,6 +37,9 @@ This counts named nodes, not arithmetic operations; its semantics and JSON
 serialization are not yet proved equal to the checked Lean expression.
 A [source-only typed macro evaluator and quoted recipe draft](research/nine-seed38-jones-compact-lean-draft/README.md)
 defines open well-scopedness and semantic targets; it does not prove them.
+An [independent source comparison](reviews/nine-seed38-jones-compact-lean-draft-frontier-independent/README.md)
+matches the 45 generated Lean node trees to the JSON, but is not a verified
+parser, serializer or semantic equality proof.
 A [macro-language-only Lean attempt](research/nine-seed38-jones-compact-language-check/README.md),
 [independently audited](reviews/nine-seed38-jones-compact-language-failure-frontier-independent/README.md),
 failed to parse the reserved binder name `prefix` and produced no object; it
