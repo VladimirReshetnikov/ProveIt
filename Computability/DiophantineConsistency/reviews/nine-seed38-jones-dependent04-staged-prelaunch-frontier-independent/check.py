@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+d=Path(__file__).resolve().parents[2];p=d/'research/nine-seed38-jones-dependent04-staged-check'
+def h(q):return hashlib.sha256(q.read_bytes()).hexdigest()
+for n,v in {'run.py':'53259cbfcfede64808a8a1157d179c8b3e305c6a109aa717c51fe4db7f931cc5','provider_preflight.py':'2d1ca94d5db2bea7cf5bf75303fb95a5fd3322c9ac0cdafa6f5b647bc748fac4','source-manifest.json':'5f6a1261cbdbc0fe342bcefab7e845b5decc4c741692544072174b2350fe9e98'}.items():assert h(p/n)==v
+rows=json.loads((p/'source-manifest.json').read_text())['rows'];expected=[('Norm38MacroDependentJ','2e200102f2be0cceab613227249efd63c7921daa680f1e232724e11ae3af0d44','Norm38MacroDependentC',['d27_A_carry','prefix_J']),('Norm38MacroDependentQ','a7a156db71800d5944572785885dc9ba2ba9d8d0e6e3a5a68cbd274e1c3cafe1','Norm38MacroDependentJ',['d28_W_carry','d28_C_carry','prefix_Q']),('Norm38MacroDependentD','796d65e5da039291ce773ac17bb0c132b18f12d6551aab61bb97095fa80958ee','Norm38MacroDependentQ',['d29_A_carry','d29_C_carry','prefix_D'])];assert len(rows)==3
+for row,(n,sha,imp,ts) in zip(rows,expected):
+ q=p/'src/DiophantineConsistency'/f'{n}.lean';assert h(q)==sha==row['source_sha256'];s=q.read_text();assert row['module']=='DiophantineConsistency.'+n;assert row['imports']==re.findall(r'^import ([\w.]+)$',s,re.M)==['DiophantineConsistency.'+imp];assert re.findall(r'^theorem (\w+)',s,re.M)==ts and re.findall(r'^#print axioms (\w+)',s,re.M)==ts
+ for a,b,c in re.findall(r'd(\d+)\.values a \(\(Fin\.last (\d+)\)((?:\.castSucc)*)\)',s):assert int(a)==int(b)+1+c.count('.castSucc')
+named=(d/'research/nine-seed38-jones-named-prefix-draft/Norm38MacroPrefixes.lean').read_text();lines=named.splitlines();expected_nodes=['def d28 : Dag 28 := .snoc d27 (.sub (.mul (.constant (4 : Int)) (.ref ⟨23, by decide⟩)) (.constant (5 : Int)))','def d29 : Dag 29 := .snoc d28 (.sub (.mul (.mul (.constant (3 : Int)) (.ref ⟨25, by decide⟩)) (.ref ⟨26, by decide⟩)) (.mul (.constant (2 : Int)) (.sub (.pow (.ref ⟨25, by decide⟩) (.lit 2)) (.constant (1 : Int)))))','def d30 : Dag 30 := .snoc d29 (.add (.mul (.sub (.pow (.ref ⟨23, by decide⟩) (.lit 2)) (.constant (1 : Int))) (.pow (.ref ⟨26, by decide⟩) (.lit 2))) (.constant (1 : Int)))'];assert all(x in lines for x in expected_nodes)
+r=subprocess.run([sys.executable,'-I','-S','-B',str(p/'run.py'),'--preflight'],capture_output=True,text=True,check=True);o=json.loads(r.stdout);assert o['status']=='PASS_NO_LEAN_PREFLIGHT' and o['stage_count']==3
+print(json.dumps({'status':'PASS','preflight':o,'scope':'uncompiled J/Q/D prefix evaluations; no Lean replay'},sort_keys=True,indent=2))
