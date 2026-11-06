@@ -1,0 +1,5 @@
+# Independent prelaunch review: macro-language binder rename
+
+**Pass for bounded launch.** The only source changes rename the reserved local binder `prefix` and its uses to `prior` in `Dag.snoc`, `Dag.scoped`, and `Dag.values`; the constructor, evaluator and scope logic remain unchanged. The runner diff retains provider checks and resource limits, adds exact prior failed-state/log binding and source-delta validation, and uses a fresh output path. The independent checker verifies the complete source transformation, all packet pins, prior failure, same direct named-formula producer and fresh no-Lean preflight.
+
+The original failed parser before testing recursion under finite sums, dependent `Fin.snoc` indexing or resource fit; this retry does not assume they will pass. Successful compilation would establish the language definitions only, not the recipe, graph equality or JSON binding. Provider observations are point-in-time, monitor readings sampled, and initial-agreement numeric outer exit remains unavailable. Preflight requires a fresh output path and refuses after launch.

@@ -41,6 +41,10 @@ A [macro-language-only Lean attempt](research/nine-seed38-jones-compact-language
 [independently audited](reviews/nine-seed38-jones-compact-language-failure-frontier-independent/README.md),
 failed to parse the reserved binder name `prefix` and produced no object; it
 did not test the generated recipe or establish semantic equality.
+A [binder-rename retry](research/nine-seed38-jones-compact-language-retry01/README.md),
+[independently audited](reviews/nine-seed38-jones-compact-language-retry01-terminal-frontier-independent/README.md),
+then compiled the language and evaluator definitions. It did not compile the
+generated recipe or prove well-scopedness, evaluation equality or JSON binding.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
