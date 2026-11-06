@@ -1,0 +1,7 @@
+# Conditional ring-value topological agreement checked
+
+Author-observed outer session `89578` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `91774b1327ec3ec0e5c86d2b8a8183fb0e18afc72a4a6a0cc89cadf991b266e4`; before and after provider surveys both hash to `23c3537bab78d8742d1038a85561cc30b6b9cffd26c277b0b9291eff83482dc4`. The outer record is an author observation, not an independently observed transcript.
+
+`Sign33RingTopology` compiled in 2.011 seconds; object SHA-256 `12541ed2f43c8fa4e2bee94b089ef7f74802fe15cf253809b6e659bde73365b5` at `/tmp/nine-sharing-sign33-ring-topology-check-20261106/lib/DiophantineConsistency/Sign33RingTopology.olean`, compile log `093eff2f521b8bbf4e226a7a0c5ddfd0c2723fbeb573f00296cf06c0d021903a`. Its axiom report lists `[propext]`, with no warnings. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Peak sampled session RSS was 2,148,708,352 bytes and minimum sampled available host memory was 18,980,380,672 bytes; sampling has the stated limitations.
+
+This generic result assumes topological ordering, initial/reference gate agreement, and ring-value gate equations for the fixed valuation. It does not establish those premises for the sign33 lift, the five norms, source-zero bridge or an iPRA endpoint. Inherited provider and numeric-exit limitations remain as in the parent README.

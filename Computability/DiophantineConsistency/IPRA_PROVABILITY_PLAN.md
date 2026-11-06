@@ -1944,6 +1944,11 @@ prove the lifted assignment satisfies the 38-seed componentwise gates: those
 conditions are stronger than the signed-value equalities available here.
 Ring-value gate replay requires a separate proof. Its compile records two
 unused-section-variable warnings.
+A [conditional double-topology client](research/nine-sharing-sign33-ring-topology-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-ring-topology-terminal-frontier-independent/README.md),
+checks agreement of a ring-value assignment and reference on completed nodes
+when both satisfy the same topological gate equations. Deriving the 60 gate
+equations from the 33-seed static conditions remains open.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
