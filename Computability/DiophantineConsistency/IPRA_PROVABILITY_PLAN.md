@@ -1921,8 +1921,11 @@ casts. Its compile records three unused-simp warnings. All 24 row consequences
 are now checked separately. An [eight-batch assembly](research/nine-sharing-sign33-residual-assembly-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-residual-assembly-terminal-frontier-independent/README.md),
 then checks that a seed zero implies all 24 grouped conditions at the same
-valuation under all four port casts. The reverse direction, source graph
-bridge and iPRA transfer remain open.
+valuation under all four port casts. A [nine-stage converse](research/nine-sharing-sign33-residual-converse-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-residual-converse-terminal-frontier-independent/README.md),
+checks the reverse implication under the same hypotheses. Its group logs
+contain 24 unused cast-variable warnings; the final stage has none. A checked
+combined iff, source graph bridge and iPRA transfer remain separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
