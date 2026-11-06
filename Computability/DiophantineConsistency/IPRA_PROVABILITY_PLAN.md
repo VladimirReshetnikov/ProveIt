@@ -1615,7 +1615,11 @@ from a source-expression zero at shifted inputs. A [four-cast specialization](re
 [independently audited](reviews/nine-sharing-norm38-current-source-cast-instantiation-terminal-independent/README.md),
 then checks this construction for the actual current model ports without a
 cast hypothesis. Combining the existential directions and the iPRA transfer
-remain separate.
+remain separate. A [conditional existential composition](research/nine-sharing-norm38-current-existential-iff-draft/README.md),
+[independently audited](reviews/nine-sharing-norm38-current-existential-iff-terminal-independent/README.md),
+checks both seed/source and nine-variable/source existential equivalences
+under an explicit universal port-cast assumption. The cast-free composition
+and iPRA transfer are still to be checked.
 A [forward-constructor gate build](research/nine-sharing-norm38-forward-gates-draft/README.md),
 [independently audited](reviews/nine-sharing-norm38-forward-gates-terminal-independent/README.md),
 checks all 60 gate conditions and their conjunction for the generated witness
