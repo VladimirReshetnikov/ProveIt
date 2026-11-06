@@ -1,0 +1,5 @@
+# Independent terminal review: 33-to-38 coordinate lift
+
+The retained state records successful dependency and Lean compilation checks; the author observation says session 45574 exited 0. The checker validates source/object, logs, all three reports, direct assembly-provider binding, 100 guard slots, 1,192 overlay links and identical before/after surveys. No Lean replay was performed; the author observation is not an independent raw terminal transcript. All reports list `[propext, Classical.choice, Quot.sound]`; there are two unused-section-variable warnings on the coordinate lemmas.
+
+The checked theorems extract five signed values from AllCuts, preserve the first 14 inputs and place the ten signed-pair coordinates, with the fifth pair `(0,v33)` representing y²−V². They do not prove 38-gate or norm semantics, signed-witness existence, source-equation equivalence or an iPRA endpoint. The prelaunch graph/coordinate JSON comparison was external. Provider observations are point-in-time and monitoring is sampled.

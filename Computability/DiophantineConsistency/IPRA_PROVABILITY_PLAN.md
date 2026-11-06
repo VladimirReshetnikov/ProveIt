@@ -1933,6 +1933,13 @@ contain 24 unused cast-variable warnings; the final stage has none. An
 [independently audited](reviews/nine-sharing-sign33-residual-iff-terminal-frontier-independent/README.md),
 then checks the biconditional at the same valuation under those casts. The
 source graph bridge and iPRA transfer remain separate.
+A [33-to-38 coordinate lift](research/nine-sharing-sign33-lift38-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-lift38-terminal-frontier-independent/README.md),
+checks the input prefix, signed slots and signed-value extraction. It does not
+prove the lifted assignment satisfies the 38-seed componentwise gates: those
+conditions are stronger than the signed-value equalities available here.
+Ring-value gate replay requires a separate proof. Its compile records two
+unused-section-variable warnings.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
