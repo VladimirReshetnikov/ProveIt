@@ -98,6 +98,10 @@ A [fourth prefix group](research/nine-seed38-jones-prefix-group04-staged-check/R
 [independently audited](reviews/nine-seed38-jones-prefix-group04-staged-terminal-frontier-independent/README.md),
 checks seven short-prefix input and shifted-input values without unfolding
 the prior rank expression. Full-recipe semantic equality remains open.
+A [fifth preservation client](research/nine-seed38-jones-prefix-group05-check/README.md),
+[independently audited](reviews/nine-seed38-jones-prefix-group05-terminal-frontier-independent/README.md),
+checks the `q` and `N` values at prefix `d10`; it does not yet identify the
+rank node or complete the recipe semantics.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
