@@ -1579,6 +1579,9 @@ A [forward-bridge draft](research/nine-sharing-norm38-forward-bridge-draft/READM
 [independently inspected](reviews/nine-sharing-norm38-forward-bridge-independent/README.md),
 proposes constructing seed witnesses from an original zero under explicit
 port-cast and positivity hypotheses; this direction is also uncompiled.
+Adapted [five-norm and source-to-seed drafts](research/nine-sharing-norm38-forward-five-norms-draft/README.md)
+have passed a [source review](reviews/nine-sharing-norm38-forward-five-norms-draft-independent/README.md).
+Their provider integration and Lean elaboration remain unverified.
 A [forward-constructor gate build](research/nine-sharing-norm38-forward-gates-draft/README.md),
 [independently audited](reviews/nine-sharing-norm38-forward-gates-terminal-independent/README.md),
 checks all 60 gate conditions and their conjunction for the generated witness
