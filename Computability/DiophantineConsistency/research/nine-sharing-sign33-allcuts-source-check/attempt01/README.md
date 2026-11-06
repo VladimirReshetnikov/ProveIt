@@ -1,0 +1,7 @@
+# Sign33 AllCuts-to-source-syntax implication checked
+
+Author-observed outer session `93561` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `f7f26e110fb47eeed66c7285139f96c0910be8130d0d004af9afe563610cde8b`; before and after provider surveys both hash to `69caa5fcad25167e301076af1ab89db03a86105d425bdc777fc857e4ed66d5ae`. The outer record is an author observation, not an independently observed transcript.
+
+`Sign33AllCutsSource` compiled in 3.721 seconds; object SHA-256 `9518aba7d4f0ba9a988284315ace952cbfc8bf6f09865aef1f46ca29d46a5c05` at `/tmp/nine-sharing-sign33-allcuts-source-check-20261106/lib/DiophantineConsistency/Sign33AllCutsSource.olean`, compile log `01b4698f44d7605fc4a03e1c11acc0c99e4d6dd4319fd07feca83c6769a81062`. Its axiom report lists `[propext, Classical.choice, Quot.sound]`, with no warnings. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Peak sampled session RSS was 2,910,777,344 bytes and minimum sampled available host memory was 18,837,204,992 bytes; sampling has the stated limitations.
+
+Under four explicit symbolic-port casts, `AllCuts` implies `InternalZero` for the exact source syntax and corresponding shifted full-coordinate inputs. No source-to-seed witness construction, Lean proof of external JSON binding, or sign33 iPRA endpoint is established. Inherited provider and numeric-exit limitations remain as in the parent README.

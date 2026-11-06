@@ -2057,9 +2057,12 @@ for that lift. Its individual stages record 17 warnings; the assembly has none.
 A [replay-to-source-value client](research/nine-sharing-sign33-lift-source-value-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-lift-source-value-terminal-frontier-independent/README.md),
 then checks that `AllCuts` implies zero `Carrier65` value at the corresponding
-shifted inputs and model ports. Transfer to source syntax and construction of
-33 witnesses from a source zero remain separate; the inherited initial-stage
-numeric outer exit remains uncaptured.
+shifted inputs and model ports. A [source-syntax client](research/nine-sharing-sign33-allcuts-source-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-allcuts-source-terminal-frontier-independent/README.md),
+transfers this implication to the source expression under four explicit port
+casts and the shifted coordinates. Composition with seed zero, current-port
+specialization and construction of 33 witnesses from a source zero remain
+separate; the inherited initial-stage numeric outer exit remains uncaptured.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
