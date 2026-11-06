@@ -124,18 +124,63 @@ Build-time lessons:
 - `congr 1` exhausted the recursion depth by unfolding `Compact943Data.row`.
   Explicit `sum_congr` rewrites replaced it.
 
+## Phase 3c: ports, masks and the first `LeafFacts` link
+
+The `Compact44/Facts/` halting chain takes `CompactLeafFacts.LeafFacts p v`
+at the ports `p`. Its four leaves are port-generic. These four modules supply
+what the next layer needs at the 121x8801 ports:
+
+- [`Mixed121Ports`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Ports.lean)
+  defines `β = 2^(121·8801) − 1`, `K`, `MC` and `β + MF_native` as symbolic
+  naturals. `MC` is a `CompactListMask` digit list, and `MF_native` is an
+  explicit replicate list. The module proves the leaf bounds `0 < β`,
+  `MC < β`, `β + MF < 2β`, `46 ≤ β` and `β + 1 = 2^d` without materializing a
+  numeral. [`tools/check_ports.py`](tools/check_ports.py) rebuilds `MC` and
+  `MF_source` from the lists and matches the payloads.
+- [`Mixed121Masks`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Masks.lean)
+  proves the five mask facts of the port-generic saturation client:
+  `popcount(MC) = d − 989`, `popcount(MF) = 989`, their sum `d`, `MC` even,
+  `MF ≡ 4 (mod 8)`, and both masks below `2^d`.
+- [`Mixed121Increment`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Increment.lean)
+  is a mechanical width-121 port of `CompactDummyBound`,
+  `CompactMixedIncrement` and the model part of `CompactListMask`. Only
+  `67/66/65` become `121/120/119`. Its `recipe_digits` gives native cells
+  `dig C 0 = 1` and `≤ 3` from the low-mask no-carry.
+- [`Mixed121Aligned`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Aligned.lean)
+  composes these with Compact44's port-generic
+  `graph_aligned_congruence_facts` and `graph_saturation_facts`. Its
+  `symbolic_aligned` is the counterpart of `symbolic_aligned_facts`. From
+  `LeafFacts` at the 121x8801 ports it gives:
+  - `q = 2^(dN)` and `J = rep(d, N)`;
+  - the first-pair congruence;
+  - the native cell bounds.
+
+Kernel lesson (it cost a 47-minute build). The kernel must never compare two
+non-identical terms under a Nat operation while a concrete mask is inside. Its
+Nat-literal extension then evaluates the mask to a numeral: 8801 digits, each
+with a support lookup. `unfold`/`delta` under `% 2`, `digits B (8800+1)`
+against `digits B 8801`, and a typed `Finset.sum_range_succ'` instance all
+triggered it. The module uses `rw` with `rfl` definition lemmas instead,
+literal-form instances (`digits_8801`), and arithmetic over variables. It now
+builds in under a minute of elaboration.
+
 ## Remaining phases
 
 Measured against the Compact44 calibration, which is 472 modules plus the
 endpoint layer:
 
-1. the graph-level clean-carry step: from a graph zero, a `CarryInput` for
-   the flattened family and a carry-free column at each clause target. This
-   is Compact44's `FixedGraphCleanCarry`, but it depends on each form's own
-   graph. The width-generic `carry_input` and the room above are its tuple
-   inputs;
-2. the padding cells `8792..8799`, and the mask populations and low bits of
-   §3;
+1. the clean-carry step: a `CarryInput` for the flattened family and a
+   carry-free column at each clause target. This is Compact44's
+   `Facts/FixedGraphCleanCarry`. Like the whole `Facts/` halting chain
+   (45 modules, about 3,000 lines), it takes
+   `CompactLeafFacts.LeafFacts p v` at the ports `p`, not a particular
+   graph's zero. It is therefore a tuple-level port. `LeafFacts` is stated for
+   arbitrary ports, and its `R` and `Nt` have exactly the shape of package 55's
+   52 / 79 form. The per-form obligation is to prove `LeafFacts` at a positive
+   valuation, as `P57Facts` did on Compact44. The width-generic `carry_input`
+   and the room above are inputs to this step;
+2. the padding cells `8792..8799` (the mask populations and low bits of §3
+   are done, in `Mixed121Masks`);
 3. the spatial and temporal overlap identities, and the binary-alignment
    argument for `b = 121`;
 4. the packing, rank and controller layers. Compact44's `PackingInput d` is

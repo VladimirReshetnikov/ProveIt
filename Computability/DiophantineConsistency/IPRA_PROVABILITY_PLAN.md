@@ -4253,12 +4253,24 @@ the packages' coefficient files with it:
   (`55-congruence-norms/native/SOURCE_CHAIN.md`). A calibration was started
   on 5 November 2026
   ([record](research/mixed121-calibration/README.md), `Lean/…/Mixed121/`).
-  Six modules prove the following: the symbolic kernel and support facts; the
-  radix-four clause decoder and the coefficient digit form; one decoded
-  reflected band; `K` in every model as two rotated bands plus the bare part;
-  and the flattened family with its carry room `3·mass + 1 < 2^120`. The
-  graph-level clean carry, the overlap and alignment arguments, the
-  `λ = 2341` controller and both endpoints remain open.
+  Ten modules now prove the following:
+  - the symbolic kernel and support facts;
+  - the radix-four clause decoder and the coefficient digit form;
+  - one decoded reflected band;
+  - `K` in every model, as two rotated bands plus the bare part;
+  - the flattened family, with its carry room `3·mass + 1 < 2^120`;
+  - the four ports, with the bounds the leaves need;
+  - the §3 mask facts (`popcount(MC) = d − 989`, `popcount(MF) = 989`,
+    `MC` even, `MF ≡ 4 (mod 8)`);
+  - the native-cell decoder;
+  - `Mixed121Aligned.symbolic_aligned`, the first tuple-level link of the
+    halting chain.
+
+  The halting chain consumes `CompactLeafFacts.LeafFacts p v`, which is stated
+  for arbitrary ports, not a particular graph's zero. So the rest of the
+  `Compact44/Facts/` chain is a tuple-level port. That includes the clean
+  carry, overlap, alignment and the `λ = 2341` controller. The per-form work is
+  proving `LeafFacts` and the endpoints for 52 / 79 and 44 / 111.
 - **admissible942** (β of 189,269 bits; `candidates/one-page-admissible942`):
   183's 150 / 65 and 192's 174 / 69. 188 binds block-mask2963. No Lean module
   mentions the admissible942 exponent. The tree's endpoints for these
