@@ -17,9 +17,14 @@ standard mapped Gödel–Gentzen consistency equivalence. The checked expression
 is symbolic, `ExecutableJones.expression (SharingSeed38.seed
 CurrentWindowCarry2011.ports) 0`; the coordinates range over the naturals,
 including zero. This does not yet bind an exported literal equation or PDF,
-or establish the final expression's operation count or degree. The retained
+or establish the final expression's operation count or exact degree. The retained
 initial-agreement ancestor has successful Lean child exits but no captured
 numeric outer exit; its inherited provider and point-observation limits remain.
+An [external degree survey](research/nine-seed38-jones-metric-survey/README.md),
+[independently reviewed by manual transcription and affine propagation](reviews/nine-seed38-jones-metric-transcription-frontier-independent/README.md),
+gives the conservative upper bound `291404·5^39 + 860` for that symbolic
+nine-variable expression. This is not a Lean degree theorem, an exact degree,
+an operation count, or a literal-export binding.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
