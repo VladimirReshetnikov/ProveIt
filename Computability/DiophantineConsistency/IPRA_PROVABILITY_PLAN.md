@@ -1762,6 +1762,10 @@ A [targeted numeral retry](research/nine-sharing-sign33-strong-f-retry01/README.
 then checked that the strong norm and the four stated positivity/equality
 hypotheses imply `2 ≤ f` in IΣ₁ models. Its compile has one linter suggestion;
 the remaining sign transports and 33-witness zero bridge are still open.
+A [scalar and first-index window attempt](research/nine-sharing-sign33-windows-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-windows-failure-frontier-independent/README.md),
+failed because the `absdiff` identifier was not in scope. It produced no
+successful object; the reported `sorryAx` is a failed-declaration artifact.
 An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/README.md),
 [independently inspected](reviews/nine-sharing-gate-model-draft-independent/README.md),
 separates signed-pair algebra and conditional trace replay from generated
