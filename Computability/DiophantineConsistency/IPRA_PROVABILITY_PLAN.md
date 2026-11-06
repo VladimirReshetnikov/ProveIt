@@ -1836,6 +1836,12 @@ A [conditional auxiliary-sign attempt](research/nine-sharing-sign33-aux-ring-che
 [independently audited](reviews/nine-sharing-sign33-aux-ring-failure-frontier-independent/README.md),
 elaborated the mapped norm and square rewrite but failed because the
 `linear_combination` tactic was unavailable. It produced no sign theorem.
+A [no-new-import retry](research/nine-sharing-sign33-aux-ring-retry01/README.md),
+[independently audited](reviews/nine-sharing-sign33-aux-ring-retry01-terminal-frontier-independent/README.md),
+then checked the nonpositive auxiliary squared-difference sign from explicit
+positive `S,y` and the natural absolute-difference norm. All five sign
+consequences now have conditional ring-transport lemmas; source-zero premise
+recovery, natural witnesses and the 33-witness zero bridge remain open.
 An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/README.md),
 [independently inspected](reviews/nine-sharing-gate-model-draft-independent/README.md),
 separates signed-pair algebra and conditional trace replay from generated
