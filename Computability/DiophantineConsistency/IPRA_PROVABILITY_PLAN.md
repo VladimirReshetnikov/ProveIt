@@ -1528,6 +1528,12 @@ resulting source-equation bridge remain open.
 An [unsplit initial-agreement attempt](research/nine-sharing-norm38-reference-initial-check/README.md),
 [independently audited](reviews/nine-sharing-norm38-reference-initial-timeout-terminal-independent/README.md),
 timed out without producing a Lean object or axiom report.
+A [split initial-agreement build](research/nine-sharing-norm38-reference-initial-split-check/README.md),
+[independently audited](reviews/nine-sharing-norm38-reference-initial-split-terminal-independent/README.md),
+subsequently recorded successful Lean scans and compiles for all eight stages
+and the initial-agreement axiom report. The author's observed PASS output did
+not retain a numeric outer exit; no such exit is inferred. The later terminal
+agreement and source/seed bridge remain separate.
 A [separate field client](research/nine-sharing-norm38-reference-fields01-check/README.md),
 [independently audited](reviews/nine-sharing-norm38-reference-fields01-terminal-independent/README.md),
 checks that reference nodes 61 and 44 equal the original P and Q fields over

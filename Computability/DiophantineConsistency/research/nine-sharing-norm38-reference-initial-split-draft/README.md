@@ -1,0 +1,5 @@
+# Source-only split fallback for initial agreement
+
+This uncompiled diagnostic divides the 21 initial static/reference node equalities into seven modules of three claims and a `Fin 21` assembly module. Its generator checks the pinned source syntax: nodes 0–13 are positively shifted coordinates, 14–17 are the four natural ports, and 18–20 are constants 1, 3 and 4, paired with the corresponding reference leaves. It does not test model casting or Lean elaboration. The split is a fallback if the separately prepared single-module check exhausts resources; there is no runner or Lean object in this packet.
+
+`python3 -I -S -B generate.py` rewrites generated outputs; use an isolated copy for reproduction. Both the use of `simp` in each group and `List.mem_map`/`fin_cases` in the assembly are unverified and may fail or consume excessive resources. The generic gate topology and gate-reference equalities still require a separately checked composition, and the reverse direction and endpoint remain open.
