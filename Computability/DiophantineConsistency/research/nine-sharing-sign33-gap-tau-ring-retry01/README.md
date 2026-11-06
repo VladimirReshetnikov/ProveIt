@@ -1,0 +1,9 @@
+# Gap/tau namespace retry: additive orientation errors
+
+The [prior gap/tau diagnostic](../nine-sharing-sign33-gap-tau-ring-check/attempt01/README.md) failed at the combined `open` command because `ModelArithmetic` was unavailable, followed by cascading unknown identifiers. This retry removes only `ModelArithmetic` from that open list; the theorem statement, explicit window hypotheses and proof are unchanged. `ModelDifferenceRing` remains open for `ι`, `ι_le_ι`, and `ι_nonneg`. The retry failed on two additive orientation errors; see [attempt01](attempt01/README.md). No sign33 zero bridge or iPRA endpoint is claimed.
+
+The runner pins the prior failed state and exact namespace-error log, uses a fresh output directory, and retains the previous source-built provider survey, direct dependency/guard checks and resource limits. Full guard and survey rechecks occur only after success. Provider observations are point-in-time, resource monitoring is sampled, and deeper transitive/dynamic ancestry remains inherited, including an uncaptured numeric outer exit of an earlier initial-agreement provider.
+
+Candidate source SHA-256 `59ce482fcd8966e12e24c83290af34a8cf67d6cdd2d4ea360c4aa47bffbc6769`, manifest `930550bbac383ee9dabca7b166131fe0390d49fd21d2d6e6e3437b6a596cb60b`, survey `3adc88d86f4941fa22513aab35ae6fa987143b357008cf9a76710bf56a078ef7`, runner `0c9a4c5464b6790ddf7757640ecfb1d40069f6de94fc00e3618f1498f2637ba1`. Author no-Lean preflight session 62742 exited 0; independent prelaunch review and a coordinated Lean slot preceded the failed run. Limits remained `-M2800`, 120 seconds per call, sampled 4-GiB session RSS and 10-GiB available-host-memory floor with a 5-GB free-space precheck.
+
+The [independent terminal audit](../../reviews/nine-sharing-sign33-gap-tau-ring-retry01-failure-frontier-independent/README.md) checked both additive orientation errors and provider observations without replaying Lean.

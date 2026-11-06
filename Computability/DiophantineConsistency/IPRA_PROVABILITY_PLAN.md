@@ -1782,6 +1782,10 @@ A [gap/tau ring-transport attempt](research/nine-sharing-sign33-gap-tau-ring-che
 [independently audited](reviews/nine-sharing-sign33-gap-tau-ring-failure-frontier-independent/README.md),
 failed because `ModelArithmetic` was unavailable in the combined `open`
 command; its cascading errors and `sorryAx` are not proof evidence.
+A [namespace retry](research/nine-sharing-sign33-gap-tau-ring-retry01/README.md),
+[independently audited](reviews/nine-sharing-sign33-gap-tau-ring-retry01-failure-frontier-independent/README.md),
+passed name resolution but failed on two addition-order mismatches; it also
+produced no theorem or successful final survey.
 An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/README.md),
 [independently inspected](reviews/nine-sharing-gate-model-draft-independent/README.md),
 separates signed-pair algebra and conditional trace replay from generated
