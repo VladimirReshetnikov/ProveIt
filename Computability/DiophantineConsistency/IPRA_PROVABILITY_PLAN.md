@@ -1628,7 +1628,11 @@ A [seed-to-source composition](research/nine-sharing-norm38-seed-source-composit
 [independently audited](reviews/nine-sharing-norm38-seed-source-composition-terminal-independent/README.md),
 subsequently checks that a seed zero gives a source-expression zero at the
 same shifted witness coordinates under the four generic port-cast assumptions.
-The concrete-port specialization, converse and iPRA transfer remain separate.
+A [concrete-port specialization](research/nine-sharing-norm38-current-seed-source-draft/README.md),
+[independently audited](reviews/nine-sharing-norm38-current-seed-source-terminal-independent/README.md),
+then discharges those casts using the four separately checked current-port
+projections, without expanding the coefficients. The converse and iPRA transfer
+remain separate.
 A [current-port specialization attempt](research/nine-sharing-norm38-current-ports-check/README.md),
 [independently audited](reviews/nine-sharing-norm38-current-ports-terminal-independent/README.md),
 hit Lean's kernel memory limit in the four-cast proof. Its failed axiom reports
