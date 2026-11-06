@@ -1,0 +1,7 @@
+# Sign33 transport, f² and cT−r residual links checked
+
+Author-observed outer session `58665` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `659fd8325cf95592f6e143d6a8af47225d62c760b243835c62279ea7083786f1`; before and after provider surveys both hash to `9dbd8f5b4ec20b051457792a6534a4705acddaf9ee1e193e500a7ad259f37720`. The outer record is an author observation, not an independently observed transcript.
+
+`Sign33ResidualBatch05` compiled in 4.759 seconds; object SHA-256 `9505d4fe52e0702caa501d397ff8f126db4ebc1ef8ed82b6832da0e17d55863d` at `/tmp/nine-sharing-sign33-residual-batch05-check-20261106/lib/DiophantineConsistency/Sign33ResidualBatch05.olean`, compile log `e3f8e855f526cc814e5de4d879fdfd4e3eafe8abf889c054e85a62c893a45b78`. All four axiom reports list `[propext, Classical.choice, Quot.sound]`, with no warnings. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Peak sampled session RSS was 2,157,539,328 bytes and minimum sampled available host memory was 18,984,071,168 bytes; sampling has the stated limitations.
+
+Under the explicitly stated p0–p3 casts, seed zero implies the transport equation, f² and cT−r cuts on the same full valuation. No remaining residual/static identities, chronological graph replay, Lean proof of external JSON binding, source-zero bridge or sign33 iPRA endpoint is established. Inherited provider and numeric-exit limitations remain as in the parent README.

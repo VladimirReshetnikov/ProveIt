@@ -1,0 +1,5 @@
+# Independent terminal review: sign33 transport/f²/cT−r
+
+The retained state records successful dependency and Lean compilation checks; the author observation says session 58665 exited 0. The checker validates source/object, logs, all four reports, direct square-sum provider binding, 100 guard slots, 1,174 overlay links and identical before/after surveys. No Lean replay was performed; the author observation is not an independent raw terminal transcript. All reports are `[propext, Classical.choice, Quot.sound]`, with no warnings.
+
+Under the stated IΣ₁-model and all-four-port-cast hypotheses, seed zero entails the transport equation, f² at full coordinate 28 and positive-orientation cT−r at 29 under one valuation. Individual row hypotheses are p0/p1, none and p0/p2/p3, respectively. This does not prove remaining rows, signed-witness existence, graph replay, source-model equivalence or an iPRA endpoint. JSON/source matching remains external; provider observations are point-in-time and monitoring is sampled.

@@ -1882,6 +1882,10 @@ checks the positive gap/tau cuts and next norm under the stated port-0,
 port-2 and port-3 casts. Its source header incorrectly claims no casts; the
 packet records the erratum. One unused-simp warning remains, and nine
 residual links are still separate.
+A [sixth residual client](research/nine-sharing-sign33-residual-batch05-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-residual-batch05-terminal-frontier-independent/README.md),
+checks the transport relation, `f²` and positive `cT−r` cut. Its combined
+theorem assumes all four port casts; six residual links remain separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
