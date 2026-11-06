@@ -190,6 +190,27 @@ namespaces to `W121.X`, and refuses any module that mentions the period
 `8807`. Every port built on its first attempt. The two carry-reset files
 were then retargeted at `Mixed121Rotation`'s width-generic carry family.
 
+## Phase 3e: the decoded selection inside the chain
+
+- [`Mixed121Single`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Single.lean)
+  is the counterpart of Compact44's foreign-band and single-band links. At
+  either clause target, the other band's sources (the support shifted by
+  `∓1102`) and the bare sources (offsets `30, 62, 1100, 2200, 8843`) lie
+  outside `Bad`, so the clean graph digit is one band's decoder input alone.
+- [`Mixed121Selected`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Selected.lean)
+  is the counterpart of the selected-inputs, local-no-carry and decoding
+  links:
+  - a band's source cells are the support positions themselves, so its
+    selector and copy digits are Boolean;
+  - `MF_native` has digit `μ` at both clause targets, so the high-mask
+    saturation gives `NoCarry F_t μ`.
+
+  `graph_selected_decode` then applies `Mixed121Decoder.decode` at the clean
+  target. Either the band is empty, or exactly one tile is selected and all
+  44 copy and anchor digits equal its digits. This is the recipe's §2 clause
+  decoding, as a theorem about every `LeafFacts` valuation at the 121x8801
+  ports.
+
 ## Remaining phases
 
 Measured against the Compact44 calibration, which is 472 modules plus the
