@@ -1,0 +1,5 @@
+# Independent terminal audit: conditional static carrier
+
+The successful IΣ₁ model theorem concludes `Carrier65.value = 0` from **both** `fiveNorms` and six explicit static/reference terminal agreements at nodes 61, 44, 78, 66, 80 and 36, with ports embedded and first fourteen witness coordinates shifted by one. The terminal agreement is a hypothesis, not established by this theorem. The axiom report is `[propext, Classical.choice, Quot.sound]` with no warnings. This is not yet an unconditional source/seed bridge or an iPRA endpoint.
+
+The checker pins source, manifest, runner, retained/live state, logs and object, validates author-recorded session 89237 exit 0, checks 100 direct guard slots and 1,074 overlay routes, authenticates the successful six-field object from the earlier overall-failed run, and reruns its independent terminal review. PASS follows the runner's final direct-guard and five-field survey checks. The outer record is an author observation, not an independently observed transcript; resource sampling and point checks do not establish continuous resource use or complete transitive/dynamic ancestry. No Lean replay was performed.

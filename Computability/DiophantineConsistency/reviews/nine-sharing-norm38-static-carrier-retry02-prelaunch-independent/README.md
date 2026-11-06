@@ -1,0 +1,5 @@
+# Independent prelaunch review: conditional carrier retry02
+
+No material launch blocker found. The sole source change from retry01 qualifies the previously ambiguous subtraction lemma as `_root_.sub_self`; the theorem statement and its six terminal-agreement and five-norm hypotheses are unchanged. The sole runner changes are the fresh output path and manifest pin. The previous error log reports ambiguous `sub_self` and `sorryAx`; it is not proof evidence. The new proof and its resource fit remain untested.
+
+The checker pins source, manifest and runner, checks the exact source/runner deltas and unchanged field survey, reruns the no-Lean preflight, and reruns the independent prior partial-producer audit. The runner selects the successful six-field row of an overall-failed earlier run and excludes its failed conditional row. Its provider/resource guards are point/sampled observations, not complete transitive/dynamic ancestry, and postflight occurs only after success. No Lean was launched in this review.

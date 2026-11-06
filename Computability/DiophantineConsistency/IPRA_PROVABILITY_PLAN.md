@@ -1554,6 +1554,11 @@ A [two-stage combination attempt](research/nine-sharing-norm38-reference-fields-
 [independently audited](reviews/nine-sharing-norm38-reference-fields-combine-terminal-independent/README.md),
 compiled the six-field conjunction. Its following conditional Carrier65
 implication failed on a local `let` rewrite and was not accepted.
+A [qualified-name retry](research/nine-sharing-norm38-static-carrier-retry02/README.md),
+[independently audited](reviews/nine-sharing-norm38-static-carrier-retry02-terminal-independent/README.md),
+then checked that agreement of the six static terminals with their reference
+nodes, together with the five static norms, implies a Carrier65 zero in an
+IΣ₁ model. The terminal-agreement hypotheses remain to be derived.
 A [forward-bridge draft](research/nine-sharing-norm38-forward-bridge-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-forward-bridge-independent/README.md),
 proposes constructing seed witnesses from an original zero under explicit
