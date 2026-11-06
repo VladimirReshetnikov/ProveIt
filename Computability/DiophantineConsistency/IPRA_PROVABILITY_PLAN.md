@@ -1690,7 +1690,11 @@ A [Jones/static client](research/nine-sharing-norm38-current-jones-static-check-
 [independently audited](reviews/nine-sharing-norm38-current-jones-static-v2-terminal-independent/README.md),
 checks that the nine-natural-variable expression has a zero iff some
 38-coordinate valuation satisfies the current static conditions in each
-indicated IΣ₁ model. Its connection to the original equation remains open.
+indicated IΣ₁ model. A [one-way Jones/source client](research/nine-sharing-norm38-current-nine-source-draft/README.md),
+[independently audited](reviews/nine-sharing-norm38-current-nine-source-terminal-independent/README.md),
+then checks that a zero of this expression yields a zero of the current source
+expression at the shifted first fourteen seed coordinates. The converse and
+iPRA transfer remain separate.
 A separate [conditional composition draft](research/nine-sharing-norm38-compose-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-compose-draft-independent/README.md),
 assembles the prospective seed/current equivalence from explicit extraction
