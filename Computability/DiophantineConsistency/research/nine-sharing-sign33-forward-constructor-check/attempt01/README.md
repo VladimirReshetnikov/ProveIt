@@ -1,0 +1,7 @@
+# Sign33 forward constructor projections checked
+
+Author-observed outer session `90019` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `90d2364c1d5193dc53a3afac3ed108e23db42b2917f9e8740fee1f81b86c11ed`; before and after provider surveys both hash to `ddf25ea632a938aebef8007fab47ab86807b1b7212aad505e19027588df32c87`. The outer record is an author observation, not an independently observed transcript.
+
+`SharingForward33` compiled in 2.33 seconds; object SHA-256 `306a8d3da4b5d24cf466f631356c4851d1a4aa2df5bb642aeb8c854cf7369e1b` at `/tmp/nine-sharing-sign33-forward-constructor-check-20261106/lib/DiophantineConsistency/SharingForward33.olean`, compile log `347cf781a22573c6fc5aec928ba5ac6d6b0cb549329bb7eee9d5a923bb4e4242`. The first-14 input projection report lists `[propext, Classical.choice, Quot.sound]`; the five signed-coordinate projection report lists `[propext]`. There were no warnings. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Peak sampled session RSS was 2,172,166,144 bytes and minimum sampled available host memory was 19,017,146,368 bytes; sampling has the stated limitations.
+
+The constructor and projection lemmas do not establish any gate identities, AllCuts, norms, source-zero implication, Lean proof of external JSON binding, or a sign33 iPRA endpoint. Inherited provider and numeric-exit limitations remain as in the parent README.

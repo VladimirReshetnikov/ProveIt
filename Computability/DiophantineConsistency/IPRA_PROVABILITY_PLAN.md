@@ -2077,8 +2077,13 @@ with a Lean interpreter memory exception under `-M2800`; it produced no
 current-port object. A [factored retry](research/nine-sharing-sign33-seed-current-source-retry01/README.md),
 [independently audited](reviews/nine-sharing-sign33-seed-current-source-retry01-terminal-frontier-independent/README.md),
 then checks that current-port 33-seed zero implies source-expression zero at
-the same shifted inputs. Constructing 33 witnesses from a source zero remains
-separate; the inherited initial-stage numeric outer exit remains uncaptured.
+the same shifted inputs. A [forward constructor client](research/nine-sharing-sign33-forward-constructor-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-forward-constructor-terminal-frontier-independent/README.md),
+checks coordinate projections for a 33-witness vector built from the 38-seed
+positive cuts and five supplied signed representatives. It does not yet prove
+the required `AllCuts` conditions or seed zero. The source-zero witness
+construction remains incomplete; the inherited initial-stage numeric outer
+exit remains uncaptured.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
