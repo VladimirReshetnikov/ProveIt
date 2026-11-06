@@ -1,0 +1,49 @@
+/tmp/nine-seed38-jones-prefix-group01-check-20261106/src/DiophantineConsistency/Norm38MacroPrefixGroup01.lean:24:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Dag.values ?a d2 (Fin.last 1)
+in the target expression
+  Dag.values a d2 ⟨1, ⋯⟩ ^ 5 ^ 39 = (base a ^ 5) ^ 5 ^ 39
+
+R : Type u_1
+inst✝ : CommRing R
+a : Fin 9 → R
+⊢ Dag.values a d2 ⟨1, ⋯⟩ ^ 5 ^ 39 = (base a ^ 5) ^ 5 ^ 39
+
+Note: The target expression is not type-correct under the `instances` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    Eq.refl true
+  has type
+    @Eq Bool true true
+  but is expected to have type
+    @Eq Bool (decide (1 < 2)) true
+  in the application
+    id (Eq.refl true)
+/tmp/nine-seed38-jones-prefix-group01-check-20261106/src/DiophantineConsistency/Norm38MacroPrefixGroup01.lean:30:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Dag.values ?a d3 (Fin.last 2)
+in the target expression
+  Dag.values a d3 ⟨2, ⋯⟩ ^ 16 = ((base a ^ 5) ^ 5 ^ 39) ^ 16
+
+R : Type u_1
+inst✝ : CommRing R
+a : Fin 9 → R
+⊢ Dag.values a d3 ⟨2, ⋯⟩ ^ 16 = ((base a ^ 5) ^ 5 ^ 39) ^ 16
+
+Note: The target expression is not type-correct under the `instances` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    Eq.refl true
+  has type
+    @Eq Bool true true
+  but is expected to have type
+    @Eq Bool (decide (2 < 3)) true
+  in the application
+    id (Eq.refl true)
+'DiophantineConsistency.Norm38MacroPrefixGroup01.prefix_B' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.Norm38MacroPrefixGroup01.prefix_q' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.Norm38MacroPrefixGroup01.prefix_N' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]

@@ -76,6 +76,11 @@ proved the value of the short `d1` prefix. A [preservation client](research/nine
 [independently audited](reviews/nine-seed38-jones-first-preservation-terminal-frontier-independent/README.md),
 then checks the first entry of the complete recipe. Full recipe semantic
 equality remains open.
+A [three-prefix attempt](research/nine-seed38-jones-prefix-group01-check/README.md),
+[independently audited](reviews/nine-seed38-jones-prefix-group01-failure-frontier-independent/README.md),
+failed on `Fin.last` versus numeral-index rewrites for two entries. The first
+declaration had a clean report, but the failed module produced no object or
+successful final survey.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),

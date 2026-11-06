@@ -1,0 +1,5 @@
+# Candidate first three nontrivial prefix values
+
+This source-only group proposes identities for the **short named prefixes** `d2`, `d3`, and `d4`, corresponding to `B=b^5`, `q=B^(5^39)`, and `N=q^16`. It uses the checked `d1` value and `snoc_last` cut, keeps `indexY` as a symbolic constant, and does not enumerate any finite sum or expand a large ring power. Each node's equality uses the preceding prefix value. The exponent `5^39` is a small symbolic natural expression, not an expanded polynomial.
+
+The group size of three is a proposed bounded experiment, not an observed resource limit or guarantee. All three proofs and their axiom reports are untested. These statements concern each short prefix's last value; they do not by themselves identify those entries in the full `d45`, prove the full recipe semantics or bind JSON/human-document bytes. A later proof needs the checked prior-entry preservation mechanism for those indices and node groups for the rest of the recipe. Any Lean check needs a separate guarded provider, independent prelaunch review and slot coordination.
