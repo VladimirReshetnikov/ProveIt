@@ -218,7 +218,10 @@ checks symbolic `U` and `Y` values at `d27` using a shared `d20` to `d27`
 path. An [M checkpoint client](research/nine-seed38-jones-checkpoint21-27-m-check/README.md),
 [independently audited](reviews/nine-seed38-jones-checkpoint21-27-m-terminal-frontier-independent/README.md),
 then checks `M` at `d27` as the opaque `d11` rank times symbolic `Y`. Further
-dependency-ordered substitutions remain separate.
+dependency-ordered substitutions remain separate. An [A checkpoint client](research/nine-seed38-jones-checkpoint24-27-a-check/README.md),
+[independently audited](reviews/nine-seed38-jones-checkpoint24-27-a-terminal-frontier-independent/README.md),
+checks the symbolic `A` value at `d27` using `M` and `U` while retaining the
+rank opaquely. Full semantic composition remains separate.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
 not a Lean proof or evidence that the complete composition fits the resource
