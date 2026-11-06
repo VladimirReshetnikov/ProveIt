@@ -143,6 +143,10 @@ A [live-entry carry build](research/nine-seed38-jones-live18-staged-check/README
 [independently audited](reviews/nine-seed38-jones-live18-staged-terminal-frontier-independent/README.md),
 checks eleven prior values preserved through `d18`; the twelfth live input is
 already the last node there. These are carry equalities only.
+A [dependent-node client](research/nine-seed38-jones-dependent01-staged-check/README.md),
+[independently audited](reviews/nine-seed38-jones-dependent01-staged-terminal-frontier-independent/README.md),
+checks the short-prefix `U` and `Y` equations using the `d18` live values.
+Later nodes and full recipe semantics remain separate.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
