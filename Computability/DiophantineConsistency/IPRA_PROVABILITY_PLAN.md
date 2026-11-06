@@ -212,6 +212,10 @@ at `d41`. A [final checkpoint client](research/nine-seed38-jones-checkpoint41-45
 [independently audited](reviews/nine-seed38-jones-checkpoint41-45-terminal-frontier-independent/README.md),
 checks `d41` to `d45` and recipe lookup preservation, plus symbolic `g` and `G`
 values at `d41`. Full semantic composition remains separate.
+A [U/Y checkpoint client](research/nine-seed38-jones-checkpoint20-27-uy-check/README.md),
+[independently audited](reviews/nine-seed38-jones-checkpoint20-27-uy-terminal-frontier-independent/README.md),
+checks symbolic `U` and `Y` values at `d27` using a shared `d20` to `d27`
+path. Further dependency-ordered substitutions remain separate.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
 not a Lean proof or evidence that the complete composition fits the resource
