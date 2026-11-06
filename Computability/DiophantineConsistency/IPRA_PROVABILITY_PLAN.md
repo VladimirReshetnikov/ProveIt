@@ -1611,8 +1611,11 @@ irreducibility setup of an earlier checked completion. The source-to-seed
 composition has since been checked by a [fixed-current client](research/nine-sharing-norm38-current-source-to-seed/README.md),
 [independently audited](reviews/nine-sharing-norm38-current-source-to-seed-terminal-independent/README.md):
 given the four explicit model port casts, it constructs a 38-witness seed zero
-from a source-expression zero at shifted inputs. Discharging the concrete casts,
-combining the existential directions and the iPRA transfer remain separate.
+from a source-expression zero at shifted inputs. A [four-cast specialization](research/nine-sharing-norm38-current-source-cast-instantiation/README.md),
+[independently audited](reviews/nine-sharing-norm38-current-source-cast-instantiation-terminal-independent/README.md),
+then checks this construction for the actual current model ports without a
+cast hypothesis. Combining the existential directions and the iPRA transfer
+remain separate.
 A [forward-constructor gate build](research/nine-sharing-norm38-forward-gates-draft/README.md),
 [independently audited](reviews/nine-sharing-norm38-forward-gates-terminal-independent/README.md),
 checks all 60 gate conditions and their conjunction for the generated witness
