@@ -1,0 +1,5 @@
+# Independent prelaunch review: g/theta/G symbolic prefixes
+
+No launch blocker found. The checker pins the runner, survey, manifest, four source modules, imports, six theorem names and reports, and reruns the successful no-Lean preflight. The provider survey replays the independent group02 terminal audit and mechanical split check. The runner binds the first stage to the authenticated group02 carry and later stages to the actual first-stage carry object and guards; full postflight requires complete success.
+
+The proposed commutative-ring statements preserve the first two prefix values through the `castSucc` index chains, then give short-prefix g, theta and G values. Prior sum-bearing prefixes remain opaque. No Lean execution was performed by this review, and full-recipe value identities, complete semantic or JSON/document binding and operation counts are outside scope. Provider observations are point-in-time and monitoring is sampled; the inherited initial-stage numeric outer exit remains unavailable. This checker is prelaunch-only because its preflight requires a fresh output path.

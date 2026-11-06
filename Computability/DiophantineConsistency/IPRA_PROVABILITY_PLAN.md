@@ -90,6 +90,10 @@ A [second staged prefix group](research/nine-seed38-jones-prefix-group02-staged-
 checks the short-prefix carry and `e`, `ell`, `lambda` identities without
 enumerating their symbolic sums. Full-recipe preservation and semantic
 equality remain open.
+A [third staged prefix group](research/nine-seed38-jones-prefix-group03-staged-check/README.md),
+[independently audited](reviews/nine-seed38-jones-prefix-group03-staged-terminal-frontier-independent/README.md),
+checks the short-prefix carries and `g`, `theta`, `G` identities while
+keeping the earlier sums opaque. Full-recipe semantic equality remains open.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
