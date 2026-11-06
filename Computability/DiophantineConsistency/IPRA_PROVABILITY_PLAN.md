@@ -176,6 +176,12 @@ The [final local-node build](research/nine-seed38-jones-dependent08-staged-check
 checks the immediate-prefix equations for nodes `d40` through `d45`. Carrying
 their dependencies and composing the full-recipe semantic equality remain
 separate, as does binding the human-readable text to Lean.
+A [live-carry inventory](research/nine-seed38-jones-live-carry-inventory/README.md),
+[independently audited](reviews/nine-seed38-jones-live-carry-inventory-frontier-independent/README.md),
+counts 89 distinct named consumer edges and 403 single-snoc steps for a fresh
+per-entry carry strategy. These are external planning counts, not a Lean proof,
+minimality result or arithmetic operation count; existing carry lemmas may
+reduce the work.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
