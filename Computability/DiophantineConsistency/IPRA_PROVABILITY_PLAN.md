@@ -35,6 +35,12 @@ A [45-named-node macro-DAG prototype](research/nine-seed38-jones-compact-macro-p
 has passed an [independent manual recipe audit](reviews/nine-seed38-jones-compact-macro-frontier-independent/README.md).
 This counts named nodes, not arithmetic operations; its semantics and JSON
 serialization are not yet proved equal to the checked Lean expression.
+A [source-only typed macro evaluator and quoted recipe draft](research/nine-seed38-jones-compact-lean-draft/README.md)
+defines open well-scopedness and semantic targets; it does not prove them.
+A [macro-language-only Lean attempt](research/nine-seed38-jones-compact-language-check/README.md),
+[independently audited](reviews/nine-seed38-jones-compact-language-failure-frontier-independent/README.md),
+failed to parse the reserved binder name `prefix` and produced no object; it
+did not test the generated recipe or establish semantic equality.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
