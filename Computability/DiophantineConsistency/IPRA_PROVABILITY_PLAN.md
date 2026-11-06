@@ -94,6 +94,10 @@ A [third staged prefix group](research/nine-seed38-jones-prefix-group03-staged-c
 [independently audited](reviews/nine-seed38-jones-prefix-group03-staged-terminal-frontier-independent/README.md),
 checks the short-prefix carries and `g`, `theta`, `G` identities while
 keeping the earlier sums opaque. Full-recipe semantic equality remains open.
+A [fourth prefix group](research/nine-seed38-jones-prefix-group04-staged-check/README.md),
+[independently audited](reviews/nine-seed38-jones-prefix-group04-staged-terminal-frontier-independent/README.md),
+checks seven short-prefix input and shifted-input values without unfolding
+the prior rank expression. Full-recipe semantic equality remains open.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
