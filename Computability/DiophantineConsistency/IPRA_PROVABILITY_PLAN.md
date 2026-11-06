@@ -1599,6 +1599,10 @@ A [staged retry](research/nine-sharing-norm38-source-to-seed-staged/README.md),
 compiled the source-zero-to-carrier-zero step, but the next model unit-norm
 extraction timed out without output or an object. Its final composition and
 whole-run provider recheck did not run.
+A [further norm split](research/nine-sharing-norm38-unit-norms-split/README.md),
+[independently audited](reviews/nine-sharing-norm38-unit-norms-split-terminal-independent/README.md),
+also timed out without output on the first, generic-input stage; its shifted
+stage and final survey were not reached. The timeout's cause is not known.
 A [forward-constructor gate build](research/nine-sharing-norm38-forward-gates-draft/README.md),
 [independently audited](reviews/nine-sharing-norm38-forward-gates-terminal-independent/README.md),
 checks all 60 gate conditions and their conjunction for the generated witness

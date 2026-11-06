@@ -1,0 +1,5 @@
+# Generic-input unit-norm diagnostic timed out
+
+Author-observed outer session `59916` returned numeric exit 1. Retained state SHA-256 `d86bb7430d4c23f93813a71e357e1555b89f95014b7996bedb34f8afd3b210b8`, pre-run survey `f69de9b5a9dcc2d6bf93d5ac8e4e6a06353d5645ba8f86c5aeda71a6084697a8`. The outer record is an author observation, not an independently observed transcript.
+
+The first stage `Norm38GenericUnitNorms` passed dependency scan but produced an empty compile log before the 120-second timeout; the monitor terminated it with exit `-15`, sampled peak RSS 2,883,248,128 bytes. No first-stage object was recorded and the shifted-input stage was not reached. Final all-stage guard checks and the post-success producer survey were not reached. Neither theorem was established by this attempt. This result does not identify the cause of the timeout. Point-observation and inherited-provider limitations, including the uncaptured numeric exit of the initial-agreement producer, remain as in the parent README.

@@ -1,0 +1,5 @@
+# Independent terminal audit: split unit-norm timeout
+
+The first abstract unit-norm extraction stage passed dependency scanning but produced no compile output and was terminated by the monitor at its 120-second timeout (recorded Lean exit −15). No theorem object or axiom report was produced. The shifted specialization and final whole-run survey were not reached. The failure does not identify the underlying source of the time cost or establish any norm theorem.
+
+The checker pins source, manifest, runner, provider survey, retained/live state and logs; validates author-recorded session 59916 exit 1; checks 100 direct guard slots, 1,138 overlay routes and the exact FreshCarrierSpheres provider binding; and reruns the selected-provider point survey. The initial-agreement ancestor's numeric outer exit remains uncaptured. The outer observation is author-recorded rather than an independent historical transcript. Resource observations are sampled and provider point checks do not establish complete dynamic/transitive ancestry. No Lean replay was performed.

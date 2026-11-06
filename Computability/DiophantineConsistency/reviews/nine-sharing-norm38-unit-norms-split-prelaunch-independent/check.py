@@ -1,0 +1,18 @@
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+P=Path(__file__).resolve().parent;D=P.parents[1];R=D/'research';q=R/'nine-sharing-norm38-unit-norms-split';prior=R/'nine-sharing-norm38-source-to-seed-staged';sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest();man=q/'source-manifest.json';run=q/'run.py';survey=q/'provider_survey.py'
+assert sha(man)=='6f15604e0d9f148b0a1c48031a94740ffd8f0b09e5163bbd9ee1af8ad902fc0e' and sha(survey)=='631812fa3f28d07fafa704f43e152f9b78dd3b1faa6eb8cd0baddc0faa08b783'==sha(prior/'provider_survey.py') and sha(run)=='53573476066580de3a710b626d9acbcd9704207d389eb714b58bcf7acbe5c842'
+rows=json.loads(man.read_text())['rows'];names=['Norm38GenericUnitNorms','Norm38ShiftedUnitNorms'];pins=['edf5ababfee718c0d32fe24f0728f502865dcb2b60bee480f3ac286eff674e02','6e879b32363bf392f9c8fa3c5c96422a45cb42c6651b014c96a955943502da24'];assert [r['module'].split('.')[-1] for r in rows]==names
+texts=[]
+for r,n,h in zip(rows,names,pins):
+ p=q/'src/DiophantineConsistency'/f'{n}.lean';assert sha(p)==r['source_sha256']==h and D.parents[1]/r['source']==p;t=p.read_text();texts.append(t);assert re.findall(r'^import ([A-Za-z0-9_.]+)$',t,re.M)==r['imports'] and t.count('#print axioms')==1 and 'sorry' not in t
+assert rows[0]['imports']==['FreshCarrierSpheres'] and rows[1]['imports']==['DiophantineConsistency.Norm38GenericUnitNorms'];a,b=texts
+assert '(p : Fin 4 → DiffRing V) (v : Fin 14 → DiffRing V)' in a and '(hb : (0 : DiffRing V) < p 0)' in a and '(hv : ∀ j, (0 : DiffRing V) < v j)' in a and '(hz : Carrier65.value p v = 0)' in a
+assert 'd.P=1 ∧ d.Q=1 ∧ d.U=1 ∧ Carrier65.strong d=1 ∧ d.W=1' in a and 'FreshCarrierSpheres.value65_zero_iff_norms' in a and 'FreshCarrierSpheres.modelFacts p v hb hv' in a
+assert '(hb : (0 : DiffRing V) < ι (ports 0))' in b and '(fun j => ι (u j+1))' in b and 'Norm38GenericUnitNorms.carrier_zero_unitNorms' in b
+old=(prior/'run.py').read_text();new=old.replace('/tmp/nine-sharing-norm38-source-to-seed-staged-20261105','/tmp/nine-sharing-norm38-unit-norms-split-20261106').replace('616e70064e4ad2959b2d9bb45d0baf635f5765b20f1a1a327a2edaf925e60e4c',sha(man)).replace('three-module staged source-to-seed diagnostic','two-module split unit-norm diagnostic').replace("('DiophantineConsistency.Norm38SourceCarrierZero','DiophantineConsistency.Norm38CarrierUnitNorms')","('DiophantineConsistency.Norm38GenericUnitNorms',)").replace('PASS norm38 staged source-to-seed','PASS norm38 split unit-norm diagnostic');assert new==run.read_text()
+x=subprocess.run([sys.executable,'-I','-S','-B',str(survey)],capture_output=True,text=True,timeout=120);z=json.loads(x.stdout);assert x.returncode==0 and not x.stderr and z['status']=='PASS_POINT_PRODUCER_SURVEY' and 'FreshCarrierSpheres' in z['selected'];assert all('DiophantineConsistency/'+n+'.olean' not in z['links'] for n in names)
+x=subprocess.run([sys.executable,'-I','-S','-B',str(run),'--preflight'],capture_output=True,text=True,timeout=120);assert x.returncode==0 and json.loads(x.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT' and not x.stderr,(x.stdout,x.stderr)
+p=D/'reviews/nine-sharing-norm38-source-to-seed-staged-terminal-independent';x=subprocess.run([sys.executable,'-I','-S','-B',str(p/'check.py')],capture_output=True,timeout=120);assert x.returncode==0 and not x.stderr and x.stdout==(p/'result.json').read_bytes(),x.stderr
+print(json.dumps({'status':'PASS_PRELAUNCH_ONLY','manifest_sha256':sha(man),'runner_sha256':sha(run),'target_collision':'none in surveyed links at review time','scope':'No Lean; staged norm lemmas and combined imports untested; previous timeout cause unknown.'},indent=2,sort_keys=True))
