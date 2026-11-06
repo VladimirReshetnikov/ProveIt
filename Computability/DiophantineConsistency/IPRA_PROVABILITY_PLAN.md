@@ -27,8 +27,10 @@ nine-variable expression. This is not a Lean degree theorem, an exact degree,
 an operation count, or a literal-export binding.
 A [compact named-formula draft](research/nine-seed38-jones-named-formula-draft/FORMULA.md)
 has passed an [independent manual transcription review](reviews/nine-seed38-jones-named-formula-frontier-independent/README.md).
-Its associated Lean evaluation specialization remains uncompiled, and the
-human document has not been machine-bound to the checked expression.
+A [Lean evaluation specialization](research/nine-seed38-jones-named-formula-check/README.md),
+[independently audited](reviews/nine-seed38-jones-named-formula-terminal-frontier-independent/README.md),
+checks the associated symbolic ring evaluation. The human document has not
+been machine-bound to the checked expression.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
