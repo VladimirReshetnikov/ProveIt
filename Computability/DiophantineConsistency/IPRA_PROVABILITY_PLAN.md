@@ -48,6 +48,10 @@ A [binder-rename retry](research/nine-seed38-jones-compact-language-retry01/READ
 [independently audited](reviews/nine-seed38-jones-compact-language-retry01-terminal-frontier-independent/README.md),
 then compiled the language and evaluator definitions. It did not compile the
 generated recipe or prove well-scopedness, evaluation equality or JSON binding.
+A [generated-recipe elaboration client](research/nine-seed38-jones-compact-recipe-check/README.md),
+[independently audited](reviews/nine-seed38-jones-compact-recipe-terminal-frontier-independent/README.md),
+subsequently compiled the 45-node data and two proposition definitions. Those
+propositions are not proved, and the JSON translator remains unverified.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
