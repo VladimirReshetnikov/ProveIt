@@ -1620,6 +1620,11 @@ A [combined client](research/nine-sharing-norm38-seed-static-iff-check/README.md
 checks the same-valuation biconditional between seed zero and the conjunction
 of static gates and norms under those hypotheses. It does not yet relate them
 to Carrier65 or prove an iPRA endpoint.
+A [seed-to-source composition](research/nine-sharing-norm38-seed-source-composition-draft/README.md),
+[independently audited](reviews/nine-sharing-norm38-seed-source-composition-terminal-independent/README.md),
+subsequently checks that a seed zero gives a source-expression zero at the
+same shifted witness coordinates under the four generic port-cast assumptions.
+The concrete-port specialization, converse and iPRA transfer remain separate.
 A [current-port specialization attempt](research/nine-sharing-norm38-current-ports-check/README.md),
 [independently audited](reviews/nine-sharing-norm38-current-ports-terminal-independent/README.md),
 hit Lean's kernel memory limit in the four-cast proof. Its failed axiom reports
