@@ -1,0 +1,5 @@
+# Independent terminal review: named prefixes
+
+**Pass for retained Lean evidence**, without Lean replay. Author-observed outer session 83109 exited 0; this is not an independent raw process transcript. Stage one proves `Norm38MacroRecipe.recipe = d45`, with Lean reporting no axioms. Stage two proves the symbolic value of the short `d1` prefix's last/only entry, with `[propext, Classical.choice, Quot.sound]`. Neither stage emits warnings. Stage two is not yet a theorem about entry zero of the full recipe; no full evaluator identity or JSON/document binding is established.
+
+`check.py` verifies both source/state/object/log records, the recipe and cuts producer paths/hashes and stage-two binding to the stage-one output, all 250 direct guard slots and 1,167 overlay links, and replays the point-in-time provider audit. Both dependency scans and both compiles exited 0 without sampled monitor stop/error. Provider checks are point observations and the inherited initial-agreement numeric outer exit is unavailable.

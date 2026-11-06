@@ -69,6 +69,11 @@ A [first concrete node attempt](research/nine-seed38-jones-compact-first-node-ch
 [independently audited](reviews/nine-seed38-jones-compact-first-node-failure-frontier-independent/README.md),
 hit the sampled 4-GiB session-RSS stop with an empty compile log; it produced
 no theorem. The precise cause of the memory use remains unknown.
+A [named-prefix build](research/nine-seed38-jones-named-prefix-check/README.md),
+[independently audited](reviews/nine-seed38-jones-named-prefix-terminal-frontier-independent/README.md),
+then checked that the original Lean recipe equals the factored `d45` and
+proved the value of the short `d1` prefix. It does not yet prove entry zero
+of the complete recipe or the full semantic equality.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
