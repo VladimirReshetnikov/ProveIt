@@ -2034,8 +2034,11 @@ records 12 simp/tactic warnings. The [final gate client](research/nine-sharing-s
 [independently audited](reviews/nine-sharing-sign33-ring-gates11-terminal-frontier-independent/README.md),
 checks targets 78–80 and records ten simp/tactic warnings; its unchanged source
 header incorrectly says six equations rather than three. All 60 individual
-gate equations are now checked under their stated hypotheses. Their assembly,
-the five norms and the source-zero bridge remain separate.
+gate equations are now checked under their stated hypotheses. A [gate assembly](research/nine-sharing-sign33-ring-gates-assembly-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-ring-gates-assembly-terminal-frontier-independent/README.md),
+checks that `AllCuts` implies all 60 ring-value gate equations for the same
+lifted valuation; its compile records two unused-simp warnings. The five norms
+and source-zero bridge remain separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
