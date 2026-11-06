@@ -110,6 +110,11 @@ A [rank-node attempt](research/nine-seed38-jones-prefix-rank-check/README.md),
 [independently audited](reviews/nine-seed38-jones-prefix-rank-terminal-frontier-independent/README.md),
 failed on the raw evaluator `rfl`; its second stage did not run and the
 failed declaration's `sorryAx` is not proof evidence.
+A [structural-evaluator retry](research/nine-seed38-jones-prefix-rank-retry01/README.md),
+[independently audited](reviews/nine-seed38-jones-prefix-rank-retry01-terminal-frontier-independent/README.md),
+then checked the symbolic `d11` rank expression and its prefix carry
+substitutions. Its identification with `rankCode` and full recipe semantics
+remain separate.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
