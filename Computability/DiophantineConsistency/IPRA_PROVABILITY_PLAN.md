@@ -124,6 +124,11 @@ A [prefix power client](research/nine-seed38-jones-prefix-b-power-check/README.m
 [independently audited](reviews/nine-seed38-jones-prefix-b-power-terminal-frontier-independent/README.md),
 checks `B=b^5` at the actual `d10` prefix. Its composition with the rank
 identity and the full recipe semantics remain separate.
+A [rank composition attempt](research/nine-seed38-jones-prefix-rank-composition-check/README.md),
+[independently audited](reviews/nine-seed38-jones-prefix-rank-composition-terminal-frontier-independent/README.md),
+failed on a `Fin` zero-index presentation mismatch after the substantive
+rewrites. It produced no object; the failed declaration's `sorryAx` is not
+proof evidence.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
