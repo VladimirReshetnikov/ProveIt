@@ -1594,6 +1594,11 @@ A [two-stage check](research/nine-sharing-norm38-forward-source-check/README.md)
 compiled the five-norm theorem for the generated witnesses, but its subsequent
 source-zero-to-seed stage timed out. The final whole-run provider recheck did
 not run, and no source-to-seed theorem was produced.
+A [staged retry](research/nine-sharing-norm38-source-to-seed-staged/README.md),
+[independently audited](reviews/nine-sharing-norm38-source-to-seed-staged-terminal-independent/README.md),
+compiled the source-zero-to-carrier-zero step, but the next model unit-norm
+extraction timed out without output or an object. Its final composition and
+whole-run provider recheck did not run.
 A [forward-constructor gate build](research/nine-sharing-norm38-forward-gates-draft/README.md),
 [independently audited](reviews/nine-sharing-norm38-forward-gates-terminal-independent/README.md),
 checks all 60 gate conditions and their conjunction for the generated witness
