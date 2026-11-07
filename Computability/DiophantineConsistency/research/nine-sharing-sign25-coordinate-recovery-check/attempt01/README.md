@@ -1,0 +1,3 @@
+# Sign25 deleted-coordinate recovery attempt 01
+
+Author-observed outer session 77733 exited 0, including both stages and final postflight. `ell_coordinate` and `lift_drop` report `[propext, Classical.choice, Quot.sound]`, with no warnings. Under an old sign26 zero in IΣ₁, the deleted natural coordinate equals the product of coordinates 17 and 18, and product lift after drop restores the old valuation. This does not yet prove either zero-set implication, endpoint, Lean degree, or external JSON/port binding. Monitor observations are sampled; upstream stale success labels, inherited syntax heartbeat and historical sign26 plan README appendix caveats apply.

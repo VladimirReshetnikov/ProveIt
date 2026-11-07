@@ -586,7 +586,10 @@ checks the removed product row and the affected N0 row on the lift. It reports
 three unused-variable warnings. A [remaining-cuts client](research/nine-sharing-sign25-remaining-cuts-check/README.md),
 [independently audited](reviews/nine-sharing-sign25-remaining-cuts-terminal-frontier-independent/README.md),
 checks q3 and the 14 other transferred rows, with 18 unused-variable warnings.
-The coordinate recovery and assembled model bridge remain separate.
+A [coordinate-recovery client](research/nine-sharing-sign25-coordinate-recovery-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-coordinate-recovery-terminal-frontier-independent/README.md),
+derives the deleted product coordinate from old seed zero and checks lift after
+drop. The assembled model bridge remains separate.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
