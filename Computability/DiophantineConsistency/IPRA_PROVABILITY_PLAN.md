@@ -237,7 +237,10 @@ composition remains separate. An [E checkpoint attempt](research/nine-seed38-jon
 [independently audited](reviews/nine-seed38-jones-checkpoint31-41-e-failure-frontier-independent/README.md),
 failed on an unqualified `prefix_i` name and an unsolved goal; it produced no
 object, did not run its second stage or final postflight, and its `sorryAx`
-reports are not proof evidence.
+reports are not proof evidence. A [qualification-only retry](research/nine-seed38-jones-checkpoint31-41-e-retry01/README.md),
+[independently audited](reviews/nine-seed38-jones-checkpoint31-41-e-retry01-terminal-frontier-independent/README.md),
+then checks symbolic `E` at `d31` and `d41`, keeping rank opaque. Full semantic
+composition remains separate.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
 not a Lean proof or evidence that the complete composition fits the resource
