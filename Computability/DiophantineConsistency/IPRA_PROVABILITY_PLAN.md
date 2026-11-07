@@ -75,7 +75,10 @@ checks the next three short-prefix values. A [second prefix group](research/nine
 checks three B carries and the e/ell/lambda values; full output semantics
 remain separate. A [third prefix group](research/nine-seed33-jones-prefix-group03-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-prefix-group03-staged-terminal-frontier-independent/README.md),
-checks further carry, g, theta and G identities, still locally.
+checks further carry, g, theta and G identities, still locally. A
+[fourth prefix group](research/nine-seed33-jones-prefix-group04-staged-check/README.md),
+[independently audited](reviews/nine-seed33-jones-prefix-group04-staged-terminal-frontier-independent/README.md),
+checks seven input-prefix values; full recipe output semantics remain open.
 A [human-readable 33-seed formula](research/nine-seed33-jones-human-formula/FORMULA.md)
 has passed an [independent manual transcription review](reviews/nine-seed33-jones-human-formula-frontier-independent/README.md).
 Lean does not parse the Markdown; numeric expansion and exact metrics remain
