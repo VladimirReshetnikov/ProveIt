@@ -429,7 +429,10 @@ conditional positivity and natural reconstruction argument is not yet a Lean
 zero bridge or iPRA endpoint; the existing quartic Jones theorem does not
 apply directly. An [independently reviewed bridge plan](research/nine-sharing-sign26-lean-bridge-plan/README.md)
 retains the q3 congruence, Nt positivity, port-cast and natural-representation
-obligations; it is not a Lean proof. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
+obligations; it is not a Lean proof. An [independently reviewed syntax and
+bridge draft](research/nine-sharing-sign26-sextic-lean-draft/README.md) makes
+the inserted gap representative and hypotheses explicit; its targets remain
+unproved. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
 [independently audited](reviews/nine-sharing-sign26-q3-single-cut-independent/README.md),
 examines ten direct cuts under one formal monic reduction rule; it is not a
 semantic lower bound or an obstruction to other encodings.
