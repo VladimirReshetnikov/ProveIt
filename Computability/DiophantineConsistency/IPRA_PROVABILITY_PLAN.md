@@ -211,7 +211,14 @@ unknown. A [narrow-import retry](research/nine-sharing-sign31-direct-ipra-retry0
 [independently audited](reviews/nine-sharing-sign31-direct-ipra-retry01-failure-frontier-independent/README.md),
 checks five expression, evaluation and source-zero stages, but its sixth
 endpoint stage again hits the interpreter memory limit. Its exact internal
-trigger is unknown, and no endpoint object or final postflight was produced. The
+trigger is unknown, and no endpoint object or final postflight was produced.
+A [four-stage endpoint retry](research/nine-sharing-sign31-direct-ipra-final-retry/README.md),
+[independently audited](reviews/nine-sharing-sign31-direct-ipra-final-retry-terminal-frontier-independent/README.md),
+checks the direct `Fin 31` expression's polynomial bridge and native,
+standard and translated-standard iPRA proof-existence equivalences. It
+authenticates the five successful stages of the otherwise-failed predecessor
+and excludes that predecessor's failed endpoint. Lean degree, external JSON
+and numerical coefficient bindings remain separate. The
 quartic Jones theorem does not apply directly to it. An external
 [28-witness sextic candidate](research/nine-sharing-sign28-sextic-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign28-sextic-frontier-independent/README.md),
