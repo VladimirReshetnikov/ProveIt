@@ -87,7 +87,10 @@ checks seven further carried values; full output semantics remain open.
 A [raw-rank prefix client](research/nine-seed33-jones-prefix-rank-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-prefix-rank-staged-terminal-frontier-independent/README.md),
 checks the symbolic d11 raw rank and its carried form. It does not by itself
-identify the full recipe output. A [B-power client](research/nine-seed33-jones-prefix-b-power-check/README.md),
+identify the full recipe output. A [generic rankCode link](research/nine-seed33-jones-rankcode-link-check/README.md),
+[independently audited](reviews/nine-seed33-jones-rankcode-link-terminal-frontier-independent/README.md),
+checks the corresponding generic algebraic relation; concrete composition is
+separate. A [B-power client](research/nine-seed33-jones-prefix-b-power-check/README.md),
 [independently audited](reviews/nine-seed33-jones-prefix-b-power-terminal-frontier-independent/README.md),
 checks the local d10 `B=b^5` identity.
 A [human-readable 33-seed formula](research/nine-seed33-jones-human-formula/FORMULA.md)
@@ -278,7 +281,10 @@ postflight; the internal trigger is unknown. A [factored retry](research/nine-sh
 [independently audited](reviews/nine-sharing-sign28-current-source-iff-retry01-failure-frontier-independent/README.md),
 checks the cons-form conversion but its second stage again hits the memory
 limit, with no source object or final postflight. The precise trigger remains
-unknown. The source composition and
+unknown. An [imports-only diagnostic](research/nine-sharing-sign28-source-import-diagnostic/README.md),
+[independently audited](reviews/nine-sharing-sign28-source-import-diagnostic-terminal-frontier-independent/README.md),
+compiles each provider alone and both together; it does not establish the
+cause of the earlier exception or prove source equivalence. The source composition and
 iPRA endpoint likewise remain to be checked in Lean. A further external
 [27-witness sextic candidate](research/nine-sharing-sign27-sextic-normalized-root-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign27-sextic-root-independent/README.md),
