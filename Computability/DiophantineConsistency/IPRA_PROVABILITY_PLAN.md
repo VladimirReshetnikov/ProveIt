@@ -297,7 +297,10 @@ postflight; its trigger is unknown. An [abstract-target transport](research/nine
 [independently audited](reviews/nine-sharing-sign28-abstract-target-terminal-frontier-independent/README.md),
 checks the 28-coordinate equivalence to an arbitrary target conditional on
 the corresponding 31-coordinate equivalence. It does not supply the concrete
-source equivalence. The source composition and
+source equivalence. An [expression-evaluation client](research/nine-sharing-sign28-expression-eval-check/README.md),
+[independently audited](reviews/nine-sharing-sign28-expression-eval-terminal-frontier-independent/README.md),
+checks the symbolic and current input-removal evaluations in four stages.
+The source composition and
 iPRA endpoint likewise remain to be checked in Lean. A further external
 [27-witness sextic candidate](research/nine-sharing-sign27-sextic-normalized-root-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign27-sextic-root-independent/README.md),

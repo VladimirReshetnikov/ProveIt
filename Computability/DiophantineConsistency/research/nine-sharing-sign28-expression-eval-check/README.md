@@ -1,0 +1,5 @@
+# Proposed narrow sign28 expression evaluation check
+
+Four bounded stages propose the abstract-port input-substitution definition and evaluation theorem, followed by the current-port definition and its evaluation specialization. The source imports the narrow checked sign28 seed syntax and generic input-removal provider, rather than a current-source iff. No source iff, polynomial bridge, iPRA endpoint, Lean degree theorem, or external JSON/coefficient binding follows from these stages alone.
+
+The runner authenticates the successful generic row within an overall failed producer, the checked sign28 syntax producer, and the current-data observation within successful rows of a partially failed port producer. It retains provider guards and overlay routes with deeper ancestry inherited. Author no-Lean preflight returned 0 and the reviewed run succeeded as recorded in [attempt01](attempt01/README.md); the [independent terminal audit](../../reviews/nine-sharing-sign28-expression-eval-terminal-frontier-independent/README.md) passed. Limits remain `-M2800`, 120 seconds per call, sampled 4-GiB RSS, 10-GiB available-host-memory floor and 5-GB disk precheck.
