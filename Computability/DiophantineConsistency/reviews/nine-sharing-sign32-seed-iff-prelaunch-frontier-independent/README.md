@@ -1,0 +1,5 @@
+# Independent sign32 symbolic seed iff prelaunch review
+
+The checker pins both candidate sources, runner, two surveys and producer inventories, independently reproduces the no-Lean preflight, and checks ordered imports and theorem signatures. The proposed pointwise iff uses the checked forward implication, the reverse implication at the lifted valuation, and `drop(lift(v))=v`. The proposed existential iff preserves an arbitrary distinguished coordinate 0 by using the existing lift and drop, both of which preserve coordinate 0. Both iff statements assume an IΣ₁ model and explicit equality of port-0's integer cast with natural beta's image. The surveys authenticate all eight substitution producers and four forward assembly producers; the runner checks both reverse producer stages, collision-free injection of four forward objects and direct guard routes.
+
+The claims are symbolic seed equivalences, not current-port specialization, numeric port binding, higher-degree Jones construction or an endpoint. Elaboration and reports are untested; no Lean ran. Provider observations are point-in-time; sampled monitoring does not give a complete dynamic or transitive trace.

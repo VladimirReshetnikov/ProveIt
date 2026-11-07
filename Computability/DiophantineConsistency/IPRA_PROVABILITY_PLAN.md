@@ -109,7 +109,11 @@ checks that old-seed zero and the beta cast force the removed q² coordinate
 and `lift (drop v) = v`. A [reverse assembly](research/nine-sharing-sign32-reverse-assembly-check/README.md),
 [independently audited](reviews/nine-sharing-sign32-reverse-assembly-terminal-frontier-independent/README.md),
 then checks old 33-seed zero implies 32-seed zero at the drop under that cast.
-Packaging the equivalence and specializing the fixed port remain separate.
+A [seed equivalence client](research/nine-sharing-sign32-seed-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign32-seed-iff-terminal-frontier-independent/README.md),
+packages the pointwise lift equivalence and same-input existential equivalence
+in IΣ₁ models under the explicit beta cast. Fixed-port specialization and a
+sextic-compatible Jones endpoint remain separate.
 A [single-cut syntactic substitution survey](research/nine-sharing-sign33-single-cut-substitution-survey/README.md),
 [independently audited](reviews/nine-sharing-sign33-single-cut-survey-frontier-independent/README.md),
 finds a degree-3 or degree-4 residual in each of the 19 single-cut substitutions
