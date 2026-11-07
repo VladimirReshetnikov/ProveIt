@@ -55,7 +55,10 @@ compiles the specialized macro-language definitions under the same limits.
 A [recipe/scopedness client](research/nine-seed33-jones-compact-recipe-scoped-check/README.md),
 [independently audited](reviews/nine-seed33-jones-compact-recipe-scoped-terminal-frontier-independent/README.md),
 compiles the 45-node Lean recipe and checks its Boolean scopedness without
-axioms. Semantic equality and external serialization binding remain separate.
+axioms. A [generic cuts client](research/nine-seed33-jones-compact-cuts-check/README.md),
+[independently audited](reviews/nine-seed33-jones-compact-cuts-terminal-frontier-independent/README.md),
+checks the snoc, range, star and prefix-lookup identities. Concrete recipe
+semantic equality and external serialization binding remain separate.
 A [human-readable 33-seed formula](research/nine-seed33-jones-human-formula/FORMULA.md)
 has passed an [independent manual transcription review](reviews/nine-seed33-jones-human-formula-frontier-independent/README.md).
 Lean does not parse the Markdown; numeric expansion and exact metrics remain
