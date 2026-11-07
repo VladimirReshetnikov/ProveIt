@@ -435,7 +435,10 @@ retains the q3 congruence, Nt positivity, port-cast and natural-representation
 obligations; it is not a Lean proof. An [independently reviewed syntax and
 bridge draft](research/nine-sharing-sign26-sextic-lean-draft/README.md) makes
 the inserted gap representative and hypotheses explicit; its targets remain
-unproved. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
+unproved. A [syntax and squares client](research/nine-sharing-sign26-seed-squares-check/README.md),
+[independently audited](reviews/nine-sharing-sign26-seed-squares-terminal-frontier-independent/README.md),
+checks symbolic seed zero iff its 17 residuals vanish in the indicated models,
+retaining the historical appended-plan-link replay caveat. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
 [independently audited](reviews/nine-sharing-sign26-q3-single-cut-independent/README.md),
 examines ten direct cuts under one formal monic reduction rule; it is not a
 semantic lower bound or an obstruction to other encodings.
