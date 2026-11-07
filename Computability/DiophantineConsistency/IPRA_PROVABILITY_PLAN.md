@@ -36,6 +36,10 @@ A [33-seed compact macro prototype](research/nine-seed33-jones-compact-macro-pro
 records 45 live named nodes with the seed-specific symbolic coefficients.
 This is a named-node count, not an arithmetic operation count; the JSON is not
 formally bound to the Lean formula.
+A [human-readable 33-seed formula](research/nine-seed33-jones-human-formula/FORMULA.md)
+has passed an [independent manual transcription review](reviews/nine-seed33-jones-human-formula-frontier-independent/README.md).
+Lean does not parse the Markdown; numeric expansion and exact metrics remain
+separate.
 
 A [nine-natural-coordinate Jones expression built from the 38-witness seed](research/nine-sharing-norm38-ipra-endpoint-check/README.md)
 now has [independently audited Lean endpoints](reviews/nine-sharing-norm38-ipra-endpoint-terminal-frontier-independent/README.md)
