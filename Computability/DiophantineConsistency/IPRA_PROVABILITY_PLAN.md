@@ -55,6 +55,14 @@ A [sorted-baseline retry](research/nine-sharing-sign33-cut-search-deterministic/
 reproduces byte-for-byte in isolated runs and again finds best 33 in the
 restricted sample. It remains a finite heuristic, not a lower bound or proof
 of the candidate's signed-cut hypotheses.
+A separate [32-witness sextic candidate](research/nine-sharing-sign32-sextic-candidate-v2/README.md),
+[independently audited](reviews/nine-sharing-sign32-sextic-frontier-independent/README.md),
+eliminates the `q²` cut by substitution. The external audit checks 23
+residuals, the coefficient bytes and the exact degree-six argument over the
+fixed integer ports; the earlier candidate's unresolved relative coefficient
+path is retained in its own packet. Both all-model reconstruction directions
+remain to be checked in Lean. The existing nine-variable Jones theorem requires
+degree at most four, so no 32-witness Jones endpoint follows from this result.
 
 A [nine-natural-coordinate Jones expression built from the 38-witness seed](research/nine-sharing-norm38-ipra-endpoint-check/README.md)
 now has [independently audited Lean endpoints](reviews/nine-sharing-norm38-ipra-endpoint-terminal-frontier-independent/README.md)
