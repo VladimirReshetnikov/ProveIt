@@ -2125,7 +2125,11 @@ checks `f²` and the normalized `S` and `S²` cuts. The signed fields and five
 source-dependent constructor norms remain separate. A [core-norm extraction](research/nine-sharing-sign33-current-core-norms-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-current-core-norms-terminal-frontier-independent/README.md),
 checks that current source zero yields the five corresponding core norms;
-matching them to the constructed witness coordinates remains to be proved.
+matching them to the constructed witness coordinates remains to be proved. A
+[natural-source bridge](research/nine-sharing-sign33-current-natural-core-norms-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-current-natural-core-norms-terminal-frontier-independent/README.md),
+applies the checked positive-shift equivalence to obtain those five core norms
+from zero of the natural source expression.
 A [conditional forward-gap client](research/nine-sharing-sign33-forward-gap-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-forward-gap-terminal-frontier-independent/README.md),
 checks the constructor's gap field assuming the corresponding core
