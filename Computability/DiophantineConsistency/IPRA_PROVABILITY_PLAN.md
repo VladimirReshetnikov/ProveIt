@@ -319,7 +319,11 @@ is not proof evidence, and it produced no object or final postflight. A
 [namespace retry](research/nine-sharing-generic-polynomial-bridge-transport-retry01/README.md),
 [independently audited](reviews/nine-sharing-generic-polynomial-bridge-transport-retry01-terminal-frontier-independent/README.md),
 checks the generic bridge transfer assuming both all-model zero equivalence
-and the second expression's bridge; concrete specialization remains separate. The
+and the second expression's bridge. A [concrete sign28 specialization](research/nine-sharing-sign28-concrete-polynomial-bridge-check/README.md),
+[independently audited](reviews/nine-sharing-sign28-concrete-polynomial-bridge-terminal-frontier-independent/README.md),
+checks `PolynomialBridge` for the direct current-port 28-coordinate expression,
+inheriting the sign31 source ancestry. Native and standard endpoint assembly
+remain separate. The
 source composition and
 iPRA endpoint likewise remain to be checked in Lean. A further external
 [27-witness sextic candidate](research/nine-sharing-sign27-sextic-normalized-root-candidate/README.md),

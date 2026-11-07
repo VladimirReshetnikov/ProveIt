@@ -1,0 +1,3 @@
+Independent terminal audit: PASS. Author-recorded session 17666 exited 0. The source, object, logs, exact model-iff, generic transport and sign31 bridge direct provider bindings, 200 guard slots and 1,325 overlay links were checked; the provider-union survey replayed. The concrete sign28 PolynomialBridge theorem reports [propext, Classical.choice, Quot.sound], with no warnings.
+
+This establishes the bridge for the Fin28 current expression, subject to the documented transitive source ancestry of the sign31 provider. Native/standard endpoint assembly, Lean degree and external JSON/coefficient binding remain separate. The outer exit is author-recorded and deeper ancestry inherited; no Lean replay was performed.
