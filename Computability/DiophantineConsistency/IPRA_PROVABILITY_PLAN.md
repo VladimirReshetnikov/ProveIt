@@ -462,7 +462,11 @@ A [recipe-output composition](research/nine-seed38-jones-vars-output-check/READM
 [independently audited](reviews/nine-seed38-jones-vars-output-terminal-frontier-independent/README.md),
 checks equality with `RefinedPair.value` of the symbolic RingVars under those
 same caveats. Matching the opaque rank to the named evaluator and linking the
-JSON remain separate.
+JSON remain separate. A [named-evaluator equality attempt](research/nine-seed38-jones-named-equality-check/README.md),
+[independently audited](reviews/nine-seed38-jones-named-equality-failure-frontier-independent/README.md),
+failed on an unsolved tuple equality involving concrete `Fin.cons` indices
+and exponent additions. Its error-containing `sorryAx` report is not proof
+evidence; the final equality stage and postflight did not run.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
 not a Lean proof or evidence that the complete composition fits the resource
