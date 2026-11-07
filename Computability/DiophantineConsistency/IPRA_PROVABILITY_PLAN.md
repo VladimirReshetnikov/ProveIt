@@ -550,6 +550,10 @@ bindings, and a sextic-to-nine-variable Jones theorem remain separate. A [restri
 [independently audited](reviews/nine-sharing-sign26-q3-single-cut-independent/README.md),
 examines ten direct cuts under one formal monic reduction rule; it is not a
 semantic lower bound or an obstruction to other encodings.
+A [literal single-cut survey](research/nine-sharing-sign26-single-cut-survey/README.md),
+[independently audited](reviews/nine-sharing-sign26-single-cut-frontier-independent/README.md),
+checks syntactic degrees for eleven direct substitutions without cancellation
+or congruence. It likewise gives no semantic lower bound.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
