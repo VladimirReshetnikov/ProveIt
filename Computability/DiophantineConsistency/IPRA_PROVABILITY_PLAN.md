@@ -157,7 +157,11 @@ quartic Jones theorem does not apply directly to it. An external
 [28-witness sextic candidate](research/nine-sharing-sign28-sextic-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign28-sextic-frontier-independent/README.md),
 removes three more positive cuts with exact degree 6. Its model bridge and
-iPRA endpoint likewise remain to be checked in Lean.
+iPRA endpoint likewise remain to be checked in Lean. A [restricted survey](research/nine-sharing-sign31-sextic-positive-cut-survey/README.md),
+[independently reviewed](reviews/nine-sharing-sign31-positive-cut-survey-frontier-independent/README.md),
+enumerates the sequential positive-cut substitutions that preserve
+syntactic residual degree at most three. Its maximum of three further cuts
+is not a semantic lower bound or a constraint on different encodings.
 A [single-cut syntactic substitution survey](research/nine-sharing-sign33-single-cut-substitution-survey/README.md),
 [independently audited](reviews/nine-sharing-sign33-single-cut-survey-frontier-independent/README.md),
 finds a degree-3 or degree-4 residual in each of the 19 single-cut substitutions
