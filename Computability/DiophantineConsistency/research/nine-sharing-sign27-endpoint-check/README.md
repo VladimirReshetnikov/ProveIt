@@ -1,0 +1,5 @@
+# Proposed direct sign27 iPRA endpoint
+
+Three separately compiled stages propose native, standard and translated equivalences for the symbolic 27-coordinate direct expression using its checked concrete polynomial bridge. The native stage uses the local-opacity pattern that succeeded for sign28. The bridge inherits sign28/sign31 source ancestry; no Jones/nine-variable result, Lean degree theorem or external JSON/coefficient binding is asserted.
+
+The runner authenticates the successful sign27 concrete bridge and previously guarded endpoint framework objects, then verifies each freshly produced stage and overlay. Deeper ancestry and the historical plan README-link caveat are inherited. Author no-Lean preflight exited 0, and the reviewed run succeeded as recorded in [attempt01](attempt01/README.md); the [independent terminal audit](../../reviews/nine-sharing-sign27-endpoint-terminal-frontier-independent/README.md) passed. Limits remain `-M2800`, 120 seconds per call, sampled 4-GiB RSS, 10-GiB available-host-memory floor and 5-GB disk precheck.

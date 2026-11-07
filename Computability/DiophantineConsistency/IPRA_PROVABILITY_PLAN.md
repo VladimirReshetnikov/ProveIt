@@ -412,7 +412,13 @@ indicated models, with one unused-section warning. A [concrete polynomial
 bridge](research/nine-sharing-sign27-concrete-polynomial-bridge-check/README.md),
 [independently audited](reviews/nine-sharing-sign27-concrete-polynomial-bridge-terminal-frontier-independent/README.md),
 transports the sign28 bridge to the direct sign27 expression. The iPRA
-endpoint remains separate, with sign28/sign31 source ancestry inherited.
+endpoint is checked by a [direct endpoint client](research/nine-sharing-sign27-endpoint-check/README.md),
+[independently audited](reviews/nine-sharing-sign27-endpoint-terminal-frontier-independent/README.md):
+native, standard and translated-standard iPRA proof-existence equivalences
+hold for the symbolic current-port `Fin 27` expression. The sign28/sign31
+source ancestry and partial-provider caveats are inherited; Lean degree,
+external JSON and numerical coefficient bindings, and a sextic-to-nine-variable
+Jones theorem remain separate.
 A further external [26-witness sextic candidate](research/nine-sharing-sign26-sextic-gap-congruence-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign26-sextic-gap-independent/README.md),
 eliminates the gap witness using congruence modulo the q3 residual. Its
