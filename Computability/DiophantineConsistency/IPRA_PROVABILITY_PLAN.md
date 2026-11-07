@@ -534,7 +534,10 @@ hit the interpreter memory limit in its first stage, producing no endpoint
 object or final postflight; the trigger is unknown. An [opacity retry](research/nine-sharing-sign26-endpoint-retry01/README.md),
 [independently audited](reviews/nine-sharing-sign26-endpoint-retry01-failure-frontier-independent/README.md),
 also hit the interpreter memory limit in the native stage and produced no
-endpoint object or final postflight. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
+endpoint object or final postflight. An [imports-only diagnostic](research/nine-sharing-sign26-endpoint-import-diagnostic/README.md),
+[independently audited](reviews/nine-sharing-sign26-endpoint-import-diagnostic-terminal-frontier-independent/README.md),
+compiles framework and bridge imports separately and together; it does not
+establish an endpoint or identify the earlier exception's cause. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
 [independently audited](reviews/nine-sharing-sign26-q3-single-cut-independent/README.md),
 examines ten direct cuts under one formal monic reduction rule; it is not a
 semantic lower bound or an obstruction to other encodings.
