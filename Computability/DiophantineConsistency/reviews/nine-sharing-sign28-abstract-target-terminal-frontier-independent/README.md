@@ -1,0 +1,3 @@
+Independent terminal audit: PASS. Author-recorded session 5061 exited 0. The pinned source, object, logs, exact cons-form direct provider, 100 guard slots and 1,312 overlay links were checked; partial and union surveys replayed. The transfer theorem reports [propext, Classical.choice, Quot.sound], with no warnings.
+
+The theorem explicitly assumes sign31 seed existence iff an arbitrary proposition T and concludes the corresponding sign28 iff T in IΣ₁. It does not itself supply a concrete source hypothesis or establish an endpoint. The cons provider is a successful row of an overall-failed producer without final postflight. Outer exit is author-recorded and deeper ancestry inherited; no Lean replay was performed.

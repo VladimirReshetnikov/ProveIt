@@ -1,0 +1,5 @@
+# Proposed sign28 abstract-target transport
+
+This bounded client imports only the successful current cons-form seed iff and proposes transferring it through an explicitly assumed equivalence from the sign31 seed-zero statement to an arbitrary proposition `T`. It does not establish the assumption, a concrete source iff, an iPRA endpoint, a Lean degree theorem, or an external JSON/coefficient binding. Concrete specialization may still hit the prior resource limit.
+
+The runner surveys the successful cons stage within its overall failed producer and also carries the previously checked source-provider overlay union, though the candidate does not import that source theorem. It retains point-in-time guards and inherited deeper ancestry. Author no-Lean preflight returned 0, and the independently reviewed run succeeded as recorded in [attempt01](attempt01/README.md); the [independent terminal audit](../../reviews/nine-sharing-sign28-abstract-target-terminal-frontier-independent/README.md) passed. Limits remain `-M2800`, 120 seconds per call, sampled 4-GiB RSS, 10-GiB available-host-memory floor, and 5-GB disk precheck.

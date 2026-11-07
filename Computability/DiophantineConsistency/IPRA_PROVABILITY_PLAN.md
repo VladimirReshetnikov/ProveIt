@@ -290,7 +290,11 @@ cause of the earlier exception or prove source equivalence. An [explicit
 transitivity retry](research/nine-sharing-sign28-current-source-iff-retry02/README.md),
 [independently audited](reviews/nine-sharing-sign28-current-source-iff-retry02-failure-frontier-independent/README.md),
 also hits the interpreter memory limit and produces no source object or final
-postflight; its trigger is unknown. The source composition and
+postflight; its trigger is unknown. An [abstract-target transport](research/nine-sharing-sign28-abstract-target-check/README.md),
+[independently audited](reviews/nine-sharing-sign28-abstract-target-terminal-frontier-independent/README.md),
+checks the 28-coordinate equivalence to an arbitrary target conditional on
+the corresponding 31-coordinate equivalence. It does not supply the concrete
+source equivalence. The source composition and
 iPRA endpoint likewise remain to be checked in Lean. A further external
 [27-witness sextic candidate](research/nine-sharing-sign27-sextic-normalized-root-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign27-sextic-root-independent/README.md),
