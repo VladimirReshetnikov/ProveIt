@@ -1,0 +1,3 @@
+# Sign25 concrete polynomial bridge attempt 01
+
+Author-observed outer session 71841 exited 0, including final postflight. The concrete polynomialBridge theorem reports `[propext, Classical.choice, Quot.sound]`, with no warnings. It transports the checked sign26 bridge via sign25/26 zero equivalence, inheriting sign26/27 source ancestry. No native/standard/translated endpoint, nine-variable Jones result, Lean degree, or external JSON binding is claimed. Monitor observations are sampled. Upstream stale sign26 success labels, inherited syntax heartbeat and historical sign26 plan README appendix caveats apply.

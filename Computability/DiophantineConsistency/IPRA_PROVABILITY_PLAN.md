@@ -633,7 +633,10 @@ the syntax runner's heartbeat and label qualifications. An [expression-zero
 equivalence](research/nine-sharing-sign25-expression-equivalence-check/README.md),
 [independently audited](reviews/nine-sharing-sign25-expression-equivalence-terminal-frontier-independent/README.md),
 composes the Fin25 and Fin26 current expressions in both directions. The
-direct iPRA endpoint remains separate.
+[concrete polynomial bridge](research/nine-sharing-sign25-concrete-polynomial-bridge-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-concrete-polynomial-bridge-terminal-frontier-independent/README.md),
+transports the checked sign26 bridge to the sign25 expression. The direct iPRA
+endpoint remains separate.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
