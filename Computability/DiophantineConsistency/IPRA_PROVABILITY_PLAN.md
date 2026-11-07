@@ -2184,7 +2184,10 @@ A [split-coordinate attempt](research/nine-sharing-sign33-forward-norm-strong-sp
 [independently audited](reviews/nine-sharing-sign33-forward-norm-strong-split-partial-frontier-independent/README.md),
 compiled stage one but hit Lean's 200000-heartbeat limit at coordinate 22;
 later stages and final postflight did not run, and its `sorryAx` report is not
-proof evidence.
+proof evidence. An [abstract projection client](research/nine-sharing-sign33-abstract-projection22-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-abstract-projection22-terminal-frontier-independent/README.md),
+then checks coordinate 22 while keeping the 38-coordinate tuple abstract. It
+does not establish the strong norm or the remaining projections.
 A [generic reference-ell client](research/nine-sharing-sign33-reference-ell-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-reference-ell-terminal-frontier-independent/README.md),
 checks the ring-level node 30 identity used by a proposed P-norm route; it
