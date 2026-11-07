@@ -427,7 +427,9 @@ A further external [26-witness sextic candidate](research/nine-sharing-sign26-se
 eliminates the gap witness using congruence modulo the q3 residual. Its
 conditional positivity and natural reconstruction argument is not yet a Lean
 zero bridge or iPRA endpoint; the existing quartic Jones theorem does not
-apply directly. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
+apply directly. An [independently reviewed bridge plan](research/nine-sharing-sign26-lean-bridge-plan/README.md)
+retains the q3 congruence, Nt positivity, port-cast and natural-representation
+obligations; it is not a Lean proof. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
 [independently audited](reviews/nine-sharing-sign26-q3-single-cut-independent/README.md),
 examines ten direct cuts under one formal monic reduction rule; it is not a
 semantic lower bound or an obstruction to other encodings.
