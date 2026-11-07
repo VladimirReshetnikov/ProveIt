@@ -2129,7 +2129,11 @@ equalities and the remaining constructor conditions still need to be applied.
 A [conditional forward-tau client](research/nine-sharing-sign33-forward-tau-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-forward-tau-terminal-frontier-independent/README.md),
 checks the constructor's tau field from the generic gap and tau representative
-equalities; it records two warnings and does not supply those hypotheses.
+equalities; it records two warnings and does not supply those hypotheses. A
+[conditional inner-cut client](research/nine-sharing-sign33-forward-inner-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-forward-inner-terminal-frontier-independent/README.md),
+checks the constructor's inner field from gap and inner representative
+equalities; it also records two warnings.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
