@@ -640,6 +640,11 @@ substitutes the q3 cube into the sign25 residuals. Its external fixed-port
 square-sum has exact degree eight, by the explicit N0 specialization. This
 is an external AST result: the model lift/drop, inherited sign25 bridge,
 Lean degree and port-byte binding, and iPRA endpoint remain open.
+A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
+[independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
+substitutes a natural quadratic for Delta. Its external square-sum has exact
+degree eight by a leading-coefficient sum-of-squares argument; the sign23→24
+and sign24→25 Lean model bridges and direct endpoint remain open.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a

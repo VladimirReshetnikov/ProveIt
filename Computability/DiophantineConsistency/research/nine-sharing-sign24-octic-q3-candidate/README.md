@@ -13,6 +13,6 @@ python3 -I -S -B research/nine-sharing-sign24-octic-q3-candidate/build.py --chec
 python3 -I -S -B research/nine-sharing-sign24-octic-q3-candidate/check.py
 ```
 
-The checker output matches `result.json`. No Lean syntax equivalence, zero-set bridge, iPRA endpoint, or nine-variable/Jones theorem is claimed. The inherited sign25→sign26 bridge is also still open. Independent audit requested.
+The checker output matches `result.json`. No Lean syntax equivalence, zero-set bridge, iPRA endpoint, or nine-variable/Jones theorem is claimed. The inherited sign25→sign26 pointwise seed-zero bridge and same-input existential equivalence have since been Lean-checked; the sign25 endpoint remains open. Independent audit requested.
 
 The [independent candidate audit](../../reviews/nine-sharing-sign24-octic-q3-independent/README.md) passed for the substitution, external exact degree, coefficient hashes and stated conditional model scope.
