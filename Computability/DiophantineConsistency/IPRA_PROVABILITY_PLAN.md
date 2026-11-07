@@ -2241,7 +2241,12 @@ universal cast. A [four-cast specialization](research/nine-sharing-sign33-curren
 [independently audited](reviews/nine-sharing-sign33-current-source-seed-casts-terminal-frontier-independent/README.md),
 discharges that hypothesis for the current ports: natural source zero yields
 an existential 33-seed zero with leading 1 in each indicated IΣ₁ model.
-Composing the two source directions remains separate.
+A [source/seed equivalence](research/nine-sharing-sign33-current-seed-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-current-seed-iff-terminal-frontier-independent/README.md),
+composes both directions: existence of a natural source zero is equivalent to
+existence of a current 33-seed zero with leading 1 in those models, without
+explicit port-cast hypotheses. Jones transfer and iPRA proof existence remain
+separate.
 A [generic reference-ell client](research/nine-sharing-sign33-reference-ell-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-reference-ell-terminal-frontier-independent/README.md),
 checks the ring-level node 30 identity used by a proposed P-norm route; it
