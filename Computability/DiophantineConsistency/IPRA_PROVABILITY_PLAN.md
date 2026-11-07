@@ -2139,7 +2139,10 @@ checks the constructor's inner field from gap and inner representative
 equalities; it also records two warnings. A [value/negative attempt](research/nine-sharing-sign33-forward-value-negative-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-forward-value-negative-failure-frontier-independent/README.md),
 failed to elaborate the dependent `Fin.cons` valuation; neither theorem nor
-an object was produced, and the final postflight did not run.
+an object was produced, and the final postflight did not run. A [typed retry](research/nine-sharing-sign33-forward-value-negative-retry01/README.md),
+[independently audited](reviews/nine-sharing-sign33-forward-value-negative-retry01-terminal-frontier-independent/README.md),
+checks both value and negative signed fields conditional on their core
+representative equalities; its compile records eight simp/tactic warnings.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
