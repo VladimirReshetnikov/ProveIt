@@ -103,6 +103,9 @@ checks M there while keeping the d11 rank opaque.
 A [d27 A checkpoint client](research/nine-seed33-jones-checkpoint24-27-a-check/README.md),
 [independently audited](reviews/nine-seed33-jones-checkpoint24-27-a-terminal-frontier-independent/README.md),
 checks A at that checkpoint with the rank still opaque.
+A [d27 C checkpoint client](research/nine-seed33-jones-checkpoint26-27-c-check/README.md),
+[independently audited](reviews/nine-seed33-jones-checkpoint26-27-c-terminal-frontier-independent/README.md),
+checks symbolic C there, again with opaque rank.
 A [d41 J checkpoint client](research/nine-seed33-jones-checkpoint28-41-j-check/README.md),
 [independently audited](reviews/nine-seed33-jones-checkpoint28-41-j-terminal-frontier-independent/README.md),
 checks the symbolic J value there.
