@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+import hashlib,json
+from pathlib import Path
+D=Path(__file__).resolve().parents[2];P=D/'research/nine-seed38-jones-terminal-cut-retry01';Q=D/'research/nine-seed38-jones-terminal-cut-check';sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+for n,h in {'run.py':'e8afc64f48c674b519ad3b6925666e852369a766230dad59fb0df1aa81241d35','provider_preflight.py':'b09a56bb5d5f0be6310a00029108950c0171862db2c522a1ab27d297d0209167','source-manifest.json':'14950ee407a4c307ce5deca8f5983c3542613e200d91b9ede84da1882100e9d0','src/DiophantineConsistency/Norm38MacroTerminalT.lean':'bda39c06525a17959e951b2c689ed5f31571324a3b0aacfbdf2f3b489d4bddd3','src/DiophantineConsistency/Norm38MacroTerminalOutput.lean':'921487eb186ddf29bed53603ed925c72d91a9284fcb3be75698eccbf10ffef59'}.items():assert sha(P/n)==h
+assert (P/'src/DiophantineConsistency/Norm38MacroTerminalT.lean').read_bytes()==(Q/'src/DiophantineConsistency/Norm38MacroTerminalT.lean').read_bytes()
+a=(Q/'src/DiophantineConsistency/Norm38MacroTerminalOutput.lean').read_text();b=(P/'src/DiophantineConsistency/Norm38MacroTerminalOutput.lean').read_text();old='  rw [hik, hit, Norm38MacroCuts.snoc_previous a d43 _ (Fin.last 42), h35, h36, h37, d44_T_cut]';new='  have hk : d44.values a ((Fin.last 42).castSucc) = d43.values a (Fin.last 42) := by\n    change (Dag.snoc d43 _).values a (Fin.castSucc (Fin.last 42)) = _\n    exact Norm38MacroCuts.snoc_previous a d43 _ (Fin.last 42)\n  rw [hik, hit, hk, h35, h36, h37, d44_T_cut]';assert a.count(old)==1 and a.replace(old,new)==b
+for n in ('d45_output_cut','recipe_output_cut'):assert a.split('theorem '+n,1)[1].split(':= by',1)[0]==b.split('theorem '+n,1)[1].split(':= by',1)[0]
+assert sha(Q/'attempt01/state.json')=='ea7e7ce1a82e2e5a413e4888741cd574716db5ded19f0131191ac83332a975fb'
+R=D/'reviews/nine-seed38-jones-terminal-cut-failure-frontier-independent';assert sha(R/'check.py')=='41f3cc7646db4952c76eccbdf510ed1479153109252dd7916b8b1dcd2b3b0464' and sha(R/'result.json')=='a04d7e62c9a9ee29ae2b680588410274a6a3dfd7d1a8b0e79587907fe79525db'
+print(json.dumps({'status':'PASS_STATIC','scope':'same two-stage cut statements; explicit typed d44 snoc helper proof delta only; no Lean or full semantics'},indent=2,sort_keys=True))

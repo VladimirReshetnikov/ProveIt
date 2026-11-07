@@ -378,6 +378,10 @@ remains separate. A [terminal-cut attempt](research/nine-seed38-jones-terminal-c
 [independently audited](reviews/nine-seed38-jones-terminal-cut-failure-frontier-independent/README.md),
 compiled the `T` stage but failed the output stage on a `d44` rewrite mismatch.
 Its `sorryAx` reports are not proof evidence; the final postflight did not run.
+An [explicit-snoc retry](research/nine-seed38-jones-terminal-cut-retry01/README.md),
+[independently audited](reviews/nine-seed38-jones-terminal-cut-retry01-terminal-frontier-independent/README.md),
+then checks recipe output in seven unevaluated cuts, retaining inherited A1
+and initial-exit caveats. Named-formula and JSON equality remain separate.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
 not a Lean proof or evidence that the complete composition fits the resource
