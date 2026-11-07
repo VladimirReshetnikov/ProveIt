@@ -5308,10 +5308,11 @@ That includes:
 - 163's 75 / 402, which has a guarded-provider endpoint in research;
 - the rest of the fourteen-positive Pareto row (degree / operations): 55's
   and 59's 52 / 79. Endpoints exist for the
-  formulas of 183's 150 / 65 and 188's 94 / 67 and 118 / 66, but only at the
-  maintained CURRENT2011 tuple (`β = 2^94517 − 1`). The packages bind them to
-  admissible942 and block-mask2963. 192's thirteen-positive 174 / 69 is in the
-  same position;
+  formulas of 188's 94 / 67 and 118 / 66, but only at the
+  maintained CURRENT2011 tuple (`β = 2^94517 − 1`). The package binds them to
+  block-mask2963. 192's thirteen-positive 174 / 69 is bound to admissible942,
+  whose calibration is now closed (183 is done; see below), and still needs
+  its retarget;
 - the thirteen-positive 170's 154 / 72 and 162 / 71;
 - 170's 74 / 438;
 - 184's 104 / 174;
@@ -5399,6 +5400,22 @@ the packages' coefficient files with it:
     `λ = 2341` controller);
   - the iPRA endpoints.
 - **admissible942** (β of 189,269 bits; `candidates/one-page-admissible942`):
-  183's 150 / 65 and 192's 174 / 69. 188 binds block-mask2963. No Lean module
-  mentions the admissible942 exponent. The tree's endpoints for these
-  formulas are at the different CURRENT2011 tuple.
+  183's 150 / 65 and 192's 174 / 69. 188 binds block-mask2963.
+
+  **183's 150 / 65, CLOSED (2026-11-07).** The modules are in
+  `Lean/DiophantineConsistency/Adm942/` (36 of them), a port of the
+  CURRENT2011 in-model calibration to `L = 4027`:
+  - soundness: `Adm942Soundness.zero_halts`;
+  - construction: `Adm942Construction.halt_positive_zero_closed`;
+  - the admissible942 Local Normalization Lemma, proved directly by a
+    column-sum argument in `Adm942LocalNormalization` (3 modules instead of
+    2011's 51).
+
+  `Adm942/IPRACarrier65Adm942` gives native, standard and equality-only
+  iPRA equivalences `nativeNoZero (150/65) ↔ ¬mappedNativeRefutation`.
+  `research/admissible942-calibration/tools/check_forms.py` binds the Lean
+  syntax to `carrier65.json`, and `check_recipe.py` / `check_ports.py` bind
+  it to the payloads.
+
+  192's 174 / 69 still needs `ModelThirteenCarrier` and
+  `ArithmeticThirteenOuter` retargeted onto the admissible942 window.

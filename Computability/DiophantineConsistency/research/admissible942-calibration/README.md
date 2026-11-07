@@ -1,4 +1,4 @@
-# The admissible942 tuple: a Lean calibration (soundness and construction done)
+# The admissible942 tuple: a Lean calibration (183 closed)
 
 7 November 2026. Claude session; not a paired replay.
 
@@ -97,9 +97,20 @@ kept.
     - `block` held on 17,472 checks: 300 random admissible triples plus all
       triples with `mc = 0`, each with all 32 bit settings;
     - as negative controls, non-admissible triples break the high mask.
-- **Open.** The proof of `LocalNormalization` for admissible942 (2011:
-  `ArithmeticLocalNormalization` and its world, block and digits modules). After
-  that come the 183 iPRA endpoint and the 192 retarget (`ModelThirteenCarrier`,
-  `ArithmeticThirteenOuter`).
+- **Local Normalization (done).** `Adm942LocalColumns`,
+  `Adm942LocalNormalization`, `Adm942Construction`.
+  - The proof is direct. `K·cellN` is a radix-`2^47` sum of columns, each
+    bounded by the coefficient mass `< 2^53`, and column 4026 vanishes. So
+    `% BN` and `/ BN` split the column sum exactly.
+  - Every tested digit then equals its column, with enough room below it,
+    and each digit passes the mask test from the adjacency hypotheses.
+  - The only kernel decision is a linear walk over the 4027 high-mask digits.
+  - `Adm942Construction.halt_positive_zero_closed` is the construction with no
+    remaining hypothesis.
+- **183 endpoint (done).** `IPRACarrier65Adm942`: `positiveBridge`, then
+  native, standard and equality-only iPRA equivalences between the absence
+  of positive zeros of 183's 150/65 and `¬mappedNativeRefutation`.
+- **Open.** The 192 retarget (`ModelThirteenCarrier`,
+  `ArithmeticThirteenOuter`) onto the admissible942 window.
 
 All axioms are within `[propext, Classical.choice, Quot.sound]`.
