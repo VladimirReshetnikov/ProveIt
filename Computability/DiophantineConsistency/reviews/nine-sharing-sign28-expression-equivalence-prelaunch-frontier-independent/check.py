@@ -1,0 +1,9 @@
+#!/usr/bin/env python3
+import hashlib,json,subprocess,sys
+from pathlib import Path
+D=Path(__file__).resolve().parents[2];P=D/'research/nine-sharing-sign28-expression-equivalence-check';H=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+for n,h in {'run.py':'97e4c2e0f5a97f7d3727c49ff6abf9ebca2820b1188bd24afb77e55e4448330a','source-manifest.json':'66d567b806defedcd73bee8b654fbbab1f6046a3192bdbe19a65894ec9e12d72','sign31-survey.py':'4e701dcddcb49d7f7fa902391e93e6ad45d1247b18051600cc7dfae7def894d4','partial-survey.py':'462acee066ec0a45fb30b682cc7d435a0b4b1414b9f8129c6f326ca3049ded8e','union.json':'649504a958f6ca8d31189a10827cde5c51fd0f9a744a93efa34e5d3a78c855d8','src/DiophantineConsistency/Sign28ExpressionEquivalence.lean':'c3b3648ee369518a17b9ad941a517df4a87e07207ef10a4f6ed8737a932e9280'}.items():assert H(P/n)==h
+m=json.loads((P/'source-manifest.json').read_text())['rows'];assert len(m)==1 and m[0]['imports']==['DiophantineConsistency.Sign28CurrentExpressionEval','DiophantineConsistency.Sign31CurrentExpressionEval','DiophantineConsistency.Sign28CurrentConsIff'];s=(P/'src/DiophantineConsistency/Sign28ExpressionEquivalence.lean').read_text()
+for x in ['∃ w : Fin 28 → V, InternalZero Sign28CurrentExpression.expression w','∃ w : Fin 31 → V, InternalZero Sign31CurrentExpression.expression w','Sign28CurrentExpression.eval_expression','Sign31CurrentExpression.eval_expression','Sign28CurrentConsIff.seed_cons_iff (V := V)','h31.symm','𝗜𝚺₁']:assert x in s
+r=subprocess.run([sys.executable,'-I','-S','-B',str(P/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=120);assert not r.stderr and json.loads(r.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT'
+print(json.dumps({'status':'PASS_STATIC_AND_NO_LEAN_PREFLIGHT','scope':'proposed direct-expression zero existence iff only; no source or endpoint'},sort_keys=True,indent=2))

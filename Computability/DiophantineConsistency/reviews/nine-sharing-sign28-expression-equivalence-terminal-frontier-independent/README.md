@@ -1,0 +1,3 @@
+Independent terminal audit: PASS. Author-recorded session 92816 exited 0. The source, object, logs, exact direct Fin28/Fin31 evaluation and cons-form providers, 200 guard slots and 1,321 overlay links were checked; the partial and sign31 surveys replayed. The zero-existence equivalence reports [propext, Classical.choice, Quot.sound], with no warnings.
+
+The theorem is an IΣ₁ model-level equivalence of zeros of the Fin28 and Fin31 current direct expressions. It does not itself establish a current-source iff, polynomial bridge, endpoint, degree theorem or JSON binding. Two direct providers were selected from successful rows within overall-failed runs; outer exit is author-recorded and deeper ancestry inherited. No Lean replay was performed.

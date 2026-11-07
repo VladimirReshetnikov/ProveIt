@@ -303,7 +303,10 @@ the corresponding 31-coordinate equivalence. It does not supply the concrete
 source equivalence. An [expression-evaluation client](research/nine-sharing-sign28-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign28-expression-eval-terminal-frontier-independent/README.md),
 checks the symbolic and current input-removal evaluations in four stages.
-The source composition and
+An [expression equivalence](research/nine-sharing-sign28-expression-equivalence-check/README.md),
+[independently audited](reviews/nine-sharing-sign28-expression-equivalence-terminal-frontier-independent/README.md),
+checks equality of zero existence for the direct 28- and 31-coordinate
+expressions in the indicated IΣ₁ models. The source composition and
 iPRA endpoint likewise remain to be checked in Lean. A further external
 [27-witness sextic candidate](research/nine-sharing-sign27-sextic-normalized-root-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign27-sextic-root-independent/README.md),
