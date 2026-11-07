@@ -81,7 +81,10 @@ checks the X/Y/E residual identities and list positions; it records six linter
 warnings. A [third substitution client](research/nine-sharing-sign32-substitution-group02-check/README.md),
 [independently audited](reviews/nine-sharing-sign32-substitution-group02-terminal-frontier-independent/README.md),
 checks the kY/ell/Delta residual identities and list positions; it records
-eight linter warnings. The remaining bridge obligations stay separate.
+eight linter warnings. A [fourth substitution client](research/nine-sharing-sign32-substitution-group03-check/README.md),
+[independently audited](reviews/nine-sharing-sign32-substitution-group03-terminal-frontier-independent/README.md),
+checks mainRoot/c²/Delta-c² identities and list positions; it records eight
+linter warnings. The remaining bridge obligations stay separate.
 A [single-cut syntactic substitution survey](research/nine-sharing-sign33-single-cut-substitution-survey/README.md),
 [independently audited](reviews/nine-sharing-sign33-single-cut-survey-frontier-independent/README.md),
 finds a degree-3 or degree-4 residual in each of the 19 single-cut substitutions
