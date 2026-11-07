@@ -449,8 +449,10 @@ not proof evidence and no object or final postflight was produced. An
 [explicit-import retry](research/nine-sharing-sign26-ordered-ring-retry01/README.md),
 [independently audited](reviews/nine-sharing-sign26-ordered-ring-retry01-terminal-frontier-independent/README.md),
 checks the generic congruence and gap nonnegativity under explicit ordered-ring
-hypotheses, with two linter warnings. Model extraction and natural
-representability remain separate. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
+hypotheses, with two linter warnings. A [zero-extraction client](research/nine-sharing-sign26-zero-extraction-check/README.md),
+[independently audited](reviews/nine-sharing-sign26-zero-extraction-terminal-frontier-independent/README.md),
+checks that symbolic sign26 seed zero supplies the q3 and Nt ring equations.
+Natural gap representability and the model bridge remain separate. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
 [independently audited](reviews/nine-sharing-sign26-q3-single-cut-independent/README.md),
 examines ten direct cuts under one formal monic reduction rule; it is not a
 semantic lower bound or an obstruction to other encodings.

@@ -1,0 +1,5 @@
+# Proposed sign26 q3/Nt extraction
+
+This guarded client proposes extracting q3 and Nt from sign26 seed zero in arbitrary IΣ₁ models, and giving their explicit difference-ring equalities for symbolic ports. It does not assume fixed-port casts or infer gap nonnegativity or a natural representative. The Nt normalization, list membership and exact source proof remain uncompiled; no zero bridge, endpoint, Lean degree theorem or external binding is claimed.
+
+The runner binds both successful sign26 syntax/square-sum producer rows and their guards/overlay routes. Deeper ancestry and the historical plan README-link caveat are inherited. Author no-Lean preflight exited 0 and the reviewed run succeeded as recorded in [attempt01](attempt01/README.md); the [independent terminal audit](../../reviews/nine-sharing-sign26-zero-extraction-terminal-frontier-independent/README.md) passed. Limits remain `-M2800`, 120 seconds per call, sampled 4-GiB RSS, 10-GiB available-host-memory floor and 5-GB disk precheck.
