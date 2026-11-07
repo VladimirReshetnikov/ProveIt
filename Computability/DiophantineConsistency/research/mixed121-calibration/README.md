@@ -258,12 +258,27 @@ direction: a positive solution of any equation whose leaf facts hold at these
 ports gives internal halting of machine 215. The whole `Mixed121/` tree is
 54 modules, about 6,700 lines, including the 22 width ports under `W121/`.
 
+## Phase 4: package 55's 52 / 79 form reaches halting
+
+The 14-positive, 79-operation, degree-52 equation of
+`con-zfc-diophantine-forms/55-congruence-norms/fourteen/polynomial.json`
+is the first form placed on this tuple. Its four ports are package 31's
+payloads (the same SHA-256s), and so they are `Mixed121Ports.ports`. Four
+modules give its forward direction:
+
+| Module | Content |
+| --- | --- |
+| [`P55Graph`](../../Lean/DiophantineConsistency/Mixed121/P55Graph.lean) | the 79-gate let-chain, checked against the pinned JSON by [`tools/generate_p55.py`](tools/generate_p55.py) `--check`; the four-squares form of a zero; ring evaluation of `M`, `W`, `Na`, `N0`, `Nt` |
+| [`P55Root`](../../Lean/DiophantineConsistency/Mixed121/P55Root.lean) | each residual read in the model: transport and main root as for package 62 (`U = 4q⁴`, `Y = sq³`), strong and auxiliary norms as for package 64, and `N0 = 1` as the first Pell norm |
+| [`P55Norm`](../../Lean/DiophantineConsistency/Mixed121/P55Norm.lean) | the local minimum block (`W² + Na² = 1` iff `W = 0`, `Na = 1`) and the unit split `N0·Nt = 1 ⟹ N0 = Nt = 1`; `N0 = −1` is the excluded consecutive-product negative Pell equation for `n = XY²` |
+| [`P55Facts`](../../Lean/DiophantineConsistency/Mixed121/P55Facts.lean) | `facts_ports` at any ports with the four `leaf_bounds`, then `halts` at the 121x8801 ports via `Mixed121Halt.halts_of_facts` |
+
+Only `P55Facts.halts` names the 121x8801 ports; the rest is port-generic.
+
 ## Remaining phases
 
-1. **Per-form leaf facts.** Prove `LeafFacts Mixed121Ports.ports v` from a
-   positive zero of package 55's 52 / 79 form, and of the 44 / 111 form, as
-   `P57Facts` did for Compact44. `LeafFacts`' `R` and `Nt` have exactly the
-   shape of the 52 / 79 form.
+1. **Per-form leaf facts for 44 / 111.** Package 132's fifteen-integer form
+   needs its own `LeafFacts` proof, as phase 4 did for 52 / 79.
 2. **Completeness.** Halting of machine 215 gives a solution. This is the
    recipe's witness construction: packing, rank, and the `λ = 2341`
    controller of §4. Compact44's `PackingInput d` is already parametric in

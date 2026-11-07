@@ -4651,10 +4651,15 @@ the packages' coefficient files with it:
 
   This is the counterpart of `CompactLeafFactsHalt.halts_of_facts`.
   `LeafFacts` is stated for arbitrary ports, so the chain was a tuple-level
-  port; it needed no controller. What remains is per-form or in the
-  completeness direction:
-  - proving `LeafFacts` from a positive zero of the 52 / 79 and 44 / 111
-    forms (as `P57Facts` did);
+  port; it needed no controller.
+
+  **52 / 79, forward direction (2026-11-06):** `Mixed121/P55Graph`, `P55Root`,
+  `P55Norm` and `P55Facts` prove that a positive zero of package 55's
+  degree-52 equation at these ports gives `LeafFacts`, hence
+  `P55Facts.halts`. The graph is checked against the pinned JSON by
+  `research/mixed121-calibration/tools/generate_p55.py --check`. What remains
+  is per-form or in the completeness direction:
+  - proving `LeafFacts` from a positive zero of the 44 / 111 form;
   - the witness construction for halting ⟹ solvable (packing, rank and the
     `λ = 2341` controller);
   - the iPRA endpoints.
