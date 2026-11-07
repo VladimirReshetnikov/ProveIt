@@ -1,4 +1,4 @@
-# The admissible942 tuple: a Lean calibration (soundness done)
+# The admissible942 tuple: a Lean calibration (soundness and construction done)
 
 7 November 2026. Claude session; not a paired replay.
 
@@ -81,9 +81,25 @@ kept.
   - The alignment offsets are `{0} ∪ [20, 961]`. `r = 20` is refuted by the
     south colour of tile 941 and `21..961` by a two-selector count. The 2011
     `r = 19` orbit argument and the padding staircase are not needed.
-- **Open.** The converse still has to be ported: the controller and unit
-  (`ord_C0 Γ = 740784`), the packing cells, `LocalNormalization`, and the
-  assembly. After that come the 183 iPRA endpoint and the 192 retarget
-  (`ModelThirteenCarrier`, `ArithmeticThirteenOuter`).
+- **Construction (done modulo `LocalNormalization`).** `Adm942ControllerData`,
+  `Adm942ControllerChoice`, `Adm942Controller`, `Adm942KernelResidue`,
+  `Adm942ConstructionUnit`, `Adm942PackingCells`, `Adm942ConstructionAssembly`,
+  `Adm942CurrentConstruction`. `Adm942CurrentConstruction.halt_positive_zero`: a
+  halt of the decimal215 run gives a positive zero. Its only hypothesis is
+  `Adm942PackingCells.LocalNormalization`, a closed statement about ordinary
+  natural numbers, exactly as in 2011.
+  - The unit uses the 2011 lcm exponent, since `ord_C0 Γ = 740784` does not
+    divide `λ − 1`.
+  - `K ≡ 15862373587 (mod C0)` is proved without ever writing out `K`: one
+    Horner fold over the tile table, checked by `decide +kernel`.
+  - A Python check confirmed that `LocalNormalization` is true:
+    - `low`, `product`, `low_origin` and the bounds hold exhaustively;
+    - `block` held on 17,472 checks: 300 random admissible triples plus all
+      triples with `mc = 0`, each with all 32 bit settings;
+    - as negative controls, non-admissible triples break the high mask.
+- **Open.** The proof of `LocalNormalization` for admissible942 (2011:
+  `ArithmeticLocalNormalization` and its world, block and digits modules). After
+  that come the 183 iPRA endpoint and the 192 retarget (`ModelThirteenCarrier`,
+  `ArithmeticThirteenOuter`).
 
 All axioms are within `[propext, Classical.choice, Quot.sound]`.
