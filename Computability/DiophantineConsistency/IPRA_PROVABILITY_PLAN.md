@@ -40,6 +40,11 @@ formally bound to the Lean formula. A [macro cost survey](research/nine-seed33-j
 counts 173 explicit operators when powers and finite sums each cost one unit
 and named references are shared. This convention is not a binary circuit or
 expanded-sum operation count, and the JSON remains unbound to Lean.
+A [specialized sign33 macro source draft](research/nine-seed33-jones-compact-lean-specialized-draft/README.md),
+[independently reviewed](reviews/nine-seed33-jones-compact-lean-specialized-frontier-independent/README.md),
+quotes the 45-node prototype and specializes the checked sign38 macro
+language. Its Lean elaboration and semantic targets remain unproved; the
+source review alone is not a formal JSON or human-text binding.
 A [human-readable 33-seed formula](research/nine-seed33-jones-human-formula/FORMULA.md)
 has passed an [independent manual transcription review](reviews/nine-seed33-jones-human-formula-frontier-independent/README.md).
 Lean does not parse the Markdown; numeric expansion and exact metrics remain
