@@ -517,8 +517,11 @@ source bridge or endpoint follows from those lemmas alone. A [direct-expression
 equivalence](research/nine-sharing-sign26-expression-equivalence-check/README.md),
 [independently audited](reviews/nine-sharing-sign26-expression-equivalence-terminal-frontier-independent/README.md),
 checks zero-existence equivalence with the direct sign27 expression in the
-indicated models, with one unused-section warning. The bridge and iPRA endpoint
-remain separate. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
+indicated models, with one unused-section warning. A [concrete polynomial
+bridge](research/nine-sharing-sign26-concrete-polynomial-bridge-check/README.md),
+[independently audited](reviews/nine-sharing-sign26-concrete-polynomial-bridge-terminal-frontier-independent/README.md),
+transports the sign27 bridge to the direct sign26 expression. The iPRA
+endpoint remains separate, with earlier source ancestry inherited. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
 [independently audited](reviews/nine-sharing-sign26-q3-single-cut-independent/README.md),
 examines ten direct cuts under one formal monic reduction rule; it is not a
 semantic lower bound or an obstruction to other encodings.
