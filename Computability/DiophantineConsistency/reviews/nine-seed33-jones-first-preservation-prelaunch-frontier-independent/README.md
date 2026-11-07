@@ -1,0 +1,3 @@
+Independent prelaunch review: PASS source/provider checks and no-Lean preflight exit 0. The checker verifies all 44 snoc_previous applications in exact d44-to-d1 order, common index zero, and composition of recipe_eq_named with the checked d1 value. The runner replays the first-value terminal audit and generator, authenticates its direct provider/guard and requires successful postflight. The author's preflight had no separately retained session ID; independent preflight also passed. Earlier dynamic/transitive ancestry remains inherited.
+
+Lean elaboration and resource fit are untested. Proposed scope is the first entry only, not full output semantics, JSON/human binding, degree or operation count.

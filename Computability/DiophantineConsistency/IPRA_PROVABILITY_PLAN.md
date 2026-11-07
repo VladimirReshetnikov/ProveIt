@@ -65,7 +65,10 @@ checks that the Lean recipe equals its 45-node named-prefix representation;
 its theorem is axiom-free. A [first-value client](research/nine-seed33-jones-first-value-check/README.md),
 [independently audited](reviews/nine-seed33-jones-first-value-terminal-frontier-independent/README.md),
 checks the first short prefix's value. Neither establishes full evaluator or
-JSON equality.
+JSON equality. A [first-entry preservation client](research/nine-seed33-jones-first-preservation-check/README.md),
+[independently audited](reviews/nine-seed33-jones-first-preservation-terminal-frontier-independent/README.md),
+checks that this first value persists through the full Lean recipe; full output
+semantics remain separate.
 A [human-readable 33-seed formula](research/nine-seed33-jones-human-formula/FORMULA.md)
 has passed an [independent manual transcription review](reviews/nine-seed33-jones-human-formula-frontier-independent/README.md).
 Lean does not parse the Markdown; numeric expansion and exact metrics remain
