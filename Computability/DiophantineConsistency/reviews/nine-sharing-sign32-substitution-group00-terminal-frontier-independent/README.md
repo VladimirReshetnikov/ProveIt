@@ -1,0 +1,5 @@
+# Independent sign32 substitution group00 terminal audit
+
+The retained state records successful dependency scan and Lean compile; the separate author observation records outer session 18759 exit 0. The checker validates source, object and logs, all 100 direct guard entries and 1,059 overlay links, and exact routing to the checked sign32 square-sum provider. `old_q3_head` reports `[propext]`; `old_q2_zero` and `old_q3_eval` report `[propext, Classical.choice, Quot.sound]`. There are no warnings.
+
+The model claims assume IΣ₁ and the explicit equality between port 0's integer cast and the image of the natural beta. They prove only the eliminated old q² residual vanishes under the proposed lift, and the old q³ evaluation equals the new q³ evaluation; the third theorem identifies the old list head. They do not prove the other 22 residual identities, either entire zero-set bridge direction, numeric port binding or an endpoint. No Lean replay occurred. The outer session is author-observed, the provider/guard checks are point-in-time and sampled resource monitoring does not establish a full dynamic or transitive trace.

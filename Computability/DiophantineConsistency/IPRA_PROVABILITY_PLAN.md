@@ -71,7 +71,11 @@ neither bridge direction has been proved in Lean. A [syntax and square-sum
 client](research/nine-sharing-sign32-seed-squares-check/README.md),
 [independently audited](reviews/nine-sharing-sign32-seed-squares-terminal-frontier-independent/README.md),
 checks that symbolic 32-seed zero is equivalent to zero of all 23 residuals at
-the same valuation; it does not establish the 32-to-33 bridge or an endpoint.
+the same valuation. A [first substitution client](research/nine-sharing-sign32-substitution-group00-check/README.md),
+[independently audited](reviews/nine-sharing-sign32-substitution-group00-terminal-frontier-independent/README.md),
+checks that the removed q² residual vanishes under the lift and matches the
+first retained q³ residual. The other substitution identities, 32-to-33 bridge
+and endpoint remain separate.
 A [single-cut syntactic substitution survey](research/nine-sharing-sign33-single-cut-substitution-survey/README.md),
 [independently audited](reviews/nine-sharing-sign33-single-cut-survey-frontier-independent/README.md),
 finds a degree-3 or degree-4 residual in each of the 19 single-cut substitutions
