@@ -284,7 +284,11 @@ limit, with no source object or final postflight. The precise trigger remains
 unknown. An [imports-only diagnostic](research/nine-sharing-sign28-source-import-diagnostic/README.md),
 [independently audited](reviews/nine-sharing-sign28-source-import-diagnostic-terminal-frontier-independent/README.md),
 compiles each provider alone and both together; it does not establish the
-cause of the earlier exception or prove source equivalence. The source composition and
+cause of the earlier exception or prove source equivalence. An [explicit
+transitivity retry](research/nine-sharing-sign28-current-source-iff-retry02/README.md),
+[independently audited](reviews/nine-sharing-sign28-current-source-iff-retry02-failure-frontier-independent/README.md),
+also hits the interpreter memory limit and produces no source object or final
+postflight; its trigger is unknown. The source composition and
 iPRA endpoint likewise remain to be checked in Lean. A further external
 [27-witness sextic candidate](research/nine-sharing-sign27-sextic-normalized-root-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign27-sextic-root-independent/README.md),
