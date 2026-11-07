@@ -35,7 +35,11 @@ A [33-seed compact macro prototype](research/nine-seed33-jones-compact-macro-pro
 [independently audited](reviews/nine-seed33-jones-compact-macro-frontier-independent/README.md),
 records 45 live named nodes with the seed-specific symbolic coefficients.
 This is a named-node count, not an arithmetic operation count; the JSON is not
-formally bound to the Lean formula.
+formally bound to the Lean formula. A [macro cost survey](research/nine-seed33-jones-macro-cost-survey/README.md),
+[independently audited](reviews/nine-seed33-jones-macro-cost-frontier-independent/README.md),
+counts 173 explicit operators when powers and finite sums each cost one unit
+and named references are shared. This convention is not a binary circuit or
+expanded-sum operation count, and the JSON remains unbound to Lean.
 A [human-readable 33-seed formula](research/nine-seed33-jones-human-formula/FORMULA.md)
 has passed an [independent manual transcription review](reviews/nine-seed33-jones-human-formula-frontier-independent/README.md).
 Lean does not parse the Markdown; numeric expansion and exact metrics remain
