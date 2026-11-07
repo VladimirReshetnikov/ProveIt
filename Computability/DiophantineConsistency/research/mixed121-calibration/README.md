@@ -315,5 +315,7 @@ refutation is absent. Axioms: `propext`, `Classical.choice`, `Quot.sound`.
    arbitrary-odd-factor construction, so its port changes the constants
    (`p = 581197 → λ = 2341`, `C0 = 342946332593 → 2492980061`), not the
    argument.
-3. **Endpoints.** 52 / 79 is done (`IPRAPositive55`); 44 / 111 remains (its
-   forward leaf facts and a converse built on `Mixed121Seeds.halt_first_gamma`).
+3. **Endpoints.** 52 / 79 is done (`IPRAPositive55`). 44 / 111 turned out to
+   be on a different tuple, source34 ("mixed-parity-unrounded-1064921": same
+   β, `b`, `L` and `λ = 2341` controller, but kernel `D_C = ρ^40 + ρ^41 + … `,
+   `D_R = ρ`, parity-separated high mask), so it needs its own calibration.

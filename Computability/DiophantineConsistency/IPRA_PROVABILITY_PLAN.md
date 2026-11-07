@@ -5220,7 +5220,17 @@ the packages' coefficient files with it:
   calibration exists (`research/direct-bfs-*`, `DirectBFS80FixedIPRA`); it is
   not in the tree.
 - **`wang943-mixed-121x8801`** (β of 1,064,921 bits): 55's and 59's
-  fourteen-positive 52 / 79 and 132's fifteen-integer 44 / 111. 281 of the
+  fourteen-positive 52 / 79. *Correction (6 November 2026):* 132's
+  fifteen-integer 44 / 111 is **not** on this tuple. Package 132 records only
+  the six-port **source34** payloads ("mixed-parity-unrounded-1064921": β
+  `6a029139…`, K0 `18c40dd3…`, MC `3fc17cf7…`, MF `78a7befe…`, plus
+  `cone_A = 2^1113`, `cone_B = 2^666104`). Source34 shares β, `b = 121`,
+  `L = 8801` and the `λ = 2341` controller, but its kernel is
+  `D_C = ρ^40 + ρ^41 + ρ^1100 + ρ^2200 + bands` with `D_R = ρ`, and its high
+  mask is parity-separated (`ρ^(1000+2j) + ρ^(1021+2j)`). It needs its own
+  calibration, and 44 / 111 would also be the tree's first ℤ-variable
+  endpoint (signed-pair bridge plus the signed Pell / centered-budget
+  reduction of `132-signed-caps-free-scales/lowdegree/PROOF.md`). 281 of the
   618 `Compact44` modules use the 67×8807 layout constants directly. This is
   not only a change of constants: its kernel is `K = D_C + B·D_R`, with its
   own packing interface and controller
@@ -5260,7 +5270,7 @@ the packages' coefficient files with it:
   controller), `P55Converse.converse` builds the witnesses, and
   `Mixed121/IPRAPositive55` gives native, standard and equality-only iPRA
   equivalences `nativeNoZero (52/79) ↔ ¬mappedNativeRefutation`.
-  - proving `LeafFacts` from a positive zero of the 44 / 111 form;
+  - (44 / 111 is on the source34 tuple; see the correction above.)
   - the witness construction for halting ⟹ solvable (packing, rank and the
     `λ = 2341` controller);
   - the iPRA endpoints.
