@@ -166,7 +166,12 @@ quartic Jones theorem does not apply directly to it. An external
 [28-witness sextic candidate](research/nine-sharing-sign28-sextic-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign28-sextic-frontier-independent/README.md),
 removes three more positive cuts with exact degree 6. Its model bridge and
-iPRA endpoint likewise remain to be checked in Lean. A [restricted survey](research/nine-sharing-sign31-sextic-positive-cut-survey/README.md),
+iPRA endpoint likewise remain to be checked in Lean. A further external
+[27-witness sextic candidate](research/nine-sharing-sign27-sextic-normalized-root-candidate/README.md),
+[independently audited](reviews/nine-sharing-sign27-sextic-root-independent/README.md),
+normalizes a positive norm root and removes its product coordinate. Its
+positive-root, predecessor and embedding bridge remains unproved in Lean.
+A [restricted survey](research/nine-sharing-sign31-sextic-positive-cut-survey/README.md),
 [independently reviewed](reviews/nine-sharing-sign31-positive-cut-survey-frontier-independent/README.md),
 enumerates the sequential positive-cut substitutions that preserve
 syntactic residual degree at most three. Its maximum of three further cuts
