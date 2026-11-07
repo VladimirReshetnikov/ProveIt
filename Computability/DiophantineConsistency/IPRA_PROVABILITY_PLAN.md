@@ -463,8 +463,11 @@ equation. A [seed-to-gap composition](research/nine-sharing-sign26-seed-gap-chec
 checks representability from seed zero under explicit beta/K port casts and
 beta≥1. A [current-hypotheses client](research/nine-sharing-sign26-current-hypotheses-check/README.md),
 [independently audited](reviews/nine-sharing-sign26-current-hypotheses-terminal-frontier-independent/README.md),
-checks those casts and beta positivity at the current ports; applying them and
-the full model bridge remain separate. A [congruence-cuts client](research/nine-sharing-sign26-congruence-cuts-check/README.md),
+checks those casts and beta positivity at the current ports. A [current
+seed-gap specialization](research/nine-sharing-sign26-current-seed-gap-check/README.md),
+[independently audited](reviews/nine-sharing-sign26-current-seed-gap-terminal-frontier-independent/README.md),
+checks the represented gap from current-port seed zero; the full model bridge
+remains separate. A [congruence-cuts client](research/nine-sharing-sign26-congruence-cuts-check/README.md),
 [independently audited](reviews/nine-sharing-sign26-congruence-cuts-terminal-frontier-independent/README.md),
 checks the removed gap row and the Tau/Inner transfers under explicit gap and
 q3 equalities, with two linter warnings. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
