@@ -2169,7 +2169,11 @@ records four simp/tactic warnings. A [P-norm mapping attempt](research/nine-shar
 [independently audited](reviews/nine-sharing-sign33-forward-norm-p-failure-frontier-independent/README.md),
 failed with a Lean interpreter memory exception in its first stage; it produced
 no object and did not run its second stage or final postflight. The remaining
-norm mappings are separate.
+norm mappings are separate. A [strong-norm mapping attempt](research/nine-sharing-sign33-forward-norm-strong-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-forward-norm-strong-partial-frontier-independent/README.md),
+compiled its conditional 38-terminal stage, but its second stage failed on
+recursion depth and produced no object; its `sorryAx` report is not proof
+evidence and final postflight did not run.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
