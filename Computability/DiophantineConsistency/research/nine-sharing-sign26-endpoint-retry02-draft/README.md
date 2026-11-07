@@ -1,0 +1,3 @@
+# Sign26 endpoint retry 02: source-only draft
+
+The first stage names the direct expression by a definition and proves its polynomial bridge using the checked sign26 bridge; this definition reduces to the prior expression outside local irreducibility. The native stage then uses the already generic `IPRAExpressionNative.equivalence_of_bridge` with the named expression and pretyped bridge, keeping the expression locally irreducible. The theorem retains the same meaning and the later standard/translated sources are unchanged. No theorem is claimed until checked. This may reduce concrete application elaboration; the previous exception's exact trigger remains unknown.
