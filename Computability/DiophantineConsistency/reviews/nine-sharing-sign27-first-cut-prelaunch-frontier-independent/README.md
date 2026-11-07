@@ -1,0 +1,3 @@
+Independent prelaunch review: PASS. The pinned source uses the exact reviewed Fin28→Fin29 lift and proposes old N1 row membership, its zero under the lift and equality of the first common residual evaluations. The two first-residual expressions match textually, and the runner authenticates both sign27/sign28 syntax and square-sum producers with 1,057 byte-matched overlay entries and direct guards. Independent no-Lean preflight passed.
+
+These are uncompiled first-cut statements only, without predecessor dependence; the remaining residuals, zero bridge and endpoint are separate. The sign27 syntax's historical plan README appended-link replay caveat and deeper ancestry are inherited; no machine JSON binding or Lean degree claim follows.

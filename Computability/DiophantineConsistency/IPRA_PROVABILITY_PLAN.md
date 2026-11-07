@@ -366,7 +366,11 @@ checks the predecessor and product reconstruction from an explicit embedded
 root equation. A [seed-root extraction client](research/nine-sharing-sign27-seed-root-recovery-check/README.md),
 [independently audited](reviews/nine-sharing-sign27-seed-root-recovery-terminal-frontier-independent/README.md),
 checks that a symbolic sign28 seed zero supplies a predecessor and both
-reconstruction equalities. The full sign27 zero bridge remains separate.
+reconstruction equalities. A [first-cut attempt](research/nine-sharing-sign27-first-cut-check/README.md),
+[independently audited](reviews/nine-sharing-sign27-first-cut-failure-frontier-independent/README.md),
+left a numeral-cast equality unsolved. Its `sorryAx` report is not proof
+evidence; no object or final postflight was produced. The full sign27 zero
+bridge remains separate.
 A further external [26-witness sextic candidate](research/nine-sharing-sign26-sextic-gap-congruence-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign26-sextic-gap-independent/README.md),
 eliminates the gap witness using congruence modulo the q3 residual. Its
