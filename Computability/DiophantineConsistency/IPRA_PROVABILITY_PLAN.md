@@ -102,6 +102,12 @@ checks the d28 through d30 local equations.
 An [E/F dependent-prefix client](research/nine-seed33-jones-dependent05-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-dependent05-staged-terminal-frontier-independent/README.md),
 checks the d31 and d32 local equations.
+A [Gprime/H dependent-prefix client](research/nine-seed33-jones-dependent06-staged-check/README.md),
+[independently audited](reviews/nine-seed33-jones-dependent06-staged-terminal-frontier-independent/README.md),
+checks the d33 and d34 local equations.
+An [I/A0/A1/V dependent-prefix client](research/nine-seed33-jones-dependent07-staged-check/README.md),
+[independently audited](reviews/nine-seed33-jones-dependent07-staged-terminal-frontier-independent/README.md),
+checks the d35 through d39 local equations.
 A [raw-rank prefix client](research/nine-seed33-jones-prefix-rank-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-prefix-rank-staged-terminal-frontier-independent/README.md),
 checks the symbolic d11 raw rank and its carried form. It does not by itself
@@ -350,7 +356,21 @@ positive-root, predecessor and embedding bridge remains unproved in Lean.
 An [independently reviewed source plan](research/nine-sharing-sign27-lean-bridge-plan/README.md)
 and [syntax draft](research/nine-sharing-sign27-sextic-lean-draft/README.md)
 make the predecessor and two coordinate-recovery obligations explicit; they
-are not Lean-checked proofs.
+are not Lean-checked proofs. A [syntax and squares client](research/nine-sharing-sign27-seed-squares-check/README.md),
+[independently audited](reviews/nine-sharing-sign27-seed-squares-terminal-frontier-independent/README.md),
+checks symbolic seed zero iff all 18 residuals vanish in the intended models.
+Its source-review receipt retains the historical appended-plan-link replay
+caveat. An [abstract root-recovery client](research/nine-sharing-sign27-root-recovery-check/README.md),
+[independently audited](reviews/nine-sharing-sign27-root-recovery-terminal-frontier-independent/README.md),
+checks the predecessor and product reconstruction from an explicit embedded
+root equation. A [seed-root extraction client](research/nine-sharing-sign27-seed-root-recovery-check/README.md),
+[independently audited](reviews/nine-sharing-sign27-seed-root-recovery-terminal-frontier-independent/README.md),
+checks that a symbolic sign28 seed zero supplies a predecessor and both
+reconstruction equalities. A [first-cut attempt](research/nine-sharing-sign27-first-cut-check/README.md),
+[independently audited](reviews/nine-sharing-sign27-first-cut-failure-frontier-independent/README.md),
+left a numeral-cast equality unsolved. Its `sorryAx` report is not proof
+evidence; no object or final postflight was produced. The full sign27 zero
+bridge remains separate.
 A further external [26-witness sextic candidate](research/nine-sharing-sign26-sextic-gap-congruence-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign26-sextic-gap-independent/README.md),
 eliminates the gap witness using congruence modulo the q3 residual. Its
@@ -360,6 +380,11 @@ apply directly. A [restricted q3-remainder survey](research/nine-sharing-sign26-
 [independently audited](reviews/nine-sharing-sign26-q3-single-cut-independent/README.md),
 examines ten direct cuts under one formal monic reduction rule; it is not a
 semantic lower bound or an obstruction to other encodings.
+A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
+[independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
+shows that dropping Nt and its sole v4 coordinate loses a condition in a
+local parameter family. It does not constrain solutions of the full system
+or establish a witness-count lower bound.
 A [one-step survey](research/nine-sharing-sign27-single-positive-cut-survey/README.md),
 [independently audited](reviews/nine-sharing-sign27-single-cut-independent/README.md),
 checks the syntactic-degree effect of the seven directly eligible positive

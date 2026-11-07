@@ -1,0 +1,5 @@
+# Proposed sign27 syntax and square-sum check
+
+This guarded two-stage client proposes compilation of the reviewed symbolic sign27 seed syntax and the IΣ₁ zero iff all 18 residuals vanish, using the checked generic sign33 square-sum utility. It does not establish a predecessor, sign27/sign28 zero bridge, iPRA endpoint, Lean degree bound, or machine binding to the external JSON/coefficient bytes. External AST comparison and its independent source review remain separate evidence.
+
+The runner binds the reviewed source and audit pins, checked generic square-sum producer and captured Jones provider, with direct guards and overlay routes. Deeper provider ancestry is inherited. Author no-Lean preflight exited 0 and the reviewed run succeeded as recorded in [attempt01](attempt01/README.md); the [independent terminal audit](../../reviews/nine-sharing-sign27-seed-squares-terminal-frontier-independent/README.md) passed. The receipt preserves the source-review plan README historical-link replay caveat. Limits remain `-M2800`, 120 seconds per call, sampled 4-GiB RSS, 10-GiB available-host-memory floor and 5-GB disk precheck.

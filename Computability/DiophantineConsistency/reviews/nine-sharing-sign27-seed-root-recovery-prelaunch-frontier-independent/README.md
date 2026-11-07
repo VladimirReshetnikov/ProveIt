@@ -1,0 +1,3 @@
+Independent prelaunch review: PASS. The pinned source proposes extracting the sign28 N1 row `(v21²−v22)−1`, normalizing it to ιv21²=ιv22+1 and applying the checked abstract root-recovery theorem. The N1 expression matches the reviewed sign28 syntax, and the resulting predecessor and second-coordinate equations are explicit. The runner binds the audited root-recovery provider and guards; its terminal audit and independent no-Lean preflight passed.
+
+Membership simplification, ring normalization, elaboration and resource success remain untested. The proposed conclusion recovers coordinates only, not the sign27 zero bridge, endpoint, degree theorem or JSON binding. Deeper ancestry is inherited.

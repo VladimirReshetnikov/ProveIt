@@ -1,0 +1,3 @@
+Independent failure audit: PASS. Author-recorded session 24677 exited 1. Dependency scan succeeded, but compile exited 1 because the N1-zero proof left `ι(v21)*2 − ι(v21)*ι 2 = 0`; one unused simp-argument warning appears. The N1-zero axiom report contains error-induced sorryAx. The other two reports appear clean in the failed log, but no compiled module object or final postflight exists, so no first-cut producer is credited.
+
+The pinned source, both sign27/sign28 direct provider bindings, 150 guard slots, 1,061 overlay links, logs and sign28 survey were checked. The historical sign27 source-review plan-link caveat is inherited. Outer exit is author-recorded, deeper ancestry inherited; no Lean replay was performed.

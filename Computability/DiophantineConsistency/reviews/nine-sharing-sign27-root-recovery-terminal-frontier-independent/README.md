@@ -1,0 +1,3 @@
+Independent terminal audit: PASS. Author-recorded session 32826 exited 0. The pinned source, object, dependency/compile logs, exact sign28 square-sum direct provider, 100 guard slots and 1,059 overlay links were checked. The root-recovery theorem reports [propext, Classical.choice, Quot.sound], with no warnings.
+
+The theorem assumes the explicit embedded ring equation ιx·ιx=ιy+1 and concludes existence of a model predecessor u with x=u+1 and y=u(u+2). It does not extract that equation from seed zero or prove the sign27/sign28 bridge or endpoint. Outer exit is author-recorded, deeper ancestry inherited; no Lean replay was performed.
