@@ -407,7 +407,10 @@ object or final postflight; its `sorryAx` report is not proof evidence. A
 [cast-one retry](research/nine-seed38-jones-vars-bd-retry02/README.md),
 [independently audited](reviews/nine-seed38-jones-vars-bd-retry02-terminal-frontier-independent/README.md),
 checks the symbolic Bd/dvsr binding with rank opaque and inherited A1 and
-initial-exit caveats; the named-formula equality remains separate.
+initial-exit caveats. A [Cd binding client](research/nine-seed38-jones-vars-cd-check/README.md),
+[independently audited](reviews/nine-seed38-jones-vars-cd-terminal-frontier-independent/README.md),
+checks symbolic Cd/dvnd under the same caveats; the named-formula equality
+remains separate.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
 not a Lean proof or evidence that the complete composition fits the resource

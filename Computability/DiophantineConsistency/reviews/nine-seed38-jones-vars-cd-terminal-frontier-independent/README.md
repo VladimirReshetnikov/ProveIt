@@ -1,0 +1,5 @@
+# Independent RingVars/Cd terminal audit
+
+The state records a successful dependency scan and Lean compile; the author's separate record reports actual outer session 90536 exit 0. The checker validates source/object pins and logs, all 100 direct guards, 1,275 overlay links and the exact Bd provider. The requested theorem reports `[propext, Classical.choice, Quot.sound]`; no warnings occur. The independent prelaunch source review checks the index and `dvnd=(Q*F+J*(H−C))²` against the earlier Cd cut.
+
+The checked theorem equates the symbolic d41 Cd cut to `vars.dvnd`, with d11 rank opaque. It does not establish complete recipe/named-formula equality or JSON binding. No Lean replay was performed. The outer outcome is author-observed; guard checks are point-in-time and sampled monitoring is not a complete transitive or dynamic trace. Earlier A1 independent recursive preflight was interrupted, with the author's passing preflight recorded, and an earlier initial-agreement numeric outer exit is unavailable.
