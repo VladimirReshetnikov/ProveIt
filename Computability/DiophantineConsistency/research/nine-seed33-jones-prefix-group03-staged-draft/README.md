@@ -1,0 +1,3 @@
+# Sign33 g/theta/G short-prefix source-only candidates
+
+These four drafts adapt the independently checked sign38 B/b carry and g/theta/G short-prefix identities to sign33 namespace and G exponent 5^33. Fixed seed values and powers stay symbolic. These statements do not evaluate the final recipe output, establish semantic equality, bind JSON/human text, or prove a degree/operation count. The [guarded runner](../nine-seed33-jones-prefix-group03-staged-check/README.md) binds the audited group02 provider; the guarded compilation passed and the [independent terminal audit](../../reviews/nine-seed33-jones-prefix-group03-staged-terminal-frontier-independent/) passed.

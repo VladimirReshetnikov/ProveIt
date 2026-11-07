@@ -73,7 +73,9 @@ semantics remain separate. A [B/q/N prefix client](research/nine-seed33-jones-pr
 checks the next three short-prefix values. A [second prefix group](research/nine-seed33-jones-prefix-group02-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-prefix-group02-staged-terminal-frontier-independent/README.md),
 checks three B carries and the e/ell/lambda values; full output semantics
-remain separate.
+remain separate. A [third prefix group](research/nine-seed33-jones-prefix-group03-staged-check/README.md),
+[independently audited](reviews/nine-seed33-jones-prefix-group03-staged-terminal-frontier-independent/README.md),
+checks further carry, g, theta and G identities, still locally.
 A [human-readable 33-seed formula](research/nine-seed33-jones-human-formula/FORMULA.md)
 has passed an [independent manual transcription review](reviews/nine-seed33-jones-human-formula-frontier-independent/README.md).
 Lean does not parse the Markdown; numeric expansion and exact metrics remain
