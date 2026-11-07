@@ -2234,8 +2234,11 @@ core norms and five representative equalities. Supplying those hypotheses
 from source zero is checked by a [current-source AllCuts client](research/nine-sharing-sign33-current-forward-all-cuts-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-current-forward-all-cuts-terminal-frontier-independent/README.md):
 natural source zero yields an existential AllCuts witness under an explicit
-universal current-port cast. Deriving seed zero and discharging the cast remain
-separate.
+universal current-port cast. A [source-to-seed client](research/nine-sharing-sign33-current-source-seed-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-current-source-seed-terminal-frontier-independent/README.md),
+then derives a 33-seed zero with distinguished input 1 under the same explicit
+universal cast. Discharging the cast and composing the two source directions
+remain separate.
 A [generic reference-ell client](research/nine-sharing-sign33-reference-ell-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-reference-ell-terminal-frontier-independent/README.md),
 checks the ring-level node 30 identity used by a proposed P-norm route; it
