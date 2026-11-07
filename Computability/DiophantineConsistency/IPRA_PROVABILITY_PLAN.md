@@ -31,6 +31,11 @@ gives the conservative upper bound `291404·5^34 + 860 =
 169619452208280563354492188360` for the symbolic nine-variable expression.
 It is not a Lean theorem, exact degree, operation count or literal-export
 binding; its seed fingerprints are source/AST fingerprints.
+A [33-seed compact macro prototype](research/nine-seed33-jones-compact-macro-prototype/README.md),
+[independently audited](reviews/nine-seed33-jones-compact-macro-frontier-independent/README.md),
+records 45 live named nodes with the seed-specific symbolic coefficients.
+This is a named-node count, not an arithmetic operation count; the JSON is not
+formally bound to the Lean formula.
 
 A [nine-natural-coordinate Jones expression built from the 38-witness seed](research/nine-sharing-norm38-ipra-endpoint-check/README.md)
 now has [independently audited Lean endpoints](reviews/nine-sharing-norm38-ipra-endpoint-terminal-frontier-independent/README.md)
