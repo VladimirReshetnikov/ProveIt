@@ -5310,9 +5310,8 @@ That includes:
   and 59's 52 / 79. Endpoints exist for the
   formulas of 188's 94 / 67 and 118 / 66, but only at the
   maintained CURRENT2011 tuple (`β = 2^94517 − 1`). The package binds them to
-  block-mask2963. 192's thirteen-positive 174 / 69 is bound to admissible942,
-  whose calibration is now closed (183 is done; see below), and still needs
-  its retarget;
+  block-mask2963 (183's 150 / 65 and 192's 174 / 69 on admissible942 are
+  closed; see below);
 - the thirteen-positive 170's 154 / 72 and 162 / 71;
 - 170's 74 / 438;
 - 184's 104 / 174;
@@ -5417,5 +5416,9 @@ the packages' coefficient files with it:
   syntax to `carrier65.json`, and `check_recipe.py` / `check_ports.py` bind
   it to the payloads.
 
-  192's 174 / 69 still needs `ModelThirteenCarrier` and
-  `ArithmeticThirteenOuter` retargeted onto the admissible942 window.
+  **192's 174 / 69, CLOSED (2026-11-07).** `Adm942/Adm942ThirteenOuter` and
+  `Adm942/Adm942ThirteenCarrier` retarget the second-Pell-root reduction onto
+  the admissible942 window. The final bridge is
+  `IPRAOrdinary12.bridge_of_positive IPRACarrier65Adm942.positiveBridge`.
+  `Adm942ThirteenCarrier.native/standard/reference_equivalence69` are the
+  three iPRA endpoints for `expressionAt69` at the admissible942 ports.

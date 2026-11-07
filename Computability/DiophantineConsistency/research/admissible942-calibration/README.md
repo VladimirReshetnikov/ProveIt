@@ -1,4 +1,4 @@
-# The admissible942 tuple: a Lean calibration (183 closed)
+# The admissible942 tuple: a Lean calibration (183 and 192 closed)
 
 7 November 2026. Claude session; not a paired replay.
 
@@ -110,7 +110,10 @@ kept.
 - **183 endpoint (done).** `IPRACarrier65Adm942`: `positiveBridge`, then
   native, standard and equality-only iPRA equivalences between the absence
   of positive zeros of 183's 150/65 and `¬mappedNativeRefutation`.
-- **Open.** The 192 retarget (`ModelThirteenCarrier`,
-  `ArithmeticThirteenOuter`) onto the admissible942 window.
+- **192 endpoint (done).** `Adm942ThirteenOuter` (base, rank ≡ 3 mod 4 and
+  window positivity at width 189269) and `Adm942ThirteenCarrier` (completion,
+  `sameNoZero69` and `bridge69` through 183's `positiveBridge`) give
+  `native/standard/reference_equivalence69` for 192's 174/69 at the
+  admissible942 ports.
 
 All axioms are within `[propext, Classical.choice, Quot.sound]`.
