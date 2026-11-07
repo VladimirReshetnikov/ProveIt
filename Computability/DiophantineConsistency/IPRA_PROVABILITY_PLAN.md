@@ -561,7 +561,10 @@ An external [25-witness octic candidate](research/nine-sharing-sign25-octic-ell-
 [independently audited](reviews/nine-sharing-sign25-octic-ell-frontier-independent/README.md),
 eliminates the natural ell product at the cost of exact degree 8. Its
 lift/drop bridge and iPRA endpoint are not yet checked in Lean; it is a
-different degree/variable tradeoff from the 26-witness sextic.
+different degree/variable tradeoff from the 26-witness sextic. An [independently
+reviewed Lean source draft](research/nine-sharing-sign25-octic-lean-draft/README.md)
+specifies the product lift/drop and retains its inherited 4,000,000-heartbeat
+syntax option; its bridge targets remain unproved.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
