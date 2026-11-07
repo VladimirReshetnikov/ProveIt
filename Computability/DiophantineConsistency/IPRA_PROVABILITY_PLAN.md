@@ -2207,7 +2207,10 @@ A [node-76 client](research/nine-sharing-sign33-node76-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-node76-terminal-frontier-independent/README.md),
 checks the conditional topology equality and generic reference `V²−y²`
 identity. The sign reversal and constructor binding needed for the U norm
-remain separate.
+remain separate. A [negative-sign attempt](research/nine-sharing-sign33-negative-node76-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-negative-node76-failure-frontier-independent/README.md),
+failed because `dsimp` made no progress; it produced no object or final
+postflight, and its `sorryAx` report is not proof evidence.
 A [generic reference-ell client](research/nine-sharing-sign33-reference-ell-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-reference-ell-terminal-frontier-independent/README.md),
 checks the ring-level node 30 identity used by a proposed P-norm route; it
