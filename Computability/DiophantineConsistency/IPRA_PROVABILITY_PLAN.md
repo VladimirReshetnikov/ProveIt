@@ -63,6 +63,11 @@ fixed integer ports; the earlier candidate's unresolved relative coefficient
 path is retained in its own packet. Both all-model reconstruction directions
 remain to be checked in Lean. The existing nine-variable Jones theorem requires
 degree at most four, so no 32-witness Jones endpoint follows from this result.
+A [single-cut syntactic substitution survey](research/nine-sharing-sign33-single-cut-substitution-survey/README.md),
+[independently audited](reviews/nine-sharing-sign33-single-cut-survey-frontier-independent/README.md),
+finds a degree-3 or degree-4 residual in each of the 19 single-cut substitutions
+into this residual list. This describes syntax only; it does not exclude
+cancellation, other encodings, multiple changes or a 32-witness quartic.
 
 A [nine-natural-coordinate Jones expression built from the 38-witness seed](research/nine-sharing-norm38-ipra-endpoint-check/README.md)
 now has [independently audited Lean endpoints](reviews/nine-sharing-norm38-ipra-endpoint-terminal-frontier-independent/README.md)
