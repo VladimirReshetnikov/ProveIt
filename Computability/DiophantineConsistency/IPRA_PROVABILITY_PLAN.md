@@ -225,7 +225,10 @@ and numerical coefficient bindings remain separate. The
 quartic Jones theorem does not apply directly to it. An external
 [28-witness sextic candidate](research/nine-sharing-sign28-sextic-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign28-sextic-frontier-independent/README.md),
-removes three more positive cuts with exact degree 6. Its model bridge and
+removes three more positive cuts with exact degree 6. An [independently
+reviewed source-only bridge draft](research/nine-sharing-sign28-sextic-lean-draft/README.md)
+sets out the three-coordinate lift and drop and retains an explicit beta-cast
+obligation. Its model bridge and
 iPRA endpoint likewise remain to be checked in Lean. A further external
 [27-witness sextic candidate](research/nine-sharing-sign27-sextic-normalized-root-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign27-sextic-root-independent/README.md),
