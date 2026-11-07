@@ -92,7 +92,10 @@ identify the full recipe output. A [generic rankCode link](research/nine-seed33-
 checks the corresponding generic algebraic relation; concrete composition is
 checked locally by a [d11 rank composition](research/nine-seed33-jones-prefix-rank-composition-check/README.md),
 [independently audited](reviews/nine-seed33-jones-prefix-rank-composition-terminal-frontier-independent/README.md).
-Full output semantics remain separate. A [B-power client](research/nine-seed33-jones-prefix-b-power-check/README.md),
+A [symbolic d11 specialization](research/nine-seed33-jones-prefix-rank-symbolic-check/README.md),
+[independently audited](reviews/nine-seed33-jones-prefix-rank-symbolic-terminal-frontier-independent/README.md),
+checks the relevant symbolic substitutions. Full output semantics remain
+separate. A [B-power client](research/nine-seed33-jones-prefix-b-power-check/README.md),
 [independently audited](reviews/nine-seed33-jones-prefix-b-power-terminal-frontier-independent/README.md),
 checks the local d10 `B=b^5` identity.
 A [human-readable 33-seed formula](research/nine-seed33-jones-human-formula/FORMULA.md)
