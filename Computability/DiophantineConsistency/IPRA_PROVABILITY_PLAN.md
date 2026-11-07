@@ -2126,6 +2126,10 @@ composition](research/nine-sharing-sign33-current-forward-gap-check/README.md),
 then supplies five representatives and the constructor gap field under source
 zero and an explicit universal current-port cast. Four other representative
 equalities and the remaining constructor conditions still need to be applied.
+A [conditional forward-tau client](research/nine-sharing-sign33-forward-tau-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-forward-tau-terminal-frontier-independent/README.md),
+checks the constructor's tau field from the generic gap and tau representative
+equalities; it records two warnings and does not supply those hypotheses.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
