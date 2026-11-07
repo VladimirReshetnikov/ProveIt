@@ -133,6 +133,11 @@ and final postflight did not run. The specific source trigger is unknown. A
 compiled the generic input-substitution evaluation, but its concrete
 expression/evaluation stage again hit the interpreter memory limit. Its
 endpoint and final postflight did not run; the precise trigger remains unknown.
+A further [abstract-port retry](research/nine-sharing-sign32-direct-ipra-abstract-retry/README.md),
+[independently audited](reviews/nine-sharing-sign32-direct-ipra-abstract-retry-failure-frontier-independent/README.md),
+also hit the interpreter memory limit in its first, symbolic-port stage, which
+contains both a definition and its evaluation theorem. No object or endpoint
+result was produced; the triggering declaration remains unknown.
 An external [31-witness sextic candidate](research/nine-sharing-sign31-sextic-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign31-sextic-frontier-independent/README.md),
 eliminates the `f2` cut from the 32-witness AST while preserving exact degree 6.

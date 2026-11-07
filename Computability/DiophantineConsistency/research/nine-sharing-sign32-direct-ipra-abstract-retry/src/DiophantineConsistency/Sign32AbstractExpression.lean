@@ -1,0 +1,27 @@
+import DiophantineConsistency.Sign32GenericRemoveInput
+import DiophantineConsistency.Sign32CurrentSourceIff
+
+/-! UNCOMPILED input substitution and model evaluation with symbolic ports. -/
+set_option autoImplicit false
+noncomputable section
+namespace DiophantineConsistency.Sign32AbstractExpression
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic ModelDifferenceRing
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011
+variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def expression (p : Fin 4 → ℤ) : Expr (Fin 32) :=
+  Sign32GenericRemoveInput.removeInput (SharingSeed32Sextic.seed p)
+
+theorem eval_expression (p : Fin 4 → ℤ) (w : Fin 32 → V) :
+    (expression p).evalRing (fun i => ι (w i)) =
+      (SharingSeed32Sextic.seed p).evalRing (fun i => ι (Fin.cons (1 : V) w i)) := by
+  change (Sign32GenericRemoveInput.removeInput (SharingSeed32Sextic.seed p)).evalRing (fun i => ι (w i)) = _
+  rw [Sign32GenericRemoveInput.eval_removeInput]
+  congr 1
+  funext i
+  refine Fin.cases ?_ (fun j => ?_) i
+  · simp [map_one]
+  · simp
+end DiophantineConsistency.Sign32AbstractExpression
+#print axioms DiophantineConsistency.Sign32AbstractExpression.eval_expression
