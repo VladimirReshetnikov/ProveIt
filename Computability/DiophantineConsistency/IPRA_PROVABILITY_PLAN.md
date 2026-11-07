@@ -139,6 +139,9 @@ checks the symbolic A0 value and associated P/K paths.
 A [d41 A1 checkpoint client](research/nine-seed33-jones-checkpoint37-41-a1-check/README.md),
 [independently audited](reviews/nine-seed33-jones-checkpoint37-41-a1-terminal-frontier-independent/README.md),
 checks symbolic A1 there.
+A [V0/V1 checkpoint client](research/nine-seed33-jones-checkpoint38-39-v-check/README.md),
+[independently audited](reviews/nine-seed33-jones-checkpoint38-39-v-terminal-frontier-independent/README.md),
+checks their symbolic values at d38 and d39.
 A [U/Y dependent-prefix client](research/nine-seed33-jones-dependent01-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-dependent01-staged-terminal-frontier-independent/README.md),
 checks the d19 and d20 local equations; full output semantics remain open.
