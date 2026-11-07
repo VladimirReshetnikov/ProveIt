@@ -281,7 +281,12 @@ Only `P55Facts.halts` names the 121x8801 ports; the rest is port-generic.
    needs its own `LeafFacts` proof, as phase 4 did for 52 / 79.
 2. **Completeness.** Halting of machine 215 gives a solution. This is the
    recipe's witness construction: packing, rank, and the `λ = 2341`
-   controller of §4. Compact44's `PackingInput d` is already parametric in
-   `d`.
+   controller of §4. [`CONVERSE_PORT.md`](CONVERSE_PORT.md) maps Compact44's
+   147-module halt-to-witness layer: 80 modules to hand-port (about 5,700
+   lines), 17 width-only modules, 9 that only need import retargeting, and 41
+   reusable unchanged. Compact44's controller is already the
+   arbitrary-odd-factor construction, so its port changes the constants
+   (`p = 581197 → λ = 2341`, `C0 = 342946332593 → 2492980061`), not the
+   argument.
 3. **Endpoints.** The iPRA endpoints `equation ↔ Con(ZFC)` for 52 / 79 and
    44 / 111, by the Compact44 promotion method.
