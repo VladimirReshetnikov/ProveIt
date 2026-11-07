@@ -439,6 +439,11 @@ named-formula equality remains separate. A [margin and Kc binding client](resear
 [independently audited](reviews/nine-seed38-jones-vars-kc-terminal-frontier-independent/README.md),
 checks Dm against the RingVars margin and Kc against `dvsr*(2*marg-1)`;
 the rank remains opaque, and the inherited A1 and initial-exit caveats apply.
+A [recipe-output composition](research/nine-seed38-jones-vars-output-check/README.md),
+[independently audited](reviews/nine-seed38-jones-vars-output-terminal-frontier-independent/README.md),
+checks equality with `RefinedPair.value` of the symbolic RingVars under those
+same caveats. Matching the opaque rank to the named evaluator and linking the
+JSON remain separate.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
 not a Lean proof or evidence that the complete composition fits the resource
