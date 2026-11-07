@@ -524,7 +524,11 @@ indicated models, with one unused-section warning. A [concrete polynomial
 bridge](research/nine-sharing-sign26-concrete-polynomial-bridge-check/README.md),
 [independently audited](reviews/nine-sharing-sign26-concrete-polynomial-bridge-terminal-frontier-independent/README.md),
 transports the sign27 bridge to the direct sign26 expression. The iPRA
-endpoint remains separate, with earlier source ancestry inherited. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
+endpoint remains separate, with earlier source ancestry inherited. A [native
+endpoint attempt](research/nine-sharing-sign26-endpoint-check/README.md),
+[independently audited](reviews/nine-sharing-sign26-endpoint-failure-frontier-independent/README.md),
+hit the interpreter memory limit in its first stage, producing no endpoint
+object or final postflight; the trigger is unknown. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
 [independently audited](reviews/nine-sharing-sign26-q3-single-cut-independent/README.md),
 examines ten direct cuts under one formal monic reduction rule; it is not a
 semantic lower bound or an obstruction to other encodings.
