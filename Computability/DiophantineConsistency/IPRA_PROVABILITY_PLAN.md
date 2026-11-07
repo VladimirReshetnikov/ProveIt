@@ -10,6 +10,30 @@ repaired on that snapshot, and the 14-variable endpoint rechecked on the
 repaired parent; source-current and inherited external-ancestry qualifications
 remain as described below.
 
+## Proof size and scope estimate
+
+For the existing 14-variable endpoint, no further Lean lines are required for
+the checked core derivability statement under the repository's selected iPRA
+and mapped ZFC-refutation definitions. `IPRACurrentNativeZFC.lean` is 24
+physical lines but imports extensive shared development. As a footprint, the
+1,000 project sources in the manifest for the fresh standard-endpoint closure
+have 198,838 physical lines at their pinned hashes. This includes shared code,
+comments and definitions, is not a minimal proof size, and excludes external
+Foundation and other library sources. The closure is documented in
+[`current14-standard-fresh-rebuild-preflight`](research/current14-standard-fresh-rebuild-preflight/README.md).
+
+As an engineering guess, 500–2,000 additional Lean lines could suffice to
+bind a deliberately specified human-readable source formula to the checked
+syntax, assuming the existing components match. This is not a measured lower
+bound and excludes parsers, scripts and build or audit infrastructure. Fully
+formal PDF parsing/rendering is a different, currently unspecified scope; the
+existing correspondence includes manual checking. Replaying the checked
+sources and auditing provider ancestry is also not principally a Lean-line
+count. None of these estimates bounds the size of an explicit iPRA proof
+certificate, which the derivability theorem does not print.
+
+## Current reduction status
+
 A [nine-natural-coordinate Jones expression built from the 33-witness seed](research/nine-sharing-sign33-ipra-endpoint-check/README.md)
 now has [independently audited Lean endpoints](reviews/nine-sharing-sign33-ipra-endpoint-terminal-frontier-independent/README.md)
 for the native and standard iPRA mapped-refutation equivalences and the
