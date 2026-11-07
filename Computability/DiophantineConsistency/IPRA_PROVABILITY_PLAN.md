@@ -360,8 +360,10 @@ Its source-review receipt retains the historical appended-plan-link replay
 caveat. An [abstract root-recovery client](research/nine-sharing-sign27-root-recovery-check/README.md),
 [independently audited](reviews/nine-sharing-sign27-root-recovery-terminal-frontier-independent/README.md),
 checks the predecessor and product reconstruction from an explicit embedded
-root equation. Extracting that equation from seed zero and the full model
-bridge remain separate.
+root equation. A [seed-root extraction client](research/nine-sharing-sign27-seed-root-recovery-check/README.md),
+[independently audited](reviews/nine-sharing-sign27-seed-root-recovery-terminal-frontier-independent/README.md),
+checks that a symbolic sign28 seed zero supplies a predecessor and both
+reconstruction equalities. The full sign27 zero bridge remains separate.
 A further external [26-witness sextic candidate](research/nine-sharing-sign26-sextic-gap-congruence-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign26-sextic-gap-independent/README.md),
 eliminates the gap witness using congruence modulo the q3 residual. Its

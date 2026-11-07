@@ -1,0 +1,3 @@
+# Proposed extraction of sign28 normalized-root witness
+
+This source-only client proposes extracting the old N1 residual from the checked sign28 square-sum zero theorem, converting its ring-zero equation to the explicit equality required by `Sign27RootRecovery.recover`, and obtaining a predecessor and the two reconstruction equations. Neither this client nor its exact enumeration/simplification has run Lean. The abstract recovery provider is author-checked but its independent terminal audit is pending. This is not a sign27 zero bridge, source iff, endpoint, degree theorem or external byte binding.

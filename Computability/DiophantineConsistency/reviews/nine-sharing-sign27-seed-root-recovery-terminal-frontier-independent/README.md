@@ -1,0 +1,3 @@
+Independent terminal audit: PASS. Author-recorded session 13719 exited 0. The pinned source, object, dependency/compile logs, exact abstract root-recovery provider, 100 guard slots and 1,060 overlay links were checked. The N1 membership theorem reports [propext]; the coordinate recovery theorem reports [propext, Classical.choice, Quot.sound], with no warnings.
+
+For symbolic ports in IΣ₁, sign28 seed zero now implies existence of u with v21=u+1 and v22=u(u+2). This is coordinate recovery only, not the complete sign27 zero bridge or endpoint. Outer exit is author-recorded and deeper ancestry inherited; no Lean replay was performed.
