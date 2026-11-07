@@ -596,7 +596,9 @@ derives the deleted product coordinate from old seed zero and checks lift after
 drop. An [assembled pointwise zero bridge](research/nine-sharing-sign25-zero-assembly-check/README.md),
 [independently audited](reviews/nine-sharing-sign25-zero-assembly-terminal-frontier-independent/README.md),
 checks both directions for symbolic ports in IΣ₁ models. The same-input
-existential composition and direct iPRA endpoint remain separate.
+existential composition is checked in a [seed-iff client](research/nine-sharing-sign25-seed-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-seed-iff-terminal-frontier-independent/README.md).
+The direct iPRA endpoint remains separate.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
