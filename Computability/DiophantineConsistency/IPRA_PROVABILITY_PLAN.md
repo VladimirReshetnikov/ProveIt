@@ -598,7 +598,11 @@ drop. An [assembled pointwise zero bridge](research/nine-sharing-sign25-zero-ass
 checks both directions for symbolic ports in IΣ₁ models. The same-input
 existential composition is checked in a [seed-iff client](research/nine-sharing-sign25-seed-iff-check/README.md),
 [independently audited](reviews/nine-sharing-sign25-seed-iff-terminal-frontier-independent/README.md).
-The direct iPRA endpoint remains separate.
+A [direct expression and evaluation client](research/nine-sharing-sign25-expression-eval-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-expression-eval-terminal-frontier-independent/README.md),
+checks its Fin25 input-one evaluation at abstract and current ports. It inherits
+the syntax runner's heartbeat and label qualifications. The direct iPRA
+endpoint remains separate.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
