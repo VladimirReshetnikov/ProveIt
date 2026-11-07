@@ -2150,7 +2150,11 @@ representative equalities; its compile records eight simp/tactic warnings.
 A [first Q-norm mapping attempt](research/nine-sharing-sign33-forward-norm-q-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-forward-norm-q-failure-frontier-independent/README.md),
 failed with a Lean interpreter memory exception under `-M2800`; it produced no
-theorem or object and did not reach final provider postflight.
+theorem or object and did not reach final provider postflight. A [factored
+retry](research/nine-sharing-sign33-forward-norm-q-retry02/README.md),
+[independently audited](reviews/nine-sharing-sign33-forward-norm-q-retry02-terminal-frontier-independent/README.md),
+checks the constructor Q field assuming the generic core Q norm, using the
+checked 38-witness reference terminal. It records one unused-simp warning.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign

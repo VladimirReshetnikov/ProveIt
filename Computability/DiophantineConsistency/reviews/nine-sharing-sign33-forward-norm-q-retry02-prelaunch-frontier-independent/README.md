@@ -1,0 +1,5 @@
+# Independent prelaunch review: factored conditional Q retry
+
+The first stage proposes deriving the 38-constructor terminal 44 from the checked forward gates, terminal agreement, prefix identity and reference-Q field under the same shifted-core `Q=1` hypothesis. The second simplifies that terminal to the ring value of coordinates 22 squared minus 24 and transfers it to the 33-constructor's corresponding shifted coordinates 23 and 25. The source now explicitly simplifies pair operations and ring-map laws before the final definitional coordinate identification; the previous unrun retry's overly strong definitional assumption was corrected.
+
+The checker pins both sources, runner, manifest and provider survey, verifies terminal selection, source coordinates and the 33/38 vector mapping, and reruns the guarded no-Lean preflight. No blocker was found within this point-in-time scope, but Lean elaboration remains untested. This is conditional on Q=1, not a source-zero implication, all norms/cuts or an iPRA endpoint; the inherited initial-agreement outer-exit gap remains.
