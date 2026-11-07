@@ -396,7 +396,10 @@ the reverse direction constructing the predecessor and recovery equations.
 A [same-input existential client](research/nine-sharing-sign27-seed-iff-check/README.md),
 [independently audited](reviews/nine-sharing-sign27-seed-iff-terminal-frontier-independent/README.md),
 checks seed zero-existence equivalence for the same symbolic ports and input.
-The direct expression and iPRA endpoint compositions remain separate.
+An [expression-evaluation client](research/nine-sharing-sign27-expression-eval-check/README.md),
+[independently audited](reviews/nine-sharing-sign27-expression-eval-terminal-frontier-independent/README.md),
+checks abstract and current input-removal evaluations in four stages. The
+direct expression equivalence and iPRA endpoint remain separate.
 A further external [26-witness sextic candidate](research/nine-sharing-sign26-sextic-gap-congruence-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign26-sextic-gap-independent/README.md),
 eliminates the gap witness using congruence modulo the q3 residual. Its

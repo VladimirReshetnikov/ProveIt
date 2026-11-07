@@ -1,0 +1,5 @@
+# Proposed narrow sign27 expression evaluation
+
+Four stages propose the symbolic-port input-removal definition and evaluation theorem, then the current-port definition and its evaluation specialization for 27 coordinates. The stages use checked sign27 syntax rather than importing the seed-zero bridge. They do not establish source equivalence, a polynomial bridge, an endpoint, a Lean degree theorem, or an external JSON/coefficient binding.
+
+The runner authenticates the successful generic input-removal row within an overall failed producer, the checked sign27 syntax producer, and current-data observations within successful rows of a partially failed port producer. It retains direct guards and overlay routes, deeper inherited ancestry and the historical plan README-link replay caveat. Author no-Lean preflight exited 0, and the reviewed run succeeded as recorded in [attempt01](attempt01/README.md); the [independent terminal audit](../../reviews/nine-sharing-sign27-expression-eval-terminal-frontier-independent/README.md) passed. Limits remain `-M2800`, 120 seconds per call, sampled 4-GiB RSS, 10-GiB available-host-memory floor and 5-GB disk precheck.
