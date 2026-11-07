@@ -1,0 +1,5 @@
+# Independent RingVars/Bd retry02 terminal audit
+
+The state records a successful dependency scan and Lean compile; the author's separate record reports actual outer session 43726 exit 0. The checker validates source/object pins and logs, all 100 direct guard entries, 1,274 overlay links and the exact terminal-output provider. The requested theorem reports `[propext, Classical.choice, Quot.sound]`; there are no warnings. Prelaunch review verified the sole proof delta from retry01 replaces unused `Nat.cast_ofNat` with `Int.cast_one`; the original theorem and symbolic variables are unchanged.
+
+The checked theorem equates the symbolic d41 Bd cut to `vars.dvsr`, with d11 rank still opaque. It does not establish equality of the complete recipe to the named evaluator or a JSON/document binding. No Lean replay was performed. The outer outcome is author-observed; guard checks are point-in-time and sampled monitoring is not a complete transitive or dynamic trace. Earlier A1 independent recursive preflight was interrupted, with the author's passing preflight recorded, and the earlier initial-agreement numeric outer exit is unavailable.
