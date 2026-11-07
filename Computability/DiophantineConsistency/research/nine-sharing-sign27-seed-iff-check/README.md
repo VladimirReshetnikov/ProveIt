@@ -1,0 +1,5 @@
+# Proposed sign27/sign28 same-input existential iff
+
+This guarded candidate composes the two sign27/sign28 zero-bridge directions into an existential seed-zero iff preserving an arbitrary distinguished input. The reverse direction takes the predecessor produced by the bridge; no total model predecessor is assumed. The source header describing the bridge import as uncompiled is stale: it subsequently passed its run and independent terminal audit.
+
+The runner binds all three successful bridge stages, their direct guards and overlay routes. Deeper ancestry and the historical plan README-link caveat are inherited. Author no-Lean preflight exited 0, and the reviewed run succeeded as recorded in [attempt01](attempt01/README.md); the [independent terminal audit](../../reviews/nine-sharing-sign27-seed-iff-terminal-frontier-independent/README.md) passed. Limits remain `-M2800`, 120 seconds per call, sampled 4-GiB RSS, 10-GiB available-host-memory floor and 5-GB disk precheck. No concrete source iff, endpoint, Lean degree theorem or external JSON/coefficient binding is claimed.
