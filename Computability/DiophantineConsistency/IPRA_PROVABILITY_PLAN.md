@@ -408,8 +408,11 @@ checks abstract and current input-removal evaluations in four stages. The
 [direct-expression equivalence](research/nine-sharing-sign27-expression-equivalence-check/README.md),
 [independently audited](reviews/nine-sharing-sign27-expression-equivalence-terminal-frontier-independent/README.md),
 checks zero-existence equivalence with the direct sign28 expression in the
-indicated models, with one unused-section warning. The iPRA endpoint remains
-separate.
+indicated models, with one unused-section warning. A [concrete polynomial
+bridge](research/nine-sharing-sign27-concrete-polynomial-bridge-check/README.md),
+[independently audited](reviews/nine-sharing-sign27-concrete-polynomial-bridge-terminal-frontier-independent/README.md),
+transports the sign28 bridge to the direct sign27 expression. The iPRA
+endpoint remains separate, with sign28/sign31 source ancestry inherited.
 A further external [26-witness sextic candidate](research/nine-sharing-sign26-sextic-gap-congruence-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign26-sextic-gap-independent/README.md),
 eliminates the gap witness using congruence modulo the q3 residual. Its
