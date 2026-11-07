@@ -112,6 +112,9 @@ checks the symbolic J value there.
 A [d41 Q checkpoint client](research/nine-seed33-jones-checkpoint29-41-q-check/README.md),
 [independently audited](reviews/nine-seed33-jones-checkpoint29-41-q-terminal-frontier-independent/README.md),
 checks symbolic Q at that checkpoint.
+A [d41 D checkpoint client](research/nine-seed33-jones-checkpoint30-41-d-check/README.md),
+[independently audited](reviews/nine-seed33-jones-checkpoint30-41-d-terminal-frontier-independent/README.md),
+checks symbolic D there.
 A [U/Y dependent-prefix client](research/nine-seed33-jones-dependent01-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-dependent01-staged-terminal-frontier-independent/README.md),
 checks the d19 and d20 local equations; full output semantics remain open.
