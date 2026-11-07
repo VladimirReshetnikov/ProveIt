@@ -386,7 +386,11 @@ checks the three remaining residuals affected by the root substitution, with
 six linter warnings. A [remaining-cuts client](research/nine-sharing-sign27-remaining-cuts-check/README.md),
 [independently audited](reviews/nine-sharing-sign27-remaining-cuts-terminal-frontier-independent/README.md),
 checks the 14 unaffected residual identities, with 20 linter warnings. The
-full sign27 zero bridge remains separate.
+[full directional zero bridge](research/nine-sharing-sign27-zero-bridge-check/README.md),
+[independently audited](reviews/nine-sharing-sign27-zero-bridge-terminal-frontier-independent/README.md),
+checks both lift and reverse directions in the indicated IΣ₁ models, with
+the reverse direction constructing the predecessor and recovery equations.
+Existential and iPRA endpoint compositions remain separate.
 A further external [26-witness sextic candidate](research/nine-sharing-sign26-sextic-gap-congruence-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign26-sextic-gap-independent/README.md),
 eliminates the gap witness using congruence modulo the q3 residual. Its
