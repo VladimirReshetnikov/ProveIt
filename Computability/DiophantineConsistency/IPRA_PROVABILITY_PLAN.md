@@ -67,7 +67,11 @@ A [source-only Lean syntax and bridge draft](research/nine-sharing-sign32-sextic
 [independently reviewed](reviews/nine-sharing-sign32-sextic-lean-frontier-independent/README.md),
 transcribes all 23 residuals and defines proposed lift/drop maps and two open
 zero-set propositions. Separate errata correct its reproduction instructions;
-neither direction has been proved or compiled in Lean.
+neither bridge direction has been proved in Lean. A [syntax and square-sum
+client](research/nine-sharing-sign32-seed-squares-check/README.md),
+[independently audited](reviews/nine-sharing-sign32-seed-squares-terminal-frontier-independent/README.md),
+checks that symbolic 32-seed zero is equivalent to zero of all 23 residuals at
+the same valuation; it does not establish the 32-to-33 bridge or an endpoint.
 A [single-cut syntactic substitution survey](research/nine-sharing-sign33-single-cut-substitution-survey/README.md),
 [independently audited](reviews/nine-sharing-sign33-single-cut-survey-frontier-independent/README.md),
 finds a degree-3 or degree-4 residual in each of the 19 single-cut substitutions
