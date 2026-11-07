@@ -91,7 +91,11 @@ for tau; it records three linter warnings. The remaining bridge obligations
 stay separate. A [sixth substitution client](research/nine-sharing-sign32-substitution-group05-check/README.md),
 [independently audited](reviews/nine-sharing-sign32-substitution-group05-terminal-frontier-independent/README.md),
 checks N0/Nt/f² identities and list positions, recording four linter warnings.
-The remaining bridge obligations stay separate.
+A [seventh substitution client](research/nine-sharing-sign32-substitution-group06-check/README.md),
+[independently audited](reviews/nine-sharing-sign32-substitution-group06-terminal-frontier-independent/README.md),
+checks cTminusR/V/normalizedS identities and list positions, retaining the
+beta-port cast for cTminusR and recording four warnings. The remaining bridge
+obligations stay separate.
 A [single-cut syntactic substitution survey](research/nine-sharing-sign33-single-cut-substitution-survey/README.md),
 [independently audited](reviews/nine-sharing-sign33-single-cut-survey-frontier-independent/README.md),
 finds a degree-3 or degree-4 residual in each of the 19 single-cut substitutions

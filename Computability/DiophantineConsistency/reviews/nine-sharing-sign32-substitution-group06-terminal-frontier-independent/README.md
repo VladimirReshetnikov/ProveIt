@@ -1,0 +1,5 @@
+# Independent sign32 cTminusR/V/normalizedS terminal audit
+
+The state records a successful dependency scan and Lean compile; the author's separate record reports actual outer session 51650 exit 0. The checker validates source, object, logs, all 100 direct guards, 1,065 overlay links and the exact group05 provider. Six row-link reports are `[propext]`; three same-valuation evaluation reports are `[propext, Classical.choice, Quot.sound]`. The log contains four unused-`p` linter warnings in the V and normalizedS old/new definitions.
+
+The checked statements identify old/new cTminusR, V and normalizedS residuals at their exact list positions and show evaluations agree under the proposed lift in an IΣ₁ model. The cTminusR theorem explicitly assumes the port-0 cast equality because its old residual uses eliminated coordinate 15; V and normalizedS do not. Remaining residual identities, the complete zero-set bridge, numeric port binding and any endpoint remain outside scope. No Lean replay was performed. The outer record is author-observed; guards are point-in-time and sampled monitoring does not establish a complete dynamic or transitive trace.
