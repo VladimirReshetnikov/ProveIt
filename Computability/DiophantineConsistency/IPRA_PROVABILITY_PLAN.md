@@ -196,6 +196,12 @@ iPRA endpoint likewise remain to be checked in Lean. A further external
 [independently audited](reviews/nine-sharing-sign27-sextic-root-independent/README.md),
 normalizes a positive norm root and removes its product coordinate. Its
 positive-root, predecessor and embedding bridge remains unproved in Lean.
+A further external [26-witness sextic candidate](research/nine-sharing-sign26-sextic-gap-congruence-candidate/README.md),
+[independently audited](reviews/nine-sharing-sign26-sextic-gap-independent/README.md),
+eliminates the gap witness using congruence modulo the q3 residual. Its
+conditional positivity and natural reconstruction argument is not yet a Lean
+zero bridge or iPRA endpoint; the existing quartic Jones theorem does not
+apply directly.
 A [one-step survey](research/nine-sharing-sign27-single-positive-cut-survey/README.md),
 [independently audited](reviews/nine-sharing-sign27-single-cut-independent/README.md),
 checks the syntactic-degree effect of the seven directly eligible positive
