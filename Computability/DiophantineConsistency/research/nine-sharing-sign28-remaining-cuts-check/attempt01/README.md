@@ -1,0 +1,3 @@
+# Terminal result
+
+Author-observed outer session 53605 exited 0 with `PASS sign28 remaining residual identities diagnostic`; both Lean stages exited 0. There are 14 evaluation reports, all `[propext, Classical.choice, Quot.sound]`. Stage 1 logs 13 linter warnings (10 unused `p` binders, three unused `simp` arguments); stage 2 logs eight unused-`p` warnings. State, logs and author-recorded outer outcome are retained here; objects remain under `/tmp/nine-sharing-sign28-remaining-cuts-check-20261106/lib/DiophantineConsistency/`. Together with three-cut, the individual lift identities are checked; whole zero-set assembly and reverse reconstruction are not.

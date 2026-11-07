@@ -243,7 +243,10 @@ the intended models. A [three-cut client](research/nine-sharing-sign28-first-cut
 [independently audited](reviews/nine-sharing-sign28-first-cuts-terminal-frontier-independent/README.md),
 checks the three inserted-cut zeros and five affected residual identities,
 with the explicit beta cast where needed and 15 unused-binder/simp warnings.
-Its full model bridge and
+A [remaining-cuts client](research/nine-sharing-sign28-remaining-cuts-check/README.md),
+[independently audited](reviews/nine-sharing-sign28-remaining-cuts-terminal-frontier-independent/README.md),
+checks q3 and 13 unaffected residual identities, with 21 unused-binder/simp
+warnings. Its full model bridge and
 iPRA endpoint likewise remain to be checked in Lean. A further external
 [27-witness sextic candidate](research/nine-sharing-sign27-sextic-normalized-root-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign27-sextic-root-independent/README.md),
