@@ -354,7 +354,11 @@ are not Lean-checked proofs. A [syntax and squares client](research/nine-sharing
 [independently audited](reviews/nine-sharing-sign27-seed-squares-terminal-frontier-independent/README.md),
 checks symbolic seed zero iff all 18 residuals vanish in the intended models.
 Its source-review receipt retains the historical appended-plan-link replay
-caveat; the predecessor and full model bridge remain separate.
+caveat. An [abstract root-recovery client](research/nine-sharing-sign27-root-recovery-check/README.md),
+[independently audited](reviews/nine-sharing-sign27-root-recovery-terminal-frontier-independent/README.md),
+checks the predecessor and product reconstruction from an explicit embedded
+root equation. Extracting that equation from seed zero and the full model
+bridge remain separate.
 A further external [26-witness sextic candidate](research/nine-sharing-sign26-sextic-gap-congruence-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign26-sextic-gap-independent/README.md),
 eliminates the gap witness using congruence modulo the q3 residual. Its
