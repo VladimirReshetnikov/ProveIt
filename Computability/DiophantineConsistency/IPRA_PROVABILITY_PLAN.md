@@ -573,6 +573,12 @@ client](research/nine-sharing-sign25-seed-squares-check/README.md),
 checks symbolic seed zero iff its 16 residuals vanish. Its retained runner
 success/scope labels incorrectly say sign26; the pinned modules and theorem
 are sign25. The bridge and endpoint remain separate.
+A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
+[independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
+substitutes the q3 cube into the sign25 residuals. Its external fixed-port
+square-sum has exact degree eight, by the explicit N0 specialization. This
+is an external AST result: the model lift/drop, inherited sign25 bridge,
+Lean degree and port-byte binding, and iPRA endpoint remain open.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
