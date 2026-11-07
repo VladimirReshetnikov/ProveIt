@@ -483,7 +483,10 @@ zero bridge was attempted in a [three-stage client](research/nine-sharing-sign26
 [independently audited](reviews/nine-sharing-sign26-zero-bridge-failure-frontier-independent/README.md):
 the coordinate and conditional forward stages compiled, but the reverse stage
 hit the 200,000-heartbeat limit, with no reverse object or final postflight.
-The full bridge remains separate. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
+The full bridge remains separate. An [expression-evaluation client](research/nine-sharing-sign26-expression-eval-check/README.md),
+[independently audited](reviews/nine-sharing-sign26-expression-eval-terminal-frontier-independent/README.md),
+checks abstract and current input-removal evaluations in four stages; no
+source bridge or endpoint follows from those lemmas alone. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
 [independently audited](reviews/nine-sharing-sign26-q3-single-cut-independent/README.md),
 examines ten direct cuts under one formal monic reduction rule; it is not a
 semantic lower bound or an obstruction to other encodings.
