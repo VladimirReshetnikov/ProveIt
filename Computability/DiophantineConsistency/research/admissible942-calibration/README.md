@@ -1,4 +1,4 @@
-# The admissible942 tuple: a Lean calibration (started)
+# The admissible942 tuple: a Lean calibration (soundness done)
 
 7 November 2026. Claude session; not a paired replay.
 
@@ -54,3 +54,36 @@ binding:
 
 So the endpoints only need the tuple calibration: the per-form Lean syntax and
 its port-parametric algebra already exist.
+
+## Lean status
+
+The modules live in
+[`Lean/DiophantineConsistency/Adm942/`](../../Lean/DiophantineConsistency/Adm942/).
+They are ports of the CURRENT2011 in-model chain, with the 2011 theorem names
+kept.
+
+- **Window layer (done).** `Adm942MaskData`, `Adm942Kernel`, `Adm942Ports`,
+  `Adm942MaskConstants`, `Adm942CarrierRadix`, `Adm942HalfBinomial`,
+  `Adm942RankForcing`, `Adm942WindowInterface`, `Adm942WindowZero`. In every
+  model of IΣ₁, a positive zero of `expressionAt` at the admissible942 ports
+  gives `q u = 2^(189269·N)` and the admissible942 `Window`.
+  [`tools/check_ports.py`](tools/check_ports.py) checks that the Lean digit lists
+  give the pinned payloads, and also checks the mask populations, residues,
+  coefficient mass and support gaps.
+- **Soundness (done).** `Adm942CellLocal`, `Adm942CellLabels`,
+  `Adm942CellTransfer`, `Adm942CellDecoding`, `Adm942WholeField`,
+  `Adm942Occupation`, `Adm942CellWindow`, `Adm942Soundness`.
+  `Adm942Soundness.zero_halts` / `zero_halts_below`: a positive zero makes the
+  decimal215 run halt before `q u`, through
+  `ArithmeticWangSoundness.marked_halts` on `WangTiles942`.
+  - Compared with 2011, the doubled clause band is replaced by two clean bands
+    1006 apart, decoded with carry-in at most 57.
+  - The alignment offsets are `{0} ∪ [20, 961]`. `r = 20` is refuted by the
+    south colour of tile 941 and `21..961` by a two-selector count. The 2011
+    `r = 19` orbit argument and the padding staircase are not needed.
+- **Open.** The converse still has to be ported: the controller and unit
+  (`ord_C0 Γ = 740784`), the packing cells, `LocalNormalization`, and the
+  assembly. After that come the 183 iPRA endpoint and the 192 retarget
+  (`ModelThirteenCarrier`, `ArithmeticThirteenOuter`).
+
+All axioms are within `[propext, Classical.choice, Quot.sound]`.
