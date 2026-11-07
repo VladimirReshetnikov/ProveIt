@@ -233,7 +233,11 @@ checks symbolic `Q` at `d29` and `d41` while keeping rank opaque. Full semantic
 composition remains separate. A [D checkpoint client](research/nine-seed38-jones-checkpoint30-41-d-check/README.md),
 [independently audited](reviews/nine-seed38-jones-checkpoint30-41-d-terminal-frontier-independent/README.md),
 checks symbolic `D` at `d30` and `d41` with rank opaque. Full semantic
-composition remains separate.
+composition remains separate. An [E checkpoint attempt](research/nine-seed38-jones-checkpoint31-41-e-check/README.md),
+[independently audited](reviews/nine-seed38-jones-checkpoint31-41-e-failure-frontier-independent/README.md),
+failed on an unqualified `prefix_i` name and an unsolved goal; it produced no
+object, did not run its second stage or final postflight, and its `sorryAx`
+reports are not proof evidence.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
 not a Lean proof or evidence that the complete composition fits the resource
