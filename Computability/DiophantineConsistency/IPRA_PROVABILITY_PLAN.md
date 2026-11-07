@@ -50,6 +50,11 @@ found no candidate below 33 witnesses in its sampled space. Its seeded search
 is not reproducible as originally stated because hash-dependent set ordering
 affects the trajectory. This is neither an exhaustive search nor a lower bound;
 selected signed cuts still require residual construction and sign proofs.
+A [sorted-baseline retry](research/nine-sharing-sign33-cut-search-deterministic/README.md),
+[independently audited](reviews/nine-sharing-sign33-cut-search-deterministic-frontier-independent/README.md),
+reproduces byte-for-byte in isolated runs and again finds best 33 in the
+restricted sample. It remains a finite heuristic, not a lower bound or proof
+of the candidate's signed-cut hypotheses.
 
 A [nine-natural-coordinate Jones expression built from the 38-witness seed](research/nine-sharing-norm38-ipra-endpoint-check/README.md)
 now has [independently audited Lean endpoints](reviews/nine-sharing-norm38-ipra-endpoint-terminal-frontier-independent/README.md)
