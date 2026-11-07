@@ -1,0 +1,3 @@
+# Sign33 U/Y checkpoint source-only candidates
+
+These three drafts adapt the previously checked sign38 d18 input values, d20→d27 path and U/Y symbolic substitutions to sign33 namespace and exponent `5^34`. The statements concern d27 checkpoint entries, not full output semantic equality or JSON/human binding. The [guarded runner](../nine-seed33-jones-checkpoint20-27-uy-check/README.md) separately authenticates the audited input, carry, path and U/Y producers; the guarded compilation passed and the [independent terminal audit](../../reviews/nine-seed33-jones-checkpoint20-27-uy-terminal-frontier-independent/) passed.
