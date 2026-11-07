@@ -1,0 +1,3 @@
+Independent prelaunch review: PASS. The two pinned source modules propose drop-after-lift, pointwise seed equivalence and existential equivalence with coordinate zero preserved. Both equivalences retain the same symbolic ports, explicit beta cast and IΣ₁ model assumption. The independent zero-bridge terminal audit and direct no-Lean preflight passed; the runner checks all four immediate bridge rows and guards and binds candidate imports. The source header saying the bridge is unchecked is stale, as recorded in the candidate README.
+
+This is not yet an elaborated Lean result. Current-source/iPRA composition, degree and external JSON/coefficient binding remain separate; dynamic and deeper transitive provider ancestry is inherited.
