@@ -2211,7 +2211,10 @@ constructor application remains separate. A [factored constructor attempt](resea
 [independently audited](reviews/nine-sharing-sign33-constructor-ell-retry01-partial-frontier-independent/README.md),
 checked its coordinate projections but failed its second stage on a
 cast-of-successor mismatch; that stage has no object, its `sorryAx` report is
-not proof evidence, and final postflight did not run.
+not proof evidence, and final postflight did not run. A [ring-map retry](research/nine-sharing-sign33-constructor-ell-retry02/README.md),
+[independently audited](reviews/nine-sharing-sign33-constructor-ell-retry02-terminal-frontier-independent/README.md),
+then checks the constructor's `v21` against shifted core `ell`, recording one
+unused-simp warning. The P-norm mapping remains separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
