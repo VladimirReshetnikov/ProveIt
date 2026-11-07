@@ -344,6 +344,10 @@ iPRA endpoint likewise remain to be checked in Lean. A further external
 [independently audited](reviews/nine-sharing-sign27-sextic-root-independent/README.md),
 normalizes a positive norm root and removes its product coordinate. Its
 positive-root, predecessor and embedding bridge remains unproved in Lean.
+An [independently reviewed source plan](research/nine-sharing-sign27-lean-bridge-plan/README.md)
+and [syntax draft](research/nine-sharing-sign27-sextic-lean-draft/README.md)
+make the predecessor and two coordinate-recovery obligations explicit; they
+are not Lean-checked proofs.
 A further external [26-witness sextic candidate](research/nine-sharing-sign26-sextic-gap-congruence-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign26-sextic-gap-independent/README.md),
 eliminates the gap witness using congruence modulo the q3 residual. Its
