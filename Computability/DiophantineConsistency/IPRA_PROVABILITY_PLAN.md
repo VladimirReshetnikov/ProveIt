@@ -2180,6 +2180,11 @@ evidence and final postflight did not run. An [explicit-coordinate retry](resear
 [independently audited](reviews/nine-sharing-sign33-forward-norm-strong-retry01-partial-frontier-independent/README.md),
 again compiled stage one but its second stage timed out after 120.224 seconds
 without an object or final postflight; the cause of the timeout is unknown.
+A [generic reference-ell client](research/nine-sharing-sign33-reference-ell-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-reference-ell-terminal-frontier-independent/README.md),
+checks the ring-level node 30 identity used by a proposed P-norm route; it
+records one tactic-sequencing warning. Its model-topology and constructor
+connections remain separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
