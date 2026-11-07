@@ -97,6 +97,9 @@ semantics.
 A [d27 U/Y checkpoint client](research/nine-seed33-jones-checkpoint20-27-uy-check/README.md),
 [independently audited](reviews/nine-seed33-jones-checkpoint20-27-uy-terminal-frontier-independent/README.md),
 checks the corresponding symbolic U/Y substitutions at that checkpoint.
+A [d27 M checkpoint client](research/nine-seed33-jones-checkpoint21-27-m-check/README.md),
+[independently audited](reviews/nine-seed33-jones-checkpoint21-27-m-terminal-frontier-independent/README.md),
+checks M there while keeping the d11 rank opaque.
 A [U/Y dependent-prefix client](research/nine-seed33-jones-dependent01-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-dependent01-staged-terminal-frontier-independent/README.md),
 checks the d19 and d20 local equations; full output semantics remain open.
