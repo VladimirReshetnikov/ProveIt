@@ -84,6 +84,10 @@ A [q/N preservation client](research/nine-seed33-jones-prefix-group05-check/READ
 checks their values at the later d10 prefix. A [d10 carry group](research/nine-seed33-jones-prefix-group06-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-prefix-group06-staged-terminal-frontier-independent/README.md),
 checks seven further carried values; full output semantics remain open.
+A [raw-rank prefix client](research/nine-seed33-jones-prefix-rank-staged-check/README.md),
+[independently audited](reviews/nine-seed33-jones-prefix-rank-staged-terminal-frontier-independent/README.md),
+checks the symbolic d11 raw rank and its carried form. It does not by itself
+identify the full recipe output.
 A [human-readable 33-seed formula](research/nine-seed33-jones-human-formula/FORMULA.md)
 has passed an [independent manual transcription review](reviews/nine-seed33-jones-human-formula-frontier-independent/README.md).
 Lean does not parse the Markdown; numeric expansion and exact metrics remain
