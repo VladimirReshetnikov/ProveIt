@@ -90,6 +90,9 @@ checks eleven live-entry carries at that prefix; it remains local.
 A [U/Y dependent-prefix client](research/nine-seed33-jones-dependent01-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-dependent01-staged-terminal-frontier-independent/README.md),
 checks the d19 and d20 local equations; full output semantics remain open.
+A [M/P/K dependent-prefix client](research/nine-seed33-jones-dependent02-staged-check/README.md),
+[independently audited](reviews/nine-seed33-jones-dependent02-staged-terminal-frontier-independent/README.md),
+checks the d21 through d23 local equations.
 A [raw-rank prefix client](research/nine-seed33-jones-prefix-rank-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-prefix-rank-staged-terminal-frontier-independent/README.md),
 checks the symbolic d11 raw rank and its carried form. It does not by itself
