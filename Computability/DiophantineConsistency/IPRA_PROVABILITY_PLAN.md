@@ -2219,7 +2219,12 @@ checks the sign relation assuming the explicit `y²−V²` representative; the
 33-coordinate and U-norm applications remain separate. A [node-78 factor](research/nine-sharing-sign33-node78-factor-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-node78-factor-terminal-frontier-independent/README.md),
 checks a generic graph identity with one tactic-sequencing warning; its U-norm
-application remains separate.
+application is checked by a [conditional U client](research/nine-sharing-sign33-forward-norm-u-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-forward-norm-u-terminal-frontier-independent/README.md).
+It derives the constructor U field assuming core U=1 and the negative
+representative equation, with one tactic-sequencing warning. All five
+conditional norm mappings are now checked; their assembly with source-derived
+representatives remains separate.
 A [generic reference-ell client](research/nine-sharing-sign33-reference-ell-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-reference-ell-terminal-frontier-independent/README.md),
 checks the ring-level node 30 identity used by a proposed P-norm route; it
