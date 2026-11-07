@@ -2227,7 +2227,11 @@ application is checked by a [conditional U client](research/nine-sharing-sign33-
 It derives the constructor U field assuming core U=1 and the negative
 representative equation, with one tactic-sequencing warning. All five
 conditional norm mappings are now checked; their assembly with source-derived
-representatives remains separate.
+representatives remains separate. A [conditional forward AllCuts assembly](research/nine-sharing-sign33-forward-all-cuts-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-forward-all-cuts-terminal-frontier-independent/README.md),
+checks all eight groups for the same constructed valuation assuming the five
+core norms and five representative equalities. Supplying those hypotheses
+from source zero and deriving seed zero remain separate.
 A [generic reference-ell client](research/nine-sharing-sign33-reference-ell-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-reference-ell-terminal-frontier-independent/README.md),
 checks the ring-level node 30 identity used by a proposed P-norm route; it
