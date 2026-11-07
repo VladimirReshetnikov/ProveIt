@@ -95,7 +95,11 @@ A [seventh substitution client](research/nine-sharing-sign32-substitution-group0
 [independently audited](reviews/nine-sharing-sign32-substitution-group06-terminal-frontier-independent/README.md),
 checks cTminusR/V/normalizedS identities and list positions, retaining the
 beta-port cast for cTminusR and recording four warnings. The remaining bridge
-obligations stay separate.
+obligations stay separate. A [final substitution client](research/nine-sharing-sign32-substitution-group07-check/README.md),
+[independently audited](reviews/nine-sharing-sign32-substitution-group07-terminal-frontier-independent/README.md),
+checks the last four residual identities and list positions, recording 12
+linter warnings. All 23 individual comparisons are checked; assembly and
+backward coordinate reconstruction remain separate.
 A [single-cut syntactic substitution survey](research/nine-sharing-sign33-single-cut-substitution-survey/README.md),
 [independently audited](reviews/nine-sharing-sign33-single-cut-survey-frontier-independent/README.md),
 finds a degree-3 or degree-4 residual in each of the 19 single-cut substitutions
