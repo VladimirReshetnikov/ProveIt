@@ -40,6 +40,12 @@ A [human-readable 33-seed formula](research/nine-seed33-jones-human-formula/FORM
 has passed an [independent manual transcription review](reviews/nine-seed33-jones-human-formula-frontier-independent/README.md).
 Lean does not parse the Markdown; numeric expansion and exact metrics remain
 separate.
+A [bounded signed-cut search](research/nine-sharing-sign33-cut-search/README.md),
+[independently reviewed](reviews/nine-sharing-sign33-cut-search-frontier-independent/README.md),
+found no candidate below 33 witnesses in its sampled space. Its seeded search
+is not reproducible as originally stated because hash-dependent set ordering
+affects the trajectory. This is neither an exhaustive search nor a lower bound;
+selected signed cuts still require residual construction and sign proofs.
 
 A [nine-natural-coordinate Jones expression built from the 38-witness seed](research/nine-sharing-norm38-ipra-endpoint-check/README.md)
 now has [independently audited Lean endpoints](reviews/nine-sharing-norm38-ipra-endpoint-terminal-frontier-independent/README.md)
