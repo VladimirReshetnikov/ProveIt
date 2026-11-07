@@ -476,7 +476,11 @@ JSON remain separate. A [named-evaluator equality attempt](research/nine-seed38-
 [independently audited](reviews/nine-seed38-jones-named-equality-failure-frontier-independent/README.md),
 failed on an unsolved tuple equality involving concrete `Fin.cons` indices
 and exponent additions. Its error-containing `sorryAx` report is not proof
-evidence; the final equality stage and postflight did not run.
+evidence; the final equality stage and postflight did not run. A
+[finite-index retry](research/nine-seed38-jones-named-equality-retry01/README.md),
+[independently audited](reviews/nine-seed38-jones-named-equality-retry01-failure-frontier-independent/README.md),
+failed earlier on dependent-codomain inference for its first `Fin.cons`
+helper; neither the tuple theorem nor the final equality was established.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
 not a Lean proof or evidence that the complete composition fits the resource
