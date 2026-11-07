@@ -1,0 +1,5 @@
+# Independent RingVars margin/Kc prelaunch review
+
+The checker pins both sources, runner, survey and manifest, reproduces the no-Lean preflight, and checks ordered imports, theorem names and conclusions. The first proposed equality identifies the audited d42 Dm cut with `vars.marg=K²G−4(C−KY)²G−8gK²`. The second carries the checked d41 Bd/dvsr cut through one snoc and identifies d43 Kc with `dvsr*(2*marg−1)`, matching d43 source indices 39 and 41. Runner authenticates the weight provider and freshly compiled first stage, with guard/overlay checks.
+
+These are proposed short-prefix cut bindings with opaque d11 rank, not full recipe/named-formula equality or JSON binding. Lean elaboration remains untested; no Lean ran. Earlier A1 independent recursive preflight was interrupted with the author's passing preflight recorded; an earlier initial-agreement numeric outer exit remains unavailable. Provider observations are point-in-time and sampled monitoring is not a full dynamic/transitive trace.
