@@ -142,7 +142,11 @@ An external [31-witness sextic candidate](research/nine-sharing-sign31-sextic-ca
 [independently audited](reviews/nine-sharing-sign31-sextic-frontier-independent/README.md),
 eliminates the `f2` cut from the 32-witness AST while preserving exact degree 6.
 Its natural lift/drop argument has not been formalized in Lean, and the
-quartic Jones theorem does not apply directly to it.
+quartic Jones theorem does not apply directly to it. An external
+[28-witness sextic candidate](research/nine-sharing-sign28-sextic-candidate/README.md),
+[independently audited](reviews/nine-sharing-sign28-sextic-frontier-independent/README.md),
+removes three more positive cuts with exact degree 6. Its model bridge and
+iPRA endpoint likewise remain to be checked in Lean.
 A [single-cut syntactic substitution survey](research/nine-sharing-sign33-single-cut-substitution-survey/README.md),
 [independently audited](reviews/nine-sharing-sign33-single-cut-survey-frontier-independent/README.md),
 finds a degree-3 or degree-4 residual in each of the 19 single-cut substitutions
