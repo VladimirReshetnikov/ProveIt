@@ -2165,7 +2165,11 @@ checked 38-witness reference terminal. It records one unused-simp warning. A
 [W-norm mapping](research/nine-sharing-sign33-forward-norm-w-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-forward-norm-w-terminal-frontier-independent/README.md),
 checks the constructor W field assuming generic core W=1; its second stage
-records four simp/tactic warnings. The remaining norm mappings are separate.
+records four simp/tactic warnings. A [P-norm mapping attempt](research/nine-sharing-sign33-forward-norm-p-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-forward-norm-p-failure-frontier-independent/README.md),
+failed with a Lean interpreter memory exception in its first stage; it produced
+no object and did not run its second stage or final postflight. The remaining
+norm mappings are separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
