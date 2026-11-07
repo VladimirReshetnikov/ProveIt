@@ -281,7 +281,10 @@ postflight; the internal trigger is unknown. A [factored retry](research/nine-sh
 [independently audited](reviews/nine-sharing-sign28-current-source-iff-retry01-failure-frontier-independent/README.md),
 checks the cons-form conversion but its second stage again hits the memory
 limit, with no source object or final postflight. The precise trigger remains
-unknown. The source composition and
+unknown. An [imports-only diagnostic](research/nine-sharing-sign28-source-import-diagnostic/README.md),
+[independently audited](reviews/nine-sharing-sign28-source-import-diagnostic-terminal-frontier-independent/README.md),
+compiles each provider alone and both together; it does not establish the
+cause of the earlier exception or prove source equivalence. The source composition and
 iPRA endpoint likewise remain to be checked in Lean. A further external
 [27-witness sextic candidate](research/nine-sharing-sign27-sextic-normalized-root-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign27-sextic-root-independent/README.md),
