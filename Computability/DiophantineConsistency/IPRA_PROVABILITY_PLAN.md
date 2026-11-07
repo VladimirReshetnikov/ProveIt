@@ -84,6 +84,9 @@ A [q/N preservation client](research/nine-seed33-jones-prefix-group05-check/READ
 checks their values at the later d10 prefix. A [d10 carry group](research/nine-seed33-jones-prefix-group06-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-prefix-group06-staged-terminal-frontier-independent/README.md),
 checks seven further carried values; full output semantics remain open.
+A [d18 carry client](research/nine-seed33-jones-live18-staged-check/README.md),
+[independently audited](reviews/nine-seed33-jones-live18-staged-terminal-frontier-independent/README.md),
+checks eleven live-entry carries at that prefix; it remains local.
 A [raw-rank prefix client](research/nine-seed33-jones-prefix-rank-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-prefix-rank-staged-terminal-frontier-independent/README.md),
 checks the symbolic d11 raw rank and its carried form. It does not by itself
