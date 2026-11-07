@@ -360,7 +360,10 @@ interrupted-preflight and earlier outer-exit caveats. Full semantic composition
 remains separate. A [Dm checkpoint client](research/nine-seed38-jones-checkpoint42-dm-check/README.md),
 [independently audited](reviews/nine-seed38-jones-checkpoint42-dm-terminal-frontier-independent/README.md),
 checks symbolic `Dm` at `d42` under the same inherited caveats; final semantic
-composition remains separate.
+composition remains separate. A [Kc checkpoint client](research/nine-seed38-jones-checkpoint43-kc-check/README.md),
+[independently audited](reviews/nine-seed38-jones-checkpoint43-kc-terminal-frontier-independent/README.md),
+checks symbolic `Kc` at `d43` under those caveats; final semantic composition
+remains separate.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
 not a Lean proof or evidence that the complete composition fits the resource
