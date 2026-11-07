@@ -501,7 +501,10 @@ unused-section warnings. Same-input equivalence and current-port
 specialization follow in stages. A [same-input seed iff](research/nine-sharing-sign26-seed-iff-check/README.md),
 [independently audited](reviews/nine-sharing-sign26-seed-iff-terminal-frontier-independent/README.md),
 checks existential equivalence under the same explicit port casts and beta
-bound; current-port specialization remains separate. An [expression-evaluation client](research/nine-sharing-sign26-expression-eval-check/README.md),
+bound. A [current-port specialization](research/nine-sharing-sign26-current-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign26-current-iff-terminal-frontier-independent/README.md),
+discharges these hypotheses for the fixed ports and checks same-input seed
+equivalence. An [expression-evaluation client](research/nine-sharing-sign26-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign26-expression-eval-terminal-frontier-independent/README.md),
 checks abstract and current input-removal evaluations in four stages; no
 source bridge or endpoint follows from those lemmas alone. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
