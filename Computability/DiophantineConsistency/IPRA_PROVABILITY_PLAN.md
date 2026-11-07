@@ -240,6 +240,9 @@ object, did not run its second stage or final postflight, and its `sorryAx`
 reports are not proof evidence. A [qualification-only retry](research/nine-seed38-jones-checkpoint31-41-e-retry01/README.md),
 [independently audited](reviews/nine-seed38-jones-checkpoint31-41-e-retry01-terminal-frontier-independent/README.md),
 then checks symbolic `E` at `d31` and `d41`, keeping rank opaque. Full semantic
+composition remains separate. An [F checkpoint client](research/nine-seed38-jones-checkpoint32-41-f-check/README.md),
+[independently audited](reviews/nine-seed38-jones-checkpoint32-41-f-terminal-frontier-independent/README.md),
+checks symbolic `F` at `d32` and `d41` with rank opaque. Full semantic
 composition remains separate.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
