@@ -350,7 +350,10 @@ A [Bd/Cd checkpoint client](research/nine-seed38-jones-checkpoint40-41-bdcd-chec
 [independently audited](reviews/nine-seed38-jones-checkpoint40-41-bdcd-terminal-frontier-independent/README.md),
 checks the two symbolic values at `d41`, retaining the inherited A1
 interrupted-preflight and earlier outer-exit caveats. Full semantic composition
-remains separate.
+remains separate. A [Dm checkpoint client](research/nine-seed38-jones-checkpoint42-dm-check/README.md),
+[independently audited](reviews/nine-seed38-jones-checkpoint42-dm-terminal-frontier-independent/README.md),
+checks symbolic `Dm` at `d42` under the same inherited caveats; final semantic
+composition remains separate.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
 not a Lean proof or evidence that the complete composition fits the resource
