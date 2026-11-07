@@ -573,6 +573,11 @@ client](research/nine-sharing-sign25-seed-squares-check/README.md),
 checks symbolic seed zero iff its 16 residuals vanish. Its retained runner
 success/scope labels incorrectly say sign26; the pinned modules and theorem
 are sign25. The bridge and endpoint remain separate.
+A [first-cut Lean client](research/nine-sharing-sign25-first-cut-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-first-cut-terminal-frontier-independent/README.md),
+checks the removed product row and the affected N0 row on the lift. It reports
+three unused-variable warnings; the remaining transfers and full model bridge
+are separate obligations.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
