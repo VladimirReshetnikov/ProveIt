@@ -350,7 +350,11 @@ positive-root, predecessor and embedding bridge remains unproved in Lean.
 An [independently reviewed source plan](research/nine-sharing-sign27-lean-bridge-plan/README.md)
 and [syntax draft](research/nine-sharing-sign27-sextic-lean-draft/README.md)
 make the predecessor and two coordinate-recovery obligations explicit; they
-are not Lean-checked proofs.
+are not Lean-checked proofs. A [syntax and squares client](research/nine-sharing-sign27-seed-squares-check/README.md),
+[independently audited](reviews/nine-sharing-sign27-seed-squares-terminal-frontier-independent/README.md),
+checks symbolic seed zero iff all 18 residuals vanish in the intended models.
+Its source-review receipt retains the historical appended-plan-link replay
+caveat; the predecessor and full model bridge remain separate.
 A further external [26-witness sextic candidate](research/nine-sharing-sign26-sextic-gap-congruence-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign26-sextic-gap-independent/README.md),
 eliminates the gap witness using congruence modulo the q3 residual. Its
