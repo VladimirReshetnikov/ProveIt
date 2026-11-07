@@ -554,6 +554,11 @@ A [literal single-cut survey](research/nine-sharing-sign26-single-cut-survey/REA
 [independently audited](reviews/nine-sharing-sign26-single-cut-frontier-independent/README.md),
 checks syntactic degrees for eleven direct substitutions without cancellation
 or congruence. It likewise gives no semantic lower bound.
+An external [25-witness octic candidate](research/nine-sharing-sign25-octic-ell-candidate/README.md),
+[independently audited](reviews/nine-sharing-sign25-octic-ell-frontier-independent/README.md),
+eliminates the natural ell product at the cost of exact degree 8. Its
+lift/drop bridge and iPRA endpoint are not yet checked in Lean; it is a
+different degree/variable tradeoff from the 26-witness sextic.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
