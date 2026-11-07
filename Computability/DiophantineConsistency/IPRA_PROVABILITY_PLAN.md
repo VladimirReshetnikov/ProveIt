@@ -48,7 +48,12 @@ source review alone is not a formal JSON or human-text binding.
 A [language compilation attempt](research/nine-seed33-jones-compact-language-check/README.md),
 [independently audited](reviews/nine-seed33-jones-compact-language-failure-frontier-independent/README.md),
 hit Lean's interpreter memory limit under `-M2800` and produced no object or
-final postflight; the responsible declaration or dependency is unknown.
+final postflight; the responsible declaration or dependency is unknown. A
+[reduced-import retry](research/nine-seed33-jones-compact-language-import-retry01/README.md),
+[independently audited](reviews/nine-seed33-jones-compact-language-import-retry01-terminal-frontier-independent/README.md),
+compiles the specialized macro-language definitions under the same limits.
+Recipe scopedness, semantic equality and external serialization binding remain
+separate.
 A [human-readable 33-seed formula](research/nine-seed33-jones-human-formula/FORMULA.md)
 has passed an [independent manual transcription review](reviews/nine-seed33-jones-human-formula-frontier-independent/README.md).
 Lean does not parse the Markdown; numeric expansion and exact metrics remain
