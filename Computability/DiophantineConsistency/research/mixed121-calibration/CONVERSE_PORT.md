@@ -28,6 +28,16 @@ Ported and building, with axioms `propext`, `Classical.choice`, `Quot.sound`:
 | `ArithmeticConstructionUnitCompact44` | `Mixed121ConstructionUnit` (`Γ` order `5070`, not `p − 1`) |
 | `SymbolicKernelResidue` | `Mixed121KernelResidue` (`K ≡ 510020909 mod C0`) |
 | `KernelAliasExplicit`, `AliasResidueNumeral`, `AliasUnitGivenResidue`, `AliasUnitDischarged`, `AliasRankCalibration`, `ActualRankCalibration`, `ChosenControllerCalibration` | `Mixed121Calibration` (one module, same theorem names) |
+| `CompactHighPhaseReduction` | `Mixed121HighPhase` (active phases `1065..1074`, tail `8792..8799`) |
+| `CompactPulseBitSafety`, `CompactLowModFour` | `Mixed121PulseBit` |
+| `CompactKernelFiniteCert` | `Mixed121KernelFiniteCert` |
+| `CompactConstructedRank`, `CompactPackingOriginResidue` | `Mixed121ConstructedRank` |
+| `ConcreteSparseKernel` … `KernelDigitsBounded`, `TopDigitClean` | `Mixed121SparseKernel` (`2^1070003 ≤ K < 2^1070004`) |
+| `CompactKernelSplit`, `CompactLowerKernelMass`, `CompactKernelDivFour` | `Mixed121KernelSplit` |
+| `CompactCellCopyCode` … `CompactCellProductBound` (13 modules) | `Mixed121Cell` (44 extra digits = `Mixed121Digits.digit`) |
+
+Not needed: `CompactSymbolicMaskData` (only `low_eq`), and the byte-window modules
+`SymbolicKernelBytes`, `ByteWindow`, `RadixBitWindow` (their only consumer is outside the closure).
 
 | Level | Module | Class | Lines |
 | ---: | --- | :---: | ---: |
