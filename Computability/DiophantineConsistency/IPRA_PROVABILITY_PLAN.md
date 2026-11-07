@@ -2190,7 +2190,10 @@ later stages and final postflight did not run, and its `sorryAx` report is not
 proof evidence. An [abstract projection client](research/nine-sharing-sign33-abstract-projection22-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-abstract-projection22-terminal-frontier-independent/README.md),
 then checks coordinate 22 while keeping the 38-coordinate tuple abstract. It
-does not establish the strong norm or the remaining projections.
+does not establish the strong norm. An [additional projection client](research/nine-sharing-sign33-abstract-projections28-32-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-abstract-projections28-32-terminal-frontier-independent/README.md),
+checks the corresponding abstract projections for coordinates 28 and 32;
+their application to the strong norm remains separate.
 A [generic reference-ell client](research/nine-sharing-sign33-reference-ell-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-reference-ell-terminal-frontier-independent/README.md),
 checks the ring-level node 30 identity used by a proposed P-norm route; it
