@@ -2103,6 +2103,10 @@ initial-stage numeric outer exit remains uncaptured. A [fourth positive-cut
 client](research/nine-sharing-sign33-forward-group03-positive-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-forward-group03-positive-terminal-frontier-independent/README.md),
 checks the two positive cuts in group 03; its source-dependent norm is excluded.
+A [late positive-cut client](research/nine-sharing-sign33-forward-late-positive-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-forward-late-positive-terminal-frontier-independent/README.md),
+checks `f²` and the normalized `S` and `S²` cuts. The signed fields and five
+source-dependent norms remain separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
