@@ -360,6 +360,11 @@ apply directly. A [restricted q3-remainder survey](research/nine-sharing-sign26-
 [independently audited](reviews/nine-sharing-sign26-q3-single-cut-independent/README.md),
 examines ten direct cuts under one formal monic reduction rule; it is not a
 semantic lower bound or an obstruction to other encodings.
+A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
+[independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
+shows that dropping Nt and its sole v4 coordinate loses a condition in a
+local parameter family. It does not constrain solutions of the full system
+or establish a witness-count lower bound.
 A [one-step survey](research/nine-sharing-sign27-single-positive-cut-survey/README.md),
 [independently audited](reviews/nine-sharing-sign27-single-cut-independent/README.md),
 checks the syntactic-degree effect of the seven directly eligible positive
