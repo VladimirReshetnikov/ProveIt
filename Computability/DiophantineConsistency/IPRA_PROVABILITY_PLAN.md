@@ -113,7 +113,12 @@ A [seed equivalence client](research/nine-sharing-sign32-seed-iff-check/README.m
 [independently audited](reviews/nine-sharing-sign32-seed-iff-terminal-frontier-independent/README.md),
 packages the pointwise lift equivalence and same-input existential equivalence
 in IΣ₁ models under the explicit beta cast. Fixed-port specialization and a
-sextic-compatible Jones endpoint remain separate.
+sextic-compatible Jones endpoint remain separate. A [current-port specialization](research/nine-sharing-sign32-current-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign32-current-iff-terminal-frontier-independent/README.md),
+discharges the beta cast and checks both equivalences for current ports. Its
+current-data route inherits successful rows from an overall-failed split and
+the recorded ancestry limits; external JSON binding and a sextic-compatible
+Jones endpoint remain separate.
 A [single-cut syntactic substitution survey](research/nine-sharing-sign33-single-cut-substitution-survey/README.md),
 [independently audited](reviews/nine-sharing-sign33-single-cut-survey-frontier-independent/README.md),
 finds a degree-3 or degree-4 residual in each of the 19 single-cut substitutions
