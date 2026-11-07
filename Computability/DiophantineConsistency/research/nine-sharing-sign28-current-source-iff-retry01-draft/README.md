@@ -1,0 +1,3 @@
+# Proposed factored sign28 current-source retry
+
+The first narrow-import stage states the cons-form current seed equivalence and local generic cons conversion; the second composes it with the checked sign31 current-source iff. The final theorem statement is unchanged from the failed initial candidate. Local irreducibility is applied to large port constants and seed expressions without changing assumptions. This source-only candidate has not been compiled or independently reviewed. The initial interpreter exception's precise trigger remains unknown; factoring is an experiment under unchanged limits.

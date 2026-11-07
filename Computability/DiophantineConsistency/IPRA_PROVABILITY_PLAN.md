@@ -87,7 +87,9 @@ checks seven further carried values; full output semantics remain open.
 A [raw-rank prefix client](research/nine-seed33-jones-prefix-rank-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-prefix-rank-staged-terminal-frontier-independent/README.md),
 checks the symbolic d11 raw rank and its carried form. It does not by itself
-identify the full recipe output.
+identify the full recipe output. A [B-power client](research/nine-seed33-jones-prefix-b-power-check/README.md),
+[independently audited](reviews/nine-seed33-jones-prefix-b-power-terminal-frontier-independent/README.md),
+checks the local d10 `B=b^5` identity.
 A [human-readable 33-seed formula](research/nine-seed33-jones-human-formula/FORMULA.md)
 has passed an [independent manual transcription review](reviews/nine-seed33-jones-human-formula-frontier-independent/README.md).
 Lean does not parse the Markdown; numeric expansion and exact metrics remain
@@ -272,7 +274,11 @@ discharges that hypothesis for the current ports and checks both equivalences
 in IΣ₁ models. A [source-composition attempt](research/nine-sharing-sign28-current-source-iff-check/README.md),
 [independently audited](reviews/nine-sharing-sign28-current-source-iff-failure-frontier-independent/README.md),
 hit the interpreter memory limit without producing an object or final
-postflight; the internal trigger is unknown. The source composition and
+postflight; the internal trigger is unknown. A [factored retry](research/nine-sharing-sign28-current-source-iff-retry01/README.md),
+[independently audited](reviews/nine-sharing-sign28-current-source-iff-retry01-failure-frontier-independent/README.md),
+checks the cons-form conversion but its second stage again hits the memory
+limit, with no source object or final postflight. The precise trigger remains
+unknown. The source composition and
 iPRA endpoint likewise remain to be checked in Lean. A further external
 [27-witness sextic candidate](research/nine-sharing-sign27-sextic-normalized-root-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign27-sextic-root-independent/README.md),
