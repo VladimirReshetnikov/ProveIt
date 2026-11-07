@@ -506,7 +506,12 @@ helper; neither the tuple theorem nor the final equality was established. A
 [constant-family retry](research/nine-seed38-jones-named-equality-retry02/README.md),
 [independently audited](reviews/nine-seed38-jones-named-equality-retry02-failure-frontier-independent/README.md),
 elaborated the helpers but still left the tuple equality unsolved; the final
-equality and postflight did not run.
+equality and postflight did not run. A [definitional-normalization retry](research/nine-seed38-jones-named-equality-retry03/README.md),
+[independently audited](reviews/nine-seed38-jones-named-equality-retry03-terminal-frontier-independent/README.md),
+then checks equality of the Lean compact recipe and named expression
+evaluation over commutative rings and `Fin 9` valuations. One
+`unnecessarySeqFocus` warning and the inherited provider caveats remain; this
+does not bind serialized JSON or human-readable text to Lean.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
 not a Lean proof or evidence that the complete composition fits the resource
