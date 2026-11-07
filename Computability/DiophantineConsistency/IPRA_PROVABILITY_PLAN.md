@@ -70,7 +70,10 @@ JSON equality. A [first-entry preservation client](research/nine-seed33-jones-fi
 checks that this first value persists through the full Lean recipe; full output
 semantics remain separate. A [B/q/N prefix client](research/nine-seed33-jones-prefix-group01-check/README.md),
 [independently audited](reviews/nine-seed33-jones-prefix-group01-terminal-frontier-independent/README.md),
-checks the next three short-prefix values, still short of full output semantics.
+checks the next three short-prefix values. A [second prefix group](research/nine-seed33-jones-prefix-group02-staged-check/README.md),
+[independently audited](reviews/nine-seed33-jones-prefix-group02-staged-terminal-frontier-independent/README.md),
+checks three B carries and the e/ell/lambda values; full output semantics
+remain separate.
 A [human-readable 33-seed formula](research/nine-seed33-jones-human-formula/FORMULA.md)
 has passed an [independent manual transcription review](reviews/nine-seed33-jones-human-formula-frontier-independent/README.md).
 Lean does not parse the Markdown; numeric expansion and exact metrics remain

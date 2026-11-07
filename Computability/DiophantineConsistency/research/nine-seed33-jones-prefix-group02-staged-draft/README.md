@@ -1,0 +1,3 @@
+# Sign33 symbolic sum-prefix source-only candidates
+
+These four sources adapt the previously checked sign38 B carries and e/ell/lambda short-prefix identities to sign33: namespace, codingStar/codingExpo arity 33, range 33, and exponent 5^34. Finite sums, powers and fixed coefficients stay symbolic. The statements concern prefixes only, not the final recipe output, semantic equality, JSON/human binding, degree or arithmetic operation count. The [guarded runner](../nine-seed33-jones-prefix-group02-staged-check/README.md) now pins the audited B/q/N provider; the guarded compilation passed and the [independent terminal audit](../../reviews/nine-seed33-jones-prefix-group02-staged-terminal-frontier-independent/) passed.
