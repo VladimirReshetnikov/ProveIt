@@ -21,6 +21,10 @@ The checked endpoint does not bind a literal numerical equation or PDF, nor
 establish an operation count or exact degree. The retained initial-agreement
 ancestor has successful Lean child exits but no captured numeric outer exit;
 inherited provider and point-observation limits remain.
+A [33-seed named-formula client](research/nine-sharing-sign33-jones-named-formula-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-jones-named-formula-terminal-frontier-independent/README.md),
+checks the symbolic named Lean right-hand side over every commutative ring.
+It does not bind an external serialization or establish a degree theorem.
 
 A [nine-natural-coordinate Jones expression built from the 38-witness seed](research/nine-sharing-norm38-ipra-endpoint-check/README.md)
 now has [independently audited Lean endpoints](reviews/nine-sharing-norm38-ipra-endpoint-terminal-frontier-independent/README.md)
