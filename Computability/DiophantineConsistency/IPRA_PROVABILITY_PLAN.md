@@ -175,6 +175,10 @@ iPRA endpoint likewise remain to be checked in Lean. A further external
 [independently audited](reviews/nine-sharing-sign27-sextic-root-independent/README.md),
 normalizes a positive norm root and removes its product coordinate. Its
 positive-root, predecessor and embedding bridge remains unproved in Lean.
+A [one-step survey](research/nine-sharing-sign27-single-positive-cut-survey/README.md),
+[independently audited](reviews/nine-sharing-sign27-single-cut-independent/README.md),
+checks the syntactic-degree effect of the seven directly eligible positive
+cuts in that candidate. It excludes other reductions and is not a lower bound.
 A [restricted survey](research/nine-sharing-sign31-sextic-positive-cut-survey/README.md),
 [independently reviewed](reviews/nine-sharing-sign31-positive-cut-survey-frontier-independent/README.md),
 enumerates the sequential positive-cut substitutions that preserve
