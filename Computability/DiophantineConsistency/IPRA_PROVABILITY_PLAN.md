@@ -159,7 +159,9 @@ sextic-to-nine-variable Jones endpoint; inherited provider caveats apply.
 An external [31-witness sextic candidate](research/nine-sharing-sign31-sextic-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign31-sextic-frontier-independent/README.md),
 eliminates the `f2` cut from the 32-witness AST while preserving exact degree 6.
-Its natural lift/drop argument has not been formalized in Lean, and the
+An [independently audited Lean source draft](research/nine-sharing-sign31-sextic-lean-draft/README.md)
+sets out the corresponding syntax and lift/drop obligations, without a Lean
+check. Its natural lift/drop argument has not been formalized in Lean, and the
 quartic Jones theorem does not apply directly to it. An external
 [28-witness sextic candidate](research/nine-sharing-sign28-sextic-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign28-sextic-frontier-independent/README.md),
