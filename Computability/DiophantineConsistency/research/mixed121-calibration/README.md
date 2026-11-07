@@ -275,11 +275,38 @@ modules give its forward direction:
 
 Only `P55Facts.halts` names the 121x8801 ports; the rest is port-generic.
 
+## Phase 5: the converse, and the 52 / 79 iPRA endpoint
+
+The halt-to-witness layer of Compact44 (see [`CONVERSE_PORT.md`](CONVERSE_PORT.md))
+is ported to 121x8801. The λ = 2341 controller and the kernel residue come
+first (`Mixed121ControllerData`, `…ControllerChoice`, `…ConstructionUnit`,
+`…KernelResidue`, `…Calibration`). Then the cell and word layers
+(`Mixed121Cell`, `Mixed121Word`, `Mixed121Block`, `Mixed121Column`), the
+phases of the high mask (`Mixed121FieldParity`, `Mixed121Target`,
+`Mixed121High`, `Mixed121Origin`), the calibrated packing (`Mixed121Rank`)
+and the canonical halt data (`Mixed121Seeds.halt_first_gamma`). Differences of
+substance from Compact44:
+
+* `Γ` has order `5070` modulo `C0 = 11²·13·677·2341`, not `λ − 1`;
+* all ten bits of each field window are uniform, so Compact44's marker-phase
+  modules have no counterpart;
+* the clause-target digit depends on the tile: it is `2·clause(i) − 1`, carry-free
+  against `μ` because its bits are at `0` and `11 + 2k` (checked over the 943
+  rows by `decide +kernel`);
+* every packing field is discharged at once (`halt_chosen_rank_no_high`),
+  where Compact44 used four stages with residual hypotheses.
+
+`P55ConvZero` and `P55Converse` build package 55's fourteen witnesses from the
+halt data, a hybrid of packages 62 and 64. [`IPRAPositive55`](../../Lean/DiophantineConsistency/Mixed121/IPRAPositive55.lean)
+then proves, in native, standard and equality-only iPRA, that the 52 / 79
+equation has no positive zero iff `¬Halts(M215)`, i.e. iff the mapped ZFC
+refutation is absent. Axioms: `propext`, `Classical.choice`, `Quot.sound`.
+
 ## Remaining phases
 
 1. **Per-form leaf facts for 44 / 111.** Package 132's fifteen-integer form
    needs its own `LeafFacts` proof, as phase 4 did for 52 / 79.
-2. **Completeness.** Halting of machine 215 gives a solution. This is the
+2. **Completeness — done for 52 / 79 (phase 5).** Halting of machine 215 gives a solution. This is the
    recipe's witness construction: packing, rank, and the `λ = 2341`
    controller of §4. [`CONVERSE_PORT.md`](CONVERSE_PORT.md) maps Compact44's
    147-module halt-to-witness layer: 80 modules to hand-port (about 5,700
@@ -288,5 +315,5 @@ Only `P55Facts.halts` names the 121x8801 ports; the rest is port-generic.
    arbitrary-odd-factor construction, so its port changes the constants
    (`p = 581197 → λ = 2341`, `C0 = 342946332593 → 2492980061`), not the
    argument.
-3. **Endpoints.** The iPRA endpoints `equation ↔ Con(ZFC)` for 52 / 79 and
-   44 / 111, by the Compact44 promotion method.
+3. **Endpoints.** 52 / 79 is done (`IPRAPositive55`); 44 / 111 remains (its
+   forward leaf facts and a converse built on `Mixed121Seeds.halt_first_gamma`).

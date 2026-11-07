@@ -5241,6 +5241,12 @@ the packages' coefficient files with it:
   `P55Facts.halts`. The graph is checked against the pinned JSON by
   `research/mixed121-calibration/tools/generate_p55.py --check`. What remains
   is per-form or in the completeness direction:
+
+  **52 / 79, CLOSED (2026-11-06):** the converse layer is ported
+  (`Mixed121Seeds.halt_first_gamma`, the canonical halt data, with the λ = 2341
+  controller), `P55Converse.converse` builds the witnesses, and
+  `Mixed121/IPRAPositive55` gives native, standard and equality-only iPRA
+  equivalences `nativeNoZero (52/79) ↔ ¬mappedNativeRefutation`.
   - proving `LeafFacts` from a positive zero of the 44 / 111 form;
   - the witness construction for halting ⟹ solvable (packing, rank and the
     `λ = 2341` controller);
