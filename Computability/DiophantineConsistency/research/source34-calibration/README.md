@@ -42,6 +42,29 @@ both the SHA-256 pins of the binding and the gzip files in
 `candidates/valuation-shared-norms/source/inherited/root_fusion/coefficients/`.
 This is a finite check outside Lean.
 
+## Done in Lean (7 November 2026)
+
+`Source34/Source34Kernel`, `Source34KernelResidue`, `Source34ConstructionUnit`,
+`Source34Ports`, `Source34Masks` and `Source34Calibration`: the kernel and its
+support facts (clause bands disjoint modulo `L`, anchor bands meeting only at
+`2195/3296`), `K ≡ 2050743806 (mod C0)`, the controller unit
+(`Γ ≡ 1150455639`, order `334620`), the four ports with their leaf bounds, the
+five mask facts, and the chosen-dimension rank calibration. Axioms:
+`propext`, `Classical.choice`, `Quot.sound`.
+[`tools/check_ports.py`](tools/check_ports.py) matches the `MC` and `MF` digit
+lists with the payloads.
+
+## The completeness obstruction
+
+44 / 111's guard is `G = budget − pos`, `pos = 1 + p₁² + p₂² + p₃(p₃+1)`. The
+completeness direction must represent the canonical family's budget as
+`pos(p₁, p₂, p₃)`, that is `4·budget − 3` as `(2p₁)² + (2p₂)² + (2p₃+1)²`,
+inside every model of `𝗜𝚺₁`. That is Legendre's three-square theorem for
+`N ≡ 1 (mod 4)`. No free parameter of the canonical family moves `budget`, and
+the theorem is in neither Mathlib nor this tree. Soundness needs only
+`pos > 0`, so the calibration below still serves the forward direction; the
+iPRA equivalence also needs an internal three-square theorem.
+
 ## Remaining work
 
 1. A `Source34/` port of the Mixed121 calibration modules: kernel, ports,

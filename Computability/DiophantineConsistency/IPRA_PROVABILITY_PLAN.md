@@ -5294,7 +5294,21 @@ the packages' coefficient files with it:
   mask is parity-separated (`ρ^(1000+2j) + ρ^(1021+2j)`). It needs its own
   calibration, and 44 / 111 would also be the tree's first ℤ-variable
   endpoint (signed-pair bridge plus the signed Pell / centered-budget
-  reduction of `132-signed-caps-free-scales/lowdegree/PROOF.md`). 281 of the
+  reduction of `132-signed-caps-free-scales/lowdegree/PROOF.md`).
+  *Obstruction (7 November 2026):* its guard `G = budget − pos` with
+  `pos = 1 + p₁² + p₂² + p₃(p₃+1)` makes the completeness direction
+  (halting ⟹ integer zero) need, inside every model of `𝗜𝚺₁`, a
+  representation `budget = pos(p₁, p₂, p₃)` of the canonical family's budget,
+  i.e. `4·budget − 3 = (2p₁)² + (2p₂)² + (2p₃+1)²`. That is Legendre's
+  three-square theorem for `N ≡ 1 (mod 4)` (PROOF.md §7, “Represent the new
+  positive budget by the three private Pos coordinates”; §6 uses it again to
+  reach the predecessor). The canonical family has no free parameter that
+  moves `budget`, and neither Mathlib nor this tree proves the three-square
+  theorem, even over ℕ. Soundness (zero ⟹ halting) needs only `pos > 0` and
+  is not affected. Every ℤ row whose guard is a `Pos` form inherits the same
+  obstruction. The source34 calibration
+  ([record](research/source34-calibration/README.md), `Lean/…/Source34/`)
+  is in progress for the soundness half. 281 of the
   618 `Compact44` modules use the 67×8807 layout constants directly. This is
   not only a change of constants: its kernel is `K = D_C + B·D_R`, with its
   own packing interface and controller
