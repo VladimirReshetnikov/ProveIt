@@ -231,7 +231,10 @@ quartic Jones theorem does not apply directly to it. An external
 removes three more positive cuts with exact degree 6. An [independently
 reviewed source-only bridge draft](research/nine-sharing-sign28-sextic-lean-draft/README.md)
 sets out the three-coordinate lift and drop and retains an explicit beta-cast
-obligation. Its model bridge and
+obligation. A [syntax and squares client](research/nine-sharing-sign28-seed-squares-check/README.md),
+[independently audited](reviews/nine-sharing-sign28-seed-squares-terminal-frontier-independent/README.md),
+checks that the symbolic-port seed is zero iff its 19 residuals vanish in
+the intended models. Its model bridge and
 iPRA endpoint likewise remain to be checked in Lean. A further external
 [27-witness sextic candidate](research/nine-sharing-sign27-sextic-normalized-root-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign27-sextic-root-independent/README.md),
