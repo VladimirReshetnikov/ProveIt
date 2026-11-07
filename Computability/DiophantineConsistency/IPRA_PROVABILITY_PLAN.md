@@ -58,7 +58,11 @@ compiles the 45-node Lean recipe and checks its Boolean scopedness without
 axioms. A [generic cuts client](research/nine-seed33-jones-compact-cuts-check/README.md),
 [independently audited](reviews/nine-seed33-jones-compact-cuts-terminal-frontier-independent/README.md),
 checks the snoc, range, star and prefix-lookup identities. Concrete recipe
-semantic equality and external serialization binding remain separate.
+semantic equality and external serialization binding remain separate. A
+[named-prefix client](research/nine-seed33-jones-named-prefix-check/README.md),
+[independently audited](reviews/nine-seed33-jones-named-prefix-terminal-frontier-independent/README.md),
+checks that the Lean recipe equals its 45-node named-prefix representation;
+its theorem is axiom-free. This is not evaluator or JSON equality.
 A [human-readable 33-seed formula](research/nine-seed33-jones-human-formula/FORMULA.md)
 has passed an [independent manual transcription review](reviews/nine-seed33-jones-human-formula-frontier-independent/README.md).
 Lean does not parse the Markdown; numeric expansion and exact metrics remain
