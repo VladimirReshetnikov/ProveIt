@@ -180,6 +180,10 @@ A [terminal T/output cut](research/nine-seed33-jones-terminal-cut-check/README.m
 [independently audited](reviews/nine-seed33-jones-terminal-cut-terminal-frontier-independent/README.md),
 checks the recipe output under earlier checkpoint-value hypotheses; the
 named-evaluator equality and external-file binding remain separate.
+A [RingVars/Bd client](research/nine-seed33-jones-vars-bd-check/README.md),
+[independently audited](reviews/nine-seed33-jones-vars-bd-terminal-frontier-independent/README.md),
+identifies the symbolic Bd checkpoint with the named value while leaving the
+d11 rank opaque.
 A [U/Y dependent-prefix client](research/nine-seed33-jones-dependent01-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-dependent01-staged-terminal-frontier-independent/README.md),
 checks the d19 and d20 local equations; full output semantics remain open.

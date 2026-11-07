@@ -1,0 +1,9 @@
+#!/usr/bin/env python3
+import hashlib,json,subprocess,sys
+from pathlib import Path
+D=Path(__file__).resolve().parents[2];P=D/'research/nine-seed33-jones-vars-bd-check';H=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+for n,h in {'run.py':'48f565f253f5ed61099d6334dbc9bf9964741a7c4b4eed29489bdb7e0f06ffa0','source-manifest.json':'b4fa1672a1979256a88b21716d6165dd562955dcc091436ed549ce5ec19cb5e9','values-survey.py':'97baad9252b3d21784b4bd9c3c4fab1366b04f47332126412cf0d62dd78769f7'}.items():assert H(P/n)==h
+m=json.loads((P/'source-manifest.json').read_text())['rows'];assert len(m)==1;e=m[0];name='Sign33MacroVarsBd';p=P/'src/DiophantineConsistency'/f'{name}.lean';old=D/'research/nine-seed38-jones-vars-bd-retry02/src/DiophantineConsistency/Norm38MacroVarsBd.lean';assert e['module']=='DiophantineConsistency.'+name and H(p)==e['source_sha256']==H(D/f'research/nine-seed33-jones-vars-bd-draft/{name}.lean');assert p.read_text()==old.read_text().replace('Norm38','Sign33').replace('5 ^ 39','5 ^ 34').replace('5 ^ 38','5 ^ 33');s=p.read_text();assert all(x in s for x in ['d11.values a (Fin.last 10)','5 ^ 34','5 ^ 33','d41.values a ⟨39, by decide⟩ = (vars a).dvsr','lookup40_41 a (Fin.last 39)','d40_Bd_value','RingVars.dvsr','Int.cast_one'])
+up=D/'reviews/nine-seed33-jones-terminal-cut-terminal-frontier-independent/check.py';assert H(up)=='61b076f28933bd5d8409b9d119d31066b22e0705c75be7b0b0258bdb144bd669';subprocess.run([sys.executable,'-I','-S','-B',str(up)],capture_output=True,check=True,timeout=120)
+r=subprocess.run([sys.executable,'-I','-S','-B',str(P/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=180);assert not r.stderr and json.loads(r.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT'
+print(json.dumps({'status':'PASS_STATIC_AND_NO_LEAN_PREFLIGHT','scope':'symbolic Bd=dvsr at d41 with d11 rank opaque; no full named semantics or JSON binding'},sort_keys=True,indent=2))
