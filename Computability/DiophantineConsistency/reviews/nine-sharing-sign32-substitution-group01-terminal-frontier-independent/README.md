@@ -1,0 +1,5 @@
+# Independent sign32 X/Y/E terminal audit
+
+The state records a successful dependency scan and Lean compile; the author's separate record reports actual outer session 29038 exit 0. The checker validates the source, object and logs, all 100 direct guards, 1,060 overlay links and the exact group00 provider. Six row-link reports are `[propext]`; the three same-valuation evaluation reports are `[propext, Classical.choice, Quot.sound]`. The log contains six linter warnings: four unused `p` binders in the Y/E row definitions, and two unused simp arguments in the E evaluation proof.
+
+The checked statements identify old/new X/Y/E residuals at their exact list positions and show their evaluations agree under the proposed lift in an IΣ₁ model. These rows do not use eliminated old coordinate 15, so the evaluation theorems require no port-0 cast equality. They do not prove remaining substitution identities, a full zero-set bridge, numeric port binding or an endpoint. No Lean replay was performed. The outer record is author-observed; guards are point-in-time and sampled monitoring does not establish a complete dynamic or transitive trace.
