@@ -1,0 +1,5 @@
+# Partial terminal result
+
+Author-observed outer session 76962 exited 1 after `FAILED RuntimeError('compile failed Sign31DirectIPRA')`. The first five Lean stages exited 0, defining the symbolic/current 31-coordinate expression and proving abstract evaluation, current evaluation and current-source zero equivalence. Their three reports are `[propext, Classical.choice, Quot.sound]` and their compile logs have no warnings. The sixth endpoint-only stage dependency check exited 0 but Lean compile exited -6 with a `lean::memory_exception` at `interpreter`; its log has no theorem reports, no object was produced, and no endpoint claim follows. Monitor stop reason was null. This last stage contained polynomialBridge, native, standard and translated declarations, so the log does not isolate the internal trigger. Limits were unchanged.
+
+State, logs and author-recorded outer outcome are retained here; the five successful objects remain under `/tmp/nine-sharing-sign31-direct-ipra-retry01-20261106/lib/DiophantineConsistency/`.

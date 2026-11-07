@@ -203,7 +203,11 @@ remains separate. A [direct endpoint attempt](research/nine-sharing-sign31-direc
 [independently audited](reviews/nine-sharing-sign31-direct-ipra-failure-frontier-independent/README.md),
 hit the interpreter memory limit in its definition-only first stage; no
 object, endpoint or final postflight was produced. The internal cause is
-unknown. The
+unknown. A [narrow-import retry](research/nine-sharing-sign31-direct-ipra-retry01/README.md),
+[independently audited](reviews/nine-sharing-sign31-direct-ipra-retry01-failure-frontier-independent/README.md),
+checks five expression, evaluation and source-zero stages, but its sixth
+endpoint stage again hits the interpreter memory limit. Its exact internal
+trigger is unknown, and no endpoint object or final postflight was produced. The
 quartic Jones theorem does not apply directly to it. An external
 [28-witness sextic candidate](research/nine-sharing-sign28-sextic-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign28-sextic-frontier-independent/README.md),
