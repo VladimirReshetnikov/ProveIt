@@ -1,0 +1,3 @@
+# Terminal result
+
+Author-observed outer session 36474 exited 0 with `PASS sign32 reverse residual assembly diagnostic`; all four Lean stages exited 0. There are 25 axiom reports: 23 residual-zero helpers and the final reverse implication report `[propext, Classical.choice, Quot.sound]`, while `new_rows` reports `[propext]`. The compile logs contain no warnings. State, logs and author-recorded outer outcome are retained here; objects remain under `/tmp/nine-sharing-sign32-reverse-assembly-check-20261106/lib/DiophantineConsistency/`. The proved implication assumes the explicit beta-port cast and uses symbolic seeds; combined equivalence, numerical port binding and a sextic Jones theorem remain open.
