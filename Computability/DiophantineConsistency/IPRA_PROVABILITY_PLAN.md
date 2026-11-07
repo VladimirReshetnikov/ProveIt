@@ -2231,7 +2231,11 @@ representatives remains separate. A [conditional forward AllCuts assembly](resea
 [independently audited](reviews/nine-sharing-sign33-forward-all-cuts-terminal-frontier-independent/README.md),
 checks all eight groups for the same constructed valuation assuming the five
 core norms and five representative equalities. Supplying those hypotheses
-from source zero and deriving seed zero remain separate.
+from source zero is checked by a [current-source AllCuts client](research/nine-sharing-sign33-current-forward-all-cuts-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-current-forward-all-cuts-terminal-frontier-independent/README.md):
+natural source zero yields an existential AllCuts witness under an explicit
+universal current-port cast. Deriving seed zero and discharging the cast remain
+separate.
 A [generic reference-ell client](research/nine-sharing-sign33-reference-ell-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-reference-ell-terminal-frontier-independent/README.md),
 checks the ring-level node 30 identity used by a proposed P-norm route; it
