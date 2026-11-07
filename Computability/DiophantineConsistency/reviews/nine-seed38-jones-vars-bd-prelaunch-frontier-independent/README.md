@@ -1,0 +1,5 @@
+# Independent ring-variable Bd prelaunch review
+
+The checker pins source, runner, provider survey and manifest, independently reproduces the no-Lean preflight, and checks all 11 `RingVars` constructor fields in their declared order. Input shifts and `N`, `b`, and `G` expressions agree structurally with the named evaluator after its `Fin.cons 1 a` convention and ν=38 substitutions; the proposed `R` field remains the opaque d11 value, whose equality to the named rank requires its separate checked theorem. The candidate conclusion binds d41 index 39 to `vars.dvsr`, with the one-step d40 Bd lookup and `dvsr=(J*F)^2` matching the previously audited Bd cut.
+
+This proposes one cut identity, not equality of `vars` to the named evaluator or of the complete recipe to the named formula. Lean elaboration and axiom report remain untested. The direct terminal-cut object and guards are authenticated by the runner's point survey; earlier A1 independent recursive preflight interruption and initial-agreement missing numeric outer exit remain inherited. No Lean ran; point checks and sampled monitoring do not provide a complete dynamic or transitive trace.

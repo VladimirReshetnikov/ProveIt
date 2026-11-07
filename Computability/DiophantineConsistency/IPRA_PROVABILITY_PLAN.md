@@ -389,6 +389,10 @@ An [explicit-snoc retry](research/nine-seed38-jones-terminal-cut-retry01/README.
 [independently audited](reviews/nine-seed38-jones-terminal-cut-retry01-terminal-frontier-independent/README.md),
 then checks recipe output in seven unevaluated cuts, retaining inherited A1
 and initial-exit caveats. Named-formula and JSON equality remain separate.
+A [RingVars/Bd binding attempt](research/nine-seed38-jones-vars-bd-check/README.md),
+[independently audited](reviews/nine-seed38-jones-vars-bd-failure-frontier-independent/README.md),
+failed when `rfl` did not close the expanded Bd/RingVars equality; no object or
+final postflight was produced, and its `sorryAx` report is not proof evidence.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
 not a Lean proof or evidence that the complete composition fits the resource

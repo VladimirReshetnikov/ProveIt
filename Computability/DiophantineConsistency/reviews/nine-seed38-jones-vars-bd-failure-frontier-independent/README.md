@@ -1,0 +1,5 @@
+# Independent RingVars/Bd failure audit
+
+The state and logs record dependency scan exit 0 and Lean compile exit 1; the separate author observation records outer session 97794 exit 1. The checker validates source and logs, all 100 recorded direct guards, 1,274 overlay links and the exact terminal-output provider. The compile failed at the final `rfl`, which did not close the expanded Bd expression against `(vars a).dvsr`. The printed axiom report contains `sorryAx` after the error and is not evidence of the theorem. No successful object is recorded and final whole-run postflight was not reached.
+
+This is an elaboration/proof failure of the proposed single cut, not evidence of a mathematical counterexample. No Lean replay was performed. Outer outcome is author-observed, guard checks are point-in-time and sampled monitoring is not a complete dynamic or transitive trace. Earlier A1 independent preflight recursive replay was interrupted, with the author's successful preflight recorded; the earlier initial-agreement numeric outer exit remains unavailable.
