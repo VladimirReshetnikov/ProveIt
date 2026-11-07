@@ -185,6 +185,11 @@ A [one-step survey](research/nine-sharing-sign27-single-positive-cut-survey/READ
 [independently audited](reviews/nine-sharing-sign27-single-cut-independent/README.md),
 checks the syntactic-degree effect of the seven directly eligible positive
 cuts in that candidate. It excludes other reductions and is not a lower bound.
+A [local gap/Nt obstruction](research/nine-sharing-sign27-gap-nt-local-obstruction/README.md),
+[independently checked](reviews/nine-sharing-sign27-gap-nt-independent/README.md),
+shows that those two equations and basic nonnegativity alone do not force the
+coordinate reconstructed by a prospective gap elimination to be natural.
+It does not constrain the full system or prove a witness-count lower bound.
 A [restricted survey](research/nine-sharing-sign31-sextic-positive-cut-survey/README.md),
 [independently reviewed](reviews/nine-sharing-sign31-positive-cut-survey-frontier-independent/README.md),
 enumerates the sequential positive-cut substitutions that preserve
