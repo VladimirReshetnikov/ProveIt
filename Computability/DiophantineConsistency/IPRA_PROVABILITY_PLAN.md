@@ -127,7 +127,12 @@ sextic-compatible Jones endpoint remain separate. A [direct endpoint attempt](re
 [independently audited](reviews/nine-sharing-sign32-direct-ipra-failure-frontier-independent/README.md),
 failed in its first stage with a Lean interpreter memory exception under
 `-M2800`; it produced no expression object or theorem, and the endpoint stage
-and final postflight did not run. The specific source trigger is unknown.
+and final postflight did not run. The specific source trigger is unknown. A
+[factored retry](research/nine-sharing-sign32-direct-ipra-retry01/README.md),
+[independently audited](reviews/nine-sharing-sign32-direct-ipra-retry01-failure-frontier-independent/README.md),
+compiled the generic input-substitution evaluation, but its concrete
+expression/evaluation stage again hit the interpreter memory limit. Its
+endpoint and final postflight did not run; the precise trigger remains unknown.
 A [single-cut syntactic substitution survey](research/nine-sharing-sign33-single-cut-substitution-survey/README.md),
 [independently audited](reviews/nine-sharing-sign33-single-cut-survey-frontier-independent/README.md),
 finds a degree-3 or degree-4 residual in each of the 19 single-cut substitutions
