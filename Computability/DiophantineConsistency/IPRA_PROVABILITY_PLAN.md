@@ -265,7 +265,10 @@ checks pointwise and same-input existential equivalence under the same
 hypothesis. A [current-port specialization](research/nine-sharing-sign28-current-iff-check/README.md),
 [independently audited](reviews/nine-sharing-sign28-current-iff-terminal-frontier-independent/README.md),
 discharges that hypothesis for the current ports and checks both equivalences
-in IΣ₁ models. The source composition and
+in IΣ₁ models. A [source-composition attempt](research/nine-sharing-sign28-current-source-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign28-current-source-iff-failure-frontier-independent/README.md),
+hit the interpreter memory limit without producing an object or final
+postflight; the internal trigger is unknown. The source composition and
 iPRA endpoint likewise remain to be checked in Lean. A further external
 [27-witness sextic candidate](research/nine-sharing-sign27-sextic-normalized-root-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign27-sextic-root-independent/README.md),
