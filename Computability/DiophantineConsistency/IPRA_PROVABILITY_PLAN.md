@@ -45,6 +45,10 @@ A [specialized sign33 macro source draft](research/nine-seed33-jones-compact-lea
 quotes the 45-node prototype and specializes the checked sign38 macro
 language. Its Lean elaboration and semantic targets remain unproved; the
 source review alone is not a formal JSON or human-text binding.
+A [language compilation attempt](research/nine-seed33-jones-compact-language-check/README.md),
+[independently audited](reviews/nine-seed33-jones-compact-language-failure-frontier-independent/README.md),
+hit Lean's interpreter memory limit under `-M2800` and produced no object or
+final postflight; the responsible declaration or dependency is unknown.
 A [human-readable 33-seed formula](research/nine-seed33-jones-human-formula/FORMULA.md)
 has passed an [independent manual transcription review](reviews/nine-seed33-jones-human-formula-frontier-independent/README.md).
 Lean does not parse the Markdown; numeric expansion and exact metrics remain
