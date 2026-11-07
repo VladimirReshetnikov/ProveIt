@@ -63,6 +63,11 @@ fixed integer ports; the earlier candidate's unresolved relative coefficient
 path is retained in its own packet. Both all-model reconstruction directions
 remain to be checked in Lean. The existing nine-variable Jones theorem requires
 degree at most four, so no 32-witness Jones endpoint follows from this result.
+A [source-only Lean syntax and bridge draft](research/nine-sharing-sign32-sextic-lean-draft/README.md),
+[independently reviewed](reviews/nine-sharing-sign32-sextic-lean-frontier-independent/README.md),
+transcribes all 23 residuals and defines proposed lift/drop maps and two open
+zero-set propositions. Separate errata correct its reproduction instructions;
+neither direction has been proved or compiled in Lean.
 A [single-cut syntactic substitution survey](research/nine-sharing-sign33-single-cut-substitution-survey/README.md),
 [independently audited](reviews/nine-sharing-sign33-single-cut-survey-frontier-independent/README.md),
 finds a degree-3 or degree-4 residual in each of the 19 single-cut substitutions
