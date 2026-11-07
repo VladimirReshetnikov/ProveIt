@@ -1,0 +1,3 @@
+# Sign33 compact light recipe source
+
+The split script removes only the final open endpoint semantic proposition from the independently source-reviewed generated recipe, retaining the exact DAG and Boolean scopedness target. It exited 0 on regeneration check. The guarded check compiled this source and an axiom-free scopedness theorem; the [independent terminal audit](../../reviews/nine-seed33-jones-compact-recipe-scoped-terminal-frontier-independent/) passed. This it does not assert semantic equality or bind JSON/human text to Lean. See the [guarded candidate](../nine-seed33-jones-compact-recipe-scoped-check/README.md).
