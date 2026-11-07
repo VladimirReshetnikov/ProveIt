@@ -4598,8 +4598,8 @@ the packages' coefficient files with it:
   (`55-congruence-norms/native/SOURCE_CHAIN.md`). A calibration was started
   on 5 November 2026
   ([record](research/mixed121-calibration/README.md), `Lean/…/Mixed121/`).
-  Seventeen modules, plus 21 mechanical width ports in `Mixed121/W121/`, now
-  prove the following:
+  Thirty-two modules, plus 22 mechanical width ports in `Mixed121/W121/`
+  (about 6,700 lines), now prove the following:
   - the symbolic kernel and support facts;
   - the radix-four clause decoder and the coefficient digit form;
   - one decoded reflected band;
@@ -4609,16 +4609,21 @@ the packages' coefficient files with it:
   - the §3 mask facts (`popcount(MC) = d − 989`, `popcount(MF) = 989`,
     `MC` even, `MF ≡ 4 (mod 8)`);
   - the native-cell decoder;
-  - the `LeafFacts` halting chain at the 121x8801 ports, from
-    `symbolic_aligned` through `Mixed121CleanCarry.graph_clean_carry`: a
-    clause target with zero carry, where the graph digit equals the raw band
-    column.
+  - **the whole `LeafFacts` halting chain at the 121x8801 ports**, from
+    `symbolic_aligned` to `Mixed121Halt.halts_of_facts`: every positive
+    valuation with `LeafFacts Mixed121Ports.ports v` in a model of `𝗜𝚺₁`
+    gives `∃ T, first (run₂₁₅ T) = 0`. Axioms: `propext`,
+    `Classical.choice`, `Quot.sound`.
 
-  The halting chain consumes `CompactLeafFacts.LeafFacts p v`, which is stated
-  for arbitrary ports, not a particular graph's zero. So the rest of the
-  `Compact44/Facts/` chain is a tuple-level port. That includes the clean
-  carry, overlap, alignment and the `λ = 2341` controller. The per-form work is
-  proving `LeafFacts` and the endpoints for 52 / 79 and 44 / 111.
+  This is the counterpart of `CompactLeafFactsHalt.halts_of_facts`.
+  `LeafFacts` is stated for arbitrary ports, so the chain was a tuple-level
+  port; it needed no controller. What remains is per-form or in the
+  completeness direction:
+  - proving `LeafFacts` from a positive zero of the 52 / 79 and 44 / 111
+    forms (as `P57Facts` did);
+  - the witness construction for halting ⟹ solvable (packing, rank and the
+    `λ = 2341` controller);
+  - the iPRA endpoints.
 - **admissible942** (β of 189,269 bits; `candidates/one-page-admissible942`):
   183's 150 / 65 and 192's 174 / 69. 188 binds block-mask2963. No Lean module
   mentions the admissible942 exponent. The tree's endpoints for these

@@ -1,4 +1,4 @@
-# The wang943-mixed-121x8801 tuple: a Lean calibration, phase 1
+# The wang943-mixed-121x8801 tuple: a Lean calibration
 
 4 November 2026. Claude session; not a paired replay.
 
@@ -211,25 +211,62 @@ were then retargeted at `Mixed121Rotation`'s width-generic carry family.
   decoding, as a theorem about every `LeafFacts` valuation at the 121x8801
   ports.
 
+## Phase 3f: from one decoded block to a halting run
+
+The rest of Compact44's `Facts/` halting chain, ported link by link. Every
+link takes `CompactLeafFacts.LeafFacts Mixed121Ports.ports v` at a positive
+valuation `v`. The 121-specific geometry is re-derived and checked by
+`omega`/`decide`:
+
+- the second anchor is `1096`;
+- the bare offsets are `2200` and `8843 = 8801 + 42`;
+- the field windows are ten cells wide;
+- the copy indices are `9 → 29` for the successor, `42 → 40` for the orbit,
+  and `30 + u ↔ 10 + u` and `20 + u ↔ u` for the field matches.
+
+| Module | Link |
+| --- | --- |
+| [`Mixed121Occupied`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Occupied.lean) | block `0` selects the Start tile, and all 44 copy cells carry its digits |
+| [`Mixed121Parity`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Parity.lean), [`Mixed121AnchorParity`](../../Lean/DiophantineConsistency/Mixed121/Mixed121AnchorParity.lean) | the anchor cells `2195`/`3296` are read through the bare offsets `1100`/`2200` |
+| [`Mixed121Shift`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Shift.lean) | the temporal shift is block-aligned: `(E/121) % (8801N) = 8801·s` |
+| [`Mixed121Uniform`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Uniform.lean) | every block's band decodes, uniformly in the block |
+| [`Mixed121Field`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Field.lean) | vertical (`30`/`D`) and horizontal (`62`/`8843`) field transport |
+| [`Mixed121Copy`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Copy.lean), [`Mixed121Orbit`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Orbit.lean) | copy cells are block-local; selection propagates along the temporal orbit |
+| [`Mixed121Successor`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Successor.lean) | selection propagates to the spatial successor through the marker bit `9` |
+| [`Mixed121AllBlocks`](../../Lean/DiophantineConsistency/Mixed121/Mixed121AllBlocks.lean) | every block is selected (`𝚺₁` induction in the model of `𝗜𝚺₁`) |
+| [`Mixed121BlockWord`](../../Lean/DiophantineConsistency/Mixed121/Mixed121BlockWord.lean) | the selected tiles form a `𝚺₁` row word, packed into 10-bit blocks; no row is the impossible tile `1` |
+| [`Mixed121FieldMatch`](../../Lean/DiophantineConsistency/Mixed121/Mixed121FieldMatch.lean), [`Mixed121TileMatch`](../../Lean/DiophantineConsistency/Mixed121/Mixed121TileMatch.lean) | neighbouring tiles agree on shared fields, and so match as Wang tiles |
+| [`Mixed121Halt`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Halt.lean) | row `0` is tile `0`; the word is a `CompactLocalWord.Word`; machine 215 halts |
+
+The final theorem is
+
+```lean
+Mixed121Halt.halts_of_facts (v : Fin 12 → V) (hv : ∀ j, 0 < v j)
+    (hz : CompactLeafFacts.LeafFacts Mixed121Ports.ports v) :
+    ∃ T : V, ArithmeticCantor.first (ArithmeticMachineRun215.run T) = 0
+```
+
+over every model `V` of `𝗜𝚺₁`. Its axioms are only `propext`,
+`Classical.choice` and `Quot.sound`. It is the exact counterpart of
+`CompactLeafFactsHalt.halts_of_facts`. The tail after the local word
+(`OldWordIdentificationDraft.local_to_marked`,
+`ArithmeticWangSoundness.marked_halts`) is generic in the word, so it is
+reused unchanged; both tuples encode the same 943 tiles in the same order.
+
+The tuple-level calibration is therefore complete in the soundness
+direction: a positive solution of any equation whose leaf facts hold at these
+ports gives internal halting of machine 215. The whole `Mixed121/` tree is
+54 modules, about 6,700 lines, including the 22 width ports under `W121/`.
+
 ## Remaining phases
 
-Measured against the Compact44 calibration, which is 472 modules plus the
-endpoint layer:
-
-1. the clean-carry step: a `CarryInput` for the flattened family and a
-   carry-free column at each clause target. This is Compact44's
-   `Facts/FixedGraphCleanCarry`. Like the whole `Facts/` halting chain
-   (45 modules, about 3,000 lines), it takes
-   `CompactLeafFacts.LeafFacts p v` at the ports `p`, not a particular
-   graph's zero. It is therefore a tuple-level port. `LeafFacts` is stated for
-   arbitrary ports, and its `R` and `Nt` have exactly the shape of package 55's
-   52 / 79 form. The per-form obligation is to prove `LeafFacts` at a positive
-   valuation, as `P57Facts` did on Compact44. The width-generic `carry_input`
-   and the room above are inputs to this step;
-2. the padding cells `8792..8799` (the mask populations and low bits of §3
-   are done, in `Mixed121Masks`);
-3. the spatial and temporal overlap identities, and the binary-alignment
-   argument for `b = 121`;
-4. the packing, rank and controller layers. Compact44's `PackingInput d` is
-   already parametric in `d`;
-5. halt data, leaf facts and the equation endpoints for 52 / 79 and 44 / 111.
+1. **Per-form leaf facts.** Prove `LeafFacts Mixed121Ports.ports v` from a
+   positive zero of package 55's 52 / 79 form, and of the 44 / 111 form, as
+   `P57Facts` did for Compact44. `LeafFacts`' `R` and `Nt` have exactly the
+   shape of the 52 / 79 form.
+2. **Completeness.** Halting of machine 215 gives a solution. This is the
+   recipe's witness construction: packing, rank, and the `λ = 2341`
+   controller of §4. Compact44's `PackingInput d` is already parametric in
+   `d`.
+3. **Endpoints.** The iPRA endpoints `equation ↔ Con(ZFC)` for 52 / 79 and
+   44 / 111, by the Compact44 promotion method.
