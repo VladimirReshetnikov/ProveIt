@@ -1,0 +1,5 @@
+# Proposed current-port sign28/sign31 seed equivalence
+
+This guarded client proposes the beta-port cast and applies the sign28/sign31 pointwise and same-input existential equivalences to the concrete current port function in IΣ₁ models. The current high port uses the existing `highPort + beta` convention. This is a seed-to-seed statement, not a current-source or iPRA endpoint, Lean degree bound, or external JSON/coefficient binding.
+
+The runner binds the two successful immediate iff producer rows and surveys the successful port-base and port-zero rows of a partially failed earlier producer; it also binds the observed current-data provider. Deeper provider ancestry is inherited. The author no-Lean preflight returned 0 and the reviewed run succeeded as recorded in [attempt01](attempt01/README.md); the [independent terminal audit](../../reviews/nine-sharing-sign28-current-iff-terminal-frontier-independent/README.md) passed. Limits are `-M2800`, 120 seconds per call, sampled 4-GiB RSS, 10-GiB available-host-memory floor, and 5-GB disk precheck.

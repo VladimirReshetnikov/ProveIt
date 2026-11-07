@@ -260,7 +260,10 @@ checks lift and drop implications in IΣ₁ models under the explicit beta-cast
 hypothesis. A [seed iff client](research/nine-sharing-sign28-seed-iff-check/README.md),
 [independently audited](reviews/nine-sharing-sign28-seed-iff-terminal-frontier-independent/README.md),
 checks pointwise and same-input existential equivalence under the same
-hypothesis. The current-port specialization and
+hypothesis. A [current-port specialization](research/nine-sharing-sign28-current-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign28-current-iff-terminal-frontier-independent/README.md),
+discharges that hypothesis for the current ports and checks both equivalences
+in IΣ₁ models. The source composition and
 iPRA endpoint likewise remain to be checked in Lean. A further external
 [27-witness sextic candidate](research/nine-sharing-sign27-sextic-normalized-root-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign27-sextic-root-independent/README.md),

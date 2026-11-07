@@ -1,0 +1,3 @@
+# Proposed current-port specialization
+
+Source-only candidate for discharging the beta cast and specializing sign28/sign31 seed equivalence at current ports. The inherited `highPort + beta` convention is provided by `CurrentWindowCarry2011.ports`; this file uses the port function without redefining it. The generic sign28 iff is itself pending Lean and independent review. This candidate has not been elaborated, and does not assert current-source equivalence, an endpoint, degree bound or external coefficient binding. A fresh guarded check must authenticate the successful generic iff and the relevant current-port provider.
