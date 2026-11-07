@@ -105,6 +105,9 @@ checks the d31 and d32 local equations.
 A [Gprime/H dependent-prefix client](research/nine-seed33-jones-dependent06-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-dependent06-staged-terminal-frontier-independent/README.md),
 checks the d33 and d34 local equations.
+An [I/A0/A1/V dependent-prefix client](research/nine-seed33-jones-dependent07-staged-check/README.md),
+[independently audited](reviews/nine-seed33-jones-dependent07-staged-terminal-frontier-independent/README.md),
+checks the d35 through d39 local equations.
 A [raw-rank prefix client](research/nine-seed33-jones-prefix-rank-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-prefix-rank-staged-terminal-frontier-independent/README.md),
 checks the symbolic d11 raw rank and its carried form. It does not by itself
