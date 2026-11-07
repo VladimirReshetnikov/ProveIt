@@ -1,0 +1,5 @@
+# Independent A1 terminal audit
+
+The frozen state records two successful dependency scans and Lean compiles; the separate author observation records outer session 38602 exit 0. The checker verifies source and object pins, both sets of logs, all 250 direct guard entries, producer hashes and realpaths, and 1,262 overlay symlinks. It pins the independent prelaunch source review, which checks the D/F/I substitution and d37-to-d41 index mapping. `path37_41` is reported axiom-free; `d37_A1_value`, `lookup37_41`, and `d41_A1_value` report `[propext, Classical.choice, Quot.sound]`. No warnings occur.
+
+Scope is symbolic A1 at d37 and its transfer to d41, retaining opaque rank; it is not a final recipe/output identity or a document binding. No Lean replay was performed. The outer session record is author-observed; provider checks are point-in-time and sampled monitoring does not establish complete transitive/dynamic ancestry. The independent prelaunch recursive replay was intentionally interrupted; the author's no-Lean preflight was recorded. A still earlier initial-agreement provider's numeric outer exit remains unavailable.
