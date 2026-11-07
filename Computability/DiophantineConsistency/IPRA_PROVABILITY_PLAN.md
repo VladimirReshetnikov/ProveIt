@@ -2143,6 +2143,10 @@ an object was produced, and the final postflight did not run. A [typed retry](re
 [independently audited](reviews/nine-sharing-sign33-forward-value-negative-retry01-terminal-frontier-independent/README.md),
 checks both value and negative signed fields conditional on their core
 representative equalities; its compile records eight simp/tactic warnings.
+A [first Q-norm mapping attempt](research/nine-sharing-sign33-forward-norm-q-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-forward-norm-q-failure-frontier-independent/README.md),
+failed with a Lean interpreter memory exception under `-M2800`; it produced no
+theorem or object and did not reach final provider postflight.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
