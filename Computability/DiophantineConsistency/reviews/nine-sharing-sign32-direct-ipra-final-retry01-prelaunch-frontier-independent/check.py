@@ -1,0 +1,9 @@
+#!/usr/bin/env python3
+import hashlib,json
+from pathlib import Path
+D=Path(__file__).resolve().parents[2];N=D/'research/nine-sharing-sign32-direct-ipra-final-retry01';O=D/'research/nine-sharing-sign32-direct-ipra-final-check';sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+for n,h in {'run.py':'68e61a95a01df123d1433a9dc38d2cb50e41d74febe03dc01a9cceb629d9e45e','source-manifest.json':'004a04c5625c4c3e33565bef46154278cb8993704ab21978cf5038e422894100','framework-survey.py':'9a58fe9d171030cd0bbfb820c5f4c355f047f88a84858489b8da827f2d7e0bc9'}.items():assert sha(N/n)==h
+n='Sign32DirectIPRA';a=(O/'src/DiophantineConsistency'/f'{n}.lean').read_text();p=N/'src/DiophantineConsistency'/f'{n}.lean';b=p.read_text();assert sha(p)=='3e4def38dc06a82d16dcab596fe8606259fccab89f2ced85f02f462bfbb779be';assert a.replace('simpa only [InternalZero, not_exists, ne_eq]','simpa only [InternalZero, ObjectCurrentEquation2011.InternalZero, not_exists, ne_eq]')==b
+rows=json.loads((N/'source-manifest.json').read_text())['rows'];assert len(rows)==1 and rows[0]['module']=='DiophantineConsistency.Sign32DirectIPRA' and rows[0]['source_sha256']==sha(p) and [x[7:] for x in b.splitlines() if x.startswith('import ')]==rows[0]['imports']
+s=json.loads((O/'attempt01/state.json').read_text());assert sha(O/'attempt01/state.json')=='148101c02f0b631ed27c0b6588ab3bf120eac27ec7cce0568af0ba8930871511' and s['status']=='FAILED' and s['rows'][0]['module']=='Sign32CurrentExpressionSource' and s['rows'][0]['compile']['exit']==0 and s['rows'][0]['object_sha256']=='e1f97c454d60009f2015aa69d048f328f3d25dde74326f068394debaa4b94876' and s['rows'][1]['compile']['exit']==1
+print(json.dumps({'status':'PASS_STATIC','scope':'one added source-zero unfolding; prior successful first-stage object from failed run, no endpoint claim before compile'}))

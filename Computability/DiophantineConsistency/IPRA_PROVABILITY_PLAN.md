@@ -148,7 +148,14 @@ A [factored endpoint attempt](research/nine-sharing-sign32-direct-ipra-final-che
 checks the direct 32-coordinate expression's source-zero equivalence in the
 intended models. The following endpoint stage failed on a zero-predicate type
 mismatch; its `sorryAx` reports are not proof evidence, and its final
-postflight did not run.
+postflight did not run. An [unfolding retry](research/nine-sharing-sign32-direct-ipra-final-retry01/README.md),
+[independently audited](reviews/nine-sharing-sign32-direct-ipra-final-retry01-terminal-frontier-independent/README.md),
+checks the direct `Fin 32` expression's polynomial bridge and native,
+standard and translated-standard iPRA proof-existence equivalences. It uses
+the successful source-zero stage of the preceding otherwise-failed run and
+excludes its failed endpoint stage. This does not establish a Lean degree
+bound, a binding to the external JSON or numerical coefficients, or a
+sextic-to-nine-variable Jones endpoint; inherited provider caveats apply.
 An external [31-witness sextic candidate](research/nine-sharing-sign31-sextic-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign31-sextic-frontier-independent/README.md),
 eliminates the `f2` cut from the 32-witness AST while preserving exact degree 6.
