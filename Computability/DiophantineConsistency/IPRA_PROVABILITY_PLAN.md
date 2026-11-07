@@ -182,7 +182,10 @@ checks q3 and the other 19 residual identities and row positions, with 37
 unused-binder or unused-simp warnings. A [directional zero bridge](research/nine-sharing-sign31-zero-bridge-check/README.md),
 [independently audited](reviews/nine-sharing-sign31-zero-bridge-terminal-frontier-independent/README.md),
 checks both the natural lift and drop implications for the same arbitrary
-symbolic ports in IΣ₁ models. The existential/source composition and iPRA
+symbolic ports in IΣ₁ models. A [seed iff client](research/nine-sharing-sign31-seed-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign31-seed-iff-terminal-frontier-independent/README.md),
+checks pointwise lift equivalence and same-input existential equivalence for
+arbitrary common ports without a beta cast. The source composition and iPRA
 endpoint remain separate, and the
 quartic Jones theorem does not apply directly to it. An external
 [28-witness sextic candidate](research/nine-sharing-sign28-sextic-candidate/README.md),

@@ -1,0 +1,3 @@
+# Terminal result
+
+Author-observed outer session 58566 exited 0 with `PASS sign31 seed iff diagnostic`; both Lean stages exited 0. `drop_lift`, `pointwise` and `exists_same_input` report `[propext, Classical.choice, Quot.sound]`; the compile logs contain no warnings. State, logs and author-recorded outer outcome are retained here; the objects remain under `/tmp/nine-sharing-sign31-seed-iff-check-20261106/lib/DiophantineConsistency/`. The seed equivalence is symbolic, has arbitrary common ports and needs no beta cast. Current-source/endpoint composition, Lean degree and external JSON/numerical coefficient bindings remain separate.

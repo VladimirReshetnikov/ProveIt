@@ -1,0 +1,7 @@
+# Independent sign31/sign32 seed iff terminal audit
+
+PASS. The checked statements concern arbitrary common symbolic ports and IΣ₁ models: `drop_lift` recovers the original 32-coordinate valuation, `pointwise` equates sign31 zero with sign32 zero at its f² lift, and `exists_same_input` preserves any chosen coordinate-zero value in both existential directions. They use the separately checked forward/backward bridges; there is no beta cast hypothesis. Current-source equivalence, iPRA endpoints, degree and JSON/numerical coefficient binding are separate.
+
+The independent checker verifies the frozen state and author-observed outer session 58566 exit 0, both source snapshots/objects/dependency and compile logs, 200 candidate direct guard slots and 1,068 overlay links, all four immediate bridge producer source/object/logs/guards, and reruns the pinned first-cut/drop provider survey. Each compile log reports only the stated `[propext, Classical.choice, Quot.sound]` axioms for its three requested theorems; no warnings or `sorryAx` are present. No Lean replay was performed; the numeric outer exit is author-recorded. The checks are point-in-time, deeper transitive/dynamic ancestry is inherited, and sampled monitoring can miss transient spikes/escaped descendants.
+
+Checker SHA-256 `b0b941cc864c542d4204273a16534d8bb08fb9490ccd85b2cd9ca9c5c8f89a0e`; result SHA-256 `fb8c032fec3edd92f5039f59373ecc16e5ad8148c7817e9abcfb5657d6fff555`.
