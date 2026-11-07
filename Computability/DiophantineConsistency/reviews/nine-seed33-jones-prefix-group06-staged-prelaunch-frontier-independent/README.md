@@ -1,0 +1,3 @@
+Independent prelaunch review: PASS. The two pinned source modules are namespace-only adaptations of checked sign38 proofs and propose seven d10 carries of e, ell, lambda, g, theta, B and b. Exact Fin indices, cast-successor counts and previous-node chains were checked. Both stages import and guard the audited group05 q/N provider; independent no-Lean preflight passed.
+
+These are equalities to earlier short prefixes only; elaboration and bounded-resource success are untested. Full output semantic equality and JSON/human binding remain separate; point observations and deeper provider ancestry are inherited.
