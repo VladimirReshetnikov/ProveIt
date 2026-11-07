@@ -152,6 +152,10 @@ remain separate.
 A [Kc checkpoint client](research/nine-seed33-jones-checkpoint43-kc-check/README.md),
 [independently audited](reviews/nine-seed33-jones-checkpoint43-kc-terminal-frontier-independent/README.md),
 checks symbolic Kc at d43 and its Bd carry.
+A [terminal T/output cut](research/nine-seed33-jones-terminal-cut-check/README.md),
+[independently audited](reviews/nine-seed33-jones-terminal-cut-terminal-frontier-independent/README.md),
+checks the recipe output under earlier checkpoint-value hypotheses; the
+named-evaluator equality and external-file binding remain separate.
 A [U/Y dependent-prefix client](research/nine-seed33-jones-dependent01-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-dependent01-staged-terminal-frontier-independent/README.md),
 checks the d19 and d20 local equations; full output semantics remain open.
