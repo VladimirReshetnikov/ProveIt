@@ -567,7 +567,12 @@ lift/drop bridge and iPRA endpoint are not yet checked in Lean; it is a
 different degree/variable tradeoff from the 26-witness sextic. An [independently
 reviewed Lean source draft](research/nine-sharing-sign25-octic-lean-draft/README.md)
 specifies the product lift/drop and retains its inherited 4,000,000-heartbeat
-syntax option; its bridge targets remain unproved.
+syntax option; its bridge targets remain unproved. A [syntax and squares
+client](research/nine-sharing-sign25-seed-squares-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-seed-squares-terminal-frontier-independent/README.md),
+checks symbolic seed zero iff its 16 residuals vanish. Its retained runner
+success/scope labels incorrectly say sign26; the pinned modules and theorem
+are sign25. The bridge and endpoint remain separate.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
