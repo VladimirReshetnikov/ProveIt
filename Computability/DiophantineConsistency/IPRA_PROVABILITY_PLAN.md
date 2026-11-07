@@ -312,7 +312,11 @@ checks equality of zero existence for the direct 28- and 31-coordinate
 expressions in the indicated IΣ₁ models. A [generic bridge-transport attempt](research/nine-sharing-generic-polynomial-bridge-transport-check/README.md),
 [independently audited](reviews/nine-sharing-generic-polynomial-bridge-transport-failure-frontier-independent/README.md),
 failed on missing namespace and identifier elaboration; its `sorryAx` report
-is not proof evidence, and it produced no object or final postflight. The
+is not proof evidence, and it produced no object or final postflight. A
+[namespace retry](research/nine-sharing-generic-polynomial-bridge-transport-retry01/README.md),
+[independently audited](reviews/nine-sharing-generic-polynomial-bridge-transport-retry01-terminal-frontier-independent/README.md),
+checks the generic bridge transfer assuming both all-model zero equivalence
+and the second expression's bridge; concrete specialization remains separate. The
 source composition and
 iPRA endpoint likewise remain to be checked in Lean. A further external
 [27-witness sextic candidate](research/nine-sharing-sign27-sextic-normalized-root-candidate/README.md),
