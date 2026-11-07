@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+d=Path(__file__).resolve().parents[2];p=d/'research/nine-sharing-sign33-forward-norm-strong-split-check';sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest()
+for n,h in {'run.py':'3cbe3f1f119d0002a292e8b91d80dadbed88da4c25fa87cd46d92ef255cf2aae','provider_survey.py':'e93e0ae60790a3d94e7fa5dcc43319e962df44972ad865e7989b00f738809f25','source-manifest.json':'c47b2200e3a5f5a82b393497c66cf206568a51782eeeb5771de8500ae8ea3f18'}.items():assert sha(p/n)==h
+rows=json.loads((p/'source-manifest.json').read_text())['rows'];names=['Sign33ForwardNormStrong38','Sign33ForwardCoordinate22','Sign33ForwardCoordinate28','Sign33ForwardCoordinate32','Sign33ForwardNormStrong'];hashes=['81d87dfe099c67f1977994ff3aef6ff7e98e90e0b340d89d34c83ba08cfec7c2','b20c12d02be3ac81b21afdc72c3ed11bd787bc1bb2036791a93998fd7887d6b4','5235d3fba3c6b59c2015c55281fe30336a67fbc0ed725ce76f4e371fcfeecc1b','afbef6535a3fdbb3ab2a54dad50f358379ea7d063a592a55aa91f7e9effa1443','1de9f17a4ad18668f0054f22b5fd9b268aaa746a452df988b8744096dd65ff16'];assert len(rows)==5
+for row,n,h in zip(rows,names,hashes):
+ q=p/'src/DiophantineConsistency'/f'{n}.lean';s=q.read_text();assert row['module']=='DiophantineConsistency.'+n and row['source_sha256']==sha(q)==h and re.findall(r'^import ([\w.]+)$',s,re.M)==row['imports'] and s.count('#print axioms ')==1
+old=d/'research/nine-sharing-sign33-forward-norm-strong-retry01/src/DiophantineConsistency';assert (p/'src/DiophantineConsistency/Sign33ForwardNormStrong38.lean').read_bytes()==(old/'Sign33ForwardNormStrong38.lean').read_bytes();final=(p/'src/DiophantineConsistency/Sign33ForwardNormStrong.lean').read_text();previous=(old/'Sign33ForwardNormStrong.lean').read_text();assert final.split('theorem norm_strong_of_core',1)[1].split(':= by',1)[0]==previous.split('theorem norm_strong_of_core',1)[1].split(':= by',1)[0]
+f=(d/'research/nine-sharing-sign33-forward-constructor-check/src/DiophantineConsistency/SharingForward33.lean').read_text();part=f.split('def witnessCoordinates',1)[1].split('theorem witness_inputs',1)[0];vec=[x.strip() for x in re.search(r'!\[(.*?)\]',part,re.S).group(1).split(',')]
+for n,i,j,k in [('Sign33ForwardCoordinate22',22,21,21),('Sign33ForwardCoordinate28',28,27,29),('Sign33ForwardCoordinate32',32,31,35)]:
+ s=(p/'src/DiophantineConsistency'/f'{n}.lean').read_text();assert f') {i} =' in s and f'ports u {k}' in s and f'({j} : Fin 33).succ = ({i} : Fin 34)' in s and vec[j]==f'w {k}' and f'{n}.project' in final
+run=(p/'run.py').read_text();assert "elif mod in {e['module'] for e in entries}" in run and "need(guard(deps)==row['direct_guard']" in run
+r=subprocess.run([sys.executable,'-I','-S','-B',str(p/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=300);o=json.loads(r.stdout);assert not r.stderr and o['status']=='PASS_NO_LEAN_PREFLIGHT' and o['stage_count']==5
+print(json.dumps({'status':'PASS','preflight':o,'scope':'split conditional strong projection proposal; no Lean replay'},indent=2,sort_keys=True))
