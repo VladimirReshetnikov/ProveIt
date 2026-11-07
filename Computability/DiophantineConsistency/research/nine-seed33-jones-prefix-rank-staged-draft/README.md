@@ -1,0 +1,3 @@
+# Sign33 d11 raw-rank source-only candidates
+
+These two drafts adapt the previously checked sign38 d11 raw-rank and carried-rank proofs to sign33 namespace and the `5^34` exponent. Values and finite sums stay symbolic. These are local d11 identities and do not prove the final output, named-rank equality, JSON/human binding, degree or arithmetic-operation count. The [guarded runner](../nine-seed33-jones-prefix-rank-staged-check/README.md) binds the audited group06 provider; the guarded compilation passed and the [independent terminal audit](../../reviews/nine-seed33-jones-prefix-rank-staged-terminal-frontier-independent/) passed.
