@@ -123,7 +123,11 @@ Jones endpoint remain separate. A [32-seed/source composition](research/nine-sha
 checks that a current sextic seed zero with 32 natural tail witnesses and
 input 1 is equivalent to current source zero in IΣ₁ models; it records one
 unused-section-variable warning. The direct 32-coordinate endpoint and any
-sextic-compatible Jones endpoint remain separate.
+sextic-compatible Jones endpoint remain separate. A [direct endpoint attempt](research/nine-sharing-sign32-direct-ipra-check/README.md),
+[independently audited](reviews/nine-sharing-sign32-direct-ipra-failure-frontier-independent/README.md),
+failed in its first stage with a Lean interpreter memory exception under
+`-M2800`; it produced no expression object or theorem, and the endpoint stage
+and final postflight did not run. The specific source trigger is unknown.
 A [single-cut syntactic substitution survey](research/nine-sharing-sign33-single-cut-substitution-survey/README.md),
 [independently audited](reviews/nine-sharing-sign33-single-cut-survey-frontier-independent/README.md),
 finds a degree-3 or degree-4 residual in each of the 19 single-cut substitutions
