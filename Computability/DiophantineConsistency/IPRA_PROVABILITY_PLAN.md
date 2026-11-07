@@ -25,6 +25,12 @@ A [33-seed named-formula client](research/nine-sharing-sign33-jones-named-formul
 [independently audited](reviews/nine-sharing-sign33-jones-named-formula-terminal-frontier-independent/README.md),
 checks the symbolic named Lean right-hand side over every commutative ring.
 It does not bind an external serialization or establish a degree theorem.
+An [external degree survey](research/nine-seed33-jones-metric-survey/README.md),
+[independently audited](reviews/nine-seed33-jones-metric-transcription-frontier-independent/README.md),
+gives the conservative upper bound `291404·5^34 + 860 =
+169619452208280563354492188360` for the symbolic nine-variable expression.
+It is not a Lean theorem, exact degree, operation count or literal-export
+binding; its seed fingerprints are source/AST fingerprints.
 
 A [nine-natural-coordinate Jones expression built from the 38-witness seed](research/nine-sharing-norm38-ipra-endpoint-check/README.md)
 now has [independently audited Lean endpoints](reviews/nine-sharing-norm38-ipra-endpoint-terminal-frontier-independent/README.md)
