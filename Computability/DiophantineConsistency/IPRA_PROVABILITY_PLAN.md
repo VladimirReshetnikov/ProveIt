@@ -118,7 +118,12 @@ sextic-compatible Jones endpoint remain separate. A [current-port specialization
 discharges the beta cast and checks both equivalences for current ports. Its
 current-data route inherits successful rows from an overall-failed split and
 the recorded ancestry limits; external JSON binding and a sextic-compatible
-Jones endpoint remain separate.
+Jones endpoint remain separate. A [32-seed/source composition](research/nine-sharing-sign32-current-source-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign32-current-source-iff-terminal-frontier-independent/README.md),
+checks that a current sextic seed zero with 32 natural tail witnesses and
+input 1 is equivalent to current source zero in IΣ₁ models; it records one
+unused-section-variable warning. The direct 32-coordinate endpoint and any
+sextic-compatible Jones endpoint remain separate.
 A [single-cut syntactic substitution survey](research/nine-sharing-sign33-single-cut-substitution-survey/README.md),
 [independently audited](reviews/nine-sharing-sign33-single-cut-survey-frontier-independent/README.md),
 finds a degree-3 or degree-4 residual in each of the 19 single-cut substitutions
