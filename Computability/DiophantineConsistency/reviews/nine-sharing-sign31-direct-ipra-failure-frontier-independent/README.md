@@ -1,0 +1,3 @@
+Independent failure audit: author-recorded session 75196 exited 1. The dependency scan for the first, symbolic definition-only module passed, but compile exited −6 with an interpreter memory exception under -M2800; sampled session RSS peaked at 2,937,880,576 bytes and the monitor reported no stop. The log does not identify the internal operation responsible. No stage-1 object, later stages, direct endpoint or final whole-run postflight is established.
+
+The checker verifies source/logs, 150 direct guard slots, the exact current-source and generic substitution producer bindings, and 1,298 overlay links. The outer result is author-recorded, transitive/dynamic provider provenance remains inherited, and this audit did not replay Lean.

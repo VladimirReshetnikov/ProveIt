@@ -196,7 +196,11 @@ arbitrary common ports without a beta cast. A [current-source client](research/n
 [independently audited](reviews/nine-sharing-sign31-current-source-iff-terminal-frontier-independent/README.md),
 checks current-port seed zero with leading input 1 and 31 natural witnesses
 iff current source zero in the intended models. The direct iPRA endpoint
-remains separate, and the
+remains separate. A [direct endpoint attempt](research/nine-sharing-sign31-direct-ipra-check/README.md),
+[independently audited](reviews/nine-sharing-sign31-direct-ipra-failure-frontier-independent/README.md),
+hit the interpreter memory limit in its definition-only first stage; no
+object, endpoint or final postflight was produced. The internal cause is
+unknown. The
 quartic Jones theorem does not apply directly to it. An external
 [28-witness sextic candidate](research/nine-sharing-sign28-sextic-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign28-sextic-frontier-independent/README.md),
