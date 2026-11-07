@@ -90,7 +90,9 @@ checks the symbolic d11 raw rank and its carried form. It does not by itself
 identify the full recipe output. A [generic rankCode link](research/nine-seed33-jones-rankcode-link-check/README.md),
 [independently audited](reviews/nine-seed33-jones-rankcode-link-terminal-frontier-independent/README.md),
 checks the corresponding generic algebraic relation; concrete composition is
-separate. A [B-power client](research/nine-seed33-jones-prefix-b-power-check/README.md),
+checked locally by a [d11 rank composition](research/nine-seed33-jones-prefix-rank-composition-check/README.md),
+[independently audited](reviews/nine-seed33-jones-prefix-rank-composition-terminal-frontier-independent/README.md).
+Full output semantics remain separate. A [B-power client](research/nine-seed33-jones-prefix-b-power-check/README.md),
 [independently audited](reviews/nine-seed33-jones-prefix-b-power-terminal-frontier-independent/README.md),
 checks the local d10 `B=b^5` identity.
 A [human-readable 33-seed formula](research/nine-seed33-jones-human-formula/FORMULA.md)

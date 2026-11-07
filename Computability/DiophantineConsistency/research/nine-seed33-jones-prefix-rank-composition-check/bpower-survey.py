@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+"""Authenticate B-power producer and exact shared direct carry route."""
+import hashlib,json,os,sys,subprocess
+from pathlib import Path
+P=Path(__file__).resolve().parent;D=P.parents[1];C=Path('/tmp/nine-seed33-jones-prefix-b-power-check-20261106');B=Path('/tmp/nine-seed33-jones-rankcode-link-check-20261106');sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+a=D/'reviews/nine-seed33-jones-prefix-b-power-terminal-frontier-independent';assert sha(a/'check.py')=='dff9ee405f481265fda1dc455fd03482c575a7479afc3295028f99a7691166d0' and sha(a/'result.json')=='ee74fa651eaaaea1576bc814add4af8d024caba6f1727abbdea772ae5237c927';r=subprocess.run([sys.executable,'-I','-S','-B',str(a/'check.py')],capture_output=True,text=True,timeout=120);assert r.returncode==0 and json.loads(r.stdout)['status']=='PASS_TERMINAL_AUDIT'
+p=D/'research/nine-seed33-jones-prefix-b-power-check/attempt01/state.json';assert sha(p)=='4e9204d20463a3a99e7fb433fe9fe1b682513370a4697cb19ed3cb6f99ae78e6';s=json.loads(p.read_text());row=s['rows'][0];assert row['module']=='Sign33MacroPrefixBPower' and row['object_sha256']=='0abadc08a4ba54e39c9404a8bcffc4b9a742d33333b4c1cefbbf13e69252267f';obj=C/'lib/DiophantineConsistency/Sign33MacroPrefixBPower.olean';assert sha(obj)==row['object_sha256']
+dep=row['dependencies']['DiophantineConsistency.Sign33MacroPrefixCarryOthers'];q=B/'lib/DiophantineConsistency/Sign33MacroPrefixCarryOthers.olean';assert q.is_file() and str(q.resolve())==dep['realpath'] and sha(q)==dep['sha256']
+for root in (B/'lib',Path('/tmp/current2011-spheres-fresh-base-priority-check02'),Path('/tmp/normalized106-fresh-model-client-20261105'),Path('/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib'),Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean')):assert not os.path.lexists(root/'DiophantineConsistency/Sign33MacroPrefixBPower.olean')
+print(json.dumps({'status':'PASS','bpower_sha256':sha(obj),'bpower_realpath':str(obj.resolve()),'scope':'Audited B-power object and exact shared direct carry route; deeper ancestry inherited.'},sort_keys=True))
