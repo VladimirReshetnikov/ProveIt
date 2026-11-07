@@ -103,7 +103,10 @@ backward coordinate reconstruction remain separate. A [forward assembly](researc
 [independently audited](reviews/nine-sharing-sign32-forward-assembly-terminal-frontier-independent/README.md),
 checks that 32-seed zero implies 33-seed zero at the lift in an IΣ₁ model
 under the beta-port cast. The reverse direction and fixed-port specialization
-remain separate.
+remain separate. A [coordinate-recovery client](research/nine-sharing-sign32-coordinate-recovery-check/README.md),
+[independently audited](reviews/nine-sharing-sign32-coordinate-recovery-terminal-frontier-independent/README.md),
+checks that old-seed zero and the beta cast force the removed q² coordinate
+and `lift (drop v) = v`. The reverse seed-zero implication remains separate.
 A [single-cut syntactic substitution survey](research/nine-sharing-sign33-single-cut-substitution-survey/README.md),
 [independently audited](reviews/nine-sharing-sign33-single-cut-survey-frontier-independent/README.md),
 finds a degree-3 or degree-4 residual in each of the 19 single-cut substitutions

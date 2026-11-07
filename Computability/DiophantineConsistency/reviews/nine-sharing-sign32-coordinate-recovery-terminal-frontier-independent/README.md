@@ -1,0 +1,5 @@
+# Independent sign32 coordinate-recovery terminal audit
+
+The state records both dependency scans and Lean compiles exiting 0; the author's separate record reports actual outer session 23846 exit 0. The checker validates both source/object/log sets, 200 direct guards, 1,067 overlay links and the exact group07 and first-stage producer routes, and independently reruns the pinned eight-producer point survey. Both requested axiom reports are `[propext, Classical.choice, Quot.sound]`; no compiler warnings occur.
+
+In an IΣ₁ model, assuming the explicit port-0 cast equality and an old sign33 seed zero, the checked theorems recover old coordinate 15 as the model-natural q² and show lifting after dropping it restores the same old valuation. These facts prepare the reverse zero-set argument but do not themselves prove sign33 zero implies sign32 zero. Numeric port binding, a sextic Jones construction and an endpoint remain separate. No Lean replay was performed. The outer record is author-observed; guards are point-in-time and sampled monitoring is not a complete dynamic or transitive trace.
