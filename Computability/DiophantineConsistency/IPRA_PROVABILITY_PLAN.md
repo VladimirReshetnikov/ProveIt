@@ -121,6 +121,9 @@ checks symbolic E there.
 A [d41 F checkpoint client](research/nine-seed33-jones-checkpoint32-41-f-check/README.md),
 [independently audited](reviews/nine-seed33-jones-checkpoint32-41-f-terminal-frontier-independent/README.md),
 checks symbolic F there.
+A [d41 Gprime checkpoint client](research/nine-seed33-jones-checkpoint33-41-gprime-check/README.md),
+[independently audited](reviews/nine-seed33-jones-checkpoint33-41-gprime-terminal-frontier-independent/README.md),
+checks symbolic Gprime there.
 A [U/Y dependent-prefix client](research/nine-seed33-jones-dependent01-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-dependent01-staged-terminal-frontier-independent/README.md),
 checks the d19 and d20 local equations; full output semantics remain open.
