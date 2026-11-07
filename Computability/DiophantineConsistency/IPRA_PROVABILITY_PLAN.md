@@ -629,8 +629,11 @@ existential composition is checked in a [seed-iff client](research/nine-sharing-
 A [direct expression and evaluation client](research/nine-sharing-sign25-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign25-expression-eval-terminal-frontier-independent/README.md),
 checks its Fin25 input-one evaluation at abstract and current ports. It inherits
-the syntax runner's heartbeat and label qualifications. The direct iPRA
-endpoint remains separate.
+the syntax runner's heartbeat and label qualifications. An [expression-zero
+equivalence](research/nine-sharing-sign25-expression-equivalence-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-expression-equivalence-terminal-frontier-independent/README.md),
+composes the Fin25 and Fin26 current expressions in both directions. The
+direct iPRA endpoint remains separate.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
