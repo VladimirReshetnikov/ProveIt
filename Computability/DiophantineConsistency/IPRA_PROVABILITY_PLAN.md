@@ -272,7 +272,11 @@ discharges that hypothesis for the current ports and checks both equivalences
 in IΣ₁ models. A [source-composition attempt](research/nine-sharing-sign28-current-source-iff-check/README.md),
 [independently audited](reviews/nine-sharing-sign28-current-source-iff-failure-frontier-independent/README.md),
 hit the interpreter memory limit without producing an object or final
-postflight; the internal trigger is unknown. The source composition and
+postflight; the internal trigger is unknown. A [factored retry](research/nine-sharing-sign28-current-source-iff-retry01/README.md),
+[independently audited](reviews/nine-sharing-sign28-current-source-iff-retry01-failure-frontier-independent/README.md),
+checks the cons-form conversion but its second stage again hits the memory
+limit, with no source object or final postflight. The precise trigger remains
+unknown. The source composition and
 iPRA endpoint likewise remain to be checked in Lean. A further external
 [27-witness sextic candidate](research/nine-sharing-sign27-sextic-normalized-root-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign27-sextic-root-independent/README.md),
