@@ -145,6 +145,10 @@ checks their symbolic values at d38 and d39.
 A [Bd/Cd checkpoint client](research/nine-seed33-jones-checkpoint40-41-bdcd-check/README.md),
 [independently audited](reviews/nine-seed33-jones-checkpoint40-41-bdcd-terminal-frontier-independent/README.md),
 checks their symbolic values and lookups at d40/d41.
+A [Dm checkpoint client](research/nine-seed33-jones-checkpoint42-dm-check/README.md),
+[independently audited](reviews/nine-seed33-jones-checkpoint42-dm-terminal-frontier-independent/README.md),
+checks symbolic Dm at d42 and the d41 K/Y carries. Full output semantics
+remain separate.
 A [U/Y dependent-prefix client](research/nine-seed33-jones-dependent01-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-dependent01-staged-terminal-frontier-independent/README.md),
 checks the d19 and d20 local equations; full output semantics remain open.
