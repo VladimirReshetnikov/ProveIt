@@ -236,7 +236,11 @@ sets out the three-coordinate lift and drop and retains an explicit beta-cast
 obligation. A [syntax and squares client](research/nine-sharing-sign28-seed-squares-check/README.md),
 [independently audited](reviews/nine-sharing-sign28-seed-squares-terminal-frontier-independent/README.md),
 checks that the symbolic-port seed is zero iff its 19 residuals vanish in
-the intended models. Its model bridge and
+the intended models. A [three-cut client](research/nine-sharing-sign28-first-cuts-check/README.md),
+[independently audited](reviews/nine-sharing-sign28-first-cuts-terminal-frontier-independent/README.md),
+checks the three inserted-cut zeros and five affected residual identities,
+with the explicit beta cast where needed and 15 unused-binder/simp warnings.
+Its full model bridge and
 iPRA endpoint likewise remain to be checked in Lean. A further external
 [27-witness sextic candidate](research/nine-sharing-sign27-sextic-normalized-root-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign27-sextic-root-independent/README.md),
