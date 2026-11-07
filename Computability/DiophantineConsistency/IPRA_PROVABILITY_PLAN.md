@@ -90,7 +90,10 @@ checks eleven live-entry carries at that prefix; it remains local.
 A [d18-to-recipe path client](research/nine-seed33-jones-prefix-path18-45-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-prefix-path18-45-staged-terminal-frontier-independent/README.md),
 checks that those first 18 entries can be looked up through later checkpoints.
-It does not establish output semantics.
+An [additional checkpoint client](research/nine-seed33-jones-checkpoints27-45-staged-check/README.md),
+[independently audited](reviews/nine-seed33-jones-checkpoints27-45-staged-terminal-frontier-independent/README.md),
+checks later paths and four symbolic values. These do not establish output
+semantics.
 A [U/Y dependent-prefix client](research/nine-seed33-jones-dependent01-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-dependent01-staged-terminal-frontier-independent/README.md),
 checks the d19 and d20 local equations; full output semantics remain open.

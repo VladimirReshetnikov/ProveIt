@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+import hashlib,json,os,subprocess,sys
+from pathlib import Path
+D=Path(__file__).resolve().parents[2];P=D/'research/nine-seed33-jones-checkpoints27-45-staged-check';A=P/'attempt01';O=Path('/tmp/nine-seed33-jones-checkpoints27-45-staged-check-20261106');H=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+assert H(A/'state.json')=='8526c67e2e6c730898f8f3da8e5262b4cbdf9343af43901ef46cc60306829251' and H(A/'outer-terminal-author-record.json')=='3fc527f31aa9b4c9f5a1deaf76538c65efb85e40092fed510c017313bcbdf15c';o=json.loads((A/'outer-terminal-author-record.json').read_text());assert (o['session_id'],o['exit_code'])==(27951,0)
+s=json.loads((A/'state.json').read_text());assert s['status']=='PASS' and len(s['rows'])==3 and len(s['overlay_links'])==1120 and s['runner_sha256']==H(P/'run.py')=='f5d6fd726a26cd541798f11afb50cf2ab11c34467832cd2c4657fe716a6f245c';names=['Sign33MacroCheckpoint27to34','Sign33MacroCheckpoint34to41','Sign33MacroCheckpoint41to45'];objs=['66446b5c0f059d25fdf94807876ff8de0c52b3e12957287a628db974556ee7fb','593e6f35fe1fdfe2975416231b071c118275581007ffe71b72323f19aaeffa5d','71ed9dcb4bef7528b777f26b3f787c6ca0e6d93ab7b14f15f2841b82ba300fd6'];paths=['path27_34','path34_41','path41_45'];ths=[['lookup27_34','d34_phi_value'],['lookup34_41','d41_N_value'],['lookup41_45','lookup_recipe41','d41_g_value','d41_G_value']];m=json.loads((P/'source-manifest.json').read_text())['rows'];pins={'Sign33MacroPath18to45':'4c4ef02f8f9c200b7c20313cc08edd9bd359e3056aa5c00b79b02ee1a335f1a2','Sign33MacroLive18Group03':'3fb6663a5d3070e902df9e95f4accd0058a7ada288923837f0c1464273388364','Sign33MacroPrefixInputsB':'1fa27bad80c2a5df777dd57235777d762bc4e7018ab9b830eb447467dc300ba8','Sign33MacroLive18Group01':'9ad348b1432ec9acb52c84a5605cf91131d04c1c4b7f8470715298eb582d99d1','Sign33MacroLive18Group02':'8d4d912136b18a8d46b5904d3c1d8127e5fbafc40d62ffb25ef09a63c094b004','Sign33MacroPrefixQNCarry':'c35a2307d35050bac27cb469bb3acf21ecca0d94c925eb440b981eb8b258b50b','Sign33MacroPrefixGsmall':'c5f5b65538743b2bd08f5e7e5dd1cc8fd95bef8e48a46801c303c53598ed230d','Sign33MacroPrefixGlarge':'1887baa3203c288e248f8ee85eb0af794de72272dbde1c039a8774ebc4735e2f',names[0]:objs[0],names[1]:objs[1]}
+for i,(r,n,obj,e) in enumerate(zip(s['rows'],names,objs,m)):
+ assert r['module']==n and r['source_sha256']==e['source_sha256']==H(P/'src/DiophantineConsistency'/f'{n}.lean')==H(O/'src/DiophantineConsistency'/f'{n}.lean') and r['object_sha256']==obj==H(O/'lib/DiophantineConsistency'/f'{n}.olean') and len(r['direct_guard'])==[200,200,300][i]
+ for phase in ('deps','compile'):
+  v=r[phase];assert v['exit']==0 and v['stop_reason'] is None and not v['monitor_errors'] and not v['observed_descendant_pids'];assert H(A/f'{n}-{phase}.txt')==H(O/f'{n}-{phase}.txt')==v['log_sha256']
+ for path,v in r['direct_guard'].items():
+  q=Path(path)
+  if v is None:assert not os.path.lexists(q)
+  else:assert q.is_file() and str(q.resolve())==v['realpath'] and H(q)==v['sha256']
+ for mod in e['imports']:
+  v=r['dependencies'][mod];assert v['sha256']==pins[mod.split('.')[-1]] and r['direct_guard'][v['path']]=={'sha256':v['sha256'],'realpath':v['realpath']}
+ log=' '.join((A/f'{n}-compile.txt').read_text().split());assert 'warning:' not in log and 'sorryAx' not in log and 'error:' not in log;assert f"'DiophantineConsistency.{n}.{paths[i]}' does not depend on any axioms" in log
+ for th in ths[i]:assert f"'DiophantineConsistency.{n}.{th}' depends on axioms: [propext, Classical.choice, Quot.sound]" in log
+for path,target in s['overlay_links'].items():assert Path(path).is_symlink() and str(Path(path).resolve())==target
+pre=D/'reviews/nine-seed33-jones-checkpoints27-45-staged-prelaunch-frontier-independent/check.py';assert H(pre)=='99e10cb946317781130aa72ec5f28a233c0635f2d127a8fdbf56446f15c82b69';up=D/'reviews/nine-seed33-jones-prefix-path18-45-staged-terminal-frontier-independent/check.py';assert H(up)=='84b526564578d6e72fcb47fea066c1b199f9731ad344b2c251bb904695306513';subprocess.run([sys.executable,'-I','-S','-B',str(up)],check=True,capture_output=True,timeout=120)
+print(json.dumps({'status':'PASS_TERMINAL_AUDIT','author_session':27951,'stages':3,'guards':700,'links':1120,'scope':'checkpoint paths and symbolic phi/N/g/G only; no full output semantics'},sort_keys=True,indent=2))
