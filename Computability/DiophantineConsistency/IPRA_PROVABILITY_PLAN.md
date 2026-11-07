@@ -340,6 +340,11 @@ A [V0/V1 checkpoint client](research/nine-seed38-jones-checkpoint38-39-v-check/R
 checks both symbolic values with rank opaque. The interrupted A1 independent
 preflight and the earlier uncaptured outer exit remain inherited limitations;
 full semantic composition remains separate.
+A [Bd/Cd checkpoint client](research/nine-seed38-jones-checkpoint40-41-bdcd-check/README.md),
+[independently audited](reviews/nine-seed38-jones-checkpoint40-41-bdcd-terminal-frontier-independent/README.md),
+checks the two symbolic values at `d41`, retaining the inherited A1
+interrupted-preflight and earlier outer-exit caveats. Full semantic composition
+remains separate.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
 not a Lean proof or evidence that the complete composition fits the resource
