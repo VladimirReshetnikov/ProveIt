@@ -1,0 +1,7 @@
+# Independent sign31 syntax/squares prelaunch review
+
+PASS within source/provider prelaunch scope. I checked both staged source snapshots, manifest hashes and order, and the generic theorem application: the sign31 seed is the first square plus the sum of squares of the remaining 21 residuals, matching the imported generic `squareSum_zero_iff` and `square_syntax` at the same symbolic ports and `Fin 32` valuation. The claim is only the equivalence between that seed's internal zero and zero of all 22 residuals in an IΣ₁ model. The proof and combined imports have not been elaborated here.
+
+I inspected the runner's producer source/object/log and direct-guard checks, separate NineFreshJones and sign33-square routing, staged dependency binding and final guard/source/overlay checks. The independent checker pins the reviewed runner, manifest and sources, and reruns its no-Lean preflight; that preflight exited 0. This is a point-in-time provider observation, not a complete dynamic/transitive load trace. External JSON/AST comparisons are inherited source-audit evidence and are not Lean bindings. Sampled monitoring can miss transient events; the runner's Lean-process preflight is not an atomic lock. There is no sign32 equivalence, degree theorem or iPRA endpoint here.
+
+`check.py` SHA-256 `7241dca74c24264436608fc12ab20904a1dd000d261eddee20e2762deb50a82c`; `result.json` SHA-256 `f280a9817aabd143784fe5885268f88d6e96bcde06700eb35fa429e2316dea7a`.

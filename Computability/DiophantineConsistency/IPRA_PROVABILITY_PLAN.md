@@ -161,7 +161,11 @@ An external [31-witness sextic candidate](research/nine-sharing-sign31-sextic-ca
 eliminates the `f2` cut from the 32-witness AST while preserving exact degree 6.
 An [independently audited Lean source draft](research/nine-sharing-sign31-sextic-lean-draft/README.md)
 sets out the corresponding syntax and lift/drop obligations, without a Lean
-check. Its natural lift/drop argument has not been formalized in Lean, and the
+check. A [syntax and squares client](research/nine-sharing-sign31-seed-squares-check/README.md),
+[independently audited](reviews/nine-sharing-sign31-seed-squares-terminal-frontier-independent/README.md),
+checks that the symbolic-port sign31 seed vanishes exactly when its 22
+residuals vanish in the intended models. Its natural lift/drop argument has
+not been formalized in Lean, and the
 quartic Jones theorem does not apply directly to it. An external
 [28-witness sextic candidate](research/nine-sharing-sign28-sextic-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign28-sextic-frontier-independent/README.md),
