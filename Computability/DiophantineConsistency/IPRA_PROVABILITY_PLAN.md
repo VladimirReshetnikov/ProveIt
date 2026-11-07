@@ -479,7 +479,11 @@ checks the removed gap row and the Tau/Inner transfers under explicit gap and
 q3 equalities, with two linter warnings. A [remaining-cuts client](research/nine-sharing-sign26-remaining-cuts-check/README.md),
 [independently audited](reviews/nine-sharing-sign26-remaining-cuts-terminal-frontier-independent/README.md),
 checks the other 14 residual transfers, with 24 linter warnings. The assembled
-zero bridge remains separate. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
+zero bridge was attempted in a [three-stage client](research/nine-sharing-sign26-zero-bridge-check/README.md),
+[independently audited](reviews/nine-sharing-sign26-zero-bridge-failure-frontier-independent/README.md):
+the coordinate and conditional forward stages compiled, but the reverse stage
+hit the 200,000-heartbeat limit, with no reverse object or final postflight.
+The full bridge remains separate. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
 [independently audited](reviews/nine-sharing-sign26-q3-single-cut-independent/README.md),
 examines ten direct cuts under one formal monic reduction rule; it is not a
 semantic lower bound or an obstruction to other encodings.
