@@ -190,8 +190,11 @@ checks both the natural lift and drop implications for the same arbitrary
 symbolic ports in IΣ₁ models. A [seed iff client](research/nine-sharing-sign31-seed-iff-check/README.md),
 [independently audited](reviews/nine-sharing-sign31-seed-iff-terminal-frontier-independent/README.md),
 checks pointwise lift equivalence and same-input existential equivalence for
-arbitrary common ports without a beta cast. The source composition and iPRA
-endpoint remain separate, and the
+arbitrary common ports without a beta cast. A [current-source client](research/nine-sharing-sign31-current-source-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign31-current-source-iff-terminal-frontier-independent/README.md),
+checks current-port seed zero with leading input 1 and 31 natural witnesses
+iff current source zero in the intended models. The direct iPRA endpoint
+remains separate, and the
 quartic Jones theorem does not apply directly to it. An external
 [28-witness sextic candidate](research/nine-sharing-sign28-sextic-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign28-sextic-frontier-independent/README.md),

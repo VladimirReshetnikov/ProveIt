@@ -1,0 +1,7 @@
+# Independent sign31 current-source iff prelaunch review
+
+PASS within source/provider prelaunch scope. The proposed theorem relates an existential zero of the sign31 symbolic sextic seed at `Fin.cons 1` with exactly 31 witnesses to an existential zero of the current natural source at 14 coordinates, in IΣ₁ models. The proof uses the checked `exists_cons_iff` for 31- and 32-witness valuations, checked sign31/sign32 same-input iff at the same current ports and input 1, and checked sign32/current-source iff; their directions compose as stated. Elaboration is untested. No sign31 iPRA endpoint, Lean degree theorem, sextic Jones result, or external JSON/numerical-byte binding follows here.
+
+I inspected source/manifest pins, both immediate sign31 producer source/object/log/direct guards, the pinned sign32 source producer and direct guards, and the union survey's 1,059 byte-equal common paths and 225 additional source-only links with collision checks. The runner binds the two direct imports and candidate guards to those exact objects, then rechecks candidate guards/links and the union survey. Independent no-Lean preflight exited 0. These are point-in-time checks, not a full dynamic/transitive trace; deeper ancestry is inherited. Sampling can miss transient spikes or escaped descendants, and the process preflight is not an atomic lock.
+
+Checker SHA-256 `2a5ca07afe50dbdb8973a801656a9312e7c4e1838f066db911cf834c0aafc642`; result SHA-256 `7ebeb596d0125563d179d5c4c10de0be97d4951d9a4105cbacf4ad79973918a4`.
