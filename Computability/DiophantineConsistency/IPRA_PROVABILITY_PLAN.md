@@ -2237,8 +2237,11 @@ natural source zero yields an existential AllCuts witness under an explicit
 universal current-port cast. A [source-to-seed client](research/nine-sharing-sign33-current-source-seed-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-current-source-seed-terminal-frontier-independent/README.md),
 then derives a 33-seed zero with distinguished input 1 under the same explicit
-universal cast. Discharging the cast and composing the two source directions
-remain separate.
+universal cast. A [four-cast specialization](research/nine-sharing-sign33-current-source-seed-casts-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-current-source-seed-casts-terminal-frontier-independent/README.md),
+discharges that hypothesis for the current ports: natural source zero yields
+an existential 33-seed zero with leading 1 in each indicated IΣ₁ model.
+Composing the two source directions remains separate.
 A [generic reference-ell client](research/nine-sharing-sign33-reference-ell-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-reference-ell-terminal-frontier-independent/README.md),
 checks the ring-level node 30 identity used by a proposed P-norm route; it
