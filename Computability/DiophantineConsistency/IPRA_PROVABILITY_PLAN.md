@@ -227,7 +227,10 @@ checks symbolic `J` at `d28` and `d41` with the rank opaque. Full semantic
 composition remains separate. A [C checkpoint client](research/nine-seed38-jones-checkpoint26-27-c-check/README.md),
 [independently audited](reviews/nine-seed38-jones-checkpoint26-27-c-terminal-frontier-independent/README.md),
 checks symbolic `Bprime`, `W` and `C` using the earlier values, keeping rank
-and sums opaque. Full semantic composition remains separate.
+and sums opaque. A [Q checkpoint client](research/nine-seed38-jones-checkpoint29-41-q-check/README.md),
+[independently audited](reviews/nine-seed38-jones-checkpoint29-41-q-terminal-frontier-independent/README.md),
+checks symbolic `Q` at `d29` and `d41` while keeping rank opaque. Full semantic
+composition remains separate.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
 not a Lean proof or evidence that the complete composition fits the resource
