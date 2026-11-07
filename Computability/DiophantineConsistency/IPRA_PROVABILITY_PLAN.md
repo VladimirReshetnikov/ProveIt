@@ -249,6 +249,9 @@ checks symbolic `Gprime` at `d33` and `d41` with rank opaque. Full semantic
 composition remains separate. An [H checkpoint client](research/nine-seed38-jones-checkpoint34-41-h-check/README.md),
 [independently audited](reviews/nine-seed38-jones-checkpoint34-41-h-terminal-frontier-independent/README.md),
 checks symbolic `H` at `d34` and `d41` with rank opaque. Full semantic
+composition remains separate. An [I checkpoint client](research/nine-seed38-jones-checkpoint35-41-i-check/README.md),
+[independently audited](reviews/nine-seed38-jones-checkpoint35-41-i-terminal-frontier-independent/README.md),
+checks symbolic `I` at `d35` and `d41` with rank opaque. Full semantic
 composition remains separate.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
