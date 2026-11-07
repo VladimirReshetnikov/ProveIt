@@ -490,8 +490,12 @@ A [factored reverse retry](research/nine-sharing-sign26-zero-bridge-retry01/READ
 [independently audited](reviews/nine-sharing-sign26-zero-bridge-retry01-failure-frontier-independent/README.md),
 again compiled the earlier stages but failed its new helper on unreduced
 finite-vector applications; its `sorryAx` report is not proof evidence, and
-the final reverse stage and postflight did not run. The full bridge remains
-separate. An [expression-evaluation client](research/nine-sharing-sign26-expression-eval-check/README.md),
+the final reverse stage and postflight did not run. A [simplification retry](research/nine-sharing-sign26-zero-bridge-retry02/README.md),
+[independently audited](reviews/nine-sharing-sign26-zero-bridge-retry02-terminal-frontier-independent/README.md),
+checks both zero implications: forward assumes beta/K casts and beta≥1,
+while reverse needs no additional port assumptions beyond IΣ₁. It records two
+unused-section warnings. Same-input equivalence and current-port
+specialization remain separate. An [expression-evaluation client](research/nine-sharing-sign26-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign26-expression-eval-terminal-frontier-independent/README.md),
 checks abstract and current input-removal evaluations in four stages; no
 source bridge or endpoint follows from those lemmas alone. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
