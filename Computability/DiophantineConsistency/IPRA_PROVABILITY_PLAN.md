@@ -164,7 +164,10 @@ sets out the corresponding syntax and lift/drop obligations, without a Lean
 check. A [syntax and squares client](research/nine-sharing-sign31-seed-squares-check/README.md),
 [independently audited](reviews/nine-sharing-sign31-seed-squares-terminal-frontier-independent/README.md),
 checks that the symbolic-port sign31 seed vanishes exactly when its 22
-residuals vanish in the intended models. Its natural lift/drop argument has
+residuals vanish in the intended models. A [first-cut client](research/nine-sharing-sign31-first-cut-check/README.md),
+[independently audited](reviews/nine-sharing-sign31-first-cut-terminal-frontier-independent/README.md),
+checks the eliminated square residual and the two affected row identities;
+it records five unused-variable warnings. The remaining natural lift/drop argument has
 not been formalized in Lean, and the
 quartic Jones theorem does not apply directly to it. An external
 [28-witness sextic candidate](research/nine-sharing-sign28-sextic-candidate/README.md),
