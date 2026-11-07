@@ -2188,8 +2188,11 @@ proof evidence.
 A [generic reference-ell client](research/nine-sharing-sign33-reference-ell-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-reference-ell-terminal-frontier-independent/README.md),
 checks the ring-level node 30 identity used by a proposed P-norm route; it
-records one tactic-sequencing warning. Its model-topology and constructor
-connections remain separate.
+records one tactic-sequencing warning. A [constructor-ell attempt](research/nine-sharing-sign33-constructor-ell-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-constructor-ell-failure-frontier-independent/README.md),
+timed out after 120.206 seconds with an empty log and no object or final
+postflight; the cause is unknown. Its model-topology and constructor connections
+remain separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
