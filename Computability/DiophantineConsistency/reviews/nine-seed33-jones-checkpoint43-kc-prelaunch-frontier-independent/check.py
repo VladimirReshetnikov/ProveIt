@@ -1,0 +1,9 @@
+#!/usr/bin/env python3
+import hashlib,json,subprocess,sys
+from pathlib import Path
+D=Path(__file__).resolve().parents[2];P=D/'research/nine-seed33-jones-checkpoint43-kc-check';H=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+for n,h in {'run.py':'1a157eacd26af74882f9c878aa57d750104bf984744c90c62655738d096db60b','source-manifest.json':'ba350cd226abc05c76de4790894f2bd4c7c725b557edf13cb610090669f2fb13','values-survey.py':'b4607bcccf3be8af08426c363a11a91c57f38ab43a0b4cc0b61f64b83e02536c'}.items():assert H(P/n)==h
+m=json.loads((P/'source-manifest.json').read_text())['rows'];assert len(m)==1;e=m[0];name='Sign33MacroKcValue';p=P/'src/DiophantineConsistency'/f'{name}.lean';old=D/'research/nine-seed38-jones-checkpoint43-kc-check/src/DiophantineConsistency/Norm38MacroKcValue.lean';assert e['module']=='DiophantineConsistency.'+name and H(p)==e['source_sha256']==H(D/f'research/nine-seed33-jones-checkpoint43-kc-draft/{name}.lean');assert p.read_text()==old.read_text().replace('Norm38','Sign33').replace('5 ^ 39','5 ^ 34').replace('5 ^ 38','5 ^ 33');s=p.read_text();assert all(x in s for x in ['d42_Bd_value','d43_Kc_value','prefix_Kc','⟨39, by decide⟩ : Fin 42','⟨41, by decide⟩ : Fin 42','d42_Bd_value, d42_Dm_value'])
+up=D/'reviews/nine-seed33-jones-checkpoint42-dm-terminal-frontier-independent/check.py';assert H(up)=='cefa8b945e4458f17de3124d0703c9fe7bac7db2eeb5c5604cdcccbfbc6d6153';subprocess.run([sys.executable,'-I','-S','-B',str(up)],capture_output=True,check=True,timeout=120)
+r=subprocess.run([sys.executable,'-I','-S','-B',str(P/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=180);assert not r.stderr and json.loads(r.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT'
+print(json.dumps({'status':'PASS_STATIC_AND_NO_LEAN_PREFLIGHT','scope':'d42 Bd carry and symbolic Kc d43 only; rank opaque, no full output semantics'},sort_keys=True,indent=2))
