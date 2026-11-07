@@ -2195,7 +2195,10 @@ records one tactic-sequencing warning. A [constructor-ell attempt](research/nine
 [independently audited](reviews/nine-sharing-sign33-constructor-ell-failure-frontier-independent/README.md),
 timed out after 120.206 seconds with an empty log and no object or final
 postflight; the cause is unknown. Its model-topology and constructor connections
-remain separate.
+remain separate. A [node-30 topology client](research/nine-sharing-sign33-static-node30-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-static-node30-terminal-frontier-independent/README.md),
+checks the relevant same-valuation equality conditional on `gatesHold`; its
+constructor application remains separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
