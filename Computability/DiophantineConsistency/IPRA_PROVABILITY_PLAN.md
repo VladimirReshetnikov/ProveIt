@@ -2178,7 +2178,10 @@ records four simp/tactic warnings. A [P-norm mapping attempt](research/nine-shar
 [independently audited](reviews/nine-sharing-sign33-forward-norm-p-failure-frontier-independent/README.md),
 failed with a Lean interpreter memory exception in its first stage; it produced
 no object and did not run its second stage or final postflight. The remaining
-norm mappings are separate. A [strong-norm mapping attempt](research/nine-sharing-sign33-forward-norm-strong-check/README.md),
+norm mappings are separate. A [factored P attempt](research/nine-sharing-sign33-forward-norm-p-retry01/README.md),
+[independently audited](reviews/nine-sharing-sign33-forward-norm-p-retry01-failure-frontier-independent/README.md),
+failed on a tau cast-shift mismatch, with no object or postflight; its `sorryAx`
+report is not proof evidence. A [strong-norm mapping attempt](research/nine-sharing-sign33-forward-norm-strong-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-forward-norm-strong-partial-frontier-independent/README.md),
 compiled its conditional 38-terminal stage, but its second stage failed on
 recursion depth and produced no object; its `sorryAx` report is not proof
