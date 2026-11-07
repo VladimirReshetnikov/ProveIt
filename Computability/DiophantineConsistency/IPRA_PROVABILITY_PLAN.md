@@ -309,7 +309,11 @@ checks the symbolic and current input-removal evaluations in four stages.
 An [expression equivalence](research/nine-sharing-sign28-expression-equivalence-check/README.md),
 [independently audited](reviews/nine-sharing-sign28-expression-equivalence-terminal-frontier-independent/README.md),
 checks equality of zero existence for the direct 28- and 31-coordinate
-expressions in the indicated IΣ₁ models. The source composition and
+expressions in the indicated IΣ₁ models. A [generic bridge-transport attempt](research/nine-sharing-generic-polynomial-bridge-transport-check/README.md),
+[independently audited](reviews/nine-sharing-generic-polynomial-bridge-transport-failure-frontier-independent/README.md),
+failed on missing namespace and identifier elaboration; its `sorryAx` report
+is not proof evidence, and it produced no object or final postflight. The
+source composition and
 iPRA endpoint likewise remain to be checked in Lean. A further external
 [27-witness sextic candidate](research/nine-sharing-sign27-sextic-normalized-root-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign27-sextic-root-independent/README.md),
