@@ -510,7 +510,12 @@ discharges these hypotheses for the fixed ports and checks same-input seed
 equivalence. An [expression-evaluation client](research/nine-sharing-sign26-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign26-expression-eval-terminal-frontier-independent/README.md),
 checks abstract and current input-removal evaluations in four stages; no
-source bridge or endpoint follows from those lemmas alone. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
+source bridge or endpoint follows from those lemmas alone. A [direct-expression
+equivalence](research/nine-sharing-sign26-expression-equivalence-check/README.md),
+[independently audited](reviews/nine-sharing-sign26-expression-equivalence-terminal-frontier-independent/README.md),
+checks zero-existence equivalence with the direct sign27 expression in the
+indicated models, with one unused-section warning. The bridge and iPRA endpoint
+remain separate. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
 [independently audited](reviews/nine-sharing-sign26-q3-single-cut-independent/README.md),
 examines ten direct cuts under one formal monic reduction rule; it is not a
 semantic lower bound or an obstruction to other encodings.
