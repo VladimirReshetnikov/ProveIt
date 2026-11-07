@@ -461,8 +461,10 @@ checks natural gap representability assuming beta≥1 and the embedded Nt
 equation. A [seed-to-gap composition](research/nine-sharing-sign26-seed-gap-check/README.md),
 [independently audited](reviews/nine-sharing-sign26-seed-gap-terminal-frontier-independent/README.md),
 checks representability from seed zero under explicit beta/K port casts and
-beta≥1. Discharging the current-port assumptions and the full model bridge
-remain separate. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
+beta≥1. A [current-hypotheses client](research/nine-sharing-sign26-current-hypotheses-check/README.md),
+[independently audited](reviews/nine-sharing-sign26-current-hypotheses-terminal-frontier-independent/README.md),
+checks those casts and beta positivity at the current ports; applying them and
+the full model bridge remain separate. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
 [independently audited](reviews/nine-sharing-sign26-q3-single-cut-independent/README.md),
 examines ten direct cuts under one formal monic reduction rule; it is not a
 semantic lower bound or an obstruction to other encodings.

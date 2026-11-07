@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+import hashlib,json,subprocess,sys
+from pathlib import Path
+D=Path(__file__).resolve().parents[2];P=D/'research/nine-sharing-sign26-current-hypotheses-check';H=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+for n,h in {'run.py':'62f1f551c9a11ae12fdc9fe8b96560ee85876f18f866f0ee7b1368b3ef8d256d','source-manifest.json':'5d0d0821646fa489c66982229962b07a3a89edbe53e0141d8857f5ab7dd418c0','carrier-survey.py':'f65e38ee48f9f4a57b8a4a68f0514e86a93e2e833c90386012a5d58ab1b375b9','src/DiophantineConsistency/Sign26CurrentHypotheses.lean':'91dbe9d84eacce0d441812d36cbae146b828d642ff472576588fdc70d9f1e066'}.items():assert H(P/n)==h
+m=json.loads((P/'source-manifest.json').read_text())['rows'];assert len(m)==1 and m[0]['imports']==['DiophantineConsistency.Sign26SeedGap','DiophantineConsistency.ArithmeticCarrierSoundness2011'];s=(P/'src/DiophantineConsistency/Sign26CurrentHypotheses.lean').read_text();assert H(D/'research/nine-sharing-sign26-current-hypotheses-draft/Sign26CurrentHypotheses.lean')==m[0]['source_sha256']
+for x in ['(CurrentWindowCarry2011.ports 0 : ℤ) : DiffRing V) = ι (CurrentMasks2011.beta : V)','(CurrentWindowCarry2011.ports 1 : ℤ) : DiffRing V) = ι (CurrentKernel2011.K : V)','Int.cast_natCast, map_natCast','(1 : V) ≤ (CurrentMasks2011.beta : V)','ArithmeticCarrierSoundness2011.current_bounds (V := V)).1','(1 : V) ≤ 15','[V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]']:assert x in s
+up=D/'reviews/nine-sharing-sign26-seed-gap-terminal-frontier-independent/check.py';assert H(up)=='9a107d39ef50a60c5ea5dfe8e5b1220c8faf35d074a44e4a4b9dc793df4c7347';subprocess.run([sys.executable,'-I','-S','-B',str(up)],capture_output=True,check=True,timeout=120)
+r=subprocess.run([sys.executable,'-I','-S','-B',str(P/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=180);assert not r.stderr and json.loads(r.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT'
+print(json.dumps({'status':'PASS_STATIC_AND_NO_LEAN_PREFLIGHT','scope':'current p0/p1 casts and beta≥1 only; no seed-gap application or Lean replay'},sort_keys=True,indent=2))
