@@ -179,8 +179,11 @@ checks the eliminated square residual and the two affected row identities;
 it records five unused-variable warnings. A [remaining-cuts client](research/nine-sharing-sign31-remaining-cuts-check/README.md),
 [independently audited](reviews/nine-sharing-sign31-remaining-cuts-terminal-frontier-independent/README.md),
 checks q3 and the other 19 residual identities and row positions, with 37
-unused-binder or unused-simp warnings. The assembled natural lift/drop argument has
-not been formalized in Lean, and the
+unused-binder or unused-simp warnings. A [directional zero bridge](research/nine-sharing-sign31-zero-bridge-check/README.md),
+[independently audited](reviews/nine-sharing-sign31-zero-bridge-terminal-frontier-independent/README.md),
+checks both the natural lift and drop implications for the same arbitrary
+symbolic ports in IΣ₁ models. The existential/source composition and iPRA
+endpoint remain separate, and the
 quartic Jones theorem does not apply directly to it. An external
 [28-witness sextic candidate](research/nine-sharing-sign28-sextic-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign28-sextic-frontier-independent/README.md),
