@@ -1,0 +1,5 @@
+# Proposed sign26 seed-to-gap representative
+
+This guarded client composes checked Nt extraction from sign26 seed zero with the checked conditional model gap-representative theorem. It retains explicit p0/p1 port casts and `1 ≤ beta`; it does not discharge them or prove q3-dependent residual transfer, a zero bridge, endpoint, Lean degree theorem or external JSON/coefficient binding.
+
+The runner binds the successful q3/Nt extraction and representative providers, direct guards and overlay routes, comparing 1,059 overlapping objects by bytes and injecting one standalone ordered-ring extra. Deeper ancestry and the historical plan README-link caveat are inherited. Author no-Lean preflight exited 0, and the reviewed run succeeded as recorded in [attempt01](attempt01/README.md); the [independent terminal audit](../../reviews/nine-sharing-sign26-seed-gap-terminal-frontier-independent/README.md) passed. Limits remain `-M2800`, 120 seconds per call, sampled 4-GiB RSS, 10-GiB available-host-memory floor and 5-GB disk precheck.

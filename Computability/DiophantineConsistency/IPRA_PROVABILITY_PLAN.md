@@ -458,8 +458,11 @@ checks that symbolic sign26 seed zero supplies the q3 and Nt ring equations.
 A [conditional gap-representative client](research/nine-sharing-sign26-gap-representative-check/README.md),
 [independently audited](reviews/nine-sharing-sign26-gap-representative-terminal-frontier-independent/README.md),
 checks natural gap representability assuming beta≥1 and the embedded Nt
-equation. Discharging those assumptions from seed zero/current ports and the
-full model bridge remain separate. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
+equation. A [seed-to-gap composition](research/nine-sharing-sign26-seed-gap-check/README.md),
+[independently audited](reviews/nine-sharing-sign26-seed-gap-terminal-frontier-independent/README.md),
+checks representability from seed zero under explicit beta/K port casts and
+beta≥1. Discharging the current-port assumptions and the full model bridge
+remain separate. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
 [independently audited](reviews/nine-sharing-sign26-q3-single-cut-independent/README.md),
 examines ten direct cuts under one formal monic reduction rule; it is not a
 semantic lower bound or an obstruction to other encodings.
