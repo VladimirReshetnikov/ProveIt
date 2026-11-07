@@ -39,3 +39,18 @@ lemmas already exist (`ArithmeticCarrierSoundness2011.expressionAt_equations`,
 from `WangTiles942Data.lean`, applies the recipe and reproduces all four
 payloads (β 189,269 bits, K 189,693, MC 189,269, MF_source 189,270; minimal
 big-endian bytes) exactly. This is a finite check outside Lean.
+
+[`tools/check_forms.py`](tools/check_forms.py) closes the form side of the
+binding:
+
+- 183's `equation/carrier65.json` (pinned SHA-256 `bf58ed66…`) is identical,
+  modulo associativity and commutativity of `+` and `*`, to the Lean
+  `ObjectCurrentEquation2011.expressionAt p` with `p = (β, K, MC, MF_source)`;
+- 192's `compact13/positive13_square.json` (`9574f3db…`) is identical in the
+  same sense to `ModelThirteenCarrier.expressionAt69 p`;
+- every single-gate operation change is detected (65/65 and 69/69);
+- 183's coefficient files and 192's pinned hashes are the four admissible942
+  payloads.
+
+So the endpoints only need the tuple calibration: the per-form Lean syntax and
+its port-parametric algebra already exist.
