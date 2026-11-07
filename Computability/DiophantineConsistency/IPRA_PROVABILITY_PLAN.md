@@ -331,6 +331,11 @@ composition remains separate. An [A1 checkpoint client](research/nine-seed38-jon
 checks symbolic `A1` at `d37` and `d41` with rank opaque. Its independent
 prelaunch provider replay was interrupted; the passing preflight was
 author-observed. Full semantic composition remains separate.
+A [V0/V1 checkpoint client](research/nine-seed38-jones-checkpoint38-39-v-check/README.md),
+[independently audited](reviews/nine-seed38-jones-checkpoint38-39-v-terminal-frontier-independent/README.md),
+checks both symbolic values with rank opaque. The interrupted A1 independent
+preflight and the earlier uncaptured outer exit remain inherited limitations;
+full semantic composition remains separate.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
 not a Lean proof or evidence that the complete composition fits the resource
