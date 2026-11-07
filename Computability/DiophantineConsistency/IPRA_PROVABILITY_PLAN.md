@@ -108,6 +108,10 @@ checks the d33 and d34 local equations.
 An [I/A0/A1/V dependent-prefix client](research/nine-seed33-jones-dependent07-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-dependent07-staged-terminal-frontier-independent/README.md),
 checks the d35 through d39 local equations.
+A [final local dependent-prefix client](research/nine-seed33-jones-dependent08-staged-check/README.md),
+[independently audited](reviews/nine-seed33-jones-dependent08-staged-terminal-frontier-independent/README.md),
+checks the d40 through d45 local equations. Carry composition, full recipe
+semantics and external serialization binding remain separate.
 A [raw-rank prefix client](research/nine-seed33-jones-prefix-rank-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-prefix-rank-staged-terminal-frontier-independent/README.md),
 checks the symbolic d11 raw rank and its carried form. It does not by itself
