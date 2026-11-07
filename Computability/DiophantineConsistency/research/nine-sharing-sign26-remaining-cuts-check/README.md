@@ -1,0 +1,5 @@
+# Proposed sign26 unaffected residual checks
+
+Two stages propose evaluation identities and exact list positions for the 14 surviving sign27 residuals that do not use the removed gap coordinate, excluding q3, the two separately handled affected rows and deleted gap. Names `Rnn` are zero-based old full residual indices; each identity uses the same lift valuation and requires neither q3 nor gap-representation equality. The packet does not assemble either zero-set direction.
+
+The runner binds the audited congruence-cuts provider, its direct guards and overlay routes, and each local stage; deeper ancestry and the historical plan README-link caveat are inherited. Author no-Lean preflight exited 0, and the reviewed run succeeded as recorded in [attempt01](attempt01/README.md); the [independent terminal audit](../../reviews/nine-sharing-sign26-remaining-cuts-terminal-frontier-independent/README.md) passed. Limits remain `-M2800`, 120 seconds per call, sampled 4-GiB RSS, 10-GiB available-host-memory floor and 5-GB disk precheck. No endpoint, Lean degree theorem or external JSON/coefficient binding is claimed.

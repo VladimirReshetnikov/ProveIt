@@ -473,7 +473,10 @@ checks the represented gap from current-port seed zero; the full model bridge
 remains separate. A [congruence-cuts client](research/nine-sharing-sign26-congruence-cuts-check/README.md),
 [independently audited](reviews/nine-sharing-sign26-congruence-cuts-terminal-frontier-independent/README.md),
 checks the removed gap row and the Tau/Inner transfers under explicit gap and
-q3 equalities, with two linter warnings. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
+q3 equalities, with two linter warnings. A [remaining-cuts client](research/nine-sharing-sign26-remaining-cuts-check/README.md),
+[independently audited](reviews/nine-sharing-sign26-remaining-cuts-terminal-frontier-independent/README.md),
+checks the other 14 residual transfers, with 24 linter warnings. The assembled
+zero bridge remains separate. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
 [independently audited](reviews/nine-sharing-sign26-q3-single-cut-independent/README.md),
 examines ten direct cuts under one formal monic reduction rule; it is not a
 semantic lower bound or an obstruction to other encodings.
