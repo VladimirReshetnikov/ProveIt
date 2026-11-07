@@ -57,8 +57,11 @@ def port(stem, ported):
 
 
 def main():
-    ported = sys.argv[1:]
-    for stem in ported:
+    targets = sys.argv[1:]
+    # References to modules ported earlier are rewritten too.
+    existing = [p.stem for p in DST.glob("*.lean")] if DST.exists() else []
+    ported = sorted(set(targets) | set(existing))
+    for stem in targets:
         port(stem, ported)
         print("ported", stem)
 
