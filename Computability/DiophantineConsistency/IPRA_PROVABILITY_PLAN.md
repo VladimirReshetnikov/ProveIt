@@ -143,6 +143,12 @@ A subsequent [definition/evaluation split](research/nine-sharing-sign32-direct-i
 checks all four symbolic-port and current-port definition/evaluation stages.
 The source-zero composition and iPRA endpoint remain separate; the successful
 generic provider is a stage from an otherwise failed earlier attempt.
+A [factored endpoint attempt](research/nine-sharing-sign32-direct-ipra-final-check/README.md),
+[independently audited](reviews/nine-sharing-sign32-direct-ipra-final-failure-frontier-independent/README.md),
+checks the direct 32-coordinate expression's source-zero equivalence in the
+intended models. The following endpoint stage failed on a zero-predicate type
+mismatch; its `sorryAx` reports are not proof evidence, and its final
+postflight did not run.
 An external [31-witness sextic candidate](research/nine-sharing-sign31-sextic-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign31-sextic-frontier-independent/README.md),
 eliminates the `f2` cut from the 32-witness AST while preserving exact degree 6.
