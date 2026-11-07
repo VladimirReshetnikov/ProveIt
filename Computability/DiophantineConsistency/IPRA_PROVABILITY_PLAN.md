@@ -2136,7 +2136,10 @@ equalities; it records two warnings and does not supply those hypotheses. A
 [conditional inner-cut client](research/nine-sharing-sign33-forward-inner-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-forward-inner-terminal-frontier-independent/README.md),
 checks the constructor's inner field from gap and inner representative
-equalities; it also records two warnings.
+equalities; it also records two warnings. A [value/negative attempt](research/nine-sharing-sign33-forward-value-negative-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-forward-value-negative-failure-frontier-independent/README.md),
+failed to elaborate the dependent `Fin.cons` valuation; neither theorem nor
+an object was produced, and the final postflight did not run.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
