@@ -2154,7 +2154,11 @@ theorem or object and did not reach final provider postflight. A [factored
 retry](research/nine-sharing-sign33-forward-norm-q-retry02/README.md),
 [independently audited](reviews/nine-sharing-sign33-forward-norm-q-retry02-terminal-frontier-independent/README.md),
 checks the constructor Q field assuming the generic core Q norm, using the
-checked 38-witness reference terminal. It records one unused-simp warning.
+checked 38-witness reference terminal. It records one unused-simp warning. A
+[W-norm mapping](research/nine-sharing-sign33-forward-norm-w-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-forward-norm-w-terminal-frontier-independent/README.md),
+checks the constructor W field assuming generic core W=1; its second stage
+records four simp/tactic warnings. The remaining norm mappings are separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
