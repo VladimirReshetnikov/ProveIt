@@ -1,0 +1,3 @@
+Independent failure audit: PASS. Author-recorded session 57672 exited 1. Native endpoint dependency scan succeeded; compile exited −6 with uncaught interpreter memory exception at sampled peak RSS 2,937,425,920 bytes under the 4-GiB sampled limit. Monitor stop was null; exact internal trigger is unknown. No native object or axiom report exists; standard/translated stages and final postflight were unrun.
+
+The source, both direct bridge/framework provider bindings, 150 guard slots, 1,326 overlay links, failure logs and framework survey were checked. This run establishes no endpoint. Outer exit is author-recorded, deeper ancestry inherited; no Lean replay was performed.

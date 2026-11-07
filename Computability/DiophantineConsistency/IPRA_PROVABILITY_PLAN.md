@@ -325,8 +325,11 @@ checks the generic bridge transfer assuming both all-model zero equivalence
 and the second expression's bridge. A [concrete sign28 specialization](research/nine-sharing-sign28-concrete-polynomial-bridge-check/README.md),
 [independently audited](reviews/nine-sharing-sign28-concrete-polynomial-bridge-terminal-frontier-independent/README.md),
 checks `PolynomialBridge` for the direct current-port 28-coordinate expression,
-inheriting the sign31 source ancestry. Native and standard endpoint assembly
-remain separate. The
+inheriting the sign31 source ancestry. A [native endpoint attempt](research/nine-sharing-sign28-endpoint-check/README.md),
+[independently audited](reviews/nine-sharing-sign28-endpoint-failure-frontier-independent/README.md),
+hit the interpreter memory limit in its first stage, producing no endpoint
+object or final postflight; the trigger is unknown. Native and standard
+endpoint assembly remain separate. The
 source composition and
 iPRA endpoint likewise remain to be checked in Lean. A further external
 [27-witness sextic candidate](research/nine-sharing-sign27-sextic-normalized-root-candidate/README.md),
