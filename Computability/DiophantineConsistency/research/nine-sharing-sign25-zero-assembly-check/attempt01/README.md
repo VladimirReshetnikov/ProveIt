@@ -1,0 +1,3 @@
+# Sign25 zero bridge assembly attempt 01
+
+Author-observed outer session 39074 exited 0, including all four stages and final postflight. Coordinate recovery, lift/drop, forward and backward reports use `[propext, Classical.choice, Quot.sound]`; the two finite row enumerations use `[propext]`. There are no warnings. The forward and backward zero implications hold in IΣ₁ for the same symbolic ports, with the explicit product lift and drop. No endpoint, Lean degree theorem, or external JSON/port binding is claimed. Monitor observations are sampled; upstream stale success labels, inherited syntax heartbeat and historical sign26 plan README appendix caveats remain documented.

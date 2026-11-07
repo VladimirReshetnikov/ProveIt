@@ -589,7 +589,10 @@ checks q3 and the 14 other transferred rows, with 18 unused-variable warnings.
 A [coordinate-recovery client](research/nine-sharing-sign25-coordinate-recovery-check/README.md),
 [independently audited](reviews/nine-sharing-sign25-coordinate-recovery-terminal-frontier-independent/README.md),
 derives the deleted product coordinate from old seed zero and checks lift after
-drop. The assembled model bridge remains separate.
+drop. An [assembled pointwise zero bridge](research/nine-sharing-sign25-zero-assembly-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-zero-assembly-terminal-frontier-independent/README.md),
+checks both directions for symbolic ports in IΣ₁ models. The same-input
+existential composition and direct iPRA endpoint remain separate.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
