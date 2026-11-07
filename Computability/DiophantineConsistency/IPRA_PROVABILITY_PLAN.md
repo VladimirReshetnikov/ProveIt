@@ -96,6 +96,9 @@ checks the d21 through d23 local equations.
 A [further dependent-prefix client](research/nine-seed33-jones-dependent03-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-dependent03-staged-terminal-frontier-independent/README.md),
 checks the d24 through d27 A/Bprime/W/C equations.
+A [J/Q/D dependent-prefix client](research/nine-seed33-jones-dependent04-staged-check/README.md),
+[independently audited](reviews/nine-seed33-jones-dependent04-staged-terminal-frontier-independent/README.md),
+checks the d28 through d30 local equations.
 A [raw-rank prefix client](research/nine-seed33-jones-prefix-rank-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-prefix-rank-staged-terminal-frontier-independent/README.md),
 checks the symbolic d11 raw rank and its carried form. It does not by itself
