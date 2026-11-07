@@ -2197,6 +2197,11 @@ their application to the strong norm is checked by a [factored retry](research/n
 [independently audited](reviews/nine-sharing-sign33-forward-norm-strong-retry02-terminal-frontier-independent/README.md).
 It derives the constructor strong field assuming core strong=1 and records one
 unused-simp warning; composition with source zero remains separate.
+A [node-76 client](research/nine-sharing-sign33-node76-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-node76-terminal-frontier-independent/README.md),
+checks the conditional topology equality and generic reference `V²−y²`
+identity. The sign reversal and constructor binding needed for the U norm
+remain separate.
 A [generic reference-ell client](research/nine-sharing-sign33-reference-ell-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-reference-ell-terminal-frontier-independent/README.md),
 checks the ring-level node 30 identity used by a proposed P-norm route; it
