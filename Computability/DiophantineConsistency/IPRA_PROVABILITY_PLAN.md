@@ -2193,7 +2193,10 @@ then checks coordinate 22 while keeping the 38-coordinate tuple abstract. It
 does not establish the strong norm. An [additional projection client](research/nine-sharing-sign33-abstract-projections28-32-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-abstract-projections28-32-terminal-frontier-independent/README.md),
 checks the corresponding abstract projections for coordinates 28 and 32;
-their application to the strong norm remains separate.
+their application to the strong norm is checked by a [factored retry](research/nine-sharing-sign33-forward-norm-strong-retry02/README.md),
+[independently audited](reviews/nine-sharing-sign33-forward-norm-strong-retry02-terminal-frontier-independent/README.md).
+It derives the constructor strong field assuming core strong=1 and records one
+unused-simp warning; composition with source zero remains separate.
 A [generic reference-ell client](research/nine-sharing-sign33-reference-ell-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-reference-ell-terminal-frontier-independent/README.md),
 checks the ring-level node 30 identity used by a proposed P-norm route; it
