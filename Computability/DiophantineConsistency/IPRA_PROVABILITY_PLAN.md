@@ -2181,7 +2181,10 @@ no object and did not run its second stage or final postflight. The remaining
 norm mappings are separate. A [factored P attempt](research/nine-sharing-sign33-forward-norm-p-retry01/README.md),
 [independently audited](reviews/nine-sharing-sign33-forward-norm-p-retry01-failure-frontier-independent/README.md),
 failed on a tau cast-shift mismatch, with no object or postflight; its `sorryAx`
-report is not proof evidence. A [strong-norm mapping attempt](research/nine-sharing-sign33-forward-norm-strong-check/README.md),
+report is not proof evidence. A [targeted P retry](research/nine-sharing-sign33-forward-norm-p-retry02/README.md),
+[independently audited](reviews/nine-sharing-sign33-forward-norm-p-retry02-terminal-frontier-independent/README.md),
+checks the constructor P field assuming core P=1 and the tau representative.
+A [strong-norm mapping attempt](research/nine-sharing-sign33-forward-norm-strong-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-forward-norm-strong-partial-frontier-independent/README.md),
 compiled its conditional 38-terminal stage, but its second stage failed on
 recursion depth and produced no object; its `sorryAx` report is not proof
