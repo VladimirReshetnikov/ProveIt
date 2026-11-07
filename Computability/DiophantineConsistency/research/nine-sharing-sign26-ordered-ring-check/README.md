@@ -1,0 +1,5 @@
+# Proposed generic sign26 ordered-ring lemmas
+
+This bounded standalone candidate proposes the exact algebraic q3 congruence and gap nonnegativity under explicit ordered-ring inequalities and Nt equation. It does not derive those assumptions from an IΣ₁ model, prove a gap representative, connect any seed, or establish an endpoint. Names and tactic availability remain untested.
+
+The runner pins the source, Lean binary, monitor and 60 direct candidate slots for `Init`, ordered-ring definitions and `Linarith`; it checks exact dependency routes and post-run drift. The package snapshot and deeper transitive imports are inherited, with sampled process monitoring. Author no-Lean preflight exited 0 and prelaunch passed, but compile failed as recorded in [attempt01](attempt01/README.md); the [independent failure audit](../../reviews/nine-sharing-sign26-ordered-ring-failure-frontier-independent/README.md) passed and no theorem is credited from that module. Limits remain `-M2800`, 120 seconds per call, sampled 4-GiB RSS, 10-GiB available-host-memory floor and 5-GB disk precheck.

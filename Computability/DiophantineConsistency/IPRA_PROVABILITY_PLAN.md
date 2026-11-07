@@ -438,7 +438,11 @@ the inserted gap representative and hypotheses explicit; its targets remain
 unproved. A [syntax and squares client](research/nine-sharing-sign26-seed-squares-check/README.md),
 [independently audited](reviews/nine-sharing-sign26-seed-squares-terminal-frontier-independent/README.md),
 checks symbolic seed zero iff its 17 residuals vanish in the indicated models,
-retaining the historical appended-plan-link replay caveat. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
+retaining the historical appended-plan-link replay caveat. An [ordered-ring
+attempt](research/nine-sharing-sign26-ordered-ring-check/README.md),
+[independently audited](reviews/nine-sharing-sign26-ordered-ring-failure-frontier-independent/README.md),
+failed because the `ring` tactic was unavailable; its `sorryAx` reports are
+not proof evidence and no object or final postflight was produced. A [restricted q3-remainder survey](research/nine-sharing-sign26-q3-single-cut-survey/README.md),
 [independently audited](reviews/nine-sharing-sign26-q3-single-cut-independent/README.md),
 examines ten direct cuts under one formal monic reduction rule; it is not a
 semantic lower bound or an obstruction to other encodings.
