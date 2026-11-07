@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+d=Path(__file__).resolve().parents[2];p=d/'research/nine-sharing-sign33-ipra-endpoint-check';sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest()
+for n,h in {'run.py':'c10ce0489ec7753f04ac35a12a1c3844a8390ce30f9ef3d9f2dfb97a63ba99ed','provider_survey.py':'6501e610b1bbedca4773d7260feced295c67847529de5484f4e3dc28c1a10bc3','source-manifest.json':'9db22c65d8395c67231f414cda5951e5d428aef88b8cced1a6008cccdcfa1e05'}.items():assert sha(p/n)==h
+rows=json.loads((p/'source-manifest.json').read_text())['rows'];assert len(rows)==1;n='Sign33IPRAEndpoint';q=p/'src/DiophantineConsistency'/f'{n}.lean';s=q.read_text();assert sha(q)==rows[0]['source_sha256']=='76f72845b8171f09820080be06733560c18a31230573892614b532f11d65c0fd' and rows[0]['imports']==re.findall(r'^import ([\w.]+)$',s,re.M)==['DiophantineConsistency.'+x for x in ['Sign33CurrentJonesSourceIff','HACurrentEquation2011','IPRAExpressionNative','IPRAStandardTheory']]
+for x in ['ExecutableJones.expression (SharingSeed33.seed CurrentWindowCarry2011.ports) 0','(∃ a : Fin 9 → V, InternalZero expression a) ↔','InternalZero ObjectCurrentEquation2011.naturalExpression u','internalZero_iff expression a','Sign33CurrentJonesSourceIff.nine_exists_iff_source','HAExpressionAssembly.PolynomialBridge expression','not_congr (zero_iff_current V)','nativeTheory ⊢','IPRAStandardTheory.standardTheory ⊢','IPRAExpressionNative.nativeNoZero expression 🡘 ∼mappedNativeRefutation embedding','(Semiformula.lMap embedding sourceSentence)ᴺ','IPRABoundedRhoZFC.zfcEquiv']:assert x in s
+assert re.findall(r'^theorem (\w+)',s,re.M)==['zero_iff_current','polynomialBridge','native_equivalence','standard_equivalence','standard_translated_equivalence'] and s.count('#print axioms ')==5
+survey=(p/'provider_survey.py').read_text();assert '87f18e7aec2758fb2a4f04893255a9f4e3076f80e00efa1024d965378a3b3f72' in survey
+r=subprocess.run([sys.executable,'-I','-S','-B',str(p/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=300);o=json.loads(r.stdout);assert not r.stderr and o['status']=='PASS_NO_LEAN_PREFLIGHT' and o['stage_count']==1
+print(json.dumps({'status':'PASS','preflight':o,'scope':'symbolic 33-Jones iPRA endpoint proposal; no Lean replay'},indent=2,sort_keys=True))

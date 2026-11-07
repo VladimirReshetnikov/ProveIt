@@ -10,6 +10,18 @@ repaired on that snapshot, and the 14-variable endpoint rechecked on the
 repaired parent; source-current and inherited external-ancestry qualifications
 remain as described below.
 
+A [nine-natural-coordinate Jones expression built from the 33-witness seed](research/nine-sharing-sign33-ipra-endpoint-check/README.md)
+now has [independently audited Lean endpoints](reviews/nine-sharing-sign33-ipra-endpoint-terminal-frontier-independent/README.md)
+for the native and standard iPRA mapped-refutation equivalences and the
+standard mapped Gödel–Gentzen consistency equivalence. The symbolic expression
+is `ExecutableJones.expression (SharingSeed33.seed CurrentWindowCarry2011.ports) 0`;
+its nine coordinates range over naturals including zero. The Lean source's
+historical uncompiled-provider header is stale, as documented in its README.
+The checked endpoint does not bind a literal numerical equation or PDF, nor
+establish an operation count or exact degree. The retained initial-agreement
+ancestor has successful Lean child exits but no captured numeric outer exit;
+inherited provider and point-observation limits remain.
+
 A [nine-natural-coordinate Jones expression built from the 38-witness seed](research/nine-sharing-norm38-ipra-endpoint-check/README.md)
 now has [independently audited Lean endpoints](reviews/nine-sharing-norm38-ipra-endpoint-terminal-frontier-independent/README.md)
 for the native and standard iPRA mapped-refutation equivalences and the
