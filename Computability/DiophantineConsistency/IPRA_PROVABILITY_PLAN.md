@@ -167,7 +167,10 @@ checks that the symbolic-port sign31 seed vanishes exactly when its 22
 residuals vanish in the intended models. A [first-cut client](research/nine-sharing-sign31-first-cut-check/README.md),
 [independently audited](reviews/nine-sharing-sign31-first-cut-terminal-frontier-independent/README.md),
 checks the eliminated square residual and the two affected row identities;
-it records five unused-variable warnings. The remaining natural lift/drop argument has
+it records five unused-variable warnings. A [remaining-cuts client](research/nine-sharing-sign31-remaining-cuts-check/README.md),
+[independently audited](reviews/nine-sharing-sign31-remaining-cuts-terminal-frontier-independent/README.md),
+checks q3 and the other 19 residual identities and row positions, with 37
+unused-binder or unused-simp warnings. The assembled natural lift/drop argument has
 not been formalized in Lean, and the
 quartic Jones theorem does not apply directly to it. An external
 [28-witness sextic candidate](research/nine-sharing-sign28-sextic-candidate/README.md),
