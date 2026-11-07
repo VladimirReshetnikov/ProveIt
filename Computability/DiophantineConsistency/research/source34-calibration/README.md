@@ -54,6 +54,21 @@ five mask facts, and the chosen-dimension rank calibration. Axioms:
 [`tools/check_ports.py`](tools/check_ports.py) matches the `MC` and `MF` digit
 lists with the payloads.
 
+**The `LeafFacts` halting chain at the source34 ports** (27 further modules,
+`Source34Band` … `Source34Halt`): every positive valuation with
+`CompactLeafFacts.LeafFacts Source34Ports.ports v` in a model of `𝗜𝚺₁` gives
+internal halting of machine 215 (`Source34Halt.halts_of_facts`, same statement
+as `Mixed121Halt.halts_of_facts`). Only tuple-specific declarations are
+restated; generic Mixed121 definitions and lemmas, and all of `Mixed121/W121/`,
+are reused under their own names, so the two calibrations share their generic
+constants. The changed geometry is the stride-two field windows: the vertical
+target `1000 + 2u` sees only the shift-40 source `960 + 2u` and the temporal
+source, the horizontal target `1021 + 2u` only the shift-41 source `980 + 2u`
+and the spatial source `1020 + 2u` (shift `8802`); `Source34Field` proves both
+by `interval_cases u` (`omega` alone could not handle `2u` against `8801` with
+the parity test). Every finite geometric fact was checked in Python before it
+was proved.
+
 ## The completeness obstruction
 
 44 / 111's guard is `G = budget − pos`, `pos = 1 + p₁² + p₂² + p₃(p₃+1)`. The
