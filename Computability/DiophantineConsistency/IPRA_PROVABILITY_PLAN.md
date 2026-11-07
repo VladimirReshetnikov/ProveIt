@@ -2117,7 +2117,12 @@ A [conditional forward-gap client](research/nine-sharing-sign33-forward-gap-chec
 [independently audited](reviews/nine-sharing-sign33-forward-gap-terminal-frontier-independent/README.md),
 checks the constructor's gap field assuming the corresponding core
 representative equation. It records four simp/tactic warnings and does not
-itself construct the representative from source zero.
+itself construct the representative from source zero. A [current-source gap
+composition](research/nine-sharing-sign33-current-forward-gap-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-current-forward-gap-terminal-frontier-independent/README.md),
+then supplies five representatives and the constructor gap field under source
+zero and an explicit universal current-port cast. Four other representative
+equalities and the remaining constructor conditions still need to be applied.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign

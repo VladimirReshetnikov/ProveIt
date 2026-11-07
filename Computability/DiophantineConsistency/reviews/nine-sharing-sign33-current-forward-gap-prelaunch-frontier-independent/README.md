@@ -1,0 +1,5 @@
+# Independent prelaunch review: current source representatives and gap
+
+The proposed theorem takes current natural source zero and a universal cast equality from current integer ports to model-natural ports. It applies the checked five-core-representatives theorem at `u+1`, uses the cast equality in the correct orientation to transport the core gap hypothesis, then applies the conditional constructor gap theorem. The four remaining tau/inner/value/negative core equalities are retained, with the negative representative oriented `y²−V²`. The checker pins source, runner, manifest and provider survey, compares the prior theorem's hypotheses and outputs, and reruns the guarded no-Lean preflight.
+
+No blocker was found within this point-in-time source/provider scope. This is a proposed representative-existence plus one gap field theorem under the explicit universal cast hypothesis, not all cuts, seed zero or an iPRA endpoint. Lean elaboration and complete dynamic provider ancestry remain untested.
