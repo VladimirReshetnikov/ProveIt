@@ -2106,7 +2106,10 @@ checks the two positive cuts in group 03; its source-dependent norm is excluded.
 A [late positive-cut client](research/nine-sharing-sign33-forward-late-positive-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-forward-late-positive-terminal-frontier-independent/README.md),
 checks `f²` and the normalized `S` and `S²` cuts. The signed fields and five
-source-dependent norms remain separate.
+source-dependent constructor norms remain separate. A [core-norm extraction](research/nine-sharing-sign33-current-core-norms-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-current-core-norms-terminal-frontier-independent/README.md),
+checks that current source zero yields the five corresponding core norms;
+matching them to the constructed witness coordinates remains to be proved.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
