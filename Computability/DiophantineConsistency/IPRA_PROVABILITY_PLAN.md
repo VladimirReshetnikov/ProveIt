@@ -138,6 +138,11 @@ A further [abstract-port retry](research/nine-sharing-sign32-direct-ipra-abstrac
 also hit the interpreter memory limit in its first, symbolic-port stage, which
 contains both a definition and its evaluation theorem. No object or endpoint
 result was produced; the triggering declaration remains unknown.
+A subsequent [definition/evaluation split](research/nine-sharing-sign32-direct-ipra-abstract-split/README.md),
+[independently audited](reviews/nine-sharing-sign32-direct-ipra-abstract-split-terminal-frontier-independent/README.md),
+checks all four symbolic-port and current-port definition/evaluation stages.
+The source-zero composition and iPRA endpoint remain separate; the successful
+generic provider is a stage from an otherwise failed earlier attempt.
 An external [31-witness sextic candidate](research/nine-sharing-sign31-sextic-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign31-sextic-frontier-independent/README.md),
 eliminates the `f2` cut from the 32-witness AST while preserving exact degree 6.
