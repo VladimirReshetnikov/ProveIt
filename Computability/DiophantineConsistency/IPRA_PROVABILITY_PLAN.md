@@ -370,7 +370,10 @@ checks symbolic `Dm` at `d42` under the same inherited caveats; final semantic
 composition remains separate. A [Kc checkpoint client](research/nine-seed38-jones-checkpoint43-kc-check/README.md),
 [independently audited](reviews/nine-seed38-jones-checkpoint43-kc-terminal-frontier-independent/README.md),
 checks symbolic `Kc` at `d43` under those caveats; final semantic composition
-remains separate.
+remains separate. A [terminal-cut attempt](research/nine-seed38-jones-terminal-cut-check/README.md),
+[independently audited](reviews/nine-seed38-jones-terminal-cut-failure-frontier-independent/README.md),
+compiled the `T` stage but failed the output stage on a `d44` rewrite mismatch.
+Its `sorryAx` reports are not proof evidence; the final postflight did not run.
 An [independently reviewed composition plan](research/nine-seed38-jones-semantic-composition-plan/README.md)
 describes checkpoint paths and substitution in dependency order; it is a plan,
 not a Lean proof or evidence that the complete composition fits the resource
