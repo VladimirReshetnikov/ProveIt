@@ -2246,7 +2246,10 @@ A [source/seed equivalence](research/nine-sharing-sign33-current-seed-iff-check/
 composes both directions: existence of a natural source zero is equivalent to
 existence of a current 33-seed zero with leading 1 in those models, without
 explicit port-cast hypotheses. Jones transfer and iPRA proof existence remain
-separate.
+separate. An [independent 33-seed Jones client](research/nine-sharing-sign33-current-jones-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-current-jones-terminal-frontier-independent/README.md),
+checks the symbolic nine-variable Jones zero iff 33-seed existential zero in
+those models. Its source and iPRA compositions remain separate.
 A [generic reference-ell client](research/nine-sharing-sign33-reference-ell-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-reference-ell-terminal-frontier-independent/README.md),
 checks the ring-level node 30 identity used by a proposed P-norm route; it
