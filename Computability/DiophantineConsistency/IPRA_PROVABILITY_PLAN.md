@@ -2113,6 +2113,11 @@ source-dependent constructor norms remain separate. A [core-norm extraction](res
 [independently audited](reviews/nine-sharing-sign33-current-core-norms-terminal-frontier-independent/README.md),
 checks that current source zero yields the five corresponding core norms;
 matching them to the constructed witness coordinates remains to be proved.
+A [conditional forward-gap client](research/nine-sharing-sign33-forward-gap-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-forward-gap-terminal-frontier-independent/README.md),
+checks the constructor's gap field assuming the corresponding core
+representative equation. It records four simp/tactic warnings and does not
+itself construct the representative from source zero.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
