@@ -17,6 +17,18 @@ is already the arbitrary-odd-factor construction of recipe §4. Its port
 changes `p = 581197 → λ = 2341`, `p − 1 = 581196 → 2340`,
 `d = 590069 → 1064921`, and the residue of `g = B^(p−1)` modulo `C0·p`.
 
+## Progress
+
+Ported and building, with axioms `propext`, `Classical.choice`, `Quot.sound`:
+
+| Compact44 | 121x8801 |
+| --- | --- |
+| `ArithmeticControllerDataCompact44` | `Mixed121ControllerData` (transcribed) |
+| `ArithmeticControllerChoiceCompact44Triangle` | `Mixed121ControllerChoice` (transcribed) |
+| `ArithmeticConstructionUnitCompact44` | `Mixed121ConstructionUnit` (`Γ` order `5070`, not `p − 1`) |
+| `SymbolicKernelResidue` | `Mixed121KernelResidue` (`K ≡ 510020909 mod C0`) |
+| `KernelAliasExplicit`, `AliasResidueNumeral`, `AliasUnitGivenResidue`, `AliasUnitDischarged`, `AliasRankCalibration`, `ActualRankCalibration`, `ChosenControllerCalibration` | `Mixed121Calibration` (one module, same theorem names) |
+
 | Level | Module | Class | Lines |
 | ---: | --- | :---: | ---: |
 | 0 | `ArithmeticAdaptiveConstructionCorrection2011` | G | 33 |
