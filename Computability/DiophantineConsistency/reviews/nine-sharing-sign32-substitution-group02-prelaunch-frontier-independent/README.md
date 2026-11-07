@@ -1,0 +1,5 @@
+# Independent sign32 kY/ell/Delta prelaunch review
+
+The checker pins source, runner and manifest, independently reproduces the no-Lean preflight, and compares all six proposed old/new expressions against the exact source-list rows. Old positions are 4, 5, 6 in the old remaining list; new positions are 3, 4, 5 in the new remaining list. None uses eliminated old coordinate 15; the checked lift maps the other coordinates as required. Therefore the three proposed evaluation identities need no port-0 cast hypothesis. The runner binds the successful immediate group01 object and verifies retained source, logs, guards and overlay; deeper ancestry is inherited.
+
+These are nine local row-link/evaluation claims with symbolic ports and one valuation. Elaboration and axiom reports remain untested; no Lean run occurred. The remaining residual identities and complete zero-set bridge are outside scope. Provider checks are point-in-time; sampled resource monitoring does not give a complete transitive or dynamic trace.
