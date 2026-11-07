@@ -1,0 +1,5 @@
+# Proposed local-irreducibility direct endpoint retry
+
+This bounded three-stage candidate adds local irreducibility for the current expression and port constants to the previously failed native stage. Imports, theorem statements, proof bodies and later stages are unchanged. The previous interpreter exception's exact trigger remains unknown; this is a scoped experiment under the same limits, not a diagnosis. The reviewed run succeeded as recorded in [attempt01](attempt01/README.md), and the [independent terminal audit](../../reviews/nine-sharing-sign28-endpoint-retry01-terminal-frontier-independent/README.md) passed.
+
+The runner binds the audited concrete sign28 polynomial bridge and the surveyed endpoint framework objects, checking direct guards and each staged object. Deeper sign31 source ancestry is inherited. Author no-Lean preflight returned 0; independent prelaunch is requested. Limits remain `-M2800`, 120 seconds per call, sampled 4-GiB RSS, 10-GiB available-host-memory floor and 5-GB disk precheck. No Jones/nine-variable result, Lean degree bound or external JSON/coefficient binding is claimed.
