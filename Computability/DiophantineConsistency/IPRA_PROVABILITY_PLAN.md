@@ -2204,7 +2204,11 @@ postflight; the cause is unknown. Its model-topology and constructor connections
 remain separate. A [node-30 topology client](research/nine-sharing-sign33-static-node30-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-static-node30-terminal-frontier-independent/README.md),
 checks the relevant same-valuation equality conditional on `gatesHold`; its
-constructor application remains separate.
+constructor application remains separate. A [factored constructor attempt](research/nine-sharing-sign33-constructor-ell-retry01/README.md),
+[independently audited](reviews/nine-sharing-sign33-constructor-ell-retry01-partial-frontier-independent/README.md),
+checked its coordinate projections but failed its second stage on a
+cast-of-successor mismatch; that stage has no object, its `sorryAx` report is
+not proof evidence, and final postflight did not run.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
