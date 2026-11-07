@@ -1,0 +1,5 @@
+# Independent RingVars/Bd retry prelaunch review
+
+The checker pins source, runner, provider survey and manifest, reproduces the independent no-Lean preflight, and verifies the exact sole source change from the failed candidate: `rfl` is replaced with explicit `simp only` over relevant `RingVars` definitions and numeral casts. The variables, theorem statement and all other source bytes are unchanged. The failed original had dependency scan exit 0 and Lean exit 1; its `sorryAx` report is invalid. This targeted proof change and its elaboration remain untested.
+
+Runner and survey retain the original authenticated terminal-cut provider/guard route with fresh output/draft paths and updated source/manifest pins. This is one symbolic Bd-to-dvsr cut, not full named-formula equality or JSON binding. Earlier A1 independent recursive preflight was interrupted with author passing preflight recorded; an earlier initial-agreement numeric outer exit remains unavailable. Provider checks are point-in-time and sampled monitoring is not a full dynamic/transitive trace. No Lean ran in this review.
