@@ -1,0 +1,79 @@
+import DiophantineConsistency.BFS943.AdjacentBounds
+import DiophantineConsistency.BFS943.AdjacentDenominator
+import DiophantineConsistency.ModelDifferenceRing
+
+/-! An assembled strictly decreasing adjacent-Pell step in every IΣ₁ model. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace TenPositiveAdjacentStep
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open DiophantineConsistency.ArithmeticSignedPairs DiophantineConsistency.ArithmeticGcdNormalization
+open DiophantineConsistency.ModelDifferenceRing
+open TenPositiveAdjacentDenominator TenPositiveAdjacentPreserve TenPositiveAdjacentBounds
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Squaring a signed difference agrees with squaring its natural magnitude. -/
+theorem magnitude_square_cast (a b : V) :
+    (ι a-ι b)*(ι a-ι b) = ι (magnitude (a,b)*magnitude (a,b)) := by
+  rcases le_total b a with h | h
+  · have hs : a-b+b=a := tsub_add_cancel_of_le h
+    have hm : magnitude (a,b)=a-b := magnitude_of_add (by rw [add_comm,hs])
+    have hc : ι (a-b) = (ι a : DiffRing V)-ι b := by
+      apply eq_sub_iff_add_eq.mpr
+      rw [←map_add,hs]
+    rw [hm,map_mul,hc]
+  · have hs : b-a+a=b := tsub_add_cancel_of_le h
+    have hm : magnitude (a,b)=b-a := by
+      have hm' : magnitude (b,a)=b-a := magnitude_of_add (by rw [add_comm,hs])
+      simpa only [←magnitude_swap (a,b),swap] using hm'
+    have hc : ι (b-a) = (ι b : DiffRing V)-ι a := by
+      apply eq_sub_iff_add_eq.mpr
+      rw [←map_add,hs]
+    rw [hm,map_mul,hc]
+    ring
+
+/-- One full adjacent-Pell step preserves a reduced positive denominator and
+the norm while strictly decreasing the positive first coordinate. -/
+theorem adjacent_step (B m v r : V)
+    (hB : 0<B) (hm : 0<m) (hv : 1<v) (hu : Bez r m 1)
+    (h : (1+B)*((m*v)*(m*v))=m*m+B*(r*r)) :
+    ∃ v' r' : V, 0<v' ∧ v'<v ∧ Bez r' m 1 ∧
+      (1+B)*((m*v')*(m*v'))=m*m+B*(r'*r') := by
+  have hdiv : m*m∣B := denominator_square_divides (1+B) B v r m hm hu h
+  obtain ⟨t,ht⟩ := hdiv
+  let v' : V := magnitude ((1+2*B)*v,2*m*t*r)
+  let r' : V := magnitude ((1+2*B)*r,2*(1+B)*m*v)
+  have hlt : v'<v := adjacent_first_decreases B m v r t hB hm hv ht h
+  have hbez : Bez r' m 1 := adjacent_step_reduced_square B r m v hm hu ⟨t,ht⟩
+  have hx : magnitude ((1+2*B)*(m*v),2*B*r)=m*v' :=
+    adjacent_first_coordinate B m v r t ht
+  have h : (1+B)*((m*v)*(m*v))=m*m+B*(r*r) := h
+  have hcast := congrArg (ι : V →+* DiffRing V) h
+  simp only [map_add,map_one,map_mul] at hcast
+  have hnorm := adjacent_norm_identity (ι B : DiffRing V) (ι (m*v)) (ι r) (ι m) (by
+    simpa only [map_mul] using hcast)
+  dsimp at hnorm
+  have hxcast := magnitude_square_cast ((1+2*B)*(m*v)) (2*B*r)
+  have hrcast := magnitude_square_cast ((1+2*B)*r) (2*(1+B)*m*v)
+  simp only [map_add,map_one,map_mul,map_ofNat] at hxcast hrcast
+  rw [hx] at hxcast
+  simp only [map_mul] at hxcast hrcast hnorm
+  rw [hxcast] at hnorm
+  simp only [mul_assoc] at hrcast hnorm
+  rw [hrcast] at hnorm
+  have hnew : (1+B)*((m*v')*(m*v'))=m*m+B*(r'*r') := by
+    apply ι_injective
+    simpa only [r',map_add,map_one,map_mul,mul_assoc] using hnorm
+  have hvpos : 0<v' := pos_iff_ne_zero.mpr (by
+    intro hv0
+    have hp : 0<m*m+B*(r'*r') := add_pos_of_pos_of_nonneg (mul_pos hm hm) (by simp)
+    rw [hv0] at hnew
+    simp only [mul_zero] at hnew
+    exact (ne_of_gt hp) hnew.symm)
+  exact ⟨v',r',hvpos,hlt,hbez,hnew⟩
+
+#print axioms TenPositiveAdjacentStep.magnitude_square_cast
+#print axioms TenPositiveAdjacentStep.adjacent_step
+end TenPositiveAdjacentStep
