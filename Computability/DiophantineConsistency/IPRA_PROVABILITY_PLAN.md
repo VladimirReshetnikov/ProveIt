@@ -5331,11 +5331,17 @@ to a positive 75 zero by moving `n` (77: `XY = (ws)q⁴`, `e = XY·ρ`; 79:
 layer ported to q1 gives `X = 2^R`, so `q` is a power of two and `q² | s`; the
 zero maps to a 75 zero at `(qw, s/q², n′)`.
 
-**172's 87/214 and 82/240 (free charts) are open.** There `c = ks + η` while
+**172's 82/240 (free_plain), CLOSED (2026-11-08)**
+([`BFS943/IPRATrace82`](Lean/DiophantineConsistency/BFS943/IPRATrace82.lean),
+[record](research/ten-positive-p172-82-endpoint/README.md)) through a new
+zero-free halting entry `FixedSourceHalt.source_halts`
+([record](research/bfs943-fixed-source-entry/README.md)): `FixedSource` asks only
+for `X = 2^R`, the mask, the transport identity and the population bound.
+
+**172's 87/214 (free_inverse) is open.** Before the FixedSource entry, there `c = ks + η` while
 `A − 1 = qs(X + 1)`, so no zero map into a closed q-chart circuit exists, and
-`Trace75BFSModelHalt.graph_halts` accepts only 75 zeros: soundness needs a new
-entry point at the native-outer-data stage (`X = 2^R`, `q³ | Y`, `t = B/h`) or a
-λ-uniform BFS-word chain. 87/214 also needs an internal second-order expansion
+`Trace75BFSModelHalt.graph_halts` accepts only 75 zeros: soundness needed a new
+entry point (now FixedSource). 87/214 also needs an internal second-order expansion
 of `ψ₁₊₂ᵥ(m)` and `q⁶ | 3x ⇒ q⁴ | x`.
 
 **66's fifteen-positive 30 / 78, 26 / 87 and 24 / 88, CLOSED (2026-11-07)** at
