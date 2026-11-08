@@ -5318,6 +5318,16 @@ reduction to 75: `value76 p v = value75 p v'` with `n ↦ n + (V² − bV)B`, an
 positive 76 zero has `B ≥ 0` and `V² ≥ bV`. Completeness re-derives the 75
 construction with the carrier chosen for weight `bV`.
 
+**171's ten-positive 77/348 and 163's 79/290, CLOSED (2026-11-08)** at the same
+ports ([`BFS943/IPRATrace77`](Lean/DiophantineConsistency/BFS943/IPRATrace77.lean),
+[`BFS943/IPRATrace79`](Lean/DiophantineConsistency/BFS943/IPRATrace79.lean);
+records [77](research/ten-positive-trace77-endpoint/README.md),
+[79](research/ten-positive-trace79-endpoint/README.md)). Both reduce soundness
+to a positive 75 zero by moving `n` (77: `XY = (ws)q⁴`, `e = XY·ρ`; 79:
+`q | s`, then the q3 chart at `s/q`), and build completeness from a 76 zero.
+163's 80/258 (chart q1) is open: it needs `q² | s` at a positive zero, which
+needs the `X = 2^R` projection layer at chart q1.
+
 **66's fifteen-positive 30 / 78, 26 / 87 and 24 / 88, CLOSED (2026-11-07)** at
 the compact44 ports (`Compact44/P66*`, `C44Short15*`,
 `Compact44/IPRAPositive66p78`, `66p87`, `66p88`;
