@@ -5311,6 +5311,13 @@ the endpoint [`BFS943/IPRATrace75`](Lean/DiophantineConsistency/BFS943/IPRATrace
 (native, standard and reference equivalences at the BFS943 ports). This is the
 tree's first direct-BFS943 module set.
 
+**163's ten-positive 76/352, CLOSED (2026-11-08)** at the same ports
+([`BFS943/IPRATrace76`](Lean/DiophantineConsistency/BFS943/IPRATrace76.lean),
+[record](research/ten-positive-trace76-endpoint/README.md)). Soundness is a
+reduction to 75: `value76 p v = value75 p v'` with `n ↦ n + (V² − bV)B`, and a
+positive 76 zero has `B ≥ 0` and `V² ≥ bV`. Completeness re-derives the 75
+construction with the carrier chosen for weight `bV`.
+
 **66's fifteen-positive 30 / 78, 26 / 87 and 24 / 88, CLOSED (2026-11-07)** at
 the compact44 ports (`Compact44/P66*`, `C44Short15*`,
 `Compact44/IPRAPositive66p78`, `66p87`, `66p88`;
