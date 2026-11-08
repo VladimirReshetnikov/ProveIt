@@ -5369,6 +5369,15 @@ zero has an even carrier `2·Zh`, and `Zh` is a zero of the 87 norm. The generic
 hands `Zh` to the `Trace87Shift*` chain; the two centres are bounded below `3g`
 and `5g|V|`.
 
+**193's P190 (118/190), CLOSED (2026-11-08)**
+([`BFS943/IPRATrace118`](Lean/DiophantineConsistency/BFS943/IPRATrace118.lean),
+[record](research/ten-positive-p193-118-endpoint/README.md)). The root scale 4
+halves twice by the same parity argument (`Zc = 4·Zh`, `Zh` a zero of the 87
+norm). `OmegaFold = Ω + L·B`, and the weight `L = A·U³·b²` dominates
+`2(4gy + Ω)` by the adjacent Pell norm (`U²|b| > 52EF`), giving `B ≥ 0` and a
+`ShiftZero` for the `Trace87Shift*` chain. **With this, all thirteen
+ten-positive Pareto points have iPRA endpoints at the BFS943 ports.**
+
 **66's fifteen-positive 30 / 78, 26 / 87 and 24 / 88, CLOSED (2026-11-07)** at
 the compact44 ports (`Compact44/P66*`, `C44Short15*`,
 `Compact44/IPRAPositive66p78`, `66p87`, `66p88`;
@@ -5383,7 +5392,7 @@ That includes:
 - the thirteen-positive 170's 154 / 72 and 162 / 71;
 - 170's 74 / 438;
 - 184's 104 / 174;
-- the ten-positive 193's 118/190 (every other ten-positive point is closed above);
+- (the ten-positive Pareto row is closed: see the BFS943 paragraphs above);
 - 101's nine-positive points.
 
 **Tuple audit (4 November 2026).** After 57, every open point is at a tuple
