@@ -5343,8 +5343,20 @@ for `X = 2^R`, the mask, the transport identity and the population bound.
 [record](research/ten-positive-p172-87-endpoint/README.md)), also through
 FixedSource. `BFS943/InverseLucasCubic` holds the form-independent internal
 second-order Lucas expansion (needed only mod `v²`) and `cancel_three`.
-179's 89/210 and 90/206 (`Z₈₉ = Z₈₇ − M·g0·V`) still need their own centered
-`B ≥ 0` estimate (179's (3)); the rest of the 87 chain carries over.
+
+**179's 89/210 and 90/206 and 171/172's 85/232, CLOSED (2026-11-08)**
+([`BFS943/IPRATrace89`](Lean/DiophantineConsistency/BFS943/IPRATrace89.lean),
+[`IPRATrace90`](Lean/DiophantineConsistency/BFS943/IPRATrace90.lean),
+[`IPRATrace85`](Lean/DiophantineConsistency/BFS943/IPRATrace85.lean); records
+[89](research/ten-positive-p179-89-endpoint/README.md),
+[90](research/ten-positive-p179-90-endpoint/README.md),
+[85](research/ten-positive-p171-85-endpoint/README.md)). The centred points
+`Z = Z₈₇ − M·g·V` use the generic `Centred87*` layer: 179's estimate (3)–(4)
+gives `B ≥ 0` for any centre with `g² < 4EF₀`, after which the shifted 87 chain
+`Trace87Shift*` reads the carrier only modulo `D` and `H` and ends in the same
+FixedSource; completeness moves `n` to `n + gV` at a positive 87 zero. 171's
+and 172's 85/232 files are one polynomial on one tuple: the 87 circuit with the
+80-style strip `c = kY + η` and denominator `6q⁶` (`Trace85*`, `q² | s`).
 
 **66's fifteen-positive 30 / 78, 26 / 87 and 24 / 88, CLOSED (2026-11-07)** at
 the compact44 ports (`Compact44/P66*`, `C44Short15*`,
@@ -5360,7 +5372,8 @@ That includes:
 - the thirteen-positive 170's 154 / 72 and 162 / 71;
 - 170's 74 / 438;
 - 184's 104 / 174;
-- the ten-positive Pareto points;
+- the ten-positive Pareto points other than 75, 76, 77, 79, 80, 82, 85, 87,
+  89 and 90 above (open: 194's 97/202 and 111/198, 193's 118/190);
 - 101's nine-positive points.
 
 **Tuple audit (4 November 2026).** After 57, every open point is at a tuple

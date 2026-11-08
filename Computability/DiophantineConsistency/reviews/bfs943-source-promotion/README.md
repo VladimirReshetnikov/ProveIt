@@ -155,4 +155,6 @@ copies). They are listed with their record folder in
 [`post_promotion.tsv`](post_promotion.tsv); `tools/check_manifest.py` accepts
 exactly those extra files and checks that none shadows a manifest row. The
 first are the 15 modules of package 163's 76/352 endpoint
-([`research/ten-positive-trace76-endpoint`](../../research/ten-positive-trace76-endpoint/README.md)).
+([`research/ten-positive-trace76-endpoint`](../../research/ten-positive-trace76-endpoint/README.md));
+later rows add the 77, 79, 80, 82, 85, 87, 89 and 90 endpoints and the shared
+`FixedSource*`, `InverseLucasCubic`, `Trace87Shift*` and `Centred87*` layers.
