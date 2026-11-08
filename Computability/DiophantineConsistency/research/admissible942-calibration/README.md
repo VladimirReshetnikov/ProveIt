@@ -116,4 +116,10 @@ kept.
   `native/standard/reference_equivalence69` for 192's 174/69 at the
   admissible942 ports.
 
+- **192's oriented 170 / 70 (done).** `ThirteenOriented70` (generic: `L = (cT − R)V`
+  in the `y`-shape, `oriented_bound : |V| ≤ (cT − R)V` at a zero, restoration and
+  completion map) and `Adm942Oriented70Carrier` (completion, `sameNoZero70o`,
+  `native/standard/reference_equivalence70o`). Binding:
+  [`tools/check_oriented70.py`](tools/check_oriented70.py).
+
 All axioms are within `[propext, Classical.choice, Quot.sound]`.

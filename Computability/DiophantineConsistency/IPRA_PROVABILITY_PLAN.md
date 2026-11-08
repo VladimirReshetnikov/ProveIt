@@ -5422,6 +5422,15 @@ the packages' coefficient files with it:
   `IPRAOrdinary12.bridge_of_positive IPRACarrier65Adm942.positiveBridge`.
   `Adm942ThirteenCarrier.native/standard/reference_equivalence69` are the
   three iPRA endpoints for `expressionAt69` at the admissible942 ports.
+
+  **192's 170 / 70 (the oriented companion), CLOSED (2026-11-07).**
+  `compact13/positive13_oriented.json` replaces `L = V²` by `L = (cT − R)V`.
+  `Adm942/ThirteenOriented70` generalizes the restoration to any `L ≥ |V|`
+  and proves `|V| ≤ (cT − R)V` at a zero (`cT − R = 0` is impossible by the
+  auxiliary norm; `c < f²` by the strong norm); `Adm942/Adm942Oriented70Carrier`
+  builds the completion with `m = −e₄ + (1 + h·L)·g` and gives
+  `native/standard/reference_equivalence70o`.
+  `research/admissible942-calibration/tools/check_oriented70.py` binds the JSON.
 - **block-mask2963** (β of 139,261 bits; `candidates/one-page-block-mask2963`):
   188's 118 / 66 and 94 / 67.
 
