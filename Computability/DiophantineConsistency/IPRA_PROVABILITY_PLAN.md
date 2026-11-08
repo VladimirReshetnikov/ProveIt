@@ -5378,6 +5378,14 @@ norm). `OmegaFold = Ω + L·B`, and the weight `L = A·U³·b²` dominates
 `ShiftZero` for the `Trace87Shift*` chain. **With this, all thirteen
 ten-positive Pareto points have iPRA endpoints at the BFS943 ports.**
 
+**184's eleven-positive 104/174 (constant dilation), CLOSED (2026-11-08)**
+([`BFS943/IPRATrace104`](Lean/DiophantineConsistency/BFS943/IPRATrace104.lean),
+[record](research/eleven-positive-p184-104-endpoint/README.md)). The dilation
+`Y = 210s` needs its own port of the 87 chain (`Trace104*`, ending in
+FixedSource). The output `(3N+1)(P0+1) − 1` forces `N = 0`, i.e. `K = Hκ`, and
+the core norm is `H²·P0`. The `44100·ℓ₀` cubic correction is the new
+form-independent third-order Lucas expansion `BFS943/InverseLucasThird`.
+
 **66's fifteen-positive 30 / 78, 26 / 87 and 24 / 88, CLOSED (2026-11-07)** at
 the compact44 ports (`Compact44/P66*`, `C44Short15*`,
 `Compact44/IPRAPositive66p78`, `66p87`, `66p88`;
@@ -5391,7 +5399,7 @@ That includes:
   192's 174 / 69 on admissible942; see below);
 - the thirteen-positive 170's 154 / 72 and 162 / 71;
 - 170's 74 / 438;
-- 184's 104 / 174;
+- (184's eleven-positive 104 / 174 is closed: see above);
 - (the ten-positive Pareto row is closed: see the BFS943 paragraphs above);
 - 101's nine-positive points.
 
