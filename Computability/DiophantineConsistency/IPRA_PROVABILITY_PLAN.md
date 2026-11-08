@@ -5506,6 +5506,11 @@ the packages' coefficient files with it:
   59's 91 / 69, 101 / 68 and 125 / 67, 56's 54 / 73 and 46 / 74, and 47's
   44 / 75 (`Mixed121/Short15*`, `Mixed121/IPRAPositive59p69` … `IPRAPositive47p75`;
   the new soundness step excludes `Nk = Nt = −1`).
+  Package 54's fifteen-positive gate lists 80 / 70, 78 / 71 and 64 / 72 are CLOSED
+  at these ports too (2026-11-08; `Mixed121/IPRAPositive54p70`, `54p71`, `54p72`,
+  through `Short15P54Split`). They are 54's circuits instantiated at 55's ports;
+  54's literal equations on its own c54 tuple (base `2^429959`) remain
+  uncalibrated.
   - (44 / 111 is on the source34 tuple; see the correction above.)
   - the witness construction for halting ⟹ solvable (packing, rank and the
     `λ = 2341` controller);
