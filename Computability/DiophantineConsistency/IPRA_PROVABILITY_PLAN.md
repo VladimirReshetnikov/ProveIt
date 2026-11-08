@@ -5426,9 +5426,14 @@ the packages' coefficient files with it:
 - **Directly indexed BFS943 K0** (raw SHA-256 `0a86821a…`), the same 67×8807
   layout with BFS row order: 163, 170, 171, 172, 179, 184, 193 and 194. This
   covers every ten-positive Pareto point, 170's three points, 184's
-  eleven-positive point, and most ℤ rows. A research-only direct-BFS
+  eleven-positive point. A research-only direct-BFS
   calibration exists (`research/direct-bfs-*`, `DirectBFS80FixedIPRA`); its
   trace75 closure is in the tree as `BFS943/` since 2026-11-08.
+  *Correction (8 November 2026):* this audit's earlier "and most ℤ rows" was
+  wrong. The ℤ JSONs of 171, 172, 179 and 194 pin the **source34** K0 (gzip
+  `56b512fa…`) in their own directories; only those packages' ten-positive
+  subdirectories bind BFS943. Every ℤ row from 11ℤ up is on source34, and the
+  10ℤ Sun forms are on 121x8801.
 - **`wang943-mixed-121x8801`** (β of 1,064,921 bits): 55's and 59's
   fourteen-positive 52 / 79. *Correction (6 November 2026):* 132's
   fifteen-integer 44 / 111 is **not** on this tuple. Package 132 records only
