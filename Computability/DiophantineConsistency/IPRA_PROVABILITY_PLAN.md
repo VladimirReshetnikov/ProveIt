@@ -5338,11 +5338,13 @@ zero-free halting entry `FixedSourceHalt.source_halts`
 ([record](research/bfs943-fixed-source-entry/README.md)): `FixedSource` asks only
 for `X = 2^R`, the mask, the transport identity and the population bound.
 
-**172's 87/214 (free_inverse) is open.** Before the FixedSource entry, there `c = ks + η` while
-`A − 1 = qs(X + 1)`, so no zero map into a closed q-chart circuit exists, and
-`Trace75BFSModelHalt.graph_halts` accepts only 75 zeros: soundness needed a new
-entry point (now FixedSource). 87/214 also needs an internal second-order expansion
-of `ψ₁₊₂ᵥ(m)` and `q⁶ | 3x ⇒ q⁴ | x`.
+**172's 87/214 (free_inverse), CLOSED (2026-11-08)**
+([`BFS943/IPRATrace87`](Lean/DiophantineConsistency/BFS943/IPRATrace87.lean),
+[record](research/ten-positive-p172-87-endpoint/README.md)), also through
+FixedSource. `BFS943/InverseLucasCubic` holds the form-independent internal
+second-order Lucas expansion (needed only mod `v²`) and `cancel_three`.
+179's 89/210 and 90/206 (`Z₈₉ = Z₈₇ − M·g0·V`) still need their own centered
+`B ≥ 0` estimate (179's (3)); the rest of the 87 chain carries over.
 
 **66's fifteen-positive 30 / 78, 26 / 87 and 24 / 88, CLOSED (2026-11-07)** at
 the compact44 ports (`Compact44/P66*`, `C44Short15*`,
