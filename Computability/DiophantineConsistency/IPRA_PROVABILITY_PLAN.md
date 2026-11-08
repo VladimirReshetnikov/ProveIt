@@ -5386,6 +5386,22 @@ FixedSource). The output `(3N+1)(P0+1) − 1` forces `N = 0`, i.e. `K = Hκ`, an
 the core norm is `H²·P0`. The `44100·ℓ₀` cubic correction is the new
 form-independent third-order Lucas expansion `BFS943/InverseLucasThird`.
 
+**170's 71/162, 72/154 (thirteen-positive) and 74/438 (twelve-positive),
+CLOSED (2026-11-08)**
+([`BFS943/IPRAQuot170p71`](Lean/DiophantineConsistency/BFS943/IPRAQuot170p71.lean),
+[`p72`](Lean/DiophantineConsistency/BFS943/IPRAQuot170p72.lean),
+[`p74`](Lean/DiophantineConsistency/BFS943/IPRAQuot170p74.lean); records
+[71](research/p170-71-endpoint/README.md), [72](research/p170-72-endpoint/README.md),
+[74](research/p170-74-endpoint/README.md)), through a new Carrier65 calibration
+at the BFS943 ports
+([`BFS943/IPRACarrier65BFS943`](Lean/DiophantineConsistency/BFS943/IPRACarrier65BFS943.lean),
+[record](research/bfs943-carrier65-calibration/README.md)): the five
+`Equations` give a FixedSource, and `halt_outer` reads Carrier65 coordinates off
+the BFS halt seeds. Each 170 zero is restored to a Carrier65 zero (`A = τ²`,
+`k ≡ R ± 1` mod `E` or `q⁴`, the `−1` sign excluded by growth; 74/438 through
+coprimality and adjacent integrality). **With this, every compact-tuple point
+at the direct-BFS943 ports is closed.**
+
 **66's fifteen-positive 30 / 78, 26 / 87 and 24 / 88, CLOSED (2026-11-07)** at
 the compact44 ports (`Compact44/P66*`, `C44Short15*`,
 `Compact44/IPRAPositive66p78`, `66p87`, `66p88`;
@@ -5397,8 +5413,7 @@ That includes:
 - (the fourteen-positive Pareto row is closed: 55's and 59's 52 / 79 on
   121x8801, 188's 94 / 67 and 118 / 66 on block-mask2963, 183's 150 / 65 and
   192's 174 / 69 on admissible942; see below);
-- the thirteen-positive 170's 154 / 72 and 162 / 71;
-- 170's 74 / 438;
+- (170's 154 / 72, 162 / 71 and 74 / 438 are closed: see above);
 - (184's eleven-positive 104 / 174 is closed: see above);
 - (the ten-positive Pareto row is closed: see the BFS943 paragraphs above);
 - 101's nine-positive points.
