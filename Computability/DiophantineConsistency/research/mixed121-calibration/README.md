@@ -313,6 +313,22 @@ has `M = W = 0` and `Na = N0 = Nt = 1` by `P55Norm.residuals`). It gives the sam
 iPRA endpoints. [`tools/generate_p59.py`](tools/generate_p59.py) checks the 79 gates
 against the pinned JSON, the package's exact-degree audit and the port hashes.
 
+**Fifteen-positive forms on this tuple (2026-11-07).** Package 59's 91 / 69
+(`p69_d91`), 101 / 68 (`p68_d101`) and 125 / 67 (`p67_d125`), package 56's
+54 / 73 (Q54) and 46 / 74 (Q46), and package 47's 44 / 75 (`gap_minima75`) all bind
+package 55's four ports. They are unit products or grouped sums of squares of the
+residuals `N0, N1, Na, Nk, Nt, Ns` with an explicit multiplier `Nk = k − hE − R`.
+`Short15Graph` … `Short15Facts` take a positive zero straight to `LeafFacts` and
+`Mixed121Halt.halts_of_facts`; the new step is `Short15Index.minus_false`, which
+rules out `Nk = Nt = −1` (`Nt = −1` gives `C ≥ 0` because `0 < K0`, then the Pell
+doubling bound contradicts `c = kY + η`). `Short15ConvData` / `Short15ConvZero`
+read the canonical halt data with `h = 4Ys'` and `γ = γold`. The endpoints are
+`IPRAPositive59p69`, `IPRAPositive59p68`, `IPRAPositive59p67`, `IPRAPositive56q54`,
+`IPRAPositive56q46` and `IPRAPositive47p75`, each with native, standard and
+equality-only equivalences. [`tools/generate_short15.py`](tools/generate_short15.py)
+`--check` binds each literal graph to its pinned JSON and checks that each package's
+port hashes equal package 55's.
+
 ## Remaining phases
 
 1. **Per-form leaf facts for 44 / 111.** Package 132's fifteen-integer form

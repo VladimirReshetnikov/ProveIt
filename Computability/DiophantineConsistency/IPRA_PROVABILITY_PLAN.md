@@ -5394,6 +5394,10 @@ the packages' coefficient files with it:
   Package 59's 52 / 79 (a different polynomial at the same ports, CLOSED
   2026-11-07) transfers this bridge: `Mixed121/P59Graph` shows its residuals
   evaluate as 55's, and `Mixed121/IPRAPositive59` gives the three endpoints.
+  The fifteen-positive points on the same tuple are CLOSED too (2026-11-07):
+  59's 91 / 69, 101 / 68 and 125 / 67, 56's 54 / 73 and 46 / 74, and 47's
+  44 / 75 (`Mixed121/Short15*`, `Mixed121/IPRAPositive59p69` … `IPRAPositive47p75`;
+  the new soundness step excludes `Nk = Nt = −1`).
   - (44 / 111 is on the source34 tuple; see the correction above.)
   - the witness construction for halting ⟹ solvable (packing, rank and the
     `λ = 2341` controller);
