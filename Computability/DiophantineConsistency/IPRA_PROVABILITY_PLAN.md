@@ -5325,8 +5325,18 @@ records [77](research/ten-positive-trace77-endpoint/README.md),
 [79](research/ten-positive-trace79-endpoint/README.md)). Both reduce soundness
 to a positive 75 zero by moving `n` (77: `XY = (ws)q⁴`, `e = XY·ρ`; 79:
 `q | s`, then the q3 chart at `s/q`), and build completeness from a 76 zero.
-163's 80/258 (chart q1) is open: it needs `q² | s` at a positive zero, which
-needs the `X = 2^R` projection layer at chart q1.
+**163's 80/258 (chart q1), CLOSED (2026-11-08)**
+([`BFS943/IPRATrace80`](Lean/DiophantineConsistency/BFS943/IPRATrace80.lean),
+[record](research/ten-positive-trace80-endpoint/README.md)): the projection
+layer ported to q1 gives `X = 2^R`, so `q` is a power of two and `q² | s`; the
+zero maps to a 75 zero at `(qw, s/q², n′)`.
+
+**172's 87/214 and 82/240 (free charts) are open.** There `c = ks + η` while
+`A − 1 = qs(X + 1)`, so no zero map into a closed q-chart circuit exists, and
+`Trace75BFSModelHalt.graph_halts` accepts only 75 zeros: soundness needs a new
+entry point at the native-outer-data stage (`X = 2^R`, `q³ | Y`, `t = B/h`) or a
+λ-uniform BFS-word chain. 87/214 also needs an internal second-order expansion
+of `ψ₁₊₂ᵥ(m)` and `q⁶ | 3x ⇒ q⁴ | x`.
 
 **66's fifteen-positive 30 / 78, 26 / 87 and 24 / 88, CLOSED (2026-11-07)** at
 the compact44 ports (`Compact44/P66*`, `C44Short15*`,
