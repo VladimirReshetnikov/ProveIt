@@ -5307,11 +5307,8 @@ That includes:
 
 - 163's 75 / 402, which has a guarded-provider endpoint in research;
 - the rest of the fourteen-positive Pareto row (degree / operations): 55's
-  and 59's 52 / 79. Endpoints exist for the
-  formulas of 188's 94 / 67 and 118 / 66, but only at the
-  maintained CURRENT2011 tuple (`β = 2^94517 − 1`). The package binds them to
-  block-mask2963 (183's 150 / 65 and 192's 174 / 69 on admissible942 are
-  closed; see below);
+  and 59's 52 / 79 (188's 94 / 67 and 118 / 66 on block-mask2963, 183's
+  150 / 65 and 192's 174 / 69 on admissible942 are closed; see below);
 - the thirteen-positive 170's 154 / 72 and 162 / 71;
 - 170's 74 / 438;
 - 184's 104 / 174;
@@ -5422,3 +5419,19 @@ the packages' coefficient files with it:
   `IPRAOrdinary12.bridge_of_positive IPRACarrier65Adm942.positiveBridge`.
   `Adm942ThirteenCarrier.native/standard/reference_equivalence69` are the
   three iPRA endpoints for `expressionAt69` at the admissible942 ports.
+- **block-mask2963** (β of 139,261 bits; `candidates/one-page-block-mask2963`):
+  188's 118 / 66 and 94 / 67.
+
+  **Both CLOSED (2026-11-07).** `Lean/DiophantineConsistency/Bm2963/` (31
+  modules) ports the admissible942 calibration to `L = 2963` with one clause
+  band at 1956 (phase zero from the marker parity first, then decoding):
+  - soundness `Bm2963Soundness.zero_halts`, construction
+    `Bm2963Construction.halt_positive_zero_closed` (Local Normalization proved by
+    column sums), Carrier65 bridge `IPRACarrier65Bm2963.positiveBridge`;
+  - `Bm2963Carrier118.native/standard/reference_equivalence118` through
+    `ModelCarrierScaled.zero_iff118`;
+  - `Bm2963Carrier94.native/standard/reference_equivalence94`, with its own
+    ordinary soundness chain (`ordinary_halts`) and completeness `i ↦ Δi`.
+
+  `research/block-mask2963-calibration/tools/` binds the payloads
+  (`check_recipe.py`) and both JSON forms (`check_forms.py`).

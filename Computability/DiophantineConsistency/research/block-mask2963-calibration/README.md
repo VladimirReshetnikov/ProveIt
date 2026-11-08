@@ -1,4 +1,4 @@
-# The block-mask2963 tuple: a Lean calibration (started)
+# The block-mask2963 tuple: a Lean calibration (188 closed)
 
 Package 188 (`con-zfc-diophantine-forms/188-pell-orientation-exact-projection/`)
 binds its two 14-positive native companions to the block-mask2963 tuple
@@ -9,9 +9,9 @@ binds its two 14-positive native companions to the block-mask2963 tuple
 - the scaled companion 118 / 66 is `ModelCarrierCurrent.expressionAt118`;
 - the ordinary companion 94 / 67 is `Carrier94Syntax.expressionAt94`.
 
-Both already have iPRA endpoints, but at the CURRENT2011 ports. This directory
-records the finite binding to block-mask2963 and the Lean port of the
-calibration. The port uses the admissible942 port (`Lean/DiophantineConsistency/Adm942/`,
+Both had iPRA endpoints only at the CURRENT2011 ports. This directory records
+the finite binding to block-mask2963 and the Lean port of the calibration, which
+now gives both forms unconditional iPRA endpoints at the block-mask2963 ports. The port uses the admissible942 port (`Lean/DiophantineConsistency/Adm942/`,
 [`../admissible942-calibration/README.md`](../admissible942-calibration/README.md))
 as its template.
 
@@ -68,3 +68,53 @@ All four checks are outside Lean, and each prints `ok`.
   plus negative controls.
 - [`tools/col_check.py`](tools/col_check.py) checks the column bounds that the
   direct Local Normalization proof needs.
+
+## Lean status
+
+The 31 modules live in
+[`Lean/DiophantineConsistency/Bm2963/`](../../Lean/DiophantineConsistency/Bm2963/).
+They port the admissible942 modules, with the 2011/Adm942 theorem names kept.
+
+- **Window layer (done).** `Bm2963MaskData`, `Bm2963Kernel`, `Bm2963Ports`,
+  `Bm2963MaskConstants`, `Bm2963CarrierRadix`, `Bm2963HalfBinomial`,
+  `Bm2963RankForcing`, `Bm2963WindowInterface`, `Bm2963WindowZero`.
+  - The kernel has one band lemma on `[971, 1956]`; the coefficient mass is
+    3829914518400945, so the carry bound 57 holds.
+  - `window_of_equations` takes only the transport equation (`Transport`), so
+    the ordinary 94/67 chain reuses it unchanged.
+- **Soundness (done).** `Bm2963CellLocal`, `Bm2963CellLabels`,
+  `Bm2963CellTransfer`, `Bm2963CellDecoding`, `Bm2963WholeField`,
+  `Bm2963Occupation`, `Bm2963CellWindow`, `Bm2963Soundness`.
+  `Bm2963Soundness.zero_halts` / `zero_halts_below`.
+  - Fields 971..1005 see the reflected band: only label weights, even, at most
+    `2^44 − 1024` (`label_mass` by `decide +kernel`).
+  - Phase zero is proved first, from the marker parity at 1005 in cell 0;
+    decoding then uses the phase-0 snapshot with carry-in `tw 1956 + k ≤ 58`.
+- **Construction (done).** `Bm2963ControllerData`, `Bm2963ControllerChoice`,
+  `Bm2963Controller`, `Bm2963KernelResidue`, `Bm2963ConstructionUnit`,
+  `Bm2963PackingCells`, `Bm2963ConstructionAssembly`,
+  `Bm2963CurrentConstruction`.
+  - The unit exponent is `λ − 1 = 1362520 = ord_C0 Γ` (no lcm exponent).
+  - `K ≡ 25047958135 (mod C0)`: a chunked Horner fold under `decide +kernel`,
+    with the modulus written as a literal (an `abbrev` modulus made the kernel
+    evaluate `K` in full). The module builds in about 2 minutes.
+- **Local Normalization (done).** `Bm2963LocalColumns`,
+  `Bm2963LocalNormalization`, `Bm2963Construction`: the direct column-sum proof
+  with one band, the digit-4 padding case and column 2962 = 0.
+  `Bm2963Construction.halt_positive_zero_closed` has no remaining hypothesis.
+- **Carrier65 at these ports (done).** `IPRACarrier65Bm2963.positiveBridge` and
+  its native, standard and equality-only endpoints.
+- **188's 118 / 66 (done).** `Bm2963Carrier118`: `sameZero118` through the
+  port-generic `ModelCarrierScaled.zero_iff118`, then
+  `native/standard/reference_equivalence118` for `expressionAt118` at the
+  block-mask2963 ports.
+- **188's 94 / 67 (done).** `Bm2963Carrier94`: the ordinary soundness chain
+  (`ordinary_equations`, `power_of_ordinary`, `population_of_ordinary`,
+  `ordinary_halts`), completeness by `Carrier94Value.zero94_of_maintained`, and
+  `native/standard/reference_equivalence94` for `expressionAt94` at the
+  block-mask2963 ports.
+
+All axioms are within `[propext, Classical.choice, Quot.sound]`. The JSON forms
+are bound to this Lean syntax by `tools/check_forms.py`. For 94/67 the gate trees
+differ only in how one constant is associated (`(I² − Aaux) + 1` against
+`1 + I² − Aaux`); the signed-sum normal forms are equal.
