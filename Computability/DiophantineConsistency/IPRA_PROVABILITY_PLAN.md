@@ -5306,9 +5306,9 @@ Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
 
 - 163's 75 / 402, which has a guarded-provider endpoint in research;
-- the rest of the fourteen-positive Pareto row (degree / operations): 55's
-  and 59's 52 / 79 (188's 94 / 67 and 118 / 66 on block-mask2963, 183's
-  150 / 65 and 192's 174 / 69 on admissible942 are closed; see below);
+- (the fourteen-positive Pareto row is closed: 55's and 59's 52 / 79 on
+  121x8801, 188's 94 / 67 and 118 / 66 on block-mask2963, 183's 150 / 65 and
+  192's 174 / 69 on admissible942; see below);
 - the thirteen-positive 170's 154 / 72 and 162 / 71;
 - 170's 74 / 438;
 - 184's 104 / 174;
@@ -5391,6 +5391,9 @@ the packages' coefficient files with it:
   controller), `P55Converse.converse` builds the witnesses, and
   `Mixed121/IPRAPositive55` gives native, standard and equality-only iPRA
   equivalences `nativeNoZero (52/79) ↔ ¬mappedNativeRefutation`.
+  Package 59's 52 / 79 (a different polynomial at the same ports, CLOSED
+  2026-11-07) transfers this bridge: `Mixed121/P59Graph` shows its residuals
+  evaluate as 55's, and `Mixed121/IPRAPositive59` gives the three endpoints.
   - (44 / 111 is on the source34 tuple; see the correction above.)
   - the witness construction for halting ⟹ solvable (packing, rank and the
     `λ = 2341` controller);

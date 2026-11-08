@@ -302,6 +302,17 @@ then proves, in native, standard and equality-only iPRA, that the 52 / 79
 equation has no positive zero iff `¬Halts(M215)`, i.e. iff the mapped ZFC
 refutation is absent. Axioms: `propext`, `Classical.choice`, `Quot.sound`.
 
+Package 59's 14-positive 52 / 79 (`59-degree-separated/short/circuits/p79_d52_14positive.json`)
+is a different polynomial at the same four ports: its output is
+`M² + (Na − 1)² + (N0·Nt − 1)² + W²` instead of `M² + W² + Na² + (N0·Nt − 1)² − 1`,
+and its auxiliary norm is written `ŷ² − Aaux·u·(V + ŷ)`. `P59Graph` proves, over any
+commutative ring, that every residual evaluates as package 55's, and
+[`IPRAPositive59`](../../Lean/DiophantineConsistency/Mixed121/IPRAPositive59.lean)
+transfers package 55's bridge (a 59-zero has four vanishing squares; a positive 55-zero
+has `M = W = 0` and `Na = N0 = Nt = 1` by `P55Norm.residuals`). It gives the same three
+iPRA endpoints. [`tools/generate_p59.py`](tools/generate_p59.py) checks the 79 gates
+against the pinned JSON, the package's exact-degree audit and the port hashes.
+
 ## Remaining phases
 
 1. **Per-form leaf facts for 44 / 111.** Package 132's fifteen-integer form
@@ -315,7 +326,7 @@ refutation is absent. Axioms: `propext`, `Classical.choice`, `Quot.sound`.
    arbitrary-odd-factor construction, so its port changes the constants
    (`p = 581197 → λ = 2341`, `C0 = 342946332593 → 2492980061`), not the
    argument.
-3. **Endpoints.** 52 / 79 is done (`IPRAPositive55`). 44 / 111 turned out to
+3. **Endpoints.** 52 / 79 is done for package 55 (`IPRAPositive55`) and package 59 (`IPRAPositive59`). 44 / 111 turned out to
    be on a different tuple, source34 ("mixed-parity-unrounded-1064921": same
    β, `b`, `L` and `λ = 2341` controller, but kernel `D_C = ρ^40 + ρ^41 + … `,
    `D_R = ρ`, parity-separated high mask), so it needs its own calibration.
