@@ -5302,10 +5302,23 @@ Package 57's twelve-positive 258 / 89 followed
 - **Converse.** It takes `y = (y_halt + 1)/(Δic²)²`, which is integral by
   `ArithmeticOddOrdinateResidue.pair` at rank `≡ 3 (mod 4)`.
 
+**163's ten-positive 75 / 402, CLOSED (2026-11-08).** The research trace75
+assembly is promoted into the tree as 346 modules under
+[`Lean/DiophantineConsistency/BFS943/`](Lean/DiophantineConsistency/BFS943/)
+([record](reviews/bfs943-source-promotion/README.md)): 341 copies with only
+their imports rewritten, four reconstructions of never-committed sources, and
+the endpoint [`BFS943/IPRATrace75`](Lean/DiophantineConsistency/BFS943/IPRATrace75.lean)
+(native, standard and reference equivalences at the BFS943 ports). This is the
+tree's first direct-BFS943 module set.
+
+**66's fifteen-positive 30 / 78, 26 / 87 and 24 / 88, CLOSED (2026-11-07)** at
+the compact44 ports (`Compact44/P66*`, `C44Short15*`,
+`Compact44/IPRAPositive66p78`, `66p87`, `66p88`;
+[record](research/fifteen-p66-endpoint/README.md)).
+
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
 
-- 163's 75 / 402, which has a guarded-provider endpoint in research;
 - (the fourteen-positive Pareto row is closed: 55's and 59's 52 / 79 on
   121x8801, 188's 94 / 67 and 118 / 66 on block-mask2963, 183's 150 / 65 and
   192's 174 / 69 on admissible942; see below);
@@ -5324,8 +5337,8 @@ the packages' coefficient files with it:
   layout with BFS row order: 163, 170, 171, 172, 179, 184, 193 and 194. This
   covers every ten-positive Pareto point, 170's three points, 184's
   eleven-positive point, and most ℤ rows. A research-only direct-BFS
-  calibration exists (`research/direct-bfs-*`, `DirectBFS80FixedIPRA`); it is
-  not in the tree.
+  calibration exists (`research/direct-bfs-*`, `DirectBFS80FixedIPRA`); its
+  trace75 closure is in the tree as `BFS943/` since 2026-11-08.
 - **`wang943-mixed-121x8801`** (β of 1,064,921 bits): 55's and 59's
   fourteen-positive 52 / 79. *Correction (6 November 2026):* 132's
   fifteen-integer 44 / 111 is **not** on this tuple. Package 132 records only
