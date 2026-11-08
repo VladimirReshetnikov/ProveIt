@@ -74,8 +74,24 @@ def main():
             bad.append(f"{mod}: relation {rel} fails")
     on_disk = {p.stem for p in B.glob("*.lean")}
     listed = {r[0] for r in rows}
-    if on_disk != listed:
-        bad.append(f"folder/manifest mismatch: extra {sorted(on_disk - listed)}, missing {sorted(listed - on_disk)}")
+    # Modules authored in BFS943/ after the promotion are not promotion rows;
+    # they must be declared in post_promotion.tsv (module, record folder).
+    post = {}
+    post_file = D / "post_promotion.tsv"
+    if post_file.exists():
+        for line in post_file.read_text(encoding="utf-8").splitlines():
+            if line and not line.startswith("#"):
+                m, rec = line.split("	")
+                post[m] = rec
+    clash = sorted(set(post) & listed)
+    if clash:
+        bad.append(f"post-promotion modules shadow manifest rows: {clash}")
+    extra = on_disk - listed - set(post)
+    missing = (listed | set(post)) - on_disk
+    if extra or missing:
+        bad.append(f"folder/manifest mismatch: extra {sorted(extra)}, missing {sorted(missing)}")
+    if post:
+        print("post-promotion modules", len(post))
     print("rows", len(rows), counts)
     if drift:
         print("promoted hash changed:", ", ".join(drift))

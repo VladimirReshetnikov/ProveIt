@@ -147,3 +147,12 @@ Finite external checks, not Lean theorems about files:
   payload bytes is the finite external checks above, not a Lean theorem. The
   four reconstructed modules are new proofs of the lost modules' call-site
   statements, not recoveries of their bytes.
+
+## Modules authored after the promotion
+
+`BFS943/` also holds modules written later, directly in the tree (not research
+copies). They are listed with their record folder in
+[`post_promotion.tsv`](post_promotion.tsv); `tools/check_manifest.py` accepts
+exactly those extra files and checks that none shadows a manifest row. The
+first are the 15 modules of package 163's 76/352 endpoint
+([`research/ten-positive-trace76-endpoint`](../../research/ten-positive-trace76-endpoint/README.md)).
