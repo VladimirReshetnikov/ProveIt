@@ -5358,6 +5358,17 @@ FixedSource; completeness moves `n` to `n + gV` at a positive 87 zero. 171's
 and 172's 85/232 files are one polynomial on one tuple: the 87 circuit with the
 80-style strip `c = kY + η` and denominator `6q⁶` (`Trace85*`, `q² | s`).
 
+**194's 97/202 (quotient_t) and 111/198 (product2), CLOSED (2026-11-08)**
+([`BFS943/IPRATrace97`](Lean/DiophantineConsistency/BFS943/IPRATrace97.lean),
+[`IPRATrace111`](Lean/DiophantineConsistency/BFS943/IPRATrace111.lean); records
+[97](research/ten-positive-p194-97-endpoint/README.md),
+[111](research/ten-positive-p194-111-endpoint/README.md)), in their radix67
+copies. The root scale `r = 2` needs no new root extraction: `Q − 1` is odd, so a
+zero has an even carrier `2·Zh`, and `Zh` is a zero of the 87 norm. The generic
+`Scaled87*` layer gives `B ≥ 0` for any shift `ws ≤ 5g|V|` (from `64g ≤ F`) and
+hands `Zh` to the `Trace87Shift*` chain; the two centres are bounded below `3g`
+and `5g|V|`.
+
 **66's fifteen-positive 30 / 78, 26 / 87 and 24 / 88, CLOSED (2026-11-07)** at
 the compact44 ports (`Compact44/P66*`, `C44Short15*`,
 `Compact44/IPRAPositive66p78`, `66p87`, `66p88`;
@@ -5372,8 +5383,7 @@ That includes:
 - the thirteen-positive 170's 154 / 72 and 162 / 71;
 - 170's 74 / 438;
 - 184's 104 / 174;
-- the ten-positive Pareto points other than 75, 76, 77, 79, 80, 82, 85, 87,
-  89 and 90 above (open: 194's 97/202 and 111/198, 193's 118/190);
+- the ten-positive 193's 118/190 (every other ten-positive point is closed above);
 - 101's nine-positive points.
 
 **Tuple audit (4 November 2026).** After 57, every open point is at a tuple
