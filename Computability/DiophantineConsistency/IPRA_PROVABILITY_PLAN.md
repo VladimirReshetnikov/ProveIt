@@ -5416,8 +5416,15 @@ That includes:
 - (170's 154 / 72, 162 / 71 and 74 / 438 are closed: see above);
 - (184's eleven-positive 104 / 174 is closed: see above);
 - (the ten-positive Pareto row is closed: see the BFS943 paragraphs above);
-- 101's nine-positive 1,057 (complete-radical majorant) and 82's 726
-  (Laurent radical) on 121x8801. **105's nine-positive 456 is CLOSED**
+- 82's nine-positive 726 (Laurent radical) on 121x8801. Its ports are the
+  121x8801 tuple, but it sits on package 71's source65 prefix
+  (L = bB¹⁹⁹¹, height 1873) and Pell registers, which `Nine121` does not
+  cover. **101's nine-positive 1,057 is CLOSED** (8 November 2026,
+  6a88ab32e1): `Nine121/IPRANine101p1057`, record
+  `research/nine-positive-p101-1057-endpoint/`. The package's 36,309-term
+  certificate is the 2,599-term defect Π² − σ²DFI, translated. Lean checks
+  the defect identity by one kernel Kronecker evaluation (`Kron4`) and gets
+  positivity by domination for A ≥ 2²⁰. **105's nine-positive 456 is CLOSED**
   (8 November 2026, 7e21d56246): `Nine121/IPRANine105p456`, record
   `research/nine-positive-p105-456-endpoint/`. 105's H1868 tables are 101's
   layout untranslated (the source polynomial is X² times 101's), so
