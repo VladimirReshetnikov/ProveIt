@@ -293,10 +293,18 @@ end Nine121.N101Source
     m0, m1, m2 = (len(pos[k]) for k in range(3))
     def tr(t):
         return '(' + ', '.join(str(v) for v in t) + ')'
-    S2 = vec([('{' + ', '.join(tr(t) for t in s) + '}') if s else '∅' for s in d['S2']])
-    S1 = vec([('{' + ', '.join(tr(t) for t in s) + '}') if s else '∅' for s in d['S1']])
-    S0 = vec([fset(s) for s in d['S0']])
-    lay = f'''import DiophantineConsistency.Nine121.SparseExtraction
+    def lst(items):
+        return '[' + ', '.join(items) + ']'
+    S2 = vec([lst([tr(t) for t in s]) for s in d['S2']])
+    S1 = vec([lst([tr(t) for t in s]) for s in d['S1']])
+    S0 = vec([lst([str(p) for p in s]) for s in d['S0']])
+    mask2 = sum(1 << p for p in set(pos[2]))
+    mask1 = sum(1 << p for p in set(pos[1]))
+    chk2 = '\n\n'.join(
+        f'theorem chk2_ok_{k} : chkI (targets {k}) mask2 wL ((S2 {k}).map pairOf) 0 wL = true := by\n'
+        f'  decide +kernel' for k in range(22))
+    exacts2 = ', '.join(f'chk2_ok_{k}' for k in range(22))
+    lay = f'''import DiophantineConsistency.Nine121.SparseCheck
 import DiophantineConsistency.Nine121.N101Source
 import Mathlib.Data.Fin.VecNotation
 import Mathlib.Tactic.FinCases
@@ -313,9 +321,13 @@ targets are translated down by two, and the three kernels are the literal
 `S2 k`, `S1 k`, `S0 k` list every quadratic, linear and constant interaction
 landing on the `k`-th target, including those of positions shared between rows;
 `coeff_target` is the extraction identity `[T^{{q_k}}](K₂U² + K₁U + K₀) = 2ρ_k`
-for the gapN86 rows in any commutative ring. -/
+for the gapN86 rows in any commutative ring.
+
+Completeness of the index lists is certified by `SparseCheck`: a pair loop over the
+weights with one bit test of the position masks `mask2`, `mask1` per pair (`chk2_ok_k`,
+`chk1_ok`), turned into the exact characterisations `hS2`, `hS1` by `quad_iff`/`lin_iff`. -/
 {HEADER}namespace Nine121.N101Layout
-open Polynomial SparseExtraction
+open Polynomial SparseExtraction SparseCheck
 
 def weights : Fin 31 → ℕ := {vec(list(map(str, w)))}
 
@@ -353,36 +365,84 @@ theorem c2_last (ports : Fin 4 → R) : c2 ports ⟨{m2 - 1}, by decide⟩ = 1 :
   simp [c2]
 
 /-- The translated source polynomial `K₂U² + K₁U + K₀`. -/
-def sourcePoly (ports : Fin 4 → R) (x : Fin 31 → R) : R[X] :=
+noncomputable def sourcePoly (ports : Fin 4 → R) (x : Fin 31 → R) : R[X] :=
   wordPoly weights x ^ 2 * kernelPoly pos2 (c2 ports) + wordPoly weights x * kernelPoly pos1 (c1 ports) +
     kernelPoly pos0 (c0 ports)
 
 end Coefficients
 
-def S2 : Fin 22 → Finset (Fin 31 × Fin 31 × Fin {m2}) :=
+def wL : List ℕ := {lst(list(map(str, w)))}
+
+/-- Bit `e` is set iff `e` is a quadratic-kernel position. -/
+def mask2 : ℕ := {mask2}
+
+/-- Bit `e` is set iff `e` is a linear-kernel position. -/
+def mask1 : ℕ := {mask1}
+
+theorem weights_getD : ∀ i : Fin 31, weights i = wL.getD i 0 := by decide +kernel
+theorem mask2_bits : ∀ p, Nat.testBit mask2 (pos2 p) = true := by decide +kernel
+theorem mask1_bits : ∀ p, Nat.testBit mask1 (pos1 p) = true := by decide +kernel
+
+def S2 : Fin 22 → List (Fin 31 × Fin 31 × Fin {m2}) :=
   {S2}
 
-def S1 : Fin 22 → Finset (Fin 31 × Fin {m1}) :=
+def S1 : Fin 22 → List (Fin 31 × Fin {m1}) :=
   {S1}
 
-def S0 : Fin 22 → Finset (Fin {m0}) :=
+def S0 : Fin 22 → List (Fin {m0}) :=
   {S0}
 
-theorem hS2 : ∀ k t, weights t.1 + weights t.2.1 + pos2 t.2.2 = targets k ↔ t ∈ S2 k := by
+/-- The first two coordinates of a quadratic index, as naturals. -/
+def pairOf (t : Fin 31 × Fin 31 × Fin {m2}) : ℕ × ℕ := ((t.1 : ℕ), (t.2.1 : ℕ))
+
+-- `List.all` keeps the decision procedure on the listed indices; a binder `∀ t ∈ S2 k` would
+-- be decided through the `Fintype` instance over every triple.
+theorem S2_all : ∀ k, ((S2 k).all fun t => weights t.1 + weights t.2.1 + pos2 t.2.2 == targets k) = true := by
+  decide +kernel
+theorem S1_all : ∀ k, ((S1 k).all fun t => weights t.1 + pos1 t.2 == targets k) = true := by
   decide +kernel
 
-theorem hS1 : ∀ k t, weights t.1 + pos1 t.2 = targets k ↔ t ∈ S1 k := by decide +kernel
+theorem S2_mem (k : Fin 22) : ∀ t ∈ S2 k, weights t.1 + weights t.2.1 + pos2 t.2.2 = targets k := by
+  intro t ht
+  simpa using List.all_eq_true.1 (S2_all k) t ht
+
+theorem S1_mem (k : Fin 22) : ∀ t ∈ S1 k, weights t.1 + pos1 t.2 = targets k := by
+  intro t ht
+  simpa using List.all_eq_true.1 (S1_all k) t ht
+theorem S2_nodup : ∀ k, (S2 k).Nodup := by decide +kernel
+theorem S1_nodup : ∀ k, (S1 k).Nodup := by decide +kernel
+theorem S0_nodup : ∀ k, (S0 k).Nodup := by decide +kernel
+
+{chk2}
+
+theorem chk2_ok (k : Fin 22) : chkI (targets k) mask2 wL ((S2 k).map pairOf) 0 wL = true := by
+  fin_cases k
+  exacts [{exacts2}]
+
+theorem chk1_ok : ∀ k : Fin 22, chk1 (targets k) mask1 ((S1 k).map fun t => (t.1 : ℕ)) 0 wL = true := by
+  decide +kernel
+
+theorem hS2 (k : Fin 22) : ∀ t, weights t.1 + weights t.2.1 + pos2 t.2.2 = targets k ↔ t ∈ S2 k :=
+  quad_iff weights pos2 pos2_injective wL weights_getD rfl mask2 mask2_bits (targets k) (S2 k)
+    (S2_mem k) (chk2_ok k)
+
+theorem hS1 (k : Fin 22) : ∀ t, weights t.1 + pos1 t.2 = targets k ↔ t ∈ S1 k :=
+  lin_iff weights pos1 pos1_injective wL weights_getD rfl mask1 mask1_bits (targets k) (S1 k)
+    (S1_mem k) (chk1_ok k)
 
 theorem hS0 : ∀ k p, pos0 p = targets k ↔ p ∈ S0 k := by decide +kernel
 
 theorem coeff_target {{R : Type*}} [CommRing R] (ports : Fin 4 → R) (x : Fin 31 → R) (k : Fin 22) :
     (sourcePoly ports x).coeff (targets k) = 2 * N101Source.rows ports x k := by
   rw [sourcePoly, coeff_add, coeff_add, quad_expand, lin_expand, kernelPoly,
-    coeff_sum_monomial _ _ _ _ (hS2 k), coeff_sum_monomial _ _ _ _ (hS1 k),
-    coeff_sum_monomial _ _ _ _ (hS0 k)]
+    coeff_sum_monomial_list _ _ _ _ (S2_nodup k) (hS2 k),
+    coeff_sum_monomial_list _ _ _ _ (S1_nodup k) (hS1 k),
+    coeff_sum_monomial_list _ _ _ _ (S0_nodup k) (hS0 k)]
   fin_cases k <;> simp [S2, S1, S0, c2, c1, c0, N101Source.rows] <;> ring
 
 end Nine121.N101Layout
+
+#print axioms Nine121.N101Layout.coeff_target
 '''
     return {'N101Source.lean': src, 'N101Layout.lean': lay}
 
