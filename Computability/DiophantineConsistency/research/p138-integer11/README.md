@@ -20,8 +20,8 @@ model of `𝗜𝚺₁`, `e` has a zero in `DiffRing V` iff machine 215 halts int
   `ycoord` convention.
 * **Completeness:** from `Source34Seeds.halt_first_gamma` (canonical data), using
   `ModelPellExistence` for the guard and `Intersective19.root` for the residue. Interpolation
-  steps the auxiliary index linearly by `lcm(4n₀f, 4I)`. It needs two new lemmas: a
-  `mod 4ρ²` quotient congruence, and `v_p(n₀) ≤ v_p(I)`.
+  steps the auxiliary index linearly by `4·I·f·w`, where `n₀ = g·w` with `g ∣ I` and `w`
+  coprime to `I` (see `zrows-toolkit`, stage 3).
 
 ## Built (9 November 2026)
 
@@ -58,6 +58,7 @@ Completeness, first layer:
 | `P138Cone` | the cone calibration `q ≤ 2·coneA·F ≤ 3q` and `q ≤ 2·coneB·C ≤ 3q`, for every packed halt word |
 | `P138Canonical` | the record `Canonical`: every canonical quantity from a halt, with the parities `J ≡ 1 (mod 6)`, `W ≡ 4 (mod 12)`, `sY` odd, `R ≡ c ≡ 3 (mod 4)`, and `H ∣ K`. Also `Matches` and the register bridge, `2·Derr ≤ q²`, `q²k² < 4·Budget` and `Budget > 64` |
 | `P138Guard` | the guard Pell pair `g² = 1 + Dn·τ²·s²` with `Dn = Budget − 4`, and `P = (τg)²`, `BP = (dτg)²` |
+| `P138Interp` | `interp`: from the canonical data and the guard, `r` with `s ∣ r` and `f`, such that for every target `a₀` there are `T ≡ a₀ (mod s·r)` and `y` with `Df = f²` and `QV² − (Q−1)y² = 1`; it uses `ZRowsLinearInterpolation.supported_interpolation` with `N = 4·s·A·p₀·c²` |
 
 [`tools/gen_literal.py`](tools/gen_literal.py) generates `P138Syntax.lean`. With `--check`, it
 confirms:
@@ -75,7 +76,7 @@ PROOF.md states, which are also the `cone_A`/`cone_B` payloads that `source34-ca
 
 ## Remaining
 
-* **Completeness:** interpolation (the square period, the odd quotient mod `4ρ²`, the even
-  Chebyshev congruence, `v_p(n₀) ≤ v_p(I)`, linear stepping), then assembly at the unknowns that
-  `P138Canonical`'s header lists.
+* **Completeness:** the assembly. It takes the residue root `a₀` of `π(·+κ)` modulo `s·r` from
+  `Intersective19.root`, sets `n = (Ac + S·p₀·f·y)/S`, and concludes with `value_eq`, at the
+  unknowns that `P138Canonical`'s header lists.
 * The endpoint `IntegerModelBridge`, then the short 840/108 form.

@@ -33,10 +33,22 @@ zeros of `e` in the ring of differences `DiffRing V` (`IntegerDomain.integer_zer
 | `Intersective19` | `root`: for every `m > 0` there is a `t` in `DiffRing V` with `m ∣ (t² + 3)(t³ − 19)`. The proof uses a simple-root Hensel step (`lift_step`, `hensel`) at internal exponents, the 3-adic cube root of 19 (`three_adic`), the prime-power cases `p = 2`, `p = 3`, `p ∣ 19`, `p ≡ 1` and `p ≡ 2 (mod 3)`, the splitting `m = pᵏ·r` with `p ∤ r` (`valuation`), and CRT (`crt_step`) inside an order induction on `m` |
 | `GcdCRT` | congruences modulo `M` and `N` have a common solution iff `gcd(M, N) ∣ a − b` (`crt_gcd`, `crt_gcd_iff`) |
 
+## Modules (stage 3: supported-modulus interpolation)
+
+The convention is Lean's `ycoord n a`, with discriminant `delta a = (a+1)(a+3)`.
+
+| Module | Content |
+|---|---|
+| `PellBinomial` | the internal binomial expansion of both Pell coordinates (`coords`); Euler's form `ψ(p) = Q·p + Δ^((p−1)/2)` at an irreducible odd `p` (`ycoord_prime`); `p ∣ ψ(p) ⇒ p ∣ Δ` |
+| `PellValuationIndex` | `k ∣ ψ(t) ⇒ k·ψ(t) ∣ ψ(kt)` (`lift`); Frobenius `p ∣ ψ(pm) ⇒ p ∣ ψ(m)` for `p ∤ 2Δ`; `index_valuation`: `p ∣ ψ(n)` and `pᵏ ∣ n` give `pᵏ ∣ ψ(n)`; the split `n₀ = g·w` with `g ∣ I` and `w` coprime to `I` (`coprime_split`); `strong_index` |
+| `PellEvenChebyshev` | `ψ(2t) ≡ −2t` and `ψ(2t+1) ≡ 2t+1 (mod 2(b+3))`; `even_ordinate`: `ψ(2L) = 2(b+2)P` with `P ≡ ±L (mod 4(b+2)²)` |
+| `LinearInterpolation` | the odd quotient modulo every `c ∣ 4I²`; the square period; `linear_interpolation` and `supported_interpolation`: stepping the auxiliary index by `4·I·f·w` moves `T` linearly by a unit modulo `I²`, so `T` reaches every class modulo any `M ∣ I²` |
+
+This replaces the lifting-the-exponent theorem and the valuation isometry of 112 §5 by linear
+stepping. Neither LTE nor a pigeonhole surjectivity argument is needed.
+
 ## What remains (for 11ℤ, 10ℤ and 113's 12ℤ)
 
-* Interpolation, the Pell-specific part: the period `4n₀f` modulo `f²`, the valuation fact
-  `v_p(ψ(n₀)) ≥ v_p(n₀)` (in the form `gcd(λ, 4I²) ∣ 4I`), and the Chebyshev congruences.
 * The per-point graph, soundness and completeness modules. The halting side at the source34
   ports, needed by 11ℤ, is done: `Source34Converse.halt_iff_facts` (see
   [`source34-calibration`](../source34-calibration/README.md)).
