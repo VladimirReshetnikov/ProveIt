@@ -5417,7 +5417,7 @@ That includes:
 - (184's eleven-positive 104 / 174 is closed: see above);
 - (the ten-positive Pareto row is closed: see the BFS943 paragraphs above);
 - (the nine-positive Pareto row is closed: all four points on 121x8801.)
-  **82's nine-positive 726 is CLOSED** (9 November 2026):
+  **82's nine-positive 726 is CLOSED** (9 November 2026, 18cc3f2003):
   `Nine121/IPRANine82p726`, record `research/nine-positive-p82-726-endpoint/`.
   Its source is the package-31 parent itself (source65's kernels pin
   `1c336ba0…` with only the row operations of `N101Source.transformed`), so
