@@ -5416,8 +5416,13 @@ That includes:
 - (170's 154 / 72, 162 / 71 and 74 / 438 are closed: see above);
 - (184's eleven-positive 104 / 174 is closed: see above);
 - (the ten-positive Pareto row is closed: see the BFS943 paragraphs above);
-- 101's nine-positive 1,057 (complete-radical majorant), 105's 456 and 82's
-  726 on 121x8801. **101's nine-positive 420 is CLOSED** (8 November 2026,
+- 101's nine-positive 1,057 (complete-radical majorant) and 82's 726
+  (Laurent radical) on 121x8801. **105's nine-positive 456 is CLOSED**
+  (8 November 2026, 7e21d56246): `Nine121/IPRANine105p456`, record
+  `research/nine-positive-p105-456-endpoint/`. 105's H1868 tables are 101's
+  layout untranslated (the source polynomial is X² times 101's), so
+  `N105Layout.coeff_target` follows from 101's. Its finalizer `N105Finalizer`
+  is a sibling of `N9Finalizer`. **101's nine-positive 420 is CLOSED** (8 November 2026,
   d4758e684f): `Nine121/IPRANine101p420` gives native, standard and
   equality-only iPRA equivalences for the literal `N101p420Graph.n451` at
   `Mixed121Ports.ports` (record `research/nine-positive-p101-420-endpoint/`;
