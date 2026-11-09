@@ -5416,7 +5416,14 @@ That includes:
 - (170's 154 / 72, 162 / 71 and 74 / 438 are closed: see above);
 - (184's eleven-positive 104 / 174 is closed: see above);
 - (the ten-positive Pareto row is closed: see the BFS943 paragraphs above);
-- 101's nine-positive points.
+- 101's nine-positive points. A proved prefix toward 101's 420 is in
+  `Lean/.../Nine121/` (03eee09491; record
+  `research/nine-positive-p101-420-endpoint/`). It contains the internal
+  31-source ↔ machine-215 calibration at 121x8801 in both directions
+  (`Source31Facts`, `Source31Converse`, reusable for 101's 1,057, 105's 456
+  and 106's 10ℤ forms) and the sound and complete saturated simple finalizer
+  (`N9Finalizer`). Still open: the digit-extraction contract, the literal
+  graph and the endpoint.
 
 **Tuple audit (4 November 2026).** After 57, every open point is at a tuple
 that the tree's Compact44 calibration does not cover. The tree's `paramKernel rho`
