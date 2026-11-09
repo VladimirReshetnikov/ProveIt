@@ -94,4 +94,9 @@ raises are used: up to `8000000` in generated and finalizer modules.
 
 ## What remains
 
-Nothing for the 420 endpoint itself. Possible follow-ups: the same contract for 101's complete-radical form (1,057 operations; only the majorant differs, `N9Finalizer` covers the simple majorant only) and for 105's 456 form; and a shorter evaluation proof of the graph if build time matters.
+Nothing for the 420 endpoint itself. The prefix, layout and contract here are
+reused by 105's 456 form ([`../nine-positive-p105-456-endpoint/`](../nine-positive-p105-456-endpoint/README.md))
+and by 101's complete-radical 1,057 form
+([`../nine-positive-p101-1057-endpoint/`](../nine-positive-p101-1057-endpoint/README.md)),
+both now closed. A shorter evaluation proof of the graph would only matter if
+build time does.
