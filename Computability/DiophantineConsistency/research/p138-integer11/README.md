@@ -49,6 +49,16 @@ model of `𝗜𝚺₁`, `e` has a zero in `DiffRing V` iff machine 215 halts int
 internal halt. Together with `P138Syntax.literal_zero_iff`, this is the forward half of
 `IntegerModelBridge`.
 
+Completeness, first layer:
+
+| Module | Content |
+|---|---|
+| `P138Quarter` | the canonical `4η < k`, from a quartered sandwich slack and `4v < D` in the central split |
+| `P138Kernel` | `c0 = 105534389824824194647382298625`, the radix-`ρ` digit of the lower kernel at 5495 (kernel `decide` on the sparse list, `ρ` never evaluated); `c0·ρ^5495 ≤ lower < (c0+1)·ρ^5495` |
+| `P138Cone` | the cone calibration `q ≤ 2·coneA·F ≤ 3q` and `q ≤ 2·coneB·C ≤ 3q`, for every packed halt word |
+| `P138Canonical` | the record `Canonical`: every canonical quantity from a halt, with the parities `J ≡ 1 (mod 6)`, `W ≡ 4 (mod 12)`, `sY` odd, `R ≡ c ≡ 3 (mod 4)`, and `H ∣ K`. Also `Matches` and the register bridge, `2·Derr ≤ q²`, `q²k² < 4·Budget` and `Budget > 64` |
+| `P138Guard` | the guard Pell pair `g² = 1 + Dn·τ²·s²` with `Dn = Budget − 4`, and `P = (τg)²`, `BP = (dτg)²` |
+
 [`tools/gen_literal.py`](tools/gen_literal.py) generates `P138Syntax.lean`. With `--check`, it
 confirms:
 
@@ -65,6 +75,7 @@ PROOF.md states, which are also the `cone_A`/`cone_B` payloads that `source34-ca
 
 ## Remaining
 
-* **Completeness:** the canonical data and their parities; the cone calibration
-  `q ≤ 2·cone·F ≤ 3q`; the guard Pell pair; the interpolation lemmas; and assembly.
+* **Completeness:** interpolation (the square period, the odd quotient mod `4ρ²`, the even
+  Chebyshev congruence, `v_p(n₀) ≤ v_p(I)`, linear stepping), then assembly at the unknowns that
+  `P138Canonical`'s header lists.
 * The endpoint `IntegerModelBridge`, then the short 840/108 form.
