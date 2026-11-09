@@ -37,6 +37,17 @@ model of `𝗜𝚺₁`, `e` has a zero in `DiffRing V` iff machine 215 halts int
 | `P138Window` | the signed packing window `|q|(q²−1) < R < q⁴ − 2`; `3R+1 < |E|`, `R+1 ≤ |k|` |
 | `P138Adjacent` | the auxiliary root is integral (`e = δy`), via `quotient_of_scaled_norm` |
 | `P138EarlyFold` | the record `EarlyFold`: the strong pair, the odd auxiliary index, residues, and the main root `|c| = ψ`, `Dm = χ²` at an odd index; the guard split `Dt = τ²`, `Dg = g²`; `S ∣ Ac`; `H ∣ Kq⁵` |
+| `P138Rank` | the record `MainIndex`: `R = ι Rn`, with `Rn` odd the index of the main root (`cn = ψ_b(Rn)`, `Dm = χ²`, `2Rn < cn`) |
+| `P138FirstIndex` | the record `FirstIndex`: `2n = R + 1` for both signs of `X`, using a new alternating residue for the negative first base; `k = ±2ψ_bF(n)` |
+| `P138Ratio` | `|H| ≥ |X|(2|Y|+1)`, and `H_large`: `xn·(xn−3)^t < |H|` when `R = 2t+1` |
+| `P138Projector` | the negative-base congruence `neg_projection_odd`; the fifth-power height bound; `projector`: `σX = 2^R` and `x₈ = σ·cn` with `σ = ±1`, for either sign of the main base |
+| `P138Orientation` | `q > 0` (because `2^N − 1 ∤ 2^m + 1`), and the record `Oriented`: positive `J, F, C, α, Y`, `X = 2^R`, `c = ψ` |
+| `P138HalfBinomial` | the sharpened upper sandwich, and `eta_pos`: `kY < c`, so `η > 0` |
+| `P138Leaf` | `leaf_of_zero`: positive `LeafFacts Source34Ports.ports` at `![J, F, α, 1, 1, X, Y, 1, η, ζ, 1, 1]`; and `sound`: a zero gives an internal halt of machine 215, through `Source34Converse.halt_iff_facts` |
+
+**Soundness is closed.** In every model of `𝗜𝚺₁`, a `DiffRing` zero of `value portsR` gives an
+internal halt. Together with `P138Syntax.literal_zero_iff`, this is the forward half of
+`IntegerModelBridge`.
 
 [`tools/gen_literal.py`](tools/gen_literal.py) generates `P138Syntax.lean`. With `--check`, it
 confirms:
@@ -54,9 +65,6 @@ PROOF.md states, which are also the `cone_A`/`cone_B` payloads that `source34-ca
 
 ## Remaining
 
-* **Soundness:** the main index; the first index, including an alternating residue for
-  `X < 0`; the ratio bound; the projector, including the negative-base congruence for odd `R`;
-  orientation, including `q > 0`; the sharpened half-binomial; and the `LeafFacts` assembly.
 * **Completeness:** the canonical data and their parities; the cone calibration
   `q ≤ 2·cone·F ≤ 3q`; the guard Pell pair; the interpolation lemmas; and assembly.
 * The endpoint `IntegerModelBridge`, then the short 840/108 form.
