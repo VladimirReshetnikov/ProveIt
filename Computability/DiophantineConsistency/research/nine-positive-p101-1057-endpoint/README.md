@@ -118,4 +118,4 @@ The kernel checks are `decide +kernel`. Finite heartbeat raises are used (up to 
 
 ## What remains
 
-Nothing for the 1,057 endpoint itself. `Kron4` is generic (any four-variable polynomial identity with a syntactic degree box) and should make the Laurent-cone certificate of package 82 (`nine_full_radical`, 41,853 cone coefficients) equally cheap; that point, however, sits on package 71's source65 prefix (`L = bB¹⁹⁹¹`, `N = 2^17079501·bB¹⁰⁵⁷`, height 1873) and package 71's Pell registers (`F = (A² − 1)E² + 1`, `E = iJC²D`), none of which is formalized in `Nine121`.
+Nothing for the 1,057 endpoint itself. `Kron4` is generic (any four-variable polynomial identity with a syntactic degree box); package 82's Laurent-cone point (`nine_full_radical`, 726 operations) is now closed with it on package 71's source65 prefix and Pell registers, see [`../nine-positive-p82-726-endpoint/`](../nine-positive-p82-726-endpoint/README.md).

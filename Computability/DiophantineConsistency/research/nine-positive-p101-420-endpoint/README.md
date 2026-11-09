@@ -90,7 +90,10 @@ raises are used: up to `8000000` in generated and finalizer modules.
   for every equation coded from that source: 101's 420 and 1,057, 105's 456,
   and 106's 10ℤ forms.
 * The finalizer module is the literal saturated simple finalizer of 101/105.
-  The complete-radical (1,057) and Laurent (82's 726) majorants are not covered.
+  The complete-radical (1,057) and Laurent (82's 726) majorants are handled by
+  the sibling finalizers `N1057Finalizer` and `N82Finalizer`; see the 1,057 and
+  726 records ([`../nine-positive-p101-1057-endpoint/`](../nine-positive-p101-1057-endpoint/README.md),
+  [`../nine-positive-p82-726-endpoint/`](../nine-positive-p82-726-endpoint/README.md)).
 
 ## What remains
 

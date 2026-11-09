@@ -5416,10 +5416,19 @@ That includes:
 - (170's 154 / 72, 162 / 71 and 74 / 438 are closed: see above);
 - (184's eleven-positive 104 / 174 is closed: see above);
 - (the ten-positive Pareto row is closed: see the BFS943 paragraphs above);
-- 82's nine-positive 726 (Laurent radical) on 121x8801. Its ports are the
-  121x8801 tuple, but it sits on package 71's source65 prefix
-  (L = bB¹⁹⁹¹, height 1873) and Pell registers, which `Nine121` does not
-  cover. **101's nine-positive 1,057 is CLOSED** (8 November 2026,
+- (the nine-positive Pareto row is closed: all four points on 121x8801.)
+  **82's nine-positive 726 is CLOSED** (9 November 2026):
+  `Nine121/IPRANine82p726`, record `research/nine-positive-p82-726-endpoint/`.
+  Its source is the package-31 parent itself (source65's kernels pin
+  `1c336ba0…` with only the row operations of `N101Source.transformed`), so
+  `Source31Facts`/`Source31Converse` carry over unchanged. New are the
+  source65 layout (`N82Layout`, 7+38+39 shared-tap records, its own
+  `SparseCheck` certificate), the prefix L = bB¹⁹⁹¹, N = 2^17079501·bB¹⁰⁵⁷,
+  height 1873 (`N82Prefix`, `N82Contract`), Jones's F = (A²−1)(iJC²D)²+1
+  (`SatPellJ`), and the Laurent majorant T = 4T₀, S = 2¹⁸C⁷ (`N82Majorant`):
+  three `Kron4` identity checks plus the generic top-group domination lemma
+  `TopDom.pos_split` for A, Z ≥ 2²⁰, replacing the package's 32,637-term
+  translated certificate. **101's nine-positive 1,057 is CLOSED** (8 November 2026,
   6a88ab32e1): `Nine121/IPRANine101p1057`, record
   `research/nine-positive-p101-1057-endpoint/`. The package's 36,309-term
   certificate is the 2,599-term defect Π² − σ²DFI, translated. Lean checks
