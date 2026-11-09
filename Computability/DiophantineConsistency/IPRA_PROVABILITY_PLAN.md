@@ -5407,6 +5407,23 @@ the compact44 ports (`Compact44/P66*`, `C44Short15*`,
 `Compact44/IPRAPositive66p78`, `66p87`, `66p88`;
 [record](research/fifteen-p66-endpoint/README.md)).
 
+**138's eleven-integer 924 / 107, CLOSED (9 November 2026)**
+([`P138/IPRAInteger138`](Lean/DiophantineConsistency/P138/IPRAInteger138.lean),
+[record](research/p138-integer11/README.md)). This is the tree's first ℤ-row
+endpoint. The sentence is `nativeNoZero (signedSplit expression)`: each integer
+unknown is written as `aᵢ − bᵢ` over 22 naturals. Its bridge is
+`IntegerDomain.IntegerModelBridge`: in every model of `𝗜𝚺₁`, a zero in the ring
+of differences exists iff machine 215 halts.
+- Soundness reaches source34's `LeafFacts`, then `Source34Converse.halt_iff_facts`.
+- Completeness assembles the canonical source34 halt data, the guard Pell pair,
+  supported-modulus interpolation by linear stepping
+  ([`zrows-toolkit`](research/zrows-toolkit/README.md), stage 3) and an
+  intersective root of `(t² + 3)(t³ − 19)`.
+- No three-square theorem is involved: the guard is the nonsquare `Budget − 4`.
+- `gen_literal.py --check` binds the Lean literal to the pinned JSON.
+  `check_ports138.py` binds the six ports to the restored payloads that
+  `coefficient_binding` names.
+
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
 

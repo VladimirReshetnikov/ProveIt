@@ -1,6 +1,6 @@
-# Package 138's eleven-integer equation (924/107): Lean route (in progress)
+# Package 138's eleven-integer equation (924/107): iPRA endpoint (closed)
 
-This record tracks the iPRA endpoint of package 138's equation
+This record documents the iPRA endpoint of package 138's equation
 [`parity_saturated11_native.json`](../../con-zfc-diophantine-forms/138-semantic-signs/integer11/parity_saturated11_native.json).
 The equation has eleven unknowns over ℤ, degree 924 and 107 operations. Its proof is in
 [`PROOF.md`](../../con-zfc-diophantine-forms/138-semantic-signs/integer11/PROOF.md), whose parent is
@@ -74,9 +74,25 @@ Every module was re-elaborated serially with no errors. Axioms are within `prope
 PROOF.md states, which are also the `cone_A`/`cone_B` payloads that `source34-calibration`'s
 `check_recipe.py` reproduces.
 
+## Endpoint
+
+| Module | Content |
+|---|---|
+| `P138Complete` | `complete`: an internal halt gives a `DiffRing` zero of `value portsR`. The residue root `a₀ = t − κ` comes from `Intersective19.root` at `s·r`, and `n = H⁴e₀ + p₀·f·y` makes `Z = S·p₀·f·y`; the proof then closes by `value_eq_product`, with no division |
+| `IPRAInteger138` | `expression` (the literal at `ports6`), `bridge : IntegerModelBridge expression`, and `native_equivalence`, `standard_equivalence`, `reference_equivalence` |
+
+The three endpoints say that the native, standard and equality-only iPRA theories each prove
+`nativeNoZero (signedSplit expression)` equivalent to `∼mappedNativeRefutation embedding`,
+the Foundation ZFC consistency predicate: the equation has no integer zero iff Con(ZFC). The
+equality-only theory proves the order-erased form.
+
+[`tools/check_ports138.py`](tools/check_ports138.py) binds the six ports. The JSON's port leaves
+are symbolic, `["coefficient", name]`, and its `coefficient_binding` names
+`coefficients/BINDING.json`. The checker follows `RESTORED_DEPENDENCIES.json` to the restored
+binding and the six payloads, and verifies each pinned SHA-256, byte count and bit count. It
+then evaluates `ports6` from a verbatim-checked transcription of the Lean definitions and
+compares it with the payloads, and it rejects six mutation controls.
+
 ## Remaining
 
-* **Completeness:** the assembly. It takes the residue root `a₀` of `π(·+κ)` modulo `s·r` from
-  `Intersective19.root`, sets `n = (Ac + S·p₀·f·y)/S`, and concludes with `value_eq`, at the
-  unknowns that `P138Canonical`'s header lists.
-* The endpoint `IntegerModelBridge`, then the short 840/108 form.
+* The short 840/108 form of the same package (a different first-index argument, `M = 4q⁴`).
