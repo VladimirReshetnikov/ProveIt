@@ -62,8 +62,8 @@ theorem not_dvd_exp_add_one (N m : V) (hN : 3 ≤ N) : ¬ (Exp.exp N - 1) ∣ Ex
   linarith
 
 section Regs
-variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V)
-local notation "𝓡" => regs p x
+variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V) (κ : DiffRing V)
+local notation "𝓡" => regsK p x κ
 
 /-- **`q > 0`** once `X = 2^R`. -/
 theorem q_pos (hp : PortFacts p) (Rn : V) (hX : (𝓡).X = ι (Exp.exp Rn)) : 0 < (𝓡).q := by
@@ -75,12 +75,12 @@ theorem q_pos (hp : PortFacts p) (Rn : V) (hX : (𝓡).X = ι (Exp.exp Rn)) : 0 
     exact (abs_dvd_abs _ _).mpr (dvd_mul_right _ _)
   have hpow : Pow2 Qn := Pow2.of_dvd hdvd (exp_pow2 _)
   have hQe : Exp.exp (log Qn) = Qn := exp_of_exponential (exponential_of_pow2 hpow)
-  rcases lt_or_gt_of_ne (q_ne p x hp) with hneg | hpos
+  rcases lt_or_gt_of_ne (q_ne p x κ hp) with hneg | hpos
   · exfalso
     have hq : (𝓡).q = -ι (Exp.exp (log Qn)) := by rw [hQe, ← hQn, abs_of_neg hneg]; ring
     have hb := hp.beta_exp
     have hβ := beta_pos p hp
-    have hbJ := beta_J p x
+    have hbJ := beta_J p x κ
     -- `J < 0`
     have hJneg : (𝓡).J < 0 := by
       have : p 0 * (𝓡).J < 0 := by
@@ -99,7 +99,7 @@ theorem q_pos (hp : PortFacts p) (Rn : V) (hX : (𝓡).X = ι (Exp.exp Rn)) : 0 
   · exact hpos
 
 /-- **The oriented data.** -/
-structure Oriented (E : EarlyFold p x) (M : MainIndex p x E) where
+structure Oriented (E : EarlyFold p x κ) (M : MainIndex p x κ E) where
   hq : 0 < (𝓡).q
   hJ : 0 < (𝓡).J
   hF : 0 < (𝓡).F
@@ -112,16 +112,16 @@ structure Oriented (E : EarlyFold p x) (M : MainIndex p x E) where
   hA : (𝓡).A = ι E.Bn
 
 set_option maxHeartbeats 1000000 in
-theorem oriented (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x)
-    (M : MainIndex p x E) (Fi : FirstIndex p x E M) : Nonempty (Oriented p x E M) := by
-  obtain ⟨σ, hσ, hcσ, hσX⟩ := projector p x hp hz E M Fi
+theorem oriented (hp : PortFacts p) (hz : valueK p x κ = 0) (E : EarlyFold p x κ)
+    (M : MainIndex p x κ E) (Fi : FirstIndex p x κ E M) : Nonempty (Oriented p x κ E M) := by
+  obtain ⟨σ, hσ, hcσ, hσX⟩ := projector p x κ hp hz E M Fi
   obtain ⟨t, ht⟩ := P72ConvArith.odd_of_mod_two M.hodd
   -- `σ = 1`
   have hσ1 : σ = 1 := by
     rcases hσ with h | h
     · exact h
     · exfalso
-      obtain ⟨_, m, hm⟩ := X_mod p x hp
+      obtain ⟨_, m, hm⟩ := X_mod p x κ hp
       have h3 := P72ConvArith.exp_odd_mod_three t
       rw [← ht] at h3
       have hd := div_add_mod (Exp.exp M.Rn) 3
@@ -137,18 +137,18 @@ theorem oriented (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x)
   have hXpos : 0 < (𝓡).X := by rw [hσX]; exact ι_pos (exp_pos _)
   have hk : 0 < (𝓡).k := (Fi.hpos hXpos).2
   have hcpos : 0 < x 8 := by rw [hcσ]; exact ι_pos E.hcn0
-  have hB : 0 < (𝓡).Budget := by linarith [budget_ge p x hp hz]
+  have hB : 0 < (𝓡).Budget := by linarith [budget_ge p x κ hp hz]
   have hY : 0 < (𝓡).Y := by
-    have h := (c_interval p x hp hB).2.2
+    have h := (c_interval p x κ hp hB).2.2
     have h1 : 0 < (𝓡).k * (𝓡).Y := (pos_iff_pos_of_mul_pos h).mp hcpos
     exact (pos_iff_pos_of_mul_pos h1).mp hk
   have hApos : 0 < (𝓡).A := by
     rw [A_eq, a_eq]; have := mul_pos hXpos hY; linarith
   have hA : (𝓡).A = ι E.Bn := by rw [← E.hBn, abs_of_pos hApos]
-  have hq := q_pos p x hp M.Rn hσX
-  obtain ⟨hF, hC, hα⟩ := signs p x hp hz
+  have hq := q_pos p x κ hp M.Rn hσX
+  obtain ⟨hF, hC, hα⟩ := signs p x κ hp hz
   have hJ : 0 < (𝓡).J := by
-    have h1 := abs_q p x hp
+    have h1 := abs_q p x κ hp
     rw [abs_of_pos hq] at h1
     have hb := beta_pos p hp
     have : 0 < p 0 * (𝓡).J := by rw [beta_J]; linarith

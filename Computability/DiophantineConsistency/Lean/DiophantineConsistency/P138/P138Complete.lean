@@ -90,7 +90,7 @@ theorem complete (T : V) (hT : ArithmeticCantor.first (ArithmeticMachineRun215.r
   have hZ : (regs (portsR (V := V)) x).Z = (regs (portsR (V := V)) x).S * ((ι Cn.d * ι Cn.τ * ι g) * ι f * y) := by
     rw [Z_eq, hx9]
     linear_combination (4 * ι Cn.a + 3) ^ 4 * e0 * hS - hAc
-  rw [value_eq_product, hZ, hBP, hDf]
+  rw [value, value_eq_product, hZ, hBP, hDf]
   linear_combination
     (-((regs (portsR (V := V)) x).S ^ 2 * (ι Cn.d * ι Cn.τ * ι g) ^ 2 * ι f ^ 2)) * hnorm
 

@@ -103,7 +103,7 @@ theorem guard (Cn : Canonical V) :
         (regs (portsR (V := V)) x).BP = (ι Cn.d * ι Cn.τ * ι g) ^ 2 := by
   have hm0 := canonX_matches Cn
   obtain ⟨_, h64⟩ := canonical_budget Cn hm0
-  obtain ⟨m, hm⟩ := budget_mod (portsR (V := V)) (canonX Cn) portFacts
+  obtain ⟨m, hm⟩ := budget_mod (portsR (V := V)) (canonX Cn) (kN portsR (canonX Cn)) portFacts
   rw [reg_Budget Cn hm0] at h64 hm
   -- `D = budget − 4`, a natural number
   obtain ⟨Dn, hDn⟩ := nonneg_iff.mp (show (0 : DiffRing V) ≤ budget Cn - 4 by linarith)

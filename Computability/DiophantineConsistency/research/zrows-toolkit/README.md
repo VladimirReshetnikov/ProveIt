@@ -4,9 +4,11 @@ This is the shared Lean layer for iPRA endpoints of the frontier rows whose unkn
 (10ℤ to 17ℤ in `con-zfc-diophantine-forms/README.md`). The modules live in
 `Lean/DiophantineConsistency/ZRows/`.
 
-**Status:** stages 1 and 2 are built. Each module re-elaborates without errors or warnings,
-and every `#print axioms` reports `[propext, Classical.choice, Quot.sound]` or a subset of it. No
-ℤ frontier endpoint is closed yet.
+**Status:** stages 1–3 are built. Each module re-elaborates without errors or warnings,
+and every `#print axioms` reports `[propext, Classical.choice, Quot.sound]` or a subset of it.
+The first ℤ frontier endpoints using them are package 138's eleven-integer 924/107 and 840/108
+(`P138/IPRAInteger138`, `P138/IPRAInteger138Short`; record in
+[`p138-integer11`](../p138-integer11/README.md)).
 
 ## Convention
 

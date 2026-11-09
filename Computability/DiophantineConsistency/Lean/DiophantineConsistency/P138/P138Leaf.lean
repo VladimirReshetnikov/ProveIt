@@ -2,10 +2,11 @@ import DiophantineConsistency.P138.P138Orientation
 import DiophantineConsistency.P138.P138HalfBinomial
 import DiophantineConsistency.Source34.Source34Converse
 
-/-! # Soundness of the 924/107 equation: a zero gives the leaf facts, hence a halt
+/-! # Soundness of package 138's equations: a zero gives the leaf facts, hence a halt
 
-At an integer zero `x` of the literal value (`P138Value.value portsR x = 0`), in every model `V`
-of `𝗜𝚺₁`, the soundness layer B1–B13 yields positive
+At an integer zero `x` of the output with `k` slot `κ` (`P138Value.valueK portsR x κ = 0`), where
+`κ` has an index modulus (`P138Window.IndexModulus`), in every model `V` of `𝗜𝚺₁`, the soundness
+layer B1–B13 yields positive
 
     J, F, α = q − F − C, X = 2^R, Y, η = c − Yk, ζ = k − η
 
@@ -16,7 +17,9 @@ with the main pair `c = ψ_a(R)` (`a = XY + Y`), the first pair `2n = R + 1`,
 `![J, F, α, 1, 1, X, Y, 1, η, ζ, 1, 1]` (P138_ROUTE §1); `pairMod` is the identity
 `(F + α)(X + K0 q) + F q − q(X + K0 q) = −z q (q − 1)` with `q − 1 = Jβ`.
 
-`sound` closes the loop through `Source34Converse.halt_iff_facts`. -/
+`sound_k` closes the loop through `Source34Converse.halt_iff_facts`. The native 924/107 equation
+(`κ = kN`, modulus `E`) gives `leaf_of_zero` and `sound`; the short 840/108 equation (`κ = kS`,
+modulus `4q⁴`) is `P138Short.sound`. -/
 set_option autoImplicit false
 set_option Elab.async false
 noncomputable section
@@ -48,18 +51,18 @@ theorem natural {A : DiffRing V} (h : 0 < A) : ∃ a : V, 0 < a ∧ A = ι a := 
   exact ⟨a, pos_of_ι (by rw [← ha]; exact h), ha⟩
 
 section Zero
-variable (x : Fin 11 → DiffRing V)
-local notation "𝓡" => regs (portsR (V := V)) x
+variable (x : Fin 11 → DiffRing V) (κ : DiffRing V)
+local notation "𝓡" => regsK (portsR (V := V)) x κ
 
 set_option maxHeartbeats 4000000 in
-/-- **Soundness, leaf form.** -/
-theorem leaf_of_zero (hz : value portsR x = 0) :
+/-- **Soundness, leaf form**, at any `k` slot with an index modulus. -/
+theorem leaf_of_zero_k (hκ : IndexModulus portsR x κ) (hz : valueK portsR x κ = 0) :
     ∃ v : Fin 12 → V, (∀ j, 0 < v j) ∧ CompactLeafFacts.LeafFacts Source34Ports.ports v := by
   have hp : PortFacts (portsR (V := V)) := portFacts
-  obtain ⟨E⟩ := early_fold portsR x hp hz
-  obtain ⟨M⟩ := main_index portsR x hp hz E
-  obtain ⟨Fi⟩ := first_index portsR x hp hz E M
-  obtain ⟨O⟩ := oriented portsR x hp hz E M Fi
+  obtain ⟨E⟩ := early_fold portsR x κ hp hz
+  obtain ⟨M⟩ := main_index portsR x κ hp hκ hz E
+  obtain ⟨Fi⟩ := first_index portsR x κ hp hκ hz E M
+  obtain ⟨O⟩ := oriented portsR x κ hp hz E M Fi
   obtain ⟨t, ht⟩ := P72ConvArith.odd_of_mod_two M.hodd
   have hn : Fi.n = t + 1 := by
     have h := Fi.hn; rw [ht] at h
@@ -67,10 +70,10 @@ theorem leaf_of_zero (hz : value portsR x = 0) :
     have h' := congrArg (ι (V := V)) h
     simp only [map_add, map_mul, map_ofNat, map_one] at h' ⊢
     linarith
-  have hB : 0 < (𝓡).Budget := by linarith [budget_ge portsR x hp hz]
-  obtain ⟨_, _, heta2, _⟩ := centered portsR x hp hB
-  obtain ⟨hci1, hci2, _⟩ := c_interval portsR x hp hB
-  have hs := signs portsR x hp hz
+  have hB : 0 < (𝓡).Budget := by linarith [budget_ge portsR x κ hp hz]
+  obtain ⟨_, _, heta2, _⟩ := centered portsR x κ hp hB
+  obtain ⟨hci1, hci2, _⟩ := c_interval portsR x κ hp hB
+  have hs := signs portsR x κ hp hz
   -- the natural coordinates
   obtain ⟨Jn, hJn0, hJn⟩ := natural O.hJ
   obtain ⟨Fn, hFn0, hFn⟩ := natural O.hF
@@ -100,7 +103,7 @@ theorem leaf_of_zero (hz : value portsR x = 0) :
   have ht12 : (12 : V) ≤ t := by
     apply ι_le_ι.mp
     have h4 : (4080 : DiffRing V) ≤ ι M.Rn := by
-      have := (sizes portsR x hp hs).2.2; rwa [M.hR] at this
+      have := R_ge portsR x κ hp hs; rwa [M.hR] at this
     rw [ht] at h4; simp only [map_add, map_mul, map_ofNat, map_one] at h4; rw [map_ofNat]
     linarith
   have ht5 : (5 : V) ≤ t := le_trans (by norm_num) ht12
@@ -130,7 +133,7 @@ theorem leaf_of_zero (hz : value portsR x = 0) :
   have hp1 : portsR (V := V) 1 = ι K0 := port1
   have hp2 : portsR (V := V) 2 = ι MC := port2
   have hp3 : portsR (V := V) 3 = ι MF := port3
-  have hJb : (𝓡).J * p0R = (𝓡).q - 1 := by rw [mul_comm]; exact beta_J portsR x
+  have hJb : (𝓡).J * p0R = (𝓡).q - 1 := by rw [mul_comm]; exact beta_J portsR x κ
   set qV : V := 1 + Jn * β with hqVdef
   have hqV : (ι qV : DiffRing V) = (𝓡).q := by
     rw [hqVdef]; simp only [map_add, map_mul, map_one]; rw [← hJn, ← hp0, hJb]; ring
@@ -225,14 +228,32 @@ theorem leaf_of_zero (hz : value portsR x = 0) :
     apply ι_injective
     rw [map_mul, map_pow, hqV, ← hon, ← hYn, Y_eq]; ring
 
+/-- **Soundness** at any `k` slot with an index modulus: a zero in any model of `𝗜𝚺₁` gives an
+internal halt of machine 215. -/
+theorem sound_k (hκ : IndexModulus portsR x κ) (hz : valueK portsR x κ = 0) :
+    ∃ T : V, ArithmeticCantor.first (ArithmeticMachineRun215.run T) = 0 :=
+  (Source34Converse.halt_iff_facts).2 (leaf_of_zero_k x κ hκ hz)
+
+end Zero
+
+section Native
+variable (x : Fin 11 → DiffRing V)
+
+/-- **Soundness, leaf form**, for the native 924/107 equation (`k = R + 1 + hE`). -/
+theorem leaf_of_zero (hz : value portsR x = 0) :
+    ∃ v : Fin 12 → V, (∀ j, 0 < v j) ∧ CompactLeafFacts.LeafFacts Source34Ports.ports v :=
+  leaf_of_zero_k x _ (native_modulus portsR x portFacts) hz
+
 /-- **Soundness.** A zero of the 924/107 equation in any model of `𝗜𝚺₁` gives an internal halt
 of machine 215. -/
 theorem sound (hz : value portsR x = 0) :
     ∃ T : V, ArithmeticCantor.first (ArithmeticMachineRun215.run T) = 0 :=
   (Source34Converse.halt_iff_facts).2 (leaf_of_zero x hz)
 
-end Zero
+end Native
 
+#print axioms leaf_of_zero_k
+#print axioms sound_k
 #print axioms leaf_of_zero
 #print axioms sound
 

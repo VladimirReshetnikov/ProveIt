@@ -5424,6 +5424,18 @@ of differences exists iff machine 215 halts.
   `check_ports138.py` binds the six ports to the restored payloads that
   `coefficient_binding` names.
 
+**138's eleven-integer 840 / 108 (the short form), CLOSED (9 November 2026)**
+([`P138/IPRAInteger138Short`](Lean/DiophantineConsistency/P138/IPRAInteger138Short.lean),
+same [record](research/p138-integer11/README.md)). The short form differs only
+in the index modulus, `k = R + 1 + h·4q⁴` instead of `R + 1 + hE`.
+- The soundness chain is now generic in the `k` register (`P138Value.regsK`).
+  It needs only an index modulus `μ` with `μ ∣ E` and `4q⁴ ≤ |μ|`; the window
+  then gives `3R + 1 < |μ|`, and the first-index argument runs modulo `|μ|`.
+- Completeness is the native completeness, substituted. `E = 4q⁴(3w+1)(2v+1)`,
+  so the short value at `h(3w+1)(2v+1)` is the native value at `h`
+  (`P138Value.valueS_update`).
+- Both checkers cover both JSONs.
+
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
 

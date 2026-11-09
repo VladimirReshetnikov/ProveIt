@@ -4,7 +4,8 @@ import DiophantineConsistency.BFS943.PellRankReduction
 
 /-! # The signed rank: the main index is `R`
 
-132-lowops §5, first paragraph, at a zero of the 924/107 output. After the early fold
+132-lowops §5, first paragraph, at a zero of the output with an index modulus for the `k`
+slot (`P138Window.IndexModulus`; native 924/107 and short 840/108 alike). After the early fold
 (`P138EarlyFold.EarlyFold`) the main ordinate `|c| = ψ_b(p)` has an odd index `p`; this module
 shows `p = R` (`main_index`, packaged as the record `MainIndex`).
 
@@ -100,24 +101,24 @@ theorem three_le_of_odd {i c : V} (hi : 0 < i) (hodd : i % 2 = 1) (b : V) (hc : 
   simpa only [show (2 : V) + 1 = 3 by norm_num] using lt_iff_succ_le.mp hr2lt
 
 section Regs
-variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V)
-local notation "𝓡" => regs p x
+variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V) (κ : DiffRing V)
+local notation "𝓡" => regsK p x κ
 
 /-- The signs of the centered budget at a zero. -/
-theorem signs (hp : PortFacts p) (hz : value p x = 0) :
+theorem signs (hp : PortFacts p) (hz : valueK p x κ = 0) :
     0 < (𝓡).F * (𝓡).q ∧ 0 < x 1 * (𝓡).q ∧ 0 < ((𝓡).q - (𝓡).F - x 1) * (𝓡).q := by
-  have hB : 0 < (𝓡).Budget := by linarith [budget_ge p x hp hz]
-  obtain ⟨_, _, _, h1, h2, h3, _⟩ := centered p x hp hB
+  have hB : 0 < (𝓡).Budget := by linarith [budget_ge p x κ hp hz]
+  obtain ⟨_, _, _, h1, h2, h3, _⟩ := centered p x κ hp hB
   exact ⟨h1, h2, h3⟩
 
 theorem three_le_abs_Y (hp : PortFacts p) : 3 ≤ |(𝓡).Y| := by
-  have hq := abs_q_ge p x hp
+  have hq := abs_q_ge p x κ hp
   have h64 : (3 : DiffRing V) ≤ 2 ^ 64 := by norm_num
   have hq3 : |(𝓡).q| ≤ |(𝓡).q| ^ 3 := le_self_pow₀ (by linarith) (by norm_num)
-  linarith [abs_Y p x hp]
+  linarith [abs_Y p x κ hp]
 
 /-- **The main index.** -/
-structure MainIndex (E : EarlyFold p x) where
+structure MainIndex (E : EarlyFold p x κ) where
   Rn : V
   hR : (𝓡).R = ι Rn
   hlo : |(𝓡).q| * ((𝓡).q ^ 2 - 1) < ι Rn
@@ -130,14 +131,14 @@ structure MainIndex (E : EarlyFold p x) where
   hRpos : 0 < Rn
 
 set_option maxHeartbeats 2000000 in
-theorem main_index (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x) :
-    Nonempty (MainIndex p x E) := by
-  have hB : 0 < (𝓡).Budget := by linarith [budget_ge p x hp hz]
-  have hs := signs p x hp hz
-  obtain ⟨Rn, hRn, hlo, hhi⟩ := window p x hp hs
-  obtain ⟨_, hkR, _⟩ := sizes p x hp hs
-  have hci := (c_interval p x hp hB).1
-  have hY3 := three_le_abs_Y p x hp
+theorem main_index (hp : PortFacts p) (hκ : IndexModulus p x κ) (hz : valueK p x κ = 0)
+    (E : EarlyFold p x κ) : Nonempty (MainIndex p x κ E) := by
+  have hB : 0 < (𝓡).Budget := by linarith [budget_ge p x κ hp hz]
+  have hs := signs p x κ hp hz
+  obtain ⟨Rn, hRn, hlo, hhi⟩ := window p x κ hp hs
+  have hkR := k_ge p x κ hp hκ hs
+  have hci := (c_interval p x κ hp hB).1
+  have hY3 := three_le_abs_Y p x κ hp
   have hR0 : (0 : DiffRing V) ≤ ι Rn := ι_nonneg _
   -- `2 R < |c|`
   have h2R : 2 * Rn < E.cn := by
@@ -151,7 +152,7 @@ theorem main_index (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x) :
     linarith
   have hRpos : 0 < Rn := by
     have : (0 : DiffRing V) ≤ |(𝓡).q| * ((𝓡).q ^ 2 - 1) := by
-      have := abs_q_ge p x hp
+      have := abs_q_ge p x κ hp
       have h64 : (2 : DiffRing V) ≤ 2 ^ 64 := by norm_num
       have : 1 ≤ (𝓡).q ^ 2 := by rw [← sq_abs]; nlinarith
       exact mul_nonneg (abs_nonneg _) (by linarith)
@@ -173,7 +174,7 @@ theorem main_index (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x) :
         0 E.vn E.h xr rank hcn0
         (by
           have h8 : (8 : V) ≤ delta (E.Bn - 2) :=
-            ι_le_ι.mp (by rw [← E.hDelta, map_ofNat]; exact Delta_gt p x hp)
+            ι_le_ι.mp (by rw [← E.hDelta, map_ofNat]; exact Delta_gt p x κ hp)
           have h1 : 1 ≤ E.Un * E.p0 := pos_iff_one_le.mp (mul_pos E.hUn0 E.hp0)
           calc (2 : V) ≤ 8 := by norm_num
             _ ≤ delta (E.Bn - 2) := h8

@@ -30,19 +30,19 @@ theorem power_double (z t : V) : power z (2 * t) = power (z * z) t := by
   rw [power_mul_base, ← power_add, two_mul]
 
 section Regs
-variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V)
-local notation "𝓡" => regs p x
+variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V) (κ : DiffRing V)
+local notation "𝓡" => regsK p x κ
 
 theorem abs_X_ge (hp : PortFacts p) : 2 ^ 66 ≤ |(𝓡).X| := by
-  have := abs_X p x hp; have := abs_q_ge p x hp
+  have := abs_X p x κ hp; have := abs_q_ge p x κ hp
   have e : (2 : DiffRing V) ^ 66 = 4 * 2 ^ 64 := by norm_num
   linarith
 
 theorem six_le_abs_Y (hp : PortFacts p) : 6 ≤ |(𝓡).Y| := by
-  have hq := abs_q_ge p x hp
+  have hq := abs_q_ge p x κ hp
   have h64 : (6 : DiffRing V) ≤ 2 ^ 64 := by norm_num
   have hq3 : |(𝓡).q| ≤ |(𝓡).q| ^ 3 := le_self_pow₀ (by linarith) (by norm_num)
-  linarith [abs_Y p x hp]
+  linarith [abs_Y p x κ hp]
 
 /-- `|A| ≥ |Y| (|X| − 1) − 2`. -/
 theorem abs_A_ge : |(𝓡).Y| * (|(𝓡).X| - 1) - 2 ≤ |(𝓡).A| := by
@@ -60,8 +60,8 @@ theorem abs_A_ge : |(𝓡).Y| * (|(𝓡).X| - 1) - 2 ≤ |(𝓡).A| := by
 
 /-- `|H| ≥ |X| (2|Y| + 1)`. -/
 theorem abs_H_ge (hp : PortFacts p) : |(𝓡).X| * (2 * |(𝓡).Y| + 1) ≤ |(𝓡).H| := by
-  have hX := abs_X_ge p x hp
-  have hY := six_le_abs_Y p x hp
+  have hX := abs_X_ge p x κ hp
+  have hY := six_le_abs_Y p x κ hp
   have h66 : (8 : DiffRing V) ≤ 2 ^ 66 := by norm_num
   have ha : |(𝓡).Y| * (|(𝓡).X| - 1) ≤ |(𝓡).a| := by
     rw [a_eq, show (𝓡).X * (𝓡).Y + (𝓡).Y = (𝓡).Y * ((𝓡).X + 1) by ring, abs_mul]
@@ -82,10 +82,10 @@ theorem abs_H_ge (hp : PortFacts p) : |(𝓡).X| * (2 * |(𝓡).Y| + 1) ≤ |(�
 theorem base_square (hp : PortFacts p) {P : DiffRing V}
     (hP : P ≤ 2 * |(𝓡).X| * |(𝓡).Y| ^ 2 + 1) :
     (|(𝓡).X| - 3) * (2 * P) ≤ (2 * |(𝓡).A| - 1) * (2 * |(𝓡).A| - 1) := by
-  have hX := abs_X_ge p x hp
-  have hY := six_le_abs_Y p x hp
+  have hX := abs_X_ge p x κ hp
+  have hY := six_le_abs_Y p x κ hp
   have h66 : (8 : DiffRing V) ≤ 2 ^ 66 := by norm_num
-  have hA := abs_A_ge p x
+  have hA := abs_A_ge p x κ
   set xx := |(𝓡).X|
   set yy := |(𝓡).Y|
   have hX8 : 8 ≤ xx := by linarith
@@ -102,15 +102,15 @@ theorem base_square (hp : PortFacts p) {P : DiffRing V}
   linarith
 
 /-- **The ratio bound.** -/
-theorem H_large (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x)
-    (M : MainIndex p x E) (Fi : FirstIndex p x E M) (t xn : V) (ht : M.Rn = 2 * t + 1)
+theorem H_large (hp : PortFacts p) (hz : valueK p x κ = 0) (E : EarlyFold p x κ)
+    (M : MainIndex p x κ E) (Fi : FirstIndex p x κ E M) (t xn : V) (ht : M.Rn = 2 * t + 1)
     (hxn : |(𝓡).X| = ι xn) :
     (ι (xn * power (xn - 3) t) : DiffRing V) < |(𝓡).H| := by
-  have hB : 0 < (𝓡).Budget := by linarith [budget_ge p x hp hz]
-  have hci := (c_interval p x hp hB).2.1
+  have hB : 0 < (𝓡).Budget := by linarith [budget_ge p x κ hp hz]
+  have hci := (c_interval p x κ hp hB).2.1
   obtain ⟨yn, hyn⟩ := abs_eq_ι (𝓡).Y
-  have hX := abs_X_ge p x hp
-  have hY := six_le_abs_Y p x hp
+  have hX := abs_X_ge p x κ hp
+  have hY := six_le_abs_Y p x κ hp
   have hn : Fi.n = t + 1 := by
     have h := Fi.hn; rw [ht] at h
     apply ι_injective
@@ -137,7 +137,7 @@ theorem H_large (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x)
     apply ι_le_ι.mp
     simp only [map_mul, map_ofNat]
     rw [hxsub, hb2, map_add, map_ofNat]
-    exact base_square p x hp Fi.hbFhi
+    exact base_square p x κ hp Fi.hbFhi
   have hPpos : 0 < power (2 * (Fi.bF + 2)) t := power_pos _ _ (by simp)
   have hprod : power (xn - 3) t * power (2 * (Fi.bF + 2)) t ≤ E.cn := by
     rw [← power_mul_base]
@@ -156,7 +156,7 @@ theorem H_large (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x)
   have hpow : power (xn - 3) t < 2 * yn + 1 := by
     rw [mul_comm (power (2 * (Fi.bF + 2)) t)] at hlt
     exact lt_of_mul_lt_mul_right hlt (by simp)
-  have hH := abs_H_ge p x hp
+  have hH := abs_H_ge p x κ hp
   rw [hxn, hyn] at hH
   have hxpos : (0 : DiffRing V) < ι xn := by rw [← hxn]; linarith
   have : (ι (xn * power (xn - 3) t) : DiffRing V) < ι xn * (2 * ι yn + 1) := by

@@ -12,16 +12,22 @@ for either sign of `q` (`window`). For `q < 0` write `Q = −q`, `F' = −F`, `C
 then `R = (Q(Q − F') + C')(Q² − 1) + J'(Q MF − MC)`, and both cases reduce to `window_core` with
 `G = q(q − F) − C ∈ [2|q| − 1, q² − 2]` and `−(|q| + 1) < (MC + q MF) J < 2|q|(|q| + 1)`.
 
-`sizes`: `3R + 1 < |E|`, `R + 1 ≤ |k|` and `4080 ≤ R`, from `|E| = |X||Y| ≥ 4q⁴` and
-`k = R + 1 + h E`. This is the signed analogue of the positive windows
-`FreeJEarlyWindow.early_window`, `Direct80RankExact.graph_rank_exact`. -/
+This is the signed analogue of the positive windows `FreeJEarlyWindow.early_window`,
+`Direct80RankExact.graph_rank_exact`.
+
+The registers are those of `P138Value.regsK p x κ`, with the `k` slot `κ` free. The one place
+where `k`'s definition enters soundness is its index modulus (`IndexModulus`): `κ = R + 1 + hμ`
+with `μ ∣ E` and `4q⁴ ≤ |μ|`. The native form has `μ = E` (`native_modulus`, using
+`|E| = |X||Y| ≥ 4q⁴`), the short form `μ = 4q⁴` (`short_modulus`, using `E = 4q⁴(3w+1)(2v+1)`).
+With the window, `modulus` gives a natural `m = |μ|` with `m ∣ E`, `m ∣ k − (R + 1)` and
+`3R + 1 < m` (since `R + 2 < q⁴`); then `R + 1 ≤ |k|` (`k_ge`) and `4080 ≤ R` (`R_ge`). -/
 set_option autoImplicit false
 set_option Elab.async false
 noncomputable section
 namespace DiophantineConsistency.P138Window
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic
 open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
-open ModelDifferenceRing P138Value P138Ports P138Bootstrap P138Budget
+open ModelDifferenceRing ZRowsCoprimeSquares P138Value P138Ports P138Bootstrap P138Budget
 
 variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
@@ -46,11 +52,11 @@ theorem neg_of_mul_pos_neg {a b : DiffRing V} (h : 0 < a * b) (hb : b < 0) : a <
   linarith
 
 section Regs
-variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V)
-local notation "𝓡" => regs p x
+variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V) (κ : DiffRing V)
+local notation "𝓡" => regsK p x κ
 
 /-- The column term `T = (MC + q MF) J` and `beta J = q − 1`. -/
-theorem beta_J : p 0 * (𝓡).J = (𝓡).q - 1 := by rw [(qm_eq p x).symm, qm_def]
+theorem beta_J : p 0 * (𝓡).J = (𝓡).q - 1 := by rw [(qm_eq p x κ).symm, qm_def]
 
 set_option maxHeartbeats 1000000 in
 theorem window_ineq (hp : PortFacts p)
@@ -62,10 +68,10 @@ theorem window_ineq (hp : PortFacts p)
   have hMC := hp.MC_lt
   have hMF0 := hp.MF_nonneg
   have hMF := hp.MF_lt
-  have hbJ := beta_J p x
-  have hq64 := abs_q_ge p x hp
+  have hbJ := beta_J p x κ
+  have hq64 := abs_q_ge p x κ hp
   have h64 : (4 : DiffRing V) ≤ 2 ^ 64 := by norm_num
-  have hqne := q_ne p x hp
+  have hqne := q_ne p x κ hp
   rw [R_eq]
   set q := (𝓡).q with hqdef
   set F := (𝓡).F
@@ -165,10 +171,10 @@ theorem window_ineq (hp : PortFacts p)
 theorem window (hp : PortFacts p)
     (hs : 0 < (𝓡).F * (𝓡).q ∧ 0 < x 1 * (𝓡).q ∧ 0 < ((𝓡).q - (𝓡).F - x 1) * (𝓡).q) :
     ∃ Rn : V, (𝓡).R = ι Rn ∧ |(𝓡).q| * ((𝓡).q ^ 2 - 1) < ι Rn ∧ ι Rn + 2 < (𝓡).q ^ 4 := by
-  obtain ⟨h1, h2⟩ := window_ineq p x hp hs
+  obtain ⟨h1, h2⟩ := window_ineq p x κ hp hs
   have h0 : 0 ≤ (𝓡).R := by
     have : 0 ≤ |(𝓡).q| * ((𝓡).q ^ 2 - 1) := by
-      have := abs_q_ge p x hp
+      have := abs_q_ge p x κ hp
       have h64 : (2 : DiffRing V) ≤ 2 ^ 64 := by norm_num
       have : 1 ≤ (𝓡).q ^ 2 := by rw [← sq_abs]; nlinarith
       exact mul_nonneg (abs_nonneg _) (by linarith)
@@ -176,43 +182,82 @@ theorem window (hp : PortFacts p)
   obtain ⟨Rn, hRn⟩ := nonneg_iff.mp h0
   exact ⟨Rn, hRn, by rw [← hRn]; exact h1, by rw [← hRn]; exact h2⟩
 
-/-- **Sizes**: `3R + 1 < |E|`, `R + 1 ≤ |k|`, `4080 ≤ R`. -/
-theorem sizes (hp : PortFacts p)
+/-- `4q⁴ ≤ |E|`, from `|X| ≥ 4|q|` and `|Y| ≥ |q|³`. -/
+theorem four_q4_le_E (hp : PortFacts p) : 4 * (𝓡).q ^ 4 ≤ |(𝓡).E| := by
+  rw [E_def, abs_mul]
+  have hX := abs_X p x κ hp
+  have hY := abs_Y p x κ hp
+  have e : (𝓡).q ^ 4 = |(𝓡).q| * |(𝓡).q| ^ 3 := by
+    have h4 : |(𝓡).q| ^ 4 = (𝓡).q ^ 4 := by
+      rw [show |(𝓡).q| ^ 4 = (|(𝓡).q| ^ 2) ^ 2 by ring, sq_abs]; ring
+    rw [← h4]; ring
+  rw [e]
+  have : 0 ≤ |(𝓡).q| ^ 3 := pow_nonneg (abs_nonneg _) 3
+  calc 4 * (|(𝓡).q| * |(𝓡).q| ^ 3) = (4 * |(𝓡).q|) * |(𝓡).q| ^ 3 := by ring
+    _ ≤ |(𝓡).X| * |(𝓡).Y| := mul_le_mul hX hY this (abs_nonneg _)
+
+/-- **An index modulus of the `k` slot**: `κ = R + 1 + hμ` with `μ ∣ E` and `4q⁴ ≤ |μ|`. This
+is the only hypothesis on `κ` that soundness uses. -/
+def IndexModulus : Prop :=
+  ∃ μ h : DiffRing V, κ = (𝓡).R + 1 + h * μ ∧ μ ∣ (𝓡).E ∧ 4 * (𝓡).q ^ 4 ≤ |μ|
+
+/-- The native index `kN = R + 1 + hE` has the modulus `μ = E`. -/
+theorem native_modulus (hp : PortFacts p) : IndexModulus p x (kN p x) :=
+  ⟨(regsK p x (kN p x)).E, x 3, kN_eq p x _, dvd_refl _, four_q4_le_E p x _ hp⟩
+
+/-- The short index `kS = R + 1 + h · 4q⁴` has the modulus `μ = 4q⁴`, which divides
+`E = 4q⁴(3w+1)(2v+1)`. -/
+theorem short_modulus : IndexModulus p x (kS p x) := by
+  refine ⟨4 * (regsK p x (kS p x)).q ^ 4, x 3, kS_eq p x _,
+    ⟨(3 * x 6 + 1) * (2 * x 5 + 1), E_eq_short p x _⟩, ?_⟩
+  rw [abs_of_nonneg (by positivity)]
+
+/-- `4080 ≤ R`, from the window and `|q| ≥ 2^64`. -/
+theorem R_ge (hp : PortFacts p)
     (hs : 0 < (𝓡).F * (𝓡).q ∧ 0 < x 1 * (𝓡).q ∧ 0 < ((𝓡).q - (𝓡).F - x 1) * (𝓡).q) :
-    3 * (𝓡).R + 1 < |(𝓡).E| ∧ (𝓡).R + 1 ≤ |(𝓡).k| ∧ 4080 ≤ (𝓡).R := by
-  obtain ⟨h1, h2⟩ := window_ineq p x hp hs
-  have hq := abs_q_ge p x hp
+    4080 ≤ (𝓡).R := by
+  obtain ⟨h1, _⟩ := window_ineq p x κ hp hs
+  have hq := abs_q_ge p x κ hp
   have h64 : (4096 : DiffRing V) ≤ 2 ^ 64 := by norm_num
-  have hq1 : 1 ≤ |(𝓡).q| := by linarith
   have hq2 : 2 ≤ (𝓡).q ^ 2 - 1 := by rw [← sq_abs]; nlinarith
-  have hR : 4080 ≤ (𝓡).R := by
-    have := mul_le_mul (by linarith : (4096:DiffRing V) ≤ |(𝓡).q|) hq2 (by norm_num) (abs_nonneg _)
+  have := mul_le_mul (by linarith : (4096:DiffRing V) ≤ |(𝓡).q|) hq2 (by norm_num) (abs_nonneg _)
+  linarith
+
+/-- **The index modulus in natural form**: a natural `m = |μ|` with `m ∣ E`, `m ∣ k − (R + 1)`
+and `3R + 1 < m`. -/
+theorem modulus (hp : PortFacts p) (hκ : IndexModulus p x κ)
+    (hs : 0 < (𝓡).F * (𝓡).q ∧ 0 < x 1 * (𝓡).q ∧ 0 < ((𝓡).q - (𝓡).F - x 1) * (𝓡).q) :
+    ∃ m : V, (ι m : DiffRing V) ∣ (𝓡).E ∧ (ι m : DiffRing V) ∣ (𝓡).k - ((𝓡).R + 1) ∧
+      3 * (𝓡).R + 1 < ι m := by
+  obtain ⟨μ, h, hk, hdvd, hge⟩ := hκ
+  obtain ⟨m, hm⟩ := abs_eq_ι μ
+  obtain ⟨_, h2⟩ := window_ineq p x κ hp hs
+  have hR := R_ge p x κ hp hs
+  refine ⟨m, ?_, ?_, ?_⟩
+  · rw [← hm]; exact (abs_dvd μ _).mpr hdvd
+  · have e : (𝓡).k - ((𝓡).R + 1) = μ * h := by rw [k_reg]; linear_combination hk
+    rw [← hm, e]
+    exact dvd_mul_of_dvd_left (abs_dvd_self μ) h
+  · have : 0 ≤ (𝓡).q ^ 4 := by positivity
     linarith
-  have hE : 4 * (𝓡).q ^ 4 ≤ |(𝓡).E| := by
-    rw [E_def, abs_mul]
-    have hX := abs_X p x hp
-    have hY := abs_Y p x hp
-    have e : (𝓡).q ^ 4 = |(𝓡).q| * |(𝓡).q| ^ 3 := by
-      have h4 : |(𝓡).q| ^ 4 = (𝓡).q ^ 4 := by
-        rw [show |(𝓡).q| ^ 4 = (|(𝓡).q| ^ 2) ^ 2 by ring, sq_abs]; ring
-      rw [← h4]; ring
-    rw [e]
-    have : 0 ≤ |(𝓡).q| ^ 3 := pow_nonneg (abs_nonneg _) 3
-    calc 4 * (|(𝓡).q| * |(𝓡).q| ^ 3) = (4 * |(𝓡).q|) * |(𝓡).q| ^ 3 := by ring
-      _ ≤ |(𝓡).X| * |(𝓡).Y| := mul_le_mul hX hY this (abs_nonneg _)
-  have hE3 : 3 * (𝓡).R + 1 < |(𝓡).E| := by
-    have : 0 ≤ (𝓡).q ^ 4 := by rw [show (𝓡).q ^ 4 = ((𝓡).q ^ 2) ^ 2 by ring]; exact sq_nonneg _
-    linarith
-  refine ⟨hE3, ?_, hR⟩
-  rw [k_eq]
-  by_cases hh : x 3 = 0
-  · rw [hh, zero_mul, add_zero]; exact le_of_eq (abs_of_nonneg (by linarith)).symm
-  · have h1' : |(𝓡).E| ≤ |x 3 * (𝓡).E| := by
-      rw [abs_mul]; exact le_mul_of_one_le_left (abs_nonneg _) (one_le_abs hh)
-    have h3 : |x 3 * (𝓡).E| - ((𝓡).R + 1) ≤ |(𝓡).R + 1 + x 3 * (𝓡).E| := by
-      have := abs_sub_abs_le_abs_sub (x 3 * (𝓡).E) (-((𝓡).R + 1))
+
+/-- `R + 1 ≤ |k|`: `k ≡ R + 1 (mod m)` with `0 < R + 1 < m − 2R`. -/
+theorem k_ge (hp : PortFacts p) (hκ : IndexModulus p x κ)
+    (hs : 0 < (𝓡).F * (𝓡).q ∧ 0 < x 1 * (𝓡).q ∧ 0 < ((𝓡).q - (𝓡).F - x 1) * (𝓡).q) :
+    (𝓡).R + 1 ≤ |(𝓡).k| := by
+  obtain ⟨m, _, ⟨d, hd⟩, hm⟩ := modulus p x κ hp hκ hs
+  have hR := R_ge p x κ hp hs
+  have hk : (𝓡).k = (𝓡).R + 1 + ι m * d := by linear_combination hd
+  rw [hk]
+  by_cases hd0 : d = 0
+  · rw [hd0, mul_zero, add_zero]; exact le_of_eq (abs_of_nonneg (by linarith)).symm
+  · have h1' : (ι m : DiffRing V) ≤ |ι m * d| := by
+      rw [abs_mul, abs_of_nonneg (ι_nonneg m)]
+      exact le_mul_of_one_le_right (ι_nonneg m) (one_le_abs hd0)
+    have h3 : |ι m * d| - ((𝓡).R + 1) ≤ |(𝓡).R + 1 + ι m * d| := by
+      have := abs_sub_abs_le_abs_sub (ι m * d) (-((𝓡).R + 1))
       rw [abs_neg, abs_of_nonneg (by linarith : (0 : DiffRing V) ≤ (𝓡).R + 1)] at this
-      rw [show x 3 * (𝓡).E - -((𝓡).R + 1) = (𝓡).R + 1 + x 3 * (𝓡).E by ring] at this
+      rw [show ι m * d - -((𝓡).R + 1) = (𝓡).R + 1 + ι m * d by ring] at this
       exact this
     linarith
 
@@ -221,6 +266,11 @@ end Regs
 #print axioms window_core
 #print axioms window_ineq
 #print axioms window
-#print axioms sizes
+#print axioms four_q4_le_E
+#print axioms native_modulus
+#print axioms short_modulus
+#print axioms R_ge
+#print axioms modulus
+#print axioms k_ge
 
 end DiophantineConsistency.P138Window

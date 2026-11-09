@@ -3,7 +3,7 @@ import DiophantineConsistency.P138.P138Squares
 /-! # The centered budget recovers the common signs
 
 `PROOF.md`, "Soundness", the paragraph after (6). In every model of `𝗜𝚺₁`, at a zero of the
-924/107 output:
+output `P138Value.valueK p x κ` (any `k` slot `κ`; native 924/107 and short 840/108 alike):
 
 * `budget_ge`: `Budget ≥ 12`. Indeed `Dg = P / Dt > 0` (`P > 0`, `Dt ≥ 1`); `Budget ≤ 3` would give
   `D ≤ −1` and, as `s ≠ 0`, `Dg ≤ 1 − Dt ≤ 0`; then (2) gives `Budget ≥ 12`.
@@ -49,14 +49,14 @@ theorem cone_row {cone y q : DiffRing V} (hc : 8 ≤ cone) (h : (cone * y - q) ^
   nlinarith
 
 section Regs
-variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V)
-local notation "𝓡" => regs p x
+variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V) (κ : DiffRing V)
+local notation "𝓡" => regsK p x κ
 
 /-- **`Budget ≥ 12` at a zero.** -/
-theorem budget_ge (hp : PortFacts p) (hz : value p x = 0) : 12 ≤ (𝓡).Budget := by
-  have hP := P_pos p x hp hz
-  obtain ⟨hDt, _⟩ := Dt_facts p x hp
-  have hs := (s_r_ne p x hp hz).1
+theorem budget_ge (hp : PortFacts p) (hz : valueK p x κ = 0) : 12 ≤ (𝓡).Budget := by
+  have hP := P_pos p x κ hp hz
+  obtain ⟨hDt, _⟩ := Dt_facts p x κ hp
+  have hs := (s_r_ne p x κ hp hz).1
   have hs2 : 1 ≤ x 10 ^ 2 := by have := one_le_abs hs; rw [← sq_abs]; nlinarith
   have hDg : 0 < 1 + (𝓡).D4 * (𝓡).Dt * x 10 ^ 2 := by
     rw [P_eq] at hP
@@ -72,7 +72,7 @@ theorem budget_ge (hp : PortFacts p) (hz : value p x = 0) : 12 ≤ (𝓡).Budget
       have h1 : (𝓡).D4 * (𝓡).Dt ≤ -1 := by nlinarith
       nlinarith
     linarith
-  obtain ⟨m, hm | hm⟩ := budget_mod p x hp
+  obtain ⟨m, hm | hm⟩ := budget_mod p x κ hp
   · rw [hm] at h4 ⊢
     have : 0 < m := by linarith
     have := one_le_of_pos' this
@@ -103,7 +103,7 @@ theorem centered (hp : PortFacts p) (hB : 0 < (𝓡).Budget) :
     linarith
   have hDerr0 : 0 ≤ (𝓡).Derr := by rw [Derr_eq]; positivity
   have hq2 : 0 < (𝓡).q ^ 2 :=
-    lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 (q_ne p x hp)))
+    lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 (q_ne p x κ hp)))
   have heta : 4 * (𝓡).eta ^ 2 < (𝓡).k ^ 2 := by
     have h1 : 4 * (𝓡).q ^ 2 * (𝓡).eta ^ 2 < (𝓡).k ^ 2 * (𝓡).q ^ 2 := by nlinarith
     by_contra hc
@@ -124,15 +124,15 @@ theorem centered (hp : PortFacts p) (hB : 0 < (𝓡).Budget) :
 theorem c_interval (hp : PortFacts p) (hB : 0 < (𝓡).Budget) :
     |(𝓡).k| * (2 * |(𝓡).Y| - 1) < 2 * |x 8| ∧ 2 * |x 8| < |(𝓡).k| * (2 * |(𝓡).Y| + 1) ∧
       0 < x 8 * ((𝓡).k * (𝓡).Y) := by
-  obtain ⟨hk, _, heta, _⟩ := centered p x hp hB
+  obtain ⟨hk, _, heta, _⟩ := centered p x κ hp hB
   have h2e : 2 * |(𝓡).eta| < |(𝓡).k| := by
     have h : (2 * (𝓡).eta) ^ 2 < (𝓡).k ^ 2 := by nlinarith
     have := _root_.sq_lt_sq.mp h
     rw [abs_mul, abs_two] at this
     exact this
   have hY1 : 1 ≤ |(𝓡).Y| := by
-    have h1 := abs_Y p x hp
-    have h2 := abs_q_ge p x hp
+    have h1 := abs_Y p x κ hp
+    have h2 := abs_q_ge p x κ hp
     have h3 : (1 : DiffRing V) ≤ |(𝓡).q| := by
       have : (1 : DiffRing V) ≤ 2 ^ 64 := one_le_pow₀ (by norm_num); linarith
     have h4 : 1 ≤ |(𝓡).q| ^ 3 := one_le_pow₀ h3
@@ -164,7 +164,7 @@ theorem c_interval (hp : PortFacts p) (hB : 0 < (𝓡).Budget) :
   nlinarith
 
 theorem c_ne (hp : PortFacts p) (hB : 0 < (𝓡).Budget) : x 8 ≠ 0 := by
-  have h := (c_interval p x hp hB).2.2
+  have h := (c_interval p x κ hp hB).2.2
   intro h0; rw [h0, zero_mul] at h; exact lt_irrefl _ h
 
 end Regs

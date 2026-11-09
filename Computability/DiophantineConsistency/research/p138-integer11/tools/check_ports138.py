@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""Check that package 138's six ports in Lean are the integers the 924/107 JSON is bound to.
+"""Check that package 138's six ports in Lean are the integers its two JSONs are bound to.
 
 Usage: py -I -X utf8 -B check_ports138.py
 
-What the JSON pins. `parity_saturated11_native.json` (SHA-256 pinned below, the same pin as
-`gen_literal.py`) does not contain the numeric values of its six fixed integers. Its nodes 11..16
-are symbolic leaves `["coefficient", name]` for `beta K0 MC MF cone_A cone_B`, and its field
-`coefficient_binding` names `coefficients/BINDING.json`, a path relative to the package directory.
+What the JSONs pin. `parity_saturated11_native.json` (924/107) and `parity_saturated11_short.json`
+(840/108), SHA-256 pinned below (the same pins as `gen_literal.py`), do not contain the numeric
+values of their six fixed integers. In both, nodes 11..16 are symbolic leaves
+`["coefficient", name]` for `beta K0 MC MF cone_A cone_B`, and the field `coefficient_binding`
+names `coefficients/BINDING.json`, a path relative to the package directory. So both forms are
+bound to the same six payloads, and to the same Lean ports `P138Ports.ports6`.
 The package ships that file and its payloads as restored dependencies:
 `integer11/RESTORED_DEPENDENCIES.json` maps `coefficients/BINDING.json` and the six
 `coefficients/*.bin.gz` to repository copies, with SHA-256 and byte counts. `BINDING.json` gives
@@ -14,7 +16,7 @@ each payload's file name, raw SHA-256, bit length and raw byte length.
 
 The check, link by link:
 
-1. the JSON's SHA-256, its coefficient leaves (names and order) and `coefficient_binding`;
+1. each JSON's SHA-256, its coefficient leaves (names and order) and `coefficient_binding`;
 2. every `coefficients/` entry of `RESTORED_DEPENDENCIES.json`: the repository copy exists and
    has the pinned SHA-256 and size;
 3. every payload of `BINDING.json`: gunzip, raw SHA-256, bits, raw bytes, minimal encoding;
@@ -35,8 +37,12 @@ HERE = Path(__file__).resolve()
 DC = HERE.parents[3]
 REPO = HERE.parents[5]
 PKG = DC / 'con-zfc-diophantine-forms/138-semantic-signs/integer11'
-JSON_PATH = PKG / 'parity_saturated11_native.json'
-JSON_SHA256 = 'ae109bcc44bd2d6c7102875eb79e562366bbf46ce1e350d0cfa8cc026add4195'
+JSONS = [
+    (PKG / 'parity_saturated11_native.json',
+     'ae109bcc44bd2d6c7102875eb79e562366bbf46ce1e350d0cfa8cc026add4195'),
+    (PKG / 'parity_saturated11_short.json',
+     '286116717dcd19faaec9f27e2a88e36a704a1a644385c1a3a9116c564994cfe7'),
+]
 LEAN = DC / 'Lean/DiophantineConsistency'
 PORTS = ['beta', 'K0', 'MC', 'MF', 'cone_A', 'cone_B']
 
@@ -205,17 +211,18 @@ def raw(v):
 
 
 def main():
-    print('1. the pinned JSON')
-    data = JSON_PATH.read_bytes()
-    need(hashlib.sha256(data).hexdigest() == JSON_SHA256, f'{JSON_PATH.name} SHA-256 = {JSON_SHA256}')
-    p = json.loads(data)
-    leaves = [(i, r[1]) for i, r in enumerate(p['nodes']) if r[0] == 'coefficient']
-    need([n for _, n in leaves] == PORTS, f'coefficient leaves, in order: {[n for _, n in leaves]}')
-    need([i for i, _ in leaves] == list(range(11, 17)), 'coefficient leaves are nodes 11..16')
-    need(not any(r[0] == 'coefficient' and isinstance(r[1], int) for r in p['nodes']),
-         'the JSON carries no numeric value for any coefficient (symbolic leaves only)')
-    need(p.get('coefficient_binding') == 'coefficients/BINDING.json',
-         f"coefficient_binding = {p.get('coefficient_binding')!r}")
+    print('1. the pinned JSONs')
+    for json_path, json_sha256 in JSONS:
+        data = json_path.read_bytes()
+        need(hashlib.sha256(data).hexdigest() == json_sha256, f'{json_path.name} SHA-256 = {json_sha256}')
+        p = json.loads(data)
+        leaves = [(i, r[1]) for i, r in enumerate(p['nodes']) if r[0] == 'coefficient']
+        need([n for _, n in leaves] == PORTS, f'  coefficient leaves, in order: {[n for _, n in leaves]}')
+        need([i for i, _ in leaves] == list(range(11, 17)), '  coefficient leaves are nodes 11..16')
+        need(not any(r[0] == 'coefficient' and isinstance(r[1], int) for r in p['nodes']),
+             '  the JSON carries no numeric value for any coefficient (symbolic leaves only)')
+        need(p.get('coefficient_binding') == 'coefficients/BINDING.json',
+             f"  coefficient_binding = {p.get('coefficient_binding')!r}")
 
     print('2. the restored dependencies of coefficients/')
     restored = json.loads((PKG / 'RESTORED_DEPENDENCIES.json').read_text(encoding='utf-8'))

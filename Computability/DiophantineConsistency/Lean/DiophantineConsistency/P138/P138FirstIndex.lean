@@ -3,19 +3,21 @@ import DiophantineConsistency.ArithmeticPellFirstIndex
 
 /-! # The first index: `2n = R + 1`
 
-132-lowops §5, second paragraph, for the native modulus `M_index = E = XY`. At a zero, with the
-main index `R` of `P138Rank`:
+132-lowops §5, second paragraph, for any index modulus `μ` of the `k` slot
+(`P138Window.IndexModulus`: `k = R + 1 + hμ`, `μ ∣ E`, `4q⁴ ≤ |μ|`). The native form has
+`μ = M_index = E = XY`, the short form `μ = M_index = 4q⁴`; the argument is the same, with
+`m = |μ|` (`P138Window.modulus`). At a zero, with the main index `R` of `P138Rank`:
 
 * `Dt = τ²` (`P138EarlyFold.guard_split`) is the first norm `τ² = 1 + ℓ(ℓ+1) k²`, `ℓ = XY²`.
   For `X > 0` it is classified at base `2(ℓ − 1) + 1` (`ArithmeticPellFirstNorm.solution_index`
   at `ℓ − 1`), for `X < 0` at base `2(λ − 2) + 1` with `λ = −ℓ` (since `ℓ(ℓ+1) = λ(λ−1)`):
   `τ = χ(n)`, `|k| = 2ψ(n)`.
-* Residues modulo `|E|`: for `X > 0`, `|E| ∣ bF + 1` and `ψ(n) ≡ n`
-  (`ArithmeticPellCongruences.residue_quotients`); for `X < 0`, `|E| ∣ bF + 3` and the
+* Residues modulo `m`: `m ∣ E ∣ ℓ = XY²`. For `X > 0`, `m ∣ bF + 1` and `ψ(n) ≡ n`
+  (`ArithmeticPellCongruences.residue_quotients`); for `X < 0`, `m ∣ bF + 3` and the
   **alternating residue** `ψ(n) ≡ (−1)^(n−1) n (mod bF + 3)` (`alt_residue`, new). Together with
-  `k = R + 1 + hE`: `2n ≡ ±(R + 1) (mod |E|)`.
+  `k ≡ R + 1 (mod m)`: `2n ≡ ±(R + 1) (mod m)`.
 * No wrap: `n < R` (otherwise `|k|/2 = ψ_bF(n) ≥ ψ_b(R) = |c|`, by `base_mono`, against
-  `|c| > |k|(|Y| − ½)`), and `3R + 1 < |E|`, so `2n = R + 1`.
+  `|c| > |k|(|Y| − ½)`), and `3R + 1 < m` (from `R + 2 < q⁴ ≤ m/4`), so `2n = R + 1`.
 * For `X > 0` the residue sign is exact, which forces `k > 0`. -/
 set_option autoImplicit false
 set_option Elab.async false
@@ -143,11 +145,11 @@ theorem eq_zero_of_dvd_small {m : V} {D : DiffRing V} (h : (ι m : DiffRing V) �
   linarith
 
 section Regs
-variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V)
-local notation "𝓡" => regs p x
+variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V) (κ : DiffRing V)
+local notation "𝓡" => regsK p x κ
 
 /-- **The first index.** -/
-structure FirstIndex (E : EarlyFold p x) (M : MainIndex p x E) where
+structure FirstIndex (E : EarlyFold p x κ) (M : MainIndex p x κ E) where
   n : V
   bF : V
   hn : 2 * n = M.Rn + 1
@@ -158,8 +160,8 @@ structure FirstIndex (E : EarlyFold p x) (M : MainIndex p x E) where
   hpos : 0 < (𝓡).X → (∃ ln : V, ι ln = (𝓡).X * (𝓡).Y ^ 2 ∧ bF = 2 * (ln - 1) + 1) ∧ 0 < (𝓡).k
 
 /-- The classified first norm, before the no-wrap argument. -/
-theorem first_classified (hp : PortFacts p) (mE kn τ : V) (hmE : |(𝓡).E| = ι mE)
-    (hkn : |(𝓡).k| = ι kn) (hDt : (𝓡).Dt = ι τ * ι τ) :
+theorem first_classified (hp : PortFacts p) (mE kn τ : V) (hm0 : 0 < mE)
+    (hmE : (ι mE : DiffRing V) ∣ (𝓡).E) (hkn : |(𝓡).k| = ι kn) (hDt : (𝓡).Dt = ι τ * ι τ) :
     ∃ n bF : V, xcoord n bF = τ ∧ 2 * ycoord n bF = kn ∧
       ((ι mE : DiffRing V) ∣ ι kn - ι (2 * n) ∨ (ι mE : DiffRing V) ∣ ι kn + ι (2 * n)) ∧
       (ι bF : DiffRing V) + 2 ≤ 2 * |(𝓡).X| * |(𝓡).Y| ^ 2 + 1 ∧
@@ -169,11 +171,11 @@ theorem first_classified (hp : PortFacts p) (mE kn τ : V) (hmE : |(𝓡).E| = �
   obtain ⟨xn, hxn⟩ := abs_eq_ι (𝓡).X
   obtain ⟨yn, hyn⟩ := abs_eq_ι (𝓡).Y
   have hX4 : 4 ≤ |(𝓡).X| := by
-    have := abs_X p x hp; have := abs_q_ge p x hp
+    have := abs_X p x κ hp; have := abs_q_ge p x κ hp
     have : (1 : DiffRing V) ≤ 2 ^ 64 := one_le_pow₀ (by norm_num); linarith
-  have hY3 := three_le_abs_Y p x hp
-  have hmE' : (ι mE : DiffRing V) = ι xn * ι yn := by rw [← hmE, E_def, abs_mul, hxn, hyn]
-  have hmEn : mE = xn * yn := ι_injective (by rw [map_mul]; exact hmE')
+  have hY3 := three_le_abs_Y p x κ hp
+  obtain ⟨w0, hw0⟩ : (ι mE : DiffRing V) ∣ ι xn * ι yn := by
+    rw [← hxn, ← hyn, ← abs_mul, ← E_def]; exact (dvd_abs _ _).mpr hmE
   have hk2 : (𝓡).k ^ 2 = ι kn * ι kn := by rw [← sq_abs, hkn]; ring
   have hY2 : (𝓡).Y ^ 2 = ι yn * ι yn := by rw [← sq_abs, hyn]; ring
   have hDt' : ι τ * ι τ = 1 + ((𝓡).X * (𝓡).Y ^ 2) * ((𝓡).X * (𝓡).Y ^ 2 + 1) * (ι kn * ι kn) := by
@@ -186,7 +188,7 @@ theorem first_classified (hp : PortFacts p) (mE kn τ : V) (hmE : |(𝓡).E| = �
     have h36 : (4 : DiffRing V) * 3 * 3 ≤ |(𝓡).X| * |(𝓡).Y| * |(𝓡).Y| :=
       mul_le_mul h12 hY3 (by norm_num) (by linarith)
     linarith
-  rcases lt_or_gt_of_ne (X_ne p x hp) with hXneg | hXpos
+  rcases lt_or_gt_of_ne (X_ne p x κ hp) with hXneg | hXpos
   · -- `X < 0`: base `2(λ − 2) + 1`, `λ = −ℓ`
     have hX : (𝓡).X = -ι xn := by rw [← hxn, abs_of_neg hXneg]; ring
     set lam : V := xn * yn * yn with hlam
@@ -200,11 +202,9 @@ theorem first_classified (hp : PortFacts p) (mE kn τ : V) (hmE : |(𝓡).E| = �
     obtain ⟨n, _, hx, hy⟩ := solution_index (lam - 2) τ kn hnorm
     refine ⟨n, 2 * (lam - 2) + 1, hx, hy, ?_, ?_, ?_, fun h => absurd h (not_lt.mpr hXneg.le)⟩
     · have hd : mE ∣ 2 * (lam - 2) + 1 + 3 := by
-        refine ι_dvd_iff.mp ⟨2 * ι yn, ?_⟩
+        refine ι_dvd_iff.mp ⟨2 * ι yn * w0, ?_⟩
         simp only [map_add, map_mul, map_ofNat, map_one]
-        rw [hl2, hmE', hlam]; simp only [map_mul]; ring
-      have hm0 : 0 < mE := by
-        rw [hmEn]; apply pos_of_ι; rw [map_mul, ← hxn, ← hyn]; nlinarith
+        rw [hl2, hlam]; simp only [map_mul]; linear_combination (2 * ι yn) * hw0
       rcases alt_sign (2 * (lam - 2) + 1) mE hm0 hd n with h | h
       · left
         obtain ⟨w, hw⟩ := h
@@ -231,9 +231,9 @@ theorem first_classified (hp : PortFacts p) (mE kn τ : V) (hmE : |(𝓡).E| = �
       rw [hl1', hDt', hl]; ring
     obtain ⟨n, _, hx, hy⟩ := solution_index (ln - 1) τ kn hnorm
     have hd : mE ∣ 2 * (ln - 1) + 1 + 1 := by
-      refine ι_dvd_iff.mp ⟨2 * ι yn, ?_⟩
+      refine ι_dvd_iff.mp ⟨2 * ι yn * w0, ?_⟩
       simp only [map_add, map_mul, map_ofNat, map_one]
-      rw [hl1', hmE', hln]; simp only [map_mul]; ring
+      rw [hl1', hln]; simp only [map_mul]; linear_combination (2 * ι yn) * hw0
     obtain ⟨_, s, _, hys⟩ := ArithmeticPellCongruences.residue_quotients n (2 * (ln - 1) + 1) mE hd
     have hexact : (ι mE : DiffRing V) ∣ ι kn - ι (2 * n) :=
       ⟨2 * ι s, by rw [← hy, hys]; simp only [map_mul, map_add, map_ofNat]; ring⟩
@@ -244,20 +244,20 @@ theorem first_classified (hp : PortFacts p) (mE kn τ : V) (hmE : |(𝓡).E| = �
       rw [hl1', hln, map_mul, map_mul, ← hxn, ← hyn]; nlinarith
 
 set_option maxHeartbeats 2000000 in
-theorem first_index (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x)
-    (M : MainIndex p x E) : Nonempty (FirstIndex p x E M) := by
-  have hB : 0 < (𝓡).Budget := by linarith [budget_ge p x hp hz]
-  have hs := signs p x hp hz
-  obtain ⟨hE3, _, _⟩ := sizes p x hp hs
-  obtain ⟨hk0, _⟩ := centered p x hp hB
-  have hci := (c_interval p x hp hB).1
-  have hY3 := three_le_abs_Y p x hp
-  obtain ⟨τ, _, _, _, hDt, _, _⟩ := guard_split p x hp hz E
-  obtain ⟨mE, hmE⟩ := abs_eq_ι (𝓡).E
+theorem first_index (hp : PortFacts p) (hκ : IndexModulus p x κ) (hz : valueK p x κ = 0)
+    (E : EarlyFold p x κ) (M : MainIndex p x κ E) : Nonempty (FirstIndex p x κ E M) := by
+  have hB : 0 < (𝓡).Budget := by linarith [budget_ge p x κ hp hz]
+  have hs := signs p x κ hp hz
+  obtain ⟨mE, hmE, hkdvd0, hE3⟩ := modulus p x κ hp hκ hs
+  obtain ⟨hk0, _⟩ := centered p x κ hp hB
+  have hci := (c_interval p x κ hp hB).1
+  have hY3 := three_le_abs_Y p x κ hp
+  obtain ⟨τ, _, _, _, hDt, _, _⟩ := guard_split p x κ hp hz E
   obtain ⟨kn, hkn⟩ := abs_eq_ι (𝓡).k
-  obtain ⟨n, bF, hx, hy, hres, hhi, hlo, hposX⟩ := first_classified p x hp mE kn τ hmE hkn hDt
   rw [M.hR] at hE3
-  rw [hmE] at hE3
+  have hm0 : 0 < mE := pos_of_ι (by have := ι_nonneg M.Rn; linarith)
+  obtain ⟨n, bF, hx, hy, hres, hhi, hlo, hposX⟩ :=
+    first_classified p x κ hp mE kn τ hm0 hmE hkn hDt
   -- `n < R`
   have hnR : n < M.Rn := by
     by_contra hcon
@@ -275,7 +275,7 @@ theorem first_index (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x)
               have := mul_le_mul_of_nonneg_left (abs_add_le (𝓡).X 1) (abs_nonneg (𝓡).Y)
               rw [abs_one] at this; linarith
       have hX4 : 4 ≤ |(𝓡).X| := by
-        have := abs_X p x hp; have := abs_q_ge p x hp
+        have := abs_X p x κ hp; have := abs_q_ge p x κ hp
         have : (1 : DiffRing V) ≤ 2 ^ 64 := one_le_pow₀ (by norm_num); linarith
       have h4Y : 4 * |(𝓡).Y| ≤ |(𝓡).X| * |(𝓡).Y| := mul_le_mul_of_nonneg_right hX4 (abs_nonneg _)
       have h5 : |(𝓡).X| * |(𝓡).Y| * 5 ≤ |(𝓡).X| * |(𝓡).Y| * (2 * |(𝓡).Y| - 1) :=
@@ -293,10 +293,8 @@ theorem first_index (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x)
       mul_le_mul_of_nonneg_left (by linarith) (abs_nonneg _)
     have : 0 < |(𝓡).k| := abs_pos.mpr hk0
     linarith
-  -- `k ≡ R + 1 (mod |E|)`
-  have hkdvd : (ι mE : DiffRing V) ∣ (𝓡).k - (ι M.Rn + 1) := by
-    rw [show (𝓡).k - (ι M.Rn + 1) = x 3 * (𝓡).E by rw [k_eq, M.hR]; ring]
-    exact dvd_mul_of_dvd_right (by rw [← hmE]; exact abs_dvd_self _) _
+  -- `k ≡ R + 1 (mod m)`
+  have hkdvd : (ι mE : DiffRing V) ∣ (𝓡).k - (ι M.Rn + 1) := by rw [← M.hR]; exact hkdvd0
   have hkn0 : 0 < kn := pos_of_ι (by rw [← hkn]; exact abs_pos.mpr hk0)
   have hsmall : (ι (2 * n) : DiffRing V) + (ι M.Rn + 1) < ι mE := by
     have : ι n + 1 ≤ (ι M.Rn : DiffRing V) := by

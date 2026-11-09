@@ -9,8 +9,8 @@ import Mathlib.Algebra.Ring.GeomSum
 /-! # Early folding: the main square `Dm = d²` before the first Pell root
 
 132-lowops §4 and signed-quadratic §2, as used by `PROOF.md` ("The early folding theorem uses
-only these strong and auxiliary norms and the bound `|c| ≤ |I|`"). At a zero of the 924/107
-output, in every model of `𝗜𝚺₁` (`early_fold`, packaged as the record `EarlyFold`):
+only these strong and auxiliary norms and the bound `|c| ≤ |I|`"). At a zero of the output
+`P138Value.valueK p x κ` (any `k` slot `κ`), in every model of `𝗜𝚺₁` (`early_fold`, packaged as the record `EarlyFold`):
 
 * `B = |A| ≥ 3`, base `b = B − 2` (so `delta b = (b+1)(b+3) = A² − 1 = Delta`);
 * the strong pair: `I0 = |U| p0` (`I = U p0`), `f² = 1 + Delta I0²`, classified as
@@ -76,8 +76,8 @@ theorem two_lt_of_norm {F I D : DiffRing V} (hD : 8 ≤ D) (hI : 0 ≤ I) (hF : 
   nlinarith
 
 section Regs
-variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V)
-local notation "𝓡" => regs p x
+variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V) (κ : DiffRing V)
+local notation "𝓡" => regsK p x κ
 
 /-- **The early-fold data at a zero.** -/
 structure EarlyFold where
@@ -101,7 +101,7 @@ structure EarlyFold where
   hy : 0 < y
   hBP : (𝓡).BP = ι p0 * ι p0
   hDf : (𝓡).Df = ι f * ι f
-  hDa : Da p x = ι e * ι e
+  hDa : Da p x κ = ι e * ι e
   hey : ι e = ((𝓡).Q - 1) * ι y
   haux : (𝓡).Q * (𝓡).V ^ 2 - ((𝓡).Q - 1) * (ι y) ^ 2 = 1
   hUn : |(𝓡).U| = ι Un
@@ -130,14 +130,14 @@ structure EarlyFold where
 
 set_option maxHeartbeats 2000000 in
 /-- **Early folding.** At a zero, the strong, auxiliary and main roots exist as above. -/
-theorem early_fold (hp : PortFacts p) (hz : value p x = 0) : Nonempty (EarlyFold p x) := by
-  have hc : x 8 ≠ 0 := c_ne p x hp (by linarith [budget_ge p x hp hz])
-  obtain ⟨p0, f, e, hp0, hf, he, hBP, hDf, hDa⟩ := roots p x hp hz
-  obtain ⟨y, hy, hey, haux⟩ := aux_integral p x hp hz hc hDa he
+theorem early_fold (hp : PortFacts p) (hz : valueK p x κ = 0) : Nonempty (EarlyFold p x κ) := by
+  have hc : x 8 ≠ 0 := c_ne p x κ hp (by linarith [budget_ge p x κ hp hz])
+  obtain ⟨p0, f, e, hp0, hf, he, hBP, hDf, hDa⟩ := roots p x κ hp hz
+  obtain ⟨y, hy, hey, haux⟩ := aux_integral p x κ hp hz hc hDa he
   -- the base
   obtain ⟨Bn, hBn⟩ := abs_eq_ι (𝓡).A
   have hB3 : 3 ≤ Bn := by
-    have h := abs_A p x hp
+    have h := abs_A p x κ hp
     rw [hBn, show (3 : DiffRing V) = ι 3 by rw [map_ofNat]] at h
     exact ι_le_ι.mp h
   have hB2 : 2 ≤ Bn := le_trans (by norm_num) hB3
@@ -149,7 +149,7 @@ theorem early_fold (hp : PortFacts p) (hz : value p x = 0) : Nonempty (EarlyFold
     rw [Delta_eq, map_mul, map_add, map_add, map_one, map_ofNat, hbB, ← sq_abs, hBn]; ring
   -- the strong pair
   obtain ⟨Un, hUn⟩ := abs_eq_ι (𝓡).U
-  have hU0 := U_ne p x hp hz hc
+  have hU0 := U_ne p x κ hp hz hc
   have hUn0 : 0 < Un := by
     rcases eq_zero_or_pos Un with h0 | h0
     · rw [h0, map_zero] at hUn; exact absurd (abs_eq_zero.mp hUn) hU0
@@ -168,7 +168,7 @@ theorem early_fold (hp : PortFacts p) (hz : value p x = 0) : Nonempty (EarlyFold
     · rw [h0, y_zero] at hmy; exact absurd hmy.symm hI0pos.ne'
     · exact h0
   have hdb : 8 ≤ delta b :=
-    ι_le_ι.mp (by rw [← hDelta, map_ofNat]; exact Delta_gt p x hp)
+    ι_le_ι.mp (by rw [← hDelta, map_ofNat]; exact Delta_gt p x κ hp)
   have hsize : 2 * I0 < f := by
     apply ι_lt_ι.mp
     have hst := congrArg (ι (V := V)) hstrong
@@ -228,7 +228,7 @@ theorem early_fold (hp : PortFacts p) (hz : value p x = 0) : Nonempty (EarlyFold
     · rw [h0, map_zero] at hcn; exact absurd (abs_eq_zero.mp hcn) hc
     · exact h0
   have hres : SignMod f vn cn :=
-    signed_square_residue f vn cn (bOff p x) (𝓡).V (x 8) hf
+    signed_square_residue f vn cn (bOff p x κ) (𝓡).V (x 8) hf
       (by rw [V_bOff, hDf, map_mul]) hvn hcn
   have htarget : SignMod f cn (ycoord (2 * h + 1) b) := sign_trans hf (sign_symm hres) htransfer
   have hcdvd : cn * cn ∣ I0 := by
@@ -242,8 +242,8 @@ theorem early_fold (hp : PortFacts p) (hz : value p x = 0) : Nonempty (EarlyFold
     apply ι_lt_ι.mp
     have hUc : 3 * |x 8| ^ 2 ≤ |(𝓡).U| := by
       rw [U_eq, abs_mul, abs_mul, abs_pow]
-      have hA := abs_A p x hp
-      have hr := one_le_abs (s_r_ne p x hp hz).2
+      have hA := abs_A p x κ hp
+      have hr := one_le_abs (s_r_ne p x κ hp hz).2
       have h0 : 0 ≤ |x 8| ^ 2 := by positivity
       have : 3 * 1 ≤ |(𝓡).A| * |x 4| := mul_le_mul hA hr (by norm_num) (abs_nonneg _)
       nlinarith
@@ -270,7 +270,7 @@ theorem early_fold (hp : PortFacts p) (hz : value p x = 0) : Nonempty (EarlyFold
 /-! ## Consequences -/
 
 /-- **The guard splits.** `P = (p0/d)²`, `Dt = τ²`, `Dg = g²`, `p0 = d τ g`. -/
-theorem guard_split (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x) :
+theorem guard_split (hp : PortFacts p) (hz : valueK p x κ = 0) (E : EarlyFold p x κ) :
     ∃ τ g : V, 0 < τ ∧ 0 < g ∧ (𝓡).Dt = ι τ * ι τ ∧
       1 + (𝓡).D4 * (𝓡).Dt * x 10 ^ 2 = ι g * ι g ∧
       E.p0 = xcoord E.idx (E.Bn - 2) * τ * g := by
@@ -293,8 +293,8 @@ theorem guard_split (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x) 
     ⟨-((𝓡).D4 * x 10 ^ 2), 1, by ring⟩
   have hprod : (𝓡).Dt * (1 + (𝓡).D4 * (𝓡).Dt * x 10 ^ 2) = ι t * ι t := by rw [← P_eq, hP]
   obtain ⟨⟨τ, hτ⟩, ⟨g, hg⟩⟩ := abs_squares_of_mul_square hcop hprod
-  have hDt : 0 < (𝓡).Dt := by linarith [(Dt_facts p x hp).1]
-  have hPpos := P_pos p x hp hz
+  have hDt : 0 < (𝓡).Dt := by linarith [(Dt_facts p x κ hp).1]
+  have hPpos := P_pos p x κ hp hz
   have hDg : 0 < 1 + (𝓡).D4 * (𝓡).Dt * x 10 ^ 2 := by
     rw [P_eq] at hPpos; exact pos_of_mul_pos_right hPpos hDt.le
   rw [abs_of_pos hDt] at hτ
@@ -323,10 +323,10 @@ theorem guard_split (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x) 
   rw [ht]; simp only [map_mul]; rw [htg']; ring
 
 /-- **`Z = ±S p0 f y`.** -/
-theorem Z_eq_S (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x) :
+theorem Z_eq_S (hp : PortFacts p) (hz : valueK p x κ = 0) (E : EarlyFold p x κ) :
     (𝓡).Z = (𝓡).S * (ι E.p0 * ι E.f * ι E.y) ∨ (𝓡).Z = -((𝓡).S * (ι E.p0 * ι E.f * ι E.y)) := by
-  obtain ⟨w, hw, hww⟩ := prod_square p x hp hz
-  have hδ : (𝓡).Q - 1 ≠ 0 := (nonzero p x hp).2.2.1
+  obtain ⟨w, hw, hww⟩ := prod_square p x κ hp hz
+  have hδ : (𝓡).Q - 1 ≠ 0 := (nonzero p x κ hp).2.2.1
   have hsq : w * w = (ι E.p0 * ι E.f * ι E.e) * (ι E.p0 * ι E.f * ι E.e) := by
     rw [hww, E.hBP, E.hDf, E.hDa]; ring
   rcases mul_self_eq_mul_self_iff.mp hsq with h1 | h1
@@ -338,17 +338,17 @@ theorem Z_eq_S (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x) :
     rw [hw, h1, E.hey]; ring
 
 /-- **`S ∣ Ac`.** -/
-theorem S_dvd_Ac (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x) :
+theorem S_dvd_Ac (hp : PortFacts p) (hz : valueK p x κ = 0) (E : EarlyFold p x κ) :
     (𝓡).S ∣ (𝓡).Ac := by
   have hAc : (𝓡).Ac = (𝓡).S * x 9 - (𝓡).Z := by rw [Z_eq]; ring
-  rcases Z_eq_S p x hp hz E with h | h
+  rcases Z_eq_S p x κ hp hz E with h | h
   · exact ⟨x 9 - ι E.p0 * ι E.f * ι E.y, by rw [hAc, h]; ring⟩
   · exact ⟨x 9 + ι E.p0 * ι E.f * ι E.y, by rw [hAc, h]; ring⟩
 
 /-- The projector register `Kq = X (X + 2 a c) − 1` (132-lowops §5). -/
 def Kq : DiffRing V := (𝓡).X * ((𝓡).X + 2 * (𝓡).a * x 8) - 1
 
-theorem K_Kq : (𝓡).K = (𝓡).H * (𝓡).X * x 8 - 2 * Kq p x := by
+theorem K_Kq : (𝓡).K = (𝓡).H * (𝓡).X * x 8 - 2 * Kq p x κ := by
   unfold Kq; rw [K_eq, H_def]; ring
 
 /-- An odd divisor of `2 Y` divides `Y`. -/
@@ -359,25 +359,25 @@ theorem odd_dvd_of_dvd_two_mul {H Y : DiffRing V} (hH : ∃ m : DiffRing V, H = 
   exact ⟨Y - m * k, by linear_combination (-m) * hk⟩
 
 /-- **`H ∣ Kq⁵`.** -/
-theorem H_dvd_Kq5 (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x) :
-    (𝓡).H ∣ Kq p x ^ 5 := by
+theorem H_dvd_Kq5 (hp : PortFacts p) (hz : valueK p x κ = 0) (E : EarlyFold p x κ) :
+    (𝓡).H ∣ Kq p x κ ^ 5 := by
   have hHS : (𝓡).H ∣ (𝓡).S := ⟨x 10 * x 4, by rw [S_eq]; ring⟩
-  have hHAc : (𝓡).H ∣ (𝓡).Ac := dvd_trans hHS (S_dvd_Ac p x hp hz E)
+  have hHAc : (𝓡).H ∣ (𝓡).Ac := dvd_trans hHS (S_dvd_Ac p x κ hp hz E)
   have h1 : (𝓡).H ∣ (𝓡).Ac - (𝓡).zc ^ 5 :=
     ⟨3 * (𝓡).H * (𝓡).zc ^ 3 - 19 * (𝓡).H ^ 2 * (𝓡).zc ^ 2 - 57 * (𝓡).H ^ 4, by rw [Ac_eq]; ring⟩
   have h2 : (𝓡).H ∣ (𝓡).zc ^ 5 - (𝓡).K ^ 5 :=
     dvd_trans (show (𝓡).H ∣ (𝓡).zc - (𝓡).K from ⟨x 7, by rw [zc_eq]; ring⟩)
       (sub_dvd_pow_sub_pow _ _ 5)
-  have h3 : (𝓡).H ∣ (𝓡).K ^ 5 - (-2 * Kq p x) ^ 5 :=
-    dvd_trans (show (𝓡).H ∣ (𝓡).K - -2 * Kq p x from ⟨(𝓡).X * x 8, by rw [K_Kq]; ring⟩)
+  have h3 : (𝓡).H ∣ (𝓡).K ^ 5 - (-2 * Kq p x κ) ^ 5 :=
+    dvd_trans (show (𝓡).H ∣ (𝓡).K - -2 * Kq p x κ from ⟨(𝓡).X * x 8, by rw [K_Kq]; ring⟩)
       (sub_dvd_pow_sub_pow _ _ 5)
-  have h4 : (𝓡).H ∣ -(2 * (2 * (2 * (2 * (2 * Kq p x ^ 5))))) := by
-    have e : -(2 * (2 * (2 * (2 * (2 * Kq p x ^ 5))))) =
+  have h4 : (𝓡).H ∣ -(2 * (2 * (2 * (2 * (2 * Kq p x κ ^ 5))))) := by
+    have e : -(2 * (2 * (2 * (2 * (2 * Kq p x κ ^ 5))))) =
         ((𝓡).Ac - (((𝓡).Ac - (𝓡).zc ^ 5) + ((𝓡).zc ^ 5 - (𝓡).K ^ 5))) -
-          ((𝓡).K ^ 5 - (-2 * Kq p x) ^ 5) := by ring
+          ((𝓡).K ^ 5 - (-2 * Kq p x κ) ^ 5) := by ring
     rw [e]
     exact dvd_sub (dvd_sub hHAc (dvd_add h1 h2)) h3
-  have hodd := H_odd p x
+  have hodd := H_odd p x κ
   exact odd_dvd_of_dvd_two_mul hodd (odd_dvd_of_dvd_two_mul hodd (odd_dvd_of_dvd_two_mul hodd
     (odd_dvd_of_dvd_two_mul hodd (odd_dvd_of_dvd_two_mul hodd (dvd_neg.mp h4)))))
 

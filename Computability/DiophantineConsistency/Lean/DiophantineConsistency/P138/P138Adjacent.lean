@@ -21,48 +21,48 @@ open ModelDifferenceRing ZRowsCoprimeSquares P138Value P138Ports P138Bootstrap P
 variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 section Regs
-variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V)
-local notation "𝓡" => regs p x
+variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V) (κ : DiffRing V)
+local notation "𝓡" => regsK p x κ
 
 theorem ι_pos {a : V} (h : 0 < a) : (0 : DiffRing V) < ι a := by
   rw [← map_zero ι]; exact ι_lt_ι.mpr h
 
 /-- At a zero with `c ≠ 0`, `U ≠ 0`. -/
-theorem U_ne (hp : PortFacts p) (hz : value p x = 0) (hc : x 8 ≠ 0) : (𝓡).U ≠ 0 := by
-  have hA := abs_A p x hp
+theorem U_ne (hp : PortFacts p) (hz : valueK p x κ = 0) (hc : x 8 ≠ 0) : (𝓡).U ≠ 0 := by
+  have hA := abs_A p x κ hp
   have hA0 : (𝓡).A ≠ 0 := by intro h0; rw [h0, abs_zero] at hA; linarith
   rw [U_eq]
-  exact mul_ne_zero (mul_ne_zero hA0 (s_r_ne p x hp hz).2) (pow_ne_zero 2 hc)
+  exact mul_ne_zero (mul_ne_zero hA0 (s_r_ne p x κ hp hz).2) (pow_ne_zero 2 hc)
 
 /-- At a zero, `BP ≥ 1`. -/
-theorem BP_ge (hp : PortFacts p) (hz : value p x = 0) : 1 ≤ (𝓡).BP := by
-  obtain ⟨p0, _, _, hp0, _, _, hBP, _, _⟩ := roots p x hp hz
+theorem BP_ge (hp : PortFacts p) (hz : valueK p x κ = 0) : 1 ≤ (𝓡).BP := by
+  obtain ⟨p0, _, _, hp0, _, _, hBP, _, _⟩ := roots p x κ hp hz
   have h1 : (1 : DiffRing V) ≤ ι p0 := by rw [← map_one ι]; exact ι_le_ι.mpr (pos_iff_one_le.mp hp0)
   rw [hBP]; nlinarith
 
 /-- **`Q > 1`** at a zero with `c ≠ 0`. -/
-theorem Q_gt (hp : PortFacts p) (hz : value p x = 0) (hc : x 8 ≠ 0) : 1 < (𝓡).Q := by
+theorem Q_gt (hp : PortFacts p) (hz : valueK p x κ = 0) (hc : x 8 ≠ 0) : 1 < (𝓡).Q := by
   have hU1 : 1 ≤ (𝓡).U ^ 2 := by
-    have := one_le_abs (U_ne p x hp hz hc); rw [← sq_abs]; nlinarith
-  have hD := Delta_gt p x hp
-  have hBP := BP_ge p x hp hz
+    have := one_le_abs (U_ne p x κ hp hz hc); rw [← sq_abs]; nlinarith
+  have hD := Delta_gt p x κ hp
+  have hBP := BP_ge p x κ hp hz
   have hD2 : 64 ≤ (𝓡).Delta ^ 2 := by nlinarith
   have h1 : 64 ≤ (𝓡).Delta ^ 2 * (𝓡).U ^ 2 := by nlinarith
   rw [Q_eq]; nlinarith
 
 /-- **The auxiliary ordinate is integral.** -/
-theorem aux_integral (hp : PortFacts p) (hz : value p x = 0) (hc : x 8 ≠ 0) {e : V}
-    (he : Da p x = ι e * ι e) (he0 : 0 < e) :
+theorem aux_integral (hp : PortFacts p) (hz : valueK p x κ = 0) (hc : x 8 ≠ 0) {e : V}
+    (he : Da p x κ = ι e * ι e) (he0 : 0 < e) :
     ∃ y : V, 0 < y ∧ ι e = ((𝓡).Q - 1) * ι y ∧
       (𝓡).Q * (𝓡).V ^ 2 - ((𝓡).Q - 1) * (ι y) ^ 2 = 1 := by
-  have hQ := Q_gt p x hp hz hc
+  have hQ := Q_gt p x κ hp hz hc
   obtain ⟨dn, hdn⟩ := nonneg_iff.mp (show (0 : DiffRing V) ≤ (𝓡).Q - 1 by linarith)
   have hdn0 : 0 < dn := by
     rcases eq_zero_or_pos dn with h0 | h0
     · rw [h0, map_zero] at hdn; linarith
     · exact h0
   have hCy : 0 < (𝓡).Q * (𝓡).V ^ 2 - 1 := by
-    have hDa : 0 < Da p x := by rw [he]; exact mul_pos (ι_pos he0) (ι_pos he0)
+    have hDa : 0 < Da p x κ := by rw [he]; exact mul_pos (ι_pos he0) (ι_pos he0)
     unfold Da at hDa
     exact pos_of_mul_pos_right hDa (by linarith)
   have hV : (𝓡).V ≠ 0 := by

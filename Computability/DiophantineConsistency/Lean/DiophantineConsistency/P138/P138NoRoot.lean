@@ -68,30 +68,30 @@ theorem no_cube_19 {z h : DiffRing V} (hh : h ≠ 0) : z ^ 3 ≠ 19 * h ^ 3 := b
   exact cube_ne_19 _ (ι_nonneg a') hab'
 
 section Regs
-variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V)
-local notation "𝓡" => regs p x
+variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V) (κ : DiffRing V)
+local notation "𝓡" => regsK p x κ
 
 /-- **`Ac ≠ 0`** (`H` is odd, hence nonzero). -/
 theorem Ac_ne : (𝓡).Ac ≠ 0 := by
   rw [Ac_eq]
-  have hH := H_ne p x
+  have hH := H_ne p x κ
   refine mul_ne_zero ?_ (sub_ne_zero.mpr (no_cube_19 hH))
   have : 0 < 3 * (𝓡).H ^ 2 := by positivity
   have := sq_nonneg (𝓡).zc
   exact (show (0 : DiffRing V) < (𝓡).zc ^ 2 + 3 * (𝓡).H ^ 2 by linarith).ne'
 
 /-- **At a zero, `S = s r H ≠ 0`.** -/
-theorem S_ne (hp : PortFacts p) (hz : value p x = 0) : (𝓡).S ≠ 0 := by
+theorem S_ne (hp : PortFacts p) (hz : valueK p x κ = 0) : (𝓡).S ≠ 0 := by
   intro hS
   rw [value_eq_product, hS, Z_eq, hS] at hz
   have h : ((𝓡).Q - 1) * (𝓡).Ac ^ 2 = 0 := by linear_combination hz
   rcases mul_eq_zero.mp h with h | h
-  · exact (nonzero p x hp).2.2.1 h
-  · exact Ac_ne p x (pow_eq_zero_iff (by norm_num) |>.mp h)
+  · exact (nonzero p x κ hp).2.2.1 h
+  · exact Ac_ne p x κ (pow_eq_zero_iff (by norm_num) |>.mp h)
 
 /-- **At a zero, `s ≠ 0` and `r ≠ 0`.** -/
-theorem s_r_ne (hp : PortFacts p) (hz : value p x = 0) : x 10 ≠ 0 ∧ x 4 ≠ 0 := by
-  have h := S_ne p x hp hz
+theorem s_r_ne (hp : PortFacts p) (hz : valueK p x κ = 0) : x 10 ≠ 0 ∧ x 4 ≠ 0 := by
+  have h := S_ne p x κ hp hz
   rw [S_eq] at h
   exact ⟨fun h0 => h (by rw [h0]; ring), fun h0 => h (by rw [h0]; ring)⟩
 

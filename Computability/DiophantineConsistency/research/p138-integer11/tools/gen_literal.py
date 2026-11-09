@@ -1,37 +1,57 @@
 #!/usr/bin/env python3
-"""Emit and check Lean/DiophantineConsistency/P138/P138Syntax.lean, package 138's 924/107 literal.
+"""Emit and check package 138's two Lean literals:
 
-Input (inert JSON, SHA-256 pinned below):
-  con-zfc-diophantine-forms/138-semantic-signs/integer11/parity_saturated11_native.json
-  (131 nodes, 107 live operations: 66 mul, 24 add, 17 sub; output node 130).
+  native 924/107   Lean/DiophantineConsistency/P138/P138Syntax.lean
+                   from con-zfc-diophantine-forms/138-semantic-signs/integer11/parity_saturated11_native.json
+                   (131 nodes, 107 live operations: 66 mul, 24 add, 17 sub; output node 130)
+  short  840/108   Lean/DiophantineConsistency/P138/P138ShortSyntax.lean
+                   from con-zfc-diophantine-forms/138-semantic-signs/integer11/parity_saturated11_short.json
+                   (132 nodes, 108 live operations: 67 mul, 24 add, 17 sub; output node 131)
 
-The Lean literal has one definition per JSON node, in JSON order:
+Both JSON inputs are inert data with pinned SHA-256 (below).
+
+Each Lean literal has one definition per JSON node, in JSON order:
   def n<i> (p : Fin 6 → ℤ) : Expr (Fin 11) := ...
 with the eleven variables `j C z h r v w T c n s` as `.var 0 … .var 10`, the six coefficient leaves
 `beta K0 MC MF cone_A cone_B` as `.constant (p 0) … .constant (p 5)`, integer leaves as
 `.constant (k)`, and every gate as `n<a> p (+|-|*) n<b> p`.
 
 Each node gets an evaluation lemma `e<i>`, proved from its two children only: a named register
-(`named_registers` of the JSON) evaluates to the field of `P138Value.regs` of the same name (closed
-by `rfl`, i.e. the hand-written register map of `P138Value` must agree with the DAG gate by gate,
-operand order included); an unnamed node evaluates to the expression of its children. The output
-node evaluates to `P138Value.value`.
+(`named_registers` of the JSON) evaluates to the field of the same name of `P138Value.regs`
+(native) or `P138Value.regsS` (short), closed by `rfl`, i.e. the hand-written register map of
+`P138Value` must agree with the DAG gate by gate, operand order included; an unnamed node evaluates
+to the expression of its children. The output node evaluates to `P138Value.value` (native) or
+`P138Value.valueS` (short).
 
 Usage:
-  py -I -X utf8 -B gen_literal.py          write the Lean file
-  py -I -X utf8 -B gen_literal.py --check  regenerate and compare byte for byte, then parse every
-                                           `def n<i>` of the file on disk back and compare it with
-                                           JSON node i; run mutation controls; check the output
-                                           numerically against the PROOF.md formulas.
+  py -I -X utf8 -B gen_literal.py [--form native|short]          write the Lean file(s)
+  py -I -X utf8 -B gen_literal.py [--form native|short] --check  for each form: check the JSON pin;
+      regenerate and compare byte for byte; parse every `def n<i>` of the file on disk back and
+      compare it with JSON node i; check the DAG and the parsed literal numerically against the
+      PROOF.md formulas; run mutation controls. With both forms, also check the completeness
+      transfer `short(h (3w+1)(2v+1)) = native(h)` numerically.
+Without `--form`, both forms are processed.
 """
 from pathlib import Path
 import hashlib, json, random, re, sys
 
 HERE = Path(__file__).resolve()
 DC = HERE.parents[3]
-JSON_PATH = DC / 'con-zfc-diophantine-forms/138-semantic-signs/integer11/parity_saturated11_native.json'
-LEAN_PATH = DC / 'Lean/DiophantineConsistency/P138/P138Syntax.lean'
-JSON_SHA256 = 'ae109bcc44bd2d6c7102875eb79e562366bbf46ce1e350d0cfa8cc026add4195'
+PKG = 'con-zfc-diophantine-forms/138-semantic-signs/integer11/'
+FORMS = {
+    'native': dict(
+        json=PKG + 'parity_saturated11_native.json',
+        sha='ae109bcc44bd2d6c7102875eb79e562366bbf46ce1e350d0cfa8cc026add4195',
+        lean='Lean/DiophantineConsistency/P138/P138Syntax.lean', module='P138Syntax',
+        tag='924/107', ops=107, counts=(66, 24, 17), output=130,
+        regs='regs', value='value', gen='gen_literal.py', seed=138924107),
+    'short': dict(
+        json=PKG + 'parity_saturated11_short.json',
+        sha='286116717dcd19faaec9f27e2a88e36a704a1a644385c1a3a9116c564994cfe7',
+        lean='Lean/DiophantineConsistency/P138/P138ShortSyntax.lean', module='P138ShortSyntax',
+        tag='840/108', ops=108, counts=(67, 24, 17), output=131,
+        regs='regsS', value='valueS', gen='gen_literal.py --form short', seed=138840108),
+}
 VARS = ['j', 'C', 'z', 'h', 'r', 'v', 'w', 'T', 'c', 'n', 's']
 PORTS = ['beta', 'K0', 'MC', 'MF', 'cone_A', 'cone_B']
 OPS = {'add': '+', 'sub': '-', 'mul': '*'}
@@ -47,13 +67,17 @@ def need(ok, msg):
         raise SystemExit('FAIL: ' + msg)
 
 
-def load():
-    raw = JSON_PATH.read_bytes()
-    need(hashlib.sha256(raw).hexdigest() == JSON_SHA256, 'JSON SHA-256 pin')
+def load(f):
+    raw = (DC / f['json']).read_bytes()
+    need(hashlib.sha256(raw).hexdigest() == f['sha'], 'JSON SHA-256 pin: ' + f['json'])
     d = json.loads(raw)
     need(d['schema'] == 'integer-polynomial-dag-v1', 'schema')
     need(d['variables'] == VARS, 'variable order')
-    need(d['output'] == len(d['nodes']) - 1 == 130, 'output node')
+    need(d['output'] == len(d['nodes']) - 1 == f['output'], 'output node')
+    mul, add, sub = f['counts']
+    need(d['operation_counts'] == {'mul': mul, 'add': add, 'sub': sub} and d['operations'] == f['ops'],
+         'operation counts')
+    need(sum(1 for r in d['nodes'] if r[0] in OPS) == f['ops'], 'live gate count')
     return d
 
 
@@ -69,36 +93,39 @@ def leaf_lean(row):
     raise SystemExit('FAIL: leaf kind ' + kind)
 
 
-def generate(d):
+def generate(f, d):
     nodes = d['nodes']
     named = {i: n for n, i in d['named_registers'].items()}
+    mod, regs, value = f['module'], f['regs'], f['value']
+    mul, add, sub = f['counts']
     out = []
     w = out.append
     w('import DiophantineConsistency.WeightedExpressionDegree')
     w('import DiophantineConsistency.P138.P138Value')
     w('import DiophantineConsistency.P138.P138Ports')
     w('')
-    w("/-! # Package 138's 924/107 equation, as a Lean literal")
+    w(f"/-! # Package 138's {f['tag']} equation, as a Lean literal")
     w('')
-    w('Generated by `research/p138-integer11/tools/gen_literal.py` from')
-    w('`con-zfc-diophantine-forms/138-semantic-signs/integer11/parity_saturated11_native.json`')
-    w(f'(SHA-256 `{JSON_SHA256}`): {len(nodes)} nodes, 107 live operations')
-    w('(66 `mul`, 24 `add`, 17 `sub`), variables `j C z h r v w T c n s`, output node 130. Node `nᵢ` is')
+    w(f"Generated by `research/p138-integer11/tools/{f['gen']}` from")
+    w(f"`{f['json']}`")
+    w(f'(SHA-256 `{f["sha"]}`): {len(nodes)} nodes, {f["ops"]} live operations')
+    w(f'({mul} `mul`, {add} `add`, {sub} `sub`), variables `j C z h r v w T c n s`, output node '
+      f'{d["output"]}. Node `nᵢ` is')
     w('the JSON node `i`; the six coefficient leaves are the integer constants `p 0 … p 5`')
     w('(`beta K0 MC MF cone_A cone_B`).')
     w('')
     w('The evaluation is proved gate by gate (`eᵢ`, from the two children only): a named register')
-    w('evaluates to the field of `P138Value.regs` with the same name, an unnamed node to the')
-    w('expression of its children. `evalRing_literal`: the literal evaluates to `P138Value.value` in')
+    w(f'evaluates to the field of `P138Value.{regs}` with the same name, an unnamed node to the')
+    w(f'expression of its children. `evalRing_literal`: the literal evaluates to `P138Value.{value}` in')
     w('every commutative ring; `literal_zero_iff`: at the six ports, its zeros in the ring of')
-    w('differences of a model of `𝗜𝚺₁` are the zeros of `value portsR`. The correspondence with the')
+    w(f'differences of a model of `𝗜𝚺₁` are the zeros of `{value} portsR`. The correspondence with the')
     w('JSON is checked by `gen_literal.py --check` (byte-identical regeneration, node-by-node parse,')
     w('mutation rejection). -/')
     w('set_option autoImplicit false')
     w('set_option maxRecDepth 8192')
     w('set_option linter.unusedVariables false')
     w('noncomputable section')
-    w('namespace DiophantineConsistency.P138Syntax')
+    w(f'namespace DiophantineConsistency.{mod}')
     w('open P138Value')
     w('')
     w('/-! ## The literal DAG -/')
@@ -119,7 +146,7 @@ def generate(d):
     w('')
     w('section Eval')
     w('variable {𝔸 : Type*} [CommRing 𝔸] (p : Fin 6 → ℤ) (x : Fin 11 → 𝔸)')
-    w('local notation "𝓟" => regs (fun i => (p i : 𝔸)) x')
+    w(f'local notation "𝓟" => {regs} (fun i => (p i : 𝔸)) x')
     w('')
     terms = []
     for i, row in enumerate(nodes):
@@ -139,7 +166,7 @@ def generate(d):
             a, b = row[1], row[2]
             rws = [f'n{i}', EVAL[kind], f'e{a}'] + ([f'e{b}'] if b != a else [])
             if i == d['output']:
-                t = 'value (fun i => (p i : 𝔸)) x'
+                t = f'{value} (fun i => (p i : 𝔸)) x'
                 close = True
             elif i in named:
                 need(named[i] in FIELDS, 'named register is a Regs field: ' + named[i])
@@ -150,12 +177,10 @@ def generate(d):
                 close = False
             w(f'theorem e{i} : (n{i} p).evalRing x = {t} := by')
             w(f'  rw [{", ".join(rws)}]' + ('; rfl' if close else ''))
-        if kind == 'variable' and i in named:
-            pass
         terms.append(t)
     w('')
-    w('/-- **The literal evaluates to `P138Value.value` in every commutative ring.** -/')
-    w('theorem evalRing_literal : (literal p).evalRing x = value (fun i => (p i : 𝔸)) x :=')
+    w(f'/-- **The literal evaluates to `P138Value.{value}` in every commutative ring.** -/')
+    w(f'theorem evalRing_literal : (literal p).evalRing x = {value} (fun i => (p i : 𝔸)) x :=')
     w(f'  e{d["output"]} p x')
     w('')
     w('end Eval')
@@ -166,18 +191,18 @@ def generate(d):
     w('open ModelDifferenceRing P138Ports')
     w('variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]')
     w('')
-    w('/-- At the six fixed ports, zeros of the literal in `DiffRing V` are zeros of `value portsR`. -/')
+    w(f'/-- At the six fixed ports, zeros of the literal in `DiffRing V` are zeros of `{value} portsR`. -/')
     w('theorem literal_zero_iff (x : Fin 11 → DiffRing V) :')
-    w('    (literal (fun i => (ports6 i : ℤ))).evalRing x = 0 ↔ value portsR x = 0 := by')
+    w(f'    (literal (fun i => (ports6 i : ℤ))).evalRing x = 0 ↔ {value} portsR x = 0 := by')
     w('  rw [evalRing_literal]')
     w('  rfl')
     w('')
     w('end Model')
     w('')
-    w('#print axioms DiophantineConsistency.P138Syntax.evalRing_literal')
-    w('#print axioms DiophantineConsistency.P138Syntax.literal_zero_iff')
+    w(f'#print axioms DiophantineConsistency.{mod}.evalRing_literal')
+    w(f'#print axioms DiophantineConsistency.{mod}.literal_zero_iff')
     w('')
-    w('end DiophantineConsistency.P138Syntax')
+    w(f'end DiophantineConsistency.{mod}')
     return '\n'.join(out) + '\n'
 
 
@@ -237,8 +262,9 @@ def eval_dag(nodes, out, xs, ps):
     return val[out]
 
 
-def eval_proof_md(xs, ps):
-    """Section 'Literal definition' of 138's PROOF.md, transcribed independently."""
+def eval_proof_md(form, xs, ps):
+    """Section 'Literal definition' of 138's PROOF.md, transcribed independently.
+    `M_index = E` [native], `M_index = 4q^4` [short]."""
     j, C, z, h, r, v, w, T, c, n, s = xs
     beta, K0, MC, MF, cA, cB = ps
     J = 6 * j + 1; q = beta * J + 1; W = 12 * w + 4
@@ -246,7 +272,8 @@ def eval_proof_md(xs, ps):
     a = E + Y; A = a + 2; H = 4 * a + 3; Delta = a * a + H
     F = (K0 + W) * C - z * (q - 1)
     R = (q * (q - F) - C) * (q * q - 1) + (MC + q * MF) * J
-    k = R + 1 + h * E; eta = c - Y * k
+    M_index = {'native': E, 'short': 4 * q**4}[form]
+    k = R + 1 + h * M_index; eta = c - Y * k
     Derr = (cA * F - q)**2 + (cB * C - q)**2
     Budget = k * k * (q * q - Derr) - 4 * q * q * eta * eta
     L = X * Y * Y * k; Dt = 1 + L * (L + k); D = Budget - 4
@@ -261,49 +288,106 @@ def eval_proof_md(xs, ps):
     return (Q * (Z * Z - RG * V * V) + (RG - Z * Z)) % PRIME
 
 
-def numeric_gate(nodes, out, trials=40):
-    rng = random.Random(138924107)
+def numeric_gate(form, nodes, out, seed, trials=40):
+    rng = random.Random(seed)
     for _ in range(trials):
         xs = [rng.randrange(PRIME) for _ in VARS]
         ps = [rng.randrange(PRIME) for _ in PORTS]
-        if eval_dag(nodes, out, xs, ps) != eval_proof_md(xs, ps):
+        if eval_dag(nodes, out, xs, ps) != eval_proof_md(form, xs, ps):
             return False
     return True
 
 
-def main():
-    d = load()
-    need(numeric_gate(d['nodes'], d['output']), 'JSON DAG = PROOF.md formula (1) modulo 2^127-1')
-    text = generate(d)
-    if '--check' not in sys.argv:
-        LEAN_PATH.write_text(text, encoding='utf-8', newline='\n')
-        print('wrote', LEAN_PATH)
-        return
-    disk = LEAN_PATH.read_text(encoding='utf-8')
-    need(disk == text, 'Lean file is byte-identical to a fresh generation')
-    parsed, out = parse_lean(disk)
-    need(compare(parsed, out, d), 'parsed Lean literal = JSON DAG node for node')
-    need(numeric_gate(parsed, out, trials=8), 'parsed literal = PROOF.md formula (1)')
-    # mutation controls on the parsed literal
-    controls = 0
-    for mutate in ('child', 'op', 'literal', 'variable', 'coefficient'):
-        bad = [list(r) for r in parsed]
-        if mutate == 'child':
-            bad[130] = ['add', 128, 128]
-        elif mutate == 'op':
-            bad[127] = ['add', 124, 126]
-        elif mutate == 'literal':
-            bad[113] = ['integer', 18]
-        elif mutate == 'variable':
+def transfer_gate(dn, ds, trials=40):
+    """`P138Value.valueS_update`: short at h' = h (3w+1)(2v+1) equals native at h."""
+    rng = random.Random(138)
+    for _ in range(trials):
+        xs = [rng.randrange(PRIME) for _ in VARS]
+        ps = [rng.randrange(PRIME) for _ in PORTS]
+        h, v, w = xs[3], xs[5], xs[6]
+        ys = list(xs)
+        ys[3] = h * (3 * w + 1) * (2 * v + 1) % PRIME
+        if eval_dag(ds['nodes'], ds['output'], ys, ps) != eval_dag(dn['nodes'], dn['output'], xs, ps):
+            return False
+    return True
+
+
+def mutations(form, d):
+    """Corrupted copies of the DAG: (name, nodes, output). Each must be rejected."""
+    nodes, out = d['nodes'], d['output']
+    named = d['named_registers']
+    i19 = [i for i, r in enumerate(nodes) if r == ['integer', 19]]
+    need(len(i19) == 1, 'the unique integer leaf 19')
+    need(nodes[out - 3][0] == 'sub', 'node out-3 is the subtraction Z2 - RG V2')
+    k = named['k']
+    # the gate of `k` that holds h * M_index, i.e. the `mul` child of the last `add`
+    hm = nodes[k][2]
+    need(nodes[hm][0] == 'mul' and nodes[hm][1] == VARS.index('h'), 'k = (1 + R) + h * M_index')
+    mindex = nodes[hm][2]
+    # the other form's index modulus: `E = X * Y` for the short DAG; for the native DAG (where `E`
+    # precedes `q24`), the `h * M_index` gate becomes `h * q24 = h * 4 q^2`
+    target, alt = (mindex, [named['X'], named['Y']]) if form == 'short' else (hm, [3, named['q24']])
+    cases = []
+    for name in ('child', 'op', 'literal', 'variable', 'coefficient', 'modulus'):
+        bad = [list(r) for r in nodes]
+        if name == 'child':
+            bad[out] = ['add', out - 2, out - 2]
+        elif name == 'op':
+            bad[out - 3] = ['add'] + bad[out - 3][1:]
+        elif name == 'literal':
+            bad[i19[0]] = ['integer', 18]
+        elif name == 'variable':
             bad[0] = ['variable', 'C']
-        else:
+        elif name == 'coefficient':
             bad[15] = ['coefficient', 'cone_B']
-        need(not compare(bad, out, d), 'mutation detected by node comparison: ' + mutate)
-        need(not numeric_gate(bad, out, trials=2), 'mutation changes the value: ' + mutate)
+        else:
+            bad[target] = ['mul'] + alt
+        cases.append((name, bad, out))
+    cases.append(('output', [list(r) for r in nodes], out - 1))
+    return cases
+
+
+def check(name, f, d):
+    lean_path = DC / f['lean']
+    text = generate(f, d)
+    disk = lean_path.read_text(encoding='utf-8')
+    need(disk == text, f'{name}: Lean file is byte-identical to a fresh generation')
+    parsed, out = parse_lean(disk)
+    need(compare(parsed, out, d), f'{name}: parsed Lean literal = JSON DAG node for node')
+    need(numeric_gate(name, parsed, out, f['seed'], trials=8), f'{name}: parsed literal = PROOF.md (1)')
+    controls = 0
+    for mname, bad, bout in mutations(name, d):
+        need(not compare(bad, bout, d), f'{name}: mutation detected by node comparison: {mname}')
+        need(not numeric_gate(name, bad, bout, f['seed'], trials=2),
+             f'{name}: mutation changes the value: {mname}')
         controls += 1
-    need(not compare(parsed, 129, d), 'mutated output index detected')
-    print(f'OK: {len(parsed)} nodes match JSON node for node; output {out}; '
-          f'byte-identical regeneration; PROOF.md numeric gate; {controls + 1} mutation controls rejected')
+    print(f'OK {name} {f["tag"]}: {len(parsed)} nodes match JSON node for node; output {out}; '
+          f'byte-identical regeneration; PROOF.md numeric gate; {controls} mutation controls rejected')
+
+
+def main():
+    forms = list(FORMS)
+    if '--form' in sys.argv:
+        sel = sys.argv[sys.argv.index('--form') + 1]
+        need(sel in FORMS, 'unknown form ' + sel)
+        forms = [sel]
+    data = {}
+    for name in forms:
+        f = FORMS[name]
+        d = load(f)
+        need(numeric_gate(name, d['nodes'], d['output'], f['seed']),
+             f'{name}: JSON DAG = PROOF.md formula (1) modulo 2^127-1')
+        data[name] = d
+        if '--check' in sys.argv:
+            check(name, f, d)
+        else:
+            path = DC / f['lean']
+            path.write_text(generate(f, d), encoding='utf-8', newline='\n')
+            print('wrote', path)
+    if '--check' in sys.argv and len(data) == 2:
+        need(transfer_gate(data['native'], data['short']),
+             'transfer: short(h (3w+1)(2v+1)) = native(h) modulo 2^127-1')
+        print('OK transfer: short value at h(3w+1)(2v+1) = native value at h (40 points mod 2^127-1)')
 
 
 if __name__ == '__main__':

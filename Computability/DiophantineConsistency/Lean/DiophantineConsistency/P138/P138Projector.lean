@@ -195,11 +195,11 @@ theorem height_power (xn t : V) (hx : Exp.exp (66 : V) ≤ xn) (ht : 14 ≤ t) :
 /-! ## At a zero -/
 
 section Regs
-variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V)
-local notation "𝓡" => regs p x
+variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V) (κ : DiffRing V)
+local notation "𝓡" => regsK p x κ
 
 /-- **The main congruence, either sign of `A`.** -/
-theorem signed_main (hp : PortFacts p) (E : EarlyFold p x) (M : MainIndex p x E) :
+theorem signed_main (hp : PortFacts p) (E : EarlyFold p x κ) (M : MainIndex p x κ E) :
     ∃ d z : DiffRing V, d * d = (𝓡).Dm ∧
       d = ι (Exp.exp M.Rn) + (𝓡).a * ι E.cn + (4 * (𝓡).a + 3) * z := by
   obtain ⟨u, hu⟩ := P72ConvArith.odd_of_mod_two M.hodd
@@ -236,15 +236,15 @@ theorem eq_zero_of_dvd_lt {H D : DiffRing V} (h : H ∣ D) (hD : |D| < |H|) : D 
 
 set_option maxHeartbeats 2000000 in
 /-- **The signed projector.** `σ X = 2^R` with `x 8 = σ |c|`. -/
-theorem projector (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x)
-    (M : MainIndex p x E) (Fi : FirstIndex p x E M) :
+theorem projector (hp : PortFacts p) (hz : valueK p x κ = 0) (E : EarlyFold p x κ)
+    (M : MainIndex p x κ E) (Fi : FirstIndex p x κ E M) :
     ∃ σ : DiffRing V, (σ = 1 ∨ σ = -1) ∧ x 8 = σ * ι E.cn ∧
       σ * (𝓡).X = ι (Exp.exp M.Rn) := by
   obtain ⟨t, ht⟩ := P72ConvArith.odd_of_mod_two M.hodd
   obtain ⟨xn, hxn⟩ := abs_eq_ι (𝓡).X
-  obtain ⟨d, z, hdd, hd⟩ := signed_main p x hp E M
-  have hHK := H_dvd_Kq5 p x hp hz E
-  have hlarge := H_large p x hp hz E M Fi t xn ht hxn
+  obtain ⟨d, z, hdd, hd⟩ := signed_main p x κ hp E M
+  have hHK := H_dvd_Kq5 p x κ hp hz E
+  have hlarge := H_large p x κ hp hz E M Fi t xn ht hxn
   -- the sign of `c`
   obtain ⟨σ, hσ, hcσ⟩ : ∃ σ : DiffRing V, (σ = 1 ∨ σ = -1) ∧ x 8 = σ * ι E.cn := by
     rcases eq_or_eq_neg_abs (x 8) with h | h <;> rw [E.hcn] at h
@@ -258,7 +258,7 @@ theorem projector (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x)
     rw [hdd, Dm_eq, Delta_def, H_def, hcσ]
     linear_combination (((𝓡).a * (𝓡).a + (4 * (𝓡).a + 3)) * ι E.cn * ι E.cn) * hσσ
   have hK : (4 * (𝓡).a + 3) ∣ (X' * X' + 2 * (𝓡).a * X' * ι E.cn - 1) ^ 5 := by
-    have e : X' * X' + 2 * (𝓡).a * X' * ι E.cn - 1 = Kq p x := by
+    have e : X' * X' + 2 * (𝓡).a * X' * ι E.cn - 1 = Kq p x κ := by
       unfold Kq; rw [hX', hcσ]
       linear_combination ((𝓡).X * (𝓡).X) * hσσ
     rw [e, ← H_def]; exact hHK
@@ -268,7 +268,7 @@ theorem projector (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x)
   have hX66 : Exp.exp (66 : V) ≤ xn := by
     apply ι_le_ι.mp
     rw [← hxn]
-    have := abs_X_ge p x hp
+    have := abs_X_ge p x κ hp
     have e : (ι (Exp.exp (66 : V)) : DiffRing V) = 2 ^ 66 := by
       have h := exp_nat (V := V) 66
       rw [Nat.cast_ofNat] at h
@@ -277,7 +277,7 @@ theorem projector (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x)
   have ht14 : (14 : V) ≤ t := by
     apply ι_le_ι.mp
     have h4 : (4080 : DiffRing V) ≤ ι M.Rn := by
-      have := (sizes p x hp (signs p x hp hz)).2.2; rwa [M.hR] at this
+      have := R_ge p x κ hp (signs p x κ hp hz); rwa [M.hR] at this
     rw [ht] at h4; simp only [map_add, map_mul, map_ofNat, map_one] at h4; rw [map_ofNat]
     linarith
   have hheight := height_power xn t hX66 ht14
@@ -285,7 +285,7 @@ theorem projector (hp : PortFacts p) (hz : value p x = 0) (E : EarlyFold p x)
   have hX'abs : |X'| = ι xn := by
     rw [hX', abs_mul, hxn]; rcases hσ with h | h <;> rw [h] <;> simp
   have hxn1 : (1 : DiffRing V) ≤ ι xn := by
-    rw [← hxn]; have := abs_X_ge p x hp
+    rw [← hxn]; have := abs_X_ge p x κ hp
     have : (1 : DiffRing V) ≤ 2 ^ 66 := one_le_pow₀ (by norm_num); linarith
   have hP : |(X' - T) * (T * X' + 1)| ≤ (ι xn * (T + 1)) ^ 2 := by
     rw [abs_mul]
