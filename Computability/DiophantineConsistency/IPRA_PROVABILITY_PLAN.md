@@ -5416,14 +5416,17 @@ That includes:
 - (170's 154 / 72, 162 / 71 and 74 / 438 are closed: see above);
 - (184's eleven-positive 104 / 174 is closed: see above);
 - (the ten-positive Pareto row is closed: see the BFS943 paragraphs above);
-- 101's nine-positive points. A proved prefix toward 101's 420 is in
-  `Lean/.../Nine121/` (03eee09491; record
-  `research/nine-positive-p101-420-endpoint/`). It contains the internal
-  31-source ↔ machine-215 calibration at 121x8801 in both directions
-  (`Source31Facts`, `Source31Converse`, reusable for 101's 1,057, 105's 456
-  and 106's 10ℤ forms) and the sound and complete saturated simple finalizer
-  (`N9Finalizer`). Still open: the digit-extraction contract, the literal
-  graph and the endpoint.
+- 101's nine-positive 1,057 (complete-radical majorant), 105's 456 and 82's
+  726 on 121x8801. **101's nine-positive 420 is CLOSED** (8 November 2026,
+  d4758e684f): `Nine121/IPRANine101p420` gives native, standard and
+  equality-only iPRA equivalences for the literal `N101p420Graph.n451` at
+  `Mixed121Ports.ports` (record `research/nine-positive-p101-420-endpoint/`;
+  `check_graph.py` binds it to the pinned JSON `ea0804c3…`). The new reusable
+  layers are the internal 31-source ↔ machine-215 calibration
+  (`Source31Facts`, `Source31Converse`), the saturated simple finalizer
+  (`N9Finalizer`, which 105's 456 shares), and the sparse digit-extraction
+  contract (`SparseCentral`, `SignedDigits`, `LowMask`, `SparseExtraction`,
+  `SparseCheck`, `N101Contract`).
 
 **Tuple audit (4 November 2026).** After 57, every open point is at a tuple
 that the tree's Compact44 calibration does not cover. The tree's `paramKernel rho`
