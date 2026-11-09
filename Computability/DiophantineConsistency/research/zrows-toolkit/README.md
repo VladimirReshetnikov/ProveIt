@@ -4,7 +4,7 @@ This is the shared Lean layer for iPRA endpoints of the frontier rows whose unkn
 (10ℤ to 17ℤ in `con-zfc-diophantine-forms/README.md`). The modules live in
 `Lean/DiophantineConsistency/ZRows/`.
 
-**Status:** stages 1–3 are built. Each module re-elaborates without errors or warnings,
+**Status:** stages 1–4 are built. Each module re-elaborates without errors or warnings,
 and every `#print axioms` reports `[propext, Classical.choice, Quot.sound]` or a subset of it.
 The first ℤ frontier endpoints using them are package 138's eleven-integer 924/107 and 840/108
 (`P138/IPRAInteger138`, `P138/IPRAInteger138Short`; record in
@@ -48,6 +48,21 @@ The convention is Lean's `ycoord n a`, with discriminant `delta a = (a+1)(a+3)`.
 
 This replaces the lifting-the-exponent theorem and the valuation isometry of 112 §5 by linear
 stepping. Neither LTE nor a pigeonhole surjectivity argument is needed.
+
+## Modules (stage 4: interpolation modulo `I⁴`)
+
+The linear-cofactor completeness (packages 135, 144, 153, 165, 172) interpolates modulo
+`u·s·r = A²·d·s·t³`, which divides `I⁴` but in general not `I²`.
+
+| Module | Content |
+|---|---|
+| `QuarticInterpolation` | `step_law`: the linear law of the abscissa quotient from an arbitrary base point of the progression, for any half step `m = 2·I·f·w·k` with `ψ_ρ(m) = 2ρ·I·Q·P`; `first_ordinate` (`Q = 1`) and `second_ordinate` (`Q = I²`, `m = 2·I·f·w·I²`, `P` coprime to `I`), the latter by the composition `ψ_ρ(m₁·I²) = ψ_ρ(m₁)·ψ_C(I²)` at `C = χ_ρ(m₁)`, the residue law `ψ_C(N) ≡ N (mod C − 1)` and `I⁴ ∣ C − 1`; `quartic_interpolation` and `supported_interpolation4`: stepping first by `4·I·f·w` and then by `4·I³·f·w` makes `T` reach every class modulo any `M ∣ I⁴` |
+
+The second level needs only that the cofactor `P` of `ψ_ρ(2·I·f·w·I²) = 2ρ·I³·P` is a unit
+modulo `I`. The sharper congruence `P ≡ ±L (mod L·ρ²)` (`L = I³·f·w`) considered during route
+planning is false in general (it fails for `a = 0`, `n0 = 6`, `I = 780`, and in every small instance
+tested with `3 ∣ I`) and is not used. The bound is `M ∣ I⁴`: one more level per further
+factor `I²` would need one more composition, that is, an internal induction over levels.
 
 ## What remains (for 11ℤ, 10ℤ and 113's 12ℤ)
 
