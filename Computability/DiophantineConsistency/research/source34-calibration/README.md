@@ -69,6 +69,33 @@ by `interval_cases u` (`omega` alone could not handle `2u` against `8801` with
 the parity test). Every finite geometric fact was checked in Python before it
 was proved.
 
+**The converse at the source34 ports** (9 November 2026, 17 further modules,
+`Source34PulseBit` … `Source34Converse`): an internal halt of machine 215 gives
+a positive solution of the leaf facts at the source34 ports.
+
+* `Source34Seeds.halt_first_gamma` is the canonical halting data. It has the
+  same statement as `Mixed121Seeds.halt_first_gamma`, with the source34
+  kernel, masks, constructed rank and base cell.
+* `Source34Converse.converse_facts` builds the 31 coordinates of the
+  31-input parent source. It reuses the generic ring identity
+  `Nine121.Source31Converse.rows_zero` and the port-generic
+  `Source31Facts.facts_ports`.
+* `Source34Converse.halt_iff_facts` combines it with
+  `Source34Halt.halts_of_facts`. In every model of `𝗜𝚺₁`, machine 215 halts
+  internally iff the leaf facts have a positive solution at the source34
+  ports.
+
+The 16 ported modules are exactly the closure of `Mixed121Seeds`, minus what
+`Source34/` already had and the generic Mixed121 code. Tuple-specific changes:
+
+* the field windows are named by an index `u < 10` (`1000 + 2u`,
+  `1021 + 2u`);
+* the copy digit gets its own lemma `Source34Cell.trackDigit`;
+* the kernel's top exponent is `8802`, so `2^1065042 ≤ K < 2^1065043`;
+* the bare kernel terms are `{40, 41, 1100, 2200}`.
+
+Axioms: `propext`, `Classical.choice`, `Quot.sound`.
+
 ## The completeness obstruction
 
 44 / 111's guard is `G = budget − pos`, `pos = 1 + p₁² + p₂² + p₃(p₃+1)`. The
@@ -82,8 +109,9 @@ iPRA equivalence also needs an internal three-square theorem.
 
 ## Remaining work
 
-1. A `Source34/` port of the Mixed121 calibration modules: kernel, ports,
-   masks, kernel residue, controller unit, then the decoding, column and
-   packing layers with the stride-2 copy geometry.
-2. The 44 / 111 graph and its signed (ℤ-variable) reduction, the first
-   ℤ-variable endpoint of the tree.
+1. The per-point graphs of the source34 rows and their signed (ℤ-variable)
+   reductions. The 11ℤ rows (138, 172) avoid the three-square guard. They
+   need the integer toolkit of [`zrows-toolkit`](../zrows-toolkit/README.md)
+   and package 132's signed soundness chain down to the leaf facts.
+2. For 44 / 111 and the other `pos`-guarded rows: an internal three-square
+   theorem (see above).

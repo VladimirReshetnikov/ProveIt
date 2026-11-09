@@ -37,7 +37,9 @@ zeros of `e` in the ring of differences `DiffRing V` (`IntegerDomain.integer_zer
 
 * Interpolation, the Pell-specific part: the period `4n₀f` modulo `f²`, the valuation fact
   `v_p(ψ(n₀)) ≥ v_p(n₀)` (in the form `gcd(λ, 4I²) ∣ 4I`), and the Chebyshev congruences.
-* The source34 converse port (11ℤ) and the per-point graph, soundness and completeness modules.
+* The per-point graph, soundness and completeness modules. The halting side at the source34
+  ports, needed by 11ℤ, is done: `Source34Converse.halt_iff_facts` (see
+  [`source34-calibration`](../source34-calibration/README.md)).
 
 The 12ℤ–17ℤ rows other than 113 have a guard of the form `1 + p₁² + p₂² + p₃(p₃ + 1)`. For them,
 completeness also needs Legendre's three-square theorem inside models of `𝗜𝚺₁`. It is not in
