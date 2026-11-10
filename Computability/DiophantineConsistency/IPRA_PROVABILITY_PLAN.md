@@ -1317,7 +1317,10 @@ the union survey is point-in-time, and transfers/equivalence remain separate.
 A [seven-row transfer client](research/nine-sharing-sign16-transfers-check/README.md),
 [independently audited](reviews/nine-sharing-sign16-transfers-terminal-independent/README.md),
 checks the retained residual transfers under represented beta and a supplied gap,
-with 345 linter warnings. Zero assembly and equivalence remain separate.
+with 345 linter warnings. A [pointwise zero assembly](research/nine-sharing-sign16-zero-assembly-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-zero-assembly-terminal-independent/README.md),
+checks forward zero with a supplied gap and backward zero with gap recovery.
+Gap existence has stronger bounds; existential equivalence remains separate.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a

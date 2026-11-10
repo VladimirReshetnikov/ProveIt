@@ -1,0 +1,5 @@
+# Sign16 pointwise zero assembly: source-only client
+
+The two checked clients assemble the seven retained residual transfers and removed V row into conditional pointwise zero maps, under represented beta and, forward, a supplied V representative. Representative existence is separate and independently audited. The [seven-transfer provider](../../reviews/nine-sharing-sign16-transfers-terminal-independent/README.md) is independently audited. No existential equivalence, source-to-JSON binding or iPRA endpoint is claimed.
+
+The runner pins all seven transfer stages and their point-in-time provenance, with two separately monitored stages. No-Lean preflight exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign16-zero-assembly-prelaunch-independent/README.md) passed. Author outer session 53524 exited 0 ([receipt](attempt01/outer-result.json)); the [independent terminal audit](../../reviews/nine-sharing-sign16-zero-assembly-terminal-independent/README.md) passed. Limits are `-M2800`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck.
