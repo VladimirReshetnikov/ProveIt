@@ -1340,7 +1340,11 @@ failed-parent-child, uncaptured-exit and point-union-survey caveats. The
 polynomial bridge is checked by a [concrete transport client](research/nine-sharing-sign16-concrete-polynomial-bridge-check/README.md),
 [independently audited](reviews/nine-sharing-sign16-concrete-polynomial-bridge-terminal-independent/README.md).
 Its point-in-time producer union and inherited failed-parent/uncaptured-exit
-caveats remain; the iPRA endpoint and JSON binding are separate.
+caveats remain. A [three-stage iPRA endpoint client](research/nine-sharing-sign16-endpoint-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-endpoint-terminal-independent/README.md),
+checks native, standard and Gödel–Gentzen-translated standard proof-existence
+formulations for the symbolic Fin16 expression. Its exact Lean degree and
+external JSON/PDF binding remain separate.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
