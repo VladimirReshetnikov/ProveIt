@@ -1365,6 +1365,10 @@ A [shared-values client](research/nine-sharing-sign15-shared-values-check/README
 [independently audited](reviews/nine-sharing-sign15-shared-values-terminal-independent/README.md),
 checks natural c, root and scale evaluations under represented beta. Signed Na
 interpretation and the natural lift remain separate.
+A [Na-row client](research/nine-sharing-sign15-na-row-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-na-row-terminal-independent/README.md),
+extracts the substituted row from actual staged seed zero with shared values
+abstract, with one warning. Its concrete interpretation and lift are separate.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
