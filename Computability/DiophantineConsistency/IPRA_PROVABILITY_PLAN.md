@@ -1402,6 +1402,10 @@ A [zero-assembly attempt](research/nine-sharing-sign14-zero-assembly-check/READM
 [independently audited](reviews/nine-sharing-sign14-zero-assembly-terminal-independent/README.md),
 hit the default 200,000-heartbeat limit in the forward stage; no forward
 object, reverse stage or postflight was produced.
+A [scoped-heartbeat retry](research/nine-sharing-sign14-zero-assembly-retry01-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-zero-assembly-retry01-terminal-independent/README.md),
+hit the 120-second forward compilation guard; no object, reverse stage or
+postflight was produced.
 An [expression-evaluation client](research/nine-sharing-sign14-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign14-expression-eval-terminal-independent/README.md),
 checks abstract and current Fin14 symbolic evaluation. Successful-child/
