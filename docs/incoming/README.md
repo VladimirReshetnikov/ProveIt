@@ -680,6 +680,20 @@ was run and no new formal endpoint status follows from this intake. The
 written reconciliation uses the permitted continuation-note format; no
 unified LaTeX/PDF rebuild is claimed.
 
+## Out-of-band placement: `pa_flexible_output.zip` (9 November 2026)
+
+At Vladimir's direction this one archive (arrival `cb5ce85523`) was placed
+on its own, outside the numbered batches, as the new project
+[`Logic/PeanoArithmetic/FlexibleOutput/`](../../Logic/PeanoArithmetic/FlexibleOutput/README.md):
+a proposed theorem (one divergent program whose halting on input 0 with
+output `n` holds in some model of PA, for every standard `n`), its draft
+article, and three Lean files. All thirteen manifest hashes match. The
+package was delivered uncompiled; its three Lean files compile unmodified in
+the root workspace and are registered as the library `PAFlexibleOutput`.
+They are a conditional scaffold, not a proof of the PA theorem. No write
+report was made. The other archives in this directory were not part of the
+request and remain queued.
+
 ## Queue status after batch 203
 
 `Feedback_Scheduling_and_Corrected_217_2026-10-21.zip` (arrival `1083e2b5ff`)

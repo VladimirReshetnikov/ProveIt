@@ -302,6 +302,56 @@ then proves, in native, standard and equality-only iPRA, that the 52 / 79
 equation has no positive zero iff `¬Halts(M215)`, i.e. iff the mapped ZFC
 refutation is absent. Axioms: `propext`, `Classical.choice`, `Quot.sound`.
 
+Package 59's 14-positive 52 / 79 (`59-degree-separated/short/circuits/p79_d52_14positive.json`)
+is a different polynomial at the same four ports: its output is
+`M² + (Na − 1)² + (N0·Nt − 1)² + W²` instead of `M² + W² + Na² + (N0·Nt − 1)² − 1`,
+and its auxiliary norm is written `ŷ² − Aaux·u·(V + ŷ)`. `P59Graph` proves, over any
+commutative ring, that every residual evaluates as package 55's, and
+[`IPRAPositive59`](../../Lean/DiophantineConsistency/Mixed121/IPRAPositive59.lean)
+transfers package 55's bridge (a 59-zero has four vanishing squares; a positive 55-zero
+has `M = W = 0` and `Na = N0 = Nt = 1` by `P55Norm.residuals`). It gives the same three
+iPRA endpoints. [`tools/generate_p59.py`](tools/generate_p59.py) checks the 79 gates
+against the pinned JSON, the package's exact-degree audit and the port hashes.
+
+**Fifteen-positive forms on this tuple (2026-11-07).** Package 59's 91 / 69
+(`p69_d91`), 101 / 68 (`p68_d101`) and 125 / 67 (`p67_d125`), package 56's
+54 / 73 (Q54) and 46 / 74 (Q46), and package 47's 44 / 75 (`gap_minima75`) all bind
+package 55's four ports. They are unit products or grouped sums of squares of the
+residuals `N0, N1, Na, Nk, Nt, Ns` with an explicit multiplier `Nk = k − hE − R`.
+`Short15Graph` … `Short15Facts` take a positive zero straight to `LeafFacts` and
+`Mixed121Halt.halts_of_facts`; the new step is `Short15Index.minus_false`, which
+rules out `Nk = Nt = −1` (`Nt = −1` gives `C ≥ 0` because `0 < K0`, then the Pell
+doubling bound contradicts `c = kY + η`). `Short15ConvData` / `Short15ConvZero`
+read the canonical halt data with `h = 4Ys'` and `γ = γold`. The endpoints are
+`IPRAPositive59p69`, `IPRAPositive59p68`, `IPRAPositive59p67`, `IPRAPositive56q54`,
+`IPRAPositive56q46` and `IPRAPositive47p75`, each with native, standard and
+equality-only equivalences. [`tools/generate_short15.py`](tools/generate_short15.py)
+`--check` binds each literal graph to its pinned JSON and checks that each package's
+port hashes equal package 55's.
+
+**Package 54's gate lists at these ports (2026-11-08).** Package 54's three
+fifteen-positive frontier circuits, 80 / 70 (`p70_degree80`), 78 / 71
+(`p71_degree78`) and 72 / 64 (`p72_degree64`), are bound in the package to its own
+tuple `complemented-factorized-receiver-89x4831` (base `2^429959`), which the tree
+does **not** calibrate. As for package 59's copy of 101 / 68, the Lean endpoints
+take **54's gate lists, instantiated at package 55's 121x8801 ports**
+(`Mixed121Ports.ports`); degree and operation count do not depend on the tuple.
+54's literal c54-port equations remain uncalibrated. The output is
+`A² + B(B − 2) + C²` with `A = N0·N1`, `B = Na·Nk·Nt` and `C = S`, over the same six
+residuals as above. `Short15P54Split` shows that a zero has `A = ±1`, `B = 1`, `C = 0`
+(`N0`, `N1` are never zero), hence `N0 = N1 = Na = 1`, `S = 0`, `Nk = Nt = ±1`, and the
+`Short15` chain finishes as for the six-factor products. The converse uses
+`Short15ConvData.canonical` unchanged. Package 54's own completeness argument
+relies on a c54 fact, the low-mask phase `R ≡ 3 (mod 4)`; at 121x8801 that role is
+played by the canonical halt data already proved here. The graphs are
+`P54p70Graph`, `P54p71Graph` and `P54p72Graph`, and the endpoints are
+`IPRAPositive54p70`, `IPRAPositive54p71` and `IPRAPositive54p72`, each with native,
+standard and equality-only equivalences.
+[`tools/generate_short15_p54.py`](tools/generate_short15_p54.py) `--check` binds each
+Lean block to the gates of its pinned JSON. It also checks that 54's four port hashes
+are disjoint from package 55's, so the endpoints are not 54's literal equations.
+`--mutations` confirms that seven kinds of corrupted gate lists are rejected.
+
 ## Remaining phases
 
 1. **Per-form leaf facts for 44 / 111.** Package 132's fifteen-integer form
@@ -315,7 +365,7 @@ refutation is absent. Axioms: `propext`, `Classical.choice`, `Quot.sound`.
    arbitrary-odd-factor construction, so its port changes the constants
    (`p = 581197 → λ = 2341`, `C0 = 342946332593 → 2492980061`), not the
    argument.
-3. **Endpoints.** 52 / 79 is done (`IPRAPositive55`). 44 / 111 turned out to
+3. **Endpoints.** 52 / 79 is done for package 55 (`IPRAPositive55`) and package 59 (`IPRAPositive59`). 44 / 111 turned out to
    be on a different tuple, source34 ("mixed-parity-unrounded-1064921": same
    β, `b`, `L` and `λ = 2341` controller, but kernel `D_C = ρ^40 + ρ^41 + … `,
    `D_R = ρ`, parity-separated high mask), so it needs its own calibration.

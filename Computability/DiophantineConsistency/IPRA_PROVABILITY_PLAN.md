@@ -5305,21 +5305,181 @@ Package 57's twelve-positive 258 / 89 followed
 - **Converse.** It takes `y = (y_halt + 1)/(Δic²)²`, which is integral by
   `ArithmeticOddOrdinateResidue.pair` at rank `≡ 3 (mod 4)`.
 
+**163's ten-positive 75 / 402, CLOSED (2026-11-08).** The research trace75
+assembly is promoted into the tree as 346 modules under
+[`Lean/DiophantineConsistency/BFS943/`](Lean/DiophantineConsistency/BFS943/)
+([record](reviews/bfs943-source-promotion/README.md)): 341 copies with only
+their imports rewritten, four reconstructions of never-committed sources, and
+the endpoint [`BFS943/IPRATrace75`](Lean/DiophantineConsistency/BFS943/IPRATrace75.lean)
+(native, standard and reference equivalences at the BFS943 ports). This is the
+tree's first direct-BFS943 module set.
+
+**163's ten-positive 76/352, CLOSED (2026-11-08)** at the same ports
+([`BFS943/IPRATrace76`](Lean/DiophantineConsistency/BFS943/IPRATrace76.lean),
+[record](research/ten-positive-trace76-endpoint/README.md)). Soundness is a
+reduction to 75: `value76 p v = value75 p v'` with `n ↦ n + (V² − bV)B`, and a
+positive 76 zero has `B ≥ 0` and `V² ≥ bV`. Completeness re-derives the 75
+construction with the carrier chosen for weight `bV`.
+
+**171's ten-positive 77/348 and 163's 79/290, CLOSED (2026-11-08)** at the same
+ports ([`BFS943/IPRATrace77`](Lean/DiophantineConsistency/BFS943/IPRATrace77.lean),
+[`BFS943/IPRATrace79`](Lean/DiophantineConsistency/BFS943/IPRATrace79.lean);
+records [77](research/ten-positive-trace77-endpoint/README.md),
+[79](research/ten-positive-trace79-endpoint/README.md)). Both reduce soundness
+to a positive 75 zero by moving `n` (77: `XY = (ws)q⁴`, `e = XY·ρ`; 79:
+`q | s`, then the q3 chart at `s/q`), and build completeness from a 76 zero.
+**163's 80/258 (chart q1), CLOSED (2026-11-08)**
+([`BFS943/IPRATrace80`](Lean/DiophantineConsistency/BFS943/IPRATrace80.lean),
+[record](research/ten-positive-trace80-endpoint/README.md)): the projection
+layer ported to q1 gives `X = 2^R`, so `q` is a power of two and `q² | s`; the
+zero maps to a 75 zero at `(qw, s/q², n′)`.
+
+**172's 82/240 (free_plain), CLOSED (2026-11-08)**
+([`BFS943/IPRATrace82`](Lean/DiophantineConsistency/BFS943/IPRATrace82.lean),
+[record](research/ten-positive-p172-82-endpoint/README.md)) through a new
+zero-free halting entry `FixedSourceHalt.source_halts`
+([record](research/bfs943-fixed-source-entry/README.md)): `FixedSource` asks only
+for `X = 2^R`, the mask, the transport identity and the population bound.
+
+**172's 87/214 (free_inverse), CLOSED (2026-11-08)**
+([`BFS943/IPRATrace87`](Lean/DiophantineConsistency/BFS943/IPRATrace87.lean),
+[record](research/ten-positive-p172-87-endpoint/README.md)), also through
+FixedSource. `BFS943/InverseLucasCubic` holds the form-independent internal
+second-order Lucas expansion (needed only mod `v²`) and `cancel_three`.
+
+**179's 89/210 and 90/206 and 171/172's 85/232, CLOSED (2026-11-08)**
+([`BFS943/IPRATrace89`](Lean/DiophantineConsistency/BFS943/IPRATrace89.lean),
+[`IPRATrace90`](Lean/DiophantineConsistency/BFS943/IPRATrace90.lean),
+[`IPRATrace85`](Lean/DiophantineConsistency/BFS943/IPRATrace85.lean); records
+[89](research/ten-positive-p179-89-endpoint/README.md),
+[90](research/ten-positive-p179-90-endpoint/README.md),
+[85](research/ten-positive-p171-85-endpoint/README.md)). The centred points
+`Z = Z₈₇ − M·g·V` use the generic `Centred87*` layer: 179's estimate (3)–(4)
+gives `B ≥ 0` for any centre with `g² < 4EF₀`, after which the shifted 87 chain
+`Trace87Shift*` reads the carrier only modulo `D` and `H` and ends in the same
+FixedSource; completeness moves `n` to `n + gV` at a positive 87 zero. 171's
+and 172's 85/232 files are one polynomial on one tuple: the 87 circuit with the
+80-style strip `c = kY + η` and denominator `6q⁶` (`Trace85*`, `q² | s`).
+
+**194's 97/202 (quotient_t) and 111/198 (product2), CLOSED (2026-11-08)**
+([`BFS943/IPRATrace97`](Lean/DiophantineConsistency/BFS943/IPRATrace97.lean),
+[`IPRATrace111`](Lean/DiophantineConsistency/BFS943/IPRATrace111.lean); records
+[97](research/ten-positive-p194-97-endpoint/README.md),
+[111](research/ten-positive-p194-111-endpoint/README.md)), in their radix67
+copies. The root scale `r = 2` needs no new root extraction: `Q − 1` is odd, so a
+zero has an even carrier `2·Zh`, and `Zh` is a zero of the 87 norm. The generic
+`Scaled87*` layer gives `B ≥ 0` for any shift `ws ≤ 5g|V|` (from `64g ≤ F`) and
+hands `Zh` to the `Trace87Shift*` chain; the two centres are bounded below `3g`
+and `5g|V|`.
+
+**193's P190 (118/190), CLOSED (2026-11-08)**
+([`BFS943/IPRATrace118`](Lean/DiophantineConsistency/BFS943/IPRATrace118.lean),
+[record](research/ten-positive-p193-118-endpoint/README.md)). The root scale 4
+halves twice by the same parity argument (`Zc = 4·Zh`, `Zh` a zero of the 87
+norm). `OmegaFold = Ω + L·B`, and the weight `L = A·U³·b²` dominates
+`2(4gy + Ω)` by the adjacent Pell norm (`U²|b| > 52EF`), giving `B ≥ 0` and a
+`ShiftZero` for the `Trace87Shift*` chain. **With this, all thirteen
+ten-positive Pareto points have iPRA endpoints at the BFS943 ports.**
+
+**184's eleven-positive 104/174 (constant dilation), CLOSED (2026-11-08)**
+([`BFS943/IPRATrace104`](Lean/DiophantineConsistency/BFS943/IPRATrace104.lean),
+[record](research/eleven-positive-p184-104-endpoint/README.md)). The dilation
+`Y = 210s` needs its own port of the 87 chain (`Trace104*`, ending in
+FixedSource). The output `(3N+1)(P0+1) − 1` forces `N = 0`, i.e. `K = Hκ`, and
+the core norm is `H²·P0`. The `44100·ℓ₀` cubic correction is the new
+form-independent third-order Lucas expansion `BFS943/InverseLucasThird`.
+
+**170's 71/162, 72/154 (thirteen-positive) and 74/438 (twelve-positive),
+CLOSED (2026-11-08)**
+([`BFS943/IPRAQuot170p71`](Lean/DiophantineConsistency/BFS943/IPRAQuot170p71.lean),
+[`p72`](Lean/DiophantineConsistency/BFS943/IPRAQuot170p72.lean),
+[`p74`](Lean/DiophantineConsistency/BFS943/IPRAQuot170p74.lean); records
+[71](research/p170-71-endpoint/README.md), [72](research/p170-72-endpoint/README.md),
+[74](research/p170-74-endpoint/README.md)), through a new Carrier65 calibration
+at the BFS943 ports
+([`BFS943/IPRACarrier65BFS943`](Lean/DiophantineConsistency/BFS943/IPRACarrier65BFS943.lean),
+[record](research/bfs943-carrier65-calibration/README.md)): the five
+`Equations` give a FixedSource, and `halt_outer` reads Carrier65 coordinates off
+the BFS halt seeds. Each 170 zero is restored to a Carrier65 zero (`A = τ²`,
+`k ≡ R ± 1` mod `E` or `q⁴`, the `−1` sign excluded by growth; 74/438 through
+coprimality and adjacent integrality). **With this, every compact-tuple point
+at the direct-BFS943 ports is closed.**
+
+**66's fifteen-positive 30 / 78, 26 / 87 and 24 / 88, CLOSED (2026-11-07)** at
+the compact44 ports (`Compact44/P66*`, `C44Short15*`,
+`Compact44/IPRAPositive66p78`, `66p87`, `66p88`;
+[record](research/fifteen-p66-endpoint/README.md)).
+
+**138's eleven-integer 924 / 107, CLOSED (9 November 2026)**
+([`P138/IPRAInteger138`](Lean/DiophantineConsistency/P138/IPRAInteger138.lean),
+[record](research/p138-integer11/README.md)). This is the tree's first ℤ-row
+endpoint. The sentence is `nativeNoZero (signedSplit expression)`: each integer
+unknown is written as `aᵢ − bᵢ` over 22 naturals. Its bridge is
+`IntegerDomain.IntegerModelBridge`: in every model of `𝗜𝚺₁`, a zero in the ring
+of differences exists iff machine 215 halts.
+- Soundness reaches source34's `LeafFacts`, then `Source34Converse.halt_iff_facts`.
+- Completeness assembles the canonical source34 halt data, the guard Pell pair,
+  supported-modulus interpolation by linear stepping
+  ([`zrows-toolkit`](research/zrows-toolkit/README.md), stage 3) and an
+  intersective root of `(t² + 3)(t³ − 19)`.
+- No three-square theorem is involved: the guard is the nonsquare `Budget − 4`.
+- `gen_literal.py --check` binds the Lean literal to the pinned JSON.
+  `check_ports138.py` binds the six ports to the restored payloads that
+  `coefficient_binding` names.
+
+**138's eleven-integer 840 / 108 (the short form), CLOSED (9 November 2026)**
+([`P138/IPRAInteger138Short`](Lean/DiophantineConsistency/P138/IPRAInteger138Short.lean),
+same [record](research/p138-integer11/README.md)). The short form differs only
+in the index modulus, `k = R + 1 + h·4q⁴` instead of `R + 1 + hE`.
+- The soundness chain is now generic in the `k` register (`P138Value.regsK`).
+  It needs only an index modulus `μ` with `μ ∣ E` and `4q⁴ ≤ |μ|`; the window
+  then gives `3R + 1 < |μ|`, and the first-index argument runs modulo `|μ|`.
+- Completeness is the native completeness, substituted. `E = 4q⁴(3w+1)(2v+1)`,
+  so the short value at `h(3w+1)(2v+1)` is the native value at `h`
+  (`P138Value.valueS_update`).
+- Both checkers cover both JSONs.
+
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
 
-- 163's 75 / 402, which has a guarded-provider endpoint in research;
-- the rest of the fourteen-positive Pareto row (degree / operations): 55's
-  and 59's 52 / 79. Endpoints exist for the
-  formulas of 183's 150 / 65 and 188's 94 / 67 and 118 / 66, but only at the
-  maintained CURRENT2011 tuple (`β = 2^94517 − 1`). The packages bind them to
-  admissible942 and block-mask2963. 192's thirteen-positive 174 / 69 is in the
-  same position;
-- the thirteen-positive 170's 154 / 72 and 162 / 71;
-- 170's 74 / 438;
-- 184's 104 / 174;
-- the ten-positive Pareto points;
-- 101's nine-positive points.
+- (the fourteen-positive Pareto row is closed: 55's and 59's 52 / 79 on
+  121x8801, 188's 94 / 67 and 118 / 66 on block-mask2963, 183's 150 / 65 and
+  192's 174 / 69 on admissible942; see below);
+- (170's 154 / 72, 162 / 71 and 74 / 438 are closed: see above);
+- (184's eleven-positive 104 / 174 is closed: see above);
+- (the ten-positive Pareto row is closed: see the BFS943 paragraphs above);
+- (the nine-positive Pareto row is closed: all four points on 121x8801.)
+  **82's nine-positive 726 is CLOSED** (9 November 2026, 18cc3f2003):
+  `Nine121/IPRANine82p726`, record `research/nine-positive-p82-726-endpoint/`.
+  Its source is the package-31 parent itself (source65's kernels pin
+  `1c336ba0…` with only the row operations of `N101Source.transformed`), so
+  `Source31Facts`/`Source31Converse` carry over unchanged. New are the
+  source65 layout (`N82Layout`, 7+38+39 shared-tap records, its own
+  `SparseCheck` certificate), the prefix L = bB¹⁹⁹¹, N = 2^17079501·bB¹⁰⁵⁷,
+  height 1873 (`N82Prefix`, `N82Contract`), Jones's F = (A²−1)(iJC²D)²+1
+  (`SatPellJ`), and the Laurent majorant T = 4T₀, S = 2¹⁸C⁷ (`N82Majorant`):
+  three `Kron4` identity checks plus the generic top-group domination lemma
+  `TopDom.pos_split` for A, Z ≥ 2²⁰, replacing the package's 32,637-term
+  translated certificate. **101's nine-positive 1,057 is CLOSED** (8 November 2026,
+  6a88ab32e1): `Nine121/IPRANine101p1057`, record
+  `research/nine-positive-p101-1057-endpoint/`. The package's 36,309-term
+  certificate is the 2,599-term defect Π² − σ²DFI, translated. Lean checks
+  the defect identity by one kernel Kronecker evaluation (`Kron4`) and gets
+  positivity by domination for A ≥ 2²⁰. **105's nine-positive 456 is CLOSED**
+  (8 November 2026, 7e21d56246): `Nine121/IPRANine105p456`, record
+  `research/nine-positive-p105-456-endpoint/`. 105's H1868 tables are 101's
+  layout untranslated (the source polynomial is X² times 101's), so
+  `N105Layout.coeff_target` follows from 101's. Its finalizer `N105Finalizer`
+  is a sibling of `N9Finalizer`. **101's nine-positive 420 is CLOSED** (8 November 2026,
+  d4758e684f): `Nine121/IPRANine101p420` gives native, standard and
+  equality-only iPRA equivalences for the literal `N101p420Graph.n451` at
+  `Mixed121Ports.ports` (record `research/nine-positive-p101-420-endpoint/`;
+  `check_graph.py` binds it to the pinned JSON `ea0804c3…`). The new reusable
+  layers are the internal 31-source ↔ machine-215 calibration
+  (`Source31Facts`, `Source31Converse`), the saturated simple finalizer
+  (`N9Finalizer`, which 105's 456 shares), and the sparse digit-extraction
+  contract (`SparseCentral`, `SignedDigits`, `LowMask`, `SparseExtraction`,
+  `SparseCheck`, `N101Contract`).
 
 **Tuple audit (4 November 2026).** After 57, every open point is at a tuple
 that the tree's Compact44 calibration does not cover. The tree's `paramKernel rho`
@@ -5329,9 +5489,14 @@ the packages' coefficient files with it:
 - **Directly indexed BFS943 K0** (raw SHA-256 `0a86821a…`), the same 67×8807
   layout with BFS row order: 163, 170, 171, 172, 179, 184, 193 and 194. This
   covers every ten-positive Pareto point, 170's three points, 184's
-  eleven-positive point, and most ℤ rows. A research-only direct-BFS
-  calibration exists (`research/direct-bfs-*`, `DirectBFS80FixedIPRA`); it is
-  not in the tree.
+  eleven-positive point. A research-only direct-BFS
+  calibration exists (`research/direct-bfs-*`, `DirectBFS80FixedIPRA`); its
+  trace75 closure is in the tree as `BFS943/` since 2026-11-08.
+  *Correction (8 November 2026):* this audit's earlier "and most ℤ rows" was
+  wrong. The ℤ JSONs of 171, 172, 179 and 194 pin the **source34** K0 (gzip
+  `56b512fa…`) in their own directories; only those packages' ten-positive
+  subdirectories bind BFS943. Every ℤ row from 11ℤ up is on source34, and the
+  10ℤ Sun forms are on 121x8801.
 - **`wang943-mixed-121x8801`** (β of 1,064,921 bits): 55's and 59's
   fourteen-positive 52 / 79. *Correction (6 November 2026):* 132's
   fifteen-integer 44 / 111 is **not** on this tuple. Package 132 records only
@@ -5397,11 +5562,68 @@ the packages' coefficient files with it:
   controller), `P55Converse.converse` builds the witnesses, and
   `Mixed121/IPRAPositive55` gives native, standard and equality-only iPRA
   equivalences `nativeNoZero (52/79) ↔ ¬mappedNativeRefutation`.
+  Package 59's 52 / 79 (a different polynomial at the same ports, CLOSED
+  2026-11-07) transfers this bridge: `Mixed121/P59Graph` shows its residuals
+  evaluate as 55's, and `Mixed121/IPRAPositive59` gives the three endpoints.
+  The fifteen-positive points on the same tuple are CLOSED too (2026-11-07):
+  59's 91 / 69, 101 / 68 and 125 / 67, 56's 54 / 73 and 46 / 74, and 47's
+  44 / 75 (`Mixed121/Short15*`, `Mixed121/IPRAPositive59p69` … `IPRAPositive47p75`;
+  the new soundness step excludes `Nk = Nt = −1`).
+  Package 54's fifteen-positive gate lists 80 / 70, 78 / 71 and 64 / 72 are CLOSED
+  at these ports too (2026-11-08; `Mixed121/IPRAPositive54p70`, `54p71`, `54p72`,
+  through `Short15P54Split`). They are 54's circuits instantiated at 55's ports;
+  54's literal equations on its own c54 tuple (base `2^429959`) remain
+  uncalibrated.
   - (44 / 111 is on the source34 tuple; see the correction above.)
   - the witness construction for halting ⟹ solvable (packing, rank and the
     `λ = 2341` controller);
   - the iPRA endpoints.
 - **admissible942** (β of 189,269 bits; `candidates/one-page-admissible942`):
-  183's 150 / 65 and 192's 174 / 69. 188 binds block-mask2963. No Lean module
-  mentions the admissible942 exponent. The tree's endpoints for these
-  formulas are at the different CURRENT2011 tuple.
+  183's 150 / 65 and 192's 174 / 69. 188 binds block-mask2963.
+
+  **183's 150 / 65, CLOSED (2026-11-07).** The modules are in
+  `Lean/DiophantineConsistency/Adm942/` (36 of them), a port of the
+  CURRENT2011 in-model calibration to `L = 4027`:
+  - soundness: `Adm942Soundness.zero_halts`;
+  - construction: `Adm942Construction.halt_positive_zero_closed`;
+  - the admissible942 Local Normalization Lemma, proved directly by a
+    column-sum argument in `Adm942LocalNormalization` (3 modules instead of
+    2011's 51).
+
+  `Adm942/IPRACarrier65Adm942` gives native, standard and equality-only
+  iPRA equivalences `nativeNoZero (150/65) ↔ ¬mappedNativeRefutation`.
+  `research/admissible942-calibration/tools/check_forms.py` binds the Lean
+  syntax to `carrier65.json`, and `check_recipe.py` / `check_ports.py` bind
+  it to the payloads.
+
+  **192's 174 / 69, CLOSED (2026-11-07).** `Adm942/Adm942ThirteenOuter` and
+  `Adm942/Adm942ThirteenCarrier` retarget the second-Pell-root reduction onto
+  the admissible942 window. The final bridge is
+  `IPRAOrdinary12.bridge_of_positive IPRACarrier65Adm942.positiveBridge`.
+  `Adm942ThirteenCarrier.native/standard/reference_equivalence69` are the
+  three iPRA endpoints for `expressionAt69` at the admissible942 ports.
+
+  **192's 170 / 70 (the oriented companion), CLOSED (2026-11-07).**
+  `compact13/positive13_oriented.json` replaces `L = V²` by `L = (cT − R)V`.
+  `Adm942/ThirteenOriented70` generalizes the restoration to any `L ≥ |V|`
+  and proves `|V| ≤ (cT − R)V` at a zero (`cT − R = 0` is impossible by the
+  auxiliary norm; `c < f²` by the strong norm); `Adm942/Adm942Oriented70Carrier`
+  builds the completion with `m = −e₄ + (1 + h·L)·g` and gives
+  `native/standard/reference_equivalence70o`.
+  `research/admissible942-calibration/tools/check_oriented70.py` binds the JSON.
+- **block-mask2963** (β of 139,261 bits; `candidates/one-page-block-mask2963`):
+  188's 118 / 66 and 94 / 67.
+
+  **Both CLOSED (2026-11-07).** `Lean/DiophantineConsistency/Bm2963/` (31
+  modules) ports the admissible942 calibration to `L = 2963` with one clause
+  band at 1956 (phase zero from the marker parity first, then decoding):
+  - soundness `Bm2963Soundness.zero_halts`, construction
+    `Bm2963Construction.halt_positive_zero_closed` (Local Normalization proved by
+    column sums), Carrier65 bridge `IPRACarrier65Bm2963.positiveBridge`;
+  - `Bm2963Carrier118.native/standard/reference_equivalence118` through
+    `ModelCarrierScaled.zero_iff118`;
+  - `Bm2963Carrier94.native/standard/reference_equivalence94`, with its own
+    ordinary soundness chain (`ordinary_halts`) and completeness `i ↦ Δi`.
+
+  `research/block-mask2963-calibration/tools/` binds the payloads
+  (`check_recipe.py`) and both JSON forms (`check_forms.py`).

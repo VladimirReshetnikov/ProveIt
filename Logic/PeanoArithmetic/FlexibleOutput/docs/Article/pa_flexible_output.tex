@@ -1,0 +1,767 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\DeclareUnicodeCharacter{2081}{\ensuremath{{}_1}}
+\DeclareUnicodeCharacter{2082}{\ensuremath{{}_2}}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{xurl}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,
+  citecolor=blue!45!black,pdftitle={A divergent program with every possible output in a model of PA},
+  pdfauthor={Prepared for Vladimir Reshetnikov}}
+\definecolor{codebg}{RGB}{247,248,250}
+\lstset{basicstyle=\ttfamily\small,backgroundcolor=\color{codebg},
+  columns=fullflexible,keepspaces=true,breaklines=true,showstringspaces=false,
+  frame=single,rulecolor=\color{black!15},xleftmargin=4pt,xrightmargin=4pt,
+  aboveskip=9pt,belowskip=9pt,
+  literate={ℕ}{{$\mathbb N$}}1 {→}{{$\to$}}1 {∀}{{$\forall$}}1
+  {∃}{{$\exists$}}1 {¬}{{$\neg$}}1 {∧}{{$\land$}}1 {∈}{{$\in$}}1
+  {⟨}{{$\langle$}}1 {⟩}{{$\rangle$}}1 {←}{{$\leftarrow$}}1
+  {↔}{{$\leftrightarrow$}}1 {₂}{{$_2$}}1 {₁}{{$_1$}}1
+  {𝗣𝗔}{{$\mathsf{PA}$}}2 {⊢}{{$\vdash$}}1 {∼}{{$\sim$}}1
+  {↑}{{$\uparrow$}}1}
+\setlist{itemsep=3pt,topsep=5pt}
+\newcommand{\N}{\mathbb N}
+\newcommand{\PA}{\mathsf{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\Prf}{\operatorname{Prf}}
+\newcommand{\Search}{\operatorname{Search}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\num}[1]{\overline{#1}}
+\newcommand{\pto}{\rightharpoonup}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{A divergent program with every possible output\\in a model of Peano arithmetic}
+\author{A proof and Lean formalization plan\\Prepared for Vladimir Reshetnikov}
+\date{November 9, 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+There is one partial computable program which diverges on every standard
+input, while for each standard natural number $n$ some first-order model of
+Peano arithmetic believes that the program halts on input $0$ with output
+$n$. We prove this directly by self-referential proof search, using only
+consistency, verification of finite computations, and completeness. We
+also explain the immediate connection with the universal algorithm in the
+reference supplied by the user. A concrete Lean statement is given using
+Mathlib program codes and Foundation's actual first-order satisfiability
+predicate. Accompanying source files isolate the short proof and apply
+Mathlib's existing recursion theorem. The remaining arithmetization and
+proof-search obligations are specified explicitly. The mathematical proof
+is complete; the concrete PA formalization is a detailed implementation
+outline, and the supplied Lean files have not been compiler-checked in the
+authoring environment.
+\end{abstract}
+
+\tableofcontents
+
+\section{The precise statement}
+
+Following the user's clarification, computability here means
+\emph{partial} computability. The standard computation at $0$ does not
+terminate. Thus the external function has type $\N\pto\N$, represented in
+Lean by \texttt{Nat -> Part Nat}, usually written \texttt{\ensuremath{\N} →. \ensuremath{\N}}.
+The expression ``$f(0)=n$ holds in $M$'' means that $M$ satisfies a fixed
+arithmetical sentence describing the computation of a particular program.
+
+Fix an effective coding of deterministic programs and a uniform arithmetic
+formula $\Halt(e,x,y)$ describing that program $e$ halts on input $x$ with
+output $y$. In the usual trace presentation it is an existential assertion
+that a coded finite computation has the prescribed initial configuration
+and output. For standard $e,x,y$ write
+\[
+ H_e(x,y):=\Halt(\num e,\num x,\num y).
+\]
+The numerals are part of the object-language sentence. The symbol $n$ in
+the quantifier below ranges over \emph{external standard} natural numbers.
+
+\begin{theorem}[Arbitrary possible output]\label{thm:main}
+There is a standard program code $e$ for a partial computable function
+$\varphi_e:\N\pto\N$ such that
+\begin{align}
+ &\forall x\in\N\quad \varphi_e(x)\uparrow, \label{eq:diverge}\\
+ &\forall n\in\N\quad
+   \exists M\ \bigl(M\models\PA\ \text{and}\ M\models H_e(0,n)\bigr).
+   \label{eq:models}
+\end{align}
+Here $\uparrow$ denotes divergence. The same program code and the same
+arithmetization are used for all $n$.
+\end{theorem}
+
+More generally, the construction works for every consistent computably
+axiomatized extension $T$ of $\PA$, with the search performed over proofs
+of $T$. For the requested case, the standard natural-number structure is
+a model of PA in the metatheory and gives the required consistency.
+Nothing in the argument asserts that PA proves its own consistency.
+
+The formal witness must retain the program code. Many different programs
+compute the empty partial function in the standard model, and their
+arithmetical computation assertions can behave differently in nonstandard
+models. Equality of the external partial functions alone does not identify
+the sentences to interpret inside a model.
+
+\section{A direct proof by self-referential proof search}
+
+\subsection{The three background ingredients}
+
+The following standard facts suffice.
+
+\paragraph{Effective syntax and proof checking.}
+PA has an effective proof system. Numeral construction, formula
+substitution, negation, and checking whether a finite proof has a given
+conclusion are computable. One can therefore search uniformly over pairs
+$(p,n)$ for a PA proof $p$ of $\neg H_e(0,n)$, treating $e$ as an ordinary
+input parameter.
+
+\paragraph{Verification of actual finite computations.}
+If the standard computation of program $e$ on input $x$ actually halts
+with output $y$, then
+\begin{equation}\label{eq:finiteverify}
+ \PA\vdash H_e(x,y).
+\end{equation}
+A genuine finite computation can be checked step by step. Equivalently,
+its computation sentence is a true $\Sigma^0_1$ sentence, and PA proves
+all such sentences. This is a statement about standard finite
+computations; it is not an internal reflection principle for all PA
+proofs.
+
+\paragraph{Kleene's recursion theorem.}
+For a partial computable operation $Q(c,x)$, with $c$ a program code, there
+is a code $e$ such that
+\begin{equation}\label{eq:fixedpoint}
+ \varphi_e(x)\simeq Q(e,x)\qquad\text{for every standard }x.
+\end{equation}
+Equality $\simeq$ includes agreement about divergence. The theorem is
+already available in Mathlib as \path{Nat.Partrec.Code.fixed_point₂}
+\cite{Mathlib}.
+
+\subsection{The algorithm}
+
+For a supplied code $c$, let $Q(c,x)$ ignore $x$ and run the following
+ordinary proof search. Use any fixed computable enumeration of pairs of
+natural numbers, such as unpairing successive natural numbers.
+
+\begin{lstlisting}
+Q(c, x):
+    for q = 0, 1, 2, ...:
+        (p, n) := unpair(q)
+        if p is a PA proof of NOT Halt(c, 0, n):
+            return n
+\end{lstlisting}
+
+The procedure is partial computable uniformly in $c$ and $x$. Apply the
+recursion theorem to obtain $e$ satisfying
+\[
+ \varphi_e=Q(e,\cdot).
+\]
+This makes the program search for proofs excluding its own outputs.
+The recursion theorem removes the apparent circularity: the parameterized
+algorithm $Q$ is defined before any fixed point is chosen.
+
+\begin{lemma}\label{lem:nohalt}
+Assuming $\Con(\PA)$, the standard computation $\varphi_e(0)$ does not
+halt.
+\end{lemma}
+\begin{proof}
+Suppose that it halts with output $k$. By the fixed-point equation,
+$Q(e,0)$ halts with output $k$. The definition of the search then supplies
+a genuine finite PA proof of $\neg H_e(0,k)$. On the other hand, the
+actual finite computation of $e$ supplies, by
+\eqref{eq:finiteverify}, a PA proof of $H_e(0,k)$. These two proofs
+contradict consistency.
+\end{proof}
+
+\begin{lemma}\label{lem:unrefuted}
+For every standard $n$, $\PA\nvdash\neg H_e(0,n)$.
+\end{lemma}
+\begin{proof}
+If such a proof existed, exhaustive search would eventually find a proof
+of the prescribed form. It might first find a proof referring to another
+output $k$, but it would certainly terminate. The fixed-point equation
+would then make $\varphi_e(0)$ terminate, contradicting
+Lemma~\ref{lem:nohalt}.
+\end{proof}
+
+\begin{remark}[The first-proof detail]
+A proof excluding $n$ does \emph{not} necessarily make the program output
+$n$. An earlier accepted proof can concern another value $k$. The
+contradiction must use the value actually selected by the search and the
+proof selected with it. Both the mathematical argument and the supplied
+Lean assembly preserve this distinction.
+\end{remark}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+The search ignores its input. Its fixed point is therefore nowhere
+defined in the standard model, by Lemma~\ref{lem:nohalt} and the
+external equality of partial functions.
+
+For a standard $n$, consider the theory
+\[
+ T_n:=\PA+H_e(0,n).
+\]
+If $T_n$ were inconsistent, the deduction theorem would yield
+$\PA\vdash\neg H_e(0,n)$, contrary to
+Lemma~\ref{lem:unrefuted}. Thus $T_n$ is consistent. By first-order
+completeness it has a model $M_n$. This model satisfies exactly the two
+requirements in \eqref{eq:models}. The construction treats $n=0$ just as
+it treats every other natural number.
+\end{proof}
+
+\subsection{What the proof does and does not require}
+
+The proof uses consistency, rather than $\Sigma_1$-soundness, to show that
+no refutation can exist. It uses only the forward implication
+``actual finite computation implies provable computation sentence.''
+Consequently it remains valid for a consistent c.e. extension $T$ of PA
+even if $T$ is arithmetically unsound.
+
+Only the \emph{external} fixed-point equality
+$\varphi_e=Q(e,\cdot)$ is needed for this conclusion. If the search
+terminated, that equality would give an actual standard terminating
+computation of $e$, and finite-computation verification would provide its
+PA proof. There is no need, for the theorem as stated, to formalize within
+PA the whole proof of Kleene's recursion theorem.
+
+Functionality of the fixed computation formula is also important for the
+meaning of the result:
+\[
+ \PA\vdash
+ \forall a\,\forall x\,\forall y\,\forall z\,
+ \bigl((\Halt(a,x,y)\land\Halt(a,x,z))\to y=z\bigr).
+\]
+It follows from determinism of the chosen operational semantics. The
+different prescribed standard outputs occur in different models.
+
+\begin{corollary}[Independence of each output sentence]
+For every standard $n$, PA proves neither $H_e(0,n)$ nor its negation.
+\end{corollary}
+\begin{proof}
+Unprovability of the negation was established already. If PA proved
+$H_e(0,n)$, functionality and distinctness of the numerals for $n$ and
+$n+1$ would give $\PA\vdash\neg H_e(0,n+1)$, a contradiction.
+This argument still uses only consistency together with the usual
+functionality proof.
+\end{proof}
+
+\section{Connection with the supplied universal-algorithm reference}
+
+Hamkins's exposition of Woodin's theorem supplies a program $u$ which can
+enumerate any prescribed finite sequence in an appropriate PA model. It
+also gives a stronger extension property for models; the single-output
+question needs only the finite-sequence assertion \cite{Hamkins2017}.
+Define
+\[
+ f(x):=\text{simulate $u$ until its first enumerated number appears,
+ then return that number}.
+\]
+For each $n$, take a model in which $u$ enumerates exactly $[n]$.
+In that model $f(0)=n$. In the standard model $u$ enumerates nothing:
+otherwise a real finite enumeration event would be provable in PA,
+contradicting the existence of a PA model in which its sequence is empty.
+Thus $f(0)$ diverges standardly.
+
+The direct proof in Section~2 is the one-input form of the self-reference
+method credited to Vadim Kosoy in Hamkins's earlier exposition
+\cite{Hamkins2016}. It makes a smaller Lean target than formalizing the
+entire end-extension theorem. No claim of a new universal-algorithm
+theorem is being made here.
+
+\section{How the nonstandard model supports the computation}
+
+In a witness model $M_n$, the code $e$, the input $0$, and the output $n$
+are all standard numerals. The model's witness to the existential
+computation assertion is nonstandard. If there were a standard valid
+computation witness, its finite verification would show that the program
+really halts, contradicting the proof above.
+
+For a literal step-by-step machine presentation, the first halting time
+must exceed every standard natural number of the model. Any prescribed
+standard number of deterministic steps starting from a standard
+configuration agrees with the real computation. The model regards its
+longer coded history as finite because its own natural-number domain
+contains nonstandard elements.
+
+This explains why the theorem is compatible with determinism and the
+fixed value of every actually terminating standard computation. It also
+explains why Lean must keep two semantic levels separate:
+\begin{itemize}
+ \item $y\in\texttt{Code.eval}\ e\ x$ describes standard computation in
+       the metatheory;
+ \item $M\models H_e(x,y)$ interprets a first-order arithmetic sentence
+       in a potentially nonstandard structure.
+\end{itemize}
+These are related on the standard natural-number model by a
+representation theorem. They must not be identified for an arbitrary
+model.
+
+\section{A concrete Lean formalization of the statement}
+
+\subsection{Use first-order syntax and genuine model existence}
+
+The accompanying \path{lean/Statement.lean} stays within Foundation's
+arithmetic syntax, already used by ProveIt's \path{PAUndecidable}
+development \cite{PAUndecidable}. This avoids translating between two
+different first-order formalizations.
+
+The essential target is:
+\begin{lstlisting}
+def MainClaim : Prop :=
+  ∃ e : Nat.Partrec.Code,
+    ¬ (Nat.Partrec.Code.eval e 0).Dom ∧
+    ∀ n : ℕ,
+      LO.FirstOrder.Satisfiable
+        (insert (haltSentence e 0 n) 𝗣𝗔)
+\end{lstlisting}
+Here \texttt{Satisfiable} is Foundation's existing semantic predicate for
+existence of a first-order model. It is not a placeholder predicate named
+``has a model.'' The program type itself certifies that an external
+partial recursive function is being discussed. The stronger
+\texttt{StrongClaim} in the source replaces divergence at $0$ by
+divergence at every standard input.
+
+\subsection{One fixed universal computation formula}
+
+To make \texttt{haltSentence} concrete, the source uses a single universal
+partial evaluator on a two-element vector:
+\begin{lstlisting}
+def universalEval : List.Vector ℕ 2 →. ℕ :=
+  fun v => Nat.Partrec.Code.eval
+    (Nat.Partrec.Code.ofNatCode (v.get 0)) (v.get 1)
+
+noncomputable def universalGraph :
+    ArithmeticSemisentence 3 :=
+  codeOfPartrec' universalEval
+
+noncomputable def haltSentence
+    (c : Code) (x y : ℕ) : ArithmeticSentence :=
+  universalGraph/[↑y, ↑(Encodable.encode c), ↑x]
+\end{lstlisting}
+The variable order is output, program code, input. Foundation's
+\path{codeOfPartrec'} chooses an arithmetic program representation; its
+standard correctness theorem is \path{codeOfPartrec'_spec}
+\cite{FoundationRepresentation}.
+
+The choice is made once, yielding one finite formula for a chosen
+universal interpreter. The formula is then specialized by numeral
+substitution. A fixed finite syntactic object can be hardwired into a
+computable syntax transformer, even when the initial existence proof
+uses classical choice. Choosing an unrelated noncomputable formula
+separately for every program would not justify the computable
+proof-search construction.
+
+This is a specified universal-interpreter presentation. Its standard
+equivalence to Mathlib's evaluator alone does not prove PA-equivalence to
+every other possible computation encoding. If a later implementation
+requires the exact bounded-\texttt{evaln} presentation, it should prove
+the additional internal equivalence or use that presentation directly.
+
+\subsection{Make the representation contract explicit}
+
+The source defines the following additional obligations as propositions:
+\begin{itemize}
+ \item \texttt{UniversalEvalPartrec}: partial recursiveness of the
+       universal evaluator.
+ \item \texttt{UniversalGraphSigmaOne}: the chosen graph is
+       $\Sigma^0_1$.
+ \item \texttt{StandardCorrectness}: satisfaction of each closed graph
+       instance by $\N$ is equivalent to membership in
+       \texttt{Code.eval}.
+ \item \texttt{FiniteProofAdequacy}: actual halting implies a PA proof
+       of the corresponding sentence.
+ \item \texttt{RefutationsRE}: the relation
+       $(c,n)\mapsto\PA\vdash\neg\texttt{haltSentence}(c,0,n)$
+       is recursively enumerable uniformly in both parameters.
+ \item \texttt{FunctionalityInPAModels}: the chosen graph has at most
+       one output for each program/input pair in every PA model,
+       including nonstandard arguments.
+\end{itemize}
+The most informative concrete endpoint is therefore
+\begin{lstlisting}
+def FullySpecifiedMainClaim : Prop :=
+  StandardCorrectness ∧
+  FunctionalityInPAModels ∧
+  MainClaim
+\end{lstlisting}
+These definitions do not assert that their propositions have already been
+proved. They state exactly what the completed integration must establish.
+
+\section{Existing results located in ProveIt and its dependencies}
+
+The source audit used the following fixed snapshot, rather than an
+unversioned assumption about current APIs:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Component & Revision or version\\
+\midrule
+ProveIt & \texttt{08edc6964d8990d2230179a9d65355ac1eee7a9e}\\
+Lean & \texttt{leanprover/lean4:v4.32.0}\\
+Mathlib & \texttt{81a5d257c8e410db227a6665ed08f64fea08e997}\\
+Foundation & \texttt{32e1a0956a8622fad067328ca1959729a7634428}\\
+\bottomrule
+\end{tabular}
+\end{center}
+Foundation is exposed by ProveIt's Lake configuration from its vendored
+submodule. The fetched sources, rather than only README descriptions,
+were inspected. The archive's \path{dependencies.json} records the links.
+
+\subsection{Computability and self-reference}
+
+\path{Mathlib.Computability.PartrecCode} provides:
+\begin{lstlisting}
+Nat.Partrec.Code.fixed_point₂
+  {f : Code → ℕ →. ℕ} (hf : Partrec₂ f) :
+  ∃ c : Code, eval c = f c
+\end{lstlisting}
+It also provides \path{eval_part}, \path{evaln_sound},
+\path{evaln_complete}, and \path{primrec_evaln}. In particular,
+\[
+ y\in\texttt{eval}\ c\ x
+ \quad\Longleftrightarrow\quad
+ \exists k\; y\in\texttt{evaln}\ k\ c\ x.
+\]
+These results support both the direct partial-function proof and a
+bounded-trace arithmetization \cite{Mathlib}.
+
+\subsection{Arithmetic representation and numeral substitution}
+
+The inspected Foundation representation file contains active declarations
+\path{code}, \path{models_code}, \path{code_sigma_one},
+\path{codeOfPartrec'_spec}, \path{codeOfREPred_spec}, and
+\path{re_complete}. The forward finite-verification step can use
+\path{LO.FirstOrder.Arithmetic.sigma_one_completeness} from
+\path{Foundation.FirstOrder.Arithmetic.R0.Basic}.
+
+ProveIt's \path{PAUndecidable.lean} supplies a particularly close template
+for the effective syntax work. It proves
+\path{haltingSentenceCode_computable} and
+\path{haltingSentenceCode_eq_quote}, and includes
+\path{computable_of_sigmaOne_definable_function₁}. The required new
+transformer adds code/output parameters and a negation to the same kind
+of numeral-substitution construction \cite{PAUndecidable}.
+
+\subsection{Consistency of an extension and existence of a model}
+
+Foundation's \path{Incompleteness.Dense} has
+\path{LO.Entailment.consistent_cons_of_unprovable_neg}. It turns
+unrefutability of a sentence into consistency after adjoining that
+sentence. Then
+\path{LO.FirstOrder.Theory.small_satisfiable_of_consistent}, in
+\path{Foundation.FirstOrder.Completeness.CounterModel}, supplies a
+genuine model \cite{FoundationCompleteness}. The essential final step has
+the following shape:
+\begin{lstlisting}
+-- For sigma = haltSentence e 0 n:
+have hcon : Consistent (insert sigma PA) :=
+  consistent_cons_of_unprovable_neg hnot
+exact Theory.small_satisfiable_of_consistent hcon
+\end{lstlisting}
+Here \texttt{PA} is an explanatory ASCII alias for the source's PA
+notation; the exact namespaces and instances are recorded in the API
+audit. No new completeness theorem needs to be proved.
+
+\subsection{Two implementation hazards}
+
+\paragraph{A commented theorem is not a reusable result.}
+In the inspected representation file, \path{codeAux_uniq} and
+\path{code_uniq} occur inside a block comment. They cannot be imported as
+proved declarations. Moreover, that commented sketch is stated over a
+weak theory while using global order comparability in its minimization
+case. The needed functionality lemma should be proved under PA (or
+adequate ordered-arithmetic axioms), rather than obtained by blindly
+uncommenting the old block.
+
+\paragraph{An unrestricted induction interface is too strong.}
+One other subsystem in ProveIt uses \path{SetTheory.PA.Model}, whose
+induction field ranges over every Lean predicate. That is not the
+first-order nonstandard-model interface needed here. The repository also
+has a genuine first-order bundle
+\path{LeanProofs.PAFiniteBasisReduction.TwoNonisomorphicModels.FirstOrderPAModel}
+\cite{TwoModels}. For this project, staying with Foundation's
+\texttt{Satisfiable} avoids mixing the two syntaxes.
+
+\section{The supplied Lean proof files}
+
+\subsection{The logic-only core}
+
+\path{lean/ProofCore.lean} imports only \texttt{Std}. It explicitly
+packages program evaluation, arithmetic sentences, provability, model
+satisfaction, consistency, finite computation verification, and
+completeness into an \texttt{ArithmeticInterface}. Its
+\texttt{SelfSearch} proposition has just the two operational properties
+used by the proof:
+\begin{align*}
+ \varphi_e(0)\downarrow=y
+   &\Longrightarrow \PA\vdash\neg H_e(0,y),\\
+ (\exists n\;\PA\vdash\neg H_e(0,n))
+   &\Longrightarrow \exists y\;\varphi_e(0)\downarrow=y.
+\end{align*}
+It proves standard divergence, unrefutability, and existence of a model
+for every output. This small layer exposes the logical content without
+requiring the arithmetic coding library.
+
+\subsection{The assembly really uses the recursion theorem}
+
+\path{lean/MathlibAssembly.lean} is more concrete. Its program type is
+Mathlib's actual \texttt{Nat.Partrec.Code}, and standard evaluation is
+\texttt{Nat.Partrec.Code.eval}. The input data consist of an arithmetic
+bridge and an ordinary proof-search implementation. The search record
+contains:
+\begin{lstlisting}
+search : Code → ℕ →. ℕ
+partialRecursive : Partrec₂ search
+ignoresInput : ∀ c x, search c x = search c 0
+returnsRefutation : ∀ {c x y},
+  y ∈ search c x → provable (neg (halts c 0 y))
+findsRefutation : ∀ {c},
+  (∃ n, provable (neg (halts c 0 n))) →
+  ∃ m, m ∈ search c 0
+\end{lstlisting}
+The implementation of this search has no self-reference: $c$ is just a
+parameter. The assembly obtains self-reference by the actual library
+call
+\begin{lstlisting}
+obtain ⟨e, he⟩ :=
+  Nat.Partrec.Code.fixed_point₂ S.partialRecursive
+\end{lstlisting}
+and derives the claimed divergence and model existence from
+\texttt{he}. Thus the difficult fixed-point theorem is reused, rather
+than assumed as a new hypothesis about a desired witness.
+
+The file concludes with a theorem whose shape is
+\begin{lstlisting}
+∃ e : Code,
+  Partrec (Nat.Partrec.Code.eval e) ∧
+  (∀ x y, ¬ y ∈ Nat.Partrec.Code.eval e x) ∧
+  (∀ n, ∃ M, A.isModel M ∧
+    A.realizes M (A.halts e 0 n))
+\end{lstlisting}
+Another theorem names the partial function $f$ explicitly while retaining
+its code. All theorem bodies in these two files are supplied. Their
+arithmetic/search assumptions are explicit parameters. No claim is made
+that those parameters have already been instantiated for PA.
+
+\section{A clear route to a complete Lean proof}
+
+The remaining development can be divided into the following modules. The
+proposed module names are new project names, not claims about existing
+repository declarations.
+
+\subsection{Stage 1: validate the chosen computation presentation}
+
+In a proposed \texttt{PAFlexibleOutput.Computation} module:
+\begin{enumerate}
+ \item Prove \texttt{UniversalEvalPartrec} from \path{eval_part},
+       computability of decoding, and vector projections. Convert to
+       Foundation's vector-based \texttt{Nat.Partrec'} interface using
+       \path{Nat.Partrec'.of_part}.
+ \item Apply \path{codeOfPartrec'_spec}. Simplify numeral substitution
+       and the encoding round trip to prove
+       \texttt{StandardCorrectness}.
+ \item Unfold the chosen representation and use
+       \path{code_sigma_one} to prove that its graph and numeral
+       instances are $\Sigma_1$.
+ \item Apply \path{sigma_one_completeness} to obtain
+       \texttt{FiniteProofAdequacy}.
+\end{enumerate}
+These steps use existing representation machinery. They should be
+verified independently of the self-reference argument.
+
+\subsection{Stage 2: prove functionality under PA}
+
+Prove that every fixed \texttt{Nat.ArithPart₁.Code} compiled by
+Foundation's \texttt{codeAux}/\texttt{code} defines a partial function in
+every PA model. Structural induction on that finite syntax is enough.
+The arithmetic and projection cases are immediate. In a composition
+case, uniqueness of the intermediate tuple follows component by
+component from the induction hypotheses; uniqueness of the final result
+then follows from the outer induction hypothesis.
+
+For minimization, suppose $y$ and $z$ are two candidate outputs. Each
+asserts that the inner program returns zero there and returns a nonzero
+value at every smaller argument. PA's linear ordering gives $y=z$,
+$y<z$, or $z<y$. In the $y<z$ case, the condition attached to $z$
+provides a nonzero inner output at $y$, while the condition attached to
+$y$ provides zero. The inner uniqueness hypothesis contradicts this.
+The other strict inequality is symmetric.
+
+Apply this lemma to the code selected for \texttt{universalGraph}.
+It proves the required internal functionality, recorded as
+\path{FunctionalityInPAModels}.
+This is a substantive missing formal lemma, but its mathematical proof is
+elementary and local. It should be established under PA's actual
+arithmetic/order instances.
+
+\subsection{Stage 3: implement uniform proof search}
+
+In a proposed \texttt{PAFlexibleOutput.ProofSearch} module:
+\begin{enumerate}
+ \item Prove computability of the function sending $(c,n)$ to the
+       G\"odel code of $\neg H_c(0,n)$. Use the
+       fixed finite formula and the numeral-substitution template from
+       \texttt{PAUndecidable}.
+ \item Compose this transformer with the effective PA proof relation.
+       This establishes the required r.e. relation. One may implement a direct
+       decidable proof checker with explicit certificates, or use the
+       recursively enumerable relation and dovetail its witnesses.
+ \item Implement the search over encoded pairs of a proof witness and
+       an output numeral. Prove partial recursiveness by unbounded
+       search over a computable acceptance test.
+ \item Prove \texttt{returnsRefutation}: every successful return
+       retains the certificate it accepted.
+ \item Prove \texttt{findsRefutation}: a genuine finite proof has a
+       standard finite code and is eventually reached. Its existence
+       guarantees some return; it need not be the first accepted
+       output.
+ \item Prove \texttt{ignoresInput}, since the ordinary input was not
+       used by the search.
+\end{enumerate}
+If starting from an r.e. relation rather than a decidable proof checker,
+the search must dovetail. Running a possibly nonterminating semidecision
+for each output sequentially would not be exhaustive.
+
+\subsection{Stage 4: instantiate logic and model existence}
+
+Use Foundation arithmetic sentences, PA provability, and its packaged
+first-order structures for the \texttt{ArithmeticBridge}. Obtain
+consistency from the standard natural-number model. Finite computation
+verification is Stage 1. For \texttt{modelOfUnrefuted}, combine the
+consistency-of-adjoining lemma with first-order completeness.
+
+The result of \texttt{MathlibAssembly} now gives the concrete semantic
+conclusion. Convert ``no output belongs to the partial value'' into
+``its domain proposition is false'' using the fact that every defined
+\texttt{Part} has its value as a member. Combining this with Stage 1 and
+Stage 2 proves \texttt{FullySpecifiedMainClaim}.
+
+\subsection{Stage 5: compile and audit}
+
+Check one module at a time in the pinned ProveIt environment. Its build
+instructions explicitly warn against concurrent Lean builds. The
+archive includes a sequential checking script for the supplied source
+files; it assumes their imported dependencies have already been built.
+Once the concrete PA instance is implemented, run \texttt{\#print axioms}
+on the final theorem and verify that no admitted proof is present.
+
+The remaining work is concentrated in arithmetic syntax and effective
+proof-search plumbing, plus the specified functionality lemma. It does
+not require a new recursion theorem, a new completeness theorem, or the
+full model-extension construction from Woodin's stronger result.
+
+\section{Optional strengthening: an internally total constant function}
+
+With a small extra implementation choice, the witness models can believe
+the program is total on their entire domains, including nonstandard
+inputs. Let $W(p)$ be an explicit wrapper which ignores its argument and
+runs $p$ at $0$. Apply the recursion theorem to the operation which, on
+parameter $p$, searches for PA refutations of outputs of $W(p)$ at $0$.
+If $p$ is the resulting fixed point and $e=W(p)$, the previous
+consistency argument still applies to $e$.
+
+For a computation presentation in which the wrapper semantics have been
+verified in PA, we have
+\[
+ \PA\vdash\forall x\,\forall y\,
+   \bigl(\Halt(\num e,x,y)\leftrightarrow H_e(0,y)\bigr).
+\]
+Consequently a model satisfying $H_e(0,n)$ satisfies
+$\forall x\,\Halt(\num e,x,\num n)$: it regards $e$ as the total
+constant-$n$ function. Externally the program is still nowhere defined.
+This strengthening needs an internal wrapper-correctness lemma. The
+external fixed-point equality by itself does not automatically establish
+the internal equation, and the stronger theorem is not claimed as proved
+by the supplied Lean sources.
+
+\section{Delivery and verification status}
+
+\begin{longtable}{@{}p{0.32\linewidth}p{0.62\linewidth}@{}}
+\toprule
+Item & Status\\
+\midrule
+Mathematical theorem & Complete proof in Sections 1--2.\\
+Connection to user reference & Explained using the first-output extractor.\\
+Repository API audit & Relevant pinned source files fetched and inspected.\\
+Concrete Lean statement & Defined in \texttt{Statement.lean}; representation
+requirements are explicit.\\
+Logical core & Filled proof terms under explicit interfaces.\\
+Recursion-theorem assembly & Filled proof terms applying Mathlib's
+\texttt{fixed\_point}$_2$, conditional on arithmetic/search interfaces.\\
+Concrete PA instance & Implementation tasks listed in Section 8; not yet
+completed.\\
+Local Lean compilation & Not performed; no Lean or Lake executable was
+available. No successful kernel check is claimed.\\
+PDF & Compiled from the included source.\\
+\bottomrule
+\end{longtable}
+
+The archive contains the paper, the three Lean source files, exact
+dependency information, mathematical and API audit notes, and
+reproduction scripts. It is intended to be directly usable as the start
+of a focused \texttt{PAFlexibleOutput} development inside ProveIt.
+
+\begin{thebibliography}{99}
+\small
+\bibitem{Hamkins2017}
+Joel David Hamkins,
+\emph{The universal algorithm: a new simple proof of Woodin's theorem},
+May 28, 2017. User-supplied reference.
+\url{https://jdh.hamkins.org/the-universal-algorithm-a-new-simple-proof-of-woodins-theorem/}.
+
+\bibitem{Hamkins2016}
+Joel David Hamkins,
+\emph{Every function can be computable!}, March 25, 2016,
+including the alternative proof credited to Vadim Kosoy.
+\url{https://jdh.hamkins.org/every-function-can-be-computable/}.
+
+\bibitem{ProveIt}
+Vladimir Reshetnikov, \emph{ProveIt}, inspected at commit
+\path{08edc6964d8990d2230179a9d65355ac1eee7a9e}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/08edc6964d8990d2230179a9d65355ac1eee7a9e}.
+
+\bibitem{Mathlib}
+Mathlib, \emph{Mathlib/Computability/PartrecCode.lean},
+revision \path{81a5d257c8e410db227a6665ed08f64fea08e997}.
+\url{https://github.com/leanprover-community/mathlib4/blob/81a5d257c8e410db227a6665ed08f64fea08e997/Mathlib/Computability/PartrecCode.lean}.
+API documentation:
+\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/Computability/PartrecCode.html}.
+
+\bibitem{PAUndecidable}
+ProveIt, \emph{Logic/PeanoArithmetic/Undecidable/Lean/PAUndecidable.lean},
+at the revision in \cite{ProveIt}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/08edc6964d8990d2230179a9d65355ac1eee7a9e/Logic/PeanoArithmetic/Undecidable/Lean/PAUndecidable.lean}.
+
+\bibitem{FoundationRepresentation}
+FormalizedFormalLogic/Foundation,
+\emph{Foundation/FirstOrder/Arithmetic/R0/Representation.lean},
+revision \texttt{32e1a0956a8622fad067328ca1959729a7634428}.
+\url{https://github.com/FormalizedFormalLogic/Foundation/blob/32e1a0956a8622fad067328ca1959729a7634428/Foundation/FirstOrder/Arithmetic/R0/Representation.lean}.
+
+\bibitem{FoundationCompleteness}
+FormalizedFormalLogic/Foundation,
+\emph{Foundation/FirstOrder/Completeness/CounterModel.lean},
+at the revision in \cite{FoundationRepresentation}.
+\url{https://github.com/FormalizedFormalLogic/Foundation/blob/32e1a0956a8622fad067328ca1959729a7634428/Foundation/FirstOrder/Completeness/CounterModel.lean}.
+
+\bibitem{TwoModels}
+ProveIt,
+\emph{PAFiniteBasisReduction/TwoNonisomorphicModels.lean},
+at the revision in \cite{ProveIt}; in
+\texttt{Logic/PeanoArithmetic/NotFinitelyAxiomatizable/Lean}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/08edc6964d8990d2230179a9d65355ac1eee7a9e/Logic/PeanoArithmetic/NotFinitelyAxiomatizable/Lean/PAFiniteBasisReduction/TwoNonisomorphicModels.lean}.
+\end{thebibliography}
+\end{document}

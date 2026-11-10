@@ -1,0 +1,181 @@
+# Repository / API audit for the universal partial computation theorem
+
+## Snapshot
+
+- ProveIt commit: `08edc6964d8990d2230179a9d65355ac1eee7a9e`.
+- Lean toolchain: `leanprover/lean4:v4.32.0`.
+- Mathlib pin from root lake-manifest.json: `81a5d257c8e410db227a6665ed08f64fea08e997`.
+- Foundation submodule pin: `32e1a0956a8622fad067328ca1959729a7634428`.
+- Foundation is exposed by ProveIt's root Lake configuration as lean_lib Foundation with srcDir `lib/FormalizedFormalLogic-Foundation`, not as a Lake manifest package.
+- Sources were fetched and read. They were not compiled in this environment, and no claim of a fresh kernel audit is made.
+
+## Prefer a single formal syntax
+
+Use Foundation's `LO.FirstOrder.Arithmetic` throughout: `ArithmeticTheory`, `ArithmeticSentence`, `ArithmeticSemisentence k`, `𝗣𝗔`, `T ⊢ σ`, and `LO.FirstOrder.Satisfiable T`.
+
+A compact, genuine first-order semantic endpoint is:
+
+```lean
+∃ e : Nat.Partrec.Code,
+  ¬ (Nat.Partrec.Code.eval e 0).Dom ∧
+  ∀ n : ℕ, LO.FirstOrder.Satisfiable (insert (HaltSentence e 0 n) 𝗣𝗔)
+```
+
+Here HaltSentence must be a fixed, explicitly specified arithmetization of deterministic computation. It is a new definition to implement; it is not a repository theorem name.
+
+In the pinned Foundation version, `Satisfiable T` abbreviates
+`Semantics.Satisfiable (SmallStruc L) T`. It is honest model existence, not an abstract placeholder.
+
+## Computability and recursion
+
+Import `Mathlib.Computability.PartrecCode`. Namespace `Nat.Partrec.Code` provides:
+
+```lean
+eval : Code → ℕ →. ℕ
+evaln : ℕ → Code → ℕ → Option ℕ
+evaln_sound : x ∈ evaln k c n → x ∈ eval c n
+evaln_complete : x ∈ eval c n ↔ ∃ k, x ∈ evaln k c n
+primrec_evaln : Primrec fun a : (ℕ × Code) × ℕ =>
+  evaln a.1.1 a.1.2 a.2
+eval_part : Partrec₂ eval
+fixed_point₂ {f : Code → ℕ →. ℕ} (hf : Partrec₂ f) :
+  ∃ c : Code, eval c = f c
+```
+
+A proof-search program g(e,x) that returns the output n of the first enumerated PA proof of ¬HaltSentence(e,0,n) can be closed by fixed_point₂.
+
+Crucial simplification: only external equality `eval e = g e` is needed. If any such refutation exists, the search really halts at some m; Sigma-1 completeness gives a PA proof of its actual output, contradictory to the selected refutation. No internalized PA proof of the recursion-theorem equality is needed.
+
+## PA arithmetization and Sigma-1 completeness
+
+ProveIt `PAUndecidable` imports:
+- `Foundation.FirstOrder.Incompleteness.Halting`;
+- `Foundation.FirstOrder.Incompleteness.InductionSchemeDelta1`.
+
+It contains:
+```lean
+PAUndecidable.computable_of_sigmaOne_definable_function₁
+    (f : ℕ → ℕ) [𝚺₁-Function₁ f] : Computable f
+
+PAUndecidable.haltingCode_iff_pa_provable (n : Nat) :
+    HaltingCode n ↔
+      InstanceTheoremhood 𝗣𝗔 (codeOfREPred HaltingCode) n
+
+PAUndecidable.haltingSentenceCode_computable :
+    Computable HaltingSentenceCode
+
+PAUndecidable.haltingSentenceCode_eq_quote (n : ℕ) :
+    HaltingSentenceCode n =
+      (⌜((codeOfREPred HaltingCode)/[n] : ArithmeticSentence)⌝ : ℕ)
+```
+
+The last two give a close template for a computable formula-code compiler.
+
+In `Foundation.FirstOrder.Arithmetic.R0.Basic`:
+```lean
+LO.FirstOrder.Arithmetic.sigma_one_completeness
+    {T : ArithmeticTheory} [𝗥₀ ⪯ T]
+    {σ : ArithmeticSentence} (hσ : Hierarchy 𝚺 1 σ) :
+    ℕ↓[ℒₒᵣ] ⊧ σ → T ⊢ σ
+```
+
+In `Foundation.FirstOrder.Arithmetic.R0.Representation`:
+- `code`, `code_sigma_one`, `models_code`;
+- `codeOfPartrec'`, `codeOfPartrec'_spec`;
+- `codeOfREPred`, `codeOfREPred_spec`;
+- `re_complete`.
+
+WARNING: `code_uniq` and `codeAux_uniq` appear inside a commented-out model section. They are NOT available active theorem declarations. They cannot be cited as already proving nonstandard functionality of the chosen representation. Either prove functionality for a direct finite-computation arithmetization, or add that lemma for the Foundation compiler.
+
+Choose one fixed universal Sigma-1 formula and specialize by numeral substitution. This makes the sentence-code map computable even if existence of that fixed finite formula was originally obtained by classical choice. Do not make a separate noncomputable representative choice at each e.
+
+## Soundness and models
+
+Import `Foundation.FirstOrder.Completeness.CounterModel` (or umbrella `Foundation.FirstOrder.Completeness`).
+
+Available:
+```lean
+LO.FirstOrder.Theory.small_satisfiable_of_consistent :
+  Entailment.Consistent T → Satisfiable T
+
+LO.FirstOrder.Theory.satisfiable_iff_consistent :
+  Semantics.Satisfiable (Struc.{max u w} L) T ↔ Entailment.Consistent T
+
+LO.FirstOrder.Theory.Proof.complete :
+  T ⊨[Struc.{max u w} L] φ → T ⊢ φ
+
+LO.FirstOrder.Theory.Proof.complete_iff :
+  T ⊨ φ ↔ T ⊢ φ
+```
+
+Import `Foundation.FirstOrder.Incompleteness.Dense` for:
+```lean
+LO.Entailment.consistent_cons_of_unprovable_neg
+  (h : 𝓢 ⊬ ∼φ) : Consistent (adjoin φ 𝓢)
+```
+
+Then unrefutability of each HaltSentence gives consistent `insert (HaltSentence e 0 n) 𝗣𝗔`; completeness supplies the desired model.
+
+`Foundation.FirstOrder.Basic.Soundness` has:
+- `Theory.Proof.sound`;
+- `Theory.consistent_of_model`;
+- `Theory.models_of_provable`;
+- `Theory.unprovable_of_countermodel`.
+
+`Foundation.FirstOrder.Basic.Semantics.Semantics` has:
+- `satisfiable_iff`, extracting a carrier, Nonempty instance, Structure instance, and theory satisfaction;
+- `models_theory_iff`;
+- `models_of_mem`;
+- `ModelOfSat.models`;
+- `Semiformula.eval_rew` and numeral-substitution semantics.
+
+## Other available incompleteness tools
+
+Pinned old layout import `Foundation.FirstOrder.Bootstrapping.FixedPoint` gives:
+- `Bootstrapping.Arithmetic.substNumeral`, `substNumerals`;
+- `substNumeral_app_quote`, `substNumerals_app_quote`;
+- `ssnum`, `ssnums` and definability instances;
+- `parameterizedFixedpoint`;
+- `parameterized_diagonal₁`.
+
+Pinned import `Foundation.FirstOrder.Incompleteness.GödelRosser` gives:
+```lean
+LO.FirstOrder.Arithmetic.incomplete'
+  (T : ArithmeticTheory) [T.Δ₁] [𝗜𝚺₁ ⪯ T] [Entailment.Consistent T] :
+  Entailment.Incomplete T
+```
+
+These are optional; Kleene's recursion theorem is a more direct route here.
+
+## Model-interface pitfall in a different ProveIt subsystem
+
+`SetTheory.PA.Model` has induction for every Lean predicate and is categorical. It is unsuitable for nonstandard model constructions. The genuine first-order bundle is:
+`LeanProofs.PAFiniteBasisReduction.TwoNonisomorphicModels.FirstOrderPAModel`,
+imported via `PAFiniteBasisReduction.TwoNonisomorphicModels`, with:
+```lean
+structure FirstOrderPAModel where
+  Carrier : Type
+  preModel : PA.PreModel Carrier
+  satisfiesPA : RawPASatisfies preModel
+```
+
+That file also proves `standardPAModel`, `nonstandardPAModel_exists`, and `peano_arithmetic_has_two_nonisomorphic_models`. Mixing its PA syntax with Foundation is unnecessary for this task.
+
+## Trust / build notes
+
+The fetched relevant active sources contain no declared `sorry` or new axioms in their theorem bodies; this is a source inspection, not a transitive kernel audit. Root repository instructions require one Lean module per build invocation and no concurrent Lean/Lake builds. Full implementation should finish with `#print axioms` on the endpoint and must not include `sorryAx`.
+
+
+
+FINAL REVIEW CLARIFICATIONS
+
+The chosen universalGraph is one fixed deterministic universal-interpreter presentation.
+It is not claimed PA-equivalent to every other evaluator arithmetization. Use
+FullySpecifiedMainClaim, which includes standard correctness and internal functionality.
+
+Prove functionality under PA or adequate ordered arithmetic: the old commented
+R0 sketch uses global order comparability in its minimization case and should
+not simply be uncommented unchanged.
+
+Statement.lean explicitly imports InductionSchemeDelta1 and qualifies LO.ORingStructure.
+All delivered Lean sources remain uncompiled.

@@ -1,0 +1,72 @@
+import DiophantineConsistency.BFS943.TenPositiveDoubling
+import DiophantineConsistency.BFS943.ScaledSquare
+
+/-! Abstract doubled-product-square root extraction; no graph binding. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace TenPositiveProductRoot
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open DiophantineConsistency.ArithmeticGcdNormalization
+open TenPositiveDoubling TenPositiveScaledSquare
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- A common-divisor property yields a Bézout unit certificate using the
+internal gcd. No external prime-factorization principle is assumed. -/
+theorem bez_of_common_divisors (a b : V)
+    (h : ∀d : V, d∣a → d∣b → d∣1) : Bez a b 1 := by
+  obtain ⟨g,hg⟩ := gcd_certificate_exists a b
+  have hg1 : g∣(1:V) := h g hg.1 hg.2.1
+  obtain ⟨t,ht⟩ := hg1
+  have hgpos : 0<g := pos_of_mul_pos_left (by rw [←ht]; simp) (by simp)
+  have hgone : g=1 := le_antisymm (le_of_dvd (by simp : (0:V)<1) ⟨t,ht⟩)
+    (pos_iff_one_le.mp hgpos)
+  simpa [hgone] using hg.2.2
+
+/-- The cross-multiplied doubled product relation yields the G square,
+provided its abstract ingredients, |V| and the scale are positive. -/
+theorem doubled_product_root (delta U E V0 z M : V)
+    (hdelta : 0<delta) (hU : 0<U) (hE : 0<E) (hV0 : 0<V0) (hM : 0<M)
+    (h : let a := delta*U*U*E; let G := E*(1+a);
+      let Q := delta*((1+4*a*(1+a))-1);
+      (Q-1)*(z*z)=(M*M)*(G*(Q*V0*V0-1))) :
+    ∃ g : V, let a := delta*U*U*E; E*(1+a)=g*g := by
+  let a : V := delta*U*U*E
+  let G : V := E*(1+a)
+  let Q : V := delta*((1+4*a*(1+a))-1)
+  let D : V := Q-1
+  let Dy : V := Q*V0*V0-1
+  have hc : ∀d : V, d∣G → d∣D*Dy → d∣1 := by
+    intro d hd hp
+    exact positive_doubled_coprime delta U E V0 d hdelta hU hE hV0 hd hp
+  have hu : Bez G (D*Dy) 1 := bez_of_common_divisors G (D*Dy) hc
+  change D*(z*z)=(M*M)*(G*Dy) at h
+  exact scaled_product_factor_square D z M G Dy hM hu h
+
+
+/-- The same relation yields positive roots of both E and 1+a, by their
+explicit Bézout certificate. The graph-specific hypotheses remain external. -/
+theorem doubled_product_roots (delta U E V0 z M : V)
+    (hdelta : 0<delta) (hU : 0<U) (hE : 0<E) (hV0 : 0<V0) (hM : 0<M)
+    (h : let a := delta*U*U*E; let G := E*(1+a);
+      let Q := delta*((1+4*a*(1+a))-1);
+      (Q-1)*(z*z)=(M*M)*(G*(Q*V0*V0-1))) :
+    ∃ tau f : V, 0<tau ∧ 0<f ∧ E=tau*tau ∧
+      1+delta*U*U*E=f*f := by
+  let a : V := delta*U*U*E
+  have hecert : Bez E (1+a) 1 := ⟨delta*U*U,0,0,1,by dsimp [a]; ring⟩
+  obtain ⟨g,hg⟩ := doubled_product_root delta U E V0 z M hdelta hU hE hV0 hM h
+  change E*(1+a)=g*g at hg
+  obtain ⟨tau,htau⟩ := DiophantineConsistency.ModelProductPell.pp_square_of_coprime E (1+a) g hecert hg
+  have hg' : (1+a)*E=g*g := by rw [mul_comm]; exact hg
+  obtain ⟨f,hf⟩ := DiophantineConsistency.ModelProductPell.pp_square_of_coprime (1+a) E g
+    (DiophantineConsistency.ModelProductPell.pp_bez_symm hecert) hg'
+  have htp : 0<tau := pos_of_mul_pos_left (by rw [←htau]; exact hE) (by simp)
+  have hfp : 0<f := pos_of_mul_pos_left (by rw [←hf]; simp) (by simp)
+  exact ⟨tau,f,htp,hfp,htau,hf⟩
+
+#print axioms TenPositiveProductRoot.bez_of_common_divisors
+#print axioms TenPositiveProductRoot.doubled_product_root
+#print axioms TenPositiveProductRoot.doubled_product_roots
+end TenPositiveProductRoot
