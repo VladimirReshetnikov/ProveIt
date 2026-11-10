@@ -6232,8 +6232,26 @@ points of the eleven-integer row.
 - `gen_literal131.py --check` and `check_ports131.py` bind the literal and the
   six ports.
 
-Still open on the eleven-integer row: 137's 648 / 115, 135's 398 / 121 and
-125's 488 / 118, 464 / 119.
+**137's eleven-integer weak product 648 / 115, CLOSED (10 November 2026)**
+([`P137/IPRAInteger137`](Lean/DiophantineConsistency/P137/IPRAInteger137.lean),
+[record](research/p137-integer11/README.md)).
+- The front is the weak front `Y = v q` with the saturated carrier
+  `zc = T Dcar + K M + H (v − q²)`, `M = 2q²` (`P137Front`, shared node for
+  node with 135's 398 / 121). The back end is the single product
+  `δ Z² − S² BP Df Cy` (`P137Value`).
+- Soundness (`P137Fold.sound`): a zero forces `S ∣ Ac`, and
+  `P137Bootstrap.recover` then gives `v = (1 + 2v') q²`, so the weak registers
+  are 138's at `v'`; `ZRows/StrongFold.strong_fold` gives `P138Rank.Folded` and
+  138's leaf chain gives the halt.
+- Completeness (`P137Complete.complete`) reads 138's canonical record at the
+  new scale; the guard `4 (3 Budget − 4)` is a nonsquare because no square is
+  2 modulo 3.
+- `gen_literal137.py --check` and `check_ports137.py` bind the literal and the
+  six ports. The package's other three eleven-integer equations (640 / 118,
+  580 / 119, 574 / 122) are dominated by 125's 488 / 118 and 464 / 119.
+
+Still open on the eleven-integer row: 135's 398 / 121 and 125's 488 / 118,
+464 / 119.
 
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
