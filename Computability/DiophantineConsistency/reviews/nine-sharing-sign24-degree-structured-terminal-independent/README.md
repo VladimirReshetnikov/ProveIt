@@ -1,0 +1,3 @@
+# Independent audit of the structured degree attempt
+
+The independent checker completed in session 48233 with exit 0. It checks the frozen record of author session 34924, whose outer exit was 1. The generic polynomial degree and structural bounds compiled successfully; the finite residual stage failed with unsolved goals and `sorryAx` in its failed log. The concrete degree composition and final postflight were not reached, so this attempt proves no concrete degree upper bound. The checker verifies the direct recorded source, artifacts, provider guards and overlays; it is a point-in-time audit and does not independently re-prove all inherited ancestry.

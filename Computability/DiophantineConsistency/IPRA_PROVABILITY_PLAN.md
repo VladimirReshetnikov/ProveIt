@@ -772,6 +772,10 @@ A [local-heartbeat retry](research/nine-sharing-sign24-degree-upper-retry-check/
 [independently audited](reviews/nine-sharing-sign24-degree-upper-retry-terminal-independent/README.md),
 compiled the generic bound but stopped the concrete calculation at its
 120-second guard without producing an object or final postflight.
+A [structured attempt](research/nine-sharing-sign24-degree-structured-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-degree-structured-terminal-independent/README.md),
+compiled generic substitution and square-sum bounds but failed on individual
+residual goals, reporting `sorryAx`; no concrete bound or postflight resulted.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
