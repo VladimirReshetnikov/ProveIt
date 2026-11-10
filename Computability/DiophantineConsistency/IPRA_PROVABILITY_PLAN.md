@@ -1367,6 +1367,11 @@ An [actual-inner axis binding](research/nine-sharing-sign14-axis-inner-binding-c
 checks staged shared37 has axis degree 8 under `p 0 ≠ 0`, with two warnings.
 Point-survey/ancestry qualifications remain; Na/seed lower and external binding
 are separate.
+A subsequent [actual Na-axis binding](research/nine-sharing-sign14-axis-na-binding-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-axis-na-binding-terminal-independent/README.md),
+checks that the actual staged row has degree 62 when `p 0 ≠ 0`. Its two
+warnings and inherited point-survey qualifications are recorded. Seed
+dominance, the multivariate lower bound and external binding remain separate.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
@@ -1832,6 +1837,11 @@ A [generic rank criterion](research/nine-sharing-sign17-k-rank-generic-check/REA
 [independently audited](reviews/nine-sharing-sign17-k-rank-generic-terminal-independent/README.md),
 checks the abstract result under explicit rank and weight hypotheses. Its
 specialization to actual physicalMap, the candidate witness and K remain separate.
+A subsequent [actual physical-map criterion](research/nine-sharing-sign17-k-actual-rank-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-actual-rank-terminal-independent/README.md),
+checks the specialization with candidate zero/nonzero and descending-weight
+hypotheses. It does not establish those hypotheses for the concrete candidate
+or bind the full K coefficient or an external file.
 A [symbolic MF radix-digit attempt](research/nine-sharing-sign17-mf-radix-digits-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mf-radix-digits-terminal-independent/README.md),
 passed fifteen prerequisites but failed the final digit theorem on recursion
