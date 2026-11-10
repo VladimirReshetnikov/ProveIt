@@ -85,6 +85,10 @@ The distinct [free-`q−F` 64-operation proposal](research/current14-carrier64-f
 also has an externally reviewed symbolic positive zero at the actual ports.
 Its direct inverse has a negative coordinate; this does not rule out a
 different old witness or settle existential equivalence.
+The distinct [free-`Y` 63-operation proposal](research/current14-carrier63-free-y-zero/README.md)
+likewise has an independently reviewed symbolic positive zero at the current
+ports whose eliminated `q³` divisibility fails. These zero constructions are
+external mathematical checks, not new Lean proofs.
 
 ## Sign14 proof transfer and fixed-constant work
 
@@ -155,6 +159,9 @@ Lean also checks a [74-live-operation circuit](research/nine-sharing-sign14-posi
 with 18 additions, 18 subtractions and 38 multiplications; its [output
 equals the expression over every commutative ring](research/nine-sharing-sign14-positive74-circuit-output-check/README.md),
 as confirmed by an [independent terminal audit](reviews/nine-sharing-sign14-positive74-circuit-output-terminal-independent/README.md).
+An independently reviewed [local rewrite search](research/nine-sharing-sign14-positive74-local-search/README.md)
+found no smaller circuit in its tested one- and two-gate families, including
+31 residual-sign variants. It does not establish minimality.
 The [all-model
 polynomial bridge](research/nine-sharing-sign14-positive74-ipra-bridge-check/README.md)
 and the [native, standard and translated iPRA endpoints](research/nine-sharing-sign14-positive74-ipra-endpoint-check/README.md)
