@@ -1,0 +1,85 @@
+All recorded Python measurements use CPython 3.12.14 and zlib 1.3.2.
+The measurer removes genuine docstrings, applies \texttt{ast.unparse},
+and appends a newline. It then counts UTF-8 bytes, significant Python
+tokens, and every AST node of the whole standalone module, including
+JSON input and the verdict driver. The common Python/JSON runtime is
+excluded, matching the inspected drafts' convention. There is no hidden
+theory-specific import, embedded binary theorem engine, or decompression
+trick in a selected checker.
+
+Gzip is reported with \texttt{compresslevel=9} and \texttt{mtime=0},
+including its wrapper. It is an informational metric. Raw and normalized
+gzip lengths are both retained. For the three normalized compact sources
+these lengths coincide. The readable expansion has 2,307 raw bytes,
+1,463 normalized bytes, 295 tokens, and 348 AST nodes; its raw gzip size
+is 961 bytes and its normalized gzip size is 546 bytes.
+
+The checker suite has 49 local certificate cases and 46 global-reference
+cases. Together with malformed-input cases it checks 756 complete-process
+expectations across the four new programs and three frozen baselines,
+under ordinary and optimized Python. Six additional expectations run
+three deliberately invalid implementation variants in both modes. All pass with zero
+mismatches. The mutations exercise compound-progress selection, context
+leakage from a subproof, and future-variable capture by premature name
+allocation. Their targeted certificates are rejected by the
+corrected programs and accepted by the corresponding mutants.
+
+The independent arithmetic diagnostics evaluate the displayed source
+Boolean operations and protected orbits. They check 361 orbit/parameter
+pairs, 19 right-inverse inputs, 21 coverage/predecessor inputs, 21
+fixed-point/marker inputs, six fixed-prefix indices, and 63 finite-update
+source cases. Seven targeted bad controls detect missing zero protection,
+missing stopping, omitted finite exceptions, and corrupted marker
+operations. A separate branching-successor example illustrates the
+invalidity of cancelling $S$ from a right-inverse identity alone. It is
+explicitly \emph{not} a model of all the weak theory's recursor and
+induction schemas.
+
+Two independent assistant workers reviewed the coverage and fixed-prefix
+arguments, with the detailed logical review retained in the archive.
+This is internal independent checking, not external human peer review
+or proof-assistant certification. The tests do not establish a theorem
+about nonstandard elements; that conclusion rests on the written
+fixed-parameter induction arguments.
+
+\subsection{Reproduction commands and files}
+From the extracted archive directory, run
+\begin{verbatim}
+python3 verify_manifest.py
+python3 reproduce.py
+python3 build.py
+\end{verbatim}
+The first verifies distributed file identities. The second remeasures the
+complete modules and frozen corpus, regenerates the certificates, checks
+the process expectations, and runs the arithmetic diagnostics. The third
+builds the standalone TeX source and PDF with shell escape disabled.
+The tests require only Python's standard library. Building the report
+requires a standard pdfLaTeX installation.
+
+\file{evidence/snapshot.json} fixes the source commit and archive blob
+identities. \file{evidence/corpus_metrics.json} records all 484 distinct
+source measurements and locations; \file{evidence/boundary_classification.json}
+records the 48 relevant role classifications. Exact frozen Python
+sources are supplied under \file{evidence/source_corpus/}, so the static
+remeasurement needs no network. To repeat the full archive-identity audit
+against a local checkout of the pinned repository, run
+\begin{verbatim}
+python3 audit_corpus.py /path/to/ProveIt/docs/drafts
+\end{verbatim}
+No inspected corpus program is executed by that audit. Only the selected
+and explicitly attributed test programs are executed during reproduction.
+
+The complete compact and readable checkers are under \file{code/};
+the four-packet witness-capture attack and regenerated named proofs are
+under \file{tests/}. \file{reference/} retains the measured incumbents,
+the original inherited mathematical sources, and the upstream MIT-0
+license. Attribution and content hashes are recorded in
+\file{evidence/mathematical_provenance.json} and the source manifest.
+The adapted arithmetic appendix makes its scalar prerequisites explicit
+before general PR compilation, avoiding a possible circular reading of
+the original exposition.
+
+The complete deliverable supports the specific new lemmas, small source
+reductions, and inherited full-iPRA interpretation stated here. It does
+not establish a single all-coordinate record, an absolute minimum,
+or an injectivity-free complete self-seeded axiomatization.

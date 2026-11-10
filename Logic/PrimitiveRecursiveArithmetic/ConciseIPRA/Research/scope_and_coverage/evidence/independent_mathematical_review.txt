@@ -1,0 +1,128 @@
+INDEPENDENT REVIEW OF THE TWO CURRENT MATHEMATICAL FRAGMENTS
+Reviewer: separate assistant instance /root/audit_recursion, 2026-11-10.
+This is written mathematical review, not external human peer review or a
+Lean/Rocq formalization. No additional implementation tests were run here.
+
+1. Mixed-binder presentation: correctness
+---------------------------------------
+Reviewed review/agent_logic/mixed_binder.tex before its provenance revision.
+The displayed calculus is mathematically coherent and the full-iPRA bridge
+appears valid, with the following essential details checked independently.
+
+- Literal equations and compound matrices have DIFFERENT binder meanings.
+  Homogeneous binder congruence is valid: in the atomic-to-atomic case the
+  converted local premise uses Step; in the compound-to-compound case it
+  uses Base. Unrestricted congruence across the two kinds is not asserted.
+- Contextual equation induction is genuinely charged in atomic Base.
+  Atomic introduction merely gives progress. Omitting Base loses this
+  induction derivation; omitting Step loses the arbitrary native atomic
+  binder's progress-composite derivation. Both must remain in the kernel.
+- Numerical cases are derivable for atoms by ignoring the induction
+  hypothesis, and for compounds by ignoring the case-base assumption.
+  This proves the weak fresh-variable case rule before ordinary logic.
+- The gate preserves matrix kind at every depth. Its zero theorem follows
+  by structural induction; its positive equivalence follows by the proved
+  homogeneous congruence. No cross-kind exchange is used.
+- P(A)=D(unused,y).G_y A is equivalent to A even when A is an equation:
+  from the atomic progress clause, its theorem G_0 A and Base at 1 yield A.
+  The forward direction ignores the progress premise and uses A directly.
+- Padding each WHOLE shorter operand to equal binder depth before aligned
+  selector recursion is valid for arbitrary native formulas. Every pair
+  of matrices encountered at corresponding levels then has the same kind.
+  This avoids the unsound general technique of padding a submatrix inside
+  an already present binder and silently changing that binder's meaning.
+- Implication uses M-plus with positive binder depth. Its outer binder is
+  therefore the compound closure form and retains the antecedent at zero.
+  This avoids requiring contextual numerical cases in the implication
+  bootstrap. The other displayed connective macros work at either kind.
+- Universal elimination is not arbitrary formula induction: the gated
+  clause gives all successor instances by its allowed Base rule, then the
+  already derived numerical-cases rule adds the separately supplied zero.
+- Both native formula composites hold. The atomic composite uses Step to
+  derive the progress implication and uses deterministic atomic DI in the
+  reverse direction. The compound composite uses Base and deterministic
+  case DI. Their ordinary translations preserve equation versus compound
+  root class, so the necessary congruence in external formula induction is
+  homogeneous. Full domain identity isomorphisms transfer from the scalar
+  arithmetic bridge. Separation from genuine ordinary falsity is charged.
+- If the wire implementation also exposes Q clauses as formulas, their
+  representative D(unused,y).A preserves their compound outer class. The
+  text should be read as equivalence of reusable resources, with the
+  corresponding object-formula definitional extension made explicit when
+  describing the extra wire constructor.
+
+2. Mixed-binder presentation: critical novelty correction
+--------------------------------------------------------
+The mixed THEORY is already in the supplied corpus. An exact prior source
+is:
+review/extracted/ipra_research_2026-11-10/ipra_research_2026-11-10/
+  reference/audit/prior_math/all_starts.tex
+
+That source explicitly calls the predecessor calculus P the system with
+deterministic atomic-progress/compound-case DI, QE_0 from B(0) to B(t), and
+atomic QE_+ from E(r) to E(Sr). This is exactly the current theory, with Q
+as an object formula instead of an auxiliary resource. It already proves
+full native formula round trips using a safe sublanguage plus a normalizer.
+
+The WHOLE-OPERAND padding proof in the current fragment can be presented
+as a simplification of that earlier logical-interface proof: it avoids
+the earlier safe-sublanguage validator in the metatheory and its separate
+raw-formula normalization argument. It does not invent the mixed binder,
+its deterministic introduction, its semantics, or its two eliminations.
+
+The old source also resolves the proposed all-starts circularity. It sets
+tau(r,s)=I(r,s;u.Su) and permits atomic E(r) -> E(tau(r,s)). Choosing r=0
+and s=t gives tau(0,t)=t by the DIRECT I0 computation; equation induction
+therefore bootstraps without using I(t,0;S)=t. After deriving induction it
+proves tau(r,0)=r, tau(r,1)=Sr and tau(r,Ss)=S tau(r,s), and recovers Step.
+Thus the current fragment's final unresolved-circularity paragraph must
+be replaced or sharply restricted to its particular opposite orientation.
+The general all-starts fusion is established prior work in this corpus.
+
+3. Right predecessor without successor injectivity: correctness
+--------------------------------------------------------------
+Reviewed review/agent_arithmetic/right_predecessor.tex.
+No hidden use of successor cancellation or of constructor coverage was
+found. The result is a right inverse on successors, not a left inverse.
+
+- In the no-injectivity F+epsilon theory, D(0,a)=Sa and D(Sn,a)=a prove
+  successor/zero separation using 0 != 1. The Boolean conjunction table
+  only needs S(a) != 0, not injectivity or distinction of S1 from 1.
+- Equality reflection and Boolean ranges give decidable quantifier-free
+  formulas. Equation induction on chi_A=1 yields the needed QF induction
+  without any coverage or cancellation premise.
+- The clock body includes the guard v=0 OR Sv=a, so h_a(0)=0 and its
+  initial F value is exactly 1. This removes the earlier shifted initial
+  value and exceptional-target assumptions that needed cancellation.
+- For fixed passive a, the invariant V(j,a)=Sj OR S(V(j,a))=a is valid.
+  If the second alternative holds the update fixes its value. Otherwise
+  the first alternative makes the value nonzero and the guard false, so
+  the update advances it by one. This is a legitimate fixed-parameter
+  QF induction, not induction with a changing target.
+- Only after this universal induction, specialize a=S^2m,j=m. In either
+  disjunct S(V(m,a))=a follows directly, WITHOUT cancellation. Two actual
+  F computation steps preserve the state, proving S(W(S^2m))=S^2m.
+- The finite P graph has exhaustive, disjoint guards n=0,n=1,otherwise.
+  Its definitional extension is conservative. More importantly, the text
+  explicitly expands finite P cases to transfer QF induction. This avoids
+  the invalid blanket assertion that any conservative definition preserves
+  a restricted induction schema. No primitive F body containing P is added.
+- The induction on n=0 OR n=S(Pn) is valid. In the nonzero old branch,
+  Sn=S^2(Pn), so the clock lemma supplies S(W(Sn))=Sn; cases Sn=1 versus
+  Sn!=1 then select the correct graph value of P. This establishes coverage.
+  Applying coverage at Sn gives S(P(Sn))=Sn by zero/successor separation.
+
+The theorem heading 'right cancellation' would be clearer as 'a right
+predecessor': the statement does not cancel S. Its concluding limitation
+is essential. Applying P to Sa=Sb gives only P(Sa)=P(Sb); the missing
+identities P(Sa)=a and P(Sb)=b are not supplied by this argument. Therefore
+the precursor theory is not shown bi-interpretable with iPRA without its
+successor-injectivity axiom. Do not assign the inherited tiny iPRA checker
+to this no-injectivity precursor theory.
+
+4. Review status
+----------------
+Correctness of both displayed constructions is supported as above. The
+mixed presentation's novelty claim required a material correction, which
+was sent to the root and author immediately. The right-predecessor result
+does not establish the requested smaller complete iPRA axiomatization.

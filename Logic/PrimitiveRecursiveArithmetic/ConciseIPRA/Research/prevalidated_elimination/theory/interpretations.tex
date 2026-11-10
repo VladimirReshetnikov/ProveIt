@@ -1,0 +1,140 @@
+\section{What is interpreted, and why both composites are identities}
+\label{sec:interpretations}
+
+Merely implementing all standard primitive-recursive functions would not
+establish bi-interpretability. The interpretation must work internally
+at arbitrary elements of every model, preserve the complete intuitionistic
+language, and identify both return interpretations. The inherited
+construction provides these stronger conclusions.
+
+\subsection{Ordinary intuitionistic logic is reconstructed}
+
+Let $C(v,a,b)=I(v,a;u.b)$, so computation gives
+$C(0,a,b)=a$ and $C(Sv,a,b)=b$. On equations define
+\[
+ G_v(s=t):=(C(v,0,s)=C(v,0,t)),\qquad
+ M_v(s=t,r=q):=(C(v,s,r)=C(v,t,q)).
+\]
+Extend gates through paired binders. An auxiliary $\Q$ is interderivable
+with a $\D$ having unused witness, so it can first be eliminated from
+the formula grammar. Padding
+\[
+ A\dashv\vdash\D_{u,y}G_yA
+\]
+aligns unequal binder depths before a selector is extended recursively.
+Case introduction and binder congruence prove, by external induction on
+finite syntax,
+\[
+ \vdash G_0A,\quad G_{Sv}A\dashv\vdash A,
+ \qquad M_0(A,B)\dashv\vdash A,\quad M_{Sv}(A,B)\dashv\vdash B.
+\]
+This construction applies to arbitrary quantified native formulas;
+it does not claim a numerical decision procedure for their truth.
+
+Put $p(z)=I(z,0;u.C(u,1,0))$. The fixed computations $p(1)=1$ and
+$p(2)=0$ suffice for the logical macros
+\begin{align*}
+ A\Rightarrow_* B&=\D_{u,z}M_z(A,B),\\
+ A\land_* B&=\D_{u,z}G_zM_{p(z)}(A,B),\\
+ \exists_*x\,A(x)&=\D_{x,y}G_yA(x),\\
+ A\lor_* B&=\exists_*x\,M_x(A,B),\\
+ \forall_*x\,A(x)&=A(0)\land_*\D_{u,z}G_zA(z),\\
+ \bot_*&=(0=1).
+\end{align*}
+Newly introduced variables are fresh and $u$ is unused. Selector
+endpoints give implication introduction and elimination; gates give
+the existential rules. Numerical cases give disjunction elimination.
+The instances at $1$ and $2$ give conjunction projections. Derived
+numerical coverage handles arbitrary targets in universal elimination.
+Under $0=1$, transport through $C$ gives every equation, and external
+formula induction with case introduction gives explosion.
+
+The exact native formula returns are
+\begin{align*}
+ \Q_yB&\dashv\vdash B(0)\Rightarrow_*\forall_*yB(y),\\
+ \D_{x,y}B&\dashv\vdash
+  \exists_*x\bigl(B(x,0)\Rightarrow_*\forall_*yB(x,y)\bigr).
+\end{align*}
+Forwards, eliminate the paired formula, assume its base, and use the
+opened closure at a fresh arbitrary index. Backwards, eliminate the
+displayed existential, introduce $\D$ by case at that witness, and use
+implication and universal elimination to supply the successor instance.
+These are return equivalences for arbitrary native matrices, not just
+for a chosen image of ordinary formulas.
+The $\Q$ return follows by the unused-witness equivalence above, or
+directly by closure elimination and universal introduction.
+
+\subsection{Arithmetic reconstruction in the required order}
+
+The ordinary realization $T_I$ has intuitionistic first-order equality
+logic, the scalar computation schemas, numerical coverage
+$\forall x(x=0\lor\exists y\,x=Sy)$, the explicit separation bridge
+$(0=S0)\to\bot$, and contextual literal-equation induction.
+The bridge must be present: positive numerical equations alone admit
+a singleton structure. Native falsity maps to the designated contradictory
+equation and ordinary falsity maps back to it.
+
+The appendices establish the following dependency order internally.
+First, scalar iteration and equation induction construct a predecessor
+term $P$ with $P0=0$ and $P(Sn)=n$. No pairing or equality test is assumed
+in that bootstrap. Next, truncated subtraction and a characteristic of
+actual equality are constructed, and their reflection is proved on the
+whole domain. This compiles each quantifier-free formula to an equivalent
+equation, yielding quantifier-free induction. Only then are pairing and
+its projections derived by bounded scalar iteration. Thus none of these
+steps silently uses the general primitive-recursion theorem it is
+supposed to establish.
+
+For a fixed primitive-recursive description
+\[
+ f(0,\vec p)=g(\vec p),\qquad
+ f(Sn,\vec p)=h(n,f(n,\vec p),\vec p),
+\]
+let $\pi,L,H$ be the proved pairing and projections, and let the earlier
+descriptions have scalar translations $g^*,h^*$. Set
+\begin{align*}
+ V(n,\vec p)&=I\bigl(n,\pi(0,g^*(\vec p));
+  u.\pi(SL(u),h^*(L(u),H(u),\vec p))\bigr),\\
+ f^*(n,\vec p)&=H(V(n,\vec p)).
+\end{align*}
+Equation induction proves $L(V(n,\vec p))=n$, with passive parameters
+fixed. The projection equations then establish the target recursion
+equations. This is an external recursion on each finite function
+description. It is not a uniformly total numerical evaluator.
+
+\begin{theorem}[Full bi-interpretability and equiconsistency]
+The canonical presentation checked by the new kernels is bi-interpretable
+and equiconsistent with full first-order iPRA. Both interpretations use
+the entire numerical domain, interpreted equality is actual equality,
+and the numerical composite isomorphisms have graph $x=y$.
+\end{theorem}
+\begin{proof}
+Interpret a fixed scalar iterator in iPRA by ordinary primitive recursion
+whose update ignores the old counter. Interpret $\Q,\D$ by their displayed
+ordinary meanings. Coverage proves case introduction, and equation
+induction proves progress introduction under an assumed base. The other
+rules have their ordinary logical meanings.
+
+In the reverse direction use the logical macros and the scalar compiler
+above. The internal predecessor, reflection, and quantifier-free-induction
+proofs validate all target arithmetic axioms. For any fixed iterator,
+equation induction compares two operations satisfying its same seed and
+update equations and proves uniqueness at arbitrary internal counters.
+The analogous argument applies to ordinary primitive recursion. External
+induction on finite descriptions therefore identifies every numerical
+double translation with the original operation. The identity graph is
+internally a total bijection preserving the operations.
+
+The displayed $\Q$ and $\D$ return equivalences, together with the ordinary
+returns of the six logical macros, prove both formula composites by
+external structural induction. Falsity is preserved using the explicit
+ordinary separation bridge. Finite proof translations thus preserve
+contradictions in both directions. No assertion that either theory proves
+its own consistency is made.
+
+Lemma~\ref{lem:zero-repair} preserves the native consequence relation
+under the computation restrictions, and
+Theorem~\ref{thm:correspondence} identifies that canonical consequence
+relation with the new checker. Hence the implementation changes preserve
+all these interpretation properties.
+\end{proof}

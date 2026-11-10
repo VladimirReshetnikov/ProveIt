@@ -1,0 +1,36 @@
+BOUNDARY-SOURCE CLASSIFICATION
+
+All 41 boundary source files were read in full and their SHA-256 identities
+were checked against evidence/boundary_sources.json. Classification used
+executable contents and external dependencies, not filenames. No tests were
+rerun. The frozen source census is commit b9c4d74a0018bdafc5bc06e755a0145f4ed2b8d6:
+20 current archives, 35 recursively inventoried archives, 484 distinct Python
+sources.
+
+Exactly three boundary sources are complete standalone proof checkers:
+
+  224590b443849546c484fe69566c61e87d5639e8bcc35321de4e8d215333deaf
+    542 normalized bytes; 263 tokens; 309 AST nodes; 343 gzip-9 bytes.
+  2ba26ac42c7d0998082a2c602a33e60df6125363ed855919c5b0c599cc4db951
+    578 normalized bytes; 261 tokens; 295 AST nodes; 346 gzip-9 bytes.
+  b1a51c50181047371e17e33c090f65c921e79583fe0f48f60d6bea3fd812bf3d
+    642 normalized bytes; 263 tokens; 291 AST nodes; 353 gzip-9 bytes.
+
+Their coordinate minima are 542 normalized bytes, 261 tokens, and 291 AST
+nodes, attained by different programs. The token and AST leaders use the
+inherited generic exception-based traversal and retain its stated malformed-
+string/unbounded-runtime qualification.
+
+The other 38 sources are utilities: document builders, manifest/source-
+integrity checks, measurement/reproduction drivers, fixture generators,
+certificate translators, or harnesses that invoke separately stored kernels.
+No additional complete checker or incomplete candidate kernel was found
+among these 38 files. In particular, a wrapper invoking a checker is not
+counted at the wrapper's own source size; a source generator containing
+checker fragments also requires the external source it rewrites.
+
+Per-hash reasons, metrics, complete-checker flags and runtime qualifications
+are recorded in evidence/boundary_classification.json. This classification
+establishes the observed complete-module frontier for the selected frozen
+corpus; it is not a proof of an absolute lower bound or a fresh formal
+verification of those checkers.

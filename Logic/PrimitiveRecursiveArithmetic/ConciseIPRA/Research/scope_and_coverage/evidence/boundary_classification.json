@@ -1,0 +1,599 @@
+{
+  "snapshot_commit": "b9c4d74a0018bdafc5bc06e755a0145f4ed2b8d6",
+  "frozen_census": {
+    "direct_archives": 20,
+    "distinct_python_sources": 484,
+    "recursive_archive_count": 35
+  },
+  "selection_file": "evidence/boundary_sources.json",
+  "method": "Read all 41 selected source files in full; classify by executable contents and dependencies, not filenames. SHA-256 checked against the supplied boundary inventory. No tests rerun.",
+  "boundary_source_count": 41,
+  "complete_checker_count": 3,
+  "excluded_utility_count": 38,
+  "incomplete_checker_count": 0,
+  "observed_complete_checker_coordinate_minima": {
+    "normalized_bytes": 542,
+    "tokens": 261,
+    "ast_nodes": 291
+  },
+  "classification_scope": "Complete-source role audit, not a fresh universal soundness proof or proof of absolute minimality.",
+  "sources": [
+    {
+      "sha256": "0af746ff8edf7bc2f57f46345254309ee668531eb9961b087c0ec2750c715674",
+      "path": "source_corpus/0af746ff8edf7bc2f57f46345254309ee668531eb9961b087c0ec2750c715674.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "fixture_generator",
+      "reason": "Imports producer, calls its build_cases and Emitter, and appends selected example packets and expectations. It neither implements inference validation nor accepts arbitrary proof input.",
+      "metrics": {
+        "normalized_bytes": 1589,
+        "tokens": 320,
+        "ast_nodes": 271,
+        "gzip9_normalized_bytes": 644
+      }
+    },
+    {
+      "sha256": "0b2fa669ad4ee8ed1b4831ff90aa45d6e1b2913d4824b028c0438aecffdb731b",
+      "path": "source_corpus/0b2fa669ad4ee8ed1b4831ff90aa45d6e1b2913d4824b028c0438aecffdb731b.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "producer_source_generator",
+      "reason": "Reads two external producer modules, splices their Emitter methods through the AST, and compares the generated producer with another file. The generated subject is an untrusted producer, not an in-module verifier.",
+      "metrics": {
+        "normalized_bytes": 983,
+        "tokens": 231,
+        "ast_nodes": 248,
+        "gzip9_normalized_bytes": 459
+      }
+    },
+    {
+      "sha256": "0b6bc83c13a36c4e03dd058a589d11c50cc1ef683ad8143ba2fb72d3a5f60211",
+      "path": "source_corpus/0b6bc83c13a36c4e03dd058a589d11c50cc1ef683ad8143ba2fb72d3a5f60211.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "reproduction_driver",
+      "reason": "Parses a --corpus option and runs measurement, verification, diagnostic and audit scripts in subprocesses. All theorem-specific checking is outside this module.",
+      "metrics": {
+        "normalized_bytes": 826,
+        "tokens": 135,
+        "ast_nodes": 134,
+        "gzip9_normalized_bytes": 448
+      }
+    },
+    {
+      "sha256": "0d93579080eed914be7af5c24d9165cf9365ad15c1d7110299a4afe53de0c983",
+      "path": "source_corpus/0d93579080eed914be7af5c24d9165cf9365ad15c1d7110299a4afe53de0c983.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "checker_source_generator",
+      "reason": "Reads root_seed_checker.py, rewrites string fragments into a separate matched_transport_checker.py, and imports an external measurement function. Embedded code fragments are not a self-contained executed verifier.",
+      "metrics": {
+        "normalized_bytes": 1752,
+        "tokens": 220,
+        "ast_nodes": 230,
+        "gzip9_normalized_bytes": 738
+      }
+    },
+    {
+      "sha256": "16df88d046c784e8db4d4f81f51b791bca7cc02346affd62159034973f6fc887",
+      "path": "source_corpus/16df88d046c784e8db4d4f81f51b791bca7cc02346affd62159034973f6fc887.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "source_identity_and_test_driver",
+      "reason": "Compares the ASTs of two external checker files and invokes implementation/verify.py. Its own executable logic checks source identity, not proof derivability.",
+      "metrics": {
+        "normalized_bytes": 873,
+        "tokens": 178,
+        "ast_nodes": 186,
+        "gzip9_normalized_bytes": 432
+      }
+    },
+    {
+      "sha256": "224590b443849546c484fe69566c61e87d5639e8bcc35321de4e8d215333deaf",
+      "path": "source_corpus/224590b443849546c484fe69566c61e87d5639e8bcc35321de4e8d215333deaf.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": true,
+      "classification": "complete_checker",
+      "reason": "Loads a JSON certificate from standard input, defines the scope opener and recursive verifier, implements major verification, transport/closure, computation supply and paired introduction, initializes the context, and emits ACCEPT on successful completion. Only the standard json module is imported.",
+      "metrics": {
+        "normalized_bytes": 542,
+        "tokens": 263,
+        "ast_nodes": 309,
+        "gzip9_normalized_bytes": 343
+      },
+      "runtime_qualification": "Uses the strict JSON list predicate a * 0 == []; ordinary physical recursion and memory resource limitations remain."
+    },
+    {
+      "sha256": "263377140652af63fc9b4c96a82aacea89e2c0a0a2c6898ea196822f62e9d34d",
+      "path": "source_corpus/263377140652af63fc9b4c96a82aacea89e2c0a0a2c6898ea196822f62e9d34d.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "integrity_and_reproduction_driver",
+      "reason": "Validates a file manifest, copies the package into a temporary directory, and runs three external reproduction/verification scripts. It contains no standalone inference engine.",
+      "metrics": {
+        "normalized_bytes": 1005,
+        "tokens": 195,
+        "ast_nodes": 203,
+        "gzip9_normalized_bytes": 574
+      }
+    },
+    {
+      "sha256": "2ba26ac42c7d0998082a2c602a33e60df6125363ed855919c5b0c599cc4db951",
+      "path": "source_corpus/2ba26ac42c7d0998082a2c602a33e60df6125363ed855919c5b0c599cc4db951.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": true,
+      "classification": "complete_checker",
+      "reason": "Loads a JSON certificate from standard input and includes the entire generic opener, recursive native-rule verifier, initial context and ACCEPT driver. Only json.load is imported; theorem-specific checking is implemented in this file.",
+      "metrics": {
+        "normalized_bytes": 578,
+        "tokens": 261,
+        "ast_nodes": 295,
+        "gzip9_normalized_bytes": 346
+      },
+      "runtime_qualification": "Generic exception-based traversal: finite successful runs have the inherited sound interpretation; malformed strings can diverge in an ideal unbounded-stack execution. Actual CPython applies recursion limits. This qualification does not turn the complete module into a utility."
+    },
+    {
+      "sha256": "3237ea59d8bcc6c8470ae242dea4292627947d493cf4415c0a706857c3c5335a",
+      "path": "source_corpus/3237ea59d8bcc6c8470ae242dea4292627947d493cf4415c0a706857c3c5335a.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "document_build_utility",
+      "reason": "Recursively expands TeX input files, invokes pdflatex, records build logs, and copies the PDF. It never reads or validates a proof certificate.",
+      "metrics": {
+        "normalized_bytes": 1118,
+        "tokens": 255,
+        "ast_nodes": 264,
+        "gzip9_normalized_bytes": 572
+      }
+    },
+    {
+      "sha256": "40eaff7b9feef36532ae0f767ae82914cadfef1f06c12f3ab8621998e7956214",
+      "path": "source_corpus/40eaff7b9feef36532ae0f767ae82914cadfef1f06c12f3ab8621998e7956214.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "certificate_translator",
+      "reason": "Deep-copies existing packets and rewrites canonical computation-command fields. It validates only the expected wrapper shape needed for translation, not derivability; it has no proof-verification driver.",
+      "metrics": {
+        "normalized_bytes": 688,
+        "tokens": 119,
+        "ast_nodes": 139,
+        "gzip9_normalized_bytes": 304
+      }
+    },
+    {
+      "sha256": "42f11b4ba5febeac013995b897c110739d9243be916ca96f1f2db2083ed1d196",
+      "path": "source_corpus/42f11b4ba5febeac013995b897c110739d9243be916ca96f1f2db2083ed1d196.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "manifest_integrity_utility",
+      "reason": "Reads MANIFEST.json and checks each file against byte counts and SHA-256. Its rejection condition concerns payload integrity, not mathematical proofs.",
+      "metrics": {
+        "normalized_bytes": 658,
+        "tokens": 168,
+        "ast_nodes": 172,
+        "gzip9_normalized_bytes": 369
+      }
+    },
+    {
+      "sha256": "4484f9aacdac5949f53549a13b93ae12f57cf4ba043cc717338fdab998433387",
+      "path": "source_corpus/4484f9aacdac5949f53549a13b93ae12f57cf4ba043cc717338fdab998433387.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "proof_statistics_utility",
+      "reason": "Recursively counts dictionaries containing a rule key, checks expected node totals for named fixtures, and writes statistics. It does not check any inference rule or establish theorem acceptance.",
+      "metrics": {
+        "normalized_bytes": 1038,
+        "tokens": 229,
+        "ast_nodes": 232,
+        "gzip9_normalized_bytes": 490
+      }
+    },
+    {
+      "sha256": "48fe38bc20a2c49c14edb82a62a249285c633910a4af0fbed8db644dc949e8d0",
+      "path": "source_corpus/48fe38bc20a2c49c14edb82a62a249285c633910a4af0fbed8db644dc949e8d0.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "reproduction_driver",
+      "reason": "Runs four external measurement, checker-test, arithmetic and countermodel scripts and aggregates their JSON output. The proof checker is a separate executed dependency.",
+      "metrics": {
+        "normalized_bytes": 1284,
+        "tokens": 235,
+        "ast_nodes": 229,
+        "gzip9_normalized_bytes": 620
+      }
+    },
+    {
+      "sha256": "538d70a619274c1de382944192a23c467ea0c8eb10a99f546fd9c31725df9034",
+      "path": "source_corpus/538d70a619274c1de382944192a23c467ea0c8eb10a99f546fd9c31725df9034.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "measurement_and_test_driver",
+      "reason": "Dynamically loads source_measure.py, remeasures external source files and gzip artifacts, then invokes test_checkers.py and independent_audit.py. No inference validation is implemented here.",
+      "metrics": {
+        "normalized_bytes": 1118,
+        "tokens": 241,
+        "ast_nodes": 250,
+        "gzip9_normalized_bytes": 573
+      }
+    },
+    {
+      "sha256": "69dba25ea00590ec0c4abdb61cb708cc2385dc9f80855d5fbc6c0d87772bf7ce",
+      "path": "source_corpus/69dba25ea00590ec0c4abdb61cb708cc2385dc9f80855d5fbc6c0d87772bf7ce.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "reproduction_driver",
+      "reason": "Runs five separate measurement/producer/test/audit scripts via subprocess. The short wrapper contains no theorem-specific proof checker.",
+      "metrics": {
+        "normalized_bytes": 411,
+        "tokens": 74,
+        "ast_nodes": 72,
+        "gzip9_normalized_bytes": 265
+      }
+    },
+    {
+      "sha256": "730c55a45fabd28142bb8a6cba9789f39811f2cb4275c9eeb755ec3af897b119",
+      "path": "source_corpus/730c55a45fabd28142bb8a6cba9789f39811f2cb4275c9eeb755ec3af897b119.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "document_build_utility",
+      "reason": "Runs pdflatex three times, checks return codes and prints the report path. It is a document compiler wrapper.",
+      "metrics": {
+        "normalized_bytes": 399,
+        "tokens": 85,
+        "ast_nodes": 83,
+        "gzip9_normalized_bytes": 268
+      }
+    },
+    {
+      "sha256": "734fd069159b078e1f8542204062e2d5c1f7e6ecf437090ce5a0be3bb15d5d69",
+      "path": "source_corpus/734fd069159b078e1f8542204062e2d5c1f7e6ecf437090ce5a0be3bb15d5d69.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "manifest_integrity_utility",
+      "reason": "Checks external package members against MANIFEST.sha256.json and reports missing or changed files. It does not evaluate proof derivations.",
+      "metrics": {
+        "normalized_bytes": 767,
+        "tokens": 181,
+        "ast_nodes": 184,
+        "gzip9_normalized_bytes": 410
+      }
+    },
+    {
+      "sha256": "74ecae26d92b9998540e4794853c10674bde7c60f754067676a75a6e869c000e",
+      "path": "source_corpus/74ecae26d92b9998540e4794853c10674bde7c60f754067676a75a6e869c000e.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "document_build_utility",
+      "reason": "Sets reproducible-build environment values, invokes latexmk in a temporary directory, copies logs and the PDF, and reports output size. No arithmetic or logical verifier is present.",
+      "metrics": {
+        "normalized_bytes": 1232,
+        "tokens": 243,
+        "ast_nodes": 252,
+        "gzip9_normalized_bytes": 602
+      }
+    },
+    {
+      "sha256": "7ed14cdabd3bc48042c3adb406abdcb6252fe8e01d8737cc406cb4c9e019d8df",
+      "path": "source_corpus/7ed14cdabd3bc48042c3adb406abdcb6252fe8e01d8737cc406cb4c9e019d8df.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "manifest_integrity_utility",
+      "reason": "Reads a payload manifest and checks byte lengths and SHA-256 hashes of external files. Acceptance here refers to file integrity only.",
+      "metrics": {
+        "normalized_bytes": 473,
+        "tokens": 113,
+        "ast_nodes": 129,
+        "gzip9_normalized_bytes": 294
+      }
+    },
+    {
+      "sha256": "8a9f135339ed9ef2481689e5ed3a6a7168ad908cf438b600fa68e543119a9985",
+      "path": "source_corpus/8a9f135339ed9ef2481689e5ed3a6a7168ad908cf438b600fa68e543119a9985.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "document_build_utility",
+      "reason": "Invokes pdflatex repeatedly in a build directory, saves logs and copies the produced PDF. No proof-certificate parsing or inference validation is present.",
+      "metrics": {
+        "normalized_bytes": 694,
+        "tokens": 147,
+        "ast_nodes": 152,
+        "gzip9_normalized_bytes": 388
+      }
+    },
+    {
+      "sha256": "96560ece74c292c85f13eb5d87ff457681c7a9f0de429a68a937daaea8322778",
+      "path": "source_corpus/96560ece74c292c85f13eb5d87ff457681c7a9f0de429a68a937daaea8322778.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "measurement_and_test_driver",
+      "reason": "Runs four external verification/audit scripts, loads a measurement function from another source file, and records metrics for six separate programs. It does not include their inference engines.",
+      "metrics": {
+        "normalized_bytes": 1444,
+        "tokens": 275,
+        "ast_nodes": 260,
+        "gzip9_normalized_bytes": 685
+      }
+    },
+    {
+      "sha256": "978cb2e2dbbdbd554934d86bf441041e850e96ac4a8d2afdf8885354ee6bec0a",
+      "path": "source_corpus/978cb2e2dbbdbd554934d86bf441041e850e96ac4a8d2afdf8885354ee6bec0a.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "measurement_and_test_driver",
+      "reason": "Runs external QE and kernel test scripts and imports source_measure.py to measure separate implementations. The module aggregates evidence rather than independently checking arbitrary proofs.",
+      "metrics": {
+        "normalized_bytes": 1305,
+        "tokens": 230,
+        "ast_nodes": 215,
+        "gzip9_normalized_bytes": 619
+      }
+    },
+    {
+      "sha256": "a20b546e0a86259df3dabbe5ab8671869dfb4f7217e6d27e55c790bbf374886e",
+      "path": "source_corpus/a20b546e0a86259df3dabbe5ab8671869dfb4f7217e6d27e55c790bbf374886e.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "reproduction_driver",
+      "reason": "Runs separate measurement and verifier scripts, optionally also a document build script. All mathematical verification is delegated to external files.",
+      "metrics": {
+        "normalized_bytes": 365,
+        "tokens": 88,
+        "ast_nodes": 87,
+        "gzip9_normalized_bytes": 219
+      }
+    },
+    {
+      "sha256": "a713e55016bfc24b22ca12b398fd7214b5877d74d1e5fd5f5e49de14e867027c",
+      "path": "source_corpus/a713e55016bfc24b22ca12b398fd7214b5877d74d1e5fd5f5e49de14e867027c.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "document_build_utility",
+      "reason": "Locates pdflatex, invokes it twice and prints a PDF path. It is solely a report build wrapper.",
+      "metrics": {
+        "normalized_bytes": 371,
+        "tokens": 74,
+        "ast_nodes": 74,
+        "gzip9_normalized_bytes": 257
+      }
+    },
+    {
+      "sha256": "ad03b002ab9c15eea3014aee72126fcbbd29b5cce2a623e35162353bba164f15",
+      "path": "source_corpus/ad03b002ab9c15eea3014aee72126fcbbd29b5cce2a623e35162353bba164f15.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "document_build_utility",
+      "reason": "Runs pdflatex twice against report.tex. It contains no proof-verifier implementation.",
+      "metrics": {
+        "normalized_bytes": 216,
+        "tokens": 48,
+        "ast_nodes": 42,
+        "gzip9_normalized_bytes": 178
+      }
+    },
+    {
+      "sha256": "b1a51c50181047371e17e33c090f65c921e79583fe0f48f60d6bea3fd812bf3d",
+      "path": "source_corpus/b1a51c50181047371e17e33c090f65c921e79583fe0f48f60d6bea3fd812bf3d.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": true,
+      "classification": "complete_checker",
+      "reason": "Includes JSON input, a local-floor generic syntax opener, a looping native-rule checker with recursive major proofs, context updates, theorem-specific arithmetic/logical dispatch and an ACCEPT verdict. It imports only json.load and does not rely on an external checker.",
+      "metrics": {
+        "normalized_bytes": 642,
+        "tokens": 263,
+        "ast_nodes": 291,
+        "gzip9_normalized_bytes": 353
+      },
+      "runtime_qualification": "Generic exception-based traversal: finite successful runs have the inherited sound interpretation; malformed strings can diverge in an ideal unbounded-stack execution. Actual CPython applies recursion limits. This qualification does not turn the complete module into a utility."
+    },
+    {
+      "sha256": "b47d6e3c762642a05ef1078de5bc313490c15d2d0d069eed06ac09535978fde7",
+      "path": "source_corpus/b47d6e3c762642a05ef1078de5bc313490c15d2d0d069eed06ac09535978fde7.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "document_build_utility",
+      "reason": "Checks for pdflatex and invokes it three times, reporting build failure logs or the PDF path. It performs no theorem checking.",
+      "metrics": {
+        "normalized_bytes": 574,
+        "tokens": 116,
+        "ast_nodes": 113,
+        "gzip9_normalized_bytes": 349
+      }
+    },
+    {
+      "sha256": "b8306778608f53a96f97af7fbe6e3b9d034e3f1404bd418530dddc389e039e05",
+      "path": "source_corpus/b8306778608f53a96f97af7fbe6e3b9d034e3f1404bd418530dddc389e039e05.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "integrity_and_reproduction_driver",
+      "reason": "Verifies a SHA-256 manifest and runs six external measurement/test/audit modules. Its own code supplies integrity and orchestration, not the proof checker.",
+      "metrics": {
+        "normalized_bytes": 1486,
+        "tokens": 275,
+        "ast_nodes": 286,
+        "gzip9_normalized_bytes": 720
+      }
+    },
+    {
+      "sha256": "bf2ec376b48d959d9211f8a474f6ac5d1154a4fde85bc560f4dc2b84d0226ab8",
+      "path": "source_corpus/bf2ec376b48d959d9211f8a474f6ac5d1154a4fde85bc560f4dc2b84d0226ab8.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "document_build_utility",
+      "reason": "Runs three pdflatex passes with shell escape disabled and prints the resulting PDF path. It is not a mathematical verifier.",
+      "metrics": {
+        "normalized_bytes": 263,
+        "tokens": 56,
+        "ast_nodes": 52,
+        "gzip9_normalized_bytes": 204
+      }
+    },
+    {
+      "sha256": "c20efba88eb33aff7dfca043f27f99ade48994ca7e7daa429bae1d45e1ffb0b0",
+      "path": "source_corpus/c20efba88eb33aff7dfca043f27f99ade48994ca7e7daa429bae1d45e1ffb0b0.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "reproduction_driver",
+      "reason": "Invokes external measurement, kernel-test and self-seeded-model scripts. The checking code itself is absent from this wrapper.",
+      "metrics": {
+        "normalized_bytes": 321,
+        "tokens": 60,
+        "ast_nodes": 59,
+        "gzip9_normalized_bytes": 233
+      }
+    },
+    {
+      "sha256": "c521ffda63f00ce9080cbf62be44ef77f6427f77c9bd981c59c3ce6b44185bd3",
+      "path": "source_corpus/c521ffda63f00ce9080cbf62be44ef77f6427f77c9bd981c59c3ce6b44185bd3.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "certificate_translator",
+      "reason": "Deep-copies a packet and replaces absent-major and mode fields for the array-truth protocol. It performs no inference validation and provides no arbitrary-proof acceptance driver.",
+      "metrics": {
+        "normalized_bytes": 363,
+        "tokens": 73,
+        "ast_nodes": 87,
+        "gzip9_normalized_bytes": 199
+      }
+    },
+    {
+      "sha256": "c74fb2d2791abfd81d17632019ffce3e0c1cf68e817b6e8380d5a55f8be8945f",
+      "path": "source_corpus/c74fb2d2791abfd81d17632019ffce3e0c1cf68e817b6e8380d5a55f8be8945f.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "external_checker_test_harness",
+      "reason": "Loads a fixed fixture corpus and runs two external checker programs under ordinary and optimized Python, comparing their exits and stdout with expected labels. The inference engines are external dependencies.",
+      "metrics": {
+        "normalized_bytes": 1108,
+        "tokens": 271,
+        "ast_nodes": 274,
+        "gzip9_normalized_bytes": 572
+      }
+    },
+    {
+      "sha256": "d3886b1088da204687504fde95161166373fee825639c11a0500c199813902d0",
+      "path": "source_corpus/d3886b1088da204687504fde95161166373fee825639c11a0500c199813902d0.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "document_build_utility",
+      "reason": "Expands TeX includes, invokes pdflatex and checks the document log for warnings. The tested claims concern report rendering, not proof derivability.",
+      "metrics": {
+        "normalized_bytes": 1303,
+        "tokens": 255,
+        "ast_nodes": 267,
+        "gzip9_normalized_bytes": 662
+      }
+    },
+    {
+      "sha256": "d74613ce21a1a795aca7dd2869e6dda9b34aaaf8eae4ed8fee175d87e5b767be",
+      "path": "source_corpus/d74613ce21a1a795aca7dd2869e6dda9b34aaaf8eae4ed8fee175d87e5b767be.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "reproduction_driver",
+      "reason": "Contains a subprocess call to tests/test_profiles.py. It cannot check a proof without that external script and its checker dependencies.",
+      "metrics": {
+        "normalized_bytes": 190,
+        "tokens": 47,
+        "ast_nodes": 48,
+        "gzip9_normalized_bytes": 156
+      }
+    },
+    {
+      "sha256": "df4bedc013d122a8de492f0565388eda17b21058eec609aff1174c58acdf621a",
+      "path": "source_corpus/df4bedc013d122a8de492f0565388eda17b21058eec609aff1174c58acdf621a.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "document_build_utility",
+      "reason": "Flattens TeX input/listing directives and invokes latexmk or pdflatex. It is a standalone-document generator, not a proof checker.",
+      "metrics": {
+        "normalized_bytes": 1154,
+        "tokens": 231,
+        "ast_nodes": 221,
+        "gzip9_normalized_bytes": 542
+      }
+    },
+    {
+      "sha256": "dfad027e2cd174294141748b01bf8dc266453c11d4cd49ae5674448c302fd389",
+      "path": "source_corpus/dfad027e2cd174294141748b01bf8dc266453c11d4cd49ae5674448c302fd389.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "external_checker_test_harness",
+      "reason": "Loads certificates and executes code/unrestricted_control.py as an external kernel, checking fixture expectations in two Python modes. It does not contain that kernel or any independent inference validation.",
+      "metrics": {
+        "normalized_bytes": 1175,
+        "tokens": 274,
+        "ast_nodes": 277,
+        "gzip9_normalized_bytes": 604
+      }
+    },
+    {
+      "sha256": "ecf87b02525cf9084ef726e4afc142851ab79d32a6af21386caff4461adccee9",
+      "path": "source_corpus/ecf87b02525cf9084ef726e4afc142851ab79d32a6af21386caff4461adccee9.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "document_build_utility",
+      "reason": "Requires latexmk/pdflatex and launches the report build. It has no proof-checking input or logic.",
+      "metrics": {
+        "normalized_bytes": 382,
+        "tokens": 68,
+        "ast_nodes": 63,
+        "gzip9_normalized_bytes": 259
+      }
+    },
+    {
+      "sha256": "f3d33834ab4c889095dc1a777924e904660aa8ec549a1101770be5a4207889dc",
+      "path": "source_corpus/f3d33834ab4c889095dc1a777924e904660aa8ec549a1101770be5a4207889dc.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "reproduction_driver",
+      "reason": "Runs three separate native-verification, observation and measurement scripts. Its own source only orchestrates those external tools.",
+      "metrics": {
+        "normalized_bytes": 392,
+        "tokens": 76,
+        "ast_nodes": 78,
+        "gzip9_normalized_bytes": 254
+      }
+    },
+    {
+      "sha256": "fa6f39f741e6e2294d0e45550401ce538aa8f0bec424c76e862afa54fb003ad2",
+      "path": "source_corpus/fa6f39f741e6e2294d0e45550401ce538aa8f0bec424c76e862afa54fb003ad2.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "source_integrity_and_test_driver",
+      "reason": "Checks inherited arithmetic source hashes and invokes implementation/verify.py. It verifies provenance and delegates all implementation tests to a separate module.",
+      "metrics": {
+        "normalized_bytes": 637,
+        "tokens": 118,
+        "ast_nodes": 126,
+        "gzip9_normalized_bytes": 366
+      }
+    },
+    {
+      "sha256": "fb797da36e2ec34b1d663c24b3a4f024eba8ab0eb96e2b75fba7b13622d566c2",
+      "path": "source_corpus/fb797da36e2ec34b1d663c24b3a4f024eba8ab0eb96e2b75fba7b13622d566c2.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "source_measurement_utility",
+      "reason": "Imports metrics from source_measure, measures seven external Python files, and writes their coordinate minima and savings. It neither checks submitted proof certificates nor includes the measured kernels.",
+      "metrics": {
+        "normalized_bytes": 1543,
+        "tokens": 303,
+        "ast_nodes": 289,
+        "gzip9_normalized_bytes": 689
+      }
+    },
+    {
+      "sha256": "ffa1fb7c4ed5cc93c41f66619e1fa6140f32f3f1224444bf0189ceb2aa6d89e1",
+      "path": "source_corpus/ffa1fb7c4ed5cc93c41f66619e1fa6140f32f3f1224444bf0189ceb2aa6d89e1.py",
+      "read_in_full": true,
+      "complete_standalone_proof_checker": false,
+      "classification": "document_build_utility",
+      "reason": "Runs pdflatex three times and reports compilation errors or success. It is exclusively a report build utility.",
+      "metrics": {
+        "normalized_bytes": 427,
+        "tokens": 91,
+        "ast_nodes": 87,
+        "gzip9_normalized_bytes": 287
+      }
+    }
+  ]
+}

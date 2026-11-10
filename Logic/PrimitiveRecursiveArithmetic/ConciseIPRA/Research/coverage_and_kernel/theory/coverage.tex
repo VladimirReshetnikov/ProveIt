@@ -1,0 +1,235 @@
+\section{Coverage before cancellation in the scalar self-seeded basis}
+\label{sec:coverage-no-cancellation}
+
+This section isolates a mathematical simplification of the supplied
+scalar self-seeded presentation. It is not a complete new basis below
+the measured checker frontier. In particular, it does not justify
+deleting successor injectivity from that presentation.
+
+Use ordinary intuitionistic first-order logic with equality, terms
+$0,S,\epsilon$, and a staged scalar recursor $F(n;v.h)$ with equations
+\[
+ F(0;v.h)=S(h[0/v]),\qquad
+ F(Sn;v.h)=h[F(n;v.h)/v].
+\]
+The remaining nonlogical assumptions, besides contextual induction on
+literal equations, are explicitly
+\[
+ 0=S0\to\bot,\qquad
+ \epsilon(a,b)=0\lor\epsilon(a,b)=1,\qquad
+ \epsilon(a,b)=1\leftrightarrow a=b.
+\]
+All free numerical variables in these schemas are universally closed. Here $1=S0$, and each recursor body is an earlier-stage
+source term. Neither successor injectivity nor numerical coverage is
+assumed in the result below.
+
+Put $D(c,a)=F(c;v.a)$ and $Z(c)=D(c,0)$. Thus
+\[
+ D(0,a)=Sa,\quad D(Sn,a)=a,\quad Z(0)=1,\quad Z(Sn)=0.
+\]
+If $Sn=0$, these equations give $0=1$, so every successor is nonzero.
+For Boolean $b,c$, the source terms
+\[
+ \neg_Bb=\epsilon(b,0),\qquad
+ b\wedge_Bc=\epsilon(D(b,\epsilon(c,0)),0)
+\]
+have their usual truth tables; define $\vee_B$ by De Morgan. Only
+$0\ne1$ and successor nonzeroness are used in these finite cases.
+The usual external syntax recursion assigns a Boolean characteristic
+to each fixed quantifier-free formula. Literal-equation induction
+therefore gives contextual quantifier-free induction, without
+successor cancellation.
+
+Define the following fixed source terms:
+\[
+ \begin{split}
+ B_a(v)&=\epsilon(v,0)\vee_B\epsilon(Sv,a),\\
+ H_a(v)&=D(B_a(v),v),\\
+ U(j,a)&=F(j;v.H_a(v)),\qquad p_*(a)=U(a,a).
+ \end{split}
+\]
+The update holds the state at zero or immediately before $a$, and
+increments it in the remaining case. Since $B_a(0)=1$,
+$H_a(0)=0$ and $U(0,a)=1$. With $a$ fixed, quantifier-free induction gives
+\begin{equation}
+ U(j,a)=Sj\quad\lor\quad S(U(j,a))=a.
+ \label{eq:protected-orbit}
+\end{equation}
+At zero the first alternative holds. A state satisfying the second
+alternative is fixed by $H_a$. Otherwise the first alternative advances
+from $Sj$ to $S(Sj)$: in that branch the current state is a successor
+and hence nonzero. No separate induction asserting nonzeroness of the
+whole orbit is needed.
+
+After this induction has been proved with its parameter fixed,
+specialize $j=m$ and $a=S^2m$. Both alternatives of
+\eqref{eq:protected-orbit} imply $S(U(m,S^2m))=S^2m$. The state is
+then fixed. Exactly two further computation steps give
+\begin{equation}
+                     S(p_*(S^2m))=S^2m.
+ \label{eq:protected-right-inverse}
+\end{equation}
+This is a right-inverse equation only; no cancellation of $S$ has
+taken place.
+
+\paragraph{Whole-domain coverage theorem.}
+The theory with the assumptions just listed proves
+\[
+                     n=0\ \lor\ \exists m\,n=Sm.
+\]
+Indeed, apply quantifier-free induction to
+\[
+ C(n):\quad n=0\ \lor\ n=1\ \lor\ S(p_*(n))=n.
+\]
+The zero case is immediate. In the successor step, $n=0$ gives
+$Sn=1$. If $n=1$, apply \eqref{eq:protected-right-inverse} with
+$m=0$. In the third case $n=S(p_*(n))$, whence
+$Sn=S^2(p_*(n))$; apply \eqref{eq:protected-right-inverse} with
+$m=p_*(n)$ and rewrite. This proves $C(n)$ for every $n$.
+Its second and third alternatives provide the witnesses $0$ and
+$p_*(n)$ respectively. The proof covers nonstandard elements and
+never assumes that an arbitrary element is reached by a standard
+finite successor iteration.
+
+\subsection{No fixed points and rigidity of each standard numeral}
+
+The same weak theory proves more than coverage, although the following
+results still fall short of arbitrary successor cancellation.
+
+\paragraph{Successor has no fixed point.}
+Let $h(v)=\epsilon(v,0)$. This source update has no fixed point.
+Indeed, $h(v)=v$ and the Boolean range of $h$ give $v=0$ or $v=1$;
+the two cases contradict $h(0)=1$ and $h(1)=0$, respectively.
+If $Sa=a$, the recursor equation would give
+\[
+ F(a;v.h)=F(Sa;v.h)=h(F(a;v.h)),
+\]
+contrary to that fact. Thus $Sa\ne a$ for every $a$, without using
+successor injectivity or coverage. In particular, $1\ne2$.
+
+\paragraph{The only predecessor of one is zero.}
+Put
+\[
+ h(v)=\neg_B\epsilon(v,2),\qquad A(n)=F(n;v.h).
+\]
+The distinctness of $0,1,2$ gives $h(0)=1$, $A(0)=2$, and
+$A(1)=h(2)=0$. The image of $h$ is contained in $\{0,1\}$, and
+\[
+                         h(v)=0\quad\longleftrightarrow\quad v=2.
+\]
+Quantifier-free induction proves $A(n)=2\leftrightarrow n=0$.
+The zero case holds, whereas at every successor both sides are false:
+$A(Sn)=h(A(n))$ is zero or one, and $Sn\ne0$.
+If $Sn=1$, then $h(A(n))=A(Sn)=A(1)=0$; hence $A(n)=2$ and $n=0$.
+The converse is immediate. Therefore
+\[
+                              Sn=1\quad\longleftrightarrow\quad n=0.
+\]
+
+\paragraph{Finite-prefix rigidity metatheorem.}
+For every fixed standard integer $k\ge1$, there is a finite derivation
+in the weak theory of
+\begin{equation}
+ Sx=\overline{k}\quad\longleftrightarrow\quad x=\overline{k-1}.
+ \label{eq:standard-predecessor}
+\end{equation}
+Here bars denote fixed numerals. This is an external metatheorem,
+not a derivation of a single formula quantifying over $k$.
+
+The proof is an external induction on $k$. Carry as induction data
+the distinctness of the numerals $0,\ldots,k+1$ and
+\eqref{eq:standard-predecessor} for all smaller positive indices.
+The initial distinctness of $0,1,2$ follows above. Define the following
+finite numeral-valued source update:
+\[
+ h_k(v)=
+ \begin{cases}
+ \overline{i-1},&v=\overline{i},\quad 1\le i\le k-1,\\
+ \overline{k-1},&v=\overline{k+1},\\
+ \overline{k},&\text{otherwise}.
+ \end{cases}
+\]
+This display abbreviates an actual source term, not an additional
+recursion schema over a graph-defined function. To construct it,
+for each fixed $r=1,\ldots,k$ form the Boolean characteristic $b_r(v)$
+of the finite condition that the displayed value is at least $r$.
+Explicitly, $b_r$ is the Boolean negation of the disjunction of
+$\epsilon(v,\overline{i})$ for $1\le i\le\min(r,k-1)$, together
+with $\epsilon(v,\overline{k+1})$ when $r=k$. Empty disjunctions
+mean zero; all index comparisons here are metalevel comparisons
+between fixed integers, not assumed arithmetic order predicates.
+Start with $t_0(v)=0$ and set
+\[
+                  t_r(v)=D(\neg_B b_r(v),t_{r-1}(v)).
+\]
+Then $h_k=t_k$: each true condition contributes one successor, and
+each false condition leaves the value unchanged. The construction
+uses exactly $k$ external syntax steps and the already available
+finite Boolean gates. It is not asserted to provide a single source
+term with variable $k$.
+
+Write $A_k(n)=F(n;v.h_k)$ and introduce the distinct marker numerals
+\[
+ q_0=\overline{k+1},\qquad q_j=\overline{k-j}\quad(1\le j\le k).
+\]
+Since $h_k(0)=\overline{k}$, the initial state is $q_0$. Direct finite
+computation gives $A_k(\overline{j})=q_j$ for $0\le j\le k$.
+The displayed update has no output $q_0$, and for $1\le j\le k$ it
+satisfies
+\[
+                       h_k(v)=q_j\quad\longleftrightarrow\quad v=q_{j-1}.
+\]
+Quantifier-free induction therefore gives
+$A_k(n)=q_0\leftrightarrow n=0$. For $1\le j<k$, an external
+induction on $j$, using numerical coverage and the already proved
+predecessor uniqueness for $\overline{j}$, gives
+\[
+                     A_k(n)=q_j\quad\longleftrightarrow\quad n=\overline{j}.
+\]
+For clarity, in the successor case $n=Sm$ the left side is equivalent
+to $A_k(m)=q_{j-1}$, hence to $m=\overline{j-1}$. The right side has
+exactly the same condition by the previous predecessor theorem.
+The zero case has two false sides.
+
+Now $Sx=\overline{k}$ implies
+$h_k(A_k(x))=A_k(\overline{k})=q_k$, so $A_k(x)=q_{k-1}$ and
+$x=\overline{k-1}$. This proves the next predecessor theorem.
+To extend numeral distinctness to $k+2$, a putative equality
+$\overline{k+2}=\overline{j}$ with $1\le j\le k$ reduces, by the
+newly available predecessor theorems, to
+$\overline{k+1}=\overline{j-1}$, already impossible. Equality with
+zero is excluded by successor nonzeroness, and equality with $k+1$
+by the no-fixed-point lemma. This closes the external induction.
+
+Consequently no element other than the intended previous numeral can
+map to any fixed standard positive numeral. This does not rule out
+collisions over nonstandard targets: replacing the fixed construction
+above by a uniform variable-index argument would require an additional
+theorem that has not been supplied.
+
+\paragraph{A simpler predecessor when cancellation is retained.}
+If successor injectivity is retained, as in the supplied complete
+self-seeded theory, \eqref{eq:protected-right-inverse} gives
+$p_*(S^2m)=Sm$. Define the total single-valued finite-case graph
+\[
+ P(n)=
+ \begin{cases}
+ 0,&n=0\text{ or }n=1,\\
+ p_*(n),&n\ne0\text{ and }n\ne1.
+ \end{cases}
+\]
+Its graph uses only quantifier-free source guards and source value
+terms. Finite common refinements therefore eliminate each fixed
+quantifier-free formula containing $P$, preserving the available
+induction rule. The zero equation is immediate. For $P(Sn)=n$,
+use the already derived coverage to split $n=0$ or $n=Sm$.
+The first gives $P1=0$. In the second, $S^2m$ is neither zero nor
+one, and the displayed equation gives $P(S^2m)=Sm=n$.
+
+Thus only the values at zero and one need correction, rather than
+the three exceptional values in the supplied stopped-counter
+construction. Coverage is proved first, and the subsequent
+predecessor proof no longer needs a joint coverage/predecessor
+induction. The remaining open issue is precise: can the weaker
+theory prove $p_*(S^2m)=Sm$, or otherwise prove $Sx=Sy\to x=y$?
+The proof above establishes neither statement.

@@ -1,0 +1,229 @@
+% Standalone includable research fragment. Requires amsmath, amssymb,
+% amsthm and theorem/lemma/corollary environments in the parent document.
+% This is a new result in the present audit, not an assertion of priority
+% outside the supplied repository corpus.
+\section{Finite aperiodicity without injectivity or induction}
+\label{sec:finite-aperiodicity}
+
+The scalar self-seeded draft charges successor injectivity as an
+axiom.\cite{selfseed}
+There is a useful reduction of its unresolved arithmetic problem: every
+\emph{fixed finite} successor cycle is already excluded by its computation
+schemas and Boolean equality, without using either injectivity or any
+induction rule. This does not exclude a merger of two distinct predecessor
+chains. The distinction is essential.
+
+\subsection{Exact assumptions}
+
+Work in intuitionistic first-order logic with actual equality and falsity.
+The numerical language has $0,S,\epsilon$, and, for each fixed earlier-stage
+term $h(v,\vec p)$, a scalar iteration symbol $F_h(n,\vec p)$ satisfying
+\begin{align}
+ F_h(0,\vec p)&=S(h(0,\vec p)),\label{eq:ac-F0}\\
+ F_h(Sn,\vec p)&=h(F_h(n,\vec p),\vec p).
+ \label{eq:ac-FS}
+\end{align}
+The other assumptions used in this section are precisely
+\begin{gather}
+ 0=S0\longrightarrow\bot,\label{eq:ac-sep}\\
+ \epsilon(x,y)=0\ \lor\ \epsilon(x,y)=S0,
+ \label{eq:ac-range}\\
+ \epsilon(x,y)=S0\quad\longleftrightarrow\quad x=y.
+ \label{eq:ac-reflection}
+\end{gather}
+The ordinary logical rules are specified in the next paragraph; they are
+part of this precursor, not omitted from its cost. Write $1=S0$ and
+$\bar j=S^j0$ for an externally fixed nonnegative integer
+$j$. There is no quantification over function descriptions. Each displayed
+$h$ is a finite term, and its $F_h$ symbol is introduced at a later finite
+stage. Numerical coverage, successor injectivity, predecessor, arbitrary
+initialization, and induction are not assumptions of this section.
+
+\paragraph{Ordinary logical rule inventory.}
+In the precursor, formulas are generated from numerical equations and
+$\bot$ by $\land,\lor,\to,\forall,\exists$. Contexts are finite reusable
+assumption lists. The complete logical inventory is hypothesis membership;
+conjunction introduction and its two projections; the two disjunction
+injections and disjunction elimination with a common conclusion from its
+two discharged branch assumptions; implication introduction by discharging
+its antecedent and modus ponens; universal introduction at a parameter
+fresh for the retained context and specialization at a term; existential
+introduction with a term witness and elimination at a parameter fresh for
+the retained context and conclusion; and inference of any formula from
+$\bot$. Equality has reflexivity and capture-free replacement of an equal
+numerical term in an arbitrary formula. Weakening, exchange, contraction,
+renaming and cut are admissible structural rules. These ordinary rules
+have no excluded-middle or double-negation-elimination axiom. Quantifier
+substitutions avoid capture. The displayed computation, separation,
+range and reflection formulas are the only nonlogical axioms used here;
+the next section adds exactly contextual literal-equation induction.
+
+\begin{lemma}[Zero is not a successor]
+\label{lem:ac-zero}
+For every $a$, the assumptions prove $Sa\ne0$.
+\end{lemma}
+\begin{proof}
+For the constant-zero update put $Z(n)=F_{v.0}(n)$. The two computation
+schemas give $Z(0)=1$ and $Z(Sa)=0$. An equality $Sa=0$ would therefore
+give $0=1$, contradicting \eqref{eq:ac-sep} by symmetry. No range theorem
+for $Z$ and no constructor coverage are used.
+\end{proof}
+
+\subsection{An explicit finite-table compiler}
+
+For a constant update define
+\[
+ D(n,a):=F_{v.a}(n).
+\]
+The computation schemas give
+\[
+ D(0,a)=Sa,\qquad D(Sn,a)=a.
+\]
+For a Boolean term $b$, meaning that $b=0\lor b=1$ has been proved,
+define the conditional increment
+\[
+ \operatorname{Inc}(b,a):=D(\epsilon(b,0),a).
+\]
+Reflection and separation prove $\epsilon(0,0)=1$ and
+$\epsilon(1,0)=0$; in the latter case use the two-value range axiom and
+rule out the alternative value $1$. Thus
+\begin{equation}
+ \operatorname{Inc}(0,a)=a,\qquad
+ \operatorname{Inc}(1,a)=Sa.
+ \label{eq:ac-inc}
+\end{equation}
+These equations do not cancel a successor.
+
+Fix a positive ordinary integer $k$, and suppose that
+$\bar0,\ldots,\bar k$ have already been proved pairwise distinct.
+The following notation is an external finite expansion:
+\[
+ T_0(v):=0,\qquad
+ T_{j+1}(v):=
+ \operatorname{Inc}\bigl(\epsilon(v,\bar j),\,\cdot\,\bigr)^{j+1}
+                      \bigl(T_j(v)\bigr)
+ \quad(0\le j<k),\qquad
+ h_k(v):=T_k(v).
+ \tag{Finite cycle term}\label{eq:ac-cycle-term}
+\]
+Here the exponent $j+1$ means exactly $j+1$ written compositions of the
+displayed unary term template, not an object-level recursion or a new
+iteration operation. Consequently \eqref{eq:ac-cycle-term} is a canonical
+finite term in $0,S,\epsilon,F$ after the abbreviations are expanded.
+
+For a fixed $i<k$, substituting $v=\bar i$ makes its $i$th equality test
+equal to $1$ and all other displayed tests equal to $0$. Exactly $i+1$
+conditional increments are then performed. For $v=\bar k$ all tests are
+zero. Hence the source theory proves the finite table
+\begin{equation}
+ h_k(\bar i)=\overline{i+1}\ (0\le i<k),\qquad
+ h_k(\bar k)=0.
+ \label{eq:ac-table}
+\end{equation}
+It also proves, for arbitrary $v$,
+\begin{equation}
+ h_k(v)=\bar0\ \lor\cdots\lor\ h_k(v)=\bar k.
+ \label{eq:ac-h-range}
+\end{equation}
+Indeed, make the finitely many case distinctions supplied by
+\eqref{eq:ac-range}. If some displayed test is $1$, reflection identifies
+$v$ with its corresponding numeral; distinctness makes all the other
+tests zero, and the preceding computation applies. If all tests are zero,
+the output is zero. This is a finite use of intuitionistic disjunction
+elimination. It assumes no excluded middle for quantified formulas.
+
+This construction also describes the exact finite-table capacity used
+here: a numeral-valued table is a finite sum of disjoint Boolean
+indicators, with each unit contribution implemented by
+\eqref{eq:ac-inc}. It does not provide a selector between arbitrary
+numerical values or an object-level evaluator of variable-length tables.
+
+\begin{lemma}[The finite update has no $k$-periodic point]
+\label{lem:ac-finite-update}
+Under the displayed numeral-distinctness assumption, the source proves
+\[
+                       h_k^{\,k}(w)\ne w
+                       \qquad\text{for every }w.
+\]
+Again, the superscript denotes a fixed finite composition.
+\end{lemma}
+\begin{proof}
+If $h_k^{\,k}(w)=w$, then $k\ge1$ and the range theorem
+\eqref{eq:ac-h-range} imply that $w$ is one of
+$\bar0,\ldots,\bar k$. On these $k+1$ values, the fixed table
+\eqref{eq:ac-table} is one cycle. Starting at any of them and applying
+that table $k$ times ends at a different displayed numeral. Each case
+therefore contradicts the assumed distinctness. The modular description
+of this finite table is explanatory: all cases are finite computations
+in the source theory.
+\end{proof}
+
+\begin{theorem}[Every fixed successor cycle is impossible]
+\label{thm:ac-aperiodicity}
+For each fixed ordinary integer $k\ge1$, assumptions
+\eqref{eq:ac-F0}--\eqref{eq:ac-reflection} prove
+\[
+                           \forall a\;S^k a\ne a.
+\]
+No instance of numerical induction and no successor-injectivity axiom is
+used in this family of proofs.
+\end{theorem}
+\begin{proof}
+We construct these finite proofs by external induction on $k$.
+Suppose all positive cycle lengths less than $k$ have been excluded.
+The numerals $\bar0,\ldots,\bar k$ are pairwise distinct: equality of
+$\bar0$ with a positive numeral contradicts Lemma~\ref{lem:ac-zero};
+and equality $\bar i=\bar j$ with $1\le i<j\le k$ would give
+\[
+                   S^{j-i}(\bar i)=\bar i,
+\]
+contradicting an earlier theorem because $1\le j-i<k$. For $k=1$ the
+second case is empty, so the construction starts from separation alone.
+
+Construct the term $h_k$ of \eqref{eq:ac-cycle-term}. Suppose
+$S^k a=a$, and put $w=F_{h_k}(a)$. Exactly $k$ applications of the
+successor computation schema, followed by equality congruence, give
+\[
+ w=F_{h_k}(a)=F_{h_k}(S^k a)=h_k^{\,k}(F_{h_k}(a))=h_k^{\,k}(w).
+\]
+This contradicts Lemma~\ref{lem:ac-finite-update}. Discharge the
+assumption and universally generalize $a$.
+
+The induction in the first sentence is in the metatheory and produces
+one finite source proof for each fixed $k$. It is not a numerical
+induction instance of the theory being simplified.
+\end{proof}
+
+\begin{corollary}
+Every fixed pair of distinct numerals is provably distinct, and, for
+fixed $0\le i<j$, the source proves $S^i a\ne S^j a$ for arbitrary $a$.
+\end{corollary}
+\begin{proof}
+The numeral assertion is part of the construction. For the second
+assertion use Theorem~\ref{thm:ac-aperiodicity} with the element $S^i a$
+and cycle length $j-i$.
+\end{proof}
+
+\subsection{Precisely what remains open}
+
+The theorem excludes cycles along one successor chain. It does not infer
+$a=b$ from $Sa=Sb$ for two arbitrary elements. A directed successor
+structure can have two different predecessor chains merge and still have
+no finite cycle. This observation identifies the gap; it is not a
+countermodel to the full scalar-iteration theory.
+
+The finite-table construction has a different fixed term $h_k$ for each
+external $k$. It does not supply a term for cycles of arbitrary internal
+length. The latter would require a uniform arithmetic construction with
+proved internal invariants, and could plausibly support a cancellation
+argument. It cannot be obtained merely by quantifying over the finite
+proofs above: the source has neither a uniform total evaluator nor an
+arbitrary-initializer iterator among its assumptions.
+
+In particular, the existing scalar self-seeded completion uses injectivity
+when its capped trajectory proves
+$S(V(m,S^3m))=S^3m$ and concludes $V(m,S^3m)=S^2m$. The aperiodicity
+theorem does not justify this cancellation. Deleting injectivity from that
+completion on the basis of the present theorem would therefore be
+unproved. The result is a new independently useful consequence and a
+more precise research target, not a completed smaller axiomatization.

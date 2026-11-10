@@ -1,0 +1,308 @@
+\section{The new kernel and its correctness argument}
+\label{sec:kernel}
+
+The following is the entire recommended small checker. The explanatory
+\file{code/readable_checker.py} separately implements the same explicit-list
+discipline with named variables and comments; the small program does not
+import it.
+\lstinputlisting[language=Python]{code/checker.py}
+
+\subsection{Certificate representation}
+
+Input is one JSON array. The last item is the requested closed native
+formula. Earlier items are four-field records $[m,s,u,t]$, consumed
+backwards. A hypothesis closes without consuming a record. Unused prefix
+items are inert. Closed canonical encodings contain no initial negative
+parameter; fresh negative names introduced while checking may occur in
+the relevant continuation records.
+
+Canonical formula encodings are
+\[
+  s=t\longmapsto[s,t],\qquad
+  \D_{x,y}B\longmapsto[B],\qquad
+  \Q_yB\longmapsto[B,B,B].
+\]
+Canonical numerical encodings use scalar zero, a unary successor, and
+a ternary iterator. The interpretation is sorted: a list at a formula
+position need not have the same meaning as at a numerical position.
+The inherited conservative decoding of raw aliases is:
+\begin{center}
+\small
+\begin{tabular}{cll}
+\toprule
+List length & Numerical position & Formula position\\
+\midrule
+0 & zero & $0=0$\\
+1 & successor of its child & $\D$ of its child\\
+2 & zero; annotations ignored & equality of its two terms\\
+3 & scalar iterator & $\Q$ of the last field\\
+$\geq4$ & zero; children ignored & $0=0$; children ignored\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first two fields of a general ternary formula are annotations;
+canonical closures repeat the same matrix three times. Successfully
+admitted scalar padding at a formula position denotes truth.
+
+At numerical root depth three, coordinates $0,1,2$ denote zero. Under
+$p$ protected numerical slots, $3+2j$ and $4+2j$ name slot $j$, counted
+from the innermost slot. More generally, an admitted nonnegative scalar
+in $[0,3)$ denotes zero, and one in $[3+2j,5+2j)$ denotes protected
+slot $j$ whenever $j<p$. This extends the two-integer-per-slot convention
+to fractional JSON numbers. Admitted negative scalar values are distinct
+rigid parameter names. Meaningful formula depths are $2p$, and meaningful
+numerical depths are $3+2p$.
+
+A numerical successor adds two dummy zero slots to its child. The
+counter and initializer of an iterator add one dummy zero slot; its
+update instead adds its genuine state slot. A paired formula adds its
+two bound slots, and a closure adds one. Consequently the single update
+$d\mapsto d+5-\operatorname{len}(a)$ gives all required depths. Larger
+arities already denote constants. Traversing their ignored annotations
+can reject an input, but successful traversal does not change their
+constant interpretation. One must not infer global raw-tree
+idempotence from this semantic statement.
+
+\subsection{Opening, scopes, and failure sentinels}
+
+Write $\mathcal O_k(a;t,d)$ for the function \texttt{i} at floor $k$.
+It preserves a scalar $a$ when $k\leq a<d$. An escaping numerical
+coordinate is the distinguished substitution hole; its image is checked
+at numerical root depth three before insertion. An escaping scalar at
+a formula position erases to truth. A used missing numerical image
+rejects. Induction on successfully traversed finite trees proves
+capture-free semantic opening at meaningful sorted positions. The
+induction treats the three meaningful arities separately; ignored
+annotations need no semantic induction hypothesis beyond their constant
+interpretation.
+
+The internal value \texttt{0j} is the missing-image sentinel. It is not
+an object-language number. A successful numerical attempt to use it
+would require the ordered comparison \texttt{k <= 0j}, which raises
+\texttt{TypeError}. Thus it never enters a successfully opened term or
+retained hypothesis. Replacing the earlier \texttt{None} sentinel by
+\texttt{0j} preserves this failure behavior. Replacing it by the ordinary
+integer zero would silently fill missing numerical holes and violate
+scope validation; the supplied control then accepts an invalid closed
+goal containing an unallocated name.
+
+The internal value \texttt{1j} is a deliberately unmatchable candidate.
+No value supplied by the standard JSON decoder equals this non-real
+complex value. This remains true for the decoder's additional NaN and
+infinity spellings. Consequently
+\[
+ m\in\bigl([s,u],\;s\mathbin{\texttt{and}}1j
+                       \mathbin{\texttt{or}}[t,t,t]\bigr)
+\]
+can hold only for a truthy major $m$. Its second alternative holds
+exactly when $s$ is false-valued and $m=[t,t,t]$. The first alternative
+is the equality pattern. The sentinel removes the need for an extra
+\texttt{m and} guard; it does not remove checking of the major proof.
+
+Using \texttt{False} for the disabled candidate would be unsound because
+Python identifies it with the numerical progress marker zero. The
+supplied mutation controls exhibit a closed false numerical equation
+accepted after that single bad replacement. The non-real sentinel is
+therefore a logical guard in this implementation, not a cosmetic choice.
+
+\subsection{Freezing an elimination before checking its major}
+
+The earlier checker first recursively proved $m$ and then interpreted
+the elimination template. A successful major subproof can lower the
+global floor by allocating names internal to that proof. The new
+checker interprets the template first, at the old floor, and retains
+the already opened minor goal. It then proves the major before entering
+the continuation.
+
+\begin{lemma}[Frozen elimination]
+\label{lem:frozen}
+At a fixed floor, suppose the goal and retained context have been
+validated. If a matching equality or closure pattern transforms the
+goal using the two successful openings of one template, the later
+checked major justifies that transformation. Allocating names internal
+to the major proof does not change the decoded meaning of the already
+opened minor goal.
+\end{lemma}
+\begin{proof}
+For an equality match $m=[s,u]$, the two openings at the unchanged floor
+are the instances $F(u)$ and $F(s)$ of one capture-free template $F$.
+The target opening is required to equal the current raw goal. If the
+source opening is truthy, it becomes the minor obligation. A later
+successful proof of $m$ supplies $s=u$, so transport yields the original
+goal. If the source opening is false-valued, the Boolean implementation
+keeps the original goal; this imposes the stronger unchanged obligation
+and remains sound.
+
+For a closure match, $s$ is false-valued and $m=[t,t,t]$. If its numerical
+image is used, successful opening forces it to denote zero; if unused,
+it can be replaced semantically by zero. The same opening lemma identifies
+the two instances as $B(u)$ and $B(0)$.
+After proving $\Q_yB$, QE justifies their use. The same false-valued
+source fallback is harmless.
+
+Every meaningful negative name left in an already opened minor was
+admitted at the old floor. Inserted numerical images were checked at
+that floor too. Lowering the floor can therefore neither bind nor alter
+such a meaningful occurrence. Bound-coordinate identities are preserved
+by the sorted opening lemma. Raw contents in ignored annotations may
+behave differently upon later traversal, but their decoded constant
+meaning is unchanged. This is a semantic stability argument, not an
+unqualified raw-array identity claim.
+\end{proof}
+
+\begin{lemma}[Folding the successful major check]
+Every successful invocation of \texttt{c} returns \texttt{None}.
+Thus, in the truthy-major branch, the expression
+\texttt{c(m,g) or m*3} proves the major and then exports exactly
+\texttt{m*3}.
+\end{lemma}
+\begin{proof}
+A hypothesis executes the bare \texttt{return}. Every other successful
+call finishes after its successful continuation without an explicit
+return value. Induction on the finite successful call tree gives the
+claim. An exception in the major propagates and prevents continuation.
+No unproved major can be bypassed by the Boolean expression.
+\end{proof}
+
+\subsection{All continuation cases}
+
+\paragraph{Proved majors.}
+A unary paired major $[B]$ becomes $[B,B,B]$ when multiplied by three.
+Opening this closure at the new fresh parameter is exactly DE's local
+hypothesis. Equality majors become length-six truth aliases, and closure
+majors become length-nine truth aliases. Other successfully admitted
+formula aliases have the inherited harmless constant interpretations.
+A mismatch in the elimination pattern retains the original goal; it
+still requires a proof of the major. Thus there is no ``unchecked
+no-op'' path.
+
+\paragraph{Computation.}
+When $m$ is false-valued and $u$ is truthy, the record supplies an
+arithmetic hypothesis. A false-valued $s$ gives
+\[
+   I(0,u;v.t)=u.
+\]
+A truthy $s$ constructs a genuine successor counter and gives
+\[
+   I(Ss,u;v.t)=t[I(s,u;v.t)/v].
+\]
+Raw slot conventions may introduce fresh parameters when the generated
+equation is opened. Its simultaneous zero instance is one of these
+computation theorems, so rule \eqref{eq:known-zero} applies. If the update
+uses its state, the recursive source is checked at numerical root depth
+three, including the update inside that source. If the state is unused,
+the final generated equation still validates its meaningful contents.
+This validation is required to prevent an escaping update coordinate
+from being mistaken for an extra state variable.
+
+\paragraph{Paired introduction.}
+When both $m$ and $u$ are false-valued, exact unary unpacking opens the
+paired goal at witness $t$, preserving its index slot. The witness is
+checked before the floor decreases whenever its numerical image is used.
+An irrelevant witness can be discarded and replaced by zero.
+The new goal is the successor
+instance at the fresh index. For the progress marker $m=0$ an equation
+matrix retains its arbitrary-index instance; otherwise the retained
+instance is at zero. Compound matrices therefore receive only their
+case assumption. The exact unpacking prevents a binary equation goal
+from masquerading as a paired formula. The undersupplied empty case
+has the inherited truth interpretation.
+
+At every non-hypothesis continuation the floor decreases by one. Earlier
+meaningful goals and hypotheses cannot already contain that new name.
+If fractional numerical aliases occur in the newly admitted interval,
+they are separate fresh parameters, not additional names for its integer
+endpoint. The fresh-discharge argument substitutes zero for all of them
+when required. Canonical certificates use only integer names.
+
+\subsection{Soundness and canonical completeness}
+
+\begin{theorem}[Correspondence with the native theory]
+\label{thm:correspondence}
+Every successful finite run of the explicit-list checker has a decoded
+conclusion derivable in the native theory of Section~\ref{sec:axioms}.
+Conversely, every finite canonical derivation has a finite certificate
+accepted by the mathematical resource-unbounded checker. The same
+canonical consequence relation is checked by the byte profile and by
+the structurally qualified generic profile.
+\end{theorem}
+\begin{proof}
+For soundness, induct on the finite successful checking trace.
+Hypothesis use is justified by semantic opening. A matched elimination
+uses Lemma~\ref{lem:frozen}; its major is proved by the induction
+hypothesis and cannot be skipped. The exported local assumption is
+justified by DE or truth weakening. A computation uses its proved zero
+instance and the fresh-discharge rule. An introduction uses its exactly
+unpacked matrix, correctly scoped witness, fresh index, and restricted
+case or equation-progress assumption. Each continuation has the stated
+native rule as a derivation of its caller's original conclusion.
+The failure sentinels never contribute an object-language value.
+
+For completeness, first apply Lemma~\ref{lem:zero-repair} to any forbidden
+computation leaves. Use the canonical arity encoding and the inherited
+backwards serialization of the six logical rule patterns. Canonical
+template holes use positive escaping coordinates; all other free names
+are already admitted rigid parameters. Their two openings therefore
+give the same raw instances before and after the major subproof lowers
+the floor. All canonical equation, closure, and paired matrices are
+nonempty lists, so the false-valued source fallback does not remove a
+canonical inference. The sentinel guard selects exactly the intended
+equality or closure pattern, and the folded check proves the same major.
+The original finite canonical certificate is consequently accepted.
+
+The compact list test distinguishes lists among all successfully tested
+JSON values: strings and numbers have different zero products, while
+mappings and null fail the test by exception. The generic profile has
+the inherited conservative treatment of additional iterable aliases;
+the sentinel change preserves that treatment. Its nonempty-string
+qualification is stated explicitly and is not needed for canonical
+completeness.
+\end{proof}
+
+The structural profile writes the goal update as an explicit conditional
+statement. It always adopts a matched source, even a false-valued raw
+alias, instead of retaining the preferred profile's stronger original-goal
+fallback. The direct transport or QE argument justifies this. Canonical
+matrices are nonempty, so this difference does not change canonical
+completeness. It is not a claim of identical raw acceptance across profiles.
+
+\subsection{Why raw acceptance equality is not claimed}
+
+Moving validation earlier changes how a noncanonical negative escaping
+coordinate is treated. Before a major subproof allocates names, it can
+be the template's hole. After that proof it can instead be an admitted
+rigid parameter. Accordingly the old and new accepted JSON languages
+are incomparable, although their canonical native consequence relations
+agree. The accompanying ordering fixtures include an input accepted
+only by the new checker and another accepted only by the old checker;
+both conclusions are true reflexive equations.
+
+For a compact new-only example let
+\[
+ o=[0],\quad r=[0,o,0],\quad M=[r,o],\quad C=[0,0,o,0].
+\]
+The stack
+\[
+ [\,C,\ C,\ [M,r,o,[-1,o]],\ [o,o]\,]
+\]
+is accepted by the new byte checker and rejected by its old comparator.
+The repeated $C$ records prove the relevant zero computations. The
+template's $-1$ is an escaping hole before that proof allocates $-1$,
+but becomes a rigid name under the old sequencing. This example
+illustrates the reason for proving the new checker directly rather
+than asserting same-input simulation.
+
+\subsection{Finite validation and its boundary}
+\input{evidence/validation_summary.tex}
+The positive cases include actual uses of equation induction,
+retained assumptions, nonvacuous existential witnesses, nested closures,
+transport, and repaired zero computations. Negative cases exercise
+failed majors, illegal scopes, forbidden compound progress, malformed
+computation descriptions, and the new sentinel guard. Mutation controls
+are deliberately bad programs created only in temporary test locations;
+they are not candidate kernels.
+
+These checks establish reproducibility and expose specific guard failures.
+They do not prove the universal metatheorems or replace a proof-assistant
+formalization. The correctness claim rests on the written trace argument
+and the attributed internal interpretation proofs as well as the tests.

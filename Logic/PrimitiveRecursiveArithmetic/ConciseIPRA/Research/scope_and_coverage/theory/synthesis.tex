@@ -1,0 +1,277 @@
+\section{Results and their exact scope}
+\label{sec:results}
+
+The requested significant new axiomatization below the supplied complexity
+frontier has not been established. This report gives concrete implementation
+and arithmetic results, and keeps their claims separate.
+
+First, a complete checker for the existing initialized scalar-iterator
+presentation occupies 529 normalized Python bytes, compared with the current
+542-byte incumbent. An explicit-list version occupies 537 bytes. Both include
+the parser interface, scope checking, arithmetic, logic, and verdict. The
+reduction is an implementation composition of techniques already in the
+drafts, not a new arithmetic foundation. Neither program improves the independent
+261-token and 291-AST-node minima, which are attained by different programs.
+
+Second, a new capped-clock construction proves numerical coverage in the
+scalar self-seeded precursor without successor injectivity. It defines a
+finite-case graph $P$ and proves
+\[
+ n=0\ \lor\ n=S(Pn),\qquad S(P(Sn))=Sn.
+\]
+It does not prove $P(Sn)=n$. A separate argument rules out every fixed finite
+successor cycle without any numerical induction. The complete self-seeded
+iPRA presentation in the drafts still needs its injectivity axiom; these
+theorems do not yet justify deleting it.
+
+An initially promising syntax-directed paired binder turned out to be an
+existing proposal in a nested archive. The earlier all-starts development
+already gives deterministic introduction, the progress/base elimination
+interface, and a fusion theorem. It is not counted as a new result here.
+The independently reworked prototype was also larger than the incumbent.
+This negative novelty check is recorded so that the same idea is not
+mistaken for a future breakthrough.\cite{allstarts}
+
+\subsection{The frozen comparison}
+
+All 20 direct ZIPs in \file{docs/drafts} were retrieved at commit
+\file{b9c4d74a0018bdafc5bc06e755a0145f4ed2b8d6}. Their exact byte lengths
+and Git blob identities were verified. The recursive scan contains 35 distinct
+archive payloads, 2,744 Python occurrences, and 484 distinct Python source
+contents. All distinct source bytes are included for offline remeasurement;
+the measurement command parses them but does not execute them. All 41
+source files at or below any incumbent coordinate minimum were read in full:
+three are complete checkers and 38 are supporting utilities.
+
+The coordinate minima are achieved upper bounds on an unknown optimum.
+They are not proved lower bounds on every possible presentation. A universal
+lower-bound claim would additionally need a fixed implementation language,
+runtime boundary, source convention, and a mathematical minimality argument.
+No such claim is made here.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Complete program & Bytes & Tokens & AST & Gzip 9\\\midrule
+Current byte incumbent & 542 & 263 & 309 & 343\\
+Current explicit-list incumbent & 550 & 263 & 307 & 349\\
+Current token incumbent & 578 & 261 & 295 & 346\\
+Current AST incumbent & 642 & 263 & 291 & 353\\\midrule
+New compact composition & \textbf{529} & 266 & 310 & 333\\
+New explicit-list composition & \textbf{537} & 266 & 308 & 337\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every row is one whole module. The compact composition improves the observed
+byte minimum by $13/542\approx2.40\%$. The explicit-list version is five bytes
+below that same minimum and thirteen below the matched explicit-list incumbent.
+The gzip column compresses raw source at level nine, with \texttt{mtime=0}
+and the wrapper included; it is informational only. Counts use CPython
+3.12.14 and zlib 1.3.2. Normalization removes genuine docstrings (retaining an empty-suite
+\texttt{pass} where needed), applies
+\texttt{ast.unparse}, and appends a newline. Significant tokens omit whitespace,
+comments, indentation and end markers. AST counts charge the whole normalized
+module. Different runtimes may change normalization or compression.
+
+\subsection{Proven, measured, inherited, and unresolved}
+
+The initialized-iterator axiomatization, its full-domain iPRA bridge, the
+arity codec, certified-zero repair, lexical scopes and neutral-major technique
+are inherited and explicitly attributed. The smaller source composition is
+new in this deliverable, but its ingredients are not claimed as novel.
+The capped-clock right predecessor and fixed finite aperiodicity argument
+are new results relative to the inspected material.
+No literature-wide priority claim is made.
+
+The metatheorems are written mathematical proofs, checked separately by other
+assistant instances during this investigation. They are not Lean/Rocq
+formalizations or external human peer review. Finite tests check executable
+interfaces and arithmetic transcriptions; they do not establish the general
+model-theoretic claims. No claim of a significant foundational breakthrough
+or absolute simplestness is warranted by these results.
+
+\section{The measured theory in a compact ordinary form}
+\label{sec:ordinary-core}
+
+For orientation, the following ordinary first-order theory $T_I$ is
+bi-interpretable with full first-order intuitionistic PRA. Its numerical
+terms are $x,0,St,I(n,a;v.h)$. Only $h$ binds the state variable $v$;
+passive parameters are fixed. For each fixed earlier-stage update $h$, the
+first-order realization has a function symbol $I_h(n,a,\vec p)$.
+There is no numerical code ranging over a uniformly total evaluator.
+
+Its nonlogical computation schemas are
+\[
+ I(0,a;v.h)=a,\qquad I(Sn,a;v.h)=h[I(n,a;v.h)/v].
+\]
+It has numerical coverage $x=0\lor\exists y\,x=Sy$, separation
+$(0=S0)\to\bot$, and contextual induction on literal equations:
+\[
+ \frac{\Gamma\vdash E(0)\qquad\Gamma,E(z)\vdash E(Sz)}
+      {\Gamma\vdash E(t)},
+ \qquad E\text{ a literal numerical equation}.
+\]
+The parameter $z$ is fresh for $\Gamma$ and the passive parameters.
+Intuitionistic first-order equality logic is part of this ordinary
+presentation. The smaller native presentation, whose complete rules are
+given in Section~\ref{sec:choice-introduction}, derives this logical interface,
+coverage, separation and equation induction. These are not uncharged
+primitive rules in the measured checker.
+
+The native paired binder has the ordinary meaning
+\[
+ \mathsf D_{x,y}B\quad\mapsto\quad
+ \exists x\bigl(B(x,0)\to\forall y B(x,y)\bigr).
+\]
+Equations and this binder are the only object-formula constructors. The
+native primitives are computation, reusable hypothesis/closure use, paired
+elimination, numerical transport, and case/progress paired introductions,
+with progress permitted only at a literal equation. Their exact eigenvariable
+conditions, derived logical macros, and formula composites appear below.
+
+\paragraph{Why this is full iPRA.}
+The dependency order matters. Equation induction and numerical cases first
+construct a scalar predecessor, without assuming pairing, actual equality
+decidability, or successor injectivity. Predecessor then gives truncated
+subtraction and a characteristic of actual equality. Every fixed
+quantifier-free formula becomes a characteristic equation, so all its
+induction instances follow. Pairing and projections are then constructed
+and every fixed primitive recursion is compiled into scalar iteration.
+Internal uniqueness of the recurrences proves both numerical composites.
+The domain remains the entire original numerical domain, and the definable
+isomorphism in both directions is $x=y$. The attributed proofs are reproduced
+in the appendices; agreement only on standard numerals would not suffice.
+
+\section{What the 529-byte checker changes}
+\label{sec:composition}
+
+\subsection{The entire compact module}
+
+\lstinputlisting[language=Python]{code/checker_compact.py}
+
+\file{code/checker_explicit.py} uses \texttt{isinstance} to recognize list
+nodes. This costs eight normalized bytes and is the recommended compact
+source for direct inspection.
+\file{code/readable_checker.py} is a separately executable expansion with
+named operations and comments, not an omitted trusted dependency. No checker
+imports a producer, numerical library, another kernel, or an oracle.
+
+\subsection{Three compositions, with matched controls}
+
+The current byte incumbent uses a global fresh-name floor. The new kernel
+passes that floor lexically into each premise; completed major proofs cannot
+change their caller's scope. This local discipline already exists in the
+uniform-zero draft. The initial hypothesis is the empty-array truth, and
+every packet checks its major, with \texttt{[]} serving as the immediately
+proved neutral major. That protocol already exists in the monus/neutral-major
+draft. Finally, each successful non-introduction branch constructs a nonempty
+list, so Boolean disjunction can select the same hypothesis as an explicit
+conditional chain. That factoring is also inherited.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Matched module & Bytes & Tokens & AST & Gzip 9\\\midrule
+Guarded major, lexical floor & 545 & 267 & 311 & 336\\
+Neutral major, global floor & 542 & 263 & 309 & 343\\
+Neutral major, lexical, conditional dispatch & 535 & 266 & 310 & 335\\
+Neutral major, lexical, factored dispatch & 529 & 266 & 310 & 333\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The controls isolate the change; they do not invent a new arithmetic basis
+from incidental syntax savings. In particular, lexicalization followed by
+factoring saves seven then six bytes against the 542-byte incumbent, while
+adding three tokens and one AST node overall.
+
+\subsection{The complete canonical packet interface}
+
+The JSON input is an array. Its last entry is a closed goal; earlier
+four-field packets $[m,s,u,t]$ are consumed backwards. A successful run
+exits with status zero and prints exactly \texttt{ACCEPT}. An exception
+rejects. An unused prefix has no effect. No Python code in a certificate
+is executed.
+
+Every non-hypothesis command first proves its major $m$ in the same context
+and at the same lexical floor. A substantive major can transport equality,
+specialize a closure, or eliminate a paired formula. A neutral major is
+\texttt{[]}. With a neutral major and a nonempty initializer $u$, the
+packet supplies a computation, with $s$ its predecessor discriminator and
+$t$ its update. With $m,u$ both false-valued, it introduces a unary paired
+goal with witness $t$. The marker $u=0$ selects equation progress; $u=[]$
+selects the zero case. The unused $s$ field does not select induction.
+
+The sorted representation uses unary arrays for successor or paired
+binding, binary arrays for equations, and ternary arrays for scalar
+iteration or auxiliary closure. A canonical closure is $[B,B,B]$, so
+tripling a unary major exports precisely its closure. Other nonempty
+array majors export a high-arity truth alias. At numerical positions,
+empty and surplus arrays denote zero; at formula positions they denote
+the derived truth $0=0$. These are explicit constant interpretations,
+not hidden axioms about new symbols.
+
+The common opening depth increment is $5-r$ at arity $r$. Numerical root
+depth is three; one protected numerical slot has width two. Negative
+admitted labels are rigid parameters. Under an iterator the counter and
+initializer receive a dummy zero slot, while the update receives the
+state slot. Under successor there are two dummy zero slots. The precise
+decoder and opening proof are reproduced in
+Appendix~\ref{sec:arity-checker}. This representation is deliberately
+charged and explained; it is not ordinary surface arithmetic notation.
+
+\subsection{Why all computations are still available}
+
+Literal-zero initializers and literal-zero successor predecessors do not
+select the compact direct-computation branch. Put
+\[
+                  Z_*:=I(S(S0),S0;v.0).
+\]
+Its permitted successor computation gives $Z_*=0$. In an excluded
+computation instance, replace all offending initializer/predecessor positions
+simultaneously by a fresh placeholder $w$, giving an equation template
+$E(w)$. The equation $E(Z_*)$ is permitted. Transport along $Z_*=0$
+then gives $E(0)$. This is the inherited three-node certified-zero repair.
+It does not need to decide whether an arbitrary term denotes zero.
+
+\subsection{Soundness of the composition}
+
+Two details require more than a superficial source comparison. First,
+the matcher has a Boolean-false alternative when $s$ is nonempty.
+It would be unsafe if a numeric zero could be a proved major. The
+neutral-major invariant excludes this: from list-valued assumptions,
+no finite successful invocation proves a numeric scalar. A minimal-trace
+argument proves the invariant for every starting scope floor. The initial
+assumption is a list, and every surviving continuation adds a list. Thus
+a false-valued major reaching the matcher is the empty list, never zero.
+The complete inherited argument is in Appendix~\ref{sec:neutral-major-audit}.
+Its quantification over starting floors makes it valid for lexical floors.
+
+Second, generated computation hypotheses can contain freshly admitted
+parameters. They need only have a provable simultaneous zero instance.
+If $\vec b$ is fresh for $\Gamma,A$, from
+$\vdash H(\vec0)$ and $\Gamma,H(\vec b)\vdash A$ one substitutes zero
+for the new names and cuts in the computation proof. One must not claim
+that every generated $H(\vec b)$ is uniformly true. Fractional numeric
+aliases that pass the raw checker are included among the finite fresh
+parameter family; canonical proofs use integer coordinates.
+
+The remaining composition steps are direct. Premise contexts are fresh
+lists, so they cannot mutate a caller. A nonempty list major gives
+nonempty $m*3$; a computation produces a nonempty binary equation.
+Therefore the factored dispatch has exactly the conditional dispatch's
+value, and only introduction performs the assignment that opens the goal.
+In introduction $u$ is false-valued and cannot equal odd arity one, so
+compound progress is excluded. Canonical proof translation changes absent
+majors to the empty list and moves the old choice marker into $u$; it
+otherwise preserves the inherited native derivation.
+
+Consequently every successful raw run decodes to an inherited derivation,
+and every canonical inherited proof has a finite translated certificate
+under adequate computational resources. Both iPRA interpretation
+composites and equiconsistency transfer unchanged. Real stack and memory
+limits can reject large valid certificates. The strict-list variants do
+not use the generic malformed-string traversal that qualifies some
+historical token/AST record holders.
+

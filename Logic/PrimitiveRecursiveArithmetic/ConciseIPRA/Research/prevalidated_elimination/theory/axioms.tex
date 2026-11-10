@@ -1,0 +1,161 @@
+\section{The complete native presentation}
+\label{sec:axioms}
+
+We use full first-order intuitionistic PRA as the target: fixed finite
+primitive-recursive function descriptions, their defining equations,
+ordinary intuitionistic predicate logic with equality, and quantifier-free
+induction. In the full PR language the usual atomic-induction presentation
+is equivalent; Salehi uses that formulation \cite{salehi}. The smaller
+scalar language below requires an internal proof of that equivalence,
+which is supplied in the inherited appendices.
+
+\subsection{Numerical syntax and computation}
+
+There is one numerical sort. Terms are finite expressions
+\[
+ t ::= x\mid 0\mid St\mid I(n,a;v.h).
+\]
+Only the occurrence of $v$ in $h$ is bound. Every other parameter is fixed
+during iteration. A fixed earlier-stage update description gives a
+first-order function symbol with counter, initializer, and passive
+parameters as arguments. There is no number variable ranging over
+function descriptions, and no universally total evaluator is assumed.
+
+The two unrestricted computation schemas are
+\begin{align}
+ I(0,a;v.h)&=a,\tag{I0}\label{eq:i0}\\
+ I(Sn,a;v.h)&=h[I(n,a;v.h)/v].\tag{IS}\label{eq:is}
+\end{align}
+The measured checker directly supplies the following restricted instances:
+I0 when $a$ is not the literal zero term, and IS when neither $n$ nor $a$
+is literal zero. These are syntactic restrictions, not assertions that
+the terms have positive numerical values.
+
+\begin{lemma}[The inherited certified-zero repair]
+\label{lem:zero-repair}
+The restricted computations derive every instance of I0 and IS using
+equality transport. Each excluded computation leaf can be replaced by
+exactly three inference nodes.
+\end{lemma}
+\begin{proof}
+Let $1=S0$, $2=S1$, and $C=I(2,1;v.0)$. Its direct IS instance gives
+$C=0$: its predecessor is $1$, its initializer is $1$, and the update
+ignores the previous state. In a forbidden computation equation replace
+every offending literal-zero initializer or predecessor, or both, by
+one fresh variable $w$. Call the resulting equation template $F(w)$.
+The equation $F(C)$ is a permitted direct computation. Transport $C=0$
+through $F$ to obtain $F(0)$, exactly the requested original equation.
+The two computation leaves and one transport are three nodes. The proof
+does not assume a zero-initializer computation to establish $C=0$.
+\end{proof}
+
+\subsection{Formula syntax}
+
+Native formulas are
+\[
+ A ::= (s=t)\mid \Q_y A\mid \D_{x,y}A.
+\]
+The designated absurd formula is $\bot_*:=(0=S0)$. The following ordinary
+readings explain the interpretations but are not additional primitive
+logical syntax:
+\[
+ \Q_y B = B(0)\to\forall y\,B(y),\qquad
+ \D_{x,y}B=\exists x\bigl(B(x,0)\to\forall y\,B(x,y)\bigr).
+\]
+All bound names are renamed before capture-free substitution. A context
+$\Gamma$ is a finite reusable list of native formulas. The primitive
+rules are exactly those below, together with the restricted computation
+schemas just specified.
+
+\paragraph{Hypothesis and equality transport.}
+\[
+ \frac{}{\Gamma\vdash A}\ (A\in\Gamma),
+ \qquad
+ \frac{\Gamma\vdash s=t\quad\Gamma\vdash F(s)}
+      {\Gamma\vdash F(t)}\ (\mathrm{Tr}).
+\]
+Here $F(w)$ is any fixed native formula template. There is no primitive
+reflexivity rule. For example, with $r=I(0,t;v.0)$, using the computation
+$r=t$ twice in transport with $F(w):=(w=t)$ derives $t=t$.
+
+\paragraph{Closure and paired elimination.}
+\[
+ \frac{\Gamma\vdash\Q_y B\quad\Gamma\vdash B(0)}
+      {\Gamma\vdash B(t)}\ (\mathrm{QE}),
+ \qquad
+ \frac{\Gamma\vdash\D_{x,y}B\quad
+       \Gamma,\Q_yB(a,y)\vdash A}
+      {\Gamma\vdash A}\ (\mathrm{DE}).
+\]
+For DE the parameter $a$ is fresh for the retained context, conclusion,
+and passive parameters of the major formula. The displayed local
+hypothesis is discharged.
+
+\paragraph{The two paired introductions.}
+\begin{gather*}
+ \frac{\Gamma,B(t,0)\vdash B(t,Sz)}
+      {\Gamma\vdash\D_{x,y}B(x,y)}\ (\mathrm{DI}_{\rm case}),\\[3pt]
+ \frac{\Gamma,E(t,z)\vdash E(t,Sz)}
+      {\Gamma\vdash\D_{x,y}E(x,y)}\ (\mathrm{DI}_{\rm progress}).
+\end{gather*}
+The progress rule is permitted only when $E$ is a literal numerical
+equation. An equation underneath a quantifier or paired binder is not
+a literal equation. In both rules $z$ is fresh for $\Gamma$, the witness
+$t$, and all passive parameters. The indicated local hypothesis is
+discharged. Case introduction applies to every native formula, including
+equations. Each introduction retains exactly one local assumption.
+
+\paragraph{Structural conventions.}
+Weakening, contraction, exchange, ordinary-assumption cut, renaming, and
+capture-free numerical substitution are admissible by induction on
+derivations. These are metatheorems, not an unlisted theorem oracle.
+If substitution turns a previously permitted computation initializer or
+predecessor into literal zero, Lemma~\ref{lem:zero-repair} supplies the
+substituted computation instance.
+The root-constructor restriction on progress is preserved by numerical
+substitution. A concrete proof supplies all premises of every selected
+rule; no search procedure is part of the trusted kernel.
+
+\subsection{The implemented computation-supply rule}
+
+Instead of recognizing a computation leaf by comparing it to the goal,
+the implementation inserts a generated local hypothesis and continues.
+Its mathematical justification is the following admissible rule:
+\begin{equation}
+ \frac{\vdash H(\vec0)\qquad\Gamma,H(\vec b)\vdash A}
+      {\Gamma\vdash A},
+ \quad \vec b\cap\FV(\Gamma,A)=\varnothing.
+ \label{eq:known-zero}
+\end{equation}
+Substitute zero simultaneously for the new names in the continuation,
+renaming later eigenparameters first, and cut its remaining assumption
+against the given theorem. Only the specific computation generators
+described in Section~\ref{sec:kernel} are implemented. There is no general
+recognizer for the theorem premise of \eqref{eq:known-zero}.
+
+An open generated hypothesis need not hold at every new parameter value.
+For example an admitted raw packet can generate
+$I(0,0;v.0)=b$, whose zero instance is a computation theorem but whose
+instance at $b=1$ is false. Validation of the retained goal before that
+new name is admitted is essential. The soundness argument is substitution
+and cut, not uniform truth of every supplied open equation.
+
+\subsection{Derived cases and induction}
+
+For a literal equation $E(y)$, introduce $\D_{u,y}E(y)$ with unused $u$
+by progress, eliminate it to obtain its closure, and use the proved base.
+This derives
+\[
+ \frac{\Gamma\vdash E(0)\quad\Gamma,E(z)\vdash E(Sz)}
+      {\Gamma\vdash E(t)}.
+\]
+The parameters remain fixed throughout. Likewise case introduction with
+unused witness, followed by DE and QE, derives numerical cases for every
+native $A$:
+\[
+ \frac{\Gamma\vdash A(0)\quad\Gamma\vdash A(Sz)}
+      {\Gamma\vdash A(t)}.
+\]
+These derived rules must not be confused: the second gives cases, not
+induction on arbitrary quantified formulas. The primitive progress
+restriction is retained throughout the executable programs.

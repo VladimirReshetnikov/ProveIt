@@ -1,0 +1,79 @@
+EXACT THEORIES AND THEIR DISTINCT CLAIMS
+======================================
+
+A. COMPLETE INITIALIZED-I CALCULUS IMPLEMENTED BY code/*.py
+
+One numerical sort; terms x, 0, S(t), I(n,a;u.h). Only u in h is bound.
+Each h is a fixed finite earlier-stage source term, with passive numerical
+parameters. This is a schema over source syntax, not a numerical universal
+evaluator or a function-code quantifier.
+
+Primitive computation schemas:
+    I(0,a;u.h)    = a
+    I(S(n),a;u.h) = h[I(n,a;u.h)/u]
+
+Native formulas:
+    A ::= (s=t) | Q_y A | D_{x,y} A.
+Designated absurdity: 0=S(0).
+
+Ordinary interpretations:
+    Q_y B(y)       = B(0) -> forall y B(y)
+    D_{x,y} B(x,y) = exists x (B(x,0) -> forall y B(x,y)).
+
+Primitive inference patterns, in reusable formula contexts Gamma:
+
+Hyp:  A in Gamma entails Gamma |- A.
+
+Tr:   Gamma |- s=t and Gamma |- H(s) entail Gamma |- H(t),
+      for every fixed native formula template H.
+
+QE:   Gamma |- Q_y B(y) and Gamma |- B(0) entail Gamma |- B(t).
+
+DE:   Gamma |- D_{x,y} B and Gamma,Q_y B(b,y) |- A entail Gamma |- A,
+      with b fresh for Gamma, A and the passive matrix data; discharge
+      the displayed Q assumption.
+
+DI case:
+      Gamma,B(t,0) |- B(t,S(z)) entails Gamma |- D_{x,y} B(x,y).
+
+DI progress:
+      Gamma,E(t,z) |- E(t,S(z)) entails Gamma |- D_{x,y} E(x,y),
+      only when E is a literal numerical equation.
+
+In both DI rules, z is fresh for the retained context, witness t and fixed
+matrix parameters, and the displayed assumption is discharged. All
+substitutions avoid capture. Structural rules are admissible. There are
+no further primitive equality, successor or logical axioms. The full
+ordinary realization, derivations and interpretation composites appear
+in the report and attributed appendices. This calculus is bi-interpretable
+and equiconsistent with full first-order iPRA on the whole numerical domain.
+
+The code additionally uses sorted array encodings, truth padding, generated
+zero-instance hypotheses and an explicit acceptance contract, specified in
+the report. These are certificate conventions for this calculus.
+
+B. WEAK SELF-SEEDED-F THEORY FOR THE NEW MATHEMATICAL LEMMAS
+
+Ordinary intuitionistic first-order logic with actual equality; terms
+0, S, epsilon and staged scalar F(n;v.h), with the same fixed finite
+earlier-stage source convention.
+
+Nonlogical schemas, universally closed in their free numerical variables:
+    F(0;v.h)     = S(h[0/v])
+    F(S(n);v.h)  = h[F(n;v.h)/v]
+    0=S(0) -> false
+    epsilon(a,b)=0 or epsilon(a,b)=1
+    epsilon(a,b)=1 iff a=b
+where 1 abbreviates S(0).
+
+Contextual literal-equation induction:
+    Gamma |- E(0) and Gamma,E(z) |- E(S(z)) entail Gamma |- E(t),
+    where E is a literal equation and z is fresh for Gamma, t and passive
+    parameters. Discharge E(z). Ordinary logic and equality have their
+    usual full intuitionistic rules, written explicitly in the report.
+
+Successor injectivity and numerical coverage are NOT assumed in B.
+The new proof derives coverage, no successor fixed points, and uniqueness
+of predecessors of each fixed standard numeral. It does not derive
+universal successor injectivity or prove B bi-interpretable with iPRA.
+The measured code/*.py programs implement A, not B.
