@@ -1798,6 +1798,10 @@ A [Fin64 aggregate batch](research/nine-sharing-sign17-k-weight-aggregate-batch0
 [independently audited](reviews/nine-sharing-sign17-k-weight-aggregate-batch01-terminal-independent/README.md),
 checks one universal actual-weight theorem for rows 32–95. Ranking and full
 K/file binding remain separate.
+A [paired aggregate batch](research/nine-sharing-sign17-k-weight-aggregate-batch02-03-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-weight-aggregate-batch02-03-terminal-independent/README.md),
+checks universal actual-weight theorems for rows 96–223. Physical rank and
+full K/file binding remain separate.
 A [generic Fin.append certificate lemma](research/nine-sharing-sign17-k-weight-append-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-weight-append-terminal-independent/README.md),
 checks composition of such certificates. The audit records a checker schema
