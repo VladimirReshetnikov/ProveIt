@@ -1,0 +1,5 @@
+# Independent prelaunch review
+
+PASS. The infrastructure stage is byte-identical to the repository's `ArithmeticDAG.lean`. The staged core and value sources are exactly the previously reviewed draft split, with imports and axiom reports added; all graph/count/liveness and semantic-equality declarations and proofs are preserved. The three direct-import routes, local stage ordering, Mathlib and Carrier65 object hashes, first-candidate and Init checks, overlay pins, per-child resource limits, and no-Lean preflight were reviewed.
+
+The inherited environment is copied without scrubbing `LEAN_SRC_PATH`, `LEAN_SYSROOT`, or dynamic-loader variables; these variables were absent in this review's environment. The Carrier65 and package objects are direct historical realpath/hash pins, not fresh source-to-object proofs; complete transitive ancestry remains inherited. Import compatibility, all three Lean stages, and particularly the arbitrary-ring `value_eq_carrier` bridge remain untested. The count concerns this circuit, not minimality or a new PDF/degree binding. No Lean run.
