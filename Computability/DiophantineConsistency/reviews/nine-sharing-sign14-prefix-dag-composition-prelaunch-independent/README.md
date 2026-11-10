@@ -1,0 +1,5 @@
+# Independent prelaunch review
+
+PASS. Independently parsed all 29 proposed fragment Code expressions and encoded them back to their exact pinned fragment bytes. Checked all 44 shared and five row byte definitions structurally against the independently audited DAG manifest, including each operator, fragment/reference and named dependency lemma; all source copies, chained imports and axiom-report directives were checked. The Code, external DAG and first-fragment audits were replayed, the 29 original/source fragment copies and postflight checks verified, and the unchanged resource guards and no-Lean preflight passed. Our first checker invocation expected the wrong text for a postflight check label; this was corrected before the passing run without invoking Lean.
+
+The source uses named subproofs rather than proposing one whole-row normalization. These 78 proposed theorems remain untested until Lean runs. The relationship of their separately embedded fragments to original full files remains an external audit, not a Lean JSON/PDF theorem; inherited provenance qualifications apply.

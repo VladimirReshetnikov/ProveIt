@@ -1492,6 +1492,12 @@ A [shared07 fragment lemma](research/nine-sharing-sign14-prefix-dag-lemma-check/
 [independently audited](reviews/nine-sharing-sign14-prefix-dag-lemma-terminal-independent/README.md),
 checks its 15-byte embedded subtree fragment against the corresponding
 symbolic code. The other fragments and full row remain separate.
+A [bulk fragment-composition client](research/nine-sharing-sign14-prefix-dag-composition-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-prefix-dag-composition-terminal-independent/README.md),
+checks all 29 embedded short-fragment encodings, 44 shared-node compositions
+and five row-code compositions. Its 20 stages report 49 sequencing-linter
+warnings. Applying the generic decoder theorem to the assembled lists and
+the original-file/JSON/PDF links remain separate.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
