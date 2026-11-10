@@ -1509,6 +1509,12 @@ checks the five-square expression and its equality to the symbolic Fin14
 expression for arbitrary ports. The original prefix-file/JSON/PDF connection
 and fixed-port bytes remain external or separate; endpoint and degree clients
 for the assembled expression are being prepared.
+A [fragment-DAG degree-transfer attempt](research/nine-sharing-sign14-prefix-dag-degree-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-prefix-dag-degree-terminal-independent/README.md),
+failed at import setup because the exact-degree producer's local predecessor
+objects were omitted from the overlay. It produced no client object or
+postflight; the audit records that its prelaunch direct-producer survey did
+not detect this transitive local dependency.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
