@@ -1196,7 +1196,10 @@ checks symbolic Fin18 evaluation against the staged seed. A [direct expression
 equivalence](research/nine-sharing-sign18-expression-equivalence-check/README.md),
 [independently audited](reviews/nine-sharing-sign18-expression-equivalence-terminal-independent/README.md),
 checks current-port Fin18/Fin19 model-zero existence equivalence, with one
-warning. These do not bind the expression to external JSON or supply an endpoint.
+warning. A [concrete polynomial bridge](research/nine-sharing-sign18-concrete-polynomial-bridge-check/README.md),
+[independently audited](reviews/nine-sharing-sign18-concrete-polynomial-bridge-terminal-independent/README.md),
+checks the symbolic Fin18 `PolynomialBridge` through Fin19. These do not bind
+the expression to external JSON or supply the direct iPRA endpoint.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
