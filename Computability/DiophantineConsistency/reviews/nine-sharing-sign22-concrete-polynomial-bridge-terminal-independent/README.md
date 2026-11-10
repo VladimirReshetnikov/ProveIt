@@ -1,0 +1,3 @@
+# Independent sign22 concrete polynomial bridge terminal audit
+
+Independent checker session 63739 exited 0 against author outer session 14594 (exit 0). The direct symbolic sign22 `PolynomialBridge` stage and postflight succeeded at scoped -M3600 with retained monitored controls. Its report lists `[propext, Classical.choice, Quot.sound]`, with no warnings or `sorryAx`. The checker verified source, object, logs, all three direct provider bindings, 200 guards, overlays and upstream audits. The result is a polynomial bridge, not by itself an iPRA endpoint or external JSON/PDF binding; historical provider ancestry remains point-observed.

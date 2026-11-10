@@ -881,7 +881,10 @@ checks input-one evaluation at abstract and current ports, with historical
 partial-provider qualifications. A [direct expression-zero equivalence](research/nine-sharing-sign22-expression-equivalence-check/README.md),
 [independently audited](reviews/nine-sharing-sign22-expression-equivalence-terminal-independent/README.md),
 checks current-port Fin22/Fin23 zero existence in the stated IΣ₁ models. The
-polynomial bridge and endpoint remain separate.
+polynomial bridge is checked by a [direct client](research/nine-sharing-sign22-concrete-polynomial-bridge-check/README.md),
+[independently audited](reviews/nine-sharing-sign22-concrete-polynomial-bridge-terminal-independent/README.md),
+under the scoped `-M3600` interpreter limit and sampled 4 GiB RSS cap. The
+iPRA endpoint and formal byte/degree binding remain separate.
 A [21-witness degree-14 candidate](research/nine-sharing-sign21-degree14-s-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign21-degree14-s-independent/README.md),
 substitutes the natural normalized-S product. Its fixed-input external square-sum
