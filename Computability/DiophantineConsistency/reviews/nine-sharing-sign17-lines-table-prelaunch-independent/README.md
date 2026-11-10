@@ -1,0 +1,3 @@
+# Independent prelaunch audit
+
+PASS: the proposed ordered table preserves the actual table's order: start, 430 decoded transitions, copy blocks 1 then 0, signal blocks true then false and the fixed tail. Independently counted 1 + 430 + 4 + 2×(199+45) + 19 = 942 using the checked target lists and source constructors. The signal and transition formulas, Fin942 tile projection and audited target-order provider routes/guards were checked; no-Lean preflight passed. The proof retains existing fixed start/copy/tail and head-color definitions, and rank/K/PDF/file claims remain separate. No Lean was run.
