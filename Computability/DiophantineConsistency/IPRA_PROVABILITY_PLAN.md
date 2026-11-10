@@ -63,7 +63,11 @@ now has a checked generic evaluation equality with the 92-gate seed. A
 and its [fixed-input expression and polynomial equalities to 90 gates](research/nine-sharing-sign14-86gate-expression-check/README.md)
 have also passed Lean and independent terminal review. Their [explicit
 composition through 92 gates](research/nine-sharing-sign14-86gate-to92-expression-check/README.md)
-is checked. Model, degree and iPRA endpoint transfers remain separate.
+is checked. The [model-zero equivalence](research/nine-sharing-sign14-86gate-model-check/README.md),
+[exact symbolic degree 124](research/nine-sharing-sign14-86gate-degree-check/README.md)
+and [all-model polynomial bridge](research/nine-sharing-sign14-86gate-bridge-check/README.md)
+have also passed independent terminal reviews. The iPRA endpoint transfer
+remains separate.
 
 For fixed-constant work, the [generic radix stream theorem](research/nine-sharing-sign17-k-radix-stream-retry-check/README.md)
 and its [symbolic K specialization](research/nine-sharing-sign17-k-radix-stream-current-check/README.md)
