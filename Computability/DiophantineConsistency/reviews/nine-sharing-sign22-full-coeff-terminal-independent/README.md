@@ -1,0 +1,3 @@
+# Independent sign22 full coefficient and lower-bound terminal audit
+
+Independent checker session 20308 exited 0 against author outer session 59967 (exit 0). All seven stages and postflight succeeded. The Lean source proves full seed axis twelfth coefficient 272 at arbitrary integer ports and `12 ≤ (Sign22AbstractExpression.expression p).toPolynomial.totalDegree`. Twelve linter warnings occurred and no `sorryAx` appeared; reports list standard Lean metatheory axioms or subsets. Sources, objects, direct guards, overlays and expression provider were verified. A separate upper bound exists, but no combined exact-equality declaration or external JSON/Jones/PDF binding follows from this packet alone.

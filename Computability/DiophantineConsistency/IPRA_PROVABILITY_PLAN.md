@@ -933,6 +933,12 @@ coefficient and exact lower bound were separate. A [square-coefficient client](r
 [independently audited](reviews/nine-sharing-sign22-leading-coeff-terminal-independent/README.md),
 checks twelfth-degree coefficients 256 and 16 for the two leading squares.
 It records four tactic warnings; the full sum and lower bound remain separate.
+A [full coefficient and lower-bound client](research/nine-sharing-sign22-full-coeff-check/README.md),
+[independently audited](reviews/nine-sharing-sign22-full-coeff-terminal-independent/README.md),
+checks that the full seed axis degree-twelve coefficient is 272 and proves
+`12 ≤ toPolynomial.totalDegree` for the abstract expression at arbitrary integer
+ports. It records 12 tactic warnings. A combined equality theorem and external
+byte binding remain separate.
 A [21-witness degree-14 candidate](research/nine-sharing-sign21-degree14-s-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign21-degree14-s-independent/README.md),
 substitutes the natural normalized-S product. Its fixed-input external square-sum
@@ -988,7 +994,10 @@ checks both directions under the beta representation hypothesis. Current-port
 specialization remained separate. A [same-input existential client](research/nine-sharing-sign20-seed-iff-check/README.md),
 [independently audited](reviews/nine-sharing-sign20-seed-iff-terminal-independent/README.md),
 checks seed equivalence under that hypothesis. Current-port specialization
-and iPRA endpoint remain separate.
+is checked by an [independently audited client](research/nine-sharing-sign20-current-iff-check/README.md),
+using the current beta representative; its current-data provider has successful
+observed children but a failed overall run. Direct-expression composition and
+the iPRA endpoint remain separate.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a

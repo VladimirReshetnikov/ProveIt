@@ -1,0 +1,3 @@
+# Independent sign20 current-port iff terminal audit
+
+Independent checker session 63193 exited 0 against author outer session 23971 (exit 0). The client proved the current beta port representation and used it to specialize the conditional same-input seed iff; stage and postflight succeeded with two standard Lean metatheory reports, no warnings or `sorryAx`. Source, object, direct guards, overlays, conditional seed provider and port survey were checked. Current data is inherited from successful children of a failed historical producer, not a fully passed enclosing run. This is not a direct-expression endpoint or external binding.
