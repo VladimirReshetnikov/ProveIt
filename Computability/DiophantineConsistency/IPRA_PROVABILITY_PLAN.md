@@ -46,17 +46,21 @@ remain as described in the review.
 
 The [92-gate seed evaluation equality](research/nine-sharing-sign14-92gate-lean-check/README.md)
 has independently reviewed Lean evidence over an arbitrary commutative
-ring. The [fixed-input expression and polynomial equalities](research/nine-sharing-sign14-92gate-expression-check/README.md)
-are also checked. The model-level zero equivalence, exact degree and iPRA
-transfers remain separate.
-The further 87-gate AST has an independently audited external rewrite and
-gate count; its Lean transfer remains open. Its count is an upper bound under
-exact ordered subtree sharing, not a minimality result.
+ring. The [fixed-input expression and polynomial equalities](research/nine-sharing-sign14-92gate-expression-check/README.md),
+[model-level zero equivalence](research/nine-sharing-sign14-92gate-model-check/README.md)
+and [exact symbolic degree 124](research/nine-sharing-sign14-92gate-degree-check/README.md)
+are also checked. The all-model bridge and iPRA endpoint transfers remain
+separate.
+The further [86-gate AST](research/nine-sharing-sign14-86gate-candidate/README.md)
+has an independently audited external rewrite and gate count; its Lean
+transfer remains open. Its count is an upper bound under exact ordered
+subtree sharing, not a minimality result.
 
 For fixed-constant work, the [generic radix stream theorem](research/nine-sharing-sign17-k-radix-stream-retry-check/README.md)
-has a successful Lean run and independent terminal review. It concerns an
-arbitrary base and vector: specializing it to the actual K, proving digit
-bounds and connecting external bytes remain separate.
+and its [symbolic K specialization](research/nine-sharing-sign17-k-radix-stream-current-check/README.md)
+have successful Lean runs and independent terminal reviews. They equate K
+to an in-Lean digit-stream value. Digit bounds and connections to external
+bytes remain separate.
 
 ## Current reduction status
 
