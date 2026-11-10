@@ -1432,6 +1432,10 @@ circuit to 38 additions, 17 subtractions and 40 multiplications. The
 count is an upper bound under the same free-leaf, exact-sharing convention.
 Lean equivalence, endpoint and degree transfer for this new candidate remain
 to be proved; external file and PDF bindings remain separate.
+A [95-gate Lean source draft](research/nine-sharing-sign14-95gate-lean-draft/README.md),
+[independently reviewed](reviews/nine-sharing-sign14-95gate-lean-draft-independent/README.md),
+expands to the candidate's five external residual ASTs and proposes generic
+ring-evaluation equivalences. It has not yet been elaborated or checked.
 A [compact prefix transcription](research/nine-sharing-sign14-prefix-formula/README.md),
 [independently audited](reviews/nine-sharing-sign14-prefix-formula-independent/README.md),
 encodes the five external seed residuals in five small ASCII files and checks
