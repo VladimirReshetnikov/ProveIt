@@ -1466,6 +1466,10 @@ A [94-gate all-model zero client](research/nine-sharing-sign14-94gate-model-chec
 checks pointwise and existential zero equivalence with the prior expression
 for arbitrary ports in every stated IΣ₁ model. The optimized degree, bridge and
 iPRA endpoints remain separate.
+A [94-gate exact-degree client](research/nine-sharing-sign14-94gate-degree-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-94gate-degree-terminal-independent/README.md),
+checks that the optimized current-port polynomial has total degree exactly
+124. Its iPRA bridge and endpoints and external-file bindings remain separate.
 A [95-gate Lean source draft](research/nine-sharing-sign14-95gate-lean-draft/README.md),
 [independently reviewed](reviews/nine-sharing-sign14-95gate-lean-draft-independent/README.md),
 expands to the candidate's five external residual ASTs and proposes generic
