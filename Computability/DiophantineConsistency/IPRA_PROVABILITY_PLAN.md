@@ -1302,6 +1302,13 @@ A [natural V-lift attempt](research/nine-sharing-sign16-v-lift-check/README.md),
 [independently audited](reviews/nine-sharing-sign16-v-lift-failure-independent/README.md),
 failed because the representative equality had the opposite orientation;
 no object or postflight was produced.
+A [symmetry retry](research/nine-sharing-sign16-v-lift-retry01-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-v-lift-retry01-terminal-independent/README.md),
+checks a natural deleted-V representative from seed zero under represented
+ports, positive beta and the explicit MC/MF bounds. Sign/window ancestry
+includes an uncaptured earlier numeric exit; surveys are point-in-time while
+direct guards and overlays were rechecked. Coordinate and residual bridges,
+full equivalence and the endpoint remain separate.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a

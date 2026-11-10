@@ -1,0 +1,3 @@
+# Independent sign16 natural V-lift retry terminal audit
+
+The independent checker exited 0. Author outer session 79524 exited 0; stage and postflight passed. Source/object, logs, half-window/sign provider guards and overlays were checked. The report has standard axioms, no warnings or sorryAx. Lean proves existence of a natural representative for the deleted V expression under staged seed zero, represented beta/K/MC/MF, beta positivity and MC/MF bounds. Sign/window ancestry includes an uncaptured earlier numeric exit; union/inherited surveys were point-in-time and not replayed postflight, though direct guards and overlays were rechecked. Residual transfers and full equivalence remain separate. No Lean was rerun here.
