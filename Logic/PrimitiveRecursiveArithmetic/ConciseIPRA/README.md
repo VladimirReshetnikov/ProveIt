@@ -5,7 +5,7 @@ complete presentation of a theory bi-interpretable with full first-order
 intuitionistic primitive recursive arithmetic (iPRA), and the Lean
 formalization of the most concise of them.
 
-- [`Research/`](Research/) holds sixteen delivered packages, one directory
+- [`Research/`](Research/) holds nineteen delivered packages, one directory
   each. They are written mathematics with executable Python proof checkers;
   none of them claims a proof-assistant verification.
 - `Lean/` is the formalization (see [Lean formalization](#lean-formalization)).
@@ -93,6 +93,9 @@ for separate coordinates, they are listed separately. Each package's own
 | [`compact_kernel`](Research/compact_kernel/) | Truth transfer in eventually constant powers for all `∧, ∃, ∀` formulas, hence a symmetry obstruction | 266 / 310 / 612 |
 | [`certified_zero`](Research/certified_zero/) | Certified zero sources; the reference statement of the inherited basis and bridge | 264 / 308 / 566; 558 bytes; joint 262 / 296 / 598 |
 | [`uniform_zero`](Research/uniform_zero/) | Uniform zero and constructed elimination majors; shorter certificates | 545 to 564 bytes over six profiles |
+| [`uniform_premise`](Research/uniform_premise/) | Every non-hypothesis instruction verifies a major premise against a retained neutral truth; a successful-trace invariant replaces the type guard | 262 / 303 / 548, and 537 bytes |
+| [`witness_rule`](Research/witness_rule/) | One introduction rule in place of the case/progress choice: progress exactly when the matrix is a literal equation and the witness is literally `0`, cases otherwise; the same sequents are derivable | 266 / 312 / 555 |
+| [`neutral_scope`](Research/neutral_scope/) | Composition of neutral premises with local scopes; no new mathematics | 266 / 310 / 529, and 290 AST nodes |
 
 ### Other arithmetic bases
 
@@ -105,10 +108,11 @@ for separate coordinates, they are listed separately. Each package's own
 
 ## Intake record
 
-Twenty archives `ipra_<name>_2026-11-10.zip` were delivered to `docs/drafts/`
-on 2026-11-10 and filed here on the same day.
+Twenty-three archives `ipra_<name>_2026-11-10.zip` were delivered to
+`docs/drafts/` on 2026-11-10, in two rounds of twenty and three, and filed here
+on the same day.
 
-- **Filed (16):** the packages listed above, each under its `<name>`.
+- **Filed (19):** the packages listed above, each under its `<name>`.
 - **Discarded (4):** `flat_computation`, `affine_arity`, `arity_calculus` and
   `affine_supply`. Each is a checker-size step on the native scalar core with
   no mathematics of its own, and each is superseded in its coordinates by

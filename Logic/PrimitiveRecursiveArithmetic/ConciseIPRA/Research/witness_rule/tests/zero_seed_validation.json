@@ -1,0 +1,66 @@
+{
+  "status": "PASS",
+  "positive_certificates": [
+    {
+      "name": "zero_seed_successor",
+      "accepted": true,
+      "nodes": 21,
+      "source_nodes": 1,
+      "overhead": 20
+    },
+    {
+      "name": "zero_seed_initializer",
+      "accepted": true,
+      "nodes": 21,
+      "source_nodes": 1,
+      "overhead": 20
+    },
+    {
+      "name": "zero_seed_nested_update",
+      "accepted": true,
+      "nodes": 21,
+      "source_nodes": 1,
+      "overhead": 20
+    },
+    {
+      "name": "wrapped_successor",
+      "accepted": true,
+      "nodes": 6,
+      "source_nodes": 1,
+      "overhead": 5
+    },
+    {
+      "name": "wrapped_initializer",
+      "accepted": true,
+      "nodes": 6,
+      "source_nodes": 1,
+      "overhead": 5
+    },
+    {
+      "name": "wrapped_nested_update",
+      "accepted": true,
+      "nodes": 6,
+      "source_nodes": 1,
+      "overhead": 5
+    }
+  ],
+  "negative_controls": [
+    {
+      "rejected": true,
+      "reason": "ZCC requires literal-zero seed"
+    },
+    {
+      "rejected": true,
+      "reason": "ZCC update must ignore outer state"
+    },
+    {
+      "rejected": true,
+      "reason": "ZCC update must ignore outer state"
+    }
+  ],
+  "countermodel_relation_finite_sanity": {
+    "range": "0..9",
+    "passed": true
+  },
+  "scope": "Concrete certificate and side-condition checks, not a universal formalization; the complete metatheorems are written proofs."
+}

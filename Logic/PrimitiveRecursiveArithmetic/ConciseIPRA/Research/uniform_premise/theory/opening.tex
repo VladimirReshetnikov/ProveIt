@@ -1,0 +1,152 @@
+\section{Opening, arithmetic generation and the exact scope boundary}
+\label{sec:opening-details}
+
+This section restates the inherited opening and generated-computation
+arguments \cite{arity,certified} for the selected instruction format.
+It explains the semantic facts used in the new trace proof; it does not
+charge an external validator to the untrusted producer.
+
+\subsection{An explicit decoder for admitted numerical coordinates}
+
+At a meaningful numerical position with \(p\) protected slots, the
+depth is \(3+2p\). Nonnegative coordinates in \([0,3)\) denote zero.
+For \(0\le j<p\), coordinates in \([3+2j,5+2j)\) denote slot \(j\),
+starting with the innermost slot. Thus a canonical integer slot has
+the two spellings \(3+2j,4+2j\). This interval convention also covers
+noninteger JSON coordinates. Negative admitted numbers are distinct
+rigid parameters. Python's booleans act as coordinate values zero and
+one; both coordinates decode to numerical zero. Values that fail the comparison,
+including nonfinite coordinates, can only survive at meaningful
+numerical positions by being replaced by a validated image; they are
+not extra numerical constants in the object language.
+
+At a formula position scalar padding is the chosen constant formula
+reading. The numerical reading of a unary successor's child uses two
+additional zero slots. An iterator's counter and initializer use one
+additional zero slot; its update uses one state slot. A paired matrix
+has the two slots \(y,x\), and a closure matrix has slot \(y\).
+These are exactly the environments described by the array table.
+Surplus numerical arrays denote zero and surplus formula arrays denote
+truth, independently of their annotations.
+
+\begin{lemma}[Semantic opening]
+For every successful opening at a meaningful numerical root
+\(3+2p\) or formula root \(2p\), its decoded result is capture-free
+filling of the distinguished numerical hole in the decoded template.
+Protected slots and admitted rigid parameters retain their meaning.
+A successful no-image check preserves the meaning of a closed expression.
+\end{lemma}
+\begin{proof}
+Induct on the finite traversed tree. The scalar interval comparison
+protects exactly the displayed slots and admitted names. Outside that
+interval, a relevant numerical occurrence is filled by the image. The
+image is checked at numerical root depth three: it therefore has no
+free positive slot, and its free numerical parameters are rigid negative
+names. Copying it under additional slots captures none of these names.
+Its own internal binders retain their relative indices.
+
+At a meaningful unary, binary or ternary array, the depth increments
+\(4,3,2\) create exactly the environments in the decoding table.
+An ignored child has no effect on the mathematical meaning. Traversal
+of an ignored annotation can fail and reject a certificate; if it
+succeeds, the relevant constant meaning remains unchanged. In
+particular, negative child depths inside a surplus array do not require
+a fictitious numerical interpretation of those ignored children.
+These cases prove both filling and validation. Structural equality of
+successfully checked raw results consequently implies equality of
+their decoded meanings.
+\end{proof}
+
+No claim is needed that every raw tree is idempotent under every later
+revalidation. Surplus arrays can have odd validation behavior in ignored
+annotations while still having a constant meaning. The lemma is stated
+only at meaningful sorted positions and for successful calls.
+
+\subsection{Why fresh names cannot escape into a retained conclusion}
+
+The global floor only decreases. When its old value is \(K\), its
+next allocated integer label is \(K-1\). Earlier relevant goals and
+context entries have passed no-image validation, so they contain no
+relevant numerical occurrence below their then-current floor. They
+therefore contain none of the names newly admitted in \([K-1,K)\).
+An occurrence inside an ignored annotation is not a free variable of
+the decoded formula.
+
+For integral canonical data there is one new label. For arbitrary
+finite raw numerical data, finitely many additional fractional names
+may lie in the interval. They are distinct fresh parameters, not
+aliases of its integer endpoint. Whenever a generated assumption
+uses them, the zero-instance discharge replaces every one of them
+simultaneously by zero. The retained context and conclusion are fixed.
+
+\subsection{The generated computation equation}
+
+With empty major and nonempty initializer \(u\), the raw assumption is
+\[
+ H=\begin{cases}
+ [\,[s,u,t],u\,],&s\text{ falsy},\\
+ [\,[[s],u,t],\ i(t,[s,u,t],3)\,],&s\text{ truthy}.
+ \end{cases}
+\]
+It is always a binary formula array. Its final image may be zero or
+the fresh parameter, as selected by the common tail of the code.
+
+\begin{lemma}[Zero-instance computation]
+If the generated expression and the subsequent checks succeed, the
+decoded assumption after simultaneous zero substitution for the newly
+admitted names is an instance of I0 or IS.
+\end{lemma}
+\begin{proof}
+In the falsy predecessor case, every successfully checked meaningful
+numerical predecessor is a zero representation. Empty arrays, zero
+numbers and false denote zero; a null, string or mapping in a meaningful
+numerical position fails. Both endpoint readings of the initializer
+agree after the new names and unprotected holes become zero. This is I0.
+
+In the truthy case the left counter is explicitly a successor.
+If the update depends on its state in a relevant position, opening
+\(t\) at root three inserts the source \([s,u,t]\). The insertion
+first validates that entire source at numerical root three. In
+particular it revisits its update under precisely one state slot;
+an extra escaping update coordinate fails. It also checks counter
+and initializer with their prescribed dummy zero slot. The source
+therefore has exactly the state interpretation needed by the
+recursive value on the right.
+
+Additional dummy slots inside the explicitly constructed successor
+do not change the decoded predecessor: closed relevant positive
+coordinates denote those zero slots, and rigid parameters are
+unchanged. Semantic opening now identifies the right endpoint with
+the update applied to that recursive predecessor value. This is IS.
+If the update does not use its state, its zero-normalized decoded
+value is independent of the unused image on both sides, which again
+gives IS. Checks performed only inside ignored annotations can
+reject more data but cannot change this successful decoded equation.
+\end{proof}
+
+The zero-instance conclusion is all that the continuation requires.
+The admissible zero-instance rule simultaneously replaces every newly
+admitted name by zero and then discharges the generated assumption.
+No assertion that every raw open assumption is uniformly true is
+needed. In particular, if the raw initializer is coordinate \(3\),
+the selected format opens its separate endpoint at zero: the tail test
+\texttt{len(a)\%2 == u} is then false.
+
+\subsection{The paired slots and the induction restriction}
+
+For a unary \(D\) goal, \texttt{i(*a,t,2)} opens its witness slot
+at the numerical witness \(t\) and retains the index slot. The final
+goal opening with \texttt{[k]} supplies the successor of the fresh
+index. The local hypothesis is the arbitrary-index instance when
+\(u=0\) and the opened matrix has even arity; otherwise it is the
+zero instance. The only nontrivial even-arity formula constructor is
+the binary equation. Other even arities denote truth. Thus no
+induction on a nontrivial compound formula is silently admitted.
+
+For a unary major \([B]\), triplication gives \([B,B,B]\). Opening
+this at the fresh name leaves its index bound and replaces the
+existential witness slot. The continuation is exactly DE. For a
+nonunary nonempty major, the export has at least six fields and
+denotes a harmless truth. These inherited slot calculations continue
+to hold when the verified empty major replaces the optional-premise
+opcode.

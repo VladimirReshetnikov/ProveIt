@@ -1,0 +1,47 @@
+INDEPENDENT REVIEW OF THE UNCONDITIONAL-MAJOR CHECKER
+===================================================
+Reviewed file: work/kernel_reduction/scalar_bottom_explicit.py
+SHA-256: 7070ea91f96ed566b8e6f67a9e0e519eb503fc5af5629e040208e4ea406f1723
+Scope: mathematical code inspection, independent finite adversarial tests, and corpus-relative novelty search. This is not proof-assistant verification.
+
+CODE CHANGE
+The context initially contains the empty array [], decoded as the already derivable theorem 0=0. Every instruction has an explicit major m and checks c(m,g) unconditionally. An instruction with no substantive logical major uses m=[] and discharges it immediately by hypothesis. Nonempty major arrays still implement the inherited Eq/Q/DE modes. The scalar-zero vs empty-array choice selecting DI progress/case moves from field m to field u. Computation is still selected by a truthy initializer u and uses the inherited certified-zero admissibility repair.
+
+ALL-TRACES SHAPE ARGUMENT
+For any context g consisting of arrays, no finite successful call c(a,g) has a scalar/non-array requested goal a. Moreover, every recursive continuation in a successful call preserves array contexts.
+
+Prove these two assertions together by strong induction on the total number of command records consumed by a successful call. A hypothesis leaf can succeed only for an array a: the explicit-list opener preserves array-vs-scalar root, and a scalar result cannot equal an array entry of g. Non-numerical nonarrays fail the scope comparison rather than turning into arrays.
+
+Otherwise one record [m,s,u,t] is consumed and c(m,g) must succeed. This uses fewer records, so the induction hypothesis implies m is an array. If m is nonempty, h=m*3 is an array. An attempted endpoint rewrite of a scalar goal still produces a scalar: equality with i(t,u) forces t to have a scalar root, and both formula-root openings of t are scalar. The Boolean fallback also preserves a scalar requested goal. The tail then has an array context and scalar goal, impossible by the induction hypothesis.
+
+If m=[], it cannot match either a two-element equality array [s,u] or the three-element closure array [t]*3, and it is unequal to scalar False. Thus no endpoint rewrite occurs. A truthy u constructs the two-element computation equation h, hence an array; a scalar goal would fail the later len(a). A falsy u invokes paired introduction. Any scalar output from opening its matrix also fails len(a), because m=[] is false and cannot short-circuit that test. A successful introduction therefore has an array a=h, and the new context entry remains an array. This proves both assertions.
+
+Consequences:
+- Any successful major is an array; scalar false-sentinel collisions cannot be reached in an accepting trace.
+- A zero or False requested goal is unaccepting from the initial [[]] context.
+- The chosen scalar-formula-as-bottom decoder is sound as a constant interpretation, but is not needed to prove the code reduction: the same shape argument excludes scalar majors even under the old scalar-as-truth decoder. The substantive change is the verified neutral premise [], initial truth, and unconditionally checked major, not solely a reassignment of unused padding semantics.
+
+SEMANTIC CHECKS
+1. Empty major [] is the theorem 0=0; its immediate hypothesis proof consumes no command and allocates no name.
+2. Nonempty array majors follow the inherited m*3 Eq/Q/D continuation. Root scalar formula padding may be decoded as 0=S0; formula-root opening preserves that constant, so the common-motive argument remains valid. Canonical Eq/Q/D and numerical interpretation are unchanged.
+3. For canonical introduction, u=0 selects literal-equation progress (even arity); u=[] selects cases. Q/D matrices have odd arity and receive only cases. Surplus array matrices denote truth. Scalar matrices reject.
+4. Computation with a truthy raw initializer u can accidentally select a fresh-name opening if u equals len(a)%2. The correct obligation is the inherited zero-instance discharge, not that H(b) is uniformly true. Substitute zero for every newly admitted alias, then cut the resulting true computation. The original goal and retained context were validated at the old floor and omit those aliases.
+5. Canonical proof transformation replaces false major opcodes by [] and transfers the old DI case/progress marker to u. The added initial truth can prune a formerly nontrivial truth subtree; a general completeness proof should reserialize or prune in the new context rather than claim all old raw packets are preserved byte-for-byte.
+6. Native contradiction remains the canonical equation 0=S0. A raw scalar 0 is auxiliary decoder padding. Canonical completeness does not promise an accepted encoding for every arbitrary raw formula whose decoding happens to be a theorem.
+
+CORRECTED EXPECTATION
+The raw formula [0] (D applied to scalar-bottom padding) decodes to a true closure, but the proposed DI packets [[],0,[],0] and [[],0,0,0] correctly reject: matrix opening produces scalar0 and the len test fails. The corresponding canonical D(0=S0), serialized [[0,[0]]], is proved by [[],0,[],0] followed by the local hypothesis. Do not claim arbitrary raw-decoder completeness.
+
+FINITE ADVERSARIAL EVIDENCE
+polarity_review.py executes 22,248 expected-rejection checks:
+- 10 scalar goals with no records;
+- 10,000 one-record combinations with verified [] major, including booleans, fractional and nonfinite numeric goals;
+- 238 inherited candidate trees retargeted to scalar goals or false canonical equations;
+- 12,000 deterministic random structured attempts at scalar or false-equation goals.
+There were zero false accepts. Nine complete command-line controls also passed, including independently handwritten C=0, I0 at initializer1, 0=0, and canonical D(0=S0) certificates.
+These tests are diagnostics and do not prove universal mathematical soundness. The all-traces shape argument above is the general justification for the specific scalar-goal claim.
+
+NOVELTY SEARCH
+The pinned 17-archive corpus recursively contains32 distinct ZIP byte strings and867 distinct text sources (.tex/.md/.txt/.py). The targeted search and AST scan found no unconditional major-check instruction design and no initial context argument [[]] or [[0,0]]. All matching current scalar-formula descriptions use truth, or explicitly describe scalarFalse as an unaccepting operational state rather than native falsity. The closest predecessors are the named-specialization shared-continuation proof and the guarded-elimination audit, copied with provenance under prior_polarity_neighbors/.
+
+This supports corpus-relative novelty of the verified neutral-major design. Shared continuations, administrative truth assumptions, and the numerical/logical axiomatization are inherited. It does not establish global priority or a significant new arithmetic foundation.

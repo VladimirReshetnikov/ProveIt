@@ -1,0 +1,36 @@
+{
+  "snapshot": "76a2651601d17b34d46753f189ea026a21ce8d29",
+  "distinct_zip_payloads": 32,
+  "unique_text_files": 867,
+  "python_asts_parsed": 443,
+  "patterns": {
+    "zero_seed_congruence": "(?:zero[\\s-]*seed|seed[\\s-]*zero).{0,160}congruence|congruence.{0,160}(?:zero[\\s-]*seed|seed[\\s-]*zero)",
+    "state_free_congruence": "(?:state[\\s-]*free|ignores? (?:the|its) state).{0,160}congruence|congruence.{0,160}(?:state[\\s-]*free|ignores? (?:the|its) state)",
+    "successor_only_congruence": "congruence.{0,160}successor[\\s-]*(?:only|endpoint)|successor[\\s-]*(?:only|endpoint).{0,160}congruence",
+    "equivalence_merges_0_1": "(?:equivalence|identif|class).{0,80}(?:\\\\?\\{0,\\s*1\\\\?\\}|zero and one|0 and 1)",
+    "successor_context_update": "R\\([^\\n]{0,100}(?:S\\(Su\\)|S\\(S[uv]\\)|S\\^2[uv])",
+    "new_rule_names": "\\b(?:ZCC|Wrapped-ZCC|zero-seed state-free)\\b"
+  },
+  "text_matches": [
+    {
+      "kind": "successor_context_update",
+      "sha256": "8b763365c0c457327b3c2dec61b82e7dac5cf442da74e4a9488ff8f500ee9945",
+      "location": "ipra_constructed_computation_2026-11-10.zip!ipra_constructed_computation_2026-11-10/sources/ipra_generated_assumptions_2026-11-10.zip!ipra_generated_assumptions_2026-11-10/sources/ipra_k_iteration_2026-11-09.zip!ipra_k_iteration_2026-11-09/reference/prior_four_schema_gate.tex",
+      "context": "ion, adapted from the inherited\nclosed-scalar compiler. The already defined $N$ satisfies\n$N(Dx)=0$ and $N(S(Dx))=1$. Put\n\\[\n c(x,y):=I_D(x,S(Dy)),\n\\]\n\\[\n h(u):=C(Nu,Hu,u),\\qquad\n R(u):=C\\bigl(Nu,C(N(Hu),D(H(Hu)),1),S^2u\\bigr),\n\\]\n\\[\n \\pi_1(z):=H(I_h(z,z)),\\qquad\n \\pi_0(z):=d\\bigl(z,H(I_R(Sz,Dz))\\bigr).\n\\tag{Pair}\\label{fc:pair}\n\\]\nThese are finite acyclic terms. There is no assertion that every s"
+    },
+    {
+      "kind": "state_free_congruence",
+      "sha256": "93a1ce6e34e5cd3bc86704edba9968f986b6ad3198fecc2de94a1f8cd7d2d12a",
+      "location": "ipra_counter_congruence_2026-11-10.zip!ipra_counter_congruence_2026-11-10/ipra_counter_congruence.tex",
+      "context": "d $J_F$ is a specialization of the successor-recursion\ncompiler already present in the inspected drafts: take its initializer\nto be $F(0)$ and its step to be $h(u,z)=F(Su)$, which ignores the state.\nThe additional observation here is that this specialization is proved\ncorrect using only root replacement and congruence in the counter.\nThe general recursion compiler itself is inherited.\n\n\\begin{theorem}[All numerical congruence from counter congruence]\n\\label{ctr:all-congruence}\nFor every fixed n"
+    },
+    {
+      "kind": "state_free_congruence",
+      "sha256": "e86256d4085993cec634a28c34ebf2095e3e7be225c4cab0f110779e0b73307f",
+      "location": "ipra_counter_congruence_2026-11-10.zip!ipra_counter_congruence_2026-11-10/theory/counter_theorem.tex",
+      "context": "d $J_F$ is a specialization of the successor-recursion\ncompiler already present in the inspected drafts: take its initializer\nto be $F(0)$ and its step to be $h(u,z)=F(Su)$, which ignores the state.\nThe additional observation here is that this specialization is proved\ncorrect using only root replacement and congruence in the counter.\nThe general recursion compiler itself is inherited.\n\n\\begin{theorem}[All numerical congruence from counter congruence]\n\\label{ctr:all-congruence}\nFor every fixed n"
+    }
+  ],
+  "ast_label_hits": [],
+  "scope": "A structured screen plus review of the supplied counter-congruence proof, not a semantic equivalence decision procedure or literature priority search."
+}
