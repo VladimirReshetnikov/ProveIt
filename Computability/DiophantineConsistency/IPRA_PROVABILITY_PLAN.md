@@ -1786,6 +1786,10 @@ A [universal Fin32 aggregation probe](research/nine-sharing-sign17-k-weight-aggr
 [independently audited](reviews/nine-sharing-sign17-k-weight-aggregate-probe-terminal-independent/README.md),
 checks one table theorem for witness rows 0–31 against actual tile weights.
 Physical ranking and full K/file binding remain separate.
+A [Fin64 aggregate batch](research/nine-sharing-sign17-k-weight-aggregate-batch01-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-weight-aggregate-batch01-terminal-independent/README.md),
+checks one universal actual-weight theorem for rows 32–95. Ranking and full
+K/file binding remain separate.
 A [symbolic MF radix-digit attempt](research/nine-sharing-sign17-mf-radix-digits-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mf-radix-digits-terminal-independent/README.md),
 passed fifteen prerequisites but failed the final digit theorem on recursion
