@@ -2101,6 +2101,11 @@ A [first compositional control-sum attempt](research/nine-sharing-sign17-k-contr
 replayed its two ingredients but failed to match the generic split under the
 Fin44 sum. No final object or postflight was produced; an explicit split
 retry remains separate.
+A [control-sum split retry](research/nine-sharing-sign17-k-control-block-sum-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-control-block-sum-retry-terminal-independent/README.md),
+checks the four actual symbolic control sums equal the in-Lean Fin44 weighted
+sum. It reports one unused-simp warning; full K and external-file binding
+remain separate.
 A [ranked rawWord retry](research/nine-sharing-sign17-k-ranked-rawword-retry-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-ranked-rawword-retry-terminal-independent/README.md),
 checks the actual rawWord and K symbolic identities, including the ranked
