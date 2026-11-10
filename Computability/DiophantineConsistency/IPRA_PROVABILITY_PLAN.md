@@ -51,9 +51,10 @@ ring. The [fixed-input expression and polynomial equalities](research/nine-shari
 and [exact symbolic degree 124](research/nine-sharing-sign14-92gate-degree-check/README.md)
 are also checked. The all-model bridge and iPRA endpoint transfers remain
 separate.
-The further 87-gate AST has an independently audited external rewrite and
-gate count; its Lean transfer remains open. Its count is an upper bound under
-exact ordered subtree sharing, not a minimality result.
+The further [86-gate AST](research/nine-sharing-sign14-86gate-candidate/README.md)
+has an independently audited external rewrite and gate count; its Lean
+transfer remains open. Its count is an upper bound under exact ordered
+subtree sharing, not a minimality result.
 
 For fixed-constant work, the [generic radix stream theorem](research/nine-sharing-sign17-k-radix-stream-retry-check/README.md)
 and its [symbolic K specialization](research/nine-sharing-sign17-k-radix-stream-current-check/README.md)
