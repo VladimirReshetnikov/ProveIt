@@ -1457,6 +1457,11 @@ checks the optimized and previous 14-variable expressions have equal
 evaluation over every commutative ring and equal polynomials at arbitrary
 integer ports. Exact-degree and iPRA endpoint clients for the optimized
 expression remain separate, as do external JSON/PDF and fixed-port bytes.
+A [95-gate all-model zero client](research/nine-sharing-sign14-95gate-model-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-95gate-model-terminal-independent/README.md),
+checks pointwise and existential zero equivalence with the prior expression
+for arbitrary ports in every stated IΣ₁ model. The optimized polynomial
+bridge, degree and iPRA endpoint remain separate.
 A [compact prefix transcription](research/nine-sharing-sign14-prefix-formula/README.md),
 [independently audited](reviews/nine-sharing-sign14-prefix-formula-independent/README.md),
 encodes the five external seed residuals in five small ASCII files and checks
