@@ -73,3 +73,33 @@ The [independent mask review](../../reviews/nine-sharing-sign17-external-masks-i
 passed and the external design packet is frozen. The review independently
 checked the inspected Lean recipes and raw bytes, but does not turn the
 external observation into a Lean theorem.
+
+## MC chunking after the bounded failure
+
+The [split diagnostic](../nine-sharing-sign17-mc-byte-staged-check/attempt01/README.md)
+independently established that Lean can elaborate the exact MC-sized numeral
+and prove its reflexivity; the separate whole-mask computation overflowed its
+stack. This does not isolate the exact internal operation within that proof.
+A compositional approach should use the existing checked
+`LowMaskCoding.ofDigits_maskList` theorem instead of reducing the 978-element
+support sum in one step. With `r = 2^47`, the 2011 little-endian radix digits
+are proposed to have runs of `r−2` and `r−1` of lengths respectively
+`951, 9, 26, 18, 1, 1006`; the alternating values start with `r−2`.
+Proving this sequence equals the actual `maskList` remains an open Lean task.
+
+Eight radix digits are exactly 376 bits, or 47 bytes. Read-only inspection of
+the frozen raw MC bytes, reversed to little-endian, finds 252 blocks: 251
+47-byte blocks and a final 18-byte block. Their exact byte-pattern runs occur
+at block ranges `[0,118)`, `[118,119)`, `[119,120)`, `[120,123)`,
+`[123,124)`, `[124,125)`, `[125,126)`, `[126,251)`, `[251,252)`; the first
+and fourth share a pattern, as do the all-ones ranges. These run counts and
+proposed correspondence are external observations, not Lean theorems.
+
+A bounded proof can establish the few distinct 8-digit/47-byte block
+identities separately, prove a general `ofDigits` append/repeat composition
+lemma, and use the mask membership theorem with the displayed support
+intervals to derive the radix-digit run sequence. The final equality must
+still explicitly connect the composed abstract byte list to the literal and
+the symbolic current port. The fixed gzip/raw/source checks remain external
+provenance until a separate Lean theorem about the embedded file bytes is
+constructed; no full MC byte binding is claimed by this plan.

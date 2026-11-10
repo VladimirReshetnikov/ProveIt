@@ -1514,6 +1514,11 @@ A [concrete MC numeral probe](research/nine-sharing-sign17-mc-byte-probe-check/R
 [independently audited](reviews/nine-sharing-sign17-mc-byte-probe-terminal-independent/README.md),
 passed fifteen prerequisites but the final compile hit stack overflow; no MC
 equality object or postflight was produced.
+A [split MC diagnostic](research/nine-sharing-sign17-mc-byte-staged-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-mc-byte-staged-terminal-independent/README.md),
+checked literal declaration and reflexivity but again hit stack overflow in the
+comparison stage. The successful literal child belongs to a failed parent;
+no MC equality object or postflight was produced.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
