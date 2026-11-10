@@ -1709,6 +1709,10 @@ An [external K coefficient-recipe check](research/nine-sharing-sign17-k-coeffici
 matches the pinned K0 snapshot to the frozen coefficient recipe and three
 radix powers. It does not prove the recipe equals Lean's K tile/rank sum or
 bind Lean to file, gzip, JSON or PDF.
+An [external K block layout](research/nine-sharing-sign17-k-block-layout/README.md),
+[independently reviewed](reviews/nine-sharing-sign17-k-block-layout-independent/README.md),
+matches 2,021 radix digits and 253 blocks to the raw snapshot from that
+coefficient recipe. Lean K-to-array and file binding remain open.
 A [symbolic MF radix-digit attempt](research/nine-sharing-sign17-mf-radix-digits-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mf-radix-digits-terminal-independent/README.md),
 passed fifteen prerequisites but failed the final digit theorem on recursion
