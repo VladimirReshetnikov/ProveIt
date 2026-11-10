@@ -1085,7 +1085,10 @@ checks both directions under that hypothesis. The existential model bridge
 is checked by a [same-input seed-iff client](research/nine-sharing-sign19-seed-iff-check/README.md),
 [independently audited](reviews/nine-sharing-sign19-seed-iff-terminal-independent/README.md),
 under the same explicit hypothesis. Current-port specialization and the iPRA
-endpoint remain separate.
+endpoint remain separate. An [expression-evaluation client](research/nine-sharing-sign19-expression-eval-check/README.md),
+[independently audited](reviews/nine-sharing-sign19-expression-eval-terminal-independent/README.md),
+checks abstract and current-port symbolic expressions and their evaluation
+identities; it does not bind those expressions to external JSON.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
