@@ -1343,6 +1343,11 @@ A [dominant-root factor client](research/nine-sharing-sign17-axis-degree-root-ch
 checks degree 11 for an explicit univariate factor under nonzero parameter.
 Its console label is stale; state and manifest show all three stages. Binding
 the factor to the staged root and the full lower bound remain separate.
+A [root-and-scale client](research/nine-sharing-sign17-axis-degree-scale-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-axis-degree-scale-terminal-independent/README.md),
+checks degrees 2, 7, 11 and 23 for explicit univariate pieces under a
+nonzero parameter. Binding them to staged syntax and the full lower bound
+remain separate; the console label is inherited.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
