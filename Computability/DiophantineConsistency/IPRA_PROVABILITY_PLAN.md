@@ -1357,6 +1357,11 @@ A [root-and-scale client](research/nine-sharing-sign17-axis-degree-scale-check/R
 checks degrees 2, 7, 11 and 23 for explicit univariate pieces under a
 nonzero parameter. Binding them to staged syntax and the full lower bound
 remain separate; the console label is inherited.
+A [corrected-axis binding attempt](research/nine-sharing-sign17-axis-root-binding-corrected-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-axis-root-binding-corrected-failure-independent/README.md),
+passed four ingredient stages but failed in the binding stage on cast
+normalization and the Lean interpreter memory limit; no binding object or
+postflight was produced.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
