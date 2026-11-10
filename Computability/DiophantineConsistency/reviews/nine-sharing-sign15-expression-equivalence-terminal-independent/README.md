@@ -1,0 +1,3 @@
+# Independent terminal audit: sign15/16 current-expression equivalence
+
+Checker exit 0. Author outer 84204 exited 0; stage and postflight passed. The current symbolic Fin15/Fin16 zero-existence iff and its input-cons helper report propext, Classical.choice and Quot.sound; one unused-section-variable warning and no sorryAx occur. Source, object, logs, three direct evaluator/seed-iff providers, guards and overlays were checked. Evaluator union and inherited current-bounds surveys are point-in-time; successful-child/failed-parent and historical ancestry qualifications remain. Polynomial bridge, iPRA endpoint, Lean exact degree and external JSON/PDF binding remain separate.

@@ -1466,8 +1466,11 @@ direct expression equivalence, endpoint and JSON binding remain separate.
 An [expression-evaluation client](research/nine-sharing-sign15-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-expression-eval-terminal-independent/README.md),
 checks abstract and current Fin15 symbolic evaluation. Provider surveys retain
-successful-child/failed-parent ancestry; direct iff, endpoint, Lean degree and
-JSON binding remain separate.
+successful-child/failed-parent ancestry. A [direct expression equivalence](research/nine-sharing-sign15-expression-equivalence-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-expression-equivalence-terminal-independent/README.md),
+checks current Fin15/Fin16 zero existence iff, with one warning and inherited
+point-survey/ancestry qualifications. Polynomial bridge, endpoint, Lean exact
+degree and JSON binding remain separate.
 A [further shared-values client](research/nine-sharing-sign15-more-shared-values-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-more-shared-values-terminal-independent/README.md),
 checks four natural component evaluations under represented beta. Assembled
