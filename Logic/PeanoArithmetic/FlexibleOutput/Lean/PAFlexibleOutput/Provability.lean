@@ -4,10 +4,11 @@ import Foundation.FirstOrder.Incompleteness.InductionSchemeDelta1
 # Provability of the numeral instances of a formula is recursively enumerable
 
 `provable_substs_re`: for every arithmetical formula `φ(y, c, x)` the relation "`𝗣𝗔` proves
-`φ(y, c, x)` at the numerals of `y`, `c`, `x`" is recursively enumerable in `((c, x), y)`.
-Nothing is assumed about `φ`.
+`φ(y, c, x)` at the numerals of `y`, of the code of `c`, and of `x`" is recursively enumerable
+in `((c, x), y)`. Here `c` ranges over any coded type; the main proof takes programs. Nothing
+is assumed about `φ`.
 
-The route is internal. The triple is read as one number `p`, with Foundation's projections
+The route is internal. The code of the triple is one number `p`, with Foundation's projections
 `π₁`, `π₂`. Foundation's arithmetized provability predicate `Provable 𝗣𝗔` and its formal
 substitution of numerals are `𝚺₁`-definable, so the predicate
 
@@ -29,8 +30,8 @@ open Bootstrapping Bootstrapping.Arithmetic
 
 /-- The provable numeral instances of an arithmetical formula form a recursively enumerable
 relation. -/
-theorem provable_substs_re (φ : ArithmeticSemisentence 3) :
-    REPred fun p : (ℕ × ℕ) × ℕ => 𝗣𝗔 ⊢ φ/[↑p.2, ↑p.1.1, ↑p.1.2] := by
+theorem provable_substs_re {α : Type*} [Primcodable α] (φ : ArithmeticSemisentence 3) :
+    REPred fun p : (α × ℕ) × ℕ => 𝗣𝗔 ⊢ φ/[↑p.2, ↑(Encodable.encode p.1.1), ↑p.1.2] := by
   have h : 𝚺₁-Predicate fun p : ℕ ↦ Bootstrapping.Provable 𝗣𝗔 (subst ℒₒᵣ
       ?[numeral (π₂ p), numeral (π₁ (π₁ p)), numeral (π₂ (π₁ p))] (⌜φ⌝ : ℕ)) := by definability
   refine ((re_iff_sigma1.mpr h).comp Computable.encode).of_eq fun ⟨⟨c, x⟩, y⟩ => ?_

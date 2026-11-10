@@ -2,7 +2,12 @@ import PAFlexibleOutput.Halting
 import Foundation.FirstOrder.Arithmetic.PeanoMinus.Basic
 
 /-!
-# The halting formula is functional in every model of `𝗣𝗔⁻`
+# The halting formula is `𝚺₁`, and functional in every model of `𝗣𝗔⁻`
+
+Two facts about the halting formula that the main theorem does not use.
+
+`universalGraph_sigma_one`: the halting formula is `𝚺₁`, as is every representing formula of
+Foundation.
 
 Foundation represents a partial recursive function by the formula `code c` attached to a
 code `c : Nat.ArithPart₁.Code k`. Its first variable is the output and the remaining `k`
@@ -21,9 +26,9 @@ candidates is the only fact it is given.
 `universalGraph` is `code c` for a code `c` chosen by `Classical.epsilon`, so its functionality
 (`universalGraph_uniq`) follows without any information about which code was chosen.
 
-The main theorem does not use this module: the value sentence it works with states uniqueness
-of the output itself. The module records the stronger fact that in a model of `𝗣𝗔⁻` one output
-already determines the value (`valueIn_of_outputIn`).
+The main theorem does not need functionality: the value sentence it works with states
+uniqueness of the output itself. The module records the stronger fact that in a model of `𝗣𝗔⁻`
+one output already determines the value (`valueIn_of_outputIn`).
 -/
 
 set_option autoImplicit false
@@ -31,6 +36,10 @@ set_option autoImplicit false
 namespace PAFlexibleOutput
 
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+
+/-- The halting formula is `𝚺₁`. -/
+theorem universalGraph_sigma_one : Hierarchy 𝚺 1 universalGraph := by
+  simp [universalGraph, codeOfPartrec']
 
 variable {M : Type*} [ORingStructure M] [M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻]
 

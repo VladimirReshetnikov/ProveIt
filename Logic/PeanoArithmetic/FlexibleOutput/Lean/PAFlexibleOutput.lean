@@ -23,5 +23,6 @@ The main theorem uses four modules.
 
 One module is independent of the main theorem.
 
-* `PAFlexibleOutput.Functionality`: the halting formula is functional in every model of `𝗣𝗔⁻`.
+* `PAFlexibleOutput.Functionality`: the halting formula is `𝚺₁`, and functional in every model
+  of `𝗣𝗔⁻`.
 -/

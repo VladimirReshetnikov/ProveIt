@@ -28,16 +28,15 @@ theorem exists_selector {α : Type*} [Primcodable α] {R : α × ℕ → Prop} (
   obtain ⟨cg, hcg⟩ := exists_code.1 (hR.map (snd.comp fst).to₂)
   -- `cg` returns the candidate `n` on the code of `(a, n)` exactly when `R (a, n)`.
   have hmem (a : α) (n y : ℕ) :
-      y ∈ eval cg (Encodable.encode (a, n)) ↔ R (a, n) ∧ y = n := by
-    simp [hcg, eq_comm]
+      y ∈ eval cg (Encodable.encode (a, n)) ↔ R (a, y) ∧ y = n := by
+    simp +contextual [hcg, eq_comm]
   have hstage : Computable₂ fun (a : α) (k : ℕ) =>
       evaln k.unpair.2 cg (Encodable.encode (a, k.unpair.1)) :=
     (primrec_evaln.to_comp.comp (((snd.comp (unpair.comp snd)).pair (const cg)).pair
       (Computable.encode.comp (fst.pair (fst.comp (unpair.comp snd)))))).to₂
   refine ⟨_, Partrec.rfindOpt hstage, fun a y hy => ?_, fun a n hn => ?_⟩
   · obtain ⟨k, hk⟩ := Nat.rfindOpt_spec hy
-    obtain ⟨h, rfl⟩ := (hmem a k.unpair.1 y).mp (evaln_sound hk)
-    exact h
+    exact ((hmem a _ y).mp (evaln_sound hk)).1
   · obtain ⟨s, hs⟩ := evaln_complete.mp ((hmem a n n).mpr ⟨hn, rfl⟩)
     exact Nat.rfindOpt_dom.mpr ⟨Nat.pair n s, n, by simpa using hs⟩
 
