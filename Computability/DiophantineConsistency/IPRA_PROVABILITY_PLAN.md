@@ -686,6 +686,12 @@ stopped at its first stage on namespace and identifier errors; its log reports
 compiled the generic standard theorem conditional on a polynomial bridge,
 but its sign25 specialization hit an interpreter memory exception. The
 overall run failed and the translated stage and postflight did not run.
+A [pretyped-sentence attempt](research/nine-sharing-sign25-typed-sentence-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-typed-sentence-terminal-independent/README.md),
+compiled the generic standard theorem and concrete sentence equality in two
+stages, then hit an interpreter memory exception when specializing the bridge.
+The final wrapper and postflight did not run; no concrete standard endpoint
+is claimed.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
