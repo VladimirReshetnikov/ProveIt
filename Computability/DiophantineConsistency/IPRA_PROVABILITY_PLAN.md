@@ -1049,7 +1049,11 @@ A [leading-row client](research/nine-sharing-sign20-leading-rows-check/README.md
 [independently audited](reviews/nine-sharing-sign20-leading-rows-terminal-independent/README.md),
 checks the two beta-dependent axis identities, diagonal degree nonincrease
 and other-row weighted degree at most six, with seven tactic warnings. The
-coefficient and exact lower bound remain separate.
+coefficient and exact lower bound remain separate. A [square-coefficient
+attempt](research/nine-sharing-sign20-leading-coeff-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-leading-coeff-failure-independent/README.md),
+failed on integer-polynomial constant normalization and reported `sorryAx`;
+no coefficient object or final postflight was produced.
 A [19-witness degree-44 external candidate](research/nine-sharing-sign19-degree44-y-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign19-external-independent/README.md),
 eliminates Y and has exact fixed-input degree 44 when beta is nonzero. The
