@@ -1084,6 +1084,11 @@ A [narrow count diagnostic](research/nine-sharing-sign20-count-diagnostic-check/
 [independently audited](reviews/nine-sharing-sign20-count-diagnostic-failure-independent/README.md),
 converted the boolean tests to propositional equality but left the two
 syntax-tree count goals unsolved; it produced no object or postflight.
+A [shape client](research/nine-sharing-sign20-count-shapes-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-count-shapes-terminal-independent/README.md),
+checks 18 inequalities distinguishing each leading row from the other rows;
+the count and degree lower bound remain separate. Its imported provider is a
+successful child of an overall failed parent run.
 A separate [current-beta nonzero attempt](research/nine-sharing-sign20-current-beta-check/README.md),
 [independently audited](reviews/nine-sharing-sign20-current-beta-failure-independent/README.md),
 failed because a finite comparison could not unfold the locally irreducible
