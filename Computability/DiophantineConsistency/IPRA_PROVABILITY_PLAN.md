@@ -1751,6 +1751,10 @@ A [symbolic MF byte-list attempt](research/nine-sharing-sign17-mf-whole-bytes-ch
 [independently audited](reviews/nine-sharing-sign17-mf-whole-bytes-terminal-independent/README.md),
 passed 22 prerequisites but failed the final append/cons normalization; no
 symbolic MF byte-list object or postflight was produced.
+A [cons-normalization retry](research/nine-sharing-sign17-mf-whole-bytes-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-mf-whole-bytes-retry-terminal-independent/README.md),
+passed 22 prerequisites but left nil-append terms in the final equality;
+no symbolic MF byte-list object or postflight was produced.
 A [generic block-composition attempt](research/nine-sharing-sign17-mc-compose-core-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mc-compose-core-terminal-independent/README.md),
 passed eighteen prerequisites but failed the final flatten-tail induction;
