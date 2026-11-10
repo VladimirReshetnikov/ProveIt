@@ -1,0 +1,3 @@
+# Independent prelaunch audit
+
+PASS: all reviewed declarations are preserved exactly across the core, quote and endpoint stages; checked full source segments, three source hashes/import topology and all ten expected report requests. The revised whitelist/source delta audit and named current14 endpoint terminal audit were rerun, and direct provider/Init/resource guards and no-Lean preflight pass. Initial TeX-to-prefix comparison remains an independent external source observation; the older initial PLAN pin was later changed and is not asserted to rerun. The proposed Lean result concerns the fixed normalized token lists and endpoint, not a raw lexer, TeX/PDF parser or external-file theorem. Lean compilation/tactic reduction remains untested. No Lean was run.
