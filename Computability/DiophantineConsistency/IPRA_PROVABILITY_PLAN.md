@@ -1428,6 +1428,11 @@ An [axis noncancellation client](research/nine-sharing-sign17-axis-noncancel-che
 checks degree 96 for the explicit Na square plus the other squares under
 `p 0 ≠ 0`. Equality to the actual seed and the multivariate lower bound remain
 separate; the replayed Na stage has two warnings and the console label is inherited.
+An [actual seed axis-degree client](research/nine-sharing-sign17-axis-seed-degree-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-axis-seed-degree-terminal-independent/README.md),
+checks seed equality to that sum and corrected-axis degree 96 for `p 0 ≠ 0`.
+It has two warnings and an inherited console label; the multivariate lower
+bound and current-port specialization remain separate.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
