@@ -872,7 +872,12 @@ source header says sign24; the pinned declarations and theorem are sign23.
 An [independently audited lower-bound ingredients client](research/nine-sharing-sign23-leading-coeff-check/README.md)
 checks two leading residual axis identities, each square's degree-eight
 coefficient one, and degree-at-most-two bounds for the other residuals. The
-full coefficient and exact lower bound remain separate.
+[full coefficient and lower-bound client](research/nine-sharing-sign23-full-coeff-check/README.md),
+[independently audited](reviews/nine-sharing-sign23-full-coeff-terminal-independent/README.md),
+checks that the full seed axis degree-eight coefficient is two and proves
+`8 ≤ toPolynomial.totalDegree` for the abstract expression at arbitrary integer
+ports. It records four unused-simp warnings. A combined exact equality theorem
+and external byte binding remain separate.
 A [22-witness degree-12 candidate](research/nine-sharing-sign22-dodecic-ky-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign22-dodecic-ky-independent/README.md),
 eliminates kY by a natural product. Its fixed-input external square-sum has

@@ -1,0 +1,3 @@
+# Independent sign23 full coefficient and lower-bound prelaunch review
+
+Independent checker session 93531 exited 0. Four source modules replay the audited two-leading-row ingredients; the proposed remaining-list lemma counts distinct N0 and Dc2 separately, each exactly once, giving the full seed axis eighth coefficient two for arbitrary integer ports. The final source explicitly connects the Fin23 abstract-expression polynomial to that seed axis and proposes total degree at least eight. Import/source, expression provider, local finite-check heartbeat scopes and resource guards were checked with no-Lean preflight. No Lean lower theorem, exact equality or JSON/PDF binding follows from preflight.
