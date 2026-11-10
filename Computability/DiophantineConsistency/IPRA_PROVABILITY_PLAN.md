@@ -1620,6 +1620,10 @@ A [composition retry](research/nine-sharing-sign17-mc-compose-core-retry-check/R
 checks generic aligned block, repetition and flattened-tail facts. Its replayed
 core has one warning; concrete whole-port application and external file binding
 remain separate.
+A [concrete block-composition client](research/nine-sharing-sign17-mc-compose-blocks-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-mc-compose-blocks-terminal-independent/README.md),
+checks the 251 aligned blocks and tail decode equally in Lean. Connecting this
+to symbolic lowPort and file/gzip/JSON/PDF binding remains separate.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
