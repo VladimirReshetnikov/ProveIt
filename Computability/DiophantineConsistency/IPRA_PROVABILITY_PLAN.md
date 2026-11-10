@@ -1172,6 +1172,11 @@ A [qualified-lemma retry](research/nine-sharing-sign18-coordinate-retry03-check/
 [independently audited](reviews/nine-sharing-sign18-coordinate-retry03-terminal-independent/README.md),
 checks main-root zero, coordinate recovery and lift/drop under the explicit
 beta representation hypothesis. The full model bridge remains separate.
+A [nine-stage residual-transfer client](research/nine-sharing-sign18-transfers-check/README.md),
+[independently audited](reviews/nine-sharing-sign18-transfers-terminal-independent/README.md),
+checks the retained rows under that hypothesis, with 227 mostly unused-simp
+warnings. The independent checker required an output-path correction after
+its first invocation failed. Zero assembly and the endpoint remain separate.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
