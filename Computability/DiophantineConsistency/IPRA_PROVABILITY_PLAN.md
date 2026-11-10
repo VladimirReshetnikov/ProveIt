@@ -728,7 +728,10 @@ port-byte binding, and the iPRA endpoint remain open. A [concrete polynomial
 bridge attempt](research/nine-sharing-sign24-concrete-polynomial-bridge-check/README.md),
 [independently audited](reviews/nine-sharing-sign24-concrete-polynomial-bridge-terminal-independent/README.md),
 stopped with an interpreter memory exception under `-M2800`; no bridge object
-or final postflight was produced.
+or final postflight was produced. A [staged retry](research/nine-sharing-sign24-polynomial-bridge-staged-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-polynomial-bridge-staged-terminal-independent/README.md),
+compiled transport conditional on the sign25 bridge, but the instantiation
+stage hit the interpreter limit; no unconditional bridge or postflight follows.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
