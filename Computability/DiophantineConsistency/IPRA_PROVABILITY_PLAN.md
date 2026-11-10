@@ -1383,6 +1383,14 @@ A [seed-axis degree client](research/nine-sharing-sign14-axis-seed-degree-check/
 checks the staged seed's axis degree is 124 when `p 0 ≠ 0`, using strict
 dominance over the other four squared residuals. It records two warnings;
 the multivariate diagonal lower bound and external binding remain separate.
+A later [exact-degree client](research/nine-sharing-sign14-exact-degree-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-exact-degree-terminal-independent/README.md),
+checks the diagonal lower bound and joins it to the upper bound. It proves
+total degree exactly 124 for the symbolic Fin14 expression at arbitrary
+integer ports with `p 0 ≠ 0`, and at the current ports using their proved
+positivity. The run records four warnings and inherits the stated point-survey
+and failed-parent ancestry qualifications. External JSON/PDF binding and an
+operation count remain separate; this is not the root degree-150 equation.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
