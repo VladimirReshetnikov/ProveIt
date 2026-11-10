@@ -1760,6 +1760,10 @@ A [four-case tile-weight sample](research/nine-sharing-sign17-k-tile-sample-chec
 [independently audited](reviews/nine-sharing-sign17-k-tile-sample-terminal-independent/README.md),
 checks actual Lean weights at indices 0, 926, 126 and 432. The other 938
 entries, full ranking and K/file binding remain open.
+A [32-row tile-weight batch](research/nine-sharing-sign17-k-weight-batch00-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-weight-batch00-terminal-independent/README.md),
+checks actual Lean tile weights for witness rows 0–31. Physical ranks, the
+other 910 rows, full K and file binding remain open.
 A [symbolic MF radix-digit attempt](research/nine-sharing-sign17-mf-radix-digits-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mf-radix-digits-terminal-independent/README.md),
 passed fifteen prerequisites but failed the final digit theorem on recursion
