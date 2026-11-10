@@ -855,7 +855,9 @@ checks symbolic seed zero iff its 13 residuals vanish; it does not establish
 the degree or bridge in Lean. A [coordinate client](research/nine-sharing-sign22-coordinate-check/README.md),
 [independently audited](reviews/nine-sharing-sign22-coordinate-terminal-independent/README.md),
 checks the natural kY lift, recovery and lift-after-drop identity, with one
-unused-variable warning. The residual transfers and full bridge remain open.
+unused-variable warning. A [residual-transfer client](research/nine-sharing-sign22-transfers-check/README.md),
+[independently audited](reviews/nine-sharing-sign22-transfers-terminal-independent/README.md),
+checks all 13 rows, with 43 linter warnings. The assembled bridge remains open.
 A [21-witness degree-14 candidate](research/nine-sharing-sign21-degree14-s-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign21-degree14-s-independent/README.md),
 substitutes the natural normalized-S product. Its fixed-input external square-sum
