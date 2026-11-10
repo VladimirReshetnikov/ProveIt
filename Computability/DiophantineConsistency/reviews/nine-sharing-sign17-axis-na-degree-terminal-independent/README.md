@@ -1,0 +1,3 @@
+# Independent sign17 Na axis-degree terminal audit
+
+The independent checker exited 0. Author outer session 11264 exited 0; all eight stages and postflight passed, despite inherited console label. Source/object pins, logs, direct providers, guards and overlays were checked. The last stage has two no-op/unreachable tactic warnings and no sorryAx; both reports have standard axioms. Lean proves the staged row06 evaluation identity and its univariate natDegree 48 on the corrected axis when p0≠0. The sum-of-squares lower bound, current-port nonzero specialization and external binding remain separate. No Lean was rerun here.

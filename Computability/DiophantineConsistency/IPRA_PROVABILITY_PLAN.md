@@ -1396,6 +1396,11 @@ A [split associativity retry](research/nine-sharing-sign17-axis-root-binding-sta
 checks five shared-node identities on the corrected axis in seven stages;
 the console label is stale, while the state and manifest show every stage.
 The Na degree and full lower bound remain separate.
+A [staged Na axis-degree client](research/nine-sharing-sign17-axis-na-degree-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-axis-na-degree-terminal-independent/README.md),
+checks the row06 identity and degree 48 on the corrected axis under `p 0 ≠ 0`,
+with two tactic warnings. The full sum lower bound and current-port
+specialization remain separate; its console label is stale.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
