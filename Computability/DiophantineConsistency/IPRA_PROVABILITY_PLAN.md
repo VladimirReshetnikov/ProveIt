@@ -668,6 +668,10 @@ A [wrapper-only retry](research/nine-sharing-sign25-endpoint-wrappers-check/READ
 reused the previously successful native child from its failed outer run, but
 the standard wrapper again hit the interpreter memory limit. The translated
 wrapper and postflight did not run.
+A [direct theory-transfer retry](research/nine-sharing-sign25-endpoint-transfer-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-endpoint-transfer-terminal-independent/README.md),
+also stopped at the standard wrapper with the same interpreter exception;
+this does not determine whether import loading or elaboration caused it.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
