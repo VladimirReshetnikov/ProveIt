@@ -1387,6 +1387,11 @@ A [split binding diagnostic](research/nine-sharing-sign17-axis-root-binding-stag
 [independently audited](reviews/nine-sharing-sign17-axis-root-binding-staged-failure-independent/README.md),
 checked low and factor modules after four prerequisites, but the final
 root/scale stage failed on associativity; no final object or postflight exists.
+A [split associativity retry](research/nine-sharing-sign17-axis-root-binding-staged-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-axis-root-binding-staged-retry-terminal-independent/README.md),
+checks five shared-node identities on the corrected axis in seven stages;
+the console label is stale, while the state and manifest show every stage.
+The Na degree and full lower bound remain separate.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
