@@ -1453,6 +1453,10 @@ reassociates the Nt residual to reuse an existing difference. Its live
 exact-sharing circuit has 37 additions, 16 subtractions and 39
 multiplications. Lean equivalence, degree and iPRA endpoints for this further
 candidate remain open; the count is an upper bound, not minimality.
+A [92-gate Lean source draft](research/nine-sharing-sign14-92gate-lean-draft/README.md),
+[independently reviewed](reviews/nine-sharing-sign14-92gate-lean-draft-independent/README.md),
+expands to the candidate's five external residual ASTs and proposes the Nt
+reassociation evaluation equality. It has not been elaborated or checked.
 A [93-gate Lean source draft](research/nine-sharing-sign14-93gate-lean-draft/README.md),
 [independently reviewed](reviews/nine-sharing-sign14-93gate-lean-draft-independent/README.md),
 expands to the five external candidate residuals and proposes the
