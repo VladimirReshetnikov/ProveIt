@@ -1196,6 +1196,10 @@ A finite [positive-gate octic search](research/nine-sharing-octic-positive-elimi
 reaches at best 23 witnesses among 19 ordered states when every step preserves
 residual syntactic degree at most four. This excludes no other transformation
 and is not a general variable-count lower bound or a Lean theorem.
+A [degree-five variant](research/nine-sharing-decic-positive-elimination-search/README.md),
+[independently audited](reviews/nine-sharing-decic-positive-elimination-independent/README.md),
+likewise reaches at best 23 witnesses among 22 ordered states; its scope is
+the same narrow stepwise syntactic positive-gate search.
 A [direct-elimination frontier survey](research/nine-sharing-direct-elimination-frontier-search/README.md),
 [independently audited](reviews/nine-sharing-direct-elimination-frontier-independent/README.md),
 checks 65 ordered positive-gate states from the sign23 syntax. Its best
