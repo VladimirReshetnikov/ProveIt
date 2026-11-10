@@ -5622,6 +5622,22 @@ in the index modulus, `k = R + 1 + h·4q⁴` instead of `R + 1 + hE`.
   (`P138Value.valueS_update`).
 - Both checkers cover both JSONs.
 
+**172's eleven-integer 298 / 146 and 300 / 144, CLOSED (9 November 2026)**
+([`P172/IPRAInteger172`](Lean/DiophantineConsistency/P172/IPRAInteger172.lean),
+[`P172/IPRAInteger172b`](Lean/DiophantineConsistency/P172/IPRAInteger172b.lean),
+[record](research/p172-integer11/README.md)). These are the two lowest-degree
+points of the eleven-integer row.
+- Both are one linear-cofactor circuit (`LinCof/LCValue.regsK`), generic in
+  five slots: the index `k`, `kq2`, `L`, the centre and the radical weight.
+- New against 138: `Y` is a free unknown, and the scale `Y = (2t + 1)·q³` is
+  recovered at a zero (`LCScale`). Completeness interpolates modulo `I⁴`
+  (quartic supported interpolation) because `r = A·t²` carries the factor `A`.
+- `gen_literal172.py --check` and `check_ports172.py` bind both literals and
+  the six ports.
+- The same theorems apply to 135's 352 / 125, 340 / 129, 328 / 130 and 144's
+  316 / 133, 308 / 140 (their own centres, weights 4 and 64); those endpoints
+  are not yet stated.
+
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
 
