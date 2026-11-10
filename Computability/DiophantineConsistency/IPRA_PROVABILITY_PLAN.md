@@ -1356,6 +1356,10 @@ A [14-witness external candidate](research/nine-sharing-sign14-tau-candidate/REA
 eliminates tau and has external fixed-port degree 124. Its natural tau lift,
 sign15 equivalence, operation count, Lean degree, iPRA endpoint and JSON/PDF
 binding remain open. A negative integer lift test is not a seed zero.
+A [staged syntax client](research/nine-sharing-sign14-staged-syntax-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-staged-syntax-terminal-independent/README.md),
+checks the symbolic seed-zero characterization in 16 stages. External AST
+transcription is separate; tau lift, equivalence and endpoint remain open.
 A [staged syntax client](research/nine-sharing-sign15-staged-syntax-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-staged-syntax-terminal-independent/README.md),
 checks the symbolic seed-zero characterization in 16 stages. The external AST
