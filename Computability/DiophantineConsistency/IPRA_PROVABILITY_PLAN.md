@@ -73,8 +73,9 @@ coefficient checks](research/nine-sharing-sign17-k-digit-bound-probe-retry-check
 also passed independent review. The [remaining 896 coefficient bounds](research/nine-sharing-sign17-k-digit-bound-blocks-check/README.md)
 have now passed 14 separately audited Lean stages. Their [unconditional
 all-coefficient and stream-bound assembly](research/nine-sharing-sign17-k-digit-bound-assembly-check/README.md)
-has also passed independent terminal audit. Connections to external bytes
-remain separate.
+has also passed independent terminal audit. Lean now also identifies that
+stream as [K's canonical radix digits](research/nine-sharing-sign17-k-canonical-digits-retry02-check/README.md).
+Connections to external bytes remain separate.
 
 ## Current reduction status
 
