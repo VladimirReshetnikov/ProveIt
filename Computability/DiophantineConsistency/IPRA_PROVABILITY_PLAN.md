@@ -1091,8 +1091,11 @@ its imported provider is a successful child of an overall failed parent run.
 A [count client](research/nine-sharing-sign20-count-proof-check/README.md),
 [independently audited](reviews/nine-sharing-sign20-count-proof-terminal-independent/README.md),
 checks that each leading row occurs exactly once, with four warnings and the
-same inherited qualification. The combined coefficient and degree lower
-bound remain separate.
+same inherited qualification. A [count-based lower client](research/nine-sharing-sign20-count-lower-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-count-lower-terminal-independent/README.md),
+checks the full axis coefficient `2 * (p 0)^4` and degree at least twenty
+when `p 0 ≠ 0`. Its diagonal provider is a successful child of an overall
+failed grandparent; the exact-degree union remains separate.
 A separate [current-beta nonzero attempt](research/nine-sharing-sign20-current-beta-check/README.md),
 [independently audited](reviews/nine-sharing-sign20-current-beta-failure-independent/README.md),
 failed because a finite comparison could not unfold the locally irreducible
@@ -1165,6 +1168,10 @@ A [numeral-normalization retry](research/nine-sharing-sign18-coordinate-retry02-
 [independently audited](reviews/nine-sharing-sign18-coordinate-retry02-failure-independent/README.md),
 failed on an ambiguous `sub_self` lemma and an unsolved root-zero goal;
 no coordinate object or final postflight was produced.
+A [qualified-lemma retry](research/nine-sharing-sign18-coordinate-retry03-check/README.md),
+[independently audited](reviews/nine-sharing-sign18-coordinate-retry03-terminal-independent/README.md),
+checks main-root zero, coordinate recovery and lift/drop under the explicit
+beta representation hypothesis. The full model bridge remains separate.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a

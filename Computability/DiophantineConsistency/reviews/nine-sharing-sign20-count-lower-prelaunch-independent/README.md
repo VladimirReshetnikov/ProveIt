@@ -1,0 +1,3 @@
+# Independent prelaunch review: sign20 count-based coefficient and lower bound
+
+The independent no-Lean checker exited 0. Two proposed stages use the passed finite-count provider for seed-axis coefficient 2·(p 0)⁴ and prove a symbolic Fin20 degree lower bound under p 0 ≠ 0. The diagonal theorem is a successful child of an explicitly failed grandparent; its actual symlink through the count provider overlay, source/object/guard pins and failed outer receipt were checked. Source/import routes and retained resource guards passed. No Lean coefficient/lower result, exact-degree union or external binding is claimed.
