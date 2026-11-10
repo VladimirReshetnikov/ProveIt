@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+root=Path(__file__).resolve().parents[2];repo=root.parents[1];p=root/'research/nine-sharing-sign14-positive74-object-compiler-ops-check';sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest()
+assert sha(p/'run.py')=='edb723138fb0365123c66b53b48429b4e6a16dccecfeff34138625276d1b0bb1' and sha(p/'source-manifest.json')=='890b9ae895047864e7c20ccd4fbf50a7bf2494568daacdf060a038304213eaea'
+e,=json.loads((p/'source-manifest.json').read_text())['rows'];n='Sign14Positive74ObjectCompilerOps';q=p/'src/DiophantineConsistency'/(n+'.lean');s=q.read_text();assert e['module']=='DiophantineConsistency.'+n and e['imports']==['DiophantineConsistency.Sign14Positive74ObjectFunctionBinary'] and sha(q)==sha(repo/e['source'])==e['source_sha256'] and re.findall(r'^import ([A-Za-z0-9_.]+)$',s,re.M)==e['imports'] and not re.search(r'(?m)^\s*(axiom|opaque|partial)\b|\b(sorry|admit|native_decide)\b',s)
+for z in ('Rew.embSubsts v (Semiterm.lMap embedding (sourceTerm n (ArithmeticExpression.term Fin.val e)))','compiledOpen (.add p q) v = .func addCode ![compiledOpen p v, compiledOpen q v]','compiledOpen (.mul p q) v = .func mulCode ![compiledOpen p v, compiledOpen q v]'):assert z in s
+arith=(root/'Lean/DiophantineConsistency/ArithmeticExpression.lean').read_text();reflect=(root/'Lean/DiophantineConsistency/FoundationHANoZero.lean').read_text();pra=(root/'Lean/DiophantineConsistency/PRALanguage.lean').read_text();assert all(z in arith for z in ('| .add p q => .add (term coordinates p) (term coordinates q)','| .mul p q => .mul (term coordinates p) (term coordinates q)')) and all(z in reflect for z in ('| .add s t => .func .add ![reflectTerm v s, reflectTerm v t]','| .mul s t => .func .mul ![reflectTerm v s, reflectTerm v t]')) and all(z in pra for z in ('add := addCode','mul := mulCode'))
+subprocess.run([sys.executable,'-I','-S','-B',str(root/'reviews/nine-sharing-sign14-positive74-object-function-binary-retry01-terminal-independent/check.py')],capture_output=True,check=True,timeout=180)
+r=(p/'run.py').read_text();assert "'-M3600'" in r and "LEAN_NUM_THREADS='1'" in r and "'-j1'" in r and 'rss_limit=4*1024**3,mem_floor=10*1024**3,seconds=120,interval=.1' in r and 'direct producer binding' in r
+x=subprocess.run([sys.executable,'-I','-S','-B',str(p/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=180);assert not x.stderr and json.loads(x.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT'
+print(json.dumps({'status':'PASS_PRELAUNCH','scope':'proposed actual compiler add/mul open-term shapes; structural proof separate'},indent=2))
