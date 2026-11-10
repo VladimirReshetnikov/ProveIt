@@ -1392,6 +1392,11 @@ An [auxiliary-from-seed client](research/nine-sharing-sign15-aux-from-seed-check
 derives that norm under represented ports and bounds without assuming a
 natural deleted-inner witness or its sign. Union and first-index surveys are
 point-in-time; other norms, window and lift remain separate.
+A [main-norm client](research/nine-sharing-sign15-main-norm-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-main-norm-terminal-independent/README.md),
+derives the maintained main norm from staged seed zero and represented beta,
+without the deleted witness. Its union survey is point-in-time; the full
+window and lift remain separate.
 A [further shared-values client](research/nine-sharing-sign15-more-shared-values-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-more-shared-values-terminal-independent/README.md),
 checks four natural component evaluations under represented beta. Assembled
