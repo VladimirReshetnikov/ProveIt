@@ -1281,8 +1281,13 @@ successful children of a failed overall run. A [direct expression equivalence](r
 checks current-port symbolic Fin17/Fin18 model-zero equivalence, with one
 warning. A [concrete polynomial bridge](research/nine-sharing-sign17-concrete-polynomial-bridge-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-polynomial-bridge-terminal-independent/README.md),
-checks the symbolic Fin17 `PolynomialBridge` through Fin18; the iPRA
-endpoint and external coefficient/PDF bindings remain separate.
+checks the symbolic Fin17 `PolynomialBridge` through Fin18. A [three-stage
+iPRA endpoint client](research/nine-sharing-sign17-endpoint-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-endpoint-terminal-independent/README.md),
+checks native, standard and Gödel–Gentzen-translated standard proof-existence
+formulations for that symbolic expression. Its exact degree in Lean and its
+connections to external JSON, Jones coefficients and equation.pdf remain
+unproved; provider surveys are point observations, not a complete ancestry trace.
 A finite [positive-gate octic search](research/nine-sharing-octic-positive-elimination-search/README.md),
 [independently audited](reviews/nine-sharing-octic-positive-elimination-independent/README.md),
 reaches at best 23 witnesses among 19 ordered states when every step preserves
