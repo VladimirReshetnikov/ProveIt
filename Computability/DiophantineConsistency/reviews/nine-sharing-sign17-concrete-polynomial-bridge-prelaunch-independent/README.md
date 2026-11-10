@@ -1,0 +1,3 @@
+# Independent prelaunch review: sign17 concrete polynomial bridge
+
+The independent no-Lean checker exited 0. The proposed stage transports the audited sign18 polynomial bridge through the sign17/sign18 model-zero iff to the direct symbolic Fin17 expression. Direct imports, generic/sign18 provider union (0/40 extra entries), producer injection routes and -M3600 guards were checked. The generic producer already exists in the base and is accepted only when its realpath and hash match the audited producer. Historical provider ancestry is point-observed. No Lean bridge, iPRA endpoint or external JSON/PDF binding is established by this review.

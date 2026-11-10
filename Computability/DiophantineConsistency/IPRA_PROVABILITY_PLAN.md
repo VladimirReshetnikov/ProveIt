@@ -1271,7 +1271,10 @@ and the corresponding seed equivalence. Its historical port provider has
 successful children of a failed overall run. A [direct expression equivalence](research/nine-sharing-sign17-expression-equivalence-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-expression-equivalence-terminal-independent/README.md),
 checks current-port symbolic Fin17/Fin18 model-zero equivalence, with one
-warning. The iPRA endpoint remains separate.
+warning. A [concrete polynomial bridge](research/nine-sharing-sign17-concrete-polynomial-bridge-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-concrete-polynomial-bridge-terminal-independent/README.md),
+checks the symbolic Fin17 `PolynomialBridge` through Fin18; the iPRA
+endpoint and external coefficient/PDF bindings remain separate.
 A finite [positive-gate octic search](research/nine-sharing-octic-positive-elimination-search/README.md),
 [independently audited](reviews/nine-sharing-octic-positive-elimination-independent/README.md),
 reaches at best 23 witnesses among 19 ordered states when every step preserves
