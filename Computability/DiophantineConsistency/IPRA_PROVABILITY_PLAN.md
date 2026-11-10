@@ -1087,8 +1087,12 @@ syntax-tree count goals unsolved; it produced no object or postflight.
 A [shape client](research/nine-sharing-sign20-count-shapes-check/README.md),
 [independently audited](reviews/nine-sharing-sign20-count-shapes-terminal-independent/README.md),
 checks 18 inequalities distinguishing each leading row from the other rows;
-the count and degree lower bound remain separate. Its imported provider is a
-successful child of an overall failed parent run.
+its imported provider is a successful child of an overall failed parent run.
+A [count client](research/nine-sharing-sign20-count-proof-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-count-proof-terminal-independent/README.md),
+checks that each leading row occurs exactly once, with four warnings and the
+same inherited qualification. The combined coefficient and degree lower
+bound remain separate.
 A separate [current-beta nonzero attempt](research/nine-sharing-sign20-current-beta-check/README.md),
 [independently audited](reviews/nine-sharing-sign20-current-beta-failure-independent/README.md),
 failed because a finite comparison could not unfold the locally irreducible
