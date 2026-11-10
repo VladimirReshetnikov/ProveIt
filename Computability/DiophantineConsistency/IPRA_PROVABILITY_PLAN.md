@@ -1095,7 +1095,11 @@ same inherited qualification. A [count-based lower client](research/nine-sharing
 [independently audited](reviews/nine-sharing-sign20-count-lower-terminal-independent/README.md),
 checks the full axis coefficient `2 * (p 0)^4` and degree at least twenty
 when `p 0 ≠ 0`. Its diagonal provider is a successful child of an overall
-failed grandparent; the exact-degree union remains separate.
+failed grandparent. An [exact-degree union](research/nine-sharing-sign20-exact-degree-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-exact-degree-terminal-independent/README.md),
+checks degree exactly twenty for arbitrary integer ports with `p 0 ≠ 0`, and
+unconditionally for the current Lean ports using the checked nonzero result.
+The external JSON, Jones and PDF bindings remain separate.
 A separate [current-beta nonzero attempt](research/nine-sharing-sign20-current-beta-check/README.md),
 [independently audited](reviews/nine-sharing-sign20-current-beta-failure-independent/README.md),
 failed because a finite comparison could not unfold the locally irreducible
