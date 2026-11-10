@@ -1,0 +1,228 @@
+AUDIT: PREPARING AN ELIMINATION MINOR BEFORE CHECKING ITS MAJOR
+=============================================================
+Pinned predecessor: ipra_certified_zero_2026-11-10/code/checker_bytes.py,
+ProveIt commit 76a2651601d17b34d46753f189ea026a21ce8d29.
+Audited final byte source: kernel_experiments/folded_h_nomguard.py.
+
+VERDICT
+The change has a sound successful-run interpretation for the full admitted
+JSON interface, using the inherited arity decoder and opening lemmas. It
+preserves canonical native completeness. It does NOT preserve, include, or
+reverse-include the predecessor's entire raw accepted-input language: explicit
+counterexamples in both directions are supplied below. Both differentially
+accepted examples have a true closed goal. This is a small source/control-flow
+reduction, not a new logical or arithmetic axiom and not a foundational
+breakthrough.
+
+The two additional imaginary-sentinel changes preserve the reordered
+program's accepted-input language, independently of the preceding qualification.
+For the generic iterable profile this statement retains the inherited
+successful-run/finite-CPython qualification; do not assert structural termination
+on malformed nonempty strings for an ideal unlimited-stack interpreter.
+
+1. THE TWO PROGRAM CHANGES
+
+Original elimination:
+  if m:
+      c(m,g)
+      a = m in ([s,u], not s and [t]*3) and i(t,u)==a and i(t,s) or a
+  h = m*3 if m else ...
+
+First, scope-sensitive reordering:
+  a = m and m in ([s,u], not s and [t]*3) and i(t,u)==a and i(t,s) or a
+  h = c(m,g) or m*3 if m else ...
+
+Then the sentinel version:
+  a = m in ([s,u], s and 1j or [t]*3) and i(t,u)==a and i(t,s) or a
+  h = c(m,g) or m*3 if m else ...
+  i's missing-image default changes from None to 0j.
+
+Every successful c call returns None: Hyp returns without a value, and each
+other branch ends after a recursive c call without an explicit return.
+Thus c(m,g) or m*3 is exactly m*3 after a successfully checked major. Failure
+propagates. No successful continuation can bypass major checking.
+
+2. THE IMAGINARY SENTINELS ARE NOT OBJECT-LANGUAGE TERMS
+
+For every value m produced by Python's uncustomized JSON decoder, m != 1j.
+JSON numbers are real-valued Python integers/floats (including decoder-accepted
+NaN and infinities); none has imaginary part one. Booleans are numeric aliases
+on the real axis. Null, strings, lists, and dictionaries also do not equal 1j.
+No custom equality methods can come from JSON.
+
+Consequently, for every JSON m,s,u,t:
+  bool(m) and (m in ([s,u], not s and [t]*3))
+is equivalent to
+  m in ([s,u], s and 1j or [t]*3).
+If s is truthy, the second alternative is an unmatchable 1j. If s is falsy,
+it is the same nonempty triplicate list. The first alternative is always a
+nonempty two-element list. A falsy JSON m cannot equal either nonempty list.
+Thus membership itself implies truthiness of m. The omission of the outer
+m guard is justified for the actual JSON interface, not arbitrary Python
+objects with adversarial __eq__ methods.
+
+The default 0j is likewise unavailable in JSON. If a numerical substitution
+hole is used without a supplied image, validating that default reaches
+k <= 0j < d, which raises TypeError. It can never return an accepted numerical
+image. The predecessor's None default also raises TypeError on that path.
+If no numerical image is needed, neither default is consulted. Formula-level
+scalar padding continues to yield truth via the even-depth short circuit.
+The default therefore has exactly the predecessor's successful-run behavior.
+The same reasoning applies to explicit-list and generic-iterable openers:
+a complex scalar cannot pass their ordered-coordinate comparison.
+
+Neither sentinel is inserted into a decoded formula, numerical term, retained
+context, or certificate output. These are implementation sentinels only.
+
+3. THE SCOPE FACT NEEDED FOR REORDERING
+
+Let K be the global negative floor on entry to a successful c(a,g) call.
+The initial i(a) check occurs before reading its command. The retained
+context is well-scoped at that floor by the inherited continuation invariant.
+The opener reads k but does not change it and never consumes instructions.
+Therefore both preparatory calls i(t,u) and i(t,s), if evaluated, use the
+same floor K.
+
+Inherited semantic opening, specialized to this use:
+If opening a raw formula template T at floor K with numerical image r
+succeeds, its decoded result is F(r), where F is the fixed capture-avoiding
+one-hole native formula represented by T at K. The same fixed template is
+used by openings with two different images at that same floor. Missing
+meaningful numerical images reject. If the image is never used, an otherwise
+inadmissible raw image is irrelevant and may be replaced semantically by
+zero. Positive protected coordinate intervals and fixed negative labels use
+the existing arity-decoder conventions; all escaping meaningful coordinates
+are the template hole. Ignored annotations are interpreted as zero/truth.
+
+Persistence after a successful opening:
+Every meaningful free rigid label of the opened result was admitted at K.
+Its positive coordinates are protected slots; inserted images were checked
+at numerical root depth three. Lowering the floor to L <= K therefore cannot
+change the result's meaningful decoded formula. Raw ignored annotations may
+open differently after the floor changes, but the enclosing ignored node
+remains zero/truth. Do not claim raw idempotence or byte-for-byte stability
+for arbitrary annotations. The semantic persistence statement is enough.
+
+4. SOUNDNESS OF THE REORDERED ELIMINATION
+
+Suppose the initial desired formula is A, decoded at floor K.
+
+If the preparation does not retain a truthy replacement minor, the goal
+remains A. The major is still checked and the inherited administrative
+continuation is unchanged: D exports its fresh closure; other proved majors
+supply only harmless truth aliases. Any extra work followed by a proof of A
+is sound. This also covers a falsy replacement discarded by the trailing
+'or a': the checker simply retains the original goal.
+
+Otherwise preparation has established the raw equality i(t,u)==a and stores
+a1=i(t,s), with both openings at K.
+
+Equality case: raw m=[s,u]. By the opening lemma, i(t,u) decodes as F(u), and
+a1 decodes as F(s), for one fixed F chosen before the major proof. The later
+successful call c(m,g), which still starts at K, proves the numerical equality
+s=u. Its own internal fresh labels may lower the global floor but do not alter
+F or the already-opened minor's meaning. The continuation proves F(s), after
+which the ordinary native equality-transport rule gives F(u)=A. The additional
+m*3 context entry is a high-arity truth alias in this case.
+
+Closure case: raw m=[t,t,t], with falsy s. The successfully checked major has
+meaning Q_y B(y). The preparatory openings give B(u) and B(0). A meaningful
+successful falsy image denotes zero; when the image is unused, it can be
+replaced by zero. The continuation proves B(0), so closure specialization
+gives B(u)=A. The extra m*3 entry is again a harmless truth alias.
+
+After the major proof the usual common continuation allocates a fresh name
+and opens the retained minor once more. Semantic persistence ensures that
+this opening does not introduce a dependence on that new name into the
+already-prepared meaningful minor. The inherited known-zero supply and
+paired-elimination arguments therefore apply without modification. Retained
+g is unchanged because recursive proof contexts are constructed by list
+concatenation, not shared mutation.
+
+If m is falsy, the sentinel-membership lemma makes preparation inert.
+Arithmetic and introduction branches are then byte-for-byte the inherited
+ones, apart from the equivalent missing-image sentinel. Their established
+soundness arguments, including zero-instance rather than uniform truth for
+fresh computation assumptions, remain necessary.
+
+A trace induction on successful recursive calls now proves the whole-program
+soundness theorem. The initial requested goal is checked at floor zero.
+No theorem-supply oracle, new induction principle, or unverified major is
+introduced by this transformation.
+
+5. CANONICAL COMPLETENESS
+
+Use the canonical certificates produced from finite native derivations:
+  * all meaningful free negative labels in a packet have already been admitted;
+  * substitution holes are the usual positive escaping coordinates;
+  * bound coordinates follow the ordinary arity codec;
+  * terms and formulas use canonical array shapes, without newly admitted
+    negative names hidden as template holes or annotation aliases.
+
+For these templates and images, lowering k while checking a major changes
+neither i(t,u) nor i(t,s), even as raw arrays: every negative name was already
+rigid and positive hole behavior is independent of k. The preparation can
+therefore commute across c(m,g). Induct on the canonical derivation/consumed
+instruction tree. Major proofs consume the same instructions and allocate
+the same labels; the retained minor and generated continuation hypothesis
+are identical; the subsequent recursive continuation is identical. Thus
+every canonical predecessor proof is accepted by the new checker using the
+same certificate (assuming adequate resources).
+
+The inherited completeness construction supplies such a scope-disciplined
+canonical certificate for every native theorem. Hence the new checker has
+the same canonical native consequence relation and inherits the established
+whole-domain bi-interpretation and equiconsistency with iPRA. This is NOT an
+absolute raw-certificate acceptance-equivalence claim.
+
+6. EXACT RAW ACCEPTANCE INCOMPARABILITY
+
+Let one=[0], s0=[0,one,0], s1=[0,one,one], M0=[s0,one], M1=[s1,one],
+C0=[0,0,one,0], C1=[0,0,one,one], and target=[one,one].
+Let outer=[M0,s0,one,[-1,one]], inner=[M1,s1,one,[3,one]].
+
+New accepts, old rejects:
+  [C0,C0,outer,target]
+
+Old accepts, new rejects:
+  [C1,C1,inner,C0,outer,target]
+
+Both advertised goals are 1=1. The -1 occurrence in the outer motive is a
+hole before the major proof and an admitted rigid parameter after that proof.
+The first program treats it in the latter way, whereas the new program
+prepares the motive in the former way. Both directions were run against the
+exact standalone programs in ordinary and optimized Python. These examples
+forbid describing the change as a restriction of, extension of, or exact
+same-input optimization of the entire old raw interface.
+
+7. NEGATIVE GUARD CONTROLS
+
+Unmatchable disabled-Q marker:
+Let one=[0] and C=[[one],one,0], so C denotes I(2,1;v.0)=0. The packet
+  [[0,one,one,0],[0,C,one,[3,0]],[one,0]]
+has genuine closed false goal 1=0. The correct candidate rejects. A mutation
+that replaces only 's and 1j or [t]*3' by 'not s and [t]*3', without restoring
+the m guard, accepts. It wrongly treats falsy arithmetic marker m=0 as a
+matched Q major when s is truthy and performs unlicensed transport. This
+shows why the imaginary disabled marker is essential to the guard removal.
+
+Missing-image rejection:
+The packet
+  [[0,0,3,0],[[0,3,0],-1]]
+has an invalid closed goal containing the unallocated name -1. The correct
+candidate rejects. Changing only the missing-image default from 0j to real
+zero accepts it. This second control demonstrates input-scope failure, not
+a separate canonical false closed theorem, and must be described accordingly.
+
+8. EXECUTABLE EVIDENCE
+
+ordering_receipt.json: 80 runs, zero mismatches. This includes 36 inherited
+fixtures in ordinary/-O Python (72 runs) plus both ordering counterexamples
+on old/new programs in both modes (8 runs).
+
+sentinel_receipt.json: 160,000 representative JSON dispatch comparisons
+satisfied the algebraic equivalence above. Eight actual process controls
+(correct/mutant x two packets x ordinary/-O) all gave expected verdicts.
+These finite checks support the transcription. The soundness/completeness
+claims rely on the written opening/persistence/inference arguments above,
+not finite tests alone. There is no proof-assistant certification.

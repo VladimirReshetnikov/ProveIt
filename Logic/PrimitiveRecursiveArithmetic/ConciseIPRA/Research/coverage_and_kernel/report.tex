@@ -1,0 +1,335 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,longtable,array,enumitem}
+\usepackage{xcolor,listings,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={iPRA: coverage before cancellation and smaller proof kernels},pdfauthor={Research prepared for Vladimir Reshetnikov with ChatGPT},pdfsubject={Explicit iPRA presentations, interpretation proofs, and reproducible checker measurements}}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{0.3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\Q}{\mathsf Q}
+\newcommand{\D}{\mathsf D}
+\newcommand{\file}[1]{\expandafter\nolinkurl\expandafter{\detokenize{#1}}}
+\lstset{language=Python,basicstyle=\ttfamily\scriptsize,columns=fullflexible,
+ keepspaces=true,breaklines=true,breakatwhitespace=false,showstringspaces=false,
+ frame=single,rulecolor=\color{black!20},backgroundcolor=\color{black!2},
+ xleftmargin=3pt,xrightmargin=3pt,aboveskip=8pt,belowskip=8pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small iPRA: coverage and proof kernels}
+\fancyhead[R]{\small 10 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+
+\title{\textbf{iPRA: coverage before cancellation,\\
+standard-numeral rigidity, and smaller proof kernels}}
+\author{Research prepared for Vladimir Reshetnikov\\with ChatGPT}
+\date{10 November 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+This investigation produces a new coverage theorem for the scalar
+self-seeded arithmetic in the supplied drafts. Without assuming successor
+injectivity, the weak theory proves that every element is zero or a successor,
+that successor has no fixed points, and that every fixed standard positive
+numeral has exactly its intended predecessor. With injectivity retained,
+the predecessor construction needs only two exceptional inputs and no joint
+coverage/predecessor induction. A separate logical theorem identifies one
+native paired binder over an equation with the explicitly prenex
+existential-universal quantifier-free class, explaining precisely why
+weakening the induction guard is substantive.
+
+Complete proof checkers for the inherited initialized-iterator presentation
+are also reduced: the recommended explicit-list program has 539 normalized
+Python bytes; a compact equivalent has 531. A distinct generic profile has
+289 AST nodes. The current comparison envelope is 542 bytes, 261 tokens,
+and 291 AST nodes, attained by different programs. No new program beats
+all three coordinates, and the token minimum is unchanged. The arithmetic
+lemma is not assigned the sizes of these inherited-arithmetic checkers.
+
+\textbf{Unresolved target.} This is not a proof of an absolutely simplest
+axiomatization or the requested significant complete-checker breakthrough.
+Successor injectivity in the weak self-seeded theory remains unproved here;
+neither its full iPRA bi-interpretability nor a countermodel is claimed.
+The archive contains complete sources, attributed equivalence proofs,
+executable certificates, measurements, and negative controls.
+\end{abstract}
+\newpage
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{Result, comparison, and scope}
+\label{sec:result}
+The audit freezes the 20 direct ZIP archives in
+\file{VladimirReshetnikov/ProveIt}, under \file{docs/drafts}, at this
+commit:\cite{source}
+\begin{center}\small
+\texttt{b9c4d74a0018bdafc5bc06e755a0145f4ed2b8d6}
+\end{center}
+The static audit checks each archive's Git blob identity and length,
+recurses through 35 distinct ZIP contents, and measures 484 distinct
+Python source byte strings. There are 2,744 source occurrences under the
+deduplicated-archive traversal. At or below any previously reported
+candidate threshold, 48 distinct source files require classification:
+10 complete theorem checkers and 38 support programs. The latter are
+build scripts, test runners, translators, measurers, or integrity tools.
+They cannot be counted as standalone theorem checkers.
+
+A final read-only check of commit \texttt{89f5bdfe} found that the
+archives had been curated into
+\file{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research}.
+All 2,769 retained research files match original archive members by Git
+blob identity, including all 1,605 Python files and all 187 TeX files.
+Only the project README and attributes file are new. All three
+comparison-frontier programs remain present and unchanged; the migration
+does not alter this comparison.\cite{maintained}
+The exact hashes and remeasurements are recorded in
+\file{evidence/latest_snapshot_recheck.json}.
+
+The observed coordinate minima in both inspected snapshots are
+\[
+  (\text{bytes},\text{tokens},\text{AST nodes})=(542,261,291).
+\]
+The first two occur in different neutral-major profiles; the third occurs
+in the earlier lexical-loop profile.\cite{neutral,selfseed}
+They are observed minima within this fixed corpus, hence upper bounds on
+an unknown optimum. They are not mathematical lower bounds on all possible
+theories or implementations.
+
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Whole standalone module & Bytes & Tokens & AST & Gzip-9\\
+\midrule
+Current byte leader &542&263&309&343\\
+Current token leader &578&261&295&346\\
+Current AST leader &642&263&291&353\\
+\midrule
+New explicit-list checker &539&266&308&340\\
+New compact-list checker &531&266&310&335\\
+New generic-loop checker &613&263&289&349\\
+\bottomrule
+\end{tabular}
+\end{center}
+The byte improvement is $11/542\approx2.03\%$ for the compact profile.
+The AST improvement is $2/291\approx0.69\%$ for a different program.
+The explicit-list program is recommended for review and ordinary use:
+its parsing recursion follows finite JSON trees. The generic profile
+has a malformed-string divergence qualification under an ideal unlimited
+stack, explained in Section~\ref{sec:kernel}. These programs implement
+the same initialized-iterator arithmetic. Their size reductions compose
+existing neutral-major, lexical-scope, and control-flow techniques;
+they are not presented as new arithmetic axioms.
+
+There are three logically separate contributions:
+\begin{enumerate}
+\item The new theorem about the weaker self-seeded arithmetic in
+Section~\ref{sec:coverage-no-cancellation}; it does not complete an
+injectivity-free iPRA foundation.
+\item The binder-depth expressivity calculation in
+Section~\ref{sec:depth-one-boundary}; it is a precise induction-guard
+diagnostic, not a universal checker-size lower bound.
+\item Smaller complete presentations of the inherited, fully
+iPRA-equivalent calculus in Sections~\ref{sec:axioms} and
+\ref{sec:kernel}; these satisfy full-domain bi-interpretability through
+the included inherited bridge.
+\end{enumerate}
+
+\section{The complete calculus implemented by the measured checkers}
+\label{sec:axioms}
+This section explicitly fixes every primitive numerical schema and
+inference pattern. The construction is the inherited Choice-DI calculus
+in formula-context form, with a new composition of certificate techniques.
+The complete mathematical theory must not be confused with the weaker
+self-seeded theory investigated in the next section.
+
+\subsection{Numerical and formula syntax}
+There is one numerical sort. Terms are
+\[
+ t::=x\mid0\mid St\mid I(n,a;u.h).
+\]
+Only $u$ in $h$ is bound by the iterator. Every update is fixed finite
+earlier-stage term syntax; all other variables are passive numerical
+parameters. Equivalently, introduce one first-order symbol $I_h$ for
+each such finite description. There are no numerical function codes
+and no uniformly total evaluator.
+
+The two computation schemas are
+\begin{align}
+ I(0,a;u.h)&=a, & I(Sn,a;u.h)&=h[I(n,a;u.h)/u].
+ \tag{I0, IS}\label{eq:choice-computations}
+\end{align}
+Native formulas are
+\[
+ A::=(s=t)\mid\Q_y A\mid\D_{x,y}A.
+\]
+The designated absurdity is $0=S0$. The intended ordinary readings are
+\[
+ (\Q_yB)^\circ=B^\circ(0)\to\forall yB^\circ(y),\qquad
+ (\D_{x,y}B)^\circ=
+ \exists x\bigl(B^\circ(x,0)\to\forall yB^\circ(x,y)\bigr).
+\]
+These are interpretation clauses, not additional primitive connectives.
+The $Q$ binder is conservative shorthand for unused-witness $D$;
+its explicit presence makes the checker interface smaller.
+
+\subsection{All primitive inference patterns}
+Contexts consist of reusable native formulas. Substitutions avoid capture.
+The complete rule inventory, in addition to I0 and IS, is:
+\begin{enumerate}[label=\textbf{\arabic*.}]
+\item \textbf{Hypothesis.} Infer $\Gamma\vdash A$ when $A\in\Gamma$.
+\item \textbf{Transport.} From $\Gamma\vdash s=t$ and
+$\Gamma\vdash H(s)$, infer $\Gamma\vdash H(t)$, for any fixed native
+formula template $H$.
+\item \textbf{Closure elimination.} From $\Gamma\vdash\Q_yB(y)$
+and $\Gamma\vdash B(0)$, infer $\Gamma\vdash B(t)$.
+\item \textbf{Paired elimination.} From $\Gamma\vdash\D_{x,y}B(x,y)$
+and $\Gamma,\Q_yB(a,y)\vdash A$, infer $\Gamma\vdash A$.
+The parameter $a$ is fresh for $\Gamma,A$ and the passive matrix data.
+The displayed local assumption is discharged.
+\item \textbf{Case introduction.} From
+$\Gamma,B(t,0)\vdash B(t,Sz)$, infer
+$\Gamma\vdash\D_{x,y}B(x,y)$.
+\item \textbf{Equation-progress introduction.} From
+$\Gamma,E(t,z)\vdash E(t,Sz)$, infer
+$\Gamma\vdash\D_{x,y}E(x,y)$, only when $E$ is a literal numerical
+equation. An equation below a binder is not a literal equation.
+\end{enumerate}
+In the last two rules $z$ is fresh for the retained context, witness,
+and fixed matrix parameters; the displayed assumption is discharged.
+Weakening, exchange, contraction, renaming, cut, and numerical
+substitution are admissible by induction on finite derivations.
+No generalization rule allowing a retained parameter to change during
+an induction is used.
+
+No further numerical or logical axioms are primitive here. Reflexivity,
+successor injectivity, numerical coverage, the ordinary intuitionistic
+connectives, and full quantifier-free induction are derived. The
+appendices supply the construction in a noncircular order.
+
+\subsection{Why this is fully equivalent to iPRA}
+The equation-progress rule, an unused witness in $D$, and its elimination
+derive contextual literal-equation induction. Case introduction similarly
+gives numerical cases. Computation and transport give reflexivity:
+if $r=I(0,t;u.0)$, use $r=t$ as both transport premises with the
+motive $v=t$ to obtain $t=t$.
+
+The derived selector $C(v,a,b)=I(v,a;u.b)$ permits formula gating and
+selection. Appendix~\ref{sec:choice-introduction} explicitly reconstructs
+intuitionistic implication, conjunction, disjunction, both quantifiers,
+and falsity, including both formula round trips. The scalar predecessor
+is constructed using only equation induction and numerical cases in
+Appendix~\ref{sec:hybrid-bootstrap}. Equality reflection then yields
+quantifier-free induction; pairing compiles every fixed general PR
+description. Internal recurrence uniqueness identifies both numerical
+return translations. The isomorphism of the original domain with its
+double interpretation has graph $x=y$ in both theories.
+
+Thus the theory implemented by each selected checker is equiconsistent
+and bi-interpretable with full first-order iPRA. This statement concerns
+all native formulas and retained contexts, including quantified ones,
+and the entire numerical domain. It is stronger than equality of standard
+numerical functions or equiconsistency alone. The underlying mathematical
+bridge is inherited and explicitly attributed; the new checker composition
+does not change it.
+
+\input{theory/coverage.tex}
+\input{theory/binder_depth.tex}
+
+\section{The complete proof kernels and their invariants}
+\label{sec:kernel}
+\input{theory/kernel.tex}
+
+\section{Evidence, reproducibility, and limitations}
+\label{sec:evidence}
+\input{theory/evidence.tex}
+
+\section{Further research questions}
+\begin{enumerate}
+\item Can the weak self-seeded theory prove successor injectivity?
+The proved identity is $S(p_*(S^2m))=S^2m$. A derivation of
+$p_*(S^2m)=Sm$ would close a central gap; simply cancelling the outer
+$S$ assumes exactly what is missing.
+\item Can the fixed-standard-index marker construction be internalized
+uniformly without assuming a general primitive-recursive compiler?
+Every fixed numeral target has a unique predecessor, but passing from
+that external family to one variable-index theorem is not automatic.
+\item If cancellation is not derivable, can one construct a model of
+\emph{all} staged recursor equations and equation-induction instances
+with a successor collision? A branching successor graph alone does not
+meet those obligations.
+\item Can a single complete, structurally terminating checker beat the
+current 261-token minimum and the new 531-byte and 289-node results
+simultaneously? Merely mixing coordinates of different programs does
+not answer this question.
+\item Can a new certificate invariant remove a whole rule or validation
+operation while preserving the entire consequence relation? The concrete
+scope and compound-induction attacks in this archive are useful regression
+targets for such a proposal.
+\item Can the new coverage, standard-target, and binder-depth proofs be
+formalized in Lean or Rocq using only the exact source schemas? Numerical
+testing and an informal stronger induction principle would not constitute
+that formalization.
+\end{enumerate}
+
+\appendix
+\input{theory/ordinary_logic.tex}
+\input{theory/logical_bridge.tex}
+\input{theory/scalar_predecessor.tex}
+\input{theory/equality_reflection.tex}
+\input{theory/primitive_recursion.tex}
+\input{theory/inherited_ordinary_bridge.tex}
+
+\section{Attribution of the raw-input audit}
+The following raw-input analysis is reproduced from the neutral-major
+draft at the pinned snapshot.\cite{neutral} Its occurrences of ``new''
+refer to that earlier protocol. Section~\ref{sec:kernel} proves the
+additional lexical-scope and branch-folding changes used here. The
+minimal-successful-trace argument below quantifies over arbitrary starting
+floors, so it continues to apply when major proofs allocate only local
+names. The original unmodified source is preserved in \file{reference/}.
+\input{reference/neutral_audit.tex}
+
+\begin{thebibliography}{9}
+\bibitem{source} Vladimir Reshetnikov, \emph{ProveIt}, frozen draft corpus
+at commit \file{b9c4d74a0018bdafc5bc06e755a0145f4ed2b8d6}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/b9c4d74a0018bdafc5bc06e755a0145f4ed2b8d6/docs/drafts}.
+Retrieved and byte-verified 10 November 2026.
+\bibitem{maintained} Vladimir Reshetnikov, \emph{Concise presentations of
+intuitionistic primitive recursive arithmetic}, maintained project README,
+commit \texttt{89f5bdfe}, 10 November 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/89f5bdfef815cd2b2c5422978896edc9c819af3f/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}.
+\bibitem{neutral} \emph{Equality from monus and neutral major premises},
+\file{ipra_monus_and_neutral_major_2026-11-10.zip}, in the pinned corpus.
+Source of the neutral-major protocol and its raw-input audit.
+\bibitem{selfseed} \emph{Scalar self-seeded arithmetic and the iPRA checker
+frontier}, \file{ipra_selfseed_scalar_2026-11-10.zip}, in the pinned corpus.
+Source of the complete self-seeded presentation, lexical profiles,
+and the collected inherited arithmetic appendices.
+\bibitem{arity} \emph{Arity calculus for iPRA},
+\file{ipra_arity_calculus_2026-11-10.zip}, in the pinned corpus.
+\bibitem{certified} \emph{Certified zero},
+\file{ipra_certified_zero_2026-11-10.zip}, in the pinned corpus.
+\bibitem{erasure} Inherited scalar-predecessor development,
+\file{reference/scalar_predecessor.tex} in the self-seeded archive
+of reference~\cite{selfseed}. The exact source hash is recorded in
+\file{evidence/mathematical_provenance.json}.
+\bibitem{forward} Inherited equality-reflection development,
+\file{reference/equality_reflection.tex} in reference~\cite{selfseed}.
+The presentation here explicitly restricts its function inventory to the
+already constructed scalar terms before general PR compilation.
+\bibitem{progress} Inherited pairing and primitive-recursion development,
+\file{reference/primitive_recursion.tex} in reference~\cite{selfseed}.
+\end{thebibliography}
+\end{document}

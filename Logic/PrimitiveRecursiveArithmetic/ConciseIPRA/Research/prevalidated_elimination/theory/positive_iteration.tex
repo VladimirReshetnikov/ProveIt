@@ -1,0 +1,280 @@
+% Includable research note. Requires amsmath, amssymb, amsthm.
+% Uses theorem, lemma, corollary, proposition, proof environments.
+% This is a standard-N result; it is not a positive iPRA axiomatization.
+
+\section{Strict dependence in the positive-iteration term algebra}
+\label{sec:positive-strict-dependence}
+
+\paragraph{Status and scope.}
+The current checker-and-barriers draft proves a zero-profile obstruction
+for positive iteration. The certified-zero draft gives the stronger,
+whole-theory obstruction of a two-element model for the proposed eager
+arithmetic, even with induction on every formula. The results below concern
+a different question: the exact functions denoted by the positive-iteration
+terms in the \emph{standard natural numbers}. They strengthen the
+standard-function analysis, but do not remove that finite-model obstruction
+or establish a smaller iPRA presentation. A search of the supplied TeX
+corpus found no statement of the strict-dependence classification below;
+no literature-wide priority claim is made.
+
+\paragraph{The term algebra.}
+Let terms be built from variables, zero, successor, and
+\[
+ F(n,a;u.h)=h_{\vec x}^{\,n+1}(a),\qquad
+ h_{\vec x}(b)=h(b,\vec x).
+\]
+Only $u$ is bound in the update $h$. All passive parameters are fixed
+during iteration, the counter is not passed to the update, and each
+description is finite earlier-stage syntax. Arbitrary nesting and
+capture-free substitution are allowed. Equivalently,
+\[
+ F(0,a;u.h)=h[a/u],\qquad
+ F(Sn,a;u.h)=h[F(n,a;u.h)/u].
+\]
+The following assertions are about this standard interpretation, not about
+every model of those equations.
+
+For a function $f:\mathbb N^r\to\mathbb N$, a coordinate $j$ is
+\emph{essential} if changing that coordinate can change the value, with
+the other coordinates fixed. Write $U(f)$ for its set of essential
+coordinates. Strict increase in coordinate $j$ means strict increase for
+\emph{every} fixed choice of the other coordinates, not merely for some
+such choice.
+
+\begin{theorem}[Constant--projection--growth classification]
+\label{thm:positive-classification}
+Every fixed positive-iteration term $t(x_1,\ldots,x_r)$ belongs to exactly
+one of the following three classes.
+\begin{enumerate}
+\item It is a constant function.
+\item It is one coordinate projection $x_j$.
+\item Its essential-coordinate set $U$ is nonempty; it is independent of
+      the remaining coordinates; it is strictly increasing in each
+      coordinate in $U$; and
+      \[
+             t(\vec x)\geq x_j+1\qquad(j\in U).
+      \]
+\end{enumerate}
+In particular every term is coordinatewise nondecreasing. Its class and
+its exact essential-coordinate set can be calculated by structural
+recursion on its finite syntax. Calculating the class does not require
+evaluating a constant term or uniformly evaluating arbitrary primitive
+recursive descriptions.
+\end{theorem}
+
+\begin{proof}
+We prove the classification, monotonicity, and the asserted exact
+dependencies together. Zero is constant and a variable is its projection.
+Successor preserves constancy for a constant argument. For a nonconstant
+argument it preserves its exact dependencies and strict increases, and
+raises its lower bound from at least $x_j$ to at least $x_j+1$.
+
+Consider $F(n,a;u.h)$. Apply the induction hypothesis to $n$, to $a$, and
+to $h$, regarding its state $u$ as an additional independent coordinate.
+There are four immediate cases.
+\begin{enumerate}
+\item If $h$ is constant, the result is that constant: at least one
+      update is performed.
+\item If $h$ is the state projection $u$, the result is the seed $a$.
+\item If $h$ is a passive-coordinate projection, the result is that
+      projection, independently of the seed and counter.
+\item If $h$ has the third class but does not depend on $u$, the result
+      is $h(\vec x)$, with exactly its already classified dependencies.
+\end{enumerate}
+The remaining case is that $h$ has the third class and depends on $u$.
+For every fixed passive assignment, therefore,
+\[
+                 h(b,\vec x)\geq b+1,
+\]
+and $h$ is strictly increasing in $b$. Let $U_n,U_a$ be the essential
+sets of the counter and seed, and let $V$ be the passive essential set of
+$h$. Define
+\[
+                         U=U_n\cup U_a\cup V.
+\]
+The resulting function is independent of coordinates outside $U$.
+If $U$ is empty it is constant. Suppose $U$ is nonempty.
+
+First, the result is monotone in every coordinate. For two ordered
+parameter assignments $\rho\leq\sigma$, the seed and counter values
+are ordered, and the update under $\rho$ is pointwise at most the update
+under $\sigma$. Induction over any common number of updates preserves
+the ordered states. Any additional updates at $\sigma$ can only increase
+its state, because each update raises the state by at least one.
+
+Next, every coordinate in $U$ gives a strict increase. An increase of
+an essential seed coordinate strictly increases the initial state, and
+strict monotonicity of the update in its state preserves that difference.
+An increase of an essential passive update coordinate strictly increases
+the state at the first update, which exists even at counter zero; later
+updates preserve the difference. An increase of an essential counter
+coordinate increases the number of updates, and every extra update
+raises the state by at least one. If a coordinate occurs in more than
+one of these roles, all its other effects are nondecreasing, so the
+same strict comparison remains valid. Thus $U$ is precisely the
+essential-coordinate set.
+
+Finally, writing $N,A$ for the counter and seed values, the result is at
+least $A+N+1$. If $j\in U_a$, the induction hypothesis gives
+$A\geq x_j$, so the result is at least $x_j+1$. If $j\in U_n$, it
+gives $N\geq x_j$, with the same conclusion. If $j\in V$, the last
+application of $h$ is at least $x_j+1$ by the induction hypothesis on
+$h$. This proves the required dominance for every $j\in U$.
+
+These cases also constitute a finite classification algorithm. Constants
+and projections have their explicit tags. In the last case one forms
+the union $U_n\cup U_a\cup V$ and tests whether it is empty. No
+semantic search or evaluation of all assignments is involved.
+The three outcomes are disjoint: a projection fails the strict additive
+lower bound at that coordinate, and a constant has no essential
+coordinate.
+\end{proof}
+
+\begin{corollary}[No bounded nonconstant numerical term]
+Every nonconstant positive-iteration term is unbounded in each of its
+essential coordinates with all other coordinates fixed. Consequently no
+term denotes a nonconstant function with finite range. In particular
+there is no Boolean-valued zero-test term, and no predecessor term.
+\end{corollary}
+
+\begin{proof}
+A projection is unbounded in its sole essential coordinate. In the third
+class the lower bound $t(\vec x)\geq x_j+1$ proves unboundedness.
+Predecessor is nonconstant but is not strictly increasing from $0$ to $1$.
+\end{proof}
+
+\subsection{An obstruction for tuple domains with actual equality}
+
+The classification also obstructs moving to finite tuples if interpreted
+equality remains actual coordinatewise equality. Quotient equality is a
+material exception, as the next subsection demonstrates explicitly.
+
+\begin{theorem}[No nontrivial term-defined unital magma on a tuple domain]
+\label{thm:positive-actual-unit}
+Let $d$ be finite, let $\varnothing\ne D\subseteq\mathbb N^d$, and let
+$e\in D$. Suppose $f:D\times D\to D$ is given by a fixed tuple of
+positive-iteration terms, with any fixed numerical parameters, and
+\[
+                         f(e,z)=z=f(z,e)\qquad(z\in D)
+\]
+in actual coordinatewise equality. Then $D$ has exactly one element.
+No definability assumption on $D$ is needed.
+\end{theorem}
+
+\begin{proof}
+Fixed numerical parameters can be replaced by their numeral terms, so
+Theorem~\ref{thm:positive-classification} applies to every coordinate
+function $f_i(x_1,\ldots,x_d,y_1,\ldots,y_d)$.
+Let $J$ be the coordinates that are nonconstant on $D$. If $i\in J$,
+$f_i$ must depend on at least one coordinate from each input tuple:
+otherwise one of $f_i(e,z)$ and $f_i(z,e)$ would be constant on $D$.
+In particular $f_i$ is neither constant nor a projection, and has the
+third class.
+
+There is an essential left-input coordinate $j_i\in J$. Indeed, if
+every essential left-input coordinate were constant on $D$, then
+$f_i(z,e)$ would be constant there, contrary to $i\in J$.
+The dominance conclusion and the right unit law yield
+\[
+                              z_i\geq z_{j_i}+1
+                              \qquad(z\in D).
+\]
+If $J$ were nonempty, the map $i\mapsto j_i$ on the finite set $J$
+would have a directed cycle. Summing the displayed inequalities around
+that cycle gives $z_i\geq z_i+\ell$ for its positive length $\ell$,
+an impossibility. Thus $J$ is empty. Every coordinate is constant on
+$D$, so the nonempty set $D$ is a singleton. The case $d=0$ is immediate.
+\end{proof}
+
+\subsection{The same algebra does have an injective pairing term}
+
+The preceding theorem is not an almost-unary majorization result.
+Positive iteration combines two unbounded inputs, and even defines an
+injective numerical pairing in the standard model.
+Put
+\[
+ q(a,b):=F(a,b;u.Su)=a+b+1,\qquad
+ d(a):=q(a,a)=2a+1,
+\]
+and define
+\[
+             \pi(a,b):=F(a,S(d(b));u.d(u)).
+\]
+Iteration of $u\mapsto2u+1$ gives the exact identity
+\[
+             \pi(a,b)+1=2^{a+1}(2b+3).
+\]
+The factor $2b+3$ is odd. Uniqueness of the power of two dividing a
+positive integer therefore recovers $a$ from $\pi(a,b)$; the odd part
+then recovers $b$. Thus $\pi$ is injective on $\mathbb N^2$.
+
+This is not a pairing compiler for arbitrary primitive recursion. A
+numerical decoder is not supplied by the displayed term, and the
+classification prevents the usual coordinate projections of this pairing
+from being positive-iteration unary terms. For example, either projection
+is nonmonotone on suitable values in the range of $\pi$, while a
+nonconstant unary term is strictly increasing on all of $\mathbb N$.
+For the first projection use $\pi(1,0)=11<13=\pi(0,2)$;
+for the second use $\pi(0,1)=9<11=\pi(1,0)$.
+
+\subsection{Why quotient equality is a substantive escape}
+
+There is an explicit standard-model quotient with term-defined ring
+operations. This illustrates the limits of
+Theorem~\ref{thm:positive-actual-unit}, not a bi-interpretation of the
+whole eager theory.
+In addition to $q$, put
+\[
+                  m(a,b):=F(a,0;u.q(u,b))=(a+1)(b+1).
+\]
+On $\mathbb N^2$ define
+\[
+ (a,b)\mathrel E(c,d)
+       \quad\Longleftrightarrow\quad q(a,d)=q(c,b).
+\]
+This is exactly equality of the integer differences $a-b$ and $c-d$.
+The map $(a,b)\mapsto a-b$ identifies $\mathbb N^2/E$ with
+$\mathbb Z$. Zero is represented by $(0,0)$, the multiplicative unit
+by $(1,0)$, and negation swaps coordinates. Addition and multiplication
+are given by the following
+\emph{tuples of positive-iteration terms}:
+\[
+\begin{aligned}
+ (a,b)\mathbin\oplus(c,d)
+     &:=\bigl(q(a,c),q(b,d)\bigr),\\
+ (a,b)\mathbin\otimes(c,d)
+     &:=\bigl(q(m(a,c),m(b,d)),\ q(m(a,d),m(b,c))\bigr).
+\end{aligned}
+\]
+For addition, the two extra ones cancel. For multiplication, expanding
+the difference of the two coordinates gives
+\[
+ (a+1)(c+1)+(b+1)(d+1)
+ -(a+1)(d+1)-(b+1)(c+1)
+ =(a-b)(c-d).
+\]
+Thus both operations respect $E$ and induce the usual integer ring.
+The nonnegative-difference domain also has the first-order description
+\[
+                 a=b\quad\lor\quad\exists r\,(q(b,r)=a).
+\]
+These are standard-algebra identities. No claim is made here that the
+eager axioms prove the required quotient properties, transfer induction
+to graph-defined arithmetic, or supply closure under arbitrary primitive
+recursion.
+
+In fact the inherited two-element eager model has $Sx=1$ and interprets
+$F(n,a;h)$ as $h(a)$. There $q(a,b)=1$ for all inputs, so the same
+formula $E$ identifies every pair and the displayed quotient has one
+element. This is a concrete reason why a successful construction in
+the standard algebra is insufficient for interpretation of iPRA in the
+whole proposed eager theory. Adding successor injectivity excludes that
+particular model, but proving a new interpretation after such an addition
+would be further work.
+
+\paragraph{Verification boundary.}
+The companion Python program checks a deterministic finite sample of the
+classification algorithm, and the explicit pairing and quotient formulas.
+It does not verify the structural induction proof in a proof assistant.
+The proofs above establish the unbounded standard-function statements;
+the tests check their transcription on the reported finite inputs.

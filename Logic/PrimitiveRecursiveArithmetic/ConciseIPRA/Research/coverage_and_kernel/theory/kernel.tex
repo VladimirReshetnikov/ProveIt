@@ -1,0 +1,183 @@
+The recommended complete program is printed here. It imports only the
+standard JSON parser. The theorem producer, tests, arithmetic metatheory,
+and corpus audit are not trusted imports.
+\lstinputlisting{code/checker.py}
+The more compact list test in \file{code/checker_bytes.py} replaces
+\texttt{isinstance(a, list)} by \texttt{a * 0 == []}. For JSON values,
+only arrays satisfy that test; unsupported multiplication or a failed
+numerical comparison rejects the input. The explicit test is retained
+in the recommended program for readability. A fully expanded standalone
+version is supplied as \file{code/readable_checker.py}.
+
+\subsection{Public contract and sorted expression encoding}
+Input is one finite JSON array whose last element is the goal. Earlier
+four-field packets $[m,s,u,t]$ are consumed in reverse order. Acceptance
+requires normal process exit and exactly \texttt{ACCEPT} followed by a
+newline. Exceptions, nonzero exits, resource failures, and other output
+are rejection. Unused certificate prefixes are permitted. Completeness
+is the usual adequate-resource claim about finite canonical proofs;
+there is no assertion that fixed hardware checks arbitrarily large proofs.
+
+The inherited representation is sorted: the numerical and formula
+interpretations of an array differ.
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}cXX@{}}
+\toprule
+Arity & Numerical interpretation & Formula interpretation\\\midrule
+0 & Zero & The theorem $0=0$\\
+1 & Successor & Paired binder $D$\\
+2 & Zero; annotations ignored & Equality\\
+3 & Scalar iterator $I$ & Closure $Q$, last child its matrix\\
+$\ge4$ & Zero; annotations ignored & The theorem $0=0$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Canonical forms include $[n]$ for successor, $[n,a,h]$ for iteration,
+$[s,t]$ for an equation, $[B]$ for $D$, and $[B,B,B]$ for $Q$.
+Formula root depth is zero and numerical root depth is three. Under
+$p$ protected numerical slots the depths are $2p$ and $3+2p$.
+Coordinates $0,1,2$ denote numerical zero; coordinates $3+2j,4+2j$
+name protected slot $j$. Admitted negative labels name rigid parameters.
+
+The common child-depth increment is $5-r$ at an array of arity $r$.
+A successor child is read beneath two dummy zero slots. The counter
+and initializer of an iterator are beneath one dummy zero slot; its
+update is beneath the actual state slot. The same increment therefore
+implements the different binding conventions. A scalar escaping a
+protected numerical environment is the substitution hole, whose image
+is checked at numerical root depth three. Formula scalar padding has
+the inherited truth meaning. This is a representation of finite terms,
+not a new arithmetic operation or a total evaluator for numerical codes.
+
+\subsection{Lexical scopes and the crucial allocation order}
+At a call $c(a,g,k)$, the opener closes over that call's fresh-name floor
+$k$. A major subproof receives the same context and floor value. Its
+private allocation cannot change the caller's floor. Context extension
+constructs a new list in the recursive programs. In the loop profile,
+the context is an immutable tuple and \texttt{+=} rebinds it. The default
+list in the recursive programs is never mutated.
+
+The current goal is checked at the old floor. Raw hypothesis construction
+and witness opening occur before decrementing $k$; every recursive-image
+or witness check triggered there uses that old floor. The final hypothesis
+opening may admit fresh names, discharged by the zero-instance argument
+below. Different completed major
+branches may reuse names because their assumptions cannot escape. A
+finite raw certificate may use fresh fractional numerical labels; these
+are treated as a finite family of fresh parameters, as in the inherited
+raw-input proof. Canonical certificates use only integer coordinates.
+
+The order is essential. The delivered four-packet attack in
+\file{tests/future_witness_capture.json} targets
+\[
+ D_{x,y}\bigl[I(y,0;v.x)=I(y,0;v.y)\bigr].
+\]
+Its zero equation is true. At every successor $y$, its equation says
+$x=y$. Thus its ordinary meaning requires a single number equal to
+every positive number, which is false already at $1$ and $2$.
+An unsafe mutation that allocates the new name before opening the
+witness accepts this formula: the witness can then be chosen as the
+successor of the induction eigenparameter. The corrected programs
+reject it. This is a concrete reason to retain the construction-before-
+allocation order, not merely a formatting preference.
+
+\subsection{Neutral major premises and folded branches}
+The initial hypothesis \texttt{[]} denotes the already derived theorem
+$0=0$. Every non-hypothesis command checks its major $m$ unconditionally.
+A canonical command without a substantive major supplies \texttt{[]};
+its proof closes immediately and allocates no name. The inherited
+list-valued-context invariant excludes numeric scalar majors from a
+finite successful checking trace. In particular, scalar zero cannot
+reach the matcher as a false-valued major. This is why the potentially
+dangerous Python \texttt{False} alternative in the matcher is harmless.
+The complete raw argument is reproduced in the final appendix.
+
+For a surviving nonempty list $m$, the list $m*3$ is nonempty. For a
+computation command, the constructed hypothesis is a two-element list,
+also nonempty. Consequently the original three-way choice of major
+export, computation, and introduction is equivalently implemented by
+\[
+ \texttt{m*3 or (u and COMPUTATION) or INTRODUCTION}.
+\]
+No semantic branch is removed. The AST profile folds only the outer
+major choice. Its loop replaces a tail recursive continuation with a
+context-preserving iteration; it does not change an inference rule.
+
+In an introduction, both $m$ and $u$ are false-valued. The mode comparison
+is with $u$: zero selects progress for a literal equation, while an
+empty array selects the zero case. No false-valued JSON mode equals the
+odd arity of a meaningful compound matrix. Replacing $u$ by the
+unrestricted source field $s$ would permit compound induction; the
+archive contains a targeted forbidden-induction certificate for that error.
+
+These changes are compositions of documented existing techniques. Their
+particular complete source files were absent from the frozen corpus,
+but no foundational novelty is inferred from that fact.
+
+\subsection{Computation supply and missing literal-zero cases}
+The direct computation interface uses truthy syntactic initializers,
+and a truthy predecessor for a successor instance. This is not a
+numerical nonzeroness test. The finite term
+\[
+                     Z_*:=I(S(S0),S0;v.0)
+\]
+has a directly permitted proof of $Z_*=0$. For an excluded computation,
+replace its offending zero predecessor and initializer positions
+simultaneously by a fresh placeholder in a fixed equation $E(w)$.
+Then $E(Z_*)$ is directly permitted; transport along $Z_*=0$ gives
+$E(0)$. One transport and its two computation premises repair the
+leaf. Thus unrestricted I0 and IS are recovered without an arithmetic
+oracle or an extra axiom.
+
+A generated raw hypothesis may contain newly admitted names and need
+not be true uniformly in those names. The sound rule is
+\[
+ \vdash H(\vec0),\qquad\Gamma,H(\vec b)\vdash A
+ \quad\Longrightarrow\quad\Gamma\vdash A,
+ \qquad\vec b\notin\operatorname{FV}(\Gamma,A).
+\]
+Substitute zero for all the finitely many new names in the continuation,
+rename later eigenparameters first, and cut in the proved zero instance.
+The old-floor validation is exactly what licenses this discharge.
+
+\subsection{Soundness and canonical completeness}
+Induct on a finite successful trace. Hypothesis closure uses a retained
+formula. A recursive major is proved in the caller's old context.
+Endpoint matching realizes transport or closure elimination. A unary
+paired major exports its closure at a fresh witness; other surviving
+arities export only truth padding. Introduction retains exactly the
+permitted case or literal-equation progress hypothesis. Computation
+supply uses the preceding zero-instance discharge argument. Finally
+cut away the initial derived truth. This yields a derivation in the
+native calculus of Section~\ref{sec:axioms}.
+
+Conversely, start with a finite native derivation, normalize the
+excluded computation leaves as above, and alpha-rename its parameters
+with a branch-local name supply. Major subproofs start at the caller's
+floor, and continuations allocate their own next name. Canonical absent
+majors are empty arrays. Folding the nonempty branches chooses the same
+hypothesis, and looping the tail continuation has the same effect.
+The resulting finite certificate is accepted. The decoded canonical
+theorems are therefore exactly those of the complete native calculus;
+its full-domain iPRA interpretations transfer unchanged.
+
+This argument does not claim identical accepted languages for all
+redundant malformed JSON spellings. In particular, the generic opener
+admits some iterable truth aliases, while folded multiplication may
+reject them before a continuation. That only removes redundant raw
+encodings and leaves canonical completeness intact.
+
+\subsection{The generic profile's qualification}
+The generic AST profile attempts iterable traversal and catches failure.
+A nonempty malformed string can cause repeated traversal of its own
+one-character strings. Real CPython ultimately rejects through its
+stack limit; an ideal unlimited-stack interpreter can diverge. Thus
+289 AST nodes is not claimed as the size of a total abstract parser on
+all malformed JSON. The recommended explicit-list program and the
+compact-list variant recurse structurally through finite trees and
+reject unsupported leaf types. The arithmetic and metatheoretic
+claims use finite successful traces and finite canonical proofs.
+
+The written proofs have not been formalized in Lean or Rocq. The
+regression suite tests the implementation and concrete counterexamples;
+it does not prove the universal soundness or bi-interpretability theorem.

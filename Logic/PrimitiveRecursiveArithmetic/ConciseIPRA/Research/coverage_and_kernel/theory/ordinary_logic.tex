@@ -1,0 +1,52 @@
+\section{The ordinary intuitionistic logic used in the arithmetic arguments}
+\label{sec:ordinary-rules}
+The native calculus has exactly the primitive rules in
+Section~\ref{sec:axioms}; it derives the following interface. The weaker
+self-seeded theory in Section~\ref{sec:coverage-no-cancellation} instead
+uses this ordinary interface explicitly. It is therefore charged as part
+of that theory, not treated as free hidden machinery.
+
+Formulas are built from numerical equations and $\bot$ with
+$\wedge,\vee,\to,\forall,\exists$. The rules are single-conclusion
+intuitionistic natural deduction:
+\[
+\frac{A\quad B}{A\wedge B}\quad
+\frac{A\wedge B}{A}\quad\frac{A\wedge B}{B}\qquad
+\frac{A}{A\vee B}\quad\frac{B}{A\vee B}\quad
+\frac{A\vee B\quad[A]\ \vdots\ C\quad[B]\ \vdots\ C}{C},
+\]
+\[
+\frac{[A]\ \vdots\ B}{A\to B}\qquad
+\frac{A\to B\quad A}{B}\qquad
+\frac{\bot}{A},
+\]
+\[
+\frac{A(a)}{\forall xA(x)}\quad
+\frac{\forall xA(x)}{A(t)}\qquad
+\frac{A(t)}{\exists xA(x)}\quad
+\frac{\exists xA(x)\quad[A(a)]\ \vdots\ B}{B}.
+\]
+In universal introduction, $a$ is fresh for the undischarged context.
+In existential elimination, $a$ is fresh for that context, the conclusion
+$B$, and the passive parameters of the quantified formula. Brackets
+mark the hypotheses discharged by the inference. There is the hypothesis
+rule and the usual reusable-context structural behavior. Equality has
+reflexivity $t=t$ and capture-free transport from $s=t,A(s)$ to $A(t)$
+for every fixed formula template. These imply the usual symmetry,
+transitivity, and function congruence laws. Negation abbreviates
+$A\to\bot$; biconditional abbreviates the conjunction of both implications.
+Neither excluded middle for arbitrary formulas nor double-negation
+elimination is a rule.
+
+For reference, the contextual literal-equation induction schema is
+\[
+\frac{\Gamma\vdash s(0,\vec p)=t(0,\vec p)\qquad
+ \Gamma,s(z,\vec p)=t(z,\vec p)\vdash s(Sz,\vec p)=t(Sz,\vec p)}
+ {\Gamma\vdash s(a,\vec p)=t(a,\vec p)}.
+\]
+The parameter $z$ is fresh for the retained context, target, and fixed
+parameters. This restriction is part of the schema. The derived
+quantifier-free induction used in the new coverage proof is obtained
+by translating each fixed quantifier-free formula into its Boolean
+characteristic equation, rather than by silently allowing a larger
+primitive induction rule.

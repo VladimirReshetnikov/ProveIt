@@ -1,0 +1,254 @@
+LEXICAL NEUTRAL-MAJOR CHECKERS: RESULTS, PROOF OBLIGATIONS, AND LIMITS
+================================================================
+
+Snapshot and contribution
+-------------------------
+
+The comparison sources were read from ProveIt at commit
+b9c4d74a0018bdafc5bc06e755a0145f4ed2b8d6.  The new files compose existing
+ideas from three current drafts:
+
+1. ipra_monus_and_neutral_major_2026-11-10: the initial derived truth [],
+   an unconditional major-premise check, and the induction selector u.
+2. ipra_selfseed_scalar_2026-11-10: lexical fresh-name floors, immutable
+   premise contexts, and the loop implementation.
+3. ipra_uniform_zero_2026-11-10, code/control_compact.py: short-circuit
+   folding of branches whose constructed hypotheses are nonempty lists.
+
+The composition does not introduce a new arithmetic basis or a new logical
+inference rule.  In particular, none of these checkers implements the new
+self-seeded, tied-seed, or monus arithmetic proposals.  They all implement
+the inherited initialized scalar iterator / Choice-DI calculus.
+
+Complete measured files
+-----------------------
+
+  file                         normalized bytes   tokens   AST   gzip9 raw
+  code/checker.py                      539           266     308      340
+  code/checker_bytes.py                531           266     310      335
+  code/checker_ast.py                  613           263     289      349
+  code/readable_checker.py            1463           295     348      961
+
+The readable expansion has 2307 raw bytes including explanatory comments
+and docstrings. Its gzip9-normalized count is 546 bytes. The other files
+are already ast.unparse-normalized. The runtime is Python 3.12.14 and
+zlib 1.3.2. Gzip uses compresslevel=9, mtime=0, includes its wrapper, and
+is informational only. Exact hashes and sizes are in evidence/metrics.json.
+
+The explicit-list profile is the recommended compact implementation.  It
+does not depend on exception-driven iterable traversal. The byte profile
+uses the previously employed exact-JSON predicate a*0 == []; only arrays
+satisfy it. On finite JSON, unsupported scalar/dictionary inputs either
+fail a numerical comparison or fail multiplication and cannot turn an
+arbitrary value into a list.
+
+The generic AST profile retains the inherited runtime qualification:
+nonempty malformed strings may recurse until the concrete Python stack
+limit rejects them. Its canonical finite array/number traversal is
+structural, but it is not a total abstract parser for unlimited-stack
+Python. This qualification must accompany its smaller AST count.
+
+Comparison
+----------
+
+The frozen neutral-major byte profile is 542 bytes / 263 tokens / 309 AST.
+Its explicit-list sibling is 550 / 263 / 307. The new byte and explicit
+compositions each save 11 normalized bytes, adding 3 tokens and 1 AST node.
+The byte reduction 542 -> 531 is about 2.03 percent.
+
+The previous whole-corpus AST minimum reported by the root audit is 291,
+from a different program. The new AST composition reaches 289, about a
+0.69 percent reduction. It has 613 bytes and 263 tokens, so it does not
+improve the previous byte or token minima. The token minimum remains 261.
+
+Thus the family improves the observed envelope from (542 bytes, 261 tokens,
+291 AST) to (531 bytes, 261 tokens, 289 AST). These coordinates are achieved
+by different programs. This is not a single program below every coordinate,
+not a theorem about an optimum, and not the requested significant new
+foundation. The programs are useful reproducible implementation progress.
+
+Logical theory implemented
+-------------------------
+
+Numerical terms are variables, 0, successor S, and I(n,a;v.h), binding the
+previous state v in h. The two computation schemas are
+
+  I(0,a;v.h) = a;
+  I(Sn,a;v.h) = h[I(n,a;v.h)/v].
+
+The native formula constructor is
+
+  D_(x,y) A(x,y) := exists x (A(x,0) -> forall y A(x,y)),
+
+with equations as atomic formulas. Internal proof contexts additionally
+use the resource Q_y A := A(0) -> forall y A(y). The complete inherited
+rules are hypothesis, numerical computation, arbitrary-formula equality
+transport, Q specialization, D elimination with a fresh witness, and two
+D introductions. The case introduction derives the successor instance
+under the zero instance. The progress introduction derives the successor
+instance under the current-index instance and is restricted to a literal
+equation matrix. The witness is chosen before the induction parameter.
+
+The inherited arithmetic and logical reconstruction proves full first-
+order iPRA bi-interpretability, not merely agreement of arithmetic
+consequences. That bridge is unchanged by these implementations. A complete
+final report should reproduce or include its precise native rules and
+interpretation proofs with attribution, rather than assign these tiny
+checker sizes to the independent new arithmetic proposal.
+
+Lexical floor and context invariant
+----------------------------------
+
+At a call c(a,g,k), k is the fresh-name floor on that proof branch. The
+inner opener closes over this call's k. The recursive major call receives
+the same g and the same numerical k value. Its local reassignment of k
+cannot change the caller's k. Context extension is g + [H] in the recursive
+profiles. In the loop profile it is tuple rebinding g += (H,), not in-place
+list mutation. The default list in the recursive profiles is never mutated.
+
+A completed major proof therefore cannot export any of its private
+assumptions or change the caller's supply of names. Different major branches
+may reuse names after return. All old negative labels and protected slots
+are checked by the opener at the old floor before the continuation's new
+parameter is admitted. The interpretation of a rigid old label is unchanged
+by a smaller floor. Fresh fractional labels in a newly admitted interval,
+if a noncanonical JSON certificate uses them, are handled as a finite family
+of fresh parameters, just as in the inherited neutral-major audit.
+
+The initial list g=[[]] contains the already derived theorem 0=0. Adding it
+is conservative by hypothesis cut. The crucial inherited invariant is that
+every reached context is list-valued and no numeric formula goal can be
+proved from such a context. Consequently, a scalar zero cannot act as an
+absent major. The empty-array major closes immediately, consumes no packet,
+and allocates no name. This makes the unguarded equality/Q matcher safe:
+its potential Python False alternative cannot equal any successfully
+proved scalar major, because there is none.
+
+Short-circuit folding
+---------------------
+
+The byte/explicit profiles construct a hypothesis with
+
+  m*3 or (u and COMPUTATION) or INTRODUCTION.
+
+Here COMPUTATION is a two-element list. If m is a surviving nonempty list,
+m*3 is nonempty, exactly the original major-export branch. If m=[] and u
+is true, the computation list is nonempty, exactly the original numerical
+branch. If m=[] and u is false, the introduction expression is selected.
+No branch condition is removed. The AST profile folds only the outer
+major branch and retains the conditional arithmetic/introduction choice.
+
+For the generic AST parser an empty dictionary can be an iterable truth
+alias in the old implementation; evaluating m*3 rejects that alias before
+continuation. This can only restrict its accepted redundant raw encodings.
+All canonical encodings use m=[], and they are unaffected. Do not claim
+byte-for-byte equality of accepted raw JSON languages between every profile.
+
+The equality-goal Boolean expression in the recursive profiles retains
+the inherited fallback behavior if a replacement is false-valued. Canonical
+formula templates have a nonempty fixed outer constructor; their root
+opening is therefore nonempty. The only empty-list target already closes
+against the initial truth before any command is read. The explicit
+conditional update in the loop profile thus has the same canonical
+inference behavior. The inherited list-valued-context invariant excludes
+the scalar-goal loophole on successful noncanonical runs.
+
+Soundness
+---------
+
+Induct on a finite successful checking trace. Hypothesis closure uses a
+retained formula. A substantive major is established by the recursive
+induction hypothesis in precisely the caller's old context. Endpoint
+matching implements equality transport or Q specialization. A unary D
+major exports the corresponding Q resource at a fresh witness; other
+nonempty arities export only constant truth aliases under the sorted
+decoder. Introduction retains its one permitted zero/progress instance;
+the u field is false-valued in this branch, so it cannot compare equal to
+the odd arity of a meaningful compound matrix. Equation-only progress is
+therefore preserved.
+
+The generated computation branch is justified by the inherited known-zero-
+instance rule. A generated open H(b) need not be true for all b. Its zero
+completion H(0) is a computation theorem, while b is absent from the old
+context and conclusion. Substitute zero for b in the continuation and cut
+in H(0). For a finite family of fresh fractional names, substitute zero for
+each name and rename later eigenparameters first. Local proof scoping
+preserves exactly the freshness needed for this discharge.
+
+Finally remove the initial derived truth by cut. This gives a derivation
+in the inherited native calculus, whose whole-domain interpretation in
+iPRA proves the decoded formula. This is a written metatheoretic argument
+using the inherited sorted-opening and arithmetic lemmas, not a Lean/Rocq
+formalization.
+
+Canonical completeness
+----------------------
+
+Start with a finite derivation in the native calculus. Apply the inherited
+certified-zero computation normalization: Z*=I(2,1;v.0) satisfies Z*=0
+by a directly permitted successor equation. A computation with a literal
+zero initializer or predecessor is recovered by replacing all offending
+positions simultaneously by Z*, then transporting along Z*=0. This uses
+one transport and two direct computation premises per repaired leaf.
+
+Next serialize the proof tree with a branch-local name supply. On entry
+to a named producer derivation with n genuinely extended local hypotheses,
+start its floor at -n. The initial truth is a fixed theorem and does not
+count toward that naming depth. Major subproofs receive the same floor;
+each continuation gets its own next negative label. Alpha-renaming makes
+all rule eigenparameters meet this discipline. No mathematical formula
+or inference is changed.
+
+Canonical majorless commands use m=[]. For D introduction, u=0 selects
+literal-equation progress and u=[] selects cases. The empty major proof
+closes immediately. Boolean folding chooses the same hypothesis. A loop
+iteration is the original tail recursive call with an immutable context.
+The resulting finite certificate is accepted. Hence the set of decoded
+canonical theorems is exactly the inherited calculus, and its iPRA
+interpretations and both identity composites transfer unchanged.
+
+Finite evidence and focused controls
+------------------------------------
+
+Run `python3 measure.py` and `python3 tests/verify_compositions.py` from this
+directory. The producer is copied with attribution from the neutral-major
+draft and is not imported by a checker. Its LocalEmitter wrapper changes
+only branchwise fresh-name allocation. Saved certificate trees can be
+regenerated independently of the checker.
+
+The suite covers arithmetic base/step instances, uses of the state, zero
+normalization, nonvacuous existential witnesses, both D introduction
+modes, nested closures, quantified equality transport, contextual equation
+induction, incorrect endpoints, future labels, malformed JSON, and known
+false-proof attacks. Both ordinary and optimized Python are tested. Three
+mutations deliberately accept the particular bad proof they are intended
+to guard against: using unrestricted source s to select compound progress,
+mutating a caller's context in place, and allocating a parameter before
+opening the witness. The correct profiles reject those certificates.
+
+The compound-progress mutation tests a forbidden inference/certificate;
+its target is not asserted here to be false or underivable in iPRA, and
+this finite test proves no strict arithmetic-strength separation.
+
+New ordering counterexample
+---------------------------
+
+The small added certificate tests/future_witness_capture.json targets
+
+  D_(x,y) [ I(y,0;v.x) = I(y,0;v.y) ].
+
+At y=0 its equation is 0=0; at y=S(n) it is x=S(n). Thus its standard
+meaning is `exists x, forall y>0, x=y`, which is false in N.
+
+An unsafe mutation moves `k -= 1` before the construction/opening of h.
+It can now choose the witness x=S(k), using the induction eigenparameter
+that was supposed to be fresh after the witness was fixed. The successor
+goal becomes reflexivity of I(S(k),0;v.S(k)); ordinary computation and
+transport prove that reflexivity. Four instruction packets (one D
+introduction, one equality transport, and two base computations) plus
+the final goal suffice. All final profiles reject at old-floor validation;
+the mutation accepts in ordinary and optimized Python.
+
+This is an order-sensitive soundness obligation. It explains why h and the
+witness must be constructed before fresh-name allocation. It is not a new
+axiomatization or a checker-size reduction.

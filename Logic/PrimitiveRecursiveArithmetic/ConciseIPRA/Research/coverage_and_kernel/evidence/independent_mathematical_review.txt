@@ -1,0 +1,132 @@
+INDEPENDENT REVIEW OF COVERAGE WITHOUT SUCCESSOR CANCELLATION
+
+Reviewed source:
+  arithmetic_work/coverage_without_cancellation.md
+
+Conclusion:
+  The displayed proof derives numerical coverage from the listed self-seeded
+  computation, epsilon, separation, and literal-equation induction axioms.
+  It does not use successor injectivity, numerical coverage, or a hidden
+  restriction to standard elements. The derived equation is a right-inverse
+  equation; cancelling its leading successor without a further axiom would
+  be invalid.
+
+Detailed checks:
+
+1. Successor-nonzeroness is derived before Boolean operations are used.
+   With D(c,a)=F_(v.a)(c), Z(c)=D(c,0), a putative Sn=0 equates Z(Sn)=0
+   with Z(0)=1. This contradicts the explicit separation axiom 0!=1.
+
+2. The proposed Boolean conjunction uses no distinction between 1 and 2.
+   For b=0, D(b,epsilon(c,0)) is a successor, so its equality-to-zero test
+   is false. For b=1, it is epsilon(c,0), and its equality-to-zero test
+   is c. This uses only 0!=1 and successor-nonzeroness. Disjunction by
+   De Morgan is valid on these two-valued terms. Range and reflection of
+   epsilon make numerical equality decidable, so the characteristic-function
+   recursion for arbitrary fixed quantifier-free formulas is constructive.
+
+3. Equation induction legitimately yields the quantifier-free induction
+   instances used here: replace a fixed quantifier-free invariant A(n) by
+   its previously constructed source characteristic equation chi_A(n)=1.
+   All terms remain staged source terms; no newly introduced graph-defined
+   update operation is smuggled into F.
+
+4. The zero-protected update B_a(v)=epsilon(v,0) OR epsilon(Sv,a),
+   H_a(v)=D(B_a(v),v), gives H_a(0)=0 and U(0,a)=1 for every a.
+   U(j,a)=Sj OR S U(j,a)=a is proved with a fixed passive parameter a.
+   In the first branch, U= Sj is nonzero; a failed hit advances to S²j,
+   and a successful hit freezes. In the second branch the hit remains
+   true and the update fixes the state. No cancellation is involved.
+
+5. The separate lemma U(j,a)!=0, although true, is not needed for the last
+   invariant proof. The clock branch supplies nonzeroness locally, and
+   the hit branch freezes even if the current state were zero. Omitting
+   that auxiliary induction makes the written argument shorter.
+
+6. Specialization to j=m, a=S²m happens only after the fixed-a invariant
+   is proved. Both alternatives imply S U(m,S²m)=S²m. The update now fixes
+   that state; two (exactly two) computation steps show U(S²m,S²m)=U(m,S²m).
+   Thus S pstar(S²m)=S²m. There is no meta-level loop with nonstandard
+   length and no use of injectivity to identify the state itself.
+
+7. The final invariant C(n)=(n=0 OR n=1 OR S pstar(n)=n) is quantifier-free.
+   Its successor step has three valid cases. In the final case, substitute
+   m=pstar(n) into the already universal right-inverse theorem, and use
+   Sn=S²pstar(n). This is ordinary capture-free term substitution into a
+   proved theorem, not induction with a varying passive parameter.
+
+8. Actual coverage n=0 OR exists m n=Sm follows by ordinary existential
+   introduction in the latter two cases (witnesses 0 and pstar(n)). All
+   reasoning is internal to the whole numerical domain.
+
+Additional sound but nonessential observation:
+  The same assumptions rule out fixed points of S. Let h(v)=epsilon(v,0).
+  Boolean range and 0!=1 prove h(v)!=v for every v. If Sa=a, the recursor
+  equations force F_h(a)=h(F_h(a)), contradiction. This does not establish
+  successor injectivity and should not be presented as doing so.
+
+Further lemma supplied by arithmetic_basis and independently checked:
+  The predecessor of 1 is unique. Since S has no fixed points, 2!=1;
+  successor-nonzeroness also gives 2!=0. Put h(v)=not_B epsilon(v,2)
+  and V(n)=F_h(n). Then h(0)=1, V(0)=2, V(1)=h(2)=0, and h has
+  range {0,1}, excluding 2. Derived coverage therefore proves
+  V(n)=2 iff n=0. If Sn=1, then h(V(n))=V(Sn)=V(1)=0. The Boolean
+  truth table gives V(n)=2, hence n=0. This is a boundary cancellation
+  theorem only; the general step for arbitrary targets remains open.
+
+FINITE-PREFIX RIGIDITY ADDENDUM (independent review of the TeX extension)
+
+  For each externally fixed standard k>=1, the theory proves
+  Sx=bar(k) iff x=bar(k-1), with x ranging over the whole domain.
+  The arithmetic agent's displayed proof has been checked as follows.
+
+  A. The external induction data are correctly chosen: distinct numerals
+     0,...,k+1, and predecessor uniqueness delta_j for every 1<=j<k.
+     The k=1 start needs only the previously proved distinctness of 0, 1, 2.
+
+  B. The finite update h_k sends i to i-1 for 1<=i<=k-1, sends k+1 to k-1,
+     and sends every other element (including 0 and k) to k. The disjointness
+     of these guards follows from the carried numeral distinctness.
+
+  C. The threshold Boolean b_r is correctly false exactly when the target
+     value is below r. For a guard v=i, the target i-1 is below r exactly
+     when i<=r; for v=k+1, target k-1 is below r only when r=k. Thus the
+     displayed finite disjunction is correct. The source composition
+     t_r=D(not_B b_r,t_(r-1)) increments exactly for true b_r. Exactly k
+     external term-construction steps yield the intended finite numeral.
+     No arithmetic order, finite-case function recursor extension, or
+     variable-k iteration is used.
+
+  D. Its markers q0=k+1 and q_j=k-j for 1<=j<=k are distinct. The image
+     of h_k omits q0 and h_k(v)=q_j iff v=q_(j-1) for 1<=j<=k. This also
+     holds at k=1, where the first table row is empty, q0=2, and q1=0.
+
+  E. A_k(0)=q0 follows from h_k(0)=k; exactly j fixed computations give
+     A_k(bar(j))=q_j for 0<=j<=k. The proof of A_k(n)=q0 iff n=0 is a
+     legitimate quantifier-free induction (or can use established coverage).
+
+  F. For j<k, the external j-induction uses only already proved delta_j.
+     In the successor case, A_k(Sm)=q_j iff A_k(m)=q_(j-1) iff m=j-1,
+     while Sm=j has the same condition by delta_j. The zero case has two
+     false sides. Hence no future delta_k is used circularly.
+
+  G. From Sx=k, recursor computation and A_k(k)=q_k give A_k(x)=q_(k-1),
+     hence x=k-1. For k=1 this uses the established q0 equivalence directly.
+
+  H. Extending distinctness to k+2 is correct: equality to a positive j<=k
+     reduces by delta_j to k+1=j-1, contradicting the old distinctness.
+     Equality to 0 contradicts successor-nonzeroness; equality to k+1
+     contradicts the general no-fixed-point lemma. This closes the outer
+     external induction.
+
+  No change is needed in this proof. Its finite source constructions and
+  finite derivations are parameterized at the metalevel. They do not yield
+  a single internal formula quantifying over the numeral index k, and no
+  arbitrary-target successor cancellation is inferred.
+
+Limits:
+  No proof of pstar(Sn)=n without cancellation was obtained, and no complete
+  countermodel of all F schemas plus induction was constructed. In particular
+  a branching successor graph by itself would not be an adequate countermodel.
+  The review is written mathematical verification, not Lean/Rocq verification.
+

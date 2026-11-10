@@ -1,0 +1,286 @@
+% Independent audit fragment for the corrected array-truth interface.
+% Reviewed files: kernel_notes/array_truth_checker{,_bytes,_joint}.py.
+% IMPORTANT: the final mode comparison is with u, not s.
+% Requires only ordinary LaTeX plus amsmath/amssymb.
+
+\section{Why the absent major can be a proved empty array}
+\label{sec:neutral-major-audit}
+
+This section audits the new control-flow change on raw input, including
+noncanonical JSON.  It uses the inherited sorted arity decoder and
+semantic-opening lemmas for the numerical and logical rules.  It does not
+replace those lemmas with finite testing or claim proof-assistant
+certification.
+
+\subsection{The exact change}
+
+The initial context is the one-element list \texttt{[[]]}.  Its sole
+formula, the empty array, denotes $0=0$ under the inherited decoder.
+At every non-hypothesis command the checker now executes
+\begin{verbatim}
+    m, s, u, t = q()
+    c(m, g)
+\end{verbatim}
+without testing whether \texttt{m} is nonempty.  A canonical command with
+no substantive major puts \texttt{[]} in this field.  Its premise closes
+immediately by hypothesis, without consuming a command or changing the
+fresh-name floor.
+
+The final choice of the retained assumption uses
+\begin{verbatim}
+    (m or len(a) % 2 == u) and k
+\end{verbatim}
+instead of comparing the arity parity with \texttt{m}.  In an
+introduction command, \texttt{u=0} selects equation progress and
+\texttt{u=[]} selects the zero-case premise.  This reuse is legitimate
+because introduction is reached only when both \texttt{m} and
+\texttt{u} are false-valued.  Computation still requires a truthy
+initializer \texttt{u}; its missing literal-zero cases have the
+inherited certified-zero repair.
+
+The source is deliberately left with the old matcher
+\begin{verbatim}
+    m in ([s, u], not s and [t] * 3)
+\end{verbatim}
+and no added \texttt{m and} guard.  As an isolated Python expression this
+would be unsafe: if \texttt{s} is truthy, its second alternative is
+\texttt{False}, which compares equal to numeric zero.  The following
+whole-program invariant proves that this dangerous major cannot reach
+the matcher.
+
+\subsection{Two facts about the root opener}
+
+Call a Python value \emph{numeric} here when it is an integer, a float,
+or a Boolean returned by the JSON loader.  The finite Python execution
+also admits the loader's optional nonfinite float values.  No custom
+numeric class is supplied by a certificate.
+
+Write $O_k(r;t)$ for the opener on the numeric value $r$, with image $t$
+and its default formula-root depth zero.  Direct evaluation of the
+program gives
+\[
+ O_k(r;t)=
+ \begin{cases}
+ r,&k\le r<0,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+ \tag{Root scalar}
+\]
+In particular this result is numeric and independent of the image $t$.
+The formula covers negative allocated names and negative fractional
+names without identifying different numerical values.  Signed zero and
+Booleans have Python's ordinary numerical equality behavior.  A NaN
+fails the interval test and returns zero; the relevant infinite values
+also return zero.  None of these results is a list.
+
+A second fact is that a successful root opening of a list returns a
+list.  Under either strict list predicate, no other input type can
+return a numeric result except a numeric input.  Under the generic
+iterable opener, a successful iterable traversal also returns a list;
+if traversal fails, the numerical comparison cannot succeed on a list,
+string, dictionary, or null.  Thus in every profile:
+\begin{quote}
+If a root opening returns a numeric result, its argument was numeric;
+if it succeeds on a list, its result is a list.
+\end{quote}
+These statements concern finite successful evaluations.  They assert
+neither arbitrary revalidation idempotence at ignored annotations nor
+unlimited-stack termination for the generic iterable profile.
+
+\subsection{No numeric goal can be proved from list-valued assumptions}
+
+\paragraph{Lemma.}
+For any initial integer fresh-name floor and any finite remaining
+certificate, there is no finite successful invocation
+\texttt{c(a,g)} whose raw goal \texttt{a} is numeric and whose every
+context element is a list.
+
+\emph{Proof.}
+Suppose otherwise, and select such a successful invocation with the
+fewest calls to \texttt{c} in its completed recursive trace.  Its first
+hypothesis check cannot close: the root opening of its numeric goal is
+numeric, and no numerical JSON value equals a Python list.
+
+The invocation must therefore consume a command and successfully return
+from \texttt{c(m,g)}.  If \texttt{m} were numeric, this would be a
+strictly shorter successful invocation of the forbidden kind.  Thus the
+major is not numeric.
+
+In either strict profile, a successfully checked nonnumeric major is a
+list.  In the generic profile an empty string or an empty dictionary can
+also open to the empty list.  A nonempty dictionary can occasionally
+have its iterable alias proved, but it cannot occur as a truthy major
+in the selected completed parent invocation: the subsequent expression
+\texttt{m * 3} raises a type error.  A nonempty string has no finite
+successful opening.  Consequently every truthy major that survives to
+the continuation exports a list, and every surviving false-valued
+major is an empty list or one of those harmless empty iterable aliases.
+
+Consider the possible change of goal.  If the matcher does not fire,
+the goal stays numeric.  If it fires, its target test requires
+\texttt{i(t,u) == a}.  The second root-opening fact therefore implies
+that \texttt{t} is numeric.  By (Root scalar), \texttt{i(t,s)} and
+\texttt{i(t,u)} are the same root result.  Both the Boolean-expression
+and the explicit-conditional implementations consequently retain a
+numeric goal.  The Boolean implementation may retain the original raw
+zero alias when the transported result is false-valued; that makes no
+difference to this assertion.
+
+If the major is truthy, the generated hypothesis is the list
+\texttt{m * 3}.  If the major is false-valued and \texttt{u} is truthy,
+the computation expression constructs a two-element list.  A successful
+opening of either hypothesis is a list.  The final recursive call then
+has a numeric root-opened goal and an entirely list-valued context.  It
+is a proper subtrace of the selected invocation, contradicting its
+minimality.
+
+The only remaining case is introduction.  Its expression
+\texttt{i(*a,t,2)} must unpack the numeric raw goal as an iterable,
+which raises a type error.  That case cannot belong to a successful
+trace.  All possibilities have been excluded.\hfill$\square$
+
+The minimization ranges over all starting floors and stacks.  It is
+therefore unaffected by a recursively checked major decreasing the
+global floor before its parent resumes.  The argument uses finite
+completed traces, not a presumption that recursive checking always
+terminates.
+
+\subsection{Every reached command has a list-valued context}
+
+Initially the only assumption is the list \texttt{[]}.  Suppose a
+command is reached with list-valued assumptions and its major check
+returns.  The lemma excludes a numeric major.  A truthy surviving major
+exports a list; a computation constructs a list.  In introduction the
+assignment is
+\begin{verbatim}
+    h = a = i(*a, t, 2)
+\end{verbatim}
+in mathematical order.  If its result is numeric, the later
+\texttt{len(a)} raises a type error before the continuation context is
+constructed, since this branch has false-valued \texttt{m}.  Such a
+scalar matrix does \emph{not} insert a scalar-zero assumption.  If the
+assignment yields a list, successful opening again yields a list.
+
+Both recursive premises thus receive list-valued contexts whenever
+execution reaches them.  The expression \texttt{g + [new]} constructs a
+new list; a premise cannot mutate its caller's context.  Induction on
+the reached calls proves the invariant.  The tuple-based explanatory
+variant has the corresponding immutability property.
+
+It follows that no numeric zero, Boolean \texttt{False}, floating zero,
+truthy numeric scalar, or newly allocated numeric name can be a
+successfully verified major at a reached command.  In particular a
+closed scalar-zero goal is rejected by this interface.  The canonical
+empty-array truth is accepted instead; mathematical completeness is
+claimed for canonical encodings, not for every redundant truth alias.
+
+\subsection{The unguarded matcher is safe on every reached continuation}
+
+If \texttt{s} is false-valued, both matcher alternatives are nonempty
+lists, so no false-valued major can match.  If \texttt{s} is truthy, the
+second alternative is \texttt{False}.  A false-valued major reaching
+this point is an empty list, or in the generic profile an empty string
+or dictionary.  None equals \texttt{False}; a numeric major has already
+been excluded.  Therefore, at every point reached after a successful
+major check, the matcher has exactly the same truth value as
+\begin{verbatim}
+    m and m in ([s, u], not s and [t] * 3)
+\end{verbatim}
+even though this identity is false on unrestricted Python tuples of
+values.  No sentinel and no extra source guard are needed.
+
+The proof depends on the initial context being \texttt{[[]]}, not
+\texttt{[0]}, and on premise contexts being freshly constructed.
+Silently changing either detail would invalidate this argument.
+
+\subsection{Why the relocated induction mode must be the initializer field}
+
+The corrected selector compares arity parity with \texttt{u}.  In an
+introduction branch this field is necessarily false-valued.  No
+false-valued JSON value compares equal to one.  Thus a meaningful
+compound matrix, of odd arity one or three, cannot receive a progress
+assumption.  A literal equation has even arity two and receives
+progress precisely for a zero-like mode such as \texttt{0}; an empty
+array mode chooses the zero instance.  Surplus arities retain their
+inherited constant interpretations.  Scalar matrices cannot survive
+the shape check discussed above.
+
+Comparing instead with the unused \texttt{s} field would be wrong.
+That field is unrestricted in introduction, so choosing
+\texttt{s=1} would enable progress for odd-arity compound matrices.
+The distinction is semantic, not merely a preferred serialization.
+
+In the computation branch \texttt{u} is truthy.  Its new comparison can
+choose a fresh-name opening for some noncanonical scalar initializer
+aliases.  This is handled by the inherited zero-instance discharge
+lemma, not by claiming that every generated open hypothesis is
+uniformly true.  If the generated hypothesis is $H(\vec b)$, its zero
+completion $H(\vec0)$ is a computation theorem, while the old-floor
+validation makes the finite family of newly admitted names $\vec b$
+fresh for the retained conclusion and context.  Substituting zero for
+those names and cutting in the computation theorem discharges the
+extra hypothesis.  Negative fractional names in the newly admitted
+interval are included separately in this finite substitution.
+
+\subsection{Conservativity and canonical completeness}
+
+The initial empty-array formula is already a theorem.  For example the
+permitted nonempty-seed computation gives
+\[
+ C=0,\qquad C:=I(S(S0),S0;v.0).
+\]
+Use this equation as both the equality major and the premise of
+transport through $F(w)\equiv(w=0)$ to obtain $0=0$.  Adding that fixed
+theorem to a proof context is conservative by substitution of its
+finite derivation for hypothesis uses.  No new object-level truth
+predicate or logical axiom has been introduced.
+
+For canonical certificates, substantive major commands retain their
+old fields.  A computation uses the absent-major field \texttt{[]} and
+its existing nonempty initializer.  An introduction uses absent major
+\texttt{[]}, with \texttt{u=0} for equation progress and
+\texttt{u=[]} for cases; its witness remains in \texttt{t}.
+The added empty major closes without a command or name allocation, so
+the remaining canonical proof simulation is unchanged.  First applying
+the existing certified-zero repair supplies every unrestricted
+computation instance.  This gives a finite certificate for every
+canonical derivation of the inherited native calculus.
+
+Conversely, the invariant makes each reached matcher a legitimate
+guarded matcher.  The remaining commands use the inherited
+transport, closure, paired-introduction/elimination, and zero-instance
+computation arguments, with the corrected equation-only mode test.
+Discharging the initial $0=0$ theorem yields a derivation in that same
+calculus.  Its established whole-domain iPRA interpretations therefore
+transfer without changing the numerical domain, equality, or object
+language.  The new result concerns a proof-checker presentation, not a
+new primitive-recursive arithmetic foundation.
+
+\subsection{Raw JSON types and the generic profile}
+
+The strict profiles recognize only Python lists as containers.  The
+short predicate \texttt{a * 0 == []} has this effect for JSON values:
+lists pass; strings and numbers give different zero products;
+dictionaries and null raise.  Its numerical fallback rejects strings.
+The root invariant covers all numbers and Booleans that reach it,
+including nonfinite values accepted by the default Python loader.
+
+The generic profile has the inherited additional aliases.  An empty
+string and an empty dictionary open to \texttt{[]}; a dictionary with
+only the empty-string key opens to \texttt{[[]]}, with its value ignored.
+A truthy dictionary cannot survive export as a major because
+\texttt{m * 3} raises.  Nonempty strings and nonempty dictionary keys
+have no finite successful opening.  Actual CPython rejects them through
+its recursion limit and subsequent type failure, while an ideal
+unlimited-stack execution can diverge.  The raw soundness argument
+above covers every finite successful run of this profile; it does not
+assert ideal termination on every malformed finite JSON input.
+
+Larger arrays remain arrays throughout opening, irrespective of their
+ignored annotations or depth increments.  They therefore do not
+threaten the scalar-versus-list invariant.  Their formula meanings and
+freshness behavior remain subject to the inherited sorted-decoder
+proof.  Physical time, memory, and stack limits can reject sufficiently
+large genuine proofs in every profile; the completeness claim has the
+same adequate-resource, canonical-proof interpretation as its
+predecessors.
