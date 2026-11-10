@@ -2157,6 +2157,12 @@ A [literal coefficient union attempt](research/nine-sharing-sign17-k-literal-coe
 checked eight tile-union stages but failed on recursion depth during final
 rawWord transport. The pointwise coefficient report was clean; no final
 object or postflight was produced. An explicit finite-sum retry is separate.
+A [literal coefficient union retry](research/nine-sharing-sign17-k-literal-coefficient-union-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-literal-coefficient-union-retry-terminal-independent/README.md),
+checks the pointwise in-Lean Fin986 literal vector and the resulting actual
+rawWord/K identities with sentinels separate. The external JSON/gzip/file
+connection and the sentinel collision in a byte-digit representation remain
+separate.
 A [ranked rawWord retry](research/nine-sharing-sign17-k-ranked-rawword-retry-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-ranked-rawword-retry-terminal-independent/README.md),
 checks the actual rawWord and K symbolic identities, including the ranked
