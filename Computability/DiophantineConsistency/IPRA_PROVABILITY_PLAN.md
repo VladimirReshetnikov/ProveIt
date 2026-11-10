@@ -1447,6 +1447,10 @@ uses a difference-of-squares identity to replace five copies of one shared
 product. Its 94-gate circuit has 37 additions, 17 subtractions and 40
 multiplications under the same convention. Lean equivalence, degree, iPRA
 endpoint and external-file transfers for this candidate remain separate.
+A [94-gate Lean source draft](research/nine-sharing-sign14-94gate-lean-draft/README.md),
+[independently reviewed](reviews/nine-sharing-sign14-94gate-lean-draft-independent/README.md),
+expands to the candidate's five external residual ASTs and proposes the
+difference-of-squares evaluation equalities. It has not been elaborated or checked.
 A [95-gate Lean source draft](research/nine-sharing-sign14-95gate-lean-draft/README.md),
 [independently reviewed](reviews/nine-sharing-sign14-95gate-lean-draft-independent/README.md),
 expands to the candidate's five external residual ASTs and proposes generic
