@@ -1,0 +1,3 @@
+# Independent sign22 expression/evaluation prelaunch review
+
+Independent checker exited 0. The four Fin22 abstract/current expression and evaluation sources are exact adaptations of the checked sign23 stages, remove the distinguished seed input by substituting one, and bind to the independently audited sign22 squares provider. The guarded no-Lean preflight passed. Generic input-removal and current-data providers include successful individual stages of earlier failed enclosing runs, credited only at the observed stage level. No Lean expression result, endpoint, degree or external file correspondence follows from preflight.

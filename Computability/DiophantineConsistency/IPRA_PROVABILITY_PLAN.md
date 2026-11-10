@@ -866,7 +866,11 @@ now checks both directions along the natural kY lift and drop. The existential
 composition is checked by a [same-input client](research/nine-sharing-sign22-seed-iff-check/README.md),
 [independently audited](reviews/nine-sharing-sign22-seed-iff-terminal-independent/README.md),
 for arbitrary symbolic ports. The direct expression and iPRA endpoint remain
-separate.
+separate. A [direct expression evaluation client](research/nine-sharing-sign22-expression-eval-check/README.md),
+[independently audited](reviews/nine-sharing-sign22-expression-eval-terminal-independent/README.md),
+checks input-one evaluation at abstract and current ports, with historical
+partial-provider qualifications. The expression-zero composition and endpoint
+remain separate.
 A [21-witness degree-14 candidate](research/nine-sharing-sign21-degree14-s-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign21-degree14-s-independent/README.md),
 substitutes the natural normalized-S product. Its fixed-input external square-sum
