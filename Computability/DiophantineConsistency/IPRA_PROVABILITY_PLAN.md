@@ -1183,7 +1183,10 @@ warnings. The independent checker required an output-path correction after
 its first invocation failed. A [zero-assembly client](research/nine-sharing-sign18-zero-assembly-check/README.md),
 [independently audited](reviews/nine-sharing-sign18-zero-assembly-terminal-independent/README.md),
 checks both pointwise zero directions under the beta representation
-hypothesis; existential equivalence and the endpoint remain separate.
+hypothesis. A [same-input seed-iff client](research/nine-sharing-sign18-seed-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign18-seed-iff-terminal-independent/README.md),
+checks the resulting existential equivalence under the same hypothesis;
+current-port specialization and the endpoint remain separate.
 A finite [positive-gate octic search](research/nine-sharing-octic-positive-elimination-search/README.md),
 [independently audited](reviews/nine-sharing-octic-positive-elimination-independent/README.md),
 reaches at best 23 witnesses among 19 ordered states when every step preserves
