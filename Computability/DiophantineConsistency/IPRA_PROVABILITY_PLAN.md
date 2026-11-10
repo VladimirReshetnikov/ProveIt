@@ -1487,7 +1487,11 @@ checks current Fin15/Fin16 zero existence iff, with one warning and inherited
 point-survey/ancestry qualifications. A [concrete polynomial bridge](research/nine-sharing-sign15-concrete-polynomial-bridge-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-concrete-polynomial-bridge-terminal-independent/README.md),
 checks symbolic transport through Fin16. Point-union and inherited ancestry
-caveats remain; endpoint, Lean exact degree and JSON binding are separate.
+caveats remain. A [three-stage iPRA endpoint client](research/nine-sharing-sign15-endpoint-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-endpoint-terminal-independent/README.md),
+checks native, standard and Gödel–Gentzen-translated standard proof-existence
+formulations for the symbolic Fin15 expression. Exact Lean degree and external
+JSON/PDF binding remain separate.
 A [further shared-values client](research/nine-sharing-sign15-more-shared-values-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-more-shared-values-terminal-independent/README.md),
 checks four natural component evaluations under represented beta. Assembled
