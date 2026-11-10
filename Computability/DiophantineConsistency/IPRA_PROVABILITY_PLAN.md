@@ -1447,6 +1447,12 @@ uses a difference-of-squares identity to replace five copies of one shared
 product. Its 94-gate circuit has 37 additions, 17 subtractions and 40
 multiplications under the same convention. Lean equivalence, degree, iPRA
 endpoint and external-file transfers for this candidate remain separate.
+A subsequent [92-gate external candidate](research/nine-sharing-sign14-92gate-candidate/README.md),
+[independently audited](reviews/nine-sharing-sign14-92gate-candidate-independent/README.md),
+reassociates the Nt residual to reuse an existing difference. Its live
+exact-sharing circuit has 37 additions, 16 subtractions and 39
+multiplications. Lean equivalence, degree and iPRA endpoints for this further
+candidate remain open; the count is an upper bound, not minimality.
 A [93-gate Lean source draft](research/nine-sharing-sign14-93gate-lean-draft/README.md),
 [independently reviewed](reviews/nine-sharing-sign14-93gate-lean-draft-independent/README.md),
 expands to the five external candidate residuals and proposes the
