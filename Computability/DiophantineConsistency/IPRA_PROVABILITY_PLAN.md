@@ -1264,6 +1264,13 @@ A [natural inner-equation client](research/nine-sharing-sign16-inner-from-seed-c
 derives the inner equation from seed zero under represented ports and explicit
 beta/MC/MF bounds. Union and inherited first-index surveys are point-in-time;
 direct guards and overlays were rechecked. The V lift remains open.
+[Auxiliary](research/nine-sharing-sign16-aux-from-seed-check/README.md) and
+[main norm](research/nine-sharing-sign16-main-norm-check/README.md) clients,
+independently audited ([auxiliary](reviews/nine-sharing-sign16-aux-from-seed-terminal-independent/README.md),
+[main](reviews/nine-sharing-sign16-main-norm-terminal-independent/README.md)),
+derive those norms from seed zero under their stated port hypotheses, without
+assuming the deleted V witness. Union and inherited surveys remain point-in-time;
+direct guards and overlays were rechecked. Other norms and the V lift remain open.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
