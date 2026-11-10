@@ -73,6 +73,13 @@ checks a same-positive-zero degree-138 alternative with 66 operations and a
 restricted multiplication-sharing lower bound. Neither search establishes
 global minimality, and neither is a Lean theorem.
 
+A [conditional 64-operation integer-leaf proposal](research/current14-carrier64-transport-proposal/README.md)
+retains fourteen positive inputs. Its forward zero map and circuit identity
+have passed external review, but its reverse zero map is open. A reviewed
+partial assignment meets transport and the first Pell norm while the naively
+recovered old coordinate is negative; the remaining norms are not established,
+so it is not a full counterexample. The proposal is not a proved replacement.
+
 ## Sign14 proof transfer and fixed-constant work
 
 The 93-gate sign14 symbolic expression now has checked native, standard and
