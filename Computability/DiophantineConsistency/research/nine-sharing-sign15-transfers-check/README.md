@@ -1,0 +1,5 @@
+# Sign15 retained residual transfers: source-only client
+
+Six checked stages transfer the retained rows between sign16 and sign15 under a supplied abstract signed-inner representative, with no port or sign assumption. The [coordinate provider](../../reviews/nine-sharing-sign15-coordinate-terminal-independent/README.md) is independently audited. Actual natural representative existence is independently audited. No zero bridge, JSON binding or endpoint is claimed.
+
+No-Lean preflight exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign15-transfers-prelaunch-independent/README.md) passed. Author outer session 53196 exited 0 ([receipt](attempt01/outer-result.json)); 299 linter warning entries, no sorryAx; the [independent terminal audit](../../reviews/nine-sharing-sign15-transfers-terminal-independent/README.md) passed. Limits are `-M2800`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck. Inherited provider surveys are point-in-time.

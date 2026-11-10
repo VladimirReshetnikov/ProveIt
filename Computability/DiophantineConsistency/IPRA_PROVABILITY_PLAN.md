@@ -1428,6 +1428,10 @@ A [supplied-gap coordinate client](research/nine-sharing-sign15-coordinate-check
 checks lift and recovery without port/sign assumptions, with 41 linter warnings.
 Gap existence is separately checked under bounds; the point-union survey is
 point-in-time, and residual transfers and equivalence remain separate.
+A [six-row transfer client](research/nine-sharing-sign15-transfers-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-transfers-terminal-independent/README.md),
+checks the retained residuals under a supplied abstract gap, with 299 linter
+warnings. Zero assembly and equivalence remain separate.
 A [further shared-values client](research/nine-sharing-sign15-more-shared-values-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-more-shared-values-terminal-independent/README.md),
 checks four natural component evaluations under represented beta. Assembled
