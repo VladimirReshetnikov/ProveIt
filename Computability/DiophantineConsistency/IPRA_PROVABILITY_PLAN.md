@@ -1205,6 +1205,12 @@ checks native, standard and Gödel–Gentzen-translated standard proof-existence
 formulations for the symbolic expression. Its exact degree in Lean and its
 connections to external JSON, Jones coefficients and equation.pdf remain
 unproved; provider surveys are point observations, not a complete ancestry trace.
+A [16-witness degree-112 external candidate](research/nine-sharing-sign16-degree112-v-candidate/README.md),
+[independently checked](reviews/nine-sharing-sign16-external-independent/README.md)
+and with its [proof plan reviewed](reviews/nine-sharing-sign16-final-plan-independent/README.md),
+substitutes a signed V expression. Its external degree is exactly 112 for
+nonzero beta, but proving that the replacement is nonnegative at every new zero
+and hence the reverse equivalence remains open. No iPRA endpoint is claimed.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
