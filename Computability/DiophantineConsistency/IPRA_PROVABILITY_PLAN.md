@@ -1915,6 +1915,11 @@ An [ordering sample](research/nine-sharing-sign17-k-order-batch01-check/README.m
 [independently audited](reviews/nine-sharing-sign17-k-order-batch01-terminal-independent/README.md),
 checks 64 nonzero candidate indices and the 63 internal adjacent comparisons
 for rows 32–95. Cross-block ordering, full union and K binding remain separate.
+A [Start/order probe](research/nine-sharing-sign17-k-order-probe-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-order-probe-terminal-independent/README.md),
+checks candidate index 0 is Start and verifies nonzero indices and adjacent
+weight comparisons among rows 1–31. The Start-to-next relation is intentionally
+not an ordering hypothesis; cross-block order and global rank remain separate.
 A [paired ordering client](research/nine-sharing-sign17-k-order-batch02-03-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-order-batch02-03-terminal-independent/README.md),
 checks nonzero indices and internal adjacent weight comparisons for rows
