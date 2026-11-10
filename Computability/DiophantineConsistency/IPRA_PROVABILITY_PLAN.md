@@ -54,8 +54,10 @@ The [actual all-equal diagonal has degree 150](research/current14-carrier65-diag
 when the first port is nonzero. The [direct polynomial transport](research/current14-carrier65-degree-direct-retry-check/README.md)
 now proves exact total degree 150 for every integer-port tuple satisfying that
 condition; it passed an [independent terminal audit](reviews/current14-carrier65-degree-direct-retry-terminal-independent/README.md).
-The current-port specialization and the expression/PDF correspondence remain
-separate. The actual all-equal diagonal also has an independently audited
+The [current-port specialization](research/current14-carrier65-degree-current-check/README.md)
+also proves exact degree 150 and passed [independent audit](reviews/current14-carrier65-degree-current-terminal-independent/README.md).
+The expression/PDF correspondence remains separate. The actual all-equal
+diagonal also has an independently audited
 [rank bound of 4](research/current14-carrier65-diagonal-rank-check/README.md)
 and an [exact W degree of 2](research/current14-carrier65-diagonal-w-retry02-check/README.md)
 for arbitrary integer ports. The diagonal c, a, H and Δ degrees 5, 6, 6 and
