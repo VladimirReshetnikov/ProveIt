@@ -1273,6 +1273,11 @@ A [compositional staged retry](research/nine-sharing-sign17-degree-staged-retry-
 checks all remaining shared and residual bounds and proves symbolic Fin17
 total degree at most 96 for arbitrary integer ports. Exact degree and external
 binding remain separate.
+An [exact-axis core attempt](research/nine-sharing-sign17-axis-degree-core-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-axis-degree-core-failure-independent/README.md),
+failed because a multiplication-degree lemma was missing from its imports;
+no object or postflight was produced. The independent checker was corrected
+twice before its final pass.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage

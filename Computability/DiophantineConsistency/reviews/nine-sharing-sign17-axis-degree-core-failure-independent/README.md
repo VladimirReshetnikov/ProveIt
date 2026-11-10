@@ -1,0 +1,3 @@
+# Independent sign17 axis-degree core failure audit
+
+The final independent checker exited 0. Author outer session 85964 exited 1: the single compile failed because the multiplication-degree constant was unknown. Product and base reports contain sorryAx; the module object and postflight are absent. Logs, source, provider pins, guards and overlays were checked; no Lean was run in this audit. Two initial checker runs exited 1 because the audit script used an incorrect output-directory spelling and expected the wrong Lean error-label syntax; both checks were corrected before the final successful audit.
