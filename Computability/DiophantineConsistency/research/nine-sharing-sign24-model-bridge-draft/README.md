@@ -43,6 +43,10 @@ Run from this directory `python3 -I -S -B check_syntax.py` to reproduce
 `syntax-result.json` and `python3 -I -S -B check_transfers.py` to reproduce
 `transfer-result.json`. The two generators refuse to overwrite existing files;
 run them in a fresh research subdirectory to reproduce their respective
-sources and receipts. No Lean process has been run for this packet. Every
-`.lean` file is an uncompiled proposal; there is no model-bridge or endpoint
-claim. Independent review and a guarded build are required.
+sources and receipts. Matching source copies of the syntax, square
+decomposition, and q3 coordinate client have now passed guarded builds and
+independent terminal audits at `research/nine-sharing-sign24-seed-squares-check/`
+and `research/nine-sharing-sign24-coordinate-check/`. Matching copies of the
+15 transfer drafts have also passed a guarded build and independent terminal
+audit at `research/nine-sharing-sign24-transfers-check/`. There is no
+assembled model-bridge or endpoint claim.

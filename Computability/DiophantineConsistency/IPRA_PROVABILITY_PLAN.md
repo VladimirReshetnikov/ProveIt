@@ -673,8 +673,11 @@ checks the symbolic seed zero iff its 15 residuals vanish. The q3 model
 lift and coordinate recovery have a [Lean client](research/nine-sharing-sign24-coordinate-check/README.md),
 [independently audited](reviews/nine-sharing-sign24-coordinate-terminal-independent/README.md),
 under an explicit beta-port representation hypothesis. The remaining residual
-transfers, current-port cast, full model bridge, Lean degree and port-byte
-binding, and iPRA endpoint remain open.
+transfers have a [Lean client](research/nine-sharing-sign24-transfers-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-transfers-terminal-independent/README.md),
+checking all 15 row identities with 61 linter warnings. The assembled model
+bridge, current-port cast, Lean degree and port-byte binding, and iPRA
+endpoint remain open.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
