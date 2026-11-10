@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+root=Path(__file__).resolve().parents[2];repo=root.parents[1];p=root/'research/nine-sharing-sign14-positive74-degree-exact-check';sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest()
+assert sha(p/'run.py')=='3494107f574e6db0934c881a1b274a267a8d4f142b80029a111fcb1aba19ad3d' and sha(p/'source-manifest.json')=='cb15ff788e14c51cb926d379cf40cec1f17a141c423f1b8f5fbe215e3f6cf6c9' and sha(p/'provider-union.py')=='a30696a159a8d3699aeb8325580ddb3454e50532f3cc7f3ca3c5b3799d4dcddb'
+e,=json.loads((p/'source-manifest.json').read_text())['rows'];n='Sign14Positive74DegreeExact';q=p/'src/DiophantineConsistency'/(n+'.lean');s=q.read_text();assert e['module']=='DiophantineConsistency.'+n and e['imports']==['DiophantineConsistency.Sign14Positive74DegreeTranslation','DiophantineConsistency.Sign14Positive74DegreeIdentity','DiophantineConsistency.Sign14Optimized86Degree'] and sha(q)==sha(repo/e['source'])==e['source_sha256'] and re.findall(r'^import ([A-Za-z0-9_.]+)$',s,re.M)==e['imports'] and not re.search(r'(?m)^\s*(axiom|opaque|partial)\b|\b(sorry|admit|native_decide)\b',s)
+for z in ('Sign14Positive74.expression CurrentWindowCarry2011.ports','expression.toPolynomial.totalDegree = 124','translate expression.toPolynomial = Sign14Optimized86Current.expression.toPolynomial','Sign14Positive74DegreeIdentity.shifted_polynomial CurrentWindowCarry2011.ports','(translate_degree _).symm','Sign14Optimized86Current.totalDegree_eq'):assert z in s
+for f in ('nine-sharing-sign14-positive74-degree-translation-terminal-independent','nine-sharing-sign14-positive74-degree-identity-terminal-independent','nine-sharing-sign14-86gate-degree-terminal-independent'):
+ subprocess.run([sys.executable,'-I','-S','-B',str(root/'reviews'/f/'check.py')],capture_output=True,check=True,timeout=180)
+u=json.loads(subprocess.run([sys.executable,'-I','-S','-B',str(p/'provider-union.py')],capture_output=True,text=True,check=True,timeout=180).stdout);assert u['status']=='PASS' and u['overlap_count']==2982 and len(u['extra'])==55 and u['captured_direct_edges']==24 and set(u['direct'])=={'Sign14Positive74DegreeIdentity','Sign14Optimized86Degree'}
+r=(p/'run.py').read_text();assert "'-M3600'" in r and "LEAN_NUM_THREADS='1'" in r and "'-j1'" in r and 'rss_limit=4*1024**3,mem_floor=10*1024**3,seconds=120,interval=.1' in r and 'direct producer binding' in r
+x=subprocess.run([sys.executable,'-I','-S','-B',str(p/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=180);assert not x.stderr and json.loads(x.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT'
+print(json.dumps({'status':'PASS_PRELAUNCH','scope':'proposed current Lean positive74 expression total degree 124; graph/JSON/PDF binding separate; union survey point-in-time not complete load trace'},indent=2))
