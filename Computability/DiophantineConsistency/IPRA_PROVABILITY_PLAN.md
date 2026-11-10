@@ -87,11 +87,13 @@ and [two inner residuals](research/nine-sharing-sign14-positive74-rows-inner-che
 have since passed Lean and independent terminal review. All five residuals
 are covered individually, and their [whole-expression coordinate identity](research/nine-sharing-sign14-positive74-expression-bridge-check/README.md)
 is checked. The [pointwise and existential model-zero equivalences](research/nine-sharing-sign14-positive74-model-check/README.md)
-are checked in the `positiveShift` formulation. A separately stated
-positive-witness bijection and exact degree remain open. The [all-model
+are checked in the `positiveShift` formulation; an [explicitly positive-witness
+model equivalence](research/nine-sharing-sign14-positive74-positive-witness-check/README.md)
+is checked separately. Exact degree and an explicitly positive-witness
+object-language iPRA statement remain open. The [all-model
 polynomial bridge](research/nine-sharing-sign14-positive74-ipra-bridge-check/README.md)
-has passed Lean and independent terminal audit; the final iPRA derivability
-endpoints remain separate.
+and the [native, standard and translated iPRA endpoints](research/nine-sharing-sign14-positive74-ipra-endpoint-check/README.md)
+for the shifted expression have passed Lean and independent terminal audit.
 
 For fixed-constant work, the [generic radix stream theorem](research/nine-sharing-sign17-k-radix-stream-retry-check/README.md)
 and its [symbolic K specialization](research/nine-sharing-sign17-k-radix-stream-current-check/README.md)
