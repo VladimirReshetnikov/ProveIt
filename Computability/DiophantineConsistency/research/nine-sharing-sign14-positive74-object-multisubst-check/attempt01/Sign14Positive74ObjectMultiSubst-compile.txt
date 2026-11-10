@@ -1,0 +1,38 @@
+/tmp/nine-sharing-sign14-positive74-object-multisubst-check-20261110/src/DiophantineConsistency/Sign14Positive74ObjectMultiSubst.lean:48:8: error: Proof search failed: [{
+    antecedent :=
+      [(app (Rew.embSubsts (mix s v w))) φ 🡒 (app (Rew.embSubsts (Function.update (mix s v w) i (w i)))) φ,
+        (app (Rew.embSubsts v)) φ 🡒 (app (Rew.embSubsts (mix s v w))) φ, guard, eqAt (mix s v w i) (w i),
+        (app (Rew.embSubsts v)) φ],
+    succedent := [(app (Rew.embSubsts (Function.update (mix s v w) i (w i)))) φ] },
+  {
+    antecedent :=
+      [(app (Rew.embSubsts (mix s v w))) φ 🡒 (app (Rew.embSubsts (Function.update (mix s v w) i (w i)))) φ,
+        (app (Rew.embSubsts v)) φ 🡒 (app (Rew.embSubsts (mix s v w))) φ, guard, eqAt (mix s v w i) (w i)],
+    succedent := [] },
+  {
+    antecedent :=
+      [guard 🡒 (app (Rew.embSubsts v)) φ 🡒 (app (Rew.embSubsts (mix s v w))) φ, guard 🡒 eqAt (mix s v w i) (w i),
+        eqAt (mix s v w i) (w i) 🡒
+          (app (Rew.embSubsts (mix s v w))) φ 🡒 (app (Rew.embSubsts (Function.update (mix s v w) i (w i)))) φ],
+    succedent := [eqAt (mix s v w i) (w i), guard, eqAt (mix s v w i) (w i)] },
+  {
+    antecedent :=
+      [guard 🡒 (app (Rew.embSubsts v)) φ 🡒 (app (Rew.embSubsts (mix s v w))) φ, guard 🡒 eqAt (mix s v w i) (w i)],
+    succedent := [guard] },
+  { antecedent := [guard 🡒 eqAt (mix s v w i) (w i)], succedent := [guard] }]
+/tmp/nine-sharing-sign14-positive74-object-multisubst-check-20261110/src/DiophantineConsistency/Sign14Positive74ObjectMultiSubst.lean:50:6: error: Type mismatch: After simplification, term
+  t⨀!he⨀!Classical.choice ih⨀!step
+ has type
+  extended nativeTheory ⊢!
+    guard 🡒 (app (Rew.embSubsts v)) φ 🡒 (app (Rew.embSubsts (Function.update (mix s v w) i (w i)))) φ
+but is expected to have type
+  extended nativeTheory ⊢! guard 🡒 (app (Rew.embSubsts v)) φ 🡒 (app (Rew.embSubsts (update i (w i) (mix s v w)))) φ
+/tmp/nine-sharing-sign14-positive74-object-multisubst-check-20261110/src/DiophantineConsistency/Sign14Positive74ObjectMultiSubst.lean:52:2: error: Type mismatch: After simplification, term
+  hm Finset.univ
+ has type
+  extended nativeTheory ⊢ guard 🡒 (app (Rew.embSubsts v)) φ 🡒 (app (Rew.embSubsts w)) φ
+but is expected to have type
+  Nonempty (extended nativeTheory ⊢! guard 🡒 (app (Rew.embSubsts v)) φ 🡒 (app (Rew.embSubsts w)) φ)
+'DiophantineConsistency.Sign14Positive74ObjectMultiSubst.guardedAllSubstitution' depends on axioms: [propext,
+ sorryAx,
+ Quot.sound]
