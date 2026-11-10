@@ -790,6 +790,10 @@ A [lower-bound first attempt](research/nine-sharing-sign24-degree-lower-check/RE
 [independently audited](reviews/nine-sharing-sign24-degree-lower-terminal-independent/README.md),
 identified the N0 row but failed its axis specialization on finite-index
 goals and reported `sorryAx`; no object or later degree theorem was produced.
+A [finite-index retry](research/nine-sharing-sign24-degree-lower-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-degree-lower-retry-terminal-independent/README.md),
+checks the N0 axis identity in any commutative ring and generic diagonal
+total-degree nonincrease. The coefficient argument and exact degree remain open.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact

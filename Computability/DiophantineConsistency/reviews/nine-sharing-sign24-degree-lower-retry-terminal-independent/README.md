@@ -1,0 +1,3 @@
+# Independent sign24 degree lower-bound ingredients terminal audit
+
+Independent checker session 97202 exited 0 against author outer session 2251 (exit 0). Both Lean stages and final postflight succeeded. The first identifies the N0 residual and proves its axis identity over arbitrary commutative rings, with `[propext]` reports. The second proves the Fin24-to-Fin1 diagonal substitution cannot increase polynomial total degree, with `[propext, Classical.choice, Quot.sound]` report. No warnings or `sorryAx` occurred. The checker verified source, objects, direct guards, overlays and expression provider. These are ingredients only: no full polynomial lower bound, exact degree or external file binding follows.
