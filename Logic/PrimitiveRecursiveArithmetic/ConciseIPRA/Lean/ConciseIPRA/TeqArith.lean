@@ -126,6 +126,15 @@ theorem succ_eq_add_one (x : Q Γ) : succ x = x + 1 := by
 
 theorem one_add_one_eq : (1 : Q Γ) + 1 = succ 1 := (succ_eq_add_one 1).symm
 
+/-! The simp normal form pushes successors out of sums. -/
+
+attribute [simp] add_succ succ_add
+
+@[simp] theorem add_one_eq (x : Q Γ) : x + 1 = succ x := (succ_eq_add_one x).symm
+
+@[simp] theorem one_add_eq (x : Q Γ) : 1 + x = succ x := by
+  rw [add_comm, add_one_eq]
+
 end Q
 
 namespace Ext
