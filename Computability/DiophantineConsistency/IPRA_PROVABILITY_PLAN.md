@@ -641,6 +641,11 @@ endpoint remains separate. A [guarded endpoint attempt](research/nine-sharing-si
 stopped at its first Lean stage with an interpreter memory exception under
 `-M2800`; no endpoint object or final postflight was produced. Its retained
 state's sign26 scope label is stale: the attempted sources are sign25.
+A [split diagnostic](research/nine-sharing-sign25-endpoint-diagnostic-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-endpoint-diagnostic-terminal-independent/README.md),
+compiled the bridge import but encountered an interpreter memory exception
+when adding the expression alias and local attributes. Later stages did not
+run; the exact trigger and the endpoint remain unresolved.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
