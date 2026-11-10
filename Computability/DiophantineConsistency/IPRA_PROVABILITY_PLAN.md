@@ -681,7 +681,11 @@ A [generic standard-theory attempt](research/nine-sharing-sign25-generic-standar
 [independently audited](reviews/nine-sharing-sign25-generic-standard-terminal-independent/README.md),
 stopped at its first stage on namespace and identifier errors; its log reports
 `sorryAx` after elaboration errors and no theorem object was produced. A
-namespace-corrected retry is separate.
+[namespace-corrected retry](research/nine-sharing-sign25-generic-standard-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-generic-standard-retry-terminal-independent/README.md),
+compiled the generic standard theorem conditional on a polynomial bridge,
+but its sign25 specialization hit an interpreter memory exception. The
+overall run failed and the translated stage and postflight did not run.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
