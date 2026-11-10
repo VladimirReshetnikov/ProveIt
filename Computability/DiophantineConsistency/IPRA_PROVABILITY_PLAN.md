@@ -1461,6 +1461,11 @@ A [94-gate fixed-input expression client](research/nine-sharing-sign14-94gate-ex
 checks generic commutative-ring evaluation and polynomial equality with the
 95-gate expression at arbitrary ports. Model, degree and iPRA transfers remain
 separate, as do external JSON/PDF and fixed-port byte bindings.
+A [94-gate all-model zero client](research/nine-sharing-sign14-94gate-model-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-94gate-model-terminal-independent/README.md),
+checks pointwise and existential zero equivalence with the prior expression
+for arbitrary ports in every stated IΣ₁ model. The optimized degree, bridge and
+iPRA endpoints remain separate.
 A [95-gate Lean source draft](research/nine-sharing-sign14-95gate-lean-draft/README.md),
 [independently reviewed](reviews/nine-sharing-sign14-95gate-lean-draft-independent/README.md),
 expands to the candidate's five external residual ASTs and proposes generic
