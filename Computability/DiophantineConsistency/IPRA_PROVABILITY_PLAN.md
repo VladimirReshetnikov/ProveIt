@@ -1630,6 +1630,10 @@ A [concrete block-composition client](research/nine-sharing-sign17-mc-compose-bl
 [independently audited](reviews/nine-sharing-sign17-mc-compose-blocks-terminal-independent/README.md),
 checks the 251 aligned blocks and tail decode equally in Lean. Connecting this
 to symbolic lowPort and file/gzip/JSON/PDF binding remains separate.
+A [whole-byte-list attempt](research/nine-sharing-sign17-mc-whole-bytes-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-mc-whole-bytes-terminal-independent/README.md),
+passed twenty prerequisites but left a replicate-append equality unresolved;
+no symbolic port-byte-list object or postflight was produced.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
