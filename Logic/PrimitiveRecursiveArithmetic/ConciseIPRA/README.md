@@ -5,7 +5,7 @@ complete presentation of a theory bi-interpretable with full first-order
 intuitionistic primitive recursive arithmetic (iPRA), and the Lean
 formalization of the most concise of them.
 
-- [`Research/`](Research/) holds nineteen delivered packages, one directory
+- [`Research/`](Research/) holds twenty-two delivered packages, one directory
   each. They are written mathematics with executable Python proof checkers;
   none of them claims a proof-assistant verification.
 - `Lean/` is the formalization (see [Lean formalization](#lean-formalization)).
@@ -96,6 +96,9 @@ for separate coordinates, they are listed separately. Each package's own
 | [`uniform_premise`](Research/uniform_premise/) | Every non-hypothesis instruction verifies a major premise against a retained neutral truth; a successful-trace invariant replaces the type guard | 262 / 303 / 548, and 537 bytes |
 | [`witness_rule`](Research/witness_rule/) | One introduction rule in place of the case/progress choice: progress exactly when the matrix is a literal equation and the witness is literally `0`, cases otherwise; the same sequents are derivable | 266 / 312 / 555 |
 | [`neutral_scope`](Research/neutral_scope/) | Composition of neutral premises with local scopes; no new mathematics | 266 / 310 / 529, and 290 AST nodes |
+| [`prevalidated_elimination`](Research/prevalidated_elimination/) | The elimination template and both instances are fixed before the major premise is proved; no new mathematics | 263 / 307 / 547; 539 bytes; 261 tokens |
+| [`scope_and_coverage`](Research/scope_and_coverage/) | Byte-profile checkers; for the self-seeded recursor without successor injectivity, `S^k(a) ≠ a` for each fixed `k ≥ 1` and a right predecessor with `n = 0 ∨ n = S(P n)` | 266 / 310 / 529, and 537 bytes |
+| [`coverage_and_kernel`](Research/coverage_and_kernel/) | For the self-seeded recursor without successor injectivity, whole-domain coverage from a protected orbit; one `D` over a literal equation represents exactly the prenex `∃∀` quantifier-free class | 531 and 539 bytes; 289 AST nodes |
 
 ### Other arithmetic bases
 
@@ -108,11 +111,11 @@ for separate coordinates, they are listed separately. Each package's own
 
 ## Intake record
 
-Twenty-three archives `ipra_<name>_2026-11-10.zip` were delivered to
-`docs/drafts/` on 2026-11-10, in two rounds of twenty and three, and filed here
-on the same day.
+Twenty-six archives `ipra_<name>_2026-11-10.zip` were delivered to
+`docs/drafts/` on 2026-11-10, in three rounds of twenty, three and three, and
+filed here on the same day.
 
-- **Filed (19):** the packages listed above, each under its `<name>`.
+- **Filed (22):** the packages listed above, each under its `<name>`.
 - **Discarded (4):** `flat_computation`, `affine_arity`, `arity_calculus` and
   `affine_supply`. Each is a checker-size step on the native scalar core with
   no mathematics of its own, and each is superseded in its coordinates by
