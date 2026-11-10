@@ -1350,6 +1350,10 @@ A [symbolic Fin14 degree-upper client](research/nine-sharing-sign14-degree-upper
 checks total degree at most 124 for arbitrary integer ports and current ports.
 The Lean lower bound/exact degree and external binding remain separate;
 inherited partial-parent ancestry is qualified.
+A [generic axis-degree ingredient](research/nine-sharing-sign14-axis-degree-generic-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-axis-degree-generic-terminal-independent/README.md),
+checks degree 8 under nonzero parameter and explicit correction/rank degree
+bounds. Binding the actual staged axis and the lower bound remain separate.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
