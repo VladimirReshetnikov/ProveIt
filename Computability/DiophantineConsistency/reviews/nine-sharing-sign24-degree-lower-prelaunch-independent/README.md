@@ -1,0 +1,3 @@
+# Independent sign24 degree lower-bound first-stage prelaunch review
+
+Independent checker session 95713 exited 0. The two proposed stages identify the actual N0 residual as entry six of the remaining list and its axis specialization, and prove a generic total-degree upper bound under the Fin24 diagonal substitution. The axis fixes seed index 0 to one and seed indices 16/17 to t; after input removal, diagonal polynomial indices 15/16 map to X. The checked source and guards retain the audited expression provider, fresh-output check, -M3600 and existing resource controls. No Lean theorem, full lower bound, exact degree or external file binding follows from this preflight.

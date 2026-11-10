@@ -786,6 +786,10 @@ checks `toPolynomial.totalDegree ≤ 8` for the actual abstract Fin24 expression
 at arbitrary integer ports and for the current expression. It passed all four
 stages and final postflight, with four no-op/unreachable tactic warnings. It
 does not establish an exact degree lower bound or external byte binding.
+A [lower-bound first attempt](research/nine-sharing-sign24-degree-lower-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-degree-lower-terminal-independent/README.md),
+identified the N0 row but failed its axis specialization on finite-index
+goals and reported `sorryAx`; no object or later degree theorem was produced.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
