@@ -1329,6 +1329,11 @@ An [explicit-calculation retry](research/nine-sharing-sign17-axis-degree-base-re
 checks the generic shift and nonzero-z affine factor degrees. Its console label
 is inherited from an earlier probe; the state and manifest contain both stages.
 The concrete lower bound remains separate.
+A [dominant-root factor client](research/nine-sharing-sign17-axis-degree-root-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-axis-degree-root-terminal-independent/README.md),
+checks degree 11 for an explicit univariate factor under nonzero parameter.
+Its console label is stale; state and manifest show all three stages. Binding
+the factor to the staged root and the full lower bound remain separate.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
