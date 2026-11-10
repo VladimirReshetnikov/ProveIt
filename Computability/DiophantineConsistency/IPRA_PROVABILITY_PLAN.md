@@ -1381,6 +1381,10 @@ A [scalar-window client](research/nine-sharing-sign14-scalar-window-check/README
 derives `q ≥ F` from staged seed/Nt under explicit beta/MC/MF bounds, without
 N0 or a tau witness. The first-index survey remains point-in-time; equivalence
 is separate.
+A [signed tau-value client](research/nine-sharing-sign14-tau-value-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-tau-value-terminal-independent/README.md),
+checks E and signed tau evaluations under represented beta/MC/MF and `q ≥ F`,
+without a natural tau witness. Transfers and equivalence remain separate.
 A [staged syntax client](research/nine-sharing-sign15-staged-syntax-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-staged-syntax-terminal-independent/README.md),
 checks the symbolic seed-zero characterization in 16 stages. The external AST
