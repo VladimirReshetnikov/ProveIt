@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+root=Path(__file__).resolve().parents[2];repo=root.parents[1];p=root/'research/nine-sharing-sign14-positive74-object-shift-induction-check';sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest()
+assert sha(p/'run.py')=='2f57e0e2c9d80f96f7194dcdb450044d153bb3ef460285a98d3c6f618c849e3b' and sha(p/'source-manifest.json')=='d7b0fc75ee10de6c4454c96a2b577a0fc47745337e76dcef77330c7a24a224ad'
+e,=json.loads((p/'source-manifest.json').read_text())['rows'];n='Sign14Positive74ObjectShiftInduction';q=p/'src/DiophantineConsistency'/(n+'.lean');s=q.read_text();assert e['module']=='DiophantineConsistency.'+n and e['imports']==['DiophantineConsistency.Sign14Positive74ObjectCompilerInduction'] and sha(q)==sha(repo/e['source'])==e['source_sha256'] and re.findall(r'^import ([A-Za-z0-9_.]+)$',s,re.M)==e['imports'] and not re.search(r'(?m)^\s*(axiom|opaque|partial)\b|\b(sorry|admit|native_decide)\b',s)
+for z in ('(hconst : ∀ k : ℕ, extended nativeTheory ⊢!','(hpos : ∀ i : Fin n, extended nativeTheory ⊢!','(hneg : extended nativeTheory ⊢!','Aligned v w (positiveShift e).splitNatural.1 e.splitNatural.1','Aligned v w (positiveShift e).splitNatural.2 e.splitNatural.2','| constant z => exact ⟨.leaf _ _ (hconst _), .leaf _ _ (hconst _)⟩','| var i => exact ⟨.leaf _ _ (hpos i), .leaf _ _ hneg⟩','| add p q hp hq => exact ⟨.add hp.1 hq.1, .add hp.2 hq.2⟩','| sub p q hp hq => exact ⟨.add hp.1 hq.2, .add hp.2 hq.1⟩','.add (.mul hp.1 hq.1) (.mul hp.2 hq.2)','.add (.mul hp.1 hq.2) (.mul hp.2 hq.1)','alignNative (splitTrees v w hconst hpos hneg e).1','alignNative (splitTrees v w hconst hpos hneg e).2'):assert z in s
+natural=(root/'Lean/DiophantineConsistency/NaturalExpression.lean').read_text();assert all(z in natural for z in ('(a.1 + b.1, a.2 + b.2)','(a.1 + b.2, a.2 + b.1)','(a.1 * b.1 + a.2 * b.2, a.1 * b.2 + a.2 * b.1)'))
+subprocess.run([sys.executable,'-I','-S','-B',str(root/'reviews/nine-sharing-sign14-positive74-object-compiler-induction-terminal-independent/check.py')],capture_output=True,check=True,timeout=180)
+r=(p/'run.py').read_text();assert "'-M3600'" in r and "LEAN_NUM_THREADS='1'" in r and "'-j1'" in r and 'rss_limit=4*1024**3,mem_floor=10*1024**3,seconds=120,interval=.1' in r and 'direct producer binding' in r
+x=subprocess.run([sys.executable,'-I','-S','-B',str(p/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=180);assert not x.stderr and json.loads(x.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT'
+print(json.dumps({'status':'PASS_PRELAUNCH','scope':'conditional split/shift native induction under explicit constant/positive-variable/negative-variable leaf proofs'},indent=2))
