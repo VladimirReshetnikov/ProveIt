@@ -1283,6 +1283,10 @@ An [exact-axis core attempt](research/nine-sharing-sign17-axis-degree-core-check
 failed because a multiplication-degree lemma was missing from its imports;
 no object or postflight was produced. The independent checker was corrected
 twice before its final pass.
+An [explicit-import retry](research/nine-sharing-sign17-axis-degree-core-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-axis-degree-core-retry-failure-independent/README.md),
+failed at an imported `Matrix.map` namespace collision with Foundation; no
+source theorem, object or final postflight was produced.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
