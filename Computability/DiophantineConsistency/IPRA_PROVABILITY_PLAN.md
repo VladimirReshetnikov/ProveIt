@@ -116,8 +116,9 @@ transition rows](research/nine-sharing-sign17-lines-decoder-check/README.md),
 and the [target sets and rail values](research/nine-sharing-sign17-lines-rails-check/README.md).
 The [ordered table and all 942 indexed tiles](research/nine-sharing-sign17-lines-table-check/README.md)
 are now reconstructed from those Lean digits, reusing the fixed start, copy,
-tail and head-color definitions. Rank/K composition and external document
-semantics remain separate.
+tail and head-color definitions. The [floor ranks and K/byte-value composition](research/nine-sharing-sign17-lines-kernel-check/README.md)
+are checked from that table. The original full-equation endpoint composition
+and external document semantics remain separate.
 
 ## Current reduction status
 
