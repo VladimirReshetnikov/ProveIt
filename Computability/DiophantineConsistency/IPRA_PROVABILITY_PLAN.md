@@ -34,6 +34,15 @@ unspecified scope. Replaying all ancestry is not principally a Lean-line
 count. These figures do not bound an explicit iPRA proof certificate, which
 the derivability theorem does not print.
 
+The [65-gate graph-to-expression theorem](research/current14-carrier65-dag-expression-retry-check/README.md)
+now checks an explicit live circuit for the maintained Lean expression, with
+16 additions, 12 subtractions and 37 multiplications, for arbitrary integer
+ports and commutative-ring inputs. This is an upper bound under the stated
+binary-circuit metric, not a minimality result. The count provider consists
+of successful children of an earlier failed outer run, and historical direct
+objects remain point-pinned. A Lean proof of exact degree 150 remains open;
+the comparison with TeX/PDF is external.
+
 ## Sign14 proof transfer and fixed-constant work
 
 The 93-gate sign14 symbolic expression now has checked native, standard and
