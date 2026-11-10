@@ -1192,6 +1192,12 @@ A finite [positive-gate octic search](research/nine-sharing-octic-positive-elimi
 reaches at best 23 witnesses among 19 ordered states when every step preserves
 residual syntactic degree at most four. This excludes no other transformation
 and is not a general variable-count lower bound or a Lean theorem.
+A [direct-elimination frontier survey](research/nine-sharing-direct-elimination-frontier-search/README.md),
+[independently audited](reviews/nine-sharing-direct-elimination-frontier-independent/README.md),
+checks 65 ordered positive-gate states from the sign23 syntax. Its best
+residual syntactic degree bounds are 4, 6, 7, 10 and 22 for 23 through 19
+witnesses, respectively. This finite survey is not a general optimality,
+exact-degree or Lean model result.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a

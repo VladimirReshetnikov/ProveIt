@@ -1,0 +1,3 @@
+# Independent audit: finite direct-elimination frontier
+
+The independent checker exited 0. A separate breadth-first implementation reproduced all 65 ordered states and every proposed next substitution from the pinned sign23 AST, and compared all stored optimal sequences at each witness count. The best residual syntactic degree bounds for 23, 22, 21, 20 and 19 witnesses are 4, 6, 7, 10 and 22 respectively; no search-depth cutoff was reached. This is only the finite positive direct-variable syntactic exploration. It does not prove a general optimum, exact polynomial degree, model bridge or Lean-to-JSON binding.
