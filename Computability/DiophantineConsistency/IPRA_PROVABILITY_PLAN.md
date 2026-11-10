@@ -1529,6 +1529,11 @@ A [split MC diagnostic](research/nine-sharing-sign17-mc-byte-staged-check/README
 checked literal declaration and reflexivity but again hit stack overflow in the
 comparison stage. The successful literal child belongs to a failed parent;
 no MC equality object or postflight was produced.
+A [bounded MC chunk client](research/nine-sharing-sign17-mc-chunk-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-mc-chunk-terminal-independent/README.md),
+checks six finite radix/byte block identities. Its audit records checker and
+replayed-object pin corrections; whole-port composition and Lean file binding
+remain separate.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
