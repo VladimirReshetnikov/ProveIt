@@ -1500,6 +1500,10 @@ An [external mask-byte recomputation](research/nine-sharing-sign17-external-bind
 [independently reviewed](reviews/nine-sharing-sign17-external-masks-independent/README.md),
 matches MC and shifted MF bytes using manually inspected Lean recipes and
 Python. This is not a Lean file, gzip or JSON binding; K0 is excluded.
+A [concrete MC numeral probe](research/nine-sharing-sign17-mc-byte-probe-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-mc-byte-probe-terminal-independent/README.md),
+passed fifteen prerequisites but the final compile hit stack overflow; no MC
+equality object or postflight was produced.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
