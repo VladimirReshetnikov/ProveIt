@@ -1245,6 +1245,10 @@ A [closed-reduction probe retry](research/nine-sharing-sign17-degree-shared-prob
 [independently audited](reviews/nine-sharing-sign17-degree-shared-probe-retry-failure-independent/README.md),
 also passed the generic stage but failed to unfold that locally irreducible
 node; no shared-node object or postflight was produced.
+A [second probe retry](research/nine-sharing-sign17-degree-shared-probe-retry02-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-degree-shared-probe-retry02-terminal-independent/README.md),
+checks generic syntax degree and bounds for shared nodes 00–04. The remaining
+nodes and full degree bound are separate.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
