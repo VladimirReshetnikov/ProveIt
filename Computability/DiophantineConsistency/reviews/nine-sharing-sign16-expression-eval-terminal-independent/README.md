@@ -1,0 +1,3 @@
+# Independent sign16 expression/evaluation terminal audit
+
+The independent checker exited 0. Author outer session 23822 exited 0; four stages and postflight passed. Source/object pins, logs, direct providers, guards, overlays and both surveys were checked. Two evaluation reports have standard axioms, with no warnings or sorryAx. These are Fin16 input-one evaluation facts; the generic-removal and current-data providers retain individually successful observations from overall failed producers and deeper inherited ancestry. Expression equivalence and external JSON binding remain separate. No Lean was rerun here.
