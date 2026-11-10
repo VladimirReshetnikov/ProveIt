@@ -1314,6 +1314,10 @@ A [coordinate client](research/nine-sharing-sign16-coordinate-check/README.md),
 checks supplied-gap deleted-row zero and recovery under represented beta,
 with one warning. The stronger-hypothesis gap existence is separate above;
 the union survey is point-in-time, and transfers/equivalence remain separate.
+A [seven-row transfer client](research/nine-sharing-sign16-transfers-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-transfers-terminal-independent/README.md),
+checks the retained residual transfers under represented beta and a supplied gap,
+with 345 linter warnings. Zero assembly and equivalence remain separate.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
