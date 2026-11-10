@@ -2082,6 +2082,10 @@ A [ranked rawWord retry](research/nine-sharing-sign17-k-ranked-rawword-retry-che
 checks the actual rawWord and K symbolic identities, including the ranked
 tile sum, 34 control contributions and three sentinels. The frozen
 coefficient-array and external-file bindings remain separate.
+A [direct control-coefficient attempt](research/nine-sharing-sign17-k-control-coefficients-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-control-coefficients-terminal-independent/README.md),
+timed out at the 120-second child limit without an object or postflight.
+The split-vector ingredients above replace that monolithic check.
 A [ranked rawWord assembly attempt](research/nine-sharing-sign17-k-ranked-rawword-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-ranked-rawword-terminal-independent/README.md),
 failed because three fixed sentinel-vector entries were not reduced. It
