@@ -692,6 +692,11 @@ compiled the generic standard theorem and concrete sentence equality in two
 stages, then hit an interpreter memory exception when specializing the bridge.
 The final wrapper and postflight did not run; no concrete standard endpoint
 is claimed.
+A [specialization diagnostic](research/nine-sharing-sign25-specialization-diagnostic-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-specialization-diagnostic-terminal-independent/README.md),
+compiled the generic and sentence stages plus their combined bridge import,
+then hit an interpreter exception while checking the typed assertion with
+local attributes. The proof check and postflight were not reached.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
