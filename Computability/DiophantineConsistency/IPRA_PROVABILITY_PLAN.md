@@ -1369,6 +1369,14 @@ A [Na-row client](research/nine-sharing-sign15-na-row-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-na-row-terminal-independent/README.md),
 extracts the substituted row from actual staged seed zero with shared values
 abstract, with one warning. Its concrete interpretation and lift are separate.
+A [transport-row client](research/nine-sharing-sign15-transport-row-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-transport-row-terminal-independent/README.md),
+derives natural Nt transport from staged seed zero under represented beta/K,
+without the deleted witness. The window and lift remain separate.
+A [rank-value client](research/nine-sharing-sign15-rank-value-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-rank-value-terminal-independent/README.md),
+checks natural rank representation under explicit represented beta/MC/MF and
+`q ≥ F`. Deriving that inequality and the lift remain separate.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
