@@ -21,7 +21,9 @@ A candidate staged kernel-checked route is:
    its range, injectivity/bijection and its treatment of position 0. Check the
    941 non-Start tile weights against the table in bounded chunks, using the
    actual Lean `tile` and `selectorWeight` definitions. These are finite
-   computations; no such table proof is yet present here.
+   computations; independently audited finite-batch weight theorems now
+   cover all 942 candidate rows, but they have not yet been assembled into
+   one Fin942 theorem.
 2. Prove the candidate table is strictly descending. Use the existing
    bijection and `physical_lt_iff_weight`/`physicalWeight_strictAnti` to prove
    the candidate positions equal the actual `physicalEquiv` ordering. This
@@ -39,3 +41,21 @@ A candidate staged kernel-checked route is:
 
 This is a design, not a proof of the array-to-Lean-K equality, a completed
 byte binding, or any additional consistency equivalence.
+
+## Bounded certificate assembly
+
+Lean has checked a [generic `Fin.append` certificate lemma](../nine-sharing-sign17-k-weight-append-check/README.md)
+and an [actual-map rank criterion](../nine-sharing-sign17-k-adjacent-rank-check/README.md)
+conditional on Start/nonzero behavior and 940 adjacent inequalities. A
+future assembly can concatenate the checked 32-entry first block, 64-entry
+interior blocks and 14-entry final block, then combine their finite weight
+theorems using `Fin.append`. Each provider's terminal receipt, actual object,
+import route and shared overlay must be checked before the assembled client is
+run; matching external witness rows are not themselves a Lean theorem.
+
+For the non-Start part, check indices are nonzero and adjacent weights decrease
+inside each block, plus each boundary between blocks. The separately checked
+rank criterion turns those facts into actual physical positions. The
+[single-block ordering sample](../nine-sharing-sign17-k-order-batch01-check/README.md)
+is only a proposed test until its own run and audit pass. This still leaves
+control terms, coefficient aggregation, radix bytes and file provenance.
