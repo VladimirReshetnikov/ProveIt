@@ -1345,6 +1345,12 @@ caveats remain. A [three-stage iPRA endpoint client](research/nine-sharing-sign1
 checks native, standard and Gödel–Gentzen-translated standard proof-existence
 formulations for the symbolic Fin16 expression. Its exact Lean degree and
 external JSON/PDF binding remain separate.
+A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
+[independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
+eliminates the signed inner coordinate and has external fixed-port degree 124
+for positive beta. Its proposed non-circular natural lift, equivalence, Lean
+degree, endpoint and JSON/PDF binding remain open; a negative-lift test is not
+claimed to be a seed zero.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
