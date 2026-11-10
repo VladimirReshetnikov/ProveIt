@@ -1255,6 +1255,10 @@ A [second probe retry](research/nine-sharing-sign17-degree-shared-probe-retry02-
 [independently audited](reviews/nine-sharing-sign17-degree-shared-probe-retry02-terminal-independent/README.md),
 checks generic syntax degree and bounds for shared nodes 00–04. The remaining
 nodes and full degree bound are separate.
+A [staged expansion attempt](research/nine-sharing-sign17-degree-staged-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-degree-staged-failure-independent/README.md),
+checked shared05–09 but failed at shared14 in the next stage; no failed-stage
+object, later stages or final postflight were produced.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
