@@ -6655,7 +6655,26 @@ points of the eleven-integer row.
 - `gen_literal135w.py --check` and `check_ports135w.py` bind the literal and the
   six ports.
 
-Still open on the eleven-integer row: 125's 488 / 118, 464 / 119.
+**125's eleven-integer three-root norm 488 / 118 and 464 / 119, CLOSED
+(10 November 2026)**
+([`P125/IPRAInteger125`](Lean/DiophantineConsistency/P125/IPRAInteger125.lean),
+namespaces `Form488` and `Form464`;
+[record](research/p125-integer11/README.md)).
+- The front is 138's native front, gate for gate. The back end is the
+  three-root norm `ZRows/ThreeRoot.norm3` of the slot and the radicands
+  `9 S² Df`, `S² δ Cy`, `81 S² Dt Dg` (`P125Value`); the centered form is the
+  direct form at `n + Q V` (`valueC_shift`).
+- Soundness (`P125Fold.sound_direct`, `sound_centered`): the three radicands
+  are separated modulo 3, so a zero makes each a square (`P125Roots.roots`) and
+  gives `S ∣ Ac`; `ZRows/StrongFold.strong_fold` gives `P138Rank.Folded` and
+  138's leaf chain gives the halt.
+- Completeness (`P125Complete.complete_direct`, `complete_centered`) reuses
+  138's canonical record, 137's guard Pell pair at `2 s`, and
+  `ZRows/LinearInterpolation.supported_interpolation` without a multiplier.
+- `gen_literal125.py --check` and `check_ports125.py` bind the two literals and
+  the six ports.
+
+The eleven-integer Pareto row is thereby closed.
 
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
