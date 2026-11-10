@@ -763,6 +763,11 @@ and final postflight at `-M3600`. It inherits historical provider and
 point-observation qualifications and the stale bridge stdout label. The
 external degree-eight and coefficient-byte descriptions are not formally
 bound to that Lean expression; this is not a Jones nine-variable endpoint.
+A [Lean degree-bound attempt](research/nine-sharing-sign24-degree-upper-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-degree-upper-terminal-independent/README.md),
+compiled the generic polynomial-degree upper bound, but the concrete syntactic
+calculation timed out at 200,000 heartbeats and subsequent failed declarations
+reported `sorryAx`. No concrete degree bound or final postflight was produced.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
