@@ -1408,6 +1408,11 @@ A [staged Na axis-degree client](research/nine-sharing-sign17-axis-na-degree-che
 checks the row06 identity and degree 48 on the corrected axis under `p 0 ≠ 0`,
 with two tactic warnings. The full sum lower bound and current-port
 specialization remain separate; its console label is stale.
+An [other-row axis client](research/nine-sharing-sign17-axis-other-degree-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-axis-other-degree-terminal-independent/README.md),
+bounds the other seven residual degrees by 46 on the corrected axis. The
+replayed Na stage has two warnings and the console label is inherited;
+noncancellation and the full lower bound remain separate.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
