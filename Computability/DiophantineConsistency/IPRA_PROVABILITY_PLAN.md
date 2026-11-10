@@ -1080,6 +1080,10 @@ A separate [current-beta nonzero attempt](research/nine-sharing-sign20-current-b
 [independently audited](reviews/nine-sharing-sign20-current-beta-failure-independent/README.md),
 failed because a finite comparison could not unfold the locally irreducible
 radix; it produced no positivity or nonzero object or final postflight.
+A [radix-unfolding retry](research/nine-sharing-sign20-current-beta-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-current-beta-retry-terminal-independent/README.md),
+checks positivity and nonzero for the exact current Lean beta port. It does
+not bind that port to external bytes or by itself prove the degree lower bound.
 A [19-witness degree-44 external candidate](research/nine-sharing-sign19-degree44-y-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign19-external-independent/README.md),
 eliminates Y and has exact fixed-input degree 44 when beta is nonzero. The
