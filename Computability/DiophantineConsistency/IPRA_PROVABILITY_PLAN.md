@@ -2086,6 +2086,11 @@ and [44-slot symbolic control-vector equality](research/nine-sharing-sign17-k-co
 have independently passed Lean audits. The control vector's match to the
 external coefficient slice is still checked only in Python; combining the
 blocks into the actual control-sum identity remains separate.
+A [first compositional control-sum attempt](research/nine-sharing-sign17-k-control-block-sum-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-control-block-sum-terminal-independent/README.md),
+replayed its two ingredients but failed to match the generic split under the
+Fin44 sum. No final object or postflight was produced; an explicit split
+retry remains separate.
 A [ranked rawWord retry](research/nine-sharing-sign17-k-ranked-rawword-retry-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-ranked-rawword-retry-terminal-independent/README.md),
 checks the actual rawWord and K symbolic identities, including the ranked
