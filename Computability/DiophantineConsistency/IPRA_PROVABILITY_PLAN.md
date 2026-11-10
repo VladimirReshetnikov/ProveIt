@@ -979,7 +979,10 @@ checks the lift and recovery under an explicit model beta representation. A
 [residual-transfer client](research/nine-sharing-sign20-transfers-check/README.md),
 [independently audited](reviews/nine-sharing-sign20-transfers-terminal-independent/README.md),
 checks all 11 row identities under the same hypothesis, with 38 linter
-warnings. The assembled model bridge remains separate.
+warnings. A [pointwise zero bridge](research/nine-sharing-sign20-zero-assembly-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-zero-assembly-terminal-independent/README.md),
+checks both directions under the beta representation hypothesis. Current-port
+specialization, existential composition and iPRA endpoint remain separate.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
