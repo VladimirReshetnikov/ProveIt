@@ -1237,6 +1237,10 @@ A [degree-upper attempt](research/nine-sharing-sign17-degree-upper-check/README.
 [independently audited](reviews/nine-sharing-sign17-degree-upper-failure-independent/README.md),
 passed its first two stages but hit the 120-second residual-stage guard;
 no residual object, final degree theorem or postflight was produced.
+A [shared-node probe](research/nine-sharing-sign17-degree-shared-probe-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-degree-shared-probe-failure-independent/README.md),
+passed its generic stage but failed on a no-progress simplification for one
+shared node; no shared-node object or postflight was produced.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
