@@ -52,6 +52,12 @@ is also checked. The [whole polynomial has total degree at most 150](research/cu
 for arbitrary integer ports; this has passed an [independent terminal audit](reviews/current14-carrier65-degree-upper-terminal-independent/README.md).
 The nonzero degree-150 witness remains separate, so exactness is not yet a
 Lean theorem; the diagonal transport theorem alone does not supply the witness.
+For that witness, the actual all-equal diagonal has an independently audited
+[rank bound of 4](research/current14-carrier65-diagonal-rank-check/README.md)
+and an [exact W degree of 2](research/current14-carrier65-diagonal-w-retry02-check/README.md)
+for arbitrary integer ports. The diagonal c, a, H and Δ degrees 5, 6, 6 and
+12 are [checked under nonzero first port](research/current14-carrier65-diagonal-core-binding-retry-check/README.md).
+The remaining factors and their composition are still separate.
 
 ## Sign14 proof transfer and fixed-constant work
 
