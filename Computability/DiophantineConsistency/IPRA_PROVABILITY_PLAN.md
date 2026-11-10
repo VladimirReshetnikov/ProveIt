@@ -5989,6 +5989,23 @@ points of the eleven-integer row.
 - `gen_literal135.py --check` and `check_ports135.py` bind the five literals
   and the six ports.
 
+**131's eleven-integer two-root 810 / 112, CLOSED (10 November 2026)**
+([`P131/IPRAInteger131`](Lean/DiophantineConsistency/P131/IPRAInteger131.lean),
+[record](research/p131-integer11/README.md)).
+- The front is 138's short form, read from `P138Value.regsK`. The back end is
+  new (`P131Value`): `U = r c²`, the linear slot reads the strong root, and the
+  output is the two-root norm `Inner² − 4 δ · Guard · Aux`.
+- Soundness (`P131Fold.sound`) goes through `ZRows/StrongFold.strong_fold`, the
+  early fold stated without any circuit's registers, to `P138Rank.Folded` and
+  138's leaf chain.
+- Completeness (`P131Complete.complete`) reuses 138's canonical record, guard
+  Pell pair and intersective root, with its own supported-modulus interpolation.
+- `gen_literal131.py --check` and `check_ports131.py` bind the literal and the
+  six ports.
+
+Still open on the eleven-integer row: 137's 648 / 115, 135's 398 / 121 and
+125's 488 / 118, 464 / 119.
+
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
 
