@@ -757,7 +757,11 @@ degree eight by a leading-coefficient sum-of-squares argument; the sign23→24
 Lean model bridge and direct endpoint remain open. A [seed syntax and squares
 client](research/nine-sharing-sign23-seed-squares-check/README.md),
 [independently audited](reviews/nine-sharing-sign23-seed-squares-terminal-independent/README.md),
-checks symbolic seed zero iff its 14 residuals vanish.
+checks symbolic seed zero iff its 14 residuals vanish. A [Delta coordinate
+attempt](research/nine-sharing-sign23-coordinate-check/README.md),
+[independently audited](reviews/nine-sharing-sign23-coordinate-terminal-independent/README.md),
+failed on numeral-embedding goals and printed `sorryAx` for the failed
+declaration. No coordinate object or final postflight was produced.
 A [22-witness degree-12 candidate](research/nine-sharing-sign22-dodecic-ky-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign22-dodecic-ky-independent/README.md),
 eliminates kY by a natural product. Its fixed-input external square-sum has
