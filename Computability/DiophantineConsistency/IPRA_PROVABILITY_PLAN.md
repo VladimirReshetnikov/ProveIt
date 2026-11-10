@@ -1810,6 +1810,11 @@ A [generic Fin.append certificate lemma](research/nine-sharing-sign17-k-weight-a
 [independently audited](reviews/nine-sharing-sign17-k-weight-append-terminal-independent/README.md),
 checks composition of such certificates. The audit records a checker schema
 correction and stale console label; no concrete union or ranking follows yet.
+A [conditional rank-certificate attempt](research/nine-sharing-sign17-k-rank-certificate-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-rank-certificate-terminal-independent/README.md),
+passed fifteen prerequisites but failed because the physical permutation
+namespace was not imported by its provider; no criterion object or postflight
+was produced.
 A [symbolic MF radix-digit attempt](research/nine-sharing-sign17-mf-radix-digits-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mf-radix-digits-terminal-independent/README.md),
 passed fifteen prerequisites but failed the final digit theorem on recursion
