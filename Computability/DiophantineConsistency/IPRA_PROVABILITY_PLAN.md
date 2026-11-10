@@ -799,7 +799,11 @@ checks both directions along the natural Delta lift and drop without an extra
 beta hypothesis. A [same-input existential composition](research/nine-sharing-sign23-seed-iff-check/README.md),
 [independently audited](reviews/nine-sharing-sign23-seed-iff-terminal-independent/README.md),
 checks the resulting sign23/sign24 equivalence for symbolic ports. The direct
-expression and iPRA endpoint remain separate.
+expression has an [evaluation client](research/nine-sharing-sign23-expression-eval-check/README.md),
+[independently audited](reviews/nine-sharing-sign23-expression-eval-terminal-independent/README.md),
+for input one at abstract and current ports, inheriting the documented partial
+historical provider observations. Expression-zero composition and the iPRA
+endpoint remain separate.
 A [22-witness degree-12 candidate](research/nine-sharing-sign22-dodecic-ky-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign22-dodecic-ky-independent/README.md),
 eliminates kY by a natural product. Its fixed-input external square-sum has
