@@ -1161,6 +1161,10 @@ A [vector-simplification retry](research/nine-sharing-sign18-coordinate-retry01-
 advanced but failed on numeral embeddings; no module object or postflight was
 produced. The independent checker itself was corrected after a stale output
 path caused its first invocation to fail.
+A [numeral-normalization retry](research/nine-sharing-sign18-coordinate-retry02-check/README.md),
+[independently audited](reviews/nine-sharing-sign18-coordinate-retry02-failure-independent/README.md),
+failed on an ambiguous `sub_self` lemma and an unsolved root-zero goal;
+no coordinate object or final postflight was produced.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
