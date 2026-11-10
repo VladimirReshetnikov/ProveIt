@@ -1224,6 +1224,11 @@ A [root-form lift client](research/nine-sharing-sign17-root-lift-check/README.md
 checks root and scale positivity and the signed-gap representative for
 positive beta and the retained norm equation, with arbitrary natural B and C.
 Identifying those terms with the concrete staged syntax remains separate.
+A [staged syntax client](research/nine-sharing-sign17-staged-syntax-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-staged-syntax-terminal-independent/README.md),
+checks the symbolic seed-zero iff its eight residuals vanish in 17 stages.
+External AST correspondence is source-reviewed, not a Lean binding; the
+signed-lift bridge and endpoint remain separate.
 A finite [positive-gate octic search](research/nine-sharing-octic-positive-elimination-search/README.md),
 [independently audited](reviews/nine-sharing-octic-positive-elimination-independent/README.md),
 reaches at best 23 witnesses among 19 ordered states when every step preserves
