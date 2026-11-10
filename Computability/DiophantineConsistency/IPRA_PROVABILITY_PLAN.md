@@ -672,6 +672,11 @@ A [direct theory-transfer retry](research/nine-sharing-sign25-endpoint-transfer-
 [independently audited](reviews/nine-sharing-sign25-endpoint-transfer-terminal-independent/README.md),
 also stopped at the standard wrapper with the same interpreter exception;
 this does not determine whether import loading or elaboration caused it.
+A [declaration-free import diagnostic](research/nine-sharing-sign25-wrapper-import-diagnostic-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-wrapper-import-diagnostic-terminal-independent/README.md),
+successfully imports the native object, standard theory, and both together.
+It does not establish the wrapper or identify the exact source of earlier
+memory exceptions.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
