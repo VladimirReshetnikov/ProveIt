@@ -938,7 +938,11 @@ A [full coefficient and lower-bound client](research/nine-sharing-sign22-full-co
 checks that the full seed axis degree-twelve coefficient is 272 and proves
 `12 ≤ toPolynomial.totalDegree` for the abstract expression at arbitrary integer
 ports. It records 12 tactic warnings. A combined equality theorem and external
-byte binding remain separate.
+byte binding were separate. An [exact-degree client](research/nine-sharing-sign22-exact-degree-check/README.md),
+[independently audited](reviews/nine-sharing-sign22-exact-degree-terminal-independent/README.md),
+combines the two bounds in Lean and proves `toPolynomial.totalDegree = 12` for
+the abstract expression at every integer port vector and for current ports.
+External JSON, coefficient-byte and PDF binding remains separate.
 A [21-witness degree-14 candidate](research/nine-sharing-sign21-degree14-s-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign21-degree14-s-independent/README.md),
 substitutes the natural normalized-S product. Its fixed-input external square-sum
