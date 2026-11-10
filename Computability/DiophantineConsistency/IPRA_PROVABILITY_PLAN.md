@@ -1464,6 +1464,11 @@ A subsequent [89-gate external candidate](research/nine-sharing-sign14-89gate-ca
 rewrites an Nt subexpression to reuse the rank difference. Its exact-sharing
 circuit has 35 additions, 16 subtractions and 38 multiplications. Lean
 equivalence, degree and iPRA endpoints remain open; no minimality is claimed.
+A subsequent [88-gate external candidate](research/nine-sharing-sign14-88gate-candidate/README.md),
+[independently audited](reviews/nine-sharing-sign14-88gate-candidate-independent/README.md),
+rewrites another Nt difference to reuse the existing rank difference. Its
+exact-sharing circuit has 34 additions, 16 subtractions and 38 multiplications.
+Lean equivalence, degree and iPRA endpoints remain open; no minimality is claimed.
 A [92-gate Lean source draft](research/nine-sharing-sign14-92gate-lean-draft/README.md),
 [independently reviewed](reviews/nine-sharing-sign14-92gate-lean-draft-independent/README.md),
 expands to the candidate's five external residual ASTs and proposes the Nt
