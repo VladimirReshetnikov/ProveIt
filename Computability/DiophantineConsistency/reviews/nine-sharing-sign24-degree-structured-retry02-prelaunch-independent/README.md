@@ -1,0 +1,3 @@
+# Independent structured degree retry 02 prelaunch review
+
+Independent checker session 70633 exited 0. Relative to the preceding failed retry, only the residual stage changes: it proposes `change` to closed numeral inequalities before kernel `decide`, with arbitrary port parameters preserved and no coefficient substitution. The kernel must verify the definitional reductions during compilation; preflight does not establish that they succeed. The runner changes only its fresh output path, manifest pin and descriptive labels. Existing local heartbeat and guarded memory, host floor, time and disk limits remain in force. The checked goal is an upper bound for the Lean expression, without an exact lower bound or external JSON/PDF correspondence.

@@ -780,6 +780,12 @@ A [kernel-decision retry](research/nine-sharing-sign24-degree-structured-retry-c
 [independently audited](reviews/nine-sharing-sign24-degree-structured-retry-terminal-independent/README.md),
 also failed its residual stage because the propositions retained free port
 variables; no concrete bound or postflight resulted.
+A [closed-residual retry](research/nine-sharing-sign24-degree-structured-retry02-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-degree-structured-retry02-terminal-independent/README.md),
+checks `toPolynomial.totalDegree ≤ 8` for the actual abstract Fin24 expression
+at arbitrary integer ports and for the current expression. It passed all four
+stages and final postflight, with four no-op/unreachable tactic warnings. It
+does not establish an exact degree lower bound or external byte binding.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
