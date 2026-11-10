@@ -1,0 +1,3 @@
+# Independent prelaunch audit
+
+PASS: the source is byte-identical to the historical SeedLines proof and its twelve Lean digit lists contain 715 decimal digits, retaining the leading zero on line seven. The proposed theorem is about these explicit lists and `DecimalMachine215.seed`. The directly captured DecimalMachine215 object matches the historical observation hash but has a different realpath; this equality does not establish its full transitive ancestry. The audited K provider, source/Init/resource guards and no-Lean preflight pass. Lean compilation, TeX/PDF interpretation and external file binding remain separate. No Lean was run.
