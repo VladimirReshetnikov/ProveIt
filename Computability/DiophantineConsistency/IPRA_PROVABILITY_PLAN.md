@@ -1186,7 +1186,11 @@ checks both pointwise zero directions under the beta representation
 hypothesis. A [same-input seed-iff client](research/nine-sharing-sign18-seed-iff-check/README.md),
 [independently audited](reviews/nine-sharing-sign18-seed-iff-terminal-independent/README.md),
 checks the resulting existential equivalence under the same hypothesis;
-current-port specialization and the endpoint remain separate.
+current-port specialization and the endpoint remain separate. An
+[expression-evaluation client](research/nine-sharing-sign18-expression-eval-check/README.md),
+[independently audited](reviews/nine-sharing-sign18-expression-eval-terminal-independent/README.md),
+checks symbolic Fin18 evaluation against the staged seed. It does not bind
+the expression to external JSON or supply an endpoint.
 A finite [positive-gate octic search](research/nine-sharing-octic-positive-elimination-search/README.md),
 [independently audited](reviews/nine-sharing-octic-positive-elimination-independent/README.md),
 reaches at best 23 witnesses among 19 ordered states when every step preserves
