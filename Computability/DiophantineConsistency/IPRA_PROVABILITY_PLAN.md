@@ -766,7 +766,11 @@ checks symbolic seed zero iff its 14 residuals vanish. A [Delta coordinate
 attempt](research/nine-sharing-sign23-coordinate-check/README.md),
 [independently audited](reviews/nine-sharing-sign23-coordinate-terminal-independent/README.md),
 failed on numeral-embedding goals and printed `sorryAx` for the failed
-declaration. No coordinate object or final postflight was produced.
+declaration. No coordinate object or final postflight was produced. A
+[numeral rewrite retry](research/nine-sharing-sign23-coordinate-retry01/README.md),
+[independently audited](reviews/nine-sharing-sign23-coordinate-retry01-terminal-independent/README.md),
+checks the natural Delta lift and coordinate recovery, with one unused-variable
+warning. Residual transfers and the full bridge remain separate.
 A [22-witness degree-12 candidate](research/nine-sharing-sign22-dodecic-ky-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign22-dodecic-ky-independent/README.md),
 eliminates kY by a natural product. Its fixed-input external square-sum has
