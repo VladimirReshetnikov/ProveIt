@@ -114,7 +114,10 @@ Separately, the [715-digit Lean seed lines](research/nine-sharing-sign17-seed-li
 now feed the parametric decoder to produce all [430 cached actions and
 transition rows](research/nine-sharing-sign17-lines-decoder-check/README.md),
 and the [target sets and rail values](research/nine-sharing-sign17-lines-rails-check/README.md).
-The rest of the table and external document semantics remain separate.
+The [ordered table and all 942 indexed tiles](research/nine-sharing-sign17-lines-table-check/README.md)
+are now reconstructed from those Lean digits, reusing the fixed start, copy,
+tail and head-color definitions. Rank/K composition and external document
+semantics remain separate.
 
 ## Current reduction status
 
