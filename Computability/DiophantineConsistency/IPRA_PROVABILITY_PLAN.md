@@ -798,7 +798,10 @@ A [leading-coefficient attempt](research/nine-sharing-sign24-leading-coeff-check
 [independently audited](reviews/nine-sharing-sign24-leading-coeff-terminal-independent/README.md),
 compiled the other residuals' diagonal degree-at-most-two bounds, but failed
 the N0-square coefficient normalization and reported `sorryAx`. No coefficient
-object or final postflight was produced.
+object or final postflight was produced. A [normalization retry](research/nine-sharing-sign24-leading-coeff-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-leading-coeff-retry-terminal-independent/README.md),
+checks that coefficient equals one and the other residuals' diagonal degrees
+are at most two. The full sum coefficient and exact degree remain separate.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
@@ -857,7 +860,10 @@ the degree or bridge in Lean. A [coordinate client](research/nine-sharing-sign22
 checks the natural kY lift, recovery and lift-after-drop identity, with one
 unused-variable warning. A [residual-transfer client](research/nine-sharing-sign22-transfers-check/README.md),
 [independently audited](reviews/nine-sharing-sign22-transfers-terminal-independent/README.md),
-checks all 13 rows, with 43 linter warnings. The assembled bridge remains open.
+checks all 13 rows, with 43 linter warnings. A [pointwise zero bridge](research/nine-sharing-sign22-zero-assembly-check/README.md),
+[independently audited](reviews/nine-sharing-sign22-zero-assembly-terminal-independent/README.md),
+now checks both directions along the natural kY lift and drop. The existential
+composition and iPRA endpoint remain separate.
 A [21-witness degree-14 candidate](research/nine-sharing-sign21-degree14-s-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign21-degree14-s-independent/README.md),
 substitutes the natural normalized-S product. Its fixed-input external square-sum
