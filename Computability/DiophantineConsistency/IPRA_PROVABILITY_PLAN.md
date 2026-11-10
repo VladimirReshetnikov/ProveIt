@@ -2014,6 +2014,10 @@ A [global assembly attempt](research/nine-sharing-sign17-k-global-assembly-check
 passed its four replay stages but failed on finite-index cast normalization
 in the final assembly. It produced no final object or postflight; a targeted
 cast-normalization retry is being prepared.
+A [cast-normalization retry](research/nine-sharing-sign17-k-global-assembly-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-global-assembly-retry-terminal-independent/README.md),
+fixed 28 branch mismatches but failed on the two chunk00 cases where
+`Fin.castLE` wraps a variable. It produced no final object or postflight.
 A [generic finite-partition probe](research/nine-sharing-sign17-k-partition-probe-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-partition-probe-terminal-independent/README.md),
 failed on a nested-offset associativity mismatch. It produced no object or
