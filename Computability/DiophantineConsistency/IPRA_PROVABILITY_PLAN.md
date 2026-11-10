@@ -1030,8 +1030,13 @@ checks current-port Fin20/Fin21 zero existence in the stated IΣ₁ models; one
 unused-section-variable warning remains. A [polynomial bridge client](research/nine-sharing-sign20-concrete-polynomial-bridge-check/README.md),
 [independently audited](reviews/nine-sharing-sign20-concrete-polynomial-bridge-terminal-independent/README.md),
 checks the symbolic Fin20 bridge under scoped `-M3600` and the sampled 4 GiB
-RSS cap. The iPRA endpoint and formal external byte/degree binding remain
-separate.
+RSS cap. A [direct iPRA endpoint](research/nine-sharing-sign20-endpoint-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-endpoint-terminal-independent/README.md),
+checks native, standard and translated-standard proof-existence equivalences
+for the symbolic Fin20 expression, with a successful outer exit and final
+postflight. Historical provider and point-observation qualifications remain.
+The external degree-twenty and coefficient-byte descriptions are not formally
+bound to this Lean expression; it is not a Jones nine-variable endpoint.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
