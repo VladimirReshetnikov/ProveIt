@@ -1,0 +1,5 @@
+# Sign15 pointwise zero assembly: source-only client
+
+The two checked stages assemble six retained residual transfers and the removed inner row into pointwise zero maps, requiring a supplied abstract inner representative only forward and no port/sign assumptions. Natural representative existence is separately audited. The [transfer provider](../../reviews/nine-sharing-sign15-transfers-terminal-independent/README.md) is independently audited. No existential iff, JSON binding or iPRA endpoint is claimed.
+
+No-Lean preflight exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign15-zero-assembly-prelaunch-independent/README.md) passed. Author outer session 53749 exited 0 ([receipt](attempt01/outer-result.json)); the [independent terminal audit](../../reviews/nine-sharing-sign15-zero-assembly-terminal-independent/README.md) passed. Limits are `-M2800`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck. Inherited provider surveys are point-in-time.

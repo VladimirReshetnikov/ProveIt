@@ -1431,7 +1431,11 @@ point-in-time, and residual transfers and equivalence remain separate.
 A [six-row transfer client](research/nine-sharing-sign15-transfers-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-transfers-terminal-independent/README.md),
 checks the retained residuals under a supplied abstract gap, with 299 linter
-warnings. Zero assembly and equivalence remain separate.
+warnings. A [pointwise zero assembly](research/nine-sharing-sign15-zero-assembly-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-zero-assembly-terminal-independent/README.md),
+checks forward zero with a supplied representative and backward zero with
+recovery, without port/sign hypotheses. Point-in-time ancestry persists;
+existential equivalence and the endpoint remain separate.
 A [further shared-values client](research/nine-sharing-sign15-more-shared-values-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-more-shared-values-terminal-independent/README.md),
 checks four natural component evaluations under represented beta. Assembled
