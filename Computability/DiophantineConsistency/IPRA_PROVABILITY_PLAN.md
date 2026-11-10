@@ -1148,6 +1148,10 @@ A [staged syntax client](research/nine-sharing-sign18-staged-syntax-check/README
 checks the symbolic seed-zero iff its nine residuals vanish, in 18 stages
 with one warning. The external AST correspondence is source-reviewed, not
 a Lean binding; the model bridge and endpoint remain separate.
+A [main-root coordinate attempt](research/nine-sharing-sign18-coordinate-check/README.md),
+[independently audited](reviews/nine-sharing-sign18-coordinate-failure-independent/README.md),
+failed on finite-vector simplification and recovery, with three `sorryAx`
+reports; no coordinate object or final postflight was produced.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
