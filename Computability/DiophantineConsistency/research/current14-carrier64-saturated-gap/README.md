@@ -92,9 +92,9 @@ an old same-q,R,w positive repair exists  iff  b divides d0*(M+1).
 Here positivity of the old `z` is automatic: `R>=4q³-1`, `q=2^t`, and
 `X=wq=2^R` imply `w=2^(R-t)>=q`, so `M*C0-F0>0`. If the divisibility
 holds, the old positive `z0=1+(M*C0-F0)/b` preserves transport and every
-other factor, giving an old positive zero. In particular, coprimality of
-`M+1` and `b` would force `d0=0`; no such general coprimality has been
-proved.
+other factor, giving an old positive zero. If the divisibility holds and
+`M+1` is coprime to `b`, then it forces `d0=0`. Coprimality alone does not
+establish the divisibility, and no such general coprimality has been proved.
 
 Indeed it cannot be assumed in all possible exponent branches. The actual
 ports satisfy `beta=1`, `MC=8`, `MF=1 (mod 10)`, and `K=0 (mod 11)`.
