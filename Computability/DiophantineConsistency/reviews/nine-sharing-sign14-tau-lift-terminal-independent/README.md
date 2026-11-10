@@ -1,0 +1,3 @@
+# Independent terminal audit: sign14 natural tau representative
+
+Checker exit 0. Author outer 94421 exited 0; dependency/compile and final postflight passed. From staged sign14 seed zero and four represented/bounded ports the theorem obtains a natural representative for abstract shared36, without N0 or a prior tau witness. It reports propext, Classical.choice and Quot.sound, with no warnings or sorryAx. Source, object, logs, all three direct providers, guards and overlays were checked. The union and inherited first-index surveys are point-in-time with recorded ancestry qualifications. Residual transfers and equivalence remain separate.
