@@ -923,7 +923,11 @@ now checks both directions along the natural normalized-S lift and drop. The
 existential composition is checked by a [same-input client](research/nine-sharing-sign21-seed-iff-check/README.md),
 [independently audited](reviews/nine-sharing-sign21-seed-iff-terminal-independent/README.md),
 for arbitrary symbolic ports. The direct expression and iPRA endpoint remain
-separate.
+separate. A [direct expression evaluation client](research/nine-sharing-sign21-expression-eval-check/README.md),
+[independently audited](reviews/nine-sharing-sign21-expression-eval-terminal-independent/README.md),
+checks input-one evaluation at abstract and current ports, with historical
+partial-provider qualifications. Expression-zero composition and the iPRA
+endpoint remain separate.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
