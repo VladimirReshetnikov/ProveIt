@@ -1115,7 +1115,10 @@ identities. A [direct expression equivalence](research/nine-sharing-sign19-expre
 [independently audited](reviews/nine-sharing-sign19-expression-equivalence-terminal-independent/README.md),
 checks equivalence of current-port Fin19 and Fin20 zero existence in the
 relevant models, with one warning. These do not bind the expressions to
-external JSON or supply an iPRA endpoint.
+external JSON or supply an iPRA endpoint. A [concrete polynomial bridge](research/nine-sharing-sign19-concrete-polynomial-bridge-check/README.md),
+[independently audited](reviews/nine-sharing-sign19-concrete-polynomial-bridge-terminal-independent/README.md),
+checks the symbolic Fin19 `PolynomialBridge` via the Fin20 bridge; the direct
+iPRA endpoint remains a separate client.
 A further [18-witness degree-94 external candidate](research/nine-sharing-sign18-degree94-root-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign18-external-independent/README.md),
 eliminates the main-root coordinate. Its fixed-input degree is exactly 94
