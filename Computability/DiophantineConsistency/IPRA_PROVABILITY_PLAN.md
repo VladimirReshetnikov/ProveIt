@@ -997,7 +997,10 @@ checks seed equivalence under that hypothesis. Current-port specialization
 is checked by an [independently audited client](research/nine-sharing-sign20-current-iff-check/README.md),
 using the current beta representative; its current-data provider has successful
 observed children but a failed overall run. Direct-expression composition and
-the iPRA endpoint remain separate.
+the iPRA endpoint remain separate. A [direct expression evaluation client](research/nine-sharing-sign20-expression-eval-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-expression-eval-terminal-independent/README.md),
+checks input-one evaluation at abstract and current ports, inheriting the
+documented partial historical provider observations.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
