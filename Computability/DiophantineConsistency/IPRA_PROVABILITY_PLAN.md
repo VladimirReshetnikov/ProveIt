@@ -77,7 +77,10 @@ substitutes `vᵢ = uᵢ - 1` for fourteen strictly positive inputs and cancels
 shifts in the external 86-gate AST. Its input convention differs from the
 86-gate natural-coordinate circuit, so those gate counts are not a
 same-interface comparison. Lean coordinate transport, the degree transfer
-and external-file binding are still open.
+and external-file binding are still open. The positive candidate's [staged
+Lean syntax](research/nine-sharing-sign14-positive74-syntax-check/README.md)
+has compiled and passed independent terminal review; that is not yet a
+coordinate-transport theorem.
 
 For fixed-constant work, the [generic radix stream theorem](research/nine-sharing-sign17-k-radix-stream-retry-check/README.md)
 and its [symbolic K specialization](research/nine-sharing-sign17-k-radix-stream-current-check/README.md)
