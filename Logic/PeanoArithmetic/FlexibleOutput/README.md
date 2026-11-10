@@ -3,8 +3,8 @@
 **Status: proved in Lean.** The main theorem is
 `PAFlexibleOutput.flexibleOutput` in
 [`Lean/PAFlexibleOutput/Main.lean`](Lean/PAFlexibleOutput/Main.lean). Its
-axioms are `propext`, `Classical.choice` and `Quot.sound`. The proof is five
-modules, 376 lines in all.
+axioms are `propext`, `Classical.choice` and `Quot.sound`. The proof is four
+modules, 255 lines in all.
 
 ## The theorem
 
@@ -30,49 +30,66 @@ through one fixed arithmetical formula `universalGraph(y, program, input)`,
 The same code and the same formula serve every `x` and every `o`. Three facts
 make the formula a definition of `f` and not an arbitrary formula:
 
-- `standardCorrectness`: in the standard model, `universalGraph(y, ⌜c⌝, x)`
-  holds iff `y ∈ Nat.Partrec.Code.eval c x`;
+- `outputIn_nat`: in the standard model, `universalGraph(y, ⌜c⌝, x)` holds iff
+  `y ∈ Nat.Partrec.Code.eval c x`; hence `valueIn_nat`: the value computed in
+  `ℕ` is the real value;
 - `universalGraph_uniq`: in every model of `𝗣𝗔⁻` the formula has at most one
   output for a given program and input, nonstandard programs and inputs
   included;
 - `universalGraph_sigma_one`: the formula is `𝚺₁`.
 
 Since `f` diverges on every standard input, `ℕ` is a model for `o = ⊥`, and by
-`standardCorrectness` it is a model for no `o = n`: the models for the
-numerical outputs are nonstandard.
+`valueIn_nat` it is a model for no `o = n`: the models for the numerical
+outputs are nonstandard.
 
-Two corollaries in `Main.lean`:
-
-| Theorem | Statement |
-| --- | --- |
-| `exists_partrec_flexibleOutput` | the statement as worded above: a partial recursive `f : ℕ →. ℕ` with a program `e`, and for every `o` a model of PA with `ValueIn M e 0 o` |
-| `flexibleOutput_satisfiable` | sentence form: `e` diverges, and `Satisfiable (insert (haltSentence e x n) 𝗣𝗔)` for all `x` and `n` |
+The corollary `exists_partrec_flexibleOutput` in `Main.lean` is the statement
+as worded above: a partial recursive `f : ℕ →. ℕ` with a program `e`, and for
+every `o` a model of PA with `ValueIn M e 0 o`.
 
 ## Proof
 
-The outputs refuted by PA form a recursively enumerable relation: "PA proves
-that program `c` does not halt on input `x` with output `y`"
-(`refutationsRE`). So a partial recursive `Search(c, x)` returns some refuted
-output of `c` on `x` whenever there is one (`exists_selector`). Kleene's
-second recursion theorem (`Nat.Partrec.Code.fixed_point₂`) gives a program `e`
-with `φ_e(x) = Search(e, x)`.
+Let `V_c(x, y)` be the *value sentence* "`y` is the only output of program `c`
+on input `x`", an instance of the formula
+`valueGraph(y, c, x) := ∀ z, universalGraph(z, c, x) ↔ z = y`. A structure
+satisfies `V_c(x, n)` iff it computes the value `n`, that is, iff
+`ValueIn M c x (some n)` (`models_not_valueGraph`, stated for the negation).
+
+The values refuted by PA form a recursively enumerable relation: "PA proves
+`¬V_c(x, y)`" (`provable_substs_re`). So a partial recursive `Search(c, x)`
+returns some refuted value of `c` on `x` whenever there is one
+(`exists_selector`). Kleene's second recursion theorem
+(`Nat.Partrec.Code.fixed_point₂`) gives a program `e` with
+`φ_e(x) = Search(e, x)`.
 
 1. `e` diverges. An output `m` of `e` on `x` would be an output of the search,
-   so PA would prove that `e` does not halt on `x` with output `m`. But `e`
-   does halt with that output, so the halting sentence is true in `ℕ`
-   (`standardCorrectness`), and `ℕ` is a model of PA.
-2. PA refutes no output of `e`: a refuted output would make the search, and
-   with it `e`, halt.
-3. By the completeness theorem every halting sentence `H_e(x, n)` holds in
-   some model of PA, and in that model `n` is the only output
-   (`valueIn_of_models`, from `universalGraph_uniq`).
+   so PA would prove `¬V_e(x, m)`. But `m` would be the only real output of
+   `e` on `x`, so `V_e(x, m)` would be true in `ℕ` (`valueIn_nat`), and `ℕ` is
+   a model of PA.
+2. PA refutes no value of `e`: a refuted value would make the search, and with
+   it `e`, halt.
+3. By the completeness theorem every value sentence `V_e(x, n)` holds in some
+   model of PA, and that model computes the value `n`.
 4. `ℕ` is a model in which `e` has no output.
 
-Step 1 uses that `ℕ` is a model of PA. The paper proof in the article uses
-less, the consistency of PA alone: there PA verifies the finite computation
-(`𝚺₁`-completeness) and so proves both `H_e(x, m)` and its negation. The Lean
-proof takes the semantic route because it is shorter and Foundation provides
-`ℕ ⊧* 𝗣𝗔`; the first Lean proof (commit `410c820c4f`) followed the paper.
+The proof differs from the paper proof in the article at two points.
+
+- The paper searches for a refutation of the halting sentence "`y` is an
+  output", and obtains uniqueness of the output in step 3 from the
+  functionality of the halting formula in models of PA. Here uniqueness is
+  part of the sentence that is searched for, so step 3 needs no property of
+  the model, and step 1 needs uniqueness in `ℕ` only, where it is the fact
+  that a computation has one result. The functionality theorem
+  (`universalGraph_uniq`) is still proved, in the module `Functionality`,
+  which the main theorem does not use; with it, `V_c(x, n)` and the halting
+  sentence for `n` are equivalent in every model of `𝗣𝗔⁻`
+  (`valueIn_of_outputIn`).
+- Step 1 uses that `ℕ` is a model of PA. The paper uses less, the consistency
+  of PA alone: there PA verifies the finite computation (`𝚺₁`-completeness)
+  and so proves both the halting sentence and its negation. The Lean proof
+  takes the semantic route because it is shorter and Foundation provides
+  `ℕ ⊧* 𝗣𝗔`; the first Lean proof (commit `410c820c4f`) followed the paper.
+  The value sentence is not `𝚺₁`, so with it the paper's route is not
+  available as it stands.
 
 This is the self-reference proof (due to Vadim Kosoy) in Joel David Hamkins,
 "Every function can be computable!", for one input at a time (the models for
@@ -83,13 +100,14 @@ algorithm; the article gives the references.
 
 | Path | Contents |
 | --- | --- |
-| [`Lean/PAFlexibleOutput/Halting.lean`](Lean/PAFlexibleOutput/Halting.lean) | `universalGraph`, Foundation's representing formula of the universal function of Mathlib's `Nat.Partrec.Code`; `haltSentence`, `OutputIn`, `ValueIn`; `standardCorrectness`, `outputIn_nat`, `universalGraph_sigma_one`. |
-| [`Lean/PAFlexibleOutput/Functionality.lean`](Lean/PAFlexibleOutput/Functionality.lean) | `code_uniq`: Foundation's representing formula of a partial recursive function has at most one output in every model of `𝗣𝗔⁻`, by induction on the code. `universalGraph_uniq`, `valueIn_of_models`. |
-| [`Lean/PAFlexibleOutput/Refutations.lean`](Lean/PAFlexibleOutput/Refutations.lean) | `refutationsRE`: "PA refutes output `y` of program `c` on input `x`" is recursively enumerable, through the `𝚺₁`-definability of Foundation's arithmetized provability and numeral substitution. |
+| [`Lean/PAFlexibleOutput/Halting.lean`](Lean/PAFlexibleOutput/Halting.lean) | `universalGraph`, Foundation's representing formula of the universal function of Mathlib's `Nat.Partrec.Code`; `OutputIn`, `ValueIn`; `outputIn_nat`, `valueIn_nat`; `valueGraph` and `models_not_valueGraph`; `universalGraph_sigma_one`. |
+| [`Lean/PAFlexibleOutput/Provability.lean`](Lean/PAFlexibleOutput/Provability.lean) | `provable_substs_re`: for every formula `φ(y, c, x)`, "PA proves `φ` at the numerals `y`, `c`, `x`" is recursively enumerable, through the `𝚺₁`-definability of Foundation's arithmetized provability and numeral substitution. |
 | [`Lean/PAFlexibleOutput/Search.lean`](Lean/PAFlexibleOutput/Search.lean) | `exists_selector`: a recursively enumerable relation has a partial recursive selector, by dovetailing. Mathlib only. |
-| [`Lean/PAFlexibleOutput/Main.lean`](Lean/PAFlexibleOutput/Main.lean) | `flexibleOutput` and the two corollaries. |
+| [`Lean/PAFlexibleOutput/Main.lean`](Lean/PAFlexibleOutput/Main.lean) | `flexibleOutput` and the corollary. |
+| [`Lean/PAFlexibleOutput/Functionality.lean`](Lean/PAFlexibleOutput/Functionality.lean) | Not used by the main theorem. `code_uniq`: Foundation's representing formula of a partial recursive function has at most one output in every model of `𝗣𝗔⁻`, by induction on the code. `universalGraph_uniq`, `valueIn_of_outputIn`. 66 lines. |
 | [`Lean/PAFlexibleOutput.lean`](Lean/PAFlexibleOutput.lean) | Import surface. |
-| [`Article/pa_flexible_output.tex`](Article/pa_flexible_output.tex), [`.pdf`](Article/pa_flexible_output.pdf) | The delivered draft: statement, mathematical proof, the Lean statement, the located repository and dependency results, and a five-stage route to a Lean proof. It predates the Lean proof and describes it as future work. |
+| [`docs/Article/pa_flexible_output.tex`](docs/Article/pa_flexible_output.tex), [`.pdf`](docs/Article/pa_flexible_output.pdf) | The delivered draft: statement, mathematical proof, the Lean statement, the located repository and dependency results, and a five-stage route to a Lean proof. It predates the Lean proof and describes it as future work. |
+| `docs/proposals/` | Arriving proposals for simplifying the Lean proof. A proposal is removed once it has been dealt with, so the directory is normally empty. |
 | [`Research/delivery/`](Research/delivery/) | The rest of the delivered package, unchanged: `README.txt`, `verification_status.txt`, `dependencies.json` (pinned revisions and inspected sources), `notes/`, `scripts/`, `lean-toolchain`, and the three delivered Lean files in `lean/`. |
 
 Notes on the Lean proof:
@@ -97,13 +115,20 @@ Notes on the Lean proof:
 - Foundation's own `code_uniq` is commented out at the pinned revision, so the
   induction on the code in `Functionality` is new. The only case with content
   is minimisation, which needs the order of the model to be linear; this is
-  why the statement is about `𝗣𝗔⁻` and not `𝗥₀`.
-- In `Refutations` the relation is `𝚺₁`-definable in `ℕ` because
-  `Bootstrapping.Provable 𝗣𝗔`, formal negation and formal numeral substitution
-  are; Foundation's `sigma1_re` turns that into `REPred`. The code inside is
-  the Gödel number of `∼(haltSentence c x y)` (`neg_subst_quote`), and
-  arithmetized provability of a Gödel number in `ℕ` is real provability
-  (`provable_iff_provable`).
+  why the statement is about `𝗣𝗔⁻` and not `𝗥₀`. In Lean one `simp` call
+  unfolds the semantics of the formula in all cases and `grind` closes them,
+  with trichotomy of the two candidate outputs as its only hint.
+- In `Search` the semi-decision procedure of the relation is made to return
+  its candidate before it is compiled to a code, so a bounded run of the code
+  already yields the witness.
+- In `Provability` the triple `((c, x), y)` is read as one number through
+  Foundation's pairing, which agrees with Mathlib's `Nat.pair`
+  (`nat_pair_eq`). The resulting predicate is `𝚺₁`-definable in `ℕ` because
+  `Bootstrapping.Provable 𝗣𝗔`, formal numeral substitution and the
+  projections are; Foundation's `re_iff_sigma1` turns that into `REPred`. The
+  formula `φ` itself need not be `𝚺₁`. The code inside is the Gödel number of
+  the instance of `φ`, and arithmetized provability of a Gödel number in `ℕ`
+  is real provability (`provable_iff_provable`).
 
 ## The delivered scaffold
 
@@ -118,9 +143,11 @@ executable and delivered them uncompiled, which their comments still say.
 The first Lean proof, commit `410c820c4f`, compiled the three files unmodified
 as modules of the library, discharged every obligation of `Statement.lean`
 and proved its `MainClaim`, `StrongClaim` and `FullySpecifiedMainClaim` by
-instantiating `MathlibAssembly`: eight modules, 1003 lines. The current proof
-replaces that route by the direct argument above and does not import the
-delivered files, so they are no longer part of the library or of any build.
+instantiating `MathlibAssembly`: eight modules, 1003 lines. The second
+version, commit `7142f7f52b`, replaced that route by a direct argument with
+the halting sentence: five modules, 376 lines. The current proof does not
+import the delivered files, so they are no longer part of the library or of
+any build.
 They import only Mathlib and Foundation, and the delivered
 `scripts/check_lean.sh` checks them from the `lean/` directory.
 
@@ -129,6 +156,8 @@ What the current proof does differently:
 - the search takes the input as a parameter, so the theorem holds at every
   input and the clause "the search ignores its input" is gone;
 - divergence comes from truth in `ℕ` and not from `𝚺₁`-completeness;
+- the search is for a refutation of the value sentence and not of the halting
+  sentence, so the functionality of the halting formula is not used;
 - the abstract bridge, the search-implementation structure and the sentence
   for divergence are gone: `ValueIn` states both cases directly.
 
@@ -163,6 +192,6 @@ Delivered as `docs/incoming/pa_flexible_output.zip` (arrival commit
 the package's `SHA256SUMS` manifest matched the placed files; the manifest
 itself is not filed, since the repository keeps no package-local checksum
 ledgers, and remains in the archive at the arrival commit. The package's
-`pa_flexible_output.{tex,pdf}` is under `Article/` and everything else is
-under `Research/delivery/`. The modules under `Lean/` were written in this
+`pa_flexible_output.{tex,pdf}` is under `docs/Article/` and everything else
+is under `Research/delivery/`. The modules under `Lean/` were written in this
 repository on 2026-11-09.
