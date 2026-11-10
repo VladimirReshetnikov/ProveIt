@@ -1738,6 +1738,10 @@ An [external K block layout](research/nine-sharing-sign17-k-block-layout/README.
 [independently reviewed](reviews/nine-sharing-sign17-k-block-layout-independent/README.md),
 matches 2,021 radix digits and 253 blocks to the raw snapshot from that
 coefficient recipe. Lean K-to-array and file binding remain open.
+An [external K ranking witness](research/nine-sharing-sign17-k-ranking-witness/README.md),
+[independently reviewed](reviews/nine-sharing-sign17-k-ranking-witness-independent/README.md),
+reconstructs 942 source-transcribed tile weights and checks their permutation,
+order and coefficient entries in Python. It is not a Lean ranking or K theorem.
 A [symbolic MF radix-digit attempt](research/nine-sharing-sign17-mf-radix-digits-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mf-radix-digits-terminal-independent/README.md),
 passed fifteen prerequisites but failed the final digit theorem on recursion

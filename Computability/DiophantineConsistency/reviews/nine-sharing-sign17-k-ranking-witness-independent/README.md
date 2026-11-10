@@ -1,0 +1,5 @@
+# Independent external review
+
+PASS. Without running or overwriting the author generator, this checker reconstructs all 942 indexed tile tuples from the pinned Lean table source, action cache and target sets using an independent Python transcription. It checks the action-derived target sets, exact index ordering and distinct tiles; every witness row's physical position, tile and weight against this reconstruction; the 942-index permutation and Start index; strict descending non-Start weights; and all 942 ranking sums using the actual transcribed physical-position formula. Each doubled weight matches the corresponding frozen coefficient-array entry.
+
+The pinned source and input hashes and these finite computations are external evidence. The Python transcription is not a Lean proof of the source definitions, physical ranking, K coefficient sum, or any filesystem, gzip, hash or JSON binding. Reproduce with `python3 -I -S -B reviews/nine-sharing-sign17-k-ranking-witness-independent/check.py`.
