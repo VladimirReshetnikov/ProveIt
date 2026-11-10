@@ -1451,6 +1451,11 @@ A [93-gate Lean source draft](research/nine-sharing-sign14-93gate-lean-draft/REA
 [independently reviewed](reviews/nine-sharing-sign14-93gate-lean-draft-independent/README.md),
 expands to the five external candidate residuals and proposes the
 distributive evaluation bridge. It has not yet been elaborated or checked.
+A [93-gate generic seed check](research/nine-sharing-sign14-93gate-lean-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-93gate-lean-terminal-independent/README.md),
+proves the rewritten and 94-gate seeds evaluate equally over every
+commutative ring at arbitrary integer ports. Three unused-simp warnings were
+recorded. Fixed-input expression, degree and iPRA transfers remain separate.
 A subsequent [93-gate external candidate](research/nine-sharing-sign14-93gate-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign14-93gate-candidate-independent/README.md),
 uses distributivity to factor four copies of a rank term. Its exact-sharing
