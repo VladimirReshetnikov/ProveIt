@@ -1,0 +1,5 @@
+# Independent prelaunch review
+
+PASS. The sole source change adds the direct `WeightedExpressionDegree` import omitted by the earlier replay; all three statements and proof bodies are unchanged. Its repository source defines `Expr.evalRing` and all seven previously missing helper names, and the existing historical object is explicitly pinned and checked as a first-candidate direct provider. The failed attempt/no object, independently audited successful DAG/value provider and successful core child of failed earlier parent, syntax point object, Init/routes/overlays, resource limits and no-Lean preflight were checked.
+
+The earlier prelaunch review missed this import; the failure review records that correction. This review checks source names and a historical point object, not a fresh source-to-object proof or full transitive closure. Lean import compatibility and all retry results remain untested. The runner inherits environment variables without scrubbing; relevant overrides were absent at the earlier review. No minimality, degree or formal TeX/PDF claim; no Lean run.
