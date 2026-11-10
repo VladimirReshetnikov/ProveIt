@@ -2034,6 +2034,10 @@ A [second cast-normalization retry](research/nine-sharing-sign17-k-global-assemb
 checks the unconditional in-Lean theorem `∀ i, physicalMap (candidate i) = i`
 for all 942 candidate entries. The five stages and postflight passed; this
 is not yet the complete K coefficient aggregation or an external-file binding.
+A [ranked tile-sum reindexing attempt](research/nine-sharing-sign17-k-ranked-tile-sum-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-ranked-tile-sum-terminal-independent/README.md),
+failed on an extra argument to a finite-surjectivity lemma. It produced no
+object or postflight; the control terms and full K aggregation remain separate.
 A [generic finite-partition probe](research/nine-sharing-sign17-k-partition-probe-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-partition-probe-terminal-independent/README.md),
 failed on a nested-offset associativity mismatch. It produced no object or

@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+root=Path(__file__).resolve().parents[2];repo=root.parents[1];p=root/'research/nine-sharing-sign17-k-ranked-tile-sum-check';sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest()
+assert sha(p/'run.py')=='4f931bec3cbc40344ca48b1589dba36814da80ce9cd4180a1b8363218f21319d' and sha(p/'source-manifest.json')=='3014362eb0c7009149190f05efb0f1e0b0ede6c282df1642929e0361ba386201'
+e,=json.loads((p/'source-manifest.json').read_text())['rows'];q=p/'src/DiophantineConsistency/Sign17KRankedTileSum.lean';s=q.read_text();assert e['module']=='DiophantineConsistency.Sign17KRankedTileSum' and e['imports']==['DiophantineConsistency.Sign17KGlobalAssembly'] and sha(q)==sha(repo/e['source'])==e['source_sha256'] and re.findall(r'^import ([A-Za-z0-9_.]+)$',s,re.M)==e['imports'] and not re.search(r'(?m)^\s*(axiom|opaque|partial)\b|\b(sorry|admit|native_decide)\b',s)
+for t in ('theorem candidate_injective : Function.Injective Sign17KWeightUnion942.indices','congrArg physicalMap h','Finite.surjective_of_injective _ candidate_injective','physicalPosition (Sign17KWeightUnion942.indices i) = i.val','congrArg Fin.val (Sign17KGlobalAssembly.candidate_positions i)','theorem ranked_tile_sum (r : ℕ)','2 * selectorWeight (tile i) * r ^ (1005 - physicalPosition i)','2 * Sign17KWeightUnion942.weights i * r ^ (1005 - i.val)','candidate_bijective.sum_comp','Sign17KWeightUnion942.all_weights, physical_position'):assert t in s
+c=root/'reviews/nine-sharing-sign17-k-global-assembly-retry02-terminal-independent/check.py';subprocess.run([sys.executable,'-I','-S','-B',str(c)],capture_output=True,check=True,timeout=180)
+r=(p/'run.py').read_text();assert "need('Init' in deps" in r and "env['LEAN_NUM_THREADS']='1'" in r and "str(candidates[0])==rec['path']" in r and "rec['realpath']==provider_init['realpath'] and rec['sha256']==provider_init['sha256']" in r and "'-M3600'" in r and 'rss_limit=4*1024**3,mem_floor=10*1024**3,seconds=120,interval=.1' in r
+x=subprocess.run([sys.executable,'-I','-S','-B',str(p/'run.py'),'--preflight'],capture_output=True,text=True,timeout=180);assert x.returncode==0 and not x.stderr and json.loads(x.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT'
+print(json.dumps({'status':'PASS_PRELAUNCH','scope':'candidate bijection and reindex of actual 942 tile terms, arbitrary natural base; K/control/file binding separate'},indent=2))
