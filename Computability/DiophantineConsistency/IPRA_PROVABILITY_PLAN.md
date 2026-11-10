@@ -1423,6 +1423,11 @@ A [natural inner-lift client](research/nine-sharing-sign15-inner-lift-check/READ
 derives a natural representative of `C*T − Rank` from actual staged seed zero
 and represented bounded ports, without a prior deleted witness or sign.
 Point-in-time survey/ancestry caveats remain; transfers and equivalence are separate.
+A [supplied-gap coordinate client](research/nine-sharing-sign15-coordinate-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-coordinate-terminal-independent/README.md),
+checks lift and recovery without port/sign assumptions, with 41 linter warnings.
+Gap existence is separately checked under bounds; the point-union survey is
+point-in-time, and residual transfers and equivalence remain separate.
 A [further shared-values client](research/nine-sharing-sign15-more-shared-values-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-more-shared-values-terminal-independent/README.md),
 checks four natural component evaluations under represented beta. Assembled
