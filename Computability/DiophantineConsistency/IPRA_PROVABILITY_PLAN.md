@@ -1067,7 +1067,10 @@ checks symbolic seed zero iff its ten staged residuals vanish, with two
 warnings. A [Y-coordinate client](research/nine-sharing-sign19-coordinate-check/README.md),
 [independently audited](reviews/nine-sharing-sign19-coordinate-terminal-independent/README.md),
 checks lift and recovery under an explicit model beta representation. The
-residual transfers, model bridge and endpoint remain separate.
+[residual-transfer client](research/nine-sharing-sign19-transfers-check/README.md),
+[independently audited](reviews/nine-sharing-sign19-transfers-terminal-independent/README.md),
+checks all ten rows under the same hypothesis, with 15 warnings. The full
+model bridge and endpoint remain separate.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
