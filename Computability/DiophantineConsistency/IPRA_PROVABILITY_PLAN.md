@@ -1407,6 +1407,11 @@ A [strict-norm client](research/nine-sharing-sign15-strict-norm-check/README.md)
 derives the strict norm from staged seed zero and represented beta without the
 deleted witness, with one warning. Its union survey is point-in-time; window
 and lift remain separate.
+A [window-scale client](research/nine-sharing-sign15-window-scale-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-window-scale-terminal-independent/README.md),
+checks the scale identity from staged seed zero and represented beta, with one
+warning and inherited point-in-time survey qualification. Half-window and
+the natural inner lift remain separate.
 A [further shared-values client](research/nine-sharing-sign15-more-shared-values-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-more-shared-values-terminal-independent/README.md),
 checks four natural component evaluations under represented beta. Assembled
