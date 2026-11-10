@@ -2054,6 +2054,11 @@ A [ranked tile-sum retry](research/nine-sharing-sign17-k-ranked-tile-sum-retry-c
 checks candidate bijectivity and reindexes the actual 942-tile weighted
 power sum to the candidate-weight sum for any natural base. Control terms,
 sentinels, full K and external-file binding remain separate.
+A [ranked rawWord retry](research/nine-sharing-sign17-k-ranked-rawword-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-ranked-rawword-retry-terminal-independent/README.md),
+checks the actual rawWord and K symbolic identities, including the ranked
+tile sum, 34 control contributions and three sentinels. The frozen
+coefficient-array and external-file bindings remain separate.
 A [ranked rawWord assembly attempt](research/nine-sharing-sign17-k-ranked-rawword-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-ranked-rawword-terminal-independent/README.md),
 failed because three fixed sentinel-vector entries were not reduced. It
