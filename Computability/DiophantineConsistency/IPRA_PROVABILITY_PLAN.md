@@ -1394,6 +1394,11 @@ A [supplied-tau coordinate client](research/nine-sharing-sign14-coordinate-check
 [independently audited](reviews/nine-sharing-sign14-coordinate-terminal-independent/README.md),
 checks lift and recovery without port/sign assumptions, with 47 linter warnings.
 The point-union survey remains qualified; residual transfers and iff are separate.
+An [expression-evaluation client](research/nine-sharing-sign14-expression-eval-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-expression-eval-terminal-independent/README.md),
+checks abstract and current Fin14 symbolic evaluation. Successful-child/
+failed-parent ancestry remains qualified; direct iff, endpoint, Lean degree
+and JSON binding remain separate.
 A [staged syntax client](research/nine-sharing-sign15-staged-syntax-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-staged-syntax-terminal-independent/README.md),
 checks the symbolic seed-zero characterization in 16 stages. The external AST

@@ -1,0 +1,5 @@
+# Sign14 expression/evaluation: source-only client
+
+Four checked stages define and evaluate abstract/current symbolic sign14 expressions over 14 remaining variables, using the independently audited [staged sign14 syntax](../../reviews/nine-sharing-sign14-staged-syntax-terminal-independent/README.md). No expression iff, external JSON binding or iPRA endpoint is claimed.
+
+The runner surveys successful input-removal and current-data rows of two overall failed producers, with deeper ancestry inherited; both surveys and direct guards are rechecked postflight. No-Lean preflight exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign14-expression-eval-prelaunch-independent/README.md) passed. Author outer session 85790 exited 0 ([receipt](attempt01/outer-result.json)); the [independent terminal audit](../../reviews/nine-sharing-sign14-expression-eval-terminal-independent/README.md) passed. Limits are `-M2800`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck.
