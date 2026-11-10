@@ -1498,6 +1498,11 @@ checks all 29 embedded short-fragment encodings, 44 shared-node compositions
 and five row-code compositions. Its 20 stages report 49 sequencing-linter
 warnings. Applying the generic decoder theorem to the assembled lists and
 the original-file/JSON/PDF links remain separate.
+A [five-row fragment-DAG decoder](research/nine-sharing-sign14-prefix-dag-decode-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-prefix-dag-decode-terminal-independent/README.md),
+checks all five assembled fragment lists decode to their staged Lean
+residuals for arbitrary ports. The original full-file/JSON reconstruction
+is still external; a polynomial-expression assembly remains separate.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
