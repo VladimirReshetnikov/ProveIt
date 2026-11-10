@@ -184,6 +184,12 @@ A [RingVars/Bd client](research/nine-seed33-jones-vars-bd-check/README.md),
 [independently audited](reviews/nine-seed33-jones-vars-bd-terminal-frontier-independent/README.md),
 identifies the symbolic Bd checkpoint with the named value while leaving the
 d11 rank opaque.
+A [Cd and radicands client](research/nine-seed33-jones-vars-cd-rad-staged-check/README.md),
+[independently audited](reviews/nine-seed33-jones-vars-cd-rad-staged-terminal-independent/README.md),
+checks Cd and the two radicands against the corresponding symbolic RingVars
+fields, with the rank still opaque. Its author-reported outer exit has no
+independently retained raw terminal transcript; inherited ancestry remains
+point-observed. Full recipe semantics and external serialization are separate.
 A [U/Y dependent-prefix client](research/nine-seed33-jones-dependent01-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-dependent01-staged-terminal-frontier-independent/README.md),
 checks the d19 and d20 local equations; full output semantics remain open.
@@ -1833,6 +1839,10 @@ A [paired aggregate batch for rows 480–607](research/nine-sharing-sign17-k-wei
 [independently audited](reviews/nine-sharing-sign17-k-weight-aggregate-batch08-09-terminal-independent/README.md),
 checks two more universal actual-weight theorems. The candidate ranking and
 full K/file binding remain separate.
+A [paired aggregate batch for rows 608–735](research/nine-sharing-sign17-k-weight-aggregate-batch10-11-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-weight-aggregate-batch10-11-terminal-independent/README.md),
+checks two further universal actual-weight theorems. Candidate ranking and
+full K/file binding remain separate.
 A [generic Fin.append certificate lemma](research/nine-sharing-sign17-k-weight-append-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-weight-append-terminal-independent/README.md),
 checks composition of such certificates. The audit records a checker schema
@@ -1851,6 +1861,11 @@ A subsequent [actual physical-map criterion](research/nine-sharing-sign17-k-actu
 checks the specialization with candidate zero/nonzero and descending-weight
 hypotheses. It does not establish those hypotheses for the concrete candidate
 or bind the full K coefficient or an external file.
+A subsequent [adjacent-weight criterion](research/nine-sharing-sign17-k-adjacent-rank-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-adjacent-rank-terminal-independent/README.md),
+reduces the descending hypothesis to 940 neighboring inequalities, still
+assuming the candidate zero/nonzero properties. It does not establish the
+candidate ranking or K/file binding.
 A [symbolic MF radix-digit attempt](research/nine-sharing-sign17-mf-radix-digits-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mf-radix-digits-terminal-independent/README.md),
 passed fifteen prerequisites but failed the final digit theorem on recursion
