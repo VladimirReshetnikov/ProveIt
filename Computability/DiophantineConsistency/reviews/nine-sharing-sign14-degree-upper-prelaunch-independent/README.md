@@ -1,0 +1,5 @@
+# Independent prelaunch review
+
+PASS. An independent parser reads the actual staged Lean syntax for all 44 shared nodes and five residual rows, computes their structural degrees, and compares both the proposed numerical bounds and each generated `change` expression with the corresponding Lean-source syntax. The five residual degrees are 22, 22, 2, 62 and 46. The source proposes composing the degree-62 residual bounds through squaring and input removal to give arbitrary-port symbolic total degree at most 124. All 18 source rows/imports, audited expression-evaluation provider, numeric receipt, no-Lean preflight and bounded guards are checked.
+
+This is prelaunch evidence; Lean must check the generated proofs. The staged syntax parser is independent of the external JSON AST, and this review makes no Lean claim about external-file identity, exact degree or PDF/Jones correspondence. Historical successful-child/failed-parent ancestry remains qualified. Reproduce before the fresh output path is populated with `python3 -I -S -B reviews/nine-sharing-sign14-degree-upper-prelaunch-independent/check.py`.
