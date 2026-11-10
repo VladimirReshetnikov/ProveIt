@@ -1387,6 +1387,19 @@ A [signed-value client](research/nine-sharing-sign15-signed-value-check/README.m
 checks the substituted inner and V values in the difference ring under
 represented beta/MC/MF and `q ≥ F`, without assuming a natural inner witness.
 The seed-level auxiliary norm and lift remain separate.
+An [auxiliary-from-seed client](research/nine-sharing-sign15-aux-from-seed-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-aux-from-seed-terminal-independent/README.md),
+derives that norm under represented ports and bounds without assuming a
+natural deleted-inner witness or its sign. Union and first-index surveys are
+point-in-time; other norms, window and lift remain separate.
+A [further shared-values client](research/nine-sharing-sign15-more-shared-values-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-more-shared-values-terminal-independent/README.md),
+checks four natural component evaluations under represented beta. Assembled
+norms and the lift remain separate.
+A [remaining-row client](research/nine-sharing-sign15-other-rows-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-other-rows-terminal-independent/README.md),
+extracts four retained row consequences from seed zero with shared values
+abstract. Assembled norms and the lift remain separate.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
