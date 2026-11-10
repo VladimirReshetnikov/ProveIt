@@ -88,7 +88,10 @@ have since passed Lean and independent terminal review. All five residuals
 are covered individually, and their [whole-expression coordinate identity](research/nine-sharing-sign14-positive74-expression-bridge-check/README.md)
 is checked. The [pointwise and existential model-zero equivalences](research/nine-sharing-sign14-positive74-model-check/README.md)
 are checked in the `positiveShift` formulation. A separately stated
-positive-witness bijection, exact degree and iPRA transport remain open.
+positive-witness bijection and exact degree remain open. The [all-model
+polynomial bridge](research/nine-sharing-sign14-positive74-ipra-bridge-check/README.md)
+has passed Lean and independent terminal audit; the final iPRA derivability
+endpoints remain separate.
 
 For fixed-constant work, the [generic radix stream theorem](research/nine-sharing-sign17-k-radix-stream-retry-check/README.md)
 and its [symbolic K specialization](research/nine-sharing-sign17-k-radix-stream-current-check/README.md)
@@ -107,7 +110,8 @@ now proves that symbolic K is the base-256 value of the explicit in-Lean
 fixture byte list. Connecting that list to external file bytes remains open.
 Separately, the [715-digit Lean seed lines](research/nine-sharing-sign17-seed-lines-replay-check/README.md)
 now feed the parametric decoder to produce all [430 cached actions and
-transition rows](research/nine-sharing-sign17-lines-decoder-check/README.md).
+transition rows](research/nine-sharing-sign17-lines-decoder-check/README.md),
+and the [target sets and rail values](research/nine-sharing-sign17-lines-rails-check/README.md).
 The rest of the table and external document semantics remain separate.
 
 ## Current reduction status
