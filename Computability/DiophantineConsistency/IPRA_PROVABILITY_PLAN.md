@@ -1247,6 +1247,10 @@ A [conditional coordinate client](research/nine-sharing-sign17-coordinate-check/
 checks the deleted row and coordinate lift/drop when a natural gap with the
 required embedding is supplied, with two warnings. Gap existence and the full
 model bridge remain separate.
+A [conditional residual-transfer client](research/nine-sharing-sign17-transfers-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-transfers-terminal-independent/README.md),
+checks eight row transfers given that gap, with 382 mostly unused-simp warnings.
+Zero assembly and the iPRA endpoint remain separate.
 A finite [positive-gate octic search](research/nine-sharing-octic-positive-elimination-search/README.md),
 [independently audited](reviews/nine-sharing-octic-positive-elimination-independent/README.md),
 reaches at best 23 witnesses among 19 ordered states when every step preserves
