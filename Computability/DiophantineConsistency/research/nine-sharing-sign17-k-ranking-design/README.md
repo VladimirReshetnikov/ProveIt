@@ -23,8 +23,10 @@ A candidate staged kernel-checked route is:
    actual Lean `tile` and `selectorWeight` definitions. These are finite
    computations; independently audited finite-batch weight theorems now
    cover all 942 candidate rows, and the [Fin942 weight union](../nine-sharing-sign17-k-weight-union942-check/README.md)
-   combines them into a single checked theorem. Physical-rank and
-   coefficient-array bindings remain separate.
+   combines them into a single checked theorem. The [global physical-rank
+   assembly](../nine-sharing-sign17-k-global-assembly-retry02-check/README.md)
+   proves actual positions of the in-Lean candidate vector; coefficient-array
+   and external witness bindings remain separate.
 2. Prove the candidate table is strictly descending. Use the existing
    bijection and `physical_lt_iff_weight`/`physicalWeight_strictAnti` to prove
    the candidate positions equal the actual `physicalEquiv` ordering. This
@@ -57,6 +59,6 @@ For the non-Start part, check indices are nonzero and adjacent weights decrease
 inside each block, plus each boundary between blocks. The separately checked
 rank criterion turns those facts into actual physical positions. The
 [local ordering clients](../nine-sharing-sign17-k-order-all-retry-check/README.md)
-passed Lean and independent audit for every block and boundary, though their
-facts are not yet assembled as global hypotheses. This still leaves
+passed Lean and independent audit for every block and boundary. The separate
+global chunk and rank assembly also passed; this still leaves
 control terms, coefficient aggregation, radix bytes and file provenance.

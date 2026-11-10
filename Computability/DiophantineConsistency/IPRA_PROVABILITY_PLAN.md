@@ -2023,6 +2023,11 @@ A [cast-normalization retry](research/nine-sharing-sign17-k-global-assembly-retr
 [independently audited](reviews/nine-sharing-sign17-k-global-assembly-retry-terminal-independent/README.md),
 fixed 28 branch mismatches but failed on the two chunk00 cases where
 `Fin.castLE` wraps a variable. It produced no final object or postflight.
+A [second cast-normalization retry](research/nine-sharing-sign17-k-global-assembly-retry02-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-global-assembly-retry02-terminal-independent/README.md),
+checks the unconditional in-Lean theorem `∀ i, physicalMap (candidate i) = i`
+for all 942 candidate entries. The five stages and postflight passed; this
+is not yet the complete K coefficient aggregation or an external-file binding.
 A [generic finite-partition probe](research/nine-sharing-sign17-k-partition-probe-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-partition-probe-terminal-independent/README.md),
 failed on a nested-offset associativity mismatch. It produced no object or
