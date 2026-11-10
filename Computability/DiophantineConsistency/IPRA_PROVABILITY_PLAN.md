@@ -827,7 +827,14 @@ now composes the current-port Fin23 and Fin24 expressions. The polynomial
 bridge is checked by a [direct client](research/nine-sharing-sign23-concrete-polynomial-bridge-check/README.md),
 [independently audited](reviews/nine-sharing-sign23-concrete-polynomial-bridge-terminal-independent/README.md),
 at the scoped `-M3600` interpreter limit with the sampled 4 GiB RSS cap. The
-external byte binding and iPRA endpoint remain separate.
+[direct iPRA endpoint](research/nine-sharing-sign23-endpoint-check/README.md),
+[independently audited](reviews/nine-sharing-sign23-endpoint-terminal-independent/README.md),
+checks native, standard, and translated-standard proof-existence equivalences
+for the symbolic Fin23 expression, with a successful outer exit and final
+postflight. Inherited historical provider and point-observation qualifications
+remain. The external degree-eight and coefficient-byte descriptions are not
+formally bound to this Lean expression; this is not a Jones nine-variable
+endpoint.
 A [22-witness degree-12 candidate](research/nine-sharing-sign22-dodecic-ky-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign22-dodecic-ky-independent/README.md),
 eliminates kY by a natural product. Its fixed-input external square-sum has

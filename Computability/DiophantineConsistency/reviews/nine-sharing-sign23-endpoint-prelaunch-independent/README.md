@@ -1,0 +1,3 @@
+# Independent sign23 endpoint prelaunch review
+
+Independent checker session 2154 exited 0. The proposed native, standard and translated iPRA endpoint sources are exact sign23 adaptations of the checked sign24 sources. The checker reran the independent sign23 bridge terminal audit and no-Lean preflight, verified the bridge's numeric outer exit, source/object bindings, direct framework survey, stage imports and retained -M3600, sampled 4 GiB RSS, 10 GiB host floor, 120-second and 5 GB disk guards. No endpoint theorem follows from preflight. Existing provider ancestry is point-observed, and the external JSON/PDF and exact degree correspondence remain separate.
