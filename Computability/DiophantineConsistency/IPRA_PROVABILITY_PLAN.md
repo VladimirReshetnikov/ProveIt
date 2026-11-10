@@ -147,6 +147,10 @@ It establishes native and standard iPRA equivalence with the selected mapped
 refutation negation, and the translated-standard endpoint. Its current-port
 in-Lean expression has [exact total degree 124](research/nine-sharing-sign14-positive74-degree-exact-retry01-check/README.md),
 with an [independent terminal audit](reviews/nine-sharing-sign14-positive74-degree-exact-retry01-terminal-independent/README.md).
+Lean also checks a [74-live-operation circuit](research/nine-sharing-sign14-positive74-circuit-retry01-check/README.md)
+with 18 additions, 18 subtractions and 38 multiplications; its [output
+equals the expression over every commutative ring](research/nine-sharing-sign14-positive74-circuit-output-check/README.md),
+as confirmed by an [independent terminal audit](reviews/nine-sharing-sign14-positive74-circuit-output-terminal-independent/README.md).
 The [all-model
 polynomial bridge](research/nine-sharing-sign14-positive74-ipra-bridge-check/README.md)
 and the [native, standard and translated iPRA endpoints](research/nine-sharing-sign14-positive74-ipra-endpoint-check/README.md)
