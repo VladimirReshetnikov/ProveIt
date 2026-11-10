@@ -1,0 +1,5 @@
+# Independent terminal review
+
+PASS. Outer session 37533 exited 0 and both guarded stages and postflight passed. Lean proves over every commutative ring and every Fin9 input that the sign33 macro recipe output equals the named symbolic endpoint expression's `evalRing`; the first stage identifies the RingVars tuples. Both reports use standard axioms, with one unnecessary-sequence linter warning and no `sorryAx`. Source/object/log hashes, direct provider routes and guards, 1,388 overlay links and the two-provider point survey replay are authenticated.
+
+This is a symbolic Lean evaluator equality, not a theorem that external JSON, prose, a file or a PDF denotes that expression. Earlier point-observed source/provider ancestry is inherited, not a complete dynamic/transitive trace; the preceding -M2800 memory failure is retained separately. Reproduce while the retained temporary providers are available with `python3 -I -S -B reviews/nine-seed33-jones-named-equality-memory-retry-terminal-independent/check.py`.

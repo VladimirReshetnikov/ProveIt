@@ -200,6 +200,14 @@ A [named-expression equality attempt](research/nine-seed33-jones-named-equality-
 failed in the first stage on Lean's interpreter memory cap at `-M2800`.
 It produced no equality theorem or postflight; the failed receipt and its
 sampled resource observations are retained.
+A [scoped memory retry](research/nine-seed33-jones-named-equality-memory-retry-check/README.md),
+[independently audited](reviews/nine-seed33-jones-named-equality-memory-retry-terminal-independent/README.md),
+subsequently checks that the compact recipe's output equals the symbolic
+nine-variable endpoint expression over every commutative ring. Its first
+stage also identifies the rank and named RingVars tuple. The retry uses
+`-M3600` with the same sampled 4-GiB RSS, host-memory and time limits and
+records one linter warning. External JSON, human-text and PDF binding, exact
+degree and a binary operation count remain separate.
 A [U/Y dependent-prefix client](research/nine-seed33-jones-dependent01-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-dependent01-staged-terminal-frontier-independent/README.md),
 checks the d19 and d20 local equations; full output semantics remain open.
