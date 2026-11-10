@@ -789,7 +789,10 @@ failed on a numeral-embedding goal, with `sorryAx` in the failed declaration;
 no transfer object or postflight was produced. A [numeral rewrite retry](research/nine-sharing-sign23-transfers-retry01/README.md),
 [independently audited](reviews/nine-sharing-sign23-transfers-retry01-terminal-independent/README.md),
 checks all 14 row transfers, with 52 linter warnings. The full bridge remains
-separate.
+separate. An [assembled pointwise zero bridge](research/nine-sharing-sign23-zero-assembly-check/README.md),
+[independently audited](reviews/nine-sharing-sign23-zero-assembly-terminal-independent/README.md),
+checks both directions along the natural Delta lift and drop without an extra
+beta hypothesis. The existential composition and iPRA endpoint remain separate.
 A [22-witness degree-12 candidate](research/nine-sharing-sign22-dodecic-ky-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign22-dodecic-ky-independent/README.md),
 eliminates kY by a natural product. Its fixed-input external square-sum has
