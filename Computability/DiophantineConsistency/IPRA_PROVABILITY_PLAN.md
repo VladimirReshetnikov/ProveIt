@@ -5714,9 +5714,19 @@ points of the eleven-integer row.
   (quartic supported interpolation) because `r = A·t²` carries the factor `A`.
 - `gen_literal172.py --check` and `check_ports172.py` bind both literals and
   the six ports.
-- The same theorems apply to 135's 352 / 125, 340 / 129, 328 / 130 and 144's
-  316 / 133, 308 / 140 (their own centres, weights 4 and 64); those endpoints
-  are not yet stated.
+
+**135's 352 / 125, 340 / 129, 328 / 130 and 144's 316 / 133, 308 / 140
+(eleven integers), CLOSED (9 November 2026)**
+([`P135/IPRAInteger135`](Lean/DiophantineConsistency/P135/IPRAInteger135.lean),
+[`P144/IPRAInteger144`](Lean/DiophantineConsistency/P144/IPRAInteger144.lean),
+[record](research/p135-integer11/README.md)).
+- All five are 172's linear-cofactor circuit at the 300-type slots with their
+  own centre (`P135Value`) and the radical weight 4 or 64.
+- `LinCof/LCFamily.zero_iff_halts` joins `LCLeaf.sound` and
+  `LCComplete.lc_complete300` for every centre that does not read `n` and every
+  nonzero even square weight; each bridge is an instance of it.
+- `gen_literal135.py --check` and `check_ports135.py` bind the five literals
+  and the six ports.
 
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
