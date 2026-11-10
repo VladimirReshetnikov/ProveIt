@@ -1186,7 +1186,10 @@ checks both pointwise zero directions under the beta representation
 hypothesis. A [same-input seed-iff client](research/nine-sharing-sign18-seed-iff-check/README.md),
 [independently audited](reviews/nine-sharing-sign18-seed-iff-terminal-independent/README.md),
 checks the resulting existential equivalence under the same hypothesis;
-current-port specialization and the endpoint remain separate. An
+its [current-port specialization](research/nine-sharing-sign18-current-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign18-current-iff-terminal-independent/README.md),
+also checks the beta-port representation, with the inherited successful-child
+of failed-producer qualification. The endpoint remains separate. An
 [expression-evaluation client](research/nine-sharing-sign18-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign18-expression-eval-terminal-independent/README.md),
 checks symbolic Fin18 evaluation against the staged seed. It does not bind
