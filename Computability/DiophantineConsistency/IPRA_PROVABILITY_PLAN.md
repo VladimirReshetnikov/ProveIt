@@ -66,8 +66,11 @@ composition through 92 gates](research/nine-sharing-sign14-86gate-to92-expressio
 is checked. The [model-zero equivalence](research/nine-sharing-sign14-86gate-model-check/README.md),
 [exact symbolic degree 124](research/nine-sharing-sign14-86gate-degree-check/README.md)
 and [all-model polynomial bridge](research/nine-sharing-sign14-86gate-bridge-check/README.md)
-have also passed independent terminal reviews. The iPRA endpoint transfer
-remains separate.
+have also passed independent terminal reviews. The [native, standard and
+translated iPRA endpoints](research/nine-sharing-sign14-86gate-endpoint-check/README.md)
+now pass independent terminal review for the symbolic expression too. The
+operation count and external AST comparison remain external checks; file,
+PDF and fixed-port byte correspondence remain separate.
 
 For fixed-constant work, the [generic radix stream theorem](research/nine-sharing-sign17-k-radix-stream-retry-check/README.md)
 and its [symbolic K specialization](research/nine-sharing-sign17-k-radix-stream-current-check/README.md)
