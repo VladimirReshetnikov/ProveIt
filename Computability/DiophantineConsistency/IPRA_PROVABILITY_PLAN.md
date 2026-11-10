@@ -1304,6 +1304,10 @@ A [mapped-degree retry](research/nine-sharing-sign17-univariate-degree-probe-ret
 [independently audited](reviews/nine-sharing-sign17-univariate-degree-probe-retry-failure-independent/README.md),
 left the rewrite side condition `0 = 0` unresolved; no module object or
 postflight was produced.
+A [side-condition retry](research/nine-sharing-sign17-univariate-degree-probe-retry02-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-univariate-degree-probe-retry02-terminal-independent/README.md),
+checks generic univariate product, dominant-addition and mapped-degree facts.
+The concrete lower bound and exact degree remain separate.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
