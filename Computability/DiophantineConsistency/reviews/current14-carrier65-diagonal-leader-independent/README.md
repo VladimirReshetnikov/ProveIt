@@ -1,0 +1,7 @@
+# Independent external diagonal review
+
+PASS. An independent standard-library checker parses the pinned 65-gate graph, verifies the original Q node's exact ancestor topology, independently expands the five-variable cancellation identity, confirms cancellation of the apparent degree-22 Q leading terms, and propagates exact nonzero leading coefficients in the formal ring Z[beta,K,MC,MF]. It obtains P=(-4 beta^14)t^22, Q=(16 beta^11)t^18, U=(64 beta^34)t^62, W=(-2)t^2, Z=(-16 beta^28)t^46 and final coefficient `-131072 beta^87` at t^150. Every tracked zero leading coefficient fails closed.
+
+As an additional independent check, the checker computes the full exact univariate t-polynomial directly from the original graph, without the Q rewrite, for five integer port assignments including positive and negative nonzero beta; each has degree 150 and the expected leading coefficient. This finite check supplements, rather than replaces, formal-coefficient propagation. Thus the external result gives diagonal degree 150 when beta is nonzero; it makes no such claim for beta=0.
+
+Graph hash and independently reviewed graph/Carrier65 source mapping were checked. This is Python/external exact arithmetic, not a Lean polynomial-totalDegree theorem, and is not a formal interpretation of TeX/PDF/files. The Lean graph evaluator bridge is separately audited and does not by itself internalize this certificate. No Lean run.
