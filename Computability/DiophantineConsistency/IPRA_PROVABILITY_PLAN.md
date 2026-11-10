@@ -1447,6 +1447,12 @@ uses a difference-of-squares identity to replace five copies of one shared
 product. Its 94-gate circuit has 37 additions, 17 subtractions and 40
 multiplications under the same convention. Lean equivalence, degree, iPRA
 endpoint and external-file transfers for this candidate remain separate.
+A subsequent [93-gate external candidate](research/nine-sharing-sign14-93gate-candidate/README.md),
+[independently audited](reviews/nine-sharing-sign14-93gate-candidate-independent/README.md),
+uses distributivity to factor four copies of a rank term. Its exact-sharing
+circuit has 37 additions, 17 subtractions and 39 multiplications. Lean
+equivalence, degree and iPRA endpoints for this further candidate remain open;
+the count is an upper bound, not minimality.
 A [94-gate Lean source draft](research/nine-sharing-sign14-94gate-lean-draft/README.md),
 [independently reviewed](reviews/nine-sharing-sign14-94gate-lean-draft-independent/README.md),
 expands to the candidate's five external residual ASTs and proposes the
