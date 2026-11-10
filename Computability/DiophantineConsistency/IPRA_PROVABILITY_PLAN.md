@@ -1211,6 +1211,10 @@ and with its [proof plan reviewed](reviews/nine-sharing-sign16-final-plan-indepe
 substitutes a signed V expression. Its external degree is exactly 112 for
 nonzero beta, but proving that the replacement is nonnegative at every new zero
 and hence the reverse equivalence remains open. No iPRA endpoint is claimed.
+A [generic absdiff ingredient attempt](research/nine-sharing-sign16-absdiff-ingredient-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-absdiff-ingredient-failure-independent/README.md),
+failed because a tactic was unavailable under its imports; no module object or
+postflight was produced.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
