@@ -1398,6 +1398,10 @@ A [five-row transfer client](research/nine-sharing-sign14-transfers-check/README
 [independently audited](reviews/nine-sharing-sign14-transfers-terminal-independent/README.md),
 checks retained residual transfers under a supplied abstract tau, with 255
 linter warnings. Zero assembly and equivalence remain separate.
+A [zero-assembly attempt](research/nine-sharing-sign14-zero-assembly-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-zero-assembly-terminal-independent/README.md),
+hit the default 200,000-heartbeat limit in the forward stage; no forward
+object, reverse stage or postflight was produced.
 An [expression-evaluation client](research/nine-sharing-sign14-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign14-expression-eval-terminal-independent/README.md),
 checks abstract and current Fin14 symbolic evaluation. Successful-child/
