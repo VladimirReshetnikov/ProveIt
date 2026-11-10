@@ -811,6 +811,12 @@ postflight were not reached. A [commutativity retry](research/nine-sharing-sign2
 compiled the whole seed's diagonal coefficient at degree eight as one for
 arbitrary ports. Its final direct-expression lower stage failed on a constant
 evaluation goal and reported `sorryAx`; the overall run and postflight failed.
+A [constant-evaluation retry](research/nine-sharing-sign24-full-coeff-retry02-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-full-coeff-retry02-terminal-independent/README.md),
+checks `8 ≤ toPolynomial.totalDegree` for the actual abstract expression at
+arbitrary integer ports. It passed seven stages and postflight, with one
+unused-simp warning. Together with the independently checked upper bound this
+implies exact degree eight; a single combined theorem is separate.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
