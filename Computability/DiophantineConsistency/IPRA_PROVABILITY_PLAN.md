@@ -1503,6 +1503,12 @@ A [five-row fragment-DAG decoder](research/nine-sharing-sign14-prefix-dag-decode
 checks all five assembled fragment lists decode to their staged Lean
 residuals for arbitrary ports. The original full-file/JSON reconstruction
 is still external; a polynomial-expression assembly remains separate.
+A [fragment-DAG polynomial assembly](research/nine-sharing-sign14-prefix-dag-assembly-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-prefix-dag-assembly-terminal-independent/README.md),
+checks the five-square expression and its equality to the symbolic Fin14
+expression for arbitrary ports. The original prefix-file/JSON/PDF connection
+and fixed-port bytes remain external or separate; endpoint and degree clients
+for the assembled expression are being prepared.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
