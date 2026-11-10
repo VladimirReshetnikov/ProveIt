@@ -658,6 +658,11 @@ exited 1 when the standard wrapper raised an interpreter memory exception;
 the translated wrapper and final postflight did not run. Thus this is a
 successful native child with inherited provider qualifications, not a
 successful complete endpoint run.
+An [opacity retry](research/nine-sharing-sign25-endpoint-no-alias-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-endpoint-no-alias-retry-terminal-independent/README.md),
+failed with an interpreter memory exception in the first native stage even
+though that source is byte-identical to the earlier successful child. The
+wrappers and postflight did not run; the cause of that variation is unknown.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
