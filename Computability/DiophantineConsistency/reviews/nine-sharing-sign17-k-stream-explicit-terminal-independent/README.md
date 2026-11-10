@@ -1,0 +1,3 @@
+# Independent terminal audit
+
+PASS: author-observed outer session 58274 exited 0. Stage and postflight passed; frozen state, source/object/logs, all nine direct provider objects and guarded overlays match, including the recorded 1,207-target provider overlap. Three reports have standard axiom sets (`[propext, Quot.sound]` for coefficient one and `[propext, Classical.choice, Quot.sound]` for the other two); two linter warnings identify an unreachable/no-op tactic, and no `sorryAx` appears. The theorem gives symbolic K's in-Lean radix digits as an explicit list with the index-1004 increment. It does not identify that list with fixture bytes or an external file. The numeric outer receipt itself does not hash the state. No Lean was run.
