@@ -38,14 +38,12 @@ of `e` on input `x` is `o`. -/
 theorem flexibleOutput :
     ∃ e : Code, (∀ x, Nat.Partrec.Code.eval e x = Part.none) ∧ ∀ (x : ℕ) (o : Option ℕ),
       ∃ (M : Type) (_ : ORingStructure M) (_ : M↓[ℒₒᵣ] ⊧* 𝗣𝗔), ValueIn M e x o := by
-  obtain ⟨f, hf, hsound, hfind⟩ := exists_selector (provable_substs_re (∼valueGraph))
-  obtain ⟨e, he⟩ := Nat.Partrec.Code.fixed_point₂ (f := fun c x => f (Encodable.encode c, x))
-    (hf.comp ((Computable.encode.comp .fst).pair .snd))
-  replace he : ∀ x, Nat.Partrec.Code.eval e x = f (Encodable.encode e, x) := congrFun he
+  obtain ⟨f, hf, hsound, hfind⟩ := exists_selector (provable_substs_re (α := Code) (∼valueGraph))
+  obtain ⟨e, he⟩ := Nat.Partrec.Code.fixed_point₂ hf.to₂
   -- An output would be a value refuted by `𝗣𝗔`, but it is the value in `ℕ`.
   have hdiv : ∀ x, Nat.Partrec.Code.eval e x = Part.none := fun x =>
     Part.eq_none_iff.2 fun m hm => models_not_valueGraph.mp
-      (models_of_provable (M := ℕ) inferInstance (hsound (Encodable.encode e, x) m (he x ▸ hm)))
+      (models_of_provable (M := ℕ) inferInstance (hsound (e, x) m (congrFun he x ▸ hm)))
       (valueIn_nat.mpr (Part.eq_some_iff.2 hm))
   refine ⟨e, hdiv, fun x o => ?_⟩
   cases o with
@@ -53,7 +51,7 @@ theorem flexibleOutput :
   | some n =>
     by_contra hno
     -- No model has value `n`, so `𝗣𝗔` refutes the value `n`, and the selector halts.
-    exact Part.eq_none_iff'.mp (he x ▸ hdiv x) <| hfind (Encodable.encode e, x) n <|
+    exact Part.eq_none_iff'.mp (congrFun he x ▸ hdiv x) <| hfind (e, x) n <|
       Arithmetic.complete.{0} 𝗣𝗔 _ fun M _ hM =>
         models_not_valueGraph.mpr fun h => hno ⟨M, inferInstance, hM, h⟩
 

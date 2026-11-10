@@ -4,7 +4,7 @@
 `PAFlexibleOutput.flexibleOutput` in
 [`Lean/PAFlexibleOutput/Main.lean`](Lean/PAFlexibleOutput/Main.lean). Its
 axioms are `propext`, `Classical.choice` and `Quot.sound`. The proof is four
-modules, 255 lines in all.
+modules, 237 lines in all.
 
 ## The theorem
 
@@ -37,6 +37,9 @@ make the formula a definition of `f` and not an arbitrary formula:
   output for a given program and input, nonstandard programs and inputs
   included;
 - `universalGraph_sigma_one`: the formula is `𝚺₁`.
+
+The main theorem uses the first fact only; the other two are proved in the
+module `Functionality`.
 
 Since `f` diverges on every standard input, `ℕ` is a model for `o = ⊥`, and by
 `valueIn_nat` it is a model for no `o = n`: the models for the numerical
@@ -100,11 +103,11 @@ algorithm; the article gives the references.
 
 | Path | Contents |
 | --- | --- |
-| [`Lean/PAFlexibleOutput/Halting.lean`](Lean/PAFlexibleOutput/Halting.lean) | `universalGraph`, Foundation's representing formula of the universal function of Mathlib's `Nat.Partrec.Code`; `OutputIn`, `ValueIn`; `outputIn_nat`, `valueIn_nat`; `valueGraph` and `models_not_valueGraph`; `universalGraph_sigma_one`. |
-| [`Lean/PAFlexibleOutput/Provability.lean`](Lean/PAFlexibleOutput/Provability.lean) | `provable_substs_re`: for every formula `φ(y, c, x)`, "PA proves `φ` at the numerals `y`, `c`, `x`" is recursively enumerable, through the `𝚺₁`-definability of Foundation's arithmetized provability and numeral substitution. |
+| [`Lean/PAFlexibleOutput/Halting.lean`](Lean/PAFlexibleOutput/Halting.lean) | `universalGraph`, Foundation's representing formula of the universal function of Mathlib's `Nat.Partrec.Code`; `OutputIn`, `ValueIn`; `outputIn_nat`, `valueIn_nat`; `valueGraph` and `models_not_valueGraph`. |
+| [`Lean/PAFlexibleOutput/Provability.lean`](Lean/PAFlexibleOutput/Provability.lean) | `provable_substs_re`: for every formula `φ(y, c, x)`, "PA proves `φ` at the numerals of `y`, of the code of `c`, and of `x`" is recursively enumerable, for `c` in any coded type, through the `𝚺₁`-definability of Foundation's arithmetized provability and numeral substitution. |
 | [`Lean/PAFlexibleOutput/Search.lean`](Lean/PAFlexibleOutput/Search.lean) | `exists_selector`: a recursively enumerable relation has a partial recursive selector, by dovetailing. Mathlib only. |
 | [`Lean/PAFlexibleOutput/Main.lean`](Lean/PAFlexibleOutput/Main.lean) | `flexibleOutput` and the corollary. |
-| [`Lean/PAFlexibleOutput/Functionality.lean`](Lean/PAFlexibleOutput/Functionality.lean) | Not used by the main theorem. `code_uniq`: Foundation's representing formula of a partial recursive function has at most one output in every model of `𝗣𝗔⁻`, by induction on the code. `universalGraph_uniq`, `valueIn_of_outputIn`. 66 lines. |
+| [`Lean/PAFlexibleOutput/Functionality.lean`](Lean/PAFlexibleOutput/Functionality.lean) | Not used by the main theorem. `universalGraph_sigma_one`. `code_uniq`: Foundation's representing formula of a partial recursive function has at most one output in every model of `𝗣𝗔⁻`, by induction on the code. `universalGraph_uniq`, `valueIn_of_outputIn`. 75 lines. |
 | [`Lean/PAFlexibleOutput.lean`](Lean/PAFlexibleOutput.lean) | Import surface. |
 | [`docs/Article/pa_flexible_output.tex`](docs/Article/pa_flexible_output.tex), [`.pdf`](docs/Article/pa_flexible_output.pdf) | The delivered draft: statement, mathematical proof, the Lean statement, the located repository and dependency results, and a five-stage route to a Lean proof. It predates the Lean proof and describes it as future work. |
 | `docs/proposals/` | Arriving proposals for simplifying the Lean proof. A proposal is removed once it has been dealt with, so the directory is normally empty. |
@@ -121,9 +124,13 @@ Notes on the Lean proof:
 - In `Search` the semi-decision procedure of the relation is made to return
   its candidate before it is compiled to a code, so a bounded run of the code
   already yields the witness.
+- In `Halting`, `valueIn_nat` is extensionality of `Part`: the value in `ℕ`
+  is `o` iff the outputs are exactly the members of `o`.
 - In `Provability` the triple `((c, x), y)` is read as one number through
   Foundation's pairing, which agrees with Mathlib's `Nat.pair`
-  (`nat_pair_eq`). The resulting predicate is `𝚺₁`-definable in `ℕ` because
+  (`nat_pair_eq`). The component `c` may be of any coded type, so the main
+  proof takes programs themselves and applies the recursion theorem to the
+  search with no decoding step. The resulting predicate is `𝚺₁`-definable in `ℕ` because
   `Bootstrapping.Provable 𝗣𝗔`, formal numeral substitution and the
   projections are; Foundation's `re_iff_sigma1` turns that into `REPred`. The
   formula `φ` itself need not be `𝚺₁`. The code inside is the Gödel number of
@@ -145,10 +152,11 @@ as modules of the library, discharged every obligation of `Statement.lean`
 and proved its `MainClaim`, `StrongClaim` and `FullySpecifiedMainClaim` by
 instantiating `MathlibAssembly`: eight modules, 1003 lines. The second
 version, commit `7142f7f52b`, replaced that route by a direct argument with
-the halting sentence: five modules, 376 lines. The current proof does not
+the halting sentence: five modules, 376 lines. The third, commit
+`e9727c0568`, searches for the value sentence: four modules, 255 lines, which
+later shortening of single proofs brought to 237. The current proof does not
 import the delivered files, so they are no longer part of the library or of
-any build.
-They import only Mathlib and Foundation, and the delivered
+any build. They import only Mathlib and Foundation, and the delivered
 `scripts/check_lean.sh` checks them from the `lean/` directory.
 
 What the current proof does differently:
