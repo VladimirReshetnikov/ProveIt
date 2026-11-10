@@ -1989,6 +1989,11 @@ A [64-case middle-offset probe](research/nine-sharing-sign17-k-global-rank-middl
 [independently audited](reviews/nine-sharing-sign17-k-global-rank-middle-probe-terminal-independent/README.md),
 checks positions 449–512 and adjacent comparisons through 513 across a
 block boundary. Full global assembly remains separate.
+A [global numeric chunk client](research/nine-sharing-sign17-k-global-chunks-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-global-chunks-terminal-independent/README.md),
+checks all 941 nonzero-index cases and all 940 adjacent-weight comparisons
+in 15 bounded Lean chunks. Their global partition and the unconditional rank
+theorem remain separate.
 A [conditional global-rank transport](research/nine-sharing-sign17-k-global-rank-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-global-rank-terminal-independent/README.md),
 derives candidate physical positions from the Fin942 weights under explicit
