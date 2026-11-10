@@ -1072,6 +1072,10 @@ A [structural-distinctness retry](research/nine-sharing-sign20-full-coeff-retry-
 [independently audited](reviews/nine-sharing-sign20-full-coeff-retry-failure-independent/README.md),
 passed five stages, then failed to normalize two port-dependent list counts;
 no final seed-coefficient or lower-bound object or postflight was produced.
+A separate [current-beta nonzero attempt](research/nine-sharing-sign20-current-beta-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-current-beta-failure-independent/README.md),
+failed because a finite comparison could not unfold the locally irreducible
+radix; it produced no positivity or nonzero object or final postflight.
 A [19-witness degree-44 external candidate](research/nine-sharing-sign19-degree44-y-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign19-external-independent/README.md),
 eliminates Y and has exact fixed-input degree 44 when beta is nonzero. The
