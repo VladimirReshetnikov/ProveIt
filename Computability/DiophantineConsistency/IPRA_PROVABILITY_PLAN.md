@@ -1941,6 +1941,12 @@ A [replayed Fin224 union](research/nine-sharing-sign17-k-weight-union224-check/R
 combines the first four weight batches in one context and checks actual-weight
 theorems for rows 0–159 and 0–223. Rank, full union and K binding remain
 separate.
+A [single-context Fin942 weight union](research/nine-sharing-sign17-k-weight-union942-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-weight-union942-terminal-independent/README.md),
+replays all 40 bounded stages and checks a universal actual-weight theorem
+for all 942 candidate rows. Its final stage has no warnings; 15 linter
+warnings occur in replayed prerequisites. Candidate ordering, physical rank,
+full K and external-file binding remain separate.
 A [paired aggregate batch for rows 736–863](research/nine-sharing-sign17-k-weight-aggregate-batch12-13-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-weight-aggregate-batch12-13-terminal-independent/README.md),
 checks two further universal actual-weight theorems. Candidate ranking and
