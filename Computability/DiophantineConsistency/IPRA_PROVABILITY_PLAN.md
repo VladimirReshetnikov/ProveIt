@@ -710,8 +710,10 @@ has successful observed children but a failed overall run. The direct expression
 has an [evaluation client](research/nine-sharing-sign24-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign24-expression-eval-terminal-independent/README.md),
 for input one at abstract and current ports; it inherits partial historical
-provider observations. Expression-zero composition, Lean degree and port-byte
-binding, and iPRA endpoint remain open.
+provider observations. An [expression-zero equivalence](research/nine-sharing-sign24-expression-equivalence-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-expression-equivalence-terminal-independent/README.md),
+composes the current-port Fin24 and Fin25 expressions. Lean degree and
+port-byte binding, and the iPRA endpoint remain open.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
