@@ -1,0 +1,75 @@
+UNIFORM-PREMISE CERTIFICATES
+
+Run either checker as: python3 code/checker.py < certificate.json
+It reads one JSON array. The final item is the closed goal; preceding items
+are four-field instructions, consumed backwards. An unused prefix is inert.
+Successful exit zero and exactly ACCEPT followed by newline is acceptance.
+Exceptions reject. The same checks operate in Python -O mode.
+
+Each instruction is [m,s,u,t]. Every instruction verifies major m first.
+
+  m nonempty array: ordinary equality, Q or D elimination major.
+  m=[] and u truthy: generated computation, predecessor s, initializer u,
+                    scalar-state update t.
+  m=[] and u=[]: paired case introduction with witness t.
+  m=[] and u=0:  equation progress introduction with witness t.
+
+The s field is unused for introduction. A literal zero witness is allowed.
+Computation uses s=0 (or another valid falsy zero spelling) for I0; a truthy s
+constructs a successor counter explicitly. The initializer must be truthy
+syntax. A certified nonempty zero restores forbidden literal-zero cases.
+
+The initial context is [[]]. Its sole member is the theorem 0=0, represented
+by the empty-array truth alias. A major [] closes immediately without taking
+another instruction. It is a proved premise, not an unchecked opcode.
+
+CANONICAL LANGUAGE
+
+Numerical objects: zero, successor, initialized scalar iteration I(n,a;v.h).
+Formulas: numerical equality, paired binder D, auxiliary conditional closure Q.
+
+  []             numerical zero / formula truth
+  [b]            successor / paired binder D
+  [s,t]          zero annotation / equality
+  [n,a,h]        scalar iteration / Q using the last field
+  4+ fields      numerical zero / formula truth, ignoring contents semantically
+
+A canonical Q resource is [B,B,B]. Opening traverses each array with depth
+increment 5-len(node). Numerical root depth is 3, formula root depth is 0.
+Each protected numerical slot has width 2. Canonical integer coordinates
+0,1,2 denote zero; 3,4 denote the nearest slot; 5,6 the next; etc. Rigid negative
+labels are allocated by the checker. The numerical decoder includes dummy zero
+slots at successor/iterator nodes as specified in the report; the named
+producer handles these shifts explicitly.
+
+All successful goals and context entries are array rooted. Scalar formula
+padding is outside canonical object syntax; the inherited truth reading or
+the optional bottom completion is sound. In neither case may a scalar be an
+unproved major. The supplied scalar false-sentinel attack is rejected.
+
+CANONICAL COMPLETENESS
+
+Convert a native proof, not an arbitrary old byte stream. Regenerate it in the
+new contexts, prune goals that already close by hypothesis, choose m=[] where
+the old proof had no major, and put the old introduction marker into u.
+Compulsory neutral majors add recursive calls but consume no instructions.
+Old raw aliases need not have certificates under every spelling. In particular,
+raw [0] rejects the short introduction; canonical D(0=S0) is [[0,[0]]] and has
+an accepted case proof.
+
+CHECKER PROFILES
+
+checker.py uses isinstance(a,list) and a direct conditional for transport.
+checker_compact.py uses the exact-JSON list predicate a*0==[] and a Boolean
+transport expression. Both use structurally recursive opening on finite JSON
+arrays. They have the same canonical native consequence relation. No claim
+of byte-for-byte identical behavior for every noncanonical raw stream is needed.
+Neither imports the producer, proof catalog, readable expansion or measurer.
+
+FRESH COMPUTATION HYPOTHESES
+
+A generated open equation H(k) need not be a theorem for arbitrary fresh k.
+The soundness proof requires its simultaneous zero instance H(0). Freshness
+allows the continuation proof to substitute zero for every new name, then cut
+in that computation theorem. This includes fractional fresh-name aliases in
+raw JSON. The checker is not asserting uniform truth of arbitrary H(k).

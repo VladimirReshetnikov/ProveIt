@@ -1,0 +1,140 @@
+Independent audit of audit_work/neutral_local.py
+==============================================
+Audit scope: the 529-byte normalized composition in the named file; use the parent's
+measurement receipt for its exact source metrics. No absolute minimality,
+new arithmetic basis, or formal proof-assistant verification is asserted.
+
+Result
+------
+I found no soundness or scope defect in the composed strict-list checker.
+The composition uses existing neutral-major, lexical-scope, and shared
+continuation constructions. Its correctness follows with the qualifications
+below. It is a small implementation reduction, not an axiomatic breakthrough.
+
+A standalone descriptive expansion is readable_neutral_local.py. It uses an
+explicit isinstance list test. For JSON values this has exactly the same
+accepted-input behavior as the compact zero-product list test, including
+rejection of strings, dictionaries, and null at every inspected position.
+The descriptive program does not import the compact one.
+
+Precise claims
+--------------
+1. Soundness: for every finite successful run on JSON data, the decoded closed
+   result is derivable in the inherited initialized-iterator Eq/Q/D calculus.
+   The hypotheses used by the public driver contain only the canonical empty
+   array truth, whose meaning 0=0 is already derivable. This includes the
+   standard decoder's finite float and Boolean aliases and successful
+   noncanonical arrays, not only the canonical example grammar.
+2. Canonical completeness: every finite native derivation has a finite
+   certificate accepted under adequate resources. Apply the inherited
+   certified-zero normalization to computation leaves, serialize eigenvariables
+   with lexical floors, and use empty-list major packets for computations and
+   introductions. The closed canonical native language is unchanged.
+3. The fresh name floor belongs to each recursive activation. A major-premise
+   proof can allocate names locally but cannot change its caller's floor.
+   Reusing names after that proof returns is alpha-renaming of disjoint scopes.
+4. Successful runs, not timeout or incidental stdout, define acceptance:
+   process exit zero and exactly the line ACCEPT. Physical resource failures
+   may reject large valid certificates, as for the source comparison programs.
+5. The strict-list implementation is structurally terminating on finite JSON
+   in the ideal unlimited-resource setting. Recursive checker calls consume a
+   finite packet whenever hypothesis closure fails. An opener traverses finite
+   syntax and checks each inserted numerical image with its default invalid
+   image, so insertion cannot trigger an unbounded chain of substitutions.
+
+Main proof obligations checked
+------------------------------
+A. List-valued contexts and the false sentinel.
+The initial context is [[]]. Every added hypothesis is a list: nonempty
+major export is m*3, computation is a binary array, and introduction either
+produces a list or raises before context extension at len(goal). No numeric
+goal can succeed in a list-valued context. Prove this by minimal successful
+checking trace: hypothesis closure cannot match a number against a list;
+a successful numeric major would be a shorter counterexample; a transported
+numeric goal stays numeric because numerical root opening has no dependence
+on its image; the continuation is another shorter counterexample; numeric
+introduction cannot be unpacked.
+
+Consequently the unguarded matcher cannot confuse a missing major with False
+when the second alternative `not s and [t]*3` equals False. Its mandatory
+recursive proof has already excluded every numeric major. The empty list
+neutral major closes from context but does not compare equal to False.
+
+B. Arity-specific inference.
+A proved equality major [s,u] licenses transport from the source instance to
+the target instance. A proved closure [t,t,t] with falsy source licenses
+specialization from the zero instance. A unary proved paired formula exports
+its Q closure at a fresh witness. Every other nonempty array export has
+surplus arity and denotes the fixed truth 0=0. No discarded annotation becomes
+meaningful through this export: only a unary major can produce meaningful
+ternary syntax, and its unique previously meaningful body is the third field.
+
+C. Introduction and the relocated mode.
+Introduction is reached only with m=[] and falsy u. Its unpacking expression
+requires a unary goal (the empty goal would already have closed by hypothesis).
+It opens the existential witness, then checks the successor instance. The
+retained assumption uses a fresh parameter iff len(matrix)%2 == u. A falsy
+JSON value cannot compare equal to one, so meaningful compound matrices
+(arity one or three) receive only the zero instance. Literal equations (arity
+two) can receive the progress instance for a numeric-zero mode; the empty
+list mode gives the case instance. Even surplus arities denote truth, and
+scalar matrices fail at len(matrix) before they could introduce scalar truth.
+Thus compound induction has not been admitted.
+
+D. Computation assumptions and zero completion.
+A computation hypothesis need not be uniformly true at the newly allocated
+parameter. The valid argument is: all new parameter names are fresh for the
+retained goal and old context; simultaneous replacement of every such name by
+zero turns the generated equation into an I0 or IS instance; substitute in
+the continuation derivation and cut in that computation theorem. This also
+covers finite fractional labels in the newly admitted interval [K-1,K).
+
+If a successor update uses its recursive state meaningfully, its insertion
+rechecks the whole source [predecessor,initializer,update] at numerical depth
+three under the OLD floor. Escaping state coordinates or future parameters
+in meaningful positions reject. The newly protected dummy slots in the
+constructed successor are zero, so the predecessor remains the right one.
+If the state is semantically unused, the update is constant in that state;
+source checking may be skipped without affecting the IS instance. Ignored
+annotations can make a proof reject; they do not change decoded meaning.
+
+E. Scope boundaries.
+The first opener invocation validates every meaningful part of the requested
+goal under the old floor. Retained contexts were likewise validated at their
+creation and are never mutated. Every newly admitted label in [K-1,K) is
+therefore absent from their free numerical parameters. A major subproof
+returns only by success/failure, never by exporting its private context.
+Local reuse of labels is valid both for eigenvariable discharge and for the
+computation zero-completion argument. It changes serialized labels but not
+the proof rule or the domain of interpretation.
+
+Implementation checks
+---------------------
+The independent process suite in audit_checks.py performed 178 expectations,
+all passing in ordinary and optimized Python. It compares the compact and
+readable checkers on the 31 named producer cases (124 process checks), adds
+12 explicit raw roots across both programs and both modes (48 checks), and
+runs one concrete mutation attack against two correct and one altered
+program, again in both modes (6 checks).
+
+The mutation changes only the initial context [[]] to [0]. The supplied
+scalar_context_attack.json then proves the false equation 1=0 in that altered
+program, while both correct programs reject it. The attack first uses a
+numeric-zero fake major to transport the genuine computation C=0 into 1=0,
+where C=I(2,1;v.0). This isolates the exact nontrivial invariant behind the
+omitted `m and` guard. It is stronger evidence than an arbitrary malformed
+input that happens to throw. It does not replace the universal proof above.
+
+These checks overlap the supplied corpus's named logical examples. They
+should not be described as 178 distinct mathematical theorems. The raw roots
+and scalar-context control are explicit additional checks motivated by the
+whole-program proof obligation.
+
+Metatheory transfer
+-------------------
+The accepted canonical consequence relation is the inherited one. Therefore
+its already established whole-domain bi-interpretation with ordinary iPRA
+transfers without a new numerical domain, quotient, primitive logical axiom,
+or implicit equality-reflection principle. The composed implementation does
+not independently settle any unresolved claim in a different tied-seed or
+self-seeded arithmetic draft.

@@ -1,0 +1,497 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\pdfmapfile{+lm.map}
+\pdfmapfile{+cm.map}
+\pdfmapfile{+symbols.map}
+\usepackage[margin=0.9in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx,enumitem}
+\usepackage{xcolor,fancyhdr,listings,xurl,needspace}
+\usepackage[colorlinks=true,linkcolor=blue!35!black,citecolor=blue!35!black,urlcolor=blue!40!black]{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{RGB}{24,45,64}
+\definecolor{pale}{RGB}{245,247,249}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{0.3em}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=1.6em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\D}{\mathsf D}
+\newcommand{\Q}{\mathsf Q}
+\newcommand{\Eq}{\mathsf{Eq}}
+\newcommand{\Tr}{\mathsf{Tr}}
+\newcommand{\FV}{\operatorname{FV}}
+\newcommand{\llbracket}{\mathopen{[\![}}
+\newcommand{\rrbracket}{\mathclose{]\!]}}
+\newcommand{\file}[1]{\expandafter\nolinkurl\expandafter{\detokenize{#1}}}
+\newcommand{\Acal}{\mathcal A}
+\newcommand{\Ccal}{\mathcal C}
+\lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,keepspaces=true,
+ breaklines=true,showstringspaces=false,frame=single,rulecolor=\color{black!15},
+ backgroundcolor=\color{pale},aboveskip=8pt,belowskip=8pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small A deterministic witness rule for iPRA}
+\fancyhead[R]{\small 10 November 2026}
+\fancyfoot[C]{\thepage}
+\hypersetup{pdftitle={A Deterministic Witness Rule for iPRA: Equivalence, Complete Checkers, and Limits},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\title{\color{ink}\bfseries A Deterministic Witness Rule for iPRA\\[8pt]
+\large Equivalence, complete checkers, and the limits of the reduction}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{10 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The independent choice between case introduction and equation-progress
+introduction in the supplied paired-binder calculus is admissibly removed.
+Progress is selected exactly when the matrix is a literal equation and
+the existential witness is the literal zero term; every other introduction
+uses cases. An unused bound variable recovers progress at other witnesses.
+The independently certified term $C=I(2,1;v.0)=0$ recovers atomic cases at
+zero without presupposing substitution admissibility for the new rule.
+The resulting calculus preserves every native sequent through the identity
+on formulas, and hence preserves the inherited whole-domain
+bi-interpretation and equiconsistency with first-order intuitionistic PRA.
+
+The complete new checker has 555 normalized Python bytes. A separate
+implementation of the unchanged Choice-DI calculus has 550 bytes. The
+inspected current corpus attains a minimum of 558 bytes, with different
+programs attaining 262 tokens and 296 AST nodes. Our two selected programs
+do not improve those latter minima. The code reduction comes from a
+small dispatch simplification and an inherited invalid-image convention;
+the new deterministic rule costs five bytes relative to the 550-byte
+control. These contributions are accounted for separately.
+
+This is a verified small reduction, not the requested significant new
+arithmetic foundation or a proof of absolute simplicity. The package
+contains written proofs, complete source, executable proof normalization,
+adversarial controls, the frozen source census, and a compiled report.
+The mathematical metatheorems are not Lean or Rocq formalizations.
+\end{abstract}
+\begin{center}
+\fcolorbox{ink}{pale}{\begin{minipage}{0.92\linewidth}
+\textbf{Established:} one deterministic introduction pattern, the same
+native consequence relation, two smaller complete byte profiles, and a
+separate restricted-congruence theorem.\\
+\textbf{Not established:} a global minimum, a simultaneous improvement
+of all size coordinates, or the requested major foundational breakthrough.
+\end{minipage}}
+\end{center}
+\clearpage
+\setcounter{tocdepth}{1}
+\hypersetup{bookmarksdepth=2}
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+
+\section{What changed, and what the comparison actually shows}
+\label{sec:overview}
+
+The research target is full first-order intuitionistic primitive recursive
+arithmetic, with the symbols of fixed finite primitive-recursive
+descriptions, their defining equations, the successor axioms, and
+quantifier-free induction in intuitionistic first-order equality logic.
+Descriptions are external finite syntax. A number does not range over
+arbitrary functions, and no uniformly total interpreter is postulated.
+The requirement here includes internally provable interpretation
+composites, not merely equiconsistency or agreement on standard numerals.
+
+The selected repository snapshot is
+\file{76a2651601d17b34d46753f189ea026a21ce8d29}~\cite{snapshot}.
+It contains 17 direct ZIPs in \file{docs/drafts}. Recursive inspection
+finds 32 distinct ZIP payloads, 443 distinct Python source byte strings,
+and 2,239 source occurrences after archive-content deduplication.
+Every source at or below at least one observed boundary was inspected:
+36 candidates comprise three complete checkers and 33 supporting utilities.
+The full source census and all 443 frozen source byte strings are supplied.
+The historical sources are parsed for measurement, not executed by the census.
+
+The current byte minimum is the certified-zero program at 558 bytes.
+Its distinct joint profile attains 262 significant tokens and 296 AST nodes.
+These are the smallest values \emph{attained in this finite collection}.
+They are upper bounds on an unknown global optimum, not mathematical
+lower bounds on every possible axiomatization or checker.
+
+\subsection{Three contributions that must not be conflated}
+
+\paragraph{A rule-normalization theorem.}
+The new calculus $\mathcal C_{\rm w}$ has one introduction pattern whose
+choice is determined by the witness syntax. It retains the same numerical
+operations, formula meanings, equality transport, and elimination rules.
+The proof in Section~\ref{sec:deterministic-witness} preserves all native
+sequents. Its main technical point is to use hypothesis cut, not an
+unjustified numerical substitution that could change the syntactic guard.
+
+\paragraph{A small implementation improvement.}
+Every selected major triple is truthy, and every generated computation
+equation is a nonempty array. A Boolean expression therefore shares their dispatch.
+Canonical null markers are replaced by empty lists. This saves six
+normalized bytes with no change of native theory. The inherited invalid
+image $0j$ saves another two bytes relative to \texttt{None}. Thus the
+unchanged Choice-DI theory has a complete 550-byte implementation. Adding
+the deterministic witness guard gives the 555-byte implementation of
+$\mathcal C_{\rm w}$. The mathematical restriction alone is not credited
+with the byte saving.
+
+\paragraph{An independent congruence refinement.}
+Appendix~\ref{zcc:section} shows that counter congruence for a different,
+counter-dependent recursor needs only seed zero and state-free updates.
+The displayed numerical-congruence derivation adds twenty nodes, or five
+for a distinct wrapped rule. This result does not implement the measured
+scalar checker and is assigned no byte record.
+
+\subsection{Exact whole-program sizes}
+
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Complete program & Bytes & Tokens & AST & Gzip-9\\
+\midrule
+Supplied certified-zero byte profile & 558 & 264 & 310 & 345\\
+Supplied certified-zero joint profile & 598 & 262 & 296 & 350\\
+Same byte baseline, invalid image only & 556 & 264 & 310 & 343\\
+New unchanged-choice implementation & 550 & 264 & 310 & 342\\
+New deterministic-witness implementation & 555 & 266 & 312 & 344\\
+New witness implementation, explicit type & 559 & 266 & 312 & 348\\
+New witness implementation, explicit list & 563 & 266 & 310 & 349\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The two smallest new files are \file{code/checker_choice.py} and
+\file{code/checker.py}. The last two rows use an ordinary exact-type test
+and \texttt{isinstance}, respectively; all four avoid the generic-iterable
+malformed-string qualification of the old joint profile. The 550-byte
+reduction is $8/558\approx1.43\%$; the 555-byte reduction is
+$3/558\approx0.54\%$. No selected program is below all three old
+coordinate minima. The readable expansion is separately measured in
+\file{evidence/measurements.json}, rather than omitted from accounting or
+mistaken for a dependency of the compact file.
+
+Measurements include imports, input loading, scope checking, computation,
+logic, and the acceptance verdict. Python and its standard JSON library
+are the common runtime boundary used by the comparison programs. Exact
+measurements use CPython 3.12.14 and zlib 1.3.2, normalize by
+\texttt{ast.unparse(ast.parse(raw)) + LF}, count all \texttt{ast.walk}
+nodes, and exclude only comment/layout/encoding tokens from token counts.
+No axiom data or validator is hidden outside a measured program.
+Gzip is \texttt{gzip.compress(raw, compresslevel=9, mtime=0)}, including
+its wrapper; it is an informational figure and not an optimization target.
+
+\input{theory/witness_rule.tex}
+
+\section{The complete checker and its exact trust boundary}
+\label{sec:executable}
+
+This is the complete 555-byte source. The explanatory expansion in
+\file{code/readable_checker.py} is independently executable. Neither
+program imports a producer, a theorem database, a numerical evaluator,
+or the other checker.
+
+\lstinputlisting[language=Python]{code/checker.py}
+
+\subsection{Certificate grammar and sorted interpretation}
+
+Input is a JSON array. Its last element is the requested closed formula;
+earlier four-field packets $[m,s,u,t]$ are consumed backwards. An unused
+prefix is inert. Success means exit zero and exactly \texttt{ACCEPT}
+followed by a newline. An exception rejects with a nonzero exit status.
+The program does not use Python \texttt{assert}, so optimized Python
+does not remove a logical check.
+
+The arity representation is inherited~\cite{arity,certified}:
+\begin{center}\small
+\begin{tabular}{cll}
+\toprule
+Array arity & Numerical interpretation & Formula interpretation\\
+\midrule
+0 & Zero & Truth $0=0$\\
+1 & Successor, with two dummy slots & Paired binder $D$\\
+2 & Zero; annotations ignored & Equality\\
+3 & Scalar iterator, one state slot & Closure $Q$ of its last field\\
+At least 4 & Zero; children ignored & Truth; children ignored\\
+\bottomrule
+\end{tabular}
+\end{center}
+Canonical equations are $[s,t]$, paired formulas are $[B]$, and closures
+are $[B,B,B]$. Numerical zero is scalar $0$, successor is unary, and an
+iterator is ternary. Numerical roots have depth three; formula roots have
+depth zero. Each traversal adds $5-\text{arity}$ to the depth. At a
+numerical root, scalar positions $0,1,2$ are dummy zeros; successive
+protected slots use pairs $3,4$, then $5,6$, and so on. Negative allocated
+labels denote rigid parameters. In a successor its child has two dummy
+zero slots; an iterator's counter and seed have one dummy slot, and the
+update has its actual state slot. In $D$, the two slots are $y,x$; in
+$Q$, the one slot is $y$.
+
+The opener retains a scalar in $k\le a<d$. An escaping numerical
+coordinate is filled by an image checked at numerical root depth three;
+escaping formula padding erases to truth. The default image $0j$ is
+intentionally not ordered against a real numerical coordinate. If it is
+actually needed as a missing numerical image, the comparison fails,
+just as it fails for the old \texttt{None}. Unused images need not be
+evaluated. The list predicate \texttt{a * 0 == []} recognizes lists among
+JSON values on which the expression succeeds; unsupported types reject.
+The explicit-list variant is provided for a clearer spelling.
+
+At ignored high arities the decoder is constant. The appropriate invariant
+is semantic opening at meaningful sorted positions, conditional on a
+successful traversal. A global raw-tree idempotence assertion is not
+assumed. The inherited opening argument and its complete source are
+identified in the provenance record; the new checker changes none of
+its depth arithmetic or numerical substitution.
+
+\subsection{The three operations and the shared continuation}
+
+For a truthy major $m$, the checker proves $m$ in the retained context.
+If $m=[s,u]$ and the target opening of $t$ is the current goal, it
+reduces that goal by equality transport. If $s$ is falsy and
+$m=[t,t,t]$, it performs closure specialization from its zero instance.
+A failed endpoint match keeps the original goal. A unary paired major
+exports its tripled matrix as a closure; other nonempty arrays export
+constant truth. The recursive major proof is always required.
+
+For a falsy major and a truthy initializer $u$, the packet generates
+the equation
+\[
+ H=\begin{cases}
+ I(0,u;v.t)=u,&s\text{ falsy},\\
+ I(Ss,u;v.t)=t[I(s,u;v.t)/v],&s\text{ truthy}.
+ \end{cases}
+\]
+Every selected generated equation is a nonempty two-element array.
+Canonical forbidden zero seeds or zero predecessors are restored by
+the certified-zero computation lemma. No separate arithmetic opcode
+or semantic test that an initializer is positive is required.
+
+For a falsy major and falsy initializer, the packet introduces a paired
+goal, with $t$ as its witness. For canonical nonempty goals, unary
+unpacking checks the paired shape. Once the witness is opened, progress is selected exactly by
+\texttt{t == len(a) \% 2 == 0}. On canonical data this says that the
+witness is literal zero and the opened matrix is an equation. Compound
+matrices use their base instance. Larger harmless truth aliases retain
+the inherited constant interpretation.
+
+The continuation allocates a fresh negative name, opens the successor
+goal, appends exactly one local hypothesis, and recurses with a new
+context list. The context is not shared mutably with a major subproof.
+Already checked goals and contexts do not mention names admitted only
+after this allocation. JSON fractional numbers in a newly admitted
+interval must be treated as distinct fresh names, not identified with
+its integer endpoint; only finitely many occur in a finite trace.
+
+\subsection{Why Boolean dispatch is legitimate}
+
+The old assignment was a conditional on $m$, followed by a conditional
+on $u$. In a successful new execution, a truthy permitted $m$ has a
+truthy triple $m*3$. If no major is selected, a selected computation
+has a nonempty equation array. Therefore the expression
+\[
+  m*3\ \texttt{or}\ (u\ \texttt{and}\ H)\ \texttt{or}\ \text{introduction}
+\]
+selects precisely the intended branch. Some old falsy marker aliases,
+including null, fail at multiplication. Canonical arithmetic null
+markers are replaced by $[]$. Both old markers are falsy and compare
+unequal to an integer parity, so this replacement preserves the old
+Choice-DI program's continuation. This is a restriction and normalization
+of certificate data, not an additional logical inference.
+
+\subsection{An exact simulation of every new accepting trace}
+
+For a false-major packet executed by the witness checker, change its
+marker to $0$ if its raw field $t$ equals $0$, and to $[]$ otherwise.
+Leave every true major unchanged. Apply this fixed transformation to
+the complete finite input stack. For a false major, the old guard
+\[
+             \texttt{len(a) \% 2 == m}
+\]
+then has exactly the new guard's value
+\[
+             \texttt{t == len(a) \% 2 == 0}.
+\]
+Indeed the first transformed marker compares equal only at parity zero,
+and the second never compares equal to integer parity. This remains
+true for arithmetic packets: their update occupies $t$, and the same
+opening image is obtained. Both major branches, every recursive call,
+and every new local assumption otherwise coincide. Replacing the unused
+invalid-image default $0j$ by \texttt{None} cannot change a successful
+trace, because either default raises if used as a numerical image.
+Thus a new finite acceptance simulates an old certified-zero acceptance.
+
+This argument includes noncanonical successful inputs. It avoids the
+false assertion that every generated $H(b)$ is a uniformly true arithmetic
+equation. In general only $H(\vec0)$ is known. Freshness permits substitution
+of zero for all newly introduced names in a continuation proving a
+conclusion independent of them, followed by cut against the known zero
+instance. This substitution and cut take place in the simulated old
+calculus. This is the inherited supply argument, not a new reflection rule.
+
+For completeness, first use the theorem in
+Section~\ref{sec:deterministic-witness} to normalize a finite named
+derivation. Repair excluded computation leaves by the certified zero.
+Serialize canonical terms and formulas with fresh names and use $[]$
+for falsy packet markers. In a canonical computation all meaningful
+parameters are already allocated, so opening at zero or at the new name
+does not alter the supplied equation. The canonical introductions now
+have exactly the mode selected by their witness. This constructs an
+accepting finite certificate, assuming sufficient computation resources.
+
+\section{Why this is full intuitionistic PRA}
+\label{sec:bridge-summary}
+
+The ordinary realization has actual equality, genuine falsity, the whole
+numerical domain, the iterator equations, contextual literal-equation
+induction, numerical coverage, and separation $(0=S0)\to\bot$.
+The native formula interpretation is
+\[
+ (s=t)^\circ=(s=t),\quad
+ (D_{x,y}B)^\circ=\exists x\bigl(B^\circ(x,0)\to\forall yB^\circ(x,y)\bigr),
+ \quad (Q_yB)^\circ=B^\circ(0)\to\forall yB^\circ(y).
+\]
+The deterministic witness restriction does not change these meanings.
+Its introductions are old case/progress instances, and its converse
+simulation preserves the same end formulas and retained hypotheses.
+
+For orientation, the inherited scalar selector is
+$C(n,a,b)=I(n,a;v.b)$. Its zero and successor computations make it a
+formula gate and a selector between arbitrary formulas after padding
+their binder depths. The paired binder then defines implication,
+conjunction, disjunction, existential quantification, and universal
+quantification; $0=1$ represents falsity. Those definitions derive the
+ordinary intuitionistic rules. Their explicit formulas, all introduction
+and elimination arguments, and both logical composites are reproduced
+in Appendix~\ref{sec:choice-introduction}. In particular the native
+paired formula is interderivable with
+\[
+ \exists_*x\bigl(B(x,0)\Rightarrow_*\forall_*yB(x,y)\bigr).
+\]
+This round trip is essential; a progressive reinterpretation of atomic
+$D$ would not suffice.
+
+The numerical bridge follows the proved dependency order:
+\begin{enumerate}
+\item Equation induction and cases construct a scalar predecessor
+      $P$ and prove $P0=0$, $P(Sn)=n$ internally.
+\item These yield subtraction and a numerical test reflecting actual
+      equality on the whole domain, rather than merely on standard values.
+\item A characteristic-term construction transfers induction from
+      literal equations to all fixed quantifier-free formulas.
+\item Pairing and projections, established using that induction,
+      compile each fixed general primitive recursion into scalar iteration.
+\end{enumerate}
+The full inherited proofs are reproduced in Appendices
+\ref{sec:hybrid-bootstrap}, \ref{sec:eic-completion}, and
+\ref{sec:iterator-coding}; they are not counted as imported checker code.
+
+Conversely, iPRA defines every fixed scalar iterator by primitive recursion
+that ignores its counter argument in the update. For each finite description,
+the double translation satisfies the original defining equations.
+Equation induction proves uniqueness of its values, at arbitrary internal
+counters and with passive parameters fixed. Thus both numerical composites
+are internally isomorphic to the original domain by $x=y$.
+There is no restriction to a cut, retract, quotient, or standard numerals.
+Both interpretations preserve falsity, using the explicit ordinary
+separation sentence. Effective proof translations give equiconsistency;
+no self-consistency theorem is claimed. Appendix~\ref{sec:ordinary-bridge}
+spells out these composites.
+
+\section{Reproducibility, evidence, and remaining scope}
+\label{sec:evidence}
+
+The new named proof normalizer is separate from the trusted checker.
+It records the two actual mode repairs, preserves the final formula,
+and then uses the unchanged attributed arity emitter. Its binder
+convention uses globally distinct names; mathematical alpha-renaming
+provides that convention for an arbitrary finite derivation.
+
+The focused witness suite contains 18 positive and five negative cases.
+It tests the three compact exact-list implementations and the readable
+expansion, in ordinary and optimized Python: 184 complete CLI runs.
+Two further mutation controls remove the literal-equation restriction;
+the mutated program then accepts a forged compound-progress certificate,
+whereas the delivered programs reject it. A zero-case test uses its base
+assumption essentially, and a nonzero-progress test uses its induction
+hypothesis with the witness occurring in the matrix. Their untranslated
+certificates reject and the normalized certificates accept. These examples
+exercise the two proof transformations, rather than only vacuous witnesses.
+
+The unchanged-choice checker replays the 36 supplied certified-zero
+cases after its marker translation, in both Python modes: 72 executions.
+The independent initial baseline audit also recorded 216 executions of
+the three upstream programs. Appendix~\ref{zcc:section} has six separate
+symbolic congruence certificates and three side-condition rejection controls.
+These suites overlap in mathematical content and are not counts of
+distinct theorems. Finite checks support the implementation; the universal
+soundness and equivalence conclusions rest on the written arguments.
+
+From a fresh extraction, run:
+\begin{lstlisting}[language=bash]
+python3 reproduce.py
+python3 code/checker.py < examples/zero_case_uses_base.json
+python3 code/checker.py < examples/nonzero_progress_uses_IH.json
+python3 code/checker.py < examples/closed_false.json
+python3 build.py
+\end{lstlisting}
+The first two individual proof checks accept; the last rejects.
+Reproduction verifies package hashes before rerunning tests. Rebuilding
+or intentionally editing the source can change those hashes, particularly
+PDF metadata, so use a working copy if the original manifest is to remain
+an identity record. The build produces a standalone LaTeX source and
+compiles without shell escape. The only build dependency outside Python's
+standard library is a suitable TeX installation.
+
+The report and code establish a small positive result under a fixed,
+reproducible comparison. They do not establish the significant breakthrough
+requested. Removing an independent certificate choice can simplify a rule
+inventory while increasing another implementation cost: here its guard
+adds five bytes. The smaller overall programs should therefore not be
+advertised as evidence of a radically simpler numerical foundation.
+
+\clearpage
+\appendix
+\section*{Attributed complete bridge proofs}
+\addcontentsline{toc}{section}{Attributed complete bridge proofs}
+The following five sections reproduce the corresponding source fragments
+from the supplied certified-zero package, byte-for-byte. They document the
+inherited theory to which the new identity-sequent theorem applies. Their
+historical constructions are not new contributions of this report.
+\input{reference/inherited_choice_basis.tex}
+\input{reference/scalar_predecessor.tex}
+\input{reference/equality_reflection.tex}
+\input{reference/primitive_recursion.tex}
+\input{reference/inherited_ordinary_bridge.tex}
+\clearpage
+\input{theory/restricted_congruence.tex}
+
+\begin{thebibliography}{9}
+\bibitem{snapshot} Vladimir Reshetnikov, \emph{ProveIt, current draft corpus},
+commit \file{76a2651601d17b34d46753f189ea026a21ce8d29},
+10 November 2026.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/76a2651601d17b34d46753f189ea026a21ce8d29/docs/drafts}.
+\bibitem{certified} \emph{A Certified Zero Removes a Computation Opcode},
+\file{ipra_certified_zero_2026-11-10.zip}, in~\cite{snapshot}.
+Source of the selected comparison programs, certified-zero computation
+repair, named emitter, and reproduced complete arithmetic/logical bridge.
+\bibitem{arity} \emph{An Arity Calculus for iPRA},
+\file{ipra_arity_calculus_2026-11-10.zip}, in~\cite{snapshot}.
+Source of the arity encoding and sorted-opening argument, as inherited
+by~\cite{certified}.
+\bibitem{forward} Supplied actual-equality reflection proof,
+\file{reference/equality_reflection.tex} in~\cite{certified}, with its
+attribution to the earlier forward-left development.
+\bibitem{erasure} Supplied scalar predecessor proof,
+\file{reference/scalar_predecessor.tex} in~\cite{certified}, with its
+attribution to the earlier scalar and unparenthesized one-hole developments.
+\bibitem{progress} Supplied pairing and primitive-recursion proof,
+\file{reference/primitive_recursion.tex} in~\cite{certified}, with its
+attribution to the earlier progress-closure development.
+\bibitem{counter} \emph{Counter Congruence Suffices for iPRA},
+\file{ipra_counter_congruence_2026-11-10.zip}, in~\cite{snapshot}.
+Source of the different $R$ calculus refined in Appendix~\ref{zcc:section}.
+\end{thebibliography}
+\end{document}

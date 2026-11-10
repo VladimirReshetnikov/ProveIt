@@ -1,0 +1,659 @@
+{
+  "parameters": [
+    "a",
+    "q",
+    "b"
+  ],
+  "goal": [
+    "=",
+    [
+      "R",
+      [
+        "v",
+        "q"
+      ],
+      [
+        "v",
+        "b"
+      ],
+      "nu",
+      "nv",
+      [
+        "R",
+        [
+          "R",
+          [
+            "S",
+            [
+              "v",
+              "a"
+            ]
+          ],
+          [
+            "0"
+          ],
+          "source_u",
+          "source_v",
+          [
+            "v",
+            "source_u"
+          ]
+        ],
+        [
+          "v",
+          "nv"
+        ],
+        "ku",
+        "kv",
+        [
+          "S",
+          [
+            "v",
+            "ku"
+          ]
+        ]
+      ]
+    ],
+    [
+      "R",
+      [
+        "v",
+        "q"
+      ],
+      [
+        "v",
+        "b"
+      ],
+      "nu",
+      "nv",
+      [
+        "R",
+        [
+          "v",
+          "a"
+        ],
+        [
+          "v",
+          "nv"
+        ],
+        "ku",
+        "kv",
+        [
+          "S",
+          [
+            "v",
+            "ku"
+          ]
+        ]
+      ]
+    ]
+  ],
+  "proof": {
+    "rule": "RL",
+    "equality": [
+      "=",
+      [
+        "R",
+        [
+          "S",
+          [
+            "v",
+            "a"
+          ]
+        ],
+        [
+          "0"
+        ],
+        "f_ctr",
+        "f_state",
+        [
+          "R",
+          [
+            "v",
+            "q"
+          ],
+          [
+            "v",
+            "b"
+          ],
+          "nu",
+          "nv",
+          [
+            "R",
+            [
+              "v",
+              "f_ctr"
+            ],
+            [
+              "v",
+              "nv"
+            ],
+            "ku",
+            "kv",
+            [
+              "S",
+              [
+                "v",
+                "ku"
+              ]
+            ]
+          ]
+        ]
+      ],
+      [
+        "R",
+        [
+          "v",
+          "q"
+        ],
+        [
+          "v",
+          "b"
+        ],
+        "nu",
+        "nv",
+        [
+          "R",
+          [
+            "R",
+            [
+              "S",
+              [
+                "v",
+                "a"
+              ]
+            ],
+            [
+              "0"
+            ],
+            "source_u",
+            "source_v",
+            [
+              "v",
+              "source_u"
+            ]
+          ],
+          [
+            "v",
+            "nv"
+          ],
+          "ku",
+          "kv",
+          [
+            "S",
+            [
+              "v",
+              "ku"
+            ]
+          ]
+        ]
+      ]
+    ],
+    "major": {
+      "rule": "RL",
+      "equality": [
+        "=",
+        [
+          "R",
+          [
+            "S",
+            [
+              "R",
+              [
+                "S",
+                [
+                  "v",
+                  "a"
+                ]
+              ],
+              [
+                "0"
+              ],
+              "source_u",
+              "source_v",
+              [
+                "v",
+                "source_u"
+              ]
+            ]
+          ],
+          [
+            "0"
+          ],
+          "f_ctr",
+          "f_state",
+          [
+            "R",
+            [
+              "v",
+              "q"
+            ],
+            [
+              "v",
+              "b"
+            ],
+            "nu",
+            "nv",
+            [
+              "R",
+              [
+                "v",
+                "f_ctr"
+              ],
+              [
+                "v",
+                "nv"
+              ],
+              "ku",
+              "kv",
+              [
+                "S",
+                [
+                  "v",
+                  "ku"
+                ]
+              ]
+            ]
+          ]
+        ],
+        [
+          "R",
+          [
+            "S",
+            [
+              "v",
+              "a"
+            ]
+          ],
+          [
+            "0"
+          ],
+          "f_ctr",
+          "f_state",
+          [
+            "R",
+            [
+              "v",
+              "q"
+            ],
+            [
+              "v",
+              "b"
+            ],
+            "nu",
+            "nv",
+            [
+              "R",
+              [
+                "v",
+                "f_ctr"
+              ],
+              [
+                "v",
+                "nv"
+              ],
+              "ku",
+              "kv",
+              [
+                "S",
+                [
+                  "v",
+                  "ku"
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      "major": {
+        "rule": "CC",
+        "major": {
+          "rule": "RL",
+          "equality": [
+            "=",
+            [
+              "R",
+              [
+                "v",
+                "a"
+              ],
+              [
+                "0"
+              ],
+              "u_ctr",
+              "u_state",
+              [
+                "S",
+                [
+                  "S",
+                  [
+                    "v",
+                    "u_ctr"
+                  ]
+                ]
+              ]
+            ],
+            [
+              "S",
+              [
+                "R",
+                [
+                  "S",
+                  [
+                    "v",
+                    "a"
+                  ]
+                ],
+                [
+                  "0"
+                ],
+                "source_u",
+                "source_v",
+                [
+                  "v",
+                  "source_u"
+                ]
+              ]
+            ]
+          ],
+          "major": {
+            "rule": "RL",
+            "equality": [
+              "=",
+              [
+                "R",
+                [
+                  "R",
+                  [
+                    "S",
+                    [
+                      "v",
+                      "a"
+                    ]
+                  ],
+                  [
+                    "0"
+                  ],
+                  "source_u",
+                  "source_v",
+                  [
+                    "v",
+                    "source_u"
+                  ]
+                ],
+                [
+                  "0"
+                ],
+                "u_ctr",
+                "u_state",
+                [
+                  "S",
+                  [
+                    "S",
+                    [
+                      "v",
+                      "u_ctr"
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "R",
+                [
+                  "v",
+                  "a"
+                ],
+                [
+                  "0"
+                ],
+                "u_ctr",
+                "u_state",
+                [
+                  "S",
+                  [
+                    "S",
+                    [
+                      "v",
+                      "u_ctr"
+                    ]
+                  ]
+                ]
+              ]
+            ],
+            "major": {
+              "rule": "CC",
+              "major": {
+                "rule": "RS"
+              }
+            },
+            "minor": {
+              "rule": "DE",
+              "paired": [
+                "D",
+                "zcc_xsnested_update",
+                "zcc_ysnested_update",
+                [
+                  "=",
+                  [
+                    "R",
+                    [
+                      "v",
+                      "zcc_ysnested_update"
+                    ],
+                    [
+                      "0"
+                    ],
+                    "u_ctr",
+                    "u_state",
+                    [
+                      "S",
+                      [
+                        "S",
+                        [
+                          "v",
+                          "u_ctr"
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "S",
+                    [
+                      "v",
+                      "zcc_ysnested_update"
+                    ]
+                  ]
+                ]
+              ],
+              "eigen": "zcc_asnested_update",
+              "major": {
+                "rule": "DI",
+                "mode": "case",
+                "witness": [
+                  "0"
+                ],
+                "eigen": "zcc_zsnested_update",
+                "body": {
+                  "rule": "RS"
+                }
+              },
+              "body": {
+                "rule": "QE",
+                "closure": [
+                  "Q",
+                  "zcc_ysnested_update",
+                  [
+                    "=",
+                    [
+                      "R",
+                      [
+                        "v",
+                        "zcc_ysnested_update"
+                      ],
+                      [
+                        "0"
+                      ],
+                      "u_ctr",
+                      "u_state",
+                      [
+                        "S",
+                        [
+                          "S",
+                          [
+                            "v",
+                            "u_ctr"
+                          ]
+                        ]
+                      ]
+                    ],
+                    [
+                      "S",
+                      [
+                        "v",
+                        "zcc_ysnested_update"
+                      ]
+                    ]
+                  ]
+                ],
+                "target": [
+                  "R",
+                  [
+                    "S",
+                    [
+                      "v",
+                      "a"
+                    ]
+                  ],
+                  [
+                    "0"
+                  ],
+                  "source_u",
+                  "source_v",
+                  [
+                    "v",
+                    "source_u"
+                  ]
+                ],
+                "major": {
+                  "rule": "hyp",
+                  "index": 0
+                },
+                "base": {
+                  "rule": "R0"
+                }
+              }
+            }
+          },
+          "minor": {
+            "rule": "DE",
+            "paired": [
+              "D",
+              "zcc_xtnested_update",
+              "zcc_ytnested_update",
+              [
+                "=",
+                [
+                  "R",
+                  [
+                    "v",
+                    "zcc_ytnested_update"
+                  ],
+                  [
+                    "0"
+                  ],
+                  "u_ctr",
+                  "u_state",
+                  [
+                    "S",
+                    [
+                      "S",
+                      [
+                        "v",
+                        "u_ctr"
+                      ]
+                    ]
+                  ]
+                ],
+                [
+                  "S",
+                  [
+                    "v",
+                    "zcc_ytnested_update"
+                  ]
+                ]
+              ]
+            ],
+            "eigen": "zcc_atnested_update",
+            "major": {
+              "rule": "DI",
+              "mode": "case",
+              "witness": [
+                "0"
+              ],
+              "eigen": "zcc_ztnested_update",
+              "body": {
+                "rule": "RS"
+              }
+            },
+            "body": {
+              "rule": "QE",
+              "closure": [
+                "Q",
+                "zcc_ytnested_update",
+                [
+                  "=",
+                  [
+                    "R",
+                    [
+                      "v",
+                      "zcc_ytnested_update"
+                    ],
+                    [
+                      "0"
+                    ],
+                    "u_ctr",
+                    "u_state",
+                    [
+                      "S",
+                      [
+                        "S",
+                        [
+                          "v",
+                          "u_ctr"
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "S",
+                    [
+                      "v",
+                      "zcc_ytnested_update"
+                    ]
+                  ]
+                ]
+              ],
+              "target": [
+                "v",
+                "a"
+              ],
+              "major": {
+                "rule": "hyp",
+                "index": 0
+              },
+              "base": {
+                "rule": "R0"
+              }
+            }
+          }
+        }
+      },
+      "minor": {
+        "rule": "RS"
+      }
+    },
+    "minor": {
+      "rule": "RS"
+    }
+  }
+}
