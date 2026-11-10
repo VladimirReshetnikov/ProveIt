@@ -1984,6 +1984,10 @@ A [conditional global-rank transport](research/nine-sharing-sign17-k-global-rank
 derives candidate physical positions from the Fin942 weights under explicit
 Start, nonzero and numeric-adjacency hypotheses. Those hypotheses have not
 yet been assembled globally; full K and file binding remain separate.
+A [generic finite-partition probe](research/nine-sharing-sign17-k-partition-probe-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-partition-probe-terminal-independent/README.md),
+failed on a nested-offset associativity mismatch. It produced no object or
+postflight; a narrow normalization retry is being prepared.
 A [replayed Fin224 union](research/nine-sharing-sign17-k-weight-union224-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-weight-union224-terminal-independent/README.md),
 combines the first four weight batches in one context and checks actual-weight
