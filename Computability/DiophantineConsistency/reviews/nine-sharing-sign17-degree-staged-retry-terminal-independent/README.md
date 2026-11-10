@@ -1,0 +1,3 @@
+# Independent terminal audit: sign17 staged degree retry
+
+The independent checker exited 0. Author outer session 58319 exited 0; all eleven stages and final postflight passed. The audit checks source and object pins, direct imports and guarded candidates, logs, monitored limits, overlays, the audited probe and framework survey. All stage logs are free of warnings and sorryAx. The final Lean source proves polynomial totalDegree ≤96 for arbitrary integer ports and for the current symbolic Fin17 expression; the two polynomial-degree reports list propext, Classical.choice and Quot.sound. No exact lower bound, external JSON or equation.pdf binding follows. No Lean process was rerun in this audit.

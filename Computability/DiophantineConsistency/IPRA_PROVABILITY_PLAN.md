@@ -1215,6 +1215,11 @@ A [generic absdiff ingredient attempt](research/nine-sharing-sign16-absdiff-ingr
 [independently audited](reviews/nine-sharing-sign16-absdiff-ingredient-failure-independent/README.md),
 failed because a tactic was unavailable under its imports; no module object or
 postflight was produced.
+An [explicit-ring retry](research/nine-sharing-sign16-absdiff-ingredient-retry01-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-absdiff-ingredient-retry01-terminal-independent/README.md),
+checks the square identity and auxiliary norm transport under explicit inner
+and signed-norm hypotheses. Deriving those hypotheses from the reduced rows
+and obtaining the natural lift remain separate.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
@@ -1263,6 +1268,11 @@ A [staged expansion attempt](research/nine-sharing-sign17-degree-staged-check/RE
 [independently audited](reviews/nine-sharing-sign17-degree-staged-failure-independent/README.md),
 checked shared05–09 but failed at shared14 in the next stage; no failed-stage
 object, later stages or final postflight were produced.
+A [compositional staged retry](research/nine-sharing-sign17-degree-staged-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-degree-staged-retry-terminal-independent/README.md),
+checks all remaining shared and residual bounds and proves symbolic Fin17
+total degree at most 96 for arbitrary integer ports. Exact degree and external
+binding remain separate.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
