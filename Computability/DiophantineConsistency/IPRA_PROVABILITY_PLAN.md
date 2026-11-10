@@ -1483,6 +1483,11 @@ A [22-fragment whole-row attempt](research/nine-sharing-sign14-prefix-chunked-ro
 timed out after 120 seconds, with no object or postflight. Subtree-aligned
 intermediate lemmas are being investigated; the connection to the original
 row remains an external check.
+An [external subtree-aligned fragment DAG](research/nine-sharing-sign14-prefix-dag-fragments/README.md),
+[independently audited](reviews/nine-sharing-sign14-prefix-dag-fragments-independent/README.md),
+reconstructs all five prefix rows from 29 distinct fragments of at most
+32 bytes and 44 acyclic shared-node decompositions. Lean fragment and
+composition lemmas remain separate from this external byte check.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
