@@ -1,0 +1,5 @@
+# Independent source-only delta audit
+
+PASS: the revised whitelist contains exactly the 22 previously reviewed declaration names plus `result`; the initial variable/port map, decoder and all 23 quoted formula lines are byte-identical to the audited source. Seven proposed concrete controls cover reserved/empty declaration names, duplicate names, unknown RHS, trailing tokens, exhausted fuel and malformed line shape. An independent Python control-flow model rejects those examples and accepts the fixed quote; the Lean `rfl` controls have not been compiled. The only other change replaces `rfl` with `all_goals rfl` after the sentence rewrite. This fixes the identified unrestricted-name issue for the specified whitelist; it does not assert general lexer, TeX/PDF parsing or external-file semantics.
+
+The original draft PLAN was updated after the first audit, so that audit's pinned PLAN hash no longer matches; its audited TeX and original Lean source hashes remain unchanged and are independently checked here. No Lean was run.
