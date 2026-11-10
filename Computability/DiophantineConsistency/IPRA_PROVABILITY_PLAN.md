@@ -844,6 +844,10 @@ A [22-witness degree-12 candidate](research/nine-sharing-sign22-dodecic-ky-candi
 eliminates kY by a natural product. Its fixed-input external square-sum has
 exact degree twelve, trading degree for one fewer witness. The sign22→23 and
 subsequent model bridges, JSON-to-Lean binding, and iPRA endpoint remain open.
+A [seed syntax and squares client](research/nine-sharing-sign22-seed-squares-check/README.md),
+[independently audited](reviews/nine-sharing-sign22-seed-squares-terminal-independent/README.md),
+checks symbolic seed zero iff its 13 residuals vanish; it does not establish
+the degree or bridge in Lean.
 A [21-witness degree-14 candidate](research/nine-sharing-sign21-degree14-s-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign21-degree14-s-independent/README.md),
 substitutes the natural normalized-S product. Its fixed-input external square-sum
