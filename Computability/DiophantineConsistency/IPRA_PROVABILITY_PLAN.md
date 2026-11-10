@@ -1052,7 +1052,10 @@ Lean bridge, degree/byte binding and iPRA endpoint remain open. A [syntax and
 squares attempt](research/nine-sharing-sign19-seed-squares-check/README.md),
 [independently audited](reviews/nine-sharing-sign19-seed-squares-failure-independent/README.md),
 hit its 120-second guard during the first syntax compile; no object, square
-stage or postflight was produced. A staged retry is separate.
+stage or postflight was produced. A [12-stage syntax retry](research/nine-sharing-sign19-staged-syntax-check/README.md),
+[independently audited](reviews/nine-sharing-sign19-staged-syntax-terminal-independent/README.md),
+checks symbolic seed zero iff its ten staged residuals vanish, with two
+warnings. The model bridge and endpoint remain separate.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
