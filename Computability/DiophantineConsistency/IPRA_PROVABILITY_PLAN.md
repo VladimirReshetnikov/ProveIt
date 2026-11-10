@@ -820,7 +820,10 @@ historical provider observations. Expression-zero composition and the iPRA
 endpoint were separate. An [expression-zero equivalence](research/nine-sharing-sign23-expression-equivalence-check/README.md),
 [independently audited](reviews/nine-sharing-sign23-expression-equivalence-terminal-independent/README.md),
 now composes the current-port Fin23 and Fin24 expressions. The polynomial
-bridge, external byte binding and iPRA endpoint remain separate.
+bridge is checked by a [direct client](research/nine-sharing-sign23-concrete-polynomial-bridge-check/README.md),
+[independently audited](reviews/nine-sharing-sign23-concrete-polynomial-bridge-terminal-independent/README.md),
+at the scoped `-M3600` interpreter limit with the sampled 4 GiB RSS cap. The
+external byte binding and iPRA endpoint remain separate.
 A [22-witness degree-12 candidate](research/nine-sharing-sign22-dodecic-ky-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign22-dodecic-ky-independent/README.md),
 eliminates kY by a natural product. Its fixed-input external square-sum has

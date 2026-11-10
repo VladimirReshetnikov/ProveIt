@@ -1,0 +1,3 @@
+# Independent sign23 concrete polynomial bridge terminal audit
+
+Independent checker session 41496 exited 0 against author outer session 43945 (exit 0). The Lean stage and final postflight succeeded at scoped -M3600 with sampled 4 GiB RSS, 10 GiB host floor and 120-second timeout. The direct symbolic sign23 `PolynomialBridge` theorem reports `[propext, Classical.choice, Quot.sound]` as Lean metatheory axioms, with no warning or `sorryAx`. Source, object, logs, three direct provider bindings, 200 guards and 1,411 overlay links were verified, along with upstream terminal audits. This is a polynomial bridge, not by itself an iPRA endpoint or external file binding. Provider ancestry remains point-observed; the sign24 provider has an inherited stale stdout label.
