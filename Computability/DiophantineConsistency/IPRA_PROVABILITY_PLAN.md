@@ -63,8 +63,9 @@ and its [symbolic K specialization](research/nine-sharing-sign17-k-radix-stream-
 have successful Lean runs and independent terminal reviews. They equate K
 to an in-Lean digit-stream value. A [conditional digit bound and 90 concrete
 coefficient checks](research/nine-sharing-sign17-k-digit-bound-probe-retry-check/README.md)
-also passed independent review. Bounds for the remaining 896 coefficients,
-unconditional assembly and connections to external bytes remain separate.
+also passed independent review. The [remaining 896 coefficient bounds](research/nine-sharing-sign17-k-digit-bound-blocks-check/README.md)
+have now passed 14 separately audited Lean stages. Their unconditional
+all-coefficient assembly and connections to external bytes remain separate.
 
 ## Current reduction status
 
