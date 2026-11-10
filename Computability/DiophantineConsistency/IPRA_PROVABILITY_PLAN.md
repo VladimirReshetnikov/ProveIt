@@ -1434,6 +1434,10 @@ A [generic parser-reflection attempt](research/nine-sharing-sign14-prefix-reflec
 [independently audited](reviews/nine-sharing-sign14-prefix-reflection-terminal-independent/README.md),
 failed to simplify three recursive `Option.bind` cases. It produced no
 reflection object or postflight; a proof-only retry is in preparation.
+A [first proof-only retry](research/nine-sharing-sign14-prefix-reflection-retry01-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-prefix-reflection-retry01-terminal-independent/README.md),
+also failed: its added simplification made no progress in the same three
+cases. No reflection object or postflight was produced.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
