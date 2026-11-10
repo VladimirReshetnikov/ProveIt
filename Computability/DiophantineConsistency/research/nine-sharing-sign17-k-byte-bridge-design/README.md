@@ -22,6 +22,10 @@ author run exited 0, with 2,021 digits and the collision at index 1004.
 Checker SHA-256:
 `8b86dcde6572072ca3ac42b57149a6d57eaca6b84298bd067a202adb1046f228`.
 This is external Python/snapshot evidence, not a Lean digit or file theorem.
+An [independent external audit](../../reviews/nine-sharing-sign17-k-byte-bridge-design-independent/README.md)
+also reconstructed the 2,021 digits directly by division and verified the
+collision value `c[1] + 1 = 30099357829123` and all radix bounds. This
+remains external evidence, not a Lean or filesystem theorem.
 
 One route is a generic theorem relating `Nat.ofDigits` of a reversed finite
 coefficient vector to the shifted finite power sum, followed by a separate

@@ -2168,6 +2168,12 @@ checks the pointwise in-Lean Fin986 literal vector and the resulting actual
 rawWord/K identities with sentinels separate. The external JSON/gzip/file
 connection and the sentinel collision in a byte-digit representation remain
 separate.
+The [16 tile-coefficient literal blocks](research/nine-sharing-sign17-k-tile-coefficients-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-tile-coefficients-terminal-independent/README.md),
+check all 942 doubled tile weights against the in-Lean literals used in that
+union. An [external radix-layout audit](reviews/nine-sharing-sign17-k-byte-bridge-design-independent/README.md)
+also checks the sentinel collision at digit 1004 against the pinned snapshot;
+it is not a Lean byte or file theorem.
 A [ranked rawWord retry](research/nine-sharing-sign17-k-ranked-rawword-retry-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-ranked-rawword-retry-terminal-independent/README.md),
 checks the actual rawWord and K symbolic identities, including the ranked
