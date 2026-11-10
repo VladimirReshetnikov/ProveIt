@@ -124,8 +124,8 @@ An independently audited [74-gate positive-coordinate candidate](research/nine-s
 substitutes `vᵢ = uᵢ - 1` for fourteen strictly positive inputs and cancels
 shifts in the external 86-gate AST. Its input convention differs from the
 86-gate natural-coordinate circuit, so those gate counts are not a
-same-interface comparison. The Lean degree transfer and external-file
-binding are still open. The positive candidate's [staged
+same-interface comparison. External-file binding remains open. The positive
+candidate's [staged
 Lean syntax](research/nine-sharing-sign14-positive74-syntax-check/README.md)
 has compiled and passed independent terminal review; that is not yet a
 complete coordinate-transport theorem. Three base-node identities and the
@@ -142,8 +142,10 @@ now relates guarded positive inputs to shifted inputs, and its [concrete
 explicit-positive-coordinate endpoint](research/nine-sharing-sign14-positive74-object-endpoint-check/README.md)
 has passed an [independent terminal audit](reviews/nine-sharing-sign14-positive74-object-endpoint-terminal-independent/README.md).
 It establishes native and standard iPRA equivalence with the selected mapped
-refutation negation, and the translated-standard endpoint. The exact degree
-of the positive-coordinate expression remains open. The [all-model
+refutation negation, and the translated-standard endpoint. Its current-port
+in-Lean expression has [exact total degree 124](research/nine-sharing-sign14-positive74-degree-exact-retry01-check/README.md),
+with an [independent terminal audit](reviews/nine-sharing-sign14-positive74-degree-exact-retry01-terminal-independent/README.md).
+The [all-model
 polynomial bridge](research/nine-sharing-sign14-positive74-ipra-bridge-check/README.md)
 and the [native, standard and translated iPRA endpoints](research/nine-sharing-sign14-positive74-ipra-endpoint-check/README.md)
 for the shifted expression have passed Lean and independent terminal audit.
