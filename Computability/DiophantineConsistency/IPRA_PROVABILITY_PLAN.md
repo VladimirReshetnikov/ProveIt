@@ -1264,8 +1264,10 @@ equivalence under represented positive beta. A [current-port specialization](res
 [independently audited](reviews/nine-sharing-sign17-current-iff-retry01-terminal-independent/README.md),
 checks positivity and representation of current beta in the relevant models
 and the corresponding seed equivalence. Its historical port provider has
-successful children of a failed overall run. Direct expression equivalence and
-the iPRA endpoint remain separate.
+successful children of a failed overall run. A [direct expression equivalence](research/nine-sharing-sign17-expression-equivalence-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-expression-equivalence-terminal-independent/README.md),
+checks current-port symbolic Fin17/Fin18 model-zero equivalence, with one
+warning. The iPRA endpoint remains separate.
 A finite [positive-gate octic search](research/nine-sharing-octic-positive-elimination-search/README.md),
 [independently audited](reviews/nine-sharing-octic-positive-elimination-independent/README.md),
 reaches at best 23 witnesses among 19 ordered states when every step preserves
