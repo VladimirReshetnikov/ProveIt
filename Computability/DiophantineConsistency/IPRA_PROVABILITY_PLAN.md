@@ -681,8 +681,10 @@ under an explicit beta-port representation hypothesis. The remaining residual
 transfers have a [Lean client](research/nine-sharing-sign24-transfers-check/README.md),
 [independently audited](reviews/nine-sharing-sign24-transfers-terminal-independent/README.md),
 checking all 15 row identities with 61 linter warnings. The assembled model
-bridge, current-port cast, Lean degree and port-byte binding, and iPRA
-endpoint remain open.
+bridge now has an [independently audited Lean client](research/nine-sharing-sign24-zero-assembly-check/README.md)
+for both pointwise directions under the beta representation hypothesis. The
+current-port cast, existential composition, Lean degree and port-byte binding,
+and iPRA endpoint remain open.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
