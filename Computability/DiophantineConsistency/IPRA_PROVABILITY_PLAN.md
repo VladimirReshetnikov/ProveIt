@@ -1468,6 +1468,11 @@ A [95-gate all-model zero client](research/nine-sharing-sign14-95gate-model-chec
 checks pointwise and existential zero equivalence with the prior expression
 for arbitrary ports in every stated IΣ₁ model. The optimized polynomial
 bridge, degree and iPRA endpoint remain separate.
+A [95-gate polynomial-bridge client](research/nine-sharing-sign14-95gate-bridge-retry01-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-95gate-bridge-retry01-terminal-independent/README.md),
+checks the current-port all-model bridge after explicitly unfolding the prior
+current-expression wrapper. The optimized iPRA endpoint and external-file
+bindings remain separate.
 A [95-gate exact-degree client](research/nine-sharing-sign14-95gate-degree-check/README.md),
 [independently audited](reviews/nine-sharing-sign14-95gate-degree-terminal-independent/README.md),
 transfers total degree exactly 124 to the optimized current-port polynomial.
