@@ -1,0 +1,3 @@
+# Independent terminal audit: sign17 positive current-port seed iff
+
+The independent checker exited 0. Author-observed outer session 18828 exited 0, with stage and final postflight successful. Lean checked current beta port representability, natural beta positivity, its model cast positivity and the same-input Fin18/Fin19 seed iff at current ports. Source/object/import/log pins, guards, overlays and port survey were checked; four axiom reports, no warnings or sorryAx. Historical port data comes from successful child stages of an overall failed producer. No direct-expression iff, iPRA endpoint or external JSON/PDF binding is claimed.

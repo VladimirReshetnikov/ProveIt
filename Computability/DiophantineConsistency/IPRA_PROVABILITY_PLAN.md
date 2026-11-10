@@ -1260,8 +1260,12 @@ checks both pointwise directions, supplying the gap forward and recovering it
 backward. A [positive-beta seed-iff client](research/nine-sharing-sign17-seed-iff-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-seed-iff-terminal-independent/README.md),
 combines these directions with gap existence into same-input existential
-equivalence under represented positive beta. The current-port specialization
-and iPRA endpoint remain separate.
+equivalence under represented positive beta. A [current-port specialization](research/nine-sharing-sign17-current-iff-retry01-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-current-iff-retry01-terminal-independent/README.md),
+checks positivity and representation of current beta in the relevant models
+and the corresponding seed equivalence. Its historical port provider has
+successful children of a failed overall run. Direct expression equivalence and
+the iPRA endpoint remain separate.
 A finite [positive-gate octic search](research/nine-sharing-octic-positive-elimination-search/README.md),
 [independently audited](reviews/nine-sharing-octic-positive-elimination-independent/README.md),
 reaches at best 23 witnesses among 19 ordered states when every step preserves

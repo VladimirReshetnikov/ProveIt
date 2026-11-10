@@ -1,0 +1,3 @@
+# Independent prelaunch review: sign17 current-port seed iff revised source
+
+The independent no-Lean checker exited 0. The only source delta from the unrun initial packet explicitly unfolds locally irreducible radix before decide, matching the successful earlier sign20 beta proof pattern. The proposed stage specializes the audited positive-beta Fin18/Fin19 seed iff; source/import/provider routes and bounded guards were checked. Historical current-port data remains inherited from successful children of an overall failed producer. No Lean specialization or endpoint is established by this review.
