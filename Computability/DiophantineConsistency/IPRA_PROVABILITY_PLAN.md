@@ -1004,7 +1004,12 @@ observed children but a failed overall run. Direct-expression composition and
 the iPRA endpoint remain separate. A [direct expression evaluation client](research/nine-sharing-sign20-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign20-expression-eval-terminal-independent/README.md),
 checks input-one evaluation at abstract and current ports, inheriting the
-documented partial historical provider observations.
+documented partial historical provider observations. A [direct equivalence
+attempt](research/nine-sharing-sign20-expression-equivalence-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-expression-equivalence-failure-independent/README.md),
+failed before invoking Lean because the runner retained old family keys and
+routing; its earlier prelaunch review missed those post-preflight paths. No
+state or theorem was produced; a corrected retry is separate.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
