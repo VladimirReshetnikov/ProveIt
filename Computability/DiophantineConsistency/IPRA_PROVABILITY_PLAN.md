@@ -1424,6 +1424,10 @@ A [readable-syntax Lean probe](research/nine-sharing-sign14-readable-lean-probe-
 compiled the definitions stage but failed the first generic ring identity
 because an expression numeral was not reduced. No low-identity object or
 postflight was produced; a numeral-simplification retry is separate.
+A [readable low-identity retry](research/nine-sharing-sign14-readable-lean-retry01-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-readable-lean-retry01-terminal-independent/README.md),
+checks the generic commutative-ring shared07 identity after reducing the
+expression numeral. Remaining row, seed, degree and iPRA bridges are separate.
 An [external circuit count](research/nine-sharing-sign14-operation-count/README.md),
 [independently audited](reviews/nine-sharing-sign14-operation-count-independent/README.md),
 constructs a 98-gate binary arithmetic DAG for the JSON candidate by sharing
