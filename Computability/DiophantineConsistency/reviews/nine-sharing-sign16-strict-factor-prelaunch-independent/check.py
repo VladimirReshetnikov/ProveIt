@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+"""Review generic sign16 absdiff transport candidate without invoking Lean."""
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+root=Path(__file__).resolve().parents[2];p=root/'research/nine-sharing-sign16-strict-factor-check';draft=root/'research/nine-sharing-sign16-strict-factor-draft';sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest();run=p/'run.py';m=p/'source-manifest.json';assert sha(run)=='c4b3db311bee447df5e968ae9a8090f62d78dcd7af4677bf7fdd4e566bafc239' and sha(m)=='cfd7f8bd20a7ef969ffd6f7a2da8cff1756037d72bd35295c141c6ae24cf5676';row,=json.loads(m.read_text())['rows'];name='Sign16StrictFactor';src=p/'src/DiophantineConsistency'/(name+'.lean');s=src.read_text();assert sha(src)==sha(draft/(name+'.lean'))==row['source_sha256']=='8cb747b59a4567fe93cff10836c0c33068830e293b8f29c547571a1e6e9bb3ac' and row['module']=='DiophantineConsistency.'+name and re.findall(r'^import ([A-Za-z0-9_.]+)$',s,re.M)==row['imports']==['DiophantineConsistency.Sign16MoreSharedValues'];assert not re.search(r'(?m)^\s*(axiom|opaque)\b|\b(sorry|admit)\b',s)
+assert 'theorem strict_of_factors (D f i c S : V) (hD : 0 < D)' in s and '(hS : S = i * D * c * c)' in s and '(hrow : D * (f*f) = S*S + D)' in s and 'f*f = 1 + D * (i*c*c) * (i*c*c)' in s
+r=run.read_text();assert "'-M2800'" in r and "'-j1'" in r and 'rss_limit=4*1024**3,mem_floor=10*1024**3,seconds=120,interval=.1' in r and 'free>=5_000_000_000' in r and 'matches=[x for x in base[\'rows\'] if x[\'module\']==local]' in r and "sha(P/'source-manifest.json')" in r
+check=root/'reviews/nine-sharing-sign16-more-shared-values-terminal-independent/check.py';assert sha(check)=='9249cd245922d9d101bbfc585e6efe52adb602fa9477e56dce2c129ab90a142d';subprocess.run([sys.executable,'-I','-S','-B',str(check)],capture_output=True,check=True,timeout=120)
+x=subprocess.run([sys.executable,'-I','-S','-B',str(run),'--preflight'],capture_output=True,text=True,timeout=180);assert x.returncode==0 and not x.stderr and json.loads(x.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT'
+print(json.dumps({'status':'PASS_PRELAUNCH','runner_sha256':sha(run),'scope':'generic strict norm cancellation under positivity and explicit factor/row assumptions; no concrete extraction'},indent=2,sort_keys=True))
