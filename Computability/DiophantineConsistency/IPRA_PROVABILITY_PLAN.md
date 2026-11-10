@@ -1554,6 +1554,11 @@ A [radix-runs attempt](research/nine-sharing-sign17-mc-radix-runs-check/README.m
 [independently audited](reviews/nine-sharing-sign17-mc-radix-runs-terminal-independent/README.md),
 failed in its final stage on unavailable mask-list identifiers and simplifier
 recursion; no radix-run object or postflight was produced.
+A [narrow-core retry](research/nine-sharing-sign17-mc-radix-runs-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-mc-radix-runs-retry-terminal-independent/README.md),
+compiled a generic digit core but failed its runs stage on a redundant tactic;
+no runs object or final postflight was produced. The core is a successful
+child of a failed parent.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
