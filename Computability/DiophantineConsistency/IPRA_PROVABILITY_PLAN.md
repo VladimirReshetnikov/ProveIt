@@ -1419,6 +1419,11 @@ A [human-readable 14-natural-variable presentation](research/nine-sharing-sign14
 uses distinct input names and explicit positive shifts for the five-residual
 98-gate candidate. Its external presentation-to-AST comparison does not
 establish Lean JSON, PDF or fixed-port file semantics.
+A [readable-syntax Lean probe](research/nine-sharing-sign14-readable-lean-probe-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-readable-lean-probe-terminal-independent/README.md),
+compiled the definitions stage but failed the first generic ring identity
+because an expression numeral was not reduced. No low-identity object or
+postflight was produced; a numeral-simplification retry is separate.
 An [external circuit count](research/nine-sharing-sign14-operation-count/README.md),
 [independently audited](reviews/nine-sharing-sign14-operation-count-independent/README.md),
 constructs a 98-gate binary arithmetic DAG for the JSON candidate by sharing
