@@ -1089,8 +1089,10 @@ checks all ten rows under the same hypothesis, with 15 warnings. A
 checks both directions under that hypothesis. The existential model bridge
 is checked by a [same-input seed-iff client](research/nine-sharing-sign19-seed-iff-check/README.md),
 [independently audited](reviews/nine-sharing-sign19-seed-iff-terminal-independent/README.md),
-under the same explicit hypothesis. Current-port specialization and the iPRA
-endpoint remain separate. An [expression-evaluation client](research/nine-sharing-sign19-expression-eval-check/README.md),
+under the same explicit hypothesis. A [current-port client](research/nine-sharing-sign19-current-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign19-current-iff-terminal-independent/README.md),
+checks that hypothesis and the same-input equivalence for the current ports;
+the iPRA endpoint remains separate. An [expression-evaluation client](research/nine-sharing-sign19-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign19-expression-eval-terminal-independent/README.md),
 checks abstract and current-port symbolic expressions and their evaluation
 identities; it does not bind those expressions to external JSON.
