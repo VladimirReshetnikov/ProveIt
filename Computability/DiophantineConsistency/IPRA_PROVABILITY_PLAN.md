@@ -1370,6 +1370,12 @@ clients, independently audited ([rank](reviews/nine-sharing-sign14-rank-value-te
 [Nt](reviews/nine-sharing-sign14-transport-row-terminal-independent/README.md)),
 check natural rank under represented ports and `q ≥ F`, and natural Nt
 transport from seed zero without a tau witness. The tau lift remains separate.
+A [noncircular tau-bound client](research/nine-sharing-sign14-tau-bound-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-tau-bound-terminal-independent/README.md),
+checks `Rank ≤ E*N+k` and natural subtraction embedding from staged seed/Nt
+under represented bounded ports, without N0 or a deleted tau witness. Historical
+point-survey/uncaptured-exit qualifications remain; coordinate transfers,
+equivalence and endpoint remain separate.
 A [staged syntax client](research/nine-sharing-sign15-staged-syntax-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-staged-syntax-terminal-independent/README.md),
 checks the symbolic seed-zero characterization in 16 stages. The external AST
