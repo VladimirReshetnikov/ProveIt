@@ -1138,6 +1138,11 @@ A further [18-witness degree-94 external candidate](research/nine-sharing-sign18
 eliminates the main-root coordinate. Its fixed-input degree is exactly 94
 for nonzero beta by an external coefficient calculation. Its model bridge,
 Lean expression, external-to-Lean binding and iPRA endpoint remain open.
+A [staged syntax client](research/nine-sharing-sign18-staged-syntax-check/README.md),
+[independently audited](reviews/nine-sharing-sign18-staged-syntax-terminal-independent/README.md),
+checks the symbolic seed-zero iff its nine residuals vanish, in 18 stages
+with one warning. The external AST correspondence is source-reviewed, not
+a Lean binding; the model bridge and endpoint remain separate.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
