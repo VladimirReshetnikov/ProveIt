@@ -1445,6 +1445,10 @@ An [actual seed axis-degree client](research/nine-sharing-sign17-axis-seed-degre
 checks seed equality to that sum and corrected-axis degree 96 for `p 0 ≠ 0`.
 It has two warnings and an inherited console label; the multivariate lower
 bound and current-port specialization remain separate.
+A [multivariate lower-bound attempt](research/nine-sharing-sign17-axis-degree-lower-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-axis-degree-lower-failure-independent/README.md),
+passed twelve stages but failed the axis variable case in the next binding
+stage; no binding or lower-bound object or postflight was produced.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
