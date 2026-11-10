@@ -1369,6 +1369,10 @@ A [corrected-axis binding attempt](research/nine-sharing-sign17-axis-root-bindin
 passed four ingredient stages but failed in the binding stage on cast
 normalization and the Lean interpreter memory limit; no binding object or
 postflight was produced.
+A [cast-normalization retry](research/nine-sharing-sign17-axis-root-binding-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-axis-root-binding-retry-failure-independent/README.md),
+again passed four prerequisites but hit the interpreter memory limit in its
+binding stage, with no binding object or postflight.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
