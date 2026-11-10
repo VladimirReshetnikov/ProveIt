@@ -663,6 +663,11 @@ An [opacity retry](research/nine-sharing-sign25-endpoint-no-alias-retry-check/RE
 failed with an interpreter memory exception in the first native stage even
 though that source is byte-identical to the earlier successful child. The
 wrappers and postflight did not run; the cause of that variation is unknown.
+A [wrapper-only retry](research/nine-sharing-sign25-endpoint-wrappers-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-endpoint-wrappers-terminal-independent/README.md),
+reused the previously successful native child from its failed outer run, but
+the standard wrapper again hit the interpreter memory limit. The translated
+wrapper and postflight did not run.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
