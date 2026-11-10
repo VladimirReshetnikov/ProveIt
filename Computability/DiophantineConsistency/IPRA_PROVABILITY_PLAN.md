@@ -1402,6 +1402,11 @@ A [first-norm client](research/nine-sharing-sign15-first-norm-check/README.md),
 derives the first norm from the reduced seed and retained tau under represented
 bounded ports, without the deleted witness. Union and first-index surveys are
 point-in-time; the full window and lift remain separate.
+A [strict-norm client](research/nine-sharing-sign15-strict-norm-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-strict-norm-terminal-independent/README.md),
+derives the strict norm from staged seed zero and represented beta without the
+deleted witness, with one warning. Its union survey is point-in-time; window
+and lift remain separate.
 A [further shared-values client](research/nine-sharing-sign15-more-shared-values-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-more-shared-values-terminal-independent/README.md),
 checks four natural component evaluations under represented beta. Assembled
