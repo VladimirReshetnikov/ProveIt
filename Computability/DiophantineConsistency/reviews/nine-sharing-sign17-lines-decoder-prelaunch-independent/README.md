@@ -1,0 +1,3 @@
+# Independent prelaunch audit
+
+PASS: the proposed cache theorem substitutes the checked explicit Lean decimal-lines value into the parameterized action, then applies the existing Fin430 cache/decoder equality. The transition-row formula matches the current WangTiles942 source, including bit order, rail/head placement and row index. Both separately audited providers, all 1,252 shared overlay targets and producer-object collisions, source/Init/resource guards and no-Lean preflight pass. Lean tactic success and the broader table/PDF/external-file binding remain separate; current source-to-object ancestry is not inferred. No Lean was run.
