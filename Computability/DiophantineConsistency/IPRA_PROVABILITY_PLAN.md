@@ -1234,6 +1234,10 @@ A [shared-values client](research/nine-sharing-sign16-shared-values-check/README
 [independently audited](reviews/nine-sharing-sign16-shared-values-terminal-independent/README.md),
 identifies the c, root and scale values with natural representatives under
 represented beta. Signed R, window premises and the V lift remain separate.
+A [further shared-values client](research/nine-sharing-sign16-more-shared-values-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-more-shared-values-terminal-independent/README.md),
+checks four additional natural interpretations under represented beta;
+maintained norms and the V lift remain separate.
 A [conditional rank client](research/nine-sharing-sign16-rank-value-check/README.md),
 [independently audited](reviews/nine-sharing-sign16-rank-value-terminal-independent/README.md),
 identifies signed R with a natural rank under represented ports and `q ≥ F`;
@@ -1255,6 +1259,11 @@ A [typed retry](research/nine-sharing-sign16-scalar-window-retry01-check/README.
 derives `q ≥ F` from seed zero under represented beta/K, positive beta and
 explicit MC/MF bounds. The survey caveat persists; direct guards are rechecked.
 The remaining norm conditions and V lift are separate.
+A [natural inner-equation client](research/nine-sharing-sign16-inner-from-seed-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-inner-from-seed-terminal-independent/README.md),
+derives the inner equation from seed zero under represented ports and explicit
+beta/MC/MF bounds. Union and inherited first-index surveys are point-in-time;
+direct guards and overlays were rechecked. The V lift remains open.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
