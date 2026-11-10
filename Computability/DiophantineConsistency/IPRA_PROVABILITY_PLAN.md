@@ -2112,6 +2112,11 @@ A [control-sum split retry](research/nine-sharing-sign17-k-control-block-sum-ret
 checks the four actual symbolic control sums equal the in-Lean Fin44 weighted
 sum. It reports one unused-simp warning; full K and external-file binding
 remain separate.
+A [Fin986 coefficient recipe](research/nine-sharing-sign17-k-full-coefficients-blocks-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-full-coefficients-blocks-terminal-independent/README.md),
+combines 942 doubled tile weights and 44 controls into one in-Lean weighted
+sum, with three sentinels separately, and proves the resulting rawWord/K
+identities. Literal coefficient-array and external-file bindings remain separate.
 A [ranked rawWord retry](research/nine-sharing-sign17-k-ranked-rawword-retry-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-ranked-rawword-retry-terminal-independent/README.md),
 checks the actual rawWord and K symbolic identities, including the ranked
