@@ -1062,7 +1062,12 @@ A [second cast-normalization retry](research/nine-sharing-sign20-leading-coeff-r
 [independently audited](reviews/nine-sharing-sign20-leading-coeff-retry02-terminal-independent/README.md),
 checks that each of the two distinguished squared axis rows has coefficient
 beta to the fourth at degree twenty, for arbitrary integer beta. The full
-sum and the exact lower bound remain separate.
+sum and the exact lower bound remain separate. A [full-coefficient
+attempt](research/nine-sharing-sign20-full-coeff-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-full-coeff-failure-independent/README.md),
+failed in its fifth stage on a distinctness proof with a free port parameter;
+the first four stages passed, but no coefficient or lower-bound object and no
+final postflight were produced.
 A [19-witness degree-44 external candidate](research/nine-sharing-sign19-degree44-y-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign19-external-independent/README.md),
 eliminates Y and has exact fixed-input degree 44 when beta is nonzero. The
