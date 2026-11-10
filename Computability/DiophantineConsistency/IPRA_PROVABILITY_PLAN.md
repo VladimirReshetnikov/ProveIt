@@ -1456,6 +1456,11 @@ A [94-gate generic seed check](research/nine-sharing-sign14-94gate-lean-check/RE
 proves the rewritten and 95-gate seeds have equal evaluation for arbitrary
 integer ports and every commutative ring. The run reports four unused-simp
 warnings; fixed-input expression, degree and iPRA transfers remain separate.
+A [94-gate fixed-input expression client](research/nine-sharing-sign14-94gate-expression-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-94gate-expression-terminal-independent/README.md),
+checks generic commutative-ring evaluation and polynomial equality with the
+95-gate expression at arbitrary ports. Model, degree and iPRA transfers remain
+separate, as do external JSON/PDF and fixed-port byte bindings.
 A [95-gate Lean source draft](research/nine-sharing-sign14-95gate-lean-draft/README.md),
 [independently reviewed](reviews/nine-sharing-sign14-95gate-lean-draft-independent/README.md),
 expands to the candidate's five external residual ASTs and proposes generic
