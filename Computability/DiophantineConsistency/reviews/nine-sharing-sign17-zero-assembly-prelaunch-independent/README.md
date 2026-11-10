@@ -1,0 +1,3 @@
+# Independent prelaunch review: sign17 conditional zero assembly
+
+The independent checker exited 0. Two proposed stages assemble nine old and eight new residual rows through eight transfer modules. Forward explicitly assumes a supplied natural gap with the signed embedding equality; backward recovers that equality from old seed zero. Row uses, transfer directions, source/import/provider routes and bounded guards were checked. Gap existence under positive represented beta is separately established by another audited packet; this prelaunch review does not yet combine them or prove an iPRA endpoint.

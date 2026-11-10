@@ -1,0 +1,3 @@
+# Independent terminal audit: sign17 conditional zero assembly
+
+The independent checker exited 0. Author-observed outer session 1428 exited 0, with both stages and final postflight successful. Lean checked forward pointwise seed-zero mapping under a supplied natural gap embedding, and backward mapping using the old zero's recovered gap. Source/object/import/log pins, eight transfer providers, guards and overlays were checked; four axiom reports, no warnings or sorryAx. The separate positive-beta gap-existence theorem has not yet been combined into this packet; existential equivalence and iPRA endpoint remain separate.
