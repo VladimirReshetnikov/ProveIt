@@ -1362,6 +1362,11 @@ A [staged axis root/scale binding](research/nine-sharing-sign14-axis-binding-che
 [independently audited](reviews/nine-sharing-sign14-axis-binding-terminal-independent/README.md),
 checks five actual shared-node identities, with ten linter warnings. The point
 union is not replayed postflight; inner/seed lower and external binding remain separate.
+An [actual-inner axis binding](research/nine-sharing-sign14-axis-inner-binding-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-axis-inner-binding-terminal-independent/README.md),
+checks staged shared37 has axis degree 8 under `p 0 ≠ 0`, with two warnings.
+Point-survey/ancestry qualifications remain; Na/seed lower and external binding
+are separate.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
