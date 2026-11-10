@@ -1451,6 +1451,12 @@ proves that the rewritten and preceding five-square seeds have equal
 evaluation for arbitrary integer ports and every commutative ring. The run
 reports five unused-simp warnings. Optimized 14-variable expression, degree,
 iPRA endpoint and external-file transfers remain separate.
+A [fixed-input expression and polynomial client](research/nine-sharing-sign14-95gate-expression-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-95gate-expression-terminal-independent/README.md),
+checks the optimized and previous 14-variable expressions have equal
+evaluation over every commutative ring and equal polynomials at arbitrary
+integer ports. Exact-degree and iPRA endpoint clients for the optimized
+expression remain separate, as do external JSON/PDF and fixed-port bytes.
 A [compact prefix transcription](research/nine-sharing-sign14-prefix-formula/README.md),
 [independently audited](reviews/nine-sharing-sign14-prefix-formula-independent/README.md),
 encodes the five external seed residuals in five small ASCII files and checks
