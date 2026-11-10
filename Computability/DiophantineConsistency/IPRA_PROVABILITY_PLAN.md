@@ -1466,7 +1466,11 @@ A [case-split retry](research/nine-sharing-sign17-axis-degree-lower-retry-check/
 [independently audited](reviews/nine-sharing-sign17-axis-degree-lower-retry-terminal-independent/README.md),
 checks the actual abstract Fin17 expression has total degree at least 96 when
 `p 0 ≠ 0`. Replayed stages have 15 linter warnings and the console label is
-stale; exact-degree union and current-port specialization remain separate.
+stale. An [exact-degree union](research/nine-sharing-sign17-exact-degree-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-exact-degree-terminal-independent/README.md),
+checks exact degree 96 under `p 0 ≠ 0` and for the current Lean ports, including
+current-port positivity/nonzero. Its console label is inherited; external
+JSON and PDF binding remain separate.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
