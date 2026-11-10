@@ -2072,6 +2072,11 @@ A [ranked tile-sum retry](research/nine-sharing-sign17-k-ranked-tile-sum-retry-c
 checks candidate bijectivity and reindexes the actual 942-tile weighted
 power sum to the candidate-weight sum for any natural base. Control terms,
 sentinels, full K and external-file binding remain separate.
+A [generic shifted-sum split](research/nine-sharing-sign17-k-control-append-check/README.md)
+and [44-slot symbolic control-vector equality](research/nine-sharing-sign17-k-control-blocks-check/README.md)
+have independently passed Lean audits. The control vector's match to the
+external coefficient slice is still checked only in Python; combining the
+blocks into the actual control-sum identity remains separate.
 A [ranked rawWord retry](research/nine-sharing-sign17-k-ranked-rawword-retry-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-ranked-rawword-retry-terminal-independent/README.md),
 checks the actual rawWord and K symbolic identities, including the ranked
