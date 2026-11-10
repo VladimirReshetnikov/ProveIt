@@ -910,7 +910,9 @@ checks symbolic seed zero iff its 12 residuals vanish; it does not prove the
 degree or model bridge in Lean. A [coordinate client](research/nine-sharing-sign21-coordinate-check/README.md),
 [independently audited](reviews/nine-sharing-sign21-coordinate-terminal-independent/README.md),
 checks the natural normalized-S lift, recovery and lift-after-drop identity,
-with one unused-variable warning. The residual transfers remain separate.
+with one unused-variable warning. A [residual-transfer client](research/nine-sharing-sign21-transfers-check/README.md),
+[independently audited](reviews/nine-sharing-sign21-transfers-terminal-independent/README.md),
+checks all 12 rows with 42 linter warnings. The assembled bridge remains open.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
