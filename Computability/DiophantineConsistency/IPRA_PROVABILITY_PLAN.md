@@ -1651,6 +1651,11 @@ An [external MF source-port block layout](research/nine-sharing-sign17-mf-block-
 [independently reviewed](reviews/nine-sharing-sign17-mf-block-layout-independent/README.md),
 reconstructs its pinned 11,815-byte snapshot from 2,012 radix digits in 252
 blocks. This is external evidence, not a Lean whole-port or file theorem.
+An [external K coefficient-recipe check](research/nine-sharing-sign17-k-coefficient-bytes/README.md),
+[independently reviewed](reviews/nine-sharing-sign17-k-coefficient-bytes-independent/README.md),
+matches the pinned K0 snapshot to the frozen coefficient recipe and three
+radix powers. It does not prove the recipe equals Lean's K tile/rank sum or
+bind Lean to file, gzip, JSON or PDF.
 A [symbolic MF radix-digit attempt](research/nine-sharing-sign17-mf-radix-digits-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mf-radix-digits-terminal-independent/README.md),
 passed fifteen prerequisites but failed the final digit theorem on recursion
