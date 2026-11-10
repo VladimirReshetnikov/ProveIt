@@ -864,7 +864,12 @@ for the symbolic Fin23 expression, with a successful outer exit and final
 postflight. Inherited historical provider and point-observation qualifications
 remain. The external degree-eight and coefficient-byte descriptions are not
 formally bound to this Lean expression; this is not a Jones nine-variable
-endpoint.
+endpoint. A [Lean degree-upper client](research/nine-sharing-sign23-degree-upper-check/README.md),
+[independently audited](reviews/nine-sharing-sign23-degree-upper-terminal-independent/README.md),
+proves its polynomial total degree is at most eight for arbitrary integer ports
+and the current ports, with four no-op/unreachable tactic warnings. A residual
+source header says sign24; the pinned declarations and theorem are sign23.
+An exact lower bound remains separate.
 A [22-witness degree-12 candidate](research/nine-sharing-sign22-dodecic-ky-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign22-dodecic-ky-independent/README.md),
 eliminates kY by a natural product. Its fixed-input external square-sum has

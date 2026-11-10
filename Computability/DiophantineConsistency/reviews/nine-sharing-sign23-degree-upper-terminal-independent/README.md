@@ -1,0 +1,3 @@
+# Independent sign23 degree-upper terminal audit
+
+Independent checker session 9304 exited 0 against author outer session 54177 (exit 0). Four stages and postflight succeeded, proving Lean polynomial `totalDegree ≤ 8` for the abstract sign23 Fin23 expression at arbitrary integer ports and its current-port instance. Reports list standard Lean metatheory axioms; four warnings concern unreachable/no-op fallback tactics, with no `sorryAx`. Source, objects, direct guards, overlays and expression provider were checked. A source header stale says sign24, while declarations and imports are sign23. This is not an exact lower bound or external JSON/Jones/PDF binding.
