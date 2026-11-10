@@ -1451,6 +1451,11 @@ A [94-gate Lean source draft](research/nine-sharing-sign14-94gate-lean-draft/REA
 [independently reviewed](reviews/nine-sharing-sign14-94gate-lean-draft-independent/README.md),
 expands to the candidate's five external residual ASTs and proposes the
 difference-of-squares evaluation equalities. It has not been elaborated or checked.
+A [94-gate generic seed check](research/nine-sharing-sign14-94gate-lean-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-94gate-lean-terminal-independent/README.md),
+proves the rewritten and 95-gate seeds have equal evaluation for arbitrary
+integer ports and every commutative ring. The run reports four unused-simp
+warnings; fixed-input expression, degree and iPRA transfers remain separate.
 A [95-gate Lean source draft](research/nine-sharing-sign14-95gate-lean-draft/README.md),
 [independently reviewed](reviews/nine-sharing-sign14-95gate-lean-draft-independent/README.md),
 expands to the candidate's five external residual ASTs and proposes generic
