@@ -1040,7 +1040,11 @@ checks native, standard and translated-standard proof-existence equivalences
 for the symbolic Fin20 expression, with a successful outer exit and final
 postflight. Historical provider and point-observation qualifications remain.
 The external degree-twenty and coefficient-byte descriptions are not formally
-bound to this Lean expression; it is not a Jones nine-variable endpoint.
+bound to this Lean expression; it is not a Jones nine-variable endpoint. A
+[Lean degree-upper client](research/nine-sharing-sign20-degree-upper-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-degree-upper-terminal-independent/README.md),
+proves total degree at most twenty for arbitrary integer ports and current
+ports, with four fallback warnings. The exact lower bound remains separate.
 A [19-witness degree-44 external candidate](research/nine-sharing-sign19-degree44-y-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign19-external-independent/README.md),
 eliminates Y and has exact fixed-input degree 44 when beta is nonzero. The
