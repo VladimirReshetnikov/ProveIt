@@ -1488,6 +1488,10 @@ An [external subtree-aligned fragment DAG](research/nine-sharing-sign14-prefix-d
 reconstructs all five prefix rows from 29 distinct fragments of at most
 32 bytes and 44 acyclic shared-node decompositions. Lean fragment and
 composition lemmas remain separate from this external byte check.
+A [shared07 fragment lemma](research/nine-sharing-sign14-prefix-dag-lemma-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-prefix-dag-lemma-terminal-independent/README.md),
+checks its 15-byte embedded subtree fragment against the corresponding
+symbolic code. The other fragments and full row remain separate.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
