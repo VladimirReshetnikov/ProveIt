@@ -1454,6 +1454,11 @@ A [third proof-only retry](research/nine-sharing-sign14-prefix-reflection-retry0
 checks the generic fuel-bounded decode/encode theorem with an arbitrary
 suffix, using definitional simplification in the binary cases. The concrete
 long-row byte and staged-expression bindings remain separate.
+A [shared symbolic-code client](research/nine-sharing-sign14-prefix-code-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-prefix-code-terminal-independent/README.md),
+checks the interpretation of 44 shared nodes and five residual code trees
+against the staged Lean expressions. It reports 49 sequencing-linter warnings;
+the long-row byte encodings and external JSON/PDF connections remain separate.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
