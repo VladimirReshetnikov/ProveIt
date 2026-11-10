@@ -1320,6 +1320,11 @@ An [axis-base attempt](research/nine-sharing-sign17-axis-degree-base-check/READM
 [independently audited](reviews/nine-sharing-sign17-axis-degree-base-failure-independent/README.md),
 passed its generic replay but failed the affine-degree proof; no axis object
 or postflight was produced.
+An [explicit-calculation retry](research/nine-sharing-sign17-axis-degree-base-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-axis-degree-base-retry-terminal-independent/README.md),
+checks the generic shift and nonzero-z affine factor degrees. Its console label
+is inherited from an earlier probe; the state and manifest contain both stages.
+The concrete lower bound remains separate.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
