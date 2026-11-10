@@ -1351,6 +1351,11 @@ eliminates the signed inner coordinate and has external fixed-port degree 124
 for positive beta. Its proposed non-circular natural lift, equivalence, Lean
 degree, endpoint and JSON/PDF binding remain open; a negative-lift test is not
 claimed to be a seed zero.
+A [staged syntax client](research/nine-sharing-sign15-staged-syntax-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-staged-syntax-terminal-independent/README.md),
+checks the symbolic seed-zero characterization in 16 stages. The external AST
+comparison is separate; the natural lift, Lean JSON binding, exact Lean degree
+and endpoint remain open.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
