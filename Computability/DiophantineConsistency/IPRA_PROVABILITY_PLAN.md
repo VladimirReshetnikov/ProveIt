@@ -653,6 +653,11 @@ A [22-witness degree-12 candidate](research/nine-sharing-sign22-dodecic-ky-candi
 eliminates kY by a natural product. Its fixed-input external square-sum has
 exact degree twelve, trading degree for one fewer witness. The sign22→23 and
 subsequent model bridges, JSON-to-Lean binding, and iPRA endpoint remain open.
+A [21-witness degree-14 candidate](research/nine-sharing-sign21-degree14-s-candidate/README.md),
+[independently audited](reviews/nine-sharing-sign21-degree14-s-independent/README.md),
+substitutes the natural normalized-S product. Its fixed-input external square-sum
+has exact degree fourteen. The sign21→22 and subsequent model bridges and
+iPRA endpoint remain open.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
