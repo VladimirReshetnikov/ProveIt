@@ -1993,6 +1993,10 @@ A [generic finite-partition probe](research/nine-sharing-sign17-k-partition-prob
 [independently audited](reviews/nine-sharing-sign17-k-partition-probe-terminal-independent/README.md),
 failed on a nested-offset associativity mismatch. It produced no object or
 postflight; a narrow normalization retry is being prepared.
+A [normalization retry](research/nine-sharing-sign17-k-partition-probe-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-partition-probe-retry-terminal-independent/README.md),
+checks the generic three-block partition after normalizing that offset. This
+is a small generic case, not yet the Fin942 global assembly.
 A [replayed Fin224 union](research/nine-sharing-sign17-k-weight-union224-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-weight-union224-terminal-independent/README.md),
 combines the first four weight batches in one context and checks actual-weight
