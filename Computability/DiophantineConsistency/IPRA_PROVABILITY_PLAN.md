@@ -1482,6 +1482,13 @@ A [93-gate fixed-input expression client](research/nine-sharing-sign14-93gate-ex
 checks generic commutative-ring evaluation and polynomial equality with the
 94-gate expression at arbitrary ports. Model, degree and iPRA transfers remain
 separate, as do external JSON/PDF and fixed-port byte bindings.
+A [93-gate model-zero client](research/nine-sharing-sign14-93gate-model-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-93gate-model-terminal-independent/README.md),
+checks pointwise and existential equivalence in every stated IΣ₁ model at
+arbitrary ports. A separate [exact-degree client](research/nine-sharing-sign14-93gate-degree-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-93gate-degree-terminal-independent/README.md),
+checks degree 124 at the current ports. The iPRA endpoint and external-file
+bindings remain separate.
 A subsequent [93-gate external candidate](research/nine-sharing-sign14-93gate-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign14-93gate-candidate-independent/README.md),
 uses distributivity to factor four copies of a rank term. Its exact-sharing
