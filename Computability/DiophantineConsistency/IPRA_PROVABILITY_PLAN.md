@@ -1054,6 +1054,10 @@ attempt](research/nine-sharing-sign20-leading-coeff-check/README.md),
 [independently audited](reviews/nine-sharing-sign20-leading-coeff-failure-independent/README.md),
 failed on integer-polynomial constant normalization and reported `sorryAx`;
 no coefficient object or final postflight was produced.
+A [cast-normalization retry](research/nine-sharing-sign20-leading-coeff-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-leading-coeff-retry-failure-independent/README.md),
+also failed its final coefficient stage, with two unsolved goals and `sorryAx`;
+its first three stages succeeded, but no coefficient object or postflight exists.
 A [19-witness degree-44 external candidate](research/nine-sharing-sign19-degree44-y-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign19-external-independent/README.md),
 eliminates Y and has exact fixed-input degree 44 when beta is nonzero. The
@@ -1069,8 +1073,11 @@ warnings. A [Y-coordinate client](research/nine-sharing-sign19-coordinate-check/
 checks lift and recovery under an explicit model beta representation. The
 [residual-transfer client](research/nine-sharing-sign19-transfers-check/README.md),
 [independently audited](reviews/nine-sharing-sign19-transfers-terminal-independent/README.md),
-checks all ten rows under the same hypothesis, with 15 warnings. The full
-model bridge and endpoint remain separate.
+checks all ten rows under the same hypothesis, with 15 warnings. A
+[pointwise zero-assembly client](research/nine-sharing-sign19-zero-assembly-check/README.md),
+[independently audited](reviews/nine-sharing-sign19-zero-assembly-terminal-independent/README.md),
+checks both directions under that hypothesis. The existential model bridge
+and endpoint remain separate.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
