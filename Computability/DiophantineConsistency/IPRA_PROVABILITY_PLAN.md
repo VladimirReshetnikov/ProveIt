@@ -1237,6 +1237,11 @@ A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
 object, concrete-gap stage or postflight was produced.
+A [concrete-root retry](research/nine-sharing-sign17-concrete-root-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-concrete-root-retry-terminal-independent/README.md),
+checks the shared evaluations and a natural gap from the actual staged row06
+under represented positive beta and row-zero. The full zero equivalence remains
+separate.
 A [conditional coordinate client](research/nine-sharing-sign17-coordinate-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-coordinate-terminal-independent/README.md),
 checks the deleted row and coordinate lift/drop when a natural gap with the
