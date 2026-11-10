@@ -11,3 +11,6 @@ fixed-port byte bindings remain separate.
 An [independent structural review](../../reviews/nine-sharing-sign14-86gate-lean-draft-independent/README.md)
 matches all five expanded residuals with the external 86-gate candidate.
 It is not a Lean compilation or a theorem about external files.
+
+The 90-gate seed provider subsequently passed its [guarded retry](../nine-sharing-sign14-90gate-lean-retry01-check/README.md)
+and independent terminal review. The 86-gate draft itself remains uncompiled.

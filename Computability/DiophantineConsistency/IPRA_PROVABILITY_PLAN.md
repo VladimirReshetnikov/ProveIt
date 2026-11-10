@@ -57,6 +57,10 @@ The further [86-gate AST](research/nine-sharing-sign14-86gate-candidate/README.m
 has an independently audited external rewrite and gate count; its Lean
 transfer remains open. Its count is an upper bound under exact ordered
 subtree sharing, not a minimality result.
+The intermediate [90-gate seed](research/nine-sharing-sign14-90gate-lean-retry01-check/README.md)
+now has a checked generic evaluation equality with the 92-gate seed. A
+[direct 86-gate transfer draft](research/nine-sharing-sign14-86gate-lean-draft/README.md)
+has passed external structural comparison but has not yet been checked by Lean.
 
 For fixed-constant work, the [generic radix stream theorem](research/nine-sharing-sign17-k-radix-stream-retry-check/README.md)
 and its [symbolic K specialization](research/nine-sharing-sign17-k-radix-stream-current-check/README.md)
