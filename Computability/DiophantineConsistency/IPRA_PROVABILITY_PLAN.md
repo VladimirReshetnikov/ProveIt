@@ -1413,7 +1413,11 @@ unrun reverse source had the same stale reference. No object or postflight exist
 A [corrected-family retry](research/nine-sharing-sign14-zero-assembly-retry03-check/README.md),
 [independently audited](reviews/nine-sharing-sign14-zero-assembly-retry03-terminal-independent/README.md),
 checks both pointwise directions with a supplied tau forward and recovery
-backward, without port/sign assumptions. Existential iff remains separate.
+backward, without port/sign assumptions. A [conditional seed iff](research/nine-sharing-sign14-seed-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-seed-iff-terminal-independent/README.md),
+combines them with tau lift under represented ports and beta/MC/MF bounds.
+Point surveys and inherited ancestry remain qualified; current specialization,
+endpoint and external binding are separate.
 An [expression-evaluation client](research/nine-sharing-sign14-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign14-expression-eval-terminal-independent/README.md),
 checks abstract and current Fin14 symbolic evaluation. Successful-child/
