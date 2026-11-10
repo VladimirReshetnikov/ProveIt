@@ -737,6 +737,10 @@ or final postflight was produced. A [staged retry](research/nine-sharing-sign24-
 [independently audited](reviews/nine-sharing-sign24-polynomial-bridge-staged-terminal-independent/README.md),
 compiled transport conditional on the sign25 bridge, but the instantiation
 stage hit the interpreter limit; no unconditional bridge or postflight follows.
+A [sign26 bypass attempt](research/nine-sharing-sign24-polynomial-bridge-bypass-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-polynomial-bridge-bypass-terminal-independent/README.md),
+also stopped at its Lean compile with the interpreter exception and no object
+or final postflight.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
