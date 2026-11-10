@@ -648,6 +648,11 @@ A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidat
 substitutes a natural quadratic for Delta. Its external square-sum has exact
 degree eight by a leading-coefficient sum-of-squares argument; the sign23→24
 and sign24→25 Lean model bridges and direct endpoint remain open.
+A [22-witness degree-12 candidate](research/nine-sharing-sign22-dodecic-ky-candidate/README.md),
+[independently audited](reviews/nine-sharing-sign22-dodecic-ky-independent/README.md),
+eliminates kY by a natural product. Its fixed-input external square-sum has
+exact degree twelve, trading degree for one fewer witness. The sign22→23 and
+subsequent model bridges, JSON-to-Lean binding, and iPRA endpoint remain open.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
