@@ -60,3 +60,5 @@ cmp /tmp/carrier64-growth-compatible.json research/current14-carrier64-growth-co
 The independent review of this partial assignment and its exclusion by the
 second growth inequality is in
 `../../reviews/current14-carrier64-growth-window-independent/`.
+Its separate partial-witness audit is in
+`../../reviews/current14-carrier64-growth-compatible-partial-independent/`.
