@@ -1291,7 +1291,13 @@ independently audited ([strict](reviews/nine-sharing-sign16-strict-norm-retry01-
 [scale](reviews/nine-sharing-sign16-window-scale-terminal-independent/README.md)),
 derive the strict norm and scale identity under seed zero and represented beta,
 with one warning each. Point-in-time provider survey caveats persist; full
-window assembly and the V lift remain separate.
+window assembly and the V lift remain separate. A [half-window assembly](research/nine-sharing-sign16-window-assembly-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-window-assembly-terminal-independent/README.md),
+checks `2 * Rank < C` under seed zero, represented ports, positive beta and
+MC/MF bounds, with one warning. The audit records an initial checker-format
+failure; inherited windows ancestry includes an unavailable earlier outer
+exit and a successful child of a failed build. Surveys are point-in-time,
+while direct guards and overlays were rechecked. The V lift remains open.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
