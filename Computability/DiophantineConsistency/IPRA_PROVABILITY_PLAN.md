@@ -719,7 +719,11 @@ for input one at abstract and current ports; it inherits partial historical
 provider observations. An [expression-zero equivalence](research/nine-sharing-sign24-expression-equivalence-check/README.md),
 [independently audited](reviews/nine-sharing-sign24-expression-equivalence-terminal-independent/README.md),
 composes the current-port Fin24 and Fin25 expressions. Lean degree and
-port-byte binding, and the iPRA endpoint remain open.
+port-byte binding, and the iPRA endpoint remain open. A [concrete polynomial
+bridge attempt](research/nine-sharing-sign24-concrete-polynomial-bridge-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-concrete-polynomial-bridge-terminal-independent/README.md),
+stopped with an interpreter memory exception under `-M2800`; no bridge object
+or final postflight was produced.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
