@@ -689,8 +689,11 @@ bridge now has an [independently audited Lean client](research/nine-sharing-sign
 for both pointwise directions under the beta representation hypothesis. The
 same-input [existential composition](research/nine-sharing-sign24-seed-iff-check/README.md),
 [independently audited](reviews/nine-sharing-sign24-seed-iff-terminal-independent/README.md),
-also retains that hypothesis. The current-port cast, Lean degree and port-byte
-binding, and iPRA endpoint remain open.
+also retains that hypothesis. A [current-port specialization](research/nine-sharing-sign24-current-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-current-iff-terminal-independent/README.md),
+discharges it using the current beta representative; its current-data producer
+has successful observed children but a failed overall run. The direct expression,
+Lean degree and port-byte binding, and iPRA endpoint remain open.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
