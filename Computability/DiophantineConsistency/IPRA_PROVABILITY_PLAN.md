@@ -1068,6 +1068,10 @@ attempt](research/nine-sharing-sign20-full-coeff-check/README.md),
 failed in its fifth stage on a distinctness proof with a free port parameter;
 the first four stages passed, but no coefficient or lower-bound object and no
 final postflight were produced.
+A [structural-distinctness retry](research/nine-sharing-sign20-full-coeff-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-full-coeff-retry-failure-independent/README.md),
+passed five stages, then failed to normalize two port-dependent list counts;
+no final seed-coefficient or lower-bound object or postflight was produced.
 A [19-witness degree-44 external candidate](research/nine-sharing-sign19-degree44-y-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign19-external-independent/README.md),
 eliminates Y and has exact fixed-input degree 44 when beta is nonzero. The
