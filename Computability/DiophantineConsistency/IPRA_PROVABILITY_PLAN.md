@@ -1377,6 +1377,10 @@ A [cast-normalization retry](research/nine-sharing-sign17-axis-root-binding-retr
 [independently audited](reviews/nine-sharing-sign17-axis-root-binding-retry-failure-independent/README.md),
 again passed four prerequisites but hit the interpreter memory limit in its
 binding stage, with no binding object or postflight.
+A [split binding diagnostic](research/nine-sharing-sign17-axis-root-binding-staged-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-axis-root-binding-staged-failure-independent/README.md),
+checked low and factor modules after four prerequisites, but the final
+root/scale stage failed on associativity; no final object or postflight exists.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
