@@ -1,0 +1,3 @@
+# Independent sign23 two-leading-row ingredients prelaunch review
+
+Independent checker session 24590 exited 0. The candidate identifies the actual N0 and Dc2 rows at remaining-list offsets 5 and 3, gives their axis identities and individual square coefficient-one statements, and proposes arbitrary-port weighted/axis degree bounds for remaining residuals excluding both rows. It checks 13 branches at Fin24 seed arity and a Fin23 diagonal substitution. Source, manifest/imports, expression provider, no-Lean preflight and local heartbeat/resource controls were checked. These ingredients do not yet establish full coefficient two, a lower bound, exact degree or JSON/PDF binding.
