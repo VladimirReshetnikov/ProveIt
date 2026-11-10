@@ -1487,6 +1487,12 @@ A [beta byte-pattern probe](research/nine-sharing-sign17-beta-byte-probe-check/R
 passed fifteen replay stages but failed its final theorem on exponent, depth
 and decoder elaboration issues; no beta object or postflight was produced.
 An external decompression observation is not a Lean file or gzip binding.
+A [natural-decoder retry](research/nine-sharing-sign17-beta-byte-probe-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-beta-byte-probe-retry-terminal-independent/README.md),
+checks that the abstract big-endian pattern `31 :: replicate 11814 255`
+decodes to symbolic beta and current port zero. Its console label is inherited;
+the external gzip snapshot observation, other ports and filesystem/JSON/PDF
+bindings remain separate.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage

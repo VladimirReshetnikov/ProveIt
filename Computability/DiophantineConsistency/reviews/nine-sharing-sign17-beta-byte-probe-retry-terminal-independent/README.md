@@ -1,0 +1,3 @@
+# Independent sign17 beta-byte probe retry terminal audit
+
+The independent checker exited 0. Author outer session 92673 exited 0; all sixteen stages and postflight passed despite inherited console label. Sources, objects, logs, direct routes, guards and overlays were checked, with no sorryAx. The final stage has no warnings; its general repunit and beta-pattern reports use propext/Quot.sound, and current port0 report has the standard three axioms. Lean proves the abstract natural big-endian digit pattern equals symbolic beta and current port0. The independently observed gzip snapshot is an external provenance check; no Lean file/gzip/hash/JSON/PDF binding or equality for the other ports follows. No Lean was rerun here.
