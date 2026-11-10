@@ -1300,6 +1300,10 @@ A [univariate compatibility probe](research/nine-sharing-sign17-univariate-degre
 [independently audited](reviews/nine-sharing-sign17-univariate-degree-probe-failure-independent/README.md),
 passed the alternative import but left two mapped-degree goals unsolved; the
 module object and postflight were not produced.
+A [mapped-degree retry](research/nine-sharing-sign17-univariate-degree-probe-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-univariate-degree-probe-retry-failure-independent/README.md),
+left the rewrite side condition `0 = 0` unresolved; no module object or
+postflight was produced.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
