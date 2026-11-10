@@ -1242,6 +1242,10 @@ A [transport-row client](research/nine-sharing-sign16-transport-row-check/README
 [independently audited](reviews/nine-sharing-sign16-transport-row-terminal-independent/README.md),
 derives the natural Nt transport equation from seed zero under represented
 beta and K; window bounds and the V lift remain separate.
+A [remaining-row extraction](research/nine-sharing-sign16-other-rows-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-other-rows-terminal-independent/README.md),
+checks four more seed-zero consequences with shared evaluations abstract;
+identifying maintained norms and obtaining the V lift remain separate.
 A [scalar-window attempt](research/nine-sharing-sign16-scalar-window-check/README.md),
 [independently audited](reviews/nine-sharing-sign16-scalar-window-failure-independent/README.md),
 failed because `zero_le` was applied as a function; no object or postflight was
