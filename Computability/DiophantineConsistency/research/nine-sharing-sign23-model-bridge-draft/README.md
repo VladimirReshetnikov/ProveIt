@@ -14,8 +14,11 @@ Delta residual, recover that coordinate from an old seed zero, and prove lift
 after drop. Unlike the q3 substitution, this coordinate lift has no beta-port
 representation premise. Matching syntax and square-decomposition source
 copies passed a guarded build and independent terminal audit at
-`reviews/nine-sharing-sign23-seed-squares-terminal-independent/`; the
-coordinate and transfer proposals remain uncompiled.
+`reviews/nine-sharing-sign23-seed-squares-terminal-independent/`. The
+original coordinate proposal failed; a numeral-rewrite retry subsequently
+passed an independent terminal audit at
+`reviews/nine-sharing-sign23-coordinate-retry01-terminal-independent/`.
+The transfer proposals remain uncompiled.
 
 `generate_transfers.py` drafts evaluation identities for all 14 retained
 rows; `check_transfers.py` parses both sets of displayed expressions and
