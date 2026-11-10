@@ -1076,6 +1076,10 @@ A [finite-list simplification retry](research/nine-sharing-sign20-full-coeff-ret
 [independently audited](reviews/nine-sharing-sign20-full-coeff-retry02-failure-independent/README.md),
 also passed five stages but left two list-count goals unresolved; no sixth
 object, lower-bound object or final postflight was produced.
+A [count-expansion retry](research/nine-sharing-sign20-full-coeff-retry03-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-full-coeff-retry03-failure-independent/README.md),
+likewise passed five stages but left boolean syntax-tree equality goals in
+the sixth; it produced no sixth object, lower-bound object or postflight.
 A separate [current-beta nonzero attempt](research/nine-sharing-sign20-current-beta-check/README.md),
 [independently audited](reviews/nine-sharing-sign20-current-beta-failure-independent/README.md),
 failed because a finite comparison could not unfold the locally irreducible
