@@ -80,7 +80,10 @@ same-interface comparison. Lean coordinate transport, the degree transfer
 and external-file binding are still open. The positive candidate's [staged
 Lean syntax](research/nine-sharing-sign14-positive74-syntax-check/README.md)
 has compiled and passed independent terminal review; that is not yet a
-coordinate-transport theorem.
+complete coordinate-transport theorem. Three base-node identities and the
+[transport residual](research/nine-sharing-sign14-positive74-row02-check/README.md)
+have since passed Lean and independent terminal review; the remaining four
+residuals and their assembly are open.
 
 For fixed-constant work, the [generic radix stream theorem](research/nine-sharing-sign17-k-radix-stream-retry-check/README.md)
 and its [symbolic K specialization](research/nine-sharing-sign17-k-radix-stream-current-check/README.md)
