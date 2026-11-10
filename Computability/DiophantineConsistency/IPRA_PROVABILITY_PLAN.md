@@ -1156,6 +1156,11 @@ A [main-root coordinate attempt](research/nine-sharing-sign18-coordinate-check/R
 [independently audited](reviews/nine-sharing-sign18-coordinate-failure-independent/README.md),
 failed on finite-vector simplification and recovery, with three `sorryAx`
 reports; no coordinate object or final postflight was produced.
+A [vector-simplification retry](research/nine-sharing-sign18-coordinate-retry01-check/README.md),
+[independently audited](reviews/nine-sharing-sign18-coordinate-retry01-failure-independent/README.md),
+advanced but failed on numeral embeddings; no module object or postflight was
+produced. The independent checker itself was corrected after a stale output
+path caused its first invocation to fail.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
