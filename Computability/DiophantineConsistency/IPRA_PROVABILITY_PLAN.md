@@ -1432,6 +1432,10 @@ circuit to 38 additions, 17 subtractions and 40 multiplications. The
 count is an upper bound under the same free-leaf, exact-sharing convention.
 Lean equivalence, endpoint and degree transfer for this new candidate remain
 to be proved; external file and PDF bindings remain separate.
+A [95-gate Lean source draft](research/nine-sharing-sign14-95gate-lean-draft/README.md),
+[independently reviewed](reviews/nine-sharing-sign14-95gate-lean-draft-independent/README.md),
+expands to the candidate's five external residual ASTs and proposes generic
+ring-evaluation equivalences. It has not yet been elaborated or checked.
 A [compact prefix transcription](research/nine-sharing-sign14-prefix-formula/README.md),
 [independently audited](reviews/nine-sharing-sign14-prefix-formula-independent/README.md),
 encodes the five external seed residuals in five small ASCII files and checks
@@ -2072,11 +2076,20 @@ A [ranked tile-sum retry](research/nine-sharing-sign17-k-ranked-tile-sum-retry-c
 checks candidate bijectivity and reindexes the actual 942-tile weighted
 power sum to the candidate-weight sum for any natural base. Control terms,
 sentinels, full K and external-file binding remain separate.
+A [generic shifted-sum split](research/nine-sharing-sign17-k-control-append-check/README.md)
+and [44-slot symbolic control-vector equality](research/nine-sharing-sign17-k-control-blocks-check/README.md)
+have independently passed Lean audits. The control vector's match to the
+external coefficient slice is still checked only in Python; combining the
+blocks into the actual control-sum identity remains separate.
 A [ranked rawWord retry](research/nine-sharing-sign17-k-ranked-rawword-retry-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-ranked-rawword-retry-terminal-independent/README.md),
 checks the actual rawWord and K symbolic identities, including the ranked
 tile sum, 34 control contributions and three sentinels. The frozen
 coefficient-array and external-file bindings remain separate.
+A [direct control-coefficient attempt](research/nine-sharing-sign17-k-control-coefficients-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-control-coefficients-terminal-independent/README.md),
+timed out at the 120-second child limit without an object or postflight.
+The split-vector ingredients above replace that monolithic check.
 A [ranked rawWord assembly attempt](research/nine-sharing-sign17-k-ranked-rawword-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-ranked-rawword-terminal-independent/README.md),
 failed because three fixed sentinel-vector entries were not reduced. It
