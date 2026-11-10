@@ -1233,6 +1233,10 @@ An [expression-evaluation client](research/nine-sharing-sign17-expression-eval-c
 [independently audited](reviews/nine-sharing-sign17-expression-eval-terminal-independent/README.md),
 checks the symbolic Fin17 input-one evaluator against that staged seed; it
 does not establish the model bridge, endpoint or external binding.
+A [degree-upper attempt](research/nine-sharing-sign17-degree-upper-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-degree-upper-failure-independent/README.md),
+passed its first two stages but hit the 120-second residual-stage guard;
+no residual object, final degree theorem or postflight was produced.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
