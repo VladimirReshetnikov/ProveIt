@@ -1695,6 +1695,11 @@ A [ten-chunk client](research/nine-sharing-sign17-mf-chunk-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mf-chunk-terminal-independent/README.md),
 checks ten small radix/byte identities. External fixture matching is separate
 Python evidence; no whole-port or file/gzip theorem follows.
+A [concrete MF block-composition client](research/nine-sharing-sign17-mf-compose-blocks-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-mf-compose-blocks-terminal-independent/README.md),
+checks equal decoding of 251 aligned radix/byte blocks plus a tail. Two prior
+stages have warnings; symbolic digit-list linkage and external file binding
+remain separate.
 A [generic block-composition attempt](research/nine-sharing-sign17-mc-compose-core-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mc-compose-core-terminal-independent/README.md),
 passed eighteen prerequisites but failed the final flatten-tail induction;
