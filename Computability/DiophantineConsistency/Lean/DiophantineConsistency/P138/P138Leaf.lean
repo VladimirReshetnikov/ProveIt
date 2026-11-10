@@ -17,7 +17,9 @@ with the main pair `c = ψ_a(R)` (`a = XY + Y`), the first pair `2n = R + 1`,
 `![J, F, α, 1, 1, X, Y, 1, η, ζ, 1, 1]` (P138_ROUTE §1); `pairMod` is the identity
 `(F + α)(X + K0 q) + F q − q(X + K0 q) = −z q (q − 1)` with `q − 1 = Jβ`.
 
-`sound_k` closes the loop through `Source34Converse.halt_iff_facts`. The native 924/107 equation
+The argument is `leaf_of_folded`: it reads the zero only through the record
+`P138Rank.Folded` of facts about front registers, so it serves every circuit with this front
+(`halt_of_folded`). `sound_k` closes the loop through `Source34Converse.halt_iff_facts`. The native 924/107 equation
 (`κ = kN`, modulus `E`) gives `leaf_of_zero` and `sound`; the short 840/108 equation (`κ = kS`,
 modulus `4q⁴`) is `P138Short.sound`. -/
 set_option autoImplicit false
@@ -55,25 +57,24 @@ variable (x : Fin 11 → DiffRing V) (κ : DiffRing V)
 local notation "𝓡" => regsK (portsR (V := V)) x κ
 
 set_option maxHeartbeats 4000000 in
-/-- **Soundness, leaf form**, at any `k` slot with an index modulus. -/
-theorem leaf_of_zero_k (hκ : IndexModulus portsR x κ) (hz : valueK portsR x κ = 0) :
+/-- **The leaf facts from the folded front**, at any `k` slot with an index modulus. The
+output of the circuit is not read: only the front registers of `P138Value.regsK`. -/
+theorem leaf_of_folded (hκ : IndexModulus portsR x κ) (Fd : Folded (portsR (V := V)) x κ) :
     ∃ v : Fin 12 → V, (∀ j, 0 < v j) ∧ CompactLeafFacts.LeafFacts Source34Ports.ports v := by
   have hp : PortFacts (portsR (V := V)) := portFacts
-  obtain ⟨E⟩ := early_fold portsR x κ hp hz
-  obtain ⟨M⟩ := main_index portsR x κ hp hκ hz E
-  obtain ⟨Fi⟩ := first_index portsR x κ hp hκ hz E M
-  obtain ⟨O⟩ := oriented portsR x κ hp hz E M Fi
-  obtain ⟨t, ht⟩ := P72ConvArith.odd_of_mod_two M.hodd
+  obtain ⟨Fi⟩ := first_index portsR x κ hp hκ Fd
+  obtain ⟨O⟩ := oriented portsR x κ hp Fd Fi
+  obtain ⟨t, ht⟩ := P72ConvArith.odd_of_mod_two Fd.hodd
   have hn : Fi.n = t + 1 := by
     have h := Fi.hn; rw [ht] at h
     apply ι_injective
     have h' := congrArg (ι (V := V)) h
     simp only [map_add, map_mul, map_ofNat, map_one] at h' ⊢
     linarith
-  have hB : 0 < (𝓡).Budget := by linarith [budget_ge portsR x κ hp hz]
+  have hB : 0 < (𝓡).Budget := Fd.hbudget
   obtain ⟨_, _, heta2, _⟩ := centered portsR x κ hp hB
   obtain ⟨hci1, hci2, _⟩ := c_interval portsR x κ hp hB
-  have hs := signs portsR x κ hp hz
+  have hs := signs_of_budget portsR x κ hp hB
   -- the natural coordinates
   obtain ⟨Jn, hJn0, hJn⟩ := natural O.hJ
   obtain ⟨Fn, hFn0, hFn⟩ := natural O.hF
@@ -82,7 +83,7 @@ theorem leaf_of_zero_k (hκ : IndexModulus portsR x κ) (hz : valueK portsR x κ
   obtain ⟨Yn, hYn0, hYn⟩ := natural O.hY
   obtain ⟨Wn, hWn0, hWn⟩ := natural (show 0 < (𝓡).W from
     (pos_iff_pos_of_mul_pos (show 0 < (𝓡).q * (𝓡).W by rw [← X_def, O.hX]; exact ι_pos (exp_pos _))).mp O.hq)
-  set Xn : V := Exp.exp M.Rn with hXn
+  set Xn : V := Exp.exp Fd.Rn with hXn
   have hXd : (𝓡).X = ι Xn := O.hX
   have habsX : |(𝓡).X| = ι Xn := by rw [hXd, abs_of_nonneg (ι_nonneg _)]
   have habsY : |(𝓡).Y| = ι Yn := by rw [hYn, abs_of_nonneg (ι_nonneg _)]
@@ -94,30 +95,30 @@ theorem leaf_of_zero_k (hκ : IndexModulus portsR x κ) (hz : valueK portsR x κ
   set kk : V := 2 * ycoord Fi.n Fi.bF with hkk
   have hkd : (𝓡).k = ι kk := by rw [← Fi.hk, abs_of_pos hk0]
   -- the main base `b = XY + Y`
-  have hb : E.Bn - 2 = Xn * Yn + Yn := by
+  have hb : Fd.Bn - 2 = Xn * Yn + Yn := by
     apply ι_injective
-    rw [ι_tsub' (le_trans (by norm_num) E.hB3), map_ofNat, ← O.hA, A_eq, a_eq, hXd, hYn]
+    rw [ι_tsub' (le_trans (by norm_num) Fd.hB3), map_ofNat, ← O.hA, A_eq, a_eq, hXd, hYn]
     simp only [map_add, map_mul]; ring
-  have hcmain : E.cn = ycoord M.Rn (Xn * Yn + Yn) := by rw [M.hc, hb]
+  have hcmain : Fd.cn = ycoord Fd.Rn (Xn * Yn + Yn) := by rw [Fd.hc, hb]
   -- `η > 0`
   have ht12 : (12 : V) ≤ t := by
     apply ι_le_ι.mp
-    have h4 : (4080 : DiffRing V) ≤ ι M.Rn := by
-      have := R_ge portsR x κ hp hs; rwa [M.hR] at this
+    have h4 : (4080 : DiffRing V) ≤ ι Fd.Rn := by
+      have := R_ge portsR x κ hp hs; rwa [Fd.hR] at this
     rw [ht] at h4; simp only [map_add, map_mul, map_ofNat, map_one] at h4; rw [map_ofNat]
     linarith
   have ht5 : (5 : V) ≤ t := le_trans (by norm_num) ht12
-  have hetapos : kk * Yn < E.cn := by
-    refine P138HalfBinomial.eta_pos Xn Yn t E.cn kk ht5 (by rw [hXn, ht]) (pos_iff_one_le.mp hYn0)
+  have hetapos : kk * Yn < Fd.cn := by
+    refine P138HalfBinomial.eta_pos Xn Yn t Fd.cn kk ht5 (by rw [hXn, ht]) (pos_iff_one_le.mp hYn0)
       (by rw [hcmain, ht, show Xn * Yn + Yn = Yn * (Xn + 1) by ring])
       (by rw [hkk, hn, hbF]) ?_ ?_
     · apply ι_lt_ι.mp
-      rw [abs_of_pos hk0, hkd, habsY, E.hcn] at hci1
+      rw [abs_of_pos hk0, hkd, habsY, Fd.hcn] at hci1
       simp only [map_add, map_mul, map_ofNat]; nlinarith
     · apply ι_lt_ι.mp
-      rw [abs_of_pos hk0, hkd, habsY, E.hcn] at hci2
+      rw [abs_of_pos hk0, hkd, habsY, Fd.hcn] at hci2
       simp only [map_add, map_mul, map_ofNat, map_one]; nlinarith
-  have heta : (𝓡).eta = ι E.cn - ι Yn * ι kk := by rw [eta_eq, O.hc, hYn, hkd]
+  have heta : (𝓡).eta = ι Fd.cn - ι Yn * ι kk := by rw [eta_eq, O.hc, hYn, hkd]
   have hetap : 0 < (𝓡).eta := by
     rw [heta]; have := ι_lt_ι.mpr hetapos; rw [map_mul] at this; linarith
   obtain ⟨ηn, hηn0, hηn⟩ := natural hetap
@@ -141,14 +142,14 @@ theorem leaf_of_zero_k (hκ : IndexModulus portsR x κ) (hz : valueK portsR x κ
   have hFq : Fn ≤ qV := by
     apply ι_le_ι.mp; rw [hqV, ← hFn]; have := O.hα; have := O.hC; linarith
   have hq2 : 1 ≤ qV ^ 2 := one_le_pow₀ hq1
-  have hRV : ((qV - 1) * (qV - Fn) + αn) * (qV ^ 2 - 1) + (MC + qV * MF) * Jn = M.Rn := by
+  have hRV : ((qV - 1) * (qV - Fn) + αn) * (qV ^ 2 - 1) + (MC + qV * MF) * Jn = Fd.Rn := by
     apply ι_injective
     have e1 : (ι (qV - 1) : DiffRing V) = (𝓡).q - 1 := by rw [ι_tsub' hq1, map_one, hqV]
     have e2 : (ι (qV - Fn) : DiffRing V) = (𝓡).q - (𝓡).F := by rw [ι_tsub' hFq, hqV, ← hFn]
     have e3 : (ι (qV ^ 2 - 1) : DiffRing V) = (𝓡).q ^ 2 - 1 := by
       rw [ι_tsub' hq2, map_one, map_pow, hqV]
     simp only [map_add, map_mul]
-    rw [e1, e2, e3, hqV, ← hαn, ← hJn, ← hp2, ← hp3, ← M.hR, R_eq]
+    rw [e1, e2, e3, hqV, ← hαn, ← hJn, ← hp2, ← hp3, ← Fd.hR, R_eq]
     ring
   -- the valuation
   refine ⟨![Jn, Fn, αn, 1, 1, Xn, Yn, 1, ηn, ζn, 1, 1], ?_, ?_⟩
@@ -166,7 +167,7 @@ theorem leaf_of_zero_k (hκ : IndexModulus portsR x κ) (hz : valueK portsR x κ
       2 * ycoord j (2 * ((Xn * Yn) * Yn - 1) + 1) = ηn + ζn ∧
       xcoord pi (Xn * Yn + Yn) = main ∧ ycoord pi (Xn * Yn + Yn) = ηn + Yn * (ηn + ζn)
     rw [hRV]
-    refine ⟨xcoord Fi.n Fi.bF, xcoord M.Rn (Xn * Yn + Yn), Fi.n, M.Rn,
+    refine ⟨xcoord Fi.n Fi.bF, xcoord Fd.Rn (Xn * Yn + Yn), Fi.n, Fd.Rn,
       lt_of_lt_of_le (by simp) (one_le_x _ _), lt_of_lt_of_le (by simp) (one_le_x _ _),
       ?_, ?_, rfl, Fi.hn, by rw [hbF], ?_, rfl, ?_⟩
     · rw [hn]
@@ -228,6 +229,18 @@ theorem leaf_of_zero_k (hκ : IndexModulus portsR x κ) (hz : valueK portsR x κ
     apply ι_injective
     rw [map_mul, map_pow, hqV, ← hon, ← hYn, Y_eq]; ring
 
+/-- **A folded front gives an internal halt of machine 215**, at any `k` slot with an index
+modulus. -/
+theorem halt_of_folded (hκ : IndexModulus portsR x κ) (Fd : Folded (portsR (V := V)) x κ) :
+    ∃ T : V, ArithmeticCantor.first (ArithmeticMachineRun215.run T) = 0 :=
+  (Source34Converse.halt_iff_facts).2 (leaf_of_folded x κ hκ Fd)
+
+/-- **Soundness, leaf form**, at any `k` slot with an index modulus. -/
+theorem leaf_of_zero_k (hκ : IndexModulus portsR x κ) (hz : valueK portsR x κ = 0) :
+    ∃ v : Fin 12 → V, (∀ j, 0 < v j) ∧ CompactLeafFacts.LeafFacts Source34Ports.ports v := by
+  obtain ⟨Fd⟩ := folded_of_zero portsR x κ portFacts hκ hz
+  exact leaf_of_folded x κ hκ Fd
+
 /-- **Soundness** at any `k` slot with an index modulus: a zero in any model of `𝗜𝚺₁` gives an
 internal halt of machine 215. -/
 theorem sound_k (hκ : IndexModulus portsR x κ) (hz : valueK portsR x κ = 0) :
@@ -252,6 +265,8 @@ theorem sound (hz : value portsR x = 0) :
 
 end Native
 
+#print axioms leaf_of_folded
+#print axioms halt_of_folded
 #print axioms leaf_of_zero_k
 #print axioms sound_k
 #print axioms leaf_of_zero

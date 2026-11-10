@@ -18,7 +18,10 @@ shows `p = R` (`main_index`, packaged as the record `MainIndex`).
 * `2R < |c|` (from `|c| > |k|(|Y| − ½)`, `|k| ≥ R + 1`) and `2p < ψ_b(p) = |c|` give `p = R`
   (`ArithmeticPellHalfIndex.sign_eq_of_half`).
 
-The first index, the projector and the orientation are not used. -/
+The first index, the projector and the orientation are not used.
+
+The module ends with the record `Folded`: the facts about front registers that the rest of the
+chain needs (`folded_of_zero`). From there on the chain does not read the zero. -/
 set_option autoImplicit false
 set_option Elab.async false
 noncomputable section
@@ -104,12 +107,16 @@ section Regs
 variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V) (κ : DiffRing V)
 local notation "𝓡" => regsK p x κ
 
-/-- The signs of the centered budget at a zero. -/
-theorem signs (hp : PortFacts p) (hz : valueK p x κ = 0) :
+/-- The signs of the centered budget, from a positive budget. -/
+theorem signs_of_budget (hp : PortFacts p) (hB : 0 < (𝓡).Budget) :
     0 < (𝓡).F * (𝓡).q ∧ 0 < x 1 * (𝓡).q ∧ 0 < ((𝓡).q - (𝓡).F - x 1) * (𝓡).q := by
-  have hB : 0 < (𝓡).Budget := by linarith [budget_ge p x κ hp hz]
   obtain ⟨_, _, _, h1, h2, h3, _⟩ := centered p x κ hp hB
   exact ⟨h1, h2, h3⟩
+
+/-- The signs of the centered budget at a zero. -/
+theorem signs (hp : PortFacts p) (hz : valueK p x κ = 0) :
+    0 < (𝓡).F * (𝓡).q ∧ 0 < x 1 * (𝓡).q ∧ 0 < ((𝓡).q - (𝓡).F - x 1) * (𝓡).q :=
+  signs_of_budget p x κ hp (by linarith [budget_ge p x κ hp hz])
 
 theorem three_le_abs_Y (hp : PortFacts p) : 3 ≤ |(𝓡).Y| := by
   have hq := abs_q_ge p x κ hp
@@ -210,11 +217,50 @@ theorem main_index (hp : PortFacts p) (hκ : IndexModulus p x κ) (hz : valueK p
   refine ⟨⟨Rn, hRn, hlo, hhi, heq.symm, by rw [heq]; exact E.hidxodd,
     by rw [heq]; exact E.hcidx, by rw [heq]; exact E.hDm, h2R, hRpos⟩⟩
 
+/-! ## The folded front
+
+Everything the rest of the soundness chain (`P138FirstIndex` … `P138Leaf`) reads from a zero.
+Every field is a statement about front registers of `P138Value.regsK` (`A, c, Budget, Dt, H,
+Kq, R, Dm`); the back end of the circuit (`U, BP, strong, Df, Q, V, Z, RG, …`) does not occur.
+A circuit with the same front and a different back end (package 131's two-root 810/112) reuses
+the chain by building this record from its own zero. -/
+
+/-- **The folded front**: the main Pell pair `|c| = ψ_b(R)`, `b = |A| − 2`, with odd index
+`R`, a positive budget, the first norm `Dt = τ²` and `H ∣ Kq⁵`. -/
+structure Folded where
+  Bn : V
+  cn : V
+  Rn : V
+  τ : V
+  hBn : |(𝓡).A| = ι Bn
+  hB3 : 3 ≤ Bn
+  hcn : |x 8| = ι cn
+  hcn0 : 0 < cn
+  hbudget : 0 < (𝓡).Budget
+  hDt : (𝓡).Dt = ι τ * ι τ
+  hHK : (𝓡).H ∣ Kq p x κ ^ 5
+  hR : (𝓡).R = ι Rn
+  hodd : Rn % 2 = 1
+  hc : cn = ycoord Rn (Bn - 2)
+  hDm : (𝓡).Dm = ι (xcoord Rn (Bn - 2)) * ι (xcoord Rn (Bn - 2))
+  hRpos : 0 < Rn
+
+/-- **A zero of package 138's output gives the folded front.** -/
+theorem folded_of_zero (hp : PortFacts p) (hκ : IndexModulus p x κ) (hz : valueK p x κ = 0) :
+    Nonempty (Folded p x κ) := by
+  obtain ⟨E⟩ := early_fold p x κ hp hz
+  obtain ⟨M⟩ := main_index p x κ hp hκ hz E
+  obtain ⟨τ, _, _, _, hDt, _, _⟩ := guard_split p x κ hp hz E
+  exact ⟨⟨E.Bn, E.cn, M.Rn, τ, E.hBn, E.hB3, E.hcn, E.hcn0,
+    by linarith [budget_ge p x κ hp hz], hDt, H_dvd_Kq5 p x κ hp hz E, M.hR, M.hodd, M.hc,
+    M.hDm, M.hRpos⟩⟩
+
 end Regs
 
 #print axioms mod_eq_of_ι_dvd
 #print axioms sign_of_rank
 #print axioms ι_absdiff
 #print axioms main_index
+#print axioms folded_of_zero
 
 end DiophantineConsistency.P138Rank

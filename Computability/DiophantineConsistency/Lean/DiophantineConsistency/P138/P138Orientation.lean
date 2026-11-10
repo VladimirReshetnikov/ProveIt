@@ -99,23 +99,23 @@ theorem q_pos (hp : PortFacts p) (Rn : V) (hX : (𝓡).X = ι (Exp.exp Rn)) : 0 
   · exact hpos
 
 /-- **The oriented data.** -/
-structure Oriented (E : EarlyFold p x κ) (M : MainIndex p x κ E) where
+structure Oriented (Fd : Folded p x κ) where
   hq : 0 < (𝓡).q
   hJ : 0 < (𝓡).J
   hF : 0 < (𝓡).F
   hC : 0 < x 1
   hα : 0 < (𝓡).q - (𝓡).F - x 1
-  hX : (𝓡).X = ι (Exp.exp M.Rn)
+  hX : (𝓡).X = ι (Exp.exp Fd.Rn)
   hk : 0 < (𝓡).k
   hY : 0 < (𝓡).Y
-  hc : x 8 = ι E.cn
-  hA : (𝓡).A = ι E.Bn
+  hc : x 8 = ι Fd.cn
+  hA : (𝓡).A = ι Fd.Bn
 
 set_option maxHeartbeats 1000000 in
-theorem oriented (hp : PortFacts p) (hz : valueK p x κ = 0) (E : EarlyFold p x κ)
-    (M : MainIndex p x κ E) (Fi : FirstIndex p x κ E M) : Nonempty (Oriented p x κ E M) := by
-  obtain ⟨σ, hσ, hcσ, hσX⟩ := projector p x κ hp hz E M Fi
-  obtain ⟨t, ht⟩ := P72ConvArith.odd_of_mod_two M.hodd
+theorem oriented (hp : PortFacts p) (Fd : Folded p x κ) (Fi : FirstIndex p x κ Fd) :
+    Nonempty (Oriented p x κ Fd) := by
+  obtain ⟨σ, hσ, hcσ, hσX⟩ := projector p x κ hp Fd Fi
+  obtain ⟨t, ht⟩ := P72ConvArith.odd_of_mod_two Fd.hodd
   -- `σ = 1`
   have hσ1 : σ = 1 := by
     rcases hσ with h | h
@@ -124,29 +124,29 @@ theorem oriented (hp : PortFacts p) (hz : valueK p x κ = 0) (E : EarlyFold p x 
       obtain ⟨_, m, hm⟩ := X_mod p x κ hp
       have h3 := P72ConvArith.exp_odd_mod_three t
       rw [← ht] at h3
-      have hd := div_add_mod (Exp.exp M.Rn) 3
+      have hd := div_add_mod (Exp.exp Fd.Rn) 3
       rw [h3] at hd
       have hι := congrArg (ι (V := V)) hd
       simp only [map_add, map_mul, map_ofNat] at hι
       rw [h] at hσX
       -- `−X = 3 q' + 2` and `X = 3 m + 2`
-      have : (3 : DiffRing V) * (ι (Exp.exp M.Rn / 3) + m + 1) = -1 := by
+      have : (3 : DiffRing V) * (ι (Exp.exp Fd.Rn / 3) + m + 1) = -1 := by
         linear_combination hι - hσX - hm
-      rcases int_split (ι (Exp.exp M.Rn / 3) + m + 1) with h0 | h0 <;> linarith
+      rcases int_split (ι (Exp.exp Fd.Rn / 3) + m + 1) with h0 | h0 <;> linarith
   rw [hσ1, one_mul] at hcσ hσX
   have hXpos : 0 < (𝓡).X := by rw [hσX]; exact ι_pos (exp_pos _)
   have hk : 0 < (𝓡).k := (Fi.hpos hXpos).2
-  have hcpos : 0 < x 8 := by rw [hcσ]; exact ι_pos E.hcn0
-  have hB : 0 < (𝓡).Budget := by linarith [budget_ge p x κ hp hz]
+  have hcpos : 0 < x 8 := by rw [hcσ]; exact ι_pos Fd.hcn0
+  have hB : 0 < (𝓡).Budget := Fd.hbudget
   have hY : 0 < (𝓡).Y := by
     have h := (c_interval p x κ hp hB).2.2
     have h1 : 0 < (𝓡).k * (𝓡).Y := (pos_iff_pos_of_mul_pos h).mp hcpos
     exact (pos_iff_pos_of_mul_pos h1).mp hk
   have hApos : 0 < (𝓡).A := by
     rw [A_eq, a_eq]; have := mul_pos hXpos hY; linarith
-  have hA : (𝓡).A = ι E.Bn := by rw [← E.hBn, abs_of_pos hApos]
-  have hq := q_pos p x κ hp M.Rn hσX
-  obtain ⟨hF, hC, hα⟩ := signs p x κ hp hz
+  have hA : (𝓡).A = ι Fd.Bn := by rw [← Fd.hBn, abs_of_pos hApos]
+  have hq := q_pos p x κ hp Fd.Rn hσX
+  obtain ⟨hF, hC, hα⟩ := signs_of_budget p x κ hp Fd.hbudget
   have hJ : 0 < (𝓡).J := by
     have h1 := abs_q p x κ hp
     rw [abs_of_pos hq] at h1

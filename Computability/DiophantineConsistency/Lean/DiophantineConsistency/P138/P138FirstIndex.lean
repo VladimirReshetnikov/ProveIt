@@ -8,7 +8,7 @@ import DiophantineConsistency.ArithmeticPellFirstIndex
 `μ = M_index = E = XY`, the short form `μ = M_index = 4q⁴`; the argument is the same, with
 `m = |μ|` (`P138Window.modulus`). At a zero, with the main index `R` of `P138Rank`:
 
-* `Dt = τ²` (`P138EarlyFold.guard_split`) is the first norm `τ² = 1 + ℓ(ℓ+1) k²`, `ℓ = XY²`.
+* `Dt = τ²` (`P138Rank.Folded.hDt`) is the first norm `τ² = 1 + ℓ(ℓ+1) k²`, `ℓ = XY²`.
   For `X > 0` it is classified at base `2(ℓ − 1) + 1` (`ArithmeticPellFirstNorm.solution_index`
   at `ℓ − 1`), for `X < 0` at base `2(λ − 2) + 1` with `λ = −ℓ` (since `ℓ(ℓ+1) = λ(λ−1)`):
   `τ = χ(n)`, `|k| = 2ψ(n)`.
@@ -149,10 +149,10 @@ variable (p : Fin 6 → DiffRing V) (x : Fin 11 → DiffRing V) (κ : DiffRing V
 local notation "𝓡" => regsK p x κ
 
 /-- **The first index.** -/
-structure FirstIndex (E : EarlyFold p x κ) (M : MainIndex p x κ E) where
+structure FirstIndex (Fd : Folded p x κ) where
   n : V
   bF : V
-  hn : 2 * n = M.Rn + 1
+  hn : 2 * n = Fd.Rn + 1
   hk : |(𝓡).k| = ι (2 * ycoord n bF)
   hDt : (𝓡).Dt = ι (xcoord n bF) * ι (xcoord n bF)
   hbFhi : (ι bF : DiffRing V) + 2 ≤ 2 * |(𝓡).X| * |(𝓡).Y| ^ 2 + 1
@@ -244,27 +244,27 @@ theorem first_classified (hp : PortFacts p) (mE kn τ : V) (hm0 : 0 < mE)
       rw [hl1', hln, map_mul, map_mul, ← hxn, ← hyn]; nlinarith
 
 set_option maxHeartbeats 2000000 in
-theorem first_index (hp : PortFacts p) (hκ : IndexModulus p x κ) (hz : valueK p x κ = 0)
-    (E : EarlyFold p x κ) (M : MainIndex p x κ E) : Nonempty (FirstIndex p x κ E M) := by
-  have hB : 0 < (𝓡).Budget := by linarith [budget_ge p x κ hp hz]
-  have hs := signs p x κ hp hz
+theorem first_index (hp : PortFacts p) (hκ : IndexModulus p x κ) (Fd : Folded p x κ) :
+    Nonempty (FirstIndex p x κ Fd) := by
+  have hB : 0 < (𝓡).Budget := Fd.hbudget
+  have hs := signs_of_budget p x κ hp Fd.hbudget
   obtain ⟨mE, hmE, hkdvd0, hE3⟩ := modulus p x κ hp hκ hs
   obtain ⟨hk0, _⟩ := centered p x κ hp hB
   have hci := (c_interval p x κ hp hB).1
   have hY3 := three_le_abs_Y p x κ hp
-  obtain ⟨τ, _, _, _, hDt, _, _⟩ := guard_split p x κ hp hz E
+  obtain ⟨τ, hDt⟩ : ∃ τ : V, (𝓡).Dt = ι τ * ι τ := ⟨Fd.τ, Fd.hDt⟩
   obtain ⟨kn, hkn⟩ := abs_eq_ι (𝓡).k
-  rw [M.hR] at hE3
-  have hm0 : 0 < mE := pos_of_ι (by have := ι_nonneg M.Rn; linarith)
+  rw [Fd.hR] at hE3
+  have hm0 : 0 < mE := pos_of_ι (by have := ι_nonneg Fd.Rn; linarith)
   obtain ⟨n, bF, hx, hy, hres, hhi, hlo, hposX⟩ :=
     first_classified p x κ hp mE kn τ hm0 hmE hkn hDt
   -- `n < R`
-  have hnR : n < M.Rn := by
+  have hnR : n < Fd.Rn := by
     by_contra hcon
-    have hle : M.Rn ≤ n := le_of_not_gt hcon
-    have hbb : E.Bn - 2 ≤ bF := by
+    have hle : Fd.Rn ≤ n := le_of_not_gt hcon
+    have hbb : Fd.Bn - 2 ≤ bF := by
       apply ι_le_ι.mp
-      rw [ι_tsub' (le_trans (by norm_num) E.hB3), map_ofNat, ← E.hBn]
+      rw [ι_tsub' (le_trans (by norm_num) Fd.hB3), map_ofNat, ← Fd.hBn]
       have hA : |(𝓡).A| ≤ |(𝓡).Y| * (|(𝓡).X| + 1) + 2 := by
         have e : (𝓡).A = (𝓡).Y * ((𝓡).X + 1) + 2 := by rw [A_eq, a_eq]; ring
         rw [e]
@@ -281,33 +281,33 @@ theorem first_index (hp : PortFacts p) (hκ : IndexModulus p x κ) (hz : valueK 
       have h5 : |(𝓡).X| * |(𝓡).Y| * 5 ≤ |(𝓡).X| * |(𝓡).Y| * (2 * |(𝓡).Y| - 1) :=
         mul_le_mul_of_nonneg_left (by linarith) (by linarith)
       nlinarith
-    have h1 := (ArithmeticPellFirstIndex.base_mono (E.Bn - 2) bF hbb M.Rn).2
-    have h2 : ycoord M.Rn bF ≤ ycoord n bF :=
+    have h1 := (ArithmeticPellFirstIndex.base_mono (Fd.Bn - 2) bF hbb Fd.Rn).2
+    have h2 : ycoord Fd.Rn bF ≤ ycoord n bF :=
       (ArithmeticPellStrongDivisibility.y_strictMono bF).monotone hle
-    have hcn : E.cn ≤ ycoord n bF := by rw [M.hc]; exact le_trans h1 h2
-    have h3 : 2 * ι E.cn ≤ |(𝓡).k| := by
+    have hcn : Fd.cn ≤ ycoord n bF := by rw [Fd.hc]; exact le_trans h1 h2
+    have h3 : 2 * ι Fd.cn ≤ |(𝓡).k| := by
       rw [hkn, ← hy, map_mul, map_ofNat]
       have := ι_le_ι.mpr hcn; linarith
-    rw [E.hcn] at hci
+    rw [Fd.hcn] at hci
     have : |(𝓡).k| * 5 ≤ |(𝓡).k| * (2 * |(𝓡).Y| - 1) :=
       mul_le_mul_of_nonneg_left (by linarith) (abs_nonneg _)
     have : 0 < |(𝓡).k| := abs_pos.mpr hk0
     linarith
   -- `k ≡ R + 1 (mod m)`
-  have hkdvd : (ι mE : DiffRing V) ∣ (𝓡).k - (ι M.Rn + 1) := by rw [← M.hR]; exact hkdvd0
+  have hkdvd : (ι mE : DiffRing V) ∣ (𝓡).k - (ι Fd.Rn + 1) := by rw [← Fd.hR]; exact hkdvd0
   have hkn0 : 0 < kn := pos_of_ι (by rw [← hkn]; exact abs_pos.mpr hk0)
-  have hsmall : (ι (2 * n) : DiffRing V) + (ι M.Rn + 1) < ι mE := by
-    have : ι n + 1 ≤ (ι M.Rn : DiffRing V) := by
+  have hsmall : (ι (2 * n) : DiffRing V) + (ι Fd.Rn + 1) < ι mE := by
+    have : ι n + 1 ≤ (ι Fd.Rn : DiffRing V) := by
       rw [← map_one ι, ← map_add]; exact ι_le_ι.mpr (lt_iff_succ_le.mp hnR)
     rw [map_mul, map_ofNat]; linarith
-  have hpos2 : (0 : DiffRing V) < ι (2 * n) + (ι M.Rn + 1) := by
-    have := ι_nonneg (2 * n); have := ι_nonneg M.Rn; linarith
-  have hnone : ¬ (ι mE : DiffRing V) ∣ ι (2 * n) + (ι M.Rn + 1) := by
+  have hpos2 : (0 : DiffRing V) < ι (2 * n) + (ι Fd.Rn + 1) := by
+    have := ι_nonneg (2 * n); have := ι_nonneg Fd.Rn; linarith
+  have hnone : ¬ (ι mE : DiffRing V) ∣ ι (2 * n) + (ι Fd.Rn + 1) := by
     intro h
     have := eq_zero_of_dvd_small h (by rw [abs_of_pos hpos2]; exact hsmall)
     linarith
-  have hcomb : (ι mE : DiffRing V) ∣ ι (2 * n) - (ι M.Rn + 1) ∨
-      (ι mE : DiffRing V) ∣ ι (2 * n) + (ι M.Rn + 1) := by
+  have hcomb : (ι mE : DiffRing V) ∣ ι (2 * n) - (ι Fd.Rn + 1) ∨
+      (ι mE : DiffRing V) ∣ ι (2 * n) + (ι Fd.Rn + 1) := by
     obtain ⟨d, hd⟩ := hkdvd
     rcases eq_or_eq_neg_abs (𝓡).k with hks | hks <;> rw [hkn] at hks <;> rw [hks] at hd
     · rcases hres with ⟨w, hw⟩ | ⟨w, hw⟩
@@ -316,10 +316,10 @@ theorem first_index (hp : PortFacts p) (hκ : IndexModulus p x κ) (hz : valueK 
     · rcases hres with ⟨w, hw⟩ | ⟨w, hw⟩
       · exact Or.inr ⟨-(d + w), by linear_combination -hd - hw⟩
       · exact Or.inl ⟨d + w, by linear_combination hd + hw⟩
-  have hnR' : 2 * n = M.Rn + 1 := by
+  have hnR' : 2 * n = Fd.Rn + 1 := by
     rcases hcomb with h | h
     · have h0 := eq_zero_of_dvd_small h (by
-        rw [abs_sub_lt_iff]; constructor <;> linarith [ι_nonneg (2 * n), ι_nonneg M.Rn])
+        rw [abs_sub_lt_iff]; constructor <;> linarith [ι_nonneg (2 * n), ι_nonneg Fd.Rn])
       apply ι_injective
       rw [map_add, map_one]; linarith
     · exact absurd h hnone
