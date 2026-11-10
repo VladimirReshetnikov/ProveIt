@@ -1316,6 +1316,10 @@ A [side-condition retry](research/nine-sharing-sign17-univariate-degree-probe-re
 [independently audited](reviews/nine-sharing-sign17-univariate-degree-probe-retry02-terminal-independent/README.md),
 checks generic univariate product, dominant-addition and mapped-degree facts.
 The concrete lower bound and exact degree remain separate.
+An [axis-base attempt](research/nine-sharing-sign17-axis-degree-base-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-axis-degree-base-failure-independent/README.md),
+passed its generic replay but failed the affine-degree proof; no axis object
+or postflight was produced.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
