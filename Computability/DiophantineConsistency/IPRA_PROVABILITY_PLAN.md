@@ -2049,6 +2049,10 @@ A [ranked tile-sum retry](research/nine-sharing-sign17-k-ranked-tile-sum-retry-c
 checks candidate bijectivity and reindexes the actual 942-tile weighted
 power sum to the candidate-weight sum for any natural base. Control terms,
 sentinels, full K and external-file binding remain separate.
+A [ranked rawWord assembly attempt](research/nine-sharing-sign17-k-ranked-rawword-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-ranked-rawword-terminal-independent/README.md),
+failed because three fixed sentinel-vector entries were not reduced. It
+produced no object or postflight; a targeted retry is being prepared.
 A [generic finite-partition probe](research/nine-sharing-sign17-k-partition-probe-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-partition-probe-terminal-independent/README.md),
 failed on a nested-offset associativity mismatch. It produced no object or
