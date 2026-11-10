@@ -54,9 +54,9 @@ and [native, standard and translated iPRA endpoints](research/nine-sharing-sign1
 also passed independent terminal review. The gate count and candidate AST
 comparison are external; PDF and fixed-port byte binding remain separate.
 The further [86-gate AST](research/nine-sharing-sign14-86gate-candidate/README.md)
-has an independently audited external rewrite and gate count; its Lean
-transfer remains open. Its count is an upper bound under exact ordered
-subtree sharing, not a minimality result.
+has an independently audited external rewrite and gate count; its structural
+correspondence to the Lean expression remains an external check. Its count is
+an upper bound under exact ordered subtree sharing, not a minimality result.
 The intermediate [90-gate seed](research/nine-sharing-sign14-90gate-lean-retry01-check/README.md)
 now has a checked generic evaluation equality with the 92-gate seed. A
 [direct 86-gate seed evaluation equality](research/nine-sharing-sign14-86gate-lean-check/README.md)
@@ -82,7 +82,8 @@ Lean syntax](research/nine-sharing-sign14-positive74-syntax-check/README.md)
 has compiled and passed independent terminal review; that is not yet a
 complete coordinate-transport theorem. Three base-node identities and the
 [transport residual](research/nine-sharing-sign14-positive74-row02-check/README.md)
-have since passed Lean and independent terminal review; the remaining four
+and [two outer residuals](research/nine-sharing-sign14-positive74-rows-outer-retry01-check/README.md)
+have since passed Lean and independent terminal review; the remaining two
 residuals and their assembly are open.
 
 For fixed-constant work, the [generic radix stream theorem](research/nine-sharing-sign17-k-radix-stream-retry-check/README.md)
@@ -97,8 +98,9 @@ has also passed independent terminal audit. Lean now also identifies that
 stream as [K's canonical radix digits](research/nine-sharing-sign17-k-canonical-digits-retry02-check/README.md).
 Those digits have an [explicit in-Lean stream](research/nine-sharing-sign17-k-stream-explicit-check/README.md),
 including the sentinel collision. A separate [byte-fixture value identity](research/nine-sharing-sign17-k-byte-compose-retry-check/README.md)
-is checked; connecting the fixture list to the actual stream and external
-bytes remains open.
+is checked. The [whole-list and byte-value assembly](research/nine-sharing-sign17-k-byte-binding-retry-check/README.md)
+now proves that symbolic K is the base-256 value of the explicit in-Lean
+fixture byte list. Connecting that list to external file bytes remains open.
 
 ## Current reduction status
 
