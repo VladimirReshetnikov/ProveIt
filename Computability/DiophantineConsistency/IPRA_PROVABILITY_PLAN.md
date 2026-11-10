@@ -1122,7 +1122,13 @@ relevant models, with one warning. These do not bind the expressions to
 external JSON or supply an iPRA endpoint. A [concrete polynomial bridge](research/nine-sharing-sign19-concrete-polynomial-bridge-check/README.md),
 [independently audited](reviews/nine-sharing-sign19-concrete-polynomial-bridge-terminal-independent/README.md),
 checks the symbolic Fin19 `PolynomialBridge` via the Fin20 bridge; the direct
-iPRA endpoint remains a separate client.
+iPRA endpoint is checked by a [three-stage client](research/nine-sharing-sign19-endpoint-check/README.md),
+[independently audited](reviews/nine-sharing-sign19-endpoint-terminal-independent/README.md),
+for native, standard and Gödel–Gentzen-translated standard formulations.
+This is a symbolic Lean expression; its exact degree in Lean and its
+connections to external JSON, Jones coefficients and equation.pdf remain
+unproved. Provider surveys are point observations, not a complete
+transitive/dynamic ancestry trace.
 A further [18-witness degree-94 external candidate](research/nine-sharing-sign18-degree94-root-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign18-external-independent/README.md),
 eliminates the main-root coordinate. Its fixed-input degree is exactly 94
