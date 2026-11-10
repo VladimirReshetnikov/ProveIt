@@ -1644,6 +1644,11 @@ A [whole-byte-list attempt](research/nine-sharing-sign17-mc-whole-bytes-check/RE
 [independently audited](reviews/nine-sharing-sign17-mc-whole-bytes-terminal-independent/README.md),
 passed twenty prerequisites but left a replicate-append equality unresolved;
 no symbolic port-byte-list object or postflight was produced.
+A [replicate-append retry](research/nine-sharing-sign17-mc-whole-bytes-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-mc-whole-bytes-retry-terminal-independent/README.md),
+checks that symbolic lowPort/current port2 equals base-256 decoding of an
+explicit compact little-endian natural-byte list. A separate Python audit
+matches that layout to a raw snapshot; no Lean file/gzip/JSON/PDF theorem follows.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
