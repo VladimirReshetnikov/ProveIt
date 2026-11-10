@@ -1,0 +1,5 @@
+# Independent external audit: sign14 signed-tau candidate
+
+Checker exit 0. Independent expression-tree traversal confirms substitution of the removed sign15 tau-coordinate right side into the five retained rows, with four external port records and compressed/raw hashes preserved. The five syntactic residual degree bounds are 22, 22, 2, 62 and 46. Independent sparse symbolic axis expansion gives the degree-62 Na coefficient `64*beta^34`; with the positive external beta snapshot and all other residual degrees smaller, the fixed-port sum of squares has external exact degree 124.
+
+A separate finite integer assignment gives the removed tau lift -117477; it is not asserted to be a seed zero. The proposed scalar-window route explicitly avoids assuming a tau representative, but its sign14 Nt extraction, arithmetic steps, natural lift and equivalence have not been Lean checked by this audit. This candidate has 14 natural witnesses, but its operation count and equivalence to the referenced degree-150 PDF equation are not established; no Lean degree, iPRA endpoint, or verified JSON/PDF binding is claimed.

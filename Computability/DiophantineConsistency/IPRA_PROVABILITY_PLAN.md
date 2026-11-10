@@ -1351,6 +1351,11 @@ eliminates the signed inner coordinate and has external fixed-port degree 124
 for positive beta. Its proposed non-circular natural lift, equivalence, Lean
 degree, endpoint and JSON/PDF binding remain open; a negative-lift test is not
 claimed to be a seed zero.
+A [14-witness external candidate](research/nine-sharing-sign14-tau-candidate/README.md),
+[independently audited](reviews/nine-sharing-sign14-external-independent/README.md),
+eliminates tau and has external fixed-port degree 124. Its natural tau lift,
+sign15 equivalence, operation count, Lean degree, iPRA endpoint and JSON/PDF
+binding remain open. A negative integer lift test is not a seed zero.
 A [staged syntax client](research/nine-sharing-sign15-staged-syntax-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-staged-syntax-terminal-independent/README.md),
 checks the symbolic seed-zero characterization in 16 stages. The external AST

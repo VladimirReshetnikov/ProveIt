@@ -1,0 +1,7 @@
+# Sign14 signed-tau external candidate
+
+This conditional research candidate removes sign15 coordinate 15, whose defining row is `tau = E*N + k − Rank`, and substitutes that signed expression into the five remaining residuals. It has 14 natural witnesses. Integer substitution does not establish a natural tau witness at every reduced-seed zero; the proposed [nonnegative-lift route](PROOF_PLAN.md) remains unproved. No sign14/sign15 equivalence, Lean bridge, iPRA endpoint, or verified external-JSON binding is claimed.
+
+The reproducible [external checker](check.py) verifies the exact structural substitution and port-byte hashes. It finds syntactic residual degrees 22, 22, 2, 62 and 46. With all witnesses set to `t` and beta, MC and MF treated as independent symbols, the degree-62 coefficient of Na is `64*beta^34`. Since the external fixed beta is positive and every other residual has lower degree, the fixed-port sum of squares has exact degree 124. This is an external computation, not a Lean degree theorem. One tested integer lift is negative; that assignment is not asserted to be a seed zero.
+
+The candidate uses the same witness count as the referenced 14-variable degree-150 PDF equation and has lower externally computed degree. Operation count and proof equivalence have not been established, so this is not yet a replacement equation. The [independent external audit](../../reviews/nine-sharing-sign14-external-independent/README.md) passed, including its own negative-lift example; the candidate packet is frozen.
