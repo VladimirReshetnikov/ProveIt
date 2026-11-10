@@ -61,8 +61,10 @@ subtree sharing, not a minimality result.
 For fixed-constant work, the [generic radix stream theorem](research/nine-sharing-sign17-k-radix-stream-retry-check/README.md)
 and its [symbolic K specialization](research/nine-sharing-sign17-k-radix-stream-current-check/README.md)
 have successful Lean runs and independent terminal reviews. They equate K
-to an in-Lean digit-stream value. Digit bounds and connections to external
-bytes remain separate.
+to an in-Lean digit-stream value. A [conditional digit bound and 90 concrete
+coefficient checks](research/nine-sharing-sign17-k-digit-bound-probe-retry-check/README.md)
+also passed independent review. Bounds for the remaining 896 coefficients,
+unconditional assembly and connections to external bytes remain separate.
 
 ## Current reduction status
 
