@@ -1337,7 +1337,10 @@ producers and deeper ancestry. A [direct expression equivalence](research/nine-s
 [independently audited](reviews/nine-sharing-sign16-expression-equivalence-terminal-independent/README.md),
 checks current Fin16/Fin17 model-zero equivalence, with one warning and inherited
 failed-parent-child, uncaptured-exit and point-union-survey caveats. The
-polynomial bridge, endpoint and JSON binding remain separate.
+polynomial bridge is checked by a [concrete transport client](research/nine-sharing-sign16-concrete-polynomial-bridge-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-concrete-polynomial-bridge-terminal-independent/README.md).
+Its point-in-time producer union and inherited failed-parent/uncaptured-exit
+caveats remain; the iPRA endpoint and JSON binding are separate.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
