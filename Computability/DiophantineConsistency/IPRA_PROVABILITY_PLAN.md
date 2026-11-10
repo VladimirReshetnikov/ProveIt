@@ -22,15 +22,17 @@ comments and definitions, is not a minimal proof size, and excludes external
 Foundation and other library sources. The closure is documented in
 [`current14-standard-fresh-rebuild-preflight`](research/current14-standard-fresh-rebuild-preflight/README.md).
 
-As an engineering guess, 500–2,000 additional Lean lines could suffice to
-bind a deliberately specified human-readable source formula to the checked
-syntax, assuming the existing components match. This is not a measured lower
-bound and excludes parsers, scripts and build or audit infrastructure. Fully
-formal PDF parsing/rendering is a different, currently unspecified scope; the
-existing correspondence includes manual checking. Replaying the checked
-sources and auditing provider ancestry is also not principally a Lean-line
-count. None of these estimates bounds the size of an explicit iPRA proof
-certificate, which the derivability theorem does not print.
+The [normalized prefix-token transcription](research/current14-seed-readable-prefix-staged-check/README.md)
+of the 22 named abbreviations and final equation now has a Lean-checked
+standard-iPRA derivability endpoint at the numeral-derived ports. Its tokens
+were independently compared with `equation.tex` outside Lean. For that
+specified Lean transcription, no further Lean lines are needed to state the
+checked endpoint. This supersedes the earlier 500–2,000-line guess for a
+formula-to-syntax bridge; it does not prove that TeX or PDF bytes render the
+tokens. Fully formal document parsing/rendering remains a separate,
+unspecified scope. Replaying all ancestry is not principally a Lean-line
+count. These figures do not bound an explicit iPRA proof certificate, which
+the derivability theorem does not print.
 
 ## Sign14 proof transfer and fixed-constant work
 
