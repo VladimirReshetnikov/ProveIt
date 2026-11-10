@@ -1515,6 +1515,11 @@ failed at import setup because the exact-degree producer's local predecessor
 objects were omitted from the overlay. It produced no client object or
 postflight; the audit records that its prelaunch direct-producer survey did
 not detect this transitive local dependency.
+A [provider-closure retry](research/nine-sharing-sign14-prefix-dag-degree-retry01-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-prefix-dag-degree-retry01-terminal-independent/README.md),
+pins and injects the four local degree-producer objects and checks exact
+degree 124 for the assembled current-port expression. The original-file,
+JSON and PDF connection remains external.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
