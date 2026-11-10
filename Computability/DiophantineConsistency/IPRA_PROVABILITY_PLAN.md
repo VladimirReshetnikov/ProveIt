@@ -1184,6 +1184,11 @@ its first invocation failed. A [zero-assembly client](research/nine-sharing-sign
 [independently audited](reviews/nine-sharing-sign18-zero-assembly-terminal-independent/README.md),
 checks both pointwise zero directions under the beta representation
 hypothesis; existential equivalence and the endpoint remain separate.
+A finite [positive-gate octic search](research/nine-sharing-octic-positive-elimination-search/README.md),
+[independently audited](reviews/nine-sharing-octic-positive-elimination-independent/README.md),
+reaches at best 23 witnesses among 19 ordered states when every step preserves
+residual syntactic degree at most four. This excludes no other transformation
+and is not a general variable-count lower bound or a Lean theorem.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
