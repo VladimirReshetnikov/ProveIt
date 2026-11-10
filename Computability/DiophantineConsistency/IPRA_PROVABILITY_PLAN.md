@@ -1469,6 +1469,10 @@ A [first shared-node chunk attempt](research/nine-sharing-sign14-prefix-chunk-ch
 failed on the default recursion-depth limit in the file-head proof. It
 produced no object or postflight; a scoped recursion-depth retry is being
 prepared.
+A [scoped recursion-depth retry](research/nine-sharing-sign14-prefix-chunk-retry01-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-prefix-chunk-retry01-terminal-independent/README.md),
+then hit the kernel memory limit on the file-head theorem and also produced
+no object or postflight. Avoiding whole-string conversion is under investigation.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
