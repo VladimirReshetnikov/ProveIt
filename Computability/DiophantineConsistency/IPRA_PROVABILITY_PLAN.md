@@ -1225,6 +1225,11 @@ A [staged syntax client](research/nine-sharing-sign16-staged-syntax-check/README
 checks symbolic seed-zero iff its seven staged residuals vanish, in 17 stages
 with one warning. External JSON binding, the signed lift and equivalence remain
 open.
+A [row-premises client](research/nine-sharing-sign16-row-premises-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-row-premises-terminal-independent/README.md),
+extracts the inner and signed-Na consequences of seed zero, with shared
+evaluations abstract and one warning. Representability, window premises and
+the signed lift remain open.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
