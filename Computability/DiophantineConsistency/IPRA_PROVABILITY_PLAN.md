@@ -904,7 +904,10 @@ has exact degree fourteen. The sign21→22 and subsequent model bridges and
 iPRA endpoint remain open. A [syntax and squares client](research/nine-sharing-sign21-seed-squares-check/README.md),
 [independently audited](reviews/nine-sharing-sign21-seed-squares-terminal-independent/README.md),
 checks symbolic seed zero iff its 12 residuals vanish; it does not prove the
-degree or model bridge in Lean.
+degree or model bridge in Lean. A [coordinate client](research/nine-sharing-sign21-coordinate-check/README.md),
+[independently audited](reviews/nine-sharing-sign21-coordinate-terminal-independent/README.md),
+checks the natural normalized-S lift, recovery and lift-after-drop identity,
+with one unused-variable warning. The residual transfers remain separate.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
