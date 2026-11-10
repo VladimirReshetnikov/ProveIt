@@ -1199,7 +1199,12 @@ checks current-port Fin18/Fin19 model-zero existence equivalence, with one
 warning. A [concrete polynomial bridge](research/nine-sharing-sign18-concrete-polynomial-bridge-check/README.md),
 [independently audited](reviews/nine-sharing-sign18-concrete-polynomial-bridge-terminal-independent/README.md),
 checks the symbolic Fin18 `PolynomialBridge` through Fin19. These do not bind
-the expression to external JSON or supply the direct iPRA endpoint.
+the expression to external JSON. A [three-stage iPRA endpoint client](research/nine-sharing-sign18-endpoint-check/README.md),
+[independently audited](reviews/nine-sharing-sign18-endpoint-terminal-independent/README.md),
+checks native, standard and Gödel–Gentzen-translated standard proof-existence
+formulations for the symbolic expression. Its exact degree in Lean and its
+connections to external JSON, Jones coefficients and equation.pdf remain
+unproved; provider surveys are point observations, not a complete ancestry trace.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
