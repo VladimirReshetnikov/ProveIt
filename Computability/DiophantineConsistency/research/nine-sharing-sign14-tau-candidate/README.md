@@ -1,5 +1,15 @@
 # Sign14 signed-tau external candidate
 
+**Later symbolic Lean progress.** The paragraphs below record the original
+external-candidate checkpoint. Subsequent guarded work proved the natural lift
+and same-port zero equivalence for the symbolic construction, checked native,
+standard and translated iPRA proof-existence endpoints, and proved exact
+degree 124 for its current-port Lean expression. See the
+[endpoint](../nine-sharing-sign14-endpoint-check/README.md) and
+[exact-degree](../nine-sharing-sign14-exact-degree-check/README.md) records.
+The external `seed.json` is not yet formally bound to that Lean expression;
+the operation count and PDF correspondence also remain separate.
+
 This conditional research candidate removes sign15 coordinate 15, whose defining row is `tau = E*N + k − Rank`, and substitutes that signed expression into the five remaining residuals. It has 14 natural witnesses. Integer substitution does not establish a natural tau witness at every reduced-seed zero; the proposed [nonnegative-lift route](PROOF_PLAN.md) remains unproved. No sign14/sign15 equivalence, Lean bridge, iPRA endpoint, or verified external-JSON binding is claimed.
 
 The reproducible [external checker](check.py) verifies the exact structural substitution and port-byte hashes. It finds syntactic residual degrees 22, 22, 2, 62 and 46. With all witnesses set to `t` and beta, MC and MF treated as independent symbols, the degree-62 coefficient of Na is `64*beta^34`. Since the external fixed beta is positive and every other residual has lower degree, the fixed-port sum of squares has exact degree 124. This is an external computation, not a Lean degree theorem. One tested integer lift is negative; that assignment is not asserted to be a seed zero.
