@@ -1,0 +1,3 @@
+# Independent prelaunch audit
+
+PASS: inspected parameterized mask/payload, discovery/sigma, radix/prefix, mark/tally, flags and action/target formulas against the current DecimalMachine215 source, including integer conversions, positions 430/636 and modulus 216. The proposed theorem specializes the arbitrary seed to the existing in-Lean seed. Audited K provider/source/Init/resource guards and no-Lean preflight pass; direct source-to-object ancestry is not inferred, and Lean tactic compatibility is untested. This does not yet tie the SeedLines lists, cache, PDF or external files to the action. No Lean was run.
