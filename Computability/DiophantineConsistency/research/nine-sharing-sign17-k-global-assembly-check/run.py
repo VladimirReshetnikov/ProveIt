@@ -1,0 +1,143 @@
+#!/usr/bin/env python3
+"""Bounded order-block client against the audited single-context Fin942 provider."""
+import hashlib,importlib.util,json,os,re,shutil,subprocess,sys
+from pathlib import Path
+if not sys.flags.isolated or not sys.flags.no_site or sys.flags.optimize: raise SystemExit('use python3 -I -S -B')
+P=Path(__file__).resolve().parent;D=P.parents[1];REPO=next(p for p in P.parents if (p/'lakefile.toml').is_file())
+BASE=Path('/tmp/nine-sharing-sign17-k-weight-union942-20261110');OUT=Path('/tmp/nine-sharing-sign17-k-global-assembly-20261110')
+SPHERE=Path('/tmp/current2011-spheres-fresh-base-priority-check02');MODEL=Path('/tmp/normalized106-fresh-model-client-20261105');PKG=Path('/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib')
+LEAN=Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean');TOOL=LEAN.parent.parent/'lib/lean';MON=D/'research/thirteen-current2011-complete-4g-retry/monitor.py'
+STATE=D/'research/nine-sharing-sign17-k-weight-union942-check/attempt01/state.json';OUTER=STATE.parent/'outer-result.json';AUDIT=D/'reviews/nine-sharing-sign17-k-weight-union942-terminal-independent/check.py'
+roots=[OUT/'lib',SPHERE,MODEL,PKG,TOOL];suffixes=['.olean','.olean.private','.olean.server','.ir','.ilean','.olean.hash','.olean.private.hash','.olean.server.hash','.ir.hash','.ilean.hash']
+def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def need(x,msg):
+ if not x:raise RuntimeError(msg)
+def guard(modules):
+ ret={}
+ for n in modules:
+  for r in roots:
+   for suf in suffixes:
+    p=r/(n.replace('.','/')+suf)
+    if os.path.lexists(p):need(p.is_file(),'bad candidate '+str(p));ret[str(p)]={'realpath':str(p.resolve()),'sha256':sha(p)}
+    else:ret[str(p)]=None
+ return ret
+def save():
+ t=OUT/'state.tmp';t.write_text(json.dumps(state,sort_keys=True,indent=2)+'\n');os.replace(t,OUT/'state.json')
+need(not OUT.exists(),'output exists');need(sha(MON)=='d6d32747a34269702abd603d600a848266720aa06c0b91653942f316cd6dc1ad','monitor pin')
+need(sha(STATE)=='8fcf9cd4f3cd881fdc5ccfaad2a84cd8e43e22cfa28962c3388b7a5b5700c6f6','provider state pin')
+need(sha(OUTER)=='288a4723e03ab3ff062f294d07b6adf4d76228b5999a3f5813e013f2e9100cb2' and json.loads(OUTER.read_text())['outer_exit_code']==0,'provider outer pin')
+need(sha(AUDIT)=='9ce34a17b6264e7178e9aa9b3e8afc579526ab0cc6a384ac1ec5379385edbde7','provider audit pin')
+base=json.loads(STATE.read_text());need(base['status']=='PASS' and len(base['rows'])==40 and base['rows'][-1]['module']=='Sign17KWeightUnion942','provider status')
+provider_init=base['rows'][0]['dependencies']['Init'];need(all(r['dependencies'].get('Init')==provider_init for r in base['rows']),'provider Init consistency')
+need(provider_init['realpath']==str((TOOL/'Init.olean').resolve()) and provider_init['sha256']=='d2e85d72099f9d869c9582aad5fb13079968d9d121ac6061e8326b00800b306e','provider Init pin')
+for row in base['rows']:
+ n=row['module'];need(row['deps']['exit']==0 and row['compile']['exit']==0,'provider stage '+n)
+ need(sha(BASE/'src/DiophantineConsistency'/(n+'.lean'))==row['source_sha256'] and sha(BASE/'lib/DiophantineConsistency'/(n+'.olean'))==row['object_sha256'],'provider source/object '+n)
+ for key in ('deps','compile'):need(sha(BASE/(n+'-'+key+'.txt'))==row[key]['log_sha256'],'provider log '+n)
+ for k,v in row['direct_guard'].items():
+  q=Path(k)
+  if v is None:need(not os.path.lexists(q),'provider unexpected '+k)
+  else:need(q.is_file() and str(q.resolve())==v['realpath'] and sha(q)==v['sha256'],'provider guard '+k)
+for k,v in base['overlay_links'].items():need(Path(k).is_symlink() and str(Path(k).resolve())==v,'provider overlay '+k)
+need(sha(P/'source-manifest.json')=='cbcac45dfa222e9a10d65d765411375d6e30f9909190023dda76244be65b7980','manifest pin')
+entries=json.loads((P/'source-manifest.json').read_text())['rows'];need(len(entries)==5,'stage count');names=[e['module'].split('.')[-1] for e in entries];need(len(names)==len(set(names)),'duplicate names')
+witness=D/'research/nine-sharing-sign17-k-ranking-witness/witness.json'
+need(sha(witness)=='7f50654d30197158157533857892ddde91b7234bfdfe0cc6089282e5613b81a3','witness pin')
+need(sha(D/'reviews/nine-sharing-sign17-k-ranking-witness-independent/check.py')=='9572d4eec346374dcc989fb070f4a488f06317a486efd36443818782e5f70150','witness audit')
+rows=json.loads(witness.read_text())['rows'];need(len(rows)==942 and [r['physical'] for r in rows]==list(range(942)),'witness rows')
+need(rows[0]['index']==0 and all(r['index']!=0 for r in rows[1:]) and all(rows[i]['weight']>rows[i+1]['weight'] for i in range(1,941)),'external candidate facts')
+adj_state=D/'research/nine-sharing-sign17-k-adjacent-rank-check/attempt01/state.json'
+adj_outer=D/'research/nine-sharing-sign17-k-adjacent-rank-check/attempt01/outer-result.json'
+need(sha(adj_state)=='405e4e30322340971b67cdc9cac90c4201e1b6d3edfb4810219390317a026091','adjacent state')
+need(sha(adj_outer)=='74410d14e72e4c9556fa2219ae6ae17d2a58a6aba21637b69ed7f539f19e5a37' and json.loads(adj_outer.read_text())['outer_exit_code']==0,'adjacent outer')
+need(sha(D/'reviews/nine-sharing-sign17-k-adjacent-rank-terminal-independent/check.py')=='e9c7fb8c652f69b5285cf8c17150fc3a7410f48bae428083adf904dee5b6be29','adjacent audit')
+adj=json.loads(adj_state.read_text());need(adj['status']=='PASS' and len(adj['rows'])==18 and all(adj['rows'][15+i]['source_sha256']==entries[i]['source_sha256'] for i in range(3)),'adjacent source binding')
+perm=BASE/'lib/DiophantineConsistency/MFWangTiles942Permutation.olean';need(sha(perm)=='746ee3bbee5b45245056866af653077343b4613078b7251ec1abcca7566b4db8' and str(perm) in base['overlay_links'] and str(perm.resolve())==base['overlay_links'][str(perm)],'permutation overlay pin')
+extras={'Mathlib.Order.WellFounded':(PKG/'Mathlib/Order/WellFounded.olean','ca401b51912d529f98ac681a875d6932f2007191ba8fb0ad9d8c8a25c652be7c'),'Mathlib.Order.Fin.Basic':(PKG/'Mathlib/Order/Fin/Basic.olean','7f0e65d168054f0c977dea30e1268dab68b5754949fc814c8ed33ff9966238f5'),'DiophantineConsistency.MFWangTiles942Permutation':(perm,'746ee3bbee5b45245056866af653077343b4613078b7251ec1abcca7566b4db8')}
+for mod,(p,pin) in extras.items():need(sha(p)==pin,'extra import pin '+mod)
+rank_state=D/'research/nine-sharing-sign17-k-global-rank-check/attempt01/state.json';rank_outer=rank_state.parent/'outer-result.json'
+need(sha(rank_state)=='5713e7e87146473595bcac750631337fb5e9c2e2ff75ea5080b331d74b79fd71','global rank state')
+need(sha(rank_outer)=='2b2967eec3a7a6b359ce9877e628fa6c42fe759b41a249556276a8ab30293c94' and json.loads(rank_outer.read_text())['outer_exit_code']==0,'global rank outer')
+need(sha(D/'reviews/nine-sharing-sign17-k-global-rank-terminal-independent/check.py')=='4b8d141c754f56f2f535a4bfa4db39cf46d4c6777000e34ba98079cecc4a4ffe','global rank audit')
+rank=json.loads(rank_state.read_text());need(rank['status']=='PASS' and len(rank['rows'])==4 and all(rank['rows'][i]['source_sha256']==entries[i]['source_sha256'] for i in range(4)),'global rank source binding')
+partition_state=D/'research/nine-sharing-sign17-k-partition-probe-retry-check/attempt01/state.json';partition_outer=partition_state.parent/'outer-result.json'
+need(sha(partition_state)=='3c19a9f78cbb40f911b6af0e7159513c00b61dcab2ff5a78c4e9105d717d3e84','partition state')
+need(sha(partition_outer)=='653136ce0bb1abaf1c3acbfd6c8d9a0fbee93c56533ba0dd1814197ad36e641f' and json.loads(partition_outer.read_text())['outer_exit_code']==0,'partition outer')
+need(sha(D/'reviews/nine-sharing-sign17-k-partition-probe-retry-terminal-independent/check.py')=='511c8d3cfd1dbd1aa190443a760dd1842c7d35a2210d0cf8f0905054b70cd403','partition audit')
+CHUNKS=Path('/tmp/nine-sharing-sign17-k-global-chunks-20261110')
+chunks_state=D/'research/nine-sharing-sign17-k-global-chunks-check/attempt01/state.json';chunks_outer=chunks_state.parent/'outer-result.json'
+need(sha(chunks_state)=='f92e1eef6c9dc706deae66375834fdf9f37a49d2bb9e910470cff81a93b089dc','chunks state')
+need(sha(chunks_outer)=='4bfb55d5d0311164dd78b3473f52f65cc9e756319c293bbfe1b505238e829a73' and json.loads(chunks_outer.read_text())['outer_exit_code']==0,'chunks outer')
+need(sha(D/'reviews/nine-sharing-sign17-k-global-chunks-terminal-independent/check.py')=='fa86295cb40b7a19d71115fed0977b9076b6c603f265975ad70d09d8a5064d6b','chunks audit')
+chunks=json.loads(chunks_state.read_text());need(chunks['status']=='PASS' and len(chunks['rows'])==15 and chunks['provider_state_sha256']==sha(STATE),'chunks provider state')
+need(sha(D/'research/nine-sharing-sign17-k-global-assembly-draft/generate.py')=='50ca855476198d04582a24c1d7968d07c2884e9033a23322fa7ec72a022d34f5','assembly generator')
+for row in chunks['rows']:
+ n=row['module'];need(row['deps']['exit']==0 and row['compile']['exit']==0,'chunk stage '+n);need(sha(CHUNKS/'src/DiophantineConsistency'/(n+'.lean'))==row['source_sha256'] and sha(CHUNKS/'lib/DiophantineConsistency'/(n+'.olean'))==row['object_sha256'],'chunk source/object '+n)
+ for key in ('deps','compile'):need(sha(CHUNKS/(n+'-'+key+'.txt'))==row[key]['log_sha256'],'chunk log '+n)
+ for k,v in row['direct_guard'].items():
+  q=Path(k)
+  if v is None:need(not os.path.lexists(q),'chunk unexpected '+k)
+  else:need(q.is_file() and str(q.resolve())==v['realpath'] and sha(q)==v['sha256'],'chunk guard '+k)
+for k,v in chunks['overlay_links'].items():need(Path(k).is_symlink() and str(Path(k).resolve())==v,'chunk overlay '+k)
+for k,v in base['overlay_links'].items():
+ q=CHUNKS/'lib'/Path(k).relative_to(BASE/'lib');need(chunks['overlay_links'].get(str(q))==v,'chunk shared overlay '+str(q))
+for row in base['rows']:
+ n=row['module'];q=CHUNKS/'lib/DiophantineConsistency'/(n+'.olean');need(chunks['overlay_links'].get(str(q))==str((BASE/'lib/DiophantineConsistency'/(n+'.olean')).resolve()),'chunk parent overlay '+n)
+chunk_names={r['module']:r for r in chunks['rows']};need(set(chunk_names)=={f'Sign17KGlobalChunk{i:02}' for i in range(15)},'chunk names')
+provider_names={r['module']:r for r in base['rows']};seen=set()
+for e in entries:
+ n=e['module'].split('.')[-1];src=P/'src/DiophantineConsistency'/(n+'.lean');need(sha(src)==e['source_sha256'] and sha(REPO/e['source'])==e['source_sha256'],'source pin '+n)
+ need(not os.path.lexists(BASE/'lib/DiophantineConsistency'/(n+'.olean')),'provider collision '+n)
+ need(re.findall(r'^import ([A-Za-z0-9_.]+)$',src.read_text(),re.M)==e['imports'],'imports '+n)
+ for m in e['imports']:
+  local=m.split('.')[-1];need(m in extras or local in provider_names or local in chunk_names or local in seen,'unexpected or unordered import '+m)
+ seen.add(n)
+if sys.argv[1:]==['--preflight']:
+ print(json.dumps({'status':'PASS_NO_LEAN_PREFLIGHT','stage_count':len(entries),'scope':'Audited single-context provider and direct source/object/guard observations; no Lean, complete transitive trace, global order or rank proof.'},sort_keys=True));raise SystemExit(0)
+need(not sys.argv[1:],'unexpected arguments')
+for proc in Path('/proc').iterdir():
+ if not proc.name.isdecimal():continue
+ try:need(not ((proc/'comm').read_text().strip()=='lean' and (proc/'stat').read_text().rsplit(')',1)[1].split()[0] not in ('Z','X')),'another Lean process is active')
+ except (FileNotFoundError,ProcessLookupError):continue
+need(shutil.disk_usage('/tmp').free>=5_000_000_000 and int(next(x.split()[1] for x in Path('/proc/meminfo').read_text().splitlines() if x.startswith('MemAvailable:')))*1024>=10*1024**3,'resources')
+spec=importlib.util.spec_from_file_location('monitor',MON);monitor=importlib.util.module_from_spec(spec);spec.loader.exec_module(monitor)
+OUT.mkdir();(OUT/'src/DiophantineConsistency').mkdir(parents=True);(OUT/'lib/DiophantineConsistency').mkdir(parents=True);links={}
+for k,v in base['overlay_links'].items():
+ rel=Path(k).relative_to(BASE/'lib');q=OUT/'lib'/rel;q.parent.mkdir(parents=True,exist_ok=True);q.symlink_to(v);links[str(q)]=v
+for n,row in provider_names.items():
+ q=OUT/'lib/DiophantineConsistency'/(n+'.olean');need(not os.path.lexists(q),'overlay collision '+n);q.symlink_to((BASE/'lib/DiophantineConsistency'/(n+'.olean')).resolve());links[str(q)]=str(q.resolve())
+for n,row in chunk_names.items():
+ q=OUT/'lib/DiophantineConsistency'/(n+'.olean');need(not os.path.lexists(q),'chunk output collision '+n);q.symlink_to((CHUNKS/'lib/DiophantineConsistency'/(n+'.olean')).resolve());links[str(q)]=str(q.resolve())
+for n in names:shutil.copyfile(P/'src/DiophantineConsistency'/(n+'.lean'),OUT/'src/DiophantineConsistency'/(n+'.lean'))
+env=os.environ.copy();env['LEAN_PATH']=':'.join(map(str,roots[:-1]));env['LEAN_NUM_THREADS']='1';state={'status':'RUNNING','rows':[],'overlay_links':links,'provider_state_sha256':sha(STATE),'manifest_sha256':sha(P/'source-manifest.json')};save()
+try:
+ for entry,n in zip(entries,names):
+  src=OUT/'src/DiophantineConsistency'/(n+'.lean');need(sha(src)==entry['source_sha256'],'snapshot drift '+n)
+  prefix=['/usr/bin/ionice','-c','3','/usr/bin/nice','-n','19',str(LEAN),'-M3600','-j1','-DElab.async=false'];row={'module':n,'source_sha256':entry['source_sha256']};state['rows'].append(row);save()
+  log=OUT/(n+'-deps.txt');res=monitor.run(prefix+['--deps',str(src)],OUT,env,log,rss_limit=4*1024**3,mem_floor=10*1024**3,seconds=120,interval=.1);row['deps']={**res,'log_sha256':sha(log)};save();need(res['exit']==0 and res['stop_reason'] is None and not res['monitor_errors'] and not res['observed_descendant_pids'],'deps failed '+n)
+  deps={};counts={}
+  for line in log.read_text().splitlines():
+   p=Path(line);hits=[r for r in roots if p.is_relative_to(r)];need(p.is_absolute() and p.is_file() and line.endswith('.olean') and len(hits)==1,'bad dep '+line);mod=str(p.relative_to(hits[0]))[:-6].replace('/','.');counts[mod]=counts.get(mod,0)+1;need(mod not in deps or (mod=='Init' and counts[mod]<=2 and deps[mod]['path']==line),'duplicate '+mod);deps[mod]={'path':line,'realpath':str(p.resolve()),'sha256':sha(p)}
+  need('Init' in deps,'implicit Init dependency '+n)
+  need(set(deps)-{'Init'}==set(entry['imports'])-{'Init'},'dependency set '+n)
+  for mod,rec in deps.items():
+   candidates=[r/(mod.replace('.','/')+'.olean') for r in roots if (r/(mod.replace('.','/')+'.olean')).is_file()]
+   need(candidates and str(candidates[0])==rec['path'],'first-candidate route '+mod)
+   if mod=='Init':
+    need(rec['realpath']==provider_init['realpath'] and rec['sha256']==provider_init['sha256'],'provider Init binding');continue
+   depname=mod.split('.')[-1]
+   if mod in extras:path,expected=extras[mod]
+   elif depname in provider_names:path=BASE/'lib/DiophantineConsistency'/(depname+'.olean');expected=provider_names[depname]['object_sha256']
+   elif depname in chunk_names:path=CHUNKS/'lib/DiophantineConsistency'/(depname+'.olean');expected=chunk_names[depname]['object_sha256']
+   else:
+    prior=[r for r in state['rows'][:-1] if r['module']==depname];need(len(prior)==1,'local producer '+mod);path=OUT/'lib/DiophantineConsistency'/(depname+'.olean');expected=prior[0]['object_sha256']
+   need(rec['sha256']==expected and rec['realpath']==str(path.resolve()),'direct producer '+mod)
+  row['dependencies']=deps;row['direct_guard']=guard(deps);save();log=OUT/(n+'-compile.txt');obj=OUT/'lib/DiophantineConsistency'/(n+'.olean')
+  res=monitor.run(prefix+['--root='+str(OUT/'src'),str(src),'-o',str(obj)],OUT,env,log,rss_limit=4*1024**3,mem_floor=10*1024**3,seconds=120,interval=.1);row['compile']={**res,'log_sha256':sha(log)};save();need(res['exit']==0 and res['stop_reason'] is None and not res['monitor_errors'] and not res['observed_descendant_pids'],'compile failed '+n)
+  need(not re.search(r"(?im)^.*(?:error:|error\([^)]*\):|\bsorryAx\b|declaration uses .sorry.).*$",log.read_text()) and obj.is_file(),'errors '+n);need(guard(deps)==row['direct_guard'],'guard drift '+n);row['object_sha256']=sha(obj);save()
+ for entry,row in zip(entries,state['rows']):
+  need(sha(OUT/'lib/DiophantineConsistency'/(row['module']+'.olean'))==row['object_sha256'] and guard(row['dependencies'])==row['direct_guard'],'final drift '+row['module'])
+ for k,v in links.items():need(Path(k).is_symlink() and str(Path(k).resolve())==v,'final overlay '+k)
+ state['status']='PASS';save();print('PASS K assembled candidate physical rank')
+except BaseException as e:
+ state['status']='FAILED';state['exception']=repr(e);save();raise

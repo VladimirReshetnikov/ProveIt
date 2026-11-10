@@ -2003,6 +2003,11 @@ A [conditional global-rank transport](research/nine-sharing-sign17-k-global-rank
 derives candidate physical positions from the Fin942 weights under explicit
 Start, nonzero and numeric-adjacency hypotheses. Those hypotheses have not
 yet been assembled globally; full K and file binding remain separate.
+A [global assembly attempt](research/nine-sharing-sign17-k-global-assembly-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-global-assembly-terminal-independent/README.md),
+passed its four replay stages but failed on finite-index cast normalization
+in the final assembly. It produced no final object or postflight; a targeted
+cast-normalization retry is being prepared.
 A [generic finite-partition probe](research/nine-sharing-sign17-k-partition-probe-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-partition-probe-terminal-independent/README.md),
 failed on a nested-offset associativity mismatch. It produced no object or
