@@ -754,7 +754,15 @@ or final postflight. A [scoped `-M3600` retry](research/nine-sharing-sign24-conc
 compiled the unconditional symbolic Fin24 polynomial bridge and passed its
 final postflight while retaining the sampled 4 GiB RSS cap. Its stdout says
 sign25, but the pinned module and theorem are sign24. The direct iPRA endpoint,
-external byte binding and Lean exact-degree theorem remain separate.
+external byte binding and Lean exact-degree theorem were separate. The
+[direct endpoint](research/nine-sharing-sign24-endpoint-memory-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-endpoint-memory-terminal-independent/README.md),
+now checks native, standard and translated-standard iPRA proof-existence
+equivalences for the symbolic Fin24 expression, with a successful outer exit
+and final postflight at `-M3600`. It inherits historical provider and
+point-observation qualifications and the stale bridge stdout label. The
+external degree-eight and coefficient-byte descriptions are not formally
+bound to that Lean expression; this is not a Jones nine-variable endpoint.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
