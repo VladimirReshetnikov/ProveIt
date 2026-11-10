@@ -1044,7 +1044,11 @@ bound to this Lean expression; it is not a Jones nine-variable endpoint.
 A [19-witness degree-44 external candidate](research/nine-sharing-sign19-degree44-y-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign19-external-independent/README.md),
 eliminates Y and has exact fixed-input degree 44 when beta is nonzero. The
-Lean bridge, degree/byte binding and iPRA endpoint remain open.
+Lean bridge, degree/byte binding and iPRA endpoint remain open. A [syntax and
+squares attempt](research/nine-sharing-sign19-seed-squares-check/README.md),
+[independently audited](reviews/nine-sharing-sign19-seed-squares-failure-independent/README.md),
+hit its 120-second guard during the first syntax compile; no object, square
+stage or postflight was produced. A staged retry is separate.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
