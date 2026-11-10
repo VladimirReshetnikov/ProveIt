@@ -1324,7 +1324,11 @@ Gap existence has stronger bounds. A [same-input seed equivalence](research/nine
 [independently audited](reviews/nine-sharing-sign16-seed-iff-terminal-independent/README.md),
 combines them under represented beta/K/MC/MF, positive beta and explicit MC/MF
 bounds. Inherited uncaptured-exit, failed-provider-child and point-survey
-qualifications remain; current-port specialization and endpoint are separate.
+qualifications remain. A [current-port specialization](research/nine-sharing-sign16-current-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-current-iff-terminal-independent/README.md),
+checks that equivalence with model port bounds discharged. Carrier and
+inherited surveys are point-in-time while direct guards and overlays were
+rechecked; direct expression equivalence and the endpoint remain separate.
 An [expression-evaluation client](research/nine-sharing-sign16-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign16-expression-eval-terminal-independent/README.md),
 checks abstract and current Fin16 symbolic evaluation. Its generic-removal and
