@@ -1180,7 +1180,10 @@ A [nine-stage residual-transfer client](research/nine-sharing-sign18-transfers-c
 [independently audited](reviews/nine-sharing-sign18-transfers-terminal-independent/README.md),
 checks the retained rows under that hypothesis, with 227 mostly unused-simp
 warnings. The independent checker required an output-path correction after
-its first invocation failed. Zero assembly and the endpoint remain separate.
+its first invocation failed. A [zero-assembly client](research/nine-sharing-sign18-zero-assembly-check/README.md),
+[independently audited](reviews/nine-sharing-sign18-zero-assembly-terminal-independent/README.md),
+checks both pointwise zero directions under the beta representation
+hypothesis; existential equivalence and the endpoint remain separate.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
