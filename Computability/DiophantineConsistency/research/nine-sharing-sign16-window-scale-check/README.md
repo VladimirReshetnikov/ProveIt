@@ -1,0 +1,5 @@
+# Sign16 window scale: source-only client
+
+The checked theorem derives the scale required by the maintained window theorem from seed zero and represented beta, using the audited [main norm](../../reviews/nine-sharing-sign16-main-norm-terminal-independent/README.md). Its local D-unfolding correction follows the independently audited [strict-norm failure](../../reviews/nine-sharing-sign16-strict-norm-failure-independent/README.md). No sign conclusion, lift, equivalence or iPRA endpoint is claimed.
+
+The inherited main-norm union survey was point-in-time and is not repeated here; current direct import guards and output overlays are checked. No-Lean preflight exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign16-window-scale-prelaunch-independent/README.md) passed. Author outer session 2899 exited 0 ([receipt](attempt01/outer-result.json)); the [independent terminal audit](../../reviews/nine-sharing-sign16-window-scale-terminal-independent/README.md) passed. Same `-M2800`, 120-second, sampled 4-GiB RSS, 10-GiB host-memory and 5-GB disk limits apply.

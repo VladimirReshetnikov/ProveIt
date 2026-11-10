@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+"""Review generic sign16 absdiff transport candidate without invoking Lean."""
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+root=Path(__file__).resolve().parents[2];p=root/'research/nine-sharing-sign16-window-scale-check';draft=root/'research/nine-sharing-sign16-window-scale-draft';sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest();run=p/'run.py';m=p/'source-manifest.json';assert sha(run)=='2bec4e3ec0d035fb86d87dabb65c163166cd2e9f93017bd932f3dd5596496813' and sha(m)=='522df1875a843987e21209835e9be74c4da92d0b00ac9a229a57ba7762601772';row,=json.loads(m.read_text())['rows'];name='Sign16WindowScale';src=p/'src/DiophantineConsistency'/(name+'.lean');s=src.read_text();assert sha(src)==sha(draft/(name+'.lean'))==row['source_sha256']=='6b1274da3c72eadf329a188ef72ae0afb5f03e671ed8800358cd20ddcc939e77' and row['module']=='DiophantineConsistency.'+name and re.findall(r'^import ([A-Za-z0-9_.]+)$',s,re.M)==row['imports']==['DiophantineConsistency.Sign16MainNorm'];assert not re.search(r'(?m)^\s*(axiom|opaque)\b|\b(sorry|admit)\b',s)
+assert 'theorem scale_of_seed (p : Fin 4 → ℤ) (beta : V) (v : Fin 17 → V)' in s and '(hp : ((p 0 : ℤ) : DiffRing V) = ι beta)' in s and '(hz : InternalZero (seed p) v)' in s and 'Scale beta v = (v 6 + 1)' in s and 'Sign16MainNorm.main_of_seed' in s
+r=run.read_text();assert "'-M2800'" in r and "'-j1'" in r and 'rss_limit=4*1024**3,mem_floor=10*1024**3,seconds=120,interval=.1' in r and 'free>=5_000_000_000' in r and 'matches=[x for x in base[\'rows\'] if x[\'module\']==local]' in r and "sha(P/'source-manifest.json')" in r
+check=root/'reviews/nine-sharing-sign16-main-norm-terminal-independent/check.py';assert sha(check)=='c64c655431ac4d48c286abda800923481c374ff4c00ac58ebbe054ebc9b31948';subprocess.run([sys.executable,'-I','-S','-B',str(check)],capture_output=True,check=True,timeout=120)
+x=subprocess.run([sys.executable,'-I','-S','-B',str(run),'--preflight'],capture_output=True,text=True,timeout=180);assert x.returncode==0 and not x.stderr and json.loads(x.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT'
+print(json.dumps({'status':'PASS_PRELAUNCH','runner_sha256':sha(run),'scope':'scale identity from seed zero and represented beta; no full window or lift'},indent=2,sort_keys=True))

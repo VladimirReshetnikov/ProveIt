@@ -1285,6 +1285,13 @@ A [strict-norm composition attempt](research/nine-sharing-sign16-strict-norm-che
 [independently audited](reviews/nine-sharing-sign16-strict-norm-failure-independent/README.md),
 failed on two local type mismatches; no object or postflight was produced.
 Its provider surveys retain the point-in-time qualification.
+A [strict-norm retry](research/nine-sharing-sign16-strict-norm-retry01-check/README.md)
+and [window-scale client](research/nine-sharing-sign16-window-scale-check/README.md),
+independently audited ([strict](reviews/nine-sharing-sign16-strict-norm-retry01-terminal-independent/README.md),
+[scale](reviews/nine-sharing-sign16-window-scale-terminal-independent/README.md)),
+derive the strict norm and scale identity under seed zero and represented beta,
+with one warning each. Point-in-time provider survey caveats persist; full
+window assembly and the V lift remain separate.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
