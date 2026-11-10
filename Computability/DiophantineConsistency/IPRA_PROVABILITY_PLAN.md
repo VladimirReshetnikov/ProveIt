@@ -937,7 +937,10 @@ checks input-one evaluation at abstract and current ports, with historical
 partial-provider qualifications. An [expression-zero equivalence](research/nine-sharing-sign21-expression-equivalence-check/README.md),
 [independently audited](reviews/nine-sharing-sign21-expression-equivalence-terminal-independent/README.md),
 checks current-port Fin21/Fin22 zero existence in the stated IΣ₁ models. The
-polynomial bridge and endpoint remain separate.
+polynomial bridge is checked by a [direct client](research/nine-sharing-sign21-concrete-polynomial-bridge-check/README.md),
+[independently audited](reviews/nine-sharing-sign21-concrete-polynomial-bridge-terminal-independent/README.md),
+under scoped `-M3600` and the sampled 4 GiB RSS cap. The iPRA endpoint and
+formal byte/degree binding remain separate.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a

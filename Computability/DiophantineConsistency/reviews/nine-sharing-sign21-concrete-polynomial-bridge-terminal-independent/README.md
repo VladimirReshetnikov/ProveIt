@@ -1,0 +1,3 @@
+# Independent sign21 concrete polynomial bridge terminal audit
+
+Independent checker session 41498 exited 0 against author outer session 23976 (exit 0). The symbolic sign21 `PolynomialBridge` stage and postflight succeeded at scoped -M3600 with retained monitored controls. Its single report lists standard Lean metatheory axioms, with no warnings or `sorryAx`. Source, object, logs, three direct provider bindings, 200 guards, overlay links and upstream audits were verified. This is a polynomial bridge, not by itself an iPRA endpoint or external file binding; inherited provider ancestry remains point-observed.
