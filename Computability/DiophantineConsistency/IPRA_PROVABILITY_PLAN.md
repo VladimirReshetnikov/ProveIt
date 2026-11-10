@@ -1390,6 +1390,10 @@ A [natural tau-lift client](research/nine-sharing-sign14-tau-lift-check/README.m
 derives a natural shared36 representative from actual staged seed zero and
 represented bounded ports, without N0 or a prior tau witness. Point-union and
 first-index ancestry caveats remain; transfers, iff and endpoint are separate.
+A [supplied-tau coordinate client](research/nine-sharing-sign14-coordinate-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-coordinate-terminal-independent/README.md),
+checks lift and recovery without port/sign assumptions, with 47 linter warnings.
+The point-union survey remains qualified; residual transfers and iff are separate.
 A [staged syntax client](research/nine-sharing-sign15-staged-syntax-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-staged-syntax-terminal-independent/README.md),
 checks the symbolic seed-zero characterization in 16 stages. The external AST
