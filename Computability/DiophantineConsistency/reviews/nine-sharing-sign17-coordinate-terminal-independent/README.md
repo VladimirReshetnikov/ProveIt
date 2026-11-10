@@ -1,0 +1,3 @@
+# Independent terminal audit: sign17 conditional signed coordinate
+
+The independent checker exited 0. Author-observed outer session 63210 exited 0, with the stage and final postflight successful. Lean checked the old deleted row, zero under a supplied natural gap embedding, recovery of the embedding from an old zero, and lift/drop. Source/object/import/log pins, direct guards, overlays and staged providers were checked; four axiom reports, two warnings and no sorryAx. The d_zero direction assumes the gap representative exists; this packet does not establish existence, a full model bridge or iPRA endpoint.

@@ -1237,6 +1237,11 @@ A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
 object, concrete-gap stage or postflight was produced.
+A [conditional coordinate client](research/nine-sharing-sign17-coordinate-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-coordinate-terminal-independent/README.md),
+checks the deleted row and coordinate lift/drop when a natural gap with the
+required embedding is supplied, with two warnings. Gap existence and the full
+model bridge remain separate.
 A finite [positive-gate octic search](research/nine-sharing-octic-positive-elimination-search/README.md),
 [independently audited](reviews/nine-sharing-octic-positive-elimination-independent/README.md),
 reaches at best 23 witnesses among 19 ordered states when every step preserves
