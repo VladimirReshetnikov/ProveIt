@@ -991,7 +991,11 @@ A [full coefficient and lower-bound client](research/nine-sharing-sign21-full-co
 checks that the seed axis degree-fourteen coefficient is one and proves
 `14 ≤ toPolynomial.totalDegree` for the abstract expression at arbitrary
 integer ports. It records ten tactic warnings. A combined equality theorem and
-external byte binding remain separate.
+external byte binding were separate. An [exact-degree client](research/nine-sharing-sign21-exact-degree-check/README.md),
+[independently audited](reviews/nine-sharing-sign21-exact-degree-terminal-independent/README.md),
+combines the two bounds in Lean and proves `toPolynomial.totalDegree = 14` for
+the abstract expression at every integer port vector and for current ports.
+External JSON, coefficient-byte and PDF binding remains separate.
 A [20-witness degree-20 candidate](research/nine-sharing-sign20-degree20-e-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign20-degree20-e-independent/README.md),
 eliminates E by a natural product and has exact external fixed-input degree 20
@@ -1037,6 +1041,10 @@ for the symbolic Fin20 expression, with a successful outer exit and final
 postflight. Historical provider and point-observation qualifications remain.
 The external degree-twenty and coefficient-byte descriptions are not formally
 bound to this Lean expression; it is not a Jones nine-variable endpoint.
+A [19-witness degree-44 external candidate](research/nine-sharing-sign19-degree44-y-candidate/README.md),
+[independently audited](reviews/nine-sharing-sign19-external-independent/README.md),
+eliminates Y and has exact fixed-input degree 44 when beta is nonzero. The
+Lean bridge, degree/byte binding and iPRA endpoint remain open.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
