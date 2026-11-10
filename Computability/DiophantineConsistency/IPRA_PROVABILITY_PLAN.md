@@ -929,7 +929,10 @@ retry](research/nine-sharing-sign22-leading-rows-retry-check/README.md),
 [independently audited](reviews/nine-sharing-sign22-leading-rows-retry-terminal-independent/README.md),
 checks the two leading axis identities, other-row weighted degree at most
 four and diagonal degree nonincrease. Three fallback warnings remain; the
-coefficient and exact lower bound are separate.
+coefficient and exact lower bound were separate. A [square-coefficient client](research/nine-sharing-sign22-leading-coeff-check/README.md),
+[independently audited](reviews/nine-sharing-sign22-leading-coeff-terminal-independent/README.md),
+checks twelfth-degree coefficients 256 and 16 for the two leading squares.
+It records four tactic warnings; the full sum and lower bound remain separate.
 A [21-witness degree-14 candidate](research/nine-sharing-sign21-degree14-s-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign21-degree14-s-independent/README.md),
 substitutes the natural normalized-S product. Its fixed-input external square-sum
