@@ -48,8 +48,10 @@ actual factors Δ, P, U, W and Z have independently audited upper bounds
 12, 22, 62, 2 and 46, respectively, in the [non-Q fields
 client](research/current14-carrier65-other-fields-check/README.md). A generic
 [diagonal degree-transport theorem](research/current14-carrier65-diagonal-degree-retry02-check/README.md)
-is also checked. The whole-expression upper bound and the nonzero degree-150
-witness remain separate; the diagonal theorem alone supplies neither.
+is also checked. The [whole polynomial has total degree at most 150](research/current14-carrier65-degree-upper-check/README.md)
+for arbitrary integer ports; this has passed an [independent terminal audit](reviews/current14-carrier65-degree-upper-terminal-independent/README.md).
+The nonzero degree-150 witness remains separate, so exactness is not yet a
+Lean theorem; the diagonal transport theorem alone does not supply the witness.
 
 ## Sign14 proof transfer and fixed-constant work
 
