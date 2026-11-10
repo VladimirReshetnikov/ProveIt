@@ -874,8 +874,10 @@ for arbitrary symbolic ports. The direct expression and iPRA endpoint remain
 separate. A [direct expression evaluation client](research/nine-sharing-sign22-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign22-expression-eval-terminal-independent/README.md),
 checks input-one evaluation at abstract and current ports, with historical
-partial-provider qualifications. The expression-zero composition and endpoint
-remain separate.
+partial-provider qualifications. A [direct expression-zero equivalence](research/nine-sharing-sign22-expression-equivalence-check/README.md),
+[independently audited](reviews/nine-sharing-sign22-expression-equivalence-terminal-independent/README.md),
+checks current-port Fin22/Fin23 zero existence in the stated IΣ₁ models. The
+polynomial bridge and endpoint remain separate.
 A [21-witness degree-14 candidate](research/nine-sharing-sign21-degree14-s-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign21-degree14-s-independent/README.md),
 substitutes the natural normalized-S product. Its fixed-input external square-sum
