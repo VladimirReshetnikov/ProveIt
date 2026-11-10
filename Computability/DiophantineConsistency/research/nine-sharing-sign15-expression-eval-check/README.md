@@ -1,0 +1,5 @@
+# Sign15 expression/evaluation: source-only client
+
+Four checked stages define and evaluate abstract/current symbolic sign15 expressions over 15 remaining variables, using the independently audited [staged sign15 syntax](../../reviews/nine-sharing-sign15-staged-syntax-terminal-independent/README.md). No expression equivalence, external JSON binding or iPRA endpoint is claimed.
+
+The runner checks successful input-removal and current-data rows of two overall failed producers, with deeper ancestry inherited; both surveys and direct guards are rechecked postflight. No-Lean preflight exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign15-expression-eval-prelaunch-independent/README.md) passed; the auditor corrected an initial stale seed identifier. Author outer session 94468 exited 0 ([receipt](attempt01/outer-result.json)); the [independent terminal audit](../../reviews/nine-sharing-sign15-expression-eval-terminal-independent/README.md) passed. Limits are `-M2800`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck.

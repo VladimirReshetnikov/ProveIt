@@ -1457,6 +1457,11 @@ A [current-port specialization](research/nine-sharing-sign15-current-iff-check/R
 checks that same-input seed equivalence for the current symbolic ports. Current
 bounds/union surveys are point-in-time with inherited ancestry qualifications;
 direct expression equivalence, endpoint and JSON binding remain separate.
+An [expression-evaluation client](research/nine-sharing-sign15-expression-eval-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-expression-eval-terminal-independent/README.md),
+checks abstract and current Fin15 symbolic evaluation. Provider surveys retain
+successful-child/failed-parent ancestry; direct iff, endpoint, Lean degree and
+JSON binding remain separate.
 A [further shared-values client](research/nine-sharing-sign15-more-shared-values-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-more-shared-values-terminal-independent/README.md),
 checks four natural component evaluations under represented beta. Assembled
