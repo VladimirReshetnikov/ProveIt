@@ -677,6 +677,11 @@ A [declaration-free import diagnostic](research/nine-sharing-sign25-wrapper-impo
 successfully imports the native object, standard theory, and both together.
 It does not establish the wrapper or identify the exact source of earlier
 memory exceptions.
+A [generic standard-theory attempt](research/nine-sharing-sign25-generic-standard-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-generic-standard-terminal-independent/README.md),
+stopped at its first stage on namespace and identifier errors; its log reports
+`sorryAx` after elaboration errors and no theorem object was produced. A
+namespace-corrected retry is separate.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
