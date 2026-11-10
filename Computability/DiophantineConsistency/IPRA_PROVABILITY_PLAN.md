@@ -1941,6 +1941,10 @@ A [paired ordering client](research/nine-sharing-sign17-k-order-batch02-03-check
 checks nonzero indices and internal adjacent weight comparisons for rows
 96–223, including the 159/160 boundary. Other boundaries, candidate rank
 and full K/file binding remain separate.
+A [first cross-block ordering client](research/nine-sharing-sign17-k-order-boundaries-early-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-order-boundaries-early-terminal-independent/README.md),
+checks actual-weight comparisons at the 31/32 and 95/96 boundaries. Other
+block boundaries and the global ranking theorem remain separate.
 A [replayed Fin224 union](research/nine-sharing-sign17-k-weight-union224-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-weight-union224-terminal-independent/README.md),
 combines the first four weight batches in one context and checks actual-weight

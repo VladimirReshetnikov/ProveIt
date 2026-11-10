@@ -22,8 +22,9 @@ A candidate staged kernel-checked route is:
    941 non-Start tile weights against the table in bounded chunks, using the
    actual Lean `tile` and `selectorWeight` definitions. These are finite
    computations; independently audited finite-batch weight theorems now
-   cover all 942 candidate rows, but they have not yet been assembled into
-   one Fin942 theorem.
+   cover all 942 candidate rows, and the [Fin942 weight union](../nine-sharing-sign17-k-weight-union942-check/README.md)
+   combines them into a single checked theorem. Physical-rank and
+   coefficient-array bindings remain separate.
 2. Prove the candidate table is strictly descending. Use the existing
    bijection and `physical_lt_iff_weight`/`physicalWeight_strictAnti` to prove
    the candidate positions equal the actual `physicalEquiv` ordering. This
@@ -47,11 +48,10 @@ byte binding, or any additional consistency equivalence.
 Lean has checked a [generic `Fin.append` certificate lemma](../nine-sharing-sign17-k-weight-append-check/README.md)
 and an [actual-map rank criterion](../nine-sharing-sign17-k-adjacent-rank-check/README.md)
 conditional on Start/nonzero behavior and 940 adjacent inequalities. A
-future assembly can concatenate the checked 32-entry first block, 64-entry
-interior blocks and 14-entry final block, then combine their finite weight
-theorems using `Fin.append`. Each provider's terminal receipt, actual object,
-import route and shared overlay must be checked before the assembled client is
-run; matching external witness rows are not themselves a Lean theorem.
+single-context replay concatenates the checked 32-entry first block, 64-entry
+interior blocks and 14-entry final block, and combines their finite weight
+theorems using `Fin.append`. The Fin942 theorem still refers to the in-Lean
+candidate vectors; external witness and file linkage remain separate.
 
 For the non-Start part, check indices are nonzero and adjacent weights decrease
 inside each block, plus each boundary between blocks. The separately checked
