@@ -1433,7 +1433,11 @@ checks current Fin14/Fin15 model-zero existence equivalence with one warning.
 A [concrete polynomial bridge](research/nine-sharing-sign14-concrete-polynomial-bridge-check/README.md),
 [independently audited](reviews/nine-sharing-sign14-concrete-polynomial-bridge-terminal-independent/README.md),
 checks symbolic Fin14 transport through Fin15. Point-union/inherited
-qualifications remain; endpoint, Lean degree and JSON binding are separate.
+qualifications remain. A [three-stage iPRA endpoint client](research/nine-sharing-sign14-endpoint-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-endpoint-terminal-independent/README.md),
+checks native, standard and Gödel–Gentzen-translated standard proof-existence
+formulations for this symbolic Fin14 expression. Exact Lean degree and
+external JSON/PDF binding remain separate.
 A [staged syntax client](research/nine-sharing-sign15-staged-syntax-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-staged-syntax-terminal-independent/README.md),
 checks the symbolic seed-zero characterization in 16 stages. The external AST
