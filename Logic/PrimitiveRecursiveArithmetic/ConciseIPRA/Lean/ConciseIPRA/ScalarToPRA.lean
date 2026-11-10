@@ -282,6 +282,80 @@ def morph : TmMorph Tm PRAAx where
   f_var _ := rfl
   f_subst := tau_subst
 
+/-! ### The axioms of `T_eq` hold in `iPRA` under the translation -/
+
+theorem ax_iterZero (a : Tm n) (h : Tm (n + 1)) :
+    [] ⊢[PRAAx] tau (Tm.iter Tm.zero a h) ≐ tau a := by
+  have h1 := code_eval a Syn.var ([] : List (Fm PTm n))
+  rw [Syn.subst_id] at h1
+  exact Prf.eqTrans (iterSym_zero (code a) (code h) Syn.var) h1
+
+theorem ax_iterSucc (c a : Tm n) (h : Tm (n + 1)) :
+    [] ⊢[PRAAx] tau (Tm.iter (Tm.succ c) a h)
+      ≐ tau (Syn.subst (inst (Tm.iter c a h)) h) := by
+  have h1 := iterSym_succ (Γ := ([] : List (Fm PTm n))) (code a) (code h) (tau c) Syn.var
+  have h2 := code_eval h (Fin.cases (tau (Tm.iter c a h)) Syn.var) ([] : List (Fm PTm n))
+  have h3 := tau_subst (inst (Tm.iter c a h)) h
+  have e : (fun i => tau (inst (Tm.iter c a h) i))
+      = Fin.cases (tau (Tm.iter c a h)) Syn.var := by
+    funext i
+    refine Fin.cases ?_ (fun j => ?_) i <;> simp
+  rw [e] at h3
+  exact Prf.eqTrans h1 (Prf.eqTrans h2 (Prf.eqSymm h3))
+
+theorem ax_sep :
+    [] ⊢[PRAAx] ((PTm.zero : PTm 0) ≐ PTm.succ PTm.zero) ⟶ Fm.bot :=
+  Prf.impI (Prf.impE (PRA.succNeZero _) (Prf.eqSymm Prf.hyp0))
+
+/-- The predecessor function symbol. -/
+def pd : PR 1 := .prec .zero (.proj 0)
+
+theorem pd_succ (y : PTm n) : Γ ⊢[PRAAx] app pd (fun _ => PTm.succ y) ≐ y := by
+  have e : (fun _ : Fin 1 => PTm.succ y) = Fin.cases (PTm.succ y) Fin.elim0 := by
+    funext i
+    refine Fin.cases ?_ (fun j => j.elim0) i
+    rfl
+  rw [e]
+  exact Prf.eqTrans (PRA.precSucc PR.zero (PR.proj 0) y Fin.elim0) (PRA.proj 0 _)
+
+/-- Every number is zero or the successor of its predecessor. -/
+theorem pred_cases : ([] : List (Fm PTm n)) ⊢[PRAAx]
+    Fm.all (((Syn.var 0 : PTm (n + 1)) ≐ PTm.zero)
+      ⋎ ((Syn.var 0 : PTm (n + 1)) ≐ PTm.succ (app pd (fun _ => Syn.var 0)))) := by
+  refine PRA.qfInd _ (by simp [Fm.QF]) ?_ ?_
+  · simp only [Fm.subst_or, Fm.subst_eq, Syn.subst_var, Syn.inst_zero, PTm.subst_zero]
+    exact Prf.orI₁ (Prf.eqRefl _)
+  · simp only [Fm.subst_or, Fm.subst_eq, Syn.subst_var, Syn.repl_zero, PTm.subst_zero]
+    exact Prf.orI₂ (congr PR.succ (fun _ => Prf.eqSymm (pd_succ _)))
+
+theorem ax_cover : ([] : List (Fm PTm 1)) ⊢[PRAAx]
+    ((Syn.var 0 : PTm 1) ≐ PTm.zero)
+      ⋎ Fm.ex ((Syn.var 1 : PTm 2) ≐ PTm.succ (Syn.var 0)) := by
+  have h := Prf.allE (Syn.var 0 : PTm 1) (pred_cases (n := 1))
+  simp only [Fm.subst_or, Fm.subst_eq, Syn.subst_var, Syn.inst_zero, PTm.subst_zero] at h
+  refine Prf.orE h (Prf.orI₁ Prf.hyp0) (Prf.orI₂ ?_)
+  exact Prf.exI (app pd (fun _ => Syn.var 0)) Prf.hyp0
+
+theorem ax_ind (s t : Tm (n + 1)) :
+    [] ⊢[PRAAx] (((s ≐ t).subst (inst Tm.zero) ⟶
+      Fm.all ((s ≐ t) ⟶ (s ≐ t).subst (repl (Tm.succ (Syn.var 0)))) ⟶
+        Fm.all (s ≐ t)).map morph.f) :=
+  Prf.iffMpr (morph.map_ind (s ≐ t) Tm.zero (Tm.succ (Syn.var 0)) [])
+    (Prf.axm (PRAAx.ind (tau s ≐ tau t) trivial))
+
+/-- The interpretation of `T_eq` in `iPRA`: iterator terms become primitive
+recursive function symbols, and every axiom of `T_eq` becomes a theorem. -/
+def interp : Interp TeqAx PRAAx where
+  toTmMorph := morph
+  f_ax := by
+    intro k φ hφ
+    cases hφ with
+    | iterZero a h => exact ax_iterZero a h
+    | iterSucc c a h => exact ax_iterSucc c a h
+    | cover => exact ax_cover
+    | sep => exact ax_sep
+    | ind s t => exact ax_ind s t
+
 end ToPRA
 
 end LeanProofs.ConciseIPRA
