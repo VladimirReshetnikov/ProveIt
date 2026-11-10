@@ -1412,6 +1412,11 @@ A [prefix parser and short-row client](research/nine-sharing-sign14-prefix-probe
 checks that the 51-byte embedded Nt row decodes to the actual staged residual
 for arbitrary ports, leaving no input. The other four rows, the JSON-to-byte
 and PDF connections, and fixed-port bytes remain separate.
+A [direct four-row attempt](research/nine-sharing-sign14-prefix-rows-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-prefix-rows-terminal-independent/README.md),
+hit Lean's kernel memory limit on the first 689-byte row. It produced no row
+object or postflight; the other three rows were not tried. A compositional
+approach remains under investigation.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
