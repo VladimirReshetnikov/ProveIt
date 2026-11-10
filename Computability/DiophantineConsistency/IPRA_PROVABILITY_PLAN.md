@@ -208,6 +208,11 @@ stage also identifies the rank and named RingVars tuple. The retry uses
 `-M3600` with the same sampled 4-GiB RSS, host-memory and time limits and
 records one linter warning. External JSON, human-text and PDF binding, exact
 degree and a binary operation count remain separate.
+An [external structural comparison](research/nine-seed33-jones-json-lean-structural-check/README.md),
+[independently audited](reviews/nine-seed33-jones-json-lean-structural-independent/README.md),
+compares all 45 pinned JSON nodes with the checked Lean recipe source, including
+finite binders, references and seed metadata; it rejects 49 targeted mutations.
+Both implementations are external Python checks, not a Lean JSON or PDF theorem.
 A [U/Y dependent-prefix client](research/nine-seed33-jones-dependent01-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-dependent01-staged-terminal-frontier-independent/README.md),
 checks the d19 and d20 local equations; full output semantics remain open.
