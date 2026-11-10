@@ -1354,6 +1354,10 @@ A [generic axis-degree ingredient](research/nine-sharing-sign14-axis-degree-gene
 [independently audited](reviews/nine-sharing-sign14-axis-degree-generic-terminal-independent/README.md),
 checks degree 8 under nonzero parameter and explicit correction/rank degree
 bounds. Binding the actual staged axis and the lower bound remain separate.
+A [generic Na-degree client](research/nine-sharing-sign14-axis-na-generic-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-axis-na-generic-terminal-independent/README.md),
+checks degree 62 under nonzero parameter and the stated correction/rank bounds;
+actual row/seed binding and the full lower bound remain separate.
 A [staged axis root/scale binding](research/nine-sharing-sign14-axis-binding-check/README.md),
 [independently audited](reviews/nine-sharing-sign14-axis-binding-terminal-independent/README.md),
 checks five actual shared-node identities, with ten linter warnings. The point
