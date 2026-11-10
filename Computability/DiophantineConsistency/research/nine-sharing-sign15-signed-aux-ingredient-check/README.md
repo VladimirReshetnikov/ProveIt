@@ -1,0 +1,5 @@
+# Sign15 signed auxiliary ingredient: source-only client
+
+The checked generic lemmas derive a square identity and auxiliary norm from an explicit signed Na hypothesis without a natural inner witness or nonnegativity assumption, using the independently audited [absdiff-square provider](../../reviews/nine-sharing-sign33-absdiff-square-terminal-frontier-independent/README.md). They do not derive the hypothesis from a sign15 seed, and no model equivalence or iPRA endpoint is claimed.
+
+No-Lean preflight exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign15-signed-aux-ingredient-prelaunch-independent/README.md) passed. Author outer session 61659 exited 0 ([receipt](attempt01/outer-result.json)); the [independent terminal audit](../../reviews/nine-sharing-sign15-signed-aux-ingredient-terminal-independent/README.md) passed. Limits are `-M2800`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck. Provider ancestry is inherited.

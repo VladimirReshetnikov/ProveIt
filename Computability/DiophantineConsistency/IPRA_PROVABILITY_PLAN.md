@@ -1356,6 +1356,11 @@ A [staged syntax client](research/nine-sharing-sign15-staged-syntax-check/README
 checks the symbolic seed-zero characterization in 16 stages. The external AST
 comparison is separate; the natural lift, Lean JSON binding, exact Lean degree
 and endpoint remain open.
+A [signed auxiliary ingredient](research/nine-sharing-sign15-signed-aux-ingredient-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-signed-aux-ingredient-terminal-independent/README.md),
+checks a generic non-circular auxiliary norm under an explicit signed Na
+hypothesis. Extracting that hypothesis from the actual seed and the natural
+lift remain separate.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
