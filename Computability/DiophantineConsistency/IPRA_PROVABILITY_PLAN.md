@@ -1376,6 +1376,11 @@ checks `Rank ≤ E*N+k` and natural subtraction embedding from staged seed/Nt
 under represented bounded ports, without N0 or a deleted tau witness. Historical
 point-survey/uncaptured-exit qualifications remain; coordinate transfers,
 equivalence and endpoint remain separate.
+A [scalar-window client](research/nine-sharing-sign14-scalar-window-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-scalar-window-terminal-independent/README.md),
+derives `q ≥ F` from staged seed/Nt under explicit beta/MC/MF bounds, without
+N0 or a tau witness. The first-index survey remains point-in-time; equivalence
+is separate.
 A [staged syntax client](research/nine-sharing-sign15-staged-syntax-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-staged-syntax-terminal-independent/README.md),
 checks the symbolic seed-zero characterization in 16 stages. The external AST
@@ -1475,8 +1480,10 @@ checks abstract and current Fin15 symbolic evaluation. Provider surveys retain
 successful-child/failed-parent ancestry. A [direct expression equivalence](research/nine-sharing-sign15-expression-equivalence-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-expression-equivalence-terminal-independent/README.md),
 checks current Fin15/Fin16 zero existence iff, with one warning and inherited
-point-survey/ancestry qualifications. Polynomial bridge, endpoint, Lean exact
-degree and JSON binding remain separate.
+point-survey/ancestry qualifications. A [concrete polynomial bridge](research/nine-sharing-sign15-concrete-polynomial-bridge-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-concrete-polynomial-bridge-terminal-independent/README.md),
+checks symbolic transport through Fin16. Point-union and inherited ancestry
+caveats remain; endpoint, Lean exact degree and JSON binding are separate.
 A [further shared-values client](research/nine-sharing-sign15-more-shared-values-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-more-shared-values-terminal-independent/README.md),
 checks four natural component evaluations under represented beta. Assembled
