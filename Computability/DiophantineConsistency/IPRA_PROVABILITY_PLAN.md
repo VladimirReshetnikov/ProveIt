@@ -1494,6 +1494,10 @@ arbitrary ports. A separate [exact-degree client](research/nine-sharing-sign14-9
 [independently audited](reviews/nine-sharing-sign14-93gate-degree-terminal-independent/README.md),
 checks degree 124 at the current ports. The iPRA endpoint and external-file
 bindings remain separate.
+A [93-gate polynomial-bridge client](research/nine-sharing-sign14-93gate-bridge-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-93gate-bridge-terminal-independent/README.md),
+checks the current-port all-model bridge using the prior 94-gate bridge.
+The iPRA endpoints and external-file bindings remain separate.
 A subsequent [93-gate external candidate](research/nine-sharing-sign14-93gate-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign14-93gate-candidate-independent/README.md),
 uses distributivity to factor four copies of a rank term. Its exact-sharing
