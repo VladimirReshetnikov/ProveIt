@@ -1,0 +1,3 @@
+# Independent terminal audit
+
+PASS: author-observed outer session 58984 exited 0. Stage/postflight passed; frozen receipt/state/logs, source/object, ObjectGuard provider and four direct historical object point pins/guards match. Both open-term reconstruction and nonzero-implication reports use `[propext, Classical.choice, Quot.sound]` without warnings or `sorryAx`. The `Classical.choice` is a Lean meta-level axiom in the reports; the stated open-term implications are in the intuitionistic object theory. Historical source-to-object and full transitive ancestry remain inherited. This is not the 14-variable guarded endpoint. No Lean was run.
