@@ -1,0 +1,5 @@
+# Independent prelaunch review
+
+PASS. The manifest, runner, original and copied source hashes, imports and previous failed retry receipt were checked, and the no-Lean preflight was independently rerun successfully. Comparing the whole source to retry01 establishes exactly three proof-only changes: explicit reduced Option matches after the left recursive rewrite, for add, sub and mul. The definitions, mappings and generic decode/encode/suffix statement are unchanged. The stated -M3600, 120-second, sampled 4-GiB RSS and 10-GiB available-memory guards remain; inherited point-in-time and failed-parent qualifications apply.
+
+The intended statement remains a generic parser reflection theorem under adequate fuel; compilation and any long-row, external JSON or PDF correspondence remain separate. The first invocation of our checker incorrectly replayed an obsolete prelaunch whose output directory now exists, and the second had a singleton tuple typo. Both were corrected before the successful checker run; neither invoked Lean.
