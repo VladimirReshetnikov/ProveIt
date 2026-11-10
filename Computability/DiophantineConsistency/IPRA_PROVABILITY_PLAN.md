@@ -1569,6 +1569,11 @@ A [narrow-core retry](research/nine-sharing-sign17-mc-radix-runs-retry-check/REA
 compiled a generic digit core but failed its runs stage on a redundant tactic;
 no runs object or final postflight was produced. The core is a successful
 child of a failed parent.
+A [second radix-runs retry](research/nine-sharing-sign17-mc-radix-runs-retry02-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-mc-radix-runs-retry02-terminal-independent/README.md),
+checks that symbolic lowPort equals the six radix runs. Its replayed core has
+one warning and the audit records an object-pin correction; byte composition
+and file binding remain separate.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
