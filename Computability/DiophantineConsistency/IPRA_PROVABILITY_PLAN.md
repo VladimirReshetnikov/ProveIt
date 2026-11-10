@@ -1309,6 +1309,11 @@ ports, positive beta and the explicit MC/MF bounds. Sign/window ancestry
 includes an uncaptured earlier numeric exit; surveys are point-in-time while
 direct guards and overlays were rechecked. Coordinate and residual bridges,
 full equivalence and the endpoint remain separate.
+A [coordinate client](research/nine-sharing-sign16-coordinate-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-coordinate-terminal-independent/README.md),
+checks supplied-gap deleted-row zero and recovery under represented beta,
+with one warning. The stronger-hypothesis gap existence is separate above;
+the union survey is point-in-time, and transfers/equivalence remain separate.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
