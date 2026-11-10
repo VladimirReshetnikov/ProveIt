@@ -1333,8 +1333,11 @@ An [expression-evaluation client](research/nine-sharing-sign16-expression-eval-c
 [independently audited](reviews/nine-sharing-sign16-expression-eval-terminal-independent/README.md),
 checks abstract and current Fin16 symbolic evaluation. Its generic-removal and
 current-data providers retain individually successful observations from failed
-producers and deeper ancestry; expression equivalence and JSON binding remain
-separate.
+producers and deeper ancestry. A [direct expression equivalence](research/nine-sharing-sign16-expression-equivalence-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-expression-equivalence-terminal-independent/README.md),
+checks current Fin16/Fin17 model-zero equivalence, with one warning and inherited
+failed-parent-child, uncaptured-exit and point-union-survey caveats. The
+polynomial bridge, endpoint and JSON binding remain separate.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
