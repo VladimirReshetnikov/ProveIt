@@ -1271,6 +1271,12 @@ independently audited ([auxiliary](reviews/nine-sharing-sign16-aux-from-seed-ter
 derive those norms from seed zero under their stated port hypotheses, without
 assuming the deleted V witness. Union and inherited surveys remain point-in-time;
 direct guards and overlays were rechecked. Other norms and the V lift remain open.
+A [first-norm client](research/nine-sharing-sign16-first-norm-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-first-norm-terminal-independent/README.md),
+derives that norm using retained tau under seed-zero, represented ports,
+positive beta and explicit MC/MF bounds. Union and inherited surveys are
+point-in-time; direct guards and overlays were rechecked. The strict norm and
+V lift remain separate.
 A [strict-factor cancellation ingredient](research/nine-sharing-sign16-strict-factor-check/README.md),
 [independently audited](reviews/nine-sharing-sign16-strict-factor-terminal-independent/README.md),
 checks generic cancellation under explicit positivity and factor/row

@@ -1,0 +1,3 @@
+# Independent sign16 first-norm terminal audit
+
+The independent checker exited 0. Author outer session 22096 exited 0; stage and postflight passed. Source/object, logs, all three direct provider guards and overlays were checked. The report has standard axioms and no warnings or sorryAx. The theorem gives the first norm from staged seed zero and retained tau, under represented ports, beta positivity and MC/MF bounds. Union and inherited surveys were point-in-time and not replayed postflight, while direct guards and overlays were rechecked. Strict norm and V lift remain separate. No Lean was rerun here.
