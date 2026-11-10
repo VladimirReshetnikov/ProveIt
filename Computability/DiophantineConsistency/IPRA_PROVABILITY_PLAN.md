@@ -1353,17 +1353,18 @@ degree, endpoint and JSON/PDF binding remain open; a negative-lift test is not
 claimed to be a seed zero.
 A [14-witness external candidate](research/nine-sharing-sign14-tau-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign14-external-independent/README.md),
-eliminates tau and has external fixed-port degree 124. Its natural tau lift,
-sign15 equivalence, operation count, Lean degree, iPRA endpoint and JSON/PDF
-binding remain open. A negative integer lift test is not a seed zero.
+eliminates tau and has external fixed-port degree 124. The external audit did
+not prove the natural lift or equivalence; later symbolic Lean work below checks
+those steps. Operation count, Lean degree, endpoint and JSON/PDF binding are
+separate. A negative integer lift test is not a seed zero.
 A [staged syntax client](research/nine-sharing-sign14-staged-syntax-check/README.md),
 [independently audited](reviews/nine-sharing-sign14-staged-syntax-terminal-independent/README.md),
 checks the symbolic seed-zero characterization in 16 stages. External AST
-transcription is separate; tau lift, equivalence and endpoint remain open.
+transcription remains separate; later symbolic lift and equivalence are below.
 A [shared-values client](research/nine-sharing-sign14-shared-values-check/README.md),
 [independently audited](reviews/nine-sharing-sign14-shared-values-terminal-independent/README.md),
-checks c, root and scale evaluations under represented beta. The tau lift
-and JSON binding remain separate.
+checks c, root and scale evaluations under represented beta. The symbolic tau
+lift appears below; JSON binding remains separate.
 [Rank](research/nine-sharing-sign14-rank-value-check/README.md) and
 [Nt transport](research/nine-sharing-sign14-transport-row-check/README.md)
 clients, independently audited ([rank](reviews/nine-sharing-sign14-rank-value-terminal-independent/README.md),
