@@ -56,6 +56,7 @@ candidate vectors; external witness and file linkage remain separate.
 For the non-Start part, check indices are nonzero and adjacent weights decrease
 inside each block, plus each boundary between blocks. The separately checked
 rank criterion turns those facts into actual physical positions. The
-[single-block ordering sample](../nine-sharing-sign17-k-order-batch01-check/README.md)
-passed Lean and independent audit for candidate rows 32–95. This still leaves
+[local ordering clients](../nine-sharing-sign17-k-order-all-retry-check/README.md)
+passed Lean and independent audit for every block and boundary, though their
+facts are not yet assembled as global hypotheses. This still leaves
 control terms, coefficient aggregation, radix bytes and file provenance.

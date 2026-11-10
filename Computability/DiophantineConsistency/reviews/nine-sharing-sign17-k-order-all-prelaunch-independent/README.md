@@ -1,0 +1,7 @@
+# Independent prelaunch review
+
+PASS. All 17 source copies and manifest imports were checked; the Start source covers index zero and rows 1–31, blocks 01–14 exactly follow the audited Fin64 template, and block 15 correctly changes to Fin14/Fin13. Each of the 15 proposed boundary comparisons has the correct adjacent vector and endpoint (31/0 for the first, 63/0 thereafter), direction, and actual-weight transport. Independently checked external witness values satisfy the proposed nonzero and descending properties. The full Fin942 terminal, external witness, Start and sample terminal audits and no-Lean preflight were rerun. The runner pins and rechecks all 40 Fin942 source/object/log/direct guards and overlay links and routes direct imports to those objects; per-child resource caps remain.
+
+The first author preflight failed on a generator hash typo, before output or Lean; the corrected no-Lean preflight passed. This is still source-only and does not establish the global assembled rank, K, or external file binding. The 17-stage serial run may occupy the exclusive Lean slot for minutes.
+
+**Review withdrawn before launch:** a subsequent guard inspection found that `Init` is recorded and guarded but omitted from first-candidate/provider route comparison, and `LEAN_NUM_THREADS` is inherited rather than set to 1. The source checks remain valid, but a fresh corrected runner and new prelaunch review are requested for stronger provenance and reproducible thread configuration. This is not evidence of an incorrect Lean theorem or an observed resource violation.

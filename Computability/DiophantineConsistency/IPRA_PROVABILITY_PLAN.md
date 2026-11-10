@@ -1950,6 +1950,13 @@ A [first cross-block ordering client](research/nine-sharing-sign17-k-order-bound
 [independently audited](reviews/nine-sharing-sign17-k-order-boundaries-early-terminal-independent/README.md),
 checks actual-weight comparisons at the 31/32 and 95/96 boundaries. Other
 block boundaries and the global ranking theorem remain separate.
+A [full set of local K ordering checks](research/nine-sharing-sign17-k-order-all-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-order-all-retry-terminal-independent/README.md),
+checks Start, nonzero candidate indices, all within-block adjacent
+comparisons and all 15 interblock boundaries in 17 stages. The first guard's
+prelaunch review was withdrawn before Lean, and the corrected runner checks
+the captured `Init` route and sets one thread. These local facts have not yet
+been assembled into the global rank or complete K/file binding.
 A [replayed Fin224 union](research/nine-sharing-sign17-k-weight-union224-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-weight-union224-terminal-independent/README.md),
 combines the first four weight batches in one context and checks actual-weight
