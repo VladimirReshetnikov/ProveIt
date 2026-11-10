@@ -1459,6 +1459,11 @@ factors four copies of a rank term to reuse an existing expression. Its live
 exact-sharing circuit has 36 additions, 16 subtractions and 38 multiplications.
 Lean equivalence, degree and iPRA endpoints for this further candidate remain
 open; the count is an upper bound, not minimality.
+A subsequent [89-gate external candidate](research/nine-sharing-sign14-89gate-candidate/README.md),
+[independently audited](reviews/nine-sharing-sign14-89gate-candidate-independent/README.md),
+rewrites an Nt subexpression to reuse the rank difference. Its exact-sharing
+circuit has 35 additions, 16 subtractions and 38 multiplications. Lean
+equivalence, degree and iPRA endpoints remain open; no minimality is claimed.
 A [92-gate Lean source draft](research/nine-sharing-sign14-92gate-lean-draft/README.md),
 [independently reviewed](reviews/nine-sharing-sign14-92gate-lean-draft-independent/README.md),
 expands to the candidate's five external residual ASTs and proposes the Nt
