@@ -1241,6 +1241,10 @@ A [shared-node probe](research/nine-sharing-sign17-degree-shared-probe-check/REA
 [independently audited](reviews/nine-sharing-sign17-degree-shared-probe-failure-independent/README.md),
 passed its generic stage but failed on a no-progress simplification for one
 shared node; no shared-node object or postflight was produced.
+A [closed-reduction probe retry](research/nine-sharing-sign17-degree-shared-probe-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-degree-shared-probe-retry-failure-independent/README.md),
+also passed the generic stage but failed to unfold that locally irreducible
+node; no shared-node object or postflight was produced.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
