@@ -1,0 +1,3 @@
+# Independent sign24 full coefficient commutativity retry prelaunch review
+
+Independent checker session 90944 exited 0. Relative to the failed attempt, the only Lean source edits add `add_comm` to the exact list-count branch and remove two unused simp arguments; all other six modules are unchanged. The runner changes only fresh output, manifest pin and status labels; all resource caps remain. Source hypotheses, arbitrary-port direct-expression polynomial connection and prior audited ingredients were rechecked. The proposed lower bound remains uncompiled and does not by itself provide exact equality or external JSON/PDF binding.

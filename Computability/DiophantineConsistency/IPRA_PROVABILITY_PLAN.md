@@ -806,7 +806,11 @@ A [full-coefficient attempt](research/nine-sharing-sign24-full-coeff-check/READM
 [independently audited](reviews/nine-sharing-sign24-full-coeff-terminal-independent/README.md),
 compiled the ingredients but failed on addition commutativity in the list
 composition, reporting `sorryAx`. The seed coefficient, lower bound and
-postflight were not reached.
+postflight were not reached. A [commutativity retry](research/nine-sharing-sign24-full-coeff-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-full-coeff-retry-terminal-independent/README.md),
+compiled the whole seed's diagonal coefficient at degree eight as one for
+arbitrary ports. Its final direct-expression lower stage failed on a constant
+evaluation goal and reported `sorryAx`; the overall run and postflight failed.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
