@@ -49,8 +49,10 @@ has independently reviewed Lean evidence over an arbitrary commutative
 ring. The [fixed-input expression and polynomial equalities](research/nine-sharing-sign14-92gate-expression-check/README.md),
 [model-level zero equivalence](research/nine-sharing-sign14-92gate-model-check/README.md)
 and [exact symbolic degree 124](research/nine-sharing-sign14-92gate-degree-check/README.md)
-are also checked. The all-model bridge and iPRA endpoint transfers remain
-separate.
+are also checked. The [all-model bridge](research/nine-sharing-sign14-92gate-bridge-check/README.md)
+and [native, standard and translated iPRA endpoints](research/nine-sharing-sign14-92gate-endpoint-check/README.md)
+also passed independent terminal review. The gate count and candidate AST
+comparison are external; PDF and fixed-port byte binding remain separate.
 The further [86-gate AST](research/nine-sharing-sign14-86gate-candidate/README.md)
 has an independently audited external rewrite and gate count; its Lean
 transfer remains open. Its count is an upper bound under exact ordered
