@@ -863,7 +863,10 @@ unused-variable warning. A [residual-transfer client](research/nine-sharing-sign
 checks all 13 rows, with 43 linter warnings. A [pointwise zero bridge](research/nine-sharing-sign22-zero-assembly-check/README.md),
 [independently audited](reviews/nine-sharing-sign22-zero-assembly-terminal-independent/README.md),
 now checks both directions along the natural kY lift and drop. The existential
-composition and iPRA endpoint remain separate.
+composition is checked by a [same-input client](research/nine-sharing-sign22-seed-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign22-seed-iff-terminal-independent/README.md),
+for arbitrary symbolic ports. The direct expression and iPRA endpoint remain
+separate.
 A [21-witness degree-14 candidate](research/nine-sharing-sign21-degree14-s-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign21-degree14-s-independent/README.md),
 substitutes the natural normalized-S product. Its fixed-input external square-sum
