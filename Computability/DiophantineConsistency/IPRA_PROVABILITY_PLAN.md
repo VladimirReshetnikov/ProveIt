@@ -6400,8 +6400,23 @@ points of the eleven-integer row.
   six ports. The package's other three eleven-integer equations (640 / 118,
   580 / 119, 574 / 122) are dominated by 125's 488 / 118 and 464 / 119.
 
-Still open on the eleven-integer row: 135's 398 / 121 and 125's 488 / 118,
-464 / 119.
+**135's eleven-integer weak cofactor 398 / 121, CLOSED (10 November 2026)**
+([`P135W/IPRAInteger135W`](Lean/DiophantineConsistency/P135W/IPRAInteger135W.lean),
+[record](research/p135w-integer11/README.md)).
+- The front and carrier are 137's weak front, node for node (`P137Front`). The
+  back end is the linear-cofactor norm form with radical weight 4
+  (`P135WValue`): the guard `P` is a second radical, not a factor of the
+  cofactor.
+- Soundness (`P135WFold.sound`): the norm form gives `P = g²` and three pairwise
+  coprime squares `B`, `Df`, `δ Cy` (`P135WRoots`); `S ∣ Ac` recovers the scale,
+  and `ZRows/StrongFold.strong_fold` gives `P138Rank.Folded`.
+- Completeness (`P135WComplete.complete`) reads 138's canonical record at the
+  new scale, reuses 138's guard Pell pair (the discriminant is `Budget − 4`),
+  and uses the quartic interpolation `ZRows/QuarticInterpolation`.
+- `gen_literal135w.py --check` and `check_ports135w.py` bind the literal and the
+  six ports.
+
+Still open on the eleven-integer row: 125's 488 / 118, 464 / 119.
 
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
