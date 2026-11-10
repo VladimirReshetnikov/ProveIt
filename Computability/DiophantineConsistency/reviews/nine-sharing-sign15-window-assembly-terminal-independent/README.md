@@ -1,0 +1,3 @@
+# Independent terminal audit: sign15 half-window assembly
+
+Checker exit 0. Author outer 41362 exited 0; stage and final postflight passed. From staged sign15 seed zero and represented/bounded ports the theorem derives `2*Rank<C` without a deleted inner witness. It reports propext, Classical.choice and Quot.sound, with one unused-simp warning and no sorryAx. Source, object, logs, five direct providers, guards and overlays were checked. Union and historical windows/first-index surveys remain point-in-time, with inherited ancestry qualifications. A natural inner representative and expression equivalence remain separate.

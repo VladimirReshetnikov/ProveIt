@@ -1412,6 +1412,12 @@ A [window-scale client](research/nine-sharing-sign15-window-scale-check/README.m
 checks the scale identity from staged seed zero and represented beta, with one
 warning and inherited point-in-time survey qualification. Half-window and
 the natural inner lift remain separate.
+A [half-window assembly](research/nine-sharing-sign15-window-assembly-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-window-assembly-terminal-independent/README.md),
+checks `2 * Rank < C` from reduced seed zero under represented bounded ports,
+without the deleted witness, with one warning. Union/windows/first-index
+surveys are point-in-time and inherited ancestry remains; the natural
+representative and bridge are separate.
 A [further shared-values client](research/nine-sharing-sign15-more-shared-values-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-more-shared-values-terminal-independent/README.md),
 checks four natural component evaluations under represented beta. Assembled
