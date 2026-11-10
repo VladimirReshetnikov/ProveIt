@@ -1233,6 +1233,10 @@ An [expression-evaluation client](research/nine-sharing-sign17-expression-eval-c
 [independently audited](reviews/nine-sharing-sign17-expression-eval-terminal-independent/README.md),
 checks the symbolic Fin17 input-one evaluator against that staged seed; it
 does not establish the model bridge, endpoint or external binding.
+A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
+failed in its first stage on multiplication associativity; no first-stage
+object, concrete-gap stage or postflight was produced.
 A finite [positive-gate octic search](research/nine-sharing-octic-positive-elimination-search/README.md),
 [independently audited](reviews/nine-sharing-octic-positive-elimination-independent/README.md),
 reaches at best 23 witnesses among 19 ordered states when every step preserves
