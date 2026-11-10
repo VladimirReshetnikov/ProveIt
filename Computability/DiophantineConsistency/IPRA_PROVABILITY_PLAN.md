@@ -1058,6 +1058,11 @@ A [cast-normalization retry](research/nine-sharing-sign20-leading-coeff-retry-ch
 [independently audited](reviews/nine-sharing-sign20-leading-coeff-retry-failure-independent/README.md),
 also failed its final coefficient stage, with two unsolved goals and `sorryAx`;
 its first three stages succeeded, but no coefficient object or postflight exists.
+A [second cast-normalization retry](research/nine-sharing-sign20-leading-coeff-retry02-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-leading-coeff-retry02-terminal-independent/README.md),
+checks that each of the two distinguished squared axis rows has coefficient
+beta to the fourth at degree twenty, for arbitrary integer beta. The full
+sum and the exact lower bound remain separate.
 A [19-witness degree-44 external candidate](research/nine-sharing-sign19-degree44-y-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign19-external-independent/README.md),
 eliminates Y and has exact fixed-input degree 44 when beta is nonzero. The
