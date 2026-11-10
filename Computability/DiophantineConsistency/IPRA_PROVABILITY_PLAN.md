@@ -1320,7 +1320,11 @@ checks the retained residual transfers under represented beta and a supplied gap
 with 345 linter warnings. A [pointwise zero assembly](research/nine-sharing-sign16-zero-assembly-check/README.md),
 [independently audited](reviews/nine-sharing-sign16-zero-assembly-terminal-independent/README.md),
 checks forward zero with a supplied gap and backward zero with gap recovery.
-Gap existence has stronger bounds; existential equivalence remains separate.
+Gap existence has stronger bounds. A [same-input seed equivalence](research/nine-sharing-sign16-seed-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-seed-iff-terminal-independent/README.md),
+combines them under represented beta/K/MC/MF, positive beta and explicit MC/MF
+bounds. Inherited uncaptured-exit, failed-provider-child and point-survey
+qualifications remain; current-port specialization and endpoint are separate.
 An [expression-evaluation client](research/nine-sharing-sign16-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign16-expression-eval-terminal-independent/README.md),
 checks abstract and current Fin16 symbolic evaluation. Its generic-removal and

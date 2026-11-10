@@ -1,0 +1,3 @@
+# Independent sign16 same-input seed iff terminal audit
+
+The independent checker exited 0. Author outer session 94370 exited 0; stage and postflight passed. Source/object, logs, both direct provider guards and overlays were checked. The theorem report lists standard axioms, with no warnings or sorryAx. Lean proves same-input existential sign16/sign17 staged seed equivalence under represented beta/K/MC/MF, beta>0, MC<beta and MF<2*beta. Inherited ancestry includes an unavailable earlier numeric outer exit and a successful child of a failed provider build; union/inherited surveys were point-in-time and not replayed postflight, while direct guards and overlays were rechecked. Current-port specialization and endpoint remain separate. No Lean was rerun here.
