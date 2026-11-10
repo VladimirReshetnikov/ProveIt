@@ -358,11 +358,12 @@ theorem odd_dvd_of_dvd_two_mul {H Y : DiffRing V} (hH : ∃ m : DiffRing V, H = 
   obtain ⟨k, hk⟩ := h
   exact ⟨Y - m * k, by linear_combination (-m) * hk⟩
 
-/-- **`H ∣ Kq⁵`.** -/
-theorem H_dvd_Kq5 (hp : PortFacts p) (hz : valueK p x κ = 0) (E : EarlyFold p x κ) :
-    (𝓡).H ∣ Kq p x κ ^ 5 := by
+/-- **`H ∣ Kq⁵` from `S ∣ Ac`.** Algebra of the front registers `H, K, zc, Ac, S` only: no
+zero of the output and no back-end register is read, so every circuit with this centre shares
+the lemma. -/
+theorem H_dvd_Kq5_of_S_dvd (hS : (𝓡).S ∣ (𝓡).Ac) : (𝓡).H ∣ Kq p x κ ^ 5 := by
   have hHS : (𝓡).H ∣ (𝓡).S := ⟨x 10 * x 4, by rw [S_eq]; ring⟩
-  have hHAc : (𝓡).H ∣ (𝓡).Ac := dvd_trans hHS (S_dvd_Ac p x κ hp hz E)
+  have hHAc : (𝓡).H ∣ (𝓡).Ac := dvd_trans hHS hS
   have h1 : (𝓡).H ∣ (𝓡).Ac - (𝓡).zc ^ 5 :=
     ⟨3 * (𝓡).H * (𝓡).zc ^ 3 - 19 * (𝓡).H ^ 2 * (𝓡).zc ^ 2 - 57 * (𝓡).H ^ 4, by rw [Ac_eq]; ring⟩
   have h2 : (𝓡).H ∣ (𝓡).zc ^ 5 - (𝓡).K ^ 5 :=
@@ -381,6 +382,11 @@ theorem H_dvd_Kq5 (hp : PortFacts p) (hz : valueK p x κ = 0) (E : EarlyFold p x
   exact odd_dvd_of_dvd_two_mul hodd (odd_dvd_of_dvd_two_mul hodd (odd_dvd_of_dvd_two_mul hodd
     (odd_dvd_of_dvd_two_mul hodd (odd_dvd_of_dvd_two_mul hodd (dvd_neg.mp h4)))))
 
+/-- **`H ∣ Kq⁵`.** -/
+theorem H_dvd_Kq5 (hp : PortFacts p) (hz : valueK p x κ = 0) (E : EarlyFold p x κ) :
+    (𝓡).H ∣ Kq p x κ ^ 5 :=
+  H_dvd_Kq5_of_S_dvd p x κ (S_dvd_Ac p x κ hp hz E)
+
 end Regs
 
 #print axioms signed_square_residue
@@ -389,6 +395,7 @@ end Regs
 #print axioms Z_eq_S
 #print axioms S_dvd_Ac
 #print axioms K_Kq
+#print axioms H_dvd_Kq5_of_S_dvd
 #print axioms H_dvd_Kq5
 
 end DiophantineConsistency.P138EarlyFold

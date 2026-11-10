@@ -102,11 +102,11 @@ theorem base_square (hp : PortFacts p) {P : DiffRing V}
   linarith
 
 /-- **The ratio bound.** -/
-theorem H_large (hp : PortFacts p) (hz : valueK p x κ = 0) (E : EarlyFold p x κ)
-    (M : MainIndex p x κ E) (Fi : FirstIndex p x κ E M) (t xn : V) (ht : M.Rn = 2 * t + 1)
+theorem H_large (hp : PortFacts p) (Fd : Folded p x κ) (Fi : FirstIndex p x κ Fd) (t xn : V)
+    (ht : Fd.Rn = 2 * t + 1)
     (hxn : |(𝓡).X| = ι xn) :
     (ι (xn * power (xn - 3) t) : DiffRing V) < |(𝓡).H| := by
-  have hB : 0 < (𝓡).Budget := by linarith [budget_ge p x κ hp hz]
+  have hB : 0 < (𝓡).Budget := Fd.hbudget
   have hci := (c_interval p x κ hp hB).2.1
   obtain ⟨yn, hyn⟩ := abs_eq_ι (𝓡).Y
   have hX := abs_X_ge p x κ hp
@@ -124,12 +124,12 @@ theorem H_large (hp : PortFacts p) (hz : valueK p x κ = 0) (E : EarlyFold p x �
     linarith
   have hxsub : (ι (xn - 3) : DiffRing V) = |(𝓡).X| - 3 := by rw [ι_tsub' hx3, map_ofNat, hxn]
   -- the two Pell growth bounds
-  set b := E.Bn - 2 with hb
+  set b := Fd.Bn - 2 with hb
   have hb2 : (ι (2 * b + 3) : DiffRing V) = 2 * |(𝓡).A| - 1 := by
     rw [hb]; simp only [map_add, map_mul, map_ofNat]
-    rw [ι_tsub' (le_trans (by norm_num) E.hB3), map_ofNat, ← E.hBn]; ring
-  have hc1 : power ((2 * b + 3) * (2 * b + 3)) t ≤ E.cn := by
-    rw [← power_double, M.hc, ht]
+    rw [ι_tsub' (le_trans (by norm_num) Fd.hB3), map_ofNat, ← Fd.hBn]; ring
+  have hc1 : power ((2 * b + 3) * (2 * b + 3)) t ≤ Fd.cn := by
+    rw [← power_double, Fd.hc, ht]
     exact power_le_ycoord b (2 * t)
   have hK1 : ycoord (t + 1) Fi.bF ≤ power (2 * (Fi.bF + 2)) t := ycoord_le_power Fi.bF t
   -- the base comparison
@@ -139,18 +139,18 @@ theorem H_large (hp : PortFacts p) (hz : valueK p x κ = 0) (E : EarlyFold p x �
     rw [hxsub, hb2, map_add, map_ofNat]
     exact base_square p x κ hp Fi.hbFhi
   have hPpos : 0 < power (2 * (Fi.bF + 2)) t := power_pos _ _ (by simp)
-  have hprod : power (xn - 3) t * power (2 * (Fi.bF + 2)) t ≤ E.cn := by
+  have hprod : power (xn - 3) t * power (2 * (Fi.bF + 2)) t ≤ Fd.cn := by
     rw [← power_mul_base]
     exact le_trans (power_mono_base _ _ t hbase) hc1
   -- `2|c| < |k|(2|Y| + 1)` with `|k| = 2ψ_bF(t+1)`
-  have hck : E.cn < ycoord (t + 1) Fi.bF * (2 * yn + 1) := by
+  have hck : Fd.cn < ycoord (t + 1) Fi.bF * (2 * yn + 1) := by
     apply ι_lt_ι.mp
-    rw [E.hcn, Fi.hk, hn, hyn] at hci
+    rw [Fd.hcn, Fi.hk, hn, hyn] at hci
     simp only [map_mul, map_add, map_ofNat, map_one] at hci ⊢
     linarith
   have hlt : power (xn - 3) t * power (2 * (Fi.bF + 2)) t <
       power (2 * (Fi.bF + 2)) t * (2 * yn + 1) := by
-    calc power (xn - 3) t * power (2 * (Fi.bF + 2)) t ≤ E.cn := hprod
+    calc power (xn - 3) t * power (2 * (Fi.bF + 2)) t ≤ Fd.cn := hprod
       _ < ycoord (t + 1) Fi.bF * (2 * yn + 1) := hck
       _ ≤ power (2 * (Fi.bF + 2)) t * (2 * yn + 1) := mul_le_mul_of_nonneg_right hK1 (by simp)
   have hpow : power (xn - 3) t < 2 * yn + 1 := by
