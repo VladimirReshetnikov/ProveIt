@@ -1440,7 +1440,10 @@ warnings. A [pointwise zero assembly](research/nine-sharing-sign15-zero-assembly
 [independently audited](reviews/nine-sharing-sign15-zero-assembly-terminal-independent/README.md),
 checks forward zero with a supplied representative and backward zero with
 recovery, without port/sign hypotheses. Point-in-time ancestry persists;
-existential equivalence and the endpoint remain separate.
+an [existential seed equivalence](research/nine-sharing-sign15-seed-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-seed-iff-terminal-independent/README.md),
+combines the maps with natural lift under represented ports and the stated
+beta/MC/MF bounds. Current specialization, endpoint and JSON binding remain separate.
 A [further shared-values client](research/nine-sharing-sign15-more-shared-values-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-more-shared-values-terminal-independent/README.md),
 checks four natural component evaluations under represented beta. Assembled
