@@ -137,8 +137,13 @@ are covered individually, and their [whole-expression coordinate identity](resea
 is checked. The [pointwise and existential model-zero equivalences](research/nine-sharing-sign14-positive74-model-check/README.md)
 are checked in the `positiveShift` formulation; an [explicitly positive-witness
 model equivalence](research/nine-sharing-sign14-positive74-positive-witness-check/README.md)
-is checked separately. Exact degree and an explicitly positive-witness
-object-language iPRA statement remain open. The [all-model
+is checked separately. A [native sentence equivalence](research/nine-sharing-sign14-positive74-object-sentence-iff-check/README.md)
+now relates guarded positive inputs to shifted inputs, and its [concrete
+explicit-positive-coordinate endpoint](research/nine-sharing-sign14-positive74-object-endpoint-check/README.md)
+has passed an [independent terminal audit](reviews/nine-sharing-sign14-positive74-object-endpoint-terminal-independent/README.md).
+It establishes native and standard iPRA equivalence with the selected mapped
+refutation negation, and the translated-standard endpoint. The exact degree
+of the positive-coordinate expression remains open. The [all-model
 polynomial bridge](research/nine-sharing-sign14-positive74-ipra-bridge-check/README.md)
 and the [native, standard and translated iPRA endpoints](research/nine-sharing-sign14-positive74-ipra-endpoint-check/README.md)
 for the shifted expression have passed Lean and independent terminal audit.
