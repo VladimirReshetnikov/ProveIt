@@ -1759,6 +1759,11 @@ A [cons-normalization retry](research/nine-sharing-sign17-mf-whole-bytes-retry-c
 [independently audited](reviews/nine-sharing-sign17-mf-whole-bytes-retry-terminal-independent/README.md),
 passed 22 prerequisites but left nil-append terms in the final equality;
 no symbolic MF byte-list object or postflight was produced.
+A [nil-append retry](research/nine-sharing-sign17-mf-whole-bytes-retry02-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-mf-whole-bytes-retry02-terminal-independent/README.md),
+checks symbolic highPort+beta/current port3 equals an explicit compact byte-list
+decoding, with three final warnings. The audit records checker corrections;
+external raw layout and Lean file/gzip/JSON/PDF binding remain separate.
 A [generic block-composition attempt](research/nine-sharing-sign17-mc-compose-core-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mc-compose-core-terminal-independent/README.md),
 passed eighteen prerequisites but failed the final flatten-tail induction;
