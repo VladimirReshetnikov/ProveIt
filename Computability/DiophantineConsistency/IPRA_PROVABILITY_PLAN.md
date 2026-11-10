@@ -1418,6 +1418,11 @@ checks `2 * Rank < C` from reduced seed zero under represented bounded ports,
 without the deleted witness, with one warning. Union/windows/first-index
 surveys are point-in-time and inherited ancestry remains; the natural
 representative and bridge are separate.
+A [natural inner-lift client](research/nine-sharing-sign15-inner-lift-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-inner-lift-terminal-independent/README.md),
+derives a natural representative of `C*T − Rank` from actual staged seed zero
+and represented bounded ports, without a prior deleted witness or sign.
+Point-in-time survey/ancestry caveats remain; transfers and equivalence are separate.
 A [further shared-values client](research/nine-sharing-sign15-more-shared-values-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-more-shared-values-terminal-independent/README.md),
 checks four natural component evaluations under represented beta. Assembled
