@@ -1257,8 +1257,11 @@ checks eight row transfers given that gap, with 382 mostly unused-simp warnings.
 A [conditional zero-assembly client](research/nine-sharing-sign17-zero-assembly-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-zero-assembly-terminal-independent/README.md),
 checks both pointwise directions, supplying the gap forward and recovering it
-backward. Combining positive-beta gap existence and proving the iPRA endpoint
-remain separate.
+backward. A [positive-beta seed-iff client](research/nine-sharing-sign17-seed-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-seed-iff-terminal-independent/README.md),
+combines these directions with gap existence into same-input existential
+equivalence under represented positive beta. The current-port specialization
+and iPRA endpoint remain separate.
 A finite [positive-gate octic search](research/nine-sharing-octic-positive-elimination-search/README.md),
 [independently audited](reviews/nine-sharing-octic-positive-elimination-independent/README.md),
 reaches at best 23 witnesses among 19 ordered states when every step preserves

@@ -1,0 +1,20 @@
+# Sign17 positive-beta seed iff guarded union candidate
+
+This source-only stage proposes combining conditional zero assembly with the
+audited gap-from-seed existence provider, retaining both port representation
+and beta positivity hypotheses. The union survey validates the gap provider's
+`outer_exit_code` receipt and byte-matches overlay dependencies. Provider
+point surveys are not a complete transitive/dynamic ancestry trace. No current
+port specialization, Lean/JSON binding, degree theorem or endpoint is claimed.
+
+The fresh-output guard uses `-M2800`, one thread and 120 seconds, a monitored
+4 GiB RSS cap, 10 GiB available-memory floor and 5 GB disk precheck. Independent
+prelaunch review and a coordinated Lean slot are needed.
+
+Author no-Lean preflight exited 0 (`preflight-author-record.json`). The
+[independent prelaunch review](../../reviews/nine-sharing-sign17-seed-iff-prelaunch-independent/README.md)
+passed before launch.
+Attempt 01 passed its stage and postflight with author-observed outer session
+`28500` exit 0; see `attempt01/README.md`. The
+[independent terminal audit](../../reviews/nine-sharing-sign17-seed-iff-terminal-independent/README.md)
+passed; the packet and stage inputs are frozen.
