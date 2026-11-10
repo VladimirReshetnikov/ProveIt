@@ -1448,6 +1448,11 @@ an [existential seed equivalence](research/nine-sharing-sign15-seed-iff-check/RE
 [independently audited](reviews/nine-sharing-sign15-seed-iff-terminal-independent/README.md),
 combines the maps with natural lift under represented ports and the stated
 beta/MC/MF bounds. Current specialization, endpoint and JSON binding remain separate.
+A [current-port specialization](research/nine-sharing-sign15-current-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-current-iff-terminal-independent/README.md),
+checks that same-input seed equivalence for the current symbolic ports. Current
+bounds/union surveys are point-in-time with inherited ancestry qualifications;
+direct expression equivalence, endpoint and JSON binding remain separate.
 A [further shared-values client](research/nine-sharing-sign15-more-shared-values-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-more-shared-values-terminal-independent/README.md),
 checks four natural component evaluations under represented beta. Assembled

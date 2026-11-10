@@ -1,0 +1,3 @@
+# Independent terminal audit: sign15 current-port seed iff
+
+Checker exit 0. Author outer 84886 exited 0; stage and final postflight passed. Four port-representation theorems and the same-input sign15/sign16 seed iff at current symbolic ports each report propext, Classical.choice and Quot.sound, with no warnings or sorryAx. Source, object, logs, conditional-iff/current-bounds direct provider guards and overlays were checked. The historical current-bounds survey and inherited provider unions are point-in-time with their recorded ancestry qualifications. Direct expression iff, iPRA endpoint and JSON/PDF binding remain separate.
