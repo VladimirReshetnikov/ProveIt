@@ -1382,6 +1382,11 @@ A [scalar-window client](research/nine-sharing-sign15-scalar-window-check/README
 derives `q ≥ F` from staged seed zero under represented beta/K and the stated
 beta/MC/MF bounds. The first-index survey remains point-in-time; the full
 window and natural lift remain separate.
+A [signed-value client](research/nine-sharing-sign15-signed-value-check/README.md),
+[independently audited](reviews/nine-sharing-sign15-signed-value-terminal-independent/README.md),
+checks the substituted inner and V values in the difference ring under
+represented beta/MC/MF and `q ≥ F`, without assuming a natural inner witness.
+The seed-level auxiliary norm and lift remain separate.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
