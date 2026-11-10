@@ -1364,6 +1364,12 @@ A [shared-values client](research/nine-sharing-sign14-shared-values-check/README
 [independently audited](reviews/nine-sharing-sign14-shared-values-terminal-independent/README.md),
 checks c, root and scale evaluations under represented beta. The tau lift
 and JSON binding remain separate.
+[Rank](research/nine-sharing-sign14-rank-value-check/README.md) and
+[Nt transport](research/nine-sharing-sign14-transport-row-check/README.md)
+clients, independently audited ([rank](reviews/nine-sharing-sign14-rank-value-terminal-independent/README.md),
+[Nt](reviews/nine-sharing-sign14-transport-row-terminal-independent/README.md)),
+check natural rank under represented ports and `q ≥ F`, and natural Nt
+transport from seed zero without a tau witness. The tau lift remains separate.
 A [staged syntax client](research/nine-sharing-sign15-staged-syntax-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-staged-syntax-terminal-independent/README.md),
 checks the symbolic seed-zero characterization in 16 stages. The external AST
