@@ -916,7 +916,12 @@ checks native, standard, and translated-standard proof-existence equivalences
 for the symbolic Fin22 expression, with a successful outer exit and final
 postflight. Inherited provider and point-observation qualifications remain.
 The external degree-twelve and coefficient-byte descriptions are not formally
-bound to this Lean expression; it is not a Jones nine-variable endpoint.
+bound to this Lean expression; it is not a Jones nine-variable endpoint. A
+[Lean degree-upper client](research/nine-sharing-sign22-degree-upper-check/README.md),
+[independently audited](reviews/nine-sharing-sign22-degree-upper-terminal-independent/README.md),
+proves total degree at most twelve for arbitrary integer ports and current
+ports, with four no-op/unreachable tactic warnings. The exact lower bound is
+separate.
 A [21-witness degree-14 candidate](research/nine-sharing-sign21-degree14-s-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign21-degree14-s-independent/README.md),
 substitutes the natural normalized-S product. Its fixed-input external square-sum
@@ -956,6 +961,10 @@ A [20-witness degree-20 candidate](research/nine-sharing-sign20-degree20-e-candi
 eliminates E by a natural product and has exact external fixed-input degree 20
 when beta is nonzero. Its model bridge, Lean degree and byte binding, and iPRA
 endpoint remain open.
+A [sign20 syntax and squares client](research/nine-sharing-sign20-seed-squares-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-seed-squares-terminal-independent/README.md),
+checks symbolic seed zero iff its 11 residuals vanish. It does not establish
+the beta representation, model bridge, Lean degree, or iPRA endpoint.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
