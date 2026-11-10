@@ -2179,6 +2179,11 @@ check all 942 doubled tile weights against the in-Lean literals used in that
 union. An [external radix-layout audit](reviews/nine-sharing-sign17-k-byte-bridge-design-independent/README.md)
 also checks the sentinel collision at digit 1004 against the pinned snapshot;
 it is not a Lean byte or file theorem.
+A [generic ofDigits sum probe](research/nine-sharing-sign17-k-ofdigits-sum-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-ofdigits-sum-failure-independent/README.md),
+failed because an induction `generalizing` argument was unnecessary. Its
+clean printed report does not replace the missing object and postflight; a
+minimal proof retry is separate.
 A [ranked rawWord retry](research/nine-sharing-sign17-k-ranked-rawword-retry-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-ranked-rawword-retry-terminal-independent/README.md),
 checks the actual rawWord and K symbolic identities, including the ranked
