@@ -1751,6 +1751,10 @@ An [external K ranking witness](research/nine-sharing-sign17-k-ranking-witness/R
 [independently reviewed](reviews/nine-sharing-sign17-k-ranking-witness-independent/README.md),
 reconstructs 942 source-transcribed tile weights and checks their permutation,
 order and coefficient entries in Python. It is not a Lean ranking or K theorem.
+A [four-case tile-weight sample](research/nine-sharing-sign17-k-tile-sample-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-tile-sample-terminal-independent/README.md),
+checks actual Lean weights at indices 0, 926, 126 and 432. The other 938
+entries, full ranking and K/file binding remain open.
 A [symbolic MF radix-digit attempt](research/nine-sharing-sign17-mf-radix-digits-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mf-radix-digits-terminal-independent/README.md),
 passed fifteen prerequisites but failed the final digit theorem on recursion
