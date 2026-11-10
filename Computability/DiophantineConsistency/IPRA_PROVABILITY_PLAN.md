@@ -921,7 +921,10 @@ bound to this Lean expression; it is not a Jones nine-variable endpoint. A
 [independently audited](reviews/nine-sharing-sign22-degree-upper-terminal-independent/README.md),
 proves total degree at most twelve for arbitrary integer ports and current
 ports, with four no-op/unreachable tactic warnings. The exact lower bound is
-separate.
+separate. A [lower-bound ingredients attempt](research/nine-sharing-sign22-leading-rows-check/README.md),
+[independently audited](reviews/nine-sharing-sign22-leading-rows-terminal-independent/README.md),
+failed its first N0 axis identity due to omitted lower-order terms, reporting
+`sorryAx`; no object, later stages, or postflight were produced.
 A [21-witness degree-14 candidate](research/nine-sharing-sign21-degree14-s-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign21-degree14-s-independent/README.md),
 substitutes the natural normalized-S product. Its fixed-input external square-sum
