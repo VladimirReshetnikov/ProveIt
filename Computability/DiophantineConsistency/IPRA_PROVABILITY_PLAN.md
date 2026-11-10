@@ -703,7 +703,11 @@ also retains that hypothesis. A [current-port specialization](research/nine-shar
 [independently audited](reviews/nine-sharing-sign24-current-iff-terminal-independent/README.md),
 discharges it using the current beta representative; its current-data producer
 has successful observed children but a failed overall run. The direct expression,
-Lean degree and port-byte binding, and iPRA endpoint remain open.
+has an [evaluation client](research/nine-sharing-sign24-expression-eval-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-expression-eval-terminal-independent/README.md),
+for input one at abstract and current ports; it inherits partial historical
+provider observations. Expression-zero composition, Lean degree and port-byte
+binding, and iPRA endpoint remain open.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
