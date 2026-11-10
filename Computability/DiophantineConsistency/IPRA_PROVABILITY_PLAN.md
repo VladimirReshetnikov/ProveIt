@@ -1220,6 +1220,11 @@ An [explicit-ring retry](research/nine-sharing-sign16-absdiff-ingredient-retry01
 checks the square identity and auxiliary norm transport under explicit inner
 and signed-norm hypotheses. Deriving those hypotheses from the reduced rows
 and obtaining the natural lift remain separate.
+A [staged syntax client](research/nine-sharing-sign16-staged-syntax-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-staged-syntax-terminal-independent/README.md),
+checks symbolic seed-zero iff its seven staged residuals vanish, in 17 stages
+with one warning. External JSON binding, the signed lift and equivalence remain
+open.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
