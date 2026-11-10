@@ -1,0 +1,3 @@
+# Independent terminal audit
+
+PASS: author-observed outer session 32017 exited 0. Stage/postflight passed; frozen state, byte-identical audited source, object/logs, all three pinned direct overlay routes and guarded overlays match. All five beta, mu, omega, rational K and all-ports reports use `[propext, Classical.choice, Quot.sound]`, without warning or `sorryAx`. This replays the structured port identities in the numeral-K context; source header is historical and stale. Complete transitive source/object ancestry, PDF/TeX interpretation and external files remain separate. The numeric outer receipt itself does not hash the state. No Lean was run.
