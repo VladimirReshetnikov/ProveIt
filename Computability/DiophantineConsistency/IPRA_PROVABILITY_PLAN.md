@@ -1459,6 +1459,11 @@ A [shared symbolic-code client](research/nine-sharing-sign14-prefix-code-check/R
 checks the interpretation of 44 shared nodes and five residual code trees
 against the staged Lean expressions. It reports 49 sequencing-linter warnings;
 the long-row byte encodings and external JSON/PDF connections remain separate.
+A [reflected row00 byte attempt](research/nine-sharing-sign14-prefix-reflected-probe-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-prefix-reflected-probe-terminal-independent/README.md),
+still hit the kernel memory limit on the complete 689-byte equality. No module
+or postflight was produced; the final decode statement depended on that failed
+byte declaration. Smaller byte chunks are being investigated.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
