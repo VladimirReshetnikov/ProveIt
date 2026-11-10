@@ -1,0 +1,3 @@
+# Independent sign24 leading-coefficient ingredients prelaunch review
+
+Independent checker session 51419 exited 0. The first two proposed stages replay the independently audited N0 and diagonal degree sources unchanged. The other stages propose weighted degree at most two for the first and every non-N0 residual at arbitrary integer ports, and a separate coefficient-one identity for the N0 square; only finite weighted-degree checks receive local four-million-heartbeat settings. Source/manifest/provider, fresh output, guarded limits and no-Lean preflight were verified. These are ingredients, not yet a proof of a full sum coefficient, a degree lower bound or external JSON/PDF correspondence.

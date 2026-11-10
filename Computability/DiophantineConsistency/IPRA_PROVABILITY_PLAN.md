@@ -794,6 +794,11 @@ A [finite-index retry](research/nine-sharing-sign24-degree-lower-retry-check/REA
 [independently audited](reviews/nine-sharing-sign24-degree-lower-retry-terminal-independent/README.md),
 checks the N0 axis identity in any commutative ring and generic diagonal
 total-degree nonincrease. The coefficient argument and exact degree remain open.
+A [leading-coefficient attempt](research/nine-sharing-sign24-leading-coeff-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-leading-coeff-terminal-independent/README.md),
+compiled the other residuals' diagonal degree-at-most-two bounds, but failed
+the N0-square coefficient normalization and reported `sorryAx`. No coefficient
+object or final postflight was produced.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact

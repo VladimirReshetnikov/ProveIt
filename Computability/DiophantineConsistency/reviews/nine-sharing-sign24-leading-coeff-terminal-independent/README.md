@@ -1,0 +1,3 @@
+# Independent sign24 leading-coefficient partial failure audit
+
+Independent checker session 51698 exited 0 against author outer session 86999 (exit 1). The first three children compiled: N0 row/axis, diagonal degree nonincrease, and arbitrary-port non-N0 residual weighted and axis degree bounds. The fourth child failed coefficient normalization, emitted three unused-simp warnings and reported `sorryAx`; no coefficient object or final postflight exists. Source, objects, direct guards, overlay and expression provider were checked. These successful children are partial observations of a failed enclosing run, not a full lower-bound, coefficient-one or JSON/PDF theorem.
