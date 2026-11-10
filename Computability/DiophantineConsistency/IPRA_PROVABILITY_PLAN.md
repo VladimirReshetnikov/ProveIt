@@ -1773,6 +1773,10 @@ A [second weight batch](research/nine-sharing-sign17-k-weight-batch01-check/READ
 [independently audited](reviews/nine-sharing-sign17-k-weight-batch01-terminal-independent/README.md),
 checks witness rows 32–95 against actual Lean tile weights. Ranking, the
 remaining entries, full K and file binding remain separate.
+A [third weight batch](research/nine-sharing-sign17-k-weight-batch02-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-weight-batch02-terminal-independent/README.md),
+checks witness rows 96–159. Physical ranking, remaining entries, full K and
+file binding remain separate.
 A [symbolic MF radix-digit attempt](research/nine-sharing-sign17-mf-radix-digits-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mf-radix-digits-terminal-independent/README.md),
 passed fifteen prerequisites but failed the final digit theorem on recursion
