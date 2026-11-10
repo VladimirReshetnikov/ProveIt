@@ -1192,8 +1192,11 @@ also checks the beta-port representation, with the inherited successful-child
 of failed-producer qualification. The endpoint remains separate. An
 [expression-evaluation client](research/nine-sharing-sign18-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign18-expression-eval-terminal-independent/README.md),
-checks symbolic Fin18 evaluation against the staged seed. It does not bind
-the expression to external JSON or supply an endpoint.
+checks symbolic Fin18 evaluation against the staged seed. A [direct expression
+equivalence](research/nine-sharing-sign18-expression-equivalence-check/README.md),
+[independently audited](reviews/nine-sharing-sign18-expression-equivalence-terminal-independent/README.md),
+checks current-port Fin18/Fin19 model-zero existence equivalence, with one
+warning. These do not bind the expression to external JSON or supply an endpoint.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
