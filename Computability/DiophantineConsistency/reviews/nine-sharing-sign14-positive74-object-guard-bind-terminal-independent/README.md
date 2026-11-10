@@ -1,0 +1,3 @@
+# Independent terminal audit
+
+PASS: author-observed outer session 17411 exited 0. Stage/postflight passed; frozen receipt/state/logs, source/object, audited open-reconstruction provider and guarded overlays match. `guard_subst` reports `[propext, Quot.sound]` and the instantiated reconstruction implication `[propext, Classical.choice, Quot.sound]`; three unused-simp warnings and no `sorryAx`. This proves guard substitution and its open object-theory reconstruction implication only; full expression substitution and closed sentence equivalence remain separate. Historical object ancestry is inherited, with captured routes point-in-time. No Lean was run.
