@@ -57,5 +57,5 @@ For the non-Start part, check indices are nonzero and adjacent weights decrease
 inside each block, plus each boundary between blocks. The separately checked
 rank criterion turns those facts into actual physical positions. The
 [single-block ordering sample](../nine-sharing-sign17-k-order-batch01-check/README.md)
-is only a proposed test until its own run and audit pass. This still leaves
+passed Lean and independent audit for candidate rows 32–95. This still leaves
 control terms, coefficient aggregation, radix bytes and file provenance.

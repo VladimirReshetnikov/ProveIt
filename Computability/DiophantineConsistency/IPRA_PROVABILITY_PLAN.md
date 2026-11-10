@@ -1872,6 +1872,13 @@ A [final paired aggregate batch for rows 864–941](research/nine-sharing-sign17
 checks one Fin64 and one Fin14 actual-weight theorem. All 942 witness rows
 are now covered by separate checked batches; their union, candidate ranking,
 full K and external-file binding remain separate.
+A [Fin96 union](research/nine-sharing-sign17-k-weight-union96-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-weight-union96-terminal-independent/README.md),
+combines the first two batches into one actual-weight theorem for rows 0–95.
+An [ordering sample](research/nine-sharing-sign17-k-order-batch01-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-order-batch01-terminal-independent/README.md),
+checks 64 nonzero candidate indices and the 63 internal adjacent comparisons
+for rows 32–95. Cross-block ordering, full union and K binding remain separate.
 A [paired aggregate batch for rows 736–863](research/nine-sharing-sign17-k-weight-aggregate-batch12-13-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-weight-aggregate-batch12-13-terminal-independent/README.md),
 checks two further universal actual-weight theorems. Candidate ranking and
