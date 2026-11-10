@@ -1425,6 +1425,10 @@ A [direct four-row attempt](research/nine-sharing-sign14-prefix-rows-check/READM
 hit Lean's kernel memory limit on the first 689-byte row. It produced no row
 object or postflight; the other three rows were not tried. A compositional
 approach remains under investigation.
+A [generic parser-reflection attempt](research/nine-sharing-sign14-prefix-reflection-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-prefix-reflection-terminal-independent/README.md),
+failed to simplify three recursive `Option.bind` cases. It produced no
+reflection object or postflight; a proof-only retry is in preparation.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
@@ -1897,6 +1901,11 @@ An [ordering sample](research/nine-sharing-sign17-k-order-batch01-check/README.m
 [independently audited](reviews/nine-sharing-sign17-k-order-batch01-terminal-independent/README.md),
 checks 64 nonzero candidate indices and the 63 internal adjacent comparisons
 for rows 32–95. Cross-block ordering, full union and K binding remain separate.
+A [replayed Fin224 union](research/nine-sharing-sign17-k-weight-union224-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-weight-union224-terminal-independent/README.md),
+combines the first four weight batches in one context and checks actual-weight
+theorems for rows 0–159 and 0–223. Rank, full union and K binding remain
+separate.
 A [paired aggregate batch for rows 736–863](research/nine-sharing-sign17-k-weight-aggregate-batch12-13-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-weight-aggregate-batch12-13-terminal-independent/README.md),
 checks two further universal actual-weight theorems. Candidate ranking and

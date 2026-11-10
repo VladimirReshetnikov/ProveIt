@@ -1,0 +1,76 @@
+/tmp/nine-sharing-sign14-prefix-reflection-check-20261110/src/DiophantineConsistency/Sign14PrefixReflection.lean:70:23: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  decode p n (encode b ++ ?tail)
+in the target expression
+  (do
+      let __x ← some (interpret p a, encode b ++ tail)
+      let __x_1 ← decode p n __x.2
+      some (__x.1.add __x_1.1, __x_1.2)) =
+    some (interpret p (a.add b), tail)
+
+case add.succ
+p : Fin 4 → ℤ
+a b : Code
+ha : ∀ (n : ℕ), depth a ≤ n → ∀ (tail : List Char), decode p n (encode a ++ tail) = some (interpret p a, tail)
+hb : ∀ (n : ℕ), depth b ≤ n → ∀ (tail : List Char), decode p n (encode b ++ tail) = some (interpret p b, tail)
+tail : List Char
+n : ℕ
+hn : depth (a.add b) ≤ n + 1
+hA : depth a ≤ n
+hB : depth b ≤ n
+⊢ (do
+      let __x ← some (interpret p a, encode b ++ tail)
+      let __x_1 ← decode p n __x.2
+      some (__x.1.add __x_1.1, __x_1.2)) =
+    some (interpret p (a.add b), tail)
+/tmp/nine-sharing-sign14-prefix-reflection-check-20261110/src/DiophantineConsistency/Sign14PrefixReflection.lean:80:23: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  decode p n (encode b ++ ?tail)
+in the target expression
+  (do
+      let __x ← some (interpret p a, encode b ++ tail)
+      let __x_1 ← decode p n __x.2
+      some (__x.1.sub __x_1.1, __x_1.2)) =
+    some (interpret p (a.sub b), tail)
+
+case sub.succ
+p : Fin 4 → ℤ
+a b : Code
+ha : ∀ (n : ℕ), depth a ≤ n → ∀ (tail : List Char), decode p n (encode a ++ tail) = some (interpret p a, tail)
+hb : ∀ (n : ℕ), depth b ≤ n → ∀ (tail : List Char), decode p n (encode b ++ tail) = some (interpret p b, tail)
+tail : List Char
+n : ℕ
+hn : depth (a.sub b) ≤ n + 1
+hA : depth a ≤ n
+hB : depth b ≤ n
+⊢ (do
+      let __x ← some (interpret p a, encode b ++ tail)
+      let __x_1 ← decode p n __x.2
+      some (__x.1.sub __x_1.1, __x_1.2)) =
+    some (interpret p (a.sub b), tail)
+/tmp/nine-sharing-sign14-prefix-reflection-check-20261110/src/DiophantineConsistency/Sign14PrefixReflection.lean:90:23: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  decode p n (encode b ++ ?tail)
+in the target expression
+  (do
+      let __x ← some (interpret p a, encode b ++ tail)
+      let __x_1 ← decode p n __x.2
+      some (__x.1.mul __x_1.1, __x_1.2)) =
+    some (interpret p (a.mul b), tail)
+
+case mul.succ
+p : Fin 4 → ℤ
+a b : Code
+ha : ∀ (n : ℕ), depth a ≤ n → ∀ (tail : List Char), decode p n (encode a ++ tail) = some (interpret p a, tail)
+hb : ∀ (n : ℕ), depth b ≤ n → ∀ (tail : List Char), decode p n (encode b ++ tail) = some (interpret p b, tail)
+tail : List Char
+n : ℕ
+hn : depth (a.mul b) ≤ n + 1
+hA : depth a ≤ n
+hB : depth b ≤ n
+⊢ (do
+      let __x ← some (interpret p a, encode b ++ tail)
+      let __x_1 ← decode p n __x.2
+      some (__x.1.mul __x_1.1, __x_1.2)) =
+    some (interpret p (a.mul b), tail)
+'DiophantineConsistency.Sign14PrefixReflection.decode_encode' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]
