@@ -13,4 +13,6 @@ matches all five expanded residuals with the external 86-gate candidate.
 It is not a Lean compilation or a theorem about external files.
 
 The 90-gate seed provider subsequently passed its [guarded retry](../nine-sharing-sign14-90gate-lean-retry01-check/README.md)
-and independent terminal review. The 86-gate draft itself remains uncompiled.
+and independent terminal review. The [86-gate seed equality](../nine-sharing-sign14-86gate-lean-check/README.md)
+also passed a guarded Lean run and independent terminal review. Later
+transfers remain separate.
