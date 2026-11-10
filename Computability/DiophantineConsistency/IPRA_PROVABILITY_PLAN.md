@@ -2219,6 +2219,10 @@ A [minimal generic ofDigits retry](research/nine-sharing-sign17-k-ofdigits-sum-r
 [independently audited](reviews/nine-sharing-sign17-k-ofdigits-sum-retry-terminal-independent/README.md),
 checks the arbitrary-base little-endian finite power-sum identity. Concrete K
 digits and external-file binding remain separate.
+A [generic reversal/increment client](research/nine-sharing-sign17-k-radix-reversal-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-radix-reversal-terminal-independent/README.md),
+checks the finite-vector reversal and single-index increment identities. It is
+a generic ingredient, not a concrete K byte or external-file theorem.
 A [ranked rawWord retry](research/nine-sharing-sign17-k-ranked-rawword-retry-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-ranked-rawword-retry-terminal-independent/README.md),
 checks the actual rawWord and K symbolic identities, including the ranked
