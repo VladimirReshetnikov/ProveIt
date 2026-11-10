@@ -1970,6 +1970,10 @@ A [global-offset probe](research/nine-sharing-sign17-k-global-rank-probe-check/R
 [independently audited](reviews/nine-sharing-sign17-k-global-rank-probe-terminal-independent/README.md),
 checks Start and the first 16 nonzero/adjacent cases directly on the nested
 Fin942 vectors. It does not establish global assembly or rank.
+A [64-case middle-offset probe](research/nine-sharing-sign17-k-global-rank-middle-probe-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-global-rank-middle-probe-terminal-independent/README.md),
+checks positions 449–512 and adjacent comparisons through 513 across a
+block boundary. Full global assembly remains separate.
 A [conditional global-rank transport](research/nine-sharing-sign17-k-global-rank-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-global-rank-terminal-independent/README.md),
 derives candidate physical positions from the Fin942 weights under explicit
