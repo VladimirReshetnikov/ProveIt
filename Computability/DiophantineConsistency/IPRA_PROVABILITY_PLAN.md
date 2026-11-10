@@ -1045,6 +1045,11 @@ bound to this Lean expression; it is not a Jones nine-variable endpoint. A
 [independently audited](reviews/nine-sharing-sign20-degree-upper-terminal-independent/README.md),
 proves total degree at most twenty for arbitrary integer ports and current
 ports, with four fallback warnings. The exact lower bound remains separate.
+A [leading-row client](research/nine-sharing-sign20-leading-rows-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-leading-rows-terminal-independent/README.md),
+checks the two beta-dependent axis identities, diagonal degree nonincrease
+and other-row weighted degree at most six, with seven tactic warnings. The
+coefficient and exact lower bound remain separate.
 A [19-witness degree-44 external candidate](research/nine-sharing-sign19-degree44-y-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign19-external-independent/README.md),
 eliminates Y and has exact fixed-input degree 44 when beta is nonzero. The
