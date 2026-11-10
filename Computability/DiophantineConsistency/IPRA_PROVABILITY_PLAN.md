@@ -646,12 +646,19 @@ A [split diagnostic](research/nine-sharing-sign25-endpoint-diagnostic-check/READ
 compiled the bridge import but encountered an interpreter memory exception
 when adding the expression alias and local attributes. Later stages did not
 run; the exact trigger and the endpoint remain unresolved.
+A [minimal diagnostic](research/nine-sharing-sign25-endpoint-minimal-diagnostic-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-endpoint-minimal-diagnostic-terminal-independent/README.md),
+checks the bridge type successfully, but the typed alias without the local
+attributes still raises the interpreter memory exception. Its third stage
+was not attempted; no endpoint follows.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
 square-sum has exact degree eight, by the explicit N0 specialization. This
-is an external AST result: the model lift/drop, inherited sign25 bridge,
-Lean degree and port-byte binding, and iPRA endpoint remain open.
+degree is an external AST result. A [syntax and squares client](research/nine-sharing-sign24-seed-squares-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-seed-squares-terminal-independent/README.md),
+checks the symbolic seed zero iff its 15 residuals vanish. The q3 model
+lift/drop, Lean degree and port-byte binding, and iPRA endpoint remain open.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
