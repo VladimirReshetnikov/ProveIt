@@ -1372,6 +1372,11 @@ A subsequent [actual Na-axis binding](research/nine-sharing-sign14-axis-na-bindi
 checks that the actual staged row has degree 62 when `p 0 ≠ 0`. Its two
 warnings and inherited point-survey qualifications are recorded. Seed
 dominance, the multivariate lower bound and external binding remain separate.
+A [seed-axis degree client](research/nine-sharing-sign14-axis-seed-degree-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-axis-seed-degree-terminal-independent/README.md),
+checks the staged seed's axis degree is 124 when `p 0 ≠ 0`, using strict
+dominance over the other four squared residuals. It records two warnings;
+the multivariate diagonal lower bound and external binding remain separate.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
