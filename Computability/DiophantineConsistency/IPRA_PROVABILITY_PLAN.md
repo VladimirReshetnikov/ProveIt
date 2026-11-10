@@ -2147,6 +2147,11 @@ A [Fin986 coefficient recipe](research/nine-sharing-sign17-k-full-coefficients-b
 combines 942 doubled tile weights and 44 controls into one in-Lean weighted
 sum, with three sentinels separately, and proves the resulting rawWord/K
 identities. Literal coefficient-array and external-file bindings remain separate.
+A [literal coefficient union attempt](research/nine-sharing-sign17-k-literal-coefficient-union-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-literal-coefficient-union-failure-independent/README.md),
+checked eight tile-union stages but failed on recursion depth during final
+rawWord transport. The pointwise coefficient report was clean; no final
+object or postflight was produced. An explicit finite-sum retry is separate.
 A [ranked rawWord retry](research/nine-sharing-sign17-k-ranked-rawword-retry-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-ranked-rawword-retry-terminal-independent/README.md),
 checks the actual rawWord and K symbolic identities, including the ranked
