@@ -1678,6 +1678,10 @@ A [structural retry](research/nine-sharing-sign17-mf-radix-digits-retry-check/RE
 [independently audited](reviews/nine-sharing-sign17-mf-radix-digits-retry-terminal-independent/README.md),
 removed the arithmetic error but failed the first-digit proof at recursion
 depth; no digit object or postflight was produced.
+A [second structural retry](research/nine-sharing-sign17-mf-radix-digits-retry02-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-mf-radix-digits-retry02-terminal-independent/README.md),
+checks symbolic highPort+beta/current port3 decoding from 2,012 radix digits,
+with one warning. Byte composition and file/gzip/JSON/PDF binding remain separate.
 A [ten-chunk client](research/nine-sharing-sign17-mf-chunk-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mf-chunk-terminal-independent/README.md),
 checks ten small radix/byte identities. External fixture matching is separate
