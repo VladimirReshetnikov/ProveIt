@@ -1229,6 +1229,10 @@ A [staged syntax client](research/nine-sharing-sign17-staged-syntax-check/README
 checks the symbolic seed-zero iff its eight residuals vanish in 17 stages.
 External AST correspondence is source-reviewed, not a Lean binding; the
 signed-lift bridge and endpoint remain separate.
+An [expression-evaluation client](research/nine-sharing-sign17-expression-eval-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-expression-eval-terminal-independent/README.md),
+checks the symbolic Fin17 input-one evaluator against that staged seed; it
+does not establish the model bridge, endpoint or external binding.
 A finite [positive-gate octic search](research/nine-sharing-octic-positive-elimination-search/README.md),
 [independently audited](reviews/nine-sharing-octic-positive-elimination-independent/README.md),
 reaches at best 23 witnesses among 19 ordered states when every step preserves
