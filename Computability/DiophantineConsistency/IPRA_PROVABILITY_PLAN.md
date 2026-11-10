@@ -1910,6 +1910,11 @@ An [ordering sample](research/nine-sharing-sign17-k-order-batch01-check/README.m
 [independently audited](reviews/nine-sharing-sign17-k-order-batch01-terminal-independent/README.md),
 checks 64 nonzero candidate indices and the 63 internal adjacent comparisons
 for rows 32–95. Cross-block ordering, full union and K binding remain separate.
+A [paired ordering client](research/nine-sharing-sign17-k-order-batch02-03-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-order-batch02-03-terminal-independent/README.md),
+checks nonzero indices and internal adjacent weight comparisons for rows
+96–223, including the 159/160 boundary. Other boundaries, candidate rank
+and full K/file binding remain separate.
 A [replayed Fin224 union](research/nine-sharing-sign17-k-weight-union224-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-weight-union224-terminal-independent/README.md),
 combines the first four weight batches in one context and checks actual-weight
