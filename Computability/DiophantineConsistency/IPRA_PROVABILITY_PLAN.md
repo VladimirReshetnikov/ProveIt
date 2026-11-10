@@ -1819,6 +1819,10 @@ A [conditional rank-certificate attempt](research/nine-sharing-sign17-k-rank-cer
 passed fifteen prerequisites but failed because the physical permutation
 namespace was not imported by its provider; no criterion object or postflight
 was produced.
+A [generic rank criterion](research/nine-sharing-sign17-k-rank-generic-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-rank-generic-terminal-independent/README.md),
+checks the abstract result under explicit rank and weight hypotheses. Its
+specialization to actual physicalMap, the candidate witness and K remain separate.
 A [symbolic MF radix-digit attempt](research/nine-sharing-sign17-mf-radix-digits-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mf-radix-digits-terminal-independent/README.md),
 passed fifteen prerequisites but failed the final digit theorem on recursion
