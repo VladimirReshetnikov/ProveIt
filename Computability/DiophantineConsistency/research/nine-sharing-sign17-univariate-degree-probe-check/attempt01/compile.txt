@@ -1,0 +1,27 @@
+/tmp/nine-sharing-sign17-univariate-degree-probe-20261110/src/DiophantineConsistency/Sign17UnivariateDegreeProbe.lean:25:2: error: unsolved goals
+case pos
+p : MvPolynomial (Fin 1) ℤ
+q : P := (uniqueAlgEquiv ℤ (Fin 1)) p
+hq : q = 0
+⊢ (eval₂ Polynomial.C (fun x => Polynomial.X) p).natDegree ≤ p.totalDegree
+/tmp/nine-sharing-sign17-univariate-degree-probe-20261110/src/DiophantineConsistency/Sign17UnivariateDegreeProbe.lean:33:6: error: Type mismatch: After simplification, term
+  Nat.lt_of_not_ge hn
+ has type
+  p.totalDegree < (eval₂ Polynomial.C (fun x => Polynomial.X) p).natDegree
+but is expected to have type
+  p.totalDegree < (Finsupp.single 0 (Polynomial.natDegree q)).support.card * Polynomial.natDegree q
+/tmp/nine-sharing-sign17-univariate-degree-probe-20261110/src/DiophantineConsistency/Sign17UnivariateDegreeProbe.lean:25:10: warning: This simp argument is unused:
+  hq
+
+Hint: Omit it from the simp argument list.
+  simp ̵[̵h̵q̵]̵
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'DiophantineConsistency.Sign17UnivariateDegree.product_degree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.Sign17UnivariateDegree.dominant_add' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.Sign17UnivariateDegree.mapped_degree_le' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]

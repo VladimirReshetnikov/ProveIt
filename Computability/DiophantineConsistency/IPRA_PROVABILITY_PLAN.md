@@ -1292,6 +1292,10 @@ An [explicit-import retry](research/nine-sharing-sign17-axis-degree-core-retry-c
 [independently audited](reviews/nine-sharing-sign17-axis-degree-core-retry-failure-independent/README.md),
 failed at an imported `Matrix.map` namespace collision with Foundation; no
 source theorem, object or final postflight was produced.
+A [univariate compatibility probe](research/nine-sharing-sign17-univariate-degree-probe-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-univariate-degree-probe-failure-independent/README.md),
+passed the alternative import but left two mapped-degree goals unsolved; the
+module object and postflight were not produced.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
