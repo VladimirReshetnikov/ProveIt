@@ -89,6 +89,10 @@ The distinct [free-`Y` 63-operation proposal](research/current14-carrier63-free-
 likewise has an independently reviewed symbolic positive zero at the current
 ports whose eliminated `q³` divisibility fails. These zero constructions are
 external mathematical checks, not new Lean proofs.
+An independent [free-`k,c` 63-operation proposal](research/current14-carrier63-free-kc-zero/README.md)
+also has a reviewed symbolic positive zero at the current ports; its direct
+inverse violates the original positive-coordinate interval. None of these
+examples settles unrestricted existential equivalence.
 
 ## Sign14 proof transfer and fixed-constant work
 
