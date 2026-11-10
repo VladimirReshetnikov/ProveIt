@@ -1,0 +1,3 @@
+# Independent terminal audit
+
+PASS: author-observed outer session 97424 exited 0. Stage and postflight passed; frozen state, source/object/logs, direct numeral-K current14 endpoint provider and guarded overlays match. The named-expression equality reports `[propext]` and the standard-iPRA endpoint `[propext, Classical.choice, Quot.sound]`, with no warnings or `sorryAx`. The expression was mechanically copied from existing Lean syntax and independently compared byte-for-byte in prelaunch; it is not a formal TeX/PDF parse or external-file binding. The endpoint states derivability of a biconditional, not either side alone or a printed proof certificate. The numeric outer receipt itself does not hash the state. No Lean was run.
