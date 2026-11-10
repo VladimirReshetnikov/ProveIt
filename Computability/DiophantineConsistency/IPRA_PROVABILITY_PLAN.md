@@ -2038,6 +2038,11 @@ A [ranked tile-sum reindexing attempt](research/nine-sharing-sign17-k-ranked-til
 [independently audited](reviews/nine-sharing-sign17-k-ranked-tile-sum-terminal-independent/README.md),
 failed on an extra argument to a finite-surjectivity lemma. It produced no
 object or postflight; the control terms and full K aggregation remain separate.
+A [ranked tile-sum retry](research/nine-sharing-sign17-k-ranked-tile-sum-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-ranked-tile-sum-retry-terminal-independent/README.md),
+checks candidate bijectivity and reindexes the actual 942-tile weighted
+power sum to the candidate-weight sum for any natural base. Control terms,
+sentinels, full K and external-file binding remain separate.
 A [generic finite-partition probe](research/nine-sharing-sign17-k-partition-probe-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-partition-probe-terminal-independent/README.md),
 failed on a nested-offset associativity mismatch. It produced no object or
