@@ -1477,6 +1477,12 @@ A [95-gate polynomial-bridge client](research/nine-sharing-sign14-95gate-bridge-
 checks the current-port all-model bridge after explicitly unfolding the prior
 current-expression wrapper. The optimized iPRA endpoint and external-file
 bindings remain separate.
+A [95-gate symbolic iPRA endpoint client](research/nine-sharing-sign14-95gate-endpoint-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-95gate-endpoint-terminal-independent/README.md),
+checks native, standard and Gödel–Gentzen-translated proof-existence
+equivalences for the optimized current-port expression. Its exact degree 124
+is separately checked. The 95-gate count and JSON-to-Lean source comparison
+are external audits; Lean file, PDF and fixed-port-byte semantics remain separate.
 A [95-gate exact-degree client](research/nine-sharing-sign14-95gate-degree-check/README.md),
 [independently audited](reviews/nine-sharing-sign14-95gate-degree-terminal-independent/README.md),
 transfers total degree exactly 124 to the optimized current-port polynomial.
