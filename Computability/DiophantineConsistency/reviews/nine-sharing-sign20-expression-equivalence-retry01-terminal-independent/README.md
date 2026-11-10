@@ -1,0 +1,3 @@
+# Independent sign20 expression equivalence retry terminal audit
+
+Independent checker session 65844 exited 0 against author outer session 22244 (exit 0). The current-port direct Fin20/Fin21 zero-existence equivalence over stated IΣ₁ models and postflight succeeded. Its seed provider discharged the earlier explicit beta representation hypothesis for current ports. Two standard Lean metatheory reports, one unused-section-variable warning and no `sorryAx` occurred. Source, object, direct provider guards, overlay union and three provider audits were checked. Historical partial-provider ancestry remains qualified; this is not yet an iPRA endpoint or external file binding.

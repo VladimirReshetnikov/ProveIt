@@ -1014,7 +1014,11 @@ attempt](research/nine-sharing-sign20-expression-equivalence-check/README.md),
 [independently audited](reviews/nine-sharing-sign20-expression-equivalence-failure-independent/README.md),
 failed before invoking Lean because the runner retained old family keys and
 routing; its earlier prelaunch review missed those post-preflight paths. No
-state or theorem was produced; a corrected retry is separate.
+state or theorem was produced. A [corrected retry](research/nine-sharing-sign20-expression-equivalence-retry01-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-expression-equivalence-retry01-terminal-independent/README.md),
+checks current-port Fin20/Fin21 zero existence in the stated IΣ₁ models; one
+unused-section-variable warning remains. The polynomial bridge and endpoint
+are separate.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
