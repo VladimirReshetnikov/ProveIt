@@ -95,7 +95,10 @@ have now passed 14 separately audited Lean stages. Their [unconditional
 all-coefficient and stream-bound assembly](research/nine-sharing-sign17-k-digit-bound-assembly-check/README.md)
 has also passed independent terminal audit. Lean now also identifies that
 stream as [K's canonical radix digits](research/nine-sharing-sign17-k-canonical-digits-retry02-check/README.md).
-Connections to external bytes remain separate.
+Those digits have an [explicit in-Lean stream](research/nine-sharing-sign17-k-stream-explicit-check/README.md),
+including the sentinel collision. A separate [byte-fixture value identity](research/nine-sharing-sign17-k-byte-compose-retry-check/README.md)
+is checked; connecting the fixture list to the actual stream and external
+bytes remains open.
 
 ## Current reduction status
 
