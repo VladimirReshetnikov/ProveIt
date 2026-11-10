@@ -768,6 +768,10 @@ A [Lean degree-bound attempt](research/nine-sharing-sign24-degree-upper-check/RE
 compiled the generic polynomial-degree upper bound, but the concrete syntactic
 calculation timed out at 200,000 heartbeats and subsequent failed declarations
 reported `sorryAx`. No concrete degree bound or final postflight was produced.
+A [local-heartbeat retry](research/nine-sharing-sign24-degree-upper-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-degree-upper-retry-terminal-independent/README.md),
+compiled the generic bound but stopped the concrete calculation at its
+120-second guard without producing an object or final postflight.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
