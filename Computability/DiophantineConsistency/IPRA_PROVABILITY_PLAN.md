@@ -1077,7 +1077,10 @@ checks all ten rows under the same hypothesis, with 15 warnings. A
 [pointwise zero-assembly client](research/nine-sharing-sign19-zero-assembly-check/README.md),
 [independently audited](reviews/nine-sharing-sign19-zero-assembly-terminal-independent/README.md),
 checks both directions under that hypothesis. The existential model bridge
-and endpoint remain separate.
+is checked by a [same-input seed-iff client](research/nine-sharing-sign19-seed-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign19-seed-iff-terminal-independent/README.md),
+under the same explicit hypothesis. Current-port specialization and the iPRA
+endpoint remain separate.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
