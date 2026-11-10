@@ -64,7 +64,14 @@ also has an independently audited
 and an [exact W degree of 2](research/current14-carrier65-diagonal-w-retry02-check/README.md)
 for arbitrary integer ports. The diagonal c, a, H and Δ degrees 5, 6, 6 and
 12 are [checked under nonzero first port](research/current14-carrier65-diagonal-core-binding-retry-check/README.md).
-The remaining factors and their composition are still separate.
+
+Two independently reviewed external searches examine reductions of this
+65-operation integer-leaf graph. A [bounded local rewrite screen](research/current14-carrier65-local-rewrite-search/README.md)
+found no improvement within its enumerated one- and two-gate replacement
+families. An [unscaled-tail search](research/current14-carrier65-unscaled-tail-search/README.md)
+checks a same-positive-zero degree-138 alternative with 66 operations and a
+restricted multiplication-sharing lower bound. Neither search establishes
+global minimality, and neither is a Lean theorem.
 
 ## Sign14 proof transfer and fixed-constant work
 
