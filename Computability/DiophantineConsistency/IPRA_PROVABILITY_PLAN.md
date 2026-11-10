@@ -890,7 +890,13 @@ checks current-port Fin22/Fin23 zero existence in the stated IΣ₁ models. The
 polynomial bridge is checked by a [direct client](research/nine-sharing-sign22-concrete-polynomial-bridge-check/README.md),
 [independently audited](reviews/nine-sharing-sign22-concrete-polynomial-bridge-terminal-independent/README.md),
 under the scoped `-M3600` interpreter limit and sampled 4 GiB RSS cap. The
-iPRA endpoint and formal byte/degree binding remain separate.
+[direct iPRA endpoint](research/nine-sharing-sign22-endpoint-check/README.md),
+[independently audited](reviews/nine-sharing-sign22-endpoint-terminal-independent/README.md),
+checks native, standard, and translated-standard proof-existence equivalences
+for the symbolic Fin22 expression, with a successful outer exit and final
+postflight. Inherited provider and point-observation qualifications remain.
+The external degree-twelve and coefficient-byte descriptions are not formally
+bound to this Lean expression; it is not a Jones nine-variable endpoint.
 A [21-witness degree-14 candidate](research/nine-sharing-sign21-degree14-s-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign21-degree14-s-independent/README.md),
 substitutes the natural normalized-S product. Its fixed-input external square-sum
