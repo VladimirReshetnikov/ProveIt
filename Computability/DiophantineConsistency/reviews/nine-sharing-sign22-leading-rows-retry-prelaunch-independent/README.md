@@ -1,0 +1,3 @@
+# Independent sign22 leading-row correction retry prelaunch review
+
+Independent checker session 63469 exited 0. Relative to the failed attempt, only the N0 axis right-hand side changes, matching the failed Lean normalization; the other two sources are identical and the runner changes only fresh output and manifest pin. The separate arithmetic script checks hand-transcribed axis polynomials and reports squared leading coefficients summing to 272, but it is not a Lean or external-AST correspondence proof. Provider and resource controls were rechecked. No corrected Lean identity, coefficient or lower bound follows from preflight.

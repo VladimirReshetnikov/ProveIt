@@ -1,0 +1,3 @@
+# Independent sign22 corrected leading-row ingredients terminal audit
+
+Independent checker session 50347 exited 0 against author outer session 66045 (exit 0). Three stages and postflight succeeded: corrected N0/Dc2 row and axis identities, Fin22 diagonal degree nonincrease, and weighted/axis degree at most four for other residuals. Three no-op/unreachable fallback warnings appeared, without `sorryAx`; reports show standard Lean metatheory axioms or subsets. Source, objects, guards, overlays and expression provider were checked. No square coefficient, full lower bound, exact degree or external file binding follows from these ingredients.

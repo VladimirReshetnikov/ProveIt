@@ -924,7 +924,12 @@ ports, with four no-op/unreachable tactic warnings. The exact lower bound is
 separate. A [lower-bound ingredients attempt](research/nine-sharing-sign22-leading-rows-check/README.md),
 [independently audited](reviews/nine-sharing-sign22-leading-rows-terminal-independent/README.md),
 failed its first N0 axis identity due to omitted lower-order terms, reporting
-`sorryAx`; no object, later stages, or postflight were produced.
+`sorryAx`; no object, later stages, or postflight were produced. A [corrected
+retry](research/nine-sharing-sign22-leading-rows-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign22-leading-rows-retry-terminal-independent/README.md),
+checks the two leading axis identities, other-row weighted degree at most
+four and diagonal degree nonincrease. Three fallback warnings remain; the
+coefficient and exact lower bound are separate.
 A [21-witness degree-14 candidate](research/nine-sharing-sign21-degree14-s-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign21-degree14-s-independent/README.md),
 substitutes the natural normalized-S product. Its fixed-input external square-sum
