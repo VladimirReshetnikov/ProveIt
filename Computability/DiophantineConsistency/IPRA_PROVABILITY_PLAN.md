@@ -1464,6 +1464,11 @@ A [reflected row00 byte attempt](research/nine-sharing-sign14-prefix-reflected-p
 still hit the kernel memory limit on the complete 689-byte equality. No module
 or postflight was produced; the final decode statement depended on that failed
 byte declaration. Smaller byte chunks are being investigated.
+A [first shared-node chunk attempt](research/nine-sharing-sign14-prefix-chunk-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-prefix-chunk-terminal-independent/README.md),
+failed on the default recursion-depth limit in the file-head proof. It
+produced no object or postflight; a scoped recursion-depth retry is being
+prepared.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
