@@ -981,7 +981,11 @@ A [Lean degree-upper client](research/nine-sharing-sign21-degree-upper-check/REA
 [independently audited](reviews/nine-sharing-sign21-degree-upper-terminal-independent/README.md),
 proves its polynomial total degree is at most fourteen for arbitrary integer
 ports and the current ports, with four no-op/unreachable tactic warnings. The
-exact lower bound remains separate.
+exact lower bound remains separate. An [independently audited ingredients
+client](research/nine-sharing-sign21-leading-coeff-check/README.md) checks the
+leading septic row and axis identity, diagonal degree nonincrease and other
+residuals' weighted degree at most six, with nine fallback warnings. The
+coefficient and lower bound remain separate.
 A [20-witness degree-20 candidate](research/nine-sharing-sign20-degree20-e-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign20-degree20-e-independent/README.md),
 eliminates E by a natural product and has exact external fixed-input degree 20

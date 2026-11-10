@@ -1,0 +1,3 @@
+# Independent sign21 leading-row ingredients terminal audit
+
+Independent checker session 53815 exited 0 against author outer session 82822 (exit 0). Three stages and postflight succeeded: septic row/axis identity, Fin21 diagonal degree nonincrease, and weighted/axis degree at most six for other residuals. Nine fallback-tactic warnings occurred without `sorryAx`; reports list standard Lean metatheory axioms or subsets. Source, objects, direct guards, overlays and expression provider were verified. No full coefficient, lower bound, exact degree or external binding follows from these ingredients.
