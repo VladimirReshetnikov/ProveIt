@@ -1635,6 +1635,10 @@ An [external MC block layout](research/nine-sharing-sign17-mc-block-layout/READM
 [independently reviewed](reviews/nine-sharing-sign17-mc-block-layout-independent/README.md),
 reconstructs the pinned 11,815-byte snapshot in 252 blocks from radix digits.
 It is Python/filesystem evidence, not a Lean whole-port or file theorem.
+An [external MF source-port block layout](research/nine-sharing-sign17-mf-block-layout/README.md),
+[independently reviewed](reviews/nine-sharing-sign17-mf-block-layout-independent/README.md),
+reconstructs its pinned 11,815-byte snapshot from 2,012 radix digits in 252
+blocks. This is external evidence, not a Lean whole-port or file theorem.
 A [generic block-composition attempt](research/nine-sharing-sign17-mc-compose-core-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mc-compose-core-terminal-independent/README.md),
 passed eighteen prerequisites but failed the final flatten-tail induction;
