@@ -1402,6 +1402,11 @@ encodes the five external seed residuals in five small ASCII files and checks
 their trees against the pinned JSON. This check is external; a proposed Lean
 parser and byte-to-staged-row proof, fixed port bytes and PDF binding are
 separate.
+A [prefix parser and short-row client](research/nine-sharing-sign14-prefix-probe-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-prefix-probe-terminal-independent/README.md),
+checks that the 51-byte embedded Nt row decodes to the actual staged residual
+for arbitrary ports, leaving no input. The other four rows, the JSON-to-byte
+and PDF connections, and fixed-port bytes remain separate.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
