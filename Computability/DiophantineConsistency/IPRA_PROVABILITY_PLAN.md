@@ -1605,6 +1605,11 @@ A [generic block-composition attempt](research/nine-sharing-sign17-mc-compose-co
 [independently audited](reviews/nine-sharing-sign17-mc-compose-core-terminal-independent/README.md),
 passed eighteen prerequisites but failed the final flatten-tail induction;
 no composition object or postflight was produced.
+A [composition retry](research/nine-sharing-sign17-mc-compose-core-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-mc-compose-core-retry-terminal-independent/README.md),
+checks generic aligned block, repetition and flattened-tail facts. Its replayed
+core has one warning; concrete whole-port application and external file binding
+remain separate.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
