@@ -1520,6 +1520,12 @@ A [provider-closure retry](research/nine-sharing-sign14-prefix-dag-degree-retry0
 pins and injects the four local degree-producer objects and checks exact
 degree 124 for the assembled current-port expression. The original-file,
 JSON and PDF connection remains external.
+A [fragment-DAG iPRA endpoint client](research/nine-sharing-sign14-prefix-dag-endpoint-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-prefix-dag-endpoint-terminal-independent/README.md),
+checks native, standard and Gödel–Gentzen-translated proof-existence
+equivalences for that assembled expression. The separately embedded short
+fragments are connected to the original prefix files and JSON by external
+checks; Lean file/JSON/PDF semantics and fixed-port byte identity remain separate.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
