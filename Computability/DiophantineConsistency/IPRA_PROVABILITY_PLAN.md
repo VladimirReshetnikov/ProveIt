@@ -815,8 +815,11 @@ A [constant-evaluation retry](research/nine-sharing-sign24-full-coeff-retry02-ch
 [independently audited](reviews/nine-sharing-sign24-full-coeff-retry02-terminal-independent/README.md),
 checks `8 ≤ toPolynomial.totalDegree` for the actual abstract expression at
 arbitrary integer ports. It passed seven stages and postflight, with one
-unused-simp warning. Together with the independently checked upper bound this
-implies exact degree eight; a single combined theorem is separate.
+unused-simp warning. An [exact-degree client](research/nine-sharing-sign24-exact-degree-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-exact-degree-terminal-independent/README.md),
+combines the two bounds in Lean and proves `toPolynomial.totalDegree = 8` for
+the abstract expression at every integer port vector and for current ports.
+The external JSON, coefficient bytes and PDF remain separately unbound.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
