@@ -75,10 +75,12 @@ global minimality, and neither is a Lean theorem.
 
 A [conditional 64-operation integer-leaf proposal](research/current14-carrier64-transport-proposal/README.md)
 retains fourteen positive inputs. Its forward zero map and circuit identity
-have passed external review, but its reverse zero map is open. A reviewed
-partial assignment meets transport and the first Pell norm while the naively
-recovered old coordinate is negative; the remaining norms are not established,
-so it is not a full counterexample. The proposal is not a proved replacement.
+have passed external review, but its reverse zero map is open. A subsequent
+[symbolic positive zero at the actual ports](research/current14-carrier64-current-full-zero/README.md)
+has passed an [independent external audit](reviews/current14-carrier64-current-full-zero-independent/README.md).
+The enormous witness is not expanded or Lean-checked, and its existence does
+not determine whether the maintained equation has a zero. The proposal is not
+a proved replacement.
 
 ## Sign14 proof transfer and fixed-constant work
 
