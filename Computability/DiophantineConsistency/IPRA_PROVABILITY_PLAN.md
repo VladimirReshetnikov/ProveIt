@@ -1443,6 +1443,11 @@ A [second proof-only retry](research/nine-sharing-sign14-prefix-reflection-retry
 failed because its three explicit `change` patterns were not definitionally
 equal to the elaborated `Option` do-blocks. It also produced no object or
 postflight.
+A [third proof-only retry](research/nine-sharing-sign14-prefix-reflection-retry03-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-prefix-reflection-retry03-terminal-independent/README.md),
+checks the generic fuel-bounded decode/encode theorem with an arbitrary
+suffix, using definitional simplification in the binary cases. The concrete
+long-row byte and staged-expression bindings remain separate.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
