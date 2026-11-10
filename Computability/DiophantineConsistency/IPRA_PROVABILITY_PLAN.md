@@ -1194,6 +1194,11 @@ of failed-producer qualification. The endpoint remains separate. An
 [independently audited](reviews/nine-sharing-sign18-expression-eval-terminal-independent/README.md),
 checks symbolic Fin18 evaluation against the staged seed. It does not bind
 the expression to external JSON or supply an endpoint.
+A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
+[independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
+eliminates a signed difference using the retained Na equation to justify a
+natural lift when beta is positive. Its external fixed-port degree is 96;
+the Lean model bridge, iPRA endpoint and external-to-Lean binding remain open.
 A finite [positive-gate octic search](research/nine-sharing-octic-positive-elimination-search/README.md),
 [independently audited](reviews/nine-sharing-octic-positive-elimination-independent/README.md),
 reaches at best 23 witnesses among 19 ordered states when every step preserves
