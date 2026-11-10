@@ -1354,6 +1354,10 @@ A [generic axis-degree ingredient](research/nine-sharing-sign14-axis-degree-gene
 [independently audited](reviews/nine-sharing-sign14-axis-degree-generic-terminal-independent/README.md),
 checks degree 8 under nonzero parameter and explicit correction/rank degree
 bounds. Binding the actual staged axis and the lower bound remain separate.
+A [staged axis root/scale binding](research/nine-sharing-sign14-axis-binding-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-axis-binding-terminal-independent/README.md),
+checks five actual shared-node identities, with ten linter warnings. The point
+union is not replayed postflight; inner/seed lower and external binding remain separate.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
