@@ -1429,7 +1429,10 @@ checks abstract and current Fin14 symbolic evaluation. Successful-child/
 failed-parent ancestry remains qualified. A [direct expression iff](research/nine-sharing-sign14-expression-equivalence-check/README.md),
 [independently audited](reviews/nine-sharing-sign14-expression-equivalence-terminal-independent/README.md),
 checks current Fin14/Fin15 model-zero existence equivalence with one warning.
-The bridge, endpoint, Lean degree and JSON binding remain separate.
+A [concrete polynomial bridge](research/nine-sharing-sign14-concrete-polynomial-bridge-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-concrete-polynomial-bridge-terminal-independent/README.md),
+checks symbolic Fin14 transport through Fin15. Point-union/inherited
+qualifications remain; endpoint, Lean degree and JSON binding are separate.
 A [staged syntax client](research/nine-sharing-sign15-staged-syntax-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-staged-syntax-terminal-independent/README.md),
 checks the symbolic seed-zero characterization in 16 stages. The external AST
