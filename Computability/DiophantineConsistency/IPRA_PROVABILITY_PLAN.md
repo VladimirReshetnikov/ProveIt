@@ -636,7 +636,11 @@ composes the Fin25 and Fin26 current expressions in both directions. The
 [concrete polynomial bridge](research/nine-sharing-sign25-concrete-polynomial-bridge-check/README.md),
 [independently audited](reviews/nine-sharing-sign25-concrete-polynomial-bridge-terminal-frontier-independent/README.md),
 transports the checked sign26 bridge to the sign25 expression. The direct iPRA
-endpoint remains separate.
+endpoint remains separate. A [guarded endpoint attempt](research/nine-sharing-sign25-endpoint-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-endpoint-terminal-audit-20261109/README.md),
+stopped at its first Lean stage with an interpreter memory exception under
+`-M2800`; no endpoint object or final postflight was produced. Its retained
+state's sign26 scope label is stale: the attempted sources are sign25.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
