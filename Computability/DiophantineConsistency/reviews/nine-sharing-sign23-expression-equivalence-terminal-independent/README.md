@@ -1,0 +1,3 @@
+# Independent sign23 expression equivalence terminal audit
+
+Independent checker session 64687 exited 0 against author outer session 21108 (exit 0). The recorded child compiled and completed postflight, with one unused-section-variable warning and the two printed Lean metatheory axiom reports `[propext, Classical.choice, Quot.sound]`; no `sorryAx` occurred. Source, object, direct provider guards, overlay links and independent upstream provider checks were reviewed. The theorem establishes current-port direct Fin23/Fin24 zero-existence equivalence over the stated IΣ₁ models; it is not itself an iPRA endpoint or external JSON/PDF identification. Provider checks are point-observed and retain historical successful-child-of-failed-outer ancestry qualifications.
