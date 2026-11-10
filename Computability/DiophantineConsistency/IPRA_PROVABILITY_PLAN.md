@@ -1242,6 +1242,10 @@ A [concrete-root retry](research/nine-sharing-sign17-concrete-root-retry-check/R
 checks the shared evaluations and a natural gap from the actual staged row06
 under represented positive beta and row-zero. The full zero equivalence remains
 separate.
+A [gap-from-seed client](research/nine-sharing-sign17-gap-from-seed-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-gap-from-seed-terminal-independent/README.md),
+derives the natural gap directly from symbolic seed zero under represented
+positive beta. Zero assembly and the endpoint remain separate.
 A [conditional coordinate client](research/nine-sharing-sign17-coordinate-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-coordinate-terminal-independent/README.md),
 checks the deleted row and coordinate lift/drop when a natural gap with the

@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+"""Review proposed seed-zero to signed-gap extraction and provider routes."""
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+root=Path(__file__).resolve().parents[2];research=root/'research';p=research/'nine-sharing-sign17-gap-from-seed-check';draft=research/'nine-sharing-sign17-gap-from-seed-draft';sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest();m=p/'source-manifest.json';assert sha(m)=='12560945b74c3660c7a18f6b980a4e92ebf0f7045650e113b3fc8339fccf1257';e,=json.loads(m.read_text())['rows'];src=p/'src/DiophantineConsistency/Sign17GapFromSeed.lean';s=src.read_text();assert e['module']=='DiophantineConsistency.Sign17GapFromSeed' and sha(src)==sha(draft/src.name)==e['source_sha256'] and re.findall(r'^import ([A-Za-z0-9_.]+)$',s,re.M)==e['imports']==['DiophantineConsistency.Sign17ConcreteGap','DiophantineConsistency.SharingSign17Squares']
+assert '(hp : ((p 0 : ℤ) : DiffRing V) = ι beta) (hb : 0 < beta)' in s and '(hz : InternalZero (SharingSeed17Degree96.seed p) v)' in s and 'SharingSeed17Degree96.row06 p ∈' in s and 'SharingSign17Squares.seed_zero_iff_residuals' in s and 'Sign17ConcreteRoot.exists_from_row06 p beta v hp hb hNa' in s
+assert '∃ gap : V, ι gap = ((ι (v 13))+1)*((ι (v 13))+1)-(ι (v 17))*(ι (v 17))' in s and not re.search(r'(?m)^\s*(axiom|opaque)\b|\b(sorry|admit)\b',s)
+runner=p/'run.py';assert sha(runner)=='808789500a9be7df14d344616be18bcf73531b72a2d132b127ee0a9dcdb7508f';r=runner.read_text();assert "if local=='Sign17ConcreteGap':" in r and "elif local=='SharingSign17Squares':" in r and "need(check_staged()==staged_data,'staged final drift')" in r and "'-M3600'" in r and 'rss_limit=4*1024**3,mem_floor=10*1024**3,seconds=120,interval=.1' in r
+for review in ('nine-sharing-sign17-concrete-root-retry-terminal-independent','nine-sharing-sign17-staged-syntax-terminal-independent'):
+ subprocess.run([sys.executable,'-I','-S','-B',str(root/'reviews'/review/'check.py')],check=True,capture_output=True,timeout=120)
+survey=subprocess.run([sys.executable,'-I','-S','-B',str(p/'staged-survey.py')],check=True,capture_output=True,text=True,timeout=120);d=json.loads(survey.stdout);assert d['status']=='PASS' and d['overlay_overlap']==1057 and 'SharingSign17Squares' in d['objects']
+base=json.loads((research/'nine-sharing-sign17-concrete-root-retry-check/attempt01/state.json').read_text());q=Path('/tmp/nine-sharing-sign17-concrete-root-retry-20261110/lib/DiophantineConsistency/SharingSign17Squares.olean');assert q.is_symlink() and q.exists() and str(q.resolve())==base['overlay_links'][str(q)] and sha(q)==d['objects']['SharingSign17Squares']['sha256']
+x=subprocess.run([sys.executable,'-I','-S','-B',str(runner),'--preflight'],capture_output=True,text=True,timeout=180);assert x.returncode==0 and not x.stderr and json.loads(x.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT'
+print(json.dumps({'status':'PASS_PRELAUNCH','runner_sha256':sha(runner),'overlay_overlap':1057,'scope':'proposed seed-zero gap existence under represented positive beta; no Lean result/full bridge'},indent=2,sort_keys=True))
