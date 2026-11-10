@@ -85,8 +85,8 @@ complete coordinate-transport theorem. Three base-node identities and the
 and [two outer residuals](research/nine-sharing-sign14-positive74-rows-outer-retry01-check/README.md)
 and [two inner residuals](research/nine-sharing-sign14-positive74-rows-inner-check/README.md)
 have since passed Lean and independent terminal review. All five residuals
-are covered individually; whole-expression, model, degree and iPRA
-transport remain open.
+are covered individually, and their [whole-expression coordinate identity](research/nine-sharing-sign14-positive74-expression-bridge-check/README.md)
+is checked. Model, degree and iPRA transport remain open.
 
 For fixed-constant work, the [generic radix stream theorem](research/nine-sharing-sign17-k-radix-stream-retry-check/README.md)
 and its [symbolic K specialization](research/nine-sharing-sign17-k-radix-stream-current-check/README.md)
