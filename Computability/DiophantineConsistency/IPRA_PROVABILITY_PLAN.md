@@ -1534,6 +1534,10 @@ A [bounded MC chunk client](research/nine-sharing-sign17-mc-chunk-check/README.m
 checks six finite radix/byte block identities. Its audit records checker and
 replayed-object pin corrections; whole-port composition and Lean file binding
 remain separate.
+A [radix-runs attempt](research/nine-sharing-sign17-mc-radix-runs-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-mc-radix-runs-terminal-independent/README.md),
+failed in its final stage on unavailable mask-list identifiers and simplifier
+recursion; no radix-run object or postflight was produced.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
