@@ -877,7 +877,11 @@ coefficient one, and degree-at-most-two bounds for the other residuals. The
 checks that the full seed axis degree-eight coefficient is two and proves
 `8 ≤ toPolynomial.totalDegree` for the abstract expression at arbitrary integer
 ports. It records four unused-simp warnings. A combined exact equality theorem
-and external byte binding remain separate.
+is provided by an [exact-degree client](research/nine-sharing-sign23-exact-degree-check/README.md),
+[independently audited](reviews/nine-sharing-sign23-exact-degree-terminal-independent/README.md),
+which proves `toPolynomial.totalDegree = 8` for the abstract expression at all
+integer port vectors and for current ports. External byte binding remains
+separate.
 A [22-witness degree-12 candidate](research/nine-sharing-sign22-dodecic-ky-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign22-dodecic-ky-independent/README.md),
 eliminates kY by a natural product. Its fixed-input external square-sum has
