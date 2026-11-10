@@ -754,7 +754,10 @@ A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidat
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
 degree eight by a leading-coefficient sum-of-squares argument; the sign23→24
-and sign24→25 Lean model bridges and direct endpoint remain open.
+Lean model bridge and direct endpoint remain open. A [seed syntax and squares
+client](research/nine-sharing-sign23-seed-squares-check/README.md),
+[independently audited](reviews/nine-sharing-sign23-seed-squares-terminal-independent/README.md),
+checks symbolic seed zero iff its 14 residuals vanish.
 A [22-witness degree-12 candidate](research/nine-sharing-sign22-dodecic-ky-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign22-dodecic-ky-independent/README.md),
 eliminates kY by a natural product. Its fixed-input external square-sum has
