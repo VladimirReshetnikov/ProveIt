@@ -117,8 +117,12 @@ and the [target sets and rail values](research/nine-sharing-sign17-lines-rails-c
 The [ordered table and all 942 indexed tiles](research/nine-sharing-sign17-lines-table-check/README.md)
 are now reconstructed from those Lean digits, reusing the fixed start, copy,
 tail and head-color definitions. The [floor ranks and K/byte-value composition](research/nine-sharing-sign17-lines-kernel-check/README.md)
-are checked from that table. The original full-equation endpoint composition
-and external document semantics remain separate.
+are checked from that table. A [current14 endpoint client](research/nine-sharing-sign17-lines-current14-endpoint-check/README.md)
+substitutes the numeral-derived K into the four-port tuple and checks both
+standard iPRA equivalences and the four structured recipes. The mathematical
+Lean transcription is connected through the decoder and table; interpreting
+the actual PDF/TeX or external file bytes and full provider ancestry remain
+separate.
 
 ## Current reduction status
 
