@@ -1970,6 +1970,11 @@ A [global-offset probe](research/nine-sharing-sign17-k-global-rank-probe-check/R
 [independently audited](reviews/nine-sharing-sign17-k-global-rank-probe-terminal-independent/README.md),
 checks Start and the first 16 nonzero/adjacent cases directly on the nested
 Fin942 vectors. It does not establish global assembly or rank.
+A [conditional global-rank transport](research/nine-sharing-sign17-k-global-rank-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-global-rank-terminal-independent/README.md),
+derives candidate physical positions from the Fin942 weights under explicit
+Start, nonzero and numeric-adjacency hypotheses. Those hypotheses have not
+yet been assembled globally; full K and file binding remain separate.
 A [replayed Fin224 union](research/nine-sharing-sign17-k-weight-union224-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-weight-union224-terminal-independent/README.md),
 combines the first four weight batches in one context and checks actual-weight
