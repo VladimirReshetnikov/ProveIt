@@ -1493,6 +1493,10 @@ checks that the abstract big-endian pattern `31 :: replicate 11814 255`
 decodes to symbolic beta and current port zero. Its console label is inherited;
 the external gzip snapshot observation, other ports and filesystem/JSON/PDF
 bindings remain separate.
+An [external mask-byte recomputation](research/nine-sharing-sign17-external-binding-design/README.md),
+[independently reviewed](reviews/nine-sharing-sign17-external-masks-independent/README.md),
+matches MC and shifted MF bytes using manually inspected Lean recipes and
+Python. This is not a Lean file, gzip or JSON binding; K0 is excluded.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage

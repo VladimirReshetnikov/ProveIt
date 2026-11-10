@@ -57,3 +57,19 @@ A rigorous staged approach is:
 The scope of each new checked theorem and of every external provenance check
 must remain explicit. No JSON-to-Lean, gzip-to-Lean, whole-port or PDF binding
 is claimed here.
+
+A second read-only [mask recomputation](check-mask-bytes.py) transcribes the
+current low-support sets and high-digit list formulas and independently checks
+that the resulting low mask and `highPort + beta` numerically equal the raw
+big-endian MC and MF snapshots. It exited 0; [mask-result.json](mask-result.json)
+records both gzip/raw hashes. Its checker SHA-256 is
+`55c554248c691fa91e2522c7d70d660ff25e38324c60cdc9aba4c1a14ab3eb99`;
+result SHA-256 is
+`756ff0fb9b305826e1a11a7ca09e05c2ed2df26cacd007555786b9769dbbf3b0`.
+This recomputation manually transcribes the Lean definitions and is external
+Python evidence; it is not a kernel proof that either raw file equals a Lean
+port. The K0 byte equality has not been checked by this script.
+The [independent mask review](../../reviews/nine-sharing-sign17-external-masks-independent/README.md)
+passed and the external design packet is frozen. The review independently
+checked the inspected Lean recipes and raw bytes, but does not turn the
+external observation into a Lean theorem.
