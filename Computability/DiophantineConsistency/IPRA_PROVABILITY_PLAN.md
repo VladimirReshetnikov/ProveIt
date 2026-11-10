@@ -1281,6 +1281,10 @@ A [strict-factor cancellation ingredient](research/nine-sharing-sign16-strict-fa
 [independently audited](reviews/nine-sharing-sign16-strict-factor-terminal-independent/README.md),
 checks generic cancellation under explicit positivity and factor/row
 equalities. Their concrete extraction remains separate.
+A [strict-norm composition attempt](research/nine-sharing-sign16-strict-norm-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-strict-norm-failure-independent/README.md),
+failed on two local type mismatches; no object or postflight was produced.
+Its provider surveys retain the point-in-time qualification.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
