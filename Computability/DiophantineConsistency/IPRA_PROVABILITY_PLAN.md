@@ -81,6 +81,10 @@ has passed an [independent external audit](reviews/current14-carrier64-current-f
 The enormous witness is not expanded or Lean-checked, and its existence does
 not determine whether the maintained equation has a zero. The proposal is not
 a proved replacement.
+The distinct [free-`q−F` 64-operation proposal](research/current14-carrier64-free-qminusf-zero/README.md)
+also has an externally reviewed symbolic positive zero at the actual ports.
+Its direct inverse has a negative coordinate; this does not rule out a
+different old witness or settle existential equivalence.
 
 ## Sign14 proof transfer and fixed-constant work
 
