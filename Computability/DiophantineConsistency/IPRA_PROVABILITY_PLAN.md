@@ -72,6 +72,13 @@ now pass independent terminal review for the symbolic expression too. The
 operation count and external AST comparison remain external checks; file,
 PDF and fixed-port byte correspondence remain separate.
 
+An independently audited [74-gate positive-coordinate candidate](research/nine-sharing-sign14-positive74-candidate/README.md)
+substitutes `vᵢ = uᵢ - 1` for fourteen strictly positive inputs and cancels
+shifts in the external 86-gate AST. Its input convention differs from the
+86-gate natural-coordinate circuit, so those gate counts are not a
+same-interface comparison. Lean coordinate transport, the degree transfer
+and external-file binding are still open.
+
 For fixed-constant work, the [generic radix stream theorem](research/nine-sharing-sign17-k-radix-stream-retry-check/README.md)
 and its [symbolic K specialization](research/nine-sharing-sign17-k-radix-stream-current-check/README.md)
 have successful Lean runs and independent terminal reviews. They equate K
