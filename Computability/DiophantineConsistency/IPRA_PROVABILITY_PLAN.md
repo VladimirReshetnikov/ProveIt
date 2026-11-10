@@ -1414,6 +1414,11 @@ integer ports with `p 0 ≠ 0`, and at the current ports using their proved
 positivity. The run records four warnings and inherits the stated point-survey
 and failed-parent ancestry qualifications. External JSON/PDF binding and an
 operation count remain separate; this is not the root degree-150 equation.
+A [human-readable 14-natural-variable presentation](research/nine-sharing-sign14-readable-equation/README.md),
+[independently audited](reviews/nine-sharing-sign14-readable-equation-independent/README.md),
+uses distinct input names and explicit positive shifts for the five-residual
+98-gate candidate. Its external presentation-to-AST comparison does not
+establish Lean JSON, PDF or fixed-port file semantics.
 An [external circuit count](research/nine-sharing-sign14-operation-count/README.md),
 [independently audited](reviews/nine-sharing-sign14-operation-count-independent/README.md),
 constructs a 98-gate binary arithmetic DAG for the JSON candidate by sharing
