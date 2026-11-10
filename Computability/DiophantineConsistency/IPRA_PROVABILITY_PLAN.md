@@ -1441,6 +1441,12 @@ circuit to 38 additions, 17 subtractions and 40 multiplications. The
 count is an upper bound under the same free-leaf, exact-sharing convention.
 Lean equivalence, endpoint and degree transfer for this new candidate remain
 to be proved; external file and PDF bindings remain separate.
+A subsequent [94-gate external candidate](research/nine-sharing-sign14-94gate-candidate/README.md),
+[independently audited](reviews/nine-sharing-sign14-94gate-candidate-independent/README.md),
+uses a difference-of-squares identity to replace five copies of one shared
+product. Its 94-gate circuit has 37 additions, 17 subtractions and 40
+multiplications under the same convention. Lean equivalence, degree, iPRA
+endpoint and external-file transfers for this candidate remain separate.
 A [95-gate Lean source draft](research/nine-sharing-sign14-95gate-lean-draft/README.md),
 [independently reviewed](reviews/nine-sharing-sign14-95gate-lean-draft-independent/README.md),
 expands to the candidate's five external residual ASTs and proposes generic
