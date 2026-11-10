@@ -190,6 +190,11 @@ checks Cd and the two radicands against the corresponding symbolic RingVars
 fields, with the rank still opaque. Its author-reported outer exit has no
 independently retained raw terminal transcript; inherited ancestry remains
 point-observed. Full recipe semantics and external serialization are separate.
+A [terminal RingVars composition](research/nine-seed33-jones-vars-final-resume-check/README.md),
+[independently audited](reviews/nine-seed33-jones-vars-final-resume-terminal-independent/README.md),
+checks the compact recipe output against `RefinedPair.value` applied to the
+symbolic RingVars fields over any commutative ring. The d11 rank is still
+opaque; named-expression equality and external serialization remain separate.
 A [U/Y dependent-prefix client](research/nine-seed33-jones-dependent01-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-dependent01-staged-terminal-frontier-independent/README.md),
 checks the d19 and d20 local equations; full output semantics remain open.
