@@ -1,0 +1,5 @@
+# Sign14 residual transfers: source-only client
+
+Five checked stages transfer retained rows between sign15 and sign14 under a supplied abstract signed-tau representative, skipping the deleted row, with no port/sign assumptions. The [coordinate provider](../../reviews/nine-sharing-sign14-coordinate-terminal-independent/README.md) is independently audited; the source generator's initial stale-path failure is documented in its draft. No zero assembly, JSON binding or endpoint is claimed.
+
+No-Lean preflight exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign14-transfers-prelaunch-independent/README.md) passed. Author outer session 17153 exited 0 ([receipt](attempt01/outer-result.json)); 255 linter warnings/no sorryAx; the [independent terminal audit](../../reviews/nine-sharing-sign14-transfers-terminal-independent/README.md) passed. Limits are `-M2800`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck. Inherited provider surveys are point-in-time.

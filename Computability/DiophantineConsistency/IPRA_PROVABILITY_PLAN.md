@@ -1394,6 +1394,10 @@ A [supplied-tau coordinate client](research/nine-sharing-sign14-coordinate-check
 [independently audited](reviews/nine-sharing-sign14-coordinate-terminal-independent/README.md),
 checks lift and recovery without port/sign assumptions, with 47 linter warnings.
 The point-union survey remains qualified; residual transfers and iff are separate.
+A [five-row transfer client](research/nine-sharing-sign14-transfers-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-transfers-terminal-independent/README.md),
+checks retained residual transfers under a supplied abstract tau, with 255
+linter warnings. Zero assembly and equivalence remain separate.
 An [expression-evaluation client](research/nine-sharing-sign14-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign14-expression-eval-terminal-independent/README.md),
 checks abstract and current Fin14 symbolic evaluation. Successful-child/
