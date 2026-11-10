@@ -13,6 +13,10 @@ syntax; the bound variable of a quantifier is index `0`.
 
 namespace LeanProofs.ConciseIPRA
 
+/-- Case analysis on `Fin (n + 2)` at index `1`, which `simp` writes as a numeral. -/
+@[simp] theorem finCases_one {α : Sort _} {n : ℕ} (a : α) (f : Fin (n + 1) → α) :
+    (Fin.cases a f : Fin (n + 2) → α) 1 = f 0 := rfl
+
 /-- A scoped term syntax: variables and simultaneous substitution with the
 monad laws. -/
 class Syn (T : ℕ → Type) where
@@ -53,6 +57,20 @@ def inst (t : T n) : Fin (n + 1) → T n := Fin.cases t var
 
 @[simp] theorem shift_var (i : Fin n) : shift (var i : T n) = var i.succ := by
   simp [shift]
+
+/-- The substitution replacing variable `0` by a term that may mention it. -/
+def repl (s : T (n + 1)) : Fin (n + 1) → T (n + 1) := Fin.cases s (fun i => var i.succ)
+
+@[simp] theorem repl_zero (s : T (n + 1)) : repl s 0 = s := rfl
+
+@[simp] theorem repl_succ (s : T (n + 1)) (i : Fin n) : repl s i.succ = var i.succ := by
+  simp [repl]
+
+@[simp] theorem up_one (σ : Fin (n + 1) → T m) : up σ 1 = shift (σ 0) := up_succ σ 0
+
+@[simp] theorem inst_one (t : T (n + 1)) : inst t 1 = var 0 := inst_succ t 0
+
+@[simp] theorem repl_one (s : T (n + 2)) : repl s 1 = var 1 := repl_succ s 0
 
 theorem up_var : up (var : Fin n → T n) = var := by
   funext i
@@ -123,6 +141,16 @@ def shift (φ : Fm T n) : Fm T (n + 1) := φ.subst (fun i => var i.succ)
 
 /-- Biimplication. -/
 def iff (φ ψ : Fm T n) : Fm T n := and (imp φ ψ) (imp ψ φ)
+
+/-- Quantifier-free formulas. -/
+def QF : {n : ℕ} → Fm T n → Prop
+  | _, eq _ _ => True
+  | _, bot => True
+  | _, and φ ψ => φ.QF ∧ ψ.QF
+  | _, or φ ψ => φ.QF ∧ ψ.QF
+  | _, imp φ ψ => φ.QF ∧ ψ.QF
+  | _, all _ => False
+  | _, ex _ => False
 
 @[simp] theorem subst_eq (s t : T n) (σ : Fin n → T m) :
     (eq s t).subst σ = eq (Syn.subst σ s) (Syn.subst σ t) := rfl

@@ -176,8 +176,8 @@ theorem up_eq_upS (σ : Fin n → Tm m) : Syn.up σ = upS σ := by
   · rfl
   · simp [shift_eq_ren]
 
-@[simp] theorem subst_var (σ : Fin n → Tm m) (i : Fin n) :
-    Syn.subst σ (var i) = σ i := rfl
+/-- The generic variable `Syn.var` is the normal form for variables. -/
+@[simp] theorem var_eq (i : Fin n) : (var i : Tm n) = Syn.var i := rfl
 
 @[simp] theorem subst_zero (σ : Fin n → Tm m) : Syn.subst σ (zero : Tm n) = zero := rfl
 
