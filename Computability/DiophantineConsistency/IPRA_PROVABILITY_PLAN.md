@@ -1209,6 +1209,11 @@ A [generic signed-lift ingredient attempt](research/nine-sharing-sign17-signed-l
 [independently audited](reviews/nine-sharing-sign17-signed-lift-lemmas-failure-independent/README.md),
 failed in its first stage on an unavailable ordered-ring class; no first
 object, second stage or final postflight was produced.
+A [standard-class retry](research/nine-sharing-sign17-signed-lift-lemmas-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-signed-lift-lemmas-retry-terminal-independent/README.md),
+checks generic ordered-ring positivity, nonnegative gap and existence of a
+model-natural representative under explicit hypotheses. It does not establish
+those hypotheses for the concrete sign17 expression or prove its bridge.
 A finite [positive-gate octic search](research/nine-sharing-octic-positive-elimination-search/README.md),
 [independently audited](reviews/nine-sharing-octic-positive-elimination-independent/README.md),
 reaches at best 23 witnesses among 19 ordered states when every step preserves
