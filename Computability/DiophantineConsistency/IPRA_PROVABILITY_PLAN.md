@@ -776,6 +776,10 @@ A [structured attempt](research/nine-sharing-sign24-degree-structured-check/READ
 [independently audited](reviews/nine-sharing-sign24-degree-structured-terminal-independent/README.md),
 compiled generic substitution and square-sum bounds but failed on individual
 residual goals, reporting `sorryAx`; no concrete bound or postflight resulted.
+A [kernel-decision retry](research/nine-sharing-sign24-degree-structured-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign24-degree-structured-retry-terminal-independent/README.md),
+also failed its residual stage because the propositions retained free port
+variables; no concrete bound or postflight resulted.
 A [23-witness octic candidate](research/nine-sharing-sign23-octic-delta-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign23-octic-delta-independent/README.md),
 substitutes a natural quadratic for Delta. Its external square-sum has exact
