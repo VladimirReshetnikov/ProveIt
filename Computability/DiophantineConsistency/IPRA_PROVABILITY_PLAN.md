@@ -1214,6 +1214,11 @@ A [standard-class retry](research/nine-sharing-sign17-signed-lift-lemmas-retry-c
 checks generic ordered-ring positivity, nonnegative gap and existence of a
 model-natural representative under explicit hypotheses. It does not establish
 those hypotheses for the concrete sign17 expression or prove its bridge.
+A [root-form lift client](research/nine-sharing-sign17-root-lift-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-root-lift-terminal-independent/README.md),
+checks root and scale positivity and the signed-gap representative for
+positive beta and the retained norm equation, with arbitrary natural B and C.
+Identifying those terms with the concrete staged syntax remains separate.
 A finite [positive-gate octic search](research/nine-sharing-octic-positive-elimination-search/README.md),
 [independently audited](reviews/nine-sharing-octic-positive-elimination-independent/README.md),
 reaches at best 23 witnesses among 19 ordered states when every step preserves
