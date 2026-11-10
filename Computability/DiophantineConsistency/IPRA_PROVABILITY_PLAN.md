@@ -1477,6 +1477,11 @@ A [93-gate generic seed check](research/nine-sharing-sign14-93gate-lean-check/RE
 proves the rewritten and 94-gate seeds evaluate equally over every
 commutative ring at arbitrary integer ports. Three unused-simp warnings were
 recorded. Fixed-input expression, degree and iPRA transfers remain separate.
+A [93-gate fixed-input expression client](research/nine-sharing-sign14-93gate-expression-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-93gate-expression-terminal-independent/README.md),
+checks generic commutative-ring evaluation and polynomial equality with the
+94-gate expression at arbitrary ports. Model, degree and iPRA transfers remain
+separate, as do external JSON/PDF and fixed-port byte bindings.
 A subsequent [93-gate external candidate](research/nine-sharing-sign14-93gate-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign14-93gate-candidate-independent/README.md),
 uses distributivity to factor four copies of a rank term. Its exact-sharing
