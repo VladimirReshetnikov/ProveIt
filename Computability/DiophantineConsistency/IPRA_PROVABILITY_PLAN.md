@@ -40,8 +40,8 @@ now checks an explicit live circuit for the maintained Lean expression, with
 ports and commutative-ring inputs. This is an upper bound under the stated
 binary-circuit metric, not a minimality result. The count provider consists
 of successful children of an earlier failed outer run, and historical direct
-objects remain point-pinned. A Lean proof of exact degree 150 remains open;
-the comparison with TeX/PDF is external. The actual norm factor Q now has
+objects remain point-pinned. The comparison with TeX/PDF is external. The
+actual norm factor Q now has
 an independently audited [degree upper bound of 18](research/current14-carrier65-q-actual-retry-check/README.md)
 for arbitrary integer ports, using a checked cancellation identity. The
 actual factors Δ, P, U, W and Z have independently audited upper bounds
@@ -50,9 +50,12 @@ client](research/current14-carrier65-other-fields-check/README.md). A generic
 [diagonal degree-transport theorem](research/current14-carrier65-diagonal-degree-retry02-check/README.md)
 is also checked. The [whole polynomial has total degree at most 150](research/current14-carrier65-degree-upper-check/README.md)
 for arbitrary integer ports; this has passed an [independent terminal audit](reviews/current14-carrier65-degree-upper-terminal-independent/README.md).
-The nonzero degree-150 witness remains separate, so exactness is not yet a
-Lean theorem; the diagonal transport theorem alone does not supply the witness.
-For that witness, the actual all-equal diagonal has an independently audited
+The [actual all-equal diagonal has degree 150](research/current14-carrier65-diagonal-whole-check/README.md)
+when the first port is nonzero. The [direct polynomial transport](research/current14-carrier65-degree-direct-retry-check/README.md)
+now proves exact total degree 150 for every integer-port tuple satisfying that
+condition; it passed an [independent terminal audit](reviews/current14-carrier65-degree-direct-retry-terminal-independent/README.md).
+The current-port specialization and the expression/PDF correspondence remain
+separate. The actual all-equal diagonal also has an independently audited
 [rank bound of 4](research/current14-carrier65-diagonal-rank-check/README.md)
 and an [exact W degree of 2](research/current14-carrier65-diagonal-w-retry02-check/README.md)
 for arbitrary integer ports. The diagonal c, a, H and Δ degrees 5, 6, 6 and
