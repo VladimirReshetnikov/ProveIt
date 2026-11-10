@@ -1234,6 +1234,10 @@ A [shared-values client](research/nine-sharing-sign16-shared-values-check/README
 [independently audited](reviews/nine-sharing-sign16-shared-values-terminal-independent/README.md),
 identifies the c, root and scale values with natural representatives under
 represented beta. Signed R, window premises and the V lift remain separate.
+A [conditional rank client](research/nine-sharing-sign16-rank-value-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-rank-value-terminal-independent/README.md),
+identifies signed R with a natural rank under represented ports and `q ≥ F`;
+deriving that inequality and the V lift remain open.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
