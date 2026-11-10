@@ -1080,6 +1080,10 @@ A [count-expansion retry](research/nine-sharing-sign20-full-coeff-retry03-check/
 [independently audited](reviews/nine-sharing-sign20-full-coeff-retry03-failure-independent/README.md),
 likewise passed five stages but left boolean syntax-tree equality goals in
 the sixth; it produced no sixth object, lower-bound object or postflight.
+A [narrow count diagnostic](research/nine-sharing-sign20-count-diagnostic-check/README.md),
+[independently audited](reviews/nine-sharing-sign20-count-diagnostic-failure-independent/README.md),
+converted the boolean tests to propositional equality but left the two
+syntax-tree count goals unsolved; it produced no object or postflight.
 A separate [current-beta nonzero attempt](research/nine-sharing-sign20-current-beta-check/README.md),
 [independently audited](reviews/nine-sharing-sign20-current-beta-failure-independent/README.md),
 failed because a finite comparison could not unfold the locally irreducible
