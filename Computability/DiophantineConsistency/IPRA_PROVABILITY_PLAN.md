@@ -1706,6 +1706,10 @@ A [concrete MF block-composition client](research/nine-sharing-sign17-mf-compose
 checks equal decoding of 251 aligned radix/byte blocks plus a tail. Two prior
 stages have warnings; symbolic digit-list linkage and external file binding
 remain separate.
+A [symbolic MF byte-list attempt](research/nine-sharing-sign17-mf-whole-bytes-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-mf-whole-bytes-terminal-independent/README.md),
+passed 22 prerequisites but failed the final append/cons normalization; no
+symbolic MF byte-list object or postflight was produced.
 A [generic block-composition attempt](research/nine-sharing-sign17-mc-compose-core-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mc-compose-core-terminal-independent/README.md),
 passed eighteen prerequisites but failed the final flatten-tail induction;
