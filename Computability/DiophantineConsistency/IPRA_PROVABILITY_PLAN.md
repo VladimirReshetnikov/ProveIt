@@ -195,6 +195,11 @@ A [terminal RingVars composition](research/nine-seed33-jones-vars-final-resume-c
 checks the compact recipe output against `RefinedPair.value` applied to the
 symbolic RingVars fields over any commutative ring. The d11 rank is still
 opaque; named-expression equality and external serialization remain separate.
+A [named-expression equality attempt](research/nine-seed33-jones-named-equality-resume-check/README.md),
+[independently audited](reviews/nine-seed33-jones-named-equality-resume-terminal-independent/README.md),
+failed in the first stage on Lean's interpreter memory cap at `-M2800`.
+It produced no equality theorem or postflight; the failed receipt and its
+sampled resource observations are retained.
 A [U/Y dependent-prefix client](research/nine-seed33-jones-dependent01-staged-check/README.md),
 [independently audited](reviews/nine-seed33-jones-dependent01-staged-terminal-frontier-independent/README.md),
 checks the d19 and d20 local equations; full output semantics remain open.

@@ -1,0 +1,7 @@
+# Nine-variable sign33 recipe-to-expression equality: guarded candidate
+
+These two source snapshots adapt the audited sign38 named-tuple and named-evaluator equality stages to the sign33 symbolic endpoint. The first identifies the rank and RingVars tuple; the second proposes equality between the compact recipe and the named Lean endpoint evaluator over every commutative ring. The provider survey replays two independent terminal audits and compares the two point-observed source-object overlay sets, obtaining a 1,388-entry compatible union. It does not provide a complete dynamic or transitive trace.
+
+Author no-Lean preflight session 92321 exited 0, after the provider audit-status correction and added output collision checks recorded in `preflight-author-record.json`. No Lean run was made. Independent prelaunch review and an allocated Lean slot are required. External JSON, human text and PDF correspondence remain separate.
+
+The [independent prelaunch review](../../reviews/nine-seed33-jones-named-equality-resume-prelaunch-independent/README.md) passed. Author attempt 01 exited 1 (outer session 14696): Lean reported an interpreter memory exception compiling the first tuple stage at `-M2800`. Its state and log are retained in `attempt01/`; no first-stage object, second stage, postflight or equality theorem was produced. The [independent terminal audit](../../reviews/nine-seed33-jones-named-equality-resume-terminal-independent/README.md) confirmed that failure.
