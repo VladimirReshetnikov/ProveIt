@@ -1,0 +1,318 @@
+\section{A complete native presentation of full intuitionistic PRA}
+\label{sec:presentation}
+
+This section specifies the mathematical theory checked by the program.
+It is the inherited Choice-DI scalar-iteration presentation
+\cite{uniform,arity}. Its rules, numerical operations, and interpretation
+proofs are retained explicitly. The new executable is a representation
+of this theory, rather than a different arithmetical theory whose
+equivalence is only conjectural.
+
+\subsection{Numerical syntax and the two computation schemas}
+
+There is one numerical sort, with finite terms
+\[
+ t ::= x\mid 0\mid St\mid I(n,a;u.h).
+\]
+Only the update body $h$ binds $u$. The counter $n$ and initializer $a$
+do not bind it. Other variables in $h$ are passive numerical parameters
+and remain fixed during iteration. In every retained context, the
+following are axiom schemas:
+\begin{align}
+ I(0,a;u.h)&=a, &&\text{(I0)}\label{eq:new-I0}\\
+ I(Sn,a;u.h)&=h[I(n,a;u.h)/u]. &&\text{(IS)}\label{eq:new-IS}
+\end{align}
+The update sees only its previous value, not the old counter.
+
+The binder is a finite-description notation with an ordinary first-order
+elaboration. Beginning with $0,S$, each earlier-stage term
+$h(u,\vec p)$ admits a new symbol $i_h(n,a,\vec p)$ with the two
+displayed defining equations. Each expression and derivation involves
+only finitely many stages. This introduces neither a function sort nor
+an object variable ranging over programs. In particular, it does not
+postulate a total universal evaluator for all primitive-recursive
+descriptions.
+
+\subsection{Formula syntax and all primitive logical rules}
+
+Formulas are finite expressions
+\[
+ A ::= (s=t)\mid \Q_y A\mid\D_{x,y}A.
+\]
+The variables $x,y$ bound by $\D$ are distinct. Contexts $\Gamma$ are
+finite reusable lists of formulas. Substitution always avoids capture;
+local bound variables are renamed as needed. The designated
+contradiction is the equation $0=S0$. The intended readings, which
+will be proved exact rather than assumed as extra inference rules, are
+\[
+ \Q_y A(y)\equiv A(0)\to\forall y A(y),\qquad
+ \D_{x,y}A(x,y)\equiv
+ \exists x\bigl(A(x,0)\to\forall y A(x,y)\bigr).
+\]
+
+Together with I0 and IS, the following list is complete:
+\[
+ \frac{}{\Gamma\vdash A}\;(A\in\Gamma)
+ \quad\text{(Hyp)},
+\]
+\[
+ \frac{\Gamma\vdash s=t\qquad\Gamma\vdash F(s)}
+      {\Gamma\vdash F(t)}
+ \quad\text{(Tr)},
+\]
+\[
+ \frac{\Gamma\vdash\Q_yA(y)\qquad\Gamma\vdash A(0)}
+      {\Gamma\vdash A(t)}
+ \quad\text{(QE)},
+\]
+\[
+ \frac{\Gamma\vdash\D_{x,y}A(x,y)\qquad
+       \Gamma,\Q_yA(b,y)\vdash F}
+      {\Gamma\vdash F}
+ \quad\text{(DE)},
+\]
+\[
+ \frac{\Gamma,A(t,0)\vdash A(t,Sz)}
+      {\Gamma\vdash\D_{x,y}A(x,y)}
+ \quad\text{(DI-case)},
+\]
+\[
+ \frac{\Gamma,E(t,z)\vdash E(t,Sz)}
+      {\Gamma\vdash\D_{x,y}E(x,y)}
+ \quad\text{(DI-progress)}.
+\]
+
+In Tr, $F(v)$ is any fixed native formula template, including a
+compound one. In DE, $b$ is fresh for $\Gamma,F$ and the fixed
+parameters of the matrix. In both introductions, $z$ is fresh for
+$\Gamma$, the chosen witness $t$, and the fixed matrix parameters.
+The displayed local assumptions are discharged. In DI-progress,
+$E(x,y)$ must be a \emph{literal equation}. An equation inside a
+quantified formula does not qualify. DI-case is available for both
+equations and compound formulas.
+
+There are no additional primitive equality, successor, induction, or
+ordinary logical axioms or rules. In particular, unrestricted progress
+on compound formulas is not part of the theory. The program checks the
+root-constructor restriction directly through its arity representation.
+
+\subsection{First derived principles}
+
+Weakening, exchange, contraction, renaming, numerical substitution,
+and ordinary-assumption cut are admissible by induction on finite
+derivations. Rename eigenparameters before inserting a proof or term.
+Numerical substitution leaves an induction matrix's root constructor
+unchanged, so the equation-only restriction survives these transformations.
+
+Reflexivity is derived. Let $B(p)=I(0,p;v.0)$, so I0 proves $B(p)=p$.
+Use that equation as both premises of Tr with template $F(w):=(w=p)$.
+The result is $p=p$. Transport then supplies symmetry, transitivity,
+and congruence for every fixed numerical expression, as well as transport
+inside arbitrary native formulas.
+
+The auxiliary closure $\Q_y A$ is interderivable with
+$\D_{x,y}A$ when $x$ is unused. From $\Q_y A$, DI-case specializes
+the closure under its base assumption. Conversely, DE opens the paired
+formula to exactly $\Q_y A$, and Hyp supplies the continuation. Thus
+the public use of $\Q$ introduces no independent logical strength.
+
+With an unused existential coordinate, DI-progress, DE, and QE derive
+the contextual equation-induction rule
+\[
+ \frac{\Gamma\vdash E(0)\qquad\Gamma,E(z)\vdash E(Sz)}
+      {\Gamma\vdash E(t)},
+ \qquad z\text{ fresh}.
+ \tag{EqInd}\label{eq:new-eqind}
+\]
+The construction first proves $\D_{x,y}E(y)$ by progress, opens its
+closure by DE, and applies QE to the separately proved base. The
+same unused-coordinate construction with DI-case gives numerical
+zero/successor cases for an arbitrary formula:
+\[
+ \frac{\Gamma\vdash A(0)\qquad\Gamma\vdash A(Sz)}
+      {\Gamma\vdash A(t)},
+ \qquad z\text{ fresh}.
+ \tag{Cases}\label{eq:new-cases}
+\]
+Only EqInd permits the current instance as an induction assumption.
+These two rules must not be conflated.
+
+\subsection{Recovering ordinary intuitionistic logic}
+
+Set $1=S0$, $2=S1$, and define a numerical selector
+\[
+ C(v,a,b)=I(v,a;u.b).
+\]
+The computation schemas give $C(0,a,b)=a$ and $C(Sv,a,b)=b$.
+These two endpoint identities are enough to construct a formula gate
+by external recursion on each fixed formula:
+\[
+ G_v(s=t):=(C(v,0,s)=C(v,0,t)),\qquad
+ G_v(\D_{x,y}A):=\D_{x,y}G_vA.
+\]
+First replace an auxiliary $\Q$ by its unused-witness $\D$ version.
+Then $G_0A$ is provable and $G_{Sv}A$ is interderivable with $A$.
+Padding by $\D_{u,y}G_yA$ preserves a formula and permits binder
+depths to be aligned.
+
+For equations put
+\[
+ M_v(s=t,r=w):=(C(v,s,r)=C(v,t,w)).
+\]
+For paired formulas align binders and recurse on their bodies. If just
+one input is an equation, pad it first. The maximum remaining binder
+depth decreases, so this is a finite external construction. Derived
+binder congruence gives
+\[
+ M_0(A,B)\dashv\vdash A,\qquad M_{Sv}(A,B)\dashv\vdash B.
+\]
+Let $\delta(v)=C(v,1,0)$ and $p(z)=I(z,0;u.\delta(u))$.
+Only the finite computations $p(1)=1$ and $p(2)=0$ are needed for
+the following logical macros, with all unused coordinates fresh:
+\begin{align*}
+ A\to_*B&:=\D_{u,z}M_z(A,B),\\
+ A\wedge_*B&:=\D_{u,z}G_zM_{p(z)}(A,B),\\
+ \exists_*x\,A(x)&:=\D_{x,y}G_yA(x),\\
+ A\vee_*B&:=\exists_*x\,M_x(A,B),\\
+ \forall_*x\,A(x)&:=A(0)\wedge_*\D_{u,z}G_zA(z),\\
+ \bot_*&:=(0=1).
+\end{align*}
+
+For implication introduction, the retained zero instance is the
+antecedent and the successor instance is the consequent. For elimination,
+open the closure and specialize at $1$. Conjunction introduction uses
+the gate's provable zero case; its projections specialize the positive
+gate at $1,2$. Existential introduction uses the proposed numerical
+witness; elimination opens a fresh witness, proves the gate's zero
+instance, and specializes at $1$. Disjunction uses numerical cases on
+the selected witness. Universal elimination uses its explicit zero
+conjunct or the successor closure; universal introduction uses a fresh
+arbitrary parameter. Every ordinary introduction and elimination rule
+is proved in the first appendix, including its eigenvariable conditions.
+
+Numerical cases now prove
+\[
+ x=0\ \vee_*\ \exists_*y\,(x=Sy).
+\]
+When a target occurs in a retained context, one uses this equality-based
+case split and Tr; one does not substitute into the retained context
+without justification. Under $0=1$, transporting the selector endpoint
+identities yields any numerical equation. External induction on formula
+syntax using DI-case gives explosion for every native formula. This
+recovers genuine intuitionistic falsity without adding excluded middle
+for arbitrary formulas.
+
+\subsection{Recovering all primitive-recursive arithmetic}
+
+There is a substantial inherited arithmetic argument behind the small
+primitive basis. The appendices give its finite terms and proofs, in
+the following noncircular order:
+\begin{enumerate}
+\item Scalar iteration, cases, and literal-equation induction construct
+      predecessor $P$, with $P(0)=0$ and $P(Sx)=x$.
+\item A primitive-recursive characteristic of \emph{actual equality}
+      is proved correct on the entire domain, not merely on standard
+      numerals. Boolean characteristics of fixed quantifier-free
+      formulas then reduce their induction to EqInd.
+\item Quantifier-free induction proves the required pairing and
+      projection identities. Pairing was not presupposed in the
+      construction of predecessor.
+\item Pairing compiles counter-aware primitive recursion into
+      scalar iteration with a passive initializer.
+\end{enumerate}
+
+Here is the last compiler explicitly. Suppose a primitive-recursive
+description has base $g(\vec p)$ and step $h(n,v,\vec p)$.
+Let $\pi,\pi_0,\pi_1$ be the proved pairing and projections, and
+assume the smaller descriptions have already been translated. Define
+\begin{align*}
+ V(n,\vec p)&=I\bigl(n,\pi(0,g^*(\vec p));\ u.
+       \pi(S\pi_0(u),h^*(\pi_0(u),\pi_1(u),\vec p))\bigr),\\
+ f^*(n,\vec p)&=\pi_1(V(n,\vec p)).
+\end{align*}
+Equation induction proves $\pi_0(V(n,\vec p))=n$. The projection
+identities then prove the required base and step equations for $f^*$.
+Composition and projections translate directly. The compilation is an
+external recursion on a finite function description; it is not a single
+object-language evaluator for all primitive-recursive programs.
+
+Successor injectivity follows by applying predecessor. If $Sx=0$,
+the selector distinguishes the two sides and derives $0=1$; hence
+successor separation follows under the decoded falsity. Together with
+coverage, full intuitionistic logic, the PR compiler, and quantifier-free
+induction, this recovers the usual first-order axioms of iPRA.
+
+\subsection{Both interpretations and both composites}
+
+For a completely ordinary first-order comparison theory, let $T_I$
+have the staged iterator symbols, intuitionistic first-order equality
+logic, I0, IS, EqInd, and
+\[
+ x=0\vee\exists y(x=Sy),\qquad (0=S0)\to\bot.
+\]
+The last bridge is explicit. Positive computation equations alone have
+a singleton ordinary model; naming $0=S0$ as native falsity is not a
+reason to omit the bridge from $T_I$.
+
+\begin{theorem}[Full-domain bi-interpretability]
+\label{thm:new-equivalence}
+The native calculus is a faithful presentation of $T_I$. It is
+bi-interpretable and equiconsistent with full first-order iPRA. The
+numerical domains are unchanged and equality is actual equality.
+Both domain composites are internally isomorphic to the identity by
+the relation $x=y$. Both formula composites are derivably equivalent
+to the original formulas.
+\end{theorem}
+\begin{proof}
+Interpret a fixed scalar iterator in iPRA by primitive recursion whose
+step ignores the old counter. Preserve numerical equality and use
+\[
+ (\Q_yA)^\circ=A^\circ(0)\to\forall y A^\circ(y),\qquad
+ (\D_{x,y}A)^\circ=
+ \exists x\bigl(A^\circ(x,0)\to\forall y A^\circ(x,y)\bigr).
+\]
+Tr, QE, and DE are valid under these readings. DI-case is valid by
+successor coverage; DI-progress is valid by equation induction, under
+the temporarily assumed zero instance. I0 and IS are the primitive
+recursion equations. Thus every native proof translates to an iPRA proof.
+
+In the reverse direction, translate every PR function description by
+the scalar compiler and every ordinary connective and quantifier by
+the displayed macros. The derived rules and arithmetic bridge validate
+each logical and nonlogical axiom and each inference of iPRA.
+
+For numerical round trips, two scalar iterations with the same seed
+and provably equal fixed updates are equal at every counter by EqInd.
+The analogous uniqueness proof applies to each compiled primitive
+recursion. External induction on a finite function description therefore
+identifies its double translation with the original function, including
+its passive parameters. This also proves coherence of the staged binder
+notation. The domain is the whole numerical domain in each direction;
+$x=y$ is consequently an internally total, bijective isomorphism of
+the composite with the original structure.
+
+For the nontrivial native formula composite, prove
+\[
+ \D_{x,y}A\dashv\vdash
+ \exists_*x\bigl(A(x,0)\to_*\forall_*y A(x,y)\bigr).
+\]
+Forward, use DE at a fresh witness, assume the base, and specialize
+the exposed closure at an arbitrary numerical argument. Reverse,
+eliminate the translated existential, use its implication and universal
+instance at $Sz$ under the base assumption, and discharge DI-case.
+The closure composite is the unused-witness instance. External
+structural induction on formulas, using the derived ordinary rules,
+proves both formula composites. All these derivations are internal to
+the respective theories; standard-model agreement alone is not the
+argument.
+
+The falsity bridge preserves contradictions in both directions.
+The effective translations of finite derivations therefore establish
+equiconsistency. They do not assert an internal proof of either
+theory's own consistency.
+\end{proof}
+
+The proof is a written mathematical reduction with its inherited
+arithmetic details reproduced below. The executable examples verify
+particular proof certificates; they are not a Lean or Rocq verification
+of this metatheorem.

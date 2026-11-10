@@ -1,0 +1,85 @@
+% Appendix fragment; requires amsmath and amssymb only.
+\section{Why atomic case introduction cannot simply be removed}
+\label{app:forced-progress-obstruction}
+
+\paragraph{Attribution.} The counterinterpretation and the lost theorem $D_{x,y}(y=1)$ already appear in the current flat-computation draft. The following is a self-contained rederivation of that inherited obstruction, not a new contribution.~\cite{flat}
+
+Another tempting reduction is to make the introduction mode automatic:
+use progress when the matrix is a literal equation, and case introduction
+when it is compound.  This would remove one certificate choice.  It does
+not preserve the native theory with its existing elimination rule.
+
+Recall that $\mathsf Q_yB(y)$ is an internal clause with meaning
+$B(0)\to\forall yB(y)$, and that paired elimination of
+$\mathsf D_{x,y}B(x,y)$ supplies such a clause at a fresh witness.
+The unrestricted introduction inventory allows
+\[
+ \frac{\Gamma,B(t,0)\vdash B(t,Sz)}
+      {\Gamma\vdash\mathsf D_{x,y}B(x,y)}
+\]
+for every matrix, and
+\[
+ \frac{\Gamma,E(t,z)\vdash E(t,Sz)}
+      {\Gamma\vdash\mathsf D_{x,y}E(x,y)}
+\]
+for literal equation matrices.  Both rules have the usual freshness
+conditions.  The proposed reduction deletes the first rule exactly when
+$B$ is a literal equation.
+
+\paragraph{A sound alternative semantics for the reduced rules.}
+Take the standard natural numbers for all numerical terms and actual
+equality for equations.  Interpret $\mathsf Q$ as above.  Interpret
+$\mathsf D$ recursively by
+\[
+ (\mathsf D_{x,y}B)^\dagger=
+ \begin{cases}
+ \exists x\,\forall y\,
+   \bigl(B^\dagger(x,y)\to B^\dagger(x,Sy)\bigr),
+       & B\text{ is a literal equation},\\[2pt]
+ \exists x\,
+   \bigl(B^\dagger(x,0)\to\forall yB^\dagger(x,y)\bigr),
+       & B\text{ is compound}.
+ \end{cases}
+\]
+This is a definition on each fixed finite formula, not a truth predicate
+inside the calculus.
+
+Forced progress introduction is sound by its direct meaning.
+Compound case introduction is sound by the zero-or-successor property
+of the standard natural numbers.  For paired elimination with an atomic
+matrix, ordinary numerical induction turns the supplied progressiveness
+into its conditional universal closure.  Paired elimination with a
+compound matrix and closure specialization are sound directly.  Equality
+transport is sound because numerical substitution leaves the distinction
+between a literal equation and a compound matrix unchanged.  Numerical
+computation and every context-availability operation are sound as well.
+Therefore every theorem of the reduced rule system is true under
+$\dagger$.
+
+\paragraph{A lost theorem.}
+Let $1=S0$ and let the witness coordinate be unused.  The original
+calculus proves
+\[
+                   \mathsf D_{x,y}(y=1).
+\]
+Indeed, case introduction assumes its zero instance $0=1$; numerical
+explosion yields $Sz=1$, so the rule applies.  Numerical explosion here
+only uses the existing numerical selector and equality transport: an
+assumption $0=1$ identifies its two endpoints and hence yields any
+literal equation.  No induction on a compound formula is required.
+
+Under $\dagger$, however, this displayed formula says
+\[
+                   \exists x\,\forall y\,(y=1\to Sy=1),
+\]
+which is false at $y=1$.  Consequently it is not derivable in the reduced
+calculus.
+
+The padding equivalence between $A$ and a suitably gated paired closure
+does not repair this counterexample.  Padding can move a proof obligation
+into a compound matrix, but the existing elimination interface only
+returns conditional closure; it does not recover the progressiveness
+required to introduce an arbitrary raw atomic paired formula.
+Thus removing atomic case introduction would require a substantive
+change of rules and a new interpretation-composite proof.  It is not an
+admissible simplification of the present kernel.

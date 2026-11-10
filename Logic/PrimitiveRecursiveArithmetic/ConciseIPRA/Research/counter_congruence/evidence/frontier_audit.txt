@@ -1,0 +1,121 @@
+INDEPENDENT CURRENT-CORPUS AUDIT
+===============================
+Pinned repository: VladimirReshetnikov/ProveIt
+Commit: 2fdcf5bf988bead821c416649f713f98b7ed8776
+Date: 2026-11-10
+
+1. ACTUAL TARGET
+
+The current coordinate envelope for complete standalone Python proof
+checkers is exactly 281 normalized tokens / 315 AST nodes / 685 normalized
+bytes. It is attained by different programs. No current single program
+attains all three minima.
+
+Generated assumptions, code/checker.py: 281 / 318 / 685.
+Generated assumptions, code/checker_ast.py: 283 / 315 / 710.
+Guarded elimination, code/kernel_tokens.py: 281 / 325 / 739.
+Guarded elimination, code/kernel.py: 284 / 322 / 720.
+Guarded elimination, code/kernel_ast.py: 285 / 318 / 818.
+Guarded elimination, successor_variant/code/kernel_bytes.py: 290 / 333 / 689.
+Atomic transport, code/unrestricted_control.py: 297 / 335 / 698.
+
+The unchanged inherited source_measure.py was run on the whole module,
+including imports, input and verdicts, after stripping genuine docstrings.
+This independently reproduces the archived measurements. The recursive
+scan visited 14 distinct ZIP contents: 9 current root archives and nested
+historical archives. It measured 342 Python source occurrences with 164
+distinct source hashes. Every source below any of the three envelope
+coordinates is a build, measurement, reproduction, integrity or test
+wrapper, not a standalone theorem checker. Direct extracted sources
+alone comprise 261 occurrences and the same 164 unique hashes.
+
+Artifacts: frontier_audit.json gives selected exact hashes and exclusions;
+frontier_archive_metrics.json gives every recursively scanned occurrence;
+frontier_source_metrics.json gives every direct extracted occurrence.
+
+The 287 / 323 / 738 comparison printed in several new reports concerns
+their earlier 7bded17cc012... input snapshot, not the present nine-archive
+folder. A proposed new construction must compare against 281 / 315 / 685.
+These are empirical attained upper bounds on optimal program size, not
+mathematical lower bounds or evidence of absolute simplestness.
+
+2. NOVELTY EXCLUSIONS WITHIN THE PRESENT CORPUS
+
+Already done: explicit elimination endpoint certificates; elimination-only
+assumption availability with derived identity; arbitrary equality transport
+derived from atomic transport; named specialization via variables plus 1;
+shared continuations; benign failed endpoint matches leaving the goal
+unchanged; computation equations generated as local assumptions; discharge
+of a fresh generated equation by its known zero instance; successor-seeded
+counter-aware recursion with immediate predecessor and a direct PR compiler.
+
+The generated-assumptions draft already combines the last two continuation
+ideas in a complete 685-byte program. Its generator permits H(w) even when
+H(w) is not universally true, provided H(0) is a computation theorem and
+w is absent from the retained context and goal. Soundness is substitution
+of zero followed by cut. Merely putting axiom checking into context
+extension, or calling this existential elimination, is not a new theorem
+relative to this corpus.
+
+The atomic-transport draft itself admits the compound transport lifting
+already existed historically. Its new restriction costs source bytes and
+is not the cause of its total byte improvement.
+
+Other completed structural mathematics: the scalar countdown report proves
+a fixed reflection sentence equivalent to quantifier-free induction over
+its uniqueness base; the successor-recursion report adds a commutation
+completion. These have not beaten the small complete checkers.
+
+Already stated obstruction: the fused-seed recursor R(0;h)=h(0),
+R(Sn;h)=h(S R(n;h)) with only variables, zero and successor is monotone
+in each numerical input on N. It cannot term-define zero test. This rules
+out one same-domain term compiler, not different-domain or graph-defined
+bi-interpretations.
+
+3. MATHEMATICAL SCOPE AND AUDIT FINDINGS
+
+The scalar Choice-DI bridge has no fatal gap identified in this review.
+Its important safeguards should be retained in any successor construction:
+
+- Progress introduction is restricted to a literal equation; case
+  introduction permits compound formulas. A binder around an equation
+  does not count as literal. General formula induction would strengthen
+  the theory, and must not enter through a certificate alias.
+- Arithmetic signature stages are external finite descriptions. There
+  is no internal universal total evaluator for all PR programs.
+- The ordinary first-order realization explicitly includes numerical
+  coverage and the falsity bridge (0=1)->bottom. Positive equations alone
+  have singleton models. Native designation of 0=1 as contradiction must
+  not be confused with having derived ordinary falsity from equations.
+- Whole-domain equality reflection is proved internally before use of
+  pairing and quantifier-free characteristic functions. Standard-N tests
+  alone do not establish the claimed bi-interpretation.
+- Numerical round trips require internal uniqueness for each fixed
+  recursion description, preserving all passive parameters. Formula
+  round trips require Q and D to recover their ordinary conditional
+  universal and existential meanings; theorem equivalence alone is weaker
+  than bi-interpretability.
+- Mathematical proofs remain written proofs. None of these current tiny
+  checkers comes with a full Lean/Rocq verification of raw JSON soundness.
+
+For generated assumptions, the eager validation of the predecessor
+iterator is essential. Without i([*n,t,u],d=1), a two-child counter can
+be ignored by a constant update and generate a false equation. The
+existing draft includes a concrete mutation counterexample. Do not delete
+that check merely because the update does not use its state.
+
+The raw codec accepts inert aliases and ignores unused packet prefixes.
+Soundness is only about the decoded requested formula of successful
+traces; canonical completeness promises one valid encoding per theorem,
+not validity of all syntactic aliases. Any claimed simplified codec should
+be judged at this same complete-program boundary, or state a changed one.
+
+4. USEFUL DIRECTION WITHOUT A NOVELTY CLAIM
+
+A genuinely new structural improvement would remove one generator,
+opener operation, or fundamental rule family while keeping the complete
+proof representation and interpretation bridge explicit. Combining
+already published variants or Python golfing can still improve the
+measurement but is not a significant new arithmetic foundation. The
+parent's candidate should be checked against the exact present envelope
+and adversarial raw-scope cases before any dominance claim is made.

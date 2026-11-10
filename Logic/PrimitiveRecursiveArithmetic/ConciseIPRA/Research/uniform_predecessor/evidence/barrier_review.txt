@@ -1,0 +1,108 @@
+INDEPENDENT AUDIT: SINGLE-BODY INFORMATION BARRIER
+=================================================
+
+Scope
+-----
+Reviewed work/arithmetic/results/single_body_barrier.tex in full. This is
+a written mathematical review, not a proof-assistant verification. No finite
+testing is needed for the specific existence argument below.
+
+Verdict
+-------
+The standard-model bounding-coordinate theorem and its nonrepresentability
+corollary are correct under the displayed seed/update/readout interface.
+One qualification is needed for the claim of effective extraction. With that
+qualification, no further mathematical gap was found.
+
+Required correction: effective extraction
+----------------------------------------
+The text admits arbitrary globally bounded primitive-recursive primitives,
+and more generally any primitive satisfying the bounding-coordinate property.
+If only their PR program descriptions are supplied, it is not valid to claim
+that a coordinate and bound can always be effectively extracted.
+
+For a Turing machine e, define b_e(x,y) to be its first halting time if that
+time is at most max(x,y), and zero otherwise. This is uniformly primitive
+recursive in its inputs. For every fixed e it is globally bounded: by zero
+if e never halts, and by its halting time otherwise. Suppose a uniform
+extractor, given its PR description, returned a coordinate i and a PR bound
+H on that coordinate, or returned a global constant bound. In the coordinate
+case evaluate H(0). If e halts at time T, set coordinate i to zero and the
+other coordinate to at least T: then T <= H(0). Thus simulating e up to
+H(0) decides whether e ever halts. A supplied global constant works the same
+way. Such an extractor is impossible.
+
+Recommended wording:
+
+  Every generated term is globally bounded or has a bounding coordinate.
+  Given bounding-coordinate/global-bound witnesses for the primitive
+  operations used in its finite description, the proof effectively
+  constructs a suitable coordinate and primitive-recursive majorant.
+
+Alternatively require a bound witness as part of each primitive's
+registration. All unary PR primitives admit a computable monotone envelope
+max_{z<=n} f(z), and Boolean-valued primitives have the explicit bound 1,
+so these common subclasses need no extra semantic search. The unrestricted
+existence and nonrepresentability statements remain valid when every
+globally bounded PR operation is freely available, without any extraction
+claim from naked program descriptions.
+
+Checks of the core argument
+--------------------------
+1. Finite PR envelopes: a fixed PR map of finitely many arguments has a
+   nondecreasing unary PR envelope obtained by bounded maximization over a
+   finite box. Vector outputs are covered by an additional finite maximum.
+
+2. Globally bounded body: every probe is bounded by the same constant.
+   F_0 and F_1 therefore reset every register to a fixed bounded box at
+   every step. G cannot recover the counter or a passive parameter from
+   outside that box, because its arguments are exactly the registers.
+
+3. Passive-coordinate body bound: the same reset argument works with
+   H(p_i) uniformly in all local probe arguments, even when the probe
+   locations depend on the target counter, elapsed counter, and registers.
+   The fixed F_1 does not directly receive m, n, or retained registers.
+
+4. Local-coordinate body bound: v(m,n) gives a valid PR trajectory bound.
+   The quantity n+m+v(m,n) bounds every input of every U_j. The induction
+   step therefore bounds probes by H(u(n+m+v)), then registers by f_1 of
+   that bound. The maximum with the prior value makes v monotone in m.
+   K(n)=max_{z<=n} g(v(z,z)) supplies a monotone unary bound on the output.
+
+5. Counter composition: applying the already-derived bounding property
+   of t(p) to the monotone K yields either a constant bound or K(N(p_i)).
+   No joint dependence on two passive inputs survives this step.
+
+6. Term composition: the bound follows the particular bounded input of
+   the outer operation; all other inputs can be discarded for majorization.
+   A bounded outer operation or bounded selected actual argument gives a
+   constant bound. This is valid also for nested finite constructors.
+
+7. Corollaries: addition and the unrestricted selector have no bounding
+   coordinate, as witnessed by fixing the alleged coordinate and varying
+   another argument. A binary injection has an infinite fiber at any
+   fixed coordinate, so its values on that fiber cannot lie in a finite
+   bounded set. These arguments prove precisely standard-model term
+   nondefinability, not a general interpretation obstruction.
+
+Essential boundary
+------------------
+The exclusion of direct retained-state input to F_1 is essential. The
+displayed counterexample r_0=h(0,a), r_{m+1}=S r_m with h(u,a)=a computes
+a+n and is correctly outside the theorem's interface. More generally,
+allowing F_1 direct access to m or n also breaks the passive-bound case;
+the theorem rightly permits those counters only in probe locations.
+
+The opening prose should mention this restriction as clearly as the exact
+definition does: 'one fixed body' alone is insufficient unless unbounded
+passive information and retained state reach the combining maps only via
+that body's evaluations. The current final boundary subsection explains
+this correctly.
+
+Research status
+---------------
+The result is a legitimate extension of an inherited invariant to a broader
+constructor class. It does not provide a smaller positive iPRA basis, prove
+absolute checker minimality, or exclude relational/domain-changing
+bi-interpretations. The report's existing qualifications correctly retain
+these distinctions.

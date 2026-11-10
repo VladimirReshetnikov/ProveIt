@@ -1,0 +1,97 @@
+FLAT CHECKER: EXACT CANONICAL PROTOCOL
+====================================
+
+Input is one JSON array. The last element is the requested closed formula.
+Preceding instructions are 4-field arrays consumed right to left. A context
+hypothesis closes the current goal without reading an instruction. The
+major proof is read before the continuation. An unread prefix is inert.
+
+The whole program prints ACCEPT and exits 0, or prints REJECT and exits
+nonzero. Rejection may additionally produce a traceback on stderr.
+
+RAW TREES
+---------
+Numerical: [] is 0; [p] is successor; [p,q] is 0 with checked annotations;
+[n,a,h] is initialized scalar iteration. Counter/seed carry two dummy
+zero slots; the update carries two aliases of its one recursive state.
+The update does not receive the counter.
+
+Formula: [] is truth 0=0; [A] is Q_y A; [s,t] is equality;
+[P,U,A] is D_xy A, with first two fields checked but semantically unused.
+
+Depth is even for formula positions and odd for numerical positions.
+Unary/binary/ternary nodes add 2/1/4 respectively. At numerical depth 2q+1,
+positive coordinates 2j-1 and2j name the same j-th protected slot. Coordinate 0
+is numerical zero. Negative coordinates name allocated rigid parameters.
+The global floor starts 0 and decreases at every non-hypothesis continuation.
+
+Opening retains a scalar a only when k<=a<d. Otherwise numerical positions
+use the supplied image, itself checked at numerical root; formula padding
+becomes zero. Missing USED numerical images reject. Every array is traversed.
+Canonical certificates use only lists, integer coordinates, and null for
+the arithmetic command. Successful noncanonical aliases are decoded as
+described and proved sound in the report, rather than treated as silently
+accessible future parameters.
+
+PACKETS [m,s,u,t]
+-----------------
+1. Truthy m: first prove m.
+
+   If m=[s,u] and opening t at u is exactly the requested goal, replace
+   the goal by t opened at s (equality transport).
+
+   If s is falsy, m=[t], and opening t at u matches the requested goal,
+   replace it by the zero instance (Q elimination).
+
+   In both cases append truth. If endpoints fail to match, retain the old
+   goal and append truth. The failed endpoint claim is never assumed.
+
+   If m has 3 children, append its Q clause opened at a new parameter;
+   this is D elimination. The old goal is unchanged.
+
+2. Null m: arithmetic. The fields s,u,t are counter, seed, update.
+
+   Source := [s,u,t]
+   Right  := u                                      if s is falsy
+             open(t,[list(*s),u,t],numerical_root)    otherwise
+
+   The call list(*s) eagerly checks a singleton counter whose predecessor
+   is list-shaped. It cannot be omitted just because t ignores its state.
+   The final supplied equation [Source,Right] is opened with image 0.
+   It is a computation theorem uniformly in any admitted new parameter.
+
+3. Other falsy m: D introduction with witness t.
+
+   m=[] gives the zero-base assumption (case).
+   m=0 gives the current-step assumption on an equation matrix (progress),
+   and gives case on Q/D matrices. There is no compound-progress rule.
+   Literal witness 0 is valid in both modes.
+
+COMMON CONTINUATION
+-------------------
+Allocate a fresh negative name. Open the new goal at its successor. Append
+the local assumption opened at the fresh name for D elimination/atomic
+progress, or at 0 for case/arithmetic. Recur. Context entries are reusable.
+
+BOXING
+------
+If a desired successor predecessor is a scalar, compute instead at the
+composite B(p)=I(0,p;v.0). Its I0 equation proves B(p)=p; equality transport
+then recovers the desired step. The producer implements this explicitly.
+
+MINIMAL EXAMPLE
+---------------
+The following proves I(0,1;v.0)=1:
+
+  [[null,0,[0],0], [[0,[0],0],[0]]]
+
+For actual induction, nonvacuous zero witnesses, and malformed-input
+rejections, use the JSON files in ../tests/fixtures/.
+
+TRUST BOUNDARY
+--------------
+Only checker.py is the measured 679-byte trusted program. It imports only
+the standard JSON loader. The readable expansion, producer, diagnostics,
+source measurer, and inherited written proofs are separately provided
+artifacts and are not imported by the checker. The written correspondence
+proof establishes the claimed semantics; finite tests supplement it.

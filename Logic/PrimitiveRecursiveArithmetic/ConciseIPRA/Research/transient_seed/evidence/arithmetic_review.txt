@@ -1,0 +1,102 @@
+HISTORICAL REVIEW: written before the final native SR bootstrap.
+Any earlier open-status statement is superseded by native_sr_review.txt
+and theory/native_sr_bootstrap.tex. The ordinary arithmetic checks remain valid.
+
+ARITHMETIC RESEARCH AND CROSS-REVIEW RECORD
+=========================================
+
+Repository baseline
+-------------------
+VladimirReshetnikov/ProveIt, docs/drafts, commit
+2fdcf5bf988bead821c416649f713f98b7ed8776.
+
+Assigned source archives read directly:
+  ipra_scalar_countdown_2026-11-09.zip
+  ipra_successor_recursion_2026-11-09.zip
+  ipra_endpoint_certificates_2026-11-09.zip
+
+The relevant unresolved question was then read in
+ipra_shared_continuation_2026-11-10/report.tex, section
+"A genuinely smaller numerical grammar: the precise unresolved step".
+It states that no left-inverse term P with P(Sa)=a was obtained for the
+one-update-variable successor-seeded recursor. Its Shift compiler is
+conditional on precisely that lemma.
+
+New positive result
+-------------------
+The ordinary theory with 0 and R(n,a;u.h), S a := R(0,a;u.0),
+R(0,a;u.h)=Sa, R(Sn,a;u.h)=h(R(n,a;u.h)), full intuitionistic first-order
+equality logic, coverage, separation, and literal-equation induction
+does admit a finite term P with whole-domain proofs P0=0 and P(Sa)=a.
+
+The comparator is developed independently in sr_comparator.tex.
+Transient seeds outside a reachable finite-residue class provide the
+zero-start doubling, tripling, and ramp trajectories needed for the
+factor-map comparator. No predecessor or arbitrary initialization enters
+this bootstrap.
+
+The predecessor construction is in sr_predecessor_and_equivalence.tex.
+For the comparator L, let F_m(u)=S u if L(Su,m)=1 and 0 otherwise,
+implemented with the available shifted selector T. F_m(Sm)=0 makes Sm
+an accessible transient seed. Applying F_m outside the recursor yields
+zero-start trajectories J_m under F_m and K_m under F_m composed with itself.
+One literal gated equation induction proves the bounded-run property.
+Two further literal equation inductions prove the period and doubled
+trajectory identities. Their diagonal specialization gives
+P(n)=K_n(n), P(Sa)=a without cancelling S.
+
+The initializer compiler is then P(R(n,a;v.S h(Pv))). It has the ordinary
+base and step equations by direct computation. The inherited internal
+scalar-iPRA reconstruction supplies the remaining arithmetic and
+whole-domain bi-interpretability argument; it must be included and
+attributed rather than replaced by a standard-model observation.
+
+Cross-review
+------------
+The arithmetic_core agent checked every equation in the comparator
+construction independently, including the two cases of Ramp-triple,
+the affine factor constants, seed rotation, and persistence of comparison.
+The theory_audit agent checked the cycle predecessor proof independently,
+including the literal gate invariant, fixed passive parameters in both
+subsequent inductions, and the final diagonal specialization. No hidden
+successor cancellation, formula induction, or prior initializer was found.
+
+This is an independent assistant cross-review, not external peer review
+or a Lean/Rocq proof-assistant certificate.
+
+Finite diagnostics
+------------------
+sr_evaluator.py evaluates the comparator macros from the successor-seeded
+recursion equations, with stable fixed-update memoization. Its 1,279 checks
+passed; no closed forms are used to evaluate N, M, scaling, G, H, or L.
+sr_predecessor_diagnostics.py extends it by the exact F/J/K/P and initializer
+macros. Its 926 checks passed. In particular P was not implemented using
+subtraction, division, or modulo. Its displayed initial values are
+0,0,1,2,3,4,5,6,7,8.
+
+These 2,205 finite checks verify transcription and sample behavior. They
+do not replace the written arbitrary-element induction proofs.
+
+New negative result
+-------------------
+binary_recursor_obstruction.tex proves a bounded-coordinate theorem for
+the distinct tied-seed candidate B(n;u,v.h), whose base is S h(0,0).
+Every term is globally bounded or bounded by a function of one input
+coordinate alone. The four structural cases are global bound, passive
+coordinate, old-counter coordinate, and previous-state coordinate.
+Consequently no term represents ordinary addition, the unrestricted
+two-branch selector, or an injection from N^2 to N. This does not exclude
+arbitrary relational or domain-changing interpretations of a theory.
+binary_recursor_bounds.py illustrates the constructive bound compiler;
+294 finite transcriptions passed.
+
+Claim boundaries
+----------------
+1. The positive result is an ordinary first-order SR theorem. A smaller
+   native SR checker still needs its own noncircular logical bootstrap.
+2. A measured initialized-iterator kernel is an equivalent different
+   presentation; an unchecked submitted-goal translator is not free.
+3. The two-constructor numerical grammar reduction is established. No
+   absolute minimum for complete checkers is asserted here.
+4. Novelty is relative to the explicitly inspected draft question, not a
+   literature-wide priority claim.

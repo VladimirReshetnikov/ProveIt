@@ -1,0 +1,216 @@
+% New result: a standard-model obstruction for a tied-seed binary recursor.
+% The result concerns numerical term representation, not all interpretations.
+\section{A bounded-coordinate obstruction for a tied-seed recursor}
+\label{sec:binary-recursor-obstruction}
+
+One tempting way to remove a numerical constructor field is to make the
+initializer a special evaluation of the update itself.  The following
+obstruction shows that this particular reduction loses an essential
+term-forming ability.  It is an obstruction to a proposed reduction, not
+an impossibility theorem for every smaller presentation of iPRA.
+
+\subsection{The candidate and its standard interpretation}
+
+Consider finite numerical terms
+\[
+ t::=x\mid 0\mid B(n;u,v.h),
+\]
+where only $h$ binds the distinct old-counter variable $u$ and previous-state
+variable $v$.  Every update is fixed finite earlier syntax; its other
+variables are passive numerical parameters.  Define
+\[
+ Sa:=B(0;u,v.a)
+\]
+when $u,v$ are fresh for $a$, and propose the two computation schemas
+\[
+ B(0;u,v.h)=S(h[0/u,0/v]),\qquad
+ B(Sn;u,v.h)=h[n/u,B(n;u,v.h)/v].
+ \tag{B}\label{eq:tied-seed-B}
+\]
+In the standard natural-number interpretation these mean, for each fixed
+previously interpreted function $h$,
+\[
+ B_h(0,\vec p)=1+h(0,0,\vec p),\qquad
+ B_h(m+1,\vec p)=h(m,B_h(m,\vec p),\vec p).
+ \tag{B$_{\mathbb N}$}\label{eq:tied-seed-standard}
+\]
+Thus the displayed abbreviation $S$ has exactly its ordinary successor
+meaning.  Structural recursion on descriptions followed by primitive
+recursion on $m$ supplies the standard interpretation of every term.
+There is no object-language quantification over functions.
+
+Several useful operations survive.  Put
+\[
+ D(n,a):=B(n;u,v.a),\qquad W(n):=B(n;u,v.u),\qquad
+ P(n):=W(D(n,n)).
+\]
+The computation schemas give, without induction,
+\[
+\begin{gathered}
+ D(0,a)=Sa,\quad D(Sn,a)=a,\qquad
+ W(0)=1,\quad W(Sn)=n,\\
+ P(0)=0,\qquad P(Sn)=n.
+\end{gathered}
+\]
+In particular, loss of an immediate predecessor is not the difficulty
+with this proposal.
+
+\subsection{A property of every numerical term}
+
+For a function $f:\mathbb N^r\to\mathbb N$, say that coordinate $i$ is
+a \emph{bounding coordinate} if there is a nondecreasing function
+$F:\mathbb N\to\mathbb N$ such that
+\[
+             f(x_1,\ldots,x_r)\le F(x_i)
+             \quad\text{for every }\vec x.
+ \tag{BC}\label{eq:bounding-coordinate}
+\]
+Equivalently, for every fixed bound $b$, its image on $x_i\le b$ is
+bounded independently of all the other coordinates.  A globally bounded
+function is allowed as a separate case, including when $r=0$.
+The bound need not be a term of the candidate language.  In the proof
+below it can always be chosen primitive recursive.
+
+\paragraph{Bounded-coordinate theorem.}
+Every term in the $0,B$ language has a standard interpretation which is
+either globally bounded or has a bounding coordinate among its free
+numerical variables.  A coordinate and a nondecreasing primitive-recursive
+bound can be obtained compositionally from its finite syntax.
+
+\paragraph{Proof.}
+Use structural induction, treating the bound variables of an update as
+additional independent input coordinates when processing its body.
+A variable $x_i$ has bound $F(z)=z$ in coordinate $i$, and $0$ is
+globally bounded by $0$.
+
+For the inductive step write $t=B(n;u,v.h)$ and let $H$ be the bound
+already obtained for $h$, whose free variables are among
+$u,v,\vec p$.  Bound names are first made fresh for $n$ and the passive
+parameters.  There are four cases.
+
+\begin{enumerate}
+\item If $h$ is globally bounded by a constant $K$, its initial value
+is at most $K+1$ and each subsequent value is at most $K$.
+Consequently $B_h(m,\vec p)\le K+1$ for every $m,\vec p$.
+
+\item Suppose a passive parameter $p_j$ is the chosen bounding coordinate
+of $h$.  Both $h(0,0,\vec p)$ and every
+$h(m,B_h(m,\vec p),\vec p)$ are at most $H(p_j)$, uniformly in the
+counter and previous state.  Therefore
+\[
+                 B_h(m,\vec p)\le H(p_j)+1.
+\]
+This remains true when the counter term $n$ also depends on $p_j$ or
+on any of the other passive parameters: the estimate is independent
+of its value.
+
+\item Suppose $u$ is the chosen bounding coordinate of $h$.  Then
+$h(u,v,\vec p)\le H(u)$ uniformly in $v,\vec p$.  Define the
+nondecreasing primitive-recursive function
+\[
+                 K(m):=1+\max_{0\le q\le m}H(q).
+\]
+The base value is at most $H(0)+1\le K(0)$; at every positive
+counter $m+1$ the value is at most $H(m)\le K(m+1)$.
+Hence $B_h(m,\vec p)\le K(m)$ for all arguments.
+
+\item Suppose $v$ is the chosen bounding coordinate of $h$.  Then
+$h(u,v,\vec p)\le H(v)$ uniformly in $u,\vec p$.  Define
+\[
+ K(0):=H(0)+1,\qquad
+ K(m+1):=\max\{K(m),H(K(m))\}.
+\]
+The initial value of $B_h$ is at most $H(0)+1$ because its
+previous-state argument in $h(0,0,\vec p)$ is exactly zero.
+If $B_h(m,\vec p)\le K(m)$, monotonicity of $H$ gives
+\[
+ B_h(m+1,\vec p)
+ \le H(B_h(m,\vec p))
+ \le H(K(m))\le K(m+1).
+\]
+Ordinary metatheoretic induction on the standard natural number $m$
+therefore gives $B_h(m,\vec p)\le K(m)$.  The sequence $K$ is
+nondecreasing and primitive recursive.
+\end{enumerate}
+
+In the last two cases the term is bounded by $K(n(\vec p))$.
+Apply the structural induction hypothesis to the counter term $n$.
+If $n$ is globally bounded by $N$, then $K(N)$ is a constant bound
+for the whole term.  Otherwise $n(\vec p)\le N(p_i)$ for a chosen
+coordinate $p_i$ and a nondecreasing primitive-recursive function $N$;
+then $K(N(p_i))$ is the required bound.  This exhausts the possible
+bounding coordinates of $h$ and completes the proof.
+\hfill$\square$
+
+This induction processes nested occurrences of $B$ and arbitrary repeated
+passive variables.  Capture-free substitution does not escape the result:
+if an already bounded expression is composed with finitely many terms,
+apply the bound to its chosen argument term and then use that term's
+chosen bound.  Unused arguments cannot create a second unbounded input.
+Finite macro expansion, including all occurrences of $S,D,W,P$, therefore
+preserves the theorem.  The argument is about standard values and does
+not assume that this metatheoretic bound is itself provable in a weak
+candidate theory.
+
+\subsection{What the obstruction rules out}
+
+\paragraph{No ordinary two-branch selector.}
+There is no $0,B$ term with standard values
+\[
+ C(0,a,b)=a,\qquad C(n+1,a,b)=b.
+\]
+Such a function is not globally bounded.  The control coordinate $n$
+cannot bound it, since $n=0$ leaves $a$ arbitrary.  The coordinate $a$
+cannot bound it, since $a=0,n=1$ leaves $b$ arbitrary.  The coordinate
+$b$ cannot bound it, since $b=0,n=0$ leaves $a$ arbitrary.  These are
+all three input coordinates, contradicting the theorem.
+
+\paragraph{No ordinary addition or a numerically injective pairing term.}
+Addition $a+b$ has no bounding coordinate: fixing either argument at zero
+leaves the other unbounded.  More generally, no binary term can be an
+injection $\mathbb N^2\to\mathbb N$.  If one coordinate bounds such a
+term, fixing it at zero confines infinitely many distinct pairs to a
+finite set of output values; a globally bounded term fails injectivity
+for the same reason.
+
+\paragraph{A one-sided selector does not repair the problem.}
+If literal-equation induction is available, the candidate does define
+the one-sided mask
+\[
+ M(n,a):=P\bigl(P(B(a;u,v.D(n,v)))\bigr),
+\qquad
+ M(0,a)=a,\quad M(Sn,a)=0.
+\]
+For $n=0$ its update is successor and its initial value is $2$;
+equation induction gives $B(a;u,v.D(0,v))=S^2a$.
+For $n=Sx$ its update is the identity and its initial value is $1$;
+equation induction gives $B(a;u,v.D(Sx,v))=1$.
+The two predecessor equations then establish the mask endpoints.
+This causes no contradiction: $a$ is a bounding coordinate of $M$.
+Combining two such masks into an unrestricted selector is precisely an
+operation that the theorem excludes in this term language.
+
+\subsection{Exact logical scope}
+
+The obstruction applies to standard-model \emph{term representation}.
+Adding sound logical rules or sound induction principles cannot make a
+term compute addition, selection, or an injective numerical pairing in
+$\mathbb N$: the semantic obstruction is independent of such proofs.
+In particular this proposal cannot justify a direct compiler from the
+old scalar-iterator language, because that language already has the
+ordinary selector $I(n,a;u.b)$.
+
+It does not prove that a theory using this numerical syntax cannot be
+equiconsistent or bi-interpretable with iPRA.  The user explicitly permits
+other domains and languages, and an interpretation may use definable
+relations, quotients, several coordinates, or functions defined by
+unique-existence formulas rather than numerical terms.  No exclusion of
+all such interpretations is claimed.  Nor does the result address the
+different successor-seeded recursor with an \emph{independent initializer}
+$R(n,a;u,v.h)$: that initializer invalidates the bounded-coordinate
+induction and is exactly the field whose removal was being considered.
+
+The positive methodological conclusion is concrete: eliminating an
+initializer by setting it to $1+h(0,0)$ is not a sound route to a
+term-equivalent arithmetic basis, even though it retains successor,
+ordinary predecessor, and a useful one-sided mask.

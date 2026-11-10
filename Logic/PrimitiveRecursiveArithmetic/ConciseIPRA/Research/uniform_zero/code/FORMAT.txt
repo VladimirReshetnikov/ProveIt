@@ -1,0 +1,83 @@
+CANONICAL CERTIFICATE FORMAT
+============================
+
+All checkers read one JSON array. The last element is the goal formula.
+Earlier elements are four-field packets [m,s,u,t], consumed from the end.
+An available hypothesis closes a goal without consuming a packet.
+An unused prefix is allowed. Acceptance means BOTH exit status zero AND
+exact stdout ACCEPT followed by a newline. An exception is rejection.
+
+The control family uses the inherited scalar-0 numerical representation.
+The zero and constructed families use scalar 1 as numerical ZERO; [1]
+is the mathematical successor of zero. Instruction markers 0 and [] retain
+their control meanings. No source expression is executed as Python.
+
+Numerical arrays:
+  [a]       successor, with two dummy zero slots under the constructor
+  [n,a,h]   initialized scalar iterator, with one state slot in h and
+            one dummy zero slot in n,a
+Formula arrays:
+  [s,u]     equality
+  [B]       paired D, binding universal then witness slots in the body
+  [B,B,B]   conditional-universal Q, binding one slot
+Numerical roots have depth 3. Under protected slots, coordinates 3+2j
+and 4+2j name slot j, counted from the innermost slot. At every meaningful
+numerical root, coordinates 0,1,2 denote zero. Negative allocated labels
+name rigid parameters. The common depth increment is 5-len(node).
+See the paper for ignored shapes, padding, JSON aliases and freshness.
+
+CONSTRUCTED-MAJOR PACKETS
+========================
+Equality transport: [1, source, target, formula_template].
+  The checker constructs and PROVES [source,target], matches the template
+  at target against the goal, then checks its source instance.
+  Every canonical source is truthy, including numerical zero encoded 1.
+
+Q specialization: [1,0,target,matrix].
+  The checker constructs and PROVES [matrix,matrix,matrix], then checks
+  the zero instance of matrix. The target may be any scoped numerical term.
+
+D elimination: [paired_formula,0,0,0].
+  The checker proves paired_formula, opens its witness at a new local
+  parameter, and adds the resulting Q closure to the continuation context.
+
+I0 computation: [0,0,initializer,update].
+IS computation: [0,predecessor,initializer,update].
+  In IS the predecessor is always truthy canonically, including zero=1.
+  The checker constructs the successor counter; it does not trust a claimed
+  successor shape. Computation adds a generated equation and continues.
+  The initializer is always truthy canonically, including zero=1.
+
+Case introduction: [[],0,0,witness].
+Equation-progress introduction: [0,0,0,witness].
+  The goal must have unary D shape. The witness is opened before allocating
+  the fresh local parameter. Progress is permitted only for an equation root;
+  compounds receive the base assumption and cannot use compound induction.
+
+ZERO-ONLY AND CONTROL PACKETS
+============================
+The zero-only family uses the same numerical representation, computation,
+and binder packets, but equality and Q packets retain their explicit major
+formula in field m. The control uses that explicit-major interface and
+numerical zero=0; its producer restores excluded zero computations through
+the published C=I(2,1;v.0)=0 three-node repair.
+
+LOCAL SCOPES
+============
+The initial floor is 0. Every non-hypothesis continuation decrements its
+local floor. A major proof receives the old floor; on returning, its local
+allocations do not change the parent's floor. Parameters may therefore be
+reused in disjoint closed scopes. The context is never mutated in place.
+
+GENERATED ASSUMPTIONS
+=====================
+A raw generated computation equation H(b) need not be uniformly true in
+its new parameter b. Soundness uses its provable zero instance H(0) and
+fresh-parameter discharge. The paper gives this argument explicitly.
+
+KERNEL BOUNDARY
+===============
+The entire checker, input parsing, scope check, opening, all rule branches,
+and verdict driver are in each selected Python file. Only standard json
+is imported. Tests, proof producers, measurement tools, and bridge proofs
+are outside the executable kernel and are never imported by it.

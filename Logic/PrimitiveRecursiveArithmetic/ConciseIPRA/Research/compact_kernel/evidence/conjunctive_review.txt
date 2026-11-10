@@ -1,0 +1,181 @@
+INDEPENDENT REVIEW: PRIMITIVE-POSITIVE EVENTUALLY-CONSTANT MODEL OBSTRUCTION
+
+Reviewed file: logic_audit_work/pp_obstruction.tex
+Reviewer: axiom_design agent, 2026-11-10
+Status: The mathematical argument is sound on its stated ordinary first-order
+interpretation interface. I recommend the small semantic clarification below.
+This is a written review, not a proof-assistant verification or external review.
+
+1. Primitive-positive transfer
+
+The induction on formulas is valid. Every finite tuple of eventually constant
+parameters is equal to one fixed tuple outside a finite set. If an existential
+formula has a witness at each coordinate, choose witnesses separately on that
+finite exceptional set and one witness for the common tail. The assembled
+witness is eventually constant. For nested existential quantifiers, the same
+argument applies to the inner primitive-positive matrix by structural induction.
+No uniform definable choice function or infinitary choice principle is needed.
+Finitarity of every signature symbol is essential for closure and common tails.
+
+2. Regular axioms and primitive-positive induction
+
+True regular implications transfer because a true antecedent supplies its
+coordinatewise antecedents and the reverse transfer reconstructs witnesses in
+the consequent. True negative constraints transfer at any one coordinate.
+
+For induction, the crucial localizing sequence really does work. Given the
+global base A(0,p) and the global step, fix coordinate i and suppose A(k,p(i)).
+Take n(i)=k and n(j)=0 for j != i. The base supplies A(n(j),p(j)) at every other
+coordinate. Primitive-positive transfer gives the global premise A(n,p), so
+the global step yields A(k+1,p(i)). External ordinary induction in standard N
+then proves each coordinate instance; transfer finishes arbitrary n in E.
+The parameters never change. Retained contextual assumptions need not be pp:
+the model satisfies the full displayed induction sentence, so the usual rule
+under arbitrary retained assumptions is sound there.
+
+3. Intuitionistic semantics: the precise claim needed
+
+A classical structure is a one-world intuitionistic Kripke model. Interpret an
+ordinary intuitionistic first-order bi-interpretation in this one-world model;
+the result is a classical, one-world model M of iPRA. The proof needs only the
+fact that this classical domain structure has no nonidentity finite-order
+automorphism. It does NOT need to assert that arbitrary multiworld Kripke
+models, including their frames, have no finite-order automorphisms. Frame
+permutations can introduce irrelevant automorphisms even when each numerical
+domain is fixed.
+
+Suggested clarifying sentence after the first automorphism paragraph:
+
+  "Only automorphisms of the classical numerical domain of the one-node
+  interpreted model are used here; no rigidity claim about general Kripke
+  frames is needed."
+
+The definable linear order in every classical iPRA model is standard arithmetic
+available with quantifier-free induction. One may use x <= y iff x dotminus y
+= 0 (the primitive-recursive truncated subtraction formulation), or the
+displayed existential addition definition. In either formulation, iPRA proves
+the order laws and totality. An automorphism preserves this parameter-free
+definable order. If its order divides r, a strict increase or decrease would
+give a strict cycle after r iterations. Hence it is the identity.
+
+4. Quotients, dimensions, and parameters
+
+A definable interpretation with domain D subset E^d and definable quotient
+equality is functorial under any automorphism fixing its finitely many defining
+parameters: apply the automorphism coordinatewise to representatives. The
+well-definedness and inverse follow from invariance of D and the equivalence
+relation. The induced automorphism's order divides the original order; it need
+not have exactly that order, and the proof correctly says 'dividing two'.
+
+Parameters of the second interpretation and of a return isomorphism can be
+represented by finitely many finite tuples in E, even when those parameters
+are quotient classes. Choosing a tail swap fixing all those representatives
+is stronger than fixing their classes and is sufficient. If parameters are
+chosen from a definable parameter family, choose any permitted finite tuple
+first; the same tail argument applies. The source-side definable isomorphism
+then is equivariant, and its injectivity forces the original tail swap to be
+the identity. This handles arbitrary finite dimension and arbitrary formulas
+in domains, graphs, quotient equality, and return maps.
+
+5. Concrete limits of the model: coverage and Boolean range
+
+Let e_i be 1 at coordinate i and 0 elsewhere. It is eventually constant.
+It is not 0, and it cannot equal S(b): any successor sequence is positive at
+every coordinate, whereas e_i has zero coordinates. Thus the true standard
+sentence
+
+  forall x (x = 0 or exists y (x = S(y)))
+
+fails in E. This is a concrete disjunctive axiom outside the regular fragment.
+
+If the signature includes the PR sign function sg(0)=0, sg(Sn)=1, then
+sg(e_i)=e_i. Therefore both sg(e_i)=0 and sg(e_i)=1 are false in E. The standard
+Boolean-range principle sg(x)=0 or sg(x)=1 also fails. Its usual pointwise
+equational identities remain true, demonstrating why those equations alone
+do not supply the missing cases principle. These facts are compatible with
+classical excluded middle, which the one-node structure satisfies: the
+missing disjunction is a substantive arithmetic assertion, not an absence of
+classical logical reasoning.
+
+If addition and truncated subtraction are present, e_i and e_j for i != j
+are incomparable under the pointwise arithmetic order. Thus totality of that
+order is another true standard disjunction not preserved by this construction.
+
+These examples give a concrete boundary for the obstruction. They do not
+claim an optimal logical fragment, rule out every axiom outside regular
+logic, or prove any source-size lower bound.
+
+6. Scope and novelty wording
+
+The 'same conclusion for every theory having E as a model' statement is
+correct for theories in the displayed signature (or expansions retaining the
+same tail-swap automorphism property). It should not be read as covering
+arbitrary non-pointwise expansions of the underlying set E, which may destroy
+the symmetry. The final scope paragraph already makes this distinction.
+
+Attribution to the earlier equation/conjunctive-induction EC construction is
+appropriate. The existential-transfer/pp-induction extension is the actual
+new result relative to the inspected corpus. The manuscript correctly avoids
+a literature-wide priority claim or a positive smallest-axiomatization claim.
+
+ADDENDUM: UNIVERSAL QUANTIFIERS AND ARBITRARY FINITE ALTERNATION
+
+The stronger transfer claim proposed after the initial review is valid.
+Replace 'primitive-positive' by the precisely displayed conjunctive grammar
+
+  C ::= atom | top | C and C | exists x C | forall x C.
+
+Carry out one simultaneous structural induction on all formulas of this
+grammar. The atomic, conjunction, and existential clauses in the original
+proof remain correct. In the existential reverse clause, the induction
+hypothesis is for the entire smaller matrix, which may now itself contain
+universal quantifiers. At each exceptional coordinate choose a scalar witness
+satisfying that whole matrix; choose one such scalar witness at the common
+tail tuple. No future universally quantified variable has been fixed in making
+that choice: if the smaller matrix begins with a universal, the selected
+scalar witness satisfies it for all scalar values already. The induction
+hypothesis then turns this into satisfaction for all permitted sequences.
+
+Universal forward clause: Suppose E satisfies forall x C(x,p). Fix coordinate
+i and scalar u. The constant sequence with value u is in E. Instantiate the
+universal with that sequence, apply the induction hypothesis, and read off
+N satisfies C(u,p(i)). Since u was arbitrary, N satisfies forall x C(x,p(i)).
+
+Universal reverse clause: Suppose every coordinate satisfies forall x C(x,p(i)).
+Take an arbitrary sequence a in E. At each coordinate C(a(i),p(i)) holds.
+The induction hypothesis gives E satisfies C(a,p). Since a was arbitrary,
+E satisfies forall x C(x,p).
+
+These clauses do not impose any alternation bound. For example, under
+forall x exists y forall z exists w R(x,y,z,w,p), after x is assigned an
+eventually constant sequence, the scalar y witnesses can be chosen to satisfy
+the complete remaining forall z exists w formula. This gives one eventually
+constant y before z is chosen. For each later z sequence, the finite tuple
+(x,y,z,p) again has a common tail, allowing an eventually constant w. Thus
+there is no hidden reversal of quantifiers or illegal anticipation of a future
+universal choice.
+
+The localized induction proof then applies verbatim to every formula C in
+this enlarged class. Each standard-true implication C -> D between two such
+formulas, as well as C -> falsity, also transfers by the same argument as
+before. These implications are no longer all 'regular' in the usual logical
+terminology, because C and D may contain universals. Prefer the explicit
+grammar and 'conjunctive sequents' or 'positive Horn formulas' over extending
+the term 'regular' without explanation.
+
+The model and automorphism argument are unchanged. Arbitrary interpretation
+formulas remain allowed in the no-bi-interpretation theorem; the conjunctive
+restriction applies to the proposed source axiom/induction architecture, not
+to the candidate interpretations.
+
+This does not imply that the model satisfies induction for all ordinary
+formulas of arithmetic. Although standard arithmetic can Booleanize many
+matrices using PR characteristic functions, the equations of those functions
+do not force their outputs to be globally either 0 or 1 in E. The sign(e_i)
+counterexample above explicitly witnesses that failure. A claimed replacement
+of ordinary disjunction or negation by such equations would need its own
+internal equivalence theorem, which is precisely unavailable in this model.
+
+Final verdict on the strengthened theorem: accepted as a written mathematical
+argument, subject to the same one-node semantics, parameter, and signature
+scope qualifications documented above.

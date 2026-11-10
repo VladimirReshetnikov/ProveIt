@@ -1,0 +1,150 @@
+INDEPENDENT AUDIT: FIXED-COUNTER EQUALITY COMPLETENESS
+===================================================
+Date: 2026-11-10
+Status: PASS as a written mathematical argument, subject to the explicit
+scope and attribution below. This is an independent assistant review,
+not external peer review or a full proof-assistant verification.
+
+Candidate reviewed: research/counter_transport_reduction.txt.
+Current repository snapshot: 2fdcf5bf988bead821c416649f713f98b7ed8776.
+
+THE EXACT RESULT
+
+Keep the successor-seeded counter-aware recursor equations R0 and RS
+unchanged. Replace arbitrary equation transport by root-left replacement
+(RL) and congruence only in the immediate counter of one R expression
+(CC), with identical seed/update/passive parameters on both sides.
+Keep the inherited Eq/D logical rules and its internal Q clauses.
+Then every original contextual sequent remains derivable. Both original
+and new rules are interderivable with identity translations of terms,
+formulas and contexts. Therefore the existing whole-domain iPRA
+bi-interpretation and equiconsistency transfer to this presentation.
+
+This statement is stronger than standard-N agreement but does not claim
+that a smaller complete proof checker has been obtained.
+
+CHECKED DEPENDENCY SEQUENCE
+
+1. Reflexivity needs only RS and RL. For a term s, the computation
+   rho_s = R(Ss,0;u,v.u) = s is an RS axiom. Using this equation as
+   both RL premises gives s=s. No equality congruence is used.
+
+2. RL and reflexivity give symmetry, transitivity and recovery of an
+   available equation as an object proof. Explicitly, an available s=t
+   and the object proof s=s give t=s. A second symmetry gives s=t.
+   If p=q and q=r are proved, symmetry gives q=p; RL with minor q=r
+   gives p=r. This works under arbitrary retained contexts.
+
+3. General object-assumption recovery is external induction on Eq/D
+   formula depth. The equation case is step 2. For D, eliminate the
+   assumption, case-introduce the same D with the exposed witness, and
+   use its Q clause at the new successor after recursively recovering
+   the smaller base hypothesis. No formula transport is needed.
+
+4. Numerical cases need only DI-case, DE and QE. Given derivations of
+   E(0) and E(Sz), weaken the successor proof by an unused E(0) base,
+   case-introduce D with unused witness coordinate, eliminate it to
+   obtain the Q clause, and apply QE to the base at the target term.
+   This argument applies to arbitrary object E; the proposed theorem
+   uses it only on a literal equation. It invokes neither equation
+   induction, arithmetic coverage nor numerical congruence.
+
+5. For a fixed finite numerical template F, choose all bound variables
+   and the case parameter fresh for its passive parameters. Put
+     H_F(n) = R(n,F(0);u,v.S(F(Su))),
+     W(n)   = R(n,0;u,v.u),
+     J_F(n) = W(H_F(n)).
+   At 0, R0 gives H_F(0)=S(F(0)). At Sz, RS gives
+   H_F(Sz)=S(F(Sz)); the update ignores v. Apply CC to W, apply W's
+   RS equation W(Sa)=a, and compose using step 2. Step 4 therefore
+   gives J_F(n)=F(n) at every target term n. No induction or arbitrary
+   contextual rewrite has entered the proof.
+
+6. Given an available s=t, CC applied to H_F yields H_F(s)=H_F(t).
+   CC applied to W yields J_F(s)=J_F(t). The identities from step 5
+   and root equality algebra give F(s)=F(t). The seed and update of
+   H_F contain only fixed passive parameters, not the generic counter
+   variable n. This is the crucial syntactic condition for CC.
+
+7. Apply step 6 to both numerical sides of any atomic formula. Together
+   with root equality algebra this recovers arbitrary atomic transport.
+
+8. The already inherited backward-base / closure-use / forward-successor
+   argument lifts atomic transport through D by external formula-depth
+   induction. Identity expansion from step 3 supplies its needed object
+   base proofs. All local contexts remain allowed. No quantified or
+   compound arithmetic induction instance is introduced.
+
+9. For the reverse inclusion, original atomic transport immediately
+   derives RL (motive v=r) and derives CC from reflexivity with the
+   literal-equation motive R(s,a;h)=R(v,a;h). Hence exact contextual
+   consequence equivalence, rather than only one-way soundness, holds.
+
+FRESHNESS AND INTERPRETATION BOUNDARIES
+
+- The numerical hole, generic counter, both recursor update variables,
+  and all logical eigenparameters must be distinct from the template's
+  passive variables. Alpha-rename nested binders before substitution.
+- In proving the J_F identity, keep passive parameters fixed. Obtain
+  arbitrary target terms through QE / the derived cases rule; no active
+  induction hypothesis has its parameters changed.
+- D identity expansion and compound transport are separate external
+  inductions on formula syntax. They are not logical or arithmetic
+  induction axioms in the new theory.
+- Exact native consequence equivalence transfers the original logical
+  macros, actual-equality reflection, both formula composites, recursion
+  uniqueness, and the explicit ordinary falsity bridge. These are inherited
+  proofs; the new fixed-counter theorem does not independently replace them.
+- The mathematical syntax is fixed finite descriptions, not a quantified
+  universe of programs or an internal total universal evaluator.
+
+NOVELTY AND PRECISE ATTRIBUTION
+
+The general fixed-position equality strategy is already present in
+Equality through one fixed iterator position. The historical archive
+was independently retrieved and verified using the following identity:
+
+  Repository retrieval commit:
+    7e694b036f89a0f16313089329555da531d6a656
+  Path:
+    docs/drafts/ipra_fixed_position_2026-11-09.zip
+  Archive byte length: 558141
+  Git blob SHA-1: 181081972b1bb4d6f430fb71b88df9a3c834261c
+  Archive SHA-256:
+    e628b61e3663b2918cb8791d798fef32c9537a4ddbff88b94798926090e1e293
+  Main member: ipra_fixed_position_2026-11-09/report.tex
+  Main member SHA-256:
+    b5727d53f1f01b7baedc13c95d215171e5d23caf7e8ebc2f0989ae47552edd95
+  Its own input snapshot:
+    aac8216be66b1a6f043fed87a8d515bc5b5d0790
+
+That report uses Root and Seed (initializer-position replacement), with
+three scalar computation schemas I0, direct I1, and I2+. Its one-step
+context B_F(a)=I(1,a;u.F(u)) gives full numerical congruence. Its theorem
+Full native formula transport already gives the full Q/D lifting.
+Neither the reification strategy nor the compound lifting is new here.
+
+The proposed J_F expression is itself a specialization of the already
+published successor-recursion compiler
+  J_{g,h}(n) = W(R(n,g;u,v.S h(u,W(v))))
+with g=F(0) and h(u,z)=F(Su). Source:
+  ipra_successor_recursion_2026-11-09/theory/successor_recursion.tex.
+Thus it must not be called a newly invented arithmetic compiler.
+
+No fixed-counter completeness theorem or the corresponding restricted
+proof of J_F(n)=F(n) was found in the current nine archives, their nested
+historical archives (241 text occurrences inspected by targeted search),
+or the independently retrieved full fixed-position report and its notes.
+The exact relative-corpus contribution is:
+
+  A special case of the inherited counter-aware compiler recovers every
+  numerical context using only counter congruence. Consequently Root+CC
+  suffice for full equality transport under unchanged R0/RS, without
+  the earlier initializer construction's extra direct-first-step schema.
+
+This is a new restricted-rule sufficiency argument relative to the
+inspected sources, not a literature-wide priority claim, not a new
+arithmetic basis, and not a demonstrated complete-checker size record.
+The current executable target remains 281 tokens / 315 AST nodes /
+685 normalized bytes. Measurement of a full new checker, if supplied,
+must include all rule branches, scope checks, input and verdict code.

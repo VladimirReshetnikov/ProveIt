@@ -1,0 +1,228 @@
+Complete J checker profiles and local normalization audit
+=======================================================
+
+Metric and frozen source identities
+-----------------------------------
+Runtime: CPython 3.12.14. The inherited source_measure.py removes genuine
+docstrings, parses the entire module, applies ast.unparse plus one newline,
+and counts significant tokens, full AST nodes, and normalized UTF-8 bytes.
+Imports, JSON input, scope checking, all inference branches, and the public
+ACCEPT/REJECT verdict driver are included. No certificate-supplied code is
+executed. All candidates use the same JSON and verdict interface.
+
+file                    tokens   AST   bytes
+code/checker_direct.py     283   320     687
+code/checker.py            284   322     681
+code/checker_ast.py        282   313     707
+code/checker_ast_total.py  287   314     711
+
+SHA-256:
+checker_direct.py:
+16895a8d3bf261083caf6af4a9640a238d07c6e82adf2022963f6291126c256b
+checker.py:
+cc23043c14e094dc3cb745db05f3213187840194534ba2810646dbd21c2ca338
+checker_ast.py:
+c3e95728f7ebad34e078d22baed25a24c15eed7f2c213643689ca256778ef2c8
+
+The current nine-archive old envelope is 281 / 315 / 685.
+The new separate-profile envelope is 282 / 313 / 681.
+Restricting to idealized total-input profiles gives 283 / 314 / 681.
+The AST and byte coordinates improve; the token coordinate does not.
+No new program dominates every old coordinate. Neither envelope is a proved
+lower bound on all possible implementations. Run code/measure_checkers.py to
+reproduce evidence/checker_metrics.json, including comparator hashes.
+
+The arithmetic change versus the inherited initialized iterator is exactly
+J(0,a;h)=S(a), J(Sn,a;h)=h(J(n,a;h)); the new zero branch emits [t] instead
+of t. Independent arithmetic arguments, not these size measurements, justify
+its relationship with iPRA.
+
+The byte profile replaces a guarded assignment statement by the extensionally
+identical conditional-expression assignment. Its public input acceptance set
+and inference behavior match the direct profile. This is a Python source
+representation saving, not a new mathematical axiom or proof rule.
+
+The AST profile uses exception dispatch for scalar/list opening. Its only
+further change from the inherited AST opener is to traverse `a` instead of
+`a + []`. Canonical array/integer certificates have the same behavior. This
+also admits a small set of harmless iterable aliases, described below. That
+source simplification is distinct from the new arithmetic construction.
+
+Local normalization lemma for the AST opener
+-------------------------------------------
+For operands inspected during a successful opening, define partial local
+normalization N as follows:
+
+  a JSON array     -> apply N to its inspected children;
+  a JSON number    -> the same number;
+  empty string ''  -> [];
+  empty object {}  -> [];
+  object {'': v}   -> [[]], discarding its uninspected value v.
+
+The last three cases are exactly the new successful iterable aliases. A
+nonempty string cannot have a finite successful opening: each character is
+a nonempty one-character string, whose opening recursively requests itself;
+any caught failure then reaches an invalid scalar comparison. An object
+with a nonempty key inherits that failure. Thus a successful object has no
+keys or just its sole empty key. All other noniterable JSON scalars use the
+same checked scalar branch as the inherited exception opener. The earlier
+numerical-alias and missing-image validation argument is unchanged.
+
+Structural induction on a successful opening proves that opening commutes
+with N. The lengths and truthiness of the newly accepted containers agree
+with their normalized forms. Positive raw equality comparisons imply the
+corresponding normalized comparisons. A failed equality comparison may
+become successful after normalization; this is harmless because an unmatched
+instruction is separately justified as a neutral continuation. Do not claim
+identical packet acceptance after arbitrary normalization.
+
+This is deliberately a local lemma. Unread proof prefixes and uninspected
+packet fields can contain arbitrary JSON values. They need not be globally
+normalizable, and the original checkers already ignore such fields.
+
+Branch audit
+------------
+1. Hypothesis closure uses the normalized requested formula and normalized
+   retained hypotheses, so it is unchanged in decoded meaning.
+
+2. A truthy object major can sometimes have its alias proved, but cannot
+   complete the elimination branch: Python's m[2:] operation rejects it.
+   Nonempty-string majors cannot open successfully. The existing scalar-goal
+   invariant excludes successful scalar majors. Thus a complete successful
+   elimination still uses an actual nonempty list major. A successful endpoint
+   match transports or specializes one common normalized motive; unmatched
+   endpoints are the inherited neutral continuation. D elimination retains
+   its eigenparameter requirement.
+
+3. A successful D introduction must still inspect an actual three-element
+   requested list: integer lookup a[2] cannot select a JSON object's string
+   key, and larger lists fail the arity table. Normalized empty matrices mean
+   the provable truth equation; their otherwise permitted progress is harmless.
+   Genuine nonempty compound matrices still receive only base-case assumptions.
+
+4. A false new counter alias denotes zero, so the arithmetic base equation
+   remains J0. A true sole-empty-key object denotes S0. Its star expansion in
+   the eagerly checked predecessor gives ['', seed, update], whose normalized
+   counter is zero. Therefore the generated successor equation is exactly JS
+   at predecessor zero. Other object/string counters fail eager arity or key
+   traversal. Any successful supplied source itself is an actual three-element
+   array; strings or objects with three entries have nonempty keys/characters
+   that cannot survive its subsequent full opening.
+
+5. Ignored object values introduce no numerical parameters. All meaningful
+   labels are still subject to the inherited floor and numerical-root checks.
+   The fresh-parameter and known-zero-instance discharge arguments therefore
+   transfer. For J0, the generated equation at the zero witness is now
+   J(0,a;h)=S(a); its extra successor dummy slot is assigned zero, so the same
+   zero-extension induction identifies the initializer on both sides.
+
+These observations translate each finite successful AST trace to a native J
+proof. Every canonical J derivation is still serialized using arrays and
+integers, so canonical completeness is unchanged. This is a written semantic
+review, not Lean/Rocq verification or a proof derived from testing.
+
+Finite executable evidence
+--------------------------
+Run tests/verify_ast_profile.py. The frozen suite contains 33 shared proof
+and rejection certificates plus 12 focused iterable-alias controls, each
+run normally and with Python -O: 90 complete CLI executions, all passed.
+The expected acceptance of these aliases intentionally differs from the
+strict direct/byte profile. The suite also checks that object majors cannot
+escape slicing, nonempty keys reject, and aliases cannot prove a false
+J computation. An initializer fixture uses the same normalized zero alias
+on both sides; different syntactic zero encodings need not be accepted by
+the same packet even though they have the same numerical meaning.
+
+Independent review: the logic-research agent reviewed the local normalization
+and branch argument and found no new unsound inference. This is an internal
+independent review, not external peer review or proof-assistant certification.
+
+Explorations not included in the delivered frontier
+--------------------------------------------------
+Branch-local freshness can replace the global floor, but its best direct J
+profile was 286 / 321 / 683 and needs certificate reserialization. It is not
+used here. Additional lexical/import/verdict tricks were not used to claim a
+mathematical improvement. No token profile at or below the old 281 minimum
+was established under the retained direct, clear protocol.
+
+Recursion-limit caveat for the AST profile
+----------------------------------------
+A nonempty string in an inspected syntax position recursively requests an
+opening of a one-character string. In actual CPython, the finite recursion
+limit raises an exception; the scalar fallback then fails, and the complete
+public driver prints REJECT with a nonzero exit status. This behavior was
+checked normally and with -O. With a literally unbounded recursion stack,
+the same malformed input can diverge instead of rejecting. Thus the small
+AST variant does not provide total malformed-input rejection in that idealized
+unbounded interpreter. The direct and byte profiles retain explicit list
+checking and do not introduce this string self-recursion.
+
+The AST source reduction is conditional on the stated operational convention:
+actual Python rejection with finite runtime limits, soundness of every finite
+successful trace, and canonical completeness with adequate resource limits.
+It must not be described as a universally terminating idealized proof validator
+on all JSON values. If that stronger requirement is imposed, use the guarded
+opener and do not claim this 313-node AST reduction. This distinction has no
+bearing on the separate mathematical J axiomatization and its written proofs.
+
+Portable corpus reproduction
+----------------------------
+The exact nine current source ZIPs are bundled under sources/. Run
+code/audit_corpus.py without network access. It checks exact lengths, Git blob
+SHA-1 values and SHA-256 values, recursively measures embedded ZIP sources,
+checks the preserved manual classifications of every under-envelope source,
+and writes evidence/reproduced_corpus_metrics.json. Its reproduced counts are
+415 source occurrences, 164 distinct source hashes, and envelope 281/315/685.
+The original record is unchanged. evidence/audit_current.py is explicitly
+marked as the historical workspace scan; it is not the portable entry point.
+
+
+Additional structurally terminating AST profile
+-----------------------------------------------
+code/checker_ast_total.py has 287 normalized tokens, 314 full AST nodes,
+and 711 normalized bytes. SHA-256:
+98bef0ad49440dcfc9e118997b3b06f66a78f1ddeb09de7330cacd3a7046abad
+
+It traverses a.copy() in the exception opener. For arrays this is the same
+shallow copying operation as a + []. Strings have no copy method, so they
+reject immediately through the unchanged scalar comparison fallback.
+A nonempty JSON object yields string keys; each key rejects immediately.
+Consequently the only new successful alias is the empty object, which denotes
+the empty numerical term or empty formula. Opening commutes with local
+replacement {} -> [], and all inference branches retain their earlier meaning.
+No uninspected value of a nonempty object is admitted as numerical syntax.
+
+Unlike direct iteration, this opener terminates on every finite JSON operand
+in the idealized unbounded-resource model. Array recursion descends into proper
+subexpressions. Each image validation is invoked at numerical root with the
+missing-image sentinel restored; an invalid image therefore fails instead of
+replacing itself indefinitely. Nonempty objects reject through their string
+keys. The complete proof checker also terminates: every non-hypothesis proof
+call consumes a packet from the finite input array before issuing subcalls.
+These structural claims concern the delivered JSON input types and the finite
+list/number values constructed by the program, not arbitrary user-defined
+Python objects.
+
+Its other change is a conventional assignment expression in the driver:
+
+    c((q := load(open(0)).pop)(), [])
+
+This binds the same global packet-pop operation and then pops the same root
+goal, in exactly the order of the original two statements. Parsing, failure
+handling, ACCEPT/REJECT output, and exit-status behavior are unchanged. The
+assignment-expression reduction is an implementation detail, not a change to
+the axiom system.
+
+Run tests/verify_total_ast_profile.py. It replays 33 shared proof/rejection
+certificates and 14 focused copying-opener controls, normally and under -O:
+94 complete CLI runs passed. It verifies immediate rejection of inspected
+strings and nonempty objects, accepts the empty-object zero/truth alias,
+and rejects a false J0 equation formed with that alias. An independent
+logic-research review found no soundness objection to this local normalization
+or driver transformation. Evidence is in total_ast_profile_validation.json.
+
+Thus even after excluding the 313-node direct-iteration variant and its ideal
+nontermination caveat, a delivered complete profile improves the old 315-node
+AST frontier to 314. The byte frontier separately improves from 685 to 681.
+The old 281-token frontier remains unbeaten. No single-source domination or
+absolute minimality claim follows.

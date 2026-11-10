@@ -1,0 +1,416 @@
+% Original research fragment prepared during the 10 November 2026 iteration.
+% Requires amsmath, amssymb, amsthm.  No standalone document preamble.
+\section{A scalar successor-seeded recursor is sufficient}
+\label{sec:scalar-successor-bootstrap}\label{sec:hybrid-bootstrap}
+
+This section gives an internal predecessor construction for the scalar
+successor-seeded recursor.  Its update has only the previous state as a
+local variable.  It does not receive the old counter.  The construction
+first exchanges the numerical states zero and one to manufacture
+zero-start iteration.  It then uses affine, rather than ordinary,
+addition in a factor-map construction.  This avoids assuming either a
+predecessor or an unrestricted selector during the bootstrap.
+
+\subsection{Primitive syntax and available reasoning}
+
+The numerical terms are variables, $0$, and
+\[
+ R(n,a;u.h).
+\]
+Only $u$ in the update $h$ is bound.  All its other variables are passive
+parameters.  Every body is fixed finite earlier syntax.  Write
+\[
+ Sa:=R(0,a;u.0),\qquad 1:=S0,
+\]
+and postulate precisely the two computation schemes
+\begin{align}
+ R(0,a;u.h)&=Sa,\tag{R0}\label{ss:r0}\\
+ R(Sn,a;u.h)&=h[R(n,a;u.h)/u].\tag{RS}\label{ss:rs}
+\end{align}
+Thus successor is an abbreviation, and the zero equation for its chosen
+defining body is tautological.  No numerical function variable or
+uniform interpreter is introduced.
+
+The bootstrap uses equality transport and the following two derived
+rules, only for literal equations $E$:
+\[
+ \frac{\Gamma\vdash E(0)\qquad\Gamma\vdash E(Sz)}
+      {\Gamma\vdash E(t)},\qquad
+ \frac{\Gamma\vdash E(0)\qquad\Gamma,E(z)\vdash E(Sz)}
+      {\Gamma\vdash E(t)}.
+ \tag{NC, EI}\label{ss:nc-ei}
+\]
+Here $z$ is fresh for the retained context and fixed parameters.
+These rules follow directly from native DI-case and DI-progress,
+respectively, with an unused witness variable, followed by DE and QE.
+They therefore precede the reconstruction of ordinary logical
+connectives.  Reflexivity is also available before any selector:
+\eqref{ss:rs} gives $R(S0,0;u.t)=t$ for a constant update, and transport
+of that equation along itself gives $t=t$.  Symmetry, transitivity and
+term congruence then follow by transport.
+
+Every induction below is an application of EI to one displayed
+equation, with its other parameters fixed.  Finite-valued case analyses
+are abbreviations for repeated NC and substitution of already proved
+equations.  They do not invoke induction on a disjunction, a quantified
+formula, or a simultaneous conjunction of equations.
+
+\subsection{A finite orbit that exchanges zero and one}
+
+Define the restricted selector and zero test
+\[
+ C^+(n,a,b):=R(n,a;u.b),\qquad Z(n):=C^+(n,0,0).
+\]
+Computation gives
+\[
+ C^+(0,a,b)=Sa,\quad C^+(Sn,a,b)=b,\qquad
+ Z(0)=1,\quad Z(Sn)=0.
+\]
+The superscript emphasizes that this is not yet the ordinary selector.
+Its zero branch adds one to its supplied value.
+
+Put
+\[
+ \epsilon(n):=R(n,0;u.Z(u)),\qquad
+ B(a,b):=Z\bigl(C^+(a,0,Z(b))\bigr).
+\]
+Thus $\epsilon(0)=1$ and $\epsilon(Sn)=Z(\epsilon(n))$.
+Numerical cases on its counter and on the argument of $Z$ show that
+$\epsilon(n)$ is always one of the two Boolean values.  On Boolean
+arguments, $B$ has the conjunction table.  Consequently
+\[
+ \epsilon(SSn)=\epsilon(n).
+ \label{ss:parity-period}
+\]
+No assertion about even or odd representations of arbitrary numbers is
+needed for this equation.
+
+Define
+\[
+ q(u):=B\bigl(\epsilon(u),Z(Z(u))\bigr),\qquad
+ A(n):=R(n,1;u.q(u)),\qquad
+ O(n):=Z\bigl(\epsilon(A(n))\bigr).
+\]
+Finite computation gives $q(2)=1$ and $q(1)=q(0)=0$.  Hence
+\[
+ A(0)=2,\quad A(1)=1,\quad A(SSn)=0;
+ \qquad O(0)=0,\quad O(1)=1,\quad O(SSn)=0.
+ \label{ss:one-indicator}
+\]
+For $A(SSn)=0$, the base is the two-step computation; its induction
+step applies $q$ and uses $q(0)=0$.  The three equations for $O$ then
+follow by substitution and finite computation.
+
+Now set
+\[
+ j(u):=C^+\bigl(O(u),C^+(u,0,u),0\bigr),\qquad
+ \tau(n):=R(n,0;u.j(u)).
+\]
+The preceding equations give
+\[
+ j(0)=2,\qquad j(1)=0,\qquad j(SSn)=SSSn.
+\]
+It follows that
+\begin{equation}
+ \tau(0)=1,\qquad \tau(1)=0,\qquad \tau(SSn)=SSn.
+ \label{ss:swap}
+\end{equation}
+The third equation follows by EI: its base is
+$\tau(2)=j(\tau(1))=j(0)=2$; its step uses the displayed equation
+for $j(SSn)$.  Two numerical cases on an arbitrary input now prove
+\begin{equation}
+                         \tau(\tau(n))=n.
+ \label{ss:swap-involution}
+\end{equation}
+This proof requires neither predecessor nor successor injectivity.
+
+\subsection{Zero-start iteration by conjugation}
+
+For every fixed scalar update $h$, define
+\begin{equation}
+ K(n;u.h):=
+ \tau\!\left(R\left(n,0;
+       v.\tau\bigl(h[\tau(v)/u]\bigr)\right)\right).
+ \label{ss:zero-iterator}
+\end{equation}
+Bound variables are renamed before this finite substitution.  Its
+computation equations are
+\begin{equation}
+ K(0;u.h)=0,\qquad
+ K(Sn;u.h)=h[K(n;u.h)/u].
+ \label{ss:k-computation}
+\end{equation}
+The base is $\tau(1)=0$.  At a successor, the two outer occurrences
+of $\tau$ cancel by \eqref{ss:swap-involution}.
+This gives a genuine zero-start scalar iterator for arbitrary fixed
+updates, not merely for the finite updates used to construct $\tau$.
+
+\subsection{Affine arithmetic before predecessor}
+
+The shifted sum
+\[
+ T(x,y):=R(y,x;u.Su)
+\]
+satisfies $T(x,0)=Sx$ and $T(x,Sy)=S T(x,y)$.
+Equation inductions give
+\begin{equation}
+ T(0,y)=Sy,\quad T(Sx,y)=S T(x,y),\quad
+ T(x,y)=T(y,x),\quad
+ T(T(x,y),z)=T(x,T(y,z)).
+ \label{ss:shifted-semigroup}
+\end{equation}
+For example, the first two identities are proved by induction on $y$;
+commutativity is then proved by induction on $y$, and associativity by
+induction on $z$.  In particular, we have a commutative semigroup, not
+an addition operation with zero as identity.
+
+Define
+\[
+ d(n):=K(n;u.SSu),\qquad D(n):=T(n,n),\qquad
+ \Theta(n):=T(T(n,n),n).
+\]
+Finite computation, \eqref{ss:shifted-semigroup}, and EI give
+\begin{align}
+ d(0)&=0,& d(Sn)&=SSd(n),&D(n)&=Sd(n),\notag\\
+ D(0)&=1,&D(Sn)&=SSD(n),\notag\\
+ \Theta(0)&=2,&\Theta(Sn)&=SSS\Theta(n),\notag\\
+ \Theta(T(x,y))&=T(\Theta(x),\Theta(y)).
+ \label{ss:affine-laws}
+\end{align}
+The last equality is simply reassociation and permutation of the six
+arguments after expanding the three copies of $T(x,y)$.
+
+Let $N(n):=Z(\epsilon(n))$.  The parity equations imply
+\begin{equation}
+ \epsilon(D(n))=0,\quad
+ \epsilon(\Theta(n))=\epsilon(n),\quad
+ N(\Theta(n))=N(n),\quad N(Sn)=Z(N(n)).
+ \label{ss:affine-parity}
+\end{equation}
+For the first equation, induction follows the two successor increments
+of $D$.  For the second, $\Theta$ advances by three successors, so both
+sides toggle once.  The other equations follow by applying $Z$ and its
+Boolean identities.
+
+\subsection{A ramp and an affine factor map}
+
+Define a three-state update and its zero-start orbit by
+\[
+ m(u):=C^+\bigl(u,0,C^+(\epsilon(u),1,0)\bigr),\qquad
+ M(n):=K(n;u.m(u)).
+\]
+Only the finite values
+\[
+ m(0)=1,\qquad m(1)=2,\qquad m(2)=0
+\]
+will be used.  In particular, no general division algorithm or
+remainder theorem is assumed.
+
+Set
+\[
+ F(n):=K(n;u.T(u,M(u))).
+\]
+The central literal-equation induction is
+\begin{equation}
+                          M(F(n))=N(n).
+ \label{ss:ramp-invariant}
+\end{equation}
+At zero, both sides are zero.  If $N(n)=0$, the next $F$ state is
+$T(F(n),0)=SF(n)$, so its $M$ value is $m(0)=1=N(Sn)$.
+If $N(n)=1$, the next state is $T(F(n),1)=SSF(n)$, whose $M$ value
+is $m(m(1))=m(2)=0=N(Sn)$.  These are Boolean cases licensed by
+the preceding definitions and NC.
+
+It follows that
+\begin{equation}
+ F(Sn)=T(F(n),N(n)),\qquad F(SSn)=SSSF(n).
+ \label{ss:ramp-step}
+\end{equation}
+The second equation uses the two Boolean cases of $N(n)$ and
+$N(Sn)=Z(N(n))$.  A further induction, using the two-step increments
+of $D$, gives
+\begin{equation}
+                          S F(D(n))=\Theta(n).
+ \label{ss:ramp-double}
+\end{equation}
+Its base is $S F(1)=2=\Theta(0)$, and its successor step adds three
+successors to both sides.
+
+The second scaling identity is
+\begin{equation}
+ F(\Theta(n))=T(\Theta(F(n)),N(n)).
+ \label{ss:ramp-triple}
+\end{equation}
+Here is a detailed induction check.  The zero case is $F(2)=3=T(2,0)$.
+Write $X=\Theta(F(n))$ and $b=N(n)$.  After using the induction
+equation, \eqref{ss:ramp-step}, and
+$N(\Theta(n))=N(n)$, the new left side becomes
+\[
+                      S^3T(T(X,b),b).
+\]
+Using $F(Sn)=T(F(n),b)$ and the homomorphism law for $\Theta$, the
+new right side becomes
+\[
+                    T(T(X,\Theta(b)),Z(b)).
+\]
+At $b=0$ both terms reduce to $S^5X$; at $b=1$ both reduce to $S^7X$,
+using $\Theta(0)=2$ and $\Theta(1)=5$.  This is one equation induction
+with a Boolean case split, not induction with a varying parameter.
+
+Now define
+\[
+                   H(u):=C^+(\epsilon(u),F(u),u).
+\]
+The essential factor equations are
+\begin{equation}
+ H(0)=0,\qquad H(D(u))=\Theta(u),\qquad
+ H(\Theta(u))=\Theta(H(u)).
+ \label{ss:factor-map}
+\end{equation}
+The first is a computation.  The second follows from
+$\epsilon(D(u))=0$ and \eqref{ss:ramp-double}.
+For the third, $\epsilon(\Theta(u))=\epsilon(u)$.
+If that Boolean value is $1$, both sides are $\Theta(u)$.
+If it is $0$, then $N(u)=1$ and \eqref{ss:ramp-triple} gives
+\[
+ H(\Theta(u))=S F(\Theta(u))
+   =S T(\Theta(F(u)),1)
+   =S^3\Theta(F(u))
+   =\Theta(SF(u))=\Theta(H(u)).
+\]
+The restricted selector is exactly sufficient: the transformed branch
+is a successor, and the retained branch is the unmodified state.
+
+\subsection{A strict comparator without general initialization}
+
+Define
+\[
+ E(x):=K(x;u.D(u)),\qquad
+ V(x,y):=\epsilon\bigl(R(y,d(E(x));u.H(u))\bigr).
+\]
+We prove the three equations
+\begin{equation}
+ V(x,0)=0,\qquad V(0,Sy)=1,\qquad
+ V(Sx,Sy)=V(x,y).
+ \label{ss:strict-comparator}
+\end{equation}
+The standard-model meaning of $V$ is the indicator of $x<y$, but
+that interpretation is not used in the proof.
+
+At zero, the recursor state is $Sd(E(x))=D(E(x))$, so the first
+equation follows from \eqref{ss:affine-parity}.
+For the second, $E(0)=d(0)=0$ and the first update of the initial
+state $1=D(0)$ is $H(1)=\Theta(0)=2$.  Moreover $H(2)=2$.
+Equation induction on $y$ therefore gives
+$R(Sy,0;u.H(u))=2$, and $\epsilon(2)=1$.
+
+For the third equation, prove by EI on $y$, with $x$ fixed,
+\begin{equation}
+ R(Sy,d(E(Sx));u.H(u))
+     =\Theta\bigl(R(y,d(E(x));u.H(u))\bigr).
+ \label{ss:trajectory-scaling}
+\end{equation}
+At $y=0$, the left side is
+\[
+ H(Sd(E(Sx)))=H(D(E(Sx)))
+   =\Theta(E(Sx))=\Theta(D(E(x))),
+\]
+which is the right side's initial value.  The induction step applies
+$H$ and then uses $H\Theta=\Theta H$.
+Applying $\epsilon$ to \eqref{ss:trajectory-scaling} proves the third
+equation of \eqref{ss:strict-comparator}.
+This argument does not use an initializer-shifting rotation rule for
+$R$; such a rule would require precisely the missing predecessor.
+
+\subsection{Saturation constructs predecessor}
+
+Put
+\[
+ B_m(u):=C^+(Z(V(u,m)),u,u),\qquad
+ W(t,m):=K(t;u.B_m(u)).
+\]
+Because $V$ is Boolean, $B_m(u)$ is $Su$ when $V(u,m)=1$ and is
+$u$ when $V(u,m)=0$.  Direct numerical cases give
+\[
+ C^+(e,Sa,Sb)=S C^+(e,a,b).
+\]
+Together with \eqref{ss:strict-comparator}, this yields
+\[
+ B_{Sm}(Su)=S B_m(u),\qquad B_{Sm}(0)=1.
+\]
+Equation induction on $t$, with $m$ fixed, now proves
+\begin{equation}
+                         W(St,Sm)=S W(t,m).
+ \label{ss:saturated-shift}
+\end{equation}
+Its base is $B_{Sm}(0)=1$; its step applies the first of the two
+preceding equations.  Two separate equation inductions give
+\[
+                       W(n,n)=n,\qquad V(n,n)=0.
+\]
+Consequently
+\begin{equation}
+                         W(Sn,n)=B_n(n)=n.
+ \label{ss:extra-step}
+\end{equation}
+
+Define the finite scalar term
+\begin{equation}
+ P(m):=K\bigl(m;u.C^+(Z(V(Su,m)),u,u)\bigr).
+ \label{ss:predecessor}
+\end{equation}
+The zero equation is immediate.  At parameter $m=Sn$, the update in
+\eqref{ss:predecessor} agrees pointwise with $B_n$, since
+$V(Su,Sn)=V(u,n)$.  EI on a separate iteration counter $t$, keeping
+$n$ fixed, therefore proves equality of the two zero-start trajectories.
+Only afterwards substitute $t=Sn$.  Equation \eqref{ss:extra-step}
+then gives
+\begin{equation}
+                         P(0)=0,\qquad P(Sn)=n.
+ \label{ss:predecessor-equations}
+\end{equation}
+This explicitly supplies the required body-extensionality argument;
+updates with different syntax were not silently identified.
+
+\subsection{Recovery of the ordinary scalar presentation}
+
+For every fixed initialized update define
+\begin{equation}
+ I(n,a;u.h):=
+ P\!\left(R\left(n,a;v.S\bigl(h[P(v)/u]\bigr)\right)\right).
+ \label{ss:initialized-compiler}
+\end{equation}
+Using \eqref{ss:predecessor-equations} in the two computation cases
+proves
+\[
+ I(0,a;u.h)=a,\qquad
+ I(Sn,a;u.h)=h[I(n,a;u.h)/u].
+\]
+The ordinary selector is now also available, for example as
+\[
+ C(n,a,b):=P(C^+(n,a,Sb)).
+\]
+Its endpoints are exactly $a$ and $b$.  All ordinary logical gates and
+selectors can therefore be reconstructed after the arithmetic
+bootstrap.  There is no circular appeal to full intuitionistic logic
+or an already available unrestricted selector in the predecessor proof.
+
+Conversely, in the ordinary scalar presentation define
+\[
+                    R(n,a;u.h):=I(n,Sa;u.h).
+\]
+These descriptions satisfy \eqref{ss:r0}--\eqref{ss:rs}.  The two
+numerical translations preserve zero and successor, and each translated
+recursor agrees with the original by EI on its counter: their zero
+values agree and their step functions agree.  With passive parameters
+fixed, this gives the termwise identities required for the two
+interpretation composites.  The domain is unchanged.  Combining this
+identity-domain equivalence with the established full scalar-iPRA
+bridge gives equiconsistency and bi-interpretability with iPRA.
+
+\paragraph{Scope of the result.}
+The reduction removes the independent successor constructor and the
+counter variable from the successor-seeded recursor's update language.
+It does not establish an absolute minimum for axiomatizations or a
+checker-size improvement by itself.  A complete checker comparison
+must still count every syntax, substitution, scoping and proof rule.

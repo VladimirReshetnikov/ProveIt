@@ -1,0 +1,303 @@
+\clearpage
+\section{Complete executable checkers and their correspondence}
+\label{sec:implementation}
+
+The numerical completion does not by itself shrink a validator. The
+programs below retain the generated-assumption architecture of the
+supplied draft and change its arithmetic base equation from $I(0,a)=a$
+to $J(0,a)=Sa$. The byte profile also replaces one conditional statement
+by an equivalent conditional expression. The AST profile uses the
+exception-based opener and the explicitly decoded iterable aliases
+described below. Every entire executable module is charged in the
+comparison, including the JSON input and verdict driver.
+
+\Needspace{28\baselineskip}
+\subsection{The complete byte profile}
+\lstinputlisting[language=Python]{code/checker.py}
+The imported JSON parser supplies data only. The submitted data is never
+evaluated as Python source. No arithmetic oracle, external theorem table,
+proof producer, helper validator, or unmeasured module is imported.
+The arithmetic change is the final \texttt{[t]} in the assignment of
+\texttt{h}; that is the raw successor of the initializer.
+
+\Needspace{30\baselineskip}
+\subsection{The complete AST profile}
+\lstinputlisting[language=Python]{code/checker_ast.py}
+The two checkers have the same canonical mathematical certificates.
+The latter additionally accepts the safe non-array aliases specified
+below. The different implementations improve different coordinates;
+their costs must not be combined into an imaginary single program.
+
+The additional complete file \file{code/checker_ast_total.py} replaces
+\texttt{for b in a} by \texttt{for b in a.copy()} and binds the input
+pop method with the conventional assignment expression
+\texttt{c((q := load(open(0)).pop)(), [])}. It measures $287/314/711$.
+The input is still loaded once and its final goal is popped before the
+checker runs. Strings lack \texttt{copy} and immediately reject; a
+nonempty object's string keys likewise reject. Only the empty object
+adds an alias of $[]$. Opening therefore terminates structurally on
+finite input trees, including malformed ones. Each non-hypothesis proof
+invocation consumes a packet. This alternative improves the old AST
+frontier by one node without the malformed-string tradeoff of the
+313-node version. Its source is included in full in the archive.
+
+\subsection{Public protocol and exact sorted decoding}
+
+The input is one JSON array. Its last item is the closed requested
+formula. Earlier items are four-field instructions $[m,s,u,t]$, consumed
+from right to left by \texttt{pop}. A major subproof is consumed before
+its continuation. A hypothesis closes without consuming an instruction.
+An unread prefix is inert. Successful execution prints
+\texttt{ACCEPT} and exits with status zero; rejection prints
+\texttt{REJECT} and exits nonzero, possibly with a traceback on standard
+error. Resource limits can reject sufficiently large valid certificates;
+mathematical completeness is for unbounded resources.
+
+\begin{center}
+\begin{tabular}{cllc}
+\toprule
+Arity & Formula & Numerical term & Depth increase\\
+\midrule
+0 & truth $0=0$ & zero & no children\\
+1 & conditional closure $\Q$ & derived successor & 2\\
+2 & equality & annotated zero & 1\\
+3 & paired closure $\D$ & successor-seeded $J$ & 4\\
+\bottomrule
+\end{tabular}
+\end{center}
+The unary numerical node is an abbreviation for $J(0,a;u.0)$.
+It is a charged serialization convenience, not an additional primitive
+computation schema. Numerical binary nodes denote zero but their
+annotations are still traversed. The first two fields of a ternary
+formula are likewise checked annotations.
+
+For a protected numerical environment $\rho$, nearest slot first, the
+precise nontrivial decoding clauses are
+\[
+\begin{aligned}
+ T_\rho([p])&=S T_{0,\rho}(p),&
+ F_\rho([B])&=\Q_y F_{y,\rho}(B),\\
+ T_\rho([p,q])&=0,&
+ F_\rho([s,t])&=(T_\rho(s)=T_\rho(t)),\\
+ T_\rho([n,a,h])&=
+ J(T_{0,0,\rho}(n),T_{0,0,\rho}(a);v.T_{v,v,\rho}(h)),\\
+ F_\rho([P,U,B])&=\D_{x,y}F_{y,x,\rho}(B).
+\end{aligned}
+\]
+Empty arrays decode as zero at numerical sort and truth at formula sort.
+The two update slots alias the \emph{same} scalar state; they are not
+separate changing inputs. The two slots of $\D$ are distinct numerical
+binders. The extra slots under a successor and under an iterator's
+counter and initializer are dummy zeros.
+
+At formula depth $2q$ and numerical depth $2q+1$, there are $q$ protected
+slots. Positive coordinates $2j-1$ and $2j$ name the same $j$th slot;
+zero denotes numerical zero. Negative coordinates name allocated rigid
+parameters. The global lower bound $k$ begins at zero and decreases at
+every non-hypothesis continuation, including computation and neutral
+endpoint continuations. A major subproof may allocate names before the
+outer continuation allocates its own name.
+
+The opener $i(a,t,d)$ retains a scalar in $[k,d)$. An exposed numerical
+coordinate is replaced by the supplied image, itself checked at numerical
+root, depth one. Exposed formula coordinates denote truth. A missing or
+invalid \emph{used} numerical image rejects. This numerical-root check is
+what prevents capture by a surrounding template. The requested goal is
+checked with no supplied image before any continuation, so meaningful
+future numerical parameters cannot occur in it.
+
+Canonical data uses arrays and integers. Retained finite fractional
+coordinates alias their integer floors, and Boolean values have their
+zero/one meanings. An exceptional scalar can survive only by being
+replaced with a successfully checked image, or as an exposed formula
+truth. These conventions do not add numerical operations or axioms.
+
+\subsection{The AST profile's additional local aliases}
+
+The AST opener traverses its argument directly inside \texttt{try}.
+On a successful used opening, the only additional iterable possibilities
+are:
+\[
+ \texttt{""}\rightsquigarrow[],\qquad
+ \texttt{\{\}}\rightsquigarrow[],\qquad
+ \texttt{\{"":value\}}\rightsquigarrow[[]].
+\]
+The value of the sole dictionary entry is ignored. A nonempty string
+recurses on a one-character string without reaching a leaf, so cannot
+finish successfully. A dictionary with a nonempty key therefore cannot
+complete a used opening either. The empty-key singleton has exactly the
+length, truth value, and traversed child of a unary node. All three
+normalizations commute with scope opening. For the first two aliases the
+depth increment is immaterial because there are no children.
+
+Actual CPython rejects the nonempty-string case through its finite
+recursion limit. An ideal interpreter with no recursion bound would
+diverge on that malformed input. Thus the AST reduction has this explicit
+raw-input tradeoff; the byte profile retains list dispatch and avoids it.
+The soundness statement concerns every finite successful run, and the
+completeness statement promises canonical array/integer certificates.
+
+An empty-key dictionary cannot successfully be a non-hypothesis major:
+the subsequent slice \texttt{m[2:]} fails. As a unary successor counter,
+its expansion supplies the empty-string zero predecessor, whose numerical
+opening normalizes to zero. Thus it gives the same computation as the
+corresponding array. These are local statements about successfully opened
+and inspected data, not a claim that every ignored field in a raw
+certificate has a global canonical decoding. Arbitrary unused fields
+and unread prefixes remain semantically inert.
+
+\subsection{Every instruction branch}
+
+\paragraph{A truthy major.}
+First recursively prove $m$; a failed major is never ignored. If
+$m=[s,u]$ and the target opening of the formula motive $t$ at $u$
+matches the requested goal, continue at its opening at $s$. This is
+equality transport. If $s$ is falsy and $m=[t]$, the analogous match is
+QE, with its zero-instance minor. In either case the extra context entry
+is truth, the empty slice $m[2:]$. An unmatched binary or unary major
+retains the requested goal and adds only that truth. It does not supply
+the alleged endpoint equality.
+
+A ternary major cannot match either endpoint candidate. Its slice is
+$[B]$; opening at the newly allocated name supplies the $\Q$ assumption
+of DE, while the requested conclusion is retained. The fresh name is
+absent from the already checked conclusion and context.
+
+\paragraph{A falsy major and a truthy original fourth field.}
+This is paired introduction with witness $t$. The opener takes the goal's
+third field and leaves one induction coordinate protected. Marker $m=[]$
+chooses its zero-instance assumption. Marker $m=0$ chooses the current
+instance only when the opened matrix is a literal equation; otherwise
+it also chooses the zero instance. The new goal is the successor
+instance. The test \texttt{len(a) \% 2 == m} is precisely this distinction
+on successfully decoded matrices. It never permits progress introduction
+on a $\Q$ or $\D$ matrix.
+
+A zero witness must have a truthy encoding in this branch. In the new
+basis one can use the term $J(1,0;u.0)$, which is provably zero. The old
+initialized-iterator witness $[0,0,0]$ now denotes one and cannot be reused
+as zero. The supplied producer makes the required change. Routine
+transport along a proved equality handles the selected zero encoding.
+
+\paragraph{A falsy major and falsy original fourth field.}
+The source $s$ must unpack as $[n,a,h]$. The packet's original third
+field is unused. With a false counter the added raw equation is
+$[s,[a]]$, expressing the successor-seeded base. With a true counter
+the inner opening of $[*n,a,h]$ both forces the counter to be unary and
+validates the predecessor iterator before substitution into the update.
+This eager check is essential even when that update ignores its state.
+
+Every branch then decrements $k$, opens the goal with the fresh successor
+$[k]$, adds the appropriately opened assumption, and uses the same
+recursive continuation. The major and parity tests select a fresh-name
+assumption for DE/progress and a zero assumption for cases; computation
+can generate a local equation containing the fresh name. The admissible
+known-instance supply rule accounts for precisely that last possibility.
+
+\subsection{Why generated J equations are sound}
+
+\begin{lemma}[Structural zero extension]\label{impl:zero}
+Read a fixed numerical tree under additional outer slots assigned zero.
+Alternatively expose those slots to a fresh rigid parameter $w$ and then
+substitute $w=0$. Whenever the indicated openings succeed, the decoded
+numerical terms agree in the theory.
+\end{lemma}
+\begin{proof}
+Induct externally on the finite tree. Internal binder slots and older
+rigid parameters are unchanged. An added zero slot, an exposed coordinate,
+or an alias of $w$ becomes zero. Successor adds a dummy zero on both
+sides. A checked numerical binary node denotes zero on both sides.
+At a ternary node its counter and initializer add two zero slots and its
+update adds two aliases of one symbolic state. Apply the induction
+hypothesis to all three children. Their fixed $J$ descriptions agree by
+substitution and congruence. The local iterable aliases in the AST profile
+normalize before the same argument. This proof does not enumerate the
+standard natural numbers.
+\end{proof}
+
+\begin{lemma}[The generated equation has a provable zero instance]
+\label{impl:supply}
+If a computation instruction successfully adds $H(w)$, where $w$ is its
+fresh parameter, then the native theory proves $H(0)$.
+\end{lemma}
+\begin{proof}
+At a false counter the left side is $J(0,a;v.h)$. Its initializer is
+read under two dummy zero slots. The initializer on the right side is
+under one dummy zero, inside its successor, and may expose additional
+coordinates to $w$. After $w=0$, Lemma~\ref{impl:zero} identifies the
+two initializers. The equation is consequently J0. The particular update
+does not affect this base value.
+
+At a true counter the eager predecessor check forces a unary $n=[p]$,
+or its documented empty-key alias. An array counter with two or more
+fields makes a predecessor tree of arity at least four, which the depth
+table rejects. A scalar cannot be expanded. The predecessor tree, its
+initializer, and its update are numerically checked before fresh-name
+allocation. Thus an out-of-scope coordinate cannot masquerade as its
+recursive state. The right side substitutes exactly that checked
+predecessor iterator into the update. The extra dummy zero under the
+source successor changes no surviving meaningful coordinate, by the
+same structural argument. Its zero instance is JS.
+\end{proof}
+
+The original conclusion and retained context do not contain $w$.
+Substitute zero for $w$ in the continuation derivation and cut the
+proved $H(0)$. The local equation need not be valid for every value of
+$w$; its known zero instance is sufficient. This proof is the inherited
+generated-assumption argument with its base adapted to the new seed.
+
+\begin{theorem}[Checker correspondence]\label{impl:correspondence}
+Every successful finite execution of each delivered complete checker has a
+decoded closed conclusion provable in the stated native theory.
+Conversely, every closed native theorem has a finite canonical certificate
+accepted by each checker, with unbounded computational resources.
+\end{theorem}
+\begin{proof}
+For soundness, induct on the finite successful checking trace. Hyp closes
+a retained formula. A matched transport or QE command is sound by
+capture-free opening. An unmatched unary or binary major is neutral,
+and a ternary major performs DE. The DI command supplies exactly one of
+the two permitted assumptions and maintains its eigenparameter condition.
+A computation continuation is admissible by Lemma~\ref{impl:supply} and
+known-instance supply.
+
+Every added context entry is an array produced by opening. For the
+strict list profile a scalar requested formula cannot close by membership
+in this list context; its other branches reject or retain it while
+consuming another instruction. Hence there is no finite successful scalar
+goal trace. For the AST profile, the additional successfully opened
+iterables are exactly the local array aliases above. This establishes the
+required root sorts without an omitted predicate. The initial scope check,
+the eager numerical-image check, and the decreasing floor maintain the
+freshness and substitution invariants throughout the trace.
+The total-input AST variant has only the empty-object alias, and the
+assignment expression preserves the input driver's evaluation order.
+
+For completeness, serialize a finite native derivation in the checker's
+depth-first consumption order. Replace computation leaves with supply of
+their constant equation followed by Hyp. Use matched endpoints for
+transport and QE. Use the designated DI markers and a truthy witness
+encoding, with equality expansion when needed. Canonical descriptions put
+zero in dummy positions and use allocated rigid names for passive
+parameters. Allocate a new label at every common continuation, including
+neutral and arithmetic ones, and account for automatic hypothesis closure.
+Thus all steps have finite canonical certificates. This is an effective
+metatheoretic proof translation, not a claim that the small example
+producer implements the entire translation.
+\end{proof}
+
+\subsection{Executable evidence and its limits}
+\input{evidence/test_summary.tex}
+The separate numerical diagnostic evaluates the displayed $J$ definitions
+and checks 306 selected identities and values. It is a finite diagnostic,
+not the whole-domain proof. The latter is the equation-induction argument
+in the preceding sections. The named certificate producer demonstrates
+nonvacuous logical and computation rules, but does not emit the entire
+predecessor derivation as a kernel certificate. Neither finite testing nor
+independent assistant review is represented as a machine-checked
+metatheorem. The archive records this boundary in \file{CLAIMS.json}.
+
+Run \texttt{python3 reproduce.py} for the supplied measurement and proof
+fixtures, and \texttt{python3 build.py} to compile the PDF. The frozen
+source archives and their hashes allow the corpus measurements and
+textual novelty search to be repeated without relying on a moving branch.

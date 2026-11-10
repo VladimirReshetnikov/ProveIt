@@ -1,0 +1,203 @@
+% Inclusion fragment. Requires amsmath, amssymb, amsthm.
+% Uses theorem, lemma, corollary, proof environments supplied by the parent.
+\section{A general obstruction to computing the initializer from the update}
+\label{sec:tied-seed-circuits}
+
+The current counter-congruence and transient-seed drafts already prove a
+one-coordinate majorization theorem for the particular operator
+\[
+ B(0;u,v.h)=1+h(0,0),\qquad
+ B(n+1;u,v.h)=h(n,B(n;u,v.h)).
+\]
+The transient-seed draft also states composition closure and the
+nonexistence of an injective pairing term. We do not claim those
+conclusions again as new results. The following extension
+identifies a substantially broader family of initializer-elimination
+attempts to which the same obstruction applies. It allows finitely many
+adaptive probes of the update and arbitrary primitive-recursive
+combinations of the answers. The restriction is that the initializer
+receives no independent unbounded numerical input.
+
+\paragraph{Fixed query circuits.}
+Fix a finite acyclic circuit $P$ with no ordinary input nodes. Its nodes
+are numerals; applications of fixed primitive-recursive functions to
+earlier node values; or queries $H(a,b)$, whose two arguments are earlier
+node values. One node is designated as output. The circuit may query $H$
+several times, and a later query may depend on earlier answers. Its finite
+graph and all its ordinary primitive-recursive operations are fixed by
+the constructor, rather than supplied as numerical inputs at runtime.
+
+For a fixed update term $h(u,v,\vec p)$, let
+$h_{\vec p}(a,b)=h(a,b,\vec p)$. Define the tied-seed recursor
+\[
+ \begin{split}
+ R_P(0;u,v.h)&=P^{h_{\vec p}},\\
+ R_P(n+1;u,v.h)&=h(n,R_P(n;u,v.h),\vec p).
+ \end{split}
+ \tag{Tied seed}
+\]
+The only access of the circuit to $\vec p$ is through queries to
+$h_{\vec p}$. In particular it does not receive a separate initializer,
+the actual counter argument, or a passive numerical parameter as an
+ordinary input. Each fixed instance denotes a primitive-recursive
+function: the circuit is finite and the outer recursion is ordinary
+primitive recursion. No universal evaluator is introduced.
+
+\paragraph{Permitted term primitives.}
+The term language may contain constants, projections, and arbitrary fixed
+unary primitive-recursive functions. More generally, it may contain any
+fixed primitive-recursive operation $f$ for which either a constant bound
+is known or there are a fixed input coordinate $j$ and unary
+primitive-recursive function $F$ satisfying
+\[
+                    f(\vec x)\le F(x_j).
+ \tag{One-coordinate bound}
+\]
+Thus predecessor, zero tests, bounded Boolean tests, minimum, and
+one-sided data gates are all permitted. Ordinary finite substitution
+and arbitrary nesting of the displayed $R_P$ constructors are allowed.
+The arbitrary combining operations inside a query circuit need not obey
+this bound; they receive only the circuit's internally generated values.
+
+For example, a permitted initializer first computes
+$q=h(0,0,\vec p)$ and then returns
+\[
+                  q+h(q,q+1,\vec p)^2.
+\]
+The second query is adaptive and the final combination can grow rapidly.
+The theorem still applies: the values cannot acquire two independent
+unbounded controlling coordinates from this one update.
+
+\begin{lemma}[A circuit cannot acquire an independent unbounded input]
+For any fixed query circuit $P$ the following statements hold.
+\begin{enumerate}
+\item If $H(a,b)\le M$ for all $a,b$, then
+      $P^H\le C_P(M)$ for some unary primitive-recursive $C_P$,
+      independent of $H$.
+\item If $H(a,b)\le F(a)$ for all $a,b$, where $F$ is a fixed unary
+      primitive-recursive function, then $P^H$ has a constant bound
+      depending on $P,F$, and independent of $H$. The same statement
+      holds with $F(b)$ in place of $F(a)$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+For a fixed $r$-ary primitive-recursive operation $g$, put
+\[
+ \widehat g(z)=\max\{g(z_1,\ldots,z_r):z_1,\ldots,z_r\le z\}.
+\]
+This is a nondecreasing unary primitive-recursive function. Nullary
+operations are simply their constant values.
+
+Traverse the finite acyclic circuit in a topological order. For the
+first assertion, give each numeral its constant bound, each oracle
+answer the bound $M$, and each ordinary operation node the bound
+$\widehat g$ of the maximum of its predecessor bounds. Every node bound
+is unary primitive recursive in $M$; the output bound is $C_P(M)$.
+
+For the second assertion use constant bounds throughout the traversal.
+At an oracle query, apply the nondecreasing envelope
+$\widehat F(z)=\max_{t\le z}F(t)$ to the bound on the controlling query
+argument. Since its argument node precedes the query, its constant bound
+is already available. This gives a finite constant bound at every node.
+The proof for the second query coordinate is identical.
+\end{proof}
+
+\begin{theorem}[Tied-seed circuit obstruction]
+Every fixed term $t(x_1,\ldots,x_k)$ of the language just described has
+either a constant bound or a bound
+\[
+              t(x_1,\ldots,x_k)\le F(x_i)
+\]
+for some one coordinate $i$ and unary primitive-recursive function $F$.
+The coordinate and the function may depend on the term. This is an
+external standard-function statement; it makes no claim about a uniform
+primitive-recursive evaluator that, given arbitrary term syntax and an
+input value, computes the corresponding majorant value.
+\end{theorem}
+\begin{proof}
+Replace every unary bounding function by its nondecreasing envelope.
+The property is preserved by a primitive operation with a known bound:
+only the term placed in its controlling input matters, and the two
+nondecreasing unary bounds can be composed. Constants and projections
+are immediate. It remains to check the new recursion constructor.
+
+Apply the structural induction hypothesis to
+$h(u,v,\vec p)$. Write $r_j(\vec p)$ for its recursive state at counter
+$j$.
+
+If $h(u,v,\vec p)\le F(p_i)$ for a passive parameter, the first circuit
+lemma gives
+\[
+ r_0(\vec p)\le C_P(F(p_i)),\qquad
+ r_{j+1}(\vec p)\le F(p_i).
+\]
+Consequently $\max(C_P(F(p_i)),F(p_i))$ bounds the result independently
+of the actual counter. A constant bound for $h$ yields a constant bound
+in exactly the same way.
+
+If $h(u,v,\vec p)\le F(u)$, the second circuit lemma bounds the initial
+state by a constant $b$. Every subsequent state satisfies
+$r_{j+1}\le F(j)$. Therefore the nondecreasing unary primitive-recursive
+function
+\[
+                       M(n)=\max(b,F(n))
+\]
+bounds $r_n$ at every $n$, including $n=0$.
+
+If $h(u,v,\vec p)\le F(v)$, the second circuit lemma again gives a
+constant bound $b$ on the initial state. Put
+\[
+                       K(z)=\max(z,F(z)).
+\]
+Then $K$ is nondecreasing and $K\ge\operatorname{id}$. Induction on $n$
+gives $r_n\le K^n(b)$. Fixed-function iteration is primitive recursive,
+and $n\mapsto K^n(b)$ is nondecreasing.
+
+In the last two cases the actual counter is itself a smaller term.
+Compose its constant or one-coordinate bound with $M$ or
+$n\mapsto K^n(b)$, respectively. These cases exhaust the possible
+controlling coordinates of $h$, completing the structural induction.
+\end{proof}
+
+\begin{corollary}[Combining two unbounded data inputs remains impossible]
+This term language cannot define ordinary binary addition, maximum, a
+general three-argument numerical selector, or an injection
+$\mathbb N^2\longrightarrow\mathbb N$.
+\end{corollary}
+\begin{proof}
+For addition or maximum, hold the asserted controlling input fixed and
+increase the other input. For a selector $C(c,a,b)$ that returns $a$ at
+$c=0$ and $b$ at $c>0$, each proposed controlling coordinate is defeated
+by fixing it and increasing a selected data input. For an injection,
+fixing the controlling coordinate leaves infinitely many argument pairs
+whose outputs would all lie in one finite bounded interval. Constant
+bounds fail for the same reasons.
+\end{proof}
+
+\paragraph{What this does and does not establish.}
+The original particular $B$ operator is recovered by a one-query circuit
+followed by successor. The extension also rules out taking several
+fixed or adaptive probes of that same update, then adding, multiplying,
+maximizing, or otherwise primitively-recursively combining their answers
+to manufacture a seed. It continues to hold after adjoining arbitrary
+fixed unary primitive-recursive functions and the other bounded-input
+primitives described above. It is therefore stronger than checking a
+single seed recipe or searching a finite collection of candidate terms.
+
+This remains a standard-function \emph{term-definability} obstruction.
+It does not rule out quantified graph definitions, a relational
+interpretation, a different interpretation domain, additional axioms, or
+bi-interpretability obtained by another route. An independent unbounded
+initializer is one way to escape the hypothesis, but the theorem does
+not assert that it is the only way. The theorem is not a smaller positive
+axiomatization and is not presented as a globally novel result.
+
+\paragraph{Why the interface restriction is necessary.}
+If the initializer circuit is allowed one further independent passive
+input $y$, take $h(u,v,x,y)=x$ and let the initializer be
+$y+h(0,0,x,y)$. At counter zero the resulting term is exactly $x+y$,
+so the one-coordinate conclusion fails. Likewise, a circuit permitted
+two independently chosen update oracles can query the constant updates
+$h_1=x$ and $h_2=y$ and add their answers. These observations identify
+the boundary of the theorem; they do not claim that either relaxation
+alone supplies a complete arithmetic basis or a smaller proof checker.

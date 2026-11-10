@@ -1,0 +1,114 @@
+INDEPENDENT ASSISTANT REVIEW OF J_bootstrap.tex
+=============================================
+
+Reviewer role: separate reasoning agent in the same research session.
+This is a written mathematical audit, not a proof-assistant formalization
+or an external peer review.
+
+Scope reviewed
+--------------
+The complete fragment J_bootstrap.tex, from the staged numerical grammar
+through the whole-domain predecessor and initializer-recovery theorem.
+The inherited scalar PR compiler and native logical return-translation
+are separate obligations and are explicitly identified in that fragment.
+
+Result
+------
+No mathematical gap was found in the reviewed arithmetic bootstrap.
+The argument uses contextual induction only on single literal equations
+and the numerical-cases rule. It does not assume successor injectivity,
+a predecessor, ordinary unshifted addition, pairing, an equality
+characteristic, or induction on quantified formulas before deriving them.
+
+Specific checks
+---------------
+1. Shifted addition a oplus b has endpoints S(a) and S(a oplus b).
+   Its displayed commutativity, associativity and successor shifts follow
+   by separate equation inductions without cancellation of S.
+
+2. The two finite cycles are well founded. N has range {0,1} by cases on
+   Z's argument. The range of j is {0,1,2}; its cycle 0 -> 1 -> 2 -> 0
+   gives M(Sn)=j(Mn) and M(S^3 n)=Mn. These range statements can be read
+   as admissible finite case splits, without using the later ordinary
+   logical connective macros.
+
+3. The ramp invariant M(Gn)=S(Nn) uses one equation induction.
+   At Nn=0, the update adds one successor and changes the residue 1 to 2.
+   At Nn=1, it adds two successors and changes the residue 2 to 1.
+   Thus G(S^2 n)=S^3 G(n). No claim that every arbitrary element has a
+   pre-existing definable half is needed.
+
+4. The affine terms are genuinely available before predecessor:
+     D(a)=S^2(a oplus a),
+     T(a)=S^4((a oplus a) oplus a),
+     R(a)=S^3(a oplus a).
+   Their standard meanings 2a+3, 3a+6 and 2a+4 are explanatory only.
+   The equation G(Ta)=T(Ga) oplus Na has the correct base 10=10.
+   Its induction step changes both sides by four successors when Na=0
+   and five successors when Na=1.
+
+5. The factor identities H(2)=2, H(Da)=Ta and H(Ta)=T(Ha) follow
+   from the finite parity cases and the ramp scaling equation.
+
+6. E(Sx)=D(E x), with E=S A, follows from shifted addition. The
+   crucial identity F(Sx,Sy)=T(Fxy) is proved with x fixed by induction
+   on y. Its base is H(D(E x))=T(E x); its step is H o T = T o H.
+   This proves L(0,y)=1, L(Sx,0)=0 and L(Sx,Sy)=L(x,y) on the whole
+   source domain, rather than only for standard numerals.
+
+7. Conditional increment commutes with successor:
+     K(c,Su)=S K(c,u).
+   Hence B_(Sm)(Su)=S B_m(u). This establishes
+     V(St,S^2 k)=S V(t,Sk)
+   by induction on t with k fixed. The diagonal V(n,Sn)=Sn then uses
+   substitution into that completed lemma. It does not change a passive
+   parameter inside an active induction hypothesis.
+
+8. The capped predecessor Q satisfies Q0=Q1=1 and Q(S^2 k)=Sk.
+   The update comparison with V is first proved at an independent
+   counter t with k fixed; t=S^2 k is substituted only afterward.
+
+9. The finite correction
+     P(m)=B(Z(L(3,m)),Q(Q(m)),L(2,m))
+   gives P0=P1=0, P2=1 and P(S^3 k)=S^2 k. These equations yield
+   P(Sn)=n by numerical cases. If desired, use two literal-equation
+   inductions: first P(S^2 n)=Sn, then P(Sn)=n.
+
+10. The initializer compiler
+      I(n,a;v.h)=P(J(n,a;u.S(h[Pu/v])))
+    has the correct base P(Sa)=a. At a successor the outside P strips
+    a displayed S, leaving h applied to the previous compiled value.
+    No positivity invariant about an arbitrary internal state is used.
+
+Limits
+------
+This audit establishes no absolute lower bound on proof-checker size and
+makes no claim of literature-wide novelty. It also does not certify an
+implementation's raw JSON acceptance semantics. Those questions need
+separate provenance, whole-program measurements, and implementation
+validation. The native logical interpretation and the inherited general
+primitive-recursion compiler must accompany the fragment to support the
+full iPRA bi-interpretability claim.
+
+ADDENDUM: PRE-SELECTOR CONTEXTUAL FINITE CASES
+-------------------------------------------
+A follow-up audit identified a dependency that the arithmetic fragment
+must not leave implicit. The theorem form of numerical cases does not
+immediately permit case assumptions b=0 or b=1 inside a retained
+induction context. The completed proof supplies the required native
+lemma in native_bridge_notes.tex:
+
+* Functional finite-range elimination, with closed endpoint premises,
+  is derived directly from numerical cases and computations.
+* The three-cycle M/j proves successor cancellation on the finite
+  values 0,1,2 without global successor injectivity.
+* Each branch Gamma,b=r |- u=v is packaged by case introduction as
+  D_(a,y)(B(y,r,u)=B(y,b,v)), with a unused. Functional range elimination
+  yields the self-guard r=b. Its zero instance is reflexive, and Q
+  elimination yields u=v.
+
+This explicitly validates the finite splits in the ramp and affine
+induction steps before predecessor and the unrestricted selector exist.
+The full construction passes the dependency audit with this lemma
+included. The arithmetic fragment should not be treated as self-contained
+without that finite-case justification or an equivalent proof.

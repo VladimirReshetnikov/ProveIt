@@ -1,0 +1,23 @@
+SUCCESSOR-SEEDED J COMPLETE-CHECKER RECEIPT
+=========================================
+
+Finite CLI verification of complete checkers; not a formal soundness theorem or a certificate of the full arithmetic bootstrap.
+
+Python: 3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]
+Distinct fixtures: 36
+Common fixtures: 33 (17 accepted; 16 rejected)
+Profile-boundary aliases: 3
+Complete CLI runs passed: 216 / 216
+Targeted mutation controls passed: 24 / 24
+
+Exact source SHA-256 hashes:
+  checker.py  cc23043c14e094dc3cb745db05f3213187840194534ba2810646dbd21c2ca338
+  checker_direct.py  16895a8d3bf261083caf6af4a9640a238d07c6e82adf2022963f6291126c256b
+  checker_ast.py  c3e95728f7ebad34e078d22baed25a24c15eed7f2c213643689ca256778ef2c8
+
+For every checker, both ordinary Python and -O were run.
+The three alias fixtures are rejected by list dispatch and accepted
+by iterable dispatch. Their decoded numerical equations are true.
+All remaining fixtures have identical expectations across profiles.
+
+Any source change requires a fresh run and new hashes.

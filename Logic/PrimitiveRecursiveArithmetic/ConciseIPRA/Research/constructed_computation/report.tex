@@ -1,0 +1,736 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=.92in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,fancyhdr,listings,needspace}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{RGB}{24,48,65}
+\definecolor{paperblue}{RGB}{246,249,251}
+\hypersetup{pdftitle={Constructing Computation Sources: A Smaller Complete iPRA Checker},pdfauthor={Research prepared for Vladimir Reshetnikov},pdfsubject={Intuitionistic primitive recursive arithmetic, proof checking, bi-interpretability}}
+\setlength{\parskip}{.3em}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=.2em,topsep=.4em,leftmargin=1.7em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\Kcal}{\mathcal K}
+\newcommand{\Ccal}{\mathcal C}
+\newcommand{\FV}{\operatorname{FV}}
+\newcommand{\file}[1]{\expandafter\nolinkurl\expandafter{\detokenize{#1}}}
+\lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,keepspaces=true,
+ breaklines=true,showstringspaces=false,frame=single,rulecolor=\color{black!15},
+ backgroundcolor=\color{paperblue},xleftmargin=.3em,xrightmargin=.3em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Constructing computation sources}
+\fancyhead[R]{\small Intuitionistic primitive recursive arithmetic}
+\fancyfoot[C]{\thepage}
+\title{\color{ink}\textbf{Constructing Computation Sources}\\[.5em]
+\large A smaller complete iPRA checker and a finite-range obstruction}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{November 10, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give an explicit proof presentation of full first-order intuitionistic
+primitive recursive arithmetic, with a standalone checker strictly below
+the observed complete-checker minima in the nine current ProveIt draft
+archives. Under the unchanged whole-program normalizer, the selected
+checker has \textbf{279 tokens, 314 syntax-tree nodes, and 682 bytes},
+compared with the current coordinate envelope \textbf{281/315/685}.
+
+The mathematical change is small and precise. A computation certificate
+supplies a predecessor and a base/step flag; the checker constructs the
+source counter. The predecessor image is checked only if the update uses
+it. This replaces an eager validation obligation by a construction
+invariant and a state-independence argument. The change preserves the
+native theory and its whole-domain bi-interpretation with iPRA. An
+explicitly attributed appendix reproduces the full inherited arithmetic
+and logical bridge.
+
+A separate new result settles a current-draft question negatively:
+restricting paired-introduction witnesses to zero or variables and
+closure-specialization targets to one or variables loses native theorems.
+Adding any fixed finite set of numeral targets does not repair the loss.
+
+These are a reproducible implementation reduction and a mathematical
+obstruction theorem. They do not establish an absolute simplest
+axiomatization or the significant breakthrough requested. The source-size
+gain is modest; the arithmetic basis and the logical reconstruction are
+inherited. The proofs are written mathematical arguments, not a
+Lean or Rocq verification.
+\end{abstract}
+\clearpage
+\setcounter{tocdepth}{1}\tableofcontents
+\clearpage
+
+\section{The precise improvement}
+\label{sec:comparison}
+
+The comparison is pinned to ProveIt commit
+\begin{center}\small\texttt{4a04139595eadc3e8818f1df2a94838ed4851d83}.\end{center}
+The \file{docs/drafts} tree is
+\texttt{cec0cd82d69646386c802841068c17ff76d188fc}.
+It contains nine direct ZIP archives\cite{snapshot}. Their exact bytes,
+Git blob hashes, SHA-256 hashes, and member inventories are included in
+the package. The source scan measured 261 extracted Python occurrences
+with 164 distinct contents. An additional scan of ten nested provenance
+archives measured 154 historical occurrences, with 109 distinct contents;
+none improves the current complete-checker envelope.
+
+Files smaller than the envelope were inspected before classification:
+build, measurement, experiment, and verification scripts are not complete
+theorem checkers. Complete historical checkers inside reference folders
+do count. The comparison is with the present combined corpus, not the
+older minima quoted by individual reports.
+
+\begin{center}\small
+\begin{tabular}{lrrr}
+\toprule
+Entire standalone program & Tokens & AST nodes & Bytes\\
+\midrule
+Generated assumptions, principal\cite{generated} &281&318&685\\
+Generated assumptions, AST profile\cite{generated}&283&315&710\\
+Current coordinate envelope&281&315&685\\
+\midrule
+Constructed computation, explicit assignments&277&317&684\\
+Constructed computation, AST profile&279&314&709\\
+\textbf{Constructed computation, selected profile}&\textbf{279}&\textbf{314}&\textbf{682}\\
+\midrule
+Old generator with the same initialization profile&283&315&683\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The selected single program strictly improves all three current minima:
+two fewer tokens, one fewer AST node, and three fewer bytes. The percentage
+reductions against those separate minima are approximately $0.71\%$,
+$0.32\%$, and $0.44\%$. They are small. The three minima are attained
+by different old programs, whereas the selected new program beats all
+three simultaneously.
+
+The arithmetic generator itself changes the explicit program from
+$281/318/685$ to $277/317/684$. The selected profile additionally folds
+initialization into an existing default expression and folds the input
+binding into its first call. Those two Python idioms are inherited
+source-layout techniques, not new mathematical principles. Applying the
+identical profile to the old generator yields $283/315/683$: the genuine
+generator comparison remains four tokens, one AST node, and one byte.
+The table separates these effects so that the improvement cannot be
+misattributed to a new arithmetic foundation.
+
+\subsection{What the metric includes}
+
+The unchanged normalizer removes genuine docstrings, parses the complete
+module, applies \texttt{ast.unparse} followed by a newline, and counts
+significant tokens, all AST nodes, and UTF-8 bytes. Measurements use
+CPython 3.12.14. Initial state, JSON input, traversal, scope checks,
+inference dispatch, and the complete ACCEPT/REJECT driver are included.
+Every counted checker imports only the standard JSON library. Producers,
+converters, and the numerical testing decoder are not trusted by it.
+
+The Python runtime and standard library are the shared platform, as in
+the drafts. No interpreter, axiom table, theorem-specific library, or
+unchecked executable certificate is moved outside the counted file.
+The selected and old programs have the same outer JSON container,
+four-field packet arity, and verdict convention. Computation packets use
+the new predecessor/mode semantics and require translation.
+In particular, rejected inputs print \texttt{REJECT}, exit nonzero, and
+may produce a traceback; accepted inputs print \texttt{ACCEPT} and exit
+zero. The program does not use assertions whose behavior changes under
+Python optimization.
+
+The observed sizes are upper bounds on an implementation optimum. They
+are not mathematical lower bounds for all theories or all programming
+languages. This report meets the operational comparison with the supplied
+complete programs; it does not prove global minimality or claim that a
+one-byte algorithmic reduction constitutes a major simplification of
+arithmetic.
+
+\section{The complete native axiomatization}
+\label{sec:native}
+
+The target is \emph{full first-order} iPRA: intuitionistic logic with actual
+numerical equality, genuine falsity, function symbols for fixed finite
+primitive-recursive descriptions, their defining equations, the usual
+successor boundary laws, and quantifier-free induction. Atomic-induction
+presentations of iPRA also occur in the literature\cite{salehi}; here the
+reduction from quantifier-free induction is proved internally in the
+reproduced bridge. No equivalence with a merely quantifier-free theorem
+set is substituted for bi-interpretability.
+
+\subsection{Numerical and formula syntax}
+
+There is one numerical sort. The numerical terms are
+\[
+ t::=x\mid 0\mid St\mid I(n,a;v.h).
+\]
+Only $h$ binds $v$; $n,a$ do not. Other parameters of $h$ remain fixed.
+Each body is a fixed finite earlier description. Equivalently, at each
+external syntactic stage introduce a first-order symbol $i_h(n,a,\vec p)$
+for each earlier term $h(v,\vec p)$. There is no function quantifier and
+no uniformly total evaluator for all primitive-recursive descriptions.
+
+The two computation patterns are
+\begin{align}
+ I(0,a;v.h)&=a,\tag{I0}\label{eq:I0}\\
+ I(Sn,a;v.h)&=h[I(n,a;v.h)/v].\tag{IS}\label{eq:IS}
+\end{align}
+The formula grammar is
+\[
+ A::=(s=t)\mid Q_yA\mid D_{x,y}A,
+\]
+with distinct paired bound variables. A context is a finite reusable
+list of these formulas. Substitution is capture-free; binders are renamed
+before substituting. The designated absurdity is $\bot_*=(0=S0)$.
+The ordinary readings, whose adequacy will be proved rather than assumed,
+are
+\begin{align*}
+ (Q_yB)^\circ&=B^\circ(0)\to\forall y\,B^\circ(y),\\
+ (D_{x,y}B)^\circ&=\exists x\bigl(B^\circ(x,0)\to
+                                  \forall y\,B^\circ(x,y)\bigr).
+\end{align*}
+
+\subsection{Every primitive rule}
+
+The presentation $\Kcal$ has the following complete inventory.
+Hypothesis use, equality transport, and closure use are
+\[
+ \frac{}{\Gamma\vdash A}\;(A\in\Gamma),\qquad
+ \frac{\Gamma\vdash s=t\quad\Gamma\vdash F(s)}
+      {\Gamma\vdash F(t)},\qquad
+ \frac{\Gamma\vdash Q_yB(y)\quad\Gamma\vdash B(0)}
+      {\Gamma\vdash B(t)}.
+ \tag{Hyp, Tr, QE}
+\]
+The motive $F$ is any fixed native formula template. Transport does not
+license induction on $F$.
+
+Paired elimination is
+\[
+ \frac{\Gamma\vdash D_{x,y}B(x,y)\qquad
+       \Gamma,Q_yB(a,y)\vdash A}
+      {\Gamma\vdash A}.
+ \tag{DE}
+\]
+Here $a$ is absent from $\Gamma,A$ and the fixed parameters of $B$.
+Paired introduction has two forms:
+\[
+ \frac{\Gamma,B(t,0)\vdash B(t,Sz)}
+      {\Gamma\vdash D_{x,y}B(x,y)},
+ \qquad
+ \frac{\Gamma,E(t,z)\vdash E(t,Sz)}
+      {\Gamma\vdash D_{x,y}E(x,y)}.
+ \tag{DI-case, DI-progress}
+\]
+The second matrix $E$ must be a \emph{literal equation}. A formula with a
+$Q$ or $D$ at its root is not literal. In both forms $z$ is absent from
+$\Gamma,t$ and all fixed matrix parameters. Displayed local hypotheses
+are discharged. Case introduction is allowed for every native matrix.
+
+Finally, numerical computation is supplied as a temporary assumption:
+\[
+ \frac{\Gamma,E\vdash A}{\Gamma\vdash A}
+ \quad\left(E\text{ is an instance of I0 or IS}\right).
+ \tag{Comp}
+\]
+This is two finitely specified computation schemas, whose instances are
+arbitrary finite terms with the stated bindings. There are no additional
+logical or nonlogical axioms, primitive reflexivity rules, coverage
+axioms, separation axioms, unrestricted induction rules, or hidden
+first-order proof engines.
+
+The reference calculus $\Ccal$ instead has I0 and IS as theorem leaves
+and the same five logical rule families. Both presentations prove exactly
+the same native sequents: Comp is cut with a computation theorem, and a
+computation theorem is obtained in $\Kcal$ by Comp followed by Hyp.
+Weakening, exchange, contraction, renaming, numerical substitution, and
+cut are admissible by induction on finite derivations. Rename local
+parameters before substitution or cut; substitution preserves the root
+constructor and hence the literal-equation induction restriction.
+
+\section{The new computation-certificate principle}
+\label{sec:principle}
+
+The current leading draft supplies an alleged iterator source
+$[c,a,h]$. In a successor step it expands $c$ and eagerly checks the
+predecessor iterator before substituting it into $h$. This guards against
+a non-successor counter that happens to have a truthy serialization.
+The old check is important: simply deleting it admits a false equation.
+
+The new certificate supplies the \emph{predecessor} $p$, the initializer
+$a$, the update $h$, and an explicit mode $e$. The checker itself forms
+the source:
+\[
+\begin{array}{c|c}
+e=0 & I(0,a;v.h)=a\\[2pt]
+e=1 & I(Sp,a;v.h)=h[I(p,a;v.h)/v].
+\end{array}
+\]
+The mode occupies an already existing, previously unused computation
+field. It does not lengthen the packet. The source has a genuine
+successor constructor because the checker constructs it. In particular,
+the successor-of-zero case uses $p=0,e=1$; there is no restriction to
+nonzero predecessors or any special zero-alias convention.
+
+The two lines implementing the new generator are
+\begin{lstlisting}[language=Python]
+n, t, r = s
+h = [[u and [n], t, r], i(r, s, 1) if u else t]
+\end{lstlisting}
+Here $s=[p,a,h]$ and the packet's $u$ is the mode. The local $t,r$
+become the initializer and update. Only canonical flags 0 and 1 are
+needed for completeness; other raw values are handled as described below.
+
+\subsection{Why validation can be delayed}
+
+The opener $i$ checks a substituted numerical image whenever an exposed
+numerical coordinate actually uses that image. Therefore the old eager
+validation can be separated into two distinct obligations:
+\begin{enumerate}
+\item the source counter is a successor;
+\item a recursive image used in the result is a valid numerical term.
+\end{enumerate}
+Construction establishes the first. Demand-driven substitution establishes
+the second. If the update ignores its state, the recursive image is absent
+from the generated equation and needs no separate validation.
+
+There is a further scope issue: the common continuation introduces a new
+parameter $w$, and a raw generated equation can depend on it. Its zero
+instance, rather than the equation at every $w$, is what must be proved.
+
+\begin{lemma}[Known-instance discharge]
+\label{lem:known-instance}
+If $w\notin\FV(\Gamma,A)$, $\Gamma\vdash H(0)$, and
+$\Gamma,H(w)\vdash A$, then $\Gamma\vdash A$.
+\end{lemma}
+\begin{proof}
+Rename eigenparameters in the continuation to avoid capture. Substitute
+zero for $w$, leaving the retained context and goal unchanged. This gives
+$\Gamma,H(0)\vdash A$. Cut with the given proof of $H(0)$.
+\end{proof}
+
+\begin{theorem}[Constructed computation supply]
+\label{thm:new-supply}
+Every equation $H(w)$ successfully generated by the new arithmetic
+branch has a zero instance provable from I0 or IS, with equality
+substitution. Consequently its common continuation is admissible in
+$\Ccal$ and hence in $\Kcal$.
+\end{theorem}
+\begin{proof}
+In base mode, after setting $w=0$, the source initializer and its copy on
+the right agree by structural zero completion. I0 gives the equation.
+The predecessor payload is unused and has no object-language meaning
+in this branch.
+
+In step mode, first suppose that opening the update requests its recursive
+image. It then validates $[p,a,h]$ at numerical root. Successful numerical
+validation is idempotent, so doing it on demand gives the same substituted
+value as validating eagerly. The extra dummy zero slot beneath the
+constructed successor cannot introduce a meaningful new dependency:
+numerical-root validation of the predecessor image would reject that
+dependency. The two occurrences of the predecessor therefore agree, and
+the zero instance is IS.
+
+If the update never requests its image, it is independent of the outer
+state on every meaningful numerical path. Genuine internal variables
+are protected; a meaningful outer-state reference would request the
+image. Numerical binary annotations are semantically zero and contribute
+no hidden state dependence. The common opening still checks the entire
+source iterator. After zero completion it has the form
+$I(Sp_0,a_0;v.h_0)=h_0$, where $h_0$ is independent of $v$. IS proves
+this equation without needing an unused recursive image.
+
+The old goal and context were checked before allocating $w$, so they
+have no meaningful occurrence of it. Lemma~\ref{lem:known-instance}
+discharges the actual generated assumption. Appendix
+\ref{sec:constructed-supply-audit} gives the full raw-coordinate argument.
+\end{proof}
+
+\begin{corollary}[No change to the native theory]
+The new certificate calculus proves exactly the closed native theorems
+of $\Kcal$. It preserves the same sequents and the same interpretation
+composites, rather than merely preserving standard numerical truth.
+\end{corollary}
+\begin{proof}
+Soundness follows from Theorem~\ref{thm:new-supply} and the unchanged
+logical-rule checks. For completeness, encode each Comp instance with
+its mode and predecessor; supply the generated equation and close its
+use by Hyp. Other instructions and their eigenparameter allocation are
+unchanged. Canonical numerical syntax uses rigid labels for passive
+parameters and zeros in dummy positions. Both computation equations,
+including the step with zero predecessor, are generated exactly.
+\end{proof}
+
+\section{Recovering logic and arithmetic}
+\label{sec:bridge-summary}
+
+This section summarizes the inherited construction; the complete
+arguments appear in Appendices~\ref{sec:choice-introduction}--\ref{sec:ordinary-bridge}.
+Their provenance and unchanged source hashes are recorded. The new
+contribution is the conservative certificate generator above, not the
+following arithmetic bootstrap.
+The inherited logic appendix presents $D$ formulas with auxiliary
+clauses. The present nested-$Q$ syntax is covered because $Q_yB$ is
+interderivable with $D_{v,y}B$ for unused $v$: case DI gives one direction,
+and DE followed by Hyp gives the other. External induction eliminates
+nested $Q$ occurrences, using the same uniform matrix-congruence
+argument. Thus no extra logical connective is left without a round trip.
+
+Put $C(n,a,b)=I(n,a;v.b)$. Then $C(0,a,b)=a$ and $C(Sn,a,b)=b$.
+From computation and transport one derives reflexivity, symmetry,
+transitivity, and congruence. DI-progress, DE, and QE give contextual
+literal-equation induction. DI-case, DE, and QE give numerical cases
+for arbitrary native formulas. These constructions retain arbitrary
+assumptions, with the displayed eigenparameter conditions.
+
+For a formula $A$, form a gate $G_zA$ recursively. At an equation leaf
+replace $s=t$ by $C(z,0,s)=C(z,0,t)$, and continue beneath binders.
+Then $G_0A$ is provable and $G_{Sz}A$ is interderivable with $A$.
+Padding by a vacuous paired binder allows two formulas of different
+depths to be aligned. A recursively constructed selector $M_z(A,B)$
+then satisfies
+\[
+ M_0(A,B)\dashv\vdash A,\qquad M_{Sz}(A,B)\dashv\vdash B.
+\]
+The scalar parity term $p(z)=I(z,0;v.C(v,1,0))$ has $p(1)=1,p(2)=0$.
+With fresh bound variables, the following macros recover the full
+intuitionistic interface:
+\begin{align*}
+ A\Rightarrow_*B&=D_{u,z}M_z(A,B),\\
+ A\wedge_*B&=D_{u,z}G_zM_{p(z)}(A,B),\\
+ \exists_*x\,A(x)&=D_{x,y}G_yA(x),\\
+ A\vee_*B&=\exists_*x\,M_x(A,B),\\
+ \forall_*x\,A(x)&=A(0)\wedge_*D_{u,z}G_zA(z),\\
+ \bot_*&=(0=S0).
+\end{align*}
+The coordinate $u$ is unused. The selector gives implication rules;
+the gate gives existential rules; numerical cases and selectors give
+disjunction; the two parity values give conjunction projections.
+Coverage gives universal elimination in arbitrary retained contexts.
+Under $0=S0$, the selector and transport give every equation; structural
+formula recursion then gives explosion. No excluded-middle rule for
+quantified formulas is introduced.
+
+The ordinary realization $T_I$ has standard intuitionistic equality
+logic, I0 and IS, contextual literal-equation induction, and the explicit
+boundary sentences
+\[
+ \forall x(x=0\vee\exists y\,x=Sy),\qquad (0=S0)\to\bot.
+\]
+The falsity bridge is necessary: positive numerical equations alone
+admit a one-element structure.
+
+The arithmetic reconstruction has a fixed noncircular order. First an
+internal scalar predecessor is built using numerical cases and equation
+induction. Then truncated subtraction and a characteristic of actual
+equality are constructed and proved correct for all source elements.
+Each fixed quantifier-free formula has a characteristic equation, so its
+induction follows. Finally pairing and projections are constructed and
+general primitive recursion is compiled. Pairing is not assumed in the
+predecessor argument.
+
+If $\pi,L,H$ are the proved pairing and projections, a general recursion
+$f(0,\vec p)=g(\vec p)$, $f(Sn,\vec p)=h(n,f(n,\vec p),\vec p)$ is
+represented by
+\[
+\begin{split}
+ V(n,\vec p)&=I\bigl(n,\pi(0,g^*(\vec p));
+ v.\pi(SL(v),h^*(L(v),H(v),\vec p))\bigr),\\
+ f^*(n,\vec p)&=H(V(n,\vec p)).
+\end{split}
+\]
+Equation induction proves $L(V(n,\vec p))=n$, and the projection
+identities prove both defining equations. This is an external compiler
+for each finite description, not an internal uniformly total evaluator.
+
+\begin{theorem}[Whole-domain bi-interpretability and equiconsistency]
+\label{thm:biinterp}
+The ordinary realization of $\Kcal$ is bi-interpretable and equiconsistent
+with full first-order iPRA. In each numerical composite, the definable
+isomorphism is $x=y$ on the entire domain.
+\end{theorem}
+\begin{proof}
+Interpret scalar iteration in iPRA by primitive recursion ignoring the
+counter in its update; interpret each iPRA description in $T_I$ by the
+scalar compiler. The preceding internal arithmetic proves all source
+axioms and quantifier-free induction instances. The logical macros and
+ordinary readings preserve all formulas and proof rules.
+
+For either numerical composite, the double translation satisfies the
+original defining equations. Literal-equation induction proves uniqueness
+with all passive parameters fixed. External induction on a fixed finite
+description therefore identifies the operation with its double
+translation at every internal argument. The identity graph is internally
+total, bijective, and operation-preserving. No quotient, definable cut,
+or restriction to standard numerals is used.
+
+For formula composites, the decisive native equivalences are
+\[
+ Q_yB\dashv\vdash B(0)\Rightarrow_*\forall_*yB(y),
+\]
+\[
+ D_{x,y}B\dashv\vdash
+ \exists_*x\bigl(B(x,0)\Rightarrow_*\forall_*yB(x,y)\bigr).
+\]
+DE proves the forward direction by exposing a witness and its closure;
+the reverse uses existential elimination and case DI, with its successor
+premise supplied by implication and universal elimination. Structural
+induction gives all formula round trips. The explicit falsity bridge
+preserves contradiction. Theorem~\ref{thm:new-supply} transfers the
+interpretations unchanged to the new certificate presentation. Finite
+proof translations yield equiconsistency, with no claim that either
+theory proves its own consistency.
+\end{proof}
+
+\Needspace{24\baselineskip}
+\section{The entire selected checker}
+\label{sec:checker}
+
+\lstinputlisting[language=Python]{code/checker.py}
+
+The assignment to $k$ in the lambda's default is evaluated once when the
+function is created at module scope; it does not reset freshness during
+calls. Likewise the input assignment initializes $q$ before its first
+call. The explicit-assignment implementation has the same successful
+traces and is supplied for easier inspection. The descriptive reference
+implementation uses meaningful names and separates the branches. None
+of these files calls a proof producer or a theorem library.
+
+\subsection{Input, tree decoding, and scopes}
+
+Input is a JSON array. Its last item is the requested closed formula;
+the preceding four-field packets $[m,s,u,t]$ are popped from the end.
+Hypothesis closure consumes no packet. An unread prefix is inert, as in
+the comparison programs. A malformed, exhausted, or unsuccessful input
+rejects. Physical Python recursion or memory limits may reject large
+valid certificates; mathematical completeness concerns unbounded
+resources on finite canonical certificates.
+
+\begin{center}\small
+\begin{tabular}{cllc}
+\toprule
+Array length & Formula reading & Numerical reading & Depth added\\
+\midrule
+0 & truth $0=0$ & zero & no children\\
+1 & $Q$ & successor &2\\
+2 & equation & zero with checked annotations &1\\
+3 & $D$ & scalar iterator &4\\
+\bottomrule
+\end{tabular}
+\end{center}
+Larger arrays reject when traversed. Let $\rho$ be the environment of
+protected numerical slots. The main decoder clauses are
+\begin{align*}
+ T_\rho([p])&=S T_{0,\rho}(p),&
+ F_\rho([B])&=Q_yF_{y,\rho}(B),\\
+ T_\rho([p,q])&=0,&
+ F_\rho([s,t])&=(T_\rho(s)=T_\rho(t)),\\
+ T_\rho([n,a,h])&=I(T_{0,0,\rho}(n),T_{0,0,\rho}(a);
+                         v.T_{v,v,\rho}(h)),\\
+ F_\rho([P,U,B])&=D_{x,y}F_{y,x,\rho}(B).
+\end{align*}
+The two padding fields of $D$ and the annotations of a numerical binary
+node are checked, although they contribute no mathematical data. In
+particular the scalar iterator has two aliases for its one state, not
+an extra recursion-counter input.
+
+At formula depth $2q$ and numerical depth $2q+1$ there are $q$ protected
+slots. Positive coordinates $2j-1,2j$ name the same $j$th slot, nearest
+first. Scalar zero denotes numerical zero; negative labels name already
+allocated rigid parameters. The floor $k$ starts at zero and decreases
+at each continuation. The opener preserves labels in $[k,d)$, inserts a
+checked numerical image at an exposed numerical coordinate, and maps an
+exposed formula leaf to truth. Missing meaningful images reject.
+Canonical inputs use integers and arrays. Accepted finite fractional
+aliases have the inherited floor-coordinate meaning; noncanonical data
+do not add new numerical operations. Scope safety and the common-motive
+opening lemma are structural facts about this traversal.
+
+\subsection{All command branches}
+
+For nonempty $m$, the checker first proves the major $m$. Matched equality
+or closure endpoints and the target equality implement Tr or QE. They
+change the goal to the appropriate minor and add only truth to the
+context. An inapplicable Eq/Q request leaves the goal unchanged and adds
+only truth. A three-field $D$ major adds its opened $Q$ closure, giving
+DE. An unsuccessful major never falls through as if it had succeeded.
+
+For false $m$ and true $t$, the command is DI with witness $t$.
+Canonical marker $m=[]$ selects the zero-case assumption; marker $m=0$
+selects the current hypothesis only when the matrix is a literal
+equation, and otherwise selects the zero case. A fresh successor is the
+new goal. Thus arbitrary compound induction is not silently introduced.
+
+For false $m$ and false $t$, the new arithmetic generator uses
+$s=[p,a,h]$ and mode $u$. It constructs the source and supplies the
+generated equation. Theorems above justify all successful raw cases,
+including those whose generated equation has only a known zero witness.
+
+Finally every non-hypothesis command decreases the floor, opens the new
+goal and hypothesis, and takes one common continuation. The prior context
+and goal cannot contain the fresh label meaningfully. Every successfully
+added context formula is an array. Hence a scalar goal cannot terminate
+successfully by exploiting the truth placeholder: it either rejects or
+continues consuming packets. These invariants ensure that every successful
+major has an intended formula shape.
+
+\section{A new obstruction to simultaneous restrictions}
+\label{sec:obstruction-summary}
+
+The named-specialization draft simulates arbitrary QE targets using
+equality naming and separately discusses restricted introduction
+witnesses. Whether both restrictions can be imposed together is a
+different question\cite{named}. It has a negative answer for the native
+rules with no extra arbitrary-substitution rule.
+
+\begin{theorem}[Simultaneous restriction loses theorems]
+Restrict DI witnesses to zero or in-scope variables, and QE targets to
+one or in-scope variables. Then
+\[
+                 D_{x,y}\bigl(C(y,1,x)=1\bigr)
+\]
+is unprovable, although it is a theorem of the unrestricted calculus.
+Adding any fixed finite set of numeral QE targets still leaves some
+unrestricted native theorems unprovable.
+\end{theorem}
+\begin{proof}[Proof of the first assertion]
+Evaluate numerical terms in the standard natural numbers, give every
+free variable value zero, and define a proof invariant by
+\[
+ [Q_yB]=[B(0)]\Rightarrow[B(1)],\qquad
+ [D_{x,y}B]=[B(0,0)]\Rightarrow[B(0,1)].
+\]
+An allowed DI witness has value zero; its fresh step parameter has value
+zero, so its successor has value one. Both DI modes preserve the
+displayed implication. DE's new closure has the same truth value as
+its major. Variable-target QE supplies the base, and target-one QE is
+implication elimination. Equality transport and computation preserve
+the invariant; known-zero-instance Supply preserves it by choosing its
+fresh parameter to be zero.
+
+The displayed formula evaluates to true implying false: its zero
+instance is $C(0,1,0)=1$, while its one instance is $C(1,1,0)=1$.
+In the unrestricted calculus, case DI with witness 1 proves the formula
+immediately from $C(Sz,1,1)=1$. Appendix
+\ref{sec:finite-restriction} gives the finite-range extension.
+\end{proof}
+
+This establishes failure of identity-language theorem equivalence for
+the specific simultaneous restrictions. It does not rule out all other
+interpretations, all restricted calculi, or all alternative domains. In
+particular an additional arbitrary-term substitution rule would change
+the system and invalidate the claimed restriction.
+
+\section{Verification, reproduction, and limits}
+\label{sec:evidence}
+
+\input{evidence/verification_summary.tex}
+
+The tests execute the complete standalone programs, including their
+input and verdict drivers, under ordinary and optimized Python. The
+examples exercise computation with used and unused state, transport,
+closure specialization, nonvacuous witnesses, compound case introduction,
+and contextual equation induction. Negative controls exercise failed
+majors, forbidden compound progress, future labels, malformed sources,
+and the false-equation exploit motivating the old eager guard. New
+constructor packets are checked against their new meaning, not assigned
+the semantics of an old packet with the same raw fields.
+
+An independent finite numerical decoder evaluates zero instances of
+generated assumptions, including dummy slots and preexisting rigid
+parameters. These are falsification tests and reproducibility evidence.
+They do not prove the universal soundness, completeness, or
+bi-interpretation theorems; the written structural proofs establish
+those claims. The metatheory and Python runtime are not machine-verified.
+
+The package contains the selected checker, two explicit profiles, a
+descriptive checker, an untrusted proof producer and converter,
+certificates, the unchanged source-measurement utility, source archives,
+hash manifests, test receipts, the complete LaTeX source, and this PDF.
+Run \texttt{python3 verify.py} for the finite reproduction and
+\texttt{python3 build.py} to rebuild the PDF and standalone TeX file.
+The original archives remain unchanged.
+
+The construction retains the substantial inherited scalar-predecessor
+and equality-reflection arguments. It establishes a small strict
+implementation reduction, not a substantially simpler arithmetic
+foundation. The separate obstruction identifies a specific incorrect
+way to reduce the logical rules. Neither the source audit nor these
+proofs establish global minimality.
+
+\appendix
+\input{appendices/constructed_supply.tex}
+\input{appendices/restriction_obstruction.tex}
+\clearpage
+\section*{The inherited bridge, reproduced with attribution}
+\addcontentsline{toc}{section}{The inherited bridge, reproduced with attribution}
+The next five sections are copied unchanged from the generated-assumptions
+archive at the pinned snapshot. That archive attributes the logical
+Choice-DI basis, scalar predecessor construction, actual-equality
+reflection, and primitive-recursion compiler to the earlier drafts.
+Their exact source paths and SHA-256 identities are in
+\file{evidence/source_manifest.json}. They are included so that the
+bi-interpretation does not depend on an unavailable external proof.
+None is claimed as a new result of this report. Their occurrences of
+ordinary logic describe the interpretation theory; they do not add
+primitives to the small native checker above.
+\input{appendices/inherited_choice_basis.tex}
+\input{appendices/scalar_predecessor.tex}
+\input{appendices/equality_reflection.tex}
+\input{appendices/primitive_recursion.tex}
+\input{appendices/inherited_ordinary_bridge.tex}
+
+\clearpage
+\begin{thebibliography}{99}\raggedright
+\bibitem{snapshot}
+Vladimir Reshetnikov, repository maintainer. \emph{ProveIt: current draft
+collection}, commit \file{4a04139595eadc3e8818f1df2a94838ed4851d83}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/4a04139595eadc3e8818f1df2a94838ed4851d83/docs/drafts}.
+
+\bibitem{generated}
+\emph{Numerical axioms as local assumptions},
+\file{ipra_generated_assumptions_2026-11-10.zip} in~\cite{snapshot}.
+Source of the current leading generator, zero-witness discharge,
+scope decoder, test producer, and reproduced bridge.
+
+\bibitem{named}
+\emph{Naming values before specialization},
+\file{ipra_named_specialization_2026-11-10.zip} in~\cite{snapshot}.
+Source of the named-specialization comparison and the question about
+simultaneous restrictions.
+
+\bibitem{endpoint}
+\emph{Endpoint certificates},
+\file{ipra_endpoint_certificates_2026-11-09.zip} in~\cite{snapshot}.
+Source of the shared whole-program measurement convention.
+
+\bibitem{erasure}
+Inherited scalar predecessor construction, preserved as
+\file{reference/scalar_predecessor.tex} in the generated-assumptions
+archive, with its earlier scalar-development attribution.
+
+\bibitem{forward}
+Inherited actual-equality reflection construction, preserved as
+\file{reference/equality_reflection.tex} in the generated-assumptions
+archive, with attribution to the forward-left development.
+
+\bibitem{progress}
+Inherited pairing and primitive-recursion compiler, preserved as
+\file{reference/primitive_recursion.tex} in the generated-assumptions
+archive, with attribution to the progress-closure development.
+
+\bibitem{salehi}
+Saeed Salehi. \emph{Decidable Formulas of Intuitionistic Primitive
+Recursive Arithmetic}. Reports on Mathematical Logic \textbf{36}
+(2002), 55--61.
+\url{https://rml.tcs.uj.edu.pl/rml-36/36-SALEHI.pdf}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,136 @@
+INDEPENDENT REVIEW: PREDECESSOR-PACKET I CHECKER
+==============================================
+
+Reviewed source
+---------------
+review/logic_core/final_attempt/candidate_all_coordinates.py
+The arithmetic interpretation in this review is ordinary initialized I,
+not successor-seeded SR. The changes below are source/protocol changes;
+they are distinct from the new SR arithmetic theorem.
+
+Verdict
+-------
+The new arithmetic generator is sound under the existing zero-witness
+Supply interpretation, and canonically complete for the initialized-I
+native calculus. The generator constructs a successor counter rather than
+trusting a supplied successor-shaped counter. This is why it can remove
+the old eager predecessor-arity validation without the former constant-
+update counterexample. The ordinary image-opening validation is retained.
+
+Generator
+---------
+The packet s=[n,t,u] supplies the PREDECESSOR iterator. The generated pair is
+
+  [[n and [n],t,u], i(u,s,1) if n else t].
+
+If n is falsy, every successful numerical decoding of n is zero. The
+source therefore denotes I(0,a;h). Its seed lies below two dummy zero
+slots, whereas the copied right seed can expose coordinates to the newly
+allocated parameter w. After w:=0 the ordinary zero-extension induction
+identifies both seeds; old negative rigid parameters remain unchanged.
+Thus H(0) is I0.
+
+If n is truthy, the source counter is literally the singleton [n], whatever
+the shape or numerical value of n. Its meaning is S(p). In particular a
+truthy numerical zero alias yields S0, not zero. This prevents the old
+attack in which a binary zero counter was mistaken for a successor. A
+malformed predecessor n is still traversed inside the newly constructed
+source and rejects unless it has one of the documented inert aliases.
+
+There are two cases for the right-side opening i(u,s,1):
+
+(A) Some exposed numerical occurrence causes the image s to be used.
+    The opener then calls i(s,d=1) before fresh allocation. This validates
+    the entire predecessor iterator at numerical root, including its
+    initializer and update. Any meaningful updater coordinate outside its
+    two protected state aliases fails this root check. The resulting
+    right side is capture-free substitution of the validated predecessor
+    iterator into the update. The additional dummy zero under the source
+    singleton does not change any meaningful surviving coordinate. After
+    zero extension, H(0) is IS.
+
+(B) The image s is never used.
+    Then no meaningful occurrence of the outer state appears in u: an
+    exposed numerical state occurrence would necessarily have triggered
+    the image call. References inside genuinely internal binders remain
+    internal; numerical-zero annotations and the ignored dictionary value
+    have no numerical meaning. Thus the update is independent of its
+    outer recursive state. The source's n and t are still checked by the
+    final whole-equation traversal. Their additional dummy/fresh aliases
+    specialize to zero, giving well-formed p and a, while the state-free
+    right update equals the decoded source update. Hence H(0) is again
+    I(S(p),a;h)=h(I(p,a;h)), with its unused recursive value harmless.
+
+This is the important replacement invariant. It would be incorrect simply
+to say that predecessor validation is redundant in the old packet format.
+It is safe here because the source successor is built by construction and
+used recursive images are still validated by the opener.
+
+Negative and positive aliases
+-----------------------------
+An already allocated negative parameter is retained on both sides.
+A newly exposed positive coordinate, an alias of the new negative name,
+or another unavailable coordinate that survives through the fresh opening
+is specialized to zero in H(0). Extra source dummy slots likewise denote
+zero. Internal update slots are held symbolic during the structural
+zero-extension induction. In case (A) the root image check prevents them
+from being confused with an unavailable outer coordinate; in case (B)
+the update does not use the outer state at all.
+
+The iterable opener's valid new aliases are unchanged: empty string and
+empty object mean []; the object with only the empty key means [[]].
+For example a truthy predecessor object {"":value} denotes 1, and its
+constructed source singleton denotes 2. Its ignored value cannot inject
+parameters. Nonempty keys/strings fail when traversed. Noniterable truthy
+scalars cannot bypass source validation. Success of the arithmetic branch
+therefore always has one of the two decoded computation meanings above.
+
+Canonical completeness
+----------------------
+An I0 instance is supplied by n=0. An IS instance whose canonical
+predecessor term is truthy is supplied directly. For literal predecessor
+zero, let z=I(0,0;constant 0), whose I0 proof gives z=0. The term z has a
+truthy canonical serialization. Supply the IS equation at predecessor z,
+then transport the formula
+
+  I(Sv,a;h)=h(I(v,a;h))
+
+along z=0 to obtain its literal zero instance. This is finite, uses only
+an already available I0 computation and equality transport, and involves
+no circular appeal to IS at zero. All logical rules and the other
+arithmetic leaf translations retain their ordinary canonical proofs.
+
+Other source simplifications
+----------------------------
+1. ASCII depths: b' BAD'[arity] % 8 equals 2,1,4 at arities 1,2,3.
+   Arity zero has no traversed child, so its different unused increment
+   has no effect. Arity greater than three rejects as before.
+
+2. Missing-image sentinel 0j: a used 0j image cannot be iterated or ordered
+   with the integer floor, so it fails exactly as a used None sentinel.
+   JSON cannot supply a complex value. No accepted numerical term or
+   formula contains this sentinel.
+
+3. Boolean transport assignment: compared with the conditional expression,
+   `condition and i(t,s) or a` differs only if the matched minor opening is
+   falsy. A nonempty traversed outer container opens to a nonempty list.
+   Therefore a falsy formula opening is either [] from an empty container
+   or scalar zero from a formula leaf. In either case its value is
+   independent of the numerical image. The matched target opening i(t,u)
+   is the same falsy value, and its comparison to a has succeeded. Retaining
+   a therefore retains an equivalent identical empty/scalar goal; all
+   subsequent membership, opening, len, and comparison behavior is the
+   same. No used proof instruction, guard, or side effect is skipped.
+
+4. The initial walrus assigns the parser's pop method before invoking it.
+   It preserves input consumption order. The standard json wildcard import
+   supplies load; no submitted string is executed as code.
+
+Limits
+------
+This review proves the changed invariant for initialized I. A mechanical
+SR adaptation additionally needs its zero branch changed to [t] and its
+canonical literal-zero successor-step bootstrap justified separately.
+The present strict-coordinate claim concerns a complete auxiliary I
+checker, not a new arithmetic basis in that program. Written review and
+finite tests are not Lean/Rocq verification.

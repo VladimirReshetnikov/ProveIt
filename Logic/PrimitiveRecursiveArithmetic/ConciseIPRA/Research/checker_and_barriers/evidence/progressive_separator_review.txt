@@ -1,0 +1,82 @@
+Independent review of progressive_boolean_obstruction.tex
+========================================================
+
+Verdict: the product countermodel, explicit depth-two formula, and depth
+claim are mathematically correct for the specified progressive calculus
+with BoolCases deleted. I checked the exact native rules against
+draft_extract/ipra_research_2026-11-10/ipra_research_2026-11-10/theory/progressive_binder.tex.
+I also ran verify_progressive_separator.py; all stated finite diagnostics
+passed. The finite script is correctly described as an illustration, not
+a proof of equation induction or general rule soundness.
+
+Rule-by-rule checks
+-------------------
+All fixed PR descriptions are interpreted coordinatewise in N^2; their
+defining equations hold coordinatewise. Actual pair equality validates
+transport through arbitrary native formulas. Interpreting an available
+object by its ordinary formula and a clause P_y B by forall y(B -> B(Sy))
+validates availability both from a retained context and from a proved
+object. HI is ordinary existential/universal/implicational introduction
+with the stated freshness condition. HE is ordinary existential
+elimination with a fresh witness. Step is universal specialization and
+modus ponens. Iter is exactly the equational-induction schema.
+
+For any equation E(x,p), fixed parameter valuation gives a product truth
+set U0 x U1. If E(0) and its universal step hold, both Uj contain zero.
+From r in U0, apply the step to (r,0); from r in U1, apply it to (0,r).
+This proves each Uj successor closed. External induction gives each Uj=N.
+The argument works at every valuation of arbitrary retained assumptions:
+fix a valuation satisfying the context, then use the true base and
+progress clause there. No restriction to equational contexts is needed.
+The eigenvariable conditions remain essential.
+
+Endpoint derivations
+--------------------
+F(0): each inner matrix C(0,Z(y),z)=0 computes to the equation Z(y)=0,
+independently of z. Its progress follows by equation identity and
+transport. Thus its H formula is derivable for arbitrary y, and the outer
+HI ignores its local assumption.
+
+F(1): the inner matrix computes to z=0, independently of y. The outer
+progress is object identity. The original calculus has no primitive
+hypothesis-conclusion rule, but object identity is derived before using
+BoolCases by the finite HI/HE/Step expansion stated in the source. The
+report should name that fact, or spell out the following direct expansion:
+open the assumed inner H, obtain its progress clause, introduce the target
+inner H with the retained witness, translate the target equation hypothesis
+to z=0 and then to the source matrix by computation/transport, apply Step,
+and translate back to the target matrix at Sz. No Boolean case is used.
+
+Counterexample and minimality
+----------------------------
+At e=(0,1), the atomic matrix is Z(y0)=0 AND z1=0. The inner progress
+formula is true exactly when y0=0: then its antecedent is always false;
+otherwise z=(0,0) violates its progress. Hence the inner formula drops from
+true at y=0 to false at Sy, refuting the outer H.
+
+Depth <=1 preservation is correct for this endpoint/product separation.
+For H with equational matrix, choose the pair of standard endpoint
+witnesses. If the pair equation holds, both coordinate antecedents hold,
+so both coordinate conclusions hold. No implication converse is used.
+The statement is about this one-world product construction and native
+grammar, not an absolute lower bound for other separators or checkers.
+
+Scope caveats
+-------------
+The result proves the specified Boolean-case rule is not admissible in
+the reduced calculus under its given numerical/equality interpretation.
+It does not rule out a different interpretation of iPRA into that theory,
+nor different object formulas/primitives/domains. It also does not certify
+any checker implementation. The existing scope paragraph gets this right.
+
+Positive iteration with a zero-test primitive
+============================================
+The zero-profile invariant does NOT survive adjoining Z(0)=1, Z(Sn)=0:
+Z itself already has zero set N\{0}, which is forbidden by that invariant.
+More substantially R+(n,0;v.Z(v)) has values alternating between 1 and 0,
+so its zero set is one parity class. Thus the old proof's update step is
+replaced by a two-state Boolean transition that may alternate, and the
+iteration counter becomes relevant to zero status. A single bounded unary
+primitive therefore escapes this particular obstruction. This does NOT
+prove it restores an unrestricted selector, predecessor, initialized
+iteration, or full iPRA; each is a separate obligation.

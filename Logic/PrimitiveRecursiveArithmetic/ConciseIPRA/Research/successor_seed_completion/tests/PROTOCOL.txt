@@ -1,0 +1,176 @@
+SUCCESSOR-SEEDED J CERTIFICATE PROTOCOL
+=====================================
+
+This is a readable account of the canonical certificate language emitted by
+producer.py, together with the three tested iterable-decoder aliases. The
+complete executable programs in ../code/ are authoritative. The surrounding
+report gives the mathematical interpretation and its soundness argument.
+The producer, this document, fixtures, and test runner are untrusted aids;
+none is imported by a checker.
+
+RUNNING A CERTIFICATE
+--------------------
+
+From this directory:
+
+  python3 ../code/checker.py < fixtures/atomic_progress_closure.json
+  python3 -O ../code/checker.py < fixtures/atomic_progress_closure.json
+
+A successful run prints ACCEPT and exits zero. A rejected input prints
+REJECT, raises the underlying exception, and exits nonzero. The runner
+checks both the exit status and the exact stripped standard output. The
+checker does not rely on Python assertions, so -O has the same intended
+behavior. Python, its JSON parser, and its ordinary operational semantics
+are part of the stated ambient implementation, not omitted subroutines.
+
+INPUT ORDER
+-----------
+
+The input is one JSON array. Its last item is the requested closed formula.
+Earlier items are four-field commands [m,s,u,t]. Both the initial goal and
+commands are consumed using pop(), so commands execute right to left.
+When a command verifies a major formula, its proof commands are consumed
+before the command's continuation. A context hypothesis consumes no command.
+An unused prefix is inert. Every consumed command gets one fresh negative
+label when its continuation begins; checking a major can itself consume
+commands and allocate labels before this happens.
+
+CANONICAL SORTED TREE SYNTAX
+---------------------------
+
+The same raw JSON trees carry different meanings at the numerical and
+formula sorts. Constructor arity determines the interpretation.
+
+  Arity       Numerical position                  Formula position
+  0           zero                                truth
+  1           successor abbreviation              Q binder
+  2           annotated zero                      numerical equality
+  3           scalar J                            paired D binder
+
+The producer writes numerical zero as integer 0. It writes [a] for Sa;
+semantically this is J(0,a;v.0), not another primitive numerical operation.
+It writes J(n,a;v.h) as a three-child tree, and equality as [s,t]. A Q tree
+has its body as its sole child. A D tree is [0,0,body]; its body binds the
+index y and witness x. The numerical J update has just ONE changing scalar
+state. Two binder cells in the common raw codec both denote that same
+state; they do not supply a predecessor counter. In its counter and seed,
+the corresponding dummy cells denote zero. Numerical unary/binary nodes
+also use the codec's local dummy framing. Consequently their numerical
+annotations may be discarded semantically without suppressing validation.
+
+Named binders are converted to local coordinates. At each binder cell,
+coordinates 2j-1 and 2j are aliases. Negative integers denote allocated
+parameters; future negative labels are unavailable. The producer uses the
+odd representative of each coordinate and globally distinct names.
+
+The exact common opening/validation routine for the list profile is:
+
+  i = lambda a, t=None, d=0: (
+      [i(b,t,d+b' \x02\x01\x04'[len(a)]) for b in a]
+      if isinstance(a,list) else
+      a if k <= a < d else d % 2 and i(t,d=1)
+  )
+
+Here k is the current negative allocation floor. The same routine validates,
+opens binders, and substitutes endpoints; its local depth d matters. The
+iterable variant replaces only the list dispatch by a try/except around
+that comprehension. Its documented extra aliases are described below.
+
+COMMAND DISPATCH
+----------------
+
+Before reading a command, the checker normalizes the current formula and
+closes immediately if it is in the current context.
+
+1. Truthy m: verify the major first.
+
+   The checker recursively proves m in the existing context. Failure here
+   is rejection: it cannot fall through into a neutral operation. If m is
+   the displayed equality [s,u], and opening the displayed motive t at u
+   matches the requested conclusion, the continuation proves that motive
+   at s. This is equality transport, and t may be compound.
+
+   If s is false, m=[t], and the same target matching succeeds, the
+   continuation proves the zero instance of t. This is Q specialization
+   at the arbitrary numerical term u. Its zero premise is not omitted.
+
+   If endpoints or target do not match, the requested formula is unchanged.
+   A proved equality or Q major then adds only a harmless truth formula.
+   A proved D major adds its witness-opened Q body at the fresh negative
+   label; its continuation must not let that witness escape into the goal.
+
+2. Falsy m, truthy t: paired introduction.
+
+   The requested D body's witness coordinate is opened at numerical t.
+   The continuation proves its successor-index instance at a fresh z.
+   With m=[] the added assumption is the zero-index instance (case mode).
+   With m=0 and a literal equation matrix, it is the z-index instance
+   (equation-progress mode). A compound Q or D matrix still receives the
+   zero instance. A certificate cannot enable compound induction by merely
+   writing the numeric progress flag.
+
+   The raw witness field must be truthy to select this dispatcher. The
+   numerical zero term J(1,0;v.0), encoded [[0],0,0], is truthy and provably
+   zero. The old ordinary-iterator convenience [0,0,0] now denotes ONE and
+   must not replace an essential zero witness. The producer uses the
+   truthy-zero convenience automatically only for an unused witness slot;
+   a separate nonvacuous fixture proves its required zero equation.
+
+3. Both m and t falsy: forward computation insertion.
+
+   The field s is unpacked as [n,a,h]. If n is false, the inserted equation
+   is [s,[a]], expressing J(0,a;v.h)=Sa. It is not [s,a]. If n is truthy,
+   the inserted equation uses the exact right side
+
+     i(h, i([*n,a,h], d=1), 1).
+
+   For a canonical successor counter [p], this is h with its scalar state
+   replaced by J(p,a;v.h). The recursive image is validated eagerly before
+   opening h, even when h is a constant and discards that state. In
+   particular a two- or three-child counter cannot exploit a constant
+   update to bypass recursive-image arity and scope checks.
+
+COMMON CONTINUATION
+-------------------
+
+The floor k is decremented after the branch-specific preparation, on every
+non-hypothesis continuation, including computation insertion. The current
+goal is opened at successor of that fresh label. The generated formula is
+opened at the fresh label or at zero according to the displayed dispatch
+condition, then appended to the context. Canonical numerical computation
+packets use inert dummy coordinates, so their generated equations remain
+ordinary equations. More general raw parameter aliases require the local
+opening interpretation explained in the main report; they should not be
+read as a blanket rule asserting every open equation universally.
+
+ITERABLE-DECODER PROFILE BOUNDARIES
+----------------------------------
+
+checker_ast.py permits the empty string and empty object wherever their
+iteration produces the empty tree. A JSON object with its sole key equal
+to the empty string iterates to a unary tree whose child is the empty
+tree. Its value is ignored: only keys are iterated. All nonempty strings
+fail to yield a finite valid normalization. These aliases are local tree
+aliases, interpreted within the same surrounding coordinate framing.
+
+The three alias fixtures prove respectively J0(0;0)=1 with an empty-string
+counter, the same equation with an empty-object counter, and J1(0;0)=0
+with a sole-empty-key object counter. The third also exercises eager
+normalization of the recursive image. The two list-dispatch checkers
+reject all three encodings; the iterable checker accepts them. These are
+intentional encoding differences, not disagreements on a false theorem.
+
+LIMITS OF THE DELIVERED CERTIFICATES
+-----------------------------------
+
+The named producer builds the displayed finite derivations and symbolically
+tracks their contexts. It does not call the checker's opening routine or
+dispatcher, and it does not use a numerical evaluator to establish goals.
+Its capture-free substitution assumes the globally distinct binder names
+used by these examples. It is not a general-purpose verified translator.
+
+The fixtures test real complete-program proof acceptance and meaningful
+rejection boundaries. They do not constitute a machine-checked proof of
+the whole predecessor bootstrap, soundness, or bi-interpretability. Those
+arguments remain mathematical proofs in the report. The separate
+numerical diagnostics also remain finite standard-natural-number checks.

@@ -1,0 +1,222 @@
+% Includable independent-review fragment. Requires amsmath, amssymb,
+% amsthm and theorem/proposition/corollary environments in the parent.
+\section{Finite tuple domains and quotient equality}
+\label{sec:finite-quotient-obstruction}
+
+The one-coordinate majorant theorem has a consequence that is stronger
+than failure to express ordinary addition as a single numerical term.
+It also obstructs interpretations using finite tuples and a nontrivial
+quotient equality, provided the interpreted operation is given by a
+tuple of terms. The following statement is purely about functions on
+the standard natural numbers; it does not require definability of the
+domain or the equivalence relation.
+
+The underlying domination property is the established notion of an
+\emph{almost unary function} on a countable set; its closure under
+composition belongs to the existing clone-theoretic literature
+\cite{pinsker}. The present argument uses that property and, for the
+recursor application, the stronger availability of primitive-recursive
+majorants. We give the finite-quotient result below with a complete
+proof and make no literature-wide priority claim for it.
+
+\begin{theorem}[Finite quotient from coordinate bounds]
+\label{thm:finite-quotient}
+Let $d\geq1$, let $D\subseteq\mathbb N^d$, let $E$ be an equivalence
+relation on $D$, and let $e\in D$. Suppose
+$f:D\times D\longrightarrow D$ has a two-sided identity modulo $E$:
+\[
+                  f(e,z)\mathrel E z,
+                  \qquad f(z,e)\mathrel E z
+                  \quad(z\in D).
+\]
+For each output coordinate $i$, suppose there are an input coordinate
+$j_i\in\{1,\ldots,d\}$ and a nondecreasing unary function $g_i$ such
+that one of the following holds uniformly on $D\times D$:
+\[
+ f(x,y)_i\leq g_i(x_{j_i}),
+ \qquad\hbox{or}\qquad
+ f(x,y)_i\leq g_i(y_{j_i}).
+\]
+A constant bound is also allowed. Then $D/E$ is finite.
+
+More explicitly, put $L(z)=f(e,z)$ and $R(z)=f(z,e)$. A composition
+of at most
+\[
+                   \ell_d=\left\lceil\log_2(d+1)\right\rceil
+\]
+maps chosen from $L,R$ sends every element of $D$ to an $E$-equivalent
+representative in one fixed finite box
+$\prod_{i=1}^d\{0,\ldots,C_i\}$. If the coordinate bounds are
+primitive recursive, the constants and the word can be obtained
+effectively from those bounds, their selected coordinates, and $e$.
+\end{theorem}
+
+\begin{proof}
+Under $L$, a coordinate bounded through an $x$ input has the constant
+bound $g_i(e_{j_i})$; under $R$ it is bounded by $g_i(z_{j_i})$.
+For a coordinate bounded through a $y$ input, these roles are reversed.
+Thus each coordinate's bound is made independent of the unbounded
+input by at least one of the letters $L,R$. Under the other letter it
+depends on at most one coordinate. A coordinate with a constant bound
+is removed by both letters.
+
+For precision, regard $\{1,\ldots,d\}$ as a finite set of states
+tracking dependencies of bounds, not actual functional dependencies.
+The transition for a letter sends state $i$ either to the
+selected input state $j_i$, or to a terminal symbol $\dagger$ when
+that letter gives a constant bound. The terminal symbol is absorbing.
+Initially all $d$ states are live. For a current live set $S$, the
+number of its states removed by $L$, plus the number removed by $R$,
+is at least $|S|$. Choose a letter removing at least
+$\lceil|S|/2\rceil$ states, and replace the live set by the images
+of the surviving states. Each survivor has only one image, so
+\[
+                     |S_{\rm next}|\leq\lfloor|S|/2\rfloor.
+\]
+After at most $\ell_d$ choices the live set is empty, since
+$2^{\ell_d}>d$.
+
+The letters are selected from the outside of the composition inward.
+If they are $U_1,\ldots,U_k$, the resulting map is
+\[
+                     W=U_1\circ\cdots\circ U_k;
+\]
+in an evaluation, $U_k$ is applied first. This order matters for the
+dependency calculation. Inductively, each coordinate of the partial
+composition is either uniformly bounded, or bounded by a composition
+of the unary functions along one live dependency path. Appending the
+next letter on the inside replaces that live input coordinate by its
+new coordinate bound. Nondecreasingness permits this substitution of
+bounds. When the path reaches $\dagger$, the resulting bound is a
+constant. The empty final live set therefore gives the constants
+$C_1,\ldots,C_d$ asserted in the theorem.
+
+Both $L$ and $R$ map $D$ into $D$. The two identity laws say that
+each sends every argument to an $E$-equivalent element. Consequently,
+transitivity of $E$ gives $W(z)\mathrel E z$ for every $z\in D$.
+No compatibility axiom for $f$ and $E$ is needed for this step.
+Every $E$-class thus meets the finite set
+\[
+               D\cap\prod_{i=1}^d\{0,\ldots,C_i\}.
+\]
+In particular, the number of classes is at most
+$\prod_{i=1}^d(C_i+1)$.
+\end{proof}
+
+An arbitrary unary bound may be replaced by its nondecreasing envelope
+$g^*(n)=\max_{m\leq n}g(m)$. If $g$ is primitive recursive, so is this
+envelope. The monotonicity condition therefore costs no additional
+assumption in the application to term majorants. For $d=0$, the
+underlying tuple domain has at most one element and the conclusion is
+immediate.
+
+\begin{corollary}[No finite-dimensional term interpretation of iPRA]
+\label{cor:no-term-interpretation}
+Suppose a numerical language has a standard model on $\mathbb N$ in
+which every term is bounded by a unary function of one of its free
+coordinates, or by a constant. No interpretation of iPRA in this
+model can use a fixed finite-dimensional domain, arbitrary quotient
+equality, and a term tuple for the interpreted addition operation.
+This remains true with fixed numerical parameters in the
+interpretation.
+\end{corollary}
+
+\begin{proof}
+Let $D\subseteq\mathbb N^d$ and $E$ be the proposed interpretation
+domain and equality. Choose a representative $e\in D$ of its zero.
+The interpreted addition tuple satisfies the hypotheses of
+Theorem~\ref{thm:finite-quotient}, because both zero identity laws are
+theorems of iPRA. A majorant in a fixed interpretation parameter is a
+constant bound and causes no exception. Hence $D/E$ is finite.
+
+On the other hand, iPRA's successor separation and injectivity give
+infinitely many distinct standard numerals in every model. Their
+interpretations would be infinitely many distinct $E$-classes. This
+contradicts the preceding finiteness conclusion.
+\end{proof}
+
+Only the two identity laws for addition were used in the finiteness
+argument; associativity, commutativity, and cancellation are unnecessary.
+Thus the obstruction applies more generally to an interpreted infinite
+unital magma. It does not rule out interpretations whose arithmetic
+operations are defined by quantified graphs instead of term tuples.
+Such relational interpretations are permitted by the original research
+question and remain outside this theorem.
+
+\subsection{Sharpness of the composition-length bound}
+
+The logarithmic word-length bound is attained in every positive
+dimension. This is a statement about compositions of the two unit
+maps, not about optimal proof-checker size or the shortest possible
+definition of a representative map.
+
+Fix $d\geq1$, put $k=\lfloor\log_2d\rfloor$, and first suppose
+$k\geq1$. Of the $d$ coordinates, label $2^k$ by the words
+$w\in\{L,R\}^k$. Write $\sigma(w)$ for the word obtained by removing
+its first letter and appending $R$. Take $D=\mathbb N^d$, let $E$
+be the universal equivalence relation, and let $e$ be the zero tuple.
+For the labeled coordinates define
+\[
+ f(x,y)_w=
+ \begin{cases}
+ y_{\sigma(w)},&w\text{ starts with }L,\\
+ x_{\sigma(w)},&w\text{ starts with }R.
+ \end{cases}
+\]
+Set every remaining coordinate to zero. The unit laws hold modulo
+$E$, and every coordinate is a projection or a constant.
+
+Under a unit-map letter, state $w$ survives exactly when that letter
+is its first letter; in that case it moves to $\sigma(w)$. For any
+word $\alpha\in\{L,R\}^k$, the state initially labeled $\alpha$
+therefore survives all $k$ letters. In the actual composition its
+output coordinate is a projection of the input coordinate labeled
+$R^k$, so the composition is unbounded. The letters here are again
+read from the outside of the composition inward. Hence no word of
+length $k$ gives a uniformly bounded map; a shorter bounded word
+would remain bounded when extended on the inside and is equally
+impossible.
+
+The word $L^{k+1}$ removes every dependency. A state containing $R$
+in one of its original $k$ positions is removed on reaching that
+position. The only state surviving the first $k$ letters is $L^k$,
+which has then become $R^k$ and is removed by the last $L$.
+Constant coordinates are removed immediately. Thus the minimum
+length is exactly
+\[
+                 k+1=\left\lceil\log_2(d+1)\right\rceil.
+\]
+
+If $k=0$, then $d=1$. Set $f(x,y)=x$, use universal $E$, and take
+$e=0$. The map $R$ is the identity and $L$ is constant zero. The
+empty word is unbounded and a single $L$ is bounded, giving the
+required exact minimum one in this case too.
+
+\subsection{The limits of the obstruction are concrete}
+
+Both identity laws are necessary. On $D=\mathbb N$ with actual
+equality, the projection $f(x,y)=x$ has $f(z,e)=z$ for every fixed
+$e$ and satisfies the one-coordinate bound, but $D/E$ is infinite.
+The omitted identity law is exactly what fails. The opposite
+projection illustrates the other one-sided case.
+
+Relational definitions also give a direct escape from the term
+hypothesis. In a first-order setting with decidable equality to
+zero, the quantifier-free graph
+\[
+ M(x,y,z)\;\equiv\;
+ (x=0\land z=y)\;\lor\;
+ (x\ne0\land z=x)
+\]
+is total and single-valued. It defines the operation that returns
+$y$ when $x=0$ and otherwise returns $x$. Its two-sided identity is
+zero, so it is an infinite unital magma on $\mathbb N$. Indeed it is
+associative: it selects the first nonzero argument in a finite list,
+or zero if all are zero. It cannot be represented by an almost unary
+numerical term, but its graph is already a finite logical formula.
+
+This example is not an interpretation of iPRA: no addition compiler
+or closure under primitive recursion follows from it. It demonstrates
+that the remaining relational route is a substantive possibility.
+The finite-quotient theorem does not close that route or prove that
+the requested smaller axiomatization cannot exist.

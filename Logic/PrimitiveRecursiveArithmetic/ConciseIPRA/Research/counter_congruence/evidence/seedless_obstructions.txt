@@ -1,0 +1,68 @@
+Seedless recursion obstructions (independent mathematical analysis)
+
+1. Zero-seeded counter recursion
+
+Terms: variables, 0, successor, and J(n;u,v.h), with
+J(0;u,v.h)=0 and J(Sn;u,v.h)=h[n/u,J(n;u,v.h)/v].
+Every standard numerical term function is coordinatewise monotone.
+Proof is structural induction. If h is monotone, the state sequence r_0=0,
+r_(k+1)=h(k,r_k,p) is nondecreasing: the initial inequality is automatic,
+and h's monotonicity propagates r_k<=r_(k+1). Parameter monotonicity follows
+by induction on k. Composition with a monotone counter term preserves it.
+Thus the ordinary zero indicator, and therefore all PR functions, are not
+term-definable. This only excludes the direct term compiler, not every
+possible relational interpretation or changed-domain construction.
+
+2. Successor-seeded recursion with no independent initializer
+
+Terms: variables, 0, and B(n;u,v.h), with
+B(0;u,v.h)=S(h(0,0)), B(Sn;u,v.h)=h(n,B(n;u,v.h)),
+where S(a)=B(0;u,v.a).
+
+At first this basis is promising. Define
+W(n)=B(n;u,v.u), Z(n)=B(n;u,v.0), H(n,a)=B(n;u,v.a).
+Then W0=1, W(Sn)=n, Z0=1, Z(Sn)=0,
+H(0,a)=Sa and H(Sn,a)=a. In particular P(n)=W(H(n,n)) is true
+predecessor: P0=0, P(Sn)=n. Root agent additionally observed the gate
+G(n,a)=P(P(B(a;u,v.H(n,v)))), with G(0,a)=a and G(Sn,a)=0,
+provable by equation induction. Nevertheless arbitrary initialized
+recursion cannot be obtained by a term compiler.
+
+Theorem (one-coordinate unary bound).
+For every fixed term t(x_1,...,x_k), either t has a constant standard bound,
+or there are an i and a unary primitive-recursive function F with
+ t(x_1,...,x_k) <= F(x_i)
+for all natural values of all parameters. The controlling coordinate and F
+may depend on t; no uniform evaluator is asserted.
+
+Proof.
+Projections, 0, successor, and ordinary substitution preserve the claimed
+property after replacing each bound by its nondecreasing envelope.
+For B(n;u,v.h), apply the induction hypothesis to h as a term in u,v and
+the passive parameters.
+* If h is bounded by F of a passive parameter p_i, every recursive value
+  is bounded by 1+F(p_i), since the base is S h(0,0).
+* If h is bounded by F(u), every value at counter n is bounded by
+  1+max_{j<=n}F(j). Compose this monotone unary bound with the unary bound
+  on the counter term n.
+* If h is bounded by F(v), put K(m)=m+1+max_{j<=m}F(j), and b=1+F(0).
+  Then K is monotone and K(m)>=m. Induction on counter n gives
+  B(n;h)<=K^n(b). This is a unary PR bound in n, monotone in n, and again
+  composes with the unary bound on the actual counter term.
+* A constant bound for h is the passive-parameter case with a constant.
+All constructions involve fixed primitive-recursive descriptions, so their
+unary bounds are primitive recursive. This completes the structural proof.
+
+Corollaries.
+(a) a+b is not a term: fixing the asserted controlling coordinate and
+varying the other input defeats any unary bound.
+(b) C(c,a,b), equal to a at c=0 and b at c>0, is not a term. If the
+controller is c, fix c and vary its selected data argument. If it is a,
+fix a and set c=1 while varying b. If it is b, fix b and set c=0 while
+varying a.
+(c) The discovered gate and predecessor do not imply term completeness:
+the gate is bounded by its single data input.
+
+Limits: these are standard-function definability obstructions. They do not
+by themselves rule out relational interpretations, stronger contextual
+axiom packages, quotient domains, or a first-order bi-interpretation.

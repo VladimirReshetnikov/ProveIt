@@ -1,0 +1,99 @@
+Independent source and theory audit
+Repository: VladimirReshetnikov/ProveIt
+Commit: 0300a290bedee5019c974291850b798378438b2e
+
+Scope and counting
+------------------
+The census traverses all 16 ZIP archives currently in docs/drafts, including
+every nested ZIP. It reads only Python and nested-archive members; it does not
+execute repository code or extract member paths. Archive content hashes are
+memoized. There are 22 distinct archive byte strings, 297 distinct Python byte
+strings, and 516 Python member occurrences in the distinct archives. Counting
+an embedded archive each time it is included gives 2,249 source occurrences.
+There were no ZIP or Python-parse errors.
+
+The manifest records each root Git blob SHA-1 and SHA-256, the complete nested
+archive graph, and the source hash attached to each archive member. metrics.json
+records every distinct Python source, its occurrence locations, and measurements.
+It labels 130 nominal standalone checker candidates after removing four
+measurement/audit harnesses from the 134 textual stdin/ACCEPT/REJECT candidates.
+This classification is not a formal soundness certification of 130 programs.
+Every nonchecker program below any coordinate of the observed checker envelope
+was inspected: the 23 such programs build PDFs, package files, measure sources,
+convert certificates, or run finite tests. None is itself a theorem checker.
+
+Measurements
+------------
+Whole modules are counted. Genuine module/function/class docstrings are removed,
+then ast.unparse plus one final LF determines normalized bytes and tokens.
+Whitespace and comment tokens are ignored; all AST nodes are counted. Imports,
+JSON parsing, substitution/validation, rule checking, and verdict handling are
+included. The inherited source_measure.py is copied byte for byte from the
+endpoint-certificate draft. No source optimizer or custom theorem library is
+part of the measured boundary.
+
+The current coordinate envelope is 277 normalized tokens, 311 AST nodes, and
+672 normalized bytes. Different complete programs attain the coordinates:
+  tokens: constructed_computation/code/checker_explicit.py
+          (277 tokens, 317 AST nodes, 684 bytes; gzip9 raw/norm 403/403)
+  AST: transient_seed/code/checker_structure.py
+       (280 tokens, 311 AST nodes, 705 bytes; gzip9 raw/norm 393/393)
+  bytes: counter_congruence/ancillary/zero_product.py
+         (281 tokens, 322 AST nodes, 672 bytes; gzip9 raw/norm 397/397)
+
+The flat-computation main checker is 278/314/679, gzip9 402/402. The scalar-
+successor matched byte control is 277/319/679, gzip9 401/401. The unnormalized
+raw-byte minimum is local_rewriting/code/kernel_scalar_boxed.py (also copied
+as flat_computation/reference/local_scalar.py): raw 628, normalized 685,
+290 tokens, 334 nodes, gzip9 raw/norm 396/414. A normalized-byte improvement
+must not be described as improving this raw-byte minimum unless it actually does.
+
+The byte floor is in ancillary/, and token controls occur in reference/.
+Their locations are not grounds for exclusion. zero_product.py uses a*0==[]
+as its list test. On JSON values this distinguishes lists correctly; other
+unsupported values reject or follow the existing scalar-validation path.
+It is a source-level trick, not an arithmetic reduction. It nevertheless is
+a complete standalone comparison program and is included conservatively.
+
+Gzip is informational only. Measurements use GzipFile(filename='',mtime=0,
+compresslevel=9), include header and trailer, and were cross-checked against
+gzip -9 -n -c on every saved comparator. Runtime: CPython 3.12.14, zlib 1.3.2.
+Six exact source comparators, provenance, and an offline reproduction script
+are provided. Their measured metrics all reproduced without executing them.
+
+Theoretical findings for the assigned eight drafts
+------------------------------------------------
+atomic_transport, guarded_elimination, local_rewriting, named_specialization,
+shared_continuation, endpoint_certificates, elimination_assumptions, and
+generated_assumptions share a careful logical bridge. The paired binder has
+ordinary reading D_xy B = exists x (B(x,0) -> forall y B(x,y)). Internal Q
+clauses have the conditional-universal reading. Gate and selector constructions
+recover all first-order intuitionistic connectives. Numerical cases are derived
+before disjunction, avoiding an apparent coverage circularity. Progress
+introduction is explicitly restricted to literal equations. The arguments
+include every formula round trip, full-domain numerical uniqueness, an actual-
+equality characteristic, and a genuine-falsity bridge through 0=1. I found no
+fatal mathematical gap in these shared bridge arguments during this audit.
+
+The local-rewriting draft proves that one-hole atomic rewriting suffices, but
+its very small shipped kernels still permit general formula-template transport.
+The endpoint/path implementation is explicitly left as a possible certificate
+interface, with capture avoidance highlighted. Do not attribute those kernels'
+measured sizes to enforcement of the one-hole restriction.
+
+The source minima are attained upper bounds on implementation cost, not a proved
+lower bound on possible axiomatizations. The current compact sources are highly
+compressed representations (arity-coded sorting, exceptions for rejection, and
+Python idioms); report a separately readable implementation's size when claiming
+the metric concerns straightforward checking, and explain the mathematical rule
+change separately from source presentation changes.
+
+Research side result
+--------------------
+For a proposed tied-body recursor F(n;u,v.h), with F(0,h)=S h(0,0) and
+F(Sn,h)=h(n,F(n,h)), a predecessor is surprisingly derivable without a full
+selector. Let B(n,a)=F(n;u,v.a), Z(n)=B(n,0), and W(n)=F(n;u,v.u).
+Then P(n)=W(B(Z(n),W(n))) satisfies P0=0 and P(Sx)=x. However, the independent
+one-coordinate-majorant argument from the parent/theory agent still blocks
+term-definable addition and full binary selection. This bootstrap does not
+establish equivalence to iPRA and must not be used as such.

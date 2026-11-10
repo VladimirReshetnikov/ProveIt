@@ -1,0 +1,903 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.92in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,fancyhdr,xcolor,listings,needspace}
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,
+ citecolor=blue!45!black,pdftitle={Atomic transport for intuitionistic primitive recursive arithmetic},
+ pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{0.2em}
+\setlist{itemsep=0.2em,topsep=0.4em,leftmargin=1.6em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\Acal}{\mathcal A}
+\newcommand{\D}{\ensuremath{\mathsf D}}
+\newcommand{\Q}{\ensuremath{\mathsf Q}}
+\newcommand{\av}{\mathrel{\triangleright}}
+\newcommand{\FV}{\operatorname{FV}}
+\newcommand{\file}[1]{{\small\nolinkurl{#1}}}
+\lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,keepspaces=true,
+breaklines=true,showstringspaces=false,frame=single,rulecolor=\color{black!20},
+xleftmargin=0.4em,xrightmargin=0.4em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Atomic transport for iPRA}
+\fancyhead[R]{\small Construction, proofs, and limits}
+\fancyfoot[C]{\thepage}
+\title{\textbf{Atomic Transport for Intuitionistic\\Primitive Recursive Arithmetic}\\[0.45em]
+\large A reduced logical interface and a smaller complete byte checker}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{November 10, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We specify an axiomatization of full first-order intuitionistic primitive
+recursive arithmetic with two numerical computation schemas and a paired
+logical binder. General assumption use and transport through compound
+formulas are both derived. Primitive equality transport has only a literal
+equation as its motive. The removal of compound transport is proved by
+an explicit structural construction using case introduction, without
+induction on compound formulas. Together with the inherited successor
+recursor, this gives a theory with whole-domain, actual-equality
+bi-interpretations with iPRA and effective consistency reductions.
+
+The complete standalone implementation has 304 normalized Python tokens,
+345 abstract-syntax-tree nodes, and 714 normalized bytes. An audit of all
+ten current draft archives at the pinned ProveIt revision finds the
+coordinate envelope 287/323/738, attained by different complete programs.
+The new checker improves the byte coordinate by 24 bytes (3.25\%); it
+does not improve the other two minima. The byte saving combines inherited
+certificate and arithmetic techniques and must not be attributed to the
+transport restriction alone.
+
+This is a modest, reproducible advance. It does not establish an absolute
+simplest axiomatization, a program below every coordinate of the current
+frontier, or the significant mathematical breakthrough requested. All
+axioms, rules, side conditions, interpretation composites, implementation
+boundaries, and the distinction between written proofs and finite tests
+are stated explicitly.
+\end{abstract}
+\begin{quote}
+\textbf{Status.} The equivalence theorem below is a written mathematical
+proof, supported by executable certificates and independent assistant
+review. It is not a Lean/Rocq formalization or external peer review.
+The global minimization problem remains open in this investigation.
+\end{quote}
+\clearpage
+\setcounter{tocdepth}{2}\tableofcontents
+\clearpage
+
+\section{The comparison that the construction actually meets}
+\label{sec:comparison}
+
+The repository was read at commit
+\begin{center}\file{7bded17cc0122767f86e494fcf256b47fe85c9b8}.\end{center}
+Its \file{docs/drafts} directory contains ten ZIP archives. All ten were
+downloaded at that revision and checked against their recorded byte
+lengths and Git blob hashes. The audit measured 154 Python source
+occurrences, comprising 109 distinct contents, using the unchanged
+whole-program measurement procedure from the drafts under CPython
+3.12.14. Build scripts, manifest tools, numerical experiment programs,
+and fragment-only checkers were not classified as complete checkers.
+The archive and complete source inventories are included in
+\file{evidence/source_manifest.json} and
+\file{evidence/all_source_metrics.json}.
+
+\begin{center}\small
+\begin{tabular}{lrrr}
+\toprule
+Entire standalone program & Tokens & AST nodes & Bytes\\
+\midrule
+Endpoint certificates, compact &287&328&749\\
+Named specialization, token profile &287&331&811\\
+Endpoint archive, matched legacy structure &293&323&893\\
+Successor recursion &305&351&738\\
+\midrule
+Current coordinate envelope &287&323&738\\
+\textbf{Atomic transport: this package} &\textbf{304}&\textbf{345}&\textbf{714}\\
+Matched unrestricted control: this package &297&335&698\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The 323-node comparator is inside an archive's \file{reference/}
+directory, but it is a complete standalone checker and counts. This
+matters: 326, for example, is not the current minimum AST size.
+The three coordinates of the envelope are not the size of one program.
+The new program is smaller than the previous byte leader in all three
+measurements, but smaller than the entire corpus envelope only in bytes.
+The delivered unrestricted control is shorter still: it measures 698
+bytes, saving 40 bytes (5.42\%) against that same old byte leader.
+Its primitive transport remains unrestricted. The atomic guard costs
+16 bytes, so no part of the byte saving is attributed to adding that guard.
+
+These attained source sizes are upper bounds on the best possible
+implementation size, not mathematical lower bounds. No fixed universal
+machine, implementation grammar, or absolute lower-bound theorem has
+been supplied. We interpret the requested comparison operationally as
+an attempt to beat the strongest observed complete programs. The
+normalizer removes comments and genuine docstrings, calls
+\file{ast.unparse}, and counts tokens, AST nodes, and UTF-8 bytes of the
+whole module. JSON parsing, scope traversal, freshness, all inference
+checks, rejection, and the public verdict driver are included. Python
+and its standard JSON library are shared infrastructure. Proof length
+and runtime are different costs and are not claimed to decrease.
+
+\subsection{Attribution and the precise contribution}
+
+The successor-seeded recursor, its direct primitive-recursion compiler,
+the paired binder, choice between case and progress introduction,
+elimination-only use of assumptions, and explicit endpoint packets are
+already present in the supplied drafts\cite{recursor,elimination,endpoints}.
+They are inherited here. The smaller byte implementation combines these
+ingredients. No new numerical basis or priority claim is made for them.
+
+The mathematical consolidation re-establishes that \emph{literal-equation
+transport suffices even in the elimination-only Eq/\D\ object calculus}.
+Both general assumption use and full compound transport can be restored
+without a primitive compound induction instance. The proof separates
+identity expansion from transport expansion, avoiding a circular use of
+the rules being removed.
+
+A historical cross-check is decisive for novelty. The older
+\file{ipra_fixed_position_2026-11-09.zip}, retrieved at repository commit
+\file{7e694b036f89a0f16313089329555da531d6a656}, already proves the same
+backward-base / closure-use / forward-successor lifting in its theorem
+``Full native formula transport''\cite{fixedposition}. It also derives
+atomic transport from still more restricted equality rules, at the cost
+of changed first-step arithmetic computation. The no-hypothesis adaptation
+here uses the already known identity expansion with the inherited R
+computation substituted at its leaves. Accordingly this report claims
+\emph{a consolidation and an implemented smaller byte checker, not a new
+structural transport theorem}. That historical archive is not one of the
+ten current direct members used for the current size comparison.
+
+\section{Complete primitive theory}
+\label{sec:theory}
+
+\subsection{Numerical syntax and its two computation schemas}
+
+Numerical terms are variables, zero, and
+\[
+                    R(n,a;u,v.h).
+\]
+Only the update $h$ binds $u,v$, which are distinct. Its remaining
+parameters are fixed throughout that recursion. Define
+\[
+             S(a):=R(0,a;u,v.0),\qquad 1:=S0.
+\]
+Thus $S$ is a fixed abbreviation, not a further primitive numerical
+operation. The only numerical axiom schemas, in any retained context, are
+\begin{align}
+ R(0,a;u,v.h)&=S(a), &&\tag{R0}\label{eq:R0}\\
+ R(Sn,a;u,v.h)&=h[n/u,R(n,a;u,v.h)/v].
+ &&\tag{RS}\label{eq:RS}
+\end{align}
+Substitution is simultaneous and capture-free; the recursive value in
+RS retains the original update $h$.
+
+Every body is a fixed finite expression. Equivalently, form a staged
+first-order signature: for each earlier-stage term $h(u,v,\vec p)$,
+declare a function symbol $r_h(n,a,\vec p)$ with these equations.
+There is no quantified function variable, universal evaluation operation,
+or claim of uniform primitive-recursive evaluation of all descriptions.
+The stages are an external syntactic construction. Coherence under
+substitution of descriptions will follow from equation-induction
+uniqueness in Section~\ref{sec:interpretations}.
+
+\subsection{Object formulas and available elimination majors}
+
+The object language is
+\[
+                     A::=(s=t)\mid\D_{x,y}A.
+\]
+Both distinct variables $x,y$ are bound by $\D$. A retained context
+$\Gamma$ is a finite reusable list of object assumptions and internal
+clauses $\Q_yB(y)$, with $B$ an object formula. A clause supplies $B(t)$
+when supplied a proof of $B(0)$. It is not itself an object-formula
+constructor. Its ordinary meaning is $B(0)\to\forall yB(y)$.
+
+The availability judgment has exactly these clauses:
+\[
+ \frac{}{\Gamma\av M}\quad(M\in\Gamma),\qquad
+ \frac{\Gamma\vdash A}{\Gamma\av A}\quad(A\text{ an object formula}).
+ \tag{Avail}
+\]
+Availability may be used only as an elimination major below. In
+particular, there is no primitive rule from $A\in\Gamma$ to
+$\Gamma\vdash A$. Internal $\Q$ clauses are available by membership.
+Their object representative is $\D_{w,y}B(y)$, for unused $w$.
+
+\subsection{All primitive proof-building rules}
+
+Besides R0 and RS, the entire inventory is
+\[
+ \frac{\Gamma\av s=t\qquad\Gamma\vdash U(s)=V(s)}
+      {\Gamma\vdash U(t)=V(t)}\quad\mathsf{AT},
+ \tag{Atomic transport}\label{rule:AT}
+\]
+\[
+ \frac{\Gamma\av\Q_yB(y)\qquad\Gamma\vdash B(0)}
+      {\Gamma\vdash B(t)}\quad\mathsf{QE},
+ \tag{Closure use}\label{rule:QE}
+\]
+\[
+ \frac{\Gamma\av\D_{x,y}B(x,y)\qquad
+       \Gamma,\Q_yB(a,y)\vdash F}
+      {\Gamma\vdash F}\quad\mathsf{DE},
+ \tag{Paired elimination}\label{rule:DE}
+\]
+\[
+ \frac{\Gamma,B(t,\eta_\varepsilon(z))\vdash B(t,Sz)}
+      {\Gamma\vdash\D_{x,y}B(x,y)}\quad\mathsf{DI}_\varepsilon,
+ \qquad \eta_0(z)=0,\quad\eta_1(z)=z.
+ \tag{Paired introduction}\label{rule:DI}
+\]
+Case introduction ($\varepsilon=0$) is allowed for every object matrix.
+Progress introduction ($\varepsilon=1$) is allowed only when the matrix
+is a literal equation. An equation under a binder is not literal.
+In DI, $z$ is fresh for $\Gamma$, $t$, and all fixed matrix parameters.
+In DE, $a$ is fresh for $\Gamma$, $F$, and all fixed matrix parameters.
+Local assumptions and clauses are discharged. Bound variables are
+renamed before substitutions. AT's $U,V$ are fixed numerical templates;
+its motive is never a compound formula.
+
+Call this calculus $\Acal$. Native absurdity is designated as
+$\bot_*=(0=1)$. There are no other logical or nonlogical axioms,
+reflexivity rule, primitive hypothesis-conclusion rule, coverage axiom,
+separation axiom, or extra induction schema. We derive the ordinary
+intuitionistic logical interface below; it is not silently imported into
+the checker.
+
+\section{The transport reduction without circular reasoning}
+\label{sec:atomic}
+
+\begin{lemma}[Equation reflexivity and symmetry]
+For each numerical term $s$, $\Gamma\vdash s=s$. An available $s=t$
+gives a proof of $t=s$ using only atomic transport.
+\end{lemma}
+\begin{proof}
+Let $r_s=R(Ss,0;u,v.u)$. RS gives $r_s=s$. Use two copies of this
+computation, one as the available equality and one as the minor, with
+atomic motive $w=s$. The result is $s=s$. This is a three-node proof.
+For symmetry use available $s=t$, minor $s=s$, and motive $w=s$.
+\end{proof}
+
+\begin{lemma}[Object identity expansion]
+If the object formula $A$ belongs to $\Gamma$, then $\Gamma\vdash A$.
+If $d(A)$ is its number of paired binders, an expansion uses
+$4+3d(A)$ proof-building nodes, counting availability as an edge annotation.
+\end{lemma}
+\begin{proof}
+For $A=(s=t)$, transport the three-node reflexivity proof of $s=s$
+along the available $s=t$, with motive $s=w$. This uses four nodes.
+For $A=\D_{x,y}B$, eliminate its available assumption at fresh $a$.
+The new clause is $\Q_yB(a,y)$. Reintroduce $A$ by case DI at witness
+$a$. Its retained base is $B(a,0)$, whose proof is supplied recursively
+by the smaller identity expansion. QE at $Sz$ gives the required step
+$B(a,Sz)$. Close DI and DE. This adds three nodes. No compound
+transport is used at any stage.
+\end{proof}
+
+Weakening, exchange, contraction, renaming, and numerical substitution
+are admissible by induction on derivations. For object cut, replace each
+availability use of the cut assumption by its supplied proof, freshening
+local parameters. A numerical substitution preserves a matrix's root
+constructor, so the progress restriction survives these operations.
+These structural arguments do not require arbitrary-formula transport.
+
+\begin{theorem}[Compound transport from atomic transport]
+\label{thm:atomic-transport}
+For every fixed Eq/\D\ object template $F(w)$, the rule
+\[
+ \frac{\Gamma\av s=t\qquad\Gamma\vdash F(s)}
+      {\Gamma\vdash F(t)}
+\]
+is admissible in $\Acal$. The construction uses no progress DI except
+what may already occur in the supplied premise proofs.
+\end{theorem}
+\begin{proof}
+Induct externally on the number of paired binders in $F$. The
+equation case is AT. Suppose $F(w)=\D_{x,y}B(w,x,y)$, with binders
+fresh for $s,t$ and $\Gamma$. Eliminate the given $F(s)$ at a fresh
+parameter $a$ and retain
+\[
+                       \Q_yB(s,a,y).
+\]
+To introduce $F(t)$ choose the same witness $a$ and use case DI.
+Its local assumption is $B(t,a,0)$; obtain a proof of it by the already
+proved identity expansion. Symmetry supplies $t=s$, and the structural
+induction hypothesis for the smaller object template gives $B(s,a,0)$.
+QE on the retained clause at $Sz$ then gives $B(s,a,Sz)$. Apply the
+structural induction hypothesis forwards along $s=t$ to obtain
+$B(t,a,Sz)$, exactly the case-DI premise. Close DI and DE.
+
+The parameter $z$ is fresh for the opened clause and $a$, and $a$ is
+fresh for the conclusion. All recursion here is on fixed formula syntax,
+not an object-theory induction on formulas. The only new DI instances
+are case instances. The two recursive transports preserve all retained
+assumptions. This completes the construction.
+\end{proof}
+
+\begin{corollary}[Exact object-sequent equivalence]
+Replace AT by unrestricted object-formula transport and add general
+object hypothesis use. The resulting reference calculus and $\Acal$
+prove exactly the same Eq/\D\ object sequents in the same clause contexts.
+\end{corollary}
+\begin{proof}
+Every $\Acal$ inference is valid in the reference calculus. In the other
+direction replace hypothesis leaves by identity expansion and each
+compound transport by Theorem~\ref{thm:atomic-transport}. Translate
+finite derivations recursively. Proved majors remain available, and
+context majors remain available by membership.
+\end{proof}
+
+The boundary is deliberate: it is not a theorem that every raw unary
+$\Q$ object goal is preserved. A $\Q$ is an internal reusable clause;
+its Eq/\D\ representative uses an unused existential coordinate.
+Deleting general hypothesis use while continuing to assert raw-$\Q$
+identity would be incorrect.
+
+\section{The short numerical construction}
+\label{sec:numerical}
+
+The following direct compiler is inherited from the successor-recursion
+draft\cite{recursor}; it is included to make the present construction
+self-contained. Atomic equality reasoning already gives transitivity
+and numerical congruence. Define
+\[
+ W(n):=R(n,0;u,v.u),\qquad
+ C(n,a,b):=W(R(n,a;u,v.Sb)),\qquad
+ P(n):=C(n,0,W(n)).
+\]
+Computation alone proves
+\begin{align*}
+ W0&=1,&W(Sn)&=n,\\
+ C(0,a,b)&=a,&C(Sn,a,b)&=b,\\
+ P0&=0,&P(Sn)&=n.
+\end{align*}
+The counter input $u$ of R is essential: it is not an alias for $v$.
+Applying W proves that successor is injective.
+
+Suppose fixed terms $g(\vec p)$ and $h(n,z,\vec p)$ are already
+represented. Put
+\[
+ J_{g,h}(n,\vec p)=
+ W\bigl(R(n,g(\vec p);u,v.S h(u,W(v),\vec p))\bigr).
+ \tag{Compiler}\label{eq:compiler}
+\]
+Then
+\[
+ J_{g,h}(0,\vec p)=g(\vec p),\qquad
+ J_{g,h}(Sn,\vec p)=h(n,J_{g,h}(n,\vec p),\vec p).
+\]
+At zero, R returns $Sg$ and W removes the successor. At a successor,
+R returns $S h(n,J_{g,h}(n,\vec p),\vec p)$ and W again removes
+the displayed successor. Both identities hold at arbitrary source
+elements; there is no standard-numeral restriction or positivity premise.
+Zero, successor, and projections are terms; composition is substitution.
+External recursion on any fixed PR description therefore compiles it.
+No scalar predecessor search, pairing construction, or equation induction
+is needed for this compiler. Scalar iteration is its special case with
+$h$ independent of its counter.
+
+\section{Deriving the full intuitionistic logical interface}
+\label{sec:logic}
+
+This section adapts the inherited Choice-DI interface\cite{elimination,recursor}.
+Every use of a retained object formula means identity expansion, and
+every compound equality transport means Theorem~\ref{thm:atomic-transport}.
+Thus none of the following reasoning adds a primitive checker rule.
+
+\subsection{Cases, equation induction, and congruence of the binder}
+
+With an unused coordinate $x$, progress DI introduces $\D_{x,y}E(y)$
+from $\Gamma,E(z)\vdash E(Sz)$ for a literal equation E. DE opens
+its clause $\Q_yE(y)$; a supplied base proof $E(0)$ and QE at t give
+$E(t)$. Hence contextual equation induction is admissible:
+\[
+ \frac{\Gamma\vdash E(0)\qquad\Gamma,E(z)\vdash E(Sz)}
+      {\Gamma\vdash E(t)}. \tag{EI}\label{rule:EI}
+\]
+Case DI in the same construction, ignoring its base assumption in a
+given successor proof, yields numerical cases for any object template:
+\[
+ \frac{\Gamma\vdash A(0)\qquad\Gamma\vdash A(Sz)}
+      {\Gamma\vdash A(t)}. \tag{NC}\label{rule:NC}
+\]
+The usual freshness conditions are retained. Witness 1 may be used
+for the unused coordinate. These derivations never need a proof whose
+conclusion is an internal Q clause.
+
+Uniform pointwise interderivability of matrices is preserved under D.
+Eliminate the source D at a fresh witness, introduce the target D at
+that witness by case DI, convert its base backwards, use the opened
+source clause at $Sz$, and convert the result forwards. This is the
+same constructive pattern as the transport theorem, now with arbitrary
+uniform conversion derivations. Reverse the conversions for the converse.
+
+\subsection{Numerical gates and formula selectors}
+
+For a numerical control z define, externally on fixed formula syntax,
+\[
+ G_z(s=t):=(C(z,0,s)=C(z,0,t)),\qquad
+ G_z(\D_{x,y}B):=\D_{x,y}G_zB.
+\]
+Freshen binders away from the control. Computation, reflexivity, and
+binder congruence prove $\vdash G_0A$ and $G_{Sz}A\dashv\vdash A$.
+The padding operation $\operatorname{Pad}(A)=\D_{u,y}G_yA$, with
+unused u,y, is equivalent to A: case DI proves the forward direction;
+DE, the true zero gate, and QE at 1 prove the reverse direction.
+
+Define the selector on two equation leaves by
+\[
+ M_z(s=t,r=w):=(C(z,s,r)=C(z,t,w)).
+\]
+At aligned fresh binders extend it by
+\begin{align*}
+ M_z(\D_{x,y}A,\D_{x,y}B)&=\D_{x,y}M_z(A,B),\\
+ M_z(E,\D_{x,y}B)&=\D_{x,y}M_z(G_yE,B),\\
+ M_z(\D_{x,y}A,E)&=\D_{x,y}M_z(A,G_yE),
+\end{align*}
+where E is an equation. The maximum input binder depth decreases in
+each recursive call. Padding and binder congruence give
+\[
+             M_0(A,B)\dashv\vdash A,\qquad
+             M_{Sz}(A,B)\dashv\vdash B.
+\]
+These are finite syntactic operations, not object-language function symbols.
+
+\subsection{Connectives and quantifiers}
+
+Use the scalar iteration I compiled by \eqref{eq:compiler}, put
+$Z(n)=C(n,1,0)$ and $p(n)=I(n,0;v.Z(v))$. The only parity facts
+needed are the finite computations $p(1)=1$ and $p(2)=0$.
+With fresh bound variables and unused u define
+\begin{align*}
+ A\Rightarrow_*B&=\D_{u,z}M_z(A,B),\\
+ A\wedge_*B&=\D_{u,z}G_zM_{p(z)}(A,B),\\
+ \exists_*x A(x)&=\D_{x,y}G_yA(x),\\
+ A\vee_*B&=\exists_*x M_x(A,B),\\
+ \forall_*x A(x)&=A(0)\wedge_*\D_{u,z}G_zA(z),\\
+ \bot_*&=(0=1).
+\end{align*}
+
+Implication introduction converts its retained zero selector into A,
+applies the supplied derivation of B, and converts B to the successor
+selector; case DI closes. Elimination is DE followed by QE at 1.
+Existential introduction uses its supplied witness and the successor
+gate. Elimination opens D, supplies the theorem given by its zero gate,
+and uses QE at 1. These are the usual eigenparameter conditions.
+
+Disjunction introductions use control witnesses 0 and 1. For elimination,
+turn the two branch derivations into $A\Rightarrow_*F$ and
+$B\Rightarrow_*F$. NC gives $M_z(A,B)\Rightarrow_*F$ at any control;
+eliminate the existential selector and apply the implication.
+For conjunction introduction NC gives $M_v(A,B)$ at every v from the
+two supplied proofs. Specialize to $p(Sz)$, add the successor gate,
+and use case DI. Projections are QE at 1 and 2 after DE, using the two
+displayed parity values.
+
+NC now gives the coverage formula
+\[
+             (x=0)\vee_*\exists_*y\,(x=Sy).
+\]
+At zero use the left injection of reflexivity; at a successor use the
+right injection with its evident witness. Coverage permits a case split
+even if x occurs in retained assumptions: it adds an equality naming
+the case, rather than illicitly substituting into the whole context.
+Universal introduction obtains the zero and successor cases of a
+fresh-parameter proof and forms the two conjuncts. Universal elimination
+uses coverage, the first conjunct at zero, and the gated closure at a
+successor. This avoids an eigenvariable assumption about the retained context.
+
+Finally, under $0=1$, computation and atomic transport prove
+\[
+                   s=C(0,s,t)=C(1,s,t)=t
+\]
+for arbitrary s,t. Every equation follows; external recursion on object
+syntax, using case DI at each D, proves every object formula. This
+derives explosion for the designated absurdity. We have thus derived
+the full intuitionistic natural-deduction rules, with actual equality,
+without postulating excluded middle for quantified formulas.
+
+\section{Full arithmetic and both interpretation composites}
+\label{sec:interpretations}
+
+\subsection{An explicit ordinary realization}
+
+Let $T_R$ be ordinary intuitionistic first-order logic with equality
+in the staged R signature, the equations R0 and RS, contextual
+literal-equation induction EI, and
+\[
+ \forall x\,(x=0\vee\exists y\,x=Sy),\qquad (0=1)\to\bot.
+ \tag{Boundary}
+\]
+For definiteness, ordinary logic here has hypothesis, implication
+introduction and modus ponens, conjunction introduction and its two
+projections, the two disjunction introductions and case elimination,
+universal introduction and specialization, existential introduction and
+fresh-witness elimination, and explosion. Equality has reflexivity and
+substitution. The usual eigenvariable restrictions are imposed. These
+ordinary rules specify the comparison theory, not additional primitives
+of $\Acal$.
+
+Realize its object and clause syntax by
+\[
+ (s=t)^\circ=(s=t),\quad
+ (\D_{x,y}B)^\circ=\exists x(B^\circ(x,0)\to\forall yB^\circ(x,y)),
+\]
+\[
+                 (\Q_yB)^\circ=B^\circ(0)\to\forall yB^\circ(y).
+\]
+The interpretation domain is $x=x$ and equality is actual equality.
+Case DI is sound by coverage. Progress DI is sound by equation
+induction under its temporarily assumed base. All other native rules
+have their direct ordinary meanings. Conversely Section~\ref{sec:logic}
+derives the ordinary rules, coverage, and EI. Separation translates to
+the identity implication $(0=1)\Rightarrow_*(0=1)$.
+
+The explicit falsity bridge matters. The positive numerical equations
+alone admit a singleton structure, so declaring them an ordinary
+first-order theory while silently omitting separation would be a mistake.
+
+\subsection{Actual equality reflection}
+
+For clarity, the remaining arithmetic bridge is given internally,
+not merely by agreement on standard numerals. Every fixed PR description
+is already compiled by Section~\ref{sec:numerical}. In particular use
+\[
+ x+0=x,\quad x+Sy=S(x+y),\qquad
+ d(x,0)=x,\quad d(x,Sy)=P(d(x,y)).
+\]
+Let $\operatorname{sg}(x)=C(x,0,1)$. Coverage and the computation
+equations show that sg takes only 0,1, that
+$\operatorname{sg}(x)=0\leftrightarrow x=0$, and $C(x,a,a)=a$.
+Applying sg and separation gives $Sx\ne0$. Coverage and W give
+$W(x)=0\leftrightarrow x=1$.
+
+Literal-equation induction proves, in order,
+\[
+ 0+y=y,\qquad (Sx)+y=S(x+y),\qquad
+ d(Sx,Sy)=d(x,y),\qquad d(Sa,a)=1.
+\]
+For the first two induct on y with x fixed. For the third induct on y:
+the base is $P(Sx)=x$, and its step applies P to the induction equation.
+For the fourth induct on a and use the third identity in the step.
+
+One more equation induction, on y with x fixed, gives
+\[
+        C(\operatorname{sg}(d(x,y)),x,y+d(x,y))=x. \tag{Residual}
+\]
+The base is $C(\operatorname{sg}(x),x,x)=x$. In the step set
+$r=d(x,y)$ and $r'=Pr=d(x,Sy)$. Coverage splits $r'$ into zero
+or successor. At zero the selector already returns x. In the successor
+case, $r'\ne0$ forces r to be a successor, and $P(Sq)=q$ gives
+$r=Sr'$. The induction equation says $y+r=x$. The new second branch
+is $(Sy)+r'=y+Sr'=y+r=x$. This completes the induction without
+using a decidable actual-equality predicate in its premises.
+
+Consequently $d(Sa,b)=1\leftrightarrow a=b$: forwards, Residual yields
+$b+1=Sa$, hence $Sb=Sa$, and W cancels the successors; backwards
+use $d(Sa,a)=1$. Thus
+\[
+                 e(a,b)=\operatorname{sg}(W(d(Sa,b)))
+\]
+is Boolean and satisfies $e(a,b)=0\leftrightarrow a=b$ for arbitrary
+elements of every source model.
+
+For a fixed quantifier-free formula A, define its zero-true
+characteristic by
+\begin{align*}
+ b_{s=t}&=e(s,t),&b_\bot&=1,\\
+ b_{A\wedge B}&=C(b_A,b_B,1),&
+ b_{A\vee B}&=C(b_A,0,b_B),&
+ b_{A\to B}&=C(b_A,b_B,0).
+\end{align*}
+An external induction on A, using the proved Boolean ranges, gives
+$b_A\in\{0,1\}$ and $b_A=0\leftrightarrow A$ intuitionistically.
+The implication case uses that $b_A=1$ proves $\neg A$; it does not
+assert excluded middle for arbitrary quantified formulas. Applying EI
+to $b_A(n)=0$ recovers every contextual quantifier-free induction instance.
+
+\subsection{The two numerical interpretations}
+
+Take iPRA in its full first-order language of fixed PR descriptions,
+with defining equations, constructor separation, and quantifier-free
+induction. Its atomic-induction formulation is equivalent by the
+characteristic argument above; this is the usual first-order iPRA
+convention\cite{salehi}. Interpret its descriptions in $T_R$ by
+\eqref{eq:compiler}, leaving domain, equality, and ordinary logic unchanged.
+All defining equations, successor axioms, and induction instances have
+just been verified internally.
+
+Conversely, each fixed R body is interpreted in iPRA by ordinary
+primitive recursion with base $Sa$ and step $h(u,v,\vec p)$. The
+abbreviation $S(a)=R(0,a;u,v.0)$ then has ordinary successor value.
+R0, RS, the boundary sentences, and EI are iPRA theorems.
+
+For the stronger bi-interpretability claim, first anchor the successor
+abbreviation. Its iPRA interpretation is the zero instance of the
+recursor with zero update, so its defining base clause gives ordinary
+$Sa$. Compiling that interpreted successor back gives the original
+$S(a)$ by the compiler's base computation. This includes the expansion
+$r_0(0,a)$ used to name successor, and does not presuppose uniqueness
+of all R symbols. Thus the same successor occurs in both copies of each
+recursion before the following staged uniqueness argument begins.
+
+Now fix independent initializer and parameter variables. Two solutions
+of the same fixed R recursion
+are internally equal by induction on their value equation: bases agree,
+and their steps agree by equality congruence and the induction equation.
+Induct externally on the finite staged description. Its double
+translation satisfies the same equations once earlier subdescriptions
+have been identified, so uniqueness identifies it with the original.
+The identical argument works for ordinary PR descriptions. Only after
+these identities have been proved for independent parameters do we
+substitute counter-dependent actual arguments. This also establishes
+coherence when substitution changes the name of a staged body.
+
+Both numerical interpretation domains are the entire original domain;
+both internally definable isomorphisms have graph $x=y$. Nothing is
+restricted to the standard cut or quotiented by a numerical observer.
+
+\subsection{The logical round trips}
+
+The ordinary meanings of gates and selectors give the advertised
+meanings of all six macros in Section~\ref{sec:logic}, with coverage
+in the universal case and separation for falsity. For the only primitive
+object binder the reverse composite is explicitly
+\[
+ \D_{x,y}B\dashv\vdash
+ \exists_*x\bigl(B(x,0)\Rightarrow_*\forall_*yB(x,y)\bigr).
+\]
+Forwards, open D at fresh a, use its available clause under the assumed
+base to prove each $B(a,y)$, form the conditional universal, and introduce
+the existential at a. Backwards, eliminate the existential at fresh a,
+introduce the original D by case DI, and use its retained base, the
+conditional, and universal specialization to obtain the successor case.
+Neither direction requires Q to be an object goal. External induction
+on formulas establishes both logical composites.
+
+\begin{theorem}[Whole-domain bi-interpretation]
+The ordinary realization of $\Acal$ is bi-interpretable with full
+first-order iPRA. The two numerical isomorphisms are internally given
+by $x=y$, and both logical formula composites are provably equivalent
+to their originals. Effective finite proof translations preserve the
+designated contradiction, hence the two theories are equiconsistent.
+\end{theorem}
+This is an external metatheorem. No claim is made that either theory
+proves its own consistency or the uniform correctness of an arbitrary
+primitive-recursive evaluator.
+
+\section{The complete checker and its exact boundary}
+\label{sec:checker}
+
+The complete measured module is printed below. It imports only the
+standard JSON parser; the producer, tests, arithmetic evaluator, and
+measurement program are not trusted dependencies.
+\lstinputlisting{code/checker.py}
+
+\subsection{Raw syntax and scope}
+
+The canonical representation uses JSON lists of arity at most three
+and integer leaves. Its two sorted meanings are
+\begin{center}\small
+\begin{tabular}{cll}
+\toprule
+List arity & Numerical position & Formula position\\
+\midrule
+0 & zero & truth ($0=0$)\\
+1 & successor abbreviation & internal closure Q\\
+2 & annotated zero & equation\\
+3 & R recursor & paired binder D\\
+\bottomrule
+\end{tabular}
+\end{center}
+The additional scalar zero denotes zero or truth at the corresponding
+sort. The first two children of D are checked padding; binary numerical
+nodes denote zero with checked formula annotations. These aliases are
+inherited representation conventions, not extra mathematical operations.
+
+For a nearest-first environment $\rho$, coordinates $2j-1,2j$
+both select its j-th entry. Negative coordinates name allocated rigid
+parameters. Canonical numerical decoding is
+\begin{align*}
+ T_\rho([p])&=S(T_{(0,\rho)}p),\\
+ T_\rho([n,a,h])&=
+ R(T_{(0,0,\rho)}n,T_{(0,0,\rho)}a;
+          u,v.T_{(v,u,\rho)}h).
+\end{align*}
+Equation children use the same environment, while Q prepends y and D
+prepends $y,x$. The traversal's increments $2,1,4$ preserve the sort
+parity: formula positions have even depth and numerical positions odd
+depth. Opening at depth 3 protects the state coordinate while substituting
+the counter; opening at depth 1 then supplies the recursive state.
+
+The freshness floor k begins at zero and decreases at each DI or DE.
+A scalar is retained exactly when $k\le a<d$. An exposed numerical
+coordinate requests the supplied image, which is checked at numerical
+root before insertion. An exposed formula leaf is an inert truth alias.
+The initial \file{i(q())} is indispensable: it validates the public goal
+before any eigenparameter has been allocated. Removing it accepts goals
+with undeclared numerical parameters. The validation suite includes
+that specific regression.
+
+Canonical producers use only integer leaves and strict lists. On the
+larger JSON input language, unsupported syntax raises, used numerical
+images are validated, and unused annotation fields can be inert.
+Finite real coordinates in an accepted numerical position have the same
+slot meaning as their floor; booleans have Python's integer alias
+meaning. Nonfinite leaves cannot serve as root numerical terms or used
+numerical images, but they can be exposed template holes and disappear
+under opening. This is an accepted alias, not an additional numerical
+value. Nonnumeric used numerical leaves fail validation.
+No soundness claim rests on trusting a producer or on executing submitted
+code. The readable checker and \file{code/FORMAT.txt} explain the same
+format without relying on terse variable names.
+
+\subsection{Four-field instructions and all acceptance branches}
+
+Input is an array with a closed goal as its last element. Earlier cells
+are consumed from the end, each with four fields $[m,s,u,t]$. An unread
+prefix is inert. A successful run prints \file{ACCEPT} and exits zero;
+a failed run prints \file{REJECT} and exits nonzero, possibly with a
+traceback. The checks also run under {\small\texttt{python -O}}; no logical check
+uses an assertion removed by optimization.
+
+For truthy m the checker first validates m and either finds it in the
+context or proves it recursively. A failed major raises and cannot
+fall through into introduction. The shared endpoint condition is
+\[
+ \bigl(m=[s,u]\ \&\ \operatorname{len}(t)=2\bigr)
+ \quad\hbox{or}\quad
+ \bigl(s=0\ \&\ m=[t]\bigr).
+\]
+The first alternative is exactly atomic transport. The second is Q
+specialization and is allowed at compound object matrices. The target
+opening must be the requested goal, and the source opening must have a
+proof. A failed endpoint check on a unary or binary major cannot become
+DE: accessing its third child fails. A ternary major yields precisely
+the fresh-witness Q clause for DE. Canonical DE packets use $t=[]$,
+because the new root guard evaluates \file{len(t)} even there.
+
+For falsy m and truthy t the node is DI. The witness is opened, a fresh
+parameter allocated, and exactly one local assumption is retained.
+The integer tag $m=0$ permits progress at a literal equation;
+$m=[]$ selects the case choice. Compound matrices receive the case
+choice. A zero numerical witness is represented by a nonempty term
+computing to zero, for example $R(S0,0;u,v.0)$, with equality transport
+providing its usual representative change when necessary.
+
+When both m and t are falsy the goal must be a computation equation.
+At a zero counter its result is the singleton successor of the seed.
+At a successor counter, the call \file{i(r,*n,3)} enforces exactly one
+counter child by fixed function arity, even if the update ignores that
+coordinate. The recursive state keeps the original r. The division by
+the Boolean endpoint equality explicitly rejects a wrong result.
+
+\subsection{Why the byte claim is limited but complete}
+
+The atomic restriction itself adds a guard. Its mathematical value
+is the smaller primitive logical interface. The byte saving comes from
+combining elimination-only assumptions, explicit endpoint packets, and
+the existing short R computation branch. The package also measures a
+matched version with the atomic guard removed, so these sources of the
+change can be distinguished. We do not assign an implementation saving
+to a theorem merely because they occur in the same report.
+
+For raw internal Q expressions the absence of general hypothesis
+conclusion is essential. A Q-root goal has no successful finite proof:
+computation and atomic transport end at equation roots; DI requires a
+D root; DE keeps the goal; and Q specialization at a Q-root matrix
+requires another Q-root minor. Following that minor gives an impossible
+infinite descent in a finite accepted trace. The same argument excludes
+Q on the object-formula spine. From an empty initial context, successful
+object proofs therefore have the Eq/D purity required by the theory.
+Q clauses remain usable as elimination majors. Inert numerical annotations
+are not claimed to be additional object proof goals.
+
+Soundness follows by induction on a successful finite checking trace,
+using the sorted-opening and freshness invariant at each step and the
+rule correspondence above. Canonical completeness follows by serializing
+finite $\Acal$ derivations, expanding derived identities and transports,
+and renaming eigenparameters in the checker's actual allocation order.
+Very large valid proofs may exceed a real Python process's resources;
+finite-resource rejection is not an additional inference principle.
+
+\section{Validation and reproducibility}
+\label{sec:validation}
+
+Run {\small\texttt{python3 reproduce.py}} from the extracted directory. It checks
+the archive manifest, remeasures complete programs with the frozen
+normalizer, rebuilds certificates with the untrusted producer, and runs
+positive and targeted negative cases against the public checker. The
+tests include symbolic recursion equations, compound identity and
+transport expansions, witness reuse, lexical binding, incorrect endpoints,
+malformed counters, direct compound transport, and undeclared parameters.
+The producer is not imported by the measured kernel. Its output is data
+and is checked afresh by the actual standalone program.
+
+\IfFileExists{evidence/validation_summary.tex}{\input{evidence/validation_summary.tex}}{
+The generated validation receipt is supplied in the evidence directory.}
+
+The tests establish the recorded finite behavior, not universal
+soundness, equivalence, or minimality. The universal claims are the
+written arguments in Sections~\ref{sec:theory}--\ref{sec:checker}.
+The proof expansion is a constructive certificate generator rather than
+a formal proof assistant development. The reported boundary between
+those forms of evidence is intentional.
+
+\section{What this investigation leaves open}
+
+The construction meets a strict complete-checker byte comparison and
+re-establishes an exact logical restriction theorem in the combined interface.
+It does not dominate all
+three coordinates, establish global simplestness, or supply the requested
+significant breakthrough. Its numerical basis and the structural transport
+idea are inherited. The exact combined implementation and executable proof
+expansion are the contributions of this package. This is the strongest
+checked result obtained here.
+
+Two more substantial implementation changes were examined. A bottom-up
+proof synthesizer produced conclusions instead of repeatedly checking
+targets; its prototype measured 356/422/934. A certificate-controlled
+conversion traversal replaced computation leaves by reflexivity; its
+prototype measured 324/373/883. Both were larger. They are not delivered
+as certified alternatives. The separate note
+\file{notes/certified_conversion.txt} gives the mathematical conservative
+conversion construction without claiming a smaller complete program.
+
+Unrestricted normalization is a particularly misleading shortcut: a
+uniform primitive-recursive evaluator for all PR descriptions cannot
+exist by diagonalization. A finite conversion certificate avoids that
+claim, but its checks and scope machinery still have to be counted.
+Likewise, allowing progress DI at arbitrary compound matrices recovers
+unrestricted formula induction and changes the target theory. Deleting
+the reusable Q clause loses the ability to specialize repeatedly at the
+same existential witness. None of those costs has been hidden in this
+package to manufacture a record.
+
+The next substantive target is a numerical/logical representation that
+removes one of these checked obligations while retaining both internal
+interpretation composites.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{snapshot} Vladimir Reshetnikov, \emph{ProveIt}, pinned commit
+\file{7bded17cc0122767f86e494fcf256b47fe85c9b8}, \file{docs/drafts},
+accessed November 10, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/7bded17cc0122767f86e494fcf256b47fe85c9b8/docs/drafts}.
+\bibitem{recursor} ProveIt draft, \emph{Successor from Recursion},
+\file{ipra_successor_recursion_2026-11-09.zip}, in the pinned snapshot.
+Inherited R basis, compiler, arithmetic completion, native logical bridge,
+and complete byte comparator.
+\bibitem{elimination} ProveIt draft, \emph{An iPRA Axiomatization with
+Assumptions Used Only for Elimination},
+\file{ipra_elimination_assumptions_2026-11-09.zip}, in the pinned snapshot.
+Inherited availability convention, Eq/D object boundary, and identity expansion.
+\bibitem{endpoints} ProveIt draft, \emph{Explicit Endpoints},
+\file{ipra_endpoint_certificates_2026-11-09.zip}, in the pinned snapshot.
+Inherited endpoint certificates, protected-slot traversal, normalization
+metrics, and complete comparison programs.
+\bibitem{fixedposition} ProveIt historical draft, \emph{Equality Through
+One Fixed Iterator Position}, \file{ipra_fixed_position_2026-11-09.zip},
+the theorem ``Full native formula transport'' and its preceding atomic
+transport corollary. Retrieved at commit
+\file{7e694b036f89a0f16313089329555da531d6a656}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/7e694b036f89a0f16313089329555da531d6a656/docs/drafts/ipra_fixed_position_2026-11-09.zip}.
+\bibitem{salehi} Saeed Salehi, \emph{Decidable formulas of intuitionistic
+primitive recursive arithmetic}, Reports on Mathematical Logic 36
+(2002), 55--61, Section 1.
+\url{https://rml.tcs.uj.edu.pl/rml-36/36-SALEHI.pdf}.
+\end{thebibliography}
+\end{document}

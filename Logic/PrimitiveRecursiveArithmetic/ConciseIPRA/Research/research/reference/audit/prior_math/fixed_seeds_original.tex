@@ -1,0 +1,256 @@
+% Research note for integration. Requires amsmath, amssymb, amsthm.
+\section{A finite-section obstruction for every fixed numeral seed}
+
+The current report \texttt{ipra\_fixed\_seed\_obstruction\_2026-11-09}
+leaves mixed seeds open. Its zero-seed support invariant and its
+positive-seed relation invariant both fail when zero and positive seeds
+are available together. The following different invariant covers any
+collection of fixed numeral seeds and tolerates every unary primitive
+recursive function as a primitive operation.
+
+Fix \(C\subseteq\mathbb N\). Terms are formed from variables, fixed
+numerals, unary primitive recursive functions, and
+\[
+ J_c(n;u.h),\qquad c\in C,
+\]
+where \(u\) is bound only in \(h\); all other variables are passive
+parameters. Its standard meaning is
+\[
+ J_c(0;u.h)=c,\qquad J_c(Sn;u.h)=h[J_c(n;u.h)/u].
+\]
+There is no counter variable bound in \(h\). Nesting and substitution
+are unrestricted. Each seed is a fixed numeral, not a free-input term.
+
+\subsection{One active coordinate}
+
+\begin{definition}
+A function \(f:\mathbb N^r\to\mathbb N\) has a \emph{finite unary section
+normal form} if there are an active coordinate \(j\), finite-valued unary
+primitive recursive maps \(\chi_i:\mathbb N\to A_i\) for \(i\ne j\), and
+unary primitive recursive functions \(g_\alpha\), indexed by
+\(\alpha\in\prod_{i\ne j}A_i\), such that
+\[
+ f(\vec x)=g_{(\chi_i(x_i))_{i\ne j}}(x_j).                 \tag{FS}
+\]
+The sets \(A_i\) are fixed finite subsets of \(\mathbb N\), not
+unbounded hidden inputs; any finite palette can be coded this way.
+Empty color cells are harmless. Nullary functions are constants.
+\end{definition}
+
+Equivalently, one can use finite Cartesian partitions on every input
+and a unary output function of the same fixed coordinate on each cell.
+Any partition on that active coordinate is absorbed into its unary
+output function. In particular, varying all inactive coordinates
+produces only finitely many unary sections.
+
+\begin{lemma}[Uniform reduction of a finite orbit]
+Suppose the orbit of \(c\) under \(F:X\to X\) has at most \(b\ge1\)
+elements. Put \(L_b=\operatorname{lcm}(1,\ldots,b)\) and
+\[
+ r_b(n)=
+ \begin{cases}
+ n&n<b,\\
+ b+((n-b)\bmod L_b)&n\ge b.
+ \end{cases}
+\]
+Then \(F^n(c)=F^{r_b(n)}(c)\) for all \(n\), and \(r_b\) has finite range.
+\end{lemma}
+\begin{proof}
+The orbit has transient length at most \(b-1\) and eventual period
+between \(1\) and \(b\). For \(n\ge b\), both indices are past the
+transient and differ by a multiple of the actual period. Smaller
+indices are unchanged.
+\end{proof}
+
+\begin{theorem}[Fixed-seed finite-section theorem]
+Every term of the displayed grammar has a finite unary section normal
+form. The result includes mixed zero and positive seeds, arbitrarily
+many available fixed numeral seeds, and arbitrary unary primitive
+recursive helper operations.
+\end{theorem}
+\begin{proof}
+Use structural induction. Constants and variables have the form.
+Applying a unary primitive recursive function composes it with the
+finitely many output pieces. Consider \(J_c(n;u.h)\), with parameter
+variables \(\vec x=(x_1,\ldots,x_r)\). The nullary case is immediate;
+otherwise add dummy variables to normal forms as necessary.
+
+If \(u\) is the active coordinate of \(h\), write
+\[
+ h(u,\vec x)=H_{\sigma(\vec x)}(u),\qquad
+ n(\vec x)=g_{\tau(\vec x_{\ne k})}(x_k),
+\]
+where each component of \(\sigma\) or \(\tau\) is a finite unary color.
+Refine the colors of all coordinates except \(k\) by the colors
+occurring in both expressions. After these outside colors are fixed,
+the iterator is a unary function of \(x_k\):
+\[
+ x\longmapsto H_{\sigma(x)}^{\,g_\tau(x)}(c).
+\]
+Here the component of \(\sigma\) belonging to \(x_k\) is computed inside
+this unary function. It is primitive recursive. There are finitely
+many outside-color choices, so (FS) holds with active coordinate \(k\).
+
+Suppose instead that a passive parameter \(x_j\) is active in \(h\).
+Write its normal form as
+\[
+ h(u,\vec x)=H_{\eta(u),\sigma(\vec x_{\ne j})}(x_j),
+ \qquad \eta:\mathbb N\to B,\quad |B|=q.
+\]
+For fixed parameters, all update values lie in the set
+\[
+ \{H_{\beta,\sigma}(x_j):\beta\in B\}.
+\]
+Including the seed, the entire orbit has at most \(b=q+1\) elements,
+uniformly over the parameter tuple. Hence
+\[
+ J_c(n;u.h)=J_c(r_b(n);u.h).                             \tag{BR}
+\]
+Again write \(n=g_{\tau(\vec x_{\ne k})}(x_k)\).
+If \(k=j\), fixing the outside colors already leaves a unary function
+of \(x_j\). If \(k\ne j\), refine the color of \(x_k\) by the finite
+vector
+\[
+ \bigl(r_b(g_\gamma(x_k))\bigr)_\gamma,
+\]
+where \(\gamma\) ranges over all finitely many counter-piece indices.
+Refine the other inactive coordinates by the old update and counter
+colors. After fixing these outside colors, the counter-piece index
+\(\tau\) can still depend on the finite color of \(x_j\), but this
+dependence is computed inside a unary function of \(x_j\). The stored
+vector supplies the resulting bounded iteration count. Formula (BR)
+therefore gives a unary primitive recursive function of \(x_j\) on
+each outside-color cell. This is (FS) with active coordinate \(j\).
+
+All refinements are finite and primitive recursive. The two cases
+exhaust the active coordinates of \(h\), and the argument never
+restricts the fixed seed \(c\).
+\end{proof}
+
+This is an external normal-form construction. Its unary programs need
+not be expressible in the smaller fixed-seed syntax. There is no
+uniform total primitive recursive evaluator for arbitrary primitive
+recursive programs hidden in the argument: each construction is on one
+fixed finite term.
+
+\begin{corollary}
+No term of the grammar defines addition, multiplication, minimum,
+maximum, an injective binary pairing, or the equality characteristic
+function \(\epsilon(x,y)\) on the whole standard domain. No term
+defines \(C(b,a,d)\), equal to \(a\) for \(b=0\) and to \(d\) for \(b>0\).
+\end{corollary}
+\begin{proof}
+Each named binary function has infinitely many distinct unary sections
+in either coordinate, contrary to (FS) for whichever coordinate is
+active. For multiplication use positive fixed arguments. For equality
+the sections are the distinct singleton indicators. Injective pairing
+has distinct sections by injectivity.
+
+For the selector, activity in \(b\) fails by setting \(b=0\) and varying
+\(a\) inside an infinite color cell. Activity in \(a\) fails by setting
+\(b=1\) and varying \(d\) inside such a cell. Activity in \(d\) fails
+by setting \(b=0\) and varying \(a\) inside such a cell.
+\end{proof}
+
+The invariant does \emph{not} exclude predecessor: it is vacuous for
+unary functions, and the generous grammar explicitly permits
+predecessor as a helper. The obstruction concerns independent inputs.
+
+\subsection{Ordinary bi-interpretability via the prior amalgam}
+
+The earlier report
+\texttt{ipra\_input\_amalgamation\_2026-11-08}, section
+\texttt{03\_amalgam.tex}, constructs a countermodel for a generous
+unary theory \(T_1\). Its language contains every unary primitive
+recursive function. Its logic is ordinary intuitionistic first-order
+logic with actual equality and genuine falsity. Its nonlogical
+families are all classically true universal quantifier-free sentences,
+all true one-input sentences
+\(\forall x\exists\vec y\,B(x,\vec y)\) with quantifier-free \(B\), and
+full quantifier-free induction with arbitrary finite parameter tuples.
+These all-true families are an obstruction device, not an effectively
+enumerable small proof checker.
+
+Let \(T_C\) be the analogous generous theory in the expanded language
+containing each fixed-seed term operation as a function symbol with
+its free numerical variables as arguments. Thus \(T_C\) includes all
+computation equations, coverage, separation, decidable equality, and
+even full parameterized quantifier-free induction.
+
+\begin{theorem}[Mixed fixed seeds do not repair ordinary bi-interpretability]
+For every seed set \(C\subseteq\mathbb N\), \(T_C\) is not ordinarily
+first-order bi-interpretable with iPRA. This permits definable subsets
+of finite Cartesian powers, definable equality quotients, and a fixed
+finite tuple of interpretation parameters. Every subtheory of \(T_C\)
+in this language has the same obstruction.
+\end{theorem}
+\begin{proof}
+Each added operation has a quantifier-free unary-language graph
+\[
+ \bigvee_\alpha\left(
+   \bigwedge_{i\ne j}\chi_i(x_i)=\bar\alpha_i
+   \ \wedge\ y=g_\alpha(x_j)\right).                    \tag{G}
+\]
+The cases form a finite partition. Finite case expansion eliminates
+nested expanded terms from any quantifier-free formula without
+introducing quantifiers. It preserves the standard truth of that
+formula and uses its actual logical connectives.
+
+The prior model is worth recalling. Choose
+\(M\succ\mathbb N_1\) proper elementary in the unary primitive recursive
+language, and an infinite label set \(I\). Its domain is
+\[
+ D=\mathbb N\ \sqcup\bigl((M\setminus\mathbb N)\times I\bigr).
+\]
+Every unary operation acts in its input's copy of \(M\), retaining its
+label for nonstandard outputs and returning the shared standard value
+otherwise. The earlier report proves \(D\models T_1\). Finite atomic
+diagrams can be copied into \(\mathbb N\), giving all true universal
+sentences. One-input witnesses lie in a single copy. A quantifier-free
+induction matrix with parameters restricts to a quantifier-free
+matrix in each copy: an equation between a unary term of the induction
+variable and a parameter value outside that copy becomes false,
+and fixed parameter-only equations become their fixed truth values.
+Induction in each elementary copy then supplies full contextual QFI.
+
+Expand \(D\) using (G). Every true expanded universal sentence reduces
+by finite case expansion to a true unary universal sentence. Expanded
+one-input existence laws likewise reduce to the old family. Expanded
+QFI matrices remain quantifier-free unary matrices with the same
+parameters. The expansion is consequently a classical model of
+\(T_C\), hence also a one-world intuitionistic Kripke model.
+
+Permuting copy labels is an automorphism of \(D\) and its definable
+expansion. Given finitely many parameters, swap two unused labels:
+this is a nontrivial parameter-fixing involution. Every classical
+iPRA model, however, has its definable linear order. An
+order-preserving involution of a linear order is the identity.
+
+Under ordinary bi-interpretations the source involution induces an
+involution of the interpreted iPRA structure, hence the identity.
+It therefore induces the identity on the double interpretation. The
+definable isomorphism from the source to its double interpretation is
+equivariant and injective, forcing the original involution to be the
+identity, a contradiction. Finite tuple domains and equality quotients
+do not change the argument; finite representative tuples for quotient
+parameters can be included among the fixed source parameters.
+\end{proof}
+
+\paragraph{Scope and attribution.}
+The new step is the fixed-seed finite-section theorem and its transfer
+to mixed fixed seeds. The amalgam and rigidity argument are inherited.
+This does not exclude arbitrary additional axioms: two-input pairing
+totality, for example, fails in the amalgam and evades the theorem.
+It does not cover nonordinary translations changing the meanings of
+logical connectives, and it does not obstruct equiconsistency alone.
+It gives no absolute proof-checker size lower bound and no
+below-frontier positive axiomatization.
+
+The two normal-form cases identify the role of arbitrary
+initialization. With a state-active update and fixed seed, the counter
+is the only independent unbounded input. With a parameter-active
+update, the orbit is uniformly finite, so the counter supplies only
+a finite choice. In contrast,
+\(I(n,a;u.Su)=a+n\) uses two independent unbounded inputs and escapes
+both alternatives.
+

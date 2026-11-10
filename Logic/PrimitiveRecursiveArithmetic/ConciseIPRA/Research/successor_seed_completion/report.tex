@@ -1,0 +1,485 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=.94in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,fancyhdr,listings,needspace}
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,
+ citecolor=blue!45!black,pdftitle={Completing the Successor-Seeded Scalar Basis for iPRA},
+ pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{.22em}
+\setlist{itemsep=.2em,topsep=.4em,leftmargin=1.7em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\D}{\mathsf D}
+\newcommand{\Q}{\mathsf Q}
+\newcommand{\FV}{\operatorname{FV}}
+\newcommand{\file}[1]{{\small\nolinkurl{#1}}}
+\lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,keepspaces=true,
+ breaklines=true,showstringspaces=false,frame=single,rulecolor=\color{black!20},
+ xleftmargin=.3em,xrightmargin=.3em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Successor-seeded scalar arithmetic}
+\fancyhead[R]{\small Construction, equivalence, and limits}
+\fancyfoot[C]{\thepage}
+\title{\textbf{Completing the Successor-Seeded\\Scalar Basis for iPRA}\\[.5em]
+\large A predecessor construction resolving an open candidate in the supplied drafts}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{November 10, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The shared-continuation draft proposes a numerical language consisting of
+zero and a scalar iterator that starts at the successor of its initializer.
+It explicitly leaves open the construction of a predecessor in this
+language. We complete that candidate. A shifted factor map yields an
+internally correct comparator; a saturated iteration yields a capped
+predecessor; a fixed three-input correction yields a genuine predecessor.
+Every arithmetic induction in the new bootstrap has a single literal
+equation as its invariant. No predecessor, successor cancellation, ordinary
+initialization, pairing, or general selector is used to manufacture the
+predecessor.
+
+The resulting basis has two numerical constructors, two computation
+schemas, and one changing update variable. With the explicit native
+logical rules given below it is bi-interpretable and equiconsistent with
+full first-order intuitionistic primitive recursive arithmetic. Both
+interpretations use the entire numerical domain and actual equality, and
+both numerical composite isomorphisms are the identity.
+
+The mathematical completion and the implementation comparison are separate
+claims. The supplied complete checker improves the inspected byte frontier,
+but does not establish a simultaneous improvement in every source-size
+coordinate, absolute minimality, or global priority. The equivalence proof
+is a written proof with independent assistant review and executable
+diagnostics; it is not a Lean or Rocq formalization.
+\end{abstract}
+\clearpage
+\begingroup
+\small\setlength{\parskip}{0pt}
+\setcounter{tocdepth}{2}\tableofcontents
+\endgroup
+\clearpage
+
+\section{What is new, and what has actually been minimized}
+\label{sec:result}
+
+\subsection{The resolved obligation}
+The comparison is pinned to ProveIt commit
+\begin{center}\file{2fdcf5bf988bead821c416649f713f98b7ed8776}.\end{center}
+The current directory contains nine direct ZIP archives. In
+\file{ipra_shared_continuation_2026-11-10.zip}, the report's section
+``A genuinely smaller numerical grammar: the precise unresolved step''
+states exactly the successor-seeded scalar candidate studied here and
+proves a conditional initialized-iterator compiler. Its unresolved
+obligation is a finite term $P$ and an internal proof of $P(Sa)=a$
+\cite{shared}. The present work supplies that term and proof, including
+$P(0)=0$. It therefore completes an existing proposed basis rather than
+claiming to have invented its syntax.
+
+The new steps are the shifted affine alignment of the factor-map
+construction, its whole-domain comparator proof, and the finite correction
+of a capped predecessor. The earlier ordinary scalar bootstrap already
+uses finite cycles, a factor map, and saturation; that strategy is credited
+to the supplied development\cite{generated}. Related restricted-iteration
+and seed-shifting methods occur in Severin\cite{severin}. This limited
+literature check establishes context, not a global priority claim.
+
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Numerical basis & Constructors & Computation schemas & Update variables\\
+\midrule
+Initialized scalar $0,S,I$ & 3 & 2 & 1\\
+Counter-aware successor $0,R$ & 2 & 2 & 2\\
+Completed scalar $0,J$ & 2 & 2 & 1\\
+\bottomrule
+\end{tabular}
+\end{center}
+The counts omit variables and count a binder-forming operation as one
+constructor. The $R$ comparison is the existing successor-recursion
+proposal\cite{successor}. Two numerical constructors alone are not a
+proof-checker lower bound: argument structure, logic, validation, and
+encoding also cost code.
+
+\subsection{Complete-checker comparison}
+\input{evidence/metrics_table.tex}
+The audit recursively includes embedded source archives and complete
+programs stored in reference directories. It found 415 Python source
+occurrences, 164 distinct source hashes, and no parse errors. Fourteen
+distinct smaller-coordinate utilities were inspected and excluded because
+they are builders, measurers, integrity verifiers, or test runners calling
+another checker. The complete measured frontier is consequently
+$281$ normalized tokens, $315$ AST nodes, and $685$ normalized bytes;
+different existing programs attain these coordinates.
+
+The metric removes comments and actual docstrings, applies
+\texttt{ast.unparse}, and measures the entire module, including JSON input,
+scope checks, inference checks, rejection, and verdict output. Python and
+its standard JSON parser are common runtime infrastructure. The supplied
+normalizer and frozen controls reproduce the comparison under CPython
+3.12.14. An observed minimum among implementations is an attained upper
+bound on the possible checker cost, not a proved mathematical lower bound.
+
+The byte saving is small and partly a Python source representation change.
+The substantive mathematical result is the resolved predecessor
+obligation. We do not attribute a representation-only saving to the
+arithmetic theorem, nor claim that a single supplied program beats all
+three current coordinate minima.
+
+\section{The entire primitive theory}
+\label{sec:primitive}
+
+Here $\ipra$ is the full first-order intuitionistic theory of fixed finite
+primitive-recursive descriptions, their equations, the successor boundary
+laws, and quantifier-free induction. The atomic-induction presentation is
+standard\cite{salehi}; the explicit equality-reflection argument in
+Appendix~\ref{sec:eic-completion} verifies the relevant equivalence here.
+It is important to retain the full first-order logical interface.
+Equivalence only with the quantifier-free equational fragment would not
+satisfy the requested bi-interpretability condition.
+
+\subsection{Numerical language}
+The finite staged terms are
+\[
+ t::=x\mid0\mid J(n,a;u.h),\qquad Sa:=J(0,a;u.0),\qquad1:=S0.
+\]
+Only $u$ in the update $h$ is bound. Its remaining parameters are fixed
+throughout that iteration. The numerical axioms, available in any retained
+context, are exactly
+\[
+ J(0,a;u.h)=Sa,\qquad
+ J(Sn,a;u.h)=h[J(n,a;u.h)/u].\tag{J0, JS}
+\]
+Every substitution is capture-free. Equivalently introduce one ordinary
+function symbol $j_h(n,a,\vec p)$ for each fixed earlier-stage description
+$h(u,\vec p)$. In particular the zero-body description defines successor.
+There is no object-level quantification over descriptions, no higher-type
+function sort, and no total universal evaluator for all PR descriptions.
+
+\subsection{Native formulas and every logical rule}
+Formulas and reusable contexts have grammar
+\[
+ A::=(s=t)\mid\Q_y A\mid\D_{x,y}A,\qquad
+ \Gamma\text{ a finite reusable list of such formulas}.
+\]
+The variables $x,y$ are distinct. Both are bound by $\D$; only $y$ is
+bound by $\Q$. Their intended ordinary meanings are
+\[
+ (\Q_yB)^\circ=B^\circ(0)\to\forall yB^\circ(y),
+ \qquad
+ (\D_{x,y}B)^\circ=
+ \exists x\bigl(B^\circ(x,0)\to\forall yB^\circ(x,y)\bigr).
+\]
+Besides the two computation schemas, the complete primitive inference
+inventory is
+\[
+ \frac{}{\Gamma\vdash A}\ (A\in\Gamma),\qquad
+ \frac{\Gamma\vdash s=t\quad\Gamma\vdash F(s)}
+      {\Gamma\vdash F(t)},\qquad
+ \frac{\Gamma\vdash\Q_yB\quad\Gamma\vdash B(0)}
+      {\Gamma\vdash B(t)}.
+ \tag{Hyp, Tr, QE}
+\]
+The transport motive $F$ is any fixed native formula template. The paired
+elimination and its two introduction choices are
+\[
+ \frac{\Gamma\vdash\D_{x,y}B(x,y)\quad
+       \Gamma,\Q_yB(a,y)\vdash F}{\Gamma\vdash F},
+ \tag{DE}
+\]
+\[
+ \frac{\Gamma,B(t,0)\vdash B(t,Sz)}{\Gamma\vdash\D_{x,y}B(x,y)},
+ \qquad
+ \frac{\Gamma,E(t,z)\vdash E(t,Sz)}{\Gamma\vdash\D_{x,y}E(x,y)}.
+ \tag{DI-case, DI-progress}
+\]
+The matrix $E$ in DI-progress must be a literal numerical equation.
+An equation under either binder does not qualify. In DI, $z$ is absent
+from the retained context, witness, and passive matrix parameters.
+In DE, $a$ is absent from the retained context, conclusion, and passive
+matrix parameters. The displayed local assumption is discharged.
+Bound variables and eigenparameters are renamed before substitution.
+These rules do not contain a classical rule or induction on a compound
+formula. Native falsity is the formula $0=1$.
+
+Weakening, exchange, contraction, numerical substitution, renaming, and
+ordinary assumption cut are admissible by induction on derivations.
+Rename local eigenparameters first. Numerical substitution preserves the
+root constructor of an equation, so it preserves the progress restriction.
+For cut, replace each use of the discharged Hyp by its given proof and
+recurse through the remaining rule instances. These are metatheorems,
+not uncharged primitive instructions in the checker.
+
+\subsection{The equivalent computation-supply presentation}
+The implementation uses the inherited generated-assumption presentation
+\cite{generated}. It replaces a numerical axiom leaf by
+\[
+ \frac{\Gamma,H(w)\vdash A}{\Gamma\vdash A},\qquad
+ w\notin\FV(\Gamma,A),\quad \Gamma\vdash H(0).
+ \tag{Known-instance supply}
+\]
+The checker generates only the particular equations whose zero instances
+are justified by J0 or JS and the raw opening lemma; it does not decide
+arbitrary instances of the displayed side condition. The rule is
+admissible: substitute zero for $w$ in the premise and cut the proof of
+$H(0)$. Conversely, a computation theorem $E$ is obtained by supplying
+the constant equation $H(w)=E$ and immediately using Hyp. Thus the
+computation-leaf and computation-supply versions prove the same sequents.
+This proof architecture is inherited, not a new contribution here.
+
+\input{theory/prelogic.tex}
+\input{theory/bootstrap.tex}
+
+\section{Recovering full first-order intuitionistic logic}
+\label{sec:choice-introduction}
+After Theorem~\ref{js:recovery}, the derived initialized iterator $I$ and
+the genuine selector $C(n,a,b):=I(n,a;u.b)$ are available. Consequently
+$C(0,a,b)=a$ and $C(Sn,a,b)=b$ on the whole domain. The following
+logical construction is inherited from the supplied native-binder
+developments\cite{generated,elimination}; its prerequisites have now
+been obtained without circularity.
+
+\subsection{Gates, padding, and formula selection}
+First eliminate each $\Q_yB$ by its interderivable representation
+$\D_{u,y}B$ with unused $u$. From $\Q$ to $\D$ use DI-case and QE;
+from $\D$ to $\Q$ use DE and the supplied Hyp. Hence it suffices to
+define the following operations on Eq/$\D$ formulas.
+
+For a fresh control $v$, define a gate by external recursion on formulas:
+\[
+ G_v(s=t):=(C(v,0,s)=C(v,0,t)),\qquad
+ G_v(\D_{x,y}A):=\D_{x,y}G_vA.
+\]
+It satisfies $\vdash G_0A$ and $G_{Sv}A\dashv\vdash A$.
+Uniform interderivability lifts through $\D$: open the original binder,
+convert the new base to the old base, use its closure at a successor,
+convert the result, and introduce the new binder by DI-case.
+This proves the gate identities by external structural induction.
+It also proves the padding equivalence
+\[
+ A\dashv\vdash\D_{u,y}G_yA\qquad(u,y\notin\FV(A)).
+\]
+The forward direction is DI-case. For the reverse, DE, the zero-gate
+theorem, and QE at $1$ recover $A$.
+
+Define the formula selector by
+\[
+ \mathcal M_v(s=t,r=q):=(C(v,s,r)=C(v,t,q)),
+\]
+\[
+\begin{aligned}
+ \mathcal M_v(\D_{x,y}A,\D_{x,y}B)&:=\D_{x,y}\mathcal M_v(A,B),\\
+ \mathcal M_v(E,\D_{x,y}B)&:=\D_{x,y}\mathcal M_v(G_yE,B),\\
+ \mathcal M_v(\D_{x,y}A,E)&:=\D_{x,y}\mathcal M_v(A,G_yE).
+\end{aligned}
+\]
+Here $E$ is an equation and bound coordinates are freshly aligned.
+Every recursive call decreases maximum binder depth. Padding and binder
+congruence prove $\mathcal M_0(A,B)\dashv\vdash A$ and
+$\mathcal M_{Sv}(A,B)\dashv\vdash B$, including different input depths.
+
+\subsection{Explicit logical macros and their rules}
+Put $\delta(v)=C(v,1,0)$ and $p(z)=I(z,0;u.\delta(u))$.
+Its fixed computations give $p(1)=1,p(2)=0$. The entire macro list is
+\[
+\begin{aligned}
+ A\Rightarrow_*B&:=\D_{u,z}\mathcal M_z(A,B),\\
+ A\wedge_*B&:=\D_{u,z}G_z\mathcal M_{p(z)}(A,B),\\
+ \exists_*xA(x)&:=\D_{x,y}G_yA(x),\\
+ A\vee_*B&:=\exists_*x\mathcal M_x(A,B),\\
+ \forall_*xA(x)&:=A(0)\wedge_*\D_{u,z}G_zA(z),\\
+ \bot_*&:=(0=1).
+\end{aligned}
+\]
+All auxiliary variables are fresh and $u$ is unused. Implication
+introduction is DI-case, using the selector's zero endpoint as its local
+assumption; implication elimination opens the binder and specializes at
+$1$. Existential introduction uses the supplied witness and the gate;
+existential elimination opens its witness and specializes the closure
+using the zero-gate theorem.
+
+Conjunction introduction first uses NC to obtain
+$\mathcal M_v(A,B)$ uniformly from the two supplied proofs, then
+substitutes $v=p(Sz)$ for the successor matrix. Its projections specialize
+at $1$ and $2$. Disjunction introduction uses selector witness $0$ or
+$1$. For elimination, form the two branch implications into the common
+conclusion; numerical cases give the implication from an arbitrary
+selector, and existential elimination supplies that selector.
+
+These derived rules and numerical cases prove
+$x=0\vee_*\exists_*y(x=Sy)$. Universal introduction supplies its zero
+and successor parts from a proof at a fresh parameter. Universal
+elimination uses that coverage: its zero branch is the first conjunct,
+and its successor branch is obtained from the gated closure. Under
+$0=1$, the selector equations give every numerical equation; external structural
+induction on formulas using DI-case gives every native formula; a
+$\Q$ formula uses its unused-$\D$ representation. Thus
+falsity elimination is available.
+
+For explicitness, the recovered ordinary inference inventory is Hyp,
+equality reflexivity and replacement, falsity elimination,
+$\to$I/$\to$E, $\wedge$I and both projections, both $\vee$I rules
+and $\vee$E, $\forall$I/$\forall$E, and $\exists$I/$\exists$E.
+The last four are
+\[
+ \frac{\Gamma\vdash A(z)}{\Gamma\vdash\forall xA(x)},\quad
+ \frac{\Gamma\vdash\forall xA(x)}{\Gamma\vdash A(t)},\quad
+ \frac{\Gamma\vdash A(t)}{\Gamma\vdash\exists xA(x)},\quad
+ \frac{\Gamma\vdash\exists xA(x)\quad\Gamma,A(z)\vdash F}
+      {\Gamma\vdash F}.
+\]
+Universal introduction excludes $z$ from $\Gamma$ and passive data;
+existential elimination also excludes it from $F$. The propositional
+rules have their usual reusable-context form: introduce an implication
+by discharging its antecedent, eliminate it with a proof of that
+antecedent; form a conjunction from its two proofs and project either;
+introduce either disjunct and eliminate a disjunction using two local
+proofs of the same conclusion. No additional classical principle is
+silently included.
+
+\section{The two interpretations and their composites}
+\label{sec:interpretations}
+Let $T_J$ be the ordinary first-order realization: intuitionistic equality
+logic, J0/JS, literal-equation induction, numerical coverage, and
+$(0=1)\to\bot$. The explicit falsity bridge is essential; the positive
+equations alone admit a singleton structure. The native theory interprets
+$T_J$ by the preceding macros, equation induction, coverage, and explosion.
+Conversely the ordinary meanings of $\Q,\D$ validate every native rule:
+DI-case uses coverage, and DI-progress uses induction on its literal
+equation. The supply presentation is equivalent by substitution and cut.
+
+Appendix~\ref{sec:eic-completion}, instantiated with the derived $P,C,I$,
+constructs a characteristic of actual equality and translates every
+quantifier-free formula into a characteristic equation. It therefore
+recovers all quantifier-free induction. Appendix~\ref{sec:iterator-coding}
+constructs pairing and its projections by bounded scalar iteration and
+compiles each fixed general PR description. Pairing is only a state-coding
+tool; the interpretation domain remains the whole original domain.
+
+\begin{theorem}[Full-domain bi-interpretability]\label{thm:main}
+The stated native theory, its computation-supply presentation, and $T_J$
+are faithful presentations of a theory bi-interpretable and equiconsistent
+with full first-order $\ipra$. Both numerical domain formulas are $x=x$;
+both numerical composite isomorphisms have graph $x=y$.
+\end{theorem}
+\begin{proof}
+In $\ipra$, interpret each fixed $J$ body by primitive recursion with
+base $Sa$ and step $h$, ignoring the recursion counter in the update.
+Its two equations and ordinary boundary and induction rules are provable.
+In the other direction, the initializer compiler of
+Theorem~\ref{js:recovery}, followed by the scalar PR compiler, gives a
+finite term for each fixed target description. Equality reflection
+validates the constructor laws and every target induction instance.
+
+For the numerical composites, induct externally on each finite
+description. Once earlier subdescriptions are identified, the original
+operation and its double translation have the same base and update.
+Internal induction on the single equation between their values proves
+equality at every counter. Parameters remain fixed during this induction.
+For the original PR descriptions use the corresponding uniqueness proof
+with their counter argument. This proves internal operation preservation
+by the identity relation, not merely equality of standard numerical
+outputs. The same argument gives coherence when substituting parameters
+changes a staged update description.
+
+For the formula composites, the six displayed ordinary logical macros
+have their intended meanings by their endpoint and padding proofs.
+The nontrivial native return translations are
+\[
+ \Q_yB\dashv\vdash B(0)\Rightarrow_*\forall_*yB(y),
+\]
+\[
+ \D_{x,y}B\dashv\vdash
+ \exists_*x\bigl(B(x,0)\Rightarrow_*\forall_*yB(x,y)\bigr).
+\]
+Forward, DE opens the witness and supplies its closure. Under the local
+base, QE supplies the body at a fresh parameter; introduce the universal,
+implication, and existential. Backward, eliminate the existential and use
+its implication and universal to supply DI-case's successor premise under
+the retained base. The $\Q$ case follows directly or from its unused
+witness representation. External induction on every finite native and
+ordinary formula gives both formula composites, in arbitrary contexts.
+
+Finally, ordinary falsity and native $0=1$ are contradictions in both
+directions. The effective finite proof translations therefore give
+equiconsistency. No theory is asserted to prove its own consistency.
+\end{proof}
+
+\input{theory/implementation.tex}
+
+\Needspace{25\baselineskip}
+\section{Further research questions}
+\begin{enumerate}
+\item Can the shifted comparator and capped-predecessor correction be
+replaced by a substantially shorter $J$ term? The present proof resolves
+existence and whole-domain correctness, not optimal term size.
+\item Can the native finite-case lifting argument be formalized first,
+followed by the comparator and predecessor, in Lean or Rocq? This would
+check the most delicate dependency boundary before formalizing the
+inherited logical macros and PR compiler.
+\item Can the completed numerical basis remove a mechanism from the
+complete checker, producing a single implementation below all three
+current size coordinates? The mathematical signature reduction alone
+does not achieve that stronger benchmark.
+\item What lower bounds can be proved after fixing a concrete checker
+language, input grammar, runtime primitives, and required rejection
+contract? The observed corpus envelope is not such a theorem.
+\item Which other initializer maps $\sigma(a)$, in place of $Sa$, permit
+recovery of arbitrary initialization from scalar recursion and equation
+induction? A useful criterion must supply an internally proved inverse,
+not assume one in the compiler.
+\item Can the capped-predecessor correction be isolated as a general
+finite-exception repair principle for restricted arithmetic bases? The
+present term uses only the original partial selector and the comparator.
+\end{enumerate}
+
+\appendix
+\input{reference/equality_reflection.tex}
+\input{reference/primitive_recursion.tex}
+
+\begin{thebibliography}{9}
+\bibitem{shared}VladimirReshetnikov/ProveIt,
+\emph{A Shared Continuation for iPRA},
+\file{ipra_shared_continuation_2026-11-10.zip}, report section
+``A genuinely smaller numerical grammar: the precise unresolved step.''
+Pinned corpus commit \file{2fdcf5bf988bead821c416649f713f98b7ed8776}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2fdcf5bf988bead821c416649f713f98b7ed8776/docs/drafts/ipra_shared_continuation_2026-11-10.zip}{Pinned source archive}.
+\bibitem{generated}VladimirReshetnikov/ProveIt,
+\file{ipra_generated_assumptions_2026-11-10.zip}, code, protocol,
+zero-instance proof, and attributed scalar appendices, at the same commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2fdcf5bf988bead821c416649f713f98b7ed8776/docs/drafts/ipra_generated_assumptions_2026-11-10.zip}{Pinned source archive}.
+\bibitem{successor}VladimirReshetnikov/ProveIt,
+\file{ipra_successor_recursion_2026-11-09.zip},
+\file{theory/successor_recursion.tex}, at the same commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/2fdcf5bf988bead821c416649f713f98b7ed8776/docs/drafts/ipra_successor_recursion_2026-11-09.zip}{Pinned source archive}.
+\bibitem{elimination}VladimirReshetnikov/ProveIt,
+\file{ipra_elimination_assumptions_2026-11-09.zip}, native logical
+macros and formula return translations, at the same commit.
+\bibitem{forward}ProveIt forward-left arithmetic development,
+as reproduced with attribution in the generated-assumptions archive,
+\file{reference/equality_reflection.tex}. Its proof is included here with
+the instantiated predecessor reference adjusted.
+\bibitem{progress}ProveIt progress-closure arithmetic development,
+as reproduced with attribution in the generated-assumptions archive,
+\file{reference/primitive_recursion.tex}. Its scalar compiler is included
+here with notation local to the appendix.
+\bibitem{salehi}S. Salehi, \emph{Decidable formulas of intuitionistic
+primitive recursive arithmetic}, Reports on Mathematical Logic
+\textbf{36} (2002), 55--61.
+\url{https://rml.tcs.uj.edu.pl/rml-36/36-SALEHI.pdf}.
+\bibitem{severin}D. E. Severin, \emph{Unary primitive recursive functions},
+Journal of Symbolic Logic \textbf{73} (2008), 1122--1138.
+See in particular Remarks 5.10 and 6.9 for related seed shifts.
+\url{https://arxiv.org/abs/cs/0603063}.
+\end{thebibliography}
+\end{document}

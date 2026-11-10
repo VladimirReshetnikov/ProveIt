@@ -1,0 +1,62 @@
+\section{The exact term-function boundary}
+\label{sec:exact-boundary}
+
+The preceding theorem interprets all PR functions by finite graphs. It does not say that every multivariate PR function becomes a term. The distinction can be made exact, with no infinite family of primitive unary operations and no oracle for arbitrary bounded predicates.
+
+For $k\geq1$ let $\mathcal A_k$ consist of the primitive-recursive functions $f:\N^k\to\N$ for which there are a coordinate $i$ and a unary primitive-recursive function $F$ satisfying
+\[
+                         f(\vec x)\leq F(x_i)
+                  \quad\text{for all }\vec x\in\N^k.
+\]
+Let $\mathcal A_0$ be the nullary constants. The primitive-recursive qualification on the majorant is essential. The established term \emph{almost unary} usually allows an arbitrary unary bound; see~\cite{pinsker}. The class here keeps the stronger effective bound.
+
+\begin{theorem}[Exact standard term functions]
+\label{thm:exact-standard}
+The standard numerical functions represented by the finite $0,S,\epsilon,B$ language are exactly $\mathcal A_k$ at each arity $k$.
+\end{theorem}
+\begin{proof}
+For the forward inclusion use the one-coordinate majorant induction underlying the previous tied-seed obstructions~\cite{local,uniform}. We restate its actual arithmetic cases. The equality characteristic is bounded by one, and successor is unary. Replace every unary PR bound by its nondecreasing PR envelope when necessary. For a body $h(u,v,\vec p)$, a bound $H(p_j)$ in one passive coordinate bounds the output of $B_h$ by $1+H(p_j)$. A bound $H(u)$ in the counter coordinate bounds it by $1+H(n)$ at counter $n$. A bound $H(v)$ in the state coordinate bounds it by
+\[
+ K^{\,n}(1+H(0)),\qquad K(z)=\max(z,H(z)),
+\]
+a unary PR function of $n$. If the actual counter is a term, compose with its own one-coordinate bound. Ordinary term substitution preserves the invariant by taking a nondecreasing envelope of the outer bound and following its controlling argument. Every fixed term is PR because its descriptions are finite. This proves the upper inclusion.
+
+For the converse let $f(\vec x)\leq F(x_i)$. The internal compiler already supplies quantifier-free partition cases $C_j(\vec x)$ and source value terms
+\[
+                    v_j(\vec x)=\tau_f(x_j,\vec x),
+\]
+whose value is $f(\vec x)$ on case $C_j$. Their characteristic terms $\chi_{C_j}$ are supplied by the derived Boolean compilation. Put
+\[
+                      a_j(\vec x)=G(\chi_{C_j}(\vec x),v_j(\vec x)).
+\]
+This is zero off its case and equals $f$ on its case. Exactly one case holds, so every $a_j$ is bounded by $F(x_i)$, and at most one is nonzero.
+
+Every unary PR function is already a source term: in the one-variable instance of the compiler, the sole maximum case is automatic and the value is $\tau_F(x,x)$. Use this term to form $b=F(x_i)$. Starting with $s_0=0$, form the fixed finite sequence of terms
+\[
+                     s_j=\operatorname{ad}_{b}(s_{j-1},a_j)
+                       \quad(1\leq j\leq k).
+\]
+Every partial sum is either zero or $f$, so both arguments of each bounded addition are at most $b$. The last value is $f$. At arity zero use its numeral. The construction takes a fixed description of $f$, a coordinate $i$, and a valid unary PR majorant as input; it does not decide whether an arbitrary proposed bound is valid.
+\end{proof}
+
+\paragraph{A sharp finite-choice bound.}
+For every $k$-ary PR function, the internal compiler uses at most $k$ possible output terms, one for each first-maximum case. This is optimal in general for this finite-term selection interface. Suppose the $k$-variable sum were always one of $r<k$ source terms. Each term is bounded by a unary function of one controlling input. Choose an input coordinate that controls none of the $r$ terms, fix all other coordinates at zero, and increase the chosen one. All candidate terms remain bounded by fixed constants, while the sum is unbounded. This is a contradiction.
+
+The claim is about selecting from a finite family of output terms. It is not a lower bound on the number of clauses in an arbitrary graph formula: a Boolean characteristic of any PR graph is itself globally bounded and hence, by Theorem~\ref{thm:exact-standard}, a source term. Such a graph can therefore have a one-equation definition. The compiler's finite output witnesses are what provide totality and preserve induction internally.
+
+\subsection{Why the effective majorant qualification matters}
+The class just characterized is strictly smaller than the intersection of PR functions with the ordinary set-theoretic almost-unary class.
+
+Enumerate the unary PR descriptions as $u_0,u_1,\ldots$ and define the total recursive function
+\[
+                         g(x)=1+\max_{e\leq x}u_e(x).
+\]
+Its computation terminates because every listed description is total. It has no PR majorant: any proposed unary PR bound occurs as some $u_e$, and $g(x)>u_e(x)$ for every $x\geq e$. A fixed machine computes $g$. Let $s(x,t)$ return its output if it halts within $t$ steps on input $x$, and return zero otherwise. Bounded machine simulation is primitive recursive, so
+\[
+                              f(x,t)=x+s(x,t)
+\]
+is PR. For fixed $x$ its range is contained in $\{x,x+g(x)\}$, so it is almost unary with an unrestricted bound in $x$. A unary PR bound in $x$ would majorize $g$, which is impossible. No bound in $t$ is possible at all, because $f(x,t)\geq x$. Thus $f$ belongs to the ordinary almost-unary PR intersection but not to $\mathcal A_2$.
+
+This example distinguishes standard function classes. The full iPRA bi-interpretation rests on the preceding internal compiler and its finite-case induction argument, rather than on standard-function expressivity alone.
+
+Likewise, the converse in Theorem~\ref{thm:exact-standard} assumes that the proposed majorant is valid in the standard model. To prove internally that its resulting single term equals the graph-defined function, one additionally needs an internal proof of that majorant. No such extra hypothesis is required for the finite-case bi-interpretation.

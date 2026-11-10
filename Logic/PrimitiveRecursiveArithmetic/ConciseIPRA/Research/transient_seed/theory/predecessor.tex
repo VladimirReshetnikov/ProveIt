@@ -1,0 +1,315 @@
+% New theorem: predecessor in the one-state successor-seeded recursor.
+% Requires the independently audited comparator section sr_comparator.tex.
+% All arguments in this section are in ordinary intuitionistic FOL equality
+% with numerical coverage, 0 != S0, and contextual literal-equation induction.
+\section{Removing the independent successor constructor with one update slot}
+\label{sec:sr-predecessor}
+
+The successor-seeded one-state proposal in the shared-continuation draft
+left a precise problem unresolved: construct a term $P$ and prove
+$P(Sa)=a$ without assuming the ordinary initialized iterator or the
+unshifted selector that $P$ is intended to recover.  The following
+construction resolves that problem for the ordinary first-order theory.
+It uses a finite-cycle update with an explicitly accessible transient
+seed, rather than assuming that an arbitrary initializer can be decoded.
+
+\subsection{Exact source theory and the comparator prerequisite}
+
+The numerical terms are
+\[
+ t::=x\mid0\mid R(n,a;u.h),\qquad Sa:=R(0,a;u.0).
+\]
+The update binds exactly one numerical variable $u$; all other variables
+are fixed passive parameters.  The only computation schemas are
+\[
+ R(0,a;u.h)=Sa,\qquad
+ R(Sn,a;u.h)=h[R(n,a;u.h)/u].
+ \tag{SR}\label{eq:sr-source}
+\]
+Use ordinary intuitionistic first-order equality logic with genuine
+falsity, the two boundary sentences
+\[
+ \forall x\,(x=0\vee\exists y\,x=Sy),\qquad 0=S0\longrightarrow\bot,
+\]
+and contextual induction on a literal equation:
+\[
+ \frac{\Gamma\vdash E(0)\qquad\Gamma,E(z)\vdash E(Sz)}
+      {\Gamma\vdash E(t)}.
+ \tag{EI}\label{eq:sr-ei}
+\]
+The eigenvariable $z$ is absent from the retained context, the conclusion
+term, and all passive parameters.  All descriptions are fixed finite
+syntax; an equivalent staged first-order signature gives one symbol
+for each earlier update description.  There is no uniform total evaluator.
+Denote this ordinary theory by $T_{\rm SR}$.
+
+Write
+\[
+ T(n,a,b):=R(n,a;u.b),\qquad Z(n):=R(n,0;u.0).
+\]
+Their equations are
+\[
+ T(0,a,b)=Sa,\quad T(Sn,a,b)=b,\qquad
+ Z(0)=1,\quad Z(Sn)=0.
+\]
+Here $1=S0$.  Coverage proves $Z(t)=0\vee Z(t)=1$.  Applying $Z$ to
+$Sx=0$ gives $0=1$, so successor separation is available without
+successor injectivity.
+
+The preceding comparator construction supplies a finite SR term $L$
+with whole-domain proofs of
+\[
+\begin{gathered}
+ L(x,y)=0\vee L(x,y)=1,\qquad
+ L(0,y)=1,\qquad L(Sx,0)=0,\\
+ L(Sx,Sy)=L(x,y),\qquad
+ L(x,y)=1\ \longrightarrow\ L(x,Sy)=1.
+\end{gathered}
+ \tag{L}\label{eq:sr-comparator-properties}
+\]
+Its proof uses only SR, numerical cases, equality, and literal-equation
+induction.  In particular it assumes no predecessor, unshifted selector,
+pairing, successor injectivity, or induction on compound formulas.
+This dependency is essential: the familiar initialized-scalar
+predecessor proof cannot simply be imported before its initializer has
+been recovered.
+
+\subsection{Shifted addition and elementary comparison facts}
+
+Define the shifted sum
+\[
+                  A(a,b):=R(b,a;u.Su).
+\]
+Its computation equations and elementary literal-equation inductions give
+\[
+\begin{gathered}
+ A(a,0)=Sa,\qquad A(a,Sb)=S A(a,b),\\
+ A(0,b)=Sb,\qquad A(Sa,b)=S A(a,b),\qquad A(a,b)=A(b,a).
+\end{gathered}
+ \tag{A}\label{eq:sr-shifted-addition}
+\]
+For the third equation induct on $b$; for the fourth do the same with
+$a$ fixed.  Commutativity follows by induction on $b$, using those
+two equations for its base and step.  These are equations in the source
+theory, not identities inferred from the intended value $a+b+1$.
+An immediate consequence is
+\[
+ A(0,1)=2,\qquad
+ A(Sa,S^2a)=S^2A(a,Sa).
+ \tag{AD}\label{eq:sr-double-index}
+\]
+
+Literal-equation induction on $n$ in the comparator recurrences yields
+\[
+                 L(n,n)=1,\qquad L(Sn,n)=0.
+ \tag{Diagonal}\label{eq:sr-comparison-diagonals}
+\]
+Monotonicity then gives $L(a,Sa)=1$.
+Also $L(S^2m,m)=0$: its Boolean alternative $1$ would imply
+$L(S^2m,Sm)=1$ by monotonicity, whereas the recurrence and the strict
+diagonal make this $L(Sm,m)=0$.  Separation rules out $0=1$.
+Finally, monotonicity and the recurrence prove
+\[
+           L(St,m)=1\ \longrightarrow\ L(t,m)=1,
+ \tag{Down}\label{eq:sr-comparison-down}
+\]
+because $L(St,Sm)=L(t,m)$.  None of these arguments uses successor
+cancellation or reflection of the comparator into actual equality.
+
+\subsection{A reset cycle with an accessible transient seed}
+
+For each fixed passive parameter $m$, define
+\[
+           F_m(u):=T\bigl(Z(L(Su,m)),u,0\bigr).
+ \tag{F}\label{eq:sr-cycle-update}
+\]
+This is a finite SR term.  Its two Boolean cases are
+\[
+ F_m(u)=Su\quad\hbox{if }L(Su,m)=1,\qquad
+ F_m(u)=0\quad\hbox{if }L(Su,m)=0.
+\]
+Thus it increments below the chosen boundary and resets to zero at or
+beyond that boundary.  In particular the preceding comparison facts give
+\[
+                       F_m(m)=0,\qquad F_m(Sm)=0.
+ \tag{Reset}\label{eq:sr-cycle-reset}
+\]
+The second equality makes the source's available initializer $Sm$
+useful: one explicit application of $F_m$ turns it into zero.
+
+Define two derived trajectories
+\[
+\begin{aligned}
+ J_m(t)&:=F_m\bigl(R(t,m;u.F_m(u))\bigr),\\
+ K_m(t)&:=F_m\bigl(R(t,m;u.F_m(F_m(u)))\bigr).
+\end{aligned}
+ \tag{JK}\label{eq:sr-cycle-trajectories}
+\]
+Their recurrences follow from SR and Reset by direct equational reasoning:
+\[
+\begin{gathered}
+ J_m(0)=0,\qquad J_m(St)=F_m(J_m(t)),\\
+ K_m(0)=0,\qquad K_m(St)=F_m(F_m(K_m(t))).
+\end{gathered}
+ \tag{JR,KR}\label{eq:sr-cycle-recurrences}
+\]
+For $K$, the outer $F_m$ commutes with the update $F_m\circ F_m$
+simply by associativity of substitution.  No general iterator-rotation
+theorem or arbitrary initializer has been assumed.  Every induction
+below holds $m$ fixed until the completed universal identity is
+subsequently specialized.
+
+\subsection{A conditional equation induction, with its literal invariant}
+
+The crucial bounded-trajectory statement is
+\[
+                   L(t,m)=1\ \longrightarrow\ J_m(t)=t.
+ \tag{Run}\label{eq:sr-cycle-bounded-run}
+\]
+It is proved by induction on the following \emph{single literal equation}:
+\[
+ T\bigl(L(t,m),0,J_m(t)\bigr)
+       =T\bigl(L(t,m),0,t\bigr).
+ \tag{Gate}\label{eq:sr-cycle-gate}
+\]
+When $L(t,m)=0$, both sides are $1$.  When $L(t,m)=1$, the equation
+is exactly $J_m(t)=t$.  This use of the shifted selector is valid even
+though the ordinary unshifted selector has not yet been constructed.
+
+At $t=0$, the comparator value is $1$ and $J_m(0)=0$, so Gate holds.
+For the successor step retain Gate as the literal induction hypothesis
+and split the proved Boolean value $L(St,m)$.
+If it is $0$, the new gate equation has both sides equal to $1$.
+If it is $1$, Down gives $L(t,m)=1$; the retained gate equation
+therefore yields $J_m(t)=t$.  The definition of $F_m$ now gives
+$F_m(t)=St$, and JR gives $J_m(St)=St$.  This establishes the new
+gate equation.  EI proves Gate for every $t$, and its positive Boolean
+case proves Run.
+
+The retained induction context contains only the displayed gate
+equation and fixed passive data.  Induction on the implication Run,
+induction on a disjunction, and changing a parameter inside an active
+induction hypothesis are not used.
+
+At the diagonal, Run and $L(m,m)=1$ give $J_m(m)=m$.  One more
+computation and Reset consequently give
+\[
+                          J_m(Sm)=0.
+ \tag{Period base}\label{eq:sr-cycle-period-base}
+\]
+
+\subsection{Two ordinary equation inductions give the predecessor}
+
+First, with $m$ fixed, induct on the literal equation
+\[
+                     J_m(A(m,t))=J_m(t).
+ \tag{Period}\label{eq:sr-cycle-period}
+\]
+At zero, $A(m,0)=Sm$ and both trajectories are zero by Period base.
+At a successor, $A(m,St)=S A(m,t)$ and JR applies $F_m$ to both
+sides of the induction equation.  This proves Period on the entire
+source domain; it is not a calculation only at standard counters.
+
+Second, with the same fixed parameter $m$, induct on
+\[
+                  K_m(Sa)=J_m(A(a,Sa)).
+ \tag{Double}\label{eq:sr-cycle-double}
+\]
+At zero, both sides are $F_m(F_m(0))$, because $A(0,1)=2$.
+At a successor, KR applies $F_m$ twice to the left side, and JR plus
+AD applies $F_m$ twice to the right side.  The induction equation
+therefore supplies the step.
+
+Now define the single finite SR term
+\[
+                              P(n):=K_n(n).
+ \tag{P}\label{eq:sr-predecessor-term}
+\]
+Its zero equation is $P(0)=K_0(0)=0$.  For arbitrary $a$, specialize
+the already proved identities at $m=Sa$ to obtain
+\[
+\begin{aligned}
+ P(Sa)
+ &=K_{Sa}(Sa)\\
+ &=J_{Sa}(A(a,Sa)) &&\text{by Double}\\
+ &=J_{Sa}(A(Sa,a)) &&\text{by commutativity of }A\\
+ &=J_{Sa}(a)       &&\text{by Period}\\
+ &=a              &&\text{by Run and }L(a,Sa)=1.
+\end{aligned}
+\]
+Consequently
+\[
+                         \boxed{P(0)=0,\qquad P(Sa)=a.}
+ \tag{Predecessor}\label{eq:sr-predecessor}
+\]
+The proof has not cancelled a successor or assumed an actual-equality
+characteristic.  It works at arbitrary source elements, including
+nonstandard elements of any model of the stated ordinary theory.
+Successor injectivity can now be derived by applying $P$ to an equation
+$Sa=Sb$.
+
+\subsection{Ordinary initialization and both interpretation composites}
+
+For any fixed finite update $h(u,\vec p)$, put
+\[
+ \widehat I(n,a;u.h)
+ :=P\bigl(R(n,a;v.S(h[Pv/u]))\bigr),
+ \tag{I}\label{eq:sr-initializer-compiler}
+\]
+with $v$ fresh.  Predecessor and SR give, by direct computation,
+\[
+ \widehat I(0,a;u.h)=a,\qquad
+ \widehat I(Sn,a;u.h)=h[\widehat I(n,a;u.h)/u].
+\]
+In particular the ordinary selector is now available as
+$C(n,a,b)=\widehat I(n,a;u.b)$.
+
+The established initialized-scalar reconstruction then applies with
+all its hypotheses satisfied: ordinary intuitionistic equality logic,
+coverage and separation, literal-equation induction, successor, and
+scalar iteration with arbitrary initial values.  It proves actual
+equality reflection, compiles quantifier-free formulas into Boolean
+terms, recovers contextual quantifier-free induction, and supplies
+pairing and the compiler for every fixed primitive-recursive description.
+Its written internal reconstruction, included elsewhere in the report,
+is required for this conclusion; standard-model term completeness alone
+would not suffice.  The predecessor step of that older reconstruction
+is unnecessary here because Predecessor has already been proved.
+
+Conversely, interpret each fixed SR description in ordinary iPRA by
+primitive recursion with initial value $Sa$ and update $h$.  Then SR,
+coverage, separation, and the translated literal-equation induction
+instances are all iPRA theorems.  The language uses no function variables
+or quantification over codes.
+
+To check the stronger return condition, first anchor successor: the
+zero instance $Sa=R(0,a;u.0)$ translates to ordinary $Sa$, and its
+opposite translation is the source $Sa$. This uses the zero computation,
+not uniqueness for an as-yet-unidentified recursor. Then compare one fixed description
+with its double translation after earlier descriptions have been
+identified.  For an SR description both sides have initial value $Sa$
+and the same update $h$; EI on the literal equation comparing their
+values proves their equality.  For an initialized scalar description,
+the same argument uses its common initial value $a$.  The subsequent
+primitive-recursion compiler has the same uniqueness argument for its
+fixed descriptions.  In each argument the initializer and passive
+parameters remain independent formal variables during induction; only
+after the universally parameterized identity is proved are arbitrary
+terms substituted for them.
+
+Both interpretation domains are the entire numerical domain, equality
+is actual equality, and the numerical composite isomorphisms have graph
+$x=y$.  The ordinary logical translations are identities, so external
+induction on formulas gives the full formula return translations.
+Thus $T_{\rm SR}$ is equiconsistent and bi-interpretable with full
+first-order iPRA.
+
+\paragraph{What this proves about simplicity.}
+The ordinary numerical grammar has just zero and the successor-seeded
+scalar recursor. Section~\ref{sec:native-sr-bootstrap} additionally
+translates this arithmetic proof into the native logical rules, before
+ordinary connectives or an unshifted selector are available. The Boolean
+successor decoder in that section removes the circularity that a direct
+appeal to the established logical reconstruction would have introduced.
+The numerical identity composites proved here therefore apply to the
+direct native SR presentation as well.
