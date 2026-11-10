@@ -1360,6 +1360,10 @@ A [staged syntax client](research/nine-sharing-sign14-staged-syntax-check/README
 [independently audited](reviews/nine-sharing-sign14-staged-syntax-terminal-independent/README.md),
 checks the symbolic seed-zero characterization in 16 stages. External AST
 transcription is separate; tau lift, equivalence and endpoint remain open.
+A [shared-values client](research/nine-sharing-sign14-shared-values-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-shared-values-terminal-independent/README.md),
+checks c, root and scale evaluations under represented beta. The tau lift
+and JSON binding remain separate.
 A [staged syntax client](research/nine-sharing-sign15-staged-syntax-check/README.md),
 [independently audited](reviews/nine-sharing-sign15-staged-syntax-terminal-independent/README.md),
 checks the symbolic seed-zero characterization in 16 stages. The external AST
@@ -1669,6 +1673,10 @@ A [structural retry](research/nine-sharing-sign17-mf-radix-digits-retry-check/RE
 [independently audited](reviews/nine-sharing-sign17-mf-radix-digits-retry-terminal-independent/README.md),
 removed the arithmetic error but failed the first-digit proof at recursion
 depth; no digit object or postflight was produced.
+A [ten-chunk client](research/nine-sharing-sign17-mf-chunk-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-mf-chunk-terminal-independent/README.md),
+checks ten small radix/byte identities. External fixture matching is separate
+Python evidence; no whole-port or file/gzip theorem follows.
 A [generic block-composition attempt](research/nine-sharing-sign17-mc-compose-core-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mc-compose-core-terminal-independent/README.md),
 passed eighteen prerequisites but failed the final flatten-tail induction;
