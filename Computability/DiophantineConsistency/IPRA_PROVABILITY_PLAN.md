@@ -61,9 +61,9 @@ The intermediate [90-gate seed](research/nine-sharing-sign14-90gate-lean-retry01
 now has a checked generic evaluation equality with the 92-gate seed. A
 [direct 86-gate seed evaluation equality](research/nine-sharing-sign14-86gate-lean-check/README.md)
 and its [fixed-input expression and polynomial equalities to 90 gates](research/nine-sharing-sign14-86gate-expression-check/README.md)
-have also passed Lean and independent terminal review. Their explicit
-composition with the 92-gate endpoint, model, degree and iPRA transfers
-remains separate.
+have also passed Lean and independent terminal review. Their [explicit
+composition through 92 gates](research/nine-sharing-sign14-86gate-to92-expression-check/README.md)
+is checked. Model, degree and iPRA endpoint transfers remain separate.
 
 For fixed-constant work, the [generic radix stream theorem](research/nine-sharing-sign17-k-radix-stream-retry-check/README.md)
 and its [symbolic K specialization](research/nine-sharing-sign17-k-radix-stream-current-check/README.md)
