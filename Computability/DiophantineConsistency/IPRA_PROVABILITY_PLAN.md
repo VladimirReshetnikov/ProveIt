@@ -41,7 +41,11 @@ ports and commutative-ring inputs. This is an upper bound under the stated
 binary-circuit metric, not a minimality result. The count provider consists
 of successful children of an earlier failed outer run, and historical direct
 objects remain point-pinned. A Lean proof of exact degree 150 remains open;
-the comparison with TeX/PDF is external.
+the comparison with TeX/PDF is external. The actual norm factor Q now has
+an independently audited [degree upper bound of 18](research/current14-carrier65-q-actual-retry-check/README.md)
+for arbitrary integer ports, using a checked cancellation identity. The
+other factors, whole-expression bound and nonzero degree-150 witness remain
+separate.
 
 ## Sign14 proof transfer and fixed-constant work
 
