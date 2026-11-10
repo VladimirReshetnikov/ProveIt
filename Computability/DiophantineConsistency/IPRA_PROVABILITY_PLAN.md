@@ -651,6 +651,13 @@ A [minimal diagnostic](research/nine-sharing-sign25-endpoint-minimal-diagnostic-
 checks the bridge type successfully, but the typed alias without the local
 attributes still raises the interpreter memory exception. Its third stage
 was not attempted; no endpoint follows.
+A [no-alias retry](research/nine-sharing-sign25-endpoint-no-alias-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-endpoint-no-alias-terminal-independent/README.md),
+successfully compiled its native iPRA endpoint child. Its overall runner then
+exited 1 when the standard wrapper raised an interpreter memory exception;
+the translated wrapper and final postflight did not run. Thus this is a
+successful native child with inherited provider qualifications, not a
+successful complete endpoint run.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
