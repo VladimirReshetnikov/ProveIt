@@ -1410,6 +1410,10 @@ A [locally irreducible retry](research/nine-sharing-sign14-zero-assembly-retry02
 [independently audited](reviews/nine-sharing-sign14-zero-assembly-retry02-terminal-independent/README.md),
 failed because the forward proof referenced the wrong squares family; the
 unrun reverse source had the same stale reference. No object or postflight exists.
+A [corrected-family retry](research/nine-sharing-sign14-zero-assembly-retry03-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-zero-assembly-retry03-terminal-independent/README.md),
+checks both pointwise directions with a supplied tau forward and recovery
+backward, without port/sign assumptions. Existential iff remains separate.
 An [expression-evaluation client](research/nine-sharing-sign14-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign14-expression-eval-terminal-independent/README.md),
 checks abstract and current Fin14 symbolic evaluation. Successful-child/
