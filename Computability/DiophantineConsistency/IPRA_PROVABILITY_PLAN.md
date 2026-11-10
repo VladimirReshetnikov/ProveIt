@@ -32,6 +32,32 @@ sources and auditing provider ancestry is also not principally a Lean-line
 count. None of these estimates bounds the size of an explicit iPRA proof
 certificate, which the derivability theorem does not print.
 
+## Sign14 proof transfer and fixed-constant work
+
+The 93-gate sign14 symbolic expression now has checked native, standard and
+Gödel–Gentzen-translated iPRA derivability endpoints. Its [endpoint run](research/nine-sharing-sign14-93gate-endpoint-check/README.md)
+and [independent terminal review](reviews/nine-sharing-sign14-93gate-endpoint-terminal-independent/README.md)
+use the previously audited all-model bridge. Its exact degree 124 is checked
+for the current symbolic ports. This is a fourteen-natural-coordinate
+expression; the 93-gate count and correspondence to the external candidate
+remain external checks, and it is not the maintained 14-positive-variable
+PDF equation. Inherited provider ancestry and the external-file boundary
+remain as described in the review.
+
+The [92-gate seed evaluation equality](research/nine-sharing-sign14-92gate-lean-check/README.md)
+has independently reviewed Lean evidence over an arbitrary commutative
+ring. The [fixed-input expression and polynomial equalities](research/nine-sharing-sign14-92gate-expression-check/README.md)
+are also checked. The model-level zero equivalence, exact degree and iPRA
+transfers remain separate.
+The further 87-gate AST has an independently audited external rewrite and
+gate count; its Lean transfer remains open. Its count is an upper bound under
+exact ordered subtree sharing, not a minimality result.
+
+For fixed-constant work, the [generic radix stream theorem](research/nine-sharing-sign17-k-radix-stream-retry-check/README.md)
+has a successful Lean run and independent terminal review. It concerns an
+arbitrary base and vector: specializing it to the actual K, proving digit
+bounds and connecting external bytes remain separate.
+
 ## Current reduction status
 
 A [nine-natural-coordinate Jones expression built from the 33-witness seed](research/nine-sharing-sign33-ipra-endpoint-check/README.md)
