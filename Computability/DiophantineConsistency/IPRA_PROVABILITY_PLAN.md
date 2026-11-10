@@ -1478,6 +1478,11 @@ now checks in Lean against the corresponding shared code. A separate
 [external chunk audit](reviews/nine-sharing-sign14-prefix-row00-chunks-independent/README.md)
 checks that 22 short files concatenate to the pinned 689-byte row. Lean does
 not yet establish the full row or the concatenation to the original file.
+A [22-fragment whole-row attempt](research/nine-sharing-sign14-prefix-chunked-row-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-prefix-chunked-row-terminal-independent/README.md),
+timed out after 120 seconds, with no object or postflight. Subtree-aligned
+intermediate lemmas are being investigated; the connection to the original
+row remains an external check.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
