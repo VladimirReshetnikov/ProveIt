@@ -170,11 +170,11 @@ requirement to build Lean one module at a time.
   the halting problem and Hilbert's tenth problem respectively.
 - A Lean proof that [one partial recursive function has every possible value
   at 0 in some model of PA](Logic/PeanoArithmetic/FlexibleOutput/README.md):
-  there is a program, divergent on every input, such that for every `o`, a
-  natural number or `⊥`, some model of PA computes the value `o` on input 0.
-  The program is a self-referential proof search obtained from mathlib's
-  Kleene recursion theorem; the halting formula is functional in every model
-  of PA.
+  there is a program, divergent on every input, such that for every input `x`
+  and every `o`, a natural number or `⊥`, some model of PA computes the value
+  `o` on input `x`. The program is a self-referential proof search obtained
+  from mathlib's Kleene recursion theorem; the halting formula is functional
+  in every model of PA.
 - Lean/Coq proofs that first-order Peano arithmetic has two non-isomorphic
   models, separating the numeral-generated standard model from a compactness
   model with an element above every standard numeral.
