@@ -1242,6 +1242,10 @@ A [transport-row client](research/nine-sharing-sign16-transport-row-check/README
 [independently audited](reviews/nine-sharing-sign16-transport-row-terminal-independent/README.md),
 derives the natural Nt transport equation from seed zero under represented
 beta and K; window bounds and the V lift remain separate.
+A [scalar-window attempt](research/nine-sharing-sign16-scalar-window-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-scalar-window-failure-independent/README.md),
+failed because `zero_le` was applied as a function; no object or postflight was
+produced. Its first-index provider survey was a point-in-time check.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
