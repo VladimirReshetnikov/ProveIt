@@ -1,8 +1,8 @@
 import PAFlexibleOutput.Halting
-import PAFlexibleOutput.Functionality
-import PAFlexibleOutput.Refutations
+import PAFlexibleOutput.Provability
 import PAFlexibleOutput.Search
 import PAFlexibleOutput.Main
+import PAFlexibleOutput.Functionality
 
 /-!
 # A divergent program with every possible output in a model of PA
@@ -12,10 +12,16 @@ Import surface of the project. The main theorem is `PAFlexibleOutput.flexibleOut
 every input `x` and every `o : Option ℕ` some model of `𝗣𝗔` computes the value `o` for `e` on
 `x`.
 
-* `PAFlexibleOutput.Halting`: the halting formula, the halting sentences, the value of a
-  program inside a structure, and the standard semantics.
-* `PAFlexibleOutput.Functionality`: the halting formula is functional in every model of `𝗣𝗔⁻`.
-* `PAFlexibleOutput.Refutations`: the outputs refuted by `𝗣𝗔` are recursively enumerable.
+The main theorem uses four modules.
+
+* `PAFlexibleOutput.Halting`: the halting formula, the value of a program inside a structure,
+  the value formula, and the standard semantics.
+* `PAFlexibleOutput.Provability`: the provable numeral instances of a formula are recursively
+  enumerable.
 * `PAFlexibleOutput.Search`: a recursively enumerable relation has a partial recursive selector.
 * `PAFlexibleOutput.Main`: the main theorem.
+
+One module is independent of the main theorem.
+
+* `PAFlexibleOutput.Functionality`: the halting formula is functional in every model of `𝗣𝗔⁻`.
 -/

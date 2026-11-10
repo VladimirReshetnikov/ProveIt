@@ -1,5 +1,5 @@
-import PAFlexibleOutput.Functionality
-import PAFlexibleOutput.Refutations
+import PAFlexibleOutput.Halting
+import PAFlexibleOutput.Provability
 import PAFlexibleOutput.Search
 
 /-!
@@ -12,16 +12,17 @@ no output if `o = none`.
 
 ## Proof
 
-The refuted outputs form a recursively enumerable relation (`refutationsRE`), so a partial
-recursive `f` selects, for a program `c` and an input `x`, some `y` such that `𝗣𝗔` proves that
-`c` does not halt on `x` with output `y`, whenever there is one (`exists_selector`). Kleene's
-second recursion theorem gives a program `e` that on input `x` computes `f (e, x)`.
+Say that `𝗣𝗔` *refutes the value* `y` of a program `c` on an input `x` if it proves the negation
+of the value sentence "`y` is the only output of `c` on `x`". The refuted values form a
+recursively enumerable relation (`provable_substs_re`), so a partial recursive `f` selects, for
+`c` and `x`, some refuted value whenever there is one (`exists_selector`). Kleene's second
+recursion theorem gives a program `e` that on input `x` computes `f (e, x)`.
 
-* `e` diverges. An output `m` of `e` on `x` would be refuted by `𝗣𝗔`, but the halting sentence
-  for `m` is true in `ℕ`, and `ℕ` is a model of `𝗣𝗔`.
-* Hence no output of `e` is refuted by `𝗣𝗔`, as a refuted output would make the selector, and
-  with it `e`, halt. By the completeness theorem every halting sentence of `e` has a model, and
-  in that model the output is unique (`valueIn_of_models`).
+* `e` diverges. An output `m` of `e` on `x` would be a value refuted by `𝗣𝗔`. But `m` would be
+  the only real output, so its value sentence would be true in `ℕ`, and `ℕ` is a model of `𝗣𝗔`.
+* Hence `𝗣𝗔` refutes no value of `e`, as a refuted value would make the selector, and with it
+  `e`, halt. By the completeness theorem every value sentence of `e` has a model, and that model
+  computes the value (`models_not_valueGraph`).
 * `ℕ` is a model in which `e` has no value.
 -/
 
@@ -37,37 +38,24 @@ of `e` on input `x` is `o`. -/
 theorem flexibleOutput :
     ∃ e : Code, (∀ x, Nat.Partrec.Code.eval e x = Part.none) ∧ ∀ (x : ℕ) (o : Option ℕ),
       ∃ (M : Type) (_ : ORingStructure M) (_ : M↓[ℒₒᵣ] ⊧* 𝗣𝗔), ValueIn M e x o := by
-  obtain ⟨f, hf, hsound, hfind⟩ := exists_selector refutationsRE
-  obtain ⟨e, he⟩ := Nat.Partrec.Code.fixed_point₂ (f := fun c x => f (c, x)) hf
-  replace he : ∀ x, Nat.Partrec.Code.eval e x = f (e, x) := congrFun he
-  -- An output would be refuted by `𝗣𝗔`, but it is true in `ℕ`.
-  have hdiv : ∀ x m, m ∉ Nat.Partrec.Code.eval e x := fun x m hm =>
-    Semantics.Not.models_not.mp
-      (models_of_provable (M := ℕ) inferInstance (hsound (e, x) m (he x ▸ hm)))
-      ((standardCorrectness e x m).mpr hm)
-  refine ⟨e, fun x => Part.eq_none_iff.2 (hdiv x), fun x o => ?_⟩
+  obtain ⟨f, hf, hsound, hfind⟩ := exists_selector (provable_substs_re (∼valueGraph))
+  obtain ⟨e, he⟩ := Nat.Partrec.Code.fixed_point₂ (f := fun c x => f (Encodable.encode c, x))
+    (hf.comp ((Computable.encode.comp .fst).pair .snd))
+  replace he : ∀ x, Nat.Partrec.Code.eval e x = f (Encodable.encode e, x) := congrFun he
+  -- An output would be a value refuted by `𝗣𝗔`, but it is the value in `ℕ`.
+  have hdiv : ∀ x, Nat.Partrec.Code.eval e x = Part.none := fun x =>
+    Part.eq_none_iff.2 fun m hm => models_not_valueGraph.mp
+      (models_of_provable (M := ℕ) inferInstance (hsound (Encodable.encode e, x) m (he x ▸ hm)))
+      (valueIn_nat.mpr (Part.eq_some_iff.2 hm))
+  refine ⟨e, hdiv, fun x o => ?_⟩
   cases o with
-  | none => exact ⟨ℕ, inferInstance, inferInstance, fun y hy => hdiv x y (outputIn_nat.mp hy)⟩
+  | none => exact ⟨ℕ, inferInstance, inferInstance, valueIn_nat.mpr (hdiv x)⟩
   | some n =>
     by_contra hno
-    -- No model has value `n`, so `𝗣𝗔` refutes the output `n`, and the selector halts.
-    have hn : 𝗣𝗔 ⊢ ∼haltSentence e x n := Arithmetic.complete.{0} 𝗣𝗔 _ fun M _ hM =>
-      Semantics.Not.models_not.mpr fun h =>
-        haveI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗣𝗔) hM
-        hno ⟨M, inferInstance, hM, valueIn_of_models h⟩
-    obtain ⟨m, hm⟩ := Part.dom_iff_mem.1 (hfind (e, x) n hn)
-    exact hdiv x m (he x ▸ hm)
-
-/-- The sentence form: every halting sentence of the program is satisfiable together with
-`𝗣𝗔`, although the program diverges. -/
-theorem flexibleOutput_satisfiable :
-    ∃ e : Code, (∀ x, Nat.Partrec.Code.eval e x = Part.none) ∧
-      ∀ x n : ℕ, Satisfiable (insert (haltSentence e x n) 𝗣𝗔) := by
-  obtain ⟨e, hdiv, h⟩ := flexibleOutput
-  refine ⟨e, hdiv, fun x n => ?_⟩
-  obtain ⟨M, _, hM, hn⟩ := h x (some n)
-  exact satisfiable_intro M
-    (Semantics.ModelsSet.insert_iff.mpr ⟨models_haltSentence.mpr ((hn _).mpr rfl), hM⟩)
+    -- No model has value `n`, so `𝗣𝗔` refutes the value `n`, and the selector halts.
+    exact Part.eq_none_iff'.mp (he x ▸ hdiv x) <| hfind (Encodable.encode e, x) n <|
+      Arithmetic.complete.{0} 𝗣𝗔 _ fun M _ hM =>
+        models_not_valueGraph.mpr fun h => hno ⟨M, inferInstance, hM, h⟩
 
 /-- The theorem as usually stated: there is a partial recursive function `f : ℕ →. ℕ` such that
 for every `o`, a natural number or `none`, the statement "`f 0 = o`" holds in some model of
@@ -80,7 +68,6 @@ theorem exists_partrec_flexibleOutput :
   exact ⟨_, Nat.Partrec.Code.eval_part.comp (.const e) .id, e, rfl, h 0⟩
 
 #print axioms flexibleOutput
-#print axioms flexibleOutput_satisfiable
 #print axioms exists_partrec_flexibleOutput
 
 end PAFlexibleOutput
