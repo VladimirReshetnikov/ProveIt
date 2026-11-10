@@ -1238,6 +1238,10 @@ A [conditional rank client](research/nine-sharing-sign16-rank-value-check/README
 [independently audited](reviews/nine-sharing-sign16-rank-value-terminal-independent/README.md),
 identifies signed R with a natural rank under represented ports and `q ≥ F`;
 deriving that inequality and the V lift remain open.
+A [transport-row client](research/nine-sharing-sign16-transport-row-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-transport-row-terminal-independent/README.md),
+derives the natural Nt transport equation from seed zero under represented
+beta and K; window bounds and the V lift remain separate.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
