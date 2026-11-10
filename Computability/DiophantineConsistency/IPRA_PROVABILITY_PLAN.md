@@ -1419,6 +1419,11 @@ An [other-row axis client](research/nine-sharing-sign17-axis-other-degree-check/
 bounds the other seven residual degrees by 46 on the corrected axis. The
 replayed Na stage has two warnings and the console label is inherited;
 noncancellation and the full lower bound remain separate.
+An [axis noncancellation client](research/nine-sharing-sign17-axis-noncancel-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-axis-noncancel-terminal-independent/README.md),
+checks degree 96 for the explicit Na square plus the other squares under
+`p 0 ≠ 0`. Equality to the actual seed and the multivariate lower bound remain
+separate; the replayed Na stage has two warnings and the console label is inherited.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
