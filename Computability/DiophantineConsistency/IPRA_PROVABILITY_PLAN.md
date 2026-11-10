@@ -1441,6 +1441,12 @@ A [95-gate Lean source draft](research/nine-sharing-sign14-95gate-lean-draft/REA
 [independently reviewed](reviews/nine-sharing-sign14-95gate-lean-draft-independent/README.md),
 expands to the candidate's five external residual ASTs and proposes generic
 ring-evaluation equivalences. It has not yet been elaborated or checked.
+A [numeral-adjusted Lean check](research/nine-sharing-sign14-95gate-lean-retry01-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-95gate-lean-retry01-terminal-independent/README.md),
+proves that the rewritten and preceding five-square seeds have equal
+evaluation for arbitrary integer ports and every commutative ring. The run
+reports five unused-simp warnings. Optimized 14-variable expression, degree,
+iPRA endpoint and external-file transfers remain separate.
 A [compact prefix transcription](research/nine-sharing-sign14-prefix-formula/README.md),
 [independently audited](reviews/nine-sharing-sign14-prefix-formula-independent/README.md),
 encodes the five external seed residuals in five small ASCII files and checks
