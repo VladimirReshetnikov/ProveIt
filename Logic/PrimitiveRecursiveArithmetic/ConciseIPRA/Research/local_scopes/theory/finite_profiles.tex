@@ -1,0 +1,305 @@
+% Optional inclusion fragment. Requires the B grammar of obstruction.tex.
+% This theorem concerns standard term functions, not all definable relations.
+
+\section{A stronger term invariant: only finite information from other inputs}
+\label{sec:finite-control}
+
+The coordinate bound leaves open whether the tied-seed language could
+compute a bounded numerical comparison. This section closes that
+particular route. The gate supplied by the current drafts does not
+suffice to construct a numerical equality test, minimum, or truncated
+subtraction. A stronger semantic invariant excludes all three.
+
+\begin{definition}[One numerical input and finite control]
+\label{fc:def}
+A function $f:\mathbb N^r\to\mathbb N$, with $r\ge1$, has the finite
+control property if there are an active coordinate $i$, finite nonempty
+sets $A_j$ and unary maps $\alpha_j:\mathbb N\to A_j$ for $j\ne i$,
+and unary functions $F_a:\mathbb N\to\mathbb N$ indexed by
+$a\in\prod_{j\ne i}A_j$, such that
+\[
+ f(x_1,\ldots,x_r)
+   =F_{(\alpha_j(x_j))_{j\ne i}}(x_i).
+ \tag{FC}\label{fc:form}
+\]
+Thus the value may depend without a bound on one coordinate, while each
+other coordinate supplies only a member of a fixed finite set. For
+primitive-recursive functions, all displayed maps will be chosen
+primitive recursive, using finite encodings of the sets $A_j$.
+\end{definition}
+
+A constant function satisfies the definition with any active coordinate.
+Information about the active coordinate may also determine a finite
+choice, since that choice can be absorbed into the unary function
+$F_a$. The definition imposes no restriction at arity one.
+Throughout the constructive argument, finite ranges may be replaced by
+the specified finite codomains; no decision procedure for exact attained
+ranges is assumed.
+
+\begin{lemma}[Finite-valued functions and composition]
+\label{fc:composition}
+\begin{enumerate}
+\item If $f$ has the finite control property and $\rho$ is unary with
+      finite range, then $\rho\circ f$ factors through finite-valued
+      unary maps of \emph{all} input coordinates.
+\item The functions with the finite control property contain constants
+      and projections and are closed under composition.
+\end{enumerate}
+Both assertions preserve primitive recursiveness of the displayed maps.
+\end{lemma}
+
+\begin{proof}
+For the first assertion, use~\eqref{fc:form} and attach to the active
+coordinate the finite feature
+\[
+                 \beta_i(x)=\bigl(\rho(F_a(x))\bigr)_a.
+\]
+There are finitely many $a$, and each entry lies in the finite range of
+$\rho$. Together with the existing $\alpha_j(x_j)$, this determines
+$\rho(f(\vec x))$.
+
+For composition write $f(g_1(\vec x),\ldots,g_r(\vec x))$, where $f$
+has active input $i$ and $g_i$ has active input $k$. Every other $g_j$
+enters $f$ only through its finite-valued feature $\alpha_j\circ g_j$.
+By the first assertion these features are determined by finite unary
+features of all coordinates of $\vec x$. Combine their features on
+coordinates other than $k$ with the finite controls of $g_i$. Once those
+combined controls are fixed, the whole expression is one unary function
+of $x_k$: features depending on $x_k$ are evaluated inside that unary
+function. There are only finitely many combined controls, giving the
+required form. All vector formation, finite selection, and composition
+here are primitive recursive when the original maps are.
+\end{proof}
+
+\begin{theorem}[Finite control for every tied-seed term]
+\label{fc:B-theorem}
+Every standard numerical function of positive arity represented by a
+$B$-term in the grammar of
+Section~\ref{sec:finite-dimensional-obstruction} has the finite control
+property. Nullary terms are constants and satisfy the same conclusion
+after an unused input is added. A finite representation of the form
+\eqref{fc:form}, with primitive-recursive feature maps and profiles, can
+be constructed by induction on its syntax.
+\end{theorem}
+
+\begin{proof}
+Variables and zero are covered by Lemma~\ref{fc:composition}. It is
+enough to show that the operation $B_h(n,\vec p)$ preserves the property
+when its fixed update $h(u,v,\vec p)$ has it. The actual counter term
+is then substituted using the composition lemma.
+
+\paragraph{The active input of $h$ is its previous state.}
+Write
+\[
+                 h(u,v,\vec p)=F_{\alpha(u),\gamma(\vec p)}(v),
+\]
+where $\gamma(\vec p)$ is a tuple of finite unary features, one for
+each passive coordinate. For each of its finitely many values $c$, define
+one unary sequence by
+\[
+ R_c(0)=1+F_{\alpha(0),c}(0),\qquad
+ R_c(m+1)=F_{\alpha(m),c}(R_c(m)).
+\]
+These are primitive-recursive unary functions. Directly from the
+standard defining equations,
+\[
+                      B_h(n,\vec p)=R_{\gamma(\vec p)}(n).
+\]
+This has active coordinate $n$ and finite controls on the passive inputs.
+
+\paragraph{The active input of $h$ is its old counter.}
+Write
+\[
+                 h(u,v,\vec p)=F_{\beta(v),\gamma(\vec p)}(u).
+\]
+For each finite passive profile $c$, define
+\[
+ R_c(0)=1+F_{\beta(0),c}(0),\qquad
+ R_c(m+1)=F_{\beta(R_c(m)),c}(m).
+\]
+Again $B_h(n,\vec p)=R_{\gamma(\vec p)}(n)$, of the required form.
+
+\paragraph{The active input of $h$ is a passive parameter $p$.}
+Write the remaining passive parameters as $\vec q$ and put
+\[
+                 h(u,v,p,\vec q)
+                    =F_{\alpha(u),\beta(v),\gamma(\vec q)}(p).
+\]
+The ranges of $\alpha$, $\beta$, and $\gamma$ are finite. Form one
+finite catalogue of unary functions $V_j(p)$ containing all profiles
+$F_{a,b,c}(p)$ and also every possible initial profile
+\[
+                    V_{0,c}(p)=1+F_{\alpha(0),\beta(0),c}(p).
+\]
+Give these occurrences separate indices if their extensional functions
+happen to coincide. Denote the finite index set by $J$. Every state of
+the recursion is the value at $p$ of one function in this catalogue.
+
+The only observation of a previous state used by the update is its
+$\beta$-value. Record all such observations at once in the finite unary
+feature
+\[
+                         \kappa(p)=\bigl(\beta(V_j(p))\bigr)_{j\in J}.
+\]
+For each passive control value $c$ and each possible finite vector $k$,
+define a finite-state process. Its initial state is the catalogue index
+of $V_{0,c}$. At counter $m$, if its present index is $j$, its next index
+is the catalogue occurrence of
+\[
+                              F_{\alpha(m),k_j,c}.
+\]
+Let $\theta_{c,k}(n)\in J$ be the index after $n$ transitions. This is
+a finite-valued primitive-recursive unary function of $n$. It is
+defined for all possible vectors $k$, including ones not realized by
+any $p$; only the realized vectors will be used in the equality below.
+Pack the finitely many processes into one finite-valued unary feature
+\[
+                              \eta(n)=\bigl(\theta_{c,k}(n)\bigr)_{c,k}.
+\]
+Induction on the standard counter in the metatheory gives
+\[
+ B_h(n,p,\vec q)
+   =V_{\eta(n)_{\gamma(\vec q),\kappa(p)}}(p).
+ \tag{Catalogue evaluation}\label{fc:catalogue}
+\]
+The initial case selects $V_{0,c}$; the transition uses exactly the
+recorded observation $\beta(V_j(p))=\kappa(p)_j$.
+
+For each fixed $e$ in the finite product codomain chosen for $\eta$
+and each fixed $c$,
+define the unary profile
+\[
+                              H_{e,c}(p)=V_{e_{c,\kappa(p)}}(p).
+\]
+Equation~\eqref{fc:catalogue} becomes
+\[
+                       B_h(n,p,\vec q)=H_{\eta(n),\gamma(\vec q)}(p).
+\]
+This has active coordinate $p$, with finite controls on $n$ and each
+remaining passive input. It proves the last case. The construction is
+finite and primitive recursive at every stage, completing the syntax
+induction.
+\end{proof}
+
+The numerical bounds of Lemma~\ref{obs:coordinate-bound} are also an
+immediate consequence of this stronger representation: take the maximum
+of the finitely many unary profiles and then its running maximum. Its
+new content is that the other inputs supply only finitely many distinct
+profiles, rather than arbitrarily complicated bounded information.
+
+\begin{corollary}[No numerical equality test, minimum, or variable countdown]
+\label{fc:excluded}
+None of the following binary functions is represented by a $B$-term:
+\[
+ \operatorname{eq}(a,b)=
+ \begin{cases}1,&a=b,\\0,&a\ne b,\end{cases}
+ \qquad
+ \min(a,b),
+ \qquad
+ a\mathbin{\dotminus}b=\max(a-b,0).
+\]
+The same exclusion holds for the complementary numerical equality test.
+\end{corollary}
+
+\begin{proof}
+For a binary function with active first coordinate, fixing the second
+coordinate produces at most finitely many unary functions of the first.
+If the second coordinate is active, the reverse collection of unary
+profiles is finite. Each displayed function has infinitely many
+distinct profiles in both directions.
+
+For numerical equality, fixing one input at $b$ gives the characteristic
+function of the singleton $\{b\}$ in the other input. For minimum,
+the functions $x\mapsto\min(x,b)$ are distinct for distinct $b$, as is
+seen by evaluating at an $x$ at least as large as both candidate values.
+For truncated subtraction, distinct fixed second arguments give distinct
+functions by evaluating the first argument above both; distinct fixed
+first arguments give distinct functions already at second argument zero.
+The finite-profile conclusion of Theorem~\ref{fc:B-theorem} is therefore
+impossible in either orientation.
+\end{proof}
+
+\subsection{The exact consequence for the proposed relational route}
+
+The current $B$ grammar does define ordinary predecessor and a one-sided
+gate. Write
+\[
+ D(n,a)=B(n;u,v.a),\quad W(n)=B(n;u,v.u),\quad
+ P(n)=W(D(n,n)),\quad Z(n)=D(n,0).
+\]
+Their computation equations give
+$D(0,a)=Sa$, $D(Sn,a)=a$, $P0=0$, $P(Sn)=n$, $Z0=1$, and $Z(Sn)=0$.
+With equation induction, the gate
+\[
+             G(n,a)=P\bigl(P(B(a;u,v.D(Z(n),v)))\bigr)
+\]
+satisfies $G(0,a)=0$ and $G(Sn,a)=a$. At zero its internal update is
+the identity and its state is constantly $1$; at a positive control its
+update is successor and its state is $S^2a$.
+
+For completeness, both gate identities are internal consequences of the
+$B$ computation schemas, ordinary equality reasoning, and literal-equation
+induction. For the zero control, induct directly on
+\[
+                 B(a;u,v.D(Z(0),v))=1.
+\]
+Its base is $S(D(1,0))=S0=1$; its successor computation applies
+$D(1,\cdot)$, which repeats the previous state. For the positive control
+$Sq$, induct directly on
+\[
+                 B(a;u,v.D(Z(Sq),v))=S^2a.
+\]
+Its base is $S(D(0,0))=S(S0)=2$; its successor computation applies
+$D(0,\cdot)$, hence successor, to the previous state. Keeping these
+actual update bodies throughout avoids invoking an unmentioned
+extensionality principle for recursion descriptions. The displayed
+equations for $P$ then remove the two outer predecessors.
+All control parameters are fixed during these inductions; no induction
+on a disjunction or a compound formula is used.
+
+\begin{lemma}[A positive boundary: arbitrary zero-start counter recursion]
+\label{fc:zero-start-lemma}
+In any such equational presentation, the gate gives a general zero-start
+counter recursor as a macro:
+\[
+ L(n;u,v.h)
+   :=B\bigl(Sn;r,s.G(r,h[Pr/u,s/v])\bigr),
+ \tag{Zero-start macro}\label{fc:zero-start}
+\]
+with all new bound variables fresh. It satisfies
+\[
+ L(0;u,v.h)=0,\qquad
+ L(Sn;u,v.h)=h[n/u,L(n;u,v.h)/v].
+\]
+\end{lemma}
+
+\begin{proof}
+Let $H(r,s)=G(r,h[Pr/u,s/v])$ be the fixed internal update. The gate
+equations and $P(Sr)=r$ give
+\[
+               H(0,s)=0,\qquad H(Sr,s)=h[r/u,s/v].
+\]
+Thus $B_H(0)=S(H(0,0))=1$ and
+$B_H(1)=H(0,B_H(0))=0$. The latter identity is the base equation for
+$L(n)=B_H(Sn)$. At a successor,
+\[
+ L(Sn)=B_H(S(Sn))=H(Sn,B_H(Sn))=h[n/u,L(n)/v].
+\]
+No further induction is used after the gate identities have been proved.
+\end{proof}
+
+These statements do not conflict with Theorem~\ref{fc:B-theorem}:
+their macros remain $B$-terms. In particular, fixed-modulus counting
+and fixed finite-state controls do not yield a numerical equality
+test for two unbounded independent inputs.
+
+The theorem does not settle whether every unary primitive-recursive
+function is represented, because its conclusion imposes no restriction
+on unary functions. It also does not rule out formula-defined comparison
+relations: the source already has logical equality $a=b$, which must
+not be confused with a term returning its numerical characteristic.
+This term theorem alone leaves quantified operation graphs outside its
+scope. Section~\ref{sec:relational-obstruction} adds a proof-theoretic
+argument and excludes arbitrary finite-dimensional relational
+bi-interpretations for the ordinary tied-seed theory with its stated
+existential-free axiomatization.

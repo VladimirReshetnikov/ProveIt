@@ -1,0 +1,91 @@
+Independent review: positive_iteration_obstruction.tex
+====================================================
+
+Verdict
+-------
+The standard-model zero-profile theorem and its stated term-definability
+consequences are correct for the exact staged language {variables, 0, S,
+R+}, where R+(n,a;v.h) performs n+1 applications of the fixed update.
+I found one correction needed in the later graph-definition observation:
+add successor separation 0 != S(m) to coverage and injectivity before
+claiming its graph is total and unique.
+
+Structural induction and binding
+--------------------------------
+Take all bound update variables fresh for the counter, seed, and passive
+parameters (or track free-variable identities under ordinary alpha
+renaming). The induction hypothesis for the fixed body h treats its state
+variable v and every passive parameter as free arguments. Its zero set is
+either empty or the simultaneous vanishing of a fixed subset H of those
+arguments. A nested iterator within h causes no gap: h is a structurally
+smaller fixed term, so its complete denotation, including the nested
+iteration, is covered by the induction hypothesis.
+
+At a fixed valuation of the passive parameters, let k be the conjunction
+of their required zero conditions. If v is absent from H, one update sets
+the zero-status bit to the constant k. If v is in H, it sends the previous
+zero-status bit b to b AND k. Both maps are idempotent after one application.
+If h has empty zero set, the updated state is always nonzero. Thus an
+arbitrary positive number of iterations has exactly the profile claimed
+in the text. If v is present, a never-zero seed remains never zero; this
+justifies the absorbing-bottom convention. If v is absent, the seed's
+profile truly drops out.
+
+The outer counter n may share free variables with the seed and update.
+This is harmless: first fix the entire valuation. It fixes the update map,
+the seed, and a nonnegative counter value, so there is at least one update.
+Any variable appearing separately in h or a is still present in H or the
+seed profile when required. Only the numerical value of the outer counter
+as an iteration count drops out. Suggested clarification: "The counter's
+value contributes only the guarantee of at least one update; variables
+that also occur in the seed or update retain their ordinary profiles."
+
+Successor has no zeros; zero has all inputs as zeros; a variable vanishes
+exactly at its own zero coordinate. These base cases and the update
+argument close structural induction for every fixed term. No internal
+induction or standard-domain assumption has been smuggled into a claimed
+arbitrary-model theorem: the result is explicitly a standard-N theorem.
+
+Consequences
+------------
+For one free input, the only possible zero sets are empty, {0}, and N.
+Predecessor has zero set {0,1}; the 1-at-zero, 0-at-positive zero-test has
+zero set N minus {0}. Neither is term-definable in this language. A term
+compiler for general initialized iteration would yield that zero-test
+from constant update zero and seed one, hence is impossible. The claim is
+properly restricted to terms, not relational definitions or changed domains.
+
+Graph-definition correction
+---------------------------
+For each fixed old-language update h, the graph
+  (n=0 AND z=a) OR exists m (n=S(m) AND z=R+(m,a;h))
+is total by coverage. It is unique using successor injectivity within the
+second branch and successor separation to exclude overlap of the two
+branches. Coverage and injectivity alone do not exclude that overlap.
+
+There is an explicit countermodel showing the missing separation matters.
+Take domain {0,1}, interpret zero by 0, and let successor exchange 0 and 1.
+Interpret every staged positive iterator as
+  R+(0,a;h) = h(a),
+  R+(1,a;h) = h(h(a)).
+Every unary function h on a two-element set satisfies h^3=h (the four maps
+are identity, exchange, constant zero, and constant one). Therefore both
+R+ equations hold at both counter values, for each parameter valuation,
+and the staged definition works for every fixed nested description.
+Successor is injective and coverage holds, but zero is a successor.
+For n=0, a=0, and h constant one, the proposed graph holds for z=0 by its
+first branch and z=1 by its second branch with m=1. It is not unique.
+
+After adding separation explicitly, the graph observation is correct.
+The report appropriately does not infer full bi-interpretability from it:
+induction after graph expansion and closure under updates using the new
+functions remain separate obligations. The logical bootstrap's dependence
+on a selector is likewise correctly identified as a possible circularity.
+
+Scope discipline
+----------------
+The theorem ceases to apply after adjoining a zero-test primitive or any
+other operation whose standard zero set violates the profile invariant.
+No claim about such extensions, arbitrary relational interpretations,
+finite-dimensional quotients, or changed numerical domains follows from
+this proof alone. The existing exact-scope paragraph states that correctly.

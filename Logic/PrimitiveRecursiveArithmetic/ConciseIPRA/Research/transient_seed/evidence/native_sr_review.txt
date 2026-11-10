@@ -1,0 +1,165 @@
+INDEPENDENT REVIEW: NATIVE SR BOOTSTRAP AND DIRECT CHECKER
+========================================================
+
+Status
+------
+The native successor-seeded scalar bootstrap is closed by the restricted
+Boolean-antecedent implication lemma. The earlier open-status concern
+about needing a selector before predecessor no longer applies. This is an
+independent assistant review of written proofs, not a proof-assistant
+formalization or external human review.
+
+1. Native logical bootstrap
+---------------------------
+The starting rules are SR0/SRS, Hyp, equality transport, QE, DE, case DI
+for every matrix, and progress DI only for literal equations.
+Unconditional numerical CASE for arbitrary native formulas and contextual
+literal-equation induction are derived directly by DI, DE, a supplied zero
+premise, and QE. Their target term may occur in retained assumptions; only
+the new eigenvariable is fresh.
+
+Reflexivity comes from two copies of R(1,0;constant t)=t. Under 0=1,
+T(0,a,b)=Sa and T(1,a,b)=b imply Sa=b for arbitrary a,b and hence every
+equation. These facts require no ordinary logical interface.
+
+Let Z(n)=T(n,0,0), N(n)=Z(R(n,0;Z)), p2(n)=N(Sn).
+Unconditional CASE proves Z^3r=Zr and N(Zr)=Zr. Computation gives
+N0=0, N(Sn)=Z(Nn), hence N(S^2n)=Nn. Therefore
+
+  p2(S(Zr)) = N(S^2(Zr)) = N(Zr) = Zr.
+
+This finite reflection, also valid at 0 and 1, is not global successor
+injectivity. For b,c of these Boolean forms and E=(s=t), define
+
+  Imp(b=c,E) := D_{w,z}(T(z,b,s)=T(z,c,t)),  w unused.
+
+Its zero matrix is Sb=Sc; applying p2 reflects that into b=c. Its
+successor matrix is E. Case DI therefore gives the restricted implication
+introduction rule, and DE/QE at 1 give its elimination rule. No generic
+implication or predecessor is being presumed.
+
+If b=Zr and Gamma,b=0 |- E and Gamma,b=1 |- E, choose x fresh for all
+retained data and use unconditional CASE on A(x)=Imp(b=Zx,E). A(0) uses
+the b=1 branch; A(Sz) uses the b=0 branch. Specialization at x=r yields
+Imp(b=Zr,E), whose antecedent is reflexive. This proves the contextual
+Boolean case rule with arbitrary retained Gamma and an EQUATION conclusion.
+The distinction between fresh x and target r is essential and is respected.
+
+2. Comparator/predecessor dependency audit
+------------------------------------------
+All genuinely needed case splits in the arithmetic construction fit that
+rule: N and L are literally Z applied to a term, and each split concludes
+an equation. The ordinary presentation's early range disjunctions are
+unnecessary in the native proof. In particular, replace the use of the
+range of j/M in equation (M) by the native equation
+
+  j^3(j(u))=j(u).
+
+Prove it by unconditional CASE on u. At zero it is a finite cycle
+calculation. In the successor case, split the Boolean N(Sz), obtaining
+j(Sz)=0 or j(Sz)=2; both branches are finite cycle calculations. Since
+M(n)=j(j(R(n,0;j))), this gives M(S^3n)=M(n). No trit-range disjunction or
+trit case rule is needed.
+
+The scaling invariants use only their equation induction hypotheses.
+Ramp-invariant, Ramp-step, Ramp-triple, Factor-cases/Factor, and comparator
+persistence split only N terms. Persistence's impossible branch yields
+0=1 and uses numerical equation explosion. The strict-next-diagonal and
+Gate induction split L terms, again with equation conclusions. Down,
+Period, Double, the final diagonal, and the initializer compiler are
+ordinary equation reasoning/induction. Conditional row descriptions in
+the ordinary text are read as derivable native sequents, not as primitive
+native implication formulas. Each passive parameter remains fixed during
+its induction; diagonal parameter substitution occurs afterward.
+
+Thus P0=0 and P(Sa)=a are native theorems. The compiler
+I(n,a;u.h)=P(R(n,a;v.S(h[Pv/u]))) then gives ordinary initialization and
+C. The established native selector/gate reconstruction supplies the full
+intuitionistic interface only after this point. There is no remaining
+coverage/selector bootstrap cycle.
+
+3. Direct checker change
+------------------------
+The required arithmetic change from the initialized-I checker is exactly
+
+  h = [s, i(u, i([*n,t,u],d=1),1) if n else [t]]
+
+in place of the former zero branch `else t`. The public decoder now reads
+ternary numerical nodes as successor-seeded scalar R. Unary numerical
+nodes still read as S, now the abbreviation R(0,a;constant 0); two update
+slots still alias the same single state, not a counter/state pair.
+All logical branches, freshness checks, and restrictions are unchanged.
+
+For a false counter, the generated raw equation is [s,[t]]. At numerical
+sort, the source seed t is read below two dummy zero slots from its R
+constructor. The copied t on the right is read below one dummy zero slot
+from its new S wrapper. This difference is harmless only after the
+fresh-parameter specialization used by the Supply proof, and must not be
+ignored.
+
+At the common tail, a positive coordinate that is a dummy zero in the
+source may become the fresh parameter w in the right copy. Existing
+negative rigid parameters retain their values. Substituting w=0 makes all
+these additional outer coordinates zero in both copies. Structural
+induction on t, keeping any genuinely internal R state symbolic, then
+identifies the two seed terms. Successor adds another dummy zero on both
+sides of each corresponding recursive comparison; a binary numerical
+annotation is still zero; a nested R has the same two state aliases on
+both sides. Thus the decoded generated equation H satisfies
+
+  H(0) = [R(0,a;h) = Sa],
+
+up to these proved zero-extension identities. This is SR0 throughout the
+source domain, with any old rigid parameters still free. The new wrapper
+does not require its seed copies to agree before w=0.
+
+For a true counter, the code is unchanged apart from the interpretation
+of R. The eager inner i([*n,t,u],d=1) forces a genuine unary counter and
+checks the predecessor R term before allocation, even when the update
+ignores the recursive state. Its successful root check excludes meaningful
+out-of-scope updater coordinates; the subsequent opening therefore is
+capture-free substitution of that predecessor R term. The source
+successor's extra dummy zero slot changes no meaningful surviving
+coordinate. After zero extension, H(0) is exactly SRS. For the iterable
+profile, the additional valid singleton counter {"":value} denotes S0;
+its starred predecessor is the empty-string zero, eagerly normalized.
+The ignored dictionary value has no numerical role.
+
+The fresh-witness Supply proof is therefore still valid: the old context
+and goal exclude w, substitute w:=0 in the continuation and cut the known
+SR computation instance H(0). H(w) need not be true at every w.
+Canonical arithmetic instances can still be supplied as constant-in-w
+hypotheses, preserving completeness. All current mathematical guards remain
+appropriate: initial/major checking, eager predecessor validation,
+image checking at numerical root, pre-allocation goal scope, and the
+literal-equation-only progression test. No guard should be deleted merely
+because the new SR zero branch has a successor wrapper.
+
+4. Other reviewed boundaries
+-----------------------------
+The iterable alias argument remains valid: empty string and empty object
+normalize to []; the object with sole empty key normalizes to [[]]. All
+nonempty string/key traversals fail; dictionaries cannot survive genuine
+major slicing or DI integer lookup. The direct decoded-step soundness
+argument is necessary; whole-packet erasure need not preserve neutral
+versus matched elimination choices.
+
+The ordinary completion and whole-domain interpretation proofs have no
+additional gap found. Explicitly anchor S(a)=R(0,a;0) by its zero
+computation before staged recursion uniqueness. Retain independent
+initializer/passive variables during uniqueness induction, and substitute
+actual dependent arguments only afterward. Both domains remain the whole
+numerical domain and equality remains actual equality.
+
+Finite SR macro evaluations and executable certificate tests supplement
+these written arguments. They do not replace the arbitrary-element
+induction proofs or a future Lean/Rocq formalization.
+
+ACTUAL BOOTSTRAP CERTIFICATES
+----------------------------
+The independent reviewer also inspected decoder_closure, decoder_at, and
+restricted_implication_identity in the untrusted SR producer. These expand
+finite SR computations, equality transport, and native CASE. The implication
+proof genuinely uses its retained Sb=1 hypothesis and the checked p2 decoder;
+the compound closure uses case mode with fresh names. Thus the certificates
+exercise the critical bootstrap mechanism, not only numerical examples.

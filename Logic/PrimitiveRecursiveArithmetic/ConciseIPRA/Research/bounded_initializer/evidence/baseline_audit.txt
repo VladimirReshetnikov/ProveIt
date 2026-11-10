@@ -1,0 +1,89 @@
+CURRENT IPRA BASELINE AUDIT
+Snapshot: VladimirReshetnikov/ProveIt fb2dbd2a33c6b132671a54b029d0bf3cd98c633d
+Inputs: 13 direct ZIP archives independently pinned by parent to Git blob hashes.
+
+1. Measured coordinate minima among complete standalone public drivers
+   Normalized bytes: 616, uniform_predecessor/ancillary/checker_bytes.py.
+      Other coordinates: 269 significant tokens, 311 AST nodes; raw 616; gzip9 366.
+   Significant tokens: 268, uniform_predecessor/ancillary/checker_ast.py
+      and uniform_predecessor/reference/matched/baseline_tokens.py.
+   AST nodes: 300, uniform_predecessor/ancillary/checker_ast.py.
+      Other coordinates: 649 normalized bytes, 268 tokens; raw 648; gzip9 367.
+   Raw bytes: 616, same byte winner.
+   Raw gzip9 FYI: 366, byte winner and matched/baseline_joint.py.
+
+Measure-current script independently parses all extracted .py and all nested .zip
+members, deduplicating source SHA256. It finds 370 distinct Python sources, 165
+nominal public drivers, zero parse errors. Driver classification is an inventory
+aid, not a correctness theorem. Every non-driver below at least one coordinate
+was inspected: all are build, reproduction, source measurement, archive check,
+or untrusted format conversion helpers. None is an overlooked complete checker.
+The metric convention is strip genuine docstrings, ast.unparse entire module,
+append newline; count bytes, significant tokens, AST nodes; gzip level 9 mtime 0.
+See current_metrics.json and measure_current.py.
+
+2. The byte and AST minima are different complete programs. No single source
+realizes 616/268/300. A strict improvement below the coordinate envelope would
+require at most 615 normalized bytes, 267 tokens, 299 AST nodes in one source.
+This is not a mathematical lower bound; it is an achieved finite-corpus envelope.
+
+3. All minimum attainers live in uniform_predecessor. Their gain versus old
+672/277/311 claims comes substantially from a changed public rejection contract:
+accept exactly when process exits zero and prints ACCEPT. Uncaught exceptions
+reject. No explicit REJECT printing / try-except wrapper remains. This is an
+honest standalone checker under that contract, but any measured mathematical
+improvement must compare a matched rejection interface. Main uniform_predecessor
+629/269/307 is not the byte leader; ancillary sources and matched baselines count.
+
+4. Newer main-source records that would be missed by reading old abstracts:
+   affine_arity/code/checker.py = 648 bytes, 283 tokens, 326 AST, gzip385;
+   arity_calculus separate envelope = 659 bytes, 273 tokens, 308 AST;
+   ipra_research loop = 749 bytes, 276 tokens, 305 AST.
+These do not reset the true current baseline because uniform_predecessor is lower.
+
+5. Independent execution: both minimum-attaining checkers were run against all
+31 supplied uniform_predecessor cases in normal and -O Python. All 124 expectations
+passed. This corroborates these examples only; it is not a formal soundness proof.
+Results are in baseline_validation.json.
+
+6. Mathematical scope:
+The compact programs are not merely equation proof checkers. Their inherited
+Choice-DI presentation has equations, scalar initialized iteration, paired
+D_xy A := exists x (A(x,0) -> forall y A(x,y)), auxiliary Q_y A := A(0)->forall y A,
+unrestricted equality transport, paired elimination, case introduction for any
+formula, and progress introduction for literal equations. Numerical selectors
+are used recursively through native formula syntax, with padding to align binder
+depths, to define all ordinary intuitionistic connectives. Quantifier macros
+include the required zero conjunct for universal quantification.
+
+The ordinary realization T_I explicitly includes numerical coverage and the
+falsity bridge (0=S0)->bottom. The latter cannot be omitted merely because native
+explosion derives every native formula from 0=S0: a purely positive equational
+arithmetic language otherwise admits a singleton structure.
+
+The claimed whole-domain bi-interpretability is stronger than standard-number
+agreement: scalar predecessor and actual equality reflection are established
+before pairing; each finite PR definition is compiled into scalar iteration;
+equation induction proves uniqueness internally, and both composites preserve
+operations via x=y. Native formula composites additionally need the converse D
+macro equivalence. Inspected written arguments explicitly address these points.
+No new decisive defect was established by this scoped audit. No Lean/Rocq
+verification is supplied. It would be dishonest to call the inherited universal
+claims machine verified solely because examples pass.
+
+7. Runtime caveat:
+The AST-minimal opener dispatches using try/except over iterable JSON input.
+Malformed nonempty strings can recurse into themselves until CPython's recursion
+limit raises. Thus completeness/soundness claims should use the declared finite
+CPython process contract and canonical inputs, or provide a structurally total
+parser profile. The 616-byte explicit zero-product list predicate does not rely
+on that iterable/string behavior; it is the cleaner byte baseline.
+
+8. Routes already present, so do not call these newly invented:
+ - one-child D and threefold Q representation with depth d+5-arity;
+ - affine d+arity+1 depth law plus exact introduction guard;
+ - local rather than global freshness floor;
+ - iterative continuation checker;
+ - removing explicit REJECT driver;
+ - generated arithmetic assumptions rather than trusted computation recognition;
+ - zero-product array test, branch-local expression factoring.

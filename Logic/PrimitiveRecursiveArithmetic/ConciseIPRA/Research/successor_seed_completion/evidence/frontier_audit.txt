@@ -1,0 +1,65 @@
+Audit of current ProveIt/docs/drafts snapshot
+==========================================
+Commit: 2fdcf5bf988bead821c416649f713f98b7ed8776
+Runtime: CPython 3.12.14
+Nine top-level ZIPs; recursive embedded-ZIP scan: 415 Python source occurrences,
+164 distinct source SHA-256 values, zero Python parse failures.
+
+Whole executable modules, after docstring removal and ast.unparse plus newline:
+  normalized tokens: 281
+  full AST nodes:    315
+  normalized bytes: 685
+The coordinates are attained by different programs. Generated-assumptions
+code/checker.py has 281/318/685; checker_ast.py has 283/315/710. Guarded
+kernel_tokens.py also has 281 tokens but 325 AST nodes and 739 bytes.
+All fourteen distinct non-checkers with a coordinate below this envelope were
+inspected. They are compilation wrappers, source-measurement utilities,
+package-integrity checks, or test drivers invoking an external checker.
+Their full provenance and classifications appear in current_corpus_metrics.json.
+These are observed upper bounds, not a theorem of absolute minimality.
+
+Novelty exclusions
+------------------
+Generated assumptions: computation axioms become supplied local assumptions
+with a provable zero instance, discharged by substitution and cut. Each
+non-hypothesis command uses the same continuation. Failed endpoint requests
+retain the outstanding goal and insert only truth.
+Guarded elimination: an unmatched Eq/Q elimination is a neutral continuation;
+no forbidden equality is asserted. Minor source variants mix I and R recursors.
+Named specialization: QE restricted to names and numeral one preserves raw
+native sequents, with an explicit proof expansion N+9q; direct checker is larger.
+Shared continuation: combines endpoint certificates with focused/elimination-only
+assumptions and one continuation; modest implementation, no new arithmetic basis.
+Atomic transport: already known in embedded fixed-position history; guarded
+checker 304/345/714, unrestricted control 297/335/698.
+Embedded all-starts: deterministic atomic-progress/compound-base DI plus
+QE from E(r) to E(I(r,s;u.Su)); arbitrary raw formula normalization and iPRA
+bi-interpretation are supplied, but measured checker is larger.
+Embedded fixed-seed obstruction extends to updates with counter access.
+
+Scoping investigation
+---------------------
+The arity increments (2,1,4) deliberately unify three sorted pairs:
+  unary: Q / successor;
+  binary: equation / checked numerical zero annotation;
+  ternary: D with two binders / scalar iterator whose state has two aliases.
+Giving the numerical iterator only one slot while retaining two for D breaks
+the shared traversal and adds sort-specific code.
+The eager opening i([*n,t,u],d=1) is essential twice: it forces a nonzero raw
+counter to be unary and validates update/seed/predecessor scope even when the
+update ignores its recursive image. Its deletion admits false equations.
+The recursive image check inside the substitution helper prevents capture.
+For example, a purely syntactic capture-permitting specialization could change
+forall y exists x (x != y) into exists x (x != x). Goal matching alone cannot
+replace numerical-root validation of arbitrary QE targets or DI witnesses.
+
+A branch-local fresh floor removes mutable global state. The opener is nested
+inside c(a,g,k=0), major recursive calls retain k, and continuation calls pass
+k-1. It is sound after certificate reserialization because no eigenparameter
+internal to a major subproof can occur in its checked outer end-sequent.
+Measured source local_floor.py has 284/319/681: four bytes smaller but more
+syntax, so it does not beat the complete current envelope. No universal
+proof-certificate translator or full test suite is supplied for this exploratory
+variant; it should not be presented as a validated deliverable.
+Tail-call-to-loop conversion was also examined and failed to improve metrics.
+No sound significant deletion of scoping/arity machinery was established.

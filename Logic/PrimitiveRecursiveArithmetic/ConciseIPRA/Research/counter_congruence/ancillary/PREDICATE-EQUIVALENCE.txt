@@ -1,0 +1,114 @@
+JSON PREDICATE SPELLINGS: UNIVERSAL EQUIVALENCE ARGUMENT
+======================================================
+
+This note concerns only the three small spelling variants of the archived
+generated-assumptions principal checker. It does not introduce a new theory,
+new arithmetic rule, new scope invariant or a new soundness proof for the
+inherited kernel. All inference and substitution code is byte-for-byte
+unchanged except for the list predicate and the previously reviewed JSON
+import spelling.
+
+Trusted setting
+---------------
+The complete standalone program calls the ordinary Python standard-library
+json.load without hooks or custom parse functions. JSON decoding therefore
+creates exact built-in instances of list, dict, str, int, float, bool and
+NoneType. The checker subsequently makes further lists and integers; it
+does not evaluate submitted Python, invoke submitted callbacks or construct
+list subclasses. Its byte-string depth table supplies integer offsets,
+not numerical-tree objects. No global name json, list, type or isinstance
+is reassigned by either checker. JSON object keys such as '__class__' do
+not install Python attributes or change a dict's runtime class.
+
+Exact-class predicates
+----------------------
+On those reachable values, each of
+  isinstance(a, list)
+  a.__class__ is list
+  type(a) is list
+has the same Boolean value. All exact built-ins have the usual __class__
+attribute, and no reachable list subclass creates a distinction between
+instance and exact-class tests. Therefore replacing the predicate leaves
+every opener branch, returned value and rejection unchanged. This is a
+property of this specified input/runtime contract, not of arbitrary Python
+objects passed to an externally exposed helper.
+
+The zero-product predicate
+--------------------------
+Consider replacing the predicate by a * 0 == []. Its behavior is:
+
+  a's exact runtime class       New predicate                 Old behavior
+  list                          True (a*0 is [])               list branch
+  int, float, bool              False                         scalar branch
+  str                           False (a*0 is '')               scalar branch
+  dict, NoneType                raises TypeError              scalar comparison raises
+
+For floats, NaN and both infinities are included: multiplication by zero
+may produce NaN, but a numeric value does not compare equal to an empty
+list. The computation does not alter a; retained numerical aliases and
+the following k <= a < d comparison therefore use exactly the original
+value. Strings compare unequal to [], then both programs fail at the
+same incompatible scalar comparison. For dict and NoneType the new
+predicate raises earlier, but the original predicate would be false and
+its immediately following k <= a comparison always raises TypeError.
+
+There is no exception handler inside the opener or proof dispatcher that
+could recover from one of these failures. Both reach the same outer
+REJECT handler and nonzero exit. The exception message/traceback can
+differ for dict or None, but that is not part of the declared ACCEPT/
+REJECT protocol. On every other reachable class the predicate returns
+the same Boolean and the remainder of the program is unchanged.
+
+Induction on the finite executed calls now gives equality of the accepted
+certificate language and of successful returned values. In rejected
+traces, earlier rejection of dict/None does not turn a rejection into an
+acceptance. As with the inherited completeness claim, this argument uses
+unbounded finite resources; it does not promise identical allocation,
+running time or behavior at a physical resource limit.
+
+Measurements
+------------
+Unchanged whole-program normalizer, CPython 3.12.14:
+
+  archived principal    281 tokens / 318 AST / 685 bytes
+  exact_class.py        280 tokens / 321 AST / 680 bytes
+  exact_type.py         281 tokens / 322 AST / 676 bytes
+  zero_product.py       281 tokens / 322 AST / 672 bytes
+
+All variants include the JSON import change. Exact class improves the
+old token coordinate by one. Zero product improves the old byte
+coordinate by 13 (about 1.90%). Neither improves the AST minimum of 315.
+These three predicate variants give the envelope 280 / 315 / 672. The
+separate inverted-guard profile additionally lowers AST size to 314, so the
+complete selected collection gives 280 / 314 / 672, attained by different programs. These are source-spelling changes and code-size tradeoffs; the
+more cryptic product predicate is not a cognitive or mathematical advance.
+
+Executable evidence
+-------------------
+verify.py verifies the exact source transformations, measures
+the complete programs, replays the inherited 14 positive and 14 negative
+cases plus three malformed inputs under ordinary and optimized Python,
+and compares all verdicts and exit codes with the unchanged baseline.
+The portable suite runs all five selected variants and both frozen baselines: 62
+runs per program, 434 total runs. Each of the three inherited soundness-guard
+mutation controls is run against each selected variant (15 controls); every
+genuine checker must reject its invalid packet and every targeted guard
+deletion must accept it.
+
+Fifty-seven deterministic opener-boundary situations cover every JSON
+runtime class, finite numeric aliases, NaN/infinities, nested invalid
+nodes, scope failure and image substitution. All seven selected programs agree
+on successful values and rejections in the portable suite. These finite checks supplement
+the exact runtime-type argument above.
+
+The occurrence search found no exact or docstring-stripped AST-equivalent
+copy of any candidate in 15 distinct ZIP contents, 384 Python source
+occurrences and 199 distinct source hashes: current, recursively embedded
+and separately retrieved historical fixed-position sources. No novelty
+is claimed for Python's class, type or multiplication idioms, and the
+search is not an algorithm deciding arbitrary Python semantic equivalence.
+
+Exact hashes, measurements, inputs and run records are preserved in
+validation.json. This argument preserves whatever mathematical
+soundness and completeness the inherited checker already has; it does
+not independently formalize that inherited metatheory in Lean or Rocq.

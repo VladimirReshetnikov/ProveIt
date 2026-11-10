@@ -1,0 +1,320 @@
+{
+  "commit": "0300a290bedee5019c974291850b798378438b2e",
+  "selection": "Unique source hashes not selected by the public-ACCEPT/stdin heuristic and strictly below at least one of 672 normalized bytes, 277 significant tokens, or 311 AST nodes.",
+  "review_method": "Every selected complete source was read statically; no inspected source was executed. Source bytes were matched to the supplied SHA-256 identities.",
+  "count": 23,
+  "standalone_complete_checkers_omitted": 0,
+  "classification_counts": {
+    "validation_wrapper": 3,
+    "pdf_build": 6,
+    "reproduction_wrapper": 7,
+    "integrity_checker": 2,
+    "metrics_driver": 1,
+    "certificate_converter": 1,
+    "proof_tree_counter": 1,
+    "checker_generator": 1,
+    "archive_builder": 1
+  },
+  "conclusion": "None of these 23 sources is a standalone complete proof checker. No smaller complete checker was omitted by the driver filter among sources capable of improving a recorded coordinate minimum.",
+  "sources": [
+    {
+      "sha256": "dfad027e2cd174294141748b01bf8dc266453c11d4cd49ae5674448c302fd389",
+      "location": "ipra_atomic_transport_2026-11-10.zip!ipra_atomic_transport_2026-11-10/tests/check_control.py",
+      "classification": "validation_wrapper",
+      "reason": "Runs code/unrestricted_control.py on a finite fixture set via subprocess; no inference checker in this file.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 1175,
+        "normalized_tokens": 274,
+        "ast_nodes": 277
+      }
+    },
+    {
+      "sha256": "1aabd3c90c7ca38f7305daa12cc3d3c74129b5362e84686f8c75d0e68b77fdb0",
+      "location": "ipra_constructed_computation_2026-11-10.zip!ipra_constructed_computation_2026-11-10/sources/ipra_elimination_assumptions_2026-11-09.zip!ipra_elimination_assumptions_2026-11-09/verify.py",
+      "classification": "validation_wrapper",
+      "reason": "Checks a file manifest and invokes measure_complete_sources.py and verify_kernels.py; summarizes their results.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 1693,
+        "normalized_tokens": 310,
+        "ast_nodes": 307
+      }
+    },
+    {
+      "sha256": "bf2ec376b48d959d9211f8a474f6ac5d1154a4fde85bc560f4dc2b84d0226ab8",
+      "location": "ipra_constructed_computation_2026-11-10.zip!ipra_constructed_computation_2026-11-10/sources/ipra_endpoint_certificates_2026-11-09.zip!ipra_endpoint_certificates_2026-11-09/build.py",
+      "classification": "pdf_build",
+      "reason": "Invokes pdflatex on report.tex; contains no proof checking.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 263,
+        "normalized_tokens": 56,
+        "ast_nodes": 52
+      }
+    },
+    {
+      "sha256": "16df88d046c784e8db4d4f81f51b791bca7cc02346affd62159034973f6fc887",
+      "location": "ipra_constructed_computation_2026-11-10.zip!ipra_constructed_computation_2026-11-10/sources/ipra_generated_assumptions_2026-11-10.zip!ipra_generated_assumptions_2026-11-10/sources/ipra_all_starts_2026-11-10.zip!ipra_all_starts_2026-11-10/verify.py",
+      "classification": "validation_wrapper",
+      "reason": "Compares executable ASTs of two other checker files, then invokes implementation/verify.py.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 873,
+        "normalized_tokens": 178,
+        "ast_nodes": 186
+      }
+    },
+    {
+      "sha256": "978cb2e2dbbdbd554934d86bf441041e850e96ac4a8d2afdf8885354ee6bec0a",
+      "location": "ipra_constructed_computation_2026-11-10.zip!ipra_constructed_computation_2026-11-10/sources/ipra_generated_assumptions_2026-11-10.zip!ipra_generated_assumptions_2026-11-10/sources/ipra_named_specialization_2026-11-10.zip!ipra_named_specialization/reproduce.py",
+      "classification": "reproduction_wrapper",
+      "reason": "Invokes test_qe.py/test_kernels.py and imports the separate source-measure module; no inference semantics.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 1305,
+        "normalized_tokens": 230,
+        "ast_nodes": 215
+      }
+    },
+    {
+      "sha256": "734fd069159b078e1f8542204062e2d5c1f7e6ecf437090ce5a0be3bb15d5d69",
+      "location": "ipra_constructed_computation_2026-11-10.zip!ipra_constructed_computation_2026-11-10/sources/ipra_generated_assumptions_2026-11-10.zip!ipra_generated_assumptions_2026-11-10/sources/ipra_named_specialization_2026-11-10.zip!ipra_named_specialization/verify_archive.py",
+      "classification": "integrity_checker",
+      "reason": "Verifies file lengths and SHA-256 hashes against MANIFEST.sha256.json; not logical proof checking.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 767,
+        "normalized_tokens": 181,
+        "ast_nodes": 184
+      }
+    },
+    {
+      "sha256": "a713e55016bfc24b22ca12b398fd7214b5877d74d1e5fd5f5e49de14e867027c",
+      "location": "ipra_constructed_computation_2026-11-10.zip!ipra_constructed_computation_2026-11-10/sources/ipra_generated_assumptions_2026-11-10.zip!ipra_generated_assumptions_2026-11-10/sources/ipra_scalar_countdown_2026-11-09.zip!ipra_scalar_countdown_2026-11-09/build.py",
+      "classification": "pdf_build",
+      "reason": "Locates pdflatex and compiles report.tex; no proof checking.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 371,
+        "normalized_tokens": 74,
+        "ast_nodes": 74
+      }
+    },
+    {
+      "sha256": "f3d33834ab4c889095dc1a777924e904660aa8ec549a1101770be5a4207889dc",
+      "location": "ipra_constructed_computation_2026-11-10.zip!ipra_constructed_computation_2026-11-10/sources/ipra_generated_assumptions_2026-11-10.zip!ipra_generated_assumptions_2026-11-10/sources/ipra_scalar_countdown_2026-11-09.zip!ipra_scalar_countdown_2026-11-09/reproduce.py",
+      "classification": "reproduction_wrapper",
+      "reason": "Invokes three separate validation and measurement scripts; delegates all theorem checking.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 392,
+        "normalized_tokens": 76,
+        "ast_nodes": 78
+      }
+    },
+    {
+      "sha256": "fb797da36e2ec34b1d663c24b3a4f024eba8ab0eb96e2b75fba7b13622d566c2",
+      "location": "ipra_constructed_computation_2026-11-10.zip!ipra_constructed_computation_2026-11-10/sources/ipra_generated_assumptions_2026-11-10.zip!ipra_generated_assumptions_2026-11-10/sources/ipra_scalar_feedback_2026-11-09.zip!ipra_scalar_feedback_2026-11-09/code/measure_sources.py",
+      "classification": "metrics_driver",
+      "reason": "Imports source_measure.metrics and measures seven separate checker files; no inference engine.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 1543,
+        "normalized_tokens": 303,
+        "ast_nodes": 289
+      }
+    },
+    {
+      "sha256": "e20874557e749ec486989d93d0225ff8a15017ad44e1327aa679e75fbe0ed559",
+      "location": "ipra_constructed_computation_2026-11-10.zip!ipra_constructed_computation_2026-11-10/sources/ipra_generated_assumptions_2026-11-10.zip!ipra_generated_assumptions_2026-11-10/sources/ipra_scalar_feedback_2026-11-09.zip!ipra_scalar_feedback_2026-11-09/verify.py",
+      "classification": "reproduction_wrapper",
+      "reason": "Checks manifest hashes and invokes measurement and validation scripts; no standalone inference rules.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 1539,
+        "normalized_tokens": 283,
+        "ast_nodes": 294
+      }
+    },
+    {
+      "sha256": "7ed14cdabd3bc48042c3adb406abdcb6252fe8e01d8737cc406cb4c9e019d8df",
+      "location": "ipra_constructed_computation_2026-11-10.zip!ipra_constructed_computation_2026-11-10/sources/ipra_generated_assumptions_2026-11-10.zip!ipra_generated_assumptions_2026-11-10/sources/ipra_three_schema_2026-11-09.zip!ipra_three_schema_2026-11-09/verify_archive.py",
+      "classification": "integrity_checker",
+      "reason": "Verifies exact distributed file bytes and hashes against MANIFEST.json; not logical proof checking.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 473,
+        "normalized_tokens": 113,
+        "ast_nodes": 129
+      }
+    },
+    {
+      "sha256": "a20b546e0a86259df3dabbe5ab8671869dfb4f7217e6d27e55c790bbf374886e",
+      "location": "ipra_constructed_computation_2026-11-10.zip!ipra_constructed_computation_2026-11-10/sources/ipra_guarded_elimination_2026-11-10.zip!ipra_guarded_elimination_2026-11-10/reproduce.py",
+      "classification": "reproduction_wrapper",
+      "reason": "Invokes measurement, tests, optional PDF build, and successor-variant test scripts.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 365,
+        "normalized_tokens": 88,
+        "ast_nodes": 87
+      }
+    },
+    {
+      "sha256": "fa6f39f741e6e2294d0e45550401ce538aa8f0bec424c76e862afa54fb003ad2",
+      "location": "ipra_constructed_computation_2026-11-10.zip!ipra_constructed_computation_2026-11-10/sources/ipra_shared_continuation_2026-11-10.zip!ipra_shared_continuation_2026-11-10/verify.py",
+      "classification": "reproduction_wrapper",
+      "reason": "Checks inherited arithmetic-source hashes and invokes implementation/verify.py.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 637,
+        "normalized_tokens": 118,
+        "ast_nodes": 126
+      }
+    },
+    {
+      "sha256": "40eaff7b9feef36532ae0f767ae82914cadfef1f06c12f3ab8621998e7956214",
+      "location": "ipra_constructed_computation_2026-11-10.zip!ipra_constructed_computation_2026-11-10/tests/convert.py",
+      "classification": "certificate_converter",
+      "reason": "Defines only an untrusted transformation of canonical old packet layouts; does not validate theorem derivability.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 688,
+        "normalized_tokens": 119,
+        "ast_nodes": 139
+      }
+    },
+    {
+      "sha256": "96560ece74c292c85f13eb5d87ff457681c7a9f0de429a68a937daaea8322778",
+      "location": "ipra_constructed_computation_2026-11-10.zip!ipra_constructed_computation_2026-11-10/verify.py",
+      "classification": "reproduction_wrapper",
+      "reason": "Invokes four test/audit scripts and imports separate metrics; produces an evidence receipt.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 1444,
+        "normalized_tokens": 275,
+        "ast_nodes": 260
+      }
+    },
+    {
+      "sha256": "3237ea59d8bcc6c8470ae242dea4292627947d493cf4415c0a706857c3c5335a",
+      "location": "ipra_counter_congruence_2026-11-10.zip!ipra_counter_congruence_2026-11-10/build.py",
+      "classification": "pdf_build",
+      "reason": "Expands LaTeX includes, invokes pdflatex, and copies the report PDF.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 1118,
+        "normalized_tokens": 255,
+        "ast_nodes": 264
+      }
+    },
+    {
+      "sha256": "4484f9aacdac5949f53549a13b93ae12f57cf4ba043cc717338fdab998433387",
+      "location": "ipra_counter_congruence_2026-11-10.zip!ipra_counter_congruence_2026-11-10/code/count_nodes.py",
+      "classification": "proof_tree_counter",
+      "reason": "Recursively counts rule-tagged nodes in existing fixtures and checks expected counts; does not check inference rules.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 1038,
+        "normalized_tokens": 229,
+        "ast_nodes": 232
+      }
+    },
+    {
+      "sha256": "d3886b1088da204687504fde95161166373fee825639c11a0500c199813902d0",
+      "location": "ipra_counter_congruence_2026-11-10.zip!ipra_counter_congruence_2026-11-10/reference/ipra_fixed_position_2026-11-09.zip!ipra_fixed_position_2026-11-09/build.py",
+      "classification": "pdf_build",
+      "reason": "Expands LaTeX includes, invokes pdflatex, and checks document warnings.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 1303,
+        "normalized_tokens": 255,
+        "ast_nodes": 267
+      }
+    },
+    {
+      "sha256": "0d93579080eed914be7af5c24d9165cf9365ad15c1d7110299a4afe53de0c983",
+      "location": "ipra_counter_congruence_2026-11-10.zip!ipra_counter_congruence_2026-11-10/reference/ipra_fixed_position_2026-11-09.zip!ipra_fixed_position_2026-11-09/code/build_comparison.py",
+      "classification": "checker_generator",
+      "reason": "Reads root_seed_checker.py, replaces source fragments, and writes a matched checker; requires the separate complete source and metrics module.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 1752,
+        "normalized_tokens": 220,
+        "ast_nodes": 230
+      }
+    },
+    {
+      "sha256": "df4bedc013d122a8de492f0565388eda17b21058eec609aff1174c58acdf621a",
+      "location": "ipra_successor_seed_completion_2026-11-10.zip!ipra_successor_seed_completion_2026-11-10/build.py",
+      "classification": "pdf_build",
+      "reason": "Flattens report includes/listings and invokes latexmk or pdflatex.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 1154,
+        "normalized_tokens": 231,
+        "ast_nodes": 221
+      }
+    },
+    {
+      "sha256": "0b6bc83c13a36c4e03dd058a589d11c50cc1ef683ad8143ba2fb72d3a5f60211",
+      "location": "ipra_successor_seed_completion_2026-11-10.zip!ipra_successor_seed_completion_2026-11-10/reproduce.py",
+      "classification": "reproduction_wrapper",
+      "reason": "Parses a corpus option and invokes independent measurement, test, and numerical-diagnostic scripts.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 826,
+        "normalized_tokens": 135,
+        "ast_nodes": 134
+      }
+    },
+    {
+      "sha256": "730c55a45fabd28142bb8a6cba9789f39811f2cb4275c9eeb755ec3af897b119",
+      "location": "ipra_transient_seed_2026-11-10.zip!ipra_transient_seed_2026-11-10/build.py",
+      "classification": "pdf_build",
+      "reason": "Invokes pdflatex three times and reports compilation status.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 399,
+        "normalized_tokens": 85,
+        "ast_nodes": 83
+      }
+    },
+    {
+      "sha256": "41e0c6cf72f1523a013cf35f8147e41a4f19d2dc0de2f8ccff39bb11166ece2f",
+      "location": "ipra_transient_seed_2026-11-10.zip!ipra_transient_seed_2026-11-10/package.py",
+      "classification": "archive_builder",
+      "reason": "Builds hashes and a ZIP archive of deliverables, then checks ZIP integrity; no theorem checker.",
+      "standalone_complete_checker": false,
+      "static_review_complete": true,
+      "metrics": {
+        "normalized_bytes": 1119,
+        "normalized_tokens": 304,
+        "ast_nodes": 296
+      }
+    }
+  ]
+}

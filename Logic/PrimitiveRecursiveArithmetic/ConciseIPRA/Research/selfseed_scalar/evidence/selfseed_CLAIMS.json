@@ -1,0 +1,47 @@
+{
+  "title": "Scalar self-seeded iteration with actual equality",
+  "status": "Written whole-domain bi-interpretation proof, independently reviewed; no proof-assistant certification and no measured complete checker for this new theory.",
+  "source_file": "scalar_selfseed_notes.tex",
+  "source_sha256": "fcee4d432decd79e3e0e809a64376c91fbb286f2c8e148a4a76a1733f35c8369",
+  "source_bytes": 28933,
+  "repository_snapshot": "76a2651601d17b34d46753f189ea026a21ce8d29",
+  "primitive_numerical_language": [
+    "0",
+    "S (definitionally eliminable)",
+    "epsilon(x,y), with 1 iff actual equality",
+    "F(n;v.h), binding only one state variable in h"
+  ],
+  "primitive_numerical_axioms": [
+    "F(0;v.h)=S(h(0))",
+    "F(Sn;v.h)=h(F(n;v.h))",
+    "Sx=Sy implies x=y",
+    "0=S0 implies genuine bottom",
+    "epsilon(x,y)=0 or epsilon(x,y)=1",
+    "epsilon(x,y)=1 iff x=y"
+  ],
+  "primitive_induction": "Contextual induction on literal equations only",
+  "primitive_logic": "Full ordinary intuitionistic first-order logic with actual equality; must be counted in any implementation",
+  "derived": [
+    "Successor nonzeroness from D and 0!=1",
+    "All quantifier-free induction via epsilon characteristics",
+    "W(S^3m)=S^2m for source term W",
+    "Finite-case predecessor graph",
+    "Numerical coverage and P(Sn)=n by one joint quantifier-free induction",
+    "Internal discrete linear order from capped orbit and New-cap law",
+    "Bounded selection on encoded values",
+    "Source compiler for bounded initialized scalar iteration using two sentinels",
+    "Finite-case graphs and source unary bounds for every fixed primitive-recursive description",
+    "Both whole-domain interpretation composites internally equal the identity"
+  ],
+  "comparison_to_Bepsilon": "The existing B_epsilon basis binds both old counter and previous state in its sole recursor body. F_epsilon removes the old-counter binder as well as retaining no independent initializer, but explicitly pays for successor injectivity that B_epsilon derives. It is not asserted to dominate B_epsilon in every complexity measure.",
+  "novelty_scope": "Relative to the 17 inspected current ZIPs; no literature-wide priority claim",
+  "not_claimed": [
+    "Absolute simplest axiomatization",
+    "Complete checker below the current frontier",
+    "Measured byte/token/AST size for this new theory",
+    "Lean or Rocq verification",
+    "Universal soundness from finite numerical tests",
+    "Free extension of F bodies to graph-defined functions",
+    "An internal proof of consistency"
+  ]
+}

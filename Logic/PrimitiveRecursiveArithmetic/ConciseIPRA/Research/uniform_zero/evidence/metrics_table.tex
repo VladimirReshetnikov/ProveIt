@@ -1,0 +1,20 @@
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Complete program & Bytes & Tokens & AST & gzip-9\\
+\midrule
+Published byte leader & 558 & 264 & 310 & 345\\
+Published explicit-list & 566 & 264 & 308 & 351\\
+Published token/AST leader & 598 & 262 & 296 & 350\\
+\midrule
+Matched inherited control & 545 & 267 & 311 & 336\\
+Control, explicit-list & 553 & 267 & 309 & 343\\
+Uniform zero & 550 & 269 & 314 & 338\\
+Uniform zero, explicit-list & 558 & 269 & 312 & 344\\
+Constructed majors & 556 & 272 & 314 & 341\\
+Constructed, explicit-list & 564 & 272 & 312 & 346\\
+Readable constructed checker & 1600 & 309 & 361 & 891\\
+\bottomrule
+\end{tabular}
+\end{center}
+Bytes, tokens, and AST refer to the normalized complete module. The gzip column counts the delivered raw source. The readable source is 2,192 raw bytes; normalized gzip sizes are also recorded in \file{evidence/metrics.json}. The published generic token/AST profile has the malformed-string qualification described in the text.

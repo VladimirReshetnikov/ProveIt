@@ -1,0 +1,162 @@
+\section{The smaller checker and its complete boundary}
+\label{sec:checker}
+
+This section concerns the initialized-iterator presentation specified in
+Section~\ref{sec:rules}. It does not implement the new $B+d$ grammar.
+The mathematical theorem is identity preservation of its native
+consequence relation under a changed proof protocol. Thus its existing
+whole-domain iPRA interpretations transfer unchanged.
+
+\subsection{A precise sorted representation}
+The inherited encoding is sorted: the same array can have different
+meanings in a numerical position and a formula position. Its native
+meanings are:
+\begin{center}\small
+\begin{tabular}{cll}
+\toprule
+Array arity & Numerical meaning & Formula meaning\\\midrule
+0 & $0$ & $0=0$\\
+1 & Successor of its child & Paired binder $D$\\
+2 & $0$, annotations ignored & Equality of its two terms\\
+3 & Initialized scalar iteration & Closure $Q$, last child is matrix\\
+$\ge4$ & $0$, annotations ignored & $0=0$, annotations ignored\\
+\bottomrule
+\end{tabular}
+\end{center}
+Canonical paired formulas are \texttt{[B]}, canonical equations are
+\texttt{[s,t]}, and canonical closures are \texttt{[B,B,B]}. The three
+copies let list multiplication export exactly a closure when its major
+is unary; all other nonempty array majors export a high-arity truth.
+This arity construction is inherited, not a new contribution.\cite{arity}
+
+The opener increases depth by $5-r$ at an array of arity $r$. Numerical
+root depth is three; formula root depth is zero. Under $p$ protected
+numerical slots, the corresponding depths are $3+2p$ and $2p$. Root
+coordinates $0,1,2$ denote numerical zero. Coordinates $3+2j,4+2j$ denote
+the $j$th protected slot. Negative admitted labels name rigid parameters.
+A unary successor's child is decoded beneath two dummy zero slots;
+the counter and initializer of an iterator are decoded beneath one dummy
+zero slot, while its update is under its actual state slot. This is how
+the common depth law implements the different sorted constructors.
+
+At global floor $k$, a scalar in $[k,d)$ is retained. A scalar escaping
+at numerical depth is the opening hole; its supplied image is checked at
+numerical root depth three. An escaping scalar at formula depth erases
+to the truth padding. A missing image at a genuinely used numerical
+hole rejects. The proof that this implements capture-free opening is the
+inherited structural induction over the sorted decoder. An image has
+only rigid negative free labels, so copying it under protected slots
+does not capture those free parameters. Large ignored arities retain
+their constant meanings; they are not assumed to be idempotently
+revalidated as raw trees.
+
+Every non-hypothesis continuation decreases $k$. Incoming goals and
+premises have been checked at the older floor, so a newly admitted
+parameter is fresh for the retained context and conclusion. If a finite
+raw certificate admits fractional labels in a newly opened interval,
+they are distinct fresh parameters; all are included in a later
+zero-instance substitution when needed.
+
+\subsection{The restricted direct computation interface}
+The initializer field must be nonempty to select computation. A false
+predecessor selects the zero equation; a true predecessor selects its
+successor equation. Thus the canonical directly supplied instances are
+\[
+ I(0,a;v.h)=a\quad(a\text{ not literal }0),
+\]
+\[
+ I(Sn,a;v.h)=h(I(n,a;v.h))
+ \quad(n,a\text{ not literal }0).
+\]
+This is a syntactic restriction, not a numerical nonzero test. The
+inherited normalization is short and noncircular. Set
+\[
+ Z_*:=I(S(S0),S0;v.0).
+\]
+The permitted successor equation immediately gives $Z_*=0$: its
+predecessor and seed are both the nonempty numeral one. For an excluded
+computation, replace every offending predecessor or seed position
+simultaneously by a fresh placeholder $w$ in a fixed equation motive
+$E(w)$. Keep unrelated zeros in the update unchanged. Then $E(Z_*)$ is
+a permitted computation, and transport along $Z_*=0$ proves $E(0)$.
+The repair consists of one transport node and its two computation
+premises. All unrestricted I0 and IS instances follow.\cite{certified}
+
+Generated raw hypotheses need only have a known zero instance. For
+fresh $\vec b$ absent from $\Gamma,A$, the rule
+\[
+ \vdash H(\vec0),\quad\Gamma,H(\vec b)\vdash A
+ \quad\Longrightarrow\quad\Gamma\vdash A
+\]
+is admissible: substitute zero for the fresh names in the second
+derivation, rename subsequent eigenparameters first, and cut in the
+first proof. The modified computation mode still uses this rule.
+It would be false to say every generated open hypothesis is uniformly
+true in its newly admitted parameters.
+
+\subsection{All fields and all command branches}
+The input is one JSON array. Its last element is the requested goal.
+Earlier four-field packets $[m,s,u,t]$ are consumed from the end.
+The initial assumption is the empty array, a representation of the
+derived theorem $0=0$. A hypothesis closes without consuming a packet.
+Every other command first proves $m$ in the current context.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Case & Meaning\\\midrule
+Truthy $m$ & Check the substantive major. The old equality/closure endpoint
+match can change the goal from $F(u)$ to $F(s)$. Export $m*3$ as the
+paired elimination resource or a constant truth alias.\\[3pt]
+False $m$, true $u$ & Supply a computation. Field $s$ is the predecessor,
+$u$ the initializer, and $t$ the update.\\[3pt]
+False $m$, false $u$ & Introduce the unary paired goal with witness $t$.
+Canonical $u=0$ selects progress for a literal equation;
+canonical $u=[]$ selects its zero-case premise. Field $s$ is unused.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Every canonical absent major is \texttt{[]}; it closes immediately
+against the initial truth assumption. Scalar zero is deliberately not
+an alternative absent major. The next section proves why this detail
+makes the unguarded matcher safe.
+
+\subsection{Cost and verification}
+Relative to their corresponding frozen predecessors, the explicit and
+byte profiles each remove 16 normalized bytes, one token, and one AST
+node. The generic profile removes 20 bytes, one token, and one AST node.
+The changes to the mathematical protocol, rather than unrelated import
+or driver edits, account for these matched differences.
+
+Against the independent old envelope, the new byte profile goes from
+558 to 542 bytes, a reduction of approximately $2.87\%$. The explicit
+list-based program is 550 bytes. The generic traversal reaches 261
+tokens and 295 AST nodes, improving each old structural minimum by one;
+its 578 bytes do not beat 558. Consequently no single simultaneous
+three-coordinate record is asserted.
+
+The normalizer removes actual docstrings, applies \texttt{ast.unparse},
+and appends a newline. It counts the entire module. The delivered run
+uses CPython 3.12.14 and zlib 1.3.2. Gzip measures
+\texttt{gzip.compress(source, compresslevel=9, mtime=0)}, including its
+wrapper. Raw and normalized measurements, source hashes, and the actual
+gzip streams are supplied. Compression is an informational measurement.
+
+The offline checker suite runs 46 positive, negative, alias, and malformed
+cases through the three compact programs and the readable expansion,
+under both ordinary Python and \texttt{-O}: 368 expected process results.
+Two additional mutation controls replace the correct mode comparison
+with the tempting wrong one, and demonstrate acceptance of a forbidden
+compound-progress certificate. The corrected checker rejects that
+certificate. This checks the actual restriction whose loss would matter,
+rather than only a generic malformed input.
+
+The finite arithmetic diagnostics separately evaluate the displayed
+$B$ macros and two monus equations on inputs through eight, including
+the intermediate equalities of every active gated-complement step.
+They perform 1,750 assertions and distinguish seven failure mutants.
+Those diagnostics are not a full proof checker for $B+d$ and are not
+included in the compact trusted-source measurements.
+
+\input{theory/neutral_audit.tex}

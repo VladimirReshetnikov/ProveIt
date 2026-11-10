@@ -1,0 +1,1668 @@
+LOCATION: docs/drafts/ipra_atomic_transport_2026-11-10.zip :: ipra_atomic_transport_2026-11-10/README.txt
+SHA256: f34d9c0dfce6981be51eb0cc7ee78eab79fa4a8ab2e4dd8bf73fd5aa361c7883
+MATCH: successor_seed at line 10
+ATOMIC TRANSPORT FOR INTUITIONISTIC PRIMITIVE RECURSIVE ARITHMETIC
+Prepared for Vladimir Reshetnikov, November 10, 2026
+================================================================
+
+RESULT AND LIMIT
+----------------
+This package gives a fully specified Eq/D axiomatization whose primitive
+equality transport is restricted to literal equations. Compound transport
+and general object-assumption use have explicit derivations. The numerical
+basis is the inherited successor-seeded counter-aware recursor R. Written
+proofs establish full-domain, actual-equality bi-interpretability with
+first-order iPRA and equiconsistency.
+
+The complete atomic checker measures 304 normalized Python tokens,
+345 AST nodes, and 714 normalized bytes. The complete current corpus
+envelope is 287 / 323 / 738, attained by different programs. Thus this
+construction improves the byte coordinate by 24 bytes (3.25%), while
+not improving the other two independent minima. A delivered matched
+unrestricted control is smaller still: 297 / 335 / 698, a 5.42% byte
+improvement over the previous byte leader. It retains general transport.
+
+The atomic guard costs 16 bytes. The byte saving comes from combining
+
+LOCATION: docs/drafts/ipra_atomic_transport_2026-11-10.zip :: ipra_atomic_transport_2026-11-10/code/FORMAT.txt
+SHA256: 798aa748d9fb568e514689c9ce8fc44820dd3120a3942a82b5d93fc335ec9ee1
+MATCH: seed_equation at line 9
+ATOMIC-TRANSPORT ENDPOINT CERTIFICATES
+=====================================
+
+Canonical numerical syntax
+--------------------------
+The terms are 0, S(t), and R(n,a;u,v.h), with ordinary rigid parameters
+where permitted by scope. The defining computations are
+
+  R(0,a;u,v.h)    = S(a),
+  R(S(n),a;u,v.h) = h[n/u, R(n,a;u,v.h)/v].
+
+The old update h is retained inside the recursive state. Substituting the
+current counter into the recursive state's own update would be incorrect.
+
+Object formulas and clauses
+---------------------------
+Object formulas contain only literal numerical equations and paired
+closures D_xy B. Unary Q_y B is an internal closure clause, usable by
+membership as an elimination major. It is not an object formula that can
+be directly concluded. Its ordinary reading is B(0) -> forall y B(y);
+D_xy B means exists x (B(x,0) -> forall y B(x,y)).
+
+Canonical serialization
+-----------------------
+Input is one JSON list. Its final member is the closed goal. All preceding
+
+LOCATION: docs/drafts/ipra_atomic_transport_2026-11-10.zip :: ipra_atomic_transport_2026-11-10/evidence/baseline_audit.md
+SHA256: c351921201bdf1152d7da785b1890ab19133e8954ab914e9282135423e3e55bc
+MATCH: successor_seed at line 30
+6. **scalar_countdown**: three-schema `0,G,J` numerical basis, ordinary coverage/separation, fixed countdown uniqueness, and a fixed sentence `L(b,S(S(a)))=2 -> a=b`. Internal scalar reset yields QF induction; observation levels at least 2 work, levels 0 and 1 are inconsistent. Complete native checker 1754 / 1996 / 6536; no frontier saving.
+7. **scalar_feedback**: numerical grammar `0,S,e,I`, no initial comparator equations, and one scalar self-comparison rule. Finite-state scalar iterators calibrate `e` as actual Boolean inequality; induction and PR arithmetic follow. Its own complete checker is 358 / 401 / 941. The separate 762-byte Choice checker is only an inherited-calculus implementation advance.
+8. **successor_recursion**: only `0` and counter-aware successor-seeded recursion `R`, with abbreviation `S(a)=R(0,a;u,v.0)`. Equations `R(0,a;u,v.h)=S(a)` and `R(Sn,a;u,v.h)=h[n/u,R(n,a;u,v.h)/v]`. A computation-only predecessor-at-successors `W(n)=R(n,0;u,v.u)` and `C(n,a,b)=W(R(n,a;u,v.S(b)))` compile general primitive recursion without the scalar pairing bootstrap. Own complete checker 305 / 351 / 738, the current byte leader, although its serialized unary successor abbreviation remains charged.
+9. **three_schema**: numerical `0,B,J`, `S(x)=B(0,x)`, equations `B(B(0,a),b)=a`, `J(0;u.h)=0`, and `J(Sn;u.h)=h[J(n;u.h)/u]`. Direct selector/predecessor plus one invariant recover initialized iteration. The shipped symbolic checker is equational-fragment only and cannot enter the full-checker comparison.
+
+LOCATION: docs/drafts/ipra_atomic_transport_2026-11-10.zip :: ipra_atomic_transport_2026-11-10/evidence/baseline_audit.md
+SHA256: c351921201bdf1152d7da785b1890ab19133e8954ab914e9282135423e3e55bc
+MATCH: seed_equation at line 30
+6. **scalar_countdown**: three-schema `0,G,J` numerical basis, ordinary coverage/separation, fixed countdown uniqueness, and a fixed sentence `L(b,S(S(a)))=2 -> a=b`. Internal scalar reset yields QF induction; observation levels at least 2 work, levels 0 and 1 are inconsistent. Complete native checker 1754 / 1996 / 6536; no frontier saving.
+7. **scalar_feedback**: numerical grammar `0,S,e,I`, no initial comparator equations, and one scalar self-comparison rule. Finite-state scalar iterators calibrate `e` as actual Boolean inequality; induction and PR arithmetic follow. Its own complete checker is 358 / 401 / 941. The separate 762-byte Choice checker is only an inherited-calculus implementation advance.
+8. **successor_recursion**: only `0` and counter-aware successor-seeded recursion `R`, with abbreviation `S(a)=R(0,a;u,v.0)`. Equations `R(0,a;u,v.h)=S(a)` and `R(Sn,a;u,v.h)=h[n/u,R(n,a;u,v.h)/v]`. A computation-only predecessor-at-successors `W(n)=R(n,0;u,v.u)` and `C(n,a,b)=W(R(n,a;u,v.S(b)))` compile general primitive recursion without the scalar pairing bootstrap. Own complete checker 305 / 351 / 738, the current byte leader, although its serialized unary successor abbreviation remains charged.
+9. **three_schema**: numerical `0,B,J`, `S(x)=B(0,x)`, equations `B(B(0,a),b)=a`, `J(0;u.h)=0`, and `J(Sn;u.h)=h[J(n;u.h)/u]`. Direct selector/predecessor plus one invariant recover initialized iteration. The shipped symbolic checker is equational-fragment only and cannot enter the full-checker comparison.
+10. **three_schema (1)**: essentially the same `0,G,J` arithmetic simplification with full native checker 1442 / 1674 / 5323 and matched four-schema checker 1529 / 1772 / 5620. Companion compact controls are inherited scalar Choice-DI programs, separate from the new arithmetic.
+
+LOCATION: docs/drafts/ipra_atomic_transport_2026-11-10.zip :: ipra_atomic_transport_2026-11-10/evidence/targeted_math_audit.md
+SHA256: 0bfa08356dd72c20941ec5c6a91796963bfc468ba1fde6afb130dff0d0d37476
+MATCH: finite_correction at line 29
+Every displayed use of induction has a literal equation invariant. Numerical disjunctions in individual steps are obtained by cases or already established finite range theorems.
+
+## 2. Actual equality reflection is also correctly ordered
+
+After predecessor is available, numerical coverage gives `x=0 or x=S(Px)`. Applying `P` proves successor injectivity. Applying the sign selector to a hypothetical `Sx=0` and using the explicit separation bridge proves successor/zero separation.
+
+The sign and countdown tests have their correct whole-domain meanings using only coverage, predecessor, and separation. Truncated subtraction `d(x,y)=I(y,x;P)` is already a scalar term; no general primitive-recursion compiler is needed.
+
+The decisive invariant is the literal equation
+
+`C(sg(d(x,y)), x, y+d(x,y)) = x`.
+
+It is proved by induction on `y`, with `x` fixed. In the successor step, write `r=d(x,y)` and `r'=P(r)`. Coverage of `r'` gives the zero branch (trivial reflexivity) and the successor branch. In the latter, coverage of `r` either contradicts `r'!=0`, or gives `r=S(r')`. The previous equation then gives `y+r=x`; addition shifts the successor to obtain `(Sy)+r'=x`. This uses the same fixed `x,y` induction instance throughout.
+
+Substitute `x=Sa,y=b` into the proved invariant. If `d(Sa,b)=1`, then `b+1=Sa`, hence `Sb=Sa`, and predecessor yields `a=b`. Conversely, the separately proved diagonal `d(Sa,a)=1` gives the reverse implication. Therefore
+
+LOCATION: docs/drafts/ipra_atomic_transport_2026-11-10.zip :: ipra_atomic_transport_2026-11-10/ipra_atomic_transport_standalone.tex
+SHA256: 89b5360e0c59590636aeb0827bf0665d053460993f6cbc16aab3c13a4577f56d
+MATCH: successor_seed at line 137
+an attempt to beat the strongest observed complete programs. The
+normalizer removes comments and genuine docstrings, calls
+\file{ast.unparse}, and counts tokens, AST nodes, and UTF-8 bytes of the
+whole module. JSON parsing, scope traversal, freshness, all inference
+checks, rejection, and the public verdict driver are included. Python
+and its standard JSON library are shared infrastructure. Proof length
+and runtime are different costs and are not claimed to decrease.
+
+\subsection{Attribution and the precise contribution}
+
+The successor-seeded recursor, its direct primitive-recursion compiler,
+the paired binder, choice between case and progress introduction,
+elimination-only use of assumptions, and explicit endpoint packets are
+already present in the supplied drafts\cite{recursor,elimination,endpoints}.
+They are inherited here. The smaller byte implementation combines these
+ingredients. No new numerical basis or priority claim is made for them.
+
+The mathematical consolidation re-establishes that \emph{literal-equation
+transport suffices even in the elimination-only Eq/\D\ object calculus}.
+Both general assumption use and full compound transport can be restored
+without a primitive compound induction instance. The proof separates
+identity expansion from transport expansion, avoiding a circular use of
+
+LOCATION: docs/drafts/ipra_atomic_transport_2026-11-10.zip :: ipra_atomic_transport_2026-11-10/ipra_atomic_transport_standalone.tex
+SHA256: 89b5360e0c59590636aeb0827bf0665d053460993f6cbc16aab3c13a4577f56d
+MATCH: seed_equation at line 181
+\section{Complete primitive theory}
+\label{sec:theory}
+
+\subsection{Numerical syntax and its two computation schemas}
+
+Numerical terms are variables, zero, and
+\[
+                    R(n,a;u,v.h).
+\]
+Only the update $h$ binds $u,v$, which are distinct. Its remaining
+parameters are fixed throughout that recursion. Define
+\[
+             S(a):=R(0,a;u,v.0),\qquad 1:=S0.
+\]
+Thus $S$ is a fixed abbreviation, not a further primitive numerical
+operation. The only numerical axiom schemas, in any retained context, are
+\begin{align}
+ R(0,a;u,v.h)&=S(a), &&\tag{R0}\label{eq:R0}\\
+ R(Sn,a;u,v.h)&=h[n/u,R(n,a;u,v.h)/v].
+ &&\tag{RS}\label{eq:RS}
+\end{align}
+Substitution is simultaneous and capture-free; the recursive value in
+RS retains the original update $h$.
+
+Every body is a fixed finite expression. Equivalently, form a staged
+first-order signature: for each earlier-stage term $h(u,v,\vec p)$,
+declare a function symbol $r_h(n,a,\vec p)$ with these equations.
+There is no quantified function variable, universal evaluation operation,
+or claim of uniform primitive-recursive evaluation of all descriptions.
+The stages are an external syntactic construction. Coherence under
+substitution of descriptions will follow from equation-induction
+uniqueness in Section~\ref{sec:interpretations}.
+
+LOCATION: docs/drafts/ipra_atomic_transport_2026-11-10.zip :: ipra_atomic_transport_2026-11-10/notes/atomic_transport_detail.tex
+SHA256: 1f4f0260921ae5cf989079a3207ac2f810521483f8dced5453e4775483526314
+MATCH: successor_seed at line 1
+% Self-contained logical fragment for the successor-seeded R basis.
+% Requires amsmath and amssymb.  No custom theorem environments or macros.
+% This file proves the restriction; it makes no checker-size claim.
+
+\section{Atomic transport with elimination-only assumptions}
+\label{sec:atomic-transport}
+
+We prove that equality need only be transported through literal
+equations.  Transport through a compound formula is an explicitly
+derived operation.  The proof does not assume a hypothesis-conclusion
+rule, does not use compound formula congruence, and never treats an
+internal closure clause as an object formula.  Progress introduction
+is not used in this logical reduction.
+
+\subsection{The exact restricted interface}
+
+Numerical terms are finite expressions formed from variables, $0$, and
+
+LOCATION: docs/drafts/ipra_atomic_transport_2026-11-10.zip :: ipra_atomic_transport_2026-11-10/notes/atomic_transport_detail.tex
+SHA256: 1f4f0260921ae5cf989079a3207ac2f810521483f8dced5453e4775483526314
+MATCH: successor_seed at line 267
+$\mathsf Q_yB(s,y)$ and the equality availability: induct on its
+finite proof tree and replace each QE use of the distinguished clause
+by the three operations above.  All other nodes are copied, after
+fresh renaming.  A clause can have no other elimination use in the
+specified sorted calculus.  Symmetry gives the reverse resource
+replacement.  This is a theorem about contextual proof transformation,
+not a theorem asserting a bare $\mathsf Q$ conclusion.
+
+\subsection{Exact consequence and interpretation preservation}
+
+Let $\mathcal E_R$ be the same successor-seeded R calculus with
+elimination-only availability and unrestricted object-formula
+transport.  Then for every well-sorted context $\Gamma$ and object
+formula $A$,
+\[
+ \Gamma\vdash_{\mathcal A_R}A
+ \quad\Longleftrightarrow\quad
+ \Gamma\vdash_{\mathcal E_R}A.
+\]
+The forward translation is inclusion of AT in unrestricted transport.
+For the reverse translation, replace each transport inference by
+Theorem~4 and otherwise recurse through the proof.  Both translations
+leave all numerical and object-formula syntax unchanged.
+
+Adding an ordinary hypothesis-conclusion rule for object assumptions
+also leaves these object sequents unchanged, by Theorem~3.  Internal
+clauses keep their membership-only policy throughout.  Consequently,
+
+LOCATION: docs/drafts/ipra_atomic_transport_2026-11-10.zip :: ipra_atomic_transport_2026-11-10/notes/atomic_transport_detail.tex
+SHA256: 1f4f0260921ae5cf989079a3207ac2f810521483f8dced5453e4775483526314
+MATCH: seed_equation at line 30
+\subsection{The exact restricted interface}
+
+Numerical terms are finite expressions formed from variables, $0$, and
+the counter-aware recursion constructor
+\[
+                     R(n,a;u,v.h).
+\]
+Only the update $h$ binds the distinct numerical variables $u,v$.
+All its other free variables are passive parameters.  Put
+\[
+ S(a):=R(0,a;u,v.0),\qquad W(n):=R(n,0;u,v.u).
+\]
+These are fixed term abbreviations, not additional numerical axioms.
+The computation schemas, valid in every context, are
+\begin{align}
+ R(0,a;u,v.h)&=S(a),\tag{R0}\label{eq:at-r0}\\
+ R(Sn,a;u,v.h)&=
+       h[n/u,R(n,a;u,v.h)/v].\tag{RS}\label{eq:at-rs}
+\end{align}
+The substitutions in RS are simultaneous and capture avoiding.
+In particular,
+\begin{equation}
+                    W(Ss)=s
+                    \tag{W}\label{eq:at-w}
+\end{equation}
+is one instance of RS, since the update is the old counter $u$.
+No numerical induction is needed for this equation.
+
+Object formulas and internal closure clauses are separately sorted:
+\[
+ A::=(s=t)\mid\mathsf D_{x,y}A,
+ \qquad \mathsf Q_yB(y)\quad(B\text{ an object formula}).
+\]
+A context $\Gamma$ is a finite reusable list of object assumptions
+and internal clauses.  Proof conclusions are always object formulas.
+
+LOCATION: docs/drafts/ipra_atomic_transport_2026-11-10.zip :: ipra_atomic_transport_2026-11-10/report.tex
+SHA256: c0f296836cf7c59fc097329afa0527c4f71a366f2d1b9bcda71e916ab25751ab
+MATCH: successor_seed at line 137
+an attempt to beat the strongest observed complete programs. The
+normalizer removes comments and genuine docstrings, calls
+\file{ast.unparse}, and counts tokens, AST nodes, and UTF-8 bytes of the
+whole module. JSON parsing, scope traversal, freshness, all inference
+checks, rejection, and the public verdict driver are included. Python
+and its standard JSON library are shared infrastructure. Proof length
+and runtime are different costs and are not claimed to decrease.
+
+\subsection{Attribution and the precise contribution}
+
+The successor-seeded recursor, its direct primitive-recursion compiler,
+the paired binder, choice between case and progress introduction,
+elimination-only use of assumptions, and explicit endpoint packets are
+already present in the supplied drafts\cite{recursor,elimination,endpoints}.
+They are inherited here. The smaller byte implementation combines these
+ingredients. No new numerical basis or priority claim is made for them.
+
+The mathematical consolidation re-establishes that \emph{literal-equation
+transport suffices even in the elimination-only Eq/\D\ object calculus}.
+Both general assumption use and full compound transport can be restored
+without a primitive compound induction instance. The proof separates
+identity expansion from transport expansion, avoiding a circular use of
+
+LOCATION: docs/drafts/ipra_atomic_transport_2026-11-10.zip :: ipra_atomic_transport_2026-11-10/report.tex
+SHA256: c0f296836cf7c59fc097329afa0527c4f71a366f2d1b9bcda71e916ab25751ab
+MATCH: seed_equation at line 181
+\section{Complete primitive theory}
+\label{sec:theory}
+
+\subsection{Numerical syntax and its two computation schemas}
+
+Numerical terms are variables, zero, and
+\[
+                    R(n,a;u,v.h).
+\]
+Only the update $h$ binds $u,v$, which are distinct. Its remaining
+parameters are fixed throughout that recursion. Define
+\[
+             S(a):=R(0,a;u,v.0),\qquad 1:=S0.
+\]
+Thus $S$ is a fixed abbreviation, not a further primitive numerical
+operation. The only numerical axiom schemas, in any retained context, are
+\begin{align}
+ R(0,a;u,v.h)&=S(a), &&\tag{R0}\label{eq:R0}\\
+ R(Sn,a;u,v.h)&=h[n/u,R(n,a;u,v.h)/v].
+ &&\tag{RS}\label{eq:RS}
+\end{align}
+Substitution is simultaneous and capture-free; the recursive value in
+RS retains the original update $h$.
+
+Every body is a fixed finite expression. Equivalently, form a staged
+first-order signature: for each earlier-stage term $h(u,v,\vec p)$,
+declare a function symbol $r_h(n,a,\vec p)$ with these equations.
+There is no quantified function variable, universal evaluation operation,
+or claim of uniform primitive-recursive evaluation of all descriptions.
+The stages are an external syntactic construction. Coherence under
+substitution of descriptions will follow from equation-induction
+uniqueness in Section~\ref{sec:interpretations}.
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/evidence/corpus_audit.md
+SHA256: d7adb84b55b5dbf4f02443ff030916f7d1aff1c92de478cd46edcc7bd022cf01
+MATCH: seed_equation at line 30
+- `ipra_three_schema_2026-11-09` and `(1)` are variants of the same zero-seeded 0/G/J basis: `Sx=G(0,x)`, `G(Sa,b)=a`, J0, JS. They recover arbitrary initialization via an equation invariant. Their matching implementation comparison is much larger than the compact core.
+- K iteration specializes the reset operation to K application, yielding `(K a)b=a`, J(K)=K, and J(Kn)=h[J(n)]; also three equations, also larger than compact frontier.
+- Successor recursion absorbs S into a counter-aware recursor's seed. Numerical grammar is only 0 and R, with `Sa:=R(0,a;u,v.0)`, `R(0,a;u,v.h)=Sa`, `R(Sn,a;u,v.h)=h[n/u,R(n,a;u,v.h)/v]`. It has direct `W(n)=R(n,0;u,v.u)`, `W(0)=1`, `W(Sn)=n`, and direct general PR compiler. This is already the smallest byte implementation and a mathematically useful arithmetic simplification. See its `theory/successor_recursion.tex` lines 6-40, 101-166, and 256-272.
+- All-starts changes *atomic* Q semantics to progression and combines zero-start induction and one-step progression in arbitrary-start specialization. It normalizes all raw formulas into a safe gated sublanguage, repairing a prior round-trip hole. Its complete checker costs 323/374/974. See `theory/all_starts.tex` lines 453-544 for full raw-formula normalization. Safe-language-only equivalence is expressly insufficient.
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/sources/ipra_all_starts_2026-11-10.zip :: ipra_all_starts_2026-11-10/theory/fixed_seed_counter_access.tex
+SHA256: 2c4ad24145ea4db6c87b9bfd1b7564ef309bebb33eccffd85e09c1dd46f251e9
+MATCH: one_variable_seed at line 201
+bi-interpretability.  The present theorem extends that argument to
+counter-dependent fixed-seed recursion: each new operation still has a
+quantifier-free graph in the language containing every unary PR function,
+obtained by a finite disjunction over its inactive-coordinate colors.
+Consequently the same definable expansion of the amalgam still admits
+nonidentity involutions fixing any prescribed finite parameter tuple.
+The inherited order-rigidity argument excludes bi-interpretability with
+iPRA for that generous true-universal/one-input-witness/QFI theory and
+its subtheories. The inherited proofs are reproduced as source files
+\file{reference/fixed_seeds_original.tex} and
+\file{reference/amalgam_original.tex}; their source identities are in the
+provenance manifest. The amalgam and automorphism argument are inherited;
+the new contribution is the counter-access normal form proved above.
+This does not rule out equiconsistency, stronger additional multi-input
+existence axioms, or nonordinary translations that change logical
+connectives.  It gives no absolute lower bound on proof-checker size.
+
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/sources/ipra_scalar_countdown_2026-11-09.zip :: ipra_scalar_countdown_2026-11-09/evidence/report_text.txt
+SHA256: 1124fc33044b94150145a89d28dfd61c1ba512b128d787643ab6ed3fd3eadd22
+MATCH: unresolved_candidate at line 861
+certificate producer, positive/negative fixtures, reproduction scripts, frozen comparison sources, audit
+manifests, measurement results, independent review notes, and file hashes.
+The source manifest pins the exact eleven draft archives and verifies their Git blob SHA-1 values;
+SHA-256 values are included as a separate integrity record. Original archive names with dates in
+UTC are preserved as source identifiers even though this report uses the user’s Pacific calendar date.
+The repository was read for this task; the deliverable does not depend on an unrecorded remote
+modification.
+7
+What remains unresolved
+The new axiomatization meets equiconsistency and full bi-interpretability, but the verified imple-
+mentation is larger than both its matched readable predecessor and the compact current frontier. A
+significant reduction in complete-checker complexity remains a separate research problem.
+There are two concrete questions. First, can level-two faithfulness be derived from the fixed
+countdown rule without adding strength? The present equivalence isolates exactly what such a proof
+would accomplish: it would derive all quantifier-free induction in the finite scalar language. The
+earlier countdown retraction does not justify that step by itself. Second, can the two arithmetic
+verification patterns be represented by a smaller complete logical interface? Any such implementation
+must charge the expanded I, L macros and preserve eigenvariable exclusion.
+Several apparent savings were rejected during this investigation. Allowing arbitrary raw tree
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/sources/ipra_scalar_countdown_2026-11-09.zip :: ipra_scalar_countdown_2026-11-09/report.tex
+SHA256: 07c07e9aeeabf04513011b2c0cd7649ad62bd4408825b2b9e0b3521bb299ae8b
+MATCH: unresolved_candidate at line 179
+transport uses a fixed finite formula template. Structural weakening,
+exchange, contraction, alpha-renaming, and assumption cut are admissible.
+No excluded-middle or double-negation-elimination rule is present.
+The computations, boundary sentences, fixed uniqueness rule, and fixed
+faithfulness sentence in the next section are the complete nonlogical
+inventory. Induction is a theorem, not an additional primitive rule.
+
+\input{theory/completion}
+\input{theory/pr_compiler}
+\input{theory/native}
+\input{theory/evidence}
+
+\section{What remains unresolved}
+The new axiomatization meets equiconsistency and full bi-interpretability,
+but the verified implementation is larger than both its matched readable
+predecessor and the compact current frontier. A significant reduction in
+complete-checker complexity remains a separate research problem.
+
+There are two concrete questions. First, can level-two faithfulness be
+derived from the fixed countdown rule without adding strength? The present
+equivalence isolates exactly what such a proof would accomplish: it would
+derive all quantifier-free induction in the finite scalar language.
+The earlier countdown retraction does not justify that step by itself.
+Second, can the two arithmetic verification patterns be represented by
+a smaller complete logical interface? Any such implementation must charge
+the expanded \(I,L\) macros and preserve eigenvariable exclusion.
+
+Several apparent savings were rejected during this investigation.
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/sources/ipra_successor_recursion_2026-11-09.zip :: ipra_successor_recursion_2026-11-09/ATTRIBUTION.txt
+SHA256: 3819ebce5662b99a156e7f5f1e0ab5708f4326abcdfa7000819e015d6e47adea
+MATCH: successor_seed at line 51
+quantifier-free Boolean compilation, are adapted from
+ipra_kernel_and_initializer_2026-11-10/theory/equality_reflection.tex.
+
+The countdown supplement attributes and reproduces the necessary
+countdown shift, stationarity, tail-counter, and zero-equation-induction
+results from countdown_retraction and the historical forward_left paper.
+It does not present those prerequisites as new results.
+
+New contributions relative to the inspected corpus
+--------------------------------------------------
+1. The successor-seeded recursor R with independently bound old counter
+   and previous state; primitive numerical grammar zero/R; two schemas.
+2. W(Sn)=n by one computation, the immediate selector, and the direct
+   general primitive-recursion compiler with computational defining laws.
+3. The corresponding full ordinary/native iPRA bi-interpretation using
+   this shorter numerical bootstrap.
+4. The new compact computation branch. The inner counter-opening call
+   checks singleton arity through Python's argument-count check before
+   evaluation, allowing removal of a separate unpacking operation.
+5. Complete actual certificates and a named, untrusted producer for the
+   new arithmetic, including its compiler equations under binders.
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/sources/ipra_successor_recursion_2026-11-09.zip :: ipra_successor_recursion_2026-11-09/README.txt
+SHA256: cc6552519c8aeec90e3cccea627b0562281bc3793f0b14c8a2623a60476caa4c
+MATCH: seed_equation at line 20
+Prepared for Vladimir Reshetnikov — November 9, 2026 (Pacific date)
+
+READ FIRST
+----------
+ipra_successor_recursion.pdf is the main paper. Its complete standalone
+editable source is ipra_successor_recursion.tex. report.tex and theory/
+are the modular sources from which the standalone version is generated.
+
+MAIN RESULT
+-----------
+The only primitive numerical constructors are zero and
+
+    R(n,a;u,v.h),
+
+where u is the old counter and v the previous state. Successor is the
+fixed abbreviation S(a)=R(0,a;u,v.0). The computation schemas are
+
+    R(0,a;u,v.h)   = S(a)
+    R(Sn,a;u,v.h)  = h[n/u,R(n,a;u,v.h)/v].
+
+There is no uniform total evaluator or quantification over function codes.
+Updates are fixed finite descriptions with passive numerical parameters.
+
+The derived term W(n)=R(n,0;u,v.u) satisfies W(0)=1 and W(Sn)=n
+by computation. Therefore
+
+    C(n,a,b) = W(R(n,a;u,v.S(b)))
+
+is an unrestricted zero/successor selector. Every ordinary primitive
+recursion with base g and update h compiles directly to
+
+    J_g,h(n,x) = W(R(n,g(x);u,v.S(h(u,W(v),x)))).
+
+Its defining base and step equations follow by computation alone. This
+removes the scalar predecessor and pairing bootstrap used in the old
+initialized-scalar presentation.
+
+The main paper specifies all ordinary and native logical rules, both
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/sources/ipra_successor_recursion_2026-11-09.zip :: ipra_successor_recursion_2026-11-09/code/FORMAT.txt
+SHA256: 3569119cb9a52b6be28c2b3ff493aec1ac385bf26077c1309f3cd1441e7c37f9
+MATCH: successor_seed at line 30
+stderr. Python optimization does not remove any logical check.
+
+EXACT NUMERICAL THEORY
+
+The primitive numerical notation is 0 and a staged recursion constructor
+R(n,a;u,v.h). Here u is the previous counter, v is the previous state, and
+only h binds u,v. Other parameters of h remain fixed throughout recursion.
+Every h is fixed finite syntax, not an object-level function code.
+
+S(a) abbreviates R(0,a;u,v.0). The two computation schemas are
+
+    R(0,a;u,v.h) = S(a)
+    R(S(n),a;u,v.h) = h[n/u, R(n,a;u,v.h)/v].
+
+This is successor-seeded, counter-aware recursion. In particular R(0,0;0)
+is 1, not 0. A truthy term representing zero is R(S(0),0;u,v.0).
+
+NATIVE LOGIC
+
+Formulas are equations, unary Q closures, and paired D binders:
+
+    Q_y B(y)      means B(0) -> forall y B(y),
+    D_xy B(x,y)   means exists x (B(x,0) -> forall y B(x,y)).
+
+The first-order logical consequence relation is intuitionistic. Contexts
+are reusable finite lists. Native falsity is 0=S(0); the interpretation
+theorem identifies it with genuine falsity. The two computation schemas,
+hypothesis use, equality transport, Q elimination, D elimination, and the
+choice D introduction below are the entire primitive inventory.
+
+CANONICAL RAW TREES AND PROTECTED SLOTS
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/sources/ipra_successor_recursion_2026-11-09.zip :: ipra_successor_recursion_2026-11-09/code/FORMAT.txt
+SHA256: 3569119cb9a52b6be28c2b3ff493aec1ac385bf26077c1309f3cd1441e7c37f9
+MATCH: seed_equation at line 27
+prints REJECT and exits nonzero; a traceback may additionally appear on
+stderr. Python optimization does not remove any logical check.
+
+EXACT NUMERICAL THEORY
+
+The primitive numerical notation is 0 and a staged recursion constructor
+R(n,a;u,v.h). Here u is the previous counter, v is the previous state, and
+only h binds u,v. Other parameters of h remain fixed throughout recursion.
+Every h is fixed finite syntax, not an object-level function code.
+
+S(a) abbreviates R(0,a;u,v.0). The two computation schemas are
+
+    R(0,a;u,v.h) = S(a)
+    R(S(n),a;u,v.h) = h[n/u, R(n,a;u,v.h)/v].
+
+This is successor-seeded, counter-aware recursion. In particular R(0,0;0)
+is 1, not 0. A truthy term representing zero is R(S(0),0;u,v.0).
+
+NATIVE LOGIC
+
+Formulas are equations, unary Q closures, and paired D binders:
+
+    Q_y B(y)      means B(0) -> forall y B(y),
+    D_xy B(x,y)   means exists x (B(x,0) -> forall y B(x,y)).
+
+The first-order logical consequence relation is intuitionistic. Contexts
+are reusable finite lists. Native falsity is 0=S(0); the interpretation
+theorem identifies it with genuine falsity. The two computation schemas,
+hypothesis use, equality transport, Q elimination, D elimination, and the
+choice D introduction below are the entire primitive inventory.
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/sources/ipra_successor_recursion_2026-11-09.zip :: ipra_successor_recursion_2026-11-09/code/correctness.md
+SHA256: b0abad5835450f4cb0c2bc8b9a132b8b70a08802ac70a83b67fd12227ca97317
+MATCH: successor_seed at line 7
+# Review of the counter-aware kernel
+
+The complete new program is `kernel.py`. The old byte comparator is the
+762-byte `code/choice_checker.py` from `ipra_scalar_feedback_2026-11-09.zip`.
+The Choice-DI logical rules, target checking, freshness discipline, and
+strict list traversal are unchanged. The arithmetic branch is changed to
+successor-seeded, counter-aware recursion as specified in `FORMAT.txt`.
+
+## Arithmetic opening lemma
+
+At a recursion update root, the numerical environment is `(v,u,rho)`:
+state first, counter second. At numerical depth 3, the coordinates 1 and 2
+remain protected and 3/4 are exposed. Therefore `i(h,n,3)` substitutes the
+predecessor counter n and protects the state. A subsequent depth-1 opening
+substitutes the previous recursion value for the state. Each used image is
+first checked at numerical root; it cannot acquire a meaning from a local
+binder at its insertion site. All passive parameters at a computation
+leaf are retained rigid parameters, so these two local openings preserve
+them. An induction on the raw tree gives the same statement under nested
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/sources/ipra_successor_recursion_2026-11-09.zip :: ipra_successor_recursion_2026-11-09/evidence/independent_theory_review.txt
+SHA256: 4d623a0a2dc75b16e7a0e464cc9f0bdb82271a2c505cfac349448695d01c3669
+MATCH: successor_seed at line 5
+Independent mathematical review
+Reviewer: theory_reduction agent
+Snapshot: 70feebabe24445912ae5eb336a6d7e9ba40a882b
+
+1. Successor-seeded counter-aware recursor
+
+The two computation schemas R(0,a;h)=S(a) and
+R(Sn,a;h)=h(n,R(n,a;h)), with S(a) abbreviating R(0,a;0),
+are interpreted by ordinary primitive recursion. The update must have
+two independent arguments, old counter and previous state.
+
+W(n)=R(n,0;u,v.u) satisfies W(0)=1 and W(Sn)=n by computation.
+Thus successor injectivity is immediate. The definitions of C and P
+in successor_seed.tex have their required full-domain equations without
+induction. The compiler W(R(n,g;u,v.S h(u,W(v)))) has exactly the
+ordinary PR base g and step h(n,previous value), again by computation.
+
+The full-domain equality-reflection development was checked against the
+inherited residual-invariant argument. It uses only literal-equation
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/sources/ipra_successor_recursion_2026-11-09.zip :: ipra_successor_recursion_2026-11-09/evidence/independent_theory_review.txt
+SHA256: 4d623a0a2dc75b16e7a0e464cc9f0bdb82271a2c505cfac349448695d01c3669
+MATCH: seed_equation at line 7
+Independent mathematical review
+Reviewer: theory_reduction agent
+Snapshot: 70feebabe24445912ae5eb336a6d7e9ba40a882b
+
+1. Successor-seeded counter-aware recursor
+
+The two computation schemas R(0,a;h)=S(a) and
+R(Sn,a;h)=h(n,R(n,a;h)), with S(a) abbreviating R(0,a;0),
+are interpreted by ordinary primitive recursion. The update must have
+two independent arguments, old counter and previous state.
+
+W(n)=R(n,0;u,v.u) satisfies W(0)=1 and W(Sn)=n by computation.
+Thus successor injectivity is immediate. The definitions of C and P
+in successor_seed.tex have their required full-domain equations without
+induction. The compiler W(R(n,g;u,v.S h(u,W(v)))) has exactly the
+ordinary PR base g and step h(n,previous value), again by computation.
+
+The full-domain equality-reflection development was checked against the
+inherited residual-invariant argument. It uses only literal-equation
+induction once PR functions have been compiled. Its Boolean translation
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/sources/ipra_successor_recursion_2026-11-09.zip :: ipra_successor_recursion_2026-11-09/examples/README.txt
+SHA256: bb682aa014e4a70e4cb940faf217e31601204fc4c96fda27686e93ba66008a96
+MATCH: successor_seed at line 4
+These are the individual certificates from code/certificates.json.
+Expected results and meanings:
+
+zero_seed_successor.json: ACCEPT — R(0,0;0)=1: the numerical base is successor seeded.
+zero_arbitrary_seed.json: ACCEPT — R(0,4;u)=5, independently of the update body.
+counter_slot.json: ACCEPT — The predecessor counter is 2, distinct from the seed and previous state.
+state_slot.json: ACCEPT — The state slot is the earlier R value, not the predecessor counter.
+counter_below_successor.json: ACCEPT — Opening a counter occurrence under an additional numerical binder.
+state_below_successor.json: ACCEPT — Opening a previous-state occurrence under an additional binder.
+both_slots_nested.json: ACCEPT — Nested R uses outer state as counter and outer counter as seed.
+counter_even_alias.json: ACCEPT — Coordinates 3 and 4 alias the counter.
+state_even_alias.json: ACCEPT — Coordinates 1 and 2 alias the previous state.
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/sources/ipra_successor_recursion_2026-11-09.zip :: ipra_successor_recursion_2026-11-09/ipra_successor_recursion.tex
+SHA256: 1d14435017b142fe12681157ff155dc53a13baf4a3f241d521cfbac3347d7193
+MATCH: successor_seed at line 174
+New $0,R$ & Two; counter and state update inputs & Direct formula above;
+base and step by computation\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Attribution and scope of novelty}
+
+The compact Eq/Q/D logical syntax, Choice-DI rule, logical gates and
+selectors, equality reflection invariant, and source-measurement method
+are inherited and attributed. The byte leader already contains the
+shared major-premise decomposition used here; that refactoring is not
+presented as new. The contributions relative to the inspected corpus are
+the successor-seeded counter-aware numerical basis, its direct compiler,
+and the use of the counter-opening call's argument arity to validate the
+successor counter while removing a separate unpacking step.
+
+Neither a literature-wide priority claim nor absolute simplicity is
+asserted. A stronger demand that one complete program beat all three
+coordinate minima remains unmet. The new theory does satisfy the strict
+comparison in normalized bytes, and its numerical equivalence proof is
+substantially shorter than the inherited scalar route.
+
+% New construction, prepared independently by theory_reduction.
+% Requires amsmath, amssymb. No custom theorem environments or macros.
+\section{A two-constructor arithmetic basis}
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/sources/ipra_successor_recursion_2026-11-09.zip :: ipra_successor_recursion_2026-11-09/ipra_successor_recursion.tex
+SHA256: 1d14435017b142fe12681157ff155dc53a13baf4a3f241d521cfbac3347d7193
+MATCH: successor_seed at line 1110
+formalizations of the binding and bi-interpretation proofs. The
+supplement isolates a separate mathematical question: whether countdown
+uniqueness alone already proves either of its equivalent finite
+completion equations.
+
+\appendix
+\section{Complete measured checker}
+\label{app:kernel}
+This is the entire measured executable. The untrusted certificate producer,
+numeric evaluator, source normalizer, and report are not imports of it.
+\begin{lstlisting}[language=Python]
+"""Complete Choice-DI checker with successor-seeded counter-aware recursion.
+
+Numerical primitives are zero and R. Unary S is the fixed abbreviation
+S(a)=R(0,a;u,v.0). The numerical computation rules are
+R(0,a;u,v.h)=S(a), R(S(n),a;u,v.h)=h[n/u,R(n,a;u,v.h)/v].
+The update environment is (previous state v, counter u, outer parameters).
+Eq/Q/D logic and its proof rules are inherited without change.
+Only Python's standard json module is imported. See FORMAT.txt.
+"""
+import json
+k = 0
+i = lambda a, t=None, d=0: [i(b, t, d + b' \x02\x01\x04'[len(a)]) for b in a] if type(a) is list else a if k <= a < d else d % 2 and i(t, d=1)
+
+def c(a, g):
+    global k
+    if i(a) in g:
+        return 1
+    m, t = q()
+    if m and 1 / c(m, g):
+        h = m[2:]
+        if not h:
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/sources/ipra_successor_recursion_2026-11-09.zip :: ipra_successor_recursion_2026-11-09/ipra_successor_recursion.tex
+SHA256: 1d14435017b142fe12681157ff155dc53a13baf4a3f241d521cfbac3347d7193
+MATCH: seed_equation at line 132
+parses the entire Python program, uses \texttt{ast.unparse}, and counts
+significant tokens, AST nodes, and UTF-8 bytes including normalized
+layout. Imports, syntax traversal, freshness, rule dispatch, JSON input,
+and the complete ACCEPT/REJECT driver are charged. Both sides share the
+Python runtime and standard JSON library. Measurements were made with
+CPython 3.12.14; another Python release may unparse differently.
+
+\subsection{The arithmetic idea}
+
+Replace ordinary scalar iteration by recursion whose initial value is
+the successor of the submitted seed:
+\[
+ R(0,a;u,v.h)=Sa,\qquad
+ R(Sn,a;u,v.h)=h(n,R(n,a;u,v.h)).
+\]
+Define $Sa$ to be $R(0,a;u,v.0)$ itself. The apparent successor in
+these equations is consequently an abbreviation, not an independent
+numerical primitive. The old counter is now an actual update input.
+Taking that input as the update immediately gives
+\[
+ W(n):=R(n,0;u,v.u),\qquad W(0)=1,\quad W(Sn)=n.
+\]
+The entire primitive-recursion compiler then consists of one R and
+two uses of W around the recursively compiled update:
+\[
+ J_{g,h}(n,\vec x)=
+ W\bigl(R(n,g(\vec x);u,v.S h(u,W(v),\vec x))\bigr).
+\]
+Section~\ref{sec:successor-seed} proves its defining equations directly.
+There is no auxiliary pairing operation, bounded search, or positivity
+invariant in this compiler.
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/sources/ipra_successor_recursion_2026-11-09.zip :: ipra_successor_recursion_2026-11-09/ipra_successor_recursion.tex
+SHA256: 1d14435017b142fe12681157ff155dc53a13baf4a3f241d521cfbac3347d7193
+MATCH: seed_equation at line 216
+passive numerical parameters, fixed throughout the recursion.
+Descriptions are staged: every body is fixed finite earlier syntax.
+This can equivalently be presented by an infinite first-order signature,
+one symbol for each such body. There is no numerical variable ranging
+over function descriptions and no uniform total program evaluator.
+
+Write the following as abbreviations, not primitive symbols:
+\[
+ Sa:=R(0,a;u,v.0),\qquad 1:=S0.
+ \tag{S-def}\label{ss:sdef}
+\]
+The complete numerical computation inventory consists of
+\begin{align}
+ R(0,a;u,v.h)&=Sa,\tag{R0}\label{ss:r0}\\
+ R(Sn,a;u,v.h)&=h[n/u,R(n,a;u,v.h)/v].
+ \tag{RS}\label{ss:rs}
+\end{align}
+All instances use simultaneous capture-free substitution.
+After expanding S-def, R0 is literally
+$R(0,a;u,v.h)=R(0,a;u,v.0)$, and the counter in RS is literally
+$R(0,n;u,v.0)$. Neither equation presupposes a successor constructor.
+For a body equal to zero, its R0 instance is reflexive; that is harmless.
+
+\subsection{The entire ordinary logical and induction inventory}
+
+Formulas are numerical equations and genuine falsity $\bot$, closed
+under $\wedge,\vee,\to,\forall,\exists$. Contexts are finite reusable
+lists. Ordinary intuitionistic equality logic consists of the following
+rules, and no classical rule is added:
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/sources/ipra_successor_recursion_2026-11-09.zip :: ipra_successor_recursion_2026-11-09/ipra_successor_recursion.tex
+SHA256: 1d14435017b142fe12681157ff155dc53a13baf4a3f241d521cfbac3347d7193
+MATCH: seed_equation at line 1114
+uniqueness alone already proves either of its equivalent finite
+completion equations.
+
+\appendix
+\section{Complete measured checker}
+\label{app:kernel}
+This is the entire measured executable. The untrusted certificate producer,
+numeric evaluator, source normalizer, and report are not imports of it.
+\begin{lstlisting}[language=Python]
+"""Complete Choice-DI checker with successor-seeded counter-aware recursion.
+
+Numerical primitives are zero and R. Unary S is the fixed abbreviation
+S(a)=R(0,a;u,v.0). The numerical computation rules are
+R(0,a;u,v.h)=S(a), R(S(n),a;u,v.h)=h[n/u,R(n,a;u,v.h)/v].
+The update environment is (previous state v, counter u, outer parameters).
+Eq/Q/D logic and its proof rules are inherited without change.
+Only Python's standard json module is imported. See FORMAT.txt.
+"""
+import json
+k = 0
+i = lambda a, t=None, d=0: [i(b, t, d + b' \x02\x01\x04'[len(a)]) for b in a] if type(a) is list else a if k <= a < d else d % 2 and i(t, d=1)
+
+def c(a, g):
+    global k
+    if i(a) in g:
+        return 1
+    m, t = q()
+    if m and 1 / c(m, g):
+        h = m[2:]
+        if not h:
+            s, u, t = m + [t] if m[1:] else [0, t] + m
+            return i(t, u) == a and c(i(t, s), g)
+    elif t:
+        h = a = i(a[2], t, 2)
+    else:
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/sources/ipra_successor_recursion_2026-11-09.zip :: ipra_successor_recursion_2026-11-09/report.tex
+SHA256: 673a6e02cc46649176c4b21c737ad499bdec82bb37935a0cdb1186194e9bf946
+MATCH: successor_seed at line 174
+New $0,R$ & Two; counter and state update inputs & Direct formula above;
+base and step by computation\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Attribution and scope of novelty}
+
+The compact Eq/Q/D logical syntax, Choice-DI rule, logical gates and
+selectors, equality reflection invariant, and source-measurement method
+are inherited and attributed. The byte leader already contains the
+shared major-premise decomposition used here; that refactoring is not
+presented as new. The contributions relative to the inspected corpus are
+the successor-seeded counter-aware numerical basis, its direct compiler,
+and the use of the counter-opening call's argument arity to validate the
+successor counter while removing a separate unpacking step.
+
+Neither a literature-wide priority claim nor absolute simplicity is
+asserted. A stronger demand that one complete program beat all three
+coordinate minima remains unmet. The new theory does satisfy the strict
+comparison in normalized bytes, and its numerical equivalence proof is
+substantially shorter than the inherited scalar route.
+
+\input{theory/successor_recursion.tex}
+\input{theory/native_logic.tex}
+\input{theory/checker.tex}
+\input{theory/evidence.tex}
+
+\section{A separate finite completion of countdown uniqueness}
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/sources/ipra_successor_recursion_2026-11-09.zip :: ipra_successor_recursion_2026-11-09/report.tex
+SHA256: 673a6e02cc46649176c4b21c737ad499bdec82bb37935a0cdb1186194e9bf946
+MATCH: seed_equation at line 132
+parses the entire Python program, uses \texttt{ast.unparse}, and counts
+significant tokens, AST nodes, and UTF-8 bytes including normalized
+layout. Imports, syntax traversal, freshness, rule dispatch, JSON input,
+and the complete ACCEPT/REJECT driver are charged. Both sides share the
+Python runtime and standard JSON library. Measurements were made with
+CPython 3.12.14; another Python release may unparse differently.
+
+\subsection{The arithmetic idea}
+
+Replace ordinary scalar iteration by recursion whose initial value is
+the successor of the submitted seed:
+\[
+ R(0,a;u,v.h)=Sa,\qquad
+ R(Sn,a;u,v.h)=h(n,R(n,a;u,v.h)).
+\]
+Define $Sa$ to be $R(0,a;u,v.0)$ itself. The apparent successor in
+these equations is consequently an abbreviation, not an independent
+numerical primitive. The old counter is now an actual update input.
+Taking that input as the update immediately gives
+\[
+ W(n):=R(n,0;u,v.u),\qquad W(0)=1,\quad W(Sn)=n.
+\]
+The entire primitive-recursion compiler then consists of one R and
+two uses of W around the recursively compiled update:
+\[
+ J_{g,h}(n,\vec x)=
+ W\bigl(R(n,g(\vec x);u,v.S h(u,W(v),\vec x))\bigr).
+\]
+Section~\ref{sec:successor-seed} proves its defining equations directly.
+There is no auxiliary pairing operation, bounded search, or positivity
+invariant in this compiler.
+
+LOCATION: docs/drafts/ipra_generated_assumptions_2026-11-10.zip :: ipra_generated_assumptions_2026-11-10/sources/ipra_successor_recursion_2026-11-09.zip :: ipra_successor_recursion_2026-11-09/theory/successor_recursion.tex
+SHA256: caab9c83431a2e79c77c655e06e5d32467d929e74288e8993bf719d103ae8c8c
+MATCH: seed_equation at line 33
+passive numerical parameters, fixed throughout the recursion.
+Descriptions are staged: every body is fixed finite earlier syntax.
+This can equivalently be presented by an infinite first-order signature,
+one symbol for each such body. There is no numerical variable ranging
+over function descriptions and no uniform total program evaluator.
+
+Write the following as abbreviations, not primitive symbols:
+\[
+ Sa:=R(0,a;u,v.0),\qquad 1:=S0.
+ \tag{S-def}\label{ss:sdef}
+\]
+The complete numerical computation inventory consists of
+\begin{align}
+ R(0,a;u,v.h)&=Sa,\tag{R0}\label{ss:r0}\\
+ R(Sn,a;u,v.h)&=h[n/u,R(n,a;u,v.h)/v].
+ \tag{RS}\label{ss:rs}
+\end{align}
+All instances use simultaneous capture-free substitution.
+After expanding S-def, R0 is literally
+$R(0,a;u,v.h)=R(0,a;u,v.0)$, and the counter in RS is literally
+$R(0,n;u,v.0)$. Neither equation presupposes a successor constructor.
+For a body equal to zero, its R0 instance is reflexive; that is harmless.
+
+\subsection{The entire ordinary logical and induction inventory}
+
+Formulas are numerical equations and genuine falsity $\bot$, closed
+under $\wedge,\vee,\to,\forall,\exists$. Contexts are finite reusable
+lists. Ordinary intuitionistic equality logic consists of the following
+rules, and no classical rule is added:
+
+LOCATION: docs/drafts/ipra_guarded_elimination_2026-11-10.zip :: ipra_guarded_elimination_2026-11-10/README.txt
+SHA256: c2947b5143ac866b44adc9a9a80d189a50378a095c0607b0a32dfb34ca8f94de
+MATCH: successor_seed at line 34
+  report_standalone.tex          Expanded LaTeX with all inputs embedded
+  appendices/                   All included LaTeX dependencies
+  code/readable.py              Standalone readable proof checker
+  CHECKER-FORMAT.txt             Public certificate and verdict convention
+  SOUNDNESS-NOTES.txt            Implementation correctness notes
+
+OPTIONAL SMALLER BYTE PROFILE
+  successor_variant/code/kernel_bytes.py
+      290 tokens / 333 AST nodes / 689 normalized bytes.
+This is a separate arithmetic presentation using the existing counter-aware
+successor-seeded recursor R, with the same new guarded elimination mechanism.
+It is not the scalar I language. Its R-specific computation, identity expansion,
+format notes, inherited arithmetic proofs, and 315 full-process checks are
+in successor_variant/. Across both presentations the coordinate envelope is
+281 / 318 / 689; no one program attains all three minima.
+
+COMPACT COMPLETE PROGRAMS
+  code/kernel.py                284 tokens / 322 AST / 720 bytes (principal)
+  code/kernel_tokens.py         281 tokens / 325 AST / 739 bytes
+  code/kernel_ast.py            285 tokens / 318 AST / 818 bytes
+  code/kernel_bytes.py          283 tokens / 331 AST / 713 bytes
+
+The byte profile uses the inherited elimination-only assumption interface and
+
+LOCATION: docs/drafts/ipra_guarded_elimination_2026-11-10.zip :: ipra_guarded_elimination_2026-11-10/appendices/successor_recursion.tex
+SHA256: dbc269632761d0db070791bedd42546178f3037297060735b01457bee05fe39d
+MATCH: seed_equation at line 40
+passive numerical parameters, fixed throughout the recursion.
+Descriptions are staged: every body is fixed finite earlier syntax.
+This can equivalently be presented by an infinite first-order signature,
+one symbol for each such body. There is no numerical variable ranging
+over function descriptions and no uniform total program evaluator.
+
+Write the following as abbreviations, not primitive symbols:
+\[
+ Sa:=R(0,a;u,v.0),\qquad 1:=S0.
+ \tag{S-def}\label{ss:sdef}
+\]
+The complete numerical computation inventory consists of
+\begin{align}
+ R(0,a;u,v.h)&=Sa,\tag{R0}\label{ss:r0}\\
+ R(Sn,a;u,v.h)&=h[n/u,R(n,a;u,v.h)/v].
+ \tag{RS}\label{ss:rs}
+\end{align}
+All instances use simultaneous capture-free substitution.
+After expanding S-def, R0 is literally
+$R(0,a;u,v.h)=R(0,a;u,v.0)$, and the counter in RS is literally
+$R(0,n;u,v.0)$. Neither equation presupposes a successor constructor.
+For a body equal to zero, its R0 instance is reflexive; that is harmless.
+
+\subsection{The entire ordinary logical and induction inventory}
+
+Formulas are numerical equations and genuine falsity $\bot$, closed
+under $\wedge,\vee,\to,\forall,\exists$. Contexts are finite reusable
+lists. Ordinary intuitionistic equality logic consists of the following
+rules, and no classical rule is added:
+
+LOCATION: docs/drafts/ipra_guarded_elimination_2026-11-10.zip :: ipra_guarded_elimination_2026-11-10/audits/frontier_semantic_audit.txt
+SHA256: 8a44573d76c3fa5ee949d755372e77314cb6f56b6b76984613788d7af7f6380b
+MATCH: seed_equation at line 30
+4. Interpret Q B as B(0)->forall y B(y), and D B as exists x(B(x,0)->forall y B(x,y)); the domain is unchanged and equality is actual equality. Both native and ordinary formula composites follow from selector endpoints, coverage and binder congruence, including raw Q via the unused-witness D representation.
+5a. Scalar arithmetic route: elementary addition/parity; ramp and factor H; H(2u)=3u, H(3u)=3H(u), H(1)=1; comparator L(x,y)=N(I(y,E(x);H)); saturated iteration; predecessor P(Sx)=x. Every induction has one literal equation and fixed passive parameters.
+5b. Successor-recursion route: R(0,a;u,v.h)=Sa, R(Sn,a;u,v.h)=h(n,R(n,a;u,v.h)); S(a)=R(0,a;u,v.0). W(n)=R(n,0;u,v.u) gives W(Sn)=n immediately. W(R(n,g;u,v.S h(u,Wv))) directly realizes every PR recursion. This is already in the corpus and should not be re-claimed as new.
+6. Coverage+predecessor+separation give successor axioms. Literal-equation induction proves residual equality d(Sa,b)=1 iff a=b, hence Boolean reflection of actual equality on the entire domain. External recursion on quantifier-free formulas gives b_A=0 iff A; induction on b_A=0 yields full contextual QFI.
+7. Scalar route adds square pairing and a PR compiler after QFI. Both routes prove uniqueness of each fixed recursive description by equation induction, establishing numerical round trips internally. The graph x=y is the double-interpretation isomorphism; formula round trips preserve full quantified intuitionistic consequence.
+
+LOCATION: docs/drafts/ipra_guarded_elimination_2026-11-10.zip :: ipra_guarded_elimination_2026-11-10/audits/r_semantic_audit.txt
+SHA256: 161a07aaded184d59d82620b84050f580225445f246112caf1cf8250baf2f279
+MATCH: seed_equation at line 8
+INDEPENDENT AUDIT: R + ELIMINATION-ONLY ASSUMPTIONS + BENIGN ENDPOINTS
+
+Reviewed source: candidate_r/code/kernel_bytes.py
+SHA256: bf4f4fb045424534f751eeb71cdb0e73d428b3ab6e4ed883fc5fa26cb874cd5c
+CPython 3.12.14 measurements: 290 normalized tokens, 333 AST nodes, 689 normalized bytes.
+
+This is a distinct arithmetic presentation from scalar initialized I. Its equations are
+R(0,a;u,v.h)=S(a) and R(S(n),a;u,v.h)=h[n/u,R(n,a;u,v.h)/v].
+The body has two independent numerical inputs. The inherited native Eq/Q/D logic,
+benign-elimination proof, and focused availability convention otherwise transfer.
+
+COMPUTATION VALIDATION
+
+The expression is
+  i(i(r, *n, 3), [*n, t, r], 1) if n else [t].
+
+If n is truthy, the inner call i(r,*n,3) supplies the entire argument list
+before function evaluation begins. Since i has exactly three parameters,
+a list n of length one is the only admitted nonempty list length. Length two
+supplies four positional arguments and length three supplies five; Python
+raises even when r is constant and would ignore its substitution image.
+A truthy numerical scalar is noniterable and also raises. The strict-list
+
+LOCATION: docs/drafts/ipra_guarded_elimination_2026-11-10.zip :: ipra_guarded_elimination_2026-11-10/report.tex
+SHA256: 6cf62257575f26fe3ff4fd0f57562c6122efe130f7e62274ec3e872d8c28aed0
+MATCH: successor_seed at line 748
+making malformed-input termination depend on a runtime recursion limit?
+We retained strict list recognition instead of adopting a smaller iterable
+parser with problematic nonempty-string recursion.
+\item Can the guarded rule be given a small machine-checked soundness proof
+covering its real permissive JSON decoder, followed by a formalization of
+the inherited arithmetic and both formula composites?
+\item Can a new numerical constructor shorten both the checker and its
+internal arithmetic development? The existing successor-seeded,
+counter-aware recursor already has a direct predecessor and PR compiler;
+reintroducing that construction under another name would not be progress.
+\item Can one remove a logical constructor or an arithmetic schema while
+preserving the internal round trip for \emph{every} native formula?
+Equiconsistency, standard-model agreement, and equivalence of a selected
+safe fragment are insufficient substitutes for the requested
+bi-interpretability.
+\item What cost model best captures a straightforward implementation?
+Source tokens, AST nodes, runtime primitives, parser size, certificate
+length, and the difficulty of its correctness proof are different costs.
+A meaningful global lower bound needs an explicitly fixed model.
+
+LOCATION: docs/drafts/ipra_guarded_elimination_2026-11-10.zip :: ipra_guarded_elimination_2026-11-10/report.tex
+SHA256: 6cf62257575f26fe3ff4fd0f57562c6122efe130f7e62274ec3e872d8c28aed0
+MATCH: successor_seed at line 788
+\file{ipra_endpoint_certificates_2026-11-09.zip}.
+Inherited checked endpoint fields and exact compact and matched-structure
+comparison sources. See the pinned manifest for blob identities.
+\bibitem{assumptions} ProveIt supplied draft,
+\file{ipra_elimination_assumptions_2026-11-09.zip}.
+Inherited availability convention, identity expansion, and object-sequent
+equivalence used by the byte profile.
+\bibitem{successor} ProveIt supplied draft,
+\file{ipra_successor_recursion_2026-11-09.zip}.
+Existing successor-seeded counter-aware recursion and the 738-byte comparator.
+\bibitem{erasure} Scalar predecessor appendix reproduced from
+\file{ipra_named_specialization/reference/scalar_predecessor.tex}
+inside \cite{named}; that source credits the earlier one-hole scalar
+development. Its mathematical construction is inherited, not a new claim.
+\bibitem{progress} Arithmetic reflection and scalar PR compilation
+appendices reproduced from
+\file{ipra_named_specialization/reference/equality_reflection.tex} and
+\file{primitive_recursion.tex} inside \cite{named}, with their inherited
+attribution to the progress-closure development.
+\bibitem{forward} Arithmetic reflection proof reproduced from
+\file{ipra_named_specialization/reference/equality_reflection.tex}
+
+LOCATION: docs/drafts/ipra_guarded_elimination_2026-11-10.zip :: ipra_guarded_elimination_2026-11-10/report.tex
+SHA256: 6cf62257575f26fe3ff4fd0f57562c6122efe130f7e62274ec3e872d8c28aed0
+MATCH: seed_equation at line 634
+as an unrelated new predicate.
+
+\section{A 689-byte variant using the inherited successor recursor}
+\label{sec:successor-variant}
+
+The repository already contains a different arithmetic basis with a short
+internal compiler~\cite{successor}. The guarded-elimination result also
+applies to it, and the resulting focused program is smaller in bytes than
+our scalar variant. It uses the numerical grammar
+\[
+ t::=x\mid0\mid R(n,a;u,v.h),\qquad
+ Sa:=R(0,a;u,v.0),
+\]
+and exactly two computation schemas
+\[
+ R(0,a;u,v.h)=Sa,\qquad
+ R(Sn,a;u,v.h)=h[n/u,R(n,a;u,v.h)/v].
+\]
+The two update variables are distinct: $u$ is the predecessor counter and
+$v$ is the earlier recursive value. All remaining parameters stay fixed.
+Successor is an abbreviation, not an extra primitive numerical operation.
+The same logical syntax, guarded GE, case/progress DI, and focused
+availability convention are used, with these two arithmetic equations
+replacing I0 and IS. This is a separate presentation, not a reinterpretation
+of the scalar kernel's source-size numbers as if it checked different
+computations.
+
+Its reflexivity proof uses $r_t=R(St,0;u,v.u)$. The successor computation
+gives $r_t=t$; using that same theorem as both transport premises gives
+
+LOCATION: docs/drafts/ipra_guarded_elimination_2026-11-10.zip :: ipra_guarded_elimination_2026-11-10/report_standalone.tex
+SHA256: 1c6e0dc8ada113e63c681d4fa4c2f80873098c73e51d0f1572c8332926a83f91
+MATCH: successor_seed at line 834
+making malformed-input termination depend on a runtime recursion limit?
+We retained strict list recognition instead of adopting a smaller iterable
+parser with problematic nonempty-string recursion.
+\item Can the guarded rule be given a small machine-checked soundness proof
+covering its real permissive JSON decoder, followed by a formalization of
+the inherited arithmetic and both formula composites?
+\item Can a new numerical constructor shorten both the checker and its
+internal arithmetic development? The existing successor-seeded,
+counter-aware recursor already has a direct predecessor and PR compiler;
+reintroducing that construction under another name would not be progress.
+\item Can one remove a logical constructor or an arithmetic schema while
+preserving the internal round trip for \emph{every} native formula?
+Equiconsistency, standard-model agreement, and equivalence of a selected
+safe fragment are insufficient substitutes for the requested
+bi-interpretability.
+\item What cost model best captures a straightforward implementation?
+Source tokens, AST nodes, runtime primitives, parser size, certificate
+length, and the difficulty of its correctness proof are different costs.
+A meaningful global lower bound needs an explicitly fixed model.
+
+LOCATION: docs/drafts/ipra_guarded_elimination_2026-11-10.zip :: ipra_guarded_elimination_2026-11-10/report_standalone.tex
+SHA256: 1c6e0dc8ada113e63c681d4fa4c2f80873098c73e51d0f1572c8332926a83f91
+MATCH: successor_seed at line 2224
+\file{ipra_endpoint_certificates_2026-11-09.zip}.
+Inherited checked endpoint fields and exact compact and matched-structure
+comparison sources. See the pinned manifest for blob identities.
+\bibitem{assumptions} ProveIt supplied draft,
+\file{ipra_elimination_assumptions_2026-11-09.zip}.
+Inherited availability convention, identity expansion, and object-sequent
+equivalence used by the byte profile.
+\bibitem{successor} ProveIt supplied draft,
+\file{ipra_successor_recursion_2026-11-09.zip}.
+Existing successor-seeded counter-aware recursion and the 738-byte comparator.
+\bibitem{erasure} Scalar predecessor appendix reproduced from
+\file{ipra_named_specialization/reference/scalar_predecessor.tex}
+inside \cite{named}; that source credits the earlier one-hole scalar
+development. Its mathematical construction is inherited, not a new claim.
+\bibitem{progress} Arithmetic reflection and scalar PR compilation
+appendices reproduced from
+\file{ipra_named_specialization/reference/equality_reflection.tex} and
+\file{primitive_recursion.tex} inside \cite{named}, with their inherited
+attribution to the progress-closure development.
+\bibitem{forward} Arithmetic reflection proof reproduced from
+\file{ipra_named_specialization/reference/equality_reflection.tex}
+
+LOCATION: docs/drafts/ipra_guarded_elimination_2026-11-10.zip :: ipra_guarded_elimination_2026-11-10/report_standalone.tex
+SHA256: 1c6e0dc8ada113e63c681d4fa4c2f80873098c73e51d0f1572c8332926a83f91
+MATCH: seed_equation at line 701
+as an unrelated new predicate.
+
+\section{A 689-byte variant using the inherited successor recursor}
+\label{sec:successor-variant}
+
+The repository already contains a different arithmetic basis with a short
+internal compiler~\cite{successor}. The guarded-elimination result also
+applies to it, and the resulting focused program is smaller in bytes than
+our scalar variant. It uses the numerical grammar
+\[
+ t::=x\mid0\mid R(n,a;u,v.h),\qquad
+ Sa:=R(0,a;u,v.0),
+\]
+and exactly two computation schemas
+\[
+ R(0,a;u,v.h)=Sa,\qquad
+ R(Sn,a;u,v.h)=h[n/u,R(n,a;u,v.h)/v].
+\]
+The two update variables are distinct: $u$ is the predecessor counter and
+$v$ is the earlier recursive value. All remaining parameters stay fixed.
+Successor is an abbreviation, not an extra primitive numerical operation.
+The same logical syntax, guarded GE, case/progress DI, and focused
+availability convention are used, with these two arithmetic equations
+replacing I0 and IS. This is a separate presentation, not a reinterpretation
+of the scalar kernel's source-size numbers as if it checked different
+computations.
+
+Its reflexivity proof uses $r_t=R(St,0;u,v.u)$. The successor computation
+gives $r_t=t$; using that same theorem as both transport premises gives
+
+LOCATION: docs/drafts/ipra_guarded_elimination_2026-11-10.zip :: ipra_guarded_elimination_2026-11-10/report_standalone.tex
+SHA256: 1c6e0dc8ada113e63c681d4fa4c2f80873098c73e51d0f1572c8332926a83f91
+MATCH: seed_equation at line 1939
+passive numerical parameters, fixed throughout the recursion.
+Descriptions are staged: every body is fixed finite earlier syntax.
+This can equivalently be presented by an infinite first-order signature,
+one symbol for each such body. There is no numerical variable ranging
+over function descriptions and no uniform total program evaluator.
+
+Write the following as abbreviations, not primitive symbols:
+\[
+ Sa:=R(0,a;u,v.0),\qquad 1:=S0.
+ \tag{S-def}\label{ss:sdef}
+\]
+The complete numerical computation inventory consists of
+\begin{align}
+ R(0,a;u,v.h)&=Sa,\tag{R0}\label{ss:r0}\\
+ R(Sn,a;u,v.h)&=h[n/u,R(n,a;u,v.h)/v].
+ \tag{RS}\label{ss:rs}
+\end{align}
+All instances use simultaneous capture-free substitution.
+After expanding S-def, R0 is literally
+$R(0,a;u,v.h)=R(0,a;u,v.0)$, and the counter in RS is literally
+$R(0,n;u,v.0)$. Neither equation presupposes a successor constructor.
+For a body equal to zero, its R0 instance is reflexive; that is harmless.
+
+\subsection{The entire ordinary logical and induction inventory}
+
+Formulas are numerical equations and genuine falsity $\bot$, closed
+under $\wedge,\vee,\to,\forall,\exists$. Contexts are finite reusable
+lists. Ordinary intuitionistic equality logic consists of the following
+rules, and no classical rule is added:
+
+LOCATION: docs/drafts/ipra_guarded_elimination_2026-11-10.zip :: ipra_guarded_elimination_2026-11-10/successor_variant/R-NOTES.txt
+SHA256: 937e803e9127b51cc883d281004817beb399a87e262bad3845a9ddca7be349aa
+MATCH: successor_seed at line 1
+OPTIONAL SUCCESSOR-SEEDED RECURSION PROFILE
+
+This directory is a separate arithmetic presentation. Do not read its
+ternary numerical nodes as initialized scalar iteration I. They represent
+the counter-aware recursor R from the inspected successor-recursion draft:
+
+  R(0,a;u,v.h) = S(a)
+  R(S(n),a;u,v.h) = h[n/u, R(n,a;u,v.h)/v].
+
+The update has two DISTINCT inputs: u is the predecessor counter and v is
+the earlier state. Other free variables are passive parameters. Successor
+can be defined as S(a)=R(0,a;u,v.0); the unary array node is its syntax
+abbreviation. Finite staged R bodies introduce no uniform total evaluator.
+
+The equation/closure/paired logical syntax and the new benign-elimination
+rule are the same as in the main scalar package. The byte profile also
+
+LOCATION: docs/drafts/ipra_guarded_elimination_2026-11-10.zip :: ipra_guarded_elimination_2026-11-10/successor_variant/R-NOTES.txt
+SHA256: 937e803e9127b51cc883d281004817beb399a87e262bad3845a9ddca7be349aa
+MATCH: seed_equation at line 7
+OPTIONAL SUCCESSOR-SEEDED RECURSION PROFILE
+
+This directory is a separate arithmetic presentation. Do not read its
+ternary numerical nodes as initialized scalar iteration I. They represent
+the counter-aware recursor R from the inspected successor-recursion draft:
+
+  R(0,a;u,v.h) = S(a)
+  R(S(n),a;u,v.h) = h[n/u, R(n,a;u,v.h)/v].
+
+The update has two DISTINCT inputs: u is the predecessor counter and v is
+the earlier state. Other free variables are passive parameters. Successor
+can be defined as S(a)=R(0,a;u,v.0); the unary array node is its syntax
+abbreviation. Finite staged R bodies introduce no uniform total evaluator.
+
+The equation/closure/paired logical syntax and the new benign-elimination
+rule are the same as in the main scalar package. The byte profile also
+uses the inherited elimination-only assumption interface. Thus the new
+logical contribution transfers to R once the arithmetic computations and
+identity expansion are adjusted.
+
+THE ESSENTIAL IDENTITY-EXPANSION CHANGE
+
+LOCATION: docs/drafts/ipra_shared_continuation_2026-11-10.zip :: ipra_shared_continuation_2026-11-10/README.txt
+SHA256: 0c4d6eaf85cdca69713ef7f5cffb2b00b59cfe9e30b3ce2a2085f83e98b9e983
+MATCH: successor_seed at line 29
+equality transport, and the charged context-availability policy. Full
+intuitionistic logic, quantifier-free induction, every fixed primitive
+recursive operation, and both whole-domain interpretation composites are
+reconstructed. Designated absurdity is explicitly 0=S0; the ordinary
+interpretation includes its bridge to genuine falsity.
+
+The new implementation combines explicit endpoint certificates, the
+administrative continuation, and focused assumption availability. It
+does not use an uncharged theorem oracle or a proof producer. A separate
+one-variable successor-seeded recursor is an unresolved research candidate;
+the missing left inverse of successor is not asserted as proved.
+
+READ
+----
+ipra_shared_continuation.pdf  Complete report, proofs, limits, and references.
+report.tex                  Main LaTeX source.
+appendices/                 Three attributed arithmetic proof dependencies.
+implementation/IMPLEMENTATION.txt
+                            Implementation contract and correctness argument.
+implementation/independent_review.md
+                            Separate assistant source review (not formal QA).
+
+RUN
+---
+From this extracted directory:
+
+    python3 verify.py
+    python3 build.py
+
+Verification requires Python 3.12 for exact reproduction of the reported
+
+LOCATION: docs/drafts/ipra_shared_continuation_2026-11-10.zip :: ipra_shared_continuation_2026-11-10/README.txt
+SHA256: 0c4d6eaf85cdca69713ef7f5cffb2b00b59cfe9e30b3ce2a2085f83e98b9e983
+MATCH: one_variable_seed at line 29
+equality transport, and the charged context-availability policy. Full
+intuitionistic logic, quantifier-free induction, every fixed primitive
+recursive operation, and both whole-domain interpretation composites are
+reconstructed. Designated absurdity is explicitly 0=S0; the ordinary
+interpretation includes its bridge to genuine falsity.
+
+The new implementation combines explicit endpoint certificates, the
+administrative continuation, and focused assumption availability. It
+does not use an uncharged theorem oracle or a proof producer. A separate
+one-variable successor-seeded recursor is an unresolved research candidate;
+the missing left inverse of successor is not asserted as proved.
+
+READ
+----
+ipra_shared_continuation.pdf  Complete report, proofs, limits, and references.
+report.tex                  Main LaTeX source.
+appendices/                 Three attributed arithmetic proof dependencies.
+implementation/IMPLEMENTATION.txt
+                            Implementation contract and correctness argument.
+implementation/independent_review.md
+                            Separate assistant source review (not formal QA).
+
+RUN
+---
+From this extracted directory:
+
+    python3 verify.py
+    python3 build.py
+
+Verification requires Python 3.12 for exact reproduction of the reported
+source measures. Other Python versions can change ast.unparse and AST
+node counts. The programs themselves use only Python's standard library.
+
+LOCATION: docs/drafts/ipra_shared_continuation_2026-11-10.zip :: ipra_shared_continuation_2026-11-10/README.txt
+SHA256: 0c4d6eaf85cdca69713ef7f5cffb2b00b59cfe9e30b3ce2a2085f83e98b9e983
+MATCH: unresolved_candidate at line 29
+intuitionistic logic, quantifier-free induction, every fixed primitive
+recursive operation, and both whole-domain interpretation composites are
+reconstructed. Designated absurdity is explicitly 0=S0; the ordinary
+interpretation includes its bridge to genuine falsity.
+
+The new implementation combines explicit endpoint certificates, the
+administrative continuation, and focused assumption availability. It
+does not use an uncharged theorem oracle or a proof producer. A separate
+one-variable successor-seeded recursor is an unresolved research candidate;
+the missing left inverse of successor is not asserted as proved.
+
+READ
+----
+ipra_shared_continuation.pdf  Complete report, proofs, limits, and references.
+report.tex                  Main LaTeX source.
+appendices/                 Three attributed arithmetic proof dependencies.
+implementation/IMPLEMENTATION.txt
+                            Implementation contract and correctness argument.
+implementation/independent_review.md
+                            Separate assistant source review (not formal QA).
+
+RUN
+---
+From this extracted directory:
+
+    python3 verify.py
+    python3 build.py
+
+Verification requires Python 3.12 for exact reproduction of the reported
+source measures. Other Python versions can change ast.unparse and AST
+
+LOCATION: docs/drafts/ipra_shared_continuation_2026-11-10.zip :: ipra_shared_continuation_2026-11-10/report.tex
+SHA256: d9c612fd5589271458e42f9d3283b6ccf3627605444b63713f1d1f251b2c2690
+MATCH: successor_seed at line 733
+ R(Sn,a;u.h)=h[R(n,a;u.h)/u].\tag{SR}
+\]
+This differs from the existing successor-recursion proposal: that proposal
+has two independent update arguments, the old counter and old state, and
+uses the counter to get a predecessor immediately~\cite{successor}.
+Aliasing those two inputs does not preserve that proof.
+
+The one-variable system already defines
+\[
+ Z(n):=R(n,0;u.0),\qquad Z(0)=1,\quad Z(Sn)=0,
+\]
+and a shifted selector
+\[
+ T(n,a,b):=R(n,a;u.b),\qquad T(0,a,b)=Sa,\quad T(Sn,a,b)=b.
+\]
+It also defines successor-seeded successor iteration $R(n,a;u.Su)$,
+whose standard value is $a+n+1$, and finite cycles by iterating $Z$
+and suitable finite combinations of $T$.
+These facts do not yet give the ordinary selector with unshifted zero
+branch, or the initialized iterator used in the established compiler.
+
+\begin{proposition}[A sufficient left-inverse lemma]
+If the SR theory has a numerical term $P$ with a whole-domain proof
+$P(Sa)=a$, then ordinary initialized scalar iteration can be recovered by
+\[
+ \widehat I(n,a;u.h):=
+ P\bigl(R(n,a;u.S(h[Pu/u]))\bigr).
+ \tag{Shift compiler}
+\]
+Its two defining equations require only computation and the left-inverse
+identity. Neither $P0=0$ nor an induction argument is needed for those
+
+LOCATION: docs/drafts/ipra_shared_continuation_2026-11-10.zip :: ipra_shared_continuation_2026-11-10/report.tex
+SHA256: d9c612fd5589271458e42f9d3283b6ccf3627605444b63713f1d1f251b2c2690
+MATCH: seed_equation at line 717
+backward. Unused prefix cells are inert. Acceptance prints
+\texttt{ACCEPT} with status zero; rejection prints \texttt{REJECT} with
+nonzero status and may emit a traceback on standard error. Submitted
+strings are never executed as code.
+
+\section{A genuinely smaller numerical grammar: the precise unresolved step}
+\label{sec:unresolved}
+
+One explored route removes primitive successor while retaining a
+\emph{one-variable} update. Consider
+\[
+ t::=x\mid0\mid R(n,a;u.h),\qquad Sa:=R(0,a;u.0),
+\]
+with just
+\[
+ R(0,a;u.h)=Sa,\qquad
+ R(Sn,a;u.h)=h[R(n,a;u.h)/u].\tag{SR}
+\]
+This differs from the existing successor-recursion proposal: that proposal
+has two independent update arguments, the old counter and old state, and
+uses the counter to get a predecessor immediately~\cite{successor}.
+Aliasing those two inputs does not preserve that proof.
+
+The one-variable system already defines
+\[
+ Z(n):=R(n,0;u.0),\qquad Z(0)=1,\quad Z(Sn)=0,
+\]
+and a shifted selector
+\[
+ T(n,a,b):=R(n,a;u.b),\qquad T(0,a,b)=Sa,\quad T(Sn,a,b)=b.
+\]
+It also defines successor-seeded successor iteration $R(n,a;u.Su)$,
+whose standard value is $a+n+1$, and finite cycles by iterating $Z$
+and suitable finite combinations of $T$.
+These facts do not yet give the ordinary selector with unshifted zero
+
+LOCATION: docs/drafts/ipra_shared_continuation_2026-11-10.zip :: ipra_shared_continuation_2026-11-10/report.tex
+SHA256: d9c612fd5589271458e42f9d3283b6ccf3627605444b63713f1d1f251b2c2690
+MATCH: unresolved_candidate at line 739
+The one-variable system already defines
+\[
+ Z(n):=R(n,0;u.0),\qquad Z(0)=1,\quad Z(Sn)=0,
+\]
+and a shifted selector
+\[
+ T(n,a,b):=R(n,a;u.b),\qquad T(0,a,b)=Sa,\quad T(Sn,a,b)=b.
+\]
+It also defines successor-seeded successor iteration $R(n,a;u.Su)$,
+whose standard value is $a+n+1$, and finite cycles by iterating $Z$
+and suitable finite combinations of $T$.
+These facts do not yet give the ordinary selector with unshifted zero
+branch, or the initialized iterator used in the established compiler.
+
+\begin{proposition}[A sufficient left-inverse lemma]
+If the SR theory has a numerical term $P$ with a whole-domain proof
+$P(Sa)=a$, then ordinary initialized scalar iteration can be recovered by
+\[
+ \widehat I(n,a;u.h):=
+ P\bigl(R(n,a;u.S(h[Pu/u]))\bigr).
+ \tag{Shift compiler}
+\]
+Its two defining equations require only computation and the left-inverse
+identity. Neither $P0=0$ nor an induction argument is needed for those
+two equations.
+\end{proposition}
+\begin{proof}
+Put $K(n)=R(n,a;v.S(h[Pv/u]))$, with $v$ fresh. At zero the
+right side is $P(Sa)=a$. At a successor,
+\[
+ P(K(Sn))=P\bigl(S(h[PK(n)/u])\bigr)
+          =h[PK(n)/u]
+          =h[\widehat I(n,a;u.h)/u].
+\]
+The middle equality is the same left-inverse identity.
+\end{proof}
+
+No such left-inverse term and proof were obtained here, and no impossibility
+theorem for SR is asserted. The existing scalar predecessor appendix
+
+LOCATION: docs/drafts/ipra_shared_continuation_2026-11-10.zip :: ipra_shared_continuation_2026-11-10/report.tex
+SHA256: d9c612fd5589271458e42f9d3283b6ccf3627605444b63713f1d1f251b2c2690
+MATCH: unresolved_candidate at line 759
+ \widehat I(n,a;u.h):=
+ P\bigl(R(n,a;u.S(h[Pu/u]))\bigr).
+ \tag{Shift compiler}
+\]
+Its two defining equations require only computation and the left-inverse
+identity. Neither $P0=0$ nor an induction argument is needed for those
+two equations.
+\end{proposition}
+\begin{proof}
+Put $K(n)=R(n,a;v.S(h[Pv/u]))$, with $v$ fresh. At zero the
+right side is $P(Sa)=a$. At a successor,
+\[
+ P(K(Sn))=P\bigl(S(h[PK(n)/u])\bigr)
+          =h[PK(n)/u]
+          =h[\widehat I(n,a;u.h)/u].
+\]
+The middle equality is the same left-inverse identity.
+\end{proof}
+
+No such left-inverse term and proof were obtained here, and no impossibility
+theorem for SR is asserted. The existing scalar predecessor appendix
+cannot be imported as its proof: that appendix already uses ordinary
+initialized iteration and the unshifted selector. Interpreting arithmetic
+only on positive elements does not automatically solve the problem either;
+one still has to construct the internally functional inverse or an
+alternative definable isomorphism needed for the return interpretation.
+Consequently SR is an explicitly unresolved candidate, not part of the
+claimed equivalent axiomatization or of the reported size reduction.
+
+\section{Rejected conversion route and validation scope}
+
+A second experiment moved I0/IS out of the computation branch and used
+reflexivity modulo weak-head iterator conversion at atomic leaves. A
+
+LOCATION: docs/drafts/ipra_shared_continuation_2026-11-10.zip :: ipra_shared_continuation_2026-11-10/report.tex
+SHA256: d9c612fd5589271458e42f9d3283b6ccf3627605444b63713f1d1f251b2c2690
+MATCH: unresolved_candidate at line 769
+No such left-inverse term and proof were obtained here, and no impossibility
+theorem for SR is asserted. The existing scalar predecessor appendix
+cannot be imported as its proof: that appendix already uses ordinary
+initialized iteration and the unshifted selector. Interpreting arithmetic
+only on positive elements does not automatically solve the problem either;
+one still has to construct the internally functional inverse or an
+alternative definable isomorphism needed for the return interpretation.
+Consequently SR is an explicitly unresolved candidate, not part of the
+claimed equivalent axiomatization or of the reported size reduction.
+
+\section{Rejected conversion route and validation scope}
+
+A second experiment moved I0/IS out of the computation branch and used
+reflexivity modulo weak-head iterator conversion at atomic leaves. A
+successful conversion comparison expands to a finite chain of the old
+equations. Conversely, every old computation equation has matching
+endpoints after one contraction and the shared subsequent contractions.
+Acceptance soundness needs only that a successful run consist of valid
+finite rewrites; it does not require a uniformly total evaluator.
+
+The straightforward measured prototype has 311 normalized tokens,
+356 AST nodes, and 898 normalized bytes, compared with 287/331/811 for
+
+LOCATION: docs/drafts/ipra_shared_continuation_2026-11-10.zip :: ipra_shared_continuation_2026-11-10/report.tex
+SHA256: d9c612fd5589271458e42f9d3283b6ccf3627605444b63713f1d1f251b2c2690
+MATCH: unresolved_candidate at line 838
+dependence on Python syntax. Comparing short readable kernels in a fixed
+small metalanguage could distinguish mathematical simplification from
+runtime-specific refactoring more sharply.
+\end{enumerate}
+
+\paragraph{Final assessment.}
+The complete implementations provide a verified, modest improvement of
+the inspected coordinate envelope, accompanied by a fully specified
+equivalent native presentation. The numerical axiomatization itself is
+inherited. The larger request for a significant new simplicity breakthrough
+remains unresolved, and the unproved recursor candidate is not promoted
+to a theorem.
+
+\appendix
+\section*{Provenance of the arithmetic appendices}
+\addcontentsline{toc}{section}{Provenance of the arithmetic appendices}
+The next three appendices are copied unchanged from the reference
+directory of the current named-specialization archive. They are inherited
+proofs, not new results of this report. The local provenance manifest
+records their source archive, member paths, SHA-256 hashes, and the pinned
+repository commit. The source repository's MIT No Attribution license is
+included. All logical and inductive prerequisites used in these appendices
+have been reconstructed above.
+
+\input{appendices/scalar_predecessor.tex}
+\input{appendices/equality_reflection.tex}
+
+LOCATION: docs/drafts/ipra_shared_continuation_2026-11-10.zip :: ipra_shared_continuation_2026-11-10/report.tex
+SHA256: d9c612fd5589271458e42f9d3283b6ccf3627605444b63713f1d1f251b2c2690
+MATCH: shifted_selector at line 729
+ t::=x\mid0\mid R(n,a;u.h),\qquad Sa:=R(0,a;u.0),
+\]
+with just
+\[
+ R(0,a;u.h)=Sa,\qquad
+ R(Sn,a;u.h)=h[R(n,a;u.h)/u].\tag{SR}
+\]
+This differs from the existing successor-recursion proposal: that proposal
+has two independent update arguments, the old counter and old state, and
+uses the counter to get a predecessor immediately~\cite{successor}.
+Aliasing those two inputs does not preserve that proof.
+
+The one-variable system already defines
+\[
+ Z(n):=R(n,0;u.0),\qquad Z(0)=1,\quad Z(Sn)=0,
+\]
+and a shifted selector
+\[
+ T(n,a,b):=R(n,a;u.b),\qquad T(0,a,b)=Sa,\quad T(Sn,a,b)=b.
+\]
+It also defines successor-seeded successor iteration $R(n,a;u.Su)$,
+whose standard value is $a+n+1$, and finite cycles by iterating $Z$
+and suitable finite combinations of $T$.
+These facts do not yet give the ordinary selector with unshifted zero
+branch, or the initialized iterator used in the established compiler.
+
+\begin{proposition}[A sufficient left-inverse lemma]
+If the SR theory has a numerical term $P$ with a whole-domain proof
+$P(Sa)=a$, then ordinary initialized scalar iteration can be recovered by
+\[
+ \widehat I(n,a;u.h):=
+ P\bigl(R(n,a;u.S(h[Pu/u]))\bigr).
+ \tag{Shift compiler}
+\]
+Its two defining equations require only computation and the left-inverse
+
+LOCATION: docs/drafts/ipra_shared_continuation_2026-11-10.zip :: ipra_shared_continuation_2026-11-10/report.tex
+SHA256: d9c612fd5589271458e42f9d3283b6ccf3627605444b63713f1d1f251b2c2690
+MATCH: shifted_selector at line 736
+uses the counter to get a predecessor immediately~\cite{successor}.
+Aliasing those two inputs does not preserve that proof.
+
+The one-variable system already defines
+\[
+ Z(n):=R(n,0;u.0),\qquad Z(0)=1,\quad Z(Sn)=0,
+\]
+and a shifted selector
+\[
+ T(n,a,b):=R(n,a;u.b),\qquad T(0,a,b)=Sa,\quad T(Sn,a,b)=b.
+\]
+It also defines successor-seeded successor iteration $R(n,a;u.Su)$,
+whose standard value is $a+n+1$, and finite cycles by iterating $Z$
+and suitable finite combinations of $T$.
+These facts do not yet give the ordinary selector with unshifted zero
+branch, or the initialized iterator used in the established compiler.
+
+\begin{proposition}[A sufficient left-inverse lemma]
+If the SR theory has a numerical term $P$ with a whole-domain proof
+$P(Sa)=a$, then ordinary initialized scalar iteration can be recovered by
+\[
+ \widehat I(n,a;u.h):=
+ P\bigl(R(n,a;u.S(h[Pu/u]))\bigr).
+ \tag{Shift compiler}
+\]
+Its two defining equations require only computation and the left-inverse
+identity. Neither $P0=0$ nor an induction argument is needed for those
+two equations.
+\end{proposition}
+\begin{proof}
+Put $K(n)=R(n,a;v.S(h[Pv/u]))$, with $v$ fresh. At zero the
+right side is $P(Sa)=a$. At a successor,
+\[
+ P(K(Sn))=P\bigl(S(h[PK(n)/u])\bigr)
+          =h[PK(n)/u]
+
+LOCATION: docs/drafts/ipra_shared_continuation_2026-11-10.zip :: ipra_shared_continuation_2026-11-10/report.tex
+SHA256: d9c612fd5589271458e42f9d3283b6ccf3627605444b63713f1d1f251b2c2690
+MATCH: shifted_selector at line 765
+Put $K(n)=R(n,a;v.S(h[Pv/u]))$, with $v$ fresh. At zero the
+right side is $P(Sa)=a$. At a successor,
+\[
+ P(K(Sn))=P\bigl(S(h[PK(n)/u])\bigr)
+          =h[PK(n)/u]
+          =h[\widehat I(n,a;u.h)/u].
+\]
+The middle equality is the same left-inverse identity.
+\end{proof}
+
+No such left-inverse term and proof were obtained here, and no impossibility
+theorem for SR is asserted. The existing scalar predecessor appendix
+cannot be imported as its proof: that appendix already uses ordinary
+initialized iteration and the unshifted selector. Interpreting arithmetic
+only on positive elements does not automatically solve the problem either;
+one still has to construct the internally functional inverse or an
+alternative definable isomorphism needed for the return interpretation.
+Consequently SR is an explicitly unresolved candidate, not part of the
+claimed equivalent axiomatization or of the reported size reduction.
+
+\section{Rejected conversion route and validation scope}
+
+A second experiment moved I0/IS out of the computation branch and used
+reflexivity modulo weak-head iterator conversion at atomic leaves. A
+successful conversion comparison expands to a finite chain of the old
+equations. Conversely, every old computation equation has matching
+
+LOCATION: docs/drafts/ipra_shared_continuation_2026-11-10.zip :: ipra_shared_continuation_2026-11-10/report.tex
+SHA256: d9c612fd5589271458e42f9d3283b6ccf3627605444b63713f1d1f251b2c2690
+MATCH: shifted_selector at line 808
+peer review. The interpretation arguments and sorted-opening arguments
+are written mathematical proofs with independent assistant review.
+Physical recursion and memory limits can reject sufficiently large valid
+proofs; canonical completeness is the usual idealized finite-resource
+statement.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item \textbf{Can the SR left inverse be constructed without circularity?}
+The Shift compiler isolates an explicit sufficient lemma. A proof must
+not assume the ordinary iterator or unshifted selector that it is intended
+to recover. A countermodel or term-generation obstruction would also be
+useful, but none is presently established.
+\item \textbf{Can one program beat all three current coordinates?}
+The new envelope uses different complete implementations. The remaining
+tradeoff between the Hyp and focused interfaces is concrete and measurable.
+A single such program would be stronger implementation evidence.
+\item \textbf{Can a mathematical operation be removed, rather than another
+source-level branch rearranged?} Shared continuations and endpoint data
+save code, but leave the scalar numerical theory unchanged. A significant
+advance should remove a genuine checking obligation while preserving both

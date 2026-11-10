@@ -1,0 +1,191 @@
+% Original research note for the present investigation.  This fragment is
+% self-contained modulo amsmath, amssymb, and amsthm.  It does not claim
+% proof-assistant verification or literature-wide priority.
+
+\section{A finite-model obstruction to eager initialization}
+\label{sec:eager-obstruction}
+
+There is a tempting way to shorten the computation clause of an iteration
+checker.  Instead of preserving an independent initializer at counter zero,
+apply the update immediately:
+\begin{align}
+ F(0,a;v.h)&=h[a/v],\label{eq:eager-zero}\\
+ F(Sn,a;v.h)&=h[F(n,a;v.h)/v].\label{eq:eager-step}
+\end{align}
+The same syntactic opening operation then appears in both computation
+clauses.  This subsection proves that, with the stated remaining
+primitives, this change cannot present iPRA.  The obstruction applies to
+relational interpretations and to finite-dimensional interpretations with
+quotients, as well as to translations by terms.
+
+\paragraph{The precise proposed theory.}
+Let the numerical terms be the finite expressions
+\[
+ t ::= x\mid 0\mid S(t)\mid F(t,a;v.h).
+\]
+In the last constructor, $v$ is bound in the update $h$ only.  Every other
+free variable of $h$ is a passive parameter.  Nested occurrences of $F$
+are allowed, but this is a finite structural grammar: the update does not
+refer circularly to the operation currently being defined.  Equivalently,
+one may use a staged first-order signature containing a separate operation
+symbol for each already constructed update description.  Substitution is
+capture avoiding.
+
+Let $T_{\mathrm e}$ use ordinary intuitionistic first-order logic with
+actual equality, the equations \eqref{eq:eager-zero}--\eqref{eq:eager-step},
+the two boundary assertions
+\[
+ \forall x\,(x=0\vee\exists y\,x=Sy),\qquad 0\ne S0,
+\]
+and induction on literal equations, with arbitrary retained assumptions
+and passive parameters.  The countermodel below also satisfies the
+stronger assertion $\forall x\,(0\ne Sx)$ and induction on \emph{every}
+formula.  It therefore covers any version obtained by strengthening the
+induction schema in that way.  Successor injectivity is \emph{not} an
+axiom of this proposed simplification.
+
+\paragraph{Two-element interpretation.}
+Take the ordered set $M=\{0,1\}$ with $0<1$, interpret zero by $0$, and put
+\[
+                         S^M(b)=1\quad(b\in M).
+\]
+For a variable assignment $\rho$, interpret the eager constructor by
+\[
+ \llbracket F(n,a;v.h)\rrbracket_\rho
+   :=\llbracket h\rrbracket_{\rho[v\mapsto\llbracket a\rrbracket_\rho]}.
+ \tag{Eager interpretation}
+\]
+The counter is deliberately ignored.  This equation is a definition of
+the mathematical interpretation, not a new evaluator trusted by the
+proposed proof checker.
+
+\paragraph{Monotonicity lemma.}
+Every numerical term is monotone in all its free variables under this
+interpretation.
+
+\paragraph{Proof.}
+Use structural induction on the finite term.  Variables are projections,
+zero is constant, and successor is the constant function $1$.  For the
+remaining case let
+\[
+ A(\rho)=\llbracket a\rrbracket_\rho,
+ \qquad H(b,\rho)=\llbracket h\rrbracket_{\rho[v\mapsto b]}.
+\]
+After renaming the bound variable if necessary, the induction hypothesis
+says that $A$ is monotone and $H$ is monotone jointly in $b$ and its passive
+parameters.  If $\rho\le\sigma$ coordinatewise, then
+\[
+ H(A(\rho),\rho)\le H(A(\sigma),\sigma).
+\]
+This is exactly the assertion for $F(n,a;v.h)$.  Dependence on the
+counter term may disappear, which causes no problem for monotonicity.
+Nested eager binders are handled by the same structural induction.
+\hfill$\square$
+
+For completeness, the usual substitution lemma holds for this
+interpretation: evaluating a capture-free term substitution is the same
+as modifying the corresponding free-variable assignment.  Its proof is
+another structural induction.  In the binder case first rename $v$ away
+from the substituted variable and replacement term, and then apply the
+induction hypotheses to $a$ and $h$.  Consequently the displayed
+interpretation respects the formal substitution in both computation
+schemas, including arbitrary fixed passive parameters.
+
+\paragraph{Idempotence lemma.}
+Every monotone map $H:M\to M$ is idempotent.
+
+\paragraph{Proof.}
+The possible pairs $(H(0),H(1))$ are precisely
+\[
+                       (0,0),\qquad(0,1),\qquad(1,1).
+\]
+They are respectively the constant-zero map, the identity, and the
+constant-one map.  Each satisfies $H(H(b))=H(b)$ for both $b\in M$.
+\hfill$\square$
+
+\paragraph{Finite-model theorem.}
+The structure $M$ is a model of $T_{\mathrm e}$, and remains a model if
+literal-equation induction is replaced by full first-order induction.
+
+\paragraph{Proof.}
+Fix arbitrary values of all passive parameters and let $H$ be the
+resulting unary interpretation of the update $h$.  By the monotonicity
+lemma $H$ is monotone, and therefore idempotent.  If $a^M$ is the value of
+the initializer, the zero clause reads
+\[
+                         H(a^M)=H(a^M).
+\]
+The left side of the successor clause is again $H(a^M)$, because the
+counter is ignored; its right side is $H(H(a^M))$.  These agree by
+idempotence.  The substitution lemma justifies these calculations for
+the schemas as written, not merely for closed numerical instances.
+
+Coverage holds because the elements are $0$ and $S0=1$.  Also $Sx=1\ne0$
+for each $x$.  To check induction, fix any formula $A(x,\vec p)$ and an
+assignment of its passive parameters.  If $A(0,\vec p)$ and
+\[
+             \forall x\,(A(x,\vec p)\to A(Sx,\vec p))
+\]
+hold, the step at $x=0$ gives $A(1,\vec p)$.  These are all elements of
+the domain, so $\forall x\,A(x,\vec p)$ holds.  This argument works for
+arbitrary formulas and under any fixed retained context.  The classical
+structure is also a one-world intuitionistic Kripke model, so all
+intuitionistic first-order rules with equality are valid in it.
+\hfill$\square$
+
+\paragraph{The native paired-binder presentation is covered.}
+If the eager arithmetic is instead combined with the inherited
+Eq/$Q$/$D$ presentation, interpret its clauses by
+\[
+ Q_yB(y):=B(0)\to\forall y\,B(y),\qquad
+ D_{x,y}B(x,y):=\exists x\bigl(B(x,0)\to\forall y\,B(x,y)\bigr).
+\]
+Hypothesis use, equality transport, $Q$ specialization from its zero
+instance, and fresh-witness $D$ elimination are sound in this ordinary
+reading.  For case introduction, choose the supplied witness $t$.
+The retained base assumption supplies the $y=0$ instance, while the
+fresh-successor premise supplies the $y=1=S0$ instance.  For progress
+introduction, the retained base assumption and the forward step imply
+every instance by the induction just verified.  The usual freshness
+conditions keep the witness and passive parameters fixed in these
+arguments.  Thus neither removing ordinary connective primitives nor
+packaging induction as the native progress rule removes the countermodel.
+
+\paragraph{Corollary: no interpretation of iPRA.}
+There is no ordinary finite-dimensional first-order interpretation of
+iPRA in $T_{\mathrm e}$, even if its interpreted domain is a definable
+subset of $M^d$ modulo a definable equivalence relation.  Consequently
+$T_{\mathrm e}$ cannot satisfy the required bi-interpretability condition.
+
+\paragraph{Proof.}
+An interpretation would turn every model of $T_{\mathrm e}$ into a model
+of iPRA.  In the displayed two-element model, a definable subset of $M^d$
+has at most $2^d$ elements, and a quotient cannot increase that number.
+A finite collection of interpreted sorts does not change finiteness.
+But iPRA proves that all standard successor numerals are distinct, using
+successor injectivity and zero--successor separation; hence it has no
+finite model.  This is a contradiction.  The same argument permits a
+fixed finite tuple of parameters in the interpretation.
+\hfill$\square$
+
+\paragraph{Scope and relation to the earlier obstructions.}
+This result concerns eager initialization $h(a)$ with an independent
+initializer $a$.  It is not the existing almost-unary growth argument
+for a tied seed or a zero-seeded restricted iterator.  The supplied
+\texttt{local\_scopes} draft also already excludes relational
+bi-interpretability for an existential-free tied-seed theory, by finite
+witness extraction and finite-profile image counting.  The present
+argument obstructs all ordinary finite-dimensional relational
+interpretations, including quotients, because it exhibits a finite
+model of this different eager theory.  In particular it excludes even
+a one-way interpretation of iPRA; it is not a claim to be the first
+obstruction to relational bi-interpretability in this research program.
+It does not apply to a recursion
+update with a separately available counter argument, to the initialized
+iterator $I(0,a;h)=a$, or to the successor-seeded iterator
+$R(0,a;h)=Sa$.  Those alternatives require their own analyses.
+Adding successor injectivity would exclude this countermodel, but would
+be an additional arithmetic axiom and would not by itself prove a new
+primitive-recursion compiler or bi-interpretation.  This obstruction
+rules out the particular apparent simplification; it is not a lower
+bound on all iPRA axiomatizations and is not a positive size improvement.

@@ -1,0 +1,692 @@
+% Working mathematical development. Epsilon convention: 1 iff equality.
+\section{Scalar self-seeded iteration with actual equality}
+\label{sec:selfseed-theory}
+There is one numerical sort, with terms
+\[
+ t ::= x\mid 0\mid St\mid \epsilon(t,t)\mid F(n;v.h).
+\]
+Only $h$ binds $v$. Every fixed earlier-stage body $h(v,\vec p)$ gives
+one first-order symbol $F_h(n,\vec p)$; there is no function-variable
+sort and no uniformly total evaluator. Ordinary intuitionistic
+first-order logic with actual equality is used.
+
+The numerical axioms are
+\begin{align*}
+F(0;v.h)&=S(h[0/v]),&F(Sn;v.h)&=h[F(n;v.h)/v],\\
+Sx=Sy&\longrightarrow x=y,&0=S0&\longrightarrow\bot,\\
+\epsilon(x,y)=0&\ \lor\ \epsilon(x,y)=1,&
+\epsilon(x,y)=1&\longleftrightarrow x=y.
+\end{align*}
+Here $1=S0$ and all free variables are universally closed.
+The sole induction rule is contextual induction on a literal equation:
+\[
+\frac{\Gamma\vdash E(0)\quad\Gamma,E(z)\vdash E(Sz)}
+     {\Gamma\vdash E(t)},
+\]
+where $z$ is fresh for the retained context and fixed parameters.
+All substitutions avoid capture. Successor injectivity is an explicitly
+charged additional axiom. Numerical coverage is derived below rather
+than postulated.
+
+\paragraph{Optional definitional removal of the successor constructor.}
+The source grammar may be shortened to $x,0,\epsilon,F$ by defining
+$S(a):=F(0;v.a)$. The constant-body computation already proves this
+identity in the displayed theory. In the shortened presentation write
+both computation schemas and the boundary axioms using that abbreviation.
+The fixed constant-body symbol belongs to the first description stage;
+its own base equation is tautological, while its step equation and the
+boundary axioms remain substantive. Reintroducing $S$ by the definition
+recovers the displayed theory, and expanding $S$ gives the converse
+translation. This familiar constructor-elimination device already occurs
+in the supplied successor-seeded drafts; the new contribution below is
+the scalar self-seeded completion, not this abbreviation by itself.
+
+\subsection{Elementary Boolean operations and quantifier-free induction}
+Put
+\[
+D(n,a):=F(n;v.a),\qquad Z(n):=D(n,0).
+\]
+The computation axioms prove
+\[
+D(0,a)=Sa,\quad D(Sn,a)=a,\quad Z(0)=1,\quad Z(Sn)=0.
+\]
+If $Sn=0$, then $D(Sn,0)=0=D(0,0)=1$, contradicting separation.
+Thus every successor is nonzero. Injectivity and this consequence
+distinguish every fixed pair of distinct numerals.
+
+For Boolean $b,c$ define
+\[
+\neg_B b=\epsilon(b,0),\qquad
+b\mathbin{\wedge_B}c=\epsilon(D(b,\epsilon(c,0)),0).
+\]
+Their four truth-table cases follow from the displayed computations.
+Disjunction is defined by De Morgan on these Boolean values, and
+implication by $\neg_Bb\vee_Bc$. Numerical coverage is not substituted
+for Boolean range: the primitive range axiom supplies the two cases
+of every equality characteristic, and the finite truth tables preserve
+that range.
+
+For each fixed quantifier-free formula $A$, an external recursion on
+syntax produces a Boolean source term $\chi_A$ such that
+\[
+ \chi_A=1\longleftrightarrow A,\qquad
+ \chi_A=0\longleftrightarrow\neg A.
+\]
+The implication clause is intuitionistically valid because its
+quantifier-free antecedent has the proved Boolean characteristic and
+is therefore decidable. Equation induction on $\chi_A=1$ gives
+contextual quantifier-free induction. This does not add induction for
+arbitrary quantified formulas.
+
+\subsection{A finite-case predecessor graph}
+For a passive parameter $a$ define
+\[
+ U_a(v):=D(\epsilon(Sv,a),v),\qquad
+ V(j,a):=F(j;v.U_a(v)),\qquad W(a):=V(a,a).
+\]
+If $a\ne1$, then $V(0,a)=2$. The Boolean cases show that $U_a(v)$
+is $v$ when $Sv=a$, and $Sv$ otherwise. Contextual quantifier-free
+induction on $j$ therefore proves
+\[
+a\ne1\quad\longrightarrow\quad
+\bigl(V(j,a)=S^2j\ \lor\ S(V(j,a))=a\bigr).
+\tag{P-invariant}
+\]
+In the first alternative of the step, a successful test gives the
+second alternative and a failed test advances the clock by one. In
+the second alternative the update fixes the value.
+
+Take $a=S^3m$ and $j=m$. This $a$ differs from $1$ by injectivity and
+successor nonzeroness. The first alternative gives $V(m,a)=S^2m$.
+The second gives the same equation by successor injectivity, since
+$S(V(m,a))=S^3m$. The update now fixes the value, so exactly three
+further computation steps give
+\[
+                         W(S^3m)=S^2m.\tag{W}
+\]
+No induction with a changing passive parameter was used: the induction
+proved P-invariant with $a$ fixed, and only afterwards specialized it.
+
+The values at the three small arguments, calculated directly, are
+$W(0)=2$, $W(1)=2$, and $W(2)=4$. Define the graph $\Phi_P(n,p)$ by
+the following finite quantifier-free cases:
+\[
+\begin{split}
+\Phi_P(n,p):={}&(n=0\wedge p=0)\vee(n=1\wedge p=0)
+ \vee(n=2\wedge p=1)\\
+ &\vee(n\ne0\wedge n\ne1\wedge n\ne2\wedge p=W(n)).
+\end{split}
+\]
+Equality decidability makes these guards exhaustive; they are pairwise
+disjoint. Thus the graph is provably total and single-valued, without
+an existence oracle or a new recursion schema. Introduce its function
+$P$ in a conservative definitional extension. No constructor-coverage
+principle has yet been used.
+
+Every term containing finitely many $P$ occurrences can be expanded
+into finitely many quantifier-free source guards with source value
+terms: refine argument cases and then the four cases of $\Phi_P$.
+Consequently each quantifier-free formula of the extension has a
+provably equivalent source quantifier-free formula. Applying source
+quantifier-free induction proves its extension instance. This is a
+finite-case argument, not the invalid assertion that every conservative
+definition automatically preserves a restricted induction schema.
+
+\paragraph{Deriving predecessor and coverage together.}
+Apply this legitimate quantifier-free induction in the extension to
+the joint invariant
+\[
+ \bigl(n=0\ \lor\ n=S(Pn)\bigr)\quad\wedge\quad P(Sn)=n.
+ \tag{Joint invariant}
+\]
+At zero the first conjunct is immediate, and the second is $P1=0$
+from the finite cases. For the successor first conjunct, the old
+second conjunct gives $Sn=S(P(Sn))$. For its second conjunct
+$P(S^2n)=Sn$, split the old first conjunct. If $n=0$, use $P2=1$.
+If $n=S(Pn)$, then $S^2n=S^3(Pn)$ is distinct from $0,1,2$;
+the last predecessor case and (W) give
+\[
+ P(S^2n)=W(S^3(Pn))=S^2(Pn)=Sn.
+\]
+Thus the source proves, through finite-case elimination,
+\[
+ P0=0,\qquad P(Sn)=n,\qquad n=0\ \lor\ n=S(Pn).
+\]
+Ordinary existential introduction now gives numerical coverage
+$n=0\lor\exists m\,n=Sm$. This is an axiom deletion, not a
+standard-model observation: the single displayed joint induction
+constructs both conclusions internally, before using coverage in
+any subsequent order argument.
+
+\subsection{Capped counting and an order candidate}
+Define
+\[
+H_a(v):=D(\epsilon(v,S^2a),v),\qquad C(n,a):=F(n;v.H_a(v)).
+\]
+Since $S^2a\ne0$, $H_a(0)=1$ and $C(0,a)=2$. The same two-case
+induction as above gives
+\[
+C(n,a)=S^2n\ \lor\ C(n,a)=S^2a,\qquad C(a,a)=S^2a.
+\tag{C-invariant}
+\]
+If the cap has been reached the next state is identical. In particular
+$C(n,0)=2$ by equation induction.
+
+Coverage proves $D(c,Sv)=S(D(c,v))$. Boolean reflection and successor
+injectivity prove
+$\epsilon(Sv,S^3a)=\epsilon(v,S^2a)$; hence
+$H_{Sa}(Sv)=S(H_a(v))$. Moreover $C(1,Sa)=3$ because the cap
+$S^3a$ cannot equal $2$. Equation induction on $n$, keeping $a$ fixed,
+now proves the factor identity
+\[
+                            C(Sn,Sa)=S(C(n,a)).\tag{C-factor}
+\]
+Thus the Boolean term
+\[
+                          L(a,n):=\epsilon(C(n,a),S^2a)
+\]
+satisfies the familiar comparison recurrences
+\[
+ L(0,n)=1,\qquad L(Sa,0)=0,\qquad L(Sa,Sn)=L(a,n).
+\tag{L-recurrence}
+\]
+Write $a\le n$ for $L(a,n)=1$. The orbit supplies more than its
+two-variable comparison recurrences. Its persistence and the invariant
+give the unilateral law
+\[
+ a\le Sb\quad\longleftrightarrow\quad (a\le b\ \lor\ a=Sb).
+ \tag{New-cap}
+\]
+Indeed, if the cap is already reached it persists. If it is not reached,
+the old value is $S^2b$, the next value is $S^3b$, and this equals the
+cap $S^2a$ exactly when $a=Sb$. The reverse direction uses persistence
+and $C(a,a)=S^2a$.
+
+Linearity now has a valid fixed-parameter induction. Fix $a$ and induct
+on $n$ in $a\le n\lor n\le a$. The base uses $0\le a$. At the
+successor, $a\le n$ persists. In the other alternative split $a=0$
+or $a=Sb$ by coverage. The zero case gives $n=0$. In the successor
+case New-cap gives $n\le b$ or $n=a$. The first gives $Sn\le Sb=a$
+by the factor identity; the second gives $a\le Sn$ by reflexivity and
+persistence. The induction hypothesis has kept $a$ fixed throughout.
+
+For completeness, $Sn\not\le n$ follows by equation induction from
+$L(1,0)=0$ and the factor recurrence. The implication
+$Sn\le a\Rightarrow n\le a$ follows by splitting $a=0$ or $a=Sb$,
+using the factor recurrence and persistence. Antisymmetry is induction
+on $n$, with $a$ fixed, in
+$(a\le n\wedge n\le a)\to a=n$. At a successor New-cap splits
+$a\le Sn$ into $a=Sn$ or $a\le n$; in the latter case $Sn\le a$
+implies $n\le a$, the induction hypothesis gives $a=n$, and
+$Sn\not\le n$ gives a contradiction. Transitivity is induction on
+$c$, with $a,b$ fixed, in
+$(a\le b\wedge b\le c)\to a\le c$. New-cap splits the new second
+comparison into its old one or $b=Sc$. These give the conclusion by
+the induction hypothesis and persistence, or by substitution.
+Thus $\le$ is an internal discrete linear order with least element
+zero. Successor preserves and reflects it by L-recurrence.
+
+The finite-case graph choosing $n$ when $n\le a$ and $a$ otherwise
+defines $\min(n,a)$. C-invariant, antisymmetry, and the definition
+of $L$ prove
+\[
+                          C(n,a)=S^2\min(n,a).
+\tag{C-min}
+\]
+All subsequent uses of order and minimum refer to these derived
+graphs and laws, not standard-model interpretations.
+
+\subsection{Conditional bounded selection: exact local lemma}
+Let $M(c,p,q)=(c\wedge_Bp)\vee_B(\neg_Bc\wedge_Bq)$, for Boolean
+$c,p,q$. Define the following source terms:
+\[
+\begin{split}
+T(b,c,a,d)&:=F\bigl(b;v.D(M(c,\epsilon(v,S^2a),
+                                  \epsilon(v,S^2d)),v)\bigr),\\
+\operatorname{Sel}(b,c,a,d)&:=W(W(T(b,c,a,d))).
+\end{split}
+\]
+If $c=1$, recurrence uniqueness gives $T(b,c,a,d)=C(b,a)$;
+if $c=0$, it gives $T(b,c,a,d)=C(b,d)$. Accordingly the exact proved
+conditional hypotheses
+\[
+ a=S^2a_0,\ d=S^2d_0,\ L(a,b)=1,\ L(d,b)=1
+\]
+imply that Sel returns $a$ when $c=1$ and $d$ when $c=0$.
+Indeed the selected capped value is $S^2a$ or $S^2d$, and both
+applications of $W$ are in the range covered by (W), so they remove
+exactly two successors. This lemma uses the literal equations
+$L(a,b)=L(d,b)=1$, not unproved order properties.
+
+The stronger branch-local version is also valid: when $c=1$ only
+$2\le a\le b$ is needed, and when $c=0$ only $2\le d\le b$ is
+needed. The Boolean mux erases the other test pointwise; recurrence
+uniqueness then identifies $T$ with the selected capped counter. The
+compiler below nevertheless makes both candidates bounded before
+using Sel, to keep its invariant uniform.
+
+\section{A source compiler for bounded scalar iteration}
+\label{sec:selfseed-bounded}
+This section is the step that allows graph-defined operations to be
+used in updates without enlarging the primitive recursor schema.
+
+\subsection{Finite cases and encoded values}
+Call a total single-valued function graph \emph{finite-case} if it has
+finitely many source quantifier-free guards $A_i(\vec x)$ with source
+value terms $t_i(\vec x)$, the guards are provably exhaustive, and
+the values agree whenever their guards overlap. Equivalently its
+graph is $\bigvee_i(A_i(\vec x)\wedge y=t_i(\vec x))$.
+Finite composition of such graphs again has this form, by taking
+finite common refinements of the argument cases. The same expansion
+eliminates the corresponding graph-defined function symbols from
+every fixed quantifier-free formula. Hence quantifier-free induction
+transfers to their conservative definitional extension. This assertion
+concerns ordinary function terms only: it does not freely admit a
+new primitive $F$ body containing an opaque defined function.
+
+Write $e(x)=S^2x$. On encoded inputs $u=e(x)$ the following finite
+source cases decode $x$:
+\[
+ u=2:\ 0;\qquad u=3:\ 1;\qquad u\ne2,3:\ W(W(u)).
+ \tag{Decode}
+\]
+The last case has $u\ge4$ by coverage, and two applications of (W)
+therefore remove exactly two successors. No source term is claimed
+to be a correct decoder at all encoded values without these cases.
+
+For $B\ge2$ define the source clipping term
+\[
+                    K_B(v):=W(W(C(v,B))).
+\]
+When $v\ge2$, C-min and (W) prove
+\[
+             K_B(v)=\min(v,B),\qquad 2\le K_B(v)\le B.
+ \tag{Clip}
+\]
+Only arguments of the form $e(t)$ or values already in $[2,B]$
+are supplied to this term in the following compiler. There is no
+assertion that Clip has the same description at $v=0,1$.
+
+Let $g(\vec p)$ and $h(v,\vec p)$ be fixed finite-case graphs. Fix a
+raw cap $b$ and put $B=e(b)$. Expand the finite cases of $g$, encode
+and clip each candidate value directly as $C(t_i,b)=e(\min(t_i,b))$, and fold the
+cases by nested $\operatorname{Sel}(B,\chi_{A_i},-, -)$, with
+default value $2$. This gives a source term $a_B(\vec p)$ in $[2,B]$
+that equals $e(\min(g(\vec p),b))$.
+
+For the update, first compose the finite cases of $h$ with Decode
+for its state argument, refine the resulting source guards, and
+perform the same encoded clipping and selection. The result is a
+literal original-language source term $h_B(u,\vec p)$, provably
+in $[2,B]$ for every numerical $u$, such that
+\[
+ h_B(e(v),\vec p)=e(\min(h(v,\vec p),b)).
+ \tag{Compiled update}
+\]
+The universal range follows because every candidate is $C(t_i,b)$
+and hence lies in $[2,B]$, including at inputs not satisfying its
+guard. Equality characteristics and Boolean connectives make every
+guard test Boolean; no lazy-evaluation assumption is involved.
+
+\subsection{Two transient sentinels}
+Define the source term
+\[
+\begin{split}
+ H_B(u):=\operatorname{Sel}\bigl(S^2B,\epsilon(u,0),B,\quad\qquad\qquad\qquad\qquad\qquad\\
+ \operatorname{Sel}\bigl(S^2B,\epsilon(u,SB),S^2B,
+ \operatorname{Sel}(S^2B,\epsilon(u,S^2B),a_B,h_B(u))\bigr)\bigr).
+\end{split}
+\]
+Every candidate of these selectors lies in $[2,S^2B]$. Since the
+sentinels $SB,S^2B$ are distinct and exceed $B$, the theory proves
+\[
+ H_B(0)=B,\quad H_B(SB)=S^2B,\quad H_B(S^2B)=a_B,
+ \quad 2\le u\le B\Longrightarrow H_B(u)=h_B(u).
+\]
+Consequently
+\[
+ F(0;u.H_B)=SB,\quad F(1;u.H_B)=S^2B,\quad F(2;u.H_B)=a_B.
+\]
+Set
+\[
+                      Y_b(n,\vec p):=F(e(n);u.H_B(u)).
+\]
+Quantifier-free induction proves $2\le Y_b(n,\vec p)\le B$.
+Its base and step equations are
+\[
+ Y_b(0,\vec p)=a_B,\qquad
+ Y_b(Sn,\vec p)=h_B(Y_b(n,\vec p),\vec p).
+\]
+Applying the finite Decode cases to $Y_b$ produces a finite-case
+graph $R_b(n,\vec p)$ satisfying
+\[
+\begin{split}
+ R_b(0,\vec p)&=\min(g(\vec p),b),\\
+ R_b(Sn,\vec p)&=\min(h(R_b(n,\vec p),\vec p),b),\\
+ R_b(n,\vec p)&\le b.
+\end{split}
+\tag{Bounded iteration}
+\]
+Every occurrence of $F$ in $Y_b$ has a literal source body. In
+particular, the finitely many auxiliary graph functions do not occur
+as unexplained new symbols inside that body. The construction is an
+external finite compiler from their cases to source syntax.
+
+\paragraph{Scope of the lemma.}
+This gives arbitrary initialized, capped \emph{scalar} iteration of
+finite-case graph functions. It does not yet assert unbounded
+recursion totality. Below each unbounded use is assigned a source
+unary cap and supplied with an internal proof that clipping cannot
+occur on its intended arguments.
+
+\section{Arithmetic graphs without a circular size bound}
+\label{sec:selfseed-arithmetic}
+
+All graph-defined functions in this section are finite-case, and every
+induction mentioned is quantifier-free after their finite-case
+elimination. They do not become additional permissible $F$ bodies.
+The compiler of the preceding section is used whenever an iteration
+update refers to one of these graphs.
+
+\subsection{Difference and doubling}
+Use Bounded iteration with initializer $x$, update $P$, and cap $x$.
+Since $P(v)\le v$, clipping is never active. This defines a total
+finite-case graph $d(x,n)$ with
+\[
+d(x,0)=x,\qquad d(x,Sn)=P(d(x,n)),\qquad d(x,n)\le x.
+\]
+Equation induction on $y$, with $x$ fixed, proves
+$d(Sx,Sy)=d(x,y)$: its base is $P(Sx)=x$, and its step applies $P$
+to the previous equality. In particular $d(n,n)=0$ by a further
+equation induction. No interpretation as subtraction is assumed
+at this stage.
+
+Let
+\[
+ Q(n):=F(n;v.S^2v),\qquad \operatorname{db}(n):=P^3(Q(n)).
+\]
+Here $Q$ is a source term, and $\operatorname{db}$ is a finite-case
+graph. Their equations are
+\[
+ Q(0)=3,\quad Q(Sn)=S^2Q(n),\qquad
+ \operatorname{db}(0)=0,\quad
+ \operatorname{db}(Sn)=S^2\operatorname{db}(n),\quad
+ Q(n)=S^3\operatorname{db}(n).
+\]
+For the last three identities, first prove $Q(n)\ge3$ by induction;
+functional predecessor coverage then permits cancelling precisely
+three successors, and the displayed recurrence follows. Quantifier-free
+induction proves $n\le\operatorname{db}(n)$ and monotonicity. For
+monotonicity induct on the larger argument in
+$a\le b\to\operatorname{db}(a)\le\operatorname{db}(b)$ and use
+the equality-or-predecessor alternatives in New-cap.
+
+\subsection{Addition by a saturated diagonal argument}
+For any cap $c$, let $A_c(n,a)$ be Bounded iteration with initializer
+$a$ and update $S$. Write $s_c(v)=\min(Sv,c)$. Thus
+\[
+ A_c(0,a)=\min(a,c),\qquad A_c(Sn,a)=s_c(A_c(n,a)).
+\]
+For $a\le c$, equation induction gives seed commutation:
+\[
+                  A_c(n,s_c(a))=s_c(A_c(n,a)).
+ \tag{Seed commute}
+\]
+The two sides have the same base and the same update. The finite-case
+minimum graph obeys $\min(0,c)=0$ and
+$\min(Sn,c)=s_c(\min(n,c))$, by the discrete linear-order laws.
+Iteration uniqueness therefore gives
+$A_c(n,0)=\min(n,c)$.
+
+Fix $a\le c$ and induct on $n$ in
+\[
+ n\le c\ \longrightarrow\ A_c(n,a)=A_c(a,n).
+\]
+The base follows from the preceding minimum identity. Whenever $Sn\le c$,
+the step applies $s_c$ on the first side, and Seed commute on the
+second; the induction hypothesis then identifies them. This proves
+commutativity for bounded arguments without assuming addition.
+The increasing update and order-preserving $s_c$ also prove that
+$A_c$ is monotone in its counter and in its initializer within $[0,c]$.
+Counter monotonicity uses induction on the larger counter and New-cap;
+initializer monotonicity is direct induction on the common counter.
+
+Now fix an input bound $b$ and choose the \emph{source} cap
+$c=Q(b)=S^3\operatorname{db}(b)$. Quantifier-free induction on $n$ in
+\[
+ n\le b\ \longrightarrow\ A_c(n,n)=\operatorname{db}(n)
+\]
+proves the diagonal identity. At a successor Seed commute makes
+$A_c(Sn,Sn)=s_c^2(A_c(n,n))$. Since
+$\operatorname{db}(Sn)\le\operatorname{db}(b)<c$, neither of these
+two successor operations is clipped. Thus the successor diagonal
+equals $S^2\operatorname{db}(n)=\operatorname{db}(Sn)$.
+
+Monotonicity now gives the global local bound
+\[
+ n,a\le b\quad\Longrightarrow\quad
+ A_{Q(b)}(n,a)\le A_{Q(b)}(b,b)
+   =\operatorname{db}(b)<Q(b).
+ \tag{Addition bound}
+\]
+So these runs have no clipping on bounded inputs. For two caps from
+input bounds $b,b'$, induction on $n$ restricted by $n\le b,b'$
+proves that the results agree whenever $a\le b,b'$: the two bases
+are $a$, and both successor steps are genuine successor operations.
+
+Choose $b$ as the first largest of the two arguments, by the finitely
+many source order cases. This defines a finite-case graph $n+a$.
+Coherence proves its defining equations
+$0+a=a$ and $(Sn)+a=S(n+a)$ across possible changes of chosen cap.
+The graph is commutative by bounded commutativity. It has the
+source unary bound $Q(b)$ on arguments at most $b$.
+Usual associativity and monotonicity follow by fixed-parameter
+quantifier-free inductions from these equations.
+
+\subsection{Multiplication and primitive-recursive pairing}
+Define the source unary function
+\[
+ E(n):=F(n;v.Q(v)).
+\]
+It satisfies $E0=4$, $E(Sn)=Q(E(n))=\operatorname{db}(E(n))+3$,
+is monotone, and $E(n)\ge n$. Fix $n,a\le b$ and apply Bounded
+iteration with initial value zero, update $v\mapsto v+a$, and
+source cap $E(Q(b))$. For the run at stage $j\le b$, use the
+quantifier-free invariant
+\[
+                         v_j\le E(b+j).
+\]
+Its base is immediate. At a successor,
+\[
+ v_j+a\le E(b+j)+b
+          \le\operatorname{db}(E(b+j))<E(S(b+j)).
+\]
+Here $E(b+j)\ge b$ and the already constructed addition is used
+only through its finite-case graph. Also
+$b+j\le\operatorname{db}(b)<Q(b)$, so the stage bound is at most
+the chosen cap. Thus clipping is inactive throughout the intended run.
+The same cap-coherence induction as for addition gives a finite-case
+multiplication graph, with source unary bound
+\[
+                         M_\times(b)=E(Q(b)).
+\]
+Its zero and successor equations give the elementary nonnegative
+semiring identities by quantifier-free induction. In particular,
+$w^2\ge w$ for $w\ge1$ and
+$w^2+w<(Sw)^2$.
+
+Put
+\[
+                         \kappa(x,y)=(x+y)^2+x.
+\]
+This is a finite-case graph, with a monotone inflationary source bound
+\[
+                  K(b)=Q(M_\times(Q(b))).
+\]
+Both coordinates of a valid code are no greater than the code.
+To construct its projections, use capped scalar iteration starting
+at zero with update
+\[
+ u\longmapsto\begin{cases}Su,&(Su)^2\le z,\\u,&\text{otherwise},\end{cases}
+\]
+cap $z$, and counter $z$. The update preserves $u\le z$ and
+$u^2\le z$. The additional quantifier-free invariant
+\[
+               u_j=j\quad\lor\quad\text{the update fixes }u_j
+\]
+shows that the state at $j=z$ is fixed: if it equals $z$, then
+$(Sz)^2>z$ already makes it fixed. Hence the result $r(z)$ satisfies
+$r(z)^2\le z<(Sr(z))^2$. Linear order and square monotonicity make
+such a result unique.
+
+Set
+\[
+ \pi_0(z)=d(z,r(z)^2),\qquad \pi_1(z)=d(r(z),\pi_0(z)).
+\]
+The difference identity $d(x+y,y)=x$ follows by equation induction
+on $y$, using $d(Sx,Sy)=d(x,y)$ and the addition equations.
+For $z=\kappa(x,y)$, put $w=x+y$. The inequalities
+$w^2\le z\le w^2+w<(Sw)^2$ give $r(z)=w$, whence
+\[
+               \pi_0(\kappa(x,y))=x,\qquad
+               \pi_1(\kappa(x,y))=y.
+\]
+The graph functions are total on arbitrary codes too, and
+$\pi_0(z),\pi_1(z)\le z$, since each difference is bounded by
+its first argument. No unbounded minimization has been introduced.
+
+\section{Full primitive recursion and both interpretations}
+\label{sec:selfseed-equivalence}
+
+\subsection{A source bound for every fixed description}
+We externally recurse on ordinary finite primitive-recursive
+descriptions. The induction data for $f$ are a finite-case graph,
+internal proofs of its defining equations, and a monotone inflationary
+\emph{source unary term} $M_f$ such that
+\[
+              \vec x\le b\quad\Longrightarrow\quad f(\vec x)\le M_f(b).
+\]
+Zero, successor, and projections have these data with the bound $Q$.
+Composition takes finite common refinements of cases. If
+$f=h(g_1,\ldots,g_m)$, the composition
+$M_h\circ M_{g_1}\circ\cdots\circ M_{g_m}$ is a suitable source
+bound: monotonicity and inflationarity make it dominate each needed
+intermediate argument. Empty tuples and nullary descriptions are
+handled by their fixed finite source values and inflationary constant
+shifts of $b$.
+
+Suppose the next description is
+\[
+f(0,\vec p)=g(\vec p),\qquad
+f(Sn,\vec p)=h(n,f(n,\vec p),\vec p).
+\]
+Let $G=M_g$, $H=M_h$, and choose the source unary function
+\[
+D=K\circ H\circ G\circ Q,\qquad
+U(t)=F(t;v.D(v)),\qquad B(b)=U(SQ(b)).
+\]
+Every factor is monotone and inflationary, and $D(v)\ge Sv$.
+Consequently $U$ is monotone and $U(t)\ge St$; $B$ is a monotone
+inflationary source term. These facts are quantifier-free inductions
+using the already proved order laws.
+
+The scalar state update is the finite-case graph
+\[
+ J(z,\vec p)=\kappa\bigl(S\pi_0(z),
+                    h(\pi_0(z),\pi_1(z),\vec p)\bigr),
+\]
+with initializer $\kappa(0,g(\vec p))$. Apply the bounded source
+compiler to this initializer and update with cap $B(b)$. Assume
+$n,\vec p\le b$. For stages $j\le b$ prove
+\[
+                          z_j\le U(Sb+j).
+ \tag{PR-stage}
+\]
+The seed satisfies
+\[
+\kappa(0,g(\vec p))\le K(G(b))\le D(b)
+                         \le D(U(b))=U(Sb).
+\]
+For the successor, write $s=U(Sb+j)$. Then $s\ge b$, and both
+state projections are at most $z_j\le s$. The next counter is
+at most $Ss\le Q(s)$, and the new value is at most
+$H(G(Q(s)))$, by monotonicity and inflationarity of the bounds.
+The pairing bound therefore gives
+\[
+                   J(z_j,\vec p)\le D(s)=U(S(Sb+j)).
+\]
+Since $j\le b$, the stage argument $Sb+j$ is at most
+$S\operatorname{db}(b)$ and hence at most $SQ(b)$. Thus every
+stage bound is at most $B(b)$, proving that no clipping occurs.
+The displayed invariant is quantifier free in the finite-case
+definitional extension; it translates to permitted source induction.
+
+The projection identities prove by quantifier-free induction guarded
+by $j\le b$ that the counter component of $z_j$ is $j$, and that the
+value component satisfies its required base and, when $Sj\le b$,
+step equations. Two valid caps
+give the same run up to their common allowed counter by induction:
+the seeds agree and their unclipped updates are identical. Choose
+$b$ as the first largest input among $n,\vec p$, by finitely many
+source order cases, and define $f(n,\vec p)=\pi_1(z_n)$. This is
+again a finite-case graph. At any larger input bound $b$, cap coherence
+identifies this value with the run at cap $B(b)$, or monotonicity of
+$B$ bounds it from the selected smaller input bound. Thus its value
+is bounded by $B(b)$ for every valid input bound, and take $M_f=B$.
+The cap-coherence argument proves its defining equations
+even when a successor input changes the selected largest coordinate.
+
+The source compiler has expanded every use of $g,h,\kappa,\pi_i$
+inside the scalar update into original-language terms, encoded cases,
+and bounded selectors. Neither a total evaluator for description
+codes nor a new recursor schema over graph-defined operations has
+been assumed. The construction is a finite external recursion on
+each fixed description.
+
+\subsection{Whole-domain bi-interpretation}
+Interpret the source theory in iPRA on its full numerical domain.
+Keep $0,S$ and actual equality; take $\epsilon$ to be the standard
+primitive-recursive equality characteristic. For each fixed earlier
+body $h$, interpret $F_h$ by primitive recursion with seed $S h(0)$
+and scalar update $h$. All source axioms and its equation-induction
+rule then hold in iPRA.
+
+Conversely, interpret each fixed PR function description by the
+finite-case graph constructed above. Its totality, single-valuedness,
+defining equations, and quantifier-free induction instances have all
+been proved in the source. The original successor, injectivity,
+separation, and actual equality are retained. Thus this is an
+interpretation of full first-order iPRA, with its ordinary intuitionistic
+logic and the entire numerical domain.
+
+For the iPRA-side composite, external induction on a fixed PR
+description reduces identification with the original function to
+uniqueness from its base and step equations. Internal quantifier-free
+induction proves this uniqueness at arbitrary counters and parameters.
+For the source-side composite, $0,S$ are unchanged. Both equality
+characteristics have the two-value range and reflect actual equality,
+so Boolean cases identify them. For a fixed $F_h$, external induction
+on its finite stage identifies the earlier body; both the old and
+composite functions then satisfy the same self-seeded base and scalar
+step equations. Equation induction identifies them everywhere. If a
+composite uses graph-defined functions, the finite-case elimination
+lemma supplies the required source induction instance.
+
+The relation $x=y$ therefore defines the isomorphism of each domain
+composite with the original structure. External induction on formula
+syntax extends preservation of functions and equality to all formulas;
+quantifiers range over the same whole domain and genuine falsity is
+preserved. This gives whole-domain bi-interpretability and
+equiconsistency. It is not an internal assertion of either theory's
+own consistency.
+
+\paragraph{Research status and complexity.}
+This is a written proof of a new scalar self-seeded basis, with the
+separately recorded independent mathematical audit. It removes both
+the independent initializer and the old counter argument from the
+primitive recursor. It pays explicitly for actual numerical equality,
+successor injectivity, and ordinary intuitionistic
+logic. No complete checker for this new theory has been measured,
+and no existing tiny initialized-iterator checker is assigned to it.
+It must not be described as a demonstrated improvement below the
+current complete-checker frontier or as an absolutely simplest theory.

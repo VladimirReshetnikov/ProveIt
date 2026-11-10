@@ -46,6 +46,10 @@
   lexicographic order, one-based nth primes, natural powers and prime
   factorizations, canonical base digits and divisor lists, and the exact
   canonical list of distinct permutations.
+- [`PrimitiveRecursiveArithmetic/ConciseIPRA/`](PrimitiveRecursiveArithmetic/ConciseIPRA/)
+  collects the research packages on very small complete presentations of a
+  theory bi-interpretable with intuitionistic primitive recursive arithmetic
+  (one iterator, two binders, six rules), with their Lean formalization.
 
 Deliberate paradoxes and kernel-loophole work — Girard/Hurkens, Coquand-Paulin,
 the sanctioned escape hatches, and the Lean and Rocq kernel defects — grew up

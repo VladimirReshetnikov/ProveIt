@@ -1,0 +1,639 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=.93in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,enumitem}
+\usepackage{xcolor,fancyhdr,listings,xurl,needspace}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,urlcolor=blue!45!black,citecolor=blue!40!black]{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{RGB}{26,47,68}
+\definecolor{pale}{RGB}{246,248,251}
+\setlength{\parskip}{.3em}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=.25em,topsep=.4em,leftmargin=1.6em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\D}{\mathsf D}
+\newcommand{\Q}{\mathsf Q}
+\newcommand{\FV}{\operatorname{FV}}
+\newcommand{\file}[1]{\expandafter\nolinkurl\expandafter{\detokenize{#1}}}
+\lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,keepspaces=true,
+ breaklines=true,showstringspaces=false,frame=single,rulecolor=\color{black!15},
+ backgroundcolor=\color{pale},aboveskip=8pt,belowskip=8pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Uniform zero in iPRA proof certificates}
+\fancyhead[R]{\small 10 November 2026}
+\fancyfoot[C]{\thepage}
+\hypersetup{pdftitle={Uniform Zero and Constructed Premises for iPRA},
+ pdfauthor={Research prepared for Vladimir Reshetnikov},
+ pdfsubject={Intuitionistic primitive recursive arithmetic; complete checker; bi-interpretability; proof certificates}}
+\title{\color{ink}\bfseries Uniform Zero and Constructed Premises\\for Intuitionistic Primitive Recursive Arithmetic\\[7pt]
+\large Complete rules, interpretation proofs,\\and a reproducible comparison with the current drafts}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{10 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a uniform numerical representation in which every canonical term,
+including zero, has a true Python Boolean value. A small change to the
+existing opening operation makes all generated zero instances use the same
+representation. Consequently zero initializers, zero successor predecessors,
+and zero equality sources need no auxiliary proof. Equality and conditional
+universal majors can also be constructed from their instruction fields,
+removing repeated formula data from certificates. The construction preserves
+the complete native consequence relation and therefore the inherited
+whole-domain bi-interpretation with full first-order iPRA.
+
+The inspected repository snapshot contains 17 current archives. Its smallest
+delivered complete checker occupies 558 normalized Python bytes. A composition
+of existing implementation techniques reduces that program to 545 bytes;
+uniform zero costs five additional bytes, and constructed majors cost six
+more. Thus the new complete profiles occupy 550 and 556 bytes. A matched
+comparison is essential: neither new representation is smaller than the
+545-byte implementation of the old representation. The numerical and logical
+axioms are inherited. A significant new axiomatic foundation, an absolute
+minimum, or a single program improving all existing size measures has not
+been established.
+
+The positive result is a proof-preserving certificate normalization, with
+exact savings for the displayed compiler and reproducible checking evidence.
+The archive includes the complete primitive inventory, all inherited
+arithmetic and logical bridge proofs with attribution, standalone checkers,
+proof producers, examples, negative controls, source measurements, and
+maximum-compression gzip measurements as information only.
+\end{abstract}
+\begin{center}
+\fcolorbox{ink}{pale}{\begin{minipage}{.91\linewidth}
+\textbf{Research status.} The requested foundational breakthrough remains
+open. This report supplies a complete equivalent presentation and a smaller
+implementation family, while distinguishing inherited implementation
+savings from the new certificate theorem. No proof-assistant verification
+or absolute simplicity claim is made.
+\end{minipage}}
+\end{center}
+\clearpage
+\setcounter{tocdepth}{1}\tableofcontents
+\clearpage
+
+\section{The comparison target and the result}
+\label{sec:comparison}
+
+All repository comparisons are pinned to ProveIt commit
+\begin{center}\file{76a2651601d17b34d46753f189ea026a21ce8d29}.\end{center}
+Every direct archive in \file{docs/drafts} was downloaded and checked
+against its Git blob SHA and byte length. A recursive census found 17 direct
+archives, 32 distinct ZIP payloads, 2,239 Python-source occurrences after
+archive-content deduplication, and 443 distinct Python byte strings.
+The complete manifest and source census are in \file{evidence/}.
+The comparison includes complete reference-directory checkers, not just
+the principal file advertised by each draft.\cite{snapshot,certified}
+
+The supplied corpus has separate attained minima of 558 normalized source
+bytes, 262 significant tokens, and 296 abstract-syntax-tree nodes. These
+are attained by different programs. They are upper bounds on an unknown
+optimum, not a mathematical lower-bound theorem. The token/AST leader
+uses generic exception-based traversal and depends on the actual Python
+recursion limit to reject some nonempty strings. The exact-list programs
+used here do not need that particular termination qualification.
+
+\input{evidence/metrics_table.tex}
+
+The controlled comparison has three stages. First combine previously
+documented lexical scopes, an immutable default context, the invalid
+\texttt{0j} missing-image sentinel, and a shared continuation written
+with Boolean selection. The result implements the existing certificate
+representation and measures 545 bytes. Second normalize numerical zero
+uniformly, at a cost of five bytes. Third construct equality and closure
+majors rather than repeating them, at a further cost of six bytes.
+The resulting 550- and 556-byte programs are smaller than the literal
+558-byte supplied file, but larger than the matched 545-byte control.
+That distinction is part of the result, not an omitted caveat.
+
+The explicit-list versions use \texttt{isinstance(a,list)}. The smaller
+versions use the already published predicate \texttt{a*0==[]} on values
+returned by Python's JSON decoder. Both are standalone programs: no
+producer, comparison tool, mathematical oracle, or trusted axiom file is
+imported. Python and its standard JSON library are the common platform
+excluded by the corpus's convention.
+
+\subsection{What is new relative to the inspected collection}
+
+The current collection already knows nonempty terms provably equal to zero,
+truthy scalar aliases for zero, unary paired formulas, triplicated closures,
+the affine arity traversal, scalar iteration, and complementary case/progress
+introduction. We do not claim any of these separately as new.
+
+The new combination is to choose a truthy zero \emph{uniformly throughout
+the canonical language and the checker's generated data}, prove that opening
+commutes with that choice, and exploit it in premise construction. Merely
+submitting a different zero alias to the old checker would not establish
+this theorem: its generated base assumptions would still contain its old
+zero spelling. The scalar normalizer resolves precisely that mismatch.
+
+The numerical language, arithmetic equations, native logical meaning,
+equation-only induction restriction, and interpretation domain do not change.
+The contribution is therefore a new certificate presentation of the inherited
+theory, with a quantitative proof-normalization result. It is not a new
+foundation for arithmetic. Novelty is asserted only relative to the inspected
+current and embedded draft texts, not to all published literature.
+
+\section{Complete mathematical presentation}
+\label{sec:axioms}
+
+We use full first-order intuitionistic PRA: defining equations for all
+fixed primitive-recursive descriptions, the successor axioms, intuitionistic
+first-order equality logic, and contextual quantifier-free induction.
+This target is distinct from merely its equational or negative fragment.
+The standard distinction between first-order intuitionistic, first-order
+classical, and quantifier-free presentations is explicit in the background
+literature.\cite{avigad}
+
+\subsection{One numerical sort and two arithmetic schemas}
+
+Numerical terms have the grammar
+\[
+ t::=x\mid 0\mid S(t)\mid I(n,a;u.h).
+\]
+Write $1:=S0$. Only the update body $h$ binds $u$. Its other parameters are fixed through
+iteration. The counter is not an extra argument supplied to the update.
+Equivalently, for each fixed earlier-stage term $h(u,\vec p)$, introduce
+a first-order symbol $i_h(n,a,\vec p)$ at the next finite syntactic stage.
+There is no quantified numerical code for an arbitrary update and no
+uniformly total universal primitive-recursive evaluator.
+
+The only primitive nonlogical schemas are
+\begin{align}
+ I(0,a;u.h)&=a, \tag{I0}\label{eq:main-I0}\\
+ I(Sn,a;u.h)&=h[I(n,a;u.h)/u]. \tag{IS}\label{eq:main-IS}
+\end{align}
+The substitutions are capture-free. Either schema may be used in any
+retained context. Both remain explicitly present in the new presentation.
+
+\subsection{Native formulas and intended meanings}
+
+Formulas are
+\[
+ A::=(s=t)\mid \Q_y A\mid \D_{x,y} A,
+\]
+with distinct bound variables in a paired formula. Contexts are finite,
+reusable lists of formulas. The designated contradiction and truth are
+$\bot_*=(0=S0)$ and $\top_*=(0=0)$.
+The ordinary readings are
+\[
+ (\Q_yB)^\circ=B^\circ(0)\to\forall y\,B^\circ(y),
+ \qquad
+ (\D_{x,y}B)^\circ=
+ \exists x\bigl(B^\circ(x,0)\to\forall y\,B^\circ(x,y)\bigr).
+ \tag{Readings}\label{eq:readings}
+\]
+These readings specify an interpretation; they do not silently add
+ordinary logical axioms to the native calculus. Public $\Q_yB$ is
+interderivable with $\D_{v,y}B$ for an unused $v$. Thus $\Q$ may instead
+be regarded as an auxiliary closure in contexts, with the public object
+language consisting only of equations and $\D$.
+
+\subsection{Every primitive inference rule}
+
+\paragraph{Hypothesis.}
+\[
+ \frac{}{\Gamma\vdash A}\quad(A\in\Gamma).
+ \tag{Hyp}
+\]
+
+\paragraph{Equality transport.}
+\[
+ \frac{\Gamma\vdash s=t\qquad\Gamma\vdash F(s)}
+      {\Gamma\vdash F(t)}.
+ \tag{Tr}
+\]
+Here $F$ is any fixed native formula template, including a compound one.
+
+\paragraph{Closure elimination.}
+\[
+ \frac{\Gamma\vdash\Q_y B(y)\qquad\Gamma\vdash B(0)}
+      {\Gamma\vdash B(t)}.
+ \tag{QE}
+\]
+
+\paragraph{Paired elimination.}
+\[
+ \frac{\Gamma\vdash\D_{x,y}B(x,y)\qquad
+       \Gamma,\Q_yB(b,y)\vdash A}
+      {\Gamma\vdash A}.
+ \tag{DE}
+\]
+The parameter $b$ is fresh for $\Gamma,A$ and every fixed parameter of $B$.
+The displayed local closure is discharged.
+
+\paragraph{Paired case introduction.}
+\[
+ \frac{\Gamma,B(t,0)\vdash B(t,Sz)}
+      {\Gamma\vdash\D_{x,y}B(x,y)}.
+ \tag{DI-case}
+\]
+
+\paragraph{Paired equation-progress introduction.}
+\[
+ \frac{\Gamma,E(t,z)\vdash E(t,Sz)}
+      {\Gamma\vdash\D_{x,y}E(x,y)},
+ \qquad E\text{ a literal numerical equation}.
+ \tag{DI-progress}
+\]
+In both introduction rules, $z$ is fresh for $\Gamma,t$ and every fixed
+matrix parameter. The displayed local assumption is discharged. A quantified
+formula whose innermost matrix is an equation is not a literal equation.
+Both case and progress introduction are available at equation roots;
+case introduction alone is available at compound roots.
+
+There are no additional primitive logical axioms, equality-reflexivity
+axioms, numerical coverage axioms, successor-separation axioms, or induction
+rules in this native presentation. Structural weakening, exchange,
+contraction, renaming, capture-free numerical substitution, and assumption
+cut are admissible by induction on finite derivations. Fresh eigenparameters
+are renamed before a cut or substitution. The substitution preserves the
+root constructor, hence preserves the equation-only progress restriction.
+
+\subsection{Three elementary derived principles}
+
+Reflexivity is derived from computation. Let $r=I(0,t;u.0)$. The equation
+$r=t$ is I0; use it as both premises of transport with motive $v=t$ to
+obtain $t=t$. Ordinary explicit motives then give symmetry, transitivity,
+and numerical congruence.
+
+Equation induction is derived by progress introduction with an unused
+witness coordinate. From $E(z)\vdash E(Sz)$ under a retained context,
+obtain $\D_{x,y}E(y)$, eliminate it to get $\Q_yE(y)$, supply the base
+$E(0)$, and specialize at the desired term. The same construction with
+case introduction gives numerical zero/successor cases for arbitrary
+native formulas. This is why case introduction cannot simply be discarded.
+
+Let $C(n,a,b)=I(n,a;u.b)$, with $u$ unused. Then $C(0,a,b)=a$ and
+$C(Sn,a,b)=b$. Under $0=S0$, transport therefore makes every two numerical
+terms equal. External induction on finite formula syntax, introducing a
+paired formula while ignoring its local assumption, yields every native
+formula. This derives explosion for the designated contradiction.
+
+\section{Why the presentation is fully bi-interpretable with iPRA}
+\label{sec:equivalence}
+
+The complete inherited proofs are reproduced in the appendices, with source
+hashes and attribution. This section states the precise dependency chain;
+none of the implementation changes is used as a replacement for a missing
+arithmetic or logical bridge.
+
+\subsection{Reconstructing the whole intuitionistic logical language}
+
+First expand every $\Q_yB$ as $\D_{w,y}B$, with $w$ fresh and unused,
+using the equivalence above. On the resulting equation/$\D$ formulas,
+define a gate using the selector $C$ by
+\[
+ G_v(s=t):=(C(v,0,s)=C(v,0,t)),\qquad
+ G_v(\D_{x,y}B):=\D_{x,y}G_vB.
+\]
+After fresh renaming, computation and binder congruence give
+$\vdash G_0A$ and $G_{Sv}A\dashv\vdash A$. Padding by a paired binder,
+$A\dashv\vdash\D_{u,y}G_yA$, lets formulas of different depths be aligned.
+A finite structural recursion then constructs a selector $M_v(A,B)$ with
+$M_0(A,B)\dashv\vdash A$ and $M_{Sv}(A,B)\dashv\vdash B$.
+The appendices spell out that recursion, including unequal binder depths.
+
+Writing $p(z)=I(z,0;u.C(u,1,0))$, one obtains the complete logical macros
+\begin{align*}
+ A\Rightarrow_*B&:=\D_{u,z}M_z(A,B),\\
+ A\wedge_*B&:=\D_{u,z}G_zM_{p(z)}(A,B),\\
+ \exists_*x\,A(x)&:=\D_{x,y}G_yA(x),\\
+ A\vee_*B&:=\exists_*x\,M_x(A,B),\\
+ \forall_*x\,A(x)&:=A(0)\wedge_*\D_{u,z}G_zA(z),\\
+ \bot_*&:=(0=1).
+\end{align*}
+All unused coordinates and binders are fresh. The fixed computations
+$p(1)=1$ and $p(2)=0$ suffice for conjunction elimination. The native rules
+derive every intuitionistic natural-deduction introduction and elimination
+rule for these macros, including the quantifier eigenvariable conditions.
+There is no replacement of positive disjunction or existence by a negative
+translation, and no excluded middle for arbitrary quantified formulas.
+
+\subsection{The ordinary realization and its arithmetic strength}
+
+Let $T_I$ be ordinary intuitionistic first-order equality logic in the staged
+scalar-iterator signature, with I0, IS, contextual literal-equation induction,
+and the two explicit sentences
+\[
+ \forall x\,(x=0\vee\exists y\,x=Sy),\qquad
+ (0=S0)\to\bot.
+\]
+The second is the falsity bridge. It cannot be silently omitted from an
+ordinary theory merely because native contradiction is represented by an
+equation. The native rules are sound in $T_I$ under
+\eqref{eq:readings}; the derived logic, cases, induction, and explosion
+recover the converse interpretation.
+
+The scalar arithmetic development proceeds in a noncircular order.
+First it constructs a scalar predecessor $P$ and proves $P0=0$ and
+$P(Sn)=n$, without assuming pairing or actual-equality reflection.
+Then it constructs truncated subtraction and a Boolean characteristic
+of actual equality, proving reflection on the entire numerical domain.
+Truth-table constructions extend that characteristic to each fixed
+quantifier-free formula and recover contextual quantifier-free induction.
+Only then are pairing, projections, and the compiler for every fixed
+primitive-recursive description constructed.
+
+For example, if $\pi,L,H$ are the established pairing and projections,
+a primitive recursion
+\[
+ f(0,\vec p)=g(\vec p),\qquad
+ f(Sn,\vec p)=h(n,f(n,\vec p),\vec p)
+\]
+is represented by
+\[
+ \begin{split}
+ V(n,\vec p)&=I\bigl(n,\pi(0,g^*(\vec p));
+ u.\pi(SL(u),h^*(L(u),H(u),\vec p))\bigr),\\
+ f^*(n,\vec p)&=H(V(n,\vec p)).
+ \end{split}
+\]
+Equation induction proves $L(V(n,\vec p))=n$ and the defining equations
+of $f^*$. The construction is external recursion on a fixed finite
+description. It postulates no uniform total evaluator for all programs.
+
+\begin{theorem}[The exact preserved equivalence]
+The native calculus of Section~\ref{sec:axioms}, its ordinary realization
+$T_I$, and full first-order iPRA have effective interpretation and proof
+translations with the following properties. Both numerical domains are the
+whole domain, equality is actual equality, and the numerical return
+isomorphisms have graph $x=y$. Both formula composites are provably
+equivalent to the original formulas. In particular, the theories are
+bi-interpretable and equiconsistent.
+\end{theorem}
+\begin{proof}
+Interpret scalar iteration in iPRA by ordinary primitive recursion whose
+update ignores the counter. Interpret every fixed primitive-recursive
+description in $T_I$ by the scalar compiler. The inherited predecessor and
+reflection theorems supply the successor axioms and all quantifier-free
+induction instances, so these are interpretations of the stated theories.
+
+Two recursions with the same initializer and extensionally equal updates
+are internally equal by literal-equation induction. External induction on
+each finite description therefore identifies its double translation with
+the original operation. This proves preservation of every operation by
+the identity graph on the full domain, not merely agreement at standard
+numerals. The gate/selector logical reconstruction proves the ordinary
+meaning of every macro. Conversely, native paired formulas and closures
+are interderivable with their translations in \eqref{eq:readings}.
+Binder congruence and external induction on finite formula syntax give
+both formula composites. Contradiction is preserved by the explicit
+falsity bridge. Translating finite contradiction proofs in either direction
+gives equiconsistency. The detailed inherited arithmetic lemmas and
+logical derivations are in the attributed appendices.
+\end{proof}
+
+\input{new_theory.tex}
+
+\section{The complete checker and its trust boundary}
+\label{sec:checker}
+
+The following is the complete constructed-major byte profile. The uniform
+zero-only profile retains the old explicit-major comparison instead.
+The readable version expands the same stages and is measured separately.
+
+\lstinputlisting[language=Python]{code/checker_constructed_compact.py}
+
+Input is one JSON array. Its last item is the requested formula; earlier
+items are instruction packets consumed from the end. Hypothesis closure
+uses no packet. Unused prefix instructions are permitted. Acceptance
+requires normal exit and exactly the output \texttt{ACCEPT}. An exception
+rejects. The programs contain no \texttt{assert} whose checking disappears
+under Python's optimization option.
+
+\subsection{The inherited arity decoder}
+
+Formula arrays of length one, two, and three represent respectively a
+paired formula, an equation, and an auxiliary closure. Canonical closures
+are triplicated: $[B,B,B]$. Empty and surplus formula arrays denote the
+fixed truth equation. Numerical arrays of length one and three represent
+successor and scalar iteration; other numerical arrays denote zero.
+Scalar formula padding denotes truth. These are serialization meanings,
+not extra independent predicate symbols.
+
+At a numerical root the depth is three. Coordinates $0,1,2$ all denote
+zero; under protected slots, coordinates $3+2j$ and $4+2j$ denote slot $j$
+counted from the innermost slot. Negative allocated coordinates are rigid
+parameters. The traversal adds $5-\operatorname{len}(a)$ at every array.
+This gives four for a unary paired binder or a successor with dummy slots,
+three for the sort change at equality, and two for a closure or iterator.
+The full inherited sorted decoder and successful-opening argument are
+included as \file{reference/inherited_arity_checker.tex}.
+
+The new scalar clause sends preserved zero to raw $1$. This value lies
+inside the same numerical-zero interval at every meaningful position.
+It does not move a binder, change a de Bruijn coordinate, or remove a dummy
+slot. It has a true Python Boolean value; the mathematical successor of
+zero is the unary array $[1]$, not raw scalar $1$.
+
+\subsection{Lexical scopes and shared continuation selection}
+
+Each invocation of the local checker receives its current floor $k$.
+The opener closes over that local variable. The major is checked at the
+old floor. A child major proof may allocate its own local parameters, but
+does not change the parent's floor. Then the parent decrements its floor
+and checks its continuation at the new floor. The previously checked goal
+and retained context cannot mention that new rigid name. Reuse of names
+in disjoint completed scopes is ordinary alpha-renaming; a single global
+fresh-name counter is unnecessary. This technique is inherited from the
+local-scope draft.\cite{local}
+
+The context default is an empty list, but no checker mutates it: every
+continuation passes a newly concatenated list. Thus the usual mutable-default
+pitfall does not occur. The source uses \texttt{0j} as its missing-image
+sentinel. JSON cannot supply that value; if a meaningful unbound numerical
+hole requests it, the numerical comparison rejects it.
+
+The Boolean expression constructing the next hypothesis has three ordered
+alternatives. A nonempty proved major supplies its tripled export.
+Otherwise a nonempty initializer supplies a computation equation, which is
+always a nonempty pair. Otherwise exact unary introduction supplies its
+opened matrix. Canonical arithmetic markers are raw $0$, not JSON null.
+This change excludes some old raw spellings while preserving the entire
+canonical consequence relation. The paired introduction call still enforces
+the unary shape through argument binding; there is no unchecked introduction
+of an arbitrary equality or surplus connective.
+
+\subsection{Fresh computation assumptions are not universal axioms}
+
+The generated arithmetic hypothesis can contain the newly admitted name
+$b$. In general, only its zero instance is a theorem. For a retained
+context and conclusion independent of $b$, the rule
+\[
+ \vdash H(0),\qquad \Gamma,H(b)\vdash A
+ \quad\Longrightarrow\quad \Gamma\vdash A
+\]
+is admissible: substitute zero for $b$ in the continuation and cut in
+$H(0)$. For the permissive floating-point input aliases, substitute zero
+also for every additional fresh name in the newly admitted unit interval
+that occurs in the finite derivation. They are not all identified with
+the designated integer eigenparameter.
+
+The constructed source and recursive-image check identify that zero
+instance with I0 or IS. The new zero normalization preserves its decoded
+meaning. Claiming that the generated $H(b)$ is uniformly true would be
+incorrect; neither the implementation nor the proof requires that claim.
+
+\subsection{What is and is not certified}
+
+The soundness argument is a mathematical induction on finite accepting
+checking trees, using the sorted-opening, scope, computation-supply, and
+native-rule lemmas. Canonical completeness is an effective compilation
+of finite native proofs. The included execution tests inspect substantial
+instances and failure modes; they are not a Lean or Rocq proof of those
+universal statements. All actual Python programs also have finite memory
+and stack limits and can reject sufficiently large otherwise valid proofs.
+
+\section{Reproduction and validation}
+\label{sec:validation}
+
+\input{evidence/validation_summary.tex}
+
+The named proof producer is outside the trusted checker and never imported
+by it. It describes symbolic rule premises, records hypotheses and scopes,
+and serializes certificates. The old producer retains the published
+certified-zero repair; the new producers serialize mathematical zero directly
+and perform no such expansion. Baseline and new certificates are checked by
+their respective complete programs, with both ordinary and optimized Python.
+
+Source measurement parses the entire delivered Python module, removes
+genuine docstrings, normalizes it with \texttt{ast.unparse}, and includes
+one trailing newline. Significant tokens omit layout, comments, encoding,
+and end markers. AST counts include the entire module. Maximum-compression
+gzip uses compression level nine, timestamp zero, and no original filename.
+Both raw-source and normalized-source gzip sizes, source hashes, and runtime
+versions are recorded. Gzip is informational, not an objective of the search.
+
+\begin{verbatim}
+python3 verify.py
+python3 measure.py
+python3 build.py
+\end{verbatim}
+
+The first command checks the supplied positive and negative certificates.
+The second reproduces the size table. The third compiles this document twice
+with \texttt{pdflatex}. Neither compilation nor checking requires network
+access. A TeX installation with the listed standard packages is required to
+rebuild the PDF.
+
+\section{Further research questions}
+\label{sec:further}
+
+\begin{enumerate}
+\item \textbf{Can constructed premises pay for themselves in the kernel?}
+The present fully matched construction adds six source bytes after uniform
+zero. An improvement should remove that cost without introducing an
+unaccounted witness condition, hidden interpreter, or altered induction rule.
+The exact source ablation in this report provides a fixed target.
+
+\item \textbf{Can one remove a mathematical rule rather than re-encode it?}
+The present two computation schemas and case/progress distinction remain.
+A smaller foundation must recover every lost rule and both formula
+composites. The existing countermodels to deleting atomic case introduction
+and to unsafe paired-witness specialization remain relevant.
+
+\item \textbf{Can zero computation be made definitional without paying more
+for substitution?} The rewrite $I(0,a;u.h)\to a$ has an elementary normal-form
+presentation. In the current arity codec, returning the raw seed without
+removing its dummy slot is incorrect. A different binder layout might
+make this conversion cheaper; all added scope machinery must be counted.
+The broad conversion approach already occurs in the compact-kernel draft.
+
+\item \textbf{Can the successful-trace soundness theorem be formalized
+compactly?} A useful formal target is a sorted raw-tree decoder, the
+opening lemma, the fresh-zero-instance supply lemma, and the canonical
+compiler theorem. This would strengthen assurance much more than another
+one-byte rearrangement of the Python source.
+
+\item \textbf{What should the optimization objective include?} The current
+minimum is an empirical source-size frontier. A reproducible benchmark
+should keep interface, language, malformed-input conventions, scope model,
+and charged dependencies fixed, and report certificate size and checking
+work alongside checker size. A two-byte literal-file improvement can vanish
+under a matched implementation comparison.
+\end{enumerate}
+
+\appendix
+\clearpage
+\section*{Attribution and the full inherited bridge}
+\addcontentsline{toc}{section}{Attribution and the full inherited bridge}
+
+The following five sections are reproduced unchanged from the
+\file{ipra_certified_zero_2026-11-10.zip} archive at the pinned commit.
+They are inherited mathematics, not new results of this report.
+Their original member paths and SHA-256 hashes are recorded in
+\file{evidence/inherited_provenance.json}; the repository license is included
+as \file{reference/ProveIt_LICENSE.txt}. They provide the complete logical
+reconstruction, ordinary realization, scalar predecessor, actual-equality
+reflection, and primitive-recursion compiler on which the present exact
+iPRA equivalence depends.\cite{certified}
+
+The first appendix uses an older clause notation. The clause
+$\langle B(0);y.B(y)\rangle$ is the public closure $\Q_yB$. An ordinary
+assumption $F$ corresponds to the constant clause
+$\langle H;v.F\rangle$ with $H$ a fixed computation theorem; it does not
+mean the tautological closure $\Q_vF$. The public-$\Q$ interface and clause
+interface are equivalent by the derived unused-witness construction.
+The other appendices are used with that explicit identification.
+
+\input{appendices/inherited_choice_basis.tex}
+\input{appendices/inherited_ordinary_bridge.tex}
+\input{appendices/scalar_predecessor.tex}
+\input{appendices/equality_reflection.tex}
+\input{appendices/primitive_recursion.tex}
+
+\clearpage
+\begin{thebibliography}{99}\raggedright
+\bibitem{snapshot} Vladimir Reshetnikov, repository maintainer.
+\emph{ProveIt current draft collection}, commit
+\file{76a2651601d17b34d46753f189ea026a21ce8d29}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/76a2651601d17b34d46753f189ea026a21ce8d29/docs/drafts}.
+
+\bibitem{certified} \emph{Seed-selected computation certificates for iPRA},
+\file{ipra_certified_zero_2026-11-10.zip}, in~\cite{snapshot}.
+Source of the published byte minimum, simultaneous nonempty-zero repair,
+comparison producer, and attributed bridge appendices.
+
+\bibitem{arity} \emph{An arity calculus for iPRA},
+\file{ipra_arity_calculus_2026-11-10.zip}, in~\cite{snapshot}.
+Unary paired formulas, triplicated closures, and the $5-\operatorname{arity}$
+opening convention, reproduced in the certified-zero archive.
+
+\bibitem{local} \emph{Local scopes for iPRA},
+\file{ipra_local_scopes_2026-11-10.zip}, in~\cite{snapshot}.
+Lexical eigenparameter allocation and certificate renaming.
+
+\bibitem{compact} \emph{A smaller complete iPRA checker and an obstruction
+to positive axiomatizations}, \file{ipra_compact_kernel_2026-11-10.zip},
+in~\cite{snapshot}. Includes the previously investigated definitional
+conversion approach and its scope-accounting obligations.
+
+\bibitem{generated} Inherited generated-assumption and known-instance
+supply interface, reproduced and attributed in~\cite{certified,arity}.
+\bibitem{constructed} \emph{Constructing computation sources for iPRA},
+\file{ipra_constructed_computation_2026-11-10.zip}, in~\cite{snapshot}.
+\bibitem{corpus} The complete pinned current and embedded draft corpus,
+as inventoried in~\cite{snapshot} and \file{evidence/corpus_metrics.json}.
+\bibitem{erasure} Inherited scalar-predecessor development, reproduced
+as \file{appendices/scalar_predecessor.tex}; see~\cite{certified}.
+\bibitem{forward} Inherited equality-reflection development, reproduced
+as \file{appendices/equality_reflection.tex}; see~\cite{certified}.
+\bibitem{progress} Inherited pairing and primitive-recursion development,
+reproduced as \file{appendices/primitive_recursion.tex}; see~\cite{certified}.
+\bibitem{avigad} Jeremy Avigad. \emph{Proof mining}, lecture slides, 2004,
+slide 13. \url{https://www.andrew.cmu.edu/user/avigad/Talks/asl04.pdf}.
+Used for the background distinction between first-order classical,
+first-order intuitionistic, and quantifier-free PRA presentations.
+\end{thebibliography}
+\end{document}

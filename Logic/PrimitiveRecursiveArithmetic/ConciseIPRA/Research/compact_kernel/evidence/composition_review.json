@@ -1,0 +1,18 @@
+{
+  "reviewer": "independent assistant logic_audit",
+  "source_path": "/workspace/scratch/6b72ac64f9ed/baseline_audit_work/controls/arity_explicit_p.py",
+  "source_sha256": "47fe8e866709921c092b7bad64cecef1b14626e2869725f2f080c4ce41ece362",
+  "status": "No mathematical soundness defect found in the stated composition; written review, not proof-assistant verification.",
+  "arithmetic_simulation": {
+    "new_packet": "[null,p,a,h]",
+    "old_when_p_truthy": "[[],[p,a,h],1,0]",
+    "old_when_p_falsy": "[[],[0,a,h],p,0]",
+    "claim": "At the same initial floor and goal/context, both variants generate exactly the same raw equation, update the floor identically, and open the local assumption with numerical image zero. The opener and arity decoder are unchanged.",
+    "scope_caveat": "Image zero does not itself set newly admitted rigid negative parameters to zero. Reuse the arity draft known-zero-instance supply lemma, not an unproved uniform-supply claim."
+  },
+  "logic": "All truthy-major branches are unchanged. Falsy non-null major now chooses DI regardless of witness truthiness; the native DI rule permits literal-zero witnesses, so this extends the old packet encoding soundly. Progress still applies only to binary equation matrices or constant-truth aliases; Q/D matrices have odd arity and receive case mode.",
+  "empty_goal": "i(*a,t,2) enforces unary D only when a is a nonempty list. a=[] can call i(t,2); original empty formula denotes truth, so this is sound. Scalar padding contexts/majors are likewise harmless truth under inherited decoder.",
+  "completeness": "Literal-zero successor computation now requires boxed predecessor B(0)=I(0,0;v.0), followed by equality transport along B(0)=0. This is a finite native proof transformation distinct from the newly direct zero-DI-witness feature.",
+  "driver": "Removing try/except only changes rejected-input output. Exceptions still exit nonzero, while success prints ACCEPT. Verification must check exit status and exact output.",
+  "inherited_limit": "The arithmetic/logical bi-interpretation remains inherited; its semiring/order lemmas use written QFI arguments, not exhaustive certificates."
+}

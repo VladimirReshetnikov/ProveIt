@@ -1,0 +1,522 @@
+\section{What was compared and what improved}
+\label{sec:results}
+
+The source snapshot is ProveIt commit
+\file{0300a290bedee5019c974291850b798378438b2e}. Its
+\file{docs/drafts} directory contains sixteen direct ZIP archives.
+The census follows embedded ZIPs as well: there are 22 distinct archive
+contents, 297 distinct Python source contents, 516 archive-member source
+occurrences in those distinct archives, and 2,249 occurrences if repeated
+nested inclusion paths are counted. Archive reading and Python parsing
+reported no errors. The source-role audit identifies 130 nominal complete
+standalone checker sources; this classification is not a formal
+soundness certification of every historical program.
+
+The comparison includes complete programs in \file{reference/} and
+\file{ancillary/} directories. In particular, the 672-byte
+\file{zero_product.py} must count: excluding it because of its directory
+name would overstate the improvement. Every one of the 23 nonchecker
+sources that fell below any coordinate of the baseline envelope was inspected;
+they were build, packaging, measurement, conversion, or test utilities.
+The complete census, role classifications, hashes, and per-archive
+minima are in \file{reference/audit/}.
+
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Complete program & Tokens & AST & Norm. bytes & Gzip-9 raw\\
+\midrule
+Constructed computation, explicit &277&317&684&403\\
+Transient seed, structure &280&311&705&393\\
+Counter congruence, zero-product &281&322&672&397\\
+Flat computation &278&314&679&402\\
+\midrule
+Old coordinate minima &277&311&672&--\\
+New iterative checker &\textbf{276}&\textbf{305}&749&398\\
+New byte profile &280&319&\textbf{652}&394\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The token saving is one token (0.36\%), the AST saving is six nodes
+(1.93\%), and the normalized-byte saving is twenty bytes (2.98\%).
+The first two belong to the iterative checker; the last belongs to
+the byte profile. \emph{The family envelope is not the size of one program.}
+The iterative program has 746 actual source bytes; the byte profile has
+652. The old raw-source minimum is 628 bytes, so the new byte profile
+does not improve that different metric. Normalized gzip sizes are
+399 and 394 bytes, respectively. The separately supplied explanatory
+checker has 303 normalized tokens, 339 AST nodes, 1,401 normalized bytes,
+2,051 raw bytes, and 897 raw gzip bytes. Its larger names and explanations
+are fully counted rather than hidden in a trusted dependency.
+
+\subsection{Measurement protocol}
+
+The unchanged inherited normalizer removes comments and genuine
+docstrings, parses the entire module, calls \file{ast.unparse}, appends
+one newline, and measures significant Python tokens, AST nodes, and
+UTF-8 bytes. The entire trusted program is counted, including the
+parser import, scope traversal, proof dispatcher, input, rejection, and
+acceptance output. Python and its standard JSON parser are shared
+infrastructure for the compared programs. The recorded runtime is
+CPython 3.12.14; changes to the Python AST or unparser can change metrics.
+
+As requested, gzip is an \emph{FYI measurement only}. We compress the
+exact delivered bytes at level 9, with timestamp zero and no stored
+filename. We also report compression of normalized bytes. This is
+reproduced by \file{gzip -9 -n -c} for the measured size; the Python
+implementation uses the corresponding deterministic gzip settings.
+The zlib runtime is 1.3.2. No compression objective was used to select
+the mathematical axioms. A source can shrink while its gzip grows;
+the optional Boolean-tail loop experiment exhibited precisely that.
+
+The current attained minima are upper bounds on the unknown best
+implementation size. They are not mathematical impossibility bounds.
+The operational target used here is the user's requested comparison
+against the best complete implementations in the actual supplied corpus.
+There is no claim that a globally simplest axiomatization has been found.
+
+\subsection{New and inherited contributions}
+
+The scalar iterator, paired conditional-closure binder, case/progress
+choice, flat computation packets, known-witness assumptions, and ordinary
+iPRA bridge are inherited. The present software contribution is an
+iterative continuation checker with persistent contexts and a smaller
+byte implementation using justified local refactorings. These are
+modest improvements to that presentation.
+
+The main mathematical extension is the eventual-sequence model
+and full-arity universal-Horn obstruction in
+Section~\ref{app:finite-parameter-obstruction}. The progressive-binder
+presentation in Section~\ref{app:progressive-binder} supplies an alternative
+logical organization and a one-step universal-quantifier encoding.
+Neither is assigned the small checkers' measurements. Novelty here is
+relative to the inspected source corpus, not a literature-wide priority claim.
+The finite-parameter automorphism method itself already appears in the
+nested unary-arithmetic amalgam drafts~\cite{prioramalgam}; a simpler
+product-model coverage counterexample is also inherited~\cite{priorproduct}.
+The new construction and its expanded scope, rather than those methods,
+are the distinct contribution asserted here. Both smaller obstruction
+appendices are explicitly attributed rederivations of current results.
+
+\section{The reference theory and the exact implemented presentation}
+\label{sec:implemented-theory}
+
+\subsection{Which iPRA is meant}
+
+Throughout, iPRA means \emph{full first-order intuitionistic} primitive
+recursive arithmetic, not merely its equation consequences or its
+quantifier-free language. The signature contains a symbol for every
+fixed finite PR description, with its projection, composition, and
+primitive-recursion equations; zero and successor are included. The
+constructor axioms are successor injectivity and $Sx\ne0$. Induction
+is allowed for every quantifier-free formula, in arbitrary retained
+contexts, with the usual fresh induction parameter.
+This convention accords with the distinction between first-order and
+quantifier-free presentations described in~\cite{avigad}.
+
+The underlying intuitionistic logical rules are hypothesis, weakening
+and reusable assumptions, implication introduction and elimination,
+conjunction introduction and its projections, disjunction introductions
+and case elimination, universal introduction and specialization,
+existential introduction and fresh-witness elimination, and falsity
+elimination. Equality has reflexivity and capture-free substitution.
+The usual eigenvariable restrictions apply. No law of excluded middle
+for arbitrary quantified formulas is added.
+
+\subsection{Numerical syntax and all numerical axioms}
+
+The implemented numerical grammar is
+\[
+ t::=x\mid0\mid St\mid I(n,a;u.h).
+\]
+Only the update $h$ binds $u$; its other parameters stay fixed during
+the iteration. The two numerical axiom schemas, usable in any context,
+are exactly
+\[
+ I(0,a;u.h)=a,\qquad
+ I(Sn,a;u.h)=h[I(n,a;u.h)/u].
+ \tag{I0, IS}
+\]
+The update receives its preceding state, not the old counter.
+There is no numerical quantifier over functions or descriptions.
+Equivalently, introduce staged first-order symbols $i_h$ for fixed
+earlier-stage bodies $h$. The description grammar is external finite
+syntax, and no uniformly total evaluator for all PR descriptions is
+postulated.
+
+\subsection{Logical syntax and all inference rules}
+
+Primitive object formulas can be taken to be
+\[
+ A::=(s=t)\mid D_{x,y}A.
+\]
+Contexts also contain internal clauses $Q_yB(y)$, whose intended
+meaning is $B(0)\to\forall yB(y)$. The executable format permits the
+conservative object abbreviation
+$Q_yB:=D_{u,y}B$ with unused $u$. Thus native formulas with an explicit
+$Q$ root are expanded to this abbreviation when comparing languages.
+Let $\Gamma$ be a finite reusable context. Apart from I0 and IS, the
+following is the entire proof-building inventory:
+\[
+ \frac{}{\Gamma\vdash A}\ (A\in\Gamma)\quad\mathsf{Hyp},
+ \qquad
+ \frac{\Gamma\vdash s=t\quad\Gamma\vdash F(s)}
+      {\Gamma\vdash F(t)}\quad\mathsf{Tr},
+\]
+\[
+ \frac{\Gamma\vdash Q_yB(y)\quad\Gamma\vdash B(0)}
+      {\Gamma\vdash B(t)}\quad\mathsf{QE},
+\]
+\[
+ \frac{\Gamma\vdash D_{x,y}B(x,y)\quad
+       \Gamma,Q_yB(a,y)\vdash A}
+      {\Gamma\vdash A}\quad\mathsf{DE},
+\]
+\[
+ \frac{\Gamma,B(t,\eta_\varepsilon(z))\vdash B(t,Sz)}
+      {\Gamma\vdash D_{x,y}B(x,y)}\quad\mathsf{DI}_\varepsilon,
+ \qquad \eta_0(z)=0,\quad\eta_1(z)=z.
+ \tag{Choice DI}
+\]
+The case choice $\varepsilon=0$ is allowed for every matrix. The
+progress choice $\varepsilon=1$ is allowed only when the matrix is
+a literal equation, not an equation below a binder. In DI, $z$ is
+fresh for $\Gamma$, the witness $t$, and the fixed matrix parameters.
+In DE, $a$ is fresh for $\Gamma$, the conclusion $A$, and the fixed
+matrix parameters. All displayed local assumptions are discharged;
+all substitutions avoid capture. In transport, $F$ is a fixed finite
+formula template. These conditions are part of the rules and are
+checked by the program's opening and freshness mechanism.
+
+Ordinary hypothesis use in the inherited clause-only presentation is
+derived using a constant clause and a fixed computation theorem.
+Conversely, the explicit Hyp rule above implements that derived rule.
+The displayed $Q$ extension is conservative: DE followed by Hyp
+proves $Q_yB$ from $D_{u,y}B$, while case DI and QE prove
+$D_{u,y}B$ from $Q_yB$. The unused coordinate is fresh, so neither
+conversion changes the matrix's parameters.
+
+More explicitly, recursively erase every object occurrence of $Q_yB$
+to $D_{u,y}B$ with a fresh unused $u$, erasing the body in turn.
+An object-Q specialization is simulated by DE on this expanded D,
+followed by internal-clause QE on its base. Hypothesis, transport,
+and paired rules otherwise translate directly. If Hyp treats a
+retained internal Q clause as an object conclusion, case DI and
+that clause's QE supply the expanded D conclusion. Numerical
+substitution preserves literal-equation roots, so the progress
+restriction is preserved. This gives an explicit derivation
+translation, not merely two formulas with the same intended meaning.
+
+Native falsity is $\bot_*:=(0=S0)$. There are no other logical or
+nonlogical axioms, reflexivity schema, numerical coverage axiom,
+ordinary-logic axioms, or induction rules in this primitive inventory.
+The next subsection explains their derivation.
+
+\subsection{Recovering all intuitionistic logic}
+
+The full inherited proof appears in Appendix~\ref{sec:choice-introduction};
+the essential constructions are recorded here to make the scope explicit.
+Reflexivity follows by transporting the computation
+$I(0,t;u.0)=t$ along itself. Equality symmetry, transitivity, and
+congruence follow by the corresponding fixed motives.
+
+For any equation $E$, progress DI with an unused witness gives
+$D_{u,y}E(y)$. DE and QE then combine its step with a supplied
+base proof, giving contextual equation induction. Case DI with
+an unused witness similarly gives numerical cases
+\[
+ \frac{\Gamma\vdash F(0)\quad\Gamma\vdash F(Sz)}
+      {\Gamma\vdash F(t)},
+\]
+where $z$ is fresh for the retained context. This preliminary rule
+does not use disjunction or a hidden quantified induction instance.
+
+Define the numerical selector $C(n,a,b)=I(n,a;u.b)$, with the update
+variable unused. It satisfies $C(0,a,b)=a$ and $C(Sn,a,b)=b$.
+For equations define
+\[
+ G_v(s=t):=(C(v,0,s)=C(v,0,t)),
+ \quad
+ M_v(s=t,r=w):=(C(v,s,r)=C(v,t,w)).
+\]
+Extend gates through paired binders and align unequal binder depths
+using the provable padding $A\dashv\vdash D_{u,y}G_yA$.
+This gives selectors for arbitrary formulas, with
+$M_0(A,B)\dashv\vdash A$ and $M_{Sv}(A,B)\dashv\vdash B$.
+Let $p(z)=I(z,0;u.C(u,1,0))$; the finite computations
+$p(1)=1$ and $p(2)=0$ suffice. The logical macros are
+\[
+\begin{aligned}
+ A\Rightarrow_*B&=D_{u,z}M_z(A,B),\\
+ A\wedge_*B&=D_{u,z}G_zM_{p(z)}(A,B),\\
+ \exists_*xA(x)&=D_{x,y}G_yA(x),\\
+ A\vee_*B&=\exists_*xM_x(A,B),\\
+ \forall_*xA(x)&=A(0)\wedge_*D_{u,z}G_zA(z).
+\end{aligned}
+\]
+Here $u$ is unused and all binders are fresh. The implication and
+existential rules use case DI, DE, and QE. Conjunction projections
+specialize at $1$ and $2$. Disjunction elimination uses numerical
+cases on its selector. These rules derive
+$(x=0)\vee_*\exists_*y(x=Sy)$; that coverage formula permits
+universal specialization even when the target occurs in the retained
+context. Under $0=1$, the selector gives
+$s=C(0,s,t)=C(1,s,t)=t$. External induction on formula syntax
+therefore gives explosion. No quantified excluded middle is used.
+
+\subsection{Bi-interpretability, rather than just agreement on numerals}
+
+Let $T_I$ be ordinary intuitionistic first-order equality logic in the
+scalar signature, with I0/IS, contextual literal-equation induction,
+constructor coverage $\forall x(x=0\lor\exists y\,x=Sy)$, and the
+boundary axiom $(0=1)\to\bot$. These are axioms of the ordinary
+realization; their native translations have been derived above and
+are not extra axioms of the small kernel.
+
+Interpret the native binder and internal clause in $T_I$ by
+\[
+ (D_{x,y}B)^\circ=\exists x\bigl(B^\circ(x,0)\to
+                  \forall yB^\circ(x,y)\bigr),
+ \qquad
+ (Q_yB)^\circ=B^\circ(0)\to\forall yB^\circ(y).
+\]
+Keep the entire numerical domain and actual equality. Case DI is
+sound by coverage, progress DI by contextual equation induction,
+and the other rules by their displayed ordinary meanings.
+Conversely the macros derive all ordinary rules, coverage, and
+equation induction, as just described.
+
+The scalar arithmetic bridge is substantial and is retained in full.
+Appendix~\ref{sec:hybrid-bootstrap} constructs a finite scalar term
+$P$ and proves $P(0)=0$, $P(Sn)=n$ internally. It uses only
+equation induction and numerical cases, with passive parameters fixed.
+Appendix~\ref{sec:eic-completion} constructs a faithful equality
+characteristic, proves its two-value Boolean range, and translates
+every quantifier-free formula $A$ to a Boolean equation $b_A=0$.
+Equation induction then gives all quantifier-free induction.
+Appendix~\ref{sec:iterator-coding} constructs pairing and compiles
+each fixed counter-aware primitive recursion into a scalar iteration.
+
+For each numerical composite, external induction on its finite
+description reduces the comparison to two functions satisfying the
+same recursion equations. Internal equation induction proves their
+equality at arbitrary counters and parameters. Thus the composite
+isomorphisms have graph $x=y$ over the whole domain, not merely over
+standard numerals or a chosen cut.
+
+The essential logical composite is
+\[
+ D_{x,y}B\dashv\vdash
+ \exists_*x\bigl(B(x,0)\Rightarrow_*\forall_*yB(x,y)\bigr).
+\]
+Forwards, DE supplies the clause under a fresh witness; under its
+base assumption QE supplies each instance, so the ordinary macros
+form the conditional universal and existential. Backwards, eliminate
+the existential and use case DI, obtaining its successor premise
+from the supplied conditional and universal specialization.
+The $Q$ composite is the unused-witness special case. External
+induction on formulas gives both complete logical round trips.
+
+\begin{theorem}[Exact scope of the implemented theory]
+The displayed native theory and full first-order iPRA are
+whole-domain, actual-equality bi-interpretable through the stated
+ordinary realization and logical macros. Both numerical composite
+isomorphisms are internally $x=y$. Effective finite proof translations
+preserve designated contradiction, giving equiconsistency.
+\end{theorem}
+\begin{proof}
+The logical reconstruction and both binder composites are proved
+in Appendix~\ref{sec:choice-introduction}. The internal numerical
+compiler and uniqueness arguments are supplied by the subsequent
+three appendices. The explicit separation bridge in the ordinary
+theory identifies native $0=1$ with ordinary falsity. Together these
+prove all claims. This is an external metatheorem, not an assertion
+that either theory proves its own consistency.
+\end{proof}
+
+\section{What the checker changes actually do}
+\label{sec:checker-change}
+
+\subsection{Persistent contexts and iterative continuations}
+
+The old flat checker has a recursive call for a major premise and
+another recursive call for the continuation after each instruction.
+The new \file{checker_loop.py} keeps recursion for major premises
+but executes the continuations in a \file{while} loop. Its context
+is an immutable tuple. Appending a local assumption with tuple
+\file{+=} creates a new tuple bound only in the current invocation.
+A recursively checked major receives the preceding tuple and cannot
+alter the caller's assumptions.
+
+This persistence condition is mathematical, not just a coding
+preference. Consider $F=(0=1)$ and the true vacuous closure
+$M=D_{x,y}F$. Case introduction proves $M$ while locally assuming
+$F$. A checker that appends into a shared mutable list can leak
+that local $F$ back into the caller and then accept falsity.
+The new regression \file{tests/new/context_isolation.json}
+exhibits exactly this error in an intentionally mutated control.
+The genuine tuple checker rejects it.
+
+\begin{lemma}[Continuation simulation]
+On canonical finite certificates, and with unbounded execution
+resources, the iterative checker has the same successful derivations
+as the original flat-computation checker, with the same fresh-name
+allocation order.
+\end{lemma}
+\begin{proof}
+Maintain the invariant that the loop's current goal, context contents,
+global freshness floor, and unconsumed instruction stack equal those
+at the corresponding old recursive call. Hypothesis closure is the
+same membership test. The major-premise recursive call uses the
+same preceding context, and any global fresh-name allocations it
+performs persist in both programs. Every branch constructs the same
+next goal and added assumption. Tuple concatenation has the same
+contents as old list concatenation and does not change any earlier
+context. The subsequent loop iteration therefore establishes the
+invariant again. Goal opening and assumption opening have no
+side effects on the fresh-name floor, so interchanging their order
+does not alter a successful transition. Induction on the finite
+checking trace proves the claim in both directions.
+\end{proof}
+
+The iterative version removes recursion-depth dependence on the
+number of continuation steps. It does not remove recursion limits
+on nested major proofs, syntax traversal, or JSON parsing, and it
+does not make a claim of lower asymptotic memory use for contexts.
+
+\subsection{Why the byte refactorings are sound}
+
+The compact byte profile combines the same flat interface with
+ordinary source refactorings, including the corpus's zero-product
+list test, a short-circuit form of guarded elimination, a Boolean
+form of the fresh-image choice, and direct input initialization.
+These are software changes; the twenty-byte saving is not attributed
+to a new arithmetic basis.
+
+For JSON values, \file{a * 0 == []} recognizes arrays in the opener:
+lists give the empty list, numerical values give numerical zero,
+and strings give an empty string. Unsupported values either fail
+there or in the numerical comparison, as in the original validator.
+No user-provided text is executed as Python.
+
+At a formula root, successful opening preserves a list's outer arity;
+for a scalar, its returned root is independent of the supplied
+numerical image. Hence if a guarded elimination has matched its
+target $a=i(t,u)$ and its source $i(t,s)$ is falsy, that source
+equals the same falsy target. Replacing an explicit conditional by
+\file{condition and i(t, s) or a} therefore preserves the old result,
+including that boundary case. It does not discard a failed major:
+the major is checked first.
+
+Likewise \file{(m or len(a) \% 2 == m) and k} selects the same
+fresh name or numerical zero as the original conditional; its false
+value is Python \file{False}, which the decoder treats as zero.
+The driver still prints \file{ACCEPT} with status zero on success
+and \file{REJECT} with nonzero status on failure. The entire
+driver remains inside the measured module.
+
+\subsection{Syntax, freshness, and arithmetic packets}
+
+The raw packet format is inherited and fully documented in
+\file{code/INHERITED_FORMAT.txt}. Input is a JSON array ending
+with the requested closed formula. Earlier four-field packets
+$[m,s,u,t]$ are consumed from the end. An unused prefix is inert.
+The same list grammar has two sorted interpretations:
+\begin{center}\small
+\begin{tabular}{cllc}
+\toprule
+Arity & Formula position & Numerical position & Depth increment\\
+\midrule
+0 & truth & zero & no children\\
+1 & conditional closure $Q$ & successor &2\\
+2 & equation & annotated zero &1\\
+3 & paired binder $D$ & scalar iterator &4\\
+\bottomrule
+\end{tabular}
+\end{center}
+Canonical coordinates are integers. Negative names designate
+allocated rigid parameters; positive coordinates are local binder
+slots. The global lower bound begins at zero and decreases at each
+continuation. A leaf is retained only in the active scope interval;
+opening replaces exposed numerical coordinates by a checked image.
+The same traversal checks the initial goal before allocating its
+first new name. The exact decoder includes checked dummy slots;
+these are syntax conventions, not additional arithmetic operations.
+
+A truthy $m$ is first proved. Matching Eq/Q endpoint packets perform
+transport or specialization; unmatched ones keep the goal and add
+only truth. A ternary major opens the DE clause. A \file{None}
+major selects arithmetic and exposes the three fields $s,u,t$ as
+counter, initializer, and update. A zero counter generates I0.
+A successor counter is unpacked eagerly using \file{list(*s)};
+this prevents malformed counter shapes from slipping through when
+the update ignores its state. Other falsy major markers select the
+two permitted DI choices. The common continuation then opens the
+goal and the one new assumption with the correct fresh images.
+
+The arithmetic equations produced by flat packets include the
+previously proved known-zero-instance administrative convention.
+The generated equation's zero completion is an I0 or IS instance;
+the old goal and context exclude the new name. Substitution of zero
+and ordinary cut therefore justify its continuation. For canonical
+packets this reduces to insertion of the familiar computation
+equation. The new code does not change that generator.
+
+The iterative compact opener uses the existing exception-based
+iterable variant. Canonical array/integer proofs terminate
+structurally; some additional empty-container aliases decode as
+zero or truth, while nonempty strings can require the Python
+recursion limit to reject. This is an inherited raw-input limitation,
+not a new numerical principle or an ideal total-parser claim.
+The byte profile retains an explicit list test. The claimed
+canonical proof translations do not require those noncanonical aliases.
+
+\section{Verification, files, and the remaining target}
+\label{sec:verification}
+
+The delivered reproduction command is
+\begin{lstlisting}
+python3 reproduce.py
+\end{lstlisting}
+It verifies the file manifest, remeasures the complete checkers and
+six frozen comparison programs, checks the inherited proof corpus
+under ordinary and optimized Python, and runs the targeted context
+isolation and deep-continuation controls. Its output is a receipt,
+not a formal proof of universal soundness.
+
+All 31 inherited cases cover actual contextual equation induction,
+nonvacuous fresh-witness elimination, transport below a closure,
+arithmetic sources, malformed counters, unallocated names, wrong
+endpoints, and forbidden compound progress. The new depth test
+contains 1,600 harmless arithmetic continuations followed by a
+valid computation. At an explicitly fixed recursion limit of 1,000,
+the loop and its readable version accept, while the old recursive
+checker and the byte profile reject with \file{RecursionError}.
+This demonstrates a practical benefit without changing the
+unbounded-resource consequence relation.
+
+The context-isolation control is deliberately stronger than checking
+that some normal proofs still pass: deleting the persistence
+property makes a false formula pass. The mutation is generated only
+in a temporary test directory; no unsafe checker is distributed as
+a candidate implementation.
+
+The scalar predecessor construction, general PR compiler, and
+interpretation metatheorems are written proofs, not complete native
+certificates or Lean/Rocq developments. Finite tests do not certify
+all models or all proof traces. The full Python interpreter and
+standard JSON library are not formally verified. These are the
+material limits of the evidence.
+
+\paragraph{What remains unachieved.}
+No single delivered checker strictly improves 277 tokens, 311 AST
+nodes, and 672 normalized bytes simultaneously. The progressive
+binder has a complete mathematical treatment but no smaller
+implemented checker. Neither the finite-parameter obstruction nor
+the two smaller obstruction lemmas prove a source-size lower bound
+for every possible language, domain, or presentation of iPRA.
+The requested significant positive breakthrough remains open in
+this investigation. The new obstruction does, however, rule out
+a substantial class of algebraic shortcuts without relying on
+same-domain term representability alone.

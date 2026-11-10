@@ -1,0 +1,109 @@
+PREDECESSOR-GENERATED COMPUTATION: COMPLETE CHECKER INTERFACE
+==========================================================
+
+Primary: code/checker.py
+Readable expansion: code/readable_checker.py
+
+Input is one JSON array. Its last item is the requested closed formula.
+The remaining four-field packets are consumed right to left. Hypothesis
+closure consumes no packet. An unused prefix is inert. Acceptance means
+exit status 0 with the single line ACCEPT; a parsing/checking exception
+rejects by nonzero exit status and may print a diagnostic traceback.
+The standard exit-status convention replaces a redundant catch/print/
+rethrow wrapper. This ordinary driver change is separated from the proof
+protocol in matched comparisons.
+
+SORTED TREES AND SCOPE
+---------------------
+The numerical grammar is variables, zero, successor, scalar initialized
+iteration I(n,a;u.h). Formula grammar is equations, unary Q, and paired D.
+Q_y A means A(0) -> forall y A(y); D_xy A means exists x Q_y A(x,y).
+
+Raw [] is numerical zero or formula truth. A unary numerical node is
+successor and a unary formula is Q. A binary numerical node is zero with
+checked annotations and a binary formula is equality. A ternary numerical
+node is I and a ternary formula is D; D's first two fields are padding.
+The entire tree is traversed. Higher arities reject. Unary/binary/ternary
+nodes add respectively 2, 1, 4 to the protected-coordinate threshold.
+
+At numerical positions, coordinate 0 denotes zero. Positive coordinates
+2j-1 and 2j name the same j-th protected slot. Negative coordinates name
+allocated rigid parameters, with the global floor decreasing by one at
+each non-hypothesis continuation. In an I node the counter and seed carry
+two dummy zero slots; the update carries two aliases of its one state.
+A successor contributes one dummy zero slot. Numerical parameters outside
+the protected coordinates are opened using the supplied image, and a used
+image is itself checked at numerical root. Missing used images reject.
+Exposed scalar formula padding becomes truth. The report and independent
+review specify harmless aliases; canonical certificates use arrays and
+integers, with null reserved for the arithmetic packet tag.
+
+PACKETS [m,s,u,t]
+-----------------
+1. A truthy m is a claimed major formula. Prove it first. If it equals
+   [s,u] and t opened at u equals the requested goal, continue with t
+   opened at s (equality transport). If s is falsy and m=[t], the same
+   endpoint check gives Q specialization. A nonmatching endpoint leaves
+   the goal unchanged. Eq/Q majors append only truth; a ternary D major
+   appends its opened Q clause at a fresh parameter.
+
+2. A null m is arithmetic. s is a predecessor, u the seed, t the update.
+   For falsy s, construct the equation I(s,u;t)=u.
+   For truthy s, construct the equation I(Ss,u;t)=t[I(s,u;t)/state].
+   The raw source counter is constructed internally as s and [s].
+   The entire supplied equation is finally zero-completed by the common
+   opener. When the update uses the recursive image, that image is checked
+   under the OLD parameter floor. If it does not use the image, the update
+   is independent of the recursive state and ordinary IS still applies.
+   There is no separately submitted successor constructor to validate.
+
+3. Any other falsy m is D introduction with witness t. m=[] chooses the
+   zero-base case assumption. m=0 chooses progress only on a literal
+   equation matrix and otherwise chooses case. Literal witness zero is
+   admitted. The requested D matrix is opened at t; a fresh parameter z
+   is allocated; the successor goal is checked from either its zero
+   instance or its z instance, as just specified. The retained context
+   and chosen witness cannot depend on z.
+
+ARITHMETIC COMPLETENESS AND CERTIFICATE SAVINGS
+---------------------------------------------
+Every scalar parameter is now a direct predecessor packet. The older
+flat interface required a composite predecessor because it checked the
+submitted successor with list(*counter). It implemented an IS step at
+scalar p by B(p)=p, the boxed IS computation, and equality transport.
+Here those three records become one record for every nonzero-syntax p.
+
+A literal-zero predecessor is still boxed: B(0)=I(0,0;v.0)=0.
+Compute IS at the truthy composite B(0), then transport along B(0)=0.
+This recovers IS at zero, so no arithmetic theorem is lost. More generally
+boxing proves completeness independently of any syntactic truthiness
+choice. All primitive computations are instances of I0 or IS.
+
+Inherited logical rules, arithmetic bootstrap, equality reflection, and
+whole-domain bi-interpretation proofs therefore transfer unchanged.
+The improvement is an instruction interface and certificate simplification,
+not a new primitive-recursive term language or an absolute minimality result.
+
+EXAMPLES
+--------
+I(0,1;v.0)=1:
+  [[null,0,[0],0], [[0,[0],0],[0]]]
+I(2,0;v.0)=0 (the packet predecessor is 1):
+  [[null,[0],0,0], [[[[0]],0,0],0]]
+
+TRUST AND MEASUREMENTS
+---------------------
+The primary standalone file is the complete trusted implementation.
+The named producer, tests, measurer, readable exposition, and written
+metatheory are not imported. Python and standard JSON remain common runtime
+infrastructure. Real resource limits can reject large valid derivations.
+
+Ancillary byte profile changes only the inherited import spelling and exact-JSON-list
+predicate a*0 == []; it has the same successful inputs as the primary file.
+Ancillary AST profile reuses inherited try-iteration dispatch. Its extra empty-object
+aliases are decoded as zero/truth; nonempty strings reject via Python's
+finite recursion limit, and could diverge on an unbounded interpreter.
+The primary file retains explicit list dispatch and is preferred.
+
+Compression is FYI only: gzip.compress(raw_source,compresslevel=9,mtime=0).
+The .py.gz artifacts contain exactly those deterministic compressed bytes.

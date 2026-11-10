@@ -1,0 +1,112 @@
+CURRENT CORPUS CHECKER FRONTIER
+Snapshot: VladimirReshetnikov/ProveIt
+Commit: fb2dbd2a33c6b132671a54b029d0bf3cd98c633d
+Path: docs/drafts
+
+All 13 direct ZIP files were traversed recursively, including ZIPs nested
+inside prior reports. This yields 2,701 Python source occurrences and 370
+distinct raw SHA-256 hashes. The audit only parses source and never executes
+downloaded checker, build, or test code.
+
+The measurement boundary is the entire source module. Imports, the JSON
+parser call, scope traversal, arithmetic/logical branches, and verdict
+driver are included. Genuine module/function/class docstrings are removed;
+comments disappear through parsing. Normalization is ast.unparse followed
+by a newline. AST nodes include the Module node and every descendant.
+Significant tokens exclude encoding, comments, layout, newline, endmarker.
+The source-token count additionally excludes genuine docstring tokens.
+
+Environment: CPython 3.12.14, zlib 1.3.2.
+Gzip is informational only: gzip.compress(bytes, compresslevel=9, mtime=0),
+including the gzip wrapper, measured on both raw and normalized sources.
+
+COMPLETE-CHECKER ENVELOPE
+
+Measure                 Minimum
+Source tokens           268
+Normalized tokens       268
+AST nodes               300
+Normalized UTF-8 bytes  616
+Raw UTF-8 bytes         616
+Gzip-9 raw source       366
+Gzip-9 normalized       366
+
+Different complete programs attain different minima. No absolute lower
+bound on all possible presentations or programs is implied.
+
+Attainer: uniform_predecessor/ancillary/checker_ast.py
+  268 tokens, 300 AST, 649 normalized bytes, 648 raw bytes, gzip-9 367.
+  SHA256 c991f9fa65d7c91cde9198a4e03cd258b64b8d1be3a9f0ab685de7ff80b5cb30
+  This is a complete program, but its generic iterable opener can recurse
+  forever on nonempty strings under an ideal unlimited interpreter. Actual
+  CPython rejects these malformed inputs via its finite recursion limit.
+  Canonical array/integer certificate opening is structurally recursive.
+
+Attainer: uniform_predecessor/ancillary/checker_bytes.py
+  269 tokens, 311 AST, 616 normalized/raw bytes, gzip-9 366.
+  SHA256 63126f6b112591c5d1b359dec302ca289cd305a065359a45ba0f897604375cfc
+  Exact-JSON-list predicate a*0 == []. The entire standalone checker,
+  arithmetic packet construction, scope handling, parser, driver are present.
+
+Other token attainer: uniform_predecessor/reference/matched/baseline_tokens.py
+  268 tokens, 309 AST, 633 normalized/raw bytes, gzip-9 379.
+  SHA256 4228720f928ee4b44b8d96c1ba5bcec9f11a4049feda2f579fe5f4627f1fee62
+  This older flat-interface control has an explicit list predicate. The
+  token minimum therefore does not depend on iterable malformed aliases.
+
+All three leaders reject via nonzero process exit and accept via exit zero
+plus ACCEPT. They do not print an explicit REJECT before rethrowing. The
+uniform predecessor report explicitly separates that driver reduction
+from its arithmetic certificate improvement. Any new comparison should
+retain this convention or provide matched controls.
+
+BOUNDARY CLASSIFICATION
+
+All 31 distinct source files at or below at least one of the three current
+normalized coordinate minima were read. Three are the complete checkers
+above; 28 are build scripts, artifact hash verifiers, reproduction drivers,
+untrusted certificate translators, or external-checker test harnesses.
+Their exact hashes, source occurrences, and individual reasons are in
+boundary_classification.json. This exhaustive boundary argument is enough
+to certify the displayed observed minima without classifying the much
+larger modules as complete/sound/theoretically equivalent. In particular,
+one small test harness contains ACCEPT and JSON code but imports/runs an
+external checker; string searches alone are not a correct classification.
+
+The new sources under source_corpus and hash-named archive inventories are
+counted by their actual bytes. Embedded historical files are not dismissed
+merely because they are under reference/, ancillary/, or experiments/.
+Experimental larger programs are measured but this audit does not certify
+their soundness or full iPRA equivalence.
+
+REPRODUCTION
+
+python3 audit_corpus.py PATH_TO_EXACT_13_DRAFT_ZIPS OUTPUT_DIRECTORY
+
+The resulting corpus_metrics.json and sources/*.py reproduce the inventory
+and all metrics. Every direct ZIP's Git blob hash and SHA-256 are recorded.
+No network is required if the exact archives are available.
+
+LIMITATIONS AND OPPORTUNITIES
+
+The current mathematical basis and logic in all frontier programs remain
+the inherited scalar-iteration Eq/Q/D Choice-DI presentation. Recent new
+work often changes certificate syntax or Python encoding rather than the
+arithmetic foundation. Claims of significant foundational novelty should
+not be inferred from small source reductions.
+
+The affine-arity report's 648-byte program still has the explicit
+catch/print-REJECT/rethrow wrapper. Dropping it under the current exit-status
+convention yields a smaller matched control; likewise for arity-calculus
+profiles. These combinations are useful controls, but should be credited
+as inherited representation/driver combinations rather than a fresh theory.
+
+The corpus already contains a counterexample to restricting all major
+premises to hypotheses. It also contains strong negative results for
+tied-seed single-body recursors, pure equational algebraic presentations,
+and term-based finite-dimensional quotient interpretations. Repeating those
+restrictions without a different argument is not a new positive result.
+
+This is an implementation-size/source-boundary audit. It is not a formal
+soundness proof, a Lean/Rocq verification, or an independent verification
+of every inherited bi-interpretation argument.

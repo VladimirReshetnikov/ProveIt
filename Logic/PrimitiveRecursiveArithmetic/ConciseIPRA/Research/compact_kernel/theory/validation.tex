@@ -1,0 +1,134 @@
+\section{Executable evidence, attribution, and research limits}
+\label{sec:validation}
+
+\subsection{What the delivered checks establish}
+
+The selected kernel and its four explanatory or ancillary counterparts
+were checked on 31 named proof and adversarial fixtures, under ordinary
+Python and Python's \texttt{-O} optimization mode. The resulting 310
+complete-program executions matched their expected outcomes. Forty
+malformed-input checks and 24 targeted guard-control executions also
+passed. Successful checking requires both process exit zero and exactly
+the line \texttt{ACCEPT}; a traceback alone is not a verdict convention.
+
+The positive examples include zero computation with an arbitrary seed,
+successor computation using the previous state, retained parameters,
+transport, closure specialization, paired introductions and eliminations,
+zero witnesses, and contextual induction. The fixture producer is
+untrusted and is not imported by a checker. It is independently
+regenerated from two frozen upstream producers, and the generated
+packets are compared with the delivered fixtures before checking.
+
+The negative controls target actual failure modes. Removing selected
+guards makes deliberately changed kernels accept false equations such
+as $0=1$, $I(1,1;v.v)=0$, or $I(0,1;v.0)=0$. Other controls exercise
+an attempted induction on a compound formula and an unallocated
+parameter in a requested closed goal. These are targeted checks of the
+trust boundary. They are not a proof that no other implementation defect
+exists, and they are not a formal verification of the metatheorems.
+
+The ordinary-list primary traversal handles finite JSON trees by the
+specified checking operations, subject to physical resource bounds.
+The ancillary exception-based opener has the additional qualification
+that rejection of certain malformed nonempty strings uses the runtime's
+recursion limit. Large valid proofs can exceed ordinary memory or stack
+limits in every delivered implementation. The mathematical completeness
+statement is about unbounded finite derivations, not an assertion that a
+fixed physical process accepts every arbitrarily large proof.
+
+\subsection{Exact examples for the symmetry theorem}
+
+The file \file{code/eventually_constant.py} represents an eventually
+constant sequence by its constant tail and a finite exception map.
+Its output illustrates the infinite model exactly; it does not replace
+the transfer and induction proofs by bounded experiments.
+Let $e_i$ be one at coordinate $i$ and zero elsewhere. Then:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Property & In the sequence model & Reason\\
+\midrule
+$e_i=0$ & False & Coordinate $i$ is one\\
+$\exists y\;(e_i=Sy)$ & False & All other coordinates are zero\\
+$\operatorname{sg}(e_i)=0$ & False & Its $i$th coordinate is one\\
+$\operatorname{sg}(e_i)=1$ & False & Its tail is zero\\
+$e_i\le e_j$, $i\ne j$ & False & Fails at coordinate $i$\\
+$e_j\le e_i$, $i\ne j$ & False & Fails at coordinate $j$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Here $\operatorname{sg}(0)=0$ and $\operatorname{sg}(Sn)=1$,
+interpreted coordinatewise. All its true conjunctive identities still
+hold. The failure is uniform disjunctive information: being Boolean
+at every coordinate does not mean being globally the constant zero
+or the constant one. This explains why standard Boolean coding cannot
+silently turn the model's conjunctive induction into full quantifier-free
+induction with the usual logical equivalences.
+
+The example also swaps two coordinates outside the finite supports of
+specified parameters, fixes those parameters, and moves $e_i$ to $e_j$.
+The theorem proves this for every finite tuple and every finitary
+pointwise signature. The program merely makes representative instances
+easy to inspect.
+
+\subsection{What was investigated but not claimed}
+
+Two broader positive directions were examined. First, replacing
+computation supply with numerical definitional conversion would remove
+an explicit branch, but a correct reducer must respect the codec's
+dummy slots, state binder, neutral counters, and rigid parameters. Its
+extra machinery did not yield a smaller implemented checker. Moreover,
+a uniformly total primitive-recursive evaluator for arbitrary
+primitive-recursive descriptions is impossible by the usual diagonal
+argument. A recursive normalizer or a bounded conversion certificate
+is a different option and is not excluded by that observation.
+
+Second, genuine binders in the proof-certificate grammar could let the
+opener allocate unforgeable eigenparameters, replacing predictable
+global negative labels. The flat instruction stream currently needs
+those labels so that later instructions can refer to earlier
+eigenparameters. A new scoped grammar would therefore require a
+corresponding proof-opening discipline. No complete smaller construction
+was obtained along that route.
+
+Deleting DI-case for literal equations is not justified. An ordinary
+conditional closure can hold because its zero antecedent is false,
+without its matrix being progressive at every argument. Reinterpreting
+atomic paired formulas as progressiveness also requires a matching
+elimination rule and a proof of the source-side formula composite.
+These obligations cannot be discharged just by recovering some ordinary
+logical macros. The existing drafts already analyze this difficulty;
+it is not claimed as a new negative result here.
+
+\subsection{Reproduction and the remaining target}
+
+From a fresh extraction, with Python 3.12 and a normal PDFLaTeX
+installation:
+\begin{lstlisting}
+python3 reproduce.py
+python3 code/checker.py < tests/fixtures/I0_arbitrary_seed.json
+python3 code/checker.py < tests/fixtures/contextual_induction_seed_congruence.json
+python3 build.py
+\end{lstlisting}
+The first command verifies payload hashes, recomputes the complete-module
+and gzip measurements, checks producer provenance, runs the delivered
+proof fixtures and guard controls, and reproduces the exact sequence
+examples. It needs no network. The last command rebuilds the report
+without shell escape. A standalone LaTeX source is supplied as well as
+the modular sources.
+
+The package preserves frozen comparison programs and the exhaustive
+source inventory. Repeating the complete corpus scan additionally needs
+the thirteen original archives from the pinned GitHub revision;
+\file{reference/census.py} records the scan procedure. The regular
+reproduction command uses the included frozen programs and requires
+none of the original ZIP downloads.
+
+The outcome is intentionally narrower than an absolute solution to the
+research problem. There is a complete implementation below the supplied
+byte and token envelope, and a newly extended obstruction that rules
+out an otherwise tempting family of changed-language and changed-domain
+approaches. A significant new positive axiom basis, a checker below all
+three structural minima in one program, and a global simplicity theorem
+remain unproved.

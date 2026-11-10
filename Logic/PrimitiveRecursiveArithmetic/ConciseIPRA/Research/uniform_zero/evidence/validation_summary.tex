@@ -1,0 +1,42 @@
+All 504 expected acceptance/rejection outcomes passed across seven complete
+programs in ordinary and optimized Python. The suite contains 36 cases per
+program per mode. It includes direct zero computation, zero witnesses,
+zero-source equality transport, nested closures, an actual existential
+witness, equation induction under a retained hypothesis, and transport under
+a quantified formula. Negative controls cover false conclusions, wrong
+computation endpoints, future-parameter capture, invalid witnesses and
+specialization targets, forbidden compound progress, missing fields, and
+malformed input.
+
+Four deliberate guard-mutation checks also behaved as expected. Removing
+major verification admits a forged proof of $0=1$; removing the
+literal-equation restriction admits the forged compound-progress
+certificate. Each mutant was checked in both interpreter modes. These
+checks show that the suite exercises the guards; they are not a replacement
+for their mathematical soundness proof.
+
+Across the sixteen successful non-neutral named comparison examples, the
+measured certificates have the following sizes:
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Certificate representation & Commands & Compact JSON bytes\\
+\midrule
+Matched historical & 120 & 5,029\\
+Uniform zero & 90 & 3,801\\
+Uniform zero and constructed majors & 90 & 2,955\\
+\bottomrule
+\end{tabular}
+\end{center}
+This sample has 25\% fewer instruction packets and approximately 41.24\%
+fewer serialized bytes in the constructed-major format. These are selected
+regression examples, not a representative workload or a universal
+compression ratio. The contextual-induction example changes from
+48 commands and 2,359 bytes to 40 commands and 1,437 bytes. Both direct
+zero computations change from three commands to one.
+
+The complete per-case data are in \file{evidence/validation.json}, and the
+matching certificates are under \file{examples/old}, \file{examples/zero},
+and \file{examples/constructed}. All measured local-scope certificates were
+emitted by the corresponding local-scope producer. No claim of raw-file
+compatibility with a globally allocated parameter convention is needed.

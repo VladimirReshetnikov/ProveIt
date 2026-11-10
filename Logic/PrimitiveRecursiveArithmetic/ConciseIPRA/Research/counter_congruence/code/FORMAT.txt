@@ -1,0 +1,170 @@
+ROOT REPLACEMENT AND COUNTER CONGRUENCE: COMPLETE CHECKER CONTRACT
+================================================================
+
+Status
+------
+checker.py is a complete readable implementation of the newly proposed
+restricted equality calculus. It is not a claim to beat the supplied compact
+checker frontier. All logical, numerical, binding, parsing, rejection, and
+public-verdict code is included in the measured module. It imports only
+Python's standard json module. No certificate string is executed as code.
+
+Mathematical syntax
+-------------------
+Numerical terms are variables, 0, S(a), and R(n,a;u,v.h). Only h binds u,v;
+u is the predecessor counter and v is the recursive value. The update's
+other numerical parameters are retained. S is a convenient displayed
+abbreviation: the R0 instance with update 0 identifies it with R(0,a;u,v.0).
+The checker stores this abbreviation as an S node. It does not automatically
+convert all expanded and contracted forms; an R0 equality and the derived
+equality rules may be needed when a certificate changes their representation.
+The numerical axioms are exactly:
+
+  R(0,a;u,v.h)  = S(a)                                      R0
+  R(Sn,a;u,v.h) = h[n/u, R(n,a;u,v.h)/v]                    RS
+
+Object formulas are equations and D_xy B(x,y). The reusable internal clause
+Q_y B(y) is allowed in contexts and as an available QE major. It is not an
+exported goal or a constructor inside an object formula. Its ordinary meaning
+is B(0) -> forall y B(y). The ordinary meaning of D is
+exists x (B(x,0) -> forall y B(x,y)).
+
+Contexts are finite reusable ordered lists; the ordering affects only the
+certificate's zero-based hypothesis indices. Weakening, exchange, contraction,
+renaming, and cut are mathematical admissibility properties, not extra
+certificate opcodes. Object assumptions are directly usable as hypotheses.
+An internal Q clause is available only by context membership; no other rule
+may prove a Q goal. Object Eq/D majors may be supplied by arbitrary derivations.
+
+Every primitive rule
+--------------------
+Hyp: conclude an object assumption already in the context. At a QE-major
+edge, the same checked lookup makes a retained Q clause available.
+
+RL (root-left replacement): from s=t and s=r, conclude t=r. Both premises
+are literal equations. There is no formula template or term context in this
+primitive rule.
+
+CC (counter congruence): from s=t, conclude
+R(s,a;u,v.h)=R(t,a;u,v.h). The seed and update must be identical up to bound
+variable renaming. The checker does not allow primitive successor, seed, or
+update congruence.
+
+QE: from available Q_y B(y) and B(0), conclude B(t).
+
+DE: from D_xy B(x,y) and a derivation of F under the additional clause
+Q_y B(a,y), conclude F. The numerical eigenparameter a is fresh for the old
+context, old numerical environment, major, and conclusion. The clause is
+discharged when the body ends.
+
+DI-case: from a derivation of B(t,Sz) under the additional object assumption
+B(t,0), conclude D_xy B(x,y). The eigenparameter z is fresh for the old context,
+old numerical environment, witness t, and fixed matrix parameters.
+
+DI-progress: the same construction with hypothesis E(t,z) instead of E(t,0),
+but only when the opened matrix E is a literal equation. A Q or D matrix is
+rejected before its body is checked.
+
+R0, RS, Hyp, RL, CC, QE, DE, and the two DI modes are the entire inventory.
+In particular, general equality transport and arbitrary term congruence are
+not primitive. There is no reflexivity opcode and no arbitrary-formula
+induction. The delivered producer derives reflexivity from two RS instances
+and RL; its other equality proofs expand into the listed primitives.
+
+Input and output
+----------------
+The standard input is one JSON object:
+
+  {"parameters": ["p", ...], "goal": FORMULA, "proof": PROOF}
+
+parameters may be omitted. A successful parameterized packet denotes a
+derivation with those arbitrary free numerical parameters; its universal
+closure is the corresponding sentence. The list contains no repetitions.
+The checker never assumes a value for a free parameter.
+
+Success prints exactly ACCEPT and exits zero. Any failed check, malformed
+input, or unavailable resource causes a nonzero exit; ordinary rejected
+packets print REJECT and a short diagnostic. Resource limits can prevent
+acceptance of a very large valid proof. Mathematical completeness concerns
+finite proof trees with unbounded physical resources.
+
+Tagged numerical arrays:
+  ["0"]
+  ["v", "name"]
+  ["S", TERM]
+  ["R", COUNTER, SEED, "counter_name", "state_name", UPDATE]
+
+Tagged object arrays:
+  ["=", LEFT_TERM, RIGHT_TERM]
+  ["D", "witness_name", "index_name", OBJECT_MATRIX]
+
+Tagged internal clause:
+  ["Q", "index_name", OBJECT_MATRIX]
+
+Named binders may shadow older binders. Their names must be strings; the two
+binders of one R or D must be distinct. Variables are resolved lexically when
+parsed. All comparisons use internal de Bruijn indices, so alpha-equivalent
+bound expressions compare equally. Free names remain tagged free parameters,
+including when they share a spelling with a binder elsewhere in the proof.
+
+Proof node fields
+-----------------
+  {"rule":"hyp", "index": INTEGER}
+  {"rule":"R0"}
+  {"rule":"RS"}
+  {"rule":"RL", "equality": EQUATION, "major": PROOF, "minor": PROOF}
+  {"rule":"CC", "major": PROOF}
+  {"rule":"QE", "closure": Q_CLAUSE, "target": TERM,
+   "major": HYP_PROOF, "base": PROOF}
+  {"rule":"DE", "paired": D_FORMULA, "major": PROOF,
+   "eigen": "fresh_name", "body": PROOF}
+  {"rule":"DI", "mode":"case" OR "progress", "witness": TERM,
+   "eigen": "fresh_name", "body": PROOF}
+
+Extra unused JSON fields are inert. All fields actually used by a rule are
+checked. A hypothesis index must be an integer rather than a Boolean, and
+must be nonnegative and in range. Every numerical term and formula supplied
+by a certificate is parsed in the current numerical environment before use.
+
+Scoping and substitution
+------------------------
+The internal representations distinguish bound indices from free names.
+R adds two binders only in its update; D adds two binders in its matrix; Q
+adds one. Within R, state has index 0 and counter index 1. Within D, the
+universal/index coordinate has index 0 and witness coordinate index 1.
+Opening removes the specified binder, shifts inserted bound coordinates
+under nested binders, and decreases the indices of remaining outer binders.
+
+RS first substitutes the predecessor for counter index 1, then the recursive
+value for state index 0. DI/DE first substitute the witness for D index 1.
+DI then opens index 0 at zero/current/successor as prescribed by its mode;
+DE packages the surviving index as an internal Q clause. The old conclusion
+is parsed before a DE eigenparameter is allocated, and a DI witness before
+its eigenparameter is allocated, so they cannot mention a future eigenname.
+
+Untrusted producer and evidence
+-------------------------------
+producer.py contains no additional trusted rule. It constructs ordinary JSON
+proof trees. Its fixed internal binder names are chosen fresh for the delivered
+templates. Its replace() helper is not a general capture-avoiding compiler for
+arbitrary user templates; this is a targeted certificate generator. The
+trusted checker independently uses capture-avoiding de Bruijn substitution.
+The producer's equality reifier is
+
+  W(n)   = R(n,0;u,v.u),
+  H_F(n) = R(n,F(0);u,v.S(F(Su))),
+  J_F(n) = W(H_F(n)).
+
+It proves J_F(0)=F(0) and J_F(Sn)=F(Sn) with R0/RS, RL, and CC. Numerical
+cases, expanded into DI-case/DE/QE, give J_F(t)=F(t) at arbitrary symbolic
+t. Two CC applications lift s=t through H_F and W; root equation algebra
+then gives F(s)=F(t). This proves the delivered instances of successor,
+seed, and update congruence with arbitrary retained parameters. No compound
+transport expansion is implemented in this producer; its general mathematical
+admissibility proof belongs to the report.
+
+verify.py regenerates these certificates, runs every positive and negative
+case through the standalone checker under ordinary and optimized Python,
+and records whole-module normalized source metrics. Finite certificates and
+tests are supporting evidence, not a formal proof of the implementation or
+of the universal bi-interpretability theorem.

@@ -1,0 +1,44 @@
+OPAQUE EIGENPARAMETER AUDIT
+
+Prototype checker.py is exactly the proposed local object() replacement of the
+certified-zero explicit-list program, with non-int leaves treated as rigid.
+It is an UNSOUND EXPERIMENT, not a delivered candidate.
+
+1. Exact false proof.
+false_float_capture.json contains six commands and canonical goal [0,[0]],
+i.e. 0=S0. It accepts in the prototype, and rejects in all three current
+certified-zero programs. Execution receipts are in false_float_capture_results.json.
+The proof uses a single case introduction of D_xy(0=3.0). Since float 3.0 is
+rigid, its zero and successor instances are identical, so introduction is
+vacuous. Elimination exports Q_y(0=3.0). Python equality identifies this raw
+resource with Q_y(0=3), where integer 3 is a bound variable. Specializing at
+S0, with a three-command ordinary proof of 0=0, yields 0=S0.
+This demonstrates that raw equality must respect opening: numerical values
+which compare equal cannot have different binding behavior.
+
+2. Repairing the leaf test does not repair the flat protocol.
+checker_object_only.py recognizes only exact built-in object atoms; floats
+then follow the same numerical coordinate behavior as integers. This rejects
+the above exploit, but cannot provide all native proofs. The baseline's
+four-command certificate universal_reflexivity.json proves D_xy(y=y), raw
+[[3,3]], and both opaque variants reject it.
+More strongly, in the exact-object flat protocol a meaningful introduction
+of that canonical D goal exposes Eq(S O,S O) for a fresh opaque O, with only
+Eq(O,O) (progress) or Eq(0,0) (case) newly assumed. Existing hypotheses predate
+O. No future raw JSON instruction contains O. Thus arithmetic and exported
+major resources cannot mention O, equality/closure transport cannot match
+Eq(S O,S O), and later fresh objects differ from O. The equality goal cannot
+close. Motive opening cannot remove the protected y coordinates of the
+original [[3,3]]: a numerical substitution image is validated at root depth
+and cannot supply the raw bound coordinate 3. Consequently plain substitution
+of object() for the clock fails completeness, not only format compatibility.
+A scoped proof-continuation opening mechanism is needed.
+
+3. Prior art in the supplied corpus.
+The opaque idea is already an experimental scoped proof-tree kernel:
+SHA256 dd703918f849ee9ea3a2aeb7e28d47df89d79c917cf4b1030d3de83bb70e68c3,
+under ipra_research_2026-11-10/reference/audit/sources/ and other corpus copies.
+It opens BOTH the sequent and continuation proof with the same object().
+The compact_kernel report's theory/validation.tex explicitly discusses this
+route and the flat-stream name-access obstacle. No complete smaller kernel
+was previously obtained there.

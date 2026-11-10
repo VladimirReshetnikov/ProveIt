@@ -1,0 +1,79 @@
+\section{A fully explicit arithmetic basis}
+\label{sec:new-basis}
+
+This section specifies the proposed arithmetic theory independently of the measured checker in Section~\ref{sec:checker}. Its distinguishing feature is the absence of an independently supplied initializer in its recursive constructor. The additional numerical operation is a Boolean test of actual equality.
+
+\subsection{Signature and finite staging}
+There is one numerical sort. The finite expression grammar is
+\[
+ t::=x\mid0\mid St\mid \epsilon(t,t)\mid B(n;u,v.h).
+\]
+In $B(n;u,v.h)$ only $h$ binds $u,v$; all its other variables are passive parameters. Expressions are finite and binders are renamed to avoid capture. For a strictly first-order reading, start with $0,S,\epsilon$ and introduce, at each stage, a function symbol $B_h(n,\vec p)$ for each fixed earlier-stage term $h(u,v,\vec p)$. The two equations below specify that symbol. Every proof uses finitely many such stages. There are no function variables, code variables, or a universally total evaluator.
+
+Write $1=S0$. The \emph{tied seed} equations are
+\begin{align}
+ B(0;u,v.h)&=S\bigl(h[0/u,0/v]\bigr),\tag{B0}\label{basis:b0}\\
+ B(Sn;u,v.h)&=h[n/u,B(n;u,v.h)/v].\tag{BS}\label{basis:bs}
+\end{align}
+Both substitutions on the right are simultaneous and capture-free. Thus the same fixed update body determines both the initial value and every subsequent transition.
+
+The numerical test has exactly the following specifications:
+\begin{align}
+ \epsilon(x,y)=0\ \lor\ \epsilon(x,y)=1,\tag{E-range}\label{basis:erange}\\
+ \epsilon(x,y)=1\ \longleftrightarrow\ x=y.\tag{E-reflection}\label{basis:ereflect}
+\end{align}
+The biconditional abbreviates its two implications, and is not an additional logical connective. Its equality on the right is the logic's actual equality, throughout the domain. These are universal axioms, not a test limited to standard numerals.
+
+The remaining numerical axiom is
+\[
+ 0=1\ \longrightarrow\ \bot.\tag{Separation}\label{basis:sep}
+\]
+All free variables in the displayed axiom schemas are universally closed. Induction is restricted to one literal equation $E$:
+\[
+ \frac{\Gamma\vdash E(0,\vec p)\qquad
+       \Gamma,E(z,\vec p)\vdash E(Sz,\vec p)}
+      {\Gamma\vdash E(t,\vec p)}.
+ \tag{EI}\label{basis:ei}
+\]
+The variable $z$ is absent from $\Gamma,t,\vec p$. Local assumptions in the second premise are discharged. In particular, the rule does not directly permit an implication, disjunction, or quantified induction matrix. Call this theory $T_{B\epsilon}$.
+
+\subsection{Successor can be eliminated from the primitive signature}
+The explicit successor above makes the computation laws easy to read, but it is not an essential primitive. Select the first-stage constant-body description
+\[
+ C(n,a):=B(n;u,v.a),\qquad \sigma(a):=C(0,a).
+\]
+The constant-body instance of (B0) proves $\sigma(a)=Sa$. Thus one may start with only $0,\epsilon$, and the staged $B$ constructor, use $\sigma$ as the successor abbreviation, and write the computation schemas as
+\[
+ B_h(0,\vec p)=\sigma(h(0,0,\vec p)),\qquad
+ B_h(\sigma(n),\vec p)=h(n,B_h(n,\vec p),\vec p).
+\]
+Use $1:=\sigma(0)$ in the equality-test and separation axioms, and $E(\sigma z)$ in the induction rule. The constant-body symbol's own first equation is tautological; its successor equation and the other schemas remain substantive. No body is cyclic: $C$ has the earlier-stage body $a$, and the appearance of $C$ in an axiom is not an occurrence of its own definition inside that body.
+
+Expanding $S$ by $\sigma$ gives an equivalent presentation on the same domain. Conversely, introducing $S:=\sigma$ recovers the displayed theory. Recurrence uniqueness identifies the corresponding finite body descriptions. This removes one primitive constructor, but it is not by itself a complete-checker size estimate. The rest of the report retains the readable notation $S$.
+
+\subsection{The entire logical rule inventory}
+The ambient logic is ordinary intuitionistic first-order natural deduction with equality, and is counted as part of this presentation. Its formula constructors are
+\[
+ A::=(s=t)\mid\bot\mid(A\land A)\mid(A\lor A)\mid(A\to A)
+       \mid\forall x A\mid\exists x A.
+\]
+Contexts are finite reusable lists. Hypothesis use is $\Gamma\vdash A$ for $A\in\Gamma$. Weakening, exchange, and contraction are allowed; equivalently they are admissible with reusable-context natural deduction. The logical rules are precisely the following, with retained contexts combined by union when needed:
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Constructor & Introduction and elimination\\\midrule
+$\bot$ & From $\Gamma\vdash\bot$, infer $\Gamma\vdash C$. There is no introduction rule.\\[3pt]
+$\land$ & From $A$ and $B$, infer $A\land B$; from $A\land B$, infer either conjunct.\\[3pt]
+$\lor$ & From $A$, infer $A\lor B$; from $B$, infer $A\lor B$. From $A\lor B$, a derivation of $C$ under $A$, and a derivation of $C$ under $B$, infer $C$, discharging the two branch assumptions.\\[3pt]
+$\to$ & From $\Gamma,A\vdash B$, infer $\Gamma\vdash A\to B$, discharging $A$. From $A\to B$ and $A$, infer $B$.\\[3pt]
+$\forall$ & From $\Gamma\vdash A(z)$, infer $\Gamma\vdash\forall xA(x)$ when $z$ is absent from $\Gamma$ and the fixed parameters. From $\forall xA(x)$, infer $A(t)$.\\[3pt]
+$\exists$ & From $A(t)$, infer $\exists xA(x)$. From $\exists xA(x)$ and $\Gamma,A(z)\vdash C$, infer $\Gamma\vdash C$, discharging $A(z)$, with $z$ fresh for $\Gamma,C$ and the fixed parameters.\\[3pt]
+$=$ & Reflexivity $\Gamma\vdash t=t$. From $s=t$ and $F(s)$, infer $F(t)$ for every fixed formula template $F$, by capture-free substitution.\\
+\bottomrule
+\end{tabularx}\end{center}
+Axiom instances may be used in every retained context. There are no classical logical axioms, excluded-middle schemas, additional induction rules, or unlisted reflection principles. The equality-test axioms imply decidability of numerical equality; they do not imply excluded middle for arbitrary quantified formulas.
+
+Numerical coverage is derived below, after recovering quantifier-free induction; it is not an additional axiom. The falsity bridge remains explicit: positive equations alone admit a singleton ordinary structure, so a contradiction convention cannot silently replace the ordinary falsity axiom.
+
+\paragraph{The benchmark theory.}
+Here first-order $\ipra$ has $0,S$ and symbols indexed by fixed finite primitive-recursive descriptions, their defining equations, successor injectivity and zero separation, and contextual induction for every quantifier-free formula in that language. Its logic is the same intuitionistic first-order equality logic just listed. The induction is not unrestricted induction on arbitrary quantified formulas. Different descriptions may name the same numerical function; equality between such names is proved when needed, rather than decided by an assumed extensional program oracle.

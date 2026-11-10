@@ -1,0 +1,205 @@
+INDEPENDENT SEMANTIC AUDIT: CONSTRUCTED COMPUTATION SOURCES
+10 November 2026
+
+Status and scope
+----------------
+This is a written mathematical and source review by a separate assistant
+agent. It is not a proof-assistant verification, external peer review, or
+a claim about execution tests. Test results are recorded separately by the
+runner. The audit covers the strict opening routines and the constructed
+computation-source protocol in the following exact files:
+
+code/checker.py
+SHA-256 d446ccf6744caf75aedeb527a22bc90a641d841322a058b41aba066c1a12b6d7
+
+code/checker_bytes.py
+SHA-256 3bfe19f00698377c51397e9a18c6f95c4c30645dd18c3518e8c9510ef811df4f
+
+code/checker_ast.py
+SHA-256 ab399d5891b549d8b0c4d5068c845ff1866547b8cadab35c2365e186cb7144de
+
+The first two differ in their ordinary Python JSON import arrangement.
+The third uses the inherited strict exception-based opener and binds the
+same JSON pop function with an assignment expression in the driver.
+The AST opener still uses `a + []`; no additional string/dictionary
+iteration aliases or permissive-decoder claims are involved.
+
+Mathematical target
+-------------------
+The numerical target has the scalar recursor R with equations
+
+    R(0,a;v.h) = S a,
+    R(S n,a;v.h) = h[R(n,a;v.h)/v].
+
+The update has one scalar state argument. The two protected raw slots in
+its encoding are aliases of this one argument, not a state and an old
+counter. Successor is the fixed abbreviation R(0,a;v.0). Its unary raw
+encoding is retained as an abbreviation shared with the logical Q arity.
+
+The unchanged logical checker is interpreted using the native Eq/Q/D
+calculus, its equality-transport and opening lemmas, and the strict sorted
+raw-tree decoder described in the report and inherited sources. Canonical
+certificates use arrays and integers. Checked numerical binary nodes have
+the inherited erased-zero meaning; finite fractional aliases have the
+same integer-floor interpretation as in the inherited checker.
+
+New protocol
+------------
+An arithmetic command has false m and false original t in its four-field
+packet. Its original u is now a base/step flag. The source description s
+is unpacked as [n,t,v]. In the step case this is the OLD recursor, not an
+advertised successor recursor. The exact generator is
+
+    n, t, v = s
+    h = [[u and [n], t, v], i(v, s, 1) if u else [t]]
+
+For a true flag, the left side is constructed with counter [n], which is
+necessarily a syntactic successor. For a false flag it has a zero-valued
+counter whenever the later strict traversal succeeds. Canonical flags are
+0 and 1. A noncanonical false flag such as None, an empty dictionary, or an
+empty string fails the later numerical traversal; surviving false numeric
+flags and the empty array denote zero. True flags are used only as flags
+and are not inserted into the source.
+
+Known-instance proof obligation
+-------------------------------
+Let w be the fresh rigid parameter allocated by the common continuation,
+and let H(w) be the decoded equation actually added to the context. It is
+sufficient to prove H(0), not H(w) for every w. Substituting zero for w in
+the continuation and cutting the proof of H(0) removes the local
+assumption. The retained context and conclusion do not contain w.
+
+Base flag
+---------
+The source is R(0,a;v.h), while the right side is a successor containing a
+copy of the raw initializer. The source initializer is interpreted under
+two dummy zero slots; its right-hand copy, under the successor, is
+interpreted under one dummy zero slot. Additional exposed coordinates
+may become w during the common opening. At w=0, the inherited structural
+zero-extension lemma identifies the two initializer terms. R0 then proves
+H(0).
+
+The extra successor on the right is material. For example, the raw source
+[0,3,0] can produce an equation with meaning R(0,0;v.0)=S w. Its zero
+instance is valid. The old scalar-I example [0,1,0] does not expose w here,
+because the new successor protects the nearest raw slot.
+
+Step flag: two exhaustive cases
+-------------------------------
+Evaluate the successful call i(v,s,1) before allocation of w.
+
+1. The opening uses its supplied image at an exposed numerical coordinate.
+
+   The definition of i then calls i(s,d=1). Thus the ENTIRE old recursor is
+   checked at numerical root before the fresh parameter is allocated. This
+   checks its counter, initializer, and update, including the update v
+   itself. A future negative update name or an out-of-scope outer update
+   coordinate therefore fails this check; it cannot be silently converted
+   into a recursive-state occurrence.
+
+   The source contains [n] where the old recursor contains n. The additional
+   successor adds one dummy zero slot to the interpretation of n. Every
+   coordinate surviving the old-recursion check is either an internal bound
+   coordinate, an existing rigid parameter, or one of the already zero
+   dummy slots. Consequently the extra zero slot changes no meaningful
+   value. The returned right side is exactly the capture-free substitution
+   of the checked old recursor for the update state. After decoding inert
+   aliases, RS proves the generated equation. In particular it proves H(0).
+
+2. The opening never uses its supplied image.
+
+   Every meaningful occurrence of an outer update-state coordinate would
+   be exposed at an odd numerical depth and would force the preceding
+   image check. Its absence means that the decoded update is independent
+   of the outer scalar state. Internal binders still bind their own local
+   variables. Coordinates within erased numerical annotations do not
+   contribute a state dependence.
+
+   The later common opening checks the whole constructed source and the
+   generated right side. After w=0, structural zero extension identifies
+   the source update with the returned state-independent numerical term.
+   The source counter is syntactically a successor by construction, so RS
+   gives precisely that constant update, regardless of the old counter or
+   initializer. No eager checking of an unused recursive image is needed.
+   Thus H(0) is again a theorem.
+
+These cases explain why the removed eager validation is dispensable in
+this protocol. It remains implicit whenever an image is used; when the
+image is unused, construction of the successor source removes the old
+malformed-counter obstruction.
+
+Boundary cases and intended changes of meaning
+----------------------------------------------
+A binary old-counter encoding n=[0,0] denotes zero under the inherited
+numerical decoder. With a true flag, the new source counter is [[0,0]],
+which denotes S0. Its acceptance is therefore not the old unsound claim
+about R(0,a;h). A fixture must be classified according to the new protocol,
+not according to the previous meaning of its array fields.
+
+Conversely, replacing the constructed [n] by n in the step source is an
+unsound mutation. With n=[0,0], t=0, and constant update v=0, it asserts
+R(0,0;v.0)=0, contradicting the valid base equation R(0,0;v.0)=S0.
+This is an appropriate negative control for the new mechanism.
+
+Future names in a used update remain rejected by the image check. When
+the image is unused, future names admitted in the generated counter or
+initializer are discharged by the zero-witness rule; the constant-update
+successor equation does not depend on their particular values.
+
+Freshness and the unchanged continuation
+---------------------------------------
+The requested goal is root-checked before an instruction is read. If a
+major premise is requested, that major must return successfully. A changed
+transport/QE minor is opened and checked before the common allocation.
+The global floor decreases at every continuation, including arithmetic
+and administrative continuations. Every previously retained context entry
+was checked at an earlier floor. Hence the newly allocated meaningful
+parameter is absent from the retained context and current conclusion.
+
+Major subcalls can allocate further rigid names, but do not mutate the
+parent's context list: extensions use g + [...]. Such arbitrary parameters
+do not bring their discharged assumptions into the parent's proof. The
+final common allocation is fresh relative to all these names as well.
+
+With the known-instance argument above, the inherited finite-successful-
+trace induction proves soundness of the new arithmetic branch. The other
+branches have the same opening, eigenparameter, literal-equation progress,
+and neutral-continuation arguments as the inherited strict checker.
+
+Canonical completeness
+----------------------
+For R0, serialize s=[0,a,h] with flag 0. For RS, serialize the old recursor
+s=[n,a,h] with flag 1; the generator constructs R(Sn,a;h). Canonical passive
+parameters are allocated rigid labels, and all dummy positions contain
+zero. Opening the body with s then gives the canonical substitution for
+the old state. A computation leaf is replaced by generation of its
+equation followed by immediate hypothesis closure.
+
+Every other native inference is serialized exactly as in the inherited
+producer, while tracking a fresh allocation at every common continuation.
+Therefore every finite closed native derivation has a finite canonical
+certificate in the new protocol under unbounded computational resources.
+This does not say that every old packet or every arbitrary raw alias is
+accepted unchanged.
+
+Variant equivalence
+-------------------
+The bytes profile changes only the import spelling. The AST profile's
+`a + []` succeeds only for list input among JSON values; if traversal of a
+list raises, its numeric fallback also raises rather than turning it into
+a numerical scalar. Non-list JSON values follow the same successful scalar
+cases as the principal opener. The assignment expression binds q to the
+same pop method before popping the goal, leaving the packet order
+unchanged. Thus the three profiles implement the same successful proof
+relation.
+
+Conclusion
+----------
+The constructed-source arithmetic rule is sound and canonically complete
+relative to the explicitly stated inherited opening/decoder lemmas and
+native calculus. Its justification is a mathematical case analysis of all
+successful openings, not an inference from finitely many numerical tests.
+Combined with the new scalar successor-seeded arithmetic bridge, it checks
+a presentation bi-interpretable and equiconsistent with iPRA. The separate
+size report must distinguish the family envelope from the cost of any one
+individual complete program.

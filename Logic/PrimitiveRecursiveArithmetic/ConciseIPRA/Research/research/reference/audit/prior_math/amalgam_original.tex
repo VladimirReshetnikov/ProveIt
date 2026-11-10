@@ -1,0 +1,625 @@
+% Self-contained research section for integration into the main report.
+% Requires amsmath, amssymb, amsthm, hyperref, and theorem/lemma/proposition/
+% corollary environments. No additional custom macros are used.
+% New relative to the sixteen active ZIPs at ProveIt commit
+% 4890fd00a5cacfc9881ae282120978f95c3ba392. No literature-priority claim.
+% This is an obstruction theorem, NOT a below-frontier axiomatization.
+\section{A stronger unary obstruction: full induction for quantifier-free formulas}
+\label{sec:unary-amalgam}
+
+The current unary obstruction leaves a specific question open: could
+full quantifier-free induction with arbitrary numerical parameters repair
+a language containing every unary primitive-recursive operation? The
+answer is negative for the generous theory defined below. Its model
+also has decidable equality and satisfies every true universal sentence,
+not merely universal Horn sentences. Thus the failure persists without
+the merging equality used in the earlier Kripke fan.
+
+The construction is a classical union of elementary extensions, with
+their standard elements identified. Unary operations can act within
+one copy and can return to the shared standard part. They cannot join
+nonstandard data from two different copies. A restriction argument
+nevertheless validates \emph{every} quantifier-free induction matrix
+with parameters. The gap is witnessed by one explicit existential
+induction instance and by an automorphism obstruction to all ordinary
+definable inverse interpretations.
+
+\subsection{The exact source theory and interpretation convention}
+\label{subsec:amalgam-source}
+
+Let $L_1$ contain the numerical constant $0$ and a unary function symbol
+for every fixed unary primitive-recursive function, including successor
+$S$ and predecessor. It has no positive-arity relation symbols other
+than equality, and no function of arity greater than one. Write
+$\mathbb N_1$ for the standard structure. A numeral $\bar n$ denotes
+the fixed term $S^n0$. A fixed composition of unary operations is an
+ordinary term; there is no program variable or universal evaluator.
+
+Quantifier-free formulas are built from equations and genuine falsity
+by the usual propositional connectives. In the following axiom
+families, \emph{true} means true in the classical standard structure
+$\mathbb N_1$. This selects the axioms; the deductive logic of the
+resulting theory is ordinary intuitionistic first-order logic with
+actual equality and genuine falsity. In particular, we do not change
+the meaning of implication or quantification when assessing an
+interpretation.
+
+Define $T_1$ to have the following nonlogical axioms.
+\begin{enumerate}
+\item \textbf{All true universal sentences.} Include every sentence
+\[
+  \forall x_1\cdots\forall x_k\,B(x_1,\ldots,x_k)
+  \tag{U}\label{eq:amalgam-U}
+\]
+true in $\mathbb N_1$, where $B$ is quantifier-free and $k$ is any
+fixed finite number. The matrix may use arbitrary propositional
+connectives; it need not be Horn, positive, or an equation.
+\item \textbf{All true one-input existence sentences.} Include every
+true sentence
+\[
+ \forall x\,\exists y_1\cdots\exists y_m\,
+                 C(x,y_1,\ldots,y_m),
+ \tag{E1}\label{eq:amalgam-E1}
+\]
+where $C$ is quantifier-free, $m$ is fixed and finite, and the displayed
+$x$ is its only universally quantified input. The free variables of
+$C$ are among those displayed. Fixed standard parameters can be
+written as numerals. Arbitrary additional universally quantified
+parameters are deliberately not included in this family.
+\item \textbf{Full quantifier-free induction.} For every
+quantifier-free $A(x,\vec p)$, include the universal closure in
+$\vec p$ of
+\[
+ \bigl(A(0,\vec p)\wedge
+       \forall x\,(A(x,\vec p)\to A(Sx,\vec p))\bigr)
+       \to\forall x\,A(x,\vec p).
+ \tag{QFI}\label{eq:amalgam-QFI}
+\]
+The tuple $\vec p$ may have any fixed finite length. Equivalently,
+use the usual contextual induction rule, keeping all parameters and
+retained assumptions fixed and making its step variable fresh.
+\end{enumerate}
+
+This is a deliberately generous obstruction theory, not a proposed
+effective presentation or a candidate proof checker. No recursive
+enumerability claim is made for its all-true axiom families.
+Its axioms already include successor injectivity and separation,
+$0\ne S0$, every true quantifier-free fact with any finite number
+of inputs, and the genuine two-variable equality-decidability sentence
+\[
+                 \forall x\forall y\,(x=y\vee\neg(x=y)).
+ \tag{DecEq}\label{eq:amalgam-deceq}
+\]
+Numerical coverage follows from the instance
+$\forall x\exists y\,(x=0\vee Sy=x)$ of \eqref{eq:amalgam-E1}.
+It also follows from the true universal sentence
+$\forall x\,(x=0\vee S\operatorname{pred}(x)=x)$.
+
+An \emph{ordinary first-order interpretation} here may use a definable
+subset of a finite Cartesian power, a definable equivalence relation
+as its equality, and definable graphs of its functions. Logical
+connectives retain their ordinary meanings, and quantifiers are
+relativized in the usual way. Bi-interpretability additionally requires
+provably definable isomorphisms to the two double interpretations.
+The main theorem permits a fixed finite tuple of interpretation
+parameters. A simple enlargement of the model, stated separately,
+handles countably many parameters spread across an infinite signature.
+
+\begin{theorem}[Unary amalgam obstruction]\label{thm:unary-amalgam}
+The theory $T_1$ has a classical model with a nontrivial involutive
+automorphism fixing any prescribed finite parameter tuple.
+Consequently $T_1$ is not ordinarily bi-interpretable with iPRA,
+even allowing finite-dimensional definable domains and definable
+quotient equalities. The same conclusion holds for any theory in
+this language whose axioms are true in the model constructed below,
+including every subtheory of $T_1$.
+\end{theorem}
+
+\subsection{The model: copies sharing exactly the standard part}
+\label{subsec:amalgam-model}
+
+Choose a proper elementary extension
+$M\succ\mathbb N_1$. One obtains it by adjoining to the elementary
+diagram of $\mathbb N_1$ a constant different from every standard
+numeral and applying compactness. Every finite set of the additional
+requirements is realized by a sufficiently large standard numeral.
+Since $L_1$ is countable, $M$ can also be chosen countable, although
+countability is not needed below. Identify the named standard copy
+of $\mathbb N_1$ with a substructure of $M$.
+
+The phrase \emph{nonstandard} in this proof means externally that an
+element belongs to $M\setminus\mathbb N$. We do not assert that
+this set or the standard part is first-order definable in $M$.
+The construction takes place in the ordinary classical metatheory.
+
+Let $I$ be a countably infinite set of copy labels. Form the disjoint
+union
+\[
+              D=\mathbb N\ \sqcup\bigl((M\setminus\mathbb N)\times I\bigr).
+ \tag{D}\label{eq:amalgam-domain}
+\]
+Interpret $0$ by its standard value. For every unary symbol $f$, put
+$f^D(n)=f^{\mathbb N_1}(n)$ at standard $n$, and put
+\[
+ f^D(a,i)=
+ \begin{cases}
+   f^M(a),&\text{if }f^M(a)\in\mathbb N,\\
+   (f^M(a),i),&\text{if }f^M(a)\notin\mathbb N.
+ \end{cases}
+ \tag{F}\label{eq:amalgam-functions}
+\]
+Equality is actual identity in $D$ and falsity is false. These formulas
+give total operations, including when a unary function takes a
+nonstandard argument to a standard value.
+
+For each $i\in I$, define the injection
+$e_i:M\to D$ by $e_i(n)=n$ for standard $n$ and
+$e_i(a)=(a,i)$ otherwise. Its image is denoted $M_i$.
+
+\begin{lemma}[The copies are genuine substructures]
+\label{lem:amalgam-copies}
+Each $e_i$ is an isomorphism from $M$ onto the substructure $M_i$.
+For $i\ne j$, one has $M_i\cap M_j=\mathbb N$, and
+$D=\bigcup_{i\in I}M_i$. Inclusion of $M_i$ in $D$ preserves
+and reflects the truth of every quantifier-free formula whose
+parameters and arguments belong to $M_i$.
+\end{lemma}
+\begin{proof}
+The operation law $f^D(e_i(a))=e_i(f^M(a))$ is exactly
+\eqref{eq:amalgam-functions}, including its standard-output case.
+The constant and injectivity conditions are immediate. The
+intersection and union assertions follow from the disjoint union.
+Injectivity and preservation of terms preserve and reflect equations;
+in classical structures this extends through every propositional
+connective and genuine falsity by induction on a quantifier-free
+formula. No claim of elementarity of $M_i$ inside $D$ is made.
+\end{proof}
+
+\subsection{Why every true universal sentence survives}
+\label{subsec:amalgam-universal}
+
+Unary syntax is crucial here: a term contains at most one distinct
+free variable. An equation can still compare terms in \emph{two}
+independent variables, so preservation of all universal sentences is
+stronger than checking each copy separately.
+
+\begin{lemma}[Finite atomic diagrams can be copied into the naturals]
+\label{lem:amalgam-diagram}
+Fix a finite tuple $\vec a$ from $D$ and a finite set $\mathcal T$
+of $L_1$ terms in its variables. There is a tuple $\vec b$ from
+$\mathbb N$ such that for every $s,t\in\mathcal T$,
+\[
+          s^D(\vec a)=t^D(\vec a)
+          \quad\Longleftrightarrow\quad
+          s^{\mathbb N_1}(\vec b)=t^{\mathbb N_1}(\vec b).
+ \tag{FD}\label{eq:amalgam-finite-diagram}
+\]
+Standard input entries can be left unchanged.
+\end{lemma}
+\begin{proof}
+First fix every standard input entry to its original numeral. Let
+$C\subseteq\mathbb N$ be the finite set of \emph{all} standard
+values of terms from $\mathcal T$ at $\vec a$. Each remaining
+input entry lies in a unique labelled copy outside the standard part.
+Partition these inputs into their finitely many nonempty label groups.
+Every term that is not already constant after the fixed substitutions
+depends on inputs from just one group, because it has at most one
+free variable. Assign that term to the group.
+
+Process the groups in any order. Suppose groups before $i$ have
+already been replaced by standard tuples, and let $V$ be the finite
+set of term values produced by those previous choices. In the copy
+with label $i$, forget its labels to obtain a tuple $\vec a_i$ in
+$M$. Form a finite quantifier-free conjunction requiring the following:
+\begin{enumerate}
+\item every pair of terms assigned to this group has exactly the
+same equality or inequality relation as at $\vec a_i$;
+\item each assigned term with original standard value $c$ has value
+exactly the numeral $\bar c$;
+\item each assigned term with original nonstandard value differs from
+every numeral for an element of $C\cup V$.
+\end{enumerate}
+Include equalities fixing any standard input variables used in the
+group, or simply substitute their numerals before forming the conjunction.
+All these requirements hold in $M$ at $\vec a_i$. In the last
+family, this is because an original nonstandard value differs from
+every specified standard number, regardless of how the preceding
+standard choices were made.
+
+The existential closure of this finite conjunction, with its finitely
+many numeral parameters, is therefore true in $M$. Elementarity of
+$\mathbb N_1\preccurlyeq M$ makes it true in $\mathbb N_1$.
+Choose a standard tuple witnessing it, and proceed to the next group.
+An empty collection of requirements causes no problem.
+
+Within a group, all equations and inequalities are preserved by the
+first condition. Terms with standard original values are fixed by the
+second. A cross-group equality in $D$ is possible only when both
+outputs are the same shared standard value; these equalities are
+preserved. Every other cross-group comparison is an inequality. If
+one output was standard and the other nonstandard, the latter was made
+to avoid $C$. If both were nonstandard, the later group was made to
+avoid the earlier group's actual selected output in $V$. Thus all
+cross-group inequalities are preserved as well, proving
+\eqref{eq:amalgam-finite-diagram}.
+\end{proof}
+
+\begin{proposition}[Universal theory preservation]
+\label{prop:amalgam-universal}
+The structure $D$ satisfies every axiom of family
+\eqref{eq:amalgam-U}.
+\end{proposition}
+\begin{proof}
+Suppose $\forall\vec x B(\vec x)$ is true in $\mathbb N_1$
+but false in $D$, and choose a tuple witnessing its failure. Apply
+Lemma~\ref{lem:amalgam-diagram} to the finitely many terms occurring
+in its atomic subformulas. The selected standard tuple gives every
+atom the same truth value. Induction on the quantifier-free matrix
+$B$, including implication and negation, gives it the same classical
+truth value, contradicting the original universal sentence.
+\end{proof}
+
+\subsection{Existence and full quantifier-free induction}
+\label{subsec:amalgam-induction}
+
+\begin{proposition}[All one-input existence axioms]
+\label{prop:amalgam-one-input}
+The structure $D$ satisfies every instance of
+\eqref{eq:amalgam-E1}.
+\end{proposition}
+\begin{proof}
+Given $a\in D$, choose a copy $M_i$ containing it. By elementarity,
+$M_i$ satisfies the displayed one-input sentence and supplies a finite
+tuple of witnesses inside $M_i$. Its matrix remains true in $D$
+by Lemma~\ref{lem:amalgam-copies}. When $a$ is standard, any copy
+may be used. This proof specifically uses the fact that there is only
+one independently chosen input; no single copy need contain two
+independent nonstandard inputs.
+\end{proof}
+
+\begin{lemma}[Restriction of a quantifier-free matrix]
+\label{lem:amalgam-restrict}
+Let $A(x,\vec p)$ be quantifier-free and fix arbitrary parameter
+values $\vec p\in D$. For every label $i$, there is a
+quantifier-free formula $A_i(x,\vec q_i)$ with parameters in
+$M_i$ such that
+\[
+ D\models A(a,\vec p)
+ \quad\Longleftrightarrow\quad
+ M_i\models A_i(a,\vec q_i)
+ \qquad(a\in M_i).
+ \tag{Res}\label{eq:amalgam-restriction}
+\]
+No new function symbols or quantified predicates are required.
+\end{lemma}
+\begin{proof}
+After evaluating parameter-only terms, every equation is of one of
+three types. It compares two unary terms of $x$; it compares a unary
+term of $x$ with a fixed element $b\in D$; or it compares two
+fixed elements. In the first case retain the equation. In the
+second, retain it with $b$ as a parameter when $b\in M_i$;
+when $b\notin M_i$, replace it by $0=S0$. This replacement is
+valid because every unary term of an element of $M_i$ remains in
+$M_i$, and $0=S0$ is false in $M_i$. In the third case replace
+the equation by $0=0$ or $0=S0$ according to its fixed truth value
+in $D$. Use the same replacements when the two sides appear in
+the reverse order. Only finitely many new parameter values are used.
+
+Lemma~\ref{lem:amalgam-copies} verifies the retained equations;
+the stated cases verify the replacements. Keep genuine falsity and
+all propositional connectives unchanged. Induction on the formula
+then proves \eqref{eq:amalgam-restriction}. The replacements depend
+on the selected model parameters, which is permitted in a semantic
+verification of induction; no uniform syntactic decision procedure is
+being claimed.
+\end{proof}
+
+\begin{proposition}[Full parameterized quantifier-free induction]
+\label{prop:amalgam-qfi}
+The structure $D$ satisfies every instance of
+\eqref{eq:amalgam-QFI}, including its contextual rule form.
+\end{proposition}
+\begin{proof}
+Fix $A$ and $\vec p$ and assume in $D$ that
+$A(0,\vec p)$ and
+$\forall x(A(x,\vec p)\to A(Sx,\vec p))$ hold.
+For each $i$, use Lemma~\ref{lem:amalgam-restrict}. Since
+$0\in M_i$ and $M_i$ is closed under successor, the two global
+premises restrict to the base and successor-step premises of
+$A_i(x,\vec q_i)$ in $M_i$.
+
+Every quantifier-free induction instance is true in $\mathbb N_1$:
+external ordinary induction proves it for each fixed formula and
+each fixed tuple of natural parameters. Its universal closure in
+those parameters is therefore true there, and by elementarity it
+holds in $M_i$. Applying it gives $A_i(a,\vec q_i)$ for every
+$a\in M_i$, hence $A(a,\vec p)$ throughout that copy.
+As the copies cover $D$, the conclusion holds throughout $D$.
+This proves the universally closed induction axiom for arbitrary
+$\vec p$.
+
+For the contextual rule, fix a valuation satisfying the retained
+context. If the two premises hold under that valuation, the same
+argument applies. Freshness of the induction variable ensures that
+the retained context and parameters do not change when the variable
+ranges over a copy. Alternatively, the contextual rule follows from
+the just-verified induction axiom by ordinary intuitionistic logic.
+\end{proof}
+
+Together these propositions make $D$ a classical model of $T_1$.
+A classical structure regarded as a one-world intuitionistic Kripke
+model has the same truth values for all formulas: at the only world,
+the clauses for implication and the quantifiers reduce to their
+classical clauses. Thus this model is a sound countermodel for the
+specified intuitionistic theory, not only for a classical variant of
+it. Its equality is actual identity and is decidable. No transition
+maps, future witnesses, or identification of previously distinct
+elements are involved.
+
+\subsection{Why definable quotients cannot restore a bi-interpretation}
+\label{subsec:amalgam-biinterpretation}
+
+Every permutation $\rho$ of $I$ induces a permutation $\sigma_\rho$
+of $D$: it fixes each standard element and sends $(a,i)$ to
+$(a,\rho(i))$. Formula~\eqref{eq:amalgam-functions} shows directly
+that it commutes with every unary function, in both the standard-output
+and nonstandard-output cases. It is therefore an automorphism.
+
+\begin{lemma}[Parameter-fixing involutions]
+\label{lem:amalgam-involution}
+For every finite tuple of elements of $D$, there is a nonidentity
+automorphism of order two fixing that tuple pointwise.
+\end{lemma}
+\begin{proof}
+The nonstandard entries of the tuple use only finitely many labels.
+Select distinct unused labels $i,j$ and transpose them. The resulting
+automorphism fixes the tuple and squares to the identity. If
+$a\in M\setminus\mathbb N$, it moves $(a,i)$ to $(a,j)$, so
+it is nonidentity. No cardinal counting of complete types is needed.
+\end{proof}
+
+The one fact about the target used below is that iPRA defines a linear
+order on its whole numerical domain and proves its order laws. For
+example, let $x\le y$ abbreviate $x\mathbin{\dot-}y=0$,
+where $\mathbin{\dot-}$ is the usual fixed primitive-recursive truncated
+subtraction operation. Its reflexivity, antisymmetry, transitivity,
+and totality are elementary iPRA theorems proved using defining
+equations and quantifier-free induction. This is the same target
+property used in Section~2, \emph{The common rigidity argument}, of the
+current \texttt{ipra\_unary\_barriers} report.
+
+\begin{lemma}[Order-preserving involutions are trivial]
+\label{lem:amalgam-order}
+An order-preserving permutation $\tau$ of a linear order with
+$\tau^2=\mathrm{id}$ is the identity.
+\end{lemma}
+\begin{proof}
+If $a<\tau(a)$, applying $\tau$ gives
+$\tau(a)<\tau^2(a)=a$, a contradiction. If $\tau(a)<a$,
+applying $\tau$ gives the opposite contradiction. Linearity leaves
+only $\tau(a)=a$. The proof applies to any linear order, finite
+or infinite, standard or nonstandard.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:unary-amalgam}]
+The preceding propositions and Lemma~\ref{lem:amalgam-involution}
+establish the asserted model and automorphisms. Suppose now that
+ordinary bi-interpretations with iPRA were given. Interpret iPRA in
+$D$, obtaining a structure $N^*$ with underlying set
+$X/E$, where $X\subseteq D^d$ and $E$ is the interpreted equality.
+The translated iPRA axioms and the well-definedness obligations for
+this interpretation hold in $D$, because they are provable in the
+source theory.
+
+Collect the finite source parameter tuple used by the interpretation,
+the reverse interpretation, and the source-definable composite
+isomorphism. A parameter in $N^*$ is an $E$-class; choose a
+representing tuple in $X$ and include its finitely many coordinates
+among the source parameters. The same procedure handles any further
+quotient parameters used for the composite. When parameters are
+specified by a provable existential parameter condition, choose its
+witnesses in $D$ first and include them as well. This is still a
+finite parameter set under the stated interpretation convention.
+
+Choose an involution $\sigma$ fixing all those elements.
+Applying it componentwise preserves $X$, $E$, and every defining
+relation and function graph. It induces the well-defined map
+\[
+           \sigma^*([\vec a]_E)=[\sigma(\vec a)]_E.
+ \tag{Ind}\label{eq:amalgam-induced}
+\]
+The map is an automorphism of $N^*$, and
+$(\sigma^*)^2=\mathrm{id}$ because the construction respects
+composition. The interpreted order laws make the interpreted order
+an actual linear order on $X/E$ in this classical model.
+Lemma~\ref{lem:amalgam-order} therefore gives
+$\sigma^*=\mathrm{id}$ on $N^*$.
+
+Apply the reverse interpretation to $N^*$. Since $\sigma^*$
+is already the identity and fixes its parameters, its induced map
+$\sigma^{**}$ on the double interpreted domain is the identity.
+This remains so when that domain is a definable subset of a power
+or a quotient of such a subset: componentwise identity induces
+identity on every class.
+
+By bi-interpretability, the source theory proves that a fixed
+definable graph is an isomorphism $j:D\to D^{**}$. Its
+interpretation in $D$ is therefore a total injective function to
+the double interpreted equality quotient. Invariance of that graph
+under the parameter-fixing automorphism gives
+\[
+                   j(\sigma a)=\sigma^{**}(j(a))=j(a).
+ \tag{Nat}\label{eq:amalgam-natural}
+\]
+Injectivity forces $\sigma a=a$ for every $a\in D$, contrary
+to the chosen moved element. This proves the obstruction. The same
+argument uses only that $D$ is a model of the proposed source theory,
+so it applies to the additional theories stated in the theorem.
+\end{proof}
+
+\paragraph{Optional parameter extension.}
+The main theorem needs only infinitely many labels and finite global
+parameter tuples. If one permits countably many parameters spread
+across the infinitely many symbol definitions, choose $I$ uncountable
+instead. Their representatives occupy at most countably many labels,
+so two unused labels remain. More generally, for any prescribed
+infinite cardinal bound $\lambda$ on all such parameters, take
+$|I|>\lambda$; finite-dimensional representatives do not increase
+that bound. The preceding proofs of the axioms do not depend on
+$I$ being countable. These observations handle the broader parameter
+conventions without changing the essential finite-parameter theorem.
+
+\subsection{A concrete existential-induction gap}
+\label{subsec:amalgam-pairing}
+
+The failure can be exhibited by fixed familiar unary functions.
+Choose a primitive-recursive bijective pairing on the naturals, for
+example
+\[
+          \operatorname{pair}(x,y)=2^x(2y+1)-1,
+\]
+and let $\pi_0,\pi_1$ be its unary primitive-recursive inverse
+projections. Their bounded search definitions make them fixed unary
+primitive-recursive functions and hence members of $L_1$.
+The displayed binary pairing is used here in the metatheory to define
+those unary functions; it is \emph{not} inserted as a source symbol.
+
+\begin{proposition}[Failure of pairing totality]
+\label{prop:amalgam-no-pair}
+If $a\in M_i\setminus\mathbb N$ and
+$b\in M_j\setminus\mathbb N$ with $i\ne j$, then
+\[
+ D\not\models\exists z\,
+              (\pi_0(z)=a\wedge\pi_1(z)=b).
+ \tag{NoPair}\label{eq:amalgam-no-pair}
+\]
+In particular, the true standard sentence
+\[
+ \forall x\forall y\exists z\,
+              (\pi_0(z)=x\wedge\pi_1(z)=y)
+ \tag{PairTot}\label{eq:amalgam-pairtot}
+\]
+is not derivable in $T_1$.
+\end{proposition}
+\begin{proof}
+If $z$ is standard, both unary images are standard. If $z$ has
+label $k$, every nonstandard unary image has that same label $k$,
+by \eqref{eq:amalgam-functions}. Its two nonstandard images cannot
+simultaneously have the distinct labels $i,j$. The failure in a
+model of $T_1$ proves nonderivability by intuitionistic soundness.
+\end{proof}
+
+Now define the following two \emph{unary} primitive-recursive
+functions, which are already in $L_1$:
+\[
+ c(p)=\operatorname{pair}(0,p),\qquad
+ d(z)=\operatorname{pair}(S\pi_0(z),\pi_1(z)).
+\]
+The four true universal equations
+\[
+ \begin{aligned}
+ \pi_0(c(p))&=0,&\pi_1(c(p))&=p,\\
+ \pi_0(d(z))&=S\pi_0(z),&\pi_1(d(z))&=\pi_1(z)
+ \end{aligned}
+ \tag{PC}\label{eq:amalgam-pair-compute}
+\]
+are axioms of $T_1$. Define the genuinely existential matrix
+\[
+ A(n,p):=\exists z\,
+             (\pi_0(z)=n\wedge\pi_1(z)=p).
+ \tag{A}\label{eq:amalgam-existential-matrix}
+\]
+
+\begin{corollary}[One explicit induction instance exceeds the source]
+\label{cor:amalgam-induction-gap}
+The theory $T_1$ proves both $\forall p\,A(0,p)$ and
+$\forall n\forall p(A(n,p)\to A(Sn,p))$, but does not prove
+$\forall n\forall p\,A(n,p)$. Thus it does not admit induction
+on the single $\Sigma_1$ matrix
+\eqref{eq:amalgam-existential-matrix}, despite admitting all
+quantifier-free induction with arbitrary parameters.
+\end{corollary}
+\begin{proof}
+For the base choose the witness $c(p)$ and use the first two
+equations of \eqref{eq:amalgam-pair-compute}. For the step,
+eliminate a witness $z$ to $A(n,p)$ and choose the new witness
+$d(z)$. The last two equations, equality transport, and conjunction
+introduction prove its two required equations. Existential
+introduction and elimination give the step in ordinary intuitionistic
+logic, with the witness variable fresh for the conclusion.
+The asserted universal conclusion is exactly
+\eqref{eq:amalgam-pairtot}, which fails by
+Proposition~\ref{prop:amalgam-no-pair}.
+\end{proof}
+
+This isolates an induction obstacle in reconstructions based on
+function graphs. An equation mentioning graph-defined operations
+can translate to an existential matrix in the old language; its
+induction instance therefore needs a separate admissibility argument.
+Here the pairing relation exhibits a concrete existential matrix with
+a proved base and step but without its universal conclusion. The
+example concerns the failure of two-input pairing totality itself;
+no total pairing graph has been assumed. We do not claim that adding
+just this one existential
+induction instance would by itself make $T_1$ bi-interpretable with
+iPRA; the positive reconstruction would still require its own proof.
+
+\subsection{Exact comparison with the current corpus and scope}
+\label{subsec:amalgam-comparison}
+
+The comparison is with
+\texttt{ipra\_unary\_barriers\_2026-11-09.zip}, present in
+\texttt{docs/drafts} at commit
+\path{4890fd00a5cacfc9881ae282120978f95c3ba392}.
+Its Section~3, \emph{A pure-unary obstruction beyond monotonicity},
+is the source file \path{sections/03_unary_fan.tex}. That section
+uses a homomorphic Kripke fan whose root consists of vectors with
+homogeneous complete one-types. Its source theory has all true
+universal Horn sentences, all true parameter-free unary
+quantifier-free sentences, coverage, equation induction with
+parameters, and parameter-free quantifier-free induction.
+
+The present theorem strengthens that source in three precise ways.
+First, family \eqref{eq:amalgam-U} allows every true universal
+sentence with any finite number of inputs and any quantifier-free
+matrix. It contains the earlier Horn and one-variable families.
+In particular, it includes \eqref{eq:amalgam-deceq}, whose failure
+was exhibited at the earlier fan's root. Second,
+\eqref{eq:amalgam-E1} includes every true quantifier-free existence
+law with one input, of which coverage is only one example.
+Third, \eqref{eq:amalgam-QFI} allows all quantifier-free matrices
+with arbitrary finite parameter tuples, extending both induction
+families of the earlier theorem. These are changes to the
+mathematical scope, not reductions in source-code length.
+
+The ordinary-interpretation convention and the target's linear-order
+rigidity argument are inherited in method from Section~2, \emph{Target,
+interpretations, and semantic conventions}, particularly its
+subsection \emph{The common rigidity argument}. The new part is the
+amalgam model and the proofs that it validates the larger axiom
+families. Section~4 of the existing report concerns a distinct
+zero-initialized recursion language; its monotonicity and fan results
+are neither assumed nor replaced here. No claim of historical
+priority beyond this inspected corpus is made.
+
+The obstruction has deliberately stated limits. A binary operation
+that combines independently chosen inputs, the pairing-totality
+sentence \eqref{eq:amalgam-pairtot}, or another principle false in
+$D$ can invalidate it. An interpretation that changes the meanings
+of the logical connectives also lies outside the ordinary
+first-order argument. The theorem does not prohibit all language or
+domain changes allowed by the task, and it says nothing about
+equiconsistency alone. It supplies a stronger test that a proposed
+unary reduction must pass. It does not supply the requested
+axiomatization or a complete checker below the current observed
+frontier.
+
+In particular, the successful closed-unary-update theories in the
+current corpus are not counterexamples to this result. Their operators
+$I_h(n,a)$ or $K_h(n,a)$ have two independent numerical arguments,
+even though the fixed update description $h(u)$ is unary. The present
+theorem concerns an entirely unary first-order numerical signature.
+A binder that captures a numerical parameter can likewise conceal
+additional first-order arguments and must not be classified as unary
+merely because it displays one local update variable.
+

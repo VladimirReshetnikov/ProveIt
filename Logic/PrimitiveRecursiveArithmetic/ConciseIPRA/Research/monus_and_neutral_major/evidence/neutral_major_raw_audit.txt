@@ -1,0 +1,83 @@
+CORRECTED NEUTRAL-MAJOR INTERFACE: RAW-INPUT AND NOVELTY AUDIT
+
+The reviewed final selector is (m or len(a) % 2 == u) and k.
+Comparing with s instead is a rejected construction. A concrete mutation
+control accepts the forbidden compound-progress packet under ==s and rejects
+under ==u, in both normal and optimized Python. The packet's end formula is
+not claimed false; the test witnesses the rule-boundary failure.
+
+Core proof is in neutral_major_audit.tex. It proves, for arbitrary starting
+integer floors and arbitrary finite stacks, that no finite successful c(a,g)
+can have numeric a and a context containing only lists. The minimal completed
+trace argument handles the recursive major and continuation as proper traces.
+A successfully matched transport cannot turn such a scalar goal into a list:
+root scalar opening does not depend on the substitution image. Introduction
+cannot unpack a scalar raw goal. All other continuations preserve list-valued
+context and numeric goal, contradicting minimality.
+
+For general goals, every reached command retains a list-valued context. A
+scalar introduction matrix does NOT produce a scalar hypothesis: len(a)
+raises before the continuation context can be constructed. Context extension
+uses a fresh list, and recursive major proofs cannot mutate the caller's list.
+Thus numeric m=0 (or False, 0.0, -0.0), including truthy numeric alternatives,
+cannot reach the matcher after a successful major check. Its potential
+comparison to the False sentinel is unreachable. Negative and fractional
+rigid names, booleans, and default-json-loader NaN/infinities do not alter
+this type-based invariant. No full opener-idempotence assumption is used.
+
+RAW INPUT CLASSIFICATION (positions actually sent to the opener)
+- Arrays: opening returns an array, preserving the top-level length. Surplus
+  arities cannot produce scalar context entries. Their meanings remain those
+  of the inherited sorted decoder.
+- Integers/floats/booleans: formula-root opening returns the same negative
+  admitted value, or numeric zero. Never equals any list-valued hypothesis.
+  No numeric root goal can succeed from the initial [[]] context.
+- Null: fails when sent to the opener. It can remain in inert packet fields;
+  no blanket claim is made that a JSON document containing null is rejected.
+- Strings/dictionaries in strict-list and zero-product profiles: fail when
+  actually sent to the opener; unused packet data need not be inspected.
+- Generic profile empty string / empty dictionary: iterable aliases for [].
+  They may act as absent majors, but neither equals False or numeric zero.
+- Generic dictionary with exactly the empty key: opens to [[]], ignoring
+  its value. If used as a truthy major, raw m*3 raises before continuation.
+- Generic nonempty strings and nonempty dictionary keys: no finite successful
+  opening; CPython's finite recursion limit leads to rejection. Unlimited-
+  stack execution may diverge. The audit does not claim ideal totality.
+- Non-array top-level proof stacks fail the input-pop/packet protocol unless
+  the ordinary program actually supplies the required no-argument pop; raw
+  JSON object/string/number/null roots do not provide a valid such protocol.
+
+WHY u IS THE RIGHT MODE FIELD
+Introduction requires u false, so len(a)%2 == u cannot hold for odd arity1/3.
+The original equation-only induction restriction is preserved. u=0 selects
+progress for literal equations; u=[] selects cases. In contrast s is unused
+and unrestricted in introduction, so s=1 would enable compound progress.
+For noncanonical arithmetic packets where the new selector chooses a fresh
+opening, inherited known-zero-instance discharge (including all newly admitted
+fractional names) is required; uniform truth of the open hypothesis must not
+be assumed.
+
+NOVELTY SEARCH
+Pinned comparison: 76a2651601d17b34d46753f189ea026a21ce8d29, docs/drafts.
+All443 distinct Python contents were statically searched; the prior recursive
+text search covers424 distinct .tex/.md/.txt contents across32 ZIP contents.
+No exact empty-array truth-initial-context plus unconditional absent-major
+verification pattern was found. AST search for a call argument [[]] found
+only tests/review_ast_profile.py: i0_seed([[]]), an arithmetic seed fixture,
+not a proof-checker initial context. Existing 'neutral major' terminology in
+old producers refers to mismatched proved majors that leave a target unchanged,
+not to using a derivable false-valued major to remove the premise-check branch.
+This establishes inspected-corpus novelty only, not literature-wide priority.
+
+Adding the initial [] theorem is conservative because its decoded formula
+0=0 already follows by equality transport from the permitted C=0 computation,
+C=I(2,1;v.0). The mathematical numerical and logical basis is inherited. The
+new contribution is the branch-removing certificate/control interface and
+its raw-input proof, not a new arithmetic foundation or absolute minimality.
+
+Reviewed source SHA256:
+{
+  "array_truth_checker.py": "ed7c340ab7b4ef1afc079f32626ec6f8b4cf53dd79a1a9a33443045fa33df996",
+  "array_truth_checker_bytes.py": "224590b443849546c484fe69566c61e87d5639e8bcc35321de4e8d215333deaf",
+  "array_truth_checker_joint.py": "2ba26ac42c7d0998082a2c602a33e60df6125363ed855919c5b0c599cc4db951"
+}

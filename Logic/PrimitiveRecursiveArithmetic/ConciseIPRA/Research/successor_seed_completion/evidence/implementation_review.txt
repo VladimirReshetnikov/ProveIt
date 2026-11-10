@@ -1,0 +1,121 @@
+INDEPENDENT ASSISTANT IMPLEMENTATION REVIEW
+=========================================
+
+Scope
+-----
+Reviewed theory/implementation.tex against the complete byte checker and
+AST checker present in this package. This is a mathematical/source audit,
+not formal verification or external peer review. The audit covers finite
+successful executions and the canonical completeness construction.
+
+Result
+------
+No mathematical source-correspondence error was found. The changed J0
+base, its zero-instance supply argument, the truthy-zero witness change,
+and the AST profile's local iterable aliases are mutually consistent.
+
+1. Successor-seeded base generation
+----------------------------------
+The actual generator is [source,[initializer]], not [source,initializer].
+Its left initializer is decoded under the J node's two dummy zero slots.
+The right initializer is decoded under the successor node's one dummy
+zero slot. Internal binder slots are preserved; old passive parameters
+are rigid negative names. Coordinates exposed by the one-slot difference
+are replaced by the newly allocated w. After substituting w=0 they agree
+with the dummy zeros on the left. Thus the equation's zero instance is
+J0: J(0,a;h)=S(a).
+
+A diagnostic example is source [0,3,0] at initial floor zero. The generated
+opened equation is [[0,3,0],[-1]]. Its ordinary meaning is 1=S(w), because
+the source's coordinate 3 is a dummy zero while the right coordinate is
+exposed to w. This equation need not hold for every w. At w=0 it is 1=1,
+exactly the required known-instance supply. No universal assertion of the
+fresh equation is used. The original goal and retained context exclude w;
+substitution followed by cut discharges the generated assumption.
+
+The zero-extension claim is applied to these actual codec positions: all
+passive parameters outside a term's internal binders are old rigid names.
+It should not be read as permission to shift arbitrary meaningful positive
+outer coordinates without renaming them.
+
+2. Successor computation and the eager inner check
+-------------------------------------------------
+A successful true-counter computation has a unary counter [p], or the AST
+profile's documented unary alias. The eager numerical opening of
+[*counter,initializer,update] validates the predecessor J term before it
+is substituted into the update. It checks arity, scope and update
+annotations even if the update ignores its state.
+
+This check also prevents coordinates exposed in the update from being
+mistaken for state aliases. The source successor has one additional dummy
+zero slot compared with the checked predecessor. Every surviving meaningful
+coordinate is therefore aligned correctly. The resulting computation is
+JS, or its zero-instance form; no predecessor operation is presumed by
+the checker.
+
+3. Logical dispatch and fresh parameters
+----------------------------------------
+The truthy-major branch always checks its major first. A matched endpoint
+request gives transport or Q elimination; a mismatch supplies truth and
+keeps the goal. The ternary major's slice gives the opened Q clause of D
+elimination. Scalars cannot be finite successful major goals in the strict
+profile; malformed major arities reject.
+
+DI is selected only after the current goal has been opened/validated.
+The witness image is checked at numerical root when used. The shared
+fresh successor and the matrix-arity/marker test give exactly case DI or
+literal-equation progress DI. Zero-arity truth matrices represent the
+literal equation 0=0; compound Q/D matrices cannot receive progress.
+
+The initial goal has no meaningful future numerical parameter, and all
+stored assumptions have already been opened. A major proof can allocate
+additional names, but its checked conclusion cannot export one of its
+later eigenparameters. The next shared continuation allocates a genuinely
+fresh name below that enlarged floor.
+
+4. The changed zero witness
+--------------------------
+[0,0,0] now denotes J(0,0;0)=1. It must not be used as an essential
+zero-valued DI witness. The replacement J(1,0;0) denotes zero by JS and
+has a truthy array representation. For completeness, an original zero
+witness is replaced by this term and its equality to zero is transported
+through the premise. This computation proof needs no DI. The package
+includes both a nonvacuous successful use of the new witness and rejection
+of the old replacement.
+
+5. Additional AST aliases
+-------------------------
+For a successful used opening, the additional iterable normalizations are
+  empty string -> [],
+  empty dictionary -> [],
+  dictionary with its sole key equal to the empty string -> [[]].
+The last dictionary's value is ignored. Nonempty strings recur on a
+nonempty character and cannot complete a finite successful opening;
+nonempty dictionary keys therefore cannot survive a used opening either.
+
+For the accepted aliases, scope opening commutes with normalization,
+lengths and truthiness agree, and any positive raw equality match implies
+a corresponding normalized equality. A dictionary major cannot finish
+m[2:]. A sole-empty-key dictionary used as a successor counter expands to
+the empty-string predecessor, which normalizes to zero before the eager
+predecessor check. This is the intended J(1,a;h) computation.
+
+The claim is local to inspected syntax and successful openings. Raw
+instruction packets can contain ignored fields, and unread prefixes are
+inert; no wholesale normalization of all such data is required.
+
+The finite-success correspondence statement is correct. With an ideal
+unbounded call stack, nonempty strings need not terminate in the direct
+iterable opener. Actual Python recursion limits cause rejection, and
+canonical arrays/integers have structural termination. The report does
+not claim an ideal total decider for every malformed JSON value.
+
+6. Completeness boundary
+------------------------
+Every mathematical native formula can be represented canonically with
+arrays and integers. Completeness concerns existence of a canonical
+certificate, not acceptance of every raw encoding of an equivalent
+formula. Computation leaves become constant supply instances followed
+by Hyp. Eigenparameter allocation includes arithmetic and neutral
+continuations. The example producer is correctly described as partial
+validation infrastructure rather than a complete verified compiler.

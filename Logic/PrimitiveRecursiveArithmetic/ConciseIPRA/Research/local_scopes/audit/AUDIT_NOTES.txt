@@ -1,0 +1,112 @@
+INDEPENDENT CURRENT-CORPUS AUDIT
+Snapshot: VladimirReshetnikov/ProveIt at
+3fb35a5f2c0cb506180bede7ee3b9b5f93d4bc9d
+Directory: docs/drafts
+Date: 2026-11-10
+
+Scope and result
+----------------
+The 16 direct ZIP archives contain 22 distinct ZIP byte strings after nested
+provenance archives are traversed and deduplicated. Their 297 distinct Python
+source byte strings all parse. No proposal code was executed during the scan.
+All otherwise nondominated supporting scripts were read before exclusion.
+There are 23 such exclusions: build wrappers, measurement utilities, package
+integrity/reproduction runners, and one untrusted certificate translator.
+
+The observed complete-source coordinate envelope is:
+  277 normalized significant tokens
+  311 Python AST nodes
+  672 normalized UTF-8 bytes
+Different complete programs attain these coordinates. None of the six
+reviewed frontier contents attains all three simultaneously. These are
+observed upper bounds on a possible optimum, not mathematical lower bounds
+for all formalisms or all implementations.
+
+Full frontier
+-------------
+Local copied source                 Tokens  AST  Bytes  Raw  gzip9(raw)
+reference/constructed_explicit.py      277  317    684  684         403
+reference/flat_computation.py          278  314    679  679         402
+reference/matched_bytes.py             277  319    679  679         401
+reference/matched_explicit.py          277  317    684  684         405
+reference/transient_structure.py       280  311    705  705         393
+reference/zero_product.py              281  322    672  672         397
+
+The two 277/317/684 programs differ in identifier spelling and consequently
+in gzip size. The gzip metric is only descriptive. It was not used to select
+the frontier, which uses tokens, AST nodes, and normalized bytes.
+
+Measurement protocol
+--------------------
+CPython 3.12.14; zlib runtime 1.3.2. Remove genuine module/function/class
+docstrings; parse the whole module; count every AST node; ast.unparse plus
+one final newline defines normalized text. Count tokenizer entries other
+than comments, encoding, physical/logical newlines, indentation/dedentation,
+and end marker. The complete module is retained, including imports, initial
+state, public JSON input, verdict printing, and failure handling.
+
+gzip9(raw) is len(gzip.compress(raw, compresslevel=9, mtime=0)). The audit
+also records the same compression of normalized text. For all six frontier
+sources raw bytes already equal the normalized source bytes. Headers and
+trailers count. Normalizer results for all six exactly match the inherited
+source_measure.py; see normalizer_crosscheck.json.
+
+Semantic boundaries
+-------------------
+The frontier consists of standalone JSON-to-verdict checkers. Imports are
+only from the standard json library. No arbitrary certificate code is run.
+The ordinary protocol is a closed native formula and a reversed sequence
+of four-field proof packets; a successful finite prefix traversal suffices,
+so unused earlier packets are inert. The physical Python recursion limit
+can reject very large valid derivations. Completeness is the usual
+unbounded-resource mathematical claim, not a practical completeness claim.
+
+The 311-node transient structure variant intentionally accepts additional
+raw JSON aliases because its opener tries iteration before numeric fallback.
+The delivered theory/checker.tex documents these aliases and gives a decoded
+proof argument: empty string and empty object erase to zero, and an object
+with its sole key the empty string erases to successor zero. One must not
+assert whole-certificate operational equivalence under erasure: matching can
+change. Canonical array/integer completeness is unchanged. These inherited
+soundness arguments are written proofs, not proof-assistant formalizations.
+
+The 672-byte zero_product variant replaces the exact list test with a*0==[].
+Within standard JSON built-in types this recognizes precisely arrays; other
+types either fail that test, proceed as numeric aliases, or reject. There
+are no user-defined subclasses or overloaded methods in JSON. The included
+ancillary proof argues full verdict preservation relative to its generated-
+assumptions baseline. It is a source-spelling variant, not a new theory.
+
+Novelty already present in the corpus
+------------------------------------
+The shared architecture is actual numerical equality plus Q/D paired logical
+closures. Q_y B means B(0) -> forall y B(y); D_xy B means exists x Q_y B.
+Case introduction works for arbitrary native formulas, and progress
+introduction is restricted to literal equations. Selectors and gates rebuild
+ordinary intuitionistic logic, and scalar iteration plus an internal
+predecessor/equality-characteristic bootstrap rebuild primitive recursion.
+
+Existing proposed improvements include elimination-only availability,
+generated assumptions, constructed computation sources, flat/boxed
+computation, scalar successor-seeded recursion, transient-seed predecessor,
+atomic-only transport, root-left transport plus counter congruence, named
+specialization, shared continuations, and explicit byte/AST source profiles.
+These should not be relabeled as new breakthroughs.
+
+Important inherited proof cautions include: the domain is the whole
+arithmetic domain, so examples on standard numerals do not prove the required
+interpretation theorems; mutual theorem-set conservativity alone is not
+bi-interpretability; positive computation equations alone have a singleton
+ordinary model, so an ordinary comparison theory with a separate falsity
+needs explicit separation; and an eta-only induction scheme cannot reuse
+an equality characteristic whose construction already assumed induction.
+
+Reproduce
+---------
+  python3 audit_corpus.py PATH_TO_EXACT_DRAFT_ZIPS OUTPUT_DIRECTORY
+
+classification.json fixes reviewed contents by SHA-256. The script refuses
+to certify the frontier when new nondominated content appears or when source
+parsing fails. Source paths and exact hashes are in corpus_audit.json and
+frontier.json. The reference source copies remain under the repository's
+MIT No Attribution license, copied as LICENSE-ProveIt.txt.

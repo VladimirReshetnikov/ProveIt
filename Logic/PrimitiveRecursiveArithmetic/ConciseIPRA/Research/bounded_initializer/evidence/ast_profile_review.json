@@ -1,0 +1,1511 @@
+{
+  "decision": "Justified only as an explicitly ancillary, CPython-runtime-qualified profile.",
+  "python": "3.12.14",
+  "implementation": "CPython",
+  "default_recursion_limit": 1000,
+  "zlib_runtime": "1.3.2",
+  "candidate": {
+    "raw_bytes": 639,
+    "normalized_bytes": 639,
+    "normalized_tokens": 267,
+    "ast_nodes": 298,
+    "gzip9_raw_bytes": 360,
+    "gzip9_normalized_bytes": 360,
+    "sha256": "b00daf84dcb233b637752c4a12d1f92e497e561c2cce32a8e32e07432f162d11"
+  },
+  "baseline_ast": {
+    "raw_bytes": 648,
+    "normalized_bytes": 649,
+    "normalized_tokens": 268,
+    "ast_nodes": 300,
+    "gzip9_raw_bytes": 367,
+    "gzip9_normalized_bytes": 367,
+    "sha256": "c991f9fa65d7c91cde9198a4e03cd258b64b8d1be3a9f0ab685de7ff80b5cb30"
+  },
+  "public_contract": "Accept iff process exits zero and prints exactly ACCEPT plus newline; other outcomes reject.",
+  "initialization_review": [
+    "The default expression d=(k:=0) executes once at function definition and creates global integer k=0.",
+    "The stored default d remains zero after global k changes.",
+    "The module-level q walrus assigns the bound pop method before its immediate call and before c reads q.",
+    "There is no assert or optimization-sensitive branch in the trusted program."
+  ],
+  "raw_decoder_review": [
+    "On canonical list/numeric inputs, the opener computes the same opening as the primary profile whenever evaluation completes.",
+    "A list-child exception cannot turn a list into an atomic parameter: the fallback k<=list comparison raises TypeError.",
+    "Empty strings and empty dictionaries traverse to []; a one-key dictionary with empty key traverses to [[]], independently of its value.",
+    "These accepted aliases have respectively the zero/truth and successor-zero/paired-truth meanings according to numerical/formula position.",
+    "Any nonempty string recurses into one-character strings until the finite CPython recursion limit rejects it.",
+    "Any dictionary with a nonempty key similarly rejects; dictionary values are ignored by iterable traversal.",
+    "The arity law, exact introduction guard, transport guard, computation generation, scope floor, and public verdict are unchanged from the reviewed composition."
+  ],
+  "qualification": [
+    "This is not a structurally terminating parser over all finite JSON in an ideal unbounded-stack interpreter.",
+    "The finite CPython resource qualification is the same qualification already present in the actual baseline AST leader.",
+    "The primary explicit-list checker remains the preferred transparent implementation.",
+    "Improved family coordinate minima do not imply one checker attaining all minima, an absolute lower bound, or a size result for the new B+equality arithmetic theory."
+  ],
+  "executions": 146,
+  "failures": [],
+  "rows": [
+    {
+      "category": "canonical_composition",
+      "case": "IS_boxed_zero_predecessor",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "IS_boxed_zero_predecessor",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "nonvacuous_literal_zero_witness",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "nonvacuous_literal_zero_witness",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "I0_arbitrary_seed",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "I0_arbitrary_seed",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "IS_state_used",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "IS_state_used",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "IS_constant_update",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "IS_constant_update",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "equality_transport_reflexivity",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "equality_transport_reflexivity",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "atomic_progress_closure",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "atomic_progress_closure",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "Q_arbitrary_term_specialization",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "Q_arbitrary_term_specialization",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "compound_case_nested_closure",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "compound_case_nested_closure",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "nonvacuous_witness_DE_roundtrip",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "nonvacuous_witness_DE_roundtrip",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "contextual_induction_seed_congruence",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "contextual_induction_seed_congruence",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "transport_under_Q",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "transport_under_Q",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "neutral_wrong_endpoints_then_valid_proof",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "neutral_wrong_endpoints_then_valid_proof",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "neutral_target_mismatch_then_valid_proof",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "neutral_target_mismatch_then_valid_proof",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "canonical_composition",
+      "case": "forbidden_compound_progress",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "canonical_composition",
+      "case": "forbidden_compound_progress",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "canonical_composition",
+      "case": "canonical_false",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "canonical_composition",
+      "case": "canonical_false",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "canonical_composition",
+      "case": "unallocated_goal",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "canonical_composition",
+      "case": "unallocated_goal",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "canonical_composition",
+      "case": "missing_proof",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "canonical_composition",
+      "case": "missing_proof",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "empty_input",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "empty_input",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "empty_input",
+      "checker": "primary",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "empty_input",
+      "checker": "primary",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "invalid_json",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "invalid_json",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "invalid_json",
+      "checker": "primary",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "invalid_json",
+      "checker": "primary",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "null_top",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "null_top",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "null_top",
+      "checker": "primary",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "null_top",
+      "checker": "primary",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "true_top",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "true_top",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "true_top",
+      "checker": "primary",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "true_top",
+      "checker": "primary",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "false_top",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "false_top",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "false_top",
+      "checker": "primary",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "false_top",
+      "checker": "primary",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "zero_top",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "zero_top",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "zero_top",
+      "checker": "primary",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "zero_top",
+      "checker": "primary",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "positive_number_top",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "positive_number_top",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "positive_number_top",
+      "checker": "primary",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "positive_number_top",
+      "checker": "primary",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "string_top",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "string_top",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "string_top",
+      "checker": "primary",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "string_top",
+      "checker": "primary",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "object_top",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "object_top",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "object_top",
+      "checker": "primary",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "object_top",
+      "checker": "primary",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "empty_key_object_top",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "empty_key_object_top",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "empty_key_object_top",
+      "checker": "primary",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "empty_key_object_top",
+      "checker": "primary",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "null_goal",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "null_goal",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "null_goal",
+      "checker": "primary",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "null_goal",
+      "checker": "primary",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "empty_proof",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "empty_proof",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "empty_proof",
+      "checker": "primary",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "empty_proof",
+      "checker": "primary",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "nonempty_string_goal",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "nonempty_string_goal",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "nonempty_string_goal",
+      "checker": "primary",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "nonempty_string_goal",
+      "checker": "primary",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "nonempty_string_seed",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "nonempty_string_seed",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "nonempty_string_seed",
+      "checker": "primary",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "nonempty_string_seed",
+      "checker": "primary",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "nonempty_key_object_seed",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "nonempty_key_object_seed",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "nonempty_key_object_seed",
+      "checker": "primary",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "nonempty_key_object_seed",
+      "checker": "primary",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "null_seed",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "null_seed",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "null_seed",
+      "checker": "primary",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "null_seed",
+      "checker": "primary",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "canonical_false_after_zero_supply",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "canonical_false_after_zero_supply",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "canonical_false_after_zero_supply",
+      "checker": "primary",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "canonical_false_after_zero_supply",
+      "checker": "primary",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "future_parameter",
+      "checker": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "future_parameter",
+      "checker": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "future_parameter",
+      "checker": "primary",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "rejection_control",
+      "case": "future_parameter",
+      "checker": "primary",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_string_as_zero_seed",
+      "checker": "candidate_alias",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_string_as_zero_seed",
+      "checker": "primary_alias",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_string_as_zero_seed",
+      "checker": "primary_canonical_decode",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_string_as_zero_seed",
+      "checker": "candidate_alias",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_string_as_zero_seed",
+      "checker": "primary_alias",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_string_as_zero_seed",
+      "checker": "primary_canonical_decode",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_dict_as_zero_seed",
+      "checker": "candidate_alias",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_dict_as_zero_seed",
+      "checker": "primary_alias",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_dict_as_zero_seed",
+      "checker": "primary_canonical_decode",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_dict_as_zero_seed",
+      "checker": "candidate_alias",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_dict_as_zero_seed",
+      "checker": "primary_alias",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_dict_as_zero_seed",
+      "checker": "primary_canonical_decode",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_key_dict_as_one_seed",
+      "checker": "candidate_alias",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_key_dict_as_one_seed",
+      "checker": "primary_alias",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_key_dict_as_one_seed",
+      "checker": "primary_canonical_decode",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_key_dict_as_one_seed",
+      "checker": "candidate_alias",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_key_dict_as_one_seed",
+      "checker": "primary_alias",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_key_dict_as_one_seed",
+      "checker": "primary_canonical_decode",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_string_as_truth_formula",
+      "checker": "candidate_alias",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_string_as_truth_formula",
+      "checker": "primary_alias",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_string_as_truth_formula",
+      "checker": "primary_canonical_decode",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_string_as_truth_formula",
+      "checker": "candidate_alias",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_string_as_truth_formula",
+      "checker": "primary_alias",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_string_as_truth_formula",
+      "checker": "primary_canonical_decode",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_key_dict_as_paired_truth",
+      "checker": "candidate_alias",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_key_dict_as_paired_truth",
+      "checker": "primary_alias",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_key_dict_as_paired_truth",
+      "checker": "primary_canonical_decode",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_key_dict_as_paired_truth",
+      "checker": "candidate_alias",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_key_dict_as_paired_truth",
+      "checker": "primary_alias",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "explicit_alias_control",
+      "case": "empty_key_dict_as_paired_truth",
+      "checker": "primary_canonical_decode",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_status": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "category": "baseline_public_contract",
+      "case": "invalid_json",
+      "checker": "baseline_ast",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "baseline_public_contract",
+      "case": "invalid_json",
+      "checker": "baseline_ast",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "baseline_public_contract",
+      "case": "null_top",
+      "checker": "baseline_ast",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "baseline_public_contract",
+      "case": "null_top",
+      "checker": "baseline_ast",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "baseline_public_contract",
+      "case": "string_top",
+      "checker": "baseline_ast",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "baseline_public_contract",
+      "case": "string_top",
+      "checker": "baseline_ast",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "baseline_public_contract",
+      "case": "object_top",
+      "checker": "baseline_ast",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    },
+    {
+      "category": "baseline_public_contract",
+      "case": "object_top",
+      "checker": "baseline_ast",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_status": 1,
+      "stdout": ""
+    }
+  ]
+}

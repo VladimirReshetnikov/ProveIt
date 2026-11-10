@@ -1,0 +1,73 @@
+THE NATIVE SR CORE
+==================
+Full proofs and exact implementation codecs: report.pdf.
+
+NUMERICAL SYNTAX
+  t ::= variable | 0 | R(n,a;u.h)
+Only u in h is bound by R. Each body is fixed, finite, earlier-stage syntax;
+all other parameters are held fixed. This is staged recursion syntax, not
+a numerical universal evaluator.
+  S(a) := R(0,a;u.0);  1 := S(0).
+The implementation has a charged unary node for this abbreviation.
+
+TWO COMPUTATION SCHEMAS
+  R(0,a;u.h) = S(a)
+  R(S(n),a;u.h) = h[R(n,a;u.h)/u]
+
+NATIVE FORMULAS
+  A ::= (s=t) | Q_y B | D_{x,y} B
+Q binds y. D binds x and y. The designated absurdity is 0=1.
+The intended ordinary readings are
+  Q_y B = B(0) -> forall y B(y)
+  D_{x,y} B = exists x (B(x,0) -> forall y B(x,y)).
+These readings explain the interpretation; ordinary connectives are not
+assumed as native primitive syntax.
+
+CANONICAL INFERENCE RULES
+1. Hypothesis: Gamma |- A if A is a retained hypothesis in Gamma.
+2. Equality transport: from Gamma |- s=t and Gamma |- F(s), infer
+   Gamma |- F(t), for any native formula template F.
+3. Closure elimination: from Gamma |- Q_y B and Gamma |- B(0), infer
+   Gamma |- B(t), for any numerical term t.
+4. Paired elimination: from Gamma |- D_{x,y} B and a derivation of A
+   from Gamma,Q_y B(a,y), infer Gamma |- A. The numerical parameter a
+   is fresh for Gamma,A and the passive matrix parameters.
+5. Paired case introduction: from a derivation of B(t,S(z)) under
+   Gamma,B(t,0), infer Gamma |- D_{x,y} B.
+6. Paired equation-progress introduction: from a derivation of E(t,S(z))
+   under Gamma,E(t,z), infer Gamma |- D_{x,y} E, only when E is a
+   literal numerical equation.
+   In rules 5 and 6, z is fresh for all retained data, and the displayed
+   local hypothesis is discharged. All substitutions avoid capture.
+7. Each of the two displayed computation schemas is an equation theorem,
+   with arbitrary fixed passive parameters and finite descriptions.
+
+THE CHECKER'S COMPUTATION SUPPLY
+The complete program implements computation leaves by generated-assumption
+insertion: prove A from Gamma,H(w), where w is fresh and H(0) is one of the
+specified computation instances. Its particular raw syntax generator is
+spelled out in code/checker_sr_bytes.py and explained in the report.
+This is a derived rule: substitute w=0 into the finite premise proof and
+cut the known computation instance. Conversely a constant-in-w computation
+instance closes immediately by hypothesis. No arithmetic oracle is used.
+
+WHAT IS DERIVED, NOT ASSUMED
+  Reflexivity, numerical cases, and literal-equation induction;
+  cancellation of successor on Boolean values;
+  contextual Boolean case elimination with an equation conclusion;
+  a comparator and a predecessor P with P(0)=0 and P(S(a))=a;
+  I(n,a;u.h) := P(R(n,a;v.S(h[P(v)/u])));
+  the unshifted selector and all intuitionistic first-order connectives;
+  characteristic functions for actual equality and all quantifier-free
+  formulas, pairing, and general primitive recursion.
+
+EQUIVALENCE
+The interpretation domain in both directions is the entire numerical
+domain. Equality is actual equality. Successor is anchored first; literal
+recursion-uniqueness inductions identify the numerical return translations,
+whose isomorphism has graph x=y. Native Q/D formula return equivalences
+complete the full bi-interpretation. Thus the core is equiconsistent and
+bi-interpretable with full first-order iPRA.
+
+See theory/native_sr_bootstrap.tex for the noncircular logical bridge and
+report.tex for the complete paper. Absolute minimality is not asserted.

@@ -1,0 +1,371 @@
+% Research appendix fragment. Requires amsmath, amssymb, amsthm.
+% New alternative presentation; no claim that its checker is smaller.
+\section{A progressive binder presentation of iPRA}
+\label{app:progressive-binder}
+
+This section gives a different, complete presentation of iPRA in which
+every binder introduction has the same progress form.  The induction
+restriction moves to elimination.  Boolean case analysis must be
+retained explicitly; deleting it is not justified here.  The result is a
+mathematical alternative, not a measured improvement over the main
+checker.
+
+\subsection{Numerical syntax and complete rule inventory}
+
+Numerical terms are variables, $0$, $St$, and
+$R(n,a;u,v.h)$.  Only the fixed finite update body $h$ binds $u,v$;
+other parameters are held fixed.  The numerical computation schemas are
+\[
+ R(0,a;u,v.h)=a,\qquad
+ R(Sn,a;u,v.h)=h[n/u,R(n,a;u,v.h)/v].
+ \tag{PR}
+\]
+All substitutions avoid capture, and the successor substitution is
+simultaneous.  Equivalently use a staged first-order symbol for each
+fixed body.  This is ordinary counter-aware primitive recursion, so
+zero, successor, projections, composition, and arbitrary fixed PR
+descriptions compile directly.  There is no uniform evaluator over
+quantified descriptions.
+
+Object formulas have grammar
+\[
+ A::=(s=t)\mid\mathsf H_{x,y}A.
+\]
+Internal clauses are $\mathsf P_yA(y)$, where $A$ is an object formula.
+Contexts are reusable finite lists of objects and clauses.  An object
+or clause is available when it is a context member; a proved object is
+also available.  Clauses are not object goals.  Put $\bot_*=(0=S0)$.
+
+Besides the computation schemas, the complete primitive rule inventory is
+\[
+ \frac{\Gamma\mathrel{\triangleright}s=t\quad
+       \Gamma\vdash A(s)}{\Gamma\vdash A(t)}
+ \quad\mathsf{Tr},
+\]
+\[
+ \frac{\Gamma,B(t,z)\vdash B(t,Sz)}
+      {\Gamma\vdash\mathsf H_{x,y}B(x,y)}
+ \quad\mathsf{HI},
+\]
+\[
+ \frac{\Gamma\mathrel{\triangleright}\mathsf H_{x,y}B(x,y)
+       \quad\Gamma,\mathsf P_yB(a,y)\vdash A}
+      {\Gamma\vdash A}
+ \quad\mathsf{HE},
+\]
+\[
+ \frac{\Gamma\mathrel{\triangleright}\mathsf P_yB(y)
+       \quad\Gamma\vdash B(t)}
+      {\Gamma\vdash B(St)}
+ \quad\mathsf{Step},
+\]
+\[
+ \frac{\Gamma\mathrel{\triangleright}\mathsf P_yE(y)
+       \quad\Gamma\vdash E(0)}
+      {\Gamma\vdash E(t)}
+ \quad\mathsf{Iter},
+ \qquad E\text{ a literal equation},
+\]
+and Boolean cases
+\[
+ \frac{\Gamma,\operatorname{sg}(t)=0\vdash A\quad
+       \Gamma,\operatorname{sg}(t)=1\vdash A}
+      {\Gamma\vdash A}
+ \quad\mathsf{BoolCases}.
+\]
+Here $1=S0$ and $\operatorname{sg}(n)=R(n,0;u,v.1)$, so
+$\operatorname{sg}(0)=0$ and $\operatorname{sg}(Sn)=1$.
+In HI, $z$ is fresh for $\Gamma,t$ and the passive parameters.
+In HE, $a$ is fresh for $\Gamma,A$ and the passive parameters.
+BoolCases has no eigenvariable.  The displayed local
+assumptions and clauses are discharged.  There is no primitive
+hypothesis-conclusion rule: context membership supplies availability
+only, and object identity is recovered by the expansion below.
+There are no other logical axioms or induction rules.
+
+The intended ordinary meanings are
+\[
+ (\mathsf P_yB)^\circ=\forall y(B^\circ(y)\to B^\circ(Sy)),
+\]
+\[
+ (\mathsf H_{x,y}B)^\circ
+   =\exists x\,\forall y\bigl(B^\circ(x,y)\to B^\circ(x,Sy)\bigr).
+ \tag{Meaning}
+\]
+HI is unrestricted logical introduction.  Iter is the only use of
+induction, and it is explicitly restricted to literal equations.
+
+\subsection{Elementary derived operations}
+
+Structural weakening, contraction, exchange, substitution, renaming,
+and assumption cut are admissible by induction on derivations, with
+freshening of eigenparameters before substitution.  The equation
+$R(0,t;u,v.0)=t$ and transport derive $t=t$, followed by symmetry,
+transitivity, and numerical congruence.
+
+An equation assumption $s=t$ transports reflexivity $s=s$ to $s=t$.
+For a paired assumption
+$\mathsf H B$, HE supplies a fresh witness $a$ and $\mathsf P B(a,-)$.
+Introduce the same paired object at $a$; the induction hypothesis on
+formula depth recovers its assumed matrix $B(a,z)$, and Step yields
+$B(a,Sz)$.  Thus every object identity has a finite expansion.
+
+Literal-equation induction is derivable.  Given $E(0)$ and a derivation
+of $E(Sz)$ from $E(z)$, HI with an unused witness gives
+$\mathsf H_{x,y}E(y)$.  HE supplies its progress clause, and Iter
+gives $E(t)$.  Conversely Iter is sound in ordinary iPRA by equation
+induction under the retained assumption $E(0)$.
+
+\paragraph{Boolean cases recover constructor cases.}
+Put $P(n)=R(n,0;u,v.u)$ and $C(n,a,b)=R(n,a;u,v.b)$.
+Their equations give $P0=0$, $P(Sn)=n$ and the usual selector
+endpoints.  Literal-equation induction proves
+\[
+ C(\operatorname{sg}(x),0,x)=x,\qquad
+ C(\operatorname{sg}(x),x,S(Px))=x.
+ \tag{Boolean coverage identities}
+\]
+Each base is a direct zero computation, and each successor step is a
+direct successor computation that does not use its induction hypothesis.
+Consequently $\operatorname{sg}(t)=0$ gives $t=0$ by the first
+identity, and $\operatorname{sg}(t)=1$ gives $t=S(Pt)$ by the second.
+It follows that the constructor rule
+\[
+ \frac{\Gamma,t=0\vdash A\quad\Gamma,t=Sz\vdash A}
+      {\Gamma\vdash A}
+ \quad\mathsf{Cases}
+\]
+is admissible, with $z$ fresh for $\Gamma,t,A$: use BoolCases, and
+in its second branch substitute $P(t)$ for the fresh $z$ in the
+supplied successor derivation.  Conversely constructor Cases proves
+BoolCases by the sign equations.  Thus the two case interfaces have
+exactly the same consequences.  The missing principle is isolated to
+the two-value range of sign; equation induction already supplies the
+needed numerical identities.  In the rest of the proof, Cases denotes
+this derived constructor rule.
+
+\paragraph{Binder congruence.}
+Suppose $A(x,y)$ and $B(x,y)$ are uniformly interderivable with
+$x,y$ absent from the retained context.  From $\mathsf H A$, HE gives
+the progress clause of $A(a,y)$.  To introduce $\mathsf H B$ at
+the same witness, convert the local $B(a,z)$ to $A(a,z)$, apply Step,
+and convert $A(a,Sz)$ to $B(a,Sz)$.  Reverse the conversions for the
+opposite direction.  Hence $\mathsf H$ preserves uniform equivalence.
+This argument needs neither Cases nor compound induction.
+
+\subsection{Gates and selectors on arbitrary formulas}
+
+Let $C(n,a,b)$ be the fixed PR numerical selector with
+$C(0,a,b)=a$ and $C(Sn,a,b)=b$.  It is directly represented by
+$R(n,a;u,v.b)$.  Define a numerical gate on formulas by
+\[
+ G_v(s=t):=(C(v,0,s)=C(v,0,t)),\qquad
+ G_v(\mathsf H_{x,y}A):=\mathsf H_{x,y}G_vA,
+\]
+freshening bound variables first.  External formula induction, numerical
+computation, and binder congruence give
+\[
+ \vdash G_0A,\qquad G_{Sv}A\dashv\vdash A.
+\]
+For the first assertion at a binder, HI ignores its local assumption
+and uses the induction hypothesis for the successor matrix.
+
+Padding is again available:
+\[
+ A\dashv\vdash \mathsf H_{u,y}G_yA
+ \qquad(u,y\text{ fresh for }A).
+ \tag{Padding-H}
+\]
+Forwards HI ignores its local assumption and uses the positive-gate
+equivalence.  Backwards HE supplies a progress clause; $G_0A$ is a
+theorem, so one Step gives $G_1A$ and hence $A$.
+
+The selector on formulas is defined exactly by finite structural
+recursion:
+\[
+ M_v(s=t,r=w):=(C(v,s,r)=C(v,t,w)),
+\]
+\[
+\begin{aligned}
+ M_v(\mathsf H_{x,y}A,\mathsf H_{x,y}B)
+      &:=\mathsf H_{x,y}M_v(A,B),\\
+ M_v(E,\mathsf H_{x,y}B)&:=\mathsf H_{x,y}M_v(G_yE,B),\\
+ M_v(\mathsf H_{x,y}A,E)&:=\mathsf H_{x,y}M_v(A,G_yE),
+\end{aligned}
+\]
+where $E$ is an equation.  Bindings are aligned by fresh renaming.
+The maximum binder depth decreases in every recursive call.  Computation,
+padding, and congruence give
+\[
+ M_0(A,B)\dashv\vdash A,\qquad M_{Sv}(A,B)\dashv\vdash B.
+ \tag{Selector-H}
+\]
+Cases therefore permits choosing either endpoint at an arbitrary control,
+including when the retained context mentions that control.  In particular
+proofs of both $A$ and $B$ give a proof of $M_t(A,B)$.
+
+\subsection{All intuitionistic logical connectives}
+
+Use $\mathsf T=(0=0)$.  Choose fixed PR functions $p,q,d$ with
+\[
+ p(0)=0,\quad p(Sn)=C(p(n),1,0),
+\]
+\[
+ q(0)=0,\quad q(Sn)=C(p(n),q(n),S(q(n))),
+\]
+\[
+ d(0)=0,\quad d(Sn)=SS(d(n)).
+\]
+They are parity, integer half, and doubling in the standard model.
+The following equations are proved internally by literal-equation
+induction and their defining computations:
+\[
+ p(d(n))=0,\quad p(Sd(n))=1,\quad
+ q(d(n))=n,\quad q(Sd(n))=n.
+ \tag{Clock}
+\]
+First induct on the single equation $p(d(n))=0$.  At a successor,
+two parity updates send zero to one and back to zero.  The identity
+$p(Sd(n))=1$ then follows by one computation.  Next induct on the
+single equation $q(d(n))=n$.  The two half updates at $d(n)$ and
+$Sd(n)$ first leave the value unchanged and then increment it, using
+the already proved parity equations.  Finally $q(Sd(n))=n$ follows
+by its defining zero-parity update.  Thus the argument uses two
+single-equation inductions in sequence, not conjunction induction or
+induction on any compound formula.
+
+Define the logical macros
+\[
+\begin{aligned}
+ A\Rightarrow_H B
+   &:=\mathsf H_{u,z}M_z(A,B),\\
+ \exists_H x\,A(x)
+   &:=\mathsf H_{x,z}G_zA(x),\\
+ A\wedge_H B
+   &:=\mathsf H_{u,z}G_zM_{p(z)}(A,B),\\
+ A\vee_H B
+   &:=\exists_H x\,M_x(A,B),\\
+ \forall_H x\,A(x)
+   &:=\mathsf H_{u,z}M_{p(z)}(\mathsf T,A(q(z))),\\
+ \bot_H&:=(0=S0).
+\end{aligned}
+ \tag{H-macros}
+\]
+All displayed unused coordinates and binders are fresh.  The universal
+macro uses alternating true positions: its matrix is true at $d(n)$
+and equivalent to $A(n)$ at $Sd(n)$.
+These macros are effective translations of fixed finite syntax, not
+numerical truth predicates or internal quantification over formula codes.
+
+\paragraph{Implication.}
+Given $\Gamma,A\vdash B$, apply HI to the implication macro.
+Its local assumption is $M_z(A,B)$.  Cases splits $z=0$ and
+$z=Sw$.  The first branch provides $A$ and then $B$; the second
+already provides $B$.  In both branches the successor matrix is $B$.
+For elimination, HE supplies the progress clause; $A$ is its zero
+matrix, and Step at zero gives its first positive matrix $B$.
+
+\paragraph{Existential quantification.}
+From $A(t)$ use HI at witness $t$, ignoring the local gate assumption.
+For elimination, HE gives a fresh witness $a$ and its progress clause.
+The zero gate is a theorem; Step at zero gives $A(a)$.  The ordinary
+fresh-witness elimination convention follows directly from HE.
+
+\paragraph{Conjunction.}
+If both $A$ and $B$ are proved, Cases and the selector endpoints prove
+every successor matrix, so HI applies.  Conversely HE gives the
+progress clause.  Its zero gate is a theorem, so Step at zero gives
+the matrix at $1$, namely $B$.  Step once more gives the matrix at $2$,
+namely $A$, using $p(1)=1$ and $p(2)=0$.
+
+\paragraph{Disjunction.}
+The two introductions choose existential witnesses zero and one.
+For elimination, use existential elimination at a fresh witness $a$;
+Cases splits its zero and successor alternatives.  The selector endpoints
+then give the respective supplied branch assumptions.  The final
+conclusion is arbitrary, with the usual retained context.
+
+\paragraph{Universal quantification.}
+Suppose $\Gamma\vdash A(x)$ with $x$ fresh for $\Gamma$.
+After numerical substitution, both $\mathsf T$ and $A(q(Sz))$ are
+proved.  Cases and the selector endpoints therefore prove the successor
+matrix of the universal macro; HI may ignore its local assumption.
+For specialization, HE provides the progress clause.  The matrix at
+$d(t)$ is a theorem by Clock and its true endpoint.  Step at $d(t)$
+gives the matrix at $Sd(t)$, which Clock identifies with $A(t)$.
+This proof does not iterate a compound progress clause.
+
+\paragraph{Falsity and coverage.}
+Under $0=1$, numerical computation and transport give
+$s=C(0,s,t)=C(1,s,t)=t$ for all numerical $s,t$.
+External formula induction then gives every object: for an H node,
+HI ignores the local assumption and uses the induction hypothesis on
+its successor matrix.  Thus explosion is derived.  Cases also proves
+the ordinary coverage macro
+$(n=0)\vee_H\exists_H v\,(n=Sv)$ by its two evident introductions.
+
+Consequently every ordinary intuitionistic natural-deduction rule is
+derived, including all eigenvariable restrictions.  No excluded middle
+for arbitrary quantified formulas has been used.
+
+\subsection{Whole-domain bi-interpretability}
+
+For a transparent comparison, let $T_H$ be ordinary intuitionistic
+first-order logic with equality in the staged PR signature, with the
+displayed PR computation schemas, literal-equation induction,
+constructor coverage, and $(0=1)\to\bot$.  The native rules translate
+to $T_H$ under Meaning: HI, HE, and Step are ordinary logical rules;
+Iter is equation induction; BoolCases is the sign range consequence
+of coverage.  Conversely the native
+system derives all the ordinary logical rules, coverage, and equation
+induction, with separation translating to the identity implication
+$(0=1)\Rightarrow_H(0=1)$.
+
+The usual actual-equality characteristic construction for
+PR computation plus coverage, separation, and literal-equation
+induction proves every quantifier-free induction instance.  In
+particular this is the same arithmetic completion theorem proved in
+the arithmetic appendix of the main report.  Its hypotheses have all
+been established here.  Thus $T_H$ and iPRA have the same consequences
+in their shared staged PR language; the domain is the entire numerical
+domain and equality is actual equality.
+
+It remains to check the native formula composite, not merely the
+logical macros.  For every fixed native matrix $B$ one has
+\[
+ \mathsf H_{x,y}B(x,y)\dashv\vdash
+ \exists_H x\,\forall_H y\,
+       \bigl(B(x,y)\Rightarrow_H B(x,Sy)\bigr).
+ \tag{H-composite}
+\]
+Forwards, HE supplies a fresh $a$ and its progress clause.  At fresh
+$y$, assume $B(a,y)$ and use Step to obtain $B(a,Sy)$.  Introduce
+implication and universal macros, then introduce the existential at
+$a$, and close HE.  Backwards, eliminate the existential at fresh
+$a$.  Specialize its universal at the fresh HI eigenparameter $z$.
+Under HI's assumption $B(a,z)$, implication elimination gives
+$B(a,Sz)$.  HI at witness $a$ and existential elimination finish.
+The analogous clause composite is the universal progress formula.
+
+In ordinary $T_H$, the gate, selector, and Clock equations prove the
+intended meanings of every macro.  The universal macro is worth
+emphasizing: its even-to-odd progress implications give every instance
+$A(n)$, while all instances of $A$ make every progress implication
+true.  No induction on $A$ appears in this equivalence.
+
+External induction on formula syntax, using binder congruence and
+H-composite, proves both interpretation composites.  Numerical staged
+descriptions are identified with themselves; if one passes to a
+different conventional PR enumeration, literal-equation induction
+uniquely identifies the corresponding fixed recursions.  Both
+internally definable domain isomorphisms have graph $x=y$.
+The progressive-binder calculus is therefore equiconsistent and
+whole-domain bi-interpretable with full first-order iPRA.
+
+\paragraph{Limit of the reduction.}
+This presentation has an unrestricted single HI rule, but it pays for
+that uniformity with explicit BoolCases and a distinction between Step and
+literal-equation Iter.  No theorem here makes Cases redundant, and no
+smaller complete Python checker for this presentation has been
+established.  It is therefore an alternative logical basis, not evidence
+that the measured frontier has been beaten.

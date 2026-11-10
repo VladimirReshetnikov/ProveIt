@@ -1,0 +1,154 @@
+CURRENT DRAFT AUDIT — 10 NOVEMBER 2026
+Repository: VladimirReshetnikov/ProveIt
+Commit: 76a2651601d17b34d46753f189ea026a21ce8d29
+All 17 direct ZIP files were matched to the authoritative GitHub Git blob SHA-1
+and byte length before extraction. Sources were read-only; no repository write.
+
+Scope and limits
+---------------
+This audit identifies what the supplied drafts already contain and remeasures
+complete source programs. Mathematical propositions below are report claims
+whose proofs were inspected only as needed for novelty classification; this is
+not independent proof-assistant certification of those metatheorems.
+
+The recursive corpus has 32 distinct ZIP payloads, 443 distinct Python source
+hashes, and 2239 Python occurrences when each distinct archive is traversed once.
+The count of recursively repeated inclusions would be larger and is irrelevant
+for an implementation minimum. Every source at or below any candidate minimum
+was inspected: 38 boundary sources, 3 complete kernels, 35 supporting utilities.
+Thus the observed supplied-corpus coordinate minima are:
+  normalized bytes = 558; significant normalized Python tokens = 262; AST = 296.
+Different source files attain these minima. They are achieved upper bounds on
+an unknown optimum, NOT proved lower bounds on every possible axiomatization.
+
+Current minimum attainers
+------------------------
+1. ipra_certified_zero_2026-11-10/code/checker_bytes.py
+   raw/normalized bytes 558/558, tokens 264, AST 310, raw gzip9 345.
+   SHA256 5520fce8cf011fb3b91f6d9936d12f53aa73908f8aa139dec06a7d1a609fd8ea
+   Exact JSON list test a*0==[]; structurally terminating traversal on finite
+   JSON under the declared accepted aliases and adequate physical resources.
+2. ipra_certified_zero_2026-11-10/code/checker_joint.py
+   raw/normalized bytes 598/598, tokens 262, AST 296, raw gzip9 350.
+   SHA256 6bde2f96fa87238f1527f9bf8d9845bac20ac3580bc1c6b3229d49c4427a92c4
+   Generic exception-based iterable traversal. Nonempty strings may diverge in
+   an ideal unlimited-stack interpreter; CPython's recursion limit rejects them.
+3. ipra_affine_supply_2026-11-10/code/checker_ast.py (identical source also in
+   ipra_compact_kernel_2026-11-10/ancillary/checker_ast_loop.py)
+   raw/normalized bytes 689/689, tokens 266, AST 296, raw gzip9 369.
+   SHA256 c103cbe07374d7b0b6232b04748ef206e6ed0b49356059f56db07f545b781c23
+   Shares generic traversal qualification. Dominated by certified-zero joint.
+4. The recommended explicit-list certified-zero checker is 566 bytes, 264 tokens,
+   308 AST, gzip9 351. It avoids the malformed-string recursion-limit caveat.
+
+All counts include the entire theory-specific executable source, JSON loading,
+scope traversal, inference rules, arithmetic, and ACCEPT driver. CPython and its
+standard JSON library are shared runtime. Measurements here used CPython 3.12.14
+and zlib 1.3.2, ast.unparse after stripping genuine docstrings, terminal newline.
+Gzip uses gzip.compress(source,compresslevel=9,mtime=0) and is informational.
+
+Existing positive ideas: do not present as new
+----------------------------------------------
+- certified_zero: use the initializer's nonempty syntax as computation dispatch,
+  replacing the distinct arithmetic opcode. The missing zero initializer is
+  repaired via C=I(2,1;v.0)=0; the same C also repairs a zero predecessor.
+  Every affected computation leaf becomes three native inference nodes. Source
+  encodings and contexts/end-sequents unchanged. This is the current frontier.
+- arity_calculus: a D formula is unary; its Q closure is three copies of its body;
+  every array uses opening-depth increment 5-len(node). Surplus arities have a
+  conservative constant interpretation. This is a representation change.
+- affine_arity: depth+len(node)+1 with extra coordinate below equations and a
+  bottom interpretation for surplus arities; exact introduction-shape guard.
+- uniform_predecessor: construct successor from supplied predecessor. A boxed
+  three-command step becomes one command; reduces contextual proof 48 to 40
+  commands. Driver-only controls can erase reported whole-program size gain.
+- flat_computation: boxed predecessor B(p)=I(0,p;v.0)=p supplies arbitrary p via
+  transport. Arithmetic packets [null,n,a,h] construct sources and open with 0.
+- constructed_computation: construct successor sources from predecessors; only
+  validate a recursive image when state is actually used. Small certificate
+  format improvement, inherited arithmetic/logical presentation.
+- affine_supply: compose affine scopes, uniform predecessors, arity coding, and
+  immutable-context loops. Direct zero witnesses. No single profile dominates
+  all its comparison coordinates. Mutable shared contexts are unsound.
+- compact_kernel and checker_and_barriers: compose previous encodings and
+  shared continuation construction. Gains are small checker reductions;
+  same-driver controls are essential.
+- scalar_successor, successor_seed_completion, transient_seed: all complete
+  predecessor/bootstrap proofs for successor-seeded scalar R with R(0,a;h)=Sa,
+  R(Sn,a;h)=h(R(n,a;h)), and S(a)=R(0,a;0). Recover I by
+  P(R(n,a;v.S(h(P(v))))). Distinct finite-swap, shifted-affine, or transient/reset
+  proofs; the candidate syntax/equations already appeared in an earlier draft.
+- counter_congruence: root-left equality replacement + congruence only in the
+  recursor counter derive full numerical and formula transport using cases.
+  Numerical congruence adds 56 inference nodes independent of template depth.
+  Its new-calculus checker is much larger (1617 tokens/1822 AST/6834 norm bytes).
+- bounded_initializer: new tied-seed B + Boolean actual-equality test epsilon +
+  constructor separation + contextual literal-equation induction, in ordinary
+  intuitionistic first-order logic. Bounded initializer, majorant compiler,
+  cap coherence, and finite quantifier-free function graphs recover full iPRA.
+  The small measured checkers in that package implement OLD initialized-I
+  Choice-DI, NOT this new arithmetic theory. Do not conflate the results.
+- research: progressive H_xy B := exists x forall y(B(x,y)->B(x,Sy)), with
+  unrestricted-progress introduction and equation-only iteration elimination;
+  parity/half construction encodes universals, while Boolean Cases stays.
+  The H presentation does not receive the small D-checkers' measurements.
+- local_scopes: lexical proof scopes improve one byte coordinate; arithmetic
+  and full bi-interpretation inherited. Unbounded selector completes tied seed
+  numerically, without a smaller full logical checker claim.
+
+Existing obstruction results: do not present as new
+--------------------------------------------------
+- adaptive_seed: almost-unary coordinate-bound invariant for finitely adaptive
+  queries to the body's own update, and finite-dimensional term-defined unital
+  magma quotient obstruction. ceil(log2(d+1)) compositions of unit maps suffice
+  for finite quotient collapse. Arbitrary relational operations excluded.
+- uniform_predecessor: fixed finite register vectors, body probes, counter-
+  dependent probe maps, PR combiners, unary PR functions and bounded PR
+  observations still cannot recover full independent initialization when all
+  passive/state data reach combiners solely through the one body.
+- local_scopes: full ordinary first-order finite-dimensional bi-interpretation
+  obstruction for tied-seed B with computation, coverage, separation and
+  equation induction. Allows arbitrary formula-defined domains/graphs/quotients
+  and finite parameters. Uses finite term profiles and existential-free witness
+  extraction plus the source-side return isomorphism. Does not exclude every
+  one-way interpretation or addition of arbitrary positive existence axioms.
+- research: eventually constant powers satisfy equations, equation induction,
+  universal Horn laws and finite-conjunction induction; have involutions after
+  arbitrary finite parameter expansions, obstructing ordinary bi-interpretation
+  with models of iPRA including quotient/different-domain constructions.
+- compact_kernel: strengthens coordinatewise transfer in eventually constant
+  powers to atoms, truth, conjunction, existential and universal quantification
+  with arbitrary alternation, plus all standard-true implications between such
+  formulas. Thus stronger positive theories retain the automorphism obstruction.
+- checker_and_barriers: Boolean cases remain necessary even for the progressive
+  H binder; explicit N^2 mixed-parameter counterexample. Positive-iteration
+  R+(n,a;h)=h^(n+1)(a) zero sets are only empty/universal/one zero hyperplane,
+  excluding predecessor, zero test, addition and initialized iteration as terms.
+- certified_zero: eager F(0,a;h)=h(a), F(Sn,a;h)=h(F(n,a;h)) has a two-element
+  model even with coverage, separation and all-formula induction. It cannot
+  ordinarily interpret iPRA with any fixed finite-dimensional domain/quotient.
+  Projection-box substitution restriction also loses basic reflexivity.
+- counter_congruence: dropping root replacement loses reflexivity; term-based
+  seed-deletion and naive paired-binder reversal obstructions.
+- constructed_computation: simultaneous restriction of DI witnesses and QE
+  targets gives a finite-range obstruction.
+- adaptive_seed: restricting paired-elimination major premises to hypotheses
+  loses an explicit proof of Q_y(0=0); this normalization is not admissible.
+
+Validation rerun
+----------------
+The current certified-zero package's read-only reproduce.py was executed.
+It passed: 486 payload hashes, 370 frozen sources remeasured, 7 driver-only
+controls verified; 36 cases x 3 profiles x 2 Python modes = 216 CLI runs,
+108 accepted, 108 rejected, no mismatches. Its finite eager-model audit passed.
+These finite tests support the implementation, not its universal metatheory.
+
+Files produced by this audit
+----------------------------
+corpus_verified.json: direct ZIP identities and provenance.
+all_sources.json: exhaustive recursive source inventory and measurements.
+boundary_classification.json: all 38 boundary sources and their classification.
+principal_checker_metrics.json: complete measurements of 46 principal/ancillary
+  checker module occurrences, including all raw/normalized gzip sizes.
+measure_principals.py: reproducible principal-source measurement program.
+This file: novelty/status/limitations map for all 17 proposals.

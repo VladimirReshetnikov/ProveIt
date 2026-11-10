@@ -1,0 +1,85 @@
+\section{The complete ordinary axiomatization}
+\label{sec:ordinary-rules}
+
+Use one numerical sort and finite terms
+\[
+ t::=x\mid0\mid R(n,a;u.h),\qquad Sa:=R(0,a;u.0).
+\]
+Only $h$ binds $u$. Bound names are renamed before capture-free
+substitution. Passive parameters may be arbitrary numerical terms; the
+description of each update is fixed finite earlier syntax. Formulas are
+equations, genuine falsity $\bot$, and their closure under
+$\land,\lor,\to,\forall,\exists$. Negation abbreviates implication to
+$\bot$. We use the usual full first-order iPRA, for which atomic induction
+is a standard presentation~\cite{salehi}; the equivalence to
+quantifier-free induction is proved in Section~\ref{sec:completion}.
+
+\subsection{Every nonlogical axiom and induction rule}
+
+The computation schemas are exactly
+\begin{align*}
+ R(0,a;u.h)&=Sa, &&\text{(SR0)}\\
+ R(Sn,a;u.h)&=h[R(n,a;u.h)/u]. &&\text{(SRS)}
+\end{align*}
+There are two additional boundary sentences:
+\[
+ \forall x\,(x=0\lor\exists y\,x=Sy),\qquad
+                 (0=S0)\to\bot. \tag{Cov,Sep}
+\]
+The only primitive induction is the contextual rule for a literal equation
+$E(n,\vec p)$:
+\[
+ \frac{\Gamma\vdash E(0,\vec p)\qquad
+       \Gamma,E(z,\vec p)\vdash E(Sz,\vec p)}
+      {\Gamma\vdash E(t,\vec p)}. \tag{EI}
+\]
+Here $z$ is absent from $\Gamma,t,\vec p$. The context may contain
+quantified formulas. Induction on an implication, a disjunction, or an
+arbitrary quantified formula is not primitive. There is no additional
+successor-injectivity axiom, predecessor axiom, selector axiom, or
+initializer axiom.
+
+\subsection{Every logical axiom and rule}
+
+Contexts are finite reusable lists. The assumption, equality, and falsity
+rules are
+\[
+ \frac{}{\Gamma\vdash A}\ (A\in\Gamma),\qquad
+ \frac{}{\Gamma\vdash t=t},\qquad
+ \frac{\Gamma\vdash s=t\quad\Gamma\vdash F(s)}{\Gamma\vdash F(t)},\qquad
+ \frac{\Gamma\vdash\bot}{\Gamma\vdash A}.
+\]
+The equality motive $F$ is any fixed finite formula. The propositional
+rules are precisely
+\[
+\begin{gathered}
+ \frac{\Gamma,A\vdash B}{\Gamma\vdash A\to B},\qquad
+ \frac{\Gamma\vdash A\to B\quad\Gamma\vdash A}{\Gamma\vdash B},\\[5pt]
+ \frac{\Gamma\vdash A\quad\Gamma\vdash B}{\Gamma\vdash A\land B},\qquad
+ \frac{\Gamma\vdash A_0\land A_1}{\Gamma\vdash A_i}\ (i=0,1),\\[5pt]
+ \frac{\Gamma\vdash A_i}{\Gamma\vdash A_0\lor A_1}\ (i=0,1),\qquad
+ \frac{\Gamma\vdash A\lor B\quad\Gamma,A\vdash C\quad\Gamma,B\vdash C}
+      {\Gamma\vdash C}.
+\end{gathered}
+\]
+The quantifier rules are
+\[
+\begin{gathered}
+ \frac{\Gamma\vdash A(z)}{\Gamma\vdash\forall x\,A(x)},\qquad
+ \frac{\Gamma\vdash\forall x\,A(x)}{\Gamma\vdash A(t)},\\[5pt]
+ \frac{\Gamma\vdash A(t)}{\Gamma\vdash\exists x\,A(x)},\qquad
+ \frac{\Gamma\vdash\exists x\,A(x)\quad\Gamma,A(z)\vdash C}
+      {\Gamma\vdash C}.
+\end{gathered}
+\]
+In universal introduction $z$ is fresh for $\Gamma$ and the passive
+parameters; in existential elimination it is additionally absent from
+$C$. Displayed local hypotheses are discharged. Numerical substitution,
+renaming, weakening, exchange, contraction, and ordinary assumption cut
+are admissible by induction on finite derivations. No excluded middle,
+double-negation elimination, or other classical rule is included.
+
+This explicitly defined theory is denoted $T_{\rm SR}$. The comparator
+and predecessor constructions below use this ordinary logical interface.
+That choice is part of the cost and dependency statement, not an
+unlisted logical oracle.

@@ -1,0 +1,110 @@
+\section{A finite-range obstruction to simultaneous witness and specialization restriction}
+\label{sec:finite-restriction}
+Let $\mathcal C$ be the native Choice--DI calculus with fixed scalar terms
+$0,S,I$, equations, binders $Q_yB$ and $D_{x,y}B$, and the rules specified in
+\texttt{ipra\_named\_specialization}. Consider the simultaneous restriction
+\[
+\text{DI witnesses: }0\text{ or an in-scope variable},\qquad
+\text{QE targets: }1\text{ or an in-scope variable}.
+\tag{R}
+\]
+Neither arbitrary numerical substitution nor ordinary quantified logic
+is silently added as a primitive rule.
+
+\begin{theorem}
+Restriction (R) strictly decreases the native theorem set. In particular,
+with $C(y,p,q)=I(y,p;u.q)$ and $1=S0$, the formula
+\[
+D_{x,y}\bigl(C(y,1,x)=1\bigr)
+\tag{N1}
+\]
+is a theorem of $\mathcal C$ but not of (R).
+\end{theorem}
+\begin{proof}
+Evaluate numerical terms by their standard natural-number functions and
+assign zero to every free numerical variable. Define native formula truth
+recursively by ordinary equality and
+\[
+\begin{split}
+[Q_yB]&=[B(y:=0)]\Rightarrow[B(y:=1)],\\
+[D_{x,y}B]&=[B(x:=0,y:=0)]\Rightarrow[B(x:=0,y:=1)].
+\end{split}
+\]
+These clauses specify a proof invariant, not an ordinary first-order
+interpretation with unrestricted substitution. Formula substitution
+respects equality of the numerical values of substituted terms, since
+all binders are renamed away from those terms before substitution.
+Thus equality transport and the computation schemas preserve validity.
+Hypothesis use does so immediately.
+
+An allowed DI witness has numerical value zero. Evaluating its fresh
+step parameter $z$ at zero makes the successor $Sz$ have value one.
+For case DI, the premise therefore supplies exactly the implication in
+the displayed $D$ interpretation. For progress DI it supplies the same
+implication, because its current hypothesis is evaluated at $z=0$.
+The argument even applies to compound progress; the literal-equation
+restriction is not needed for this invariant. The retained context is
+unaffected by the fresh parameter.
+
+In DE the fresh parameter $a$ also has value zero. Consequently the added
+hypothesis $Q_yB(a,y)$ has exactly the truth value of its major $D_{x,y}B$.
+Validity of the continuation proves validity of the conclusion. A
+variable-target QE concludes the same truth value as its base premise;
+a target-one QE is ordinary implication elimination. All primitive rules
+preserve the invariant, so external induction on finite derivations
+establishes soundness.
+
+In (N1) the zero instance is $C(0,1,0)=1$, which is true, while the one
+instance is $C(1,1,0)=1$, which says $0=1$ and is false. Hence (N1) is not
+derivable under (R). In the unrestricted calculus, case DI with witness
+$1$ proves it immediately from the computation equation
+$C(Sz,1,1)=1$, ignoring the base hypothesis.
+\end{proof}
+
+\paragraph{General finite-range version.}
+Fix $N\geq1$, let $W=\{0,\ldots,N\}$, allow QE only at variables and
+numerals in $W$, and continue to restrict DI witnesses to zero or
+variables. Evaluate free variables in $W$, keep ordinary numerical term
+semantics (whose outputs may lie outside $W$), and interpret
+\[
+Q_yB := B(0)\Rightarrow\bigwedge_{j\in W} B(j),\qquad
+D_{x,y}B := \bigvee_{i\in W}\left(B(i,0)\Rightarrow
+                              \bigwedge_{j\in W}B(i,j)\right).
+\]
+A sequent is valid at every assignment of its free variables in $W$.
+Case DI is valid because each positive $j\leq N$ is $S(j-1)$ with
+$j-1\in W$. Progress DI is valid by the finite external induction from
+zero to $N$. DE uses a witness in $W$ and its continuation's validity at
+that assignment; QE uses a target in $W$. Equality transport is valid
+because the recursively defined formula semantics respects numerical
+equality even for substituted numerical values outside $W$.
+The same primitive computations hold. Thus all rules preserve validity.
+The unrestricted theorem
+\[
+D_{x,y}\bigl(C(y,N+1,x)=N+1\bigr)
+\]
+is false in this interpretation, since $1\in W$ but no possible witness
+$i\in W$ equals $N+1$. Adding finitely many allowed numeral targets
+therefore does not repair the simultaneous restriction.
+
+\paragraph{Scope.}
+This is an exact obstruction to identity-language theorem equivalence for
+these simultaneous restrictions. It is not a proof that every differently
+interpreted theory with restricted rules fails to be bi-interpretable with
+iPRA. The special proof invariant for (N1) is stronger than the $N=1$
+finite-range model and yields a smaller separating formula.
+
+\paragraph{Compatibility with known-zero-instance Supply.}
+The counterinterpretations remain sound for the rule
+\[
+\frac{\Gamma,H(w)\vdash A\qquad\Gamma\vdash H(0)}
+     {\Gamma\vdash A},\qquad w\notin\operatorname{FV}(\Gamma,A).
+\]
+In the fixed-zero invariant, $H(w)$ and $H(0)$ have the same truth value.
+For the finite-range invariant, extend any outer satisfying assignment
+by $w=0$, which is permitted because $0\in W$. The second premise makes
+$H(w)$ true at that extension; the first premise supplies $A$. Freshness
+makes the end sequent unaffected by that extension. This also covers the
+new lazy computation generator, whose separate soundness theorem proves
+its generated equation's zero instance. No arbitrary-term naming rule
+with a witness outside $W$ is included.

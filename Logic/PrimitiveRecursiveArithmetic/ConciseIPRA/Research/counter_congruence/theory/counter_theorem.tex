@@ -1,0 +1,358 @@
+% Inclusion fragment. Requires amsmath, amssymb, amsthm and theorem,
+% lemma, proposition, corollary environments. No private macros are used.
+% This fragment matches Eq/D object formulas, internal Q clauses, and
+% ordinary hypothesis use for object formulas only.
+
+\section{Counter congruence recovers unrestricted equality transport}
+\label{ctr:section}
+
+The reduction in this section concerns the mathematical inference
+interface. A smaller primitive interface and a smaller executable checker
+are separate claims; only the accompanying measurements can establish
+the latter. We use the numerical terms, the Eq/$\mathsf D$ object
+formulas, the internal $\mathsf Q$ clauses, and the primitive rules
+specified above. In particular,
+\[
+ \begin{aligned}
+ R(0,a;u,v.h)&=Sa,\\
+ R(Sn,a;u,v.h)&=h[n/u,R(n,a;u,v.h)/v],
+ \end{aligned}
+ \tag{R0, RS}
+\]
+where $Sa:=R(0,a;u,v.0)$.
+Only the update $h$ binds $u,v$, and all substitutions are capture-free.
+No variable ranges over numerical program descriptions. A template in
+what follows is one fixed finite expression.
+
+Recall the two restricted equality rules:
+\[
+ \frac{\Gamma\mathrel{\triangleright}s=t\qquad
+       \Gamma\vdash s=r}
+      {\Gamma\vdash t=r}
+ \quad\mathsf{RL},
+ \qquad
+ \frac{\Gamma\mathrel{\triangleright}s=t}
+      {\Gamma\vdash R(s,a;u,v.h)=R(t,a;u,v.h)}
+ \quad\mathsf{CC}.
+ \tag{Root and counter}
+\]
+In $\mathsf{CC}$ the seed, update, and passive parameters are the same
+on both sides. The availability relation $\Gamma\mathrel{\triangleright}M$
+means that $M$ is a retained assumption or an already proved object
+formula. Internal $\mathsf Q$ clauses are available by membership.
+Full hypothesis use is present for Eq/$\mathsf D$ object assumptions;
+there is no rule with an internal $\mathsf Q$ clause as its object goal.
+
+The proof uses $\mathsf{Hyp}$, $\mathsf{QE}$, $\mathsf{DE}$ and
+$\mathsf{DI}$-case, in addition to R0, RS, $\mathsf{RL}$ and
+$\mathsf{CC}$. It does not use $\mathsf{DI}$-progress. In particular,
+no equation-induction instance is hidden in the reduction.
+
+\subsection{Structural substitution is not equality transport}
+
+Weakening, exchange, contraction, renaming, and capture-free substitution
+of a numerical term for a free parameter are admissible by induction on
+finite derivations. Rename eigenparameters first. R0 and RS are stable
+under substitution; substitution preserves the matching seed and update
+in $\mathsf{CC}$ and the matching root in $\mathsf{RL}$. It also
+preserves a formula's root constructor, so a permitted progress instance
+remains literal if progress occurs elsewhere in the derivation.
+The ordinary eigenparameter checks handle the logical rules.
+Object-assumption cut is obtained by replacing each use of the assumption
+by the supplied derivation, again freshening eigenparameters.
+These are operations on fixed finite proof syntax. They do not appeal
+to an object-theory rule replacing equal terms inside a formula.
+
+\subsection{Equality paths using root replacement alone}
+
+\begin{lemma}[Equality algebra]
+\label{ctr:equality-algebra}
+Reflexivity, symmetry, and transitivity are derivable using RS and
+$\mathsf{RL}$, without $\mathsf{CC}$ or general equality transport.
+\end{lemma}
+\begin{proof}
+For a numerical term $s$ put
+\[
+             c_s:=R(Ss,0;u,v.u).
+\]
+RS gives $c_s=s$. Use one copy as the available major and another as
+$\mathsf{RL}$'s minor; the conclusion is $s=s$.
+For symmetry, an available $s=t$ and the just-derived $s=s$ give
+$t=s$ by $\mathsf{RL}$.
+For transitivity, suppose $s=t$ and $t=r$ are available or proved.
+Hypothesis use supplies an object proof when necessary. Symmetry gives
+$t=s$; apply $\mathsf{RL}$ with this major and minor $t=r$ to obtain
+$s=r$. Consequently every finite path of proved numerical equations
+can be composed, and any edge may be reversed. This path operation
+changes no proper numerical subterm.
+\end{proof}
+
+\subsection{Numerical cases before congruence}
+
+\begin{lemma}[Numerical cases]
+\label{ctr:cases}
+For any fixed Eq/$\mathsf D$ object template $A(y)$, the following rule
+is admissible without either equality rule or progress introduction:
+\[
+ \frac{\Gamma\vdash A(0)\qquad\Gamma\vdash A(Sz)}
+      {\Gamma\vdash A(t)}.
+ \tag{Cases}
+\]
+Here $z$ is fresh for the retained context, the fixed parameters of
+$A$, and the target term $t$; it may always be renamed to meet these
+conditions.
+\end{lemma}
+\begin{proof}
+Choose a bound coordinate $x$ absent from $A$. By weakening, the
+successor premise remains available under the extra assumption
+$A(0)$. Apply $\mathsf{DI}$-case with witness zero to obtain
+$\Gamma\vdash\mathsf D_{x,y}A(y)$. Eliminate this paired formula.
+Because $x$ is unused, its new internal clause is exactly
+$\mathsf Q_yA(y)$; the fresh existential parameter does not occur in
+that clause. Weaken the given base proof into the extended context and
+apply $\mathsf{QE}$ at $t$. This proves $A(t)$ there, and
+$\mathsf{DE}$ discharges the clause. There was no rewrite by an
+equality and no induction hypothesis.
+\end{proof}
+
+\subsection{Representing a numerical context through the counter}
+
+Define
+\[
+                  W(n):=R(n,0;u,v.u).
+\]
+The computations $W(0)=S0$ and $W(Sn)=n$ are instances of R0 and RS.
+In particular the latter identity is available before any general
+congruence principle has been established.
+
+\begin{lemma}[Counter representation of a fixed context]
+\label{ctr:context-representation}
+For any fixed numerical template $F(x)$, choose all new bound variables
+fresh for its passive parameters and put
+\[
+ \begin{aligned}
+  H_F(n)&:=R(n,F(0);u,v.S(F(Su))),\\
+  J_F(n)&:=W(H_F(n)).
+ \end{aligned}
+ \tag{Counter representation}
+\]
+Then the restricted calculus proves
+\[
+                         J_F(n)=F(n)
+ \tag{Representation}\label{ctr:representation-equation}
+\]
+for arbitrary numerical $n$ and arbitrary retained context. The proof
+uses numerical cases and no progress introduction.
+\end{lemma}
+\begin{proof}
+The update of $H_F$ does not contain its state variable $v$.
+Consequently R0 and RS give the following identities literally, with
+no equality substitution into an enclosing expression:
+\[
+ H_F(0)=S(F(0)),\qquad H_F(Sz)=S(F(Sz)).
+ \tag{Two computations}
+\]
+For either of these instances, write its argument as $q$, where $q=0$
+or $q=Sz$. Apply $\mathsf{CC}$ to the displayed equality using seed
+zero and the update that returns its old counter. This produces
+\[
+                 W(H_F(q))=W(S(F(q))).
+\]
+The right-hand expression has the computation equation
+$W(S(F(q)))=F(q)$. Compose the two equation paths by
+Lemma~\ref{ctr:equality-algebra}; the result is
+$J_F(q)=F(q)$. We have now supplied both premises of
+Lemma~\ref{ctr:cases} for the literal equation
+$J_F(y)=F(y)$. Cases proves
+\eqref{ctr:representation-equation} at an arbitrary $n$.
+
+Every proper-subterm change in this argument is the single, explicitly
+stated $\mathsf{CC}$ instance through $W$. The remaining equation
+compositions use root replacement. In particular one must not silently
+replace $H_F(q)$ by $S(F(q))$ under $W$ before applying
+$\mathsf{CC}$; that is precisely the congruence being justified.
+\end{proof}
+
+The displayed $J_F$ is a specialization of the successor-recursion
+compiler already present in the inspected drafts: take its initializer
+to be $F(0)$ and its step to be $h(u,z)=F(Su)$, which ignores the state.
+The additional observation here is that this specialization is proved
+correct using only root replacement and congruence in the counter.
+The general recursion compiler itself is inherited.
+
+\begin{theorem}[All numerical congruence from counter congruence]
+\label{ctr:all-congruence}
+For every fixed numerical template $F(x)$, the restricted calculus admits
+\[
+ \frac{\Gamma\mathrel{\triangleright}s=t}
+      {\Gamma\vdash F(s)=F(t)}.
+ \tag{Numerical congruence}
+\]
+\end{theorem}
+\begin{proof}
+Use the major $s=t$ in $\mathsf{CC}$ with seed $F(0)$ and update
+$S(F(Su))$. Its conclusion is $H_F(s)=H_F(t)$. A second
+$\mathsf{CC}$ instance, now for $W$, gives
+$J_F(s)=J_F(t)$. Lemma~\ref{ctr:context-representation} supplies
+$J_F(s)=F(s)$ and $J_F(t)=F(t)$. Symmetry and path composition from
+Lemma~\ref{ctr:equality-algebra} give
+\[
+                F(s)=J_F(s)=J_F(t)=F(t).
+\]
+These are equations joined at their roots. Neither the proof nor the
+statement assumes an interpretation limited to standard numerals.
+\end{proof}
+
+\begin{corollary}[Arbitrary atomic transport]
+\label{ctr:atomic-transport}
+For all fixed numerical templates $U(x),V(x)$,
+\[
+ \frac{\Gamma\mathrel{\triangleright}s=t\qquad
+       \Gamma\vdash U(s)=V(s)}
+      {\Gamma\vdash U(t)=V(t)}
+ \tag{Atomic transport}
+\]
+is admissible.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{ctr:all-congruence} gives $U(s)=U(t)$ and $V(s)=V(t)$.
+Reverse the first equality and compose only at equation roots:
+\[
+                U(t)=U(s)=V(s)=V(t).
+\]
+\end{proof}
+
+\subsection{A constant bound on inference-node overhead}
+
+Count one node for each primitive inference, including a hypothesis
+lookup, and count a proof tree with repeated subproofs repeated. In the
+explicit expansion supplied with the report, reflexivity has three
+nodes. Symmetry adds four nodes to its supplied proof, and transitivity
+adds five nodes to the sum of its two supplied proofs.
+
+Each of the zero and successor proofs of $J_F(q)=F(q)$ has eight
+nodes: a computation, one CC lifting, a second computation, and the
+five-node transitivity overhead. The cases construction consists of
+DE, DI-case, QE, one clause hypothesis lookup, and these two eight-node
+proofs. Thus $J_F(t)=F(t)$ has twenty nodes.
+
+If the supplied proof of $s=t$ has $P$ nodes, the two CC liftings have
+$P+2$ nodes, the reversed left representation has $20+4$ nodes,
+and the right representation has twenty. Two transitivity constructions
+therefore give
+\[
+                  (P+2)+(20+4)+20+5+5=P+56.
+\]
+The additional inference-node count is independent of the syntactic
+depth of the fixed numerical template $F$. Freshening binders changes
+names, not the number of inferences. This is not a constant byte-size
+or running-time bound: the proof's term and formula labels contain
+copies of $F$ and of the supplied endpoints. It is also not a constant
+bound for the subsequent compound-formula lifting. The delivered
+successor, initializer, and update-body congruence certificates each
+have 57 nodes when their supplied equality is a one-node computation.
+
+\subsection{Compound formulas and internal clauses}
+
+The following lifting pattern is inherited from the earlier
+fixed-position and atomic-transport arguments. It is included to show
+that the numerical result recovers the full logical interface, and to
+make its independence from compound induction explicit.
+
+\begin{theorem}[Full object-formula transport]
+\label{ctr:full-transport}\label{thm:atomic-transport}
+For every fixed Eq/$\mathsf D$ object template $A(w)$, the rule
+\[
+ \frac{\Gamma\mathrel{\triangleright}s=t\qquad
+       \Gamma\vdash A(s)}
+      {\Gamma\vdash A(t)}
+ \tag{Object transport}
+\]
+is admissible. Its expansion introduces no progress instances.
+\end{theorem}
+\begin{proof}
+Induct externally on the number of paired binders in $A$. The induction
+statement is uniform in all retained contexts, source terms, and passive
+parameters. For a literal equation, use
+Corollary~\ref{ctr:atomic-transport}.
+
+Suppose $A(w)=\mathsf D_{x,y}B(w,x,y)$. Rename the two bound
+variables away from $s,t$ and the retained context. Eliminate the given
+$A(s)$ at a fresh parameter $a$. The extended context retains
+\[
+                     \mathsf Q_y B(s,a,y).
+\]
+To obtain the target $\mathsf D_{x,y}B(t,x,y)$, use
+$\mathsf{DI}$-case with witness $a$ and a fresh successor parameter
+$z$. Its local object assumption is $B(t,a,0)$; hypothesis use gives
+an object proof of it. Symmetry gives $t=s$. The external induction
+hypothesis applied backwards to the smaller template $B(w,a,0)$
+therefore gives $B(s,a,0)$. Specialize the retained clause at $Sz$ to
+obtain $B(s,a,Sz)$. Apply the induction hypothesis forwards along
+$s=t$, now to $B(w,a,Sz)$, obtaining $B(t,a,Sz)$. This is exactly
+the required case-introduction premise. Close $\mathsf{DI}$-case and
+then $\mathsf{DE}$.
+
+The new parameter $z$ is absent from the retained clause, $a$, and all
+fixed matrix parameters; the eliminated witness $a$ is absent from the
+outer conclusion. Both recursive transport uses concern the strictly
+smaller object matrix $B$. This is recursion on finite external syntax,
+not an induction rule of the arithmetic. The only introductions added
+in the binder case are case introductions.
+\end{proof}
+
+\begin{proposition}[Transporting the use of an internal clause]
+\label{ctr:clause-transport}
+An available clause $\mathsf Q_yB(s,y)$, together with an available
+$s=t$, can be used with exactly the operational force of
+$\mathsf Q_yB(t,y)$: from any object proof of $B(t,0)$ one can
+obtain $B(t,r)$ for any numerical $r$.
+\end{proposition}
+\begin{proof}
+Transport the supplied base backwards along $t=s$, specialize the old
+clause at $r$, and transport the result forwards along $s=t$, using
+Theorem~\ref{ctr:full-transport} for the two object matrices.
+This statement does not add a rule proving an internal clause as an
+object formula. If an object representative is required, use
+$\mathsf D_{x,y}B(t,y)$ with unused $x$; case introduction and the
+just-described clause use construct that representative.
+\end{proof}
+
+\begin{corollary}[Exact identity-language equivalence]
+\label{ctr:exact-equivalence}
+Let $\mathcal T_{\mathrm{ctr}}$ have R0, RS, object hypothesis use,
+$\mathsf{RL}$, $\mathsf{CC}$, $\mathsf{QE}$,
+$\mathsf{DE}$, and the case and literal-equation progress introductions.
+Let $\mathcal T_{\mathrm{tr}}$ instead use unrestricted Eq/$\mathsf D$
+object transport as its equality rule, with all other numerical and
+logical syntax and rules the same. For every finite context of object
+assumptions and internal clauses, and every object formula $A$,
+\[
+ \Gamma\vdash_{\mathcal T_{\mathrm{ctr}}}A
+ \quad\Longleftrightarrow\quad
+ \Gamma\vdash_{\mathcal T_{\mathrm{tr}}}A.
+\]
+The translations are effective on finite derivations and preserve their
+end sequents literally.
+\end{corollary}
+\begin{proof}
+From right to left, translate premise derivations recursively and replace
+each unrestricted transport instance by
+Theorem~\ref{ctr:full-transport}. All other rules are copied.
+From left to right, $\mathsf{RL}$ is the unrestricted-transport instance
+with motive $w=r$. Reflexivity is derived from a computation equation
+by that same root instance. For $\mathsf{CC}$, begin with reflexivity
+$R(s,a;h)=R(s,a;h)$ and transport its left occurrence of $s$ to $t$;
+this gives $R(t,a;h)=R(s,a;h)$. Derived symmetry gives the required
+orientation. The other rules are again copied. All side conditions are
+preserved by freshening local parameters.
+\end{proof}
+
+Because this equivalence leaves the native language and all primitive
+meanings unchanged, the whole-domain bi-interpretations and actual-equality
+composite isomorphisms of $\mathcal T_{\mathrm{tr}}$ transfer to
+$\mathcal T_{\mathrm{ctr}}$. A proof of that arithmetic and logical
+bridge is supplied separately; exact sequent equivalence is not a
+substitute for stating the bridge. The present argument supplies no
+absolute lower bound on checker size and no claim of novelty outside
+the specifically inspected sources.

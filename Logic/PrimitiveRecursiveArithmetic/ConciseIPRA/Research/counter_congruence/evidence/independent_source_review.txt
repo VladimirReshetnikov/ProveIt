@@ -1,0 +1,67 @@
+INDEPENDENT SOURCE REVIEW OF THE READABLE COUNTER CHECKER
+========================================================
+Reviewed SHA-256:
+2386eda8d133072ce9193d6256e0b6792f463dabd6afac31822e5476e6729b68
+
+Verdict: no soundness defect found in the inspected source. The supporting
+independent_audit.py script passes 22 deterministic checks against this
+hash. This is an assistant source review and finite regression evidence,
+not a proof-assistant verification of all accepted JSON inputs.
+
+The source implements R0, RS, root-left replacement, counter congruence,
+QE, DE, case DI, literal-equation progress DI, and object Hyp. Internal Q
+clauses can appear as checked majors only through context membership.
+Q cannot occur as a user-requested object goal or inside object syntax.
+This matches the final theory fragment with full object Hyp; eliminating
+object Hyp is a separate inherited equivalent presentation.
+
+Scope invariant: at every check call, all free canonical leaves of its
+goal and retained context lie in the supplied free-name set. Initially
+the parsers enforce this invariant. Introductions and eliminations extend
+that set only with a checked fresh name. The check is stronger than merely
+checking occurrence in the current goal, since every already available
+name is forbidden. Subproof names cannot escape their local recursion:
+sets are extended by union and parent contexts are not mutated.
+
+The parsers convert user names to de Bruijn coordinates only inside the
+actual body of each binder. R binds its two variables only in its update;
+neither counter nor seed is in that scope. D binds y at index 0 and x at
+index 1; Q binds only its y. The parser rejects duplicate binder names.
+Shadowing an outer name is legitimate and is represented by the nearest
+matching coordinate. Substitution traverses precisely the same scopes.
+
+Every actual substitution image is closed at its own root: numerical
+parameters are represented by named free leaves; any de Bruijn indices
+inside an image refer to that image's own internal binders. RS first
+removes counter coordinate 1, then state coordinate 0, inserting a
+recursive image with the ORIGINAL update unchanged. This realizes
+simultaneous substitution without capture. The deterministic tests include
+both a successful renamed inner binder and the corresponding rejected
+naive capture, a counter/state swap, and a frozen recursive-update mutant.
+
+CC checks exact canonical equality of the whole seed/update tails. Only
+the two counter fields may differ. Alpha-renamed bound variables normalize
+to identical trees; swapping counter/state roles or changing the seed
+does not. RL changes the equation root and requires an independently
+checked equation major and the exact corresponding minor.
+
+DI parses its witness before allocating the new eigenparameter. It removes
+the existential coordinate, permits progress only if the remaining matrix
+root is literally '=', and then instantiates the universal coordinate by
+zero/eigenparameter for the hypothesis and successor/eigenparameter for
+the goal. DE proves the paired major before allocation, removes only its
+existential coordinate, and retains exactly one Q-wrapped matrix. QE
+checks the exact target opening and its zero base, requiring the Q major
+to match an actual context entry.
+
+The stored S constructor is a notation for the mathematical successor
+abbreviation. The implementation does not apply unrestricted automatic
+definitional conversion between all expanded and contracted R/S encodings.
+Equivalent aliases may require explicit R0 and equality proof steps. This
+is a completeness/serialization convention, not a new arithmetic axiom.
+
+The strict JSON grammar rejects arbitrary scalar aliases, free future
+parameters, bool-valued hypothesis indices, malformed binders and compound
+progress. Extra unused JSON object fields are inert. Physical Python
+recursion and memory limits may reject very large valid certificates;
+the written completeness claim concerns unbounded finite resources.

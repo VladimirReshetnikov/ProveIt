@@ -1,0 +1,47 @@
+ARRAY-TRUTH CERTIFICATES
+
+Each checker reads one JSON array from standard input. Its final item is
+the goal. Earlier packets [m,s,u,t] are consumed from the end. Success is
+exit status zero and exactly ACCEPT on standard output; exceptions reject.
+An unused prefix is inert. A complete proof is the consumed suffix.
+
+The inherited sorted syntax represents equality by [s,t], paired D by
+[B], and canonical closure Q by [B,B,B]. Numerical terms are scalar zero,
+unary successor, and ternary initialized scalar iteration. The inherited
+arity decoder and depth increment 5-len(node) remain unchanged. The full
+report gives the complete mathematical interpretation and rule inventory.
+
+The root context contains only [], the empty-array alias for truth 0=0.
+It does NOT contain scalar 0. Every canonical absent major is [].
+
+Every packet first verifies m by the ordinary checking routine:
+- Nonempty m selects the inherited major-premise operations. Endpoint
+  matching controls equality transport or closure use, and m*3 supplies
+  the inherited paired-elimination resource or a harmless truth alias.
+- Empty m with nonempty u supplies computation. Here s is the predecessor,
+  u the initializer, and t the update. The certified-zero normalization
+  inherited from the baseline supplies nonempty zero initializers.
+- Empty m with false-valued u introduces a unary D goal, with witness t.
+  Canonical u=0 selects equation progress; canonical u=[] selects cases.
+  Field s is unused in this branch. A truthy u selects computation instead,
+  so it cannot authorize progress for a compound matrix.
+
+The checker deliberately verifies absent majors instead of branching around
+them: [] closes immediately by the initial truth hypothesis, consuming no
+packet and allocating no parameter. A falsy scalar marker such as 0 is not
+an alternative truth major. The report proves the invariant excluding its
+successful proof in a live list-valued context.
+
+checker.py uses explicit list recognition. checker_bytes.py uses the
+inherited equivalent zero-product list predicate on JSON values.
+checker_joint.py uses the inherited exception-based generic traversal;
+malformed nonempty strings retain its fixed-runtime recursion-limit
+qualification. All variants have canonical finite-proof completeness under
+adequate resources. The readable expansion is independently executable.
+
+Generate examples and run the focused offline validation with:
+    python3 tests/verify.py
+
+No checker imports a producer, test, model search, measurement script, or
+external theorem database. Python and its JSON standard library remain the
+shared runtime excluded under the inherited comparison convention.

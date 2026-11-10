@@ -1,0 +1,145 @@
+% Inclusion fragment. Requires amsmath, amssymb, amsthm and theorem,
+% proposition/corollary environments. No private macros are used.
+
+\subsection{Counter congruence alone does not recover root replacement}
+\label{rootind:section}
+
+The two restricted equality rules are not interchangeable. The following
+counterinterpretation shows that simply deleting root replacement loses
+even the theorem $0=0$. This is a statement about the explicitly specified
+native inference system. It does not rule out every different rule,
+encoding, numerical basis, or interpretation.
+
+\begin{theorem}[Root replacement is not derivable from the remaining rules]
+\label{rootind:theorem}
+Let $\mathcal T^{-\mathsf{RL}}$ have the same terms, Eq/$\mathsf D$
+object formulas, internal $\mathsf Q$ clauses, and rules R0, RS,
+$\mathsf{Hyp}$, $\mathsf{CC}$, $\mathsf{QE}$, $\mathsf{DE}$,
+$\mathsf{DI}$-case, and $\mathsf{DI}$-progress as the counter-congruence
+calculus, but omit $\mathsf{RL}$. Do not add an unlisted reflexivity,
+equality-substitution, or other ordinary equality rule. Then
+\[
+                    \varnothing\nvdash_{\mathcal T^{-\mathsf{RL}}}0=0.
+\]
+In particular, $\mathsf{RL}$ is not admissible in this reduced system.
+\end{theorem}
+\begin{proof}
+For this syntactic nonderivability argument, interpret the native atom
+written $s=t$ by a binary predicate $E$. We are not assuming that this
+predicate is actual equality: the missing equality principles are
+precisely what the proposed reduction would have to derive.
+
+Take numerical domain $\{0,1\}$. Interpret zero as $0$ and every
+recursion expression by
+\[
+       \llbracket R(n,a;u,v.h)\rrbracket_\rho=1
+\]
+under every assignment $\rho$, independently of its counter, seed,
+update, and passive parameters. This is compatible with capture-free
+substitution and alpha-renaming. The successor abbreviation
+$Sa=R(0,a;u,v.0)$ is therefore the constant function $1$, and the
+numeral $1=S0$ denotes the domain element $1$.
+Interpret the equality-shaped atom by
+\[
+       \llbracket s=t\rrbracket_\rho\text{ is true}
+       \quad\Longleftrightarrow\quad
+       \llbracket s\rrbracket_\rho=1.
+ \tag{Predicate interpretation}
+\]
+Its right-hand term is immaterial. The equality on the right of this
+metatheoretic definition is the usual equality of the two domain elements.
+Interpret the binders and internal clauses by their ordinary meanings:
+\[
+ \begin{aligned}
+  (\mathsf Q_y B)^\circ
+    &:=B^\circ(0)\to\forall y\,B^\circ(y),\\
+  (\mathsf D_{x,y}B)^\circ
+    &:=\exists x\bigl(B^\circ(x,0)\to\forall y\,B^\circ(x,y)\bigr).
+ \end{aligned}
+\]
+These are ordinary two-valued semantics, equivalently a one-world
+intuitionistic interpretation.
+
+We check every retained primitive rule under arbitrary assignments and
+arbitrary true retained contexts.
+
+\paragraph{Computation and counter congruence.}
+Each R0 or RS axiom has an $R$ expression as the left side of its atom.
+That expression has value $1$, so the atom is true, irrespective of its
+right side. A $\mathsf{CC}$ conclusion also has an $R$ expression on
+its left and is therefore true. These rules are sound even though the
+binary predicate is not reflexive at zero.
+
+\paragraph{Hypotheses, availability, and elimination.}
+An object hypothesis is true whenever its retained context is true.
+An available major is either such a retained assumption or an already
+proved object formula, so availability preserves truth.
+For $\mathsf{QE}$, a true clause
+$B(0)\to\forall yB(y)$ and a true base $B(0)$ give its requested
+instance $B(t)$. For $\mathsf{DE}$, the true existential major supplies
+a domain element satisfying the retained closure clause. The fresh
+witness parameter can be assigned that element; its absence from the
+outer conclusion and retained context gives the ordinary soundness
+argument for existential elimination.
+
+\paragraph{Case introduction for arbitrary object matrices.}
+Fix an assignment making $\Gamma$ true, and let $b$ be the value of
+the submitted witness $t$. Freshness makes $b$ and $\Gamma$
+independent of the new successor parameter $z$. A sound premise
+\[
+        \Gamma,B(t,0)\vdash B(t,Sz)
+\]
+ensures that $B(b,0)$ implies $B(b,1)$, since $Sz$ always denotes
+$1$. The domain has just $0$ and $1$, so this implication ensures
+$B(b,0)\to\forall yB(b,y)$. Choosing $x=b$ proves the intended
+$\mathsf D$ conclusion. This verifies $\mathsf{DI}$-case without
+restricting its matrix to an equation.
+
+\paragraph{Progress introduction for literal equations.}
+Fix the passive parameters and the witness. By inspection of finite
+numerical term syntax, a term $U(y)$ has one of the following three
+value functions of the remaining coordinate $y$:
+\[
+                y\longmapsto0,\qquad
+                y\longmapsto1,\qquad
+                y\longmapsto y.
+\]
+Indeed a zero term is constant $0$; a fixed passive variable is constant
+$0$ or $1$; the distinguished variable has value $y$; and any term
+with an $R$ root, including a successor abbreviation, is constant $1$.
+For a literal equation $E(y)=(U(y)=V(y))$, its truth depends only on
+$U(y)$ by the predicate interpretation. Its truth set is consequently
+one of
+\[
+                       \varnothing,\qquad\{1\},\qquad\{0,1\}.
+\]
+In every case, truth of $E(0)$ implies truth of $E(y)$ for both domain
+elements. Thus the required closure
+$E(0)\to\forall yE(y)$ is valid for every fixed witness, even before
+using the progress premise. This proves soundness of
+$\mathsf{DI}$-progress. The restriction to a literal equation is
+essential to this verification; it is not a claim about arbitrary
+compound matrices.
+
+All primitive rules of $\mathcal T^{-\mathsf{RL}}$ are now sound.
+Induction on a finite derivation therefore preserves truth in this
+interpretation. But the atom $0=0$ is false because its left term has
+value $0$. It has no derivation from the empty context.
+
+Finally, in the full calculus RS gives
+\[
+                  R(S0,0;u,v.u)=0.
+\]
+Two copies of this computation, used as the major and minor of
+$\mathsf{RL}$, prove $0=0$. If $\mathsf{RL}$ were admissible in
+the reduced system, this three-node argument could be translated into
+it, contradicting the counterinterpretation.
+\end{proof}
+
+The conclusion is deliberately limited. Deleting $\mathsf{RL}$ destroys
+the established identity-language equivalence with the unrestricted
+transport calculus. The counterinterpretation is not asserted to be a
+model of an ordinary theory in which equality already carries its usual
+logical axioms, and it is not an impossibility theorem for all
+bi-interpretations with a different equality or domain. Importing those
+usual equality axioms silently would change the proof-checker problem.

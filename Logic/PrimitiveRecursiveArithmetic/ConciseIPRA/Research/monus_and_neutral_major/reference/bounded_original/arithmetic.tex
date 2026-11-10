@@ -1,0 +1,534 @@
+% Includable manuscript fragment for T_{B\epsilon}.
+% Prerequisites: the axioms labeled basis:b0, basis:bs, basis:erange,
+% basis:ereflect, basis:sep, basis:ei; ordinary intuitionistic equality logic.
+% Include internal_order_lemmas.tex at the indicated point or before this file.
+% Requires amsmath, amssymb, amsthm and theorem/lemma/proposition/corollary.
+\section{Recovering bounded initialization internally}
+\label{sec:internal-bounded-initialization}
+
+Write $1=S0$.  The only induction rule initially used is the contextual
+literal-equation rule \eqref{basis:ei}.  The following construction
+does not assume that all standard-model identities about the new terms
+are axioms.  Every assertion about the theory below is derived using
+its displayed computation equations, equality, intuitionistic logic,
+and the indicated instances of induction.
+
+\subsection{The inherited elementary macros}
+
+For a fixed finite body $h$, write $B_h(n,\vec p)$ for
+$B(n;u,v.h(u,v,\vec p))$.  The subscript is a fixed description, not
+an object-level function variable.  All bound variables in a displayed
+macro are renamed apart before substitution. If substituting passive
+parameters creates a different finite body description, equation induction
+on the counter identifies its iterator with the specialized old iterator:
+the seeds agree and the step follows from the body identity and congruence.
+Thus the staged first-order presentation supplies substitution coherence;
+extensional equality of independently indexed descriptions is not assumed.
+
+The tied-seed macros from the local-scopes draft give
+\begin{align*}
+ D(n,a)&:=B(n;u,v.a),& W(n)&:=B(n;u,v.u),\\
+ P(n)&:=W(D(n,n)),& Z(n)&:=D(n,0),\\
+ G(n,a)&:=P\bigl(P(B(a;u,v.D(Z(n),v)))\bigr).
+\end{align*}
+The two computation schemas prove
+\[
+ D(0,a)=Sa,\quad D(Sn,a)=a,\quad
+ W(0)=1,\quad W(Sn)=n,
+\]
+and hence
+\[
+             P(0)=0,\quad P(Sn)=n,
+             \qquad Z(0)=1,\quad Z(Sn)=0.
+ \tag{P,Z}\label{eq:ib-PZ}
+\]
+In particular successor is injective, by applying $P$ to an equality
+$Sx=Sy$.  If $Sx=0$, applying $P$ gives $x=0$, and substitution then
+gives $S0=0$, contradicting separation.  Thus every successor is nonzero.
+
+Equation induction on $a$ gives
+\[
+                       G(0,a)=0,\qquad G(Sn,a)=a.
+ \tag{Gate}\label{eq:ib-gate}
+\]
+For the first equation the update in the inner $B$ is the identity,
+so its state remains one.  For the second it is successor, so its state
+at counter $a$ is $S(Sa)$.  These are separate literal-equation inductions
+with $n$ fixed as a passive parameter.  The two outer predecessors then
+give the equations.  No coverage principle is used here.
+
+Define the fixed macro
+\[
+ L(n;u,v.h):=
+ B\bigl(Sn;r,s.G(r,h[Pr/u,s/v])\bigr).
+ \tag{L}\label{eq:ib-L}
+\]
+If the inner update is $H$, the gate equations give
+$H(0,s)=0$ and $H(Sr,s)=h(r,s)$.  Thus $B_H(0)=1$,
+$B_H(1)=0$, and the remaining steps are the desired updates.  The
+theory proves
+\[
+ L_h(0,\vec p)=0,\qquad
+ L_h(Sn,\vec p)=h(n,L_h(n,\vec p),\vec p).
+ \tag{L computation}\label{eq:ib-L-computation}
+\]
+This is still zero-start recursion.  An arbitrary initializer has
+not been smuggled into its definition.
+
+\subsection{Quantifier-free induction and coverage are derived}
+
+The equality-test axioms give, internally,
+\[
+ \epsilon(s,t)=1\ \longleftrightarrow\ s=t,
+ \qquad
+ \epsilon(s,t)=0\ \longleftrightarrow\ s\ne t.
+ \tag{Reflection}\label{eq:ib-equality-reflection}
+\]
+For the second equivalence, use the two-valued range axiom and separation
+$0\ne1$.  Thus every numerical equation is decidable, without assuming
+excluded middle for arbitrary formulas.
+
+Every fixed quantifier-free formula $A$ has a term $\chi_A$ such that
+\[
+ \chi_A=0\ \vee\ \chi_A=1,
+ \qquad A\ \longleftrightarrow\ \chi_A=1.
+ \tag{Characteristic}\label{eq:ib-characteristic}
+\]
+This is an external recursion on finite formula syntax.  Use
+$\epsilon(s,t)$ for an equality and zero for falsity.  On Boolean inputs,
+$Z$ is negation and $G(b,c)$ is conjunction.  Define disjunction by
+$Z(G(Zb,Zc))$ and implication by the Boolean expression for
+$\neg b\vee c$.  Each formula is decidable by this construction, so
+the implication case is valid intuitionistically: for decidable $A$,
+$A\to B$ is equivalent to $\neg A\vee B$.  Truth tables are checked
+by the two Boolean cases; the gate identities apply to $0$ and $1$.
+
+Consequently contextual quantifier-free induction is admissible.
+Translate its base and step to the literal equation $\chi_A=1$, apply
+\eqref{basis:ei}, and translate back using
+\eqref{eq:ib-characteristic}.  Arbitrary retained hypotheses remain
+unchanged.  This derivation precedes all order and bounded-arithmetic
+arguments below.
+
+Apply this derived rule to the quantifier-free formula
+\[
+                            x=0\ \vee\ x=S(Px).
+\]
+The base is immediate; the successor case follows from $P(Sx)=x$.
+Thus the theory proves functional zero/successor coverage and hence
+\[
+                        x=0\ \vee\ \exists y\,x=Sy.
+ \tag{Derived coverage}\label{eq:ib-coverage}
+\]
+Coverage is therefore not an additional axiom.
+
+\subsection{Order and bounded arithmetic}
+
+For a Boolean $b$, let $J(a,b):=B(Zb;u,v.a)$, so
+$J(a,0)=a$ and $J(a,1)=Sa$.  Define
+\begin{align*}
+ H(n,y)&:=L(n;r,v.J(v,\epsilon(r,y))),\\
+ d(x,y)&:=L(x;u,v.J(v,H(Su,y))),\\
+ \operatorname{mn}(x,y)&:=d(x,d(x,y)),\\
+ \operatorname{db}(n)&:=L(n;u,v.S(Sv)),\\
+ \operatorname{ad}_b(a,c)&:=
+ d\bigl(d(\operatorname{db}(b),d(b,a)),d(b,c)\bigr).
+\end{align*}
+All five are terms in the original finite-description language.
+Use $x\leq y$ as the quantifier-free abbreviation $d(x,y)=0$.
+The elementary order lemma proves that this is a discrete linear order,
+that $d$ is its truncated difference, and that $\operatorname{mn}$
+is its minimum.  It also proves, entirely by quantifier-free induction,
+the following bounded-addition identities:
+\begin{align}
+ a\leq b&\ \Longrightarrow\ \operatorname{ad}_b(a,0)=a,
+ \label{eq:ib-add0}\\
+ a,Sc\leq b&\ \Longrightarrow\
+ \operatorname{ad}_b(a,Sc)=S\operatorname{ad}_b(a,c),
+ \label{eq:ib-addS}\\
+ a,c\leq b&\ \Longrightarrow\
+ \operatorname{ad}_b(a,c)\leq\operatorname{db}(b),
+ \label{eq:ib-addbound}\\
+ \operatorname{ad}_b(b,b)&=\operatorname{db}(b).
+ \label{eq:ib-adddiag}
+\end{align}
+The function $c\mapsto\operatorname{ad}_b(a,c)$ is nondecreasing on
+$c\leq b$, when $a\leq b$.  Only these bounded identities are used;
+there is no uncharged total binary addition term in the source language.
+The detailed inductions are given in Appendix~\ref{sec:internal-order-foundations}.
+
+Define
+\[
+ \operatorname{sel}_b(c,a,e):=
+ \operatorname{ad}_b\bigl(G(Zc,a),G(c,e)\bigr).
+\]
+If $a,e\leq b$, coverage and the gate equations show that this returns
+$a$ at $c=0$ and $e$ at every successor control.  At most one summand
+is nonzero, so the result is again at most $b$.
+
+For any fixed earlier update $h$, define the clipped initialized recursor
+\[
+ R_b(n,a;u,v.h):=
+ L\bigl(Sn;r,s.
+ \operatorname{sel}_b\bigl(r,\operatorname{mn}(a,b),
+        \operatorname{mn}(h[Pr/u,s/v],b)\bigr)\bigr).
+ \tag{Clipped recursion}\label{eq:ib-clipped-recursion}
+\]
+The gate, minimum, and $L$ equations give
+\begin{align}
+ R_b(0,a;h)&=\operatorname{mn}(a,b),\label{eq:ib-R0}\\
+ R_b(Sn,a;h)&=
+ \operatorname{mn}\bigl(h(n,R_b(n,a;h)),b\bigr).
+ \label{eq:ib-RS}
+\end{align}
+Quantifier-free induction gives $R_b(n,a;h)\leq b$ for every counter.
+The cap $b$ is a passive parameter throughout the recursion.
+This supplies arbitrary initialization whenever an independent cap
+has first been fixed.  It is compatible with the one-coordinate growth
+obstruction: the output is bounded in the cap coordinate.
+
+\section{A compiler with internal bounds and cap coherence}
+\label{sec:internal-compiler}
+
+Fix the usual finite primitive-recursive descriptions built from zero,
+successor, projections, composition, and primitive recursion.  The
+following theorem is an external construction on descriptions, producing
+finite source terms and finite source proofs.  It does not add a uniform
+evaluation function for arbitrary description codes.
+
+\begin{theorem}[Internal bounded realization]
+\label{thm:internal-bounded-realization}
+For every fixed $k$-ary primitive-recursive description $f$, one can
+construct source terms
+\[
+                     \tau_f(b,x_1,\ldots,x_k),\qquad M_f(b)
+\]
+and proofs in $T_{B\epsilon}$ with the following properties.
+\begin{enumerate}
+\item $M_f$ is nondecreasing and $b\leq M_f(b)$.
+\item The bound $\tau_f(b,\vec x)\leq M_f(b)$ holds for all inputs,
+      whether or not the inputs are bounded by $b$.
+\item If every $x_i\leq b$ and every $x_i\leq c$, then
+      $\tau_f(b,\vec x)=\tau_f(c,\vec x)$.
+\item The finite-case graphs built from these terms satisfy the defining
+      equations of the description $f$, as proved below.
+\end{enumerate}
+All comparisons are the quantifier-free source abbreviations just
+defined.  The construction produces proofs on the whole domain,
+not just correctness on standard numerals.
+\end{theorem}
+
+\begin{proof}
+We construct the first three items by induction on the fixed description.
+The fourth will then follow from the actual defining formulas.
+
+\paragraph{Initial descriptions.}
+For zero use $\tau_0=0$; for a projection use
+$\tau_{\pi_i}(b,\vec x)=\operatorname{mn}(x_i,b)$; for successor use
+$\tau_S(b,x)=S\operatorname{mn}(x,b)$.  The common bound $M(b)=Sb$
+works.  The minimum identities prove bounds and coherence immediately.
+
+\paragraph{Composition.}
+Suppose $f(\vec x)=h(g_1(\vec x),\ldots,g_m(\vec x))$.
+Write $G_i=M_{g_i}$ and $H=M_h$.  Put
+\[
+ Q=G_1\circ\cdots\circ G_m,
+ \qquad M_f=H\circ Q,
+\]
+with $Q$ the identity if $m=0$.  Since all $G_i$ are nondecreasing
+and inflationary, $G_i(b)\leq Q(b)$ for each $i$.
+Define
+\[
+ \tau_f(b,\vec x)=
+ \tau_h\bigl(Q(b),\tau_{g_1}(b,\vec x),\ldots,
+                         \tau_{g_m}(b,\vec x)\bigr).
+\]
+The global bound follows from the bound for $\tau_h$.  For coherence,
+the inner values agree at any two input caps by their induction
+hypotheses.  They are bounded by both $Q(b)$ and $Q(c)$; applying
+coherence for $h$ proves the result.  Monotonicity and inflationarity
+of $M_f$ follow by composition.
+
+\paragraph{Primitive recursion and its majorant.}
+Suppose
+\[
+ f(0,\vec x)=g(\vec x),\qquad
+ f(Sn,\vec x)=h(n,f(n,\vec x),\vec x).
+\]
+Let $G=M_g$, $H=M_h$, and put
+\[
+                      F=H\circ G\circ S.
+\]
+This is a source unary term with internal proofs of monotonicity and
+$Sz\leq F(z)$.  Let
+\[
+ I_F(t):=L(t;u,v.F(v)),\qquad
+ C_b:=I_F(S\operatorname{db}(b)),\qquad M_f(b):=C_b.
+ \tag{Majorant}\label{eq:ib-majorant}
+\]
+Equation induction gives $I_F(0)=0$, $I_F(St)=F(I_F(t))$,
+and $t\leq I_F(t)$.  Its monotonicity is a quantifier-free induction
+using order discreteness: if $s\leq St$, either $s=St$ or $s\leq t$.
+Consequently $b\mapsto C_b$ is nondecreasing and inflationary.
+This construction uses only successor, composition, and zero-start
+iteration for its majorants.
+
+For $j\leq b$, use the following actual source term for the stage bound:
+\[
+                 K_b(j):=I_F\bigl(S\operatorname{ad}_b(b,j)\bigr).
+ \tag{Stage bound}\label{eq:ib-stage-bound}
+\]
+The bounded-addition identities prove
+\begin{align}
+ b,G(b)&\leq K_b(0),\label{eq:ib-Kbase}\\
+ Sj\leq b&\ \Longrightarrow\ K_b(Sj)=F(K_b(j)),
+ \label{eq:ib-Kstep}\\
+ j\leq b&\ \Longrightarrow\ b\leq K_b(j)\leq C_b.
+ \label{eq:ib-Kcap}
+\end{align}
+For example, $K_b(0)=I_F(Sb)=F(I_F(b))\geq G(b)$ because
+$I_F(b)\geq b$, $G$ is nondecreasing, and $H$ is inflationary.
+The upper bound uses $\operatorname{ad}_b(b,j)\leq\operatorname{db}(b)$.
+Also $H(z)\leq F(z)$, by inflationarity of $G$ and monotonicity of $H$.
+
+Write $n_b=\operatorname{mn}(n,b)$ and
+$\vec x_b=(\operatorname{mn}(x_i,b))_i$.  Define
+\[
+ \tau_f(b,n,\vec x):=
+ R_{C_b}\bigl(n_b,\tau_g(b,\vec x_b);
+       u,v.\tau_h(C_b,u,v,\vec x_b)\bigr).
+ \tag{Compiled recursion}\label{eq:ib-compiled-recursion}
+\]
+Its global bound is immediate from the clipped-recursion bound.
+
+\paragraph{No clipping on bounded inputs.}
+Fix passive parameters $\vec x\leq b$ and let
+\[
+ r_b(j):=R_{C_b}\bigl(j,\tau_g(b,\vec x);
+                u,v.\tau_h(C_b,u,v,\vec x)\bigr).
+\]
+We prove by quantifier-free induction on $j$ that
+\[
+                       j\leq b\ \longrightarrow\ r_b(j)\leq K_b(j).
+ \tag{Invariant}\label{eq:ib-growth-invariant}
+\]
+At zero, $\tau_g(b,\vec x)\leq G(b)\leq K_b(0)\leq C_b$,
+so the seed is not clipped.  For the step assume $Sj\leq b$.
+Then the induction hypothesis applies at $j$; all arguments
+$j,r_b(j),\vec x$ of the step function are bounded by $K_b(j)$,
+as well as by $C_b$.  Coherence for the already constructed description
+$h$ gives
+\[
+ \tau_h(C_b,j,r_b(j),\vec x)
+ =\tau_h(K_b(j),j,r_b(j),\vec x)
+ \leq H(K_b(j))\leq F(K_b(j))=K_b(Sj)\leq C_b.
+\]
+Thus its value is not clipped and the invariant follows.  The same
+argument establishes the actual untruncated step identity
+\[
+ Sj\leq b\ \Longrightarrow\
+ r_b(Sj)=\tau_h(C_b,j,r_b(j),\vec x).
+ \tag{Unclipped step}\label{eq:ib-unclipped-step}
+\]
+The matrix of the induction is quantifier free, and the input cap and
+all passive parameters remain fixed throughout it.
+
+\paragraph{Coherence between two arbitrary caps.}
+Fix $b,c$ and inputs $n,\vec x$ bounded by both.  After the minimum
+identities remove their input clipping, compare the two runs $r_b,r_c$.
+Quantifier-free induction on $j$ proves
+\[
+             (j\leq b\wedge j\leq c)\ \longrightarrow\ r_b(j)=r_c(j).
+ \tag{Two-cap invariant}\label{eq:ib-two-cap-invariant}
+\]
+The base uses coherence for $g$ and the already proved absence of seed
+clipping.  If $Sj\leq b,c$, the two states at $j$ are equal by the
+induction hypothesis and bounded by both $C_b,C_c$.  The other step
+arguments are bounded by both caps too.  Coherence for $h$ equates
+the two raw step values.  Formula~\eqref{eq:ib-unclipped-step}
+removes their clipping, giving the successor equality.  At $j=n$
+this is exactly the required coherence of $\tau_f$.
+No induction on a universally quantified formula has occurred:
+$b,c,n,\vec x$ are fixed parameters, and both displayed invariant
+matrices are quantifier free.
+
+Every recursive step body in this construction is the already compiled
+original-language term $\tau_h$, inlined before it is inserted into $L$
+or $R_b$. No recursion schema is extended for free to an opaque function
+adjoined later by a graph definition. This distinction prevents a
+conservative-definition argument from hiding a stronger recursion principle.
+
+This completes the construction of the terms and internal proofs.
+\end{proof}
+
+\section{Function graphs and preservation of induction}
+\label{sec:internal-function-graphs}
+
+For a nonempty tuple $\vec x=(x_1,\ldots,x_k)$ let
+\[
+ C_i(\vec x):=
+ \bigwedge_{j<i}x_j<x_i\ \wedge\
+ \bigwedge_{j>i}x_j\leq x_i.
+\]
+This says that coordinate $i$ is the first largest one.  Discrete
+linearity proves that these fixed finitely many quantifier-free cases
+are exhaustive and disjoint.  Define
+\[
+ \Phi_f(\vec x,z):=
+ \bigvee_{i=1}^{k}
+ \bigl(C_i(\vec x)\wedge z=\tau_f(x_i,\vec x)\bigr).
+ \tag{Graph}\label{eq:ib-graph}
+\]
+For a nullary description use $z=\tau_f(0)$.
+
+\paragraph{A concrete example: binary addition.}
+The bounded-addition term already illustrates the method without the full compiler. Its total single-valued graph is
+\[
+ \Phi_+(x,y,z):=
+ \bigl(y\leq x\wedge z=\operatorname{ad}_x(x,y)\bigr)
+ \ \vee\
+ \bigl(x<y\wedge z=\operatorname{ad}_y(x,y)\bigr).
+\]
+On either case the selected cap bounds both arguments. The bounded-addition identities and coherence under changing a valid cap give the usual addition equations. Each possible output term is bounded by twice one input, while addition itself is not bounded by any unary function of one input. Thus graph interpretation succeeds exactly where a single-term definition is obstructed.
+
+\begin{lemma}[Totality, uniqueness, and computation]
+\label{lem:internal-graph-computation}
+The theory proves that every $\Phi_f$ is total and single-valued.
+In the definitional extension by its uniquely specified function $f^*$,
+the defining composition and primitive-recursion equations of the
+description $f$ hold.  The extension admits quantifier-free induction
+for formulas containing finitely many of these defined functions.
+\end{lemma}
+
+\begin{proof}
+Exhaustiveness provides a displayed value term on each case, proving
+existence.  Disjointness proves uniqueness.  Moreover, for every
+source cap $b$ bounding the arguments, coherence proves
+\[
+                              f^*(\vec x)=\tau_f(b,\vec x).
+ \tag{Cap realization}\label{eq:ib-cap-realization}
+\]
+One proves this by the finite graph cases: on case $i$, both $b$ and
+$x_i$ bound all arguments, so the corresponding values are equal.
+
+Initial equations follow from the compiled initial descriptions.
+For composition, use any cap $b$ bounding the common input tuple.
+The compiled inner values are bounded by $Q(b)$, so applying
+\eqref{eq:ib-cap-realization} at $Q(b)$ to the outer function proves
+the composition equation directly from its compiler definition.
+
+For recursion at counter zero, choose a graph case whose cap bounds
+$0,\vec x$.  The seed bound prevents clipping, so the value is
+$\tau_g(b,\vec x)=g^*(\vec x)$.  At a successor counter, choose a
+case whose cap $b$ bounds $Sn,\vec x$.  Then $n\leq b$,
+the unclipped-step identity applies, and
+\eqref{eq:ib-cap-realization} identifies the previous state with
+$f^*(n,\vec x)$.  All step arguments are bounded by $C_b$; the same
+cap realization for $h$ identifies the update with
+$h^*(n,f^*(n,\vec x),\vec x)$.  This proves the recursion equations.
+
+It remains to justify the induction claim, rather than merely invoke
+conservativity of definitional extensions.  Every occurrence of a
+defined function has a graph given by finitely many quantifier-free
+cases and explicit source value terms.  By external induction on a
+finite term, it therefore has a finite family of pairs
+$(A_j,t_j)$, with source quantifier-free guards $A_j$ and source
+terms $t_j$, such that the guards cover all inputs and the term equals
+$t_j$ on guard $A_j$.  At a composition of terms take the finite
+Cartesian product of the argument cases and then apply the finitely
+many cases of the outer function.  This introduces no object-language
+existential quantifier.  Guards need not be disjoint after expansion;
+their associated values agree on every overlap.
+
+For a quantifier-free formula involving defined functions, take a
+common finite refinement of the cases of all its terms.  On each
+guard replace its terms by their source values and retain its actual
+intuitionistic connectives.  The finite disjunction of these guarded
+source formulas is quantifier free and is provably equivalent to the
+original formula.  Covering cases justify the equivalence also for
+implication and negation.  Applying source quantifier-free induction
+to this equivalent formula transfers induction to the expanded
+formula.  This is the essential finite-case step: an arbitrary
+existential graph translation would not suffice.
+\end{proof}
+
+\section{Whole-domain bi-interpretability}
+\label{sec:internal-biinterpretability}
+
+\begin{theorem}[Arithmetic equivalence]
+\label{thm:internal-biinterpretability}
+The explicitly axiomatized theory $T_{B\epsilon}$ and full first-order
+intuitionistic primitive recursive arithmetic are bi-interpretable.
+Both interpretations use the whole numerical domain and actual
+equality.  Their composite definable isomorphisms are identity maps.
+In particular the theories are equiconsistent, and neither an appeal
+to standard-model agreement nor induction on quantified matrices is
+needed for this conclusion.
+\end{theorem}
+
+\begin{proof}
+\paragraph{Interpretation in iPRA.}
+Interpret $0,S$ ordinarily and $\epsilon$ as iPRA's primitive-recursive
+equality characteristic.  Translate every fixed staged $B_h$ symbol
+by primitive recursion with initial value $S h(0,0,\vec p)$ and update
+$h(n,v,\vec p)$, first translating its earlier-stage body.  The two
+computation equations become defining primitive-recursion equations.
+The equality-test, separation, and contextual equation-induction
+principles hold in iPRA.  Logical connectives, quantifiers, and genuine
+falsity retain their ordinary intuitionistic meanings.
+
+\paragraph{Interpretation of iPRA in the source.}
+Interpret each fixed primitive-recursive function description by its
+total unique graph $\Phi_f$ and use ordinary relational interpretation
+of function terms, or equivalently work in the conservative
+definitional extension by the functions $f^*$.  The graph computation
+lemma proves every defining equation.  The source predecessor and
+separation prove the successor boundary laws.  The finite-case
+quantifier-free elimination in that lemma proves every translated
+iPRA induction instance.  Thus all axioms and inference rules of
+full iPRA are interpreted, with their intuitionistic logic unchanged.
+
+\paragraph{The composite on the iPRA side.}
+An externally fixed primitive-recursive description is uniquely
+determined by its initial and step equations.  External induction on
+its finite description, with ordinary quantifier-free induction on
+the recursion counter at each recursion node, proves in iPRA that
+its composite interpretation equals the original function.  The
+necessary graph functions can be treated in their conservative
+definitional extensions; finite-case elimination supplies any needed
+induction instances.  Hence the identity on the domain preserves
+every primitive-recursive function and actual equality.
+
+\paragraph{The composite on the source side.}
+Proceed by external induction on the finite stage of a source
+description.  The ordinary $0,S$ operations are preserved.
+The interpreted equality characteristic and the original $\epsilon$
+are both Boolean characteristics of actual equality; their range and
+reflection properties prove that they agree by the two Boolean cases.
+For a fixed $B_h$, the earlier-stage induction hypothesis identifies
+the interpreted update with its original source body $h$.  Both the
+original function and its composite satisfy
+\eqref{basis:b0} and \eqref{basis:bs} with that same body.  Induction
+on the equation asserting their equality proves recurrence uniqueness
+and identifies them at every counter and every passive parameter.
+If the composite is expressed by defined graph functions, the
+finite-case elimination lemma again legitimizes this induction in
+the original theory.  Thus the identity map preserves every source
+function symbol too.
+
+Since all numerical operations and equality are preserved, external
+induction on arbitrary formula syntax proves preservation of all
+logical formulas under both composites.  Quantifiers range over the
+same whole domain.  This establishes the two identity definable
+isomorphisms and the claimed full bi-interpretation.  Genuine falsity
+is preserved in both directions, giving equiconsistency.
+\end{proof}
+
+\paragraph{Status and size.}
+This is a written mathematical construction with explicit induction
+invariants and a finite-description compiler.  It is not a Lean or
+Rocq formalization.  It establishes a different arithmetic basis;
+it does not establish that a complete proof checker for this basis is
+smaller than the current compact Choice-DI implementations.  The
+equality-test axioms, ordinary logical rules, and all validation code
+must be charged in any implementation comparison.
