@@ -1,0 +1,3 @@
+# Independent sign16 natural V-lift prelaunch
+
+Checker session 72028 exited 0. It checks the proposed natural representative for the exact deleted V expression under staged seed zero, represented ports, beta positivity and MC/MF bounds; half-window and sign-lemma audits/routes, point union with two extra overlays, controls and no-Lean preflight passed. The sign/window ancestry includes an uncaptured earlier numeric outer exit. Union/inherited surveys are point-in-time and not replayed postflight; direct guards and output overlays are rechecked. Lean must still verify the candidate; residual transfers and equivalence remain separate.
