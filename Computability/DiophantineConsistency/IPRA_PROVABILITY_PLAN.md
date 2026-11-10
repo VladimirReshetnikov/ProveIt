@@ -1587,6 +1587,10 @@ A [second radix-runs retry](research/nine-sharing-sign17-mc-radix-runs-retry02-c
 checks that symbolic lowPort equals the six radix runs. Its replayed core has
 one warning and the audit records an object-pin correction; byte composition
 and file binding remain separate.
+An [external MC block layout](research/nine-sharing-sign17-mc-block-layout/README.md),
+[independently reviewed](reviews/nine-sharing-sign17-mc-block-layout-independent/README.md),
+reconstructs the pinned 11,815-byte snapshot in 252 blocks from radix digits.
+It is Python/filesystem evidence, not a Lean whole-port or file theorem.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
