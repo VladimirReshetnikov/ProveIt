@@ -1,0 +1,3 @@
+# Independent sign21 full coefficient and lower-bound terminal audit
+
+Independent checker session 57251 exited 0 against author outer session 89132 (exit 0). All seven stages and postflight succeeded. Lean proves full seed axis fourteenth coefficient one at arbitrary integer ports and `14 ≤ (Sign21AbstractExpression.expression p).toPolynomial.totalDegree`. Nine fallback-tactic and one unused-simp warning occurred, with no `sorryAx`; reports list standard Lean metatheory axioms or subsets. Source, objects, guards, overlays and provider were verified. A separate upper bound exists, but no combined exact equality or external JSON/Jones/PDF binding follows from this packet alone.

@@ -986,6 +986,12 @@ client](research/nine-sharing-sign21-leading-coeff-check/README.md) checks the
 leading septic row and axis identity, diagonal degree nonincrease and other
 residuals' weighted degree at most six, with nine fallback warnings. The
 coefficient and lower bound remain separate.
+A [full coefficient and lower-bound client](research/nine-sharing-sign21-full-coeff-check/README.md),
+[independently audited](reviews/nine-sharing-sign21-full-coeff-terminal-independent/README.md),
+checks that the seed axis degree-fourteen coefficient is one and proves
+`14 ≤ toPolynomial.totalDegree` for the abstract expression at arbitrary
+integer ports. It records ten tactic warnings. A combined equality theorem and
+external byte binding remain separate.
 A [20-witness degree-20 candidate](research/nine-sharing-sign20-degree20-e-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign20-degree20-e-independent/README.md),
 eliminates E by a natural product and has exact external fixed-input degree 20
