@@ -920,7 +920,10 @@ with one unused-variable warning. A [residual-transfer client](research/nine-sha
 checks all 12 rows with 42 linter warnings. A [pointwise zero bridge](research/nine-sharing-sign21-zero-assembly-check/README.md),
 [independently audited](reviews/nine-sharing-sign21-zero-assembly-terminal-independent/README.md),
 now checks both directions along the natural normalized-S lift and drop. The
-existential composition and iPRA endpoint remain separate.
+existential composition is checked by a [same-input client](research/nine-sharing-sign21-seed-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign21-seed-iff-terminal-independent/README.md),
+for arbitrary symbolic ports. The direct expression and iPRA endpoint remain
+separate.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
