@@ -1644,6 +1644,10 @@ An [external MF source-port block layout](research/nine-sharing-sign17-mf-block-
 [independently reviewed](reviews/nine-sharing-sign17-mf-block-layout-independent/README.md),
 reconstructs its pinned 11,815-byte snapshot from 2,012 radix digits in 252
 blocks. This is external evidence, not a Lean whole-port or file theorem.
+A [symbolic MF radix-digit attempt](research/nine-sharing-sign17-mf-radix-digits-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-mf-radix-digits-terminal-independent/README.md),
+passed fifteen prerequisites but failed the final digit theorem on recursion
+depth and arithmetic normalization; no object or postflight was produced.
 A [generic block-composition attempt](research/nine-sharing-sign17-mc-compose-core-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mc-compose-core-terminal-independent/README.md),
 passed eighteen prerequisites but failed the final flatten-tail induction;
