@@ -1453,6 +1453,11 @@ A [multivariate lower-bound attempt](research/nine-sharing-sign17-axis-degree-lo
 [independently audited](reviews/nine-sharing-sign17-axis-degree-lower-failure-independent/README.md),
 passed twelve stages but failed the axis variable case in the next binding
 stage; no binding or lower-bound object or postflight was produced.
+A [case-split retry](research/nine-sharing-sign17-axis-degree-lower-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-axis-degree-lower-retry-terminal-independent/README.md),
+checks the actual abstract Fin17 expression has total degree at least 96 when
+`p 0 ≠ 0`. Replayed stages have 15 linter warnings and the console label is
+stale; exact-degree union and current-port specialization remain separate.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
