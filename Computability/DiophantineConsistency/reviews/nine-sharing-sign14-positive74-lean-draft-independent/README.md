@@ -1,0 +1,5 @@
+# Independent positive74 Lean syntax and transport-plan review
+
+PASS for source structure. The checker independently parses all 65 sequentially defined live binary nodes in nine source modules and expands the five roots against the audited positive-coordinate external AST. It verifies the `u[1..14]` to `Fin 14` indices `0..13`, port order beta/K0/MC/MF to `0..3`, topological references, exact five-square left association and liveness of every node.
+
+The proposed ring identity evaluates the positive expression at `v+1` and compares it with the natural-coordinate 86 expression at `v`; this orientation matches the audited external substitution. A model-level `positiveShift` step, all five row lemmas, bridge/endpoints and affine degree preservation still require Lean proofs. In particular, the external coordinate bijection and Python AST check do not themselves establish the corresponding theorem in every IΣ₁ model or a Lean JSON/PDF binding. No issue was found in the source-only route, but its 10 modules and proposed transport have not been elaborated or kernel checked.
