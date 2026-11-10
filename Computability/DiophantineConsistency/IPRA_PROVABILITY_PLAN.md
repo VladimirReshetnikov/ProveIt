@@ -1099,7 +1099,11 @@ checks that hypothesis and the same-input equivalence for the current ports;
 the iPRA endpoint remains separate. An [expression-evaluation client](research/nine-sharing-sign19-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign19-expression-eval-terminal-independent/README.md),
 checks abstract and current-port symbolic expressions and their evaluation
-identities; it does not bind those expressions to external JSON.
+identities. A [direct expression equivalence](research/nine-sharing-sign19-expression-equivalence-check/README.md),
+[independently audited](reviews/nine-sharing-sign19-expression-equivalence-terminal-independent/README.md),
+checks equivalence of current-port Fin19 and Fin20 zero existence in the
+relevant models, with one warning. These do not bind the expressions to
+external JSON or supply an iPRA endpoint.
 A [local Nt divisibility obstruction](research/nine-sharing-sign26-nt-divisibility-local-obstruction/README.md),
 [independently audited](reviews/nine-sharing-sign26-nt-divisibility-independent/README.md),
 shows that dropping Nt and its sole v4 coordinate loses a condition in a
