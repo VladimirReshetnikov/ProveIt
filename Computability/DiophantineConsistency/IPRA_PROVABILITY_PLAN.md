@@ -1420,6 +1420,13 @@ constructs a 98-gate binary arithmetic DAG for the JSON candidate by sharing
 exact ordered subtrees, including five squares and their sum. This is an upper
 bound under the stated free-leaf convention, not a Lean count or minimality
 proof; the JSON-to-Lean binding remains separate.
+A [95-gate external sign14 candidate](research/nine-sharing-sign14-95gate-candidate/README.md),
+[independently audited](reviews/nine-sharing-sign14-95gate-candidate-independent/README.md),
+uses two exact integer-ring rewrites to reduce the earlier 98-gate structural
+circuit to 38 additions, 17 subtractions and 40 multiplications. The
+count is an upper bound under the same free-leaf, exact-sharing convention.
+Lean equivalence, endpoint and degree transfer for this new candidate remain
+to be proved; external file and PDF bindings remain separate.
 A [compact prefix transcription](research/nine-sharing-sign14-prefix-formula/README.md),
 [independently audited](reviews/nine-sharing-sign14-prefix-formula-independent/README.md),
 encodes the five external seed residuals in five small ASCII files and checks
