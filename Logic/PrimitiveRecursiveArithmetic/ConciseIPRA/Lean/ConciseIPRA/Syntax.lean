@@ -103,10 +103,10 @@ namespace Fm
 
 variable {T : ℕ → Type} [Syn T] {n m k : ℕ}
 
-@[inherit_doc] scoped infix:50 " ≐ " => Fm.eq
-@[inherit_doc] scoped infixr:35 " ⋏ " => Fm.and
-@[inherit_doc] scoped infixr:30 " ⋎ " => Fm.or
-@[inherit_doc] scoped infixr:25 " ⟶ " => Fm.imp
+scoped infix:50 " ≐ " => Fm.eq
+scoped infixr:35 " ⋏ " => Fm.and
+scoped infixr:30 " ⋎ " => Fm.or
+scoped infixr:25 " ⟶ " => Fm.imp
 
 /-- Simultaneous substitution in a formula. -/
 def subst : {n m : ℕ} → Fm T n → (Fin n → T m) → Fm T m
