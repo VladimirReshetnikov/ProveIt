@@ -1,0 +1,49 @@
+VERIFICATION AND COMPLETION STATUS
+=================================
+
+Mathematics:
+  Complete metamathematical proof, with consistency and representation
+  assumptions stated. In ordinary mathematics PA consistency follows from
+  its standard natural-number model. The argument does not assume that PA
+  proves its own consistency.
+
+Sources:
+  Relevant ProveIt, pinned Mathlib, and pinned Foundation files were fetched
+  using the GitHub connector and read. Exact revisions are recorded.
+  This was source inspection, not a fresh transitive kernel-axiom audit.
+
+Lean:
+  Statement.lean: concrete definitions and formal goals; no main theorem
+  assertion. Correctness, functionality, and proof-search obligations are
+  named explicitly.
+
+  ProofCore.lean: all displayed proofs are filled in, conditional on explicit
+  interface fields; no PA-specific interface instance is supplied.
+
+  MathlibAssembly.lean: all displayed proofs are filled in, conditional on
+  an arithmetic bridge and ordinary partial-recursive proof search. The
+  existing fixed_point₂ theorem supplies self-reference.
+
+  No axiom declarations or admitted proof terms were inserted. This does
+  not make the conditional files an unconditional proof of the PA theorem.
+
+  No local Lean compilation was performed: the environment had no Lean or
+  Lake executable. In particular, no claim of successful elaboration or
+  successful #print axioms output is made.
+
+PDF:
+  Built locally with pdfLaTeX. See build logs in the authoring environment;
+  the archive contains the final source and PDF rather than transient TeX
+  auxiliaries. The PDF was inspected for rendering and text extraction.
+
+Remaining concrete formalization:
+  1. Prove partial recursiveness of universalEval and the standard semantics
+     of universalGraph/its numeral instances.
+  2. Prove internal functionality for the chosen deterministic interpreter.
+     code_uniq in the inspected Foundation source is commented out.
+  3. Prove the uniform computability of the sentence-code map and implement
+     effective proof search, with its success and completeness properties.
+  4. Instantiate consistency, finite-computation verification, and model
+     existence from Foundation's soundness/completeness results.
+  5. Instantiate MathlibAssembly and derive FullySpecifiedMainClaim.
+  6. Compile serially and audit the final theorem's axioms.

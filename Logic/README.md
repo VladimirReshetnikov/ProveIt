@@ -33,6 +33,11 @@
   Wolfram/Meredith/Sheffer/Huntington Boolean-algebra certificates.
 - [`Interpretability/PAHF/`](Interpretability/PAHF/) proves the deductive
   bi-interpretation of PA with finite-generation hereditary finite set theory.
+- [`PeanoArithmetic/FlexibleOutput/`](PeanoArithmetic/FlexibleOutput/) holds a
+  proposed theorem, its paper proof and a conditional Lean scaffold: a
+  divergent program whose halting on input 0 with output `n` holds in some
+  model of PA, for every standard `n`. The concrete PA instance is not yet
+  proved in Lean.
 - [`PeanoArithmetic/ListCoding/`](PeanoArithmetic/ListCoding/) gives independent
   Lean and Rocq/Coq natural-number codings of finite lists and genuine PA
   formulae for twenty-five list and number-theoretic predicates,

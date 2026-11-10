@@ -1,0 +1,145 @@
+MATHEMATICAL AUDIT: A PARTIAL COMPUTABLE PROGRAM WITH ARBITRARY POSSIBLE OUTPUT
+
+Scope and notation
+------------------
+The intended function is partial: f : N ->. N. A fixed ordinary program e
+computes f, and H_e(x,y) is its canonical arithmetical halting-output formula.
+The desired assertion is
+
+  exists e, [for all standard x,y, y is not in eval(e,x)] and
+            [for every standard n, some M |= PA satisfies H_e(0,n)].
+
+The metatheory assumes Con(PA). In ordinary mathematical foundations this
+follows from the standard model of PA. Only consistency is used in the
+diagonal argument. No Sigma_1-soundness or stronger arithmetic soundness
+assumption is needed.
+
+Construction
+------------
+Fix an effective enumeration/checker of finite PA proofs, including the
+recursive induction schema. Given a code a, let Search(a) be the partial
+computation that enumerates all pairs (proof,n), in one effective order,
+and stops with output n on the first verified PA proof of not H_a(0,n).
+Equivalently, scan finite proofs and recognize conclusions of that exact
+syntactic form. It is essential that this is a search over ALL outputs n,
+not a separate search whose input is n.
+
+The relation between code a and this partial computation is partial
+recursive. By Kleene's second recursion theorem, there is a code e whose
+evaluation on every input x equals Search(e). Consequently, the program
+ignores x in the external semantics.
+
+Proof that PA refutes none of the proposed outputs
+------------------------------------------------
+Suppose PA proves not H_e(0,n) for at least one n. Then Search(e) eventually
+stops. Let k be the output chosen by the first successful proof in the
+fixed search order. By definition of the search, PA proves not H_e(0,k).
+The fixed-point equation says that e(0) really halts with output k.
+That is an actual finite computation. Its trace is verified in PA, so PA
+also proves H_e(0,k). This contradicts Con(PA).
+
+Hence, for every standard n, PA does not prove not H_e(0,n).
+
+IMPORTANT CORRECTNESS POINT: the selected output k need not equal the n
+whose refutation was initially hypothesized. The contradiction uses the
+refutation for k supplied by search_sound, not an unjustified assumption
+that the search will output the initial n.
+
+Standard nontermination
+----------------------
+Since there are no such proofs, Search(e) never stops. The fixed-point
+equation therefore implies that e(x) is undefined for every standard x.
+Alternatively, an alleged halting output k implies by search_sound a PA
+proof of not H_e(0,k), already ruled out.
+
+Models for arbitrary standard outputs
+------------------------------------
+For fixed n, if PA + H_e(0,n) were inconsistent, the deduction theorem
+and classical logic would give PA |- not H_e(0,n), impossible by the
+preceding argument. Thus PA + H_e(0,n) is consistent. First-order
+completeness supplies M_n |= PA + H_e(0,n).
+
+Each such model is nonstandard, since the assertion H_e(0,n) is false in
+the standard natural numbers. Its witness to halting is nonstandard: if
+the arithmetized trace code/time bound were standard, correctness of
+finite computations would give an actual standard halt. This is the
+precise source of the apparent paradox.
+
+Optional strengthening: internal totality on every model input
+------------------------------------------------------------
+The ordinary fixed-point theorem supplies an EXTERNAL equality of partial
+functions. It must not silently be treated as a PA theorem. If the final
+claim is strengthened to say that M_n thinks the program is total, even
+on nonstandard inputs, one needs a small extra syntactic device.
+
+Let W(p) be the program 'ignore input; execute p on 0'. In Mathlib's
+Nat.Partrec.Code syntax, W(p) := Code.comp p Code.zero. Apply the ordinary
+recursion theorem to the partial recursive family
+
+  (p,x) |-> Search(W(p)),
+
+obtaining p with eval(p,x) = Search(W(p)). Put e := W(p). Then, externally,
+eval(e,x) = eval(p,0) = Search(e), so the preceding consistency proof is
+unchanged.
+
+The arithmetization of composition and the zero program gives an elementary
+PA theorem
+
+  forall x,y, H_e(x,y) <-> H_p(0,y),
+
+and hence PA proves forall x,y, H_e(x,y) <-> H_e(0,y). Therefore any
+M_n |= PA + H_e(0,n) satisfies forall x H_e(x,n). Deterministic functionality
+then says that the program is internally the total constant-n function.
+Only the wrapper semantics must be verified inside PA. The recursion
+theorem itself is still used solely in the metatheory.
+
+Minimal interface for a Lean proof
+---------------------------------
+1. A canonical formula H(e,x,y) representing machine/partial-recursive
+   evaluation; syntax and numerical instantiation are computable.
+2. A computable finite PA proof checker for the exact syntax used.
+3. Search(a) is partial recursive, uniformly in a.
+4. search_sound: k in Search(a) implies PA |- not H_a(0,k).
+5. search_complete: (exists n, PA |- not H_a(0,n)) implies Search(a).Dom.
+6. finite-trace verification: k in eval(a,0) implies PA |- H_a(0,k).
+7. Con(PA), a syntactic no-both-phi-and-not-phi lemma, and completeness.
+
+Mathlib already provides the recursion theorem:
+
+  Nat.Partrec.Code.fixed_point_two
+
+with the actual Lean name ending in the subscript Unicode character:
+
+  Nat.Partrec.Code.fixed_point₂
+    {f : Code -> N ->. N} (hf : Partrec₂ f) :
+    exists c, c.eval = f c.
+
+Other useful existing APIs are Code.eval_part, Code.evaln_sound,
+Code.evaln_complete, Code.primrec_evaln, Nat.rfindOpt_spec, and
+Nat.rfindOpt_dom. Code.eval gives the wrapper equation by simplification.
+
+Attribution and primary source
+------------------------------
+This is the singleton-input specialization of Vadim Kosoy's self-reference
+proof, presented as the alternative proof in Joel David Hamkins,
+'Every function can be computable!' (25 March 2016; alternative proof added
+following Kosoy's May 2016 comments):
+
+https://jdh.hamkins.org/every-function-can-be-computable/
+
+The source explicitly observes that its program computes the empty partial
+function in the standard model, and uses consistency plus verification of
+finite computations to obtain all the desired models. The stronger result
+there realizes arbitrary finite input/output tables and, by compactness,
+arbitrary external functions on all standard inputs. That stronger theorem
+is not needed for the user's single-input request.
+
+The Mathlib recursion-theorem API was checked in the official documentation:
+
+https://leanprover-community.github.io/mathlib4_docs/Mathlib/Computability/PartrecCode.html
+
+No total standard computable function should be claimed here: if an actual
+program halts at input 0 with standard output k, PA verifies the finite
+trace and cannot have a model in which that same deterministic program
+halts there with a different standard output. The user's clarification
+that f(0) diverges in the standard model fixes the intended partial reading.
