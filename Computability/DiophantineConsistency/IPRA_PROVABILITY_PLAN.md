@@ -1655,6 +1655,10 @@ A [symbolic MF radix-digit attempt](research/nine-sharing-sign17-mf-radix-digits
 [independently audited](reviews/nine-sharing-sign17-mf-radix-digits-terminal-independent/README.md),
 passed fifteen prerequisites but failed the final digit theorem on recursion
 depth and arithmetic normalization; no object or postflight was produced.
+A [structural retry](research/nine-sharing-sign17-mf-radix-digits-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-mf-radix-digits-retry-terminal-independent/README.md),
+removed the arithmetic error but failed the first-digit proof at recursion
+depth; no digit object or postflight was produced.
 A [generic block-composition attempt](research/nine-sharing-sign17-mc-compose-core-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-mc-compose-core-terminal-independent/README.md),
 passed eighteen prerequisites but failed the final flatten-tail induction;
