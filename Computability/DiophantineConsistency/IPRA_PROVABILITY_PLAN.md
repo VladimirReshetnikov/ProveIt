@@ -1418,6 +1418,11 @@ backward, without port/sign assumptions. A [conditional seed iff](research/nine-
 combines them with tau lift under represented ports and beta/MC/MF bounds.
 Point surveys and inherited ancestry remain qualified; current specialization,
 endpoint and external binding are separate.
+A [current-port seed specialization](research/nine-sharing-sign14-current-iff-check/README.md),
+[independently audited](reviews/nine-sharing-sign14-current-iff-terminal-independent/README.md),
+checks the same-input iff at current symbolic ports. Point-in-time historical
+survey/inherited qualifications persist; expression, endpoint and external
+binding remain separate.
 An [expression-evaluation client](research/nine-sharing-sign14-expression-eval-check/README.md),
 [independently audited](reviews/nine-sharing-sign14-expression-eval-terminal-independent/README.md),
 checks abstract and current Fin14 symbolic evaluation. Successful-child/
