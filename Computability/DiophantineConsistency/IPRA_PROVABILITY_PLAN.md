@@ -1482,6 +1482,11 @@ stale. An [exact-degree union](research/nine-sharing-sign17-exact-degree-check/R
 checks exact degree 96 under `p 0 ≠ 0` and for the current Lean ports, including
 current-port positivity/nonzero. Its console label is inherited; external
 JSON and PDF binding remain separate.
+A [beta byte-pattern probe](research/nine-sharing-sign17-beta-byte-probe-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-beta-byte-probe-failure-independent/README.md),
+passed fifteen replay stages but failed its final theorem on exponent, depth
+and decoder elaboration issues; no beta object or postflight was produced.
+An external decompression observation is not a Lean file or gzip binding.
 A [concrete-root evaluation attempt](research/nine-sharing-sign17-concrete-root-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-concrete-root-failure-independent/README.md),
 failed in its first stage on multiplication associativity; no first-stage
