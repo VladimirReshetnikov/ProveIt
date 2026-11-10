@@ -1396,6 +1396,12 @@ integer ports with `p 0 ≠ 0`, and at the current ports using their proved
 positivity. The run records four warnings and inherits the stated point-survey
 and failed-parent ancestry qualifications. External JSON/PDF binding and an
 operation count remain separate; this is not the root degree-150 equation.
+A [compact prefix transcription](research/nine-sharing-sign14-prefix-formula/README.md),
+[independently audited](reviews/nine-sharing-sign14-prefix-formula-independent/README.md),
+encodes the five external seed residuals in five small ASCII files and checks
+their trees against the pinned JSON. This check is external; a proposed Lean
+parser and byte-to-staged-row proof, fixed port bytes and PDF binding are
+separate.
 A [15-witness external candidate](research/nine-sharing-sign15-inner-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign15-external-independent/README.md),
 eliminates the signed inner coordinate and has external fixed-port degree 124
@@ -1854,6 +1860,10 @@ checks two more universal actual-weight theorems. The candidate ranking and
 full K/file binding remain separate.
 A [paired aggregate batch for rows 608–735](research/nine-sharing-sign17-k-weight-aggregate-batch10-11-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-weight-aggregate-batch10-11-terminal-independent/README.md),
+checks two further universal actual-weight theorems. Candidate ranking and
+full K/file binding remain separate.
+A [paired aggregate batch for rows 736–863](research/nine-sharing-sign17-k-weight-aggregate-batch12-13-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-weight-aggregate-batch12-13-terminal-independent/README.md),
 checks two further universal actual-weight theorems. Candidate ranking and
 full K/file binding remain separate.
 A [generic Fin.append certificate lemma](research/nine-sharing-sign17-k-weight-append-check/README.md),
