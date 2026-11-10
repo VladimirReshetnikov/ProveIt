@@ -1962,6 +1962,10 @@ comparisons and all 15 interblock boundaries in 17 stages. The first guard's
 prelaunch review was withdrawn before Lean, and the corrected runner checks
 the captured `Init` route and sets one thread. These local facts have not yet
 been assembled into the global rank or complete K/file binding.
+A [global-offset probe](research/nine-sharing-sign17-k-global-rank-probe-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-k-global-rank-probe-terminal-independent/README.md),
+checks Start and the first 16 nonzero/adjacent cases directly on the nested
+Fin942 vectors. It does not establish global assembly or rank.
 A [replayed Fin224 union](research/nine-sharing-sign17-k-weight-union224-check/README.md),
 [independently audited](reviews/nine-sharing-sign17-k-weight-union224-terminal-independent/README.md),
 combines the first four weight batches in one context and checks actual-weight
