@@ -702,6 +702,15 @@ A [pretyped full-assertion attempt](research/nine-sharing-sign25-pretyped-assert
 compiled the generic transfer and concrete assertion equality, but the short
 specialization still hit the interpreter limit. Its final wrapper and
 postflight did not run.
+A [scoped memory retry](research/nine-sharing-sign25-endpoint-memory-retry-check/README.md),
+[independently audited](reviews/nine-sharing-sign25-endpoint-memory-retry-terminal-independent/README.md),
+raises Lean's interpreter limit to `-M3600` while retaining the sampled 4 GiB
+RSS cap and other guards. It checks native, standard, and translated-standard
+iPRA proof-existence endpoints for the symbolic Fin25 expression, with an
+actual successful outer exit and final postflight. The external degree-eight
+argument and JSON coefficient bytes are not formally bound to that Lean
+expression; historical sign26/27 provider and point-observation qualifications
+remain. This is not a Jones nine-variable endpoint.
 A further [24-witness octic candidate](research/nine-sharing-sign24-octic-q3-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign24-octic-q3-independent/README.md),
 substitutes the q3 cube into the sign25 residuals. Its external fixed-port
