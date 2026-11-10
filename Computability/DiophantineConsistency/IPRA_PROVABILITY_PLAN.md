@@ -1202,6 +1202,10 @@ A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree9
 eliminates a signed difference using the retained Na equation to justify a
 natural lift when beta is positive. Its external fixed-port degree is 96;
 the Lean model bridge, iPRA endpoint and external-to-Lean binding remain open.
+A [generic signed-lift ingredient attempt](research/nine-sharing-sign17-signed-lift-lemmas-check/README.md),
+[independently audited](reviews/nine-sharing-sign17-signed-lift-lemmas-failure-independent/README.md),
+failed in its first stage on an unavailable ordered-ring class; no first
+object, second stage or final postflight was produced.
 A finite [positive-gate octic search](research/nine-sharing-octic-positive-elimination-search/README.md),
 [independently audited](reviews/nine-sharing-octic-positive-elimination-independent/README.md),
 reaches at best 23 witnesses among 19 ordered states when every step preserves
