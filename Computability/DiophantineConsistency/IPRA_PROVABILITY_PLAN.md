@@ -1246,6 +1246,11 @@ A [scalar-window attempt](research/nine-sharing-sign16-scalar-window-check/READM
 [independently audited](reviews/nine-sharing-sign16-scalar-window-failure-independent/README.md),
 failed because `zero_le` was applied as a function; no object or postflight was
 produced. Its first-index provider survey was a point-in-time check.
+A [typed retry](research/nine-sharing-sign16-scalar-window-retry01-check/README.md),
+[independently audited](reviews/nine-sharing-sign16-scalar-window-retry01-terminal-independent/README.md),
+derives `q ≥ F` from seed zero under represented beta/K, positive beta and
+explicit MC/MF bounds. The survey caveat persists; direct guards are rechecked.
+The remaining norm conditions and V lift are separate.
 A [17-witness degree-96 external candidate](research/nine-sharing-sign17-degree96-vdifference-candidate/README.md),
 [independently audited](reviews/nine-sharing-sign17-external-independent/README.md),
 eliminates a signed difference using the retained Na equation to justify a
