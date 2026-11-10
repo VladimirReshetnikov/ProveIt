@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+root=Path(__file__).resolve().parents[2];repo=root.parents[1];p=root/'research/nine-sharing-sign17-k-radix-stream-check';sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest()
+assert sha(p/'run.py')=='939ec4d121276288a4e51d4e81319b3db5ff137db44dac4e5a3f1e5eade39cd9' and sha(p/'source-manifest.json')=='a8a5cb569f629c8a0613a82cdda71e42a97de03efc57b865124d113790cd61f9';e,=json.loads((p/'source-manifest.json').read_text())['rows'];q=p/'src/DiophantineConsistency/Sign17KRadixStream.lean';s=q.read_text();assert e['module']=='DiophantineConsistency.Sign17KRadixStream' and e['imports']==['DiophantineConsistency.Sign17KSentinelCollision'] and sha(q)==sha(repo/e['source'])==e['source_sha256']=='68dd4fd1eae5e8f4054cbd37c94e4bc9106c686c533485dc9328e5636e08db5d' and re.findall(r'^import ([A-Za-z0-9_.]+)$',s,re.M)==e['imports'] and not re.search(r'(?m)^\s*(axiom|opaque|partial)\b|\b(sorry|admit|native_decide)\b',s)
+for t in ('def prefix : List ℕ := List.replicate 18 0 ++ [1, 0]', 'def suffix : List ℕ := List.replicate 1014 0 ++ [1]', 'i = ⟨984, by decide⟩', 'theorem digit_value (r : ℕ) (v : Fin 986 → ℕ)', 'r ^ 18 + r ^ 1004 + r ^ 2020', 'v i * r ^ (1005 - i.val)', 'Sign17KSentinelCollision.middle_sentinel r v'):assert t in s
+assert 18<20 and 20+984==1004 and 20+986+1014==2020 and 20+986+1015==2021
+subprocess.run([sys.executable,'-I','-S','-B',str(root/'reviews/nine-sharing-sign17-k-sentinel-collision-terminal-independent/check.py')],capture_output=True,check=True,timeout=180)
+prior=json.loads((root/'research/nine-sharing-sign17-k-sentinel-collision-check/attempt01/state.json').read_text());assert prior['status']=='PASS';obj=Path('/tmp/nine-sharing-sign17-k-sentinel-collision-20261110/lib/DiophantineConsistency/Sign17KSentinelCollision.olean');assert sha(obj)==prior['rows'][0]['object_sha256']
+r=(p/'run.py').read_text();assert "need('Init' in deps" in r and "env['LEAN_NUM_THREADS']='1'" in r and "str(candidates[0])==rec['path']" in r and "rec['realpath']==provider_init['realpath'] and rec['sha256']==provider_init['sha256']" in r and "'-M3600'" in r and 'rss_limit=4*1024**3,mem_floor=10*1024**3,seconds=120,interval=.1' in r
+x=subprocess.run([sys.executable,'-I','-S','-B',str(p/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=180);assert not x.stderr and json.loads(x.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT'
+print(json.dumps({'status':'PASS_PRELAUNCH','scope':'generic 2021-digit radix stream algebra only, no K/digit bounds/file theorem'},indent=2))
