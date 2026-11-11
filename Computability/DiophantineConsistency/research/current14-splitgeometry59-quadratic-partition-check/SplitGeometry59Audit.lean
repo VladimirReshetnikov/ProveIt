@@ -1,0 +1,4 @@
+import DiophantineConsistency.SplitGeometry59
+#print axioms DiophantineConsistency.SplitCertificate59.linear_cross
+#print axioms DiophantineConsistency.SplitCertificate59.quadratic_cross
+#print axioms DiophantineConsistency.SplitCertificate59.targetPositions_range
