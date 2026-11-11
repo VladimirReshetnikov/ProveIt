@@ -49,7 +49,10 @@ The subsequent [guarded incremental rebuild attempt](research/current14-coherent
 passed six stages and stopped at stage 7: Lean reported excessive kernel memory
 under the configured limit. The [independent failure audit](reviews/current14-coherent-extension-runner-failure-independent/README.md)
 confirms there is no completed rebuild. A split proof is a possible source
-refactor, not a byte-identical replay.
+refactor, not a byte-identical replay. The [split K215 check and proof-refactored
+module](research/current14-k215-wf-compatibility-check/README.md) have since
+compiled under the same limits and passed [independent audit](reviews/current14-k215-wf-compatibility-terminal-independent/README.md);
+a coherent extension using this refactor remains a separate build.
 
 The [65-gate graph-to-expression theorem](research/current14-carrier65-dag-expression-retry-check/README.md)
 now checks an explicit live circuit for the maintained Lean expression, with
