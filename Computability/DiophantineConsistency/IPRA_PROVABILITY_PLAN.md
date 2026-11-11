@@ -45,6 +45,11 @@ maps a 490-module observed extension of the earlier 1,000-module base. It
 found no source/hash conflict in the captured paths, but is not a build:
 seven successful stages came from failed parent runs, package and dynamic
 ancestry remain partly inherited, and sampled disk headroom was narrow.
+The subsequent [guarded incremental rebuild attempt](research/current14-coherent-extension-runner/README.md)
+passed six stages and stopped at stage 7: Lean reported excessive kernel memory
+under the configured limit. The [independent failure audit](reviews/current14-coherent-extension-runner-failure-independent/README.md)
+confirms there is no completed rebuild. A split proof is a possible source
+refactor, not a byte-identical replay.
 
 The [65-gate graph-to-expression theorem](research/current14-carrier65-dag-expression-retry-check/README.md)
 now checks an explicit live circuit for the maintained Lean expression, with
