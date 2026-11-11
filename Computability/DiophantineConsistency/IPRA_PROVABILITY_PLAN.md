@@ -52,7 +52,10 @@ confirms there is no completed rebuild. A split proof is a possible source
 refactor, not a byte-identical replay. The [split K215 check and proof-refactored
 module](research/current14-k215-wf-compatibility-check/README.md) have since
 compiled under the same limits and passed [independent audit](reviews/current14-k215-wf-compatibility-terminal-independent/README.md);
-a coherent extension using this refactor remains a separate build.
+a coherent extension using this refactor passed 34 stages before another
+kernel-memory failure at `FwdCheck09`. A [split proof of that check](research/current14-k215-fwd09-split-retry01-check/README.md)
+has since passed [independent audit](reviews/current14-k215-fwd09-split-retry01-terminal-independent/README.md).
+A fresh coherent extension using both proof refactors remains a separate build.
 
 The [65-gate graph-to-expression theorem](research/current14-carrier65-dag-expression-retry-check/README.md)
 now checks an explicit live circuit for the maintained Lean expression, with
