@@ -7321,6 +7321,11 @@ reviewed [full toy-port zero](research/ordinary13-folded-root86-toy-full-zero/RE
 has both transformed root choices negative with the other coordinates fixed;
 it does not settle the actual-port or unrestricted existence question. The
 probe is not a verified replacement or an iPRA endpoint.
+An attempted [actual-port obstruction](research/ordinary13-folded-root86-current-full-zero/README.md)
+was withdrawn after review found a port mismatch and a nonintegral auxiliary
+witness. A separate [compact44 residue lemma](research/ordinary13-compact44-power-rank-mod3/README.md)
+excludes that specific seed when `q` is a power of two; it does not settle
+the positive-domain equivalence.
 The [free-`J` 88-operation Lean bridge draft](research/ordinary13-freej88-lean-draft/README.md)
 has passed an [independent source review](reviews/ordinary13-freej88-lean-draft-independent/README.md),
 but remains uncompiled. Its full provider closure, guarded runner and
