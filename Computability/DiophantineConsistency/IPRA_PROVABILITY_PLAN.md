@@ -144,6 +144,10 @@ establishes `V > 0` for the maintained equation using its transport factor.
 A related [free-Pell-gap proposal](research/current14-carrier64-free-pell-gap-toy-zero/README.md)
 has a reviewed toy-port zero that obstructs its natural same-coordinate reverse
 map; the current-port and unrestricted existential questions remain open.
+An independently reviewed [seed characterization](research/free-pell-gap-seed-characterization/README.md)
+reduces ordinary positive-zero existence for that proposal to its first, main
+and transport factors being simultaneously 1. It does not supply a seed at
+the current ports or establish equivalence with the maintained equation.
 
 ## Sign14 proof transfer and fixed-constant work
 
