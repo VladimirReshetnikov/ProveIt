@@ -1,0 +1,11 @@
+# Independent review: withdrawn folded-root full-zero attempt
+
+The proposed full-zero claim is rejected for two independent reasons. The author packet now records its withdrawal. Its finite checker reproduces, and its alternate-port first/main seed and root-sign argument are meaningful conditional observations, but they do not complete a positive zero.
+
+First, the packet authenticated the maintained carrier65 tuple with `beta=2^94517−1`. The reviewed free-J 88/30 graph is bound externally to the P72/P115 compact44 tuple with `beta=2^590069−1`. Both byte sets and their respective hashes were independently checked; they are different port specializations. Consequently the original assertion of an actual compact44 zero was false.
+
+Second, the proposed auxiliary completion is inconsistent as written even at the alternate ports. The Chebyshev congruence for `R≡3 (mod 4)` gives `V≡−psi_A(R) (mod f²)`, whereas the specified `c=psi_A(rX)` uses `rX<R`. Put `cR=psi_A(R)`. Monotonicity gives `cR>c`. Also `c≥rX`, `rX²>2R`, `D0=chi_A(rX)≥A^rX`, and the positive c-th unit power gives `f>D0^c>A^(2R)>(2A)^(R−1)≥cR`. Thus `0<cR−c<f²`, and `V+c≡c−cR` is nonzero modulo f². Since the numerator of the proposed T is `V+c+f²R`, it is not divisible by f²; T is not an integer. An exact small control with A=2, rX=8 and R=11 reproduces the same indexed-congruence failure. This rules out the stated completion, not every conceivable alternative completion.
+
+The alternate scalar data and hashes, divisibility and positivity bounds for the first/main construction, and both negative root choices were checked against the previously reviewed source-level substitution and inherited Pell seed. These observations are conditional on that seed and do not imply a full zero without an independently valid auxiliary completion. They do not rule out another 86-graph witness with changed coordinates or settle unrestricted zero-existence equivalence. No Lean theorem or JSON/PDF binding is claimed.
+
+Run `python3 -I -S -B Computability/DiophantineConsistency/reviews/ordinary13-folded-root86-current-full-zero-independent/check.py` from the repository root for the independent byte, finite exponent and small modular controls. The huge symbolic witness is not expanded.
