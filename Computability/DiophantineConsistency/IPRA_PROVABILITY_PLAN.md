@@ -56,6 +56,11 @@ a coherent extension using this refactor passed 34 stages before another
 kernel-memory failure at `FwdCheck09`. A [split proof of that check](research/current14-k215-fwd09-split-retry01-check/README.md)
 has since passed [independent audit](reviews/current14-k215-fwd09-split-retry01-terminal-independent/README.md).
 A fresh coherent extension using both proof refactors remains a separate build.
+The [eight-refactor rebuild attempt](research/current14-coherent-extension-refactor-retry02-runner/README.md)
+passed 124 stages, then Lean exhausted its kernel memory limit in
+`SplitGeometry59`; its [failure audit](reviews/current14-coherent-extension-refactor-retry02-failure-independent/README.md)
+confirms the monitor did not trigger the stop. A proposed 22-way split has
+passed source review but has not been compiled.
 
 The [65-gate graph-to-expression theorem](research/current14-carrier65-dag-expression-retry-check/README.md)
 now checks an explicit live circuit for the maintained Lean expression, with
