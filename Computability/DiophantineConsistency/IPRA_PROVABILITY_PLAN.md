@@ -7406,6 +7406,11 @@ exact degree 26. At the authenticated ports its positive-zero existence is
 equivalent to the 87-operation graph's; the forward witness map uses the
 reviewed calibration's power bound. This is an external standard-arithmetic
 result with the same inherited Lean and file-binding limitations.
+The reviewed [q-cubed substitution](research/ordinary14-qcube85-tradeoff/README.md)
+gives 14 positive inputs and 85 operations at exact degree 56. Its
+positive-zero existence is equivalent to the 86/26 parent's for integer
+ports with `β > 0`. This trades degree for an operation and inherits the
+parent's compact44 endpoint and Lean limitations.
 The source-reviewed [87-operation Lean graph and decoder-route draft](research/ordinary14-shifted-guard87-lean-draft/README.md)
 records the fact-level replay needed for arbitrary models. It is uncompiled;
 the graph-specific model lemmas, parent bridges and iPRA endpoint remain open.
