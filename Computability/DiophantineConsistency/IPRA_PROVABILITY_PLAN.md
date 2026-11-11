@@ -7339,15 +7339,20 @@ uses the opposite first-coordinate sign; its positive-domain claims must not
 be confused with those of the preceding probe. For `β > 0` and `K0 ≥ 0`, an
 independently reviewed [forward construction](research/ordinary13-folded-root86-negated-forward/README.md)
 maps every positive zero of the 88/30 parent to a positive signed-fold zero,
-without assuming a halt witness. It produces `Bt < 0`, so the remaining reverse
-case cannot simply be dismissed by asserting that all candidate zeros have
-positive `Bt`. A reviewed [reverse repair](research/ordinary13-folded-root86-negated-positive-bt/README.md)
+without assuming a halt witness. Whenever a parent zero exists, the
+construction produces a candidate zero with `Bt < 0`. A reviewed
+[reverse repair](research/ordinary13-folded-root86-negated-positive-bt/README.md)
 does construct a parent zero whenever `Bt > 0`. For `Bt ≤ 0`, a reviewed
 [scalar-shift criterion](research/ordinary13-folded-root86-negated-shift-repair/README.md)
 decides whether a particular family of shifts can repair the witness; it does
 not prove that the criterion holds for every candidate zero. The unrestricted
 reverse existence implication remains open. These are external arithmetic
 arguments, not new Lean/iPRA or equation-file binding theorems.
+Two reviewed [full toy-port zeros](research/ordinary13-folded-root86-negated-full-zero-window/README.md)
+show that this scalar-shift criterion can fail even when all candidate
+residuals vanish; one uses four positive ports. Neither uses the actual
+compact44 constants, and neither rules out other witness changes or the
+unrestricted existence implication.
 The [free-`J` 88-operation Lean bridge draft](research/ordinary13-freej88-lean-draft/README.md)
 has passed an [independent source review](reviews/ordinary13-freej88-lean-draft-independent/README.md),
 but remains uncompiled. Its full provider closure, guarded runner and
