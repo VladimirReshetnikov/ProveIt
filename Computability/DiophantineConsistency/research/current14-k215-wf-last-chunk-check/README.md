@@ -1,0 +1,7 @@
+# K215 last well-formedness chunk: bounded probe
+
+This isolated two-stage probe recompiles the same exact three original tables against the authenticated fresh base, then checks the actual `RMEquiv.nodeOkb` predicate for indices 480–486. The earlier first-32 result and both independent source reviews are pinned. It is designed to test late table indexing under the same limits; it does not prove the middle nodes, the four root facts, the full `wfCheck`, or the original module equivalence.
+
+It uses a fresh output path and the same sampled 5.1 GB disk stop, 10 GiB available-memory floor, 4 GiB session RSS, `lean -M3600 -j1 -DElab.async=false`, 180 seconds per child and six-hour budget. Limits are unchanged from the failed coherent build. A read-only survey, log hashing, failure receipt and process cleanup can finish after a stop event; sampled guards cannot rule out transient resource drops. The runner never deletes existing artifacts; package-transitive/dynamic ancestry and TeX/PDF remain external boundaries.
+
+No-Lean controls and two-stage preflight passed, with 5,395,824,640 bytes free sampled in `controls-observation.json`; that is not reserved. Attempt01 passed: observed outer session 29721 exited 0; both stages and postflight passed, with `[propext]` for `wfChunk15`. The [independent terminal audit](../../reviews/current14-k215-wf-last-chunk-terminal-independent/) passed. This proves only indices 480–486; the middle nodes, root facts and full assembly remain separate. The run is frozen and its existing output path is not reused.
