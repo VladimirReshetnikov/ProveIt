@@ -7411,6 +7411,11 @@ gives 14 positive inputs and 85 operations at exact degree 56. Its
 positive-zero existence is equivalent to the 86/26 parent's for integer
 ports with `β > 0`. This trades degree for an operation and inherits the
 parent's compact44 endpoint and Lean limitations.
+The twice-reviewed [q-cubed main-carrier tradeoff](research/ordinary14-qcube84-probe/README.md)
+reduces this to 14 positive inputs and 84 operations at exact degree 60.
+Its positive-zero equivalence at the authenticated ports uses the specific
+Mersenne form of `β` and a fact-level replay of the cited decoder. It is
+external mathematics, not a new Lean/iPRA or PDF-binding theorem.
 The source-reviewed [87-operation Lean graph and decoder-route draft](research/ordinary14-shifted-guard87-lean-draft/README.md)
 records the fact-level replay needed for arbitrary models. It is uncompiled;
 the graph-specific model lemmas, parent bridges and iPRA endpoint remain open.
