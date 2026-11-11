@@ -40,6 +40,11 @@ standard iPRA derives its equivalence to Foundation's ZFC consistency sentence
 after language mapping and Gödel–Gentzen translation. This is a derivability
 statement; it proves neither side, and raw TeX/PDF semantics and complete
 source-to-object provenance of the later clients remain separate.
+An independently reviewed [coherent-extension preflight](research/current14-coherent-extension-preflight/README.md)
+maps a 490-module observed extension of the earlier 1,000-module base. It
+found no source/hash conflict in the captured paths, but is not a build:
+seven successful stages came from failed parent runs, package and dynamic
+ancestry remain partly inherited, and sampled disk headroom was narrow.
 
 The [65-gate graph-to-expression theorem](research/current14-carrier65-dag-expression-retry-check/README.md)
 now checks an explicit live circuit for the maintained Lean expression, with
