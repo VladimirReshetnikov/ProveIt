@@ -7409,6 +7409,10 @@ An independently reviewed [bounded residual-shear obstruction](research/ordinary
 shows that a specified family of integer-polynomial combinations cannot
 lower the degree of the 88/30 graph's first residual. Its coefficient and
 degree bounds are essential; it is not a global size or degree lower bound.
+The reviewed [local rewrite screens](research/ordinary13-88-local-rewrite-screen/README.md)
+also found no smaller graph within their enumerated one- and two-gate
+replacements and pruned ring-rewrite beam. These finite searches do not
+establish minimality or exclude other transformations.
 The independently reviewed [calibration dependency and partial actual-port assignment](research/ordinary13-folded-root86-calibration-obstruction/README.md)
 shows where the existing source uses the old first coordinate's positivity.
 Its negative-`Bt` assignment satisfies the first residual at the authenticated
