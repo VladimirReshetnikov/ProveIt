@@ -7306,7 +7306,11 @@ match the pinned P61 hashes, whose recorded physical paths are absent here.
 The [91-operation Lean bridge draft](research/ordinary13-p73-share91-lean-draft/README.md)
 has passed an [independent source/preflight review](reviews/ordinary13-p73-share91-lean-draft-independent/README.md).
 It remains uncompiled: the P73 provider closure and guarded runner are not
-authenticated, and sampled disk was below the existing 5.1 GB floor.
+authenticated, and sampled disk was below the existing 5.1 GB floor. A
+[read-only provider survey](research/ordinary13-p73-provider-preflight/README.md),
+independently reviewed, identifies a retained P72 route with two project
+modules for the graph bridge and seven for the present endpoint draft. It is
+not a build-readiness or complete package/dynamic ancestry certificate.
 
 An externally reviewed [triangular residual transformation](research/ordinary13-p72-triangular97-50/README.md)
 reduces a 98-operation, degree-28 P72 parent to 96 operations at exact degree
