@@ -7303,6 +7303,10 @@ fixed leaves. The latter improves the inspected 90-operation, degree-51
 record in degree. These are external graph and arithmetic checks, not new
 Lean endpoint or file-binding theorems; the authenticated P72 port payloads
 match the pinned P61 hashes, whose recorded physical paths are absent here.
+The [91-operation Lean bridge draft](research/ordinary13-p73-share91-lean-draft/README.md)
+has passed an [independent source/preflight review](reviews/ordinary13-p73-share91-lean-draft-independent/README.md).
+It remains uncompiled: the P73 provider closure and guarded runner are not
+authenticated, and sampled disk was below the existing 5.1 GB floor.
 
 An externally reviewed [triangular residual transformation](research/ordinary13-p72-triangular97-50/README.md)
 reduces a 98-operation, degree-28 P72 parent to 96 operations at exact degree
