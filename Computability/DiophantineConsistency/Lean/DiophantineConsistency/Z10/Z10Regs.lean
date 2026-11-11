@@ -185,7 +185,7 @@ def sixB (R : Regs 𝔸) : 𝔸 :=
 
 /-- The six-term bracket. -/
 def sixT (R : Regs 𝔸) (y : 𝔸) : 𝔸 :=
-  3 * y + (sixA R * (R.xi * (R.B1 - R.C)) + sixB R * (y * (R.xi * (R.E0 * R.Omega))))
+  3 * y + (sixA R * (R.xi * (R.B1 - R.C)) + sixB R * (y * (R.xi * (R.E0 * 16))))
 
 /-- The shear of the six-term form. -/
 def shearSix (R : Regs 𝔸) (y : 𝔸) : 𝔸 :=
