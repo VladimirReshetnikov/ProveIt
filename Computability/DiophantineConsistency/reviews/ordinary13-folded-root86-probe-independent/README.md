@@ -1,0 +1,9 @@
+# Independent review: conditional folded-root 86/26 probe
+
+The source-level graph and integer-coordinate transformation pass review. Removing the two `k*Bt` and subtraction gates leaves 86 live binary operations with the same 13 input slots and four fixed ports. The parent coordinate r occurs only in the absorbed register, and Bt and k do not depend on r. Hence `rho=r−k*Bt` and `r=rho+k*Bt` are inverse triangular polynomial maps over every integer valuation, and the two outputs agree under substitution.
+
+Strictly positive witnesses require two separate unproved conditions: `r−k*Bt>0` for the forward map and `rho+k*Bt>0` for the reverse map. The toy-port example has positive parent inputs and A0=0 but Bt=12, k=2, r=23, hence rho=−1. Independently evaluating both possible first-residual roots gives rho=−1 and −1,048,579. The other residuals are nonzero, so this is only a first-factor obstruction, not a full zero or an unrestricted nonequivalence result.
+
+Independent sparse-polynomial evaluation of the actual residual subgraphs verifies both displayed leading cancellations: with `Z=M*ell+delta0`, A0 is `2*M*ell*delta0+delta0²−M²*(1+ell*k)`; with `Dstar=U*a*c+W` and `Delta=a²+H`, A1 is `2*U*a*c*W+W²−U²*(1+H*c²)`. The source degree bounds give both residuals degree at most 13, and the remaining residuals at most 13 and 10, hence output degree at most 26. Authenticated P72 compressed and raw little-endian port bytes match P115 binding hashes. A different weighted affine ray through the entire graph has a nonzero degree-26 coefficient modulo 1,000,000,007, establishing exact degree 26 at those bytes. The author's receipt reproduces byte for byte.
+
+This is an external conditional candidate, not a positive-zero equivalence, iPRA endpoint, Lean degree proof, JSON/PDF binding, or global-minimality result. Run `python3 -I -S -B Computability/DiophantineConsistency/reviews/ordinary13-folded-root86-probe-independent/check.py` from the repository root.
