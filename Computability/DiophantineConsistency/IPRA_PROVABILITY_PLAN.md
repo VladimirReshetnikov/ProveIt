@@ -7314,6 +7314,11 @@ has 88 live operations and exact degree 30 at the authenticated ports, with
 the same integer zeros as its 88/46 parent. Its endpoint remains inherited;
 no new Lean or file-binding theorem is claimed. Comparisons with P73 are
 numerical because the witness encodings differ.
+An externally reviewed [86-operation, degree-26 folded-root probe](research/ordinary13-folded-root86-probe/README.md)
+is related by an exact integer-coordinate bijection, but each positive-domain
+direction requires a separate unproved sign condition. Its partial toy
+obstruction is not a full equation zero. It is not a verified replacement or
+an iPRA endpoint.
 The [free-`J` 88-operation Lean bridge draft](research/ordinary13-freej88-lean-draft/README.md)
 has passed an [independent source review](reviews/ordinary13-freej88-lean-draft-independent/README.md),
 but remains uncompiled. Its full provider closure, guarded runner and
