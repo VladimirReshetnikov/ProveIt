@@ -7358,6 +7358,11 @@ cannot be repaired to a positive parent zero while retaining its rank and
 the other ten inputs, even if both scalar inputs and the first coordinate
 change. This still permits other witness changes and does not decide the
 compact44 instance.
+The independently reviewed [calibration dependency and partial actual-port assignment](research/ordinary13-folded-root86-calibration-obstruction/README.md)
+shows where the existing source uses the old first coordinate's positivity.
+Its negative-`Bt` assignment satisfies the first residual at the authenticated
+ports but cannot satisfy the main residual; it is not a full equation zero
+and does not rule out another calibration argument.
 The [free-`J` 88-operation Lean bridge draft](research/ordinary13-freej88-lean-draft/README.md)
 has passed an [independent source review](reviews/ordinary13-freej88-lean-draft-independent/README.md),
 but remains uncompiled. Its full provider closure, guarded runner and
