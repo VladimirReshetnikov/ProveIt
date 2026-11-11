@@ -34,6 +34,13 @@ unspecified scope. Replaying all ancestry is not principally a Lean-line
 count. These figures do not bound an explicit iPRA proof certificate, which
 the derivability theorem does not print.
 
+The [quoted transcription to translated consistency join](research/current14-quoted-translated-endpoint-check/README.md)
+also passes [independent terminal audit](reviews/current14-quoted-translated-endpoint-terminal-independent/README.md):
+standard iPRA derives its equivalence to Foundation's ZFC consistency sentence
+after language mapping and Gödel–Gentzen translation. This is a derivability
+statement; it proves neither side, and raw TeX/PDF semantics and complete
+source-to-object provenance of the later clients remain separate.
+
 The [65-gate graph-to-expression theorem](research/current14-carrier65-dag-expression-retry-check/README.md)
 now checks an explicit live circuit for the maintained Lean expression, with
 16 additions, 12 subtractions and 37 multiplications, for arbitrary integer
