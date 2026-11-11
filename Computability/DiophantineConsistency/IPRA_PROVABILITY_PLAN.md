@@ -69,6 +69,12 @@ That extension passed 417 stages and stopped on a kernel-memory failure in
 and passed [independent audit](reviews/current14-auxiliary-order-generic-cast-terminal-independent/README.md).
 The prefix belongs to a failed parent attempt, so this is a feasibility
 result rather than a completed coherent build.
+A later coherent attempt passed 398 stages before a Lean interpreter memory
+exception in `WangTiles942Core`. Separating its two target-count decisions
+produced a [successful point-provider feasibility run](research/current14-wang942core-count-split-check/README.md)
+with an [independent audit](reviews/current14-wang942core-count-split-terminal-independent/README.md).
+That run revalidated successful children of a failed parent; it is not a full
+coherent rebuild, and the source/module split is disclosed.
 
 The [65-gate graph-to-expression theorem](research/current14-carrier65-dag-expression-retry-check/README.md)
 now checks an explicit live circuit for the maintained Lean expression, with
