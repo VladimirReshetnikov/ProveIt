@@ -75,6 +75,10 @@ produced a [successful point-provider feasibility run](research/current14-wang94
 with an [independent audit](reviews/current14-wang942core-count-split-terminal-independent/README.md).
 That run revalidated successful children of a failed parent; it is not a full
 coherent rebuild, and the source/module split is disclosed.
+The subsequent [eleven-refactor coherent run](research/current14-coherent-extension-refactor-retry05-runner/README.md)
+passed 239 stages before the disk-floor guard stopped it before stage 240.
+Its [independent stop audit](reviews/current14-coherent-extension-refactor-retry05-failure-independent/README.md)
+confirms that the endpoint and postflight did not run.
 
 The [65-gate graph-to-expression theorem](research/current14-carrier65-dag-expression-retry-check/README.md)
 now checks an explicit live circuit for the maintained Lean expression, with
