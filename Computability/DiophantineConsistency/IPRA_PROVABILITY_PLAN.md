@@ -7395,6 +7395,9 @@ from all the residuals; an earlier partial assignment does not satisfy the
 complete equation. The replay uses existing source theorem statements as
 external mathematical inputs and has not been formalized for this graph in
 Lean or connected internally to iPRA or the PDF.
+The source-reviewed [87-operation Lean graph and decoder-route draft](research/ordinary14-shifted-guard87-lean-draft/README.md)
+records the fact-level replay needed for arbitrary models. It is uncompiled;
+the graph-specific model lemmas, parent bridges and iPRA endpoint remain open.
 The reviewed [guard-reuse exclusions](research/ordinary14-guarded-fold89-reuse-exclusions/README.md)
 show that setting the guard input equal to `F`, `α`, `J` or the signed first
 input would eliminate positive zeros under the stated port bounds. This does
