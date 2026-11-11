@@ -7309,6 +7309,11 @@ also gives an 88-operation, degree-46 graph with the same integer zeros as its
 variant uses the P73 parameterization; the encodings are not claimed
 pointwise equivalent. These are external graph and arithmetic results, with
 the parent endpoint's inherited provenance and file-binding limits.
+The [free-`J` 88-operation Lean bridge draft](research/ordinary13-freej88-lean-draft/README.md)
+has passed an [independent source review](reviews/ordinary13-freej88-lean-draft-independent/README.md),
+but remains uncompiled. Its full provider closure, guarded runner and
+elaboration are untested, and its model proof does not formalize the separate
+all-integer equivalence.
 The [91-operation Lean bridge draft](research/ordinary13-p73-share91-lean-draft/README.md)
 has passed an [independent source/preflight review](reviews/ordinary13-p73-share91-lean-draft-independent/README.md).
 It remains uncompiled: the P73 provider closure and guarded runner are not
