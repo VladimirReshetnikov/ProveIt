@@ -136,5 +136,70 @@ filed here on the same day.
 
 ## Lean formalization
 
-In progress. The target is the native scalar core above as a deeply embedded
-calculus, the ordinary theory `T_eq`, and their bi-interpretation with iPRA.
+The Lake library `ConciseIPRA` (root workspace; sources under
+[`Lean/ConciseIPRA/`](Lean/ConciseIPRA/), namespace `LeanProofs.ConciseIPRA`)
+formalizes three systems and proves them mutually bi-interpretable:
+
+1. **The native scalar core** (`Native`): the calculus of
+   [The native scalar core](#the-native-scalar-core), deeply embedded.
+   Formulas are `s = t`, `Q_y B` and `D_{x,y} B` only, and derivability
+   `NPrf Γ A` has exactly the rules of the table above: Hyp, Tr, QE, DE, the
+   two DI rules and the two computation equations. There are no connectives
+   and no structural rules.
+2. **`T_eq`** (`Scalar`): intuitionistic natural deduction with equality
+   over the iterator terms, with the axioms listed under *Ordinary
+   realization*.
+3. **iPRA in the usual way** (`PR`): one function symbol for every primitive
+   recursive definition (zero, successor, projections, composition,
+   primitive recursion) with its defining equations, `S x = 0 → ⊥`,
+   injectivity of successor, and induction for quantifier-free formulas,
+   over the same intuitionistic natural deduction.
+
+### Results
+
+| Statement | Lean | Content |
+| --- | --- | --- |
+| `T_eq` ≡ iPRA | `biInterp : BiInterp TeqAx PRAAx` | term translations in both directions whose composites are provably the identity: a synonymy |
+| | `teq_iff_pra`, `pra_iff_teq` | each theory proves a sequent iff the other proves its translation |
+| | `teq_roundTrip`, `pra_roundTrip` | every formula is provably equivalent to its round trip |
+| | `teq_consistent_iff` | equiconsistency |
+| native → `T_eq` | `NPrf.sound` | `NPrf Γ A → Γ.map toFm ⊢[TeqAx] A.toFm` for the ordinary readings of `Q` and `D` |
+| `T_eq` → native | `NPrf.ofPrf` | `Γ ⊢[TeqAx] φ → NPrf (Γ.map ofFm) (ofFm φ)`, where `ofFm` replaces each connective by its native macro |
+| native = `T_eq` | `NPrf.iff_teq`, `Teq.iff_native` | faithfulness of both readings |
+| | `NEquiv.ofFm_toFm`, `Teq.iff_toFm_ofFm` | both round trips are the identity up to interderivability / provable equivalence |
+| native ≡ iPRA | `native_iff_pra`, `pra_iff_native` | the native calculus proves a sequent iff iPRA proves its reading, and conversely |
+| | `native_roundTrip`, `pra_native_roundTrip` | both composites through iPRA are the identity up to equivalence |
+| | `native_inconsistent_iff` | `NPrf [] (0 = 1)` iff iPRA proves `⊥` |
+
+All modules build without `sorry` or warnings. The final theorems depend
+only on Lean's `propext`, `Classical.choice` and `Quot.sound` (the `T_eq` ≡
+iPRA part on `propext` and `Quot.sound` alone); there are no added axioms and
+no `native_decide`.
+
+### Modules
+
+| Layer | Modules | Content |
+| --- | --- | --- |
+| syntax and logic | `Syntax`, `Term`, `Deduction`, `Interpretation` | de Bruijn substitution, iterator terms, natural deduction, term interpretations and `BiInterp` |
+| theories | `Scalar`, `PR`, `Native` | `T_eq`, iPRA, the native calculus and its soundness |
+| `T_eq` arithmetic | `Lindenbaum`, `TeqArith`, `TeqParity`, `TeqCompare`, `TeqPred`, `TeqEq`, `TeqReflect`, `TeqOrder`, `TeqPair`, `TeqRec` | predecessor, reflection of equality into a term, quantifier-free induction, pairing, compilation of primitive recursion |
+| `T_eq` ≡ iPRA | `ScalarToPRA`, `PRAToScalar`, `RoundTripScalar`, `RoundTripPRA`, `BiInterpretation` | the two interpretations and their composites |
+| native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, Leibniz, equation induction; selector and gate formulas |
+| native logic | `NativeLogic` | `⊥`, `→`, `∧`, `∨`, `∃`, `∀` as native macros with all their natural deduction rules |
+| native ≡ `T_eq` ≡ iPRA | `NativeTranslate`, `NativeComposite`, `NativeRoundTrip`, `NativeBiInterpretation` | translation of derivations, both round trips, the composite with `biInterp` |
+
+The connectives are native macros. With `sel(v, A, B)` the selector formula
+(`A` at `v = 0`, `B` at a successor) and `gate(v, A)` the formula trivial at
+`0` and equivalent to `A` at a successor:
+
+    ⊥        :=  0 = S 0
+    A → B    :=  Q_y sel(y, A, B)
+    A ∧ B    :=  Q_y gate(y, sel(par y, A, B))      par = parity iterator
+    ∃x A     :=  D_{x,y} gate(y, A(x))
+    A ∨ B    :=  ∃v sel(v, A, B)
+    ∀x A     :=  A(0) ∧ Q_y A(y)
+
+Build with one module per invocation, for example
+
+    $env:LAKE_JOBS = '1'; $env:LEAN_NUM_THREADS = '0'
+    lake build +ConciseIPRA.NativeBiInterpretation
