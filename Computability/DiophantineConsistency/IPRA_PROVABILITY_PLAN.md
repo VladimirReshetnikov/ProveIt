@@ -7395,9 +7395,18 @@ from all the residuals; an earlier partial assignment does not satisfy the
 complete equation. The replay uses existing source theorem statements as
 external mathematical inputs and has not been formalized for this graph in
 Lean or connected internally to iPRA or the PDF.
+The reviewed [residue-guard reparameterization](research/ordinary14-residue-guard86/README.md)
+removes one multiplication, giving 14 positive variables, 86 operations and
+exact degree 26. At the authenticated ports its positive-zero existence is
+equivalent to the 87-operation graph's; the forward witness map uses the
+reviewed calibration's power bound. This is an external standard-arithmetic
+result with the same inherited Lean and file-binding limitations.
 The source-reviewed [87-operation Lean graph and decoder-route draft](research/ordinary14-shifted-guard87-lean-draft/README.md)
 records the fact-level replay needed for arbitrary models. It is uncompiled;
 the graph-specific model lemmas, parent bridges and iPRA endpoint remain open.
+Three source-reviewed [fact-level model lemma drafts](research/ordinary14-shifted-guard87-fact-lemmas-draft/README.md)
+isolate quotient orientation and rank divisibility behind explicit hypotheses.
+They have not been elaborated or connected to the graph.
 An experimental [82-operation C-guard graph](research/ordinary14-c-guard82-probe/README.md)
 omits the transport congruence and has a twice-reviewed symbolic positive zero
 at the actual compact44 ports where that congruence fails. Subject to the
