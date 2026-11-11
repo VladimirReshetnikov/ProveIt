@@ -7297,6 +7297,12 @@ Package 73's thirteen-positive 30 / 92 followed
 data (`P73Converse`), because a literal zero supplies only an ordinary strong
 index. Package 74 evaluates the same polynomial in 93 operations.
 
+An externally reviewed [triangular residual transformation](research/ordinary13-p72-triangular97-50/README.md)
+reduces a 98-operation, degree-28 P72 parent to 96 operations at exact degree
+50, treating the derived fixed `L²` as a free leaf. Its same-input zero
+equivalence is an external calculation; the existing 93-operation, degree-34
+P13 form dominates it on both measures. No new Lean or file binding is claimed.
+
 Package 62's thirteen-positive 114 / 83 followed
 ([`Compact44/IPRAPositive62`](Lean/DiophantineConsistency/Compact44/IPRAPositive62.lean),
 [record](research/thirteen-p62-endpoint/README.md)). Its signed index step uses
