@@ -7358,6 +7358,16 @@ same `q` and rank, while allowing different parent witnesses. Thus the remaining
 candidate-to-parent existence implication is equivalent, in standard
 arithmetic, to existence of a parent zero. The 86/26 graph is not an established
 replacement for the parent or for the 14-variable PDF equation.
+An independently reviewed [guarded fold](research/ordinary14-guarded-fold89-26/README.md)
+adds a positive input equal to `Bt` and gives a 14-positive-variable graph
+with 89 live operations and exact degree 26. For `β > 0` and
+`0 ≤ K0 < (β+1)²`, including the authenticated ports, its positive-zero
+existence is equivalent to the 13-variable 88/30 parent's. This is an
+external witness transformation and degree check; it inherits the parent's
+endpoint and ancestry limitations and does not supply a Lean/iPRA or PDF
+binding theorem. It is a numerical improvement over the recorded
+14-variable 92/26 point and trades operations for degree against the
+14-variable 65/150 PDF equation; the encodings differ.
 Two reviewed [full toy-port zeros](research/ordinary13-folded-root86-negated-full-zero-window/README.md)
 show that this scalar-shift criterion can fail even when all candidate
 residuals vanish; one uses four positive ports. Neither uses the actual
@@ -7368,6 +7378,10 @@ cannot be repaired to a positive parent zero while retaining its rank and
 the other ten inputs, even if both scalar inputs and the first coordinate
 change. This still permits other witness changes and does not decide the
 compact44 instance.
+An independently reviewed [bounded residual-shear obstruction](research/ordinary13-88-residual-shear-obstruction/README.md)
+shows that a specified family of integer-polynomial combinations cannot
+lower the degree of the 88/30 graph's first residual. Its coefficient and
+degree bounds are essential; it is not a global size or degree lower bound.
 The independently reviewed [calibration dependency and partial actual-port assignment](research/ordinary13-folded-root86-calibration-obstruction/README.md)
 shows where the existing source uses the old first coordinate's positivity.
 Its negative-`Bt` assignment satisfies the first residual at the authenticated
