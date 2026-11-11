@@ -1,0 +1,13 @@
+from pathlib import Path
+import hashlib,json,subprocess,sys
+root=Path(__file__).resolve().parents[2];r=root/'research';p=r/'current14-wang942core-staged-check';old=r/'current14-coherent-extension-refactor-retry04-runner'
+pins={'run.py':'a9af3857b575f4be83ceaa5100fdb434406898142cce891648e797380cfd33a8','plan.json':'35d5de9f7cd145aaaa9a6f1e847b1ae60d49b8a3c4da7f1f6c3d3162f802a324','monitor.py':'5d4f035c4acc9f2b07c25c5a35f3b1ab147f4f894a4ec1a912ffc33ac2e264b0','controls.py':'4da54f274e38634555018d39351d2d9940ef312cb15265d4789537b67a5bba9a','Wang942CoreAudit.lean':'f9d529665a5303be8b2b5df768462aaf10e8843b10c7b3cc4927c9dafb05211d'}
+for n,h in pins.items():assert hashlib.sha256((p/n).read_bytes()).hexdigest()==h,n
+assert (p/'plan.json').read_bytes()==(old/'plan.json').read_bytes() and (p/'monitor.py').read_bytes()==(old/'monitor.py').read_bytes()
+plan=json.loads((p/'plan.json').read_text());s=json.loads((old/'attempt01/state.json').read_text());assert s['status']=='FAILED' and len(s['rows'])==399 and s['rows'][-1]['module']=='DiophantineConsistency.WangTiles942Core' and s['rows'][-1]['compile']['exit']==-6
+assert [x['module'] for x in s['rows'][:398]]==[e['module'] for e in plan['entries'][:398]] and all(x['compile']['exit']==x['deps']['exit']==0 and x['compile']['stop_reason'] is None and x['deps']['stop_reason'] is None for x in s['rows'][:398]);assert len(s['base_links'])==1000
+assert plan['entries'][398]['module']=='DiophantineConsistency.WangTiles942Core' and plan['entries'][398]['imports']==['DiophantineConsistency.WangTiles942TableData','DiophantineConsistency.WangTiles942Data','Mathlib.Tactic']
+client=(p/'Wang942CoreAudit.lean').read_text();assert client=='import DiophantineConsistency.WangTiles942Core\n#print axioms DiophantineConsistency.WangTiles942.transitionRow_eq_decoded\n#print axioms DiophantineConsistency.WangTiles942.row_indices_nodup\n#print axioms DiophantineConsistency.WangTiles942.all_rows_tight\n#print axioms DiophantineConsistency.WangTiles942.physicalPosition_eq_printed\n'
+subprocess.run([sys.executable,'-I','-S','-B',str(root/'reviews/current14-coherent-extension-refactor-retry04-failure-independent/check.py')],check=True,stdout=subprocess.DEVNULL)
+subprocess.run([sys.executable,'-I','-S','-B',str(root/'reviews/current14-wang942core-staged-source-independent/check.py')],check=True,stdout=subprocess.DEVNULL)
+print(json.dumps({'status':'PASS_PRELAUNCH_REVIEW','provider_parent':'FAILED','individually_successful_children':398,'probe_stages':4,'lean_run':False,'scope':'Point-provider observation; no coherent rebuild established'},indent=2))
