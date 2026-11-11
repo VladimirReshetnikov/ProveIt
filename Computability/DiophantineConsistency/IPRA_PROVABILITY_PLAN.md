@@ -7316,7 +7316,10 @@ no new Lean or file-binding theorem is claimed. Comparisons with P73 are
 numerical because the witness encodings differ.
 An externally reviewed [86-operation, degree-26 folded-root probe](research/ordinary13-folded-root86-probe/README.md)
 is related by an exact integer-coordinate bijection, but each positive-domain
-direction requires a separate unproved sign condition. An independently
+direction initially required a separate sign condition. An independently
+reviewed [positive 86-to-88 transfer](research/ordinary13-folded-root86-positive-reverse/README.md)
+now proves one direction for `β > 0`; the opposite existence implication
+remains open. An independently
 reviewed [full toy-port zero](research/ordinary13-folded-root86-toy-full-zero/README.md)
 has both transformed root choices negative with the other coordinates fixed;
 it does not settle the actual-port or unrestricted existence question. The
