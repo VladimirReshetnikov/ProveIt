@@ -7368,6 +7368,12 @@ endpoint and ancestry limitations and does not supply a Lean/iPRA or PDF
 binding theorem. It is a numerical improvement over the recorded
 14-variable 92/26 point and trades operations for degree against the
 14-variable 65/150 PDF equation; the encodings differ.
+An independently reviewed [quotient-guarded fold](research/ordinary14-guarded-fold88-26/README.md)
+absorbs the guarded quotient into the first-root input and reduces that point
+to 14 positive variables, 88 operations and exact degree 26. Under the same
+verified port bounds, its positive-zero existence is equivalent to the
+13-variable 88/30 parent's. This is an external proof with the same inherited
+Lean, ancestry and file-binding limitations; it is not a global optimum.
 The reviewed [guard-reuse exclusions](research/ordinary14-guarded-fold89-reuse-exclusions/README.md)
 show that setting the guard input equal to `F`, `α`, `J` or the signed first
 input would eliminate positive zeros under the stated port bounds. This does
