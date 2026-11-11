@@ -142,12 +142,14 @@ examples settles unrestricted existential equivalence.
 An externally reviewed [positive-zero lemma](research/current14-carrier65-positive-v/README.md)
 establishes `V > 0` for the maintained equation using its transport factor.
 A related [free-Pell-gap proposal](research/current14-carrier64-free-pell-gap-toy-zero/README.md)
-has a reviewed toy-port zero that obstructs its natural same-coordinate reverse
-map; the current-port and unrestricted existential questions remain open.
+has reviewed toy-port and [actual-port symbolic positive zeros](research/current14-free-gap-current-full-zero/README.md)
+that obstruct its natural same-coordinate reverse map. The unrestricted
+existential-equivalence question remains open.
 An independently reviewed [seed characterization](research/free-pell-gap-seed-characterization/README.md)
 reduces ordinary positive-zero existence for that proposal to its first, main
-and transport factors being simultaneously 1. It does not supply a seed at
-the current ports or establish equivalence with the maintained equation.
+and transport factors being simultaneously 1; it does not establish
+equivalence with the maintained equation. The actual-port zero is an external
+symbolic construction, not a Lean or PDF theorem.
 
 ## Sign14 proof transfer and fixed-constant work
 
