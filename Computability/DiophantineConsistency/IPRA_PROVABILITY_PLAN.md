@@ -7425,6 +7425,9 @@ the inherited source, model-proof and file-binding limitations.
 The independently source-reviewed [84-operation Lean draft](research/ordinary14-qcube84-lean-draft/README.md)
 records the Mersenne and model-level obligations. It is uncompiled and does
 not establish the new graph's iPRA endpoint.
+The [79-operation Lean graph and model-route draft](research/ordinary14-direct-pell79-lean-draft/README.md)
+has also passed source review; its factor-cancellation and positive-root maps
+still require model-level proofs and elaboration.
 The source-reviewed [87-operation Lean graph and decoder-route draft](research/ordinary14-shifted-guard87-lean-draft/README.md)
 records the fact-level replay needed for arbitrary models. It is uncompiled;
 the graph-specific model lemmas, parent bridges and iPRA endpoint remain open.
