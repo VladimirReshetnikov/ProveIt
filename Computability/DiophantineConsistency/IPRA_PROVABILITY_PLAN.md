@@ -139,6 +139,11 @@ An independent [free-`k,c` 63-operation proposal](research/current14-carrier63-f
 also has a reviewed symbolic positive zero at the current ports; its direct
 inverse violates the original positive-coordinate interval. None of these
 examples settles unrestricted existential equivalence.
+An externally reviewed [positive-zero lemma](research/current14-carrier65-positive-v/README.md)
+establishes `V > 0` for the maintained equation using its transport factor.
+A related [free-Pell-gap proposal](research/current14-carrier64-free-pell-gap-toy-zero/README.md)
+has a reviewed toy-port zero that obstructs its natural same-coordinate reverse
+map; the current-port and unrestricted existential questions remain open.
 
 ## Sign14 proof transfer and fixed-constant work
 
