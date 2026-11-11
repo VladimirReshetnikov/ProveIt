@@ -1,0 +1,12 @@
+from pathlib import Path
+import hashlib,json,subprocess,sys
+root=Path(__file__).resolve().parents[2];r=root/'research';p=r/'current14-coherent-extension-refactor-retry03-runner';old=r/'current14-coherent-extension-refactor-retry02-runner';part=r/'current14-splitgeometry59-quadratic-partition-check'
+pins={'run.py':'effb0feaeb46c8883695f891bb9aeec33c2be723fc4074e96b40212239b0b74c','plan.json':'4b3d8c392c4519a392df15fdf2f99bd441d74c1d986ac580f399a8e7d2e49705','monitor.py':'5d4f035c4acc9f2b07c25c5a35f3b1ab147f4f894a4ec1a912ffc33ac2e264b0','controls.py':'4da54f274e38634555018d39351d2d9940ef312cb15265d4789537b67a5bba9a','Current14CoherentAudit.lean':'b490d50244da4088a3258f290535aceb8b75e89b8cf030277be4cc15e32bf64e'}
+for n,h in pins.items():assert hashlib.sha256((p/n).read_bytes()).hexdigest()==h,n
+assert (p/'monitor.py').read_bytes()==(old/'monitor.py').read_bytes() and (p/'Current14CoherentAudit.lean').read_bytes()==(old/'Current14CoherentAudit.lean').read_bytes()
+a=json.loads((old/'plan.json').read_text());b=json.loads((p/'plan.json').read_text());A={e['module']:e for e in a['entries']};B={e['module']:e for e in b['entries']};target='DiophantineConsistency.SplitGeometry59';audit='DiophantineConsistency.SplitGeometry59Audit';assert len(A)==522 and len(B)==523 and all(A[n]==B[n] for n in A if n!=target) and a['external_direct']==b['external_direct'] and len(b['external_direct'])==99
+names=list(B);assert [n for n in names if n!=audit]==list(A) and names[names.index(target)+1]==audit
+assert B[target]==dict(A[target],source='Computability/DiophantineConsistency/research/current14-splitgeometry59-quadratic-partition-draft/SplitGeometry59.lean',source_sha256='191c880fd6543e036c832333073aada2720c5f4b0f014ada4bc2c15e5400700e')
+assert B[audit]['imports']==[target] and B[audit]['source_sha256']==hashlib.sha256((part/'SplitGeometry59Audit.lean').read_bytes()).hexdigest() and B[audit]['origin']=='partition-audit';assert sum(e['old_parent_status']=='FAILED' for e in b['entries'])==7
+subprocess.run([sys.executable,'-I','-S','-B',str(root/'reviews/current14-splitgeometry59-quadratic-partition-terminal-independent/check.py')],check=True,stdout=subprocess.DEVNULL)
+print(json.dumps({'status':'PASS_PRELAUNCH_REVIEW','plan_stages':523,'endpoint_audit':1,'source_refactors':9,'prior_failed_parent_children':7,'lean_run':False,'scope':'Refactored coherent guard; completion and transitive package ancestry unproved'},indent=2))

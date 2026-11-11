@@ -1,0 +1,9 @@
+# Coherent extension with nine audited proof refactors
+
+This fresh isolated rebuild retains the audited 490-project-stage order and recompiles all seven successful children of failed prior parents. It inserts 32 audited K215 helpers and a SplitGeometry59 axiom-report client. It uses nine independently reviewed source-level proof refactors: `KSource215Data`, `KSource215FwdCheck09`–`15`, and `SplitGeometry59`; all other 481 project entries must match the original plan. Original project files remain untouched. This is **not a byte-identical original-source rebuild**. Prior proof clients do not imply this full build succeeds.
+
+The guard rebuilds 523 project/helper/audit stages plus the final three-report endpoint audit client over the authenticated 1,000-module base. Direct object/companion routes, source hashes and stage reports are rechecked. External package-transitive/dynamic ancestry, between-sample changes and raw TeX/PDF binding remain limitations. This does not itself prove either side of the endpoint biconditional.
+
+Caps unchanged: 4 GiB sampled child RSS, `lean -M3600 -j1 -DElab.async=false`, 180 seconds per child, 10 GiB available host memory, 5.1 GB sampled disk stop and six-hour global trigger. Forced receipt, log hashing and cleanup may finish later. No existing artifacts are deleted. Controls and preflight do not run Lean; independent prelaunch and slot allocation are required.
+
+Attempt01 failed: outer session 63737 exited 1 at stage 418 (`CurrentAuxiliaryOrder2011`), where Lean reported kernel excessive memory at `generator_order_succ`. The first 417 stages passed, including the partitioned SplitGeometry59 and quoted-prefix translated endpoint. The monitor did not stop the child; no later stages, final audit client or postflight ran. The [independent failure audit](../../reviews/current14-coherent-extension-refactor-retry03-failure-independent/) verifies the frozen evidence. The coherent rebuild remains incomplete.
