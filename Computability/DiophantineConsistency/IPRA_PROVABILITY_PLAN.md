@@ -7381,8 +7381,16 @@ A source-reviewed [89-operation Lean graph and model-route draft](research/ordin
 records reusable divisibility and Pell lemmas and the missing signed-root,
 model-transfer and port-bound obligations. It remains uncompiled: matching
 graph rows and theorem signatures does not establish elaboration, a witness
-equivalence, or an iPRA endpoint. A separate 88-operation adaptation is in
-source review.
+equivalence, or an iPRA endpoint.
+A corresponding [88-operation Lean graph and route draft](research/ordinary14-guarded-fold88-lean-draft/README.md)
+has also passed source review. It remains uncompiled and has the same
+model-transfer and endpoint gaps, including its graph-specific positivity
+argument.
+The reviewed [87-operation shifted-guard probe](research/ordinary14-shifted-guard87-probe/README.md)
+has exact degree 26, but its reverse positive-zero implication remains open.
+An actual-port partial assignment does not satisfy the complete equation;
+it shows only that a required rank window does not follow from the guard and
+first norm alone. This probe is not an established replacement.
 The reviewed [guard-reuse exclusions](research/ordinary14-guarded-fold89-reuse-exclusions/README.md)
 show that setting the guard input equal to `F`, `α`, `J` or the signed first
 input would eliminate positive zeros under the stated port bounds. This does
