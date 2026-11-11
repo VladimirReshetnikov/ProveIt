@@ -1,0 +1,9 @@
+# Coherent extension with audited K215 proof refactors
+
+This fresh isolated rebuild retains the audited 490-project-stage order and recompiles all seven successful children of failed prior parents. It inserts 18 audited K215 well-formedness helpers and 14 subtree helpers for forward checks 09–15. It uses eight independently reviewed source-level proof refactors: `KSource215Data` and `KSource215FwdCheck09` through `15`; all other 482 project entries must match the original plan. Original project files remain untouched. This is **not a byte-identical original-source rebuild**. Prior proof clients do not imply this full build succeeds.
+
+The guard rebuilds 522 project/helper stages plus a three-report audit client over the authenticated 1,000-module base. Direct object/companion routes, source hashes and stage reports are rechecked. External package-transitive/dynamic ancestry, between-sample changes and raw TeX/PDF binding remain limitations. This does not itself prove either side of the endpoint biconditional.
+
+Caps unchanged: 4 GiB sampled child RSS, `lean -M3600 -j1 -DElab.async=false`, 180 seconds per child, 10 GiB available host memory, 5.1 GB sampled disk stop and six-hour global trigger. Forced receipt, log hashing and cleanup may finish later. No existing artifacts are deleted. Controls and preflight do not run Lean; independent prelaunch and slot allocation are required.
+
+Attempt01 failed: outer session 43319 exited 1 at stage 125 (`SplitGeometry59`), where Lean reported kernel excessive memory while deciding `quadratic_cross_near`. The first 124 stages passed, including KSource215 and all forward certificate checks. The monitor did not stop the child; no later stages, audit client or postflight ran. The [independent failure audit](../../reviews/current14-coherent-extension-refactor-retry02-failure-independent/) verifies the frozen evidence. The coherent rebuild remains incomplete.
