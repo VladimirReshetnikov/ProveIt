@@ -1,0 +1,12 @@
+from pathlib import Path
+import hashlib,json,subprocess,sys
+root=Path(__file__).resolve().parents[2];r=root/'research';p=r/'current14-coherent-extension-refactor-retry04-runner';old=r/'current14-coherent-extension-refactor-retry03-runner';aux=r/'current14-auxiliary-order-generic-cast-check'
+pins={'run.py':'4ee175d2bbafac5714746bed7edf3131b98ab7dd002a96f049a7dab13ec8468e','plan.json':'35d5de9f7cd145aaaa9a6f1e847b1ae60d49b8a3c4da7f1f6c3d3162f802a324','monitor.py':'5d4f035c4acc9f2b07c25c5a35f3b1ab147f4f894a4ec1a912ffc33ac2e264b0','controls.py':'4da54f274e38634555018d39351d2d9940ef312cb15265d4789537b67a5bba9a','Current14CoherentAudit.lean':'b490d50244da4088a3258f290535aceb8b75e89b8cf030277be4cc15e32bf64e'}
+for n,h in pins.items():assert hashlib.sha256((p/n).read_bytes()).hexdigest()==h,n
+assert (p/'monitor.py').read_bytes()==(old/'monitor.py').read_bytes() and (p/'Current14CoherentAudit.lean').read_bytes()==(old/'Current14CoherentAudit.lean').read_bytes()
+a=json.loads((old/'plan.json').read_text());b=json.loads((p/'plan.json').read_text());A={e['module']:e for e in a['entries']};B={e['module']:e for e in b['entries']};target='DiophantineConsistency.CurrentAuxiliaryOrder2011';audit='DiophantineConsistency.AuxiliaryOrderAudit';assert len(A)==523 and len(B)==524 and all(A[n]==B[n] for n in A if n!=target) and a['external_direct']==b['external_direct'] and len(b['external_direct'])==99
+names=list(B);assert [n for n in names if n!=audit]==list(A) and names[names.index(target)+1]==audit
+assert B[target]==dict(A[target],source='Computability/DiophantineConsistency/research/current14-auxiliary-order-generic-cast-draft/CurrentAuxiliaryOrder2011.lean',source_sha256='1e173faa98191542bbd0c2853eb7065b2b30719137d6b1f315b0e09da9bf5974')
+assert B[audit]['imports']==[target] and B[audit]['source_sha256']==hashlib.sha256((aux/'AuxiliaryOrderAudit.lean').read_bytes()).hexdigest() and B[audit]['origin']=='auxiliary-audit';assert sum(e['old_parent_status']=='FAILED' for e in b['entries'])==7
+subprocess.run([sys.executable,'-I','-S','-B',str(root/'reviews/current14-auxiliary-order-generic-cast-terminal-independent/check.py')],check=True,stdout=subprocess.DEVNULL)
+print(json.dumps({'status':'PASS_PRELAUNCH_REVIEW','plan_stages':524,'endpoint_audit':1,'source_refactors':10,'prior_failed_parent_children':7,'lean_run':False,'scope':'Refactored coherent guard; completion and transitive package ancestry unproved'},indent=2))
