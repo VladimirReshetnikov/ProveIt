@@ -1,0 +1,3 @@
+import DiophantineConsistency.CurrentAuxiliaryOrder2011
+#print axioms DiophantineConsistency.CurrentAuxiliaryOrder2011.generator_order_succ
+#print axioms DiophantineConsistency.CurrentAuxiliaryOrder2011.generator_order
