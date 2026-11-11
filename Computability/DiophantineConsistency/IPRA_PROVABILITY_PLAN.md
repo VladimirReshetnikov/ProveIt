@@ -222,7 +222,9 @@ equals the expression over every commutative ring](research/nine-sharing-sign14-
 as confirmed by an [independent terminal audit](reviews/nine-sharing-sign14-positive74-circuit-output-terminal-independent/README.md).
 An independently reviewed [local rewrite search](research/nine-sharing-sign14-positive74-local-search/README.md)
 found no smaller circuit in its tested one- and two-gate families, including
-31 residual-sign variants. It does not establish minimality.
+31 residual-sign variants. A separate [triple-quadratic screen](research/nine-sharing-sign14-positive74-triple-quadratic-search/README.md)
+also found no reduction in its tested positive-definite forms. Neither search
+establishes minimality.
 The [all-model
 polynomial bridge](research/nine-sharing-sign14-positive74-ipra-bridge-check/README.md)
 and the [native, standard and translated iPRA endpoints](research/nine-sharing-sign14-positive74-ipra-endpoint-check/README.md)
