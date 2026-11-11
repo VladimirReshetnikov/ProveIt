@@ -1,0 +1,9 @@
+# Independent review of the auxiliary-factor shear
+
+The source-only argument passes review. The pinned maintained and incoming graphs have the same 65 topologically ordered, live operations and the four authenticated port values are positive. The author receipt reproduces byte for byte. A separately constructed schedule verifies the stated `h=1` shear uses 67 live gates.
+
+For positive original coordinates, `Delta>0`. Factoring either the original or sheared output as `Delta*(N0*N1*Na*Nt*Ns-1)` forces the integer factor `Na` to be a unit at a zero. For all integer S,V,y, `Na = y² + S²(V²−y²)` is congruent modulo 4 to y² when S is even and to V² when S is odd. It cannot be −1, so `Na=1` at either zero. The difference formula then proves both implications pointwise. In the reverse implication the substituted z′ need only be an integer: the anchor and all other factors are independent of z, so no positivity of z′ is required.
+
+The direct-alias argument also holds as stated. With `S=i*Delta*c²`, `1−S²` is a nonzero nonunit of the integer polynomial ring because it has positive i-degree, and it is coprime to S². Since Na−1 has y-degree two and leading coefficient `1−S²`, for y-free t and nonzero polynomial h, `t+h*(Na−1)` has y-degree `deg_y(h)+2`. The four y-dependent preaggregation gates all have degree two; coefficient comparison excludes the first three, while equality with Na requires exactly h=1 and t=1. This does not exclude coordinated rewrites, new shared nodes, constrained-domain identities or a smaller circuit.
+
+This is external source and mathematical review, not a new Lean proof or TeX/PDF binding. From the repository root run `python3 -I -S -B Computability/DiophantineConsistency/reviews/current2011-carrier65-na-shear-obstruction-independent/check.py` to reproduce the finite checks.
