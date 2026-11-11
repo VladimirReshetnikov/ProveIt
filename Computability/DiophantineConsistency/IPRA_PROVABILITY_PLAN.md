@@ -60,7 +60,9 @@ The [eight-refactor rebuild attempt](research/current14-coherent-extension-refac
 passed 124 stages, then Lean exhausted its kernel memory limit in
 `SplitGeometry59`; its [failure audit](reviews/current14-coherent-extension-refactor-retry02-failure-independent/README.md)
 confirms the monitor did not trigger the stop. A proposed 22-way split has
-passed source review but has not been compiled.
+since [compiled in a fresh prefix](research/current14-splitgeometry59-quadratic-partition-check/README.md)
+and passed [independent terminal audit](reviews/current14-splitgeometry59-quadratic-partition-terminal-independent/README.md).
+The complete coherent extension using this ninth proof refactor remains open.
 
 The [65-gate graph-to-expression theorem](research/current14-carrier65-dag-expression-retry-check/README.md)
 now checks an explicit live circuit for the maintained Lean expression, with
