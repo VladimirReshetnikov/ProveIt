@@ -7368,6 +7368,10 @@ endpoint and ancestry limitations and does not supply a Lean/iPRA or PDF
 binding theorem. It is a numerical improvement over the recorded
 14-variable 92/26 point and trades operations for degree against the
 14-variable 65/150 PDF equation; the encodings differ.
+The reviewed [guard-reuse exclusions](research/ordinary14-guarded-fold89-reuse-exclusions/README.md)
+show that setting the guard input equal to `F`, `α`, `J` or the signed first
+input would eliminate positive zeros under the stated port bounds. This does
+not exclude a different positive-coordinate encoding or guard.
 Two reviewed [full toy-port zeros](research/ordinary13-folded-root86-negated-full-zero-window/README.md)
 show that this scalar-shift criterion can fail even when all candidate
 residuals vanish; one uses four positive ports. Neither uses the actual
