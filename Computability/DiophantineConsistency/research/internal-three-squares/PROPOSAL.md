@@ -63,5 +63,21 @@ and with it `budget`. Then completeness would only need **one** representable bu
 family, not the general theorem, if the budget's polynomial form gives an explicit
 decomposition for suitable `T`.
 
-This has not been examined. It can be checked numerically before any Lean, on the five packages'
-budget formulas and the canonical constructions. If it works, it replaces the whole campaign.
+Examined 2026-11-11 for packages 132 and 194; it does not remove the obstruction:
+
+* **132** (`lowdegree/PROOF.md` §§ 1, 7). `budget = Y² B0 − k² q⁸` with
+  `B0 = k²(q² − Derr) − 4q²η²`.
+  * In the canonical family `Y = M_bin/2` is fixed by the run, and so are `k`, `η` and `Derr`.
+    The only freedom left is the halting time.
+  * No identity writes `4·budget − 3` as three squares.
+  * Forcing it, for example by choosing `T` to make `4·budget − 3` a prime `≡ 1 (mod 4)` (two
+    squares by `ZRows.ModelFermat`), would need a prime-producing argument stronger than
+    Dirichlet.
+  * The package's own proof also uses the three-square theorem to restore its predecessor's guard
+    (§ 6). A direct Lean soundness proof, as for 113, does not need that.
+* **194** (`roots/PROOF.md` §§ 1, 5). The guard is `G = budget − [1 + p₂² + p₃(p₃+1)]`, but its
+  completeness sets `G = p1_old²` (root extraction). So it needs the same
+  `budget − 1 = p₁² + p₂² + p₃(p₃+1)`.
+
+Packages 121, 153 and 179 have the same `Pos` form or inherit it. The general theorem, at least
+for `N ≡ 1 (mod 4)`, is therefore required.
