@@ -1,0 +1,5 @@
+# Independent review: actual-port scalar fixed point
+
+The checker independently authenticates all four compressed and raw port payloads against the pinned graph and verifies the graph's q, rank and transport operations. It recomputes the ordinary remainder F=C(K+1) mod β, confirms it is nonzero, and checks F, alpha and C are positive. The exact F and R hashes, R≡3 mod 4, R≡0 mod B and R≥2B reproduce. Since β=2^B−1, w=2^(R−B)≡1 mod β. Therefore z=1+((K+w)C−F)/β is integral; w≥q>F makes it positive, and direct substitution gives Nt=1. The enormous w is not expanded.
+
+For the specified canonical Y, the central binomial coefficient satisfies v₂(binomial(2N,N))=popcount(N). After division by two its valuation is popcount(N)−1=282615. All other summands are divisible by 2^(R−1), whose exponent is larger, so no cancellation changes that valuation. Since v₂(q³)=3B=283551, this particular Y cannot be q³ times an integer; the deficit is 936. Other choices of first/main indices, X or scalars are not ruled out. This is a scalar-only external check, not a full candidate zero, Lean theorem or PDF result.
