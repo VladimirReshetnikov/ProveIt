@@ -58,6 +58,26 @@ quantifiers are macros over `D` built from the selector
 `C(v, a, b) := I(v, a; u.b)`, and numerical case distinction and induction for
 equations are derived rules.
 
+**Two rules can be weakened.** The Lean kernel (see
+[Lean formalization](#lean-formalization)) takes weaker forms of Tr and of DI
+by progress as primitive, and proves that the derivable sequents are the same
+(`iprf_iff_nprf`):
+
+| Rule | Premises | Conclusion |
+| --- | --- | --- |
+| Tr, equational | `Γ ⊢ s = t`, `Γ ⊢ a(s) = b(s)` | `Γ ⊢ a(t) = b(t)` |
+| QI, progress | `Γ, E(z) ⊢ E(S z)` with `z` fresh, `E` a literal equation | `Γ ⊢ Q_y E(y)` |
+
+- *Equational transport.* Transport never has to look inside a `Q` or a `D`:
+  for a compound template it follows by induction on the template from QE,
+  DE, DI by cases and symmetry. Equality reasoning in the kernel is purely
+  equational.
+- *Direct closure.* Progress introduces the closure `Q_y E(y)` itself, with
+  no existential witness and one bound variable fewer; the witnessed rule
+  follows by QE and DI by cases. This is the proposal of
+  [`direct_closure`](Research/direct_closure/) and
+  [`direct_closure_qprogress`](Research/direct_closure_qprogress/).
+
 **Ordinary realization.** `T_eq` is intuitionistic first-order logic with
 equality over the same terms, with the two computation equations, coverage
 `∀x (x = 0 ∨ ∃y x = S y)`, separation `0 = S 0 → ⊥`, and induction for literal
@@ -157,10 +177,12 @@ formalizes three systems and proves them mutually bi-interpretable:
 
 1. **The native scalar core** (`Native`): the calculus of
    [The native scalar core](#the-native-scalar-core), deeply embedded.
-   Formulas are `s = t`, `Q_y B` and `D_{x,y} B` only, and derivability
-   `NPrf Γ A` has exactly the rules of the table above: Hyp, Tr, QE, DE, the
-   two DI rules and the two computation equations. There are no connectives
-   and no structural rules.
+   Formulas are `s = t`, `Q_y B` and `D_{x,y} B` only. Derivability
+   `NPrf Γ A` has eight rules: Hyp, the two computation equations,
+   equational Tr, QE, DE, DI by cases and QI by progress. There are no
+   connectives and no structural rules. The calculus exactly as the reports
+   state it, with Tr in arbitrary templates and the witnessed DI by progress,
+   is `IPrf` (`NativeInherited`); the two derive the same sequents.
 2. **`T_eq`** (`Scalar`): intuitionistic natural deduction with equality
    over the iterator terms, with the axioms listed under *Ordinary
    realization*.
@@ -178,6 +200,8 @@ formalizes three systems and proves them mutually bi-interpretable:
 | | `teq_iff_pra`, `pra_iff_teq` | each theory proves a sequent iff the other proves its translation |
 | | `teq_roundTrip`, `pra_roundTrip` | every formula is provably equivalent to its round trip |
 | | `teq_consistent_iff` | equiconsistency |
+| kernel = reports' calculus | `iprf_iff_nprf : IPrf Γ A ↔ NPrf Γ A` | equational Tr and QI by progress derive the same sequents as Tr in arbitrary templates and witnessed DI by progress |
+| | `NPrf.tr`, `NPrf.dIProg` | the two inherited rules as derived rules of the kernel |
 | native → `T_eq` | `NPrf.sound` | `NPrf Γ A → Γ.map toFm ⊢[TeqAx] A.toFm` for the ordinary readings of `Q` and `D` |
 | `T_eq` → native | `NPrf.ofPrf` | `Γ ⊢[TeqAx] φ → NPrf (Γ.map ofFm) (ofFm φ)`, where `ofFm` replaces each connective by its native macro |
 | native = `T_eq` | `NPrf.iff_teq`, `Teq.iff_native` | faithfulness of both readings |
@@ -199,7 +223,8 @@ no `native_decide`.
 | theories | `Scalar`, `PR`, `Native` | `T_eq`, iPRA, the native calculus and its soundness |
 | `T_eq` arithmetic | `Lindenbaum`, `TeqArith`, `TeqParity`, `TeqCompare`, `TeqPred`, `TeqEq`, `TeqReflect`, `TeqOrder`, `TeqPair`, `TeqRec` | predecessor, reflection of equality into a term, quantifier-free induction, pairing, compilation of primitive recursion |
 | `T_eq` ≡ iPRA | `ScalarToPRA`, `PRAToScalar`, `RoundTripScalar`, `RoundTripPRA`, `BiInterpretation` | the two interpretations and their composites |
-| native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, Leibniz, equation induction; selector and gate formulas |
+| native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, interderivability over a context, Leibniz and transport in every template, equation induction; selector and gate formulas |
+| kernel comparison | `NativeInherited` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf` |
 | native logic | `NativeLogic` | `⊥`, `→`, `∧`, `∨`, `∃`, `∀` as native macros with all their natural deduction rules |
 | native ≡ `T_eq` ≡ iPRA | `NativeTranslate`, `NativeComposite`, `NativeRoundTrip`, `NativeBiInterpretation` | translation of derivations, both round trips, the composite with `biInterp` |
 

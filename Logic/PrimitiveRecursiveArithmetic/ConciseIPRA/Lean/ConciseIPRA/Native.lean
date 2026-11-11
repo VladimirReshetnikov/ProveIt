@@ -12,12 +12,20 @@ are generated from equations by two binders,
 In `D B` the variable `y` has index `0` and `x` has index `1`.
 
 There are no connectives and no logical axioms.  The inference rules are
-hypothesis, the two computation equations, transport along an equation in an
-arbitrary formula template, elimination of `Q`, elimination of `D`, and two
-introductions of `D`: by cases (any matrix) and by progress (literal equations
+hypothesis, the two computation equations, transport along an equation inside
+an equation, elimination of `Q`, elimination of `D`, introduction of `D` by
+cases (any matrix), and introduction of `Q` by progress (literal equations
 only).  Freshness side conditions of the informal presentation are expressed
 by de Bruijn scoping: a fresh variable is the new index `0` over a weakened
 context.
+
+Two rules are weaker than in the research reports, with the same derivable
+sequents (`NativeInherited`):
+
+* transport is purely equational; transport in an arbitrary formula template
+  is the derived rule `NPrf.tr` (`NativeEq`);
+* progress introduces `Q_y E(y)` directly; the reports' witnessed form, which
+  introduces `D_{x,y} E(x, y)`, is the derived rule `NPrf.dIProg`.
 
 `NFm.toFm` is the ordinary reading into first-order formulas over the same
 terms.
@@ -100,9 +108,12 @@ inductive NPrf : {n : ℕ} → List (NFm n) → NFm n → Prop
   /-- `I(S c, a; u.h) = h[I(c, a; u.h)/u]`. -/
   | iterSucc {n : ℕ} {Γ : List (NFm n)} (c a : Tm n) (h : Tm (n + 1)) :
       NPrf Γ (.eq (iter (succ c) a h) (Syn.subst (inst (iter c a h)) h))
-  /-- Tr: transport along an equation in any formula template. -/
-  | tr {n : ℕ} {Γ : List (NFm n)} (H : NFm (n + 1)) {s t : Tm n}
-      (h₁ : NPrf Γ (.eq s t)) (h₂ : NPrf Γ (H.subst (inst s))) : NPrf Γ (H.subst (inst t))
+  /-- Tr: transport along an equation inside an equation: from `s = t` and
+  `a(s) = b(s)` infer `a(t) = b(t)`. -/
+  | trEq {n : ℕ} {Γ : List (NFm n)} (a b : Tm (n + 1)) {s t : Tm n}
+      (h₁ : NPrf Γ (.eq s t))
+      (h₂ : NPrf Γ (.eq (Syn.subst (inst s) a) (Syn.subst (inst s) b))) :
+      NPrf Γ (.eq (Syn.subst (inst t) a) (Syn.subst (inst t) b))
   /-- QE: from `Q_y B(y)` and `B(0)` infer `B(t)`. -/
   | qE {n : ℕ} {Γ : List (NFm n)} {B : NFm (n + 1)} (t : Tm n)
       (h₁ : NPrf Γ (.Q B)) (h₂ : NPrf Γ (B.subst (inst zero))) : NPrf Γ (B.subst (inst t))
@@ -115,12 +126,12 @@ inductive NPrf : {n : ℕ} → List (NFm n) → NFm n → Prop
       (h : NPrf (((B.subst (up (inst t))).subst (inst zero)).shift :: Γ.map NFm.shift)
         ((B.subst (up (inst t))).subst (repl (succ (var 0))))) :
       NPrf Γ (.D B)
-  /-- DI by progress: from `E(t, z) ⊢ E(t, S z)` with `z` fresh infer
-  `D_{x,y} E`, for a literal equation `E` only. -/
-  | dIProg {n : ℕ} {Γ : List (NFm n)} (s₁ s₂ : Tm (n + 2)) (t : Tm n)
-      (h : NPrf ((NFm.eq s₁ s₂).subst (up (inst t)) :: Γ.map NFm.shift)
-        (((NFm.eq s₁ s₂).subst (up (inst t))).subst (repl (succ (var 0))))) :
-      NPrf Γ (.D (.eq s₁ s₂))
+  /-- QI by progress: from `E(z) ⊢ E(S z)` with `z` fresh infer
+  `Q_y E(y)`, for a literal equation `E` only. -/
+  | qIInd {n : ℕ} {Γ : List (NFm n)} (s₁ s₂ : Tm (n + 1))
+      (h : NPrf (NFm.eq s₁ s₂ :: Γ.map NFm.shift)
+        ((NFm.eq s₁ s₂).subst (repl (succ (var 0))))) :
+      NPrf Γ (.Q (.eq s₁ s₂))
 
 /-- Soundness of the native scalar core for its ordinary reading in `T_eq`. -/
 theorem NPrf.sound {n : ℕ} {Γ : List (NFm n)} {A : NFm n} (h : NPrf Γ A) :
@@ -129,9 +140,7 @@ theorem NPrf.sound {n : ℕ} {Γ : List (NFm n)} {A : NFm n} (h : NPrf Γ A) :
   | hyp h => exact .hyp (List.mem_map_of_mem h)
   | iterZero a h => exact Teq.iterZero a h
   | iterSucc c a h => exact Teq.iterSucc c a h
-  | tr H _ _ ih₁ ih₂ =>
-    rw [NFm.toFm_subst] at ih₂ ⊢
-    exact Prf.eqSubst1 _ ih₁ ih₂
+  | trEq a b _ _ ih₁ ih₂ => exact Prf.eqSubst1 (a ≐ b) ih₁ ih₂
   | qE t _ _ ih₁ ih₂ =>
     rw [NFm.toFm_subst] at ih₂ ⊢
     exact .allE t (.impE ih₁ ih₂)
@@ -144,13 +153,10 @@ theorem NPrf.sound {n : ℕ} {Γ : List (NFm n)} {A : NFm n} (h : NPrf Γ A) :
     refine .exI t ?_
     rw [Fm.subst_imp, Fm.subst_all, Fm.subst_inst, Tm.subst_zero]
     exact .impI (Teq.caseAll _ Prf.hyp0 ih)
-  | dIProg s₁ s₂ t _ ih =>
+  | qIInd s₁ s₂ _ ih =>
     simp only [List.map_cons, NFm.map_toFm_shift, NFm.toFm_subst, NFm.toFm_eq] at ih
-    rw [NFm.toFm_D]
-    refine .exI t ?_
-    rw [Fm.subst_imp, Fm.subst_all, Fm.subst_inst, Tm.subst_zero, NFm.toFm_eq, Fm.subst_eq]
-    rw [Fm.subst_eq] at ih
-    exact .impI (Teq.eqInd _ _ Prf.hyp0
+    rw [NFm.toFm_Q, NFm.toFm_eq]
+    exact .impI (Teq.eqInd s₁ s₂ Prf.hyp0
       (ih.weaken (List.cons_subset_cons _ (List.subset_cons_self _ _))))
 
 end LeanProofs.ConciseIPRA
