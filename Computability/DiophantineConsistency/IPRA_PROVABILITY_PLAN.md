@@ -7303,6 +7303,12 @@ fixed leaves. The latter improves the inspected 90-operation, degree-51
 record in degree. These are external graph and arithmetic checks, not new
 Lean endpoint or file-binding theorems; the authenticated P72 port payloads
 match the pinned P61 hashes, whose recorded physical paths are absent here.
+An independently reviewed [ordinary unit-pair construction](research/ordinary13-ordinary-pair88-46/README.md)
+also gives an 88-operation, degree-46 graph with the same integer zeros as its
+87-operation, degree-51 free-`J` parent. A separate 90-operation, degree-46
+variant uses the P73 parameterization; the encodings are not claimed
+pointwise equivalent. These are external graph and arithmetic results, with
+the parent endpoint's inherited provenance and file-binding limits.
 The [91-operation Lean bridge draft](research/ordinary13-p73-share91-lean-draft/README.md)
 has passed an [independent source/preflight review](reviews/ordinary13-p73-share91-lean-draft-independent/README.md).
 It remains uncompiled: the P73 provider closure and guarded runner are not
