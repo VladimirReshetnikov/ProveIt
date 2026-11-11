@@ -7348,14 +7348,15 @@ decides whether a particular family of shifts can repair the witness; it does
 not prove that the criterion holds for every candidate zero. The unrestricted
 reverse existence implication remains open. These are external arithmetic
 arguments, not new Lean/iPRA or equation-file binding theorems.
-A proposed [symbolic positive zero at the actual compact44 ports](research/ordinary13-folded-root86-negated-compact44-seed/README.md)
-has passed an initial mathematical review, but a collision between reviewer
-files left the committed review checker and receipt inconsistent. Its
-independent checker is being reconstructed, and a separate critical audit is
-in progress, so the full-zero claim remains provisional. The enormous witness
-uses finite CRT, binomial and Pell expressions; it is not expanded or
-formalized in Lean. The proposed same-`q`, same-rank parent obstruction would
-still allow different parent witnesses. The 86/26 graph is not an established
+A [symbolic positive zero at the actual compact44 ports](research/ordinary13-folded-root86-negated-compact44-seed/README.md)
+has passed two independent external reviews. A reviewer-file collision briefly
+left the first committed checker and receipt inconsistent; they were
+reconstructed and the receipt reproduced in a corrective commit. The enormous
+witness uses finite CRT, binomial and Pell expressions; it is not expanded or
+formalized in Lean. The reviews also rule out a positive parent zero with the
+same `q` and rank, while allowing different parent witnesses. Thus the remaining
+candidate-to-parent existence implication is equivalent, in standard
+arithmetic, to existence of a parent zero. The 86/26 graph is not an established
 replacement for the parent or for the 14-variable PDF equation.
 Two reviewed [full toy-port zeros](research/ordinary13-folded-root86-negated-full-zero-window/README.md)
 show that this scalar-shift criterion can fail even when all candidate
