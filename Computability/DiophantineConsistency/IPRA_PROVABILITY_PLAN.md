@@ -7296,6 +7296,13 @@ Package 73's thirteen-positive 30 / 92 followed
 95-operation free-J literal (`P73Halt`). Its converse is built from the halt
 data (`P73Converse`), because a literal zero supplies only an ordinary strong
 index. Package 74 evaluates the same polynomial in 93 operations.
+An independently reviewed [sharing and triangular transformation](research/ordinary13-p73-triangular91-50/README.md)
+gives a 91-operation, degree-30 graph for the identical P73 polynomial and a
+90-operation, degree-50 graph with the same positive zeros, using the same
+fixed leaves. The latter improves the inspected 90-operation, degree-51
+record in degree. These are external graph and arithmetic checks, not new
+Lean endpoint or file-binding theorems; the authenticated P72 port payloads
+match the pinned P61 hashes, whose recorded physical paths are absent here.
 
 An externally reviewed [triangular residual transformation](research/ordinary13-p72-triangular97-50/README.md)
 reduces a 98-operation, degree-28 P72 parent to 96 operations at exact degree
