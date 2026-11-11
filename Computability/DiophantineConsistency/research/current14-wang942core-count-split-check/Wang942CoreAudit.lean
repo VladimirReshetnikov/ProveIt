@@ -1,0 +1,5 @@
+import DiophantineConsistency.WangTiles942Core
+#print axioms DiophantineConsistency.WangTiles942.transitionRow_eq_decoded
+#print axioms DiophantineConsistency.WangTiles942.row_indices_nodup
+#print axioms DiophantineConsistency.WangTiles942.all_rows_tight
+#print axioms DiophantineConsistency.WangTiles942.physicalPosition_eq_printed
