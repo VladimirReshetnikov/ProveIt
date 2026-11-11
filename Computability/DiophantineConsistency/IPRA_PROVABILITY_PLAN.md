@@ -7416,6 +7416,15 @@ reduces this to 14 positive inputs and 84 operations at exact degree 60.
 Its positive-zero equivalence at the authenticated ports uses the specific
 Mersenne form of `β` and a fact-level replay of the cited decoder. It is
 external mathematics, not a new Lean/iPRA or PDF-binding theorem.
+The reviewed [first-residual cancellation](research/ordinary14-unscale-first80/README.md)
+removes four operations, and the subsequent reviewed [direct Pell-root map](research/ordinary14-direct-pell79/README.md)
+removes one more. The latter graph has 14 positive inputs, 79 operations and
+exact degree 60. Its positive-zero existence agrees with the preceding graph
+for integer ports with `β > 0`; its compact44 consistency connection retains
+the inherited source, model-proof and file-binding limitations.
+The independently source-reviewed [84-operation Lean draft](research/ordinary14-qcube84-lean-draft/README.md)
+records the Mersenne and model-level obligations. It is uncompiled and does
+not establish the new graph's iPRA endpoint.
 The source-reviewed [87-operation Lean graph and decoder-route draft](research/ordinary14-shifted-guard87-lean-draft/README.md)
 records the fact-level replay needed for arbitrary models. It is uncompiled;
 the graph-specific model lemmas, parent bridges and iPRA endpoint remain open.
