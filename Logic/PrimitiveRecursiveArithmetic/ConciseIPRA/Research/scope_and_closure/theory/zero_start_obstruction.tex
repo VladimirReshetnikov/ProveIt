@@ -1,0 +1,160 @@
+\section{Why fixing the initial state to zero is not a free simplification}
+\label{sec:zero-start-obstruction}
+
+An initialized iterator carries three pieces of data: its counter, initial
+state, and update. A tempting deletion is to fix the initial state to zero.
+The following standard-model obstruction explains why the resulting language
+cannot simply inherit the current term compiler or selector-based logical
+bootstrap. It treats a different operation from the positive iterator
+$h^{n+1}(a)$ studied in the reviewed \texttt{checker\_and\_barriers} and
+\texttt{prevalidated\_elimination} packages: here zero iterations are allowed,
+but the seed is always zero. This observation is new relative to those
+reviewed analyses; no literature-wide priority or new iPRA presentation is
+claimed.
+
+\paragraph{Two precise candidate languages.}
+In the \emph{scalar} language the numerical terms are
+\[
+ t ::= x\mid 0\mid S(t)\mid R(n;u.h),
+ \qquad
+ R(0;u.h)=0,\qquad R(Sn;u.h)=h[R(n;u.h)/u].
+ \tag{ZS}
+\]
+Only the update $h$ binds $u$; the counter $n$ does not. In the
+\emph{counter-aware} variant the last constructor is $R(n;k,u.h)$ and its
+equations are
+\[
+ R(0;k,u.h)=0,\qquad
+ R(Sn;k,u.h)=h[n/k,R(n;k,u.h)/u].
+ \tag{ZC}
+\]
+Both $k$ and $u$ are bound only in $h$. Every term is finite staged syntax;
+there is no function-variable sort or uniform evaluator. All assertions
+below concern the indicated standard interpretation in $\mathbb N$, with
+$S(n)=n+1$. Passive parameters are held fixed during a run. No equality
+test, conditional operator, additional arithmetic function, or conversion
+from formulas into numerical values belongs to either grammar.
+
+\paragraph{Monotonicity theorem.}
+\emph{Every term of either language denotes a coordinatewise nondecreasing
+function of all its free numerical variables.}
+
+\paragraph{Proof.}
+Use external structural induction on the finite syntax. Variables, zero,
+and successor satisfy the assertion. For the recursion clause, the
+induction hypothesis makes the counter and the update nondecreasing in
+all their arguments.
+
+For a fixed parameter assignment $\rho$, write $a_j^\rho$ for the state
+after $j$ updates. In the counter-aware case,
+\[
+ a_0^\rho=0,\qquad
+ a_{j+1}^\rho=h(j,a_j^\rho,\rho).
+\]
+The state sequence is nondecreasing: $a_0^\rho\le a_1^\rho$ because
+zero is least, and from $a_j^\rho\le a_{j+1}^\rho$ monotonicity of
+$h$ in both its counter and state gives
+\[
+ a_{j+1}^\rho=h(j,a_j^\rho,\rho)
+ \le h(j+1,a_{j+1}^\rho,\rho)=a_{j+2}^\rho.
+\]
+For parameter assignments $\rho\le\sigma$, induction over the common
+update index gives $a_j^\rho\le a_j^\sigma$. The counters satisfy
+$n(\rho)\le n(\sigma)$, so
+\[
+ a_{n(\rho)}^\rho
+ \le a_{n(\rho)}^\sigma
+ \le a_{n(\sigma)}^\sigma.
+\]
+This proves the recursion clause. The scalar case is the same argument
+with the update's counter argument omitted. It also covers a free
+variable occurring both in the counter expression and as a passive
+parameter of the update.\hfill$\square$
+
+\paragraph{Exact zero-profile theorem for the scalar language.}
+For a scalar term $t(x_1,\ldots,x_r)$, put
+$Z(t)=\{\vec x:t(\vec x)=0\}$.
+\emph{Its zero set is either the whole domain or a union of coordinate
+zero-hyperplanes:}
+\[
+ Z(t)=\mathbb N^r
+ \quad\hbox{or}\quad
+ Z(t)=\bigcup_{j\in J}\{\vec x:x_j=0\}
+ \qquad(J\subseteq\{1,\ldots,r\}).
+ \tag{Zero profile}
+\]
+The union may be empty. A profile can be computed by structural recursion
+without evaluating the represented function on unbounded inputs.
+
+\paragraph{Proof.}
+Zero has the whole-domain profile, a variable has its one coordinate
+hyperplane, and a successor term has the empty profile. For the remaining
+constructor, fix the passive parameters and let $b=h(0)$. If $b=0$,
+every iterate from zero is zero. If $b>0$, monotonicity of $h$ gives
+$h(v)\ge h(0)=b>0$ at every natural state $v$; consequently every
+positive iterate is nonzero. Thus, pointwise,
+\[
+ R(n;u.h)=0
+ \quad\Longleftrightarrow\quad
+ n=0\ \lor\ h[0/u]=0.
+ \tag{Zero recurrence}
+\]
+Hence $Z(R(n;u.h))=Z(n)\cup Z(h[0/u])$. The update is a proper syntax
+subterm. Its previously computed profile, with $u$ set to zero, becomes
+the whole domain if it includes the $u=0$ hyperplane, and otherwise keeps
+the same passive-coordinate hyperplanes. Union with the counter's
+profile preserves the displayed classification.
+
+Conversely, every displayed kind of zero set is realized by a scalar
+term. Zero and $S0$ realize the whole and empty sets. The constant-update
+gate $G(c,a)=R(c;u.a)$ satisfies
+$Z(G(c,a))=Z(c)\cup Z(a)$, so nested gates realize any prescribed finite
+union of coordinate hyperplanes. This converse classifies zero sets,
+not all numerical functions sharing a zero set.\hfill$\square$
+
+\paragraph{Consequences for the proposed deletion.}
+In the scalar language no term denotes predecessor: the unary function
+$\max(n-1,0)$ has zero set $\{0,1\}$, whereas a unary term has zero set
+only $\varnothing$, $\{0\}$, or $\mathbb N$. Nor does a binary term
+denote ordinary addition, whose zero set is the singleton $(0,0)$;
+that set is neither a union of the two coordinate hyperplanes, nor empty,
+nor the whole domain.
+
+In \emph{both} languages the function equal to one at zero and zero at
+every positive input is unavailable, because it is decreasing from zero
+to one. The initialized selector
+\[
+ C(0,a,b)=a,\qquad C(Sn,a,b)=b
+\]
+is therefore unavailable too: specializing $a=1,b=0$ would give that
+zero-test. In particular, there is no term compiler that recovers every
+initialized iterator from either proposed zero-start grammar on the
+same numerical domain with the standard readings of zero and successor.
+This conclusion already follows from a constant-update instance, before
+questions about pairing or general primitive recursion arise.
+
+The extra old-counter argument makes a real difference. In the
+counter-aware language
+\[
+ P(n):=R(n;k,u.k)
+ \quad\text{satisfies}\quad P(0)=0,\qquad P(Sn)=n.
+\]
+Thus predecessor is a term there, and the scalar zero-profile theorem
+does not extend to that language. Its proof fails exactly because the
+update can change with the counter: the first update can be zero while
+a later update is positive. The monotonicity theorem still applies, and
+still rules out the selector and the zero-test. No claim about
+term-definability of addition in the counter-aware language is needed
+or established here.
+
+\paragraph{What this does not prove.}
+These are standard-model, same-domain \emph{term-definability}
+obstructions. They do not rule out function graphs using quantified
+formulas, definable subdomains, tuple domains, quotient equality, or
+some other bi-interpretation permitted in the question. Such a proposal
+would need its own proof of totality and functionality of the interpreted
+operations, transfer of the restricted induction schema, closure under
+newly defined updates, and definable isomorphisms for both composites.
+The argument above establishes none of those positive requirements and
+is not presented as an impossibility theorem for all simpler
+axiomatizations of iPRA.

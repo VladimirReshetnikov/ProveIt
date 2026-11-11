@@ -1,0 +1,107 @@
+% Includable audit section; requires amsmath and amssymb.
+\section{Independent audit of the direct progress rule}
+
+Let $\mathcal C_D$ be the pinned native scalar calculus and let
+$\mathcal C_Q$ have exactly the same terms, formulas, contexts, computation
+axioms, transport, QE, DE, and case introduction. Replace only
+\[
+ \frac{\Gamma,E(t,z)\vdash E(t,Sz)}
+      {\Gamma\vdash D_{x,y}E(x,y)}
+ \quad(\mathrm{DI}_{\rm prog})
+\]
+by
+\[
+ \frac{\Gamma,E(z)\vdash E(Sz)}
+      {\Gamma\vdash Q_yE(y)}
+ \quad(\mathrm{QI}_{\rm prog}).
+\]
+Here $E$ is a literal equation. In either rule the induction eigenvariable
+is fresh for the retained context and all fixed parameters; the old rule
+also requires it to be absent from the witness $t$. The new rule contains
+no existential witness or witness-substitution operation.
+
+\paragraph{From the new rule to the old calculus.}
+Choose a new variable $x$ absent from $E$. The old progress rule with
+witness $0$ gives $D_{x,y}E(y)$ directly from the displayed premise.
+Eliminate this formula at a fresh $b$, retaining $Q_yE(y)$, and return that
+retained hypothesis. This is a three-node wrapper around the unchanged
+step proof: old progress introduction, DE, and Hyp. Thus each new progress
+node can be replaced by three old nodes.
+
+\paragraph{From the old rule to the new calculus.}
+Instantiate the old matrix first, writing $E_t(y)=E(t,y)$ with capture
+avoiding substitution. The supplied step proof gives $Q_yE_t(y)$ by the
+new rule. To introduce $D_{x,y}E(x,y)$ by the retained case rule, take
+witness $t$, a new eigenvariable $w$, and local assumption $E_t(0)$.
+QE applied to the derived $Q_yE_t(y)$ and that assumption gives
+$E_t(Sw)$, as required. Weakening retains the local base assumption in the
+derivation of $Q_yE_t(y)$. Its original induction eigenvariable remains
+absent from the added base $E_t(0)$ by the old rule's freshness conditions:
+it is absent from $t$ and all passive parameters of $E$. The new $w$ is
+chosen outside the entire original proof. This wrapper consists of Q-progress,
+QE, a hypothesis leaf, and case introduction. It replaces each old
+progress node by four new nodes.
+
+\paragraph{Full consequence equivalence.}
+Both transformations preserve the concluding formula literally up to
+alpha conversion and preserve every retained assumption. External
+induction on a finite derivation therefore gives, for every native
+context and formula,
+\[
+             \Gamma\vdash_{\mathcal C_D}A
+             \quad\Longleftrightarrow\quad
+             \Gamma\vdash_{\mathcal C_Q}A.
+\]
+This is consequence equivalence in the entire Eq/Q/D language, not just
+agreement on equations or closed theorems. Proof translations are effective
+finite tree transformations; they are not assertions of either theory's
+internal consistency.
+
+The ordinary numerical language and interpretation domain are unchanged.
+Both calculi therefore present the same ordinary theory $T_{\rm eq}$.
+In particular, the existing whole-domain bi-interpretation with iPRA
+transfers with exactly the same term translations, formula translations,
+actual equality, and identity graphs for both composites. Direct
+soundness of Q-progress can also be checked in $T_{\rm eq}$: assume
+$E(0)$, apply contextual equation induction to the supplied progress
+derivation, universally generalize its conclusion, and discharge $E(0)$.
+The result is precisely $E(0)\to\forall y\,E(y)$, the ordinary reading
+of $Q_yE(y)$.
+
+\paragraph{A nontrivial checked example.}
+Put $F(n)=I(n,0;u.Su)$ and $E(y)\equiv F(y)=y$. The zero computation
+gives $E(0)$. Under the induction assumption $F(z)=z$, successor
+computation gives
+\[
+                       F(Sz)=S(F(z)).
+\]
+Transport in the template $F(Sz)=S(w)$ gives $F(Sz)=Sz$.
+Q-progress followed by QE at the free parameter $n$ proves $F(n)=n$.
+This displayed proof has six primitive nodes: a progress node, a transport
+node, its equality hypothesis, its successor computation, a QE node, and
+its zero-computation premise. The direct translation to the old calculus
+has eight nodes. These are sizes of the specified proof trees, not claims
+of shortest possible proofs.
+
+\paragraph{Executable audit.}
+The independent readable script \texttt{audit.py} checks all rules of both
+calculi, performs capture avoiding substitution, compares bound syntax up
+to alpha equivalence, and implements both progress-rule translations. It
+checks the six-node example, the eight-node old translation, and the
+eleven-node translation back. A separate nonvacuous-witness example uses
+the equation $I(y,x;u.u)=x$, choosing a witness whose free name deliberately
+matches the matrix's original index binder. The four-node old proof and
+seven-node new proof both pass; the free witness parameter is preserved
+by alpha renaming. Contextual translation and rejection of compound
+progress, retained-context eigenvariable capture, and existential
+eigenvariable escape are also checked. The retained-context fixture has
+a correctly instantiated step; a rule-level ablation confirms that all
+other Q-progress conditions pass when only freshness is omitted. The
+production checker retains the freshness condition.
+
+This script is supporting validation, not a trusted import of the compact
+checker and not a proof-assistant formalization. The direct Q-progress
+rule itself is already derived in the pinned Lean development as
+\texttt{NPrf.qIProg}; the proposal is its selection as a primitive in place
+of witness-bearing D-progress. No new arithmetic completeness theorem or
+absolute minimality claim is inferred from that selection.

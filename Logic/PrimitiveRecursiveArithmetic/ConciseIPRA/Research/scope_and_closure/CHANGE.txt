@@ -1,0 +1,89 @@
+An implementation change only: delayed major checking in lexical scopes
+=====================================================================
+
+Reference: VladimirReshetnikov/ProveIt, commit
+8662bc0a00f4e77e482f7d141d7a4f919f70f9aa, under
+Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research.
+
+The two complete candidate programs implement the existing native scalar
+Choice-DI calculus. They introduce no new axiom, logical connective, inference
+rule, arithmetic basis, interpretation, or mathematical minimality claim.
+The previous prevalidated_elimination package already studies prevalidation;
+this is a small composition of that idea with the lexical-scope profiles.
+
+Precise source change
+--------------------
+For each reference program, remove the separate statement c(m,g,k) immediately
+after reading an instruction. Insert the same call as the first operand of the
+existing disjunction that computes h:
+
+    h = c(m,g,k) or m * 3 or ...
+
+Consequently the optional pure transport/specialization precheck is performed
+before the major derivation is checked. Fresh-parameter allocation k -= 1 is
+not moved: in particular, witness opening still precedes allocation.
+
+Source-level equivalence argument
+--------------------------------
+Work in an idealized ordinary Python execution, disregarding physical memory,
+stack, or time exhaustion. Parsed input consists of JSON values and built-in
+containers created by the checker. There are no user-defined overloaded
+operators, callbacks, or threads.
+
+1. The optional precheck and source instantiation read m,s,u,t,a and the local
+   opening function i. They neither consume q nor mutate any parsed list,
+   retained context, or scope floor. They are deterministic pure computations.
+2. The recursive major check receives the same m, g, and k in either program.
+   In these lexical variants its own local k and its own rebinding of g do not
+   modify the caller's k or g. The byte profile extends g by list concatenation;
+   the AST profile uses an immutable tuple and tuple concatenation. The only
+   shared relevant side effect is consuming the common certificate stream q.
+   The precheck does not use q, so moving the major check across it preserves
+   the sequence of all certificate reads in every successful run.
+3. Every normally terminating c invocation returns None. In the byte profile
+   this is either the explicit bare return or the implicit return after the
+   last recursive call. In the AST profile it is the implicit return after
+   the while loop. Thus adding c(m,g,k) as the first operand of the existing
+   'or' chain leaves h exactly unchanged after successful major checking.
+4. If either computation fails, the complete module cannot reach its verdict
+   print. The reordering may alter the first exception or rejection latency,
+   but neither a caught error nor a failed major is turned into acceptance.
+   If both computations succeed, all following expressions receive the same
+   values and remaining stream. Induction on finite successful checking trees
+   therefore proves equality of accepted certificates, in both directions.
+
+The CLI acceptance contract is unchanged: exit status zero and exact stdout
+"ACCEPT\n". No main-program driver, schema data, parser, or scope check is
+excluded from measurement. Stdlib JSON and the Python runtime are treated as
+the same common infrastructure as in the repository.
+
+Measured changes (CPython 3.12.14; ast.unparse plus one final newline)
+------------------------------------------------------------------
+                       tokens   AST   bytes   gzip9(normalized)
+Reference AST profile      263   289     613        349
+Candidate AST profile      264   288     608        350
+Reference byte profile     266   310     529        333
+Candidate byte profile     267   309     528        336
+
+The AST profile improves the inspected 289-node coordinate by one node; the
+byte profile improves the inspected 529-byte coordinate by one byte. They
+are different complete programs. Neither beats the 261-token coordinate, and
+neither is smaller in all coordinates. Both gzip figures increase. These
+small implementation gains do not satisfy a demand for a simpler mathematical
+axiomatization or a significant breakthrough.
+
+Verification and reproducibility
+-------------------------------
+Run python3 verify.py. It checks 49 inherited certificates, including genuine
+computation, equation induction, formula transport, arbitrary-term Q use,
+compound cases, and nonvacuous existential witnesses. The negative examples
+include forbidden compound induction, false goals, failed majors, future
+witness capture, invalid target parameters, context leaks, and float aliases.
+It also runs 14 boundary/alias cases and three deliberately unsound mutation
+controls, under ordinary and optimized Python. Exact results are written to
+tests/results.json. These finite tests support, but do not replace, the
+source-level argument above or the inherited mathematical soundness proof.
+
+novelty_screen.json records exact normalized-AST comparisons against all
+available Python files in the current Research tree. No exact match does not
+establish conceptual novelty: the prevalidation idea is explicitly inherited.

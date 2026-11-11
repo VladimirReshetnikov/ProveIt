@@ -1,0 +1,152 @@
+INDEPENDENT AUDIT OF THE REGISTER-ITERATOR BASIS
+==============================================
+
+This note records mathematical checks separately from executable tests.
+The primary checker uses counter-aware J(n;i,r.h). The scalar variant
+J(n;r.h) has the same constant-update bootstrap below.
+
+1. STEP GRAPH IS EXACTLY THE TWO COMPUTATION RULES PLUS COVERAGE
+
+Put v=J(n;i,r.h) and e=h[n/i,v/r]. The graph is
+
+  J(Sn;i,r.h)=b <-> ((e=0 and b=Sv) or e=Sb).
+
+Its right-to-left direction gives both conditional computation rules:
+
+  e=0  => J(Sn;i,r.h)=Sv;
+  e=St => J(Sn;i,r.h)=t.
+
+For functional coverage, take h to be the constant term a, n=0, and
+b=W(a):=J(1;i,r.a). Reflexivity supplies the graph's left side. Its
+right side implies a=0 or a=S(W(a)). Hence ordinary successor coverage
+is derived, not separately assumed.
+
+Conversely, from the two conditional computations and coverage, split e
+into 0 or St. If e=0 and J(Sn)=b, computation gives b=Sv. If e=St,
+computation gives b=t, so e=Sb. This proves the graph's left-to-right
+direction; its other direction is the two computations. This equivalence
+uses no induction, separation, or successor injectivity.
+
+The analogous full graph for arbitrary n is equivalent to J0 plus this
+step graph. Its right-to-left direction gives J0 and both computations;
+its left-to-right direction applied to J(n;0)=J(n;0) gives coverage.
+Thus a single full graph is possible, but it has a larger logical body.
+
+2. THE SUCCESSOR ABBREVIATION IS NOT CIRCULAR
+
+S(a) means the finite term J(a;i,r.0). The equations below use this
+abbreviation, not an additional primitive successor symbol. Finite term
+bodies are not quantified numerical descriptions. In an interpretation
+into iPRA, J_h is defined by ordinary primitive recursion, with update
+returning state+1 for command zero and predecessor(command) otherwise.
+The fixed zero program then represents ordinary successor by equation
+induction. The definition of the target primitive-recursive function uses
+iPRA's own successor; it does not presuppose the source abbreviation's
+correctness.
+
+3. PREDECESSOR AND SELECTION REQUIRE NO INDUCTION OR COVERAGE
+
+Let f(n,a)=J(n;i,r.a), 1=S0. Direct computation gives
+
+  f(0,a)=1,    f(Sn,Sa)=a,    f(n,0)=Sn.
+
+The last identity is the definition of S. In particular f(Sn,0)=S^2 n
+does not require an induction or even the nonconstant zero-command rule.
+
+Define
+
+  Z(x)=f(x,1), W(x)=f(1,x), D(x)=f(x,Sx), P(x)=W(D(x)).
+
+The exact endpoint identities are
+
+  Z0=1,       Z(Sx)=0;
+  W0=2,       W(Sx)=x;
+  D0=1,       D(Sx)=Sx;
+  P0=0,       P(Sx)=x.
+
+Each is a finite endpoint calculation. In particular predecessor is
+available before induction and before any arbitrary numerical case split.
+Successor injectivity follows by applying P. If Sx=0, applying Z gives
+0=1, so SEP gives successor separation.
+
+The shortened positive gate and selector are
+
+  G(c,a)=P^2 f(Sa,Zc),
+  C(c,a,b)=P^2 f(Sa,G(c,S^3 b)).
+
+At c=0, Zc=1, so G(0,a)=P^2(0)=0. At c=Sn, Zc=0, so
+G(Sn,a)=P^2(S^2 a)=a. Consequently C(0,a,b)=a and C(Sn,a,b)=b:
+its inner command is respectively 0 or S^3 b, and the counter Sa is
+visibly a successor in both cases. No claim about arbitrary c is needed
+to prove these endpoint schemas.
+
+4. THE COUNTER-AWARE PR COMPILER
+
+For a fixed desired step h(u,v) and initializer a, use the finite term
+
+  R(n,a;u,v.h) = J(Sn;i,r. S(C(i,a,h(Pi,r)))).
+
+Its update is always visibly a successor, so only the load computation is
+used. At the first update, old counter i=0 gives command Sa, hence loads a.
+At the next update, old counter i=Sn gives command
+S(h(P(Sn),R(n,a;h)))=S(h(n,R(n,a;h))). Thus
+
+  R(0,a;h)=a,
+  R(Sn,a;h)=h(n,R(n,a;h)).
+
+These are finite endpoint derivations, using neither induction nor
+coverage. They compile arbitrary fixed primitive-recursive definitions
+directly. All substitutions into h are simultaneous and capture avoiding.
+
+5. THE SCALAR COMPILER ALSO CHECKS OUT
+
+With a scalar J(n;r.h), set
+
+  H(v)=S^3 C(Pv,a,h(P^2v)),
+  K(n)=J(Sn;v.H(v)),
+  I(n,a;h)=P^2 K(n).
+
+One positive-load computation gives K(n)=S^2 q(n) for an explicit term
+q(n). Hence P(K(n)) is visibly a successor. The initial state is 1, and
+P1=0, so K0=S^2a. At the next update selection at the positive argument
+P(K(n)) gives K(Sn)=S^2 h(P^2K(n)). Applying P twice proves the two
+ordinary scalar-iterator equations. Again no induction or coverage is
+used. This is the same-tagging variant, not the counter-aware compiler.
+
+6. BOTH COMPOSITES NEED AND HAVE AN INTERNAL UNIQUENESS PROOF
+
+The numerical domain is the whole domain in each direction and equality
+is actual equality. Recovery of PR computations is not by itself a proof
+of bi-interpretability; the source J operator must also be recovered.
+
+Suppose two fixed J recurrences have the same initial value and the same
+instruction body, up to already proved equalities of smaller term bodies.
+Induct on the literal equation asserting equality of their nth states.
+Their current instructions are equal under that induction hypothesis.
+Coverage splits the common instruction into zero or a successor. The two
+conditional computations give equal next states in the respective cases.
+This proves recurrence uniqueness internally, with passive parameters
+fixed throughout the induction.
+
+The iPRA interpretation of J satisfies these same source recurrences, so
+this uniqueness proof supplies the J-side numerical composite. Ordinary
+PR recursion uniqueness similarly supplies the other numerical composite.
+With ordinary first-order logic preserved, formula composites follow by
+structural induction, and the domain isomorphisms have graph x=y.
+
+To recover quantifier-free induction from literal-equation induction one
+still needs the standard internal equality-characteristic argument. The
+new finite bootstrap supplies P, C, all PR computations, coverage, and
+separation before that argument is used. Thus importing that established
+completion lemma is not circular. It is a genuine proof dependency and
+must be cited or reproduced; finite evaluations do not replace it.
+
+7. CLAIM BOUNDARY
+
+The grammar removes the independent successor and initializer fields;
+the counter-aware version pays for a second bound update coordinate.
+The graph explicitly accounts for command decoding and numerical cases.
+The immediate bootstrap and direct PR compiler are mathematical benefits.
+Neither fewer named schemas nor fewer primitive term constructors proves
+a smaller standalone proof checker. The supplied readable checker is
+deliberately complete and much larger than the current compact frontier.

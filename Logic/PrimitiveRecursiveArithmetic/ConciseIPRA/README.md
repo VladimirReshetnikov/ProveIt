@@ -5,7 +5,7 @@ complete presentation of a theory bi-interpretable with full first-order
 intuitionistic primitive recursive arithmetic (iPRA), and the Lean
 formalization of the most concise of them.
 
-- [`Research/`](Research/) holds twenty-two delivered packages, one directory
+- [`Research/`](Research/) holds twenty-eight delivered packages, one directory
   each. They are written mathematics with executable Python proof checkers;
   none of them claims a proof-assistant verification.
 - `Lean/` is the formalization (see [Lean formalization](#lean-formalization)).
@@ -99,6 +99,10 @@ for separate coordinates, they are listed separately. Each package's own
 | [`prevalidated_elimination`](Research/prevalidated_elimination/) | The elimination template and both instances are fixed before the major premise is proved; no new mathematics | 263 / 307 / 547; 539 bytes; 261 tokens |
 | [`scope_and_coverage`](Research/scope_and_coverage/) | Byte-profile checkers; for the self-seeded recursor without successor injectivity, `S^k(a) ≠ a` for each fixed `k ≥ 1` and a right predecessor with `n = 0 ∨ n = S(P n)` | 266 / 310 / 529, and 537 bytes |
 | [`coverage_and_kernel`](Research/coverage_and_kernel/) | For the self-seeded recursor without successor injectivity, whole-domain coverage from a protected orbit; one `D` over a literal equation represents exactly the prenex `∃∀` quantifier-free class | 531 and 539 bytes; 289 AST nodes |
+| [`direct_closure`](Research/direct_closure/), [`direct_closure_qprogress`](Research/direct_closure_qprogress/) | Two independent write-ups of one change of primitive: equation induction introduces `Q_y E(y)` directly, from `E(z) ⊢ E(S z)`, and the witnessed `D` progress rule becomes derived; the first also carries a Lean migration sketch and a counter-vector experiment | no new minimum (552 and 568 bytes; 533 for the experiment) |
+| [`source_dispatch`](Research/source_dispatch/) | Transport may be restricted to sources that are not literally `0`, every omitted instance being derivable; the source then selects the elimination major (`Q_v F(v)` at `0`, `s = t` otherwise) | 259 tokens; 283 AST nodes; 526 bytes (three programs) |
+| [`guarded_core`](Research/guarded_core/) | Atomic matrices under `D` restricted to the guarded shape `I(y,0;u.h) = I(y,0;u.k)`, so one root-determined introduction rule suffices: progress at equations, cases at compound matrices | 260 tokens; 286 AST nodes; 527 bytes (three programs) |
+| [`scope_and_closure`](Research/scope_and_closure/) | Checker composition only for the core; a "mixed closure" variant with progressive `Q` at literal equations and a deterministic introduction; an obstruction to zero-start iterators | 264 / 288 / 608, and 528 bytes |
 
 ### Other arithmetic bases
 
@@ -108,6 +112,7 @@ for separate coordinates, they are listed separately. Each package's own
 | [`bounded_initializer`](Research/bounded_initializer/) | A tied-seed recursor `B` with a Boolean equality test `ε` |
 | [`monus_and_neutral_major`](Research/monus_and_neutral_major/) | A tied-seed recursor with two truncated-subtraction equations, from which reflection of equality is derived; also a neutral-major certificate protocol for the native core |
 | [`selfseed_scalar`](Research/selfseed_scalar/) | A self-seeded recursor `F(0;v.h) = S(h(0))`, `F(S n;v.h) = h(F(n;v.h))` over ordinary logic with successor injectivity, `0 ≠ S 0`, a Boolean equality test and literal-equation induction; also checkers of 554 bytes and of 291 AST nodes for the native core |
+| [`register_graph`](Research/register_graph/) | Terms `x`, `0` and a counter-aware register iterator `J(n; i, r. body)` only, over ordinary logic: successor `S(a) = J(a; i, r. 0)` and the initializer are derived, and primitive recursion compiles without pairing; also a 288-node AST checker for the native core |
 
 ## Intake record
 
@@ -133,6 +138,16 @@ filed here on the same day.
 - The packages' Python scripts were not executed during the intake. The
   frozen comparison sources inside the packages are copies of checkers from
   earlier drafts of this same series, under the repository's MIT-0 licence.
+
+A second delivery of six archives arrived in
+[`docs/incoming/`](docs/incoming/) on 2026-11-10 and was filed on 2026-11-11:
+`direct_closure` (two different packages under one archive name; the second
+is filed as `direct_closure_qprogress`), `guarded_core`, `register_graph`,
+`scope_and_closure` and `source_dispatch`. These respond to the Lean
+formalization below. Not filed: their frozen copies of this repository's own
+Lean sources (byte-identical to the pinned commits), three checksum ledgers
+and one reproduction log. The archives remain in the repository history.
+Their scripts were not executed.
 
 ## Lean formalization
 

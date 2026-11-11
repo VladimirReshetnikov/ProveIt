@@ -1,0 +1,145 @@
+--- a/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Native.lean
++++ b/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Native.lean
+@@ -13,8 +13,8 @@
+ 
+ There are no connectives and no logical axioms.  The inference rules are
+ hypothesis, the two computation equations, transport along an equation in an
+-arbitrary formula template, elimination of `Q`, elimination of `D`, and two
+-introductions of `D`: by cases (any matrix) and by progress (literal equations
++arbitrary formula template, elimination of `Q`, elimination of `D`, introduction of `D` by cases
++(any matrix), and direct introduction of `Q` by progress (literal equations
+ only).  Freshness side conditions of the informal presentation are expressed
+ by de Bruijn scoping: a fresh variable is the new index `0` over a weakened
+ context.
+@@ -115,12 +115,12 @@
+       (h : NPrf (((B.subst (up (inst t))).subst (inst zero)).shift :: Γ.map NFm.shift)
+         ((B.subst (up (inst t))).subst (repl (succ (var 0))))) :
+       NPrf Γ (.D B)
+-  /-- DI by progress: from `E(t, z) ⊢ E(t, S z)` with `z` fresh infer
+-  `D_{x,y} E`, for a literal equation `E` only. -/
+-  | dIProg {n : ℕ} {Γ : List (NFm n)} (s₁ s₂ : Tm (n + 2)) (t : Tm n)
+-      (h : NPrf ((NFm.eq s₁ s₂).subst (up (inst t)) :: Γ.map NFm.shift)
+-        (((NFm.eq s₁ s₂).subst (up (inst t))).subst (repl (succ (var 0))))) :
+-      NPrf Γ (.D (.eq s₁ s₂))
++  /-- Direct Q induction: from `E(z) ⊢ E(S z)` with `z` fresh infer
++  `Q_y E`, for a literal equation `E` only. -/
++  | qIInd {n : ℕ} {Γ : List (NFm n)} (s₁ s₂ : Tm (n + 1))
++      (h : NPrf (NFm.eq s₁ s₂ :: Γ.map NFm.shift)
++        ((NFm.eq s₁ s₂).subst (repl (succ (var 0))))) :
++      NPrf Γ (.Q (.eq s₁ s₂))
+ 
+ /-- Soundness of the native scalar core for its ordinary reading in `T_eq`. -/
+ theorem NPrf.sound {n : ℕ} {Γ : List (NFm n)} {A : NFm n} (h : NPrf Γ A) :
+@@ -144,13 +144,10 @@
+     refine .exI t ?_
+     rw [Fm.subst_imp, Fm.subst_all, Fm.subst_inst, Tm.subst_zero]
+     exact .impI (Teq.caseAll _ Prf.hyp0 ih)
+-  | dIProg s₁ s₂ t _ ih =>
++  | qIInd s₁ s₂ _ ih =>
+     simp only [List.map_cons, NFm.map_toFm_shift, NFm.toFm_subst, NFm.toFm_eq] at ih
+-    rw [NFm.toFm_D]
+-    refine .exI t ?_
+-    rw [Fm.subst_imp, Fm.subst_all, Fm.subst_inst, Tm.subst_zero, NFm.toFm_eq, Fm.subst_eq]
+-    rw [Fm.subst_eq] at ih
+-    exact .impI (Teq.eqInd _ _ Prf.hyp0
++    rw [NFm.toFm_Q, NFm.toFm_eq]
++    exact .impI (Teq.eqInd s₁ s₂ Prf.hyp0
+       (ih.weaken (List.cons_subset_cons _ (List.subset_cons_self _ _))))
+ 
+ end LeanProofs.ConciseIPRA
+--- a/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeStruct.lean
++++ b/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeStruct.lean
+@@ -128,9 +128,9 @@
+   | dICase B t _ ih =>
+     intro Δ s
+     exact .dICase B t (ih (List.cons_subset_cons _ (List.map_subset _ s)))
+-  | dIProg s₁ s₂ t _ ih =>
++  | qIInd s₁ s₂ _ ih =>
+     intro Δ s
+-    exact .dIProg s₁ s₂ t (ih (List.cons_subset_cons _ (List.map_subset _ s)))
++    exact .qIInd s₁ s₂ (ih (List.cons_subset_cons _ (List.map_subset _ s)))
+ 
+ theorem wk {B : NFm n} (h : NPrf Γ A) : NPrf (B :: Γ) A :=
+   h.weaken (List.subset_cons_self _ _)
+@@ -168,11 +168,11 @@
+     rw [List.map_cons, NFm.map_shift_subst, NFm.shift_subst_up, NFm.subst_inst,
+       NFm.subst_repl_succ, NFm.subst_up_inst] at h
+     exact .dICase _ _ h
+-  | dIProg s₁ s₂ t _ ih =>
++  | qIInd s₁ s₂ _ ih =>
+     intro m σ
+     have h := ih (up σ)
+-    rw [List.map_cons, NFm.map_shift_subst, NFm.subst_repl_succ, NFm.subst_up_inst] at h
+-    exact .dIProg (Syn.subst (up (up σ)) s₁) (Syn.subst (up (up σ)) s₂) (Syn.subst σ t) h
++    rw [List.map_cons, NFm.map_shift_subst, NFm.subst_repl_succ] at h
++    exact .qIInd (Syn.subst (up σ) s₁) (Syn.subst (up σ) s₂) h
+ 
+ /-- A derivation may be moved under a fresh variable. -/
+ theorem shift (h : NPrf Γ A) : NPrf (Γ.map NFm.shift) A.shift :=
+@@ -196,7 +196,7 @@
+   | qE t _ _ ih₁ ih₂ => intro Δ hΔ; exact .qE t (ih₁ hΔ) (ih₂ hΔ)
+   | dE _ _ ih₁ ih₂ => intro Δ hΔ; exact .dE (ih₁ hΔ) (ih₂ (cutLift hΔ _))
+   | dICase B t _ ih => intro Δ hΔ; exact .dICase B t (ih (cutLift hΔ _))
+-  | dIProg s₁ s₂ t _ ih => intro Δ hΔ; exact .dIProg s₁ s₂ t (ih (cutLift hΔ _))
++  | qIInd s₁ s₂ _ ih => intro Δ hΔ; exact .qIInd s₁ s₂ (ih (cutLift hΔ _))
+ 
+ /-- Cut of one hypothesis. -/
+ theorem cut1 {B : NFm n} (h₁ : NPrf Γ B) (h₂ : NPrf (B :: Γ) A) : NPrf Γ A := by
+--- a/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeEq.lean
++++ b/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeEq.lean
+@@ -9,7 +9,8 @@
+ 
+ * reflexivity, symmetry, transitivity and congruence of equations;
+ * the simultaneous Leibniz rule `NPrf.leibniz`;
+-* equation induction `NPrf.eqInd`, from the progress form of `D`-introduction;
++* equation induction `NPrf.eqInd`, from direct `Q`-induction;
++* witnessed `D`-progression `NPrf.dIProg`, now a derived compatibility rule;
+ * the two equations of the selector `sel c a b = I(c, a; u. b)`.
+ 
+ It also introduces interderivability `NEquiv A B` of two formulas and proves
+@@ -126,25 +127,30 @@
+   have h' := key k le_rfl
+   simpa using h'
+ 
++/-- Witnessed D progression, derived from direct Q induction and D cases.
++The public type is the former constructor's type. -/
++theorem dIProg (s₁ s₂ : Tm (n + 2)) (t : Tm n)
++    (h : NPrf ((NFm.eq s₁ s₂).subst (up (inst t)) :: Γ.map NFm.shift)
++      (((NFm.eq s₁ s₂).subst (up (inst t))).subst (repl (succ (var 0))))) :
++    NPrf Γ (.D (.eq s₁ s₂)) := by
++  let B : NFm (n + 1) := (NFm.eq s₁ s₂).subst (up (inst t))
++  have hQ : NPrf Γ (.Q B) :=
++    .qIInd (Syn.subst (up (inst t)) s₁) (Syn.subst (up (inst t)) s₂) h
++  refine .dICase (.eq s₁ s₂) t ?_
++  have hQ' : NPrf ((B.subst (inst zero)).shift :: Γ.map NFm.shift)
++      (.Q (B.subst (up (fun i => Syn.var i.succ)))) := hQ.shift.wk
++  have h0 : NPrf ((B.subst (inst zero)).shift :: Γ.map NFm.shift)
++      ((B.subst (up (fun i => Syn.var i.succ))).subst (inst zero)) := by
++    rw [NFm.subst_dummy_up_inst, ← NFm.shift_subst_inst_zero]
++    exact hyp0
++  simpa only [NFm.subst_dummy_up_inst] using qE (succ (var 0)) hQ' h0
++
+ /-- Introduction of `Q` for an equation by progress: from `E(z) ⊢ E(S z)` with
+ `z` fresh, infer `Q_y E(y)`. -/
+ theorem qIProg (s t : Tm (n + 1))
+     (h : NPrf (NFm.eq s t :: Γ.map NFm.shift)
+-      ((NFm.eq s t).subst (repl (succ (Syn.var 0))))) : NPrf Γ (.Q (.eq s t)) := by
+-  have e : (NFm.eq (Syn.subst (up (fun i => Syn.var i.succ)) s)
+-        (Syn.subst (up (fun i => Syn.var i.succ)) t)).subst (up (inst zero)) = .eq s t :=
+-    NFm.subst_dummy_inst (.eq s t) zero
+-  have hD : NPrf Γ (.D (.eq (Syn.subst (up (fun i => Syn.var i.succ)) s)
+-      (Syn.subst (up (fun i => Syn.var i.succ)) t))) := by
+-    refine .dIProg _ _ zero ?_
+-    rw [e]
+-    exact h
+-  refine .dE hD ?_
+-  show NPrf (.Q (.eq (Syn.subst (up (fun i => Syn.var i.succ)) s)
+-      (Syn.subst (up (fun i => Syn.var i.succ)) t)) :: Γ.map NFm.shift)
+-    (.Q (.eq (Syn.subst (up (fun i => Syn.var i.succ)) s)
+-      (Syn.subst (up (fun i => Syn.var i.succ)) t)))
+-  exact hyp0
++      ((NFm.eq s t).subst (repl (succ (Syn.var 0))))) : NPrf Γ (.Q (.eq s t)) :=
++  .qIInd s t h
+ 
+ /-- Equation induction. -/
+ theorem eqInd (s t : Tm (n + 1)) (u : Tm n) (h0 : NPrf Γ ((NFm.eq s t).subst (inst zero)))
