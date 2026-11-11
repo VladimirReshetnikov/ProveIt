@@ -7353,6 +7353,11 @@ show that this scalar-shift criterion can fail even when all candidate
 residuals vanish; one uses four positive ports. Neither uses the actual
 compact44 constants, and neither rules out other witness changes or the
 unrestricted existence implication.
+Another reviewed [toy-port zero inside the scalar port box](research/ordinary13-folded-root86-negated-boxed-full-zero/README.md)
+cannot be repaired to a positive parent zero while retaining its rank and
+the other ten inputs, even if both scalar inputs and the first coordinate
+change. This still permits other witness changes and does not decide the
+compact44 instance.
 The [free-`J` 88-operation Lean bridge draft](research/ordinary13-freej88-lean-draft/README.md)
 has passed an [independent source review](reviews/ordinary13-freej88-lean-draft-independent/README.md),
 but remains uncompiled. Its full provider closure, guarded runner and
