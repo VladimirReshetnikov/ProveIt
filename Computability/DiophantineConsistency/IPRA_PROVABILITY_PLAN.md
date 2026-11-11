@@ -7309,6 +7309,11 @@ also gives an 88-operation, degree-46 graph with the same integer zeros as its
 variant uses the P73 parameterization; the encodings are not claimed
 pointwise equivalent. These are external graph and arithmetic results, with
 the parent endpoint's inherited provenance and file-binding limits.
+The independently reviewed [free-`J` four-square form](research/ordinary13-four-square88-30/README.md)
+has 88 live operations and exact degree 30 at the authenticated ports, with
+the same integer zeros as its 88/46 parent. Its endpoint remains inherited;
+no new Lean or file-binding theorem is claimed. Comparisons with P73 are
+numerical because the witness encodings differ.
 The [free-`J` 88-operation Lean bridge draft](research/ordinary13-freej88-lean-draft/README.md)
 has passed an [independent source review](reviews/ordinary13-freej88-lean-draft-independent/README.md),
 but remains uncompiled. Its full provider closure, guarded runner and
