@@ -63,6 +63,12 @@ confirms the monitor did not trigger the stop. A proposed 22-way split has
 since [compiled in a fresh prefix](research/current14-splitgeometry59-quadratic-partition-check/README.md)
 and passed [independent terminal audit](reviews/current14-splitgeometry59-quadratic-partition-terminal-independent/README.md).
 The complete coherent extension using this ninth proof refactor remains open.
+That extension passed 417 stages and stopped on a kernel-memory failure in
+`CurrentAuxiliaryOrder2011`. A generic-cast proof refactor has subsequently
+[compiled against individually verified prefix objects](research/current14-auxiliary-order-generic-cast-check/README.md)
+and passed [independent audit](reviews/current14-auxiliary-order-generic-cast-terminal-independent/README.md).
+The prefix belongs to a failed parent attempt, so this is a feasibility
+result rather than a completed coherent build.
 
 The [65-gate graph-to-expression theorem](research/current14-carrier65-dag-expression-retry-check/README.md)
 now checks an explicit live circuit for the maintained Lean expression, with
