@@ -26,11 +26,11 @@ open Tm (zero succ iter one)
 variable {n m k : ℕ}
 
 /-- The parity iterator `I(y, 0; u. sel(u, 1, 0))`. -/
-def Tm.par (y : Tm n) : Tm n := Tm.iter y Tm.zero (Tm.sel (Syn.var 0) Tm.one Tm.zero)
+def Tm.npar (y : Tm n) : Tm n := Tm.iter y Tm.zero (Tm.sel (Syn.var 0) Tm.one Tm.zero)
 
-@[simp] theorem Tm.subst_par (σ : Fin n → Tm m) (y : Tm n) :
-    Syn.subst σ (Tm.par y) = Tm.par (Syn.subst σ y) := by
-  simp only [Tm.par, Tm.subst_iter, Tm.subst_sel, Tm.subst_zero, Tm.subst_one, Syn.subst_var,
+@[simp] theorem Tm.subst_npar (σ : Fin n → Tm m) (y : Tm n) :
+    Syn.subst σ (Tm.npar y) = Tm.npar (Syn.subst σ y) := by
+  simp only [Tm.npar, Tm.subst_iter, Tm.subst_sel, Tm.subst_zero, Tm.subst_one, Syn.subst_var,
     Syn.up_zero]
 
 namespace NFm
@@ -43,7 +43,7 @@ def imp (A B : NFm n) : NFm n := Q (sel (Syn.var 0) A.shift B.shift)
 
 /-- Conjunction. -/
 def and (A B : NFm n) : NFm n :=
-  Q (gate (Syn.var 0) (sel (Tm.par (Syn.var 0)) A.shift B.shift))
+  Q (gate (Syn.var 0) (sel (Tm.npar (Syn.var 0)) A.shift B.shift))
 
 /-- Existential quantification. -/
 def ex (A : NFm (n + 1)) : NFm n := D (gate (Syn.var 0) A.shift)
@@ -62,7 +62,7 @@ theorem imp_subst (A B : NFm n) (σ : Fin n → Tm m) :
 
 theorem and_subst (A B : NFm n) (σ : Fin n → Tm m) :
     (and A B).subst σ = and (A.subst σ) (B.subst σ) := by
-  simp only [NFm.and, subst_Q, gate_subst, sel_subst, Tm.subst_par, Syn.subst_var,
+  simp only [NFm.and, subst_Q, gate_subst, sel_subst, Tm.subst_npar, Syn.subst_var,
     Syn.up_zero, shift_subst_up]
 
 theorem ex_subst (A : NFm (n + 1)) (σ : Fin n → Tm m) :
@@ -185,22 +185,22 @@ theorem selE (w : Tm n) {A B C : NFm n} (h : NPrf Γ (NFm.sel w A B))
 
 /-! ### Conjunction -/
 
-theorem parZero : NPrf Γ (.eq (Tm.par zero) zero) := .iterZero _ _
+theorem parZero : NPrf Γ (.eq (Tm.npar zero) zero) := .iterZero _ _
 
-theorem parSucc (c : Tm n) : NPrf Γ (.eq (Tm.par (succ c)) (Tm.sel (Tm.par c) one zero)) := by
+theorem parSucc (c : Tm n) : NPrf Γ (.eq (Tm.npar (succ c)) (Tm.sel (Tm.npar c) one zero)) := by
   have h := NPrf.iterSucc (Γ := Γ) c zero (Tm.sel (Syn.var 0) one zero)
   simp only [Tm.subst_sel, Syn.subst_var, Syn.inst_zero, Tm.subst_one, Tm.subst_zero] at h
   exact h
 
-theorem parOne : NPrf Γ (.eq (Tm.par (succ zero)) (succ zero)) :=
+theorem parOne : NPrf Γ (.eq (Tm.npar (succ zero)) (succ zero)) :=
   eqTrans (parSucc zero) (eqTrans (selCongr one zero parZero) (selZero one zero))
 
-theorem parTwo : NPrf Γ (.eq (Tm.par (succ (succ zero))) zero) :=
+theorem parTwo : NPrf Γ (.eq (Tm.npar (succ (succ zero))) zero) :=
   eqTrans (parSucc (succ zero)) (eqTrans (selCongr one zero parOne) (selSucc zero one zero))
 
 theorem andI {A B : NFm n} (hA : NPrf Γ A) (hB : NPrf Γ B) : NPrf Γ (NFm.and A B) := by
   have key : ∀ {Δ : List (NFm (n + 1))}, NPrf Δ A.shift → NPrf Δ B.shift →
-      NPrf Δ ((NFm.gate (Syn.var 0) (NFm.sel (Tm.par (Syn.var 0)) A.shift B.shift)).subst
+      NPrf Δ ((NFm.gate (Syn.var 0) (NFm.sel (Tm.npar (Syn.var 0)) A.shift B.shift)).subst
         (repl (succ (Syn.var 0)))) := by
     intro Δ h₁ h₂
     simp only [NFm.gate_subst, NFm.sel_subst, Syn.subst_var, Syn.repl_zero,
@@ -210,10 +210,10 @@ theorem andI {A B : NFm n} (hA : NPrf Γ A) (hB : NPrf Γ B) : NPrf Γ (NFm.and 
 
 /-- The instance of a conjunction at a successor. -/
 theorem andInst {A B : NFm n} (h : NPrf Γ (NFm.and A B)) (c : Tm n) :
-    NPrf Γ (NFm.sel (Tm.par (succ c)) A B) := by
+    NPrf Γ (NFm.sel (Tm.npar (succ c)) A B) := by
   have h' := NPrf.qE (succ c) h
     (by simp only [NFm.gate_subst, Syn.subst_var, Syn.inst_zero]; exact NEquiv.gateZero _)
-  simp only [NFm.gate_subst, NFm.sel_subst, Tm.subst_par, Syn.subst_var, Syn.inst_zero,
+  simp only [NFm.gate_subst, NFm.sel_subst, Tm.subst_npar, Syn.subst_var, Syn.inst_zero,
     NFm.subst_inst_shift] at h'
   exact (NEquiv.gate_succ _ _).mp h'
 
