@@ -7314,6 +7314,11 @@ has 88 live operations and exact degree 30 at the authenticated ports, with
 the same integer zeros as its 88/46 parent. Its endpoint remains inherited;
 no new Lean or file-binding theorem is claimed. Comparisons with P73 are
 numerical because the witness encodings differ.
+The reviewed [C-weighted first-root fold](research/ordinary13-cfold88-28/README.md)
+gives 13 positive inputs, 88 operations and exact degree 28, with the same
+positive-zero existence as that 88/30 parent at the authenticated ports.
+The proof replays the sign-free calibration externally; it is not a new
+Lean/iPRA endpoint or a file-binding theorem.
 The reviewed [conditional sphere finalizer](research/ordinary13-freej88-conditional-sphere/README.md)
 gives a different 88-operation, degree-30 graph with the same positive zeros.
 It is an equal-metric search form, not a new Lean endpoint or improvement.
@@ -7436,6 +7441,9 @@ The reviewed [local rewrite screens](research/ordinary13-88-local-rewrite-screen
 also found no smaller graph within their enumerated one- and two-gate
 replacements and pruned ring-rewrite beam. These finite searches do not
 establish minimality or exclude other transformations.
+The corresponding reviewed [87-operation screens](research/ordinary14-87-local-rewrite-screen/README.md)
+also found no smaller graph in their stated local and pruned-beam scopes;
+their sphere form is equivalent on positive inputs only.
 The independently reviewed [calibration dependency and partial actual-port assignment](research/ordinary13-folded-root86-calibration-obstruction/README.md)
 shows where the existing source uses the old first coordinate's positivity.
 Its negative-`Bt` assignment satisfies the first residual at the authenticated
