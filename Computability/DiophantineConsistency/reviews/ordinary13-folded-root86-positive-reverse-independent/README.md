@@ -1,0 +1,7 @@
+# Independent review: positive folded-root zeros transfer to the parent
+
+The one-way source-level argument passes review. The 86-row graph is the exact two-gate fold of the 88-row parent, and the parent coordinate is `r_old=rho+k*Bt`; Bt and k do not depend on rho. At strictly positive inputs and beta>0, `b=J*beta`, q, M, Y, rho and ell are positive, and `k=eta+zeta≥2`. A zero of the four-square 86 output has A0=0.
+
+If Bt≤0, the actual first carrier satisfies `Z=M*(ell+k+rho)+Y*b−q³*Bt > M*(ell+k)>0`. Moreover `(ell+k)²−(1+ell*(ell+k))=ell*k+k²−1>0`. Therefore A0 is strictly positive, a contradiction. Thus Bt>0 at every positive 86 zero, and `r_old=rho+k*Bt` is positive. Exact polynomial substitution then gives a positive zero of the 88 graph with all other coordinates unchanged. The proof uses no division, Pell or transport theorem, and places no sign condition on K0, MC or MF.
+
+The opposite existence implication is not established. The separately reviewed toy-port example only shows that direct same-other-coordinates repair can fail; it is not an unrestricted nonequivalence proof. The author receipt and a distinct finite sign control reproduce, but the unbounded algebra above supplies the argument. No new Lean theorem or JSON/PDF binding is claimed. Run `python3 -I -S -B Computability/DiophantineConsistency/reviews/ordinary13-folded-root86-positive-reverse-independent/check.py` from the repository root.
