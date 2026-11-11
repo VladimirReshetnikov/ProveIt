@@ -7398,6 +7398,13 @@ Lean or connected internally to iPRA or the PDF.
 The source-reviewed [87-operation Lean graph and decoder-route draft](research/ordinary14-shifted-guard87-lean-draft/README.md)
 records the fact-level replay needed for arbitrary models. It is uncompiled;
 the graph-specific model lemmas, parent bridges and iPRA endpoint remain open.
+An experimental [82-operation C-guard graph](research/ordinary14-c-guard82-probe/README.md)
+omits the transport congruence and has a twice-reviewed symbolic positive zero
+at the actual compact44 ports where that congruence fails. Subject to the
+documented parent calibration and coordinate-preserving source replay, no
+positive parent zero shares its `q` and rank. This does not exclude parent
+zeros at other parameters or prove unrestricted nonequivalence, and the
+82-operation graph is not an established replacement.
 The reviewed [guard-reuse exclusions](research/ordinary14-guarded-fold89-reuse-exclusions/README.md)
 show that setting the guard input equal to `F`, `α`, `J` or the signed first
 input would eliminate positive zeros under the stated port bounds. This does
