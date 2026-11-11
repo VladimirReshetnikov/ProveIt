@@ -7314,6 +7314,9 @@ has 88 live operations and exact degree 30 at the authenticated ports, with
 the same integer zeros as its 88/46 parent. Its endpoint remains inherited;
 no new Lean or file-binding theorem is claimed. Comparisons with P73 are
 numerical because the witness encodings differ.
+The reviewed [conditional sphere finalizer](research/ordinary13-freej88-conditional-sphere/README.md)
+gives a different 88-operation, degree-30 graph with the same positive zeros.
+It is an equal-metric search form, not a new Lean endpoint or improvement.
 An externally reviewed [86-operation, degree-26 folded-root probe](research/ordinary13-folded-root86-probe/README.md)
 is related by an exact integer-coordinate bijection, but each positive-domain
 direction initially required a separate sign condition. An independently
