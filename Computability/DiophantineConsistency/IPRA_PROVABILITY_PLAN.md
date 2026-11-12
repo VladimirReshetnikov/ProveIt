@@ -7440,6 +7440,10 @@ replaces the four-square finalizer and gives 13 positive inputs, 80
 operations and exact degree 99. It has the same zero set as the 81/60
 parent at every integer valuation and arbitrary ports; its compact44
 consistency connection retains the parent's Lean and ancestry limitations.
+The independently reviewed [natural-input counterpart](research/ordinary13-natural-unit-product89/README.md)
+uses 13 natural inputs, 89 operations and exact specialized degree 99. Its
+external zero map uses a root switch when one coordinate is zero and assumes
+positive beta; the parent endpoint and file-binding limitations remain.
 The separate reviewed [degree-56 residue-adjusted form](research/ordinary13-residue-first82/README.md)
 has 13 positive inputs and 82 operations. Its local comparison uses the stated
 compact44 port bounds and the sign-free decoder, without requiring the
