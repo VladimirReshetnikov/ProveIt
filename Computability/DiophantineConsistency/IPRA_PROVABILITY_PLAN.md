@@ -7473,6 +7473,11 @@ The independently reviewed [forced-gamma variant](research/ordinary13-natural-fo
 removes one more shift: 13 natural inputs, 87 operations and exact specialized
 degree 99. Its external zero map relies on the stated port bounds and cited
 rank-window and Pell-descent results; Lean, iPRA and physical binding remain open.
+The independently reviewed [forced-input reductions](reviews/ordinary13-forced-w-x-independent-aggregate/README.md)
+give three further external tradeoffs: 13 natural inputs with 86 operations
+at degree 99, 95 at degree 28, or 94 at degree 50. Their local zero maps use
+positive beta and nonnegative K0; the respective parents' calibration, rank,
+endpoint and physical-binding qualifications remain inherited.
 The independently reviewed [13-variable unshifted-s obstruction](research/ordinary13-natural87-unshift-s-obstruction/README.md)
 gives a zero with `s=0` at the authenticated ports after removing that shift.
 It rules out the proposed local positivity and tested same-coordinate map,
@@ -7844,6 +7849,31 @@ The independently reviewed [forced-gamma natural graph](research/ordinary14-natu
 removes another shift, giving 14 natural inputs, 80 operations and exact
 specialized degree 107. Its external zero map uses the stated compact-port
 bounds and rank/Pell results; the iPRA and physical-binding gaps remain.
+The independently reviewed [forced-w natural graph](research/ordinary14-natural-forced-w79/README.md)
+removes another shift, giving 14 natural inputs, 79 operations and exact
+specialized degree 107. Its local divisibility argument assumes positive beta
+and nonnegative K0; the stronger parent and endpoint qualifications remain.
+The independently source-reviewed [natural-79 Lean transcription](research/ordinary14-natural-forced-w79-lean-draft/README.md)
+records the literal graph and product shape. It remains unelaborated and has
+no checked model or iPRA endpoint.
+The independently source-reviewed [natural-79 model route](research/ordinary14-natural79-w-model-route/README.md)
+identifies model square-divisibility interfaces and proposes ring identities
+for the forced-w argument. The existing 74 unit extractor requires positive
+w and cannot discharge the critical w=0 case; its replacement and the full
+Lean/iPRA proof remain open.
+The independently source-reviewed [79 zero-w unit draft](research/ordinary14-natural79-zero-w-unit-draft/README.md)
+proposes a zero-specific factor extraction without assuming positive w; it
+still takes three residue exclusions as explicit hypotheses. The source and
+its axiom reports remain unelaborated and unexecuted.
+The independently source-reviewed [79 residue-pattern draft](research/ordinary14-natural79-factor-residues-draft/README.md)
+proposes discharging those exclusions using literal graph patterns. The cuts
+and zero-w unit client remain unelaborated, and do not prove w positivity.
+The independently source-reviewed [79 zero-w J-positivity draft](research/ordinary14-natural79-zero-w-jpos-draft/README.md)
+proposes deriving J positivity using represented nonnegative K0. Its proof
+and imported zero-w units remain unelaborated; w positivity is still open.
+The independently source-reviewed [79-to-80 w-shift draft](research/ordinary14-natural79-wshift-model-draft/README.md)
+proposes related-valuation zero maps, conditional on w positivity at every
+79 zero. It remains unelaborated and does not discharge that premise.
 The independently source-reviewed [natural-80 Lean transcription](research/ordinary14-natural-forced-gamma80-lean-draft/README.md)
 records its literal graph and product shape. Source correspondence is checked
 externally; elaboration and model semantics remain open.
@@ -7893,6 +7923,14 @@ The independently source-reviewed [natural-80 endpoint draft](research/ordinary1
 proposes symbolic-port discharge and native, standard and equality-only
 iPRA clients. The full chain and seven requested axiom reports are unelaborated
 and unexecuted; this is not yet a checked iPRA theorem or PDF binding.
+The independently reviewed [natural-80 endpoint inventory](research/ordinary14-natural80-endpoint-import-inventory/README.md)
+records 184 lexical draft modules and 41 directly named qualified sources,
+along with a bounded token scan. It does not establish actual Lean resolution,
+provider or axiom closure, or build readiness.
+The independently source-reviewed [combined natural-80 overlay](research/ordinary14-natural80-combined-slim-overlay/README.md)
+extends the 81 snapshot with 11 endpoint drafts and selects both reviewed
+keyword alternatives. Its 184 snapshots are inert; actual Lean resolution,
+provider/companion closure and endpoint elaboration remain unverified.
 The independently source-reviewed [natural-81 Lean transcription](research/ordinary14-natural-forcedj81-lean-draft/README.md)
 records its literal graph and product shape. Its source correspondence is
 checked externally; Lean semantics and endpoint equivalence remain open.
@@ -7908,6 +7946,17 @@ The independently source-reviewed [natural-81 endpoint draft](research/ordinary1
 proposes those connections through native, standard and equality-only iPRA
 clients. Its declarations and five axiom-report commands remain unelaborated
 and unexecuted; provider and physical-equation bindings remain open.
+The independently reviewed [predecessor-order alternatives](research/ordinary14-natural-predecessor-order-patch/README.md)
+make the conversion from `1 + n` to `n + 1` explicit in two earlier drafts.
+They are inert source snapshots; the existing inventory still selects the
+originals, and neither version has been checked by Lean.
+The independently source-reviewed [combined 81 overlay](research/ordinary14-natural81-combined-slim-overlay/README.md)
+selects those alternatives alongside the earlier slim snapshots. It remains
+inert and unelaborated, and still retains a separately identified likely
+reserved helper name; provider closure and build readiness remain open.
+The independently source-reviewed [keyword alternatives](research/ordinary14-natural-partial-keyword-patch/README.md)
+rename that helper in inert snapshots. The parser hazard and proposed repair
+have not been confirmed by Lean and are not selected in the 81 overlay.
 The independently source-reviewed [natural-81 recipe-port client](research/ordinary14-natural81-recipe-port-bridge-draft/README.md)
 proposes transporting those endpoints to closed Lean byte recipes. It is
 unelaborated and does not bind those recipes to external payloads or the PDF.
@@ -7959,6 +8008,10 @@ The independently reviewed [forced-gamma shifted-root variant](research/ordinary
 removes one more shift, giving 14 natural inputs, 81 operations and exact
 specialized degree 97 under the stated compact-port bounds and rank/Pell
 results. It remains an external reduction with the same endpoint gaps.
+The independently reviewed [forced-w shifted-root graph](research/ordinary14-natural-forced-w80-degree97/README.md)
+gives 14 natural inputs, 80 operations and exact specialized degree 97. Its
+external local map uses positive beta and nonnegative K0; the parent's
+rank, endpoint and physical-binding qualifications remain inherited.
 The independently reviewed [unshifted-s obstruction](research/ordinary14-natural80-unshift-s-obstruction/README.md)
 exhibits a zero with `s=0`, including at the authenticated compact ports,
 after deleting the `s` shift from the 81 graph. It rules out forced
