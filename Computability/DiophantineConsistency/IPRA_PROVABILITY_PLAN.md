@@ -7651,6 +7651,12 @@ parent bridges and the iPRA endpoint are still required.
 The source-reviewed [compact 78/86 composition](research/ordinary14-78-86-compact-model-composition-draft/README.md)
 extends the proposed symbolic-port chain through the 85 graph. It remains
 unelaborated and has no checked provider or iPRA endpoint.
+The source-reviewed [86/87 model wrapper](research/ordinary14-86-87-model-equivalence-draft/README.md),
+[compact specialization](research/ordinary14-86-87-compact-model-equivalence-draft/README.md),
+and [compact 78/87 composition](research/ordinary14-78-87-compact-model-composition-draft/README.md)
+propose extending that chain to the 87 graph. Their dependencies remain
+unelaborated; the parent bridge, providers, physical file binding and iPRA
+endpoint remain open.
 The source-reviewed [modified-carrier facts](research/ordinary14-modified-carrier-model-facts-draft/README.md)
 propose the orientation, rank congruence and compact-Mersenne cancellation
 needed for the preceding 84/85 comparison. They remain unelaborated; the
