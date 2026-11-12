@@ -7449,6 +7449,9 @@ is unelaborated and does not prove positive witnesses or the reverse map.
 The source-reviewed [86 first-fields draft](research/ordinary14-86-first-fields-draft/README.md)
 proposes the signed first residual and slot independence from its own zero.
 It remains unelaborated and does not yet establish the quotient witness.
+The source-reviewed [86 own-zero quotient composition](research/ordinary14-86-ownzero-quotient-draft/README.md)
+proposes deriving that quotient and a magnitude root from the graph's own
+first residual. It remains unelaborated and is not yet a complete model map.
 The reviewed [q-cubed substitution](research/ordinary14-qcube85-tradeoff/README.md)
 gives 14 positive inputs and 85 operations at exact degree 56. Its
 positive-zero existence is equivalent to the 86/26 parent's for integer
