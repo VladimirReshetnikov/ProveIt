@@ -7519,6 +7519,10 @@ The source-reviewed [ring-norm extraction draft](research/ordinary14-aux-ring-no
 proposes the signed main-carrier and natural norm conversions under explicit
 positive-scale hypotheses. It remains unelaborated and is not yet connected
 to the literal graph or an iPRA endpoint.
+The source-reviewed [78/79 graph-norm client draft](research/ordinary14-aux-graph-norm-client-draft/README.md)
+proposes extracting those bounds from each literal graph's own positive zero.
+It remains unelaborated and does not establish the auxiliary-coordinate map,
+provider compatibility or an iPRA endpoint.
 The source-reviewed [87-operation Lean graph and decoder-route draft](research/ordinary14-shifted-guard87-lean-draft/README.md)
 records the fact-level replay needed for arbitrary models. It is uncompiled;
 the graph-specific model lemmas, parent bridges and iPRA endpoint remain open.
