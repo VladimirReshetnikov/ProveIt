@@ -82,9 +82,8 @@ theorem zf_eq (x : Q Γ) : zf x = sel x 1 0 := by
 /-- The parity is a Boolean: it is fixed by the double zero test. -/
 @[simp] theorem zf_zf_par (x : Q Γ) : zf (zf (par x)) = par x := by
   induction x using Q.ind with | _ a
-  have h := eqInd (Γ := Γ) (Tm.zf (Tm.zf (Tm.par (var 0)))) (Tm.par (var 0)) (by simp)
+  simpa using eqInd (Γ := Γ) (Tm.zf (Tm.zf (Tm.par (var 0)))) (Tm.par (var 0)) (by simp)
     (fun ih => by simp at ih; simp [ih]) a
-  simpa using h
 
 /-- Splitting the Boolean `par x`, over all extensions of the context. -/
 theorem par_cases (x : Q Γ) {p q : Q Γ}
@@ -99,15 +98,13 @@ theorem par_cases (x : Q Γ) {p q : Q Γ}
 
 theorem par_double (x : Q Γ) : par (x + x) = 0 := by
   induction x using Q.ind with | _ a
-  have h := eqInd (Γ := Γ) (Tm.par (Tm.add (var 0) (var 0))) Tm.zero (by simp)
+  simpa using eqInd (Γ := Γ) (Tm.par (Tm.add (var 0) (var 0))) Tm.zero (by simp)
     (fun ih => by simp at ih; simp [ih]) a
-  simpa using h
 
 theorem par_triple (x : Q Γ) : par (x + x + x) = par x := by
   induction x using Q.ind with | _ a
-  have h := eqInd (Γ := Γ) (Tm.par (Tm.add (Tm.add (var 0) (var 0)) (var 0))) (Tm.par (var 0))
+  simpa using eqInd (Γ := Γ) (Tm.par (Tm.add (Tm.add (var 0) (var 0)) (var 0))) (Tm.par (var 0))
     (by simp) (fun ih => by simp at ih; simp [ih]) a
-  simpa using h
 
 /-! ### The three-cycle -/
 
@@ -146,27 +143,25 @@ theorem ramp_succ_mod3 (x : Q Γ) : ramp (succ x) = succ (ramp x + mod3 (ramp x)
 /-- The ramp invariant: the residue of the ramp is the parity of its counter. -/
 @[simp] theorem mod3_ramp (x : Q Γ) : mod3 (ramp x) = par x := by
   induction x using Q.ind with | _ a
-  have h := eqInd (Γ := Γ) (Tm.mod3 (Tm.ramp (var 0))) (Tm.par (var 0)) (by simp)
+  simpa using eqInd (Γ := Γ) (Tm.mod3 (Tm.ramp (var 0))) (Tm.par (var 0)) (by simp)
     (fun ih => by
       simp at ih
       simp [ramp_succ_mod3, ih]
       refine par_cases (mk _ (var 0)) ?_ ?_ <;> intro k Γ' e he <;>
         have ih' := congrArg e.map ih <;> simp [he] at ih' ⊢ <;> simp [ih']) a
-  simpa using h
 
 @[simp] theorem ramp_succ (x : Q Γ) : ramp (succ x) = succ (ramp x + par x) := by
   rw [ramp_succ_mod3, mod3_ramp]
 
 theorem ramp_double (x : Q Γ) : ramp (x + x) = x + x + x := by
   induction x using Q.ind with | _ a
-  have h := eqInd (Γ := Γ) (Tm.ramp (Tm.add (var 0) (var 0)))
+  simpa using eqInd (Γ := Γ) (Tm.ramp (Tm.add (var 0) (var 0)))
     (Tm.add (Tm.add (var 0) (var 0)) (var 0)) (by simp)
     (fun ih => by simp at ih; simp [ih, par_double]) a
-  simpa using h
 
 theorem ramp_triple (x : Q Γ) : ramp (x + x + x) = ramp x + ramp x + ramp x + par x := by
   induction x using Q.ind with | _ a
-  have h := eqInd (Γ := Γ) (Tm.ramp (Tm.add (Tm.add (var 0) (var 0)) (var 0)))
+  simpa using eqInd (Γ := Γ) (Tm.ramp (Tm.add (Tm.add (var 0) (var 0)) (var 0)))
     (Tm.add (Tm.add (Tm.add (Tm.ramp (var 0)) (Tm.ramp (var 0))) (Tm.ramp (var 0)))
       (Tm.par (var 0)))
     (by simp)
@@ -174,7 +169,6 @@ theorem ramp_triple (x : Q Γ) : ramp (x + x + x) = ramp x + ramp x + ramp x + p
       simp at ih
       simp [ih, par_triple]
       refine par_cases (mk _ (var 0)) ?_ ?_ <;> intro k Γ' e he <;> simp [he]) a
-  simpa using h
 
 /-! ### The factor map -/
 

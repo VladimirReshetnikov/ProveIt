@@ -429,7 +429,9 @@ theorem NPrf.toZPrf (h : NPrf Γ A) : ZPrf Γ A := by
   | hyp h => exact .hyp h
   | iterZero a h => exact .iterZero a h
   | iterSucc c a h => exact .iterSucc c a h
-  | trEq a b _ _ ih₁ ih₂ => exact ZKernel.trF a b ih₁ ih₂
+  | @trOne _ _ h s t u _ _ ih₁ ih₂ =>
+    have e := ZKernel.symmF (ZKernel.trF h (Syn.shift u) ih₁ (by simpa using ih₂))
+    simpa using e
   | qE t _ _ ih₁ ih₂ => exact .qE t ih₁ ih₂
   | dE _ _ ih₁ ih₂ => exact .dE ih₁ ih₂
   | dICase B t _ ih => exact .dICase B t ih

@@ -58,8 +58,7 @@ variable {Γ : List (Fm Tm n)}
 
 theorem lstep_eq (k v : Q Γ) :
     lstep k v = sel (monus (pow2 (succ v)) k) (succ v) v := by
-  induction k using Q.ind with | _ a
-  induction v using Q.ind with | _ b
+  induction k, v using Q.ind₂ with | _ a b
   rfl
 
 @[simp] theorem lgc_zero (k : Q Γ) : lgc 0 k = 0 := by
@@ -67,8 +66,7 @@ theorem lstep_eq (k v : Q Γ) :
   exact sound (Teq.iterZero _ _)
 
 @[simp] theorem lgc_succ (t k : Q Γ) : lgc (succ t) k = lstep k (lgc t k) := by
-  induction t using Q.ind with | _ a
-  induction k using Q.ind with | _ b
+  induction t, k using Q.ind₂ with | _ a b
   have h := Teq.iterSucc (Γ := Γ) a Tm.zero (Tm.lstep (shift b) (var 0))
   simp only [Tm.subst_lstep, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at h
   exact sound h
@@ -92,15 +90,12 @@ theorem lgc_low_step (i c k r : Q Γ) (hk : monus (pow2 c) k = 0)
 
 /-- Below the exponent the counter follows its index. -/
 theorem sel_lgc_low (c a i : Q Γ) : sel (monus i c) (lgc i (pow2 c + a)) i = i := by
-  induction c using Q.ind with | _ c
-  induction a using Q.ind with | _ a
-  induction i using Q.ind with | _ i
-  have h := eqInd (Γ := Γ)
+  induction c, a, i using Q.ind₃ with | _ c a i
+  simpa using eqInd (Γ := Γ)
     (Tm.sel (Tm.monus (var 0) (shift c))
       (Tm.lgc (var 0) (Tm.add (Tm.pow2 (shift c)) (shift a))) (var 0))
     (var 0) (by simp)
     (fun ih => by simp at ih ⊢; exact lgc_low_step _ _ _ _ (monus_add_right _ _) ih) i
-  simpa using h
 
 theorem lgc_low (c a : Q Γ) : lgc c (pow2 c + a) = c := by
   have h := sel_lgc_low c a c
@@ -117,21 +112,17 @@ theorem lstep_pair (a b : Q Γ) : lstep (pow2 (a + b) + a) (a + b) = a + b := by
   rw [lstep_eq, pow2_succ, e, monus_add_left, sel_succ]
 
 theorem lgc_pair_add (a b j : Q Γ) : lgc (a + b + j) (pow2 (a + b) + a) = a + b := by
-  induction a using Q.ind with | _ a
-  induction b using Q.ind with | _ b
-  induction j using Q.ind with | _ j
-  have h := eqInd (Γ := Γ)
+  induction a, b, j using Q.ind₃ with | _ a b j
+  simpa using eqInd (Γ := Γ)
     (Tm.lgc (Tm.add (Tm.add (shift a) (shift b)) (var 0))
       (Tm.add (Tm.pow2 (Tm.add (shift a) (shift b))) (shift a)))
     (Tm.add (shift a) (shift b)) (by simp [lgc_low])
     (fun ih => by simp at ih; simp [add_succ, ih, lstep_pair]) j
-  simpa using h
 
 /-! ### Pairing -/
 
 theorem pair_eq (a b : Q Γ) : pair a b = pow2 (a + b) + a := by
-  induction a using Q.ind with | _ a
-  induction b using Q.ind with | _ b
+  induction a, b using Q.ind₂ with | _ a b
   rfl
 
 theorem pfst_eq (w : Q Γ) : pfst w = monus w (pow2 (lg w)) := by

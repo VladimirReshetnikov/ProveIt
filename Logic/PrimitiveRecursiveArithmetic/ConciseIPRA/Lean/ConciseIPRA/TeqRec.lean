@@ -108,8 +108,7 @@ theorem pfst_app_step (R : Tm (n + 1)) (x : Q Γ) :
 /-- The first component of the accumulator is the count. -/
 theorem pfst_iterate_step (R : Tm (n + 1)) (c a : Q Γ) :
     pfst (iterate (Tm.pair (Tm.succ (Tm.pfst (var 0))) R) c (pair 0 a)) = c := by
-  induction c using Q.ind with | _ c
-  induction a using Q.ind with | _ a
+  induction c, a using Q.ind₂ with | _ c a
   have h := eqInd (Γ := Γ)
     (Tm.pfst (Tm.iter (var 0) (Tm.pair Tm.zero (shift a))
       (Tm.pair (Tm.succ (Tm.pfst (var 0))) (Syn.subst (up (fun i => var i.succ)) R))))

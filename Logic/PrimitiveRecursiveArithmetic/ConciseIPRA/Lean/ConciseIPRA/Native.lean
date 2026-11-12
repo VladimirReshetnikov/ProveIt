@@ -12,18 +12,19 @@ are generated from equations by two binders,
 In `D B` the variable `y` has index `0` and `x` has index `1`.
 
 There are no connectives and no logical axioms.  The inference rules are
-hypothesis, the two computation equations, transport along an equation inside
-an equation, elimination of `Q`, elimination of `D`, introduction of `D` by
-cases (any matrix), and introduction of `Q` by progress (literal equations
-only).  Freshness side conditions of the informal presentation are expressed
+hypothesis, the two computation equations, transport along an equation in one
+term, elimination of `Q`, elimination of `D`, introduction of `D` by cases
+(any matrix), and introduction of `Q` by progress (literal equations only).  Freshness side conditions of the informal presentation are expressed
 by de Bruijn scoping: a fresh variable is the new index `0` over a weakened
 context.
 
 Two rules are weaker than in the research reports, with the same derivable
 sequents (`NativeInherited`):
 
-* transport is purely equational; transport in an arbitrary formula template
-  is the derived rule `NPrf.tr` (`NativeEq`);
+* transport acts on one term: from `s = t` and `h(s) = u` it infers
+  `u = h(t)`, the rule of the package `Research/one_context`.  Transport in an
+  equation template, `NPrf.trEq`, is two steps, and transport in an arbitrary
+  formula template is the derived rule `NPrf.tr` (`NativeEq`);
 * progress introduces `Q_y E(y)` directly; the reports' witnessed form, which
   introduces `D_{x,y} E(x, y)`, is the derived rule `NPrf.dIProg`.
 
@@ -108,12 +109,11 @@ inductive NPrf : {n : ℕ} → List (NFm n) → NFm n → Prop
   /-- `I(S c, a; u.h) = h[I(c, a; u.h)/u]`. -/
   | iterSucc {n : ℕ} {Γ : List (NFm n)} (c a : Tm n) (h : Tm (n + 1)) :
       NPrf Γ (.eq (iter (succ c) a h) (Syn.subst (inst (iter c a h)) h))
-  /-- Tr: transport along an equation inside an equation: from `s = t` and
-  `a(s) = b(s)` infer `a(t) = b(t)`. -/
-  | trEq {n : ℕ} {Γ : List (NFm n)} (a b : Tm (n + 1)) {s t : Tm n}
-      (h₁ : NPrf Γ (.eq s t))
-      (h₂ : NPrf Γ (.eq (Syn.subst (inst s) a) (Syn.subst (inst s) b))) :
-      NPrf Γ (.eq (Syn.subst (inst t) a) (Syn.subst (inst t) b))
+  /-- Tr: transport along an equation in one term template: from `s = t` and
+  `h(s) = u` infer `u = h(t)`. -/
+  | trOne {n : ℕ} {Γ : List (NFm n)} (h : Tm (n + 1)) {s t u : Tm n}
+      (h₁ : NPrf Γ (.eq s t)) (h₂ : NPrf Γ (.eq (Syn.subst (inst s) h) u)) :
+      NPrf Γ (.eq u (Syn.subst (inst t) h))
   /-- QE: from `Q_y B(y)` and `B(0)` infer `B(t)`. -/
   | qE {n : ℕ} {Γ : List (NFm n)} {B : NFm (n + 1)} (t : Tm n)
       (h₁ : NPrf Γ (.Q B)) (h₂ : NPrf Γ (B.subst (inst zero))) : NPrf Γ (B.subst (inst t))
@@ -140,7 +140,7 @@ theorem NPrf.sound {n : ℕ} {Γ : List (NFm n)} {A : NFm n} (h : NPrf Γ A) :
   | hyp h => exact .hyp (List.mem_map_of_mem h)
   | iterZero a h => exact Teq.iterZero a h
   | iterSucc c a h => exact Teq.iterSucc c a h
-  | trEq a b _ _ ih₁ ih₂ => exact Prf.eqSubst1 (a ≐ b) ih₁ ih₂
+  | trOne h _ _ ih₁ ih₂ => exact Prf.eqTrans (Prf.eqSymm ih₂) (Prf.eqCongr1 h ih₁)
   | qE t _ _ ih₁ ih₂ =>
     rw [NFm.toFm_subst] at ih₂ ⊢
     exact .allE t (.impE ih₁ ih₂)

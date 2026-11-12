@@ -127,6 +127,13 @@ theorem exact {a b : Tm n} (h : mk Γ a = mk Γ b) : Γ ⊢[TeqAx] a ≐ b := Qu
 
 theorem ind {p : Q Γ → Prop} (h : ∀ a, p (mk Γ a)) (x : Q Γ) : p x := Quotient.ind h x
 
+theorem ind₂ {p : Q Γ → Q Γ → Prop} (h : ∀ a b, p (mk Γ a) (mk Γ b)) (x y : Q Γ) : p x y :=
+  Quotient.inductionOn₂ x y h
+
+theorem ind₃ {p : Q Γ → Q Γ → Q Γ → Prop} (h : ∀ a b c, p (mk Γ a) (mk Γ b) (mk Γ c))
+    (x y z : Q Γ) : p x y z :=
+  Quotient.inductionOn₃ x y z h
+
 theorem hyp0 {a b : Tm n} : mk ((a ≐ b) :: Γ) a = mk ((a ≐ b) :: Γ) b := sound Prf.hyp0
 
 /-- A unary operation on classes. -/
@@ -181,14 +188,12 @@ theorem app_mk (h : Tm (n + 1)) (a : Tm n) : app h (mk Γ a) = mk Γ (Syn.subst 
 
 @[simp] theorem iterate_succ (h : Tm (n + 1)) (c x : Q Γ) :
     iterate h (succ c) x = app h (iterate h c x) := by
-  induction c using Q.ind with | _ c
-  induction x using Q.ind with | _ a
+  induction c, x using Q.ind₂ with | _ c a
   exact sound (Teq.iterSucc c a h)
 
 /-- If `0 = 1` then all classes coincide. -/
 theorem absurd (h : (0 : Q Γ) = 1) (x y : Q Γ) : x = y := by
-  induction x using Q.ind with | _ a
-  induction y using Q.ind with | _ b
+  induction x, y using Q.ind₂ with | _ a b
   exact sound (.botE _ (.impE Teq.sep (exact h)))
 
 /-- Induction for a literal equation, with the induction hypothesis available
@@ -230,15 +235,12 @@ theorem map_op₁ (e : Ext Γ Γ') (f : ∀ k, Tm k → Tm k) (hf : Sub₁ f) (x
 
 theorem map_op₂ (e : Ext Γ Γ') (f : ∀ k, Tm k → Tm k → Tm k) (hf : Sub₂ f) (x y : Q Γ) :
     e.map (Q.op₂ f hf x y) = Q.op₂ f hf (e.map x) (e.map y) := by
-  induction x using Q.ind with | _ a
-  induction y using Q.ind with | _ b
+  induction x, y using Q.ind₂ with | _ a b
   exact congrArg (Q.mk Γ') (hf e.σ a b)
 
 theorem map_op₃ (e : Ext Γ Γ') (f : ∀ k, Tm k → Tm k → Tm k → Tm k) (hf : Sub₃ f)
     (x y z : Q Γ) : e.map (Q.op₃ f hf x y z) = Q.op₃ f hf (e.map x) (e.map y) (e.map z) := by
-  induction x using Q.ind with | _ a
-  induction y using Q.ind with | _ b
-  induction z using Q.ind with | _ c
+  induction x, y, z using Q.ind₃ with | _ a b c
   exact congrArg (Q.mk Γ') (hf e.σ a b c)
 
 @[simp] theorem map_succ (e : Ext Γ Γ') (x : Q Γ) : e.map (Q.succ x) = Q.succ (e.map x) :=
@@ -280,9 +282,7 @@ theorem cases (x : Q Γ) {p q : Q Γ}
     (h0 : ∀ {m : ℕ} {Γ' : List (Fm Tm m)} (e : Ext Γ Γ'), e.map x = 0 → e.map p = e.map q)
     (hS : ∀ {m : ℕ} {Γ' : List (Fm Tm m)} (e : Ext Γ Γ') (z : Q Γ'),
       e.map x = succ z → e.map p = e.map q) : p = q := by
-  induction x using Q.ind with | _ a
-  induction p using Q.ind with | _ s
-  induction q using Q.ind with | _ t
+  induction x, p, q using Q.ind₃ with | _ a s t
   refine casesTm a ?_ ?_
   · have h := h0 (Ext.wk (a ≐ Tm.zero)) (by rw [Ext.wk_map_mk]; exact hyp0)
     rwa [Ext.wk_map_mk, Ext.wk_map_mk] at h

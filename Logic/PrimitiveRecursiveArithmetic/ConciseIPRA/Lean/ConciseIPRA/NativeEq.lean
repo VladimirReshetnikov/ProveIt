@@ -4,10 +4,12 @@ import ConciseIPRA.TeqArith
 /-!
 # Equality and interderivability in the native scalar core
 
-The only equality rule of the native calculus is the equational transport
-rule `trEq`.  This module derives from it
+The only equality rule of the native calculus is the transport rule `trOne`:
+from `s = t` and `h(s) = u` infer `u = h(t)`.  This module derives from it
 
-* reflexivity, symmetry, transitivity and congruence of equations;
+* reflexivity, symmetry, transitivity and congruence of equations, each by one
+  application of the rule, and transport in an equation template, `trEq`, by
+  two;
 * the simultaneous Leibniz rule for equations, `NPrf.leibnizEq`;
 * equation induction `NPrf.eqInd`, from the progress rule `qIInd`;
 * the two equations of the selector `sel c a b = I(c, a; u. b)`.
@@ -88,30 +90,36 @@ namespace NPrf
 
 variable {Γ : List (NFm n)}
 
-/-- The primitive transport rule with the template and its two instances
+/-- Reflexivity: transport `I(0, t; u. u) = t` along itself. -/
+theorem eqRefl (t : Tm n) : NPrf Γ (.eq t t) :=
+  .trOne (Syn.var 0) (.iterZero t (Syn.var 0)) (.iterZero t (Syn.var 0))
+
+theorem eqSymm {s t : Tm n} (h : NPrf Γ (.eq s t)) : NPrf Γ (.eq t s) :=
+  .trOne (Syn.var 0) (eqRefl s) h
+
+theorem eqTrans {s t u : Tm n} (h₁ : NPrf Γ (.eq s t)) (h₂ : NPrf Γ (.eq t u)) :
+    NPrf Γ (.eq s u) :=
+  .trOne (Syn.var 0) h₂ (eqSymm h₁)
+
+/-- Replacement of equals inside a term. -/
+theorem eqCongr (h : Tm (n + 1)) {s t : Tm n} (e : NPrf Γ (.eq s t)) :
+    NPrf Γ (.eq (Syn.subst (inst s) h) (Syn.subst (inst t) h)) :=
+  .trOne h e (eqRefl _)
+
+/-- Transport in an equation template: from `s = t` and `a(s) = b(s)` infer
+`a(t) = b(t)`, by two steps of the primitive rule. -/
+theorem trEq (a b : Tm (n + 1)) {s t : Tm n} (h₁ : NPrf Γ (.eq s t))
+    (h₂ : NPrf Γ (.eq (Syn.subst (inst s) a) (Syn.subst (inst s) b))) :
+    NPrf Γ (.eq (Syn.subst (inst t) a) (Syn.subst (inst t) b)) :=
+  .trOne b h₁ (.trOne a h₁ h₂)
+
+/-- Transport in an equation template, with the template and its two instances
 named. -/
 theorem trE {a b : Tm (n + 1)} (H : NFm (n + 1)) (hH : H = .eq a b) {s t : Tm n}
     {A A' : NFm n} (h₁ : NPrf Γ (.eq s t)) (hA : H.subst (inst s) = A)
     (hA' : H.subst (inst t) = A') (h₂ : NPrf Γ A) : NPrf Γ A' := by
   subst hH hA hA'
-  exact .trEq a b h₁ h₂
-
-theorem eqRefl (t : Tm n) : NPrf Γ (.eq t t) :=
-  trE (.eq (Syn.var 0) (Syn.shift t)) rfl (.iterZero t (Syn.var 0)) (by simp) (by simp)
-    (.iterZero t (Syn.var 0))
-
-theorem eqSymm {s t : Tm n} (h : NPrf Γ (.eq s t)) : NPrf Γ (.eq t s) :=
-  trE (.eq (Syn.var 0) (Syn.shift s)) rfl h (by simp) (by simp) (eqRefl s)
-
-theorem eqTrans {s t u : Tm n} (h₁ : NPrf Γ (.eq s t)) (h₂ : NPrf Γ (.eq t u)) :
-    NPrf Γ (.eq s u) :=
-  trE (.eq (Syn.shift s) (Syn.var 0)) rfl h₂ (by simp) (by simp) h₁
-
-/-- Replacement of equals inside a term. -/
-theorem eqCongr (h : Tm (n + 1)) {s t : Tm n} (e : NPrf Γ (.eq s t)) :
-    NPrf Γ (.eq (Syn.subst (inst s) h) (Syn.subst (inst t) h)) :=
-  trE (A := .eq (Syn.subst (inst s) h) (Syn.subst (inst s) h))
-    (.eq (Syn.shift (Syn.subst (inst s) h)) h) rfl e (by simp) (by simp) (eqRefl _)
+  exact trEq a b h₁ h₂
 
 /-- The simultaneous Leibniz rule for an equation. -/
 theorem leibnizEq (a b : Tm k) (σ σ' : Fin k → Tm n) (he : ∀ i, NPrf Γ (.eq (σ i) (σ' i)))

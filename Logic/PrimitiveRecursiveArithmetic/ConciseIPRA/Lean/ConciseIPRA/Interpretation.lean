@@ -127,14 +127,7 @@ variable (f : ∀ n, T n → T' n)
 @[simp] theorem map_iff (φ ψ : Fm T n) : (iff φ ψ).map f = iff (φ.map f) (ψ.map f) := rfl
 
 theorem map_QF {φ : Fm T n} (h : φ.QF) : (φ.map f).QF := by
-  induction φ with
-  | eq s t => trivial
-  | bot => trivial
-  | and φ ψ ih₁ ih₂ => exact ⟨ih₁ h.1, ih₂ h.2⟩
-  | or φ ψ ih₁ ih₂ => exact ⟨ih₁ h.1, ih₂ h.2⟩
-  | imp φ ψ ih₁ ih₂ => exact ⟨ih₁ h.1, ih₂ h.2⟩
-  | all φ _ => exact h.elim
-  | ex φ _ => exact h.elim
+  induction φ <;> simp_all [Fm.QF, Fm.map]
 
 end Map
 

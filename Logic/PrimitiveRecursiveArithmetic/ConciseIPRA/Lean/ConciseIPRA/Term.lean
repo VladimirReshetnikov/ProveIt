@@ -67,13 +67,7 @@ theorem upRen_comp (ξ : Fin n → Fin m) (ζ : Fin m → Fin k) :
 theorem ren_ren (t : Tm n) :
     ∀ {m k : ℕ} (ξ : Fin n → Fin m) (ζ : Fin m → Fin k),
       ren ζ (ren ξ t) = ren (fun i => ζ (ξ i)) t := by
-  induction t with
-  | var i => intro m k ξ ζ; rfl
-  | zero => intro m k ξ ζ; rfl
-  | succ t ih => intro m k ξ ζ; simp only [ren, ih]
-  | iter c a h ihc iha ihh =>
-    intro m k ξ ζ
-    simp only [ren, ihc, iha, ihh, upRen_comp]
+  induction t <;> intro m k ξ ζ <;> simp_all [ren, upRen_comp]
 
 theorem upS_upRen (ξ : Fin n → Fin m) (σ : Fin m → Tm k) :
     (fun i => upS σ (upRen ξ i)) = upS (fun i => σ (ξ i)) := by
@@ -83,13 +77,7 @@ theorem upS_upRen (ξ : Fin n → Fin m) (σ : Fin m → Tm k) :
 theorem sub_ren (t : Tm n) :
     ∀ {m k : ℕ} (ξ : Fin n → Fin m) (σ : Fin m → Tm k),
       sub σ (ren ξ t) = sub (fun i => σ (ξ i)) t := by
-  induction t with
-  | var i => intro m k ξ σ; rfl
-  | zero => intro m k ξ σ; rfl
-  | succ t ih => intro m k ξ σ; simp only [ren, sub, ih]
-  | iter c a h ihc iha ihh =>
-    intro m k ξ σ
-    simp only [ren, sub, ihc, iha, ihh, upS_upRen]
+  induction t <;> intro m k ξ σ <;> simp_all [ren, sub, upS_upRen]
 
 theorem upRen_upS (σ : Fin n → Tm m) (ξ : Fin m → Fin k) :
     (fun i => ren (upRen ξ) (upS σ i)) = upS (fun i => ren ξ (σ i)) := by
@@ -101,13 +89,7 @@ theorem upRen_upS (σ : Fin n → Tm m) (ξ : Fin m → Fin k) :
 theorem ren_sub (t : Tm n) :
     ∀ {m k : ℕ} (σ : Fin n → Tm m) (ξ : Fin m → Fin k),
       ren ξ (sub σ t) = sub (fun i => ren ξ (σ i)) t := by
-  induction t with
-  | var i => intro m k σ ξ; rfl
-  | zero => intro m k σ ξ; rfl
-  | succ t ih => intro m k σ ξ; simp only [ren, sub, ih]
-  | iter c a h ihc iha ihh =>
-    intro m k σ ξ
-    simp only [ren, sub, ihc, iha, ihh, upRen_upS]
+  induction t <;> intro m k σ ξ <;> simp_all [ren, sub, upRen_upS]
 
 theorem upS_comp (σ : Fin n → Tm m) (τ : Fin m → Tm k) :
     (fun i => sub (upS τ) (upS σ i)) = upS (fun i => sub τ (σ i)) := by
@@ -119,24 +101,14 @@ theorem upS_comp (σ : Fin n → Tm m) (τ : Fin m → Tm k) :
 theorem sub_sub (t : Tm n) :
     ∀ {m k : ℕ} (σ : Fin n → Tm m) (τ : Fin m → Tm k),
       sub τ (sub σ t) = sub (fun i => sub τ (σ i)) t := by
-  induction t with
-  | var i => intro m k σ τ; rfl
-  | zero => intro m k σ τ; rfl
-  | succ t ih => intro m k σ τ; simp only [sub, ih]
-  | iter c a h ihc iha ihh =>
-    intro m k σ τ
-    simp only [sub, ihc, iha, ihh, upS_comp]
+  induction t <;> intro m k σ τ <;> simp_all [sub, upS_comp]
 
 theorem upS_var : upS (var : Fin n → Tm n) = var := by
   funext i
   refine Fin.cases ?_ (fun j => ?_) i <;> simp [ren]
 
 theorem sub_var (t : Tm n) : sub var t = t := by
-  induction t with
-  | var i => rfl
-  | zero => rfl
-  | succ t ih => simp only [sub, ih]
-  | iter c a h ihc iha ihh => simp only [sub, ihc, iha, upS_var, ihh]
+  induction t <;> simp_all [sub, upS_var]
 
 theorem upS_ren (ξ : Fin n → Fin m) :
     upS (fun i => var (ξ i)) = fun i => var (upRen ξ i) := by
@@ -145,13 +117,7 @@ theorem upS_ren (ξ : Fin n → Fin m) :
 
 theorem ren_eq_sub (t : Tm n) :
     ∀ {m : ℕ} (ξ : Fin n → Fin m), ren ξ t = sub (fun i => var (ξ i)) t := by
-  induction t with
-  | var i => intro m ξ; rfl
-  | zero => intro m ξ; rfl
-  | succ t ih => intro m ξ; simp only [ren, sub, ih]
-  | iter c a h ihc iha ihh =>
-    intro m ξ
-    simp only [ren, sub, ihc, iha, ihh, upS_ren]
+  induction t <;> intro m ξ <;> simp_all [ren, sub, upS_ren]
 
 instance : Syn Tm where
   var := Tm.var

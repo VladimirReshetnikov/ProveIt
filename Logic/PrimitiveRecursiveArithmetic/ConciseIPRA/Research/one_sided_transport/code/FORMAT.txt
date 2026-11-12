@@ -1,0 +1,131 @@
+C7 certificate format
+=====================
+
+Run:
+    python3 c7_checker.py < certificate.json
+
+Input is exactly [closed_formula, proof]. Normal successful termination prints
+ACCEPT. An exception or a nonzero exit status is rejection. The checker contains
+no assert statements, so Python's -O flag does not disable its checks.
+
+SYNTAX
+
+At numerical context size n, variables are exact Python/JSON integers
+0,...,n-1. These are de Bruijn LEVELS, not numeral constants. Booleans are not
+variables. Terms are:
+
+    k                    variable at level k
+    ["0"]                numerical zero
+    ["S", t]             successor
+    ["I", counter, seed, body]
+
+Only the iterator body binds a variable. At ambient size n, its state variable
+has level n. The counter and seed have ambient size n; the body has size n+1.
+Every branch of the syntax validator checks this distinction explicitly.
+
+Formulas are:
+
+    ["=", s, t]
+    ["Q", matrix]
+    ["D", matrix]
+
+Q binds its y variable at level n. D binds x at level n and y at level n+1.
+Their matrices therefore have ambient sizes n+1 and n+2, respectively.
+The ordinary meanings are Q_y B = (B(0) -> forall y B(y)) and
+D_{x,y} B = exists x (B(x,0) -> forall y B(x,y)).
+
+When a substitution removes a binder, higher levels decrease by one. When its
+replacement term is inserted beneath additional binders, the replacement's
+internal bound levels increase accordingly; its free parameter levels remain
+fixed. The replace function implements this capture-avoiding operation and
+tracks the ambient depth separately in each child of an iterator. lift inserts
+a fresh parameter, also renaming all internal bound levels affected by it.
+
+RULE PACKETS
+
+The context is an ordered reusable list of assumptions. Hypothesis indices are
+zero-based; every new local assumption is appended. There are seven opcodes:
+
+1. ["hyp", index]
+   The requested formula must equal that retained assumption.
+
+2. ["i0", seed, body]
+   Proves I(0,seed;u.body) = seed.
+
+3. ["is", counter, seed, body]
+   Proves I(S(counter),seed;u.body) = body[I(counter,seed;u.body)/u].
+
+4. ["x", source, target, template, major_proof, minor_proof]
+   The requested goal must be r = template(target). The template is ONE
+   numerical term, at ambient size n+1, whose distinguished variable has
+   level n. The major proves source=target, and the minor proves
+   template(source)=r. The source must not be the literal term ["0"].
+   The fixed term r is obtained from the requested goal and is not a second
+   numerical template. No reversal of compound formulas is implemented.
+
+5. ["qe", matrix, target, closure_proof, base_proof]
+   The requested goal must be matrix(target). The two proofs establish
+   Q_y matrix(y) and matrix(0).
+
+6. ["de", matrix, existential_proof, continuation_proof]
+   The first proof establishes D_{x,y} matrix. The continuation proves the
+   requested goal in a numerical context extended by one fresh witness x,
+   with Q_y matrix(x,y) appended to the retained assumptions. The original
+   goal and all original assumptions are lifted into that larger context.
+   The lifted goal cannot depend on the new witness.
+
+7. ["di", witness, premise_proof]
+   The requested goal must be D_{x,y} B. After substituting witness for x,
+   a fresh numerical parameter z is allocated. The premise proves B(witness,Sz)
+   with B(witness,eta) appended as a local assumption, where eta=z precisely
+   when B is literally an equation and witness is literally ["0"]. In every
+   other case eta is numerical zero. The witness is checked before z exists.
+
+Every opcode has exact arity. All supplied numerical terms and formula matrices
+are checked for sort and scope before they are used. There is no arbitrary
+code evaluation, external proof database, or omitted canonical-goal parser.
+
+VERIFICATION
+
+Run:
+    python3 test_c7.py
+
+The test program generates certificates.json and test_results.json, checks the
+23 named certificates in process and as separate normal/-O executions, and runs
+1200 finite denotational checks of capture-avoiding substitution. The numerical
+evaluator is independent of the substitution code. Formula quantifiers in that
+test evaluator range over 0,1,2, solely to test substitution under logical
+binders. These finite tests are not a soundness proof or a formal verification.
+
+metrics.json measures the entire standalone checker after ast.unparse
+normalization on CPython 3.12.14. It includes all syntax validation. It is not
+claimed to improve the repository's compact checker-size records.
+
+MATCHED M7 CONTROL
+
+The file m7_control.py has exactly the same code except for its equality-rule
+branch. To avoid a spelling-length confound, it retains the opcode "x", but its
+packet is ["x",source,target,left_template,right_template,major_proof,minor_proof].
+Both templates are numerical terms at ambient size n+1. Its minor premise is
+left_template(source)=right_template(source), and its conclusion is
+left_template(target)=right_template(target). Its source restriction is the
+same as C7's. This is the old restricted two-sided transport rule.
+
+Run:
+    python3 compare_checkers.py
+    python3 test_m7_control.py
+
+The comparison generator changes only that branch, produces matched_control.diff,
+and records full-source measurements in metrics_delta.json. The control tests
+check the exact scope of the source difference and 25 certificates, including
+11 byte-identical shared certificates. These cover two genuinely varying
+endpoints, both template validators, prohibited zero sources with independently
+accepted true premises, DI selection, DE, QE, malformed input, and freshness.
+
+Measured normalized sources (tokens / AST nodes / bytes / gzip9):
+    C7: 1171 / 1339 / 3246 / 996
+    M7: 1196 / 1364 / 3302 / 1005
+
+Thus C7 saves 25 tokens, 25 AST nodes and 56 normalized bytes in this matched
+implementation. gzip saves 9 bytes and is informational only. This is a local
+controlled comparison, not a claim to beat the repository's compact frontier.

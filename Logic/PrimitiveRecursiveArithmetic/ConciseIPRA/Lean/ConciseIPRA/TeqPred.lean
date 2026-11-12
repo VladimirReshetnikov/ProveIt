@@ -50,8 +50,7 @@ theorem sel_succ_succ (c x y : Q Γ) : sel c (succ x) (succ y) = succ (sel c x y
   refine Q.cases c (fun e he => ?_) (fun e z he => ?_) <;> simp [he]
 
 theorem bump_eq (k u : Q Γ) : bump k u = sel (cmp (succ (succ u)) k) u (succ u) := by
-  induction k using Q.ind with | _ a
-  induction u using Q.ind with | _ b
+  induction k, u using Q.ind₂ with | _ a b
   rfl
 
 @[simp] theorem bump_succ_succ (k u : Q Γ) : bump (succ k) (succ u) = succ (bump k u) := by
@@ -66,8 +65,7 @@ theorem bump_eq (k u : Q Γ) : bump k u = sel (cmp (succ (succ u)) k) u (succ u)
   exact sound (Teq.iterZero _ _)
 
 @[simp] theorem sat_succ (t k : Q Γ) : sat (succ t) k = bump k (sat t k) := by
-  induction t using Q.ind with | _ a
-  induction k using Q.ind with | _ b
+  induction t, k using Q.ind₂ with | _ a b
   have h := Teq.iterSucc (Γ := Γ) a Tm.zero (Tm.bump (shift b) (var 0))
   simp only [Tm.subst_bump, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift] at h
   exact sound h
@@ -75,20 +73,17 @@ theorem bump_eq (k u : Q Γ) : bump k u = sel (cmp (succ (succ u)) k) u (succ u)
 /-- Conjugacy of the saturating counters at consecutive caps. -/
 theorem bump_sat_succ (t k : Q Γ) :
     bump (succ (succ k)) (sat t (succ (succ k))) = succ (sat t (succ k)) := by
-  induction t using Q.ind with | _ a
-  induction k using Q.ind with | _ b
-  have h := eqInd (Γ := Γ)
+  induction t, k using Q.ind₂ with | _ a b
+  simpa using eqInd (Γ := Γ)
     (Tm.bump (Tm.succ (Tm.succ (shift b))) (Tm.sat (var 0) (Tm.succ (Tm.succ (shift b)))))
     (Tm.succ (Tm.sat (var 0) (Tm.succ (shift b)))) (by simp)
     (fun ih => by simp at ih; simp [ih]) a
-  simpa using h
 
 /-- Below its cap the counter does not saturate. -/
 @[simp] theorem sat_self_succ (x : Q Γ) : sat x (succ x) = x := by
   induction x using Q.ind with | _ a
-  have h := eqInd (Γ := Γ) (Tm.sat (var 0) (Tm.succ (var 0))) (var 0) (by simp)
+  simpa using eqInd (Γ := Γ) (Tm.sat (var 0) (Tm.succ (var 0))) (var 0) (by simp)
     (fun ih => by simp at ih; simp [bump_sat_succ, ih]) a
-  simpa using h
 
 theorem pred_eq (x : Q Γ) : pred x = sat x x := by
   induction x using Q.ind with | _ a

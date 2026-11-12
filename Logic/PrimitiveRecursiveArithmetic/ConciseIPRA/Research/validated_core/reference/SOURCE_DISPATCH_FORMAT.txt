@@ -1,0 +1,51 @@
+SOURCE-DISPATCH CERTIFICATES
+
+All selected programs read one JSON array from standard input. The last item
+is the closed goal, preceding items are instruction packets, and packets are
+consumed backwards. Unused prefix data is inert. Acceptance requires exit
+status zero and the exact output ACCEPT followed by a newline. Exceptions
+reject. Ordinary and Python -O execution use the same checks.
+
+The arithmetic language remains x, 0, S, I(n,a;u.h). Raw canonical zero is 0;
+[0] is S0. Formula arities 1, 2, 3 encode D, equality, and Q respectively.
+A canonical Q has three copies of its body. Numerical root depth is 3,
+formula root depth is 0, and opening increases depth by 5 minus array arity.
+Protected numerical slots have width 2. The dummy slots under successors and
+iterator counter/initializer children are handled by the supplied producers.
+
+The main AST checker and byte checker use local scopes and packets [m,s,u,t]:
+
+* Every m is proved recursively. Neutral m=[] closes as the initial truth.
+* Equality use: s truthy, m=[s,u], template t, target instance i(t,u).
+* Q use: s falsy, m=[t,t,t], target u, and source instance i(t,s)=B(0).
+* DE: a proved unary m exports m*3 as its Q resource at a fresh witness.
+* Computation: m=[], u truthy. s is zero-mode marker or successor predecessor;
+  u is initializer and t is update. Literal-zero initializer/predecessor
+  instances use the certified-zero computation expansion in the producer.
+* DI cases: m=[], u=[], witness t.
+* DI equation progress: m=[], u=0, witness t. The formula-root guard restricts
+  genuine progress assumptions to literal equations.
+
+The token checker retains the predecessor's global fresh-name supply and
+empty initial context. Its m is a proved major when truthy; when falsy it is
+the introduction/computation marker. With u falsy, m=[] chooses case DI and
+m=0 chooses equation progress. With u truthy, a falsy m selects computation.
+Use tests/global_producer.py for this profile. Local and global raw packets
+are not claimed interchangeable.
+
+The new source matcher is m == ([s,u] if s else [t]*3). Under the canonical
+old encoding this excludes primitive equality transport from literal zero.
+The universal theorem in proofs/zero_source_admissibility.tex restores that
+rule; tests/normalizer.py provides an executable proof transformation.
+It changes proof certificates, not conclusions or the interpretation domain.
+
+Noncanonical raw aliases are given the inherited sorted meanings described in
+reference/bridge/inherited_arity_checker.tex. In particular, a truthy scalar
+can denote zero. Such a raw equality conversion is sound in the original
+native calculus and hence also in the equivalent reduced calculus. No claim
+is made that every raw alias has the same convenient canonical proof spelling.
+
+Only code/checker*.py is trusted for its corresponding profile. The readable
+checker is a separate standalone expansion. Producers, normalizers, tests,
+metrics, and the written mathematical proofs are not imported by a kernel.
+
