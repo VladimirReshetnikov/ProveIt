@@ -7495,6 +7495,9 @@ Lean elaboration are still required.
 The separately source-reviewed [main-square-gap draft](research/ordinary14-model-main-square-gap-draft/README.md)
 proposes the `k = 2` exclusion from explicit main-norm hypotheses. It remains
 unelaborated and those hypotheses have not yet been extracted from the graph.
+The source-reviewed [auxiliary-geometry draft](research/ordinary14-aux-geometry-model-draft/README.md)
+proposes the needed `0 < Δ < c³` bound under explicit natural-number
+hypotheses. Its Lean elaboration and graph-to-hypothesis bridge remain open.
 The source-reviewed [87-operation Lean graph and decoder-route draft](research/ordinary14-shifted-guard87-lean-draft/README.md)
 records the fact-level replay needed for arbitrary models. It is uncompiled;
 the graph-specific model lemmas, parent bridges and iPRA endpoint remain open.
