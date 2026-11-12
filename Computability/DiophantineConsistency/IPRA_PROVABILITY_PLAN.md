@@ -7897,9 +7897,16 @@ The independently reviewed [79 qualified-provider cut](research/ordinary14-natur
 records 44 missing source candidates on the selected lexical route, including
 a large branch pulled in by a generic divisibility helper. This presence cut
 does not establish actual Lean resolution or provider compatibility.
+The independently source-reviewed [slim reflection proposal](research/ordinary14-natural79-dvd-reflection-slim-draft/README.md)
+projects a substantially smaller lexical cut. A likely missing Foundation
+model import has a separate inert repair; neither source nor the revised
+provider closure has been checked by Lean.
 The independently source-reviewed [79-to-80 w-shift draft](research/ordinary14-natural79-wshift-model-draft/README.md)
 proposes related-valuation zero maps, conditional on w positivity at every
 79 zero. It remains unelaborated and does not discharge that premise.
+An independent [79-to-80 semantic comparison](reviews/ordinary14-natural79-80-semantic-comparison-independent/README.md)
+checks the source-level valuation directions and the separate w=0 argument;
+it does not establish either model theorem or an iPRA derivation.
 The independently source-reviewed [natural-80 Lean transcription](research/ordinary14-natural-forced-gamma80-lean-draft/README.md)
 records its literal graph and product shape. Source correspondence is checked
 externally; elaboration and model semantics remain open.

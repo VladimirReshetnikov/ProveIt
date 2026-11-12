@@ -1,0 +1,33 @@
+import DiophantineConsistency.ModelDifferenceRing
+import Mathlib.Tactic.Ring
+
+/-! Source-only slim copy of the generic natural-divisibility reflection
+lemma from DiophantineConsistency/BFS943/Direct80NaturalProjection.lean.
+Neither this helper nor its client has been elaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.NaturalDvdReflectionSlimDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency ModelDifferenceRing
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem natural_dvd_of_signed (a b : V) (hd : (ι a : DiffRing V)∣ι b) : a∣b := by
+  obtain ⟨t,ht⟩ := hd
+  rcases nonneg_or_nonpos t with ⟨s,hs⟩|⟨s,hs⟩
+  · refine ⟨s,?_⟩
+    apply ι_injective
+    rw [map_mul,ht,hs]
+  · have hb : b=0 := by
+      apply ι_eq_neg_ι
+      calc
+        (ι b:DiffRing V)=ι a*t := ht
+        _= -(ι (a*s)) := by rw [hs,map_mul]; ring
+    rw [hb]
+    exact dvd_zero a
+
+
+end DiophantineConsistency.NaturalDvdReflectionSlimDraft
+
+#print axioms DiophantineConsistency.NaturalDvdReflectionSlimDraft.natural_dvd_of_signed
