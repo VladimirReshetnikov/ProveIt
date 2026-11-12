@@ -7762,6 +7762,10 @@ to `positiveShift` in Lean.
 The source-reviewed [natural-86 ring/model bridge draft](research/ordinary14-natural-cancel86-ring-bridge-draft/README.md)
 proposes that same-valuation comparison. It remains unelaborated; symbolic
 and physical port binding and the iPRA endpoint remain open.
+The source-reviewed [natural-86 direct iPRA adapter draft](research/ordinary14-natural-cancel86-ipra-draft/README.md)
+proposes deriving the native, standard and equality-only declarations without
+a second shift. It remains unelaborated and is not a checked proof-existence
+or physical-binding theorem.
 The source-reviewed [bounded draft-API audit](research/ordinary14-root74-draft-api-audit/README.md)
 checks selected qualified draft references lexically; it does not establish
 Lean name/type/instance resolution or provider/axiom closure.
