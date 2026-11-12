@@ -1,0 +1,5 @@
+# Independent review: direct-X 75-unit proposal
+
+The direct first norm and the other three constrained unit factors exclude −1 using the reviewed negative-Pell descent and modulo-four arguments, so a product zero gives five +1 factors. The graph shift maps a parent zero forward. For the reverse h=1 boundary, C>0 alone is insufficient; the cited fact-level calibration must be applied to the new zero's own four norms and guard gap. Under its stated beta and port bounds it yields X=2^R≥q² and hence Bprime>0, so h−1 is positive. This source-dependent replay does not assume an old parent zero and does not constitute a fresh provider or Lean proof.
+
+The 79-parent residual bounds give total degree at most 100. The checker independently authenticates the actual ports and obtains degree 100 and nonzero leader 559992595 on a nonuniform affine ray modulo 1,000,000,007; it also replays the author and independent parent/calibration receipts. This is not a new iPRA endpoint, physical-PDF binding, or minimality proof. Run `python3 -I -S -B check.py` and compare with `result.json`.
