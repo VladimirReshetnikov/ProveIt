@@ -7584,6 +7584,9 @@ unelaborated and does not by itself classify the Pell index.
 The source-reviewed [84 first-index draft](research/ordinary14-84-first-index-draft/README.md)
 proposes that classification, including the zero-index case. It remains
 unelaborated and does not relate the index to the encoded rank.
+The source-reviewed [84 first-index residue draft](research/ordinary14-84-first-index-residues-draft/README.md)
+proposes the corresponding quotient equation. It is unelaborated and still
+does not identify the index with the rank.
 The source-reviewed [84 guard-gap draft](research/ordinary14-84-guard-gap-draft/README.md)
 proposes deriving the strict scalar gap from that graph's own zero under
 explicit port casts. It remains unelaborated and does not alone give the rank
