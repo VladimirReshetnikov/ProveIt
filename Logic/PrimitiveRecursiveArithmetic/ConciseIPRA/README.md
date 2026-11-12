@@ -974,16 +974,19 @@ marked as conjectures is proved here.
    or the numeral `1` as its target (`vqprf_iff_nprf`), and a variable alone is
    not enough (`vqprf_var_incomplete`). The analogous statement for DI is a
    conjecture: DI by cases at the literal `0` or at a variable is enough. A
-   route that needs no predecessor: from the case step at a term `t`, the
-   introduction with an unused witness at `0` gives `Q_y B(t, y)`; for a
-   variable `w` and the hypothesis `w = t`, transport gives `Q_y B(w, y)` and
-   the introduction at the variable `w` gives `D B`; so
-   `Q_w (w = t → D B)` holds, by cases with an unused witness again, and its
-   instance at `t` gives `D B`. Every introduction in this argument, and in
-   the library's proofs of transport in formulas and of the rules for
-   implication, is at `0` or at a variable. What is missing is those proofs
-   for the restricted calculus: it is closed under renaming but not under
-   substitution, so they cannot be copied as they stand.
+   route: prove `Q_y D_{x,y'} (sel(y, 0, S x) = y)` by cases with the
+   witnesses `0` and the fresh variable, instantiate at `y = S t`, and use the
+   injectivity of the successor to name `t` by a variable. It needs the
+   predecessor equation `pred (S z) = z` inside the restricted calculus.
+   The restricted calculus is closed under renaming but not under
+   substitution, so universal generalization is not available in it as it is
+   in the kernel: a derivation of `F(w)` that introduces at the variable `w`
+   gives no derivation of `F(S z)`. In particular the shorter argument
+   "under `w = t` introduce at `w`, then close over `w` and instantiate at
+   `t`" fails: the closure over `w` would have to be proved by cases, and at
+   `w = S z` no admissible witness is equal to `t`. Whether the restricted
+   calculus derives, say, `∃x (x = S 0)` in the empty context is the test
+   case; the route above derives it only through the predecessor.
 3. **Substitution for a variable on raw terms.** On full normal forms,
    substitution for a variable is the only equality rule needed
    (`vsprf_iff_nprf`). On raw terms the rows of the naming packet are not
