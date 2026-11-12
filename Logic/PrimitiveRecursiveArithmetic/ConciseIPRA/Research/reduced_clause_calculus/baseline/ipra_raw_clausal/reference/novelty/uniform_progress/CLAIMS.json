@@ -1,0 +1,108 @@
+{
+  "title": "A uniform introduction rule for intuitionistic primitive recursive arithmetic",
+  "date": "2026-11-11",
+  "reference": {
+    "repository": "VladimirReshetnikov/ProveIt",
+    "commit": "a4e5e96c456303cf231eab2aeeb3291d8889833f",
+    "path": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA"
+  },
+  "new_theory": {
+    "name": "R, the root-dependent uniform-introduction orbit calculus",
+    "primitive_rule_schemas": 7,
+    "numerical_terms": "variables, zero, successor, scalar iterator I(n,a;u.h)",
+    "formula_grammar": "equations, Q_y B, D_x,y B; unrestricted",
+    "atomic_Q_reading": "forall y (E(y) -> E(S y))",
+    "compound_Q_reading": "B(0) -> forall y B(y)",
+    "D_reading": "exists x Q_y B(x,y)",
+    "claims": [
+      "admissible numerical substitution by direct induction on derivations",
+      "contextual equation induction",
+      "full formula equality transport",
+      "explicit derivation-preserving translations in both directions with the pinned native calculus",
+      "both formula round trips for the whole public language",
+      "whole numerical domains with actual equality and identity numerical composites",
+      "bi-interpretability and equiconsistency with full first-order iPRA by composition with the inherited bridge"
+    ],
+    "proof_status": "Written metatheoretic proofs; not newly verified by Lean or Rocq",
+    "source": "sections/new_theory.tex",
+    "independent_audit": "sections/audit.tex"
+  },
+  "simplicity": {
+    "primary_contract": "Complete standalone typed JSON checkers with matched public-grammar, scoping, and substitution validation",
+    "normalization": "Remove genuine docstrings; ast.unparse plus one LF; entire standalone module",
+    "gzip": "gzip.compress(data, compresslevel=9, mtime=0); informational only",
+    "new_orbit_beats_adopted_eight_rule_control": true,
+    "new_orbit_beats_existing_seven_rule_witness_control": false,
+    "global_minimality_claim": false,
+    "minimum_over_all_inspected_checker_proposals_claim": false,
+    "typed_measurements": {
+      "native": {
+        "file": "code/native_checker.py",
+        "significant_tokens": 1235,
+        "ast_nodes": 1407,
+        "raw_bytes": 5278,
+        "normalized_bytes": 4692,
+        "gzip9_raw_bytes": 1501,
+        "gzip9_normalized_bytes": 1199,
+        "sha256_raw": "9f66024b3a51fc1f4f555572386ae9240026bea55edc3523d8498a4112721c76",
+        "sha256_normalized": "337b0c50626c8d3c2d8e72baadb9ef271b83484a93dea80851acac2a27a08974"
+      },
+      "orbit": {
+        "file": "code/orbit_checker.py",
+        "significant_tokens": 1206,
+        "ast_nodes": 1366,
+        "raw_bytes": 5141,
+        "normalized_bytes": 4553,
+        "gzip9_raw_bytes": 1513,
+        "gzip9_normalized_bytes": 1211,
+        "sha256_raw": "59a9f6c43c3dfd9c9f5229668a5b494e95156d08d685909e354bf172788fed8f",
+        "sha256_normalized": "88bb8ed70fce97710519495a9dea951bd45a2d1a87f3c793ab0beed77529d1fe"
+      },
+      "witness": {
+        "file": "code/witness_checker.py",
+        "significant_tokens": 1173,
+        "ast_nodes": 1334,
+        "raw_bytes": 5044,
+        "normalized_bytes": 4456,
+        "gzip9_raw_bytes": 1500,
+        "gzip9_normalized_bytes": 1198,
+        "sha256_raw": "92bfddedfcb4e52c6bcc49858888157958ba2196157df25daa7766f9777581e8",
+        "sha256_normalized": "aa9fe23e55fe15f31add9508448c8af9612cd2c8aec77d77556370eb3c8d5eef"
+      }
+    }
+  },
+  "ancillary": {
+    "theory": "Earlier guarded-source calculus, not the new R calculus",
+    "change_type": "Implementation composition, not a new axiomatization",
+    "public_input_contract": "Inherited canonical guarded public goals; compact modules are not complete canonical public-grammar validators",
+    "old_attained_coordinate_minima": {
+      "tokens": 257,
+      "ast_nodes": 279,
+      "normalized_bytes": 522
+    },
+    "new_attained_coordinate_minima": {
+      "tokens": 256,
+      "ast_nodes": 278,
+      "normalized_bytes": 521
+    },
+    "minima_attained_by_different_programs": true,
+    "token_profile_gets_larger_in_bytes_and_gzip": true,
+    "equivalence_claim_for_every_malformed_raw_stream": false
+  },
+  "verification": {
+    "process_checks": 270,
+    "expected_acceptances": 122,
+    "expected_rejections": 148,
+    "open_sequent_checks": 2,
+    "capture_avoidance_checks": 4,
+    "failures": [],
+    "scope": "Finite executable controls, not a proof-assistant verification of the metatheorems."
+  },
+  "inherited_lean_sources_rebuilt": false,
+  "limitations": [
+    "Finite checker controls are not metatheorem proofs.",
+    "The new orbit calculus does not minimize all measured implementation coordinates.",
+    "No absolute meaning of smallest independent of syntax and cost model is established."
+  ]
+}
+

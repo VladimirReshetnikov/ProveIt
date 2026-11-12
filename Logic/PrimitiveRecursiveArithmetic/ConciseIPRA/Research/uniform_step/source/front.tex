@@ -1,0 +1,202 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Uniform successor evaluation for iPRA}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\small \thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=2pt,topsep=5pt}
+\emergencystretch=2em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\lstset{basicstyle=\ttfamily\scriptsize,columns=fullflexible,
+  keepspaces=true,breaklines=true,showstringspaces=false,
+  frame=single,rulecolor=\color{black!20},xleftmargin=4pt,xrightmargin=4pt}
+\hypersetup{pdftitle={One successor step for equality and computation},
+  pdfauthor={Research prepared for Vladimir Reshetnikov},
+  pdfsubject={Five-rule clausal presentation of intuitionistic primitive recursive arithmetic}}
+@@METRIC_MACROS@@
+\begin{document}
+\begin{titlepage}
+\vspace*{1.0cm}
+{\large Mathematical foundations \hfill 11 November 2026\par}
+\vspace{1.2cm}
+{\LARGE\bfseries One successor step for\\[4pt]
+equality and computation\par}
+\vspace{0.6cm}
+{\Large A five-rule clausal presentation of\\
+intuitionistic primitive recursive arithmetic\par}
+\vspace{0.9cm}
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{1.0cm}
+\begin{abstract}
+We give a simpler arithmetic inference interface for the current
+\texttt{ConciseIPRA} proposal. On its already available zero-normal
+iterator syntax, reflexivity and one uniform successor-evaluation rule
+derive both computation and arbitrary equational transport. The three
+syntactic alternatives of the current computational-equality rule are
+replaced by one. The key is an explicit two-step derivation of equality
+composition using a one-step identity iterator.
+
+Together with the existing clausal logical interface, the complete
+presentation has five primitive rule schemes: Use, Refl, Step, DE, and
+DI. Its formulas are only equations and one two-variable binder.
+We prove exact consequence equivalence with the native kernel and
+therefore whole-domain bi-interpretability and equiconsistency with
+full first-order iPRA. Both numerical composites have the identity
+graph \(x=y\).
+
+The fully validated standalone Python checker measures
+\StepBytes\ normalized bytes, \StepTokens\ significant tokens, and
+\StepAST\ AST nodes. A matched zero-normal computation/transport
+control measures \ControlBytes, \ControlTokens, and \ControlAST,
+respectively. The comparison counts normalization, syntax validation,
+scope handling, clause storage, and the command-line interface.
+The contribution is a local mathematical and implementation reduction;
+no absolute minimum is asserted. The new equivalence is a written
+proof supported by executable proof translations and boundary tests,
+not a new Lean or Rocq verification.
+\end{abstract}
+\vfill
+\textbf{Frozen comparison.}\quad
+\texttt{VladimirReshetnikov/ProveIt}, commit\\
+\texttt{6ca328039cafa1537d81ee6b67ee2dc54ffa5a4e}.\\
+\textbf{Scope.}\quad Full intuitionistic first-order arithmetic,
+including quantified formulas and arbitrary retained assumptions.
+\end{titlepage}
+\tableofcontents
+\clearpage
+
+\section{Result and comparison with the current proposal}
+
+The useful simplification is the following single arithmetic inference.
+Write \(\overline I\) for the canonical iterator constructor, which
+returns its initializer at the literal counter zero and otherwise retains
+an iterator node:
+\[
+ \boxed{\quad
+ \frac{\overline I(c,a;u.h)=t\qquad I(Sc,a;u.h)=r}
+      {r=N(h[t/u])}
+ \quad\text{\rm Step}. \quad}
+\]
+Here \(N\) contracts zero-counter iterators recursively, and
+substitution is capture-free. The rule reads its counter, initializer,
+and body from the second premise. Its first premise is required to
+have exactly the corresponding predecessor source. No arbitrary
+equality template or occurrence path is supplied in the certificate.
+
+In the frozen repository, \texttt{NativeEval.lean} implements the
+six-rule computational-equality presentation with separate
+\texttt{evalId}, \texttt{evalZero}, and \texttt{evalSucc} constructors
+for its three Eval alternatives. The repository also contains
+zero-normalization and initializer-only equality proposals.
+The incoming \texttt{ipra\_clausal\_canonical.zip} already has a
+five-rule clausal calculus, and
+\texttt{ipra\_scalar\_uniqueness.zip} already replaces induction by
+uniqueness of iteration. Both archives were inspected before selecting
+this construction. The present proposal does not claim those earlier
+ideas as new.
+
+The new observation is that on zero-normal initialized iterators,
+\emph{the successor alternative alone recovers the missing identity
+alternative}. For \(J_s=I(S0,s;v.v)\), two Steps give
+\[
+ \frac{s=t\qquad
+       \displaystyle\frac{s=r\qquad J_s=J_s}{J_s=r}\ {\rm Step}}
+      {r=t}\ {\rm Step}.
+ \tag{1}\label{eq:headline-pivot}
+\]
+This equality-composition rule works under arbitrary retained assumptions.
+It does not depend on induction, numerical cases, or the logical binder.
+Together with one-step application of a numerical template, it restores
+the entire equality interface.
+
+\subsection{Precise claims}
+
+\begin{theorem}[Main result]\label{thm:main}
+Let \(C_{\rm step}\) be the five-rule calculus specified in
+Section~\ref{sec:five-pattern-clauses}. It is a faithful presentation of
+a theory bi-interpretable with full first-order iPRA.
+The interpretation domains are the whole numerical domains, interpreted
+equality is actual equality, and both composite interpretations have
+isomorphism graph \(x=y\). It is consequently equiconsistent with iPRA.
+
+The new arithmetic inference interface is interderivable, under arbitrary
+side assumptions, with normalized successor computation and
+one-template equational transport. Replacing the latter pair by Refl
+and Step therefore preserves the consequence relation, not merely the
+set of true standard numerical equations.
+\end{theorem}
+
+The proof has three layers. First, the equality argument
+(\ref{eq:headline-pivot}) recovers computation and transport.
+Second, the clause interface recovers the native conditional-closure
+binder and both case and progress introductions. A nonliteral canonical
+term provably equal to zero handles the one delicate introduction case.
+Third, the existing internal arithmetic bridge transfers the result to
+iPRA. The first two layers are proved in full below; the exact inherited
+bridge proofs are reproduced in the appendices with attribution.
+
+\subsection{What the simplicity claim establishes}
+
+There are several distinct comparisons, and they should not be
+collapsed into one number:
+\begin{itemize}
+\item Against the current three-alternative Eval rule, Step has one
+  arithmetic pattern. The zero equation is accounted for by the
+  existing canonical syntax.
+\item Against a matched zero-normal clausal calculus, the number of
+  inference schemes remains five. Its explicit computation axiom and
+  template-taking transport rule are replaced by Refl and Step.
+  The certificate no longer carries either a computation triple or a
+  transport template for those steps.
+\item Against the incoming five-rule clausal canonical checker, the new
+  complete checker is smaller in all three reported source coordinates.
+  This comparison also changes the numerical representation, so the
+  matched control is the cleaner measurement of the arithmetic change.
+\end{itemize}
+
+This report does not beat every historical source-size profile.
+The repository contains an aggressively encoded 516-byte guarded
+profile, and the incoming uniqueness package has an 866-byte fully
+validated implementation of a different certificate protocol. The new
+readable checker is not smaller than those programs. There is no
+representation-independent theorem here about the globally simplest
+axiomatization. The established result is the exact rule simplification
+and its controlled complete-checker reduction.
+
+\subsection{Attribution and proof status}
+
+The scalar iterator, the \(D\) binder, clause contexts, the
+witness-directed introduction, and zero-normalization are inherited
+from the supplied repository. The contribution of this package is the
+uniform Step reduction, its combination with the existing logical
+interface, the written equivalence proof, and its executable
+implementation and translations.
+
+The baseline's Lean modules establish the inherited native/scalar/iPRA
+bridge. We inspected those sources but did not compile a new Lean
+formalization in this package. Passing Python certificates supplies
+implementation evidence; the universal metatheorem is the written
+proof, and the two kinds of evidence are kept separate.
+

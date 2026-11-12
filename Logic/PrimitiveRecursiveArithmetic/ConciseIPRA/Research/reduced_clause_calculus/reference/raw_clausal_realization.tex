@@ -1,0 +1,114 @@
+\section{Ordinary arithmetic and the two interpretation composites}
+\label{sec:main-ordinary}
+
+The rule-equivalence theorem is only one part of the requirement. This
+section states precisely which ordinary first-order theory the calculus
+presents and why both interpretation composites preserve the whole
+numerical domain.
+
+\subsection{An explicit ordinary realization}
+
+Let $T_I$ use intuitionistic first-order logic with actual equality and
+genuine falsity. Its numerical language contains $0$, $S$, and every fixed
+finite scalar-iterator description. Formally, at each stage, for an
+earlier term $h(u,\vec p)$ add a function symbol $i_h(n,a,\vec p)$ with
+\[
+ i_h(0,a,\vec p)=a,\qquad
+ i_h(Sn,a,\vec p)=h(i_h(n,a,\vec p),\vec p).
+\]
+The remaining nonlogical axioms or equivalent contextual rules are
+\[
+ \forall x\,(x=0\lor\exists y\,x=Sy),\qquad
+ 0=S0\longrightarrow\bot,
+\]
+and induction for each literal equation $E(n,\vec p)$, with arbitrary
+retained assumptions and the usual fresh induction parameter.
+Only fixed finite descriptions are added. There is no numerical
+quantification over programs and no total universal evaluator.
+
+The ordinary readings are
+\[
+ (s=t)^\circ=(s=t),\qquad
+ (D_{x,y}B)^\circ=\exists x\bigl(B^\circ(x,0)\to
+                                      \forall y B^\circ(x,y)\bigr),
+\]
+\[
+ [A;y.B]^\circ=A^\circ\to\forall y B^\circ.
+\]
+Every primitive rule of $\CE$ is sound under this reading. Conversely,
+the equality rules, the ordinary logical rules, coverage, explosion,
+and equation induction are derived in $\CE$ by its equivalence with
+the reference clause calculus. The explicit falsity bridge matters:
+equational computation alone permits a singleton algebra and must not
+silently be identified with an inconsistent ordinary theory.
+
+\subsection{What the inherited scalar bootstrap proves}
+
+The appendix supplies the existing internal argument in its necessary
+dependency order:
+\begin{enumerate}
+\item Construct a scalar predecessor $P$ and prove $P0=0$ and
+      $P(Sn)=n$ using equation induction and numerical cases.
+\item Construct truncated subtraction and a faithful characteristic
+      of actual numerical equality. The reflection theorem holds at
+      arbitrary elements, including nonstandard elements of a model.
+\item Translate each fixed quantifier-free formula to a characteristic
+      equation and obtain its full intuitionistic induction instance.
+\item Construct pairing and projections by bounded search, then compile
+      each fixed general primitive recursion to scalar iteration.
+\end{enumerate}
+The order avoids assuming pairing or a faithful equality detector while
+constructing predecessor. These constructions are inherited rather than
+new size-reduction claims of this report.
+
+If $\pi,L,H$ are the resulting pairing and projections, a target recursion
+\[
+ f(0,\vec p)=g(\vec p),\qquad
+ f(Sn,\vec p)=h(n,f(n,\vec p),\vec p)
+\]
+is compiled as
+\[
+ \begin{split}
+ V(n,\vec p)&=I\bigl(n,\pi(0,g^*(\vec p));
+        u.\pi(SL(u),h^*(L(u),H(u),\vec p))\bigr),\\
+ f^*(n,\vec p)&=H(V(n,\vec p)).
+ \end{split}
+\]
+Internal equation induction proves $L(V(n,\vec p))=n$, so the projection
+equations prove both defining equations for $f^*$. This is a finite
+external compilation on descriptions.
+
+\subsection{Bi-interpretability, not just agreement on numerals}
+
+Interpret a scalar iterator in ordinary $\ipra$ by primitive recursion
+whose update ignores its counter. Interpret every $\ipra$ description
+back in $T_I$ by the compiler above. In both directions the domain
+formula is $x=x$ and numerical equality remains actual equality.
+
+For two fixed iterators with equal seeds and provably equal updates,
+equation induction proves equality of all their values. The analogous
+argument proves uniqueness of each ordinary primitive recursion.
+Induction externally on a finite description now shows that its double
+translation satisfies its original defining equations and hence is
+internally equal to the original function. This also checks coherence
+when substitution changes an update's syntactic description.
+
+Consequently the graph $x=y$ is internally a total bijection that
+preserves every numerical operation in each composite interpretation.
+For formulas, the crucial native composite is
+\[
+ D_{x,y}B\ \dashv\vdash\
+ \exists_*x\bigl(B(x,0)\Rightarrow_*\forall_*y B(x,y)\bigr).
+\]
+The forward direction opens its clause, assumes the base, and derives
+every instance; the backward direction uses the supplied universal in
+case introduction. The remaining formula composites follow by external
+structural induction through the explicitly derived logical macros.
+Thus $T_I$, and therefore the ordinary realization of $\CE$, is
+bi-interpretable and equiconsistent with full first-order $\ipra$.
+
+This is a written mathematical proof using the supplied internal
+arithmetic development. The executable tests below concern the new
+checker implementation and finite proof translations; they are not a
+replacement for the interpretation proof and are not advertised as a
+new Lean or Rocq formalization.

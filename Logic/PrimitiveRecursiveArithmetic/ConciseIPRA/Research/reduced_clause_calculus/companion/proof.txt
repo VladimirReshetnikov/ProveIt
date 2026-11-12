@@ -1,0 +1,97 @@
+1. THE CANONICAL EQUATIONAL INTERFACE
+
+Let smartI(0,a;h)=a, otherwise smartI(c,a;h)=I(c,a;h). Normalize all
+arguments before testing c. Substitution recursively rebuilds terms with
+this constructor, including inside update bodies and D matrices. A
+supplied input term must already be canonical; the public verifier rejects
+raw zero-counter iterators. Therefore the public end formula is nf(A),
+not the literal raw A. The raw/canonical comparison proves A <-> nf(A).
+
+Refl and UE imply root composition. Put K(s)=I(S0,s;u.u). Given p:s=t
+and q:s=r, the proof UE(p,UE(q,Refl(K(s)))) concludes r=t. The inner
+UE has predecessor source smartI(0,s;u.u)=s and concludes K(s)=r;
+the outer UE has the same predecessor source and concludes r=t.
+
+Successor computation is UE on the reflexivities of its predecessor
+iterate and successor iterate. For congruence in a template h, set
+H=I(S0,s;u.h). The two UE inferences
+  UE(Refl(s),Refl(H)) : H=h<s/u>
+  UE(p,Refl(H))       : H=h<t/u>
+and root composition give h<s/u>=h<t/u>. Two such congruences and
+root composition transport both endpoints of an equation. This is before
+any logical inference, induction, numerical cases, or proof substitution.
+
+2. CLAUSES AND THE FIVE PRIMITIVE PATTERNS
+
+The three logical patterns are U, E, and I of the raw-clausal source.
+U specializes a retained [A;y.B] clause using a proof of A. E opens
+D_{x,y}B at a fresh x and retains [B(x,0);y.B(x,y)]. I retains the
+ordinary assumption clause [0=0;v.B(t,eta)] and proves B(t,Sz), where
+eta=z for an equation matrix at literal witness 0 and eta=0 otherwise.
+Refl proves the neutral equation 0=0 used to access an ordinary clause.
+Every instance is now a canonical substitution instance.
+
+The clause and formula translations from raw CE5 are independent of the
+arithmetic equality implementation. Thus the canonical six-pattern
+native equality-from-iteration calculus converts to the present five
+patterns by the same clause compilation used by raw CE5. Conversely,
+ordinary clauses and their U rule are represented by the inherited
+conditional closure macros. This comparison preserves full contexts.
+
+3. THE WITNESS-MODE ISSUE AND ITS REPAIR
+
+Raw witness t may be nonliteral but normalize to 0; raw case mode then
+would turn into canonical progress mode. Let E(x,y) be the canonical
+equation matrix. Choose Z=I(S0,0;u.0), which is canonical and nonliteral,
+and has a UE proof Z=0. Under the new local assumption E(Z,0), transport
+along Z=0 to obtain E(0,0). Cut it into the normalized old case premise,
+obtaining E(0,Sz), and transport along 0=Z to obtain E(Z,Sz). I at Z
+is a case inference and produces the unchanged D formula.
+
+No general substitution theorem for syntax-directed I is presupposed.
+The proof compiler realizes this argument explicitly. It repairs uses
+of the changed ordinary clause; negative free levels of retained
+parameters remain stable beneath nested local scopes. The inserted
+transport uses only Refl, UE and U, so it adds no colliding eigenparameter.
+
+4. EFFECTIVE RAW-TO-CANONICAL TRANSLATION
+
+Normalize Refl annotations and U targets. Normalize E and I formulas and
+their numerical instances recursively. Raw successor Eval translates to
+UE by coherence of normalization and substitution. Raw root Eval and
+raw zero Eval both normalize to root composition and are replaced by the
+K(s) frame. Perform the case repair of section 3 when necessary.
+
+Induction on the proof tree shows that if raw CE5 derives A from clauses
+Gamma, the compiler derives nf(A) from nf(Gamma). Its public wrapper
+validates the source with the raw checker and the result with the
+independently implemented canonical checker. Executed examples include
+one where merely replacing the canonical witness by literal 0 makes the
+proof fail, so the mode repair is exercised substantively.
+
+5. REVERSE DIRECTION AND BOTH INTERPRETATIONS
+
+The converse follows by interpreting canonical terms as raw terms and
+using the inherited proof that t=nf(t), including the equation-induction
+proof of iterator-body extensionality. This is not a purely syntactic
+identity: normalized instances can differ from raw substituted instances.
+The equality equations and formula-congruence lemmas convert the premises,
+local assumptions and conclusions at each raw rule. The inherited
+normalization development proves both formula composites: normalizing an
+already canonical formula is literal identity, and raw A is interderivable
+with its normalized inclusion.
+
+Compose with the raw-clausal/native bridge and the existing native/iPRA
+bi-interpretation. Domains are whole, equality is actual equality, and
+both numerical isomorphism graphs remain x=y. Hence the five-pattern
+canonical calculus is bi-interpretable with iPRA and equiconsistent with
+it. This written transfer is not a newly compiled Lean theorem. The
+Python artifact implements the forward certificate compiler only.
+
+6. COMPARISON
+
+The single-arithmetic-schema result is a valid simplification of the
+inference interface. It is not the best measured checker in this delivery:
+canonical.py is 3050 normalized bytes, versus 2999 for the root-deleted
+raw companion. Its value is a cleaner arithmetic specification and an
+explicitly verified normalization compiler, not a checker-size record.

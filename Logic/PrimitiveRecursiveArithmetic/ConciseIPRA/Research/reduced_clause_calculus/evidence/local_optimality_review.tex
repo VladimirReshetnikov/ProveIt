@@ -1,0 +1,31 @@
+\begin{proposition}[Local optimality of the identity frame]
+Let $x,y,z$ be three distinct free numerical variables. Work in the raw
+arithmetic fragment whose only inference schemas are Refl, $V_0$, and
+$V_S$. Allow the two supplied proofs $p:x=y$ and $q:x=z$ as opaque,
+zero-cost premise leaves, with no other supplied lemmas. Every finite
+proof tree of $z=y$ contains at least three new inference nodes.
+The identity-frame expansion has exactly three and is therefore optimal
+under this cost convention.
+\end{proposition}
+\begin{proof}
+The conclusion $z=y$ is neither supplied premise and is not reflexive.
+Its last inference is consequently an evaluation. In either evaluation
+schema the minor premise has an iterator-headed left side $b$ and the
+conclusion has the minor's right side as its own left side. Thus the
+last minor is $b=z$. It is neither a supplied premise, whose left side
+is $x$, nor a reflexivity leaf: a finite raw iterator term cannot be
+literally the variable $z$. This minor therefore ends in another
+evaluation.
+
+Follow minor-premise edges further down the finite tree. Every such
+minor has an iterator-headed left side, so this path cannot terminate
+at $p$ or $q$. It must terminate at a Refl leaf. There are therefore
+at least two evaluation nodes and one reflexivity node. The expansion
+$V_0(p,V_0(q,\operatorname{Refl}(I(0,x;u.0))))$ attains this bound.
+\end{proof}
+
+This is a local lower bound for one inference macro in the fixed raw
+arithmetic fragment. It does not bound complete-checker size, the size
+of arbitrary proofs using the logical rules, or transformations supplied
+with previously derived lemmas. In particular it is not an optimality
+theorem for the full axiomatization.

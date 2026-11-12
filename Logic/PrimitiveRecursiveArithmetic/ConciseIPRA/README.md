@@ -5,7 +5,7 @@ complete presentation of a theory bi-interpretable with full first-order
 intuitionistic primitive recursive arithmetic (iPRA), and the Lean
 formalization of the most concise of them.
 
-- [`Research/`](Research/) holds fifty-six delivered packages, one directory
+- [`Research/`](Research/) holds sixty-one delivered packages, one directory
   each. They are written mathematics with executable Python proof checkers;
   none of them claims a proof-assistant verification.
 - `Lean/` is the formalization (see [Lean formalization](#lean-formalization)).
@@ -223,6 +223,9 @@ for separate coordinates, they are listed separately. Each package's own
 | [`validated_presentation`](Research/validated_presentation/) | The whole certificate is typed by one test on its printed form, so the public syntax validator loses its separate raw-type pass; the proof kernel is unchanged | fully validated Eq/Q/D checker 870 bytes against 897, 383 tokens against 401 |
 | [`checked_refinement`](Research/checked_refinement/) | Three smaller implementations of the existing presentations; stated to contain no new axiom deletion | guarded public-goal checker 921 bytes against 1201; native Eq/D public checker 788 against 803; compact guarded 520 against 521 |
 | [`equality_from_iteration`](Research/equality_from_iteration/) | The rule Eval of `computational_equality` without its first case: equality composition `s = t, s = r ⊢ r = t` follows from the zero-iteration case through the frame `I(0, s; u.u)`. A companion calculus on zero-normal terms has reflexivity and one successor-evaluation schema | as stated |
+| [`uniform_step`](Research/uniform_step/) | On zero-normal terms, reflexivity and one rule Step, from `I(c, a; u.h) = t` and `I(S c, a; u.h) = r` infer `r = h[t/u]`, give all computation and equality; at `c = 0` the first source is `a` by the syntax. With clause contexts: five schemes | as stated |
+| [`rootfree_clausal`](Research/rootfree_clausal/), [`reduced_clause_calculus`](Research/reduced_clause_calculus/) | The clause calculus of `raw_clausal` with a two-case Eval, the equality-composition case being derived through a zero-iterator frame; `rootfree_clausal` adds a zero-normal variant whose introduction is progressive exactly when the instantiated zero base is literally `0 = 0` | as stated |
+| [`computation_normal`](Research/computation_normal/) | A six-rule calculus on fully normal terms, as in `full_normalization`, with the statement that it does not robustly reduce checker size; separately a validated checker of the unchanged calculus | 860 bytes against 870 |
 | [`full_normalization`](Research/full_normalization/) | Both iterator computations moved into the syntax: terms are in full normal form for `I(0, a; u.h) → a` and `I(S n, a; u.h) → h[I(n, a; u.h)/u]`, and there is no computation rule at all. Six patterns: Hyp, Refl, Tr, QE, DE and one witness-selected introduction, with a lemma that repairs case introduction when normalization turns a witness into the literal `0`. Written proofs of strong normalization, confluence and substitution coherence | selected checker 2529 bytes against 2532 for the zero-only control, with more tokens and AST nodes |
 | [`reflexive_base`](Research/reflexive_base/) | On zero-normal terms, the single introduction is progressive exactly when the normalized zero instance of the matrix is literally `r = r`. Six rules; a raw seven-rule variant with an asymmetric selector gate | matched strict checker 3084 bytes against 3095 |
 | [`raw_clausal`](Research/raw_clausal/) | Five rule patterns with ordinary substitution: reflexivity, Eval, use of a retained clause, paired elimination, witness-directed paired introduction; formulas `s = t` and `D` only, with clause contexts in place of `Q` | as stated |
@@ -246,6 +249,7 @@ for separate coordinates, they are listed separately. Each package's own
 | [`canonical_recursors`](Research/canonical_recursors/) | A successor-seeded recursor `R(n, a; u.h)` with successor defined as `R(0, a; u.0)`; the zero computation is built into a canonical term grammar with normalizing substitution, so successor computation is the only explicit computation rule. Six rules; written proofs of the equivalence with the raw calculus and of the bi-interpretation with iPRA. Normalization is part of the trusted specification. Matched strict checker 4611 bytes against 4923 for the scalar iterator with independent `S`; separately, the compact guarded codec at 516 bytes against 522 |
 | [`initializer_equality`](Research/initializer_equality/) | On the canonical recursor syntax, equality transport is replacement of an iterator's initializer; zero iteration is definitional, so this includes replacement at the root, and one iteration applies any term template. Six rules; the equality step takes two proofs and no template |
 | [`clausal_canonical`](Research/clausal_canonical/) | Five rules on the canonical recursor syntax, with an Eq/D public language and contexts of reusable clauses in place of `Q`. Matched checker 3305 bytes against 3820 for the six-rule control |
+| [`counter_evaluation`](Research/counter_evaluation/) | On the counter-aware successor-seeded recursor `R(n, a; i, u.h)`, reflexivity and one rule: from `s = t` and `R(S s, a; i,u.h) = r` infer `r = h(t, R(t, a; i,u.h))`. With clause contexts: five patterns |
 
 ## Intake record
 
@@ -319,7 +323,10 @@ sources, three checksum ledgers and five build logs. The delivered module
 `Research/zero_normal/formal/ZeroNormalization.lean` compiled unchanged and
 is `Lean/ConciseIPRA/ZeroNormalization.lean`.
 
-`full_normalization` arrived after all of these and was filed on arrival.
+`computation_normal`, `counter_evaluation`, `reduced_clause_calculus`,
+`rootfree_clausal` and `uniform_step` arrived last and were filed on arrival
+(three frozen Lean copies, four logs and checksum ledgers not filed).
+`full_normalization` arrived before them and was filed on arrival.
 `equality_from_iteration`, `raw_clausal` and `reflexive_base` arrived before it
 and were filed on arrival (seventy-nine frozen Lean copies and two logs not
 filed). `clausal_canonical` and `scalar_uniqueness` arrived after these and were
@@ -441,6 +448,9 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `scalar_uniqueness` | Half proved: the uniqueness rule is a derived rule of the kernel (`NPrf.uniq`). The converse, that it recovers equation induction when induction is not a rule, needs the report's own predecessor and reflection of equality and is not formalized. |
 | `clausal_canonical` | Not formalized: it is stated on the canonical recursor syntax with clause contexts. |
 | `computational_equality`, `equality_from_iteration` | Proved: the six-rule calculus is `EPrf`, with `eprf_iff_nprf` and `eprf_iff_iprf` (`NativeEval`). Eval has the two cases of `equality_from_iteration` as constructors; the third case of `computational_equality` is the derived rule `EPrf.evalId`. The zero-normal companion of `equality_from_iteration` is not formalized. |
+| `uniform_step` | Its raw counterpart is proved: on the unnormalized syntax the rule Step is the constructor `evalSucc` of `EPrf` and `SPrf`, which need the zero case `evalZero` beside it. The zero-normal form, where the zero case is absorbed by the syntax, is not formalized. |
+| `rootfree_clausal`, `reduced_clause_calculus` | The redundancy of the equality-composition case of Eval is proved (`EPrf.evalId`, `SPrf.evalId`). The clause calculi themselves are not formalized. |
+| `computation_normal`, `counter_evaluation` | Not formalized: full normalization; the counter-aware recursor syntax. |
 | `full_normalization` | Not formalized. It needs the normalization of both computations with its termination and confluence, where `ZeroNormalization` treats the zero computation only. |
 | `reflexive_base`, `raw_clausal` | Not formalized: a further mode test for the single introduction on zero-normal terms; a clause calculus without `Q`. |
 | `zero_normal` | Its normalization layer is adopted as `ZeroNormalization`: the delivered module compiled unchanged. On top of it `NativeZeroNormal` proves the deletion of the zero computation rule for the kernel (`nzprf_iff_nprf`, `NZPrf.normal`, `nzprf_iff_pra`), with the kernel's two introductions and unrestricted sources. The six-rule form with the single introduction is not formalized. |
