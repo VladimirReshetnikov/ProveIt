@@ -1,0 +1,44 @@
+import ModelEquivalence
+import DiophantineConsistency.Compact44.C44Short15Facts
+import DiophantineConsistency.Compact44.P72Root
+
+/-! Source-only symbolic compact-port specialization. Imported map drafts
+remain unelaborated; no external file, PDF or endpoint claim. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.CompactEquivalence8485Draft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing CompactSymbolicPorts
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Proposed all-positive equivalence at symbolic compact beta and masks,
+with arbitrary natural K. The port tuple uses beta+highNat in slot 3. -/
+theorem positive_zero_iff (K : ℕ) :
+    let p : Fin 4 → ℕ := ports CompactFixedBeta.betaNat K lowNat highNat
+    (∃ v : Fin 14 → V, (∀ j, 0<v j) ∧
+      InternalZero (P84QcubeGraph.graph (fun j => (p j : ℤ))).output v) ↔
+    (∃ v : Fin 14 → V, (∀ j, 0<v j) ∧
+      InternalZero (P85QcubeGraph.graph (fun j => (p j : ℤ))).output v) := by
+  let p : Fin 4 → ℕ := ports CompactFixedBeta.betaNat K lowNat highNat
+  let t : V := (67:V)*8807
+  have hb := C44Short15Facts.port_bounds (V:=V) CompactFixedBeta.betaNat K lowNat highNat
+    CompactFixedBeta.beta_identity rfl rfl
+  have ht : 4≤t := by dsimp [t]; norm_num
+  have hradix : (p 0 : V)=Exp.exp t-1 := by
+    change (CompactFixedBeta.betaNat : V)=Exp.exp t-1
+    have hid : (CompactFixedBeta.betaNat : V)+1=Exp.exp t := by
+      simpa only [t] using (CompactFixedBeta.beta_identity (V:=V))
+    rw [←hid,add_tsub_cancel_right]
+  have hp0 : (((fun j => (p j : ℤ)) 0 : ℤ) : DiffRing V)=ι (p 0 : V) := P72Root.cast_port p 0
+  have hp1 : (((fun j => (p j : ℤ)) 1 : ℤ) : DiffRing V)=ι (p 1 : V) := P72Root.cast_port p 1
+  have hp2 : (((fun j => (p j : ℤ)) 2 : ℤ) : DiffRing V)=ι (p 2 : V) := P72Root.cast_port p 2
+  have hp3 : (((fun j => (p j : ℤ)) 3 : ℤ) : DiffRing V)=ι (p 3 : V) := P72Root.cast_port p 3
+  exact ModelEquivalence8485Draft.positive_zero_iff (fun j => (p j : ℤ))
+    (p 0 : V) (p 1 : V) (p 2 : V) (p 3 : V) t hb.1 hb.2.2.2 ht hradix
+    hp0 hp1 hp2 hp3 hb.2.1 hb.2.2.1
+
+end DiophantineConsistency.CompactEquivalence8485Draft
+
+#print axioms DiophantineConsistency.CompactEquivalence8485Draft.positive_zero_iff
