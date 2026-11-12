@@ -7473,6 +7473,11 @@ The independently reviewed [forced-gamma variant](research/ordinary13-natural-fo
 removes one more shift: 13 natural inputs, 87 operations and exact specialized
 degree 99. Its external zero map relies on the stated port bounds and cited
 rank-window and Pell-descent results; Lean, iPRA and physical binding remain open.
+The independently reviewed [forced-input reductions](reviews/ordinary13-forced-w-x-independent-aggregate/README.md)
+give three further external tradeoffs: 13 natural inputs with 86 operations
+at degree 99, 95 at degree 28, or 94 at degree 50. Their local zero maps use
+positive beta and nonnegative K0; the respective parents' calibration, rank,
+endpoint and physical-binding qualifications remain inherited.
 The independently reviewed [13-variable unshifted-s obstruction](research/ordinary13-natural87-unshift-s-obstruction/README.md)
 gives a zero with `s=0` at the authenticated ports after removing that shift.
 It rules out the proposed local positivity and tested same-coordinate map,
