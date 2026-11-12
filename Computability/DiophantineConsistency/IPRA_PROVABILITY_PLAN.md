@@ -7473,6 +7473,10 @@ offers another tradeoff: 13 natural inputs, 97 operations and exact
 specialized degree 28. Its external zero transfer depends on the cited
 fixed-port bounds and sign-free calibration replay; Lean, iPRA and physical
 equation bindings remain open.
+The independently reviewed [forced-gamma C-fold graph](research/ordinary13-natural-cfold-forced-gamma96-degree28/README.md)
+removes one shift, yielding 13 natural inputs, 96 operations and exact
+specialized degree 28. Its external map inherits the stated port bounds,
+rank and Pell results and calibration; the formal endpoint remains open.
 The independently reviewed [natural C-fold product](research/ordinary13-natural-cfold-product96/README.md)
 trades degree for one operation, giving 13 natural inputs, 96 operations and
 exact specialized degree 50. Its local zero equivalence holds at every
