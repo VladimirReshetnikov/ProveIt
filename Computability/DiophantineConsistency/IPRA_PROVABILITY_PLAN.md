@@ -7446,6 +7446,9 @@ literal graph or an iPRA endpoint.
 The source-reviewed [85-to-86 ring client](research/ordinary14-85-86-ring-client-draft/README.md)
 proposes the forward field identities under explicit slot substitutions. It
 is unelaborated and does not prove positive witnesses or the reverse map.
+The source-reviewed [positive 85-to-86 map draft](research/ordinary14-85-to-86-positive-map-draft/README.md)
+proposes the forward valuation updates, including `β = 0`. It remains
+unelaborated and does not establish the reverse map or an endpoint.
 The source-reviewed [86 first-fields draft](research/ordinary14-86-first-fields-draft/README.md)
 proposes the signed first residual and slot independence from its own zero.
 It remains unelaborated and does not yet establish the quotient witness.
