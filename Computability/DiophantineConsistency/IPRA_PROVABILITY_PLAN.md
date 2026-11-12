@@ -7677,6 +7677,9 @@ reduces the 14-positive-input degree-60 parent to 75 operations at exact
 degree 107. Its five-factor product has the same zeros on the positive domain;
 the proof uses a negative-Pell descent and modular factor exclusions. The
 compact44 endpoint and Lean limitations remain inherited.
+The source-reviewed [five-unit model facts](research/ordinary14-five-unit-model-facts-draft/README.md)
+propose the negative-Pell exclusion and product-unit step under explicit
+premises. They remain unelaborated and are not yet bound to the 75 graph.
 The reviewed [direct-X unit-product tradeoff](research/ordinary14-direct-x-unit75/README.md)
 also has 14 positive inputs and 75 operations, at exact degree 100. Its
 positive-zero comparison uses the stated port bounds and a fact-level
