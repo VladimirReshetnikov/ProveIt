@@ -1,0 +1,57 @@
+import DiophantineConsistency.AdaptiveAQ26Zeros
+import DiophantineConsistency.ArithmeticAdaptiveQuotients2011
+import DiophantineConsistency.ModelDifferenceRing
+
+/-! Source-only proposed extraction of both positive scaled-norm quotients.
+No theorem or tactic in this packet has been checked by Lean. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+noncomputable section
+namespace DiophantineConsistency.AQ26Quotient122WitnessDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The parent zero supplies both exact scaled square identities. -/
+theorem parent_norms (p : Fin 4 → ℤ) (v : Fin 26 → V)
+    (hz : InternalZero (AdaptiveAQ26Literal.literal p) v) :
+    v 19*v 19 = v 13*v 13*(1+v 17*(v 17+(v 9+v 10))) ∧
+    v 20*v 20 = v 14*v 14*(1+v 22*v 18) := by
+  have h := (AdaptiveAQ26Zeros.sum_zero p v).mp hz
+  have h0 := h 0
+  have h1 := h 1
+  change InternalZero ((.var 19)*(.var 19)-
+    ((.var 13)*(.var 13))*(1+(.var 17)*((.var 17)+((.var 9)+(.var 10)))) : Expr (Fin 26)) v at h0
+  change InternalZero ((.var 20)*(.var 20)-
+    ((.var 14)*(.var 14))*(1+(.var 22)*(.var 18)) : Expr (Fin 26)) v at h1
+  constructor
+  · have hr := (ModelDifferenceRing.internalZero_iff _ v).mp h0
+    simp only [Expr.evalRing_sub, Expr.evalRing_mul, Expr.evalRing_add,
+      Expr.evalRing_var, Expr.evalRing_ofNat] at hr
+    apply ι_injective
+    simpa only [map_mul,map_add,map_one] using (sub_eq_zero.mp hr)
+  · have hr := (ModelDifferenceRing.internalZero_iff _ v).mp h1
+    simp only [Expr.evalRing_sub, Expr.evalRing_mul, Expr.evalRing_add,
+      Expr.evalRing_var, Expr.evalRing_ofNat] at hr
+    apply ι_injective
+    simpa only [map_mul,map_add,map_one] using (sub_eq_zero.mp hr)
+
+/-- Construct the new positive witnesses from the old positive witnesses.
+No sign condition is imposed on any port. -/
+theorem parent_quotients (p : Fin 4 → ℤ) (v : Fin 26 → V)
+    (hv : ∀ i, 0<v i) (hz : InternalZero (AdaptiveAQ26Literal.literal p) v) :
+    ∃ u t : V, 0<u ∧ 0<t ∧ v 19=v 13*u ∧ v 20=v 14*t ∧
+      u*u=1+v 17*(v 17+(v 9+v 10)) ∧ t*t=1+v 22*v 18 := by
+  obtain ⟨h0,h1⟩ := parent_norms p v hz
+  obtain ⟨u,hu,hun⟩ := ArithmeticAdaptiveQuotients2011.scaled_quotient
+    (v 13) (v 19) (1+v 17*(v 17+(v 9+v 10))) (hv 13) h0
+  obtain ⟨t,ht,htn⟩ := ArithmeticAdaptiveQuotients2011.scaled_quotient
+    (v 14) (v 20) (1+v 22*v 18) (hv 14) h1
+  have hup : 0<u := pos_of_mul_pos_right (by rw [←hu]; exact hv 19) (by simp)
+  have htp : 0<t := pos_of_mul_pos_right (by rw [←ht]; exact hv 20) (by simp)
+  exact ⟨u,t,hup,htp,hu,ht,hun,htn⟩
+end DiophantineConsistency.AQ26Quotient122WitnessDraft
+#print axioms DiophantineConsistency.AQ26Quotient122WitnessDraft.parent_norms
+#print axioms DiophantineConsistency.AQ26Quotient122WitnessDraft.parent_quotients
