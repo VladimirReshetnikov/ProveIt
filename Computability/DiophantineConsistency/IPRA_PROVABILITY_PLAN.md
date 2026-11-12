@@ -7335,6 +7335,10 @@ trades degree for another operation, giving 13 positive inputs and 83
 operations at exact degree 60. Its positive-zero equivalence at the actual
 ports uses the Mersenne-specific divisibility and cited calibration; no new
 Lean/iPRA or file-binding theorem is claimed.
+The reviewed [residue-adjusted first carrier](research/ordinary13-residue-first81/README.md)
+further gives 13 positive inputs, 81 operations and exact degree 60. Its
+positive-zero maps at the authenticated ports rely on the cited sign-free
+calibration; the modified graph has no Lean/iPRA or file-binding theorem.
 The reviewed [conditional sphere finalizer](research/ordinary13-freej88-conditional-sphere/README.md)
 gives a different 88-operation, degree-30 graph with the same positive zeros.
 It is an equal-metric search form, not a new Lean endpoint or improvement.
@@ -7462,6 +7466,10 @@ The independently source-reviewed [generic first-root model bridge draft](resear
 proposes scaled-root cancellation and positive witness maps with the other
 four residuals fixed. It is not elaborated or connected to either graph;
 provider ancestry and the iPRA endpoint remain open.
+An independently source-reviewed [graph-client draft](research/ordinary14-direct-first-root-graph-client-draft/README.md)
+proposes the corresponding first-residual evaluations and fixed-other-coordinate
+comparison for the 84- and 79-operation graphs. It has not been elaborated;
+the all-positive valuation client and endpoint remain open.
 The source-reviewed [87-operation Lean graph and decoder-route draft](research/ordinary14-shifted-guard87-lean-draft/README.md)
 records the fact-level replay needed for arbitrary models. It is uncompiled;
 the graph-specific model lemmas, parent bridges and iPRA endpoint remain open.
