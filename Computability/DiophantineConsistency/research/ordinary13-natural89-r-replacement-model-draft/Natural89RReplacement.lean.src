@@ -1,0 +1,127 @@
+import Natural89DirectFY
+import ResidueRootSwitchExtract
+import Mathlib.Tactic.Ring
+
+/-! Proposed exact 89 graph root switch via its forward 85 prototype image.
+All source, casts, ring reductions and providers remain unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Natural89RReplacementDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open EtaNaturalUnitGraphDraft EtaNaturalXPositiveDraft EtaNaturalGapRankDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def putR (v : Fin 13 → V) (r : V) (i : Fin 13) : V := if i=8 then r else v i
+
+def up (v : Fin 13 → V) : Fin 13 → V :=
+  EtaUnshift85TransportDraft.raiseEta
+    (W86To87TransportDraft.raiseW
+      (Gamma87To88TransportDraft.raiseGamma (J88To89TransportDraft.raiseJ v)))
+
+theorem up_putR (v : Fin 13 → V) (r : V) : up (putR v r)=putR (up v) r := by
+  funext i
+  fin_cases i <;> simp [up,putR,EtaUnshift85TransportDraft.raiseEta,
+    W86To87TransportDraft.raiseW,Gamma87To88TransportDraft.raiseGamma,J88To89TransportDraft.raiseJ]
+
+theorem zero89_iff85 (p : Fin 4 → ℤ) (v : Fin 13 → V) :
+    InternalZero (JShifted89GraphDraft.literal p) v ↔
+      InternalZero (graph p).output (up v) := by
+  exact (J88To89TransportDraft.zero_iff p v).trans
+    ((Gamma87To88TransportDraft.zero_iff p (J88To89TransportDraft.raiseJ v)).trans
+      ((W86To87TransportDraft.zero_iff p
+        (Gamma87To88TransportDraft.raiseGamma (J88To89TransportDraft.raiseJ v))).trans
+        (EtaUnshift85TransportDraft.zero_iff p
+          (W86To87TransportDraft.raiseW
+            (Gamma87To88TransportDraft.raiseGamma (J88To89TransportDraft.raiseJ v))))))
+
+/-- If the new first-root square is the old one, the exact 85 output is
+unchanged: only the first factor depends on r. -/
+theorem prototype_update (p : Fin 4 → ℕ) (v : Fin 13 → V) (r : V)
+    (hsq : (ι (v 0*(p 0:V))*(ι (m p v*k v)+ι (k v)+ι r-ι (k v)*Bt p v)-Bt p v)*
+      (ι (v 0*(p 0:V))*(ι (m p v*k v)+ι (k v)+ι r-ι (k v)*Bt p v)-Bt p v)=
+        firstRoot p v*firstRoot p v) :
+    (graph (fun j => (p j:ℤ))).output.evalRing (fun j => ι (putR v r j))=
+      (graph (fun j => (p j:ℤ))).output.evalRing (fun j => ι (v j)) := by
+  have hfirst : (graph (fun j => (p j:ℤ))).first.evalRing (fun j => ι (putR v r j))=
+      (graph (fun j => (p j:ℤ))).first.evalRing (fun j => ι (v j)) := by
+    simp [graph,putR,firstRoot,Bt,m,X,Y,q,k,Expr.evalRing_add,Expr.evalRing_sub,
+      Expr.evalRing_mul,Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,
+      P72Root.cast_port,map_add,map_mul,map_one,map_ofNat] at hsq ⊢
+    linear_combination hsq
+  have hmain : (graph (fun j => (p j:ℤ))).main.evalRing (fun j => ι (putR v r j))=
+      (graph (fun j => (p j:ℤ))).main.evalRing (fun j => ι (v j)) := by
+    simp [graph,putR,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+      Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat] <;> ring
+  have haux : (graph (fun j => (p j:ℤ))).aux.evalRing (fun j => ι (putR v r j))=
+      (graph (fun j => (p j:ℤ))).aux.evalRing (fun j => ι (v j)) := by
+    simp [graph,putR,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+      Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat] <;> ring
+  have hstrong : (graph (fun j => (p j:ℤ))).strong.evalRing (fun j => ι (putR v r j))=
+      (graph (fun j => (p j:ℤ))).strong.evalRing (fun j => ι (v j)) := by
+    simp [graph,putR,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+      Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat] <;> ring
+  simp only [EtaNaturalUnitBridgeDraft.output_eq,Expr.evalRing_add,Expr.evalRing_sub,
+    Expr.evalRing_mul,Expr.evalRing_ofNat,hfirst,hmain,haux,hstrong]
+
+/-- The original r may be zero. The replacement modifies only position 8;
+therefore f and y are preserved exactly. -/
+theorem replacement (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (JShifted89GraphDraft.literal (fun j => (Residue90CompactPortBoundsDraft.ports K j:ℤ))) v) :
+    ∃ w : Fin 13 → V,
+      InternalZero (JShifted89GraphDraft.literal (fun j => (Residue90CompactPortBoundsDraft.ports K j:ℤ))) w ∧
+      0<w 8 ∧ w 3=v 3 ∧ w 11=v 11 := by
+  by_cases hr : 0<v 8
+  · exact ⟨v,hz,hr,rfl,rfl⟩
+  · have hr0 : v 8=0 := le_antisymm (le_of_not_gt hr) (Arithmetic.zero_le _)
+    let p := Residue90CompactPortBoundsDraft.ports K
+    let e := up v
+    have he8 : e 8=0 := by simp [e,up,hr0,EtaUnshift85TransportDraft.raiseEta,
+      W86To87TransportDraft.raiseW,Gamma87To88TransportDraft.raiseGamma,J88To89TransportDraft.raiseJ]
+    have hz85 := (zero89_iff85 (fun j => (p j:ℤ)) v).mp hz
+    have hJ := EtaNaturalJPositiveDraft.J_positive p e hz85
+    have hb46 : (46:V)≤(p 0:V) := by
+      change (46:V)≤(CompactFixedBeta.betaNat:V)
+      exact ResidueCompactQBoundDraft.beta_at_least_46
+    have hb : 0<e 0*(p 0:V) := mul_pos hJ (lt_of_lt_of_le (by norm_num : (0:V)<46) hb46)
+    have he9 : 0<e 9 := by simp [e,up,EtaUnshift85TransportDraft.raiseEta]
+    have he9' : (1:V)≤e 9 := pos_iff_one_le.mp he9
+    have he10 : (1:V)≤e 10+1 := by simp
+    have hk : (2:V)≤k e := by
+      calc
+        2=(1:V)+1 := by ring
+        _≤e 9+(e 10+1) := add_le_add he9' he10
+        _=k e := by dsimp [k]; ring
+    have hnorm := EtaNaturalGapRankDraft.first_norm p e hz85
+    have hnorm' : firstRoot p e*firstRoot p e=ι (e 0*(p 0:V))*ι (e 0*(p 0:V))*
+        (1+ι (m p e*k e)*(ι (m p e*k e)+ι (k e))) := by
+      simp only [map_mul] at hnorm ⊢
+      linear_combination hnorm
+    have hform : firstRoot p e=ι (e 0*(p 0:V))*(ι (m p e*k e)+ι (k e)-ι (k e)*Bt p e)-Bt p e := by
+      simp [firstRoot,he8]
+    obtain ⟨r,hrpos,hsq⟩ := ResidueRootSwitchExtractDraft.positive_replacement
+      (e 0*(p 0:V)) (m p e*k e) (k e) (Bt p e) (firstRoot p e) hb hk hform hnorm'
+    have hzero85 : InternalZero (graph (fun j => (p j:ℤ))).output (putR e r) := by
+      apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+      rw [prototype_update p e r hsq]
+      exact (ModelDifferenceRing.internalZero_iff _ _).mp hz85
+    let w := putR v r
+    have hzero89 : InternalZero (JShifted89GraphDraft.literal (fun j => (p j:ℤ))) w := by
+      apply (zero89_iff85 (fun j => (p j:ℤ)) w).mpr
+      simpa only [w,up_putR] using hzero85
+    refine ⟨w,hzero89,?_,?_,?_⟩
+    · simpa [w,putR] using hrpos
+    · simp [w,putR]
+    · simp [w,putR]
+
+theorem rReplacement (K : ℕ) : Natural89Positive80TransportDraft.RReplacement K := by
+  intro V _ _ v hz
+  exact replacement K v hz
+end DiophantineConsistency.Natural89RReplacementDraft
+#print axioms DiophantineConsistency.Natural89RReplacementDraft.prototype_update
+#print axioms DiophantineConsistency.Natural89RReplacementDraft.replacement
+#print axioms DiophantineConsistency.Natural89RReplacementDraft.rReplacement
