@@ -56,8 +56,14 @@ and q>=2. If r=0, the signed root relation is
 ```
 
 The plus branch is strictly positive since P,t>=1 and tau>ell. For the
-minus branch, `k*(P-1)+t<=k*P<=k*m=ell`, so it is strictly negative.
-Both contradict r=0. Thus r>0. The magnitude reflection, ordered quotient
+minus branch, `P<m`, `t<=P` and `k>=2` give
+
+```
+k*(P-1) < k*m = ell,       t < m <= k*m = ell.
+```
+
+Thus `k*(P-1)+t < 2*ell < ell+tau`, making the minus branch strictly
+negative. Both contradict r=0. Thus r>0. The magnitude reflection, ordered quotient
 and exact graph binding are mathematical obligations for a model client;
 no Lean elaboration is reported here.
 

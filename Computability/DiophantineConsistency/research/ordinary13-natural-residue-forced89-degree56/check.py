@@ -49,6 +49,18 @@ lhs=add(mul(dst,dst),mul(mul(U,U),add(con(1),mul(delta,mul(c0,c0)))),-1)
 inner=add(add(add(mul(con(2),mul(X,ac)),mul(X,X)),con(1),-1),mul(H,mul(c0,c0)),-1)
 rhs=add(add(mul(mul(U,U),inner),mul(con(2),mul(mul(mul(U,b0),H),S))),mul(mul(H,H),mul(S,S)))
 assert lhs==rhs
+# Finite controls for the two strict estimates in the r=0 minus branch.
+# These controls supplement, and do not replace, the general order argument.
+checks=0
+for km in range(2,17):
+ for mm in range(2,41):
+  for pp in range(1,mm):
+   for tt in range(1,pp+1):
+    assert km*(pp-1)<km*mm and tt<mm<=km*mm
+    assert km*(pp-1)+tt<2*km*mm
+    checks+=1
+# t<=P does not imply the formerly proposed t<=k bound.
+assert 2*(99-1)+99>2*99
 # Syntactic witness-degree upper bound, with the checked A1 identity substituted.
 d={x:1 for x in c['witnesses']};d.update({x:0 for x in c['fixed_numerals']})
 for n,o,a0,b0_ in expect:
@@ -82,4 +94,4 @@ for n,o,x,y in expect:
  x=[x%prime] if type(x) is int else env[x];y=[y%prime] if type(y) is int else env[y]
  env[n]=mp(x,y) if o=='*' else ap(x,y,1 if o=='+' else -1)
 assert len(env['out'])-1==56 and env['out'][-1]!=0
-print(json.dumps({'scope':'exact mixed-shift source and A1 identity; zero maps require documented force arguments; no Lean','variables':13,'operations':89,'degree':56,'counts':counts,'mixed_shift_rows_exact':True,'forced_unshifted':sorted(forced),'A1_cancellation_identity':True,'residual_degree_upper_bounds':{'A0':d['A0'],'A1':bound,'Fam':d['Fam'],'g72':d['g72']},'compact_port_bounds_checked':True,'compact_K_plus_one_le_beta_plus_one_squared':True,'ray_prime':prime,'ray_leading_coefficient':env['out'][-1],'lean_elaboration':False},sort_keys=True,indent=2))
+print(json.dumps({'scope':'exact mixed-shift source and A1 identity; zero maps require documented force arguments; no Lean','variables':13,'operations':89,'degree':56,'counts':counts,'mixed_shift_rows_exact':True,'forced_unshifted':sorted(forced),'A1_cancellation_identity':True,'bounded_root_inequality_controls':checks,'invalid_stronger_inequality_counterexample_checked':True,'residual_degree_upper_bounds':{'A0':d['A0'],'A1':bound,'Fam':d['Fam'],'g72':d['g72']},'compact_port_bounds_checked':True,'compact_K_plus_one_le_beta_plus_one_squared':True,'ray_prime':prime,'ray_leading_coefficient':env['out'][-1],'lean_elaboration':False},sort_keys=True,indent=2))
