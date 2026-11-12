@@ -11,7 +11,7 @@ graw=pin(D/'research/adaptive-square-sums38-two-quadratic-products/candidate.jso
 old=pin(D/'equation.tex','94f5eba440c5c74d5ab28f51f1104aae13a774ab0238ed9e46b24a4c6b2f9635').decode()
 constants=r'\textbf{The four fixed integers.}'+old.split(r'\textbf{The four fixed integers.}',1)[1].split(r'\endgroup',1)[0]+r'\endgroup'
 assert r'The integer $\mathcal A$ in base 10.' in constants and 'base 61' not in constants.lower()
-short=['J','F','alpha','f','i','T','X','Y','r','eta','zeta','y','gamma','square','scale','mainScale','rank','ell','wguard','cube','product','fSquare','cSquare','firstQ','mainQ','vroot','deltaValue','qSquare','productX','scaledIndex','ySquare','qValue','ySum','offset','gammaProduct','timeProduct','rankSeed','rootSkew']
+short=['argJ','argFuel','argAlpha','argPellF','argIndex','argTime','argX','argY','argOrdinate','argEta','argZeta','argAuxOrd','argGamma','argSquare','argScale','argMainScale','argRank','argEll','argGuard','argCube','argProduct','argFSquare','argCSquare','argFirstQ','argMainQ','argVroot','argDelta','argQSquare','argProductX','argScaledIndex','argYSquare','argQValue','argYSum','argOffset','argGammaProduct','argTimeProduct','argRankSeed','argRootSkew']
 assert len(g['witnesses'])==len(short)==38 and len(set(short))==38 and len(g['source'])==160
 inputs=dict(zip(g['witnesses'],short));aliases={row[0]:f'G{i:03d}' for i,row in enumerate(g['source'],1)}
 assert len(aliases)==160 and not(set(short)&set(aliases.values()))
