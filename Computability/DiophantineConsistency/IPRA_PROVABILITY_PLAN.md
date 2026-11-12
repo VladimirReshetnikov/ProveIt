@@ -7688,6 +7688,10 @@ The source-reviewed [78/75 ring-factor client](research/ordinary14-78-75-ring-cl
 and [78-to-75 forward map](research/ordinary14-78-to-75-model-map-draft/README.md)
 propose the same-coordinate forward direction. They remain unelaborated;
 the reverse factor extraction and endpoint are still open.
+The source-reviewed [78/75 model wrapper](research/ordinary14-78-75-model-equivalence-draft/README.md)
+and [78/74 composition](research/ordinary14-78-74-model-composition-draft/README.md)
+propose the same-port chain through those graphs. They remain unelaborated and
+do not establish an iPRA endpoint.
 The source-reviewed [75-to-78 reverse map draft](research/ordinary14-75-to-78-model-map-draft/README.md)
 proposes the same-coordinate reverse transfer from the 75 graph's own zero.
 It remains unelaborated and is not yet a checked model equivalence.
