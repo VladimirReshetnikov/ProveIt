@@ -1,0 +1,9 @@
+# Independent source review: QM37 conditional transfer
+
+This is a source-level review, not a Lean build. The checker pins the two transfer sources, the two candidate graphs, the author's receipt, and the independent external QM37 graph review. It independently checks all 37 surviving coordinate names and the stated source fragments, with bounded integer controls. Run `python3 -I -S -B check.py` from any directory and compare with `result.json`. The graph proof and the source identities remain unelaborated; the receipt does not establish any `#print axioms` result, completeness theorem, or internal iPRA proof.
+
+Parent slots 11, 13, 25, 30, 31 are respectively y, the named square v², v, named y², and Q. The projected child replaces 13 with d+1, removes parent 30 and shifts subsequent coordinates by one; extension restores squares in parent 13 and 30. Thus both restored slots are positive from y>0 and v>0, and the new slot d+1 is positive because d belongs to the nonnegative model.
+
+The proposed square identities are extracted from parent residuals 4 and 21; residual 2 yields Qy²+1=Qv²+y². With Q>0 and y>0, y²≥1 and the alternative y²<v² would make the left side strictly smaller than the right. Hence v²≤y², allowing the additive witness d, with y²=v²+d. This mathematical argument is valid in the intended ordered arithmetic models. The source's external Lean proof uses `by_contra`; the source check is not itself a constructive formalization in iPRA.
+
+The two directions of no-zero transfer invoke explicitly supplied `GraphZeroObligations`. The equivalence theorems additionally retain the prior QM38 `ZeroPreservationObligations` premise. Later residual-map drafts propose to supply the former, but neither premise may be silently treated as checked. The model machinery, imported names, tactic scripts, cast and subtraction lemmas, displayed equation binding, and axioms still need actual verification.
