@@ -7727,6 +7727,10 @@ unelaborated and is not yet composed into the complete reverse witness.
 The source-reviewed [74 own-zero unit composition](research/ordinary14-74-ownzero-units-draft/README.md)
 proposes applying those exclusions to the graph's product. It remains
 unelaborated and does not yet establish the positive reverse coordinate.
+The source-reviewed [pair-evaluation ring bridge](research/ordinary14-pair-eval-ring-bridge-draft/README.md)
+and [74 first-factor client](research/ordinary14-74-first-factor-client-draft/README.md)
+propose connecting the signed negative-Pell fact to the literal field. Both
+remain unelaborated and have no endpoint claim.
 The source-reviewed [74 own-zero strict-guard draft](research/ordinary14-74-ownzero-guard-strict-draft/README.md)
 proposes that coordinate bound from the graph's own zero under explicit
 port and discreteness hypotheses. It remains unelaborated.
