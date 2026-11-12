@@ -1,0 +1,63 @@
+import EtaZeroDirectProjection
+import Mathlib.Tactic.Omega
+
+/-! Conditional eta-natural growth and direct power client. This inert source
+is unelaborated; no graph-zero, port or iPRA endpoint is claimed. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.EtaZeroGrowthDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ArithmeticPellRecurrence ArithmeticPellPowerRecovery
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The actual eta-natural input shape X=q*w0 supplies the coefficient bound
+without any inferred divisibility or cancellation. The index and both Pell
+coordinate assumptions must use the same graph witnesses. -/
+theorem growth (q X Y R n k c eta zeta s w0 : V)
+    (hq : 16≤q) (hs : 0<s) (hw0 : 0<w0)
+    (hX : X=q*w0) (hY : Y=q^3*s)
+    (hn : 13≤n) (hindex : 2*n=R+1)
+    (hck : c=k*Y+eta) (hk : k=eta+zeta) (hzeta : 0<zeta)
+    (hmainy : c=ycoord R (Y*(X+1)))
+    (hfirst : k=2*ycoord n (2*(X*Y*Y-1)+1)) : Exp.exp R<Y := by
+  have hX16 : 16≤X := calc
+    16≤q := hq
+    _≤q*w0 := le_mul_of_one_le_right (by simp) (pos_iff_one_le.mp hw0)
+    _=X := hX.symm
+  have hqpos : 0<q := lt_of_lt_of_le (by simp : (0:V)<16) hq
+  have hYpos : 0<Y := by rw [hY]; exact mul_pos (pow_pos hqpos 3) hs
+  have hY1 : 1≤Y := pos_iff_one_le.mp hYpos
+  let r := n-1
+  have hn1 : 1≤n := le_trans (by simp : (1:V)≤13) hn
+  have hrn : r+1=n := tsub_add_cancel_of_le hn1
+  have hr : 2≤r := by omega
+  have hR : R=2*r+1 := by omega
+  rw [hR]
+  apply power_bound X Y r k c eta zeta hX16 hY1 hr hck hk hzeta
+  · simpa only [hR] using hmainy
+  · simpa only [hrn] using hfirst
+
+/-- Combine growth with the same-main no-E*q oriented carrier projection.
+All graph, beta, exact-index, coordinate and model-provider inputs are
+explicit; in particular w0 is the graph coordinate, w is the index quotient. -/
+theorem power (q X Y R n k c eta zeta gamma main s w0 w : V)
+    (hq : 16≤q) (hs : 0<s) (hw0 : 0<w0)
+    (hX : X=q*w0) (hY : Y=q^3*s)
+    (hn : 13≤n) (hpair : 2*n=R+1)
+    (hck : c=k*Y+eta) (hk : k=eta+zeta) (hzeta : 0<zeta)
+    (hfirst : k=2*ycoord n (2*(X*Y*Y-1)+1))
+    (hmainx : xcoord R (Y*(X+1))=main)
+    (hmainy : ycoord R (Y*(X+1))=c)
+    (hindex : k=R+1+4*(X*Y*Y)*w)
+    (hcar : let a:=X*Y+Y; let H:=3+4*a; let U:=Y*(q*q)
+      U*main+H*k=U*(X+a*c)+H*(U*gamma+R+1)) : X=Exp.exp R := by
+  have hbound := growth q X Y R n k c eta zeta s w0 hq hs hw0 hX hY hn hpair
+    hck hk hzeta hmainy.symm hfirst
+  have hqpos : 0<q := lt_of_lt_of_le (by simp : (0:V)<16) hq
+  exact EtaZeroDirectProjectionDraft.power_of_direct_carrier q X Y k R c gamma main s w
+    hqpos hs hY hindex hcar hbound hmainx hmainy
+end DiophantineConsistency.EtaZeroGrowthDraft
+#print axioms DiophantineConsistency.EtaZeroGrowthDraft.growth
+#print axioms DiophantineConsistency.EtaZeroGrowthDraft.power
