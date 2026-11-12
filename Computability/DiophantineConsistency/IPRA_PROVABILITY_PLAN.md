@@ -7461,6 +7461,9 @@ It and its dependencies remain unelaborated and are not an iPRA endpoint.
 The source-reviewed [85/86 model-equivalence wrapper](research/ordinary14-85-86-model-equivalence-draft/README.md)
 proposes both directions under positive `β` and the stated cast. It and its
 dependencies remain unelaborated; the bridge to the parent endpoint is open.
+The source-reviewed [87-to-86 reverse-map draft](research/ordinary14-87-to-86-model-map-draft/README.md)
+proposes discharging the reverse guard from same-zero power and Mersenne facts.
+It remains unelaborated, as do its calibration dependencies.
 The source-reviewed [86/87 ring client](research/ordinary14-86-87-ring-client-draft/README.md),
 [86 guard-gap draft](research/ordinary14-86-guard-gap-draft/README.md), and
 [positive 86-to-87 map](research/ordinary14-86-to-87-positive-map-draft/README.md)
