@@ -7924,6 +7924,10 @@ The independently reviewed [predecessor-order alternatives](research/ordinary14-
 make the conversion from `1 + n` to `n + 1` explicit in two earlier drafts.
 They are inert source snapshots; the existing inventory still selects the
 originals, and neither version has been checked by Lean.
+The independently source-reviewed [combined 81 overlay](research/ordinary14-natural81-combined-slim-overlay/README.md)
+selects those alternatives alongside the earlier slim snapshots. It remains
+inert and unelaborated, and still retains a separately identified likely
+reserved helper name; provider closure and build readiness remain open.
 The independently source-reviewed [natural-81 recipe-port client](research/ordinary14-natural81-recipe-port-bridge-draft/README.md)
 proposes transporting those endpoints to closed Lean byte recipes. It is
 unelaborated and does not bind those recipes to external payloads or the PDF.

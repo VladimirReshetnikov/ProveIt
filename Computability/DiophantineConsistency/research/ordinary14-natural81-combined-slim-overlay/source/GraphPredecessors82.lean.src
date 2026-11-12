@@ -1,0 +1,87 @@
+import PartialShift82To74
+import Predecessors82
+import OwnZeroUnits74
+
+/-! Source-only proposal for binding a partially shifted 74 own zero to the
+82 predecessor obligation. All dependencies and these proofs are unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace DiophantineConsistency.GraphPredecessors82Draft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open ArithmeticAdaptiveFactorMagnitude2011
+open FirstFactor74Draft OwnZeroProduct74Draft OwnZeroUnits74Draft FactorResidues74Draft
+open PartialShift82To74Draft Natural82ModelDraft Predecessors82Draft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Literal strong-factor cut, with its reusable graph fields kept explicit. -/
+theorem strong_cut (p : Fin 4 → ℤ) (u : Fin 14 → V) :
+    (P74PositiveGuard.graph p).strong.evalRing (fun j => ι (u j)) =
+      1 + (P74PositiveGuard.graph p).I.evalRing (fun j => ι (u j)) *
+        (P74PositiveGuard.graph p).I.evalRing (fun j => ι (u j)) -
+      ((P74PositiveGuard.graph p).a.evalRing (fun j => ι (u j)) *
+        (P74PositiveGuard.graph p).a.evalRing (fun j => ι (u j)) +
+        4*(P74PositiveGuard.graph p).a.evalRing (fun j => ι (u j)) + 3) *
+        (ι (u 3)*ι (u 3)-1) := by
+  simp [P74PositiveGuard.graph, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat] <;> ring
+
+/-- Literal auxiliary-factor cut, including its signed `vroot` field. -/
+theorem aux_cut (p : Fin 4 → ℤ) (u : Fin 14 → V) :
+    (P74PositiveGuard.graph p).aux.evalRing (fun j => ι (u j)) =
+      ι (u 11)*ι (u 11) -
+      ((P74PositiveGuard.graph p).a.evalRing (fun j => ι (u j)) *
+        (P74PositiveGuard.graph p).a.evalRing (fun j => ι (u j)) +
+        4*(P74PositiveGuard.graph p).a.evalRing (fun j => ι (u j)) + 3) *
+      (ι (u 3)*ι (u 3)-1) *
+      (ι (u 11)*ι (u 11) - (P74PositiveGuard.graph p).vroot.evalRing (fun j => ι (u j)) *
+        (P74PositiveGuard.graph p).vroot.evalRing (fun j => ι (u j))) := by
+  simp [P74PositiveGuard.graph, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat] <;> ring
+
+/-- The `a` field is an embedded natural when port beta is represented. -/
+theorem a_nonnegative (p : Fin 4 → ℤ) (beta : V) (u : Fin 14 → V)
+    (hbeta : (p 0 : DiffRing V) = ι beta) :
+    0 ≤ (P74PositiveGuard.graph p).a.evalRing (fun j => ι (u j)) := by
+  have he : (P74PositiveGuard.graph p).a.evalRing (fun j => ι (u j)) =
+      ι (FirstFactor74Draft.X beta u * FirstFactor74Draft.Y beta u + FirstFactor74Draft.Y beta u) := by
+    simp [P74PositiveGuard.graph, Expr.evalRing_add, Expr.evalRing_sub,
+      Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+      FirstFactor74Draft.q, FirstFactor74Draft.X, FirstFactor74Draft.Y, hbeta,
+      map_add, map_mul, map_one] <;> ring
+  rw [he]
+  exact ι_nonneg _
+
+/-- Proposed predecessor discharge from an 82 own zero. The only displayed
+port hypotheses are beta representation and beta positivity. This theorem and
+every imported source-only graph/unit/bridge lemma are unelaborated. -/
+theorem predecessors_of_zero (p : Fin 4 → ℤ) (beta : V) (w : Fin 14 → V)
+    (hbeta : (p 0 : DiffRing V) = ι beta) (hb : 0 < beta)
+    (hz : InternalZero (P82NaturalForced.graph p).output w) : HasThreePredecessors w := by
+  let u := partial w
+  have hz74 : InternalZero (P74PositiveGuard.graph p).output u :=
+    (internalZero_iff_partial p w).mp hz
+  have hJ : 0 < u 0 := by simp [u, partial]
+  have hw : 0 < u 6 := by simp [u, partial]
+  have hs : 0 < u 7 := by simp [u, partial]
+  obtain ⟨hmain, haux, hstrong⟩ := restricted_residues p u
+  have units := factor_units_of_zero p beta u hbeta hb hJ hw hs hz74 hmain haux hstrong
+  have hauxOne := (unit_iff_one (P74PositiveGuard.graph p).aux u).mp units.2.2.1
+  have hstrongOne := (unit_iff_one (P74PositiveGuard.graph p).strong u).mp units.2.2.2.2
+  rw [aux_cut] at hauxOne
+  rw [strong_cut] at hstrongOne
+  have hfirst := congrArg (ι : V →+* DiffRing V) units.1
+  let a := (P74PositiveGuard.graph p).a.evalRing (fun j => ι (u j))
+  let I := (P74PositiveGuard.graph p).I.evalRing (fun j => ι (u j))
+  let vroot := (P74PositiveGuard.graph p).vroot.evalRing (fun j => ι (u j))
+  let ellPart := ι ((m beta u*k u)*(m beta u*k u+k u))
+  apply predecessors_of_factor_equations w a I vroot ellPart
+    (a_nonnegative p beta u hbeta) (ι_nonneg _)
+  · simpa [ellPart, u, partial, map_mul, map_add, map_one] using hfirst
+  · simpa [a, I, u, partial] using hstrongOne
+  · simpa [a, vroot, u, partial] using hauxOne
+
+end DiophantineConsistency.GraphPredecessors82Draft
