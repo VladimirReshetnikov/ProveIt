@@ -59,13 +59,14 @@ For **82→84**, positivity of Bprime and its b-divisibility do not alone imply
 B>0. The exact scalar assignment
 
 ```
-beta=46, J=1, q=47, F=1, alpha=45, K0=0, X=47
-C=1, Bprime=46, b | Bprime, B=0
+beta=46, J=1, q=47, F=1, alpha=45, K0=0, X=47, MC=MF=1
+C=1, Bprime=46, b | Bprime, B=0, R=4771536
 ```
 
-satisfies those scalar conditions. This is **not** a full graph zero and does
+also satisfies `MC<beta`, `MF<2*beta` and the scalar rank window
+`24<=R`, `R+q³+q+1<=q⁴`. This is **not** a full graph zero and does
 not refute zero equivalence or any possible other witness map. It rules out
-deducing B>0 from just those listed scalar facts. The reviewed standard proof
+deducing B>0 from just those listed scalar facts, even with that rank window. The reviewed standard proof
 uses the stronger property `X>=q²`; with C>=1 and F<=q-2 it gives
 `B>=q²-(q-2)q=2q>0`. A model client needs this bound or another independently
 proved positive-companion construction; X>=q² is sufficient, not asserted

@@ -42,6 +42,8 @@ assert carrier(B,rold)==carrier(Bp,r)
 q0,b0,F0,alpha0,K0,X0=47,46,1,45,0,47
 C0=q0-F0-alpha0;old=C0*(X0+K0*q0)-F0*q0;new=C0*(X0+K0)-F0
 assert q0==1+b0 and C0==1 and old==0 and new==46 and new%b0==0
+MC0=MF0=1;R0=(b0*(q0-F0)+alpha0)*(q0*q0-1)+(MC0+q0*MF0)
+assert 0<MC0<b0 and 0<MF0<2*b0 and 24<=R0 and R0+q0**3+q0+1<=q0**4
 sources={
  'Lean/DiophantineConsistency/Compact44/FreeJ13Halt.lean':('18b17a1c81e6ff58d74fd6a7160948b75c71203ee8f5c3bd29e4d3fc9a76218a',['theorem positive_model_iff','InternalZero (graph CompactSymbolicModelIff.p).output']),
  'Lean/DiophantineConsistency/Compact44/IPRAOrdinary13.lean':('c6b54e6098062be18966a9fd5891284909bd1454d6d6ee8b0db26e808045a735',['theorem native_equivalence','∼mappedNativeRefutation embedding']),
@@ -58,4 +60,4 @@ sources={
 for path,(h,need) in sources.items():
  text=pin(path,h).decode()
  for entry in need:assert entry in text,(path,entry)
-print(json.dumps({'scope':'source-pinned graph delta, formal polynomial identities and scalar counterexample; not a full zero or a Lean proof','graph_operations':[84,82,87,88],'B_difference_identity':True,'signed_r_identity':True,'counterexample':{'beta':46,'J':1,'q':q0,'F':F0,'alpha':alpha0,'K0':K0,'X':X0,'Bprime':new,'B':old,'Bprime_divisible_by_b':True,'is_full_zero':False},'source_signatures_pinned':len(sources),'lean_elaboration':False},sort_keys=True,indent=2))
+print(json.dumps({'scope':'source-pinned graph delta, formal polynomial identities and scalar counterexample; not a full zero or a Lean proof','graph_operations':[84,82,87,88],'B_difference_identity':True,'signed_r_identity':True,'counterexample':{'beta':46,'J':1,'q':q0,'F':F0,'alpha':alpha0,'K0':K0,'X':X0,'Bprime':new,'B':old,'Bprime_divisible_by_b':True,'MC':MC0,'MF':MF0,'R':R0,'rank_window_holds':True,'is_full_zero':False},'source_signatures_pinned':len(sources),'lean_elaboration':False},sort_keys=True,indent=2))
