@@ -7504,6 +7504,9 @@ The source-reviewed [87 main-index](research/ordinary14-87-main-index-draft/READ
 and [P72 first-input bundle](research/ordinary14-87-p72-first-inputs-draft/README.md)
 drafts propose the remaining index classification and rank-window inputs.
 They are unelaborated and do not yet establish exact indices.
+The source-reviewed [87 P72 exact-index draft](research/ordinary14-87-p72-exact-indices-draft/README.md)
+proposes applying the theorem to those same-zero facts. It and its
+dependencies remain unelaborated and do not constitute a checked model result.
 The source-reviewed [87 strong-norm draft](research/ordinary14-87-strong-norm-draft/README.md)
 proposes the direct-Y strong identity from the 87 graph's own zero. It remains
 unelaborated and does not establish the rest of the calibration.
@@ -7543,6 +7546,10 @@ reduces the 14-positive-input degree-60 parent to 75 operations at exact
 degree 107. Its five-factor product has the same zeros on the positive domain;
 the proof uses a negative-Pell descent and modular factor exclusions. The
 compact44 endpoint and Lean limitations remain inherited.
+The reviewed [direct-X unit-product tradeoff](research/ordinary14-direct-x-unit75/README.md)
+also has 14 positive inputs and 75 operations, at exact degree 100. Its
+positive-zero comparison uses the stated port bounds and a fact-level
+calibration replay; it is external mathematics, not a new Lean endpoint.
 The reviewed [universal trace-bound probe](research/ordinary14-universal-trace-bound/README.md)
 derives an external trace bound for positive `X` under stated Pell and
 congruence hypotheses. Its 73-operation direct-`X` graph still lacks a proof
