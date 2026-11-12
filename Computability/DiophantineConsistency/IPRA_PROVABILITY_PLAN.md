@@ -7603,6 +7603,10 @@ The source-reviewed [84 P72 exact-index composition](research/ordinary14-84-p72-
 proposes applying the existing theorem to the assembled own-zero hypotheses.
 It and its dependencies remain unelaborated; it is not yet a Lean-checked
 exact-index result or an iPRA endpoint.
+The source-reviewed [84-to-85 model-map draft](research/ordinary14-84-to-85-model-map-draft/README.md)
+proposes the positive witness using those exact-index and gamma facts. It is
+unelaborated along with its dependencies; the reverse map's graph-derived
+`q ∣ X`, providers and iPRA endpoint remain open.
 The source-reviewed [84 main-index draft](research/ordinary14-84-main-index-draft/README.md)
 proposes classifying the main root while retaining the natural balance. It is
 unelaborated and does not identify that index with the rank.
