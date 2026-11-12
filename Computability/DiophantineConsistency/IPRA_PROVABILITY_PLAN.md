@@ -7886,6 +7886,13 @@ The independently source-reviewed [79 zero-w divisibility client](research/ordin
 proposes that reflection and contradiction, yielding a source-level w
 positivity claim under represented positive beta and nonnegative K0. The
 whole chain remains unelaborated and the iPRA endpoint is not established.
+The independently source-reviewed [beta-only zero-w alternatives](research/ordinary14-natural79-beta-only-zero-w-draft/README.md)
+propose weakening that local step to represented natural beta, allowing beta
+and J to be zero and other ports to be arbitrary. They are inert source and
+do not remove the stronger assumptions of the separate 80 endpoint chain.
+The independently reviewed [negative-beta obstruction](research/ordinary14-natural79-negative-beta-obstruction/README.md)
+exhibits a zero with w=0 for a different signed-port tuple, so beta's natural
+representation cannot be removed from that local argument for arbitrary ports.
 The independently source-reviewed [natural-79 endpoint draft](research/ordinary14-natural-forced-w79-ipra-draft/README.md)
 proposes composing the w-positive transfer with native, standard and
 equality-only iPRA clients at the symbolic ports. Its declarations and five
@@ -7896,6 +7903,10 @@ Foundation consistency sentence. The independently source-reviewed
 [direct-BFS Carrier65 comparison draft](research/ordinary14-natural79-carrier65-bfs-direct-comparison-draft/README.md)
 proposes one such biconditional for a distinct BFS port instance. Neither
 draft elaboration nor a binding to the displayed 2011 page is established.
+The independently source-reviewed [normalized-quote composition draft](research/ordinary14-natural79-carrier65-quoted-composition-draft/README.md)
+proposes direct and translated common-target routes to the historical
+Carrier65 quote. Its joint provider environment and Lean proofs remain
+unelaborated, and raw TeX/PDF semantics remain separate.
 The bounded [79-specific signature audit](reviews/ordinary14-natural79-signature-audit-independent/README.md)
 finds no definite mismatch in its selected unit, norm, divisibility and
 transport interfaces. It is source inspection only, not Lean elaboration or
