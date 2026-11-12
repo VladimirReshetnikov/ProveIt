@@ -416,6 +416,15 @@ by progress as primitive, and proves that the derivable sequents are the same
   (`NVPrf`, `nvprf_iff_nprf`). At the counter `0` the two rules are the same
   inference, which is where the equality reasoning takes place. This is the
   rule of [`seed_evaluation`](Research/seed_evaluation/).
+- *One evaluation rule and one introduction on zero-normal terms.* The
+  companion calculus of
+  [`equality_from_iteration`](Research/equality_from_iteration/) has six
+  rules: hypothesis, reflexivity, QE, DE, the single introduction with the
+  literal test, and UE, from `I(c, a; u.h) = t` and `I(S c, a; u.h) = r` infer
+  `r = h[t/u]` (`ZEPrf`, `zeprf_iff_nprf`). The introduction by cases of an
+  equation at the witness `0`, which the single introduction does not have,
+  is derived with the zero-normal alias `I(S 0, 0; u.0)` of `0`, with no
+  weakening and no cut.
 - *Five rules on zero-normal terms, and four schemes.* The clause calculus
   can be put on zero-normal terms with the one successor step as its only
   computation: Refl, Eval, Use, Elim and Intro, each normalizing its
@@ -746,6 +755,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | five rules on zero-normal terms | `zcprf_iff_nprf : ZCPrf (Γ.map fun X => Cl.asm (fnf (unQ X))) (fnf (unQ A)) ↔ NPrf Γ A`, `zcprf_iff_nprf_of_qfree`, `CPrf.toZC`, `Conv` | Refl, one Eval scheme, Use, Elim and Intro on zero-normal terms with clause contexts |
 | four schemes on zero-normal terms | `zvprf_iff_zcprf`, `zvprf_iff_nprf` | Use, Step, Open, Close with uniform clauses and the fixed reflexivity clause |
 | seed evaluation | `nvprf_iff_nprf : NVPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`, `NVPrf.normal` | on zero-normal terms, reflexivity and SeedEval in place of successor computation and transport |
+| one evaluation rule, six rules | `zeprf_iff_nprf : ZEPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`, `zeprf_iff_pra`, `ZEPrf.normal`, `ZN.dICase`, `ZN.qInd` | on zero-normal terms, reflexivity, the rule UE and the single introduction with the literal test |
 | equality in the initializer | `niprf_iff_nprf : NIPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`, `niprf_iff_pra`, `NIPrf.normal`, `NIPrf.root`, `NIPrf.trOneNf` | on zero-normal terms, replacement of an iterator's initializer as the only equality rule; no reflexivity rule and no template |
 | one successor step | `nsprf_iff_nprf : NSPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`, `NSPrf.normal` | on zero-normal terms, reflexivity and Step in place of successor computation and transport |
 | | `NZPrf.normal`, `nzprf_iff_nprf_of_normal` | it derives only zero-normal formulas from zero-normal hypotheses, and on those sequents it agrees with the kernel |
@@ -762,7 +772,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | | `native_inconsistent_iff` | `NPrf [] (0 = 1)` iff iPRA proves `⊥` |
 
 The main chain (every module except the seventeen kernel comparisons,
-`ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`, `NativeInitializer`,
+`ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`, `NativeZeroEval`, `NativeInitializer`,
 `NativeZeroReflexive`, `NativeZeroClausal`, `FullNormalization`, `NativeFullNormal`,
 `NativeInferredWitness`, `NativeVariableSubstitution`, `NativeNewestVariable`, `NativeWitnessDischarge`, `NativeFullSix`,
 `NativeFullFive`, `NativeNameClauses`, `NativeOpenClauses`, `NativeExportClauses`,
@@ -806,7 +816,7 @@ no `native_decide`.
 | theories | `Scalar`, `PR`, `Native` | `T_eq`, iPRA, the native calculus and its soundness |
 | `T_eq` arithmetic | `Lindenbaum`, `TeqArith`, `TeqParity`, `TeqCompare`, `TeqPred`, `TeqEq`, `TeqReflect`, `TeqOrder`, `TeqPair`, `TeqRec` | predecessor, reflection of equality into a term, quantifier-free induction, pairing, compilation of primitive recursion |
 | `T_eq` ≡ iPRA | `ScalarToPRA`, `PRAToScalar`, `RoundTripScalar`, `RoundTripPRA`, `BiInterpretation` | the two interpretations and their composites |
-| zero-normal syntax | `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`, `NativeInitializer`, `NativeZeroReflexive`, `NativeZeroClausal` | contraction of iterators with a literal-zero counter, hereditary substitution, and the equivalence of a formula with its normal form (delivered); the kernel without the zero computation rule, `NZPrf`; reflexivity and one successor step, `NSPrf`; reflexivity and seed evaluation, `NVPrf`; six rules with the reflexive-base introduction, `NRPrf`; five rules with clauses, `ZCPrf`, and four schemes with uniform clauses, `ZVPrf` |
+| zero-normal syntax | `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`, `NativeZeroEval`, `NativeInitializer`, `NativeZeroReflexive`, `NativeZeroClausal` | contraction of iterators with a literal-zero counter, hereditary substitution, and the equivalence of a formula with its normal form (delivered); the kernel without the zero computation rule, `NZPrf`; reflexivity and one successor step, `NSPrf`; reflexivity and seed evaluation, `NVPrf`; six rules with one evaluation rule and the literal test, `ZEPrf`; six rules with the reflexive-base introduction, `NRPrf`; five rules with clauses, `ZCPrf`, and four schemes with uniform clauses, `ZVPrf` |
 | closures in `T_eq` | `TeqClosure` | decidability of quantifier-free formulas; the criterion for agreement of the conditional and the progressive closure |
 | full normal forms | `FullNormalization`, `NativeFullNormal`, `NativeInferredWitness`, `NativeVariableSubstitution`, `NativeNewestVariable`, `NativeWitnessDischarge`, `NativeFullSix`, `NativeFullFive`, `NativeNameClauses`, `NativeOpenClauses`, `NativeExportClauses`, `NativeVariableClauses` | the normalizer for both computations, defined by evaluation, with its laws and its correctness; the kernel without computation rules, `FNPrf`; the same with the opening at an inferred witness, `FOPrf`; the same with substitution for a variable as its only equality rule, `VSPrf`; six rules with Name, `NMPrf`; six rules with one introduction, `F6Prf`; five rules, `N5Prf`; three rule families with clauses, `WDPrf`; the same with the opening at an inferred witness in place of Name, `OCPrf`; the same with a deterministic discharge, `XCPrf`; five rules with clauses and substitution for the newest variable, `VCPrf` |
 | derived rule | `NativeUniqueness` | uniqueness of iteration |
@@ -842,7 +852,7 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `validated_core`, `validated_presentation`, `checked_refinement` | Their results concern Python programs; the rule basis is unchanged. |
 | `scalar_uniqueness` | Half proved: the uniqueness rule is a derived rule of the kernel (`NPrf.uniq`). The converse, that it recovers equation induction when induction is not a rule, needs the report's own predecessor and reflection of equality and is not formalized. |
 | `clausal_canonical` | Not formalized: it is stated on the canonical recursor syntax with clause contexts. |
-| `computational_equality`, `equality_from_iteration` | Proved: the six-rule calculus is `EPrf`, with `eprf_iff_nprf` and `eprf_iff_iprf` (`NativeEval`). Eval has the two cases of `equality_from_iteration` as constructors; the third case of `computational_equality` is the derived rule `EPrf.evalId`. The zero-normal companion of `equality_from_iteration` is not formalized. |
+| `computational_equality`, `equality_from_iteration` | Proved: the six-rule calculus is `EPrf`, with `eprf_iff_nprf` and `eprf_iff_iprf` (`NativeEval`). Eval has the two cases of `equality_from_iteration` as constructors; the third case of `computational_equality` is the derived rule `EPrf.evalId`. The zero-normal companion of `equality_from_iteration` is proved as well (`NativeZeroEval`): `ZEPrf` has its six rules, with the single rule UE for arithmetic and equality and the single introduction with the literal test at canonical witnesses, and `zeprf_iff_nprf : ZEPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`. The missing introduction by cases of an equation at the witness `0` is derived as in `NativeOneIntro`, with the zero-normal term `I(S 0, 0; u.0)` as the alias of `0`. |
 | `clause_guards` | Proved: its calculus is `KPrf` (`kprf_iff_nprf_of_qfree`, `kprf_iff_nprf`, `KPrf.subst`; `NativeClausalDiagonal`), which was written here before the package arrived. |
 | `mirror_core` | Proved: its six-rule calculus is `M6Prf` (`m6prf_iff_nprf`), over the seven-rule `MiPrf` (`miprf_iff_nprf`; `NativeMirror`). Because the mirror shape can be created by a substitution, the structural rules are weakening, injective renaming and cut; progress for an arbitrary equation uses the lift `s = sel(y, s, t)`. |
 | `seed_evaluation` | Proved, for its arithmetic and equality interface: `NVPrf`, with `nvprf_iff_nprf`, `NVPrf.normal` and `nvprf_iff_pra` (`NativeZeroSeed`), with the kernel's two introductions and `Q` in place of clause contexts. |
