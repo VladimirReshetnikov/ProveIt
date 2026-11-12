@@ -7819,6 +7819,11 @@ The independently reviewed [ordered provider plan](research/ordinary14-root74-or
 records 162 lexically ordered source stages and 35 observed frontier objects.
 Its header and hash checks do not establish actual Lean resolution, transitive
 provider provenance, companion completeness, or a build-ready proof chain.
+The independently reviewed [recorded-ancestry audit](research/ordinary14-root74-recorded-ancestry-audit/README.md)
+follows 31 lexical frontier seeds through 1,546 retained project producer
+records and checks the recorded sources, edges and guard slots. It leaves 80
+external names unexpanded; historical record authentication, full provider
+closure, actual Lean resolution and compatibility remain open.
 The reviewed [root-74 refusal-only preflight](research/ordinary14-root74-slim-no-lean-preflight/README.md)
 records selected read-only checks and always refuses launch. It is not a
 provider or Lean build certification.
