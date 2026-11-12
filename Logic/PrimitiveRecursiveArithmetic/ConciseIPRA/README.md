@@ -569,7 +569,7 @@ for separate coordinates, they are listed separately. Each package's own
 | [`selfseed_scalar`](Research/selfseed_scalar/) | A self-seeded recursor `F(0;v.h) = S(h(0))`, `F(S n;v.h) = h(F(n;v.h))` over ordinary logic with successor injectivity, `0 ≠ S 0`, a Boolean equality test and literal-equation induction; also checkers of 554 bytes and of 291 AST nodes for the native core |
 | [`register_graph`](Research/register_graph/) | Terms `x`, `0` and a counter-aware register iterator `J(n; i, r. body)` only, over ordinary logic: successor `S(a) = J(a; i, r. 0)` and the initializer are derived, and primitive recursion compiles without pairing; also a 288-node AST checker for the native core |
 | [`canonical_recursors`](Research/canonical_recursors/) | A successor-seeded recursor `R(n, a; u.h)` with successor defined as `R(0, a; u.0)`; the zero computation is built into a canonical term grammar with normalizing substitution, so successor computation is the only explicit computation rule. Six rules; written proofs of the equivalence with the raw calculus and of the bi-interpretation with iPRA. Normalization is part of the trusted specification. Matched strict checker 4611 bytes against 4923 for the scalar iterator with independent `S`; separately, the compact guarded codec at 516 bytes against 522 |
-| [`initializer_equality`](Research/initializer_equality/) | On the canonical recursor syntax, equality transport is replacement of an iterator's initializer; zero iteration is definitional, so this includes replacement at the root, and one iteration applies any term template. Six rules; the equality step takes two proofs and no template |
+| [`initializer_equality`](Research/initializer_equality/) | On zero-normal iterator terms, equality transport is replacement of an iterator's initializer; zero iteration is definitional, so this includes replacement at the root, and one iteration applies any term template. Six rules; the equality step takes two proofs and no template |
 | [`clausal_canonical`](Research/clausal_canonical/) | Five rules on the canonical recursor syntax, with an Eq/D public language and contexts of reusable clauses in place of `Q`. Matched checker 3305 bytes against 3820 for the six-rule control |
 | [`counter_evaluation`](Research/counter_evaluation/) | On the counter-aware successor-seeded recursor `R(n, a; i, u.h)`, reflexivity and one rule: from `s = t` and `R(S s, a; i,u.h) = r` infer `r = h(t, R(t, a; i,u.h))`. With clause contexts: five patterns |
 | [`uniform_binding`](Research/uniform_binding/) | The counter-aware clause calculus with one ternary recursor `R(n, a; i, u.h)`; `R` and `D` both bind exactly two variables in their last child, and one traversal handles validation, zero-body erasure and binder opening |
@@ -744,6 +744,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | five rules on zero-normal terms | `zcprf_iff_nprf : ZCPrf (Γ.map fun X => Cl.asm (fnf (unQ X))) (fnf (unQ A)) ↔ NPrf Γ A`, `zcprf_iff_nprf_of_qfree`, `CPrf.toZC`, `Conv` | Refl, one Eval scheme, Use, Elim and Intro on zero-normal terms with clause contexts |
 | four schemes on zero-normal terms | `zvprf_iff_zcprf`, `zvprf_iff_nprf` | Use, Step, Open, Close with uniform clauses and the fixed reflexivity clause |
 | seed evaluation | `nvprf_iff_nprf : NVPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`, `NVPrf.normal` | on zero-normal terms, reflexivity and SeedEval in place of successor computation and transport |
+| equality in the initializer | `niprf_iff_nprf : NIPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`, `niprf_iff_pra`, `NIPrf.normal`, `NIPrf.root`, `NIPrf.trOneNf` | on zero-normal terms, replacement of an iterator's initializer as the only equality rule; no reflexivity rule and no template |
 | one successor step | `nsprf_iff_nprf : NSPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`, `NSPrf.normal` | on zero-normal terms, reflexivity and Step in place of successor computation and transport |
 | | `NZPrf.normal`, `nzprf_iff_nprf_of_normal` | it derives only zero-normal formulas from zero-normal hypotheses, and on those sequents it agrees with the kernel |
 | crossed transport | `rprf_iff_nprf : RPrf Γ A ↔ NPrf Γ A`, `reversal_iff_pra` | root-reversing transport and QE with nonzero sources; equality recovered without induction |
@@ -759,7 +760,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | | `native_inconsistent_iff` | `NPrf [] (0 = 1)` iff iPRA proves `⊥` |
 
 The main chain (every module except the seventeen kernel comparisons,
-`ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`,
+`ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`, `NativeInitializer`,
 `NativeZeroReflexive`, `NativeZeroClausal`, `FullNormalization`, `NativeFullNormal`,
 `NativeInferredWitness`, `NativeVariableSubstitution`, `NativeNewestVariable`, `NativeWitnessDischarge`, `NativeFullSix`,
 `NativeFullFive`, `NativeNameClauses`, `NativeOpenClauses`, `NativeExportClauses`,
@@ -803,7 +804,7 @@ no `native_decide`.
 | theories | `Scalar`, `PR`, `Native` | `T_eq`, iPRA, the native calculus and its soundness |
 | `T_eq` arithmetic | `Lindenbaum`, `TeqArith`, `TeqParity`, `TeqCompare`, `TeqPred`, `TeqEq`, `TeqReflect`, `TeqOrder`, `TeqPair`, `TeqRec` | predecessor, reflection of equality into a term, quantifier-free induction, pairing, compilation of primitive recursion |
 | `T_eq` ≡ iPRA | `ScalarToPRA`, `PRAToScalar`, `RoundTripScalar`, `RoundTripPRA`, `BiInterpretation` | the two interpretations and their composites |
-| zero-normal syntax | `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`, `NativeZeroReflexive`, `NativeZeroClausal` | contraction of iterators with a literal-zero counter, hereditary substitution, and the equivalence of a formula with its normal form (delivered); the kernel without the zero computation rule, `NZPrf`; reflexivity and one successor step, `NSPrf`; reflexivity and seed evaluation, `NVPrf`; six rules with the reflexive-base introduction, `NRPrf`; five rules with clauses, `ZCPrf`, and four schemes with uniform clauses, `ZVPrf` |
+| zero-normal syntax | `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`, `NativeInitializer`, `NativeZeroReflexive`, `NativeZeroClausal` | contraction of iterators with a literal-zero counter, hereditary substitution, and the equivalence of a formula with its normal form (delivered); the kernel without the zero computation rule, `NZPrf`; reflexivity and one successor step, `NSPrf`; reflexivity and seed evaluation, `NVPrf`; six rules with the reflexive-base introduction, `NRPrf`; five rules with clauses, `ZCPrf`, and four schemes with uniform clauses, `ZVPrf` |
 | closures in `T_eq` | `TeqClosure` | decidability of quantifier-free formulas; the criterion for agreement of the conditional and the progressive closure |
 | full normal forms | `FullNormalization`, `NativeFullNormal`, `NativeInferredWitness`, `NativeVariableSubstitution`, `NativeNewestVariable`, `NativeWitnessDischarge`, `NativeFullSix`, `NativeFullFive`, `NativeNameClauses`, `NativeOpenClauses`, `NativeExportClauses`, `NativeVariableClauses` | the normalizer for both computations, defined by evaluation, with its laws and its correctness; the kernel without computation rules, `FNPrf`; the same with the opening at an inferred witness, `FOPrf`; the same with substitution for a variable as its only equality rule, `VSPrf`; six rules with Name, `NMPrf`; six rules with one introduction, `F6Prf`; five rules, `N5Prf`; three rule families with clauses, `WDPrf`; the same with the opening at an inferred witness in place of Name, `OCPrf`; the same with a deterministic discharge, `XCPrf`; five rules with clauses and substitution for the newest variable, `VCPrf` |
 | derived rule | `NativeUniqueness` | uniqueness of iteration |
@@ -862,7 +863,8 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `diagonal_guard` | Proved: its calculus is `GPrf`, with `gprf_iff_nprf`, `gprf_iff_iprf` and substitution by direct induction (`NativeDiagonal`). Progress for an arbitrary equation is recovered by a shorter argument than the report's: no implication between equations and no substitution into the step premise. The equivalence uses neither `Classical.choice` nor the bi-interpretation. |
 | `template_free` | Proved, for the equality rule: `TPrf` is the kernel with transport replaced by the replacement rule, and `tprf_iff_nprf` (`NativeTemplateFree`). The package's seven-rule form combines it with the witness-tested single introduction, which is not combined here. |
 | `target_closure` | Its calculus and its comparison theorem are proved (`NativeTargetClosure`). `TQPrf` has the rules of `RPrf` with the elimination `Q_y B`, `B(δ_B(t))` ⊢ `B(t)`. `tqprf_iff_rprf : TQPrf Γ A ↔ RPrf Γ A`: a step of `TQPrf` is the orbit elimination with the initializer `1`; a target that is not a successor is the orbit elimination from `0`, with the redex removed by the Leibniz rule; conversely the orbit elimination at an equation is an equation induction inside `TQPrf` (`TQPrf.orbit`), whose own induction uses the target `I(0, t; u.0)`. Hence `tqprf_emb_iff`, `tqprf_iff_rd` and `tqprf_consistent`. The package's second part, a smaller checker for an existing theory, is not a statement about a calculus. |
-| `initializer_equality`, `scope_kernel` | Not formalized: the first is stated on the canonical recursor syntax; the second concerns Python programs, and its research notes are a model and an unfinished argument. |
+| `initializer_equality` | Proved, for its equality rule (`NativeInitializer`). The package is stated on zero-normal iterator terms, not on another term syntax. `NIPrf` has, in place of transport, the rule Seed: from `s = t` and `C(c, s, h) = r` infer `C(c, t, h) = r`, where `C(0, a, h)` is `a`. `niprf_iff_nprf : NIPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`. At the counter `0` the rule replaces at the root, which gives reflexivity from one successor computation, symmetry and transitivity; at the counter `1` it applies any template. The package's sixth-rule count uses the single introduction; `NIPrf` keeps the kernel's two introductions (seven rules). |
+| `scope_kernel` | Not formalized: it concerns Python programs, and its research notes are a model and an unfinished argument. |
 | `canonical_recursors` | Not formalized. It is a different term language (a recursor whose seed is a successor, with a canonical grammar and normalizing substitution), so it would need its own syntax, its equivalence with the raw calculus and a bi-interpretation with iPRA. |
 | `witness_rule` (first delivery) | Proved: `wprf_iff_nprf`. The kernel keeps two introductions, because the single rule is not stable under substitution by a direct induction (a substitution can turn a witness into the literal `0`). |
 | `direct_closure`, `direct_closure_qprogress` | Adopted: `qIInd` is the kernel's progress rule. The delivered migration patch compiled as written. |
@@ -925,10 +927,14 @@ marked as conjectures is proved here.
    proved equivalent to `RPrf` on the same formulas (`tqprf_iff_rprf`), so
    the same results hold for it.
 6. **Other term syntaxes.** `canonical_recursors`, `clausal_canonical`,
-   `initializer_equality`, `counter_evaluation`, `uniform_binding`,
-   `substitutive_discharge` in its own form, and `register_graph` are stated
-   on recursors with a counter or with a successor seed. Each needs its own
-   syntax and a bi-interpretation with the iterator terms.
+   `counter_evaluation`, `uniform_binding`, `substitutive_discharge` in its
+   own form, and `register_graph` are stated on recursors with a counter or
+   with a successor seed. Each needs its own syntax and a bi-interpretation
+   with the iterator terms. (`initializer_equality` was listed here by
+   mistake: it is on zero-normal iterator terms, and its rule is proved,
+   `niprf_iff_nprf`.) The rule of `counter_evaluation` puts the equation in
+   the counter and needs a body that sees the counter, so it has no analogue
+   on iterator terms.
 7. **The clausal presentations.** Settled: on full normal forms the clausal
    forms of `witness_discharge` (`WDPrf`), of `inferred_witness` and
    `deterministic_opening` (`OCPrf`), of `first_instance` and
