@@ -7553,6 +7553,10 @@ The source-reviewed [conditional 84/85 model client](research/ordinary14-84-85-c
 proposes positive valuation maps assuming the indicated gamma bound and
 `q ∣ X`. It has not been elaborated, and those assumptions have not yet been
 derived from the graph in Lean.
+The source-reviewed [84/85 arithmetic composition draft](research/ordinary14-84-85-arithmetic-client-draft/README.md)
+connects these conditional maps to the proposed gamma-growth and Mersenne
+facts with their Pell and carrier assumptions explicit. It remains
+unelaborated and does not extract those assumptions from graph zeros.
 The source-reviewed [modified-carrier gamma-growth draft](research/ordinary14-modified-carrier-gamma-model-draft/README.md)
 proposes the needed strict positivity using existing Pell growth lemmas under
 explicit index and carrier hypotheses. It is unelaborated and is not yet
