@@ -1,0 +1,91 @@
+502-BYTE COMPOSITION: WRITTEN CHECKER AUDIT
+=========================================
+
+Scope
+-----
+This is an implementation refinement of the inherited guarded native scalar
+calculus. It is not a new axiomatization, new arithmetic axiom deletion, or
+a single checker below all three 253 / 275 / 506 coordinate minima.
+It preserves the compact contract: finite integer/list certificates with a
+canonical guarded public goal. It does not add whole-JSON or goal validation.
+
+Files and measurements (CPython 3.12.14, ast.unparse plus final LF)
+----------------------------------------------------------------
+reference/checkers/bytes_506.py: 267 tokens / 303 AST / 506 bytes
+code/checker_505.py:             266 tokens / 301 AST / 505 bytes
+code/checker_502.py:             269 tokens / 301 AST / 502 bytes
+
+The exact control is Research/deterministic_introduction/implementation/
+code/compact_optional.py, Git blob a0af7afb236b530eb30c63c5ab788151024271b7.
+It is frozen in the context_phase incoming archive's baseline/compact506.py.
+
+Transformation 1: remainder mode selection
+-----------------------------------------
+Replace (m or ~len(a) % 2) and k with (m or 3 % len(a)) and k.
+This is the same local transformation proved in the smaller_envelope
+archive, now applied to the actual 506-byte incumbent.
+
+When m is truthy, the branch is unchanged. For meaningful formula roots
+of arity 1, 2, 3, the new residue is respectively 0, 1, 0: cases for D and
+Q and progress for equations. Surplus arities decode to constant truth,
+where either mode is sound. Empty arity raises division by zero, removing
+an accepting spelling of a noncanonical truth alias. Computation clauses
+remain computation instances under either selected image. The canonical
+compiler only needs meaningful non-neutral roots, so completeness remains.
+
+Transformation 2: eager endpoint selection
+-----------------------------------------
+Write C for
+  (m, a) == (s and [s, u] or [t] * 3, i(t, u)).
+Replace
+  C and i(t, s) or a
+by
+  (a, i(t, s))[C].
+
+The incumbent performs this operation AFTER construction of h. This is
+different from the selected control in frontier_review; the following
+argument applies at this actual point in the implementation and does not
+move the operation across h construction.
+
+Every successful call i(t,w) at depth zero preserves the outer list arity
+of t. If t is an empty list the result is the empty list for every w.
+If t is scalar, its result is either the same in-scope negative integer
+t or the literal zero, independently of w. Consequently, if i(t,s) is
+falsy and C is true, i(t,s)=i(t,u)=a, including the distinction between
+zero and the empty list. Hence the old and new selection expressions
+give exactly the same result whenever the eager expression succeeds.
+
+The new expression evaluates i(t,s) even if C is false. Both i calls are
+pure: they do not consume packets, change k, or mutate contexts. In a
+successful new run the extra call succeeded, so the old expression also
+succeeds and chooses the same result. All subsequent changes of k and g
+therefore agree. Induction over finite successful recursive calls gives
+an accepting-trace inclusion into the selector-only control.
+
+Canonical completeness is preserved by the inherited certificate
+discipline: every term or template supplied to the fields is in scope;
+inactive fields can be chosen as closed numerical terms, including zero.
+The extra call then succeeds. For actual transport/specialization packets
+it was already required by the old computation. No proof obligation is
+removed and no major-premise check disappears.
+
+Raw certificate equality is NOT claimed. Eager traversal can reject an
+otherwise unused malformed or out-of-scope field, and the residue change
+rejects an empty truth alias. The theorem set is the same under the stated
+canonical public contract and inherited soundness/completeness metatheorems.
+
+Executed checks
+---------------
+The final evidence/validation.json supersedes the initial working-suite
+receipt. It records 414 checker processes: 380 inherited-fixture runs,
+20 exact-type rejection checks, and 14 scope-counterexample runs, in both
+normal and optimized Python. There were no unexpected outcomes. The sole
+inherited-suite difference between the three direct compact byte profiles
+is the documented empty truth alias. All 12 canonical positive fixtures
+were preserved. These are finite implementation checks, not a proof of
+universal soundness or bi-interpretability. The packed accounting illustration
+is separately explained in the report and evidence/packing.json.
+
+The new composition uses the same existing arithmetic bridge, whole-domain
+interpretations, actual equality, and numerical composites x=y. None of
+those inherited mathematical results is newly proved by this optimization.

@@ -32,7 +32,9 @@
 \newcommand{\Nat}{\mathsf{N}}                % the native scalar core (eight-rule kernel)
 \newcommand{\pkg}[1]{\texttt{#1}}            % a research package, e.g. \pkg{witness\_rule}
 \newcommand{\Lean}[1]{\texttt{#1}}           % a Lean declaration or module
-\newcommand{\rulename}[1]{\textsc{#1}}       % a rule name, e.g. \rulename{Use}
+% A rule name, e.g. \rulename{Use}: every letter in small capitals, so that
+% all-capital names such as QE, DE, DI stand apart from ordinary capitals.
+\newcommand{\rulename}[1]{\textsc{\MakeLowercase{#1}}}
 % --- terms and formulas ---
 \newcommand{\It}[4]{I(#1,#2;\,#3.\,#4)}      % the iterator I(n,a;u.h): \It{n}{a}{u}{h}
 \newcommand{\Suc}{S}                         % successor

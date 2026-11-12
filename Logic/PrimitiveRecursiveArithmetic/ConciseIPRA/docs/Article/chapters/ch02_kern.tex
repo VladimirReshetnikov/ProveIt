@@ -13,8 +13,8 @@ witnessed $\D{}{}$, and the two introductions may be merged into one rule
 whose mode is read off the matrix and the witness.  \Cref{kern:sec:transport}
 treats the transport rule: the number of templates, the crossing of the
 conclusion, the exclusion of the literal $0$ as a source, the reversal of the
-root equation, replacement with no template, and replacement of a single
-occurrence.  \Cref{kern:sec:uniq} replaces induction for equations by
+root equation, replacement with no template in the forward and in the
+backward direction, and replacement of a single occurrence.  \Cref{kern:sec:uniq} replaces induction for equations by
 uniqueness of iteration.  \Cref{kern:sec:prog} changes the reading of $\Q{}$
 at a literal equation to progressivity and presents the seven-rule calculi
 that result.  \Cref{kern:sec:recursors} records two results on recursors other
@@ -30,7 +30,7 @@ end of \cref{kern:sec:prog} lists all calculi of the chapter.
 \section{Conventions and the comparison method}
 \label{kern:sec:conv}
 
-This section fixes what all thirteen packages of the chapter restate before
+This section fixes what all fourteen packages of the chapter restate before
 their own results; it draws on no package in particular.
 
 The rules of $\Nat$ are named as in \cref{base:sec:kernel}: \rulename{Hyp},
@@ -109,8 +109,8 @@ another term.
 \begin{proof}
 The side conditions of the rules below are of four kinds: freshness of an
 eigenvariable; a test on the root of the matrix; a test whether a term of the
-instance is the literal $0$ or a literal successor; and, for one rule, a
-syntactic match of subterms.  An injective renaming preserves all four.  For
+instance is the literal $0$ or a literal successor; and, for the two rules of
+replacement with no template, a syntactic match of subterms.  An injective renaming preserves all four.  For
 weakening, rename the eigenvariables of the derivation away from the added
 formulas and keep the added formulas in every context; each inference is
 still an instance of its rule with the same terms.  For cut, let
@@ -549,8 +549,9 @@ $\mathsf{W}$ as defined here.
 \label{kern:sec:transport}
 
 This section draws on \pkg{one\_context}, \pkg{one\_sided\_transport},
-\pkg{reversal\_core}, \pkg{source\_dispatch}, \pkg{template\_free} and the
-note on single occurrences in \pkg{kernel\_refinement}.
+\pkg{reversal\_core}, \pkg{source\_dispatch}, \pkg{template\_free},
+\pkg{backward\_replacement} and the note on single occurrences in
+\pkg{kernel\_refinement}.
 
 Throughout the section $J(a)\defeq\It{0}{a}{u}{0}$ and $c\defeq J(0)$.  The
 equation $J(a)=a$ is an instance of \rulename{I0}, and $J(a)\not\equiv 0$ for
@@ -1234,6 +1235,335 @@ restricted inventory of \cref{kern:lem:comprepair} and uses the aliases
 $C_s\defeq\It{2}{1}{u}{s}$ and $K\defeq\It{0}{C_s}{u}{\Suc^{n}0}$, so that
 $C_s=s$ is a permitted instance of \rulename{IS} and $K=C_s$ a permitted
 instance of \rulename{I0}, also when $s$ is the literal $0$.
+\end{remark}
+
+\subsection{Backward replacement}
+\label{kern:sec:brep}
+
+The rule \rulename{Rep} computes its conclusion from its two premises.  Its
+goal-directed counterpart computes its second premise from its conclusion and
+its first premise.  It uses the operation $\operatorname{Rep}$ of
+\cref{kern:sec:tfree} with the two sides of the first premise exchanged:
+$\operatorname{Rep}_{t}^{s}(u)$ is the result of one traversal of $u$ from
+the root in which every subterm identical with $t$ is replaced by $s$ and is
+not traversed further, the bound variables of $u$ being renamed away from $s$
+and $t$.  Inserted copies of $s$ are not traversed, so the operation is total
+also when $s$ contains $t$, and $\operatorname{Rep}_{t}^{s}(t)\equiv s$.
+
+\begin{definition}[The calculi $\mathsf{B}$ and $\mathsf{B}_{7}$]
+\label{kern:def:B}
+The rule of backward replacement is
+\[
+ \infrule{\Gamma\proves s=t\qquad
+          \Gamma\proves\operatorname{Rep}_{t}^{s}(u)=r}
+         {\Gamma\proves r=u}\ \rulename{BRep}.
+\]
+$\mathsf{B}$ is $\Nat$ with \rulename{Tr} replaced by \rulename{BRep}; its
+rules are \rulename{Hyp}, \rulename{I0}, \rulename{IS}, \rulename{BRep},
+\rulename{QE}, \rulename{DE}, \rulename{DI} and \rulename{QI}.
+$\mathsf{B}_{7}$ is $\mathsf{W}$ with \rulename{Tr} replaced by
+\rulename{BRep}; its seven rules are \rulename{Hyp}, \rulename{I0},
+\rulename{IS}, \rulename{BRep}, \rulename{QE}, \rulename{DE} and
+$\rulename{DI}_{\mathrm{w}}$.
+\end{definition}
+
+For a conclusion $r=u$ and a first premise $s=t$ the second premise is
+determined.  An instance carries no template, no selection of occurrences
+and no term besides those of its conclusion and of its first premise.  The
+source $s$ may be the literal $0$, and $t$ may occur in $s$.  Matching is a
+test on syntax: a bound variable of $u$ never matches a free variable of $t$.
+
+Among the transport rules of the section, \rulename{BRep} is closest to
+\rulename{Rep}: both are instances of \rulename{Tr} whose template is
+computed by one traversal (\cref{kern:lem:gsound,kern:lem:bsound}), and
+neither can choose which occurrences to replace.  They differ in what is
+matched and where the result goes.  \rulename{Rep} matches the source $s$ in
+the left side $u$ of its second premise and puts
+$\operatorname{Rep}_{s}^{t}(u)$ into the conclusion.  \rulename{BRep} matches
+the target $t$ in the right side $u$ of its conclusion and puts
+$\operatorname{Rep}_{t}^{s}(u)$ into the second premise.  A checker that works
+from the goal backwards therefore computes the second premise of
+\rulename{BRep} from the goal and the first premise, whereas for
+\rulename{Rep} it has to be given the term $u$, which the conclusion
+$r=\operatorname{Rep}_{s}^{t}(u)$ does not determine.  Neither rule is an
+instance of the other: \rulename{Rep} applied to $s=t$ and
+$\operatorname{Rep}_{t}^{s}(u)=r$ concludes
+$r=\operatorname{Rep}_{s}^{t}(\operatorname{Rep}_{t}^{s}(u))$, which is $t$
+and not $u$ when $u\equiv s$ and $t$ does not occur in $s$.  In the proofs
+below the marker of \cref{kern:lem:marker} is used unchanged, with the first
+premises $s=K$ and $t=K$ in place of the first premises $K=s$ and $K=t$ of
+\cref{kern:lem:gcong}.
+
+\begin{lemma}[\rulename{BRep} in $\Nat$]
+\label{kern:lem:bsound}
+Every instance of \rulename{BRep} is an instance of \rulename{Tr}.
+\end{lemma}
+
+\begin{proof}
+The occurrences of $t$ that the traversal of $u$ replaces are disjoint, and
+after the renaming of the bound variables of $u$ away from $s$ and $t$ they
+are free occurrences.  Replace them by a fresh variable $v$ to obtain a term
+template $h(v)$; then $u\equiv h(t)$ and
+$\operatorname{Rep}_{t}^{s}(u)\equiv h(s)$, and no variable of $s$ is
+captured in $h(s)$.  If no occurrence is replaced, $h$ is constant.
+\rulename{Tr} with this template, applied to $s=t$ and $h(s)=r$, concludes
+$r=h(t)$, which is $r=u$.
+\end{proof}
+
+Thus \rulename{BRep} is \rulename{Tr} with the template computed from the
+conclusion, as \rulename{Rep} is \rulename{Tr} with the template computed from
+the second premise.
+
+\begin{lemma}[Equality from \rulename{I0} and \rulename{BRep}]
+\label{kern:lem:beq}
+From \rulename{I0} and \rulename{BRep} alone the following are derivable over
+an arbitrary context: from $s=t$ and $s=r$ the equation $r=t$; reflexivity;
+symmetry; transitivity.
+\end{lemma}
+
+\begin{proof}
+\rulename{BRep} with the first premise $s=t$ and the conclusion $r=t$ has the
+second premise $\operatorname{Rep}_{t}^{s}(t)=r$, which is $s=r$, since the
+traversal matches at the root, also when one of $s$, $t$ contains the other.
+This is the joining of \cref{kern:lem:geq}, from $s=t$ and $s=u$ to $u=t$,
+with $r$ in place of $u$.  The proof of \cref{kern:lem:geq} uses
+\rulename{Rep} only through this joining and otherwise only \rulename{I0},
+so it gives reflexivity, symmetry and transitivity here as well.
+\end{proof}
+
+\begin{lemma}[Chosen templates from backward replacement]
+\label{kern:lem:bcong}
+From \rulename{I0} and \rulename{BRep} alone: from $s=t$ the equation
+$h(s)=h(t)$, for every term template $h$; and the rule \rulename{Tr}.
+\end{lemma}
+
+\begin{proof}
+Let $K$ be as in \cref{kern:lem:marker}.  $K=s$ is an instance of
+\rulename{I0}, and symmetry gives $s=K$.  Transitivity of $K=s$ and $s=t$
+gives $K=t$, and symmetry gives $t=K$ (\cref{kern:lem:beq}).
+\rulename{BRep} with the first premise $s=K$ and the conclusion $h(s)=h(K)$
+has the second premise $\operatorname{Rep}_{K}^{s}(h(K))=h(s)$, which is
+$h(s)=h(s)$ by \cref{kern:lem:marker}; reflexivity provides it, and the
+conclusion is $h(s)=h(K)$.  In the same way the first premise $t=K$ and
+reflexivity of $h(t)$ give $h(t)=h(K)$, since
+$\operatorname{Rep}_{K}^{t}(h(K))\equiv h(t)$.  Symmetry and transitivity
+give $h(s)=h(t)$.  For \rulename{Tr}, from $s=t$ and $h(s)=r$: the joining of
+\cref{kern:lem:beq}, applied to $h(s)=h(t)$ and $h(s)=r$, gives $r=h(t)$.
+\end{proof}
+
+The proof covers constant templates, templates with several occurrences of
+$v$ and occurrences below any number of binders.  For the template
+$h(v)\defeq\It{v}{s}{w}{s}$ of the example after \cref{kern:lem:gcong}, the
+two steps with the first premises $s=K$ and $t=K$ act on
+$h(K)=\It{K}{s}{w}{s}$ and leave the two fixed copies of $s$ alone.  The
+derivation of \rulename{Tr} uses no logical rule, no successor computation
+and no induction.
+
+\begin{theorem}[Backward replacement]
+\label{kern:thm:brep}
+$\mathsf{B}$, $\mathsf{B}_{7}$ and $\Nat$ are equivalent.
+\end{theorem}
+
+\begin{proof}
+\rulename{BRep} is derivable in $\Nat$ by \cref{kern:lem:bsound}, and
+\rulename{Tr} is derivable in $\mathsf{B}$ and in $\mathsf{B}_{7}$ by
+\cref{kern:lem:bcong}.  The six other rules of $\mathsf{B}$ are those of
+$\Nat$, which settles $\mathsf{B}$.  For $\mathsf{B}_{7}$ the introductions
+are treated as in the proof of \cref{kern:thm:tfree}: an instance of
+$\rulename{DI}_{\mathrm{w}}$ is derivable in $\Nat$ by
+\cref{kern:thm:witness}, and \rulename{QI} and \rulename{DI} are derivable in
+$\mathsf{B}_{7}$ by the proof of \cref{kern:thm:witness}, with the alias $c$,
+transport in an equation template derived from \rulename{Tr}
+(\cref{kern:lem:local}(iii)), and cut, which is admissible in
+$\mathsf{B}_{7}$ by \cref{kern:lem:struct}.  Each translation replaces one
+inference by a derivation of the same sequent from the same premises over
+the same context; the marker has no free variable outside $s$, so the
+conditions on the eigenvariables of enclosing rules are kept, and no
+admissibility of substitution in $\mathsf{B}$ is assumed.
+\end{proof}
+
+A substitution can create new occurrences of the target in the right side of
+the conclusion of \rulename{BRep} that are not matched in its second premise,
+so, as for \rulename{Rep} (\cref{kern:rem:tfree}), substitution does not map
+instances to instances, and it is admissible through
+\cref{kern:prop:transfer}.
+
+\paragraph{Sources other than the literal zero.}  Let
+$\rulename{BRep}^{-}$ be \rulename{BRep} with the side condition
+$s\not\equiv 0$ on the source, the term that the rule inserts.
+$\mathsf{B}^{-}$ is $\mathsf{B}$ and $\mathsf{B}^{-}_{7}$ is
+$\mathsf{B}_{7}$ with \rulename{BRep} replaced by $\rulename{BRep}^{-}$.
+For the crossed rule with a template the restriction is lifted by
+\cref{kern:prop:retraction}, with a constant template and the first premise
+$c=0$.  That argument is not available here: the first premise $c=0$ has the
+target $0$, and $\operatorname{Rep}_{0}^{c}(u)$ replaces every leaf $0$ of
+$u$, so the template is constant only when $u$ contains no $0$; and the
+marker of \cref{kern:lem:bcong} needs the first premise $t=K$, which is
+excluded when $t\equiv 0$.  The recovery below uses the logical rules.  The
+terms $J(a)$ and $c=J(0)=\It{0}{0}{u}{0}$ are those of the beginning of the
+section.
+
+\begin{lemma}[Equality in $\mathsf{B}^{-}$]
+\label{kern:lem:bmeq}
+In $\mathsf{B}^{-}$, and in every calculus in which \rulename{I0},
+\rulename{IS}, \rulename{QE}, \rulename{QI} and $\rulename{BRep}^{-}$ are
+derivable, the following are derivable over an arbitrary context.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Reflexivity; and joining from $s=t$ and $s=r$ to $r=t$ when
+ $s\not\equiv 0$.
+\item Symmetry, also when a side is the literal $0$.
+\item $\It{p}{p}{v}{p}=p$ for every term $p$ and every $v$ not free in $p$.
+\item From $p=0$ the equation $c=p$.
+\item Joining and transitivity without restriction.
+\item From $s=t$ with $s\not\equiv 0$ and $t\not\equiv 0$, the equation
+ $h(s)=h(t)$ for every term template $h$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) $\rulename{BRep}^{-}$ with the first premise $J(a)=a$, an instance of
+\rulename{I0} with the source $J(a)\not\equiv 0$, and the conclusion $a=a$ has
+the second premise $\operatorname{Rep}_{a}^{J(a)}(a)=a$, which is $J(a)=a$
+again.  Joining at a source $s\not\equiv 0$ is the joining of
+\cref{kern:lem:beq}.
+
+(ii) Let $u=r$ be given, and let $M\defeq\Suc^{k}0$ with $k\defeq|u|$, so
+that $M$ is closed and has more nodes than $u$.  $J(M)=M$ is an instance of
+\rulename{I0} with the source $J(M)\not\equiv 0$.  No subterm of $u$, also
+below a binder, is identical with $M$, so
+$\operatorname{Rep}_{M}^{J(M)}(u)\equiv u$, and $\rulename{BRep}^{-}$ with the
+first premise $J(M)=M$ and the conclusion $r=u$ has the given equation $u=r$
+as its second premise.
+
+(iii) Let $y$ be fresh and $E(y)\defeq\bigl(\It{y}{p}{v}{p}=p\bigr)$, a
+literal equation.  $E(\Suc z)$ is an instance of \rulename{IS}, because
+$p\subst{\It{z}{p}{v}{p}}{v}\equiv p$; so $\Gamma,E(z)\proves E(\Suc z)$, the
+assumption unused, and \rulename{QI} gives $\Q{y}E(y)$.  $E(0)$ is an
+instance of \rulename{I0}, and \rulename{QE} at the term $p$ gives $E(p)$,
+which is $\It{p}{p}{v}{p}=p$.
+
+(iv) If $p\equiv 0$, then $c=p$ is an instance of \rulename{I0}.  Otherwise
+$\rulename{BRep}^{-}$ with the first premise $p=0$, whose source is $p$, and
+the conclusion $p=c$ has the second premise
+$\operatorname{Rep}_{0}^{p}(c)=p$.  The traversal of $c=\It{0}{0}{u}{0}$ does
+not match at the root, since $c\not\equiv 0$, and replaces the counter, the
+seed and the body, each the literal $0$, by $p$, the bound variable being
+renamed away from $p$.  So the second premise is $\It{p}{p}{u}{p}=p$, which is
+(iii).  The conclusion is $p=c$, and (ii) gives $c=p$.
+
+(v) Joining from $s=t$ and $s=r$: if $s\not\equiv 0$, use (i).  If
+$s\equiv 0$, (ii) gives $t=0$ and $r=0$, (iv) gives $c=t$ and $c=r$, and
+joining at the source $c\not\equiv 0$ gives $r=t$.  Transitivity from $a=b$
+and $b=e$: (ii) gives $b=a$, and joining applied to $b=e$ and $b=a$ gives
+$a=e$.
+
+(vi) The proof of \cref{kern:lem:bcong}: its two applications of
+\rulename{BRep} have the sources $s$ and $t$, and its other steps are
+(i), (ii) and (v).
+\end{proof}
+
+\begin{lemma}[Congruence at a zero endpoint]
+\label{kern:lem:bzero}
+In $\mathsf{B}^{-}$ and in $\mathsf{B}^{-}_{7}$, from $0=t$ the equation
+$h(0)=h(t)$ is derivable over an arbitrary context, for every term template
+$h$.
+\end{lemma}
+
+\begin{proof}
+If $t\equiv 0$, use reflexivity; let $t\not\equiv 0$.  By the proof of
+\cref{kern:thm:witness}, the rule \rulename{QI} is derivable in
+$\mathsf{B}^{-}_{7}$ with $\rulename{DI}_{\mathrm{w}}$, \rulename{DE} and
+\rulename{Hyp} and without an equality rule, so \cref{kern:lem:bmeq} applies
+to both calculi.
+
+\emph{A variable equal to zero.}  Let $b$ be a variable not free in $h$, and
+let $b=0$ be derivable over a context $\Delta$.  Put
+$L\defeq\operatorname{Rep}_{0}^{b}(h(0))$.  Every occurrence of the term $0$
+is a leaf.  In $h(0)$ the leaves $0$ are those of $h$ and the inserted
+copies; in $h(b)$ they are those of $h$, since the variable $b$ contains no
+$0$.  Hence $\operatorname{Rep}_{0}^{b}(h(b))\equiv L$ as well: both are $h$
+with $v$ and every leaf $0$ replaced by $b$, under the same renaming of bound
+variables away from $b$.  $\rulename{BRep}^{-}$ with the first premise $b=0$,
+whose source is a variable, and the conclusion $L=h(0)$ has the second
+premise $L=L$; with the conclusion $L=h(b)$ it has the second premise $L=L$
+as well.  Reflexivity gives $L=h(0)$ and $L=h(b)$ over $\Delta$, and joining
+and symmetry (\cref{kern:lem:bmeq}) give $h(0)=h(b)$.
+
+\emph{A name for zero.}  Let $C(y,a,d)\defeq\It{y}{a}{v}{d}$ with $v$ not
+free in $d$, and $E(x,y)\defeq\bigl(C(y,0,x)=C(y,0,0)\bigr)$.  The formula
+$E(0,\Suc z)$ is an instance of reflexivity.  Hence \rulename{DI} with the
+witness $0$ and the premise $\Gamma,E(0,0)\proves E(0,\Suc z)$, or in
+$\mathsf{B}^{-}_{7}$ the rule $\rulename{DI}_{\mathrm{w}}$ with the witness
+$0$, which is in the mode of progress and has the premise
+$\Gamma,E(0,z)\proves E(0,\Suc z)$, gives $\Gamma\proves\D{x}{y}E(x,y)$; in
+both the assumption is unused.  Let $b$ be fresh for $\Gamma$, $h$ and $t$,
+and let $\Delta\defeq\Gamma,\Q{y}E(b,y)$.  Over $\Delta$:
+$C(0,0,b)=0$ and $C(0,0,0)=0$ are instances of \rulename{I0}, so symmetry
+and transitivity give $E(b,0)$; \rulename{Hyp} and \rulename{QE} at the term
+$\Suc 0$ give $E(b,\Suc 0)$, that is $C(\Suc 0,0,b)=C(\Suc 0,0,0)$; the
+instances $C(\Suc 0,0,b)=b$ and $C(\Suc 0,0,0)=0$ of \rulename{IS}, symmetry
+and transitivity give $b=0$.  Only equations at the roots are compared;
+no congruence is used.
+
+\emph{Completion.}  Over $\Delta$, the equation $0=t$ is derivable by
+weakening (\cref{kern:lem:struct}), and transitivity with $b=0$ gives $b=t$.
+Since $b\not\equiv 0$ and $t\not\equiv 0$, \cref{kern:lem:bmeq}(vi) gives
+$h(b)=h(t)$.  The first step gives $h(0)=h(b)$, and transitivity gives
+$h(0)=h(t)$ over $\Delta$.  The variable $b$ occurs neither in $\Gamma$ nor in
+$h(0)=h(t)$, so \rulename{DE} with the first premise $\D{x}{y}E(x,y)$
+concludes $\Gamma\proves h(0)=h(t)$.
+\end{proof}
+
+\begin{theorem}[Backward replacement at sources other than the literal zero]
+\label{kern:thm:bminus}
+$\mathsf{B}^{-}$, $\mathsf{B}^{-}_{7}$, $\mathsf{B}$ and $\Nat$ are
+equivalent.
+\end{theorem}
+
+\begin{proof}
+Every instance of $\rulename{BRep}^{-}$ is an instance of \rulename{BRep}, so
+$\mathsf{B}^{-}$ and $\mathsf{B}^{-}_{7}$ derive only sequents of $\Nat$ by
+\cref{kern:thm:brep}.  Conversely, congruence from $s=t$ is derivable in both:
+if $s\not\equiv 0$ and $t\not\equiv 0$ by \cref{kern:lem:bmeq}(vi); if
+$s\equiv 0$ by \cref{kern:lem:bzero}; if $t\equiv 0\not\equiv s$, symmetry
+gives $0=s$, \cref{kern:lem:bzero} gives $h(0)=h(s)$, and symmetry gives
+$h(s)=h(0)$.  From $s=t$ and $h(s)=r$, congruence gives $h(s)=h(t)$ and
+joining (\cref{kern:lem:bmeq}(v)) gives $r=h(t)$, which is \rulename{Tr}.  In
+$\mathsf{B}^{-}$ the other rules are those of $\Nat$.  In
+$\mathsf{B}^{-}_{7}$, \rulename{QI} was derived before any equality rule
+was needed, and \rulename{DI} with a literal equation and the witness $0$ is
+derived after \rulename{Tr} by the proof of \cref{kern:thm:witness}, with the
+alias $c$, transport in an equation template and cut.  The order of the
+derivations is not circular: \cref{kern:lem:bmeq,kern:lem:bzero} use
+$\rulename{DI}_{\mathrm{w}}$ only in the mode of progress with the witness
+$0$, which needs no equality rule, and the instance of \rulename{DI} that
+needs transport is derived only after \rulename{Tr}.
+\end{proof}
+
+\begin{remark}[Sources]
+\label{kern:rem:brep-sources}
+The subsection is \pkg{backward\_replacement}, which presents itself as an
+executable demonstrator of correctness for $\mathsf{B}$ and states
+\cref{kern:thm:brep,kern:thm:bminus}; it takes the marker and the bridge to
+$\iPRA$ from \pkg{template\_free} and \cref{base:thm:bridge}, and finds no
+earlier statement of \rulename{BRep} in the corpus.  No calculus of the
+subsection is formalized in Lean.  The checker of the package implements
+$\mathsf{B}$ with unrestricted sources; $\mathsf{B}_{7}$, $\mathsf{B}^{-}$
+and $\mathsf{B}^{-}_{7}$ are written proofs only.  Its tests are finite: 18
+accepted open or closed sequents, with instances of all eight rules, zero
+and nonzero sources and five generated certificates of congruence by the
+marker, whose templates have fixed copies of the source, a repeated
+variable, an unused variable and one or two nested binders; 16 rejected
+certificates, among them both kinds of capture, an escaping eigenvariable,
+wrong computation equations, a wrong instance of a closure and progress at
+a compound matrix; 7 direct tests of capture avoidance under $\D{}{}$,
+$\Q{}$ and $I$ and of the absence of repeated replacement inside an inserted
+source; and 18 runs of the driver.  An independent review in the package
+adds four accepted sequents, among them a closed certificate that
+introduces, uses and discharges the name for zero of
+\cref{kern:lem:bzero}, two rejected certificates and four runs of the
+driver.  These tests concern particular certificates; the equivalence rests
+on the proofs above.
 \end{remark}
 
 \subsection{Replacement of one occurrence}
@@ -3115,6 +3445,14 @@ $\mathsf{G}$ & \rulename{Rep}, \rulename{QE}, \rulename{DI}, \rulename{QI} &
  8 & equivalent, \cref{kern:thm:tfree} & no\\
 $\mathsf{G}_7$ & \rulename{Rep}, \rulename{QE},
  $\rulename{DI}_{\mathrm{w}}$ & 7 & equivalent, \cref{kern:thm:tfree} & no\\
+$\mathsf{B}$ & \rulename{BRep}, \rulename{QE}, \rulename{DI}, \rulename{QI}
+ & 8 & equivalent, \cref{kern:thm:brep} & no\\
+$\mathsf{B}_{7}$ & \rulename{BRep}, \rulename{QE},
+ $\rulename{DI}_{\mathrm{w}}$ & 7 & equivalent, \cref{kern:thm:brep} & no\\
+$\mathsf{B}^{-}$ & $\rulename{BRep}^{-}$, \rulename{QE}, \rulename{DI},
+ \rulename{QI} & 8 & equivalent, \cref{kern:thm:bminus} & no\\
+$\mathsf{B}^{-}_{7}$ & $\rulename{BRep}^{-}$, \rulename{QE},
+ $\rulename{DI}_{\mathrm{w}}$ & 7 & equivalent, \cref{kern:thm:bminus} & no\\
 $\mathsf{L}$ & \rulename{LOR}, \rulename{QE}, \rulename{DI}, \rulename{QI} &
  8 & equivalent, \cref{kern:thm:onehole} & yes\\
 $\Nat_{\mathrm{u}}$ & uncrossed replacement in a term template,
@@ -3418,6 +3756,7 @@ This section collects the measurements reported by \pkg{direct\_closure},
 \pkg{direct\_closure\_qprogress}, \pkg{witness\_rule},
 \pkg{source\_dispatch}, \pkg{reversal\_core}, \pkg{one\_context},
 \pkg{one\_sided\_transport}, \pkg{template\_free},
+\pkg{backward\_replacement},
 \pkg{scalar\_uniqueness}, \pkg{orbit\_closure}, \pkg{crossed\_uniqueness},
 \pkg{uniform\_progress} and \pkg{target\_closure}.  All numbers are for complete standalone Python programs under the
 protocol of \cref{base:sec:measure}, as the packages state them.
@@ -3510,6 +3849,16 @@ Package & Program & Tok. & AST & Bytes & Matched control\\
  1029 / 1089 / 3181; 1059 / 1124 / 3215; 1044 / 1096 / 3206\\
  & compact forward checker with \rulename{Rep} &
  397 & 464 & 865 & crossed rule, another packet layout: 384 / 448 / 830\\
+\midrule
+\pkg{backward\_\allowbreak replacement} & readable strict checker for
+ $\mathsf{B}$ &
+ 1647 & 1807 & 7121 & the same with \rulename{Tr} and a supplied template:
+ 1581 / 1738 / 6971\\
+ & compact checker of the guarded calculus with regrouped packets, not of
+ $\mathsf{B}$ &
+ 250 & 281 & 604 & the same with flat packets: 251 / 283 / 605\\
+ & strict companion of that checker &
+ 402 & 451 & 971 & the same with flat packets: 403 / 453 / 972\\
 \midrule
 \pkg{scalar\_\allowbreak uniqueness} & tagged checker for $\mathsf{U}$ &
  1124 & 1175 & 3393 & for $\Nat$: 1084 / 1141 / 3322\\
@@ -3604,6 +3953,23 @@ replacement; an instruction for \rulename{Rep} consists of its two premise
 derivations.  Against the control with the same traversal the saving is 59
 bytes.  The compact forward program synthesizes its conclusion and is 35
 bytes larger than its control, which has another packet layout.
+
+\emph{\pkg{backward\_replacement}.}  The readable checker validates the
+syntax and scope of every term, formula and proof node, rejects extra fields
+and Boolean values in place of integers, and accepts closed theorems at its
+driver; a separate entry point checks open sequents.  Its control differs
+only in the branch of the equality rule, which takes a supplied template,
+and in the absence of the replacement traversal; that traversal costs 66
+tokens, 69 AST nodes and 150 bytes, so removing the template from the
+certificate does not make the checker smaller.  The two compact programs
+check the guarded calculus of another chapter, unchanged, and regroup the
+last three fields of a packet, $[m,s,u,t]$ becoming $[m,[s,u,t]]$; the
+package proves by a simulation of runs that the two formats accept
+certificates for the same canonical public theorems.  The package compares
+with the least counts it collects from the corpus, 251 tokens, 275 AST nodes
+and 502 bytes, attained by three different programs: the 250 tokens lower
+the first by one, the other two are not improved, and the 250-token program
+does not implement \rulename{BRep}.
 
 \emph{\pkg{scalar\_uniqueness}.}  The instruction for \rulename{UR} carries
 the two templates, the target and the premise, checked with no added
@@ -3752,6 +4118,28 @@ compact contract?  The compact forward program of \pkg{template\_free} is
 larger than its control.
 \end{question}
 
+\begin{question}[A checker for backward replacement]
+\label{kern:q:brepsize}
+Can matching under binders, with its scope shifts, share one traversal with
+the opening routine of the compact checkers, so that \rulename{BRep} removes
+more trusted code than it adds?  The readable checker for $\mathsf{B}$ is
+larger than its matched control in all three coordinates.  Does
+$\mathsf{B}^{-}_{7}$ admit a smaller complete checker than either of its two
+restrictions alone?  An answer has to report one complete checker under a
+fixed input contract with all three counts.  (\pkg{backward\_replacement}.)
+\end{question}
+
+\begin{question}[Fusing backward replacement]
+\label{kern:q:brepfuse}
+Can \rulename{BRep} be fused with the computation equations or with the
+discharge of a witness without a second traversal of syntax?  Such a rule
+has to handle the zero and the successor computation, constant templates and
+replacement below binders.  What overhead in the size of certificates is
+unavoidable when a chosen replacement is compiled through the marker of
+\cref{kern:lem:marker}, whose size is not optimized?
+(\pkg{backward\_replacement}.)
+\end{question}
+
 \begin{question}[Replacement of one occurrence in a checker]
 \label{kern:q:lor}
 Does \rulename{LOR} help a readable or a formally verified checker, even
@@ -3890,6 +4278,20 @@ results that were not achieved.
  \cref{kern:thm:ur}.
 \item \pkg{template\_free}: the calculus $\mathsf{G}_7$, with \rulename{Rep}
  and the single introduction together, is not formalized in Lean.
+\item \pkg{backward\_replacement}: none of $\mathsf{B}$, $\mathsf{B}_{7}$,
+ $\mathsf{B}^{-}$, $\mathsf{B}^{-}_{7}$ is formalized in Lean; the package
+ suggests extending the Lean calculus \Lean{TPrf} of $\mathsf{G}$ and reusing its marker
+ lemma \Lean{Tm.rep\_marker}, with the bridge unchanged.  Its checker is not
+ formally verified, and the restricted calculi are not implemented.  No
+ program of the package is below the three least counts of the corpus
+ together, and the readable checker is not claimed to bound from below the
+ size of an optimized checker for \rulename{BRep}.  The package records
+ three routes that gave no result: removing the seed of the iterator meets
+ the obstructions for a single body, reusing the compact opening routine as
+ a normalizer needs an account of dummy slots and of shifts of bound
+ variables, and replacing a stored scope bound by the length of the context
+ has to keep apart the check of a packet at the old scope and the opening of
+ a branch at the new one.
 \item \pkg{uniform\_progress}, \pkg{target\_closure}: neither calculus gives
  a new minimum in any coordinate of the matched comparison; the compact
  minima of other packages are not improved by a checker for $\mathsf{R}$ or

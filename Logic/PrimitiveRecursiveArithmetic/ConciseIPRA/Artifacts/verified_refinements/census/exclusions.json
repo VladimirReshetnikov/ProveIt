@@ -1,0 +1,3623 @@
+{
+  "pin": "42fba2a76aea6eb41a8c4acfe7761620f58956ee",
+  "research_unique_blobs_hash_verified": 1446,
+  "canonical_metrics_available": 1445,
+  "sub_envelope_noncandidate_count": 112,
+  "all_exclusions_lack_direct_stdin_and_literal_accept": true,
+  "normalization_exceptions": [
+    {
+      "git_blob_sha": "fd953cb6cd21c0d7db6aa8e7b5fdacef1cd1b02d",
+      "path": "adaptive_seed/source_corpus/5f5c0b0ab7817da7d1ac55aa43236c1c6671d10577bd2c7ee9a89922c428c4d7.py",
+      "source_valid_python": true,
+      "canonical_normalization_error": "IndentationError: expected an indented block after class definition on line 3 (<unknown>, line 4)",
+      "explanation": "Removing the sole docstring from class Rejection leaves an empty suite. The exact shared normalizer does not insert pass, so its emitted text cannot be reparsed. The source itself is a readable reference checker and is valid Python.",
+      "canonical_unparse_bytes": 1844,
+      "canonical_unparse_tokens": 367,
+      "transformed_ast_nodes_before_reparse": 413,
+      "diagnostic_repair_only": {
+        "inserted_pass_statements": 1,
+        "normalized_bytes": 1853,
+        "significant_tokens": 368,
+        "ast_nodes": 414,
+        "used_in_reported_coordinate_minima": false
+      }
+    }
+  ],
+  "sub_envelope_noncandidates": [
+    {
+      "canonical_path": "witness_discharge/reproduce.py",
+      "git_blob_sha": "005d9e30f10864782b5b8f7f2b3fdc00989a55c9",
+      "sha256": "324e8ab0e7be5845ab4b8492580929f972d02e38e7d455c4a82be7c10e718836",
+      "imports": [
+        "json",
+        "pathlib",
+        "platform",
+        "shutil",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 948,
+      "significant_tokens": 162,
+      "ast_nodes": 159,
+      "module_docstring": "Reproduce the measurements and all delivered finite verification evidence.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "(root / 'evidence/reproduction.json').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "dict",
+        "json.dumps",
+        "main",
+        "platform.python_version",
+        "print",
+        "shutil.copyfile",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "clause_discharge/reproduce.py",
+      "git_blob_sha": "007aaf6f56c6e245a8c531a1ade72786281cfefe",
+      "sha256": "1367b1e0d3dfb056a2cb5ac7eeb06d18e92ca2e4a4d205ef347301684e798e7b",
+      "imports": [
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 495,
+      "significant_tokens": 86,
+      "ast_nodes": 79,
+      "module_docstring": "Run the meaningful implementation checks and recompute complete source sizes.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "main",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "conditional_copy/verify_manifest.py",
+      "git_blob_sha": "00f04d1844eda798115e7067c0b0f31347363a52",
+      "sha256": "297a274730edf134001f29ec7d0a283aea0cc2dc4ff6eca39c7dde7d8114360b",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib"
+      ],
+      "normalized_bytes": 623,
+      "significant_tokens": 136,
+      "ast_nodes": 145,
+      "module_docstring": "Verify the hashes of the originally delivered payload.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "', '.join",
+        "(ROOT / 'MANIFEST.json').read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "failures.append",
+        "hashlib.sha256",
+        "hashlib.sha256(path.read_bytes()).hexdigest",
+        "json.loads",
+        "len",
+        "main",
+        "manifest['files'].items",
+        "path.is_file",
+        "path.read_bytes",
+        "print"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "adaptive_seed/source_corpus/7ed14cdabd3bc48042c3adb406abdcb6252fe8e01d8737cc406cb4c9e019d8df.py",
+      "git_blob_sha": "0315e4675618675448acd3908e2ce85d651ea388",
+      "sha256": "7ed14cdabd3bc48042c3adb406abdcb6252fe8e01d8737cc406cb4c9e019d8df",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib"
+      ],
+      "normalized_bytes": 473,
+      "significant_tokens": 113,
+      "ast_nodes": 129,
+      "module_docstring": "Verify exactly the distributed payload before regenerating any outputs.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(root / 'MANIFEST.json').read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "hashlib.sha256",
+        "hashlib.sha256(data).hexdigest",
+        "json.loads",
+        "len",
+        "path.read_bytes",
+        "print",
+        "str"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "counter_congruence/code/count_nodes.py",
+      "git_blob_sha": "0578347281e9bb8dfa81e3e8a71fae62d5c13614",
+      "sha256": "4484f9aacdac5949f53549a13b93ae12f57cf4ba043cc717338fdab998433387",
+      "imports": [
+        "json",
+        "pathlib"
+      ],
+      "normalized_bytes": 1038,
+      "significant_tokens": 229,
+      "ast_nodes": 232,
+      "module_docstring": "Count inference nodes in the delivered ordinary JSON proof trees.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "nodes",
+        "main"
+      ],
+      "calls": [
+        "(ROOT / 'cases.json').read_text",
+        "(ROOT / 'node_counts.json').write_text",
+        "(ROOT / row['file']).read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "any",
+        "int",
+        "isinstance",
+        "json.dumps",
+        "json.loads",
+        "main",
+        "nodes",
+        "print",
+        "sum",
+        "value.values"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "uniform_clauses/verify_manifest.py",
+      "git_blob_sha": "062c9afcd290e8c26a2f5849641a2907e37488b4",
+      "sha256": "306cfc693904af48a6162c54b5908b40dd36215229cd31f7c0ab86a3242cb3fb",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib"
+      ],
+      "normalized_bytes": 640,
+      "significant_tokens": 146,
+      "ast_nodes": 164,
+      "module_docstring": "Verify the original delivered payload against its SHA-256 manifest.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "'PASS: all {} original payload files match.'.format",
+        "'\\n'.join",
+        "(root / 'MANIFEST.json').read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "failures.append",
+        "hashlib.sha256",
+        "hashlib.sha256(content).hexdigest",
+        "json.loads",
+        "len",
+        "path.is_file",
+        "path.read_bytes",
+        "print"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "evaluation_discharge/build_pdf.py",
+      "git_blob_sha": "06dcf5e8652b3eb3b0af09feb4a406b87196fdde",
+      "sha256": "37684a0ff532648f3a1de479654b703ce58eed57b09ed0dccfffc5824e27e423",
+      "imports": [
+        "pathlib",
+        "shutil",
+        "subprocess",
+        "tempfile"
+      ],
+      "normalized_bytes": 906,
+      "significant_tokens": 189,
+      "ast_nodes": 194,
+      "module_docstring": "Compile the standalone LaTeX report; no shell escape or downloads.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "(ROOT / 'evidence/latex-build.log').write_text",
+        "(work / SOURCE.with_suffix('.log').name).read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "RuntimeError",
+        "SOURCE.with_suffix",
+        "main",
+        "print",
+        "range",
+        "shutil.copyfile",
+        "subprocess.run",
+        "tempfile.TemporaryDirectory"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "context_phase/build.py",
+      "git_blob_sha": "08fba6ea341822e55d4d3ea40757103e0142572c",
+      "sha256": "6aab671a1889fa60255735618c8862f2d0e10e4899f351f3360390a499d4cb66",
+      "imports": [
+        "pathlib",
+        "shutil",
+        "subprocess"
+      ],
+      "normalized_bytes": 652,
+      "significant_tokens": 127,
+      "ast_nodes": 133,
+      "module_docstring": "Build the report with pdfLaTeX; Python standard library only.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(root / 'evidence' / 'latex_build_output.txt').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "print",
+        "range",
+        "shutil.which",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "prevalidated_elimination/reproduce.py",
+      "git_blob_sha": "097fc96b207f2e9476e69b4f3c27d76b1865299b",
+      "sha256": "afc3674f4525a234932e821c94a4b62368d7caeb602786f5c4bbd4d23f5e47bc",
+      "imports": [
+        "json",
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 1475,
+      "significant_tokens": 270,
+      "ast_nodes": 256,
+      "module_docstring": "Run the offline source census and the package's focused kernel checks.\n\nPython 3.12 is the reference measurement runtime. No network is used.\nThis script never treats experimental programs as trusted kernels.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "run",
+        "main"
+      ],
+      "calls": [
+        "(ROOT / 'evidence/measurements.json').read_text",
+        "(ROOT / 'evidence/verification.json').read_text",
+        "(ROOT / 'experiments/positive_iteration/check_positive_iteration.py').exists",
+        "(ROOT / 'tests/check_ordering.py').exists",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "json.dumps",
+        "json.loads",
+        "main",
+        "print",
+        "run",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "clausal_canonical/tools/manifest.py",
+      "git_blob_sha": "0a6d74564eb66bf4f42fa1d12dc6b52926d81a2b",
+      "sha256": "9f2ca3d36f7c05a629ef2165ebe133920c9d1068bedd0df067543436ba9bdffc",
+      "imports": [
+        "hashlib",
+        "pathlib"
+      ],
+      "normalized_bytes": 536,
+      "significant_tokens": 143,
+      "ast_nodes": 148,
+      "module_docstring": "Write checksums for distributable package files.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "'\\n'.join",
+        "(ROOT / 'SHA256SUMS').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "ROOT.rglob",
+        "hashlib.sha256",
+        "hashlib.sha256(path.read_bytes()).hexdigest",
+        "len",
+        "lines.append",
+        "path.is_file",
+        "path.read_bytes",
+        "path.relative_to",
+        "path.relative_to(ROOT).as_posix",
+        "print",
+        "sorted"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "direct_closure/build_report.py",
+      "git_blob_sha": "0d1085a1720c78bd15ecbd9128d9b0a8fa3ba0ae",
+      "sha256": "5c588d0a78d7c188410205ad8cb4901037964c286aaa82dc5bdcbfcbd6e8298d",
+      "imports": [
+        "pathlib",
+        "re"
+      ],
+      "normalized_bytes": 582,
+      "significant_tokens": 110,
+      "ast_nodes": 119,
+      "module_docstring": "Expand the report to one standalone LaTeX file; does not invoke TeX.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(ROOT / 'ipra_direct_closure.tex').write_text",
+        "(ROOT / 'report.tex').read_text",
+        "(ROOT / match[1]).read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "print",
+        "re.sub"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "transient_seed/build.py",
+      "git_blob_sha": "0fe97c9028a355aa9db409b7e2b8f69f1af11e4b",
+      "sha256": "730c55a45fabd28142bb8a6cba9789f39811f2cb4275c9eeb755ec3af897b119",
+      "imports": [
+        "pathlib",
+        "subprocess"
+      ],
+      "normalized_bytes": 399,
+      "significant_tokens": 85,
+      "ast_nodes": 83,
+      "module_docstring": "Compile the complete report; no shell escape is used.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "print",
+        "range",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "first_instance/reproduce.py",
+      "git_blob_sha": "132e5b23a86f38ba89c38e5401fbcd1fcd762b9b",
+      "sha256": "48b8d89b88d03c0be891720829aa07683706eb098b014263b13d247f8782652d",
+      "imports": [
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 376,
+      "significant_tokens": 75,
+      "ast_nodes": 72,
+      "module_docstring": "Replay the delivered certificates and reproduce checker measurements.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "main",
+        "print",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "rootfree_clausal/build_report.py",
+      "git_blob_sha": "13798ad3e9a105031c2d4c009faad60f7d133696",
+      "sha256": "5f022277c8cef2c3a7637197526da33fdc0572e86348e60a394e01c69ff5f04c",
+      "imports": [
+        "pathlib"
+      ],
+      "normalized_bytes": 1370,
+      "significant_tokens": 242,
+      "ast_nodes": 259,
+      "module_docstring": "Assemble the standalone LaTeX report from the editable sources.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "build"
+      ],
+      "calls": [
+        "(ROOT / 'code' / filename).read_text",
+        "(ROOT / 'code' / filename).read_text().rstrip",
+        "(ROOT / 'paper/manuscript.tex').read_text",
+        "(ROOT / 'reference/bridge' / filename).read_text",
+        "(ROOT / 'report.tex').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "RuntimeError",
+        "build",
+        "content.index",
+        "content.rstrip",
+        "print",
+        "text.replace"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "seed_evaluation/code/reproduce.py",
+      "git_blob_sha": "14a976658713b673bfbf3d696a8de96665eb7975",
+      "sha256": "a73c3d81197938c0b73321fb3eed455eb4b7d00f46a81fdb8d6204abc94f4ede",
+      "imports": [
+        "json",
+        "pathlib",
+        "shutil",
+        "verify"
+      ],
+      "normalized_bytes": 595,
+      "significant_tokens": 128,
+      "ast_nodes": 136,
+      "module_docstring": "Run the self-contained verification suite and refresh evidence receipts.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "(ROOT / 'verification.json').read_text",
+        "(evidence / 'metrics.json').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "evidence.mkdir",
+        "json.dumps",
+        "json.loads",
+        "main",
+        "shutil.copyfile",
+        "verify.main"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "parameter_witness/build.py",
+      "git_blob_sha": "17609fcc95178c18630d548384932c5051458bc1",
+      "sha256": "495ffa4dd641bea77930d4eeb93ef0909f967a0e586aa27232b807a9bfcfac71",
+      "imports": [
+        "pathlib",
+        "shutil",
+        "subprocess"
+      ],
+      "normalized_bytes": 523,
+      "significant_tokens": 89,
+      "ast_nodes": 90,
+      "module_docstring": "Build the report with a normal installed pdfLaTeX distribution.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "main",
+        "print",
+        "range",
+        "shutil.which",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "scope_and_coverage/source_corpus/ecf87b02525cf9084ef726e4afc142851ab79d32a6af21386caff4461adccee9.py",
+      "git_blob_sha": "1872118c9c01ca69ef46b2c3cd5e812c1bf0bc49",
+      "sha256": "ecf87b02525cf9084ef726e4afc142851ab79d32a6af21386caff4461adccee9",
+      "imports": [
+        "pathlib",
+        "shutil",
+        "subprocess"
+      ],
+      "normalized_bytes": 382,
+      "significant_tokens": 68,
+      "ast_nodes": 63,
+      "module_docstring": "Compile the supplied LaTeX report; no network or theorem checker needed.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "shutil.which",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "witness_discharge/build_pdf.py",
+      "git_blob_sha": "1e648a80e69b28f4c85630cb8ac95ef4fce96cdb",
+      "sha256": "9bde43271ba2b3c90c96c852a1b8910784442c23ff8a3f517266b204e89b4ebf",
+      "imports": [
+        "pathlib",
+        "shutil",
+        "subprocess",
+        "tempfile"
+      ],
+      "normalized_bytes": 901,
+      "significant_tokens": 168,
+      "ast_nodes": 170,
+      "module_docstring": "Compile the standalone report with an installed TeX Live distribution.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "(build / 'report.log').read_text",
+        "(root / 'evidence' / 'latex_build.log').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "main",
+        "print",
+        "range",
+        "shutil.copyfile",
+        "subprocess.run",
+        "tempfile.TemporaryDirectory"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "parameter_intro/build_pdf.py",
+      "git_blob_sha": "1f6e578c7f42a141b4b3bcb3a66111b7afbc8861",
+      "sha256": "04788dcfa27cedb033491972b3f8adc2dae603bb311e7cdfb3abb714f2fb231a",
+      "imports": [
+        "pathlib",
+        "shutil",
+        "subprocess",
+        "tempfile"
+      ],
+      "normalized_bytes": 1094,
+      "significant_tokens": 210,
+      "ast_nodes": 222,
+      "module_docstring": "Compile the standalone report with pdfLaTeX, without shell escape.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "(Path(directory) / 'ipra_parameter_intro.log').read_text",
+        "(ROOT / 'evidence/build_log.txt').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "RuntimeError",
+        "line.lower",
+        "log.splitlines",
+        "main",
+        "print",
+        "range",
+        "shutil.copyfile",
+        "str",
+        "subprocess.run",
+        "tempfile.TemporaryDirectory"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "scope_and_coverage/source_corpus/8a9f135339ed9ef2481689e5ed3a6a7168ad908cf438b600fa68e543119a9985.py",
+      "git_blob_sha": "2486f940601a9c03967618734fff02194cfbf50d",
+      "sha256": "8a9f135339ed9ef2481689e5ed3a6a7168ad908cf438b600fa68e543119a9985",
+      "imports": [
+        "pathlib",
+        "shutil",
+        "subprocess"
+      ],
+      "normalized_bytes": 694,
+      "significant_tokens": 147,
+      "ast_nodes": 152,
+      "module_docstring": "Compile the report from its included LaTeX sources.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(build / 'last-build.txt').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "build.mkdir",
+        "print",
+        "range",
+        "shutil.copyfile",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "substitutive_discharge/build_pdf.py",
+      "git_blob_sha": "254e76a0f84f7bab15534074632d33355714c71f",
+      "sha256": "13c7fec77d385d83e712e6b9d441b0c9fdd6a94319623cc683d98f1baa6586ef",
+      "imports": [
+        "pathlib",
+        "subprocess"
+      ],
+      "normalized_bytes": 533,
+      "significant_tokens": 121,
+      "ast_nodes": 118,
+      "module_docstring": "Compile the report using pdfLaTeX with shell escape disabled.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(build / 'report.pdf').read_bytes",
+        "(root / 'report.pdf').write_bytes",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "build.mkdir",
+        "print",
+        "range",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "adaptive_seed/source_corpus/0d93579080eed914be7af5c24d9165cf9365ad15c1d7110299a4afe53de0c983.py",
+      "git_blob_sha": "26b1bb4501337b8d82bf9d704e1d7be96d8a1eff",
+      "sha256": "0d93579080eed914be7af5c24d9165cf9365ad15c1d7110299a4afe53de0c983",
+      "imports": [
+        "audit_kernels",
+        "json",
+        "pathlib"
+      ],
+      "normalized_bytes": 1752,
+      "significant_tokens": 220,
+      "ast_nodes": 230,
+      "module_docstring": "Rebuild the matched baseline and remeasure both complete standalone files.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "'\\n'.join",
+        "(ROOT / 'matched_metrics.json').write_text",
+        "(ROOT / 'matched_transport_checker.py').write_text",
+        "(ROOT / 'root_seed_checker.py').read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "json.dumps",
+        "main",
+        "measure",
+        "print",
+        "source.index",
+        "source.replace"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "clause_contexts/reproduce.py",
+      "git_blob_sha": "2b4ed11d14909207647928689019e4a9314675d0",
+      "sha256": "76e8b1ef01c2d46f3ee28ddc204d12be931594d7c60f4c74a8adc3552c836e7f",
+      "imports": [
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 585,
+      "significant_tokens": 110,
+      "ast_nodes": 115,
+      "module_docstring": "Reproduce the selected result and all transparent comparison controls.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "run"
+      ],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "print",
+        "run",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "scope_and_closure/build_report.py",
+      "git_blob_sha": "2c2397b66f1b711709b272c3a8d57da1847e7738",
+      "sha256": "8e97731bec69c837c15dcf5820f69457363e3b62f4db0ee636202328a64937a8",
+      "imports": [
+        "pathlib"
+      ],
+      "normalized_bytes": 4672,
+      "significant_tokens": 144,
+      "ast_nodes": 149,
+      "module_docstring": "Assemble a standalone LaTeX paper from the included reviewable sections.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "'\\n\\n'.join",
+        "(ROOT / 'code/checker_bytes.py').read_text",
+        "(ROOT / 'frontmatter.tex').read_text",
+        "(ROOT / 'reference' / name).read_text",
+        "(ROOT / 'report.tex').write_text",
+        "(ROOT / 'theory' / name).read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "front.replace",
+        "parts.append",
+        "print"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "variable_substitution/build_source.py",
+      "git_blob_sha": "2f36f82f17bfad59f1f0380b68f16ee6bad322bf",
+      "sha256": "61c65578fcbbb300a3e984bdde9f13ecaf1a4ff18cf2fc98be40fb544f1410a9",
+      "imports": [
+        "pathlib"
+      ],
+      "normalized_bytes": 519,
+      "significant_tokens": 86,
+      "ast_nodes": 92,
+      "module_docstring": "Reassemble report.tex from the included editable sections and checker.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "'\\n'.join",
+        "(root / 'code' / 'native_goal_latest.py').read_text",
+        "(root / 'paper' / name).read_text",
+        "(root / 'report.tex').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "print"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "reflexive_base/build_report.py",
+      "git_blob_sha": "3c84543bf90f0f2d6c8d9fc1b8af5d451d048976",
+      "sha256": "de66584248bfe22ab7e3a67b1969bded8003ce6e14e908f20ac6880b64f54f14",
+      "imports": [
+        "ast",
+        "pathlib",
+        "subprocess"
+      ],
+      "normalized_bytes": 1174,
+      "significant_tokens": 241,
+      "ast_nodes": 234,
+      "module_docstring": "Assemble a standalone report and compile it twice with pdfLaTeX.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "'\\n'.join",
+        "(ROOT / 'code/checker.py').read_text",
+        "(ROOT / 'evidence/latex_build.log').write_text",
+        "(ROOT / 'evidence/metrics_table.tex').read_text",
+        "(ROOT / 'evidence/validation_summary.tex').read_text",
+        "(ROOT / 'report.tex').write_text",
+        "(ROOT / name).read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "RuntimeError",
+        "SystemExit",
+        "ast.parse",
+        "ast.unparse",
+        "main",
+        "print",
+        "range",
+        "subprocess.run",
+        "substitutions.items",
+        "text.count",
+        "text.replace"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "direct_closure/code/build_strict_checkers.py",
+      "git_blob_sha": "3ce42379f9a2bb53b272a99fb4ce7f482c685d1f",
+      "sha256": "7726863b2af5327fcb296cde0389b8770286da42fb5fc0d8826b006630f5dbc6",
+      "imports": [
+        "pathlib"
+      ],
+      "normalized_bytes": 6661,
+      "significant_tokens": 91,
+      "ast_nodes": 95,
+      "module_docstring": "Recreate the two standalone, explicit reference proof checkers.\n\nThis builder is not imported by either checker and is not in their trust boundary.\nThe two modules differ only in their primitive progression rule.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "(directory / name).write_text",
+        "COMMON.format",
+        "Path",
+        "Path(__file__).resolve",
+        "main"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "selfseed_scalar/verify_manifest.py",
+      "git_blob_sha": "3e2136b155024b20abd43f8ded414c48fc95f680",
+      "sha256": "42f11b4ba5febeac013995b897c110739d9243be916ca96f1f2db2083ed1d196",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib"
+      ],
+      "normalized_bytes": 658,
+      "significant_tokens": 168,
+      "ast_nodes": 172,
+      "module_docstring": "Verify the delivered payload before rebuilding or experimenting.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(ROOT / 'MANIFEST.json').read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "failures.append",
+        "hashlib.sha256",
+        "hashlib.sha256(data).hexdigest",
+        "json.dumps",
+        "json.loads",
+        "len",
+        "path.is_file",
+        "path.read_bytes",
+        "print"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "deterministic_introduction/verify_manifest.py",
+      "git_blob_sha": "3f3ca3b11207fc3ca3249ab157bddf23996afc67",
+      "sha256": "c7988d9d9b94252de862a76e75d03d58fee4c5ae2d38287e48450aa667fed3eb",
+      "imports": [
+        "hashlib",
+        "pathlib"
+      ],
+      "normalized_bytes": 405,
+      "significant_tokens": 98,
+      "ast_nodes": 108,
+      "module_docstring": "Check the delivered payload before running rebuilding commands.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(ROOT / 'SHA256SUMS').read_text",
+        "(ROOT / 'SHA256SUMS').read_text().splitlines",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "hashlib.sha256",
+        "hashlib.sha256(path.read_bytes()).hexdigest",
+        "line.split",
+        "path.is_file",
+        "path.read_bytes",
+        "print"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "newest_parameter/build_pdf.py",
+      "git_blob_sha": "410ebe6b7abb1db002b4157e63b6122eb289bb5c",
+      "sha256": "f1cde260e41237586fe362e8ddb6ac543407a38cf1de4e6b370dca238bc7df7b",
+      "imports": [
+        "pathlib",
+        "subprocess"
+      ],
+      "normalized_bytes": 385,
+      "significant_tokens": 84,
+      "ast_nodes": 84,
+      "module_docstring": "Compile report.tex in three passes using an installed pdfLaTeX.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "print",
+        "range",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "clausal_single_evaluation/build_pdf.py",
+      "git_blob_sha": "426793c37add983a840963fcb9b567863dbac17e",
+      "sha256": "d9aeb2a8a1f76fbc8c7d4c983c2bfb0cdc050fba051a001759416776f221bf73",
+      "imports": [
+        "pathlib",
+        "subprocess"
+      ],
+      "normalized_bytes": 332,
+      "significant_tokens": 70,
+      "ast_nodes": 68,
+      "module_docstring": "Build the standalone report with an installed, configured TeX Live.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "main",
+        "print",
+        "range",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "one_body/verify_manifest.py",
+      "git_blob_sha": "49a5801d0bd76f3047c09e1c28ecd095f8a57c72",
+      "sha256": "d4ad2b23f33dfe2d983f6ae7a6fe5638b661a0a562905efedca750fc39c1fa94",
+      "imports": [
+        "hashlib",
+        "pathlib",
+        "sys"
+      ],
+      "normalized_bytes": 518,
+      "significant_tokens": 129,
+      "ast_nodes": 140,
+      "module_docstring": "Verify the SHA-256 manifest of this research package.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "', '.join",
+        "(root / 'MANIFEST.sha256').read_text",
+        "(root / 'MANIFEST.sha256').read_text().splitlines",
+        "Path",
+        "Path(__file__).resolve",
+        "failed.append",
+        "hashlib.sha256",
+        "hashlib.sha256(path.read_bytes()).hexdigest",
+        "line.split",
+        "path.is_file",
+        "path.read_bytes",
+        "print",
+        "sys.exit"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "inferred_major/reproduce.py",
+      "git_blob_sha": "4f5b1a1009870acf19f073b9a6fa2710724dbae1",
+      "sha256": "e2462efc144feb414ba202062d797ae30642f52b69d598bc86b91e00cce93675",
+      "imports": [
+        "argparse",
+        "hashlib",
+        "json",
+        "pathlib",
+        "shutil",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 1128,
+      "significant_tokens": 232,
+      "ast_nodes": 241,
+      "module_docstring": "Verify the delivered proof-checker package; optionally rebuild its PDF.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "(ROOT / 'evidence/source_provenance.json').read_text",
+        "(ROOT / item['local']).read_bytes",
+        "Path",
+        "Path(__file__).resolve",
+        "ValueError",
+        "argparse.ArgumentParser",
+        "hashlib.sha1",
+        "hashlib.sha1(b'blob ' + str(len(data)).encode() + b'\\x00' + data).hexdigest",
+        "json.loads",
+        "len",
+        "main",
+        "parser.add_argument",
+        "parser.parse_args",
+        "print",
+        "shutil.copyfile",
+        "str",
+        "str(len(data)).encode",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "prefix_clauses/build.py",
+      "git_blob_sha": "51ea8572af85745b64192723956d80b552e8fccc",
+      "sha256": "7bd61b4156df2e6091aea5650f36568735b58912925a7a665841e573697ea097",
+      "imports": [
+        "pathlib",
+        "re",
+        "shutil",
+        "subprocess",
+        "tempfile"
+      ],
+      "normalized_bytes": 1128,
+      "significant_tokens": 221,
+      "ast_nodes": 229,
+      "module_docstring": "Flatten the report and build its PDF using a local TeX installation.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "flatten",
+        "main"
+      ],
+      "calls": [
+        "'\\n'.join",
+        "(ROOT / 'evidence' / 'latex_build.log').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "RuntimeError",
+        "flatten",
+        "logs.append",
+        "m.group",
+        "main",
+        "path.read_text",
+        "print",
+        "range",
+        "re.sub",
+        "shutil.copyfile",
+        "str",
+        "subprocess.run",
+        "target.write_text",
+        "tempfile.TemporaryDirectory"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "one_body/build_pdf.py",
+      "git_blob_sha": "555fecf2dc0c5504d648d7c7436baefecccd87c2",
+      "sha256": "f151688dbb857a3799494d787916e4805186cc5d3031701b04d5f9ef6ac7000d",
+      "imports": [
+        "pathlib",
+        "shutil",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 413,
+      "significant_tokens": 77,
+      "ast_nodes": 78,
+      "module_docstring": "Compile the supplied LaTeX paper twice with a standard TeX installation.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "print",
+        "range",
+        "shutil.which",
+        "subprocess.run",
+        "sys.exit"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "uniform_clauses/reproduce.py",
+      "git_blob_sha": "560d59a98e5e7e152ef6377401309a42169070d9",
+      "sha256": "e5a5d0f6dae2a84ac77ca5b09f62b39ecb63701c0220850c7dc97feff38b11e5",
+      "imports": [
+        "json",
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 1465,
+      "significant_tokens": 246,
+      "ast_nodes": 254,
+      "module_docstring": "Reproduce the proof checks and report the complete-checker measurements.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "'PASS: {} positive certificates; {} adversarial certificates; {} malformed documents; {} full process checks.'.format",
+        "'{program}: {normalized_bytes} bytes, {significant_tokens} tokens, {ast_nodes} AST nodes, {gzip9_bytes} gzip bytes'.format",
+        "(evidence / 'reproduction_log.txt').write_text",
+        "(evidence / 'validation_summary.json').write_text",
+        "(root / 'code/checker.py').read_bytes",
+        "(root / 'code/checker_normalized.py').read_bytes",
+        "(work / 'clausal_horn_shared.py').read_bytes",
+        "(work / 'evidence/clausal_horn_shared.normalized.py').read_bytes",
+        "(work / 'evidence/results.json').read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "evidence.mkdir",
+        "json.dumps",
+        "json.loads",
+        "print",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "clausal_canonical/reproduce.py",
+      "git_blob_sha": "5daade10de4c33f27f76678eedd7a8536b79e5c4",
+      "sha256": "1c8566c00599bae53431114718238ecfcbc31bbd50c17e4185518b906c683d47",
+      "imports": [
+        "argparse",
+        "hashlib",
+        "json",
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 1382,
+      "significant_tokens": 260,
+      "ast_nodes": 259,
+      "module_docstring": "Rebuild measurements, run verification, and optionally compile the report.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "run",
+        "verify_sources",
+        "main"
+      ],
+      "calls": [
+        "(ROOT / 'evidence/source_provenance.json').read_text",
+        "(ROOT / item['path']).read_bytes",
+        "Path",
+        "Path(__file__).resolve",
+        "ValueError",
+        "argparse.ArgumentParser",
+        "hashlib.sha1",
+        "hashlib.sha1(b'blob ' + str(len(contents)).encode() + b'\\x00' + contents).hexdigest",
+        "hashlib.sha256",
+        "hashlib.sha256(contents).hexdigest",
+        "json.loads",
+        "len",
+        "main",
+        "parser.add_argument",
+        "parser.parse_args",
+        "print",
+        "range",
+        "run",
+        "str",
+        "str(len(contents)).encode",
+        "subprocess.run",
+        "verify_sources"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "witness_discharge/verify_manifest.py",
+      "git_blob_sha": "60507a47a91143c4f2fd9f7fef0929a0291dcc4b",
+      "sha256": "24b6fe1cd339310e8f84442790e35acad7b441c15c654df4b2e708dc415673e5",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib"
+      ],
+      "normalized_bytes": 616,
+      "significant_tokens": 132,
+      "ast_nodes": 142,
+      "module_docstring": "Verify the delivered payload against its SHA-256 manifest.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "', '.join",
+        "(root / 'MANIFEST.json').read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "failures.append",
+        "hashlib.sha256",
+        "hashlib.sha256(path.read_bytes()).hexdigest",
+        "json.loads",
+        "len",
+        "main",
+        "manifest['sha256'].items",
+        "path.is_file",
+        "path.read_bytes",
+        "print"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "reduced_clause_calculus/tools/build_report.py",
+      "git_blob_sha": "616e3de2fda071afe6bb3258c2c8d405860e6b43",
+      "sha256": "0f217502931be9be640d297532043dc20838a2a121cdaec47cc2dc4fa9ba387d",
+      "imports": [
+        "argparse",
+        "pathlib",
+        "subprocess"
+      ],
+      "normalized_bytes": 1338,
+      "significant_tokens": 243,
+      "ast_nodes": 258,
+      "module_docstring": "Assemble a standalone TeX report; optionally compile with pdflatex.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "'\\n'.join",
+        "(ROOT / 'code' / 'reduced.py').read_text",
+        "(ROOT / 'paper' / 'end.tex').read_text",
+        "(ROOT / 'paper' / 'main_body.tex').read_text",
+        "(ROOT / 'reference' / 'foundations' / name).read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "argparse.ArgumentParser",
+        "ending.replace",
+        "main",
+        "parser.add_argument",
+        "parser.parse_args",
+        "pieces.append",
+        "print",
+        "range",
+        "subprocess.run",
+        "target.write_text"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "uniform_binding/build_report.py",
+      "git_blob_sha": "65327a568727333b5d011ad7b8097406df960af9",
+      "sha256": "0859657d05181ccc631bbc80b4848be053080c527249843ac81b5be4e53817da",
+      "imports": [
+        "pathlib"
+      ],
+      "normalized_bytes": 524,
+      "significant_tokens": 97,
+      "ast_nodes": 101,
+      "module_docstring": "Assemble one standalone LaTeX file from the editable sections.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "'\\n\\n'.join",
+        "(ROOT / 'code/checker.py').read_text",
+        "(ROOT / 'paper' / name).read_text",
+        "(ROOT / 'report.tex').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "main",
+        "print"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "crossed_uniqueness/build.py",
+      "git_blob_sha": "6735de1f5cdbe460fe1cd0c66af83cc29362ebf8",
+      "sha256": "53a6c78d060db34374919f3cd1f994d441af0b4b73870803a244d2db83c84685",
+      "imports": [
+        "pathlib",
+        "shutil",
+        "subprocess",
+        "tempfile"
+      ],
+      "normalized_bytes": 1248,
+      "significant_tokens": 264,
+      "ast_nodes": 259,
+      "module_docstring": "Build the paper; create a temporary TeX format if the installation lacks it.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "run",
+        "main"
+      ],
+      "calls": [
+        "(ROOT / 'evidence/latex_build.txt').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "RuntimeError",
+        "SystemExit",
+        "all",
+        "main",
+        "print",
+        "range",
+        "run",
+        "shutil.which",
+        "str",
+        "subprocess.run",
+        "subprocess.run([kpse, 'pdflatex.fmt'], cwd=ROOT, text=True, capture_output=True).stdout.strip",
+        "tempfile.TemporaryDirectory"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "progress_independence/verify_manifest.py",
+      "git_blob_sha": "68c9c3d88bcdef73f85998de2348ca8d33c625b0",
+      "sha256": "4eb3df4e93cd2312877c7d17b3fa01bd43ee518757f1e8289c3f1bc3eb1a7df1",
+      "imports": [
+        "hashlib",
+        "pathlib"
+      ],
+      "normalized_bytes": 474,
+      "significant_tokens": 118,
+      "ast_nodes": 130,
+      "module_docstring": "Check the archive's frozen SHA-256 ledger before regenerating evidence.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "', '.join",
+        "(ROOT / 'MANIFEST.sha256').read_text",
+        "(ROOT / 'MANIFEST.sha256').read_text().splitlines",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "failures.append",
+        "hashlib.sha256",
+        "hashlib.sha256(path.read_bytes()).hexdigest",
+        "line.split",
+        "path.is_file",
+        "path.read_bytes",
+        "print"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "scope_and_closure/measure.py",
+      "git_blob_sha": "6ddb0c0771bcdccc9700ac6890fcbd6d6669ae9d",
+      "sha256": "eb8a9c0cc0be7f0898ddb4194a1fcb4f5b932cc280c337e576d0cc4f78f88a9f",
+      "imports": [
+        "ast",
+        "gzip",
+        "hashlib",
+        "io",
+        "json",
+        "pathlib",
+        "platform",
+        "tokenize",
+        "zlib"
+      ],
+      "normalized_bytes": 1125,
+      "significant_tokens": 278,
+      "ast_nodes": 263,
+      "module_docstring": "Whole-program sizes, using the repository's existing convention.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "(ROOT / directory).glob",
+        "(ast.unparse(tree) + '\\n').encode",
+        "Path",
+        "Path(__file__).resolve",
+        "ast.parse",
+        "ast.unparse",
+        "ast.walk",
+        "gzip.compress",
+        "hashlib.sha256",
+        "hashlib.sha256(raw).hexdigest",
+        "io.StringIO",
+        "json.dumps",
+        "len",
+        "main",
+        "normalized.decode",
+        "path.read_bytes",
+        "path.relative_to",
+        "platform.python_version",
+        "print",
+        "rows.append",
+        "sorted",
+        "str",
+        "sum",
+        "tokenize.generate_tokens"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "successor_seed_completion/build.py",
+      "git_blob_sha": "719ac171ba12836784e796d59ac5e772fa309b04",
+      "sha256": "df4bedc013d122a8de492f0565388eda17b21058eec609aff1174c58acdf621a",
+      "imports": [
+        "pathlib",
+        "re",
+        "shutil",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 1154,
+      "significant_tokens": 231,
+      "ast_nodes": 221,
+      "module_docstring": "Compile the complete report with a standard TeX installation.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "flatten",
+        "main"
+      ],
+      "calls": [
+        "(ROOT / 'standalone.tex').write_text",
+        "(ROOT / match.group(2)).read_text",
+        "(ROOT / match.group(2)).read_text().rstrip",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "flatten",
+        "main",
+        "match.group",
+        "path.read_text",
+        "print",
+        "range",
+        "re.sub",
+        "shutil.which",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "uniform_zero/build.py",
+      "git_blob_sha": "71a80db195a5714b1ee303053dc2d832664134ad",
+      "sha256": "ad03b002ab9c15eea3014aee72126fcbbd29b5cce2a623e35162353bba164f15",
+      "imports": [
+        "pathlib",
+        "subprocess"
+      ],
+      "normalized_bytes": 216,
+      "significant_tokens": 48,
+      "ast_nodes": 42,
+      "module_docstring": "Compile the complete paper; no network access is used.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "range",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "checker_and_barriers/reproduce.py",
+      "git_blob_sha": "721a048c01b179a998ce304c3f8e6ccf1bbf46c5",
+      "sha256": "263377140652af63fc9b4c96a82aacea89e2c0a0a2c6898ea196822f62e9d34d",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib",
+        "shutil",
+        "subprocess",
+        "sys",
+        "tempfile"
+      ],
+      "normalized_bytes": 1005,
+      "significant_tokens": 195,
+      "ast_nodes": 203,
+      "module_docstring": "Verify the delivered payload, then rerun finite evidence in a temporary copy.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(ROOT / row['path']).read_bytes",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "hashlib.sha256",
+        "hashlib.sha256(data).hexdigest",
+        "json.loads",
+        "len",
+        "manifest.exists",
+        "manifest.read_text",
+        "print",
+        "shutil.copytree",
+        "shutil.ignore_patterns",
+        "str",
+        "subprocess.run",
+        "tempfile.TemporaryDirectory"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "one_sided_transport/build.py",
+      "git_blob_sha": "749331e4152cecc56d8b92cd5e78347291f914ab",
+      "sha256": "7e7a3650673caa6f165a3226e6a09ecb0dc85ecabf7f045fac29c5909c17c169",
+      "imports": [
+        "pathlib",
+        "shutil",
+        "subprocess",
+        "tempfile"
+      ],
+      "normalized_bytes": 1143,
+      "significant_tokens": 180,
+      "ast_nodes": 188,
+      "module_docstring": "Rebuild the standalone LaTeX report using an installed TeX distribution.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "(work / 'report.log').read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "main",
+        "print",
+        "range",
+        "shutil.copy2",
+        "shutil.which",
+        "subprocess.run",
+        "tempfile.TemporaryDirectory"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "checker_and_barriers/implementation/reproduce.py",
+      "git_blob_sha": "7687d786ba3f5ec0f256a2c04d0da93c87a13062",
+      "sha256": "538d70a619274c1de382944192a23c467ea0c8eb10a99f546fd9c31725df9034",
+      "imports": [
+        "gzip",
+        "importlib.util",
+        "json",
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 1118,
+      "significant_tokens": 241,
+      "ast_nodes": 250,
+      "module_docstring": "Remeasure frozen complete programs, then rerun the scoped finite checks.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(ROOT / 'metrics.json').read_text",
+        "(ROOT / row['file']).read_bytes",
+        "(ROOT / row['file']).with_suffix",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "any",
+        "gz.exists",
+        "gz.read_bytes",
+        "gzip.compress",
+        "importlib.util.module_from_spec",
+        "importlib.util.spec_from_file_location",
+        "json.loads",
+        "measure.metrics",
+        "print",
+        "spec.loader.exec_module",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "adaptive_seed/source_corpus/f3d33834ab4c889095dc1a777924e904660aa8ec549a1101770be5a4207889dc.py",
+      "git_blob_sha": "7bb979eb5ce0f5687a99350c0d7b6e7a6a0d0da2",
+      "sha256": "f3d33834ab4c889095dc1a777924e904660aa8ec549a1101770be5a4207889dc",
+      "imports": [
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 392,
+      "significant_tokens": 76,
+      "ast_nodes": 78,
+      "module_docstring": "Reproduce the finite evidence and measured source sizes.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "print",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "selfseed_scalar/reproduce.py",
+      "git_blob_sha": "7c137f0a55d4cd3c1901dc33420f44ddcf027113",
+      "sha256": "c20efba88eb33aff7dfca043f27f99ade48994ca7e7daa429bae1d45e1ffb0b0",
+      "imports": [
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 321,
+      "significant_tokens": 60,
+      "ast_nodes": 59,
+      "module_docstring": "Offline checks. No network, third-party Python package, or unsafe import.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "print",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "canonical_recursors/strict/build_family.py",
+      "git_blob_sha": "7ca4fe599cd0d13a2a803d6b45615ba914033abc",
+      "sha256": "d53a03b56616ee8726ac5d12bf1f3a01d01f30956ef2460f1bfec2c60749facc",
+      "imports": [
+        "pathlib"
+      ],
+      "normalized_bytes": 6706,
+      "significant_tokens": 160,
+      "ast_nodes": 147,
+      "module_docstring": "Generate three standalone, deliberately parallel strict checker modules.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "\"    if tag == 'z' and len(proof) == 3:\\n        a, h = proof[1:]\\n        if not (term(a, scope) and term(h, scope + 1)):\\n            fail()\\n        return ['=', rec(0, a, h), {rhs}]\\n\".format",
+        "(ROOT / (mode + '_checker.py')).write_text",
+        "COMMON.format",
+        "Path",
+        "Path(__file__).resolve"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "full_normalization/reproduce.py",
+      "git_blob_sha": "7d750a202777af4ed141dfe5832cec71041235e0",
+      "sha256": "f6e23b3a3b2ae0361eccf5df80cc18ba308e8c7edd2ada86fe35c566e2949eaf",
+      "imports": [
+        "argparse",
+        "hashlib",
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 853,
+      "significant_tokens": 172,
+      "ast_nodes": 177,
+      "module_docstring": "Run the portable verification packages. No network or third-party modules.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "(ROOT / name).read_bytes",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "argparse.ArgumentParser",
+        "hashlib.sha256",
+        "hashlib.sha256((ROOT / name).read_bytes()).hexdigest",
+        "main",
+        "manifest.exists",
+        "manifest.read_text",
+        "manifest.read_text().splitlines",
+        "parser.add_argument",
+        "parser.parse_args",
+        "print",
+        "row.split",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "checked_refinement/build_report.py",
+      "git_blob_sha": "7eebae5eb5a05b41b05aa966b7fa6bd5bf919b6e",
+      "sha256": "c6c4596a5a095b9e2d46d88ddb373518d627c0f6c38193959ab3f89d4677c44a",
+      "imports": [
+        "pathlib",
+        "subprocess"
+      ],
+      "normalized_bytes": 243,
+      "significant_tokens": 54,
+      "ast_nodes": 51,
+      "module_docstring": "Compile the complete report using a normal TeX Live installation.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "print",
+        "range",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "clause_discharge/verify_manifest.py",
+      "git_blob_sha": "7eebd1d3eabfac60bdc7d6c7de51db1e11ae3771",
+      "sha256": "1f9414d2d259b83569c0db927ac0c88087bba98f6f9aa97797c2927ce5dd1738",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib"
+      ],
+      "normalized_bytes": 442,
+      "significant_tokens": 110,
+      "ast_nodes": 122,
+      "module_docstring": "Verify the delivered manifest; generated evidence may change after reproduction.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(ROOT / 'MANIFEST.json').read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "hashlib.sha256",
+        "hashlib.sha256(raw).hexdigest",
+        "json.loads",
+        "len",
+        "path.read_bytes",
+        "print"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "direct_closure/reproduce.py",
+      "git_blob_sha": "7fcae2318a161a748ce8887e2dd49f585c41532b",
+      "sha256": "d8e89c51852cfecc6cd7d083fc6a358063a81498d0ffcd2bc75de5bc555deba1",
+      "imports": [
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 329,
+      "significant_tokens": 60,
+      "ast_nodes": 56,
+      "module_docstring": "Run the distributed evidence checks without network access.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "clausal_canonical/tools/build_report.py",
+      "git_blob_sha": "83225a5ad431006b09322a4d9904161f79f0c84b",
+      "sha256": "6cf8427eefd52e60267fbfee0f4c113c9a0791638cf28220b43a714e72cb4734",
+      "imports": [
+        "pathlib",
+        "re"
+      ],
+      "normalized_bytes": 543,
+      "significant_tokens": 124,
+      "ast_nodes": 116,
+      "module_docstring": "Assemble a standalone TeX report from the maintained sections.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "expand"
+      ],
+      "calls": [
+        "(ROOT / 'paper/main.tex').read_text",
+        "(ROOT / 'report.tex').write_text",
+        "(ROOT / match.group(1)).read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "expand",
+        "match.group",
+        "print",
+        "re.sub"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "reversal_core/tools/assemble_report.py",
+      "git_blob_sha": "84876c0cefa24630cc9930b3e6a1c73773b59a1c",
+      "sha256": "8d9c2f26b8e73b6b57cdddefb07dc29091070466cc2b71ba3e6698eb5c71bbd7",
+      "imports": [
+        "pathlib"
+      ],
+      "normalized_bytes": 808,
+      "significant_tokens": 107,
+      "ast_nodes": 99,
+      "module_docstring": "Regenerate the self-contained report source from the editable sections.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "'\\n'.join",
+        "(ROOT / 'code/checker_rev_typed.py').read_text",
+        "(ROOT / 'code/checker_rev_typed.py').read_text().rstrip",
+        "(ROOT / 'ipra_reversal_core.tex').write_text",
+        "(ROOT / name).read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "print",
+        "source.replace"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "constructed_computation/tests/convert.py",
+      "git_blob_sha": "87542e64f4bf8e63fb282260b433bdf4acc2866b",
+      "sha256": "40eaff7b9feef36532ae0f767ae82914cadfef1f06c12f3ab8621998e7956214",
+      "imports": [
+        "copy"
+      ],
+      "normalized_bytes": 688,
+      "significant_tokens": 119,
+      "ast_nodes": 139,
+      "module_docstring": "Untrusted conversion of canonical old computation packets.\n\nIt preserves the number and order of instructions, hence all allocated labels.\nMalformed legacy counter wrappers are outside this canonical translator.\nNo checker imports this module.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "convert"
+      ],
+      "calls": [
+        "ValueError",
+        "deepcopy",
+        "isinstance",
+        "len"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "compact_kernel/tools/rebuild_producer.py",
+      "git_blob_sha": "8c873b91c2a7c094d4441c8436b39cf00c37ee9d",
+      "sha256": "0b2fa669ad4ee8ed1b4831ff90aa45d6e1b2913d4824b028c0438aecffdb731b",
+      "imports": [
+        "ast",
+        "pathlib"
+      ],
+      "normalized_bytes": 983,
+      "significant_tokens": 231,
+      "ast_nodes": 248,
+      "module_docstring": "Reproduce the untrusted arity/uniform-predecessor producer adaptation.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "generated"
+      ],
+      "calls": [
+        "(ROOT / 'reference/producer_arity_original.py').read_text",
+        "(ROOT / 'reference/producer_uniform_original.py').read_text",
+        "(ROOT / 'tests/producer.py').read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "ast.parse",
+        "ast.unparse",
+        "ast.unparse(uniform).replace",
+        "generated",
+        "isinstance",
+        "methods.get",
+        "next",
+        "print"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "scalar_uniqueness/build_report.py",
+      "git_blob_sha": "8e9b33e3133c1fdfa00328541a220e72eab31dcf",
+      "sha256": "b2004935e77bc1849e6190a8bb48f79d3537534798fee703578bb2cb274e96dc",
+      "imports": [
+        "pathlib"
+      ],
+      "normalized_bytes": 650,
+      "significant_tokens": 125,
+      "ast_nodes": 134,
+      "module_docstring": "Assemble the standalone LaTeX source from editable local sections.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "(root / 'report.tex').write_text",
+        "(root / 'report_back.tex').read_text",
+        "(root / 'report_front.tex').read_text",
+        "(root / 'ur_complete.tex').read_text",
+        "(root / name).read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "RuntimeError",
+        "main",
+        "middle.replace"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "orbit_closure/verify_manifest.py",
+      "git_blob_sha": "8ef9149de72942e5250feb88af58a55f5f109e29",
+      "sha256": "81a3707120b2a18977f539f8ada5ef45befb02fa66ec2740464c6f09cf546b82",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib"
+      ],
+      "normalized_bytes": 409,
+      "significant_tokens": 102,
+      "ast_nodes": 105,
+      "module_docstring": "Verify the delivered bytes before running scripts that regenerate evidence.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(ROOT / 'MANIFEST.json').read_text",
+        "(ROOT / name).read_bytes",
+        "Path",
+        "Path(__file__).resolve",
+        "ValueError",
+        "hashlib.sha256",
+        "hashlib.sha256((ROOT / name).read_bytes()).hexdigest",
+        "json.loads",
+        "len",
+        "print",
+        "record['sha256'].items"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "one_context/direct/build_checkers.py",
+      "git_blob_sha": "9046c1756c60f59b381ad7dafdc20ccaa5ec1638",
+      "sha256": "b733e1e3230d6f0ef7301895cd1c90c7815d04427767b8e125b5b43cfda5c499",
+      "imports": [
+        "pathlib"
+      ],
+      "normalized_bytes": 857,
+      "significant_tokens": 69,
+      "ast_nodes": 72,
+      "module_docstring": null,
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(ROOT / 'kernel_common.py.template').read_text",
+        "(ROOT / name).write_text",
+        "COMMON.replace",
+        "Path",
+        "Path(__file__).resolve"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "deterministic_specialization/reproduce.py",
+      "git_blob_sha": "96e26d72bc77cfd31f36acd522eddd5ade1d1c60",
+      "sha256": "a7751535bc0925a70872bc0b2fdd0cac15182495c75dbf643bb7380cc3be652a",
+      "imports": [
+        "argparse",
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 622,
+      "significant_tokens": 134,
+      "ast_nodes": 135,
+      "module_docstring": "Run the self-contained verification suites; optionally rebuild the PDF.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "argparse.ArgumentParser",
+        "command.append",
+        "main",
+        "parser.add_argument",
+        "parser.parse_args",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "local_scopes/build.py",
+      "git_blob_sha": "9b05500f4aae1d2fa74c7d81c9d8c59e9e4b0554",
+      "sha256": "74ecae26d92b9998540e4794853c10674bde7c60f754067676a75a6e869c000e",
+      "imports": [
+        "json",
+        "os",
+        "pathlib",
+        "shutil",
+        "subprocess",
+        "tempfile"
+      ],
+      "normalized_bytes": 1232,
+      "significant_tokens": 243,
+      "ast_nodes": 252,
+      "module_docstring": "Compile the TeX report. Requires a LaTeX installation with latexmk.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "(ROOT / 'evidence/build.log').write_text",
+        "(ROOT / 'report.pdf').stat",
+        "Path",
+        "Path(__file__).resolve",
+        "RuntimeError",
+        "SystemExit",
+        "json.dumps",
+        "log.exists",
+        "main",
+        "os.environ.copy",
+        "output.is_file",
+        "print",
+        "shutil.copy2",
+        "str",
+        "subprocess.run",
+        "tempfile.TemporaryDirectory"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "adaptive_seed/source_corpus/734fd069159b078e1f8542204062e2d5c1f7e6ecf437090ce5a0be3bb15d5d69.py",
+      "git_blob_sha": "9dbdb99515df6ff52fceee3aee9b5b00ec0a499a",
+      "sha256": "734fd069159b078e1f8542204062e2d5c1f7e6ecf437090ce5a0be3bb15d5d69",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib"
+      ],
+      "normalized_bytes": 767,
+      "significant_tokens": 181,
+      "ast_nodes": 184,
+      "module_docstring": "Check every distributed member against its SHA-256 and exact byte size.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "(ROOT / 'MANIFEST.sha256.json').read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "failures.append",
+        "hashlib.sha256",
+        "hashlib.sha256(data).hexdigest",
+        "json.dumps",
+        "json.loads",
+        "len",
+        "main",
+        "path.is_file",
+        "path.read_bytes",
+        "print"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "seed_evaluation/code/measure.py",
+      "git_blob_sha": "9e6513e5aac9cf5243839430d3224322029f62b5",
+      "sha256": "0ee6d61ef2cd33275a977f2654ce47594a0ef366fc3297bdc8a705be852d9119",
+      "imports": [
+        "json",
+        "pathlib",
+        "sys",
+        "verify"
+      ],
+      "normalized_bytes": 610,
+      "significant_tokens": 125,
+      "ast_nodes": 124,
+      "module_docstring": "Measure all complete acceptance modules without running proof fixtures.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "(destination / 'metrics.json').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "destination.mkdir",
+        "json.dumps",
+        "main",
+        "measurements",
+        "print"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "evaluation_discharge/verify_manifest.py",
+      "git_blob_sha": "9eca054270667e561521e8330159b8f27601e05c",
+      "sha256": "8cb49e8e1887f2ec2377b57b87bf1975c6b56cf05fbc47d4ae6f314cb48b2e43",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib"
+      ],
+      "normalized_bytes": 577,
+      "significant_tokens": 137,
+      "ast_nodes": 146,
+      "module_docstring": "Verify the SHA-256 ledger of the original delivered payload.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "', '.join",
+        "(ROOT / 'MANIFEST.json').read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "failures.append",
+        "hashlib.sha256",
+        "hashlib.sha256(path.read_bytes()).hexdigest",
+        "json.loads",
+        "len",
+        "main",
+        "path.is_file",
+        "path.read_bytes",
+        "print"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "clausal_canonical/tools/build_control.py",
+      "git_blob_sha": "a47458428b9d6e7d24369a12abb68126a7f973ed",
+      "sha256": "b9b8c8b00ba1c5e6bd9e270b4e01ce6bd7b0978ebd8ee18b3e40fd1c2114af12",
+      "imports": [
+        "pathlib"
+      ],
+      "normalized_bytes": 3198,
+      "significant_tokens": 118,
+      "ast_nodes": 131,
+      "module_docstring": "Build a matched six-rule control with the new local-variable representation.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(root / 'code/arity_checker.py').read_text",
+        "(root / 'comparison').mkdir",
+        "(root / 'comparison/arity_current_control.py').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "source.index",
+        "source.replace"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "coverage_and_kernel/verify_manifest.py",
+      "git_blob_sha": "a862da9075153d95a4bb85478b6492ccbad4883c",
+      "sha256": "35d77f84aded467a8cbabfc3d40a1a743cd031331d40a9e242225dc9f3a6113b",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib"
+      ],
+      "normalized_bytes": 655,
+      "significant_tokens": 168,
+      "ast_nodes": 172,
+      "module_docstring": "Verify the original delivered payload before rebuilding or editing it.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(ROOT / 'MANIFEST.json').read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "failures.append",
+        "hashlib.sha256",
+        "hashlib.sha256(data).hexdigest",
+        "json.dumps",
+        "json.loads",
+        "len",
+        "path.is_file",
+        "path.read_bytes",
+        "print"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "adaptive_seed/source_corpus/d3886b1088da204687504fde95161166373fee825639c11a0500c199813902d0.py",
+      "git_blob_sha": "a8b481a0d2f255c02d1828b97415c689ed1307fd",
+      "sha256": "d3886b1088da204687504fde95161166373fee825639c11a0500c199813902d0",
+      "imports": [
+        "pathlib",
+        "re",
+        "subprocess"
+      ],
+      "normalized_bytes": 1303,
+      "significant_tokens": 255,
+      "ast_nodes": 267,
+      "module_docstring": "Build the paper, including a self-contained expanded LaTeX source.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "expand",
+        "main"
+      ],
+      "calls": [
+        "'\\n'.join",
+        "(ROOT / 'report.log').read_text",
+        "(ROOT / 'report_standalone.tex').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "RuntimeError",
+        "SystemExit",
+        "expand",
+        "line.lower",
+        "log.splitlines",
+        "main",
+        "match.group",
+        "path.read_text",
+        "pattern.sub",
+        "print",
+        "range",
+        "re.compile",
+        "subprocess.run",
+        "target.with_suffix"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "kernel_refinement/build_foundations.py",
+      "git_blob_sha": "a8d205845a1bcef32e2364bed21884f8eb803d3b",
+      "sha256": "5ad22688fec78770b59b48bae73aa304367ff59d85d456cc1918168ef9ecbe93",
+      "imports": [
+        "pathlib"
+      ],
+      "normalized_bytes": 578,
+      "significant_tokens": 65,
+      "ast_nodes": 76,
+      "module_docstring": "Extract the inherited mathematical sections for the supplementary PDF.\n\nThe frozen complete source report and foundation modules remain unchanged.\nOnly the required contiguous mathematical section is copied to sections/.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(ROOT / 'reference/inherited_report.tex').read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "destination.write_text",
+        "print",
+        "source.index"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "orbit_closure/reproduce.py",
+      "git_blob_sha": "a9db59c68d9e58ed567c3267ea0aa9e4a1d7983d",
+      "sha256": "fa9fb4cbacb8a2f1cb8e5518367058148287ffd2a30ef657f1763aafa775dee7",
+      "imports": [
+        "json",
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 1188,
+      "significant_tokens": 236,
+      "ast_nodes": 214,
+      "module_docstring": "Replay the offline source audit and the matched Orbit certificate tests.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(ROOT / 'evidence').mkdir",
+        "(ROOT / 'evidence/reproduction.json').write_text",
+        "(ROOT / 'orbit/validation/results.json').read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "RuntimeError",
+        "json.dumps",
+        "json.loads",
+        "print",
+        "str",
+        "subprocess.run",
+        "sys.version.split"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "monus_and_neutral_major/verify.py",
+      "git_blob_sha": "ab876f0faf94023521fbfb85035b5de3376c59c3",
+      "sha256": "48fe38bc20a2c49c14edb82a62a249285c633910a4af0fbed8db644dc949e8d0",
+      "imports": [
+        "json",
+        "pathlib",
+        "platform",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 1284,
+      "significant_tokens": 235,
+      "ast_nodes": 229,
+      "module_docstring": "Reproduce the delivered source accounting and finite checks offline.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "run",
+        "main"
+      ],
+      "calls": [
+        "(ROOT / 'evidence' / 'verification.json').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "json.dumps",
+        "json.loads",
+        "main",
+        "platform.python_version",
+        "print",
+        "process.stdout.strip",
+        "run",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "progress_independence/reproduce.py",
+      "git_blob_sha": "abe8de59449707f53659cd5805538eb1657e91c0",
+      "sha256": "174e7b2acd615e5a8b8215f9b26735c6244abffb6f08f7cc1c1cb32d7de44c23",
+      "imports": [
+        "json",
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 1002,
+      "significant_tokens": 210,
+      "ast_nodes": 209,
+      "module_docstring": "Run the packaged finite evidence, without network access or external data.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "(ROOT / 'evidence').mkdir",
+        "(ROOT / 'evidence/mathematical_examples.json').write_text",
+        "(ROOT / 'mathematics' / receipt).write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "json.dumps",
+        "json.loads",
+        "main",
+        "outputs.append",
+        "print",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "evaluation_discharge/zero/verify.py",
+      "git_blob_sha": "acda6156e252ac48dc05050ea6f4841f0d632f18",
+      "sha256": "61af7bee292622e7504ba798ec14fbfddc4f364b4e91c6873f2b5afb6ebd8c8f",
+      "imports": [
+        "pathlib",
+        "runpy",
+        "sys"
+      ],
+      "normalized_bytes": 205,
+      "significant_tokens": 50,
+      "ast_nodes": 53,
+      "module_docstring": "Reproduce this companion from any working directory.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "runpy.run_path",
+        "str",
+        "sys.path.insert"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "uniform_clauses/build.py",
+      "git_blob_sha": "ae8397b16e367f955722fea2a438bd83d70b733e",
+      "sha256": "bee97830cbd0a2946c9cd38ef6dbcd2bbd4a20a9f39c61ad9252881ab9b4e74e",
+      "imports": [
+        "pathlib",
+        "shutil",
+        "subprocess",
+        "tempfile"
+      ],
+      "normalized_bytes": 1047,
+      "significant_tokens": 198,
+      "ast_nodes": 210,
+      "module_docstring": "Compile the standalone LaTeX source in an otherwise empty directory.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(root / 'evidence').mkdir",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "print",
+        "range",
+        "shutil.copy2",
+        "shutil.which",
+        "source.with_suffix",
+        "subprocess.run",
+        "tempfile.TemporaryDirectory"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "compact_update/closure_criterion.py",
+      "git_blob_sha": "b56579cb3d77643c506affd1977c3b2e850e28f2",
+      "sha256": "21c4d5d6778aceadb9e9c57e806d2d132b85279b67bddf6f23ec1a9d22a0eeae",
+      "imports": [
+        "itertools",
+        "json",
+        "pathlib"
+      ],
+      "normalized_bytes": 1145,
+      "significant_tokens": 211,
+      "ast_nodes": 225,
+      "module_docstring": "Finite truth-sequence checks accompanying the written closure theorem.\n\nThis checks Boolean instances; it is not a proof of the arithmetic theorem.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "check"
+      ],
+      "calls": [
+        "(root / 'evidence/closure_criterion_checks.json').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "all",
+        "check",
+        "itertools.product",
+        "json.dumps",
+        "print",
+        "range",
+        "zip"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "deterministic_opening/reproduce.py",
+      "git_blob_sha": "b5c7576eaebd047df8d52bc977bcabdae7933b74",
+      "sha256": "b040922469a011176fa80fda09e0f41830e0deee5102c3c0f7eb142d9aada04f",
+      "imports": [
+        "argparse",
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 623,
+      "significant_tokens": 131,
+      "ast_nodes": 131,
+      "module_docstring": "Reproduce the selected proof checks and complete-source measurements.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "argparse.ArgumentParser",
+        "parser.add_argument",
+        "parser.parse_args",
+        "print",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "adaptive_seed/source_corpus/bf2ec376b48d959d9211f8a474f6ac5d1154a4fde85bc560f4dc2b84d0226ab8.py",
+      "git_blob_sha": "b86e2c8fe843b64125300b7b6802fcd4f2946ca1",
+      "sha256": "bf2ec376b48d959d9211f8a474f6ac5d1154a4fde85bc560f4dc2b84d0226ab8",
+      "imports": [
+        "pathlib",
+        "subprocess"
+      ],
+      "normalized_bytes": 263,
+      "significant_tokens": 56,
+      "ast_nodes": 52,
+      "module_docstring": "Compile the complete report using pdfLaTeX, with shell escape disabled.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "print",
+        "range",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "first_instance/verify_manifest.py",
+      "git_blob_sha": "b9f9ab0168135d5e2971d4902cc0c344a9d8d00e",
+      "sha256": "21dec57ed26ca2054dcf59d2b52476f9dba94caf312a5e667c53c9d6332f46b1",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib"
+      ],
+      "normalized_bytes": 609,
+      "significant_tokens": 138,
+      "ast_nodes": 147,
+      "module_docstring": "Verify hashes of the original delivered payload before regeneration.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "', '.join",
+        "(ROOT / 'MANIFEST.json').read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "failures.append",
+        "hashlib.sha256",
+        "hashlib.sha256(path.read_bytes()).hexdigest",
+        "json.loads",
+        "len",
+        "main",
+        "manifest['sha256'].items",
+        "path.is_file",
+        "path.read_bytes",
+        "print"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "frontier_review/build_pdf.py",
+      "git_blob_sha": "ba0aee59ed8e96c470362e9e566519eb7439f27d",
+      "sha256": "fe790c75dd41a0abd78e55be19a672e95b7203d6c0a616f708e5532b71eff0b7",
+      "imports": [
+        "pathlib",
+        "shutil",
+        "subprocess",
+        "tempfile"
+      ],
+      "normalized_bytes": 1345,
+      "significant_tokens": 263,
+      "ast_nodes": 262,
+      "module_docstring": "Compile the supplied LaTeX report with an installed TeX distribution.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "run",
+        "main"
+      ],
+      "calls": [
+        "(ROOT / 'evidence/latex_build.txt').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "RuntimeError",
+        "SystemExit",
+        "main",
+        "print",
+        "range",
+        "run",
+        "shutil.which",
+        "str",
+        "subprocess.run",
+        "subprocess.run([kpsewhich, 'pdflatex.fmt'], cwd=ROOT, text=True, capture_output=True).stdout.strip",
+        "tempfile.TemporaryDirectory"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "parameter_substitution/build_report.py",
+      "git_blob_sha": "bb9a269c1e0fd7e1cc9680d44346f5fdb326001c",
+      "sha256": "85dc689970789cd9b2f5f23b5138f7e3a9d3ebf208c945e378c877d87ca06712",
+      "imports": [
+        "pathlib",
+        "re"
+      ],
+      "normalized_bytes": 6752,
+      "significant_tokens": 159,
+      "ast_nodes": 163,
+      "module_docstring": "Assemble the standalone LaTeX report from its editable fragments.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "'\\n'.join",
+        "(ROOT / 'code/raw_parameter.py').read_text",
+        "(ROOT / 'ipra_parameter_substitution.tex').write_text",
+        "(ROOT / 'paper' / (name + '.tex')).read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "m.group",
+        "m.group(1).replace",
+        "main",
+        "parts.append",
+        "re.sub"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "mirror_core/reproduce.py",
+      "git_blob_sha": "bbc7bc77ecce83959a4ae614416033d7c8d21ab4",
+      "sha256": "c55f73a237f9ad3362cbc8a0179ac52a6464091d51134f9d8cf9d17039097f71",
+      "imports": [
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 320,
+      "significant_tokens": 71,
+      "ast_nodes": 69,
+      "module_docstring": "Replay the packaged checker evidence using only the Python standard library.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "main",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "uniform_zero/verify.py",
+      "git_blob_sha": "c2667a569b253b7955e29dece40499a7a07a2afb",
+      "sha256": "d74613ce21a1a795aca7dd2869e6dda9b34aaaf8eae4ed8fee175d87e5b767be",
+      "imports": [
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 190,
+      "significant_tokens": 47,
+      "ast_nodes": 48,
+      "module_docstring": "Reproduce the finite acceptance, rejection, and mutation checks.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "adaptive_seed/source_corpus/a20b546e0a86259df3dabbe5ab8671869dfb4f7217e6d27e55c790bbf374886e.py",
+      "git_blob_sha": "c33ac4d62fc665879623e222892c62b162d6dc10",
+      "sha256": "a20b546e0a86259df3dabbe5ab8671869dfb4f7217e6d27e55c790bbf374886e",
+      "imports": [
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 365,
+      "significant_tokens": 88,
+      "ast_nodes": 87,
+      "module_docstring": "Reproduce the measured kernels and complete-process controls offline.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "uniform_raw/reproduce.py",
+      "git_blob_sha": "c666585fe9ba59d5d338b596be5e9fc734a13901",
+      "sha256": "6f795695c26f44cd5122ce5ed38ba45bf2a9b93fc3409f0e1ce164f24f72ba7c",
+      "imports": [
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 175,
+      "significant_tokens": 43,
+      "ast_nodes": 45,
+      "module_docstring": "Rebuild the certificate evidence and the source-size comparison.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "scope_and_coverage/source_corpus/69dba25ea00590ec0c4abdb61cb708cc2385dc9f80855d5fbc6c0d87772bf7ce.py",
+      "git_blob_sha": "c7f93fadf9ceb52e069b09168ea9e1a46ecf1e1a",
+      "sha256": "69dba25ea00590ec0c4abdb61cb708cc2385dc9f80855d5fbc6c0d87772bf7ce",
+      "imports": [
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 411,
+      "significant_tokens": 74,
+      "ast_nodes": 72,
+      "module_docstring": "Recompute source metrics and finite checks using only this archive.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "print",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "adaptive_seed/source_corpus/fa6f39f741e6e2294d0e45550401ce538aa8f0bec424c76e862afa54fb003ad2.py",
+      "git_blob_sha": "cd92a0c8fbe67648e6208167440fe45f3cd5f036",
+      "sha256": "fa6f39f741e6e2294d0e45550401ce538aa8f0bec424c76e862afa54fb003ad2",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 637,
+      "significant_tokens": 118,
+      "ast_nodes": 126,
+      "module_docstring": "Verify inherited appendix identity and reproduce the packaged checker evidence.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(ROOT / 'evidence/inherited_arithmetic.json').read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "hashlib.sha256",
+        "hashlib.sha256(path.read_bytes()).hexdigest",
+        "json.loads",
+        "path.read_bytes",
+        "print",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "adaptive_seed/source_corpus/a713e55016bfc24b22ca12b398fd7214b5877d74d1e5fd5f5e49de14e867027c.py",
+      "git_blob_sha": "ce2c5d0415fcd2fd0031434dc37a7c96d4bed722",
+      "sha256": "a713e55016bfc24b22ca12b398fd7214b5877d74d1e5fd5f5e49de14e867027c",
+      "imports": [
+        "pathlib",
+        "shutil",
+        "subprocess"
+      ],
+      "normalized_bytes": 371,
+      "significant_tokens": 74,
+      "ast_nodes": 74,
+      "module_docstring": "Compile the complete LaTeX report.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "print",
+        "range",
+        "shutil.which",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "initializer_equality/shared_traversal/build_shared.py",
+      "git_blob_sha": "d0c2d5884b8d4d86f132e38c472fa89dc75c37b5",
+      "sha256": "038e06e465bc0bb48411177ce8c8b7e3764bb5a18c70229ee2590add1e4272f3",
+      "imports": [
+        "pathlib"
+      ],
+      "normalized_bytes": 1373,
+      "significant_tokens": 160,
+      "ast_nodes": 170,
+      "module_docstring": null,
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(BASE / f'{mode}_checker.py').read_text",
+        "(OUT / f'{mode}_shared.py').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "output.replace",
+        "source.index"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "frontier_review/verify_manifest.py",
+      "git_blob_sha": "d24e35f28390187f742b88db52fa19100e8366bd",
+      "sha256": "af96b7b78997019cd73818b106fa191d80e2baea1ea3d7a34300bebf226bf711",
+      "imports": [
+        "hashlib",
+        "pathlib"
+      ],
+      "normalized_bytes": 533,
+      "significant_tokens": 122,
+      "ast_nodes": 133,
+      "module_docstring": "Verify packaged files against MANIFEST.sha256.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "', '.join",
+        "(ROOT / 'MANIFEST.sha256').read_text",
+        "(ROOT / 'MANIFEST.sha256').read_text().splitlines",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "failures.append",
+        "hashlib.sha256",
+        "hashlib.sha256(path.read_bytes()).hexdigest",
+        "line.split",
+        "path.is_file",
+        "path.read_bytes",
+        "print"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "target_closure/build.py",
+      "git_blob_sha": "d37a0d2aa48b2e7b71455b1665544a9bc5b52336",
+      "sha256": "49ce6bddb073d9ac4eedd293175f035705d121019d9b121b2b9e9ed402432fe0",
+      "imports": [
+        "pathlib",
+        "re",
+        "subprocess"
+      ],
+      "normalized_bytes": 630,
+      "significant_tokens": 149,
+      "ast_nodes": 147,
+      "module_docstring": "Regenerate standalone LaTeX sources and compile the two documents.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "flatten"
+      ],
+      "calls": [
+        "(ROOT / (name + '.tex')).write_text",
+        "(ROOT / (name + '_main.tex')).read_text",
+        "(ROOT / name).read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "flatten",
+        "match.group",
+        "range",
+        "re.sub",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "scalar_uniqueness/code/uniqueness/measure.py",
+      "git_blob_sha": "dae75f4cff33658863e15f17579203c9b5a21a14",
+      "sha256": "6aebe43a22198f094e934c65427407a2a6aabafc21ecea1204b6a7ee817acfc3",
+      "imports": [
+        "ast",
+        "gzip",
+        "io",
+        "json",
+        "pathlib",
+        "sys",
+        "tokenize"
+      ],
+      "normalized_bytes": 1001,
+      "significant_tokens": 264,
+      "ast_nodes": 265,
+      "module_docstring": "Reproduce normalized-source metrics for the matched complete kernels.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(root / 'metrics.json').write_text",
+        "(root / (name + '.normalized.gz')).write_bytes",
+        "(root / (name + '.normalized.py')).write_text",
+        "(root / name).read_text",
+        "Path",
+        "ast.parse",
+        "ast.unparse",
+        "ast.walk",
+        "gzip.compress",
+        "io.StringIO",
+        "json.dumps",
+        "len",
+        "print",
+        "rows.append",
+        "source.encode",
+        "sum",
+        "tokenize.generate_tokens"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "smaller_envelope/reproduce.py",
+      "git_blob_sha": "dd4d9c1bb974e0e15849dff92c63eb5506dc1e0d",
+      "sha256": "6f6ab4055267cf2b0292680ff6b160f7f25218e1264765a91cdfe6f884e10a41",
+      "imports": [
+        "json",
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 902,
+      "significant_tokens": 170,
+      "ast_nodes": 156,
+      "module_docstring": "Reproduce measurements and focused implementation checks.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(root / 'evidence/METRICS.json').read_text",
+        "(root / 'evidence/REPRODUCTION.json').write_text",
+        "(root / 'evidence/byte_validation.json').read_text",
+        "(root / 'evidence/inferred_summary.json').read_text",
+        "(root / 'evidence/strict_validation.json').read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "json.dumps",
+        "json.loads",
+        "print",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "seed_evaluation/reproduce.py",
+      "git_blob_sha": "dd6f451483de363a43ae3c97b41471088241d3fb",
+      "sha256": "106af792296f0e30040f5e4aebb0a707dfd253d738e675e9a871cbc301adb83f",
+      "imports": [
+        "json",
+        "pathlib",
+        "shutil",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 1165,
+      "significant_tokens": 242,
+      "ast_nodes": 265,
+      "module_docstring": "Reproduce both SeedEval comparisons and the suspended-unit size experiment.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "json.dumps",
+        "main",
+        "print",
+        "shutil.copyfile",
+        "str",
+        "subprocess.run",
+        "target.mkdir"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "deterministic_introduction/build_report.py",
+      "git_blob_sha": "dd7d12172ab86013e4ad3de379f7c98cfe96f866",
+      "sha256": "955a1709fb87fc41ce292a9f2a2aa57a2aa9d7d62ad54b7e8fc260517140536d",
+      "imports": [
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 1112,
+      "significant_tokens": 152,
+      "ast_nodes": 153,
+      "module_docstring": "Build the standalone LaTeX report and compile it without shell escape.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "build"
+      ],
+      "calls": [
+        "'\\n'.join",
+        "(ROOT / 'code/checker.normalized.py').read_text",
+        "(ROOT / 'ipra_deterministic_introduction.tex').write_text",
+        "(ROOT / 'references.tex').read_text",
+        "(ROOT / name).read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "build",
+        "print",
+        "range",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "direct_closure_qprogress/reproduce.py",
+      "git_blob_sha": "ddf6272b85ec18a2815f0005850c02f8a48e48a7",
+      "sha256": "090cce4f30c096acc4ecc1ff65bd8c3fa70cd8338263408d0e960fa61b957b6b",
+      "imports": [
+        "json",
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 845,
+      "significant_tokens": 181,
+      "ast_nodes": 181,
+      "module_docstring": "Reproduce mathematical fixtures, process tests, and complete-source metrics.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(root / 'reproduction.json').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "json.dumps",
+        "print",
+        "results.append",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "scope_kernel/build_report.py",
+      "git_blob_sha": "df687701902ea3a1217bc068432cbead9e7427ad",
+      "sha256": "53a8a8f0a5cf12c3123ab4b651e23bf8ec3b54f76a70831abdaa2cee59264fdb",
+      "imports": [
+        "pathlib",
+        "shutil",
+        "subprocess"
+      ],
+      "normalized_bytes": 668,
+      "significant_tokens": 152,
+      "ast_nodes": 161,
+      "module_docstring": "Build the report twice; keep auxiliary files outside the deliverable tree.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(BUILD / ('pass_' + str(run + 1) + '.txt')).write_text",
+        "BUILD.mkdir",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "print",
+        "range",
+        "shutil.copy2",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "coverage_and_kernel/tests/protocol.py",
+      "git_blob_sha": "e1bb6c17dde2546c5bf2b4b2f97cfdcb001144e6",
+      "sha256": "c521ffda63f00ce9080cbf62be44ef77f6427f77c9bd981c59c3ce6b44185bd3",
+      "imports": [
+        "copy"
+      ],
+      "normalized_bytes": 363,
+      "significant_tokens": 73,
+      "ast_nodes": 87,
+      "module_docstring": "Untrusted conversion of inherited certificates to the array-truth protocol.\n\nThe inherited producer is kept byte-for-byte with attribution. The checker\nimports neither this module nor that producer. Canonical major proofs keep\ntheir global eigenparameter numbering: the neutral [] proof consumes no\npacket and allocates no fresh name.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "translate"
+      ],
+      "calls": [
+        "copy.deepcopy",
+        "isinstance",
+        "len"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "constructed_computation/verify.py",
+      "git_blob_sha": "e551e9894948f4c0bbdc4fc5aece559b94c4b797",
+      "sha256": "96560ece74c292c85f13eb5d87ff457681c7a9f0de429a68a937daaea8322778",
+      "imports": [
+        "json",
+        "pathlib",
+        "runpy",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 1444,
+      "significant_tokens": 275,
+      "ast_nodes": 260,
+      "module_docstring": "Reproduce the finite implementation evidence and source comparison.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "(ROOT / 'evidence/reproduction.json').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "json.dumps",
+        "len",
+        "main",
+        "measure",
+        "print",
+        "receipts.append",
+        "runpy.run_path",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "adaptive_seed/source_corpus/978cb2e2dbbdbd554934d86bf441041e850e96ac4a8d2afdf8885354ee6bec0a.py",
+      "git_blob_sha": "e5b894ffc727cc7353d292423b8155fa73601872",
+      "sha256": "978cb2e2dbbdbd554934d86bf441041e850e96ac4a8d2afdf8885354ee6bec0a",
+      "imports": [
+        "importlib.util",
+        "json",
+        "pathlib",
+        "platform",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 1305,
+      "significant_tokens": 230,
+      "ast_nodes": 215,
+      "module_docstring": "Reproduce the finite evidence and full-source metrics, without network access.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "(ROOT / 'evidence/reproduction.json').write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "importlib.util.module_from_spec",
+        "importlib.util.spec_from_file_location",
+        "json.dumps",
+        "len",
+        "main",
+        "measure.metrics",
+        "platform.python_implementation",
+        "platform.python_version",
+        "print",
+        "spec.loader.exec_module",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "monus_and_neutral_major/build.py",
+      "git_blob_sha": "eade4e53a45a14c0242c7a69eea7b72f20ad1f14",
+      "sha256": "b47d6e3c762642a05ef1078de5bc313490c15d2d0d069eed06ac09535978fde7",
+      "imports": [
+        "pathlib",
+        "shutil",
+        "subprocess"
+      ],
+      "normalized_bytes": 574,
+      "significant_tokens": 116,
+      "ast_nodes": 113,
+      "module_docstring": "Compile the LaTeX report; requires pdflatex and ordinary TeX packages.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "'\\n'.join",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "print",
+        "process.stdout.splitlines",
+        "range",
+        "shutil.which",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "successor_seed_completion/reproduce.py",
+      "git_blob_sha": "eb76bbfd14a2ca71e5c5cfee041416f9e24d591f",
+      "sha256": "0b6bc83c13a36c4e03dd058a589d11c50cc1ef683ad8143ba2fb72d3a5f60211",
+      "imports": [
+        "argparse",
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 826,
+      "significant_tokens": 135,
+      "ast_nodes": 134,
+      "module_docstring": "Reproduce measurements and finite diagnostics; these do not replace the proof.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "argparse.ArgumentParser",
+        "main",
+        "parser.add_argument",
+        "parser.parse_args",
+        "print",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "neutral_scope/build.py",
+      "git_blob_sha": "ebc63e9ce86cbedf8f607b8f2ec0f7fb65f344be",
+      "sha256": "5064cee163b30b921d20e9f102df8c4fbf63e211d120484c3110496913936db1",
+      "imports": [
+        "pathlib",
+        "re",
+        "subprocess"
+      ],
+      "normalized_bytes": 1271,
+      "significant_tokens": 259,
+      "ast_nodes": 265,
+      "module_docstring": "Build the complete report without network access or shell escape.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "expand"
+      ],
+      "calls": [
+        "'\\n'.join",
+        "(ROOT / 'ipra_neutral_scope.log').read_text",
+        "(ROOT / 'ipra_neutral_scope.tex').write_text",
+        "(ROOT / filename).read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "expand",
+        "log.splitlines",
+        "m.group",
+        "m.group(1).endswith",
+        "match.groups",
+        "path.read_text",
+        "print",
+        "range",
+        "re.sub",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "bounded_initializer/build.py",
+      "git_blob_sha": "ed827acdea75ded4cfdd49b3fe7391ef4ff56772",
+      "sha256": "ffa1fb7c4ed5cc93c41f66619e1fa6140f32f3f1224444bf0189ceb2aa6d89e1",
+      "imports": [
+        "pathlib",
+        "subprocess"
+      ],
+      "normalized_bytes": 427,
+      "significant_tokens": 91,
+      "ast_nodes": 87,
+      "module_docstring": "Build the complete LaTeX report; no network or shell escape.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "print",
+        "range",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "conditional_copy/validation/audit_syntax.py",
+      "git_blob_sha": "ede8403a88a48430bb84c76f73aa72a2c1fc87b3",
+      "sha256": "8c649a85122879854b1a530e573d2128efc5f675ebb9d7ef9704f155a88aabbe",
+      "imports": [
+        "checker",
+        "json",
+        "pathlib",
+        "sys"
+      ],
+      "normalized_bytes": 990,
+      "significant_tokens": 180,
+      "ast_nodes": 184,
+      "module_docstring": "Additional strict-syntax rejection cases, partly overlapping the main fixtures.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(ROOT / 'evidence' / 'syntax_audit.json').write_text",
+        "(ROOT / 'validation' / 'syntax_rejections').glob",
+        "AssertionError",
+        "Path",
+        "Path(__file__).resolve",
+        "checker.check",
+        "json.dumps",
+        "json.loads",
+        "len",
+        "path.read_text",
+        "print",
+        "rejected.append",
+        "sorted",
+        "str",
+        "sys.path.insert"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "computation_normal/tests/verify_fuel.py",
+      "git_blob_sha": "f49896800e8d90cdee5f20a37129571bdbb6661a",
+      "sha256": "9fd813b0398cae782493d2c3d6d95b0d459ef1bcf774219833cb2fc7bd6ddba9",
+      "imports": [
+        "json",
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 1094,
+      "significant_tokens": 270,
+      "ast_nodes": 266,
+      "module_docstring": "Exercise the explicit-fuel interface on genuine proof certificates.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "(ROOT / 'certificates/full_normal_case.json').read_text",
+        "(ROOT / 'evidence/fuel_verification.json').write_text",
+        "AssertionError",
+        "Path",
+        "Path(__file__).resolve",
+        "all",
+        "dict",
+        "json.dumps",
+        "json.dumps(certificate).encode",
+        "json.loads",
+        "len",
+        "print",
+        "results.append",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "crossed_uniqueness/verify_manifest.py",
+      "git_blob_sha": "f9f3b026e4523f63a439c6fd7072e85483ccb893",
+      "sha256": "798b15d93017864a7c349755f75f330000b86b304aea22acbb3b7e487da7bec0",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib"
+      ],
+      "normalized_bytes": 470,
+      "significant_tokens": 120,
+      "ast_nodes": 134,
+      "module_docstring": "Verify the untouched distribution. Rebuilding generated files may change their hashes.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "', '.join",
+        "(ROOT / 'MANIFEST.json').read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "bad.append",
+        "hashlib.sha256",
+        "hashlib.sha256(p.read_bytes()).hexdigest",
+        "json.loads",
+        "len",
+        "manifest.items",
+        "p.is_file",
+        "p.read_bytes",
+        "print",
+        "str"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "counter_congruence/build.py",
+      "git_blob_sha": "fc63ea8882f556027fb54d5a2c7266e45fe37982",
+      "sha256": "3237ea59d8bcc6c8470ae242dea4292627947d493cf4415c0a706857c3c5335a",
+      "imports": [
+        "pathlib",
+        "re",
+        "shutil",
+        "subprocess"
+      ],
+      "normalized_bytes": 1118,
+      "significant_tokens": 255,
+      "ast_nodes": 264,
+      "module_docstring": "Build a standalone TeX source and its PDF using an installed TeX setup.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "expand",
+        "main"
+      ],
+      "calls": [
+        "'\\n'.join",
+        "(ROOT / 'evidence' / 'latex_build.log').write_text",
+        "(ROOT / 'report.tex').read_text",
+        "(ROOT / (STEM + '.tex')).write_text",
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "expand",
+        "logs.append",
+        "main",
+        "match.group",
+        "path.read_text",
+        "print",
+        "range",
+        "re.sub",
+        "shutil.copyfile",
+        "str",
+        "subprocess.run",
+        "temporary.mkdir"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "smaller_envelope/build.py",
+      "git_blob_sha": "fe55cc025d22c329a76d88f1c568aa7dc050bf71",
+      "sha256": "725b320267032cec5fed90bc12d7b376ee6ee944a6774f13c75393df6c95dff9",
+      "imports": [
+        "pathlib",
+        "shutil",
+        "subprocess"
+      ],
+      "normalized_bytes": 1077,
+      "significant_tokens": 231,
+      "ast_nodes": 236,
+      "module_docstring": "Rebuild the supplied PDF from its actual LaTeX sources.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "build.mkdir",
+        "format_file.exists",
+        "lookup.stdout.strip",
+        "print",
+        "range",
+        "shutil.copyfile",
+        "str",
+        "subprocess.run"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "first_instance/build_report.py",
+      "git_blob_sha": "fef2e79c23ac5006feb7bbf5c81154b90be57daa",
+      "sha256": "71d6bbd33ecac41c4d2437eda635d05a43c4a042e57aa200facee92fc8b6602c",
+      "imports": [
+        "pathlib"
+      ],
+      "normalized_bytes": 850,
+      "significant_tokens": 117,
+      "ast_nodes": 111,
+      "module_docstring": "Assemble the complete standalone LaTeX source from editable sections.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "main"
+      ],
+      "calls": [
+        "'\\n\\n'.join",
+        "(ROOT / 'evidence/normalized/code__checker.py').read_text",
+        "(ROOT / 'ipra_first_instance.tex').write_text",
+        "(ROOT / name).read_text",
+        "Path",
+        "Path(__file__).resolve",
+        "main",
+        "print",
+        "source.replace"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    },
+    {
+      "canonical_path": "adaptive_seed/source_corpus/16df88d046c784e8db4d4f81f51b791bca7cc02346affd62159034973f6fc887.py",
+      "git_blob_sha": "ffd69c9bc0b91b8bbf13d5e2b7eeb29a81148cb3",
+      "sha256": "16df88d046c784e8db4d4f81f51b791bca7cc02346affd62159034973f6fc887",
+      "imports": [
+        "ast",
+        "pathlib",
+        "subprocess",
+        "sys"
+      ],
+      "normalized_bytes": 873,
+      "significant_tokens": 178,
+      "ast_nodes": 186,
+      "module_docstring": "Reproduce the certificate checks, source sizes, and source identity check.",
+      "direct_standard_input_sites": [],
+      "literal_accept_marker": false,
+      "top_level_functions": [
+        "executable_tree",
+        "main"
+      ],
+      "calls": [
+        "Path",
+        "Path(__file__).resolve",
+        "SystemExit",
+        "ast.dump",
+        "ast.parse",
+        "executable_tree",
+        "isinstance",
+        "main",
+        "path.read_text",
+        "print",
+        "str",
+        "subprocess.run",
+        "tree.body.pop"
+      ],
+      "scope_of_exclusion": "Not a standalone module implementing the surveyed stdin-JSON/ACCEPT contract: no direct standard-input operation and no literal ACCEPT marker. These files are report/code builders, metric utilities, manifest checkers, test/certificate utilities, or harnesses that invoke separately charged programs. This screening is not a theorem about alternative I/O conventions."
+    }
+  ]
+}

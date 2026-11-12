@@ -66,8 +66,7 @@ variable {Γ : List (Fm Tm n)}
 
 theorem congr₁ {f : ∀ k, Tm k → Tm k} (hf : Sub₁ f) {a a' : Tm n}
     (ha : Γ ⊢[TeqAx] a ≐ a') : Γ ⊢[TeqAx] f n a ≐ f n a' := by
-  have h := Prf.eqCongr1 (f (n + 1) (var 0)) ha
-  simpa only [hf, Syn.subst_var, Syn.inst_zero] using h
+  simpa only [hf, Syn.subst_var, Syn.inst_zero] using Prf.eqCongr1 (f (n + 1) (var 0)) ha
 
 theorem congr₂ {f : ∀ k, Tm k → Tm k → Tm k} (hf : Sub₂ f) {a a' b b' : Tm n}
     (ha : Γ ⊢[TeqAx] a ≐ a') (hb : Γ ⊢[TeqAx] b ≐ b') :

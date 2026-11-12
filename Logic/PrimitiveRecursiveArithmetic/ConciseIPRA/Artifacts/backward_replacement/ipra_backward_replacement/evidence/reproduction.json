@@ -1,0 +1,736 @@
+{
+  "python": "3.12.14",
+  "all_suites_passed": true,
+  "reference_checker": {
+    "python": "3.12.14",
+    "positive_sequents": 18,
+    "negative_certificates": 16,
+    "operation_tests": 7,
+    "driver_checks": 18,
+    "all_passed": true,
+    "checker_metrics": {
+      "significant_tokens": 1647,
+      "ast_nodes": 1807,
+      "normalized_utf8_bytes": 7121,
+      "raw_utf8_bytes": 8679,
+      "scope": "entire standalone module, excluding docstrings/comments only",
+      "normalization": "recursively strip docstrings; ast.unparse; one final LF",
+      "source_sha256": "a803a62dd07adbb26276dcf464669b90f6a7c5157231e962fc71d581b43be2cd",
+      "normalized_sha256": "2a82324bf77af5249f42a4bef5654649d2027bb5b4aa7645e053f30d2cebbefb"
+    },
+    "checker_metrics_with_docstrings": {
+      "significant_tokens": 1654,
+      "ast_nodes": 1821,
+      "normalized_utf8_bytes": 8325
+    },
+    "operations": {
+      "no_recursive_replacement_inside_inserted_term": true,
+      "bound_variable_is_protected": true,
+      "inserted_parameter_is_shifted": true,
+      "substitution_avoids_capture_under_iterator": true,
+      "substitution_avoids_capture_under_D": true,
+      "substitution_avoids_capture_under_Q": true,
+      "witness_leaves_y_bound": true
+    },
+    "positive_names": [
+      "hyp_open",
+      "i0_closed",
+      "is_closed",
+      "brep_reflexivity_closed",
+      "brep_zero_source_closed",
+      "di_closed",
+      "qi_closed",
+      "qe_closed",
+      "de_closed",
+      "qi_variable_equation_closed",
+      "di_variable_witness_closed",
+      "de_parameter_open",
+      "congruence_passive_copies",
+      "congruence_under_iterator_binder",
+      "congruence_nested_iterator_binders",
+      "congruence_unused_hole",
+      "congruence_repeated_hole",
+      "replacement_avoids_capture_open"
+    ],
+    "negative_names": [
+      "bound_variable_must_not_match_free_source",
+      "replacement_captures_inserted_parameter",
+      "wrong_zero_endpoint",
+      "wrong_successor_endpoint",
+      "fresh_parameter_as_existential_witness",
+      "eigenparameter_escapes_conclusion",
+      "unbound_iterator_body",
+      "boolean_is_not_a_variable",
+      "boolean_is_not_Q_tag",
+      "term_array_of_wrong_arity",
+      "progress_on_compound_matrix",
+      "wrong_closure_target",
+      "extra_proof_fields",
+      "negative_hypothesis_index",
+      "boolean_hypothesis_index",
+      "unknown_rule"
+    ]
+  },
+  "independent_audit": {
+    "all_passed": true,
+    "checker_sha256": "a803a62dd07adbb26276dcf464669b90f6a7c5157231e962fc71d581b43be2cd",
+    "positive_sequents": 4,
+    "negative_certificates": 2,
+    "driver_runs": 4,
+    "outcomes": [
+      {
+        "name": "free_target_does_not_match_bound_variable",
+        "expected_accept": true,
+        "accepted": true
+      },
+      {
+        "name": "de_uses_actual_appended_witness",
+        "expected_accept": true,
+        "accepted": true
+      },
+      {
+        "name": "closed_zero_name_is_used_and_discharged",
+        "expected_accept": true,
+        "accepted": true
+      },
+      {
+        "name": "qi_keeps_old_parameter_and_uses_new_counter",
+        "expected_accept": true,
+        "accepted": true
+      },
+      {
+        "name": "forged_matching_of_bound_variable_to_free_target",
+        "expected_accept": false,
+        "accepted": false
+      },
+      {
+        "name": "de_old_parameter_cannot_replace_new_witness",
+        "expected_accept": false,
+        "accepted": false
+      }
+    ],
+    "drivers": [
+      {
+        "name": "closed_zero_name_is_used_and_discharged",
+        "optimized": false,
+        "expected_accept": true,
+        "returncode": 0
+      },
+      {
+        "name": "de_uses_actual_appended_witness",
+        "optimized": false,
+        "expected_accept": false,
+        "returncode": 1
+      },
+      {
+        "name": "closed_zero_name_is_used_and_discharged",
+        "optimized": true,
+        "expected_accept": true,
+        "returncode": 0
+      },
+      {
+        "name": "de_uses_actual_appended_witness",
+        "optimized": true,
+        "expected_accept": false,
+        "returncode": 1
+      }
+    ],
+    "status": "Focused finite implementation tests, not formal verification."
+  },
+  "matched_comparison": {
+    "python": "3.12.14",
+    "normalization": "recursively strip docstrings; ast.unparse; one final LF",
+    "control": "checker_control.py: explicit one-term crossed transport",
+    "candidate": "checker.py: backward crossed replacement",
+    "same_public_syntax_scope_checks_and_driver": true,
+    "only_executable_changes": [
+      "remove replace_term",
+      "replace brep branch by tr branch"
+    ],
+    "candidate_metrics": {
+      "significant_tokens": 1647,
+      "ast_nodes": 1807,
+      "normalized_utf8_bytes": 7121,
+      "source_sha256": "a803a62dd07adbb26276dcf464669b90f6a7c5157231e962fc71d581b43be2cd",
+      "normalized_sha256": "2a82324bf77af5249f42a4bef5654649d2027bb5b4aa7645e053f30d2cebbefb"
+    },
+    "control_metrics": {
+      "significant_tokens": 1581,
+      "ast_nodes": 1738,
+      "normalized_utf8_bytes": 6971,
+      "source_sha256": "cb723f3afc23cec4d7544343e0f4affa595fab47c04ab1399ccec196ec9c917d",
+      "normalized_sha256": "fa11d48e8f8cf86f371bc19d2ed94d390703cc79d1faf461db38dafb56681249"
+    },
+    "candidate_minus_control": {
+      "significant_tokens": 66,
+      "ast_nodes": 69,
+      "normalized_utf8_bytes": 150
+    },
+    "common_rule_fixtures": [
+      "de_closed",
+      "de_parameter_open",
+      "di_closed",
+      "di_variable_witness_closed",
+      "hyp_open",
+      "i0_closed",
+      "is_closed",
+      "qe_closed",
+      "qi_closed",
+      "qi_variable_equation_closed"
+    ],
+    "common_rule_fixtures_passed": 10,
+    "additional_Tr_congruence_fixture_passed": true,
+    "all_passed": true,
+    "conclusion": "BRep removes the certificate template but this readable implementation is larger; no size improvement is claimed."
+  },
+  "grouped_protocol": {
+    "python": "3.12.14",
+    "normalization": "ast.unparse plus one final LF; complete modules",
+    "metrics": [
+      {
+        "path": "code/control_tokens.py",
+        "significant_tokens": 251,
+        "ast_nodes": 283,
+        "normalized_bytes": 605,
+        "sha256": "c065437162865bd05bf27a41df971e6d3451ff74595f054434912e8939a45bc0"
+      },
+      {
+        "path": "code/checker_grouped.py",
+        "significant_tokens": 250,
+        "ast_nodes": 281,
+        "normalized_bytes": 604,
+        "sha256": "d619462cb373b03a12513b0773b864dd42f87b68db5cb4799971fe66e53eab91"
+      },
+      {
+        "path": "code/control_tokens_strict.py",
+        "significant_tokens": 403,
+        "ast_nodes": 453,
+        "normalized_bytes": 972,
+        "sha256": "ca442bfb944ea621d5469c94b196d54ba8aac17414baf45d96089f463334c451"
+      },
+      {
+        "path": "code/checker_grouped_strict.py",
+        "significant_tokens": 402,
+        "ast_nodes": 451,
+        "normalized_bytes": 971,
+        "sha256": "c8cc8b863885b017a44fe99baf298000d1f5d1bd10369119aab201bf0001d28c"
+      }
+    ],
+    "inherited_compact_coordinate_envelope": {
+      "significant_tokens": 251,
+      "ast_nodes": 275,
+      "normalized_bytes": 502
+    },
+    "candidate_beats_only_token_coordinate": true,
+    "fixture_cases": [
+      {
+        "name": "compound_case_introduction_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "compound_implication_elimination_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "computation_successor_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "computation_zero_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "context_leak_attack_global.json",
+        "expected_compact": false,
+        "compact_control": false,
+        "compact_grouped": false,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "false_zero_equals_one_global.json",
+        "expected_compact": false,
+        "compact_control": false,
+        "compact_grouped": false,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "future_witness_capture_global.json",
+        "expected_compact": false,
+        "compact_control": false,
+        "compact_grouped": false,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "guarded_induction_with_used_hypothesis_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "guarded_lift_elimination_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "guarded_literal_equation_introduction_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "missing_computation_global.json",
+        "expected_compact": false,
+        "compact_control": false,
+        "compact_grouped": false,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "missing_goal_global.json",
+        "expected_compact": false,
+        "compact_control": false,
+        "compact_grouped": false,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "missing_instruction_fields_global.json",
+        "expected_compact": false,
+        "compact_control": false,
+        "compact_grouped": false,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "null_goal_global.json",
+        "expected_compact": false,
+        "compact_control": false,
+        "compact_grouped": false,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "old_atomic_case_global.json",
+        "expected_compact": false,
+        "compact_control": false,
+        "compact_grouped": false,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "transport_reflexivity_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "unguarded_progressive_alias_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "wrong_computation_endpoint_global.json",
+        "expected_compact": false,
+        "compact_control": false,
+        "compact_grouped": false,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "zero_transport_compound_D_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "zero_transport_guarded_D_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "zero_transport_guarded_Q_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "erased_kernel_compound_case_introduction_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "erased_kernel_compound_implication_elimination_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "erased_kernel_guarded_lift_elimination_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "erased_kernel_guarded_literal_equation_introduction_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "erased_kernel_transport_reflexivity_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "erased_kernel_unguarded_progressive_alias_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "erased_kernel_zero_transport_compound_D_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "erased_kernel_zero_transport_guarded_D_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "erased_kernel_zero_transport_guarded_Q_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "inferred_false_major_has_no_proof_global.json",
+        "expected_compact": false,
+        "compact_control": false,
+        "compact_grouped": false,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "inferred_mismatched_endpoint_global.json",
+        "expected_compact": false,
+        "compact_control": false,
+        "compact_grouped": false,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "inferred_source_is_future_parameter_global.json",
+        "expected_compact": false,
+        "compact_control": false,
+        "compact_grouped": false,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "omitted_inferred_major_proof_global.json",
+        "expected_compact": false,
+        "compact_control": false,
+        "compact_grouped": false,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "wrong_packet_arity_0.json",
+        "expected_compact": false,
+        "compact_control": false,
+        "compact_grouped": false,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "wrong_packet_arity_1.json",
+        "expected_compact": false,
+        "compact_control": false,
+        "compact_grouped": false,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "wrong_packet_arity_2.json",
+        "expected_compact": false,
+        "compact_control": false,
+        "compact_grouped": false,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "wrong_packet_arity_3.json",
+        "expected_compact": false,
+        "compact_control": false,
+        "compact_grouped": false,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "wrong_packet_arity_5.json",
+        "expected_compact": false,
+        "compact_control": false,
+        "compact_grouped": false,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "integer_markers_compound_case_introduction_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": true,
+        "strict_grouped": true
+      },
+      {
+        "name": "integer_markers_compound_implication_elimination_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": true,
+        "strict_grouped": true
+      },
+      {
+        "name": "integer_markers_computation_successor_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": true,
+        "strict_grouped": true
+      },
+      {
+        "name": "integer_markers_computation_zero_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": true,
+        "strict_grouped": true
+      },
+      {
+        "name": "integer_markers_guarded_induction_with_used_hypothesis_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": true,
+        "strict_grouped": true
+      },
+      {
+        "name": "integer_markers_guarded_lift_elimination_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": true,
+        "strict_grouped": true
+      },
+      {
+        "name": "integer_markers_guarded_literal_equation_introduction_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": true,
+        "strict_grouped": true
+      },
+      {
+        "name": "integer_markers_transport_reflexivity_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": true,
+        "strict_grouped": true
+      },
+      {
+        "name": "integer_markers_unguarded_progressive_alias_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "integer_markers_zero_transport_compound_D_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": true,
+        "strict_grouped": true
+      },
+      {
+        "name": "integer_markers_zero_transport_guarded_D_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": true,
+        "strict_grouped": true
+      },
+      {
+        "name": "integer_markers_zero_transport_guarded_Q_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "integer_markers_erased_kernel_compound_case_introduction_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": true,
+        "strict_grouped": true
+      },
+      {
+        "name": "integer_markers_erased_kernel_compound_implication_elimination_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": true,
+        "strict_grouped": true
+      },
+      {
+        "name": "integer_markers_erased_kernel_guarded_lift_elimination_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": true,
+        "strict_grouped": true
+      },
+      {
+        "name": "integer_markers_erased_kernel_guarded_literal_equation_introduction_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": true,
+        "strict_grouped": true
+      },
+      {
+        "name": "integer_markers_erased_kernel_transport_reflexivity_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": true,
+        "strict_grouped": true
+      },
+      {
+        "name": "integer_markers_erased_kernel_unguarded_progressive_alias_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "integer_markers_erased_kernel_zero_transport_compound_D_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": true,
+        "strict_grouped": true
+      },
+      {
+        "name": "integer_markers_erased_kernel_zero_transport_guarded_D_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": true,
+        "strict_grouped": true
+      },
+      {
+        "name": "integer_markers_erased_kernel_zero_transport_guarded_Q_global.json",
+        "expected_compact": true,
+        "compact_control": true,
+        "compact_grouped": true,
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "strict_unused_boolean",
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "strict_unused_float",
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "strict_unused_null",
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "strict_unused_string",
+        "strict_control": false,
+        "strict_grouped": false
+      },
+      {
+        "name": "strict_unused_object",
+        "strict_control": false,
+        "strict_grouped": false
+      }
+    ],
+    "all_checks_passed": true,
+    "scope": "Finite tests supplement the exact regrouping proof; they are not a proof of the inherited arithmetic bridge."
+  },
+  "claim": "No construction below all three incumbent compact minima is established."
+}

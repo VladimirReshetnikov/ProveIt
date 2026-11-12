@@ -816,7 +816,9 @@ premise gives $A(0)$ and $\Q{x}A$, and \rulename{QE} at $t$ gives $A(t)$.
 \begin{remark}[Which rules the logical interface uses]
 \label{base:rem:noprogress}
 No derivation in this section applies \rulename{QI}, except the derivations
-of \cref{base:lem:eqind} and \cref{base:cor:combined}.  The equality rules,
+of \cref{base:lem:eqind} and \cref{base:cor:combined} and, through
+\cref{base:thm:pred}, the elimination rule of the single-binder universal
+(\cref{base:prop:single-binder}(ii)).  The equality rules,
 the Leibniz rule, numerical cases and the whole of \cref{base:thm:logic} are
 derived from the seven other rules.  Cases supply the logic and progress
 supplies induction for equations; the two do not mix.  If \rulename{QI}
@@ -832,6 +834,168 @@ two formulas, and the matrix of the universal quantifier is gated), but they
 satisfy the same introduction and elimination rules and are therefore
 interderivable with them.
 In Lean the connectives and their rules are the module \Lean{NativeLogic}.
+\end{remark}
+
+\subsection{A universal quantifier with one binder}
+\label{base:sec:single-binder}
+
+This subsection draws on \pkg{single\_binder}, which writes the universal
+quantifier with one paired binder over one gated copy of its matrix, at the
+price of the predecessor term $P$ of \cref{base:thm:pred}.
+
+\begin{definition}[The single-binder universal]
+\label{base:def:single-binder}
+Let $P$ be the predecessor term of \cref{base:thm:pred}; its only free
+variable is its argument.  For a native formula $A(x)$ and distinct
+variables $u$, $z$ not free in $A$, put
+\[
+ \mathcal U_x A(x)\defeq
+ \D{u}{z}\operatorname{gate}\bigl(z,\ A(P(z))\bigr),
+\]
+where $A(P(z))$ is $A\subst{P(z)}{x}$.  The variable $u$ does not occur in
+the matrix, and $\FV(\mathcal U_xA)=\FV(A)\setminus\{x\}$.
+\end{definition}
+
+The predecessor is derived in the equational fragment $\mathcal E$ of
+\cref{base:sec:arith}, whose rules are rules or derived rules of $\Nat$
+obtained without the connectives (\cref{base:lem:E}(iv),
+\cref{base:lem:eqind}); no result of this subsection is used there, so the
+forward reference is not circular.  The consequence used below is
+\begin{equation}
+ \Gamma\proves P(\Suc t)=t\qquad\text{for every context $\Gamma$ and term $t$,}
+ \label{base:eq:pred-any}
+\end{equation}
+by substitution of $t$ for the variable of \cref{base:thm:pred} and
+weakening.  Because $P(z)$ has no free variable other than $z$,
+\eqref{base:eq:sel-subst} gives
+$(\mathcal U_xA)[\theta]=\mathcal U_x(A[\theta])$ for every substitution
+$\theta$ that fixes $x$, $u$ and $z$ and whose values do not contain them.
+Since $u$ does not occur in the matrix, \cref{base:lem:dummy} gives
+\begin{equation}
+ \mathcal U_xA(x)\dashv\vdash\Q{z}\operatorname{gate}\bigl(z,\ A(P(z))\bigr),
+ \label{base:eq:single-binder-q}
+\end{equation}
+a formula with the same single binder.
+
+\begin{proposition}[Rules of the single-binder universal]
+\label{base:prop:single-binder}
+For every native formula $A(x)$, context $\Gamma$ and term $t$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\mathcal U$I: if $\Gamma\proves A(x)$ and $x$ is not free in
+ $\Gamma$, then $\Gamma\proves\mathcal U_xA(x)$;
+\item $\mathcal U$E: if $\Gamma\proves\mathcal U_xA(x)$, then
+ $\Gamma\proves A(t)$;
+\item $\mathcal U_xA\dashv\vdash\forall_* x\,A$.  The derivation of
+ $\forall_* x\,A\proves\mathcal U_xA$ does not apply \rulename{QI}; the
+ derivation of $\mathcal U_xA\proves\forall_* x\,A$ uses
+ \eqref{base:eq:pred-any} once.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Choose $u$ and $z$ as in \cref{base:def:single-binder} and write
+$B(z)\defeq\operatorname{gate}(z,A(P(z)))$.  For every term $r$,
+\[
+ B(r)=\operatorname{gate}\bigl(r,\ A(P(r))\bigr),
+\]
+by \eqref{base:eq:sel-subst} and \cref{base:lem:subst}, because $z$ is not
+free in $A$ and $P(z)\subst{r}{z}=P(r)$.
+
+(i) Let $z'$ be a variable not free in $\Gamma$ and $A$.  Since $x$ is not
+free in $\Gamma$, substituting $P(\Suc z')$ for $x$ in the premise
+(\cref{base:lem:struct}) gives $\Gamma\proves A(P(\Suc z'))$, and
+\cref{base:lem:gate}(ii) at the term $z'$ gives
+$\Gamma\proves\operatorname{gate}(\Suc z',A(P(\Suc z')))$, that is,
+$\Gamma\proves B(\Suc z')$.  Weakening by $B(0)$ gives
+$\Gamma,B(0)\proves B(\Suc z')$.  This is the premise of \rulename{DI}
+with the matrix $B$, in which $u$ does not occur, the witness $0$ and the
+eigenvariable $z'$; the side conditions hold because $z'$ is not free in
+$\Gamma$, in $0$ or in $\mathcal U_xA$.  \rulename{DI} gives
+$\Gamma\proves\D{u}{z}B=\mathcal U_xA$.  The assumption $B(0)$ is not used.
+
+(ii) Let $b$ be a variable not free in $\Gamma$, $A$ and $t$.  By
+\rulename{DE} it suffices to derive $A(t)$ over the context $\Gamma'$ that
+extends $\Gamma$ by the hypothesis $\Q{z}B(z)$, which is the opened
+formula $\Q{z}B\subst{b}{u}$ because $u$ does not occur in $B$; the side
+conditions of \rulename{DE} hold because $b$ is not free in $\Gamma$, in
+$A(t)$ or in $\mathcal U_xA$.  Over $\Gamma'$:
+$B(0)=\operatorname{gate}(0,A(P(0)))$ is derivable by
+\cref{base:lem:gate}(i); \rulename{QE} at $\Suc t$ gives
+$B(\Suc t)=\operatorname{gate}(\Suc t,A(P(\Suc t)))$;
+\cref{base:lem:gate}(ii) at the term $t$ gives $A(P(\Suc t))$; and
+\eqref{base:eq:pred-any} with \cref{base:cor:tr} for the template $A(x)$
+gives $A(t)$.
+
+(iii) By $\forall_*$E of \cref{base:thm:logic}(vi) at the variable $x$,
+$\forall_* x\,A\proves A(x)$, and $x$ is not free in $\forall_* x\,A$, so (i)
+gives $\forall_* x\,A\proves\mathcal U_xA$.  The rules used are
+$\forall_*$E, substitution, \cref{base:lem:gate}(ii) and \rulename{DI};
+none of them applies \rulename{QI} (\cref{base:rem:noprogress}).
+Conversely, (ii) at the term $x$ gives $\mathcal U_xA\proves A(x)$, and
+$x$ is not free in $\mathcal U_xA$, so $\forall_*$I gives
+$\mathcal U_xA\proves\forall_* x\,A$.  This direction uses
+\eqref{base:eq:pred-any}, and the derivation of \cref{base:thm:pred}
+applies equation induction, that is, \rulename{QI}.
+\end{proof}
+
+Thus $\mathcal U$ satisfies the same introduction and elimination rules as
+$\forall_*$ and may replace it wherever only these rules are used; the
+replacement in the bridge is \cref{base:cor:single-binder-bridge}.  The
+interderivability holds in $\Nat$ with all eight rules.  Whether it holds
+without \rulename{QI} is open (\cref{base:q:single-binder-noprogress}).
+
+\begin{remark}[What the single binder saves]
+\label{base:rem:single-binder-size}
+Let the \emph{binder rank} $r(A)$ be the number of occurrences of $Q$ and
+$D$ in $A$: $r(s=t)=0$ and $r(\Q{y}B)=r(\D{x}{y}B)=1+r(B)$.  Substitution
+preserves rank.  By induction on \cref{base:def:gate}, first for an
+equation as first argument by induction on $B$ and then by induction on
+$A$,
+\[
+ r\bigl(\operatorname{gate}(v,B)\bigr)=r(B),\qquad
+ r\bigl(\sel(v,A,B)\bigr)=r(A)+r(B):
+\]
+the selector of \cref{base:def:gate} stacks the binders of its two formulas
+and does not align them.  Hence, by \cref{base:def:macros},
+$r(A\wedge_* B)=1+r(A)+r(B)$ and
+\[
+ r(\forall_* x\,A)=1+r(A(0))+r(\Q{x}A)=2\,r(A)+2,\qquad
+ r(\mathcal U_xA)=r(A)+1 .
+\]
+The formula $\forall_* x\,A$ contains two copies of $A$, the instance $A(0)$
+and the matrix of $\Q{x}A$; the formula $\mathcal U_xA$ contains one,
+$A(P(z))$.  For $n$ universal quantifiers over one equation $E$ the
+recursion $r_n=2r_{n-1}+2$, $r_0=0$, gives the rank $2^{n+1}-2$ and $2^n$
+copies of $E$ for $\forall_*$, against the rank $n$ and one copy of $E$
+for $\mathcal U$.  The cost is moved into the terms: every free occurrence
+of $x$ in $A$ is replaced by the fixed term $P(z)$, and the gate replaces
+each side $s$ of the terminal equation of $A$ by $\sel(z,a,s)$, where $a$
+is a nest of $r(A)$ selectors over $0$, one for each binder of $A$.  No
+formula is duplicated.
+\end{remark}
+
+\begin{remark}[The rules as \pkg{single\_binder} states them]
+\label{base:rem:single-binder-sources}
+\pkg{single\_binder} states the definition for the formulas of the
+inherited basis, built from equations and $D$ alone, with the gate
+$\operatorname{gate}(v,s=t)\defeq(\sel(v,0,s)=\sel(v,0,t))$ and
+$\operatorname{gate}(v,\D{a}{b}B)\defeq\D{a}{b}\operatorname{gate}(v,B)$,
+and with a selector that aligns the binders of its two formulas; there the
+old universal adds two to the rank instead of $r(A)+2$, and the package
+proves that its translation of an ordinary formula has binder rank exactly
+its logical depth.  Its introduction transports $A(v)$ along
+$P(\Suc v)=v$; the substitution of $P(\Suc z')$ for the eigenvariable in
+the proof of \cref{base:prop:single-binder}(i) makes that transport
+unnecessary, so that only the elimination uses a law of the predecessor,
+and only $P(\Suc t)=t$; the equation $P(0)=0$ is never used.  The package
+adds that an introduction by progress serves as well, because the
+assumption of the premise is not used.  In $\Nat$ this applies only when
+the matrix $\operatorname{gate}(z,A(P(z)))$ is a literal equation, that
+is, when $A$ is an equation, since \rulename{QI} is restricted to literal
+equations; for a compound $A$ the introduction is by cases.  The package
+obtains the preservation of the formula round trips by an induction on
+ordinary formulas whose congruence steps it does not write out; they are
+given in the proof of \cref{base:cor:single-binder-bridge}.
 \end{remark}
 
 % ---------------------------------------------------------------------
@@ -2472,6 +2636,85 @@ as in \cref{base:prop:termrt}; the explicit treatment of substitution
 formalization and is given here in full.
 \end{remark}
 
+The universal quantifier of the native reading may be replaced by the
+single-binder universal of \cref{base:def:single-binder}, as
+\pkg{single\_binder} proposes.  Let $\varphi^{\dagger}$ be defined as
+$\varphi^{*}$ in \cref{base:def:star}, except that
+$(\forall x\,\varphi)^{\dagger}\defeq\mathcal U_x\,\varphi^{\dagger}$.  By
+the commutation of $\mathcal U$ with substitution,
+$(\varphi[\theta])^{\dagger}=\varphi^{\dagger}[\theta]$.
+
+\begin{corollary}[The bridge with the single-binder universal]
+\label{base:cor:single-binder-bridge}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\varphi^{\dagger}\dashv\vdash\varphi^{*}$ in $\Nat$ for every
+ ordinary formula $\varphi$.
+\item $\Teq\proves(\mathcal U_xX)^\circ\leftrightarrow\forall x\,X^\circ$ for
+ every native formula $X$.
+\item \Cref{base:thm:bridge} holds with $\varphi^{\dagger}$ in place of
+ $\varphi^{*}$ in part (i) and with $\psi^{\sharp}\defeq(\psi^{\sigma})^{\dagger}$
+ in part (iii); parts (ii), (iv) and (v) are unchanged, except that in (iv)
+ the translation $\dagger$ fixes the free variables and replaces a bound
+ universal variable by the term $P(z)$ of its new bound variable.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+(i) By induction on $\varphi$.  Equations and $\bot$ have the same two
+translations.  In the other cases the induction hypothesis gives
+$\psi^{\dagger}\dashv\vdash\psi^{*}$ and $\chi^{\dagger}\dashv\vdash\chi^{*}$
+for the immediate subformulas, and, by \cref{base:lem:struct}, for all their
+substitution instances.  The rules cited are those of \cref{base:thm:logic}
+and \cref{base:prop:single-binder}, and every step from one formula to an
+interderivable one is a cut.  For $\psi\wedge\chi$: $\wedge_*$E gives
+$\psi^{\dagger}$ and $\chi^{\dagger}$, hence $\psi^{*}$ and $\chi^{*}$, and
+$\wedge_*$I gives $\psi^{*}\wedge_*\chi^{*}$.  For $\psi\vee\chi$: $\vee_*$E
+with the branches $\psi^{\dagger}\proves\psi^{*}\proves\psi^{*}\vee_*\chi^{*}$
+and $\chi^{\dagger}\proves\chi^{*}\proves\psi^{*}\vee_*\chi^{*}$, the last
+steps by $\vee_*$I.  For $\psi\to\chi$: over the context
+$\psi^{\dagger}\Rightarrow_*\chi^{\dagger},\ \psi^{*}$ one has
+$\psi^{\dagger}$, hence $\chi^{\dagger}$ by $\Rightarrow_*$E, hence
+$\chi^{*}$, and $\Rightarrow_*$I discharges $\psi^{*}$.  For
+$\exists x\,\psi$: $\exists_*$E at a fresh $b$ with the premise
+$\psi^{\dagger}(b)\proves\psi^{*}(b)\proves\exists_* x\,\psi^{*}$, the last
+step by $\exists_*$I.  For $\forall x\,\psi$:
+\cref{base:prop:single-binder}(ii) at the variable $x$ gives
+$\mathcal U_x\psi^{\dagger}\proves\psi^{\dagger}(x)$, hence $\psi^{*}(x)$, and
+$\forall_*$I gives $\forall_* x\,\psi^{*}$, because $x$ is not free in
+$\mathcal U_x\psi^{\dagger}$; conversely $\forall_*$E at $x$, the induction
+hypothesis and \cref{base:prop:single-binder}(i).  In each case the
+converse is the same derivation with $\dagger$ and $*$ exchanged.
+
+(ii) Transfer, in the sense of the proof of
+\cref{base:prop:roundtrip}(ii), of the two sequents of
+\cref{base:prop:single-binder}(iii) gives
+$\Teq\proves(\mathcal U_xX)^\circ\leftrightarrow(\forall_* x\,X)^\circ$, and
+\cref{base:prop:roundtrip}(ii)(f) gives
+$(\forall_* x\,X)^\circ\leftrightarrow\forall x\,X^\circ$.
+
+(iii) Part (i) of the theorem: $\Gamma\proves_{\Teq}\varphi$ if and only if
+$\Gamma^{*}\proves_{\Nat}\varphi^{*}$, by \cref{base:cor:nteq}, if and only if
+$\Gamma^{\dagger}\proves_{\Nat}\varphi^{\dagger}$, by (i) and
+\cref{base:lem:cut} applied to each member of the context and to the
+conclusion.  $(A^\circ)^{\dagger}\dashv\vdash(A^\circ)^{*}\dashv\vdash A$ by (i)
+and \cref{base:prop:roundtrip}(i).  By \cref{base:prop:sound} applied to the
+two sequents of (i), $\Teq\proves(\varphi^{\dagger})^\circ\leftrightarrow
+(\varphi^{*})^\circ$, and \cref{base:prop:roundtrip}(ii) gives
+$\Teq\proves\varphi\leftrightarrow(\varphi^{\dagger})^\circ$.  The proof of
+part (iii) of the theorem uses only parts (i) and (ii) and therefore applies
+verbatim.  Part (iv): the binders of $\varphi^{\dagger}$ range over the whole
+domain under the ordinary reading, equality is read as equality, and the
+term composites are those of \cref{base:prop:termrt}, which $\dagger$ does
+not touch.  Part (v): $\bot^{\dagger}=\bot^{*}$ is $0=\Suc 0$.
+\end{proof}
+
+The translation $\dagger$ trades the exponential growth of the binder rank
+and of the number of copies of a matrix under nested universals
+(\cref{base:rem:single-binder-size}) for one occurrence of $P(z)$ per
+occurrence of a quantified variable and the selectors of one gate per
+universal.  The axioms and rules of $\Nat$, $\Teq$
+and $\iPRA$ are unchanged.
+
 % ---------------------------------------------------------------------
 \section{Clause contexts}
 \label{base:sec:clauses}
@@ -2629,4 +2872,46 @@ identities of multiplication as usual without deriving them in $\Teq$.  The
 article replaces that pairing by the one of \cref{base:thm:pair}.  A
 derivation of the square-root pairing in $\Teq$ from \cref{base:thm:qfi} is
 not written out in any package.
+\end{question}
+
+\begin{question}[The single-binder universal without progress]
+\label{base:q:single-binder-noprogress}
+Is $\mathcal U_xA\proves\forall_* x\,A$, equivalently the rule
+$\mathcal U$E of \cref{base:prop:single-binder}(ii), derivable for every
+native $A$ from the seven rules of $\Nat$ other than \rulename{QI}?  The
+converse sequent is derived without \rulename{QI}
+(\cref{base:prop:single-binder}(iii)); the proof of
+$\mathcal U$E uses $P(\Suc t)=t$, whose derivation applies equation
+induction.  A negative answer would show that $\mathcal U$ cannot replace
+$\forall_*$ in the logical interface of \cref{base:rem:noprogress}, which
+is derived without \rulename{QI}.
+\end{question}
+
+\begin{question}[A smaller left inverse of the successor]
+\label{base:q:single-binder-inverse}
+The proofs of \cref{base:prop:single-binder,base:cor:single-binder-bridge}
+use of $P$ only that it is a term whose only free variable is its argument
+and that $\proves_{\Nat}P(\Suc x)=x$.  Every term with these two properties
+can replace $P$ in \cref{base:def:single-binder}.  \pkg{single\_binder} asks
+whether a term simpler than the predecessor serves, and reports that its
+expansion of the same predecessor construction, with all abbreviations
+unfolded, has $75$ nodes.  No smaller such term is known.
+\end{question}
+
+\begin{question}[Size of the single-binder translation]
+\label{base:q:single-binder-size}
+\pkg{single\_binder} states, for the formulas of the inherited basis built
+from equations and $D$ with a selector that aligns binders
+(\cref{base:rem:single-binder-sources}), and for raw formula trees with all
+abbreviations expanded and one node per variable, $0$, $\Suc$, iterator,
+equation and $D$, the following counts.  For
+$F_n\defeq\forall x_0\cdots\forall x_{n-1}\,(x_0+\dots+x_{n-1}=\Suc 0)$, the
+old translation has $(4n+39)2^n+2n-35$ nodes and the single-binder
+translation $85n+4$ (at $n=10$: $80881$ against $854$; the new tree is
+larger at $n=1$ and $n=2$); and for an arbitrary ordinary formula with $N$
+source nodes the single-binder translation has at most $6N^2+104N$ nodes.
+The counts are checked by a program for $n\le 10$ and the general bound is
+argued only in outline.  Neither is proved here, and the corresponding
+counts for the definitions of the article
+(\cref{base:rem:single-binder-size}) are not computed.
 \end{question}

@@ -31,12 +31,18 @@ validators of goal and certificate & \cref{cert:sec:validated} & \pkg{validated\
 inferred major, eager selection, remainder selector, phase by context & \cref{cert:sec:later} & \pkg{inferred\_major}, \pkg{smaller\_envelope}, \pkg{frontier\_review}, \pkg{context\_phase}\\
 three fields, source reused as the major & \cref{cert:sec:three-field} & \pkg{three\_field}\\
 allocation before the elimination test & \cref{cert:sec:context-first} & \pkg{context\_order}, through \pkg{three\_field} and \pkg{constantfree}\\
+retained major, forward elimination & \cref{cert:sec:retained} & \pkg{retained\_premises}\\
+truth-valued result, inverted entry test and phase by an empty context on the allocation-first programs & \cref{cert:sec:after-first} & \pkg{checker\_refinement}, \pkg{single\_binder}, \pkg{verified\_refinements}\\
+immediate application of the opener & \cref{cert:sec:after-first} & \pkg{immediate\_application}\\
+floor recomputed from the length of the context & \cref{cert:sec:context-floor} & \pkg{scope\_and\_frontier}\\
+two fields, computation equations recognized from the goal & \cref{cert:sec:two-field} & \pkg{refinement}\\
 \bottomrule
 \end{tabular}
 \end{center}
 The packages \pkg{neutral\_scope}, \pkg{scope\_and\_closure} (in its checker
 part), \pkg{compact\_update}, \pkg{kernel\_refinement}, \pkg{checked\_refinement},
-\pkg{validated\_core}, \pkg{validated\_presentation} and \pkg{scope\_kernel}
+\pkg{validated\_core}, \pkg{validated\_presentation}, \pkg{scope\_kernel},
+\pkg{immediate\_application}, \pkg{refinement} and \pkg{scope\_and\_frontier}
 state that they contain no new rule and no new arithmetic; each composes
 devices of this list, and the composition is what is proved.
 
@@ -1554,6 +1560,65 @@ guarded language, so a restriction of the goal grammar does not repair it.
 The same observation applies to an arbitrary quantified matrix in the
 progress rule (\pkg{checked\_refinement}).
 
+\begin{remark}[A second source]\label{cert:rem:closure-progress-sources}
+\pkg{verified\_refinements} proves \cref{cert:prop:closure-progress} again,
+for a shorter selector that grants progress whenever the generated hypothesis
+has arity greater than $1$, with the formula $\Q{v}G_vA(y)$ in place of
+$\Q{z}G_zP(n)$ and the same two directions of the interderivability. It adds
+that the gate conversions use only computation equations whose left sides are
+iterator-headed, so the restriction of transport sources in $\mathcal U$ does
+not block the derivation either. It claims no executable certificate for a
+modified program. \pkg{immediate\_application} gives the same argument, with
+$\Q{v}G_vF(x)$, against the selector of the three-field profiles that opens
+the retained resource $h$ at the fresh parameter whenever $h$ does not have
+arity $1$: the selector agrees with the control on the canonical branches
+(an equation matrix has arity $2$, a paired matrix arity $1$, an exported
+closure arity $3$), but a goal $\D{x}{y}B$ whose matrix is a closure, which an
+auxiliary subproof may contain, then receives progress. Restricting the
+public goal to equality and $D$ does not exclude such a subproof.
+\end{remark}
+
+The same package shows that the strengthening disappears if a closure may be
+concluded only by a hypothesis.
+
+\begin{lemma}[Rigidity of raw substitution]\label{cert:lem:rigidity}
+Let $B(y)$ be a raw formula and $z$ a variable that does not occur in $B$. If
+$B(z)$ and $B(\Suc z)$ are equal as trees, or if $B(\Suc z)$ is equal to a tree
+in which $z$ does not occur, then $y$ does not occur free in $B$.
+\end{lemma}
+\begin{proof}
+Bound occurrences are not replaced. Each free occurrence of $y$ is replaced by
+$z$ in $B(z)$ and by $\Suc z$ in $B(\Suc z)$, so $B(\Suc z)$ has one more node
+than $B(z)$ for each free occurrence. If there is one, the two trees differ in
+size, and $B(\Suc z)$ contains $z$.
+\end{proof}
+
+\begin{proposition}[Closures concluded only by hypothesis]\label{cert:prop:typed-repair}
+Add to $\mathcal A$ the rule of \cref{cert:prop:closure-progress} under the
+side condition that every subderivation whose conclusion has the root $Q$ is
+an instance of \rulename{Hyp}. Every derivation of the extended calculus that
+satisfies the side condition can be transformed into a derivation of
+$\mathcal A$ with the same conclusion and the same open assumptions.
+\end{proposition}
+\begin{proof}
+Consider an instance of the added rule, with premise
+$\Gamma,B(t,z)\proves B(t,\Suc z)$, $z$ fresh, and $B$ with root $Q$. The
+conclusion of the premise has root $Q$, so by the side condition it is a
+hypothesis: either $B(t,\Suc z)$ is $B(t,z)$, or it is a member of $\Gamma$,
+in which $z$ does not occur. In both cases \cref{cert:lem:rigidity} shows that
+$y$ does not occur free in $B(t,y)$. Then $B(t,0)$, $B(t,z)$ and $B(t,\Suc z)$
+are the same formula, and $\Gamma,B(t,0)\proves B(t,\Suc z)$ holds by
+\rulename{Hyp}. \rulename{DI} by cases gives the same conclusion $\D{x}{y}B$.
+Replacing every instance in this way, by induction on the derivation, gives
+the claim.
+\end{proof}
+
+The proposition concerns typed raw syntax. For the permissive arrays of the
+compact checkers it would need an argument about the decoder, and with
+normalizing substitution a different rigidity lemma; the implementation that
+\pkg{verified\_refinements} examined was larger than the current token and
+node minima and is not delivered.
+
 \subsection{Local rewritings of the program text}
 
 Three reported changes are identities of the host language and involve no
@@ -1584,6 +1649,12 @@ certificates with induction under a retained hypothesis or with transport
 below a binder. A correct variant that recomputes the floor at entry and
 keeps the decrement is $8$ bytes longer than the program it was meant to
 shorten ($529$ bytes against $521$; an invalid variant has $514$).
+\pkg{immediate\_application} records the invariant again and notes that with
+a global floor the counter advances during a major call while the length of
+the caller's context does not change, so the reconstruction must keep those
+transitions; its measured compositions were larger. The invariant is proved,
+the correct variant is shown to have exactly the runs of its control, and the
+inclusive single bound is refuted in \cref{cert:sec:context-floor}.
 \end{remark}
 
 \section{Validated presentations}\label{cert:sec:validated}
@@ -1921,8 +1992,12 @@ overlap, \pkg{frontier\_review}, \pkg{checked\_presentation},
 \pkg{context\_phase}, the two checkers of \pkg{progress\_independence}, the
 compact checker of \pkg{crossed\_uniqueness}, the certificates and programs of
 \pkg{three\_field}, the compact part of \pkg{constantfree}, the programs of
-\pkg{context\_order}, and the audits of sources in \pkg{orbit\_closure} and
-\pkg{progress\_independence}. The archive \pkg{context\_order} is not one of
+\pkg{context\_order}, the checkers of \pkg{retained\_premises},
+\pkg{checker\_refinement}, \pkg{502\_scope\_audit} and
+\pkg{verified\_refinements}, the checker part of \pkg{single\_binder} (its
+single-binder universal, \cref{base:def:single-binder}, is not used here), and the audits of
+sources in \pkg{orbit\_closure}, \pkg{progress\_independence} and
+\pkg{verified\_refinements}. The archive \pkg{context\_order} is not one of
 the packages of the article; its two compact programs and its audit of the
 schedule of \cref{cert:sec:context-first} are reproduced, with hashes, in
 \pkg{three\_field} and \pkg{constantfree}, and are cited from there. All
@@ -1930,7 +2005,8 @@ programs are checkers of $\mathcal U$ or
 $\mathcal A^{-}$ in the protocols of \cref{cert:def:gs}; no rule is changed.
 Each device is compared with a control, and for each device the set of
 accepted stacks is unchanged, or shrinks, or changes in a way that is
-described exactly. All statements are about stacks whose nodes are integers
+described exactly, or, where only the accepted canonical goals are compared,
+this is said. All statements are about stacks whose nodes are integers
 and arrays.
 
 \subsection{The controls}
@@ -2078,6 +2154,254 @@ accepted canonical goals is the same, by
 improve the token and the node coordinate of their controls by three each and
 are five bytes longer.
 
+\begin{remark}[A third delivery]\label{cert:rem:inferred-retained}
+\pkg{retained\_premises} delivers, as its token and node profiles, two programs
+whose text is identical to the two programs of \pkg{inferred\_major}; it calls
+the device goal-directed reconstruction of the major and gives the proofs of
+\cref{cert:thm:inferred-sound,cert:lem:separation,cert:thm:inferred-complete}
+in the same form (a repair of the first field for soundness, the odd arities
+of canonical terms for completeness). It measures them against the controls
+$256/283/594$ and $260/278/602$ and its new byte program against
+$265/306/516$, and states the envelope $253/275/513$ against the baseline
+$256/278/516$ of its revision; \cref{cert:sec:sizes} records why that baseline
+was not the minimum of the corpus. It adds two focused tests: a reflexivity
+proved after a wrong supplied major is reconstructed, and a matched target
+whose inferred major has no proof, which is rejected.
+\end{remark}
+
+\subsection{Retained majors}\label{cert:sec:retained}
+
+This subsection follows \pkg{retained\_premises}. Its control is the control
+of $516$ bytes: the guarded-source protocol with local floors, the parity
+selector, and the replacement test before step (4). The device replaces the
+backward use of a supplied major by a forward use of a major that the context
+already contains.
+
+\begin{definition}[Retained-major protocol]\label{cert:def:retained}
+Let $M^{\circ}$ be formed from the fields $s,u,t$ of the packet $[m,s,u,t]$ as
+in step (3) of \cref{cert:def:gs}. The retained-major protocol is obtained
+from its control by replacing steps (3) and (4) with:
+\begin{enumerate}
+\item[(3r)] If $M^{\circ}$ is a member of $g$, run
+$\mathrm{Check}(O_k(t;s,0),g,k)$ and put $h\defeq O_k(t;u,0)$; the goal is not
+changed, and step (4) is skipped.
+\item[(4r)] Otherwise perform step (4) of \cref{cert:def:gs}: run
+$\mathrm{Check}(m,g,k)$ and form $h$ as in (N3) of \cref{cert:def:neutral}.
+There is no replacement test.
+\end{enumerate}
+Steps (1), (2), (5) and (6) are those of the control; in step (6), $\iota=k$
+if $m$ is true-valued or the arity of $a$ is even, and zero otherwise.
+\end{definition}
+
+In a step (3r) the first field $m$ has no role except in the selector of
+step (6). Both openings of (3r) are evaluated at the floor $k$ of the caller,
+before and after the call on the minor premise, which with local floors does
+not change it. In terms of the calculus, (3r) is the forward rule
+\[
+\infrule{\sigma=\upsilon\in\Gamma\qquad \Gamma\proves F(\sigma)\qquad
+\Gamma,F(\upsilon)\proves A}{\Gamma\proves A}
+\]
+or its analogue with $\Q{y}F(y)\in\Gamma$ and the minor premise $F(0)$, which
+follow from \rulename{SE} and cut.
+
+\begin{theorem}[Soundness of retained majors]\label{cert:thm:retained-sound}
+In the retained-major protocol, let every member of $g$ be closed at floor
+$k$. If $\mathrm{Check}(a,g,k)$ returns, then $a$ is closed at floor $k$ and
+the auxiliary reading of $a$ is derivable in $\Teq$ from the auxiliary
+readings of the members of $g$.
+\end{theorem}
+\begin{proof}
+By induction on the run, as in \cref{cert:prop:scalar}. Packets that take
+(4r) are treated there: the branch is step (4) of the control, and the absence
+of a replacement test only removes a case. Consider a packet that takes (3r).
+The member $M^{\circ}$ of $g$ is closed at floor $k$.
+
+Let $s$ be true-valued. Then $M^{\circ}=[s,u]$ reads $\sigma=\upsilon$, where
+$\sigma$ and $\upsilon$ are the readings of $s$ and $u$ at the root term
+position; they are closed and contain only parameters with names in $[k,0)$.
+By \cref{cert:lem:opening}(c), if the hole occurs in the reading $F$ of $t$,
+the trees $O_k(t;s,0)$ and $O_k(t;u,0)$ read $F(\sigma)$ and $F(\upsilon)$;
+if it does not occur, both read $F$. The call on the minor premise returns,
+so by the induction hypothesis $F(\sigma)$ is derivable from $g$, and
+transport along $\sigma=\upsilon$ in $\Teq$ derives $F(\upsilon)$.
+
+Let $s$ be false-valued. Then $M^{\circ}=[t,t,t]$ reads $\Q{y}B(y)$, where
+$B$ is the reading of $t$ at depth $2$, and $t$ is closed at depth $2$. By
+\cref{cert:lem:exposure} the tree $O_k(t;s,0)$ reads $B(\tau)$ for the
+reading $\tau$ of $s$, which is $0$ for every false-valued spelling for which
+the opening is defined, and $O_k(t;u,0)$ reads $B(\upsilon)$. The minor
+premise gives $B(0)$, and the reading $B(0)\to\forall y\,B(y)$ of the
+closure gives $B(\upsilon)$.
+
+In both cases $h=O_k(t;u,0)$ is closed at floor $k$
+(\cref{cert:lem:opening}(a)), hence closed at floor $k-1$ with the same
+reading (\cref{cert:lem:fresh}). Its opening in step (6) contains no hole,
+so by \cref{cert:lem:opening}(c) it has the reading of $h$ whatever $\iota$
+is; the traversal of annotations can change the raw tree or make the opening
+undefined, but not the reading. The goal is closed at floor $k$ by step (1)
+and \cref{cert:lem:opening}(b), and so is its opening at $[k-1]$, with the
+same reading. The final call returns, and by the induction hypothesis the
+reading of $a$ is derivable from $g$ and the reading of $h$, hence from $g$
+by cut.
+\end{proof}
+
+The argument needs both openings of (3r) at one floor. A program with a
+global floor that opens the target only after the call on the minor premise
+can see a lower floor there: a negative scalar of the template that is a hole
+at the floor of the test becomes a retained parameter. \pkg{retained\_premises}
+makes no claim for such a program, and its token profile is the global
+program with inferred majors instead.
+
+Completeness needs a normal form of certificates, because the dispatch of
+(3r) depends on the context: a packet meant for (4r) takes (3r) if its
+candidate $M^{\circ}$ happens to be in the context.
+
+\begin{definition}[Compiler-normal certificates]\label{cert:def:compiler-normal}
+A certificate produced from a derivation is \emph{compiler-normal} if every
+computation hypothesis and every hypothesis added by (3r) is closed at the
+floor at which it is formed, before the opening of step (6): every numerical
+parameter of a computation equation is a parameter already allocated, and no
+field of a computation packet contains a hole. Fresh markers and aliases
+introduced below have the same property.
+\end{definition}
+
+\begin{lemma}[No collision]\label{cert:lem:collision}
+Let $g$ consist of the scalar $0$ and of canonical encodings of formulas, and
+let $r$ be the canonical encoding of a numeral $\Suc^n0$, $n\ge1$, that is not
+a subtree of a member of $g$.
+\begin{enumerate}[label=(\alph*)]
+\item A packet $[m,r,0,t]$ does not take (3r).
+\item A computation packet $[0,0,u,t]$ whose field $t$ is the canonical
+encoding of a term does not take (3r).
+\item For a computation packet $[0,s,u,t]$ with $s$ true-valued, put
+$U\defeq\It{0}{u}{v}{r}$, encoded $[0,u,r]$. In the context $g$ extended by
+$U=u$, the packet $[0,s,U,t]$ does not take (3r).
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) $M^{\circ}=[r,0]$, and a member of $g$ equal to it would contain $r$.
+(b) $M^{\circ}=[t,t,t]$ is not the scalar $0$; if it were a member $[B,B,B]$,
+the canonical formula $B$ would equal the term $t$, but a canonical formula
+contains a binary array and a canonical term has only arrays of arity $1$ and
+$3$. (c) $M^{\circ}=[s,U]$. A member of $g$ equal to it would contain $r$. The
+new member $[U,u]$ is not equal to it, since $U$ has $u$ as a proper subtree
+and so differs from $u$.
+\end{proof}
+
+\begin{theorem}[Completeness with retained majors]\label{cert:thm:retained-complete}
+Every closed theorem of $\mathcal U$ has a compiler-normal certificate on which
+the retained-major checker accepts its canonical encoding.
+\end{theorem}
+\begin{proof}
+Prove, by induction on a derivation of $\Gamma\proves A$ in $\mathcal U$, the
+following strengthened statement: for every context $g$ that consists of $0$
+and of canonical encodings closed at the current floor $k$ and contains the
+encodings of $\Gamma$, and for every injective renaming of the parameters
+already allocated, there is a compiler-normal certificate on which
+$\mathrm{Check}(A,g,k)$ returns; and if $A$ is an equation or a closure, there
+is moreover a compiler-normal \emph{continuation} for $A$, a sequence of
+packets that, run in front of the certificate of any other goal $A'$ in the
+same scope, adds the encoding of $A$ to the context. Allocated parameters are
+kept, and new ones are taken at the current floor as local floors require.
+
+\emph{Continuations.} The principal continuation of the certificate of an
+equation or closure $A$ (the packets read by the chain of final calls, not by
+major calls) cannot contain an introduction: an introduction needs a goal of
+arity $1$, and the goal stays an equation or a closure. It therefore consists
+of computation packets, \rulename{DE} packets and (3r) packets, and ends when
+$A$ is a member of the context. Each of them adds a hypothesis that does not
+depend on the goal: a computation hypothesis is closed, so its opening in
+step (6) does not depend on $\iota$, which is where the arity of the goal
+enters; a \rulename{DE} packet exports its major with $\iota=k$; a (3r) packet
+adds a closed tree. The same packets, read while the goal is another closed
+$A'$, therefore add the same hypotheses; if $A'$ is met as a member earlier,
+its certificate ends there. This is the continuation for $A$.
+
+\emph{The rules.} \rulename{Hyp}, \rulename{DE} and the introduction are
+compiled as in \cref{cert:prop:scalar}, with the unused fields chosen by
+\cref{cert:lem:collision}(a): $s=r$ and $u=0$ for a fresh marker $r$, so that
+the packet takes (4r). A zero computation takes (4r) by
+\cref{cert:lem:collision}(b). A successor computation with predecessor $s$,
+seed $u$ and update $t$, whose candidate $[s,u]$ is in the context, is
+replaced by three packets: the zero computation $U=u$ for
+$U=\It{0}{u}{v}{r}$ with a fresh marker $r$; the successor computation with
+seed $U$, which takes (4r) by \cref{cert:lem:collision}(c) and adds $F(U)$,
+where $F(z)$ is the computation equation with its seed replaced by $z$; and a
+(3r) packet with source $U$, target $u$ and template $F$, whose minor premise
+$F(U)$ is closed by the context and which adds $F(u)$. A computation with a
+literal zero seed is first replaced as in \cref{cert:thm:certzero}, so the
+seed field is true-valued. \rulename{SE} with major $\sigma=\upsilon$ and minor
+premise $F(\sigma)$, at the goal $F(\upsilon)$, is compiled as the
+continuation for $\sigma=\upsilon$, followed by the (3r) packet with source
+$\sigma$, target $\upsilon$ and template $F$, followed by nothing: the call on
+the minor premise receives the certificate of $F(\sigma)$ in the extended
+context, which the strengthened induction hypothesis supplies, and the added
+hypothesis $F(\upsilon)$ is the goal, which the final call finds in the
+context. \rulename{SE} at the literal source $0$ with major $\Q{y}B(y)$ is
+compiled in the same way with the continuation for the closure and the
+minor premise $B(0)$. Every packet is formed with parameters that are already
+allocated, so the certificate is compiler-normal, and the renaming clause
+lets the induction hypothesis be applied below the parameters allocated by
+the continuations.
+\end{proof}
+
+The normal form is used for completeness only. An arbitrary computation
+packet accepted by the checker may contain holes and needs only a known zero
+instance (\cref{cert:lem:zeroinstance}); its opening in step (6) can depend on
+the arity of the goal, and such a packet cannot in general be moved in front
+of another goal. The statement that a continuation can be appended is not
+claimed for arbitrary accepted runs.
+
+\begin{proposition}[Relation to the control]\label{cert:prop:retained-change}
+The retained-major checker and the control of $516$ bytes accept the same
+canonical goals, the closed theorems of $\mathcal U$. Some stacks accepted by
+the control are rejected by the retained-major checker. The converse inclusion
+is not claimed.
+\end{proposition}
+\begin{proof}
+The first statement is \cref{cert:thm:retained-sound,cert:thm:retained-complete}
+with \cref{cert:prop:scalar}. For the second, a packet of the control whose
+candidate $M^{\circ}$ is in the context by chance is processed by (3r) instead
+of its intended branch, and a backward elimination packet whose major is not
+in the context is processed by (4r), which exports the major and leaves the
+goal unchanged. The package exhibits three certificates accepted by the
+control that the retained-major checker rejects, each with a successor
+computation whose candidate is in the context, and translates them by the
+repair of \cref{cert:lem:collision}(c) into certificates that it accepts.
+Certificates that use (3r) are written for a branch that the control does not
+have, and the package does not compare them with the control.
+\end{proof}
+
+The translator of certificates is untrusted; it is tested on the canonical
+certificates of the package and on the three certificates with collisions,
+and support of arbitrary aliased certificates is not claimed. The byte program
+has $265$ tokens, $301$ nodes and $513$ bytes against $265/306/516$; its
+readable expansion is a separate program.
+
+\begin{remark}[Validated companions]\label{cert:rem:retained-validated}
+\pkg{retained\_premises} adds two validated programs. The first adds to the
+byte program the test of the printed form of the whole input
+(\cref{cert:thm:repr}) and a recursive test of the guarded goal grammar,
+and satisfies the typed contract for canonical guarded formulas; its
+correctness is that of the kernel together with \cref{cert:thm:repr} and
+\cref{cert:thm:guarded-validator}. The second keeps the kernel of the native
+goal-validated program of \pkg{checked\_refinement} unchanged and changes its
+validator in three ways that preserve the accepted inputs. Arrays are
+recognized by $a\cdot 0=[\,]$, which on JSON values is true for lists, false
+for strings, floats and Booleans, and undefined for \texttt{null} and objects;
+the depth flag is the integer $0$ or $1$ instead of a Boolean. The leaf
+condition becomes $a\bmod 2=[a>1]$, which for $a\ge0$ holds exactly when $a=0$
+or $a\ge3$ is odd, as before, and admits in addition the even negative
+integers. These cannot be accepted: in the first opening at floor $0$ every
+numerical leaf of a well-shaped goal lies at an odd depth, a negative leaf
+fails $0\le a<d$, and the missing image rejects. Finally a goal that fails
+the validator is replaced by the checking procedure itself, on which the
+first opening fails, instead of raising an error with a message; this
+accounts for $65$ of the $88$ bytes saved. The validator alone no longer
+recognizes the grammar exactly; the excluded negative leaves are delegated to
+the scope traversal.
+\end{remark}
+
 \subsection{Eager selection of the goal}
 
 \pkg{frontier\_review} changes the form of the replacement in the control of
@@ -2182,6 +2506,15 @@ remainder selector. By \cref{cert:thm:eager-selection,cert:prop:remainder} it
 satisfies \cref{cert:prop:scalar}. Its accepted stacks are included in those
 of its control as long as no formula of arity $0$ or at least $4$ reaches
 step (6); without this restriction neither inclusion is claimed.
+\pkg{502\_scope\_audit} delivers a program of $502$ bytes with the same two
+changes and the same sizes, together with the intermediate program with the
+remainder selector only ($266/301/505$), and proves them in the same two
+steps: the remainder selector by the argument of \cref{cert:prop:remainder},
+and eager selection by the inclusion of successful runs of
+\cref{cert:thm:eager-selection}(a) and the definedness of the extra opening on
+canonical packets of \cref{cert:thm:eager-selection}(c). Its fixtures show one
+difference of raw acceptance among the three programs, the empty array as an
+administrative truth, which the remainder selector rejects.
 
 \subsection{Truth-valued results and the tail of a packet}
 
@@ -2710,6 +3043,645 @@ retains the test of the whole input by its printed form and the full native
 goal grammar, and keeps the two false-valued modes $0$ and $[\,]$ of the
 field $u$ distinct.
 
+\subsection{Refinements of the allocation-first programs}\label{cert:sec:after-first}
+
+This subsection follows \pkg{checker\_refinement}, the checker part of
+\pkg{single\_binder}, \pkg{verified\_refinements}, the compact part of
+\pkg{refinement}, and \pkg{immediate\_application}. Their controls are the
+byte program (iv) and the native program (v) of \cref{cert:prop:compositions},
+the list variant of \pkg{context\_phase} (the paragraph after
+\cref{cert:thm:context-phase}), and, for \pkg{immediate\_application}, two
+programs of this subsection. Every change below preserves the returning
+runs of its control exactly, except in \cref{cert:prop:native-composition},
+where the accepted canonical goals are preserved.
+
+\begin{proposition}[Truth-valued result after allocation first]\label{cert:prop:truthy-first}
+In the program (iv), let the procedure return the truth value of the
+membership test of step (1) if it is true, and otherwise the one-element list
+formed by a comprehension over the one-element list that contains the removed
+packet, whose element is the result of the final call; and let branch (i) of
+step (4) be written as the conjunction of the major call and the threefold
+repetition of $m$. The resulting checker has the same returning runs, with
+the same consumption of packets, contexts, goals and floors, as (iv).
+\end{proposition}
+\begin{proof}
+By induction on the run, every returning call returns a true value: the
+value of a successful membership test, or a list with one element. The
+control writes branch (i) as the disjunction of the major call, which returns
+the null value, and the threefold repetition; the new form is the conjunction
+of a true value and the threefold repetition. After a returning major call
+both have the value of the threefold repetition, and if that is false-valued
+both continue with the same later alternatives; a failed major call fails in
+both. The comprehension iterates exactly once: it removes one packet,
+destructures its four fields, and evaluates the final call with its arguments
+in the order of the control, the extended context first (major call,
+hypothesis, decrement, opening of the hypothesis) and the selected goal
+second. The assignments to the goal and to the floor inside the comprehension
+bind the variables of the enclosing procedure, which is the rule of the host
+language for assignment expressions in comprehensions, so the opener, which
+reads the floor of the procedure, sees the decremented floor as in the
+control. When the membership test succeeds, the comprehension is not
+evaluated and no packet is read.
+\end{proof}
+
+This is \cref{cert:prop:truthy} on the newer control. \pkg{checker\_refinement}
+and \pkg{single\_binder} deliver the resulting program with identical text,
+$271/304/488$ against $267/299/495$. \pkg{single\_binder} also writes the
+procedure as an anonymous function whose body first binds the opener by an
+assignment expression and then evaluates the same expression; the function
+object is true-valued, the opener becomes a local of the anonymous function
+with the same free variables, and the runs are those of the program of $488$
+bytes ($276/308/487$). Both packages note that the new results retain data
+that the control discards, so memory use can differ.
+
+\begin{remark}[A third delivery of the program of $488$ bytes]\label{cert:rem:refinement-488}
+\pkg{refinement} delivers the program of \cref{cert:prop:truthy-first} once
+more, with text identical to that of \pkg{checker\_refinement} and
+\pkg{single\_binder} and against the same control ($271/304/488$ against
+$267/299/495$), and proves the same correspondence by the same argument: the
+comprehension is evaluated eagerly, so the final call finishes before the
+one-element list exists, and the assignments to the goal and the floor bind
+the enclosing procedure. It adds two observations. First, writing the
+comprehension as the application of an anonymous function to the unpacked
+packet is not covered by the proof: the assignments to the goal and the floor
+would then bind in that function, and would either be read before assignment
+or no longer reach the cell that the opener reads; the package discards such
+a variant. Second, it attaches the validator of the typed wrapper of
+\pkg{progress\_independence} (the test of the printed form of
+\cref{cert:thm:repr} and the shape and guard test of
+\cref{cert:thm:guarded-validator}) to both kernels. The two programs differ
+only in the kernel, which each enters after the same reader, the same test of
+the printed form, the same goal validator and the same initial call, so by
+\cref{cert:prop:truthy-first} the program on the kernel of $488$ bytes
+accepts exactly the inputs that the program on the kernel of $495$ bytes
+accepts. Both satisfy the typed contract for canonical closed guarded
+formulas, as the wrapper of \pkg{progress\_independence} does; the fields of
+unused packets are typed by $J$ only and keep the permissive sorted reading.
+They have $423/474/855$ and $419/469/862$, against $421/471/869$ for the
+wrapper of \pkg{progress\_independence}; the saving of seven bytes costs four
+tokens and five nodes, as in the compact pair.
+\end{remark}
+
+\begin{proposition}[Immediate application of the opener]\label{cert:prop:immediate}
+Let $L$ be the expression that forms the opener of a checking procedure and
+$R$ the expression that removes a packet and performs the remaining steps.
+\begin{enumerate}[label=(\alph*)]
+\item In the anonymous-function program of \pkg{single\_binder}, whose body is
+\texttt{(i := L) and (i(a) in g or R)}, replace the body by
+\texttt{(i := L)(a) in g or R}.
+\item In the native program of \cref{cert:prop:native-first}, whose procedure
+binds \texttt{i = L} and returns \texttt{i(a) in g or R}, replace the
+procedure by an anonymous function with the same parameters and defaults
+whose body is \texttt{(i := L)(a) in g or R}.
+\end{enumerate}
+In both cases the resulting checker accepts exactly the inputs that the
+original accepts, with the same consumption of packets and the same
+contexts, goals, floors and, in (b), values of the flag $v$.
+\end{proposition}
+\begin{proof}
+An assignment expression evaluates its right side, binds its target to the
+value and returns the value. So \texttt{(i := L)(a)} forms the opener, binds
+$i$, and applies that opener to $a$; in both forms the opener is bound before
+its first application, in particular before any recursive use of $i$ inside
+$L$. The opener is a function object, which is true-valued, so in (a) the
+conjunction of the control always evaluates its second operand and returns
+its value; the removed test selects no branch and has no effect. The missing
+image of $L$ is a default value, the checking procedure itself; it is
+evaluated when $L$ is formed during a call, when the global name of the
+checker already denotes the installed checker in both programs, and no
+operation of either program inspects the name, code or defaults of a
+function, so the change from a named procedure to an anonymous function in
+(b) is not observable through it. The parameters are local to the procedure
+in both forms, and $i$ is a cell captured by $L$ in both forms. The
+assignments to $a$, $k$ and, in (b), $v$ inside the comprehension of $R$ bind
+in the enclosing function also when that function is anonymous, which is the
+rule of the host language for assignment expressions in comprehensions; so
+they update the cells that $L$ reads, as before. The expression $R$, the
+reader, the test of the printed form, the initial call and the verdict are
+unchanged.
+
+Relate states of the two programs with equal parsed input and equal
+remaining stack, and corresponding calls with equal arguments. By the
+observations above, related calls form openers with the same behavior,
+evaluate the same membership test, and, if it fails, remove the same packet
+and make related recursive calls in the same order; an operation fails in one
+exactly if it fails in the other, and a call that does not terminate in one
+does not terminate in the other. The only step without a counterpart is the
+truth test of the opener in the control of (a), which can be skipped.
+Induction on the tree of calls, in both directions, gives the same verdict
+and the same remaining stack.
+\end{proof}
+
+The programs, of \pkg{immediate\_application}, have $272/304/479$ against
+$276/308/487$ for (a) and $344/392/637$ against $343/392/646$ for (b). By
+(a) and the paragraph after \cref{cert:prop:truthy-first}, the program of
+$479$ bytes has exactly the runs of the program (iv) of
+\cref{cert:prop:compositions}, so its accepted stacks are those of the
+program of $495$ bytes; by (b) and \cref{cert:prop:native-first}, the
+program of $637$ bytes accepts exactly the inputs of (v) and satisfies the
+typed contract for the grammar with equality and $D$. The package checks by a
+comparison of syntax trees that, after the displayed rewriting is inverted,
+the parameter lists, the expression $L$, the expression $R$ with the first
+application, and every other statement coincide with those of the controls,
+and it runs $121$ fixtures ($65$ on the compact pair, $56$ on the native
+pair) on candidate and control in ordinary and optimized execution ($484$
+executions). The program of $479$ bytes is below its
+control in all three coordinates; the program of $637$ bytes has one token
+more than its control and the same number of nodes.
+
+\begin{proposition}[Inverted entry test]\label{cert:prop:inverted}
+Replace, in a checking procedure whose body ends with the final call, the
+step ``if $a^{\circ}$ is a member of $g$, return'' followed by the remaining
+steps by ``if $a^{\circ}$ is not a member of $g$, perform the remaining
+steps''. The returning runs are unchanged.
+\end{proposition}
+\begin{proof}
+The membership test is evaluated once in both forms and fails in both forms
+on the same arguments. If it holds, both return the null value without
+further effect. Otherwise both perform the same steps in the same order, and
+then both return the null value, since nothing follows the final call.
+\end{proof}
+
+\pkg{verified\_refinements} applies this to (iv) and obtains $267/298/492$
+against $267/299/495$; its verifier compares the syntax trees and confirms
+that this is the only change. The rewriting acts on the same lines as
+\cref{cert:prop:truthy-first}, which has no return statement left to invert;
+no package combines the two.
+
+\begin{proposition}[Native program with the flag as an order]\label{cert:prop:native-first}
+In the program (v), write the guards of the opener as in
+\cref{cert:prop:order}, apply the change of \cref{cert:prop:truthy-first},
+and reset the flag $v$ to $0$ as an argument of the major call instead of
+immediately after the membership test. The resulting checker accepts exactly
+the inputs that (v) accepts, with the same consumption of packets and the
+same floors.
+\end{proposition}
+\begin{proof}
+The guards of (v) are those of \cref{cert:thm:fused}, so
+\cref{cert:prop:order} applies: the flag and the parity are bits, the guarded
+conditions have the values $0$, \texttt{False} or \texttt{True}, and they are
+defined wherever the control reaches them, because the test of the printed
+form admits only integers and arrays and the leaf condition is reached only
+after a successful range test. Between the membership test and the major call
+the program removes and destructures a packet, which does not call the opener,
+and the major call is the first subexpression evaluated in the arguments of
+the final call; so every opening after the first is evaluated with $v=0$ in
+both programs, and the major call receives $v=0$ explicitly where the
+control's receives it by default. The rest is
+\cref{cert:prop:truthy-first}.
+\end{proof}
+
+The program, of \pkg{checker\_refinement}, has $343/392/646$ against
+$342/391/666$ and keeps the test of the whole input by its printed form, so
+it satisfies the typed contract for the grammar with equality and $D$. The
+package attributes the truth-valued result and the flag as an order to
+\pkg{inferred\_major}; the new element is their composition with the
+allocation-first schedule.
+
+\begin{proposition}[Phase by an empty context]\label{cert:prop:empty-phase}
+In the program (v), remove the flag $v$, start with the empty context instead
+of $[0]$, read ``$v=1$'' as ``the context is empty'', and replace the reset
+of the flag by an extension of the context by the scalar $0$ in place. The
+resulting checker accepts exactly the inputs that (v) accepts, with the same
+consumption of packets and the same floors.
+\end{proposition}
+\begin{proof}
+The test of the printed form is unchanged. In the first call the guards of the
+two openers have the same truth values, so the first opening is defined in
+one program exactly if it is in the other, with the same result. A successful
+first opening at depth $0$ and floor $0$ is an array of arity $1$ or $2$: a
+scalar at the root is not in $[0,0)$, and the missing image rejects. It is a
+member neither of $[0]$ nor of the empty list, so both programs continue. The
+control then sets $v=0$, and the new program appends $0$ to its list; the
+opener reads the updated variable in both. Every later call receives a
+nonempty context.
+
+Relate two calls if their goals, floors and stacks agree and their contexts
+agree up to additional copies of $0$, each containing at least one. Membership
+does not depend on multiplicity, and the contexts are inspected only by
+membership and by truth value. A major call receives the list of its caller
+and may append copies of $0$ to it; a hypothesis is added by forming a new
+list, so nothing else changes in the context of a caller. Related calls
+therefore remove the same packets, make related major calls, form the same
+hypotheses, and decrease the floor at the same point, and their final calls
+are related. Induction on the run in both directions gives the claim. This is
+the argument of \cref{cert:thm:context-phase} for the list variant of
+\pkg{context\_phase}.
+\end{proof}
+
+The program, of \pkg{verified\_refinements}, has $334/387/654$ against
+$342/391/666$, under the same typed contract. Its context is passed
+explicitly at the top-level call, so the qualification of the list variant of
+\pkg{context\_phase}, whose default context is no longer empty after one
+invocation, does not arise. The audit in the package also measures the same
+program with the inverted entry test of \cref{cert:prop:inverted}
+($334/386/655$), which is not delivered.
+
+\begin{proposition}[A composed native goal-validated checker]\label{cert:prop:native-composition}
+Starting from the list variant of \pkg{context\_phase}, let the checker
+allocate first (\cref{cert:def:context-first}), select the new goal as $R$ if
+the condition $C$ of \cref{cert:thm:eager-selection} holds and as $a$
+otherwise, with $C$ evaluated as a comparison of pairs and $R$ evaluated only
+when $C$ holds, recognize arrays by $a\cdot 0\neq 0$, use the inverted entry
+test, and pass the empty initial context explicitly. The resulting checker
+satisfies the soundness statement of \cref{cert:prop:scalar} for the ordinary
+reading and $\mathcal A^{-}$, validates the native goal as the control does,
+and accepts a certificate of every closed theorem of $\mathcal A^{-}$ in the
+grammar with equality and $D$.
+\end{proposition}
+\begin{proof}
+On integers and arrays $a\cdot 0\neq0$ and $a\cdot0=[\,]$ have the same
+value. The first opening, with the empty context, is that of
+\cref{cert:thm:context-phase}, and all later openings are unflagged. The
+control selects $R$ if $C$ holds and $R$ is true-valued, and $a$ otherwise.
+If $C$ holds and $R$ is false-valued, then $R=a$ by the argument of
+\cref{cert:thm:eager-selection}(a), which concerns only the root of the
+template and holds at every floor; so the two selections agree wherever $R$
+is evaluated. The new checker evaluates $O(t;u,0)$ also when $m\neq M^{\circ}$,
+which can only add a rejection. Soundness follows from
+\cref{cert:prop:context-first}(a) in its native form, as for
+\cref{cert:prop:compositions}(v), and from \cref{cert:thm:context-phase}.
+Completeness follows from \cref{cert:prop:context-first}(b) with inert fields
+$0$, on which $O(t;u,0)$ is defined, and from \cref{cert:prop:inverted}.
+\end{proof}
+
+The program, of \pkg{verified\_refinements}, has $324/374/629$ against
+$325/375/641$. Its correctness statement uses integer and array certificates,
+and unused prefixes may contain other JSON values; it is a goal-validated
+program and does not satisfy the typed contract. It tests exact integers by
+the identity of a leaf with its conversion to an integer, with the
+qualification about one runtime stated after \cref{cert:thm:context-phase}.
+Raw acceptance is not compared with the control, since allocation first
+accepts further stacks and the evaluation of $O(t;u,0)$ rejects further
+stacks.
+
+\pkg{single\_binder} supplies, besides, a program that tests every node of
+the input to be an exact integer or array and the goal to be a closed guarded
+formula, by recursive predicates with explicit error messages, and then runs
+the kernel of $488$ bytes ($556/633/1544$, without a stated control), and
+\pkg{502\_scope\_audit} a readable program of the same contract for the
+kernel of $502$ bytes ($605/700/2629$). Their correctness is that of the
+kernel together with the definition of $J$ and
+\cref{cert:thm:guarded-validator}.
+
+\subsection{The floor recomputed from the context}\label{cert:sec:context-floor}
+
+This subsection follows \pkg{scope\_and\_frontier}.
+\Cref{cert:rem:floor-shortcut} records that with local floors and the initial
+context $[0]$ the floor of a call is determined by the length of its context.
+The package proves this for the inverted-entry program of
+\cref{cert:prop:inverted}, derives an exact transformation, and shows that
+the invariant holds at the entry of a call and not inside it.
+
+\begin{lemma}[Floor at entry]\label{cert:lem:context-floor}
+Let $C(g,a,k)$ be the inverted-entry program of \cref{cert:prop:inverted}.
+Every call of $C$ reached from the initial call $C([0],a_0,0)$ satisfies
+$k=1-\lvert g\rvert$, where $\lvert g\rvert$ counts the members of $g$ with
+repetitions.
+\end{lemma}
+\begin{proof}
+The initial call has $\lvert[0]\rvert=1$ and $k=0$. A call makes recursive
+calls at exactly two places. The major call $C(g,m,k)$ receives the context
+and the floor of its caller unchanged; it is evaluated before the decrement
+of the caller's floor. The final call receives the new list $g+[H]$ and the
+floor $k-1$, since $\mathord{\sim}(-k)=k-1$ on integers; and
+$k-1=(1-\lvert g\rvert)-1=1-\lvert g+[H]\rvert$. Induction on the depth of
+the call gives the claim. The value of $H$ plays no role; it may repeat a
+member of $g$ or be a neutral resource.
+\end{proof}
+
+\begin{proposition}[Floor recomputed at entry]\label{cert:prop:context-floor}
+Let $\widehat C(g,a)$ be the program that differs from $C$ only in that every
+call begins with the assignment $k\defeq 1-\lvert g\rvert$ and that the floor
+is not passed to the two recursive calls; the decrement before the final call
+is kept in place. On every finite input $\widehat C$ accepts exactly when $C$
+accepts. Corresponding calls have the same contexts, goals and remaining
+stacks and, after the assignment, the same floors, and they remove the same
+packets in the same order.
+\end{proposition}
+\begin{proof}
+Relate a call of $C$ with arguments $(g,a,k)$ and a call of $\widehat C$ with
+arguments $(g,a)$ if their remaining stacks are equal and
+$k=1-\lvert g\rvert$. The initial calls are related, and by
+\cref{cert:lem:context-floor} this is no restriction on the reachable calls
+of $C$. The two bodies are equal except for the assignment at entry and the
+floor argument of the two recursive calls. The opener reads the floor of its
+call when it is applied, so in related calls it behaves identically at every
+application: before the decrement both floors are $1-\lvert g\rvert$, and the
+decrement is the same assignment in both. Hence the membership test, the
+removal of a packet, the choices of the Boolean operators, the construction
+of the hypothesis and of the new goal, and their openings agree. The major
+calls are related, with the context unchanged, and the final calls are
+related, with the context extended by one member and the floor decreased by
+one. The context is extended by forming a new list and never in place, and
+each call has its own floor, so the only shared mutable state is the stack,
+from which related calls remove the same packets. This is a simulation step
+by step of every finite prefix of an evaluation, including evaluations that
+fail or do not terminate, so the verdicts agree on every input and not only
+on certificates of derivations.
+\end{proof}
+
+The proposition does not identify $C(g,a,k)$ with $\widehat C(g,a)$ for an
+arbitrary $k$ supplied from outside, and it does not allow the context to be
+replaced by a set or equal members to be merged: the length of the list
+counts the extensions, which is what the floor records. The program, of
+\pkg{scope\_and\_frontier}, has $267/303/500$ against $267/298/492$; the
+assignment costs five nodes and eight bytes, as the corresponding variant of
+\cref{cert:rem:floor-shortcut} cost eight bytes. Its accepted inputs are
+those of the program of $492$ bytes, hence those of the program (iv) of
+\cref{cert:prop:compositions}. The package compares the syntax trees of the
+two programs and runs $42$ inherited inputs on them and on a readable
+version, in ordinary and optimized execution ($252$ executions).
+
+A call whose context has $n$ members uses the floor $1-n$ for its entry
+scan, its major call and the opening of an introduction, and the floor $-n$,
+after the decrement, for the openings of the hypothesis and of the new goal.
+One bound written in terms of the length of the context cannot serve both
+phases: the strict bound $-\lvert g\rvert<a$ never admits the new parameter
+where it must be admitted, and the inclusive bound admits it too early.
+
+\begin{proposition}[Admitting the new parameter early]\label{cert:prop:inclusive-floor}
+Let $C^{\le}$ be the program $C$ of \cref{cert:lem:context-floor} without
+the floor argument, with the scope test $k\le a<d$ of the opener replaced by
+$-\lvert g\rvert\le a<d$, and with the decremented floor in the opening of
+the hypothesis and in the image of the new goal replaced by
+$-\lvert g\rvert$, for the context $g$ of the call. Let
+\[
+F'\defeq\D{x}{y}\bigl(\sel(y,0,x)=\sel(y,0,y)\bigr),
+\]
+a closed guarded formula with the canonical encoding
+\texttt{[[[5,0,7],[5,0,5]]]}, and put
+\[
+R\defeq\texttt{[[-1],0,[-1]]},\quad
+P\defeq\texttt{[0,0,}R\texttt{,0]},\quad
+T\defeq\texttt{[[[0,}R\texttt{,0],}R\texttt{],[0,}R\texttt{,0],}R\texttt{,[3,}R\texttt{]]}.
+\]
+Then $\iPRA$ refutes $F'$; the program $C^{\le}$ accepts the stack
+$[P,P,T,\texttt{[0,0,0,[-1]]},F']$ of four packets; and $C$ and
+$\widehat C$ reject it.
+\end{proposition}
+\begin{proof}
+The ordinary reading of $F'$ is
+$\exists x\,\bigl(\sel(0,0,x)=\sel(0,0,0)\to\forall y\,\sel(y,0,x)=\sel(y,0,y)\bigr)$.
+The antecedent reads $0=0$; for $y=\Suc 0$ and $y=\Suc\Suc 0$ the consequent
+gives $x=\Suc 0$ and $x=\Suc\Suc 0$, hence $\Suc 0=\Suc\Suc 0$, and by the
+injectivity of the successor $0=\Suc 0$. So $\iPRA$ proves $\neg F'$.
+
+Write $z$ for the parameter named $-1$. At a term position $R$ reads as
+$\sel(\Suc z,0,\Suc z)$. The packets are consumed from the end.
+\begin{enumerate}
+\item The goal $F'$ is closed, and it is not a member of $[0]$. The packet
+$[0,0,0,[-1]]$ has the neutral major $0$, which is proved by membership in
+$[0]$, and the field $u$ is false-valued, so the packet is an introduction at
+the witness $[-1]$. In $C$ and $\widehat C$ the opening of the matrix at this
+witness is evaluated at the floor $0$: the image is validated at depth $3$,
+where the scalar $-1$ is out of range, the missing image is consulted, and
+the run rejects. In $C^{\le}$ the bound is $-\lvert[0]\rvert=-1$, the scalar
+is retained, and the witness is $\Suc z$, where $z$ is the name that this
+introduction allocates as its eigenparameter. The matrix is an equation, so
+the hypothesis is $\sel(z,0,\Suc z)=\sel(z,0,z)$, and the new goal is the
+reflexive equation $\sel(\Suc z,0,\Suc z)=\sel(\Suc z,0,\Suc z)$, encoded
+$[R,R]$.
+\item The packet $T$ has the major $\It{0}{\rho}{u}{0}=\rho$, where $\rho$ is
+the reading of $R$. The major call consumes the computation packet $P$, which
+adds this instance of \rulename{I0} to the context of the major call, whose
+goal is then a member and returns. In the caller, the major equals
+$[s,u]$ for $s=[0,R,0]$ and $u=R$, and the template $[3,R]$ opened at $u$ is
+$[R,R]$, the goal; so the elimination test succeeds, and the new goal is the
+template opened at $s$, the equation $\It{0}{\rho}{u}{0}=\rho$. The exported
+resource is the sixfold array, which reads $0=0$.
+\item The second packet $P$ adds the same instance of \rulename{I0} to the
+context of the final call, and its goal is a member.
+\end{enumerate}
+So $C^{\le}$ accepts. The derivation is transport of the reflexive equation
+from the computation equation; what makes the conclusion false is the first
+step, in which the witness names the eigenparameter of its own introduction.
+\end{proof}
+
+The stack is the fixture of future witness capture that earlier packages
+already use; its application to this shortcut is the contribution of
+\pkg{scope\_and\_frontier}, which records the outcomes in ordinary and
+optimized execution and gives no size for the refuted program. The stack of
+\cref{cert:prop:entry-scan} is rejected by $C^{\le}$ and is not evidence
+against it.
+
+\subsection{Two fields, and computation equations recognized from the goal}\label{cert:sec:two-field}
+
+This subsection follows the two-field protocol of \pkg{refinement} and its
+independent review, which the package includes. It changes the format of
+certificates and does not improve a size: computation equations consume no
+packet, and every other packet has two fields.
+
+\begin{definition}[The calculus $\mathcal U^{\mathrm{Tr}}$]\label{cert:def:Utr}
+$\mathcal U^{\mathrm{Tr}}$ is $\mathcal U$ (\cref{cert:def:U}) with
+\rulename{SE} replaced by \rulename{Tr} and \rulename{QE}. Equivalently, it is
+$\mathcal A$ (\cref{cert:def:A}) without the instances of \rulename{DI}-case
+whose matrix is a literal equation.
+\end{definition}
+
+The two descriptions agree: both calculi have \rulename{Hyp}, \rulename{I0},
+\rulename{IS}, \rulename{Tr}, \rulename{QE} and \rulename{DE}, and the
+introduction of $\mathcal U$ is \rulename{DI}-progress at a literal equation
+and \rulename{DI}-case at a compound matrix. Every rule of
+$\mathcal U^{\mathrm{Tr}}$ is a rule of $\mathcal A$, and \rulename{SE} is an
+instance of \rulename{QE} when its source is the literal $0$ and of
+\rulename{Tr} otherwise. Hence every public sequent derivable in $\mathcal U$
+is derivable in $\mathcal U^{\mathrm{Tr}}$, and every sequent derivable in
+$\mathcal U^{\mathrm{Tr}}$ is derivable in $\mathcal A$. By
+\cref{cert:rem:imported} and the equivalence of $\mathcal A$ with $\Nat$, a
+closed public formula is a theorem of $\mathcal U^{\mathrm{Tr}}$ exactly if
+it is a theorem of $\mathcal U$, exactly if its ordinary reading is derivable
+in $\Teq$.
+
+\begin{definition}[Two-field protocol]\label{cert:def:two-field}
+A packet is a pair $[m,t]$. A call with goal $a$, context $g$ and floor $k$,
+initially $[0]$ and $0$, performs the following steps.
+\begin{enumerate}[label=(T\arabic*)]
+\item If $O_k(a;\bot,0)$ is a member of $g$, return.
+\item If $a=[[n,b,h],r]$ with $n$ false-valued and $b=r$, return. If
+$a=[[n,b,h],r]$ with $n=[n']$ and $O_k(h;[n',b,h],3)=r$, return. A failed
+operation in this step does not reject; it passes to step (T3).
+\item Remove the last packet $[m,t]$ and prove $m$ by a call with context $g$
+and floor $k$.
+\item If $m=[s,u]$ is binary, require $O_k(t;u,0)=a$ and replace $a$ by
+$O_k(t;s,0)$. If $m$ is ternary with last entry $B$, require $O_k(B;t,0)=a$
+and replace $a$ by $O_k(B;0,0)$. If $m$ is a true-valued scalar, reject.
+\item If $m$ is true-valued, let $h$ be the threefold repetition of $m$.
+Otherwise replace $a$ by the opening $O_k(a_0;t,2)$ of its single child $a_0$
+at the witness $t$, and let $h\defeq a$.
+\item Decrease the floor to $k-1$ and call recursively with the goal
+$O_{k-1}(a;[k-1],0)$ and the context $g+[O_{k-1}(h;\iota,0)]$, where
+$\iota=k-1$ if $m$ is true-valued or $a$ is binary, and $\iota=0$ otherwise.
+\end{enumerate}
+The checker accepts if the initial call on the goal returns. Its contract is
+the raw contract with a canonical guarded goal assumed: finite trees of
+integers and arrays, and claims about canonical closed guarded goals.
+\end{definition}
+
+Step (T2) takes the place of the computation branch of the four-field
+protocols. It introduces no parameter, so the zero-instance supply of
+\cref{cert:lem:supply,cert:lem:zeroinstance} is not used, and no false-valued
+alias of zero is needed to select a mode.
+
+\begin{lemma}[Erasure of dummy slots]\label{cert:lem:dummy-erasure}
+Let a raw tree $a$ be validated at the term depth $3+2p$ and floor $k$. Then
+at every term depth $3+2(p+q)$ at which the opening of $a$ is defined, the
+reading of $a$, with the $q$ additional outer slots read as $0$, is its
+reading at depth $3+2p$ with the $p$ slots read as $0$.
+\end{lemma}
+\begin{proof}
+By induction on $a$. Below $r$ binders of $a$ itself, a scalar with a
+reading lies in $[k,3+2(p+r))$ at the shallower depth, because $a$ is
+validated there; at the deeper depth it lies in the same interval and refers
+to the same object: $0$, a parameter, one of the $r$ inner slots, which are
+innermost in both readings, or one of the $p$ outer slots, read as $0$; it
+never refers to one of the $q$ added slots. Annotations have no reading. At a
+unary or ternary term array the induction hypothesis applies to the children
+below their prescribed slots.
+\end{proof}
+
+The lemma makes no claim when an outer slot that is present in both readings
+carries a value other than $0$. Below, the zero computation uses it with
+$p=0$, and the successor computation with $p=1$.
+
+\begin{lemma}[Computation leaves]\label{cert:lem:leaves}
+Let $a$ be a goal validated at floor $k$ for which step (T2) returns. Then
+the reading of $a$ is an instance of \rulename{I0} or of \rulename{IS}.
+\end{lemma}
+\begin{proof}
+The goal is an equation $[[n,b,h],r]$ whose left side is an iterator; its
+children $n,b$ are read at depth $5$ below one dummy slot, $h$ at depth $5$
+below the state slot, and $r$ at depth $3$. All of them are validated, since
+$a$ is.
+
+If $n$ is false-valued, then on trees of integers and arrays it is $0$ or the
+empty array, which read as $0$. The tree $b$ equals $r$, which is validated
+at depth $3$; by \cref{cert:lem:dummy-erasure} with $p=0$ and $q=1$, the
+reading of $b$ at depth $5$ is the reading of $r$. So $a$ reads as
+$\It{0}{\beta}{u}{\eta}=\beta$.
+
+If $n=[n']$, the left side reads as $\It{\Suc\nu'}{\beta}{u}{\eta}$, where
+$\nu'$ is the reading of $n'$ at depth $9$, below the dummy slot of the
+counter and the two dummy slots of the successor. Suppose first that the
+state occurs in the reading $\eta$ of $h$. Then the opening
+$O_k(h;[n',b,h],3)$ validates its image at the root term depth $3$, so $n'$,
+$b$ and $h$ are validated at depth $5$ as children of the image. By
+\cref{cert:lem:dummy-erasure} with $p=1$ and $q=2$ the reading of $n'$ at
+depth $9$ is its reading $\nu'$ at depth $5$, so the image reads as
+$\It{\nu'}{\beta}{u}{\eta}$, and by \cref{cert:lem:exposure} the opening reads
+as $\eta[\It{\nu'}{\beta}{u}{\eta}/u]$. This second validation is necessary:
+a scalar of $n'$ that is admitted only because of the two dummy slots of the
+successor would otherwise escape into the predecessor term. If the state does
+not occur in $\eta$, the opening reads as $\eta$, which does not depend on the
+state, and the equation
+$\It{\Suc\nu'}{\beta}{u}{\eta}=\eta$ is the instance of \rulename{IS} for
+every $\nu'$. In both cases the opening equals $r$ as a tree, and equal
+trees at the same depth have the same reading; so $a$ is an instance of
+\rulename{IS}.
+\end{proof}
+
+\begin{theorem}[Soundness of two fields]\label{cert:thm:two-field-sound}
+If a call of the two-field protocol with goal $a$, context $g$ and floor $k$
+returns, where $a$ and the members of $g$ are validated at floor $k$, then
+the reading of $a$ is derivable in $\mathcal U^{\mathrm{Tr}}$ from the
+readings of the members of $g$. In particular a canonical closed public goal
+that the checker accepts is a theorem of $\mathcal U^{\mathrm{Tr}}$, and its
+ordinary reading is derivable in $\Teq$.
+\end{theorem}
+\begin{proof}
+By induction on the accepting call. In step (T1) the reading of $a$ is that of
+a member of $g$ (\cref{cert:lem:opening}(b)), an instance of \rulename{Hyp}.
+In step (T2) it is an axiom, by \cref{cert:lem:leaves}. Otherwise the major
+call returns; its entry scan validates $m$ at floor $k$, and by the induction
+hypothesis the reading $M$ of $m$ is derivable.
+
+If $m=[s,u]$, then $M$ is $\sigma=\upsilon$; by \cref{cert:lem:opening}(c)
+the goal $a=O_k(t;u,0)$ reads as $F(\upsilon)$ and the new goal $O_k(t;s,0)$
+as $F(\sigma)$, for the reading $F$ of the template, and \rulename{Tr} gives
+$F(\upsilon)$ from the major and $F(\sigma)$. If $m$ is ternary, $M$ is
+$\Q{y}B'(y)$ for the reading $B'$ of its last child $B$, whose first two
+entries are annotations and need not be copies of $B$; by
+\cref{cert:lem:exposure} the goal reads as $B'(\tau)$ and the new goal as
+$B'(0)$, and \rulename{QE} applies. In both cases the threefold repetition of
+$m$ has arity $6$ or $9$ and reads $0=0$, a neutral resource
+(\cref{cert:lem:neutral-resource}); the new goal is validated at floor $k$ by
+\cref{cert:lem:opening}(a), so by \cref{cert:lem:fresh} its opening at floor
+$k-1$ has the same reading. If $m$ is unary, $m=[B]$ reads as $\D{x}{y}B'$,
+its repetition is the closure $[B,B,B]$, and its opening at the image $k-1$
+and floor $k-1$ reads as $\Q{y}B'(b,y)$ with $b$ the parameter $k-1$
+(\cref{cert:lem:exposure}); the goal is unchanged. By \cref{cert:lem:fresh}
+the name $b$ does not occur in the readings of $g$, $a$ and $m$, all
+validated at floor $k$, and \rulename{DE} applies. A major of arity at least
+$4$ reads $0=0$ and leaves the goal unchanged, with a neutral resource.
+
+If $m$ is false-valued, it reads $0=0$. A goal of arity other than $1$ that
+reaches step (T5) either rejects at the unpacking of its children or reads as
+$0=0$, which is derivable without assumptions. For $a=[a_0]$, reading as
+$\D{x}{y}B$, the opening $O_k(a_0;t,2)$ reads as $B(\tau,y)$ with $y$ the
+hole, where the witness $\tau$ is validated at floor $k$
+(\cref{cert:lem:exposure}). The new goal reads as $B(\tau,\Suc z)$ with $z$
+the parameter $k-1$, and the added hypothesis as $B(\tau,z)$ if the matrix is
+an equation and as $B(\tau,0)$ otherwise. The name $z$ is fresh for $g$, for
+$\tau$ and for $\D{x}{y}B$, which are validated at floor $k$. So the
+introduction of $\mathcal U^{\mathrm{Tr}}$ applies; a matrix of arity $0$ or
+at least $4$, or a scalar, reads $0=0$, and \rulename{DI}-case applies to it.
+In every case the members of the extended context and the new goal are
+validated at floor $k-1$, and the induction hypothesis applies to the final
+call. The last statement follows from the equivalences after
+\cref{cert:def:Utr}.
+\end{proof}
+
+\begin{theorem}[Completeness with two fields]\label{cert:thm:two-field-complete}
+For every canonical closed public formula that is a theorem of $\mathcal U$
+there is a stack of two-field packets that the protocol accepts with that
+goal.
+\end{theorem}
+\begin{proof}
+By \cref{cert:def:Utr} the formula has a derivation in $\mathcal U^{\mathrm{Tr}}$.
+Compile it along the deterministic schedule of the checker, writing every
+expression in its canonical encoding (\cref{cert:def:enc}) and naming the
+eigenparameter of the inference at a call with floor $k$ by $k-1$. At a call
+whose goal, after the entry scan, is a member of the context, or is
+recognized by step (T2), emit no packet and discard the subderivation; the
+names of later eigenparameters then follow the pruned tree of calls and not
+the original derivation, so no packet is left in the stack to misalign a
+later major or continuation. Otherwise emit the packet of the last inference
+and compile the derivation of its major and then that of its continuation:
+\rulename{Tr} with major $s=u$ and template $F$ gives $[[s,u],F]$, the
+designated variable of $F$ encoded as the outermost slot of a formula read
+below one slot; \rulename{QE} with major $\Q{y}B$ at the target $\tau$ gives
+$[[B,B,B],\tau]$; \rulename{DE} with major $\D{x}{y}B$ gives $[[B],0]$; the
+introduction at the witness $w$ gives $[0,w]$, whose major $0$ is proved by
+membership in the initial context. The stack is the reverse of the emitted
+sequence. A computation equation is written in the form that step (T2)
+recognizes: for \rulename{I0} the seed is copied unchanged to the right side,
+since the encoding of a term without free slots does not depend on the number
+of slots above it, and for \rulename{IS} the counter is the successor array
+of the predecessor and the right side is the opening of the update at the
+recursive image, which is canonical by \cref{cert:lem:canonical}; a literal
+zero predecessor is recognized directly. Since all parameters are named in
+$[k,0)$ at a call with floor $k$, every opening of the run returns the
+canonical encodings of \cref{cert:lem:canonical}, every test of step (T4)
+succeeds, and the run follows the compiled derivation.
+\end{proof}
+
+Step (T2) need not recognize every raw spelling of a computation equation;
+completeness needs only the canonical spellings. The entry scan of step (T1)
+stays necessary: auxiliary certificates are checked by the program itself.
+The certificates are not interchangeable with four-field certificates, and
+the protocol has no control; its accepted canonical goals are those of every
+checker of $\mathcal U$ in this chapter. The reference program of
+\pkg{refinement} has $295/352/742$, above every minimum of
+\cref{cert:sec:envelope}: the packets carry less data, but the checker has to
+reconstruct the role of the major, and the package states that this does not
+improve the size. The package supports the proof by finite evidence: of
+$20{,}000$ generated candidate leaves, $4{,}065$ pass the entry scan and step
+(T2), and all of them read as true equations under a sorted numerical
+evaluator with one fixed assignment of the parameters; of $8{,}008$ further
+candidates aimed at dummy slots and nested states, $3{,}608$ are accepted and
+true and $4{,}400$ are rejected. The program runs $26$ of the $898$
+executions of the package's suite.
+
 \subsection{The audit of sources}
 
 The audit in \pkg{orbit\_closure} measures every Python source of the ninety
@@ -2746,6 +3718,51 @@ incoming archives, which gives the minima $251/273/499$ of
 checker, it is not a lower bound, and it keeps the compact contract apart
 from the validated ones.
 
+Two later packages repeat the census. \pkg{502\_scope\_audit} replays the
+census of \pkg{orbit\_closure} at a later revision with an identical Research
+tree ($1380$ blobs, $5825$ paths, the ledger of $106$ utilities) and finds
+$256/276/506$, and $253/275/506$ with the incoming archive of
+\pkg{smaller\_envelope}. \pkg{verified\_refinements} gives an independent
+census at the revision that contains \pkg{three\_field} as an incoming
+archive: every Python file of the Research tree without a size cutoff,
+including frozen copies and controls ($5935$ paths, $1446$ blobs, all
+verified by their hashes and parsed without being executed), and every Python
+member of the three incoming archives ($36$ paths, $33$ sources). One blob
+cannot be measured, because removing the only docstring of a class leaves an
+empty body that the normalization does not repair; with a statement inserted
+it has $368/414/1853$, far above every minimum, and it is recorded as an
+exclusion. Among the $792$ candidates of the Research tree the minima are
+$251/275/502$, attained by three programs; with the incoming archives they
+are $249/271/495$, attained by the three programs of \pkg{three\_field}
+named in \cref{cert:sec:envelope}. The four Research sources with a JSON
+import and fewer than $495$ bytes verify manifests, and none of the $112$
+further files below the envelope in some coordinate reads standard input and
+prints the acceptance message. The census confirms the envelope that the
+packages of \cref{cert:sec:after-first} improve; like the earlier audits it
+is a census of a finite corpus and not a lower bound.
+
+Three further packages audit the revision that contains nine incoming
+archives, among them those of \cref{cert:sec:after-first}.
+\pkg{immediate\_application} inspects $3991$ Python paths and normalizes
+$1508$ distinct sources, with four exclusions at the level of paths recorded
+and not discarded; it treats a search for programs that read the input and
+print the acceptance message as a filter only, and excludes generators of
+checkers, deliberately unsound negative controls and packed programs.
+\pkg{scope\_and\_frontier} screens the integrated tree of artifacts ($2490$
+Python paths, $1314$ blobs, each matched by its hash to the census carried by
+the incoming material), retrieves and remeasures every source of fewer than
+$1300$ raw bytes ($781$ paths, $333$ blobs) without a discrepancy, finds the
+minima $251/275/502$ there, and classifies $59$ small and $19$ larger sources
+below the minima in some coordinate as builders, converters, measurement or
+reproduction drivers; with the incoming archives the minima are
+$248/270/487$, attained by three programs of \pkg{single\_binder} listed in
+\cref{cert:sec:sizes}, two of which read only the first line. It notes that
+the program of $492$ bytes of \pkg{verified\_refinements} does not lower the
+byte minimum below that of $487$ bytes. \pkg{refinement} remeasures the
+programs of \pkg{three\_field} and \pkg{constantfree} at its own, earlier
+revision, with the minima $249/271/495$. None of the three finds a smaller
+complete checker in the corpus.
+
 \section{Results on designs that were examined}\label{cert:sec:notes}
 
 The checker packages also record mathematical results obtained while other
@@ -2753,7 +3770,12 @@ designs were examined: obstructions to two shortcuts in \pkg{certified\_zero},
 an analysis of eager iteration in the standard model in
 \pkg{prevalidated\_elimination}, a criterion on closures in
 \pkg{compact\_update}, and smaller observations in
-\pkg{prevalidated\_elimination}. They are independent of the protocols above.
+\pkg{prevalidated\_elimination}; further, a counterexample to deleting the
+entry scan in \pkg{502\_scope\_audit}, an obstruction to admitting the
+reserved coordinates as spellings of zero in \pkg{immediate\_application}, an
+obstruction to substitution at a variable without reflexivity in
+\pkg{retained\_premises}, and a bound on finite compositional signatures in
+\pkg{verified\_refinements}. They are independent of the protocols above.
 
 \subsection{Projection boxes lose reflexivity}
 
@@ -3135,6 +4157,293 @@ with the required successor instance, and a test that an inferred conclusion
 contains no eigenparameter. Shorter certificates and a shorter checker are
 separate resources.
 
+\subsection{The entry scan is necessary}\label{cert:sec:entry-scan}
+
+This subsection follows \pkg{502\_scope\_audit}. Step (1) of every protocol
+opens the goal with the missing image before the membership test. Besides
+normalizing the goal, the opening verifies that every numerical occurrence of
+the goal is in scope (\cref{cert:lem:opening}(b)). Testing the membership of
+$a$ itself instead of $a^{\circ}$ saves three tokens in the global loop with
+inferred majors of \pkg{inferred\_major} and \pkg{smaller\_envelope}; the
+modified program has $250/277/596$.
+
+\begin{proposition}[Deleting the entry scan]\label{cert:prop:entry-scan}
+Let
+\[
+F\defeq\D{x}{y}\bigl(\It{y}{0}{u}{x}=\It{y}{0}{u}{\Suc x}\bigr),
+\]
+a closed guarded formula with the canonical encoding
+\texttt{[[[5,0,7],[5,0,[11]]]]}. The global loop with inferred majors whose
+step (1) tests the membership of $a$ instead of $a^{\circ}$ accepts the stack
+of seventeen packets displayed below with the goal $F$. The unchanged program
+rejects it, and so does the program of $502$ bytes. The formula $F$ is refuted
+in $\iPRA$.
+\end{proposition}
+\begin{proof}
+The ordinary reading of $F$ is
+$\exists x\,\bigl(\It{0}{0}{u}{x}=\It{0}{0}{u}{\Suc x}\to\forall y\,
+\It{y}{0}{u}{x}=\It{y}{0}{u}{\Suc x}\bigr)$. The antecedent is $0=0$, the
+instance $y=\Suc 0$ is $x=\Suc x$, and conversely $x=\Suc x$ gives every
+instance by congruence; so $\iPRA$ proves $F\leftrightarrow\exists x\,(x=\Suc x)$,
+and $\neg F$ follows by quantifier-free induction from $0\neq\Suc 0$ and the
+injectivity of the successor.
+
+Write $C(y,a,b)\defeq\It{y}{a}{u}{b}$ and $G_y(p,q)$ for
+$C(y,0,p)=C(y,0,q)$. The packet read first has the major
+$M_b\defeq\D{x}{y}G_y(x,\Suc b)$, encoded with the name $b=-1000000$, which is
+far outside the scope at floor $0$. The unchanged program opens $M_b$ in
+step (1) of the major call, finds the scalar $b$ out of range at a term
+position without an image, and rejects; so does the program of $502$ bytes, at
+the same opening with floor $0$, before its local floors differ from the
+global floor. The modified program does not open the major and proceeds as
+follows.
+\begin{enumerate}
+\item A computation packet adds $\It{0}{\Suc 0}{u}{0}=\Suc 0$ and allocates
+the parameter $z_1=-1$. The goal of the major call is opened at the image
+$\Suc z_1$; the occurrence of $b$ is out of scope and is replaced as a hole,
+so the goal becomes $\D{x}{y}G_y(x,\Suc\Suc z_1)$.
+\item An introduction at the witness $\Suc\Suc z_1$ leaves a reflexive
+equation, with the step parameter $-2$; three packets prove it by computation
+and transport. When the major call returns, the floor is $-5$.
+\item The caller still holds the original raw $M_b$. It exports the closure
+and opens it at the new witness $w=-6$; both the witness slot and the still
+out-of-scope $b$ are replaced by $w$, and the hypothesis added is
+$\Q{y}G_y(w,\Suc w)$, which is not the closure of the formula proved in the
+major call.
+\item The goal $F$ is introduced at $w$, with the step parameter $-7$; the
+retained closure, specialized at the successor, reduces the remaining goal to
+its zero row $C(0,0,w)=C(0,0,\Suc w)$, and nine packets prove this
+computation equation, using $P\defeq\It{\Suc\Suc 0}{\Suc 0}{u}{0}$ with $P=0$
+as an initializer, so that every computation packet has an array as its seed.
+\end{enumerate}
+The goal checked inside the major call and the raw major exported by its
+caller cease to agree between the first and the third stage; the decreasing
+global floor does not prevent this, because an old raw array can still
+misdescribe which variable it denotes. The stated outcomes are those of the
+three programs on the displayed stack, in ordinary and in optimized
+execution.
+\end{proof}
+
+The stack, in the order of the array (packets are consumed from the end):
+{\small
+\begin{verbatim}
+[[0,0,[[[0]],[0],0],-6],[0,[0],[0],[0,[[[0]],[0],0],[-6]]],
+ [0,[0],[0],[0,[[[0]],[0],0],[-6]]],
+ [[[[[0]],[0],[0,[[[0]],[0],0],[-6]]],[0,[[[0]],[0],0],[-6]]],
+   [[[0]],[0],[0,[[[0]],[0],0],[-6]]],[0,[[[0]],[0],0],[-6]],
+   [3,[0,[[[0]],[0],0],[-6]]]],
+ [0,0,[[[0]],[0],0],[-6]],
+ [[[0,[[[0]],[0],0],[-6]],[[[0]],[0],0]],[0,[[[0]],[0],0],[-6]],
+   [[[0]],[0],0],[3,[0,[[[0]],[0],0],[-6]]]],
+ [[[[[0]],[0],0],[0,[[[0]],[0],0],[-6]]],[[[0]],[0],0],
+   [0,[[[0]],[0],0],[-6]],[[0,[[[0]],[0],0],-6],3]],
+ [0,[0],[0],0],
+ [[[[[0]],[0],0],0],[[[0]],[0],0],0,[[0,5,-6],[0,5,[-6]]]],
+ [[[[5,0,-6],[5,0,[-6]]],[[5,0,-6],[5,0,[-6]]],[[5,0,-6],[5,0,[-6]]]],
+   0,[-7],[[5,0,-6],[5,0,[-6]]]],
+ [0,0,0,-6],[0,[0],[0],[[-2],0,[[-1]]]],[0,[0],[0],[[-2],0,[[-1]]]],
+ [[[[[0]],[0],[[-2],0,[[-1]]]],[[-2],0,[[-1]]]],[[[0]],[0],[[-2],0,[[-1]]]],
+   [[-2],0,[[-1]]],[3,[[-2],0,[[-1]]]]],
+ [0,0,0,[[-1]]],[0,0,[0],0],
+ [[[[5,0,7],[5,0,[-1000000]]]],0,0,0],
+ [[[5,0,7],[5,0,[11]]]]]
+\end{verbatim}}
+The modified program agrees with its control on all $121$ fixtures of
+\pkg{smaller\_envelope} that apply to it; the stack was constructed for the
+missing invariant. The proposition refutes one deletion. It is not a lower
+bound of $253$ tokens, and it does not exclude a program with another proved
+scope discipline. \pkg{refinement} cites this stack against the same
+deletion (the membership of $a$ in place of $a^{\circ}$ in the entry test),
+whose accepted goal $F$ is equivalent to $\exists x\,(x=\Suc x)$, and keeps
+the entry scan in all its programs, including the two-field protocol; its
+compact and strict programs reject the stack.
+
+\subsection{Reserved coordinates are not spellings of zero}\label{cert:sec:reserved}
+
+This subsection follows \pkg{immediate\_application}. The goal validators of
+the native programs (\cref{cert:thm:fused} and its successors) admit at a term
+position only the scalar $0$ and odd scalars of at least $3$, although the
+sorted reading (\cref{cert:def:reading}) reads the scalars $1$ and $2$ as $0$
+as well. A shorter validator would admit every scalar in scope at a term
+position and read $1$ and $2$ as further spellings of zero. The
+following proposition shows that this loses completeness. Throughout, the
+native protocol is the kernel of the program of \cref{cert:prop:native-first}
+and of its immediate application (\cref{cert:prop:immediate}(b)) after the
+first opening, which is the raw proof protocol.
+
+\begin{proposition}[Reserved coordinates as constants]\label{cert:prop:reserved}
+Let $c_1,c_2$ be two new constants, and let the \emph{parametric reading} be
+the sorted reading of \cref{cert:def:reading} except that at every term
+position a scalar $1$ reads as $c_1$ and a scalar $2$ as $c_2$; the scalar
+$0$ and every dummy slot still read as $0$. Then the soundness statement of
+the native protocol (\cref{cert:prop:context-first}(a) in its native form)
+holds for the parametric reading, for $\mathcal A^{-}$ over the language with
+the constants $c_1,c_2$. Consequently, if the native protocol accepts a stack
+with goal $a$, then the parametric reading of $a$ is true in the standard
+model for every assignment of numbers to $c_1$, $c_2$ and the parameters.
+\end{proposition}
+\begin{proof}
+The soundness proof is an induction on a finite accepting run, and each of its
+steps is checked for the parametric reading.
+
+Every term position has depth at least $3$, so the scalars $0$, $1$ and $2$
+pass the range test $k\le a<d$ at every term position and are never the
+hole; they are retained by every opening at every depth, and an image
+validated at depth $3$ and inserted below further slots keeps them as the
+same constants. So \cref{cert:lem:opening,cert:lem:exposure,cert:lem:fresh}
+hold for the parametric reading with the same proofs: slot pairs and
+parameters are treated as before, and traversal inside annotations has no
+effect on a reading. The parametric reading of a raw tree is still a
+function of the tree, so membership in the context and the comparisons of the
+elimination test, which compare raw trees, have the same consequences for
+readings. Transport along an equation is valid for formulas with the two
+constants, and the specialization of a closure inserts the literal scalar $0$,
+which reads as $0$.
+
+In a computation packet $[m,s,u,t]$, a false-valued counter field $s$ gives
+the counter $0$, and a true-valued one the successor array $[s]$; with the
+parametric reading the generated equation is again an instance of
+\rulename{I0} or \rulename{IS}, now with $c_1,c_2$ allowed in its terms. When
+the update uses its state, the recursive image $[s,u,t]$ is validated at its
+root term depth, where $1$ and $2$ are retained as the same constants, and the
+remaining argument about the scope of the source is unchanged. The
+substitution of $0$ for fresh parameters in \cref{cert:lem:supply} does not
+touch the constants, so \cref{cert:lem:zeroinstance,cert:lem:supply} apply as
+before; if the update does not use its state, its value does not depend on the
+state, again with $c_1,c_2$ fixed. The readings of $D$ and $Q$ are unchanged,
+their openings retain the scalars $1$ and $2$, and the new parameter is fresh
+for the context and the goal. The introduction by cases uses the coverage of
+the numbers; the introduction by progress is still restricted to literal
+equations, and induction for a literal equation with two further constants is
+valid, the constants being fixed parameters of the induction. The neutral
+resources and the annotations that read $0=0$ or $0$ do not involve $c_1,c_2$.
+These are all the cases of the induction. The last statement follows by
+reading the derivation in the standard model with arbitrary values of the
+constants and parameters.
+\end{proof}
+
+\begin{corollary}[The relaxed validator is incomplete]\label{cert:cor:reserved}
+No stack is accepted by the native protocol with the goal \texttt{[1,0]}, nor
+with the goal \texttt{[2,0]}. Hence the checker whose goal validator admits
+the scalars $1$ and $2$ at term positions as spellings of zero, and whose
+kernel is unchanged, does not accept every public theorem it admits: the goal
+\texttt{[1,0]} reads as $0=0$ in the sorted reading and is rejected.
+\end{corollary}
+\begin{proof}
+In the parametric reading \texttt{[1,0]} reads as $c_1=0$, which is false when
+$c_1$ is assigned the value $1$; by \cref{cert:prop:reserved} no stack is
+accepted. The same argument with $c_2$ applies to \texttt{[2,0]}. After the
+relaxed validation the run is a run of the unchanged kernel.
+\end{proof}
+
+The corollary does not contradict the use of such scalars as auxiliary aliases
+inside certificates: the contracts of this chapter give soundness for the
+wider raw syntax and completeness for canonical public formulas, and soundness
+for an alias does not provide a derivation that identifies every raw spelling
+with its representative. A presentation could add an identification or a
+normalization of spellings, but its cost and its correctness would have to be
+counted. The corollary excludes this one deletion from the validator; it is
+not a lower bound for presentations of $\iPRA$. The proof is a written
+extension of the soundness proof and is not mechanized.
+
+\subsection{Variable-only substitution without reflexivity}\label{cert:sec:vs}
+
+\pkg{retained\_premises} examines a variant of the raw native calculus in
+which transport is replaced by substitution at a variable. The terms and
+formulas are those of \cref{base:sec:terms}, substitution is the
+capture-avoiding substitution of raw syntax, and neither computation equation
+is a definitional reduction. The rules are \rulename{Hyp}, the axioms
+$\It{0}{a}{u}{h}=a$ and $\It{\Suc n}{a}{u}{h}=h\subst{\It{n}{a}{u}{h}}{u}$,
+\rulename{QE}, \rulename{DE}, the introductions by cases and by progress (or
+their combination selected by the witness), and, in place of \rulename{Tr},
+\[
+\infrule{\Gamma\proves x=t\qquad\Gamma\proves u=v}{\Gamma\proves v=u\subst{t}{x}}
+\qquad(\mathrm{VS}),
+\]
+where $x$ is a free numerical variable. There is no reflexivity rule and no
+other equality rule.
+
+Call a term \emph{iterator-headed} if its outermost constructor is $I$, and
+put $\nu(s=t)=1$ if $s$ is iterator-headed and $0$ otherwise, and
+$\nu(\Q{y}B)=\nu(\D{x}{y}B)=1$. A sequent $\Gamma\proves A$ is
+\emph{$\nu$-valid} if $\nu(A)=1$ whenever $\nu(C)=1$ for every $C\in\Gamma$.
+
+\begin{lemma}\label{cert:lem:head}
+For every raw formula $B(y)$ and term $t$, $\nu(B(0))=1$ implies $\nu(B(t))=1$.
+\end{lemma}
+\begin{proof}
+Substitution does not change the outermost constructor of a formula, so the
+claim is clear if $B$ is compound. Let $B$ be $s(y)=r(y)$. If $s$ is
+iterator-headed, so is $s(t)$. If $s$ is $0$, a successor, a variable other
+than $y$, or $y$ itself, then $s(0)$ is $0$, a successor or a variable, and
+$\nu(B(0))=0$.
+\end{proof}
+
+\begin{theorem}[Loss of reflexivity]\label{cert:thm:vs}
+Every sequent derivable in the calculus with $\mathrm{VS}$ is $\nu$-valid. In
+particular $0=0$ is not derivable, while the native calculus derives it.
+\end{theorem}
+\begin{proof}
+By induction on the derivation, assuming that every member of the context has
+the value $1$. \rulename{Hyp} is immediate. Both computation axioms have an
+iterator-headed left side. For \rulename{QE}, the induction hypothesis gives
+$\nu(B(0))=1$, and \cref{cert:lem:head} gives $\nu(B(t))=1$. For \rulename{DE},
+the assumption $\Q{y}B(b,y)$ added to the context has the value $1$, so the
+induction hypothesis for the minor premise gives $\nu(A)=1$. The
+introductions conclude formulas of the form $\D{x}{y}B$. For $\mathrm{VS}$,
+the induction hypothesis would give $\nu(x=t)=1$, which is false because $x$
+is a variable; so the members of the context do not all have the value $1$,
+and the conclusion is $\nu$-valid vacuously. Since $\nu(0=0)=0$, the
+equation $0=0$ is not derivable from the empty context.
+
+In the native calculus put $J_a\defeq\It{0}{a}{u}{u}$. The axiom gives
+$J_a=a$, and \rulename{Tr} with the premises $J_a=a$ and $h(J_a)=a$ for
+$h(v)\defeq v$, both instances of that axiom, gives $a=h(a)$, that is, $a=a$.
+\end{proof}
+
+The theorem concerns the raw calculus without reflexivity, rule by rule.
+Adding reflexivity refutes the invariant, and a definitional zero computation
+changes the meaning of the axiom and of the head test. The theorem also does
+not make substitution into derivations admissible for the calculus with
+$\mathrm{VS}$, since such a substitution can turn the variable source of the
+rule into a compound term. Structural weakening and cut preserve the
+invariant.
+
+\subsection{Finite compositional signatures}\label{cert:sec:finite-signature}
+
+\pkg{verified\_refinements} records an elementary argument against replacing
+the binder of the iterator by a fixed finite collection of functions combined
+by composition alone.
+
+\begin{theorem}[Finite compositional bases]\label{cert:thm:finite-signature}
+For no finite set $\Sigma$ of primitive recursive functions, constants
+included, do the terms built from one variable and $\Sigma$ by composition
+represent every unary primitive recursive function.
+\end{theorem}
+\begin{proof}
+Put
+\[
+g(n)\defeq n+1+\max\bigl(\{0\}\cup\{f(a_1,\dots,a_r):f\in\Sigma,\ a_1,\dots,
+a_r\le n\}\bigr).
+\]
+The maximum is over a finite set, $g$ is primitive recursive and
+nondecreasing, and $g(n)>n$; the iterate $g^d(n)$ is primitive recursive in
+$(d,n)$. Give the variable depth $0$ and an application, constants included,
+depth one more than the largest depth of its arguments. By induction on
+terms, a term of depth $d$ has value at most $g^d(n)$ at every input bounded
+by $n$: the arguments of an application of depth $d$ have values at most
+$g^{d-1}(n)$, since $g^{e}(n)\le g^{d-1}(n)$ for $e\le d-1$ because
+$g(x)>x$, and an application of $f\in\Sigma$ to values at most $m$ is below
+$g(m)$ by the definition of $g$, here with $m=g^{d-1}(n)$. The function $h(n)\defeq g^n(n)+1$ is primitive recursive,
+and for a term $t$ of depth $d$ and every $n\ge d$,
+$t(n)\le g^d(n)\le g^n(n)<h(n)$. So no term represents $h$.
+\end{proof}
+
+The theorem excludes only composition over a finite signature. It does not
+concern relational languages, definitions by formulas, other domains, other
+binding constructs or other proof systems; the single-constructor calculi of
+other chapters bind a variable and are not affected.
+
 \section{Checker sizes}\label{cert:sec:sizes}
 
 The table lists every program whose size is reported by a package of this
@@ -3150,18 +4459,24 @@ Code & Contract and calculus\\
 \midrule
 R/$\mathcal A$ & raw contract, calculus $\mathcal A$ of \cref{cert:def:A}\\
 R/$\mathcal U$ & raw contract with a canonical guarded goal assumed, calculus $\mathcal U$ of \cref{cert:def:U}\\
+R/$\mathcal U^{\mathrm{Tr}}$ & the same contract, calculus $\mathcal U^{\mathrm{Tr}}$ of \cref{cert:def:Utr}, two-field certificates of \cref{cert:def:two-field}\\
 G/$\mathcal U$ & goal contract for canonical closed guarded formulas, calculus $\mathcal U$\\
 G/$\mathcal A^{-}$ & goal contract for the grammar with equality and $D$, calculus $\mathcal A^{-}$\\
 T/eqd & typed contract for the grammar with equality, $Q$ and $D$, calculus $\mathcal A^{-}$\\
 T/ed & typed contract for the grammar with equality and $D$, calculus $\mathcal A^{-}$\\
 T/g & typed contract for canonical closed guarded formulas, calculus $\mathcal U$\\
+S & strict contract of \pkg{guarded\_register}: certificates $[A,\pi]$ with a proof tree $\pi$, every term and the goal validated; its own calculus, see the remarks below\\
 \bottomrule
 \end{tabular}
 \end{center}
 A program is to be compared only with the control named in its own row,
 which has the same contract and the same calculus. A dagger marks a profile
 that recognizes arrays by attempted traversal and carries the qualification
-on nonempty strings stated after \cref{cert:def:opener}. The packages also
+on nonempty strings stated after \cref{cert:def:opener}. A double dagger marks
+a program that reads only the first line of its input
+(\cref{cert:sec:representation}); such a program is compared only with its
+equally framed control and enters neither the envelope nor the list of
+superseded programs. The packages also
 report sizes after compression; these are informational in every package and
 are omitted. Controls are given as tokens\,/\,syntax-tree nodes\,/\,bytes.
 
@@ -3254,7 +4569,7 @@ the same, merged into the cases & G/$\mathcal A^{-}$ & 336 & 381 & 661 & 360/409
 validator rewritten & G/$\mathcal A^{-}$ & 357 & 412 & 778 & 358/413/788\\
 validator and $M^{\circ}$ rewritten & G/$\mathcal A^{-}$ & 357 & 415 & 777 & 358/413/788\\
 \midrule
-\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{inferred\_major} and \pkg{smaller\_envelope}: inferred major, \cref{cert:def:inferred} (the same two programs in both packages)}\\
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{inferred\_major}, \pkg{smaller\_envelope} and \pkg{retained\_premises}: inferred major, \cref{cert:def:inferred} (the same two programs in the three packages)}\\
 loop, global floor\textsuperscript{\dag} & R/$\mathcal U$ & 253 & 280 & 599 & 256/283/594\textsuperscript{\dag}\\
 loop, local floors, scalar neutral premise\textsuperscript{\dag} & R/$\mathcal U$ & 257 & 275 & 607 & 260/278/602\textsuperscript{\dag}\\
 \midrule
@@ -3272,9 +4587,9 @@ eager selection & R/$\mathcal U$ & 268 & 306 & 513 & 265/306/516\\
 the same with typed wrapper & T/g & 462 & 524 & 1183 & 459/524/1186\\
 \midrule
 \multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{checked\_presentation}, \pkg{progress\_independence}, \pkg{crossed\_uniqueness}: compositions on the control of $506$ bytes}\\
-eager selection and remainder selector (all three packages) & R/$\mathcal U$ & 269 & 301 & 502 & 267/303/506\\
+eager selection and remainder selector (all three packages, and \pkg{502\_scope\_audit}) & R/$\mathcal U$ & 269 & 301 & 502 & 267/303/506\\
 eager selection only (\pkg{progress\_independence}, \pkg{crossed\_uniqueness}) & R/$\mathcal U$ & 270 & 303 & 503 & 267/303/506\\
-remainder selector only (\pkg{crossed\_uniqueness}) & R/$\mathcal U$ & 266 & 301 & 505 & 267/303/506\\
+remainder selector only (\pkg{crossed\_uniqueness}, \pkg{502\_scope\_audit}) & R/$\mathcal U$ & 266 & 301 & 505 & 267/303/506\\
 typed wrapper, recursive validator (\pkg{checked\_presentation}, \pkg{crossed\_uniqueness}) & T/g & 463 & 519 & 1172 & 461/521/1176 and 462/524/1183\\
 typed wrapper, printed form (\pkg{progress\_independence}) & T/g & 421 & 471 & 869 & none stated\\
 \midrule
@@ -3303,6 +4618,50 @@ typed native checker, allocation first & T/ed & 342 & 391 & 666 & 344/393/673\\
 global loop, variadic context\textsuperscript{\dag} & R/$\mathcal U$ & 250 & 283 & 603 & 251/283/605\textsuperscript{\dag}\\
 allocation first, remainder selector & R/$\mathcal U$ & 264 & 299 & 498 & 265/301/499\\
 \midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{retained\_premises}: \cref{cert:sec:retained}, \cref{cert:rem:retained-validated}}\\
+retained majors, local floors & R/$\mathcal U$ & 265 & 301 & 513 & 265/306/516\\
+the same with typed wrapper & T/g & 421 & 474 & 889 & 407/459/921 (G/$\mathcal U$)\\
+native goal validator refined & G/$\mathcal A^{-}$ & 347 & 400 & 700 & 358/413/788\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{checker\_refinement}: \cref{cert:prop:truthy-first,cert:prop:native-first}}\\
+truth-valued result after allocation first & R/$\mathcal U$ & 271 & 304 & 488 & 267/299/495\\
+native, flag as an order, truth-valued result & T/ed & 343 & 392 & 646 & 342/391/666\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{single\_binder}, checker part: \cref{cert:prop:truthy-first}, \cref{cert:sec:representation}}\\
+truth-valued result (text of \pkg{checker\_refinement}) & R/$\mathcal U$ & 271 & 304 & 488 & 267/299/495\\
+the same as an anonymous function & R/$\mathcal U$ & 276 & 308 & 487 & 267/299/495\\
+three fields, global floor, first line only\textsuperscript{\dag\ddag} & R/$\mathcal U$ & 248 & 277 & 609 & 248/277/609\textsuperscript{\dag\ddag}\\
+three fields, local floors, first line only\textsuperscript{\dag\ddag} & R/$\mathcal U$ & 254 & 270 & 608 & 254/270/608\textsuperscript{\dag\ddag}\\
+strict guarded wrapper of the kernel of $488$ bytes & T/g & 556 & 633 & 1544 & none stated\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{502\_scope\_audit}: \cref{cert:prop:entry-scan}, \cref{cert:sec:representation} (its programs of $502$ and $505$ bytes are listed above)}\\
+readable program, typed & T/g & 605 & 700 & 2629 & none stated\\
+entry scan deleted, unsound negative control\textsuperscript{\dag} & other & 250 & 277 & 596 & 253/280/599\textsuperscript{\dag}\\
+program of $502$ bytes in a compressed wrapper & other & 18 & 19 & 459 & 18/19/459 (the program of $506$ bytes, same wrapper)\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{verified\_refinements}: \cref{cert:prop:inverted,cert:prop:empty-phase,cert:prop:native-composition}}\\
+inverted entry test & R/$\mathcal U$ & 267 & 298 & 492 & 267/299/495\\
+composed native goal validation & G/$\mathcal A^{-}$ & 324 & 374 & 629 & 325/375/641\\
+phase by an empty context & T/ed & 334 & 387 & 654 & 342/391/666\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{refinement}: \cref{cert:rem:refinement-488}, \cref{cert:sec:two-field}}\\
+truth-valued result after allocation first (text of \pkg{checker\_refinement}) & R/$\mathcal U$ & 271 & 304 & 488 & 267/299/495\\
+readable form of the same, docstrings kept & R/$\mathcal U$ & 314 & 381 & 1870 & none stated\\
+the same kernel with the validator of \pkg{progress\_independence} & T/g & 423 & 474 & 855 & 419/469/862\\
+matched control: that validator on the program of $495$ bytes & T/g & 419 & 469 & 862 & constructed by the package\\
+two-field reference & R/$\mathcal U^{\mathrm{Tr}}$ & 295 & 352 & 742 & none\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{immediate\_application}: \cref{cert:prop:immediate}}\\
+immediate application, anonymous function & R/$\mathcal U$ & 272 & 304 & 479 & 276/308/487\\
+immediate application, native & T/ed & 344 & 392 & 637 & 343/392/646\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{scope\_and\_frontier}: \cref{cert:prop:context-floor}}\\
+floor recomputed from the context & R/$\mathcal U$ & 267 & 303 & 500 & 267/298/492\\
+readable form of the same & R/$\mathcal U$ & 296 & 353 & 1329 & none stated\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{guarded\_register}: the guarded scalar $J$ of the chapter on canonical and counter-aware recursors}\\
+strict guarded-$J$ checker & S & 1041 & 1181 & 3467 & 1045/1193/3566 (strict scalar $I$)\\
+\midrule
 \multicolumn{6}{@{}p{14.6cm}@{}}{Attested by the audits of \pkg{orbit\_closure} and \pkg{progress\_independence} and not listed above}\\
 loop profile of \pkg{deterministic\_opening}\textsuperscript{\dag} & R/$\mathcal U$ & 263 & 276 & 580 & not in this chapter\\
 % ed.: the dagger is added; the program recognizes arrays by attempted traversal
@@ -3330,7 +4689,9 @@ the manner that the report attributes to \pkg{one\_context}. The two
 experimental synthesis programs have a certificate format of their own. The
 two three-field programs read certificates of \cref{cert:def:three-field}, and
 their controls, which read four-field certificates, are the global loop of
-\pkg{progress\_independence} and the local loop of \pkg{inferred\_major}; all
+\pkg{progress\_independence} and the local loop of \pkg{inferred\_major}; the
+two programs of \pkg{single\_binder} marked with the double dagger read
+three-field certificates as well, and so do their reframed controls; all
 other rows of $\mathcal U$ read four-field certificates. No package states a
 control for the two programs of \pkg{context\_order}; by
 \cref{cert:prop:compositions} they are the compact program of
@@ -3339,13 +4700,50 @@ control for the two programs of \pkg{context\_order}; by
 program of \pkg{three\_field} and its control satisfy the same typed contract
 for the grammar with equality and $D$.
 
+For the rows added from \pkg{retained\_premises} onwards: the control of
+$516$ bytes is the program so named in \cref{cert:sec:later}; the controls of
+$495$ and $666$ bytes are the programs (iv) and (v) of
+\cref{cert:prop:compositions}, which \pkg{checker\_refinement},
+\pkg{single\_binder} and \pkg{verified\_refinements} reproduce with identical
+text; the control of $641$ bytes is the list variant of \pkg{context\_phase}.
+The typed wrapper of \pkg{retained\_premises} is compared by its package with
+the goal-validated program of \pkg{checked\_refinement}, which satisfies a
+weaker contract; under its own contract the comparison is with the other rows
+T/g. The program of $629$ bytes validates the goal but not the whole input and
+has the code G/$\mathcal A^{-}$; the programs of $646$ and $654$ bytes validate
+both. The control of \pkg{guarded\_register} uses the same strict interface,
+logical rules, representation of variables and acceptance convention, but the
+scalar iterator in place of the calculus $J$; it is the only control of the
+table in another calculus, and the comparison is the package's. The packed
+rows are not checkers in the sense of the measurement protocol
+(\cref{cert:sec:representation}).
+
+For the rows of \pkg{refinement}, \pkg{immediate\_application} and
+\pkg{scope\_and\_frontier}: the controls of $487$ and $646$ bytes are the
+anonymous-function program of \pkg{single\_binder} and the native program of
+\pkg{checker\_refinement}, and the control of $492$ bytes is the
+inverted-entry program of \pkg{verified\_refinements}, each reproduced with
+identical text. The control of $862$ bytes is constructed by
+\pkg{refinement} by attaching the validator of the wrapper of
+\pkg{progress\_independence} to the program of $495$ bytes; it is a complete
+program of the contract T/g and is listed as a row. The readable program of
+\pkg{refinement} is measured without the removal of docstrings; the other
+programs of these packages contain none, or, in \pkg{scope\_and\_frontier},
+are measured with them removed. The two-field reference is the only program of its
+code. \pkg{immediate\_application} lists the two first-line programs of
+\pkg{single\_binder} as the bearers of its envelope, and
+\pkg{scope\_and\_frontier} lists in addition the programs of $629$, $646$
+and $654$ bytes; these rows appear above. The unsound program of
+\cref{cert:prop:inclusive-floor} has no reported size.
+
 Under the raw contract no package claims a program that improves tokens,
 nodes and bytes at once against all programs of its contract, with one
 exception that is qualified: the traversal profile of \pkg{certified\_zero} is
 below both envelopes of its package in all three coordinates. Wherever a
-package states a triple such as $256/278/521$, $257/278/521$, $251/273/499$ or
-$249/271/495$ for compact checkers, the three numbers belong to three
-programs. Under the goal contract
+package states a triple such as $256/278/521$, $257/278/521$, $251/273/499$,
+$249/271/495$, $253/275/513$, $253/275/502$, $249/271/492$, $249/271/488$,
+$248/270/487$ or $248/270/479$ for compact checkers, the three numbers belong
+to three programs. Under the goal contract
 and the typed contract single programs do improve all three coordinates of
 their controls; see the envelope below. In \pkg{uniform\_zero} the comparison with a matched control
 shows that the new devices cost source: the control without them has $545$
@@ -3358,6 +4756,47 @@ test, and $2$ for the spelling of the missing image. The typed checkers and
 the compact guarded checker of $520$ or $521$ bytes satisfy different
 contracts, and \pkg{validated\_presentation} and \pkg{scope\_kernel} state
 explicitly that their figures are not to be set against it.
+
+\subsection{What the measurement does not control}\label{cert:sec:representation}
+
+The protocol of \cref{base:sec:measure} measures the source text of a complete
+program. It is not invariant under a change of representation of the same
+checking procedure, and two packages exhibit this.
+
+\pkg{502\_scope\_audit} wraps the program of $502$ bytes in a module that
+imports the standard compression and encoding libraries and executes the
+decompressed content of one fixed string literal of $395$ characters, a
+compressed stream of $316$ bytes that expands to the exact source. The whole
+module, literal included, has $18$ tokens, $19$ syntax-tree nodes and $459$
+bytes, below every coordinate of every checker of the table. The same wrapper
+applied to the program of $506$ bytes also gives $18/19/459$, with a stream of
+the same length, so the device gives the newer program no advantage over its
+control. The checking procedure, its runs and its correctness are those of the
+expanded program; the package checks the identity of the expanded text with the
+direct program byte for byte before running its fixtures, and notes that the
+extra frame of execution can change the behavior under a recursion limit. The
+measurement counts the syntax tree of the wrapper and not that of the program
+it executes, and it does not say how generic decoders that enter the trusted
+runtime are to be charged; \pkg{orbit\_closure} states that embedding a
+compressed program changes the accounting question and does not supply a
+mathematical reduction.
+
+\pkg{single\_binder} replaces, in the global and the local three-field
+profiles, the reading of the whole standard input by the reading of its first
+line. On a certificate written on one line both programs parse the same tree,
+and every later operation is literally unchanged; every certificate has a
+lossless one-line serialization, and a converter that performs no proof
+processing supplies it. The accepted byte streams differ: later lines are
+ignored and a certificate spread over several lines must be converted. The
+change saves one token and one node and costs two bytes, and the same change
+applied to the two controls gives programs identical to the candidates. These
+rows carry the double dagger.
+
+Neither observation is a mathematical simplification. They show that the
+three coordinates depend on the charged interface (input framing, decoders,
+the success message) as well as on the checking procedure, and that a
+comparison is meaningful only between programs with the same interface; this
+is why every row names a matched control.
 
 \subsection{The coordinatewise envelope}\label{cert:sec:envelope}
 
@@ -3372,12 +4811,14 @@ one program only where this is said.
 Contract & Tokens & Nodes & Bytes & Attained by\\
 \midrule
 R/$\mathcal A$ & 261 & 288 & 528 & three programs: the traversal profiles of \pkg{monus\_and\_neutral\_major} and \pkg{prevalidated\_elimination} ($261$ tokens), the loop profile of \pkg{scope\_and\_closure} ($288$ nodes) and its zero-product profile ($528$ bytes)\\
-R/$\mathcal U$ & 249 & 271 & 495 & three programs of \pkg{three\_field}: the global three-field profile ($249/278/607$), the local three-field profile ($255/271/606$), and the four-field byte program ($267/299/495$); among programs that read four-field certificates $250/273/495$, attained by the token program of \pkg{constantfree} ($250/283/603$), the loop profile of \pkg{context\_order} ($262/273/572$) and the byte program of \pkg{three\_field}\\
+R/$\mathcal U$ & 249 & 271 & 479 & three programs: the global three-field profile ($249/278/607$) and the local three-field profile ($255/271/606$) of \pkg{three\_field}, and the immediate application of \pkg{immediate\_application} ($272/304/479$); among programs that read four-field certificates $250/273/479$, attained by the token program of \pkg{constantfree} ($250/283/603$), the loop profile of \pkg{context\_order} ($262/273/572$) and the same program of $479$ bytes; programs reading only the first line of the input are not counted (with them the minima are $248/270/479$)\\
+R/$\mathcal U^{\mathrm{Tr}}$ & 295 & 352 & 742 & one program, the two-field reference of \pkg{refinement}\\
 G/$\mathcal U$ & 407 & 459 & 921 & one program, of \pkg{checked\_refinement}\\
-T/g & 421 & 471 & 869 & one program, of \pkg{progress\_independence}\\
-G/$\mathcal A^{-}$ & 325 & 375 & 641 & the one-invocation list variant of \pkg{context\_phase}; among programs without that qualification $327/375/643$, attained by one program in \pkg{inferred\_major} and by another in \pkg{context\_phase}\\
-T/ed & 342 & 391 & 666 & one program, of \pkg{three\_field}\\
+T/g & 419 & 469 & 855 & two programs of \pkg{refinement}: the matched control ($419/469/862$) and the program on the kernel of $488$ bytes ($423/474/855$)\\
+G/$\mathcal A^{-}$ & 324 & 374 & 629 & one program, the composed native goal-validated program of \pkg{verified\_refinements}, whose exact-integer test concerns one runtime, as does that of the programs of $641$ and $643$ bytes of \pkg{context\_phase}\\
+T/ed & 334 & 387 & 637 & two programs: the phase by an empty context of \pkg{verified\_refinements} ($334/387/654$) and the native immediate application of \pkg{immediate\_application} ($344/392/637$)\\
 T/eqd & 383 & 442 & 870 & one program, of \pkg{validated\_presentation}\\
+S & 1041 & 1181 & 3467 & one program, of \pkg{guarded\_register}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -3407,26 +4848,99 @@ No program attains two of the three minima $249/271/495$, and no single
 program is below the earlier envelope $251/273/499$ in all coordinates; the
 local three-field profile is below its own control in all three. Under T/ed
 the native program of \pkg{three\_field} is below its control
-$344/393/673$ in all three coordinates. Smaller figures for T/eqd are
+$344/393/673$ in all three coordinates.
+
+The packages of \cref{cert:sec:after-first} change only the byte coordinate
+under R/$\mathcal U$. The inverted entry test of \pkg{verified\_refinements}
+gives $492$ bytes with $267$ tokens and $298$ nodes, below the program of
+$495$ bytes in two coordinates and equal in the third; the truth-valued
+result of \pkg{checker\_refinement} and \pkg{single\_binder} gives $488$
+bytes and costs $4$ tokens and $5$ nodes; the anonymous function of
+\pkg{single\_binder} gives $487$ bytes and costs $9$ tokens and $9$ nodes. The
+three programs have exactly the runs of their control
+(\cref{cert:prop:truthy-first,cert:prop:inverted}), so their accepted stacks
+are those of the program of $495$ bytes. The envelope is $249/271/487$; no
+program attains two of its minima, and none is below $251/273/499$ in all
+coordinates. The retained major of \pkg{retained\_premises} ($265/301/513$)
+improves its own control of $516$ bytes in two coordinates and does not
+change the envelope. Admitting the programs that read only the first line
+would give $248/270/487$; those two gains come from the input framing alone
+(\cref{cert:sec:representation}). Under T/ed the phase by an empty context is
+below its control in all three coordinates and the native program of
+\pkg{checker\_refinement} in bytes only; under G/$\mathcal A^{-}$ the composed
+program of \pkg{verified\_refinements} is below its control $325/375/641$ in
+all three coordinates. Under S the one program of \pkg{guarded\_register} is
+below its control in the scalar iterator in all three coordinates; S is not
+comparable with any other contract of the table. Smaller figures for T/eqd are
 reported by packages outside this chapter. Since T/g is a stronger contract
 than G/$\mathcal U$, the line for T/g also bounds the latter.
+
+The packages \pkg{immediate\_application}, \pkg{refinement} and
+\pkg{scope\_and\_frontier} change the envelope as follows. Under
+R/$\mathcal U$ the immediate application of \cref{cert:prop:immediate}(a)
+gives $479$ bytes with $272$ tokens and $304$ nodes; it is below its control
+of $487$ bytes in all three coordinates and has one token more than the
+program of $488$ bytes. The envelope is $249/271/479$, attained by three
+programs, and $250/273/479$ among programs reading four fields. With the
+programs reading only the first line it would be $248/270/479$, the triple
+that \pkg{immediate\_application} states as its envelope;
+\pkg{scope\_and\_frontier} states $248/270/487$, by the same convention, at
+the same revision without the program of $479$ bytes. Its program of $500$
+bytes, the third delivery of the program of $488$ bytes by \pkg{refinement}
+and the readable programs do not
+change the envelope, and the two-field reference is the only program under
+its own code. Under T/ed the immediate application of
+\cref{cert:prop:immediate}(b) gives $637$ bytes with one token more than its
+control, and the envelope is $334/387/637$. Under T/g the program on the
+kernel of $488$ bytes and its matched control give $419/469/855$; the matched
+control is below the wrapper of \pkg{progress\_independence} in all three
+coordinates, and the program of $855$ bytes is below that wrapper in bytes
+only. So the earlier envelope $421/471/869$ under T/g is improved in all three
+coordinates by one program, which is a control and not a delivered result;
+\pkg{refinement} lists both programs and does not remark on this. Under
+R/$\mathcal U$ and T/ed no program attains two of the minima, and no
+delivered program of the three packages is below the earlier envelope of its
+contract in all three coordinates, as all three packages state.
 
 \paragraph{Superseded programs.} A program of the table is \emph{superseded}
 if another complete program of the table with the same contract code, and
 with the same recognition of arrays (both or neither marked with a dagger), is
-no larger in each of the three coordinates and smaller in at least one. Under
-R/$\mathcal U$ the following are superseded: the compact program of
+no larger in each of the three coordinates and smaller in at least one;
+programs marked with the double dagger are not compared. Under
+R/$\mathcal U$ the following are superseded: the byte program of
+\pkg{three\_field} ($267/299/495$, \texttt{code/checker\_bytes.py}), and with
+it the programs that it superseded, namely the compact program of
 \pkg{deterministic\_introduction} ($267/303/506$), the two truth-valued
 programs of \pkg{inferred\_major} ($278/310/503$, $278/309/505$), the eager
 program of \pkg{frontier\_review} ($268/306/513$), the program of $502$ bytes
-of \pkg{checked\_presentation}, \pkg{progress\_independence} and
-\pkg{crossed\_uniqueness} ($269/301/502$) and the eager program of $503$ bytes
-of \pkg{progress\_independence} and \pkg{crossed\_uniqueness}
-($270/303/503$), all by the byte program of \pkg{three\_field}
-($267/299/495$); the remainder program of \pkg{smaller\_envelope}
-($264/304/515$), the remainder program of \pkg{crossed\_uniqueness}
-($266/301/505$) and the byte program of \pkg{context\_order} ($265/301/499$),
-by the byte program of \pkg{constantfree} ($264/299/498$); the global loop of
+of \pkg{checked\_presentation}, \pkg{progress\_independence},
+\pkg{crossed\_uniqueness} and \pkg{502\_scope\_audit} ($269/301/502$,
+\texttt{code/checker\_502.py} in the last) and the eager program of $503$
+bytes of \pkg{progress\_independence} and \pkg{crossed\_uniqueness}
+($270/303/503$), all by the inverted-entry program of
+\pkg{verified\_refinements} ($267/298/492$, \texttt{compact/checker.py});
+the remainder program of \pkg{smaller\_envelope} ($264/304/515$), the
+remainder program of \pkg{crossed\_uniqueness} and \pkg{502\_scope\_audit}
+($266/301/505$, \texttt{code/checker\_505.py} in the latter), the byte
+program of \pkg{context\_order} ($265/301/499$) and the retained-major
+program of \pkg{retained\_premises} ($265/301/513$,
+\texttt{code/checker\_retained\_bytes.py}), by the byte program of
+\pkg{constantfree} ($264/299/498$). Newly superseded are: the
+anonymous-function program of \pkg{single\_binder} ($276/308/487$,
+\texttt{code/bytes487.py}), by the immediate application of
+\pkg{immediate\_application} ($272/304/479$, \texttt{code/checker479.py});
+and, by the inverted-entry program of \pkg{verified\_refinements}
+($267/298/492$, \texttt{compact/checker.py}), the program of
+\pkg{scope\_and\_frontier} with the floor recomputed from the context
+($267/303/500$, \texttt{implementation/context\_floor.py}), its readable form
+($296/353/1329$, \texttt{implementation/readable.py}) and the readable program
+of \pkg{refinement} ($314/381/1870$, \texttt{code/checker\_readable.py}). The
+programs of $479$, $488$ and $492$ bytes (the program of $488$ bytes being that
+of \pkg{checker\_refinement}, \pkg{single\_binder} and \pkg{refinement},
+\texttt{code/checker\_compact.py} in the last) are not superseded: each pair
+of them is incomparable, the program of $487$ bytes has more tokens than each
+of them, and every other program of the contract has more than $492$ bytes.
+The global loop of
 \pkg{progress\_independence} ($251/283/605$\textsuperscript{\dag}), by the
 token program of \pkg{constantfree} ($250/283/603$\textsuperscript{\dag});
 the loop profile of \pkg{deterministic\_opening}
@@ -3435,38 +4949,64 @@ the loop profile of \pkg{deterministic\_opening}
 loop of \pkg{kernel\_refinement} and \pkg{validated\_core}
 ($256/283/594$\textsuperscript{\dag}), by the token profile of
 \pkg{uniform\_progress} ($256/283/593$\textsuperscript{\dag}). The local loop
-with inferred major of \pkg{inferred\_major} and \pkg{smaller\_envelope}
-($257/275/607$\textsuperscript{\dag}) is below the local three-field profile
-($255/271/606$\textsuperscript{\dag}) under the same contract but in a
-different certificate format; no four-field program supersedes it. Under T/ed
-the native program of \pkg{three\_field} ($342/391/666$) supersedes the typed
-native checker of \pkg{checked\_presentation} ($344/393/673$), and the
-earlier programs of that contract, of \pkg{validated\_core} ($390/454/878$),
+with inferred major of \pkg{inferred\_major}, \pkg{smaller\_envelope} and
+\pkg{retained\_premises} ($257/275/607$\textsuperscript{\dag}) is below the
+local three-field profile ($255/271/606$\textsuperscript{\dag}) under the same
+contract but in a different certificate format; no four-field program
+supersedes it. Under T/ed the phase by an empty context of
+\pkg{verified\_refinements} ($334/387/654$, \texttt{strict/checker.py})
+supersedes the native program of \pkg{three\_field} ($342/391/666$,
+\texttt{code/checker\_native.py}), which superseded the typed native checker
+of \pkg{checked\_presentation} ($344/393/673$); the earlier programs of that
+contract, of \pkg{validated\_core} ($390/454/878$),
 \pkg{validated\_presentation} ($370/426/849$) and \pkg{scope\_kernel}
-($382/446/862$), were already superseded by the latter. Under the other
-contracts the new packages add no program; there the superseded programs
-are, under T/g, the wrappers of \pkg{frontier\_review} ($462/524/1183$) and of
+($382/446/862$), were already superseded by the latter. The native program of
+\pkg{checker\_refinement} ($343/392/646$, \texttt{code/checker\_native.py})
+is not superseded, and it does not supersede the program of $654$ bytes.
+Neither is the native immediate application of \pkg{immediate\_application}
+($344/392/637$, \texttt{code/checker637.py}) superseded, nor does it
+supersede a program: it has one token more than the program of $646$ bytes,
+and more tokens and nodes than the program of $654$ bytes, which has more
+bytes. Under T/g the typed wrapper of \pkg{retained\_premises} ($421/474/889$,
+\texttt{code/checker\_retained\_strict.py}), the strict guarded wrapper of
+\pkg{single\_binder} ($556/633/1544$, \texttt{code/strict\_guarded.py}) and
+the readable program of \pkg{502\_scope\_audit} ($605/700/2629$,
+\texttt{code/checker\_readable.py}) are superseded, together with the
+wrappers of \pkg{frontier\_review} ($462/524/1183$) and of
 \pkg{checked\_presentation} and \pkg{crossed\_uniqueness} ($463/519/1172$)
 and the readable program of \pkg{smaller\_envelope} ($580/666/2473$), by the
-wrapper of \pkg{progress\_independence} ($421/471/869$); under G/$\mathcal U$
+wrapper of \pkg{progress\_independence} ($421/471/869$,
+\texttt{checker/code/checker\_strict.py}); that wrapper is now superseded, and
+with it all of these, by the matched control of \pkg{refinement}
+($419/469/862$, \texttt{baseline/checker\_strict\_862.py}). The program of
+\pkg{refinement} on the kernel of $488$ bytes ($423/474/855$,
+\texttt{code/checker\_strict.py}) and that control are incomparable, and
+neither is superseded. Under R/$\mathcal U^{\mathrm{Tr}}$ there is one
+program. Under G/$\mathcal U$
 the goal-validated program of \pkg{kernel\_refinement}, \pkg{compact\_update}
-and \pkg{validated\_core} ($489/560/1201$), by that of
-\pkg{checked\_refinement} ($407/459/921$); under G/$\mathcal A^{-}$ the programs of
-\pkg{checked\_refinement} ($358/413/788$), \pkg{uniform\_recursion}
-($340/385/685$, $336/381/661$) and \pkg{one\_body} ($357/412/778$,
-$357/415/777$), by the program of $656$ bytes of
-\pkg{deterministic\_introduction}, which in turn is superseded by the
-programs of $643$ bytes of \pkg{inferred\_major} and \pkg{context\_phase}
-(equal sizes, neither superseding the other), and the variant of
-\pkg{context\_phase} with the explicit type test ($327/375/646$) by its
-companion of $643$ bytes, whose correctness argument concerns one runtime
-(\cref{cert:sec:questions}); under T/eqd the programs of \pkg{validated\_core}
-($401/468/897$) and \pkg{scope\_kernel} ($393/460/881$), by the program of
+and \pkg{validated\_core} ($489/560/1201$) is superseded by that of
+\pkg{checked\_refinement} ($407/459/921$). Under G/$\mathcal A^{-}$ the
+composed program of \pkg{verified\_refinements} ($324/374/629$,
+\texttt{native/checker.py}) supersedes the refined native validator of
+\pkg{retained\_premises} ($347/400/700$,
+\texttt{code/checker\_native\_validated.py}), the one-invocation list variant
+of \pkg{context\_phase} ($325/375/641$), the programs of $643$ bytes of
+\pkg{inferred\_major} and \pkg{context\_phase} ($327/375/643$, equal sizes,
+neither superseding the other) and the variant of \pkg{context\_phase} with
+the explicit type test ($327/375/646$), which its companion of $643$ bytes
+already superseded; earlier, the programs of \pkg{checked\_refinement}
+($358/413/788$), \pkg{uniform\_recursion} ($340/385/685$, $336/381/661$) and
+\pkg{one\_body} ($357/412/778$, $357/415/777$) were superseded by the program
+of $656$ bytes of \pkg{deterministic\_introduction}, which the programs of
+$643$ bytes supersede. The program of $629$ bytes shares the qualification of
+the programs of $641$ and $643$ bytes on its exact-integer test
+(\cref{cert:sec:questions}) and not the qualification of the list variant on
+repeated invocation, so it is counted as superseding all of them. Under T/eqd
+the programs of \pkg{validated\_core} ($401/468/897$) and \pkg{scope\_kernel}
+($393/460/881$) are superseded by the program of
 \pkg{validated\_presentation} ($383/442/870$), whose lexical filter of $885$
-bytes has no reported token or node count and is not compared. The
-one-invocation variant of \pkg{context\_phase} ($325/375/641$) carries a
-qualification that its companions do not and is not counted as superseding
-them. Under R/$\mathcal A$, which the new packages do not touch, the
+bytes has no reported token or node count and is not compared. Under S there
+is one program. Under R/$\mathcal A$, which the new packages do not touch, the
 superseded programs are the three programs of \pkg{certified\_zero}
 ($264/308/566$ by the explicit program of \pkg{uniform\_premise},
 $262/303/548$; $264/310/558$ by the zero-product program of
@@ -3494,10 +5034,20 @@ runs and the compilation of derivations, for the actual programs on raw
 input and not for a model restricted to canonical input, and connect them to
 the derivability relation of the Lean development. All soundness and
 completeness proofs of this chapter are written proofs; no package verifies a
-program in a proof assistant. (\pkg{certified\_zero}, \pkg{uniform\_zero},
+program in a proof assistant. A smaller target is an operational semantics
+of the fragment of the host language used by the programs, enough to certify
+the simulations of \cref{cert:sec:after-first,cert:sec:context-floor}
+(consumption of packets, order of evaluation, immutability of contexts, the
+boundary of scopes, the binding of assignment expressions in comprehensions
+and anonymous functions); a suite of fixtures is not a substitute. A formal
+simulation of the raw codec, the input stream, the two phases of scope and
+the public grammar would also make later changes easier to assess; formal
+equivalences between calculi do not verify the control flow of a program.
+(\pkg{certified\_zero}, \pkg{uniform\_zero},
 \pkg{neutral\_scope}, \pkg{kernel\_refinement}, \pkg{compact\_update},
 \pkg{validated\_presentation}, \pkg{checked\_refinement},
-\pkg{scope\_kernel}.)
+\pkg{scope\_kernel}, \pkg{checker\_refinement},
+\pkg{immediate\_application}, \pkg{refinement}, \pkg{scope\_and\_frontier}.)
 \end{question}
 
 \begin{question}[One program for all coordinates]
@@ -3591,22 +5141,82 @@ results of \cref{cert:sec:validated}.)
 
 \begin{question}[The envelope of \cref{cert:sec:envelope}]
 Is there one complete program under the raw contract for $\mathcal U$ that is
-below $249$ tokens, $271$ nodes and $495$ bytes at once, or at least one that
+below $249$ tokens, $271$ nodes and $479$ bytes at once, or at least one that
 attains two of these minima? In particular, can one three-field program
 improve all three coordinates of the earlier envelope $251/273/499$, and is
 there a three-field byte program that allocates first and selects eagerly?
-The record of $495$ bytes still reads four fields, and the token and node
-gains of three fields are offset by longer byte encodings. No package answers
-these questions. (\pkg{inferred\_major}, \pkg{smaller\_envelope},
-\pkg{frontier\_review}, \pkg{checked\_presentation},
-\pkg{progress\_independence}, \pkg{three\_field}, \pkg{constantfree}.)
+The records of $479$, $488$ and $492$ bytes still read four fields, the token
+and node gains of three fields are offset by longer byte encodings, and the
+byte gains of \cref{cert:sec:after-first} cost tokens and nodes relative to
+the program of $495$ bytes, except the inverted entry test, which costs
+neither; the immediate application improves its own control in all three
+coordinates but not the program of $488$ bytes in tokens. The same question is
+open under complete input validation, where the envelope $334/387/637$ under
+T/ed and the envelope $419/469/855$ under T/g are each attained by two
+programs. No package answers these questions. (\pkg{inferred\_major},
+\pkg{smaller\_envelope}, \pkg{frontier\_review}, \pkg{checked\_presentation},
+\pkg{progress\_independence}, \pkg{three\_field}, \pkg{constantfree},
+\pkg{retained\_premises}, \pkg{checker\_refinement}, \pkg{single\_binder},
+\pkg{502\_scope\_audit}, \pkg{verified\_refinements},
+\pkg{immediate\_application}, \pkg{refinement}, \pkg{scope\_and\_frontier}.)
+\end{question}
+
+\begin{question}[Retained majors with a global floor]
+Is there a sound program with a global floor and retained majors? The proof of
+\cref{cert:thm:retained-sound} uses that both openings of (3r) are evaluated
+at one floor; a global-floor program would have to fix both instances before
+the call on the minor premise or receive another argument. Can the append
+property of \cref{cert:thm:retained-complete} be extended from compiler-normal
+certificates to arbitrary accepted runs, and can the translation of
+certificates of the control be made total on aliased certificates? The
+package delivers no global program and claims neither extension.
+(\pkg{retained\_premises}.)
+\end{question}
+
+\begin{question}[A measure invariant under representation]
+How are encoded programs, generic decoders admitted to the trusted runtime,
+the framing of the input and the success message to be charged, so that the
+measure does not reward a change of representation of one checking procedure
+(\cref{cert:sec:representation})? A measure that the packed programs of
+\pkg{502\_scope\_audit} do not beat, and under which the one-line framing of
+\pkg{single\_binder} is neutral, would make the comparison of
+\cref{cert:sec:sizes} independent of these choices. \pkg{scope\_and\_frontier}
+proposes to publish separate envelopes for canonical input, for validated
+public goals and for validated arbitrary input, and to identify a smaller
+reader or a change of framing separately from a new presentation.
+(\pkg{502\_scope\_audit}, \pkg{single\_binder}, \pkg{orbit\_closure},
+\pkg{scope\_and\_frontier}.)
+\end{question}
+
+\begin{question}[Reductions that are not rearrangements]
+Can a new calculus, rather than a rearrangement of expressions of the host
+language, reduce the fully validated programs of $646$ and $654$ bytes? Two
+directions are named. Focused use of a clause, fused with the immediate
+opening of its paired conclusion, could remove an arbitrary paired major; the
+unresolved case is an introduction by progress that is immediately consumed
+by an elimination at an arbitrary counter, for which ordinary
+$\beta$-reduction does not supply the missing induction. An interpretation
+on a proper domain or with several sorts is permitted by the task, but its
+domain predicate, its interpretation of equality and both internal composites
+would have to be charged and proved. Can the single-binder universal
+(\cref{base:def:single-binder}) remove a primitive operation of a checker?
+(\pkg{checker\_refinement}, \pkg{single\_binder}.)
+\end{question}
+
+\begin{question}[Closures as hypothesis leaves]
+\Cref{cert:prop:typed-repair} makes progress at closures conservative when
+closures are concluded only by hypotheses. Can certificates be normalized so
+that every subproof of a closure is a hypothesis leaf, with a compiler for the
+weighted-slot encoding and a proof about its decoder, at a cost below the
+saving of the shorter selector? (\pkg{verified\_refinements}.)
 \end{question}
 
 \begin{question}[One verified decoder with the refinements as corollaries]
 Can the sorted reading and the soundness induction for the compact checker be
 formalized once, so that the refinements of \cref{cert:sec:later} (the
 inferred major, eager selection, the remainder selector, the phase by
-context, three fields, allocation first) become verified corollaries, and can
+context, three fields, allocation first, retained majors, the rewritings of
+\cref{cert:sec:after-first}) become verified corollaries, and can
 the acceptance relation of the programs, with its totalized decoder and its
 scope transitions, be linked to the Lean calculus by a verified compiler? The
 root-opening lemma (\cref{cert:lem:root}) is proposed as a starting point;
@@ -3614,7 +5224,7 @@ for three fields the decisive step is the zero-instance supply
 (\cref{cert:lem:supply,cert:lem:zeroinstance}) for a compound conclusion,
 together with the sorted reading of administrative aliases.
 (\pkg{smaller\_envelope}, \pkg{frontier\_review},
-\pkg{checked\_presentation}, \pkg{three\_field}.)
+\pkg{checked\_presentation}, \pkg{three\_field}, \pkg{verified\_refinements}.)
 \end{question}
 
 \begin{question}[Validation together with the kernel]
@@ -3622,7 +5232,10 @@ Can an invariant shared between parsing, binding and proof checking make the
 typing of the whole certificate and the goal grammar cheaper together with
 the kernel, with a soundness statement for the whole accepted input language?
 \Cref{cert:thm:typed-native} still types the input by a separate test before
-the kernel runs. (\pkg{frontier\_review}.)
+the kernel runs, and so do the programs of
+\cref{cert:prop:native-first,cert:prop:empty-phase}. Could a grammar make the
+validation intrinsic to the presentation, with an exact theorem set for every
+accepted public input? (\pkg{frontier\_review}, \pkg{verified\_refinements}.)
 \end{question}
 
 \begin{question}[The floor as part of the phase]
@@ -3631,8 +5244,12 @@ The length of the context determines the floor at the entry of a call
 and the checker of \cref{cert:thm:context-phase} gives up the relation
 altogether. Is there a design in which the floor is not a separate argument
 and the transition to the next floor and the immutability of contexts are
-still accounted for, at a smaller total size? (\pkg{frontier\_review},
-\pkg{context\_phase}.)
+still accounted for, at a smaller total size? The exact reconstruction of
+\cref{cert:prop:context-floor} costs eight bytes, and one bound in terms of
+the length of the context is refuted by \cref{cert:prop:inclusive-floor};
+\pkg{scope\_and\_frontier} asks that every proposal reject the stack of that
+proposition before its size is compared. (\pkg{frontier\_review},
+\pkg{context\_phase}, \pkg{immediate\_application}, \pkg{scope\_and\_frontier}.)
 \end{question}
 
 \begin{question}[Raw acceptance under inference]
@@ -3678,6 +5295,51 @@ existence of a canonical certificate, not the preservation of every raw
 spelling. (\pkg{three\_field}.)
 \end{question}
 
+\begin{question}[A smaller two-field checker]
+The two-field protocol (\cref{cert:def:two-field}) removes data from the
+packets but adds code that recognizes computation equations and the role of
+the major; its reference program ($295/352/742$) is far above the envelope
+under R/$\mathcal U$. Is there a two-field program, or a strict interface for
+it with a validated goal and typed input, that is smaller than the
+corresponding four-field programs? The proof of
+\cref{cert:thm:two-field-sound} is for trees of integers and arrays; the
+package claims nothing about other JSON values as aliases. (\pkg{refinement}.)
+\end{question}
+
+\begin{question}[Spellings of zero in public goals]
+Can the public grammar admit further spellings of a numeral, such as the
+reserved scalars $1$ and $2$ (\cref{cert:cor:reserved}), together with a
+mechanism that identifies them with the canonical spelling, at a total cost
+below that of the validation they replace, with the cost and the correctness
+of the mechanism counted? (\pkg{immediate\_application}.)
+\end{question}
+
+\begin{question}[Normalization and opening in one traversal]
+Can a checker based on a calculus with fewer rule families, such as the
+evaluation and discharge calculi or the calculus with one rule of successor
+evaluation in other chapters, be lowered to the arity encoding with a proved
+translation? Deleting computation branches does not suffice: removing a zero
+iterator below other binders requires rebasing the references to outer
+variables, since a variable encoded by the scalar $5$ in the initializer, below
+the dummy slot, is encoded by $3$ once the slot is removed, and the opener of
+\cref{cert:def:opener} replaces only its hole by an image closed at the root
+term depth. A shared certified traversal for normalization and opening would
+have to perform this rebasing; no complete alternative is measured.
+(\pkg{scope\_and\_frontier}.)
+\end{question}
+
+\begin{question}[A representation without the parity of depths]
+\pkg{refinement} examines a representation that gives numerical and formula
+roots the same depth and removes the parity test from the opener. The local
+semantic opening lemma (\cref{cert:lem:opening}) then fails: a scalar at a
+formula position reads $0=0$, and replacing it by a numerical image can produce
+a raw tree that reads as a false equation. Is there a reachability invariant
+that excludes the offending spellings? The package exhibits no false accepted
+certificate for every such checker, and establishes no such invariant; the
+related result of \pkg{validated\_core} in \cref{cert:sec:validated} gives an
+accepted false formula for one program without the parity test.
+\end{question}
+
 The following items are limits and claims that the packages state without a
 proof in their reports, and results of these packages that belong to other
 chapters.
@@ -3705,7 +5367,12 @@ remaining question of independence of induction has a model of the binding
 iterator that respects substitution; \pkg{smaller\_envelope} and
 \pkg{frontier\_review} ask whether the arithmetic bridge (predecessor, formula
 selectors) or the term signature can be simplified together with the checker.
-These concern the rule basis and not the checkers.
+\pkg{verified\_refinements} asks the first question again and records that
+the existing investigations derive zero equations and facts about addition
+from successor-only uniqueness, but not the reflection of arbitrary
+equalities or cancellation, and that importing a predecessor built with
+other updates would be circular. These concern the rule basis and not the
+checkers.
 \item The correctness of the exact-integer test by identity with the
 conversion to an integer in \pkg{context\_phase} is an argument about one
 runtime and its standard reader; the package says so and supplies the variant
@@ -3744,6 +5411,41 @@ claimed.
 belongs to another chapter; its compact part contains only the compositions
 (iii) and (vi) of \cref{cert:prop:compositions}, supported by its written
 argument and by $61$ fixtures run $244$ times.
+\item The finite tests of the new packages are implementation evidence: $484$
+executions in \pkg{checker\_refinement}, $692$ in \pkg{retained\_premises}
+(with $16$ compiled certificates), $726$ in \pkg{single\_binder}, $414$ in
+\pkg{502\_scope\_audit} (with a separate comparison of $152$ executions for
+the packed program), and $452$ in \pkg{verified\_refinements}. None claims a
+formalization in a proof assistant.
+\item The counterexample of \cref{cert:prop:entry-scan} refutes one deletion
+of three tokens; \pkg{502\_scope\_audit} states that it is not a lower bound
+of $253$ tokens and does not exclude a different scope discipline.
+\item The obstruction of \cref{cert:thm:vs} and the bound of
+\cref{cert:thm:finite-signature} concern the rule basis and the term
+language; they may belong with the obstructions of another chapter.
+\item The finite tests of \pkg{immediate\_application}, \pkg{refinement}
+and \pkg{scope\_and\_frontier} are implementation evidence: $484$ executions
+of $121$ fixtures in the first, $898$ executions of $112$ fixture entries in
+the second (with the separate searches over computation leaves described after
+\cref{cert:thm:two-field-complete}), and $252$ executions of $42$ inputs in
+the third, all in ordinary and optimized execution and without discrepancy.
+The proofs of \cref{cert:prop:immediate,cert:prop:context-floor,cert:thm:two-field-sound,cert:thm:two-field-complete,cert:prop:reserved}
+and of \cref{cert:rem:refinement-488} are written proofs, reviewed within the
+packages; none of the three packages claims a formalization in a proof
+assistant or a new build of the Lean development, and each states that the
+requested simplification below the envelope is not achieved and that no
+minimality is claimed.
+\item The proofs of \cref{cert:prop:immediate,cert:rem:refinement-488} assume
+ideal executions: the nested result lists of the truth-valued programs retain
+more memory than the controls, and a fixed recursion or memory limit can
+separate the programs.
+\item \pkg{immediate\_application} restates the obstruction to the shorter
+progress selector (\cref{cert:rem:closure-progress-sources}) and records,
+without a measured program, that the compositions with the floor recomputed
+from the context that it tried were larger than their controls.
+\item The guarded scalar $J$ of \pkg{guarded\_register} and its correctness
+belong to the chapter on canonical and counter-aware recursors; this chapter
+records only its size.
 \item None of the packages claims a minimal program, a simplest
 axiomatization, or a result about the arithmetic basis. The statements of
 \cref{cert:sec:notes} about eager iteration concern the theory

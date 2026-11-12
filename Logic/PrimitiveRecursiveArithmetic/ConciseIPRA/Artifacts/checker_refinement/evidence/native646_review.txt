@@ -1,0 +1,152 @@
+INDEPENDENT REVIEW: THE 646-BYTE FULL-INPUT NATIVE CHECKER
+Date: 2026-11-12
+Scope: source equivalence against the exact current 666-byte control.
+Status: written source audit, not a proof-assistant verification.
+No additional regression sweep was run; the package already records 484
+candidate/control process executions covering 121 matched cases.
+
+FILES REVIEWED
+Candidate: kernel_innovation/release/code/checker_native.py
+SHA-256: 01bbcd85c34bbef99710b2e32b2962fe4ac1d22d0e02a1d43c921e26d82e0489
+Control: kernel_innovation/release/controls/checker_native666.py
+SHA-256: 538a62c650fef6c4d60e9bc4322f338a5ffb82fb711e5671bd31bff83412c0bf
+Proof reviewed: kernel_innovation/release/IMPLEMENTATION_PROOF.txt, sections 1-5.
+
+CONCLUSION
+No error found in the claimed equivalence of accepted finite JSON
+certificates, under the shared sufficient-finite-resources convention.
+The full lexical gate and the initial native Eq/D public-goal validation
+remain in the measured program. This is a 20-byte improvement under that
+stronger contract, not a 646-byte comparator to the weaker 643-byte
+goal-validation-only program.
+
+1. FULL LEXICAL GATE AND VALUE INVARIANTS
+The input wrapper is unchanged:
+  p = json.load(open(0))
+  q = not str(p).strip('0123456789-[], ') and p.pop
+
+For values produced by the standard JSON decoder, passing this gate
+restricts the payload to finite trees of integers and lists. Strings have
+quote characters, dicts have braces/colons, booleans and null have letters,
+and floats have a decimal point or letters in their printed representation.
+They fail before proof checking. Nonstandard NaN/Infinity values accepted
+by Python's decoder also fail the gate. A non-list top-level integer may
+pass the character test but fails at .pop; the same wrapper rejects it in
+both programs. There is no new alphabet precondition outside the module.
+
+Generated syntax consists of integers and lists. Scope floors start at 0
+and are decremented by an integer operation. Opening depths start at 0 or
+3 and change by the integer 5-len(a). Private mode v is exactly 1 in the
+root call and exactly 0 in all recursive calls and after the reset.
+Thus d%2 and v are always integer bits.
+
+The opener's default image t=c is a function sentinel, not a payload value.
+If invalid opening reaches that sentinel, both versions fail at a*0 before
+any changed Boolean guard is evaluated. The totality argument need not
+pretend that this sentinel is an integer/list tree.
+
+2. BOOLEAN-ORDER GUARDS ARE TOTAL WHERE NEWLY EVALUATED
+For v in {0,1} and a Boolean/bit p, (not v or p) and v<=p agree in truth
+value. Their returned types need not be identical, but here they are only
+used as conditional predicates.
+
+The list predicate is evaluated only after a*0!=0 succeeds. On the
+integer/list payload and generated-syntax invariant, this means a is a
+list, so len(a) in (1,2+d%2) is total and Boolean. If a is instead the
+function sentinel, the preceding multiplication already raises in both
+versions.
+
+The scalar predicate is evaluated only after k<=a<d succeeds. A list would
+cause a type error in this comparison in both versions, so a successful
+comparison leaves an integer. The additional predicate
+  d%2 and (not a or a>1==a%2)
+is total and returns 0 or a Boolean. Therefore the candidate's eager
+evaluation of p at v=0 introduces neither exceptions nor new successes.
+
+The fallback replacement (d%2 or v) by (d%2 | v) yields the identical
+integer bit on the stated invariant. Its following image-opening call is
+therefore taken in exactly the same cases. The changed guards consequently
+give the same opening value or the same rejection for every reached scan.
+
+3. DELAYED RESET OF v
+The initial call still passes v=1. Before any packet is read, the candidate
+evaluates i(a) in g, so the entire strict initial goal traversal is done
+with v=1. A valid closed Eq/D formula produces a list, never the scalar
+neutral sentinel 0 in the initial context [0]. An invalid scalar root
+cannot exploit the sentinel: its strict fallback reaches the failing
+default image. Hence normal proof processing necessarily follows initial
+validation.
+
+In the control, v=0 is assigned immediately before q() and packet
+unpacking. In the candidate, q() and unpacking happen first, and v=0 is
+assigned as the fourth argument of the mandatory major call:
+  c(g,m,k,(v:=0)).
+
+Between the completed initial scan and that assignment, the candidate only
+pops and unpacks a packet, loads g, loads the function i, and loads the
+major call's preceding arguments. None of those operations invokes i or
+consults v. Even though the enclosing i call's function value is loaded
+before its arguments, i is not invoked until all those arguments have been
+evaluated. Therefore the reset precedes every subsequent computation,
+witness, hypothesis, endpoint, or continuation scan.
+
+The assignment expression lies in the comprehension result. It binds the
+enclosing function's v cell, the same cell captured by lambda i. The
+recursive major receives the integer 0 explicitly. The continuation's
+omitted fourth argument receives the default 0. Thus v remains a bit and
+every corresponding scan/call sees the same mode in both programs.
+
+If packet reading or unpacking fails, the reset has occurred only in the
+control. Both modules immediately reject; neither exposes that local cell
+or catches the exception. This is not literally instruction-for-instruction
+identity, but it preserves the acceptance relation and all proof-relevant
+states.
+
+4. SUCCESSFUL RETURNS AND THE REMAINING SCHEDULE
+The control's normal return is None. The candidate's normal return is True
+at a retained hypothesis, otherwise the eager singleton list containing the
+continuation result. It is always truthy. Thus the candidate's
+  c(g,m,k,0) and m*3
+and the control's
+  c(g,m,k) or m*3
+produce the identical value after a successful major proof, including when
+m*3 is false. Exceptions still propagate before that value is obtained.
+
+The context-first continuation expression is otherwise unchanged:
+construct the raw hypothesis at the old floor, evaluate the selector,
+decrement the floor, open the hypothesis at the new floor, extend the
+context by concatenation, and then perform the optional elimination
+comparison and continuation-goal opening at that same new floor.
+No parent context is mutated. Successful return lists are not inserted
+into syntax or retained contexts.
+
+The bidirectional induction on completed calls now carries the unconsumed
+packet suffix, goal, context, floor, and scanner mode. The initial modes
+match; the harmless delay in section 3 gives matching modes before the major
+and every later scan; section 2 gives matching scanner outputs; and the
+return invariant gives matching major contribution values. The same
+continuation states and finite successes follow in both directions.
+
+5. LIMITS AND MEASUREMENTS
+The candidate can retain extra nested success lists, so fixed resource
+limits, peak memory, and exception details need not match. The equivalence
+uses sufficient resources for the finite checking run. It does not assert
+behavioral equivalence on arbitrary injected Python objects, and it does
+not add any mathematical meaning to malformed JSON certificates.
+
+Independently recomputed under CPython 3.12.14, ast.unparse plus one LF:
+                         tokens    AST    normalized bytes
+Exact current control      342     391       666
+Candidate                  343     392       646
+Delta                       +1      +1       -20
+
+The source improvement affects normalized bytes only. The whole-input
+alphabet gate and native public-goal grammar validation are included in
+both measured modules. The mathematical calculus, inherited arithmetic
+bridge, and bi-interpretation are unchanged.
+
+Attribution: truth-valued checking and Boolean-order guards already appear
+in Research/inferred_major. The present result is their measured composition
+with the newer context-first control and the delayed private-mode reset;
+it is not a new arithmetic principle or proof of absolute minimality.
+

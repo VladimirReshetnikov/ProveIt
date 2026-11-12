@@ -1,0 +1,64 @@
+--- checker_i.py
++++ checker_j.py
+@@ -1,5 +1,5 @@
+ import json
+-BINDERS = {'=': 0, 'q': 1, 'd': 2, 'i': 1, 's': 0}
++BINDERS = {'=': 0, 'q': 1, 'd': 2, 'j': 1}
+ 
+ def require(condition):
+     if not condition:
+@@ -19,15 +19,11 @@
+     if type(a) is int:
+         require(0 <= a <= depth)
+     else:
+-        require(type(a) is list and a)
+-        if a[0] == 's':
+-            require(len(a) == 2)
+-            term(a[1], depth)
+-        else:
+-            require(a[0] == 'i' and len(a) == 4)
+-            term(a[1], depth)
+-            term(a[2], depth)
+-            term(a[3], depth + 1)
++        require(type(a) is list and len(a) == 3 and (a[0] == 'j'))
++        term(a[1], depth)
++        term(a[2], depth + 1)
++        body = a[2]
++        require(subst(body, (0,), 1) == body or body[2] == 0)
+ 
+ def formula(a, depth):
+     require(type(a) is list and a)
+@@ -40,7 +36,7 @@
+         formula(a[1], depth + BINDERS[a[0]])
+ 
+ def succ(a):
+-    return ['s', a]
++    return ['j', a, 0]
+ 
+ def eq(a, b):
+     return ['=', a, b]
+@@ -55,16 +51,16 @@
+         index, = args
+         require(type(index) is int and 0 <= index < len(context))
+         return context[index]
+-    if rule == 'i0':
+-        initial, body = args
+-        value = ['i', 0, initial, body]
++    if rule == 'j0':
++        body, = args
++        value = ['j', 0, body]
+         term(value, depth)
+-        return eq(value, initial)
+-    if rule == 'is':
+-        n, initial, body = args
+-        value = ['i', n, initial, body]
++        return eq(value, succ(subst(body, (0,))))
++    if rule == 'js':
++        n, body = args
++        value = ['j', n, succ(body)]
+         term(value, depth)
+-        return eq(['i', succ(n), initial, body], subst(body, (value,)))
++        return eq(['j', succ(n), succ(body)], subst(body, (value,)))
+     if rule == 'tr':
+         template, major, minor = args
+         term(template, depth + 1)
