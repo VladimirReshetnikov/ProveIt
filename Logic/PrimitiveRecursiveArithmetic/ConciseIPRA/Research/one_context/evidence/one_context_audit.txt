@@ -1,0 +1,109 @@
+Independent audit: one-context crossed equality rule
+====================================================
+
+Reviewed against Native.lean from ConciseIPRA at the pinned snapshot.
+This is a written mathematical audit, not a proof-assistant verification.
+
+Candidate calculus X keeps all seven non-transport constructors of NPrf.
+It replaces trEq by
+
+        Gamma |- s=t       Gamma |- h(s)=u
+        ---------------------------------
+                   Gamma |- u=h(t).
+
+Here h is ONE numerical term with one designated free placeholder. The
+placeholder is syntactic and need not occur exactly once, or at all. The
+terms s,t,u and the other free parameters of h are scoped in Gamma's
+ambient numerical context. Substitution avoids capture beneath iterators.
+No formula-level context and no extra induction schema is admitted.
+
+1. Simulation of the old two-sided transport, exactly two X applications.
+
+Given p:s=t and q:a(s)=b(s), first use h=a and u=b(s):
+        r : b(s)=a(t).
+Reuse p, use h=b and u=a(t), and r as the minor premise:
+        a(t)=b(t).
+Both u choices are ambient terms; neither binds the placeholder. This is
+legal even when s,t,a,b share ambient free parameters. Reuse of p is
+allowed because the native context is reusable, not linear.
+
+2. Simulation of X in NPrf.
+
+Apply old trEq with its left template h and its right template the
+constant u, obtaining h(t)=u. Apply NPrf's already derived symmetry to
+obtain u=h(t). The old symmetry theorem is derived independently from
+NPrf's computation and old trEq rules, so there is no circularity.
+
+3. Elementary equality facts inside X (useful for an independent proof).
+
+Let r=I(0,v;z.0). The computation theorem e:r=v, used for both premises
+of X with h(x)=x and u=v, yields v=v. Thus reflexivity is derived.
+
+For p:s=t, use p for both premises, the constant context h(x)=s, and
+u=t. This yields t=s. Thus symmetry needs one X application and no
+extra reflexivity assumption.
+
+Given p:s=t and q:t=v, the symmetric p is t=s. Applying X with major
+t=s, h(x)=x, and minor q gives v=s; symmetry gives s=v. General
+congruence also follows from p and h(s)=h(s), yielding h(s)=h(t).
+
+4. Exact metatheorem.
+
+For every ambient numerical scope, finite native context Gamma, and
+native formula A, XPrf Gamma A iff NPrf Gamma A. Prove the two directions
+by induction on derivations using items 1 and 2 in the transport cases
+and the corresponding unchanged constructor in every other case.
+All fresh-variable side conditions remain identical. The simulations
+introduce no eigenvariables and no new assumptions.
+
+Consequently every structural admissibility theorem, including weakening,
+cut and capture-avoiding substitution, transfers from NPrf to XPrf.
+One can also prove substitution directly: h is substituted under one
+additional binder, while s,t,u are substituted at the ambient scope.
+There is no literal-zero or root-shape side condition to invalidate
+substitution.
+
+5. Bi-interpretability and consistency.
+
+The X-to-N and N-to-X maps are literally the identity on terms and
+formulas and translate only proof steps. Compose them with the pinned
+native/iPRA interpretations. The numerical domains, actual equality,
+logical macro translations and both existing interpretation composites
+are unchanged. Formula round trips and equiconsistency therefore follow
+from the exact sequent equivalence, not from a standard-model argument.
+
+6. Accurate complexity claims.
+
+This is a strict simplification of the SHAPE of the primitive equality
+rule: one moving numerical context replaces two moving contexts. It
+does not reduce the total number of constructors (still eight), the
+number of premises, or the arithmetic/formula grammar. It is not a
+semantically weaker theory, since all derivable sequents coincide.
+
+Do not claim a smaller complete Python checker without matched actual
+measurements. The old checker fuses arbitrary-template equality
+transport with Q-elimination; narrowing the primitive rule can destroy
+that implementation sharing. A checker retaining old trEq as an
+admissible macro remains correct for X but does not evidence a size
+reduction. This is not an absolute-minimality theorem or, by itself,
+a result below the current 257-token/279-node/522-byte incoming envelope.
+
+7. Boundaries and traps.
+
+* 'One context' means one term context, not one occurrence of a variable.
+  Restricting the hole to a single occurrence would require an additional
+  proof, especially for iterator bodies and repeated parameters.
+* u must be an ambient term. The crossed conclusion does not authorize
+  a new free placeholder occurring in u.
+* Both contexts a and b in the two-step simulation are the original
+  templates. Do not substitute t into b before the second step.
+* Do not identify proof objects or assert inverse proof translations.
+  The interpretations are inverse on formulas up to the inherited
+  provable equivalences; the derivation translations are not inverses.
+* No weakening of literal-equation induction is established here.
+* No deletion of either computation schema follows from this argument.
+
+Conclusion: mathematically sound and proof-friendly, with an elementary
+two-step exact comparison theorem. Its practical simplicity advantage
+depends on the user's criterion; a strict whole-checker improvement
+remains a separate implementation obligation.

@@ -1,0 +1,94 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{xcolor,listings,fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\definecolor{ink}{HTML}{17324D}
+\hypersetup{pdftitle={A uniform introduction rule for intuitionistic primitive recursive arithmetic},pdfauthor={Research prepared for Vladimir Reshetnikov},pdfsubject={An explicit seven-rule calculus, bi-interpretability, and whole-checker comparisons}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Uniform introduction for iPRA}}
+\fancyhead[R]{\small November 11, 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\Teq}{T_{\mathrm{eq}}}
+\newcommand{\FV}{\operatorname{FV}}
+\newcommand{\eqv}{\dashv\vdash}
+\lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,keepspaces=true,breaklines=true,frame=single,framerule=.3pt,rulecolor=\color{black!20},showstringspaces=false,aboveskip=10pt,belowskip=10pt}
+\begin{document}
+\begin{titlepage}
+\vspace*{12mm}
+{\color{ink}\Large\textsc{Concise iPRA research}}\par
+\vspace{9mm}
+{\color{ink}\huge\bfseries A uniform introduction rule for intuitionistic primitive recursive arithmetic\par}
+\vspace{7mm}
+{\Large An unrestricted seven-rule calculus,\par both interpretation composites,\par and a measured checker comparison\par}
+\vspace{12mm}
+{\large Prepared for Vladimir Reshetnikov\par November 11, 2026\par}
+\vfill
+\textbf{Result and limitation.}
+The new calculus has a single introduction schema whose mode depends only
+on the matrix root. Every equation, $Q$ formula, and $D$ formula belongs to
+its public language. A reversed iterator orbit supplies the missing
+progress elimination, and the report proves bi-interpretability with
+full first-order iPRA.
+
+This is a structural simplification, not a proof of a globally smallest
+axiomatization. In matched straightforward implementations it is smaller
+than the adopted eight-rule kernel, but larger than the already known
+seven-rule witness-sensitive kernel. A separate, small implementation
+reduction improves the inspected compact envelope; it is not an
+implementation of the new orbit calculus.\par
+\vspace{8mm}
+\textbf{Reference snapshot.}\quad
+\texttt{VladimirReshetnikov/ProveIt}\par
+\texttt{a4e5e96c456303cf231eab2aeeb3291d8889833f}\par
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}
+\end{titlepage}
+
+\begin{abstract}
+We replace the separate case and equation-induction introductions of the
+current native scalar kernel by one introduction. At an equation matrix,
+$Q_y E$ means $\forall y(E(y)\to E(Sy))$; at a compound matrix it keeps the
+conditional reading $B(0)\to\forall y B(y)$. The corresponding $D$ binds an
+existential witness. Elimination specializes a closure along
+$I(a,n;u.Su)$, with the source placed in the counter position. Its zero
+source computes directly to the arbitrary target $n$, which derives
+contextual equation induction without a circular use of an iterator
+identity. The new rules admit numerical substitution by direct induction.
+Explicit translations preserve derivations in both directions and have
+provably identity formula composites for the entire language, not only
+guarded public formulas. Numerical domains remain whole and equality
+remains actual equality. The written theorem is accompanied by a standalone
+typed proof checker, matched old kernels, reproducible size measurements,
+and positive and negative certificates. The new metatheorems are not
+claimed to have been checked in Lean or Rocq.
+\end{abstract}
+
+{\small\tableofcontents}
+\newpage
+\input{sections/context.tex}
+\input{sections/new_theory.tex}
+\input{sections/comparison.tex}
+\input{sections/audit.tex}
+\appendix
+\input{sections/old_macros.tex}
+\input{sections/arithmetic_bridge.tex}
+\input{sections/artifacts.tex}
+\input{sections/references.tex}
+\end{document}
