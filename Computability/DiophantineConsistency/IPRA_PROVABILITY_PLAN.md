@@ -7319,6 +7319,12 @@ gives 13 positive inputs, 88 operations and exact degree 28, with the same
 positive-zero existence as that 88/30 parent at the authenticated ports.
 The proof replays the sign-free calibration externally; it is not a new
 Lean/iPRA endpoint or a file-binding theorem.
+The reviewed [direct auxiliary-root form](research/ordinary13-aux-root87-36/README.md)
+has 13 positive inputs, 87 operations and exact degree 36, and has the same
+positive-zero existence as the 88/30 parent for integer ports with `β > 0`.
+A separate [C-fold auxiliary-root form](research/ordinary13-cfold-aux87/README.md)
+has the same numerical metrics and inherits the C-fold calibration. These
+are external comparisons, not new Lean endpoints.
 The reviewed [conditional sphere finalizer](research/ordinary13-freej88-conditional-sphere/README.md)
 gives a different 88-operation, degree-30 graph with the same positive zeros.
 It is an equal-metric search form, not a new Lean endpoint or improvement.
@@ -7422,6 +7428,15 @@ removes one more. The latter graph has 14 positive inputs, 79 operations and
 exact degree 60. Its positive-zero existence agrees with the preceding graph
 for integer ports with `β > 0`; its compact44 consistency connection retains
 the inherited source, model-proof and file-binding limitations.
+The twice-reviewed [direct auxiliary-root map](research/ordinary14-aux-root78/README.md)
+reduces that degree-60 point to 78 operations with 14 positive inputs. A
+separate [combined-root graph](research/ordinary14-direct-roots79-56/README.md)
+uses 79 operations at degree 56; both preserve positive-zero existence
+relative to their parents for integer ports with `β > 0`.
+The reviewed [explicit-quotient construction](research/ordinary15-direct-guards84/README.md)
+trades two additional inputs against the 13-input 87/36 form, giving 15
+positive inputs, 84 operations and degree 36. These results remain external
+arithmetic with inherited endpoint, ancestry and file-binding limitations.
 The distinct [q-squared 78-operation probe](research/ordinary14-q2-78-probe/README.md)
 has a reviewed symbolic actual-port zero with `q² ∣ Y` but `q³ ∤ Y`; its
 same-`q`, same-rank parent exclusion is conditional on the cited parent
