@@ -46,6 +46,7 @@ two-field stream for the conditional-copy calculus & \cref{cert:sec:native-refin
 test of the printed form as a disjunction; eager mode selector & \cref{cert:sec:native-refinements} & \pkg{absorbing\_orbit}; \pkg{boolean\_constancy}\\
 compositions of these rewritings & \cref{cert:sec:native-refinements} & \pkg{checked\_reductions}, \pkg{refinement} (second delivery)\\
 zero as a defined alias in the public goal & \cref{cert:sec:native-refinements} & \pkg{zero\_alias}\\
+terminating array test and erasure of the alphabet precondition & \cref{cert:sec:native-refinements} & \pkg{tolerant\_certificates}\\
 rewritings of single expressions of the stream programs & \cref{cert:sec:representation} & \pkg{fused\_iteration}, \pkg{pred50}\\
 certificates read one record per line & \cref{cert:sec:representation} & \pkg{checked\_presentation} (second delivery)\\
 \bottomrule
@@ -61,8 +62,8 @@ second delivery of \pkg{checked\_presentation}, and the checker parts of
 \pkg{atomic\_seed\_refinement}, \pkg{reductions}, \pkg{equation\_aliases},
 \pkg{alias\_back}, \pkg{absorbing\_orbit}, \pkg{absorbing\_predecessor},
 \pkg{boolean\_constancy}, \pkg{zero\_alias}, \pkg{checked\_reductions},
-\pkg{fused\_iteration}, \pkg{pred50} and the second delivery of
-\pkg{refinement} state that they contain no
+\pkg{fused\_iteration}, \pkg{pred50}, \pkg{tolerant\_certificates} and the
+second delivery of \pkg{refinement} state that they contain no
 new rule and no new arithmetic; each composes devices of this list, and the
 composition is what is proved. The mathematical parts of
 \pkg{479\_predecessor57}, \pkg{zero\_test\_split},
@@ -3607,7 +3608,8 @@ This subsection follows the checker parts of \pkg{checked\_frontier},
 \pkg{479\_predecessor57}, \pkg{atomic\_seed\_refinement},
 \pkg{zero\_test\_split}, \pkg{equation\_aliases}, \pkg{alias\_back},
 \pkg{absorbing\_orbit}, \pkg{boolean\_constancy}, \pkg{checked\_reductions},
-\pkg{zero\_alias} and the second delivery of \pkg{refinement}, and records the
+\pkg{zero\_alias}, \pkg{tolerant\_certificates} and the second delivery of
+\pkg{refinement}, and records the
 deliveries of \pkg{immediate\_opening} and \pkg{absorbing\_predecessor}.
 The controls are programs of \cref{cert:sec:after-first}: the composed native
 goal-validated program of \cref{cert:prop:native-composition} ($629$ bytes),
@@ -4308,6 +4310,143 @@ related by the bijection $B\mapsto B^{\sharp}$ on goals; completeness is claimed
 for canonical encodings only, as under T/ed. The package's negative control,
 the same program with the initial context $[0]$, rejects a translated
 certificate of a computation, as \cref{cert:cor:reserved} predicts.
+
+\subsubsection*{Erasing the alphabet precondition}
+
+\pkg{tolerant\_certificates} removes the last assumption on certificates from a
+goal-validated program. The programs of the goal contract recognize arrays by
+$a\cdot 0\neq 0$, which is true for strings as well; their soundness is stated
+for consumed packets that are integers and arrays, and a nonempty string at an
+active position makes an ideal execution traverse it without end, as noted in
+\cref{cert:prop:native-int}(b). The package replaces the test by
+$a\cdot 0=[\,]$, which on values of the JSON reader holds exactly for arrays,
+is false for numbers and strings, and fails for \texttt{null} and objects.
+
+\begin{definition}[Numeric respelling; tolerant contract]\label{cert:def:tolerant}
+A \emph{numeric respelling} of a raw tree replaces leaves by values of the JSON
+reader with the same numerical value: integral finite floats, and, for the
+leaf $0$, also \texttt{False} or the negative floating zero. A checker
+satisfies the \emph{tolerant goal contract} for a grammar if every input
+accepted by the JSON reader leads to a terminating ideal run, every accepted
+goal is a numeric respelling of a canonical closed formula of the grammar whose
+reading is a theorem, and every numeric respelling of the canonical encoding of
+a closed theorem is accepted with some certificate. No property of unused or
+consumed certificate data is assumed.
+\end{definition}
+
+Let $\widetilde N$ be the program (e) of \cref{cert:prop:late-compositions}
+($321/371/618$) with the exact-integer conjunct deleted from its leaf
+condition and with the array test $a\cdot 0\neq 0$ replaced by $a\cdot 0=[\,]$.
+
+\begin{lemma}[First opening of $\widetilde N$]\label{cert:lem:tolerant-goal}
+The first opening of $\widetilde N$, with the empty context and the floor $0$,
+is defined exactly when the goal is a numeric respelling of a tree $b$ with
+$P^{\mathrm{ed}}(b,0)$, and it then returns the goal unchanged.
+\end{lemma}
+\begin{proof}
+The array test separates arrays from all other values of the reader, and the
+arity condition is that of the control. A string reaches the scalar branch and
+fails the range test; \texttt{null} and objects fail the array test. A numeric
+leaf passes exactly when $0\le a<d$, the depth $d$ is odd, and
+$a\bmod 2=[a>1]$. For a finite nonnegative number the last condition holds
+exactly at $0$ and at the odd integers of at least $3$: for $0<a<2$ the
+remainder is $a$, which is neither $0$ nor $1$ when $a\neq 1$, while $[a>1]$ is
+$0$ or $1$, and at $a=1$ the two sides are $1$ and $0$; for $a\ge 2$ the side
+$[a>1]$ is $1$, and the floating remainder modulo $2$ is exact, so it is $1$
+exactly at the odd integers; \texttt{True} has the value $1$ and fails,
+\texttt{False} has the value $0$ and passes. Infinite values and NaN fail the range test. Every
+failure consults the missing image, the checking function, and fails. The
+opening retains every leaf it admits, so it returns the goal. Induction on the
+goal gives the claim, as in \cref{cert:lem:scope}.
+\end{proof}
+
+\begin{lemma}[Later openings of $\widetilde N$]\label{cert:lem:tolerant-open}
+After the first opening, every opening of $\widetilde N$ terminates; it fails
+when it reaches a string, \texttt{null} or an object; a nonfinite number behaves
+as a scalar outside every range, that is, as the hole at a term position and as
+$0=0$ at a formula position; and a returning opening has the properties of
+\cref{cert:lem:opening,cert:lem:exposure,cert:lem:fresh} for the raw trees of
+\cref{cert:def:raw}, whose numeric scalars include floats and Booleans.
+\end{lemma}
+\begin{proof}
+With a nonempty context the arity condition is inactive, and the array test
+recognizes exactly arrays. A string reaches the range test and fails; it is no
+longer traversed. \texttt{null} and objects fail the array test. A nonfinite
+number fails the range test and is replaced by the image at an odd depth or by
+the scalar $0$ at an even depth, which is the treatment of a hole. Traversal is
+structural on a finite tree, and the image is opened once with the missing image,
+after which a further hole fails; so every opening terminates. A returning
+opening has met only arrays and finite or nonfinite numbers at the positions it
+traversed, and the proofs of the three lemmas apply verbatim; for freshness,
+finitely many names lie in $[k-1,k)$, the case treated after
+\cref{cert:lem:fresh}.
+\end{proof}
+
+\begin{theorem}[Erasure of the alphabet precondition]\label{cert:thm:tolerant}
+$\widetilde N$ satisfies the tolerant goal contract for the language with
+equality and $D$ and the calculus $\mathcal A^{-}$:
+\begin{enumerate}[label=(\alph*)]
+\item on every input accepted by the JSON reader its ideal run terminates;
+\item if it accepts, the goal is a numeric respelling of a tree $b$ with
+$P^{\mathrm{ed}}(b,0)$ whose reading is a closed theorem of $\mathcal A^{-}$;
+\item for every closed theorem $B$ with canonical encoding $b$ and every numeric
+respelling $b'$ of $b$, some certificate with goal $b'$ is accepted.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) The input must be an array, or the removal of the goal fails. Every call
+that does not return at its membership test removes a packet from the finite
+stack before any recursive call, and every opening terminates
+(\cref{cert:lem:tolerant-goal,cert:lem:tolerant-open}). So the tree of calls is
+finite.
+
+(b) By \cref{cert:lem:tolerant-goal} the goal has the stated form. For the run
+after the first opening, the soundness proof of the control (the program of
+$629$ bytes, \cref{cert:prop:native-composition}, with
+\cref{cert:prop:native-append,cert:prop:late-compositions}) is an induction on a
+returning run over raw trees; it uses only that the operations it relies on are
+defined, and by \cref{cert:lem:tolerant-open} an opening that reaches a value
+other than an array or a number fails. The remaining places where such a value
+could enter are these. A packet that is a string or an object of four entries
+is destructured into strings, and its major, a string, fails at the opening that
+begins the major call. The comparison of the major with $[s,u]$ or $[t,t,t]$ and
+the membership test compare a fully opened tree, which contains only arrays and
+numbers, with another tree; equal trees then contain only arrays and numbers,
+and equal numbers have equal readings, so the identities used by the soundness
+proof hold. A field that is never opened or compared has no role in the
+induction. In an introduction the mode field $u$ is false-valued, and the test
+$\lvert a\rvert\bmod 2=u$ selects progress only if $u$ is numerically $0$; no
+false-valued value equals $1$, so a compound matrix of arity $1$ or $3$ never
+receives progress. A false-valued source used as an image must open to the
+reading $0$; numeric zeros and $[\,]$ do, and other false-valued values fail if
+they are used. The extra copies of $0$ in the contexts of callers
+(\cref{cert:prop:native-append}) read $0=0$. Hence the reading of the goal is
+derivable.
+
+(c) On inputs of integers and arrays the two array tests agree, and the deleted
+conjunct is true on exact integers, so $\widetilde N$ has the runs of its
+control; the canonical certificate of $B$ (\cref{cert:prop:native-composition})
+is accepted with goal $b$. With goal $b'$ relate trees of equal shape whose
+leaves are numerically equal. The range tests, the parity condition, the truth
+values, the equalities and the membership tests of the program have the same
+values on related trees, and openings map related trees to related trees; the
+goal is not multiplied, decremented or tested for its type. So the run with
+goal $b'$ is related to the run with goal $b$ step by step and accepts.
+\end{proof}
+
+The program, of \pkg{tolerant\_certificates} (\texttt{code/checker.py}), has
+$315/361/603$ against $321/371/618$ for its control under the goal contract. It
+satisfies neither the goal contract, since it accepts respelled goals, nor the
+typed contract, since it does not test the alphabet; and the programs of those
+contracts do not satisfy its contract: the programs with the array test
+$a\cdot 0\neq 0$ do not terminate, in ideal execution, on some inputs with a
+nonempty string at an active position (in an actual run they reject at the
+recursion limit), and their soundness is not established for consumed data that
+are not integers and arrays. It is listed under its own code. The package
+states that it is below the envelope $330/380/621$ of the typed contract in all
+three coordinates; this compares different contracts. Completeness is claimed,
+as elsewhere, for canonical encodings and their respellings and not for every
+spelling with references to dummy slots.
 
 \subsubsection*{Two fields for the conditional-copy calculus}
 
@@ -5389,6 +5528,7 @@ G/$\mathcal A^{-}$ & goal contract for the grammar with equality and $D$, calcul
 T/eqd & typed contract for the grammar with equality, $Q$ and $D$, calculus $\mathcal A^{-}$\\
 T/ed & typed contract for the grammar with equality and $D$, calculus $\mathcal A^{-}$\\
 T/g & typed contract for canonical closed guarded formulas, calculus $\mathcal U$\\
+Gt/$\mathcal A^{-}$ & tolerant goal contract of \cref{cert:def:tolerant} for the grammar with equality and $D$, calculus $\mathcal A^{-}$\\
 T/ed$_1$ & typed contract for the grammar $P^{\mathrm{ed}}_{1}$ of \cref{cert:def:zero-alias}, public zero encoded by the scalar $1$, initial context $[0,[1,0]]$, calculus $\mathcal A^{-}$\\
 S & strict contract of \pkg{guarded\_register}: certificates $[A,\pi]$ with a proof tree $\pi$, every term and the goal validated; its own calculus, see the remarks below\\
 K & strict contract for the conditional-copy calculus $\mathsf K$: every active term and formula and the goal validated, in full normal form; tree or stream certificates (\cref{cert:def:k-stream})\\
@@ -5656,6 +5796,9 @@ parity and product on the program of $629$ bytes & G/$\mathcal A^{-}$ & 321 & 37
 parity and product on the program of $607$ bytes & G/$\mathcal A^{-}$ & 334 & 380 & 596 & 337/383/607\\
 phase by an empty context, parity, product, gate & T/ed & 330 & 380 & 638 & 334/387/654\\
 product and gate on the program of $628$ bytes & T/ed & 340 & 385 & 621 & 341/387/628\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{tolerant\_certificates}: \cref{cert:thm:tolerant}}\\
+terminating array test, no exact-integer conjunct & Gt/$\mathcal A^{-}$ & 315 & 361 & 603 & 321/371/618 (G/$\mathcal A^{-}$)\\
 \midrule
 \multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{fused\_iteration} and \pkg{pred50}, checker parts: \cref{cert:prop:stream-rewrites}}\\
 local stream program, product in the floor\textsuperscript{\dag\ddag} & R/$\mathcal U$ & 249 & 265 & 605 & 249/267/606\textsuperscript{\dag\ddag}\\
@@ -5961,7 +6104,8 @@ R/$\mathcal U$ & 249 & 271 & 477 & three programs: the global three-field profil
 R/$\mathcal U^{\mathrm{Tr}}$ & 295 & 352 & 742 & one program, the two-field reference of \pkg{refinement}\\
 G/$\mathcal U$ & 407 & 459 & 921 & one program, of \pkg{checked\_refinement}\\
 T/g & 419 & 469 & 855 & two programs of \pkg{refinement}: the matched control ($419/469/862$) and the program on the kernel of $488$ bytes ($423/474/855$)\\
-G/$\mathcal A^{-}$ & 321 & 369 & 596 & three programs, all from \cref{cert:prop:late-compositions}: the parity and product program of \pkg{refinement} on the program of $629$ bytes ($321/371/618$), the parity program on the program of $629$ bytes of \pkg{checked\_reductions} and \pkg{refinement} ($323/369/622$), and the parity and product program of \pkg{refinement} on the program of $607$ bytes ($334/380/596$); their exact-integer tests concern one runtime, as do those of the programs of $629$ and $607$ bytes\\
+G/$\mathcal A^{-}$ & 321 & 369 & 596 & three programs, all from \cref{cert:prop:late-compositions}: the parity and product program of \pkg{refinement} on the program of $629$ bytes ($321/371/618$), the parity program on the program of $629$ bytes of \pkg{checked\_reductions} and \pkg{refinement} ($323/369/622$), and the parity and product program of \pkg{refinement} on the program of $607$ bytes ($334/380/596$); their exact-integer tests concern one runtime, as do those of the programs of $629$ and $607$ bytes, and, like every program of this contract with the array test $a\cdot 0\neq 0$, they do not terminate in ideal execution on some inputs with a nonempty string at an active position, outside the integer and array data for which their correctness is stated\\
+Gt/$\mathcal A^{-}$ & 315 & 361 & 603 & one program, of \pkg{tolerant\_certificates}; not comparable with G/$\mathcal A^{-}$ or T/ed\\
 T/ed & 330 & 379 & 621 & two programs: the program of \pkg{checked\_reductions} with the phase by an empty context, parity, gate and inverted entry ($330/379/641$), which attains two of the three minima, and the program of \pkg{refinement} with product and gate on the program of $628$ bytes ($340/385/621$)\\
 T/ed$_1$ & 331 & 373 & 625 & one program, of \pkg{zero\_alias}; not comparable with T/ed\\
 T/eqd & 383 & 442 & 870 & one program, of \pkg{validated\_presentation}\\
@@ -6131,7 +6275,16 @@ the only program of T/ed$_1$; it is below the earlier envelope $334/386/628$ of
 T/ed in all three coordinates, as the package states, but it is not below the
 present envelope $330/379/621$ in tokens or bytes, and the two contracts encode
 the public zero differently (\cref{cert:prop:zero-alias}), so no program of
-one contract supersedes a program of the other.
+one contract supersedes a program of the other. The program of
+\pkg{tolerant\_certificates} ($315/361/603$) is the only program of
+Gt/$\mathcal A^{-}$; it has fewer tokens and nodes than every program of
+G/$\mathcal A^{-}$ and T/ed and more bytes than the program of $596$ bytes, and
+since its contract differs from both (\cref{cert:thm:tolerant}) it is not
+compared with them. The program of $596$ bytes keeps its row under
+G/$\mathcal A^{-}$: that contract states correctness for integer and array
+certificates only, and the failure of termination on inputs with nonempty
+strings, which \pkg{tolerant\_certificates} records for it, lies outside that
+statement, as it does for the program of $629$ bytes.
 
 \paragraph{Superseded programs.} A program of the table is \emph{superseded}
 if another complete program of the table with the same contract code, and
@@ -6203,6 +6356,7 @@ stream programs of \pkg{fused\_iteration} ($249/265/605$,
 ($244/273/607$, \texttt{code/checker/checker607.py}). Under T/ed$_1$ there is
 one program besides its readable form, which it supersedes
 (\pkg{zero\_alias}, $430/499/2322$, \texttt{implementation/checker\_readable.py}).
+Under Gt/$\mathcal A^{-}$ there is one program, and nothing is superseded.
 The global loop of
 \pkg{progress\_independence} ($251/283/605$\textsuperscript{\dag}), by the
 token program of \pkg{constantfree} ($250/283/603$\textsuperscript{\dag});
@@ -6521,6 +6675,18 @@ package answers these questions. (\pkg{inferred\_major},
 \pkg{alias\_back}, \pkg{absorbing\_orbit}, \pkg{absorbing\_predecessor},
 \pkg{boolean\_constancy}, \pkg{zero\_alias}, \pkg{checked\_reductions},
 \pkg{fused\_iteration}, \pkg{pred50}.)
+\end{question}
+
+\begin{question}[Soundness without the alphabet precondition]
+Is the program of $596$ bytes, or any program of the goal contract with the
+array test $a\cdot 0\neq 0$, sound for every input accepted by the JSON reader?
+An audit in \pkg{tolerant\_certificates} sketches a successful-run induction for
+the program of $596$ bytes and finds no accepted false goal in $44416$ bounded
+trials ($1448$ of them ending at the recursion limit), but proves no theorem;
+such a program would still not terminate on some inputs with nonempty strings.
+Can the erasure of \cref{cert:thm:tolerant} be combined with the products of bits
+and the program of $596$ bytes so that one program of the tolerant contract is
+also below $596$ bytes? (\pkg{tolerant\_certificates}.)
 \end{question}
 
 \begin{question}[The defined alias]
@@ -6845,13 +7011,15 @@ of the unchanged baselines in \pkg{absorbing\_predecessor}; and $2576$ in
 the inherited cases and $2$ negative controls in \pkg{zero\_alias}; $1530$
 executions of the validated programs, $454$ of the compact program and $20$
 independent checks in \pkg{checked\_reductions}; $880$ in the second delivery of
-\pkg{refinement}; $40$ in \pkg{fused\_iteration}; and $108$ in \pkg{pred50};
-each package reports no unexpected outcome.
+\pkg{refinement}; $40$ in \pkg{fused\_iteration}; $108$ in \pkg{pred50}; and
+$388$ command-line runs with $44416$ bounded trials against a false goal, all
+rejected, in \pkg{tolerant\_certificates}; each package reports no unexpected
+outcome.
 \pkg{boolean\_constancy} also records that the stream programs do not read an
 unused malformed suffix, and that its program of $478$ bytes rejects the
 boundary certificate of \cref{cert:prop:eager-selector}(c). None of these packages claims a formalization in a
 proof assistant, a minimal program or a program below all coordinates of an
-envelope; all proofs of \cref{cert:prop:stream,cert:prop:native-append,cert:prop:native-int,cert:prop:parity,cert:prop:bit-products,cert:prop:gate-or,cert:prop:eager-selector,cert:prop:late-compositions,cert:prop:zero-alias,cert:prop:stream-rewrites,cert:prop:k-stream,cert:prop:header,cert:prop:delayed-equality,cert:prop:delayed-closure}
+envelope; all proofs of \cref{cert:prop:stream,cert:prop:native-append,cert:prop:native-int,cert:prop:parity,cert:prop:bit-products,cert:prop:gate-or,cert:prop:eager-selector,cert:prop:late-compositions,cert:prop:zero-alias,cert:thm:tolerant,cert:prop:stream-rewrites,cert:prop:k-stream,cert:prop:header,cert:prop:delayed-equality,cert:prop:delayed-closure}
 are written proofs for ideal executions, and the truth-valued results retain
 more memory than the controls.
 \item The certificate of $30$ packets that \pkg{zero\_test\_split} reports

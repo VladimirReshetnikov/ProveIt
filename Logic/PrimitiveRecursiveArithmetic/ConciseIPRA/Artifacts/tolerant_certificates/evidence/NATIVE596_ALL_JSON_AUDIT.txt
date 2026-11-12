@@ -1,0 +1,114 @@
+INDEPENDENT AUDIT: NATIVE596 ON ARBITRARY JSON CERTIFICATES
+
+Target source:
+incoming/ipra_refinement_2026-11-12/checkers/code/native_bytes.py
+
+Conclusion of this audit: no accepted false goal was found. There is a
+plausible direct successful-run soundness proof extending the article's raw
+decoder, rather than an equality-preserving translation to integer-only
+certificates. The mathematical agent is independently developing that proof.
+This note is an audit/proof-boundary statement, not a proof-assistant result.
+
+1. Public goal
+
+The outer call has k=0,v=1. Scalars survive only when they are exact ints
+(int(a) is a), in scope, at term depth, and either0 or odd>=3. Arrays have
+exactly the canonical Eq/D arities. Every failed condition consults the
+missing function-valued image and raises. Empty strings fail the arity guard;
+nonempty strings cannot complete a recursive opening. Hence any accepted
+input has an exact-int canonical closed Eq/D goal. v becomes0 before the
+first major proof. No input can reset it to1 later.
+
+2. Successful ordinary openings
+
+At v=0 the test a*0!=0 and 0<=shape recognizes lists and strings as sequence
+inputs. Lists recurse on children. The empty string becomes[]. Every nonempty
+string eventually recurses on a one-character string forever; with the
+actual CPython recursion limit it raises and is rejected. None and dicts
+raise at multiplication. NaN and infinities give NaN on multiplication by0,
+then raise at len(float). A successfully opened scalar is therefore a finite
+int,float,bool. Finite floats and Booleans take exactly the ordinary scalar
+range and parity cases; int(a)is a isFalse for them but0<=0 still permits
+the range case. Every successfully opened output contains only lists and
+finite numeric scalars; the empty string has been removed.
+
+The theorem can therefore concern every finite ACCEPT run, without claiming
+that every submitted node is validated. Arbitrary inert or unread fields
+can remain unexamined. A stronger claim that the idealized recursive
+algorithm terminates on every finite JSON value needs a change: nonempty
+strings cause divergence. The actual CPython command rejects by its recursion
+limit, just as it may reject very large valid proofs by resource limits.
+
+3. Raw semantics already provided by the article
+
+ch11_cert.tex defines numeric raw scalars to include floats and Booleans
+(lines216ff). Scalars0<=r<3 read as0 at term depth; slots occupy intervals
+[3+2j,5+2j); negative names in[k,0) are rigid parameters. Equal finite Python
+numeric values have the same reading, includingFalse=0,True=1,-0.0=0.
+Emptystring is assigned the reading of emptyarray wherever an opening uses
+it. Python equality of successfully used values implies equal readings;
+the converse is not needed.
+
+The article explicitly treats fractional fresh names in[k-1,k) as a finite
+family (lines422ff), not as a single integer eigenvariable. The zero-instance
+computation lemma and supply lemma eliminate this finite family. Thus one
+must NOT globally round floats to ints: rounding does not preserve source
+truthiness, numerical identity of distinct eigenparameters, or m*3.
+
+4. Branch audit
+
+The major call always succeeds before any premise is used. Its return is
+truthy (True or a nonempty singleton list). A true-valued numeric major has
+the neutral formula reading0=0, and its triple remains numeric; it cannot
+equal the nonempty array candidate s and[s,u] or[t]*3. Thus it cannot fake
+transport or closure elimination. A true-valued list major is read exactly
+as in the article; triplication exports a D witness only at unary root and
+otherwise supplies a neutral formula. An emptystring major can only act
+as an empty false-valued alias, with no successful replacement test.
+
+In an introduction u is false-valued. A false-valued JSON value can equal
+the scalar0 exactly in the numeric-zero cases (0,0.0,False,-0.0), and none
+can equal1. Therefore len(a)%2==u can select progress for equations but
+never for meaningful compound roots of arity1 or3. Other arities decode
+as neutral formulas. None,emptystring,emptydict may be inert case-mode
+markers; no reading of them is needed unless an opening uses them.
+
+In a computation u is true-valued and the raw equation is opened before
+it is retained. Null/dict/nonemptystring/nonfinite numeric values in active
+positions reject. If a false-valued source is used, the successfully opened
+source is numeric0 or emptystring/emptyarray, all reading0. The article's
+zero-instance computation proof then applies with the finite new-name family.
+
+If the replacement comparison succeeds, the proved major is literally the
+displayed raw equality or the displayed triple. Its successful opening has
+already ruled out active pathological values. Equal raw sides have equal
+readings. A source/target image that is actually inserted is successfully
+validated at root term depth; if it is not inserted, the template has no
+corresponding free hole and its value is immaterial. This handles inert
+None/dict/NaN fields without interpreting them as terms.
+
+5. Executable observations
+
+native596_json_fuzz.json records44,416 bounded adversarial trials with exact
+false public goal[0,[0]]. Every run rejected:42,968 by ordinary exception,
+1,448 at the recursion limit. The search mutates seven supplied proof/attack
+fixtures and generates short stacks from scalars, fractions, bools, NaN/Inf,
+empty/nonempty strings, null, dicts and small raw trees. These are finite
+checks only, not the proof above.
+
+native596_noninteger_examples.json records actual uninstrumented subprocess
+acceptance of a valid computation proof with all used packet zeros replaced
+by0.0 and, separately,False. The fully alphabet-validating strict621 checker
+rejects those exact inputs. Both also compare an unread object/null prefix:
+native596 accepts it, strict621 rejects. Thus all-input theorem soundness
+must be distinguished from alphabet validation and raw acceptance equality.
+
+6. What this would and would not establish
+
+A completed semantic induction would make native596 an unconditional
+theorem-sound checker of canonical native goals on arbitrary input accepted
+by the Python JSON reader. Completeness is inherited from its canonical
+integer/list certificates. It would not make596 an alphabet validator,
+would not give exact acceptance equality with strict621, would not delete
+an arithmetic/logical axiom, and would not lower the244/265/477 compact
+source envelope. The gain is removal of a soundness precondition.

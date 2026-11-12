@@ -1,0 +1,110 @@
+INDEPENDENT AUDIT: RAW VARIABLE SUBSTITUTION WITH BOUNDED HEAD CONVERSION
+
+Scope: raw terms x,0,S,I(n,a;u.h); raw formulas Eq,Q,D. No normalizer.
+Primitive families H,R,V,QE,DE,Intro,HC, seven families total.
+HC changes only the left equation endpoint by one forward or reverse I0/IS
+computation in a counter-spine context with at most three enclosing iterator
+counter edges. Depth zero means the root. Every supplied term is well scoped,
+and the IS contraction uses simultaneous capture-avoiding substitution.
+
+VERDICT
+I independently reconstructed the equivalence proof. No gap found. The proof
+does not require arbitrary-term substitution into derivations, which V and the
+witness-sensitive Intro do not support by a direct structural induction.
+It does require weakening, fresh injective renaming and cut, all of which admit
+the usual direct induction on derivations before equality is recovered.
+
+1. EQUALITY BOOTSTRAP WITHOUT TRANSPORT
+Let A(x,y) be C(y,0,x)=0, with C(y,a,b)=I(y,a;u.b).
+Introduce D_xy A at raw witness 0. Intro selects progress; its target
+C(Sz,0,0)=0 follows from R:0=0 by one reverse HC step at depth zero.
+The local progress assumption is unused. Thus D_xy A is a theorem.
+Open it at fresh b. Its zero row C(0,0,b)=0 follows from R and one reverse HC.
+QE at 1 gives C(1,0,b)=0, then one HC gives b=0.
+Given s=t, weaken its proof into this branch and apply V with source b,
+replacement 0, raw minor s=t. Because b was chosen fresh for s,t, the output
+is exactly t=s. DE exports it. This derives symmetry at arbitrary contexts.
+Consequently a right-endpoint HC is symmetry, left HC, symmetry. There is no
+appeal to the transport rule being recovered.
+
+2. EQUATIONAL FREE-BRANCH CASES BEFORE TRANSPORT
+From Gamma,E(z) |- E(Sz), introduce D_xy E(y) at the literal witness zero,
+with x unused, then DE using its closure hypothesis to derive Q_y E.
+If Gamma proves E(0) and Gamma proves E(Sz) for fresh z, weaken the latter by
+the unused hypothesis E(z), derive Q_y E, and use QE at any raw term r.
+No substitution of r into an existing derivation is involved.
+
+3. PACKET INTRODUCTION
+Let Z(v)=C(v,1,0), P(v)=I(v,0;u.Z(u)), and
+Pi(x,y) = C(y,0,C(P(y),x,h(x))) = C(y,0,C(P(y),t,r)).
+Assume Gamma |- s=t and Gamma |- h(s)=r, with x reserved as a template hole.
+For E(v)=C(v,s,h(s))=C(v,t,r), E(0) follows by two endpoint HC expansions
+from s=t; E(Sw) follows similarly from h(s)=r. The free-branch case rule at
+P(Sz) gives E(P(Sz)). Two root endpoint HC expansions give Pi(s,Sz).
+Thus Intro at s derives D Pi, ignoring its local assumption in either mode.
+
+4. EXACT DEPTH BOUND FOR THE THREE ROWS
+Pi(x,0) reduces to 0=0 using root HC only.
+For Pi(x,1), after the outer C contraction, each endpoint has shape
+  C(P(1),a,b)
+  -> C(Z(P(0)),a,b)       [depth 1]
+  -> C(Z(0),a,b)          [depth 2]
+  -> C(1,a,b)             [depth 1]
+  -> b                    [depth 0].
+For Pi(x,2), after the outer C contraction, each endpoint has shape
+  C(P(2),a,b)
+  -> C(Z(P(1)),a,b)       [depth 1]
+  -> C(Z(Z(P(0))),a,b)    [depth 2]
+  -> C(Z(Z(0)),a,b)       [depth 3]
+  -> C(Z(1),a,b)          [depth 2]
+  -> C(0,a,b)             [depth 1]
+  -> a                    [depth 0].
+Every arrow is exactly one allowed computation contraction; the final
+contraction on the previous-to-last line is the outer Z with successor
+counter. Abbreviations stand for expanded raw syntax, not derived equations.
+Thus rows 0,1,2 are respectively 0=0, h(x)=r, x=t. Neither h, s, t nor r
+is reduced internally. A raw hint may have arbitrarily deep computation
+redexes, without affecting the uniform bound for these packet computations.
+
+5. TRANSPORT
+Open D Pi at fresh b, derive its zero row from R and inverse HC, and apply
+QE at 1 and 2. The bounded conversions above give h(b)=r and b=t.
+V gives r=h(t), and DE discharges b. This proves the crossed one-term
+transport rule for arbitrary raw templates and terms.
+Reflexivity plus this rule gives all ordinary equational reasoning; two
+one-term transports give transport in a literal-equation template.
+
+6. RECOVERING NATIVE RULES
+Both raw computation equations follow from R by reverse root HC.
+Direct QI-progress was recovered in step 2.
+Only native DI-by-cases on an equation at raw witness 0 is missing. Replace
+the witness by the closed raw alias a=I(0,0;u.0), which is not literally 0.
+Its equality a=0 follows from R and root HC. Under B(a,0), transport to
+B(0,0), cut the given case derivation, then transport its conclusion back
+to B(a,Sz). Intro at a selects cases and gives the required D formula.
+Compound matrices already select cases at all witnesses.
+Thus all native rules are recovered on the same raw sequents. Formula-wide
+transport can then be inherited from native equivalence; it need not be
+proved prematurely or used in this bootstrap.
+
+7. REVERSE DIRECTION
+Native equality and computation justify each HC step (at any allowed
+counter-spine depth) and V. Its case and equation-progress rules justify
+the two Intro modes. All other primitive rules are native or derived there.
+Therefore both translations preserve exactly every open native sequent.
+Bi-interpretability follows by composition with the existing full native-iPRA
+bridge, not merely from equal consistency strength. The native syntax and
+ordinary interpretation remain unchanged, so the first equivalence is identity.
+
+IMPLEMENTATION RISKS TO CHECK
+- Count the root as depth zero and allow depth three, inclusive.
+- HC is one syntactic step, not a comparison of fully normalized terms.
+- HC may expand as well as contract, but every expansion must validate one
+  corresponding legal contraction, including capture avoidance.
+- Right-endpoint conversion is derived, not a hidden primitive.
+- V's source is a free literal numerical variable, never an arbitrary term
+  or a bound index captured by substitution.
+- Intro tests the RAW witness against literal 0; no conversion occurs there.
+- Do not assert arbitrary-term substitution admissibility by direct induction.
+- Proof of equivalence is mathematical; finite program tests do not formally
+  verify the checker or prove global source minimality.

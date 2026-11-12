@@ -1,0 +1,102 @@
+Independent critical review of tolerant_total.py and erasure_theorem.tex
+=====================================================================
+
+Reviewed source: root_work/tolerant_total.py
+Reviewed proof: math_work/erasure_theorem.tex
+Reviewer task: kernel_simplification
+Verdict: no soundness counterexample or fatal proof gap found in this review.
+This is an independent written review, not a mechanized verification.
+
+1. Array discrimination
+
+For values produced by Python's default JSON decoder, a*0 == [] recognizes
+lists exactly. Strings take the scalar branch and fail numerical comparison;
+dicts and None fail multiplication. This removes the old nonempty-string
+recursion. NaN and infinity take the scalar branch, not an array branch.
+
+2. Nonfinite scalars
+
+Auxiliary NaN and signed infinities must be allowed as raw holes at term
+positions and as truth at formula positions. They are not unconditionally
+rejected: a supplied image can replace a nonfinite hole. A finite float
+major can also overflow when tripled. Since a scalar major and its triple
+have formula-truth readings, that overflow is harmless. Every returning
+opening contains only finite scalar leaves, because a nonfinite scalar
+never satisfies the retention comparison. Public nonfinite leaves always
+fail: the required image is the rejecting sentinel.
+
+3. Floating point aliases
+
+The public validation first requires 0 <= a < d. For finite nonnegative
+binary floats, remainder modulo the power of two 2 is exact. Thus
+a%2 == (a>1) admits exactly numerical zero and odd integral numerical
+values at least 3. False and signed floating zero are zero spellings;
+True is rejected. Their numerical comparisons and structural equalities
+are consistent with canonical integer spellings in every later operation.
+
+4. Fractional rigid names
+
+Negative finite fractional coordinates can be admitted by a later floor
+decrement, but the upstream proof explicitly uses a finite family of fresh
+names in [k-1,k). Witness opening remains before that decrement, and the
+caller retains its own local floor after a major subproof. The new code
+does not change the schedule that prevents future-witness capture.
+
+5. Equality and NaN identity
+
+Python container equality may identify the same NaN object with itself.
+This is harmless under the enlarged sorted reading: each such scalar has
+the same hole/truth reading at the same position. A meaningful unfilled
+term occurrence in a proved major would have failed its entry scan.
+Nonmeaningful annotation occurrences may normalize to zero, but their
+content has no reading. Numeric equality of finite floats, ints and bools
+implies equality of the numerical values relevant to slot intervals.
+
+6. Arbitrary packet fields
+
+The first packet field is always checked as a major. A string or dictionary
+used as the packet container yields a string as that field and is rejected.
+Consumed fields other than the major can contain arbitrary JSON values
+only if the subsequent evaluation does not use them, or uses them solely
+in a harmless mode/truth test. In particular, None or a dictionary cannot
+be inserted as a meaningful term image by a successful opening.
+
+7. Termination
+
+The decoder produces finite acyclic trees. Openings traverse subtrees and
+can insert one image, which is itself checked with the missing-image
+sentinel. A second unresolved numerical hole then fails rather than
+repeating the insertion. Every nontrivial checker call consumes a packet
+from one finite list. Therefore the idealized mathematical procedure is
+total on finite parsed inputs, with exceptions treated as rejection.
+Actual resource limits can reject additional valid proofs.
+
+8. Public grammar and canonical encoding
+
+The upstream predicate P^ed permits references to dummy slots. For example,
+[[3],[3]] reads S0=S0, but is not the canonical encoding of that formula.
+Do not claim that replacing numeric aliases by ints turns every accepted
+public expression into a true canonical encoding. The soundness statement
+for all accepted inputs is under the sorted reading. Completeness is
+established for true canonical encodings and their numeric respellings.
+Any claim of completeness for every P^ed spelling needs an additional
+canonicalization/compilation theorem and is not established by this review.
+
+9. Scope of the size result
+
+315 tokens / 361 AST nodes / 603 bytes is smaller in each coordinate than
+the observed exact-alphabet envelope 330 / 380 / 621. It does not implement
+the same acceptance/rejection contract: numeric aliases and irrelevant
+noncanonical data are deliberately admitted. The soundness theorem has no
+trusted input-alphabet precondition, but this is not an exact-input
+simulation of the strict checker and does not dominate that contract.
+The raw guarded envelope 244 / 265 / 477 remains smaller. No arithmetic
+axiom, inference rule, or interpretation domain has been simplified here;
+the requested global construction has not been established.
+
+Minor editorial suggestion for the proof
+
+In the packet-destructuring paragraph, explicitly mention both other
+iterable JSON container types: strings yield characters and dicts yield
+keys; in either case the first field is a string rejected by major opening.
+
