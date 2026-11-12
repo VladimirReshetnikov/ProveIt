@@ -111,6 +111,18 @@ by progress as primitive, and proves that the derivable sequents are the same
   the two computation equations, Tr, QE, DE and DI. It derives the same
   sequents as the calculus of the reports (`mprf_iff_iprf`), and full
   transport is recovered in it without induction.
+- *One computation rule.* The zero computation `I(0, a; u.h) = a` can be
+  moved from the rules into the syntax. Call a term zero-normal if no iterator
+  in it has the literal `0` as its counter, and let every substitution of a
+  rule be followed by the contraction of such iterators. The kernel without
+  the zero computation rule, `NZPrf`, has seven rules, derives only
+  zero-normal formulas from zero-normal hypotheses (`NZPrf.normal`), and
+  derives the normal form of a sequent exactly when the kernel derives the
+  sequent (`nzprf_iff_nprf`). Reflexivity then comes from successor
+  computation: `I(S 0, t; u.u) = t` is an instance, because its right-hand
+  side `I(0, t; u.u)` is contracted. This is the proposal of
+  [`zero_normal`](Research/zero_normal/); the normalization is part of the
+  specification of the calculus.
 - *Other forms of the source restriction.* For transport in an equation
   template with an uncrossed conclusion, the same restriction needs an
   equation induction and a singleton test, though no logical rule
@@ -307,6 +319,8 @@ formalizes three systems and proves them mutually bi-interpretable:
 | uncrossed one-term transport | `uprf_iff_nprf : UPrf Γ A ↔ NPrf Γ A` | from `s = t` and `h(s) = r` infer `h(t) = r`: the crossing is not essential when sources are unrestricted |
 | one introduction rule | `wprf_iff_nprf : WPrf Γ A ↔ NPrf Γ A` | the seven-rule calculus with the single, syntax-directed introduction derives the same sequents |
 | seven rules | `mprf_iff_nprf`, `mprf_iff_iprf : MPrf Γ A ↔ IPrf Γ A` | one-term transport at sources other than the literal `0` and the single introduction together derive the sequents of the reports' calculus |
+| one computation rule | `nzprf_iff_nprf : NZPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`, `nzprf_iff_pra` | the kernel without the zero computation rule, on zero-normal terms with normalizing substitution, derives the normal form of every kernel sequent and nothing else |
+| | `NZPrf.normal`, `nzprf_iff_nprf_of_normal` | it derives only zero-normal formulas from zero-normal hypotheses, and on those sequents it agrees with the kernel |
 | crossed transport | `rprf_iff_nprf : RPrf Γ A ↔ NPrf Γ A`, `reversal_iff_pra` | root-reversing transport and QE with nonzero sources; equality recovered without induction |
 | closure criterion | `Teq.closure_iff_progress` | for quantifier-free `φ`, with `B = φ(0)`, `C = B → ∀y φ(y)` and `P = ∀y (φ(y) → φ(S y))`: `T_eq ⊢ (C ↔ P) ↔ (¬B → P)`; and `P → C` always |
 | | `Teq.ex_closure_iff_progress` | after binding a parameter `x` existentially, as in the reading of `D`: `T_eq ⊢ (∃x C ↔ ∃x P) ↔ ((∃x ¬B) → ∃x P)` |
@@ -318,8 +332,8 @@ formalizes three systems and proves them mutually bi-interpretable:
 | | `native_roundTrip`, `pra_native_roundTrip` | both composites through iPRA are the identity up to equivalence |
 | | `native_inconsistent_iff` | `NPrf [] (0 = 1)` iff iPRA proves `⊥` |
 
-The main chain (every module except the six kernel comparisons and
-`TeqClosure`) is 5,630
+The main chain (every module except the six kernel comparisons,
+`ZeroNormalization`, `NativeZeroNormal` and `TeqClosure`) is 5,630
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
 introduction and elimination, instead of an induction over the seventeen
@@ -344,6 +358,7 @@ no `native_decide`.
 | theories | `Scalar`, `PR`, `Native` | `T_eq`, iPRA, the native calculus and its soundness |
 | `T_eq` arithmetic | `Lindenbaum`, `TeqArith`, `TeqParity`, `TeqCompare`, `TeqPred`, `TeqEq`, `TeqReflect`, `TeqOrder`, `TeqPair`, `TeqRec` | predecessor, reflection of equality into a term, quantifier-free induction, pairing, compilation of primitive recursion |
 | `T_eq` ≡ iPRA | `ScalarToPRA`, `PRAToScalar`, `RoundTripScalar`, `RoundTripPRA`, `BiInterpretation` | the two interpretations and their composites |
+| zero-normal syntax | `ZeroNormalization`, `NativeZeroNormal` | contraction of iterators with a literal-zero counter, hereditary substitution, and the equivalence of a formula with its normal form (delivered); the kernel without the zero computation rule, `NZPrf` |
 | closures in `T_eq` | `TeqClosure` | decidability of quantifier-free formulas; the criterion for agreement of the conditional and the progressive closure |
 | native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, interderivability over a context, Leibniz and transport in every template, equation induction; selector and gate formulas |
 | kernel comparison | `NativeInherited`, `NativeOneContext`, `NativeOneIntro`, `NativeMinimal`, `NativeZeroSource`, `NativeReversal` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf`; no literal-zero transport sources, `OPrf`, generic over the class `OKernel`, and the uncrossed rule, `UPrf`; one introduction rule, `WPrf`, generic over the class `WKernel`; both together, `MPrf`; the source restriction for uncrossed transport in an equation template, `ZPrf`, generic over the class `ZKernel`; root-reversing transport and QE, `RPrf` |
@@ -371,7 +386,7 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `compact_update` | Its checker results concern Python programs. Its closure criterion is proved in `T_eq` for every quantifier-free formula: `Teq.closure_iff_progress`, with `Teq.closure_of_progress` and the decidability lemma `Teq.qfDec` (`TeqClosure`). The variant after existential binding is `Teq.ex_closure_iff_progress`. |
 | `uniform_progress` | Not formalized. Its calculus changes the reading of `Q` at literal equations, so it needs its own soundness proof, its own structural rules and both formula translations with their round trips. |
 | `validated_core`, `validated_presentation`, `checked_refinement` | Their results concern Python programs; the rule basis is unchanged. |
-| `zero_normal` | Its normalization layer is adopted as `ZeroNormalization`: the delivered module compiled unchanged (`nf`, hereditary substitution `hsub`, `nf_subst`, `nf_correct`, `fnf_correct`, `fnf_native_roundTrip`). |
+| `zero_normal` | Its normalization layer is adopted as `ZeroNormalization`: the delivered module compiled unchanged. On top of it `NativeZeroNormal` proves the deletion of the zero computation rule for the kernel (`nzprf_iff_nprf`, `NZPrf.normal`, `nzprf_iff_pra`), with the kernel's two introductions and unrestricted sources. The six-rule form with the single introduction is not formalized. |
 | `diagonal_guard`, `template_free`, `target_closure` | Not formalized. Each is a further calculus on the native formula language: a substitution-stable guard for the single introduction; replacement of all occurrences in place of a template; a progressive closure with a target. |
 | `initializer_equality`, `scope_kernel` | Not formalized: the first is stated on the canonical recursor syntax; the second concerns Python programs, and its research notes are a model and an unfinished argument. |
 | `canonical_recursors` | Not formalized. It is a different term language (a recursor whose seed is a successor, with a canonical grammar and normalizing substitution), so it would need its own syntax, its equivalence with the raw calculus and a bi-interpretation with iPRA. |
