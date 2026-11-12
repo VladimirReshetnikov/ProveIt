@@ -1,0 +1,173 @@
+\section{The full iPRA interpretation, explicitly}
+\label{sec:interpretations}
+
+The exact consequence theorem in Section~\ref{sec:fullnf-metatheory}
+reduces the arithmetic-strength question to the raw native calculus
+$\mathcal N$. This section states the connecting interpretations and
+the inherited arithmetic dependency order explicitly. The appendix gives
+the underlying proofs, rather than replacing them with standard-model
+calculations.
+
+\subsection{Recovering ordinary intuitionistic logic}
+
+In raw scalar syntax define the numerical selector
+\[
+ C(v,a,b)=I(v,a;u.b),
+ \qquad C(0,a,b)=a,\quad C(Sv,a,b)=b.
+\]
+For the normalized presentation take the normal form of each displayed
+term. A formula gate $G_v A$ is obtained by replacing every equation
+$s=t$ with $C(v,0,s)=C(v,0,t)$ and passing the gate through $Q$ and $D$,
+renaming bound variables to avoid capture.
+It satisfies
+\[
+ \vdash G_0A,\qquad G_{Sv}A\dashv\vdash A.
+\]
+The case rules and binder congruence extend a numerical selector to a
+formula selector $M_v(A,B)$ with
+\[
+ M_0(A,B)\dashv\vdash A,\qquad M_{Sv}(A,B)\dashv\vdash B.
+\]
+For this selector construction, first elaborate each $Q$ as a $D$ with
+an unused witness. When the resulting formulas have unequal binder depths,
+insert a vacuous witnessed gate to align them. The exact structural recursion and its
+proof appear in the inherited native-basis appendix.
+
+Let $\delta(v)=C(v,1,0)$ and $p(z)=I(z,0;u.\delta(u))$.
+The following are formula macros, not additional primitive logical rules:
+\begin{align*}
+ \bot_* &:= (0=S0),\\
+ A\Rightarrow_* B&:=Q_y M_y(A,B),\\
+ A\wedge_*B&:=Q_y G_yM_{p(y)}(A,B),\\
+ \exists_*x\,A(x)&:=D_{x,y}G_yA(x),\\
+ A\vee_*B&:=\exists_*v\,M_v(A,B),\\
+ \forall_*x\,A(x)&:=A(0)\wedge_*Q_yA(y).
+\end{align*}
+Every newly bound variable is fresh; normalize all numerical term
+expressions in the macros.
+
+For implication, case introduction supplies a closure from the assumed
+zero selector to the successor selector, and QE at $1$ gives elimination.
+For conjunction the gated base is true, and the instances $1,2$ give the
+two operands because $p(1)=1$ and $p(2)=0$. Numerical cases give its
+introduction. The existential macro uses its explicit witness and a true
+gated base; its elimination uses DE and QE at $1$. Disjunction uses
+selector witnesses $0,1$ and numerical cases. Universal introduction
+and elimination are exactly the base instance together with its
+conditional closure. These derivations supply all ordinary intuitionistic
+natural-deduction rules.
+
+Under $0=1$, equality transport through $C(v,s,t)$ gives $s=t$ for
+arbitrary terms. External induction on formula syntax then gives
+every native formula, so the designated contradiction supports explosion.
+No excluded-middle schema for quantified formulas is introduced.
+
+\subsection{The intermediate ordinary theory}
+
+Let $T_I$ be intuitionistic first-order logic with actual equality and
+genuine falsity, the scalar terms, their two computation equations,
+contextual induction for literal equations, and
+\[
+ \forall x\,(x=0\vee\exists y\,x=Sy),
+ \qquad (0=S0)\to\bot.
+\]
+The last sentence is an explicit falsity bridge. Positive equations alone
+would permit a singleton structure, so this bridge cannot be silently
+discarded from the ordinary realization.
+
+The ordinary interpretation is
+\[
+ (s=t)^\circ=(s=t),\quad
+ (Q_yB)^\circ=B^\circ(0)\to\forall y\,B^\circ(y),\quad
+ (D_{x,y}B)^\circ=
+ \exists x\bigl(B^\circ(x,0)\to\forall y\,B^\circ(x,y)\bigr).
+\]
+Case introduction is sound by coverage. Equation-progress introduction
+is sound by equation induction under the temporarily assumed base.
+The other rules are ordinary equality and logical reasoning.
+Conversely the displayed native macros, equation induction derived
+from Q-progress and QE, numerical cases, and explosion reconstruct
+$T_I$. Coverage itself follows by cases, using the native disjunction
+and existential macros.
+
+The key native formula composite is
+\[
+ D_{x,y}B
+ \dashv\vdash
+ \exists_*x\bigl(B(x,0)\Rightarrow_*\forall_*y\,B(x,y)\bigr).
+\]
+Forwards, DE opens a witness; under its base the exported closure
+gives every instance. Introduce the three macros and close DE.
+Backwards, open the existential at a fresh witness, assume its base,
+and use implication and universal elimination at $Sz$ to introduce
+the original $D$ by cases. The analogous $Q$ composite is its conditional
+closure. Induction on formulas proves both complete formula round trips.
+
+\subsection{Arithmetic compilation and both numerical composites}
+
+Each fixed scalar update is elaborated as a function symbol.
+There is no variable ranging over function codes and no uniform
+object-language evaluator. In one direction, iPRA defines a fixed
+iterator by primitive recursion whose update ignores its recursion
+counter. Its equations and every literal-equation induction instance
+are then available.
+
+For the reverse direction, the inherited internal scalar proofs proceed
+in the following order:
+\begin{enumerate}
+\item Construct a scalar predecessor $P$ and prove $P0=0$ and $P(Sn)=n$.
+This uses equation induction and numerical cases, without assuming
+pairing, equality reflection, or successor injectivity.
+\item Define truncated subtraction by iteration of $P$ and construct a
+Boolean characteristic term for \emph{actual} equality. Prove the
+reflection equivalence throughout the numerical domain.
+\item Translate every fixed quantifier-free formula into its
+characteristic equation. Contextual equation induction therefore
+supplies every quantifier-free induction instance of iPRA.
+\item Construct pairing and projections by bounded search, and compile
+every fixed primitive-recursive definition into scalar iteration.
+\end{enumerate}
+
+For example, with pairing $\pi$ and projections $L,H$ already proved,
+a primitive recursion
+\[
+ f(0,\vec p)=g(\vec p),\qquad
+ f(Sn,\vec p)=h(n,f(n,\vec p),\vec p)
+\]
+is represented by
+\[
+\begin{aligned}
+ V(n,\vec p)&=
+ I\bigl(n,\pi(0,g^*(\vec p));
+ u.\pi(SL(u),h^*(L(u),H(u),\vec p))\bigr),\\
+ f^*(n,\vec p)&=H(V(n,\vec p)).
+\end{aligned}
+\]
+Equation induction proves $L(V(n,\vec p))=n$; projection equations
+then give both defining equations for $f^*$. In $\mathcal F$, use
+the normal form of this finite term. It has the same proved
+defining equations by the normalization comparison.
+
+Uniqueness is internal, not an assertion about standard natural numbers.
+For two iterators with the same initializer and pointwise equal updates,
+induct on equality of their values. For ordinary primitive recursion,
+use the same argument with its counter-dependent update. External
+induction on a finite function description shows that its double
+translation satisfies its original equations and hence is provably
+equal to the original function.
+
+Both numerical interpretations have domain formula $x=x$ and retain
+actual equality. Consequently the identity graph $x=y$ is internally
+total, functional, bijective, and preserves each interpreted operation.
+Combined with the formula composites, this proves bi-interpretability.
+Finite proof translations preserve $0=S0$ and ordinary falsity in both
+directions, giving equiconsistency. This does not assert that either
+theory proves its own consistency.
+
+\paragraph{Status of the inherited formalization.}
+The pinned repository supplies Lean statements for native/iPRA
+faithfulness, both formula round trips, and the contradiction equivalence.
+Those source endpoints were inspected; the upstream development was
+not rebuilt here. The new full-normal-form calculus, its normalization
+metatheory, and the Python correspondence have written proofs and
+executable checks, but no new Lean or Rocq verification is claimed.

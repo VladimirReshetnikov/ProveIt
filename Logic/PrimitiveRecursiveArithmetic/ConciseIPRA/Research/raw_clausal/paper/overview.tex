@@ -1,0 +1,123 @@
+\section{Result, scope, and the exact comparison}
+\label{sec:overview}
+
+The construction is a five-pattern calculus $\CE$ with the following
+primitive inventory:
+\[
+\boxed{\text{Reflexivity, Eval, clause use, paired elimination, paired introduction.}}
+\]
+Its terms are the ordinary finite expressions
+\[
+ t ::= x\mid 0\mid S(t)\mid I(n,a;u.h),
+\]
+where the iterator binds $u$ only in $h$. Its formulas are
+\[
+ A ::= (s=t)\mid D_{x,y}A.
+\]
+All substitutions are ordinary capture-avoiding substitutions on raw
+syntax. Computation is a derivable equation; it is not performed by the
+term constructor or substitution operation.
+
+The ordinary interpretation of the only logical constructor is
+\[
+ D_{x,y}B(x,y)\ :=\
+ \exists x\bigl(B(x,0)\to\forall y\,B(x,y)\bigr).
+\]
+This is a presentation of full intuitionistic first-order logic coupled
+to the intended arithmetic. The logical macros include implication,
+conjunction, disjunction, both quantifiers, and falsity; these are given
+explicitly in the inherited reference development. There is no use of
+excluded middle for quantified formulas.
+
+\subsection{Which current proposal is being improved?}
+
+The repository index at the pinned snapshot lists fifty filed research
+packages~\cite{baseline}. Its two incoming archives must also be considered.
+In particular, the incoming clause presentation already has five
+rules~\cite{clausal}. It uses a successor-seeded recursor whose zero case
+is built into canonical syntax, together with one supplied equality
+template. The present construction keeps the five-rule count while
+returning to raw initialized iterators and removing that template.
+
+The resulting tradeoff is explicit:
+\begin{center}
+\begin{tabular}{@{}p{.31\linewidth}p{.28\linewidth}p{.29\linewidth}@{}}
+\toprule
+Feature & Canonical clause basis & Present raw clause basis\\
+\midrule
+Primitive inference patterns & Five & Five\\
+Formula constructors & Equality and $D$ & Equality and $D$\\
+Arithmetic term constructors & $0$ and $R$ & $0$, $S$, and $I$\\
+Canonicalization during substitution & Required & None\\
+Equality template in a certificate & One term template & None\\
+Primitive equality interface & Computation and transport & Reflexivity and Eval\\
+\bottomrule
+\end{tabular}
+\end{center}
+Variables are understood in both term inventories. Thus the simplification
+does not reduce every syntactic coordinate: the raw language has an
+independent successor constructor. Its benefit is a smaller complete
+matched checker with a more direct substitution specification.
+
+\subsection{Measured size, including all validation}
+
+The comparison programs use the same clause representation, binder-opening
+convention, closed-goal input contract, validation policy, error handling,
+and normalization protocol. Every program is a standalone module.
+Neither a proof compiler nor any imported project code is needed to run
+one of these checkers.
+
+\input{evidence/metrics_table}
+
+The raw six-pattern control has the two computation equations and
+one-term crossed transport in place of Reflexivity and Eval. The canonical
+five-pattern control implements the current successor-seeded clause
+basis using the same variable encoding and clause interface as the new
+checker. These are the controlled comparisons. The unchanged upstream
+canonical implementation is reported separately for orientation.
+
+Metrics are taken after removing Python docstrings and applying
+\code{ast.unparse}, followed by one line feed. Significant-token counts
+exclude formatting, comments, and the end marker. AST nodes are counted
+by \code{ast.walk}. Gzip uses compression level 9 and a zero timestamp;
+it is supplementary information, not the optimization objective.
+The reproduction script records the exact Python version.
+For completeness, the readable new source is 3,456 bytes and its
+gzip-9 file is 1,191 bytes; those figures include its explanatory
+docstring and original formatting. The normalized measurements above
+are the controlled source-complexity comparison.
+
+The current compact lower envelope includes a 516-byte checker with a
+different proof interface and highly compressed implementation
+\cite{canonical}. This report does not beat that envelope. It establishes
+a measured improvement in the transparent fully validated family, together
+with the mathematical equivalence of the resulting presentation. It does
+not prove that any particular source string, number of rules, or axiom
+system is globally minimal.
+For another reference point, the existing tagged native six-rule
+computational-equality checker is 3,039 normalized bytes with an
+open-sequent public interface. Its different representation and contract
+are not the matched comparison used above; no claim to improve every
+existing checker is intended.
+
+\subsection{Attribution and the novelty boundary}
+
+The two component ideas are inherited. Refl--Eval is the repository's
+computational-equality interface~\cite{computational}; clause contexts and
+the removal of first-class $Q$ are from the incoming clause
+presentation~\cite{clausal}. The present contribution is their raw
+five-pattern combination, the complete matched implementations, and their
+explicit equivalence and verification package.
+
+The novelty screen checked the current index, the claim summaries of all
+fifty filed packages (using their root README when no claim summary was
+present), both incoming reports, and the relevant full specifications.
+This exact raw clause/Refl--Eval combination was not found there. That is
+a scoped repository comparison, not a priority claim about the wider
+literature or a file-by-file review of every archived artifact.
+
+The separate successor-rigidity result in
+Section~\ref{sec:successor-rigidity} is a further mathematical observation.
+It is deliberately kept separate from the completed presentation: its
+remaining equality-reflection bootstrap is not assumed anywhere in the
+proof that $\CE$ is bi-interpretable with $\ipra$.

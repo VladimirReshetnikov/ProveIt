@@ -1,0 +1,154 @@
+% A local obstruction for the proposed Refl deletion.
+\section{Why a neutral equality does not replace reflexivity}
+\label{sec:reflexivity-obstruction}
+
+A tempting further reduction is to remove Refl and retain only the
+neutral equality $H=(0=0)$ used by ordinary assumption clauses.
+The following obstruction shows that this loses even positive-numeral
+reflexivity.
+
+Let $\mathsf{CE5}^{0}$ have the same raw terms, formulas, contexts,
+$\Phi$, and rules U, E, I, and Eval as $\mathsf{CE5}$, but replace
+the Refl schema by the single axiom $0=0$. Its axiom is available in
+every context.
+
+\begin{theorem}[The neutral equality is insufficient]
+\label{thm:reflexivity-obstruction}
+The weakened calculus $\mathsf{CE5}^{0}$ does not derive $S0=S0$
+from the empty context. In particular, it is not consequence-equivalent
+to $\mathsf{CE5}$ on their common raw language.
+\end{theorem}
+\begin{proof}
+Evaluate all numerical terms by their usual operations on the standard
+natural numbers, including ordinary initialized iteration. However,
+assign to the \emph{syntactic equation atom} $s=t$ the truth condition
+\[
+ \llbracket s=t\rrbracket_\nu
+ \quad\Longleftrightarrow\quad
+ \bigl(\llbracket s\rrbracket_\nu=0
+       \ \hbox{and}\ \llbracket t\rrbracket_\nu=0\bigr).
+                                                        \tag{Z}
+\]
+Thus both sides must denote zero. Interpret $D$ and clauses by
+\[
+ \llbracket D_{x,y}B\rrbracket
+  =\exists x\bigl(\llbracket B(x,0)\rrbracket
+                  \to\forall y\,\llbracket B(x,y)\rrbracket\bigr),
+\]
+\[
+ \llbracket[A;y.B]\rrbracket
+  =\llbracket A\rrbracket\to\forall y\,\llbracket B(y)\rrbracket,
+\]
+using ordinary two-valued truth. An empty context is true.
+
+We verify preservation for every primitive rule. The axiom $0=0$
+satisfies (Z). For Eval, the truth of its two premises implies
+\[
+ \llbracket s\rrbracket
+ =\llbracket t\rrbracket
+ =\llbracket b\rrbracket
+ =\llbracket r\rrbracket=0.
+\]
+In the root row of $\Phi$ its value is $t$, so the conclusion $r=t$
+satisfies (Z). In the zero-iterator row its value is again $t$, with
+the same conclusion. In the successor row write
+$b=I(Sn,a;u.h)$ and $s=I(n,a;u.h)$. The ordinary numerical evaluation
+satisfies
+\[
+ \begin{aligned}
+ \llbracket h[t/u]\rrbracket
+ &=\llbracket h[s/u]\rrbracket\\
+ &=\llbracket I(Sn,a;u.h)\rrbracket
+  =\llbracket b\rrbracket=0.
+ \end{aligned}
+\]
+The first equality follows because $s$ and $t$ both have ordinary
+numerical value zero; the second is ordinary iterator computation.
+Together with $\llbracket r\rrbracket=0$ this makes the Eval
+conclusion true.
+
+U is valid implication/universal specialization. E is valid existential
+elimination: its fresh parameter may be assigned the existential
+witness, and the conclusion and retained context do not depend on
+that parameter.
+
+For I in case mode, fix an assignment satisfying the retained context
+and assume the matrix's zero instance at the value of its witness.
+Validity of the premise gives every successor instance. Every standard
+natural number is zero or a successor, so all instances hold, proving
+the desired conditional closure and its existential conclusion.
+
+For I in progress mode, its witness is literally zero. The valid
+premise says, for every standard $n$, that the truth of $B(0,n)$
+implies the truth of $B(0,Sn)$, under the fixed retained context.
+If $B(0,0)$ holds, ordinary metatheoretic induction on standard natural
+numbers gives every instance. If the base does not hold, the
+conditional closure is already true. This argument is valid for
+the interpretation (Z); it does not require equation atoms to mean
+ordinary equality. All fresh-variable conditions ensure that the
+retained context and witness stay fixed as $n$ varies.
+
+Induction on finite derivations therefore shows that every closed
+theorem of $\mathsf{CE5}^{0}$ is true under this interpretation.
+But $S0$ has ordinary value $1$, so (Z) makes $S0=S0$ false.
+\end{proof}
+
+The interpretation in this proof is a counterinterpretation of a
+syntactic inference system. It is deliberately \emph{not} a
+first-order arithmetic structure whose equality symbol is interpreted
+as identity, nor is it the proposed arithmetic interpretation of the
+new theory. Such a counterinterpretation suffices to establish
+nonderivability: each permitted inference preserves its truth
+condition, while the desired conclusion fails it.
+
+If Refl is deleted without even adding $0=0$, the still simpler
+valuation making every equation atom false gives the analogous
+obstruction.
+
+\begin{corollary}[No finite collection of closed equation seeds]
+Delete Refl and add any finite collection of closed equation axioms
+that are true under ordinary standard-natural-number evaluation.
+Keeping Eval, U, E, and I unchanged still does not recover universal
+reflexivity.
+\end{corollary}
+\begin{proof}
+Let $A\subseteq\mathbb N$ be the finite set of numerical values of
+the supplied axioms' sides. Both sides of each axiom have the same
+value, since the axioms were assumed ordinarily true. Replace (Z) by
+\[
+ \llbracket s=t\rrbracket_\nu
+ \quad\Longleftrightarrow\quad
+ \llbracket s\rrbracket_\nu
+   =\llbracket t\rrbracket_\nu\in A.
+\]
+Every seed is true. In each Eval row, actual equality of its first
+premise's values and ordinary iterator computation imply that
+$\Phi(s,t,b)$ has the ordinary value of $b$. Its second premise
+then says that this value equals the value of $r$ and belongs to $A$,
+so the conclusion is true. The previous U/E argument and the case
+and progress arguments for I apply to this arbitrary atomic predicate
+on standard $\mathbb N$ without change.
+
+Choose $k\notin A$. The closed numeral equation
+$S^k0=S^k0$ is false in this rule-preserving interpretation and hence
+is not derivable. This is a local obstruction for the fixed remaining
+rules and closed equation seeds; it makes no claim about other axiom
+forms or different calculi.
+\end{proof}
+
+\paragraph{A retained reflexivity clause is an axiom.}
+The permanent clause
+\[
+ [\,0=0;\ y.\,y=y\,]
+\]
+together with a proof of $0=0$ does recover Refl: U at target $t$
+gives $t=t$. That clause has the ordinary reading
+$(0=0)\to\forall y(y=y)$ and fails the counterinterpretation above.
+Initializing a checker with this clause and a neutral equality proof
+can remove an instruction tag, but it has relocated the missing
+universal reflexivity axiom into the initialization. Both the axiom
+and its validation cost must remain in the complete specification.
+It is not an additional mathematical rule deletion, and it does
+not justify a four-pattern equivalence claim for the four remaining
+rules alone.
+

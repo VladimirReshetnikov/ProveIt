@@ -1,0 +1,146 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=26mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor,enumitem,listings,xurl,hyperref,fancyhdr,needspace}
+\definecolor{ink}{HTML}{173047}
+\definecolor{accent}{HTML}{176B70}
+\definecolor{wash}{HTML}{F1F5F7}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,pdftitle={A reflexive-base introduction rule for iPRA},pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsf{iPRA / Reflexive-base introduction}}
+\fancyhead[R]{\small\textsf{d9383325b18d}}
+\fancyfoot[C]{\small\thepage}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{nosep,leftmargin=1.8em}
+\setcounter{tocdepth}{2}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newcommand{\iPRA}{\mathrm{iPRA}}
+\newcommand{\nf}{\operatorname{nf}}
+\newcommand{\fnf}{\operatorname{fnf}}
+\newcommand{\Teq}{T_{\mathrm{eq}}}
+\newcommand{\file}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\Rcal}{\mathcal R}
+\newcommand{\Zcal}{\mathcal Z}
+\lstset{basicstyle=\ttfamily\scriptsize,columns=fullflexible,
+  keepspaces=true,breaklines=true,showstringspaces=false,
+  frame=single,framerule=.2pt,rulecolor=\color{black!20},
+  backgroundcolor=\color{wash},xleftmargin=2pt,xrightmargin=2pt,
+  aboveskip=8pt,belowskip=8pt}
+\title{\color{ink}\textbf{A reflexive-base introduction rule for iPRA}\\[5pt]
+  \large A six-rule presentation with ordinary closure semantics}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{11 November 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+Replace the current introduction rule's test on the syntactic form of its
+existential witness by a test on its zero instance. Use equation progress
+exactly when that instance is a syntactically reflexive equation; use numerical
+cases otherwise. On the existing zero-normal term syntax this yields six
+primitive rules and exactly the sequents of the repository's zero-normal
+kernel. Missing case steps are recovered by cutting out a proved
+reflexive base, and arbitrary equation induction is recovered through a
+selector gate. The guard is preserved, but need not be reflected, by
+substitution; the latter issue is handled explicitly. A raw-term version
+works without normalization and has seven rules. Both versions inherit the
+complete bi-interpretation with intuitionistic primitive recursive arithmetic,
+with whole numerical domains, actual equality, and identity numerical
+composites. The matched strict checker decreases from 3,095 to 3,084
+normalized Python bytes and from 1,075 to 1,073 AST nodes; its 1,013-token
+count is unchanged. This is a small, concrete simplification, not a global
+minimality theorem or a large new checker-size record.
+\end{abstract}
+
+\section{Result and comparison boundary}
+
+The comparison is pinned to ProveIt commit
+\file{d9383325b18d349b8bfdc54ef564c5784cc029ec}, under
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+The inspected README lists forty-nine research packages and the associated
+Lean formalization~\cite{upstream}. At that snapshot the ordinary kernel
+\file{NPrf} has eight rules, the witness-selected form has seven, and the
+formally proved zero-normal kernel \file{NZPrf} has seven. The written
+\file{zero_normal} package already combines zero normalization with the
+witness-selected introduction to obtain six rules~\cite{zero}.
+
+\textbf{The new proposal keeps that six-rule count.} Its change is the
+introduction criterion
+\[
+  B(t,0)\text{ is syntactically reflexive},
+\]
+in place of the joint requirement that the matrix is an equation and the
+witness is the literal zero. The term language, the meanings of the
+logical binders, and the numerical domain stay the same. This criterion
+directly identifies bases that can be proved before using any induction.
+
+\begin{center}
+\fcolorbox{accent}{wash}{\parbox{.9\linewidth}{
+\textbf{Main theorem.}
+For every normal context and formula,
+\[
+  \Gamma\vdash_{\Rcal} A
+  \quad\Longleftrightarrow\quad
+  \Gamma\vdash_{\Zcal} A.
+\]
+The proposed calculus is equiconsistent and bi-interpretable with full
+first-order iPRA. The arithmetic interpretations have the whole domain
+as their domain formula, actual equality, and numerical composite
+graph \(x=y\).
+}}
+\end{center}
+
+There are two separate simplicity claims. Mathematically, the rule no longer
+requires a distinguished syntactic representative of the witness or the
+construction of an alternative term denoting zero to recover a missing
+case. Operationally, the base test reuses a formula the checker already
+needs, and a validated-arity test gives a small matched source reduction.
+The source reduction is only eleven bytes; calling it a major breakthrough
+would overstate the result.
+
+The construction does not beat the repository's separate 516-byte compact
+guarded codec. That codec has a different certificate representation and
+public syntax contract. The report does not conflate a fully validated
+tagged checker with that smaller profile.
+
+\subsection{What is new and what is inherited}
+
+The zero-normal syntax, crossed one-term transport, numerical and logical
+bridge to iPRA, and the general guarded-introduction strategy are inherited.
+The specific reflexive-base test, its proof allowing a false guard to
+become true under substitution, and its raw-term asymmetric selector gate
+are the contribution of this report.
+
+The cumulative rule retaining both the zero and current induction
+assumptions is already present as \emph{Old DI} in
+\file{inherited_choice_basis.tex}. It is not claimed as new here.
+Neither deletion of the zero computation rule nor the six-rule count is
+claimed as new. The comparison is against the pinned source, not
+an unverified reconstruction of an earlier draft.
+
+\subsection{The target theory}
+
+Here iPRA means full intuitionistic first-order logic with equality, in a
+language containing a symbol for each finite primitive-recursive
+description: zero, successor, projections, composition, and primitive
+recursion. Its nonlogical axioms are the corresponding defining equations,
+successor separation and injectivity, and induction for quantifier-free
+formulas, with parameters and retained assumptions. This is the target
+defined in the repository's \file{PR.lean}; it is not merely the equational
+fragment or a statement about standard natural-number evaluations.
+
+\clearpage
+\tableofcontents
+\clearpage
