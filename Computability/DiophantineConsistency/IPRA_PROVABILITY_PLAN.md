@@ -7882,6 +7882,10 @@ elaboration, provider and endpoint checks remain open.
 The independently source-reviewed [79 zero-w root cut](research/ordinary14-natural79-zero-w-root-cut-draft/README.md)
 proposes deriving signed divisibility `(4Y+3) ∣ 3q²` from that norm. The
 natural-model reflection, size contradiction and Lean elaboration remain open.
+The independently source-reviewed [79 zero-w divisibility client](research/ordinary14-natural79-zero-w-divisibility-client-draft/README.md)
+proposes that reflection and contradiction, yielding a source-level w
+positivity claim under represented positive beta and nonnegative K0. The
+whole chain remains unelaborated and the iPRA endpoint is not established.
 The independently source-reviewed [79-to-80 w-shift draft](research/ordinary14-natural79-wshift-model-draft/README.md)
 proposes related-valuation zero maps, conditional on w positivity at every
 79 zero. It remains unelaborated and does not discharge that premise.
