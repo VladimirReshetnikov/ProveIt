@@ -7853,6 +7853,10 @@ The independently reviewed [forced-w natural graph](research/ordinary14-natural-
 removes another shift, giving 14 natural inputs, 79 operations and exact
 specialized degree 107. Its local divisibility argument assumes positive beta
 and nonnegative K0; the stronger parent and endpoint qualifications remain.
+The independently reviewed [79-to-78 unshift-s probe](research/ordinary14-natural78-unshift-s-obstruction/README.md)
+has an explicit zero with `s=0`, including at the authenticated ports. It
+rules out forced positivity of s and the tested same-coordinate transfer,
+not global zero-existence equivalence.
 The independently source-reviewed [natural-79 Lean transcription](research/ordinary14-natural-forced-w79-lean-draft/README.md)
 records the literal graph and product shape. It remains unelaborated and has
 no checked model or iPRA endpoint.
