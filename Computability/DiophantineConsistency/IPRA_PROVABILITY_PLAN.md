@@ -7739,6 +7739,9 @@ The reviewed [root-74 provider survey](research/ordinary14-root74-provider-surve
 records a bounded lexical cut, selected retained objects and collision
 observations. It does not establish transitive provider coherence or build
 readiness.
+The reviewed [root-74 refusal-only preflight](research/ordinary14-root74-slim-no-lean-preflight/README.md)
+records selected read-only checks and always refuses launch. It is not a
+provider or Lean build certification.
 The source-reviewed [74 own-zero product draft](research/ordinary14-74-ownzero-product-draft/README.md)
 proposes extracting the signed product from the literal graph. It remains
 unelaborated and leaves the graph's factor exclusions as explicit premises.
