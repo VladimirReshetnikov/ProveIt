@@ -1,0 +1,71 @@
+import DiophantineConsistency.ArithmeticPellFirstNorm
+import DiophantineConsistency.ArithmeticPellCongruences
+import DiophantineConsistency.ArithmeticAdaptiveFirstDivisibility2011
+
+/-! Source-only early-index wrapper for the actual residue root's *natural*
+norm. No original core.z equality, graph congruence, endpoint or Lean check. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.ResidueFirstIndexModelDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ArithmeticSignedPairs ArithmeticPellRecurrence ArithmeticPellFirstNorm
+open ArithmeticPellCongruences ArithmeticAdaptiveFirstDivisibility2011
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Early recurrence index from the actual residue-root norm and the separate
+rank divisibility cut. No equality with the old free-J core root is assumed. -/
+theorem early_index_of_natural_norm (q X Y k R tau s : V)
+    (hq : 0<q) (hX : 0<X) (hYpos : 0<Y) (hY : Y=q^3*s)
+    (hnorm : tau*tau=1+(X*Y*Y)*(X*Y*Y+1)*k*k)
+    (hR24 : 24≤R) (hwindow : R+q^3+q+1≤q^4)
+    (hcong : q^4 ∣ magnitude (R+1,k)) :
+    let Q : V := X*Y*Y
+    let B : V := 2*(Q-1)+1
+    ∃ n w : V, 13≤n ∧ n≤k ∧ xcoord n B=tau ∧ 2*ycoord n B=k ∧
+      (2*n)%(q^4)=R+1 ∧ R+1≤2*n ∧ R+1≤k ∧ k=2*n+4*Q*w := by
+  let Q : V := X*Y*Y
+  let B : V := 2*(Q-1)+1
+  have hQ : 0<Q := mul_pos (mul_pos hX hYpos) hYpos
+  have hQ1 : Q-1+1=Q := tsub_add_cancel_of_le (pos_iff_one_le.mp hQ)
+  have hB : B+1=2*Q := by
+    dsimp [B]
+    calc
+      2*(Q-1)+1+1=2*(Q-1+1) := by ring
+      _=2*Q := by rw [hQ1]
+  have hdiv : q^4∣B+1 := by
+    rw [hB]
+    refine ⟨2*X*(q*q)*s*s,?_⟩
+    dsimp [Q]
+    rw [hY]
+    ring
+  obtain ⟨n,hnk,hnx,hny⟩ := positive_parameter_solution Q tau k hQ (by simpa only [Q] using hnorm)
+  have hm : 0<q^4 := pow_pos hq _
+  have hRlt : R+1<q^4 := by
+    have hp : 0<q^3+q := add_pos (pow_pos hq _) hq
+    calc
+      R+1<(R+1)+(q^3+q) := lt_add_of_pos_right _ hp
+      _=R+q^3+q+1 := by ring
+      _≤q^4 := hwindow
+  have hres : (R+1)%(q^4)=k%(q^4) := magnitude_mod (R+1,k) (q^4) hm hcong
+  rw [mod_eq_self_of_lt hRlt] at hres
+  obtain ⟨_,t,_,hy⟩ := residue_quotients n B (q^4) hdiv
+  have hkmod : k=2*n+q^4*(2*t) := by rw [←hny,hy]; ring
+  have hnmod : (2*n)%(q^4)=R+1 := by
+    rw [hkmod,mod_add_mul' _ _ hm] at hres
+    exact hres.symm
+  have hnlow : R+1≤2*n := by rw [←hnmod]; exact mod_le _ _
+  have hklow : R+1≤k := by rw [hres]; exact mod_le _ _
+  have hn13 : 13≤n := by
+    have htwelve : (2:V)*12<2*n := by
+      rw [show (2:V)*12=24 by ring]
+      exact lt_of_le_of_lt hR24 (lt_of_lt_of_le (lt_add_one R) hnlow)
+    have h12 : (12:V)<n := lt_of_mul_lt_mul_left htwelve (by simp)
+    simpa only [show (12:V)+1=13 by ring] using lt_iff_succ_le.mp h12
+  have hdiv2 : 2*Q∣B+1 := ⟨1,by rw [hB]; ring⟩
+  obtain ⟨_,w,_,hy2⟩ := residue_quotients n B (2*Q) hdiv2
+  have hexact : k=2*n+4*Q*w := by rw [←hny,hy2]; ring
+  exact ⟨n,w,hn13,hnk,hnx,hny,hnmod,hnlow,hklow,hexact⟩
+end DiophantineConsistency.ResidueFirstIndexModelDraft
+#print axioms DiophantineConsistency.ResidueFirstIndexModelDraft.early_index_of_natural_norm

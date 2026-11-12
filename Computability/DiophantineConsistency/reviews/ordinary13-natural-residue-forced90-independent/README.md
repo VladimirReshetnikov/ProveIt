@@ -1,0 +1,15 @@
+# Independent review: compact AQ13 standard-integer gamma forcing
+
+This is an external review of the 13-natural-input, 90-operation candidate. Run `python3 -I -S -B check.py` from any directory and compare with `result.json`; the author's checker and receipt reproduce. No Lean, provider audit or iPRA theorem was performed. The gamma argument below is explicitly restricted to standard integers.
+
+The child is exactly the pinned 82-row positive parent's mixed shift, leaving `J`, `X`, `f`, `y`, and `gamma` unshifted and shifting the other eight coordinates. Every resulting graph row, input and port is live. The four earlier forcing arguments for `J,X,f,y` apply with gamma merely nonnegative under represented nonnegative beta and K0; see the [13/91 review](../ordinary13-natural-residue-forced91-independent/README.md). For the new gamma argument the selected compact beta is strictly positive and the stated MC/MF rank-window bounds also apply.
+
+The checker pins and inspects the **actual** residue-adjusted rows: `Bt=(q−F−alpha)*(X+K0)−F`, `Z=b*(ell+k+r−k*Bt)−Bt`, and `shift=U*gamma+X*Y*q+R+1−k`. It also pins the scalar rank-window source and the earlier independently reviewed elementary Pell descent. At a zero, if `C=q−F−alpha≤0`, then `Bt<0` and `Z>b*(ell+k)`, contradicting the first norm because `(ell+k)²>1+ell*(ell+k)`. Hence `C>0`, supplying the required `F+alpha<q` rank-window premise.
+
+The first norm gives the standard-integer Pell equation `tau²−m(m+1)k²=1`, with `m=X*Y²≥1`. The main norm excludes `k=2` by trapping its radicand strictly between consecutive squares; the checker verifies the exact gap identities. The independently reviewed inverse Pell step preserves this precise norm, decreases a positive k>2, and yields `k≥8m+4`; the preservation identity is independently checked here. For the compact bounds, `scalar_rank_window` applies to the graph's exact R, yielding `R+1<q⁴`. With `q≥2`, `Y≥q³`, and `X≥1`, the Pell bound gives `k−X*Y*q>q⁴` and `c>X`.
+
+At `gamma=0`, `shift=X*Y*q+R+1−k<0`. Yet `Dstar=U*(X+a*c)+H*shift>0`: `c>Y*k` and `U*a*Y>H`, while the remaining `X*Y*q+R+1` is nonnegative. Since `U²` divides `Dstar²`, standard integer square divisibility supplies `d=Dstar/U>0`. Its main norm yields `d²−((a+1)c)²=(2a+2)c²+1>0`, so `d>(a+1)c>X+a*c`; therefore `U*(d−X−a*c)=H*shift` is both positive and negative. This rules out gamma zero and completes the standard mixed zero maps.
+
+Independent free-ring A1 cancellation bounds the degree by 56. The compact P72/P115 byte hashes were authenticated, and a separate all-inputs-equal ray modulo **1,000,000,009** has degree 56 with leading coefficient 495452850. This is exact for the compact tuple, not an assertion for all port specializations.
+
+Neither the Pell argument's use here nor the prior positive-parent calibration has been formalized as an arbitrary-model transfer for this candidate. The historical source theorem, retained provider ancestry, current-2011 tuple, physical PDF semantics and internal iPRA endpoint are separate boundaries. No global minimum is claimed.

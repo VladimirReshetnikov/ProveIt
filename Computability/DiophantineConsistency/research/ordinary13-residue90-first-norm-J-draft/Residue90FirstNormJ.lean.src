@@ -1,0 +1,59 @@
+import Residue90FirstNormGap
+import Mathlib.Tactic.Linarith
+
+/-! Source-only J=0 branch for the residue graph. No Lean elaboration,
+compact fixed-kernel authentication, X forcing, provider replay or endpoint. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+noncomputable section
+namespace DiophantineConsistency.Residue90FirstNormJDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open Residue90GraphNormsDraft Residue90CompactPortBoundsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The literal graph's first norm excludes J=0. All four ports are the
+integer images of a natural tuple; only K0 nonnegative is needed locally. -/
+theorem J_positive (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v) : 0<v 0 := by
+  by_contra hn
+  have hj : v 0=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le _)
+  have hq : q p v=1 := by simp [q,hj]
+  have hF1 : (1 : DiffRing V)≤ι (v 1+1) := by
+    have hh : (1:V)≤v 1+1 := by simp
+    simpa only [map_one] using (ι_le_ι.mpr hh)
+  have hc : (ι (q p v) : DiffRing V)-ι (v 1+1)-ι (v 2+1)≤0 := by
+    have ha := ι_nonneg (v 2+1)
+    rw [hq,map_one]
+    linarith
+  have hxk : (0 : DiffRing V)≤ι (v 6)+ι (p 1:V) :=
+    add_nonneg (ι_nonneg (v 6)) (ι_nonneg (p 1:V))
+  have hcp := mul_nonpos_of_nonpos_of_nonneg hc hxk
+  have hF : (0 : DiffRing V)<ι (v 1+1) := by
+    have hh := lt_of_le_of_lt (Arithmetic.zero_le (v 1)) (lt_add_one (v 1))
+    simpa only [map_zero] using (ι_lt_ι.mpr hh)
+  have hBt : Bt p v<0 := by
+    dsimp only [Bt]
+    linarith
+  have hroot : firstRoot p v= -Bt p v := by
+    simp [firstRoot,hj]
+  have hrootpos : 0<firstRoot p v := by
+    rw [hroot]
+    exact neg_pos.mpr hBt
+  have hnorm := first_ring_norm p v hz
+  have hsquare : (firstRoot p v)*(firstRoot p v)=0 := by
+    simpa [hj] using hnorm
+  have hzero : firstRoot p v=0 := mul_self_eq_zero.mp hsquare
+  exact (ne_of_gt hrootpos) hzero
+
+/-- A compact-symbolic zero therefore forces gamma positive once the
+separately unproved X≥1 fact is available. The symbolic K is arbitrary. -/
+theorem compact_gamma_of_X (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (ports K j:ℤ))) v)
+    (hX : 1≤v 6) : 0<v 12 :=
+  Residue90FirstNormGapDraft.compact_gamma_of_JX K v hz (J_positive (ports K) v hz) hX
+end DiophantineConsistency.Residue90FirstNormJDraft
+#print axioms DiophantineConsistency.Residue90FirstNormJDraft.J_positive
+#print axioms DiophantineConsistency.Residue90FirstNormJDraft.compact_gamma_of_X

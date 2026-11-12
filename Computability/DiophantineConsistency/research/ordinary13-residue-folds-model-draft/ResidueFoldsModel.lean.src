@@ -1,0 +1,157 @@
+import ResidueFoldP89Residuals
+import ResidueFoldFold88Residuals
+import ResidueFoldP88Residuals
+import ResidueFoldFold87Residuals
+import DiophantineConsistency.ModelDifferenceRing
+import DiophantineConsistency.HAExpressionNoZeroEquiv
+import DiophantineConsistency.IPRAExpressionNative
+import Mathlib.Tactic.Ring
+
+/-! Two exact ring folds, composed conditionally with their respective parent
+bridges. All sources and proof tactics remain unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.ResidueFoldsModelDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+
+section Ring
+variable {R : Type*} [CommRing R]
+theorem relation_88_89_0 (p : Fin 4 → ℤ) (v : Fin 13 → R) :
+    (ResidueFoldFold88DraftResiduals.residuals p 0).evalRing v =
+      (ResidueFoldP89DraftResiduals.residuals p 0).evalRing v := by
+  simp [ResidueFoldFold88DraftResiduals.residuals,ResidueFoldP89DraftResiduals.residuals,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat] <;> ring
+
+theorem relation_88_89_1 (p : Fin 4 → ℤ) (v : Fin 13 → R) :
+    (ResidueFoldFold88DraftResiduals.residuals p 1).evalRing v =
+      (ResidueFoldP89DraftResiduals.residuals p 1).evalRing v := by
+  simp [ResidueFoldFold88DraftResiduals.residuals,ResidueFoldP89DraftResiduals.residuals,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat] <;> ring
+
+theorem relation_88_89_2 (p : Fin 4 → ℤ) (v : Fin 13 → R) :
+    (ResidueFoldFold88DraftResiduals.residuals p 2).evalRing v =
+      (ResidueFoldP89DraftResiduals.residuals p 2).evalRing v := by
+  simp [ResidueFoldFold88DraftResiduals.residuals,ResidueFoldP89DraftResiduals.residuals,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat] <;> ring
+
+theorem relation_88_89_3 (p : Fin 4 → ℤ) (v : Fin 13 → R) :
+    (ResidueFoldFold88DraftResiduals.residuals p 3).evalRing v =
+      (ResidueFoldP89DraftResiduals.residuals p 3).evalRing v := by
+  simp [ResidueFoldFold88DraftResiduals.residuals,ResidueFoldP89DraftResiduals.residuals,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat] <;> ring
+
+theorem evaluation_88_89 (p : Fin 4 → ℤ) (v : Fin 13 → R) :
+    (ResidueFoldFold88Draft.literal p).evalRing v = (ResidueFoldP89Draft.literal p).evalRing v := by
+  rw [←ResidueFoldFold88DraftResiduals.sum_eq_literal,←ResidueFoldP89DraftResiduals.sum_eq_literal]
+  simp only [ResidueFoldFold88DraftResiduals.sum,ResidueFoldP89DraftResiduals.sum,
+    Expr.evalRing_add,Expr.evalRing_mul,relation_88_89_0 p v,relation_88_89_1 p v,
+    relation_88_89_2 p v,relation_88_89_3 p v]
+
+theorem relation_87_88_0 (p : Fin 4 → ℤ) (v : Fin 13 → R) :
+    (ResidueFoldFold87DraftResiduals.residuals p 0).evalRing v =
+      (ResidueFoldP88DraftResiduals.residuals p 0).evalRing v := by
+  simp [ResidueFoldFold87DraftResiduals.residuals,ResidueFoldP88DraftResiduals.residuals,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat] <;> ring
+
+theorem relation_87_88_1 (p : Fin 4 → ℤ) (v : Fin 13 → R) :
+    (ResidueFoldFold87DraftResiduals.residuals p 1).evalRing v =
+      (ResidueFoldP88DraftResiduals.residuals p 1).evalRing v := by
+  simp [ResidueFoldFold87DraftResiduals.residuals,ResidueFoldP88DraftResiduals.residuals,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat] <;> ring
+
+theorem relation_87_88_2 (p : Fin 4 → ℤ) (v : Fin 13 → R) :
+    (ResidueFoldFold87DraftResiduals.residuals p 2).evalRing v =
+      (ResidueFoldP88DraftResiduals.residuals p 2).evalRing v := by
+  simp [ResidueFoldFold87DraftResiduals.residuals,ResidueFoldP88DraftResiduals.residuals,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat] <;> ring
+
+theorem relation_87_88_3 (p : Fin 4 → ℤ) (v : Fin 13 → R) :
+    (ResidueFoldFold87DraftResiduals.residuals p 3).evalRing v =
+      (ResidueFoldP88DraftResiduals.residuals p 3).evalRing v := by
+  simp [ResidueFoldFold87DraftResiduals.residuals,ResidueFoldP88DraftResiduals.residuals,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat] <;> ring
+
+theorem evaluation_87_88 (p : Fin 4 → ℤ) (v : Fin 13 → R) :
+    (ResidueFoldFold87Draft.literal p).evalRing v = (ResidueFoldP88Draft.literal p).evalRing v := by
+  rw [←ResidueFoldFold87DraftResiduals.sum_eq_literal,←ResidueFoldP88DraftResiduals.sum_eq_literal]
+  simp only [ResidueFoldFold87DraftResiduals.sum,ResidueFoldP88DraftResiduals.sum,
+    Expr.evalRing_add,Expr.evalRing_mul,relation_87_88_0 p v,relation_87_88_1 p v,
+    relation_87_88_2 p v,relation_87_88_3 p v]
+
+end Ring
+section Model
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+theorem zero_iff_88_89 (p : Fin 4 → ℤ) (v : Fin 13 → V) :
+    InternalZero (ResidueFoldFold88Draft.literal p) v ↔
+      InternalZero (ResidueFoldP89Draft.literal p) v := by
+  rw [ModelDifferenceRing.internalZero_iff,ModelDifferenceRing.internalZero_iff,
+    evaluation_88_89 p (fun i => ι (v i))]
+
+theorem sameNoZero_88_89 (p : Fin 4 → ℤ) : SameNoZero
+    (ResidueFoldFold88Draft.literal p) (ResidueFoldP89Draft.literal p) := by
+  intro V _ _
+  constructor
+  · intro h v hz
+    exact h v ((zero_iff_88_89 p v).mpr hz)
+  · intro h v hz
+    exact h v ((zero_iff_88_89 p v).mp hz)
+
+/-- No parent bridge is constructed or authenticated here. -/
+theorem polynomialBridge_88_89 (p : Fin 4 → ℤ)
+    (hparent : PolynomialBridge (ResidueFoldP89Draft.literal p)) :
+    PolynomialBridge (ResidueFoldFold88Draft.literal p) :=
+  HAExpressionNoZeroEquiv.bridge _ _ (sameNoZero_88_89 p) hparent
+
+theorem native_equivalence_88_89 (p : Fin 4 → ℤ)
+    (hparent : PolynomialBridge (ResidueFoldP89Draft.literal p)) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (ResidueFoldFold88Draft.literal p) 🡘
+      ∼mappedNativeRefutation embedding :=
+  IPRAExpressionNative.equivalence_of_bridge _ (polynomialBridge_88_89 p hparent)
+
+theorem zero_iff_87_88 (p : Fin 4 → ℤ) (v : Fin 13 → V) :
+    InternalZero (ResidueFoldFold87Draft.literal p) v ↔
+      InternalZero (ResidueFoldP88Draft.literal p) v := by
+  rw [ModelDifferenceRing.internalZero_iff,ModelDifferenceRing.internalZero_iff,
+    evaluation_87_88 p (fun i => ι (v i))]
+
+theorem sameNoZero_87_88 (p : Fin 4 → ℤ) : SameNoZero
+    (ResidueFoldFold87Draft.literal p) (ResidueFoldP88Draft.literal p) := by
+  intro V _ _
+  constructor
+  · intro h v hz
+    exact h v ((zero_iff_87_88 p v).mpr hz)
+  · intro h v hz
+    exact h v ((zero_iff_87_88 p v).mp hz)
+
+/-- No parent bridge is constructed or authenticated here. -/
+theorem polynomialBridge_87_88 (p : Fin 4 → ℤ)
+    (hparent : PolynomialBridge (ResidueFoldP88Draft.literal p)) :
+    PolynomialBridge (ResidueFoldFold87Draft.literal p) :=
+  HAExpressionNoZeroEquiv.bridge _ _ (sameNoZero_87_88 p) hparent
+
+theorem native_equivalence_87_88 (p : Fin 4 → ℤ)
+    (hparent : PolynomialBridge (ResidueFoldP88Draft.literal p)) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (ResidueFoldFold87Draft.literal p) 🡘
+      ∼mappedNativeRefutation embedding :=
+  IPRAExpressionNative.equivalence_of_bridge _ (polynomialBridge_87_88 p hparent)
+
+end Model
+end DiophantineConsistency.ResidueFoldsModelDraft
+#print axioms DiophantineConsistency.ResidueFoldsModelDraft.evaluation_88_89
+#print axioms DiophantineConsistency.ResidueFoldsModelDraft.evaluation_87_88
+#print axioms DiophantineConsistency.ResidueFoldsModelDraft.native_equivalence_88_89
+#print axioms DiophantineConsistency.ResidueFoldsModelDraft.native_equivalence_87_88

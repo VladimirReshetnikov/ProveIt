@@ -1,0 +1,13 @@
+# Independent review: residue AQ13/82 model-transfer audit
+
+This is a source-interface, free-ring and mathematical directionality review, not a Lean build. Run `python3 -I -S -B check.py` from any directory and compare with `result.json`; the original audit receipt also reproduces. No provider ancestry, all-model calibration or internal iPRA endpoint was checked.
+
+For `b=J*beta`, `q=1+b`, `C=q−F−alpha`, `B=C*(X+K0*q)−F*q`, `B'=C*(X+K0)−F`, and `D=C*K0−F`, independent free-ring computation confirms `B=B'+b*D` and `Z_B(r+(k*b+1)*D)=Z_B'(r)`. The other three residuals are independently checked to be independent of the root coordinate r. The coordinate update is signed, so it does not alone preserve positive witnesses.
+
+The proposed positive-companion orientation has a real direction asymmetry. Once the source carrier of a positive zero is shown positive, `C>0`, and `A=C*X>0`, write `B=A+qD` and `B'=A+D`. If B>0, then B'>0: D≥0 is immediate, and if D<0 then B'≥B because q≥1. The b-divisibility transfers across `B−B'=bD`. For a target positive carrier `P=b*t`, positive tau with its first norm and `tau>ell`, the proposed natural coordinate `k*(P−1)+t+(tau−ell)` is positive and the checker verifies its target first carrier is exactly `b*tau`. The model-specific magnitude, divisibility reflection, positive natural quotient and graph binding steps still need formal clients.
+
+The reverse inference `B'>0` and `b∣B'` ⇒ `B>0` is invalid under those scalar facts alone: `beta=46, J=1, q=47, F=1, alpha=45, K0=0, X=47` gives `C=1`, `B'=46`, `b∣B'`, but `B=0`. This is a scalar control, **not** a full graph zero or a counterexample to zero equivalence. The sufficient stronger condition `X≥q²`, together with C≥1 and F≤q−2, gives `B≥2q>0`; proving that condition from the actual residue graph is the central missing direction.
+
+The pinned `FreeJEarlyIndex.early_index_of_facts` takes `FreeJIndices`, whose definition explicitly includes a magnitude equation for the **original** `core.z`; the residue-adjusted first carrier cannot be silently substituted for it. Similarly `FreeJPowerFinish.graph_power` assumes an original `literal` zero. The fact-level `P72Exact.indices_ordinary` instead exposes its own recurrence, rank-window, quotient, strong and auxiliary hypotheses; they all require a noncircular graph-specific derivation. The exact interfaces, signed transport and all-model calibration are not established by the scalar control or the earlier standard-integer 82/84 review.
+
+The original audit's parent endpoint and multi-arrow transfer chain remain separately qualified. This review does not establish a current-2011 PDF binding, a compact all-model theorem or a new iPRA endpoint.

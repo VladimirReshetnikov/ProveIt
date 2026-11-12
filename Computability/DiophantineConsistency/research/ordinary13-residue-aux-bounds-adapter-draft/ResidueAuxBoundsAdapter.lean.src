@@ -1,0 +1,71 @@
+import ResidueAuxWitness
+import ResidueExactIndexModel
+import ResidueRankLower
+import NormsToBounds
+
+/-! Proposed non-circular graph adapter for the strict ordinate bound and
+conditional exact index. All graph/source/provider results are unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.ResidueAuxBoundsAdapterDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing ArithmeticSignedPairs
+open Residue90GraphNormsDraft Residue90XZeroGraphDraft Residue90FyForceDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The actual arbitrary-gamma signed main norm supplies a natural quotient
+norm without orienting the main root or assuming an old graph zero. -/
+theorem main_natural_of_graph (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v)
+    (hU : 0<U p v) : ∃ d : V, d*d=1+delta p v*c p v*c p v := by
+  have hmain := main_ring_norm p v hz
+  have hnorm : mainRoot p v*mainRoot p v=ι (U p v)*ι (U p v)*ι (1+delta p v*c p v*c p v) := by
+    simp only [delta,map_add,map_mul,map_one]
+    linear_combination hmain
+  obtain ⟨_,d,_,_,hd⟩ := Residue90SignedNormsDraft.signed_norm_quotient
+    (U p v) (1+delta p v*c p v*c p v) (mainRoot p v) hU hnorm
+  exact ⟨d,hd⟩
+
+/-- The graph's exact first/main/strong norms and actual signed ordinate
+supply the strict square bound. Eta and zeta are the shifted positive graph
+coordinates; no eta-zero generalization is assumed. -/
+theorem ordinate_square_large (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v)
+    (hJ : 0<v 0) (hbeta : 0<(p 0:V)) (hX : 0<v 6) :
+    (1 : DiffRing V)<ordinateRing p v*ordinateRing p v := by
+  obtain ⟨hb,hq2,hY,hU⟩ := Residue90CompactGraphGammaDraft.scale_facts p v hJ hbeta
+  have hqpos : 0<q p v := lt_of_lt_of_le (by simp : (0:V)<2) hq2
+  have hYpos : 0<Y p v := lt_of_lt_of_le (pow_pos hqpos 3) hY
+  have heta : 0<v 9+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hzeta : 0<v 10+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hi : 0<v 4+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  obtain ⟨tau,htau⟩ := Residue90SignedNormsDraft.first_natural_norm
+    (v 0*(p 0:V)) (m p v) (k v) (firstRoot p v) hb (first_ring_norm p v hz)
+  obtain ⟨d,hd⟩ := main_natural_of_graph p v hz hU
+  have hfirst : tau*tau=1+(v 6*Y p v*Y p v)*(v 6*Y p v*Y p v+1)*
+      ((v 9+1)+(v 10+1))*((v 9+1)+(v 10+1)) := by simpa only [m,k] using htau
+  have hdelta : (v 6*Y p v+Y p v+2)*(v 6*Y p v+Y p v+2)=delta p v+1 := by
+    dsimp [delta,H,a]
+    ring
+  have hstrong := ResidueAuxWitnessDraft.ordinary_strong p v hz
+  have hQ : QRing p v=(ι (v 4+1)*ι (c p v)*ι (c p v))*
+      (ι (v 4+1)*ι (c p v)*ι (c p v)) := by
+    rw [←strong_identity p v hz]
+    simp only [Qnat,integralI,map_add,map_mul,map_one]
+    ring
+  let t : DiffRing V := ι (v 5+1)*ι (c p v)-rankRing p v
+  have hZ : ordinateRing p v+ι (c p v)=(ι (v 3)*ι (v 3))*t := by
+    dsimp [ordinateRing,t]
+    ring
+  have hc : c p v=(v 9+1)+Y p v*((v 9+1)+(v 10+1)) := rfl
+  have hresult := AuxNormsToBoundsDraft.aux_bounds_of_natural_norms
+    (v 6) (Y p v) (v 9+1) (v 10+1) tau d (delta p v) (c p v) (v 4+1) (v 3)
+    (ordinateRing p v) (QRing p v) t hX hYpos heta hzeta hi hc hdelta hfirst hd hstrong hQ hZ
+  exact hresult.2
+end DiophantineConsistency.ResidueAuxBoundsAdapterDraft
+#print axioms DiophantineConsistency.ResidueAuxBoundsAdapterDraft.main_natural_of_graph
+#print axioms DiophantineConsistency.ResidueAuxBoundsAdapterDraft.ordinate_square_large

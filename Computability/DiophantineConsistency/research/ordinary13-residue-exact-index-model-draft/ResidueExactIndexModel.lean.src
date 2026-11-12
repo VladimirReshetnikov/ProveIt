@@ -1,0 +1,82 @@
+import ResidueMainCongruence
+import DiophantineConsistency.Compact44.P72Exact
+import DiophantineConsistency.ArithmeticPellClassification
+
+/-! Proposed fact-level assembly of P72Exact.indices_ordinary for the actual
+residue graph. Strong/auxiliary, main-index and R≥26 are explicit. No Lean. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.ResidueExactIndexModelDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ArithmeticPellRecurrence ArithmeticPellHalfIndex
+open Residue90GraphNormsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The ordinary main-index premise can be supplied from the explicit
+natural main norm; this does not extract that norm from a graph zero. -/
+theorem main_index_of_natural_norm (a c g : V)
+    (hg : g*g=1+ArithmeticPellRecurrence.delta a*c*c) : ∃ m : V, ycoord m a=c := by
+  obtain ⟨m,_,_,hy⟩ := ArithmeticPellClassification.solution_index a g c hg
+  exact ⟨m,hy⟩
+
+/-- Apply `indices_ordinary` to the actual residue graph's early-index
+client. The old auxiliary coordinate u, ordinary strong witness i', main
+index and their exact equations are *premises*, not graph-derived facts. -/
+theorem exact_indices_of_actual_graph (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (g i' u mainIndex : V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v)
+    (hJ : 0<v 0) (hbeta : 0<(p 0:V)) (hX : 0<v 6)
+    (hgap : (v 1+1)+(v 2+1)<q p v)
+    (hR26 : 26≤rank p v)
+    (hwindow : rank p v+(q p v)^3+q p v+1≤(q p v)^4)
+    (hi' : 0<i') (hf : 0<v 3)
+    (hmy : ycoord mainIndex (a p v)=c p v)
+    (hg : g*g=1+ArithmeticPellRecurrence.delta (a p v)*(c p v)*(c p v))
+    (hstrong : (i'*c p v*c p v)*(i'*c p v*c p v)+ArithmeticPellRecurrence.delta (a p v)=
+      ArithmeticPellRecurrence.delta (a p v)*(v 3*v 3))
+    (haux : ((3+4*a p v)+a p v*a p v)*(v 3*v 3-1)*
+        (absdiff (v 3*v 3*((v 5+1)*c p v)) (v 3*v 3*rank p v+c p v)*
+         absdiff (v 3*v 3*((v 5+1)*c p v)) (v 3*v 3*rank p v+c p v))+
+        absdiff (v 3*v 3*((v 5+1)*c p v)+u) (v 3*v 3*rank p v+c p v)*
+        absdiff (v 3*v 3*((v 5+1)*c p v)+u) (v 3*v 3*rank p v+c p v)=
+      1+((3+4*a p v)+a p v*a p v)*(v 3*v 3-1)*
+        (absdiff (v 3*v 3*((v 5+1)*c p v)+u) (v 3*v 3*rank p v+c p v)*
+         absdiff (v 3*v 3*((v 5+1)*c p v)+u) (v 3*v 3*rank p v+c p v))) :
+    ∃ tau n s : V,
+      tau*tau=1+(m p v)*(m p v+1)*(k v)*(k v) ∧
+      13≤n ∧ n<mainIndex ∧ mainIndex=rank p v ∧ 2*n=rank p v+1 ∧
+      n≤k v ∧ k v=2*n+4*(m p v)*s := by
+  have hR24 : 24≤rank p v := le_trans (by simp : (24:V)≤26) hR26
+  obtain ⟨tau,n,s,htau,_,hnk,_,hny,hnmod,_,_,hks⟩ :=
+    ResidueMainCongruenceDraft.early_index_of_actual_graph p v hz hJ hbeta hX hgap hR24 hwindow
+  have hF : (1:V)≤v 1+1 := by simp
+  have ha : (1:V)≤v 2+1 := by simp
+  have hq3 : 3≤q p v := by omega
+  have hqpos : 0<q p v := lt_of_lt_of_le (by simp : (0:V)<3) hq3
+  have hmu : rank p v+1<(q p v)^4 := by
+    have hp : 0<(q p v)^3+q p v := add_pos (pow_pos hqpos _) hqpos
+    calc
+      rank p v+1<(rank p v+1)+((q p v)^3+q p v) := lt_add_of_pos_right _ hp
+      _=rank p v+(q p v)^3+q p v+1 := by ring
+      _≤(q p v)^4 := hwindow
+  have hy0 : 0<v 7+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have heta : 0<v 9+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hY : Y p v=q p v*(q p v*q p v)*(v 7+1) := rfl
+  have hc : c p v=(v 9+1)+Y p v*k v := rfl
+  have haa : a p v=v 6*Y p v+Y p v := rfl
+  have hny' : 2*ycoord n (2*((v 6*Y p v)*Y p v-1)+1)=k v := by
+    simpa only [m] using hny
+  have hks' : k v=2*n+4*((v 6*Y p v)*Y p v)*s := by
+    simpa only [m] using hks
+  obtain ⟨hn13,hnlt,hindex,heq⟩ := P72Exact.indices_ordinary
+    (q p v) (v 6) (Y p v) (k v) (rank p v) g (c p v) (a p v)
+    (v 7+1) i' (v 3) (v 5+1) u n s ((q p v)^4) mainIndex (v 9+1)
+    hq3 hX hy0 hY heta hc hi' hf haa hR26 hny' hks' hmu hnmod hmy hg hstrong haux
+  exact ⟨tau,n,s,htau,hn13,hnlt,hindex,heq,hnk,hks⟩
+end DiophantineConsistency.ResidueExactIndexModelDraft
+#print axioms DiophantineConsistency.ResidueExactIndexModelDraft.main_index_of_natural_norm
+#print axioms DiophantineConsistency.ResidueExactIndexModelDraft.exact_indices_of_actual_graph

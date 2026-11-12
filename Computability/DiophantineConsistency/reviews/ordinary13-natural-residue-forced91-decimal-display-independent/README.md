@@ -1,0 +1,9 @@
+# Independent review: compact AQ13/91 decimal display
+
+This is a source, integer and extracted-PDF review of the separate [13/91 compact candidate](../../research/ordinary13-natural-residue-forced91-decimal-display/README.md). Run `python3 -I -S -B check.py` from any directory and compare with `result.json`; both author receipts also reproduce. No Lean or formal TeX/PDF semantics are established.
+
+The 13 input names are distinct, descriptive and explicitly nonnegative. All 91 graph rows match the pinned candidate in ordered TeX, and every uniquely numbered equation matches extracted PDF text. The final equation is `G091=0`. The [separate graph review](../ordinary13-natural-residue-forced91-independent/README.md) checks the mixed model forcing argument and the exact fixed-port degree; those facts do not follow from text extraction alone.
+
+The entire fixed-constant section is byte-identical to the independently reviewed compact natural79 source. The 15,086 decimal seed digits match the pinned seed text and PDF extraction. The prior independent compact checker recomputes all four β, K, μ and ω formulas against the retained P72 bytes, with β added to the high component exactly once; the pinned 13/91 graph review separately authenticates matching P72 and P115 raw/gzip hashes. These are finite external integer comparisons, not Lean proofs about physical files. The compact tuple is distinct from the current-2011 root equation's tuple.
+
+All four PDF pages were visually inspected. The graph and fixed recipe are legible at rendered scale; the full seed uses small type over multiple pages. PDF text extraction can flatten mathematical layout. The 13/82 positive parent's calibration remains externally reviewed over standard integers, and this display does not establish a new arbitrary-model calibration, Lean model transfer, iPRA endpoint, current-2011 binding or global minimality.

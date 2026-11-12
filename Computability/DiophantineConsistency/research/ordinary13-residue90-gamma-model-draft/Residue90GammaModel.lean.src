@@ -1,0 +1,102 @@
+import FirstMainLargeK
+import GammaZeroNarrow
+import Mathlib.Tactic.Linarith
+
+/-! Proposed fact-level model client for the 13/90 residue-adjusted gamma
+argument. No graph-to-facts extraction, fixed ports, Lean elaboration or
+provider replay is included. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Residue90GammaModelDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ArithmeticSignedPairs
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Unlike the older narrow estimate, this bound does not assume q≤X. It
+controls the actual residue-adjusted extra term X*Y*q. -/
+theorem enlarged_rank_gap (q X Y k eta R : V)
+    (hq : 2≤q) (hX : 1≤X) (hY : q^3≤Y) (heta : 0<eta)
+    (hk : 8*(X*Y*Y)+4≤k) (hR : R+q^3+q+1≤q^4) :
+    (R+X*Y*q)+1<k ∧ X<eta+Y*k := by
+  have hq1 : 1≤q := le_trans (by simp : (1:V)≤2) hq
+  have hq2 : q≤q*q := by
+    simpa only [mul_one] using (mul_le_mul_of_nonneg_left hq1 (Arithmetic.zero_le q))
+  have hq3 : q≤q^3 := by
+    calc
+      q≤q*q := hq2
+      _≤(q*q)*q := by
+        simpa only [mul_one] using (mul_le_mul_of_nonneg_left hq1 (Arithmetic.zero_le (q*q)))
+      _=q^3 := by ring
+  have hqY : q≤Y := le_trans hq3 hY
+  have hY1 : 1≤Y := le_trans hq1 hqY
+  have hX2 : Y≤X*Y := by
+    calc
+      Y=1*Y := by simp
+      _≤X*Y := mul_le_mul_of_nonneg_right hX (Arithmetic.zero_le Y)
+  have hq4 : q^4≤X*Y*Y := by
+    calc
+      q^4=q*q^3 := by ring
+      _≤Y*Y := mul_le_mul hqY hY (Arithmetic.zero_le (q^3)) (Arithmetic.zero_le Y)
+      _≤X*Y*Y := mul_le_mul_of_nonneg_right hX2 (Arithmetic.zero_le Y)
+  have hXYq : X*Y*q≤X*Y*Y := mul_le_mul_of_nonneg_left hqY (Arithmetic.zero_le (X*Y))
+  have hR1 : R+1≤q^4 := by
+    have h : R+1≤R+q^3+q+1 := by
+      have hq3nonneg := Arithmetic.zero_le (q^3)
+      have hqnonneg := Arithmetic.zero_le q
+      omega
+    exact le_trans h hR
+  have htwice : R+X*Y*q+1≤2*(X*Y*Y) := by
+    have h := le_trans hR1 hq4
+    nlinarith
+  have htwo_lt : 2*(X*Y*Y)<8*(X*Y*Y)+4 := by
+    have hm := Arithmetic.zero_le (X*Y*Y)
+    nlinarith
+  have hm_lt : X*Y*Y<k := by
+    have hm := Arithmetic.zero_le (X*Y*Y)
+    nlinarith
+  have hXle : X≤X*Y*Y := by
+    calc
+      X≤X*Y := le_mul_of_one_le_right (Arithmetic.zero_le X) hY1
+      _≤X*Y*Y := le_mul_of_one_le_right (Arithmetic.zero_le (X*Y)) hY1
+  have hkY : k≤Y*k := by
+    simpa only [mul_comm] using (le_mul_of_one_le_right (Arithmetic.zero_le k) hY1)
+  constructor
+  · exact lt_of_le_of_lt htwice (lt_of_lt_of_le htwo_lt hk)
+  · exact lt_of_lt_of_le (lt_of_le_of_lt hXle hm_lt) (le_trans hkY (by simp))
+
+/-- Given the literal first and main natural norms, rank bound and the actual
+signed-magnitude main norm at gamma=0, gamma cannot be zero. -/
+theorem gamma_pos_of_fact_cut (q X Y eta zeta R U tau d Delta gamma : V)
+    (hq : 2≤q) (hX : 1≤X) (hY : q^3≤Y) (heta : 0<eta) (hzeta : 0<zeta)
+    (hU : 0<U) (hR : R+q^3+q+1≤q^4)
+    (hDelta : (X*Y+Y+2)*(X*Y+Y+2)=Delta+1)
+    (hfirst : tau*tau=1+(X*Y*Y)*(X*Y*Y+1)*(eta+zeta)*(eta+zeta))
+    (hmain : d*d=1+Delta*(eta+Y*(eta+zeta))*(eta+Y*(eta+zeta)))
+    (hcarrier : gamma=0 →
+      let a := X*Y+Y
+      let c := eta+Y*(eta+zeta)
+      let H := 3+4*a
+      let P := U*(X+a*c)+H*(U*(0:V)+(R+X*Y*q)+1)
+      let N := H*(eta+zeta)
+      magnitude (P,N)*magnitude (P,N)=U*U*(1+(H+a*a)*(c*c))) : 0<gamma := by
+  by_contra hn
+  have hg : gamma=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le gamma)
+  have hXpos : 0<X := lt_of_lt_of_le (by simp : (0:V)<1) hX
+  have hq8 : (8:V)≤q^3 := by
+    have hh := pow_le_pow_left₀ (by simp : (0:V)≤2) hq 3
+    simpa using hh
+  have hY8 : 8≤Y := le_trans hq8 hY
+  have hYpos : 0<Y := lt_of_lt_of_le (by simp : (0:V)<8) hY8
+  have hkpos : 0<eta+zeta := add_pos heta hzeta
+  have hklarge := FirstMainLargeKDraft.first_main_large_k X Y eta zeta tau d Delta
+    hXpos hYpos heta hzeta hDelta hfirst hmain
+  have hklarge' : 8*(X*Y*Y)+4≤eta+zeta := by
+    simpa only [mul_assoc] using hklarge
+  obtain ⟨hgap,hc⟩ := enlarged_rank_gap q X Y (eta+zeta) eta R hq hX hY heta hklarge' hR
+  exact GammaZeroNarrowDraft.gamma_zero_impossible U X Y (eta+zeta) eta (R+X*Y*q)
+    hU hY8 hkpos hgap hc (hcarrier hg)
+end DiophantineConsistency.Residue90GammaModelDraft
+#print axioms DiophantineConsistency.Residue90GammaModelDraft.enlarged_rank_gap
+#print axioms DiophantineConsistency.Residue90GammaModelDraft.gamma_pos_of_fact_cut

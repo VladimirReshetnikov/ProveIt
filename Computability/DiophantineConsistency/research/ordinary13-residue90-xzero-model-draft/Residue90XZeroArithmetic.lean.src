@@ -1,0 +1,83 @@
+import DiophantineConsistency.ModelRelationCombining
+import DiophantineConsistency.BFS943.Trace75IntegralTransport
+import Mathlib.Tactic.LinearCombination
+import Mathlib.Tactic.Linarith
+
+/-! Proposed fact-level model X=0 contradiction. The graph must supply the
+signed main expression, squared norm, and size facts. No Lean elaboration. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Residue90XZeroArithmeticDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ModelDifferenceRing
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- An explicit Bézout-like cancellation: no coprimality assumption is
+needed once (d-ac)(d+ac)=1+H*c² is available. -/
+theorem cancel_modulus {R : Type*} [CommRing R] (H U d a c : R)
+    (hdiv : H ∣ U*(d-a*c))
+    (hnorm : (d-a*c)*(d+a*c)=1+H*(c*c)) : H ∣ U := by
+  obtain ⟨w,hw⟩ := hdiv
+  refine ⟨w*(d+a*c)-U*(c*c),?_⟩
+  linear_combination -U*hnorm+(d+a*c)*hw
+
+/-- The actual signed main-root shape and norm imply H∣U in every model's
+difference ring. The signed quotient d may have either sign. -/
+theorem modulus_dvd_scale (H U a c z t : DiffRing V) (hU : U≠0)
+    (hshape : z=U*(a*c)+H*t)
+    (hnorm : z*z=U*U*(1+(H+a*a)*(c*c))) : H ∣ U := by
+  have hsquare : U^2 ∣ z^2 := by
+    refine ⟨1+(H+a*a)*(c*c),?_⟩
+    rw [pow_two,pow_two,hnorm]
+  obtain ⟨d,hd⟩ := ModelRelationCombining.sq_dvd_sq U z hU hsquare
+  have hdiff : U*(d-a*c)=H*t := by linear_combination hshape-hd
+  have hfactorScaled : U*U*((d-a*c)*(d+a*c))=U*U*(1+H*(c*c)) := by
+    rw [hd] at hnorm
+    linear_combination hnorm
+  have hfactor : (d-a*c)*(d+a*c)=1+H*(c*c) :=
+    mul_left_cancel₀ (mul_ne_zero hU hU) hfactorScaled
+  exact cancel_modulus H U d a c ⟨t,hdiff⟩ hfactor
+
+/-- At X=0, the graph-shaped main norm is impossible for q≥2 and Y≥q³.
+`z` and `t` are signed model elements; no gamma or port sign is assumed. -/
+theorem xzero_impossible (q Y c : V) (z t : DiffRing V)
+    (hq : 2≤q) (hY : q^3≤Y)
+    (hshape : z=ι (Y*(q*q))*(ι Y*ι c)+ι (3+4*Y)*t)
+    (hnorm : z*z=ι (Y*(q*q))*ι (Y*(q*q))*
+      (1+(ι (3+4*Y)+ι Y*ι Y)*(ι c*ι c))) : False := by
+  have hqpos : 0<q := lt_of_lt_of_le (by simp : (0:V)<2) hq
+  have hq1 : 1≤q := le_trans (by simp : (1:V)≤2) hq
+  have hYpos : 0<Y := lt_of_lt_of_le (pow_pos hqpos 3) hY
+  let U : V := Y*(q*q)
+  let H : V := 3+4*Y
+  have hUpos : 0<U := mul_pos hYpos (mul_pos hqpos hqpos)
+  have hUne : (ι U : DiffRing V)≠0 := by
+    have hp : (0 : DiffRing V)<ι U := by simpa only [map_zero] using (ι_lt_ι.mpr hUpos)
+    exact ne_of_gt hp
+  have hHU : (ι H : DiffRing V) ∣ ι U :=
+    modulus_dvd_scale (ι H) (ι U) (ι Y) (ι c) z t hUne hshape hnorm
+  obtain ⟨w,hw⟩ := hHU
+  have hthreeSigned : (ι H : DiffRing V) ∣ ι (3*(q*q)) := by
+    refine ⟨ι (q*q)-4*w,?_⟩
+    dsimp only [H,U] at hw ⊢
+    simp only [map_add,map_mul,map_ofNat] at hw ⊢
+    linear_combination -4*hw
+  have hthree : H ∣ 3*(q*q) :=
+    Trace75IntegralTransport.natural_dvd_of_signed H (3*(q*q)) hthreeSigned
+  have hq3 : q*q≤q^3 := by
+    calc
+      q*q≤(q*q)*q := le_mul_of_one_le_right (Arithmetic.zero_le _) hq1
+      _=q^3 := by ring
+  have hYq : q*q≤Y := le_trans hq3 hY
+  have hthreepos : 0<3*(q*q) := mul_pos (by simp) (mul_pos hqpos hqpos)
+  have hle : H≤3*(q*q) := le_of_dvd hthreepos hthree
+  have hstrict : 3*(q*q)<H := by
+    dsimp only [H]
+    nlinarith
+  exact (not_lt_of_ge hle) hstrict
+end DiophantineConsistency.Residue90XZeroArithmeticDraft
+#print axioms DiophantineConsistency.Residue90XZeroArithmeticDraft.cancel_modulus
+#print axioms DiophantineConsistency.Residue90XZeroArithmeticDraft.modulus_dvd_scale
+#print axioms DiophantineConsistency.Residue90XZeroArithmeticDraft.xzero_impossible

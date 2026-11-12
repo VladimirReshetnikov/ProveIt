@@ -1,0 +1,59 @@
+import DiophantineConsistency.Compact44.P72Root
+import Mathlib.Tactic.LinearCombination
+import Mathlib.Tactic.Linarith
+
+/-! Source-only existential first-root switch. Graph factorization, signed
+magnitude and natural quotient extraction remain explicit premises. No Lean. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.ResidueRootSwitchArithmeticDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ModelDifferenceRing
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The plus sign is impossible at r=0 if P=b*t>0 and tau>ell. The
+represented natural quotient and the two possible root signs are premises. -/
+theorem negative_root_at_zero (b P t ell k tau : V) (z : DiffRing V)
+    (hb : 0<b) (hP : 0<P) (hPt : P=b*t) (htau : ell<tau)
+    (hz : z=ι b*(ι ell+ι k-ι k*ι P)-ι P)
+    (hsign : z=ι b*ι tau ∨ z= -(ι b*ι tau)) : z= -(ι b*ι tau) := by
+  rcases hsign with hs | hs
+  · have hbne : (ι b : DiffRing V)≠0 := by
+      have h : (0:DiffRing V)<ι b := by simpa only [map_zero] using (ι_lt_ι.mpr hb)
+      exact ne_of_gt h
+    have hpcast : (ι P : DiffRing V)=ι b*ι t := by rw [hPt,map_mul]
+    have he : (ι b : DiffRing V)*(ι ell-ι k*(ι P-1)-ι t-ι tau)=0 := by
+      linear_combination hs-hz+hpcast
+    have he0 := (mul_eq_zero.mp he).resolve_left hbne
+    have hP1 : (1 : DiffRing V)≤ι P := by
+      simpa only [map_one] using (ι_le_ι.mpr (pos_iff_one_le.mp hP))
+    have hkP : (0 : DiffRing V)≤ι k*(ι P-1) :=
+      mul_nonneg (ι_nonneg k) (sub_nonneg.mpr hP1)
+    have ht : (0 : DiffRing V)≤ι t := ι_nonneg t
+    have hlt : (ι ell : DiffRing V)<ι tau := (ι_lt_ι).mpr htau
+    exfalso
+    linarith
+  · exact hs
+
+/-- Replacing r=0 by 2*tau flips the first root and preserves its square.
+This is a witness change, not a proof that the original r was positive. -/
+theorem switch_from_zero (b P t ell k tau : V) (z : DiffRing V)
+    (hb : 0<b) (hP : 0<P) (hPt : P=b*t) (htau : ell<tau)
+    (hz : z=ι b*(ι ell+ι k-ι k*ι P)-ι P)
+    (hsign : z=ι b*ι tau ∨ z= -(ι b*ι tau)) :
+    ∃ r' : V, 0<r' ∧
+      (ι b*(ι ell+ι k+ι r'-ι k*ι P)-ι P)*
+      (ι b*(ι ell+ι k+ι r'-ι k*ι P)-ι P)=z*z := by
+  have hneg := negative_root_at_zero b P t ell k tau z hb hP hPt htau hz hsign
+  have htaupos : 0<tau := lt_of_le_of_lt (Arithmetic.zero_le ell) htau
+  refine ⟨2*tau,mul_pos (by simp) htaupos,?_⟩
+  have hflip : (ι b : DiffRing V)*(ι ell+ι k+ι (2*tau)-ι k*ι P)-ι P= -z := by
+    simp only [map_mul,map_ofNat]
+    linear_combination 2*hneg-hz
+  rw [hflip]
+  ring
+end DiophantineConsistency.ResidueRootSwitchArithmeticDraft
+#print axioms DiophantineConsistency.ResidueRootSwitchArithmeticDraft.negative_root_at_zero
+#print axioms DiophantineConsistency.ResidueRootSwitchArithmeticDraft.switch_from_zero

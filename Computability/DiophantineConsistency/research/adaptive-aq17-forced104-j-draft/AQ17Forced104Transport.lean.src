@@ -1,0 +1,144 @@
+import AQ17Forced104JForce
+import AQ17Forced105Evaluation
+import AQ17Forced105CutExtraction
+import Mathlib.Tactic.Ring
+
+/-! Proposed 104→105 J-shift transport; none has been Lean elaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.AQ17Forced104TransportDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+
+def raiseJ {V : Type*} [Add V] [One V] (v : Fin 17 → V) (i : Fin 17) : V :=
+  if i=0 then v i+1 else v i
+
+def lowerJ {V : Type*} [Sub V] (v : Fin 17 → V) (i : Fin 17) : V :=
+  if i=0 then v i-1 else v i
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem raise_lower (v : Fin 17 → V) (h : 0<v 0) : raiseJ (lowerJ v)=v := by
+  funext i
+  fin_cases i <;> simp [raiseJ,lowerJ,tsub_add_cancel_of_le (pos_iff_one_le.mp h)]
+
+theorem relation00 (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ17Forced105ResidualsDraft.residuals p 0).evalRing (fun k => ι (v k)) =
+      (AQ17Forced104ResidualsDraft.residuals p 0).evalRing (fun k => ι (raiseJ v k)) := by
+  simp [AQ17Forced105ResidualsDraft.residuals, AQ17Forced104ResidualsDraft.residuals,
+    raiseJ, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul,map_one] <;> ring
+
+theorem relation01 (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ17Forced105ResidualsDraft.residuals p 1).evalRing (fun k => ι (v k)) =
+      (AQ17Forced104ResidualsDraft.residuals p 1).evalRing (fun k => ι (raiseJ v k)) := by
+  simp [AQ17Forced105ResidualsDraft.residuals, AQ17Forced104ResidualsDraft.residuals,
+    raiseJ, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul,map_one] <;> ring
+
+theorem relation02 (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ17Forced105ResidualsDraft.residuals p 2).evalRing (fun k => ι (v k)) =
+      (AQ17Forced104ResidualsDraft.residuals p 2).evalRing (fun k => ι (raiseJ v k)) := by
+  simp [AQ17Forced105ResidualsDraft.residuals, AQ17Forced104ResidualsDraft.residuals,
+    raiseJ, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul,map_one] <;> ring
+
+theorem relation03 (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ17Forced105ResidualsDraft.residuals p 3).evalRing (fun k => ι (v k)) =
+      (AQ17Forced104ResidualsDraft.residuals p 3).evalRing (fun k => ι (raiseJ v k)) := by
+  simp [AQ17Forced105ResidualsDraft.residuals, AQ17Forced104ResidualsDraft.residuals,
+    raiseJ, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul,map_one] <;> ring
+
+theorem relation04 (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ17Forced105ResidualsDraft.residuals p 4).evalRing (fun k => ι (v k)) =
+      (AQ17Forced104ResidualsDraft.residuals p 4).evalRing (fun k => ι (raiseJ v k)) := by
+  simp [AQ17Forced105ResidualsDraft.residuals, AQ17Forced104ResidualsDraft.residuals,
+    raiseJ, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul,map_one] <;> ring
+
+theorem relation05 (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ17Forced105ResidualsDraft.residuals p 5).evalRing (fun k => ι (v k)) =
+      (AQ17Forced104ResidualsDraft.residuals p 5).evalRing (fun k => ι (raiseJ v k)) := by
+  simp [AQ17Forced105ResidualsDraft.residuals, AQ17Forced104ResidualsDraft.residuals,
+    raiseJ, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul,map_one] <;> ring
+
+theorem relation06 (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ17Forced105ResidualsDraft.residuals p 6).evalRing (fun k => ι (v k)) =
+      (AQ17Forced104ResidualsDraft.residuals p 6).evalRing (fun k => ι (raiseJ v k)) := by
+  simp [AQ17Forced105ResidualsDraft.residuals, AQ17Forced104ResidualsDraft.residuals,
+    raiseJ, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul,map_one] <;> ring
+
+theorem relation07 (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ17Forced105ResidualsDraft.residuals p 7).evalRing (fun k => ι (v k)) =
+      (AQ17Forced104ResidualsDraft.residuals p 7).evalRing (fun k => ι (raiseJ v k)) := by
+  simp [AQ17Forced105ResidualsDraft.residuals, AQ17Forced104ResidualsDraft.residuals,
+    raiseJ, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul,map_one] <;> ring
+
+theorem evaluation (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ17Forced105LiteralDraft.literal p).evalRing (fun k => ι (v k)) =
+      (AQ17Forced104LiteralDraft.literal p).evalRing (fun k => ι (raiseJ v k)) := by
+  rw [←AQ17Forced105ResidualsDraft.sum_eq_literal, ←AQ17Forced104ResidualsDraft.sum_eq_literal]
+  simp only [AQ17Forced105ResidualsDraft.sum,AQ17Forced104ResidualsDraft.sum,
+    Expr.evalRing_add,Expr.evalRing_mul,relation00 p v,relation01 p v,
+    relation02 p v,relation03 p v,relation04 p v,relation05 p v,relation06 p v,relation07 p v]
+
+theorem zero_iff (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    InternalZero (AQ17Forced105LiteralDraft.literal p) v ↔
+      InternalZero (AQ17Forced104LiteralDraft.literal p) (raiseJ v) := by
+  rw [ModelDifferenceRing.internalZero_iff,ModelDifferenceRing.internalZero_iff,evaluation p v]
+
+/-- Current second port is represented; root forcing supplies the predecessor. -/
+theorem current_no_zero_iff :
+    (∀ v : Fin 17 → V, ¬InternalZero (AQ17Forced104LiteralDraft.literal CurrentWindowCarry2011.ports) v) ↔
+      (∀ v : Fin 17 → V, ¬InternalZero (AQ17Forced105LiteralDraft.literal CurrentWindowCarry2011.ports) v) := by
+  constructor
+  · intro h v hz
+    exact h (raiseJ v) ((zero_iff CurrentWindowCarry2011.ports v).mp hz)
+  · intro h v hz
+    have hj := AQ17Forced104JForceDraft.current_j_positive v hz
+    have hlift := raise_lower v hj
+    apply h (lowerJ v)
+    apply (zero_iff CurrentWindowCarry2011.ports (lowerJ v)).mpr
+    simpa only [hlift] using hz
+
+theorem sameNoZero : SameNoZero
+    (AQ17Forced104LiteralDraft.literal CurrentWindowCarry2011.ports)
+    (AQ17Forced105LiteralDraft.literal CurrentWindowCarry2011.ports) := by
+  intro V _ _
+  exact current_no_zero_iff (V:=V)
+
+theorem polynomialBridge (h22 : AQ22Quotient110ConditionalTransferDraft.GraphZeroObligations)
+    (h20 : AQ20Substituted104ConditionalTransferDraft.GraphZeroObligations)
+    (h17 : AQ17Factored94ConditionalTransferDraft.GraphZeroObligations) :
+    PolynomialBridge (AQ17Forced104LiteralDraft.literal CurrentWindowCarry2011.ports) :=
+  HAExpressionNoZeroEquiv.bridge _ _ sameNoZero
+    (AQ17Forced105ConditionalTransferDraft.polynomialBridge h22 h20 h17
+      AQ17Forced105EvaluationDraft.zeroEquivalence
+      (AQ17Forced105ConditionalTransferDraft.sixForced_of_cut AQ17Forced105CutExtractionDraft.forcingCutExtraction))
+
+theorem native_equivalence (h22 : AQ22Quotient110ConditionalTransferDraft.GraphZeroObligations)
+    (h20 : AQ20Substituted104ConditionalTransferDraft.GraphZeroObligations)
+    (h17 : AQ17Factored94ConditionalTransferDraft.GraphZeroObligations) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (AQ17Forced104LiteralDraft.literal CurrentWindowCarry2011.ports) 🡘
+      ∼mappedNativeRefutation embedding :=
+  IPRAExpressionNative.equivalence_of_bridge _ (polynomialBridge h22 h20 h17)
+end DiophantineConsistency.AQ17Forced104TransportDraft
+#print axioms DiophantineConsistency.AQ17Forced104TransportDraft.current_no_zero_iff
+#print axioms DiophantineConsistency.AQ17Forced104TransportDraft.native_equivalence

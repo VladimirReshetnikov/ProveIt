@@ -1,0 +1,113 @@
+import Residue90Residuals
+import Residue90SignedNorms
+import DiophantineConsistency.Compact44.P72Root
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.LinearCombination
+
+/-! Proposed graph-to-model norm extraction for the literal 13/90 residuals.
+All source, simplification and ring calculations are unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Residue90GraphNormsDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing ArithmeticSignedPairs
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def q (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := 1+v 0*(p 0:V)
+def Y (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := q p v*(q p v*q p v)*(v 7+1)
+def k (v : Fin 13 → V) : V := (v 9+1)+(v 10+1)
+def c (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := (v 9+1)+Y p v*k v
+def a (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := v 6*Y p v+Y p v
+def H (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := 3+4*a p v
+def delta (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := H p v+a p v*a p v
+def U (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := Y p v*(q p v*q p v)
+def m (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := v 6*Y p v*Y p v
+def rank (p : Fin 4 → ℕ) (v : Fin 13 → V) : V :=
+  ((q p v-1)*(q p v-(v 1+1))+(v 2+1))*(q p v*q p v-1)+
+    ((p 2:V)+q p v*(p 3:V))*v 0
+
+def mainP (p : Fin 4 → ℕ) (v : Fin 13 → V) : V :=
+  U p v*(v 6+a p v*c p v)+H p v*(rank p v+v 6*Y p v*q p v+1)
+def mainN (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := H p v*k v
+
+def Bt (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  (ι (q p v)-ι (v 1+1)-ι (v 2+1))*(ι (v 6)+ι (p 1:V))-ι (v 1+1)
+def firstRoot (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  ι (v 0*(p 0:V))*(ι (m p v*k v)+ι (k v)+ι (v 8+1)-ι (k v)*Bt p v)-Bt p v
+
+/-- The output is a sum of four nonnegative squares in the model ring. -/
+theorem all_residuals_zero (p : Fin 4 → ℤ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal p) v) :
+    ∀ i : Fin 4, InternalZero (Residue90ResidualsDraft.residuals p i) v := by
+  let r : Fin 4 → DiffRing V := fun i => (Residue90ResidualsDraft.residuals p i).evalRing (fun j => ι (v j))
+  have hzR := (ModelDifferenceRing.internalZero_iff _ _).mp hz
+  rw [←Residue90ResidualsDraft.sum_eq_literal] at hzR
+  have hsum : (r 0*r 0+r 1*r 1)+(r 2*r 2+r 3*r 3)=0 := by
+    simpa only [r,Residue90ResidualsDraft.sum,Expr.evalRing_add,Expr.evalRing_mul] using hzR
+  have h0 : r 0=0 := mul_self_eq_zero.mp (by nlinarith [sq_nonneg (r 1),sq_nonneg (r 2),sq_nonneg (r 3)])
+  have h1 : r 1=0 := mul_self_eq_zero.mp (by nlinarith [sq_nonneg (r 0),sq_nonneg (r 2),sq_nonneg (r 3)])
+  have h2 : r 2=0 := mul_self_eq_zero.mp (by nlinarith [sq_nonneg (r 0),sq_nonneg (r 1),sq_nonneg (r 3)])
+  have h3 : r 3=0 := mul_self_eq_zero.mp (by nlinarith [sq_nonneg (r 0),sq_nonneg (r 1),sq_nonneg (r 2)])
+  intro i
+  fin_cases i
+  · exact (ModelDifferenceRing.internalZero_iff _ _).mpr h0
+  · exact (ModelDifferenceRing.internalZero_iff _ _).mpr h1
+  · exact (ModelDifferenceRing.internalZero_iff _ _).mpr h2
+  · exact (ModelDifferenceRing.internalZero_iff _ _).mpr h3
+
+/-- The graph's first residual gives the signed first norm, at arbitrary
+natural port tuple; no rank window or graph-side beta bound is assumed. -/
+theorem first_ring_norm (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v) :
+    (firstRoot p v)*(firstRoot p v)=ι (v 0*(p 0:V))*ι (v 0*(p 0:V))*
+      ι (1+m p v*(m p v+1)*k v*k v) := by
+  have h := (ModelDifferenceRing.internalZero_iff _ _).mp
+    (all_residuals_zero _ v hz 0)
+  simp [Residue90ResidualsDraft.residuals, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    P72Root.cast_port, map_add,map_mul,map_one,map_ofNat] at h
+  simp only [firstRoot,Bt,m,k,Y,q,map_add,map_mul,map_one,map_ofNat]
+  linear_combination h
+
+/-- Turn the natural truncated rank into the exact signed graph expression;
+the inequality q≥F is explicit and follows from the separate positive-C step. -/
+theorem rank_representation (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hFq : v 1+1≤q p v) :
+    ι (rank p v) =
+      (ι (v 2+1)+(ι (q p v)-ι (v 1+1))*ι (v 0*(p 0:V)))*
+        (ι (q p v)*ι (q p v)-1)+ι (v 0)*(ι (p 2:V)+ι (p 3:V)*ι (q p v)) := by
+  have hq1 : 1≤q p v := by simp [q]
+  have hq2 : 1≤q p v*q p v := one_le_mul hq1 hq1
+  have ht1 : ι (q p v-1)=ι (q p v)-1 := by simpa only [map_one] using (P72Root.ι_tsub hq1)
+  have htF : ι (q p v-(v 1+1))=ι (q p v)-ι (v 1+1) := P72Root.ι_tsub hFq
+  have ht2 : ι (q p v*q p v-1)=ι (q p v)*ι (q p v)-1 := by
+    simpa only [map_mul,map_one] using (P72Root.ι_tsub hq2)
+  simp only [rank,map_add,map_mul,ht1,htF,ht2,map_one]
+  simp only [q,map_add,map_mul,map_one]
+  ring
+
+/-- The actual gamma-zero main residual yields the signed pair equation used
+by the fact-level gamma client. Positive C is represented by the hFq premise. -/
+theorem main_ring_norm_at_zero (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v)
+    (hFq : v 1+1≤q p v) (hg : v 12=0) :
+    (ι (mainP p v)-ι (mainN p v))*(ι (mainP p v)-ι (mainN p v)) =
+      ι (U p v)*ι (U p v)*(1+ι (delta p v)*(ι (c p v)*ι (c p v))) := by
+  have h := (ModelDifferenceRing.internalZero_iff _ _).mp
+    (all_residuals_zero _ v hz 1)
+  have hrank := rank_representation p v hFq
+  simp [Residue90ResidualsDraft.residuals, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    P72Root.cast_port, hg,map_add,map_mul,map_one,map_ofNat] at h
+  simp only [mainP,mainN,map_add,map_mul,map_one,map_ofNat,hrank]
+  simp only [U,delta,H,a,c,k,Y,q,map_add,map_mul,map_one,map_ofNat]
+  linear_combination h
+end DiophantineConsistency.Residue90GraphNormsDraft
+#print axioms DiophantineConsistency.Residue90GraphNormsDraft.all_residuals_zero
+#print axioms DiophantineConsistency.Residue90GraphNormsDraft.first_ring_norm
+#print axioms DiophantineConsistency.Residue90GraphNormsDraft.rank_representation
+#print axioms DiophantineConsistency.Residue90GraphNormsDraft.main_ring_norm_at_zero

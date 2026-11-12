@@ -1,0 +1,47 @@
+import AuxRootBounds
+import AuxRootBridge
+
+/-! Source-only client of two unelaborated research providers. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.AuxOffsetFactsDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ModelDifferenceRing AuxRootBoundsModelDraft AuxRootModelDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The two strict bounds follow from the strong norm and the explicit
+multiple, with no assumption that z, y, or the offset is positive. -/
+theorem aux_strict_bounds (c i Delta f t z Q : DiffRing V)
+    (hc : 1<c) (hi : 1≤i) (hDelta : 0<Delta)
+    (hDeltaSmall : Delta<c*c*c)
+    (hstrong : (i*c*c)*(i*c*c)+Delta=Delta*(f*f))
+    (he : z+c=f*f*t) (hQ : Q=(i*c*c)*(i*c*c)) :
+    1<Q ∧ 1<z*z := by
+  have hc0 : 0<c := lt_trans (by norm_num) hc
+  have hf := strong_f_square_large c i Delta f hc0 hi hDelta hDeltaSmall hstrong
+  exact ⟨strong_Q_gt_one c i Q hc hi hQ, signed_square_gt_one c f t z hc hf he⟩
+
+/-- A direct auxiliary root represented by a model natural yields a strictly
+positive natural offset; no positive-root premise is assumed. -/
+theorem positive_offset_of_direct (z Q : DiffRing V) (y : V)
+    (hQ : 1<Q) (hz : 1<z*z) (haux : directAux z Q (ι y)=0) :
+    ∃ u : V, 0<u ∧ z+ι u=ι y := by
+  have hsq := square_gt_of_aux z Q (ι y) hQ hz haux
+  have hypos : (0 : DiffRing V)<ι y := by
+    by_contra hn
+    have hy0 : (ι y : DiffRing V)=0 := le_antisymm (le_of_not_gt hn) (ι_nonneg y)
+    have hbad : z*z<0 := by simpa only [hy0,mul_zero] using hsq
+    exact (not_lt_of_ge (le_of_lt hz)) (lt_trans hbad (by norm_num))
+  have hzy : z<ι y := above_of_positive z (ι y) hypos hsq
+  have hpos : (0 : DiffRing V)<ι y-z := sub_pos.mpr hzy
+  obtain ⟨u,hu⟩ := (nonneg_iff).mp (le_of_lt hpos)
+  have hupos : 0<u := by
+    apply (ι_lt_ι (a := (0:V)) (b := u)).mp
+    simpa only [map_zero,← hu] using hpos
+  refine ⟨u,hupos,?_⟩
+  rw [← hu]
+  ring
+
+end DiophantineConsistency.AuxOffsetFactsDraft
