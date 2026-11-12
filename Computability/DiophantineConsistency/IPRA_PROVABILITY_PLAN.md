@@ -7855,6 +7855,10 @@ The independently source-reviewed [natural-80 J-positivity draft](research/ordin
 proposes deriving `J > 0` from an 80 zero and represented positive `K0`,
 without assuming positive beta or gamma. It and its dependencies have not
 been elaborated.
+The independently source-reviewed [80-to-partial-74 bridge](research/ordinary14-natural80-partial74-bridge-draft/README.md)
+proposes transporting zeros at a valuation that keeps J, f, r, y and gamma
+unchanged and increments the other inputs. Its ring/model source remains
+unelaborated and does not itself prove gamma positivity or an iPRA endpoint.
 The independently source-reviewed [natural-81 Lean transcription](research/ordinary14-natural-forcedj81-lean-draft/README.md)
 records its literal graph and product shape. Its source correspondence is
 checked externally; Lean semantics and endpoint equivalence remain open.
