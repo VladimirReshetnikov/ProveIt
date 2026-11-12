@@ -7875,6 +7875,9 @@ The independently source-reviewed [79 zero-w main norm draft](research/ordinary1
 proposes deriving the literal main square norm and a signed quotient in an
 arbitrary relevant model. The later divisibility contradiction and all Lean
 elaboration, provider and endpoint checks remain open.
+The independently source-reviewed [79 zero-w root cut](research/ordinary14-natural79-zero-w-root-cut-draft/README.md)
+proposes deriving signed divisibility `(4Y+3) ∣ 3q²` from that norm. The
+natural-model reflection, size contradiction and Lean elaboration remain open.
 The independently source-reviewed [79-to-80 w-shift draft](research/ordinary14-natural79-wshift-model-draft/README.md)
 proposes related-valuation zero maps, conditional on w positivity at every
 79 zero. It remains unelaborated and does not discharge that premise.
