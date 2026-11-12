@@ -1,0 +1,17 @@
+--- reference/control_seven.py
++++ code/control.py
+@@ -86,10 +86,10 @@
+             return ['d', b]
+         case ['tr', a, p, q]:
+             term(a, n + 1)
+-            e = infer(p, g, n)
+-            f = infer(q, g, n)
+-            require(e[0] == f[0] == '=' and f[1] == sub(a, e[1]))
+-            return ['=', f[2], sub(a, e[2])]
++            _, s, t = infer(p, g, n)
++            _, b, r = infer(q, g, n)
++            require(b == sub(a, s))
++            return ['=', r, sub(a, t)]
+         case _:
+             raise ValueError('Invalid proof')
+ 

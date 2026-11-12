@@ -5,7 +5,7 @@ complete presentation of a theory bi-interpretable with full first-order
 intuitionistic primitive recursive arithmetic (iPRA), and the Lean
 formalization of the most concise of them.
 
-- [`Research/`](Research/) holds forty-nine delivered packages, one directory
+- [`Research/`](Research/) holds fifty delivered packages, one directory
   each. They are written mathematics with executable Python proof checkers;
   none of them claims a proof-assistant verification.
 - `Lean/` is the formalization (see [Lean formalization](#lean-formalization)).
@@ -123,6 +123,16 @@ by progress as primitive, and proves that the derivable sequents are the same
   side `I(0, t; u.u)` is contracted. This is the proposal of
   [`zero_normal`](Research/zero_normal/); the normalization is part of the
   specification of the calculus.
+- *Six rules.* Reflexivity and one rule Eval can replace both computation
+  equations and transport. Eval infers `r = Φ(s, t, b)` from `s = t` and
+  `b = r`, where `Φ` is `t` if `b` is `s` or if `b` is `I(0, s; u.h)`, and
+  `h[t/u]` if `b` is `I(S c, a; u.h)` and `s` is `I(c, a; u.h)`. With QE, DE
+  and the single introduction this is a calculus of six rules, `EPrf`, on the
+  unchanged terms and formulas with ordinary substitution, and it derives the
+  same sequents (`eprf_iff_nprf`). The computation equations are Eval on two
+  reflexivities; transport in a template `h` is one iteration of `h`. This is
+  the calculus of
+  [`computational_equality`](Research/computational_equality/).
 - *Other forms of the source restriction.* For transport in an equation
   template with an uncrossed conclusion, the same restriction needs an
   equation induction and a singleton test, though no logical rule
@@ -191,6 +201,7 @@ for separate coordinates, they are listed separately. Each package's own
 | [`validated_core`](Research/validated_core/) | One recursive validator shared between raw-tree typing and the public grammar, for the unchanged rule basis | fully validated Eq/Q/D checker 897 bytes against a matched 1049; compact envelope 256 tokens, 278 AST nodes, 521 bytes (different programs) |
 | [`validated_presentation`](Research/validated_presentation/) | The whole certificate is typed by one test on its printed form, so the public syntax validator loses its separate raw-type pass; the proof kernel is unchanged | fully validated Eq/Q/D checker 870 bytes against 897, 383 tokens against 401 |
 | [`checked_refinement`](Research/checked_refinement/) | Three smaller implementations of the existing presentations; stated to contain no new axiom deletion | guarded public-goal checker 921 bytes against 1201; native Eq/D public checker 788 against 803; compact guarded 520 against 521 |
+| [`computational_equality`](Research/computational_equality/) | Six rules on the unchanged language, with no normalization: Hyp, Refl, Eval, QE, DE, DI. Eval merges equality with one computation: from `s = t` and `b = r` infer `r = Φ(s, t, b)`, where `Φ` is `t` if `b` is `s` or `b` is `I(0, s; u.h)`, and `h[t/u]` if `b` is `I(S c, a; u.h)` and `s` is `I(c, a; u.h)`. Both computation equations and all congruence are derived | matched checker 3039 bytes against 3121, 959 tokens against 1008 |
 | [`zero_normal`](Research/zero_normal/) | Terms with no iterator whose counter is the literal `0`; substitution rebuilds terms with `I(0, a; u.h)` replaced by `a`, so the zero computation rule is deleted. With the single introduction and one-term transport: six rules. Ships a compiled Lean module for the normalization layer | matched strict tagged checkers, 8 and 7 rules: 3322 and 3272 bytes |
 | [`diagonal_guard`](Research/diagonal_guard/) | One introduction whose mode is chosen by a guard that substitution preserves and reflects: progress exactly when the matrix is literally `I(y, y; u.h) = I(y, y; v.k)`, cases otherwise. Seven rules on the full formula language with the original readings | matched typed checker 3244 bytes against 3382 for eight rules and 3205 for the witness rule |
 | [`template_free`](Research/template_free/) | Equality with no supplied template: from `s = t` and `u = v` infer `v = R(u)`, where `R` replaces every free occurrence of `s` in `u` by `t` in one pass. Seven rules; congruence in a chosen context is recovered through an oversized computation marker | strict tagged checker, as stated |
@@ -281,6 +292,10 @@ sources, three checksum ledgers and five build logs. The delivered module
 `Research/zero_normal/formal/ZeroNormalization.lean` compiled unchanged and
 is `Lean/ConciseIPRA/ZeroNormalization.lean`.
 
+`computational_equality` arrived later the same day and was filed on arrival;
+four frozen copies of this repository's Lean sources and one build log are
+not filed.
+
 ## Lean formalization
 
 The Lake library `ConciseIPRA` (root workspace; sources under
@@ -319,6 +334,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | uncrossed one-term transport | `uprf_iff_nprf : UPrf Γ A ↔ NPrf Γ A` | from `s = t` and `h(s) = r` infer `h(t) = r`: the crossing is not essential when sources are unrestricted |
 | one introduction rule | `wprf_iff_nprf : WPrf Γ A ↔ NPrf Γ A` | the seven-rule calculus with the single, syntax-directed introduction derives the same sequents |
 | seven rules | `mprf_iff_nprf`, `mprf_iff_iprf : MPrf Γ A ↔ IPrf Γ A` | one-term transport at sources other than the literal `0` and the single introduction together derive the sequents of the reports' calculus |
+| six rules | `eprf_iff_nprf : EPrf Γ A ↔ NPrf Γ A`, `eprf_iff_iprf` | Hyp, Refl, Eval, QE, DE and the single DI: one rule for equality and computation, no computation axiom and no template |
 | one computation rule | `nzprf_iff_nprf : NZPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`, `nzprf_iff_pra` | the kernel without the zero computation rule, on zero-normal terms with normalizing substitution, derives the normal form of every kernel sequent and nothing else |
 | | `NZPrf.normal`, `nzprf_iff_nprf_of_normal` | it derives only zero-normal formulas from zero-normal hypotheses, and on those sequents it agrees with the kernel |
 | crossed transport | `rprf_iff_nprf : RPrf Γ A ↔ NPrf Γ A`, `reversal_iff_pra` | root-reversing transport and QE with nonzero sources; equality recovered without induction |
@@ -332,7 +348,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | | `native_roundTrip`, `pra_native_roundTrip` | both composites through iPRA are the identity up to equivalence |
 | | `native_inconsistent_iff` | `NPrf [] (0 = 1)` iff iPRA proves `⊥` |
 
-The main chain (every module except the six kernel comparisons,
+The main chain (every module except the seven kernel comparisons,
 `ZeroNormalization`, `NativeZeroNormal` and `TeqClosure`) is 5,630
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
@@ -361,7 +377,7 @@ no `native_decide`.
 | zero-normal syntax | `ZeroNormalization`, `NativeZeroNormal` | contraction of iterators with a literal-zero counter, hereditary substitution, and the equivalence of a formula with its normal form (delivered); the kernel without the zero computation rule, `NZPrf` |
 | closures in `T_eq` | `TeqClosure` | decidability of quantifier-free formulas; the criterion for agreement of the conditional and the progressive closure |
 | native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, interderivability over a context, Leibniz and transport in every template, equation induction; selector and gate formulas |
-| kernel comparison | `NativeInherited`, `NativeOneContext`, `NativeOneIntro`, `NativeMinimal`, `NativeZeroSource`, `NativeReversal` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf`; no literal-zero transport sources, `OPrf`, generic over the class `OKernel`, and the uncrossed rule, `UPrf`; one introduction rule, `WPrf`, generic over the class `WKernel`; both together, `MPrf`; the source restriction for uncrossed transport in an equation template, `ZPrf`, generic over the class `ZKernel`; root-reversing transport and QE, `RPrf` |
+| kernel comparison | `NativeInherited`, `NativeOneContext`, `NativeOneIntro`, `NativeMinimal`, `NativeEval`, `NativeZeroSource`, `NativeReversal` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf`; no literal-zero transport sources, `OPrf`, generic over the class `OKernel`, and the uncrossed rule, `UPrf`; six rules with Eval, `EPrf`; one introduction rule, `WPrf`, generic over the class `WKernel`; both together, `MPrf`; the source restriction for uncrossed transport in an equation template, `ZPrf`, generic over the class `ZKernel`; root-reversing transport and QE, `RPrf` |
 | native logic | `NativeLogic` | `⊥`, `→`, `∧`, `∨`, `∃`, `∀` as native macros with all their natural deduction rules |
 | native ≡ `T_eq` ≡ iPRA | `NativeTranslate`, `NativeComposite`, `NativeRoundTrip`, `NativeBiInterpretation` | translation of derivations, both round trips, the composite with `biInterp` |
 
@@ -386,6 +402,7 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `compact_update` | Its checker results concern Python programs. Its closure criterion is proved in `T_eq` for every quantifier-free formula: `Teq.closure_iff_progress`, with `Teq.closure_of_progress` and the decidability lemma `Teq.qfDec` (`TeqClosure`). The variant after existential binding is `Teq.ex_closure_iff_progress`. |
 | `uniform_progress` | Not formalized. Its calculus changes the reading of `Q` at literal equations, so it needs its own soundness proof, its own structural rules and both formula translations with their round trips. |
 | `validated_core`, `validated_presentation`, `checked_refinement` | Their results concern Python programs; the rule basis is unchanged. |
+| `computational_equality` | Proved: its six-rule calculus is `EPrf`, with `eprf_iff_nprf` and `eprf_iff_iprf` (`NativeEval`). The three cases of Eval are three constructors. |
 | `zero_normal` | Its normalization layer is adopted as `ZeroNormalization`: the delivered module compiled unchanged. On top of it `NativeZeroNormal` proves the deletion of the zero computation rule for the kernel (`nzprf_iff_nprf`, `NZPrf.normal`, `nzprf_iff_pra`), with the kernel's two introductions and unrestricted sources. The six-rule form with the single introduction is not formalized. |
 | `diagonal_guard`, `template_free`, `target_closure` | Not formalized. Each is a further calculus on the native formula language: a substitution-stable guard for the single introduction; replacement of all occurrences in place of a template; a progressive closure with a target. |
 | `initializer_equality`, `scope_kernel` | Not formalized: the first is stated on the canonical recursor syntax; the second concerns Python programs, and its research notes are a model and an unfinished argument. |

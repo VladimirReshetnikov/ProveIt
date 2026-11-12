@@ -1,0 +1,41 @@
+--- code/control.py
++++ code/checker.py
+@@ -56,15 +56,9 @@
+         case ['hyp', i]:
+             require(type(i) is int and 0 <= i < len(g))
+             return g[i]
+-        case ['zero', a, h]:
++        case ['refl', a]:
+             term(a, n)
+-            term(h, n + 1)
+-            return ['=', ['i', ['z'], a, h], a]
+-        case ['succ', c, a, h]:
+-            term(c, n)
+-            term(a, n)
+-            term(h, n + 1)
+-            return ['=', ['i', ['s', c], a, h], sub(h, ['i', c, a, h])]
++            return ['=', a, a]
+         case ['qe', t, p, q]:
+             term(t, n)
+             a = infer(p, g, n)
+@@ -84,12 +78,16 @@
+             h = a if a[0] == '=' and t == ['z'] else shift(sub(a, ['z']))
+             require(infer(p, [h] + [shift(x) for x in g], n + 1) == sub(a, ['s', ['v', 0]], 0))
+             return ['d', b]
+-        case ['tr', a, p, q]:
+-            term(a, n + 1)
++        case ['ev', p, q]:
+             _, s, t = infer(p, g, n)
+             _, b, r = infer(q, g, n)
+-            require(b == sub(a, s))
+-            return ['=', r, sub(a, t)]
++            if b != s:
++                _, c, a, h = b
++                if c != ['z']:
++                    require(c[0] == 's')
++                    a, t = ['i', c[1], a, h], sub(h, t)
++                require(a == s)
++            return ['=', r, t]
+         case _:
+             raise ValueError('Invalid proof')
+ 

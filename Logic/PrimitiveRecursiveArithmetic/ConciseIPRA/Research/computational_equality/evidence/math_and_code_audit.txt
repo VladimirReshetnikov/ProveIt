@@ -1,0 +1,145 @@
+Independent review of the predecessor-state evaluation calculus
+==============================================================
+
+Review scope: the proposed raw six-rule calculus and code/checker.py.
+This is an independent assistant review, not external peer review or a
+proof-assistant verification.
+
+Conclusion
+----------
+The evaluation rule is sound for the ordinary scalar arithmetic reading.
+Reflexivity and this rule recover both raw iterator equations and all
+numerical-template transport. Replacing I0, IS, Tr by Refl, Eval therefore
+preserves every native sequent. Numerical terms, formulas, the four logical
+rules, and the numerical interpretation are unchanged. The new equality
+subsystem is stable under numerical substitution without normalization or
+a numeral-zero shortcut.
+
+This establishes a six-rule presentation on the old raw syntax. It does not
+establish absolute minimality or a global compact-checker record.
+
+Rule audited
+------------
+Given s=t and b=r, conclude r=rho(s,t,b), where:
+  b=s                              : rho=t;
+  b=I(0,a;u.h), s=a                 : rho=t;
+  b=I(Sn,a;u.h), s=I(n,a;u.h)       : rho=h[t/u].
+All other shapes are rejected. The source s is unrestricted. The body h
+binds its state variable u; substitution is capture avoiding. The rule has
+two proof arguments and no separately supplied term context.
+
+Soundness
+---------
+The first case is common-left equality cancellation. In the second case,
+I0 proves b=a and the major premise says a=t. In the third case, IS proves
+b=h(I(n,a;h)); the major premise identifies the predecessor state with t,
+so ordinary congruence gives b=h(t). In every case b=r turns b=rho into
+the crossed conclusion r=rho. These arguments use only rules already
+derivable in the old native calculus.
+
+Recovery of the old equality subsystem
+--------------------------------------
+No logical rule and no induction occurs in this derivation.
+
+1. Eval with b=s gives common-left cancellation: from s=t and s=r infer r=t.
+2. Symmetry: use major s=s and minor s=t to obtain t=s.
+3. Transitivity: from s=t obtain t=s; use major t=u and minor t=s to
+   obtain s=u.
+4. I0: use major a=a and minor I(0,a;h)=I(0,a;h).
+5. IS: use major I(n,a;h)=I(n,a;h) and minor
+   I(Sn,a;h)=I(Sn,a;h). This gives the exact raw IS equation for every n,
+   including literal zero. Each computation needs two Refl leaves and
+   one Eval node.
+6. Arbitrary congruence: given s=t and a fixed numerical context f(u), put
+       c=I(0,s;u.f(u)),    b=I(1,s;u.f(u)).
+   I0 gives c=s. Eval of c=s against b=b gives b=f(s). The zero Eval
+   case applied directly to s=t and c=c gives c=t. Eval of c=t against
+   b=f(s) gives f(s)=f(t).
+7. Crossed transport: given additionally f(s)=r, common-left cancellation
+   of f(s)=f(t) against f(s)=r gives r=f(t).
+
+Thus all three old arithmetic/equality rules I0, IS, Tr are admissible.
+Conversely, Refl and each Eval case are admissible in the old system.
+The four logical rules are copied. Structural induction on finite proof
+trees proves identity-language equivalence in both directions, for every
+well-scoped context and conclusion. The existing full iPRA bi-interpretation
+therefore transfers with the same numerical domains, equality, and both
+identity numerical composite graphs.
+
+In proof-tree nodes, the displayed congruence adds exactly eight nodes
+to the supplied proof of s=t. Crossed transport adds one further Eval
+and includes its supplied minor proof once. Thus each old Tr node is
+replaced by nine nodes and each computation node by three. The complete
+old-to-new translation has at most 9N nodes for an N-node old proof.
+This is a node count, not a serialized-byte, formula-size, or runtime bound.
+
+Substitution
+------------
+The evaluation cases use raw term constructors. Substitution preserves
+both I(0,a;h) and I(Sn,a;h), and sends their source terms to a' and
+I(n',a';h'), respectively. The usual substitution-composition law sends
+h[t/u] to h'[t'/u]. The source cannot collapse syntactically to the whole
+iterator: in the zero case it is a proper subterm; in the successor case
+the two counters are n' and S(n'), which cannot be the same finite term.
+Therefore an Eval instance translates to an Eval instance in the same
+branch, even when substitution turns a neutral n into literal zero.
+
+This claim is specifically about Refl and Eval. The inherited witness-
+sensitive DI still needs the already known admissibility argument: a
+substitution can turn its witness into literal zero. Full substitution
+admissibility follows from identity-language equivalence with the old
+native calculus; no stronger rule-by-rule claim about DI is made.
+
+Implementation invariant
+------------------------
+For validated JSON input, infer(p,g,n), when it returns, always returns a
+well-scoped native formula with n ambient variables.
+
+Hyp and Refl preserve this immediately. QE instantiates a scoped Q matrix
+and checks its zero instance. DE validates its result before opening the
+fresh witness and requires the local result to equal its one-variable
+shift. Its opened Q matrix has n+1 ambient variables because the source D
+matrix originally has n+2 variables. DI validates its two-variable matrix
+and its witness, instantiates x underneath the y binder, and compares its
+branch with the successor instance that preserves the fresh y slot.
+
+In Eval, both premises are equations by the invariant. The common-left
+case returns an already scoped term. The zero case checks the initializer.
+The successor case checks the exact predecessor iterator and substitutes
+a scoped term into an already scoped iterator body. Computing that
+substitution before checking the predecessor equality does not permit a
+bad certificate: the explicit require still rejects it, and the operation
+has no side effects on retained syntax.
+
+The code deliberately omits redundant equation and iterator tag tests.
+Exactly an equation formula has length three; Q and D have length two.
+Consequently successful triple destructuring of a proved formula can only
+be an equation. Exactly an iterator term has length four; z has length
+one, while v and S have length two. Successful four-way destructuring of
+a scoped term can only be an iterator. This relies on validated JSON
+syntax and the invariant, not on arbitrary unvalidated Python containers.
+
+The validator explicitly rejects Boolean values where integer variable
+counts, variable indices, or hypothesis indices are required. Every gate
+uses require and explicit exceptions; rejection does not depend on Python
+assert statements and is not disabled by the -O interpreter option.
+
+Independent regression suite
+----------------------------
+code/adversarial.py exposes a list named cases and a run() function. Its
+51 JSON-round-tripped cases all passed against code/checker.py during
+this audit. The suite covers:
+  * each evaluation case, including exact raw IS at zero;
+  * retained predecessor states at a variable counter;
+  * rejection of a neutral counter, wrong predecessor counter or body,
+    incorrect initializer, and the superseded initializer-only shortcut;
+  * nested iterator scopes and capture avoidance;
+  * QE antecedent matching;
+  * valid DE freshness and rejection of witness escape;
+  * DI progress, cases, and eigenvariable/witness checks;
+  * malformed formula and proof tags and arities;
+  * Boolean/int confusion, out-of-scope variables, malformed envelopes,
+    and missing or extra certificate fields.
+
+These are implementation regressions. Finite successful tests do not
+replace the universal mathematical proof or certify the Python interpreter.
