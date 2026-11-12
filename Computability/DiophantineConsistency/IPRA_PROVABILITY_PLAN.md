@@ -7890,6 +7890,10 @@ The independently source-reviewed [natural-79 endpoint draft](research/ordinary1
 proposes composing the w-positive transfer with native, standard and
 equality-only iPRA clients at the symbolic ports. Its declarations and five
 axiom reports remain unelaborated and unexecuted; this is not a checked proof.
+The bounded [79-specific signature audit](reviews/ordinary14-natural79-signature-audit-independent/README.md)
+finds no definite mismatch in its selected unit, norm, divisibility and
+transport interfaces. It is source inspection only, not Lean elaboration or
+evidence of instance, tactic or provider correctness.
 The independently source-reviewed [combined natural-79 overlay](research/ordinary14-natural79-combined-slim-overlay/README.md)
 contains 195 inert drafts, including the prior source alternatives. It does
 not establish actual Lean resolution, provider closure or endpoint elaboration.
