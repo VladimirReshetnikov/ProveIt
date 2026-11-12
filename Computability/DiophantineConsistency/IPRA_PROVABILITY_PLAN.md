@@ -7495,6 +7495,11 @@ The source-reviewed [87 main-balance](research/ordinary14-87-main-balance-condit
 and [q³ size](research/ordinary14-87-qcube-size-draft/README.md) drafts propose
 the direct-Y carrier balance and its size premise from the 87 zero. They remain
 unelaborated and do not establish exact indices or an iPRA endpoint.
+The source-reviewed [87 q⁴-rank](research/ordinary14-87-q4-rank-draft/README.md),
+[rank-window](research/ordinary14-87-rank-window-draft/README.md), and
+[first-index congruence](research/ordinary14-87-first-index-modq4-draft/README.md)
+drafts propose the corresponding calibration inputs from the 87 zero without
+assuming `q ∣ X`. They remain unelaborated and do not identify exact indices.
 The source-reviewed [87 strong-norm draft](research/ordinary14-87-strong-norm-draft/README.md)
 proposes the direct-Y strong identity from the 87 graph's own zero. It remains
 unelaborated and does not establish the rest of the calibration.
