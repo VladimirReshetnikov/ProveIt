@@ -285,6 +285,18 @@ by progress as primitive, and proves that the derivable sequents are the same
   `vcprf_iff_nprf` is proved by translating the six-rule calculus `F6Prf`
   under an arbitrary renaming of the source, with a context invariant that is
   a membership and not a derivability (`Cl.Inv`, `F6Prf.toVC`).
+- *Seven uniform rules, with another reading of `Q`.* `RPrf` is the calculus
+  of [`uniform_progress`](Research/uniform_progress/): hypothesis, the two
+  computations, transport in an equation template, and QE, DE, DI whose mode
+  is read off the root of the matrix alone. No rule looks at a witness, so
+  substitution in derivations is a direct induction. The price is the meaning
+  of `Q`: at a literal equation it is progressivity, `∀y (E(y) → E(S y))`.
+  So `RPrf` is not the kernel on the same formulas; it is equivalent to it
+  through a translation. `NFm.emb` pads every equation below a binder to a
+  compound formula, and `rprf_emb_iff` proves that the kernel derives a
+  sequent exactly when `RPrf` derives its translation. Equation induction
+  and transport in arbitrary formulas are derived inside `RPrf`
+  (`RPrf.eqInd`, `RPrf.leibniz`).
 - *One introduction rule, stable under substitution.* The single
   introduction above tests the witness for being the literal `0`, and a
   substitution can turn a witness into `0`. If instead the fresh variable is
@@ -712,6 +724,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | three rule families with an inferred witness | `ocprf_iff_nprf : OCPrf (UCl.refl :: Γ.map fun X => UCl.asm (NFm.unQ X).full) (NFm.unQ A).full ↔ NPrf Γ A`, `ocprf_iff_nprf_of_qfree`, `ocprf_iff_pra`, `OCPrf.qfree`, `OCPrf.packet`, `NFm.owit_rn`, `NFm.not_otest_tz`, `NPrf.toOC` | Use, Intro and Open at the witness read off two rows; no transport, no supplied term, no `Q` |
 | three rule families with a deterministic discharge | `xcprf_iff_nprf : XCPrf (UCl.refl :: Γ.map fun X => UCl.asm (NFm.unQ X).full) (NFm.unQ A).full ↔ NPrf Γ A`, `xcprf_iff_nprf_of_qfree`, `xcprf_iff_pra`, `XCPrf.qfree`, `XCPrf.dE`, `XCPrf.packet`, `XCPrf.toWD`, `F6Prf.toXC` | Use, Intro and Discharge: the clause is opened at the fresh variable and the selected witness is substituted in the exported formula |
 | substitution for the newest variable | `v0prf_iff_nprf : V0Prf (Γ.map NFm.full) A.full ↔ NPrf Γ A` | the rule of `VSPrf` restricted to the variable of index `0` |
+| seven uniform rules, `Q` at an equation read as progressivity | `rprf_emb_iff : RPrf (Γ.map NFm.emb) A.emb ↔ NPrf Γ A`, `rprf_emb_iff_pra`, `RPrf.toNPrf`, `rprf_consistent`, `NPrf.toR`, `NEquiv.rd_emb`, `RPrf.eqInd`, `RPrf.leibniz`, `RPrf.subst` | QE, DE and DI read their mode off the matrix root; equivalence with the kernel through the padding translation |
 | five rules with clauses and substitution for the newest variable | `vcprf_iff_nprf : VCPrf (Γ.map fun X => Cl.asm (NFm.unQ X).full) (NFm.unQ A).full ↔ NPrf Γ A`, `vcprf_iff_nprf_of_qfree`, `vcprf_iff_pra`, `VCPrf.qfree`, `VCPrf.packet`, `Cl.rep`, `Cl.Inv`, `F6Prf.toVC` | Refl, Sub, Use, Elim and Intro with clause contexts; no `Q`, no transport in a template |
 | five rules on zero-normal terms | `zcprf_iff_nprf : ZCPrf (Γ.map fun X => Cl.asm (fnf (unQ X))) (fnf (unQ A)) ↔ NPrf Γ A`, `zcprf_iff_nprf_of_qfree`, `CPrf.toZC`, `Conv` | Refl, one Eval scheme, Use, Elim and Intro on zero-normal terms with clause contexts |
 | four schemes on zero-normal terms | `zvprf_iff_zcprf`, `zvprf_iff_nprf` | Use, Step, Open, Close with uniform clauses and the fixed reflexivity clause |
