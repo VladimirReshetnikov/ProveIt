@@ -7738,6 +7738,9 @@ The source-reviewed [75/74 model wrapper](research/ordinary14-75-74-model-equiva
 proposes both positive-zero directions under its stated model and port
 assumptions. It and its dependencies remain unelaborated, and it is not yet
 an iPRA theorem.
+The source-reviewed [75/74 model-discreteness draft](research/ordinary14-75-74-model-discrete-draft/README.md)
+proposes the specialization using an existing discreteness argument. It is
+unelaborated, and the sampled `DiscreteOrderedRingFacts` provider is absent.
 The source-reviewed [75/74 ring client](research/ordinary14-75-74-ring-client-draft/README.md)
 and [positive map draft](research/ordinary14-75-74-positive-map-draft/README.md)
 propose the forward and conditional reverse valuation updates. They are
