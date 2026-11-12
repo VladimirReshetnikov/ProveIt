@@ -1265,6 +1265,12 @@ proposes native, standard and equality-only derivability declarations. Its
 [static import inventory](research/ordinary14-root78-endpoint-import-inventory/README.md)
 records draft headers and directly named qualified sources only. Neither is
 a Lean, provider/axiom, physical-byte or internal proof-existence check.
+The independently reviewed [provider-readiness survey](reviews/ordinary14-root78-provider-readiness-independent/README.md)
+records a bounded 76-source frontier and differing retained objects for one
+shared module; it does not certify that provider roots may be mixed. A
+source-reviewed [slim port-bounds helper](research/ordinary14-compact-port-bounds-slim-draft/README.md)
+copies the needed bounds lemma with narrower direct imports, but is not yet
+elaborated or substituted into the endpoint chain.
 The reviewed [parent-to-88 first-cut draft](research/ordinary14-parent-to-88-first-cut-draft/README.md)
 is now tracked as a dependency of the proposed parent witness; it remains
 unelaborated like the rest of that source chain.
