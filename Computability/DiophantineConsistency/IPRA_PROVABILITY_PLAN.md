@@ -79,6 +79,10 @@ The subsequent [eleven-refactor coherent run](research/current14-coherent-extens
 passed 239 stages before the disk-floor guard stopped it before stage 240.
 Its [independent stop audit](reviews/current14-coherent-extension-refactor-retry05-failure-independent/README.md)
 confirms that the endpoint and postflight did not run.
+The independently reviewed [Carrier65 resumption audit](research/current14-carrier65-retry05-resumption-audit/README.md)
+records that this runner requires a fresh output and has no resume path. It
+distinguishes the earlier checked normalized-quote standard-iPRA endpoint from
+the incomplete coherent replay and the external raw TeX/PDF association.
 
 The [65-gate graph-to-expression theorem](research/current14-carrier65-dag-expression-retry-check/README.md)
 now checks an explicit live circuit for the maintained Lean expression, with
