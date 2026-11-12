@@ -1296,6 +1296,9 @@ graph or composed into a positive witness.
 The source-reviewed [13-parent scaled-norm binding](research/ordinary13-parent-scaled-norms-draft/README.md)
 proposes the same-valuation bridge to existing adaptive norms. It remains
 unelaborated and does not itself construct the reverse positive witness.
+The source-reviewed [parent transport/quotient draft](research/ordinary13-parent-transport-quotients-draft/README.md)
+proposes the positive transport and `q³` quotient from that same zero. It
+remains unelaborated and is not yet a 14-variable witness map.
 The source-reviewed [88 guard draft](research/ordinary14-88-guard-draft/README.md)
 proposes the quotient-guard equality from that graph's own zero. It remains
 unelaborated and is one premise of the parent witness construction.
