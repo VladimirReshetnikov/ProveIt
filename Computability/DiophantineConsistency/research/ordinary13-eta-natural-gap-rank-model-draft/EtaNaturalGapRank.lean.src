@@ -1,0 +1,145 @@
+import EtaNaturalXPositive
+import Residue90CompactPortBounds
+import Residue90GraphNorms
+import Mathlib.Tactic.Linarith
+
+/-! Conditional source-only positive-C and compact-rank bindings for the exact
+eta-natural prototype. All graph and provider proofs remain unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.EtaNaturalGapRankDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open EtaNaturalUnitGraphDraft EtaNaturalXPositiveDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def X (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := q p v*v 6
+def m (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := X p v*Y p v*Y p v
+def Bt (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  (ι (q p v)-ι (v 1+1)-ι (v 2+1))*(ι (X p v)+ι (p 1:V))-ι (v 1+1)
+def firstRoot (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  ι (v 0*(p 0:V))*(ι (m p v*k v)+ι (k v)+ι (v 8)-ι (k v)*Bt p v)-Bt p v
+
+/-- Actual graph first carrier and its natural polynomial norm. No positive
+eta, r or X is assumed. -/
+theorem first_norm (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (p j:ℤ))).output v) :
+    firstRoot p v*firstRoot p v=ι (v 0*(p 0:V))*ι (v 0*(p 0:V))*
+      (1+ι (m p v)*(ι (m p v)+1)*ι (k v)*ι (k v)) := by
+  let pp : Fin 4 → ℤ := fun j => (p j:ℤ)
+  let e : Fin 13 → DiffRing V := fun j => ι (v j)
+  have hnorms := EtaNaturalUnitBridgeDraft.signed_norms pp v hz
+  obtain ⟨hfirst,_,_,_⟩ := hnorms
+  simp [graph,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,
+    e,pp,P72Root.cast_port,firstRoot,Bt,m,X,Y,q,k,
+    map_add,map_mul,map_one,map_ofNat] at hfirst ⊢
+  linear_combination hfirst
+
+/-- The exact first norm excludes C≤0 even when k=1 and r=0. -/
+theorem gap_of_J (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (p j:ℤ))).output v)
+    (hJ : 0<v 0) (hbeta : 0<(p 0:V)) :
+    (v 1+1)+(v 2+1)<q p v := by
+  by_contra hn
+  have hqle : q p v≤(v 1+1)+(v 2+1) := le_of_not_gt hn
+  have hc : (ι (q p v) : DiffRing V)-ι (v 1+1)-ι (v 2+1)≤0 := by
+    have hh : (ι (q p v) : DiffRing V)≤ι (v 1+1)+ι (v 2+1) := by
+      simpa only [map_add] using (ι_le_ι.mpr hqle)
+    linarith
+  have hxk : (0:DiffRing V)≤ι (X p v)+ι (p 1:V) :=
+    add_nonneg (ι_nonneg (X p v)) (ι_nonneg (p 1:V))
+  have hcp := mul_nonpos_of_nonpos_of_nonneg hc hxk
+  have hF : (0:DiffRing V)<ι (v 1+1) := by
+    have hh := lt_of_le_of_lt (Arithmetic.zero_le (v 1)) (lt_add_one (v 1))
+    simpa only [map_zero] using (ι_lt_ι.mpr hh)
+  have hBt : Bt p v<0 := by dsimp only [Bt]; linarith
+  have hb : 0<v 0*(p 0:V) := mul_pos hJ hbeta
+  have hbR : (0:DiffRing V)<ι (v 0*(p 0:V)) := by
+    simpa only [map_zero] using (ι_lt_ι.mpr hb)
+  have hk1 : 1≤k v := by dsimp [k]; simp
+  have hkR : (1:DiffRing V)≤ι (k v) := by
+    simpa only [map_one] using (ι_le_ι.mpr hk1)
+  have hk0 : (0:DiffRing V)≤ι (k v) := ι_nonneg (k v)
+  have hell : (0:DiffRing V)≤ι (m p v*k v) := ι_nonneg (m p v*k v)
+  have hr : (0:DiffRing V)≤ι (v 8) := ι_nonneg (v 8)
+  have hneg : (0:DiffRing V)< -Bt p v := neg_pos.mpr hBt
+  have hkt : (0:DiffRing V)≤ι (k v)*(-Bt p v) := mul_nonneg hk0 (le_of_lt hneg)
+  have hinner : (0:DiffRing V)≤ι (v 8)-ι (k v)*Bt p v := by nlinarith
+  have hmul : (0:DiffRing V)≤ι (v 0*(p 0:V))*(ι (v 8)-ι (k v)*Bt p v) :=
+    mul_nonneg (le_of_lt hbR) hinner
+  have hrootshape : firstRoot p v =
+      ι (v 0*(p 0:V))*(ι (m p v*k v)+ι (k v))+
+      ι (v 0*(p 0:V))*(ι (v 8)-ι (k v)*Bt p v)-Bt p v := by
+    dsimp only [firstRoot]; ring
+  have hrootgt : ι (v 0*(p 0:V))*(ι (m p v*k v)+ι (k v))<firstRoot p v := by
+    rw [hrootshape]; linarith
+  have hbase0 : (0:DiffRing V)≤ι (v 0*(p 0:V))*(ι (m p v*k v)+ι (k v)) :=
+    mul_nonneg (le_of_lt hbR) (add_nonneg hell hk0)
+  have hsq := mul_self_lt_mul_self hbase0 hrootgt
+  have hkk : (1:DiffRing V)≤ι (k v)*ι (k v) := one_le_mul hkR hkR
+  have hellk : (0:DiffRing V)≤ι (m p v*k v)*ι (k v) := mul_nonneg hell hk0
+  have hidentity :
+      (ι (m p v*k v)+ι (k v))*(ι (m p v*k v)+ι (k v))-
+        (1+ι (m p v)*(ι (m p v)+1)*ι (k v)*ι (k v)) =
+      ι (m p v*k v)*ι (k v)+ι (k v)*ι (k v)-1 := by
+    simp only [map_mul]; ring
+  have hsmall : 1+ι (m p v)*(ι (m p v)+1)*ι (k v)*ι (k v)≤
+      (ι (m p v*k v)+ι (k v))*(ι (m p v*k v)+ι (k v)) := by linarith
+  have hb2 : (0:DiffRing V)≤ι (v 0*(p 0:V))*ι (v 0*(p 0:V)) :=
+    mul_nonneg (le_of_lt hbR) (le_of_lt hbR)
+  have hscaled := mul_le_mul_of_nonneg_left hsmall hb2
+  have hnorm := first_norm p v hz
+  simp only [map_add,map_mul,map_one] at hnorm
+  nlinarith [hsq,hscaled,hnorm]
+
+/-- J positivity is supplied by the prototype's own first-factor client. -/
+theorem gap (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (p j:ℤ))).output v)
+    (hbeta : 0<(p 0:V)) : (v 1+1)+(v 2+1)<q p v :=
+  gap_of_J p v hz (EtaNaturalJPositiveDraft.J_positive p v hz) hbeta
+
+/-- The same natural rank definition as the existing rank-window theorem.
+Its connection to the literal signed graph rank is a separate conclusion. -/
+def rank (p : Fin 4 → ℕ) (v : Fin 13 → V) : V :=
+  ((q p v-1)*(q p v-(v 1+1))+(v 2+1))*(q p v*q p v-1)+
+    ((p 2:V)+q p v*(p 3:V))*v 0
+
+/-- At C>0 the exact graph signed rank equals this natural rank. -/
+theorem rank_representation (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hFq : v 1+1≤q p v) : ι (rank p v)=rankRing p v := by
+  have hh := Residue90GraphNormsDraft.rank_representation p v (by simpa only [q] using hFq)
+  simpa only [rank,rankRing,q,Residue90GraphNormsDraft.rank,
+    Residue90GraphNormsDraft.q] using hh
+
+/-- Compact mask tuple with arbitrary natural K. The graph supplies J and C;
+the tuple supplies beta and both mask bounds. No external K/PDF binding. -/
+theorem compact_rank_window (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (Residue90CompactPortBoundsDraft.ports K j:ℤ))).output v) :
+    let p := Residue90CompactPortBoundsDraft.ports K
+    rank p v+(q p v)^3+q p v+1≤(q p v)^4 := by
+  let p := Residue90CompactPortBoundsDraft.ports K
+  have hJ := EtaNaturalJPositiveDraft.J_positive p v hz
+  obtain ⟨hb,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) hJ
+  have hp0 : (p 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  have hbeta : 0<(p 0:V) := by simpa only [hp0] using hb
+  have hgap := gap p v hz hbeta
+  have hF : 0<v 1+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have ha : 0<v 2+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hqeq : q p v=(CompactFixedBeta.betaNat:V)*v 0+1 := by simp only [q,hp0]; ring
+  have hh := Residue90CompactPortBoundsDraft.compact_rank_window (v 0) (v 1+1) (v 2+1)
+    (q p v) hJ hF ha hqeq hgap
+  have hp2 : (p 2:V)=(CompactConcreteIncrement.mask:V) := rfl
+  have hp3 : (p 3:V)=(CompactFixedBeta.betaNat:V)+(CompactSymbolicPorts.highNat:V) := by
+    change ((CompactFixedBeta.betaNat+CompactSymbolicPorts.highNat:ℕ):V)=_
+    exact Nat.cast_add _ _
+  simpa only [rank,hp2,hp3,pow_two] using hh
+end DiophantineConsistency.EtaNaturalGapRankDraft
+#print axioms DiophantineConsistency.EtaNaturalGapRankDraft.first_norm
+#print axioms DiophantineConsistency.EtaNaturalGapRankDraft.gap
+#print axioms DiophantineConsistency.EtaNaturalGapRankDraft.rank_representation
+#print axioms DiophantineConsistency.EtaNaturalGapRankDraft.compact_rank_window
