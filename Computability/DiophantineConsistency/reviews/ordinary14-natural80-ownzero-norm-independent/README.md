@@ -1,0 +1,15 @@
+# Independent review: natural-80 own-zero and conditional norm draft
+
+The [source draft](../../research/ordinary14-natural80-ownzero-norm-draft/README.md) has a consistent fact-level route from an 80 zero to the proposed 74 factor units, and a separate conditional signed-pair lemma for the main norm. The inspected statements do not assume gamma positive. Both source receipts reproduce, but none of these statements or their imported drafts has been elaborated in Lean.
+
+`units_of_80_zero` explicitly takes an `IΣ₁` model, representations of ports 0 and 1 by model naturals `beta,K`, strict positivity of both, and an 80 `InternalZero`. The partial 74 valuation leaves slots 0, 3, 8, 11 and 12 (J, f, r, y and gamma) unchanged and adds one at the other slots. The proposed J-positivity client uses the represented positive K and the 80 zero, with no positive-beta or gamma premise; the partial shift makes the 74 w and s slots positive. The proposed 80-to-74 zero comparison has no positivity premise. The fact-level 74 extractor then requires positive beta and positive J, w and s, plus the three residue exclusions supplied by the separate residue draft. Its output is the displayed first Pell equation and the four signed factor-unit equations. Neither its signature nor the cited first-factor and residue signatures requires every coordinate positive. Arbitrary signed integer MC/MF ports are permitted at this stage; rank bounds are not supplied.
+
+`main_norm_of_unit` is a separate **conditional** statement. It takes the 74 main unit, an explicit equivalence between the literal Dstar signed pair and `(P,N)`, and the explicit assertion that the literal right-hand expression evaluates to `(rhs,0)`. The source's main pattern is `1+(Dstar²−mainRhs)`. The cited `unit_square_norm` turns its unit equation into `magnitude(pairEval Dstar)²+(pairEval mainRhs).2=(pairEval mainRhs).1`; the stated RHS pair then removes the second component, while the cited `magnitude_equivalent` transports the square to `magnitude(P,N)²=rhs`. This argument does not itself establish either pair binding or the magnitude norm required by direct main orientation for the actual graph.
+
+In particular, the future Dstar-pair binding must justify the needed model representations of MC and MF and the natural-subtraction bounds, such as those for `q−F` and `q²−1`; the guard gap and rank hypotheses remain separate. The independent checker pins the source and eight relevant interfaces, inspects the actual hypotheses and five direct slots, and checks the named factor and signed-pair connections. It is not an exhaustive transitive dependency or tactic audit. All instances, rewrites, pair equalities and both unexecuted `#print axioms` commands require Lean checking; provider coherence, iPRA derivability and physical coefficient/PDF binding remain open.
+
+Run from the repository root:
+
+```sh
+python3 -I -S -B Computability/DiophantineConsistency/reviews/ordinary14-natural80-ownzero-norm-independent/check.py | cmp - Computability/DiophantineConsistency/reviews/ordinary14-natural80-ownzero-norm-independent/result.json
+```

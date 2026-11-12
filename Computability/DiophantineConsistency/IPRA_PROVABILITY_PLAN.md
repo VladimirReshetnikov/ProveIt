@@ -7863,6 +7863,10 @@ The independently source-reviewed [80-to-partial-74 bridge](research/ordinary14-
 proposes transporting zeros at a valuation that keeps J, f, r, y and gamma
 unchanged and increments the other inputs. Its ring/model source remains
 unelaborated and does not itself prove gamma positivity or an iPRA endpoint.
+The independently source-reviewed [80 own-zero norm draft](research/ordinary14-natural80-ownzero-norm-draft/README.md)
+proposes first-Pell and unit extraction without positive gamma. Its main-norm
+conversion explicitly assumes two literal pair bindings; those bindings,
+Lean elaboration and the iPRA endpoint remain open.
 The independently source-reviewed [natural-81 Lean transcription](research/ordinary14-natural-forcedj81-lean-draft/README.md)
 records its literal graph and product shape. Its source correspondence is
 checked externally; Lean semantics and endpoint equivalence remain open.
