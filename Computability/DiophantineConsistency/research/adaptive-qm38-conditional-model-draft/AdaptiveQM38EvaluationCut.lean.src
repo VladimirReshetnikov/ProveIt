@@ -1,0 +1,55 @@
+import AdaptiveQM38ConditionalTransfer
+import AdaptiveQM38ParentSlots
+
+/-! Source-only reduction of both graph zero maps to one explicit ring
+identity. No theorem or axiom report in this file has been checked. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+noncomputable section
+namespace DiophantineConsistency.AdaptiveQM38EvaluationCutDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open AdaptiveQM38ConditionalTransferDraft AdaptiveQM38ParentSlotsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Restore after projection when the two old stored products are correct. -/
+theorem extend_project_of_slots (v : Fin 40 → V)
+    (h29 : v 29 = v 17*(v 17+(v 9+v 10)))
+    (h33 : v 33 = v 26*v 22) : extend (project v) = v := by
+  funext i
+  fin_cases i <;> simp [extend, project, h29, h33]
+
+/-- The single remaining graph-specific goal: after restoring the two product
+coordinates, the two literal expressions have equal difference-ring values.
+This is a premise, not a proved identity. -/
+def EvaluationCut : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁],
+    ∀ v : Fin 38 → V,
+      parent.evalRing (fun i => ι (extend v i)) =
+        child.evalRing (fun i => ι (v i))
+
+/-- The two zero-preservation premises follow from that ring identity and
+the two parent residuals. This reduction itself remains unelaborated. -/
+theorem obligations_of_evaluation_cut (hcut : EvaluationCut) :
+    ZeroPreservationObligations := by
+  intro V _ _
+  constructor
+  · intro v _ hz
+    have h29 := slot29_of_zero CurrentWindowCarry2011.ports v hz
+    have h33 := slot33_of_zero CurrentWindowCarry2011.ports v hz
+    have hlift : extend (project v) = v := extend_project_of_slots v h29 h33
+    have hp : InternalZero parent (extend (project v)) := by
+      simpa only [hlift] using hz
+    apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [← hcut V (project v)]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp hp
+  · intro v _ hz
+    apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [hcut V v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp hz
+
+end DiophantineConsistency.AdaptiveQM38EvaluationCutDraft
+#print axioms DiophantineConsistency.AdaptiveQM38EvaluationCutDraft.extend_project_of_slots
+#print axioms DiophantineConsistency.AdaptiveQM38EvaluationCutDraft.obligations_of_evaluation_cut
