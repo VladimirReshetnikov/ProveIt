@@ -1,0 +1,147 @@
+import AQ17Forced105Arithmetic
+import AQ17Forced105ResidualZeros
+import AQ17Factored94ConditionalTransfer
+
+/-! Modular six-coordinate zero forcing and no-zero transfer. The extraction
+of the arithmetic forcing premises and the graph evaluation identity remain
+explicit hypotheses. This source has not been Lean checked. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+noncomputable section
+namespace DiophantineConsistency.AQ17Forced105ConditionalTransferDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation ModelDifferenceRing
+
+/-- The six coordinates that are not shifted in the 105-row graph. -/
+def Forced (i : Fin 17) : Prop := i=3 ∨ i=5 ∨ i=11 ∨ i=14 ∨ i=15 ∨ i=16
+instance (i : Fin 17) : Decidable (Forced i) := by unfold Forced; infer_instance
+
+def mixed {V : Type*} [Add V] [One V] (v : Fin 17 → V) (i : Fin 17) : V :=
+  if Forced i then v i else v i+1
+
+def lower {V : Type*} [Sub V] (v : Fin 17 → V) (i : Fin 17) : V :=
+  if Forced i then v i else v i-1
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem mixed_pos (v : Fin 17 → V) (h : ∀ i, Forced i → 0<v i) :
+    ∀ i, 0<mixed v i := by
+  intro i
+  unfold mixed
+  split
+  · exact h i ‹Forced i›
+  · exact lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+
+theorem mixed_lower (v : Fin 17 → V) (h : ∀ i, 0<v i) : mixed (lower v)=v := by
+  funext i
+  by_cases hi : Forced i
+  · simp [mixed,lower,hi]
+  · simp [mixed,lower,hi,tsub_add_cancel_of_le (pos_iff_one_le.mp (h i))]
+
+def child (p : Fin 4 → ℤ) : Expr (Fin 17) := AQ17Forced105LiteralDraft.literal p
+def parent (p : Fin 4 → ℤ) : Expr (Fin 17) := AQ17Factored94LiteralDraft.literal p
+
+/-- Missing exact graph/evaluation identification, quantified for arbitrary
+signed ports. The external graph checker is not a proof of this statement. -/
+def ZeroEquivalence : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+    (p : Fin 4 → ℤ) (v : Fin 17 → V),
+    InternalZero (child p) v ↔ InternalZero (parent p) (mixed v)
+
+/-- Missing graph-to-arithmetic extraction for all six unshifted coordinates.
+The separate arithmetic lemmas establish consequences of its exact cut
+hypotheses; they do not themselves discharge this graph statement. -/
+def SixForced : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+    (p : Fin 4 → ℤ) (v : Fin 17 → V),
+    InternalZero (child p) v → ∀ i, Forced i → 0<v i
+
+/-- A concrete sufficient arithmetic cut, stated entirely in a single model.
+The graph-to-cut extraction is not supplied by the external checker. -/
+def ForcingCut (v : Fin 17 → V) : Prop :=
+  ∃ n0 n1 q delta c : V,
+    v 14*v 14=1+n0 ∧ v 15*v 15=1+n1 ∧
+    4≤q ∧ 0<delta ∧ 0<c ∧
+    ι q=(ι delta)*((ι (v 3))*(ι (v 3))-1) ∧
+    v 11*v 11+q*(v 16*v 16)=1+q*(v 11*v 11) ∧
+    (v 11=0 → q*(v 16*v 16)=1) ∧
+    ι (v 16)=(ι (v 3))*(ι (v 3))*((ι (v 5))*(ι c)-ι (v 13))-ι c
+
+def ForcingCutExtraction : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+    (p : Fin 4 → ℤ) (v : Fin 17 → V), InternalZero (child p) v → ForcingCut v
+
+/-- The cut is strong enough to force every one of the six coordinates. -/
+theorem sixForced_of_cut (h : ForcingCutExtraction) : SixForced := by
+  intro V _ _ p v hz i hi
+  obtain ⟨n0,n1,q,delta,c,hn0,hn1,hq,hd,hc,hqeq,haux,hy0,htime⟩ := h V p v hz
+  have hqpos : 0<q := lt_of_lt_of_le (by simp : (0:V)<4) hq
+  have hqone : 1≤q := le_trans (by simp : (1:V)≤4) hq
+  rcases hi with rfl | rfl | rfl | rfl | rfl | rfl
+  · exact AQ17Forced105ArithmeticDraft.f_pos (v 3) delta q hd hqpos hqeq
+  · exact AQ17Forced105ArithmeticDraft.time_pos (v 3) (v 5) (v 16) (v 13) c hc htime
+  · exact AQ17Forced105ArithmeticDraft.y_pos_of_zero_product (v 11) (v 16) q hq hy0
+  · exact AQ17Forced105ArithmeticDraft.positive_of_square_one_add (v 14) n0 hn0
+  · exact AQ17Forced105ArithmeticDraft.positive_of_square_one_add (v 15) n1 hn1
+  · exact AQ17Forced105ArithmeticDraft.ordinate_pos (v 11) (v 16) q hqone haux
+
+theorem no_zero_iff (p : Fin 4 → ℤ)
+    (he : ∀ v : Fin 17 → V, InternalZero (child p) v ↔ InternalZero (parent p) (mixed v))
+    (hf : ∀ v : Fin 17 → V, InternalZero (child p) v → ∀ i, Forced i → 0<v i) :
+    (∀ v : Fin 17 → V, ¬InternalZero (child p) v) ↔
+      ∀ v : Fin 17 → V, ¬InternalZero (positiveShift (parent p)) v := by
+  constructor
+  · intro h v hz
+    let old : Fin 17 → V := fun i => v i+1
+    have hp : ∀ i,0<old i := fun i => lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+    have hzero : InternalZero (parent p) old := (internalZero_positiveShift _ _).mp hz
+    have hlift : mixed (lower old)=old := mixed_lower old hp
+    apply h (lower old)
+    apply (he _).mpr
+    simpa only [hlift] using hzero
+  · intro h v hz
+    have hv := mixed_pos v (hf v hz)
+    let shifted : Fin 17 → V := fun i => mixed v i-1
+    have hs : (fun i => shifted i+1)=mixed v := by
+      funext i
+      exact tsub_add_cancel_of_le (pos_iff_one_le.mp (hv i))
+    apply h shifted
+    rw [internalZero_positiveShift,hs]
+    exact (he v).mp hz
+
+theorem sameNoZero (he : ZeroEquivalence) (hf : SixForced) :
+    SameNoZero (child CurrentWindowCarry2011.ports) (positiveShift (parent CurrentWindowCarry2011.ports)) := by
+  intro V _ _
+  exact no_zero_iff CurrentWindowCarry2011.ports (he V _) (hf V _)
+
+theorem polynomialBridge (h22 : AQ22Quotient110ConditionalTransferDraft.GraphZeroObligations)
+    (h20 : AQ20Substituted104ConditionalTransferDraft.GraphZeroObligations)
+    (h17 : AQ17Factored94ConditionalTransferDraft.GraphZeroObligations)
+    (he : ZeroEquivalence) (hf : SixForced) :
+    PolynomialBridge (child CurrentWindowCarry2011.ports) :=
+  HAExpressionNoZeroEquiv.bridge _ _ (sameNoZero he hf)
+    (AQ17Factored94ConditionalTransferDraft.polynomialBridge h22 h20 h17)
+
+theorem native_equivalence (h22 : AQ22Quotient110ConditionalTransferDraft.GraphZeroObligations)
+    (h20 : AQ20Substituted104ConditionalTransferDraft.GraphZeroObligations)
+    (h17 : AQ17Factored94ConditionalTransferDraft.GraphZeroObligations)
+    (he : ZeroEquivalence) (hf : SixForced) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (child CurrentWindowCarry2011.ports) 🡘
+      ∼mappedNativeRefutation embedding :=
+  IPRAExpressionNative.equivalence_of_bridge _ (polynomialBridge h22 h20 h17 he hf)
+
+theorem standard_equivalence (h22 : AQ22Quotient110ConditionalTransferDraft.GraphZeroObligations)
+    (h20 : AQ20Substituted104ConditionalTransferDraft.GraphZeroObligations)
+    (h17 : AQ17Factored94ConditionalTransferDraft.GraphZeroObligations)
+    (he : ZeroEquivalence) (hf : SixForced) : IPRAStandardTheory.standardTheory ⊢
+    IPRAExpressionNative.nativeNoZero (child CurrentWindowCarry2011.ports) 🡘
+      ∼mappedNativeRefutation embedding :=
+  (IPRAStandardTheory.provable_iff _).2 (native_equivalence h22 h20 h17 he hf)
+end DiophantineConsistency.AQ17Forced105ConditionalTransferDraft
+#print axioms DiophantineConsistency.AQ17Forced105ConditionalTransferDraft.sixForced_of_cut
+#print axioms DiophantineConsistency.AQ17Forced105ConditionalTransferDraft.no_zero_iff
+#print axioms DiophantineConsistency.AQ17Forced105ConditionalTransferDraft.native_equivalence
+#print axioms DiophantineConsistency.AQ17Forced105ConditionalTransferDraft.standard_equivalence
