@@ -7330,6 +7330,11 @@ reduces the direct-parent form to 13 positive inputs and 84 operations at
 exact degree 56. Its positive-zero maps require only `β > 0` locally, with
 no sign condition on `K0`; the parent's consistency, Lean and file-binding
 limitations remain inherited.
+The reviewed [modified main carrier](research/ordinary13-qcube-main83/README.md)
+trades degree for another operation, giving 13 positive inputs and 83
+operations at exact degree 60. Its positive-zero equivalence at the actual
+ports uses the Mersenne-specific divisibility and cited calibration; no new
+Lean/iPRA or file-binding theorem is claimed.
 The reviewed [conditional sphere finalizer](research/ordinary13-freej88-conditional-sphere/README.md)
 gives a different 88-operation, degree-30 graph with the same positive zeros.
 It is an equal-metric search form, not a new Lean endpoint or improvement.
