@@ -1,0 +1,74 @@
+ACCEPTANCE PRESERVATION FOR THE 700-BYTE NATIVE CHECKER
+====================================================
+
+Control: sources/checked_refinement/code/checker_native.py
+Candidate: experiments/baseline_audit/native_exact.py
+Acceptance: normal exit with exactly ACCEPT followed by LF.
+Input: every JSON value accepted by Python's standard json decoder; ordinary
+finite-resource failures count as rejection, as for the control. Resource
+threshold equivalence on arbitrarily large inputs is not claimed.
+
+The proof kernel c and its substitution traversal i are unchanged. Changes
+are confined to the public-goal prefilter v and the rejection path.
+
+1. Boolean state.
+The call v(a) begins with d=0 instead of d=False. Every recursive call has
+d in {0,1}, and 0/1 have exactly the required truth values and arithmetic
+values. If d=0, the allowed list lengths are 1 or 2. Thus d or len(a)-1
+produces respectively 0 or 1. If d=1, short-circuiting keeps d=1. This agrees
+with d or len(a)==2 on every branch that reaches the recursive calls.
+
+2. List test.
+In the branch where type(a) is not int, a*0==[] is true exactly for JSON
+lists. It is false for strings, floats and booleans, and raises for JSON
+null or objects. The latter two outcomes reject, just as the old false
+list-type test did. No new object type reaches len(a) or child recursion.
+Membership in {1,2+d} agrees with membership in (1,2+d).
+
+3. Numerical prefilter.
+For an integer a >= 0,
+    a % 2 == (a > 1)
+is true exactly when a=0 or a>=3 is odd, which is the old predicate. For
+a<0, the new predicate additionally allows even negative integers. These
+are the only new goals that the candidate v can approve.
+
+They cannot be accepted by c. At the initial call k=0, every numerical
+leaf of an otherwise well-shaped public goal is visited by i at odd depth:
+D increases the depth by 4, an equation changes formula depth to numerical
+depth by 3, and the numerical constructors increase depth by 4 or 2.
+A negative leaf fails 0<=a<d, so its processing invokes i(c,d=3), with c
+the existing poison default. Multiplication of that function by zero raises
+TypeError. The initial i(goal) traverses the entire goal before context
+membership or proof instruction consumption, hence no certificate can
+bypass this rejection.
+
+4. Rejection path.
+If v(a) is true, c(a if v(a) else c) calls the unchanged c on a. If v(a)
+is false, it calls c on the function c, and its initial traversal raises
+TypeError as above. Thus replacing the explicit diagnostic ValueError
+with the existing poison does not change the accepted certificate language.
+Any exception raised by v also rejects in both versions.
+
+Consequently the two complete modules accept exactly the same certificates
+in the ideal finite-trace semantics, ignoring implementation resource-bound
+thresholds. The construction does not assert that v alone recognizes the
+same grammar: v is deliberately a prefilter whose negative-index exclusions
+are delegated to the already mandatory scope traversal.
+
+MEASUREMENTS (CPython 3.12.14, ast.unparse plus LF)
+Control:   358 significant tokens / 413 AST nodes / 788 bytes.
+Candidate: 347 significant tokens / 400 AST nodes / 700 bytes.
+
+The 88-byte decrease includes removal of a diagnostic string and its explicit
+raise path. The numeric prefilter change saves 14 bytes, 6 tokens and 7 AST
+nodes by itself. This is an implementation refinement of the inherited
+native calculus, not a new arithmetic axiom deletion or a global minimality
+claim. It does not beat the compact unvalidated envelope 256/278/516.
+
+FINITE CHECKS
+79 distinct cases, each compared under ordinary Python and python -O:
+158 paired comparisons, 44 accepting pairs, 0 mismatches. Cases include the
+18 inherited native fixtures, 21 compact zero-neutral fixtures, 39 targeted
+leaf/scope cases, and the used-fresh-parameter regression. See
+native_validation.json and test_native.py. These bounded checks supplement,
+and do not replace, the preservation argument above.

@@ -1,0 +1,174 @@
+# Independent audit: native validation phase from context emptiness
+
+## Files audited
+
+The files read for this audit are `root_lab/native666.py`,
+`root_lab/phase_native.py`, and `root_lab/strict651.py`. The last filename is
+historical and does **not** state its measured size.
+
+Their complete normalized CPython 3.12.14 measurements are:
+
+| Program | Significant tokens | AST nodes | UTF-8 bytes |
+| --- | ---: | ---: | ---: |
+| Explicit phase control (`native666.py`) | 342 | 391 | 666 |
+| Empty-context phase (`phase_native.py`) | 334 | 387 | 654 |
+| Empty-context phase, inverted branch (`strict651.py`) | 334 | 386 | 655 |
+
+The empty-context version saves 8 tokens, 4 AST nodes, and 12 normalized
+bytes relative to the matched control. The inverted version saves one
+additional AST node but costs one byte relative to the selected version.
+
+## Claim
+
+Apart from finite implementation resource limits, all three programs accept
+exactly the same complete JSON inputs, with the same exact success signal
+`ACCEPT\n`. This is stronger than equality of their canonical theorem sets.
+It preserves the public-goal syntax validation and the complete-certificate
+integer/list alphabet check. It does not change any inference rule.
+
+## 1. The front-end is unchanged
+
+All programs read JSON once, apply the identical
+`not str(p).strip('0123456789-[], ')` check, and obtain `p.pop` only when that
+check succeeds. They pop the same final goal and retain the same remaining
+instruction list. JSON booleans, strings, nulls, dictionaries, and floats do
+not pass the displayed alphabet check; successfully admitted certificate data
+are finite trees of exact integers and lists. A scalar top-level value has no
+usable `pop` method and rejects in both programs. Unused certificate prefixes
+are treated identically, including their alphabet validation.
+
+The claim is about acceptance, not identical traceback text.
+
+## 2. The initial strict traversals are identical
+
+The old entry is `c([0], goal, v=1)`. The new entry is `c([], goal)`.
+During their initial calls to `i(goal)`, the three strict tests agree:
+
+| Old expression | New expression at empty `g` |
+| --- | --- |
+| `not v or shape` | `g or shape` |
+| `not v or coordinate` | `g or coordinate` |
+| `d % 2 or v` | `d % 2 or not g` |
+
+The old numerical value of `v` is 1. Both traversals therefore visit the
+same children at the same weighted depths and either return identical trees
+or reject. The function-valued default image is a rejecting sentinel in
+both: attempting to process it as the image of a missing hole raises at
+`a * 0`. No function object can be admitted as a successful tree leaf.
+
+Every successful strict traversal at formula depth zero returns a list with
+one or two children. In particular, it cannot return the scalar zero. To see
+this directly, arrays must pass the strict arity test; integers at the root
+cannot satisfy `0 <= a < 0`, and the strict missing-image branch rejects.
+For all successfully validated children, the strict traversal is the identity
+on their integer/list values. Thus the old initial membership test against
+`[0]` cannot succeed. The new initial membership test against `[]` likewise
+cannot succeed.
+
+This last fact is essential: merely replacing `[0]` by `[]` in a permissive
+checker would not establish exact acceptance equivalence.
+
+## 3. Both closures switch to the permissive phase at the same point
+
+After initial validation and the failed hypothesis test, the old program
+executes `v = 0`. The new one executes `g += [0]`. The lambda `i` captures
+these local variables and observes their updated values on every subsequent
+invocation in that call.
+
+For the old `v=0` and a nonempty new `g`, the shape and coordinate restrictions
+are bypassed in both, while the missing-image expression becomes `d % 2` in
+both. Although `g or condition` returns a list rather than Boolean `True`, it
+occurs only as the condition of a conditional expression. Its truth value is
+the only thing used; no context list becomes an output of `i`.
+
+Every recursive call of the new program receives a nonempty context. It
+therefore begins in the same permissive phase as an old recursive call with
+the default `v=0`. The first strict public-goal traversal is the only call
+made while a context is empty.
+
+## 4. Duplicate neutral entries do not alter hypothesis tests
+
+After initial validation, every old context contains the scalar zero. New
+contexts may contain extra zero entries. Define zero-padding equivalence by
+allowing insertion and deletion of duplicate scalar-zero entries while
+retaining at least one zero. For finite integer/list trees, equivalent
+contexts give exactly the same answers to `x in g`.
+
+The implementation detail matters: `g += [0]` is an **in-place** list
+extension. A recursive major-premise proof receives its caller's context
+object and may append zeros to that shared object. This is harmless, but must
+not be described as an immutable-context operation. The only mutation of a
+shared context inserts zero. A derived hypothesis is inserted using
+`g + [hypothesis]`, which creates a fresh list. Thus non-neutral hypotheses
+from a premise proof cannot leak into its caller's context.
+
+The context is inspected only for membership and truthiness. Neither its
+length, its order, nor an index into it influences scope allocation or rule
+selection. Extra zero entries preserve all operations that inspect it.
+
+## 5. Simulation of the proof-checking executions
+
+Relate an old permissive checking state and a new checking state when they
+have the same goal, scope integer, and unread instruction stream, and their
+nonempty contexts differ only by zero padding.
+
+Their `i` traversals compute identical values. Their hypothesis tests have
+the same result. If the test succeeds, both return `None`. If it fails, the
+new program inserts a redundant zero and both pop the same four-field packet.
+All subsequent computations are textually identical, except for the recursive
+checker name/signature and the redundant zeros.
+
+The recursive major-premise call starts from related states and returns the
+same value `None`, consumes the same packet prefix, or rejects in both.
+Any shared-context changes made by the new call are zero padding only. The
+remaining formula opening, major comparison, root-mode test, and arithmetic
+update `k := ~-k` consequently have identical inputs and occur in the same
+order. In particular, fresh-parameter allocation is unchanged. Appending the
+same newly opened hypothesis to the related contexts produces related
+continuation states.
+
+Induction on every finite terminating execution tree proves that normal
+termination and all consumed instructions correspond. The same local
+simulation covers rejecting finite executions up to their exception. A finite
+JSON input cannot support infinitely many non-hypothesis steps: each consumes
+a packet. A divergent opening on a malformed tree, if present, is common to
+both because the opener and its arguments agree in the permissive phase.
+
+The default image is the corresponding function object in the two programs;
+its rejecting-sentinel behavior is identical despite the removed `v`
+parameter. The image is never invoked as a checker by the opener.
+
+## 6. Inverting the final branch
+
+The third program replaces
+
+```
+if i(a) in g:
+    return
+REST
+```
+
+by
+
+```
+if i(a) not in g:
+    REST
+```
+
+There are no further statements in the function. Membership and
+non-membership have complementary outcomes after the same evaluation. The
+first form's bare return and the second form's fall-through both return
+`None`. If the test raises, both reject; if it fails, the same `REST` runs.
+This is an exact control-flow refactoring. It changes neither the phase
+argument above nor the neutral-context invariant.
+
+## Boundaries
+
+This proof audits execution equivalence of the displayed ordinary Python
+programs. It is not a Lean/Rocq proof of Python semantics. It inherits, rather
+than reproves, the mathematical adequacy of the matched native checker. No
+claim of an improved axiom basis, absolute minimality, or dominance over the
+separate compact coordinate minima follows from these source-size savings.
+The argument excludes resource-dependent differences such as running out of
+memory because one version retains more duplicate zeros; sufficient resources
+for each finite proof are part of the ordinary checker comparison contract.

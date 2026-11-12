@@ -1,0 +1,103 @@
+EXACT EAGER-COMPREHENSION REFINEMENT OF THE 495-BYTE CHECKER
+
+Pinned source: VladimirReshetnikov/ProveIt at
+25fa7ee05ea2e4347d1fdef8498c4c644c31f1ca, incoming archive
+Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/incoming/
+ipra_three_field_2026-11-12.zip, code/checker_bytes.py.
+
+Candidate: bytes_truthlist.py.
+CPython 3.12.14 normalized full-module measurements:
+  Control:   267 significant tokens, 299 AST nodes, 495 UTF-8 bytes.
+  Candidate: 271 significant tokens, 304 AST nodes, 488 UTF-8 bytes.
+
+This changes the return-value representation and Python scheduling syntax,
+not the arithmetic/logical calculus, formula language, certificate format,
+scope convention, theorem set, imports, or public-input contract. It combines
+the prior truth-valued-checking idea (Research/inferred_major/code/PROOFS.txt,
+section 2) with the newer context-first/eager-selection/remainder profile.
+It is not an arithmetic axiom deletion or an all-coordinate improvement.
+
+CONTROL SKELETON
+  if i(a) in g:
+      return
+  m,s,u,t = q()
+  c(context_expression, goal_expression, k)
+
+CANDIDATE SKELETON
+  return i(a) in g or [
+      c(context_expression, goal_expression, k)
+      for m,s,u,t in [q()]
+  ]
+
+The only change inside context_expression is:
+  control_check(g,m,k) or m*3
+becomes
+  candidate_check(g,m,k) and m*3.
+
+The comprehension is an eager list, never a generator. Its iterable has one
+element, namely the next packet. The packet is unpacked exactly once into
+exactly four variables. An incorrect iterable cardinality raises in both
+programs. Hypothesis success short-circuits before q(), exactly as before.
+Every successful candidate call returns either True, at the hypothesis case,
+or a one-element list, at the non-hypothesis case. Hence it returns a truthy
+value in every successful finite execution. The control always returns None.
+
+TRACE CORRESPONDENCE THEOREM
+Under unbounded finite implementation resources, the programs have the same
+finite successful executions on finite JSON inputs: the same acceptance
+verdict, consumed packet suffix, goal/context/scope transitions, and primitive
+arithmetic calculations. Return values differ as just specified. Exceptions
+reject in both programs. No assertion statement is used.
+
+Proof by induction on the finite dynamic call tree:
+(1) The entry scope scan i(a), membership comparison and context g are
+    identical. When membership succeeds, both return without reading a packet;
+    the return values are respectively None and True.
+(2) Otherwise each calls q() once and unpacks the identical four fields.
+    The candidate's singleton list neither changes nor reorders those fields.
+(3) Evaluation of the context expression starts at the identical point, in
+    the same lexical c-frame. Its major subcall has identical arguments and
+    incoming proof-stream suffix. By induction its success consumes the same
+    suffix. The old None-or-m*3 and new truthy-and-m*3 both evaluate to exactly
+    m*3, including when m*3 is false. All subsequent disjuncts therefore make
+    the identical decision and produce the identical raw hypothesis.
+(4) Every remaining subexpression is unchanged. Python evaluates positional
+    arguments left to right, so context construction, the scope decrement,
+    the eager endpoint selection, and the continuation goal opening occur in
+    the same order. In particular, no scope check or major proof is omitted.
+(5) Walrus expressions a:=... and k:=... inside the comprehension result bind
+    the enclosing c-function, not the comprehension iteration scope. The
+    recursive opener lambda i therefore sees precisely the same updated k
+    cell as in the control. The only comprehension-local bindings are
+    m,s,u,t, all used wholly inside that result expression.
+(6) The final continuation calls have identical arguments and remaining
+    input. Induction gives the same successful continuation. The control
+    discards its None return; the candidate places its truthy return into one
+    list cell, preserving truthiness. This closes the induction.
+The same dependency-by-dependency argument also runs backwards from any
+successful candidate trace; success never arises from merely constructing
+an unevaluated thunk. Thus this is a bisimulation, not just a one-way rule
+soundness argument or a finite testing conjecture.
+
+The candidate can consume more memory and different stack depth because it
+retains nested return lists. No claim of identical resource exhaustion at a
+fixed Python limit is made. This is the same sufficient-resources convention
+used for completeness of the compared finite proof-checking algorithms.
+
+INVALID NEARBY VARIANT
+Replacing the singleton comprehension by a lambda-unpack expression is not
+an equivalent shortcut. Assignment expressions in a lambda bind that lambda's
+own locals. In the naive variant a and k are read before those locals are
+initialized, and defaults would still leave i closing over the old outer k.
+The 489-byte naive file is deliberately invalid and must not be delivered as
+a proposed checker. This lexical-scope distinction is essential to the proof.
+
+FINITE VERIFICATION
+264 isolated Python executions compared candidate/control on all byte/progress
+and byte/context fixtures from the pinned three-field archive, in normal and
+optimized modes, plus the explicit 17-packet future-scope counterexample from
+ipra_502_scope_audit_2026-11-12.zip. No mismatches occurred. Both sound programs
+reject the future-scope attack. Receipt: bytes_truthlist_validation.json.
+These checks support implementation confidence; the universal argument above
+is the reason the mathematical theory and its inherited bi-interpretation
+are unchanged.

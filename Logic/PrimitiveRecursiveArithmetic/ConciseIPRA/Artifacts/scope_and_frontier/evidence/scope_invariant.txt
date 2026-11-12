@@ -1,0 +1,136 @@
+Context-derived scope: an exact but larger implementation
+========================================================
+
+Source baseline
+---------------
+Repository: VladimirReshetnikov/ProveIt
+Commit: 36d37fc1071fe289371f6bcd7dcfa0eac593a5a6
+Archive: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/incoming/
+         ipra_verified_refinements_2026-11-12.zip
+Archive member: ipra_verified_refinements_2026-11-12/compact/checker.py
+The exact 492-byte normalized baseline is baseline492.py.
+
+The change
+----------
+The baseline passes a floor k to c(g,a,k). The alternative passes only g,a
+and initializes k = 1 - len(g) at every invocation. Both recursive calls
+omit the redundant k argument. The local decrement is retained, because
+scope validation has an old-scope phase and a new-scope phase.
+
+Theorem (call invariant)
+-----------------------
+At every invocation of the baseline from c([0],goal), the parameters obey
+
+                  k = 1 - len(g).
+
+Proof. At the root k=0 and len(g)=1. There are only two recursive calls.
+The major-premise call c(g,m,k) keeps both values unchanged. The continuation
+call is made with g' = g + [h] and k' = k - 1. Consequently
+
+        1 - len(g') = 1 - (len(g)+1) = k - 1 = k'.
+
+This induction is on call ancestry. Recursive calls do not mutate the
+caller context: list concatenation allocates a new list. Each function has
+its own local floor, so scope changes within a major proof do not modify
+the caller floor. No soundness or completeness property of iPRA is needed
+for this programming invariant. QED.
+
+Corollary (exact simulation)
+---------------------------
+At the entry to corresponding invocations the two programs have identical
+goals, contexts, packet streams, and local floors. Each executes the same
+opening function, branch construction, floor decrement, and continuation.
+Induction on a finite successful evaluation gives identical packet
+consumption and the same acceptance result. A finite failure has the same
+first semantic failing operation. Thus the accepted finite certificate
+traces are identical in the usual unbounded mathematical execution model.
+Both inherit the same guarded public-goal convention and the same raw
+auxiliary interpretation. This is an implementation simulation; the iPRA
+bi-interpretation is inherited from the unchanged public calculus.
+
+The two phases must be preserved
+-------------------------------
+Let the current context have n entries. Its old floor is 1-n. The initial
+goal scan, recursive major proof, successor-computation construction, and
+introduction-witness opening run with that floor. Only afterward does the
+baseline set k=-n. The new hypothesis and continuation then run with the
+new floor. The appended context has n+1 entries, exactly matching -n.
+
+Replacing every scope test by '-len(g) <= a < d' prematurely admits the
+not-yet-declared eigenparameter. Replacing every test by
+'-len(g) < a < d' fails to admit that parameter during the final opening.
+Neither one-phase substitution follows from the invariant. The supplied
+unsound_inclusive_floor.py is a diagnostic attempt with no correctness claim.
+Its outcomes on existing attack fixtures are recorded, not inferred.
+
+Concrete four-packet counterexample to the inclusive shortcut
+-----------------------------------------------------------
+The inherited fixture 005_arity_future_witness_capture.json is a four-packet
+certificate with the canonical guarded public goal
+
+             D_{x,y} (C(y,0,x) = C(y,0,y)),
+             C(v,a,b) := I(v,a;u.b).
+
+Its ordinary reading is
+
+  exists x ((C(0,0,x)=C(0,0,0)) ->
+                    forall y (C(y,0,x)=C(y,0,y))).
+
+The antecedent is 0=0. The y=1 and y=2 instances of the conclusion force
+x=1 and x=2, respectively. Therefore the public goal is false in the
+standard natural numbers (indeed iPRA proves its negation).
+
+The first executed packet proposes the witness S(z), where z is exactly
+the next eigenparameter, represented by -1. The correct old floor is 0,
+so the baseline and exact context-floor variant reject this witness before
+the parameter is introduced. The naive inclusive test uses floor -1 too
+early and admits it. The progressive hypothesis then becomes
+
+             C(z,0,S(z)) = C(z,0,z),
+
+while the successor conclusion is reflexive:
+
+             C(S(z),0,S(z)) = C(S(z),0,S(z)).
+
+The remaining three packets prove that reflexive conclusion by the
+inherited zero-computation and transport instructions. The naive program
+accepts. Both correct programs reject. The experiment also tested the
+separate seventeen-packet future_scope_attack.json; all three reject that
+one, so it is not a counterexample to this particular shortcut.
+
+This four-packet certificate is inherited, not newly discovered. Applying
+it to the new attempted context-length shortcut is the new diagnostic.
+
+Complexity and validation
+-------------------------
+CPython 3.12.14; genuine docstrings removed; ast.unparse plus one LF;
+significant tokens exclude encoding, comments, whitespace, and end markers.
+
+                      tokens   AST nodes   normalized bytes
+baseline492.py          267       298             492
+context_floor.py        267       303             500
+
+The variant deletes one inter-call state coordinate, but the source-level
+cost of reconstructing it is larger than passing it. It does not beat the
+current corpus minima and is not a mathematical simplification of iPRA.
+
+Run 'python3 verify.py'. The suite includes 42 distinct inherited JSON
+certificates, both normal and optimized Python, and all three programs
+(baseline, compact variant, readable variant), for 252 comparisons. The
+known seventeen-packet future-scope attack is included. Successful finite
+regression testing is not a substitute for the invariant proof above, nor
+is it a formal proof that the inherited Python checker implements iPRA.
+
+Related normalization obstacle
+------------------------------
+The compact arity codec puts a dummy protected slot in the counter and
+initializer of an iterator. An iterator body has one genuine state slot.
+Deleting a zero-iterator node under other binders therefore requires slot
+rebasing; returning its raw initializer array is not generally correct.
+For example, an outer state variable represented as coordinate 5 below
+the initializer's dummy slot must become coordinate 3 when that dummy
+slot is removed. Normalizing only closed exposed terms avoids this exact
+example but then requires its own adequacy and congruence argument. The
+existing slot-opening function only substitutes a free outer hole with
+an image closed at root term depth; its semantic-opening lemma does not
+give the required general rebasing operation for free.

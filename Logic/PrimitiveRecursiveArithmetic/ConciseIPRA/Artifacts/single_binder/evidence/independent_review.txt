@@ -1,0 +1,130 @@
+INDEPENDENT REVIEW OF THE TRUTH-VALUED COMPREHENSION REWRITE
+
+Reviewed files:
+  baseline: incoming_audit/extracted/ipra_three_field_2026-11-12/code/checker_bytes.py
+  candidate: checker_work/candidate_context_tuple.py
+
+Verdict: the candidate preserves the baseline's abstract successful
+executions and certificate consumption.  This is an implementation
+refactoring of the inherited checker, not a change of arithmetic or rules.
+The normal-return values differ intentionally and are irrelevant to the
+top-level ACCEPT verdict.  Ordinary finite-resource qualifications apply.
+
+1. RETURN-VALUE INVARIANT
+
+Every normally returning baseline c call returns None: either its early
+bare return is executed, or the one recursive continuation completes and
+the function reaches its end.  Every normally returning candidate c call
+returns a truthy built-in value: True if the goal is already in the
+context, and otherwise a list with exactly one element.
+
+The non-hypothesis comprehension iterates over the one-element list
+[q()].  It cannot return an empty list.  If consuming or unpacking the
+packet fails, or its recursive call fails, the comprehension does not
+return normally at all; the exception is not caught.
+
+Thus, after a successful recursive major-premise check,
+
+  baseline:  c(g,m,k) or m*3
+  candidate: c(g,m,k) and m*3
+
+both evaluate to exactly m*3.  If that recursive check does not return
+normally, neither expression proceeds to m*3.  No return value from c
+is inserted into a logical context or treated as a proved formula.
+
+2. CERTIFICATE CONSUMPTION AND UNPACKING
+
+Both functions first evaluate the same i(a) membership test in g.  On
+success neither consumes an instruction.  Otherwise the baseline executes
+m,s,u,t=q(), while the candidate executes the equivalent unpacking as the
+target of its one-iteration comprehension.  The q call happens once, before
+the body, and obtains the same final element of the shared JSON packet list.
+For supported JSON data, no custom iterator, comparison, or truth hook is
+introduced by the rewrite.  Standard malformed-length or noniterable
+packets fail at the corresponding unpacking operation.
+
+3. PRECISE EVALUATION ORDER AND SCOPE
+
+Python evaluates call arguments from left to right.  In both versions the
+entire new-context argument is evaluated before the new-goal argument.
+Within the context's new i(...) expression:
+
+  a. c(g,m,k) checks its major at the old k;
+  b. the arithmetic/introduction hypothesis is constructed at the old k;
+  c. if introduction is selected, (a := i(*a,t,2)) updates a at the old k;
+  d. bool(m or 3 % len(a)) is evaluated with that updated a;
+  e. (k := ~-k) decrements k;
+  f. the hypothesis-opening i call runs with its captured k now decremented;
+  g. only then is the second call argument, the successor goal, evaluated,
+     also with the decremented k and updated a;
+  h. the third call argument supplies that same decremented k.
+
+The walrus targets a and k in a comprehension bind the containing function
+scope, not an isolated comprehension-local scope.  In particular the lambda
+i captures the same k binding that step e updates.  The ordinary iteration
+variables m,s,u,t are comprehension-local, but no computation after the
+comprehension depends on their leakage into the containing function.
+
+4. TWO-DIRECTION EXECUTION PROOF
+
+Induct on the finite tree of normally returning c invocations, carrying the
+unconsumed packet list as part of the state.  The hypothesis cases have
+identical tests and unchanged packet state.  In a non-hypothesis case both
+versions consume the same packet, invoke their major-premise child with
+the same g,m,k, and by induction consume the same major proof.  The
+return-value invariant then makes their hypothesis expressions equal.
+The evaluation-order argument makes their continuation context, goal,
+scope, and remaining packet state equal.  Apply induction to that child.
+The baseline returns None and the candidate a singleton list, establishing
+both the execution correspondence and the return-value invariant.
+
+The argument works in both directions, hence establishes equivalence of
+normal termination on finite abstract executions.  Invalid ordinary data
+operations remain uncaught and do not reach the final print statement.
+The driver ignores the c return value and prints ACCEPT only after normal
+completion, so its successful verdicts agree.
+
+5. OPTIMIZATION AND RESOURCES
+
+Neither source uses assert, __debug__, or another check deleted by Python
+-O; the logical checks survive optimization.  The candidate allocates a
+one-element list per returning non-hypothesis call, and on Python versions
+before comprehension inlining it may also use additional interpreter
+frames.  Therefore the proof does not claim identical outcomes at a fixed
+memory/recursion/time limit, identical exception messages, or identical
+performance.  It is the usual abstract checker/certificate equivalence.
+Any delivered finite regression report must name these exact file hashes;
+the earlier byte_validation.json for a 499-byte experiment does not test
+this candidate.
+
+6. SEPARATE REVIEW OF THE MACRO POLYNOMIAL BOUND
+
+The formula selector M merges two unary D chains; it does not duplicate
+either input terminal term payload.  At a rank mismatch it adds one gate
+to the shorter side and removes one D layer from the longer side.  Thus
+padding contributes six term nodes per rank difference, rather than an
+exponential number of copies.  The maximum additional constant at a
+binary connective is 24 nodes for conjunction (using the fully expanded
+8-node parity term).  Implication and disjunction have smaller constants.
+
+Under globally fresh variable conventions, original source-variable
+occurrences are neither duplicated by these binary macros nor inserted
+into gate controls.  A source variable occurrence is replaced by the
+75-node predecessor term at most once, at its own universal binder.
+Inserted predecessors use fresh bound variables and contain no other
+original source variables.  Hence predecessor insertion contributes at
+most 74N nodes for a source formula/term tree of N nodes.
+
+Each logical rank is at most N.  Charging six times N at each binary node
+gives at most 6N^2 padding nodes.  Atomic expansion, connective constants,
+and predecessor insertion fit within 104N additional nodes.  The claimed
+6N^2+104N bound is therefore conservative for the explicitly specified raw
+macro translator over the fixed scalar term language.  It does not include
+an arbitrary compiler from other PR-function notations, a normalization
+procedure, generated proof sizes, or DAG expansion from separately stored
+arithmetic definitions beyond the fixed predecessor and parity terms.
+
+The old universal itself duplicates the matrix in its two conjunction
+branches; removing precisely that duplication is why its exponential
+prefix growth disappears.  Branching implication/conjunction selectors
+do not reintroduce that unary duplication.

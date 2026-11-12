@@ -730,6 +730,10 @@ for separate coordinates, they are listed separately. Each package's own
 | [`single_constructor`](Artifacts/single_constructor/) | Terms `x`, `0` and `R(n, a; i, u.h)` with the successor defined, a fixed reflexivity clause and three families Use, Introduce and Open with an inferred witness, on full canonical normal forms. 683 tokens / 764 AST nodes / 1965 bytes |
 | [`constantfree`](Artifacts/constantfree/) | Terms `x` and `J(n; i,r.h)` only, with no numerical constant: `K(t) = J(t; i,r.i)`, `U(t) = J(t; i,r.K(r))`, `Z(t) = J(U(t); i,r.r)`, `S(t) = J(t; i,r.Z(r))`; zero is defined by `z = Z(z)`. Two `J` occurrences are necessary and sufficient for the constant one, three for zero. Also smaller compact checkers of the existing calculus | reference checker 3072 tokens; 3349 AST nodes; 13723 bytes against 2811 / 3054 / 12626. Compact: 250; 283; 603 and 264; 299; 498 |
 | [`three_field`](Artifacts/three_field/) | Three-field certificates: the elimination major is inferred from the endpoint, the source field is reused as that major, and a cleared seed selects the major-checking branch | 249; 278; 607 and 255; 271; 606; four-field byte program 267; 299; 495; validated native checker 342; 391; 666 against 344 / 393 / 673 |
+| [`guarded_register`](Artifacts/guarded_register/) | A guarded scalar register calculus with two unconditional computation axioms and no successor constructor, initializer field, Increment, Load or reflexivity rule; proved equivalent to the native core | strict checker 1041 tokens; 1181 AST nodes; 3467 bytes against 1045 / 1193 / 3566 |
+| [`single_binder`](Artifacts/single_binder/) | A universal quantifier with one paired binder and one copy of the body, `D_{u,z} gate_z A(P(z))`, interderivable with the native universal; also a compact checker | 276; 308; 487 (since superseded by 272; 304; 479) |
+| [`backward_replacement`](Artifacts/backward_replacement/) | Backward crossed replacement: from `s = t` and `Rep_t^s(u) = r` infer `r = u`, in place of transport; equivalent to the kernel, also without a literal-zero source | readable checker 1647; 1807; 7121 against 1581 / 1738 / 6971 |
+| [`checker_refinement`](Artifacts/checker_refinement/), [`refinement`](Artifacts/refinement/), [`retained_premises`](Artifacts/retained_premises/), [`verified_refinements`](Artifacts/verified_refinements/), [`immediate_application`](Artifacts/immediate_application/), [`scope_and_frontier`](Artifacts/scope_and_frontier/), [`502_scope_audit`](Artifacts/502_scope_audit/) | Checker refinements of the existing calculi (retained majors, a two-field protocol, inverted entry test, immediate substitution, a context floor), with independent censuses, a counterexample to a cheaper scope shortcut, and an audit of packed sources | compact guarded envelope 249 / 271 / 479 by three programs; native 324; 374; 629; strict 334 / 387 / 637 |
 | [`uniform_recursion`](Artifacts/uniform_recursion/) | Variables, `0` and the one recursor `R(n, a; i, u.h)`, with the successor defined as `R(0, a; i, u.0)`; a fixed reflexivity clause and three families Use, Close and Name. 662 tokens / 741 AST nodes / 1950 bytes |
 
 ## Intake record
@@ -812,7 +816,15 @@ delivery (commit `42fba2a76a`) was `constantfree` (chapter "Canonical and
 counter-aware recursors"; compact checkers in "Certificates and checkers"),
 `three_field` ("Certificates and checkers") and a second write-up of
 `progress_independence` ("Obstructions", with its census under
-`Artifacts/progress_independence/second_writeup/`). With it, 83 superseded
+`Artifacts/progress_independence/second_writeup/`). The next ten arrivals
+(`502_scope_audit`, `backward_replacement`, `checker_refinement`,
+`guarded_register`, `immediate_application`, `refinement`,
+`retained_premises`, `scope_and_frontier`, `single_binder`,
+`verified_refinements`) went the same way, into the chapters "The base
+theories" (the one-binder universal), "Refinements of the eight rules"
+(backward replacement), "Canonical and counter-aware recursors" (guarded
+registers) and "Certificates and checkers" (the rest); 21 more checker files
+they supersede were deleted. With it, 83 superseded
 checker files were deleted from `Artifacts/` (the list is in the size
 section of the chapter "Certificates and checkers").
 `checked_presentation`, `context_phase`, `crossed_uniqueness`,
@@ -975,7 +987,7 @@ The main chain (every module except the twenty kernel comparisons,
 `ZeroSeedObstruction`,
 `NativePrefix`, `NativeUniqueness`, `NativeModels`, `NativeWitnessShape`,
 `NativeWitnessComplete`, `EqKernel`, `EqArith`, `EqParity`, `EqCompare`, `EqPred` and
-`TeqClosure`) is 5,226
+`TeqClosure`) is 5,224
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
 introduction and elimination, instead of an induction over the seventeen
@@ -1209,7 +1221,7 @@ marked as conjectures is proved here.
    `deterministic_opening` (`OCPrf`), of `first_instance` and
    `clause_discharge` (`XCPrf`), and of `variable_substitution` (`VCPrf`)
    are proved equivalent to the kernel.
-8. **A shorter proof of the equivalence.** The main chain is 5,226 lines. A
+8. **A shorter proof of the equivalence.** The main chain is 5,224 lines. A
    dependency-closure computation shows that it contains nothing that the end
    results do not use. Three designs fix most of its size, and no shorter
    replacement for any of them is known: the predecessor of `T_eq` from

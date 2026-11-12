@@ -140,8 +140,7 @@ theorem leibnizEq (a b : Tm k) (σ σ' : Fin k → Tm n) (he : ∀ i, NPrf Γ (.
         · subst hi; simp
         · have hlt : i.val < j + 1 ↔ i.val < j := by omega
           simp [hi, hlt]
-  have h' := key k le_rfl
-  simpa using h'
+  simpa using key k le_rfl
 
 /-- Introduction of `Q` for an equation by progress: from `E(z) ⊢ E(S z)` with
 `z` fresh, infer `Q_y E(y)`.  This is the primitive rule. -/

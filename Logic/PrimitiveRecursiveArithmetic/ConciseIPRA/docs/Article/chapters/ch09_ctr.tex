@@ -11,7 +11,10 @@ normalizing substitution. \Cref{ctr:sec:terms} fixes the term languages and thei
 selector, and a compiler for primitive recursion that uses no pairing. \Cref{ctr:sec:bridge}
 gives the translations to and from iterator terms and transfers the bi-interpretation of
 \cref{base:thm:bridge}. \Cref{ctr:sec:constfree} removes the constant $0$ from the register
-language and defines zero by an equation. \Cref{ctr:sec:six,ctr:sec:five,ctr:sec:ce,ctr:sec:three} treat the
+language and defines zero by an equation. \Cref{ctr:sec:guarded} restricts the bodies of a
+register with one bound variable so that two unconditional equations replace its graph
+axiom, and proves the resulting native calculus equivalent to $\Nat$.
+\Cref{ctr:sec:six,ctr:sec:five,ctr:sec:ce,ctr:sec:three} treat the
 proof calculi stated on these syntaxes. \Cref{ctr:sec:binding} treats the concrete syntax in
 which the recursor and the paired binder bind the same number of variables.
 \Cref{ctr:sec:bounds} collects the boundary results.
@@ -305,6 +308,9 @@ normal $R$, two binders (\cref{ctr:sec:three}) & $R(0,a;i,u.0)$ & identity of sp
 identity of spelling\\
 register $J$ (\cref{ctr:sec:counter}) & $J(a;i,r.0)$ & axiom $J(0;i,r.h)=1$ &
 graph biconditional\\
+guarded scalar $J$ (\cref{ctr:sec:guarded}) & $J(a;v.0)$ & rule
+$J(0;u.h)=\Suc(h\subst{0}{u})$ & rule at successor-headed bodies, derived at state-free
+bodies\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -1386,6 +1392,533 @@ anchor, an anchor depending on the induction variable, a zero constructor, induc
 conjunction, malformed input), and $6$ checks of capture-avoiding substitution. These are
 finite evidence for the implementation. The compact refinements shipped in the same package
 concern the scalar kernel and are treated with the certificate checkers.
+
+\section{Guarded scalar registers}\label{ctr:sec:guarded}
+
+This section draws on \pkg{guarded\_register}.
+
+The register languages of \cref{ctr:sec:register,ctr:sec:constfree} state a computation
+step by the graph biconditional \eqref{ctr:eq:STEP}, whose right-to-left direction is the
+pair of conditional rules \eqref{ctr:eq:inc} and \eqref{ctr:eq:load}. A restriction on the
+bodies of the register with one bound variable makes both computations unconditional
+equations: a body either does not depend on the state, or is literally a successor. The
+resulting native calculus $\mathcal K_{\mathrm G}$ has the formulas and the six logical rules
+of $\Nat$ and two computation equations in place of \rulename{I0} and \rulename{IS}. It has
+no successor constructor, no initializer, no reflexivity rule and no conditional increment
+or load. \Cref{ctr:thm:gequiv} proves it equivalent to $\Nat$, with both composites.
+
+\subsection{Terms and the guard}
+
+\begin{definition}[Guarded terms]\label{ctr:def:gterms}
+The raw terms are
+\[
+ t ::= x\mid 0\mid J(n;u.h),
+\]
+with $u$ bound in $h$ only; the counter $n$ is outside the binder. Put
+\[
+ \Suc a\defeq J(a;v.0),\qquad 1\defeq\Suc 0,\qquad 2\defeq\Suc 1,\qquad
+ \Suc^{k+1}a\defeq\Suc(\Suc^k a),
+\]
+with $v$ unused. A raw term is \emph{guarded} if at every occurrence $J(n;u.h)$ the terms
+$n$ and $h$ are guarded and at least one of the following holds:
+\begin{enumerate}
+\item $u\notin\FV(h)$: the body is \emph{state-free}; passive parameters are allowed;
+\item $h\equiv\Suc(g)$, that is $h\equiv J(g;v.0)$, for some term $g$, which may contain $u$:
+the body is \emph{successor-headed}.
+\end{enumerate}
+The two conditions may overlap. They are tests on literal syntax, not on provable equality
+or on values. Below every term is guarded, and a \emph{template} $h(v)$ is a guarded term
+with a distinguished variable $v$.
+\end{definition}
+
+As with $R$ in \cref{ctr:def:languages}, the number of bound variables distinguishes this
+$J$ from the register $J(n;i,r.h)$ of \cref{ctr:sec:register}; the one-variable register of
+\cref{ctr:prop:scalarreg} is written $J_s$. On the natural numbers $J(n;u.h)$ denotes $r_n$,
+where
+\[
+ r_0=h(0)+1,\qquad r_{m+1}=\begin{cases} r_m+1, & h(r_m)=0,\\ h(r_m)-1, & h(r_m)>0.\end{cases}
+\]
+The transition is that of $J_s$: the instruction $0$ increments the register and an
+instruction $b+1$ loads $b$. The start differs. The register $J_s$ starts at $1$, while
+$J(0;u.h)$ is $\Suc(h(0))$, which is the base equation of the self-seeded constructor $F$
+of \cref{ctr:sec:bounds}. That constructor has no term for the predecessor
+(\cref{ctr:thm:unary}); the guarded register has one (\cref{ctr:lem:gboot}), because its step
+at a successor-headed body removes the successor head. The guard excludes the bodies of
+$J_s$ that depend on the state and are not literally successors, for instance the
+identity body $u$; the definition of zero in \cref{ctr:def:cfterms} uses bodies of that
+kind, and the guarded language keeps the constant $0$. At a successor-headed body only the
+load branch of the transition can occur, and the equation \eqref{ctr:eq:gR} below states
+it. At a state-free body the instruction $a$ does not change along the computation, and the
+step at an arbitrary $a$ follows from the two cases $a=0$ and $a=\Suc z$
+(\cref{ctr:lem:grec}). Neither case needs the case distinction on a state-dependent
+instruction that \eqref{ctr:eq:STEP} provides.
+
+\begin{lemma}[Substitution closure]\label{ctr:lem:gsubst}
+If $t$ and $s$ are guarded, then the capture-avoiding substitution $t\subst{s}{x}$ is
+guarded. In particular $h\subst{s}{u}$ is guarded for a guarded body $h$ and a guarded term
+$s$, and renaming of bound variables preserves the guard.
+\end{lemma}
+\begin{proof}
+Induct on $t$, with the bound variable of each occurrence of $J$ renamed away from $x$ and
+from $\FV(s)$. Variables and $0$ are immediate. For $t=J(n;u.h)$,
+$t\subst{s}{x}=J(n\subst{s}{x};u.h\subst{s}{x})$, and the counter and the body are guarded
+by the induction hypothesis. If $u\notin\FV(h)$, then $u\notin\FV(h\subst{s}{x})$, since $u$
+is not free in $s$. If $h\equiv J(g;v.0)$, then $h\subst{s}{x}\equiv J(g\subst{s}{x};v.0)$,
+since the zero body has no free variable. Renaming changes neither the set of free variables
+of a body other than its bound variable nor the shape $J(g;v.0)$.
+\end{proof}
+
+\begin{definition}[The calculus $\mathcal K_{\mathrm G}$]\label{ctr:def:gcalc}
+The formulas are the native formulas of \cref{base:sec:kernel} over guarded terms, with the
+reading of \cref{base:sec:reading}, and contexts are finite lists of formulas. The rules are
+\rulename{Hyp}, \rulename{Tr}, \rulename{QE}, \rulename{DE}, \rulename{DI} and \rulename{QI}
+of \cref{base:def:kernel}, with the same side conditions, where the template of
+\rulename{Tr} is a guarded template and $\Suc z$ in \rulename{DI} and \rulename{QI} is the
+defined successor $J(z;v.0)$, together with the two computation equations, in every
+context,
+\begin{align}
+ & J(0;u.h)=\Suc\bigl(h\subst{0}{u}\bigr), \tag{GB}\label{ctr:eq:gB}\\
+ & J(\Suc n;u.\Suc g)=g\subst{J(n;u.\Suc g)}{u}, \tag{GR}\label{ctr:eq:gR}
+\end{align}
+for every guarded $J(0;u.h)$ and all guarded $n$ and $g$. The counter of \eqref{ctr:eq:gR}
+is literally $J(n;v.0)$, and its body $\Suc g$ is admitted whatever $g$ is. The designated
+contradiction is $0=1$.
+\end{definition}
+
+Compared with $\Nat$, the terms $0,\Suc,I$ are replaced by $0,J$, and the computations
+\rulename{I0}, \rulename{IS} by \eqref{ctr:eq:gB}, \eqref{ctr:eq:gR}; the other six rules are
+literally those of \cref{base:def:kernel}. As in $\Nat$ (\cref{base:rem:inventory}) there is
+no reflexivity rule. Compared with $\mathsf T_J$, the conditional rules \eqref{ctr:eq:inc}
+and \eqref{ctr:eq:load} are not primitive (\cref{ctr:prop:grules}). The guard, the test
+that the state does not occur and the test of the successor head belong to the trusted
+specification; by \cref{ctr:lem:gsubst} they are stable under substitution.
+
+\begin{lemma}[Structural rules and equality]\label{ctr:lem:gstruct}
+In $\mathcal K_{\mathrm G}$:
+\begin{enumerate}
+\item weakening, substitution and cut are admissible, as in \cref{base:lem:struct,base:lem:cut};
+\item $\Gamma\proves J(1;u.\Suc t)=t$ for $u\notin\FV(t)$, and the equality rules of
+\cref{base:lem:eq} hold: reflexivity, symmetry, transitivity, congruence in every guarded
+template, transport in equation templates, and simultaneous congruence;
+\item equation induction (\cref{base:lem:eqind}), numerical cases (\cref{base:cor:cases}),
+congruence of $Q$ and $D$ (\cref{base:lem:bindercong}) and the Leibniz rule
+(\cref{base:thm:leibniz}) hold, with $\Suc z$ the defined successor.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+The proofs in \cref{base:sec:structural} use the computation rules only in the instance
+cases of \cref{base:lem:struct,base:lem:cut} and in \cref{base:lem:eq}(i). (1) For a
+substitution $\theta$ with $u$ fresh for $\theta$,
+\[
+ J(0;u.h)[\theta]=J(0;u.h[\theta]),\qquad \Suc\bigl(h\subst{0}{u}\bigr)[\theta]=
+ \Suc\bigl(h[\theta]\subst{0}{u}\bigr),
+\]
+and $J(\Suc n;u.\Suc g)[\theta]=J(\Suc(n[\theta]);u.\Suc(g[\theta]))$,
+$\bigl(g\subst{J(n;u.\Suc g)}{u}\bigr)[\theta]
+=g[\theta]\subst{J(n[\theta];u.\Suc(g[\theta]))}{u}$. The substituted terms are guarded by
+\cref{ctr:lem:gsubst}, so an instance of \eqref{ctr:eq:gB} or \eqref{ctr:eq:gR} becomes an
+instance of the same equation, and the remaining cases are those of the two base lemmas.
+(2) \eqref{ctr:eq:gR} at the counter $0$, with the constant $g\defeq t$ and $u\notin\FV(t)$,
+is $J(1;u.\Suc t)=t$, since $1\equiv\Suc 0$. \rulename{Tr} with the template $v$, applied to
+this equation as both premises, gives $t=t$. This replaces the instances of \rulename{I0}
+in \cref{base:lem:eq}(i); parts (ii)--(v) and \cref{base:lem:cong} are proved by
+\rulename{Tr} alone, with templates that are guarded by \cref{ctr:lem:gsubst}. (3) The proofs
+of these statements use \rulename{Hyp}, \rulename{Tr}, \rulename{QE}, \rulename{DE},
+\rulename{DI}, \rulename{QI}, parts (1) and (2), and the term $\Suc z$ only as it occurs in
+the conclusions of \rulename{DI} and \rulename{QI}. They apply verbatim.
+\end{proof}
+
+\subsection{Arithmetic from the two equations}
+
+With fresh bound variables, and $u\notin\FV(a)$ in the first definition, put
+\begin{align*}
+ f(n,a)&\defeq J(n;u.a), & W(x)&\defeq f(1,x), & Y(n)&\defeq f(n,1),\\
+ Z(c)&\defeq W^2\bigl(Y(Y(c))\bigr), & G(c,a)&\defeq W^3\bigl(f(\Suc^2a,Z(c))\bigr), &
+ C(c,a,b)&\defeq W^3\bigl(f(\Suc^2a,G(c,\Suc^4b))\bigr),
+\end{align*}
+and $P(c)\defeq C(c,0,W(c))$, where the powers are finite compositions. In this section the
+letters $f,W,Z,G,C,P$ denote these terms; the terms of the same names in
+\cref{ctr:lem:regboot} are their analogues for the register with two bound variables.
+\pkg{guarded\_register} writes $Z_2$ for $Y$. Every occurrence of $J$ in these terms has a
+state-free body, so they are guarded for all guarded arguments, and a template such as
+$f(\Suc^2a,v)=J(\Suc^2 a;u.v)$, with the hole in the body, is guarded.
+
+\begin{lemma}[Bootstrap from two equations]\label{ctr:lem:gboot}
+Using only \eqref{ctr:eq:gB}, \eqref{ctr:eq:gR} and the equality rules of
+\cref{ctr:lem:gstruct}(2), $\mathcal K_{\mathrm G}$ derives in every context, for all
+terms,
+\begin{equation}\label{ctr:eq:gf}
+ f(0,a)=\Suc a,\qquad f(n,0)\equiv\Suc n,\qquad f(\Suc n,\Suc a)=a,
+\end{equation}
+and
+\begin{alignat*}{3}
+ W(0)&=2, &\qquad W(\Suc x)&=x, &\qquad Y(0)&=2,\quad Y(\Suc n)=0,\\
+ W^3(0)&=0, & W^3(\Suc^3 a)&=a, & Z(0)&=1,\quad Z(\Suc n)=0,\\
+ G(0,a)&=0, & G(\Suc n,a)&=a, & C(0,a,b)&=a,\quad C(\Suc n,a,b)=b,\\
+ P(0)&=0, & P(\Suc n)&=n.
+\end{alignat*}
+Consequently $\Suc x=\Suc y\proves x=y$ and $0=1\proves a=b$ for all terms $a,b$.
+\end{lemma}
+\begin{proof}
+In \eqref{ctr:eq:gf} the first equation is \eqref{ctr:eq:gB} for the state-free body $a$,
+the second is the definition of $\Suc$ up to the name of the bound variable, and the third
+is \eqref{ctr:eq:gR} with the constant $g\defeq a$. Hence $W(0)=f(1,0)\equiv\Suc 1=2$,
+$W(\Suc x)=f(\Suc 0,\Suc x)=x$, $Y(0)=f(0,1)=\Suc 1$ and $Y(\Suc n)=f(\Suc n,\Suc 0)=0$. The
+map $W$ removes one successor and cycles through $0,2,1$: $W(0)=2$, $W(2)=W(\Suc 1)=1$ and
+$W(1)=W(\Suc 0)=0$, with congruence at each composition. Thus $W^3(0)=0$ and
+$W^3(\Suc^3a)=a$.
+
+At $c=0$ the two inner applications of $Y$ give $Y(Y(0))=Y(\Suc 1)=0$, and $W^2(0)=W(2)=1$;
+at $c=\Suc n$ they give $Y(0)=2$, and $W^2(2)=W(1)=0$. For $G(0,a)$ the instruction is
+$Z(0)=1=\Suc 0$, so congruence in the template $W^3(f(\Suc^2a,v))$ and \eqref{ctr:eq:gR} give
+$W^3(f(\Suc(\Suc a),\Suc 0))=W^3(0)=0$. For $G(\Suc n,a)$ the instruction is $0$, and
+$f(\Suc^2a,0)\equiv\Suc^3a$, so the value is $W^3(\Suc^3a)=a$. For $C(0,a,b)$ the instruction
+$G(0,\Suc^4b)$ is $0$, giving $W^3(\Suc^3 a)=a$. For $C(\Suc n,a,b)$ the instruction is
+$\Suc^4b$, and $f(\Suc(\Suc a),\Suc(\Suc^3b))=\Suc^3b$ by the third equation of
+\eqref{ctr:eq:gf}, so the value is $W^3(\Suc^3b)=b$. The rows of $P$ follow:
+$P(0)=C(0,0,W(0))=0$ and $P(\Suc n)=C(\Suc n,0,W(\Suc n))=W(\Suc n)=n$.
+
+From $\Suc x=\Suc y$ congruence in $W$ gives $W(\Suc x)=W(\Suc y)$, hence $x=y$. From $0=1$,
+\rulename{Tr} with the template $C(v,a,b)$ and the minor premise $C(0,a,b)=a$ gives
+$a=C(1,a,b)$, and $C(1,a,b)=C(\Suc 0,a,b)=b$.
+\end{proof}
+
+No induction, numerical case distinction, coverage or previously available selector is used.
+The finite decoder $W^3$ fixes $0$ and removes three successors; this is the property used in
+$G$ and $C$.
+
+\begin{proposition}[The conditional rules are derivable]\label{ctr:prop:grules}
+For a guarded term $J(n;u.h)$ write $j_n\defeq J(n;u.h)$ and $j_{\Suc n}\defeq J(\Suc n;u.h)$.
+The rules
+\[
+ \infrule{\Gamma\proves h\subst{j_n}{u}=\Suc b}{\Gamma\proves j_{\Suc n}=b}\ \rulename{Load},
+ \qquad
+ \infrule{\Gamma\proves h\subst{j_n}{u}=0}{\Gamma\proves j_{\Suc n}=\Suc j_n}\ \rulename{Inc}
+\]
+are derivable in $\mathcal K_{\mathrm G}$ from \eqref{ctr:eq:gB}, \eqref{ctr:eq:gR} and
+\rulename{Tr}, without \rulename{QE}, \rulename{DE}, \rulename{DI} and \rulename{QI}. They
+are the native forms of \eqref{ctr:eq:load} and \eqref{ctr:eq:inc}.
+\end{proposition}
+\begin{proof}
+\rulename{Load}. If $h\equiv\Suc g$, \eqref{ctr:eq:gR} gives $j_{\Suc n}=g\subst{j_n}{u}$, and
+the premise $\Suc(g\subst{j_n}{u})=\Suc b$ gives $g\subst{j_n}{u}=b$ by injectivity
+(\cref{ctr:lem:gboot}). If $u\notin\FV(h)$, write $h\equiv a$; the premise is $a=\Suc b$,
+and congruence in the template $f(\Suc n,v)$ gives
+$j_{\Suc n}=f(\Suc n,a)=f(\Suc n,\Suc b)=b$ by \eqref{ctr:eq:gf}.
+
+\rulename{Inc}. If $u\notin\FV(h)$, write $h\equiv a$; the premise is $a=0$. Congruence in
+$f(n,v)$ and in $f(\Suc n,v)$ gives $j_n=f(n,0)\equiv\Suc n$ and
+$j_{\Suc n}=f(\Suc n,0)\equiv\Suc(\Suc n)$, and congruence in $\Suc v$ gives
+$\Suc j_n=\Suc(\Suc n)$; transitivity concludes. If $h\equiv\Suc g$, the premise is
+$\Suc(g\subst{j_n}{u})=0$; congruence in $Z$ and \cref{ctr:lem:gboot} give
+$0=Z(\Suc(g\subst{j_n}{u}))=Z(0)=1$, and the equational explosion of \cref{ctr:lem:gboot}
+gives the conclusion.
+\end{proof}
+
+\Cref{ctr:prop:regrefl} derives reflexivity from the conditional rules; in
+$\mathcal K_{\mathrm G}$ reflexivity comes from \eqref{ctr:eq:gR}
+(\cref{ctr:lem:gstruct}), and the conditional rules come from the two equations and
+\rulename{Tr}. The body restriction is what permits their removal from the rules.
+
+\subsection{Initialized iteration}
+
+\begin{theorem}[Initialized iteration]\label{ctr:thm:giter}
+Let $a$ be a guarded term and $h(v)$ a guarded template, with all passive parameters fixed.
+With $w$ fresh put
+\[
+ H(w)\defeq\Suc\Bigl(C\bigl(w,\,a,\,\Suc^2\bigl(h(P^2(w))\bigr)\bigr)\Bigr),\qquad
+ A(k)\defeq J(k;w.H(w)),\qquad
+ I_{\mathrm G}(n,a;v.h)\defeq P^2\bigl(A(n)\bigr).
+\]
+These terms are guarded, since $H$ is literally successor-headed, even when $h$ depends on
+its variable. $\mathcal K_{\mathrm G}$ derives in every context, for every term $n$,
+\begin{equation}\label{ctr:eq:gIC}
+ I_{\mathrm G}(0,a;v.h)=a,\qquad I_{\mathrm G}(\Suc n,a;v.h)=h\bigl(I_{\mathrm G}(n,a;v.h)\bigr).
+\end{equation}
+The proof uses \eqref{ctr:eq:gB}, \eqref{ctr:eq:gR}, equality and one equation induction,
+and no coverage, pairing or logical connective.
+\end{theorem}
+\begin{proof}
+By the zero row of $C$, $H(0)=\Suc a$, and \eqref{ctr:eq:gB} gives $A(0)=\Suc(H(0))=\Suc^2a$;
+hence $P^2(A(0))=a$ by the rows of $P$. This is the first equation. Let $k$ be fresh for
+the context, $n$, $a$ and $h$, and consider the literal equation
+\begin{equation}\label{ctr:eq:ginv}
+ A(k)=\Suc^2\bigl(P^2(A(k))\bigr).
+\end{equation}
+At $k=0$ both sides equal $\Suc^2a$. For the step assume \eqref{ctr:eq:ginv} and write
+$q\defeq P^2(A(k))$. \eqref{ctr:eq:gR} for the successor-headed body $H$ gives
+\begin{equation}\label{ctr:eq:gstep}
+ A(\Suc k)=C\bigl(A(k),\,a,\,\Suc^2(h(q))\bigr).
+\end{equation}
+Transport of \eqref{ctr:eq:ginv} in the first argument of $C$ makes the control
+$\Suc(\Suc q)$, and the successor row of $C$ gives $A(\Suc k)=\Suc^2(h(q))$. Applying $P$
+twice gives $P^2(A(\Suc k))=h(q)$, and congruence in $\Suc^2v$ gives \eqref{ctr:eq:ginv} at
+$\Suc k$. Equation induction (\cref{ctr:lem:gstruct}(3)) proves \eqref{ctr:eq:ginv} at every
+term, in particular at $n$. Repeating the step calculation with this instance at $n$ in
+place of the induction hypothesis gives $A(\Suc n)=\Suc^2(h(P^2(A(n))))$, and applying $P$
+twice gives the second equation of \eqref{ctr:eq:gIC}.
+\end{proof}
+
+If the counter $n$ also occurs in $a$ or $h$, those occurrences stay passive: the induction
+is on the fresh $k$, and $n$ is substituted only in the proved instance. In
+\cref{ctr:prop:scalarreg} the shape of the state is a consequence of one computation; here it
+is the invariant \eqref{ctr:eq:ginv}, proved by one induction on a literal equation.
+
+\begin{lemma}[Unconditional recursion]\label{ctr:lem:grec}
+Let $\mathrm{Sel}(c,a,b)$ and $\mathrm{Pd}(c)$ be guarded templates such that
+$\mathcal K_{\mathrm G}$ proves $\mathrm{Sel}(0,a,b)=a$, $\mathrm{Sel}(\Suc c,a,b)=b$ and
+$\mathrm{Pd}(\Suc c)=c$ for all terms $a,b,c$. For every guarded term $J(n;u.h)$, with
+$j\defeq J(n;u.h)$, $\mathcal K_{\mathrm G}$ derives in every context
+\[
+ J(0;u.h)=\Suc\bigl(h\subst{0}{u}\bigr),\qquad
+ J(\Suc n;u.h)=\mathrm{Sel}\bigl(h\subst{j}{u},\,\Suc j,\,\mathrm{Pd}(h\subst{j}{u})\bigr).
+\]
+In particular this holds for $\mathrm{Sel}=C$ and $\mathrm{Pd}=P$. The proof uses numerical
+cases and no coverage.
+\end{lemma}
+\begin{proof}
+The first equation is \eqref{ctr:eq:gB}. If $h\equiv\Suc g$, put $g'\defeq g\subst{j}{u}$;
+\eqref{ctr:eq:gR} gives $J(\Suc n;u.h)=g'$, and
+$\mathrm{Sel}(\Suc g',\Suc j,\mathrm{Pd}(\Suc g'))=\mathrm{Pd}(\Suc g')=g'$. Otherwise
+$u\notin\FV(h)$; write $h\equiv a$, so that $h\subst{j}{u}\equiv a$. Let $x$ be a fresh
+variable and consider the literal equation
+\[
+ E(x)\colon\quad \mathrm{Sel}\bigl(x,\,\Suc(J(n;u.x)),\,\mathrm{Pd}(x)\bigr)=J(\Suc n;u.x),
+\]
+whose bodies are state-free. At $x=0$ the zero row of $\mathrm{Sel}$ makes the left side
+equal to $\Suc(J(n;u.0))$, which is literally $\Suc(\Suc n)$; the right side $J(\Suc n;u.0)$
+is the same term up to the name of the bound variable. At $x=\Suc z$, with $z$
+fresh, the left side is $\mathrm{Pd}(\Suc z)=z$ and the right side is $z$ by
+\eqref{ctr:eq:gR} with the constant $g\defeq z$. Numerical cases
+(\cref{ctr:lem:gstruct}(3)) give $E(a)$, which is the claim, since
+$J(n;u.x)\subst{a}{x}\equiv J(n;u.a)=j$ and $u\notin\FV(a)$.
+\end{proof}
+
+\subsection{Equivalence with the native core}
+
+\begin{definition}[Translations]\label{ctr:def:gtrans}
+The translation $s\mapsto s^\lambda$ from terms of $\Nat$ to guarded terms fixes variables
+and $0$ and sets
+\[
+ (\Suc s)^\lambda\defeq J(s^\lambda;v.0),\qquad
+ \It{n}{a}{u}{h}^\lambda\defeq I_{\mathrm G}(n^\lambda,a^\lambda;u.h^\lambda).
+\]
+The translation $t\mapsto t^\mu$ from guarded terms to terms of $\Nat$ fixes variables and
+$0$ and sets, with $\mathrm{pd}$ the predecessor term of \cref{base:thm:pred} (written $P$
+there) and $\sel$ the selector of \cref{base:sec:terms},
+\[
+ J(n;u.h)^\mu\defeq
+ \It{n^\mu}{\Suc\bigl(h^\mu\subst{0}{u}\bigr)}{u}{\sel\bigl(h^\mu,\Suc u,\mathrm{pd}(h^\mu)\bigr)}.
+\]
+Both are extended to native formulas and contexts so that they fix $=$, $\Q{y}$ and
+$\D{x}{y}$. Put $\sigma(x)\defeq(\Suc x)^\mu=\It{x}{\Suc 0}{u}{\sel(0,\Suc u,\mathrm{pd}(0))}$.
+\end{definition}
+
+Both translations are compositional, so they commute with capture-avoiding substitution and
+preserve the free variables of a term; they map literal equations to literal equations.
+Every $\lambda$-image is guarded, by \cref{ctr:thm:giter,ctr:lem:gsubst}. The term
+$(\Suc s)^\lambda$ is literally the defined successor of $s^\lambda$, while $(\Suc t)^\mu$
+is $\sigma(t^\mu)$, which is only provably the successor.
+
+\begin{lemma}[The reverse translation of the axioms]\label{ctr:lem:gsigma}
+$\Nat$ proves $\sigma(t)=\Suc t$ for every term $t$, and every $\mu$-translation of an
+instance of \eqref{ctr:eq:gB} or \eqref{ctr:eq:gR}, in every context.
+\end{lemma}
+\begin{proof}
+\emph{Successor.} Apply \cref{base:lem:eqind} to $\sigma(z)=\Suc z$. The base is
+\rulename{I0}. In the step \rulename{IS} and \eqref{base:eq:sel} give
+$\sigma(\Suc z)=\sel(0,\Suc\sigma(z),\mathrm{pd}(0))=\Suc\sigma(z)$, and congruence along the
+hypothesis gives $\Suc\Suc z$.
+
+\emph{\eqref{ctr:eq:gB}.} The left side translates to a term whose counter is $0$, so
+\rulename{I0} gives $\Suc(h^\mu\subst{0}{u})$. The right side translates to
+$\sigma(h^\mu\subst{0}{u})$, since $(h\subst{0}{u})^\mu=h^\mu\subst{0}{u}$, and this equals
+$\Suc(h^\mu\subst{0}{u})$ by the first part.
+
+\emph{\eqref{ctr:eq:gR}.} Put $s\defeq(\Suc g)^\mu=\sigma(g^\mu)$ and
+$K(c)\defeq\It{c}{\Suc(s\subst{0}{u})}{u}{\sel(s,\Suc u,\mathrm{pd}(s))}$, so that
+$J(m;u.\Suc g)^\mu=K(m^\mu)$ for every $m$. The left side translates to $K(\sigma(n^\mu))$.
+By the first part and congruence it equals $K(\Suc n^\mu)$, and \rulename{IS} gives, with
+$k\defeq K(n^\mu)$ and $g'\defeq g^\mu\subst{k}{u}$,
+\[
+ K(\Suc n^\mu)=\sel\bigl(\sigma(g'),\Suc k,\mathrm{pd}(\sigma(g'))\bigr)
+ =\sel\bigl(\Suc g',\Suc k,\mathrm{pd}(\Suc g')\bigr)=\mathrm{pd}(\Suc g')=g',
+\]
+by the first part, \eqref{base:eq:sel} and \cref{base:thm:pred}. The right side translates to
+$g^\mu\subst{K(n^\mu)}{u}=g'$.
+\end{proof}
+
+\begin{theorem}[Guarded registers and the native core]\label{ctr:thm:gequiv}
+\leavevmode
+\begin{enumerate}
+\item If $\Gamma\proves_{\Nat}A$ then $\Gamma^\lambda\proves_{\mathcal K_{\mathrm G}}A^\lambda$.
+If $\Gamma\proves_{\mathcal K_{\mathrm G}}A$ then $\Gamma^\mu\proves_{\Nat}A^\mu$.
+\item $\mathcal K_{\mathrm G}\proves t^{\mu\lambda}=t$ for every guarded term $t$, and
+$\Nat\proves s^{\lambda\mu}=s$ for every term $s$ of $\Nat$. Every formula is
+interderivable with its double translation, in $\mathcal K_{\mathrm G}$ and in $\Nat$.
+\item $\Gamma\proves_{\mathcal K_{\mathrm G}}A$ if and only if $\Gamma^\mu\proves_{\Nat}A^\mu$,
+and $\Gamma\proves_{\Nat}A$ if and only if $\Gamma^\lambda\proves_{\mathcal K_{\mathrm G}}A^\lambda$.
+Moreover $\proves_{\mathcal K_{\mathrm G}}0=1$ if and only if $\proves_{\Nat}0=\Suc 0$.
+\item Consequently $\mathcal K_{\mathrm G}$ is bi-interpretable with $\Teq$ and with $\iPRA$,
+by the compositions of $\lambda$ and $\mu$ with the translations of \cref{base:thm:bridge},
+with whole domains, actual equality and numerical composites of graph $x=y$, and
+$\mathcal K_{\mathrm G}$, $\Nat$, $\Teq$ and $\iPRA$ are equiconsistent.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(1) \emph{From $\Nat$ to $\mathcal K_{\mathrm G}$.} Induct on the derivation. \rulename{Hyp}
+is unchanged. An instance of \rulename{I0} translates to the first equation of
+\eqref{ctr:eq:gIC}. An instance of \rulename{IS} translates to
+$I_{\mathrm G}(J(n^\lambda;v.0),a^\lambda;u.h^\lambda)=
+h^\lambda\subst{I_{\mathrm G}(n^\lambda,a^\lambda;u.h^\lambda)}{u}$, since $\lambda$
+commutes with substitution, and this is the second equation of \eqref{ctr:eq:gIC}.
+\rulename{Tr} with the template $h$ translates to \rulename{Tr} with the guarded template
+$h^\lambda$. \rulename{QE} and \rulename{DE} translate to themselves, with the side
+condition of \rulename{DE} preserved since $\lambda$ preserves free variables. In
+\rulename{DI} and \rulename{QI} the translated conclusion of the premise is
+$B^\lambda(t^\lambda,J(z;v.0))$, respectively $E^\lambda(J(z;v.0))$, which is literally the
+premise of the rule of $\mathcal K_{\mathrm G}$; $E^\lambda$ is a literal equation.
+
+\emph{From $\mathcal K_{\mathrm G}$ to $\Nat$.} Induct on the derivation. \rulename{Hyp},
+\rulename{Tr}, \rulename{QE} and \rulename{DE} translate to themselves, as above. The
+computation equations are \cref{ctr:lem:gsigma}. In \rulename{DI} the induction hypothesis
+gives $\Gamma^\mu,B^\mu(t^\mu,0)\proves_{\Nat}B^\mu(t^\mu,\sigma(z))$. The Leibniz rule
+(\cref{base:thm:leibniz}) along $\sigma(z)=\Suc z$ (\cref{ctr:lem:gsigma}) gives
+$B^\mu(t^\mu,\Suc z)$, and \rulename{DI} of $\Nat$ applies; $z$ is fresh since $\mu$
+preserves free variables. \rulename{QI} is the same with the literal equation $E^\mu$.
+
+(2) \emph{Terms of $\Nat$.} Induct on $s$. For $s=\Suc s_0$, $s^{\lambda\mu}=\sigma(s_0^{\lambda\mu})$,
+which equals $\Suc s_0$ by \cref{ctr:lem:gsigma} and the induction hypothesis. For
+$s=\It{n}{a}{u}{h}$ let $\Phi(k)\defeq I_{\mathrm G}(k,a^\lambda;u.h^\lambda)^\mu$ with $k$
+fresh, so that $s^{\lambda\mu}=\Phi(n^{\lambda\mu})$. The $\mu$-translations of the two
+equations \eqref{ctr:eq:gIC} at $k$ are derivable in $\Nat$ by part~(1); they are
+$\Phi(0)=a^{\lambda\mu}$ and $\Phi(\sigma(k))=h^{\lambda\mu}\subst{\Phi(k)}{u}$, and
+\cref{ctr:lem:gsigma} turns the second into $\Phi(\Suc k)=h^{\lambda\mu}\subst{\Phi(k)}{u}$.
+By the induction hypotheses $a^{\lambda\mu}=a$ and $h^{\lambda\mu}=h$, the latter with $u$
+free. The term $\It{k}{a}{u}{h}$ has the base $a$ and the update $h$. The proof of
+\cref{ctr:lem:unique} uses equality, an instance of a derived equation and equation
+induction, and is available in $\Nat$ (\cref{base:lem:eq,base:lem:eqind}); it gives
+$\Phi(k)=\It{k}{a}{u}{h}$, and the instance at $n^{\lambda\mu}=n$ is the claim.
+
+\emph{Guarded terms.} Induct on $t$; variables and $0$ are fixed. Let $t=J(n;u.h)$. With
+$\mathrm{Sel}(c,a,b)\defeq I_{\mathrm G}(c,a;w.b)$, $w$ not free in $b$, and
+$\mathrm{Pd}(c)\defeq\bigl(\mathrm{pd}(x)\bigr)^\lambda\subst{c}{x}$,
+\[
+ t^{\mu\lambda}=\Psi(n^{\mu\lambda}),\qquad
+ \Psi(k)\defeq I_{\mathrm G}\Bigl(k,\ \Suc\bigl(h^{\mu\lambda}\subst{0}{u}\bigr);\
+ u.\,\mathrm{Sel}\bigl(h^{\mu\lambda},\Suc u,\mathrm{Pd}(h^{\mu\lambda})\bigr)\Bigr),
+\]
+because $\lambda$ commutes with substitution and $\sel(c,a,b)$ is $\It{c}{a}{w}{b}$. By
+\eqref{ctr:eq:gIC}, $\mathrm{Sel}(0,a,b)=a$ and $\mathrm{Sel}(\Suc c,a,b)=b$. By
+\cref{base:thm:pred}, $\Nat\proves\mathrm{pd}(\Suc x)=x$, and part~(1) gives
+$\mathcal K_{\mathrm G}\proves\mathrm{Pd}(\Suc x)=x$, since $(\Suc x)^\lambda$ is literally
+$\Suc x$; substitution gives it for every $c$. So \cref{ctr:lem:grec} applies to
+$\mathrm{Sel}$ and $\mathrm{Pd}$. Apply equation induction to $\Psi(k)=J(k;u.h)$ with $k$
+fresh. At $0$, \eqref{ctr:eq:gIC}, the induction hypothesis $h^{\mu\lambda}=h$ with $u$ free,
+substitution of $0$ for $u$ and \eqref{ctr:eq:gB} give
+$\Psi(0)=\Suc(h\subst{0}{u})=J(0;u.h)$. In the step, with $j\defeq J(k;u.h)$ and the
+hypothesis $\Psi(k)=j$, \eqref{ctr:eq:gIC}, congruence and the induction hypothesis
+substituted at $j$ give
+$\Psi(\Suc k)=\mathrm{Sel}(h\subst{j}{u},\Suc j,\mathrm{Pd}(h\subst{j}{u}))$, which is
+$J(\Suc k;u.h)$ by \cref{ctr:lem:grec}. The instance at $n^{\mu\lambda}=n$ is the claim.
+This compares the recurrence of the double translation directly with the original register;
+no intermediate term $J(n;u.h^{\mu\lambda})$, which need not be guarded, is formed.
+
+\emph{Formulas.} Induct on the formula. For an equation use the term identities with
+symmetry and transitivity. For $\Q{y}B$ and $\D{x}{y}B$ the induction hypothesis gives
+interderivability of $B$ and its double translation, with $x,y$ free, and the congruence of
+$Q$ and $D$ (\cref{base:lem:bindercong}, and \cref{ctr:lem:gstruct}(3) for
+$\mathcal K_{\mathrm G}$) applies.
+
+(3) If $\Gamma^\mu\proves_{\Nat}A^\mu$, then
+$\Gamma^{\mu\lambda}\proves_{\mathcal K_{\mathrm G}}A^{\mu\lambda}$ by (1), and (2) with cut
+(\cref{ctr:lem:gstruct}(1)) gives $\Gamma\proves_{\mathcal K_{\mathrm G}}A$. The other
+equivalence is symmetric, with \cref{base:lem:cut}. The formula $(0=\Suc 0)^\lambda$ is
+literally $0=1$, and $(0=1)^\mu$ is $0=\sigma(0)$, which is interderivable in $\Nat$ with
+$0=\Suc 0$ by \cref{ctr:lem:gsigma}.
+
+(4) By (3) and \cref{base:thm:bridge}(i) and (iii), derivability in
+$\mathcal K_{\mathrm G}$ corresponds to derivability in $\Teq$ and in $\iPRA$ under the
+composite translations. For the round trips, a formula $A$ of $\mathcal K_{\mathrm G}$ is
+interderivable with $A^{\mu\lambda}$ by (2), and the round trip of \cref{base:thm:bridge}
+makes $A^\mu$ interderivable in $\Nat$ with its double translation through $\Teq$ or
+$\iPRA$; by (1) the $\lambda$-images of interderivable formulas are interderivable. In the
+other direction a formula $\psi$ of $\iPRA$ is equivalent to its round trip through $\Nat$
+by \cref{base:thm:bridge}(iii), and the formula of $\Nat$ obtained on the way is
+interderivable with its $\lambda\mu$-translation by (2); since derivability in $\Nat$ is
+preserved by the translation to $\iPRA$, $\iPRA$ proves the equivalence of $\psi$ with its
+round trip through $\mathcal K_{\mathrm G}$. The same argument applies to $\Teq$ with
+\cref{base:thm:bridge}(i). The translations $\lambda$ and $\mu$ fix the variables, the
+binders and equality, and on terms the composites are provably the identity by (2); with
+\cref{base:thm:bridge}(iv) the numerical composites have the graph $x=y$. Equiconsistency
+is (3) with \cref{base:thm:bridge}(v).
+\end{proof}
+
+\begin{remark}[The route of the package]\label{ctr:rem:groute}
+\pkg{guarded\_register} proves \cref{ctr:thm:gequiv} with the same two translations. It
+interprets $\mathcal K_{\mathrm G}$ in the ordinary scalar theory by $\mu$, reading
+\rulename{DI} by coverage and \rulename{QI} by equation induction; it reconstructs the
+logical connectives inside $\mathcal K_{\mathrm G}$ by gates and a selector of formulas built
+from the term $C$, which is the construction of \cref{base:def:macros} with $C$ in place of
+$\sel$; and it proves \cref{ctr:lem:grec} for a state-free body by numerical coverage of the
+instruction and elimination of the derived disjunction. The proof above replaces coverage by
+numerical cases at a fresh variable, so the logical interface is not needed for the
+equivalence; the logic of $\mathcal K_{\mathrm G}$ is that of $\Nat$, transferred by
+\cref{ctr:thm:gequiv}(3). The two composites are proved inside the theories, by equation
+induction, and not by agreement on the standard model.
+\end{remark}
+
+\begin{remark}[The ordinary realization]\label{ctr:rem:gordinary}
+\pkg{guarded\_register} also states an ordinary theory $\mathsf T_{\mathrm G}$: intuitionistic
+first-order logic with equality and an independent $\bot$ over guarded terms, the universal
+closures of \eqref{ctr:eq:gB} and \eqref{ctr:eq:gR}, coverage
+$\forall x\,(x=0\lor\exists y\,x=\Suc y)$, the separation $0=1\to\bot$, and the rule
+\eqref{ctr:eq:EI} of induction for literal equations. With $\lambda$ and $\mu$ extended to
+commute with the connectives, it is bi-interpretable with $\Teq$ by the argument of
+\cref{ctr:thm:gequiv}. In $\Teq$ the $\mu$-translations of the two equations hold by
+\cref{ctr:lem:gsigma} and \cref{base:thm:bridge}(i), and coverage, separation and
+induction translate to the corresponding principles of $\Teq$ after transport along
+$\sigma(x)=\Suc x$. In $\mathsf T_{\mathrm G}$ the proofs of
+\cref{ctr:lem:gboot,ctr:thm:giter} use only equality, the two equations and induction on a
+literal equation; the axioms of $\Teq$ translate to \eqref{ctr:eq:gIC}, to coverage and to
+separation, the last two literally. The term composites are proved as in
+\cref{ctr:thm:gequiv}(2), with coverage in place of numerical cases, and the formula
+composites follow by transport. The separation axiom is needed: a one-element structure
+satisfies the two equations, coverage and every instance of induction, and refutes
+$0=1\to\bot$.
+\end{remark}
+
+\begin{remark}[A closure meaning that the eliminations do not fit]\label{ctr:rem:gclosure}
+\pkg{guarded\_register} records an obstruction for a different shortcut. Keep the
+elimination \rulename{QE} and the introduction \rulename{QI} of $\Nat$, and read the closure
+$\Q{y}E$ of a literal equation progressively, as $\forall y\,(E(y)\to E(\Suc y))$. The rules
+are sound for this reading, but not complete for it: under the reading of
+\cref{base:sec:reading}, $\Q{y}E$ is $E(0)\to\forall y\,E(y)$, every rule of $\Nat$ is
+sound, and for $E(y)\defeq(y=1)$ the formulas $\Q{y}E$ and $E(1)$ are true on the natural
+numbers while $E(2)$ is false. Hence $\Q{y}E,E(1)\not\proves_{\Nat}E(2)$, although the
+sequent is valid under the progressive reading. A faithful progressive reading requires a
+corresponding change of the elimination rule.
+\end{remark}
+
+\subsection{The strict checker}
+
+The checker of \pkg{guarded\_register} is a standalone module that imports only the JSON
+library, reads a certificate $[\mathit{goal},\mathit{proof}]$ with a closed goal and prints
+\texttt{ACCEPT} only after checking the goal and the proof; every check is a runtime
+condition, so optimized Python does not remove it. Variables are one-based de Bruijn indices
+and the integer $0$ is the constant. A guarded term is $[\texttt{j},n,h]$, with $h$ binding
+the index $1$; the state-free test is \texttt{subst(h,(0,),1)==h}, which replaces the bound
+state by $0$ and keeps all outer indices, and the alternative test is that $h$ is a $J$ node
+with literal zero body. Both computation nodes validate the whole constructed $J$ term, so an
+unguarded body cannot enter through an axiom, and the node for \eqref{ctr:eq:gR} takes $n$
+and $g$, has no equation premise and no output witness. The six logical nodes are those of
+the matched control for iterator terms, which has the term tags $\Suc$ and $I$ and no body
+restriction. The validation runs $108$ subprocess checks in ordinary and optimized Python
+($48$ acceptances, $60$ rejections, no mismatch), among them rejected certificates that use
+the removed increment and conditional load, unguarded bodies in auxiliary nodes and
+quantified induction, and $12$ parameterized certificates of the equations of
+\cref{ctr:lem:gboot} for $f$, $W$, $Z$, $G$, $C$ and $P$, checked with an empty context. These
+are finite evidence for the implementation.
 
 \section{The seeded recursor: unrestricted calculi and six rules}\label{ctr:sec:six}
 
@@ -3286,8 +3819,8 @@ needs five rules.
 
 This section draws on the measurements stated by \pkg{register\_graph},
 \pkg{canonical\_recursors}, \pkg{clausal\_canonical}, \pkg{counter\_evaluation},
-\pkg{uniform\_binding}, \pkg{uniform\_recursion}, \pkg{single\_constructor} and
-\pkg{constantfree}.
+\pkg{uniform\_binding}, \pkg{uniform\_recursion}, \pkg{single\_constructor},
+\pkg{constantfree} and \pkg{guarded\_register}.
 
 Each row is a complete standalone module in the sense of \cref{base:sec:measure}: imports,
 JSON decoding, validation of syntax and scope, normalization, substitution, every rule and
@@ -3361,6 +3894,10 @@ Iterator terms with inferred opening & 683 & 771 & 1990 & control\\
 \multicolumn{5}{@{}l}{\pkg{constantfree}}\\
 Reference checker for $\mathsf T_J^{\varnothing}$ & 3072 & 3349 & 13723 & new\\
 Reference checker for $\mathsf T_J$, as measured by \pkg{constantfree} & 2811 & 3054 & 12626 & control\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{guarded\_register}}\\
+Strict checker for $\mathcal K_{\mathrm G}$ & 1041 & 1181 & 3467 & new\\
+Strict checker for $\Nat$ on iterator terms, same interface$^\dagger$ & 1045 & 1193 & 3566 & control\\
 \end{longtable}
 
 The comparisons that isolate a change of calculus are those against a matched control. The
@@ -3382,22 +3919,29 @@ implementation, through the construction of the expanded terms, the checks of an
 the scoped rule \eqref{ctr:eq:param}. The control is the reference checker of
 \pkg{register\_graph}, but the figures that \pkg{constantfree} measures for it differ from
 the figures $2814$, $3060$, $13633$ that \pkg{register\_graph} states; the packages do not
-reconcile the two measurements. Compressed sizes are reported by the packages as supplementary
+reconcile the two measurements. The strict checker for $\mathcal K_{\mathrm G}$ is $4$
+tokens, $12$ nodes and $99$ bytes ($2.78\%$) below its control, which has the same JSON
+interface, variable representation, logical nodes, scope checks and acceptance convention;
+the guard, the state-free test and the successor-head test are counted in it. Compressed sizes are reported by the packages as supplementary
 data and are not an optimization target; they are omitted here.
 
 \section{Further questions}\label{ctr:sec:questions}
 
 This section draws on \pkg{register\_graph}, \pkg{canonical\_recursors},
 \pkg{clausal\_canonical}, \pkg{counter\_evaluation}, \pkg{uniform\_binding},
-\pkg{uniform\_recursion}, \pkg{single\_constructor} and \pkg{constantfree}. It collects their open questions,
-the claims that they state without proof, and what they report as not achieved.
+\pkg{uniform\_recursion}, \pkg{single\_constructor}, \pkg{constantfree} and
+\pkg{guarded\_register}. It collects their open questions, the claims that they state
+without proof, and what they report as not achieved.
 
 \paragraph{Status of formalization.}
 None of the calculi and term languages of this chapter is formalized in Lean or Rocq. The
-theorems of \cref{ctr:sec:terms,ctr:sec:counter,ctr:sec:bridge,ctr:sec:constfree,ctr:sec:six,ctr:sec:five,ctr:sec:ce,ctr:sec:three,ctr:sec:bounds}
+theorems of \cref{ctr:sec:terms,ctr:sec:counter,ctr:sec:bridge,ctr:sec:constfree,ctr:sec:guarded,ctr:sec:six,ctr:sec:five,ctr:sec:ce,ctr:sec:three,ctr:sec:bounds}
 are written proofs, and the executable tests of the packages are finite evidence for the
 implementations. The four certificates of \pkg{constantfree} for
-\cref{ctr:lem:cfconst,ctr:cor:cfzero} are checked by its Python checker only. The formalized
+\cref{ctr:lem:cfconst,ctr:cor:cfzero}, and the twelve certificates of
+\pkg{guarded\_register} for \cref{ctr:lem:gboot}, are checked by the Python checkers of
+the packages only; \cref{ctr:thm:gequiv} rests on the formalized \cref{base:thm:bridge},
+whose Lean build \pkg{guarded\_register} did not rerun. The formalized
 results named in \cref{ctr:sec:six,ctr:sec:three} concern
 iterator terms.
 
@@ -3425,7 +3969,35 @@ Can a native checker with $\Q{y}$ and $\D{x}{y}$ share its verified equality pre
 the increment and load steps \eqref{ctr:eq:inc}, \eqref{ctr:eq:load}, so that the register
 grammar also reduces the complete trusted source, when all conditional premises, scope
 checks and syntax checks are counted? \Cref{ctr:prop:regrefl} shows compatibility of the
-basis with such a kernel; no checker for it is supplied.
+basis with such a kernel; no checker for it is supplied. The guarded calculus
+$\mathcal K_{\mathrm G}$ of \cref{ctr:sec:guarded} is a native register kernel of a different
+form: its bodies are restricted, its computations are unconditional, and the conditional
+rules are derived (\cref{ctr:prop:grules}). Its strict checker is below its matched control
+(\cref{ctr:sec:sizes}). For the unrestricted register with conditional rules the question
+remains open.
+\end{question}
+
+\begin{question}[Guarded registers]
+\begin{enumerate}
+\item Can $\mathcal K_{\mathrm G}$ and \cref{ctr:thm:gequiv} be formalized on top of the
+existing development of $\Nat$? \pkg{guarded\_register} gives the equivalence as a written
+proof only.
+\item Is there a complete checker for $\mathcal K_{\mathrm G}$, or for a variant of it, below
+the compact envelope of $256$ tokens, $276$ nodes and $506$ bytes? That envelope combines
+three different programs, a token profile of \pkg{kernel\_refinement} ($256$, $283$,
+$594$), a node profile of \pkg{deterministic\_opening} ($263$, $276$, $580$) and a byte
+profile of \pkg{deterministic\_introduction} ($267$, $303$, $506$), which share a guarded
+public-language contract that differs from the complete validation of the strict checkers.
+The package states that a claim of this kind has to implement the whole certificate
+contract, charge the guard and every scope operation, and compare complete programs under
+the same normalization and acceptance conventions.
+\item \pkg{guarded\_register} reports two shortcuts that it examined and did not use, and
+proves neither claim. Restricting both the introduction of a witness and the specialization
+of a clause at once is said to need a joint completeness argument, since the separate
+completeness arguments may each depend on the unrestricted form of the other rule. Removing
+the scope information before the phase that chooses fresh names is complete is said to
+admit future witnesses.
+\end{enumerate}
 \end{question}
 
 \begin{question}[The register selector and the cost of the counter]
@@ -3577,6 +4149,15 @@ checker for $\mathsf T_J^{\varnothing}$ ($3072$ tokens, $3349$ nodes, $13723$ by
 larger in every coordinate than its control. No minimality of the axiomatization is
 claimed, \cref{ctr:prop:cfsize} is not a bound on checker size, and the measurement of the
 control differs from the one stated by \pkg{register\_graph} (\cref{ctr:sec:sizes}).
+\item The strict checker for $\mathcal K_{\mathrm G}$ ($1041$ tokens, $1181$ nodes, $3467$
+bytes) improves only its matched control; it is larger in every coordinate than each of the
+three compact programs named in the question on guarded registers, and \pkg{guarded\_register} does not
+reach its stated target of a program below their envelope. Its survey of the existing
+programs measured the $442$ distinct Python sources of at most $1500$ source bytes in the
+ninety package trees; the threshold limits the audit, and it is not a lower bound for
+larger sources that normalize to smaller programs. No minimality of the axiomatization or of
+the checker is claimed, and a smaller number of constructors or rule names is not by itself
+a smaller checker.
 \item Concrete limits of the interpreter on recursion depth and memory can reject a valid
 large certificate for every checker of the chapter; completeness is a statement about the
 calculi and about the checkers without such limits.

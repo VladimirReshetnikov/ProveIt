@@ -1,0 +1,63 @@
+EXACT REFACTORING OF THE NEWEST BYTE CONTROL
+
+Pinned repository: VladimirReshetnikov/ProveIt at
+42fba2a76aea6eb41a8c4acfe7761620f58956ee.
+
+Control: docs/incoming/ipra_three_field_2026-11-12.zip,
+ipra_three_field_2026-11-12/code/checker_bytes.py.
+
+The control's function body, after defining its opener, is
+
+    if i(a) in g:
+        return
+    PACKET
+    CONTINUATION
+
+The proposed version is
+
+    if i(a) not in g:
+        PACKET
+        CONTINUATION
+
+There are no statements after CONTINUATION in that function. In Python,
+falling off the end of a function returns None, precisely as a bare return.
+Membership and non-membership use complementary outcomes of the same
+membership operation. Therefore both programs evaluate i(a) and the same
+membership test exactly once. If that operation raises an exception, both
+reject. If membership holds, both return None with no further effects. If
+membership fails, both execute the same PACKET and CONTINUATION statements
+in the same order and then return None. Recursive call behavior is preserved
+by induction on every successful finite execution tree. The same argument
+applies to every finite rejecting execution before its exception. No stream,
+scope, context, formula, proof instruction, or acceptance marker changes.
+
+The verifier confirms by comparing Python ASTs that this control-flow rewrite
+is the entire source change. This is stronger than a collection of sample
+traces, though the argument is not a proof-assistant formalization of Python.
+
+CPython 3.12.14, complete source after ast.unparse plus one LF:
+
+                  tokens   AST nodes   bytes
+control495.py        267       299       495
+checker.py           267       298       492
+
+The byte difference includes all changed indentation and the deleted return.
+The 84 CLI comparisons use 21 existing positive/negative fixtures, both
+standalone modules, and ordinary plus optimized (-O) Python. All outcomes
+match the expected results. No module uses assertions for proof acceptance.
+
+Scope of the result:
+
+* This improves the current observed byte coordinate from 495 to 492.
+* It does not beat the 249-token or 271-AST coordinate records, which belong
+  to other complete modules.
+* It assumes the same canonical guarded-public-goal and integer/list
+  certificate contract as its compact control. It does not silently add
+  full public syntax validation.
+* It does not remove an axiom, schema, inference rule, or semantic assumption.
+  The inherited theorem set, and hence any established bi-interpretation,
+  is preserved by exact execution equivalence. This is an implementation
+  refinement, not a new mathematical presentation or a proof of minimality.
+
+Run python3 verify.py from this directory. The command regenerates
+verification.json, including complete metrics, file hashes, and all outcomes.

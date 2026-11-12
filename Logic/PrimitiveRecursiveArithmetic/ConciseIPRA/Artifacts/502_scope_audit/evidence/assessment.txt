@@ -1,0 +1,63 @@
+Independent mathematical assessment
+===================================
+
+Scope: ProveIt commit b1b3ae103314a9668b9f87c76594ecfcc5c177e6,
+including the supplied smaller_envelope and context_phase packages.
+
+1. No mathematical lower bound is supplied by the coordinate minima.
+   They are minima over a finite collection of concrete Python programs.
+   A new program below them is a measured implementation improvement,
+   not a proof of a globally simplest axiomatization.
+
+2. The compact public contract is a canonical guarded Eq/D goal.
+   It does not validate that complete grammar. Full-input-checking profiles
+   must be compared separately. Ordinary D semantics remains sound for
+   auxiliary unguarded formulas; completeness and spelling interchangeability
+   are only claimed for the designated public grammar and proof compilation.
+
+3. The source-zero switch performs genuine work. Nonzero source selects
+   the equality premise [s,u]; zero selects [t,t,t], a conditional closure.
+   Admissibility of transport at zero does not identify those two majors.
+   Removing the switch while retaining only binary equality would remove QE.
+   Encoding a closure as [B,B] would conflate it with reflexive equality under
+   the existing sorted decoder. A new interpretation and completeness proof
+   would be needed.
+
+4. Replacing the exported closure m*3 by one instance loses reusable
+   specialization under a single witness. In D elimination the assumption
+   is B(b,0) -> forall y B(b,y), not B(b,t) unconditionally. A direct supply
+   of B(b,t) is unsound unless its zero premise is established; permitting
+   only one instance does not straightforwardly simulate arbitrary uses of
+   the same opened witness. The existing clause-context calculi solve this
+   dependency correctly but have larger implementations.
+
+5. The local scope floor equals 1-len(g) at every entry of the 506-byte
+   compact checker. It nevertheless changes within an activation: goals
+   and major premises are checked at the old floor, then continuation
+   goal and hypothesis are opened at the new floor. The old/new distinction
+   enforces eigenvariable freshness. A fixed floor computed from len(g)
+   cannot replace the decrement. The safe substitution of the parameter
+   by k=1-len(g), retaining the decrement, measures 514 normalized bytes,
+   267 significant tokens, 308 AST nodes in this environment: no improvement.
+   The superficially smaller contextfloor_open.py and exact.py prototypes
+   are INVALID and are research scratch only. Do not distribute them.
+
+6. The inferred-major transformation in smaller_envelope has a clean
+   proof: repair each consumed packet's major to the value actually used
+   after the endpoint test. The repaired old run checks that same major,
+   then makes the same continuation. This is successful-trace simulation,
+   not equality of all malformed-input acceptance languages. Canonical
+   completeness uses that numerical templates have no binary equality
+   node, whereas every canonical formula has one, so nonelimination
+   packets cannot accidentally trigger endpoint inference.
+
+7. Future candidate review should inspect: argument evaluation order;
+   walrus updates visible inside the opener closure; goals and majors
+   checked before eigenparameter admission; context mutation through major
+   recursion; whether an invalid raw input newly succeeds; and whether a
+   certificate transformation preserves the public goal and interpretation.
+
+No new 20-token structural reduction was established by this independent
+investigation. The candidate has to earn its improvement by a measured,
+specified transformation; neither classicalizing Q nor dropping the
+zero premise is a permissible shortcut.

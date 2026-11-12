@@ -1,0 +1,138 @@
+EXACT PACKET REGROUPING
+======================
+
+1. Definitions
+--------------
+
+The incumbent program is
+  Artifacts/progress_independence/checker/code/checker_tokens.py
+at ProveIt commit 36d37fc1071fe289371f6bcd7dcfa0eac593a5a6.
+
+An ordinary certificate is a finite JSON list. Its last entry is the public
+goal. The preceding entries are proof packets, consumed from right to left
+by a shared pop operation. A successful packet has four fields [m,s,u,t].
+
+The incumbent unpacks it by
+
+  m, *r = q()
+  s, u, t = r
+
+and later reuses r=[s,u,t] and r[:2]=[s,u]. The candidate changes only the
+first line:
+
+  m, r = q()
+  s, u, t = r
+
+A candidate packet is [m,[s,u,t]]. Every other character of the normalized
+checker source is unchanged. In particular, the scanner, hypothesis test,
+recursive checking of every major, inferred-major test, computation rule,
+introduction rule, immutable context extension, global scope floor, and
+ACCEPT driver all remain present.
+
+For any nonempty list packet p define G(p)=[p[0],p[1:]]. For an empty list
+or a scalar leave the packet unchanged. Apply G to every certificate entry
+except its last, leaving the public goal unchanged. This is exactly group
+in translate.py. It is defined even on malformed packet arities, so those
+are covered by the comparison as well.
+
+2. Step-for-step simulation
+--------------------------
+
+Theorem. On any finite integer/list certificate C, the incumbent succeeds
+on C if and only if the candidate succeeds on G(C), with identical selected
+major formulas, goals, contexts, scope floors and consumed packet counts.
+The statement disregards resource exhaustion due solely to representation
+overhead, as do the repository's other mathematical checker comparisons.
+
+Proof. Before the first packet both programs have the identical goal and
+context and the identical global floor 0. Assume their states agree before
+a packet is consumed.
+
+If the old packet is a four-element list [m,s,u,t], its starred unpacking
+creates the list r=[s,u,t]. The new packet [m,[s,u,t]] binds r to a list
+with exactly those three entries in the same order. Neither program mutates
+r or any object reachable from r. Thus the subsequent evaluation of every
+expression has identical operands and returns identical values or fails
+in the same place.
+
+If the old packet is a nonempty list of another arity, either its first
+unpacking fails or its tail has length other than three and the second
+unpacking fails. G changes it to a pair whose second field is exactly that
+tail, so the candidate also fails before using any packet component. If
+the old packet is empty or a scalar, G leaves it unchanged and both fail
+their unpacking. No failure can print ACCEPT.
+
+At recursive major checks the preceding state equivalence is the induction
+hypothesis for that subcall, including the shared global floor and the
+remaining stream. After it returns, the same floor is decremented at the
+same point; the same image is used for the added hypothesis; and the same
+continuation goal is opened at the same fresh parameter. At a retained
+hypothesis both programs return without consuming a packet. Induction on
+the finite successful execution establishes both directions. An unconsumed
+prefix is permitted by both programs and is irrelevant to their success.
+
+For the reverse map, flatten every consumed candidate packet
+[m,[s,u,t]] to [m,s,u,t]. Every successful candidate execution necessarily
+unpacks both these arities, so the reverse simulation applies to every
+consumed packet. Arbitrary unused prefix entries may be replaced by inert
+scalar entries. The public goal is always preserved.
+
+3. Consequences for iPRA
+-----------------------
+
+The theorem does not change a formula, an arithmetic interpretation, a
+logical rule, or a numerical domain. It proves equality of the two sets of
+canonical public theorems. Relative to the repository's correctness and
+canonical-completeness theorem for its guarded presentation, the grouped
+program therefore presents exactly the same theory. Any equiconsistency
+and bi-interpretation of that ordinary realization with iPRA are inherited
+with precisely the same maps and identity composites.
+
+There is no new proof of that inherited arithmetic bridge in this package.
+In particular, finite regression tests would not prove bi-interpretability.
+
+4. The trust boundary
+---------------------
+
+The 250-token module is measured on the incumbent compact contract:
+finite integer/list certificate syntax and a canonical closed guarded
+Eq/D public goal, with administrative Eq/Q/D intermediates interpreted by
+the existing sorted decoder. Its scanner enforces the existing scope
+discipline. Its short source does not enforce the promised public grammar
+or the entire input alphabet by itself. Consequently 250 is not the size
+of a parser plus a fully enforced arbitrary-JSON public interface.
+
+The strict companion includes both checks. On an already parsed finite
+JSON value, its printed-form character check admits precisely the finite
+integer/list alphabet, including all unused prefix entries. Its recursive
+public validator checks Eq/D and numerical arities and the literal guard
+under D. The root scope traversal inside c checks the remaining bounds.
+Those operations are physically present in the measured 402-token module.
+
+Regrouping adds only list constructors and preserves every scalar, so a
+certificate satisfies the alphabet check exactly when its regrouping does.
+Its public goal is unchanged. The same simulation therefore proves the
+matched strict-interface equivalence. The native public-goal validator
+measured at 643 bytes elsewhere has a different interface and is not the
+matched baseline for this stronger alphabet-plus-guard check.
+
+5. Complexity and what has not been proved
+-----------------------------------------
+
+CPython 3.12.14, ast.unparse with one final LF, gives:
+
+  Compact control: 251 significant tokens, 283 AST nodes, 605 UTF-8 bytes.
+  Grouped compact: 250 significant tokens, 281 AST nodes, 604 UTF-8 bytes.
+  Strict control:  403 significant tokens, 453 AST nodes, 972 UTF-8 bytes.
+  Grouped strict:  402 significant tokens, 451 AST nodes, 971 UTF-8 bytes.
+
+These are complete modules, including JSON parsing and acceptance output;
+no compressed payload or unmeasured runtime helper implements the checker.
+The Python and JSON runtimes have the same status as in the controls.
+
+The existing compact minima (251,275,502) come from different programs.
+Only their first coordinate is improved: (250,275,502) is the new collected
+envelope. No program here has all three of those values or improves all
+three previous minima. No mathematical lower bound on all possible iPRA
+presentations is claimed. The change is certificate regrouping, not a new
+axiomatization or a mathematical simplification of the rule basis.
