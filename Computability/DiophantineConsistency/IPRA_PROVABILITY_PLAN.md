@@ -7545,6 +7545,10 @@ propose the orientation, rank congruence and compact-Mersenne cancellation
 needed for the preceding 84/85 comparison. They remain unelaborated; the
 projection-growth, graph bindings, provider compatibility and endpoint are
 still open.
+The source-reviewed [85-operation Lean graph draft](research/ordinary14-qcube85-lean-draft/README.md)
+and [84/85 ring comparison draft](research/ordinary14-84-85-ring-client-draft/README.md)
+propose the literal field comparison under explicit substitutions. They are
+unelaborated and do not establish positive-model witnesses or an endpoint.
 The source-reviewed [modified-carrier gamma-growth draft](research/ordinary14-modified-carrier-gamma-model-draft/README.md)
 proposes the needed strict positivity using existing Pell growth lemmas under
 explicit index and carrier hypotheses. It is unelaborated and is not yet
