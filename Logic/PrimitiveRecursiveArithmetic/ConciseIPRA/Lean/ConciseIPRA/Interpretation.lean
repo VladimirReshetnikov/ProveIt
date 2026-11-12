@@ -58,29 +58,24 @@ theorem iffImp (h₁ : Γ ⊢[Ax] Fm.iff φ φ') (h₂ : Γ ⊢[Ax] Fm.iff ψ ψ
 
 theorem iffAll {φ φ' : Fm T (n + 1)} (h : Γ.map Fm.shift ⊢[Ax] Fm.iff φ φ') :
     Γ ⊢[Ax] Fm.iff (Fm.all φ) (Fm.all φ') := by
-  have s : Γ.map Fm.shift ⊆ (Fm.all φ :: Γ).map Fm.shift :=
+  have s (ψ : Fm T n) : Γ.map Fm.shift ⊆ (ψ :: Γ).map Fm.shift :=
     List.map_subset _ (List.subset_cons_self _ _)
-  have s' : Γ.map Fm.shift ⊆ (Fm.all φ' :: Γ).map Fm.shift :=
-    List.map_subset _ (List.subset_cons_self _ _)
-  exact iffI (.impI (.allI (iffMp (h.weaken s) (allOpen hyp0))))
-    (.impI (.allI (iffMpr (h.weaken s') (allOpen hyp0))))
+  exact iffI (.impI (.allI (iffMp (h.weaken (s _)) (allOpen hyp0))))
+    (.impI (.allI (iffMpr (h.weaken (s _)) (allOpen hyp0))))
 
 /-- Existential introduction at the bound variable itself. -/
 theorem exOpen {φ : Fm T (n + 1)} {Δ : List (Fm T (n + 1))} (h : Δ ⊢[Ax] φ) :
     Δ ⊢[Ax] (Fm.ex φ).shift := by
-  have : Δ ⊢[Ax] Fm.ex (φ.subst (up (fun i => var i.succ))) := by
-    refine .exI (var 0) ?_
-    rwa [Fm.subst_up_succ_inst]
-  exact this
+  show Δ ⊢[Ax] Fm.ex (φ.subst (up (fun i => var i.succ)))
+  refine .exI (var 0) ?_
+  rwa [Fm.subst_up_succ_inst]
 
 theorem iffEx {φ φ' : Fm T (n + 1)} (h : Γ.map Fm.shift ⊢[Ax] Fm.iff φ φ') :
     Γ ⊢[Ax] Fm.iff (Fm.ex φ) (Fm.ex φ') := by
-  have s : Γ.map Fm.shift ⊆ φ :: (Fm.ex φ :: Γ).map Fm.shift :=
-    fun χ hχ => List.mem_cons_of_mem _ (List.map_subset _ (List.subset_cons_self _ _) hχ)
-  have s' : Γ.map Fm.shift ⊆ φ' :: (Fm.ex φ' :: Γ).map Fm.shift :=
-    fun χ hχ => List.mem_cons_of_mem _ (List.map_subset _ (List.subset_cons_self _ _) hχ)
-  exact iffI (.impI (.exE hyp0 (exOpen (iffMp (h.weaken s) hyp0))))
-    (.impI (.exE hyp0 (exOpen (iffMpr (h.weaken s') hyp0))))
+  have s (χ : Fm T (n + 1)) (ψ : Fm T n) : Γ.map Fm.shift ⊆ χ :: (ψ :: Γ).map Fm.shift :=
+    fun χ' hχ => List.mem_cons_of_mem _ (List.map_subset _ (List.subset_cons_self _ _) hχ)
+  exact iffI (.impI (.exE hyp0 (exOpen (iffMp (h.weaken (s _ _)) hyp0))))
+    (.impI (.exE hyp0 (exOpen (iffMpr (h.weaken (s _ _)) hyp0))))
 
 theorem eqIff {s s' t t' : T n} (h₁ : Γ ⊢[Ax] s ≐ s') (h₂ : Γ ⊢[Ax] t ≐ t') :
     Γ ⊢[Ax] Fm.iff (s ≐ t) (s' ≐ t') :=
@@ -166,9 +161,8 @@ theorem f_repl (s : T (n + 1)) :
 theorem f_shift (t : T n) (Γ : List (Fm T' (n + 1))) :
     Γ ⊢[Ax'] F.f (n + 1) (Syn.shift t) ≐ Syn.shift (F.f n t) := by
   have h := (F.f_subst (fun i => var i.succ) t).ofNil (Γ := Γ)
-  have e : (fun i : Fin n => F.f (n + 1) (var i.succ)) = fun i => var i.succ :=
-    funext fun i => F.f_var _
-  rwa [e] at h
+  simp only [F.f_var] at h
+  exact h
 
 theorem f_up (ρ : Fin n → T m) (Γ : List (Fm T' (m + 1))) (i : Fin (n + 1)) :
     Γ ⊢[Ax'] F.f (m + 1) (up ρ i) ≐ up (fun i => F.f m (ρ i)) i := by
@@ -202,9 +196,8 @@ theorem map_inst (φ : Fm T (n + 1)) (t : T n) (Γ : List (Fm T' n)) :
 theorem map_shift (φ : Fm T n) (Γ : List (Fm T' (n + 1))) :
     Γ ⊢[Ax'] Fm.iff (φ.shift.map F.f) (φ.map F.f).shift := by
   have h := F.map_subst φ (fun i => var i.succ) Γ
-  have e : (fun i : Fin n => F.f (n + 1) (var i.succ)) = fun i => var i.succ :=
-    funext fun i => F.f_var _
-  rwa [e] at h
+  simp only [F.f_var] at h
+  exact h
 
 theorem shiftCtx (Γ : List (Fm T n)) :
     ∀ χ ∈ (Γ.map Fm.shift).map (Fm.map F.f),
