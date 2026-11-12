@@ -7816,6 +7816,10 @@ The independently source-reviewed [natural-81 endpoint draft](research/ordinary1
 proposes those connections through native, standard and equality-only iPRA
 clients. Its declarations and five axiom-report commands remain unelaborated
 and unexecuted; provider and physical-equation bindings remain open.
+The independently reviewed [natural-81 endpoint inventory](research/ordinary14-natural81-endpoint-import-inventory/README.md)
+records 173 lexical draft modules and 38 directly named qualified sources.
+The existing slim overlay lacks 15 of those drafts; actual Lean resolution
+and coherent provider closure remain unverified.
 The independently source-reviewed [82-to-86 bridge draft](research/ordinary14-natural-forced82-ring-bridge-draft/README.md)
 proposes a changed-valuation ring identity and conditional model zero maps.
 Its natural-model existence equivalence assumes, rather than proves, that
