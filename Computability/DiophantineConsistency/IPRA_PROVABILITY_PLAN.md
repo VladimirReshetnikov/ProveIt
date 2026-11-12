@@ -96,6 +96,10 @@ follows recorded prefix and base routes to 65 Mathlib modules, three Foundation
 modules and `Init`, and checks bounded retained evidence. Compiled-import,
 source-to-object and runtime closure, as well as actual Lean resolution,
 remain unverified.
+The independently reviewed [external source-frontier expansion](research/current14-carrier65-external-frontier-source-audit/README.md)
+records one generation of available source headers from a broader recorded
+seed set, including `import all` and `meta import` observations. It leaves
+764 names unexpanded and does not establish compiled-object or runtime closure.
 
 The [65-gate graph-to-expression theorem](research/current14-carrier65-dag-expression-retry-check/README.md)
 now checks an explicit live circuit for the maintained Lean expression, with
