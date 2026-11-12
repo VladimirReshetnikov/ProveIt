@@ -7611,6 +7611,10 @@ The source-reviewed [85 guard/rank draft](research/ordinary14-85-guard-rank-draf
 starts the reverse calibration from the 85 graph's own zero, without assuming
 `q ∣ X` or an 84/FreeJ zero. It remains unelaborated and does not complete
 that calibration or the endpoint.
+The source-reviewed [85 direct first/strong norms draft](research/ordinary14-85-direct-norms-draft/README.md)
+proposes both identities from the same 85-graph zero without assuming
+`q ∣ X`. It remains unelaborated; main/auxiliary norms and power recovery
+are still required.
 The source-reviewed [84 main-index draft](research/ordinary14-84-main-index-draft/README.md)
 proposes classifying the main root while retaining the natural balance. It is
 unelaborated and does not identify that index with the rank.
