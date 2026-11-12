@@ -7739,6 +7739,11 @@ propose the symbolic endpoint declarations. Their [static import inventory](rese
 is limited to source headers and direct qualified imports. The full chain is
 unelaborated; providers, axiom checks, physical-byte binding and the iPRA
 proof-existence claim remain open.
+The reviewed [root-74 endpoint scope audit](research/ordinary14-root74-endpoint-scope-audit/README.md)
+records the exact mapped refutation target and the `positiveShift` used by
+the proposed declarations. The 74-operation count applies to the unshifted
+strictly-positive graph; a count for the shifted natural-input expression is
+separate. No Lean elaboration or byte/PDF binding has been established.
 The independently source-reviewed [isolated root-74 slim overlay](research/ordinary14-root74-slim-overlay/README.md)
 extends the earlier replacement to the 74 endpoint in copied draft sources.
 Its bounded source/object observations are not a Lean dependency resolution,
