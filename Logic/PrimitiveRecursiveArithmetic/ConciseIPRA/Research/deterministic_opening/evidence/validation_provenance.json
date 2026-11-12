@@ -1,0 +1,27 @@
+{
+  "repository": "VladimirReshetnikov/ProveIt",
+  "commit": "17898ea7e6a1300dfdcad71040d5daeed67916d4",
+  "archive": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/incoming/ipra_witness_discharge_2026-11-11.zip",
+  "copied_sources": [
+    {
+      "local_path": "reference/witness_discharge_checker.py",
+      "upstream_archive_path": "code/checker.py",
+      "sha256": "777c764029ce8d2bce10c58f8bcf94624889c53a9c66c4f3504a6f9b3e9f4f40",
+      "byte_identical": true
+    },
+    {
+      "local_path": "validation/inherited_reference_kernel.py",
+      "upstream_archive_path": "validation/reference_kernel.py",
+      "sha256": "23b4382720a593812de0a2e8bd1b9592043f6ec48af85c4f55242df18ab7a07a",
+      "byte_identical": true
+    }
+  ],
+  "adapted_constructions": [
+    "validation/macros.py adapts the upstream two-row selector/parity proof construction, reversing its informative rows so equality occurs at row 1.",
+    "validation/macros_open.py changes the local clause according to automatic witness opening; it does not perform conclusion substitution."
+  ],
+  "new_producers": [
+    "validation/translate.py implements deterministic-discharge to explicit witness-discharge, with independent old-kernel replay.",
+    "validation/generate_open.py constructs matched proof families; it is not a generic opening-to-old translation."
+  ]
+}

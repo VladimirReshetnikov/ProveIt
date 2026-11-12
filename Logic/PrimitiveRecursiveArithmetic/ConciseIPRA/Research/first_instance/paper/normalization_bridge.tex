@@ -1,0 +1,492 @@
+% Self-contained normalization and raw/normal-form comparison.
+% Adapted with explicit attribution from Research/full_normalization and
+% incoming ipra_witness_discharge_2026-11-11/report.tex, normalization appendix.
+% New explanatory addition: the administrative-let proof for the strict
+% normalizer, including evaluation of an argument erased by the update.
+
+\section{Normalization and a direct bridge to raw Choice-DI}
+\label{sec:normalization-bridge}
+\label{sec:canonical-bridge}
+
+This section reconstructs the normalization and raw-comparison arguments
+of the repository's full-normalization package~\cite{normalization} and the
+incoming witness-discharge report~\cite{witness}. The
+compound-envelope repair is inherited from those sources. The direct
+comparison below connects the present deterministic Name calculus to the
+raw Choice-DI foundations included later, without taking the incoming
+witness-discharge equivalence as a black box. The explicit
+administrative-\texttt{let} argument also accounts for the selected
+normalizer's strict evaluation of a recursive value that its update may
+subsequently discard.
+
+All assertions about normalization in this section are external theorems
+about finite syntax. They are not new arithmetic axioms or an
+object-language uniform evaluator.
+
+\subsection{Strong normalization of scalar computation}
+
+On raw terms $x,0,St,I(n,a;u.h)$ let $\longrightarrow$ be the contextual
+closure, including under update binders, of
+\[
+ I(0,a;u.h)\longrightarrow a,\qquad
+ I(Sn,a;u.h)\longrightarrow h[I(n,a;u.h)/u].
+ \tag{Raw computation}\label{eq:nb-reduction}
+\]
+Bound variables are freshened before substitution. These reductions are
+stable under capture-avoiding substitution. Call a finite term strongly
+normalizing if it has no infinite reduction sequence. For such a term $t$,
+write $\nu(t)$ for the largest length of a reduction beginning at $t$ and
+$|t|$ for its syntax-tree size. The maximum exists because the reduction
+tree is finitely branching and has no infinite path.
+
+\begin{lemma}[Closure under iteration]
+\label{lem:nb-iterator}
+Suppose $n,a$ are strongly normalizing and $h[v/u]$ is strongly normalizing
+for every strongly normalizing $v$. Then $I(n,a;u.h)$ is strongly
+normalizing.
+\end{lemma}
+\begin{proof}
+Taking $v=u$ shows that $h$ is strongly normalizing. Induct
+lexicographically on
+\[
+            (\nu(n),\ |n|,\ \nu(a)+\nu(h)).
+\]
+It suffices to show that every one-step reduct of the iterator is strongly
+normalizing. A contraction inside $n$ decreases the first coordinate.
+A contraction inside $a$ or $h$ decreases the last. If $h\to h'$, then
+$h'[v/u]$ is a reduct of $h[v/u]$ for every $v$, so the universal body
+hypothesis persists. The zero root reduct is $a$. For a successor root
+$n=Sp$, we have $\nu(p)=\nu(n)$ and $|p|<|n|$. The induction hypothesis
+makes $I(p,a;u.h)$ strongly normalizing, and the hypothesis about $h$
+then applies to the successor root reduct
+$h[I(p,a;u.h)/u]$.
+\end{proof}
+
+\begin{theorem}[Strong normalization]
+\label{thm:nb-sn}
+Replacing the free variables of any fixed finite raw term by strongly
+normalizing terms produces a strongly normalizing term. In particular,
+every finite raw term is strongly normalizing.
+\end{theorem}
+\begin{proof}
+Induct on the fixed raw term, using simultaneous capture-free substitutions.
+Variables, zero, and successor are immediate. At an iterator, first rename
+its bound state variable away from the finitely many substituting terms.
+The structural induction hypotheses give strongly normalizing counter and
+initializer instances. The induction hypothesis for the strictly smaller
+update term applies to every additional strongly normalizing assignment
+for its state variable. It gives exactly the universal premise of
+Lemma~\ref{lem:nb-iterator}. The identity substitution yields the last
+assertion.
+\end{proof}
+
+\subsection{Confluence and normalization--substitution coherence}
+
+\begin{lemma}[Confluence]
+\label{lem:nb-confluence}
+The reduction~\eqref{eq:nb-reduction} is confluent. Every term has a unique
+normal form $N(t)$, up to alpha-renaming, and literally with de Bruijn
+indices.
+\end{lemma}
+\begin{proof}
+First check local confluence. Disjoint redex contractions commute, and
+the zero and successor root patterns do not overlap. If an inner redex
+lies inside a root contraction, contract each of its residual copies on
+the other path. A zero contraction returns its initializer and erases
+the entire update; erased residuals require no step. A successor
+contraction may copy its recursive iterator into
+several update positions. The update is finite, so only finitely many
+copies arise, and substitution stability gives a common reduct after
+contracting them. An inner contraction of the update itself is handled
+both in the outer substituted update and in the retained recursive
+iterator. These are all nested overlaps.
+
+Strong normalization and local confluence imply confluence: induct on
+the reduction height of a common source to join the first steps of two
+finite reductions and then their remaining tails. Thus two normal forms
+reachable from a term are equal up to bound-variable naming.
+\end{proof}
+
+A term is normal exactly when its children are normal and no iterator
+counter is headed by $0$ or by $S$. Formula normalization changes only
+numerical terms; the equality and $D$ constructors are preserved.
+
+\begin{lemma}[Coherence]
+\label{lem:nb-coherence}
+For every finite raw term $t$ and capture-free substitution $\sigma$,
+\[
+ N(t[\sigma])=
+ N\bigl(N(t)[x\mapsto N(\sigma x)]\bigr).
+ \tag{Coherence}\label{eq:nb-coherence}
+\]
+The same equality holds for formulas. Normalized substitution consequently
+obeys identity, composition, renaming, and the usual binder-lifting laws.
+\end{lemma}
+\begin{proof}
+The reduction $t\to^*N(t)$ survives raw substitution. Within the finitely
+many substituted copies, reduce each $\sigma x$ to $N(\sigma x)$.
+The resulting terms are convertible, and confluence makes their normal
+forms identical. Applying this observation twice and using composition
+of raw substitutions proves
+\[
+ N\bigl(N(t[\sigma])[\tau]\bigr)
+   =N\bigl(t[x\mapsto N((\sigma x)[\tau])]\bigr).
+\]
+Identity, renaming, and lifting are special cases. The formula assertion
+follows structurally because formula constructors do not reduce.
+\end{proof}
+
+\paragraph{The strict implementation also terminates.}
+The selected traversal normalizes the counter, initializer, and update
+first. At a successor counter it normalizes the predecessor iterate
+before inserting it into the update. If the update ignores its state,
+that recursive value would have been erased by the direct raw root
+contraction, so this strict evaluation deserves an explicit justification.
+
+Introduce an administrative term $\mathsf{let}\ u=a\ \mathsf{in}\ h$,
+with its usual capture-free reduction to $h[a/u]$, and replace the
+successor root rule in the auxiliary syntax by
+\[
+ I(Sn,a;u.h)\longrightarrow
+       \mathsf{let}\ v=I(n,a;u.h)\ \mathsf{in}\ h[v/u],
+ \tag{Strict expansion}
+\]
+where $v$ is fresh. Reduce under all constructors and let components.
+The zero rule is unchanged. There are no new normal forms: every let
+has a root contraction, and its contraction composes a strict expansion
+to the original successor computation.
+
+For this auxiliary reduction, a let is strongly normalizing whenever
+its value is strongly normalizing and its body sends every strongly
+normalizing substitution to a strongly normalizing term. Induction on
+the sum of the component reduction heights proves this: internal
+contractions decrease the sum, and the root contraction is covered by
+the universal body hypothesis. The proof of
+Lemma~\ref{lem:nb-iterator} now uses this let-closure fact at its successor
+root, after obtaining the predecessor iterate by the same lexicographic
+induction. Structural induction, also including the let constructor,
+therefore proves strong normalization of the auxiliary syntax.
+
+The strict traversal is an evaluation strategy in this auxiliary
+calculus: after strict expansion, it first normalizes the let value and
+then contracts the let. Thus its recursive computational work cannot
+continue indefinitely, even in the erased-value case. Between those
+contractions it performs finite tree traversals and index renamings.
+Forgetting administrative lets preserves conversion in the original
+calculus; its returned normal term is therefore the unique $N(t)$.
+The same argument and~\eqref{eq:nb-coherence} identify hereditary
+substitution with normalized capture-free substitution. No uniform
+termination theorem inside iPRA has been invoked.
+
+\subsection{The raw reference calculus and its harmless clause convention}
+
+Let $\mathcal C_{\mathrm{raw}}$ be raw Choice-DI over the terms of
+\eqref{eq:nb-reduction} and formulas $s=t,D_{x,y}B$. It has the two raw
+computation equations, formula transport, clause Use, ordinary paired
+elimination, and the two separate introductions
+\[
+ \frac{\Gamma,B(t,0)\vdash B(t,Sz)}{\Gamma\vdash D_{x,y}B},
+ \qquad
+ \frac{\Gamma,E(t,z)\vdash E(t,Sz)}{\Gamma\vdash D_{x,y}E},
+ \tag{Raw introductions}\label{eq:nb-raw-intro}
+\]
+where the second matrix is a literal equation and all eigenvariable
+conditions are as in the inherited Choice-DI foundations.
+
+For comparison we allow clauses with zero or one antecedent and retain
+$\mathcal R=[\,;y.y=y]$. This is only an interface convention. In the
+inherited single-antecedent raw calculus, replace an unconditional clause
+$[\,;y.B]$ by $[H;y.B]$ and supply the theorem $H$ to each use.
+Every use of $\mathcal R$ is replaced by derived raw reflexivity.
+Conversely the optional-premise interface admits all single-antecedent
+clauses. The inherited computation theorem used as a neutral antecedent
+there and $H$ are both theorems, so those ordinary-assumption encodings
+are interchangeable by inserting the corresponding neutral proof.
+No new arithmetical or logical axiom is added by this convention.
+
+The included Choice-DI development derives equation induction with
+arbitrary passive contexts, numerical cases, all ordinary equality
+reasoning, and binder congruence. Its logical and scalar arithmetic
+bridges identify its ordinary realization with full first-order iPRA.
+We use those results, rather than an assertion only about standard
+natural-number models.
+
+\subsection{Raw provability of normalization, including update binders}
+
+Transport in a numerical parameter does not permit a free variable in
+an equality proof to become captured by an iterator update. The needed
+update congruence follows from literal-equation induction.
+
+\begin{lemma}[Update extensionality]
+\label{lem:nb-update}
+If $u$ is fresh for $\Gamma$ and
+$\Gamma\vdash_{\mathcal C_{\mathrm{raw}}}h(u)=k(u)$, then, after
+freshening binders away from the passive data,
+\[
+ \Gamma\vdash_{\mathcal C_{\mathrm{raw}}}
+     I(n,a;u.h)=I(n,a;u.k)
+\]
+for every counter $n$ and initializer $a$.
+\end{lemma}
+\begin{proof}
+Apply derived literal-equation induction to
+$E(z):=(I(z,a;u.h)=I(z,a;u.k))$, with $z$ fresh for the retained data.
+At zero both sides compute to $a$. In the successor step, write the
+left and right predecessor iterates as $L$ and $R$. Computation gives
+$h(L)$ and $k(R)$. Capture-free numerical substitution in the supplied
+pointwise proof gives $h(L)=k(L)$; the induction hypothesis $L=R$
+and ordinary term transport give $k(L)=k(R)$. Transitivity and the
+two successor computations prove $E(Sz)$. Induction gives $E(n)$.
+Only the literal equation $E$ is inducted on.
+\end{proof}
+
+\begin{lemma}[Internal normalization equivalence]
+\label{lem:nb-internal}
+For every fixed finite raw term $t$,
+\[
+              \vdash_{\mathcal C_{\mathrm{raw}}}t=N(t).
+\]
+For every fixed raw formula $A$, the formulas $A$ and $N(A)$ are
+interderivable, uniformly under additional retained contexts.
+\end{lemma}
+\begin{proof}
+Each root contraction is one raw computation equation. Ordinary
+transport handles a contraction inside a successor, counter, or
+initializer. For a contraction beneath an update binder, use
+Lemma~\ref{lem:nb-update}, repeating it for nested update contexts.
+Thus every step in a finite normalization sequence is internally a
+provable equality. Transitivity gives $t=N(t)$.
+
+For formulas, induct externally on formula depth. At an equation,
+normalize its two terms using the proved term equalities. At
+$D_{x,y}B$, open the source formula at a fresh witness, introduce the
+target at that same witness by case introduction, convert the new
+zero base to the old one by the induction hypothesis, use the old
+clause at a fresh successor, and convert the result back. Reverse the
+conversions for the reverse implication. Substitution may create fresh
+redexes in both an instance of $B$ and the corresponding instance of
+$N(B)$: apply the smaller-depth induction hypothesis to both instances
+and use coherence to identify their common normal form. These are uniform
+derivations under every passive context. The construction uses
+derived binder congruence; it never captures a free variable by an
+ordinary equality transport.
+\end{proof}
+
+\paragraph{Replacing a retained clause.}
+If antecedents $A,A'$ are uniformly interderivable and bodies $B(y),B'(y)$
+are uniformly interderivable, then the clauses $[A;y.B]$ and
+$[A';y.B']$ are interchangeable in derivations. Replace each use of the
+old clause by conversion to the new antecedent, use of the new clause,
+and conversion of its specialized conclusion. Induction on proof trees,
+with fresh local eigenparameters, justifies this under further retained
+clauses. The same statement holds for unconditional clauses, with no
+antecedent conversion. In particular, a raw context and its normalized
+context have the same consequences after the corresponding formula
+conversions. This supplies the context-conversion step explicitly,
+rather than presuming that ordinary-assumption cut alone rewrites a
+conditional-universal clause.
+
+\subsection{Repairing the omitted case introduction at witness zero}
+
+Write $\mathcal A$ for the deterministic three-family calculus specified
+in Section~\ref{sec:deterministic-name}. Its previously derived ordinary
+elimination and numerical cases require no equality transport. For unused
+$u$, put $q_v F(v)=D_{u,v}F(v)$. For an equation $E=(s=t)$ define
+\[
+ G_vE=(C(v,0,s)=C(v,0,t)),\qquad L(E)=q_vG_vE,
+\]
+with all terms normalized and all new variables fresh. Direct computation
+gives $G_0E\equiv H$ and $G_{Sw}E\equiv E$.
+
+\begin{lemma}[Compound envelope]
+\label{lem:nb-envelope}
+In $\mathcal A$, an equation $E$ and its compound envelope $L(E)$ are
+interderivable under every retained context, without equality transport.
+\end{lemma}
+\begin{proof}
+Under $E$, introduce the unused witness of $q_vG_vE$ at $1$. Its
+successor premise is literally $E$, so this is case introduction.
+Conversely, open $q_vG_vE$ by derived ordinary elimination. Its clause
+has antecedent $H$. Prove $H$ by the fixed reflexivity clause and use
+the opened clause at $1$ to obtain $E$.
+\end{proof}
+
+\begin{lemma}[Unrestricted case introduction]
+\label{lem:nb-all-cases}
+The case introduction in~\eqref{eq:nb-raw-intro}, with normalized
+substitution throughout, is derivable in $\mathcal A$ for every witness
+and every matrix.
+\end{lemma}
+\begin{proof}
+Only a literal-equation matrix $E(x,y)$ at the literal witness zero
+is missing from the primitive case mode. Suppose
+$\Gamma,E(0,0)\vdash E(0,Sz)$ is supplied. Put
+$A(x,y)=L(E(x,y))$ with suitably fresh envelope binders. Under
+$A(0,0)$, unwrap its envelope, insert the supplied derivation by
+ordinary-assumption cut, and wrap the result. This gives $A(0,Sz)$.
+Since $A$ has a $D$ root, primitive Intro at zero now selects cases,
+and yields $D_{x,y}A(x,y)$.
+
+Open it by ordinary elimination at a fresh $c$. Introduce
+$D_{x,y}E(x,y)$ at witness $c$. Its syntax is a parameter rather than
+literal zero, so Intro again selects cases. Under $E(c,0)$, wrap the
+equation to $A(c,0)$, use the opened clause at $Sz$, and unwrap
+$A(c,Sz)$ to $E(c,Sz)$. Closing Intro and ordinary elimination gives
+the desired formula. No claim that $c\ne0$ is used.
+\end{proof}
+
+\begin{lemma}[Equation progress at every witness]
+\label{lem:nb-all-progress}
+The equation-progress introduction in~\eqref{eq:nb-raw-intro}, with
+normalized substitution, is derivable in $\mathcal A$ for every witness.
+\end{lemma}
+\begin{proof}
+Given $\Gamma,E(t,z)\vdash E(t,Sz)$, use a fresh unused witness
+coordinate $w$. Primitive Intro at zero on the equation matrix
+$E(t,y)$ yields $D_{w,y}E(t,y)$ by progress. Under the prospective
+outer case assumption $E(t,0)$, open this formula by ordinary
+elimination and use its clause at $Sz$. This provides the successor
+premise for unrestricted case introduction of $D_{x,y}E(x,y)$
+at witness $t$, available by Lemma~\ref{lem:nb-all-cases}.
+The unused coordinate prevents the opened witness from replacing $t$.
+\end{proof}
+
+\subsection{An auxiliary normal-form calculus}
+
+Let $\mathcal C_{\mathrm{nf}}^+$ use canonical terms and formulas,
+normalized substitution, optional-premise clauses and the fixed
+reflexivity clause. Its rules are Use, ordinary paired elimination,
+full formula transport, and the separate unrestricted case and
+literal-equation progress introductions. There is no separate
+computation axiom, since both computation equations normalize to
+reflexivity.
+
+\begin{proposition}[Canonical Choice-DI and the new calculus]
+\label{prop:nb-canonical-choice}
+The calculi $\mathcal C_{\mathrm{nf}}^+$ and $\mathcal A$ derive the
+same canonical sequents.
+\end{proposition}
+\begin{proof}
+Translate $\mathcal C_{\mathrm{nf}}^+$ to $\mathcal A$ by using its
+derived ordinary elimination, term and formula transport, and
+Lemmas~\ref{lem:nb-all-cases}--\ref{lem:nb-all-progress}. Use and the
+fixed reflexivity clause are shared.
+
+Conversely each primitive Intro is one of the two available choices.
+For Name, ordinary elimination opens its witness clause. When the
+deterministic guard succeeds, Use at $1$, supplied with reflexivity
+of zero, proves the selected equality; otherwise reflexivity proves
+$b=b$. Full formula transport gives the exported normalized formula,
+whose stipulated freedom from $b$ permits ordinary elimination to
+close. All translations preserve the entire canonical end sequent.
+\end{proof}
+
+\subsection{Both proof translations and both composites}
+
+Let $T$ normalize all numerical terms in raw formulas and clauses.
+Let $U$ regard canonical syntax as raw syntax. These are operations on
+finite descriptions, not extra operations on the numerical domain.
+
+\begin{theorem}[Direct raw/canonical comparison]
+\label{thm:direct-raw-canonical}
+For every raw sequent and every canonical sequent,
+\begin{align*}
+ \Gamma\vdash_{\mathcal C_{\mathrm{raw}}}A
+  &\quad\Longleftrightarrow\quad
+        T\Gamma\vdash_{\mathcal A}T A,\\
+ \Delta\vdash_{\mathcal A}B
+  &\quad\Longleftrightarrow\quad
+        U\Delta\vdash_{\mathcal C_{\mathrm{raw}}}U B.
+\end{align*}
+Moreover $TU(B)=B$ literally, and $A$ and $UT(A)$ are uniformly
+interderivable in the raw calculus. The corresponding clause-context
+composites are interchangeable in every derivation.
+\end{theorem}
+\begin{proof}
+First translate a raw derivation into $\mathcal C_{\mathrm{nf}}^+$
+by induction on derivations. The two computation equations have
+identical normal forms on their two sides, so become reflexivity.
+Coherence~\eqref{eq:nb-coherence} makes the other normalized
+premises and conclusions instances of the corresponding canonical
+rules. Equation-root status is preserved, and normalization cannot
+introduce a new free eigenparameter. Crucially, the auxiliary calculus
+retains both introduction choices, so this translation never assumes
+that a nonzero-syntax raw witness stays nonzero after normalization.
+Proposition~\ref{prop:nb-canonical-choice} then translates to
+$\mathcal A$.
+
+In the reverse direction first translate $\mathcal A$ to
+$\mathcal C_{\mathrm{nf}}^+$. Regard its canonical formulas as raw.
+For a raw rule whose substitution instance is not already normal,
+Lemma~\ref{lem:nb-internal} converts the normalized premises to raw
+instances, the raw rule is applied, and its conclusion is converted
+back. The retained clause of an elimination may have a normalized
+zero antecedent instead of the literal raw substitution instance;
+the explicit clause-replacement construction above converts that
+context. The same reasoning handles Intro's temporary ordinary
+assumption. Raw reflexivity supplies the fixed reflexivity-clause
+uses. Thus induction on canonical derivations gives a raw proof
+with the stated end sequent.
+
+On canonical syntax $TU$ is literal identity. On raw syntax $UT$
+is formula normalization, whose internal equivalence and clause
+interchangeability were proved above. Composing the two proof
+translations with these equivalences gives both reverse implications
+in the displayed statements as well as the composites.
+\end{proof}
+
+\begin{corollary}[Full first-order bi-interpretation]
+\label{cor:nb-full-ipra}
+Composing the direct comparison with the included Choice-DI logical and
+scalar arithmetic bridges gives a bi-interpretation of the present
+calculus with full first-order intuitionistic primitive recursive
+arithmetic. Both numerical domains are whole, both equalities are
+actual equality, and both numerical composite isomorphisms have graph
+$x=y$. Both complete formula composites are internally provable.
+The theories are equiconsistent.
+\end{corollary}
+\begin{proof}
+The inherited bridge reconstructs all intuitionistic logical
+connectives and both quantifiers, quantifier-free induction, and the
+fixed-description primitive-recursive function symbols, with both
+formula round trips. Theorem~\ref{thm:direct-raw-canonical} supplies
+the remaining change of term presentation. Its operations commute
+with substitution modulo internally provable computation equalities,
+so it preserves those interpretations. Numerical variables normalize
+to themselves: the comparison changes finite term descriptions,
+not the numerical domain or equality. Hence the inherited numerical
+identity graphs remain $x=y$.
+
+The common designated contradiction $0=S0$ is already normal and
+is preserved in both directions. The full formula comparisons
+therefore imply equiconsistency, as well as the stronger
+bi-interpretability statement.
+\end{proof}
+
+\subsection{Uniform normalization is external}
+
+The full first-order iPRA convention here has a symbol for each fixed
+primitive-recursive definition and the corresponding defining
+equations, with quantifier-free induction in intuitionistic logic.
+It is neither the equation-only fragment nor a theory with unrestricted
+formula induction. A fixed scalar term compiles to one such
+primitive-recursive definition; no numerical variable ranges over all
+definitions inside the object theory.
+
+Uniform normalization over arbitrary finite scalar-term codes is total
+recursive but is not primitive recursive. Otherwise, by coding a unary
+scalar term, substituting a numeral, normalizing, and extracting the
+resulting numeral, one would obtain a primitive-recursive universal
+evaluator $V(e,n)$ for all primitive-recursive functions. Invalid codes
+could be assigned zero. The diagonal function $V(e,e)+1$ would itself
+have a scalar-term code, contradicting universality. This uses the
+included scalar compilation theorem, not an assumed uniform evaluator.
+
+The size of a complete checker must count its normalizer, and the
+unbounded interface has no primitive-recursive running-time bound.
+Explicit finite fuel or reduction traces give a different,
+primitive-recursive bounded certificate interface for the same
+theorems. They do not add an arithmetic assertion of a uniform bound
+on the necessary fuel. The metatheorems here are written proofs; the
+finite executable checks are implementation evidence rather than a
+new Lean or Rocq verification of them.

@@ -1,0 +1,94 @@
+\section{A separate, measured implementation reduction}
+\label{sec:continuation-fusion}
+
+This section concerns the existing scalar proof protocol, independently of
+the new mathematical presentation.  The comparison sources are frozen at
+ProveIt commit \texttt{17898ea7e6a1300dfdcad71040d5daeed67916d4}; their exact
+Git blob hashes appear in \texttt{compact/PROVENANCE.json}.
+The implementations count the entire acceptance module after
+\texttt{ast.unparse} under CPython~3.12.14, followed by one newline.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Profile & Tokens & AST nodes & Bytes & Gzip-9\\
+\hline
+Compact control &265&306&516&332\\
+Compact fused &267&302&508&330\\
+AST control &260&278&602&344\\
+AST fused &263&276&580&343\\
+Native validated control &358&413&788&460\\
+Native validated fused &360&409&780&458\\
+\hline
+\end{tabular}
+\end{center}
+
+Thus the observed byte coordinate decreases from $516$ to $508$, and the
+observed AST coordinate from $278$ to $276$, in different programs. The
+separate token leader remains $256$ tokens. No single program in this table
+improves every coordinate, and these are attained sizes, not universal
+lower bounds.
+
+The compact and AST profiles retain the upstream closed guarded Eq/D
+public-goal contract and integer/list certificate language. They do not
+independently validate the public-goal grammar. The native profile retains
+the validator of its matched upstream control. Its $780$ bytes must not be
+confused with the $508$-byte compact interface. None of these figures is a
+measurement of the new deterministic-discharge theory.
+
+\paragraph{The transformation.}
+Let $I_k$ denote scoped opening, and let $R$ be the optional elimination
+rewrite of the current goal. The old checker rewrites the goal, constructs
+a new hypothesis, decrements the scope floor $k$, then opens the
+continuation. The new checker constructs the hypothesis first and fuses
+rewriting with the continuation call. Its essential expression is
+\begin{verbatim}
+c(i(rewrite(goal), [(k := k - 1)]), new_context, k)
+\end{verbatim}
+Python evaluates argument expressions from left to right before invoking
+the called function. Consequently the rewrite still uses the old scope,
+the second argument allocates the fresh parameter, and the opening itself
+uses the new scope. This relies on the ordinary evaluation-order rule, not
+an implementation-specific optimization. See the Python language reference,
+Section~6.16, at
+\url{https://docs.python.org/3.12/reference/expressions.html#evaluation-order}.
+
+\paragraph{Why the reordering preserves proofs.}
+The expected elimination major is either the nonempty equality list
+$[s,u]$ or the nonempty closure list $[t,t,t]$. A rewrite can therefore
+change the goal only when the major $m$ is nonempty. In that case the
+hypothesis-construction expression stops at $m*3$ and cannot perform the
+introduction assignment. Conversely, if introduction changes the goal,
+$m$ is empty and the rewrite is the identity. These operations commute.
+
+The major subproof uses a separate function activation with the same scope
+and context; its local scope changes cannot affect the caller. The rewrite
+does not consume proof packets. Moving it past the major subproof therefore
+preserves successful results and the remaining packet suffix. Failure may
+occur in a different order, which does not change acceptance.
+
+The context's mode selector also agrees. With a nonempty major it does not
+inspect the goal; with an empty major the moved rewrite is the identity.
+In the iterative AST profile, opening preserves the root arity of every
+successfully opened list. A scalar case still rejects wherever the old
+arity test rejected. Finally, the AST profile preserves a false rewritten
+value with a conditional expression, whereas the compact profile retains
+its old Boolean fallback literally.
+
+Induction on the finite number of available packets now proves that each
+new program accepts exactly the certificates accepted by its matched
+control, consuming the same suffix on successful runs. This statement uses
+the documented integer/list interface and the usual sufficient-resource
+convention. It immediately transfers the inherited logical consequence
+relation, interpretation maps, actual equality and identity composites.
+It is a written program-equivalence proof, not a new proof-assistant
+verification or a mathematical axiom deletion.
+
+\paragraph{Executable verification.}
+The archive contains authenticated positive and negative fixtures, all
+controls, the new standalone modules, and a reproduction script. Verification
+comprised $252$ standalone executions with and without Python optimization,
+$500$ deterministic certificate mutations in three matched pairs, and a
+fresh-parameter boundary check in each pair. All $1629$ paired comparisons
+agreed. These finite checks test the implementations; the argument above
+establishes the universal correspondence.

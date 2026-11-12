@@ -5,7 +5,7 @@ complete presentation of a theory bi-interpretable with full first-order
 intuitionistic primitive recursive arithmetic (iPRA), and the Lean
 formalization of the most concise of them.
 
-- [`Research/`](Research/) holds seventy-three delivered packages, one directory
+- [`Research/`](Research/) holds seventy-nine delivered packages, one directory
   each. They are written mathematics with executable Python proof checkers;
   none of them claims a proof-assistant verification.
 - `Lean/` is the formalization (see [Lean formalization](#lean-formalization)).
@@ -370,6 +370,9 @@ for separate coordinates, they are listed separately. Each package's own
 | [`seed_evaluation`](Research/seed_evaluation/) | On zero-normal terms, the rule `a = b, I(S c, a; u.h) = r ⊢ r = h[I(c, b; u.h)/u]` with reflexivity, equivalent to the rule Step without any logical rule or induction | as stated |
 | [`clause_contexts`](Research/clause_contexts/) | Four inference schemes (Use, Step, Open, Close) and the reflexivity axiom clause, on zero-normal terms | as stated |
 | [`witness_discharge`](Research/witness_discharge/) | Three inference families (Use, Intro, Name) and the reflexivity axiom clause; Name combines equality substitution with the discharge of an existential witness | as stated |
+| [`inferred_witness`](Research/inferred_witness/), [`deterministic_opening`](Research/deterministic_opening/), [`first_instance`](Research/first_instance/), [`clause_discharge`](Research/clause_discharge/) | On full normal forms with clause contexts: the opening of `D_{x,y} B` at a fresh `b` reads its witness off the matrix. If `B(b, 0)` is literally `0 = 0` and `B(b, 1)` is literally `b = t`, the clause is opened at `t` (or `t` is substituted for `b` in the exported formula); otherwise at `b`. No replacement term and no equality proof are supplied. Three families (Use, Intro, Open) and the reflexivity clause | as stated; each reports a smaller matched complete checker and none claims a new minimum |
+| [`substitutive_discharge`](Research/substitutive_discharge/) | On the canonical recursor syntax, four families: one successor calculation, Use, Intro, and a discharge that opens `D` at a fresh `b`, proves `s = t` and `F(s)` there, and exports `F(t)`. Reflexivity is derived; no full normalization and no fixed clause | as stated |
+| [`prefix_clauses`](Research/prefix_clauses/) | A `Q`-free formula is a chain of `D` binders ending in one equation, stored as `[k, s, t]` for `D^k (s = t)`; the four families of `uniform_clauses` on that representation. A separate theorem removes the antecedent field of a clause | as stated |
 | [`variable_substitution`](Research/variable_substitution/) | On zero-normal terms the equality rule substitutes for a variable only: from `x = t` and `u = v` infer `v = nf(u[t/x])`; the source can be restricted to the newest parameter | as stated |
 | [`parameter_substitution`](Research/parameter_substitution/) | On raw terms with clause contexts, replacement inside a term is restricted to free parameters; a nonvariable source is used only for joining at the root or reversing the minor equation, and a fresh alias recovers transport in a template. Five instruction families | as stated |
 | [`deterministic_specialization`](Research/deterministic_specialization/) | Clause use takes no term argument: the newest clause is specialized at `S 0`, every older one at the newest eigenparameter, and an arbitrary term is reached by naming it with a `D` formula and transporting | as stated |
@@ -475,8 +478,12 @@ sources, three checksum ledgers and five build logs. The delivered module
 `Research/zero_normal/formal/ZeroNormalization.lean` compiled unchanged and
 is `Lean/ConciseIPRA/ZeroNormalization.lean`.
 
+`clause_discharge`, `deterministic_opening`, `first_instance`,
+`inferred_witness`, `prefix_clauses` and `substitutive_discharge` arrived last
+and were filed on arrival (sixteen frozen Lean copies, three logs and two
+checksum ledgers not filed).
 `clause_contexts`, `clause_guards`, `mirror_core`, `seed_evaluation`,
-`uniform_binding` and `witness_discharge` arrived last and were filed on
+`uniform_binding` and `witness_discharge` arrived before them and were filed on
 arrival (nine frozen Lean copies, three logs and two checksum ledgers not
 filed). `clausal_single_evaluation`, `clausal_two_case`,
 `deterministic_specialization`, `parameter_substitution`, `uniform_clauses`
@@ -640,6 +647,8 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `seed_evaluation` | Proved, for its arithmetic and equality interface: `NVPrf`, with `nvprf_iff_nprf`, `NVPrf.normal` and `nvprf_iff_pra` (`NativeZeroSeed`), with the kernel's two introductions and `Q` in place of clause contexts. |
 | `clause_contexts` | Proved: its four schemes with the reflexivity clause are `ZVPrf`, with `zvprf_iff_zcprf` and `zvprf_iff_nprf` (`NativeZeroClausal`). |
 | `witness_discharge` | Not formalized: its Name rule joins equality substitution with the discharge of a witness and relies on full computation normal forms. |
+| `inferred_witness`, `deterministic_opening`, `first_instance`, `clause_discharge` | Not formalized: the test that selects the witness compares rows of the matrix after full normalization, which is not formalized. |
+| `substitutive_discharge`, `prefix_clauses` | Filed; not yet examined against the Lean development. |
 | `uniform_binding` | Not formalized: the counter-aware recursor syntax. |
 | `parameter_substitution` | Proved, for the equality rule: `PPrf` is the kernel with transport replaced by Param, and `pprf_iff_nprf` (`NativeParameter`). The package's five instruction families combine it with clause contexts and the witness-tested single introduction, which are not formalized together with it. |
 | `variable_substitution` | Not formalized: its rule substitutes for a variable only and has no joining at the root, which it recovers from full computation normal forms, where `C(0, a, b)` and `a` are the same term. The normalizer with its termination and confluence is not formalized. On raw terms the nearest proved statement is `pprf_iff_nprf`. |

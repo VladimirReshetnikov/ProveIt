@@ -1,0 +1,105 @@
+INDEPENDENT MATHEMATICAL AUDIT: DETERMINISTIC WITNESS DISCHARGE
+
+Audited against the full-normalized witness_discharge report supplied in
+docs/incoming at ProveIt commit 17898ea7e6a1300dfdcad71040d5daeed67916d4.
+The audited new proposal is the root agent's deterministic extraction of an
+equality from the first row of the opened witness matrix. This is written
+mathematical review, not a proof-assistant verification.
+
+DEFINITION AUDITED
+
+Let H be 0=0. From a proof of D_{x,y} B(x,y), open the usual fresh parameter b
+and the clause [B(b,0); y.B(b,y)]. Normalize C0=B(b,0) and J=B(b,1). Set rho=t
+if C0 is literally H and J is literally b=t. Otherwise set rho=b. From a
+branch proof F, export nf(F[rho/b]), provided this formula is outer scoped.
+The branch context and the matrix are the same in both modes. All displayed
+substitutions are simultaneous and capture avoiding.
+
+SOUNDNESS
+
+In the distinguished case, reflexivity gives H and clause use at 1 gives
+b=t. Equality substitution yields F[t/b]. Normalization is justified by the
+unconditional iterator computations in the ordinary reference theory.
+The outer-scope condition makes existential elimination legitimate.
+
+In the default case the substitution is the identity. Hence the outer-scope
+condition requires that the normalized result contain no free b; this is
+ordinary existential elimination. The selected t may itself contain b.
+No occurs check is mathematically needed: b=t(b) justifies simultaneous
+substitution, while the final b-freedom condition enforces witness discharge.
+
+RECOVERY OF ORDINARY ELIMINATION
+
+If the branch result F already contains no b, then nf(F[rho/b])=F for either
+selected rho. Therefore ordinary paired elimination is recovered with no
+equality premise and without knowing which selection case occurs.
+
+EQUALITY RECONSTRUCTION
+
+Use the normalized selector C(v,a,c)=nf I(v,a;u.c), where u is unused in c,
+and parity P(y)=nf I(y,0;u.C(u,1,0)). Its only required parity facts are the
+literal computations P(1)=1 and P(2)=0. Given s=t and nf h(s)=r, let
+
+ B(x,y) :=
+ C(y,0,C(P(y),h(x),x)) = C(y,0,C(P(y),r,t)).
+
+Choose x,y fresh for all passive data. Direct normalization gives
+
+ B(x,0) = (0=0),
+ B(x,1) = (x=t),
+ B(x,2) = (nf h(x)=r).
+
+To introduce D B at witness s, numerical cases applied to v=P(Sz) prove
+the successor row C(v,h(s),s)=C(v,r,t): its zero case is the supplied
+nf h(s)=r, and its successor case is the supplied s=t. This proof ignores
+the introduction's temporary assumption, so it is valid in either the case
+or progress mode, including s literally zero.
+
+Open the resulting D B at b. Its first row forces rho=t. Clause use at 2
+provides F=(nf h(b)=r). Exporting F gives nf h(t)=r by normalization and
+substitution coherence. This is uncrossed one-term transport.
+
+Symmetry follows by taking h(w)=w and using s=s as the minor premise.
+Crossed transport follows by symmetry of the uncrossed conclusion. Full
+equation transport follows by the usual two one-term transports. Transport
+through D follows by formula-depth induction using ordinary elimination,
+case introduction at a fresh witness c, and the transport induction
+hypothesis on the matrix. None of these proofs assumes the equality rule
+being reconstructed.
+
+FULL-NORMALIZATION AND BRIDGE CHECK
+
+Both scalar computation rewrites are unconditional equations of the
+reference arithmetic. Canonical substitution is raw capture-avoiding
+substitution followed by full normalization. Its coherence law is exactly
+the one already needed by the inherited full-normalization presentation.
+The new export rule does not require a new normalization theorem.
+
+Ordinary elimination and numerical cases are reconstructed before the
+two-row equality package. Numerical cases use an unused witness at 1,
+which remains literally nonzero in full normal form. The existing compound
+envelope repair handles atomic case introduction at witness 0. Thus no
+nonliteral closed alias for 0 is required in the new proof.
+
+The comparison preserves every canonical end sequent, including arbitrary
+retained optional-antecedent clauses and formulas with arbitrarily nested
+D binders. Consequently the inherited full first-order iPRA bridge and
+formula round trips apply. The numerical interpretation domains and actual
+equality are unchanged, so the composite graph remains x=y.
+
+LIMITS AND IMPLEMENTATION OBLIGATIONS
+
+This audit does not establish a global proof-checker size record. The
+deterministic mode test and normalizer must be counted in full. A trusted
+checker must verify the major premise, open the correct matrix at a fresh
+parameter, verify the branch in that exact extended context, perform the
+chosen simultaneous substitution, normalize it, and reject an escaping
+witness. For bounded-fuel normalization, fuel exhaustion is rejection.
+Uniform normalization is effective but need not have a primitive-recursive
+bound over all descriptions; no object-level evaluator or new totality
+principle may be inferred from it.
+
+Audit conclusion: the deterministic discharge rule is sound, and the
+displayed two-row package recovers the old equality interface without
+circularity. Under the inherited canonical/raw comparison, the complete
+new calculus preserves full consequence and bi-interpretability with iPRA.

@@ -1,0 +1,171 @@
+\section{Full first-order iPRA and both interpretation composites}
+\label{sec:interpretations}
+
+The comparison is with full first-order intuitionistic primitive recursive
+arithmetic, not just its equational fragment or its closed numerical
+consequences.  This section gives the interpretation maps and identifies
+the inherited mathematical work needed for the reverse direction.
+
+\subsection{The target theory}
+
+Use ordinary intuitionistic first-order logic with actual equality and
+falsity.  Its language has $0,S$ and a symbol for every fixed primitive
+recursive definition, generated from zero, successor, projections,
+composition, and primitive recursion.  The nonlogical axioms are those
+definitions' equations, successor separation and injectivity,
+\[
+   Sx=0\to\bot,\qquad Sx=Sy\to x=y,
+\]
+and induction for every quantifier-free formula $A(n,\vec p)$:
+\[
+ \bigl(A(0,\vec p)\wedge
+       \forall n(A(n,\vec p)\to A(Sn,\vec p))\bigr)
+       \to\forall n A(n,\vec p).
+\]
+The full logic admits the usual introduction and elimination rules for
+$\wedge,\vee,\to,\forall,\exists$, falsity elimination, assumption use,
+equality reflexivity, and equality substitution.  Universal introduction
+and existential elimination have their ordinary fresh-variable conditions.
+Excluded middle for arbitrary formulas is not a rule.  This is the theory
+deeply embedded as \texttt{PR} in the pinned repository.
+
+\subsection{An intermediate ordinary scalar theory}
+
+Let $T_I$ be intuitionistic first-order equality logic on the scalar
+iterator terms, with the two computation equations, coverage,
+\[
+             \forall x\,(x=0\vee\exists y\,x=Sy),
+\]
+separation $(0=S0)\to\bot$, and contextual induction for literal
+equations.  Elaborate a fixed update term $h(u,\vec p)$ into an ordinary
+function symbol $i_h(n,a,\vec p)$ when an orthodox first-order signature is
+desired.  Its defining equations are
+\[
+ i_h(0,a,\vec p)=a,\qquad
+ i_h(Sn,a,\vec p)=h(i_h(n,a,\vec p),\vec p).
+\]
+These declarations are staged by finite syntax.  There is no numerical
+sort of arbitrary update programs and no universal evaluator.
+
+The interpretation of native syntax into $T_I$ leaves numerical terms and
+equations unchanged and sends
+\[
+ D_{x,y}B\quad\mapsto\quad
+ \exists x\bigl(B^\circ(x,0)\to\forall y B^\circ(x,y)\bigr).
+\]
+An unconditional clause becomes $\forall y B^\circ(y)$; a conditional
+clause becomes $A^\circ\to\forall y B^\circ(y)$.  The fixed reflexivity
+clause is a theorem.  The soundness of the new Open rule was proved directly
+using these readings.
+
+The separation axiom in the ordinary realization must be stated.  Positive
+computation equations alone also hold in a singleton structure.  Native
+falsity being encoded by $0=S0$ does not justify silently removing the
+ordinary falsity bridge.
+
+\subsection{All ordinary logical operations are available}
+
+Put $q_yA=D_{w,y}A$ for an unused $w$.  Define the selector on equations by
+\[
+ \operatorname{Sel}(v,s=t,r=u)
+  := C(v,s,r)=C(v,t,u),
+\]
+and recursively on equally shaped paired formulas by moving the selector
+into their matrices, freshening bound variables.  To combine formulas of
+different shapes, pad an equation $E$ by the provably equivalent compound
+envelope $q_z\operatorname{Gate}(z,E)$ and then pad the shorter binder
+depth.  Here
+\[
+ \operatorname{Gate}(v,s=t):=C(v,0,s)=C(v,0,t),
+\]
+and gating also moves recursively through paired binders.  Thus the zero
+gate is provable and its successor instances are equivalent to the input.
+The inherited native logical interface gives the following macros:
+\[
+\begin{aligned}
+ \bot^* &:=0=S0,\\
+ A\to^*B &:=q_y\operatorname{Sel}(y,A,B),\\
+ A\wedge^*B &:=q_y\operatorname{Gate}
+           (y,\operatorname{Sel}(P(y),A,B)),\\
+ \exists^*x A(x)&:=D_{x,y}\operatorname{Gate}(y,A(x)),\\
+ A\vee^*B&:=\exists^*v\operatorname{Sel}(v,A,B),\\
+ \forall^*x A(x)&:=A(0)\wedge^*q_xA(x).
+\end{aligned}
+\]
+All auxiliary variables are fresh.  The padding is a syntactic
+construction, not a new axiom.  Clause use and the recovered ordinary
+paired elimination give closure specialization.  Numerical cases give
+the selector endpoints; the compound envelope gives unrestricted case
+introduction.  These recover every intuitionistic logical rule for the
+displayed macros.  No induction on an arbitrary quantified formula is
+introduced by this logical recovery.
+
+For example, under $A$ a proof of $B$ gives a proof of the successor
+instance of $\operatorname{Sel}(y,A,B)$ from its zero instance.
+Closure introduction gives $A\to^*B$.  Closure specialization at $1$
+gives its elimination rule.  For an existential, the gated zero instance
+is provable and the successor instance is the witnessed formula.
+For a conjunction, specialization at $1,2$ selects its two components
+using the two parity endpoints.
+
+\subsection{The numerical interpretations}
+
+An iterator translates to the primitive recursive function defined by
+iteration with an update that ignores the recursion counter.  iPRA proves
+its equations, equation induction, coverage, and separation.
+
+In the opposite direction the inherited scalar development proves, in
+this order, a predecessor, reflection of actual equality by a numerical
+test, characteristic equations for all quantifier-free formulas, and
+pairing with projections.  It is important to preserve that order:
+neither pairing nor a faithful equality detector is assumed in obtaining
+the predecessor.
+
+If $\pi,L,R$ are the resulting pairing and projection terms, then a
+primitive recursion
+\[
+ f(0,\vec p)=g(\vec p),\qquad
+ f(Sn,\vec p)=h(n,f(n,\vec p),\vec p)
+\]
+is translated by
+\[
+\begin{aligned}
+ V(n,\vec p)&=
+ I\bigl(n,\pi(0,g^*(\vec p));
+      u.\pi(SL(u),h^*(L(u),R(u),\vec p))\bigr),\\
+ f^*(n,\vec p)&=R(V(n,\vec p)).
+\end{aligned}
+\]
+Equation induction proves $L(V(n,\vec p))=n$, and the two projection
+identities prove the defining equations for $f^*$.  The construction
+recurses externally over each fixed finite primitive recursive
+description.  It does not quantify over arbitrary functions internally.
+
+\subsection{Whole domains and return translations}
+
+The interpretation domain in both directions is defined by $x=x$.
+Interpreted equality is actual equality.  Uniqueness of a fixed iteration
+follows by equation induction on the equality of two solutions with the
+same seed and update.  The analogous argument applies to primitive
+recursion.  External induction on each finite function description then
+proves that both numerical term composites equal the original term on
+the entire numerical domain.  Both numerical composite isomorphisms have
+graph $x=y$, including at nonstandard elements.
+
+The logical macros and the ordinary reading have formula round trips by
+structural induction.  They cover arbitrarily nested quantifiers and
+arbitrary retained contexts.  The new opening calculus is equivalent to
+the canonical reference on the entire clause consequence relation, so
+this existing bridge transfers without changing a domain or an equality.
+In particular, the unchanged contradiction $0=S0$ gives equiconsistency.
+
+These are the inherited bridge results formalized in the pinned
+\texttt{BiInterpretation}, \texttt{NativeClausal}, and
+\texttt{NativeBiInterpretation} modules.\cite{native} Relevant endpoints include
+\texttt{biInterp}, \texttt{cprf\_iff\_nprf},
+\texttt{native\_iff\_pra}, \texttt{pra\_iff\_native},
+\texttt{native\_roundTrip}, \texttt{pra\_native\_roundTrip}, and
+\texttt{native\_inconsistent\_iff}.  The new deterministic-opening
+comparison and the full-normalization presentation remain written proofs;
+they are not additional claimed Lean endpoints.
+

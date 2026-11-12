@@ -1,0 +1,115 @@
+Independent mathematical audit of the homogeneous-context appendix
+==================================================================
+
+Reviewed the conditional four-family homogeneous-context calculus against
+the pinned ConciseIPRA basis at commit
+17898ea7e6a1300dfdcad71040d5daeed67916d4.
+
+Result: no mathematical gap found in the stated rule equivalence. This is
+an independent assistant review, not proof-assistant verification or an
+external human review.
+
+1. Equality bootstrap and the independent reflexive-prefix theorem
+-----------------------------------------------------------------
+The permanent entry y=y has the literal-reflexive base 0=0, so Use with
+omitted minor derives arbitrary reflexivity. The two Eval cases on these
+reflexivities give both computation equations. For premises s=t and s=r,
+let Z=I(0,s;u.0). Eval(s=r, Refl(Z)) yields Z=r; Eval(s=t, Z=r) yields
+r=t. Thus symmetry and transitivity are derivable, without induction.
+
+For a term template h, let Z=I(0,s;u.h(u)) and P=I(S0,s;u.h(u)). From
+s=t derive Z=s and Z=t by zero Eval. Successor Eval gives P=h(s), which
+combines with h(s)=r to give P=r. Successor Eval on Z=t and P=r then
+gives r=h(t). This recovers the exact crossed one-template transport
+needed by the existing native witness calculus.
+
+Before using the gate-retrieval theorem, prove that every D-prefix with
+a literally reflexive equation leaf is derivable. Induct on the prefix
+length k. At k=0, use the reflexivity just derived. At k>0, apply Intro
+at witness 1; this selects case mode. Opening the witness and successor
+slots preserves literal equality of the two leaf terms. The resulting
+goal therefore has a reflexive leaf and k-1 binders, so the induction
+hypothesis proves it in the enlarged context. Ignore the temporary
+context entry and close Intro. This argument uses no gate retrieval,
+gate conversion, or compound omitted minor.
+
+Consequently the final Use shortcut for any D^k(r=r), not merely an
+equation at the root, is a conservative abbreviation independently of
+the gate proof. Its skipped premise can always be replaced by the
+preceding finite derivation. The shortcut checks literal identity of
+the leaf terms; it does not recognize arbitrary provable compounds.
+
+2. The gate and the depth induction
+----------------------------------
+The reviewed gate is I(0,s;u.t)=I(v,s;u.t), with u unused in t and
+capture-free insertion. At v=0 its two sides are syntactically identical;
+at any successor they compute to s and t respectively. Formula gating
+recurses through D and does not change the number of D binders.
+
+For every A, kappa_0 A has a literally reflexive leaf. Its theoremhood
+therefore follows from the independent reflexive-prefix theorem above,
+before any appeal to gate retrieval or conversion.
+
+At depth d, prove conversion kappa_1 A <-> A using retrieval and
+conversion only at depth d-1. In the D case the elimination witness b is
+a fresh variable, hence not literal zero. Introduction at b therefore
+uses case mode in either direction. The retained source closure is used
+at S z with exactly its zero instance as minor. Once conversion at
+depth d has been proved, retrieve A from retained kappa_v A by Use at 1,
+then apply conversion. The minor can be omitted for every formula depth,
+because the computed zero gate has a literally reflexive leaf. Replacing
+that omission by the independent zero-gate proof gives the same argument
+in the narrower system. The simultaneous induction is well founded.
+
+3. Soundness
+------------
+Every context entry B(y) has the same ordinary reading B(0)->forall y B(y).
+The fixed reflexivity entry is true. Every omitted reflexive-prefix minor
+is valid by the independent prefix theorem (and its ordinary reading is
+an intuitionistic equality theorem). Ordinary formula induction
+gives kappa_0 A and kappa_(S z) A <-> A, so numerical coverage proves
+A -> Q_v kappa_v A. This validates Intro's encoded local assumption.
+The existing case/progress soundness argument then applies verbatim.
+No extra equality test, induction scheme, or semantic change of D is used.
+
+4. Completeness and round trips
+------------------------------
+Replace native Q_y B by D_(r,y) B with unused r. This preserves the
+atomic/compound root test and the witness term. Prove derivation
+translation with the stronger context invariant that every translated
+source hypothesis already has an H derivation. Intro gets its new
+hypothesis from gate retrieval. Q-elimination opens the dummy D and uses
+the retained template. Native D-elimination's local Q hypothesis is
+reconstructed by dummy-witness Intro at witness 1, retrieval of the local
+zero fact, and Use of the retained template at S z. Consequently no
+unproved clause cut, arbitrary context builder, or substitution into an
+arbitrary derivation is assumed.
+
+Weakening and fresh-parameter renaming used in this translation are direct
+inductions on the four primitive families; these operations do not change
+the witness's literal-zero status. General substitution can instead be
+transported through the existing native equivalence, so no false claim of
+rule-by-rule substitution stability is needed.
+
+The ordinary formula readings are preserved exactly. Q and unused-witness
+D are equivalent in the native theory. Gated ordinary assumptions and
+their source formulas are equivalent because Q_v kappa_v A <-> A.
+Both term maps are identities and the numerical domains stay whole.
+Composing with the pinned native bi-interpretation therefore supplies the
+required identity-graph numerical round trips and equiconsistency.
+
+5. Scope and implementation obligations
+---------------------------------------
+The positive mathematical reduction deletes the separately stored
+antecedent in every retained clause. Four rule families already occurred
+upstream; this is not a new absolute rule-count minimum. The gate,
+literal leaf-reflexivity test, term validation, scoping, substitutions, JSON
+interface, and final-conclusion check all belong in a measured complete
+checker. A flattened Eq/D formula representation is legitimate because
+every formula has one equation leaf below a unique D-chain, but the same
+representation must be allowed in a fair matched control.
+
+The new gate puts t under one iterator binder: a relative-index
+implementation must lift it. At a D-leaf with k surrounding binders,
+the gate's exterior control variable lies outside all 2k formula-bound
+variables. These are capture conditions, not optional simplifications.

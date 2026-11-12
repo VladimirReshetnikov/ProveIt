@@ -1,0 +1,174 @@
+\section{The full intuitionistic theory and both composites}
+\label{sec:bridge}
+
+Exact equivalence of clause sequents is stronger than equality of closed
+equational theorems. Here we spell out how it transfers the complete
+iPRA interpretation, including its logical operations and both round
+trips. This section summarizes inherited results~\cite{repo,lean,arithmetic};
+their detailed written arithmetic proofs are included in \texttt{reference}.
+
+\subsection{Ordinary realization}
+Let $T_I$ be intuitionistic first-order logic with actual equality,
+genuine falsity $\bot$, and the staged scalar-iterator language. Its
+nonlogical axioms and schemas are the two iterator computations,
+\[
+ \forall x\,(x=0\vee\exists y\,x=Sy),
+ \qquad (0=S0)\to\bot,
+\]
+and induction for every literal equation $E(y,\vec p)$:
+\[
+ \bigl(E(0,\vec p)\wedge
+       \forall y(E(y,\vec p)\to E(Sy,\vec p))\bigr)
+       \to\forall y E(y,\vec p).
+\]
+Equivalently this is the usual contextual induction rule, with the
+induction variable fresh for retained assumptions. A staged iterator
+symbol $i_h(n,a,\vec p)$ is introduced for each fixed earlier-stage
+description $h(u,\vec p)$; no object-language variable ranges over
+arbitrary function descriptions. The numerical domain is the whole
+domain and interpreted equality is equality itself.
+
+Use has its ordinary conditional-universal reading. Introduce is sound
+by numerical coverage in case mode and equation induction in progress
+mode. Opening is sound by Lemma~\ref{lem:opening-sound}. The explicit
+falsity bridge must not be omitted from $T_I$: positive arithmetic
+equations alone admit a one-element structure. In the native calculus
+the designated contradiction is the equation $0=S0$.
+
+\subsection{All logical operations as macros}
+Write $C(v,a,b)=N(I(v,a;u.b))$ with $u$ unused, and let
+$q_y A(y)=D_{w,y}A(y)$ for unused $w$. A gate on formulas is defined by
+external recursion on their finite syntax:
+\[
+ \begin{aligned}
+ G_v(s=t)&=(C(v,0,s)=C(v,0,t)),\\
+ G_v(D_{x,y}B)&=D_{x,y}G_vB.
+ \end{aligned}
+\]
+All bound variables are renamed away from $v$. Its endpoints satisfy
+$\vdash G_0A$ and $G_{Sz}A\dashv\vdash A$; also
+$A\dashv\vdash q_yG_yA$ when $y$ is fresh. These are derivability
+statements, including for nested binders.
+
+For equations define the selector
+\[
+ M_v(s=t,u=w)=(C(v,s,u)=C(v,t,w)).
+\]
+For compound formulas align fresh paired binders and define
+\[
+ \begin{aligned}
+ M_v(D_{x,y}A,D_{x,y}B)&=D_{x,y}M_v(A,B),\\
+ M_v(E,D_{x,y}B)&=D_{x,y}M_v(G_yE,B),\\
+ M_v(D_{x,y}A,E)&=D_{x,y}M_v(A,G_yE),
+ \end{aligned}
+\]
+where $E$ is an equation. Each recursive call lowers the maximum binder
+depth. Gate padding and binder congruence give
+$M_0(A,B)\dashv\vdash A$ and $M_{Sz}(A,B)\dashv\vdash B$.
+With $P(y)=N(I(y,0;u.C(u,1,0)))$, the following complete inventory is
+available:
+\[
+\begin{aligned}
+ \bot_*&=(0=S0),\\
+ A\Rightarrow_*B&=q_yM_y(A,B),\\
+ A\wedge_*B&=q_yG_yM_{P(y)}(A,B),\\
+ \exists_*x\,A(x)&=D_{x,y}G_yA(x),\\
+ A\vee_*B&=\exists_*v\,M_v(A,B),\\
+ \forall_*x\,A(x)&=A(0)\wedge_*q_yG_yA(y).
+\end{aligned}
+\tag{Logical macros}
+\]
+Freshness is understood in every line. The last line intentionally
+supplies the zero instance separately: the gated closure supplies all
+successor instances.
+
+Implication introduction and elimination use selector endpoints and the
+closure rules. Existential introduction and elimination use gate
+endpoints. Conjunction is projected at $1$ and $2$, using $P(1)=1$,
+$P(2)=0$; introduction uses numerical cases on its selector. Disjunction
+uses control witnesses $0$ and $1$, and its elimination uses numerical
+cases. For universals, numerical coverage combines the zero conjunct
+with the successor instances in the closure. Under $0=S0$, equality
+transport identifies $C(0,s,t)$ and $C(S0,s,t)$, proving every numerical
+equation; external induction on formula depth and case introduction
+then prove every formula. Thus all usual intuitionistic first-order
+inference rules, including explosion, are recovered.
+
+These macros do not add unrestricted induction for quantified formulas.
+Primitive progress remains restricted to equations. Equation induction itself is obtained
+by introducing a closure at an unused zero witness, opening it, and
+supplying its base. The explicit repaired case rule handles the case
+introduction instances needed above.
+
+\subsection{The numerical arithmetic bridge}
+The inherited scalar proof has a necessary dependency order. First it
+constructs a scalar predecessor and proves $\operatorname{pred}(0)=0$
+and $\operatorname{pred}(Sn)=n$ using equation induction and coverage.
+It then constructs truncated subtraction and a characteristic term
+for actual equality on the entire domain. Compiling a fixed
+quantifier-free formula into its characteristic equation gives
+quantifier-free induction. Only after this stage does it construct
+pairing and compile arbitrary primitive recursion. These steps are
+proved internally, rather than checked only on standard numerals.
+
+For concreteness, once predecessor, subtraction, and quantifier-free
+induction are available, a bounded square-root construction proves
+pairing and projections $\pi,L,H$ satisfying
+\[
+ L(\pi(a,b))=a,\qquad H(\pi(a,b))=b.
+\]
+One choice is $\pi(a,b)=(a+b)^2+a$; bounded search for the integer
+square root supplies its projections. Surjectivity of $\pi$ is
+unnecessary: it stores a recursion state and does not replace the
+interpretation domain by a coding range.
+
+Given a fixed primitive recursion
+\[
+ f(0,\vec p)=g(\vec p),\qquad
+ f(Sn,\vec p)=h(n,f(n,\vec p),\vec p),
+\]
+and already translated $g^*,h^*$, set
+\[
+ \begin{aligned}
+ W(u,\vec p)&=\pi(SL(u),h^*(L(u),H(u),\vec p)),\\
+ V(n,\vec p)&=I(n,\pi(0,g^*(\vec p));u.W(u,\vec p)),\\
+ f^*(n,\vec p)&=H(V(n,\vec p)).
+ \end{aligned}
+\]
+Equation induction proves $L(V(n,\vec p))=n$ and the defining equations
+for $f^*$. Initial functions and composition translate directly.
+In the reverse direction, every fixed scalar iterator is an ordinary
+primitive recursion whose step ignores the recursion counter.
+
+\subsection{Why this is bi-interpretability}
+For the numerical composites, internal equation induction proves
+uniqueness of each fixed iterator or primitive recursion satisfying
+its defining equations. External induction over a finite function
+description therefore identifies its double translation with the
+original operation at every internal argument. The identity graph
+$x=y$ is consequently a definable total bijection preserving every
+operation in both composite interpretations. It is not a retract,
+quotient, or restriction to standard numerals.
+
+For the logical composites, the essential native identity is
+\[
+ D_{x,y}B(x,y)\dashv\vdash
+ \exists_*x\bigl(B(x,0)\Rightarrow_*\forall_*y B(x,y)\bigr).
+\]
+Forward, ordinary opening supplies the conditional-universal clause;
+introduce the three macros and close the opening. Backward, eliminate
+the existential macro, introduce $D$ at its witness using the repaired
+case rule, and obtain the required successor instance from implication
+and universal elimination. The endpoint proofs above give the round
+trips for all ordinary connectives and quantifiers. External induction
+on formulas finishes both composites. Optional clauses correspond to
+their unconditional or conditional universal readings.
+
+These are exactly the inherited bridges recorded by
+\texttt{biInterp} and the four faithfulness and formula round-trip theorems in
+\texttt{NativeBiInterpretation.lean}~\cite{lean}. The new theorem
+preserves every end sequent of the canonical clause presentation,
+so the interpretations and the identity numerical graphs transfer
+unchanged. In particular the new calculus derives $0=S0$ if and
+only if iPRA derives $\bot$. This establishes equiconsistency; it
+does not assert that either theory proves its own consistency.

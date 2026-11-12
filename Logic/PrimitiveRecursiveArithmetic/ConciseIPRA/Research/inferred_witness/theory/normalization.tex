@@ -1,0 +1,103 @@
+\section{The normalization layer is part of the theory}
+\label{sec:normalization}
+
+Moving computation into syntax removes two displayed computation axioms,
+but it does not remove their implementation. The checker includes full
+normalization for exactly
+\[
+ I(0,a;u.h)\longrightarrow a,
+ \qquad I(Sn,a;u.h)\longrightarrow h[I(n,a;u.h)/u],
+\]
+closed under every term context, including iterator bodies. There is no
+reduction of formula constructors. The following argument records the
+inherited foundation~\cite{normalization,witness} so that the new probe
+does not depend on an unstated computation oracle.
+
+\begin{lemma}[Closure under iteration]
+Suppose $n$ and $a$ are strongly normalizing, and $h[v/u]$ is strongly
+normalizing for every strongly normalizing $v$. Then $I(n,a;u.h)$ is
+strongly normalizing.
+\end{lemma}
+\begin{proof}
+For a strongly normalizing term $s$, let $\nu(s)$ be the maximum length
+of a reduction from it. It exists because the reduction tree is finite
+branching and has no infinite path. In particular $h$ is strongly
+normalizing by taking $v=u$. Induct lexicographically on
+\[
+ (\nu(n),\ |n|,\ \nu(a)+\nu(h)).
+\]
+A reduction inside $n$ decreases the first component. A reduction inside
+$a$ or $h$ decreases the last; the universal hypothesis on $h$ survives a
+reduction in $h$, because capture-free substitution preserves reduction.
+The zero root reduct is $a$. At a successor root $n=Sp$, the predecessor
+$p$ has the same reduction height and smaller size. Thus $I(p,a;u.h)$
+is strongly normalizing by induction, and its substitution into $h$ is
+strongly normalizing by the hypothesis on $h$. Every immediate reduct
+is strongly normalizing, which proves the claim.
+\end{proof}
+
+\begin{theorem}[Unique normal forms and substitution coherence]
+Every finite raw term has a unique normal form up to bound-variable
+renaming. With de Bruijn indices the normal form is unique literally.
+For every finite simultaneous substitution $\sigma$,
+\[
+ N(t\sigma)=N\bigl(N(t)[x\mapsto N(\sigma x)]\bigr).
+ \tag{Coherence}
+\]
+The same identity holds for formulas and clauses, and normalized
+substitutions compose in the corresponding capture-avoiding way.
+\end{theorem}
+\begin{proof}
+Structural induction on $t$ proves the stronger statement that every
+substitution of strongly normalizing terms into $t$ yields a strongly
+normalizing term. The iterator case uses the preceding lemma; the
+induction hypothesis on its body applies with every additional strongly
+normalizing assignment to the state variable. Identity substitution gives
+strong normalization of all raw terms.
+
+For local confluence, disjoint contractions commute, and the zero and
+successor root patterns do not overlap. If a root contraction copies a
+subterm containing the other contraction, perform that contraction in
+each of its finitely many residual copies. If it erases the subterm,
+no residual contraction is required. Capture-free substitution supplies
+the common reduct in the iterator-body case. Induction on reduction
+height now proves confluence. A substituted reduction of $t$ and the
+reductions of the finitely many substituted images give convertible
+terms on the two sides of Coherence; their unique normal forms agree.
+Formula and clause constructors are preserved, so the same proof extends
+componentwise to them.
+\end{proof}
+
+\paragraph{Connection with raw syntax.}
+In the raw scalar calculus each reduction is a provable equation by a
+computation axiom and congruence. Therefore every fixed term is provably
+equal to its normal form, and every formula is provably equivalent to
+its normalized formula. In the opposite direction the normal forms of
+both computation axioms are reflexive equations. Transport and clause
+use commute with normalization by Coherence. The only subtle introduction
+case is a nonzero-looking raw witness that becomes literal zero; the
+compound-envelope case repair supplied above handles that instance.
+These observations give the canonical/raw comparison used in
+Corollary~\ref{cor:opening-ipra}. The raw formulas and their normal forms
+represent the same ordinary first-order statements up to provable
+equivalence.
+
+\paragraph{No uniform numerical evaluator is postulated.}
+For each fixed finite iterator description, iPRA can interpret its
+operation by primitive recursion. That does not give a primitive-recursive
+function uniformly evaluating all primitive-recursive descriptions. In
+fact such a uniform evaluator would contradict the familiar diagonal
+construction $n\mapsto U(n,n)+1$. The normalization theorem above is a
+metatheorem about all finite terms; it is not an extra totality axiom
+inside iPRA. The complete checker includes the normalization code, and
+the fuelled checker supplies a bounded certificate relation without
+claiming a uniform primitive-recursive normalization bound.
+
+\paragraph{Why canonical syntax is checked, not merely evaluated.}
+Input terms are required to be normal forms. The syntax traversal checks
+their constructor shapes and variable scopes, computes their normal
+forms, and requires the result to be identical to the input. Rule-created
+substitution instances may expose new redexes; those are normalized
+before use. In particular the probe uses normalized zero and unit
+instances, not a textual search through an unnormalized matrix. It can
+therefore discover a name that becomes visible only after computation.

@@ -1,0 +1,76 @@
+PRIMARY PREFIX CHECKER: CERTIFICATE FORMAT
+
+Input is a JSON object with exactly the keys "goal" and "proof".
+
+Terms
+  0                 numerical zero
+  positive integer  relative bound index, starting at 1
+  negative integer  absolute free eigenparameter level
+  [t]               successor
+  [n,a,h]           iterator I(n,a;u.h); h binds one variable
+
+Formula
+  [k,s,t]           k paired D binders followed by s=t
+                    k is an exact nonnegative integer
+
+A public formula must be closed. Its terms are checked at depth 2*k.
+At outer eigenparameter scope n and binder depth d, integer leaves must
+satisfy -n <= i <= d. Booleans and floats do not count as integers.
+
+Contexts
+  Each entry is a pair (antecedent formula, unary consequent template).
+  The sole initial entry is ([0,0,0], [0,1,1]), reading
+      (0=0) -> forall y, y=y.
+  A consequent template has one exterior positive slot beyond its own
+  2*k bound variables. Contexts are internal, not supplied by the JSON input.
+
+Proof nodes
+  ["u", index, target, minor]
+      Use context[index], with an exact nonnegative integer index and a
+      well-scoped numerical target. If the antecedent's two leaf terms
+      are literally equal, minor is an inert JSON field and is not parsed
+      as a proof; canonical supplied examples use []. Otherwise minor
+      must derive the antecedent. Return the consequent at target.
+
+  ["v", p, q]
+      Both subproofs must derive equations (prefix count 0). If p derives
+      s=t and q derives I(0,s;u.h)=r, return r=t. If p derives
+      I(c,a;u.h)=t and q derives I(S c,a;u.h)=r, return r=h[t/u].
+      No other evaluation case is admitted.
+
+  ["e", p, branch]
+      p must derive a positive-count formula D B. Introduce the fresh
+      eigenparameter b=-n-1 and add (B(b,0), B(b,y)). Check branch in that
+      context. Its returned formula must be well scoped at the original
+      outer scope n, so b cannot escape. Return that formula.
+
+  ["i", goal, witness, branch]
+      goal must be a well-scoped positive-count formula D B, and witness
+      a well-scoped numerical term. Let z=-n-1. Let eta=z exactly when
+      goal has count 1 and witness is literally 0; otherwise eta=0.
+      Add the constant clause (0=0, B(witness,eta)). The branch must return
+      B(witness,S z). Return goal.
+
+The final derived formula must equal the supplied public goal exactly.
+The unused minor in reflexive Use is the sole intentionally inert field.
+Other rule-node lengths and tags are exact. Each branch creates one context
+entry and one fresh eigenparameter, which justifies scope=len(context)-1
+for this closed-certificate protocol.
+
+Substitution
+  Opening a formula [k,s,t] substitutes into each term at index
+  2*k+1+offset, where offset=0 opens its next outer variable and offset=1
+  opens the witness outside that variable. In an iterator body the sought
+  index increases by one. Removal of a slot decrements larger indices.
+  All inserted values are closed with respect to exterior positive indices;
+  negative free levels are unchanged, and internal binders remain local.
+
+Homogeneous alternative
+  flat_homogeneous.py has the same public terms/formulas and proof tags,
+  but retains a single unary template per context entry. Intro gates its
+  local fact by the asymmetric iterator construction in the report;
+  Elim retains B(b,y); Use computes the antecedent as B(0). Its expanded
+  binder lifting is included in that standalone program and in its metrics.
+
+The source checkers use explicit require checks rather than Python assert
+for trusted validation, so python -O does not disable inference checks.

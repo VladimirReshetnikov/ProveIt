@@ -1,0 +1,103 @@
+\clearpage
+\section{Complete normalized acceptance checker}
+\label{app:checker}
+
+The following is the complete measured module. Documentation and comments
+are removed by the measurement convention; every executable definition
+and the command-line entry point are present. The readable source and
+the optional bounded version are separate files in the archive.
+
+CHECKER_LISTING_PLACEHOLDER
+
+\section{Reproduction and file map}
+
+With Python 3.12.14, run the following from the extracted directory:
+\begin{lstlisting}[language={}]
+python3 reproduce.py
+python3 code/checker.py < tests/positive/successor_congruence.json
+python3 code/checker.py < tests/negative/goal_false.json
+python3 build_pdf.py
+\end{lstlisting}
+The first selected example prints \texttt{ACCEPT}; the second prints
+\texttt{REJECT}. The reproduction entry point verifies the delivered
+manifest, replays positive and negative certificates and proof translations,
+checks the bounded variants, and recomputes complete-module measurements.
+The PDF build uses an installed pdfLaTeX distribution with shell escape
+disabled. A freshly compiled PDF may differ in metadata and therefore in
+its file hash; the delivered manifest describes the original payload.
+
+\begin{longtable}{@{}p{.31\textwidth}p{.65\textwidth}@{}}
+\toprule
+File or directory & Contents \\
+\midrule
+\endhead
+\path{ipra_first_instance.tex} & Standalone LaTeX source containing this entire report. \\
+\path{ipra_first_instance.pdf} & Compiled report. \\
+\path{paper/} & Editable source sections used to assemble the standalone source. \\
+\path{code/} & Complete selected and matched control checkers, with and without fuel. \\
+\path{tests/} & Positive, negative and source certificates; untrusted proof constructors, translators and independent replay. \\
+\path{reference/} & Attributed foundation fragments and exact comparison checker snapshots. \\
+\path{evidence/} & Measurements, normalized and gzip sources, verification logs and provenance. \\
+\path{FORMAT.txt} & Public JSON grammar and scope conventions. \\
+\path{CLAIMS.json} & Explicit positive claims and limitations. \\
+\path{SOURCE_PROVENANCE.json} & Pinned repository and mathematical source identities. \\
+\path{MANIFEST.json} & SHA-256 checksums of every other payload file. \\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{9}
+
+\bibitem{baseline}
+Vladimir Reshetnikov, \emph{ProveIt: Concise presentations of intuitionistic
+primitive recursive arithmetic}, snapshot
+\texttt{17898ea7e6a1300dfdcad71040d5daeed67916d4},
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/17898ea7e6a1300dfdcad71040d5daeed67916d4/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+
+\bibitem{witness}
+\emph{iPRA with equality at witness discharge},
+\path{docs/incoming/ipra_witness_discharge_2026-11-11.zip}
+in~\cite{baseline}, especially the complete native specification,
+naming-matrix proof, zero-witness repair, and normalization appendix.
+The archive's own original snapshot is
+\texttt{0ebd0c6b358f38bb0ad2883faf775421599c8aae}.
+
+\bibitem{normalization}
+\emph{Full normalization}, \path{Research/full_normalization}
+in~\cite{baseline}; normalization results as reproduced and attributed
+in~\cite{witness}. The present bridge additionally spells out a
+termination justification for strict normalization of an unused
+predecessor iterate.
+
+\bibitem{uniformbinding}
+\emph{Uniform binding for intuitionistic primitive recursive arithmetic},
+\path{docs/incoming/ipra_uniform_binding_2026-11-11.zip}
+in~\cite{baseline}. Exact checker source retained for comparison.
+
+\bibitem{erasure}
+\emph{Internal scalar predecessor bootstrap}, the attributed development
+in \path{Research/certified_zero/reference/scalar_predecessor.tex}
+of~\cite{baseline}; reproduced here without a claim of new authorship.
+
+\bibitem{forward}
+\emph{From literal-equation induction to full intuitionistic PRA},
+the attributed forward-left development in
+\path{Research/certified_zero/reference/equality_reflection.tex}
+of~\cite{baseline}; reproduced here.
+
+\bibitem{progress}
+\emph{Pairing, primitive recursion, and internal numerical composites},
+the attributed scalar arithmetic development in
+\path{Research/certified_zero/reference/primitive_recursion.tex}
+of~\cite{baseline}; reproduced here.
+
+\bibitem{khaniki}
+Erfan Khaniki, \emph{Not all Kripke models of HA are locally PA},
+\emph{Advances in Mathematics} 397 (2022), 108126.
+Author manuscript dated 9 January 2021, Section 2.1.
+\url{https://iuuk.mff.cuni.cz/~koucky/EPAC/papers/HA_Final.pdf}.
+Used for the full first-order iPRA convention, not as a source of the
+new inference restriction.
+
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,384 @@
+\section{Equality read from one fixed row}
+\label{sec:first-row-mathematics}
+
+The new reduction is local to witness discharge.  It removes the equality
+proof that the preceding \emph{Name} rule asks the certificate to supply.
+Instead, the rule reads one specified instance of its own opened clause.
+The zero instance must be the fixed reflexive equation $0=0$, and the
+successor instance must name the fresh witness.  These are decidable
+syntactic tests, not proof-search operations.
+
+\subsection{Setting and complete discharge rule}
+
+Write $N$ for full computation normalization of scalar iterator terms and
+of the numerical terms in formulas.  The reductions are
+\[
+ I(0,a;u.h)\longrightarrow a,
+ \qquad
+ I(Sn,a;u.h)\longrightarrow h[I(n,a;u.h)/u].
+\]
+Terms and formulas in inference labels are normal forms.  Substitution is
+capture avoiding and followed by $N$.  In particular, the argument uses
+the inherited normalization--substitution identity
+\begin{equation}
+ N\bigl(N(F)[t/b]\bigr)=N\bigl(F[t/b]\bigr).
+ \label{eq:row-normalization-coherence}
+\end{equation}
+This is a metasyntactic identity.  It is not an application of an
+object-language equality rule.  No numerical variable ranges over
+programs or function descriptions.
+
+Before normalization the complete numerical grammar is
+\[t::=x\mid 0\mid S(t)\mid I(n,a;u.h),\]
+where only $u$ is bound in $h$, and the other arguments do not bind.
+The native formulas are equations and $D_{x,y}B$.  Its ordinary reading is
+\[
+ \bigl(D_{x,y}B\bigr)^\circ
+   =\exists x\bigl(B^\circ(x,0)\to\forall y\,B^\circ(x,y)\bigr).
+\]
+A context consists of reusable clauses $[\Pi;y.A(y)]$, with zero or one
+antecedent in $\Pi$; the displayed $y$ is not free in the antecedent.
+An ordinary assumption $A$ is the unconditional constant clause
+$[\,;v.A]$, where $v$ is unused.  Every derivation has the fixed initial
+clause
+\[
+                    \mathcal R=[\,;y.y=y].
+\]
+Its instances supply reflexivity by the ordinary clause-use instruction.
+The designated contradiction is still $0=S0$.
+
+The Use instruction is unchanged: from the antecedent of a selected
+clause, if present, infer its consequent at any supplied numerical term.
+The Intro instruction is also unchanged.  At witness $t$ and fresh $z$,
+it derives $D_{x,y}B$ from a branch proving $N(B(t,Sz))$.  The branch has
+the ordinary assumption $N(B(t,z))$ precisely when $B$ is an equation and
+$t$ is literally $0$; otherwise it has $N(B(t,0))$.  The witness and the
+matrix's passive parameters are outer scoped, and $z$ is fresh for all
+retained data.
+
+For the new discharge instruction, first prove $D_{x,y}B$ and open it at
+a fresh numerical parameter $b$.  Write
+\[
+ \mathcal C_b=[N(B(b,0));y.N(B(b,y))],\qquad 1=S0.
+\]
+Define the term $\tau_B(b)$ deterministically:
+\begin{equation}
+ \tau_B(b)=
+ \begin{cases}
+ t,&N(B(b,0))\text{ is literally }0=0
+       \text{ and }N(B(b,1))\text{ is literally }b=t,\\
+ b,&\text{otherwise}.
+ \end{cases}
+ \label{eq:row-target}
+\end{equation}
+There is no certificate for either test.  The fresh witness must be the
+\emph{entire left term} of the tested equation, not merely one of its
+subterms.  The rule is
+\begin{equation}
+ \frac{\Gamma\vdash D_{x,y}B\qquad
+       \Gamma,\mathcal C_b\vdash F}
+      {\Gamma\vdash N(F[\tau_B(b)/b])},
+ \qquad b\notin\operatorname{FV}\bigl(N(F[\tau_B(b)/b])\bigr).
+ \tag{Row}
+ \label{rule:first-row}
+\end{equation}
+The parameter $b$ is fresh for the retained context and the matrix's
+passive parameters.  Replacement is simultaneous and performed once:
+inserted copies of $\tau_B(b)$ are not revisited.  The selected target may
+itself contain $b$.  The condition required for discharge is absence of
+$b$ from the \emph{final normalized result}, not absence from that target.
+
+Use, Intro, and Row, together with $\mathcal R$ and the specified canonical
+syntax, are the entire presentation.  Full normalization is part of its
+trusted specification and implementation.  There are no additional
+primitive equality, computation, successor, or induction rules.  This
+still counts as three instruction families; the reduction is from three
+proof premises to two in the discharge instruction and the deletion of
+its independently supplied equality data.
+
+\subsection{Soundness and the equality-free preliminaries}
+
+Let $\mathcal K_{=}$ denote the preceding full-normal Name calculus,
+whose discharge is the explicit rule
+\[
+ \frac{\Gamma\vdash D_{x,y}B\qquad\Gamma,\mathcal C_b\vdash b=t
+       \qquad\Gamma,\mathcal C_b\vdash F}
+      {\Gamma\vdash N(F[t/b])},
+ \quad b\notin\operatorname{FV}(N(F[t/b])).
+ \tag{Name}
+\]
+Here $b$ has the same freshness requirement as in Row, and $t$ is
+well scoped in the local context; it may contain $b$.  Let $\mathcal K_{\mathrm{row}}$ denote the new calculus.
+
+\begin{lemma}[The rule supplies its own equality]
+\label{lem:row-selected-equality}
+In the opened context $\Gamma,\mathcal C_b$, one can derive
+$b=\tau_B(b)$ using only Use and $\mathcal R$.
+\end{lemma}
+\begin{proof}
+If the test in \eqref{eq:row-target} succeeds, reflexivity gives its zero
+antecedent $0=0$, and Use of $\mathcal C_b$ at $1$ gives exactly $b=t$.
+If the test fails, Use of $\mathcal R$ at $b$ gives $b=b$.
+\end{proof}
+
+\begin{corollary}[Embedding into the preceding calculus]
+\label{cor:row-soundness}
+Every Row inference is derivable in $\mathcal K_{=}$ with the same end
+sequent.  Hence every new derivation is sound for the preceding ordinary
+interpretation.
+\end{corollary}
+\begin{proof}
+Retain the major and formula branches, insert the equality proof of
+Lemma~\ref{lem:row-selected-equality}, and use the old Name inference.
+Its result and eigenparameter condition are exactly those of Row.
+\end{proof}
+
+The same argument works directly in ordinary intuitionistic equality
+logic: equality gives $F[\tau_B(b)/b]$, normalization preserves its
+meaning, and the result's $b$-freedom permits existential elimination.
+This also explains why no occurs check on the selected target is needed.
+
+\begin{lemma}[Ordinary paired elimination]
+\label{lem:row-ordinary-elimination}
+From $\Gamma\vdash D_{x,y}B$ and
+$\Gamma,\mathcal C_b\vdash A$, with $b$ absent from $A$, one can derive
+$\Gamma\vdash A$.
+\end{lemma}
+\begin{proof}
+Use Row with the given formula branch $A$.  Regardless of which target
+the test selects, $N(A[\tau_B(b)/b])$ is literally $A$: there is no $b$ to
+replace, and $A$ is already normal.  In particular, this argument does
+not assume that the rule takes its fallback branch.
+\end{proof}
+
+Weakening, injective fresh renaming, and cut of an ordinary assumption
+are admissible by direct induction on derivations.  Freshen local
+parameters before insertion.  An ordinary-assumption cut replaces uses
+of its unconditional constant clause by the supplied proof.  The matrix
+and deterministic test at a Row node are unchanged by such insertion.
+Injective renaming commutes with normalization and preserves and reflects
+the tests against $0=0$ and against the distinguished fresh parameter.
+These structural arguments do not assume numerical substitution of
+derivations or any equality-congruence theorem.
+
+For a variable $w$ unused in $A$, put
+$q_yA(y)=D_{w,y}A(y)$.
+
+\begin{lemma}[Numerical cases before equality transport]
+\label{lem:row-cases}
+The following rules are derivable using only Use, Intro,
+Lemma~\ref{lem:row-ordinary-elimination}, and $\mathcal R$:
+\begin{align*}
+ &\frac{\Gamma,A(0)\vdash A(Sz)}
+        {\Gamma\vdash q_yA(y)},\\[4pt]
+ &\frac{\Gamma\vdash q_yA(y)\qquad\Gamma\vdash A(0)}
+        {\Gamma\vdash A(t)},\\[4pt]
+ &\frac{\Gamma\vdash A(0)\qquad\Gamma\vdash A(Sz)}
+        {\Gamma\vdash A(t)}.
+\end{align*}
+Here all instances are normalized, and the successor-branch parameter is
+fresh for the retained context and the template's passive parameters.
+\end{lemma}
+\begin{proof}
+For the first rule, introduce the unused witness $w$ at $1$.  This forces
+Intro's case mode even when $A$ is an equation, because the chosen
+witness is not literally $0$.  Its branch is precisely the supplied
+$A(0)\vdash A(Sz)$.
+
+For the second rule, open $q_yA$ by ordinary paired elimination.  Since
+its witness coordinate is unused, the opened clause is
+$[A(0);y.A(y)]$.  Use it at $t$ with the given proof of $A(0)$, then
+discharge the unused witness.  For the third rule, weaken its successor
+proof by the unused assumption $A(0)$ and combine the first two rules.
+\end{proof}
+
+This is numerical case distinction, not equation induction: its
+successor branch has no induction hypothesis.  It has been obtained
+before, and without, any transport principle.
+
+\subsection{Recovering arbitrary equality from two numerical rows}
+
+Define a normalizing selector and a short parity term by
+\[
+ C(v,a,c)=N(I(v,a;u.c)),\qquad
+ P(y)=N(I(y,0;u.C(u,1,0))),
+\]
+where the state variable in the first expression is unused in $c$.
+Only four literal computation identities are needed:
+\begin{equation}
+ C(0,a,c)=a,\quad C(Sv,a,c)=c,\quad
+ P(1)=1,\quad P(2)=0,\qquad 2=S1.
+ \label{eq:row-endpoints}
+\end{equation}
+No predecessor, parity range theorem, or arithmetic induction occurs in
+these finite computations.
+
+The following construction adapts the two-row witness package in the
+preceding witness-discharge report~\cite{prior}.  Its rows are
+exchanged: row $1$ now contains the equation the rule must read
+automatically, and row $2$ contains the formula the branch supplies.
+The use of the selector and parity term is inherited; the fixed-row
+discharge restriction is the present change.
+
+\begin{theorem}[Uncrossed term transport]
+\label{thm:row-term-transport}
+For every fixed numerical term template $h(v)$, the new calculus derives
+\[
+ \frac{\Gamma\vdash s=t\qquad\Gamma\vdash N(h(s))=r}
+      {\Gamma\vdash N(h(t))=r}.
+\]
+The retained context may contain arbitrary clauses.
+\end{theorem}
+\begin{proof}
+Choose fresh matrix variables $x,y$ and define the equation
+\[
+ B(x,y)=\bigl(
+ C(y,0,C(P(y),N(h(x)),x))
+ =C(y,0,C(P(y),r,t))\bigr).
+\]
+All displayed expressions are normalized.  By
+\eqref{eq:row-endpoints}, its relevant instances are literally
+\begin{equation}
+ B(x,0)=(0=0),\qquad B(x,1)=(x=t),\qquad
+ B(x,2)=(N(h(x))=r).
+ \label{eq:row-three-instances}
+\end{equation}
+
+We first prove $D_{x,y}B$ by Intro at the witness $s$.  For its successor
+branch consider the formula
+\[
+ A(v)=\bigl(C(v,N(h(s)),s)=C(v,r,t)\bigr).
+\]
+Its zero instance is the supplied equation $N(h(s))=r$.  Every successor
+instance is the supplied equation $s=t$.  Applying
+Lemma~\ref{lem:row-cases} at the target $P(Sz)$ gives
+\[
+ C(P(Sz),N(h(s)),s)=C(P(Sz),r,t),
+\]
+which is exactly $N(B(s,Sz))$.  The eigenparameter for this case proof is
+chosen fresh independently of $z$.
+
+This successor proof does not use Intro's local hypothesis.  It is
+therefore valid both when $s$ is literally $0$ and Intro selects progress,
+and when Intro selects cases.  No equality congruence has been smuggled
+into this step: each endpoint of the case proof is one of the two given
+equations by literal normalization.
+
+Apply Row to the resulting $D B$, opening its witness at fresh $b$.
+Equations~\eqref{eq:row-three-instances} make its zero test succeed and
+its first row exactly $b=t$.  Thus its selected target is $t$.  In the
+single formula branch, Use of the opened clause at $2$, with reflexivity
+of $0$ as antecedent, gives $F=(N(h(b))=r)$.  The exported formula is
+$N(F[t/b])$, which is $N(h(t))=r$ by
+\eqref{eq:row-normalization-coherence}.  The parameter $b$ is absent from
+$t,r,h$ and the outer context, so the output scope condition holds.
+\end{proof}
+
+\begin{corollary}[Equality algebra and formula transport]
+\label{cor:row-formula-transport}
+The new calculus derives symmetry, transitivity, term congruence,
+crossed one-term transport, and transport in every Eq/$D$ formula template.
+\end{corollary}
+\begin{proof}
+For symmetry of $s=t$, use
+Theorem~\ref{thm:row-term-transport} with $h(v)=v$ and $r=s$; its other
+premise is reflexivity $s=s$, and its result is $t=s$.  Applying symmetry
+to the conclusion of that theorem yields crossed transport
+$s=t,\,h(s)=r\vdash r=h(t)$.  The usual instances now give transitivity
+and term congruence.  Two crossed transports replace a parameter in
+both sides of an equation.
+
+For a compound formula template, argue externally by induction on its
+finite syntax.  Suppose it is $D_{x,y}K(v,x,y)$, and its source instance
+at $s$ is proved.  Open that instance at a fresh witness $c$.  To introduce
+the target instance at $t$, choose witness $c$.  Since this witness is a
+parameter rather than literal $0$, Intro is in case mode.  Under its
+hypothesis $K(t,c,0)$, use the induction hypothesis and $t=s$ to derive
+$K(s,c,0)$.  Use the source clause at $Sz$, then the induction hypothesis
+and $s=t$, obtaining $K(t,c,Sz)$.  Close Intro and the source elimination.
+Each recursive transport concerns the strictly smaller formula $K$.
+
+The proof always introduces the compound target at a fresh parameter;
+it does not require an unproved repair of case introduction at witness
+$0$.  Its induction is external on formula syntax, not object-language
+induction for quantified formulas.
+\end{proof}
+
+\subsection{Exact equivalence and its interpretation consequence}
+
+\begin{theorem}[The entire open consequence relation is preserved]
+\label{thm:row-exact-equivalence}
+For every finite canonical clause context $\Gamma$ containing
+$\mathcal R$ and every canonical formula $F$,
+\[
+ \Gamma\vdash_{\mathcal K_{\mathrm{row}}}F
+ \quad\Longleftrightarrow\quad
+ \Gamma\vdash_{\mathcal K_{=}}F.
+\]
+Both directions are effective transformations of finite proof trees and
+leave the entire end sequent literally unchanged.
+\end{theorem}
+\begin{proof}
+From the new calculus to the old, use
+Corollary~\ref{cor:row-soundness} at every Row node.  The two other
+instructions are unchanged.
+
+Conversely, translate an old derivation recursively.  At an old Name
+node, its translated branches prove $b=t$ and $F$ under the opened
+clause.  Use Corollary~\ref{cor:row-formula-transport} inside that branch
+to obtain $N(F[t/b])$.  The old rule's side condition says this result is
+$b$-free, so Lemma~\ref{lem:row-ordinary-elimination} discharges the
+witness.  This construction also covers targets $t$ that contain $b$;
+equality transport is simultaneous one-pass substitution into the fixed
+formula template.  Use and Intro are shared.
+
+The constructions used for this replacement were derived before this
+translation: ordinary elimination, then numerical cases, then the
+two-row term-transport package, then formula transport.  Thus recursion
+on the old proof tree is well founded.  No arbitrary numerical
+substitution theorem for derivations is assumed.
+\end{proof}
+
+\begin{corollary}[Full first-order iPRA]
+\label{cor:row-ipra}
+The new presentation is equiconsistent and bi-interpretable with full
+first-order intuitionistic primitive recursive arithmetic.  Both
+numerical interpretations use the whole domain and actual equality;
+both numerical composite isomorphisms have graph $x=y$.
+\end{corollary}
+\begin{proof}
+Compose Theorem~\ref{thm:row-exact-equivalence} with the attributed
+canonical/raw and native/iPRA comparisons.  The new comparison is the
+identity on numerical terms and formulas and has exactly the same
+ordinary reading.  It therefore transfers all proofs of the inherited
+term composites, logical macros, and formula round trips without
+changing their statements.  In particular, for native $F$ and ordinary
+iPRA $\varphi$, the inherited statements
+\[
+ F\leftrightarrow_{\mathrm{native}}(F^I)^J,
+ \qquad
+ \varphi\leftrightarrow(\varphi^J)^I
+\]
+remain provable in the respective theories.  This includes the binder
+round trip
+\[
+ D_{x,y}B\leftrightarrow_{\mathrm{native}}
+ \exists_{\mathrm{native}}x\bigl(
+ B(x,0)\to_{\mathrm{native}}
+ \forall_{\mathrm{native}}y\,B(x,y)\bigr).
+\]
+No restriction to standard natural numbers, proper definable cut, or
+quotient domain is introduced.  The contradiction $0=S0$ is unchanged,
+so the effective translations also give equiconsistency.
+\end{proof}
+
+\paragraph{Precisely what is not claimed.}
+The mode in \eqref{eq:row-target} is not invariant under arbitrary
+numerical substitution: an instance can normalize to $0=0$ when its
+unsubstituted zero row did not.  Consequently, this proof does not claim
+that blindly substituting into a derivation preserves its primitive
+instruction tags.  General admissibility follows through the exact
+equivalence instead.  Nor do fewer premises imply a smaller checker
+without measurement: the fixed-row normalization and tests must be
+counted.  The result establishes a stricter complete equality interface,
+not an absolute minimum over all possible presentations.
