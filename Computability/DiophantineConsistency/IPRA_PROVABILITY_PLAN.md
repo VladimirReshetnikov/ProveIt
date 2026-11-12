@@ -7739,6 +7739,9 @@ propose the symbolic endpoint declarations. Their [static import inventory](rese
 is limited to source headers and direct qualified imports. The full chain is
 unelaborated; providers, axiom checks, physical-byte binding and the iPRA
 proof-existence claim remain open.
+The source-reviewed [bounded proof-escape audit](research/ordinary14-root74-proof-escape-audit/README.md)
+checks selected tokens in inventoried sources and records classical references
+and unexecuted axiom commands. It is not an axiom-closure or Lean proof check.
 The reviewed [root-74 endpoint scope audit](research/ordinary14-root74-endpoint-scope-audit/README.md)
 records the exact mapped refutation target and the `positiveShift` used by
 the proposed declarations. The 74-operation count applies to the unshifted
