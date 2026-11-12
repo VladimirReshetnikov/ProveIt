@@ -7461,6 +7461,11 @@ The reviewed [explicit-quotient construction](research/ordinary15-direct-guards8
 trades two additional inputs against the 13-input 87/36 form, giving 15
 positive inputs, 84 operations and degree 36. These results remain external
 arithmetic with inherited endpoint, ancestry and file-binding limitations.
+The reviewed [negative-Pell unit finalizer](research/ordinary14-negative-pell75/README.md)
+reduces the 14-positive-input degree-60 parent to 75 operations at exact
+degree 107. Its five-factor product has the same zeros on the positive domain;
+the proof uses a negative-Pell descent and modular factor exclusions. The
+compact44 endpoint and Lean limitations remain inherited.
 The distinct [q-squared 78-operation probe](research/ordinary14-q2-78-probe/README.md)
 has a reviewed symbolic actual-port zero with `q² ∣ Y` but `q³ ∤ Y`; its
 same-`q`, same-rank parent exclusion is conditional on the cited parent
