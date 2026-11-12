@@ -7714,6 +7714,9 @@ The source-reviewed [74 guard strictness fact](research/ordinary14-positive-guar
 proposes the positive quotient recovery from explicit order and size
 hypotheses. It is unelaborated and those hypotheses have not been bound to
 the graph in Lean.
+The source-reviewed [74 own-zero product draft](research/ordinary14-74-ownzero-product-draft/README.md)
+proposes extracting the signed product from the literal graph. It remains
+unelaborated and leaves the graph's factor exclusions as explicit premises.
 The source-reviewed [75/74 ring client](research/ordinary14-75-74-ring-client-draft/README.md)
 and [positive map draft](research/ordinary14-75-74-positive-map-draft/README.md)
 propose the forward and conditional reverse valuation updates. They are
