@@ -1,0 +1,117 @@
+[
+  {
+    "file": "symmetry_symbolic.json",
+    "expected": true,
+    "purpose": "Derived symmetry without a primitive right-endpoint conversion."
+  },
+  {
+    "file": "right_conversion_derived.json",
+    "expected": true,
+    "purpose": "Right-endpoint computation derived from symmetry and left HC."
+  },
+  {
+    "file": "transport_symbolic.json",
+    "expected": true,
+    "purpose": "Full crossed transport through an iterator template; all packet rows are raw."
+  },
+  {
+    "file": "transport_zero_source.json",
+    "expected": true,
+    "purpose": "Transport packet introduced in the witness-zero progress mode."
+  },
+  {
+    "file": "transport_reducible_template.json",
+    "expected": true,
+    "purpose": "The endpoint template is itself a raw head redex and must not be normalized."
+  },
+  {
+    "file": "raw_zero_alias_case.json",
+    "expected": true,
+    "purpose": "A nonliteral zero alias selects the case premise, not the progressive premise."
+  },
+  {
+    "file": "reject_wrong_intro_mode.json",
+    "expected": false,
+    "purpose": "The same branch no longer checks when the literal-zero witness selects progress."
+  },
+  {
+    "file": "zero_computation.json",
+    "expected": true,
+    "purpose": "Zero computation is a derived HC expansion from reflexivity."
+  },
+  {
+    "file": "successor_computation.json",
+    "expected": true,
+    "purpose": "Raw successor computation from one left HC expansion."
+  },
+  {
+    "file": "counter_depth_3.json",
+    "expected": true,
+    "purpose": "The supplied counter-spine address is checked against the literal bound three."
+  },
+  {
+    "file": "counter_depth_4.json",
+    "expected": false,
+    "purpose": "The supplied counter-spine address is checked against the literal bound three."
+  },
+  {
+    "file": "reject_boolean_depth.json",
+    "expected": false,
+    "purpose": "A Boolean must not masquerade as the counter-spine depth one."
+  },
+  {
+    "file": "reject_seed_conversion.json",
+    "expected": false,
+    "purpose": "HC cannot travel into an iterator seed."
+  },
+  {
+    "file": "reject_direct_right_conversion.json",
+    "expected": false,
+    "purpose": "A direct right-endpoint HC instruction is unavailable."
+  },
+  {
+    "file": "reject_erased_scope.json",
+    "expected": false,
+    "purpose": "An out-of-scope raw body is rejected before zero erasure."
+  },
+  {
+    "file": "reject_erased_sort.json",
+    "expected": false,
+    "purpose": "A formula in an iterator body is rejected before zero erasure."
+  },
+  {
+    "file": "scoped_erased_body.json",
+    "expected": true,
+    "purpose": "An ambient parameter is allowed in a dead body when it is in scope."
+  },
+  {
+    "file": "reject_unused_qe_hint_scope.json",
+    "expected": false,
+    "purpose": "An unused specialization hint is validated even for a reflexive target."
+  },
+  {
+    "file": "reject_boolean_scope.json",
+    "expected": false,
+    "purpose": "Boolean values are not numerical scope sizes."
+  },
+  {
+    "file": "reject_contradiction.json",
+    "expected": false,
+    "purpose": "A false closed equation is not reflexivity."
+  },
+  {
+    "file": "reject_boolean_variable.json",
+    "expected": false,
+    "purpose": "Boolean values are not substitution indices."
+  },
+  {
+    "file": "reject_public_free_variable.json",
+    "expected": false,
+    "purpose": "Even a reflexive goal must be in scope."
+  },
+  {
+    "file": "self_containing_replacement.json",
+    "expected": true,
+    "purpose": "Variable replacement has no occurs check and does not iterate itself."
+  }
+]
