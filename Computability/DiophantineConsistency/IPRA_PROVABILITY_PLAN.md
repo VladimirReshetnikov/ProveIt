@@ -7582,6 +7582,9 @@ The source-reviewed [84 q⁴-rank congruence draft](research/ordinary14-84-q4-ra
 proposes the divisibility from that graph's own carrier balance, including
 the factor-three case. It remains unelaborated and does not establish exact
 Pell indices.
+The source-reviewed [84 first-index modulo q⁴ draft](research/ordinary14-84-first-index-modq4-draft/README.md)
+proposes linking the first Pell index to the rank modulo q⁴. It remains
+unelaborated and requires a rank window before exact-index calibration.
 The source-reviewed [84 main-index draft](research/ordinary14-84-main-index-draft/README.md)
 proposes classifying the main root while retaining the natural balance. It is
 unelaborated and does not identify that index with the rank.
