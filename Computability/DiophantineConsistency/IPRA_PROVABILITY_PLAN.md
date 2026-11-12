@@ -7689,6 +7689,9 @@ and [guard](research/ordinary14-74-guard-linear-combination-patch/README.md)
 import patches and a [small first-factor cut](research/ordinary14-74-first-factor-small-cut-draft/README.md)
 are preventive source alternatives. The original chain is unchanged; no
 Lean failure, need for the imports, or resource improvement has been verified.
+The reviewed [lexical tactic-import audit](research/ordinary14-root74-tactic-import-audit/README.md)
+records six observed header paths and two unresolved paths with unexpanded
+leaves. It does not establish tactic absence or a Lean error.
 The source-reviewed [78/75 ring-factor client](research/ordinary14-78-75-ring-client-draft/README.md)
 and [78-to-75 forward map](research/ordinary14-78-to-75-model-map-draft/README.md)
 propose the same-coordinate forward direction. They remain unelaborated;
