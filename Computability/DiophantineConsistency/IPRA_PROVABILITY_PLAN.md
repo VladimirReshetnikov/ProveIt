@@ -7466,6 +7466,11 @@ reduces the 14-positive-input degree-60 parent to 75 operations at exact
 degree 107. Its five-factor product has the same zeros on the positive domain;
 the proof uses a negative-Pell descent and modular factor exclusions. The
 compact44 endpoint and Lean limitations remain inherited.
+The reviewed [mixed-domain shift](research/ordinary14-mixed-guard74/README.md)
+gives 14 inputs, 74 operations and exact degree 107 by allowing `F ≥ 0`
+while the other thirteen inputs remain positive. Its polynomial is identical
+to the 75-operation parent's under `F_old = F+1`; it is not an all-positive
+74-operation equation and inherits the parent's endpoint limitations.
 The distinct [q-squared 78-operation probe](research/ordinary14-q2-78-probe/README.md)
 has a reviewed symbolic actual-port zero with `q² ∣ Y` but `q³ ∤ Y`; its
 same-`q`, same-rank parent exclusion is conditional on the cited parent
