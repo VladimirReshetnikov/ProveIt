@@ -7472,6 +7472,10 @@ map, provider compatibility and endpoint remain open.
 The source-reviewed [88-to-87 ring client](research/ordinary14-88-87-ring-client-draft/README.md)
 proposes the quotient guard shift over a commutative ring. It is unelaborated
 and does not by itself prove the reverse positive witness.
+The source-reviewed [positive 88-to-87 map](research/ordinary14-88-to-87-positive-map-draft/README.md)
+and [conditional reverse map](research/ordinary14-87-to-88-conditional-map-draft/README.md)
+propose both valuation updates; the reverse still assumes `F < omega`.
+Neither has been elaborated in Lean.
 The source-reviewed [conditional 87-to-86 map](research/ordinary14-87-to-86-conditional-map-draft/README.md)
 proposes the reverse valuation assuming the scalar gap and quotient
 positivity. It remains unelaborated and those assumptions must still be
