@@ -78,6 +78,12 @@ by progress as primitive, and proves that the derivable sequents are the same
   [`direct_closure`](Research/direct_closure/) and
   [`direct_closure_qprogress`](Research/direct_closure_qprogress/).
 
+- *No literal-zero source.* Transport may further be restricted to equations
+  `s = t` whose source `s` is not the literal term `0`; the omitted instances
+  are derivable (`zprf_iff_nprf`). This is the theorem of
+  [`source_dispatch`](Research/source_dispatch/), which lets the source of an
+  elimination select its major premise.
+
 **Ordinary realization.** `T_eq` is intuitionistic first-order logic with
 equality over the same terms, with the two computation equations, coverage
 `∀x (x = 0 ∨ ∃y x = S y)`, separation `0 = S 0 → ⊥`, and induction for literal
@@ -202,6 +208,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | | `teq_consistent_iff` | equiconsistency |
 | kernel = reports' calculus | `iprf_iff_nprf : IPrf Γ A ↔ NPrf Γ A` | equational Tr and QI by progress derive the same sequents as Tr in arbitrary templates and witnessed DI by progress |
 | | `NPrf.tr`, `NPrf.dIProg` | the two inherited rules as derived rules of the kernel |
+| no literal-zero source | `zprf_iff_nprf : ZPrf Γ A ↔ NPrf Γ A` | transport restricted to sources other than the literal `0` derives the same sequents |
 | native → `T_eq` | `NPrf.sound` | `NPrf Γ A → Γ.map toFm ⊢[TeqAx] A.toFm` for the ordinary readings of `Q` and `D` |
 | `T_eq` → native | `NPrf.ofPrf` | `Γ ⊢[TeqAx] φ → NPrf (Γ.map ofFm) (ofFm φ)`, where `ofFm` replaces each connective by its native macro |
 | native = `T_eq` | `NPrf.iff_teq`, `Teq.iff_native` | faithfulness of both readings |
@@ -224,7 +231,7 @@ no `native_decide`.
 | `T_eq` arithmetic | `Lindenbaum`, `TeqArith`, `TeqParity`, `TeqCompare`, `TeqPred`, `TeqEq`, `TeqReflect`, `TeqOrder`, `TeqPair`, `TeqRec` | predecessor, reflection of equality into a term, quantifier-free induction, pairing, compilation of primitive recursion |
 | `T_eq` ≡ iPRA | `ScalarToPRA`, `PRAToScalar`, `RoundTripScalar`, `RoundTripPRA`, `BiInterpretation` | the two interpretations and their composites |
 | native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, interderivability over a context, Leibniz and transport in every template, equation induction; selector and gate formulas |
-| kernel comparison | `NativeInherited` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf` |
+| kernel comparison | `NativeInherited`, `NativeZeroSource` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf`; the calculus without literal-zero transport sources, `ZPrf`, and `zprf_iff_nprf` |
 | native logic | `NativeLogic` | `⊥`, `→`, `∧`, `∨`, `∃`, `∀` as native macros with all their natural deduction rules |
 | native ≡ `T_eq` ≡ iPRA | `NativeTranslate`, `NativeComposite`, `NativeRoundTrip`, `NativeBiInterpretation` | translation of derivations, both round trips, the composite with `biInterp` |
 
@@ -238,6 +245,16 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
     ∃x A     :=  D_{x,y} gate(y, A(x))
     A ∨ B    :=  ∃v sel(v, A, B)
     ∀x A     :=  A(0) ∧ Q_y A(y)
+
+### Proposals of the second delivery
+
+| Package | Status in Lean |
+| --- | --- |
+| `direct_closure`, `direct_closure_qprogress` | Adopted: `qIInd` is the kernel's progress rule. The delivered migration patch compiled as written. |
+| `source_dispatch` | Proved: `zprf_iff_nprf`. The kernel keeps unrestricted sources, because substitution into derivations (`NPrf.subst`) is not admissible in the restricted calculus. |
+| `guarded_core` | Not formalized. It changes the formula language (guarded atomic matrices, clause contexts in place of `Q`), so it needs its own embedding and both translations; the package itself calls the gain modest. |
+| `scope_and_closure` | Not formalized. Its checker results concern Python programs; its mixed closure gives `Q` a progressive reading at literal equations and adds arithmetic to QE. |
+| `register_graph` | Not formalized. It is a different term language (`J` with two bound variables) over ordinary logic, so it would need a second bi-interpretation with iPRA from scratch. |
 
 Build with one module per invocation, for example
 
