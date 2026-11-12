@@ -1,0 +1,101 @@
+% Optional strengthening; do not use naive weakening for this calculus.
+\section{A further restriction: only the newest parameter is needed}
+
+In this section numerical parameter contexts are finite ordered lists.
+Every eigenparameter is put at the front of its list. Let
+$\mathcal C_0$ have the five rules of $\mathcal C_V$, except that its
+VSub source must be the front parameter of the current numerical
+context. In de Bruijn notation that source is $v_0$. This variant
+requires a different metaproof: primitive-tag-preserving weakening of
+an arbitrary $\mathcal C_0$ derivation is false.
+
+\begin{definition}
+A derivation with initial numerical parameter list $\Xi$ is
+\emph{internally sourced} if, at every VSub node, its source parameter
+was introduced by an E eigenparameter binder strictly inside that
+derivation, rather than belonging to the initial list $\Xi$.
+Moreover, that E binder is the most recently opened numerical binder
+still active at the VSub node; there is no intervening active E or I
+eigenparameter binder.
+Thus the ordinary newest-source side condition holds at every
+VSub node; the definition additionally records the source's origin.
+\end{definition}
+
+\begin{lemma}[Safe structural changes for internally sourced proofs]
+An internally sourced $\mathcal C_0$ derivation admits injective
+renaming of its initial numerical parameters into any larger initial
+parameter list, and weakening by clauses using only those initial
+parameters. The result is internally sourced relative to the enlarged
+initial list.
+\end{lemma}
+\begin{proof}
+First freshen the finitely many eigenparameters away from all inserted
+data. Preserve every internal eigenparameter and its binder, and apply
+the given injection only to the marked initial parameters. Traverse
+the proof tree while retaining those original marks: the initial list
+is not reset when descending into a premise. Equivalently, carry
+the number and names of active internal binders as an induction
+parameter. An I or E extension puts its unchanged fresh parameter ahead of
+all pre-existing parameters. At every VSub node the source is an
+internal parameter. Its origin in the most recently opened active
+numerical E binder, and hence its newest-source status, cannot be
+changed by inserting, permuting or renaming the initial parameters,
+all of which remain older than that source. Capture-free substitution
+commutes with injective renaming, normalization is equivariant, and
+renaming preserves the literal-zero mode test. Clause insertion does
+not change numerical order. All other checks are unchanged.
+
+Equivalently, in de Bruijn notation, initial-parameter renaming acts
+only on indices at or above the number of locally active eigenbinders.
+At any VSub node that number is positive and the source is index zero,
+so the source index is unchanged. This is not a proof of unrestricted
+weakening for arbitrary $\mathcal C_0$ derivations.
+\end{proof}
+
+\begin{theorem}
+Every $\mathcal C_T$ derivation has an internally sourced
+$\mathcal C_0$ translation with the identical end sequent and initial
+numerical parameter list.
+\end{theorem}
+\begin{proof}
+Induct on the given $\mathcal C_T$ proof tree. Recursively translated
+premises are internally sourced relative to their own initial
+parameter lists. Copy Refl, Use, E and I nodes unchanged. Combining
+the translated premises at these nodes preserves the invariant:
+a source that was introduced inside a premise is also introduced
+inside the combined derivation.
+
+For a crossed-transport node, apply the direct joint-name construction
+from the preceding section to the translated premises. Whenever that
+construction carries a premise proof into a new numerical scope or
+adds a local clause, apply the safe structural lemma to that entire
+premise proof. This is legitimate because it is internally sourced by
+the induction hypothesis. The equality-free numerical-case macro
+uses only Refl, Use, E and I in addition to these safely weakened
+premises. Thus no VSub source is created by any of its structural
+operations.
+
+The construction's one new VSub is at the end of the branch of the
+fresh-name E binder. Its source $b$ is the newest numerical parameter
+of that branch. The major and minor premises are obtained from the
+new clause directly by Use and Refl, so no intervening eigenbinder
+is active there. Hence the VSub meets the source-zero restriction.
+Its source was introduced by that E binder inside the constructed
+proof. No E or I eigenparameter is introduced between that binder
+and the final VSub node. Thus the entire replacement is internally
+sourced relative to the original initial list. Close E and complete the induction.
+\end{proof}
+
+The reverse translation from $\mathcal C_0$ to $\mathcal C_T$ is the
+same local translation of VSub into crossed transport as before.
+Therefore $\mathcal C_0$ and $\mathcal C_T$ prove exactly the same
+sequents. General weakening, arbitrary numerical substitution, and
+unrestricted crossed transport for arbitrary $\mathcal C_0$ premise
+proofs are now admissible by transferring those proofs to
+$\mathcal C_T$ and translating the resulting proof back. There is no
+circular use of those structural facts in the completeness proof.
+
+The same invariant and translation work for the native six-rule
+presentation: replace Use by QE, E by DE, and copy assumption and
+reflexivity. The direct fresh-name construction's final VSub still
+occurs under its own newest DE eigenparameter.

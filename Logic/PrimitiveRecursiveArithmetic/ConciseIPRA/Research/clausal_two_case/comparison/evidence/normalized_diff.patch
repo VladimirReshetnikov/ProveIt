@@ -1,0 +1,23 @@
+--- control.normalized.py
++++ checker.normalized.py
+@@ -41,14 +41,13 @@
+     if tag == 'v' and len(proof) == 3:
+         s, t = derive(proof[1], context, scope)
+         b, r = derive(proof[2], context, scope)
+-        if b != s:
+-            c, a, h = b
+-            if c != 0:
+-                if len(c) != 2:
+-                    fail()
+-                a, t = ([c[1], a, h], opening(h, t))
+-            if a != s:
++        c, a, h = b
++        if c != 0:
++            if len(c) != 2:
+                 fail()
++            a, t = ([c[1], a, h], opening(h, t))
++        if a != s:
++            fail()
+         return [r, t]
+     if tag in ('e', 'i') and len(proof) == 4:
+         goal, data, branch = proof[1:]

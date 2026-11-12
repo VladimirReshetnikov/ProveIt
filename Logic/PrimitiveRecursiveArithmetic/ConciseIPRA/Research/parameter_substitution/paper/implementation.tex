@@ -1,0 +1,180 @@
+\section{The complete checker and executable proof transformations}
+
+\subsection{An exact public contract}
+
+The standalone program is \texttt{code/raw\_parameter.py}. It imports only
+Python's standard library. It accepts one decoded JSON object with
+exactly the keys \texttt{goal} and \texttt{proof}, and verifies a closed
+Eq/$D$ theorem. There are no externally supplied assumptions. Open
+sequents are available to the mathematical calculus and to the internal
+proof-compilation interface; proof branches introduce their own scoped
+parameters and clauses.
+
+Successful checking prints \texttt{ACCEPT} and returns exit code zero.
+Rejection prints \texttt{REJECT} and returns a nonzero exit code. No
+acceptance decision depends on a Python \texttt{assert}. The standard
+JSON parser has its usual last-key semantics for duplicate textual keys;
+the decoded object, terms, formula, and derivation are checked. Extremely
+large finite certificates can exceed Python recursion or memory limits.
+
+The concrete numerical representation is:
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Mathematical object & JSON representation\\
+\midrule
+Zero & \texttt{0}\\
+Free parameter at level $k\geq1$ & integer $-k$\\
+Locally bound index $k\geq1$ & integer $k$\\
+$S(t)$ & \texttt{[0,t]}\\
+$I(n,a;u.h)$ & \texttt{[n,a,h]}\\
+$s=t$ & \texttt{[s,t]}\\
+$D_{x,y}B$ & \texttt{[B]}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The expected sort disambiguates equality from successor. In the matrix of
+$D$, the inner variable $y$ has bound index 1 and the outer variable $x$
+has index 2. Only the third child of an iterator binds its state variable.
+Booleans and floating-point values are not integers for this grammar.
+
+The proof instructions are:
+\begin{center}
+\begin{tabularx}{\linewidth}{lX}
+\toprule
+Certificate & Meaning\\
+\midrule
+\texttt{["c",n,a,h]} & Prove the appropriate computation equation for
+  \texttt{[n,a,h]}; the counter must literally be zero or a successor.\\
+\texttt{["x",p,q]} & Apply Param to the two inferred equations.\\
+\texttt{["u",j,t,p]} & Use clause occurrence $j$ at target $t$;
+  $p$ must prove its antecedent.\\
+\texttt{["e",F,p,q]} & Open the paired formula proved by $p$;
+  $q$ proves $F$ under the fresh parameter and retained clause.\\
+\texttt{["i",F,t,q]} & Close at witness $t$; $q$ proves the specified
+  successor instance under the automatically selected premise.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+For example, the following is a complete certificate for $0=0$:
+\begin{lstlisting}[language={}]
+{"goal":[0,0],
+ "proof":["x",["c",0,0,1],["c",0,0,1]]}
+\end{lstlisting}
+The two children prove $I(0,0;u.u)=0$; their root join proves reflexivity.
+
+\subsection{One opening operation, with an explicit invariant}
+
+Positive indices in \texttt{opening} select a bound coordinate. Under a
+binder the selected index increases, and indices beyond the removed
+coordinate decrease after opening. A negative index selects a free
+parameter; it remains fixed under binders, and no other indices change.
+This shares the syntax traversal used by clause opening and by Param.
+
+Every inserted term is locally closed with respect to positive bound
+indices: its free numerical parameters have negative labels. Its own
+internally bound variables are still allowed. Consequently insertion
+needs no separate shifting pass. This is an interface invariant, not a
+general assertion that de Bruijn substitution never needs lifting.
+
+The leading zero of \texttt{[0,t]} is a successor marker. Param's proper
+substitution acts only on negative integers, so it cannot rewrite this
+marker. Root equality composition is handled separately. The negative
+test for free parameters is therefore essential to both the specification
+and this representation.
+
+\subsection{Measured entire modules}
+
+The measurement uses CPython 3.12.14: remove the module docstring, parse
+the complete source, apply \texttt{ast.unparse}, and append one line feed.
+Significant tokens exclude comments, whitespace, indentation, and newline
+tokens. AST counts include every node from \texttt{ast.walk}. Parsing,
+validation, scoping, substitutions, all inference branches, and the
+command-line interface are counted. Gzip-9 with timestamp zero is
+informational only.
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{Xrrrr}
+\toprule
+Complete module & Bytes & Tokens & AST & Gzip\\
+\midrule
+Matched template control, unused free-substitution code removed
+ & 2907 & 765 & 881 & 988\\
+\textbf{New raw parameter calculus}
+ & \textbf{2857} & \textbf{769} & \textbf{892} & \textbf{998}\\
+Shared-opener template control & 2937 & 777 & 895 & 1001\\
+Filed raw three-case Eval & 3046 & 853 & 993 & 990\\
+Incoming two-case Eval & 2999 & 848 & 986 & 979\\
+Incoming root-free raw checker & 2956 & 837 & 977 & 962\\
+Incoming zero-normal fixed-base checker & 2948 & 852 & 987 & 967\\
+Incoming uniform Step & 2950 & 829 & 902 & 1005\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The clean comparison is 50 bytes, or $1.72\%$, below the pruned matched
+template control, with the token and AST tradeoff already stated.
+The 80-byte reduction against the shared-opener control isolates the
+rule change while keeping that helper unchanged, but that control carries
+a negative-index facility it does not need. It is not the strongest
+comparator. The 189-byte difference against the filed raw CE5 checker
+includes both the new basis and implementation refinements.
+
+The new module is not a repository-wide size record. The incoming
+\texttt{scope\_lexical.py} checker is 860 bytes under a different
+certificate protocol. The historical 516-byte compact guarded codec
+has a different public-language contract and does not contain the same
+public-grammar validator. Neither should be compared as if it were
+an instance of the present transparent proof-tree interface. Even within
+the investigation, a refined two-case Eval implementation is 2731 bytes,
+741 tokens, and 862 AST nodes; its source is supplied as a comparison,
+without representing it as a new mathematical theory.
+
+\subsection{Proof compilers and validation}
+
+\texttt{translate\_raw.py} translates proofs in both directions between
+the matched template calculus and the new calculus. Forward translation
+expands a template transport into the fresh-alias construction. Reverse
+translation replaces each Param instance by its ordinary template
+instance. It preserves the end formula exactly and checks the input and
+output proofs with their respective standalone verifiers. The translator
+is an untrusted producer and is not imported by the trusted checker.
+
+The executed validation suite records:
+\begin{itemize}
+\item 38 positive closed examples and 26 adversarial rejections;
+\item 76 checked forward/backward proof translations, preserving goals;
+\item 2402 independent syntactic opening comparisons and 800 independent
+      denotational opening checks, with no skipped semantic cases;
+\item 12 checks of root versus parameter substitution boundaries;
+\item 128 public command-line runs, covering normal and optimized
+      Python execution.
+\end{itemize}
+The cases include genuinely used induction hypotheses, nested $D$
+binders, closure specialization, repeated and passive occurrences of a
+compound source, sources equal to zero, iterator-update binders, invalid
+counter shapes, escaped eigenvariables, malformed certificate fields,
+and a direct attempt to perform the removed proper-zero replacement.
+
+These tests support the implementation claims. They do not prove the
+universal equivalence theorem; that theorem is supplied by the written
+proof. A separate mathematical and implementation audit is included in
+the evidence directory. No new proof-assistant verification is claimed.
+
+\subsection{Reproduction}
+
+From the extracted archive root:
+\begin{lstlisting}[language={}]
+python3 reproduce.py
+python3 code/raw_parameter.py < examples/reflexivity.json
+python3 code/raw_parameter.py < examples/used_induction.json
+python3 reproduce.py --pdf
+\end{lstlisting}
+The first command requires only the standard Python library. The last
+also requires pdfLaTeX and the ordinary packages named in the source.
+The delivered main \texttt{.tex} file is standalone: it embeds the complete
+mathematical text and checker listing, and does not require the separate
+paper fragments to compile.
+

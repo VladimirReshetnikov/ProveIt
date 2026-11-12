@@ -1,0 +1,69 @@
+\section{Further research questions}
+
+\begin{enumerate}
+\item \textbf{Formalize the restricted equality kernel.}
+Add a new derivability predicate to the pinned Lean development and prove
+the fresh-alias theorem, unrestricted crossed transport, and exact
+equivalence with \texttt{NPrf}. The useful boundary is the alias lemma:
+its proof needs computation and root joining, but no variable-substitution
+instance. This isolates the noncircular bootstrap for a formal audit.
+
+\item \textbf{Find the least residual equality interface.}
+The useful instances of Param are root joining and substitution at a
+fresh variable. Its fallback is only symmetry. Can a smaller total
+operation express exactly those indispensable instances without a larger
+syntax test? A proposal must account for arbitrary ground equality
+assumptions, rather than showing only that computation equations survive.
+
+\item \textbf{Control certificate expansion.}
+The primitive checker becomes simpler while the proof producer builds an
+alias scope around each arbitrary template transport. Quantify the
+shortest expansion and compare tree certificates with explicit sharing.
+A smaller kernel can be accompanied by larger proofs; both costs deserve
+measurement.
+
+\item \textbf{Obtain a substitution-stable single introduction.}
+The literal-witness convention remains sensitive to numerical
+substitution. The current diagonal-guard work supplies a stable alternative,
+but it costs a more elaborate shape test. A smaller stable guard must also
+permit recovery of case introduction; a conditional closure with an
+unproved base cannot simply be used as a progressive closure.
+
+\item \textbf{Separate arithmetic reductions from coding reductions.}
+The predecessor/equality-reflection bootstrap remains the obstacle for
+weaker successor-rigidity or zero-equation induction proposals. Solving it
+would change the arithmetic foundation, while the present theorem changes
+the equality interface. The latter does not settle the former.
+
+\item \textbf{State a reproducible minimization problem.}
+A meaningful lower bound needs a fixed public contract, source language,
+normalization policy, and cost metric. The present result improves one
+matched byte coordinate and restricts the equality schema; it supplies no
+lower bound proving that these six explicitly split schemas are optimal.
+\end{enumerate}
+
+\section{Provenance and exact status}
+
+The construction is a new restriction and integration of ingredients in
+the supplied project. The definitions of scalar iteration, paired
+closure, clause contexts, and the single witness-directed introduction
+are inherited. The idea of introducing a fresh numerical alias also
+appears in the optional proof in \texttt{template\_free}. The present
+argument isolates the smaller equality interface it actually requires.
+
+The archive includes unchanged inherited bridge fragments for reference:
+the native choice basis, ordinary logical bridge, scalar predecessor,
+equality reflection, and compilation of primitive recursion. Their role
+is to document the existing arithmetic dependency. They are not counted
+as newly proved results. The main paper gives the complete new reduction
+and names the precise inherited Lean statements used at the last step:
+\texttt{native\_iff\_pra}, \texttt{pra\_iff\_native},
+\texttt{native\_roundTrip}, \texttt{pra\_native\_roundTrip}, and
+\texttt{native\_inconsistent\_iff}.
+
+Original ProveIt material is distributed under its included MIT No
+Attribution license. The new checker, proof producers, proof notes, and
+reproduction scripts may be reused under the same terms. The repository
+was read at the pinned revision; this package does not publish changes
+to it.
+

@@ -1,0 +1,115 @@
+CERTIFICATE FORMAT
+==================
+
+All numerical terms supplied in used rule data are in full computation normal
+form for I(0,a;u.h)=a and I(Sn,a;u.h)=h[I(n,a;u.h)/u].
+Normalization is implemented in each standalone checker. A supplied term
+which is well scoped but not already normal is rejected where canonical
+syntax is required.
+
+Term JSON:
+  ["z"]             zero
+  ["v", i]          de Bruijn variable index i
+  ["s", t]          successor
+  ["i", n, a, h]    initialized scalar iterator
+
+The iterator binds one state variable only in h. That state is index 0,
+and outside numerical parameters are shifted by one in the body.
+
+Formula JSON:
+  ["=", s, t]       equality
+  ["q", B]          conditional closure (native checker only)
+  ["d", B]          paired binder
+
+Q binds one variable in B. D binds two: y is index 0 and x is index 1
+in D_{x,y}B. The ordinary readings are:
+  Q_y B = B(0) -> forall y B(y)
+  D_{x,y}B = exists x (B(x,0) -> forall y B(x,y)).
+
+1. NATIVE GOAL-DIRECTED CHECKER
+-----------------------------
+
+Run: python3 code/native_goal_latest.py < certificate.json
+
+Input has exactly:
+  {"variables": n, "context": [A0,...], "goal": A, "proof": hint}
+
+n is a nonnegative integer (not a Boolean). Context and goal must be
+canonical formulas in n free numerical parameters. A context hypothesis
+or a literal reflexive equality is accepted automatically; its proof hint
+is ignored. This matches the upstream control's contract.
+
+Other hints:
+
+  ["vs", t, u, p, q]
+    For goal v = w, p proves v_0=t, q proves u=v, and w must be exactly
+    nf(u[t/v_0]). The substitution does not remove v_0 from scope.
+    It replaces every free v_0 occurrence once and does not revisit the
+    inserted t. The target t may itself contain v_0.
+
+  ["qe", B, t, p, q]
+    p proves Q_y B; q proves B(0); goal is B(t).
+
+  ["de", B, p, q]
+    p proves D_{x,y}B. In the branch, a fresh numerical parameter is added
+    at index 0, all original free parameters are shifted, and Q_y B(b,y)
+    is the first ordinary formula assumption. q proves the shifted goal.
+
+  ["di", t, p]
+    Goal is D_{x,y}B. A fresh z is added at index 0. The branch p proves
+    B(t,Sz). Its first assumption is B(t,z) if the matrix has equality
+    root and t is literally ["z"], and B(t,0) otherwise.
+    The original context is shifted into that scope.
+
+The file native_original.py is the exact upstream transport control.
+It instead has ["tr", s, t, h, p, q], where h binds a template variable,
+p proves s=t and q proves h(s)=v for a goal v=h(t).
+
+2. FIVE-RULE FORWARD CHECKER
+---------------------------
+
+Run: python3 code/scalar_latest.py < certificate.json
+
+Input has exactly {"goal": A, "proof": p}. The goal is a closed Eq/D
+formula; Q is absent. The proof tree determines its conclusion.
+
+  ["r", t]                    derive t=t
+  ["x", p, q]                 latest-variable substitution
+  ["u", j, t, p]              use retained clause j at target t
+  ["e", A, p, q]              paired elimination with conclusion A
+  ["i", A, t, p]              paired introduction of A at witness t
+
+For x, the major p must derive v_0=t and q must derive u=v.
+The output is v=nf(u[t/v_0]). There is no template field.
+
+For u, retained clause j is [Antecedent; y.Body], and p must prove its
+antecedent. The result is Body(t). Indices are nonnegative integers and
+select existing clauses; negative and Boolean indices are rejected.
+
+For e, p derives D B and q derives A in the fresh-name branch with
+[B(b,0); y.B(b,y)] as first clause, with original clauses shifted.
+
+For i, A is D B. The branch proves B(t,Sz) under the selected ordinary
+assumption, represented by [0=0; unused.B(t,eta)]. The introduction
+mode and freshness are the same as in the native checker.
+
+scalar_transport.py is a matched control whose x packet additionally
+supplies a template. scalar_variable.py permits any free-variable source.
+Those are independent complete modules, not runtime dependencies of the
+selected checkers.
+
+3. OUTPUT AND RESOURCES
+-----------------------
+
+Acceptance is exit status zero and exactly ACCEPT on stdout.
+Rejection has a nonzero exit status. There is no debug or network output.
+The checkers use explicit requirements, so Python -O does not disable
+their proof checks.
+
+The mathematical calculus quantifies over finite terms and proof trees.
+Real Python processes have stack, integer-parser, memory and time limits.
+Tests or exceptions do not turn these limitations into additional axioms.
+
+The native goal checker's unused-hint behavior is intentional. The forward
+checker verifies every visited proof packet. Neither program accepts an
+unvalidated final formula or an unchecked claimed conclusion.
