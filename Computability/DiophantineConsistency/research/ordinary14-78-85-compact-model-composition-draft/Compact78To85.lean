@@ -1,0 +1,31 @@
+import CompactEquivalence
+import ModelComposition
+
+/-! Source-only symbolic compact-port composition. All compared graph and
+model clients are unelaborated drafts; no endpoint or file result is claimed. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Compact78To85Draft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing CompactSymbolicPorts
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Proposed all-positive 78↔85 comparison at symbolic compact beta and
+masks, with arbitrary natural K. Slot 3 of ports is beta+highNat. -/
+theorem positive_zero_iff (K : ℕ) :
+    let p : Fin 4 → ℕ := ports CompactFixedBeta.betaNat K lowNat highNat
+    (∃ v : Fin 14 → V, (∀ j, 0<v j) ∧
+      InternalZero (P78AuxRoot.graph (fun j => (p j : ℤ))).output v) ↔
+    (∃ v : Fin 14 → V, (∀ j, 0<v j) ∧
+      InternalZero (P85QcubeGraph.graph (fun j => (p j : ℤ))).output v) := by
+  let p : Fin 4 → ℕ := ports CompactFixedBeta.betaNat K lowNat highNat
+  have hb := C44Short15Facts.port_bounds (V:=V) CompactFixedBeta.betaNat K lowNat highNat
+    CompactFixedBeta.beta_identity rfl rfl
+  exact (Model84To78CompositionDraft.positive_zero_iff_natural_ports p hb.1).symm.trans
+    (CompactEquivalence8485Draft.positive_zero_iff K)
+
+end DiophantineConsistency.Compact78To85Draft
+
+#print axioms DiophantineConsistency.Compact78To85Draft.positive_zero_iff
