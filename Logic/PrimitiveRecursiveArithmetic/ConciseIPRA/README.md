@@ -550,7 +550,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 The main chain (every module except the sixteen kernel comparisons,
 `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`,
 `NativeZeroReflexive`, `NativeUniqueness`, `NativeModels` and
-`TeqClosure`) is 5,630
+`TeqClosure`) is 5,624
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
 introduction and elimination, instead of an induction over the seventeen
@@ -560,7 +560,9 @@ calculus is four single rule applications; reflection of quantifier-free
 formulas is proved as an equivalence of Lean propositions,
 `mk Γ (chi φ) = 0 ↔ Γ ⊢ φ`, from which the formula of `T_eq` follows. A dependency-closure scan of the
 end results, computed inside Lean from the proof terms, finds no further
-unused theorem apart from `rfl` lemmas that `simp` uses silently.
+unused theorem apart from `rfl` lemmas that `simp` uses silently and the
+derived rule `NPrf.eqInd`, which only the comparison modules use; a duplicate
+of `NFm.map_shift_subst_repl` was removed.
 
 All modules build without `sorry` or warnings. The final theorems depend
 only on Lean's `propext`, `Classical.choice` and `Quot.sound` (the `T_eq` ≡

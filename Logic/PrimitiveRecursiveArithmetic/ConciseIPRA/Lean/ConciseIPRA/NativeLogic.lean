@@ -81,12 +81,6 @@ theorem map_shift_inst (Γ : List (NFm n)) (t : Tm n) :
   | nil => rfl
   | cons B Γ ih => simp only [List.map_cons, ih, subst_inst_shift]
 
-theorem map_shift_repl (Γ : List (NFm n)) (s : Tm (n + 1)) :
-    (Γ.map NFm.shift).map (fun B => B.subst (repl s)) = Γ.map NFm.shift := by
-  induction Γ with
-  | nil => rfl
-  | cons B Γ ih => simp only [List.map_cons, ih, subst_repl_shift]
-
 end NFm
 
 namespace NPrf
@@ -259,7 +253,7 @@ theorem allI {A : NFm (n + 1)} (h : NPrf (Γ.map NFm.shift) A) : NPrf Γ (NFm.al
   have h0 := h.subst (inst zero)
   rw [NFm.map_shift_inst] at h0
   have hS := h.subst (repl (succ (Syn.var 0)))
-  rw [NFm.map_shift_repl] at hS
+  rw [NFm.map_shift_subst_repl] at hS
   exact andI h0 (qI A hS.wk)
 
 theorem allE {A : NFm (n + 1)} (t : Tm n) (h : NPrf Γ (NFm.all A)) :
