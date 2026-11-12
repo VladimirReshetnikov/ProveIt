@@ -7807,6 +7807,10 @@ The independently source-reviewed [natural-82 endpoint draft](research/ordinary1
 proposes the selected symbolic-beta facts, no-zero transport and native,
 standard and equality-only iPRA clients. Its five axiom-report commands
 are unexecuted; the source chain and physical equation bindings remain open.
+The independently source-reviewed [natural-82 recipe-port client](research/ordinary14-natural82-recipe-port-bridge-draft/README.md)
+proposes rewriting its symbolic tuple to closed Lean byte recipes and
+transporting the endpoint declarations. Neither the client nor the link to
+physical files and the displayed PDF has been checked in Lean.
 The independently reviewed [natural-82 lexical inventory](research/ordinary14-natural82-endpoint-import-inventory/README.md)
 records 169 draft modules and 36 directly named qualified sources. The prior
 slim overlay lacks 11 of those drafts; this comparison does not resolve Lean
