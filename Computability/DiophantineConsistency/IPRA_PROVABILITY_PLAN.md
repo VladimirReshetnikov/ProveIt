@@ -7801,6 +7801,10 @@ The reviewed [root-74 provider survey](research/ordinary14-root74-provider-surve
 records a bounded lexical cut, selected retained objects and collision
 observations. It does not establish transitive provider coherence or build
 readiness.
+The independently reviewed [ordered provider plan](research/ordinary14-root74-ordered-provider-plan/README.md)
+records 162 lexically ordered source stages and 35 observed frontier objects.
+Its header and hash checks do not establish actual Lean resolution, transitive
+provider provenance, companion completeness, or a build-ready proof chain.
 The reviewed [root-74 refusal-only preflight](research/ordinary14-root74-slim-no-lean-preflight/README.md)
 records selected read-only checks and always refuses launch. It is not a
 provider or Lean build certification.
