@@ -1,0 +1,9 @@
+# Independent review: AQ34 natural-shift cancellation
+
+This is an independent exact external polynomial review of the 34-variable, 172-operation natural-domain candidate. Run `python3 -I -S -B check.py` from any directory and compare with `result.json`. The author's separate checker and receipt also reproduce. No Lean was run.
+
+The checker substitutes `x+1` into every parent input, expands the entire parent and child outputs as integer polynomials over all 34 inputs and four independently symbolic ports, and compares the 1,737 resulting terms exactly. This establishes the output identity for every integer input and port tuple; the intended Diophantine domain is nonnegative inputs. The three canceled pairs have no other direct parent uses. Candidate rows are topologically evaluable and all 172 operations, inputs and ports reach the output. All 144 parent rows are compared with the pinned Lean literal source.
+
+Input degree is exactly six for every fixed integer port tuple: the fully expanded output contains the port-independent monomial `ellProductVariable² * scaleVariable⁴` with coefficient 1, and no port-dependent term has this same input monomial. No input monomial has larger degree. The counts compare the positive-domain parent's 144 operations with the child's 172 natural-domain operations; naively shifting all 34 parent inputs takes 178.
+
+The existing parent theorem's precise target is `nativeNoZero (positiveShift (AdaptiveAQ34Literal.literal CurrentWindowCarry2011.ports)) ↔ ¬mappedNativeRefutation embedding`. Its documented focused replay inherits provider ancestry; this source audit does not independently rerun or strengthen that replay. The new natural graph still needs a Lean expression, a checked evaluation bridge and endpoint client. The exact external identity does not certify compiled objects, a source closure, a literal iPRA proof, or semantics of any PDF.
