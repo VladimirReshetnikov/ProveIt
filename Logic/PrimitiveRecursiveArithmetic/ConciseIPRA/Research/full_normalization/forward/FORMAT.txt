@@ -1,0 +1,77 @@
+FORWARD CERTIFICATE FORMAT
+
+A certificate is a JSON object with exactly four keys:
+
+  {"variables": n, "context": [A0,...], "goal": A, "proof": p}
+
+n is a nonnegative integer, excluding booleans. Numerical variables in public
+terms are de Bruijn indices 0,...,n-1. A theorem certificate uses n=0 and an
+empty context; the more general interface checks open sequents.
+
+TERMS
+
+  ["v",i]              numerical variable
+  ["z"]                zero
+  ["s",t]              successor
+  ["i",c,a,h]          iterator, binding one variable in h only
+
+The bound update variable is index 0 within h; outer indices are raised there.
+Every input iterator counter c must have variable or iterator root. Literal
+zero and successor counters are rejected because they are computation redexes.
+All subterms must obey the same canonical grammar.
+
+FORMULAS
+
+  ["=",s,t]            numerical equality
+  ["q",B]              Q, binding one variable in B
+  ["d",B]              D, binding two variables in B
+
+In a D matrix B, index 0 is y and index 1 is x in D_{x,y}B. Q_y B has index 0
+as y. A contradiction is ["=",["z"],["s",["z"]]].
+
+PROOFS
+
+  ["hyp",i]
+      Return context entry i. Indices must be nonnegative integers and in range.
+
+  ["refl",t]
+      Infer t=t, after checking the canonical term t at the current scope.
+
+  ["tr",h,p,q]
+      h is a term template with one additional variable, index 0.
+      If p proves s=t and q proves h(s)=r, infer r=h(t).
+
+  ["qe",t,p,q]
+      If p proves Q_y B and q proves B(0), infer B(t).
+
+  ["de",A,p,q]
+      If p proves D_{x,y}B, check q in the scope extended by one fresh variable,
+      with Q_y B(b,y) inserted at the front of the shifted context. Its result
+      must be A shifted into that scope. Infer A in the original scope.
+
+  ["di",B,t,p]
+      B is checked at scope n+2 and t at scope n. Check p in a scope extended
+      by one fresh step variable z and with B(t,eta) inserted at the front of
+      the shifted context. Require its conclusion to be B(t,Sz). Infer D B.
+      eta is z exactly when B has equality root and t is literal zero; it is
+      zero otherwise. All instances use capture-free normalized substitution.
+
+The checker validates syntax, scopes, proof instruction shapes, all premises,
+and the final goal. There are no zero or successor computation instructions:
+their effect is implemented in the shared normalizing substitution traversal.
+
+CANONICALIZATION
+
+To normalize an external raw term programmatically, the untrusted compiler
+uses checker.walk(a, lambda i,d:["v",i]). The public certificate reader does
+not silently canonicalize malformed input. Proof templates, witnesses, context,
+and goal must be canonical when supplied.
+
+STANDARD READINGS
+
+  Q_y B(y)       = B(0) -> forall y B(y)
+  D_{x,y} B(x,y) = exists x (B(x,0) -> forall y B(x,y))
+
+The numerical domain is whole and equality is actual equality. Normal forms
+identify alternative finite term spellings; they do not quotient the numerical
+domain.

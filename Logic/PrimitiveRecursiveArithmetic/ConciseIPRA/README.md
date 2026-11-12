@@ -5,7 +5,7 @@ complete presentation of a theory bi-interpretable with full first-order
 intuitionistic primitive recursive arithmetic (iPRA), and the Lean
 formalization of the most concise of them.
 
-- [`Research/`](Research/) holds fifty-five delivered packages, one directory
+- [`Research/`](Research/) holds fifty-six delivered packages, one directory
   each. They are written mathematics with executable Python proof checkers;
   none of them claims a proof-assistant verification.
 - `Lean/` is the formalization (see [Lean formalization](#lean-formalization)).
@@ -216,6 +216,7 @@ for separate coordinates, they are listed separately. Each package's own
 | [`validated_presentation`](Research/validated_presentation/) | The whole certificate is typed by one test on its printed form, so the public syntax validator loses its separate raw-type pass; the proof kernel is unchanged | fully validated Eq/Q/D checker 870 bytes against 897, 383 tokens against 401 |
 | [`checked_refinement`](Research/checked_refinement/) | Three smaller implementations of the existing presentations; stated to contain no new axiom deletion | guarded public-goal checker 921 bytes against 1201; native Eq/D public checker 788 against 803; compact guarded 520 against 521 |
 | [`equality_from_iteration`](Research/equality_from_iteration/) | The rule Eval of `computational_equality` without its first case: equality composition `s = t, s = r ⊢ r = t` follows from the zero-iteration case through the frame `I(0, s; u.u)`. A companion calculus on zero-normal terms has reflexivity and one successor-evaluation schema | as stated |
+| [`full_normalization`](Research/full_normalization/) | Both iterator computations moved into the syntax: terms are in full normal form for `I(0, a; u.h) → a` and `I(S n, a; u.h) → h[I(n, a; u.h)/u]`, and there is no computation rule at all. Six patterns: Hyp, Refl, Tr, QE, DE and one witness-selected introduction, with a lemma that repairs case introduction when normalization turns a witness into the literal `0`. Written proofs of strong normalization, confluence and substitution coherence | selected checker 2529 bytes against 2532 for the zero-only control, with more tokens and AST nodes |
 | [`reflexive_base`](Research/reflexive_base/) | On zero-normal terms, the single introduction is progressive exactly when the normalized zero instance of the matrix is literally `r = r`. Six rules; a raw seven-rule variant with an asymmetric selector gate | matched strict checker 3084 bytes against 3095 |
 | [`raw_clausal`](Research/raw_clausal/) | Five rule patterns with ordinary substitution: reflexivity, Eval, use of a retained clause, paired elimination, witness-directed paired introduction; formulas `s = t` and `D` only, with clause contexts in place of `Q` | as stated |
 | [`scalar_uniqueness`](Research/scalar_uniqueness/) | Induction for literal equations replaced by uniqueness of iteration: from `f(S z) = h(f(z))` infer `f(t) = I(t, f(0); u.h(u))`, with no induction hypothesis in the premise. The report recovers predecessor, reflection of equality and equation induction from it, closing the gap left open in `scope_kernel` | matched raw checker grows from 3322 to 3393 bytes; validated checker of the existing calculus 866 against 870 |
@@ -311,7 +312,8 @@ sources, three checksum ledgers and five build logs. The delivered module
 `Research/zero_normal/formal/ZeroNormalization.lean` compiled unchanged and
 is `Lean/ConciseIPRA/ZeroNormalization.lean`.
 
-`equality_from_iteration`, `raw_clausal` and `reflexive_base` arrived last
+`full_normalization` arrived after all of these and was filed on arrival.
+`equality_from_iteration`, `raw_clausal` and `reflexive_base` arrived before it
 and were filed on arrival (seventy-nine frozen Lean copies and two logs not
 filed). `clausal_canonical` and `scalar_uniqueness` arrived after these and were
 filed on arrival (two frozen Lean copies and one checksum ledger not filed).
@@ -431,6 +433,7 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `scalar_uniqueness` | Half proved: the uniqueness rule is a derived rule of the kernel (`NPrf.uniq`). The converse, that it recovers equation induction when induction is not a rule, needs the report's own predecessor and reflection of equality and is not formalized. |
 | `clausal_canonical` | Not formalized: it is stated on the canonical recursor syntax with clause contexts. |
 | `computational_equality`, `equality_from_iteration` | Proved: the six-rule calculus is `EPrf`, with `eprf_iff_nprf` and `eprf_iff_iprf` (`NativeEval`). Eval has the two cases of `equality_from_iteration` as constructors; the third case of `computational_equality` is the derived rule `EPrf.evalId`. The zero-normal companion of `equality_from_iteration` is not formalized. |
+| `full_normalization` | Not formalized. It needs the normalization of both computations with its termination and confluence, where `ZeroNormalization` treats the zero computation only. |
 | `reflexive_base`, `raw_clausal` | Not formalized: a further mode test for the single introduction on zero-normal terms; a clause calculus without `Q`. |
 | `zero_normal` | Its normalization layer is adopted as `ZeroNormalization`: the delivered module compiled unchanged. On top of it `NativeZeroNormal` proves the deletion of the zero computation rule for the kernel (`nzprf_iff_nprf`, `NZPrf.normal`, `nzprf_iff_pra`), with the kernel's two introductions and unrestricted sources. The six-rule form with the single introduction is not formalized. |
 | `diagonal_guard` | Proved: its calculus is `GPrf`, with `gprf_iff_nprf`, `gprf_iff_iprf` and substitution by direct induction (`NativeDiagonal`). Progress for an arbitrary equation is recovered by a shorter argument than the report's: no implication between equations and no substitution into the step premise. The equivalence uses neither `Classical.choice` nor the bi-interpretation. |

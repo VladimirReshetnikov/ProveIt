@@ -1,0 +1,102 @@
+\section{Result and comparison boundary}
+\label{sec:result}
+
+The target is full first-order intuitionistic primitive recursive arithmetic:
+intuitionistic first-order equality logic, a function symbol for each fixed
+primitive-recursive definition, its defining equations, successor separation
+and injectivity, and quantifier-free induction with parameters. No induction
+for arbitrary quantified formulas is intended.
+
+The comparison is the repository snapshot
+\file{11be5aabc6b07262046e2553419bc6b05271d178}.
+The snapshot contains the raw native calculus, the seven-rule
+witness-selected version, two zero-normalizing six-rule variants, and
+many checker representations~\cite{snapshot,native,canonical,zero}.
+All six currently incoming archive summaries and relevant mathematical
+specifications were also inspected~\cite{incoming}.
+
+\begin{theorem}[Main result]
+There is a six-rule proof presentation $\mathcal F$ whose numerical terms
+are full scalar-iterator computation normal forms and whose formulas have
+only equation, $Q$, and $D$ constructors. It has no separate iterator
+computation axioms. Its ordinary realization is bi-interpretable and
+equiconsistent with full first-order $\ipra$.
+
+The interpretations use the whole numerical domains and actual equality.
+The isomorphisms from each numerical domain to its double interpretation
+have graph $x=y$. Both formula round trips are provably equivalent, not
+merely equivalent in the standard model.
+\end{theorem}
+
+The proof has three distinct parts. First, both iterator reductions
+terminate and yield coherent canonical substitution. Second, a compound
+envelope repairs the only missing case of the witness-selected introduction
+rule. Third, exact sequent translations connect the new presentation with
+the inherited raw native calculus, so that its full iPRA bridge transfers.
+The arithmetic foundations are reproduced with attribution in the appendices.
+
+\subsection{What is smaller}
+
+The mathematical change moves both computation schemas into a terminating
+term-construction operation. Reflexivity replaces the explicit computation
+leaves. Relative to the raw seven-rule presentation this removes one
+inference pattern; relative to the incoming six-rule zero-normal form,
+the number of patterns remains six, but the residual successor-computation
+schema is replaced by the simpler reflexivity schema.
+The normalizer is trusted code and is counted in every reported size.
+
+The matched complete checkers use the same tagged syntax, goal-directed
+protocol, typed traversal, scope checks, JSON interface, and error policy.
+The only differences are which iterator computations the traversal
+normalizes and which equations can close an axiom leaf.
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Complete standalone program & Bytes & Tokens & AST & Gzip-9\\
+\midrule
+Raw computations, matched control & 2569 & 895 & 930 & 941\\
+Zero-only normalization, matched control & 2532 & 890 & 930 & 945\\
+Full normalization, block cases & 2546 & 904 & 962 & 960\\
+Full normalization, expression cases & \textbf{2529} & 908 & 965 & 963\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The selected expression-form checker saves $40$ bytes against the matched
+raw control and $3$ bytes against the matched zero-only control.
+The latter is $3/2532\approx0.1185\%$. It has $18$ more significant tokens
+and $35$ more AST nodes than that closest control. Gzip increases by
+$18$ bytes and is reported only for information. The expression form spells
+the same three normalization cases in one conditional expression; it is
+not a different calculus.
+
+The earlier strict forward zero-normal checker has $3095$ normalized bytes.
+The new auxiliary forward checker has $3100$, so normalization does
+\emph{not} improve that implementation. Most of the reduction from older
+tagged forward checkers to the new goal-directed family comes from sharing
+validation with substitution and from inferring leaves from the goal.
+It would be misleading to attribute that entire change to the new
+mathematical idea.
+
+\paragraph{Limits of the complexity claim.}
+The repository's separate $516$-byte arity-coded checker remains smaller,
+under its different representation and public-input contract.
+No global byte, token, or AST record is claimed. Existing six-rule
+presentations are acknowledged. The present result gives a genuine change
+in the computational axiom interface and a narrow matched byte improvement,
+but does not settle the request for an absolutely simplest axiomatization
+or establish a strict improvement in every stated complexity coordinate.
+
+\subsection{Novelty within the inspected snapshot}
+
+Zero normalization and canonical successor-seeded recursors already remove
+one explicit computation equation~\cite{canonical,zero}. The incoming
+initializer and template-free reports simplify equality instructions,
+and the diagonal guard changes how introduction modes are selected.
+The construction here normalizes \emph{both} scalar computations, retains
+the original meanings of $Q$ and $D$, and repairs the missing atomic case
+through a compound logical envelope instead of a nonliteral numerical
+zero. This is the distinguishing contribution relative to the inspected
+packages. A literature-wide priority claim is not made.
