@@ -1,0 +1,99 @@
+import PositiveCarrierData
+import CarrierWitnessFacts
+
+/-! Conditional same-model target branch from the source first norm. The
+exact target carrier positivity/divisibility remain explicit assumptions. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.CompanionCarrierFactsDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ModelDifferenceRing
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The source first norm supplies a common tau. If the target signed
+carrier is positive and divisible by the same b, reflection and the positive
+branch construction supply a positive target r with the same first norm. -/
+theorem positive_target (b ell k r : V) (P z Q : DiffRing V)
+    (hb : 0<b) (hk : 2≤k)
+    (hz : z=ι b*(ι ell+ι k+ι r-ι k*P)-P)
+    (hnorm : z*z=ι b*ι b*(1+ι ell*(ι ell+ι k)))
+    (hQ : 0<Q) (hQdiv : (ι b : DiffRing V)∣Q) :
+    ∃ r' : V, 0<r' ∧
+      (ι b*(ι ell+ι k+ι r'-ι k*Q)-Q)*
+      (ι b*(ι ell+ι k+ι r'-ι k*Q)-Q)=
+        ι b*ι b*(1+ι ell*(ι ell+ι k)) := by
+  obtain ⟨_,_,tau,_,_,_,_,htau,htauNorm,_⟩ :=
+    PositiveCarrierDataDraft.root_data b ell k r P z hb hk hz hnorm
+  obtain ⟨Qn,hQn⟩ := nonneg_iff.mp (le_of_lt hQ)
+  have hQnpos : 0<Qn := (ι_lt_ι).mp (by rw [map_zero,←hQn]; exact hQ)
+  have hQdiv' : (ι b : DiffRing V)∣ι Qn := by simpa only [hQn] using hQdiv
+  obtain ⟨t,ht⟩ := Trace75IntegralTransport.natural_dvd_of_signed b Qn hQdiv'
+  have htpos : 0<t := pos_of_mul_pos_right (by rw [←ht]; exact hQnpos) (by simp)
+  obtain ⟨r',hr',hroot⟩ := CarrierWitnessFactsDraft.positive_target_root b Qn t ell k tau hQnpos htpos ht htau
+  refine ⟨r',hr',?_⟩
+  rw [hQn,hroot]
+  have hnormR := congrArg (ι : V →+* DiffRing V) htauNorm
+  simp only [map_add,map_mul,map_one] at hnormR
+  linear_combination (ι b*ι b)*hnormR
+/-- Positive 81→83 companion carrier from a represented positive gap,
+q²≤X, and the source carrier's signed b-divisibility. This is the critical
+sufficient large-X premise; no target zero is assumed. -/
+theorem enlarged_companion (q b C F K X : V)
+    (hq : q=1+b) (hqpos : 0<q) (hC : 1≤C) (hF : F+2≤q)
+    (hX : q*q≤X)
+    (hdiv : (ι b : DiffRing V)∣ι C*(ι X+ι K)-ι F) :
+    (0:DiffRing V)<ι C*(ι X+ι K*ι q)-ι F*ι q ∧
+      (ι b : DiffRing V)∣ι C*(ι X+ι K*ι q)-ι F*ι q := by
+  have hXle : X≤C*(X+K*q) := by
+    have hh : X≤X+K*q := le_add_of_nonneg_right (Arithmetic.zero_le _)
+    exact le_trans hh (le_mul_of_one_le_left (Arithmetic.zero_le _) hC)
+  have hFq : (F+2)*q≤q*q := mul_le_mul_of_nonneg_right hF (Arithmetic.zero_le q)
+  have hFlt : F*q<q*q := by
+    have h2q : 0<2*q := mul_pos (by simp) hqpos
+    have hh : F*q<F*q+2*q := lt_add_of_pos_right _ h2q
+    have he : F*q+2*q=(F+2)*q := by ring
+    rw [he] at hh
+    exact lt_of_lt_of_le hh hFq
+  have hlt : F*q<C*(X+K*q) := lt_of_lt_of_le hFlt (le_trans hX hXle)
+  have hltR : (ι F:DiffRing V)*ι q<ι C*(ι X+ι K*ι q) := by
+    simpa only [map_add,map_mul] using (ι_lt_ι.mpr hlt)
+  constructor
+  · exact sub_pos.mpr hltR
+  · obtain ⟨d,hd⟩ := hdiv
+    refine ⟨d+ι C*ι K-ι F,?_⟩
+    have hqR := congrArg (ι : V →+* DiffRing V) hq
+    simp only [map_add,map_one] at hqR
+    linear_combination hd+(ι C*ι K-ι F)*hqR
+
+/-- Reverse companion step, conditional on a represented strictly positive
+    gap C and X. This does not extract that gap from the 83 graph. -/
+theorem reduced_companion (q b C F K X : V)
+    (hq : q=1+b) (hC : 0<C) (hX : 0<X)
+    (hpos : (0:DiffRing V)<ι C*(ι X+ι K*ι q)-ι F*ι q)
+    (hdiv : (ι b : DiffRing V)∣ι C*(ι X+ι K*ι q)-ι F*ι q) :
+    (0:DiffRing V)<ι C*(ι X+ι K)-ι F ∧
+      (ι b : DiffRing V)∣ι C*(ι X+ι K)-ι F := by
+  have hqR := congrArg (ι : V →+* DiffRing V) hq
+  simp only [map_add,map_one] at hqR
+  have hq1 : (1:DiffRing V)≤ι q := by
+    rw [hqR]
+    exact le_add_of_nonneg_right (ι_nonneg b)
+  have hCX : (0:DiffRing V)<ι C*ι X := by
+    simpa only [map_mul] using (ι_lt_ι.mpr (mul_pos hC hX))
+  constructor
+  · by_cases hd : (0:DiffRing V)≤ι C*ι K-ι F
+    · nlinarith
+    · have hd' : ι C*ι K-ι F≤0 := le_of_lt (lt_of_not_ge hd)
+      have hprod : (ι q-1)*(ι C*ι K-ι F)≤0 :=
+        mul_nonpos_of_nonneg_of_nonpos (sub_nonneg.mpr hq1) hd'
+      nlinarith
+  · obtain ⟨d,hd⟩ := hdiv
+    refine ⟨d-(ι C*ι K-ι F),?_⟩
+    linear_combination hd-(ι C*ι K-ι F)*hqR
+
+end DiophantineConsistency.CompanionCarrierFactsDraft
+#print axioms DiophantineConsistency.CompanionCarrierFactsDraft.positive_target
+#print axioms DiophantineConsistency.CompanionCarrierFactsDraft.enlarged_companion
+#print axioms DiophantineConsistency.CompanionCarrierFactsDraft.reduced_companion

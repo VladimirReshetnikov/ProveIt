@@ -1,0 +1,52 @@
+import Positive81ForwardCarrier
+import Positive81ExactMain
+
+/-! Source-only compact-port forward half of CrossRootCut. The reverse half,
+provider verification, elaboration and the parent bridge remain open. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Positive81ForwardCompactDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open Residue90CompactPortBoundsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Proposed forward first-residual witness for the actual compact tuple.
+The imported calibration and graph proofs are themselves unelaborated. -/
+theorem forward (K : ℕ) (v : Fin 13 → V) (hv : ∀ i, 0<v i)
+    (hz : InternalZero (PositiveSquare81GraphDraft.graph (fun j => (ports K j:ℤ))).output v) :
+    ∃ r : V, 0<r ∧
+      (PositiveCarrier83GraphDraft.graph (fun j => (ports K j:ℤ))).first.evalRing
+        (fun j => ι (Positive81To83TransportDraft.putR v r j))=0 := by
+  let p := ports K
+  let e := Positive80To81TransportDraft.image85 v
+  have hz85 := Positive81To83TransportDraft.prototype_zero_of81 (fun j => (p j:ℤ)) v hv hz
+  have hJ := EtaNaturalJPositiveDraft.J_positive p e hz85
+  obtain ⟨hb,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (e 0) hJ
+  have hp0 : (p 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  have hbeta : 0<(p 0:V) := by simpa only [hp0] using hb
+  have hgap85 := EtaNaturalGapRankDraft.gap p e hz85 hbeta
+  have h1 : v 1-1+1=v 1 := tsub_add_cancel_of_le (pos_iff_one_le.mp (hv 1))
+  have h2 : v 2-1+1=v 2 := tsub_add_cancel_of_le (pos_iff_one_le.mp (hv 2))
+  have he1 : e 1+1=v 1 := by
+    simp [e,Positive80To81TransportDraft.image85,Natural89RReplacementDraft.up,
+      Natural89Positive80TransportDraft.lower,EtaUnshift85TransportDraft.raiseEta,
+      W86To87TransportDraft.raiseW,Gamma87To88TransportDraft.raiseGamma,
+      J88To89TransportDraft.raiseJ,h1]
+  have he2 : e 2+1=v 2 := by
+    simp [e,Positive80To81TransportDraft.image85,Natural89RReplacementDraft.up,
+      Natural89Positive80TransportDraft.lower,EtaUnshift85TransportDraft.raiseEta,
+      W86To87TransportDraft.raiseW,Gamma87To88TransportDraft.raiseGamma,
+      J88To89TransportDraft.raiseJ,h2]
+  have hq := (Positive81CalibrationDraft.original81_coordinates K v hv).1
+  have hgap : v 1+v 2<Positive81ForwardCarrierDraft.q p v := by
+    simpa only [he1,he2,hq,Positive81ForwardCarrierDraft.q,Positive81ForwardCarrierDraft.b] using hgap85
+  have hX : Positive81ForwardCarrierDraft.q p v*Positive81ForwardCarrierDraft.q p v≤
+      Positive81ForwardCarrierDraft.X p v := by
+    simpa only [Positive81ForwardCarrierDraft.X,Positive81ForwardCarrierDraft.q,
+      Positive81ForwardCarrierDraft.b] using (Positive81ExactMainDraft.calibration81_original K v hv hz).2
+  exact Positive81ForwardCarrierDraft.forward_root p v hv hz hbeta hgap hX
+end DiophantineConsistency.Positive81ForwardCompactDraft
+#print axioms DiophantineConsistency.Positive81ForwardCompactDraft.forward
