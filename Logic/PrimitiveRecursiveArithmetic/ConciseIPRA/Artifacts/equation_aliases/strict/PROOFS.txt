@@ -1,0 +1,169 @@
+UNIVERSAL PRESERVATION ARGUMENTS FOR THE STRICT CHECKER PROFILES
+================================================================
+
+Status: written source-transform proofs, independently reviewed within the
+same task. No new Lean or Rocq certification. The inherited native calculus,
+array decoder, rule compilation, and arithmetic/iPRA interpretations remain
+dependencies of the mathematical correctness claim.
+
+1. EXACT CONTRACT AND SCOPE OF THE CLAIM
+
+All profiles parse one JSON value from standard input. A successful parse
+must yield an array consumed from its right end, with its last element the
+closed canonical native Eq/D goal. The entire parsed tree, including unused
+prefix data, must use only exact integers and arrays. Four-field instruction
+packets implement the existing native calculus. The input frame verifies
+this alphabet, and the first opener traversal verifies the public formula
+grammar and closed scope. Acceptance requires normal termination and the
+exact line ACCEPT. Exceptions reject.
+
+The token/AST profiles use the context-phase control: its empty context
+marks the public grammar scan; before a proof packet is processed, a
+neutral zero is inserted into a copied context. Every subsequent context
+is nonempty. The byte profile uses the other established control, which
+keeps an explicit Boolean validation flag. The two control families need
+not have identical acceptance sets on every raw certificate. Each new
+profile is related to its own exact matched control, and both inherited
+control families present the same canonical native theory.
+
+The numerical term language is still x, 0, S(t), I(n,a;u.h). Native formulas
+are equations, Q closures, and D binders internally, with closed Eq/D public
+goals. Q_y B means B(0) -> forall y B(y); D_xy B means exists x Q_y B(x,y).
+All source and successor equations, equality transport, hypothesis access,
+case/progress selection, and witness freshness are unchanged. In particular
+none of the changes erases a source-scope check, takes a major premise on
+trust, or treats the tested goal as an additional assumption.
+
+2. WHOLE-INPUT INTEGER/LIST VALIDATION
+
+The shared input gate is
+
+  p = json.load(open(0))
+  q = not str(p).strip('0123456789-[], ') and p.pop
+
+For a value returned by Python's JSON parser, str(p) has only these allowed
+characters exactly when its entire tree consists of integers and lists.
+Strings introduce quotes; dictionaries introduce braces; floats introduce a
+decimal dot or letters; Boolean, null, NaN, and infinity spellings introduce
+letters. There is no caller-defined repr method through this interface.
+If p is an integer rather than a list, p.pop fails. If the alphabet test
+fails, q becomes false and the mandatory q() rejects before checking a proof.
+Consequently every successful checker entry has a finite integer/list tree.
+
+This gate justifies removing the old exact-int identity test from the
+initial public scanner of the context-phase control. Every reached scalar
+there is an exact integer, and int(a) is a is true on an exact CPython int.
+The earlier scope comparison prevents array/sentinel objects reaching the
+deleted test as successful scalar cases. After public validation, the
+nonempty context already short-circuits the old test, so its deletion does
+not change internal Boolean neutral values or other later scanner results.
+
+3. IMMEDIATE APPLICATION OF THE OPENER
+
+The context-phase control assigns a lambda to i and combines that assignment
+with the rest of the checker by a Boolean conjunction. Every Python function
+object is truthy. Replace
+
+  (i := lambda ...) and (i(a) in g or continuation)
+
+with
+
+  (i := lambda ...)(a) in g or continuation.
+
+The function object is created and assigned at the same point. Its default
+argument, recursive references, closure cells, and first argument are the
+same. The mandatory initial opening traversal still runs before membership
+and before any proof packet. Thus the transformation preserves evaluation
+order and the finite execution result. It is not a deletion of a validator.
+
+4. MULTIPLICATION OF TOTAL BITS
+
+Let e=d mod 2, and let
+
+  P = (not a or a > 1 == a % 2).
+
+At any point where this predicate is evaluated, the preceding scope
+comparison has already ruled out nonnumeric arrays and sentinels. External
+leaves are exact integers by section 2. Internal scalar leaves are integers
+or Boolean neutral values. P is therefore total, pure, and Boolean, and e
+is either zero or one. The expressions e and P and e*P are numerically
+equal. Computing P eagerly when e=0 has no effect or exception.
+
+For the explicit-validation-flag control this gives the exact replacement
+
+  v <= (d % 2 and P)    ->    v <= d % 2 * P.
+
+The comparison has the same Boolean value, and all later operations are
+unchanged. Reversing this one expression reproduces the complete source AST
+of strict637.py. This is the sole change made in bytes633.py.
+
+For the context-phase controls the same rewrite is made inside g or (...).
+When g is nonempty the expression is bypassed in both programs; otherwise
+the same total-bit argument applies. This covers the products in tokens338
+and ast386.
+
+5. BITWISE OR IN THE CONTEXT-PHASE FALLBACK
+
+The fallback uses the truth value of
+
+  (d % 2 or not g)
+
+to decide whether to open the supplied numerical image. Both operands are
+Boolean bits, so replacing this by d % 2 | (not g) leaves the decision
+unchanged. The only value-level difference occurs when both operands are
+false: Boolean disjunction returns False, whereas bitwise OR returns the
+integer 0. All reachable later operations respect their numerical/structural
+equality. In particular there are no remaining identity or exact-type tests
+on internal neutral values; membership/equality, truth testing, arithmetic,
+list construction, and the scope comparisons are invariant under replacing
+a Boolean neutral zero by integer zero. Parsed external data remains exact
+integer/list data in either program, and the input alphabet gate does not
+inspect newly generated internal values.
+
+A structural simulation relates each reached tree/context by replacing
+Boolean neutral zeros by integer zeros. The two runs read the same packets,
+take the same branches, allocate the same negative parameter, preserve the
+same meaningful terms and formulas, and either both reject or both complete
+under sufficient finite resources. This is an observational equivalence,
+not a claim that Python's object type of every internal zero is unchanged.
+
+6. MODULE-LEVEL ASSIGNMENT EXPRESSIONS
+
+The AST profile places the p and q assignments into the top-level checker
+call. Those names remain module globals. The exact order is still: parse
+p, run the alphabet gate, get p.pop, assign q, pop the goal, call the checker.
+The same parsed list supplies every subsequent packet. Exceptions at any
+stage still occur before acceptance. Unwinding the two assignment
+expressions produces the token profile's frame, with an identical checker
+body. This changes source representation rather than an inference rule.
+
+7. EFFECTIVE PRESERVATION AND BI-INTERPRETABILITY
+
+Sections 2-6 preserve the finite successful certificate relation relative to
+the appropriate exact matched control. The token/AST profiles allow the
+observational zero relation of section 5; it preserves all decoded formulas.
+Their ordinary theory is consequently the inherited native scalar theory.
+Compose these preservation results with the inherited native-iPRA
+interpretations: both numerical domains remain whole, equality remains
+actual equality, and the two numerical round-trip isomorphisms keep graph
+x=y. No arithmetic interpreter, extra axiom, or proof oracle has been hidden
+in an uncounted helper.
+
+The new strict coordinate envelope is (338,386,633), from three DIFFERENT
+complete programs. It improves the identified strict native envelope
+(342,391,637). It does not improve the compact guarded-public-goal envelope
+(248,270,479), whose programs omit the strict validation contract, and it
+does not establish global minimality. The enclosing mathematical report's
+equation-only Alias/Back theorem is separate from these implementation
+refinements.
+
+8. REPRODUCIBLE EVIDENCE
+
+measure.py normalizes and measures each complete module. verify.py first
+checks exact source-transform identities against the supplied immutable
+controls. It then verifies fixture hashes and runs the 56 inherited native
+proof/boundary cases on all three selected profiles under normal Python
+and python -O (336 isolated executions). Results are saved as JSON. Known
+false conclusions, future witness capture, context leakage, invalid public
+grammar, and non-integer/list unused prefixes are included. Finite fixtures
+supplement the written universal arguments and do not replace them.

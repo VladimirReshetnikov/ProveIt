@@ -1,0 +1,161 @@
+INDEPENDENT REVIEW: EQUATION-ONLY ALIAS / NEWEST SPECIALIZATION
+Reviewed source: review/math_innovation.txt, 12 November 2026.
+Reviewer: separate same-run mathematical agent; not external peer review.
+
+VERDICT
+
+The proposed calculus-to-calculus equivalence has a complete written proof
+at the level stated, conditional only on the explicitly inherited equivalence
+of the source raw template calculus with native iPRA. I found no remaining
+use of an unproved target weakening, cut, or arbitrary-substitution rule.
+The crucial distinction between uniformly reconstructible derivations and a
+single local proof is sufficient to close the apparent scope circularity.
+This is not Lean/Rocq verification, a proof of a new checker-size record, or
+an independent reproof of the repository's complete arithmetic bridge.
+
+One definitional clarification is recommended before publication: in L_k,
+'uniform equality in all extensions' must mean the FULL notion of section 2
+(arbitrary injective parameter embeddings and clause-occurrence maps), not
+just appending unused parameters. The later construction of T_k invokes that
+full uniform notion. Read that phrase with the section-2 definition and the
+proof is sound; make it explicit to prevent a weaker, insufficient reading.
+
+1. EQUATIONAL BASE AUDIT
+
+EqAlias may export only equations; all uses in the reflexivity, symmetry,
+and equation-transport constructions meet this restriction. Every use of
+EqBack has an equation conclusion and uses the newly appended alias as its
+newest parameter. Aliases are fresh for the terms they name.
+
+For symmetry, under b=s, EqBack with conclusion b=t has minor s=t. The
+second EqBack has conclusion t=b and minor t=t. Discharge exports t=s.
+For transport, under b=t, the first EqBack yields b=s from t=s, and the
+second yields E(b) from E(s); EqAlias exports E(t). Capture avoidance works
+with repeated template occurrences and iterator binders because b is fresh
+and the distinguished template variable is chosen outside the aliases.
+
+These constructions use their premises inside larger alias contexts. That
+would be invalid for an arbitrary completed newest-only proof. The note
+does not do that: it requires uniform premise procedures and reinvokes them
+in the requested larger context. Thus the base T_0 claim is correctly limited
+to uniform premises. There is no illicit L_0 claim.
+
+Atomic arbitrary specialization S_0 uses EqAlias directly: name the desired
+term t by fresh b, recompile the antecedent in that scope, use the clause at
+newest b, and export its equation. The antecedent may have any formula depth;
+the S_0 construction needs only its already-supplied uniform proof procedure,
+not an induction hypothesis on that antecedent's depth. This distinction
+prevents a hidden complexity recursion.
+
+2. NAMING AUDIT
+
+Name(t)=D_{x,y}(C(y,t,x)=t), C(y,a,b)=I(y,a;u.b).
+Close uses witness t. Its successor goal C(Sz,t,t)=t is exactly an instance
+of the successor computation schema, since the iterator body is constant t.
+No reduction of a term beyond the explicit schema is hidden here. If t is
+literally zero the mode changes to progress, but the hypothesis remains
+unused and the same computation proof works.
+
+Opening the name at b retains
+[C(0,t,b)=t ; y.C(y,t,b)=t]. Its antecedent is exactly zero computation.
+S_0 at 1 gives C(1,t,b)=t; successor computation gives C(1,t,b)=b.
+T_0 (or its symmetry/composition special cases) gives b=t. Every ingredient
+is uniform over the retained naming clause. Naming therefore supplies more
+than a local equality proof: it supplies the uniform equality needed after
+further Open/Close scopes are introduced.
+
+3. POSITIVE-DEPTH LOCAL TRANSPORT AUDIT
+
+At depth k>0, F(v)=D_{x,y}B(v,x,y). A merely local proof of F(s) is used
+as the major of Open at its original scope. The proof is not transplanted
+under the fresh witness c. This is the exact point that fixes the earlier
+tempting but invalid argument.
+
+Inside the Open branch, the target F(t) is introduced at witness c. Because
+c is a free parameter, it is not the literal numerical zero, so the rule is
+case introduction, including when B is an equation. The fresh z branch has
+ordinary assumption B(t,c,0), which is uniformly available as an
+antecedent-free constant clause. The source Open clause is retained as a
+clause occurrence and is uniformly accessible by S_(k-1).
+
+The branch is built in three steps, all at lower formula depth:
+  T_(k-1) with t=s: B(t,c,0) -> B(s,c,0);
+  S_(k-1) at Sz on the retained clause: B(s,c,0) -> B(s,c,Sz);
+  T_(k-1) with s=t: B(s,c,Sz) -> B(t,c,Sz).
+The first minor is a uniform ordinary assumption; the second has a uniform
+antecedent from the first step; the third has a uniform minor from the
+second. Therefore even when k=1, no local atomic transport theorem is being
+smuggled in. Each atomic use has the uniform premises required by T_0.
+
+Close and Open then export F(t), which does not contain c. The condition
+that s,t and the template's external data precede c is ensured by genuine
+freshness and capture-free renaming of the bound variables x,y.
+
+4. INDUCTION AND SOURCE COMPILER AUDIT
+
+The dependency graph is well founded:
+  S_0 and T_0 are direct equational constructions;
+  L_k uses only S_(k-1), T_(k-1), and primitive Open/Close;
+  T_k uses L_k;
+  S_k uses L_k and the atomic naming construction.
+
+In S_k, the arbitrary original clause is used at a fresh name b. That gives
+only a local proof of F(b), but L_k was deliberately strengthened to accept
+exactly such a minor. Its equality b=t is uniform by the name lemma. The
+outer Open discharges b after F(t) has been constructed. Thus S_k does not
+depend on itself, or on target weakening, even indirectly.
+
+The separate compiler is a structural induction on SOURCE proofs. It emits
+a uniform procedure for each conclusion. At a source Use, its antecedent is
+a proper source premise and has already been compiled; the appropriate S_k
+has already been defined by the independent depth induction. The source
+antecedent may be deeper than the specialized body without causing a cycle:
+the source-proof induction, not the formula-depth induction, produces it.
+At source Open and Close, extend the parameter embedding and clause
+occurrence map and invoke the already-compiled proper branch. Injective
+renaming preserves the literal-zero and equation-root tests, so Close modes
+are unchanged. Equation transport uses T_0, and computations/reflexivity
+use the base constructions. No completed target proof is renamed or weakened.
+
+The source should be identified as the actual raw template calculus already
+used as alias_back's matched control (arbitrary clause use, equation
+transport, reflexivity, both computations, Open, Close). This avoids a
+presentation mismatch with a differently named CPrf variant whose primitive
+arithmetic rule is Eval. The corpus establishes their equivalence, but the
+report should name the chosen source directly.
+
+5. SOUNDNESS AND WHAT TRANSFERS
+
+EqBack is valid equality substitution in the ordinary realization. EqAlias
+is valid by substituting the outer term for its fresh parameter; its extra
+assumption becomes t=t. This argument takes place in ordinary logic, not
+inside the restricted target calculus, so it does not assume the very target
+substitution theorem being investigated. Other rules are retained from the
+known sound source.
+
+Thus target-to-source soundness plus the explicit source-to-target compiler
+give equality of native consequences. Keeping identical terms and formula
+readings permits the existing whole-domain iPRA interpretations and formula
+round trips to transfer. Merely equiconsistency would not have sufficed, but
+the note actually proves the stronger exact consequence equivalence needed.
+
+6. LIMITS AND IMPLEMENTATION CHECKS TO KEEP DISTINCT
+
+The theorem settles the specifically identified incoming Alias/Back question:
+both equality rules can be equation-only while specialization stays fixed to
+the newest parameter. It does not remove compound targets from Open; those
+targets are essential in L_k and S_k. It does not remove the arbitrary Close
+witness, the computation equations, or equation progress.
+
+The proof is a mathematical restriction of an existing rule interface. It
+does not automatically save code, since validating the equation restriction
+can add a check. Any below-frontier claim needs separately measured code.
+If an implementation is supplied, useful structural test cases are:
+  - Use of a compound clause at a non-newest arbitrary term;
+  - the same operation with an antecedent deeper than the clause body;
+  - source proof compilation into an interleaved/non-order-preserving scope;
+  - duplicate clauses and noncontiguous occurrence maps;
+  - literal-zero names, names involving iterator binders, and nested D depth;
+  - rejection of every compound EqAlias/EqBack conclusion and escaping names.
+Passing such tests supports the implementation but does not prove this
+metatheorem; the proof above does not rely on finite tests.

@@ -19,6 +19,10 @@ uniqueness of iteration.  \Cref{kern:sec:prog} changes the reading of $\Q{}$
 at a literal equation to progressivity and presents the seven-rule calculi
 that result.  \Cref{kern:sec:recursors} records two results on recursors other
 than the iterator, which two of the packages prove on the side.
+\Cref{kern:sec:depth} records two limits that concern the native language and
+its presentation rather than a rule: the classes of relations defined by
+native formulas of bounded binder depth, and an obstruction to finite
+ordinary axiomatizations of $\iPRA$.
 
 Every calculus of \cref{kern:sec:intro,kern:sec:transport,kern:sec:uniq}
 derives exactly the sequents of $\Nat$, on the same formulas.  The calculi of
@@ -30,7 +34,7 @@ end of \cref{kern:sec:prog} lists all calculi of the chapter.
 \section{Conventions and the comparison method}
 \label{kern:sec:conv}
 
-This section fixes what all fourteen packages of the chapter restate before
+This section fixes what all packages of the chapter restate before
 their own results; it draws on no package in particular.
 
 The rules of $\Nat$ are named as in \cref{base:sec:kernel}: \rulename{Hyp},
@@ -1688,8 +1692,8 @@ producers.  The restricted inventory itself belongs to an earlier package,
 \section{Induction and uniqueness of iteration}
 \label{kern:sec:uniq}
 
-This section draws on \pkg{scalar\_uniqueness}, \pkg{orbit\_closure} and
-\pkg{crossed\_uniqueness}.
+This section draws on \pkg{scalar\_uniqueness}, \pkg{orbit\_closure},
+\pkg{crossed\_uniqueness} and the rigidity section of \pkg{reductions}.
 
 Induction for literal equations can be replaced by a rule that has no
 induction hypothesis in its premise: a term that satisfies the recurrence of
@@ -1851,6 +1855,50 @@ arbitrary body $h$ use \rulename{UR} for $h$.
 \subsection{Retractions and induction for zero equations}
 \label{kern:sec:urretract}
 
+\begin{proposition}[A right inverse from successor uniqueness]
+\label{kern:prop:rinv}
+Let $e(x)$ be a term template such that
+\[
+ \Gamma\proves e(0)=0,\qquad \Gamma\proves e(\Suc e(x))=\Suc e(x)
+\]
+for a variable $x$ not free in $\Gamma$, and put
+\[
+ r(n)\defeq\It{n}{0}{u}{\Suc e(u)} .
+\]
+Then for every term $t$
+\[
+ \Gamma\proves e(r(t))=t,\qquad
+ \Gamma\proves r(\Suc t)=\Suc t,\qquad
+ \Gamma\proves e(\Suc t)=\Suc t .
+\]
+The derivation uses the two computation equations, equality reasoning and
+two instances of \rulename{SU}; it uses neither coverage, nor separation,
+nor idempotence of $e$.
+\end{proposition}
+
+\begin{proof}
+Let $z$ be a variable not free in $\Gamma$, in $t$ or in $e$, and put
+$f(n)\defeq e(r(n))$.  By \rulename{I0}, $r(0)=0$, so $f(0)=e(0)=0$.  By
+\rulename{IS}, $r(\Suc z)=\Suc e(r(z))$, and the second hypothesis at the
+argument $r(z)$, obtained by substituting $r(z)$ for $x$, gives
+\[
+ f(\Suc z)=e(r(\Suc z))=e\bigl(\Suc e(r(z))\bigr)=\Suc e(r(z))=\Suc f(z).
+\]
+\rulename{SU} for the template $f$ gives
+$f(t)=\It{t}{f(0)}{u}{\Suc u}$; congruence with $f(0)=0$ and
+\cref{kern:lem:cu}(iii), the second instance of \rulename{SU}, give
+$f(t)=t$, that is, $e(r(t))=t$.  Then \rulename{IS} gives
+$r(\Suc t)=\Suc e(r(t))=\Suc t$.  Finally, the second hypothesis at the
+argument $r(t)$ is $e(\Suc e(r(t)))=\Suc e(r(t))$, and replacing $e(r(t))$
+by $t$ on both sides gives $e(\Suc t)=\Suc t$.
+\end{proof}
+
+The first conclusion says that the term $r$ is a right inverse of $e$: it
+is a term witness for the surjectivity of $e$, which is more than closure of
+the image of $e$ under successor.  The trajectory $r$ applies $\Suc$ after
+$e$, and \rulename{SU} is applied to the projected orbit $e\circ r$; this is
+what makes the computation of $f(\Suc z)$ immediate.
+
 \begin{lemma}[Rigidity of retractions]
 \label{kern:lem:rigid}
 Let $e(x)$ be a term template such that
@@ -1858,23 +1906,38 @@ Let $e(x)$ be a term template such that
  e(0)=0,\qquad e(e(x))=e(x),\qquad e(\Suc e(x))=\Suc e(x)
 \]
 are derivable for a variable $x$ not free in $\Gamma$.  Then $e(t)=t$ for
-every term $t$.  The derivation is in $T_{\mathrm{SU}}$ and does not use
-separation.
+every term $t$.  The derivation is in $T_{\mathrm{SU}}$ and uses neither
+coverage nor separation.
 \end{lemma}
 
 \begin{proof}
-Put $h(u)\defeq e(\Suc e(u))$ and $r(n)\defeq\It{n}{0}{u}{h(u)}$.  First,
-$e(r(n))=r(n)$, by coverage on $n$.  At $0$ it is $e(0)=0$, since $r(0)=0$.
-At $\Suc m$, the term $r(\Suc m)=h(r(m))=e(\Suc e(r(m)))$ is a value of
-$e$, and the second equation gives
+By \cref{kern:prop:rinv}, $e(r(t))=t$.  Idempotence at the argument $r(t)$
+gives
 \[
- e(r(\Suc m))=e\bigl(e(\Suc e(r(m)))\bigr)=e(\Suc e(r(m)))=r(\Suc m).
+ e(t)=e\bigl(e(r(t))\bigr)=e(r(t))=t . \qedhere
 \]
-The third equation now gives
-$r(\Suc n)=e(\Suc e(r(n)))=\Suc e(r(n))=\Suc r(n)$, and $r(0)=0$.
-\rulename{SU} and \cref{kern:lem:cu}(iii) give $r(n)=n$, and then
-$e(n)=e(r(n))=r(n)=n$.
 \end{proof}
+
+\begin{corollary}[Rigidity without idempotence]
+\label{kern:cor:rigidcov}
+Let $e(x)$ be a term template such that $e(0)=0$ and
+$e(\Suc e(x))=\Suc e(x)$ are derivable for a variable $x$ not free in
+$\Gamma$.  Then coverage and \rulename{SU} derive $e(t)=t$ for every term
+$t$, with the computation equations and equality reasoning.  Neither
+separation nor idempotence is used.
+\end{corollary}
+
+\begin{proof}
+Coverage gives $t=0\vee\exists y\,t=\Suc y$.  If $t=0$, then
+$e(t)=e(0)=0=t$.  If $t=\Suc y$ for a variable $y$ not free in $\Gamma$ or
+$t$, then \cref{kern:prop:rinv} gives $e(\Suc y)=\Suc y$, hence $e(t)=t$.
+Elimination of the disjunction and of the existential quantifier concludes
+$e(t)=t$.
+\end{proof}
+
+Of the three hypotheses of \cref{kern:lem:rigid}, therefore, coverage may
+replace idempotence, and idempotence makes coverage unnecessary; the two
+remaining hypotheses alone already give $e(\Suc t)=\Suc t$ for every $t$.
 
 \begin{lemma}[Induction from a numerical split]
 \label{kern:lem:split}
@@ -1924,13 +1987,72 @@ $T_{\mathrm{SU}}$ derives induction for zero equations, in the form of
 \Cref{kern:lem:rigid,kern:lem:split,kern:lem:zi} are reproduced in
 \pkg{scalar\_uniqueness} from an earlier package, \pkg{scope\_kernel}, which
 leaves the predecessor and the reflection of equality as an open bootstrap.
-The next three subsections close it.  In those two packages the first step
-of the proof of \cref{kern:lem:rigid} is an instance of \rulename{UR} for
-the body $e(\Suc e(u))$: the template $e(r(n))$ has the seed $0$ and
-satisfies $e(r(\Suc n))=h(r(n))=h(e(r(n)))$.  The proof given above, with
-coverage in place of that instance, is from \pkg{orbit\_closure}, and
-\cref{kern:thm:su} is its theorem.  The decision of $q(n)=0$ in
-\cref{kern:lem:zi} needs separation; no other step of the three lemmas does.
+The next three subsections close it.  The three packages prove
+\cref{kern:lem:rigid} in three ways.  In \pkg{scope\_kernel} and
+\pkg{scalar\_uniqueness} the trajectory is $r'(n)\defeq\It{n}{0}{u}{h(u)}$
+with the unprojected body $h(u)\defeq e(\Suc e(u))$, and the first step,
+$e(r'(n))=r'(n)$, is an instance of \rulename{UR} for the body $h$: by
+idempotence $e(h(u))=h(u)$ and $h(e(u))=h(u)$, so the template $e(r'(n))$
+has the seed $0$ and satisfies $e(r'(\Suc n))=h(r'(n))=h(e(r'(n)))$.  The
+third hypothesis then gives $r'(\Suc n)=\Suc r'(n)$, \rulename{SU} gives
+$r'(n)=n$, and $e(n)=e(r'(n))=r'(n)=n$.  The same proof is
+\cref{obs:lem:retraction}.  \pkg{orbit\_closure} keeps $r'$ and replaces the
+instance of \rulename{UR} by coverage on $n$: $r'(0)=0=e(0)$, and
+$r'(\Suc m)=e(\Suc e(r'(m)))$ is a value of $e$, so idempotence gives
+$e(r'(\Suc m))=r'(\Suc m)$; this places the derivation in $T_{\mathrm{SU}}$,
+and \cref{kern:thm:su} is the theorem of that package.  The proof given
+above, through \cref{kern:prop:rinv} with the body $\Suc e(u)$, is from
+\pkg{reductions}; it needs neither the instance of \rulename{UR} nor
+coverage, and \cref{kern:cor:rigidcov} is the other trade-off that it
+permits.  In \cref{kern:lem:split,kern:lem:zi,kern:thm:su} coverage and
+separation are now used only in \cref{kern:lem:zi}, to decide $q(n)=0$ and
+so to justify the split $e(n)=\sel(q(n),n,0)$; the right inverse does not
+remove them from that step.
+\end{remark}
+
+\begin{remark}[Successor rigidity in the clause chapter]
+\label{kern:rem:rinv-claus}
+\Cref{claus:thm:rigidity} derives induction for zero equations from the rule
+$\mathrm{SR}_0$ (from $f(0)=0$ and $f(\Suc z)=\Suc f(z)$ infer $f(t)=t$),
+which \rulename{SU} derives, with the trajectory $\It{n}{0}{u}{e(\Suc u)}$
+and with coverage.  Its hypotheses on a formula $E$ and a term $e$,
+$\Gamma\proves E(e(x))$ and $\Gamma,E(x)\proves e(x)=x$ with $x$ fresh,
+together with the base $E(0)$ and the step $E(z)\proves E(\Suc z)$, imply the
+three hypotheses of \cref{kern:lem:rigid}: substituting $0$ for $x$ in the
+second hypothesis and using the base gives $e(0)=0$; substituting $e(x)$ for
+$x$ and using the first gives $e(e(x))=e(x)$; and the step at $e(x)$ gives
+$E(\Suc e(x))$, whence $e(\Suc e(x))=\Suc e(x)$.  In the proof of
+\cref{kern:prop:rinv} the two instances of \rulename{SU} combine into one
+instance of $\mathrm{SR}_0$ for the template $e(r(n))$, whose premises
+$e(r(0))=0$ and $e(r(\Suc z))=\Suc e(r(z))$ are derived there.  Hence the
+general statement of \cref{claus:thm:rigidity}, $\Gamma\proves E(t)$, holds
+over the computation equations and $\mathrm{SR}_0$ without coverage:
+\cref{kern:lem:rigid} gives $e(t)=t$, and $E(e(t))$ transports to $E(t)$.
+Coverage remains in the derivation of $\mathrm{ZI}$ there, where it proves
+$E(e(x))$ for $e(x)=\sel(q(x),x,0)$.
+% ed.: this comparison combines kern:prop:rinv with the hypotheses of
+% claus:thm:rigidity; neither package states it.
+\end{remark}
+
+\begin{remark}[Coverage is not derivable from the other principles]
+\label{kern:rem:rinv-product}
+\Cref{kern:lem:rigid} removes coverage from the step of rigidity only, and
+coverage cannot be removed from the whole scalar presentation on the
+strength of \rulename{SU}.  The product $\mathbb N\times\mathbb N$ of two
+copies of the standard model, with $0=(0,0)$ and every operation
+coordinatewise, satisfies the computation equations, separation and
+induction for literal equations over arbitrary contexts, and refutes
+coverage at $(0,1)$ (\cref{kern:rem:limits-sources}).  The derivation of
+\rulename{UR} in \cref{kern:prop:uniq} uses equation induction, the
+computation equations and congruence only, so every instance of
+\rulename{UR}, and in particular of \rulename{SU}, is valid in the product.
+Hence intuitionistic logic with equality, the computation equations,
+separation and \rulename{SU} do not derive coverage.  \pkg{reductions}
+checks the validity of \rulename{SU} in the product directly: its premise
+gives the successor recurrence in each coordinate, and external induction in
+each coordinate gives its conclusion.  The model has the standard domain
+and the fixed language; it says nothing about an interpretation on a changed
+domain (\cref{kern:q:coverdomain}).
 \end{remark}
 
 \subsection{A predecessor from uniqueness}
@@ -2343,8 +2465,9 @@ connectives, is a derivation in $\mathsf{U}$.
 \begin{remark}[Sources and status]
 \label{kern:rem:ur-sources}
 \Crefrange{kern:sec:ur}{kern:sec:urreflect} are \pkg{scalar\_uniqueness},
-except for the proof of \cref{kern:lem:rigid} and for
-\cref{kern:thm:su}, which are from \pkg{orbit\_closure}
+except for \cref{kern:prop:rinv}, the proof of \cref{kern:lem:rigid} and
+\cref{kern:cor:rigidcov}, which are from \pkg{reductions}, and
+\cref{kern:thm:su}, which is from \pkg{orbit\_closure}
 (\cref{kern:rem:scopekernel}).  \pkg{scalar\_uniqueness} attributes the
 idea of replacing induction by uniqueness of recursion to the literature
 (Okada and Scott study uniqueness of iteration in a typed setting) and
@@ -2472,7 +2595,10 @@ $\Delta(a,b)=0\leftrightarrow a=b$ is needed.  The construction of
 \crefrange{kern:sec:urpred}{kern:sec:uracc} uses \rulename{UR} for the
 bodies $u$, $Z(u)$, $j(u)$, $g(u)$, $\chi(u)$, $\beta_m(u)$ and $P(u)$,
 among others, and cannot be repeated in $T_{\mathrm{SU}}$ as it stands.
-\pkg{orbit\_closure} does not claim that $T_{\mathrm{SU}}$ is equivalent to
+The right inverse of \cref{kern:prop:rinv} does not supply such a term
+either: it concerns a term $e$ whose values are already known at $0$ and
+along successors of its values, and \pkg{reductions} records that it does
+not construct $\Delta$ from \rulename{SU}.  \pkg{orbit\_closure} does not claim that $T_{\mathrm{SU}}$ is equivalent to
 $\Teq$.  It also records that a model used in another package,
 \pkg{canonical\_recursors}, to separate induction for zero equations from
 induction for all equations does not decide the question: in that model,
@@ -3749,6 +3875,308 @@ corollary are \Lean{ZTm.mono} and \Lean{ZTm.no\_zero\_test} in the module
 counter, with \Lean{Tm.val\_zf} for the selector of the kernel's language.
 
 % ---------------------------------------------------------------------
+\section{Binder depth and finite axiomatizations}
+\label{kern:sec:depth}
+
+This section draws on the binder-depth section and the appendix on finite
+axiomatizations of \pkg{reductions}.  Neither result changes a rule.  The
+first determines what native formulas of bounded binder depth express under
+the standard reading; the second recalls why a presentation of $\iPRA$ with
+finitely many principles has to use schemata, as the eight rules of $\Nat$
+do.
+
+\subsection{The relations defined at bounded depth}
+\label{kern:sec:depthclass}
+
+For a native formula $A$ let $\delta(A)$ be its \emph{binder depth}:
+$\delta(s=t)\defeq0$ and $\delta(\Q{y}B)\defeq\delta(\D{x}{y}B)\defeq
+1+\delta(B)$.  Each binder has one immediate subformula, so $\delta(A)$ is
+also the number of occurrences of $\Q{}$ and $\D{}{}$ in $A$; it is the
+binder rank $r(A)$ of \cref{base:rem:single-binder-size} and the depth used
+in \cref{seed:thm:prefix}.  Substitution of terms preserves it.
+
+Let $\mathbb N$ be the standard model, in which the iterator denotes
+iteration.  A native formula $A$ whose free variables are among
+$p_1,\dots,p_k$ \emph{defines} the relation
+$\{\vec a\in\mathbb N^k:\mathbb N\models A^\circ[\vec a]\}$, where $A^\circ$
+is the ordinary reading of \cref{base:def:reading}; this is the
+\emph{standard reading} of $A$, and it is classical.  Let $\mathcal R_d(k)$
+be the class of relations on $\mathbb N^k$ defined by native formulas of
+depth at most $d$.  Numerical parameters may be among the $p_i$ or be fixed
+as numerals; there are no set or function parameters.  Let $\mathrm{PR}(k)$
+be the class of primitive recursive relations on $\mathbb N^k$, and for
+$m\ge1$ let $\Sigma^0_m(k)$ and $\Pi^0_m(k)$ be the classes of relations
+\[
+ \exists x_1\,\forall x_2\,\exists x_3\cdots x_m\;
+ R(x_1,\dots,x_m,\vec p),\qquad
+ \forall x_1\,\exists x_2\,\forall x_3\cdots x_m\;
+ R(x_1,\dots,x_m,\vec p)
+\]
+with $m$ alternating single quantifiers and $R$ primitive recursive.  The
+following facts are the standard theory of the arithmetical hierarchy
+(S.~C.~Kleene, Recursive predicates and quantifiers, Trans.\ Amer.\ Math.\
+Soc.\ 53 (1943), 41--73); they rest on primitive recursive pairing, which
+contracts adjacent quantifiers of the same kind.
+\begin{enumerate}[label=\textup{(H\arabic*)}]
+\item $\mathrm{PR}(k)\subseteq\Sigma^0_1(k)\cap\Pi^0_1(k)$ and
+ $\Sigma^0_m(k)\cup\Pi^0_m(k)\subseteq\Sigma^0_{m+1}(k)\cap\Pi^0_{m+1}(k)$.
+\item The complement of a $\Sigma^0_m$ relation is $\Pi^0_m$, and
+ conversely.
+\item $\Sigma^0_m$ is closed under existential quantification of an
+ argument, $\Pi^0_m$ under universal quantification; both are closed under
+ finite conjunction and disjunction and under substitution of primitive
+ recursive functions, in particular of constants, for arguments.
+\item For every $m\ge1$ there is a relation $U_m\in\Sigma^0_m(2)$ such that
+ every relation in $\Sigma^0_m(1)$ is $\{n:U_m(e,n)\}$ for some $e$.
+\end{enumerate}
+
+\begin{lemma}[Strictness of the hierarchy]
+\label{kern:lem:hier}
+Let $\langle e,n\rangle$ be a primitive recursive pairing with primitive
+recursive projections $\pi_0\langle e,n\rangle=e$ and
+$\pi_1\langle e,n\rangle=n$, and put $H_m(q)\defeq U_m(\pi_0q,\pi_1q)$ for
+$m\ge1$.  Then $H_m\in\Sigma^0_m(1)\setminus\Pi^0_m(1)$.
+\end{lemma}
+
+\begin{proof}
+$H_m\in\Sigma^0_m(1)$ by (H3).  Suppose $H_m\in\Pi^0_m(1)$.  Then
+$U_m(e,n)\leftrightarrow H_m(\langle e,n\rangle)$ is $\Pi^0_m$ by (H3), so
+the relation $\neg U_m(n,n)$ is $\Sigma^0_m$ by (H2) and (H3).  By (H4) it
+is $\{n:U_m(e,n)\}$ for some $e$, and at $n=e$ this gives
+$U_m(e,e)\leftrightarrow\neg U_m(e,e)$.
+\end{proof}
+
+This is the diagonal argument for the hierarchy theorem.  It uses the
+universal relations of (H4) and their primitive recursive matrices; it does
+not use an evaluator for all primitive recursive functions.
+
+\begin{theorem}[The depth classes]
+\label{kern:thm:depth}
+For every arity $k$,
+\[
+ \mathcal R_0(k)=\mathrm{PR}(k),\qquad
+ \mathcal R_d(k)=\Sigma^0_{2d}(k)\quad(d\ge1).
+\]
+Every relation in $\Sigma^0_{2d}(k)$ is defined by a formula of depth $d$
+without $\Q{}$.
+\end{theorem}
+
+The equalities are equalities of classes of relations on the standard
+natural numbers.  They do not say that every native formula of depth $d$ is
+intuitionistically equivalent, in $\Teq$ or in $\iPRA$, to the reading of a
+prenex formula; the reading of a nested native formula contains
+implications with quantified antecedents.
+
+\begin{proof}
+\emph{Depth zero.}  By induction on terms, every term denotes a primitive
+recursive function of its free variables: $\It{n}{a}{u}{h}$ denotes the
+function $F$ with $F(0,a,\vec p)=a$ and
+$F(m+1,a,\vec p)=h(F(m,a,\vec p),\vec p)$, where $h(\cdot,\vec p)$ is the
+function denoted by the body.  Equality of two primitive recursive functions
+is a primitive recursive relation.  Conversely let $R\in\mathrm{PR}(k)$ and
+let $\chi$ be a function symbol of $\iPRA$ (\cref{base:def:ipra}) whose
+function is $0$ exactly on $R$.  By \cref{base:thm:primrec}(ii), $\Teq$
+proves the translations $\sigma$ of the defining equations of every
+function symbol, and $\Teq$ is valid in $\mathbb N$; by induction on the
+generation of $\chi$, the term $\sigma(\chi(\vec p))$ denotes the function
+of $\chi$.  The equation $\sigma(\chi(\vec p))=0$ defines $R$.
+
+\emph{Lower inclusion at positive depth.}  For a variable $z$ let $G_zA$ be
+$A$ with every equation $s=t$ replaced by $\sel(z,0,s)=\sel(z,0,t)$, and let
+$P$ be the predecessor term of \cref{base:thm:pred}; $\delta(G_zA)=\delta(A)$.
+In $\mathbb N$, $\sel(0,0,s)$ and $\sel(0,0,t)$ both denote $0$, and
+$\sel(w+1,0,s)$ denotes the value of $s$.  Hence $G_0A$ is true under every
+valuation, by induction on $A$, since a formula all of whose equations are
+true under every valuation is true; and $G_{w+1}A$ has the same reading as
+$A$.  Since $\Teq$ is valid in $\mathbb N$, $P(y+1)=y$.  For a formula
+$A(x,y,\vec q)$ and a fresh $z$ put
+$\mathcal B_{x,y}A\defeq\D{x}{z}\,G_z\bigl(A(x,P(z),\vec q)\bigr)$.  Its
+standard reading is
+\[
+ \exists x\,\bigl(G_0A(x,P(0),\vec q)\to\forall z\,G_zA(x,P(z),\vec q)\bigr),
+\]
+whose antecedent is true; the instance $z=0$ of the consequent is true, and
+the instance $z=y+1$ has the reading of $A(x,y,\vec q)$.  So
+$\mathcal B_{x,y}A$ defines $\exists x\,\forall y\,A(x,y,\vec q)$, and
+$\delta(\mathcal B_{x,y}A)=1+\delta(A)$.  Now let
+$X(\vec p)\leftrightarrow\exists x_1\forall y_1\cdots\exists x_d\forall y_d\,
+R(\vec x,\vec y,\vec p)$ with $R$ primitive recursive, and let
+$r(\vec x,\vec y,\vec p)=0$ define $R$, by the case of depth zero.  Apply
+$\mathcal B$ to this equation $d$ times, from the innermost pair
+$x_d,y_d$ outward.  The result defines $X$, has depth $d$ and contains no
+$\Q{}$.  This is the construction of \cref{seed:thm:prefix}, which proves
+the equivalence in $\iPRA$; only its standard reading is used here.
+
+\emph{Upper inclusion.}  The argument is classical and concerns
+$\mathbb N$.  It is proved by induction on $d\ge1$ that every native formula
+$A$ with $\delta(A)\le d$ defines a $\Sigma^0_{2d}$ relation, and a
+$\Pi^0_{2d-1}$ relation if its root is $\Q{}$.  An equation defines a
+primitive recursive relation, which is $\Sigma^0_{2d}$ by (H1).  Let $A$ be
+$\D{x}{y}B$ or $\Q{y}B$ with $\delta(B)\le d-1$.  If $d=1$, $B$ is an
+equation and defines a primitive recursive relation; if $d\ge2$, $B$
+defines a $\Sigma^0_{2d-2}$ relation by the induction hypothesis.  In both
+cases, by (H1)--(H3), $\neg B(x,0)$ is $\Pi^0_{2d-1}$ and $\forall y\,B(x,y)$
+is $\Pi^0_{2d-1}$, and so is their disjunction.  Classically
+\[
+ (\Q{y}B)^\circ\leftrightarrow\neg B^\circ(0)\vee\forall y\,B^\circ(y),
+ \qquad
+ (\D{x}{y}B)^\circ\leftrightarrow
+ \exists x\,\bigl(\neg B^\circ(x,0)\vee\forall y\,B^\circ(x,y)\bigr),
+\]
+so $\Q{y}B$ defines a $\Pi^0_{2d-1}$ relation, which is $\Sigma^0_{2d}$ by
+(H1), and $\D{x}{y}B$ defines a $\Sigma^0_{2d}$ relation by (H3).
+\end{proof}
+
+\begin{corollary}[Every level is needed]
+\label{kern:cor:depthstrict}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For $m\ge1$, a relation in $\Sigma^0_m\setminus\Pi^0_m$ is not
+ defined by a native formula of depth less than $\lceil m/2\rceil$, and a
+ relation in $\Pi^0_m\setminus\Sigma^0_m$ is not defined by a native formula
+ of depth less than $\lfloor m/2\rfloor+1$.
+\item For every $d\ge1$ the unary relation $H_{2d}$ of \cref{kern:lem:hier}
+ is defined by a native formula of depth $d$ and by none of smaller depth.
+\item $\mathcal R_0(1)\subsetneq\mathcal R_1(1)\subsetneq\mathcal R_2(1)
+ \subsetneq\cdots$.
+\end{enumerate}
+\end{corollary}
+% ed.: part (i) is the general form of the argument that the package gives
+% for H_{2d}; the package states parts (ii) and (iii).
+
+\begin{proof}
+(i) Let $X\in\Sigma^0_m\setminus\Pi^0_m$ be defined at depth $e$.  If
+$e=0$, $X$ is primitive recursive and hence $\Pi^0_m$ by (H1).  If $e\ge1$
+and $2e\le m-1$, then $X\in\Sigma^0_{2e}\subseteq\Sigma^0_{m-1}
+\subseteq\Pi^0_m$ by \cref{kern:thm:depth} and (H1).  Both are excluded, so
+$2e\ge m$.  Let $X\in\Pi^0_m\setminus\Sigma^0_m$ be defined at depth $e$.  If
+$e=0$, $X\in\Sigma^0_m$; if $e\ge1$ and $2e\le m$, then
+$X\in\Sigma^0_{2e}\subseteq\Sigma^0_m$.  So $2e\ge m+1$.
+(ii) $H_{2d}\in\Sigma^0_{2d}=\mathcal R_d(1)$ by \cref{kern:thm:depth}, and
+(i) with \cref{kern:lem:hier} excludes smaller depth.
+(iii) The classes increase with $d$, and $H_{2d+2}$ belongs to
+$\mathcal R_{d+1}(1)$ and not to $\mathcal R_d(1)$, by (ii).
+\end{proof}
+
+\begin{corollary}[No translation of bounded depth]
+\label{kern:cor:nofixed}
+For every $d$ there is an ordinary formula $\varphi(q)$ with one free
+variable such that no native formula $A$ of depth at most $d$, with free
+variables among $q$, satisfies $\mathbb N\models\forall q\,
+(\varphi\leftrightarrow A^\circ)$.  Hence no map, computable or not, from
+ordinary formulas to native formulas of depth at most $d$ has
+$\Teq\proves\varphi\leftrightarrow(\varphi')^\circ$ for every $\varphi$ with
+one free variable.  In particular the translations $\varphi^{*}$ of
+\cref{base:thm:bridge} and $\varphi^{\dagger}$ of
+\cref{base:cor:single-binder-bridge} have unbounded depth on such formulas.
+\end{corollary}
+
+\begin{proof}
+$H_{2d+2}$ is $\Sigma^0_{2d+2}$; replacing its primitive recursive matrix by
+a defining equation (the case of depth zero above) gives a prenex ordinary
+formula $\varphi(q)$ that defines it.  By
+\cref{kern:cor:depthstrict}(ii) no native formula of depth at most $d$
+defines it.  $\Teq$ is valid in $\mathbb N$, so a provable equivalence would
+be true there; and by \cref{base:thm:bridge}(i),
+$\Teq\proves\varphi\leftrightarrow(\varphi^{*})^\circ$, and likewise for
+$\varphi^{\dagger}$ by \cref{base:cor:single-binder-bridge}(i).
+\end{proof}
+
+\begin{remark}[Depth and the size of derived quantifiers]
+\label{kern:rem:depth-rank}
+\Cref{base:rem:single-binder-size} computes the binder rank of the derived
+quantifiers: $r(\forall_*x\,A)=2r(A)+2$, while
+$r(\mathcal U_xA)=r(A)+1$, and $r(\exists_*x\,A)=r(A)+1$ because the gate
+preserves rank.  For a prenex ordinary formula $\varphi$ with $m$ single
+quantifiers over one equation, $\varphi^{\dagger}$ therefore has depth $m$,
+against $2^{m+1}-2$ for $\varphi^{*}$ when all quantifiers are universal.
+\Cref{kern:cor:depthstrict}(i) bounds every native formula with the same
+standard reading from below: if $\varphi$ defines a relation in
+$\Sigma^0_m\setminus\Pi^0_m$, its depth is at least $\lceil m/2\rceil$, and
+\cref{kern:thm:depth} attains $m/2$ for even $m$ by pairing each
+existential quantifier with the following universal one in one binder.  On
+such formulas the single-binder translation is thus within a factor two of
+the least depth.  The depth bound concerns binders only; it says nothing
+about the size of terms, about the selectors that the gates add, about
+formula sharing or about the length of proofs, and the node counts of
+\cref{base:q:single-binder-size} are a different measure.
+\end{remark}
+% ed.: the comparison with the single-binder translation is editorial; the
+% package states the depth classification only.
+
+\begin{remark}[Sources and scope]
+\label{kern:rem:depth-sources}
+\pkg{reductions} states \cref{kern:thm:depth} for formulas built from
+equations and $\D{}{}$, and adds that $\Q{}$, counted as one level, does not
+change the classes, because a closure of outer depth $d$ defines a
+$\Pi^0_{2d-1}$ relation; the proof above treats both binders at once.  The
+lower inclusion is \cref{seed:thm:prefix}; the upper inclusion, the
+strictness and \cref{kern:cor:nofixed} are the contribution of the
+package.  The classification is a statement about the standard reading and
+the numerical variables of a formula.  It is not an intuitionistic
+classification by provable prenex equivalence, and it does not exclude a
+different primitive connective, a different interpreted domain, or a
+shorter proof checker.
+\end{remark}
+
+\subsection{Finite ordinary axiomatizations}
+\label{kern:sec:finax}
+
+Here a \emph{finite ordinary axiomatization} is a theory in first-order
+logic with finitely many nonlogical axioms in a finite signature; finitely
+many rule schemata with binding syntax, such as the eight rules of $\Nat$,
+are not of this kind.
+
+\begin{proposition}[No finite ordinary axiomatization]
+\label{kern:prop:finax}
+No finitely axiomatized theory $F$ in intuitionistic first-order logic over
+a finite signature is mutually interpretable with $\iPRA$ by ordinary
+finite-dimensional relative interpretations.  In particular no such theory
+is bi-interpretable with $\iPRA$.
+\end{proposition}
+
+\begin{proof}
+The proof applies two published theorems.  Suppose $F$ is such a theory.
+Replace intuitionistic logic by classical logic in $F$ and in $\iPRA$,
+keeping the nonlogical axioms; the second theory becomes classical $\mathrm{PRA}$.
+A relative interpretation commutes with the connectives and relativizes the
+quantifiers, so it maps every instance of excluded middle to a relativized
+instance of excluded middle, which is a classical theorem; the conditions on
+the domain and on the interpreted functions are proved in the intuitionistic
+theories already.  Hence the two given interpretations remain
+interpretations, and the finite classical theory $F^{\mathrm{cl}}$ is
+mutually interpretable with $\mathrm{PRA}$.  It is consistent, because it
+is interpretable in $\mathrm{PRA}$, which has the standard model.
+
+The function symbols of $\mathrm{PRA}$ form an infinite signature.
+M.~B\'ilkov\'a, D.~de~Jongh and J.~J.~Joosten (Interpretability in PRA,
+preprint, 2008, Section~2.1), following Beklemishev's analysis of reflection,
+state that $\mathrm{PRA}$ is mutually interpretable with the theory
+$(\mathrm{EA})^{\omega}_{2}$ in the finite signature of arithmetic, obtained
+from elementary arithmetic by $\omega$ iterations of uniform
+$\Pi^0_2$ reflection.  A.~Visser (The small-is-very-small principle, Math.\
+Logic Quart.\ 65 (2019), 453--478, Section~7.3) identifies $\mathrm{PRA}$ as
+strongly locally reflexive, and his Theorem~7.5 states that a strongly
+locally reflexive theory is not locally mutually interpretable with a
+finitely axiomatized theory.  Global mutual interpretability implies local
+mutual interpretability, which gives the contradiction.
+\end{proof}
+
+The reduction behind the cited theorem is the following.  An
+interpretation of the finitely many axioms of $F^{\mathrm{cl}}$ is verified
+in one finite fragment $U_0$ of $(\mathrm{EA})^{\omega}_{2}$, so composition
+makes $U_0$, enlarged by the finitely many facts that witness
+sequentiality, interpret the whole theory; strong local reflexivity then
+interprets in that fragment arithmetic with its own consistency statement,
+which the generalized second incompleteness theorem excludes.  The
+interpretations in \cref{kern:prop:finax} may use definable domains, finite
+tuples and definable equality relations, so the obstruction is not limited
+to the whole domain or to actual equality.  It does not exclude a finite
+grammar with schematic formation of recursors, finitely many inference
+schemata, or a compact checker for an infinite family of axioms.
+\pkg{reductions} notes that $\mathrm{PRA}$ is reflexive and is not
+essentially reflexive, so that the argument has to use local reflexivity.
+
+% ---------------------------------------------------------------------
 \section{Checker sizes}
 \label{kern:sec:sizes}
 
@@ -4153,8 +4581,9 @@ Can \rulename{UR} be restricted to a family of bodies and still give the
 predecessor of \cref{kern:thm:urpred}?  The reflection of equality uses
 mostly the case of a constant recurrence (\cref{kern:lem:cu}(ii)), while the
 predecessor uses other bodies.  For the retractions the question is
-answered: \cref{kern:lem:rigid} needs the body $\Suc u$ only.
-(\pkg{scalar\_uniqueness}, \pkg{orbit\_closure}.)
+answered: \cref{kern:lem:rigid} needs the body $\Suc u$ only, and by
+\cref{kern:prop:rinv} it needs no coverage.
+(\pkg{scalar\_uniqueness}, \pkg{orbit\_closure}, \pkg{reductions}.)
 \end{question}
 
 \begin{question}[The strength of successor uniqueness]
@@ -4165,8 +4594,31 @@ equality from the body $\Suc u$ alone; a negative answer has to give a model
 of the computation equations for every body and of every instance of
 \rulename{SU} over arbitrary contexts in which equation induction fails.
 The model that separates induction for zero equations from induction for
-all equations is not such a model (\cref{kern:rem:sugap}).
-(\pkg{orbit\_closure}.)
+all equations is not such a model (\cref{kern:rem:sugap}).  The concrete
+missing step is a term $\Delta$ with $\Delta(a,b)=0\leftrightarrow a=b$,
+derived from \rulename{SU} and the weak scalar axioms; the right inverse of
+\cref{kern:prop:rinv} does not give it.
+(\pkg{orbit\_closure}, \pkg{reductions}.)
+\end{question}
+
+\begin{question}[Coverage on a changed domain]
+\label{kern:q:coverdomain}
+The product model of \cref{kern:rem:rinv-product} shows that coverage cannot
+be deleted from the scalar presentation on the whole domain with the fixed
+language.  Can a presentation without coverage be bi-interpretable with
+$\iPRA$ through a definable domain?  Such an interpretation needs definable
+comparison isomorphisms in both theories; an encoding that is correct in
+the standard model alone does not give bi-interpretability.
+(\pkg{reductions}.)
+\end{question}
+
+\begin{question}[From depth to size]
+\label{kern:q:depthsize}
+\Cref{kern:thm:depth,kern:cor:depthstrict} show that some relations need
+every binder of a given depth.  Is there a corresponding lower bound on the
+size of numerical terms, on the cost of the gates and of pairing, or on the
+length of proofs?  Such a bound would measure a different coordinate of
+simplicity; compare \cref{base:q:single-binder-size}.  (\pkg{reductions}.)
 \end{question}
 
 \begin{question}[Successor and identity bodies]
@@ -4305,6 +4757,17 @@ results that were not achieved.
 \item \pkg{scope\_and\_closure}: the obstruction of
  \cref{kern:sec:zerostart} is about terms in the standard model and is not
  an impossibility theorem for simpler axiomatizations.
+\item \pkg{reductions} states that it does not establish a new
+ axiomatization below the complete-checker records, deletes no arithmetic
+ or logical axiom, claims no absolute minimality and gives no new Lean or
+ Rocq verification.  \Cref{kern:prop:rinv} does not bootstrap equality
+ reflection or induction for all equations from \rulename{SU}.
+ \Cref{kern:thm:depth} is a theorem about the classical standard reading;
+ it is not an intuitionistic prenex normal form theorem and not a lower
+ bound on the size of terms, of proofs or of a checker.
+ \Cref{kern:prop:finax} rests on the cited theorems of Visser and of
+ B\'ilkov\'a, de~Jongh and Joosten, which are not proved here, and it does
+ not apply to finite rule schemata.
 \item The proofs of this chapter are written proofs; the Lean names in the
  remarks mark the statements that are formalized.  The Python checkers are
  not formally verified, and the tests reported by the packages concern

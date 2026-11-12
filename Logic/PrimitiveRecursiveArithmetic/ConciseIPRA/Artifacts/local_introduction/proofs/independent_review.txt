@@ -1,0 +1,127 @@
+INDEPENDENT MATHEMATICAL REVIEW: DIAGONAL ALIAS/BACK WITH NEWEST CLOSE
+Reviewed draft: analysis_theory.tex (written proof fragment).
+Reference snapshot: dbe0094df420f93f2d5be366b94a0d0c4318dc5b.
+
+VERDICT
+The relative compilation argument is mathematically defensible as a written
+proof. I found no fatal circularity, forbidden weakening, or eigenparameter
+escape. It establishes removal of Close's witness argument from the raw
+Alias/Back calculus AFTER changing its mode selector to the inherited diagonal
+matrix test. It does not establish a reduction below the current compact
+248/270/479 frontier, and is not a new Lean/Rocq formalization.
+
+PRECISE ASSUMPTIONS NEEDED
+1. Back is allowed on arbitrary Eq/D formulas, including compound formulas.
+2. Alias exports F[t/b], not merely a b-free F. Its b is genuinely fresh and
+   defining term t belongs to the outer scope.
+3. The Close mode is tested on the RAW MATRIX before witness substitution:
+   progress exactly at I(y,y;u.h)=I(y,y;v.k), cases otherwise.
+4. Old parameters remain available when scopes extend. Newest is a choice
+   of available term, not an erasure of older parameters.
+5. Realizers are effective finite-proof construction procedures and are
+   quantified over all relevant future context/parameter extensions.
+6. All renamings lift under term/formula binders, and all substitutions are
+   capture-avoiding simultaneous single substitutions.
+
+PERSISTENT FAMILY FORMULATION
+A world w=(Pi,Gamma) consists of an ordered scope and clause list. An
+extension w' >= w retains all old data and appends fresh parameters and
+well-scoped clauses. Fam_w(A) is an effective procedure which, for each
+w' >= w, constructs a finite target derivation of A at w'. Source clauses
+have persistent realizers: for each w' >= w and target term r well-scoped
+there, a conditional clause takes Fam_w'(antecedent) to Fam_w'(body[r/y]);
+an antecedent-free clause takes no family argument. This is metatheory only.
+No proof family, oracle, or evaluator is an additional target inference.
+
+ACTUAL CLAUSE REALIZERS
+An actual retained clause is persistently realizable. At any extension,
+open a fresh alias c=r, obtain its antecedent from the supplied family in
+that enlarged context, Use the retained clause at newest c, and export via
+Alias. Ordinary assumptions have a body independent of the clause variable,
+so their persistent use is immediate and ignores the supplied numerical r.
+
+EQUALITY FRAGMENT
+The displayed Alias/Back constructions for reflexivity, symmetry, and full
+transport check exactly. Every Back source is its fresh local alias c and
+therefore newest at that point; any nested proof of a premise returns to
+that same scope before Back occurs. The distinguished variable in H is a
+fresh template variable, so repeated holes and binder occurrences are safe.
+These operations do not require computation, induction, normalization,
+coverage, weakening of a completed restricted proof, or a target substitution
+metatheorem. Terms s,t may mention older parameters; Back itself also allows
+self-containing t because the substitution is simultaneous once.
+
+CRITICAL CLOSE STEP
+For source witness t, introduce target alias b=theta(t), then invoke target
+Close with newest witness b. The branch introduces z', which is newer than b.
+The actual hypothesis is theta(B)(b,eta(z')). Equality operations on families
+give theta(B)(theta(t),eta(z')); use this as the realizer of the source's new
+ordinary assumption. Compile the proper source premise p to obtain
+theta(B)(theta(t),S(z')), transport back to theta(B)(b,S(z')), close, and
+discharge alias b. The exported D(theta(B)) contains no b because b was
+fresh and not in the image of theta. The fact z' is newer than b is harmless:
+each transport introduces its own fresh newest auxiliary alias.
+
+TERMINATION / NONCIRCULARITY
+The new assumption realizer in Close uses only the actual added hypothesis
+and actual alias equality, never the compiled result of p. Thus it does not
+call itself through p. Source Use may request a recursively compiled
+antecedent family, but that is a proper source subderivation. Alias/Open
+likewise recurse only on proper source branches. Equality wrappers invoke
+premise families finitely often. Structural induction on the finite source
+proof therefore gives total effective proof construction; no separate
+well-founded recursion on target proof size is needed. Arbitrary persistent
+realizers in the generalized theorem must themselves satisfy this effective
+totality condition, as the actual constructed ones do.
+
+RENAMING / SCOPE
+Injective renaming fixes the two designated matrix binders, so it preserves
+and reflects the raw diagonal shape. Open conclusions remain free of the
+newly opened parameter by the source side condition. At Alias, translating
+the exported substitution commutes with the injective parameter map.
+The proof never claims source-sensitive instructions can simply be copied
+under added numerical parameters.
+
+BRIDGE TO KPrf NEEDS EXPLICIT ADAPTERS
+NativeClausalDiagonal.lean does not use literally the same rule list:
+KPrf has Refl, two Eval cases, Use, Elim, Intro, and every clause has one
+antecedent. Explain these adapters rather than saying all other rules match.
+* Antecedent-free [;y.B] corresponds to [0=0;y.B]. Truth 0=0 follows from
+  Alias-derived reflexivity; arbitrary assumptions are interchanged similarly.
+* The raw alias calculus derives Refl and full transport. Its computation
+  equations plus equality derive the two Eval cases by equation composition.
+* KPrf derives the raw computation equations and ordinary equality; its
+  existing soundness/completeness bridge validates Alias and Back.
+* Cite kprf_iff_nprf with NFm.unQ for arbitrary native formulas, and
+  kprf_iff_nprf_of_qfree for already-Q-free Eq/D sequents. The latter alone
+  should not be advertised as an assertion about all unmodified Eq/Q/D syntax.
+These adapters are routine, but should be stated. Full formula round trips
+are then inherited under the identity on raw terms/formulas plus the existing
+macro translations. Whole-domain actual equality is preserved.
+
+FAILED SHORTCUTS / LIMITATIONS
+Keeping witness-tested eta (progress iff equation and literal-zero witness)
+while replacing witness by fresh alias b changes the mode and invalidates
+this proof. The diagonal guard is essential to the stated construction.
+Restricting Back to equations is not established here: transport of the
+compound Close assumption and conclusion currently uses arbitrary formulas.
+The mathematics simplifies a rule interface; the complete checker can grow
+because the diagonal test has a cost. Neither raw candidate equivalence nor
+byte savings may be presented as already formally verified.
+
+NOVELTY SCOPE
+The current incoming AliasBack package explicitly leaves its arbitrary Close
+witness in place and lists its removal as an open question. The diagonal
+calculus, newest-witness proposals, and AliasBack equality are inherited.
+The relative alias-based compiler is a new combination/proof relative to this
+inspected corpus, not a literature-wide originality or absolute-minimality claim.
+
+FOLLOW-UP REVIEW OF REVISED DRAFT
+The author incorporated the formal Fam/realizer definition and the KPrf
+adapters described above. The revised draft also states the appropriate
+abstract principle: any witness-independent matrix mode preserved and reflected
+by injective free-parameter renaming permits the same relative erasure proof.
+This is correct with the stated qualification that source soundness/arithmetic
+adequacy remain separate obligations. The mirror guard qualifies under
+injective renaming even though arbitrary numerical substitution can create its
+shape. No proof step used arbitrary-substitution invariance of the mode.

@@ -1,0 +1,230 @@
+INDEPENDENT SOURCE REVIEW: STRICT NATIVE CHECKER PROFILES
+12 November 2026. Separate same-run reviewer, not external peer review.
+
+FINAL SELECTED COMPOSITIONS (supersede the intermediate envelope below)
+
+Token profile, work_checker/root_product_phase.py:
+  (338 tokens,390 AST nodes,637 normalized bytes)
+  SHA256 15c4b1d6be94d8d65780e8c9a2148e8ee29c7efde9399a98b4a6e38a006b8b22
+AST profile (top-level framing composed with the same arithmetic rewrites):
+  (342 tokens,386 AST nodes,641 normalized bytes)
+  SHA256 e7a3ee7ba363f2461c2a534617b53dc20c61d1c0e01e26cca4d531e5b85e574c
+Byte profile, work_checker/637_mulmode.py:
+  (342 tokens,392 AST nodes,633 normalized bytes)
+  SHA256 1b5ec5684212aa5166be4067d12c306d9b45ffc4eea141cc84339e6a619c0aa6
+
+The final identified strict native envelope is therefore (338,386,633),
+improving the old (342,391,637), still in THREE DISTINCT PROGRAMS.
+No one selected module dominates all three old coordinate minima. The compact
+promised-guarded envelope (248,270,479) remains untouched. The individual
+candidate ASTs and all source transforms have been reviewed independently;
+the final-package fixture replay is owned by the checker implementation agent.
+The preliminary executable checks are recorded below and not counted twice.
+
+1. REVIEWED EXACT SOURCES
+
+work_checker/native_candidate.py
+  SHA256 5a86339046b711f4d098367f6dd4ec02b52129b391cf65a17b3e89e62f3ec0c5
+  (340 significant tokens, 390 AST nodes, 642 normalized bytes).
+
+work_checker/637_mulmode.py
+  SHA256 1b5ec5684212aa5166be4067d12c306d9b45ffc4eea141cc84339e6a619c0aa6
+  (342 significant tokens, 392 AST nodes, 633 normalized bytes).
+
+work_checker/load_and_top.py
+  SHA256 9de50c885a7f3899a464d85132c28abe47e9e8c752fec2c2ac3a82109c5505d3
+  (344 significant tokens, 386 AST nodes, 646 normalized bytes).
+
+Measurements were independently recomputed using CPython 3.12.14 with the
+repository's complete-module ast.unparse + LF convention. If source changes
+after these hashes, the present exact audit does not automatically cover it.
+
+2. VERDICT AND PUBLIC CONTRACT
+
+All three are sound refinements of the stated inherited strict native
+acceptance interface, under the corpus's ideal sufficient-finite-resource
+execution convention. They validate the entire JSON integer/list alphabet,
+including unused prefixes, and the canonical closed native Eq/D public goal.
+No scope scan or major-premise proof has been omitted. The arguments below
+give universal source-transform preservation relative to the inherited
+controls; finite tests are additional evidence only.
+
+The three sources are implementations of the inherited scalar theory, not
+implementations of the separate equation-only Alias/Back theorem. The
+strict native identified envelope improves from (342,391,637) to
+(340,386,633), in DIFFERENT programs. No one has that vector, and this does
+not beat the compact promised-guarded envelope (248,270,479).
+
+3. WHOLE-ALPHABET GATE
+
+The gate is:
+  p = json.load(open(0))
+  q = not str(p).strip('0123456789-[], ') and p.pop
+
+Every finite JSON value is a tree over lists, dictionaries, exact Python
+ints, floats, bools, strings, and None. The repr of any non-int/list value
+contains a character outside this alphabet: quotes, braces, a decimal dot,
+or letters, including nan/inf/True/False/None. Exact integer/list trees have
+only the listed characters. Thus a successful gate permits precisely the
+int/list alphabet. If a top-level integer passes the alphabet test, p.pop
+fails; so successful operation also requires a list. No external Python
+object with a malicious repr is possible through the JSON input interface.
+
+If the alphabet test fails q becomes False, and the mandatory q() call
+rejects before entering the checker. Unsupported top-level objects similarly
+reject. The public-goal scanner remains mandatory in every profile.
+
+4. THE 642-BYTE PROFILE
+
+Its exact matched control is incoming reductions/checker/checker620.py with
+the above whole-alphabet gate replacing its unguarded input line. That
+matched strict module was materialized as review/native620_strict_matched.py
+and measures (351,403,666). It is not necessarily identical on arbitrary raw
+certificates to the unrelated 637-byte strict incumbent: the two inherited
+control paths have different conditional/eager continuation expressions.
+
+Only two changes distinguish the 642-byte candidate from this matched
+strict control:
+
+(i) Remove 'int(a) is a' from the initial public grammar scanner. At every
+initial successful scan, the gate has already established exact integer
+leaves. On an exact Python int, int(a) returns the same object in the fixed
+CPython runtime, so the test is true. In all subsequent checker phases the
+context g is nonempty, and the preceding 'g or ...' bypasses the test even
+in the old code. Invalid array-shaped objects fail an earlier comparison,
+and the function sentinel fails its earlier multiplication/comparison; the
+removed test does not create an acceptance route for either. Runtime-derived
+Boolean neutral values occur only after the phase becomes nonempty, so they
+are not a counterexample to the root exact-int argument.
+
+(ii) Replace '(i := lambda ...) and (i(a) in g or ...)' by immediate
+application '(i := lambda ...)(a) in g or ...'. A newly constructed lambda
+is truthy. The assignment still occurs before the mandatory first i(a)
+scan; its default value t=c, closure cells, arguments, recursive references,
+and subsequent body are unchanged. Evaluation order is identical.
+
+The reviewer program inverted (ii) in the AST and removed the now-redundant
+test from the matched control AST. The resulting COMPLETE module ASTs are
+identical, excluding locations. This is stronger evidence than comparing
+some accepted fixtures: there is no unseen source edit in this candidate.
+
+The inherited checker620 phase argument is retained: g becomes nonempty
+before major checking, and its context copies differ from the older mutable
+control only by duplicate neutral zeros. The equality of those inherited
+controls is supplied by incoming reductions/checker/PROOF.txt; it is not
+silently replaced by a claim of equality with strict637.
+
+5. THE 633-BYTE PROFILE
+
+This differs from the incoming strict637 source ONLY by:
+  v <= (d % 2 and (not a or a > 1 == a % 2))
+becoming
+  v <= d % 2 * (not a or a > 1 == a % 2).
+
+The whole-alphabet gate makes external leaves exact integers. Internal
+numeric leaves are integers/Boolean neutral values; nonnumeric arrays or
+the function sentinel encounter an earlier type-incompatible multiplication
+or k<=a<d comparison. Therefore, whenever this predicate is reached in a
+successful run, its arithmetic/comparison expression is total and pure.
+
+Let e=d mod 2 and P=(not a or (a>1 and 1=a mod 2)). Both are Boolean bits.
+The old subexpression is 0 when e=0 and the Boolean P when e=1. The new one
+is the numerically equal integer e*P. Comparing either with the internal
+numeric phase flag v gives the same result. The only change in evaluation
+is that P is computed when e=0; its totality and absence of effects make
+this harmless. Scope k, depth d, the predicate's result, and every later
+proof operation remain unchanged.
+
+Replacing this one product spelling back by the original conjunction gives
+the exact complete AST of the pinned strict637 module. The profile therefore
+preserves its exact finite successful acceptance relation on JSON inputs,
+apart from physical resource limits common to this framework.
+
+6. THE 646-BYTE / 386-AST PROFILE
+
+This rewrites only the module-level framing of the 642-byte candidate:
+  p=load(...); q=gate(p) and p.pop; c([],q())
+into a single call whose second argument contains assignment expressions
+for p and q. Those names are still module globals. Evaluation order remains
+load p, test gate, acquire p.pop, assign q, pop the goal, call c. All failures
+still occur before a proof is accepted. The same parsed list remains the
+single shared packet source, and the checker body is unchanged.
+
+The reviewer unwound the two assignment expressions into ordinary module
+assignments. The resulting complete AST is exactly the 642-byte candidate's
+AST, excluding locations.
+
+7. EXECUTED EVIDENCE
+
+Source inversion and the 642-byte candidate/matched-control comparison:
+  review/native_candidate_review_results.json
+  56 incoming strict native proof/boundary cases, 2 programs, normal/-O,
+  224 isolated executions, zero failed expectations.
+
+Product and module-framing profiles:
+  review/native_new_profiles_review_results.json
+  56 same independent boundary/proof cases, 2 new profiles, normal/-O,
+  224 isolated executions, zero failed expectations.
+
+These include the corpus's known false/capture/context attacks and strict
+malformed-alphabet boundaries. The tests are finite and do not establish
+universal source semantics, calculus soundness, or bi-interpretability by
+themselves. The source arguments above and the inherited native/iPRA bridge
+are the basis of those claims. No new Lean/Rocq certification is claimed.
+
+8. SAFE COMPOSITION NOTE
+
+The same conjunction-to-bit-product rewrite of section 5 can also be applied
+inside the g-phase public predicate of the 642/646-byte profiles: g is
+nonempty after validation, and with g empty the same total numeric predicate
+argument applies. Exact metrics/hashes of such compositions must be measured
+separately. This review supplies the semantic lemma, not guessed size counts.
+
+9. FINAL PRODUCT / BIT-OR / FRAMING COMPOSITION AUDIT
+
+The final token profile composes the g-phase product rewrite with replacement
+of the scanner fallback flag
+  (d % 2 or not g)
+by
+  d % 2 | (not g).
+The final AST profile additionally applies the already-reviewed module-level
+framing rewrite. Exact AST inversion of both arithmetic spellings reproduces
+the audited 642-byte candidate; unwinding the final AST profile's framing
+gives the exact AST of the final token profile. See
+review/native_final_composition_ast.json.
+
+The fallback flags are truth-equivalent because d%2 and not g are bits.
+Evaluating not g when the old 'or' skipped it is harmless: g is an actual
+finite list, so its truth test is total and effect-free. When the fallback
+condition is false, the old complete 'flag and i(...)' expression can return
+Boolean False whereas the new one returns integer 0. This is not literal
+Python-type identity. It is a safe observational equivalence of neutral
+scalar values, which needs to be stated rather than concealed.
+
+Relate runtime trees by replacing Boolean False leaves by integer 0, with
+all other integer leaves, list structure, contexts, packet positions and
+scope floors equal. The only introduced difference is exactly this neutral
+leaf replacement. Every subsequent data operation in these kernels respects
+the relation: truth tests agree, scalar arithmetic agrees, list structural
+and tuple equality use Python numeric equality (False == 0), list membership
+agrees, and scanner dispatch a*0 !=0 agrees. Noniterable unpacking and len
+errors on either neutral scalar reject in both versions. The removed exact
+int-identity test is absent, and no remaining type/identity test distinguishes
+these internal neutral values. The lexical str(p) gate runs on the original
+parsed input before any runtime neutral value is generated, so that gate is
+not affected. Thus all successful scanner results are related, all proof
+branch decisions agree, and major/continuation packet consumption and scope
+operations agree. Induction on finite successful evaluation trees transfers
+acceptance in both directions. Physical resource-limit identity is not claimed.
+
+The public validation scan initially runs with g empty, so its fallback
+flag is true in both versions. Invalid public numerical leaves still invoke
+the same failing function sentinel; no previously invalid public syntax is
+made valid by the False/0 equivalence. After validation, the context is
+nonempty and remains so. The change therefore does not weaken the public
+grammar, freshness, scope, or whole-input alphabet obligations.
+
+All final source metrics above were recomputed, not inferred by subtracting
+characters. Their exact source hashes freeze this reviewer verdict. These
+are implementation refinements of the inherited theory, still distinct from
+the newly proved equation-only Alias/Back presentation.

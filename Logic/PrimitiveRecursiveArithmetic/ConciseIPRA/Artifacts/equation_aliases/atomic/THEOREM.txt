@@ -1,0 +1,271 @@
+EQUATION-ONLY ALIASES WITH NEWEST-PARAMETER SPECIALIZATION
+Research note, 2026-11-12
+
+STATUS
+This is a proposed mathematical strengthening of the incoming alias_back
+construction, with a written proof below. It is not a claim of a smaller
+complete checker and is not yet Lean/Rocq formalized. The existing alias_back
+note explicitly leaves its arbitrary-formula Alias export in place when
+specialization is restricted. The theorem here removes that generality:
+BOTH Alias and Back may be restricted to literal equations while Use still
+specializes at the newest parameter only. The remaining raw term syntax,
+computation equations, D-elimination, and witness-selected D-introduction
+are unchanged.
+
+PINNED MATERIAL REVIEWED
+Repository ae3c615de1b0dabe386f2bdbdb0f955cd8326e49, ConciseIPRA unified
+article chapters 1, 2, 5, 6, 9, 11; incoming alias_back RAW_THEOREM.md.
+This note's novelty is relative to the reviewed corpus, not a literature-wide
+claim. The old measures (and even current coordinatewise frontier) are upper
+bounds from implementations, not proven impossibility lower bounds.
+
+1. SYNTAX AND COMPLETE RULES
+
+Terms are raw (not normalized):
+  t ::= x | 0 | S(t) | I(n,a;u.h).
+Only u is bound in h. Write C(v,a,b)=I(v,a;u.b), with u fresh in b.
+Formulas:
+  A ::= s=t | D_{x,y} B.
+Ordinary reading: D_{x,y}B = exists x (B(x,0) -> forall y B(x,y)).
+A clause is [A;y.B] or [;y.B]. It means A -> forall y B, or forall y B.
+An ordinary assumption A is [;v.A], with v unused. Contexts are finite
+lists of clauses. A numerical scope is an ordered list of free parameters.
+last(Pi) is its newest member, or 0 if Pi is empty. The root context and
+scope are empty. Contradiction is 0=S0. All substitutions are capture free
+ordinary syntactic substitutions, with no hidden normalization.
+
+The inference schemes are:
+
+I0.       Gamma |- I(0,a;u.h)=a.
+IS.       Gamma |- I(Sn,a;u.h)=h[I(n,a;u.h)/u].
+
+UseLast.  If [A;y.B] is a retained clause, from Gamma|-A infer
+          Gamma|-B(last(Pi)). For an antecedent-free clause omit the premise.
+
+EqBack.   From Gamma|-b=t and Gamma|-E[t/b] infer Gamma|-E,
+          where b is newest and E is a literal equation. The term t may
+          contain b; simultaneous one-pass substitution has its usual meaning.
+
+EqAlias.  From Gamma,b=t |- E infer Gamma|-E[t/b], where E is a literal
+          equation, b is a fresh new parameter, and t is an outer-scope term.
+          Here b=t is an ordinary assumption. Thus b is absent from Gamma,t.
+
+Open.     From Gamma|-D_{x,y}B and
+          Gamma,[B(b,0); y.B(b,y)]|-A infer Gamma|-A,
+          with b fresh and absent from A (and the old Gamma).
+
+Close.    From Gamma,B(t,eta)|-B(t,Sz) infer Gamma|-D_{x,y}B,
+          with z fresh, eta=z if B is a literal equation and t is literally0,
+          and eta=0 otherwise. The witness t is an outer-scope term.
+
+The arithmetic equations remain TWO schemas even if grouped in a program.
+There is no reflexivity clause, no formula-valued Alias or Back, and no
+arbitrary numerical argument to UseLast. The unrestricted target of Open
+is essential to the proof below and has not been removed.
+
+2. A TECHNICAL DISCIPLINE: UNIFORM PROOF PROCEDURES
+
+UseLast and EqBack are not stable under adding a newer free parameter.
+Consequently the following proof never weakens a completed target proof.
+
+A uniform proof procedure for Gamma|-A takes:
+  (a) any injective embedding theta of the source parameters in any target
+      ordered scope (which may have extra parameters in any positions), and
+  (b) an occurrence map placing the exact theta-images of Gamma's clauses
+      in any larger target context,
+and returns an actual target derivation of theta(A).
+
+An occurrence map matters when clauses repeat. All new local assumptions
+are appended explicitly, and all old premise procedures are reinvoked in
+that extended context. An operation on uniform procedures is itself uniform
+if its construction works at every target scope and occurrence map.
+Uniformity here is a specification of proof-generating functions. It does
+not assume admissibility of weakening/cut for the target calculus.
+
+An ordinary retained assumption A is uniformly available: use its constant,
+antecedent-free clause [;v.A], whose instance does not depend on last(Pi).
+The computations I0 and IS are uniformly available under renaming.
+
+3. THE EQUATIONAL BASE
+
+All the equational constructions from alias_back use EqBack and EqAlias
+only on equations. They are uniform procedures: at every outer target
+scope introduce genuinely fresh aliases, then reinvoke earlier uniform
+premise procedures inside those scopes.
+
+Reflexivity for t: open EqAlias b=t, use its ordinary assumption b=t, and
+close the alias. The result is t=t.
+
+Symmetry from s=t:
+  open alias b=s;
+  EqBack on b=s and s=t gives b=t;
+  reflexivity gives t=t;
+  EqBack on b=t and t=t, with conclusion t=b, gives t=b;
+  close b=s to obtain t=s.
+
+Transport of equations from s=t and E(s) to E(t): first produce t=s by
+symmetry. Open alias b=t. EqBack on b=t and t=s gives b=s. EqBack on b=s
+and E(s), with conclusion E(b), gives E(b). Close b=t to obtain E(t).
+The distinguished template variable in E is fresh for the aliases. Its
+occurrences may be multiple or under term binders. The one-term crossed
+transport of the native core follows by symmetry of the transported
+literal equation.
+
+Atomic arbitrary specialization: if [A;y.E(y)] is a retained clause, E is
+an equation, and an antecedent proof procedure is given (when needed),
+then obtain E(t) as follows. Open EqAlias b=t; reinvoke the antecedent
+procedure in that extension; UseLast at the now newest b yields E(b);
+close EqAlias to export E(t). This construction is uniform even if the
+antecedent A has arbitrary formula depth.
+
+4. A VERY SMALL NAME
+
+For any outer term t define
+  N_t(x,y) := C(y,t,x)=t,
+  Name(t) := D_{x,y} N_t(x,y).
+
+Name(t) is a theorem: Close with witness t and prove its successor branch
+  C(Sz,t,t)=t
+by the IS equation (whose step body is the constant t). The local hypothesis
+is unused. This also works if t is literally0, when Close chooses progress.
+No reflexivity proof, equality transport, predecessor, or induction lemma
+is needed for this name theorem.
+
+On opening Name(t) at a fresh b we retain the equational clause
+  [ C(0,t,b)=t ; y. C(y,t,b)=t ].
+Its antecedent is exactly I0. Atomic arbitrary specialization at1=S0 gives
+C(1,t,b)=t. The IS equation gives C(1,t,b)=b. Equational transport/symmetry
+therefore yield b=t. This equality has a UNIFORM proof procedure in every
+further extension of the opened context, because the naming clause is a
+retained clause and the atomic specialization procedure works at all
+scopes. This is the critical property used below.
+
+5. SIMULTANEOUS INDUCTION ON FORMULA DEPTH
+
+Let depth(s=t)=0 and depth(D B)=1+depth(B). There are no binary formula
+connectives in this native language, so depth is just the number of D's.
+For each k prove these operations:
+
+S_k: arbitrary clause specialization with body of depth at most k,
+     from a UNIFORM antecedent procedure, yields a UNIFORM procedure.
+
+T_k: transport F(s) -> F(t), for depth(F)<=k, from UNIFORM procedures
+     for s=t and F(s), yields a UNIFORM procedure.
+
+For positive depth also prove a stronger local variant:
+
+L_k (k>0): at a fixed target context and scope, given an ACTUAL LOCAL proof
+     of F(s), where depth(F)=k, and a UNIFORM procedure for s=t in all
+     extensions of that context, construct an ACTUAL LOCAL proof of F(t).
+
+The qualification about L_k is not cosmetic. The proof of F(b) obtained
+by UseLast while b is newest need not be weakenable to a scope containing
+later parameters. L_k avoids such an invalid weakening.
+
+Base: S_0 and T_0 are the constructions of section3. No L_0 is asserted.
+
+Inductive transport (construct L_k first, k>0): write
+  F(v) = D_{x,y} B(v,x,y), depth(B)=k-1.
+At the present context use the supplied LOCAL proof of F(s) as the major
+of Open, introducing a genuinely fresh c and retaining
+  C_s := [B(s,c,0); y.B(s,c,y)].
+The proof of F(s) is used once, before any newer parameter is introduced.
+It is never moved to a deeper context.
+
+In the opened context introduce the desired F(t) by Close with witness c.
+Because c is a variable, this is always CASE mode. The branch introduces
+fresh z and the ordinary assumption B(t,c,0). Construct that branch:
+  (i) T_{k-1}, with the symmetric uniform equality t=s, transports the
+      ordinary assumption to B(s,c,0).
+  (ii) S_{k-1} specializes the retained clause C_s at Sz, obtaining
+       B(s,c,Sz).
+  (iii) T_{k-1} transports this to B(t,c,Sz).
+Each of these three branch derivations is UNIFORM over arbitrary further
+extensions: it starts from retained clauses, ordinary assumptions, and
+the given uniform equality. Thus its use in the next operation is valid.
+Close gives F(t); Open discharges c because F(t) omits c. This proves L_k.
+
+Now T_k follows: at each target scope and context supplied to the uniform
+procedure, invoke the given uniform minor procedure once to obtain its
+local proof, and apply L_k with the given uniform equality procedure.
+This yields a uniform result by construction.
+
+Inductive arbitrary specialization S_k (k>0): at an arbitrary target
+scope/context, build Name(t), Open it at a new b, and obtain the uniform
+name equality b=t by section4. Invoke the uniform antecedent procedure in
+this opened context. Primitive UseLast on the original clause now gives a
+LOCAL proof of F(b), since b is the newest parameter. Apply L_k to that
+local proof and the uniform b=t procedure to obtain F(t). Finally Open
+of Name(t) discharges b, because F(t) is in the original outer scope.
+All these constructions can be repeated for every outer embedding, so
+S_k is uniform. There is no invocation of S_k in its own construction:
+L_k uses only S_{k-1} and T_{k-1}; S_k uses L_k and S_0 for the name.
+
+Thus all S_k and T_k exist. This is a finite induction on formula depth,
+not an assumed structural rule for the newest-only target calculus.
+
+6. COMPLETENESS COMPILER
+
+Take as source the repository's raw Eq/D clause calculus with arbitrary
+specialization, unrestricted equation transport, reflexivity, the two
+computations, Open, and the witness-selected Close. (Equivalently the
+corresponding raw alias_back temporary calculus can be used after the
+standard equivalence.) Compile a source derivation into a uniform proof
+procedure, by induction on that SOURCE derivation.
+
+- Reflexivity: section3.
+- Computations: same computation schema under the embedding.
+- Equation transport: T_0 (and symmetry for the crossed orientation).
+- Use at t with body B: S_depth(B), supplied with the already compiled
+  proper-source-premise procedure for its antecedent, if any.
+- Open: invoke the compiled source major in the current target context,
+  choose a new target parameter, extend the parameter embedding and clause
+  occurrence map, and invoke the compiled source branch there. Primitive
+  Open then discharges the parameter.
+- Close: translate its witness, choose a new target parameter for z, append
+  the translated ordinary assumption, and invoke the compiled source branch.
+  Injective renaming preserves literal-equation and literal-zero tests,
+  so the mode is unchanged. Primitive Close gives the translated conclusion.
+
+All recursive compiler calls on source derivations are on proper premises.
+S_k and T_k are already defined by the independent finite depth induction.
+There is therefore no recursion cycle between proof compilation and the
+formula-depth macros. No target proof is weakened, renamed, or cut.
+At the identity embedding with no extra context, the compiler gives the
+required target proof.
+
+7. SOUNDNESS AND BI-INTERPRETABILITY
+
+I0/IS, UseLast, Open, Close are instances of the known sound raw system.
+EqBack is equality transport in the reverse direction. EqAlias is sound
+by substituting its outer term t for the fresh b in the ordinary derivation:
+the extra assumption becomes t=t and is discharged by equality reflexivity.
+This is an ordinary-logic argument and does not assume substitution is
+already admissible in the newest-only primitive calculus.
+
+The old whole-domain bridge identifies those native consequences with full
+first-order iPRA. The new compiler yields the reverse native consequence
+inclusion; soundness yields the forward inclusion. Consequently this new
+presentation has EXACTLY the same native Eq/D consequences, over arbitrary
+contexts, as the old one. The standard elimination of Q via an unused D
+witness restores the full native Eq/Q/D language. Compose with the existing
+ordinary iPRA interpretations: numerical domains are whole, equality is
+actual equality, both numerical composites are the identity graph x=y,
+and the old formula round trips are unchanged. Equiconsistency follows.
+
+This claim depends on the cited established iPRA/native bridge, not on
+finite tests. The new metatheorem is the calculus-to-calculus compiler above.
+No smaller measured checker follows just from restricting Alias/Back;
+checking those restrictions may add code unless a new representation shares
+the equation checks already present elsewhere.
+
+8. FURTHER QUESTIONS
+
+(a) Can EqAlias and EqBack share a raw arity-code representation with UseLast
+    so that this stricter interface actually lowers complete checker size?
+(b) Can one replace EqBack by crossed replacement of one term, preserving
+    the template-free goal-directed character and making a smaller kernel?
+(c) Can Open export only equation conclusions as well? The L_k proof uses
+    compound Open essentially, so the theorem above gives no such reduction.
+(d) Formalize uniform proof procedures and the L_k/S_k/T_k induction in
+    Lean, then extract a certified compiler into the target proof relation.

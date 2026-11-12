@@ -1,0 +1,175 @@
+INDEPENDENT MATHEMATICAL REVIEW: A 57-NODE SCALAR PREDECESSOR
+Prepared during this research run, 12 November 2026.
+
+VERDICT
+
+The new upper-ramp construction and the reversed-comparison predecessor
+are correct in the inherited ordinary realization T_eq. All induction
+invariants can be single literal equations. The argument does not assume
+predecessor, successor injectivity, pairing, a division algorithm, or
+arbitrary quantifier-free induction. Boolean case distinctions use numerical
+coverage and the selector equations already available in T_eq/full native.
+If a stronger claim in the pure equational EqPrf fragment is wanted, the
+case distinctions should be replaced by its proved two-point equational
+rule; that additional formal presentation is not supplied by this review.
+
+NEW TERMS
+
+Primitive terms are x, 0, S(t), I(n,a;u.h). Only u in h is bound.
+All macro expansion uses fresh bound variables, avoiding capture.
+
+  C(n,a,b) = I(n,a;u.b), with u absent from b
+  Z(n) = C(n,1,0)
+  N(n) = I(n,0;u.Z(u))
+  J(v) = I(v,2;w.Z(w))
+  M(n) = I(n,0;v.J(v))
+  R(n) = I(n,0;u.S(C(M(u),S(u),u)))
+  H(u) = C(N(u),R(u),u)
+  E(x) = I(x,1;u.2u)
+  L(x,y) = N(I(y,E(x);u.H(u)))
+
+Here 2u means u+u, with a+b=I(b,a;v.S(v)); it is a macro, not an
+additional constructor. The new proposed predecessor is
+
+  P(m) = I(m,0;u.C(L(m,S(u)),S(u),u)).
+
+1. CLOCK AND RAMP
+
+The three fixed computations are J(0)=2, J(1)=0, J(2)=1. Thus M follows
+the order 0,2,1,0 on standard numerals, but no general modulo theorem is
+needed in the internal proof.
+
+The inherited parity terms give N(n) in {0,1}, N(Sn)=Z(N(n)),
+N(n+2)=N(n), N(2n)=0, N(3n)=N(n), and b+Z(b)=1 for b=N(n).
+These are obtained before predecessor and injectivity, as in the baseline.
+
+Prove the single equation M(R(n))=N(n) by equation induction.
+The base is immediate. In the step retain the induction equation and
+write b=N(n). If b=0, the R update moves by two successors. Therefore
+M advances twice, 0 -> 2 -> 1, agreeing with N(Sn)=1. If b=1, the R
+update moves by one successor, and M advances 1 -> 0, agreeing with
+N(Sn)=0. This uses only the three displayed fixed computations of J.
+
+Consequently
+
+  R(Sn) = R(n)+1+Z(N(n)),
+  R(n+2) = R(n)+3.
+
+The second follows by applying the first twice and using
+Z(b)+Z(Z(b))=1 at the Boolean b=N(n). Equation induction on n gives
+R(2n)=3n. A separate equation induction gives
+
+  R(3n)+N(n)=3R(n).
+
+Its successor step needs no cancellation. Put b=N(n), use N(3n)=b,
+and note R(3n+3)=R(3n)+4+Z(b). The new left side is
+R(3n)+4+2Z(b). The new right side is 3R(n)+3+3Z(b).
+At b=0, the induction equation is R(3n)=3R(n), and both sides add 6.
+At b=1, the induction equation is R(3n)+1=3R(n); substitution turns
+the new right side into R(3n)+4, exactly the new left side.
+
+2. FACTOR MAP AND COMPARATOR
+
+The preceding equations yield
+
+  H(2u)=3u,  H(1)=1,  H(3u)=3H(u).
+
+For the last, N(3u)=N(u). At parity zero the ramp equation with the
+zero summand gives R(3u)=3R(u); at parity one both selectors retain
+their numerical argument. This does not assume an even/odd decomposition
+u=2v or u=2v+1 of an arbitrary number.
+
+The inherited rotation and scaling proofs now transfer literally:
+
+  I(Sy,a;H)=I(y,H(a);H),
+  I(y,3a;H)=3I(y,a;H),
+  I(y,1;H)=1.
+
+Each is proved by equation induction with a and all other parameters fixed.
+Therefore L has the required comparator equations at every argument:
+
+  L(0,y)=1,
+  L(Sx,0)=0,
+  L(Sx,Sy)=L(x,y).
+
+Its intended <= meaning motivates the term but is not used to prove the
+following predecessor identities.
+
+3. REVERSED-COMPARISON SATURATION
+
+Define
+
+  A_m(u)=C(L(m,u),S(u),u),
+  W(t,m)=I(t,0;u.A_m(u)).
+
+The comparator recurrences and the selector identity
+C(e,Sa,Sb)=S(C(e,a,b)) give
+
+  A_(Sm)(Su)=S(A_m(u)),
+  A_(Sm)(0)=1.
+
+Equation induction on t with m fixed then proves
+
+  W(St,Sm)=S(W(t,m)).
+
+The base is the second displayed A equation. The successor step applies
+the first A equation to the induction equation at the same fixed m.
+Equation induction on n now proves W(n,n)=n, using the already universally
+proved shift law with t=m=n. This is substitution into an established theorem,
+not changing the parameter of an active induction hypothesis.
+
+A separate single-equation induction proves L(n,n)=1: the base is
+L(0,0)=1 and the successor step is the comparator's diagonal recurrence.
+It follows that
+
+  W(Sn,n)=A_n(W(n,n))=A_n(n)=C(1,Sn,n)=n.
+
+For P(0)=0 use the zero computation. For the successor equation define
+
+  V(t,m)=I(t,0;u.C(L(Sm,Su),Su,u)).
+
+The comparator recurrence gives its update pointwise equal to A_m(u).
+An equation induction on t at fixed m proves V(t,m)=W(t,m), without an
+extra primitive extensionality rule. Finally
+
+  P(Sm)=V(Sm,m)=W(Sm,m)=m.
+
+Thus the internal primitive equations of predecessor hold. In particular,
+injectivity of S is a consequence afterward, not an assumption above.
+
+4. INDEPENDENT RAW TREE COUNTS
+
+Count one node per variable occurrence, zero, successor, or iterator,
+count the three iterator children, and do not charge binder labels.
+Expand every macro with no sharing and no normalization.
+
+  Z(x): 5    N(x): 8    J(x): 10    M(x): 13
+  R(x): 21   H(x): 31   E(x): 9     L(x,y): 49
+  P(m): 57
+
+In detail, L(m,Su) has 50 nodes. The outer P adds I, m, 0 (three nodes)
+and the selector adds its I, Su and u (four nodes), giving 50+3+4=57.
+The 58-node variant using L(SSu,m) has one additional successor occurrence.
+The baseline lower-ramp predecessor has 75 nodes in the same convention,
+so 57 is an 18-node or 24-percent reduction of this derived term.
+This is not a lower bound or an optimality proof for all predecessor terms,
+nor is it a reduction of the number of primitive axioms.
+
+5. CORPUS NOVELTY CHECK
+
+The complete pinned unified article was downloaded and Git-hash checked:
+15 TeX files totaling 1,732,645 bytes, under audit/article/. Searches were
+also made through all nine incoming report archives and the current/historical
+Python source census containing the scalar helper definitions.
+
+The scalar bootstrap in Article/ch01_base.tex and the scalar-uniqueness
+variant in Article/ch02_kern.tex use j=Z+2N and the lower ramp. The stored
+scalar helper code agrees. No I(v,2;w.Z(w)) clock, the proposed upper-ramp
+update, or reversed L(m,Su) predecessor was found. Other register languages
+have 0,2,1 cycles, so novelty is the explicit scalar construction and its
+shorter expansion, not the mere existence of that three-cycle.
+
+This supports novelty relative to the inspected repository snapshot, not a
+claim of historical priority throughout mathematics. The proof remains a
+written internal derivation; finite evaluations do not establish validity
+in nonstandard models, and no new Lean/Rocq formalization is claimed here.

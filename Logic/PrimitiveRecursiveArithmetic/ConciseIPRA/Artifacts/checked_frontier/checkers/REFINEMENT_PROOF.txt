@@ -1,0 +1,157 @@
+EXACT IMPLEMENTATION REFINEMENTS, NOT NEW AXIOMATIZATIONS
+========================================================
+
+Comparison snapshot:
+ecae4653f69184a25ade2b1aeaa346f7a7817b78
+VladimirReshetnikov/ProveIt, Logic/PrimitiveRecursiveArithmetic/ConciseIPRA
+
+1. What is proved
+-----------------
+
+native_append_function.py and native_append_lambda.py implement the same
+successful finite proof-checking traces as native_control.py. They consume
+the same packets and perform the same scope/grammar tests, hypothesis
+extensions, opening operations and recursive proof obligations. The
+simulation compares normal termination, not the returned Python value.
+
+strict645_lambda.py similarly implements exactly the control program
+strict646_control.py. It preserves the complete integer/list alphabet gate
+on the input and the closed native Eq/D public-goal gate.
+
+The arguments concern abstract executions with sufficient resources.
+Different call arrangements may reach CPython's finite recursion/stack or
+memory limits at different points. No claim of equal resource limits or
+equal exception text is intended.
+
+Neither transformation changes any arithmetic or logical rule. These are
+new compositions of already-known implementation techniques. In particular,
+the truth-valued return technique and the outer-lambda representation are
+already present in the current repository corpus. No global minimality or
+smaller-than-all-records claim is made.
+
+2. Truth-valued return with the exact mutable-context schedule
+------------------------------------------------------------
+
+Write C for native_control and T for native_append_function. A successful C
+call returns None. A successful T call returns either True or a singleton
+list. In particular, its return is always truthy.
+
+Both create the very same opening lambda i, with the same goal a, context
+list g and scope floor k. In the public initial call, g is empty. Thus the
+first i(a) is the same complete native-goal grammar check in both programs.
+It runs before g changes. Their membership test i(a) in g therefore agrees.
+
+If membership succeeds, C returns None and T returns True. There is no pop,
+no context mutation and no scope change in either call.
+
+Otherwise C performs g += [0], then reads m,s,u,t=q(). T evaluates
+g.append(0) before entering its singleton comprehension, then reads the same
+packet. For an ordinary Python list, these mutations have exactly the same
+effect on g and on every alias of g. append returns None, so T's `or`
+continues. Unlike a copying assignment g := g + [0], this formulation also
+preserves the control's in-place side effects on a parent context.
+
+The singleton iterable [q()] has exactly one element. Unpacking has the
+same four-field requirement as the control assignment. Its sole body is the
+same recursive continuation, except at the recursive major call:
+
+    C(g,m,k) or m*3
+
+is replaced by
+
+    T(g,m,k) and m*3.
+
+Induct on the finite completed recursive call tree. If the major call
+fails, neither expression completes. If it succeeds, the inductive
+hypothesis gives the same proof-checking effects; C returns None and T
+returns a truthy value. Both displayed expressions then evaluate to the
+identical object/value m*3. All later `or` branches, including the important
+case m=0, consequently agree. The same formula h is formed, the same image
+is selected, k is decremented at the same evaluation point, and both calls
+receive the same freshly extended context and transformed goal. The
+inductive hypothesis applies to that continuation as well.
+
+On successful completion T returns a singleton list containing the result
+of this continuation. This is truthy regardless of its element, establishing
+the inductive return-value invariant. Conversely, T can return such a list
+only after its sole body, hence every corresponding C obligation, has
+completed. This proves both directions, not only preservation of successful
+old certificates.
+
+Python evaluation order is essential: i(a) precedes append; append precedes
+q(); the major proof precedes the scope-floor update; and the context
+argument is evaluated before the continuation goal argument. The proposed
+source preserves each of these boundaries. The opening lambda sees the
+same mutated g, so public validation switches off at exactly the old point.
+
+The default image t=c is a failure sentinel. The two c objects differ as
+Python identities, but no JSON input can contain either callable. Whenever
+the sentinel is inspected as syntax, both are non-numeric callable objects
+and the same operation fails. Thus it cannot introduce a new successful
+proof trace.
+
+3. Outer-lambda representation
+-----------------------------
+
+A function of the form
+
+    def c(arguments):
+        i = lambda ...: ...
+        return BODY
+
+is replaced by
+
+    c = lambda arguments: (i := (lambda ...: ...)) and BODY
+
+The assigned lambda is truthy. Consequently the `and` always evaluates BODY
+and returns precisely its value. Arguments, defaults and closure variables
+are unchanged; in particular i and the locally updated k/v occupy the same
+logical invocation. The global binding c is installed before any checker
+call in either module, and i's default t=c is evaluated inside that call.
+This proves the transformation for native_append_lambda and independently
+for strict645_lambda. The latter changes no input, phase, proof or output
+expression at all. The verifier checks the exact AST construction.
+
+4. Complete-module measurements
+------------------------------
+
+CPython 3.12.14; ast.unparse(ast.parse(source)) plus one LF; significant
+tokens exclude comments/newline/indent/encoding markers. All AST nodes and
+all normalized UTF-8 source bytes are counted. JSON is the sole imported
+library. These modules do not import a producer, decoder or theorem table.
+
+Program                         tokens   AST   bytes
+native_control.py                  324   374     629
+native_append_function.py          330   379     623
+native_append_lambda.py            335   383     622
+strict646_control.py               343   392     646
+strict645_lambda.py                348   396     645
+
+The native profile validates the public closed native Eq/D goal, with the
+control's inherited finite integer/list certificate contract. It does not
+validate the alphabet throughout the complete JSON input; unused prefixes
+may contain other JSON values. The strict profile checks both properties.
+
+Both are distinct from the compact guarded envelope (248 tokens, 270 AST
+nodes, 487 bytes, attained by different programs). The present refinements
+do not beat that envelope. Their token and AST counts are worse than their
+matched controls. The one-byte strict lambda change is especially modest.
+
+5. Reproduction and evidence
+---------------------------
+
+Run python3 verify_refinements.py. It checks the exact documented source/AST
+transformations, complete-module metrics, and matched standalone processes
+under ordinary and optimized Python, with isolation flags -I -S -B. The
+native inherited fixture set includes compound and induction proofs,
+malformed goals, future-variable capture, context leakage and false targets.
+The strict set also exercises forbidden input alphabet values even in
+unused prefixes. The detailed receipt is refinement_verification.json.
+
+The tests are finite implementation checks. The all-traces argument is the
+inductive simulation above. Neither is a new Lean or Rocq formalization of
+the inherited arithmetic bridge or of the actual Python semantics.
+
+All source foundations and fixtures are attributed to the pinned repository
+and its incoming packages. PROVENANCE.json records the source archive
+members and control SHA-256 hashes.

@@ -1,0 +1,148 @@
+CONCISEIPRA BASELINE AUDIT
+Pinned repository commit: ecae4653f69184a25ade2b1aeaa346f7a7817b78
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Root: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA
+Audit runtime: CPython 3.12.14
+
+EXECUTIVE FINDING
+
+The README package table is not the current frontier because it does not
+include nine pending ZIPs under docs/incoming. Including all nine, the observed
+coordinatewise envelope of direct compact checkers is:
+
+  significant tokens / AST nodes / normalized UTF-8 bytes = 248 / 270 / 487.
+
+These minima belong to three DIFFERENT programs. They are upper bounds on
+the unknown optimal implementation size, not universal lower bounds.
+
+The attainers are members of docs/incoming/ipra_single_binder_2026-11-12.zip,
+Git blob 365c21dd28820ed6a9e19a641eef2ce0a7a3aa79:
+
+  ipra_single_binder/code/tokens248.py  248 / 277 / 609
+  ipra_single_binder/code/ast270.py     254 / 270 / 608
+  ipra_single_binder/code/bytes487.py   276 / 308 / 487
+
+The token and AST reductions in that package use first-line JSON framing;
+the equally reframed controls are literally the same bytes. Thus they must
+not be represented as a new mathematical simplification. The 487-byte profile
+retains the ordinary multiline JSON interface and combines known mechanisms
+in an outer-lambda form.
+
+CONTRACT-SPECIFIC COMPARISONS
+
+1. Compact profiles assume the finite exact-integer/list certificate alphabet
+   and a canonical closed guarded Eq/D public goal. They do not separately
+   validate the public grammar. Some administrative truth aliases can be
+   accepted. Scope checking is included.
+
+2. Native Eq/D public-goal validation with integer/list certificate contract:
+   ipra_verified_refinements_2026-11-12/native/checker.py = 324 / 374 / 629.
+   Its unused JSON prefixes can contain values outside the stated alphabet.
+   This is one actual complete source vector, not a pooled vector.
+
+3. Native Eq/D public-goal validation AND whole-input exact integer/list
+   alphabet validation have a split envelope of 334 / 387 / 646:
+   ipra_verified_refinements_2026-11-12/strict/checker.py = 334 / 387 / 654;
+   ipra_checker_refinement/code/checker_native.py = 343 / 392 / 646.
+
+4. The strict guarded public grammar is different from native Eq/D; do not
+   silently compare its validator to the native one as the same interface.
+
+All quoted metrics were independently recomputed here under CPython 3.12.14:
+remove genuine docstrings, ast.unparse, append one LF, reparse, count significant
+tokens (exclude comments/layout/end markers), all AST nodes, and UTF-8 bytes.
+The inherited corpus audit inserts Pass if docstring removal empties a class
+or function. One historical source requires this repair; it is far above the
+frontier. None of the listed attainers is affected.
+
+EXHAUSTIVE CURRENT SOURCE COVERAGE
+
+The pinned Artifacts Git tree is 375e5241c42c00c2bf17b3c8f618ba3970a8bdc0.
+It has 2,490 Python paths representing 1,314 unique Git blobs. These counts
+are lower than older Research census counts because redundant frozen copies
+were removed during consolidation. 1,260 blobs were recovered from the
+attributed frozen census in the 502-scope-audit ZIP; 54 missing current blobs
+were downloaded from exact pinned raw URLs. All 1,314 Git blob hashes were
+verified before parsing; the audit did not execute these source programs.
+
+Of current Artifacts sources, 78 score below at least one coordinate of
+(248,270,487). Seventy-one have matching inherited utility exclusions. The
+remaining seven were inspected in full:
+  context_phase/build.py                report builder
+  crossed_uniqueness/build.py            report builder
+  inferred_major/reproduce.py            verification driver
+  orbit_closure/reproduce.py             verification driver
+  progress_independence/reproduce.py     verification driver
+  smaller_envelope/build.py              report builder
+  smaller_envelope/reproduce.py          verification driver
+None is a standalone theorem checker; all run external generation, checking,
+or document-building code. Their small source size cannot count as the size
+of the trusted checker they call.
+
+All nine docs/incoming ZIPs were downloaded, their exact Git blob identities
+verified, and safely extracted. Their 1,501 Python members were measured.
+1,500 normalize/reparse directly; the known docstring-only-class exception
+is in a historical source copy and does not affect any record. Small utility
+scripts and intentionally unsafe negative controls were excluded from the
+eligible theorem-checker comparison. The 18-token / 19-AST / 459-byte packed
+loaders in the 502-scope-audit ZIP contain a compressed fixed payload and are
+explicit illustrations: applying the same packing to old and new kernels
+ties. They are not a new direct-checker or mathematical improvement.
+
+CURRENT INCOMING NOVELTIES THAT MUST NOT BE REPEATED AS NEW
+
+- single_binder: U_x A(x) := D_{u,z} G_z A(P(z)); one paired binder and one
+  copy of A. Predecessor plus gate provides introduction and elimination.
+  Exact expanded formula counts show exponential-to-linear growth for the
+  stated iterated-universal example. This improves macros, not axiom count.
+- constantfree: numerical terms x | J(n;i,r.h), no numerical constants,
+  successor, initializer, pairing or equality test primitive. An anchored
+  graph theory derives unique zero and gives whole-domain bi-interpretations.
+  Its transparent checker is larger than the scalar comparator.
+- guarded_register: scalar J(n;u.h) with no independent successor or
+  initializer, a restricted body grammar and two computation equations.
+- three_field: infer elimination major from endpoint, reuse a packet field
+  and clear the initializer to dispatch major checking. Different global
+  and local fresh-name protocols are measured separately.
+- retained_premises: retain checked major premises, repair dispatcher
+  collisions with fresh initializer aliases; raw variable-only substitution
+  without reflexivity cannot derive 0=0.
+- verified_refinements: making Q-rooted matrices eligible for progressive
+  introduction yields induction for arbitrary formulas, an unsafe extension.
+- progress_independence: written nonstandard-model independence of progress,
+  using staged ultrapowers; this is already a submitted claim and not a
+  result to advertise anew. It has not been independently proof-assistant
+  verified by this audit.
+- 502_scope_audit: deleting the entry goal scan lets a 17-packet certificate
+  prove a closed guarded encoding of some number being its own successor.
+  The negative control is deliberately unsound.
+
+OPEN DIRECTIONS IN THE INDEX (SOME WRITTEN PACKAGES GO BEYOND LEAN)
+
+- A shorter internal predecessor construction is a major unsolved source
+  of mathematical proof complexity; present scalar proofs use parity, a
+  mod-three ramp, factor map, comparator and saturating counter.
+- A shorter formula-level conjunction/selector construction is also open.
+- On raw terms, variable-only substitution without root joining is weaker
+  in the bare form; full normal forms recover equality through naming packets.
+- Deterministic newest-parameter introduction exists in written packages,
+  but the corresponding exact deterministic formalization remains incomplete.
+- Many recursor alternatives have written bridges but need their own Lean
+  syntax/interpreters. The existing Lean proof does not automatically verify
+  their Python checkers or their newly chosen recursors.
+
+LOCAL AUDIT FILES
+
+audit/artifact_tree.json                      pinned current Git inventory
+audit/incoming_manifest.json                  nine archive hashes/sizes
+audit/current_artifact_python_metrics.json    current unique source metrics
+audit/incoming_python_metrics.json            incoming member metrics
+audit/current_blobs/                          54 newly fetched current sources
+audit/incoming/extracted/                     exact archive extraction
+
+CLAIM BOUNDARY
+
+This audit identifies the observed comparison frontier and source contracts.
+It is not a proof that every incumbent checker is sound/complete, and it is
+not a mathematical lower bound on all theories bi-interpretable with iPRA.
+No repository files, commits, PRs, discussions or remote branches were modified.

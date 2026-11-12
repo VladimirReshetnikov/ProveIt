@@ -1,0 +1,105 @@
+INDEPENDENT REVIEW OF THE CHECKER REFINEMENTS
+12 November 2026
+
+Scope
+-----
+Reviewed native_control.py, native_append_function.py,
+native_append_lambda.py, strict646_control.py, strict645_lambda.py,
+REFINEMENT_PROOF.txt, verify_refinements.py, the recorded 440-process
+verification receipt, and the current incoming-archive source audit.
+This is an independent assistant review in the same research run, not
+external human peer review or a Lean/Rocq verification.
+
+Verdict
+-------
+The disclosed transformations preserve successful finite proof-obligation
+executions, under the explicitly stated sufficient-resource convention.
+I found no semantic flaw in the native 629-to-623-to-622 or strict
+646-to-645 refinements. The result is a byte-only implementation improvement
+of an inherited calculus. It does not establish the user's requested new
+axiomatization below the current compact coordinate envelope.
+
+Critical points checked
+-----------------------
+1. Every g reachable by either native program is a builtin Python list.
+   The control's g += [0] and the candidate's g.append(0) produce the same
+   mutation of the same list, including aliases held by the parent while
+   a recursively checked major is running. Replacing this mutation with
+   a new list would require a different argument; the actual candidate
+   correctly retains mutation.
+
+2. i(a) is evaluated before that mutation, and q() is evaluated afterward.
+   Therefore the public-goal grammar phase (recognized by empty g) ends
+   at the same point. The opening helper closes over the same g and k.
+
+3. A successful control c call returns None. A successful new native c
+   call returns True or a singleton list. Hence
+       old_c(g,m,k) or m*3
+   and
+       new_c(g,m,k) and m*3
+   have identical checking effects and evaluate to the same m*3 value.
+   This also handles m=0: the next or-branch is entered in both programs.
+   There is no accidental demand that the resulting formula be truthy.
+
+4. The recursive major is completed before the scope-floor assignment.
+   The context argument is evaluated before the continuation goal.
+   The tuple/conditional image selection remains unchanged. These facts
+   preserve both old failure boundaries and successful proof obligations.
+
+5. In the outer-lambda conversion, i := lambda ... always produces a
+   truthy callable, so the added and simply evaluates the former return
+   expression. Its closure variables a, k and (for strict) v belong to
+   the same invocation. Python assignment expressions in a comprehension
+   bind them in that enclosing invocation, as required.
+
+6. The default image t=c is evaluated when i is created inside a checker
+   invocation, after the global c binding exists. Different callable
+   identities cannot affect a successful JSON proof: input cannot contain
+   either callable, and trying to inspect that sentinel as syntax fails
+   already at a*0. No identity comparison distinguishes the two functions.
+
+7. strict645_lambda.py changes no input gate or phase operation. The
+   complete alphabet gate, its initial v=1 call, and the v:=0 transition
+   on the first major obligation are inherited literally from the
+   646-byte control.
+
+Independent finite evidence
+---------------------------
+In addition to reading the existing CLI verification, I independently
+instrumented only c-call entry/return and packet-pop events. For zero
+computation, equality reflexivity transport, and literal-equation
+introduction, the native control and both candidates have identical event
+sequences; the strict control and candidate also have identical event
+sequences. This is 15 definition-level runs. Each event includes a snapshot
+of the context, goal, scope floor and, for strict, phase flag. Packet
+consumption and unconsumed prefixes agree. Expected successful return-value
+differences are explicitly allowed. The receipt is independent_trace_review.json.
+These finite events supplement the induction argument, not replace it.
+
+I also independently remeasured the complete modules on CPython 3.12.14:
+
+                               tokens  AST  normalized bytes
+native_control.py                 324  374       629
+native_append_function.py         330  379       623
+native_append_lambda.py           335  383       622
+strict646_control.py              343  392       646
+strict645_lambda.py               348  396       645
+
+Remaining qualifications
+------------------------
+The statement concerns normal termination with sufficient resources, not
+identical stack/memory use, exception text, or full Python VM event traces.
+The function-to-list-comprehension change adds intermediate return objects.
+Native validation checks the public Eq/D goal but does not validate every
+unused certificate value. Strict validation checks both obligations.
+Neither profile is comparable without qualification to the guarded compact
+programs whose current envelope is 248 tokens, 270 AST nodes, and 487 bytes,
+attained separately. The two lowest compact token/AST values additionally
+use first-line JSON framing.
+
+A separate focused pass found no valid simplification of the 270-AST
+three-field local checker below that AST minimum. In particular, the
+invariant k=1-len(g) holds at call and loop boundaries, but not during the
+hypothesis-opening phase between decrement and context extension. Removing
+explicit scope state on that invariant alone is invalid. Straightforward
+safe rewrites tested in that pass did not improve the frontier.

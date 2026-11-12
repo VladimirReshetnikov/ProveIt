@@ -1,0 +1,201 @@
+EXACT IMPLEMENTATION REDUCTIONS: SCANNER BINDING AND STREAMED CERTIFICATES
+=======================================================================
+12 November 2026
+
+Status and scope
+----------------
+These reductions preserve the existing compact guarded iPRA presentation.
+They do not delete an arithmetic or logical axiom. The three supplied
+standalone checkers each include their parser, opening operation, proof
+rules, scope discipline, and ACCEPT output. Their common mathematical input
+contract is finite exact-integer/list certificate syntax with a canonical
+closed guarded Eq/D public goal. As for the compact controls, their code does
+not independently validate the whole public grammar. A strict public grammar
+validator is a separate, larger contract and must be measured separately.
+
+The new family attains the coordinate envelope (244 tokens, 267 AST nodes,
+479 normalized UTF-8 bytes), by THREE DIFFERENT PROGRAMS:
+
+                                 tokens       AST       bytes
+checker_tokens.py                   244       272         608
+checker_ast.py                      249       267         606
+checker_bytes.py                    272       304         479
+
+The corresponding frozen controls are the three modules supplied by the
+incoming ipra_single_binder package at repository revision
+ ecae4653f69184a25ade2b1aeaa346f7a7817b78:
+
+controls/tokens248.py                248       277         609
+controls/ast270.py                   254       270         608
+controls/bytes487.py                 276       308         487
+
+The first two gains change the input framing. Applying the same direct-stream
+framing to their controls gives the candidate programs exactly. They are
+therefore savings in the complete acceptance implementation, not in its
+inference kernel. The byte-profile gain preserves its existing whole-JSON-
+array interface and changes a common kernel expression only.
+
+Measurements use CPython 3.12.14, ast.unparse, one final LF, significant tokens
+with layout/comment tokens excluded, and all ast.walk nodes. No compression,
+serialized program, eval, exec, imported proof engine, or hidden theorem
+oracle is used.
+
+1. Bind the recursive scanner at its first use
+---------------------------------------------
+Write L for the unchanged lambda expression that defines the recursive
+scope-checking opening operation, and C for the unchanged continuation list
+comprehension. The byte control has the expression
+
+   (i := L) and (i(a) in g or C).
+
+The candidate uses
+
+   (i := L)(a) in g or C.
+
+The concrete Python spelling parenthesizes the named expression and lambda
+as required by the grammar. This is well-formed and compiled as ordinary
+Python. The lambda i closes over its own newly bound cell and the same
+current scope floor k in both programs.
+
+For every call, evaluating L creates the same function object and binds i to
+it before any opening operation. A Python function is always truthy. The
+left operand of the control's outer conjunction therefore cannot suppress
+its right operand. The candidate immediately calls that same freshly bound
+function on a; the control reaches precisely that call after testing the
+function's truth value. The result of the call, membership test, and all
+later short-circuit choices are identical.
+
+In particular, both programs create the scanner once per checker call,
+perform the entry scope traversal once, inspect the same context, consume
+the same next proof packet when necessary, recursively check the same major,
+allocate k at the same point, and perform the same later openings. The
+continuation comprehension, including assignments to a and k, is unchanged.
+Both return the same Boolean or nested list value on success and print the
+same ACCEPT signal at the root. Exceptions during any unchanged operation
+propagate in the same place. An induction over finite call/continuation
+executions gives exact successful trace equivalence.
+
+This proof does not depend on the inherited arithmetic soundness theorem.
+It establishes program equivalence first, so that any inherited public-
+theorem-set correctness statement transfers automatically. Resource-limit
+failures are excluded from the equivalence claim, as in the comparison
+corpus. No claim is made about identical bytecode, timing, or exhaustion at
+a fixed machine resource limit.
+
+2. The JSON Lines interface
+---------------------------
+For checker_tokens.py and checker_ast.py, the first physical input line is
+a JSON encoding of the public goal. Each subsequent consumed line is the
+next three-field proof packet [s,u,t]. Each JSON value occupies one physical
+line; spaces inside a line are harmless. The checkers call loads(input())
+only when their proof execution requests another value. A missing requested
+line, a malformed requested JSON value, or a wrong packet shape rejects by
+exception. Acceptance means normal exit with exactly ACCEPT followed by LF.
+
+The global and local scope profiles retain their original, distinct naming
+conventions. They have separate fixtures; the framing transformation neither
+changes nor guesses eigenparameter names.
+
+The previous one-line interface reads one array
+
+   P = [unused-prefix, ..., p_2, p_1, A]
+
+and successively calls P.pop(). Its value sequence is A,p_1,p_2,... . The
+stream interface stores exactly those values in that order:
+
+   JSON(A) LF JSON(p_1) LF JSON(p_2) LF ... .
+
+The converter to_stream.py reads an old array and emits its elements in
+reverse order, one compact JSON value per line. It validates only the
+integer/list alphabet, not the arithmetic meaning of a proof. It is an
+untrusted convenience tool and is never imported by a checker. One can
+produce stream certificates directly.
+
+3. Exact read-order simulation
+------------------------------
+Consider the old checker after parsing a finite integer/list array P, and
+the new checker on the complete reverse-order stream of P. Pair the states
+immediately before the initial goal read. At every paired state:
+
+ (i) the current goal, contexts, allocated floor(s), and local variables
+     have equal finite integer/list values;
+(ii) the next stream line encodes the next value returned by P.pop();
+(iii) the sequence of unread lines is the reverse of the remaining array.
+
+The initial goal reads give equal values. Every unchanged checker operation
+preserves (i). When either program requests another packet, the new loads
+operation returns the same tree as the old pop operation, preserving (ii)
+and (iii). Both subsequently unpack the same three values. A recursive
+major-premise proof requests its packets at exactly the same point, before
+the same continuation: no flattening or reordering of the proof execution
+is performed by the checker. The simulation thus applies to the nested
+major/continuation tree, not only to a flat sequence of independent rules.
+
+If an old execution attempts to pop an exhausted array, the new execution
+attempts to read beyond EOF; both reject. If a supplied value has the wrong
+packet shape, both fail at the same unpacking operation. All other rejection
+or acceptance behavior agrees on the complete converted stream, subject to
+sufficient resources. The converter does not change numerical trees,
+binder coordinates, scope checking, introduction modes, or major checking.
+
+Conversely, any successful stream execution consumes finitely many parsed
+values A,p_1,...,p_r. Reverse those consumed values to form an old array
+[p_r,...,p_1,A]. The same invariant proves that the old checker accepts it.
+Consequently the two protocols admit exactly the same canonical public
+theorems, in both scope profiles. This is stronger than a finite fixture
+comparison but weaker than equality of raw file-language acceptance under
+arbitrary malformed trailing bytes, as explained next.
+
+4. Frame boundaries and unused data
+----------------------------------
+An unused prefix of the old array becomes an unused suffix of the stream.
+The old parser validates the syntax of its whole initial JSON array before
+checking begins. The new parser never reads a suffix after the proof has
+completed. A malformed later line can therefore be outside the consumed
+stream frame. A blank or malformed requested line still rejects. This is
+an explicit interface change, not a claim of arbitrary-byte-language
+identity. The complete reverse-order conversion of any in-contract old
+certificate remains in contract and preserves its acceptance exactly.
+
+The scope of both theorem-set claims is finite exact-integer/list data and
+a canonical closed guarded Eq/D public goal. Float aliases, NaN values,
+strings, objects, and arbitrary Python objects are not part of that syntax.
+The compact checkers are not asserted to reject all malformed unused data.
+A strict companion must enforce its declared entire-input policy itself.
+
+5. Inherited mathematical interpretation
+----------------------------------------
+The array decoder, guarded public formula translation, iterator calculus,
+logical and arithmetic rules, and both iPRA interpretations are unchanged.
+The exact program equivalence of Section 1 and the two simulations of
+Section 3 transfer the inherited public theorem set. Composing with the
+repository's guarded/native and iPRA translations preserves equiconsistency
+and the whole numerical domains, actual equality, and identity numerical
+composite graphs x=y. No new proof-assistant formalization of the inherited
+bridge is asserted here. The new proofs concern implementation equivalence
+and framing, not a new arithmetic foundation.
+
+6. Finite regression evidence
+-----------------------------
+The byte candidate was compared with bytes487 on all 65 byte-profile
+fixtures shipped in ipra_single_binder, in ordinary and -O execution:
+260 isolated checker processes, no mismatches. That comparison is recorded
+in the separately retained evidence/byte_validation.json receipt.
+
+The self-contained verify_compact.py additionally compares the two stream
+profiles to their corresponding one-line controls on five canonical proof
+families and five rejecting families for each scope convention. The
+positive families include zero and successor computation, induction with
+its hypothesis used, compound implication elimination, and inferred-major
+checking. Rejections include context leakage, future-witness capture,
+0=1, a wrong computation endpoint, and the published out-of-scope-major
+attack. The last attack is ported only at its first ill-scoped D major;
+rejection occurs before the later packet shapes matter. No general old-to-
+new proof compiler is inferred from that port.
+
+The byte checker and byte control also reject the original scope attack,
+and separate frame-boundary checks cover EOF, blank lines, CRLF, missing
+proof, unconsumed suffixes, multiple JSON values on one line, and converter
+round trips. See evidence/compact_validation.json for exact counts and outcomes. Finite
+regressions do not establish soundness independently; Sections 1 and 3
+supply the universal implementation reasoning.

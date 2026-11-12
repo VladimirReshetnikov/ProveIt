@@ -1,0 +1,113 @@
+INDEPENDENT REVIEW: FINITE BLOCKS AND FINAL REPORT
+Reviewer: baseline_audit
+Snapshot: 2026-11-12
+
+Files reviewed:
+  research/ramp57.tex
+  research/block_macros.tex
+  research/block_macros.py
+  output/ipra_checked_blocks_2026-11-12/report_body.tex
+  output/ipra_checked_blocks_2026-11-12/reference/inherited_ordinary_bridge.tex
+
+1. PURE-EQUATIONAL PREDECESSOR PROOF
+
+The expanded ramp57 proof resolves the earlier qualification about Boolean
+case reasoning in the pure equational fragment. Its two-point interpolation
+principle follows by literal-equation induction on f(Z(t))=g(Z(t)), using
+the two endpoint equations. Substituting t=Z(N(n)) gives the required Boolean
+instance, since Z(Z(N(n)))=N(n). The conditional ramp identities are first
+proved as equations with an independent Boolean parameter and only then
+combined with the induction equation M(R(n))=N(n). No arbitrary-formula
+induction, predecessor, successor injectivity, or even/odd decomposition of
+an arbitrary domain element is imported. The simpler final report proof
+uses numerical cases in the full native calculus, which is also valid.
+
+2. FINITE SELECTOR AND RAW SIZE
+
+The Let construction puts I(1,a;w.body) around each of the two terminal
+terms. It is an explicit finite scalar term and adds exactly 2(|a|+3)
+nodes, preserving paired-binder rank. Capture avoidance is legitimate
+because all control variables are fresh for the operands; the code uses
+globally fresh binder names.
+
+The selector recurrence chooses A_0 when N(v)=1 and otherwise recurses
+on the tail at R(v). For fixed j the positive witness omega_j has value
+2^j. After k<=j even-state ramp updates it has value 3^k*2^(j-k), so
+the first j decisions are even and the next is odd. For j equal to the
+last branch, the default branch gives the same row. Each proof is finite;
+there is no appeal to induction on a quantified or compound formula.
+
+Each branch adds 48 nodes from Let with |R(v)|=21 and 18 nodes from the
+two parity-controlled term selectors with |N(v)|=8. Hence 66 is exact.
+The final gate adds six nodes. The stated total for either flat block,
+
+  sum T(A_j) + 66(n-1) + 6(r_max-r_min) + r_max + 8,
+
+and rank r_max+1 are correct. The terminal payload of each operand is
+present once, with no uncharged sharing. For rank-zero payload-two operands
+and n=2^k, the balanced recurrences give 26n-23+k for conjunction and
+12n-9+k for disjunction, versus 68n-58 for either flat block.
+
+3. PADDING OPTIMUM AND SCOPE
+
+The minimum-leaf path proof of total padding >= r_max-r_min is valid:
+the rank increase at each node is zero or the corresponding absolute
+rank difference. A tail-associated comb on descending operand ranks
+attains the bound, because its charges telescope as r_0-r_1, r_1-r_2,
+and so on. The report should specify this association explicitly; a
+left-associated descending comb need not attain the bound. This wording
+clarification was sent to the author. The displayed Sigma recurrence
+already has the correct tail association.
+
+The result is an exact optimum only within the specified selector-tree
+architecture. The text correctly avoids claiming absolute minimum rank
+or formula size; reflected arithmetic conjunctions can have rank zero.
+
+4. LOGICAL BLOCK RULES
+
+For conjunction, DI with unused local assumption introduces the block from
+all operands; opening D and using QE at syntactically positive omega_j
+projects the selected operand. For disjunction, the same omega_j is the
+existential witness; elimination opens that witness, obtains the selector
+through the zero gate and QE at 1, then uses finite branch elimination.
+Numerical cases and external induction on the finite selector suffice.
+The arguments apply to quantified native Eq/D operands and retained
+contexts. No arbitrary-formula numerical induction is required.
+
+Homogeneous quantifier blocks use ordinary finite pairing and decoder
+terms only after the arithmetic bridge. Their one-D rank claim is valid;
+the report appropriately gives no unexpanded decoder-size claim and
+attributes this tuple-coding observation to prior work.
+
+5. FINAL REPORT CLAIMS
+
+The main report correctly distinguishes:
+  - exact compact trace equivalence: 487 -> 479 bytes;
+  - exact strict trace equivalence: 646 -> 637 bytes;
+  - native theorem-set equivalence, not all raw streams: 629 -> 607 bytes.
+Its full module metrics agree with the audited controls and candidates.
+Its achieved coordinate envelope (248,270,479) is explicitly not attributed
+to one program and explicitly not a lower bound or global optimum.
+The compressed-loader and public-input contract exclusions are stated.
+
+The P57 saturation proof holds passive parameters fixed during active
+induction. Diagonal substitutions are made only into established theorems.
+The new arithmetic term changes no primitive kernel axiom. The 24-percent
+figure applies only to its fully expanded 75 -> 57 node term.
+
+The bi-interpretation is with full first-order iPRA and actual equality
+on the whole numerical domain. The falsity bridge is included. Auxiliary
+Q closures have not been silently lost: the reproduced ordinary bridge
+explicitly proves Q_y B interderivable with D_(v,y) B for unused v. The
+existing reflection/pairing development is explicitly inherited and
+comes after predecessor. The identity graph argument invokes internally
+proved recursion uniqueness with fixed passive parameters.
+
+No substantive mathematical or provenance overclaim was found in the
+reviewed report. A minor table-heading correction was requested: L(x,y)
+has two variable arguments, so the heading should say 'Fully expanded
+scalar term' rather than 'Term with one variable argument'.
+
+These are independent written proof and source reviews, not new proof-
+assistant verification. Finite implementation receipts were inspected;
+the candidate agent's full test runs were not duplicated here.

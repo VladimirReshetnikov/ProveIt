@@ -1,0 +1,171 @@
+NATIVE PUBLIC-GOAL CHECKING: 629 TO 621 / 620 BYTES
+=================================================
+
+1. Claim and comparison boundary
+
+This is an implementation refinement of the existing native scalar theory,
+not a new axiomatization and not an axiom deletion. The comparison source
+control629.py is the exact native/checker.py member of the current incoming
+ipra_verified_refinements_2026-11-12.zip at repository commit
+ecae4653f69184a25ade2b1aeaa346f7a7817b78. PROVENANCE.json records its origin
+and source hashes. The upstream licence is included.
+
+The source itself validates the public closed native Eq/D goal, using the
+inherited arity scanner. It does NOT validate the whole certificate alphabet.
+The mathematical soundness theorem inherited from the control concerns finite
+exact-integer/list proof data. Unused arbitrary JSON prefixes are intentionally
+inert, and the included finite fixtures check this boundary. This contract is
+different from both a compact canonical-input kernel and a checker that
+validates every value in the entire certificate.
+
+The theorem proved below is that, on every finite integer/list input, the
+control and both candidates have the same successful finite checking traces,
+up to duplicate zero entries in contexts and return values. They consume the
+same packets and accept exactly the same certificates under sufficient
+execution resources. Consequently the existing interpretation into iPRA and
+the inverse interpretation remain exactly those of the control. This file
+does not independently prove that inherited arithmetic and logical bridge.
+
+All three sources include JSON input, scanner, scope state, checking rules,
+and the final ACCEPT output. Measurements are complete-module ast.unparse
+normalization with one final LF, significant tokens excluding whitespace and
+comments, and every node of ast.walk, under CPython 3.12.14.
+
+    source           tokens    AST nodes    normalized UTF-8 bytes
+    control629.py       324          374                      629
+    checker621.py       332          381                      621
+    checker620.py       337          385                      620
+
+The candidate reduces bytes only. It increases tokens and AST nodes. It does
+not beat the compact coordinate envelope (248, 270, 487), and it does not
+establish any absolute program-size or mathematical lower bound. The 621-byte
+function form is easier to inspect; the optional 620-byte form uses an outer
+lambda with the same behavior.
+
+2. The three source changes
+
+The control checks a retained hypothesis and otherwise executes a statement
+sequence. A successful call returns None. The candidate instead uses
+
+    retained_hypothesis or [continuation for packet in [next_packet]]
+
+The comprehension is eager, with exactly one iterable element. At a retained
+hypothesis the result is True; at a non-hypothesis successful call the result
+is a one-element list. Every successful call therefore returns a truthy value.
+The major-premise expression changes from
+
+    control_check(...) or major * 3
+
+to
+
+    candidate_check(...) and major * 3.
+
+Both expressions have exactly the same result after a successful major
+proof, and both propagate failure of that proof before further processing.
+The mathematical rule selection is unchanged.
+
+The first continuation argument begins with (g := [*g, 0]), replacing the
+control's statement g += [0]. The immutable copy makes the context nonempty
+before the recursive major proof and every later scanner call. This is the
+same phase change that disables the public-goal grammar check after its
+initial call. It is NOT allowed to omit that phase change or the initial
+scanner invocation.
+
+Finally checker620.py changes the outer function to a lambda. Its scanner is
+bound by a named expression and conjoined with the checking expression. A
+function object is always truthy, so this conjunction returns the checking
+result. The assignment-expression variables belong to the enclosing lambda,
+just as they belong to the enclosing function in checker621.py. This is
+ordinary Python scope behavior, not an additional logical rule.
+
+3. Context invariant, including the mutable control
+
+The mutable control requires care: a recursive major check can append extra
+zero entries to its caller's list, whereas the new copy does not. The two
+lists therefore need not be literally identical after a recursive call.
+
+Call two reachable contexts equivalent when they contain zero in the same
+cases and their sequences agree after all entries equal to scalar zero are
+deleted. Equal finite integer/list values have ordinary structural equality.
+Equivalent contexts are empty simultaneously, have the same membership
+answers for every integer/list value, and give identical truth values when
+used as Boolean phase flags. After the first non-hypothesis step, both
+contexts contain zero and remain nonempty.
+
+The only in-place change to a context shared between different control
+calls is addition of zero by g += [0]. Genuine new hypotheses occur in a
+fresh list g + [hypothesis], so no such hypothesis leaks to its parent.
+Thus recursive mutation preserves the context-equivalence relation. Copying
+the context and appending one zero, as in the candidate, preserves it too.
+Appending identical new hypotheses to equivalent contexts again gives
+equivalent contexts. These facts also cover scalar truth aliases that are
+structurally equal to zero.
+
+4. Scanner and order of effects
+
+The scanner's recursive definition is unchanged. Its dependence on context
+is only through emptiness/truthiness, so equivalent contexts give identical
+successful scanner results or identical rejection. The integer scope floor
+k, the numerical opening depth d, and the image parameter t match exactly.
+In particular the initial call still scans the public goal in empty context;
+every subsequent checker call still scans its target before trusting it as
+a retained hypothesis or consuming a new proof packet.
+
+The control appends zero before reading its packet. The candidate reads the
+packet into the one-element comprehension before copying and appending zero.
+The packet source is only the bound list.pop method of the parsed input.
+It has no access to the checking context. If reading or unpacking fails,
+both programs reject. If it succeeds, both have the same four fields and
+equivalent nonempty contexts before any mathematical operation executes.
+
+Python evaluates arguments and list elements from left to right. Thus the
+candidate completes its recursive major check and any computation or
+introduction expression before it decrements k and opens the supplied
+hypothesis. It completes the first continuation argument before it evaluates
+the elimination target and the second argument. This is exactly the
+control's context-first order. No extra name is admitted early, no old
+scope check is removed, and the old conditional target selection remains a
+conditional expression rather than eager evaluation of both branches.
+
+5. Finite-trace simulation
+
+Induct on a successful finite checking tree. At a retained hypothesis the
+scanner and membership test agree by the context invariant. The old return
+is None and the new return is True.
+
+Otherwise both read the same packet. Their contexts become equivalent and
+nonempty. Apply the induction hypothesis to the major subproof. The paired
+or/and expressions then return the same major-derived value, and all later
+computation and introduction operations are identical. Their local floor
+assignments, supplied hypotheses, and continuation goals agree. The new
+contexts are equivalent. Apply the induction hypothesis to the continuation.
+The control returns None and the candidate returns a nonempty list.
+
+The argument reverses without change: a successful candidate trace supplies
+a successful control trace. Every exception-producing data operation lies
+at the corresponding point, except for the harmless moved packet-read
+mentioned above. The source-level transformation therefore preserves the
+finite integer/list certificate acceptance relation and unused prefixes.
+The lambda and function candidates differ only in the final syntactic
+binding of the same scanner and checking expression, hence have the same
+simulation.
+
+The new truthy return trees can retain more data, so identical behavior at a
+fixed physical memory or recursion limit is not asserted. No result here
+depends on assertions; optimized Python performs the same checks.
+
+6. Validation and reproduction
+
+Run python3 verify.py from this directory. It normalizes and compiles all
+three complete programs, measures them, and runs 37 selected certificates
+against each in normal and optimized Python: 222 process executions. The
+fixtures include compound proofs, induction using its hypothesis, equality
+transport, unproved conclusions, future-variable capture, context leakage,
+invalid public roots, and the 17-packet future-scope attack from the separate
+scope-audit package. It also verifies the inherited allowance for arbitrary
+unused JSON prefixes. The full outcomes are in verification.json.
+
+Finite tests do not establish universal soundness or bi-interpretability.
+Those are separated above into the source simulation and the inherited
+native-calculus equivalence. No Lean or Rocq verification of these candidates
+is claimed.
