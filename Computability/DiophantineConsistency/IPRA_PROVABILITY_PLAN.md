@@ -7549,6 +7549,10 @@ The source-reviewed [85-operation Lean graph draft](research/ordinary14-qcube85-
 and [84/85 ring comparison draft](research/ordinary14-84-85-ring-client-draft/README.md)
 propose the literal field comparison under explicit substitutions. They are
 unelaborated and do not establish positive-model witnesses or an endpoint.
+The source-reviewed [conditional 84/85 model client](research/ordinary14-84-85-conditional-model-draft/README.md)
+proposes positive valuation maps assuming the indicated gamma bound and
+`q ∣ X`. It has not been elaborated, and those assumptions have not yet been
+derived from the graph in Lean.
 The source-reviewed [modified-carrier gamma-growth draft](research/ordinary14-modified-carrier-gamma-model-draft/README.md)
 proposes the needed strict positivity using existing Pell growth lemmas under
 explicit index and carrier hypotheses. It is unelaborated and is not yet
