@@ -1,0 +1,17 @@
+import DecimalFiniteCommon
+
+/-! Inert source-only suggestion for indices [384, 416). -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+namespace Natural79DecimalSeedChunkDraft
+open Natural79PrintedDecimalBlocksDraft
+
+/-- All 32 proposed equalities are finite; this proof is untested. -/
+theorem chunk12 : ∀ i : Fin 32,
+    printedBlocks.getD (384+i.val) 0 = selectorAt (384+i.val) ∧
+    printedBlocks.getD (384+i.val) 0 = seedBlockAt (384+i.val) := by
+  decide
+
+end Natural79DecimalSeedChunkDraft
+#print axioms Natural79DecimalSeedChunkDraft.chunk12

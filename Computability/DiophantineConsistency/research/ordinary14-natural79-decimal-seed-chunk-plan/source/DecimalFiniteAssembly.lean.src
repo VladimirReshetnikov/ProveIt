@@ -1,0 +1,187 @@
+import DecimalFiniteChunk00
+import DecimalFiniteChunk01
+import DecimalFiniteChunk02
+import DecimalFiniteChunk03
+import DecimalFiniteChunk04
+import DecimalFiniteChunk05
+import DecimalFiniteChunk06
+import DecimalFiniteChunk07
+import DecimalFiniteChunk08
+import DecimalFiniteChunk09
+import DecimalFiniteChunk10
+import DecimalFiniteChunk11
+import DecimalFiniteChunk12
+import DecimalFiniteChunk13
+import DecimalFiniteChunk14
+import DecimalFiniteChunk15
+import DecimalFiniteChunk16
+import DecimalFiniteChunk17
+import DecimalFiniteChunk18
+import DecimalFiniteChunk19
+import DecimalFiniteChunk20
+import DecimalFiniteChunk21
+import DecimalFiniteChunk22
+import DecimalFiniteChunk23
+import DecimalFiniteChunk24
+import DecimalFiniteChunk25
+import DecimalFiniteChunk26
+import DecimalFiniteChunk27
+import DecimalFiniteChunk28
+import DecimalFiniteChunk29
+
+/-! Inert source-only assembly; no theorem here has been elaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+namespace Natural79DecimalSeedChunkDraft
+open Natural79PrintedDecimalSeedDraft Natural79PrintedDecimalBlocksDraft
+open Natural79DecimalSelectorKernelDraft
+
+theorem all_blocks (n : ℕ) (hn : n < 943) :
+    printedBlocks.getD n 0 = selectorAt n ∧
+    printedBlocks.getD n 0 = seedBlockAt n := by
+  by_cases h00 : n < 32
+  · simpa only [Nat.zero_add] using chunk00 ⟨n,h00⟩
+  by_cases h01 : n < 64
+  · have hi : n-32 < 32 := by omega
+    have he : 32+(n-32) = n := by omega
+    simpa only [he] using chunk01 ⟨n-32,hi⟩
+  by_cases h02 : n < 96
+  · have hi : n-64 < 32 := by omega
+    have he : 64+(n-64) = n := by omega
+    simpa only [he] using chunk02 ⟨n-64,hi⟩
+  by_cases h03 : n < 128
+  · have hi : n-96 < 32 := by omega
+    have he : 96+(n-96) = n := by omega
+    simpa only [he] using chunk03 ⟨n-96,hi⟩
+  by_cases h04 : n < 160
+  · have hi : n-128 < 32 := by omega
+    have he : 128+(n-128) = n := by omega
+    simpa only [he] using chunk04 ⟨n-128,hi⟩
+  by_cases h05 : n < 192
+  · have hi : n-160 < 32 := by omega
+    have he : 160+(n-160) = n := by omega
+    simpa only [he] using chunk05 ⟨n-160,hi⟩
+  by_cases h06 : n < 224
+  · have hi : n-192 < 32 := by omega
+    have he : 192+(n-192) = n := by omega
+    simpa only [he] using chunk06 ⟨n-192,hi⟩
+  by_cases h07 : n < 256
+  · have hi : n-224 < 32 := by omega
+    have he : 224+(n-224) = n := by omega
+    simpa only [he] using chunk07 ⟨n-224,hi⟩
+  by_cases h08 : n < 288
+  · have hi : n-256 < 32 := by omega
+    have he : 256+(n-256) = n := by omega
+    simpa only [he] using chunk08 ⟨n-256,hi⟩
+  by_cases h09 : n < 320
+  · have hi : n-288 < 32 := by omega
+    have he : 288+(n-288) = n := by omega
+    simpa only [he] using chunk09 ⟨n-288,hi⟩
+  by_cases h10 : n < 352
+  · have hi : n-320 < 32 := by omega
+    have he : 320+(n-320) = n := by omega
+    simpa only [he] using chunk10 ⟨n-320,hi⟩
+  by_cases h11 : n < 384
+  · have hi : n-352 < 32 := by omega
+    have he : 352+(n-352) = n := by omega
+    simpa only [he] using chunk11 ⟨n-352,hi⟩
+  by_cases h12 : n < 416
+  · have hi : n-384 < 32 := by omega
+    have he : 384+(n-384) = n := by omega
+    simpa only [he] using chunk12 ⟨n-384,hi⟩
+  by_cases h13 : n < 448
+  · have hi : n-416 < 32 := by omega
+    have he : 416+(n-416) = n := by omega
+    simpa only [he] using chunk13 ⟨n-416,hi⟩
+  by_cases h14 : n < 480
+  · have hi : n-448 < 32 := by omega
+    have he : 448+(n-448) = n := by omega
+    simpa only [he] using chunk14 ⟨n-448,hi⟩
+  by_cases h15 : n < 512
+  · have hi : n-480 < 32 := by omega
+    have he : 480+(n-480) = n := by omega
+    simpa only [he] using chunk15 ⟨n-480,hi⟩
+  by_cases h16 : n < 544
+  · have hi : n-512 < 32 := by omega
+    have he : 512+(n-512) = n := by omega
+    simpa only [he] using chunk16 ⟨n-512,hi⟩
+  by_cases h17 : n < 576
+  · have hi : n-544 < 32 := by omega
+    have he : 544+(n-544) = n := by omega
+    simpa only [he] using chunk17 ⟨n-544,hi⟩
+  by_cases h18 : n < 608
+  · have hi : n-576 < 32 := by omega
+    have he : 576+(n-576) = n := by omega
+    simpa only [he] using chunk18 ⟨n-576,hi⟩
+  by_cases h19 : n < 640
+  · have hi : n-608 < 32 := by omega
+    have he : 608+(n-608) = n := by omega
+    simpa only [he] using chunk19 ⟨n-608,hi⟩
+  by_cases h20 : n < 672
+  · have hi : n-640 < 32 := by omega
+    have he : 640+(n-640) = n := by omega
+    simpa only [he] using chunk20 ⟨n-640,hi⟩
+  by_cases h21 : n < 704
+  · have hi : n-672 < 32 := by omega
+    have he : 672+(n-672) = n := by omega
+    simpa only [he] using chunk21 ⟨n-672,hi⟩
+  by_cases h22 : n < 736
+  · have hi : n-704 < 32 := by omega
+    have he : 704+(n-704) = n := by omega
+    simpa only [he] using chunk22 ⟨n-704,hi⟩
+  by_cases h23 : n < 768
+  · have hi : n-736 < 32 := by omega
+    have he : 736+(n-736) = n := by omega
+    simpa only [he] using chunk23 ⟨n-736,hi⟩
+  by_cases h24 : n < 800
+  · have hi : n-768 < 32 := by omega
+    have he : 768+(n-768) = n := by omega
+    simpa only [he] using chunk24 ⟨n-768,hi⟩
+  by_cases h25 : n < 832
+  · have hi : n-800 < 32 := by omega
+    have he : 800+(n-800) = n := by omega
+    simpa only [he] using chunk25 ⟨n-800,hi⟩
+  by_cases h26 : n < 864
+  · have hi : n-832 < 32 := by omega
+    have he : 832+(n-832) = n := by omega
+    simpa only [he] using chunk26 ⟨n-832,hi⟩
+  by_cases h27 : n < 896
+  · have hi : n-864 < 32 := by omega
+    have he : 864+(n-864) = n := by omega
+    simpa only [he] using chunk27 ⟨n-864,hi⟩
+  by_cases h28 : n < 928
+  · have hi : n-896 < 32 := by omega
+    have he : 896+(n-896) = n := by omega
+    simpa only [he] using chunk28 ⟨n-896,hi⟩
+  have hi : n-928 < 15 := by omega
+  have he : 928+(n-928) = n := by omega
+  simpa only [he] using chunk29 ⟨n-928,hi⟩
+
+/-- Assemble chunked selector checks into the exact prior hblocks premise. -/
+theorem printedBlocks_eq_selectorBlocks : printedBlocks = selectorBlocks := by
+  apply List.ext_getElem
+  · simpa [selectorBlocks] using printedBlocks_length
+  · intro n h₁ h₂
+    have hn : n < 943 := by simpa [selectorBlocks] using h₂
+    have h := (all_blocks n hn).1
+    rw [List.getD_eq_getElem printedBlocks 0 h₁] at h
+    simpa [selectorAt, hn, selectorBlocks] using h
+
+/-- Reconstruct the huge seed from checked small digit windows. -/
+theorem printedSeed_eq_blocks : printedSeed = Nat.ofDigits (10^16) printedBlocks := by
+  symm
+  apply RadixWindowReconstruction.ofDigits_eq_of_windows (10^16) (by norm_num)
+  · simpa only [printedBlocks_length] using printedSeed_lt
+  · intro n hn
+    have hn' : n < 943 := by simpa only [printedBlocks_length] using hn
+    simpa [seedBlockAt] using (all_blocks n hn').2
+
+/-- Proposed final closed identity; this source has not been Lean checked. -/
+theorem printedSeed_eq_symbolicSeed : printedSeed = symbolicSeed :=
+  seed_equality_of_finite_checks printedSeed_eq_blocks printedBlocks_eq_selectorBlocks
+
+end Natural79DecimalSeedChunkDraft
+#print axioms Natural79DecimalSeedChunkDraft.printedBlocks_eq_selectorBlocks
+#print axioms Natural79DecimalSeedChunkDraft.printedSeed_eq_blocks
+#print axioms Natural79DecimalSeedChunkDraft.printedSeed_eq_symbolicSeed
