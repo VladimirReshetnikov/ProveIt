@@ -5,6 +5,10 @@ complete presentation of a theory bi-interpretable with full first-order
 intuitionistic primitive recursive arithmetic (iPRA), and the Lean
 formalization of the most concise of them.
 
+- [`docs/Article/`](docs/Article/) is the unified article
+  ([`concise_ipra.pdf`](docs/Article/concise_ipra.pdf), 443 pages): the
+  written mathematics of all delivered packages merged into eleven chapters,
+  each result stated and proved once. New proposals are integrated there.
 - [`Research/`](Research/) holds ninety-eight delivered packages, one directory
   each. They are written mathematics with executable Python proof checkers;
   none of them claims a proof-assistant verification.
@@ -1075,6 +1079,7 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `uniform_recursion` | Not formalized: its terms are variables, `0` and the counter-aware recursor `R(n, a; i, u.h)`, with the successor defined as `R(0, a; i, u.0)`. It needs its own syntax with a normalizer and a bi-interpretation with the iterator terms, like `uniform_binding` and `counter_evaluation`. Its three families Use, Close and Name are, by its own account, those of the control it is measured against (`inferred_witness`) on that syntax. |
 | `newest_parameter`, `no_witness`, `parameter_witness`, `uniform_raw` | Their common theorem is proved for the kernel, with a free choice among `0` and the variables: `dwprf_iff_nprf : DWPrf true true Γ A ↔ NPrf Γ A` (`NativeWitnessComplete`). Their audit of the predecessor is proved as stated: `EqPrf.pred_succ` and `EqPrf.pred_zero` in a calculus of equations with hypothesis, the two computations, one-template transport and equation induction only (`EqPred`), each Boolean split replaced by an equation case. The names follow the coverage packet of the packages: the name of `P(y)` by cases, used at `S t`. Not formalized: the deterministic selection (always the newest parameter, `0` in an empty scope) with its regeneration of proofs under scope extensions; the seven-rule diagonal variant, the one-bit clause calculus and the guarded calculus with that selection; the checker measurements. |
 | `conditional_copy`, `single_constructor` | Not formalized: both are stated on the counter-aware recursor on normal forms, a term syntax that is not formalized here. |
+| `orbit_closure` | Its rule Orbit, in native form, is a derived rule of the kernel: `NPrf.orbit` concludes the closure `Q_y (f(y) = I(y, f(0); u.h))` from `f(S z) = h(f(z))`, with no target term, and `NPrf.uniq` is now `NPrf.orbit` followed by `QE` (`NativeUniqueness`). Not formalized: the converse (Orbit recovers equation induction), successor-only uniqueness, the translator and the audit. |
 | `progress_independence`, `orbit_closure`, `crossed_uniqueness`, `inferred_major`, `smaller_envelope`, `checked_presentation`, `context_phase`, `frontier_review` | Filed on 2026-11-12; the comparison with the Lean development is in progress. `progress_independence` answers further question 1 in writing (QI by progress is independent, by a tower of ultrapowers); it is not formalized. |
 | `register_graph` | Not formalized. It is a different term language (`J` with two bound variables) over ordinary logic, so it would need a second bi-interpretation with iPRA from scratch. |
 

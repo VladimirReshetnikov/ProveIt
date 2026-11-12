@@ -1,0 +1,3910 @@
+\chapter{Refinements of the eight rules}
+\label{prov:ch:kern}
+\label{kern:ch}
+
+The native scalar core $\Nat$ has eight rules (\cref{base:sec:kernel}).  This
+chapter collects the changes of that rule basis which keep the language of
+equations, $\Q{}$ and $\D{}{}$ as it is: there are no clause contexts, no
+restricted class of public formulas and, with the one exception of the
+calculus $\mathsf{U}_{\mathrm{c}}$ in \cref{kern:sec:urforms}, no normal
+forms of terms.  The changes fall into four groups.  \Cref{kern:sec:intro} treats the two
+introduction rules: progress may introduce a closure directly or through a
+witnessed $\D{}{}$, and the two introductions may be merged into one rule
+whose mode is read off the matrix and the witness.  \Cref{kern:sec:transport}
+treats the transport rule: the number of templates, the crossing of the
+conclusion, the exclusion of the literal $0$ as a source, the reversal of the
+root equation, replacement with no template, and replacement of a single
+occurrence.  \Cref{kern:sec:uniq} replaces induction for equations by
+uniqueness of iteration.  \Cref{kern:sec:prog} changes the reading of $\Q{}$
+at a literal equation to progressivity and presents the seven-rule calculi
+that result.  \Cref{kern:sec:recursors} records two results on recursors other
+than the iterator, which two of the packages prove on the side.
+
+Every calculus of \cref{kern:sec:intro,kern:sec:transport,kern:sec:uniq}
+derives exactly the sequents of $\Nat$, on the same formulas.  The calculi of
+\cref{kern:sec:prog} do not; they are equivalent to $\Nat$ through a pair of
+translations with both formula round trips.  \Cref{kern:tab:calculi} at the
+end of \cref{kern:sec:prog} lists all calculi of the chapter.
+
+% ---------------------------------------------------------------------
+\section{Conventions and the comparison method}
+\label{kern:sec:conv}
+
+This section fixes what all thirteen packages of the chapter restate before
+their own results; it draws on no package in particular.
+
+The rules of $\Nat$ are named as in \cref{base:sec:kernel}: \rulename{Hyp},
+\rulename{I0}, \rulename{IS}, \rulename{Tr}, \rulename{QE}, \rulename{DE},
+\rulename{DI} (introduction of $\D{}{}$ by cases) and \rulename{QI}
+(introduction of $\Q{}$ by progress at a literal equation).  A \emph{term
+template} $h(v)$ is a term with a designated variable $v$, which may occur
+several times, once, or not at all; in the last case the template is
+\emph{constant}.  An \emph{equation template} is $a(v)=b(v)$ for two term
+templates, and a \emph{formula template} $F(v)$ is a native formula with a
+designated variable.  The sign $\equiv$ is identity of syntax (up to the
+names of bound variables), so that $s\not\equiv 0$ says that $s$ is not the
+term $0$.  This is a test on syntax and not on values:
+$\It{0}{0}{u}{0}\not\equiv 0$, although the term equals $0$ by \rulename{I0}.
+A formula is \emph{compound} if it is not a literal equation, that is, if its
+root is $\Q{}$ or $\D{}{}$.  Substitution preserves the root of a formula and
+may change whether a term is the literal $0$ or a literal successor.
+
+All calculi of the chapter have the terms of \cref{base:sec:terms}, the
+formulas of \cref{base:sec:reading}, finite lists of formulas as contexts, and
+the rules \rulename{Hyp}, \rulename{I0}, \rulename{IS} and \rulename{DE} in
+their forms of \cref{base:sec:kernel}.  A rule inventory below therefore
+names these four rules and displays the others.  The one exception is the
+calculus $\mathsf{U}_{\mathrm{c}}$ of \cref{kern:def:Uc}, which is stated on
+normal terms and has reflexivity in place of the two computation equations.
+Derivability in a calculus
+$\mathsf{X}$ is written $\proves_{\mathsf{X}}$, and $\proves$ without a
+subscript is derivability in $\Nat$.
+
+\begin{definition}[Equivalence on the same formulas]
+\label{kern:def:equiv}
+Two calculi $\mathsf{X}$ and $\mathsf{Y}$ on the native language are
+\emph{equivalent} if $\Gamma\proves_{\mathsf{X}}A$ holds exactly when
+$\Gamma\proves_{\mathsf{Y}}A$ holds, for every context $\Gamma$ and every
+native formula $A$.
+\end{definition}
+
+The equivalence is about sequents with arbitrary contexts and arbitrary
+formulas, not about closed equations.  It is always proved by two translations
+of derivations that copy the common rules and replace each instance of a
+changed rule by a fixed finite derivation; the translations are effective and
+leave terms, formulas, contexts and conclusions unchanged.
+
+\begin{proposition}[Transfer of the bridge]
+\label{kern:prop:transfer}
+Let $\mathsf{X}$ be equivalent to $\Nat$.  Then every statement of
+\cref{base:thm:bridge} holds for $\mathsf{X}$ with the same translations:
+$\mathsf{X}$, $\Teq$ and $\iPRA$ are bi-interpretable with whole domains,
+actual equality and identity numerical composites, both formula round trips
+hold, and $\proves_{\mathsf{X}}0=\Suc 0$ holds exactly when $\iPRA$ is
+inconsistent.  Weakening, substitution of terms, cut and the Leibniz rule are
+admissible in $\mathsf{X}$.
+\end{proposition}
+
+\begin{proof}
+The statements of \cref{base:thm:bridge,base:sec:structural} about $\Nat$ are
+statements about its derivable sequents, and $\mathsf{X}$ has the same
+derivable sequents.
+\end{proof}
+
+Each package of the chapter restates this transfer for its own calculus; it
+is not repeated below.  The last sentence of the proposition concerns the
+consequence relation of $\mathsf{X}$.  Whether an operation maps each rule
+instance to an instance of the same rule is a different question.
+
+\begin{lemma}[Structural operations by direct induction]
+\label{kern:lem:struct}
+In every calculus of this chapter, weakening of the context, injective
+renaming of free variables, and cut are admissible by a direct induction on
+derivations.  Substitution of terms for variables maps rule instances to rule
+instances of the same rule in a calculus none of whose side conditions tests
+a term for being the literal $0$, a literal successor or a syntactic match of
+another term.
+\end{lemma}
+
+\begin{proof}
+The side conditions of the rules below are of four kinds: freshness of an
+eigenvariable; a test on the root of the matrix; a test whether a term of the
+instance is the literal $0$ or a literal successor; and, for one rule, a
+syntactic match of subterms.  An injective renaming preserves all four.  For
+weakening, rename the eigenvariables of the derivation away from the added
+formulas and keep the added formulas in every context; each inference is
+still an instance of its rule with the same terms.  For cut, let
+$\Gamma\proves_{\mathsf{X}}A$ and $\Gamma,A\proves_{\mathsf{X}}C$.  Rename
+the eigenvariables of the second derivation away from the first, and replace
+every use of \rulename{Hyp} for the assumption $A$ by the first derivation,
+weakened by the local assumptions.  No term of an inference changes, so every
+side condition is preserved.  For substitution the first two kinds of side
+condition are preserved after a renaming of eigenvariables, as in the proof
+for $\Nat$ in \cref{base:sec:structural}; the last two kinds need not be.
+\end{proof}
+
+Several derived rules of \cref{base:sec:structural} use only part of $\Nat$,
+and they are used in that form.
+
+\begin{lemma}[Derived rules and the rules they use]
+\label{kern:lem:local}
+Let $\mathsf{X}$ be a calculus of this chapter.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $\mathsf{X}$ contains \rulename{QE} and \rulename{DI}, then
+ $\mathsf{X}$ derives: $\D{x}{y}B\dashv\vdash\Q{y}B$ for
+ $x\notin\FV(B)$; the introduction of $\Q{y}B$ by cases, from
+ $\Gamma,B(0)\proves B(\Suc z)$ with $z$ fresh, for an arbitrary matrix $B$;
+ numerical cases, from $\Gamma\proves B(0)$ and $\Gamma\proves B(\Suc z)$
+ with $z$ fresh to $\Gamma\proves B(t)$; and $\D{x}{y}B(x,y)$ from
+ $\Q{y}B(t,y)$.
+\item If $\mathsf{X}$ contains \rulename{QE} and \rulename{QI}, then
+ $\mathsf{X}$ derives equation induction: from $\Gamma\proves E(0)$ and
+ $\Gamma,E(z)\proves E(\Suc z)$, with $E$ a literal equation and $z$ fresh,
+ to $\Gamma\proves E(t)$.
+\item If $\mathsf{X}$ contains \rulename{Tr}, then $\mathsf{X}$ derives
+ reflexivity, symmetry, transitivity, congruence in every term template, and
+ transport in an equation template, from $s=t$ and $a(s)=b(s)$ to
+ $a(t)=b(t)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+The derivations of these rules in \cref{base:sec:structural} use
+\rulename{Hyp}, \rulename{DE}, weakening and the rules named in each item;
+for (iii) they use \rulename{I0} and \rulename{Tr} alone.
+\end{proof}
+
+In (iii) each of the four equality rules is one application of
+\rulename{Tr}, and transport in an equation template is two.  Symmetry needs
+a constant template: \rulename{Tr} with the template $h(v)\defeq s$, any
+derivable equation as its first premise and $s=t$ as its second premise
+concludes $t=s$.
+
+% ---------------------------------------------------------------------
+\section{The introduction rules}
+\label{kern:sec:intro}
+
+This section draws on \pkg{direct\_closure}, \pkg{direct\_closure\_qprogress}
+and \pkg{witness\_rule}, and on the obstruction section of
+\pkg{reversal\_core}.
+
+\subsection{Progress through a witness and progress at the closure}
+\label{kern:sec:direct}
+
+The reports state induction for equations as an introduction of $\D{}{}$
+with a witness:
+\[
+ \infrule{\Gamma,\ E(t,z)\proves E(t,\Suc z)}
+         {\Gamma\proves\D{x}{y}E(x,y)}\ \rulename{DP}
+ \qquad(E\text{ a literal equation}),
+\]
+where $z$ is not free in $\Gamma$, in $t$ or in $\D{x}{y}E$.
+
+\begin{definition}
+\label{kern:def:ND}
+$\Nat_{\mathrm{D}}$ is the calculus with the rules \rulename{Hyp},
+\rulename{I0}, \rulename{IS}, \rulename{Tr}, \rulename{QE}, \rulename{DE},
+\rulename{DI} and \rulename{DP}.  It is $\Nat$ with \rulename{QI} replaced by
+\rulename{DP}.
+\end{definition}
+
+The rule \rulename{DP} has a matrix in two variables and a witness term; the
+rule \rulename{QI} has a matrix in one variable and no witness.
+
+\begin{theorem}[Direct closure]
+\label{kern:thm:direct}
+$\Nat_{\mathrm{D}}$ and $\Nat$ are equivalent.  The proof uses only the
+rules \rulename{Hyp}, \rulename{QE}, \rulename{DE}, \rulename{DI} and
+weakening; it holds for any common set of further rules for which weakening
+and renaming are admissible.
+\end{theorem}
+
+\begin{proof}
+All rules but one are common.  \emph{\rulename{QI} in $\Nat_{\mathrm{D}}$.}
+Let $\Gamma,E(z)\proves E(\Suc z)$ be the translated premise.  Choose a
+variable $x$ not free in $E$ and $\Gamma$.  The rule \rulename{DP} with the
+matrix $E(y)$, in which the coordinate $x$ is not used, and the witness $0$
+has exactly this premise and concludes $\Gamma\proves\D{x}{y}E(y)$.  Apply
+\rulename{DE} with a fresh $b$: the opened hypothesis is $\Q{y}E(y)$, because
+$x$ does not occur in $E$, and the second premise
+$\Gamma,\Q{y}E(y)\proves\Q{y}E(y)$ is \rulename{Hyp}.  The conclusion is
+$\Gamma\proves\Q{y}E(y)$.
+
+\emph{\rulename{DP} in $\Nat$.}  Let $\Gamma,E(t,z)\proves E(t,\Suc z)$ be the
+translated premise.  The formula $E(t,y)$ is a literal equation in $y$ with
+$t$ as a parameter, and $z$ is not free in $t$, so \rulename{QI} gives
+$\Gamma\proves\Q{y}E(t,y)$.  Let $w$ be fresh.  Over $\Gamma,E(t,0)$,
+weakening and \rulename{QE} at $\Suc w$ give $E(t,\Suc w)$.  This is the
+premise of \rulename{DI} with the witness $t$, which concludes
+$\Gamma\proves\D{x}{y}E(x,y)$.  No equality rule, no computation equation and
+no substitution into the given premise is used.
+\end{proof}
+
+\begin{proposition}[Node counts]
+\label{kern:prop:nodes}
+Count every instance of a rule as one node.  A derivation of $\Nat$ with $n$
+nodes, $r$ of them instances of \rulename{QI}, translates to a derivation of
+$\Nat_{\mathrm{D}}$ with $n+2r\le 3n$ nodes.  A derivation of
+$\Nat_{\mathrm{D}}$ with $n$ nodes, $r$ of them instances of \rulename{DP},
+translates to a derivation of $\Nat$ with $n+3r\le 4n$ nodes.
+\end{proposition}
+
+\begin{proof}
+An instance of \rulename{QI} becomes \rulename{DP}, \rulename{DE} and
+\rulename{Hyp} over the same premise.  An instance of \rulename{DP} becomes
+\rulename{QI}, \rulename{QE}, \rulename{Hyp} and \rulename{DI} over the same
+premise.  Each premise derivation is used once, and weakening and renaming do
+not change the number of nodes.
+\end{proof}
+
+The bounds count nodes of the inference tree; they do not bound the size of
+formulas, of serialized certificates or of a checker.
+
+\begin{remark}[Sources]
+\label{kern:rem:direct-sources}
+\pkg{direct\_closure} and \pkg{direct\_closure\_qprogress} are two
+independent accounts of \cref{kern:thm:direct,kern:prop:nodes}, with the same
+two constructions and the same counts; the second contains the proof twice,
+once as a proof note and once as an audit.  Both state the calculi with
+transport in a formula template in place of \rulename{Tr}, which the theorem
+permits.  Both stress that the rule \rulename{QI} was a derived rule of the
+calculus before it was taken as primitive, so that the change is one of the
+choice of primitives.  Their example is $F(n)\defeq\It{n}{0}{u}{\Suc u}$ with
+the equation $F(y)=y$: with transport in a formula template the derivation of
+$F(n)=n$ by \rulename{QI} and \rulename{QE} has six nodes, its translation to
+$\Nat_{\mathrm{D}}$ has eight, and the translation of that back has eleven.
+In Lean the rule \rulename{QI} is the constructor \Lean{qIInd} of the kernel,
+adopted from these packages, and \rulename{DP} is the derived rule
+\Lean{NPrf.dIProg}; the equivalence of the calculus of the reports, with
+\rulename{DP} and transport in a formula template, is \Lean{iprf\_iff\_nprf}.
+\end{remark}
+
+\subsection{One closure introduction with a mode read off the matrix}
+\label{kern:sec:det}
+
+For a matrix $B(y)$ and a variable $z$ put $\eta_B(z)\defeq z$ if $B$ is a
+literal equation and $\eta_B(z)\defeq 0$ if $B$ is compound.
+
+\begin{definition}
+\label{kern:def:Ndet}
+$\Nat_{\det}$ is $\Nat$ with \rulename{QI} replaced by
+\[
+ \infrule{\Gamma,\ B(\eta_B(z))\proves B(\Suc z)}
+         {\Gamma\proves\Q{y}B(y)}\ \rulename{QI}_{\eta},
+\]
+where $B$ is an arbitrary native formula and $z$ is not free in $\Gamma$ and
+$\Q{y}B$.  Its rules are \rulename{Hyp}, \rulename{I0}, \rulename{IS},
+\rulename{Tr}, \rulename{QE}, \rulename{DE}, \rulename{DI} and
+$\rulename{QI}_{\eta}$.
+\end{definition}
+
+A certificate for $\rulename{QI}_{\eta}$ carries no choice between cases and
+progress: the root of the matrix decides.
+
+\begin{corollary}
+\label{kern:cor:det}
+$\Nat_{\det}$, $\Nat$ and $\Nat_{\mathrm{D}}$ are equivalent, and the bounds
+of \cref{kern:prop:nodes} hold between $\Nat_{\det}$ and $\Nat_{\mathrm{D}}$.
+\end{corollary}
+
+\begin{proof}
+At a literal equation $\rulename{QI}_{\eta}$ is \rulename{QI}.  At a compound
+matrix it is the introduction of $\Q{}$ by cases, which is derivable in $\Nat$
+by \cref{kern:lem:local}(i): \rulename{DI} with an unused coordinate and the
+witness $0$, then \rulename{DE} and \rulename{Hyp}.  This is the same
+three-node construction as in \cref{kern:thm:direct}, with \rulename{DI} in
+place of \rulename{DP}.  Conversely $\Nat_{\det}$ contains \rulename{QI}.
+\end{proof}
+
+The introduction of $\Q{y}E$ by cases for a literal equation $E$ is not an
+instance of $\rulename{QI}_{\eta}$, and it remains derivable through
+\rulename{DI} and \rulename{DE}.  For example $\Q{y}(y=1)$ is derivable in
+all three calculi from the premise $0=1\proves\Suc z=1$ of the introduction
+by cases, while the premise $z=1\proves\Suc z=1$ of progress is not
+derivable.
+
+\subsection{What cannot be removed from the introductions}
+\label{kern:sec:introlimits}
+
+\begin{proposition}[The guard of \rulename{QI}]
+\label{kern:prop:guard}
+If \rulename{QI} is allowed at every matrix, the resulting calculus derives
+induction for every native formula: from $\Gamma\proves B(0)$ and
+$\Gamma,B(z)\proves B(\Suc z)$ with $z$ fresh to $\Gamma\proves B(t)$.
+\end{proposition}
+
+\begin{proof}
+The unrestricted rule gives $\Gamma\proves\Q{y}B(y)$, and \rulename{QE} gives
+$B(t)$.
+\end{proof}
+
+Through the native connectives of \cref{base:sec:structural} this is
+induction for every first-order formula, and the bridge of
+\cref{base:thm:bridge}, whose target has induction for quantifier-free
+formulas only, no longer applies.  The rule $\rulename{QI}_{\eta}$ avoids
+this by using the instance at zero at a compound matrix.
+
+\begin{proposition}[\rulename{DI} cannot be dropped]
+\label{kern:prop:nodi}
+Let $\Nat^{-}$ be $\Nat$ without \rulename{DI}, or $\Nat_{\det}$ without
+\rulename{DI}.  If no formula of $\Gamma$ has the root $\D{}{}$, then
+$\Nat^{-}$ derives from $\Gamma$ no formula with the root $\D{}{}$.  In
+particular $\Nat^{-}$ does not derive $\D{x}{y}(0=0)$, which $\Nat$ derives.
+\end{proposition}
+
+\begin{proof}
+Suppose a derivation of $\Gamma\proves_{\Nat^{-}}A$ with $A$ of root
+$\D{}{}$ and $\Gamma$ as stated, and take one with the least number of nodes.
+Its last rule is not \rulename{Hyp}, by the assumption on $\Gamma$; not a
+computation equation or \rulename{Tr}, whose conclusions are equations; and
+not an introduction of $\Q{}$, whose conclusion has the root $\Q{}$.  If it
+is \rulename{QE} with the conclusion $B(t)$, then its second premise
+$\Gamma\proves B(0)$ has the same root $\D{}{}$ and the same context, and a
+smaller derivation.  If it is \rulename{DE}, then its first premise
+$\Gamma\proves\D{x}{y}B$ has the root $\D{}{}$ and the same context, and a
+smaller derivation.  Both contradict minimality.  In $\Nat$ the formula
+$\D{x}{y}(0=0)$ follows by \rulename{DI} with the witness $0$ from the
+premise $0=0\proves 0=0$.
+\end{proof}
+
+The assumptions inside a subderivation of an introduction of $\Q{}$ do not
+affect the argument, because such an introduction is never the last rule of
+a derivation of a formula with the root $\D{}{}$.
+
+\begin{proposition}[\rulename{DI} cannot be restricted to compound matrices]
+\label{kern:prop:compoundonly}
+Restrict \rulename{DI} to compound matrices $B$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The calculus with \rulename{Hyp}, \rulename{I0}, \rulename{IS},
+ \rulename{Tr}, \rulename{QE}, \rulename{DE}, \rulename{QI} and the
+ restricted \rulename{DI} does not derive $\D{x}{y}(0=0)$.
+\item The calculus with \rulename{Hyp}, \rulename{I0}, \rulename{IS},
+ \rulename{Tr}, \rulename{QE}, \rulename{DE}, \rulename{DP} and the
+ restricted \rulename{DI} does not derive $\D{x}{y}(y=1)$.
+\end{enumerate}
+Both formulas are derivable in $\Nat$.  The statements remain true with
+transport in a formula template in place of \rulename{Tr}.
+\end{proposition}
+
+\begin{proof}
+Both parts interpret terms in the standard natural numbers, equations as
+equality and $\Q{y}B$ by its ordinary reading, and give a formula
+$\D{x}{y}B$ with a compound matrix its ordinary reading.  The interpretation
+of a formula $\D{x}{y}E$ with a literal equation $E$ is changed.  It commutes
+with substitution, because substitution preserves the root of a matrix, and
+truth of a sequent means that every assignment satisfying the context
+satisfies the conclusion.
+
+(i) Let $\D{x}{y}E$ be false for every literal equation $E$.  The rules
+\rulename{Hyp}, \rulename{I0}, \rulename{IS}, transport and \rulename{QE}
+preserve truth as they do for the ordinary reading.  \rulename{QI} preserves
+truth by induction on the natural numbers.  \rulename{DE} at an atomic matrix
+has a false first premise, and at a compound matrix it is the elimination of
+an existential quantifier.  The restricted \rulename{DI} preserves truth
+because every natural number is zero or a successor.  The formula
+$\D{x}{y}(0=0)$ is false.
+
+(ii) Let $\D{x}{y}E$ mean
+$\exists x\,\forall y\,\bigl(E(x,y)\to E(x,\Suc y)\bigr)$ for a literal
+equation $E$.  \rulename{DP} preserves truth: its premise states the
+progress of $E(t,y)$, and $t$ is a witness.  \rulename{DE} at an atomic
+matrix preserves truth: if $\forall y\,(E(b,y)\to E(b,\Suc y))$ holds, then
+$E(b,0)\to\forall y\,E(b,y)$ holds by induction on the natural numbers, and
+this is the reading of the opened hypothesis $\Q{y}E(b,y)$.  The other rules
+preserve truth as in (i).  The formula $\D{x}{y}(y=1)$ is false, because at
+$y=1$ the equation $1=1$ holds and $2=1$ does not.
+
+In $\Nat$, $\D{x}{y}(0=0)$ is derived in \cref{kern:prop:nodi}, and
+$\D{x}{y}(y=1)$ follows by \rulename{DI} with the witness $0$ from
+$0=1\proves\Suc z=1$, which holds because $0=1$ derives every equation
+(\cref{base:sec:structural}).
+\end{proof}
+
+\begin{remark}[Sources]
+\label{kern:rem:limits-sources}
+\Cref{kern:prop:guard,kern:prop:nodi} are from
+\pkg{direct\_closure\_qprogress}; \pkg{direct\_closure} states the first.
+\Cref{kern:prop:compoundonly}(i) is the obstruction section of
+\pkg{reversal\_core}.  Part (ii) is stated in
+\pkg{direct\_closure\_qprogress} with the interpretation and a reference to
+an earlier package for the verification of the rules.
+% ed.: the verification of the rules under the progressive interpretation is
+% written out here; the package gives the interpretation and the falsified
+% instance only.
+\pkg{direct\_closure\_qprogress} also recalls why the ordinary theory $\Teq$
+needs its coverage axiom: the product of two copies of the standard model,
+with all operations coordinatewise, satisfies the computation equations,
+separation and induction for equations, because the solution set of an
+equation is a product $U_0\times U_1$, the base puts $0$ into both factors,
+and the step applied at $(r,0)$ and at $(0,r)$ closes each factor under
+successor; and the element $(0,1)$ is neither zero nor a successor.
+\end{remark}
+
+\subsection{One introduction with a mode read off the matrix and the witness}
+\label{kern:sec:witness}
+
+The two introductions \rulename{DI} and \rulename{QI} can be replaced by one
+introduction of $\D{}{}$.  For a matrix $B(x,y)$, a witness $t$ and a
+variable $z$ put
+\[
+ \eta_{B,t}(z)\defeq
+ \begin{cases}
+  z, & B\text{ is a literal equation and }t\equiv 0,\\
+  0, & \text{otherwise.}
+ \end{cases}
+\]
+
+\begin{definition}[The calculus $\mathsf{W}$]
+\label{kern:def:W}
+$\mathsf{W}$ has the seven rules \rulename{Hyp}, \rulename{I0},
+\rulename{IS}, \rulename{Tr}, \rulename{QE}, \rulename{DE} and
+\[
+ \infrule{\Gamma,\ B(t,\eta_{B,t}(z))\proves B(t,\Suc z)}
+         {\Gamma\proves\D{x}{y}B(x,y)}\ \rulename{DI}_{\mathrm{w}},
+\]
+where $z$ is not free in $\Gamma$, in $t$ or in $\D{x}{y}B$.
+\end{definition}
+
+The rule selects progress exactly when the matrix is a literal equation and
+the witness is the literal $0$, and cases otherwise.  A witness such as
+$\It{0}{0}{u}{0}$, which equals $0$, selects cases.  The calculus has no rule
+that introduces $\Q{}$.
+
+\begin{lemma}[A second name for zero]
+\label{kern:lem:alias}
+Let $c\defeq\It{0}{0}{u}{0}$.  Every calculus containing \rulename{I0} and
+\rulename{Tr} derives $c=0$ and $0=c$, and $c\not\equiv 0$.
+\end{lemma}
+
+\begin{proof}
+$c=0$ is an instance of \rulename{I0}, and $0=c$ follows by symmetry
+(\cref{kern:lem:local}(iii)).
+\end{proof}
+
+\begin{theorem}[Witness-selected introduction]
+\label{kern:thm:witness}
+$\mathsf{W}$ and $\Nat$ are equivalent.
+\end{theorem}
+
+\begin{proof}
+\emph{From $\mathsf{W}$ to $\Nat$.}  An instance of
+$\rulename{DI}_{\mathrm{w}}$ in the mode of cases is an instance of
+\rulename{DI}.  An instance in the mode of progress has a literal equation
+$E(x,y)$ as its matrix, the witness $0$ and the premise
+$\Gamma,E(0,z)\proves E(0,\Suc z)$; it is an instance of \rulename{DP} with
+the witness $0$, which $\Nat$ derives by \cref{kern:thm:direct}.
+
+\emph{From $\Nat$ to $\mathsf{W}$.}  The rule \rulename{QI} with the premise
+$\Gamma,E(z)\proves E(\Suc z)$: choose $x$ not free in $E$ and $\Gamma$.  The
+rule $\rulename{DI}_{\mathrm{w}}$ with the matrix $E(y)$ and the witness $0$
+is in the mode of progress, has this premise and concludes
+$\D{x}{y}E(y)$; \rulename{DE} and \rulename{Hyp} give $\Q{y}E(y)$ as in
+\cref{kern:thm:direct}.
+
+The rule \rulename{DI} with a compound matrix, or with a witness
+$t\not\equiv 0$, is an instance of $\rulename{DI}_{\mathrm{w}}$.  There
+remains \rulename{DI} with a literal equation $E(x,y)$ as its matrix and the
+witness $0$.  Let
+\[
+ \pi\colon\quad\Gamma,\ E(0,0)\proves_{\mathsf{W}}E(0,\Suc z)
+\]
+be the translated premise, with $z$ fresh.  Work over $\Gamma,E(c,0)$ with
+$c$ as in \cref{kern:lem:alias}.  Transport in the equation template $E(v,0)$
+along $c=0$ gives $E(0,0)$ (\cref{kern:lem:local}(iii)).  Cut with $\pi$,
+which is admissible in $\mathsf{W}$ by \cref{kern:lem:struct}, gives
+$E(0,\Suc z)$.  Transport in the equation template $E(v,\Suc z)$ along $0=c$
+gives $E(c,\Suc z)$.  Hence
+$\Gamma,E(c,0)\proves_{\mathsf{W}}E(c,\Suc z)$.  Since $c\not\equiv 0$, the
+rule $\rulename{DI}_{\mathrm{w}}$ with the witness $c$ is in the mode of
+cases and has exactly this premise.  It concludes $\D{x}{y}E(x,y)$; the
+conclusion does not record the witness.
+\end{proof}
+
+The construction changes an assumption by a derived transport and a cut.  It
+does not substitute a term into the derivation $\pi$, so it cannot change the
+mode of an introduction inside $\pi$.
+
+\begin{remark}[Substitution in $\mathsf{W}$]
+\label{kern:rem:wsubst}
+A substitution can turn a witness that is a variable into the literal $0$,
+and then an instance of $\rulename{DI}_{\mathrm{w}}$ in the mode of cases is
+mapped to a sequent that is not the premise of an instance in the mode of
+progress.  Substitution is admissible in $\mathsf{W}$ by
+\cref{kern:prop:transfer}, through $\Nat$, and is not obtained by a direct
+induction on the derivations of $\mathsf{W}$.  For this reason the Lean
+kernel keeps the two introductions of $\Nat$.
+\end{remark}
+
+\begin{remark}[Sources and variants]
+\label{kern:rem:witness-sources}
+\Cref{kern:thm:witness} is the theorem of \pkg{witness\_rule}; in Lean it is
+\Lean{wprf\_iff\_nprf}, for the calculus \Lean{WPrf}.  The package compares
+$\mathsf{W}$ with the calculus that has \rulename{DI} and \rulename{DP}, so
+its proof has four cases: \rulename{DI} repeated; \rulename{DI} at an
+equation with the witness $0$, as above; \rulename{DP} with the witness $0$
+repeated; and \rulename{DP} with a witness $t\not\equiv 0$, which is the
+second construction of \cref{kern:thm:direct} with the inner closure
+introduced through an unused coordinate.  The package works with a
+restricted inventory of computation instances and therefore uses
+$\It{2}{1}{u}{0}$ as its second name for zero; that inventory is treated in
+\cref{kern:lem:comprepair}.
+
+The argument does not use any property of the number zero in the witness
+coordinate.  If $p$ is a closed term and $q\not\equiv p$ is a closed term
+with $p=q$ and $q=p$ derivable from the common rules, then progress may be
+selected exactly at the witness $p$: an introduction by cases at $p$ is
+repaired at the witness $q$, and every auxiliary introduction with an unused
+coordinate takes the witness $p$.  The coordinate $y$ of the induction still
+starts at $0$.  The literal $0$ is chosen because it is the cheapest witness
+to recognize.
+
+\pkg{one\_context} states the same calculus with the two-template transport
+of \cref{kern:sec:templates} replaced by \rulename{Tr} and calls it
+$\mathcal{O}_7$; since $\Nat$ already has \rulename{Tr}, its calculus is
+$\mathsf{W}$ as defined here.
+\end{remark}
+
+% ---------------------------------------------------------------------
+\section{The transport rule}
+\label{kern:sec:transport}
+
+This section draws on \pkg{one\_context}, \pkg{one\_sided\_transport},
+\pkg{reversal\_core}, \pkg{source\_dispatch}, \pkg{template\_free} and the
+note on single occurrences in \pkg{kernel\_refinement}.
+
+Throughout the section $J(a)\defeq\It{0}{a}{u}{0}$ and $c\defeq J(0)$.  The
+equation $J(a)=a$ is an instance of \rulename{I0}, and $J(a)\not\equiv 0$ for
+every term $a$; in particular $c=0$ is an instance of \rulename{I0} and
+$c\not\equiv 0$.
+
+\subsection{One template, two templates, a formula template}
+\label{kern:sec:templates}
+
+The rule \rulename{Tr} of $\Nat$ has one term template and a crossed
+conclusion: from $s=t$ and $h(s)=r$ it infers $r=h(t)$.  The reports use two
+stronger forms,
+\[
+ \infrule{\Gamma\proves s=t\qquad\Gamma\proves a(s)=b(s)}
+         {\Gamma\proves a(t)=b(t)}\ \rulename{Tr}_{2}
+ \qquad\qquad
+ \infrule{\Gamma\proves s=t\qquad\Gamma\proves F(s)}
+         {\Gamma\proves F(t)}\ \rulename{Tr}_{F},
+\]
+with two term templates $a(v)$, $b(v)$ and with a native formula template
+$F(v)$.
+
+\begin{definition}
+\label{kern:def:N2}
+$\Nat_{2}$ is $\Nat$ with \rulename{Tr} replaced by $\rulename{Tr}_{2}$, and
+$\Nat_{F}$ is $\Nat$ with \rulename{Tr} replaced by $\rulename{Tr}_{F}$.  Each
+has the rules \rulename{Hyp}, \rulename{I0}, \rulename{IS}, its transport
+rule, \rulename{QE}, \rulename{DE}, \rulename{DI} and \rulename{QI}.
+\end{definition}
+
+\begin{theorem}[One term template suffices]
+\label{kern:thm:onecontext}
+$\Nat$, $\Nat_{2}$ and $\Nat_{F}$ are equivalent.  An instance of
+$\rulename{Tr}_{2}$ is simulated in $\Nat$ by two instances of \rulename{Tr}
+with the same first premise.  An instance of \rulename{Tr} is simulated in
+$\Nat_{2}$ by one instance of $\rulename{Tr}_{2}$ with a constant second
+template, followed by symmetry.
+\end{theorem}
+
+\begin{proof}
+\emph{$\rulename{Tr}_{2}$ in $\Nat$.}  \rulename{Tr} with the template $a$,
+applied to $s=t$ and $a(s)=b(s)$, gives $b(s)=a(t)$.  \rulename{Tr} with the
+template $b$, applied to $s=t$ and $b(s)=a(t)$, gives $a(t)=b(t)$; the term
+$a(t)$ is the fixed side of the second step.
+
+\emph{\rulename{Tr} in $\Nat_{2}$.}  First, $\Nat_{2}$ derives reflexivity and
+symmetry: $\rulename{Tr}_{2}$ with the templates $v$ and $a$, applied to
+$J(a)=a$ and $J(a)=a$, gives $a=a$; and $\rulename{Tr}_{2}$ with the
+templates $v$ and $s$, applied to $s=t$ and $s=s$, gives $t=s$.  Now let
+$s=t$ and $h(s)=r$ be given.  $\rulename{Tr}_{2}$ with the templates $h(v)$
+and the constant $r$ gives $h(t)=r$, and symmetry gives $r=h(t)$.
+
+\emph{$\Nat_{F}$.}  An instance of $\rulename{Tr}_{2}$ is the instance of
+$\rulename{Tr}_{F}$ at the template $a(v)=b(v)$, so $\Nat_{F}$ derives every
+sequent of $\Nat_{2}$.  Conversely $\rulename{Tr}_{F}$ is a derived rule of
+$\Nat$, by the Leibniz rule of \cref{base:sec:structural}.
+
+In each direction the seven other rules are copied, so the induction on
+derivations applies to open sequents and to premises under both binders.
+\end{proof}
+
+The crossing of the conclusion is what makes two successive replacements in
+one template reproduce a simultaneous replacement in both sides of an
+equation.  The rule \rulename{Tr} has no side condition, so substitution maps
+its instances to instances (\cref{kern:lem:struct}).
+
+\begin{remark}[Size of the simulation]
+\label{kern:rem:dag}
+The simulation of $\rulename{Tr}_{2}$ uses the derivation of $s=t$ twice.  A
+proof represented as a directed acyclic graph shares it; a proof represented
+as a tree copies it, and repeated translation can enlarge a tree
+substantially.  No linear bound on the size of translated trees is claimed
+in \pkg{one\_context} or \pkg{one\_sided\_transport}.
+\end{remark}
+
+\begin{remark}[Sources]
+\label{kern:rem:onecontext-sources}
+The comparison of $\Nat$ with $\Nat_{2}$ is the theorem of
+\pkg{one\_context}, whose reference calculus is $\Nat_{2}$.  In Lean the rule
+\rulename{Tr} is the constructor \Lean{NPrf.trOne} of the kernel, adopted
+from that package, and $\rulename{Tr}_{2}$ is the derived rule
+\Lean{NPrf.trEq}.  The comparison with $\Nat_{F}$ is the remark on the
+calculus of the reports in \cref{base:sec:kernel}.
+\end{remark}
+
+\subsection{Sources other than the literal zero}
+\label{kern:sec:onesided}
+
+Let $\rulename{Tr}^{-}$ be the rule \rulename{Tr} with the side condition
+$s\not\equiv 0$ on the left side of its first premise, the \emph{source}:
+\[
+ \infrule{\Gamma\proves s=t\qquad\Gamma\proves h(s)=r}
+         {\Gamma\proves r=h(t)}\ \rulename{Tr}^{-}
+ \qquad(s\not\equiv 0).
+\]
+Every variable and every term with the root $\Suc$ or $I$ is a permitted
+source, including terms whose value is zero.
+
+\begin{definition}[The calculi $\mathsf{O}$ and $\mathsf{M}$]
+\label{kern:def:OM}
+$\mathsf{O}$ is $\Nat$ with \rulename{Tr} replaced by $\rulename{Tr}^{-}$;
+its rules are \rulename{Hyp}, \rulename{I0}, \rulename{IS},
+$\rulename{Tr}^{-}$, \rulename{QE}, \rulename{DE}, \rulename{DI} and
+\rulename{QI}.  $\mathsf{M}$ is $\mathsf{W}$ with \rulename{Tr} replaced by
+$\rulename{Tr}^{-}$; its seven rules are \rulename{Hyp}, \rulename{I0},
+\rulename{IS}, $\rulename{Tr}^{-}$, \rulename{QE}, \rulename{DE} and
+$\rulename{DI}_{\mathrm{w}}$.
+\end{definition}
+
+\begin{lemma}[Equality from \rulename{I0} and $\rulename{Tr}^{-}$]
+\label{kern:lem:oseq}
+The following are derivable from \rulename{I0} and $\rulename{Tr}^{-}$ alone,
+over an arbitrary context.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Reflexivity: $a=a$.
+\item Symmetry: from $a=b$ to $b=a$, also when $a$ or $b$ is the literal
+ $0$.
+\item Restricted transport in an equation template: if $s\not\equiv 0$,
+ from $s=t$ and $a(s)=b(s)$ to $a(t)=b(t)$.
+\item Joining through zero: if $p\not\equiv 0$ and $q\not\equiv 0$, from
+ $p=0$ and $q=0$ to $p=q$.
+\item Transitivity: from $r=s$ and $s=t$ to $r=t$.
+\item Congruence: from $s=t$ to $f(s)=f(t)$, for every term template $f$.
+\item The rule \rulename{Tr} without the side condition.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) $\rulename{Tr}^{-}$ with the template $v$, applied to $J(a)=a$ and
+$J(a)=a$, gives $a=a$; the source is $J(a)\not\equiv 0$.
+
+(ii) $\rulename{Tr}^{-}$ with the constant template $a$, applied to $c=0$
+and $a=b$, gives $b=a$; the source is $c\not\equiv 0$.
+
+(iii) As in \cref{kern:thm:onecontext}: the two steps have the same first
+premise $s=t$.
+
+(iv) $\rulename{Tr}^{-}$ with the template $J(v)$, applied to $p=0$ and
+$J(p)=p$, gives $p=J(0)$, that is $p=c$.  In the same way $q=c$.  By (ii),
+$c=p$ and $c=q$.  $\rulename{Tr}^{-}$ with the template $v$, applied to
+$c=q$ and $c=p$, gives $p=q$.  The sources are $p$, $q$ and $c$.
+
+(v) If $s\not\equiv 0$, reverse $r=s$ by (ii) and apply $\rulename{Tr}^{-}$
+with the template $v$ to $s=t$ and $s=r$.  Let $s\equiv 0$.  If $r\equiv 0$,
+the second premise is the conclusion; if $t\equiv 0$, the first premise is.
+Otherwise $r\not\equiv 0$ and $t\not\equiv 0$, the premises are $r=0$ and,
+after (ii), $t=0$, and (iv) applies.
+
+(vi) If $s\not\equiv 0$, apply $\rulename{Tr}^{-}$ with the template $f$ to
+$s=t$ and $f(s)=f(s)$.  If $s\equiv 0$ and $t\not\equiv 0$, reverse the
+premise, obtain $f(t)=f(0)$ and reverse again.  If both sides are the
+literal $0$, use (i).
+
+(vii) From $s=t$ and $h(s)=r$: (vi) gives $h(s)=h(t)$, (ii) gives $r=h(s)$,
+and (v) gives $r=h(t)$.
+\end{proof}
+
+The case distinctions in this proof are on the syntax of the given terms and
+belong to the construction of the derivation.  The proof uses no induction,
+no numerical case distinction, no successor computation and no substitution
+into a derivation.  It uses the constant template in (ii) and the crossing
+of the conclusion in (ii) and (iv).
+
+\begin{proposition}[Retraction criterion]
+\label{kern:prop:retraction}
+Let a term language have a literal $0$ and a term context $J(v)$ such that
+$J(a)\not\equiv 0$ for every term $a$, and let $J(a)=a$ be available as an
+axiom scheme in every context.  Then the crossed rule restricted to sources
+other than the literal $0$ derives the crossed rule at all sources, and with
+it reflexivity, symmetry, transitivity, congruence and transport in an
+equation template.
+\end{proposition}
+
+\begin{proof}
+The proof of \cref{kern:lem:oseq} uses nothing else.
+\end{proof}
+
+\begin{theorem}[Transport at sources other than the literal zero]
+\label{kern:thm:onesided}
+$\mathsf{O}$, $\mathsf{M}$ and $\Nat$ are equivalent.
+\end{theorem}
+
+\begin{proof}
+Every instance of $\rulename{Tr}^{-}$ is an instance of \rulename{Tr}, and
+\rulename{Tr} is derivable in $\mathsf{O}$ and in $\mathsf{M}$ by
+\cref{kern:lem:oseq}(vii).  This proves the equivalence of $\mathsf{O}$ and
+$\Nat$.  For $\mathsf{M}$, the rule $\rulename{DI}_{\mathrm{w}}$ is derivable
+in $\Nat$ by \cref{kern:thm:witness}.  Conversely the proof of
+\cref{kern:thm:witness} derives \rulename{QI} and \rulename{DI} in
+$\mathsf{M}$: it uses $\rulename{DI}_{\mathrm{w}}$, \rulename{DE},
+\rulename{Hyp}, cut, which is admissible in $\mathsf{M}$ by
+\cref{kern:lem:struct}, the equations $c=0$ and $0=c$, and transport in an
+equation template along them, which $\mathsf{M}$ derives from \rulename{Tr}
+by \cref{kern:lem:local}(iii).
+\end{proof}
+
+\begin{remark}[Substitution and the choice of the kernel]
+\label{kern:rem:ossubst}
+Substituting $0$ for a variable can turn a permitted source into the literal
+$0$, so substitution does not map instances of $\rulename{Tr}^{-}$ to
+instances.  Substitution is admissible in $\mathsf{O}$ and $\mathsf{M}$ as an
+operation on derivable sequents (\cref{kern:prop:transfer}); what fails is
+the preservation of each rule instance.  \pkg{reversal\_core} makes the same
+correction to an earlier wording about the Lean calculus \Lean{ZPrf}.  The
+Lean kernel keeps unrestricted sources so that its substitution theorem is a
+direct induction.
+\end{remark}
+
+\begin{remark}[Sources]
+\label{kern:rem:onesided-sources}
+\Cref{kern:lem:oseq,kern:thm:onesided} are from \pkg{one\_sided\_transport},
+which calls $\mathsf{M}$ the calculus $\mathcal{C}$ and reserves the letter
+$\mathcal{M}$ for the same seven rules with $\rulename{Tr}_{2}$ at sources
+other than the literal $0$.  The package proves the equivalence twice: by
+simulating that two-template rule with \cref{kern:lem:oseq}(iii) and quoting
+an earlier equivalence, and directly as above.  In Lean the statement that
+\rulename{I0} and $\rulename{Tr}^{-}$ recover \rulename{Tr} is
+\Lean{OKernel.trOneF}, for the class \Lean{OKernel}; the equivalences are
+\Lean{oprf\_iff\_nprf} for $\mathsf{O}$ and \Lean{mprf\_iff\_nprf},
+\Lean{mprf\_iff\_iprf} for $\mathsf{M}$.  \Cref{kern:prop:retraction} is
+stated in \pkg{reversal\_core}.
+\end{remark}
+
+\subsection{Reversal of the root equation}
+\label{kern:sec:reversal}
+
+Define an operation on the root of a native formula:
+\[
+ (s=t)^{\dagger}\defeq(t=s),\qquad
+ (\Q{y}B)^{\dagger}\defeq\Q{y}B,\qquad
+ (\D{x}{y}B)^{\dagger}\defeq\D{x}{y}B .
+\]
+It does not descend into a matrix, it satisfies $A^{\dagger\dagger}=A$, and
+it commutes with substitution.
+
+\begin{definition}[The calculus $\mathsf{X}$]
+\label{kern:def:X}
+$\mathsf{X}$ has the eight rules \rulename{Hyp}, \rulename{I0},
+\rulename{IS}, \rulename{DE}, \rulename{DI}, \rulename{QI} and
+\begin{gather*}
+ \infrule{\Gamma\proves s=t\qquad\Gamma\proves F(s)}
+         {\Gamma\proves F(t)^{\dagger}}\ \rulename{TrX}
+ \quad(s\not\equiv 0),
+ \\[1.2ex]
+ \infrule{\Gamma\proves\Q{y}B(y)\qquad\Gamma\proves B(0)}
+         {\Gamma\proves B(t)^{\dagger}}\ \rulename{QX},
+\end{gather*}
+where $F(v)$ is an arbitrary native formula template, constant templates
+included.
+\end{definition}
+
+\begin{lemma}[Reversal]
+\label{kern:lem:reverse}
+If $\Gamma\proves_{\mathsf{X}}A$, then $\Gamma\proves_{\mathsf{X}}A^{\dagger}$.
+\end{lemma}
+
+\begin{proof}
+Apply \rulename{TrX} with the first premise $c=0$ and the constant template
+$F(v)\defeq A$.
+\end{proof}
+
+\begin{theorem}[Root-reversing eliminations]
+\label{kern:thm:reversal}
+$\mathsf{X}$ and $\Nat$ are equivalent.  The derivation of the rules of $\Nat$
+in $\mathsf{X}$ uses neither \rulename{IS} nor an introduction rule nor
+\rulename{DE}.
+\end{theorem}
+
+\begin{proof}
+\emph{From $\mathsf{X}$ to $\Nat$.}  For \rulename{TrX}, transport in the
+formula template $F$ (\cref{base:sec:structural}) gives $F(t)$; if $F(t)$ is
+an equation, symmetry gives $F(t)^{\dagger}$, and otherwise
+$F(t)^{\dagger}$ is $F(t)$.  For \rulename{QX}, use \rulename{QE} and the
+same step.
+
+\emph{From $\Nat$ to $\mathsf{X}$.}  The rule $\rulename{Tr}^{-}$ is the
+instance of \rulename{TrX} at the template $F(v)\defeq\bigl(h(v)=r\bigr)$,
+since $F(t)^{\dagger}$ is $r=h(t)$.  Hence \rulename{Tr} is derivable in
+$\mathsf{X}$ by \cref{kern:lem:oseq}(vii).  The rule \rulename{QE} is
+\rulename{QX} followed by \cref{kern:lem:reverse}; the two reversals cancel.
+The six other rules are common.  The constructions hold over arbitrary
+contexts, so they apply inside the premises of \rulename{DE} and of the two
+introductions.
+\end{proof}
+
+Only the equational instances of transport have to be recovered in
+$\mathsf{X}$; transport in a compound template is used in the other
+direction, where it is available.
+
+\begin{remark}[Sources]
+\label{kern:rem:reversal-sources}
+\Cref{kern:thm:reversal} is the theorem of \pkg{reversal\_core}, which proves
+the items of \cref{kern:lem:oseq} directly for \rulename{TrX}, with the
+templates $v=a$, $J(v)=p$, $r=v$ and $f(s)=f(v)$, and derives
+$\rulename{Tr}_{2}$ from them.  \pkg{one\_sided\_transport} observes that
+$\rulename{Tr}^{-}$ is the restriction of \rulename{TrX} to equations with
+one constant side, needs no reversal of arbitrary formulas and leaves
+\rulename{QE} unchanged.  In Lean the calculus $\mathsf{X}$ is the module
+\Lean{NativeReversal}, adopted from the package, with
+\Lean{rprf\_iff\_nprf}, \Lean{reversal\_iff\_pra} and
+\Lean{pra\_iff\_reversal}.  The package reports one comparison of proof
+sizes: a certificate of the same closed goal, symmetry of an equation with
+the source $0$, has 114 instruction packets and 5435 bytes when produced by
+the method of \cref{kern:sec:dispatch} and 37 packets and 1259 bytes when
+produced with reversal.
+\end{remark}
+
+\subsection{The same restriction for the uncrossed rule}
+\label{kern:sec:dispatch}
+
+For transport in a formula template with an uncrossed conclusion the
+restriction of the source is also harmless, but the proof needs an induction.
+Let
+\[
+ \infrule{\Gamma\proves s=t\qquad\Gamma\proves F(s)}
+         {\Gamma\proves F(t)}\ \rulename{Tr}_{F}^{-}
+ \qquad(s\not\equiv 0).
+\]
+
+\begin{definition}[The calculus $\mathsf{Z}$]
+\label{kern:def:Z}
+$\mathsf{Z}$ is $\Nat_{F}$ with $\rulename{Tr}_{F}$ replaced by
+$\rulename{Tr}_{F}^{-}$; its rules are \rulename{Hyp}, \rulename{I0},
+\rulename{IS}, $\rulename{Tr}_{F}^{-}$, \rulename{QE}, \rulename{DE},
+\rulename{DI} and \rulename{QI}.
+\end{definition}
+
+The sans-serif letter $\mathsf{Z}$ names the calculus; the italic letters
+$Z$ and $N$ name the zero test $Z(c)=\sel(c,1,0)$ and the parity term
+$N(n)=\It{n}{0}{u}{Z(u)}$ of \cref{base:sec:terms}.
+
+In $\mathsf{Z}$ the two eliminations with a template can be merged into one
+rule whose first premise is selected by the source.  For a template $F(v)$
+put $M(s,t;F)\defeq\Q{v}F(v)$ if $s\equiv 0$ and $M(s,t;F)\defeq(s=t)$
+otherwise; then
+\[
+ \infrule{\Gamma\proves M(s,t;F)\qquad\Gamma\proves F(s)}
+         {\Gamma\proves F(t)}\ \rulename{SE}
+\]
+is \rulename{QE} when $s$ is the literal $0$ and $\rulename{Tr}_{F}^{-}$
+otherwise.  This is the form in which \pkg{source\_dispatch} states the
+calculus, and the reason for its name.
+
+\begin{theorem}[Literal-zero sources of uncrossed transport]
+\label{kern:thm:dispatch}
+$\mathsf{Z}$ and $\Nat$ are equivalent.
+\end{theorem}
+
+Every instance of $\rulename{Tr}_{F}^{-}$ is derivable in $\Nat$ by the
+Leibniz rule.  For the converse it suffices to derive \rulename{Tr} in
+$\mathsf{Z}$; the seven other rules are common.  The proof does not assume
+that substitution is admissible in $\mathsf{Z}$: every auxiliary equation is
+derived at an arbitrary term by a derived rule applied at that term.  By
+\cref{kern:lem:local}(i) and (ii), numerical cases and equation induction
+are derivable in $\mathsf{Z}$, with no use of transport.
+
+\begin{lemma}[Equality at permitted sources]
+\label{kern:lem:zsafe}
+$\mathsf{Z}$ derives: $r=r$; from $p=q$ with $p\not\equiv 0$, the equations
+$q=p$ and $f(p)=f(q)$ for every term template $f$; from $p=q$ with
+$p\not\equiv 0$ and $p=r$, the equation $q=r$; from $r=s$ and $s=t$ with
+$s\not\equiv 0$, the equation $r=t$.
+\end{lemma}
+
+\begin{proof}
+Transport $J(r)=r$ along itself in the template $v=r$; the source is
+$J(r)$.  For the other statements transport, along $p=q$ or along $s=t$,
+the equations $p=p$ in the template $v=p$, $f(p)=f(p)$ in the template
+$f(p)=f(v)$, $p=r$ in the template $v=r$, and $r=s$ in the template $r=v$.
+\end{proof}
+
+\begin{lemma}[Joining through zero]
+\label{kern:lem:zjoin}
+If $p\not\equiv 0$ and $q\not\equiv 0$, then $\mathsf{Z}$ derives $p=q$ from
+$p=0$ and $q=0$.
+\end{lemma}
+
+\begin{proof}
+Transport $J(p)=J(p)$ along $p=0$ in the template $J(v)=J(p)$; the result is
+$c=J(p)$.  Symmetry at the source $c$ gives $J(p)=c$, and transport along
+$J(p)=p$ in the template $v=c$ gives $p=c$.  In the same way $q=c$.
+Symmetry at the source $q$ gives $c=q$, and transport of $p=c$ along $c=q$
+in the template $p=v$ gives $p=q$.  The sources are $p$, $q$, $c$, $J(p)$
+and $J(q)$.
+\end{proof}
+
+Define, with the selector of \cref{base:sec:terms},
+\[
+ K(v)\defeq\sel(v,0,1),\qquad H(v)\defeq\sel(v,1,2),\qquad
+ R(n)\defeq\It{n}{0}{u}{H(u)},\qquad L(n)\defeq N(R(n)).
+\]
+In the standard model $R$ takes the values $0,1,2,2,\dots$ and $L$ is $1$ at
+$1$ and $0$ elsewhere; the proof derives what it needs and does not use this
+description.
+
+\begin{lemma}[A test for the argument one]
+\label{kern:lem:ztest}
+For every term $v$, $\mathsf{Z}$ derives
+\[
+ H(v)=\Suc K(v),\quad R(1)=1,\quad R(\Suc\Suc v)=2,\quad
+ N(1)=1,\quad N(2)=0,\quad L(1)=1,\quad L(\Suc\Suc v)=0,\quad
+ L(\Suc v)=Z(v).
+\]
+\end{lemma}
+
+\begin{proof}
+All chains of equations below pass through middle terms with the root $I$ or
+$\Suc$, so each step is one of the operations of \cref{kern:lem:zsafe}.
+
+$H(v)=\Suc K(v)$: by numerical cases on the matrix $H(y)=\Suc K(y)$ at the
+term $v$.  At $0$: $H(0)=1$ and $K(0)=0$ by \rulename{I0}, hence
+$\Suc K(0)=1$ by congruence at the source $K(0)$, and $H(0)=\Suc K(0)$ by
+symmetry at the source $\Suc K(0)$ and transitivity through $1$.  At
+$\Suc z$: $H(\Suc z)=2$ and $K(\Suc z)=1$ by \rulename{IS}, hence
+$\Suc K(\Suc z)=2$, and the two equations are joined through $2$.
+
+$N(1)=Z(N(0))$ by \rulename{IS}, $N(0)=0$ by \rulename{I0}, hence
+$Z(N(0))=Z(0)$ by congruence at the source $N(0)$, and $Z(0)=1$ by
+\rulename{I0}; so $N(1)=1$.  Likewise $N(2)=Z(N(1))=Z(1)=0$, the last by
+\rulename{IS}.  In the same way $R(1)=H(R(0))=H(0)=1$.
+
+\rulename{IS} and the first equation at the term $R(v)$ give
+$R(\Suc v)=H(R(v))=\Suc K(R(v))$.  Then
+$R(\Suc\Suc v)=H(R(\Suc v))=H(\Suc K(R(v)))=2$, by \rulename{IS}, congruence
+at the source $R(\Suc v)$, and \rulename{IS} for the selector.
+
+$L(1)=N(R(1))=N(1)=1$ and $L(\Suc\Suc v)=N(R(\Suc\Suc v))=N(2)=0$, by
+congruence at the sources $R(1)$ and $R(\Suc\Suc v)$.
+
+$L(\Suc v)=Z(v)$: by numerical cases on the matrix $L(\Suc y)=Z(y)$ at the
+term $v$.  At $0$, $L(1)=1$ and $Z(0)=1$ are joined through $1$.  At
+$\Suc z$, $L(\Suc\Suc z)=0$ and $Z(\Suc z)=0$, the latter by \rulename{IS},
+are joined by \cref{kern:lem:zjoin}; both left sides have the root $I$.
+\end{proof}
+
+\begin{lemma}[Filter]
+\label{kern:lem:zfilter}
+For every term $t$, $\mathsf{Z}$ derives $t=\sel(Z(t),t,0)$ in every context.
+\end{lemma}
+
+\begin{proof}
+By numerical cases on the matrix $y=\sel(Z(y),y,0)$ at the term $t$.  At
+$0$: $Z(0)=1$, so $\sel(Z(0),0,0)=\sel(1,0,0)$ by congruence at the source
+$Z(0)$, and $\sel(1,0,0)=0$ by \rulename{IS}; symmetry at the left side,
+which has the root $I$, gives $0=\sel(Z(0),0,0)$.  At $\Suc z$:
+$Z(\Suc z)=0$, so $\sel(Z(\Suc z),\Suc z,0)=\sel(0,\Suc z,0)=\Suc z$ by
+congruence at the source $Z(\Suc z)$ and \rulename{I0}, and symmetry at the
+left side gives the instance.
+\end{proof}
+
+\begin{lemma}[Symmetry at the source zero]
+\label{kern:lem:zsym}
+For every term $t$ and every context $\Gamma$ containing $0=t$, $\mathsf{Z}$
+derives $\Gamma\proves t=0$.
+\end{lemma}
+
+\begin{proof}
+If $t\equiv 0$, use reflexivity.  Otherwise $t$ is a permitted source.  Put
+$A(n)\defeq\It{n}{t}{u}{\Suc u}$ and prove $n=A(n)$ by equation induction on
+$n$, with $t$ as a parameter and $0=t$ in the context.
+
+Base.  $A(0)=t$ by \rulename{I0}, and $t=A(0)$ by symmetry at the source
+$A(0)$.  Transport of $0=t$ along $t=A(0)$ in the template $0=v$ gives
+$0=A(0)$; the source is $t$.
+
+Step.  Assume $z=A(z)$ with $z$ fresh.  The source $z$ is a variable, so
+congruence gives $\Suc z=\Suc A(z)$.  \rulename{IS} gives
+$A(\Suc z)=\Suc A(z)$, and symmetry at the source $A(\Suc z)$ gives
+$\Suc A(z)=A(\Suc z)$.  Transport of $\Suc z=\Suc A(z)$ along this equation
+in the template $\Suc z=v$ gives $\Suc z=A(\Suc z)$.
+
+At the term $1$ the induction gives $1=A(1)$.  \rulename{IS} gives
+$A(1)=\Suc A(0)$, and congruence at the source $A(0)$ gives
+$\Suc A(0)=\Suc t$; so $A(1)=\Suc t$, and transport at the source $A(1)$
+gives $1=\Suc t$.  Congruence at the source $1$ gives $L(1)=L(\Suc t)$.  With
+$L(1)=1$ and $L(\Suc t)=Z(t)$ from \cref{kern:lem:ztest}, the third
+operation of \cref{kern:lem:zsafe} at the source $L(1)$ gives $1=L(\Suc t)$,
+and transport at the source $L(\Suc t)$ gives $1=Z(t)$.  Symmetry at the
+source $1$ gives $Z(t)=1$.
+
+Transport of the equation $t=\sel(Z(t),t,0)$ of \cref{kern:lem:zfilter}
+along $Z(t)=1$ in the template $t=\sel(v,t,0)$ gives $t=\sel(1,t,0)$, and
+transport along the instance $\sel(1,t,0)=0$ of \rulename{IS} in the
+template $t=v$ gives $t=0$.
+\end{proof}
+
+The chain of the proof is
+$0=t\ \Rightarrow\ 1=\Suc t\ \Rightarrow\ Z(t)=1\ \Rightarrow\ t=0$.
+Numerical cases are used only for equations that hold in every context, and
+the one induction that keeps the assumption $0=t$ has the literal equation
+$n=A(n)$ as its matrix.
+
+\begin{proof}[Proof of \cref{kern:thm:dispatch}]
+Symmetry holds in $\mathsf{Z}$ without restriction: at a source other than
+the literal $0$ by \cref{kern:lem:zsafe}, and at the source $0$ by
+\cref{kern:lem:zsym} and cut.  Congruence from $s=t$: if $s\not\equiv 0$
+use \cref{kern:lem:zsafe}; if $s\equiv t\equiv 0$ use reflexivity; if
+$s\equiv 0$ and $t\not\equiv 0$, derive $t=0$, then $f(t)=f(0)$ at the
+source $t$, and reverse.  Transitivity from $r=s$ and $s=t$: if
+$s\not\equiv 0$ use \cref{kern:lem:zsafe}; if $s\equiv 0$ and one of $r$,
+$t$ is the literal $0$, a premise is the conclusion; otherwise reverse
+$0=t$ and apply \cref{kern:lem:zjoin} to $r=0$ and $t=0$.  These
+constructions are not circular, since symmetry at the source $0$ was proved
+before unrestricted congruence and transitivity.  Finally, from $s=t$ and
+$h(s)=r$, congruence gives $h(s)=h(t)$, symmetry gives $r=h(s)$ and
+transitivity gives $r=h(t)$, which is \rulename{Tr}.
+\end{proof}
+
+\begin{remark}[Sources and comparison]
+\label{kern:rem:dispatch-sources}
+\Cref{kern:thm:dispatch} and its lemmas are from \pkg{source\_dispatch},
+whose calculus has \rulename{DP} in place of \rulename{QI}
+(\cref{kern:thm:direct}).  The package also derives unrestricted transport
+in a formula template inside its calculus, by induction on the template;
+here that step is the Leibniz rule of $\Nat$, since the equivalence needs
+\rulename{Tr} only.  In Lean the theorem is \Lean{zprf\_iff\_nprf}, and the
+recovery of unrestricted transport is \Lean{ZKernel.trF} for a class
+\Lean{ZKernel} that has equation induction and no logical rule.  The
+contrast with \cref{kern:lem:oseq} is the point of the two later packages:
+for the crossed rule, and for the reversing rule, a constant template
+reverses an equation in one step, and neither the test terms nor an
+induction is needed.
+\end{remark}
+
+\subsection{Replacement with no template}
+\label{kern:sec:tfree}
+
+A transport rule can be given no template at all.  For terms $s$, $t$, $u$
+let $\operatorname{Rep}_{s}^{t}(u)$ be the result of one traversal of $u$
+from the root: a subterm that is identical with $s$ is replaced by $t$ and
+is not traversed further; at any other subterm the constructor is kept and
+its immediate subterms are traversed; a variable or a $0$ that is not
+replaced is unchanged.  Under the binder of an iterator the bound variable is
+renamed away from $s$ and $t$, so that only free occurrences of $s$ are
+matched and no variable of $t$ is captured.  The test at a subterm precedes
+the descent, inserted copies of $t$ are not traversed, and the operation is
+total even when $t$ contains $s$.  It is one pass and not rewriting to a
+normal form.  In particular $\operatorname{Rep}_{s}^{t}(s)=t$.
+
+\begin{definition}[The calculi $\mathsf{G}$ and $\mathsf{G}_7$]
+\label{kern:def:G}
+The rule of global replacement is
+\[
+ \infrule{\Gamma\proves s=t\qquad\Gamma\proves u=r}
+         {\Gamma\proves r=\operatorname{Rep}_{s}^{t}(u)}\ \rulename{Rep}.
+\]
+$\mathsf{G}$ is $\Nat$ with \rulename{Tr} replaced by \rulename{Rep}; its
+rules are \rulename{Hyp}, \rulename{I0}, \rulename{IS}, \rulename{Rep},
+\rulename{QE}, \rulename{DE}, \rulename{DI} and \rulename{QI}.
+$\mathsf{G}_7$ is $\mathsf{W}$ with \rulename{Tr} replaced by \rulename{Rep};
+its seven rules are \rulename{Hyp}, \rulename{I0}, \rulename{IS},
+\rulename{Rep}, \rulename{QE}, \rulename{DE} and
+$\rulename{DI}_{\mathrm{w}}$.
+\end{definition}
+
+The rule cannot choose which occurrences of $s$ to replace.  A chosen
+template is recovered by planting a marker that cannot occur by accident.
+
+\begin{lemma}[Equality from \rulename{I0} and \rulename{Rep}]
+\label{kern:lem:geq}
+From \rulename{I0} and \rulename{Rep} alone the following are derivable:
+from $s=t$ and $s=u$ the equation $u=t$; reflexivity; symmetry;
+transitivity.
+\end{lemma}
+
+\begin{proof}
+\rulename{Rep} applied to $s=t$ and $s=u$ concludes
+$u=\operatorname{Rep}_{s}^{t}(s)$, which is $u=t$.  This joining, applied to
+$J(a)=a$ and $J(a)=a$, gives $a=a$; applied to $a=a$ and $a=b$ it gives
+$b=a$.  For transitivity let $a=b$ and $b=e$ be given: symmetry gives
+$b=a$, and the joining applied to $b=e$ and $b=a$ gives $a=e$.
+\end{proof}
+
+Only matches at the root are used in this proof.  Let $|T|$ be the number of
+nodes of a term $T$, the body of every iterator included; renaming of
+variables does not change it.
+
+\begin{lemma}[Exact marking]
+\label{kern:lem:marker}
+Let $h(v)$ be a term template, $s$ and $t$ terms, and
+\[
+ n\defeq 1+|h|+|s|+|t|,\qquad
+ K\defeq\It{0}{s}{w}{\Suc^{n}0}.
+\]
+Then the occurrences of $K$ in $h(K)$ are exactly the copies inserted for
+$v$, and
+\[
+ \operatorname{Rep}_{K}^{s}\bigl(h(K)\bigr)=h(s),\qquad
+ \operatorname{Rep}_{K}^{t}\bigl(h(K)\bigr)=h(t).
+\]
+\end{lemma}
+
+\begin{proof}
+$K$ has more nodes than $h$.  Two subterm occurrences of a term are disjoint
+or nested.  An occurrence in $h(K)$ of a subterm identical with $K$ that is
+disjoint from all inserted copies lies in a part of $h$ and has at most
+$|h|$ nodes.  One that lies properly inside an inserted copy has fewer nodes
+than $K$.  One that properly contains an inserted copy has more nodes than
+$K$.  None of these is identical with $K$, so the occurrences are the
+inserted copies.  Below a binder of $h$ the inserted copy and the term
+compared with it are subject to the same renaming, which preserves the
+number of nodes.  The traversal replaces exactly these copies and stops at
+each, which gives the two identities.
+\end{proof}
+
+The identities are facts about syntax; no rule of the calculus is applied in
+them.  The term $K$ keeps the free variables of $s$, and $K=s$ is an
+instance of \rulename{I0}.
+
+\begin{lemma}[Chosen templates from global replacement]
+\label{kern:lem:gcong}
+From \rulename{I0} and \rulename{Rep} alone: from $s=t$ the equation
+$h(s)=h(t)$, for every term template $h$; and the rule \rulename{Tr}.
+\end{lemma}
+
+\begin{proof}
+Let $K$ be as in \cref{kern:lem:marker}.  From $K=s$ and $s=t$,
+transitivity gives $K=t$.  Reflexivity gives $h(K)=h(K)$.  \rulename{Rep}
+applied to $K=s$ and $h(K)=h(K)$ concludes $h(K)=h(s)$, and applied to $K=t$
+and $h(K)=h(K)$ it concludes $h(K)=h(t)$, by \cref{kern:lem:marker}.  The
+joining of \cref{kern:lem:geq}, applied to $h(K)=h(t)$ and $h(K)=h(s)$,
+gives $h(s)=h(t)$.  For \rulename{Tr}, from $s=t$ and $h(s)=r$: symmetry
+gives $r=h(s)$ and transitivity gives $r=h(t)$.
+\end{proof}
+
+For example let $s=t$ be given and let $h(v)\defeq\It{v}{s}{w}{s}$, in which
+the two displayed copies of $s$ are to stay.  Replacement of $s$ in $h(s)$
+would change all three copies.  In $h(K)=\It{K}{s}{w}{s}$ the marker is too
+large to occur in the two fixed copies, and the two replacements produce
+$\It{s}{s}{w}{s}$ and $\It{t}{s}{w}{s}$.
+
+\begin{lemma}[\rulename{Rep} in $\Nat$]
+\label{kern:lem:gsound}
+Every instance of \rulename{Rep} is an instance of \rulename{Tr}.
+\end{lemma}
+
+\begin{proof}
+The occurrences of $s$ that the traversal of $u$ replaces are disjoint.
+Replace them by a fresh variable $v$ to obtain a term template $h(v)$; then
+$u\equiv h(s)$ and $\operatorname{Rep}_{s}^{t}(u)\equiv h(t)$.  If no
+occurrence is replaced, $h$ is constant.  \rulename{Tr} with this template,
+applied to $s=t$ and $h(s)=r$, concludes $r=h(t)$.
+\end{proof}
+
+Thus \rulename{Rep} is \rulename{Tr} with the template computed from the two
+premises.
+
+\begin{theorem}[Replacement with no template]
+\label{kern:thm:tfree}
+$\mathsf{G}$, $\mathsf{G}_7$ and $\Nat$ are equivalent.
+\end{theorem}
+
+\begin{proof}
+\rulename{Rep} is derivable in $\Nat$ by \cref{kern:lem:gsound}, and
+\rulename{Tr} is derivable in $\mathsf{G}$ and in $\mathsf{G}_7$ by
+\cref{kern:lem:gcong}.  This settles $\mathsf{G}$.  For $\mathsf{G}_7$ the
+introductions are treated as in \cref{kern:thm:witness}: an instance of
+$\rulename{DI}_{\mathrm{w}}$ is derivable in $\Nat$, and \rulename{QI} and
+\rulename{DI} are derivable in $\mathsf{G}_7$ by the proof given there, with
+the alias $c$, transport in an equation template derived from \rulename{Tr},
+and cut, which is admissible in $\mathsf{G}_7$ by \cref{kern:lem:struct}.
+\end{proof}
+
+\begin{remark}[Substitution and certificates]
+\label{kern:rem:tfree}
+A substitution can create new occurrences of the source in the second
+premise of \rulename{Rep}, so it does not map instances to instances;
+injective renaming does.  Substitution is admissible through
+\cref{kern:prop:transfer}.  An instance of \rulename{Rep} in a certificate
+consists of its two premise derivations; the price is paid in the
+derivations, which grow by the marker.
+\end{remark}
+
+\begin{remark}[Sources]
+\label{kern:rem:tfree-sources}
+The section is \pkg{template\_free}, whose calculus is $\mathsf{G}_7$.  In
+Lean the calculus $\mathsf{G}$ is \Lean{TPrf}, with \Lean{tprf\_iff\_nprf};
+the combination $\mathsf{G}_7$ with the single introduction is not
+formalized.  The compact implementation of the package works with the
+restricted inventory of \cref{kern:lem:comprepair} and uses the aliases
+$C_s\defeq\It{2}{1}{u}{s}$ and $K\defeq\It{0}{C_s}{u}{\Suc^{n}0}$, so that
+$C_s=s$ is a permitted instance of \rulename{IS} and $K=C_s$ a permitted
+instance of \rulename{I0}, also when $s$ is the literal $0$.
+\end{remark}
+
+\subsection{Replacement of one occurrence}
+\label{kern:sec:onehole}
+
+A \emph{term context with one hole} $C[\,]$ is a term with exactly one
+occurrence of a hole; the hole may lie in the body of an iterator, and
+$C[s]$ plugs $s$ into the hole after the bound variables of $C$ have been
+renamed away from $s$.  The context consisting of the hole alone is allowed.
+
+\begin{definition}[The calculi $\mathsf{L}$ and $\Nat_{\mathrm{u}}$]
+\label{kern:def:L}
+$\mathsf{L}$ is $\Nat$ with \rulename{Tr} replaced by
+\[
+ \infrule{\Gamma\proves s=t\qquad\Gamma\proves C[s]=r}
+         {\Gamma\proves C[t]=r}\ \rulename{LOR},
+\]
+for a term context $C$ with one hole.  $\Nat_{\mathrm{u}}$ is $\Nat$ with
+\rulename{Tr} replaced by the same rule for an arbitrary term template
+$h(v)$ in place of $C$: from $s=t$ and $h(s)=r$ infer $h(t)=r$.  Each has
+the rules \rulename{Hyp}, \rulename{I0}, \rulename{IS}, its replacement
+rule, \rulename{QE}, \rulename{DE}, \rulename{DI} and \rulename{QI}.
+\end{definition}
+
+\begin{theorem}[One occurrence suffices]
+\label{kern:thm:onehole}
+$\mathsf{L}$, $\Nat_{\mathrm{u}}$ and $\Nat$ are equivalent.
+\end{theorem}
+
+\begin{proof}
+An instance of \rulename{LOR} is an instance of the rule of
+$\Nat_{\mathrm{u}}$, with the template obtained by putting a fresh variable
+into the hole.  The rule of $\Nat_{\mathrm{u}}$ is derivable in $\Nat$:
+\rulename{Tr} gives $r=h(t)$ and symmetry gives $h(t)=r$.
+
+It remains to derive \rulename{Tr} in $\mathsf{L}$.  \rulename{LOR} with the
+context consisting of the hole, applied to $J(a)=a$ and $J(a)=a$, gives
+$a=a$; applied to $s=t$ and $s=s$ it gives $t=s$.  Now let $s=t$ and
+$h(s)=r$ be given.  Rename the bound variables of $h$ away from $s$ and $t$
+and number the occurrences of $v$ in $h$ from $1$ to $k$.  Let $h_j$ be $h$
+with the first $j$ occurrences replaced by $t$ and the others by $s$, and
+let $C_j$ be $h$ with the first $j-1$ occurrences replaced by $t$, the
+$j$-th by the hole and the others by $s$.  Then $h_{j-1}\equiv C_j[s]$ and
+$h_j\equiv C_j[t]$, and $C_j$ has one hole.  Hence $k$ applications of
+\rulename{LOR} lead from $h(s)=r$, which is $h_0=r$, to $h_k=r$, which is
+$h(t)=r$, and symmetry gives $r=h(t)$.  The occurrences are those of the
+template variable; a subterm of $h$ that happens to be identical with $s$ is
+part of every $C_j$ and is not replaced.
+\end{proof}
+
+\begin{remark}[Sources]
+\label{kern:rem:onehole-sources}
+The theorem for $\mathsf{L}$ is the auxiliary note of
+\pkg{kernel\_refinement}, which states it against $\Nat_{2}$: the occurrences
+in the left template are replaced one at a time, the equation is reversed,
+the occurrences in the right template are replaced, and the equation is
+reversed again.  It answers the question of \pkg{one\_context} whether a
+restriction to one occurrence is adequate under the binder of the iterator.
+In Lean, $\mathsf{L}$ is \Lean{LPrf} with \Lean{lprf\_iff\_nprf}; contexts
+with one hole are \Lean{Tm.Hole}, and the chain $h_0,\dots,h_k$ is
+\Lean{Reach.subst}, where below a binder the hole and the bound variable are
+exchanged (\Lean{Reach.iterH}).  The calculus $\Nat_{\mathrm{u}}$ is
+\Lean{UPrf} with \Lean{uprf\_iff\_nprf}.  The package measures no checker for
+$\mathsf{L}$: a traversal by position has a cost of its own, and the compact
+checkers share one opening routine between transport and \rulename{QE}.
+\end{remark}
+
+\subsection{A restricted inventory of computation instances}
+\label{kern:sec:comprepair}
+
+Several compact checkers of the packages accept a computation equation only
+when its seed, and for \rulename{IS} also the predecessor of its counter, is
+not the literal $0$.  Call an instance of \rulename{I0} \emph{permitted} if
+$a\not\equiv 0$, and an instance of \rulename{IS} permitted if
+$n\not\equiv 0$ and $a\not\equiv 0$.  Let $c_{*}\defeq\It{2}{1}{u}{0}$.
+
+\begin{lemma}[Repair of computation instances]
+\label{kern:lem:comprepair}
+Let a calculus have the permitted instances of \rulename{I0} and
+\rulename{IS} and a transport rule from which transport in an equation
+template at sources other than the literal $0$ is derivable without a
+computation equation.  Then it derives every instance of \rulename{I0} and
+of \rulename{IS}.
+\end{lemma}
+
+\begin{proof}
+$c_{*}=0$ is a permitted instance of \rulename{IS}: the predecessor of the
+counter and the seed are $1$, and the body is the constant $0$.  Write an
+instance that is not permitted as $P(0)$, where the equation template $P(v)$
+has $v$ at the offending positions:
+\begin{align*}
+ &\It{0}{v}{u}{h}=v, &
+ &\It{\Suc n}{v}{u}{h}=h\subst{\It{n}{v}{u}{h}}{u},\\
+ &\It{\Suc v}{a}{u}{h}=h\subst{\It{v}{a}{u}{h}}{u}, &
+ &\It{\Suc v}{v}{u}{h}=h\subst{\It{v}{v}{u}{h}}{u}.
+\end{align*}
+The variable $v$ is fresh, and other occurrences of $0$ are left alone.  In
+each case $P(c_{*})$ is a permitted instance.  Transport in the template $P$
+along $c_{*}=0$, at the source $c_{*}\not\equiv 0$, gives $P(0)$.
+\end{proof}
+
+The hypothesis on the transport rule holds for \rulename{Tr},
+$\rulename{Tr}^{-}$ (\cref{kern:lem:oseq}(iii)), \rulename{TrX},
+$\rulename{Tr}_{2}$ and $\rulename{Tr}_{F}^{-}$.  Hence every result of this
+chapter that uses $c=\It{0}{0}{u}{0}$ or another computation instance with a
+literal $0$ holds for the restricted inventory as well: the instance is
+first derived by the lemma.  The repair is one transport on two computation
+instances, and its only source is $c_{*}$.
+
+\begin{remark}[Sources]
+\label{kern:rem:comprepair-sources}
+The lemma is proved in \pkg{witness\_rule}, where $c_{*}$ serves also as the
+second name for zero in \cref{kern:thm:witness}, and in
+\pkg{source\_dispatch}, which checks that the repair does not use transport
+at the source $0$ before \cref{kern:thm:dispatch} is available.
+\pkg{reversal\_core} and \pkg{template\_free} use it in their certificate
+producers.  The restricted inventory itself belongs to an earlier package,
+\pkg{certified\_zero}.
+\end{remark}
+
+% ---------------------------------------------------------------------
+\section{Induction and uniqueness of iteration}
+\label{kern:sec:uniq}
+
+This section draws on \pkg{scalar\_uniqueness}, \pkg{orbit\_closure} and
+\pkg{crossed\_uniqueness}.
+
+Induction for literal equations can be replaced by a rule that has no
+induction hypothesis in its premise: a term that satisfies the recurrence of
+an iterator is that iterator.  The three packages state the rule in three
+forms.  \pkg{scalar\_uniqueness} concludes the equation at a supplied target;
+this is the rule \rulename{UR} below, and
+\crefrange{kern:sec:ur}{kern:sec:urreflect} prove that it replaces equation
+induction.  \pkg{orbit\_closure} concludes the closure of the equation, with
+no target, and isolates what the restriction of the rule to the body
+$\Suc u$ already gives.  \pkg{crossed\_uniqueness} adds a premise for the
+seed and crosses the conclusion; on fully normalized terms that rule also
+replaces transport and the two computation equations.  The second and third
+forms are treated in \cref{kern:sec:urforms}, which reduces each to
+\rulename{UR}; the calculus of \pkg{crossed\_uniqueness} is the one calculus
+of the chapter that is stated on normal forms.
+
+\subsection{The rule and the two theorems}
+\label{kern:sec:ur}
+
+Let $f(z)$ and $h(u)$ be term templates, and write $h(f(z))$ for
+$h\subst{f(z)}{u}$.  The rule of \emph{uniqueness of iteration} is
+\[
+ \infrule{\Gamma\proves f(\Suc z)=h(f(z))}
+         {\Gamma\proves f(t)=\It{t}{f(0)}{u}{h(u)}}\ \rulename{UR},
+\]
+where $z$ is not free in $\Gamma$, in $t$ or in $h$.  The body $h$ may have
+other free variables, which are parameters.  The premise is derived in
+$\Gamma$ itself, with no added assumption; the seed $f(0)$ is read off the
+template, so there is no premise for the base; and the body receives one
+state and no counter.  The rule is a scheme over terms: $z$ is a numerical
+variable and nothing ranges over functions.
+
+\begin{definition}[The calculus $\mathsf{U}$ and the theory $T_{\mathrm{UR}}$]
+\label{kern:def:U}
+$\mathsf{U}$ is $\Nat$ with \rulename{QI} replaced by \rulename{UR}; its
+eight rules are \rulename{Hyp}, \rulename{I0}, \rulename{IS}, \rulename{Tr},
+\rulename{QE}, \rulename{DE}, \rulename{DI} and \rulename{UR}.  The ordinary
+theory $T_{\mathrm{UR}}$ is $\Teq$ (\cref{base:sec:teq}) with its rule of
+induction for literal equations replaced by \rulename{UR}, read for
+contexts of ordinary formulas: intuitionistic logic with equality, the two
+computation equations, coverage $x=0\vee\exists y\,x=\Suc y$, separation
+$0=\Suc 0\to\bot$, and \rulename{UR}.
+\end{definition}
+
+In $\mathsf{U}$ the introduction \rulename{DI} treats atomic and compound
+matrices alike, and no rule looks at a witness; substitution maps instances
+of \rulename{UR} to instances after a renaming of $z$
+(\cref{kern:lem:struct}).
+
+\begin{definition}[Successor uniqueness]
+\label{kern:def:SU}
+\rulename{SU} is the rule \rulename{UR} restricted to the body
+$h(u)\defeq\Suc u$: from $\Gamma\proves f(\Suc z)=\Suc f(z)$ infer
+$\Gamma\proves f(t)=\It{t}{f(0)}{u}{\Suc u}$.  The theory
+$T_{\mathrm{SU}}$ is $T_{\mathrm{UR}}$ with \rulename{UR} replaced by
+\rulename{SU}.
+\end{definition}
+
+An instance of \rulename{SU} supplies no body.  Every derivation of
+$T_{\mathrm{SU}}$ is a derivation of $T_{\mathrm{UR}}$, and the lemmas below
+say which of them use \rulename{SU} only.
+
+\begin{proposition}[Uniqueness from induction]
+\label{kern:prop:uniq}
+\rulename{UR} is a derived rule of $\Nat$ and of $\Teq$.
+\end{proposition}
+
+\begin{proof}
+Let $g(y)\defeq\It{y}{f(0)}{u}{h(u)}$ and apply equation induction to
+$f(y)=g(y)$.  Base: $g(0)=f(0)$ by \rulename{I0}, and symmetry.  Step:
+assume $f(z)=g(z)$.  The premise gives $f(\Suc z)=h(f(z))$, congruence gives
+$h(f(z))=h(g(z))$, and \rulename{IS} gives $g(\Suc z)=h(g(z))$; hence
+$f(\Suc z)=g(\Suc z)$.
+\end{proof}
+
+In Lean this derived rule is \Lean{NPrf.uniq}.
+
+\begin{theorem}[Uniqueness of iteration in place of equation induction]
+\label{kern:thm:ur}
+$T_{\mathrm{UR}}$ and $\Teq$ derive the same sequents of ordinary formulas.
+Consequently $T_{\mathrm{UR}}$ is bi-interpretable with $\iPRA$ with whole
+domains, actual equality and identity numerical composites.
+\end{theorem}
+
+\begin{theorem}[The native form]
+\label{kern:thm:urnative}
+$\mathsf{U}$ and $\Nat$ are equivalent.
+\end{theorem}
+
+One half of each theorem is \cref{kern:prop:uniq}.  The other half, the
+derivation of induction for literal equations from \rulename{UR}, occupies
+\crefrange{kern:sec:urfirst}{kern:sec:urreflect}.  Its order avoids a
+circle: uniqueness gives induction for equations of the form $q(n)=0$ and,
+separately, a predecessor; truncated subtraction and an explicit accumulator
+give a term that reflects equality; and only then is induction for arbitrary
+equations recovered.  Pairing and the compiler for primitive recursion
+(\cref{base:thm:primrec}) are not used; they become available afterwards.
+All derivations in
+\crefrange{kern:sec:urfirst}{kern:sec:urreflect} are in $T_{\mathrm{UR}}$,
+over an arbitrary fixed context $\Gamma$ of ordinary formulas, and variables
+that are generalized or used as eigenvariables are not free in $\Gamma$.
+
+\subsection{First consequences of uniqueness}
+\label{kern:sec:urfirst}
+
+\begin{lemma}[Common update, constancy, identity]
+\label{kern:lem:cu}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $f(\Suc z)=h(f(z))$, $g(\Suc z)=h(g(z))$ and $f(0)=g(0)$, then
+ $f(t)=g(t)$.
+\item If $f(\Suc z)=f(z)$, then $f(t)=f(0)$.
+\item $\It{n}{0}{u}{\Suc u}=n$.
+\item If $h(c)=c$, then $\It{n}{c}{u}{h(u)}=c$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) \rulename{UR} for $f$ and for $g$ gives two iterators that differ only
+in the equal seeds.  (ii) is (i) for $f$ and the constant template $f(0)$,
+with $h(u)\defeq u$.  (iii) is \rulename{UR} for $f(z)\defeq z$ and
+$h(u)\defeq\Suc u$, whose premise is reflexivity.  (iv) is \rulename{UR}
+for the constant template $c$.
+\end{proof}
+
+Part (iii), and part (i) for the body $\Suc u$, are derivable in
+$T_{\mathrm{SU}}$.  Part (ii) is uniqueness for the body $u$, and it is not
+an instance of \rulename{SU}.
+
+Put $a+b\defeq\It{b}{a}{u}{\Suc u}$, $2a\defeq a+a$ and $3a\defeq a+a+a$.
+The computation equations give $a+0=a$ and $a+\Suc b=\Suc(a+b)$, so
+$a+1=\Suc a$.
+
+\begin{lemma}[Addition and iteration]
+\label{kern:lem:uradd}
+Addition is associative and commutative with the neutral element $0$, and
+$\Suc a+n=\Suc(a+n)$.  For every body $h$,
+\[
+ \It{m+n}{a}{u}{h}=\It{n}{\It{m}{a}{u}{h}}{u}{h},\qquad
+ \It{\Suc n}{a}{u}{h}=\It{n}{h(a)}{u}{h}.
+\]
+\end{lemma}
+
+\begin{proof}
+Each statement is \cref{kern:lem:cu}(i) or \rulename{UR} for functions of
+$n$.  $0+n=n$ is \cref{kern:lem:cu}(iii).  $\Suc(a+n)$ has the seed
+$\Suc a$ and the update $\Suc$, hence equals $\Suc a+n$.  The term $n+a$
+has the seed $0+a=a$ and satisfies $\Suc n+a=\Suc(n+a)$, so it has the
+update $\Suc$ and equals $a+n$.  The term $a+(b+n)$ has the seed $a+b$ and
+the update $\Suc$, hence equals $(a+b)+n$.  The term $\It{m+n}{a}{u}{h}$
+has the seed $\It{m}{a}{u}{h}$ and the update $h$.  The term
+$\It{\Suc n}{a}{u}{h}$ has the seed $\It{1}{a}{u}{h}=h(a)$ and the update
+$h$.
+\end{proof}
+
+The laws of addition in this lemma compare terms with the update $\Suc$
+only, so they are derivable in $T_{\mathrm{SU}}$; the two equations for an
+arbitrary body $h$ use \rulename{UR} for $h$.
+
+\subsection{Retractions and induction for zero equations}
+\label{kern:sec:urretract}
+
+\begin{lemma}[Rigidity of retractions]
+\label{kern:lem:rigid}
+Let $e(x)$ be a term template such that
+\[
+ e(0)=0,\qquad e(e(x))=e(x),\qquad e(\Suc e(x))=\Suc e(x)
+\]
+are derivable for a variable $x$ not free in $\Gamma$.  Then $e(t)=t$ for
+every term $t$.  The derivation is in $T_{\mathrm{SU}}$ and does not use
+separation.
+\end{lemma}
+
+\begin{proof}
+Put $h(u)\defeq e(\Suc e(u))$ and $r(n)\defeq\It{n}{0}{u}{h(u)}$.  First,
+$e(r(n))=r(n)$, by coverage on $n$.  At $0$ it is $e(0)=0$, since $r(0)=0$.
+At $\Suc m$, the term $r(\Suc m)=h(r(m))=e(\Suc e(r(m)))$ is a value of
+$e$, and the second equation gives
+\[
+ e(r(\Suc m))=e\bigl(e(\Suc e(r(m)))\bigr)=e(\Suc e(r(m)))=r(\Suc m).
+\]
+The third equation now gives
+$r(\Suc n)=e(\Suc e(r(n)))=\Suc e(r(n))=\Suc r(n)$, and $r(0)=0$.
+\rulename{SU} and \cref{kern:lem:cu}(iii) give $r(n)=n$, and then
+$e(n)=e(r(n))=r(n)=n$.
+\end{proof}
+
+\begin{lemma}[Induction from a numerical split]
+\label{kern:lem:split}
+Let $A(n)$ be an ordinary formula with $\Gamma\proves A(0)$ and
+$\Gamma,A(z)\proves A(\Suc z)$.  Suppose that
+$\Gamma\proves A(n)\vee\neg A(n)$ and that a term template $e(n)$ satisfies
+$\Gamma,A(n)\proves e(n)=n$ and $\Gamma,\neg A(n)\proves e(n)=0$, with $n$
+not free in $\Gamma$.  Then $\Gamma\proves A(t)$ for every term $t$.
+\end{lemma}
+
+\begin{proof}
+By cases, $A(e(n))$: if $A(n)$, then $e(n)=n$; otherwise $e(n)=0$ and
+$A(0)$ holds.  The first property of $e$ at the argument $e(n)$ gives
+$e(e(n))=e(n)$.  The step at $e(n)$ gives $A(\Suc e(n))$, hence
+$e(\Suc e(n))=\Suc e(n)$.  From $A(0)$, $e(0)=0$.
+\Cref{kern:lem:rigid} gives $e(n)=n$, and $A(e(n))$ becomes $A(n)$.
+\end{proof}
+
+The lemma is a statement about a split that has been justified; it gives no
+induction for formulas that are not decided by a term.
+
+\begin{lemma}[Induction for zero equations]
+\label{kern:lem:zi}
+Let $q(n)$ be a term template.  If $\Gamma\proves q(0)=0$ and
+$\Gamma,q(z)=0\proves q(\Suc z)=0$ with $z$ fresh, then
+$\Gamma\proves q(t)=0$.
+\end{lemma}
+
+\begin{proof}
+Separation gives $\Suc v\neq 0$: from $\Suc v=0$, the template
+$\sel(w,0,1)$ gives $1=0$.  With coverage, $q(n)=0$ is decided.  The
+template $e(n)\defeq\sel(q(n),n,0)$ equals $n$ if $q(n)=0$ and equals $0$
+if $q(n)$ is a successor.  \Cref{kern:lem:split} applies.
+\end{proof}
+
+\Cref{kern:lem:split,kern:lem:zi} use uniqueness only through
+\cref{kern:lem:rigid}.  Hence:
+
+\begin{theorem}[Zero equations from successor uniqueness]
+\label{kern:thm:su}
+$T_{\mathrm{SU}}$ derives induction for zero equations, in the form of
+\cref{kern:lem:zi}, over arbitrary contexts of ordinary formulas.
+\end{theorem}
+
+\begin{remark}[Sources]
+\label{kern:rem:scopekernel}
+\Cref{kern:lem:rigid,kern:lem:split,kern:lem:zi} are reproduced in
+\pkg{scalar\_uniqueness} from an earlier package, \pkg{scope\_kernel}, which
+leaves the predecessor and the reflection of equality as an open bootstrap.
+The next three subsections close it.  In those two packages the first step
+of the proof of \cref{kern:lem:rigid} is an instance of \rulename{UR} for
+the body $e(\Suc e(u))$: the template $e(r(n))$ has the seed $0$ and
+satisfies $e(r(\Suc n))=h(r(n))=h(e(r(n)))$.  The proof given above, with
+coverage in place of that instance, is from \pkg{orbit\_closure}, and
+\cref{kern:thm:su} is its theorem.  The decision of $q(n)=0$ in
+\cref{kern:lem:zi} needs separation; no other step of the three lemmas does.
+\end{remark}
+
+\subsection{A predecessor from uniqueness}
+\label{kern:sec:urpred}
+
+The construction follows the predecessor of \cref{base:thm:pred} (parity,
+three-cycle, ramp, comparator, saturating counter), with a ramp modified so
+that every induction of the original becomes an instance of
+\cref{kern:lem:cu}.  It uses coverage and does not use separation.
+
+Coverage and the selector equations give, by cases on $e$,
+\begin{equation}
+ \sel(e,\Suc a,\Suc b)=\Suc\,\sel(e,a,b). \label{kern:eq:selS}
+\end{equation}
+Recall $Z(c)=\sel(c,1,0)$ and $N(n)=\It{n}{0}{u}{Z(u)}$, and define
+\[
+ j(u)\defeq Z(u)+2N(u),\qquad M(n)\defeq\It{n}{0}{u}{j(u)},\qquad
+ g(u)\defeq u+N(M(u))+1,\qquad G(n)\defeq\It{n}{0}{u}{g(u)}.
+\]
+
+\begin{lemma}[Two clocks]
+\label{kern:lem:clocks}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $N(n)=0\vee N(n)=1$; $Z(Z(N(n)))=N(n)$; $N(n)+Z(N(n))=1$;
+ $N(N(n))=N(n)$; $N(n+2)=N(n)$.
+\item $N(2n)=0$, $N(2n+1)=1$ and $N(3n)=N(n)$.
+\item $M(n)=0\vee M(n)=1\vee M(n)=2$; $j(0)=1$, $j(1)=2$, $j(2)=0$;
+ $M(n+3)=M(n)$.
+\item $M(3n)=0$ and $M(3n+1)=1$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) By coverage on $n$: $N(0)=0$, and $N(\Suc m)=Z(N(m))$ is a value of
+$Z$, which is $1$ at $0$ and $0$ at a successor.  The next three equations
+hold in the two cases $N(n)=0$ and $N(n)=1$, by $Z(0)=1$, $Z(1)=0$,
+$N(0)=0$ and $N(1)=Z(N(0))=1$.  Two computations give
+$N(n+2)=Z(Z(N(n)))$.
+
+(ii) The template $N(2n)$ satisfies $N(2(\Suc n))=N(2n+2)=N(2n)$, so
+\cref{kern:lem:cu}(ii) gives $N(2n)=N(0)=0$; then $N(2n+1)=Z(N(2n))=1$.
+The template $N(3n)$ has the seed $0$ and satisfies
+$N(3(\Suc n))=N(3n+3)=Z(N(3n+2))=Z(N(3n))$, so \rulename{UR} gives
+$N(3n)=\It{n}{0}{u}{Z(u)}=N(n)$.
+
+(iii) $j(0)=Z(0)+2N(0)=1$.  At a successor $u$, $Z(u)=0$ and $2N(u)$ is $0$
+or $2$.  So $j$ takes values in $\{0,1,2\}$, and so does $M$, by coverage
+on $n$.  $j(1)=0+2N(1)=2$ and $j(2)=0+2N(2)=0$, since $N(2)=Z(N(1))=0$.
+Three computations give $M(n+3)=j(j(j(M(n))))$, and $j$ permutes $0,1,2$
+cyclically.
+
+(iv) $M(3(\Suc n))=M(3n+3)=M(3n)$, so \cref{kern:lem:cu}(ii) gives
+$M(3n)=M(0)=0$, and $M(3n+1)=j(M(3n))=1$.
+\end{proof}
+
+\begin{lemma}[The ramp]
+\label{kern:lem:ramp}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $M(g(u))=Z(M(u))$.
+\item $M(G(n))=N(n)$.
+\item $G(\Suc n)=G(n)+N(n)+1$, $G(n+2)=G(n)+3$ and
+ $G(n+3)=G(n)+N(n)+4$.
+\item $G(2n)=3n$ and $G(3n)=3G(n)+N(n)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) By the three cases for $M(u)$.  If $M(u)=0$, then $g(u)=\Suc u$ and
+$M(\Suc u)=j(0)=1=Z(0)$.  If $M(u)=1$, then $g(u)=\Suc\Suc u$ and
+$M(\Suc\Suc u)=j(j(1))=0=Z(1)$.  If $M(u)=2$, then $N(2)=0$,
+$g(u)=\Suc u$ and $M(\Suc u)=j(2)=0=Z(2)$.
+
+(ii) The template $M(G(n))$ has the seed $M(0)=0$ and, by (i), satisfies
+$M(G(\Suc n))=M(g(G(n)))=Z(M(G(n)))$.  \rulename{UR} gives
+$M(G(n))=\It{n}{0}{u}{Z(u)}=N(n)$.
+
+(iii) $G(\Suc n)=g(G(n))=G(n)+N(M(G(n)))+1=G(n)+N(N(n))+1$, and
+$N(N(n))=N(n)$.  Two steps give $G(n+2)=G(n)+N(n)+1+Z(N(n))+1=G(n)+3$,
+by $N(n)+Z(N(n))=1$.  A third step gives
+$G(n+3)=G(n)+3+N(n+2)+1=G(n)+N(n)+4$.
+
+(iv) $G(2n)$ and $3n$ have the seed $0$ and the update $v\mapsto v+3$, by
+(iii); \cref{kern:lem:cu}(i) gives $G(2n)=3n$.  For the second equation put
+\[
+ f(n)\defeq G(3n),\qquad k(n)\defeq 3G(n)+N(n),\qquad
+ \kappa(v)\defeq v+M(v)+4 .
+\]
+By (ii) and \cref{kern:lem:clocks}(ii), $M(f(n))=N(3n)=N(n)$.  By
+\cref{kern:lem:clocks}(iv) and the two cases for $N(n)$, $M(k(n))=N(n)$.
+By (iii), $f(\Suc n)=G(3n+3)=G(3n)+N(3n)+4=\kappa(f(n))$.  By (iii) and
+\cref{kern:lem:clocks}(i),
+\[
+ k(\Suc n)=3G(n)+3N(n)+3+Z(N(n))=3G(n)+2N(n)+4=\kappa(k(n)).
+\]
+Both templates have the seed $0$, and \cref{kern:lem:cu}(i) gives
+$f(n)=k(n)$.
+\end{proof}
+
+The update $g$ differs from the update $u+M(u)+1$ of the ramp in
+\cref{base:thm:pred} away from the orbit of $0$; the difference is what
+makes (i) hold at every argument, so that (ii) is an instance of
+\rulename{UR} with no induction hypothesis.
+
+Now define the comparison step, the comparator, the saturating step and the
+predecessor:
+\begin{gather*}
+ \chi(u)\defeq\sel(N(u),G(u),u),\qquad
+ \varepsilon(x)\defeq\It{x}{1}{u}{2u},\qquad
+ \lambda(x,y)\defeq N\bigl(\It{y}{\varepsilon(x)}{u}{\chi(u)}\bigr),\\
+ \beta_m(u)\defeq\sel(\lambda(\Suc u,m),u,\Suc u),\qquad
+ \sigma(t,m)\defeq\It{t}{0}{u}{\beta_m(u)},\\
+ P(m)\defeq\It{m}{0}{u}{\sel(\lambda(\Suc\Suc u,m),u,\Suc u)} .
+\end{gather*}
+
+\begin{lemma}[The comparator]
+\label{kern:lem:comparator}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\chi(2u)=3u$, $\chi(1)=1$ and $\chi(3u)=3\chi(u)$.
+\item $\It{y}{3a}{u}{\chi(u)}=3\,\It{y}{a}{u}{\chi(u)}$ and
+ $\It{y}{1}{u}{\chi(u)}=1$.
+\item $\lambda(0,y)=1$, $\lambda(\Suc x,0)=0$ and
+ $\lambda(\Suc x,\Suc y)=\lambda(x,y)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) $N(2u)=0$ and $G(2u)=3u$ give $\chi(2u)=3u$; $N(1)=1$ gives
+$\chi(1)=1$.  For the third equation, $N(3u)=N(u)$.  If $N(u)=0$, then
+$\chi(3u)=G(3u)=3G(u)+N(u)=3G(u)=3\chi(u)$.  If $N(u)=1$, then
+$\chi(3u)=3u=3\chi(u)$.
+
+(ii) The template $3\,\It{y}{a}{u}{\chi(u)}$ has the seed $3a$ and, by (i),
+the update $\chi$; \rulename{UR} gives the first equation.  The second is
+\cref{kern:lem:cu}(iv).
+
+(iii) $\varepsilon(0)=1$, so $\lambda(0,y)=N(1)=1$ by (ii).
+$\lambda(\Suc x,0)=N(\varepsilon(\Suc x))=N(2\varepsilon(x))=0$.  By the
+second equation of \cref{kern:lem:uradd}, by (i) and by (ii),
+\[
+ \It{\Suc y}{2\varepsilon(x)}{u}{\chi(u)}
+ =\It{y}{\chi(2\varepsilon(x))}{u}{\chi(u)}
+ =\It{y}{3\varepsilon(x)}{u}{\chi(u)}
+ =3\,\It{y}{\varepsilon(x)}{u}{\chi(u)},
+\]
+and $N(3v)=N(v)$ gives $\lambda(\Suc x,\Suc y)=\lambda(x,y)$.
+\end{proof}
+
+\begin{theorem}[Predecessor from uniqueness]
+\label{kern:thm:urpred}
+The computation equations, coverage and \rulename{UR} derive $P(0)=0$ and
+$P(\Suc m)=m$, and hence that $\Suc x=\Suc y$ implies $x=y$.
+\end{theorem}
+
+\begin{proof}
+By \eqref{kern:eq:selS} and \cref{kern:lem:comparator}(iii),
+\[
+ \beta_{\Suc m}(\Suc u)=\sel(\lambda(\Suc u,m),\Suc u,\Suc\Suc u)
+ =\Suc\beta_m(u),\qquad
+ \beta_{\Suc m}(0)=\sel(\lambda(0,m),0,1)=1 .
+\]
+As functions of $t$, the terms $\sigma(\Suc t,\Suc m)$ and
+$\Suc\sigma(t,m)$ have the seed $1$ and the update $\beta_{\Suc m}$:
+for the first by \rulename{IS}, with
+$\sigma(1,\Suc m)=\beta_{\Suc m}(0)=1$, and for the second by
+$\Suc\beta_m(\sigma(t,m))=\beta_{\Suc m}(\Suc\sigma(t,m))$.
+\Cref{kern:lem:cu}(i) gives
+\begin{equation}
+ \sigma(\Suc t,\Suc m)=\Suc\sigma(t,m). \label{kern:eq:sat}
+\end{equation}
+The template $\lambda(\Suc n,n)$ satisfies
+$\lambda(\Suc\Suc n,\Suc n)=\lambda(\Suc n,n)$ and has the value
+$\lambda(1,0)=0$ at $0$, so $\lambda(\Suc n,n)=0$ by
+\cref{kern:lem:cu}(ii).  The template $\sigma(n,n)$ has the seed $0$ and,
+by \eqref{kern:eq:sat}, the update $\Suc$, so $\sigma(n,n)=n$ by
+\rulename{UR} and \cref{kern:lem:cu}(iii).  Hence
+\begin{equation}
+ \sigma(\Suc n,n)=\beta_n(\sigma(n,n))=\sel(\lambda(\Suc n,n),n,\Suc n)=n.
+ \label{kern:eq:satdiag}
+\end{equation}
+$P(0)=0$ is an instance of \rulename{I0}.  For a variable $m$ put
+$\sigma'(t,m)\defeq\It{t}{0}{u}{\sel(\lambda(\Suc\Suc u,\Suc m),u,\Suc u)}$,
+so that $P(\Suc m)$ is $\sigma'(\Suc m,m)$.  By
+\cref{kern:lem:comparator}(iii) the body of $\sigma'$ equals $\beta_m(u)$
+at every $u$, so $\sigma'(t,m)$ and $\sigma(t,m)$ have the same seed and
+the same update, and \cref{kern:lem:cu}(i) gives
+$\sigma'(t,m)=\sigma(t,m)$.  With \eqref{kern:eq:satdiag},
+$P(\Suc m)=\sigma(\Suc m,m)=m$.  Applying $P$ to $\Suc x=\Suc y$ gives
+$x=y$.
+\end{proof}
+
+Every appeal to induction in the construction of \cref{base:thm:pred} has
+been replaced by an instance of \cref{kern:lem:cu}, and every case
+distinction uses coverage and a finite range.
+
+\subsection{Truncated subtraction and diagonal descent}
+\label{kern:sec:urmonus}
+
+Put $d(a,b)\defeq\It{b}{a}{u}{P(u)}$ and $\operatorname{sg}(a)\defeq
+\sel(a,0,1)$.
+
+\begin{lemma}[Truncated subtraction]
+\label{kern:lem:monus}
+$d(a,0)=a$, $d(a,\Suc b)=P(d(a,b))$, $d(\Suc a,\Suc b)=d(a,b)$,
+$d(a,a)=0$, $d(0,a)=0$, $P(d(\Suc n,a))=d(n,a)$ and $d(a+n,n)=a$.
+Addition is cancellative: $a+n=b+n$ implies $a=b$.
+\end{lemma}
+
+\begin{proof}
+The first two are the computation equations.  As functions of $b$, the
+terms $d(\Suc a,\Suc b)$ and $d(a,b)$ have the seed $a$, by
+$d(\Suc a,1)=P(\Suc a)=a$, and the update $P$.  The template $d(a,a)$
+satisfies $d(\Suc a,\Suc a)=d(a,a)$ and is $0$ at $0$;
+\cref{kern:lem:cu}(ii) applies.  The template $d(0,a)$ and the constant $0$
+have the seed $0$ and the update $P$.  For the sixth equation use coverage
+on $a$: at $0$ it is $P(\Suc n)=n$, and at $\Suc a'$ it is
+$P(d(n,a'))=d(n,\Suc a')$.  The template $d(a+n,n)$ satisfies
+$d(a+\Suc n,\Suc n)=d(a+n,n)$ and is $a$ at $0$.  Cancellation follows by
+applying $d(\,\cdot\,,n)$.
+\end{proof}
+
+\begin{lemma}[Diagonal descent]
+\label{kern:lem:dd}
+Let $q(x_1,\dots,x_r)$ be a term template, $r\ge 1$, such that
+\[
+ q(\Suc x_1,\dots,\Suc x_r)=q(x_1,\dots,x_r)
+\]
+and such that $q(x_1,\dots,x_r)=0$ whenever some $x_i$ is $0$.  Then
+$q(x_1,\dots,x_r)=0$.
+\end{lemma}
+
+\begin{proof}
+Coverage in each argument gives
+$q(P(x_1),\dots,P(x_r))=q(x_1,\dots,x_r)$: if some $x_i$ is $0$, both sides
+are $0$, and otherwise the first hypothesis applies.  The template
+$f(k)\defeq q(d(x_1,k),\dots,d(x_r,k))$ therefore satisfies
+$f(\Suc k)=f(k)$, and \cref{kern:lem:cu}(ii) gives $f(k)=f(0)$.  At
+$k=x_1$ the first argument is $d(x_1,x_1)=0$, so $f(x_1)=0$; and $f(0)$ is
+$q(x_1,\dots,x_r)$.
+\end{proof}
+
+The lemma uses uniqueness for one scalar state; it does not quantify over
+tuples and uses no rule for simultaneous recursion.
+
+A term is \emph{Boolean} if it is derivably $0$ or $1$.  Put
+$\operatorname{or}(p,q)\defeq\sel(p,q,1)$ and
+$\operatorname{xor}(p,q)\defeq\sel(p,q,Z(q))$.  For Boolean $p$ and $q$,
+four cases show that $\operatorname{xor}(p,q)=0$ implies $p=q$.
+
+\begin{lemma}[Three Boolean identities]
+\label{kern:lem:bool}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $Z(d(\Suc n,a))=\operatorname{sg}(d(a,n))$.
+\item $Z\bigl(d(d(x,a),d(b,a))\bigr)
+ =\operatorname{or}\bigl(Z(d(x,a)),Z(d(x,b))\bigr)$.
+\item $\operatorname{or}(\operatorname{sg}(u),\operatorname{sg}(v))
+ =\operatorname{sg}(u+v)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) Let $q(n,a)$ be the $\operatorname{xor}$ of the two sides, which are
+Boolean.  By \cref{kern:lem:monus}, $q(\Suc n,\Suc a)=q(n,a)$.  If $a=0$,
+the sides are $Z(\Suc n)=0$ and $\operatorname{sg}(0)=0$.  If $n=0$ and
+$a=\Suc b$, the sides are $Z(d(1,\Suc b))=Z(d(0,b))=1$ and
+$\operatorname{sg}(\Suc b)=1$.  \Cref{kern:lem:dd} gives $q(n,a)=0$.
+
+(ii) Let $q(x,a,b)$ be the $\operatorname{xor}$ of the two sides.
+Simultaneous successors cancel in every subtraction, so
+$q(\Suc x,\Suc a,\Suc b)=q(x,a,b)$.  If $x=0$, both sides are $1$.  If
+$a=0$, the sides are $Z(d(x,b))$ and
+$\operatorname{or}(Z(x),Z(d(x,b)))$; they agree by coverage on $x$, since
+at $x=0$ both are $1$ and at a successor $Z(x)=0$.  If $b=0$, the sides
+are $Z(d(x,a))$ and $\operatorname{or}(Z(d(x,a)),Z(x))$; they agree by
+coverage on $x$ and the two values of the Boolean term $Z(d(x,a))$.
+\Cref{kern:lem:dd} gives $q(x,a,b)=0$.
+
+(iii) By coverage on $u$: at $0$ both sides are $\operatorname{sg}(v)$,
+and at a successor both are $1$, by $\Suc u'+v=\Suc(u'+v)$.
+\end{proof}
+
+\subsection{An accumulator and the commutativity of the maximum}
+\label{kern:sec:uracc}
+
+Define
+\[
+ \mu(n,a)\defeq d(n,d(n,a)),\qquad
+ \varphi(n,a,b)\defeq\mu(n,a)+\mu\bigl(d(n,a),d(b,a)\bigr),\qquad
+ m(a,b)\defeq a+d(b,a).
+\]
+These terms are compositions of $d$ and addition; none is introduced by a
+recursion whose body sees the counter.
+
+\begin{lemma}[The accumulator]
+\label{kern:lem:acc}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\mu(\Suc n,a)=\mu(n,a)+Z(d(\Suc n,a))$.
+\item $\varphi(0,a,b)=0$ and
+ $\varphi(\Suc n,a,b)=\varphi(n,a,b)+\operatorname{sg}\bigl(d(a,n)+d(b,n)\bigr)$.
+\item $m(a,b)=m(P(a),P(b))+\operatorname{sg}(a+b)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) Split $d(\Suc n,a)$ by coverage.  If it is $0$, then
+$d(n,a)=P(0)=0$ by \cref{kern:lem:monus}, so $\mu(\Suc n,a)=\Suc n$ and
+$\mu(n,a)=n$, and $Z(0)=1$.  If it is $\Suc r$, then $d(n,a)=r$ and
+$\mu(\Suc n,a)=d(\Suc n,\Suc r)=d(n,r)=\mu(n,a)$, and $Z(\Suc r)=0$.
+
+(ii) $\varphi(0,a,b)=\mu(0,a)+\mu(0,d(b,a))=0$, because $d(0,x)=0$.  Put
+$w\defeq d(b,a)$ and split $d(\Suc n,a)$ again.  If it is $0$, then
+$d(n,a)=0$, $\varphi(\Suc n,a,b)=\Suc n$, $\varphi(n,a,b)=n$ and
+$Z(d(0,w))=1$.  If it is $\Suc r$, then $d(n,a)=r$, the first summand is
+unchanged by (i), and (i) for the second summand gives
+$\mu(\Suc r,w)=\mu(r,w)+Z(d(\Suc r,w))$.  In both cases
+\[
+ \varphi(\Suc n,a,b)=\varphi(n,a,b)+Z\bigl(d(d(\Suc n,a),d(b,a))\bigr).
+\]
+\Cref{kern:lem:bool}(ii) at $x=\Suc n$, then (i) of that lemma for each of
+the two Boolean terms, then (iii), turn the last summand into
+$\operatorname{sg}(d(a,n)+d(b,n))$.
+
+(iii) By coverage on $a$ and $b$.  At $(0,0)$ both sides are $0$.  At
+$(0,\Suc b)$ and at $(\Suc a,0)$ both sides are the successor of
+$m(0,b)=b$ and of $m(a,0)=a$.  At $(\Suc a,\Suc b)$,
+$m(\Suc a,\Suc b)=\Suc a+d(b,a)=\Suc m(a,b)$ and
+$\operatorname{sg}(\Suc a+\Suc b)=1$.
+\end{proof}
+
+\begin{lemma}[Commutativity of the maximum]
+\label{kern:lem:max}
+$a+d(b,a)=b+d(a,b)$.
+\end{lemma}
+
+\begin{proof}
+For fixed $a$, $b$ put
+\[
+ F(n)\defeq m(d(a,n),d(b,n))+\varphi(n,a,b),\qquad
+ F'(n)\defeq m(d(b,n),d(a,n))+\varphi(n,a,b).
+\]
+By \cref{kern:lem:acc}(iii) at the arguments $d(a,n)$, $d(b,n)$, by
+\cref{kern:lem:acc}(ii) and by the laws of addition, $F(\Suc n)=F(n)$, and
+likewise $F'(\Suc n)=F'(n)$.  \Cref{kern:lem:cu}(ii) gives
+$F(n)=F(0)=m(a,b)$ and $F'(n)=F'(0)=m(b,a)$.  At $n=b$, $d(b,b)=0$ and
+$m(x,0)=x=m(0,x)$, so $F(b)$ and $F'(b)$ both equal
+$d(a,b)+\varphi(b,a,b)$.  Hence $m(a,b)=m(b,a)$.
+\end{proof}
+
+The familiar proof of this identity is an induction whose hypothesis is used
+at the predecessor.  Here the two sides are joined by a term $\varphi$
+whose recurrence depends on the counter, although its definition is a
+composition; the recurrence is \cref{kern:lem:acc}(ii).
+
+\subsection{Reflection of equality and the proofs of the theorems}
+\label{kern:sec:urreflect}
+
+\begin{lemma}[Reflection of equality]
+\label{kern:lem:urreflect}
+Let $\Delta(a,b)\defeq\operatorname{sg}(d(a,b)+d(b,a))$.  Then
+$\Delta(a,b)=0\vee\Delta(a,b)=1$, and $\Delta(a,b)=0$ holds if and only if
+$a=b$.
+\end{lemma}
+
+\begin{proof}
+By coverage and separation, $\operatorname{sg}(u)=0$ if and only if $u=0$,
+and $u+v=0$ if and only if $u=0$ and $v=0$, since a sum with a successor
+summand is a successor.  If $\Delta(a,b)=0$, then $d(a,b)=0=d(b,a)$, and
+\cref{kern:lem:max} gives $a=a+d(b,a)=b+d(a,b)=b$.  If $a=b$, both
+subtractions are $d(a,a)=0$.
+\end{proof}
+
+The equality reflected is the equality of the logic on the whole numerical
+domain.
+
+\begin{proof}[Proof of \cref{kern:thm:ur}]
+By \cref{kern:prop:uniq}, every derivation of $T_{\mathrm{UR}}$ is a
+derivation of $\Teq$ after each instance of \rulename{UR} is replaced by its
+derivation.  Conversely let $\Gamma\proves s(0)=r(0)$ and
+$\Gamma,s(z)=r(z)\proves s(\Suc z)=r(\Suc z)$ in $T_{\mathrm{UR}}$.  Put
+$q(n)\defeq\Delta(s(n),r(n))$.  By \cref{kern:lem:urreflect} the two
+premises give $\Gamma\proves q(0)=0$ and
+$\Gamma,q(z)=0\proves q(\Suc z)=0$; \cref{kern:lem:zi} gives $q(t)=0$; and
+\cref{kern:lem:urreflect} gives $s(t)=r(t)$.  The context $\Gamma$ is
+arbitrary, so this is the contextual induction rule of $\Teq$.  The two
+theories have the same language and the same derivable sequents, and
+\cref{base:thm:bridge} applies to $T_{\mathrm{UR}}$.  In particular
+induction for quantifier-free formulas (\cref{base:thm:qfi}) holds in
+$T_{\mathrm{UR}}$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{kern:thm:urnative}]
+\rulename{UR} is derivable in $\Nat$ by \cref{kern:prop:uniq}.  Conversely
+it suffices to derive equation induction in $\mathsf{U}$: given
+$\Gamma,E(z)\proves_{\mathsf{U}}E(\Suc z)$, equation induction over the
+context $\Gamma,E(0)$ gives $E(\Suc z')$ for a fresh $z'$, and the
+introduction of $\Q{}$ by cases (\cref{kern:lem:local}(i)) gives
+$\Gamma\proves_{\mathsf{U}}\Q{y}E(y)$.
+
+The native connectives of \cref{base:sec:structural} obey their natural
+deduction rules in $\mathsf{U}$, and the equality rules, the Leibniz rule
+and numerical cases hold in $\mathsf{U}$: by \cref{base:rem:noprogress},
+their derivations use the seven rules of $\Nat$ other than \rulename{QI}.
+With these, $\mathsf{U}$ derives the reading of every axiom and rule of
+$T_{\mathrm{UR}}$: the computation equations,
+coverage by numerical cases, separation because the native falsity is the
+equation $0=\Suc 0$, and \rulename{UR} itself.  Hence the derivation of the
+induction rule in the proof of \cref{kern:thm:ur}, written with the native
+connectives, is a derivation in $\mathsf{U}$.
+\end{proof}
+
+\begin{remark}[Sources and status]
+\label{kern:rem:ur-sources}
+\Crefrange{kern:sec:ur}{kern:sec:urreflect} are \pkg{scalar\_uniqueness},
+except for the proof of \cref{kern:lem:rigid} and for
+\cref{kern:thm:su}, which are from \pkg{orbit\_closure}
+(\cref{kern:rem:scopekernel}).  \pkg{scalar\_uniqueness} attributes the
+idea of replacing induction by uniqueness of recursion to the literature
+(Okada and Scott study uniqueness of iteration in a typed setting) and
+claims the completion for the scalar language only: one state, no counter
+in the body, no pairing.  \Cref{kern:lem:monus} also yields the Mal'cev
+term $d(x+z,y)$, which the package notes.  In Lean,
+\cref{kern:prop:uniq} is proved; the converse direction of
+\cref{kern:thm:ur,kern:thm:urnative} is not formalized.
+\end{remark}
+
+\subsection{Other forms of the uniqueness rule}
+\label{kern:sec:urforms}
+
+Three variations of \rulename{UR} occur in \pkg{orbit\_closure} and
+\pkg{crossed\_uniqueness}.  They are related to \rulename{UR} as follows.
+The rule \rulename{Orb} concludes the closure of the equation of
+\rulename{UR} and takes no target; it is interderivable with \rulename{UR}
+by the rules for the closure alone (\cref{kern:prop:orbit}).  The rule
+\rulename{SU} of \cref{kern:def:SU} is the instance of \rulename{UR} at one
+body; it gives induction for zero equations (\cref{kern:thm:su}) and the
+laws of addition, and whether it gives induction for all equations is open.
+The rule \rulename{UX} has a premise for the seed in place of the seed
+$f(0)$ and a crossed conclusion; \rulename{UR} is its instance at the seed
+$f(0)$, and with transport it follows from \rulename{UR}.  Taken as the
+only arithmetic rule on fully normalized terms, \rulename{UX} derives
+transport as well, so that it replaces \rulename{I0}, \rulename{IS},
+\rulename{Tr} and \rulename{QI} together (\cref{kern:thm:crossed}).
+
+\subsubsection*{The closure of the orbit equation}
+
+For term templates $f$ and $h$ as in \rulename{UR}, and a variable $y$ not
+free in $h$, the ordinary and the native form of the rule are
+\[
+ \infrule{\Gamma\proves f(\Suc z)=h(f(z))}
+         {\Gamma\proves\forall y\,\bigl(f(y)=\It{y}{f(0)}{u}{h(u)}\bigr)}
+ \qquad\qquad
+ \infrule{\Gamma\proves f(\Suc z)=h(f(z))}
+         {\Gamma\proves\Q{y}\bigl(f(y)=\It{y}{f(0)}{u}{h(u)}\bigr)}\
+ \rulename{Orb},
+\]
+where $z$ is not free in $\Gamma$ or in $h$.
+
+\begin{definition}[The calculus $\mathsf{U}_{\mathrm{o}}$ and the theory
+$T_{\mathrm{Orb}}$]
+\label{kern:def:Uo}
+$\mathsf{U}_{\mathrm{o}}$ is $\Nat$ with \rulename{QI} replaced by the
+native form of \rulename{Orb}; its eight rules are \rulename{Hyp},
+\rulename{I0}, \rulename{IS}, \rulename{Tr}, \rulename{QE}, \rulename{DE},
+\rulename{DI} and \rulename{Orb}.  $T_{\mathrm{Orb}}$ is $T_{\mathrm{UR}}$
+with \rulename{UR} replaced by the ordinary form of \rulename{Orb}.
+\end{definition}
+
+\begin{proposition}[Orbit uniqueness]
+\label{kern:prop:orbit}
+$T_{\mathrm{Orb}}$ and $T_{\mathrm{UR}}$ derive the same sequents of
+ordinary formulas, and $\mathsf{U}_{\mathrm{o}}$ and $\mathsf{U}$ are
+equivalent.  Hence $T_{\mathrm{Orb}}$ derives the sequents of $\Teq$, and
+$\mathsf{U}_{\mathrm{o}}$ is equivalent to $\Nat$.
+\end{proposition}
+
+\begin{proof}
+Let $E(y)$ be the equation $f(y)=\It{y}{f(0)}{u}{h(u)}$.  In the ordinary
+theories, an instance of \rulename{UR} is \rulename{Orb} followed by the
+elimination of $\forall$ at $t$; and \rulename{UR} at a fresh variable $w$
+as its target, followed by the introduction of $\forall$, is \rulename{Orb}.
+
+In the native calculi, \rulename{Orb} is derived in $\mathsf{U}$ thus:
+\rulename{UR} at the target $\Suc w$, with $w$ fresh, gives $E(\Suc w)$,
+and the introduction of $\Q{}$ by cases (\cref{kern:lem:local}(i)), whose
+assumption $E(0)$ is not needed, gives $\Q{y}E(y)$.  Conversely
+\rulename{UR} is derived in $\mathsf{U}_{\mathrm{o}}$ by \rulename{QE} at
+$t$: its second premise $E(0)$ is the instance
+$\It{0}{f(0)}{u}{h(u)}=f(0)$ of \rulename{I0}, reversed.  Both
+constructions hold over arbitrary contexts.  The last sentence of the
+proposition is \cref{kern:thm:ur,kern:thm:urnative}.
+\end{proof}
+
+The base $E(0)$ of the orbit equation is a theorem, so $\Q{y}E$ and the
+unconditional $\forall y\,E$ say the same; in a calculus with clause
+contexts (\cref{base:sec:clauses}) \rulename{Orb} adds the clause of $E$
+with a trivial antecedent, and the term at which it is used is chosen when
+the clause is used.  The rule removes a parameter of the certificate and
+not the principle.
+
+\begin{remark}[The body must not see the counter]
+\label{kern:rem:orbcounter}
+In \rulename{Orb} the variable $y$ of the conclusion is not free in $h$.
+A checker that reads $f$ and $h$ off a proposed closure has to test this,
+also below nested binders.  Without the test, $f(y)\defeq y$ and the body
+$\Suc y$ have the premise $\Suc z=\Suc z$ and the conclusion
+$\Q{y}\bigl(y=\It{y}{0}{u}{\Suc y}\bigr)$, whose instance at $1$ is
+$1=2$.
+\end{remark}
+
+\subsubsection*{The successor body}
+
+\begin{proposition}[Addition from successor uniqueness]
+\label{kern:prop:suadd}
+$T_{\mathrm{SU}}$ derives that addition is associative and commutative with
+the neutral element $0$.  If $\Gamma\proves k(\Suc z)=k(z)$ for a term
+template $k$ and a fresh $z$, then $T_{\mathrm{SU}}$ derives
+$\Gamma\proves n+k(n)=n+k(0)$.
+\end{proposition}
+
+\begin{proof}
+The laws of addition are those of \cref{kern:lem:uradd}, whose proofs
+compare terms with the update $\Suc$.  For the second statement let
+$f(n)\defeq n+k(n)$.  Then $f(0)=0+k(0)=k(0)$ and
+\[
+ f(\Suc n)=\Suc n+k(\Suc n)=\Suc n+k(n)=\Suc(n+k(n))=\Suc f(n),
+\]
+so \rulename{SU} gives $f(n)=\It{n}{k(0)}{u}{\Suc u}=k(0)+n=n+k(0)$.
+\end{proof}
+
+If addition were cancellative in $T_{\mathrm{SU}}$, the proposition would
+give $k(n)=k(0)$, which is \cref{kern:lem:cu}(ii), uniqueness for the body
+$u$.  Cancellation is proved in \cref{kern:lem:monus} from the predecessor,
+whose construction uses other bodies.
+
+\begin{remark}[What successor uniqueness is not known to give]
+\label{kern:rem:sugap}
+To pass from \cref{kern:thm:su} to induction for all equations by the route
+of \cref{kern:sec:urreflect}, a term $\Delta$ with
+$\Delta(a,b)=0\leftrightarrow a=b$ is needed.  The construction of
+\crefrange{kern:sec:urpred}{kern:sec:uracc} uses \rulename{UR} for the
+bodies $u$, $Z(u)$, $j(u)$, $g(u)$, $\chi(u)$, $\beta_m(u)$ and $P(u)$,
+among others, and cannot be repeated in $T_{\mathrm{SU}}$ as it stands.
+\pkg{orbit\_closure} does not claim that $T_{\mathrm{SU}}$ is equivalent to
+$\Teq$.  It also records that a model used in another package,
+\pkg{canonical\_recursors}, to separate induction for zero equations from
+induction for all equations does not decide the question: in that model,
+for a nonstandard counter $p$, the term $e(a)\defeq\It{p}{a}{u}{u}$
+satisfies $e(0)=0$ and $e(\Suc a)=\Suc e(a)$ and is not the identity,
+whereas \rulename{SU} with \cref{kern:lem:cu}(iii) gives $e(a)=a$.  The
+model therefore refutes \rulename{SU}, and it is not a model of
+$T_{\mathrm{SU}}$ in which equation induction fails.  The model is not
+reproduced here.
+\end{remark}
+
+\subsubsection*{A seed premise and a crossed conclusion, on normal forms}
+
+Let $\nf(t)$ be the full normal form of a term $t$ for the two computation
+equations, read from left to right, and let $\nf(A)$ and $\nf(\Gamma)$ be
+obtained by normalizing every term.  The following facts are taken from the
+packages \pkg{full\_normalization} and \pkg{computation\_normal}, which
+belong to another chapter: $\nf$ is total; $\nf(\nf(t)[\theta])=\nf(t[\theta])$
+for every substitution $\theta$; and $\Nat$ derives $t=\nf(t)$.  A term, a
+formula or a context is \emph{normal} if $\nf$ fixes it.  For normal terms
+the selector satisfies $\nf(\sel(0,a,b))=a$ and $\nf(\sel(\Suc c,a,b))=b$,
+and $\nf(\It{1}{a}{u}{h})=\nf(h(a))$.
+
+\begin{definition}[The calculus $\mathsf{U}_{\mathrm{c}}$]
+\label{kern:def:Uc}
+The sequents of $\mathsf{U}_{\mathrm{c}}$ consist of normal formulas, and
+every instance $B(t)$, $f(n)$ or $h(f(z))$ in a rule denotes the normal
+form of the substitution.  Its six rules are \rulename{Hyp}, \rulename{QE},
+\rulename{DE}, \rulename{DI} in their forms of \cref{base:sec:kernel},
+reflexivity,
+\[
+ \infrule{}{\Gamma\proves t=t}\ \rulename{Ref},
+\]
+and \emph{seeded crossed uniqueness},
+\[
+ \infrule{\Gamma\proves f(0)=a\qquad\Gamma\proves f(\Suc z)=h(f(z))}
+         {\Gamma\proves\It{n}{a}{u}{h(u)}=f(n)}\ \rulename{UX},
+\]
+where $f(z)$ and $h(u)$ are term templates and $z$ is not free in $\Gamma$,
+$a$, $n$ or $h$.
+\end{definition}
+
+There is no computation rule, no transport rule and no rule for progress:
+computation is in the syntax, and normalization is part of the
+specification of the calculus and of any checker for it.  The introduction
+\rulename{DI} is by cases at every matrix.  The body $h$ receives the state
+and no counter, and the second premise has no induction hypothesis.  This
+is the one calculus of the chapter without the rules \rulename{I0} and
+\rulename{IS}.
+
+\begin{lemma}[Structural rules on normal forms]
+\label{kern:lem:ucstruct}
+Weakening and cut are admissible in $\mathsf{U}_{\mathrm{c}}$, and if
+$\Gamma\proves_{\mathsf{U}_{\mathrm{c}}}A$ then
+$\nf(\Gamma[\theta])\proves_{\mathsf{U}_{\mathrm{c}}}\nf(A[\theta])$.
+\end{lemma}
+
+\begin{proof}
+By induction on derivations, with eigenvariables renamed.  No rule has a
+mode or a test on a term, and
+$\nf(\nf(t)[\theta])=\nf(t[\theta])$ identifies the substituted premises
+and conclusions of each rule with an instance of the same rule.
+\end{proof}
+
+\begin{lemma}[Equality from seeded crossed uniqueness]
+\label{kern:lem:uxeq}
+$\mathsf{U}_{\mathrm{c}}$ derives, over an arbitrary context:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item numerical cases and the introduction of $\Q{}$ by cases;
+\item symmetry: from $s=t$ to $t=s$;
+\item congruence: from $s=t$ to $H(s)=H(t)$, for every term template $H$;
+\item joining: from $s=t$ and $s=r$ to $t=r$;
+\item transitivity, and the rule \rulename{Tr}: from $s=t$ and $H(s)=r$ to
+ $r=H(t)$;
+\item the rule \rulename{UR}.
+\end{enumerate}
+None of these derivations uses an induction, a predecessor or a test of
+equality.
+\end{lemma}
+
+\begin{proof}
+(i) \Cref{kern:lem:local}(i); its derivations use \rulename{Hyp},
+\rulename{QE}, \rulename{DE} and \rulename{DI}.
+
+(ii) Apply \rulename{UX} with the constant template $f(z)\defeq s$, the
+seed $a\defeq t$, the body $h(u)\defeq u$ and the counter $n\defeq 0$.  The
+first premise is $s=t$, the second is $s=s$, and the conclusion
+$\It{0}{t}{u}{u}=s$ is, in normal form, $t=s$.
+
+(iii) Apply \rulename{UX} with $f(z)\defeq\It{z}{s}{u}{H(u)}$,
+$a\defeq t$, $h\defeq H$ and $n\defeq 1$.  The first premise is $s=t$,
+because $f(0)$ has the normal form $s$.  The two sides of the second
+premise, $\It{\Suc z}{s}{u}{H(u)}$ and $H(\It{z}{s}{u}{H(u)})$, have the
+same normal form, so it is an instance of \rulename{Ref}.  The conclusion is
+$H(t)=H(s)$ in normal form, and (ii) reverses it.  The template may use its
+variable several times or not at all, also below binders.
+
+(iv) Apply \rulename{UX} with $f(z)\defeq\sel(z,s,r)$, $a\defeq t$,
+$h(u)\defeq u$ and $n\defeq 1$.  The first premise is $s=t$.  The second
+premise is $r=\sel(z,s,r)$, since $f(\Suc z)$ has the normal form $r$; it
+follows by numerical cases on $z$, from $r=s$ at $0$, which is (ii) applied
+to $s=r$, and from $r=r$ at a successor.  The conclusion is $t=r$ in normal
+form.
+
+(v) From $s=t$ and $t=r$: (ii) gives $t=s$, and (iv) gives $s=r$.  From
+$s=t$ and $H(s)=r$: (iii) gives $H(s)=H(t)$, and (iv) gives $r=H(t)$.
+
+(vi) \rulename{UX} with the seed $a\defeq f(0)$ and the first premise by
+\rulename{Ref}, followed by (ii).
+\end{proof}
+
+The counter $0$ makes \rulename{UX} a replacement at the root, the counter
+$1$ makes it an application of a template, and the selector joins two
+equations; each conclusion is read after normalization, which is why the
+calculus is stated on normal forms.
+
+\begin{theorem}[Seeded crossed uniqueness]
+\label{kern:thm:crossed}
+For every context $\Gamma$ and every native formula $A$,
+\[
+ \Gamma\proves A\ \text{in }\Nat
+ \quad\Longleftrightarrow\quad
+ \nf(\Gamma)\proves_{\mathsf{U}_{\mathrm{c}}}\nf(A).
+\]
+Hence the bridge of \cref{base:thm:bridge} holds for
+$\mathsf{U}_{\mathrm{c}}$, with the translations composed with $\nf$.
+\end{theorem}
+
+\begin{proof}
+\emph{From right to left.}  Every rule of $\mathsf{U}_{\mathrm{c}}$ is
+derivable in $\Nat$ on normal formulas.  \rulename{Ref} is reflexivity.  For
+\rulename{UX} apply equation induction to $\It{y}{a}{u}{h(u)}=f(y)$: the
+base follows from \rulename{I0} and the first premise, and in the step
+\rulename{IS}, congruence under $h$ applied to the induction hypothesis,
+and the second premise give
+$\It{\Suc z}{a}{u}{h(u)}=h(\It{z}{a}{u}{h(u)})=h(f(z))=f(\Suc z)$.  The
+normalization of an instance is justified by $t=\nf(t)$ and the Leibniz
+rule.  The same two facts make $A$ and $\nf(A)$ interderivable in $\Nat$,
+so $\nf(\Gamma)\proves\nf(A)$ gives $\Gamma\proves A$.
+
+\emph{From left to right.}  First, if $\Gamma\proves_{\mathsf{U}}A$ in the
+calculus $\mathsf{U}$ of \cref{kern:def:U}, then
+$\nf(\Gamma)\proves_{\mathsf{U}_{\mathrm{c}}}\nf(A)$, by induction on the
+derivation.  \rulename{Hyp} is clear.  The two sides of an instance of
+\rulename{I0} or \rulename{IS} have the same normal form, so the instance
+becomes \rulename{Ref}.  \rulename{Tr} becomes
+\cref{kern:lem:uxeq}(v) with the template $\nf(h)$, because
+$\nf(h(s))=\nf(\nf(h)(\nf(s)))$.  \rulename{QE}, \rulename{DE} and
+\rulename{DI} become the same rules, by the same identity.  \rulename{UR}
+becomes \cref{kern:lem:uxeq}(vi).  Second, $\Gamma\proves A$ in $\Nat$
+implies $\Gamma\proves_{\mathsf{U}}A$ by \cref{kern:thm:urnative}.
+\end{proof}
+
+\begin{remark}[Sources, overlaps and status]
+\label{kern:rem:urforms-sources}
+\Cref{kern:prop:orbit,kern:prop:suadd,kern:rem:orbcounter,kern:rem:sugap}
+are from \pkg{orbit\_closure}, which states \rulename{Orb} for the ordinary
+theory and describes the native form with its checker.  Its translator maps
+a derivation with \rulename{UR} to one with \rulename{Orb} by the second
+construction in the proof of \cref{kern:prop:orbit}.
+\Cref{kern:def:Uc,kern:lem:uxeq,kern:thm:crossed} are from
+\pkg{crossed\_uniqueness}.  That package also derives transport in a
+formula template inside $\mathsf{U}_{\mathrm{c}}$ by induction on the
+template, and restates the native connectives through $\D{}{}$ with an
+unused coordinate; here both follow from \cref{kern:thm:crossed} and
+\cref{base:sec:structural}.  Both packages take the passage from
+\rulename{UR} to equation induction from \pkg{scalar\_uniqueness}, as the
+proofs above do, and neither claims it as new.  Neither package is
+formalized in Lean.
+\end{remark}
+
+% ---------------------------------------------------------------------
+\section{The progressive reading of the closure}
+\label{kern:sec:prog}
+
+This section draws on \pkg{uniform\_progress}, \pkg{target\_closure} and the
+note on mixed closure in \pkg{scope\_and\_closure}.
+
+The single introduction of \cref{kern:sec:witness} tests the witness.  A
+single introduction whose mode depends on the root of the matrix alone is
+possible if the meaning of $\Q{y}E$ at a literal equation $E$ is changed
+from $E(0)\to\forall y\,E(y)$ to progressivity,
+$\forall y\,(E(y)\to E(\Suc y))$.  The calculi of this section have seven
+rules, keep all native formulas, and are stable under substitution or under
+renaming; they are equivalent to $\Nat$ through two translations and not on
+the same formulas.
+
+\subsection{The calculus with orbit elimination}
+\label{kern:sec:R}
+
+Extend the selector of modes of \cref{kern:sec:det} to terms:
+$\eta_B(a)\defeq a$ if the matrix $B$ is a literal equation and
+$\eta_B(a)\defeq 0$ if $B$ is compound.  The \emph{orbit term} is
+\[
+ \omega(a,n)\defeq\It{a}{n}{u}{\Suc u},
+\]
+with the counter $a$ and the seed $n$.
+
+\begin{definition}[The calculus $\mathsf{R}$]
+\label{kern:def:R}
+$\mathsf{R}$ has the seven rules \rulename{Hyp}, \rulename{I0},
+\rulename{IS}, $\rulename{Tr}_{2}$, \rulename{DE} and
+\begin{gather*}
+ \infrule{\Gamma\proves\Q{y}B(y)\qquad\Gamma\proves B(\eta_B(a))}
+         {\Gamma\proves B\bigl(\omega(\eta_B(a),n)\bigr)}\
+ \rulename{QE}_{\omega}
+ \\[1.2ex]
+ \infrule{\Gamma,\ B(t,\eta_B(z))\proves B(t,\Suc z)}
+         {\Gamma\proves\D{x}{y}B(x,y)}\ \rulename{DI}_{\eta},
+\end{gather*}
+where $a$ and $n$ are arbitrary terms, and $z$ is not free in $\Gamma$, in
+$t$ or in $\D{x}{y}B$.  The designated contradiction is $0=\Suc 0$.
+\end{definition}
+
+At a compound matrix $\rulename{QE}_{\omega}$ passes from $B(0)$ to
+$B(\omega(0,n))$, and $\omega(0,n)=n$ is an instance of \rulename{I0}.  At a
+literal equation $E$ it passes from $E(a)$ to $E(\omega(a,n))$, the instance
+$n$ steps further.  Transport in a compound formula is not a rule, and there
+is no rule of numerical cases.
+
+\begin{definition}[The progressive reading]
+\label{kern:def:preading}
+The ordinary formula $F^{\mathrm{p}}$ is defined by
+\begin{align*}
+ (s=t)^{\mathrm{p}} &\defeq (s=t),\\
+ (\Q{y}E)^{\mathrm{p}} &\defeq \forall y\,\bigl(E(y)\to E(\Suc y)\bigr)
+  && (E\text{ a literal equation}),\\
+ (\Q{y}B)^{\mathrm{p}} &\defeq
+  B^{\mathrm{p}}(0)\to\forall y\,B^{\mathrm{p}}(y)
+  && (B\text{ compound}),\\
+ (\D{x}{y}B)^{\mathrm{p}} &\defeq \exists x\,(\Q{y}B)^{\mathrm{p}} .
+\end{align*}
+\end{definition}
+
+The reading commutes with substitution, because substitution preserves the
+root of a matrix.  The elimination and the reading have to change together:
+
+\begin{proposition}[The two readings differ]
+\label{kern:prop:parity}
+Let $E(y)$ be the equation $N(y)=1$ for the parity term $N$ of
+\cref{base:sec:terms}.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item In the standard model $E(0)\to\forall y\,E(y)$ is true and
+ $\forall y\,(E(y)\to E(\Suc y))$ is false.
+\item The rule $\rulename{QE}_{\omega}$ does not preserve truth for the
+ ordinary reading of \cref{base:sec:reading}.
+\item $\Nat$ derives $\Q{y}E(y)$, and $\mathsf{R}$ does not.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+$N(0)=0$, $N(1)=1$ and $N(2)=0$.  (i) The premise $E(0)$ is false, and
+progress fails at $y=1$.  (ii) With $a\defeq 1$ and $n\defeq 1$ the two
+premises $\Q{y}E$ and $E(1)$ are true in the ordinary reading and the
+conclusion $E(\omega(1,1))$, which is $E(2)$, is false.  (iii) In $\Nat$ the
+closure follows by the introduction by cases from $N(0)=1\proves
+N(\Suc z)=1$, which holds because $N(0)=0$ and $0=1$ derives every equation.
+In $\mathsf{R}$ it is not derivable by \cref{kern:thm:rsound} below and (i).
+\end{proof}
+
+\subsection{Derived rules of the orbit calculus}
+\label{kern:sec:Rrules}
+
+\begin{lemma}[Structural rules]
+\label{kern:lem:rstruct}
+Weakening, cut and substitution of terms are admissible in $\mathsf{R}$, and
+substitution maps every rule instance to an instance of the same rule.
+\end{lemma}
+
+\begin{proof}
+\Cref{kern:lem:struct}: no rule of $\mathsf{R}$ tests a term, and
+$\eta_B(a)[\theta]=\eta_{B[\theta]}(a[\theta])$.
+\end{proof}
+
+\begin{lemma}[Equality, closure introduction, equation induction]
+\label{kern:lem:rbasic}
+$\mathsf{R}$ derives:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item reflexivity, symmetry, transitivity, congruence in a term template,
+ and \rulename{Tr};
+\item the introduction $\rulename{QI}_{\eta}$ of \cref{kern:def:Ndet}: from
+ $\Gamma,B(\eta_B(z))\proves B(\Suc z)$ with $z$ fresh to
+ $\Gamma\proves\Q{y}B(y)$;
+\item equation induction: from $\Gamma\proves E(0)$ and
+ $\Gamma,E(z)\proves E(\Suc z)$, for a literal equation $E$ and $z$ fresh,
+ to $\Gamma\proves E(t)$.
+\end{enumerate}
+The derivations of (i) and (ii) use \rulename{Hyp}, \rulename{I0},
+$\rulename{Tr}_{2}$, \rulename{DE} and $\rulename{DI}_{\eta}$ only.
+\end{lemma}
+
+\begin{proof}
+(i) Reflexivity and symmetry are derived from \rulename{I0} and
+$\rulename{Tr}_{2}$ in the proof of \cref{kern:thm:onecontext}.
+Transitivity and congruence are $\rulename{Tr}_{2}$ applied to $r=s$ in the
+template $r=v$ and to $f(s)=f(s)$ in the template $f(s)=f(v)$.
+\rulename{Tr} follows as in that proof.
+
+(ii) Apply $\rulename{DI}_{\eta}$ with the matrix $B(y)$, a coordinate $x$
+not free in $B$ and the witness $0$; then \rulename{DE}, whose opened
+hypothesis is $\Q{y}B(y)$, and \rulename{Hyp}.
+
+(iii) By (ii) the step gives $\Q{y}E(y)$.  $\rulename{QE}_{\omega}$ with
+$a\defeq 0$ and $n\defeq t$ gives $E(\omega(0,t))$ from the base, and
+$\omega(0,t)=t$ is an instance of \rulename{I0}; transport in the equation
+template $E$ gives $E(t)$.
+\end{proof}
+
+The order of the arguments of $\omega$ is what makes (iii) work:
+$\omega(0,t)=t$ is a computation, whereas $\omega(t,0)=t$ is a theorem that
+needs the induction under construction.
+
+\begin{lemma}[Orbit identities]
+\label{kern:lem:orbit}
+In every calculus or theory with the equality rules, the computation
+equations and equation induction, in particular in $\mathsf{R}$, $\Nat$ and
+$\Teq$,
+\begin{gather*}
+ \omega(0,n)=n,\qquad \omega(\Suc a,n)=\Suc\,\omega(a,n),\qquad
+ \omega(a,0)=a,\\
+ \omega(a,\Suc n)=\Suc\,\omega(a,n),\qquad
+ \omega(a,n)=\omega(n,a),\qquad \omega(a,1)=\Suc a .
+\end{gather*}
+\end{lemma}
+
+\begin{proof}
+The first two are \rulename{I0} and \rulename{IS}.  The third is by
+induction on $a$: $\omega(0,0)=0$, and
+$\omega(\Suc a,0)=\Suc\,\omega(a,0)=\Suc a$.  The fourth is by induction on
+$a$ with the parameter $n$: both sides are $\Suc n$ at $0$, and
+$\omega(\Suc a,\Suc n)=\Suc\,\omega(a,\Suc n)=\Suc\Suc\,\omega(a,n)
+=\Suc\,\omega(\Suc a,n)$.  The fifth is by induction on $a$: the base is
+$n=\omega(n,0)$, and
+$\omega(\Suc a,n)=\Suc\,\omega(a,n)=\Suc\,\omega(n,a)=\omega(n,\Suc a)$.
+The last is $\omega(a,1)=\Suc\,\omega(a,0)=\Suc a$.
+\end{proof}
+
+\begin{lemma}[The two interfaces of a closure, and transport]
+\label{kern:lem:rtransport}
+In $\mathsf{R}$, over an arbitrary context:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item one step: from $\Q{y}E(y)$ and $E(a)$ to $E(\Suc a)$, for a literal
+ equation $E$;
+\item transport: from $s=t$ and $F(s)$ to $F(t)$, for every native formula
+ template $F$;
+\item instance from the base: from $\Q{y}B(y)$ and $B(0)$ to $B(t)$, for
+ every matrix $B$;
+\item homogeneous congruence: if $B$ and $C$ are interderivable over
+ $\Gamma$ and are both literal equations or both compound, then $\Q{y}B$
+ and $\Q{y}C$ are interderivable over $\Gamma$, and so are $\D{x}{y}B$ and
+ $\D{x}{y}C$, where the bound variables are not free in $\Gamma$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) $\rulename{QE}_{\omega}$ with $n\defeq 1$ gives $E(\omega(a,1))$, and
+$\omega(a,1)=\Suc a$ by \cref{kern:lem:orbit}.
+
+(ii) and (iii) are proved together by induction on the number of binders of
+the formula, a measure that substitution does not change; (iii) for $B$ uses
+(ii) for $B$.  For an equation, (ii) is $\rulename{Tr}_{2}$.  For (iii): at
+a literal equation, $\rulename{QE}_{\omega}$ with $a\defeq 0$ and
+$n\defeq t$ gives $B(\omega(0,t))$; at a compound matrix it gives the same
+from $B(0)$; and (ii) for $B$ along $\omega(0,t)=t$ gives $B(t)$.
+
+(ii) for $\Q{y}B(v,y)$.  Derive the target $\Q{y}B(t,y)$ by
+$\rulename{QI}_{\eta}$: under the assumption $B(t,\eta_B(z))$, transport in
+$B$ along $t=s$ gives $B(s,\eta_B(z))$; then (i), if $B$ is a literal
+equation, or (iii) at $\Suc z$, if $B$ is compound, gives $B(s,\Suc z)$ from
+the given closure $\Q{y}B(s,y)$; and transport in $B$ along $s=t$ gives
+$B(t,\Suc z)$.
+
+(ii) for $\D{x}{y}B(v,x,y)$.  Apply \rulename{DE} to the given formula with
+a fresh $b$, and derive the target by $\rulename{DI}_{\eta}$ with the
+witness $b$: the premise
+$B(t,b,\eta_B(z))\proves B(t,b,\Suc z)$ follows from the opened closure
+$\Q{y}B(s,b,y)$ exactly as in the previous case.  The conclusion does not
+contain $b$.
+
+Every use of transport or of (iii) inside these two cases is for the matrix
+$B$, which has fewer binders.
+
+(iv) Repeat the two cases of (ii) with the given derivations between $B$
+and $C$, instantiated by substitution (\cref{kern:lem:rstruct}), in place
+of transport.  Because $B$ and $C$ have the same kind of root,
+$\eta_B=\eta_C$, so the assumptions of the two introductions match.
+\end{proof}
+
+The restriction in (iv) is necessary.  An equation $E$ and a compound
+formula $C$ can be interderivable while $\Q{y}E$, which is progressive, and
+$\Q{y}C$, which is conditional, are not; the padding of
+\cref{kern:lem:pad} gives such pairs.  Transport is unaffected, because it
+preserves the root of the matrix.
+
+\subsection{Soundness for the progressive reading}
+\label{kern:sec:Rsound}
+
+\begin{theorem}[Soundness]
+\label{kern:thm:rsound}
+If $\Gamma\proves_{\mathsf{R}}F$, then
+$\Gamma^{\mathrm{p}}\proves_{\Teq}F^{\mathrm{p}}$.
+\end{theorem}
+
+\begin{proof}
+By induction on the derivation.  \rulename{Hyp}, the computation equations,
+$\rulename{Tr}_{2}$ and \rulename{DE} have their ordinary meanings; for
+\rulename{DE} the opened hypothesis reads $(\Q{y}B(b,y))^{\mathrm{p}}$, the
+matrix of the existential quantifier.
+
+$\rulename{DI}_{\eta}$ at a literal equation: the premise gives
+$\forall z\,(E(t,z)\to E(t,\Suc z))$, and $t$ is a witness.  At a compound
+matrix: the premise gives $B^{\mathrm{p}}(t,\Suc z)$ under
+$B^{\mathrm{p}}(t,0)$, so coverage gives
+$B^{\mathrm{p}}(t,0)\to\forall y\,B^{\mathrm{p}}(t,y)$.
+
+$\rulename{QE}_{\omega}$ at a compound matrix: the first premise reads
+$B^{\mathrm{p}}(0)\to\forall y\,B^{\mathrm{p}}(y)$, the second gives
+$B^{\mathrm{p}}(0)$, and $\omega(0,n)=n$.  At a literal equation: assume
+$\forall y\,(E(y)\to E(\Suc y))$ and $E(a)$.  Induction on $k$ for the
+literal equation $E(\omega(k,a))$, with these two assumptions in the
+context, gives $E(\omega(k,a))$ for every $k$: the base is $E(a)$ by
+$\omega(0,a)=a$, and the step is the assumed progress at $\omega(k,a)$ with
+$\omega(\Suc k,a)=\Suc\,\omega(k,a)$.  At $k\defeq n$, the equation
+$\omega(n,a)=\omega(a,n)$ of \cref{kern:lem:orbit} gives $E(\omega(a,n))$.
+\end{proof}
+
+The use of the commutativity of $\omega$ in this proof is harmless: it is a
+theorem of $\Teq$, whose induction is given.  It is separate from the
+recovery of induction inside $\mathsf{R}$, which uses $\omega(0,t)=t$ only.
+
+\subsection{The embedding of the core}
+\label{kern:sec:Rup}
+
+For a literal equation $E$ and fresh variables $r$, $v$ let
+\[
+ \operatorname{pad}(E)\defeq\D{r}{v}\operatorname{gate}(v,E),
+ \qquad\text{that is,}\qquad
+ \D{r}{v}\bigl(\sel(v,0,s)=\sel(v,0,t)\bigr)\quad\text{for }E\equiv(s=t),
+\]
+and for a native formula $F$ let $F^{\sharp}\defeq\operatorname{pad}(F)$ if
+$F$ is a literal equation and $F^{\sharp}\defeq F$ if $F$ is compound.  The
+formula $F^{\sharp}$ is always compound.  The translation $A^{\uparrow}$ of a
+native formula is
+\[
+ (s=t)^{\uparrow}\defeq(s=t),\qquad
+ (\Q{y}B)^{\uparrow}\defeq\Q{y}(B^{\uparrow})^{\sharp},\qquad
+ (\D{x}{y}B)^{\uparrow}\defeq\D{x}{y}(B^{\uparrow})^{\sharp}.
+\]
+It fixes terms and equations, preserves the kind of the root, commutes with
+substitution, and puts a compound matrix below every binder.
+
+\begin{lemma}[Padding]
+\label{kern:lem:pad}
+For a literal equation $E$, the formulas $\operatorname{pad}(E)$ and $E$
+are interderivable in $\mathsf{R}$ over every context.  Hence $F^{\sharp}$
+and $F$ are interderivable for every $F$.
+\end{lemma}
+
+\begin{proof}
+Let $E$ be $s=t$.  The computation equations give $\operatorname{gate}(0,E)$,
+both sides being $0$, and make $\operatorname{gate}(\Suc z,E)$ and $E$
+interderivable.  From $E$: the matrix $\operatorname{gate}(v,E)$ is a
+literal equation, so $\rulename{DI}_{\eta}$ asks for
+$\operatorname{gate}(\Suc z,E)$ under the assumption
+$\operatorname{gate}(z,E)$, which is not needed.  From
+$\operatorname{pad}(E)$: \rulename{DE} opens
+$\Q{v}\operatorname{gate}(v,E)$, and $\rulename{QE}_{\omega}$ with
+$a\defeq 0$, $n\defeq 1$ and the second premise $\operatorname{gate}(0,E)$
+gives $\operatorname{gate}(\omega(0,1),E)$.  \rulename{I0} and
+$\rulename{Tr}_{2}$ give $\operatorname{gate}(1,E)$, hence $E$.
+\end{proof}
+
+\begin{theorem}[Embedding]
+\label{kern:thm:rup}
+If $\Gamma\proves A$ in $\Nat$, then
+$\Gamma^{\uparrow}\proves_{\mathsf{R}}A^{\uparrow}$.
+\end{theorem}
+
+\begin{proof}
+By induction on the derivation.  \rulename{Hyp}, \rulename{I0},
+\rulename{IS} translate to themselves, and \rulename{Tr} is derivable in
+$\mathsf{R}$ (\cref{kern:lem:rbasic}(i)).
+
+\rulename{QE}.  The premises translate to $\Q{y}(B^{\uparrow})^{\sharp}$ and
+$B^{\uparrow}(0)$.  \Cref{kern:lem:pad} gives $(B^{\uparrow})^{\sharp}(0)$,
+\cref{kern:lem:rtransport}(iii) gives $(B^{\uparrow})^{\sharp}(t)$, and
+\cref{kern:lem:pad} gives $B^{\uparrow}(t)$, which is $B(t)^{\uparrow}$.
+
+\rulename{DE}.  The first premise translates to
+$\D{x}{y}(B^{\uparrow})^{\sharp}$, and the hypothesis opened by
+\rulename{DE} in $\mathsf{R}$ is $\Q{y}(B^{\uparrow})^{\sharp}(b,y)$, the
+translation of $\Q{y}B(b,y)$.
+
+\rulename{DI}.  The translated premise is
+$\Gamma^{\uparrow},B^{\uparrow}(t,0)\proves B^{\uparrow}(t,\Suc z)$.  The
+target has the compound matrix $(B^{\uparrow})^{\sharp}$, so
+$\rulename{DI}_{\eta}$ asks for $(B^{\uparrow})^{\sharp}(t,\Suc z)$ under
+$(B^{\uparrow})^{\sharp}(t,0)$; remove the padding of the assumption, cut
+with the premise, and pad the conclusion.
+
+\rulename{QI}.  The translated premise is
+$\Gamma^{\uparrow},E(z)\proves E(\Suc z)$, and the target is
+$\Q{y}\operatorname{pad}(E(y))$, with a compound matrix.  By
+\cref{kern:lem:rbasic}(ii) it suffices to derive
+$\operatorname{pad}(E(\Suc z'))$ from $\operatorname{pad}(E(0))$.  The
+assumption gives $E(0)$; equation induction in $\mathsf{R}$
+(\cref{kern:lem:rbasic}(iii)) with the translated premise as its step gives
+$E(\Suc z')$; and \cref{kern:lem:pad} pads it.
+\end{proof}
+
+\subsection{The reading inside the core and the two round trips}
+\label{kern:sec:Rdown}
+
+The translation $F^{\downarrow}$ expresses the progressive reading with the
+native connectives $\Rightarrow_*$, $\forall_*$, $\exists_*$ of
+\cref{base:sec:structural}.  It fixes equations and is defined by
+\begin{align*}
+ (\Q{y}E)^{\downarrow} &\defeq
+   \forall_* y\,\bigl(E(y)\Rightarrow_* E(\Suc y)\bigr),
+ & (\Q{y}B)^{\downarrow} &\defeq \Q{y}B^{\downarrow},\\
+ (\D{x}{y}E)^{\downarrow} &\defeq
+   \exists_* x\,\forall_* y\,\bigl(E(x,y)\Rightarrow_* E(x,\Suc y)\bigr),
+ & (\D{x}{y}B)^{\downarrow} &\defeq \D{x}{y}B^{\downarrow},
+\end{align*}
+where $E$ is a literal equation and $B$ is compound.  It maps compound
+formulas to compound formulas and commutes with substitution.
+
+\begin{theorem}[The reading is derivation-preserving]
+\label{kern:thm:rdown}
+If $\Gamma\proves_{\mathsf{R}}F$, then
+$\Gamma^{\downarrow}\proves F^{\downarrow}$ in $\Nat$.
+\end{theorem}
+
+\begin{proof}
+By \cref{base:thm:bridge} the ordinary reading of a native connective is
+equivalent in $\Teq$ to the corresponding connective of the readings.  By
+induction on $F$, therefore, $(F^{\downarrow})^{\circ}$ is equivalent in
+$\Teq$ to $F^{\mathrm{p}}$.  \Cref{kern:thm:rsound} gives
+$\Gamma^{\mathrm{p}}\proves_{\Teq}F^{\mathrm{p}}$, hence
+$(\Gamma^{\downarrow})^{\circ}\proves_{\Teq}(F^{\downarrow})^{\circ}$, and
+the faithfulness of the ordinary reading (\cref{base:thm:bridge}) gives
+$\Gamma^{\downarrow}\proves F^{\downarrow}$.
+\end{proof}
+
+A formula of the form $A^{\uparrow}$ is an \emph{image}.  The rules of the
+native connectives are available in $\mathsf{R}$ for images, over arbitrary
+contexts of $\mathsf{R}$.
+
+\begin{lemma}[Logic on images]
+\label{kern:lem:image}
+Let $\Delta$ be a context of $\mathsf{R}$, let $A$, $A_i$, $B$, $C$ be
+native formulas, and let $F$ be a formula of $\mathsf{R}$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $A_1,\dots,A_k\proves C$ in $\Nat$ and
+ $\Delta\proves_{\mathsf{R}}A_i^{\uparrow}$ for every $i$, then
+ $\Delta\proves_{\mathsf{R}}C^{\uparrow}$.
+\item If $\Delta,C(0)^{\uparrow}\proves_{\mathsf{R}}C(\Suc z)^{\uparrow}$
+ with $z$ fresh, then $\Delta\proves_{\mathsf{R}}(\Q{y}C(y))^{\uparrow}$.
+\item If $\Delta,A^{\uparrow}\proves_{\mathsf{R}}B^{\uparrow}$, then
+ $\Delta\proves_{\mathsf{R}}(A\Rightarrow_* B)^{\uparrow}$.
+\item If $\Delta\proves_{\mathsf{R}}C(z)^{\uparrow}$ with $z$ not free in
+ $\Delta$, then $\Delta\proves_{\mathsf{R}}(\forall_* y\,C(y))^{\uparrow}$.
+\item If $\Delta\proves_{\mathsf{R}}(\exists_* x\,C(x))^{\uparrow}$ and
+ $\Delta,C(b)^{\uparrow}\proves_{\mathsf{R}}F$ with $b$ not free in $\Delta$,
+ $F$ and $C$, then $\Delta\proves_{\mathsf{R}}F$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) \Cref{kern:thm:rup}, weakening and cut.  Every rule of the native
+connectives without a discharged assumption is of this form.
+
+(ii) The target is $\Q{y}(C^{\uparrow})^{\sharp}(y)$, with a compound matrix.
+By \cref{kern:lem:rbasic}(ii) it suffices to derive
+$(C^{\uparrow})^{\sharp}(\Suc z)$ from $(C^{\uparrow})^{\sharp}(0)$, which
+follows from the hypothesis and \cref{kern:lem:pad}.
+
+(iii) $A\Rightarrow_* B$ is $\Q{y}\sel(y,A,B)$.  By (ii) it suffices to
+derive $\sel(\Suc z,A,B)^{\uparrow}$ from $\sel(0,A,B)^{\uparrow}$.  By (i)
+and $\sel(0,A,B)\proves A$, the assumption gives $A^{\uparrow}$; the
+hypothesis gives $B^{\uparrow}$; and (i) with $B\proves\sel(\Suc z,A,B)$
+gives the conclusion.
+
+(iv) $\forall_* y\,C$ is $C(0)\wedge_*\Q{y}C$.  Substitution in
+$\mathsf{R}$ gives $C(0)^{\uparrow}$ and $C(\Suc z)^{\uparrow}$, (ii) gives
+$(\Q{y}C)^{\uparrow}$, and (i) with the introduction of $\wedge_*$ gives the
+conclusion.
+
+(v) $\exists_* x\,C$ is $\D{x}{y}\operatorname{gate}(y,C)$, and its image is
+$\D{x}{y}\bigl(\operatorname{gate}(y,C)^{\uparrow}\bigr)^{\sharp}$.
+\rulename{DE} in $\mathsf{R}$ with the fresh variable $b$ opens the image of
+$\Q{y}\operatorname{gate}(y,C(b))$.  By (i) and
+$\Q{y}\operatorname{gate}(y,C(b))\proves C(b)$, this gives
+$C(b)^{\uparrow}$, and cut with the second hypothesis gives $F$.  The
+formula $F$ is carried through \rulename{DE} and is not analyzed.
+\end{proof}
+% ed.: the package states this lemma with the proof "translate the derived
+% rule constructions"; items (i)-(v) spell out which constructions are used
+% and why they hold over an arbitrary context of the new calculus.
+
+The lemma does not say that the selector and the connectives of $\Nat$ can
+be applied to arbitrary formulas of $\mathsf{R}$; that would ignore the
+dependence of $\Q{}$ on the root of its matrix.
+
+\begin{lemma}[Normalization of atomic closures]
+\label{kern:lem:atomicnorm}
+For a literal equation $E$, over every context of $\mathsf{R}$,
+\[
+ \Q{y}E(y)\dashv\vdash_{\mathsf{R}}(\Q{y}E(y))^{\downarrow\uparrow},
+ \qquad
+ \D{x}{y}E(x,y)\dashv\vdash_{\mathsf{R}}(\D{x}{y}E(x,y))^{\downarrow\uparrow}.
+\]
+\end{lemma}
+
+\begin{proof}
+Equations are their own images.  From $\Q{y}E(y)$ and $E(z)$, one step
+(\cref{kern:lem:rtransport}(i)) gives $E(\Suc z)$;
+\cref{kern:lem:image}(iii) and (iv) give the image of
+$\forall_* y\,(E(y)\Rightarrow_* E(\Suc y))$.  Conversely, from that image
+and $E(z)$, \cref{kern:lem:image}(i) with the eliminations of $\forall_*$
+and $\Rightarrow_*$ gives $E(\Suc z)$, and $\rulename{QI}_{\eta}$ at the
+literal equation $E$ gives $\Q{y}E(y)$.
+
+For $\D{}{}$: apply \rulename{DE} at a fresh $b$, convert the opened
+$\Q{y}E(b,y)$ by the first part, and apply \cref{kern:lem:image}(i) with the
+introduction of $\exists_*$.  Conversely apply \cref{kern:lem:image}(v) with
+$F\defeq\D{x}{y}E(x,y)$: under the image of
+$\forall_* y\,(E(b,y)\Rightarrow_* E(b,\Suc y))$ and the assumption $E(b,z)$
+the eliminations give $E(b,\Suc z)$, which is the premise of
+$\rulename{DI}_{\eta}$ with the witness $b$.
+\end{proof}
+
+\begin{theorem}[Round trips]
+\label{kern:thm:rround}
+For every native formula $A$ and every formula $F$ of $\mathsf{R}$,
+\[
+ A\dashv\vdash A^{\uparrow\downarrow}\ \text{in }\Nat,
+ \qquad
+ F\dashv\vdash_{\mathsf{R}}F^{\downarrow\uparrow},
+\]
+over arbitrary contexts.
+\end{theorem}
+
+\begin{proof}
+\emph{In $\Nat$.}  First, $\operatorname{pad}(E)^{\downarrow}$ is
+interderivable with $E$: it is
+$\exists_* r\,\forall_* v\,\bigl(\operatorname{gate}(v,E)\Rightarrow_*
+\operatorname{gate}(\Suc v,E)\bigr)$ with $r$ unused.  From $E$ every
+$\operatorname{gate}(\Suc v,E)$ follows.  Conversely
+$\operatorname{gate}(0,E)$ is derivable, and progress at $0$ gives
+$\operatorname{gate}(1,E)$, hence $E$.  Now induct on $A$.  Equations are
+fixed.  The matrix $(B^{\uparrow})^{\sharp}$ is compound, so
+$(\Q{y}B)^{\uparrow\downarrow}$ is $\Q{y}((B^{\uparrow})^{\sharp})^{\downarrow}$.
+If $B$ is an equation, the matrix is $\operatorname{pad}(B)^{\downarrow}$,
+interderivable with $B$.  If $B$ is compound, the matrix is
+$B^{\uparrow\downarrow}$, interderivable with $B$ by the induction
+hypothesis.  The congruence of $\Q{}$ in $\Nat$
+(\cref{base:sec:structural}) gives the claim, and $\D{}{}$ is the same.
+
+\emph{In $\mathsf{R}$.}  Induct on $F$.  Equations are fixed.  If the matrix
+of $F$ is a literal equation, the claim is \cref{kern:lem:atomicnorm}.  Let
+the matrix $B$ be compound.  The induction hypothesis makes $B$ and
+$B^{\downarrow\uparrow}$ interderivable, and both are compound.
+\Cref{kern:lem:rtransport}(iv) makes $\Q{y}B$ and
+$\Q{y}B^{\downarrow\uparrow}$ interderivable, and since
+$B^{\downarrow\uparrow}$ is compound, $\Q{y}B^{\downarrow\uparrow}$ is
+$(\Q{y}B)^{\downarrow\uparrow}$ with no padding inserted.  $\D{}{}$ is the
+same.  No congruence across different kinds of root is used, and the
+normalization is proved for every formula before the connectives are
+extended to all of $\mathsf{R}$.
+\end{proof}
+
+\begin{theorem}[The orbit calculus and the core]
+\label{kern:thm:uniform}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\Gamma\proves A$ in $\Nat$ if and only if
+ $\Gamma^{\uparrow}\proves_{\mathsf{R}}A^{\uparrow}$.
+\item $\Gamma\proves_{\mathsf{R}}F$ if and only if
+ $\Gamma^{\downarrow}\proves F^{\downarrow}$ in $\Nat$.
+\item $\mathsf{R}$ derives $0=\Suc 0$ if and only if $\Nat$ does.
+\item With the progressive reading, $\mathsf{R}$ is bi-interpretable with
+ $\Teq$ and with $\iPRA$, with whole domains, actual equality, identity
+ numerical composites and both formula round trips.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) One direction is \cref{kern:thm:rup}.  For the other, apply
+\cref{kern:thm:rdown} to $\Gamma^{\uparrow}\proves_{\mathsf{R}}A^{\uparrow}$
+and remove $\uparrow\downarrow$ by \cref{kern:thm:rround} and cut.  (ii) is
+symmetric, with \cref{kern:thm:rdown}, \cref{kern:thm:rup} and the second
+round trip.  (iii) is (i) or (ii) for the equation $0=\Suc 0$, which both
+translations fix.  (iv) The translations $\uparrow$ and $\downarrow$ fix
+every term, so composing them with the interpretations of
+\cref{base:thm:bridge} adds no change of domain; the formula round trips
+compose.
+\end{proof}
+
+\begin{corollary}[Connectives for all formulas of the orbit calculus]
+\label{kern:cor:rlogic}
+For formulas $F$, $G$ of $\mathsf{R}$ put
+$F\Rightarrow_{\mathsf{R}}G\defeq
+(F^{\downarrow}\Rightarrow_* G^{\downarrow})^{\uparrow}$, and likewise for
+$\wedge$, $\vee$, $\exists$ and $\forall$; falsity is $0=\Suc 0$.  These
+operations obey the rules of intuitionistic natural deduction in
+$\mathsf{R}$, and $\mathsf{R}$ derives coverage and equation induction.
+\end{corollary}
+
+\begin{proof}
+By \cref{kern:thm:rround}, $(F\Rightarrow_{\mathsf{R}}G)^{\downarrow}$ is
+interderivable in $\Nat$ with $F^{\downarrow}\Rightarrow_* G^{\downarrow}$.
+By \cref{kern:thm:uniform}(ii) each rule for $\Rightarrow_{\mathsf{R}}$ is
+therefore the rule for $\Rightarrow_*$ in $\Nat$, applied to the readings.
+The other connectives are the same.
+\end{proof}
+
+\begin{remark}[Sources and Lean]
+\label{kern:rem:uniform-sources}
+The calculus and \cref{kern:thm:uniform} are from \pkg{uniform\_progress}.
+The package compares $\mathsf{R}$ with an earlier progressive presentation
+that reads every closure progressively, has a recursor whose body sees the
+counter, two eliminations and a rule of Boolean cases; here the iterator is
+unchanged, compound closures keep the conditional reading, and one
+elimination serves both.  In Lean (modules \Lean{NativeProgressive} and
+following) the calculus is \Lean{RPrf}, the translation $\downarrow$ is
+\Lean{NFm.rd} and $\uparrow$ is \Lean{NFm.emb}.  \Cref{kern:thm:rdown} is
+\Lean{RPrf.toNPrf}, with \Lean{rprf\_sound\_pra} and
+\Lean{rprf\_consistent}; \cref{kern:lem:rstruct} is \Lean{RPrf.subst};
+\cref{kern:lem:rbasic}(iii) is \Lean{RPrf.eqInd};
+\cref{kern:lem:rtransport}(ii) is \Lean{RPrf.leibniz}; \cref{kern:lem:pad}
+is \Lean{RPrf.padI} and \Lean{RPrf.padE}; \cref{kern:thm:rup} is
+\Lean{NPrf.toR}; \cref{kern:thm:uniform}(i) and (ii) are
+\Lean{rprf\_emb\_iff} and \Lean{rprf\_iff\_rd}; and the two round trips are
+\Lean{NEquiv.rd\_emb} and \Lean{REquivIn.emb\_rd}.  In the Lean proof of
+\cref{kern:thm:rdown} the only rule that needs an argument is
+$\rulename{QE}_{\omega}$ at an equation, which is an equation induction in
+the kernel (\Lean{NPrf.progE}).
+\end{remark}
+
+\subsection{Transport in a formula template}
+\label{kern:sec:mixed}
+
+\begin{definition}[The calculus $\mathsf{R}_{F}$]
+\label{kern:def:RF}
+$\mathsf{R}_{F}$ is $\mathsf{R}$ with $\rulename{Tr}_{2}$ replaced by
+$\rulename{Tr}_{F}$; its seven rules are \rulename{Hyp}, \rulename{I0},
+\rulename{IS}, $\rulename{Tr}_{F}$, $\rulename{QE}_{\omega}$, \rulename{DE}
+and $\rulename{DI}_{\eta}$.
+\end{definition}
+
+\begin{proposition}[Mixed closure]
+\label{kern:prop:mixed}
+$\mathsf{R}_{F}$ and $\mathsf{R}$ derive the same sequents.  Hence
+\cref{kern:thm:rsound,kern:thm:uniform} hold for $\mathsf{R}_{F}$.
+\end{proposition}
+
+\begin{proof}
+$\rulename{Tr}_{2}$ is the instance of $\rulename{Tr}_{F}$ at an equation
+template, and $\rulename{Tr}_{F}$ is derivable in $\mathsf{R}$ by
+\cref{kern:lem:rtransport}(ii).
+\end{proof}
+
+\begin{remark}[The account of \pkg{scope\_and\_closure}]
+\label{kern:rem:mixed-sources}
+$\mathsf{R}_{F}$ is the ``mixed closure'' calculus of
+\pkg{scope\_and\_closure}, written there with the orbit term
+$\It{n}{t}{u}{\Suc u}$ and the selector $d_B$ for $\eta_B$.  The package
+proves the bi-interpretation with $\Teq$ independently of
+\pkg{uniform\_progress}, and its proof differs in three places.  The gate is
+extended through binders, $G_v(\Q{y}B)\defeq\Q{y}G_vB$ and
+$G_v(\D{x}{y}B)\defeq\D{x}{y}G_vB$, with $\proves G_0B$ and
+$G_{\Suc v}B\dashv\vdash B$ proved by induction on $B$ from homogeneous
+congruence.  Every matrix is padded, $P(B)\defeq\D{r}{v}G_vB$, compound or
+not.  And the second formula round trip is proved through $\Teq$: with
+$\rho$ the progressive reading and $K(\varphi)$ the padded native
+translation of an ordinary formula $\varphi$, the package shows
+$\rho(K\varphi)\leftrightarrow\varphi$ in $\Teq$ and
+$B\dashv\vdash K(B^{\rho})$ in its calculus, the latter by the cases of
+\cref{kern:lem:atomicnorm,kern:thm:rround}.  For $\rulename{QE}_{\omega}$
+it needs only $\omega(a,1)=\Suc a$ inside the calculus, as here.  In Lean
+the calculus is \Lean{MCPrf}, with \Lean{mcprf\_iff\_rprf},
+\Lean{mcprf\_iff\_rd}, \Lean{mcprf\_emb\_iff} and
+\Lean{mcprf\_consistent}.  The package measures no checker for it and
+states that the single introduction moves a cost into the elimination, which
+builds a term and takes a second numerical parameter.
+\end{remark}
+
+\subsection{Elimination at a target}
+\label{kern:sec:target}
+
+The orbit elimination takes two terms, a source and a seed.  It can be
+replaced by an elimination that takes the target alone.  For a matrix $B$
+and a term $t$ put
+\[
+ \delta_B(t)\defeq
+ \begin{cases}
+  r, & B\text{ is a literal equation and }t\equiv\Suc r,\\
+  0, & \text{otherwise.}
+ \end{cases}
+\]
+The test is on the syntax of $t$; terms are not normalized before it, and
+$J(\Suc r)=\It{0}{\Suc r}{u}{0}$ is not a literal successor.
+
+\begin{definition}[The calculus $\mathsf{T}$]
+\label{kern:def:T}
+$\mathsf{T}$ has the seven rules \rulename{Hyp}, \rulename{I0},
+\rulename{IS}, $\rulename{Tr}_{2}$, \rulename{DE}, $\rulename{DI}_{\eta}$ and
+\[
+ \infrule{\Gamma\proves\Q{y}B(y)\qquad\Gamma\proves B(\delta_B(t))}
+         {\Gamma\proves B(t)}\ \rulename{QE}_{\delta}.
+\]
+\end{definition}
+
+A target that is a literal successor asks for the instance at its
+predecessor; every other target of an atomic closure, and every target of a
+compound closure, asks for the instance at zero.
+
+\begin{lemma}[Interfaces and induction in $\mathsf{T}$]
+\label{kern:lem:tbasic}
+$\mathsf{T}$ derives the equality rules and $\rulename{QI}_{\eta}$, and for a
+literal equation $E$, a compound matrix $B$ and every term $t$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item one step: from $\Q{y}E(y)$ and $E(t)$ to $E(\Suc t)$;
+\item instance from the base: from $\Q{y}E(y)$ and $E(0)$ to $E(t)$, and
+ from $\Q{y}B(y)$ and $B(0)$ to $B(t)$;
+\item equation induction.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+The equality rules and $\rulename{QI}_{\eta}$ are derived as in
+\cref{kern:lem:rbasic}.  (i) $\rulename{QE}_{\delta}$ at the target
+$\Suc t$.  (ii) For $B$ compound the rule is $\rulename{QE}_{\delta}$
+itself.  For $E$, take the target $J(t)$, which is not a literal successor:
+$\rulename{QE}_{\delta}$ gives $E(J(t))$ from $E(0)$, and $J(t)=t$ with
+$\rulename{Tr}_{2}$ gives $E(t)$.  (iii) $\rulename{QI}_{\eta}$ and (ii).
+\end{proof}
+
+This bootstrap uses no predecessor, no numerical case distinction and no
+identity for the orbit term.
+
+\begin{lemma}[Substitution in $\mathsf{T}$]
+\label{kern:lem:tsubst}
+If $\Gamma\proves_{\mathsf{T}}A$, then
+$\Gamma[\theta]\proves_{\mathsf{T}}A[\theta]$.  Injective renaming maps rule
+instances to rule instances; substitution in general does not.
+\end{lemma}
+
+\begin{proof}
+By induction on the derivation, with eigenvariables renamed.  All rules but
+$\rulename{QE}_{\delta}$ commute with substitution.  Consider
+$\rulename{QE}_{\delta}$ with the matrix $B$ and the target $t$.  If $B$ is
+compound, or $t\equiv\Suc r$, or neither $t$ nor $t[\theta]$ is a literal
+successor, the substituted inference is an instance.  In the remaining case
+$B$ is a literal equation, the second premise is the instance at $0$, and
+$t[\theta]$ is a literal successor; then \cref{kern:lem:tbasic}(ii) gives
+$B[\theta](t[\theta])$ from the substituted premises.  That lemma does not
+depend on the present one.
+\end{proof}
+
+\begin{lemma}[Transport in $\mathsf{T}$]
+\label{kern:lem:ttransport}
+The statements (ii) and (iv) of \cref{kern:lem:rtransport} hold in
+$\mathsf{T}$.
+\end{lemma}
+
+\begin{proof}
+The proof of \cref{kern:lem:rtransport} uses $\rulename{Tr}_{2}$,
+$\rulename{QI}_{\eta}$, \rulename{DE}, $\rulename{DI}_{\eta}$, one step at a
+literal equation, the instance from the base at a compound matrix, and
+substitution.  In $\mathsf{T}$ these are \cref{kern:lem:tbasic,kern:lem:tsubst},
+and the instance from the base at a compound matrix is primitive, so no
+redex has to be removed.
+\end{proof}
+
+\begin{theorem}[Target elimination and orbit elimination]
+\label{kern:thm:target}
+$\mathsf{T}$ and $\mathsf{R}$ derive the same sequents.  Hence
+\cref{kern:thm:rsound,kern:thm:uniform} hold for $\mathsf{T}$.
+\end{theorem}
+
+\begin{proof}
+The two calculi differ in the elimination of $\Q{}$ only.
+
+\emph{$\rulename{QE}_{\delta}$ in $\mathsf{R}$.}  At a literal equation and
+a target $\Suc r$ it is one step (\cref{kern:lem:rtransport}(i)).  In the
+other cases its second premise is the instance at $0$, and it is
+\cref{kern:lem:rtransport}(iii); for a compound matrix this uses transport
+in a compound formula of $\mathsf{R}$, which is why that lemma precedes the
+comparison.
+
+\emph{$\rulename{QE}_{\omega}$ in $\mathsf{T}$.}  At a compound matrix,
+$\rulename{QE}_{\delta}$ with the target $\omega(0,n)$ gives the conclusion
+from $B(0)$ at once.  At a literal equation, let $\Q{y}E(y)$ and $E(a)$ be
+given.  Equation induction on $k$ in $\mathsf{T}$ gives $E(\omega(k,a))$:
+the base is $E(a)$ with $\omega(0,a)=a$, and the step is one step at
+$\omega(k,a)$ with $\omega(\Suc k,a)=\Suc\,\omega(k,a)$.  At $k\defeq n$,
+the equation $\omega(n,a)=\omega(a,n)$, which holds in $\mathsf{T}$ by
+\cref{kern:lem:orbit}, gives $E(\omega(a,n))$.
+\end{proof}
+
+The orbit identities are needed to simulate the orbit rule in $\mathsf{T}$.
+They are not needed by the rule $\rulename{QE}_{\delta}$, by its soundness
+or by the induction of \cref{kern:lem:tbasic}.  Directly, $\rulename{QE}_{\delta}$
+is sound for the progressive reading as follows: at a literal successor it
+uses one instance of progress, at another target of an atomic closure it
+uses equation induction from the instance at zero, and at a compound matrix
+it is the elimination of the conditional reading.
+
+\begin{remark}[Sources and Lean]
+\label{kern:rem:target-sources}
+The subsection is the first part of \pkg{target\_closure}.  In Lean the
+calculus is \Lean{TQPrf}, with \Lean{tqprf\_iff\_rprf}, the orbit rule
+derived as \Lean{TQPrf.orbit}, and the consequences
+\Lean{tqprf\_emb\_iff}, \Lean{tqprf\_iff\_rd} and \Lean{tqprf\_consistent}.
+The second part of the package concerns the typing of certificates for the
+calculus with the conditional reading and is summarized in
+\cref{kern:sec:sizes}.
+\end{remark}
+
+\subsection{The calculi of the chapter}
+\label{kern:sec:table}
+
+\Cref{kern:tab:calculi} lists the calculi of
+\cref{kern:sec:intro,kern:sec:transport,kern:sec:uniq,kern:sec:prog}.  Each
+has \rulename{Hyp}, \rulename{I0}, \rulename{IS} and \rulename{DE}; the
+second column gives its other rules.  The calculus
+$\mathsf{U}_{\mathrm{c}}$ is the exception: it is stated on normal terms and
+has neither \rulename{I0} nor \rulename{IS}.  The column ``subst.'' says
+whether substitution maps rule instances to rule instances
+(\cref{kern:lem:struct}); for $\mathsf{U}_{\mathrm{c}}$ substitution is
+followed by normalization (\cref{kern:lem:ucstruct}).
+
+\begin{longtable}{@{}lp{0.36\linewidth}cp{0.2\linewidth}c@{}}
+\caption{The calculi of the chapter.}\label{kern:tab:calculi}\\
+\toprule
+Calculus & Rules besides \rulename{Hyp}, \rulename{I0}, \rulename{IS},
+\rulename{DE} & Rules & Relation to $\Nat$ & Subst.\\
+\midrule
+\endfirsthead
+\toprule
+Calculus & Rules besides \rulename{Hyp}, \rulename{I0}, \rulename{IS},
+\rulename{DE} & Rules & Relation to $\Nat$ & Subst.\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$\Nat$ & \rulename{Tr}, \rulename{QE}, \rulename{DI}, \rulename{QI} & 8 &
+ & yes\\
+$\Nat_{\mathrm{D}}$ & \rulename{Tr}, \rulename{QE}, \rulename{DI},
+ \rulename{DP} & 8 & equivalent, \cref{kern:thm:direct} & yes\\
+$\Nat_{\det}$ & \rulename{Tr}, \rulename{QE}, \rulename{DI},
+ $\rulename{QI}_{\eta}$ & 8 & equivalent, \cref{kern:cor:det} & yes\\
+$\mathsf{W}$ & \rulename{Tr}, \rulename{QE}, $\rulename{DI}_{\mathrm{w}}$ &
+ 7 & equivalent, \cref{kern:thm:witness} & no\\
+$\Nat_{2}$ & $\rulename{Tr}_{2}$, \rulename{QE}, \rulename{DI},
+ \rulename{QI} & 8 & equivalent, \cref{kern:thm:onecontext} & yes\\
+$\Nat_{F}$ & $\rulename{Tr}_{F}$, \rulename{QE}, \rulename{DI},
+ \rulename{QI} & 8 & equivalent, \cref{kern:thm:onecontext} & yes\\
+$\mathsf{O}$ & $\rulename{Tr}^{-}$, \rulename{QE}, \rulename{DI},
+ \rulename{QI} & 8 & equivalent, \cref{kern:thm:onesided} & no\\
+$\mathsf{M}$ & $\rulename{Tr}^{-}$, \rulename{QE},
+ $\rulename{DI}_{\mathrm{w}}$ & 7 & equivalent, \cref{kern:thm:onesided} &
+ no\\
+$\mathsf{X}$ & \rulename{TrX}, \rulename{QX}, \rulename{DI}, \rulename{QI} &
+ 8 & equivalent, \cref{kern:thm:reversal} & no\\
+$\mathsf{Z}$ & $\rulename{Tr}_{F}^{-}$, \rulename{QE}, \rulename{DI},
+ \rulename{QI} & 8 & equivalent, \cref{kern:thm:dispatch} & no\\
+$\mathsf{G}$ & \rulename{Rep}, \rulename{QE}, \rulename{DI}, \rulename{QI} &
+ 8 & equivalent, \cref{kern:thm:tfree} & no\\
+$\mathsf{G}_7$ & \rulename{Rep}, \rulename{QE},
+ $\rulename{DI}_{\mathrm{w}}$ & 7 & equivalent, \cref{kern:thm:tfree} & no\\
+$\mathsf{L}$ & \rulename{LOR}, \rulename{QE}, \rulename{DI}, \rulename{QI} &
+ 8 & equivalent, \cref{kern:thm:onehole} & yes\\
+$\Nat_{\mathrm{u}}$ & uncrossed replacement in a term template,
+ \rulename{QE}, \rulename{DI}, \rulename{QI} & 8 & equivalent,
+ \cref{kern:thm:onehole} & yes\\
+$\mathsf{U}$ & \rulename{Tr}, \rulename{QE}, \rulename{DI}, \rulename{UR} &
+ 8 & equivalent, \cref{kern:thm:urnative} & yes\\
+$\mathsf{U}_{\mathrm{o}}$ & \rulename{Tr}, \rulename{QE}, \rulename{DI},
+ \rulename{Orb} & 8 & equivalent, \cref{kern:prop:orbit} & yes\\
+$\mathsf{U}_{\mathrm{c}}$ & \rulename{Ref}, \rulename{QE}, \rulename{DI},
+ \rulename{UX}, on normal terms; no \rulename{I0}, \rulename{IS} & 6 &
+ through $\nf$, \cref{kern:thm:crossed} & yes\\
+$\mathsf{R}$ & $\rulename{Tr}_{2}$, $\rulename{QE}_{\omega}$,
+ $\rulename{DI}_{\eta}$ & 7 & through $\uparrow$ and $\downarrow$,
+ \cref{kern:thm:uniform} & yes\\
+$\mathsf{R}_{F}$ & $\rulename{Tr}_{F}$, $\rulename{QE}_{\omega}$,
+ $\rulename{DI}_{\eta}$ & 7 & same sequents as $\mathsf{R}$,
+ \cref{kern:prop:mixed} & yes\\
+$\mathsf{T}$ & $\rulename{Tr}_{2}$, $\rulename{QE}_{\delta}$,
+ $\rulename{DI}_{\eta}$ & 7 & same sequents as $\mathsf{R}$,
+ \cref{kern:thm:target} & no\\
+\end{longtable}
+
+% ---------------------------------------------------------------------
+\section{Two results on other recursors}
+\label{kern:sec:recursors}
+
+This section draws on the appendix of \pkg{witness\_rule} on counter
+congruence and on the obstruction note of \pkg{scope\_and\_closure}.  Both
+concern term languages other than that of \cref{base:sec:terms}; the
+formulas and the logical rules are the native ones.
+
+\subsection{Counter congruence at a zero seed}
+\label{kern:sec:zcc}
+
+The appendix of \pkg{witness\_rule} refines an earlier package,
+\pkg{counter\_congruence}, whose term language has a recursor that sees the
+counter.  The terms are variables, $0$, $\Suc t$ and
+$\operatorname{Rec}(n,a;\,u,v.\,h)$, which binds $u$, the previous counter,
+and $v$, the previous state, in $h$.  The computation equations are
+\[
+ \operatorname{Rec}(0,a;\,u,v.\,h)=\Suc a,\qquad
+ \operatorname{Rec}(\Suc n,a;\,u,v.\,h)
+  =h\subst{n}{u}\subst{\operatorname{Rec}(n,a;\,u,v.\,h)}{v}.
+\]
+The formulas are equations and $\D{x}{y}A$; a closure $\Q{y}B$ occurs in a
+context only, as a resource in the sense of \cref{base:sec:clauses}.
+
+\begin{definition}[The calculus $\mathcal{C}_0$]
+\label{kern:def:C0}
+The rules of $\mathcal{C}_0$ are: \rulename{Hyp} for a formula of the
+context; lookup of a closure of the context; the two computation equations;
+\rulename{QE}, with its first premise a lookup; \rulename{DE};
+\rulename{DI}; \rulename{DP}; root replacement on the left,
+\[
+ \infrule{\Gamma\proves s=t\qquad\Gamma\proves s=r}{\Gamma\proves t=r}\
+ \rulename{RL};
+\]
+and counter congruence at a zero seed,
+\[
+ \infrule{\Gamma\proves s=t}
+  {\Gamma\proves\operatorname{Rec}(s,0;\,u,v.\,h)
+               =\operatorname{Rec}(t,0;\,u,v.\,h)}\ \rulename{ZCC}
+ \qquad(v\text{ not free in }h).
+\]
+\end{definition}
+
+The seed of \rulename{ZCC} is the literal $0$, and its body does not depend
+on the state, also not below nested binders.  There is no reflexivity, no
+general congruence and no transport.  The reference calculus of
+\pkg{counter\_congruence} has, in place of \rulename{ZCC}, the rule
+\rulename{CC} with an arbitrary seed $a$ and an arbitrary body.  Count one
+node for every rule instance, lookups included.
+
+\begin{lemma}[Root equality and cases]
+\label{kern:lem:zccbasic}
+In $\mathcal{C}_0$, without \rulename{ZCC}:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item reflexivity is derivable with three nodes, and symmetry and
+ transitivity are derivable;
+\item from $l=r$, $l=f$ and $r=g$, two instances of \rulename{RL} give
+ $f=g$;
+\item numerical cases, from $A(0)$ and $A(\Suc z)$ to $A(t)$, are derivable
+ with four nodes besides the two premises, with no equality rule and no
+ \rulename{DP}.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) $\operatorname{Rec}(\Suc s,0;\,u,v.\,u)=s$ is a computation equation, and
+\rulename{RL} applied to two copies of it gives $s=s$.  \rulename{RL}
+applied to $s=t$ and $s=s$ gives $t=s$, and applied to $t=s$ and $t=r$ it
+gives $s=r$.  (ii) \rulename{RL} on $l=r$ and $l=f$ gives $r=f$, and on
+$r=f$ and $r=g$ it gives $f=g$.  (iii) \rulename{DI} with an unused
+coordinate and the witness $0$, \rulename{DE}, a lookup of the opened
+closure, and \rulename{QE}.
+\end{proof}
+
+\begin{theorem}[Congruence from \rulename{ZCC}]
+\label{kern:thm:zcc}
+For every term template $F(x)$, $\mathcal{C}_0$ derives $F(s)=F(t)$ from
+$s=t$, with exactly $20$ nodes besides the derivation of $s=t$ and with no
+instance of \rulename{DP}.  Consequently $\mathcal{C}_0$ derives transport
+in every formula template, and it derives the same sequents as the calculus
+with \rulename{CC} and as the calculus with unrestricted transport.
+\end{theorem}
+
+\begin{proof}
+Put $U(n)\defeq\operatorname{Rec}(n,0;\,u,v.\,\Suc\Suc u)$.  Its computation
+equations are $U(0)=\Suc 0$ and $U(\Suc z)=\Suc\Suc z$, so numerical cases
+give $U(n)=\Suc n$ for every term $n$, with six nodes.  \rulename{ZCC}
+applies to $U$ and gives $U(s)=U(t)$; with $U(s)=\Suc s$ and
+$U(t)=\Suc t$, \cref{kern:lem:zccbasic}(ii) gives $\Suc s=\Suc t$.  This
+stage has $1+6+6+2=15$ nodes.
+
+Put $V_F(n)\defeq\operatorname{Rec}(\Suc n,0;\,u,v.\,F(u))$.  One
+computation equation gives $V_F(n)=F(n)$.  \rulename{ZCC}, applied to
+$\Suc s=\Suc t$ with the body $F(u)$, gives $V_F(s)=V_F(t)$, and
+\cref{kern:lem:zccbasic}(ii) with $V_F(s)=F(s)$ and $V_F(t)=F(t)$ gives
+$F(s)=F(t)$.  This stage has $1+1+1+2=5$ nodes.
+
+Transport in a formula template $A(w)$ follows by induction on the number of
+binders of $A$.  For an equation $p(w)=q(w)$, join $p(s)=p(t)$ and
+$q(s)=q(t)$ with $p(s)=q(s)$ by \cref{kern:lem:zccbasic}.  For
+$\D{x}{y}B(w,x,y)$, apply \rulename{DE} at a fresh $b$ and \rulename{DI} at
+the witness $b$: the assumption $B(t,b,0)$ is transported back to
+$B(s,b,0)$, \rulename{QE} with the opened closure gives $B(s,b,\Suc z)$, and
+transport forward gives $B(t,b,\Suc z)$.
+
+Every instance of \rulename{ZCC} is an instance of \rulename{CC}, and
+\rulename{CC} is the congruence just proved for the template
+$\operatorname{Rec}(x,a;\,u,v.\,h)$.  In the calculus with transport,
+\rulename{RL} is transport at the left root and \rulename{ZCC} is transport
+of one occurrence in an instance of reflexivity.
+\end{proof}
+
+The construction of \pkg{counter\_congruence} has $56$ nodes for the same
+congruence; replacing its final assembly by \cref{kern:lem:zccbasic}(ii)
+gives $44$, and the representation through $U$ and $V_F$ gives $20$.  These
+are sizes of the constructions described, not lower bounds, and the terms in
+the nodes grow with $F$.
+
+\begin{proposition}[A wrapped rule]
+\label{kern:prop:zccplus}
+Let $\rulename{ZCC}^{+}$ infer
+$\operatorname{Rec}(\Suc s,0;\,u,v.\,h)=\operatorname{Rec}(\Suc t,0;\,u,v.\,h)$
+from $s=t$, with $v$ not free in $h$.  Replacing \rulename{ZCC} by
+$\rulename{ZCC}^{+}$ gives the same derivable sequents, and congruence in a
+term template then has $5$ nodes besides the derivation of $s=t$.
+\end{proposition}
+
+\begin{proof}
+$\rulename{ZCC}^{+}$ with the body $F(u)$ gives $V_F(s)=V_F(t)$ directly;
+two computation equations and two instances of \rulename{RL} finish.
+Conversely \cref{kern:thm:zcc} derives $\rulename{ZCC}^{+}$, as congruence
+for the template $\operatorname{Rec}(\Suc x,0;\,u,v.\,h)$.
+\end{proof}
+
+$\rulename{ZCC}^{+}$ wraps arbitrary premises in successors.  It is not
+\rulename{ZCC} with a side condition on its premise, and the difference
+matters:
+
+\begin{proposition}[Successor premises do not suffice]
+\label{kern:prop:zcccounter}
+Restrict \rulename{ZCC} to premises of the form $\Suc p=\Suc q$, and keep
+the other rules of $\mathcal{C}_0$.  The resulting calculus does not derive
+$0=\Suc 0\proves\Suc 0=\Suc\Suc 0$, which $\mathcal{C}_0$ derives.
+\end{proposition}
+
+\begin{proof}
+Interpret terms in the standard natural numbers, with the recursor read as
+primitive recursion with the seed $a+1$.  Interpret an equation $s=t$ as
+$e(s,t)$, where $e(m,n)$ holds if $m=n$ or both $m$ and $n$ are in
+$\{0,1\}$; interpret closures and $\D{}{}$ by their ordinary readings over
+this interpretation of equations.  The relation $e$ is an equivalence, so
+\rulename{RL} preserves truth.  Computation equations are true because their
+two sides have equal values.  For the restricted rule the two counters are
+positive, and on positive numbers $e$ is equality, so a true premise gives
+equal counters and equal values of the recursor.  Lookup, \rulename{QE} and
+\rulename{DE} preserve truth by the readings, \rulename{DI} because every
+number is zero or a successor, and \rulename{DP} by induction on the
+natural numbers for the interpreted predicate.  The assumption $0=\Suc 0$ is
+true, since $e(0,1)$ holds, and $\Suc 0=\Suc\Suc 0$ is false, since $e(1,2)$
+fails.  $\mathcal{C}_0$ derives the sequent by congruence for $\Suc$.
+\end{proof}
+
+The interpretation is an interpretation of the rules; it does not read the
+equation sign as equality and is not a model of the ordinary theory.  The
+package assigns no checker size to $\mathcal{C}_0$ or to the wrapped rule.
+
+\subsection{Recursors seeded at zero}
+\label{kern:sec:zerostart}
+
+The iterator has three arguments: a counter, a seed and a body.  The note of
+\pkg{scope\_and\_closure} examines what is lost if the seed is fixed to
+zero.  Consider two term languages over variables, $0$ and $\Suc$.  The
+\emph{scalar} language has $\operatorname{It}_0(n;\,u.\,h)$ with
+\[
+ \operatorname{It}_0(0;\,u.\,h)=0,\qquad
+ \operatorname{It}_0(\Suc n;\,u.\,h)=h\subst{\operatorname{It}_0(n;\,u.\,h)}{u}.
+\]
+The \emph{counter-aware} language has $\operatorname{Rec}_0(n;\,k,u.\,h)$
+with
+\[
+ \operatorname{Rec}_0(0;\,k,u.\,h)=0,\qquad
+ \operatorname{Rec}_0(\Suc n;\,k,u.\,h)
+  =h\subst{n}{k}\subst{\operatorname{Rec}_0(n;\,k,u.\,h)}{u}.
+\]
+All statements below are about the denotations of terms in the standard
+natural numbers.
+
+\begin{theorem}[Monotonicity]
+\label{kern:thm:mono}
+Every term of either language denotes a function that is nondecreasing in
+each of its free variables.
+\end{theorem}
+
+\begin{proof}
+By induction on the term.  Variables, $0$ and $\Suc$ are clear.  For the
+recursor, let the counter $n$ and the body $h$ denote nondecreasing
+functions, fix an assignment $\rho$ of the parameters, and let $a^{\rho}_j$
+be the state after $j$ steps: $a^{\rho}_0=0$ and
+$a^{\rho}_{j+1}=h(j,a^{\rho}_j,\rho)$.  The sequence is nondecreasing in
+$j$: $a^{\rho}_0=0\le a^{\rho}_1$, and $a^{\rho}_j\le a^{\rho}_{j+1}$ gives
+$a^{\rho}_{j+1}=h(j,a^{\rho}_j,\rho)\le h(j+1,a^{\rho}_{j+1},\rho)
+=a^{\rho}_{j+2}$.  For $\rho\le\sigma$, induction on $j$ gives
+$a^{\rho}_j\le a^{\sigma}_j$.  Since $n(\rho)\le n(\sigma)$,
+\[
+ a^{\rho}_{n(\rho)}\le a^{\sigma}_{n(\rho)}\le a^{\sigma}_{n(\sigma)} .
+\]
+The scalar case is the same without the argument $j$ of $h$.  The argument
+covers a variable that occurs both in the counter and in the body.
+\end{proof}
+
+\begin{theorem}[Zero sets in the scalar language]
+\label{kern:thm:zeroprofile}
+For a term $t(x_1,\dots,x_r)$ of the scalar language let
+$\mathcal{Z}(t)\defeq\{\vec x: t(\vec x)=0\}$.  Then $\mathcal{Z}(t)$ is the
+whole of $\mathbb{N}^r$ or a union $\bigcup_{j\in J}\{\vec x:x_j=0\}$ of
+coordinate hyperplanes, for some $J\subseteq\{1,\dots,r\}$, possibly empty.
+Every set of this form is the zero set of a term.
+\end{theorem}
+
+\begin{proof}
+By induction on $t$.  The zero set of $0$ is everything, that of a variable
+is its hyperplane, and that of a successor is empty.  For
+$\operatorname{It}_0(n;\,u.\,h)$ fix the parameters and let $b$ be the value
+of $h$ at $u=0$.  If $b=0$, every iterate from $0$ is $0$.  If $b>0$,
+monotonicity of $h$ gives $h(v)\ge b>0$ for every $v$, so every iterate
+after the first step is positive.  Hence
+\[
+ \mathcal{Z}\bigl(\operatorname{It}_0(n;\,u.\,h)\bigr)
+ =\mathcal{Z}(n)\cup\mathcal{Z}\bigl(h\subst{0}{u}\bigr).
+\]
+The zero set of $h\subst{0}{u}$ is everything if the zero set of $h$ is
+everything or contains the hyperplane $u=0$, and otherwise it is the union
+of the same hyperplanes of the parameters.  A union of two sets of the
+stated form is of that form.  Conversely $0$ and $\Suc 0$ realize the whole
+set and the empty set, and $\operatorname{It}_0(c;\,u.\,a)$ with $u$ not in
+$a$ has the zero set $\mathcal{Z}(c)\cup\mathcal{Z}(a)$, so nested terms of
+this kind realize every finite union of hyperplanes.
+\end{proof}
+
+\begin{corollary}[What a zero seed loses]
+\label{kern:cor:zeroseed}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item No term of the scalar language denotes the predecessor, whose zero set
+ is $\{0,1\}$, or addition, whose zero set is $\{(0,0)\}$.
+\item No term of either language denotes the function that is $1$ at $0$
+ and $0$ elsewhere.  Hence no term denotes the selector $\sel(c,a,b)$, and
+ no translation of terms recovers the iterator of \cref{base:sec:terms}
+ from either language on the same domain with the standard $0$ and $\Suc$.
+\item In the counter-aware language
+ $\operatorname{Rec}_0(n;\,k,u.\,k)$ denotes the predecessor, so
+ \cref{kern:thm:zeroprofile} does not extend to it.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+(i) \Cref{kern:thm:zeroprofile}.  (ii) The function decreases from $0$ to
+$1$, against \cref{kern:thm:mono}; it is $\sel(c,1,0)$.  (iii) The
+computation equations give $0$ at $0$ and $n$ at $\Suc n$.
+\end{proof}
+
+These are statements about definability by terms on the same domain in the
+standard model.  They do not exclude graphs of functions defined by
+formulas, definable subdomains, domains of tuples or quotient equalities;
+an interpretation of that kind would need its own proofs of totality and
+functionality, of the transfer of induction and of both composites.  Whether
+addition is denoted by a term of the counter-aware language is not decided
+in the package.  In Lean, \cref{kern:thm:mono} and part (ii) of the
+corollary are \Lean{ZTm.mono} and \Lean{ZTm.no\_zero\_test} in the module
+\Lean{ZeroSeedObstruction}, for a zero-seeded recursor whose body sees the
+counter, with \Lean{Tm.val\_zf} for the selector of the kernel's language.
+
+% ---------------------------------------------------------------------
+\section{Checker sizes}
+\label{kern:sec:sizes}
+
+This section collects the measurements reported by \pkg{direct\_closure},
+\pkg{direct\_closure\_qprogress}, \pkg{witness\_rule},
+\pkg{source\_dispatch}, \pkg{reversal\_core}, \pkg{one\_context},
+\pkg{one\_sided\_transport}, \pkg{template\_free},
+\pkg{scalar\_uniqueness}, \pkg{orbit\_closure}, \pkg{crossed\_uniqueness},
+\pkg{uniform\_progress} and \pkg{target\_closure}.  All numbers are for complete standalone Python programs under the
+protocol of \cref{base:sec:measure}, as the packages state them.
+\Cref{kern:tab:sizes} gives, for each program, its significant tokens, AST
+nodes and normalized bytes, and the same three numbers for the control it
+is matched against.  Programs in different blocks have different input
+contracts and are not comparable across blocks.  The compact programs of
+\pkg{kernel\_refinement} and of \pkg{scope\_and\_closure} implement calculi
+of other chapters and are reported there; neither package measures a checker
+for the calculi $\mathsf{L}$ and $\mathsf{R}_{F}$ of this chapter.
+
+{\small
+\begin{longtable}{@{}p{0.19\linewidth}p{0.31\linewidth}rrrp{0.2\linewidth}@{}}
+\caption{Checker sizes reported by the packages of the chapter: tokens, AST
+nodes, normalized bytes; the control is given as tokens / AST nodes /
+bytes.}\label{kern:tab:sizes}\\
+\toprule
+Package & Program & Tok. & AST & Bytes & Matched control\\
+\midrule
+\endfirsthead
+\toprule
+Package & Program & Tok. & AST & Bytes & Matched control\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\pkg{direct\_closure} & strict tagged checker with \rulename{QI} &
+ 1169 & 1337 & 5116 & with \rulename{DP}: 1187 / 1358 / 5199\\
+ & compact checker with counter vectors (experiment) &
+ 271 & 314 & 533 & byte profile of \pkg{neutral\_scope}: 266 / 310 / 529\\
+\midrule
+\pkg{direct\_closure\_\allowbreak qprogress} & compact checker,
+ \rulename{QI} at literal equations only &
+ 285 & 331 & 568 & \pkg{neutral\_scope}: 266 / 310 / 529\\
+ & compact checker for $\Nat_{\det}$ &
+ 278 & 322 & 552 & \pkg{neutral\_scope}: 266 / 310 / 529\\
+\midrule
+\pkg{witness\_rule} & compact checker, two introductions, Boolean dispatch &
+ 264 & 310 & 550 & byte profile of \pkg{certified\_zero}: 264 / 310 / 558\\
+ & compact checker for $\mathsf{W}$ &
+ 266 & 312 & 555 & the same; joint profile of \pkg{certified\_zero}:
+ 262 / 296 / 598\\
+ & the same with an explicit type test &
+ 266 & 312 & 559 & the same\\
+ & the same with an explicit list test &
+ 266 & 310 & 563 & the same\\
+\midrule
+\pkg{source\_dispatch} & byte profile & 266 & 305 & 526 &
+ 266 / 310 / 529\\
+ & AST profile & 263 & 283 & 607 & 263 / 289 / 613\\
+ & token profile & 259 & 289 & 572 & 261 / 292 / 576\\
+\midrule
+\pkg{reversal\_core} & typed checker for $\mathsf{X}$ &
+ 456 & 520 & 1055 & old typed control: 532 / 618 / 1365; same refactoring
+ without reversal: 450 / 514 / 1049\\
+ & $\mathsf{X}$ with a validator for goals of equations and $\D{}{}$ &
+ 379 & 432 & 830 & old: 450 / 521 / 1109; without reversal:
+ 373 / 426 / 824\\
+ & $\mathsf{X}$ with a validator for all goals &
+ 405 & 462 & 879 & old: 481 / 560 / 1189; without reversal:
+ 399 / 456 / 873\\
+ & compact byte profile with a scalar neutral premise &
+ 265 & 304 & 525 & 266 / 305 / 526\\
+ & compact AST profile with a scalar neutral premise &
+ 262 & 282 & 606 & 263 / 283 / 607\\
+ & compact checker for $\mathsf{X}$ &
+ 271 & 310 & 531 & none stated\\
+\midrule
+\pkg{one\_context} & tagged checker for $\Nat$ &
+ 1089 & 1150 & 3358 & for $\Nat_{2}$: 1101 / 1160 / 3382\\
+ & strict validator, equations and $\D{}{}$ &
+ 359 & 414 & 803 & 373 / 426 / 824\\
+ & strict validator, all formulas &
+ 391 & 444 & 863 & 399 / 456 / 873\\
+ & full typing of the certificate &
+ 442 & 502 & 1039 & 450 / 514 / 1049\\
+ & strict validator with reversal, equations and $\D{}{}$ &
+ 365 & 420 & 809 & 379 / 432 / 830\\
+ & strict validator with reversal, all formulas &
+ 397 & 450 & 869 & 405 / 462 / 879\\
+ & full typing with reversal &
+ 448 & 508 & 1045 & 456 / 520 / 1055\\
+\midrule
+\pkg{one\_sided\_\allowbreak transport} & strict checker for $\mathsf{M}$ &
+ 1171 & 1339 & 3246 & $\rulename{Tr}_{2}$ at the same sources:
+ 1196 / 1364 / 3302\\
+\midrule
+\pkg{template\_free} & strict tagged checker for $\mathsf{G}_7$ &
+ 1027 & 1072 & 3147 & $\mathsf{W}$ with three traversals:
+ 1029 / 1089 / 3181; 1059 / 1124 / 3215; 1044 / 1096 / 3206\\
+ & compact forward checker with \rulename{Rep} &
+ 397 & 464 & 865 & crossed rule, another packet layout: 384 / 448 / 830\\
+\midrule
+\pkg{scalar\_\allowbreak uniqueness} & tagged checker for $\mathsf{U}$ &
+ 1124 & 1175 & 3393 & for $\Nat$: 1084 / 1141 / 3322\\
+ & validated codec with scope reuse, calculus unchanged &
+ 381 & 439 & 866 & 383 / 442 / 870\\
+\midrule
+\pkg{orbit\_closure} & tagged checker for $\mathsf{U}_{\mathrm{o}}$,
+ templates supplied &
+ 1132 & 1178 & 3400 & for $\mathsf{U}$: 1124 / 1175 / 3393\\
+ & the same, templates read off the closure &
+ 1145 & 1194 & 3455 & the same\\
+\midrule
+\pkg{crossed\_\allowbreak uniqueness} & strict checker for
+ $\mathsf{U}_{\mathrm{c}}$, normalizer included &
+ 1909 & 2087 & 5618 & none stated\\
+ & compact checker of the guarded calculus, not of
+ $\mathsf{U}_{\mathrm{c}}$ &
+ 269 & 301 & 502 & byte profile of
+ \pkg{deterministic\_\allowbreak introduction}: 267 / 303 / 506\\
+\midrule
+\pkg{uniform\_\allowbreak progress} & typed checker for $\mathsf{R}$ &
+ 1206 & 1366 & 4553 & for $\Nat$: 1235 / 1407 / 4692; for $\mathsf{W}$:
+ 1173 / 1334 / 4456\\
+ & compact token profile, guarded-source calculus &
+ 256 & 283 & 593 & 257 / 285 / 568\\
+ & compact AST profile, the same calculus &
+ 260 & 278 & 602 & 261 / 279 / 603\\
+ & compact byte profile, the same calculus &
+ 263 & 300 & 521 & 264 / 301 / 522\\
+\midrule
+\pkg{target\_closure} & typed checker for $\mathsf{T}$ &
+ 1195 & 1358 & 4532 & for $\mathsf{R}$: 1206 / 1366 / 4553\\
+ & typed checker of the conditional calculus with a lexical gate &
+ 399 & 453 & 895 & recursive typing: 442 / 502 / 1039\\
+ & the same with a descriptive error &
+ 404 & 455 & 963 & the same\\
+\end{longtable}
+}
+
+The following paragraphs summarize what the programs do beyond the rules.
+
+\emph{\pkg{direct\_closure}.}  The two strict checkers are built from one
+body and two fragments for the progress rule; they differ in that branch
+only.  The saving is the witness, its scope check and one substitution; the
+normalized source compressed by gzip is 19 bytes larger.  The experiment
+with counter vectors passes the counter of a computation as an empty or
+nonempty list, so that $\It{1}{a}{u}{h}$ is certified without the repair of
+\cref{kern:lem:comprepair}; it costs four bytes.  A variant of 528 bytes
+writes the empty list where the protocol uses the scalar zero, a canonical
+certificate fails on it, and it is not counted as a complete checker.
+
+\emph{\pkg{direct\_closure\_qprogress}.}  The compact programs keep the
+arity encoding of the control.  A failed test on the matrix must reject and
+not return a false value, which in this encoding would enter the context as
+the scalar zero; the first program uses a sentinel that is not JSON for the
+failure, and the second gives a compound matrix the mode of cases.
+
+\emph{\pkg{witness\_rule}.}  Every selected first premise is truthy and
+every generated computation equation is a nonempty list, so one Boolean
+expression selects the branch; null markers become empty lists.  This saves
+eight bytes with the calculus unchanged, and the test of the witness adds
+five.  The package proves that every accepting run is simulated, after a
+fixed change of markers, by an accepting run of the control.
+
+\emph{\pkg{source\_dispatch}.}  In canonical certificates the source is
+falsy exactly when it is the literal $0$, so the comparison of the first
+premise against two patterns becomes one comparison selected by the source.
+The byte and AST profiles also move the pure computation of the replaced
+goal before the check of the first premise, and the byte profile uses the
+checker function itself as the invalid image of a substitution.
+
+\emph{\pkg{reversal\_core}.}  The typed checker shares one validator between
+terms and formulas and writes the neutral premise as a scalar; these two
+changes give the reduction of 310 bytes against the old control, and
+reversal itself adds six bytes.  The compact programs of 525 bytes and 282
+AST nodes check certificates without reversal, for the equivalent calculus.
+
+\emph{\pkg{one\_context}.}  In the tagged checker only the branch of
+transport changes.  Independently, the strict validator of the goal omits
+the upper bound on variable indices: for a tree of the right shape that
+bound holds exactly when the first traversal of the unchanged kernel
+succeeds, which happens before any instruction is read, so the sets of
+accepted certificates are equal.  The sizes after gzip increase in all six
+pairs.
+
+\emph{\pkg{one\_sided\_transport}.}  The fixed side $r$ of
+$\rulename{Tr}^{-}$ is read off the conclusion, so the instruction carries
+three terms where the control carries four.
+
+\emph{\pkg{template\_free}.}  One traversal serves lifting, substitution and
+replacement; an instruction for \rulename{Rep} consists of its two premise
+derivations.  Against the control with the same traversal the saving is 59
+bytes.  The compact forward program synthesizes its conclusion and is 35
+bytes larger than its control, which has another packet layout.
+
+\emph{\pkg{scalar\_uniqueness}.}  The instruction for \rulename{UR} carries
+the two templates, the target and the premise, checked with no added
+assumption; the direct replacement of \rulename{QI} by \rulename{UR} costs
+71 bytes.  The second pair keeps the calculus of $\Nat$: a fully typed codec
+whose goal validator relaxes the test \texttt{2 < a < d} on a variable index
+to \texttt{a > 2} and leaves the upper bound to the first scope traversal of
+the kernel, the factorization described for \pkg{one\_context}; the change
+is four bytes.
+
+\emph{\pkg{orbit\_closure}.}  The instruction for \rulename{Orb} carries a
+proposed closure and one premise.  The selected checker reads $f$ and $h$
+off the closure, compares the seed with the instance of $f$ at zero, and
+rejects a body that mentions the counter (\cref{kern:rem:orbcounter}); it is
+62 bytes larger than its control, the checker for $\mathsf{U}$ of
+\pkg{scalar\_uniqueness}.  The translator of the package is not trusted; its
+output is checked by the target checker.  The package also audits every
+Python source of the corpus, 5,825 paths with 1,380 distinct contents, by
+parsing and measuring without executing them, and finds the least values of
+the three coordinates, 256 tokens, 276 AST nodes and 506 bytes, in three
+different programs of other packages; it records which smaller files are
+not complete standalone checkers.
+
+\emph{\pkg{crossed\_uniqueness}.}  The checker for
+$\mathsf{U}_{\mathrm{c}}$ counts the normalizer, substitution and all scope
+checks, introduces the eigenvariable of \rulename{UX} itself, and checks
+scopes before normalizing, so that a subterm erased by a computation is
+still checked.  Separately, the package composes three known refinements
+(delayed elimination, eager selection from a pair, a shorter selector of
+the mode) into a compact checker of the guarded calculus of another chapter
+with 502 bytes against 506, and a validating companion with 1172 bytes
+against 1183; neither implements $\mathsf{U}_{\mathrm{c}}$, and the least
+token and AST counts of the corpus are not improved.
+
+\emph{\pkg{uniform\_progress}.}  The typed checker for $\mathsf{R}$ is 139
+bytes smaller than the matched checker for $\Nat$ and 97 bytes larger than
+the matched checker for $\mathsf{W}$.  Its three compact programs are not
+checkers for $\mathsf{R}$; they turn the continuation into a loop over an
+immutable context and write the neutral premise as a scalar.
+
+\emph{\pkg{target\_closure}.}  The checker for $\mathsf{T}$ saves 21 bytes
+against that for $\mathsf{R}$ by dropping the source and the seed of the
+orbit, and remains 76 bytes larger than that for $\mathsf{W}$.  The lexical
+gate replaces the recursive test that every value of a certificate is an
+integer or a list by a test on the input text: a text that the JSON parser
+accepts decodes to such a value exactly when all its characters are among
+the brackets, the comma, the minus sign, the digits and the four whitespace
+characters of JSON.
+
+% ---------------------------------------------------------------------
+\section{Further questions}
+\label{kern:sec:questions}
+
+The packages of the chapter state the following questions, limits and
+unproved claims.  None of them claims a smallest calculus or a lower bound
+on the size of a checker.
+
+\begin{question}[Checkers for the direct closure]
+\label{kern:q:directsize}
+The compact checkers of \pkg{direct\_closure\_qprogress} with \rulename{QI}
+are larger than their control, because the two openings at the root must be
+distinguished.  Is there an encoding in which the direct closure rule gives
+a smaller complete checker, with malformed, aliased and scope-violating
+inputs counted?
+\end{question}
+
+\begin{question}[The variant with counter vectors]
+\label{kern:q:countervec}
+The 528-byte variant in \pkg{direct\_closure} fails on a canonical
+certificate because the base counter is written as an empty list.  Is there
+a conversion between the two spellings of zero that makes it complete?  No
+false theorem is known to be accepted by it.
+\end{question}
+
+\begin{question}[Deleting an inference case]
+\label{kern:q:deletecase}
+The direct closure rule removes a witness and keeps eight rules.  Is there a
+basis on the same formulas that deletes a case of the checker and preserves
+arbitrary contexts and both formula round trips?
+(\pkg{direct\_closure\_qprogress}.)
+\end{question}
+
+\begin{question}[Focused derivations]
+\label{kern:q:focused}
+Can a normalization theorem that permutes introductions and eliminations
+justify a simpler protocol for first premises?  Equation induction makes the
+theorem nontrivial, and it has to precede any removal of checking.
+(\pkg{direct\_closure\_qprogress}.)
+\end{question}
+
+\begin{question}[One-template transport in a compact protocol]
+\label{kern:q:compactone}
+Can a certificate format expose \rulename{Tr} or $\rulename{Tr}^{-}$ and
+keep the opening routine shared with \rulename{QE}, so that the complete
+checker is smaller than the compact programs under the same contract for
+the goal?  (\pkg{one\_context}, \pkg{one\_sided\_transport}.)
+\end{question}
+
+\begin{question}[Sharing in certificates]
+\label{kern:q:dag}
+What is the least overhead in the size of certificates when
+$\rulename{Tr}_{2}$ is replaced by \rulename{Tr}?  A certificate with
+sharing avoids the copy of the first premise (\cref{kern:rem:dag}); can a
+checker for such certificates be smaller?  (\pkg{one\_context},
+\pkg{one\_sided\_transport}.)
+\end{question}
+
+\begin{question}[Constant templates]
+\label{kern:q:constant}
+Symmetry is derived from \rulename{Tr} with a constant template.  Is there
+an equality rule simpler than $\rulename{Tr}^{-}$ that keeps this step?  A
+restriction to templates in which the variable occurs must replace it.
+(\pkg{one\_sided\_transport}.)
+\end{question}
+
+\begin{question}[Removing both syntactic tests]
+\label{kern:q:bothtests}
+The test $s\not\equiv 0$ of $\rulename{Tr}^{-}$ and the test of the witness
+in $\rulename{DI}_{\mathrm{w}}$ serve the dispatch of compact checkers; the
+unrestricted rules are admissible.  Can both tests be removed while a
+compact complete checker is kept?  (\pkg{one\_sided\_transport}.)
+\end{question}
+
+\begin{question}[The forward computation equation]
+\label{kern:q:forward}
+If the successor computation is replaced by
+$\It{\Suc n}{a}{u}{h}=\It{n}{h(a)}{u}{h}$, is the equation \rulename{IS}
+derivable?  The induction that suggests itself needs its hypothesis at the
+changed seed $h(a)$, while equation induction keeps parameters fixed.
+\pkg{one\_sided\_transport} leaves this open and claims no independence.
+\end{question}
+
+\begin{question}[A fixed input contract]
+\label{kern:q:contract}
+Which contract should later comparisons fix: goals of equations and
+$\D{}{}$, goals of all native formulas, or exact typing of the whole
+certificate?  The minima reported by the packages are attained by different
+programs under different contracts.  (\pkg{one\_context},
+\pkg{scalar\_uniqueness}.)
+\end{question}
+
+\begin{question}[Replacement without a template in a compact checker]
+\label{kern:q:tfreesize}
+Does the rule \rulename{Rep} give a smaller complete checker under a fixed
+compact contract?  The compact forward program of \pkg{template\_free} is
+larger than its control.
+\end{question}
+
+\begin{question}[Replacement of one occurrence in a checker]
+\label{kern:q:lor}
+Does \rulename{LOR} help a readable or a formally verified checker, even
+though a traversal by position costs more than it saves in the compact
+programs?  (\pkg{kernel\_refinement}.)
+\end{question}
+
+\begin{question}[Uniqueness with fewer bodies]
+\label{kern:q:urweak}
+Can \rulename{UR} be restricted to a family of bodies and still give the
+predecessor of \cref{kern:thm:urpred}?  The reflection of equality uses
+mostly the case of a constant recurrence (\cref{kern:lem:cu}(ii)), while the
+predecessor uses other bodies.  For the retractions the question is
+answered: \cref{kern:lem:rigid} needs the body $\Suc u$ only.
+(\pkg{scalar\_uniqueness}, \pkg{orbit\_closure}.)
+\end{question}
+
+\begin{question}[The strength of successor uniqueness]
+\label{kern:q:su}
+Does $T_{\mathrm{SU}}$ derive induction for all literal equations?  A
+positive answer has to supply a predecessor and a term that reflects
+equality from the body $\Suc u$ alone; a negative answer has to give a model
+of the computation equations for every body and of every instance of
+\rulename{SU} over arbitrary contexts in which equation induction fails.
+The model that separates induction for zero equations from induction for
+all equations is not such a model (\cref{kern:rem:sugap}).
+(\pkg{orbit\_closure}.)
+\end{question}
+
+\begin{question}[Successor and identity bodies]
+\label{kern:q:suid}
+Does \rulename{SU} together with uniqueness for the body $u$
+(\cref{kern:lem:cu}(ii)) give induction for all equations?  Does
+$T_{\mathrm{SU}}$ prove that addition is cancellative, which by
+\cref{kern:prop:suadd} would give uniqueness for the body $u$?
+(\pkg{orbit\_closure}.)
+\end{question}
+
+\begin{question}[Compact encodings for the other forms of uniqueness]
+\label{kern:q:urcompact}
+Can \rulename{Orb} be combined with the compact encodings of goals without
+adding more recognition of syntax than it removes?  Can \rulename{UX}
+receive a compact encoding that keeps the freshness of its eigenvariable
+and the independence of its body from the counter, and can the normalizer
+share the traversal by arity while respecting sorted positions, protected
+slots and reindexing?  The checkers for $\mathsf{U}_{\mathrm{o}}$ and
+$\mathsf{U}_{\mathrm{c}}$ are larger than their comparators.
+(\pkg{orbit\_closure}, \pkg{crossed\_uniqueness}.)
+\end{question}
+
+\begin{question}[Crossed uniqueness with clauses]
+\label{kern:q:uxclauses}
+Can a calculus with clause contexts fuse \rulename{UX} with the discharge
+of a witness without complicating the derivation of equality in
+\cref{kern:lem:uxeq}?  (\pkg{crossed\_uniqueness}.)
+\end{question}
+
+\begin{question}[Uses of the accumulator]
+\label{kern:q:accumulator}
+The term $\varphi$ of \cref{kern:lem:acc} is a composition of subtraction
+and addition with a recurrence that depends on the counter.  Does it give a
+more direct compiler for primitive recursion, or a shorter predecessor,
+without coding tuples?  (\pkg{scalar\_uniqueness}.)
+\end{question}
+
+\begin{question}[A checker for uniqueness]
+\label{kern:q:ursize}
+The checker for $\mathsf{U}$ is 71 bytes larger than its control.  Is there
+an architecture that shares the check of a computation equation with the
+check of \rulename{UR} and reverses the comparison?
+(\pkg{scalar\_uniqueness}.)
+\end{question}
+
+\begin{question}[Cost of the root-sensitive closure]
+\label{kern:q:mixedcost}
+Can $\mathsf{R}$, $\mathsf{R}_{F}$ or $\mathsf{T}$ be checked with less
+total work than the test of the witness in $\mathsf{W}$?  The matched
+checkers for $\mathsf{R}$ and $\mathsf{T}$ are larger than that for
+$\mathsf{W}$, and the comparison has to include the instances at the source
+and at the target, the construction of the orbit term and the test of the
+root.  (\pkg{uniform\_progress}, \pkg{target\_closure},
+\pkg{scope\_and\_closure}.)
+\end{question}
+
+\begin{question}[A zero seed through graphs]
+\label{kern:q:graph}
+\Cref{kern:cor:zeroseed} excludes a translation of terms.  Can an
+interpretation by graphs of functions recover an arbitrary seed from a
+language with the seed fixed to zero, with proofs of totality and
+functionality, the transfer of induction and both composites?  Is addition
+denoted by a term of the counter-aware language of
+\cref{kern:sec:zerostart}?  (\pkg{scope\_and\_closure}.)
+\end{question}
+
+\begin{question}[Lower bounds]
+\label{kern:q:lower}
+Is there a lower bound on the size of presentations in a fixed class, with
+a fixed encoding and cost model?  A census of existing programs is not such
+a bound.  (\pkg{one\_context}, \pkg{scope\_and\_closure}.)
+\end{question}
+
+The following statements of the packages are recorded without proof or as
+results that were not achieved.
+\begin{itemize}
+\item \pkg{direct\_closure\_qprogress} states that replacing the two
+ computation equations by a rule of conversion in a context would still
+ need both rewriting patterns and an account of reflexivity, and that a
+ conversion engine left out of the count would not be a smaller checker.
+ No calculus of this kind is given.
+\item \pkg{witness\_rule}: no program of the package is below all three
+ earlier coordinate minima; the restriction of the introduction is not
+ credited with a saving of bytes.
+\item \pkg{one\_context} states that removing a primitive equality test
+ from the self-seeded proposals of other packages is a missing theorem and
+ does not follow from coverage of a protected orbit.
+\item \pkg{scalar\_uniqueness}: the converse of \cref{kern:prop:uniq} is a
+ written proof; it is not formalized in Lean, where only
+ \cref{kern:prop:uniq} is proved.
+\item \pkg{orbit\_closure}: the equivalence of $T_{\mathrm{SU}}$ with $\Teq$
+ is not established, and the package does not claim it.  Its statement
+ about the model of \pkg{canonical\_recursors} (\cref{kern:rem:sugap}) rests
+ on the construction of that package.  The rule \rulename{Orb} removes a
+ field of the certificate and makes the matched checker larger, by 7 bytes
+ with supplied templates and by 62 bytes with templates read off the
+ closure.
+\item \pkg{crossed\_uniqueness}: six rule names do not by themselves make a
+ smaller presentation than the three-family clause calculi of other
+ packages; the checker for $\mathsf{U}_{\mathrm{c}}$ is the largest of
+ \cref{kern:tab:sizes}, and its normalizer is counted.  The 502-byte
+ program lowers one coordinate for a calculus of another chapter.  The
+ package asks whether a relational bi-interpretation on a changed domain
+ could reduce a complete checker; the obstructions to definability by
+ terms do not exclude it, and both composites would need proofs.
+\item \pkg{orbit\_closure}, \pkg{crossed\_uniqueness}: neither is
+ formalized in Lean, and both rest on the written proof of
+ \cref{kern:thm:ur}.
+\item \pkg{template\_free}: the calculus $\mathsf{G}_7$, with \rulename{Rep}
+ and the single introduction together, is not formalized in Lean.
+\item \pkg{uniform\_progress}, \pkg{target\_closure}: neither calculus gives
+ a new minimum in any coordinate of the matched comparison; the compact
+ minima of other packages are not improved by a checker for $\mathsf{R}$ or
+ $\mathsf{T}$.
+\item \pkg{target\_closure} reports two routes that gave no result: making
+ the guard of an atomic matrix implicit simplifies the datatype of goals
+ and adds a cost of elaboration that loses against a validator factored in
+ the same way; and a stopped-clock construction in a self-seeded arithmetic
+ gives a diagonal equation and does not prove that the successor is
+ injective.  No independence result is inferred from either.
+\item \pkg{scope\_and\_closure}: the obstruction of
+ \cref{kern:sec:zerostart} is about terms in the standard model and is not
+ an impossibility theorem for simpler axiomatizations.
+\item The proofs of this chapter are written proofs; the Lean names in the
+ remarks mark the statements that are formalized.  The Python checkers are
+ not formally verified, and the tests reported by the packages concern
+ particular certificates.
+\end{itemize}
