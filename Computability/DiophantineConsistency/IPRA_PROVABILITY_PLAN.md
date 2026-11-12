@@ -7785,6 +7785,10 @@ The independently source-reviewed [natural-82 Lean transcription](research/ordin
 proposes a literal graph and product shape. Its row-for-row correspondence
 is checked outside Lean; elaboration, model semantics and the zero-transfer
 proof have not been established.
+The independently reviewed [forced-J natural graph](research/ordinary14-natural-forcedj81/README.md)
+uses 14 natural inputs and 81 operations at exact specialized degree 107.
+Its external zero map assumes `β > 0` and the stronger `K0 > 0`; its endpoint,
+Lean and physical-file qualifications are inherited.
 The independently source-reviewed [82-to-86 bridge draft](research/ordinary14-natural-forced82-ring-bridge-draft/README.md)
 proposes a changed-valuation ring identity and conditional model zero maps.
 Its natural-model existence equivalence assumes, rather than proves, that
