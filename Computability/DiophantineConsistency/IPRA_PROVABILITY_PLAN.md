@@ -7566,6 +7566,9 @@ been elaborated and does not yet establish the orientation or Pell indices.
 The separate source-reviewed [signed scaled-root draft](research/ordinary14-scaled-signed-root-draft/README.md)
 proposes retaining both sign branches under a positive scale; it remains
 unelaborated and is not itself an oriented graph theorem.
+The source-reviewed [84 signed main-norm composition](research/ordinary14-84-signed-main-norm-draft/README.md)
+retains both branches for that graph's own zero. It remains unelaborated and
+does not establish which branch holds or extract Pell indices.
 The source-reviewed [modified-carrier gamma-growth draft](research/ordinary14-modified-carrier-gamma-model-draft/README.md)
 proposes the needed strict positivity using existing Pell growth lemmas under
 explicit index and carrier hypotheses. It is unelaborated and is not yet
