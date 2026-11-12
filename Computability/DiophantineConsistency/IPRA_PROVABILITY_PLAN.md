@@ -7619,6 +7619,9 @@ The source-reviewed [85 main-balance draft](research/ordinary14-85-main-balance-
 retains the direct graph's `X·Y·q` term and proposes an oriented natural
 balance from its own zero. It is unelaborated and does not prove the exact
 Pell indices or the reverse map.
+The source-reviewed [85 auxiliary-norm draft](research/ordinary14-85-aux-norm-draft/README.md)
+proposes the corresponding signed auxiliary relation from that graph's own
+zero. It remains unelaborated and does not prove the index calibration.
 The source-reviewed [84 main-index draft](research/ordinary14-84-main-index-draft/README.md)
 proposes classifying the main root while retaining the natural balance. It is
 unelaborated and does not identify that index with the rank.
