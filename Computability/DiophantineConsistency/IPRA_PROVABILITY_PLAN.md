@@ -7446,6 +7446,9 @@ literal graph or an iPRA endpoint.
 The source-reviewed [85-to-86 ring client](research/ordinary14-85-86-ring-client-draft/README.md)
 proposes the forward field identities under explicit slot substitutions. It
 is unelaborated and does not prove positive witnesses or the reverse map.
+The source-reviewed [86 first-fields draft](research/ordinary14-86-first-fields-draft/README.md)
+proposes the signed first residual and slot independence from its own zero.
+It remains unelaborated and does not yet establish the quotient witness.
 The reviewed [q-cubed substitution](research/ordinary14-qcube85-tradeoff/README.md)
 gives 14 positive inputs and 85 operations at exact degree 56. Its
 positive-zero existence is equivalent to the 86/26 parent's for integer
