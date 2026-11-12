@@ -45,8 +45,7 @@ namespace Tm
 
 theorem up_rn (ξ : Fin n → Fin m) :
     up (fun i => (Syn.var (ξ i) : Tm m)) = fun i => Syn.var (Tm.upRen ξ i) := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp
+  refine funext (Fin.cases ?_ fun j => ?_) <;> simp
 
 end Tm
 
@@ -59,10 +58,10 @@ def QFree : {n : ℕ} → NFm n → Prop
   | _, .D B => QFree B
 
 theorem qfree_subst (A : NFm n) : ∀ {m : ℕ} (σ : Fin n → Tm m), (A.subst σ).QFree ↔ A.QFree := by
-  induction A with
-  | eq s t => intro m σ; exact Iff.rfl
-  | Q B _ => intro m σ; exact Iff.rfl
-  | D B ih => intro m σ; exact ih _
+  induction A with intro m σ
+  | eq s t => exact Iff.rfl
+  | Q B _ => exact Iff.rfl
+  | D B ih => exact ih _
 
 /-- `Q_y B` rewritten as `D_{x,y} B` with `x` unused. -/
 def unQ : {n : ℕ} → NFm n → NFm n
@@ -74,18 +73,17 @@ theorem subst_dummy_comm (X : NFm (n + 1)) (σ : Fin n → Tm m) :
     (X.subst (up σ)).subst (up fun i => Syn.var i.succ)
       = (X.subst (up fun i => Syn.var i.succ)).subst (up (up σ)) := by
   rw [subst_subst, subst_subst]
-  refine X.subst_ext fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine X.subst_ext (Fin.cases ?_ fun j => ?_)
   · simp
   · simp only [up_succ, Syn.shift_var, Syn.subst_var, Syn.subst_up_shift]
     rfl
 
 theorem unQ_subst (A : NFm n) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     unQ (A.subst σ) = (unQ A).subst σ := by
-  induction A with
-  | eq s t => intro m σ; rfl
-  | Q B ih => intro m σ; simp only [subst_Q, unQ, ih, subst_D, subst_dummy_comm]
-  | D B ih => intro m σ; simp only [subst_D, unQ, ih]
+  induction A with intro m σ
+  | eq s t => rfl
+  | Q B ih => simp only [subst_Q, unQ, ih, subst_D, subst_dummy_comm]
+  | D B ih => simp only [subst_D, unQ, ih]
 
 theorem unQ_shift (A : NFm n) : unQ A.shift = (unQ A).shift := unQ_subst A _
 
@@ -238,28 +236,24 @@ theorem wk {c : Cl n} (h : CPrf Γ A) : CPrf (c :: Γ) A := h.weaken (List.subse
 theorem ren (h : CPrf Γ A) : ∀ {m : ℕ} (ξ : Fin n → Fin m),
     CPrf (Γ.map fun c => c.subst fun i => (Syn.var (ξ i) : Tm m))
       (A.subst fun i => (Syn.var (ξ i) : Tm m)) := by
-  induction h with
-  | refl t => intro m ξ; exact .refl _
+  induction h with intro m ξ
+  | refl t => exact .refl _
   | evalZero h _ _ ih₁ ih₂ =>
-    intro m ξ
     have h₂ := ih₂ ξ
     rw [NFm.subst_eq, Tm.subst_iter] at h₂
     exact .evalZero _ (ih₁ ξ) h₂
   | evalSucc _ _ ih₁ ih₂ =>
-    intro m ξ
     have h₁ := ih₁ ξ
     have h₂ := ih₂ ξ
     rw [NFm.subst_eq, Tm.subst_iter] at h₁ h₂
     rw [NFm.subst_eq, Syn.subst_subst_inst]
     exact .evalSucc h₁ h₂
   | @use _ Γ c t hc _ ih =>
-    intro m ξ
     rw [NFm.subst_inst]
     exact .use (c := c.subst fun i => (Syn.var (ξ i) : Tm m)) _
       (List.mem_map_of_mem (f := fun c : Cl _ => c.subst fun i => (Syn.var (ξ i) : Tm m)) hc)
       (ih ξ)
   | @elim _ Γ B A _ _ ih₁ ih₂ =>
-    intro m ξ
     have h := ih₂ (Tm.upRen ξ)
     rw [← Tm.up_rn, List.map_cons, Cl.map_shift_subst, NFm.shift_subst_up] at h
     refine .elim (B := B.subst (up (up fun i => (Syn.var (ξ i) : Tm m)))) (ih₁ ξ) ?_
@@ -272,7 +266,6 @@ theorem ren (h : CPrf Γ A) : ∀ {m : ℕ} (ξ : Fin n → Fin m),
     rw [e] at h
     exact h
   | @intro _ Γ B t hB _ ih =>
-    intro m ξ
     have h := ih (Tm.upRen ξ)
     rw [← Tm.up_rn, List.map_cons, Cl.map_shift_subst, Cl.asm_subst, NFm.subst_repl_succ,
       NFm.subst_repl_up _ (NFm.start B t), NFm.subst_up_inst, ← NFm.start_rn] at h

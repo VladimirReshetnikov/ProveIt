@@ -115,27 +115,23 @@ theorem wk {c : Cl n} (h : KPrf Γ A) : KPrf (c :: Γ) A := h.weaken (List.subse
 induction. -/
 theorem subst (h : KPrf Γ A) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     KPrf (Γ.map fun c => c.subst σ) (A.subst σ) := by
-  induction h with
-  | refl t => intro m σ; exact .refl _
+  induction h with intro m σ
+  | refl t => exact .refl _
   | evalZero h _ _ ih₁ ih₂ =>
-    intro m σ
     have h₂ := ih₂ σ
     rw [NFm.subst_eq, Tm.subst_iter] at h₂
     exact .evalZero _ (ih₁ σ) h₂
   | evalSucc _ _ ih₁ ih₂ =>
-    intro m σ
     have h₁ := ih₁ σ
     have h₂ := ih₂ σ
     rw [NFm.subst_eq, Tm.subst_iter] at h₁ h₂
     rw [NFm.subst_eq, Syn.subst_subst_inst]
     exact .evalSucc h₁ h₂
   | @use _ Γ c t hc _ ih =>
-    intro m σ
     rw [NFm.subst_inst]
     exact .use (c := c.subst σ) _
       (List.mem_map_of_mem (f := fun c : Cl _ => c.subst σ) hc) (ih σ)
   | @elim _ Γ B A _ _ ih₁ ih₂ =>
-    intro m σ
     have h := ih₂ (up σ)
     rw [List.map_cons, Cl.map_shift_subst, NFm.shift_subst_up] at h
     refine .elim (B := B.subst (up (up σ))) (ih₁ σ) ?_
@@ -147,7 +143,6 @@ theorem subst (h : KPrf Γ A) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     rw [e] at h
     exact h
   | @intro _ Γ B t hB _ ih =>
-    intro m σ
     have h := ih (up σ)
     rw [List.map_cons, Cl.map_shift_subst, Cl.asm_subst, NFm.subst_repl_succ,
       NFm.subst_repl_up _ (NFm.dstart B) σ, NFm.subst_up_inst, ← NFm.dstart_subst] at h

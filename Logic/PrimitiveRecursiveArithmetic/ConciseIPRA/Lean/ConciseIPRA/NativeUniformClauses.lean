@@ -100,19 +100,18 @@ theorem UCl.liftToCl {Δ : List (UCl n)} {Γ : List (Cl n)}
 calculus, a use of the reflexivity clause being the reflexivity rule. -/
 theorem VPrf.toCPrf {Δ : List (UCl n)} {A : NFm n} (h : VPrf Δ A) :
     ∀ {Γ : List (Cl n)}, (∀ c ∈ Δ, c = UCl.refl ∨ c.toCl ∈ Γ) → CPrf Γ A := by
-  induction h with
+  induction h with intro Γ s
   | @use _ Δ c t hc _ ih =>
-    intro Γ s
     rcases s c hc with rfl | hm
     · exact .refl t
     · obtain ⟨a, b⟩ := c
       cases a with
       | none => exact .use (c := ⟨.eq zero zero, b⟩) t hm (.refl zero)
       | some A => exact .use (c := ⟨A, b⟩) t hm (ih A rfl s)
-  | evalZero h _ _ ih₁ ih₂ => intro Γ s; exact .evalZero h (ih₁ s) (ih₂ s)
-  | evalSucc _ _ ih₁ ih₂ => intro Γ s; exact .evalSucc (ih₁ s) (ih₂ s)
-  | elim _ _ ih₁ ih₂ => intro Γ s; exact .elim (ih₁ s) (ih₂ (UCl.liftToCl s _))
-  | intro B t hB _ ih => intro Γ s; exact .intro B t hB (ih (UCl.liftToCl s _))
+  | evalZero h _ _ ih₁ ih₂ => exact .evalZero h (ih₁ s) (ih₂ s)
+  | evalSucc _ _ ih₁ ih₂ => exact .evalSucc (ih₁ s) (ih₂ s)
+  | elim _ _ ih₁ ih₂ => exact .elim (ih₁ s) (ih₂ (UCl.liftToCl s _))
+  | intro B t hB _ ih => exact .intro B t hB (ih (UCl.liftToCl s _))
 
 /-- The invariant of the converse translation, under one more variable and one
 more clause. -/

@@ -99,8 +99,7 @@ theorem psi_rn {ξ : Fin n → Fin m} (hξ : Function.Injective ξ) (s t u : Tm 
 theorem psi_var0 (s : Tm n) (h : Tm (n + 1)) :
     psi (Syn.var 0) (Syn.shift s) h = Syn.shift (Syn.subst (inst s) h) := by
   rw [psi_var, Syn.shift_subst]
-  refine congrArg (fun σ => Syn.subst σ h) (funext fun i => ?_)
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine congrArg (fun σ => Syn.subst σ h) (funext (Fin.cases ?_ fun j => ?_))
   · simp
   · simp
 

@@ -74,23 +74,20 @@ theorem ren_recV (x : Tm m) : ∀ {k : ℕ} (ξ : Fin m → Fin k) (a : Tm m) (f
 /-- Evaluation commutes with renaming of the target. -/
 theorem ren_nbe (t : Tm n) : ∀ {m k : ℕ} (ξ : Fin m → Fin k) (ρ : Fin n → Tm m),
     ren ξ (nbe t ρ) = nbe t fun i => ren ξ (ρ i) := by
-  induction t with
-  | var i => intro m k ξ ρ; rfl
-  | zero => intro m k ξ ρ; rfl
-  | succ t ih => intro m k ξ ρ; exact congrArg succ (ih ξ ρ)
+  induction t with intro m k ξ ρ
+  | var i => rfl
+  | zero => rfl
+  | succ t ih => exact congrArg succ (ih ξ ρ)
   | iter c a h ihc iha ihh =>
-    intro m k ξ ρ
     have hf : ∀ w, ren ξ (nbe h (Fin.cases w ρ))
         = nbe h (Fin.cases (ren ξ w) fun i => ren ξ (ρ i)) := by
       intro w
       rw [ihh]
-      refine congrArg (fun r => nbe h r) (funext fun i => ?_)
-      refine Fin.cases ?_ (fun j => ?_) i <;> simp
+      refine congrArg (fun r => nbe h r) (funext (Fin.cases ?_ fun j => ?_)) <;> simp
     have hb : ren (upRen ξ) (nbe h (Fin.cases (.var 0) fun i => ren Fin.succ (ρ i)))
         = nbe h (Fin.cases (.var 0) fun i => ren Fin.succ (ren ξ (ρ i))) := by
       rw [ihh]
-      refine congrArg (fun r => nbe h r) (funext fun i => ?_)
-      refine Fin.cases ?_ (fun j => ?_) i
+      refine congrArg (fun r => nbe h r) (funext (Fin.cases ?_ fun j => ?_))
       · rfl
       · simp only [Fin.cases_succ, ren_ren, upRen_succ]
     refine (ren_recV (nbe c ρ) ξ (nbe a ρ) (fun v => nbe h (Fin.cases v ρ)) _
@@ -101,22 +98,19 @@ theorem ren_nbe (t : Tm n) : ∀ {m k : ℕ} (ξ : Fin m → Fin k) (ρ : Fin n 
 /-- Evaluation of a renamed term. -/
 theorem nbe_ren (t : Tm n) : ∀ {m k : ℕ} (ξ : Fin n → Fin m) (ρ : Fin m → Tm k),
     nbe (ren ξ t) ρ = nbe t fun i => ρ (ξ i) := by
-  induction t with
-  | var i => intro m k ξ ρ; rfl
-  | zero => intro m k ξ ρ; rfl
-  | succ t ih => intro m k ξ ρ; exact congrArg succ (ih ξ ρ)
+  induction t with intro m k ξ ρ
+  | var i => rfl
+  | zero => rfl
+  | succ t ih => exact congrArg succ (ih ξ ρ)
   | iter c a h ihc iha ihh =>
-    intro m k ξ ρ
     have e₁ : ∀ v : Tm k, (fun i => (Fin.cases v ρ : Fin (m + 1) → Tm k) (upRen ξ i))
         = Fin.cases v fun i => ρ (ξ i) := by
       intro v
-      funext i
-      refine Fin.cases ?_ (fun j => ?_) i <;> simp
+      refine funext (Fin.cases ?_ fun j => ?_) <;> simp
     have e₂ : (fun i => (Fin.cases (.var 0) (fun i => ren Fin.succ (ρ i))
           : Fin (m + 1) → Tm (k + 1)) (upRen ξ i))
         = Fin.cases (.var 0) fun i => ren Fin.succ (ρ (ξ i)) := by
-      funext i
-      refine Fin.cases ?_ (fun j => ?_) i <;> simp
+      refine funext (Fin.cases ?_ fun j => ?_) <;> simp
     show recV (nbe (ren ξ c) ρ) (nbe (ren ξ a) ρ)
         (fun v => nbe (ren (upRen ξ) h) (Fin.cases v ρ))
         (nbe (ren (upRen ξ) h) (Fin.cases (.var 0) fun i => ren Fin.succ (ρ i)))
@@ -128,23 +122,20 @@ theorem nbe_ren (t : Tm n) : ∀ {m k : ℕ} (ξ : Fin n → Fin m) (ρ : Fin m 
 /-- Evaluation of a substitution instance. -/
 theorem nbe_sub (t : Tm n) : ∀ {m k : ℕ} (σ : Fin n → Tm m) (ρ : Fin m → Tm k),
     nbe (sub σ t) ρ = nbe t fun i => nbe (σ i) ρ := by
-  induction t with
-  | var i => intro m k σ ρ; rfl
-  | zero => intro m k σ ρ; rfl
-  | succ t ih => intro m k σ ρ; exact congrArg succ (ih σ ρ)
+  induction t with intro m k σ ρ
+  | var i => rfl
+  | zero => rfl
+  | succ t ih => exact congrArg succ (ih σ ρ)
   | iter c a h ihc iha ihh =>
-    intro m k σ ρ
     have e₁ : ∀ v : Tm k, (fun i => nbe (upS σ i) (Fin.cases v ρ))
         = Fin.cases v fun i => nbe (σ i) ρ := by
       intro v
-      funext i
-      refine Fin.cases ?_ (fun j => ?_) i
+      refine funext (Fin.cases ?_ fun j => ?_)
       · rfl
       · simp only [upS_succ, nbe_ren, Fin.cases_succ]
     have e₂ : (fun i => nbe (upS σ i) (Fin.cases (.var 0) fun i => ren Fin.succ (ρ i)))
         = Fin.cases (.var 0) fun i => ren Fin.succ (nbe (σ i) ρ) := by
-      funext i
-      refine Fin.cases ?_ (fun j => ?_) i
+      refine funext (Fin.cases ?_ fun j => ?_)
       · rfl
       · simp only [upS_succ, nbe_ren, Fin.cases_succ, ren_nbe]
     show recV (nbe (sub σ c) ρ) (nbe (sub σ a) ρ)
@@ -179,12 +170,11 @@ theorem nbe_recV (x : Tm m) : ∀ {k : ℕ} (a : Tm m) (f : Tm m → Tm m) (b : 
 /-- Evaluation of a value. -/
 theorem nbe_nbe (t : Tm n) : ∀ {m k : ℕ} (ρ : Fin n → Tm m) (τ : Fin m → Tm k),
     nbe (nbe t ρ) τ = nbe t fun i => nbe (ρ i) τ := by
-  induction t with
-  | var i => intro m k ρ τ; rfl
-  | zero => intro m k ρ τ; rfl
-  | succ t ih => intro m k ρ τ; exact congrArg succ (ih ρ τ)
+  induction t with intro m k ρ τ
+  | var i => rfl
+  | zero => rfl
+  | succ t ih => exact congrArg succ (ih ρ τ)
   | iter c a h ihc iha ihh =>
-    intro m k ρ τ
     show nbe (recV (nbe c ρ) (nbe a ρ) (fun v => nbe h (Fin.cases v ρ))
         (nbe h (Fin.cases (.var 0) fun i => ren Fin.succ (ρ i)))) τ
       = recV (nbe c fun i => nbe (ρ i) τ) (nbe a fun i => nbe (ρ i) τ)
@@ -193,16 +183,13 @@ theorem nbe_nbe (t : Tm n) : ∀ {m k : ℕ} (ρ : Fin n → Tm m) (τ : Fin m �
     rw [← ihc ρ τ, ← iha ρ τ]
     refine nbe_recV _ _ _ _ τ _ _ (fun w => ?_) (fun v => ?_) ?_
     · rw [ihh]
-      refine congrArg (fun r => nbe h r) (funext fun i => ?_)
-      refine Fin.cases ?_ (fun j => ?_) i <;> simp
+      refine congrArg (fun r => nbe h r) (funext (Fin.cases ?_ fun j => ?_)) <;> simp
     · rw [ihh]
-      refine congrArg (fun r => nbe h r) (funext fun i => ?_)
-      refine Fin.cases ?_ (fun j => ?_) i
+      refine congrArg (fun r => nbe h r) (funext (Fin.cases ?_ fun j => ?_))
       · rfl
       · simp only [Fin.cases_succ, nbe_ren]
     · rw [ihh]
-      refine congrArg (fun r => nbe h r) (funext fun i => ?_)
-      refine Fin.cases ?_ (fun j => ?_) i
+      refine congrArg (fun r => nbe h r) (funext (Fin.cases ?_ fun j => ?_))
       · rfl
       · simp only [Fin.cases_succ, nbe_ren, ren_nbe]
 
@@ -239,8 +226,7 @@ theorem full_inst (t : Tm n) (i : Fin (n + 1)) : full (inst (full t) i) = full (
   · simp
 
 theorem full_up (σ : Fin n → Tm m) : (fun i => full (up σ i)) = up fun i => full (σ i) := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine funext (Fin.cases ?_ fun j => ?_)
   · rfl
   · simp
 
@@ -287,11 +273,9 @@ theorem nbeEq (t : Tm n) : ∀ {m : ℕ} {Γ : List (NFm m)} (σ ρ : Fin n → 
     · have e : Syn.subst (inst v) (Syn.subst (up σ) h)
           = Syn.subst (Fin.cases v σ : Fin (_ + 1) → Tm m) h := by
         rw [Syn.subst_subst]
-        refine congrArg (fun r => Syn.subst r h) (funext fun i => ?_)
-        refine Fin.cases ?_ (fun j => ?_) i <;> simp
+        refine congrArg (fun r => Syn.subst r h) (funext (Fin.cases ?_ fun j => ?_)) <;> simp
       rw [e]
-      refine ihh _ _ fun i => ?_
-      refine Fin.cases ?_ (fun j => ?_) i
+      refine ihh _ _ (Fin.cases ?_ fun j => ?_)
       · exact hvw
       · simp only [Fin.cases_succ]; exact he j
     · refine ihh _ _ fun i => ?_
@@ -325,19 +309,16 @@ namespace NFm
 
 theorem full_subst (A : NFm n) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     (A.full.subst fun i => (σ i).full).full = (A.subst σ).full := by
-  induction A with
+  induction A with intro m σ
   | eq s t =>
-    intro m σ
     simp only [NFm.full, NFm.subst_eq]
     rw [Tm.full_subst_congr (Tm.full_idem s) fun i => Tm.full_idem (σ i),
       Tm.full_subst_congr (Tm.full_idem t) fun i => Tm.full_idem (σ i)]
   | Q B ih =>
-    intro m σ
     have h := ih (up σ)
     rw [Tm.full_up] at h
     exact congrArg NFm.Q h
   | D B ih =>
-    intro m σ
     have h := ih (up (up σ))
     rw [Tm.full_up, Tm.full_up] at h
     exact congrArg NFm.D h
@@ -349,10 +330,10 @@ theorem full_subst_congr {A A' : NFm n} {σ σ' : Fin n → Tm m} (hA : A.full =
 theorem full_rn (A : NFm n) : ∀ {m : ℕ} (ξ : Fin n → Fin m),
     (A.subst fun i => (Syn.var (ξ i) : Tm m)).full
       = A.full.subst fun i => (Syn.var (ξ i) : Tm m) := by
-  induction A with
-  | eq s t => intro m ξ; simp only [NFm.subst_eq, NFm.full, Tm.full_rn]
-  | Q B ih => intro m ξ; simp only [NFm.subst_Q, NFm.full, Tm.up_rn, ih]
-  | D B ih => intro m ξ; simp only [NFm.subst_D, NFm.full, Tm.up_rn, ih]
+  induction A with intro m ξ
+  | eq s t => simp only [NFm.subst_eq, NFm.full, Tm.full_rn]
+  | Q B ih => simp only [NFm.subst_Q, NFm.full, Tm.up_rn, ih]
+  | D B ih => simp only [NFm.subst_D, NFm.full, Tm.up_rn, ih]
 
 theorem full_shift (A : NFm n) : A.shift.full = A.full.shift := full_rn A Fin.succ
 

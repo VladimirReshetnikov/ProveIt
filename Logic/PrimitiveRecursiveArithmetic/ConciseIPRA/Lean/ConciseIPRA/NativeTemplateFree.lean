@@ -44,12 +44,11 @@ def sz : {n : ℕ} → Tm n → ℕ
   | _, .iter c a h => sz c + sz a + sz h + 1
 
 theorem sz_ren (t : Tm n) : ∀ {m : ℕ} (ξ : Fin n → Fin m), sz (ren ξ t) = sz t := by
-  induction t with
-  | var i => intro m ξ; rfl
-  | zero => intro m ξ; rfl
-  | succ t ih => intro m ξ; show sz (ren ξ t) + 1 = sz t + 1; rw [ih]
+  induction t with intro m ξ
+  | var i => rfl
+  | zero => rfl
+  | succ t ih => show sz (ren ξ t) + 1 = sz t + 1; rw [ih]
   | iter c a h ihc iha ihh =>
-    intro m ξ
     show sz (ren ξ c) + sz (ren ξ a) + sz (ren (upRen ξ) h) + 1 = sz c + sz a + sz h + 1
     rw [ihc, iha, ihh]
 
@@ -94,14 +93,12 @@ theorem rep_self (s t : Tm n) : rep s t s = t := by
 
 /-- A term smaller than the source is unchanged. -/
 theorem rep_small (u : Tm n) : ∀ (s t : Tm n), sz u < sz s → rep s t u = u := by
-  induction u with
-  | var i => intro s t h; rw [rep_var, if_neg (ne_of_sz_lt h)]
-  | zero => intro s t h; rw [rep_zero, if_neg (ne_of_sz_lt h)]
+  induction u with intro s t h
+  | var i => rw [rep_var, if_neg (ne_of_sz_lt h)]
+  | zero => rw [rep_zero, if_neg (ne_of_sz_lt h)]
   | succ a ih =>
-    intro s t h
     rw [rep_succ, if_neg (ne_of_sz_lt h), ih s t (by simp only [sz] at h; omega)]
   | iter c a b ihc iha ihb =>
-    intro s t h
     simp only [sz] at h
     rw [rep_iter, if_neg (ne_of_sz_lt (by simp only [sz]; exact h)), ihc s t (by omega),
       iha s t (by omega), ihb _ _ (by rw [sz_shift]; omega)]
@@ -113,8 +110,7 @@ def Marks (M S : Tm n) (σm σs : Fin k → Tm n) : Prop :=
 
 theorem Marks.up {M S : Tm n} {σm σs : Fin k → Tm n} (h : Marks M S σm σs) :
     Marks (Syn.shift M) (Syn.shift S) (Syn.up σm) (Syn.up σs) := by
-  intro i
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine Fin.cases ?_ fun j => ?_
   · exact .inr ⟨0, rfl, rfl⟩
   · rcases h j with ⟨e₁, e₂⟩ | ⟨j', e₁, e₂⟩
     · exact .inl ⟨by rw [Syn.up_succ, e₁], by rw [Syn.up_succ, e₂]⟩
@@ -301,27 +297,23 @@ theorem iterBody (c a : Tm n) {b b' : Tm (n + 1)} (hb : NPrf (Γ.map NFm.shift) 
 /-- From `s = t` the kernel proves `u = R(u)`. -/
 theorem repEq (u : Tm n) : ∀ {s t : Tm n} {Γ : List (NFm n)},
     NPrf Γ (.eq s t) → NPrf Γ (.eq u (Tm.rep s t u)) := by
-  induction u with
+  induction u with intro s t Γ h
   | var i =>
-    intro s t Γ h
     rw [Tm.rep_var]
     split
     · next e => rw [e]; exact h
     · exact eqRefl _
   | zero =>
-    intro s t Γ h
     rw [Tm.rep_zero]
     split
     · next e => rw [e]; exact h
     · exact eqRefl _
   | succ a ih =>
-    intro s t Γ h
     rw [Tm.rep_succ]
     split
     · next e => rw [e]; exact h
     · exact eqCongr (succ (Syn.var 0)) (ih h)
   | iter c a b ihc iha ihb =>
-    intro s t Γ h
     rw [Tm.rep_iter]
     split
     · next e => rw [e]; exact h

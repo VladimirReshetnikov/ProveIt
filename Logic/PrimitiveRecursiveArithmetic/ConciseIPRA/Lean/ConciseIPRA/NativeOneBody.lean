@@ -291,9 +291,8 @@ are interderivable.  By induction on the number of binders. -/
 theorem conv : ∀ (d : ℕ) {n : ℕ} {A A' : NFm n}, A.depth ≤ d → LEq A A' →
     ∀ Γ : List (NFm (n + 1)), OBPrf Γ A → OBPrf Γ A' := by
   intro d
-  induction d with
+  induction d with intro n A A' hd hL Γ h
   | zero =>
-    intro n A A' hd hL Γ h
     cases hL with
     | eq hs ht =>
       have ks := hs Syn.var Γ
@@ -302,7 +301,6 @@ theorem conv : ∀ (d : ℕ) {n : ℕ} {A A' : NFm n}, A.depth ≤ d → LEq A A
       exact convEq ks kt h
     | D hB => exact absurd hd (Nat.not_succ_le_zero _)
   | succ d ih =>
-    intro n A A' hd hL Γ h
     cases hL with
     | eq hs ht =>
       have ks := hs Syn.var Γ

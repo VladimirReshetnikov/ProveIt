@@ -123,10 +123,9 @@ theorem leibnizEq (a b : Tm k) (σ σ' : Fin k → Tm n) (he : ∀ i, NPrf Γ (.
   have key : ∀ j, j ≤ k →
       NPrf Γ ((NFm.eq a b).subst fun i => if i.val < j then σ' i else σ i) := by
     intro j
-    induction j with
-    | zero => intro _; simpa using h
+    induction j with intro hj
+    | zero => simpa using h
     | succ j ih =>
-      intro hj
       have hj' := ih (Nat.le_of_succ_le hj)
       refine trE ((NFm.eq a b).subst fun i => if i.val = j then Syn.var 0
           else Syn.shift (if i.val < j then σ' i else σ i)) rfl (he ⟨j, hj⟩) ?_ ?_ hj'

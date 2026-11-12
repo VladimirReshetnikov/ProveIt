@@ -104,37 +104,31 @@ theorem wk {B : NFm n} (h : TIPrf Γ A) : TIPrf (B :: Γ) A :=
 stays an iterator. -/
 theorem subst (h : TIPrf Γ A) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     TIPrf (Γ.map fun B => B.subst σ) (A.subst σ) := by
-  induction h with
-  | hyp h => intro m σ; exact .hyp (List.mem_map_of_mem h)
-  | iterZero a h => intro m σ; exact .iterZero _ _
+  induction h with intro m σ
+  | hyp h => exact .hyp (List.mem_map_of_mem h)
+  | iterZero a h => exact .iterZero _ _
   | iterSucc c a h =>
-    intro m σ
     simp only [NFm.subst_eq, Tm.subst_iter, Tm.subst_succ, Syn.subst_subst_inst]
     exact .iterSucc _ _ _
   | trI h c a g _ _ ih₁ ih₂ =>
-    intro m σ
     have h₁ := ih₁ σ
     have h₂ := ih₂ σ
     simp only [NFm.subst_eq, Syn.subst_subst_inst, Tm.subst_iter] at h₁ h₂ ⊢
     exact .trI _ _ _ _ h₁ h₂
   | qE t _ _ ih₁ ih₂ =>
-    intro m σ
     have h₂ := ih₂ σ
     rw [NFm.subst_inst] at h₂ ⊢
     exact .qE _ (ih₁ σ) h₂
   | dE _ _ ih₁ ih₂ =>
-    intro m σ
     have h := ih₂ (up σ)
     rw [List.map_cons, NFm.map_shift_subst, NFm.shift_subst_up] at h
     exact .dE (ih₁ σ) h
   | dICase B t _ ih =>
-    intro m σ
     have h := ih (up σ)
     rw [List.map_cons, NFm.map_shift_subst, NFm.shift_subst_up, NFm.subst_inst,
       NFm.subst_repl_succ, NFm.subst_up_inst] at h
     exact .dICase _ _ h
   | qIInd s₁ s₂ _ ih =>
-    intro m σ
     have h := ih (up σ)
     rw [List.map_cons, NFm.map_shift_subst, NFm.subst_repl_succ] at h
     exact .qIInd (Syn.subst (up σ) s₁) (Syn.subst (up σ) s₂) h

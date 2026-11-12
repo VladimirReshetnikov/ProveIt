@@ -75,8 +75,7 @@ namespace NFm
 theorem subst_dummy_up_up_inst (B : NFm (n + 2)) (w : Tm (n + 1)) :
     (B.subst (up (up fun i => Syn.var i.succ))).subst (up (inst w)) = B.subst (up (repl w)) := by
   rw [subst_subst, Syn.up_comp]
-  refine congrArg (fun r => B.subst (up r)) (funext fun i => ?_)
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp
+  refine congrArg (fun r => B.subst (up r)) (funext (Fin.cases ?_ fun j => ?_)) <;> simp
 
 /-- The instance of the shifted matrix at the witness `1` is the instance of
 the matrix at a witness with the normal form `0`. -/

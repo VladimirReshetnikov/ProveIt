@@ -168,31 +168,26 @@ restriction looks at a term that a substitution can change: a source stays an
 iterator and the root of a matrix stays what it is. -/
 theorem subst (h : PGPrf Γ A) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     PGPrf (Γ.map fun B => B.subst σ) (A.subst σ) := by
-  induction h with
-  | hyp h => intro m σ; exact .hyp (List.mem_map_of_mem h)
-  | iterZero a h => intro m σ; exact .iterZero _ _
+  induction h with intro m σ
+  | hyp h => exact .hyp (List.mem_map_of_mem h)
+  | iterZero a h => exact .iterZero _ _
   | iterSucc c a h =>
-    intro m σ
     simp only [NFm.subst_eq, Tm.subst_iter, Tm.subst_succ, Syn.subst_subst_inst]
     exact .iterSucc _ _ _
   | trI h c a g _ _ ih₁ ih₂ =>
-    intro m σ
     have h₁ := ih₁ σ
     have h₂ := ih₂ σ
     simp only [NFm.subst_eq, Syn.subst_subst_inst, Tm.subst_iter] at h₁ h₂ ⊢
     exact .trI _ _ _ _ h₁ h₂
   | qE t _ _ ih₁ ih₂ =>
-    intro m σ
     have h₂ := ih₂ σ
     rw [NFm.subst_inst] at h₂ ⊢
     exact .qE _ (ih₁ σ) h₂
   | dE _ _ ih₁ ih₂ =>
-    intro m σ
     have h := ih₂ (up σ)
     rw [List.map_cons, NFm.map_shift_subst, NFm.shift_subst_up] at h
     exact .dE (ih₁ σ) h
   | @dI _ Γ B t _ ih =>
-    intro m σ
     have h := ih (up σ)
     rw [List.map_cons, NFm.map_shift_subst, NFm.subst_repl_up_comm _ (NFm.eta B (Syn.var 0)),
       NFm.subst_repl_succ, NFm.subst_up_inst,
@@ -481,17 +476,14 @@ variable (g : Gating)
 
 theorem pub_subst (A : NFm n) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     (A.subst σ).pub g = (A.pub g).subst σ := by
-  induction A with
+  induction A with intro m σ
   | eq s t =>
-    intro m σ
     show NFm.Q (g.mat (Syn.subst σ s) (Syn.subst σ t)) = NFm.Q ((g.mat s t).subst (up σ))
     rw [g.mat_subst]
   | Q B ih =>
-    intro m σ
     show NFm.Q ((B.subst (up σ)).pub g) = NFm.Q ((B.pub g).subst (up σ))
     rw [ih]
   | D B ih =>
-    intro m σ
     show NFm.D ((B.subst (up (up σ))).pub g) = NFm.D ((B.pub g).subst (up (up σ)))
     rw [ih]
 

@@ -69,8 +69,7 @@ theorem Tm.full_iterSucc (c a : Tm n) (h : Tm (n + 1)) :
     (Syn.subst (inst (iter c a h)) h).full = (iter (succ c) a h).full := by
   rw [Tm.full_subst]
   show Tm.nbe h _ = Tm.nbe h (Fin.cases (iter c a h).full Tm.var)
-  refine congrArg (fun r => Tm.nbe h r) (funext fun i => ?_)
-  refine Fin.cases ?_ (fun j => ?_) i <;> rfl
+  refine congrArg (fun r => Tm.nbe h r) (funext (Fin.cases ?_ fun j => ?_)) <;> rfl
 
 /-- Every kernel derivation becomes a derivation without computation rules
 when its formulas are normalized. -/

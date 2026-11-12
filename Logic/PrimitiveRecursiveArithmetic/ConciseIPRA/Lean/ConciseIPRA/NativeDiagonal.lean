@@ -140,8 +140,7 @@ theorem dstart_subst (B : NFm (n + 2)) (σ : Fin n → Tm m) :
 theorem subst_repl_up (A : NFm (n + 1)) (d : Tm (n + 1)) (σ : Fin n → Tm m) :
     (A.subst (repl d)).subst (up σ) = (A.subst (up σ)).subst (repl (Syn.subst (up σ) d)) := by
   rw [subst_subst, subst_subst]
-  refine A.subst_ext fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine A.subst_ext (Fin.cases ?_ fun j => ?_)
   · simp
   · rw [repl_succ, Syn.subst_var, up_succ, Syn.subst_repl_shift]
 
@@ -225,30 +224,25 @@ theorem wk {B : NFm n} (h : GPrf Γ A) : GPrf (B :: Γ) A := h.weaken (List.subs
 introduction rule commutes with it because its guard does. -/
 theorem subst (h : GPrf Γ A) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     GPrf (Γ.map fun B => B.subst σ) (A.subst σ) := by
-  induction h with
-  | hyp h => intro m σ; exact .hyp (List.mem_map_of_mem h)
-  | iterZero a h => intro m σ; exact .iterZero _ _
+  induction h with intro m σ
+  | hyp h => exact .hyp (List.mem_map_of_mem h)
+  | iterZero a h => exact .iterZero _ _
   | iterSucc c a h =>
-    intro m σ
     simp only [NFm.subst_eq, Tm.subst_iter, Tm.subst_succ, Syn.subst_subst_inst]
     exact .iterSucc _ _ _
   | trOne h _ _ ih₁ ih₂ =>
-    intro m σ
     have h₂ := ih₂ σ
     simp only [NFm.subst_eq, Syn.subst_subst_inst] at h₂ ⊢
     exact .trOne _ (ih₁ σ) h₂
   | qE t _ _ ih₁ ih₂ =>
-    intro m σ
     have h₂ := ih₂ σ
     rw [NFm.subst_inst] at h₂ ⊢
     exact .qE _ (ih₁ σ) h₂
   | dE _ _ ih₁ ih₂ =>
-    intro m σ
     have h := ih₂ (up σ)
     rw [List.map_cons, NFm.map_shift_subst, NFm.shift_subst_up] at h
     exact .dE (ih₁ σ) h
   | dI B t _ ih =>
-    intro m σ
     have h := ih (up σ)
     rw [List.map_cons, NFm.map_shift_subst, NFm.subst_repl_succ,
       NFm.subst_repl_up _ (NFm.dstart B) σ, NFm.subst_up_inst, ← NFm.dstart_subst] at h

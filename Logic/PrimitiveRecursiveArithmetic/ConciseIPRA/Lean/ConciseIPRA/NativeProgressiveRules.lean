@@ -37,8 +37,7 @@ theorem NFm.eta_subst {k k' : ℕ} (B : NFm k) (τ : Fin k → Tm k') (σ : Fin 
 theorem NFm.subst_repl_up_comm (A : NFm (n + 1)) (d : Tm (n + 1)) (σ : Fin n → Tm m) :
     (A.subst (repl d)).subst (up σ) = (A.subst (up σ)).subst (repl (Syn.subst (up σ) d)) := by
   rw [NFm.subst_subst, NFm.subst_subst]
-  refine A.subst_ext fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine A.subst_ext (Fin.cases ?_ fun j => ?_)
   · simp
   · rw [repl_succ, Syn.subst_var, up_succ, Syn.subst_repl_shift]
 
@@ -70,31 +69,26 @@ theorem wk {B : NFm n} (h : RPrf Γ A) : RPrf (B :: Γ) A :=
 /-- Substitution of terms for the free variables of a derivation. -/
 theorem subst (h : RPrf Γ A) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     RPrf (Γ.map fun B => B.subst σ) (A.subst σ) := by
-  induction h with
-  | hyp h => intro m σ; exact .hyp (List.mem_map_of_mem h)
-  | iterZero a h => intro m σ; exact .iterZero _ _
+  induction h with intro m σ
+  | hyp h => exact .hyp (List.mem_map_of_mem h)
+  | iterZero a h => exact .iterZero _ _
   | iterSucc c a h =>
-    intro m σ
     simp only [NFm.subst_eq, Tm.subst_iter, Tm.subst_succ, Syn.subst_subst_inst]
     exact .iterSucc _ _ _
   | trEq p q _ _ ih₁ ih₂ =>
-    intro m σ
     have h₂ := ih₂ σ
     simp only [NFm.subst_eq, Syn.subst_subst_inst] at h₂ ⊢
     exact .trEq _ _ (ih₁ σ) h₂
   | @qE _ Γ B a c _ _ ih₁ ih₂ =>
-    intro m σ
     have h₂ := ih₂ σ
     rw [NFm.subst_inst, NFm.eta_subst B (up σ) σ a] at h₂
     rw [NFm.subst_inst, Tm.subst_add, NFm.eta_subst B (up σ) σ a]
     exact .qE _ _ (ih₁ σ) h₂
   | dE _ _ ih₁ ih₂ =>
-    intro m σ
     have h := ih₂ (up σ)
     rw [List.map_cons, NFm.map_shift_subst, NFm.shift_subst_up] at h
     exact .dE (ih₁ σ) h
   | @dI _ Γ B t _ ih =>
-    intro m σ
     have h := ih (up σ)
     rw [List.map_cons, NFm.map_shift_subst, NFm.subst_repl_up_comm _ (NFm.eta B (Syn.var 0)),
       NFm.subst_repl_succ, NFm.subst_up_inst,

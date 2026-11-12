@@ -72,33 +72,29 @@ variable (S : Sem)
 
 theorem val_ren (t : Tm n) : ∀ {m : ℕ} (ξ : Fin n → Fin m) (ρ : Fin m → ℕ),
     (ren ξ t).val S ρ = t.val S fun i => ρ (ξ i) := by
-  induction t with
-  | var i => intro m ξ ρ; rfl
-  | zero => intro m ξ ρ; rfl
-  | succ t ih => intro m ξ ρ; simp only [ren, val, ih]
+  induction t with intro m ξ ρ
+  | var i => rfl
+  | zero => rfl
+  | succ t ih => simp only [ren, val, ih]
   | iter c a h ihc iha ihh =>
-    intro m ξ ρ
     simp only [ren, val, ihc, iha, ihh]
     congr 1
     funext u
     congr 1
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i <;> simp
+    refine funext (Fin.cases ?_ fun j => ?_) <;> simp
 
 theorem val_sub (t : Tm n) : ∀ {m : ℕ} (σ : Fin n → Tm m) (ρ : Fin m → ℕ),
     (sub σ t).val S ρ = t.val S fun i => (σ i).val S ρ := by
-  induction t with
-  | var i => intro m σ ρ; rfl
-  | zero => intro m σ ρ; rfl
-  | succ t ih => intro m σ ρ; simp only [sub, val, ih]
+  induction t with intro m σ ρ
+  | var i => rfl
+  | zero => rfl
+  | succ t ih => simp only [sub, val, ih]
   | iter c a h ihc iha ihh =>
-    intro m σ ρ
     simp only [sub, val, ihc, iha, ihh]
     congr 1
     funext u
     congr 1
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
+    refine funext (Fin.cases ?_ fun j => ?_)
     · rfl
     · simp [upS, val_ren]
 
@@ -113,23 +109,20 @@ theorem val_shift (t : Tm n) (b : ℕ) (ρ : Fin n → ℕ) :
 
 theorem val_inst (t : Tm n) (ρ : Fin n → ℕ) :
     (fun i => (inst t i).val S ρ) = Fin.cases (t.val S ρ) ρ := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine funext (Fin.cases ?_ fun j => ?_)
   · rfl
   · simp only [Syn.inst_succ, Fin.cases_succ]
     rfl
 
 theorem val_up (σ : Fin n → Tm m) (y : ℕ) (ρ : Fin m → ℕ) :
     (fun i => (up σ i).val S (Fin.cases y ρ)) = Fin.cases y fun i => (σ i).val S ρ := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine funext (Fin.cases ?_ fun j => ?_)
   · rfl
   · simp only [Syn.up_succ, Fin.cases_succ, val_shift]
 
 theorem val_repl (s : Tm (n + 1)) (z : ℕ) (ρ : Fin n → ℕ) :
     (fun i => (repl s i).val S (Fin.cases z ρ)) = Fin.cases (s.val S (Fin.cases z ρ)) ρ := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine funext (Fin.cases ?_ fun j => ?_)
   · rfl
   · simp only [Syn.repl_succ, Fin.cases_succ]
     rfl
@@ -148,10 +141,10 @@ variable (S : Sem)
 
 theorem sat_subst (A : NFm n) : ∀ {m : ℕ} (σ : Fin n → Tm m) (ρ : Fin m → ℕ),
     (A.subst σ).sat S ρ = A.sat S fun i => (σ i).val S ρ := by
-  induction A with
-  | eq s t => intro m σ ρ; simp only [subst_eq, sat, Tm.val_subst]
-  | Q B ih => intro m σ ρ; simp only [subst_Q, sat, ih, Tm.val_up]
-  | D B ih => intro m σ ρ; simp only [subst_D, sat, ih, Tm.val_up]
+  induction A with intro m σ ρ
+  | eq s t => simp only [subst_eq, sat, Tm.val_subst]
+  | Q B ih => simp only [subst_Q, sat, ih, Tm.val_up]
+  | D B ih => simp only [subst_D, sat, ih, Tm.val_up]
 
 theorem sat_shift (A : NFm n) (b : ℕ) (ρ : Fin n → ℕ) :
     A.shift.sat S (Fin.cases b ρ) = A.sat S ρ := by
