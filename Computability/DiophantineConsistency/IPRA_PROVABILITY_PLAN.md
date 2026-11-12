@@ -7886,6 +7886,10 @@ The independently source-reviewed [79 zero-w divisibility client](research/ordin
 proposes that reflection and contradiction, yielding a source-level w
 positivity claim under represented positive beta and nonnegative K0. The
 whole chain remains unelaborated and the iPRA endpoint is not established.
+The independently source-reviewed [beta-only zero-w alternatives](research/ordinary14-natural79-beta-only-zero-w-draft/README.md)
+propose weakening that local step to represented natural beta, allowing beta
+and J to be zero and other ports to be arbitrary. They are inert source and
+do not remove the stronger assumptions of the separate 80 endpoint chain.
 The independently source-reviewed [natural-79 endpoint draft](research/ordinary14-natural-forced-w79-ipra-draft/README.md)
 proposes composing the w-positive transfer with native, standard and
 equality-only iPRA clients at the symbolic ports. Its declarations and five
