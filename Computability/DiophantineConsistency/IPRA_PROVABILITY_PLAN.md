@@ -7474,6 +7474,12 @@ The source-reviewed [87 guard-gap](research/ordinary14-87-guard-gap-draft/README
 and [conditional strict-bound](research/ordinary14-87-guard-strict-draft/README.md)
 drafts propose these steps under explicit hypotheses, including `X ≥ q²`
 for the latter. They remain unelaborated; graph-derived growth is still open.
+The source-reviewed [linear guard-bound variant](research/ordinary14-87-guard-strict-linear-draft/README.md)
+weakens that sufficient hypothesis to `X ≥ q`; it is also unelaborated and
+does not derive the hypothesis from the graph.
+The source-reviewed [87 first-quotient draft](research/ordinary14-87-first-quotient-draft/README.md)
+proposes deriving the quotient and first root from the 87 graph's own zero.
+It remains unelaborated and does not establish the needed growth condition.
 The source-reviewed [86 own-zero quotient composition](research/ordinary14-86-ownzero-quotient-draft/README.md)
 proposes deriving that quotient and a magnitude root from the graph's own
 first residual. It remains unelaborated and is not yet a complete model map.
