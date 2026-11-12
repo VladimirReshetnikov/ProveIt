@@ -75,10 +75,9 @@ theorem isEq_subst (A : NFm n) (σ : Fin n → Tm m) : (A.subst σ).isEq = A.isE
 
 theorem rd_subst (A : NFm n) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     rd (A.subst σ) = (rd A).subst σ := by
-  induction A with
-  | eq s t => intro m σ; rfl
+  induction A with intro m σ
+  | eq s t => rfl
   | Q B ih =>
-    intro m σ
     show (if (B.subst (up σ)).isEq then prog (rd (B.subst (up σ)))
         else NFm.Q (rd (B.subst (up σ))))
       = (if B.isEq then prog (rd B) else NFm.Q (rd B)).subst σ
@@ -87,7 +86,6 @@ theorem rd_subst (A : NFm n) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     · rfl
     · exact (prog_subst _ σ).symm
   | D B ih =>
-    intro m σ
     show (if (B.subst (up (up σ))).isEq then ex (prog (rd (B.subst (up (up σ)))))
         else NFm.D (rd (B.subst (up (up σ)))))
       = (if B.isEq then ex (prog (rd B)) else NFm.D (rd B)).subst σ
@@ -107,14 +105,12 @@ theorem map_rd_shift (Γ : List (NFm n)) :
 theorem subst_repl_inst (B : NFm (n + 1)) (d : Tm (n + 1)) (u : Tm n) :
     (B.subst (repl d)).subst (inst u) = B.subst (inst (Syn.subst (inst u) d)) := by
   rw [subst_subst]
-  refine B.subst_ext fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp
+  refine B.subst_ext (Fin.cases ?_ fun j => ?_) <;> simp
 
 theorem subst_repl_repl (B : NFm (n + 1)) (d r : Tm (n + 1)) :
     (B.subst (repl d)).subst (repl r) = B.subst (repl (Syn.subst (repl r) d)) := by
   rw [subst_subst]
-  refine B.subst_ext fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp
+  refine B.subst_ext (Fin.cases ?_ fun j => ?_) <;> simp
 
 end NFm
 

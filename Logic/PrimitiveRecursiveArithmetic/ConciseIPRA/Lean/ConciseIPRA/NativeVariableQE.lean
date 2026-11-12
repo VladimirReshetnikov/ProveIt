@@ -44,16 +44,14 @@ namespace NFm
 theorem subst_up_cases (B : NFm (k + 1)) (ρ : Fin k → Tm n) (t : Tm n) :
     (B.subst (up ρ)).subst (inst t) = B.subst (Fin.cases t ρ) := by
   rw [subst_subst]
-  refine B.subst_ext fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp
+  refine B.subst_ext (Fin.cases ?_ fun j => ?_) <;> simp
 
 theorem shift_subst_cases (B : NFm (k + 1)) (t : Tm n) (ρ : Fin k → Tm n) :
     (B.subst (Fin.cases t ρ)).shift
       = B.subst (Fin.cases (Syn.shift t) fun i => Syn.shift (ρ i)) := by
   unfold NFm.shift
   rw [subst_subst]
-  refine B.subst_ext fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp [Syn.shift]
+  refine B.subst_ext (Fin.cases ?_ fun j => ?_) <;> simp [Syn.shift]
 
 theorem shift_Q_up (B : NFm (k + 1)) (ρ : Fin k → Tm n) :
     (NFm.Q (B.subst (up ρ))).shift = .Q (B.subst (up fun i => Syn.shift (ρ i))) := by
@@ -64,8 +62,7 @@ theorem shift_Q_up (B : NFm (k + 1)) (ρ : Fin k → Tm n) :
 theorem subst_up_repl (B : NFm (k + 1)) (ρ : Fin k → Tm n) (s : Tm (n + 1)) :
     (B.subst (up ρ)).subst (repl s) = B.subst (Fin.cases s fun i => Syn.shift (ρ i)) := by
   rw [subst_subst]
-  refine B.subst_ext fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp
+  refine B.subst_ext (Fin.cases ?_ fun j => ?_) <;> simp
 
 theorem shift_subst_up_zero (B : NFm (k + 1)) (ρ : Fin k → Tm n) :
     ((B.subst (up ρ)).subst (inst zero)).shift
@@ -148,41 +145,34 @@ theorem wk {B : NFm n} (h : VQPrf c Γ A) : VQPrf c (B :: Γ) A :=
 theorem ren (h : VQPrf c Γ A) : ∀ {m : ℕ} (ξ : Fin n → Fin m),
     VQPrf c (Γ.map fun B => B.subst fun i => (Syn.var (ξ i) : Tm m))
       (A.subst fun i => (Syn.var (ξ i) : Tm m)) := by
-  induction h with
-  | hyp h => intro m ξ; exact .hyp (List.mem_map_of_mem h)
-  | iterZero a h => intro m ξ; exact .iterZero _ _
+  induction h with intro m ξ
+  | hyp h => exact .hyp (List.mem_map_of_mem h)
+  | iterZero a h => exact .iterZero _ _
   | iterSucc c' a h =>
-    intro m ξ
     simp only [NFm.subst_eq, Tm.subst_iter, Tm.subst_succ, Syn.subst_subst_inst]
     exact .iterSucc _ _ _
   | trOne h _ _ ih₁ ih₂ =>
-    intro m ξ
     have h₂ := ih₂ ξ
     simp only [NFm.subst_eq, Syn.subst_subst_inst] at h₂ ⊢
     exact .trOne _ (ih₁ ξ) h₂
   | qEVar i _ _ ih₁ ih₂ =>
-    intro m ξ
     have h₂ := ih₂ ξ
     rw [NFm.subst_inst] at h₂ ⊢
     exact .qEVar (ξ i) (ih₁ ξ) h₂
   | qEOne hc _ _ ih₁ ih₂ =>
-    intro m ξ
     have h₂ := ih₂ ξ
     rw [NFm.subst_inst] at h₂ ⊢
     exact .qEOne hc (ih₁ ξ) h₂
   | dE _ _ ih₁ ih₂ =>
-    intro m ξ
     have h := ih₂ (Tm.upRen ξ)
     rw [← Tm.up_rn, List.map_cons, NFm.map_shift_subst, NFm.shift_subst_up] at h
     exact .dE (ih₁ ξ) h
   | dICase B t _ ih =>
-    intro m ξ
     have h := ih (Tm.upRen ξ)
     rw [← Tm.up_rn, List.map_cons, NFm.map_shift_subst, NFm.shift_subst_up, NFm.subst_inst,
       NFm.subst_repl_succ, NFm.subst_up_inst] at h
     exact .dICase _ _ h
   | qIInd s₁ s₂ _ ih =>
-    intro m ξ
     have h := ih (Tm.upRen ξ)
     rw [← Tm.up_rn, List.map_cons, NFm.map_shift_subst, NFm.subst_repl_succ] at h
     exact .qIInd _ _ h
@@ -278,8 +268,7 @@ theorem qI (B : NFm (n + 1))
 /-- Equal substitutions stay equal under a binder. -/
 theorem upEq {σ σ' : Fin k → Tm n} (he : ∀ i, VQPrf c Γ (.eq (σ i) (σ' i))) :
     ∀ i, VQPrf c (Γ.map NFm.shift) (.eq (up σ i) (up σ' i)) := by
-  intro i
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine Fin.cases ?_ fun j => ?_
   · exact eqRefl _
   · rw [up_succ, up_succ]
     exact (he j).shift
@@ -289,8 +278,7 @@ theorem casesEq {σ σ' : Fin k → Tm n} {s s' : Tm n} (h : VQPrf c Γ (.eq s s
     (he : ∀ i, VQPrf c Γ (.eq (σ i) (σ' i))) :
     ∀ i, VQPrf c Γ (.eq ((Fin.cases s σ : Fin (k + 1) → Tm n) i)
       ((Fin.cases s' σ' : Fin (k + 1) → Tm n) i)) := by
-  intro i
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine Fin.cases ?_ fun j => ?_
   · exact h
   · simpa only [Fin.cases_succ] using he j
 
@@ -353,10 +341,9 @@ over one context. -/
 theorem leibniz (A : NFm k) : ∀ {n : ℕ} {Γ : List (NFm n)} (σ σ' : Fin k → Tm n),
     (∀ i, VQPrf true Γ (.eq (σ i) (σ' i))) →
       VQPrf true Γ (A.subst σ) → VQPrf true Γ (A.subst σ') := by
-  induction A with
-  | eq a b => intro n Γ σ σ' he h; exact leibnizEq a b σ σ' he h
+  induction A with intro n Γ σ σ' he h
+  | eq a b => exact leibnizEq a b σ σ' he h
   | Q B ih =>
-    intro n Γ σ σ' he h
     rw [NFm.subst_Q] at h ⊢
     refine qI _ ?_
     rw [NFm.subst_up_repl, NFm.shift_subst_up_zero]
@@ -365,7 +352,6 @@ theorem leibniz (A : NFm k) : ∀ {n : ℕ} {Γ : List (NFm n)} (σ σ' : Fin k 
     rw [← NFm.shift_Q_up]
     exact h.shift.wk
   | D B ih =>
-    intro n Γ σ σ' he h
     rw [NFm.subst_D] at h ⊢
     refine .dE h ?_
     show VQPrf true _ (.D ((B.subst (up (up σ'))).subst (up (up fun i => Syn.var i.succ))))
@@ -439,8 +425,7 @@ theorem VQPrf.zsound (h : VQPrf false Γ A) : (∀ X ∈ Γ, X.zt) → A.zt := b
     rw [Tm.val_subst]
     show h.val .std (Fin.cases ((iter c a h).val .std fun _ => 0) fun _ => 0) = _
     congr 1
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
+    refine funext (Fin.cases ?_ fun j => ?_)
     · rfl
     · simp only [Fin.cases_succ, Syn.inst_succ]
       rfl
@@ -451,8 +436,7 @@ theorem VQPrf.zsound (h : VQPrf false Γ A) : (∀ X ∈ Γ, X.zt) → A.zt := b
     simp only [NFm.zt, Tm.val_subst] at e₁ e₂ ⊢
     rw [← e₂]
     congr 1
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
+    refine funext (Fin.cases ?_ fun j => ?_)
     · exact e₁
     · simp
   | @qEVar _ Γ B i _ _ _ ih₂ =>

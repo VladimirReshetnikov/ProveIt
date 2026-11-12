@@ -101,8 +101,7 @@ def holeS (η : Tm (n + 1)) : Fin (n + 2) → Tm (n + 2) :=
 theorem subst_hole (B : NFm (n + 2)) (η : Tm (n + 1)) (t : Tm n) :
     (B.subst (holeS η)).subst (inst (Syn.shift t)) = (B.subst (up (inst t))).subst (repl η) := by
   rw [subst_subst, subst_subst]
-  refine B.subst_ext fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine B.subst_ext (Fin.cases ?_ fun j => ?_)
   · simp [holeS]
   · refine Fin.cases ?_ (fun k => ?_) j <;> simp [holeS]
 
@@ -377,18 +376,17 @@ inductive ZVPrf : {n : ℕ} → List (UCl n) → NFm n → Prop
 
 theorem ZVPrf.toZC {Δ : List (UCl n)} {A : NFm n} (h : ZVPrf Δ A) :
     ∀ {Γ : List (Cl n)}, (∀ c ∈ Δ, c = UCl.refl ∨ c.toCl ∈ Γ) → ZCPrf Γ A := by
-  induction h with
+  induction h with intro Γ s
   | @use _ Δ c t hc _ ih =>
-    intro Γ s
     rcases s c hc with rfl | hm
     · exact .refl t
     · obtain ⟨a, b⟩ := c
       cases a with
       | none => exact .use (c := ⟨.eq zero zero, b⟩) t hm (.refl zero)
       | some A => exact .use (c := ⟨A, b⟩) t hm (ih A rfl s)
-  | step c a h _ _ ih₁ ih₂ => intro Γ s; exact .step c a h (ih₁ s) (ih₂ s)
-  | elim _ _ ih₁ ih₂ => intro Γ s; exact .elim (ih₁ s) (ih₂ (UCl.liftToCl s _))
-  | intro B t hB hn ht _ ih => intro Γ s; exact .intro B t hB hn ht (ih (UCl.liftToCl s _))
+  | step c a h _ _ ih₁ ih₂ => exact .step c a h (ih₁ s) (ih₂ s)
+  | elim _ _ ih₁ ih₂ => exact .elim (ih₁ s) (ih₂ (UCl.liftToCl s _))
+  | intro B t hB hn ht _ ih => exact .intro B t hB hn ht (ih (UCl.liftToCl s _))
 
 theorem ZCPrf.toZV {Γ : List (Cl n)} {A : NFm n} (h : ZCPrf Γ A) :
     ∀ {Δ : List (UCl n)}, UCl.refl ∈ Δ →

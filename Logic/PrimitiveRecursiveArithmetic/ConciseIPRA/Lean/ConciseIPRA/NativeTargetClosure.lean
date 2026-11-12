@@ -51,8 +51,7 @@ def Tm.lpred : {n : ℕ} → Tm n → Tm n
 
 theorem Tm.up_rn_var (ξ : Fin n → Fin m) :
     up (fun i => (Syn.var (ξ i) : Tm m)) = fun i => Syn.var (Tm.upRen ξ i) := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp
+  refine funext (Fin.cases ?_ fun j => ?_) <;> simp
 
 theorem Tm.lpred_rn (t : Tm n) (ξ : Fin n → Fin m) :
     (Syn.subst (fun i => (Syn.var (ξ i) : Tm m)) t).lpred
@@ -137,31 +136,26 @@ a successor or not a successor; a substitution need not. -/
 theorem ren (h : TQPrf Γ A) : ∀ {m : ℕ} (ξ : Fin n → Fin m),
     TQPrf (Γ.map fun B => B.subst fun i => (Syn.var (ξ i) : Tm m))
       (A.subst fun i => (Syn.var (ξ i) : Tm m)) := by
-  induction h with
-  | hyp h => intro m ξ; exact .hyp (List.mem_map_of_mem h)
-  | iterZero a h => intro m ξ; exact .iterZero _ _
+  induction h with intro m ξ
+  | hyp h => exact .hyp (List.mem_map_of_mem h)
+  | iterZero a h => exact .iterZero _ _
   | iterSucc c a h =>
-    intro m ξ
     simp only [NFm.subst_eq, Tm.subst_iter, Tm.subst_succ, Syn.subst_subst_inst]
     exact .iterSucc _ _ _
   | trEq p q _ _ ih₁ ih₂ =>
-    intro m ξ
     have h₂ := ih₂ ξ
     simp only [NFm.subst_eq, Syn.subst_subst_inst] at h₂ ⊢
     exact .trEq _ _ (ih₁ ξ) h₂
   | @qE _ Γ B t _ _ ih₁ ih₂ =>
-    intro m ξ
     have h₂ := ih₂ ξ
     rw [NFm.subst_inst, NFm.delta_rn B (up fun i => (Syn.var (ξ i) : Tm m)) ξ t] at h₂
     rw [NFm.subst_inst]
     exact .qE _ (ih₁ ξ) h₂
   | dE _ _ ih₁ ih₂ =>
-    intro m ξ
     have h := ih₂ (Tm.upRen ξ)
     rw [List.map_cons, ← Tm.up_rn_var, NFm.map_shift_subst, NFm.shift_subst_up] at h
     exact .dE (ih₁ ξ) h
   | @dI _ Γ B t _ ih =>
-    intro m ξ
     have h := ih (Tm.upRen ξ)
     rw [List.map_cons, ← Tm.up_rn_var, NFm.map_shift_subst,
       NFm.subst_repl_up_comm _ (NFm.eta B (Syn.var 0)), NFm.subst_repl_succ, NFm.subst_up_inst,

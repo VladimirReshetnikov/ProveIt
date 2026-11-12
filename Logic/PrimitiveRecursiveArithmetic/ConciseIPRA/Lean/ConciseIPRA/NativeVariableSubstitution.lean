@@ -69,8 +69,7 @@ theorem subst_hole2 (H : Tm (n + 1)) (S : Tm n) (r : Tm (n + 1)) :
         (Syn.subst (Fin.cases (Syn.var 1) fun i => Syn.var i.succ.succ) H))
       = Syn.shift (Syn.subst (inst S) H) := by
   rw [Syn.subst_subst, Syn.subst_subst, Syn.shift_subst]
-  refine congrArg (fun ρ => Syn.subst ρ H) (funext fun i => ?_)
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp
+  refine congrArg (fun ρ => Syn.subst ρ H) (funext (Fin.cases ?_ fun j => ?_)) <;> simp
 
 end Tm
 

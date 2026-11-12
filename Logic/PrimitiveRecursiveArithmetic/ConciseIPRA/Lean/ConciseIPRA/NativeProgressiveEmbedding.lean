@@ -86,14 +86,12 @@ def emb : {n : ℕ} → NFm n → NFm n
 
 theorem emb_subst (A : NFm n) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     emb (A.subst σ) = (emb A).subst σ := by
-  induction A with
-  | eq s t => intro m σ; rfl
+  induction A with intro m σ
+  | eq s t => rfl
   | Q B ih =>
-    intro m σ
     show NFm.Q (pad (emb (B.subst (up σ)))) = NFm.Q ((pad (emb B)).subst (up σ))
     rw [ih, pad_subst]
   | D B ih =>
-    intro m σ
     show NFm.D (pad (emb (B.subst (up (up σ))))) = NFm.D ((pad (emb B)).subst (up (up σ)))
     rw [ih, pad_subst]
 

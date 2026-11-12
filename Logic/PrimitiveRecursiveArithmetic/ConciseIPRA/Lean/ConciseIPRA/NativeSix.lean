@@ -109,33 +109,28 @@ theorem toNPrf (h : SPrf Γ A) : NPrf Γ A := by
 induction: no rule tests a witness or a transport source. -/
 theorem subst (h : SPrf Γ A) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     SPrf (Γ.map fun B => B.subst σ) (A.subst σ) := by
-  induction h with
-  | hyp h => intro m σ; exact .hyp (List.mem_map_of_mem h)
-  | refl t => intro m σ; exact .refl _
+  induction h with intro m σ
+  | hyp h => exact .hyp (List.mem_map_of_mem h)
+  | refl t => exact .refl _
   | evalZero h _ _ ih₁ ih₂ =>
-    intro m σ
     have h₂ := ih₂ σ
     rw [NFm.subst_eq, Tm.subst_iter] at h₂
     exact .evalZero _ (ih₁ σ) h₂
   | evalSucc _ _ ih₁ ih₂ =>
-    intro m σ
     have h₁ := ih₁ σ
     have h₂ := ih₂ σ
     rw [NFm.subst_eq, Tm.subst_iter] at h₁ h₂
     rw [NFm.subst_eq, Syn.subst_subst_inst]
     exact .evalSucc h₁ h₂
   | qE t _ _ ih₁ ih₂ =>
-    intro m σ
     have h₂ := ih₂ σ
     rw [NFm.subst_inst] at h₂ ⊢
     exact .qE _ (ih₁ σ) h₂
   | dE _ _ ih₁ ih₂ =>
-    intro m σ
     have h := ih₂ (up σ)
     rw [List.map_cons, NFm.map_shift_subst, NFm.shift_subst_up] at h
     exact .dE (ih₁ σ) h
   | dI B t _ ih =>
-    intro m σ
     have h := ih (up σ)
     rw [List.map_cons, NFm.map_shift_subst, NFm.subst_repl_succ,
       NFm.subst_repl_up _ (NFm.dstart B) σ, NFm.subst_up_inst, ← NFm.dstart_subst] at h

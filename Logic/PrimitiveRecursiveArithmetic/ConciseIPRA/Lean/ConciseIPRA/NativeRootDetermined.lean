@@ -103,10 +103,10 @@ def T : {n : ℕ} → NFm n → (Fin n → ℕ) → Prop
 
 theorem T_subst (A : NFm n) : ∀ {m : ℕ} (σ : Fin n → Tm m) (ρ : Fin m → ℕ),
     T (A.subst σ) ρ = T A fun i => (σ i).val .std ρ := by
-  induction A with
-  | eq s t => intro m σ ρ; simp only [NFm.subst_eq, T, Tm.val_subst]
-  | Q B ih => intro m σ ρ; simp only [NFm.subst_Q, T, ih, Tm.val_up, NFm.isEq_subst]
-  | D B ih => intro m σ ρ; simp only [NFm.subst_D, T, ih, Tm.val_up, NFm.isEq_subst]
+  induction A with intro m σ ρ
+  | eq s t => simp only [NFm.subst_eq, T, Tm.val_subst]
+  | Q B ih => simp only [NFm.subst_Q, T, ih, Tm.val_up, NFm.isEq_subst]
+  | D B ih => simp only [NFm.subst_D, T, ih, Tm.val_up, NFm.isEq_subst]
 
 theorem T_shift (A : NFm n) (b : ℕ) (ρ : Fin n → ℕ) : T A.shift (Fin.cases b ρ) = T A ρ := by
   unfold NFm.shift

@@ -72,8 +72,7 @@ theorem mono (t : ZTm n) : ∀ {ρ σ : Fin n → ℕ}, (∀ i, ρ i ≤ σ i) �
     have le2 : ∀ {j j' u u' : ℕ} {τ τ' : Fin _ → ℕ}, j ≤ j' → u ≤ u' → (∀ i, τ i ≤ τ' i) →
         h.val (Fin.cases j (Fin.cases u τ)) ≤ h.val (Fin.cases j' (Fin.cases u' τ')) := by
       intro j j' u u' τ τ' hj hu hτ
-      refine ihh fun i => ?_
-      refine Fin.cases ?_ (fun i => ?_) i
+      refine ihh (Fin.cases ?_ fun i => ?_)
       · exact hj
       · refine Fin.cases ?_ (fun i => ?_) i
         · exact hu

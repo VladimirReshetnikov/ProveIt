@@ -101,12 +101,11 @@ theorem ren_smartI (ξ : Fin n → Fin m) (c a : Tm n) (h : Tm (n + 1)) :
 /-- In particular, normalization does not introduce free variables. -/
 theorem nf_ren (t : Tm n) : ∀ {m : ℕ} (ξ : Fin n → Fin m),
     nf (Tm.ren ξ t) = Tm.ren ξ (nf t) := by
-  induction t with
-  | var i => intro m ξ; rfl
-  | zero => intro m ξ; rfl
-  | succ t ih => intro m ξ; simp only [Tm.ren, nf, ih]
+  induction t with intro m ξ
+  | var i => rfl
+  | zero => rfl
+  | succ t ih => simp only [Tm.ren, nf, ih]
   | iter c a h ihc iha ihh =>
-    intro m ξ
     simp only [Tm.ren, nf, ihc, iha, ihh, ren_smartI]
 
 @[simp] theorem nf_shift (t : Tm n) : nf (Syn.shift t) = Syn.shift (nf t) := by
@@ -114,8 +113,7 @@ theorem nf_ren (t : Tm n) : ∀ {m : ℕ} (ξ : Fin n → Fin m),
 
 theorem nf_upS (σ : Fin n → Tm m) :
     (fun i => nf (Tm.upS σ i)) = Tm.upS (fun i => nf (σ i)) := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine funext (Fin.cases ?_ fun j => ?_)
   · rfl
   · simp only [Tm.upS_succ, nf_ren]
 
@@ -132,23 +130,21 @@ theorem nf_sub_smartI (σ : Fin n → Tm m) (c a : Tm n) (h : Tm (n + 1)) :
 /-- Contracting zero redexes before substitution does not change the final normal form. -/
 theorem nf_sub_nf (t : Tm n) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     nf (Tm.sub σ (nf t)) = nf (Tm.sub σ t) := by
-  induction t with
-  | var i => intro m σ; rfl
-  | zero => intro m σ; rfl
-  | succ t ih => intro m σ; simp only [nf, Tm.sub, ih]
+  induction t with intro m σ
+  | var i => rfl
+  | zero => rfl
+  | succ t ih => simp only [nf, Tm.sub, ih]
   | iter c a h ihc iha ihh =>
-    intro m σ
     simp only [nf, nf_sub_smartI, Tm.sub, ihc, iha, ihh]
 
 /-- Normalizing the entries of a substitution does not change the final normal form. -/
 theorem nf_sub_map (t : Tm n) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     nf (Tm.sub (fun i => nf (σ i)) t) = nf (Tm.sub σ t) := by
-  induction t with
-  | var i => intro m σ; exact nf_idempotent (σ i)
-  | zero => intro m σ; rfl
-  | succ t ih => intro m σ; simp only [Tm.sub, nf, ih]
+  induction t with intro m σ
+  | var i => exact nf_idempotent (σ i)
+  | zero => rfl
+  | succ t ih => simp only [Tm.sub, nf, ih]
   | iter c a h ihc iha ihh =>
-    intro m σ
     have hh : nf (Tm.sub (Tm.upS (fun i => nf (σ i))) h) =
         nf (Tm.sub (Tm.upS σ) h) := by
       simpa only [nf_upS] using ihh (Tm.upS σ)
@@ -213,18 +209,15 @@ def fnf : {n : ℕ} → NFm n → NFm n
 /-- The formula translation respects hereditary substitution under Q and D. -/
 theorem fnf_subst (A : NFm n) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     fnf ((fnf A).subst (fun i => nf (σ i))) = fnf (A.subst σ) := by
-  induction A with
+  induction A with intro m σ
   | eq s t =>
-    intro m σ
     simp only [fnf, NFm.subst_eq, nf_subst]
   | Q B ih =>
-    intro m σ
     have h : fnf ((fnf B).subst (Syn.up (fun i => nf (σ i)))) =
         fnf (B.subst (Syn.up σ)) := by
       simpa only [nf_up] using ih (Syn.up σ)
     exact congrArg NFm.Q h
   | D B ih =>
-    intro m σ
     have h : fnf ((fnf B).subst (Syn.up (Syn.up (fun i => nf (σ i))))) =
         fnf (B.subst (Syn.up (Syn.up σ))) := by
       simpa only [nf_up] using ih (Syn.up (Syn.up σ))

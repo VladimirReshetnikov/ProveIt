@@ -110,13 +110,11 @@ theorem asmHyp {X : NFm n} (hX : X.full = X) (h : UCl.asm X ∈ Γ) : XCPrf Γ X
 /-! ### Structural rules -/
 
 theorem weaken (h : XCPrf Γ A) : ∀ {Δ : List (UCl n)}, Γ ⊆ Δ → XCPrf Δ A := by
-  induction h with
-  | use t hc _ ih => intro Δ s; exact .use t (s hc) fun A hA => ih A hA s
+  induction h with intro Δ s
+  | use t hc _ ih => exact .use t (s hc) fun A hA => ih A hA s
   | intro B t hB hQ ht _ ih =>
-    intro Δ s
     exact .intro B t hB hQ ht (ih (List.cons_subset_cons _ (List.map_subset _ s)))
   | dis F _ _ hA ih₁ ih₂ =>
-    intro Δ s
     exact .dis F (ih₁ s) (ih₂ (List.cons_subset_cons _ (List.map_subset _ s))) hA
 
 theorem wk {c : UCl n} (h : XCPrf Γ A) : XCPrf (c :: Γ) A :=
@@ -126,9 +124,8 @@ theorem wk {c : UCl n} (h : XCPrf Γ A) : XCPrf (c :: Γ) A :=
 theorem ren (h : XCPrf Γ A) : ∀ {m : ℕ} (ξ : Fin n → Fin m),
     XCPrf (Γ.map fun c => c.subst fun i => (Syn.var (ξ i) : Tm m))
       (A.subst fun i => (Syn.var (ξ i) : Tm m)) := by
-  induction h with
+  induction h with intro m ξ
   | @use _ Γ c t hc _ ih =>
-    intro m ξ
     rw [← NFm.full_rn _ ξ, NFm.subst_inst]
     refine .use (c := c.subst fun i => (Syn.var (ξ i) : Tm m)) _
       (List.mem_map_of_mem (f := fun c : UCl _ => c.subst fun i => (Syn.var (ξ i) : Tm m)) hc)
@@ -136,7 +133,6 @@ theorem ren (h : XCPrf Γ A) : ∀ {m : ℕ} (ξ : Fin n → Fin m),
     obtain ⟨A₀, hA₀, rfl⟩ := Option.map_eq_some_iff.1 hA
     exact ih A₀ hA₀ ξ
   | @intro _ Γ B t hB hQ ht _ ih =>
-    intro m ξ
     have h := ih (Tm.upRen ξ)
     rw [List.map_cons, UCl.asm_subst, ← NFm.full_rn _ (Tm.upRen ξ),
       ← NFm.full_rn _ (Tm.upRen ξ), ← Tm.up_rn, UCl.map_shift_subst, NFm.subst_repl_succ,
@@ -145,7 +141,6 @@ theorem ren (h : XCPrf Γ A) : ∀ {m : ℕ} (ξ : Fin n → Fin m),
     · rw [Tm.up_rn ξ, Tm.up_rn, NFm.full_rn, hB]
     · rw [Tm.full_rn, ht]
   | @dis _ Γ B A F _ _ hA ih₁ ih₂ =>
-    intro m ξ
     have h₂ := ih₂ (Tm.upRen ξ)
     rw [List.map_cons, UCl.clo_subst_rn, ← Tm.up_rn, UCl.map_shift_subst] at h₂
     refine .dis (F.subst (up fun i => (Syn.var (ξ i) : Tm m))) (ih₁ ξ) h₂ ?_

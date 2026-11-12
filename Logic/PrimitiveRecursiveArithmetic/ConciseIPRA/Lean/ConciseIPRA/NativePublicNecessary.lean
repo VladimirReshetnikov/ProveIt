@@ -115,23 +115,20 @@ theorem tval_shift (t : Tm n) (v : V) (ρ : Fin n → V) :
 
 theorem tval_inst (t : Tm n) (ρ : Fin n → V) :
     (fun i => tval (inst t i) ρ) = Fin.cases (tval t ρ) ρ := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine funext (Fin.cases ?_ fun j => ?_)
   · rfl
   · simp only [Syn.inst_succ, Fin.cases_succ]
     rfl
 
 theorem tval_up (σ : Fin n → Tm m) (v : V) (ρ : Fin m → V) :
     (fun i => tval (up σ i) (Fin.cases v ρ)) = Fin.cases v fun i => tval (σ i) ρ := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine funext (Fin.cases ?_ fun j => ?_)
   · rfl
   · simp only [Syn.up_succ, Fin.cases_succ, tval_shift]
 
 theorem tval_repl (s : Tm (n + 1)) (v : V) (ρ : Fin n → V) :
     (fun i => tval (repl s i) (Fin.cases v ρ)) = Fin.cases (tval s (Fin.cases v ρ)) ρ := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine funext (Fin.cases ?_ fun j => ?_)
   · rfl
   · simp only [Syn.repl_succ, Fin.cases_succ]
     rfl
@@ -165,10 +162,10 @@ def T : {n : ℕ} → NFm n → (Fin n → V) → Prop
 
 theorem T_subst (A : NFm n) : ∀ {m : ℕ} (σ : Fin n → Tm m) (ρ : Fin m → V),
     T (A.subst σ) ρ = T A fun i => tval (σ i) ρ := by
-  induction A with
-  | eq s t => intro m σ ρ; simp only [NFm.subst_eq, T, tval_subst]
-  | Q B ih => intro m σ ρ; simp only [NFm.subst_Q, T, ih, tval_up]
-  | D B ih => intro m σ ρ; simp only [NFm.subst_D, T, ih, tval_up]
+  induction A with intro m σ ρ
+  | eq s t => simp only [NFm.subst_eq, T, tval_subst]
+  | Q B ih => simp only [NFm.subst_Q, T, ih, tval_up]
+  | D B ih => simp only [NFm.subst_D, T, ih, tval_up]
 
 theorem T_shift (A : NFm n) (v : V) (ρ : Fin n → V) : T A.shift (Fin.cases v ρ) = T A ρ := by
   unfold NFm.shift
@@ -280,8 +277,7 @@ theorem T_mono_first (B : NFm (n + 1)) (w : V) (ρ : Fin n → V)
     (h : T B (Fin.cases (w.1, 0) ρ)) : T B (Fin.cases w ρ) := by
   cases B with
   | eq a b =>
-    refine T_eq_mono (fst_cases_fst w ρ) (fun i => ?_) h
-    refine Fin.cases ?_ (fun j => ?_) i
+    refine T_eq_mono (fst_cases_fst w ρ) (Fin.cases ?_ fun j => ?_) h
     · intro hc; exact absurd rfl hc
     · intro _; rfl
   | Q B' =>
@@ -293,8 +289,7 @@ theorem T_mono_first (B : NFm (n + 1)) (w : V) (ρ : Fin n → V)
 theorem T_eq_mono_second {a b : Tm (n + 2)} (v w : V) (ρ : Fin n → V)
     (h : T (.eq a b) (Fin.cases v (Fin.cases (w.1, 0) ρ))) :
     T (.eq a b) (Fin.cases v (Fin.cases w ρ)) := by
-  refine T_eq_mono (fst_cases_snd v w ρ) (fun i => ?_) h
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine T_eq_mono (fst_cases_snd v w ρ) (Fin.cases ?_ fun j => ?_) h
   · intro _; rfl
   · refine Fin.cases ?_ (fun l => ?_) j
     · intro hc; exact absurd rfl hc

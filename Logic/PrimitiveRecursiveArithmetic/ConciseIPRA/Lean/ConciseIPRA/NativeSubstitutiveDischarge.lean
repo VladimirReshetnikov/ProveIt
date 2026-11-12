@@ -99,20 +99,17 @@ theorem wk {B : NFm n} (h : SDPrf Γ A) : SDPrf (B :: Γ) A :=
 /-- Substitution in a derivation. -/
 theorem subst (h : SDPrf Γ A) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     SDPrf (Γ.map fun B => B.subst σ) (A.subst σ) := by
-  induction h with
-  | hyp h => intro m σ; exact .hyp (List.mem_map_of_mem h)
-  | iterZero a h => intro m σ; exact .iterZero _ _
+  induction h with intro m σ
+  | hyp h => exact .hyp (List.mem_map_of_mem h)
+  | iterZero a h => exact .iterZero _ _
   | iterSucc c a h =>
-    intro m σ
     simp only [NFm.subst_eq, Tm.subst_iter, Tm.subst_succ, Syn.subst_subst_inst]
     exact .iterSucc _ _ _
   | qE t _ _ ih₁ ih₂ =>
-    intro m σ
     have h₂ := ih₂ σ
     rw [NFm.subst_inst] at h₂ ⊢
     exact .qE _ (ih₁ σ) h₂
   | @sd _ Γ B A F s t _ _ _ hA ih₁ ih₂ ih₃ =>
-    intro m σ
     have h₂ := ih₂ (up σ)
     have h₃ := ih₃ (up σ)
     rw [List.map_cons, NFm.map_shift_subst] at h₂ h₃
@@ -120,13 +117,11 @@ theorem subst (h : SDPrf Γ A) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     refine .sd (F.subst (up (up σ))) (ih₁ σ) h₂ h₃ ?_
     rw [← NFm.subst_inst, hA, NFm.shift_subst_up]
   | dICase B t _ ih =>
-    intro m σ
     have h := ih (up σ)
     rw [List.map_cons, NFm.map_shift_subst, NFm.shift_subst_up, NFm.subst_inst,
       NFm.subst_repl_succ, NFm.subst_up_inst] at h
     exact .dICase _ _ h
   | qIInd s₁ s₂ _ ih =>
-    intro m σ
     have h := ih (up σ)
     rw [List.map_cons, NFm.map_shift_subst, NFm.subst_repl_succ] at h
     exact .qIInd (Syn.subst (up σ) s₁) (Syn.subst (up σ) s₂) h

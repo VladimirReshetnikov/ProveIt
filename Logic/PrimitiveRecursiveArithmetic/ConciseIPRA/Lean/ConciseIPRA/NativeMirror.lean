@@ -63,21 +63,17 @@ theorem upRen_inj {ξ : Fin n → Fin m} (hξ : Function.Injective ξ) :
 /-- An injective renaming reflects syntactic equality. -/
 theorem ren_inj (s : Tm n) : ∀ {m : ℕ} {ξ : Fin n → Fin m}, Function.Injective ξ →
     ∀ t : Tm n, ren ξ s = ren ξ t → s = t := by
-  induction s with
+  induction s with intro m ξ hξ t e
   | var i =>
-    intro m ξ hξ t e
     cases t <;> simp only [ren, Tm.var.injEq, reduceCtorEq] at e
     rw [hξ e]
   | zero =>
-    intro m ξ hξ t e
     cases t <;> simp only [ren, reduceCtorEq] at e
     rfl
   | succ a ih =>
-    intro m ξ hξ t e
     cases t <;> simp only [ren, Tm.succ.injEq, reduceCtorEq] at e
     rw [ih hξ _ e]
   | iter c a h ihc iha ihh =>
-    intro m ξ hξ t e
     cases t <;> simp only [ren, Tm.iter.injEq, reduceCtorEq] at e
     obtain ⟨e₁, e₂, e₃⟩ := e
     rw [ihc hξ _ e₁, iha hξ _ e₂, ihh (upRen_inj hξ) _ e₃]

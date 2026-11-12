@@ -59,8 +59,7 @@ theorem subst_hole_inst (X : NFm (n + 1)) (x : Tm (n + 1)) :
     (X.subst (Fin.cases (Syn.var 0) fun i => Syn.var i.succ.succ)).subst (inst x)
       = X.subst (repl x) := by
   rw [subst_subst]
-  refine X.subst_ext fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp
+  refine X.subst_ext (Fin.cases ?_ fun j => ?_) <;> simp
 
 theorem map_shift_subst_full (Γ : List (NFm n)) (σ : Fin n → Tm m) :
     (Γ.map NFm.shift).map (fun X => (X.subst (up σ)).full)
@@ -142,18 +141,15 @@ theorem FOPrf.toNPrf (h : FOPrf Γ A) : NPrf Γ A := by
 the opening at an inferred witness when its formulas are normalized. -/
 theorem NPrf.toFO (h : NPrf Γ A) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     FOPrf (Γ.map fun X => (X.subst σ).full) (A.subst σ).full := by
-  induction h with
+  induction h with intro m σ
   | hyp h =>
-    intro m σ
     exact .hyp (List.mem_map_of_mem (f := fun X => (X.subst σ).full) h)
-  | iterZero a h => intro m σ; exact .refl (Syn.subst σ a)
+  | iterZero a h => exact .refl (Syn.subst σ a)
   | iterSucc c a h =>
-    intro m σ
     simp only [NFm.subst_eq, NFm.full, Tm.subst_iter, Tm.subst_succ, Syn.subst_subst_inst]
     rw [Tm.full_iterSucc]
     exact .refl _
   | @trOne _ Γ h s t u _ _ ih₁ ih₂ =>
-    intro m σ
     have h₁ := ih₁ σ
     have h₂ := ih₂ σ
     simp only [NFm.subst_eq, NFm.full, Syn.subst_subst_inst] at h₁ h₂ ⊢
@@ -162,7 +158,6 @@ theorem NPrf.toFO (h : NPrf Γ A) : ∀ {m : ℕ} (σ : Fin n → Tm m),
       exact h₂)
     rwa [Tm.full_subst_congr rfl (Tm.full_inst (Syn.subst σ t))] at k
   | @qE _ Γ B t _ _ ih₁ ih₂ =>
-    intro m σ
     have h₂ := ih₂ σ
     rw [NFm.subst_inst] at h₂ ⊢
     have k := FOPrf.qE (B := (B.subst (up σ)).full) (Syn.subst σ t) (ih₁ σ) (by
@@ -171,7 +166,6 @@ theorem NPrf.toFO (h : NPrf Γ A) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     rwa [NFm.full_subst_congr (σ' := inst (Syn.subst σ t)) (NFm.full_idem _)
       (fun _ => rfl)] at k
   | @dE n' Γ B A _ _ ih₁ ih₂ =>
-    intro m σ
     refine .dO (B := (B.subst (up (up σ))).full) (ih₁ σ) ?_
     have h₂ := ih₂ fun i =>
       Syn.subst (repl (NFm.owit (B.subst (up (up σ))).full)) (up σ i)
@@ -203,7 +197,6 @@ theorem NPrf.toFO (h : NPrf Γ A) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     rw [hΓ, hB, e₁] at h₂
     exact h₂
   | @dICase _ Γ B t _ ih =>
-    intro m σ
     have h := ih (up σ)
     refine .dICase (B.subst (up (up σ))).full (Syn.subst σ t) (NFm.full_idem _) ?_
     have e : ∀ {k : ℕ} (ρ : Fin (m + 1) → Tm k),
@@ -217,7 +210,6 @@ theorem NPrf.toFO (h : NPrf Γ A) : ∀ {m : ℕ} (σ : Fin n → Tm m),
       NFm.subst_repl_succ, NFm.subst_up_inst] at h
     exact h
   | @qIInd _ Γ s₁ s₂ _ ih =>
-    intro m σ
     have h := ih (up σ)
     refine .qIInd (Syn.subst (up σ) s₁).full (Syn.subst (up σ) s₂).full (Tm.full_idem _)
       (Tm.full_idem _) ?_

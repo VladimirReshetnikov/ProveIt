@@ -217,8 +217,7 @@ variable {Γ : List (NFm n)}
 /-- Equal substitutions stay equal under a binder. -/
 theorem upEq {σ σ' : Fin k → Tm n} (he : ∀ i, RPrf Γ (.eq (σ i) (σ' i))) :
     ∀ i, RPrf (Γ.map NFm.shift) (.eq (up σ i) (up σ' i)) := by
-  intro i
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine Fin.cases ?_ fun j => ?_
   · exact eqRefl _
   · rw [up_succ, up_succ]
     exact (he j).shift
@@ -226,20 +225,17 @@ theorem upEq {σ σ' : Fin k → Tm n} (he : ∀ i, RPrf Γ (.eq (σ i) (σ' i))
 /-- Substitutions that are provably equal give interderivable instances. -/
 theorem leibnizIn (A : NFm k) : ∀ {n : ℕ} {Γ : List (NFm n)} (σ σ' : Fin k → Tm n),
     (∀ i, RPrf Γ (.eq (σ i) (σ' i))) → REquivIn Γ (A.subst σ) (A.subst σ') := by
-  induction A with
+  induction A with intro n Γ σ σ' he
   | eq a b =>
-    intro n Γ σ σ' he
     exact ⟨leibnizEq a b σ σ' (fun i => (he i).wk) hyp0,
       leibnizEq a b σ' σ (fun i => eqSymm (he i).wk) hyp0⟩
   | Q B ih =>
-    intro n Γ σ σ' he
     have e := ih (up σ) (up σ') (upEq he)
     cases hB : B.isEq
     · exact REquivIn.QC (by rw [NFm.isEq_subst]; exact hB) (by rw [NFm.isEq_subst]; exact hB) e
         (fun c h => REquivIn.red ih σ c h) (fun c h => REquivIn.red ih σ' c h)
     · exact REquivIn.QE (by rw [NFm.isEq_subst]; exact hB) (by rw [NFm.isEq_subst]; exact hB) e
   | D B ih =>
-    intro n Γ σ σ' he
     have e := ih (up (up σ)) (up (up σ')) (upEq (upEq he))
     cases hB : B.isEq
     · exact ⟨REquivIn.dStepC (by rw [NFm.isEq_subst]; exact hB)

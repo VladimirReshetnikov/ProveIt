@@ -114,20 +114,15 @@ theorem hyp0 : NPrf (A :: Γ) A := .hyp List.mem_cons_self
 
 /-- Weakening. -/
 theorem weaken (h : NPrf Γ A) : ∀ {Δ : List (NFm n)}, Γ ⊆ Δ → NPrf Δ A := by
-  induction h with
-  | hyp h => intro Δ s; exact .hyp (s h)
-  | iterZero a h => intro Δ _; exact .iterZero a h
-  | iterSucc c a h => intro Δ _; exact .iterSucc c a h
-  | trOne h _ _ ih₁ ih₂ => intro Δ s; exact .trOne h (ih₁ s) (ih₂ s)
-  | qE t _ _ ih₁ ih₂ => intro Δ s; exact .qE t (ih₁ s) (ih₂ s)
-  | dE _ _ ih₁ ih₂ =>
-    intro Δ s
-    exact .dE (ih₁ s) (ih₂ (List.cons_subset_cons _ (List.map_subset _ s)))
-  | dICase B t _ ih =>
-    intro Δ s
-    exact .dICase B t (ih (List.cons_subset_cons _ (List.map_subset _ s)))
+  induction h with intro Δ s
+  | hyp h => exact .hyp (s h)
+  | iterZero a h => exact .iterZero a h
+  | iterSucc c a h => exact .iterSucc c a h
+  | trOne h _ _ ih₁ ih₂ => exact .trOne h (ih₁ s) (ih₂ s)
+  | qE t _ _ ih₁ ih₂ => exact .qE t (ih₁ s) (ih₂ s)
+  | dE _ _ ih₁ ih₂ => exact .dE (ih₁ s) (ih₂ (List.cons_subset_cons _ (List.map_subset _ s)))
+  | dICase B t _ ih => exact .dICase B t (ih (List.cons_subset_cons _ (List.map_subset _ s)))
   | qIInd s₁ s₂ _ ih =>
-    intro Δ s
     exact .qIInd s₁ s₂ (ih (List.cons_subset_cons _ (List.map_subset _ s)))
 
 theorem wk {B : NFm n} (h : NPrf Γ A) : NPrf (B :: Γ) A :=
@@ -180,15 +175,15 @@ theorem cutLift (h : ∀ B ∈ Γ, NPrf Δ B) (C : NFm (n + 1)) :
 
 /-- Cut: hypotheses may be replaced by derivations of them. -/
 theorem cut (h : NPrf Γ A) : ∀ {Δ : List (NFm n)}, (∀ B ∈ Γ, NPrf Δ B) → NPrf Δ A := by
-  induction h with
-  | hyp h => intro Δ hΔ; exact hΔ _ h
-  | iterZero a h => intro Δ _; exact .iterZero a h
-  | iterSucc c a h => intro Δ _; exact .iterSucc c a h
-  | trOne h _ _ ih₁ ih₂ => intro Δ hΔ; exact .trOne h (ih₁ hΔ) (ih₂ hΔ)
-  | qE t _ _ ih₁ ih₂ => intro Δ hΔ; exact .qE t (ih₁ hΔ) (ih₂ hΔ)
-  | dE _ _ ih₁ ih₂ => intro Δ hΔ; exact .dE (ih₁ hΔ) (ih₂ (cutLift hΔ _))
-  | dICase B t _ ih => intro Δ hΔ; exact .dICase B t (ih (cutLift hΔ _))
-  | qIInd s₁ s₂ _ ih => intro Δ hΔ; exact .qIInd s₁ s₂ (ih (cutLift hΔ _))
+  induction h with intro Δ hΔ
+  | hyp h => exact hΔ _ h
+  | iterZero a h => exact .iterZero a h
+  | iterSucc c a h => exact .iterSucc c a h
+  | trOne h _ _ ih₁ ih₂ => exact .trOne h (ih₁ hΔ) (ih₂ hΔ)
+  | qE t _ _ ih₁ ih₂ => exact .qE t (ih₁ hΔ) (ih₂ hΔ)
+  | dE _ _ ih₁ ih₂ => exact .dE (ih₁ hΔ) (ih₂ (cutLift hΔ _))
+  | dICase B t _ ih => exact .dICase B t (ih (cutLift hΔ _))
+  | qIInd s₁ s₂ _ ih => exact .qIInd s₁ s₂ (ih (cutLift hΔ _))
 
 /-- Cut of one hypothesis. -/
 theorem cut1 {B : NFm n} (h₁ : NPrf Γ B) (h₂ : NPrf (B :: Γ) A) : NPrf Γ A := by

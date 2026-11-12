@@ -163,12 +163,11 @@ theorem Good.up {ρ : Fin n → Tm m} (hρ : Good ρ) : Good (Syn.up ρ) := by
 theorem tau_subst_of_good (t : Tm n) :
     ∀ {m : ℕ} (ρ : Fin n → Tm m), Good ρ →
       ([] ⊢[PRAAx] tau (Syn.subst ρ t) ≐ Syn.subst (fun i => tau (ρ i)) (tau t)) := by
-  induction t with
-  | var i => intro m ρ _; exact Prf.eqRefl _
-  | zero => intro m ρ _; exact congr PR.zero (fun i => i.elim0)
-  | succ t ih => intro m ρ hρ; exact congr PR.succ (fun _ => ih ρ hρ)
+  induction t with intro m ρ hρ
+  | var i => exact Prf.eqRefl _
+  | zero => exact congr PR.zero (fun i => i.elim0)
+  | succ t ih => exact congr PR.succ (fun _ => ih ρ hρ)
   | iter c a h ihc iha ihh =>
-    intro m ρ hρ
     rw [Tm.subst_iter]
     refine Prf.eqTrans
       (iterSym_ext (a := code a) (h := code h) (σ := fun i => tau (ρ i)) ?_ ?_ _)

@@ -65,9 +65,9 @@ theorem qfree_iff_pre (A : NFm n) : A.QFree ↔ ∃ k, Pre k A :=
 /-- Substitution does not change the prefix. -/
 theorem Pre.subst {k : ℕ} {A : NFm n} (h : Pre k A) :
     ∀ {m : ℕ} (σ : Fin n → Tm m), Pre k (A.subst σ) := by
-  induction h with
-  | eq s t => intro m σ; exact .eq _ _
-  | D _ ih => intro m σ; exact .D (ih _)
+  induction h with intro m σ
+  | eq s t => exact .eq _ _
+  | D _ ih => exact .D (ih _)
 
 end NFm
 

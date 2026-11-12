@@ -62,8 +62,7 @@ theorem nf_up_congr {σ σ' : Fin n → Tm m} (h : ∀ i, nf (σ i) = nf (σ' i)
 
 theorem up_ren (ξ : Fin n → Fin m) :
     up (fun i => (Syn.var (ξ i) : Tm m)) = fun i => Syn.var (Tm.upRen ξ i) := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp
+  refine funext (Fin.cases ?_ fun j => ?_) <;> simp
 
 theorem nf_subst_var (t : Tm n) (ξ : Fin n → Fin m) :
     nf (Syn.subst (fun i => (Syn.var (ξ i) : Tm m)) t)
@@ -75,10 +74,10 @@ theorem nf_subst_var (t : Tm n) (ξ : Fin n → Fin m) :
 theorem fnf_ren (A : NFm n) : ∀ {m : ℕ} (ξ : Fin n → Fin m),
     fnf (A.subst fun i => (Syn.var (ξ i) : Tm m))
       = (fnf A).subst fun i => (Syn.var (ξ i) : Tm m) := by
-  induction A with
-  | eq s t => intro m ξ; simp only [NFm.subst_eq, fnf, nf_subst_var]
-  | Q B ih => intro m ξ; simp only [NFm.subst_Q, fnf, up_ren, ih]
-  | D B ih => intro m ξ; simp only [NFm.subst_D, fnf, up_ren, ih]
+  induction A with intro m ξ
+  | eq s t => simp only [NFm.subst_eq, fnf, nf_subst_var]
+  | Q B ih => simp only [NFm.subst_Q, fnf, up_ren, ih]
+  | D B ih => simp only [NFm.subst_D, fnf, up_ren, ih]
 
 theorem fnf_shift (A : NFm n) : fnf A.shift = (fnf A).shift := fnf_ren A Fin.succ
 

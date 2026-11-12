@@ -277,10 +277,9 @@ theorem pad (A : NFm n) : REquivIn Γ A A.pad := ⟨RPrf.padI RPrf.hyp0, RPrf.pa
 /-- **The second round trip.**  In the uniform calculus, over every context, a
 formula is interderivable with the translation of its progressive reading. -/
 theorem emb_rd (B : NFm k) : ∀ {Γ : List (NFm k)}, REquivIn Γ B (NFm.emb (NFm.rd B)) := by
-  induction B with
-  | eq s t => intro Γ; exact refl _
+  induction B with intro Γ
+  | eq s t => exact refl _
   | Q B ih =>
-    intro Γ
     cases hB : B.isEq
     · rw [NFm.rd_Q_ne hB]
       exact QC hB (NFm.pad_isEq _) (ih.trans (pad _)) (fun c h => RPrf.red0 _ c h)
@@ -291,7 +290,6 @@ theorem emb_rd (B : NFm k) : ∀ {Γ : List (NFm k)}, REquivIn Γ B (NFm.emb (NF
       | Q B' => cases hB
       | D B' => cases hB
   | D B ih =>
-    intro Γ
     cases hB : B.isEq
     · rw [NFm.rd_D_ne hB]
       exact ⟨dStepC hB (NFm.pad_isEq _) (ih.trans (pad _)) (fun c h => RPrf.red0 _ c h),

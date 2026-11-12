@@ -79,16 +79,14 @@ theorem subst_weak_inst (A : NFm (n + 2)) (c : Tm (n + 1)) (u : Tm (n + 2)) :
     ((A.subst (up (up (fun i => Syn.var i.succ)))).subst (up (inst c))).subst (repl u)
       = A.subst (rho (Syn.shift c) u) := by
   rw [subst_subst, subst_subst]
-  refine A.subst_ext fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine A.subst_ext (Fin.cases ?_ fun j => ?_)
   · simp [rho]
   · refine Fin.cases ?_ (fun l => ?_) j <;> simp [rho]
 
 theorem subst_tau_inst (A : NFm (n + 2)) (s u : Tm (n + 2)) :
     (A.subst (tau u)).subst (inst s) = A.subst (rho s u) := by
   rw [subst_subst]
-  refine A.subst_ext fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine A.subst_ext (Fin.cases ?_ fun j => ?_)
   · simp [rho, tau]
   · refine Fin.cases ?_ (fun l => ?_) j <;> simp [rho, tau]
 
@@ -98,8 +96,7 @@ theorem subst_closure_inst (A : NFm (n + 2)) (u : Tm (n + 2)) :
       (up (fun i => Syn.var i.succ))).subst (inst u)
       = A.subst (rho zero u) := by
   rw [subst_subst, subst_subst, subst_subst]
-  refine A.subst_ext fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine A.subst_ext (Fin.cases ?_ fun j => ?_)
   · simp [rho]
   · refine Fin.cases ?_ (fun l => ?_) j <;> simp [rho]
 

@@ -46,8 +46,7 @@ theorem subst_up_dummy (X : NFm (n + 1)) (σ : Fin n → Tm m) :
     (X.subst (up σ)).subst (up fun i => Syn.var i.succ)
       = (X.subst (up fun i => Syn.var i.succ)).subst (up (up σ)) := by
   rw [subst_subst, subst_subst]
-  refine X.subst_ext fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine X.subst_ext (Fin.cases ?_ fun j => ?_)
   · simp
   · simp only [up_succ, Syn.shift_var, Syn.subst_var, Syn.subst_up_shift]
     rfl
@@ -61,19 +60,16 @@ def pubD : {n : ℕ} → NFm n → NFm n
 
 theorem pubD_subst (A : NFm n) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     (A.subst σ).pubD = A.pubD.subst σ := by
-  induction A with
+  induction A with intro m σ
   | eq s t =>
-    intro m σ
     show NFm.D (gate (Syn.var 0) ((NFm.eq s t).subst σ).shift.shift)
       = (NFm.D (gate (Syn.var 0) (NFm.eq s t).shift.shift)).subst σ
     rw [subst_D, gate_subst, Syn.subst_var, Syn.up_zero, shift_subst_up, shift_subst_up]
   | Q B ih =>
-    intro m σ
     show NFm.D (((B.subst (up σ)).pubD).subst (up fun i => Syn.var i.succ))
       = NFm.D ((B.pubD.subst (up fun i => Syn.var i.succ)).subst (up (up σ)))
     rw [ih, subst_up_dummy]
   | D B ih =>
-    intro m σ
     show NFm.D ((B.subst (up (up σ))).pubD) = NFm.D (B.pubD.subst (up (up σ)))
     rw [ih]
 
@@ -152,15 +148,13 @@ theorem Guarded.subst_up {B : NFm (n + 1)} (h : B.Guarded) (σ : Fin n → Tm m)
 /-- The public language over guarded matrices is closed under substitution. -/
 theorem PublicBy.subst {A : NFm n} (h : A.PublicBy @Guarded) :
     ∀ {m : ℕ} (σ : Fin n → Tm m), (A.subst σ).PublicBy @Guarded := by
-  induction A with
-  | eq s t => intro m σ; exact ⟨h.1.subst σ, h.2.subst σ⟩
+  induction A with intro m σ
+  | eq s t => exact ⟨h.1.subst σ, h.2.subst σ⟩
   | Q B ih =>
-    intro m σ
     rcases h with h | ⟨h₁, h₂⟩
     · exact Or.inl (h.subst_up σ)
     · exact Or.inr ⟨by rw [isEq_subst]; exact h₁, ih h₂ _⟩
   | D B ih =>
-    intro m σ
     rcases h with h | ⟨h₁, h₂⟩
     · exact Or.inl (h.subst_up (up σ))
     · exact Or.inr ⟨by rw [isEq_subst]; exact h₁, ih h₂ _⟩
