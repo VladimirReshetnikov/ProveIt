@@ -1,0 +1,3164 @@
+\chapter{Recursors with a built-in seed}
+\label{prov:ch:seed}
+\label{seed:ch}
+
+The iterator $\It{n}{a}{u}{h}$ of \cref{base:sec:terms} takes its initial value
+$a$ as an independent argument and returns it unchanged at the counter $0$.
+This chapter treats three arithmetic bases in which the value at $0$ is tied to
+other data of the recursor.
+\begin{itemize}[nosep]
+\item The \emph{successor-seeded} recursor $R(n,a;u.h)$ starts at the successor
+of its initializer, $R(0,a;u.h)=\Suc a$. The successor is then the abbreviation
+$\Suc a\defeq R(0,a;u.0)$, and the term language is $x\mid 0\mid R(n,a;u.h)$.
+\item The \emph{tied-seed} recursor $B(n;u,v.h)$ has no initializer. Its update
+sees the old counter $u$ and the old state $v$, and its value at $0$ is
+$\Suc(h\subst{0}{u}\subst{0}{v})$.
+\item The \emph{self-seeded} recursor $F(n;v.h)$ has no initializer and its
+update sees only the old state; its value at $0$ is $\Suc(h\subst{0}{v})$.
+\end{itemize}
+The hypotheses differ from base to base, and \cref{seed:tab:hyp} records which
+properties are axioms and which are derived. In every case the logical base is
+either ordinary intuitionistic first-order logic with equality or the native
+binders $\Q{y}$, $\D{x}{y}$ of \cref{base:sec:kernel}.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}llp{0.27\linewidth}p{0.31\linewidth}@{}}
+\toprule
+Theory & Logic & Axioms beyond the two recursor equations & Derived\\
+\midrule
+$\mathsf{N}_R$ & native & none (the eight rule forms of $\Nat$) &
+predecessor, iterator, hence everything derived in $\Nat$\\
+$\mathsf{T}_R$ & ordinary & coverage, $0=\Suc 0\to\bot$, induction for literal
+equations & predecessor, injectivity of $\Suc$, iterator\\
+$\mathsf{T}_{B\varepsilon}$ & ordinary & Boolean equality test $\varepsilon$
+(range, reflection), $0=\Suc 0\to\bot$, induction for literal equations &
+predecessor, injectivity, quantifier-free induction, coverage\\
+$\mathsf{T}_{Bd}$ & ordinary & two equations for $d$, coverage,
+$0=\Suc 0\to\bot$, induction for literal equations & predecessor, injectivity,
+reflection of equality, quantifier-free induction\\
+$\mathsf{N}_{Bd}$ & native & two equations for $d$ & the same, and the
+ordinary connectives\\
+$\mathsf{T}_F$ & ordinary & injectivity of $\Suc$, $0=\Suc 0\to\bot$, Boolean
+equality test, induction for literal equations & coverage, predecessor (as a
+finite-case graph)\\
+$\mathsf{T}_F^{-}$ & ordinary & as $\mathsf{T}_F$ without injectivity &
+coverage, a right predecessor, $\Suc^k a\neq a$ for each fixed $k\geq1$\\
+\bottomrule
+\end{tabular}
+\caption{Axioms and derived properties of the theories of this chapter.}
+\label{seed:tab:hyp}
+\end{table}
+
+All recursors are staged: the body $h$ of a recursor term is a term built
+earlier, and each fixed body may be read as a function symbol whose arguments
+are the counter, the initializer where there is one, and the free variables of
+the body. No theory of this chapter quantifies over bodies or has an evaluator
+for them. Substitution is capture-avoiding. The numerals are $1\defeq\Suc 0$,
+$2\defeq\Suc 1$, and so on; $\Suc^k t$ denotes $k$ written applications of
+$\Suc$, and $\bar k\defeq\Suc^k 0$.
+
+%======================================================================
+\section{The successor-seeded recursor}
+\label{seed:sec:succ}
+
+This section draws on \pkg{scalar\_successor}, \pkg{transient\_seed} and
+\pkg{successor\_seed\_completion}, three write-ups of the same recursor.
+
+\subsection{Terms, equations and the two theories}
+
+\begin{definition}\label{seed:def:succ}
+The $R$-terms are
+\[
+ t \mathrel{::=} x \mid 0 \mid R(n,a;u.h),
+\]
+where $R(n,a;u.h)$ binds $u$ in $h$ and nowhere else. The successor is the
+abbreviation $\Suc a\defeq R(0,a;u.0)$. The two computation equations are
+\begin{align}
+ R(0,a;u.h)&=\Suc a, \label{seed:eq:R0}\\
+ R(\Suc n,a;u.h)&=h\subst{R(n,a;u.h)}{u}. \label{seed:eq:RS}
+\end{align}
+With the abbreviation expanded, \eqref{seed:eq:R0} reads
+$R(0,a;u.h)=R(0,a;u.0)$ and the counter on the left of \eqref{seed:eq:RS} is
+$R(0,n;u.0)$; no successor constructor is hidden.
+\begin{enumerate}[label=(\alph*),nosep]
+\item $\mathsf{N}_R$ is the native calculus with the eight rule forms of
+$\Nat$ (\cref{base:sec:kernel}) over the $R$-terms: \rulename{Hyp},
+\eqref{seed:eq:R0} and \eqref{seed:eq:RS} as the two computation equations,
+\rulename{Tr}, \rulename{QE}, \rulename{DE}, \rulename{DI} by cases and
+\rulename{QI} by progress for literal equations. The contradiction is
+$0=\Suc 0$.
+% ed.: the three packages state the calculus with formula transport and with
+% progress on the paired binder; the remark on rule forms at the end of the
+% section shows that the same sequents are derivable.
+\item $\mathsf{T}_R$ is ordinary intuitionistic first-order logic with equality
+over the $R$-terms, with \eqref{seed:eq:R0}, \eqref{seed:eq:RS}, coverage
+$\forall x\,(x=0\lor\exists y\,x=\Suc y)$, separation $0=\Suc 0\to\bot$, and
+induction for literal equations $E$ with side assumptions:
+from $\Gamma\proves E(0)$ and $\Gamma,E(z)\proves E(\Suc z)$, with $z$ fresh,
+infer $\Gamma\proves E(t)$.
+\end{enumerate}
+\end{definition}
+
+Neither theory has an axiom of successor injectivity, a predecessor, a
+selector or an initializer. The term language is that of the seeded recursor
+of \cref{ctr:def:languages}, where it is studied on canonical terms with
+normalizing substitution; here the terms are raw and both computation
+equations are rules. Weakening, substitution and cut
+(\cref{base:lem:struct,base:lem:cut}) hold for $\mathsf{N}_R$ with the same
+proofs: the only cases that mention a term constructor are those of the two
+computation equations, and \eqref{seed:eq:R0}, \eqref{seed:eq:RS} are closed
+under substitution like \eqref{base:eq:I0}, \eqref{base:eq:IS}. In the same
+way every result of \cref{base:sec:structural} whose proof does not use a
+computation equation holds for $\mathsf{N}_R$, and for the other native
+calculi of this chapter; these results are cited below for such calculi
+without further comment.
+
+Throughout the section
+\[
+ \sel^{+}(n,a,b)\defeq R(n,a;u.b)\quad(u\notin\FV(b)),\qquad
+ Z(n)\defeq\sel^{+}(n,0,0).
+\]
+The computation equations give
+\begin{equation}\label{seed:eq:selplus}
+ \sel^{+}(0,a,b)=\Suc a,\qquad \sel^{+}(\Suc n,a,b)=b,\qquad
+ Z(0)=1,\qquad Z(\Suc n)=0 .
+\end{equation}
+The zero branch of $\sel^{+}$ adds one to the supplied value, so $\sel^{+}$
+is not the selector $\sel$ of \cref{base:sec:terms}.
+
+\subsection{Equality, cases and induction before the predecessor}
+
+\begin{lemma}\label{seed:lem:succ-basic}
+$\mathsf{N}_R$ derives $t=t$ for every term $t$, symmetry and transitivity of
+equality, congruence $s=t\proves h(s)=h(t)$ for every term template $h$, and
+transport of literal equations: from $s=t$ and $l(s)=r(s)$ infer
+$l(t)=r(t)$. It admits the rules
+\[
+ \infrule{\Gamma\proves B(0)\qquad\Gamma\proves B(\Suc z)}{\Gamma\proves B(t)}
+ \ (\textsc{nc}),\qquad
+ \infrule{\Gamma\proves E(0)\qquad\Gamma,E(z)\proves E(\Suc z)}
+         {\Gamma\proves E(t)}\ (\textsc{ei}),
+\]
+where $B$ is any native formula, $E$ is a literal equation and $z$ is fresh
+for $\Gamma$, $t$ and the parameters of the matrix. Under the hypothesis
+$0=\Suc 0$ it derives every equation.
+\end{lemma}
+
+\begin{proof}
+Let $r\defeq R(\Suc 0,0;u.t)$ with $u\notin\FV(t)$. Equation
+\eqref{seed:eq:RS} is $r=t$. Rule \rulename{Tr} (from $s=t$ and $h(s)=u$ infer
+$u=h(t)$) with the source equation $r=t$, the template $h(v)\defeq v$ and the
+premise $r=t$ gives $t=t$. This replaces the two instances of
+\eqref{base:eq:I0} in \cref{base:lem:eq}(i). The proofs of
+\cref{base:lem:eq}(ii)--(v) use \rulename{Tr} and reflexivity only, and give
+symmetry, transitivity, congruence and transport of equations. Rule
+\textsc{nc} is \cref{base:cor:cases} and rule \textsc{ei} is
+\cref{base:lem:eqind}; their proofs use \rulename{DI}, \rulename{DE},
+\rulename{QI}, \rulename{QE} and \rulename{Hyp} and no computation equation.
+
+Under $0=\Suc 0$, congruence gives
+$\sel^{+}(0,0,s)=\sel^{+}(\Suc 0,0,s)$, that is $\Suc 0=s$ by
+\eqref{seed:eq:selplus}, for every $s$. Hence $s=t$ for all $s$, $t$.
+\end{proof}
+
+In $\mathsf{T}_R$ reflexivity and replacement are rules of the logic,
+\textsc{nc} follows from coverage, \textsc{ei} is the induction rule, and
+every formula follows from $0=\Suc 0$ by separation.
+
+\begin{lemma}[Uniqueness of iteration]\label{seed:lem:succ-unique}
+Let $u$ be a variable not free in $\Gamma$. If
+$\Gamma\proves h=k$, then $\Gamma\proves R(n,a;u.h)=R(n,a;u.k)$ for all terms
+$n$, $a$. More generally, if $\Gamma\proves\Suc a=\Suc b$ and
+$\Gamma\proves h=k$, then $\Gamma\proves R(n,a;u.h)=R(n,b;u.k)$.
+\end{lemma}
+
+\begin{proof}
+By \textsc{ei} on a fresh counter $z$ for the literal equation
+$R(z,a;u.h)=R(z,b;u.k)$. At $0$ both sides are computed by
+\eqref{seed:eq:R0} to $\Suc a$ and $\Suc b$. At $\Suc z$ the left side is
+$h\subst{R(z,a;u.h)}{u}$, which equals $h\subst{R(z,b;u.k)}{u}$ by the
+induction hypothesis and congruence, and this equals
+$k\subst{R(z,b;u.k)}{u}$ by the instance of $\Gamma\proves h=k$ at
+$u\defeq R(z,b;u.k)$, which exists because $u$ is not free in $\Gamma$.
+Then substitute $n$ for $z$.
+\end{proof}
+
+Two bodies with different syntax are thus identified by a proof, not by a
+primitive extensionality rule.
+
+\begin{lemma}[Replacement]\label{seed:lem:succ-leibniz}
+Write $A\approx A'$ if $A$ and $A'$ are interderivable over the empty
+context; by weakening and substitution they are then interderivable over
+every context and under every substitution.
+\begin{enumerate}[label=(\roman*),nosep]
+\item If $\proves t=t'$ is derivable in the empty context, and $A'$ arises
+from $A$ by replacing occurrences of $t$ by $t'$, also in the scope of binders
+that bind variables of $t$, then $A\approx A'$, in $\mathsf{N}_R$ and in
+$\Nat$.
+\item The Leibniz rule (\cref{base:thm:leibniz}) and transport in a formula
+template (\cref{base:cor:tr}) hold in $\mathsf{N}_R$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(ii) The proofs of \cref{base:lem:cong,base:lem:bindercong,base:thm:leibniz}
+use the equality rules, \rulename{QE}, \rulename{DE}, \rulename{DI} and the
+structural properties, and no computation equation.
+
+(i) By induction on $A$. At a literal equation the bound variables of $A$
+that occur in $t$ are free, and transport of equations along $t=t'$ applies.
+At a binder the matrices are interderivable over the empty context by the
+induction hypothesis, and \cref{base:lem:bindercong} applies, since no
+variable is free in the empty context. Statement (i) is not an instance of
+\cref{base:thm:leibniz}, whose substitution is capture-avoiding.
+\end{proof}
+
+\subsection{Boolean terms and contextual case analysis}
+
+The proof of the predecessor theorem splits on the value of a two-valued term
+inside an induction step, where the induction hypothesis is in the context and
+mentions that term. Rule \textsc{nc} does not allow this: its premises carry no
+equations $t=0$, $t=\Suc z$, and its context may not mention the case
+variable. In $\mathsf{T}_R$ the split is a disjunction elimination. In
+$\mathsf{N}_R$ it is derived as follows, before any selector with unshifted
+branches exists.
+
+\begin{lemma}[Functional range]\label{seed:lem:succ-range}
+For every formula template $K(w)$ and every term $r$: if
+$\Gamma\proves K(1)$ and $\Gamma\proves K(0)$ then
+$\Gamma\proves K(Z(r))$. The context may mention $r$.
+\end{lemma}
+
+\begin{proof}
+Apply \textsc{nc} to the template $w\mapsto K(Z(w))$ with $w$ fresh. Its zero
+premise $K(Z(0))$ follows from $K(1)$ and $Z(0)=1$, and its successor premise
+$K(Z(\Suc z))$ from $K(0)$ and $Z(\Suc z)=0$, by
+\cref{seed:lem:succ-leibniz}(ii). Then instantiate $w$ by $r$.
+\end{proof}
+
+Define the parity terms
+\[
+ U(n)\defeq R(n,0;u.Z(u)),\qquad N(n)\defeq Z(U(n)).
+\]
+
+\begin{lemma}[Parity and the Boolean decoder]\label{seed:lem:succ-decoder}
+$\mathsf{N}_R$ derives
+\begin{gather*}
+ Z(Z(Z(r)))=Z(r),\qquad N(0)=0,\qquad N(\Suc n)=Z(N(n)),\qquad
+ N(\Suc\Suc n)=N(n),\\
+ N(Z(r))=Z(r),\qquad N(\Suc\Suc Z(r))=Z(r).
+\end{gather*}
+\end{lemma}
+
+\begin{proof}
+The first equation is \cref{seed:lem:succ-range} for the template
+$Z(Z(w))=w$: its instances are $Z(Z(1))=Z(0)=1$ and $Z(Z(0))=Z(1)=0$.
+By \eqref{seed:eq:R0}, $U(0)=1$, so $N(0)=Z(1)=0$. By \eqref{seed:eq:RS},
+$U(\Suc n)=Z(U(n))$, so $N(\Suc n)=Z(Z(U(n)))=Z(N(n))$, and
+$N(\Suc\Suc n)=Z(Z(Z(U(n))))=Z(U(n))=N(n)$. In particular $N(1)=Z(0)=1$.
+The equation $N(Z(r))=Z(r)$ is \cref{seed:lem:succ-range} for the template
+$N(w)=w$, with instances $N(1)=1$ and $N(0)=0$. The last equation follows
+from the fourth and the fifth.
+\end{proof}
+
+\begin{definition}\label{seed:def:boolean}
+A term $b$ is \emph{Boolean in $\Gamma$} if $\Gamma\proves b=Z(r)$ for some
+term $r$. The numerals $0$ and $1$ are Boolean in every context, since
+$Z(1)=0$ and $Z(0)=1$; so is every term $N(n)$.
+\end{definition}
+% ed.: transient_seed defines a Boolean term syntactically, as a term Z(r)
+% or a numeral 0, 1 "identified with" Z(1), Z(0); provable equality with
+% some Z(r) is what its proofs use and makes the identification explicit.
+
+If $b$ and $c$ are Boolean in $\Gamma$, then
+$\Gamma,\Suc b=\Suc c\proves b=c$: apply the template $w\mapsto N(\Suc w)$ to
+the hypothesis and use the last equation of \cref{seed:lem:succ-decoder} on
+both sides. This cancels a successor on Boolean terms only; it is not
+injectivity of $\Suc$.
+
+\begin{lemma}[Restricted implication]\label{seed:lem:succ-imp}
+Let $b$, $c$ be Boolean in $\Gamma$, let $s=t$ be an equation, and put
+\[
+ \mathcal I(b=c;\,s=t)\defeq
+ \D{x}{y}\bigl(\sel^{+}(y,b,s)=\sel^{+}(y,c,t)\bigr)
+\]
+with $x$, $y$ fresh. Then
+\begin{enumerate}[label=(\roman*),nosep]
+\item if $\Gamma,b=c\proves s=t$, then $\Gamma\proves\mathcal I(b=c;\,s=t)$;
+\item if $\Gamma\proves\mathcal I(b=c;\,s=t)$ and $\Gamma\proves b=c$, then
+$\Gamma\proves s=t$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) Use \rulename{DI} by cases with witness $0$. The local assumption is the
+matrix at $y=0$, which by \eqref{seed:eq:selplus} is $\Suc b=\Suc c$; the
+decoder gives $b=c$, and cutting in the given derivation gives $s=t$. By
+\eqref{seed:eq:selplus} this is the matrix at $y=\Suc z$.
+
+(ii) Rule \rulename{DE} opens
+$\Q{y}\bigl(\sel^{+}(y,b,s)=\sel^{+}(y,c,t)\bigr)$; the opened parameter does
+not occur. Its zero instance is $\Suc b=\Suc c$, which follows from $b=c$ by
+congruence. Rule \rulename{QE} at the term $1$ gives
+$\sel^{+}(1,b,s)=\sel^{+}(1,c,t)$, that is $s=t$.
+\end{proof}
+
+\begin{lemma}[Contextual Boolean cases]\label{seed:lem:succ-cases}
+Let $b$ be Boolean in $\Gamma$ and let $E$ be a literal equation. If
+$\Gamma,b=0\proves E$ and $\Gamma,b=1\proves E$, then $\Gamma\proves E$. The
+context and $E$ may mention $b$.
+\end{lemma}
+
+\begin{proof}
+Let $\Gamma\proves b=Z(r)$ and let $w$ be a variable not in $\Gamma$, $b$,
+$r$, $E$. Apply \textsc{nc} to the native formula
+$B(w)\defeq\mathcal I(b=Z(w);\,E)$. Its zero premise is
+\cref{seed:lem:succ-imp}(i) applied to $\Gamma,b=Z(0)\proves E$, which is the
+second given branch because $Z(0)=1$. Its successor premise is
+\cref{seed:lem:succ-imp}(i) applied to $\Gamma,b=Z(\Suc z)\proves E$, which
+is the first given branch because $Z(\Suc z)=0$. Rule \textsc{nc} gives
+$\Gamma\proves B(r)$, and \cref{seed:lem:succ-imp}(ii) with
+$\Gamma\proves b=Z(r)$ gives $E$. The context does not change during the
+argument; the variable that varies is the fresh $w$.
+\end{proof}
+
+A branch whose hypotheses yield $0=\Suc 0$ is closed by the last statement of
+\cref{seed:lem:succ-basic}.
+
+\begin{remark}\label{seed:rem:succ-cases-variants}
+\Cref{seed:lem:succ-decoder,seed:lem:succ-imp,seed:lem:succ-cases} are the
+native bootstrap of \pkg{transient\_seed}.
+\pkg{successor\_seed\_completion} proves the same case rule for terms with
+values among $0,1,2$: a term $b$ has the \emph{functional range rule} for a
+finite list $V$ of numerals if $\Gamma\proves K(r)$ for all $r\in V$ implies
+$\Gamma\proves K(b)$; successor is cancelled on such terms by applying the
+three-cycle $M$ of \cref{seed:lem:succ-cycle} and then $j$ twice, using
+$M(w)=w$ and $j(j(j(w)))=w$ on $0,1,2$; and the guard formula is
+$\D{a}{y}\bigl(\sel^{+}(y,x,u)=\sel^{+}(y,b,v)\bigr)$ evaluated at $x=r$ for
+each $r\in V$. The predecessor proof below needs the two-valued case only.
+\pkg{scalar\_successor} states its finite case analyses as abbreviations for
+repeated \textsc{nc} and substitution; inside an induction step they are
+instances of \cref{seed:lem:succ-cases}.
+\end{remark}
+% ed.: in scalar_successor the step of the ramp invariant M(F(n)) = N(n) and
+% of the scaling identity split on N(n) with the induction hypothesis in the
+% context; rule NC alone does not justify this, as transient_seed and
+% successor_seed_completion both point out. The contextual case lemma closes
+% the gap.
+
+\subsection{The predecessor}
+
+All statements of this subsection are derivable in $\mathsf{N}_R$, by
+computation, the equality laws, \textsc{nc}, \textsc{ei} for the displayed
+literal equation with its other parameters fixed, and
+\cref{seed:lem:succ-cases}. They are therefore derivable in $\mathsf{T}_R$.
+No step cancels a successor or uses a selector with unshifted branches.
+
+\begin{lemma}[Shifted sum]\label{seed:lem:succ-oplus}
+Let $a\oplus b\defeq R(b,a;u.\Suc u)$. Then $a\oplus0=\Suc a$,
+$a\oplus\Suc b=\Suc(a\oplus b)$, and
+\[
+ 0\oplus a=\Suc a,\qquad \Suc a\oplus b=\Suc(a\oplus b),\qquad
+ a\oplus b=b\oplus a,\qquad (a\oplus b)\oplus c=a\oplus(b\oplus c).
+\]
+\end{lemma}
+
+\begin{proof}
+The first two equations are \eqref{seed:eq:R0} and \eqref{seed:eq:RS}. For
+$0\oplus a=\Suc a$ use \textsc{ei} on $a$: $0\oplus0=1$ and
+$0\oplus\Suc a=\Suc(0\oplus a)=\Suc\Suc a$. For
+$\Suc a\oplus b=\Suc(a\oplus b)$ use \textsc{ei} on $b$:
+$\Suc a\oplus0=\Suc\Suc a=\Suc(a\oplus0)$ and
+$\Suc a\oplus\Suc b=\Suc(\Suc a\oplus b)=\Suc\Suc(a\oplus b)
+=\Suc(a\oplus\Suc b)$. For commutativity use \textsc{ei} on $b$:
+$a\oplus0=\Suc a=0\oplus a$ and
+$a\oplus\Suc b=\Suc(a\oplus b)=\Suc(b\oplus a)=\Suc b\oplus a$. For
+associativity use \textsc{ei} on $c$: both sides are $\Suc(a\oplus b)$ at
+$0$, and
+$(a\oplus b)\oplus\Suc c=\Suc((a\oplus b)\oplus c)=\Suc(a\oplus(b\oplus c))
+=a\oplus(b\oplus\Suc c)$.
+\end{proof}
+
+In the standard model $a\oplus b=a+b+1$. Define the affine terms
+\[
+ A_2(a)\defeq\Suc^2(a\oplus a),\qquad
+ A_3(a)\defeq\Suc^4((a\oplus a)\oplus a),\qquad
+ A_2^{\circ}(a)\defeq\Suc^3(a\oplus a),
+\]
+with standard values $2a+3$, $3a+6$ and $2a+4$. \Cref{seed:lem:succ-oplus}
+gives
+\begin{equation}\label{seed:eq:affine}
+ A_2(0)=3,\qquad A_2(\Suc a)=\Suc^2A_2(a),\qquad
+ A_3(0)=6,\qquad A_3(\Suc a)=\Suc^3A_3(a).
+\end{equation}
+
+\begin{lemma}[A three-cycle]\label{seed:lem:succ-cycle}
+Let
+\[
+ j(u)\defeq\sel^{+}\bigl(u,0,\sel^{+}(Z(N(u)),1,0)\bigr),\qquad
+ X(n)\defeq R(n,0;u.j(u)),\qquad M(n)\defeq j(j(X(n))).
+\]
+Then $j(0)=1$, $j(1)=2$, $j(2)=0$, $M(0)=0$ and $M(\Suc n)=j(M(n))$.
+\end{lemma}
+
+\begin{proof}
+By \eqref{seed:eq:selplus}, $j(0)=\Suc 0$ and
+$j(\Suc z)=\sel^{+}(Z(N(\Suc z)),1,0)$. Since $N(1)=1$ and $N(2)=N(0)=0$,
+this gives $j(1)=\sel^{+}(0,1,0)=2$ and $j(2)=\sel^{+}(1,1,0)=0$. Further
+$X(0)=1$ and $X(\Suc n)=j(X(n))$, so $M(0)=j(j(1))=0$ and
+$M(\Suc n)=j(j(j(X(n))))=j(M(n))$.
+\end{proof}
+
+\begin{lemma}[The ramp]\label{seed:lem:succ-ramp}
+Let $G(n)\defeq R(n,0;u.\,u\oplus M(\Suc^2u))$. Then
+\begin{gather}
+ M(G(n))=\Suc(N(n)), \label{seed:eq:ramp-inv}\\
+ N(n)=0\proves G(\Suc n)=\Suc G(n),\qquad
+ N(n)=1\proves G(\Suc n)=\Suc^2G(n), \label{seed:eq:ramp-cases}\\
+ G(\Suc^2n)=\Suc^3G(n), \label{seed:eq:ramp-two}\\
+ N(n)=0\proves G(\Suc^3n)=\Suc^4G(n),\qquad
+ N(n)=1\proves G(\Suc^3n)=\Suc^5G(n). \label{seed:eq:ramp-three}
+\end{gather}
+\end{lemma}
+
+\begin{proof}
+By the computation equations, $G(0)=1$ and
+$G(\Suc n)=G(n)\oplus M(\Suc^2G(n))=G(n)\oplus j(j(M(G(n))))$.
+
+Equation \eqref{seed:eq:ramp-inv} is proved by \textsc{ei} on $n$. The base
+is $M(1)=j(M(0))=j(0)=1=\Suc(N(0))$. For the step keep the induction
+hypothesis $M(G(n))=\Suc(N(n))$ in the context and apply
+\cref{seed:lem:succ-cases} to the Boolean term $N(n)$. If $N(n)=0$, then
+$M(G(n))=1$, $j(j(1))=0$, so $G(\Suc n)=G(n)\oplus0=\Suc G(n)$ and
+$M(G(\Suc n))=j(M(G(n)))=j(1)=2=\Suc(Z(0))=\Suc(N(\Suc n))$. If $N(n)=1$,
+then $M(G(n))=2$, $j(j(2))=1$, so
+$G(\Suc n)=G(n)\oplus1=\Suc^2G(n)$ and
+$M(G(\Suc n))=j(j(M(G(n))))=j(j(2))=1=\Suc(Z(1))=\Suc(N(\Suc n))$.
+
+The two computations of $G(\Suc n)$ just made, now with
+\eqref{seed:eq:ramp-inv} as a theorem, are \eqref{seed:eq:ramp-cases}. For
+\eqref{seed:eq:ramp-two} apply \cref{seed:lem:succ-cases} to $N(n)$: if
+$N(n)=0$ then $N(\Suc n)=1$ and
+$G(\Suc^2n)=\Suc^2G(\Suc n)=\Suc^3G(n)$; if $N(n)=1$ then $N(\Suc n)=0$ and
+$G(\Suc^2n)=\Suc G(\Suc n)=\Suc^3G(n)$. Finally
+$G(\Suc^3n)=\Suc^3G(\Suc n)$ by \eqref{seed:eq:ramp-two}, and
+\eqref{seed:eq:ramp-cases} gives \eqref{seed:eq:ramp-three}.
+\end{proof}
+
+From $G(0)=1$, $N(0)=0$ and \eqref{seed:eq:ramp-cases},
+\eqref{seed:eq:ramp-two} one computes
+$G(1)=2$, $G(2)=4$, $G(3)=5$, $G(4)=7$, $G(6)=10$. In the standard model
+$G(n)=\lfloor 3n/2\rfloor+1$.
+
+\begin{lemma}[Affine identities]\label{seed:lem:succ-affine}
+\begin{gather*}
+ N(A_2(a))=1,\qquad N(A_3(a))=N(a),\qquad \Suc G(A_2(a))=A_3(a),\\
+ G(A_3(a))=A_3(G(a))\oplus N(a).
+\end{gather*}
+\end{lemma}
+
+\begin{proof}
+Each equation is proved by \textsc{ei} on $a$ with \eqref{seed:eq:affine}.
+
+$N(A_2(0))=N(3)=N(1)=1$, and
+$N(A_2(\Suc a))=N(\Suc^2A_2(a))=N(A_2(a))$.
+
+$N(A_3(0))=N(6)=N(0)$, and
+$N(A_3(\Suc a))=N(\Suc^3A_3(a))=Z(N(A_3(a)))=Z(N(a))=N(\Suc a)$.
+
+$\Suc G(A_2(0))=\Suc G(3)=6=A_3(0)$, and
+$\Suc G(A_2(\Suc a))=\Suc G(\Suc^2A_2(a))=\Suc^3\Suc G(A_2(a))
+=\Suc^3A_3(a)=A_3(\Suc a)$ by \eqref{seed:eq:ramp-two}.
+
+For the last equation the base is $G(A_3(0))=G(6)=10$ and
+$A_3(G(0))\oplus N(0)=A_3(1)\oplus0=\Suc 9=10$. For the step keep the
+induction hypothesis $G(A_3(a))=A_3(G(a))\oplus N(a)$ and apply
+\cref{seed:lem:succ-cases} to $N(a)$; the left side of the goal is
+$G(\Suc^3A_3(a))$ and $N(A_3(a))=N(a)$.
+
+If $N(a)=0$, then by \eqref{seed:eq:ramp-three} and the hypothesis
+\[
+ G(\Suc^3A_3(a))=\Suc^4G(A_3(a))=\Suc^4(A_3(G(a))\oplus0)=\Suc^5A_3(G(a)),
+\]
+while $G(\Suc a)=\Suc G(a)$, $N(\Suc a)=1$ and
+\[
+ A_3(G(\Suc a))\oplus N(\Suc a)=\Suc^3A_3(G(a))\oplus1=\Suc^5A_3(G(a)).
+\]
+If $N(a)=1$, then
+\[
+ G(\Suc^3A_3(a))=\Suc^5G(A_3(a))=\Suc^5(A_3(G(a))\oplus1)=\Suc^7A_3(G(a)),
+\]
+while $G(\Suc a)=\Suc^2G(a)$, $N(\Suc a)=0$ and
+\[
+ A_3(G(\Suc a))\oplus N(\Suc a)=\Suc^6A_3(G(a))\oplus0=\Suc^7A_3(G(a)).
+ \qedhere
+\]
+\end{proof}
+
+\begin{lemma}[The factor map]\label{seed:lem:succ-factor}
+Let $H(u)\defeq\sel^{+}(Z(N(u)),G(u),u)$. Then
+\begin{gather*}
+ N(u)=0\proves H(u)=u,\qquad N(u)=1\proves H(u)=\Suc G(u),\\
+ H(2)=2,\qquad H(A_2(a))=A_3(a),\qquad H(A_3(a))=A_3(H(a)).
+\end{gather*}
+\end{lemma}
+
+\begin{proof}
+The first line is \eqref{seed:eq:selplus} with $Z(0)=1$ and $Z(1)=0$. Since
+$N(2)=0$, $H(2)=2$. Since $N(A_2(a))=1$,
+$H(A_2(a))=\Suc G(A_2(a))=A_3(a)$. For the last equation apply
+\cref{seed:lem:succ-cases} to $N(a)$, using $N(A_3(a))=N(a)$. If $N(a)=0$,
+both sides are $A_3(a)$. If $N(a)=1$, then by \cref{seed:lem:succ-affine}
+\[
+ H(A_3(a))=\Suc G(A_3(a))=\Suc(A_3(G(a))\oplus1)=\Suc^3A_3(G(a))
+ =A_3(\Suc G(a))=A_3(H(a)). \qedhere
+\]
+\end{proof}
+
+On standard numbers $H$ fixes even inputs and sends an odd $u$ to
+$3(u+1)/2$. In the coordinate $u+3$ the terms $A_2$ and $A_3$ are doubling
+and tripling, and an active step of $H$ multiplies by $3/2$. This explains
+the comparator below; the proof does not use it.
+
+\begin{lemma}[A comparator]\label{seed:lem:succ-compare}
+Let
+\[
+ \alpha(x)\defeq R(x,0;u.A_2^{\circ}(u)),\qquad e(x)\defeq\Suc\alpha(x),
+ \qquad \Phi(x,y)\defeq R(y,\alpha(x);u.H(u)),\qquad
+ L(x,y)\defeq Z(N(\Phi(x,y))).
+\]
+Then $L(x,y)$ is Boolean, and
+\[
+ L(0,y)=1,\qquad L(\Suc x,0)=0,\qquad L(\Suc x,\Suc y)=L(x,y),\qquad
+ L(\Suc n,n)=0 .
+\]
+\end{lemma}
+
+\begin{proof}
+By computation and \cref{seed:lem:succ-oplus}, $e(0)=\Suc\alpha(0)=2$ and
+\[
+ e(\Suc x)=\Suc A_2^{\circ}(\alpha(x))=\Suc^4(\alpha(x)\oplus\alpha(x))
+ =\Suc^2(\Suc\alpha(x)\oplus\Suc\alpha(x))=A_2(e(x)).
+\]
+Also $\Phi(x,0)=\Suc\alpha(x)=e(x)$ by \eqref{seed:eq:R0}, and
+$\Phi(x,\Suc y)=H(\Phi(x,y))$. The initializer of $\Phi$ is chosen so that
+the successor-seeded initial value is $e(x)$; no predecessor is needed to
+start the orbit there.
+
+By \textsc{ei} on $y$, $\Phi(0,y)=2$: the base is $e(0)=2$ and the step is
+$H(2)=2$. Hence $L(0,y)=Z(N(2))=Z(0)=1$. Next
+$\Phi(\Suc x,0)=A_2(e(x))$ has $N$-value $1$, so $L(\Suc x,0)=Z(1)=0$.
+
+By \textsc{ei} on $y$ with $x$ fixed,
+$\Phi(\Suc x,\Suc y)=A_3(\Phi(x,y))$. At $y=0$ the left side is
+$H(e(\Suc x))=H(A_2(e(x)))=A_3(e(x))=A_3(\Phi(x,0))$. In the step both
+orbits apply $H$, and $H(A_3(v))=A_3(H(v))$ turns
+$H(A_3(\Phi(x,y)))$ into $A_3(\Phi(x,\Suc y))$. Applying $Z\circ N$ and
+$N(A_3(v))=N(v)$ gives $L(\Suc x,\Suc y)=L(x,y)$.
+
+Finally $L(\Suc n,n)=0$ by \textsc{ei} on $n$ from the second and third
+equations.
+\end{proof}
+
+The standard value of $L(x,y)$ is $1$ if $x\leq y$ and $0$ otherwise.
+
+\begin{lemma}[Saturation]\label{seed:lem:succ-sat}
+Let
+\[
+ K(c,u)\defeq\sel^{+}(c,u,u),\qquad
+ \beta_m(u)\defeq K(Z(L(\Suc u,m)),u),\qquad
+ V(t,m)\defeq R(t,0;u.\beta_m(u)).
+\]
+Then
+\[
+ V(\Suc t,\Suc^2k)=\Suc V(t,\Suc k),\qquad V(n,\Suc n)=\Suc n,\qquad
+ V(\Suc n,\Suc n)=V(\Suc^2n,\Suc n)=\Suc n .
+\]
+\end{lemma}
+
+\begin{proof}
+$K(0,u)=\Suc u$ and $K(\Suc v,u)=u$, so \textsc{nc} on $c$ gives
+$K(c,\Suc u)=\Suc K(c,u)$. With the comparator equations,
+\[
+ \beta_{\Suc m}(\Suc u)=K(Z(L(\Suc u,m)),\Suc u)=\Suc\beta_m(u),\qquad
+ \beta_{\Suc^2k}(1)=K(Z(L(0,k)),1)=K(0,1)=2 .
+\]
+The first equation of the lemma is \textsc{ei} on $t$ with $k$ fixed. At
+$t=0$, $V(1,\Suc^2k)=\beta_{\Suc^2k}(V(0,\Suc^2k))=\beta_{\Suc^2k}(1)=2
+=\Suc V(0,\Suc k)$. In the step,
+$V(\Suc^2t,\Suc^2k)=\beta_{\Suc^2k}(\Suc V(t,\Suc k))
+=\Suc\beta_{\Suc k}(V(t,\Suc k))=\Suc V(\Suc t,\Suc k)$.
+
+The second equation is a separate \textsc{ei} on $n$: $V(0,1)=1$, and
+$V(\Suc n,\Suc^2n)=\Suc V(n,\Suc n)$ by the first equation at $t=k=n$, an
+instance of a completed lemma. For the third,
+\[
+ \beta_{\Suc n}(\Suc n)=K(Z(L(\Suc^2n,\Suc n)),\Suc n)
+ =K(Z(L(\Suc n,n)),\Suc n)=K(1,\Suc n)=\Suc n,
+\]
+so one and then two further steps of the recursor from $V(n,\Suc n)=\Suc n$
+leave the value unchanged.
+\end{proof}
+
+\begin{lemma}[A capped predecessor]\label{seed:lem:succ-capped}
+Let $Q(m)\defeq R\bigl(m,0;u.K(Z(L(\Suc^2u,m)),u)\bigr)$. Then
+$Q(0)=Q(1)=1$ and $Q(\Suc^2k)=\Suc k$.
+\end{lemma}
+
+\begin{proof}
+$Q(0)=1$ by \eqref{seed:eq:R0}, and
+$Q(1)=K(Z(L(3,1)),1)=K(Z(L(2,0)),1)=K(1,1)=1$. For $m=\Suc^2k$ the
+comparator equations give
+$L(\Suc^2u,\Suc^2k)=L(u,k)=L(\Suc u,\Suc k)$, so the body of $Q$ at this
+parameter equals $\beta_{\Suc k}(u)$ for a generic $u$. By
+\cref{seed:lem:succ-unique}, at an independent counter $t$ with $k$ fixed,
+\[
+ R\bigl(t,0;u.K(Z(L(\Suc^2u,\Suc^2k)),u)\bigr)=V(t,\Suc k).
+\]
+Substituting $t=\Suc^2k$ and \cref{seed:lem:succ-sat} give
+$Q(\Suc^2k)=V(\Suc^2k,\Suc k)=\Suc k$.
+\end{proof}
+
+\begin{theorem}[Predecessor]\label{seed:thm:succ-pred}
+Let
+\[
+ P(m)\defeq\sel^{+}\bigl(Z(L(3,m)),\;Q(Q(m)),\;L(2,m)\bigr).
+\]
+$\mathsf{N}_R$ and $\mathsf{T}_R$ derive
+\[
+ P(0)=0,\qquad P(\Suc n)=n .
+\]
+Consequently both derive $\Suc x=\Suc y\proves x=y$.
+\end{theorem}
+
+\begin{proof}
+For $m\in\{0,1,2\}$ the comparator equations give $L(3,m)=0$, so
+$Z(L(3,m))=1$ and $P(m)=L(2,m)$ by \eqref{seed:eq:selplus}; and
+$L(2,0)=0$, $L(2,1)=L(1,0)=0$, $L(2,2)=L(0,0)=1$. Hence $P(0)=0$,
+$P(1)=0$ and $P(2)=1$. For $m=\Suc^3k$, $L(3,m)=L(0,k)=1$, so the zero branch
+of $\sel^{+}$ applies and, by \cref{seed:lem:succ-capped},
+\[
+ P(\Suc^3k)=\Suc Q(Q(\Suc^3k))=\Suc Q(\Suc^2k)=\Suc^2k .
+\]
+Rule \textsc{nc} on $n$, and in its successor case \textsc{nc} once more,
+give $P(\Suc n)=n$ from $P(1)=0$, $P(2)=1$ and $P(\Suc^3k)=\Suc^2k$.
+Injectivity follows by applying $P$ to $\Suc x=\Suc y$.
+\end{proof}
+
+\begin{remark}[The three constructions]\label{seed:rem:succ-three}
+The construction above is that of \pkg{successor\_seed\_completion}: the
+orbit $G$ is started at the seed $1$ that \eqref{seed:eq:R0} provides, the
+affine terms absorb the shift, and the capped predecessor $Q$ is corrected at
+three small arguments. The two other packages reach \cref{seed:thm:succ-pred}
+by different terms.
+
+\pkg{scalar\_successor} first builds a term $\tau$ with $\tau(0)=1$,
+$\tau(1)=0$, $\tau(\Suc^2n)=\Suc^2n$ and $\tau(\tau(n))=n$, from the parity
+term $U$, a Boolean conjunction $Z(\sel^{+}(a,0,Z(b)))$ and two finite orbits.
+Conjugation gives an iterator that starts at zero,
+\[
+ K_0(n;u.h)\defeq\tau\bigl(R(n,0;v.\tau(h\subst{\tau(v)}{u}))\bigr),\qquad
+ K_0(0;u.h)=0,\quad K_0(\Suc n;u.h)=h\subst{K_0(n;u.h)}{u},
+\]
+for every body $h$. With the shifted sum $a\oplus b$, the terms
+$a\oplus a$ and $(a\oplus a)\oplus a$, a ramp $F(n)\defeq
+K_0(n;u.\,u\oplus M'(u))$ over a three-state orbit $M'$ with the invariant
+$M'(F(n))=N(n)$, and a factor map, it obtains a strict comparator $V$ with
+$V(x,0)=0$, $V(0,\Suc y)=1$, $V(\Suc x,\Suc y)=V(x,y)$. The predecessor is
+then the saturated zero-start orbit
+$P(m)\defeq K_0\bigl(m;u.\sel^{+}(Z(V(\Suc u,m)),u,u)\bigr)$, with no
+correction.
+
+\pkg{transient\_seed} works in $\mathsf{T}_R$ and observes that
+$f(R(n,a;u.f))$ starts at $f(\Suc a)$: a seed $\Suc a$ outside an intended
+orbit is used once to enter it. Doubling and tripling orbits
+$d_2(\Suc n)=\Suc^2d_2(n)$, $d_3(\Suc n)=\Suc^3d_3(n)$ that start at zero are
+obtained in this way, then a ramp and a factor map, and a comparator $L$ with
+the equations of \cref{seed:lem:succ-compare} and the persistence law
+$L(x,y)=1\to L(x,\Suc y)=1$. The predecessor is a reset cycle: with
+$F_m(u)\defeq\sel^{+}(Z(L(\Suc u,m)),u,0)$, which increments below $m$ and
+resets to $0$ from $m$ on, and
+\[
+ J_m(t)\defeq F_m\bigl(R(t,m;u.F_m(u))\bigr),\qquad
+ K_m(t)\defeq F_m\bigl(R(t,m;u.F_m(F_m(u)))\bigr),
+\]
+one has $J_m(0)=K_m(0)=0$ because $F_m(\Suc m)=0$. Induction on the literal
+equation $\sel^{+}(L(t,m),0,J_m(t))=\sel^{+}(L(t,m),0,t)$ gives
+$L(t,m)=1\to J_m(t)=t$; two further inductions give the period
+$J_m(m\oplus t)=J_m(t)$ and $K_m(\Suc a)=J_m(a\oplus\Suc a)$; and
+$P(n)\defeq K_n(n)$ satisfies $P(\Suc a)=J_{\Suc a}(a)=a$. The package then
+transfers the proof to $\mathsf{N}_R$ by
+\cref{seed:lem:succ-cases}.
+
+The three proofs use the same resources: literal-equation induction with
+fixed parameters, numerical cases, and Boolean cases in a context.
+\end{remark}
+
+\subsection{Recovery of the iterator}
+
+\begin{theorem}[Initialized iteration]\label{seed:thm:succ-iter}
+For every body $h$ and a fresh variable $v$ put
+\[
+ \widehat I(n,a;u.h)\defeq
+ P\bigl(R(n,a;\,v.\,\Suc(h\subst{P(v)}{u}))\bigr).
+\]
+$\mathsf{N}_R$ and $\mathsf{T}_R$ derive
+\[
+ \widehat I(0,a;u.h)=a,\qquad
+ \widehat I(\Suc n,a;u.h)=h\subst{\widehat I(n,a;u.h)}{u}.
+\]
+In particular $\widehat I(c,a;u.b)$ with $u\notin\FV(b)$ is a selector with
+the unshifted values $a$ and $b$.
+\end{theorem}
+
+\begin{proof}
+Write $r(n)\defeq R(n,a;v.\Suc(h\subst{P(v)}{u}))$. By \eqref{seed:eq:R0}
+and \cref{seed:thm:succ-pred}, $\widehat I(0,a;u.h)=P(\Suc a)=a$. By
+\eqref{seed:eq:RS},
+$r(\Suc n)=\Suc(h\subst{P(r(n))}{u})$, so
+$\widehat I(\Suc n,a;u.h)=P(\Suc(h\subst{P(r(n))}{u}))
+=h\subst{P(r(n))}{u}=h\subst{\widehat I(n,a;u.h)}{u}$. The equation
+$P(\Suc x)=x$ is used at arbitrary terms; no invariant about the state
+$r(n)$ is needed.
+\end{proof}
+
+\begin{remark}
+The recursor, the candidate equations and the compiler $\widehat I$ are
+stated in an earlier draft of the series, which leaves the term $P$ open; the
+three packages supply it. In the opposite direction the predecessor is the
+only obstacle: a successor-seeded recursor whose update also receives the old
+counter has an immediate predecessor (see \cref{seed:lem:tied-macros} for the
+analogous computation).
+\end{remark}
+
+\subsection{Comparison of the two term languages}
+
+\begin{definition}\label{seed:def:succ-trans}
+The translation $t\mapsto t^{\iota}$ from $R$-terms to the terms of
+\cref{base:sec:terms} and the translation $t\mapsto t^{\rho}$ in the opposite
+direction are defined by
+\begin{align*}
+ x^{\iota}&\defeq x, & 0^{\iota}&\defeq0, &
+ R(n,a;u.h)^{\iota}&\defeq\It{n^{\iota}}{\Suc(a^{\iota})}{u}{h^{\iota}},\\
+ x^{\rho}&\defeq x, & 0^{\rho}&\defeq0, &
+ (\Suc t)^{\rho}&\defeq\Suc(t^{\rho}),\qquad
+ \It{n}{a}{u}{h}^{\rho}\defeq\widehat I(n^{\rho},a^{\rho};u.h^{\rho}),
+\end{align*}
+where $\Suc(t^{\rho})$ on the right is the abbreviation
+$R(0,t^{\rho};u.0)$. Formulas, native or ordinary, are translated by
+translating their terms. Both translations commute with substitution and
+preserve free variables and the property of being a literal equation.
+\end{definition}
+
+Note that $(\Suc a)^{\iota}=\It{0}{\Suc(a^{\iota})}{u}{0}$, which is not
+literally $\Suc(a^{\iota})$ but equals it by the zero computation equation of
+the iterator.
+
+\begin{theorem}[Equivalence of the term languages]\label{seed:thm:succ-terms}
+\leavevmode
+\begin{enumerate}[label=(\alph*),nosep]
+\item If $\Gamma\proves A$ is derivable in $\mathsf{N}_R$, then
+$\Gamma^{\iota}\proves A^{\iota}$ is derivable in $\Nat$. If
+$\Gamma\proves A$ is derivable in $\mathsf{T}_R$, then
+$\Gamma^{\iota}\proves A^{\iota}$ is derivable in $\Teq$.
+\item If $\Gamma\proves A$ is derivable in $\Nat$, then
+$\Gamma^{\rho}\proves A^{\rho}$ is derivable in $\mathsf{N}_R$. If
+$\Gamma\proves A$ is derivable in $\Teq$, then
+$\Gamma^{\rho}\proves A^{\rho}$ is derivable in $\mathsf{T}_R$.
+\item $\mathsf{N}_R$ and $\mathsf{T}_R$ derive $t^{\iota\rho}=t$ for every
+$R$-term $t$; $\Nat$ and $\Teq$ derive $t^{\rho\iota}=t$ for every iterator
+term $t$. Hence $A^{\iota\rho}\approx A$ in $\mathsf{N}_R$ and
+$A^{\rho\iota}\approx A$ in $\Nat$ for native formulas, and
+$A^{\iota\rho}\leftrightarrow A$, $A^{\rho\iota}\leftrightarrow A$ are
+provable in $\mathsf{T}_R$, $\Teq$ for ordinary formulas.
+\item Consequently $\Gamma\proves A$ is derivable in $\mathsf{N}_R$ if and
+only if $\Gamma^{\iota}\proves A^{\iota}$ is derivable in $\Nat$, and
+likewise for $\mathsf{T}_R$ and $\Teq$, and for $(\cdot)^{\rho}$ in the other
+direction. The contradictions correspond: $(0=\Suc 0)^{\iota}$ is
+interderivable with $0=\Suc 0$, and $(0=\Suc 0)^{\rho}$ is $0=\Suc 0$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(a) By induction on the derivation. Each rule instance other than a
+computation equation is translated into an instance of the same rule,
+because the translation commutes with substitution, keeps literal equations
+literal and keeps parameters fresh. One adjustment is needed where a rule
+displays a successor: the premise of \rulename{DI} by cases translates to
+$\Gamma^{\iota},B^{\iota}(t^{\iota},0)\proves
+B^{\iota}(t^{\iota},\It{0}{\Suc z}{u}{0})$, and the premise of
+\rulename{QI}, or of the induction rule of $\mathsf{T}_R$, to
+$\Gamma^{\iota},E^{\iota}(z)\proves E^{\iota}(\It{0}{\Suc z}{u}{0})$.
+Replacing $\It{0}{\Suc z}{u}{0}$ by $\Suc z$ along the zero computation
+equation, by the Leibniz property of \cref{base:sec:structural}, gives the
+premise of the same rule in $\Nat$ or $\Teq$. The translation of
+\eqref{seed:eq:R0} is
+$\It{0}{\Suc a^{\iota}}{u}{h^{\iota}}=\It{0}{\Suc a^{\iota}}{u}{0}$; both
+sides equal $\Suc a^{\iota}$ by the zero computation equation. The
+translation of \eqref{seed:eq:RS} is
+\[
+ \It{\It{0}{\Suc n^{\iota}}{u}{0}}{\Suc a^{\iota}}{u}{h^{\iota}}
+ =h^{\iota}\subst{\It{n^{\iota}}{\Suc a^{\iota}}{u}{h^{\iota}}}{u},
+\]
+which follows from $\It{0}{\Suc n^{\iota}}{u}{0}=\Suc n^{\iota}$, congruence
+and the successor computation equation. For $\mathsf{T}_R$ the logical rules
+are translated identically; coverage translates to
+$\forall x\,(x=0\lor\exists y\,x=\It{0}{\Suc y}{u}{0})$ and separation to
+$0=\It{0}{\Suc 0}{u}{0}\to\bot$, both equivalent in $\Teq$ to the
+corresponding axioms.
+
+(b) By induction on the derivation. Here $(\Suc t)^{\rho}$ is literally
+$\Suc(t^{\rho})$, so every rule instance is translated into an instance of
+the same rule, and coverage, separation and induction are translated into
+themselves. The two computation equations of the iterator are translated
+into
+$\widehat I(0,a^{\rho};u.h^{\rho})=a^{\rho}$ and
+$\widehat I(\Suc n^{\rho},a^{\rho};u.h^{\rho})
+=h^{\rho}\subst{\widehat I(n^{\rho},a^{\rho};u.h^{\rho})}{u}$, which are
+instances of \cref{seed:thm:succ-iter}.
+
+(c) First, $t^{\iota\rho}=t$ by induction on the $R$-term $t$. The cases of
+variables and $0$ are trivial. For $t=R(n,a;u.h)$,
+\[
+ t^{\iota\rho}
+ =P\Bigl(R\bigl(n^{\iota\rho},\Suc(a^{\iota\rho});\,
+   v.\,\Suc(h^{\iota\rho}\subst{P(v)}{u})\bigr)\Bigr).
+\]
+By the induction hypothesis, congruence and
+\cref{seed:lem:succ-unique} (for the body, whose induction hypothesis
+$h^{\iota\rho}=h$ is derivable in the empty context with $u$ free), this
+equals $P\bigl(R(n,\Suc a;v.\Suc(h\subst{P(v)}{u}))\bigr)$. The equation
+\[
+ P\bigl(R(z,\Suc a;\,v.\,\Suc(h\subst{P(v)}{u}))\bigr)=R(z,a;u.h)
+\]
+is proved by \textsc{ei} on $z$: at $0$ the left side is
+$P(\Suc\Suc a)=\Suc a=R(0,a;u.h)$; at $\Suc z$ it is
+$P(\Suc(h\subst{P(R(z,\Suc a;\ldots))}{u}))=h\subst{P(R(z,\Suc a;\ldots))}{u}$,
+which by the induction hypothesis is
+$h\subst{R(z,a;u.h)}{u}=R(\Suc z,a;u.h)$.
+
+Second, $t^{\rho\iota}=t$ by induction on the iterator term $t$. By (a)
+applied to \cref{seed:thm:succ-pred}, the term template
+$P^{\iota}(m)\defeq(P(m))^{\iota}$ satisfies $P^{\iota}(0)=0$ and
+$P^{\iota}(\It{0}{\Suc x}{u}{0})=x$, hence $P^{\iota}(\Suc x)=x$, in $\Nat$
+and $\Teq$. For $t=\Suc s$,
+$t^{\rho\iota}=\It{0}{\Suc(s^{\rho\iota})}{u}{0}=\Suc(s^{\rho\iota})=\Suc s$.
+For $t=\It{n}{a}{u}{h}$,
+\[
+ t^{\rho\iota}=P^{\iota}\Bigl(\It{n^{\rho\iota}}{\Suc(a^{\rho\iota})}{v}
+ {\It{0}{\Suc(h^{\rho\iota}\subst{P^{\iota}(v)}{u})}{w}{0}}\Bigr),
+\]
+which by the induction hypothesis, the zero computation equation and
+uniqueness of iteration for the iterator (the proof of
+\cref{seed:lem:succ-unique} with the iterator equations) equals
+$P^{\iota}\bigl(\It{n}{\Suc a}{v}{\Suc(h\subst{P^{\iota}(v)}{u})}\bigr)$.
+Induction for the literal equation
+$P^{\iota}\bigl(\It{z}{\Suc a}{v}{\Suc(h\subst{P^{\iota}(v)}{u})}\bigr)
+=\It{z}{a}{u}{h}$ proves the rest: at $0$ both sides are $a$, and at
+$\Suc z$ the left side is
+$h\subst{P^{\iota}(\It{z}{\Suc a}{v}{\ldots})}{u}$, which by the induction
+hypothesis is $h\subst{\It{z}{a}{u}{h}}{u}=\It{\Suc z}{a}{u}{h}$.
+
+The statements on formulas follow from
+\cref{seed:lem:succ-leibniz}(i), in $\mathsf{N}_R$ and in $\Nat$, and from
+replacement of provably equal terms under quantifiers in ordinary logic.
+
+(d) If $\Gamma^{\iota}\proves A^{\iota}$ is derivable in $\Nat$, then
+$\Gamma^{\iota\rho}\proves A^{\iota\rho}$ is derivable in $\mathsf{N}_R$ by
+(b), and $\Gamma\proves A$ follows by (c) and cut. The other cases are the
+same. For the contradiction, $(0=\Suc 0)^{\iota}$ is
+$0=\It{0}{\Suc 0}{u}{0}$.
+\end{proof}
+
+\begin{corollary}\label{seed:thm:succ-bridge}
+$\mathsf{N}_R$ and $\mathsf{T}_R$ are bi-interpretable with $\Nat$, $\Teq$
+and $\iPRA$: the interpretations are the translations of
+\cref{seed:def:succ-trans} composed with those of \cref{base:thm:bridge};
+the domains are the whole domain, equality is actual equality, each term is
+provably equal to its double translation, so that the graph $x=y$ is the
+isomorphism of both numerical composites, and every formula is provably
+equivalent to its double translation. The theories are equiconsistent.
+In $\iPRA$ the recursor with body $h$ is the function defined by primitive
+recursion with initial value $\Suc a$ and a step that ignores the counter.
+\end{corollary}
+
+\begin{proof}
+\Cref{seed:thm:succ-terms} gives the statement for $\Nat$ and $\Teq$ with
+the identity as numerical map. Composition with \cref{base:thm:bridge}
+gives the rest; the description in $\iPRA$ is the composite of
+$(\cdot)^{\iota}$ with the interpretation of the iterator.
+\end{proof}
+
+Consequently every result that \cref{base:thm:pred,base:thm:reflect,%
+base:thm:primrec} state for $\Teq$ holds in $\mathsf{T}_R$ for the
+translated terms: reflection of equality into a term, induction for
+quantifier-free formulas, pairing, and a term with the defining equations
+of each primitive recursive description. The predecessor of
+\cref{base:thm:pred} is not needed: \cref{seed:thm:succ-pred} provides one
+directly.
+
+\begin{remark}[Rule forms in the packages]\label{seed:rem:succ-rules}
+The three packages state the native calculus with two rule forms that differ
+from \cref{base:sec:kernel}: transport is formula transport, from $s=t$ and
+$F(s)$ infer $F(t)$ for every native formula template $F$; and progress
+introduces the paired binder, from $\Gamma,E(t,z)\proves E(t,\Suc z)$ infer
+$\Gamma\proves\D{x}{y}E(x,y)$ for a literal equation $E$. Both calculi derive
+the same sequents. Formula transport is
+\cref{seed:lem:succ-leibniz}(ii). The progress rule on $\D{x}{y}$ is derived
+from \rulename{QI}: the premise gives $\Q{y}E(t,y)$, and \rulename{DI} by
+cases with witness $t$ follows because its premise
+$E(t,0)\proves E(t,\Suc z)$ is \rulename{QE}. Conversely \rulename{QI} is
+derived from the progress rule on $\D{v}{y}E(y)$ with $v$ unused, followed by
+\rulename{DE} and \rulename{Hyp}; and the transport rule of
+\cref{base:sec:kernel} is a case of formula transport combined with symmetry.
+\pkg{successor\_seed\_completion} and \pkg{scalar\_successor} also describe a
+\emph{computation-supply} presentation used by their checkers: instead of a
+computation leaf, a rule passes from $\Gamma,H\proves A$ to
+$\Gamma\proves A$ for a computation equation $H$. The two presentations
+derive the same sequents by cut in one direction and \rulename{Hyp} in the
+other.
+\end{remark}
+
+%======================================================================
+\section{Tied-seed recursors}
+\label{seed:sec:tied}
+
+This section draws on \pkg{bounded\_initializer},
+\pkg{monus\_and\_neutral\_major} and the obstruction section of
+\pkg{transient\_seed}.
+
+\subsection{The recursor and its elementary terms}
+
+\begin{definition}\label{seed:def:tied}
+The tied-seed recursor $B(n;u,v.h)$ binds the distinct variables $u$ (old
+counter) and $v$ (old state) in $h$. Its computation equations are
+\begin{align}
+ B(0;u,v.h)&=\Suc\bigl(h\subst{0}{u}\subst{0}{v}\bigr), \label{seed:eq:B0}\\
+ B(\Suc n;u,v.h)&=h\subst{n}{u}\subst{B(n;u,v.h)}{v}. \label{seed:eq:BS}
+\end{align}
+The same body determines the value at $0$ and every later transition. Put
+\[
+ C(n,a)\defeq B(n;u,v.a),\quad W(n)\defeq B(n;u,v.u),\quad
+ P(n)\defeq W(C(n,n)),\quad Z(n)\defeq C(n,0),
+\]
+with $u,v\notin\FV(a)$.
+\end{definition}
+
+\begin{lemma}\label{seed:lem:tied-macros}
+From \eqref{seed:eq:B0}, \eqref{seed:eq:BS} and the equality laws alone,
+\[
+ C(0,a)=\Suc a,\quad C(\Suc n,a)=a,\quad W(0)=1,\quad W(\Suc n)=n,\quad
+ P(0)=0,\quad P(\Suc n)=n,\quad Z(0)=1,\quad Z(\Suc n)=0 .
+\]
+Hence $\Suc x=\Suc y\proves x=y$, and $\Suc x=0\proves 0=\Suc 0$.
+\end{lemma}
+
+\begin{proof}
+The first four equations are instances of the computation equations.
+$P(0)=W(C(0,0))=W(1)=0$ and $P(\Suc n)=W(C(\Suc n,\Suc n))=W(\Suc n)=n$.
+Applying $P$ to $\Suc x=\Suc y$ gives $x=y$. From $\Suc x=0$, applying $P$
+gives $x=0$, and substitution gives $\Suc 0=0$.
+\end{proof}
+
+The successor can be removed from the primitive signature: $\sigma(a)\defeq
+C(0,a)$ satisfies $\sigma(a)=\Suc a$, and writing $\sigma$ for $\Suc$ in
+\eqref{seed:eq:B0}, \eqref{seed:eq:BS} and in every axiom gives an equivalent
+presentation on the terms $x\mid0\mid B(n;u,v.h)$ and the other primitive
+operations. The constant-body instance of \eqref{seed:eq:B0} becomes
+tautological; \eqref{seed:eq:BS} for it and all other instances keep their
+content. The section keeps $\Suc$ for readability.
+
+\begin{lemma}[Gate and zero-start recursion]\label{seed:lem:tied-gate}
+Assume induction for literal equations (rule \textsc{ei} of
+\cref{seed:lem:succ-basic}). Let
+\[
+ G(n,a)\defeq P\bigl(P(B(a;u,v.C(Z(n),v)))\bigr),\qquad
+ B_0(n;u,v.h)\defeq
+ B\bigl(\Suc n;\,r,s.\,G(r,h\subst{P(r)}{u}\subst{s}{v})\bigr).
+\]
+Then
+\[
+ G(0,a)=0,\qquad G(\Suc n,a)=a,\qquad
+ B_0(0;u,v.h)=0,\qquad
+ B_0(\Suc n;u,v.h)=h\subst{n}{u}\subst{B_0(n;u,v.h)}{v}.
+\]
+\end{lemma}
+
+\begin{proof}
+For the control $0$ the body of the inner recursor is $C(1,v)=v$, its value
+at $0$ is $\Suc(C(1,0))=1$, and \textsc{ei} on $a$ shows that the value at
+$a$ is $1$; so $G(0,a)=P(P(1))=0$. For the control $\Suc n$ the body is
+$C(0,v)=\Suc v$, the value at $0$ is $\Suc(\Suc 0)=2$, and \textsc{ei} on
+$a$ shows that the value at $a$ is $\Suc\Suc a$; so
+$G(\Suc n,a)=P(P(\Suc\Suc a))=a$. In both inductions $n$ is a fixed
+parameter.
+
+Let $k(r,s)\defeq G(r,h\subst{P(r)}{u}\subst{s}{v})$, so that $k(0,s)=0$
+and $k(\Suc r,s)=h\subst{r}{u}\subst{s}{v}$. Then
+$B(0;r,s.k)=\Suc(k(0,0))=1$, $B(1;r,s.k)=k(0,1)=0$, and
+$B(\Suc\Suc n;r,s.k)=k(\Suc n,B(\Suc n;r,s.k))
+=h\subst{n}{u}\subst{B(\Suc n;r,s.k)}{v}$. These are the equations for
+$B_0$.
+\end{proof}
+
+The gate $G$ is a one-sided selector: it returns $0$ or its second argument.
+The term $P(P(B(a;u,v.C(n,v))))$ is the complementary mask, with values $a$
+at $n=0$ and $0$ at $n=\Suc m$.
+
+\subsection{The one-coordinate bound}
+
+The independent initializer cannot be recovered by a term.
+
+\begin{definition}
+A function $f\colon\mathbb N^r\to\mathbb N$ has the \emph{bounding
+coordinate} $i$ if there is a nondecreasing $F\colon\mathbb N\to\mathbb N$
+with $f(x_1,\ldots,x_r)\leq F(x_i)$ for all arguments.
+\end{definition}
+
+\begin{theorem}[One-coordinate bound]\label{seed:thm:tied-bound}
+Consider the terms built from variables, $0$, $\Suc$, $B$, and optionally a
+binary $\varepsilon$ with values in $\{0,1\}$ and a binary $d$ with
+$d(x,y)\leq x$, in the standard model with \eqref{seed:eq:B0},
+\eqref{seed:eq:BS}. The function denoted by a term is bounded by a constant
+or has a bounding coordinate among its free variables, with a nondecreasing
+primitive recursive bound that is obtained by recursion on the term.
+\end{theorem}
+% ed.: the packages prove the bound for the terms x | 0 | B (transient_seed)
+% and with S and epsilon (bounded_initializer); monus_and_neutral_major
+% asserts it for its terms with d. The case of d is added here.
+
+\begin{proof}
+By induction on the term, treating the bound variables $u$, $v$ of a body as
+further input coordinates while the body is processed. A variable has the
+bound $F(z)=z$ in its own coordinate; $0$ and $\varepsilon(s,t)$ are bounded
+by constants; $\Suc t$ and $d(s,t)$ inherit the coordinate of $t$ and of $s$,
+with bounds $F+1$ and $F$.
+
+Let $t=B(n;u,v.h)$ and write $b(m,\vec p)$ for the value of the recursor with
+body $h$ at the counter value $m$. By the induction hypothesis $h$, as a
+function of $u,v,\vec p$, is bounded by a constant or has a bounding
+coordinate with bound $H$.
+\begin{enumerate}[label=\arabic*.,nosep]
+\item If $h\leq K$ for a constant $K$, then $b(0,\vec p)\leq K+1$ and
+$b(m+1,\vec p)\leq K$.
+\item If a parameter $p_j$ is the bounding coordinate, then
+$h(0,0,\vec p)$ and every $h(m,b(m,\vec p),\vec p)$ are at most $H(p_j)$,
+so $b(m,\vec p)\leq H(p_j)+1$ for all $m$. This holds whatever the counter
+term is.
+\item If $u$ is the bounding coordinate, put
+$K(m)\defeq1+\max_{q\leq m}H(q)$. Then $b(0,\vec p)\leq H(0)+1\leq K(0)$ and
+$b(m+1,\vec p)\leq H(m)\leq K(m+1)$.
+\item If $v$ is the bounding coordinate, put $K(0)\defeq H(0)+1$ and
+$K(m+1)\defeq\max\{K(m),H(K(m))\}$. Then $b(0,\vec p)\leq H(0)+1$, because
+the state argument of $h(0,0,\vec p)$ is $0$, and
+$b(m+1,\vec p)\leq H(b(m,\vec p))\leq H(K(m))\leq K(m+1)$ by induction on
+$m$ and monotonicity of $H$.
+\end{enumerate}
+In cases 3 and 4, $K$ is nondecreasing and primitive recursive and
+$t\leq K(n(\vec p))$. By the induction hypothesis for the counter term $n$,
+either $n\leq N$ for a constant $N$, and $K(N)$ bounds $t$, or
+$n(\vec p)\leq N(p_i)$ for a nondecreasing primitive recursive $N$, and
+$K(N(p_i))$ bounds $t$ in the coordinate $p_i$.
+\end{proof}
+
+\begin{corollary}\label{seed:cor:tied-noterms}
+No term of these languages denotes, in the standard model, any of the
+following functions: the selector $\sel(n,a,b)$ with $\sel(0,a,b)=a$ and
+$\sel(n+1,a,b)=b$; addition; an injection $\mathbb N^2\to\mathbb N$.
+\end{corollary}
+
+\begin{proof}
+The selector is unbounded. The coordinate $n$ does not bound it, since at
+$n=0$ it is $a$; the coordinate $a$ does not, since at $a=0$, $n=1$ it is
+$b$; the coordinate $b$ does not, since at $b=0$, $n=0$ it is $a$. Addition
+is unbounded when either argument is fixed at $0$. If a coordinate bounds a
+binary function, fixing that coordinate at $0$ confines infinitely many pairs
+to finitely many values; a bounded function is not injective either.
+\end{proof}
+
+\begin{remark}\label{seed:rem:tied-bound-scope}
+The theorem is in \pkg{transient\_seed} for the terms $x\mid0\mid B$, and in
+\pkg{bounded\_initializer} with $\Suc$ and $\varepsilon$; the case of $d$ is
+immediate from $d(x,y)\leq x$. The same four cases, with the value $1$ at the
+counter $0$ in place of $1+h(0,0,\vec p)$, give the bound for the recursor
+$J(0;h)=1$, $J(\Suc n;h)=h(n,J(n;h))$, which \pkg{scalar\_successor} mentions
+as the reason for keeping the initializer in $R$; additional unary primitive
+recursive operations compose with the bound of their argument and do not
+change the argument. The bound concerns the
+functions denoted by terms. Sound logical rules cannot change it, so there is
+no compiler from the iterator language to these terms. It does not show that
+a theory on these terms fails to be bi-interpretable with $\iPRA$:
+\cref{seed:thm:tied-biint} interprets each primitive recursive function by a
+graph with finitely many value terms. The successor-seeded recursor
+$R(n,a;u.h)$ escapes the bound because $a\oplus b$ is unbounded in each of
+its two arguments. Related obstructions for tied seeds are in the packages
+\pkg{local\_scopes} and \pkg{uniform\_predecessor}.
+\end{remark}
+
+\subsection{The theory with a Boolean equality test}
+
+\begin{definition}\label{seed:def:tbe}
+$\mathsf{T}_{B\varepsilon}$ is ordinary intuitionistic first-order logic
+with equality over the terms
+$t\mathrel{::=}x\mid0\mid\Suc t\mid\varepsilon(t,t)\mid B(n;u,v.h)$, with
+the axioms \eqref{seed:eq:B0}, \eqref{seed:eq:BS},
+\begin{gather}
+ \varepsilon(x,y)=0\lor\varepsilon(x,y)=1, \label{seed:eq:erange}\\
+ \varepsilon(x,y)=1\leftrightarrow x=y, \label{seed:eq:ereflect}\\
+ 0=1\to\bot, \label{seed:eq:sep}
+\end{gather}
+universally closed, and induction for literal equations with side
+assumptions. Coverage, injectivity of the successor and induction for
+compound formulas are not axioms.
+\end{definition}
+
+The equality on the right of \eqref{seed:eq:ereflect} is the equality of the
+logic on the whole domain. The axioms make numerical equality decidable and
+give $\varepsilon(s,t)=0\leftrightarrow s\neq t$; they do not give excluded
+middle for quantified formulas.
+
+\begin{lemma}[Quantifier-free induction and coverage]\label{seed:lem:tbe-qf}
+In $\mathsf{T}_{B\varepsilon}$ every quantifier-free formula $A$ has a term
+$\chi_A$ with $\chi_A=0\lor\chi_A=1$ and $A\leftrightarrow\chi_A=1$.
+Induction with side assumptions holds for quantifier-free formulas, and
+$x=0\lor x=\Suc(P(x))$ is provable.
+\end{lemma}
+
+\begin{proof}
+By recursion on $A$: $\chi_{s=t}\defeq\varepsilon(s,t)$, $\chi_\bot\defeq0$,
+and on Boolean values $Z$ is negation and $G$ is conjunction by
+\cref{seed:lem:tied-macros,seed:lem:tied-gate}; disjunction is
+$Z(G(Z(b),Z(c)))$ and implication is $Z(G(b,Z(c)))$. The truth tables are
+checked on the two values. The clause for implication is valid
+intuitionistically because $A$ is decidable by its characteristic term.
+Given a base and a step for $A(n)$, pass to the literal equation
+$\chi_{A(n)}=1$, apply the induction rule and pass back. Apply the result to
+$x=0\lor x=\Suc(P(x))$: the base is immediate, and the step holds by
+$P(\Suc x)=x$ without the induction hypothesis.
+\end{proof}
+
+For a Boolean $b$ let $\operatorname{inc}(a,b)\defeq C(Z(b),a)$, so that
+$\operatorname{inc}(a,0)=a$ and $\operatorname{inc}(a,1)=\Suc a$. Reflection
+and \cref{seed:lem:tied-macros} give
+\[
+ \varepsilon(x,x)=1,\qquad\varepsilon(x,y)=\varepsilon(y,x),\qquad
+ \varepsilon(\Suc x,\Suc y)=\varepsilon(x,y),\qquad\varepsilon(0,\Suc x)=0 .
+\]
+Define the \emph{hit term} and the order relations
+\[
+ \operatorname{hit}(n,y)\defeq
+ B_0\bigl(n;r,v.\operatorname{inc}(v,\varepsilon(r,y))\bigr),\qquad
+ x<y\iffdef\operatorname{hit}(y,x)=1,\qquad
+ x\leq y\iffdef\operatorname{hit}(\Suc y,x)=1 .
+\]
+Thus $\operatorname{hit}(0,y)=0$ and
+$\operatorname{hit}(\Suc n,y)
+=\operatorname{inc}(\operatorname{hit}(n,y),\varepsilon(n,y))$.
+
+\begin{lemma}[Hit identities]\label{seed:lem:tbe-hit}
+$\mathsf{T}_{B\varepsilon}$ proves
+\begin{gather*}
+ \operatorname{hit}(\Suc n,0)=1,\quad
+ \operatorname{hit}(\Suc n,\Suc y)=\operatorname{hit}(n,y),\quad
+ \operatorname{hit}(n,n)=0,\quad\operatorname{hit}(\Suc n,n)=1,\\
+ \operatorname{hit}(n,y)=0\lor\operatorname{hit}(n,y)=1,\qquad
+ \operatorname{hit}(\Suc y,x)=Z(\operatorname{hit}(x,y)),\\
+ \operatorname{hit}(n,y)=1\to\operatorname{hit}(\Suc n,y)=1,\qquad
+ \operatorname{hit}(\Suc n,y)=1\to\operatorname{hit}(n,y)=1\lor n=y .
+\end{gather*}
+\end{lemma}
+
+\begin{proof}
+$\operatorname{hit}(\Suc n,0)=1$ by induction on $n$: the first step tests
+$\varepsilon(0,0)=1$, and every later test $\varepsilon(\Suc n,0)$ is $0$.
+$\operatorname{hit}(\Suc n,\Suc y)=\operatorname{hit}(n,y)$ by induction on
+$n$ with $y$ fixed: the base is
+$\operatorname{inc}(0,\varepsilon(0,\Suc y))=0$, and the step uses
+$\varepsilon(\Suc n,\Suc y)=\varepsilon(n,y)$. Then
+$\operatorname{hit}(n,n)=0$ by induction, and
+$\operatorname{hit}(\Suc n,n)=\operatorname{inc}(0,1)=1$.
+
+For the range use quantifier-free induction on $n$: if
+$\varepsilon(n,y)=0$ the state is unchanged; if $\varepsilon(n,y)=1$ then
+$n=y$, the old state is $\operatorname{hit}(n,n)=0$ and the new state is
+$1$. If $\operatorname{hit}(n,y)=1$, then $n\neq y$ by the diagonal value,
+so the next test is $0$ and the hit persists. The same case split gives the
+last implication.
+
+The duality $\operatorname{hit}(\Suc y,x)=Z(\operatorname{hit}(x,y))$ is
+proved by induction on $x$ with $y$ fixed. At $x=0$ both sides are $1$. In
+the step the left side is
+$\operatorname{hit}(\Suc y,\Suc x)=\operatorname{hit}(y,x)$ and the right
+side is $Z(\operatorname{inc}(\operatorname{hit}(x,y),\varepsilon(x,y)))$.
+If $\varepsilon(x,y)=0$, the right side is $Z(\operatorname{hit}(x,y))$, and
+the induction hypothesis reads
+$\operatorname{inc}(\operatorname{hit}(y,x),0)=\operatorname{hit}(y,x)
+=Z(\operatorname{hit}(x,y))$. If $\varepsilon(x,y)=1$, then $x=y$, the left
+side is $0$ and the right side is $Z(\operatorname{hit}(\Suc x,x))=Z(1)=0$.
+\end{proof}
+
+\begin{lemma}[Order]\label{seed:lem:tbe-order}
+In $\mathsf{T}_{B\varepsilon}$ the relations $<$ and $\leq$ form a discrete
+linear order with least element $0$:
+$x\leq y\leftrightarrow(x=y\lor x<y)$,
+$x<\Suc y\leftrightarrow x\leq y$, exactly one of $x<y$, $x=y$, $y<x$
+holds, both relations are transitive, the successor preserves and reflects
+them, and $x\leq\Suc y$ with $x\neq\Suc y$ implies $x\leq y$.
+\end{lemma}
+
+\begin{proof}
+The diagonal identities give $x\leq x$, $x\not<x$ and $x<\Suc x$. The
+recurrence for $\operatorname{hit}(\Suc y,x)$, split on $\varepsilon(y,x)$,
+gives the first equivalence. If $x\neq y$, then
+$\operatorname{hit}(\Suc y,x)=\operatorname{hit}(y,x)$, and by duality
+$\operatorname{hit}(x,y)$ is its Boolean complement; this is trichotomy. For
+transitivity of $<$ keep $\operatorname{hit}(y,x)=1$ and induct on $z$ in
+the quantifier-free formula
+$\operatorname{hit}(z,y)=1\to\operatorname{hit}(z,x)=1$. The base has a
+false antecedent. At $\Suc z$ the last implication of
+\cref{seed:lem:tbe-hit} gives $\operatorname{hit}(z,y)=1$, and then the
+induction hypothesis and persistence apply, or $z=y$, and then the retained
+$\operatorname{hit}(y,x)=1$ and persistence apply. Transitivity of $\leq$
+and the mixed laws follow by splitting equality from strict comparison, and
+antisymmetry from trichotomy. The identity
+$\operatorname{hit}(\Suc n,\Suc y)=\operatorname{hit}(n,y)$ gives
+preservation and reflection by the successor.
+$x<\Suc y\leftrightarrow x\leq y$ holds by definition, and the last claim
+follows from it and the first equivalence. Finally
+$\operatorname{hit}(\Suc x,0)=1$ is $0\leq x$, and $x\leq0$ gives $x=0$ by
+trichotomy.
+\end{proof}
+
+Define the difference, the minimum, doubling and bounded addition by
+\begin{gather*}
+ \widehat d(x,y)\defeq
+ B_0\bigl(x;u,v.\operatorname{inc}(v,\operatorname{hit}(\Suc u,y))\bigr),
+ \qquad\operatorname{mn}(x,y)\defeq\widehat d(x,\widehat d(x,y)),\qquad
+ \operatorname{db}(n)\defeq B_0(n;u,v.\Suc\Suc v),\\
+ K_b(a)\defeq\widehat d(\operatorname{db}(b),\widehat d(b,a)),\qquad
+ \operatorname{ad}_b(a,c)\defeq\widehat d(K_b(a),\widehat d(b,c)).
+\end{gather*}
+Thus $\widehat d(0,y)=0$ and
+$\widehat d(\Suc x,y)
+=\operatorname{inc}(\widehat d(x,y),\operatorname{hit}(\Suc x,y))$.
+
+\begin{lemma}[Difference]\label{seed:lem:tbe-diff}
+$\mathsf{T}_{B\varepsilon}$ proves
+\begin{gather*}
+ \widehat d(x,0)=x,\qquad\widehat d(\Suc x,\Suc y)=\widehat d(x,y),\qquad
+ \widehat d(x,x)=0,\qquad\widehat d(x,y)=0\leftrightarrow x\leq y,\\
+ \widehat d(x,\Suc y)=P(\widehat d(x,y)),\qquad\widehat d(x,y)\leq x,\\
+ y\leq x\to\widehat d(\Suc x,y)=\Suc(\widehat d(x,y)),\qquad
+ 0<y\leq x\to\widehat d(x,P(y))=\Suc(\widehat d(x,y)),
+\end{gather*}
+and that $\widehat d$ is monotone in its first argument and antitone in its
+second.
+\end{lemma}
+
+\begin{proof}
+$\widehat d(x,0)=x$ by induction, since $\operatorname{hit}(\Suc x,0)=1$.
+For $\widehat d(\Suc x,\Suc y)=\widehat d(x,y)$ induct on $x$ with $y$
+fixed: the base uses $\operatorname{hit}(1,\Suc y)=0$, and the step uses
+$\operatorname{hit}(\Suc\Suc x,\Suc y)=\operatorname{hit}(\Suc x,y)$.
+
+Quantifier-free induction on $x$ with $y$ fixed proves
+$\widehat d(x,y)=0\leftrightarrow\operatorname{hit}(x,y)=0$. In the step, if
+$\operatorname{hit}(\Suc x,y)=1$ the new difference is a successor; if
+$\operatorname{hit}(\Suc x,y)=0$, then $\operatorname{hit}(x,y)=0$ by
+persistence, the old difference is $0$ and stays $0$. By duality
+$\operatorname{hit}(x,y)=0$ is $\operatorname{hit}(\Suc y,x)=1$, which gives
+the characterization of $\leq$ and $\widehat d(x,x)=0$.
+
+For $\widehat d(x,\Suc y)=P(\widehat d(x,y))$ induct on $x$ with $y$ fixed.
+In the step the left side is $\widehat d(x,y)$ and the right side is
+$P(\operatorname{inc}(\widehat d(x,y),\operatorname{hit}(\Suc x,y)))$. If
+the Boolean is $1$ the predecessor cancels the successor; if it is $0$ the
+characterization gives $\widehat d(\Suc x,y)=0$, hence
+$\widehat d(x,y)=0$ and both sides are $0$.
+
+Quantifier-free induction on $x$ proves $\widehat d(x,y)\leq x$: the new
+state is the old one or its successor. For monotonicity in the first
+argument induct on $v$ in
+$u\leq v\to\widehat d(u,z)\leq\widehat d(v,z)$ with $u$, $z$ fixed: at
+$\Suc v$ either $u=\Suc v$, or $u\leq v$ by discreteness and the new state
+is at least the old one; the base uses $u\leq0\to u=0$. For antitonicity keep
+$y\leq z$ and induct on $x$ in $\widehat d(x,z)\leq\widehat d(x,y)$: if
+$\operatorname{hit}(\Suc x,z)=0$ the left state stays and the right state
+does not decrease; if it is $1$ then $z\leq x$, so $y\leq x$ and both states
+increase.
+
+The first of the two final implications is the defining recurrence, since
+$y\leq x$ means $\operatorname{hit}(\Suc x,y)=1$. For the second,
+$y=\Suc(P(y))$ by coverage, $P(y)<x$, so $\widehat d(x,P(y))\neq0$, and
+coverage at this difference with
+$\widehat d(x,\Suc(P(y)))=P(\widehat d(x,P(y)))$ gives the claim.
+\end{proof}
+
+\begin{lemma}[Minimum, doubling, bounded addition]\label{seed:lem:tbe-add}
+$\mathsf{T}_{B\varepsilon}$ proves:
+\begin{enumerate}[label=(\alph*),nosep]
+\item $x\leq y\to\operatorname{mn}(x,y)=x$ and
+$y\leq x\to\operatorname{mn}(x,y)=y$;
+\item $\operatorname{db}$ is monotone, $n\leq\operatorname{db}(n)$ and
+$\widehat d(\operatorname{db}(n),n)=n$;
+\item $a\leq b\to\operatorname{ad}_b(a,0)=a$;
+\item $a\leq b\land\Suc c\leq b\to
+\operatorname{ad}_b(a,\Suc c)=\Suc(\operatorname{ad}_b(a,c))$;
+\item $c\leq b\to\operatorname{ad}_b(0,c)=c$;
+\item $\operatorname{ad}_b(b,b)=\operatorname{db}(b)$ and
+$\operatorname{ad}_b(a,c)\leq\operatorname{db}(b)$ for all $a$, $c$;
+\item $\operatorname{ad}_b$ is monotone in its second argument;
+\item if $a,c\leq b$ and $a,c\leq b'$ then
+$\operatorname{ad}_b(a,c)=\operatorname{ad}_{b'}(a,c)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) The first claim uses $\widehat d(x,y)=0$ and $\widehat d(x,0)=x$. For the
+second induct on $y$ in $y\leq x\to\widehat d(x,\widehat d(x,y))=y$ with $x$
+fixed. The base is $\widehat d(x,x)=0$. If $\Suc y\leq x$, then $y<x$ and
+$0<\widehat d(x,y)\leq x$, so by \cref{seed:lem:tbe-diff}
+$\widehat d(x,\widehat d(x,\Suc y))=\widehat d(x,P(\widehat d(x,y)))
+=\Suc(\widehat d(x,\widehat d(x,y)))=\Suc y$.
+
+(b) $\operatorname{db}(0)=0$ and
+$\operatorname{db}(\Suc n)=\Suc\Suc\operatorname{db}(n)$ give
+$n\leq\operatorname{db}(n)$ by quantifier-free induction; monotonicity is an
+induction on the larger argument that splits equality at the successor from
+the discrete predecessor case. The identity is an induction on a literal
+equation:
+$\widehat d(\operatorname{db}(\Suc n),\Suc n)
+=\widehat d(\Suc\operatorname{db}(n),n)
+=\Suc(\widehat d(\operatorname{db}(n),n))=\Suc n$, using
+$n\leq\operatorname{db}(n)$.
+
+(c)--(h) Since $\widehat d(b,a)\leq b$, antitonicity and (b) give
+$b=\widehat d(\operatorname{db}(b),b)\leq K_b(a)\leq\operatorname{db}(b)$,
+and $K_b(0)=b$. If $\Suc a\leq b$, put $q\defeq\widehat d(b,a)$; then
+$0<q\leq b\leq\operatorname{db}(b)$ and $\widehat d(b,\Suc a)=P(q)$, so
+$K_b(\Suc a)=\widehat d(\operatorname{db}(b),P(q))=\Suc(K_b(a))$.
+Quantifier-free induction on $a$ proves (c) under $a\leq b$: the base is
+$\widehat d(b,b)=0$, and the step increments $\widehat d(K_b(a),b)$ by the
+last identity and $b\leq K_b(a)$. For (d) put $q\defeq\widehat d(b,c)$; then
+$0<q\leq b\leq K_b(a)$ and
+$\operatorname{ad}_b(a,\Suc c)=\widehat d(K_b(a),P(q))
+=\Suc(\widehat d(K_b(a),q))$. Statement (e) is a quantifier-free induction
+on $c\leq b$ from (c) and (d). For (f) substitute $a=c=b$ and use
+$\widehat d(b,b)=0$ twice; the bound is
+$\widehat d(K_b(a),\widehat d(b,c))\leq K_b(a)\leq\operatorname{db}(b)$. For
+(g), $c\leq c'$ gives $\widehat d(b,c')\leq\widehat d(b,c)$, and antitonicity
+of the outer difference gives the claim. For (h) keep $a\leq b,b'$ and
+induct on $c$ in
+$c\leq\operatorname{mn}(b,b')\to
+\operatorname{ad}_b(a,c)=\operatorname{ad}_{b'}(a,c)$: the base gives $a$ on
+both sides, and (d) applies to both sides whenever
+$\Suc c\leq\operatorname{mn}(b,b')$.
+\end{proof}
+
+Every induction in
+\cref{seed:lem:tbe-hit,seed:lem:tbe-order,seed:lem:tbe-diff,seed:lem:tbe-add}
+is on a quantifier-free formula with the other variables fixed. There is no
+total binary addition term; $\operatorname{ad}_b$ adds below the bound $b$.
+
+\begin{lemma}[Clipped initialized recursion]\label{seed:lem:tbe-clip}
+Let
+\[
+ \sel_b(c,a,e)\defeq\operatorname{ad}_b\bigl(G(Z(c),a),G(c,e)\bigr),\qquad
+ \operatorname{Rec}_b(n,a;u,v.h)\defeq
+ B_0\Bigl(\Suc n;\,r,s.\,
+ \sel_b\bigl(r,\operatorname{mn}(a,b),
+ \operatorname{mn}(h\subst{P(r)}{u}\subst{s}{v},b)\bigr)\Bigr).
+\]
+If $a,e\leq b$, then $\sel_b(0,a,e)=a$ and $\sel_b(\Suc c,a,e)=e$. For all
+arguments,
+\[
+ \operatorname{Rec}_b(0,a;u,v.h)=\operatorname{mn}(a,b),\qquad
+ \operatorname{Rec}_b(\Suc n,a;u,v.h)
+ =\operatorname{mn}\bigl(h\subst{n}{u}
+ \subst{\operatorname{Rec}_b(n,a;u,v.h)}{v},\,b\bigr),
+\]
+and $\operatorname{Rec}_b(n,a;u,v.h)\leq b$.
+\end{lemma}
+
+\begin{proof}
+By \cref{seed:lem:tied-gate} one of the two summands of $\sel_b$ is $0$ and
+the other is $a$ at $c=0$ and $e$ at a successor;
+\cref{seed:lem:tbe-add}(c) and (e) give the values. The equations for
+$\operatorname{Rec}_b$ follow from those of $B_0$ and of $\sel_b$, since both
+arguments $\operatorname{mn}(\cdot,b)$ are at most $b$; the bound is a
+quantifier-free induction.
+\end{proof}
+
+The cap $b$ is a parameter that stays fixed during the recursion. Arbitrary
+initialization is thus available once a cap has been fixed, in agreement
+with \cref{seed:thm:tied-bound}: the value is bounded in the coordinate $b$.
+
+\subsection{A compiler with caps}
+
+Fix the primitive recursive descriptions built from zero, successor,
+projections, composition and primitive recursion. The following construction
+is a recursion on a description outside the theory; it produces terms and
+proofs of $\mathsf{T}_{B\varepsilon}$ and adds no evaluator for codes of
+descriptions.
+
+\begin{theorem}[Bounded realization]\label{seed:thm:tbe-realize}
+For every $k$-ary primitive recursive description $f$ there are terms
+$\tau_f(b,x_1,\ldots,x_k)$ and $M_f(b)$ such that
+$\mathsf{T}_{B\varepsilon}$ proves:
+\begin{enumerate}[label=(\roman*),nosep]
+\item $M_f$ is nondecreasing and $b\leq M_f(b)$;
+\item $\tau_f(b,\vec x)\leq M_f(b)$ for all $b$, $\vec x$;
+\item if $x_i\leq b$ and $x_i\leq c$ for all $i$, then
+$\tau_f(b,\vec x)=\tau_f(c,\vec x)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By recursion on $f$.
+
+\emph{Initial descriptions.} $\tau_0\defeq0$,
+$\tau_{\pi_i}(b,\vec x)\defeq\operatorname{mn}(x_i,b)$,
+$\tau_{\Suc}(b,x)\defeq\Suc\operatorname{mn}(x,b)$, with $M(b)\defeq\Suc b$.
+The properties follow from \cref{seed:lem:tbe-add}(a).
+
+\emph{Composition.} Let $f(\vec x)=h(g_1(\vec x),\ldots,g_m(\vec x))$. Put
+$Q\defeq M_{g_1}\circ\cdots\circ M_{g_m}$ (the identity if $m=0$),
+$M_f\defeq M_h\circ Q$ and
+\[
+ \tau_f(b,\vec x)\defeq
+ \tau_h\bigl(Q(b),\tau_{g_1}(b,\vec x),\ldots,\tau_{g_m}(b,\vec x)\bigr).
+\]
+Since the $M_{g_i}$ are nondecreasing and $z\leq M_{g_i}(z)$,
+$M_{g_i}(b)\leq Q(b)$. (ii) is the bound for $\tau_h$. For (iii) the inner
+values agree at the caps $b$ and $c$ by the hypothesis for the $g_i$, and
+they are bounded by $Q(b)$ and by $Q(c)$; (iii) for $h$ gives the claim. (i)
+holds by composition.
+
+\emph{Primitive recursion.} Let $f(0,\vec x)=g(\vec x)$ and
+$f(\Suc n,\vec x)=h(n,f(n,\vec x),\vec x)$. Put
+\[
+ F\defeq M_h\circ M_g\circ\Suc,\qquad
+ I_F(t)\defeq B_0(t;u,v.F(v)),\qquad
+ C_b\defeq I_F(\Suc\operatorname{db}(b)),\qquad M_f(b)\defeq C_b .
+\]
+$F$ is nondecreasing with $\Suc z\leq F(z)$ and $M_h(z)\leq F(z)$. Then
+$I_F(0)=0$, $I_F(\Suc t)=F(I_F(t))$, $t\leq I_F(t)$ by induction, and $I_F$
+is nondecreasing by a quantifier-free induction that uses discreteness of the
+order; so $b\mapsto C_b$ is nondecreasing and $b\leq C_b$. For $j\leq b$
+define the stage bound
+\[
+ \kappa_b(j)\defeq I_F\bigl(\Suc\operatorname{ad}_b(b,j)\bigr).
+\]
+\Cref{seed:lem:tbe-add} gives
+\begin{equation}\label{seed:eq:stage}
+ b\leq\kappa_b(0),\quad M_g(b)\leq\kappa_b(0),\qquad
+ \Suc j\leq b\to\kappa_b(\Suc j)=F(\kappa_b(j)),\qquad
+ j\leq b\to b\leq\kappa_b(j)\leq C_b .
+\end{equation}
+Indeed $\kappa_b(0)=I_F(\Suc b)=F(I_F(b))\geq F(b)\geq M_g(b)$; the
+recurrence is \cref{seed:lem:tbe-add}(d); the upper bound is
+\cref{seed:lem:tbe-add}(f) and the lower bound is monotonicity.
+
+Write $n_b\defeq\operatorname{mn}(n,b)$ and
+$\vec x_b\defeq(\operatorname{mn}(x_i,b))_i$, and define
+\[
+ \tau_f(b,n,\vec x)\defeq
+ \operatorname{Rec}_{C_b}\bigl(n_b,\tau_g(b,\vec x_b);\,
+ u,v.\,\tau_h(C_b,u,v,\vec x_b)\bigr).
+\]
+(ii) is the bound of \cref{seed:lem:tbe-clip}.
+
+\emph{No clipping on bounded inputs.} Fix $\vec x\leq b$ and let
+$r_b(j)\defeq\operatorname{Rec}_{C_b}(j,\tau_g(b,\vec x);
+u,v.\tau_h(C_b,u,v,\vec x))$. Quantifier-free induction on $j$ proves
+\begin{equation}\label{seed:eq:growth}
+ j\leq b\to r_b(j)\leq\kappa_b(j).
+\end{equation}
+At $0$, $\tau_g(b,\vec x)\leq M_g(b)\leq\kappa_b(0)\leq C_b$, so the seed is
+not clipped. Let $\Suc j\leq b$. The arguments $j$, $r_b(j)$, $\vec x$ of the
+step are bounded by $\kappa_b(j)$ and by $C_b$, so (iii) for $h$ gives
+\[
+ \tau_h(C_b,j,r_b(j),\vec x)=\tau_h(\kappa_b(j),j,r_b(j),\vec x)
+ \leq M_h(\kappa_b(j))\leq F(\kappa_b(j))=\kappa_b(\Suc j)\leq C_b .
+\]
+The value is not clipped, which proves \eqref{seed:eq:growth} and
+\begin{equation}\label{seed:eq:unclipped}
+ \Suc j\leq b\to r_b(\Suc j)=\tau_h(C_b,j,r_b(j),\vec x).
+\end{equation}
+
+\emph{Coherence.} Fix $b$, $c$ and $n,\vec x$ bounded by both. The minimum
+identities remove the clipping of the inputs. Quantifier-free induction on
+$j$ proves $(j\leq b\land j\leq c)\to r_b(j)=r_c(j)$: the base is (iii) for
+$g$ and the absence of seed clipping; if $\Suc j\leq b,c$, the two states at
+$j$ are equal and bounded by $C_b$ and $C_c$, as are the other arguments, so
+(iii) for $h$ equates the two step values and \eqref{seed:eq:unclipped}
+removes their clipping. At $j=n$ this is (iii) for $f$. The parameters
+$b,c,n,\vec x$ are fixed and both induction formulas are quantifier-free.
+
+Every body inserted into $B_0$ or $\operatorname{Rec}_b$ is the already
+compiled term $\tau_h$ of the original language. No recursion over a
+function introduced later by a graph is used.
+\end{proof}
+
+For a nonempty tuple $\vec x=(x_1,\ldots,x_k)$ let
+\[
+ C_i(\vec x)\defeq\bigwedge_{j<i}x_j<x_i\land\bigwedge_{j>i}x_j\leq x_i
+\]
+say that $i$ is the first largest coordinate. By \cref{seed:lem:tbe-order}
+these $k$ quantifier-free cases are exhaustive and pairwise disjoint. Define
+the graph
+\begin{equation}\label{seed:eq:graph}
+ \Phi_f(\vec x,z)\defeq
+ \bigvee_{i=1}^{k}\bigl(C_i(\vec x)\land z=\tau_f(x_i,\vec x)\bigr),
+\end{equation}
+and $z=\tau_f(0)$ for a nullary $f$.
+
+\begin{example}
+For addition, without the general compiler:
+$\Phi_+(x,y,z)\defeq(y\leq x\land z=\operatorname{ad}_x(x,y))\lor
+(x<y\land z=\operatorname{ad}_y(x,y))$. In each case the chosen cap bounds
+both arguments, and \cref{seed:lem:tbe-add} gives the addition equations.
+Each of the two value terms is bounded by twice one input, whereas addition
+has no bounding coordinate.
+\end{example}
+
+\begin{lemma}[Graphs]\label{seed:lem:tbe-graph}
+$\mathsf{T}_{B\varepsilon}$ proves that each $\Phi_f$ is total and
+single-valued. In the definitional extension by the functions $f^*$ with
+graph $\Phi_f$:
+\begin{enumerate}[label=(\alph*),nosep]
+\item $f^*(\vec x)=\tau_f(b,\vec x)$ whenever $b$ bounds all $x_i$;
+\item the defining equations of the description $f$ hold;
+\item induction holds for quantifier-free formulas that contain finitely
+many of the $f^*$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Exhaustiveness gives a value term in each case, and disjointness gives
+uniqueness. (a) On the case $C_i$ both $b$ and $x_i$ bound all arguments, so
+\cref{seed:thm:tbe-realize}(iii) applies.
+
+(b) The initial equations follow from the initial terms. For composition
+take a cap $b$ for the inputs; the inner values are bounded by $Q(b)$, and
+(a) at $Q(b)$ for the outer function gives the equation from the definition
+of $\tau_f$. For recursion at the counter $0$ take a cap $b$ for $0,\vec x$:
+the seed is not clipped, so the value is
+$\tau_g(b,\vec x)=g^*(\vec x)$. At $\Suc n$ take a cap $b$ for
+$\Suc n,\vec x$: then $n\leq b$, \eqref{seed:eq:unclipped} applies, (a)
+identifies the previous state with $f^*(n,\vec x)$, all arguments of the step
+are bounded by $C_b$, and (a) for $h$ identifies the step value with
+$h^*(n,f^*(n,\vec x),\vec x)$.
+
+(c) Conservativity of the extension is not enough for this. By recursion on
+a term with occurrences of the $f^*$ one obtains finitely many pairs
+$(A_j,t_j)$ of a quantifier-free guard and a term, both in the original
+language, such that the guards cover all inputs and the term equals $t_j$ on
+$A_j$: at a composition take the product of the cases of the arguments and
+then the cases of the outer graph. The guards need not be disjoint; the
+values agree on overlaps. For a quantifier-free formula take a common
+refinement for all its terms, replace the terms by their values on each
+guard, and keep the connectives. The disjunction of the guarded formulas is
+quantifier-free in the original language and provably equivalent to the given
+formula, also under implication and negation, because the guards cover all
+inputs. \Cref{seed:lem:tbe-qf} applied to it gives the induction instance. A
+graph with an existential quantifier would not allow this step.
+\end{proof}
+
+\begin{theorem}[Bi-interpretation]\label{seed:thm:tied-biint}
+$\mathsf{T}_{B\varepsilon}$ and $\iPRA$ are bi-interpretable. Both
+interpretations use the whole domain and actual equality, the logic is
+translated identically, and the identity is the isomorphism of both
+composites. The theories are equiconsistent.
+\end{theorem}
+
+\begin{proof}
+\emph{In $\iPRA$.} Interpret $0$, $\Suc$ as themselves, $\varepsilon$ as the
+primitive recursive characteristic of equality, and each staged recursor
+with body $h$ by primitive recursion with initial value
+$\Suc(h(0,0,\vec p))$ and step $h(n,v,\vec p)$, after translating the body.
+The equations \eqref{seed:eq:B0}, \eqref{seed:eq:BS} become defining
+equations, and \eqref{seed:eq:erange}--\eqref{seed:eq:sep} and induction for
+literal equations are provable.
+
+\emph{In $\mathsf{T}_{B\varepsilon}$.} Interpret each description $f$ by
+its graph $\Phi_f$, or work in the extension by the $f^*$.
+\Cref{seed:lem:tbe-graph} gives the defining equations and every
+quantifier-free induction instance; \cref{seed:lem:tied-macros} and
+\eqref{seed:eq:sep} give injectivity of the successor and
+$0\neq\Suc x$.
+
+\emph{The composite on the side of $\iPRA$.} By recursion on a description,
+with quantifier-free induction on the counter at each recursion node, the
+double interpretation of a function equals the function: both satisfy the
+same initial and step equations.
+
+\emph{The composite on the side of $\mathsf{T}_{B\varepsilon}$.} By
+recursion on the stage of a term. $0$ and $\Suc$ are preserved. The
+interpreted characteristic of equality and $\varepsilon$ are both Boolean
+and both reflect equality, so they agree by cases. For a recursor with body
+$h$ the hypothesis for the earlier stage identifies the interpreted body
+with $h$; the recursor and its double interpretation satisfy
+\eqref{seed:eq:B0}, \eqref{seed:eq:BS} for the same body, and induction on
+the equation between them identifies them at every counter and parameter.
+Where the double interpretation is expressed with graph-defined functions,
+\cref{seed:lem:tbe-graph}(c) provides the induction instance.
+
+All operations and equality are preserved by the identity, so every formula
+is provably equivalent to its double translation by induction on the
+formula. Falsity is preserved in both directions.
+\end{proof}
+
+\subsection{The functions denoted by terms}
+
+For $k\geq1$ let $\mathcal A_k$ be the set of primitive recursive
+$f\colon\mathbb N^k\to\mathbb N$ for which there are a coordinate $i$ and a
+unary primitive recursive $F$ with $f(\vec x)\leq F(x_i)$ for all $\vec x$,
+and let $\mathcal A_0$ be the constants.
+
+\begin{theorem}[Exact class of term functions]\label{seed:thm:tbe-exact}
+The functions denoted in the standard model by the terms of
+$\mathsf{T}_{B\varepsilon}$ with $k$ free variables are exactly the
+functions in $\mathcal A_k$.
+\end{theorem}
+
+\begin{proof}
+Every term denotes a primitive recursive function, and
+\cref{seed:thm:tied-bound} gives the bound. Conversely let
+$f(\vec x)\leq F(x_i)$. The compiler provides the cases $C_j(\vec x)$ and the
+value terms $v_j(\vec x)\defeq\tau_f(x_j,\vec x)$, with value $f(\vec x)$ on
+$C_j$. Let $a_j(\vec x)\defeq G(\chi_{C_j}(\vec x),v_j(\vec x))$: it is $0$
+off its case and $f(\vec x)$ on it. Exactly one case holds, so each $a_j$ is
+at most $F(x_i)$ and at most one is nonzero. Every unary primitive recursive
+function is a term: for one variable the only case is automatic and the
+value is $\tau_F(x,x)$. Put $b\defeq\tau_F(x_i,x_i)$, $s_0\defeq0$ and
+$s_j\defeq\operatorname{ad}_b(s_{j-1},a_j)$ for $1\leq j\leq k$. Every
+partial sum is $0$ or $f(\vec x)$, so both arguments of each bounded addition
+are at most $b$, and $s_k$ denotes $f$. For $k=0$ use the numeral.
+\end{proof}
+
+The converse direction assumes that the majorant is valid in the standard
+model. To prove inside $\mathsf{T}_{B\varepsilon}$ that the single term
+equals the graph-defined function one needs a proof of the majorant in the
+theory; \cref{seed:thm:tied-biint} needs no such hypothesis.
+
+\begin{proposition}[Number of value terms]\label{seed:prop:tbe-sharp}
+The graph \eqref{seed:eq:graph} of a $k$-ary function has $k$ value terms.
+The $k$-ary sum is not, in the standard model, always equal to one of $r<k$
+terms.
+\end{proposition}
+
+\begin{proof}
+Each of the $r$ terms is bounded by a constant or by a function of one
+input. Choose an input that controls none of them, fix the others at $0$ and
+let the chosen one grow: the terms stay bounded and the sum does not.
+\end{proof}
+
+This concerns a choice among finitely many value terms. It is not a bound on
+the number of clauses of a graph formula: the characteristic function of a
+primitive recursive graph is bounded, hence a term by
+\cref{seed:thm:tbe-exact}, so every such graph has a definition by one
+equation. The value terms are what gives totality and the transfer of
+induction in \cref{seed:lem:tbe-graph}.
+
+\begin{example}[The majorant must be primitive recursive]
+\label{seed:ex:tbe-majorant}
+$\mathcal A_2$ is strictly smaller than the set of primitive recursive
+functions that are bounded by an arbitrary function of one input. Let
+$u_0,u_1,\ldots$ enumerate the unary primitive recursive descriptions and
+let $g(x)\defeq1+\max_{e\leq x}u_e(x)$. This $g$ is total recursive and has
+no primitive recursive majorant, since $g(x)>u_e(x)$ for $x\geq e$. Fix a
+machine for $g$ and let $s(x,t)$ be its output if it halts within $t$ steps
+on $x$, and $0$ otherwise; $s$ is primitive recursive. Then
+$f(x,t)\defeq x+s(x,t)$ is primitive recursive, and for fixed $x$ its values
+lie in $\{x,x+g(x)\}$, so it is bounded by a function of $x$. A primitive
+recursive bound in $x$ would majorize $g$, and no bound in $t$ exists because
+$f(x,t)\geq x$. Hence $f\notin\mathcal A_2$.
+\end{example}
+
+\subsection{Truncated subtraction in place of the equality test}
+
+\begin{definition}\label{seed:def:tbd}
+The terms are
+$t\mathrel{::=}x\mid0\mid\Suc t\mid d(t,t)\mid B(n;u,v.h)$. The computation
+equations are \eqref{seed:eq:B0}, \eqref{seed:eq:BS} and
+\begin{equation}\label{seed:eq:monus}
+ d(x,0)=x,\qquad d(x,\Suc y)=P(d(x,y)),
+\end{equation}
+where $P$ is the term of \cref{seed:def:tied}.
+\begin{enumerate}[label=(\alph*),nosep]
+\item $\mathsf{T}_{Bd}$ is ordinary intuitionistic first-order logic with
+equality over these terms, with the four computation equations, coverage
+$\forall x\,(x=0\lor\exists y\,x=\Suc y)$, separation $0=\Suc 0\to\bot$ and
+induction for literal equations with side assumptions.
+\item $\mathsf{N}_{Bd}$ is the native calculus over these terms with the
+four computation equations and the rule forms of \cref{base:sec:kernel};
+the contradiction is $0=\Suc 0$.
+\end{enumerate}
+\end{definition}
+
+In $\mathsf{T}_{Bd}$ coverage is an axiom, in contrast to
+$\mathsf{T}_{B\varepsilon}$. It is used in the proof of
+\cref{seed:lem:tbd-gc}, and it does not follow from the computation
+equations and induction for literal equations: \pkg{monus\_and\_neutral\_major}
+refers to the coordinatewise structure on $\mathbb N\times\mathbb N$, treated
+in \pkg{scope\_kernel}, which satisfies those and refutes coverage. In
+$\mathsf{N}_{Bd}$ the case rule \textsc{nc} supplies this resource.
+
+By \cref{seed:lem:tied-macros,seed:lem:tied-gate} the terms $P$, $Z$, $G$
+and $B_0$ and their equations are available in both theories. In
+$\mathsf{T}_{Bd}$, coverage and the values of $Z$ give
+\begin{equation}\label{seed:eq:tbd-Z}
+ Z(x)=0\lor Z(x)=1,\qquad Z(x)=1\leftrightarrow x=0 .
+\end{equation}
+
+\begin{lemma}\label{seed:lem:tbd-prelim}
+With induction for literal equations only,
+\[
+ d(0,y)=0,\qquad P(d(\Suc x,y))=d(x,y),\qquad d(\Suc x,\Suc y)=d(x,y),
+ \qquad d(x,x)=0,\qquad d(\Suc x,x)=1 .
+\]
+\end{lemma}
+
+\begin{proof}
+$d(0,y)=0$ by induction on $y$ with $P(0)=0$. For the second equation fix
+$x$ and induct on $y$: the base is $P(\Suc x)=x$, and
+$P(d(\Suc x,\Suc y))=P(P(d(\Suc x,y)))=P(d(x,y))=d(x,\Suc y)$. The third
+equation follows from \eqref{seed:eq:monus} and the second. The last two are
+inductions on $x$ with bases $d(0,0)=0$, $d(1,0)=1$ and the third equation
+as step.
+\end{proof}
+
+\begin{lemma}[Gated complement]\label{seed:lem:tbd-gc}
+$\mathsf{T}_{Bd}$ proves
+\begin{equation}\label{seed:eq:gc}
+ G\bigl(Z(d(y,x)),\,d(x,d(x,y))\bigr)=G\bigl(Z(d(y,x)),\,y\bigr),
+\end{equation}
+and consequently $d(y,x)=0\to d(x,d(x,y))=y$.
+\end{lemma}
+
+\begin{proof}
+Fix $x$ and apply induction for literal equations to \eqref{seed:eq:gc} as
+an equation in $y$. At $y=0$ the control is $Z(d(0,x))=1$, and both second
+arguments are $0$, by $d(x,0)=x$ and $d(x,x)=0$.
+
+For the step keep the induction hypothesis and put $a\defeq d(\Suc y,x)$. By
+coverage $a$ is a successor or $0$. If $a$ is a successor, $Z(a)=0$ and both
+sides of the goal are $0$. Let $a=0$. By \cref{seed:lem:tbd-prelim},
+$d(y,x)=P(d(\Suc y,x))=0$, so the induction hypothesis, with both gates at
+the control $1$, gives
+\[
+ d(x,t)=y,\qquad t\defeq d(x,y).
+\]
+If $t=0$, then $d(x,t)=x$, so $x=y$ and $a=d(\Suc y,y)=1$, contradicting
+$a=0$. Hence $t=\Suc w$ for some $w$ by coverage, and
+$w=P(t)=d(x,\Suc y)$ by \eqref{seed:eq:monus}. Put $v\defeq d(x,w)$. Then
+$P(v)=d(x,\Suc w)=d(x,t)=y$. If $v=0$, then $y=0$, so
+$t=d(x,0)=x=\Suc w$ and $v=d(\Suc w,w)=1$, a contradiction. Hence
+$v=\Suc z$ by coverage, $z=P(v)=y$ and $v=\Suc y$. With $w=d(x,\Suc y)$
+this reads
+\[
+ d(x,d(x,\Suc y))=\Suc y,
+\]
+which is the goal at the control $Z(a)=1$. The contradictions use
+$0\neq1$ only. The only induction formula is the literal equation
+\eqref{seed:eq:gc}. If $d(y,x)=0$, both gates have the control $1$.
+\end{proof}
+
+\begin{theorem}[Reflection of equality]\label{seed:thm:tbd-reflect}
+Let $\varepsilon(x,y)\defeq G\bigl(Z(d(x,y)),Z(d(y,x))\bigr)$.
+$\mathsf{T}_{Bd}$ proves
+\[
+ d(x,y)=0\land d(y,x)=0\to x=y,\qquad
+ \varepsilon(x,y)=0\lor\varepsilon(x,y)=1,\qquad
+ \varepsilon(x,y)=1\leftrightarrow x=y .
+\]
+\end{theorem}
+
+\begin{proof}
+From $d(y,x)=0$, \cref{seed:lem:tbd-gc} gives $d(x,d(x,y))=y$; substituting
+$d(x,y)=0$ and $d(x,0)=x$ gives $x=y$. Each input of the gate is $0$ or $1$
+by \eqref{seed:eq:tbd-Z}, and the gate equations give the range and
+$\varepsilon(x,y)=1\leftrightarrow d(x,y)=0\land d(y,x)=0$: if the first
+input is $0$ the output is $0$, and otherwise it is the second input. The
+first statement gives $x=y$ from the right side; conversely $x=y$ makes both
+differences $0$ by $d(x,x)=0$.
+\end{proof}
+
+\begin{corollary}\label{seed:cor:tbd-biint}
+$\mathsf{T}_{Bd}$ is bi-interpretable with $\iPRA$, with whole domains,
+actual equality, the logic translated identically and the identity as
+isomorphism of both composites.
+\end{corollary}
+
+\begin{proof}
+By \cref{seed:thm:tbd-reflect} the term $\varepsilon$ satisfies
+\eqref{seed:eq:erange} and \eqref{seed:eq:ereflect}, so every derivation of
+$\mathsf{T}_{B\varepsilon}$ becomes a derivation of $\mathsf{T}_{Bd}$ when
+this term is substituted for the symbol; in particular
+\cref{seed:thm:tbe-realize,seed:lem:tbe-graph} hold. In the other direction
+$\iPRA$ interprets the recursors as in \cref{seed:thm:tied-biint} and $d$ as
+truncated subtraction; it proves \eqref{seed:eq:monus}, coverage, separation
+and induction for literal equations.
+
+For the composite on the side of $\mathsf{T}_{Bd}$, first the recursors
+$C$ and $W$, which do not contain $d$, are identified with their double
+interpretations by induction on the equation between them, and hence $P$ is
+preserved. The double interpretation of $d$ is the graph of the primitive
+recursive truncated subtraction; it satisfies the two equations
+\eqref{seed:eq:monus} with the preserved $P$, and induction on the second
+argument identifies it with $d$. Likewise the term $\widehat d$ of
+\cref{seed:lem:tbe-diff}, with $\varepsilon$ expanded, satisfies
+$\widehat d(x,0)=x$ and $\widehat d(x,\Suc y)=P(\widehat d(x,y))$, so
+$\widehat d(x,y)=d(x,y)$ by induction on $y$ for this literal equation of
+the original language. The remaining recursors are identified as in
+\cref{seed:thm:tied-biint}, and the composite on the side of $\iPRA$ is
+unchanged.
+\end{proof}
+
+\subsection{The native calculus with truncated subtraction}
+
+The proof of \cref{seed:lem:tbd-gc} splits on $t=0$ or $t=\Suc w$ while an
+induction hypothesis that mentions $t$ is in the context, and
+\cref{seed:cor:tied-noterms} excludes a selector term. $\mathsf{N}_{Bd}$
+derives the split by a selector whose zero branch is Boolean.
+
+\begin{lemma}\label{seed:lem:nbd-basic}
+$\mathsf{N}_{Bd}$ derives the equality laws, \textsc{nc} and \textsc{ei} of
+\cref{seed:lem:succ-basic}, the equations of
+\cref{seed:lem:tied-macros,seed:lem:tied-gate,seed:lem:tbd-prelim}, every
+equation from $0=\Suc 0$, and the functional range rule: if
+$\Gamma\proves K(0)$ and $\Gamma\proves K(1)$ then
+$\Gamma\proves K(Z(t))$, for every formula template $K$ and term $t$.
+\end{lemma}
+
+\begin{proof}
+Reflexivity follows from the computation $C(\Suc 0,p)=p$ as in
+\cref{seed:lem:succ-basic}, and the other equality laws, \textsc{nc} and
+\textsc{ei} are derived as there; \cref{seed:lem:succ-leibniz} holds as
+well. The equations of the three lemmas use computation, equality and
+\textsc{ei} only. Under $0=\Suc 0$, transport between $C(0,a)=\Suc a$ and
+$C(1,a)=a$ gives $\Suc a=a$; then \textsc{ei} on the equation $a=0$ gives
+$a=0$ for every $a$, hence every equation. The functional range rule is
+\textsc{nc} on the template $w\mapsto K(Z(w))$.
+\end{proof}
+
+By recursion on a native formula, with \rulename{DI} by cases at each
+$\D{x}{y}$ and the representation of $\Q{y}B$ by $\D{v}{y}B$ with $v$ unused,
+every native formula follows from $0=\Suc 0$.
+
+A term $b$ is called \emph{two-valued} in $\Gamma$ if the functional range
+rule holds for it: $\Gamma\proves K(0)$ and $\Gamma\proves K(1)$ imply
+$\Gamma\proves K(b)$ for every template $K$. Terms $Z(t)$ are two-valued.
+
+\begin{lemma}[A selector with a Boolean zero branch]\label{seed:lem:nbd-sel}
+Let $\operatorname{inc}(a,b)\defeq C(Z(b),a)$ and
+\[
+ \eta(y,b,u)\defeq\operatorname{inc}\bigl(G(y,u),\,G(Z(y),b)\bigr).
+\]
+Then $\eta(\Suc y,b,u)=u$ for all terms, and $\eta(0,b,u)=b$ for every
+two-valued $b$.
+\end{lemma}
+
+\begin{proof}
+$\eta(\Suc y,b,u)=\operatorname{inc}(u,G(0,b))=\operatorname{inc}(u,0)
+=C(1,u)=u$. $\eta(0,b,u)=\operatorname{inc}(0,G(1,b))=C(Z(b),0)$, which is
+$C(1,0)=0$ at $b=0$ and $C(0,0)=1$ at $b=1$; the functional range rule for
+the template $C(Z(w),0)=w$ gives $\eta(0,b,u)=b$.
+\end{proof}
+
+The zero branch of $\eta$ is two-valued and the successor branch is
+arbitrary, so $\eta$ does not contradict \cref{seed:thm:tied-bound}.
+
+\begin{lemma}[Contextual cases]\label{seed:lem:nbd-cases}
+In $\mathsf{N}_{Bd}$, let $s=t$ be a literal equation.
+\begin{enumerate}[label=(\alph*),nosep]
+\item If $b$ is two-valued in $\Gamma$, $\Gamma,b=0\proves s=t$ and
+$\Gamma,b=1\proves s=t$, then $\Gamma\proves s=t$.
+\item If $z$ is fresh, $\Gamma,r=0\proves s=t$ and
+$\Gamma,r=\Suc z\proves s=t$, then $\Gamma\proves s=t$.
+\end{enumerate}
+The context and the equation may mention $b$ and $r$.
+\end{lemma}
+
+\begin{proof}
+(a) Let $K(x)\defeq\D{a}{y}\bigl(\eta(y,x,s)=\eta(y,b,t)\bigr)$ with $a$
+unused. For $c\in\{0,1\}$ derive $K(c)$ by \rulename{DI} by cases: the local
+assumption $\eta(0,c,s)=\eta(0,b,t)$ is $c=b$ by \cref{seed:lem:nbd-sel},
+the given branch gives $s=t$, and this is the matrix at $\Suc z$. The range
+rule for $b$ gives $K(b)$. Rule \rulename{DE} opens its closure, whose zero
+instance $\eta(0,b,s)=\eta(0,b,t)$ holds because both sides equal $b$, and
+\rulename{QE} at $1$ gives $s=t$.
+
+(b) Rule \textsc{nc} on fresh variables in literal equations gives
+\[
+ G(Z(r),r)=0,\qquad G(Z(Z(r)),r)=G\bigl(Z(Z(r)),\Suc(P(r))\bigr):
+\]
+for the first, the zero case is $G(1,0)=0$ and a successor case has the
+control $0$; for the second, the zero case has the control $0$, and a
+successor case has the control $1$ and $P(\Suc x)=x$. Apply (a) to
+$b\defeq Z(r)$. Under $Z(r)=1$ the first identity gives $r=0$. Under
+$Z(r)=0$ the second gives $r=\Suc(P(r))$; substitute $P(r)$ for $z$ in the
+second given branch.
+\end{proof}
+
+\begin{theorem}\label{seed:thm:nbd}
+$\mathsf{N}_{Bd}$ derives \eqref{seed:eq:gc}, the three statements of
+\cref{seed:thm:tbd-reflect} in the forms
+\[
+ d(x,y)=0,\ d(y,x)=0\proves x=y,\qquad
+ s=t\proves\varepsilon(s,t)=1,\qquad\varepsilon(s,t)=1\proves s=t,
+\]
+with $\varepsilon(s,t)$ two-valued, and the introduction and elimination
+rules of intuitionistic implication, conjunction, disjunction, both
+quantifiers and falsity for the formulas defined in the proof. It is
+bi-interpretable with $\mathsf{T}_{Bd}$ and with $\iPRA$, with whole domains,
+actual equality, identity composites and both formula round trips.
+\end{theorem}
+
+\begin{proof}
+Every case split in the proof of \cref{seed:lem:tbd-gc} has an equation as
+its conclusion, so it is an instance of \cref{seed:lem:nbd-cases}(b); the
+branches that end in $0=1$ are closed by \cref{seed:lem:nbd-basic}. The
+induction is \textsc{ei} for the same literal equation. The term
+$\varepsilon(s,t)$ is two-valued by the range rules of its two inputs and
+the gate equations.
+
+For a literal equation $E$, namely $s=t$, define the gate
+$\mathcal G_v(E)\defeq\bigl(G(v,\varepsilon(s,t))=G(v,1)\bigr)$; it is
+derivable at $v=0$ and interderivable with $E$ at $v=\Suc w$. For literal
+equations $E$ ($s=t$) and $F$ ($r=w$) define the formula selector
+$\mathcal M_v(E,F)\defeq\bigl(\eta(v,\varepsilon(s,t),\varepsilon(r,w))=1
+\bigr)$; by \cref{seed:lem:nbd-sel}, $\mathcal M_0(E,F)$ is interderivable
+with $E$ and $\mathcal M_{\Suc z}(E,F)$ with $F$. Extend the gate through
+$\D{x}{y}$ by $\mathcal G_v(\D{x}{y}A)\defeq\D{x}{y}\mathcal G_vA$, replace
+each $\Q{y}A$ by $\D{a}{y}A$ with $a$ unused, align binder depths by the
+padding $A\approx\D{a}{y}\mathcal G_yA$, and extend the selector through
+matched binders by recursion on the formulas; the endpoint properties are
+preserved by the binder congruence of \cref{seed:lem:succ-leibniz}. With
+$p(z)\defeq B_0(z;u,v.Z(v))$, so that $p(1)=1$ and $p(2)=0$, and with unused
+coordinates fresh, put
+\begin{align*}
+ A\Rightarrow_*B&\defeq\D{a}{z}\mathcal M_z(A,B), &
+ A\land_*B&\defeq\D{a}{z}\mathcal G_z\mathcal M_{p(z)}(A,B),\\
+ \exists_*x\,A(x)&\defeq\D{x}{y}\mathcal G_yA(x), &
+ A\lor_*B&\defeq\exists_*x\,\mathcal M_x(A,B),\\
+ \forall_*x\,A(x)&\defeq A(0)\land_*\D{a}{z}\mathcal G_zA(z), &
+ \bot_*&\defeq(0=\Suc 0).
+\end{align*}
+Implication introduction is \rulename{DI} by cases, whose local assumption
+is the zero instance of the selector; implication elimination opens the
+closure and specializes at $1$. The derivable zero instance of the gate
+gives the introductions of conjunction and existence, and specialization at
+$1$ and $2$ their eliminations. Once implication is available, \textsc{nc}
+on an implication template gives numerical cases in a context for arbitrary
+formulas, hence disjunction elimination and universal elimination. These are
+the constructions of \cref{base:thm:bridge} with the atomic gate and
+selector above in place of the numerical selector $\sel$, which does not
+exist here.
+
+Every rule of $\mathsf{N}_{Bd}$ is sound for $\mathsf{T}_{Bd}$ under the
+readings of \cref{base:sec:reading}: \rulename{DI} by cases uses coverage
+and \rulename{QI} uses induction for literal equations. Conversely
+$\mathsf{N}_{Bd}$ derives the translation of every theorem of
+$\mathsf{T}_{Bd}$ by the rules just established. The round trips are
+\[
+ \Q{y}B\approx B(0)\Rightarrow_*\forall_*y\,B(y),\qquad
+ \D{x}{y}B\approx
+ \exists_*x\,\bigl(B(x,0)\Rightarrow_*\forall_*y\,B(x,y)\bigr):
+\]
+forward, \rulename{DE} opens the witness, and under the zero instance
+\rulename{QE} gives every instance; backward, eliminate the existential, keep
+the zero instance of the matrix, and use the implication and the universal
+at $\Suc z$ for \rulename{DI} by cases. Induction on formulas gives both
+formula composites, and the numerical composites are identities. The
+bi-interpretation with $\iPRA$ is \cref{seed:cor:tbd-biint}.
+\end{proof}
+
+%======================================================================
+\section{The self-seeded recursor}
+\label{seed:sec:self}
+
+This section draws on \pkg{selfseed\_scalar}, \pkg{scope\_and\_coverage} and
+\pkg{coverage\_and\_kernel}.
+
+\subsection{The theories}
+
+\begin{definition}\label{seed:def:tf}
+The terms are
+$t\mathrel{::=}x\mid0\mid\Suc t\mid\varepsilon(t,t)\mid F(n;v.h)$, where
+$F(n;v.h)$ binds $v$ in $h$. The computation equations are
+\begin{equation}\label{seed:eq:F}
+ F(0;v.h)=\Suc(h\subst{0}{v}),\qquad
+ F(\Suc n;v.h)=h\subst{F(n;v.h)}{v}.
+\end{equation}
+$\mathsf{T}_F^{-}$ is ordinary intuitionistic first-order logic with
+equality over these terms with \eqref{seed:eq:F}, the axioms
+\eqref{seed:eq:erange}, \eqref{seed:eq:ereflect}, \eqref{seed:eq:sep} for
+$\varepsilon$ and separation, and induction for literal equations with side
+assumptions. $\mathsf{T}_F$ is $\mathsf{T}_F^{-}$ with the additional axiom
+$\Suc x=\Suc y\to x=y$. Coverage is not an axiom of either theory.
+\end{definition}
+
+The update sees neither an initializer nor the old counter. Compared with
+$\mathsf{T}_{B\varepsilon}$, which derives injectivity from the counter
+argument (\cref{seed:lem:tied-macros}), $\mathsf{T}_F$ postulates it. As in
+\cref{seed:sec:tied}, $\Suc$ can be removed from the signature by
+$\Suc a\defeq F(0;v.a)$. Put
+\[
+ C(n,a)\defeq F(n;v.a),\qquad Z(n)\defeq C(n,0),
+\]
+so that $C(0,a)=\Suc a$, $C(\Suc n,a)=a$, $Z(0)=1$, $Z(\Suc n)=0$.
+
+\begin{lemma}\label{seed:lem:tf-basic}
+$\mathsf{T}_F^{-}$ proves $\Suc n\neq0$. The terms
+\[
+ \neg_Bb\defeq\varepsilon(b,0),\qquad
+ b\land_Bc\defeq\varepsilon\bigl(C(b,\varepsilon(c,0)),0\bigr),\qquad
+ b\lor_Bc\defeq\neg_B(\neg_Bb\land_B\neg_Bc)
+\]
+have the truth tables of negation, conjunction and disjunction on the values
+$0,1$. Every quantifier-free formula $A$ has a term $\chi_A$ with
+$\chi_A=0\lor\chi_A=1$ and $\chi_A=1\leftrightarrow A$, and
+$\mathsf{T}_F^{-}$ admits induction with side assumptions for
+quantifier-free formulas.
+\end{lemma}
+
+\begin{proof}
+If $\Suc n=0$, then $0=Z(\Suc n)=Z(0)=1$. Reflection and the range axiom
+give $\varepsilon(0,0)=1$ and $\varepsilon(1,0)=0$. For the conjunction,
+$C(0,\varepsilon(c,0))=\Suc(\varepsilon(c,0))\neq0$, so the value at $b=0$
+is $0$; and $C(1,\varepsilon(c,0))=\varepsilon(c,0)$, so the value at $b=1$
+is $\neg_B\neg_Bc=c$. The only non-Boolean intermediate value is a
+successor, and its distinctness from $0$ does not cancel a successor. Define
+$\chi_{s=t}\defeq\varepsilon(s,t)$, $\chi_\bot\defeq0$, and the connectives
+by the Boolean terms, implication as $\neg_B\chi_A\lor_B\chi_B$; the Boolean
+range comes from the range axiom and the truth tables. Induction for $A(n)$
+is induction for the literal equation $\chi_{A(n)}=1$.
+\end{proof}
+
+\begin{definition}\label{seed:def:finite-case}
+A \emph{finite-case graph} is a formula
+$\bigvee_i(A_i(\vec x)\land y=t_i(\vec x))$ with quantifier-free guards $A_i$
+and terms $t_i$ of the language, such that the guards are provably
+exhaustive and the values provably agree where guards overlap.
+\end{definition}
+
+\begin{lemma}[Finite-case elimination]\label{seed:lem:tf-cases}
+A finite-case graph is provably total and single-valued. In the definitional
+extension by the functions of finitely many finite-case graphs, every
+quantifier-free formula is provably equivalent to a quantifier-free formula
+of the original language, and induction for quantifier-free formulas of the
+extension is admissible. Compositions of finite-case functions are
+finite-case.
+\end{lemma}
+
+\begin{proof}
+As in \cref{seed:lem:tbe-graph}(c): expand each term into finitely many
+guarded terms of the original language by refining the cases of its
+arguments and then the cases of the outer graph, take a common refinement
+for a formula, and apply \cref{seed:lem:tf-basic} to the resulting
+disjunction.
+\end{proof}
+
+The lemma concerns function terms in formulas. It does not allow a new body
+$h$ of $F$ that contains a function defined by a graph; bodies are always
+terms of the original language.
+
+\subsection{Without injectivity of the successor}
+
+All statements of this subsection are theorems of $\mathsf{T}_F^{-}$.
+
+\begin{lemma}[No fixed point]\label{seed:lem:tf-nofix}
+$\Suc a\neq a$ for every $a$.
+\end{lemma}
+
+\begin{proof}
+The term $h(v)\defeq\varepsilon(v,0)$ has no fixed point: $h(v)=v$ and the
+range of $h$ give $v=0$ or $v=1$, contradicting $h(0)=1$ and $h(1)=0$. If
+$\Suc a=a$, then $F(a;v.h)=F(\Suc a;v.h)=h(F(a;v.h))$.
+\end{proof}
+
+\begin{theorem}[No cycle of a fixed length]\label{seed:thm:tf-acyclic}
+For each fixed integer $k\geq1$, the equations \eqref{seed:eq:F} and the
+axioms \eqref{seed:eq:erange}, \eqref{seed:eq:ereflect}, \eqref{seed:eq:sep}
+prove $\forall a\;\Suc^ka\neq a$, without any instance of induction.
+Consequently distinct numerals are provably distinct, and
+$\Suc^ia\neq\Suc^ja$ for fixed $i<j$.
+\end{theorem}
+
+\begin{proof}
+The proofs are constructed by recursion on $k$ outside the theory. Assume
+the statement for all lengths below $k$. Then $\bar0,\ldots,\bar k$ are
+pairwise distinct: $\bar0$ differs from a positive numeral by
+\cref{seed:lem:tf-basic}, and $\bar i=\bar j$ with $1\leq i<j\leq k$ would
+be $\Suc^{j-i}(\bar i)=\bar i$ with $1\leq j-i<k$. For $k=1$ only separation
+is used.
+
+For a term $b$ with $b=0\lor b=1$ let
+$\operatorname{Inc}(b,a)\defeq C(\varepsilon(b,0),a)$, so that
+$\operatorname{Inc}(0,a)=a$ and $\operatorname{Inc}(1,a)=\Suc a$. Define, as
+a written finite expansion,
+\[
+ T_0(v)\defeq0,\qquad
+ T_{j+1}(v)\defeq\operatorname{Inc}\bigl(\varepsilon(v,\bar j),\cdot\bigr)^{j+1}
+ \bigl(T_j(v)\bigr)\quad(0\leq j<k),\qquad c_k(v)\defeq T_k(v),
+\]
+where the exponent denotes $j+1$ written compositions. At $v=\bar i$ with
+$i<k$ the test with index $i$ is $1$ and the others are $0$, so $i+1$
+increments are performed; at $v=\bar k$ all tests are $0$. Hence
+\[
+ c_k(\bar i)=\overline{i+1}\ (0\leq i<k),\qquad c_k(\bar k)=0,\qquad
+ c_k(v)=\bar0\lor\cdots\lor c_k(v)=\bar k,
+\]
+the last by the finitely many cases of \eqref{seed:eq:erange}: if some test
+is $1$, reflection identifies $v$ with a numeral and distinctness makes the
+other tests $0$.
+
+If $c_k^{\,k}(w)=w$ for the $k$-fold composition, then $w$ is one of
+$\bar0,\ldots,\bar k$ by the range, since $k\geq1$. On these $k+1$ distinct
+values $c_k$ is one cycle, and $k$ applications of it end at a different
+numeral. So $c_k^{\,k}(w)\neq w$ for every $w$.
+
+Now let $\Suc^ka=a$ and $w\defeq F(a;v.c_k)$. By $k$ uses of the successor
+equation and congruence,
+$w=F(\Suc^ka;v.c_k)=c_k^{\,k}(F(a;v.c_k))=c_k^{\,k}(w)$, a contradiction.
+The last statement applies the theorem to $\Suc^ia$ with the length $j-i$.
+\end{proof}
+
+The theorem excludes a cycle along one successor chain. It does not derive
+$a=b$ from $\Suc a=\Suc b$: two predecessor chains may merge without a
+cycle. The term $c_k$ depends on the fixed $k$, and there is no term for
+cycles of a length given by a variable.
+
+For the next results define, with a parameter $a$,
+\[
+ g_a(v)\defeq\varepsilon(v,0)\lor_B\varepsilon(\Suc v,a),\qquad
+ \theta_a(v)\defeq C(g_a(v),v),\qquad
+ U(j,a)\defeq F(j;v.\theta_a(v)),\qquad p_*(a)\defeq U(a,a).
+\]
+The update $\theta_a$ holds the state if it is $0$ or if its successor is
+$a$, and increments it otherwise. Since $\theta_a(0)=0$, the orbit starts at
+$U(0,a)=1$, and $U(\Suc j,a)=\theta_a(U(j,a))$.
+
+\begin{lemma}[Protected orbit]\label{seed:lem:tf-orbit}
+$U(j,a)=\Suc j\lor\Suc(U(j,a))=a$, and $\Suc(p_*(\Suc^2m))=\Suc^2m$.
+\end{lemma}
+
+\begin{proof}
+The first statement is a quantifier-free induction on $j$ with $a$ fixed.
+The base is $U(0,a)=\Suc 0$. In the step put $v\defeq U(j,a)$ and decide
+$\Suc v=a$. If it holds, $\theta_a$ fixes $v$ and the second alternative
+persists. Otherwise the first alternative of the hypothesis gives
+$v=\Suc j\neq0$, the guard is false and $U(\Suc j,a)=\Suc v=\Suc\Suc j$.
+
+Specialize the proved statement to $j=m$, $a=\Suc^2m$. Both alternatives
+give $\Suc(U(m,\Suc^2m))=\Suc^2m$, so the state is fixed by $\theta_a$ and
+two further computation steps give $U(\Suc^2m,\Suc^2m)=U(m,\Suc^2m)$. No
+successor is cancelled.
+\end{proof}
+
+\begin{theorem}[Coverage and a right predecessor]\label{seed:thm:tf-coverage}
+Let $P$ be the function of the finite-case graph
+\[
+ (n=0\land p=0)\lor(n=1\land p=0)\lor(n\neq0\land n\neq1\land p=p_*(n)).
+\]
+$\mathsf{T}_F^{-}$ proves, by \cref{seed:lem:tf-cases},
+\[
+ P(0)=P(1)=0,\qquad n=0\lor n=\Suc(P(n)),\qquad\Suc(P(\Suc n))=\Suc n,
+\]
+and hence coverage $n=0\lor\exists m\,n=\Suc m$.
+\end{theorem}
+
+\begin{proof}
+The graph is finite-case because equality is decidable and $0\neq1$. Apply
+quantifier-free induction to
+\[
+ n=0\ \lor\ n=1\ \lor\ \Suc(p_*(n))=n .
+\]
+The base holds. In the step, $n=0$ gives $\Suc n=1$. If $n=1$, then
+$\Suc n=\Suc^20$ and \cref{seed:lem:tf-orbit} with $m=0$ gives
+$\Suc(p_*(\Suc n))=\Suc n$. If $\Suc(p_*(n))=n$, then
+$\Suc n=\Suc^2(p_*(n))$ and \cref{seed:lem:tf-orbit} with $m=p_*(n)$ gives
+$\Suc(p_*(\Suc n))=\Suc n$. This proves the displayed disjunction for every
+$n$. To pass to $P$, decide $n=0$ and $n=1$: if $n=0$ the first alternative
+of $n=0\lor n=\Suc(P(n))$ holds; if $n=1$ then $n=\Suc 0=\Suc(P(1))$; and if
+$n\neq0,1$ the third alternative of the disjunction holds and
+$P(n)=p_*(n)$, so $n=\Suc(P(n))$. Applying $n=0\lor n=\Suc(P(n))$ to
+$\Suc n$ and excluding its zero alternative gives
+$\Suc(P(\Suc n))=\Suc n$.
+\end{proof}
+
+The proof holds for all elements of a model, standard or not. The result is
+a right inverse: it chooses one predecessor of each nonzero element and does
+not prove that $P(\Suc a)=a$.
+
+\begin{proposition}[Standard numerals have unique predecessors]
+\label{seed:prop:tf-rigid}
+For every fixed integer $k\geq1$, $\mathsf{T}_F^{-}$ proves
+\begin{equation}\label{seed:eq:rigid}
+ \Suc x=\bar k\leftrightarrow x=\overline{k-1}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+By recursion on $k$ outside the theory. The data carried are the pairwise
+distinctness of $\bar0,\ldots,\overline{k+1}$ and \eqref{seed:eq:rigid} for
+all smaller positive indices. Initially $0,1,2$ are distinct by
+\cref{seed:lem:tf-basic,seed:lem:tf-nofix}.
+
+Let $h_k$ be a term with the values
+\[
+ h_k(v)=\begin{cases}
+ \overline{i-1},& v=\bar i,\ 1\leq i\leq k-1,\\
+ \overline{k-1},& v=\overline{k+1},\\
+ \bar k,&\text{otherwise.}
+ \end{cases}
+\]
+Such a term is obtained as follows. For $r=1,\ldots,k$ let $b_r(v)$ be the
+Boolean negation of the disjunction of $\varepsilon(v,\bar i)$ for
+$1\leq i\leq\min(r,k-1)$, together with
+$\varepsilon(v,\overline{k+1})$ if $r=k$; it is the characteristic term of
+the condition that the displayed value is at least $r$. Put $t_0(v)\defeq0$,
+$t_r(v)\defeq C(\neg_Bb_r(v),t_{r-1}(v))$ and $h_k\defeq t_k$: a true
+condition contributes one successor. For $k=1$ the values of $h_1$ are those
+of $\neg_B\varepsilon(v,2)$.
+
+Let $A_k(n)\defeq F(n;v.h_k)$ and let $q_0\defeq\overline{k+1}$,
+$q_j\defeq\overline{k-j}$ for $1\leq j\leq k$; these numerals are distinct.
+Since $h_k(0)=\bar k$, $A_k(0)=q_0$, and computation gives
+$A_k(\bar j)=q_j$ for $0\leq j\leq k$. The term $h_k$ never has the value
+$q_0$, and for $1\leq j\leq k$,
+\[
+ h_k(v)=q_j\leftrightarrow v=q_{j-1}.
+\]
+Quantifier-free induction gives $A_k(n)=q_0\leftrightarrow n=0$: at a
+successor both sides are false. For $1\leq j<k$, recursion on $j$ gives
+$A_k(n)=q_j\leftrightarrow n=\bar j$: by coverage
+(\cref{seed:thm:tf-coverage}) $n=0$ or $n=\Suc m$; at $0$ both sides are
+false; at $\Suc m$ the left side is equivalent to $A_k(m)=q_{j-1}$, hence to
+$m=\overline{j-1}$, and so is the right side by \eqref{seed:eq:rigid} for
+$j<k$.
+
+Now let $\Suc x=\bar k$. Then $h_k(A_k(x))=A_k(\bar k)=q_k$, so
+$A_k(x)=q_{k-1}$ and $x=\overline{k-1}$. The converse is immediate. For the
+distinctness of $\overline{k+2}$: an equality $\overline{k+2}=\bar j$ with
+$1\leq j\leq k$ reduces by \eqref{seed:eq:rigid} for $j$ to
+$\overline{k+1}=\overline{j-1}$; equality with $0$ is excluded by
+\cref{seed:lem:tf-basic} and equality with $\overline{k+1}$ by
+\cref{seed:lem:tf-nofix}.
+\end{proof}
+
+This is a family of derivations, one for each $k$, and not one theorem that
+quantifies over $k$. It does not exclude a collision
+$\Suc x=\Suc y$, $x\neq y$, over a nonstandard target.
+
+\begin{lemma}[An equivalent form of injectivity]\label{seed:lem:tf-retract}
+In the extension by $P$ put $T(n)\defeq P(\Suc n)$. Then
+\[
+ \Suc(T(n))=\Suc n,\qquad T(T(n))=T(n),\qquad T(0)=0,
+\]
+and over $\mathsf{T}_F^{-}$ injectivity of the successor is equivalent to
+$\forall n\,(T(n)=n\to T(\Suc n)=\Suc n)$.
+\end{lemma}
+
+\begin{proof}
+The first equation is \cref{seed:thm:tf-coverage}; applying $P$ to it gives
+the second; the third is $P(1)=0$. If the fixed points of $T$ are closed
+under successor, quantifier-free induction on $T(n)=n$ gives $T(n)=n$ for
+all $n$, and from $\Suc a=\Suc b$ one gets $a=T(a)=T(b)=b$. Conversely
+injectivity applied to $\Suc(T(n))=\Suc n$ gives $T(n)=n$ for all $n$.
+\end{proof}
+
+\begin{remark}\label{seed:rem:tf-open}
+\pkg{scope\_and\_coverage} and \pkg{coverage\_and\_kernel} contain the
+protected orbit with the same guard, under the names $V$, $W$ and $U$,
+$p_*$; the first derives $n=0\lor n=\Suc(P(n))$ by induction on that formula
+in the extension by $P$, the second by the induction of the proof above.
+\Cref{seed:thm:tf-acyclic,seed:lem:tf-retract} are from the first package
+and \cref{seed:lem:tf-nofix,seed:prop:tf-rigid} from the second. Neither
+derives injectivity. The first package records why a comparison of the
+orbits with targets $\Suc n$ and $\Suc^2n$ does not close the gap: for
+$v\neq0$ the term $\Suc(\theta_{\Suc n}(v))$ stops when
+$\Suc v=\Suc n$ and $\theta_{\Suc^2n}(\Suc v)$ stops when
+$\Suc^2v=\Suc^2n$, so the intertwining of the two orbits needs
+$\Suc^2v=\Suc^2n\to\Suc v=\Suc n$ at the visited states, which is an instance
+of the missing cancellation.
+\end{remark}
+
+\subsection{With injectivity: predecessor and order}
+
+From here on the theory is $\mathsf{T}_F$.
+
+\begin{theorem}[Predecessor]\label{seed:thm:tf-pred}
+$\mathsf{T}_F$ proves $p_*(\Suc^2m)=\Suc m$, and for the finite-case
+function $P$ of \cref{seed:thm:tf-coverage}
+\[
+ P(0)=0,\qquad P(\Suc n)=n,\qquad n=0\lor n=\Suc(P(n)).
+\]
+\end{theorem}
+
+\begin{proof}
+Injectivity applied to \cref{seed:lem:tf-orbit} gives the first equation. By
+coverage $n=0$ or $n=\Suc m$. In the first case $P(\Suc n)=P(1)=0$. In the
+second $\Suc^2m$ differs from $0$ and, by injectivity and
+$\Suc m\neq0$, from $1$, so $P(\Suc^2m)=p_*(\Suc^2m)=\Suc m$.
+\end{proof}
+
+Write $w(a)\defeq p_*(a)$. The constructions below use this term only
+through
+\begin{equation}\label{seed:eq:W}
+ w(\Suc^3m)=\Suc^2m ,
+\end{equation}
+% ed.: selfseed_scalar uses its own term W (see the remark below) in the
+% constructions that follow; they depend on W only through this equation,
+% which p_* also satisfies, so the term of coverage_and_kernel is used
+% throughout and the predecessor is proved once.
+that is, $w$ removes one successor from every value that is at least $3$,
+and $w(w(\cdot))$ removes two from every value that is at least $4$.
+
+\begin{remark}\label{seed:rem:tf-W}
+This order of proof, coverage first and then the predecessor with
+corrections at $0$ and $1$, is that of \pkg{coverage\_and\_kernel}.
+\pkg{selfseed\_scalar} uses the orbit without the guard at zero,
+$V(j,a)\defeq F(j;v.C(\varepsilon(\Suc v,a),v))$ and $W(a)\defeq V(a,a)$,
+with the invariant
+$a\neq1\to(V(j,a)=\Suc^2j\lor\Suc(V(j,a))=a)$, which gives
+\eqref{seed:eq:W} for $W$ and the values $W(0)=2$, $W(1)=2$, $W(2)=4$. Its
+predecessor graph has the exceptional inputs $0,1,2$, and predecessor and
+coverage are proved together by quantifier-free induction on
+$(n=0\lor n=\Suc(P(n)))\land P(\Suc n)=n$. Both proofs cancel a successor at
+the step from $\Suc(V(m,a))=a$ to the value of $V(m,a)$, which is where
+$\mathsf{T}_F$ uses its injectivity axiom.
+\end{remark}
+
+For a parameter $a$ define the capped counter and the comparison term
+\[
+ \lambda_a(v)\defeq C(\varepsilon(v,\Suc^2a),v),\qquad
+ \operatorname{Cap}(n,a)\defeq F(n;v.\lambda_a(v)),\qquad
+ L(a,n)\defeq\varepsilon(\operatorname{Cap}(n,a),\Suc^2a),
+\]
+and write $a\leq n$ for $L(a,n)=1$. The update $\lambda_a$ holds the value
+$\Suc^2a$ and increments every other value; since $\Suc^2a\neq0$,
+$\operatorname{Cap}(0,a)=2$.
+
+\begin{lemma}[Capped counting and order]\label{seed:lem:tf-order}
+$\mathsf{T}_F$ proves
+\begin{gather*}
+ \operatorname{Cap}(n,a)=\Suc^2n\lor\operatorname{Cap}(n,a)=\Suc^2a,\qquad
+ \operatorname{Cap}(a,a)=\Suc^2a,\qquad
+ \operatorname{Cap}(\Suc n,\Suc a)=\Suc(\operatorname{Cap}(n,a)),\\
+ L(0,n)=1,\qquad L(\Suc a,0)=0,\qquad L(\Suc a,\Suc n)=L(a,n),\\
+ a\leq\Suc b\leftrightarrow(a\leq b\lor a=\Suc b),
+\end{gather*}
+and that $\leq$ is a discrete linear order with least element $0$ which the
+successor preserves and reflects. The finite-case function $\min(n,a)$, with
+value $n$ if $n\leq a$ and $a$ otherwise, satisfies
+$\operatorname{Cap}(n,a)=\Suc^2\min(n,a)$.
+\end{lemma}
+
+\begin{proof}
+The first statement is a quantifier-free induction on $n$ with $a$ fixed:
+the base is $\operatorname{Cap}(0,a)=\Suc^20$; a state $\Suc^2a$ is held;
+and a state $\Suc^2n\neq\Suc^2a$ is incremented to $\Suc^2\Suc n$. At $n=a$
+both alternatives give the second statement. In particular
+$\operatorname{Cap}(n,0)=2$.
+
+Coverage gives $C(c,\Suc v)=\Suc(C(c,v))$, and reflection with injectivity
+gives $\varepsilon(\Suc v,\Suc^3a)=\varepsilon(v,\Suc^2a)$; hence
+$\lambda_{\Suc a}(\Suc v)=\Suc(\lambda_a(v))$. Also
+$\operatorname{Cap}(1,\Suc a)=\lambda_{\Suc a}(2)=3$, because
+$\Suc^3a\neq2$. Induction on $n$ for the literal equation, with $a$ fixed,
+gives the third statement: the base is $3=\Suc 2$ and the step applies
+$\lambda_{\Suc a}$ and the last identity.
+
+$L(0,n)=1$ by $\operatorname{Cap}(n,0)=2$; $L(\Suc a,0)=\varepsilon(2,
+\Suc^3a)=0$; and
+$L(\Suc a,\Suc n)=\varepsilon(\Suc\operatorname{Cap}(n,a),\Suc\Suc^2a)
+=L(a,n)$.
+
+For the equivalence, let $\operatorname{Cap}(\Suc b,a)=\Suc^2a$. If
+$\operatorname{Cap}(b,a)=\Suc^2a$, then $a\leq b$. Otherwise
+$\operatorname{Cap}(b,a)=\Suc^2b$ by the first statement, the next value is
+$\Suc^3b$, and $\Suc^3b=\Suc^2a$ gives $a=\Suc b$. Conversely a reached cap
+persists, and $\operatorname{Cap}(\Suc b,\Suc b)=\Suc^2\Suc b$.
+
+\emph{Linearity.} Fix $a$ and induct on $n$ in $a\leq n\lor n\leq a$. The
+base is $0\leq a$. In the step, $a\leq n$ persists. If $n\leq a$, split
+$a=0$ or $a=\Suc b$ by coverage. If $a=0$, then
+$\operatorname{Cap}(0,n)=2=\Suc^2n$ gives $n=0$ and $a\leq\Suc n$. If
+$a=\Suc b$, the equivalence gives $n\leq b$, and then
+$\Suc n\leq\Suc b=a$, or $n=a$, and then $a\leq\Suc n$.
+
+\emph{Irreflexivity and descent.} $\Suc n\not\leq n$ by induction on the
+literal equation $L(\Suc n,n)=0$. $\Suc n\leq a\to n\leq a$: by coverage
+$a=0$ contradicts $L(\Suc n,0)=0$, and $a=\Suc b$ gives $n\leq b$ and then
+$n\leq\Suc b$ by persistence.
+
+\emph{Antisymmetry.} Fix $a$ and induct on $n$ in
+$(a\leq n\land n\leq a)\to a=n$. At $\Suc n$ the equivalence splits
+$a\leq\Suc n$ into $a=\Suc n$, or $a\leq n$; in the latter case
+$\Suc n\leq a$ gives $n\leq a$, the hypothesis gives $a=n$, and
+$\Suc n\leq n$ is a contradiction.
+
+\emph{Transitivity.} Fix $a$, $b$ and induct on $c$ in
+$(a\leq b\land b\leq c)\to a\leq c$. At $\Suc c$ the equivalence splits
+$b\leq\Suc c$ into $b\leq c$, where the hypothesis and persistence apply, or
+$b=\Suc c$, where substitution applies.
+
+For the last statement: if $n\leq a$, the first statement gives
+$\operatorname{Cap}(n,a)=\Suc^2n$ directly, or
+$\operatorname{Cap}(n,a)=\Suc^2a$, which is $a\leq n$ and gives $a=n$ by
+antisymmetry. If $n\not\leq a$, then $a\leq n$ by linearity, which is
+$\operatorname{Cap}(n,a)=\Suc^2a$.
+\end{proof}
+
+\begin{lemma}[Bounded selection]\label{seed:lem:tf-sel}
+For Boolean $c,p,q$ let
+$\mu(c,p,q)\defeq(c\land_Bp)\lor_B(\neg_Bc\land_Bq)$, and let
+\[
+ \Theta(b,c,a,d)\defeq F\bigl(b;\,v.\,
+ C(\mu(c,\varepsilon(v,\Suc^2a),\varepsilon(v,\Suc^2d)),v)\bigr),\qquad
+ \operatorname{Sel}(b,c,a,d)\defeq w(w(\Theta(b,c,a,d))).
+\]
+If $a=\Suc^2a_0$ and $a\leq b$, then $c=1\to\operatorname{Sel}(b,c,a,d)=a$.
+If $d=\Suc^2d_0$ and $d\leq b$, then $c=0\to\operatorname{Sel}(b,c,a,d)=d$.
+\end{lemma}
+
+\begin{proof}
+If $c=1$ the body equals $\lambda_a(v)$ for a generic $v$, so
+$\Theta(b,c,a,d)=\operatorname{Cap}(b,a)$ by induction on the equation
+between the two recursors at a counter variable; similarly
+$\Theta(b,c,a,d)=\operatorname{Cap}(b,d)$ if $c=0$. Under the hypotheses
+the selected value is $\Suc^2a=\Suc^4a_0$ or $\Suc^2d=\Suc^4d_0$, and two
+applications of \eqref{seed:eq:W} remove two successors.
+\end{proof}
+
+\subsection{Bounded iteration of finite-case functions}
+
+Write $e(x)\defeq\Suc^2x$. On an input $u=e(x)$ the finite cases
+\begin{equation}\label{seed:eq:decode}
+ u=2:\ 0;\qquad u=3:\ 1;\qquad u\neq2,3:\ w(w(u))
+\end{equation}
+return $x$: in the last case $u=\Suc^4x'$ by coverage. For $B=e(b)$ let
+$\operatorname{clip}_B(v)\defeq w(w(\operatorname{Cap}(v,B)))$. For
+$v\geq2$, \cref{seed:lem:tf-order} and \eqref{seed:eq:W} give
+$\operatorname{clip}_B(v)=\min(v,B)$ and
+$2\leq\operatorname{clip}_B(v)\leq B$. The term is applied only to
+arguments $e(t)$ or to values in $[2,B]$.
+
+\begin{proposition}[Bounded iteration]\label{seed:prop:tf-iter}
+Let $g(\vec p)$ and $h(v,\vec p)$ be finite-case functions. For every cap
+variable $b$ there is a finite-case function
+$\operatorname{It}_b(n,\vec p)$, obtained from terms of the original
+language by the cases \eqref{seed:eq:decode}, such that $\mathsf{T}_F$
+proves
+\[
+ \operatorname{It}_b(0,\vec p)=\min(g(\vec p),b),\qquad
+ \operatorname{It}_b(\Suc n,\vec p)
+ =\min\bigl(h(\operatorname{It}_b(n,\vec p),\vec p),b\bigr),\qquad
+ \operatorname{It}_b(n,\vec p)\leq b .
+\]
+Every occurrence of $F$ in the construction has a body that is a term of the
+original language.
+\end{proposition}
+
+\begin{proof}
+Put $B\defeq e(b)$. Let $g$ have the cases $(A_i,t_i)$. Encode and clip each
+candidate as $\operatorname{Cap}(t_i,b)=e(\min(t_i,b))$, which lies in
+$[2,B]$ for all inputs, and fold the cases by nested
+$\operatorname{Sel}(B,\chi_{A_i},\cdot,\cdot)$ with the default value $2$.
+By \cref{seed:lem:tf-sel} this gives a term $a_B(\vec p)$ in $[2,B]$ with
+$a_B(\vec p)=e(\min(g(\vec p),b))$.
+
+For the update, compose the cases of $h$ with the cases
+\eqref{seed:eq:decode} for its state argument, refine the guards, and encode,
+clip and select in the same way. The result is a term $h_B(u,\vec p)$ of
+the original language with $2\leq h_B(u,\vec p)\leq B$ for every $u$,
+because every candidate is a value of $\operatorname{Cap}(\cdot,b)$, and
+\[
+ h_B(e(v),\vec p)=e(\min(h(v,\vec p),b)).
+\]
+All guard tests are Boolean terms; nothing depends on an order of
+evaluation.
+
+The seed of the recursor is tied to the body, so the initial value $a_B$ is
+entered through two transient states. Let
+\[
+ H_B(u)\defeq\operatorname{Sel}\Bigl(\Suc^2B,\varepsilon(u,0),B,\;
+ \operatorname{Sel}\bigl(\Suc^2B,\varepsilon(u,\Suc B),\Suc^2B,\;
+ \operatorname{Sel}(\Suc^2B,\varepsilon(u,\Suc^2B),a_B,h_B(u))\bigr)\Bigr).
+\]
+All candidates lie in $[2,\Suc^2B]$. The sentinels $\Suc B$ and $\Suc^2B$
+are distinct and exceed $B$, so
+\[
+ H_B(0)=B,\qquad H_B(\Suc B)=\Suc^2B,\qquad H_B(\Suc^2B)=a_B,\qquad
+ 2\leq u\leq B\to H_B(u)=h_B(u),
+\]
+and therefore $F(0;u.H_B)=\Suc B$, $F(1;u.H_B)=\Suc^2B$,
+$F(2;u.H_B)=a_B$. Put $Y_b(n,\vec p)\defeq F(e(n);u.H_B(u))$.
+Quantifier-free induction gives $2\leq Y_b(n,\vec p)\leq B$,
+$Y_b(0,\vec p)=a_B$ and
+$Y_b(\Suc n,\vec p)=h_B(Y_b(n,\vec p),\vec p)$. Applying the cases
+\eqref{seed:eq:decode} to $Y_b$ gives $\operatorname{It}_b$.
+\end{proof}
+
+The proposition gives initialized, capped iteration of finite-case
+functions whose update sees the state only. Each use below supplies a cap
+that is a term of the original language in one variable and a proof that
+clipping does not occur on the intended arguments.
+
+\subsection{Arithmetic by finite-case graphs}
+
+All functions introduced in this subsection are finite-case, every induction
+is quantifier-free after \cref{seed:lem:tf-cases}, and
+\cref{seed:prop:tf-iter} is used whenever an update refers to one of them.
+
+\begin{lemma}[Difference and doubling]\label{seed:lem:tf-diff}
+There is a finite-case function $d$ with
+\[
+ d(x,0)=x,\qquad d(x,\Suc n)=P(d(x,n)),\qquad d(x,n)\leq x,\qquad
+ d(\Suc x,\Suc y)=d(x,y),\qquad d(n,n)=0 .
+\]
+The term $Q(n)\defeq F(n;v.\Suc^2v)$ and the finite-case function
+$\operatorname{db}(n)\defeq P(P(P(Q(n))))$ satisfy
+\[
+ Q(0)=3,\quad Q(\Suc n)=\Suc^2Q(n),\qquad
+ \operatorname{db}(0)=0,\quad
+ \operatorname{db}(\Suc n)=\Suc^2\operatorname{db}(n),\quad
+ Q(n)=\Suc^3\operatorname{db}(n),
+\]
+and $\operatorname{db}$ is monotone with $n\leq\operatorname{db}(n)$.
+\end{lemma}
+
+\begin{proof}
+Let $d(x,n)$ be \cref{seed:prop:tf-iter} with initial value $x$, update $P$
+and cap $x$. Since $P(v)\leq v$, clipping is never active, which gives the
+first three statements. $d(\Suc x,\Suc y)=d(x,y)$ by induction on $y$ with
+$x$ fixed: the base is $P(\Suc x)=x$ and the step applies $P$. Then
+$d(n,n)=0$ by induction. The equations for $Q$ are \eqref{seed:eq:F}. By
+induction $Q(n)\geq3$, so the functional coverage $n=0\lor n=\Suc(P(n))$
+cancels three successors and gives the equations for $\operatorname{db}$.
+$n\leq\operatorname{db}(n)$ is a quantifier-free induction, and monotonicity
+is an induction on the larger argument in
+$a\leq b\to\operatorname{db}(a)\leq\operatorname{db}(b)$ with the
+equivalence of \cref{seed:lem:tf-order}.
+\end{proof}
+
+\begin{lemma}[Addition]\label{seed:lem:tf-add}
+There is a finite-case function $+$ with $0+a=a$,
+$\Suc n+a=\Suc(n+a)$, commutative, associative and monotone, and with
+$n+a<Q(b)$ whenever $n,a\leq b$.
+\end{lemma}
+
+\begin{proof}
+For a cap $c$ let $A_c(n,a)$ be \cref{seed:prop:tf-iter} with initial value
+$a$ and update $\Suc$, and write $s_c(v)\defeq\min(\Suc v,c)$:
+\[
+ A_c(0,a)=\min(a,c),\qquad A_c(\Suc n,a)=s_c(A_c(n,a)).
+\]
+For $a\leq c$, induction on the equation gives the seed commutation
+$A_c(n,s_c(a))=s_c(A_c(n,a))$: both sides have the same value at $0$ and the
+same update. The minimum satisfies $\min(0,c)=0$ and
+$\min(\Suc n,c)=s_c(\min(n,c))$ by the order laws, so
+$A_c(n,0)=\min(n,c)$ by uniqueness of iteration.
+
+Fix $a\leq c$ and induct on $n$ in $n\leq c\to A_c(n,a)=A_c(a,n)$. The base
+is the last identity. If $\Suc n\leq c$, the step applies $s_c$ on the left
+and the seed commutation on the right. Since the update increases and $s_c$
+preserves order, $A_c$ is monotone in the counter (induction on the larger
+counter) and in the initial value within $[0,c]$ (induction on the common
+counter).
+
+Fix an input bound $b$ and take the cap $c\defeq Q(b)=\Suc^3
+\operatorname{db}(b)$, a term of the original language. Induct on $n$ in
+$n\leq b\to A_c(n,n)=\operatorname{db}(n)$: at a successor the seed
+commutation gives $A_c(\Suc n,\Suc n)=s_c(s_c(A_c(n,n)))$, and since
+$\operatorname{db}(\Suc n)\leq\operatorname{db}(b)<c$ neither step is
+clipped, so the value is $\Suc^2\operatorname{db}(n)$. By monotonicity
+\[
+ n,a\leq b\to A_{Q(b)}(n,a)\leq A_{Q(b)}(b,b)=\operatorname{db}(b)<Q(b),
+\]
+so there is no clipping on bounded inputs. For the caps of two input bounds
+$b$, $b'$, induction on $n$ restricted by $n\leq b,b'$ shows that the
+results agree for $a\leq b,b'$: the values at $0$ are $a$ and both steps are
+unclipped successors.
+
+Take $b$ to be the first largest of the two arguments, by finitely many
+order cases; this defines the finite-case function $n+a$. Coherence across
+the caps proves $0+a=a$ and $\Suc n+a=\Suc(n+a)$, bounded commutativity
+proves commutativity, and associativity and monotonicity are
+quantifier-free inductions with fixed parameters.
+\end{proof}
+
+\begin{lemma}[Multiplication and pairing]\label{seed:lem:tf-pair}
+Let $E(n)\defeq F(n;v.Q(v))$, so that $E(0)=4$ and $E(\Suc n)=Q(E(n))$.
+There are finite-case functions $\cdot$, $\kappa$, $\pi_0$, $\pi_1$ with
+\begin{gather*}
+ n\cdot a\leq E(Q(b))\ \text{for}\ n,a\leq b,\qquad
+ \kappa(x,y)\defeq(x+y)^2+x\leq Q(E(Q(Q(b))))\ \text{for}\ x,y\leq b,\\
+ \pi_0(\kappa(x,y))=x,\qquad\pi_1(\kappa(x,y))=y,\qquad
+ \pi_0(z)\leq z,\qquad\pi_1(z)\leq z,
+\end{gather*}
+and the semiring identities for $+$ and $\cdot$.
+\end{lemma}
+
+\begin{proof}
+$E$ is monotone, $E(n)\geq n$ and
+$E(\Suc n)=\operatorname{db}(E(n))+3$. Fix $n,a\leq b$ and apply
+\cref{seed:prop:tf-iter} with initial value $0$, update $v\mapsto v+a$ and
+cap $E(Q(b))$. For the state $v_j$ at a stage $j\leq b$ the invariant
+$v_j\leq E(b+j)$ holds: the base is immediate, and
+\[
+ v_j+a\leq E(b+j)+b\leq\operatorname{db}(E(b+j))<E(\Suc(b+j)),
+\]
+using $E(b+j)\geq b$. Since $b+j\leq\operatorname{db}(b)<Q(b)$, the stage
+bound is at most the cap, so clipping is inactive. Cap coherence as for
+addition gives a finite-case multiplication with the bound $E(Q(b))$; its
+equations at $0$ and at a successor give the semiring identities by
+quantifier-free induction, in particular $w^2+w<(\Suc w)^2$.
+
+$\kappa$ is finite-case with the stated bound, which is monotone and at
+least its argument, and both arguments of a code are at most the code. For
+the root, apply \cref{seed:prop:tf-iter} with initial value $0$, the update
+that sends $u$ to $\Suc u$ if $(\Suc u)^2\leq z$ and to $u$ otherwise, the
+cap $z$ and the counter $z$. The update preserves $u\leq z$ and
+$u^2\leq z$, and the quantifier-free invariant ``$u_j=j$ or the update
+fixes $u_j$'' shows that the state at $j=z$ is fixed: if it equals $z$,
+then $(\Suc z)^2>z$. So the result $r(z)$ satisfies
+$r(z)^2\leq z<(\Suc r(z))^2$, and it is unique with this property by
+monotonicity of squares. Put
+\[
+ \pi_0(z)\defeq d(z,r(z)^2),\qquad\pi_1(z)\defeq d(r(z),\pi_0(z)).
+\]
+The identity $d(x+y,y)=x$ follows by induction on $y$ from
+$d(\Suc x,\Suc y)=d(x,y)$ and the addition equations. For
+$z=\kappa(x,y)$ and $w\defeq x+y$, the inequalities
+$w^2\leq z\leq w^2+w<(\Suc w)^2$ give $r(z)=w$, hence the projection
+equations. The projections are total on all arguments and bounded by their
+argument, since a difference is bounded by its first argument.
+\end{proof}
+
+\begin{theorem}[Primitive recursion]\label{seed:thm:tf-primrec}
+For every primitive recursive description $f$ there are a finite-case
+function $f^{*}$ in $\mathsf{T}_F$, proofs of the defining equations of $f$
+for $f^{*}$, and a term $M_f$ in one variable, monotone and with
+$b\leq M_f(b)$, such that $\vec x\leq b\to f^{*}(\vec x)\leq M_f(b)$ is
+provable.
+\end{theorem}
+
+\begin{proof}
+By recursion on $f$. Zero, successor and projections have these data with
+the bound $Q$. For a composition $f=h(g_1,\ldots,g_m)$ take a common
+refinement of the cases and the bound
+$M_h\circ M_{g_1}\circ\cdots\circ M_{g_m}$. Nullary descriptions have
+numeral values and constant shifts of $b$ as bounds.
+
+Let $f(0,\vec p)=g(\vec p)$ and
+$f(\Suc n,\vec p)=h(n,f(n,\vec p),\vec p)$. Write $K_\kappa$ for the bound
+of $\kappa$ in \cref{seed:lem:tf-pair} and put
+\[
+ \Delta\defeq K_\kappa\circ M_h\circ M_g\circ Q,\qquad
+ \Upsilon(t)\defeq F(t;v.\Delta(v)),\qquad
+ \beta(b)\defeq\Upsilon(\Suc Q(b)).
+\]
+Each factor is monotone and at least its argument, and
+$\Delta(v)\geq\Suc v$; so $\Upsilon$ is monotone with
+$\Upsilon(t)\geq\Suc t$, and $\beta$ is monotone with $\beta(b)\geq b$, by
+quantifier-free inductions. The state update is the finite-case function
+\[
+ J(z,\vec p)\defeq
+ \kappa\bigl(\Suc\pi_0(z),\,h^{*}(\pi_0(z),\pi_1(z),\vec p)\bigr),
+\]
+with the initial value $\kappa(0,g^{*}(\vec p))$. Apply
+\cref{seed:prop:tf-iter} to them with the cap $\beta(b)$ and let $z_j$ be
+the state at the stage $j$. For $n,\vec p\leq b$ and $j\leq b$,
+\begin{equation}\label{seed:eq:prstage}
+ z_j\leq\Upsilon(\Suc b+j).
+\end{equation}
+The seed satisfies
+$\kappa(0,g^{*}(\vec p))\leq K_\kappa(M_g(b))\leq\Delta(b)
+\leq\Delta(\Upsilon(b))=\Upsilon(\Suc b)$. For the step write
+$s\defeq\Upsilon(\Suc b+j)$. Then $s\geq b$, both projections of $z_j$ are
+at most $s$, the next counter is at most $\Suc s\leq Q(s)$ and the next
+value is at most $M_h(M_g(Q(s)))$, so
+$J(z_j,\vec p)\leq\Delta(s)=\Upsilon(\Suc(\Suc b+j))$. Since $j\leq b$, the
+argument $\Suc b+j$ is at most $\Suc\operatorname{db}(b)\leq\Suc Q(b)$, so
+every stage bound is at most $\beta(b)$ and no clipping occurs. The
+invariant \eqref{seed:eq:prstage} is quantifier-free in the extension.
+
+By the projection equations and a quantifier-free induction guarded by
+$j\leq b$, the first component of $z_j$ is $j$, and the second component
+satisfies the base equation and, for $\Suc j\leq b$, the step equation. Two
+caps give the same run up to their common bound on the counter: the seeds
+agree and the unclipped updates are identical. Take $b$ to be the first
+largest among $n,\vec p$ and define $f^{*}(n,\vec p)\defeq\pi_1(z_n)$. For
+any larger input bound, cap coherence identifies this value with the run at
+that cap, so $f^{*}(n,\vec p)\leq\beta(b)$ for every valid $b$; put
+$M_f\defeq\beta$. Cap coherence proves the defining equations also when a
+successor input changes the first largest coordinate.
+
+\Cref{seed:prop:tf-iter} expands every use of $g^{*}$, $h^{*}$, $\kappa$,
+$\pi_i$ inside the update into terms of the original language, encoded
+cases and bounded selections. There is no evaluator for codes of
+descriptions and no recursor over functions defined by graphs.
+\end{proof}
+
+\begin{theorem}[Bi-interpretation]\label{seed:thm:tf-biint}
+$\mathsf{T}_F$ and $\iPRA$ are bi-interpretable, with whole domains, actual
+equality, the logic translated identically and the identity as isomorphism
+of both composites. They are equiconsistent.
+\end{theorem}
+
+\begin{proof}
+In $\iPRA$ keep $0$, $\Suc$ and equality, interpret $\varepsilon$ as the
+primitive recursive characteristic of equality, and each recursor with body
+$h$ by primitive recursion with initial value $\Suc(h(0))$ and a step $h$
+that ignores the counter. All axioms of $\mathsf{T}_F$ and its induction
+rule hold. Conversely interpret each description by the finite-case
+function of \cref{seed:thm:tf-primrec}; totality, single-valuedness, the
+defining equations and the quantifier-free induction instances are proved in
+$\mathsf{T}_F$ by \cref{seed:lem:tf-cases}, and injectivity and separation
+are axioms.
+
+On the side of $\iPRA$, recursion on a description reduces the
+identification of a function with its double interpretation to uniqueness
+from the base and step equations, which is a quantifier-free induction. On
+the side of $\mathsf{T}_F$, $0$ and $\Suc$ are unchanged; the two
+characteristics of equality are two-valued and reflect equality, so they
+agree by cases; and for a recursor with body $h$, the earlier stage
+identifies the body, both functions satisfy \eqref{seed:eq:F} for it, and
+induction on the equation between them identifies them, with
+\cref{seed:lem:tf-cases} where graph-defined functions occur. Induction on
+formulas extends this to all formulas, and falsity is preserved.
+\end{proof}
+
+%======================================================================
+\section{Three observations on the native core}
+\label{seed:sec:core}
+
+The packages of this chapter contain three results about the calculus
+$\Nat$ on iterator terms that do not concern a seeded recursor. They are
+recorded here from \pkg{coverage\_and\_kernel}, \pkg{transient\_seed} and
+\pkg{monus\_and\_neutral\_major}.
+
+\subsection{One native binder over a literal equation}
+
+In this subsection formulas are read in $\iPRA$ through
+\cref{base:sec:reading,base:thm:bridge}, and $\sel$, the predecessor $P$ of
+\cref{base:thm:pred}, the characteristic terms of \cref{base:thm:reflect}
+and the pairing of \cref{base:thm:primrec} are available. A formula is
+called $\Sigma_2^{\mathrm{qf}}$ if it has the form
+$\exists x\,\forall y\,\theta(x,y,\vec p)$ with $\theta$ quantifier-free,
+and $\Pi_1^{\mathrm{qf}}$ if it has the form $\forall y\,\theta(y,\vec p)$.
+These are classes of prenex formulas; no prenex normal form theorem for
+intuitionistic formulas is used.
+
+\begin{proposition}[One binder]\label{seed:prop:onebinder}
+Up to provable equivalence, the native formulas
+$\D{x}{z}E(x,z,\vec p)$ with $E$ a literal equation are exactly the
+$\Sigma_2^{\mathrm{qf}}$ formulas, and the native formulas
+$\Q{z}E(z,\vec p)$ with $E$ a literal equation are exactly the
+$\Pi_1^{\mathrm{qf}}$ formulas.
+\end{proposition}
+
+\begin{proof}
+The reading of $\D{x}{z}E$ is
+$\exists x\,(E(x,0)\to\forall z\,E(x,z))$, which is equivalent to
+$\exists x\,\forall z\,(E(x,0)\to E(x,z))$ because $z$ does not occur in
+$E(x,0)$; the matrix is quantifier-free. Without the existential quantifier
+this is the statement for $\Q{z}$.
+
+Conversely let $r(x,y,\vec p)$ be a characteristic term with
+$r=0\leftrightarrow\theta$, and let $E(x,z,\vec p)$ be the literal equation
+\[
+ \sel\bigl(z,0,r(x,P(z),\vec p)\bigr)=0 .
+\]
+Its instance at $z=0$ is provable, and its instance at $z=\Suc y$ is
+equivalent to $r(x,y,\vec p)=0$ by $P(\Suc y)=y$. By coverage,
+$\forall z\,E(x,z,\vec p)\leftrightarrow\forall y\,\theta(x,y,\vec p)$, and
+the provable antecedent $E(x,0,\vec p)$ drops out of the reading of
+$\D{x}{z}E$.
+\end{proof}
+
+\begin{corollary}\label{seed:cor:onebinder}
+If rule \rulename{QI} is extended to matrices that consist of one
+$\D{x}{y}$ over a literal equation, the extended calculus derives every
+induction instance for $\Sigma_2^{\mathrm{qf}}$ formulas. If it is extended
+to matrices $\Q{y}E$ with $E$ a literal equation, it derives every induction
+instance for $\Pi_1^{\mathrm{qf}}$ formulas.
+\end{corollary}
+
+\begin{proof}
+Let $B(n,\vec p)$ be the native formula of \cref{seed:prop:onebinder} for
+the given formula, and let $\Gamma\proves B(0,\vec p)$ and
+$\Gamma,B(z,\vec p)\proves B(\Suc z,\vec p)$. The extended rule gives
+$\Q{n}B(n,\vec p)$, and \rulename{QE} with the base gives $B(t,\vec p)$ for
+every term $t$. The equivalence of the proposition transports the
+derivation to the given formula.
+\end{proof}
+
+A guard ``at most one binder'' is therefore not equivalent to the guard
+``literal equation'' unless an elimination or conservativity theorem for the
+additional induction instances is proved. No statement on the strength of
+the extended calculus relative to $\iPRA$ is made.
+
+For a native formula let $\delta(s=t)\defeq0$ and
+$\delta(\Q{y}A)\defeq\delta(\D{x}{y}A)\defeq1+\delta(A)$. For a fresh $z$ let
+$G_zA$ be $A$ with every equation $s=t$ replaced by
+$\sel(z,0,s)=\sel(z,0,t)$. Then $\delta(G_zA)=\delta(A)$, $G_0A$ is
+provable, and $G_{\Suc u}A\leftrightarrow A$: for equations by computation,
+and for a binder by induction on the formula, with the witness $0$ for
+$\D{x}{y}$.
+
+\begin{theorem}[Alternating prefixes]\label{seed:thm:prefix}
+For every $k\geq0$, every formula
+$\exists x_1\forall y_1\cdots\exists x_k\forall y_k\,
+\theta(\vec x,\vec y,\vec p)$ with $\theta$ quantifier-free is provably
+equivalent in $\iPRA$ to the reading of a native formula of depth
+$\delta\leq k$. Consequently an extension of \rulename{QI} to all matrices
+of depth at most $k$ derives induction for this class.
+\end{theorem}
+
+\begin{proof}
+For $k=0$ take the characteristic equation. If $A(x,y,\vec p)$ translates
+the remaining prefix at depth at most $k-1$, put
+$\mathcal B(A)\defeq\D{x}{z}\,G_zA(x,P(z),\vec p)$. Its matrix at $z=0$ is
+provable and its matrix at $z=\Suc y$ is equivalent to $A(x,y,\vec p)$, so
+by coverage $\mathcal B(A)\leftrightarrow\exists x\,\forall y\,A(x,y,\vec p)$,
+and $\delta(\mathcal B(A))\leq k$. The induction statement is the argument
+of \cref{seed:cor:onebinder}.
+\end{proof}
+
+Blocks of several variables are packed by pairing, and dummy blocks can be
+added because the domain is inhabited; so the inclusion covers the prenex
+$\Sigma_{2k}$ formulas and, for $k\geq1$, the prenex $\Pi_{2k-1}$ formulas.
+At depth greater than one only this inclusion is claimed: the reading of a
+nested native formula contains implications with quantified antecedents, and
+moving quantifiers through them is not valid intuitionistically.
+
+\subsection{The case rule at a literal equation cannot be deleted}
+
+\begin{proposition}\label{seed:prop:atomic-case}
+Consider the calculus on iterator terms with paired introduction by cases
+and the progress rule on $\D{x}{y}$ of \cref{seed:rem:succ-rules}, and
+restrict the introduction so
+that its local assumption is $E(t,z)$ whenever the matrix is a literal
+equation $E$, and $B(t,0)$ otherwise. The restricted calculus does not
+derive $\D{x}{y}(y=\Suc 0)$, which the unrestricted calculus derives.
+\end{proposition}
+
+\begin{proof}
+The unrestricted calculus derives the formula by \rulename{DI} by cases:
+under the local assumption $0=\Suc 0$ every equation follows. For the
+restricted calculus read equations as equality on the standard numbers,
+$\Q{y}B$ as $B(0)\to\forall y\,B(y)$, and
+\[
+ (\D{x}{y}B)^{\dagger}\defeq
+ \begin{cases}
+ \exists x\,\forall y\,(B(x,y)\to B(x,\Suc y)),&B\ \text{a literal
+ equation},\\
+ \exists x\,(B^{\dagger}(x,0)\to\forall y\,B^{\dagger}(x,y)),&B\
+ \text{compound}.
+ \end{cases}
+\]
+Every rule of the restricted calculus is sound for this reading: a progress
+witness for an equation gives its closure by induction on the standard
+numbers, so \rulename{DE} is sound; compound case introduction is sound
+because every positive number is a successor; and transport preserves the
+distinction between literal and compound matrices. The formula
+$\D{x}{y}(y=\Suc 0)$ is false in this reading, because $y=1$ holds at $1$
+and fails at $2$.
+\end{proof}
+
+Under the standard reading the same formula is true, since its zero instance
+is false. Hence the two readings of a $\D{x}{y}$ over an equation, closure
+and progress, cannot be exchanged by padding the equation into a compound
+formula without losing one direction of the formula round trip.
+
+\subsection{Transport from the literal zero alone}
+
+\begin{proposition}\label{seed:prop:zero-source}
+In the calculus on iterator terms with formula transport
+(\cref{seed:rem:succ-rules}) and no reflexivity axiom, replace transport by
+the rule: from $\Gamma\proves0=t$ and $\Gamma\proves F(0)$ infer
+$\Gamma\proves F(t)$. The resulting calculus does not derive $0=0$.
+\end{proposition}
+
+\begin{proof}
+Interpret terms in $\{0,1\}$ with $\Suc 0=\Suc 1=1$ and every iterator
+term equal to $1$, read an equation $s=t$ as ``the value of $s$ is $1$'',
+and read $\Q{y}$, $\D{x}{y}$ by the clauses of \cref{base:sec:reading}.
+Every computation equation holds, because its left side is an iterator. No
+equation $0=t$ holds, so the restricted rule is sound. Every element is $0$
+or a successor, and induction holds for every predicate on the domain: the
+base gives the value at $0$ and the step at $0$ gives the value at $1$. So
+\rulename{DI} by cases and the progress rule are sound, as are
+\rulename{Hyp}, \rulename{QE} and \rulename{DE}. The equation $0=0$ does not
+hold.
+\end{proof}
+
+The relation used in the proof is not equality. With unrestricted transport
+$0=0$ follows from the computation $\It{0}{0}{v}{0}=0$ used as both premises
+with the template $w=0$. The proposition does not apply to a calculus that
+has $0=0$ as an axiom or as an initial context entry.
+
+%======================================================================
+\section{Checker sizes}
+\label{seed:sec:sizes}
+
+All eight packages report sizes of complete standalone checkers under the
+protocol of \cref{base:sec:measure}. \Cref{seed:tab:sizes} lists them as
+stated, with the control each package measures against. Only the programs
+of the first three packages that are marked $R$ check the successor-seeded
+calculus $\mathsf{N}_R$. All other programs check the calculus $\Nat$ on
+iterator terms; no package reports a checker for
+$\mathsf{T}_{B\varepsilon}$, $\mathsf{T}_{Bd}$, $\mathsf{N}_{Bd}$,
+$\mathsf{T}_F$ or $\mathsf{T}_F^{-}$, and the sizes below are not sizes of
+those theories.
+
+\begin{longtable}{@{}llrrr@{}}
+\caption{Checker sizes as stated by the packages (tokens, AST nodes,
+normalized bytes).}\label{seed:tab:sizes}\\
+\toprule
+Package & Program & Tokens & AST & Bytes\\
+\midrule
+\endfirsthead
+\toprule
+Package & Program & Tokens & AST & Bytes\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\pkg{scalar\_successor} & \texttt{checker.py} ($R$) & 279 & 319 & 686\\
+ & \texttt{checker\_bytes.py} ($R$) & 279 & 321 & 681\\
+ & \texttt{checker\_ast.py} ($R$) & 282 & 314 & 708\\
+ & control: generated assumptions, main & 281 & 318 & 685\\
+ & control: generated assumptions, AST profile & 283 & 315 & 710\\
+ & control: guarded elimination, token profile & 281 & 325 & 739\\
+\midrule
+\pkg{transient\_seed} & \texttt{checker\_sr\_bytes.py} ($R$) & 284 & 322 & 681\\
+ & \texttt{checker\_bytes.py} (iterator) & 282 & 320 & 679\\
+ & \texttt{checker\_structure.py} (iterator) & 280 & 311 & 705\\
+ & \texttt{checker\_joint.py} (iterator, predecessor packets) & 280 & 314 & 684\\
+ & control: generated assumptions, main & 281 & 318 & 685\\
+ & control: generated assumptions, AST profile & 283 & 315 & 710\\
+\midrule
+\pkg{successor\_seed\_completion} & \texttt{checker\_direct.py} ($R$) & 283 & 320 & 687\\
+ & \texttt{checker.py} ($R$) & 284 & 322 & 681\\
+ & \texttt{checker\_ast.py} ($R$) & 282 & 313 & 707\\
+ & \texttt{checker\_ast\_total.py} ($R$) & 287 & 314 & 711\\
+ & control: prior generated-assumption checker & 281 & 318 & 685\\
+ & control: prior AST-oriented checker & 283 & 315 & 710\\
+\midrule
+\pkg{bounded\_initializer} & \texttt{checker.py} & 266 & 310 & 612\\
+ & \texttt{checker\_compact.py} & 266 & 312 & 604\\
+ & \texttt{checker\_ast.py} & 267 & 298 & 639\\
+ & control: byte leader & 269 & 311 & 616\\
+ & control: AST and token leader & 268 & 300 & 649\\
+\midrule
+\pkg{monus\_and\_neutral\_major} & \texttt{checker.py} & 263 & 307 & 550\\
+ & \texttt{checker\_bytes.py} & 263 & 309 & 542\\
+ & \texttt{checker\_joint.py} & 261 & 295 & 578\\
+ & control: certified zero, explicit list test & 264 & 308 & 566\\
+ & control: certified zero, compact list test & 264 & 310 & 558\\
+ & control: certified zero, generic traversal & 262 & 296 & 598\\
+\midrule
+\pkg{selfseed\_scalar} & \texttt{local\_argument.py} & 267 & 309 & 562\\
+ & \texttt{local\_argument\_bytes.py} & 267 & 311 & 554\\
+ & \texttt{local\_loop\_joint.py} & 263 & 291 & 642\\
+ & \texttt{local\_loop\_joint\_separate.py} & 262 & 293 & 641\\
+ & control: \texttt{baseline\_checker.py} & 264 & 308 & 566\\
+ & control: \texttt{baseline\_checker\_bytes.py} & 264 & 310 & 558\\
+ & control: \texttt{baseline\_checker\_joint.py} & 262 & 296 & 598\\
+\midrule
+\pkg{scope\_and\_coverage} & \texttt{checker\_compact.py} & 266 & 310 & 529\\
+ & \texttt{checker\_explicit.py} & 266 & 308 & 537\\
+ & control: neutral major, global floor (byte incumbent) & 263 & 309 & 542\\
+ & control: guarded major, lexical floor & 267 & 311 & 545\\
+ & control: neutral major, lexical floor, conditional dispatch & 266 & 310 & 535\\
+\midrule
+\pkg{coverage\_and\_kernel} & \texttt{checker.py} & 266 & 308 & 539\\
+ & \texttt{checker\_bytes.py} & 266 & 310 & 531\\
+ & \texttt{checker\_ast.py} & 263 & 289 & 613\\
+ & control: byte leader & 263 & 309 & 542\\
+ & control: token leader & 261 & 295 & 578\\
+ & control: AST leader & 263 & 291 & 642\\
+\end{longtable}
+
+In every package the minima over the three coordinates are attained by
+different programs, and each package states that no single one of its
+programs is below all three coordinates of its control, with one exception:
+\texttt{checker\_joint.py} of \pkg{transient\_seed}, at 280/314/684, is
+below 281/315/685, the coordinatewise minimum of its two controls. The
+packages state that these minima are sizes attained in a fixed corpus of
+earlier checkers and not lower bounds.
+
+\paragraph{Successor-seeded checkers.}
+The $R$ programs derive from the checker with generated assumptions of an
+earlier draft: a certificate is a JSON array whose last element is the
+closed goal and whose earlier four-field packets are consumed from the end;
+a computation equation enters as a local assumption
+(\cref{seed:rem:succ-rules}). An arithmetic packet supplies the data
+$[n,a,h]$ and a flag, and the checker itself builds the counter $0$ or
+$\Suc n$ of the generated equation, so no shape test on a supplied counter
+is needed. The same change applied to the iterator gives the matched
+iterator programs of \pkg{transient\_seed}, whose joint profile uses a
+changed packet format for predecessor computations. The AST profiles accept
+additional raw aliases and reject malformed nonempty strings only through
+the recursion limit of the interpreter; \texttt{checker\_ast\_total.py}
+rejects them directly. \pkg{transient\_seed} ships kernel certificates for
+the Boolean decoder (45 commands) and for a restricted implication (149
+commands); \pkg{successor\_seed\_completion} states that the full
+predecessor derivation has not been emitted as a kernel certificate.
+
+\paragraph{Iterator checkers in the other packages.}
+The programs of \pkg{bounded\_initializer} compose an arity encoding of the
+raw syntax with a predecessor supply. Those of
+\pkg{monus\_and\_neutral\_major} implement its neutral-major certificate
+protocol for $\Nat$, in which every instruction proves a major premise and a
+derivable truth serves where none is needed; the protocol is not described
+in this chapter. Those of
+\pkg{selfseed\_scalar}, \pkg{scope\_and\_coverage} and
+\pkg{coverage\_and\_kernel} compose lexical proof scopes, the arity
+encoding, the certified-zero dispatch and, in the last two, neutral majors;
+the loop variants keep contexts as immutable tuples. \pkg{selfseed\_scalar}
+records two failed variants: a loop with in-place mutation of the context
+list accepts a certificate of $0=\Suc 0$ by leaking an assumption of a
+subproof, and a variant with opaque objects as fresh parameters accepts a
+certificate of $0=\Suc 0$ because a floating-point leaf $3.0$ is treated as
+a rigid parameter while comparing equal to the bound index $3$; the stricter
+repair of the latter loses the canonical certificate of universal
+reflexivity.
+
+%======================================================================
+\section{Further questions}
+\label{seed:sec:questions}
+
+No result of this chapter has a Lean formalization recorded in the
+repository; the packages present written proofs with finite numerical
+checks of the defining terms on standard numbers.
+
+\begin{question}[Injectivity for the self-seeded recursor]
+Does $\mathsf{T}_F^{-}$ prove $\Suc x=\Suc y\to x=y$? By
+\cref{seed:lem:tf-retract} this is equivalent to the closure under successor
+of the fixed points of $n\mapsto P(\Suc n)$, and by
+\cref{seed:lem:tf-orbit} to the derivation of $p_*(\Suc^2m)=\Suc m$ from
+$\Suc(p_*(\Suc^2m))=\Suc^2m$. \pkg{selfseed\_scalar},
+\pkg{scope\_and\_coverage} and \pkg{coverage\_and\_kernel} leave it open. A
+countermodel has to satisfy all staged recursor equations and all instances
+of induction for literal equations, together with a successor collision; a
+branching successor graph without cycles is not enough. Neither the
+bi-interpretability of $\mathsf{T}_F^{-}$ with $\iPRA$ nor its failure is
+established.
+\end{question}
+
+\begin{question}[Uniform rigidity]
+\Cref{seed:prop:tf-rigid,seed:thm:tf-acyclic} are families of derivations
+indexed by a fixed integer. Is there a single derivation with a variable
+index, without a general compiler for primitive recursion in
+$\mathsf{T}_F^{-}$?
+\end{question}
+
+\begin{question}[Shorter predecessor terms]
+Is there a substantially shorter predecessor term for the successor-seeded
+recursor than those of \cref{seed:thm:succ-pred,seed:rem:succ-three}, for
+instance a reset cycle that needs no Boolean comparator? The three packages
+prove existence and correctness on the whole domain and make no claim on
+size.
+\end{question}
+
+\begin{question}[Other seed maps]
+For which maps $\sigma$ in place of the successor does the recursor with
+$R(0,a;u.h)=\sigma(a)$ recover arbitrary initialization from its two
+equations and induction for literal equations? A criterion has to provide a
+proved inverse and not assume one. Related: is there a general class of
+finite reset mechanisms for which the transient-seed method works, and is
+the correction of a capped predecessor at finitely many arguments an
+instance of a general repair principle?
+\end{question}
+
+\begin{question}[Cancellation on finite-valued terms]
+In $\mathsf{N}_R$ and $\mathsf{N}_{Bd}$ a restricted implication and
+contextual case analysis are obtained from cancellation of the successor on
+two-valued terms, before a selector exists
+(\cref{seed:lem:succ-cases,seed:lem:nbd-cases}). Which other weak term
+languages admit this route to the full logical interface?
+\end{question}
+
+\begin{question}[Tied seeds without an additional operation]
+\Cref{seed:thm:tied-bound} excludes terms for addition, selection and
+pairing. It does not exclude interpretations of $\iPRA$ by relations,
+quotients or several coordinates in a theory on the terms
+$x\mid0\mid B(n;u,v.h)$ alone; \cref{seed:thm:tied-biint} needs
+$\varepsilon$ and \cref{seed:cor:tbd-biint} needs $d$ and the coverage
+axiom. An invariant that is stable under such interpretations is not known
+from the packages of this chapter.
+\end{question}
+
+\begin{question}[Fewer axioms for the equality test]
+$\mathsf{T}_{Bd}$ replaces the range and reflection axioms of
+$\mathsf{T}_{B\varepsilon}$ by two recursive equations, at the price of
+coverage as an axiom. Can range and reflection be replaced by recursive
+equations from which coverage is still derived? \pkg{monus\_and\_neutral\_major}
+investigates a basis with three equations for the minimum, in which
+$\operatorname{parity}(\min(2x,2y+1))$ has the standard meaning of a
+comparator; the derivation of the equations of $d$ and of reflection on the
+whole domain from that basis, without induction over a shifted parameter, is
+left open there.
+\end{question}
+
+\begin{question}[Internal majorants and sizes of the compilers]
+The converse direction of \cref{seed:thm:tbe-exact} produces a single term
+for a function with a majorant that is valid in the standard model; a proof
+in $\mathsf{T}_{B\varepsilon}$ that this term equals the graph-defined
+function needs a proof of the majorant in the theory. Bounds on the size of
+the terms and proofs produced by
+\cref{seed:thm:tbe-realize,seed:lem:tbe-graph,seed:prop:tf-iter,%
+seed:thm:tf-primrec}, on the branching of the case expansions for nested
+terms, and on the cost of translating the graph-based proofs into a native
+calculus are not given.
+\end{question}
+
+\begin{question}[Extended progress]
+\Cref{seed:cor:onebinder,seed:thm:prefix} show that an extension of
+\rulename{QI} to matrices with binders derives induction for prenex
+classes. Whether such an extension is conservative over $\Nat$, or strictly
+stronger, is not decided; at depth greater than one only the inclusion of
+\cref{seed:thm:prefix} is proved.
+\end{question}
+
+\begin{question}[Variants of the two obstructions]
+\Cref{seed:prop:atomic-case} refutes the deletion of case introduction at
+literal equations for the two displayed readings; it does not exclude a
+calculus in which a $\D{x}{y}$ over an equation is an auxiliary judgment and
+the object formulas are padded. \Cref{seed:prop:zero-source} does not
+exclude transport from the literal zero together with a reflexivity axiom.
+Neither variant is decided in the packages of this chapter; calculi with a
+single introduction rule are the subject of \pkg{witness\_rule} and
+\pkg{guarded\_core}, and restrictions on the source of transport of
+\pkg{source\_dispatch}.
+\end{question}
+
+\begin{question}[Checkers for the new bases]
+No package measures a complete checker for $\mathsf{T}_{B\varepsilon}$,
+$\mathsf{T}_{Bd}$, $\mathsf{N}_{Bd}$ or $\mathsf{T}_F$, in which the
+equality test or the subtraction equations, the ordinary logic where it is
+used, and the validation of the staged bodies are all charged. Whether any
+of these bases, or $\mathsf{N}_R$, admits a single checker below the
+controls of \cref{seed:tab:sizes} in all three coordinates is open, as are
+lower bounds for a fixed checker language and input grammar.
+\end{question}
+
+\begin{question}[Formalization]
+The packages name as first targets for a proof assistant: the contextual
+case lemmas (\cref{seed:lem:succ-cases,seed:lem:nbd-cases}), the factor map
+identities and the predecessor (\cref{seed:lem:succ-factor,%
+seed:thm:succ-pred}), the gated complement (\cref{seed:lem:tbd-gc}), cap
+coherence and finite-case elimination
+(\cref{seed:thm:tbe-realize,seed:lem:tbe-graph,seed:lem:tf-cases}), and the
+coverage and rigidity proofs of \cref{seed:thm:tf-coverage,%
+seed:prop:tf-rigid}.
+\end{question}
+

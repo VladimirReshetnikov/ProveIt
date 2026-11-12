@@ -1,0 +1,86 @@
+
+\title{Concise axiomatizations of\\ intuitionistic primitive recursive arithmetic}
+\author{}
+\date{November 2026}
+\maketitle
+
+\begin{abstract}
+Intuitionistic first-order primitive recursive arithmetic is bi-interpretable
+with a calculus that has variables, zero, successor and one iterator as its
+terms, equations and two binders as its formulas, and eight inference rules.
+Both numerical domains are whole, equality is actual equality, and both
+composite maps have graph $x=y$. This article states that calculus and the
+bridge once, and then collects every refinement of it that the research
+packages of the \texttt{ConciseIPRA} directory of the \texttt{ProveIt}
+repository contain: changes of the rule basis, guarded formula languages,
+rules that merge computation with equality, normal forms, clause calculi,
+rules that discharge a witness, introductions that take no witness, other
+recursors, obstruction results, and proof-certificate formats with their
+checkers. Each definition, rule inventory, theorem and proof is given once, in
+one notation. Statements that the packages leave unproved are collected at the
+end of each chapter.
+\end{abstract}
+
+\tableofcontents
+
+\chapter*{Introduction}
+\addcontentsline{toc}{chapter}{Introduction}
+
+\section*{The question}
+
+The question behind all of this work is how small a formal system can be
+while it still is, in the strongest reasonable sense, intuitionistic primitive
+recursive arithmetic $\iPRA$. ``Is'' means a bi-interpretation in which the
+numerical domain of each interpretation is the whole domain, equality is
+interpreted by equality, and each composite of the two numerical maps is the
+identity, provably. ``Small'' has two readings. The mathematical one counts
+term constructors, formula constructors and inference rules, and asks which of
+them can be removed, restricted or fused. The empirical one fixes a
+measurement protocol for complete proof checkers and compares their sizes
+(\cref{base:sec:measure}). The two readings do not always agree, and the text
+keeps them apart: a smaller rule basis can need a larger checker, and several
+of the smallest checkers implement an unchanged rule basis.
+
+\section*{How the article is organized}
+
+\Cref{base:sec:terms} to \cref{base:sec:measure} of the first chapter state
+the common core: the terms, the native formulas and their ordinary reading,
+the eight rules of the native scalar core $\Nat$, its structural properties
+and derived connectives, the ordinary theory $\Teq$, the arithmetic inside
+$\Teq$, and the bridge to $\iPRA$. No other chapter restates this material.
+
+The next six chapters stay on iterator terms. The second treats refinements
+of the eight rules on the unchanged language: the introductions, the
+transport rule, uniqueness of iteration in place of induction, and the
+progressive reading of the closure binder. The third treats guards: formula
+languages in which the shape of a matrix determines the mode of its
+introduction. The fourth treats rules that merge computation with equality and
+calculi on normal forms. The fifth treats clause calculi, in which contexts
+hold reusable clauses and the closure binder is not a formula. The sixth
+treats rules that fuse equality reasoning with the discharge of an opened
+witness, and restricted substitution rules. The seventh treats introductions
+that take no witness.
+
+Two chapters change the term language: recursors with a built-in seed, and
+canonical and counter-aware recursors in which the successor is defined.
+The tenth chapter collects the obstruction and independence results, with the
+models and invariants that prove them. The last chapter treats
+proof-certificate formats and checkers, and records the measured sizes.
+
+Each chapter ends with a table of the checker sizes that its packages report
+and with a section of further questions: claims stated without proof,
+conjectures, and what was tried and not achieved.
+
+\section*{Conventions}
+
+The notation of the first chapter is used throughout. Names of calculi other
+than $\Nat$, $\Teq$ and $\iPRA$ are local to the chapter that introduces
+them; the same letter can denote different calculi in different chapters.
+Every chapter compares its calculi with the eight-rule core of the first
+chapter. A research package is cited by its directory name, as in
+\pkg{witness\_rule}; \cref{prov:sec:packages} lists every package with the
+chapters that draw on it. Where a result is formalized in Lean in the
+repository, the name of the Lean declaration is given in typewriter type; the
+status of the formalization is recorded in the README of the directory and is
+not repeated here in full. Editorial repairs of the source reports are stated
+where they occur.

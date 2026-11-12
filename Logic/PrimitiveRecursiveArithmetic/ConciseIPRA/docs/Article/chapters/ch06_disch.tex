@@ -1,0 +1,3203 @@
+\chapter{Discharge of a witness and restricted equality rules}
+\label{prov:ch:disch}
+\label{disch:chap}
+
+A derivation in the native scalar core $\Nat$ (\cref{base:sec:kernel})
+supplies data at three places. The rule \rulename{Tr} takes an equation
+$s=t$ together with a term template. The rule \rulename{DE} opens a paired
+formula at a fresh witness and is separate from every equality rule. The
+rule \rulename{QE}, and the use of a clause that replaces it in a clause
+calculus (\cref{base:sec:clauses}), takes an arbitrary term. The calculi of
+this chapter fuse or restrict these interfaces.
+
+In \cref{disch:sec:name} one rule, \rulename{Name}, discharges an opened
+witness $b$ together with a proved equation $b=t$; it replaces both the
+equality rule and the elimination of $\D{x}{y}$. In
+\cref{disch:sec:inferred} neither the equation nor the term $t$ is
+supplied: both are read off two rows of the matrix. In
+\cref{disch:sec:subst} the fusion is carried out on the canonical recursor
+syntax, where no normalization is available and reflexivity is derived. In
+\cref{disch:sec:restricted} the equality rule substitutes for a variable
+only, for the newest variable only, or, on raw terms, for a free parameter;
+an obstruction shows that unary congruence is not enough. In
+\cref{disch:sec:spec} the use of a clause takes no term argument.
+\Cref{disch:sec:const} records an induction interface that one of the
+packages treats separately. \Cref{disch:sec:impl,disch:sec:sizes} summarize
+the checkers, and \cref{disch:sec:further} lists what is left open.
+
+Throughout, $\equiv$ is literal identity of syntax up to the names of bound
+variables, a \emph{parameter} is a free numerical variable, and a
+\emph{literal equation} is a formula whose root is an equation. The numerals
+$\Suc 0$ and $\Suc\Suc 0$ are written $1$ and $2$, and $H$ is the equation
+$0=0$.
+
+\section{Normal forms, clause contexts, and the reference calculus}
+\label{disch:sec:setting}
+
+This section fixes what is common to \pkg{witness\_discharge},
+\pkg{inferred\_witness}, \pkg{deterministic\_opening},
+\pkg{first\_instance}, \pkg{clause\_discharge} and
+\pkg{variable\_substitution}. Full normalization is the subject of
+\cref{comp:sec:full} and the clause calculi on raw terms that of
+\cref{claus:sec:five}; they are cited, and only what is specific to the
+calculi of this chapter is stated here. The remark on the strict traversal
+is from \pkg{first\_instance}.
+
+\subsection{Conventions on full normal forms}
+
+In \cref{disch:sec:setting,disch:sec:name,disch:sec:inferred} and in
+\cref{disch:sec:vsub,disch:sec:newest} every term and every formula is in
+full normal form: $\nf$ is the normal form for the reduction of
+\cref{comp:def:reduction}, which exists and is unique by
+\cref{comp:thm:sn,comp:thm:confluence}, and every displayed instance
+$B(t)$, $B(t,r)$ or $F\subst{t}{b}$ is formed with the normalizing
+substitution of \cref{comp:def:nusubst}. Substitution is simultaneous: an
+inserted term is not traversed again, so that $F\subst{t}{b}$ is defined
+also when $t$ contains $b$. By \cref{comp:prop:nfadm} the map $\nf$ is an
+admissible normalizer; in particular it commutes with injective renaming,
+it leaves the root of a formula unchanged, and it is coherent with
+substitution,
+\begin{equation}
+ \nf(T\sigma)=\nf\bigl(\nf(T)[x\mapsto\nf(\sigma x)]\bigr),
+ \label{disch:eq:coherence}
+\end{equation}
+so that instances compose (\cref{comp:lem:laws}) and it is immaterial
+whether a compound expression is normalized before or after one of its
+variables is instantiated. The counter of an iterator in a normal form is
+neutral (\cref{comp:lem:fullgrammar}).
+
+Let $P$ be the parity term of \cref{base:def:sel}, written $N$ there,
+$P(y)=\It{y}{0}{u}{\sel(u,1,0)}$. On normal forms the computations of
+\cref{base:eq:par012} and of the selector are literal identities:
+\begin{equation}
+ \sel(0,a,c)\equiv a,\qquad \sel(\Suc v,a,c)\equiv c,\qquad
+ P(1)\equiv 1,\qquad P(2)\equiv 0.
+ \label{disch:eq:endpoints}
+\end{equation}
+No induction, and no statement about $P$ at other arguments, is used
+anywhere in this chapter.
+
+\begin{remark}[Termination of a strict traversal]
+\label{disch:rem:strict}
+The checkers of this chapter normalize the counter, the seed and the body
+first and, at a successor counter, normalize the predecessor iterate
+$\It{n}{a}{u}{h}$ before inserting it into the body. If the body does not
+mention its state variable, that value is erased by the root contraction,
+so the strategy is not a reduction sequence of \cref{comp:def:reduction}
+as it stands. \pkg{first\_instance} justifies it as follows. Add an
+administrative term $\mathsf{let}\ u=a\ \mathsf{in}\ h$ with the reduction
+to $h\subst{a}{u}$, and replace the successor contraction by the
+\emph{strict expansion}
+\[
+ \It{\Suc n}{a}{u}{h}\longrightarrow
+ \mathsf{let}\ v=\It{n}{a}{u}{h}\ \mathsf{in}\ h\subst{v}{u},
+ \qquad v\text{ fresh},
+\]
+reducing under all constructors and under both components of a
+$\mathsf{let}$. No new normal forms arise: every $\mathsf{let}$ has a root
+contraction, and that contraction composes with a strict expansion to the
+original successor contraction. A $\mathsf{let}$ is strongly normalizing
+whenever its value is strongly normalizing and its body sends every
+strongly normalizing term substituted for $u$ to a strongly normalizing
+term; this is proved by induction on the sum of the reduction heights of
+the two components, an internal contraction decreasing the sum and the
+root contraction being covered by the hypothesis on the body. The proof of
+\cref{comp:lem:snclosure} uses this fact at the successor root, after
+obtaining the predecessor iterate by the same lexicographic induction, and
+the structural induction of \cref{comp:thm:sn}, extended by the new
+constructor, gives strong normalization of the auxiliary syntax. The
+strict traversal is an evaluation strategy of the auxiliary calculus:
+after a strict expansion it normalizes the value and then contracts the
+$\mathsf{let}$. Hence it terminates, also when the value is erased, and
+since forgetting the administrative terms preserves conversion it returns
+the unique normal form $\nf(t)$.
+\end{remark}
+
+\begin{remark}[Bounded checkers]
+\label{disch:rem:fuel}
+By \cref{comp:prop:notpr} the normalizer is total recursive and not
+primitive recursive; it is part of the specification of every calculus on
+normal forms and is counted in every checker of such a calculus.
+\pkg{witness\_discharge}, \pkg{inferred\_witness}, \pkg{first\_instance}
+and \pkg{clause\_discharge} each supply a second checker with a fuel
+field, as in \cref{comp:prop:fuel}. The metering differs from the one
+there: one unit is consumed at every entry into the recursive traversal of
+syntax and into the recursive proof check, not at every successor
+contraction. The conclusions are the same, by the same argument. An
+accepting unbounded run with $k$ metered entries is accepted with fuel $k$
+and rejected with fuel $k-1$, and erasing the fuel turns an accepting
+bounded run into an accepting unbounded run, so that
+\[
+ \exists p\ \operatorname{Accept}(A,p)
+ \quad\Longleftrightarrow\quad
+ \exists p\,\exists k\ \operatorname{Accept}_{\mathrm{fuel}}(A,p,k);
+\]
+and since every cycle of the call graph passes through a metered entry,
+the bounded acceptance relation is primitive recursive. Nothing is
+asserted about a primitive recursive bound on the fuel that a derivable
+formula needs.
+\end{remark}
+
+\subsection{Formulas, clauses, and the two conventions}
+
+The formulas of
+\cref{disch:sec:setting,disch:sec:name,disch:sec:inferred} are the
+$Q$-free formulas of \cref{claus:def:tau} over normal forms, with the
+closure abbreviation $q_yA(y)=\D{w}{y}A(y)$, $w$ unused, of that
+definition. Contexts are lists of clause occurrences
+(\cref{base:sec:clauses,claus:sec:origins}). For a matrix $B(x,y)$ and a
+term $r$ the \emph{opened clause} is
+\[
+ \mathcal C_B(r)\defeq[B(r,0);\,y.\,B(r,y)].
+\]
+Two conventions for assumptions and reflexivity occur in the packages.
+\begin{itemize}
+\item \emph{The convention with \rulename{Refl}.} Every clause has exactly
+ one antecedent, an assumption $F$ is the clause
+ $\operatorname{ord}(F)=[H;\,v.\,F]$ of \cref{claus:sec:origins}, and
+ reflexivity is a rule.
+\item \emph{The convention with the reflexivity clause.} Clauses are the
+ uniform clauses of \cref{claus:def:v}, with at most one antecedent; an
+ assumption $F$ is the unconditional clause $[\ ;\,v.\,F]$; every context
+ contains one distinguished occurrence of the clause
+ $\mathcal R=[\ ;\,y.\,y=y]$ of that definition; and there is no
+ reflexivity rule: $t=t$ is a use of $\mathcal R$ at $t$.
+\end{itemize}
+In both, $\Gamma,F$ denotes $\Gamma$ extended by the assumption clause of
+$F$. \Cref{disch:lem:conventions} shows that the two conventions are
+interchangeable. All proofs below are written in the convention with
+\rulename{Refl}.
+
+\subsection{The shared rules and the reference calculus}
+
+The rules \rulename{Use}, \rulename{Elim} and \rulename{Intro} are those of
+\cref{claus:def:c3}, read on full normal forms with normalizing
+substitution; \rulename{Intro} is the witness-selected introduction of
+\cref{comp:def:wi} with a clause as its assumption. The equality rule of
+the reference calculus is \rulename{Tr}, as in $\Nat$.
+
+\begin{definition}[Shared rules]
+\label{disch:def:rules}
+\begin{align}
+ &\infrule{}{\Gamma\proves t=t}\ \rulename{Refl}
+ \label{disch:eq:refl}\\[1ex]
+ &\infrule{\Gamma\proves A}{\Gamma\proves B(t)}\ \rulename{Use},
+ \qquad [A;\,y.\,B(y)]\text{ an occurrence in }\Gamma
+ \label{disch:eq:use}\\[1ex]
+ &\infrule{\Gamma,\ B(t,\eta)\proves B(t,\Suc z)}
+          {\Gamma\proves\D{x}{y}B(x,y)}\ \rulename{Intro},
+ \qquad
+ \eta=\begin{cases}
+ z,&B\text{ is a literal equation and }t\equiv 0,\\
+ 0,&\text{otherwise}
+ \end{cases}
+ \label{disch:eq:intro}\\[1ex]
+ &\infrule{\Gamma\proves\D{x}{y}B(x,y)\qquad
+           \Gamma,\ \mathcal C_B(b)\proves A}
+          {\Gamma\proves A}\ \rulename{Elim}
+ \label{disch:eq:elim}\\[1ex]
+ &\infrule{\Gamma\proves s=t\qquad\Gamma\proves h(s)=r}
+          {\Gamma\proves r=h(t)}\ \rulename{Tr}
+ \label{disch:eq:tr}
+\end{align}
+In \rulename{Use} the term $t$ is arbitrary; for an unconditional clause
+the rule has no premise. In \rulename{Intro} the variable $z$ is fresh for
+$\Gamma$, for the witness $t$ and for $\D{x}{y}B$; the instance with
+$\eta=0$ is the \emph{case mode} and the instance with $\eta=z$ the
+\emph{progress mode}, and the mode is determined by the literal syntax of
+the normal forms, not by provable equality. In \rulename{Elim} the
+variable $b$ is fresh for $\Gamma$, $A$ and $\D{x}{y}B$. In \rulename{Tr},
+$h(w)$ is an arbitrary term template.
+\end{definition}
+
+\begin{definition}[The reference calculus]
+\label{disch:def:reference}
+$\mathcal T$ is the calculus with the five rules \rulename{Refl},
+\rulename{Use}, \rulename{Intro}, \rulename{Elim} and \rulename{Tr}, in the
+convention with \rulename{Refl}.
+\end{definition}
+
+$\mathcal T$ is the fully normalized clause calculus with which the
+packages of this section compare themselves. It is the clause form of the
+six-rule calculus $\mathsf F$ of \cref{comp:def:fsix}.
+
+\begin{proposition}[The reference calculus and the kernel]
+\label{disch:prop:kernel}
+For a native formula $A$ let $A^{\flat}\defeq\tau(\nf(A))$, with $\tau$
+the $Q$-free form of \cref{claus:def:tau}. Then $\Nat$ derives
+$\Gamma\proves A$ if and only if $\mathcal T$ derives $A^{\flat}$ from the
+assumption clauses of the formulas $G^{\flat}$, $G\in\Gamma$; and $\Nat$
+derives $A$ from $A^\flat$ and conversely. The translation is the identity
+on normalized $Q$-free formulas and fixes $0=\Suc 0$.
+\end{proposition}
+
+\begin{proof}
+$\Nat$ derives $A$ from $\nf(A)$ and conversely by
+\cref{comp:lem:conversion}, and $\nf(A)$ from $A^\flat$ and conversely by
+\cref{claus:lem:unq}(iii). By \cref{comp:thm:fsix} it remains to show, for
+$\Gamma$ and $A$ in full normal form, that $\Gamma\proves_{\mathsf F}A$ if
+and only if $\operatorname{ord}(\tau\Gamma)\proves_{\mathcal T}\tau A$.
+This is the argument of \cref{claus:thm:five} with $\mathsf F$ in the
+place of $\Nat$ and $\mathcal T$ in the place of $\mathsf C_3$; it is
+shorter, because $\mathsf F$ and $\mathcal T$ have the same equality rule
+and the same introduction.
+
+From $\mathcal T$ to $\mathsf F$, for an annotated context
+(\cref{claus:def:origin}) and its native image: \rulename{Refl} and
+\rulename{Tr} are rules of $\mathsf F$; a \rulename{Use} of an assumption
+occurrence is \rulename{Hyp}, and a \rulename{Use} of an opened occurrence
+is \rulename{QE}; \rulename{Elim} is \rulename{DE}; and \rulename{Intro}
+is \rulename{WI} in the same mode, its new occurrence being an assumption.
+
+From $\mathsf F$ to $\mathcal T$: \rulename{Hyp} is \rulename{Refl} at $0$
+followed by \rulename{Use}; \rulename{Refl} and \rulename{Tr} are rules;
+\rulename{QE} is the second rule of \cref{disch:lem:closure} below, since
+$\tau(\Q{y}B)\equiv q_y\tau B$; and \rulename{WI} is \rulename{Intro} in
+the same mode, because $\tau$ sends literal equations to literal equations
+and all other formulas to formulas with root $D$. For \rulename{DE} apply
+\rulename{Elim} to the translated major premise. In the extended context,
+under the assumption $\tau B(b,0)$, the opened clause at $\Suc z$ gives
+$\tau B(b,\Suc z)$, so the first rule of \cref{disch:lem:closure} gives
+$q_y\tau B(b,y)$, which is $\tau(\Q{y}B(b,y))$; weaken the translated
+branch and cut this formula into it (\cref{disch:lem:structural}).
+
+Finally, from $\operatorname{ord}(\tau\Gamma)\proves_{\mathcal T}\tau A$
+the first translation gives $\tau\Gamma\proves_{\mathsf F}\tau A$, and
+\cref{claus:lem:unq}(iii), which holds in $\mathsf F$ by
+\cref{comp:thm:fsix}, with cut replaces $\tau\Gamma$ and $\tau A$ by
+$\Gamma$ and $A$.
+\end{proof}
+
+\subsection{Structural operations}
+
+\begin{lemma}[Weakening, renaming, cut]
+\label{disch:lem:structural}
+Let $\mathcal S$ be a calculus whose rules are among those of
+\cref{disch:def:rules} and the rules \rulename{Name}
+\eqref{disch:eq:name}, \rulename{Open} \eqref{disch:eq:open},
+\rulename{Export} \eqref{disch:eq:export} and \rulename{VSub}
+\eqref{disch:eq:vsub} introduced below, and which contains \rulename{Refl}
+and \rulename{Use}. The following are admissible in $\mathcal S$, by
+direct induction on derivations.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Weakening: if $\Gamma\proves A$ and every occurrence of $\Gamma$ is
+ an occurrence of $\Gamma'$, then $\Gamma'\proves A$.
+\item Injective renaming: if $\Gamma\proves A$ and $\iota$ is an injective
+ map of parameters, then $\Gamma\iota\proves A\iota$.
+\item Cut of an assumption: if $\Gamma\proves F$ and $\Gamma,F\proves A$,
+ then $\Gamma\proves A$.
+\end{enumerate}
+None of the three substitutes a term for a parameter in a derivation.
+\end{lemma}
+
+\begin{proof}
+The inductions are those of \cref{claus:lem:struct}; for \rulename{Refl},
+\rulename{Use}, \rulename{Elim}, \rulename{Intro} and \rulename{Tr} nothing
+changes, since normalization commutes with injective renaming. Only the
+side conditions of the four new rules have to be checked under an
+injective renaming. Such a renaming preserves and reflects the property of
+being a variable, the literal identities tested by the selector of
+\cref{disch:def:selector}, and the absence of a parameter from a formula.
+Hence the selected witness of \rulename{Open} and \rulename{Export}, the
+source of \rulename{VSub} and the export conditions of \rulename{Name} and
+\rulename{Export} are preserved. For weakening and cut, no side condition
+of the new rules refers to the clauses of the context other than through
+freshness, and the selector depends on the matrix of the major premise
+alone.
+\end{proof}
+
+Substitution of a term for a parameter does not preserve rule instances in
+general. It can turn a witness into the literal $0$ and so change the mode
+of \rulename{Intro} (\cref{comp:ex:modechange,claus:prop:subst}), it can
+make the test of the selector succeed, and it can turn the variable source
+of \rulename{VSub} into a compound term. Admissibility of substitution is
+proved for the calculus $\mathcal O$ in \cref{disch:thm:subst} and follows
+for the others from the equivalences.
+
+\subsection{Closures, numerical cases, and the two introductions}
+
+The lemmas of this subsection and the next are the counterparts on full
+normal forms of \cref{claus:lem:closure,claus:lem:cases,claus:lem:eq} and
+\cref{claus:lem:ftransport}. They are restated because the calculi of
+\cref{disch:sec:name,disch:sec:inferred} do not have \rulename{Elim} as a
+rule, and one of them has it at first for two kinds of matrices only; the
+hypotheses record what each argument uses.
+
+\begin{lemma}[Closure and numerical cases]
+\label{disch:lem:closure}
+Let $\mathcal S$ contain \rulename{Use} and \rulename{Intro} and admit
+weakening, and suppose that \rulename{Elim} is a primitive or derived rule
+of $\mathcal S$ for every matrix in which the witness coordinate does not
+occur. Then the following rules are derived, for every formula $A(y)$,
+every term $t$ and $z$ fresh:
+\[
+ \infrule{\Gamma,\ A(0)\proves A(\Suc z)}{\Gamma\proves q_yA(y)}
+ \qquad
+ \infrule{\Gamma\proves q_yA(y)\qquad\Gamma\proves A(0)}
+         {\Gamma\proves A(t)}
+ \qquad
+ \infrule{\Gamma\proves A(0)\qquad\Gamma\proves A(\Suc z)}
+         {\Gamma\proves A(t)}
+\]
+No equality rule is used.
+\end{lemma}
+
+\begin{proof}
+The second rule is \cref{claus:lem:closure}(ii), whose proof eliminates a
+matrix with an unused witness coordinate, and the third follows from the
+first two as in \cref{claus:cor:induction}. The first rule is obtained
+differently from \cref{claus:lem:closure}(i), with no appeal to an
+unrestricted case introduction: apply \rulename{Intro} to the matrix
+$A(y)$, with the unused witness coordinate, at the witness $1$; since
+$1\not\equiv 0$ the rule is in case mode at every root, and its premise is
+the given one.
+\end{proof}
+
+The third rule is a distinction of numerical cases, not an induction: its
+successor premise has no hypothesis.
+
+For a literal equation $E$ let $G(v,E)$ be the gate of
+\cref{comp:lem:envelope}, with $G(0,E)\equiv H$ and
+$G(\Suc w,E)\equiv E$, and let the \emph{envelope} in the present
+formulas be $L(E)\defeq q_vG(v,E)$.
+
+\begin{lemma}[The two unrestricted introductions]
+\label{disch:lem:repair}
+Let $\mathcal S$ contain \rulename{Refl}, \rulename{Use} and
+\rulename{Intro}, admit weakening and cut, and have \rulename{Elim} as a
+primitive or derived rule for every matrix in which the witness coordinate
+does not occur and for every matrix with root $D$. Then for every matrix
+$B$, every literal equation $E(x,y)$ and every witness $t$ the rules
+\[
+ \infrule{\Gamma,\ B(t,0)\proves B(t,\Suc z)}
+         {\Gamma\proves\D{x}{y}B(x,y)}
+ \qquad
+ \infrule{\Gamma,\ E(t,z)\proves E(t,\Suc z)}
+         {\Gamma\proves\D{x}{y}E(x,y)}
+\]
+are derived, with $z$ fresh as in \rulename{Intro}.
+\end{lemma}
+
+\begin{proof}
+\emph{Case introduction.} \rulename{Intro} is the first rule unless $B$ is
+a literal equation $E(x,y)$ and $t\equiv 0$. For that case the derivation
+is the one given after \cref{comp:lem:envelope} for the missing case of
+\cref{comp:thm:fsix}, read in the present formulas: $\Q{v}$ becomes $q_v$;
+the two derivations $\Gamma,E\proves L(E)$ and $\Gamma,L(E)\proves E$ of
+\cref{comp:lem:envelope} use the first and the second rule of
+\cref{disch:lem:closure}, with \rulename{Refl} for the base $H$; the
+matrix $L(E(x,y))$ has root $D$, so it is introduced at the witness $0$ in
+case mode and opened by \rulename{Elim} at a fresh $c$; and the retained
+closure is the opened clause, used by \rulename{Use} at $\Suc z$. The
+derivation eliminates matrices with an unused witness coordinate and one
+matrix with root $D$, and no others.
+
+\emph{Progress introduction.} This is the third statement of
+\cref{claus:cor:induction}, with the same proof: \rulename{Intro} for the
+matrix $E(t,y)$ at the literal witness $0$ of an unused coordinate is in
+progress mode and yields $q_yE(t,y)$; in the context $\Gamma,E(t,0)$ the
+second rule of \cref{disch:lem:closure} gives $E(t,\Suc z')$; and the case
+introduction at the witness $t$ concludes.
+\end{proof}
+
+\subsection{Equality from one term transport}
+
+\emph{Uncrossed} transport is the rule
+\begin{equation}
+ \infrule{\Gamma\proves s=t\qquad\Gamma\proves h(s)=r}
+         {\Gamma\proves h(t)=r}\ \rulename{UTr}
+ \label{disch:eq:utr}
+\end{equation}
+for an arbitrary term template $h(w)$.
+
+\begin{lemma}[Equality algebra]
+\label{disch:lem:equality}
+Let $\mathcal S$ have \rulename{Refl}, as a rule or derived. If
+\rulename{UTr} is derivable in $\mathcal S$, or if \rulename{Tr} is, then
+so are both, and so are symmetry, transitivity, the congruence
+$s=t\proves h(s)=h(t)$, and transport in every equation template:
+$s=t,\ p(s)=q(s)\proves p(t)=q(t)$.
+\end{lemma}
+
+\begin{proof}
+From \rulename{UTr}: with $h(w)=w$ and $r\equiv s$ the premises are $s=t$
+and the reflexive $s=s$, and the conclusion is $t=s$; this is symmetry, and
+\rulename{UTr} followed by symmetry is \rulename{Tr}. From \rulename{Tr}
+and reflexivity, \cref{comp:lem:eqalg}(b) gives symmetry, transitivity,
+congruence and transport in an equation template, and \rulename{Tr}
+followed by symmetry is \rulename{UTr}.
+\end{proof}
+
+\begin{lemma}[Transport in a formula]
+\label{disch:lem:formula}
+Let $\mathcal S$ contain \rulename{Use} and \rulename{Intro}, admit
+weakening, have \rulename{Elim} as a primitive or derived rule for all
+matrices, and derive symmetry and transport in every equation template.
+Then for every formula template $F(w)$
+\[
+ \infrule{\Gamma\proves s=t\qquad\Gamma\proves F(s)}{\Gamma\proves F(t)}
+\]
+is derived in $\mathcal S$.
+\end{lemma}
+
+\begin{proof}
+The proof of \cref{claus:lem:ftransport} applies, by induction on the
+syntax of the template. Its one appeal to \cref{claus:lem:cases} is an
+\rulename{Intro} at the fresh parameter opened by \rulename{Elim}; a
+parameter is not the literal $0$, so that instance is in case mode
+whatever the root of the matrix is, and the case introduction at the
+witness $0$ of \cref{disch:lem:repair} is not needed.
+\end{proof}
+
+\subsection{Two-row packets}
+
+The device by which a calculus without a general equality rule recovers
+\rulename{Tr} is a paired formula whose matrix has prescribed rows at
+$y=0,1,2$. It first occurs in \pkg{variable\_substitution}.
+
+\begin{definition}[Packet]
+\label{disch:def:packet}
+Let $E_1(x)=(a_1=c_1)$ and $E_2(x)=(a_2=c_2)$ be equations in which $x$
+may occur and $y$ does not. The \emph{packet} with rows $E_1,E_2$ is the
+matrix
+\[
+ \Pi(x,y)\defeq\Bigl(\sel\bigl(y,0,\sel(P(y),a_2,a_1)\bigr)
+ =\sel\bigl(y,0,\sel(P(y),c_2,c_1)\bigr)\Bigr).
+\]
+\end{definition}
+
+By \eqref{disch:eq:endpoints} its rows are literally
+\begin{equation}
+ \Pi(x,0)\equiv H,\qquad \Pi(x,1)\equiv E_1(x),\qquad
+ \Pi(x,2)\equiv E_2(x).
+ \label{disch:eq:rows}
+\end{equation}
+
+\begin{lemma}[Introduction of a packet]
+\label{disch:lem:packet}
+Let $\mathcal S$ contain \rulename{Use} and \rulename{Intro}, admit
+weakening, and have the numerical-case rule of \cref{disch:lem:closure}. If
+$\Gamma\proves E_1(s)$ and $\Gamma\proves E_2(s)$, then
+$\Gamma\proves\D{x}{y}\Pi(x,y)$. In any context that contains the opened
+clause $\mathcal C_\Pi(b)$, \rulename{Refl} and \rulename{Use} derive
+$E_1(b)$ and $E_2(b)$.
+\end{lemma}
+
+\begin{proof}
+Apply \rulename{Intro} at the witness $s$. Its goal is
+\[
+ \Pi(s,\Suc z)\equiv
+ \bigl(\sel(P(\Suc z),a_2(s),a_1(s))=\sel(P(\Suc z),c_2(s),c_1(s))\bigr).
+\]
+Let $A(v)\defeq\bigl(\sel(v,a_2(s),a_1(s))=\sel(v,c_2(s),c_1(s))\bigr)$.
+Then $A(0)\equiv E_2(s)$, $A(\Suc z')\equiv E_1(s)$ and, by
+\eqref{disch:eq:coherence}, $A(P(\Suc z))\equiv\Pi(s,\Suc z)$. The
+numerical-case rule at the target $P(\Suc z)$, with the two given
+derivations weakened to the local context and an eigenparameter $z'$
+chosen fresh independently of $z$, proves the goal. The assumption of
+\rulename{Intro} is not used, so the derivation is valid in either mode, in
+particular when $s\equiv 0$. The second statement is \eqref{disch:eq:rows}:
+the antecedent of $\mathcal C_\Pi(b)$ is $H$, proved by \rulename{Refl},
+and \rulename{Use} at $1$ and at $2$ gives the two rows at $b$.
+\end{proof}
+
+\subsection{Interchangeability of the two conventions}
+
+\begin{lemma}[Reflexivity as a fixed clause]
+\label{disch:lem:conventions}
+Let $\mathcal S$ be a calculus in the convention with \rulename{Refl}
+whose other rules are among \rulename{Use}, \rulename{Intro},
+\rulename{Elim}, \rulename{Tr}, \rulename{Name}, \rulename{Open},
+\rulename{Export} and \rulename{VSub}, and let $\mathcal S^{\mathcal R}$
+have the same rules without \rulename{Refl}, in the convention with the
+reflexivity clause. For a context $\Delta$ of uniform clauses let
+$L(\Delta)$ be the context $\Delta^{\circ}$ of \cref{claus:def:v}, which
+replaces every unconditional occurrence $[\ ;\,y.\,B]$ by $[H;\,y.\,B]$.
+Then for every formula $F$
+\[
+ \mathcal R,\Delta\proves_{\mathcal S^{\mathcal R}}F
+ \quad\Longleftrightarrow\quad
+ L(\Delta)\proves_{\mathcal S}F .
+\]
+The statement covers arbitrary contexts, not only those that arise in a
+derivation from $\mathcal R$ alone.
+\end{lemma}
+
+\begin{proof}
+The two inductions of the proof of \cref{claus:thm:uniform} apply. They
+translate only the uses of $\mathcal R$, the uses of unconditional
+clauses, \rulename{Refl}, and the assumption added by \rulename{Intro},
+and they copy every other rule; occurrences correspond by position, also
+when two have the same value. The rules that are copied here are
+\rulename{Tr}, \rulename{VSub}, and the rules \rulename{Elim},
+\rulename{Name}, \rulename{Open} and \rulename{Export}, each of which adds
+the clause $\mathcal C_B(r)$ with one antecedent on both sides and has the
+same premises and side conditions in the two conventions.
+\end{proof}
+
+\section{Naming packets: equality at the discharge of a witness}
+\label{disch:sec:name}
+
+This section draws on \pkg{witness\_discharge}. The packet is that of
+\pkg{variable\_substitution} (\cref{disch:sec:vsub}); its final
+substitution and the elimination of its witness become one inference here.
+
+\subsection{The rule \texorpdfstring{\rulename{Name}}{Name}}
+
+Equality substitution is performed only while the fresh witness of a
+paired formula is discharged:
+\begin{equation}
+ \infrule{\Gamma\proves\D{x}{y}B(x,y)\qquad
+          \Gamma,\ \mathcal C_B(b)\proves b=t\qquad
+          \Gamma,\ \mathcal C_B(b)\proves F}
+         {\Gamma\proves F\subst{t}{b}}\ \rulename{Name}
+ \label{disch:eq:name}
+\end{equation}
+The variable $b$ is fresh for $\Gamma$ and $\D{x}{y}B$, and the exported
+formula $F\subst{t}{b}$ must not contain $b$. The two branch premises have
+the same extended context. The term $t$ and the formula $F$ may contain
+$b$; in particular $t\equiv b$ is allowed. The side condition concerns the
+exported normal form and is not a prohibition of $b$ in $t$.
+
+\begin{definition}[The calculus of witness discharge]
+\label{disch:def:name}
+$\mathcal W$ is the calculus with the four rules \rulename{Refl},
+\rulename{Use}, \rulename{Intro} and \rulename{Name}, in the convention
+with \rulename{Refl}. $\mathcal W^{\mathcal R}$ has the three rule families
+\rulename{Use}, \rulename{Intro} and \rulename{Name} and the fixed clause
+$\mathcal R$. There is no further logical, equality, computation, case,
+induction, weakening or cut rule.
+\end{definition}
+
+\begin{lemma}[Soundness of \rulename{Name}]
+\label{disch:lem:name-sound}
+\rulename{Name} is sound for the ordinary reading in $\Teq$
+(\cref{base:sec:teq}), for every formula $F$ and also when $t$ contains
+$b$.
+\end{lemma}
+
+\begin{proof}
+Eliminate the existential quantifier in the reading of the major premise
+at a fresh $b$; the local assumption is the reading of $\mathcal C_B(b)$.
+The two branch derivations give $b=t$ and $F$. Equality substitution in
+the template $F\subst{w}{b}$ gives the raw instance at $t$, and the
+computation equations identify it with its normal form $F\subst{t}{b}$.
+This step does not need $b\notin\FV(t)$: an equation $b=t(b)$ supports the
+simultaneous substitution of $t(b)$ for $b$ in a fixed formula. What the
+elimination of the quantifier needs is the absence of $b$ from the result,
+which is the side condition.
+\end{proof}
+
+\rulename{Use} has the reading of its clause, and \rulename{Intro} is sound
+by coverage in case mode and by induction for literal equations in
+progress mode.
+
+\begin{lemma}[Ordinary elimination]
+\label{disch:lem:name-elim}
+\rulename{Elim} is a derived rule of $\mathcal W$.
+\end{lemma}
+
+\begin{proof}
+Take $t\equiv b$ in \rulename{Name}. The equality premise is
+\rulename{Refl}, the other premise is the given derivation of $A$, and
+$A\subst{b}{b}\equiv A$ does not contain $b$.
+\end{proof}
+
+By \cref{disch:lem:structural,disch:lem:name-elim} the closure rules, the
+numerical cases, the two unrestricted introductions and the introduction
+of packets
+(\cref{disch:lem:closure,disch:lem:repair,disch:lem:packet}) are available
+in $\mathcal W$. None of them uses an instance of \rulename{Name} other
+than with $t\equiv b$.
+
+\subsection{Transport from one discharge}
+
+\begin{theorem}[Transport in $\mathcal W$]
+\label{disch:thm:name-transport}
+For every term template $h(w)$ the rule \rulename{UTr}
+\eqref{disch:eq:utr} is derived in $\mathcal W$. Apart from ordinary
+eliminations, its derivation contains one instance of \rulename{Name}.
+\end{theorem}
+
+\begin{proof}
+Let $\Gamma\proves s=t$ and $\Gamma\proves h(s)=r$, let $x$ be fresh for
+$h$, $r$ and $t$, and let $\Pi$ be the packet with the rows
+\[
+ E_1(x)=(h(x)=r),\qquad E_2(x)=(x=t).
+\]
+The two given equations are $E_1(s)$ and $E_2(s)$, so
+$\Gamma\proves\D{x}{y}\Pi$ by \cref{disch:lem:packet}. Apply
+\rulename{Name} with a fresh $b$. In the context $\Gamma,\mathcal C_\Pi(b)$
+the same lemma gives the row $b=t$, which is the equality premise, and the
+row $h(b)=r$, which is taken as $F$. The exported formula is
+\[
+ (h(b)=r)\subst{t}{b}\equiv(h(t)=r)
+\]
+by \eqref{disch:eq:coherence}, because $b$ occurs neither in $h$ nor in
+$r$; it does not contain $b$. The identity is one of normal forms and not
+an application of an equality rule.
+\end{proof}
+
+\begin{corollary}[Equality in $\mathcal W$]
+\label{disch:cor:name-equality}
+$\mathcal W$ derives symmetry, transitivity, congruence, \rulename{Tr}, and
+transport in every formula template.
+\end{corollary}
+
+\begin{proof}
+\Cref{disch:lem:equality} applies by \cref{disch:thm:name-transport}; in
+particular symmetry is obtained from the packet with the identity template
+and a reflexive minor premise, and is not assumed by it.
+\Cref{disch:lem:formula} applies by \cref{disch:lem:name-elim}.
+\end{proof}
+
+\subsection{Equivalence}
+
+\begin{theorem}[$\mathcal W$ and the reference calculus]
+\label{disch:thm:name}
+For every context $\Gamma$ and formula $F$,
+\[
+ \Gamma\proves_{\mathcal W}F\quad\Longleftrightarrow\quad
+ \Gamma\proves_{\mathcal T}F .
+\]
+Both directions are effective transformations of derivations that leave
+the end sequent unchanged.
+\end{theorem}
+
+\begin{proof}
+From $\mathcal T$ to $\mathcal W$, translate a derivation recursively:
+\rulename{Elim} is replaced by \cref{disch:lem:name-elim} and
+\rulename{Tr} by \cref{disch:cor:name-equality}; the other three rules are
+shared. The constructions that replace a \rulename{Tr} node were derived
+without \rulename{Tr} and without a translated node, so the recursion is
+on the given derivation alone.
+
+From $\mathcal W$ to $\mathcal T$: $\mathcal T$ derives symmetry and
+\rulename{UTr} from \rulename{Tr} by \cref{disch:lem:equality}, and hence
+transport in every formula template by \cref{disch:lem:formula}. At a
+\rulename{Name} node the translated branch premises give $b=t$ and $F$ in
+the context $\Gamma,\mathcal C_B(b)$. Transport in the template
+$F\subst{w}{b}$, $w$ fresh, gives $F\subst{t}{b}$ in that context; the
+substitution is simultaneous, so this is correct also when $t$ contains
+$b$. By the side condition the result does not contain $b$, and
+\rulename{Elim} discharges the clause. The finitely many eigenparameters
+are renamed before each replacement.
+\end{proof}
+
+\begin{corollary}[Three rule families]
+\label{disch:cor:name-three}
+For every context $\Delta$ of clauses with at most one antecedent and every
+formula $F$,
+$\mathcal R,\Delta\proves_{\mathcal W^{\mathcal R}}F$ if and only if
+$L(\Delta)\proves_{\mathcal T}F$. Consequently $\Nat$ derives
+$\Gamma\proves A$ if and only if $\mathcal W^{\mathcal R}$ derives
+$A^{\flat}$ from $\mathcal R$ and the unconditional assumption clauses of
+the formulas of $\Gamma^{\flat}$, and the ordinary reading of
+$\mathcal W^{\mathcal R}$ is bi-interpretable with $\iPRA$ in the sense of
+\cref{base:thm:bridge}: whole domains, actual equality, both numerical
+composites with graph $x=y$, and both formula round trips.
+\end{corollary}
+
+\begin{proof}
+The first statement is \cref{disch:lem:conventions,disch:thm:name}; the
+second adds \cref{disch:prop:kernel}. The comparisons are the identity on
+normalized terms and formulas and fix $0=\Suc 0$, so the interpretations
+and composites of \cref{base:thm:bridge} are unchanged.
+\end{proof}
+
+\begin{remark}[What the count of three means; Lean]
+\label{disch:rem:name-lean}
+The number three counts inference patterns after reflexivity has been moved
+into one explicitly listed axiom clause; it does not say that reflexivity
+is proved from nothing. The reduction specific to \pkg{witness\_discharge}
+is the localization of all equality elimination at the discharge of a
+witness; the clauses with at most one antecedent and the fixed clause are
+choices of presentation taken from \pkg{uniform\_clauses}.
+
+In Lean the kernel form is \Lean{NMPrf}: on full normal forms, with
+\rulename{Name} in place of \rulename{Tr} and \rulename{DE} and with the
+hypothesis $\Q{y}B(b,y)$ in the opened context, the kernel has the six
+rules \rulename{Hyp}, \rulename{Refl}, \rulename{Name}, \rulename{QE},
+\rulename{DI} and \rulename{QI}, and \Lean{nmprf\_iff\_nprf}
+(\Lean{NativeWitnessDischarge}) proves it equivalent to $\Nat$; the packet
+is \Lean{NMPrf.packet}. The clause form $\mathcal W^{\mathcal R}$ is
+\Lean{WDPrf}, with \Lean{wdprf\_iff\_nprf} (\Lean{NativeNameClauses}).
+\end{remark}
+
+\begin{remark}[Substitution in $\mathcal W$]
+The substitution inside \rulename{Name} acts on the proved formula and is
+justified by the proved equation; it is not a substitution into the branch
+derivation. Substitution of a term for a parameter in a derivation of
+$\mathcal W$ is admissible through \cref{disch:thm:name} and the
+admissibility in $\mathcal O$ (\cref{disch:thm:subst,disch:thm:inferred}),
+not by an induction that preserves the rule at each node.
+\end{remark}
+
+\section{The inferred witness}
+\label{disch:sec:inferred}
+
+This section draws on \pkg{inferred\_witness},
+\pkg{deterministic\_opening}, \pkg{first\_instance} and
+\pkg{clause\_discharge}. The four packages contain one idea in two forms;
+\cref{disch:rem:four} records how they differ.
+
+\subsection{The selector and the two forms of the rule}
+
+\rulename{Name} has three premises, a supplied term $t$ and a supplied
+formula $F$. The equation $b=t$ need not be proved: it can be read off the
+opened clause.
+
+\begin{definition}[Selector]
+\label{disch:def:selector}
+For a matrix $B(x,y)$ and a variable $b$ that does not occur in
+$\D{x}{y}B$, the \emph{selected witness} is
+\[
+ \rho_B(b)\defeq
+ \begin{cases}
+ r,&B(b,0)\equiv H\ \text{ and }\ B(b,1)\equiv(b=r),\\
+ b,&\text{otherwise.}
+ \end{cases}
+\]
+In the first case the test \emph{succeeds}; in the second the selector
+\emph{falls back}.
+\end{definition}
+
+The test inspects two rows of the matrix, at $y=0$ and at $y=1$, and
+compares normal forms literally. The left side of the row at $1$ must be
+the variable $b$ itself; an equation $r=b$, an equation provably of that
+shape, and an equation whose left side merely contains $b$ are not
+recognized. The right side $r$ may contain $b$. There is no search, no
+decision of provable equality, and no choice left to the certificate.
+
+\begin{lemma}[Properties of the selector]
+\label{disch:lem:selector}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item For an injective renaming $\iota$,
+ $\rho_{B\iota}(\iota b)\equiv\rho_B(b)\iota$, and the test succeeds for
+ $B\iota$ at $\iota b$ if and only if it succeeds for $B$ at $b$.
+\item If $x$ does not occur in $B$, or if $B$ has root $D$, the selector
+ falls back.
+\item If the test succeeds for $B$ with $\rho_B(b)\equiv r$, and $\sigma$
+ is a substitution with $\sigma b\equiv b$ under which $b$ remains fresh
+ for $\D{x}{y}B\sigma$, then it succeeds for $B\sigma$ with
+ $\rho_{B\sigma}(b)\equiv r\sigma$.
+\item A fallback is not stable under substitution.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) Normalization commutes with $\iota$, and $\iota$ preserves and
+reflects literal identity. (b) If $x$ does not occur in $B$, the row
+$B(b,1)$ does not contain $b$ and is not an equation with left side $b$.
+If $B$ has root $D$, so has $B(b,0)$, because normalization does not remove
+a formula constructor, and it is not $H$. (c) By
+\eqref{disch:eq:coherence}, $(B\sigma)(b,0)\equiv B(b,0)\sigma\equiv
+H\sigma\equiv H$ and
+$(B\sigma)(b,1)\equiv(b=r)\sigma\equiv(b=r\sigma)$. (d) For a parameter
+$a$ and a term $r$ let $B(x,y)\defeq\bigl(\sel(y,a,x)=\sel(y,a,r)\bigr)$.
+Then $B(b,0)\equiv(a=a)\not\equiv H$ and the selector falls back, while
+under $a\mapsto 0$ the rows are $H$ and $b=r$ and the test succeeds.
+\end{proof}
+
+\begin{lemma}[The selected equation]
+\label{disch:lem:selected}
+In every context that contains $\mathcal C_B(b)$, the equation
+$b=\rho_B(b)$ is derived by \rulename{Refl} and \rulename{Use}.
+\end{lemma}
+
+\begin{proof}
+If the selector falls back, the equation is $b=b$. If the test succeeds,
+the antecedent of $\mathcal C_B(b)$ is $H$, proved by \rulename{Refl}, and
+\rulename{Use} at $1$ gives $B(b,1)\equiv(b=\rho_B(b))$.
+\end{proof}
+
+The witness can be used in two ways. Either the clause is opened at the
+selected witness and the goal is unchanged,
+\begin{equation}
+ \infrule{\Gamma\proves\D{x}{y}B(x,y)\qquad
+          \Gamma,\ \mathcal C_B(\rho_B(b))\proves A}
+         {\Gamma\proves A}\ \rulename{Open}
+ \label{disch:eq:open}
+\end{equation}
+with $b$ fresh for $\Gamma$, $A$ and $\D{x}{y}B$; or the clause is opened
+at the fresh variable and the selected witness is substituted in the
+exported formula,
+\begin{equation}
+ \infrule{\Gamma\proves\D{x}{y}B(x,y)\qquad
+          \Gamma,\ \mathcal C_B(b)\proves F}
+         {\Gamma\proves F\subst{\rho_B(b)}{b}}\ \rulename{Export}
+ \label{disch:eq:export}
+\end{equation}
+with $b$ fresh for $\Gamma$ and $\D{x}{y}B$ and $b$ not in the exported
+formula. In \rulename{Open} the parameter $b$ stays available in the
+branch whether or not the selector returns it, and the clause
+$\mathcal C_B(\rho_B(b))=[B(\rho_B(b),0);\,y.\,B(\rho_B(b),y)]$ may contain
+it. Both rules have two premises and no term argument. Against
+\rulename{Name}, the rule \rulename{Export} drops the equality premise and
+the term $t$; the rule \rulename{Open} drops in addition the formula $F$.
+
+\begin{definition}[The two calculi of the inferred witness]
+\label{disch:def:inferred}
+$\mathcal O$ has the rules \rulename{Refl}, \rulename{Use},
+\rulename{Intro} and \rulename{Open}; $\mathcal X$ has the rules
+\rulename{Refl}, \rulename{Use}, \rulename{Intro} and \rulename{Export}.
+Their forms $\mathcal O^{\mathcal R}$ and $\mathcal X^{\mathcal R}$ with
+the reflexivity clause have three rule families each.
+\end{definition}
+
+\begin{proposition}[Soundness]
+\label{disch:prop:inferred-sound}
+\rulename{Open} and \rulename{Export} are sound for the ordinary reading in
+$\Teq$, also when $\rho_B(b)$ contains $b$. Moreover every instance of
+\rulename{Export} is derivable in $\mathcal W$ with the same end sequent.
+\end{proposition}
+
+\begin{proof}
+Eliminate the existential quantifier of the major premise at $b$; the
+local assumption is the reading of $\mathcal C_B(b)$, and
+\cref{disch:lem:selected} gives $b=\rho_B(b)$. For \rulename{Export},
+equality substitution gives $F\subst{\rho_B(b)}{b}$, which does not contain
+$b$. For \rulename{Open}, equality substitution in the template
+$\mathcal C_B(v)^\circ$ gives the reading of $\mathcal C_B(\rho_B(b))$, the
+branch gives $A$, and $A$ does not contain $b$. No occurs check on the
+selected witness is needed: the rules do not assert that the equation
+$b=r(b)$ has a solution independently of the major premise. The last
+statement: keep the two premises of \rulename{Export}, insert the
+derivation of \cref{disch:lem:selected}, and apply \rulename{Name} with
+$t\equiv\rho_B(b)$.
+\end{proof}
+
+\subsection{The export form}
+
+\begin{lemma}[Ordinary elimination in $\mathcal X$]
+\label{disch:lem:export-elim}
+\rulename{Elim} is a derived rule of $\mathcal X$, by one
+\rulename{Export}.
+\end{lemma}
+
+\begin{proof}
+Apply \rulename{Export} with $F\equiv A$. Since $A$ does not contain $b$,
+$A\subst{\rho_B(b)}{b}\equiv A$ whichever term the selector returns. The
+argument does not need the selector to fall back.
+\end{proof}
+
+Hence \cref{disch:lem:closure,disch:lem:repair,disch:lem:packet} hold in
+$\mathcal X$.
+
+\begin{theorem}[Transport in $\mathcal X$]
+\label{disch:thm:export-transport}
+\rulename{UTr} is derived in $\mathcal X$ for every term template $h(w)$.
+\end{theorem}
+
+\begin{proof}
+Let $\Gamma\proves s=t$ and $\Gamma\proves h(s)=r$, and let $\Pi$ be the
+packet with the rows, exchanged against \cref{disch:thm:name-transport},
+\[
+ E_1(x)=(x=t),\qquad E_2(x)=(h(x)=r).
+\]
+\Cref{disch:lem:packet} gives $\Gamma\proves\D{x}{y}\Pi$; the equation
+$s=t$ is used here, in the proof of the major premise, and not as a
+premise of the discharge. Apply \rulename{Export} with a fresh $b$. By
+\eqref{disch:eq:rows}, $\Pi(b,0)\equiv H$ and $\Pi(b,1)\equiv(b=t)$, so
+the test succeeds and $\rho_\Pi(b)\equiv t$. In the branch, \rulename{Use}
+of $\mathcal C_\Pi(b)$ at $2$ with the premise $H$ gives
+$F\equiv(h(b)=r)$. The exported formula is
+$(h(b)=r)\subst{t}{b}\equiv(h(t)=r)$ by \eqref{disch:eq:coherence}, and it
+does not contain $b$.
+\end{proof}
+
+The row that the rule must read is at the fixed position $1$; the row that
+the branch supplies is read by \rulename{Use} at $2$.
+
+\begin{theorem}[$\mathcal X$ and $\mathcal W$]
+\label{disch:thm:export}
+$\Gamma\proves_{\mathcal X}F$ if and only if $\Gamma\proves_{\mathcal W}F$,
+for every context $\Gamma$ and formula $F$, by effective transformations
+that leave the end sequent unchanged.
+\end{theorem}
+
+\begin{proof}
+From $\mathcal X$ to $\mathcal W$ use the last statement of
+\cref{disch:prop:inferred-sound} at every \rulename{Export} node. From
+$\mathcal W$ to $\mathcal X$: by
+\cref{disch:thm:export-transport,disch:lem:equality,disch:lem:formula,disch:lem:export-elim},
+$\mathcal X$ derives transport in every formula template. At a
+\rulename{Name} node the translated branches give $b=t$ and $F$ under the
+opened clause; transport in the template $F\subst{w}{b}$ gives
+$F\subst{t}{b}$; by the side condition of \rulename{Name} it does not
+contain $b$, and \cref{disch:lem:export-elim} discharges the witness. This
+covers a term $t$ that contains $b$. The order of the constructions is:
+ordinary elimination, numerical cases, the packet, transport in a term,
+transport in a formula; none uses a later one, and no substitution into a
+derivation is used.
+\end{proof}
+
+\subsection{The open form}
+
+In $\mathcal O$ ordinary elimination is not immediate: the branch of
+\rulename{Open} assumes $\mathcal C_B(\rho_B(b))$ where \rulename{Elim}
+assumes $\mathcal C_B(b)$, and it does not help that the goal is free of
+$b$. The assumption is changed by substituting in the branch derivation.
+The order of the argument avoids a circle: the instances of
+\rulename{Open} on which the selector necessarily falls back give
+numerical cases and the unrestricted case introduction; these give
+substitution; substitution gives ordinary elimination.
+
+\begin{lemma}[Fallback openings]
+\label{disch:lem:fallback}
+If the witness coordinate does not occur in $B$, or if $B$ has root $D$,
+then \rulename{Open} for $B$ is literally \rulename{Elim} for $B$.
+Consequently
+\cref{disch:lem:closure,disch:lem:repair,disch:lem:packet} hold in
+$\mathcal O$.
+\end{lemma}
+
+\begin{proof}
+\Cref{disch:lem:selector}(b). The three lemmas require \rulename{Elim}
+only for these two kinds of matrices, and weakening and cut hold by
+\cref{disch:lem:structural}.
+\end{proof}
+
+\begin{theorem}[Substitution in $\mathcal O$]
+\label{disch:thm:subst}
+If $\Gamma\proves_{\mathcal O}A$ and $\sigma$ is a simultaneous
+substitution of terms for parameters, then
+$\Gamma\sigma\proves_{\mathcal O}A\sigma$. The transformation of
+derivations is effective. It does not preserve the rule instance at each
+node.
+\end{theorem}
+
+\begin{proof}
+By induction on the given derivation, with the statement quantified over
+all substitutions. The induction hypothesis is applied to proper
+subderivations of the given derivation only, never to a derivation that
+the construction has produced. A substitution may send a parameter to a
+term that contains that parameter; images are inserted once.
+
+\rulename{Refl} is immediate. For \rulename{Use} of an occurrence
+$[A';\,y.\,B]$ at $t$, the context $\Gamma\sigma$ contains
+$[A'\sigma;\,y.\,B\sigma]$, the induction hypothesis gives $A'\sigma$, and
+\rulename{Use} at $t\sigma$ gives $(B\sigma)(t\sigma)\equiv B(t)\sigma$ by
+\eqref{disch:eq:coherence}.
+
+For \rulename{Intro} at the witness $t$ with the matrix $B$, rename $z$
+away from the images of $\sigma$ and let $B'\equiv B\sigma$,
+$t'\equiv t\sigma$. The induction hypothesis gives
+$\Gamma\sigma,B'(t',\eta)\proves B'(t',\Suc z)$ with the old $\eta$. A
+progress instance remains one: the root is still an equation and the
+literal $0$ is still $0$. A case instance remains one unless $B$ is a
+literal equation and $t\not\equiv 0\equiv t'$. In that event the
+substituted premise is the premise of the unrestricted case introduction
+of \cref{disch:lem:repair}, which holds in $\mathcal O$ by
+\cref{disch:lem:fallback} and was proved before the present theorem.
+
+For \rulename{Open} with the major premise $\D{x}{y}B$ and the parameter
+$b$, rename $b$ away from the images of $\sigma$, let $B'\equiv B\sigma$
+and $\rho'\equiv\rho_{B'}(b)$, and translate the major premise by the
+induction hypothesis. There are two cases, according to the test for the
+\emph{old} matrix.
+
+If the old test succeeds with $\rho_B(b)\equiv r$, then by
+\cref{disch:lem:selector}(c) the new test succeeds and
+$\rho'\equiv r\sigma$. Apply the induction hypothesis to the branch with
+$\sigma$, which fixes $b$. Its clause becomes
+\[
+ \mathcal C_B(r)\sigma\equiv[B'(r\sigma,0);\,y.\,B'(r\sigma,y)]
+ \equiv\mathcal C_{B'}(\rho')
+\]
+by \eqref{disch:eq:coherence}; this does not need $r$ to be free of $b$.
+
+If the old selector falls back, the old branch has the clause
+$\mathcal C_B(b)$. The new test may fail or succeed. In both events apply
+the induction hypothesis to the old branch with the substitution that
+agrees with $\sigma$ on the other parameters and sends $b$ to $\rho'$.
+The clause becomes $\mathcal C_{B'}(\rho')$, and the context and the goal
+become $\Gamma\sigma$ and $A\sigma$, because $\Gamma$ and $A$ do not
+contain $b$ and no image of $\sigma$ does.
+
+In either case \rulename{Open} applies to the translated premises and
+proves $A\sigma$.
+\end{proof}
+
+The second case is necessary: by \cref{disch:lem:selector}(d) the selector
+is not an invariant test, and an argument that treats it as one leaves a
+gap. The checkers of \pkg{inferred\_witness} and
+\pkg{deterministic\_opening} are tested on a derivation whose opening
+falls back and for which a substitution of a passive parameter makes the
+test succeed: the old branch is then rejected, and the old branch
+instantiated at the newly selected witness is accepted.
+
+\begin{corollary}[Ordinary elimination in $\mathcal O$]
+\label{disch:cor:open-elim}
+\rulename{Elim} is admissible in $\mathcal O$ for every matrix.
+\end{corollary}
+
+\begin{proof}
+Given $\Gamma,\mathcal C_B(b)\proves A$ with $b$ fresh for $\Gamma$ and
+$A$, apply \cref{disch:thm:subst} with the substitution
+$b\mapsto\rho_B(b)$ that fixes all other parameters. The result is
+$\Gamma,\mathcal C_B(\rho_B(b))\proves A$, the branch premise of
+\rulename{Open}.
+\end{proof}
+
+\begin{theorem}[Transport in $\mathcal O$]
+\label{disch:thm:open-transport}
+\rulename{UTr} is derived in $\mathcal O$ for every term template $h(w)$.
+\end{theorem}
+
+\begin{proof}
+Take the packet of \cref{disch:thm:export-transport}, with the rows
+$x=t$ and $h(x)=r$; by \cref{disch:lem:packet,disch:lem:fallback},
+$\Gamma\proves\D{x}{y}\Pi$. Apply \rulename{Open} with a fresh $b$. The
+test succeeds with $\rho_\Pi(b)\equiv t$, so the branch has the clause
+$\mathcal C_\Pi(t)=[H;\,y.\,\Pi(t,y)]$. \rulename{Use} at $2$ with the
+premise $H$ gives $\Pi(t,2)\equiv(h(t)=r)$, the unchanged outer goal,
+which does not contain $b$. There is no equality premise and no
+substitution in an exported formula; the derivation does not use
+\cref{disch:thm:subst}.
+\end{proof}
+
+\begin{theorem}[$\mathcal O$ and the reference calculus]
+\label{disch:thm:open}
+$\Gamma\proves_{\mathcal O}A$ if and only if $\Gamma\proves_{\mathcal T}A$,
+for every context $\Gamma$ and formula $A$, by effective transformations
+that leave the end sequent unchanged.
+\end{theorem}
+
+\begin{proof}
+From $\mathcal T$ to $\mathcal O$: \rulename{Elim} is replaced by
+\cref{disch:cor:open-elim}, and \rulename{Tr} by
+\cref{disch:thm:open-transport} followed by symmetry
+(\cref{disch:lem:equality}).
+
+From $\mathcal O$ to $\mathcal T$: $\mathcal T$ derives transport in every
+formula template. At an \rulename{Open} node translate the major premise
+and open it by \rulename{Elim} at $b$, keeping the clause
+$\mathcal C_B(b)$. Write $\rho\equiv\rho_B(b)$;
+\cref{disch:lem:selected} gives $b=\rho$. Derive $q_yB(\rho,y)$ by the
+first closure rule of \cref{disch:lem:closure}: from its assumption
+$B(\rho,0)$ transport along $\rho=b$ in the template $B(w,0)$ to $B(b,0)$,
+use $\mathcal C_B(b)$ at $\Suc z$, and transport along $b=\rho$ in the
+template $B(w,\Suc z)$ to $B(\rho,\Suc z)$. \rulename{Elim} for
+$q_yB(\rho,y)$, whose witness coordinate is unused, opens exactly the
+clause $[B(\rho,0);\,y.\,B(\rho,y)]=\mathcal C_B(\rho)$. The translated
+branch, weakened by the clause $\mathcal C_B(b)$ that is still present,
+proves $A$. Both eliminations close, since $A$ contains neither the unused
+witness nor $b$. The construction is valid when $\rho$ contains $b$:
+throughout the inner part $b$ is an available parameter, and only the
+outer elimination discharges it.
+\end{proof}
+
+\subsection{Summary and comparison of the four packages}
+
+\begin{theorem}[The inferred witness]
+\label{disch:thm:inferred}
+The calculi $\mathcal T$, $\mathcal W$, $\mathcal X$ and $\mathcal O$
+derive the same sequents. For every context $\Delta$ of clauses with at
+most one antecedent and every formula $F$ the following are equivalent:
+$L(\Delta)\proves_{\mathcal T}F$;
+$\mathcal R,\Delta\proves_{\mathcal W^{\mathcal R}}F$;
+$\mathcal R,\Delta\proves_{\mathcal X^{\mathcal R}}F$;
+$\mathcal R,\Delta\proves_{\mathcal O^{\mathcal R}}F$. Substitution of
+terms for parameters is admissible in each of them. $\Nat$ derives
+$\Gamma\proves A$ if and only if $\mathcal O^{\mathcal R}$, equivalently
+$\mathcal X^{\mathcal R}$, derives $A^{\flat}$ from $\mathcal R$ and the
+unconditional assumption clauses of $\Gamma^{\flat}$; and the ordinary
+readings of $\mathcal O^{\mathcal R}$ and $\mathcal X^{\mathcal R}$ are
+bi-interpretable with $\iPRA$ as in \cref{disch:cor:name-three}.
+\end{theorem}
+
+\begin{proof}
+\Cref{disch:thm:name,disch:thm:export,disch:thm:open} give the first
+statement, \cref{disch:lem:conventions} the second.
+\Cref{disch:thm:subst} gives substitution in $\mathcal O$, and the other
+calculi inherit it through the equivalences, which leave end sequents
+unchanged. The rest is \cref{disch:prop:kernel} and
+\cref{base:thm:bridge}.
+\end{proof}
+
+In Lean the rule on the kernel, with the selected witness read off the
+normalized matrix in place of \rulename{DE}, is \Lean{FOPrf} with
+\Lean{foprf\_iff\_nprf} (\Lean{NativeInferredWitness}); its completeness
+proof translates a kernel derivation under an arbitrary substitution and
+at \rulename{DE} sends the fresh variable to the selected witness whatever
+it is, as in the second case of the proof of \cref{disch:thm:subst}; no
+distinction of cases on the test is needed there. The clause form
+$\mathcal O^{\mathcal R}$ is \Lean{OCPrf} with \Lean{ocprf\_iff\_nprf}
+(\Lean{NativeOpenClauses}), and $\mathcal X^{\mathcal R}$ is \Lean{XCPrf}
+with \Lean{xcprf\_iff\_nprf} (\Lean{NativeExportClauses}).
+
+\begin{remark}[How the four packages differ]
+\label{disch:rem:four}
+\emph{Rows inspected.} There is no difference: all four inspect the rows
+$B(b,0)$ and $B(b,1)$ of the normalized matrix, require the first to be
+literally $0=0$ and the second to be literally an equation whose left side
+is the fresh variable, and take the right side of the second as the
+witness.
+
+\emph{The reflexivity clause.} There is no difference either: all four are
+stated in the convention with the fixed unconditional clause
+$[\ ;\,y.\,y=y]$ and clauses with at most one antecedent, and have three
+rule families.
+
+\emph{Use of the witness.} \pkg{inferred\_witness} and
+\pkg{deterministic\_opening} state \rulename{Open}: the clause is opened
+at the selected witness and the branch proves the unchanged goal. Their
+proofs are those of
+\cref{disch:lem:fallback,disch:thm:subst,disch:cor:open-elim,disch:thm:open-transport,disch:thm:open}.
+\pkg{first\_instance} and \pkg{clause\_discharge} state \rulename{Export}:
+the clause is opened at the fresh variable and the witness is substituted
+in the exported formula. Their proofs are those of
+\cref{disch:lem:export-elim,disch:thm:export-transport,disch:thm:export},
+and they need no substitution theorem. \pkg{inferred\_witness} keeps the
+export form as a second write-up and as a control checker, and
+\pkg{deterministic\_opening} keeps it as an intermediate variant with its
+own checker.
+
+\emph{Reference calculus.} \pkg{inferred\_witness} proves the equivalence
+with $\mathcal T$ in the convention with the reflexivity clause; the other
+three prove it with $\mathcal W^{\mathcal R}$. In the translation of
+\rulename{Open} back to the reference calculus, \pkg{inferred\_witness}
+transports the base of the closure in both directions, as in the proof of
+\cref{disch:thm:open}; \pkg{deterministic\_opening} distinguishes the two
+cases of the test and, when it succeeds, uses that the base is $H$ and
+ignores the assumption of the closure.
+
+\emph{Additional material.} \pkg{first\_instance} compares its calculus
+with the raw clause calculus directly instead of through $\mathcal W$, by
+the argument cited in \cref{disch:prop:kernel}, and contributes
+\cref{disch:rem:strict}. \pkg{clause\_discharge} delivers, besides the
+checker of $\mathcal X^{\mathcal R}$, a smaller checker of the unchanged
+$\mathcal W^{\mathcal R}$. \pkg{deterministic\_opening} delivers a
+reordering of an inherited compact checker that is independent of the new
+rule (\cref{disch:sec:impl}).
+
+\emph{Names.} The rule is called $\mathrm O^*$ in \pkg{inferred\_witness},
+$\mathrm O$ in \pkg{deterministic\_opening}, Name in
+\pkg{first\_instance} and Row in \pkg{clause\_discharge}; the Lean
+development calls \rulename{Export} Discharge.
+\end{remark}
+
+\begin{remark}[The conditions of the test]
+\label{disch:rem:conditions}
+Three conditions cannot be removed. \pkg{deterministic\_opening} exhibits,
+for each, a certificate that the correspondingly weakened checker accepts:
+without the requirement that the left side of the row at $1$ is the fresh
+witness, and without the requirement that the row at $0$ is $0=0$, the
+checker accepts $1=0$; without the requirement that the outer goal is in
+the outer scope, it accepts a formula in which the fresh parameter
+escapes. In \pkg{clause\_discharge} the source of the replacement must be
+the witness opened by the same inference: an equation whose left side is
+an older parameter, a constant or a compound term triggers no replacement.
+With an older parameter as source, the argument of
+\cref{disch:lem:export-elim} fails, since the substitution then acts on a
+goal that mentions that parameter; the generalization is not part of any
+of the calculi (\cref{disch:sec:further}).
+\end{remark}
+
+\section{Substitutive discharge on the canonical recursor syntax}
+\label{disch:sec:subst}
+
+This section draws on \pkg{substitutive\_discharge}. Its term syntax, and
+the passage from that syntax to iterator terms, are those of
+\pkg{canonical\_recursors}.
+
+The calculi of \cref{disch:sec:name,disch:sec:inferred} depend on full
+normalization: the rows of a packet must be literal before any equality
+rule is available. If the discharge rule is given a formula template, so
+that the discharged equation may have an arbitrary source, no packet is
+needed, the only normalization is a structural erasure, and reflexivity is
+derived from one computation schema.
+
+\subsection{Syntax}
+
+In this section the convention on normal forms is not in force. Raw terms
+are
+\[
+ t::=x\mid 0\mid R(n,a;\,u.\,h),
+\]
+where $u$ is bound in the body $h$ only. Successor is defined,
+\[
+ \Suc(a)\defeq R(0,a;\,u.\,0),\qquad 1\defeq\Suc 0,
+\]
+and the intended recursor is seeded by a successor:
+$R(0,a;u.h)=\Suc a$ and $R(\Suc n,a;u.h)=h\subst{R(n,a;u.h)}{u}$. The
+first equation is made part of the syntax. The \emph{canonicalization}
+$\operatorname{cn}$ canonicalizes all subterms and replaces the body of
+every $R$ whose counter is the literal $0$ by the literal $0$; a term is
+\emph{canonical} if every subterm $R(0,a;u.h)$ has $h\equiv 0$. The
+operation does not unfold a successor iteration, does not execute a body,
+and does not test whether a term denotes zero. It never changes the root
+constructor of a term, so
+\[
+ \operatorname{cn}(t)\equiv 0\quad\Longleftrightarrow\quad t\equiv 0 .
+\]
+Terms and formulas of the calculus are canonical, and substitution means
+capture-avoiding raw substitution followed by $\operatorname{cn}$.
+
+\begin{lemma}[Coherence of canonicalization]
+\label{disch:lem:cn}
+For every term or formula $T$ and every capture-avoiding substitution
+$\sigma$,
+\[
+ \operatorname{cn}(T\sigma)
+ =\operatorname{cn}\bigl(\operatorname{cn}(T)[x\mapsto
+ \operatorname{cn}(\sigma x)]\bigr).
+\]
+Canonical substitution is associative, commutes with renaming, and
+introduces no free variables beyond those of its arguments.
+\end{lemma}
+
+\begin{proof}
+By structural induction, after renaming bound variables apart. At a node
+$R$: if the counter is the literal $0$, both sides erase the body; if a
+counter different from $0$ becomes $0$ under the substitution, both sides
+erase it again; otherwise both sides keep the constructor and the
+induction hypotheses identify the three subterms. Canonicalization does not
+turn a constructor other than a variable into the literal $0$. Formula
+binders need only the usual lifted substitution. Associativity follows by
+applying the identity to two successive raw substitutions.
+\end{proof}
+
+Formulas are equations and $\D{x}{y}B$. A context is a finite list of
+clauses $[A;\,y.\,B(y)]$ with one antecedent, and an assumption $A$ is the
+clause $[0=0;\,v.\,A]$. The truth of $0=0$ is derived, not assumed, and no
+clause is fixed in advance. The contradiction is $0=\Suc 0$.
+
+\subsection{Four rule families}
+
+\begin{definition}[The calculus of substitutive discharge]
+\label{disch:def:subdis}
+$\mathcal K$ has the following four rules. All displayed expressions are
+canonical.
+\begin{align}
+ &\infrule{}{\Gamma\proves R(\Suc n,a;\,u.\,h)=h\subst{R(n,a;\,u.\,h)}{u}}\
+ \rulename{Calc}
+ \label{disch:eq:calc}\\[1ex]
+ &\infrule{\Gamma\proves A}{\Gamma\proves B(t)}\ \rulename{Use},
+ \qquad [A;\,y.\,B(y)]\text{ an occurrence in }\Gamma
+ \notag\\[1ex]
+ &\infrule{\Gamma,\ B(t,\eta)\proves B(t,\Suc z)}
+          {\Gamma\proves\D{x}{y}B(x,y)}\ \rulename{Intro},
+ \qquad
+ \eta=\begin{cases}
+ z,&B\text{ is a literal equation and }t\equiv 0,\\
+ 0,&\text{otherwise}
+ \end{cases}
+ \notag\\[1ex]
+ &\infrule{\Gamma\proves\D{x}{y}B\qquad
+           \Gamma,\ \mathcal C_B(b)\proves s=t\qquad
+           \Gamma,\ \mathcal C_B(b)\proves F(s)}
+          {\Gamma\proves F(t)}\ \rulename{SDis}
+ \label{disch:eq:sdis}
+\end{align}
+In \rulename{Calc} the predecessor iterate on the right is canonicalized;
+at $n\equiv 0$ it is $\Suc a$. In \rulename{Intro}, $z$ is fresh for
+$\Gamma$, $t$ and $\D{x}{y}B$, and the test is literal. In \rulename{SDis},
+$b$ is fresh for $\Gamma$ and $\D{x}{y}B$, the exported formula $F(t)$
+does not contain $b$, and $F(v)$ is an arbitrary formula template whose
+distinguished variable $v$ is different from $b$; a constant template is
+allowed, and $s$, $t$ and the template may contain $b$. The calculus
+$\mathcal K_{\mathrm{sep}}$ has \rulename{Calc}, \rulename{Use},
+\rulename{Intro}, \rulename{Elim} and the transport rule
+\begin{equation}
+ \infrule{\Gamma\proves s=t\qquad\Gamma\proves F(s)}{\Gamma\proves F(t)}
+ \ \rulename{TrF}
+ \label{disch:eq:trf}
+\end{equation}
+for every formula template $F$.
+\end{definition}
+
+$\mathcal K$ has no hypothesis rule, no reflexivity axiom, no separate
+equality rule, no separate elimination of $\D{x}{y}$, no coverage or
+separation axiom and no structural rule. The one computation schema is
+\rulename{Calc}; the progress mode of \rulename{Intro} carries the
+induction. Weakening, exchange, contraction, injective renaming and cut of
+an assumption are admissible by induction on derivations, as in
+\cref{disch:lem:structural}; injective renaming preserves the literal test
+of \rulename{Intro}. Substitution of a term for a parameter can turn a
+witness into the literal $0$; it is admissible through
+\cref{disch:prop:sd-basis}, not by an induction that preserves the rules.
+
+\subsection{The bootstrap of equality}
+
+Let, for a term $t$ and variables $u,x,y$ that do not occur in it,
+\[
+ W_t\defeq R(1,0;\,u.\,t),\qquad J\defeq(W_0=0),\qquad
+ \Theta\defeq\D{x}{y}J .
+\]
+\rulename{Calc} proves $W_t=t$: the body is constant and ignores the
+predecessor iterate.
+
+\begin{lemma}[A closed paired theorem]
+\label{disch:lem:theta}
+$\Theta$ is derived by \rulename{Calc} and \rulename{Intro} alone.
+\end{lemma}
+
+\begin{proof}
+Apply \rulename{Intro} at the witness $1$. The matrix does not depend on
+its bound variables, so the goal of the premise is $J$, which
+\rulename{Calc} proves without the assumption. Neither the use of an
+assumption nor reflexivity is involved.
+\end{proof}
+
+\begin{lemma}[Transport in a formula]
+\label{disch:lem:sd-transport}
+\rulename{TrF} is a derived rule of $\mathcal K$.
+\end{lemma}
+
+\begin{proof}
+Use $\Theta$ as the major premise of \rulename{SDis}, and weaken the two
+given derivations into the opened context; they do not mention the fresh
+witness, and $F(t)$ does not contain it. No law of equality is used.
+\end{proof}
+
+\begin{lemma}[Reflexivity and assumptions]
+\label{disch:lem:sd-refl}
+$\Gamma\proves t=t$ for every term $t$, and an assumption can be used:
+$\Gamma,A\proves A$.
+\end{lemma}
+
+\begin{proof}
+\rulename{Calc} gives $W_t=t$. Use it as both premises of \rulename{TrF}
+with the template $F(v)=(v=t)$: the instance at the source is $W_t=t$ and
+the instance at the target is $t=t$. For an assumption $A$, take $t\equiv
+0$ and apply \rulename{Use} to $[0=0;\,v.\,A]$.
+\end{proof}
+
+\begin{lemma}[Equality and ordinary elimination]
+\label{disch:lem:sd-eq}
+Symmetry, transitivity, the congruence $s=t\proves h(s)=h(t)$ and
+\rulename{Elim} are derived rules of $\mathcal K$.
+\end{lemma}
+
+\begin{proof}
+From $s=t$, transport the reflexive $s=s$ in the template $(v=s)$ to
+$t=s$. From $s=t$ and $t=r$, transport $t=r$ along $t=s$ in the template
+$(v=r)$ to $s=r$. From $s=t$, transport the reflexive $h(s)=h(s)$ in the
+template $(h(s)=h(v))$ to $h(s)=h(t)$. For \rulename{Elim}, let the opened
+branch prove a formula $A$ without $b$. Apply \rulename{SDis} with the
+constant template $F(v)=A$ and with the equation $J$, proved by
+\rulename{Calc}, as the equality premise; the third premise is the given
+branch, and the exported formula is $A$. No packet and no normalization of
+a selector is needed.
+\end{proof}
+
+\begin{theorem}[$\mathcal K$ and the calculus with separate rules]
+\label{disch:thm:sd}
+For every context $\Gamma$ of canonical clauses and every formula $A$,
+$\Gamma\proves_{\mathcal K}A$ if and only if
+$\Gamma\proves_{\mathcal K_{\mathrm{sep}}}A$. The translations are
+effective and preserve the end sequent, including its parameters.
+\end{theorem}
+
+\begin{proof}
+An instance of \rulename{SDis} is \rulename{TrF} inside the opened context
+followed by \rulename{Elim}, whose side condition is that of
+\rulename{SDis}. Conversely \rulename{TrF} is
+\cref{disch:lem:sd-transport} and \rulename{Elim} is
+\cref{disch:lem:sd-eq}. The other rules are shared. Induct on derivations,
+renaming eigenparameters when the fixed auxiliary derivations are
+inserted.
+\end{proof}
+
+\subsection{The canonical basis and the bridge}
+
+\begin{proposition}[Recovered rules]
+\label{disch:prop:sd-basis}
+The following are derived in $\mathcal K$, with $q_yB\defeq\D{w}{y}B$ for
+an unused $w$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Case introduction for every matrix and witness: from
+ $\Gamma,B(t,0)\proves B(t,\Suc z)$ infer $\Gamma\proves\D{x}{y}B$.
+\item From $\Gamma,B(0)\proves B(\Suc z)$ infer $\Gamma\proves q_yB$; from
+ $\Gamma\proves q_yB$ and $\Gamma\proves B(0)$ infer $\Gamma\proves B(t)$;
+ and, for a literal equation $B$, from $\Gamma,B(z)\proves B(\Suc z)$
+ infer $\Gamma\proves q_yB$. Hence induction for literal equations under
+ an arbitrary context and numerical cases for arbitrary formulas.
+\item A context that contains the clause $[B(0);\,y.\,B(y)]$ proves
+ $q_yB$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(a) Only a literal equation at the witness $0$ is missing from
+\rulename{Intro}. The term $c\defeq W_0$ is canonical, is not the literal
+$0$, and satisfies $c=0$ by \rulename{Calc}. Given the premise at the
+witness $0$, start from the assumption $B(c,0)$, transport it to $B(0,0)$,
+insert the given derivation by cut, and transport its conclusion
+$B(0,\Suc z)$ back to $B(c,\Suc z)$. \rulename{Intro} at $c$ is in case
+mode and concludes $\D{x}{y}B$. No induction is used.
+
+(b) The first rule is (a) for the unused coordinate. For the second,
+\rulename{Elim} opens $[B(0);\,y.\,B(y)]$, and \rulename{Use} with the
+proof of $B(0)$ gives $B(t)$. The third is \rulename{Intro} at the literal
+witness $0$ of the unused coordinate, in progress mode.
+
+(c) Use (a) at the unused witness $1$: under its assumption $B(0)$, use
+the clause at $\Suc z$.
+\end{proof}
+
+By (c) a derivation of the Eq/$Q$/$D$ basis of \pkg{canonical\_recursors}
+whose elimination of $\D{x}{y}$ keeps a formula $\Q{y}B(b,y)$ is
+translated by deriving $q_yB(b,y)$ from the opened clause and cutting it
+into the translated branch; the two representations of a context are
+related by derivations and are not identified by convention. Reflexivity,
+symmetry and \rulename{TrF} give the equality rule of that basis, and its
+elimination of $\Q{}$ is the second rule of (b). Conversely that basis
+derives formula transport and the elimination of $\D{x}{y}$, which
+validate \rulename{SDis}, a clause $[A;\,y.\,B]$ being represented by its
+ordinary reading. So the two have the same consequences on formulas.
+
+\begin{theorem}[Bridge for $\mathcal K$]
+\label{disch:thm:sd-ipra}
+The ordinary reading of $\mathcal K$ and $\iPRA$ are bi-interpretable with
+whole domains, actual equality, both numerical composites with graph
+$x=y$, and both formula round trips. In particular they are equiconsistent.
+\end{theorem}
+
+\begin{proof}
+From $\mathcal K$ to $\iPRA$: interpret each fixed term $R(n,a;u.h)$ by
+primitive recursion with the seed $\Suc a$ and the displayed step. The
+erasure of a body at the counter $0$ preserves the value. \rulename{Calc}
+is a defining equation, \rulename{Use} is implication and universal
+elimination, \rulename{Intro} is coverage in case mode and induction for
+an equation under its assumed base in progress mode, and \rulename{SDis}
+is equality substitution inside the scope of an existential elimination.
+
+From $\iPRA$ to $\mathcal K$: \pkg{canonical\_recursors} constructs, before
+any numerical selector, cancellation of successor or reflection of
+equality is available, a canonical term $p$ with $p(0)=0$ and
+$p(\Suc a)=a$. The iterator of \cref{base:sec:terms} is then the term
+\begin{equation}
+ \widehat I(n,a;\,u.\,h)\defeq
+ p\Bigl(R\bigl(n,a;\,v.\,\Suc(h\subst{p(v)}{u})\bigr)\Bigr),
+ \label{disch:eq:init}
+\end{equation}
+which satisfies the two computation equations of the iterator: at the
+counter $0$ the value is $p(\Suc a)=a$, and at a successor \rulename{Calc}
+exposes an outer successor that $p$ removes. By
+\cref{disch:prop:sd-basis,disch:lem:sd-refl,disch:lem:sd-eq} the rules
+needed by the logical macros and by the arithmetic of
+\cref{base:thm:pred,base:thm:reflect,base:thm:primrec} are available in
+$\mathcal K$, with $\sel(v,a,b)$ read as $\widehat I(v,a;u.b)$. This
+gives the defining equations and the quantifier-free induction of $\iPRA$.
+
+For the numerical composites, work through each fixed primitive recursive
+description in the order of its dependencies. Once the earlier
+descriptions are identified, a description and its return translation have
+the same seed and the same step, and induction for the equation between
+the two trajectories proves them equal at every number of the whole
+domain. For the body of an $R$, pointwise equality of bodies is lifted to
+the iteration by the same argument; it is not assumed as a congruence. The
+interpretation of successor returns $\Suc a$. Hence both composites are
+the identity. The logical round trips of \cref{base:thm:bridge} identify
+the reading of $\D{x}{y}$ with its returned macro, and induction on
+formulas extends the numerical identities to both formula composites. The
+contradiction $0=\Suc 0$ corresponds to falsum in both directions.
+\end{proof}
+
+\begin{remark}[Checking, the raw companion, Lean]
+\label{disch:rem:sd}
+The syntax recursion and the proof recursion of $\mathcal K$ are
+structural, and the only canonicalization erases a body at a literal
+counter $0$. Under a standard coding of finite trees the certificate
+relation is therefore primitive recursive, with no fuel field, in contrast
+to \cref{disch:rem:fuel}.
+
+The package contains a companion on raw iterator terms without any
+normalization: the two computation equations of \cref{base:sec:terms}, the
+use of a clause, \rulename{Intro}, and the same discharge rule. An
+assumption $F$ is $[H_0;\,v.\,F]$ with
+$H_0\defeq(\It{0}{0}{u}{0}=0)$, one instance of the computation schema;
+$\D{x}{y}H_0$ is introduced at the witness $\Suc 0$ without its
+assumption; transport is the discharge of this formula; reflexivity is the
+transport of $\It{0}{t}{u}{0}=t$ along itself in the template $(v=t)$; and
+\rulename{Elim} is the discharge with a constant template and the equation
+$H_0$. The proofs are those of
+\cref{disch:lem:theta,disch:lem:sd-transport,disch:lem:sd-refl,disch:lem:sd-eq}.
+
+In Lean the discharge rule on the kernel, in place of \rulename{Tr} and
+\rulename{DE}, gives the seven-rule calculus \Lean{SDPrf}, with
+\Lean{sdprf\_iff\_nprf} (\Lean{NativeSubstitutiveDischarge}): the closed
+theorem is $\D{x}{y}(\It{0}{0}{u}{u}=0)$, proved by cases from a
+computation; a discharge of it that does not use the opened context is
+transport in an arbitrary formula (\Lean{SDPrf.tr}), and a constant
+template gives \rulename{DE} (\Lean{SDPrf.dE}). The four families on the
+canonical recursor syntax are not formalized.
+\end{remark}
+
+\section{Restricted substitution}
+\label{disch:sec:restricted}
+
+This section draws on \pkg{variable\_substitution}
+(\cref{disch:sec:vsub,disch:sec:newest}), \pkg{parameter\_substitution}
+(\cref{disch:sec:param}) and \pkg{substitutive\_discharge}
+(\cref{disch:sec:unary}).
+
+\subsection{Substitution for a variable}
+\label{disch:sec:vsub}
+
+The convention on normal forms of \cref{disch:sec:setting} is in force.
+The equality rule substitutes for a parameter and does nothing else:
+\begin{equation}
+ \infrule{\Gamma\proves x=t\qquad\Gamma\proves u=v}
+         {\Gamma\proves v=u\subst{t}{x}}\ \rulename{VSub},
+ \qquad x\text{ a parameter.}
+ \label{disch:eq:vsub}
+\end{equation}
+The rule substitutes simultaneously for every occurrence of $x$ in $u$. It
+does not remove $x$ from the parameters and does not substitute in
+$\Gamma$ or in $v$. The term $t$ may contain $x$. No template, no selected
+occurrence, no compound source and no matching of a pattern is supplied.
+A variable bound by an iterator is not a source.
+
+\begin{definition}
+\label{disch:def:vsub}
+$\mathcal V$ is the calculus with the five rules \rulename{Refl},
+\rulename{VSub}, \rulename{Use}, \rulename{Elim} and \rulename{Intro}, in
+the convention with \rulename{Refl}.
+\end{definition}
+
+\Cref{disch:lem:structural,disch:lem:closure,disch:lem:packet} apply to
+$\mathcal V$, in which \rulename{Elim} is primitive. In particular the
+numerical cases are derived with no equality rule, and neither the case
+introduction at the witness $0$ nor an envelope is needed for them.
+
+\begin{theorem}[Transport in $\mathcal V$]
+\label{disch:thm:vsub-transport}
+For every term template $h(w)$ the rule \rulename{Tr} is derived in
+$\mathcal V$. The derivation contains exactly one instance of
+\rulename{VSub}.
+\end{theorem}
+
+\begin{proof}
+Let $\Gamma\proves s=t$ and $\Gamma\proves h(s)=r$, and take the packet
+$\Pi$ of \cref{disch:thm:name-transport}, with the rows $h(x)=r$ and
+$x=t$. By \cref{disch:lem:packet}, $\Gamma\proves\D{x}{y}\Pi$. Open it by
+\rulename{Elim} at a fresh $b$; in the branch the same lemma gives
+$b=t$ and $h(b)=r$. One \rulename{VSub} with the major premise $b=t$ and
+the minor premise $h(b)=r$ yields
+\[
+ r=(h(b))\subst{t}{b}\equiv h(t)
+\]
+by \eqref{disch:eq:coherence}. The conclusion does not contain $b$, and
+\rulename{Elim} closes.
+\end{proof}
+
+Everything before the one \rulename{VSub} uses the logical rules,
+reflexivity and literal computation only: no symmetry, transitivity or
+congruence, no substitution into a derivation, no reflection of equality
+and no induction. Occurrences of $s$ in the passive part of $h$ are not
+touched, because $b$ is fresh for $h$; normalization may duplicate or
+erase the distinguished occurrences, and \eqref{disch:eq:coherence}
+accounts for this without counting them.
+
+\begin{theorem}[$\mathcal V$ and the reference calculus]
+\label{disch:thm:vsub}
+$\Gamma\proves_{\mathcal V}A$ if and only if $\Gamma\proves_{\mathcal T}A$,
+for every context $\Gamma$ and formula $A$, by effective transformations
+that are the identity on the end sequent.
+\end{theorem}
+
+\begin{proof}
+A \rulename{VSub} node is one \rulename{Tr}: with $w$ fresh let
+$K(w)\defeq u\subst{w}{x}$; then $K(x)\equiv u$ and
+$K(t)\equiv u\subst{t}{x}$, also when $t$ contains $x$, and \rulename{Tr}
+from $x=t$ and $K(x)=v$ concludes $v=K(t)$. Conversely a \rulename{Tr}
+node is replaced by the derivation of \cref{disch:thm:vsub-transport}
+after its premises are translated. The fresh names of that derivation are
+chosen away from the context, the conclusion and the terms involved, so
+all conditions of \rulename{Elim} and \rulename{Intro} hold.
+\end{proof}
+
+Together with \cref{disch:prop:kernel} and \cref{base:thm:bridge} this
+gives the comparison with $\Nat$ and the bridge to $\iPRA$, as in
+\cref{disch:cor:name-three}.
+
+\begin{proposition}[The native form with six rules]
+\label{disch:prop:vsub-native}
+On normal forms with the formulas $s=t$, $\Q{y}A$, $\D{x}{y}A$ and
+contexts of formulas, the calculus with \rulename{Hyp}, \rulename{Refl},
+\rulename{VSub}, \rulename{QE}, \rulename{DE} and the introduction
+\rulename{Intro} of \cref{disch:def:rules} derives the same sequents as
+the calculus with \rulename{Tr} in place of \rulename{VSub}, under the
+identity translation.
+\end{proposition}
+
+\begin{proof}
+\rulename{VSub} is one \rulename{Tr} as before. For the converse the
+numerical cases use no equality rule: introduce $\D{x}{y}F(y)$, with $x$
+unused, at the witness $1$, ignoring the assumption $F(0)$; the branch of
+\rulename{DE} has the hypothesis $\Q{y}F(y)$, and \rulename{QE} with the
+given proof of $F(0)$ gives $F(t)$. The packet is introduced and
+eliminated as in \cref{disch:thm:vsub-transport}; the two uses of the
+clause $[H;\,y.\,\Pi(b,y)]$ become two applications of \rulename{QE} to
+the hypothesis $\Q{y}\Pi(b,y)$ with the reflexive premise $H$, and the
+final \rulename{VSub} is unchanged.
+\end{proof}
+
+The calculus with \rulename{Tr} in this proposition is the six-rule
+calculus of \pkg{full\_normalization}. In Lean the kernel on full normal
+forms with \rulename{VSub} in place of \rulename{Tr} is \Lean{VSPrf}, with
+\Lean{vsprf\_iff\_nprf} (\Lean{NativeVariableSubstitution}) and the packet
+\Lean{VSPrf.packet}.
+
+\begin{remark}[What is reduced, and what the proof needs]
+The source of the equality rule is a variable, and the action of the rule
+is the substitution that the binders already require. The freedom of an
+ordinary equality rule is recovered by introducing, using and eliminating
+a fresh name. Full normalization is what makes the argument short: the
+rows of the packet at $0$, $1$ and $2$ are literal before any congruence
+is available. The proof uses the logical rules; no completeness statement
+is made for the equality rules in isolation.
+\end{remark}
+
+\subsection{The newest variable}
+\label{disch:sec:newest}
+
+In this subsection the parameters of a sequent form a finite ordered list,
+and the eigenparameter of \rulename{Elim} or \rulename{Intro} is put at
+the front of the list of the premise it belongs to. $\mathcal V_0$ is
+$\mathcal V$ with the source of \rulename{VSub} restricted to the front
+parameter of the list at its node; with de Bruijn indices the source is
+the variable of index $0$.
+
+Weakening is not admissible in $\mathcal V_0$ by an induction that
+preserves the rule at each node: a parameter inserted in front turns the
+former front parameter into an older one. \Cref{disch:lem:structural} is
+not available, and the completeness proof uses an invariant instead.
+
+\begin{definition}[Internally sourced derivations]
+\label{disch:def:internal}
+A derivation in $\mathcal V_0$ with the initial parameter list $\Xi$ is
+\emph{internally sourced} if at every \rulename{VSub} node the source is
+the eigenparameter of an \rulename{Elim} node of the derivation, the
+\rulename{VSub} node lies in the branch of that node, and no other
+\rulename{Elim} or \rulename{Intro} node lies between the two.
+\end{definition}
+
+So the source is never a member of $\Xi$, and it is the front parameter at
+its node.
+
+\begin{lemma}[Safe structural changes]
+\label{disch:lem:internal}
+Let an internally sourced derivation of $\Gamma\proves A$ over $\Xi$ be
+given, let $\iota$ be an injection of $\Xi$ into a list $\Xi'$, not
+necessarily monotone, and let $\Gamma'$ be a context over $\Xi'$ that
+contains every occurrence of $\Gamma\iota$. Then there is an internally
+sourced derivation of $\Gamma'\proves A\iota$ over $\Xi'$.
+\end{lemma}
+
+\begin{proof}
+Rename the eigenparameters of the derivation away from $\Xi'$ and
+$\Gamma'$. A node of the derivation has a sequent over a list
+$(e_k,\dots,e_1,\Xi)$, where $e_1,\dots,e_k$ are the eigenparameters of
+the \rulename{Elim} and \rulename{Intro} nodes on the path from the root,
+and a context $\Gamma,\Lambda$, where $\Lambda$ consists of the clauses
+those nodes add. Replace it by the sequent over $(e_k,\dots,e_1,\Xi')$
+with the context $\Gamma',\Lambda\iota$ and the formula renamed by
+$\iota$, which is extended by the identity on the $e_i$. The initial list
+is not reset when the transformation descends into a premise. Every
+instance of \rulename{Refl}, \rulename{Use}, \rulename{Elim} and
+\rulename{Intro} is carried to an instance, as in
+\cref{disch:lem:structural}: normalization and substitution commute with
+injective renaming, the mode of \rulename{Intro} is preserved, and the
+added clauses do not affect any side condition. At a \rulename{VSub} node
+the source is $e_k$ with $k\geq 1$, and it is still the front parameter of
+the new list and still bound by the same \rulename{Elim} node; inserting,
+permuting or renaming members of the initial list changes neither. The
+result is internally sourced over $\Xi'$.
+\end{proof}
+
+The lemma does not give weakening for arbitrary derivations of
+$\mathcal V_0$.
+
+\begin{theorem}[The newest variable suffices]
+\label{disch:thm:newest}
+Every derivation in $\mathcal T$ over a parameter list $\Xi$ has an
+internally sourced translation in $\mathcal V_0$ with the same end sequent
+and the same list. Consequently $\mathcal V_0$, $\mathcal V$ and
+$\mathcal T$ derive the same sequents, and weakening, substitution of
+terms for parameters and \rulename{Tr} are admissible in $\mathcal V_0$.
+\end{theorem}
+
+\begin{proof}
+By induction on the derivation in $\mathcal T$. \rulename{Refl},
+\rulename{Use}, \rulename{Elim} and \rulename{Intro} are copied. The
+translated premises are internally sourced over their own lists; a source
+that is bound by an \rulename{Elim} node inside a premise is bound by a
+node inside the combined derivation, so the invariant is preserved.
+
+At a \rulename{Tr} node apply the construction of
+\cref{disch:thm:vsub-transport} to the two translated premises. The
+construction places copies of them under the eigenparameters and the
+assumption clauses of the \rulename{Intro} of the packet and of the
+numerical-case rule; each copy is obtained by \cref{disch:lem:internal},
+which applies because the premises are internally sourced by the induction
+hypothesis. The remaining nodes of the construction are \rulename{Refl},
+\rulename{Use}, \rulename{Elim}, \rulename{Intro} and the one
+\rulename{VSub}. That node stands at the end of the branch of the
+\rulename{Elim} which opens the packet at $b$; its premises $b=t$ and
+$h(b)=r$ are derived from the opened clause by \rulename{Refl} and
+\rulename{Use}, with no eigenparameter in between. So its source $b$ is
+the front parameter and is bound by an \rulename{Elim} node of the
+constructed derivation, with no node of \rulename{Elim} or
+\rulename{Intro} between them.
+
+Conversely a restricted \rulename{VSub} is an instance of \rulename{VSub}
+and hence one \rulename{Tr} (\cref{disch:thm:vsub}). So the three calculi
+agree. A derivation of $\mathcal V_0$ is weakened, or instantiated, or
+used as a premise of \rulename{Tr}, by translating it to $\mathcal T$,
+operating there, and translating back. The completeness proof itself uses
+none of these operations on arbitrary derivations.
+\end{proof}
+
+The same invariant and translation apply to the six-rule form of
+\cref{disch:prop:vsub-native}, with \rulename{QE} for \rulename{Use} and
+\rulename{DE} for \rulename{Elim}: the final \rulename{VSub} stands under
+its own newest eigenparameter of \rulename{DE}. In Lean the kernel form
+with the newest variable is \Lean{V0Prf}, with \Lean{v0prf\_iff\_nprf}
+(\Lean{NativeNewestVariable}); the same proof applies, because the packet
+substitutes only for the witness it has just opened and no derivation is
+renamed. The clause form $\mathcal V_0$ is \Lean{VCPrf}, with
+\Lean{vcprf\_iff\_nprf} (\Lean{NativeVariableClauses}); there the premises
+needed under further variables are obtained from the induction hypothesis
+at a shifted renaming, which is the protected translation of
+\cref{disch:lem:internal}.
+
+\subsection{Substitution for a parameter on raw terms}
+\label{disch:sec:param}
+
+In this subsection terms are the raw terms of \cref{base:sec:terms} and
+substitution is ordinary capture-avoiding substitution; $\It{0}{a}{u}{h}$
+and $a$ are different terms, and nothing is normalized. The rows of a
+packet are then not literal, and substitution for a variable has to be
+combined with the joining of two equations at the root. Formulas are
+equations and $\D{x}{y}B$; contexts consist of clauses $[A;\,y.\,B(y)]$
+with one antecedent; the assumption clause of $F$ is
+$\operatorname{ord}(F)\defeq[H;\,v.\,F]$.
+
+For terms $s,t,u$ define
+\[
+ \psi(s,t,u)\defeq
+ \begin{cases}
+ u\subst{t}{s},&s\text{ is a parameter},\\
+ t,&s\text{ is not a parameter and }u\equiv s,\\
+ u,&s\text{ is not a parameter and }u\not\equiv s.
+ \end{cases}
+\]
+The first case substitutes for a variable in one pass and is defined also
+when $t$ contains $s$. For every $s$, $\psi(s,t,s)\equiv t$. For a source
+that is not a variable no proper subterm of $u$ is inspected. Define also
+the partial one-step computation
+\[
+ \kappa(\It{0}{a}{u}{h})\defeq a,\qquad
+ \kappa(\It{\Suc n}{a}{u}{h})\defeq h\subst{\It{n}{a}{u}{h}}{u},
+\]
+undefined on all other terms; the iterator in the second result is left as
+it is.
+
+\begin{definition}[The calculus of parameter substitution]
+\label{disch:def:param}
+$\mathcal P$ has the following five rule families.
+\begin{align}
+ &\infrule{}{\Gamma\proves b=\kappa(b)}\ \rulename{Compute},
+ \qquad\kappa(b)\text{ defined}
+ \label{disch:eq:compute}\\[1ex]
+ &\infrule{\Gamma\proves s=t\qquad\Gamma\proves u=r}
+          {\Gamma\proves r=\psi(s,t,u)}\ \rulename{Param}
+ \label{disch:eq:param}\\[1ex]
+ &\infrule{\Gamma\proves A}{\Gamma\proves B(t)}\ \rulename{Use},
+ \qquad [A;\,y.\,B(y)]\text{ an occurrence in }\Gamma
+ \notag\\[1ex]
+ &\infrule{\Gamma\proves\D{x}{y}B(x,y)\qquad
+           \Gamma,\ \mathcal C_B(b)\proves F}
+          {\Gamma\proves F}\ \rulename{Open}
+ \notag\\[1ex]
+ &\infrule{\Gamma,\ B(t,\eta)\proves B(t,\Suc z)}
+          {\Gamma\proves\D{x}{y}B(x,y)}\ \rulename{Close},
+ \qquad
+ \eta=\begin{cases}
+ z,&B\text{ is a literal equation and }t\equiv 0,\\
+ 0,&\text{otherwise}
+ \end{cases}
+ \notag
+\end{align}
+\rulename{Open} is \rulename{Elim} and \rulename{Close} is
+\rulename{Intro}, on raw syntax and with the same freshness conditions;
+the tests of \rulename{Close} are tests on raw syntax. In this subsection
+\rulename{Open} denotes this rule and not the rule of
+\cref{disch:eq:open}.
+\end{definition}
+
+There is no reflexivity axiom, no hypothesis rule, no template, no
+constructor $\Q{}$, no case rule and no induction schema.
+\rulename{Compute} contains the two computation equations; counting it as
+one family is a grouping of the implementation and does not turn two
+equations into one.
+
+\begin{lemma}[Equality at the root]
+\label{disch:lem:root}
+In $\mathcal P$ the following are derived under every context:
+\[
+ s=t,\ s=r\proves r=t;\qquad
+ \proves a=a;\qquad
+ s=t\proves t=s;\qquad
+ s=t,\ t=r\proves s=r .
+\]
+\end{lemma}
+
+\begin{proof}
+The first, \emph{joining at a common left side}, is \rulename{Param} with
+$u\equiv s$, since $\psi(s,t,s)\equiv t$. For reflexivity,
+\rulename{Compute} proves $\It{0}{a}{u}{0}=a$, and joining this equation
+with itself gives $a=a$. For symmetry join the reflexive $s=s$, as major
+premise, with $s=t$. For transitivity take the symmetric $t=s$ and join
+$t=r$, as major premise, with $t=s$. Only \rulename{Compute} and joining
+at the root are used.
+\end{proof}
+
+\begin{lemma}[Elementary operations]
+\label{disch:lem:param-struct}
+The use of an assumption, weakening, injective renaming and cut of an
+assumption are admissible in $\mathcal P$.
+\end{lemma}
+
+\begin{proof}
+Reflexivity proves $H$, and \rulename{Use} of $[H;\,v.\,F]$ proves $F$.
+Weakening and injective renaming are inductions on derivations; an
+injective renaming preserves being a parameter, literal identity of terms,
+the root of a formula and the literal $0$, hence the case of $\psi$ and
+the mode of \rulename{Close}. For cut, replace every \rulename{Use} of the
+occurrence $[H;\,v.\,F]$ by the given derivation of $F$, weakened to the
+local context, after renaming eigenparameters. No substitution of a term
+for a parameter in a derivation is used.
+\end{proof}
+
+\begin{lemma}[Fresh aliases]
+\label{disch:lem:alias}
+For a term $a$ and a variable $b$ fresh for $\Gamma$, $F$ and $a$,
+\[
+ \infrule{\Gamma,\ b=a\proves F}{\Gamma\proves F}
+\]
+is admissible in $\mathcal P$. Its derivation uses the two computation
+equations, joining at the root, the logical rules and cut; it uses no
+substitution in a proper subterm.
+\end{lemma}
+
+\begin{proof}
+Let $B(x,y)\defeq\bigl(\sel(y,a,x)=a\bigr)$, where
+$\sel(y,a,x)=\It{y}{a}{u}{x}$. \rulename{Close} at the witness $a$ proves
+$\D{x}{y}B$: its goal $\sel(\Suc z,a,a)=a$ is the successor case of
+\rulename{Compute} for the constant body $a$. The assumption is not used,
+so the derivation is valid in either mode, also when $a\equiv 0$.
+
+Open at a fresh $b$. The clause is
+$[\sel(0,a,b)=a;\,y.\,\sel(y,a,b)=a]$. Its antecedent is the zero case of
+\rulename{Compute}, and \rulename{Use} at $1$ gives $\sel(1,a,b)=a$. The
+successor case of \rulename{Compute} gives $\sel(1,a,b)=b$. Joining, with
+the former as major premise, gives $b=a$. Cut this into the given
+derivation, weakened by the clause; \rulename{Open} discharges $b$.
+\end{proof}
+
+A second derivation uses the case mode of \rulename{Close} only: take the
+witness $\It{0}{a}{v}{0}$, which is not the literal $0$; the successor
+case of \rulename{Compute} gives
+$\sel(\Suc z,a,\It{0}{a}{v}{0})=\It{0}{a}{v}{0}$, the zero case gives
+$\It{0}{a}{v}{0}=a$, and transitivity joins them. So the lemma does not
+depend on the progress mode. The alias is the device of the optional
+argument in \pkg{template\_free}; the point here is that it needs neither
+substitution in a proper subterm nor transport in a template nor
+induction, and therefore cannot hide the principle it is used to derive.
+
+\begin{theorem}[Substitution for a parameter gives every template]
+\label{disch:thm:param-congruence}
+For every term template $h(v)$, if $\Gamma\proves_{\mathcal P}s=t$ then
+$\Gamma\proves_{\mathcal P}h(s)=h(t)$. Repeated occurrences of $v$,
+occurrences under the binder of an iterator and the absence of $v$ are all
+permitted.
+\end{theorem}
+
+\begin{proof}
+Work under the assumption $b=s$, with $b$ fresh for $\Gamma$, $h$, $s$ and
+$t$. Transitivity gives $b=t$. Reflexivity gives $h(b)=h(b)$.
+\rulename{Param} with the major premise $b=s$ and this minor premise gives
+$h(b)=h(s)$: the source is the parameter $b$, and substitution for $b$
+marks exactly the distinguished occurrences of the template. In the same
+way $b=t$ gives $h(b)=h(t)$. Joining $h(b)=h(t)$, as major premise, with
+$h(b)=h(s)$ gives $h(s)=h(t)$, which does not contain $b$, and
+\cref{disch:lem:alias} discharges the alias.
+\end{proof}
+
+The argument is not a pass that replaces every occurrence of the possibly
+compound term $s$ in $h(s)$; such a pass would also replace occurrences of
+$s$ in the passive part of the template. Only the parameter case of
+$\psi$ acts on a proper subterm.
+
+\begin{corollary}[The equality interface of $\mathcal P$]
+\label{disch:cor:param-eq}
+$\mathcal P$ derives \rulename{Tr}, $s=t,\ h(s)=r\proves r=h(t)$, and
+transport in every equation template,
+$s=t,\ p(s)=q(s)\proves p(t)=q(t)$. It derives the replacement rule of
+\pkg{template\_free}: from $s=t$ and $u=v$ infer $v=u'$, where $u'$
+results from $u$ by replacing, in one pass from the root, the occurrences
+of $s$ by $t$.
+\end{corollary}
+
+\begin{proof}
+Join the congruence $h(s)=h(t)$, as major premise, with $h(s)=r$. Apply
+this to $p$ and then to $q$, with symmetry, for the equation template. For
+the replacement rule, a pass from the root selects finitely many pairwise
+disjoint occurrences of $s$ in $u$; replacing exactly these by a fresh
+variable gives a template $h$ with $h(s)\equiv u$ and $h(t)\equiv u'$.
+The extraction of the template belongs to the producer of the proof and
+not to the checker.
+\end{proof}
+
+\begin{lemma}[Every case introduction]
+\label{disch:lem:param-case}
+For every matrix $B$ and witness $t$, from
+$\Gamma,B(t,0)\proves B(t,\Suc z)$ one derives
+$\Gamma\proves\D{x}{y}B(x,y)$ in $\mathcal P$.
+\end{lemma}
+
+\begin{proof}
+Only a literal equation $E$ at the witness $0$ is not already the case
+mode of \rulename{Close}. Work under a fresh alias $b=0$. From the
+assumption $E(b,0)$, transport in an equation template gives $E(0,0)$; cut
+in the given derivation to obtain $E(0,\Suc z)$; transport along the
+symmetric equation gives $E(b,\Suc z)$. \rulename{Close} at the variable
+$b$ is in case mode and concludes $\D{x}{y}E$, which does not contain $b$;
+\cref{disch:lem:alias} discharges the alias. Only transport in equations
+is used.
+\end{proof}
+
+\begin{lemma}[Closures, induction, and transport in formulas]
+\label{disch:lem:param-closure}
+With $q_yB\defeq\D{w}{y}B$ for an unused $w$, the following are derived in
+$\mathcal P$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item From $\Gamma,B(0)\proves B(\Suc z)$ infer $\Gamma\proves q_yB$.
+\item From $\Gamma\proves q_yB$ and $\Gamma\proves B(0)$ infer
+ $\Gamma\proves B(t)$.
+\item A context that contains $[B(0);\,y.\,B(y)]$ proves $q_yB$.
+\item For a literal equation $E$, from $\Gamma,E(z)\proves E(\Suc z)$
+ infer $\Gamma\proves q_yE$; with (b), induction for literal equations
+ under an arbitrary context.
+\item Transport in every formula template.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) \rulename{Close} at the unused witness $1$ is in case mode. (b)
+\rulename{Open} for the unused witness adds $[B(0);\,y.\,B(y)]$, and
+\rulename{Use} gives $B(t)$. (c) In (a), under the assumption $B(0)$, use
+the clause at $\Suc z$. (d) \rulename{Close} at the unused literal witness
+$0$ is in progress mode. (e) By induction on the template, as in
+\cref{disch:lem:formula}: the equation case is
+\cref{disch:cor:param-eq}; for $\D{x}{y}K(v,x,y)$ open the source at $b$
+and introduce the target at the same $b$ in case mode, converting the base
+backwards and the successor instance forwards.
+\end{proof}
+
+\begin{theorem}[$\mathcal P$ and the kernel]
+\label{disch:thm:param}
+Let $\tau$ be the translation of native formulas that leaves terms
+unchanged and satisfies $\tau(s=t)=(s=t)$,
+$\tau(\D{x}{y}B)=\D{x}{y}\tau B$ and $\tau(\Q{y}B)=\D{w}{y}\tau B$ with
+$w$ fresh, and let $j$ be the inclusion of the formulas of $\mathcal P$
+into native formulas. For every context $\Gamma$ of native formulas and
+every native formula $A$,
+\[
+ \Gamma\proves_{\Nat}A\quad\Longleftrightarrow\quad
+ \operatorname{ord}(\tau\Gamma)\proves_{\mathcal P}\tau A .
+\]
+Moreover $\tau jF\equiv F$ for every formula $F$ of $\mathcal P$, and
+$\Nat$ derives $A$ from $j\tau A$ and conversely.
+\end{theorem}
+
+\begin{proof}
+$\tau$ commutes with substitution and preserves the property of being a
+literal equation.
+
+\emph{From $\Nat$ to $\mathcal P$}, by induction on the derivation.
+\rulename{Hyp} is the use of an assumption
+(\cref{disch:lem:param-struct}). The two computation rules are the two
+cases of \rulename{Compute}. \rulename{Tr} is
+\cref{disch:cor:param-eq}. \rulename{QE} is
+\cref{disch:lem:param-closure}(b). \rulename{DI} is
+\cref{disch:lem:param-case}, and \rulename{QI} is
+\cref{disch:lem:param-closure}(d). For \rulename{DE}, open the translated
+major premise at $b$; by \cref{disch:lem:param-closure}(c) the opened
+clause proves $q_y\tau B(b,y)$, which is $\tau(\Q{y}B(b,y))$; weaken the
+translated branch and cut this formula into it; \rulename{Open} closes.
+
+\emph{From $\mathcal P$ to $\Nat$.} Consider contexts each of whose
+occurrences is an assumption clause $\operatorname{ord}(G)$ or an opened
+clause $\mathcal C_B(b)$, with its origin recorded, and represent them by
+the native formulas $jG$ and $\Q{y}jB(b,y)$ respectively. By induction on
+a derivation in $\mathcal P$ from such a context, $\Nat$ derives $j$ of its
+conclusion from the representing formulas. A \rulename{Use} of an
+assumption clause is \rulename{Hyp}, and a \rulename{Use} of an opened
+clause is \rulename{QE}. \rulename{Compute} is a computation rule.
+\rulename{Param} is an instance of \rulename{Tr}: with the template
+$u\subst{v}{s}$, $v$ fresh, if $s$ is a parameter; with the identity
+template if $s$ is not a parameter and $u\equiv s$; with the constant
+template $u$ otherwise. \rulename{Open} is \rulename{DE}. A
+\rulename{Close} in case mode is \rulename{DI}. A \rulename{Close} in
+progress mode, at the literal witness $0$ with the matrix $E$, is
+\rulename{QI} for $\Q{y}E(0,y)$, followed by \rulename{QE} at $\Suc z$
+under the assumption $E(0,0)$ and by \rulename{DI}.
+
+\emph{Round trips.} $\tau j$ is the identity. For $j\tau$ the essential
+equivalence in $\Nat$ is $\Q{y}B(y)\dashv\vdash\D{w}{y}B(y)$ for an unused
+$w$: from left to right use \rulename{QE} under the base and \rulename{DI}
+at any witness; from right to left \rulename{DE} opens exactly
+$\Q{y}B(y)$. The equivalence lifts through both binders by the congruence
+of binders in $\Nat$ (\cref{base:sec:structural}), and induction on $A$
+gives the interderivability of $A$ and $j\tau A$. With cut in $\Nat$ this
+turns the second translation into the implication from right to left of
+the displayed equivalence.
+\end{proof}
+
+The proof of completeness uses the parameter case of $\psi$ and joining at
+the root, never the third case, which only reverses the minor premise.
+
+\begin{corollary}[Bridge for $\mathcal P$]
+\label{disch:cor:param-ipra}
+The ordinary reading of $\mathcal P$ is bi-interpretable and
+equiconsistent with $\iPRA$, with whole domains, actual equality, and both
+numerical composites with graph $x=y$.
+\end{corollary}
+
+\begin{proof}
+Compose \cref{disch:thm:param} with \cref{base:thm:bridge}. Terms are
+unchanged, so the numerical maps are identities, and $0=\Suc 0$ is fixed
+by $\tau$ and $j$.
+\end{proof}
+
+\begin{remark}[Substitution, checking, Lean]
+\label{disch:rem:param}
+Substitution of a term for a parameter does not preserve the rules of
+$\mathcal P$: it can turn the source of \rulename{Param} from a variable
+into a compound term and can turn a witness of \rulename{Close} into the
+literal $0$. Its admissibility follows from \cref{disch:thm:param} and
+substitution in $\Nat$ (\cref{base:sec:structural}). The checker performs
+structural traversals, capture-avoiding substitutions, literal comparisons
+and one-step computations only, so its certificate relation is primitive
+recursive; proofs and substituted terms can still grow considerably, since
+the producer builds an alias around every transport in a template.
+
+In Lean the kernel with \rulename{Tr} replaced by \rulename{Param} is
+\Lean{PPrf}, with \Lean{pprf\_iff\_nprf} (\Lean{NativeParameter}); the
+alias is discharged through $\D{x}{y}(\sel(y,s,x)=s)$, proved by cases with
+the witness $s$ and eliminated at $y=1$ (\Lean{PPrf.aliasE}), and the
+calculus is closed under injective renaming (\Lean{PPrf.ren}). The five
+families of $\mathcal P$, which combine the rule with clause contexts and
+the introduction with a mode, are not formalized together.
+\end{remark}
+
+\subsection{Unary congruence does not suffice}
+\label{disch:sec:unary}
+
+\rulename{VSub} and \rulename{Param} are binary: they combine two
+equations. One may ask whether the equality rule can be the unary
+congruence. On raw and on zero-normal terms it cannot.
+
+\begin{proposition}[An obstruction]
+\label{disch:prop:unary}
+Let $\Nat^{c}$ be the calculus obtained from $\Nat$ by replacing
+\rulename{Tr} with reflexivity, symmetry and the rule
+\[
+ \infrule{\Gamma\proves s=t}{\Gamma\proves h(s)=h(t)}
+\]
+for every term template $h$, all other rules being kept. Then $\Nat^{c}$
+does not derive $x=y,\ y=z\proves x=z$. The same holds on zero-normal
+terms, where $\It{0}{a}{u}{h}$ is identified with $a$.
+\end{proposition}
+
+\begin{proof}
+Let $V=\{0,m,2\}$, ordered $0<m<2$, and call two elements \emph{near} if
+they are equal or adjacent; so $0$ and $2$ are not near, and $m$ is near
+to every element. Interpret $0$ as $0$, successor as the constant function
+with value $2$, and
+\[
+ \It{n}{a}{u}{h}\ \text{ as }\
+ \begin{cases}a,&n=0,\\ m,&n\neq 0,\end{cases}
+\]
+the body being ignored. An equation $s=t$ is \emph{true} under an
+assignment of elements of $V$ to the variables if the values of $s$ and
+$t$ are near. This is a truth assignment to judgments and not a structure
+with actual equality. $\Q{y}B$ and $\D{x}{y}B$ are given the Boolean
+readings of \cref{base:sec:reading} over $V$. A sequent is valid if every
+assignment that makes its context true makes its conclusion true. The
+value of a term commutes with substitution, since bodies are ignored, and
+the value of a term is unchanged by zero-normalization.
+
+\emph{The rules other than the introductions.} \rulename{Hyp},
+reflexivity and symmetry are valid. The zero computation holds with equal
+values. In the successor computation the left side has the value $m$,
+which is near to every value. \rulename{QE} and \rulename{DE} are valid
+for the Boolean readings. For the congruence rule it suffices that the
+interpretation of the iterator preserves nearness in both arguments
+together: if both counters are $0$ the outputs are the two seeds; if
+exactly one is $0$ the outputs are a seed and $m$; otherwise both are $m$.
+Zero and successor are constants.
+
+\emph{The shape of term functions.} Every term denotes either the constant
+$m$, or a function that takes the value of a \emph{payload}, which is $0$,
+$2$ or one variable, when all variables of a finite \emph{gate} are $0$,
+and the value $m$ otherwise. This holds for variables, $0$ and successors
+with an empty gate, and for $\It{n}{a}{u}{h}$ by cases on the counter: if
+$n$ is constantly $m$ or has the payload $2$, the iterator is constantly
+$m$; if $n$ has the payload $0$ and the gate $G$, the iterator is $a$ with
+$G$ added to its gate; if $n$ has a variable $w$ as payload, the iterator
+is $a$ with $G\cup\{w\}$ added to its gate. Consequently, as a function of
+one variable $v$ with the others fixed, a term takes at $(0,m,2)$ one of
+the triples
+\[
+ (0,0,0),\quad(m,m,m),\quad(2,2,2),\quad(0,m,2),\quad(0,m,m),\quad(2,m,m).
+\]
+
+\emph{The key property.} Every formula $B(v)$ satisfies, for every
+variable $v$ and all values of the other variables,
+\begin{equation}
+ B(0)\ \text{and}\ B(2)\ \text{imply}\ B(m).
+ \label{disch:eq:convex}
+\end{equation}
+For an equation: at $v=m$ each side has the value $m$ or is constant in
+$v$. If one side has the value $m$ there, the equation is true at $m$. If
+both are constant, its truth does not depend on $v$.
+
+For $\Q{y}E$ with $E$ an equation: the formula is false exactly if $E$ is
+true at $y=0$ and $y=m$ and false at $y=2$. Falsity at $2$ means that the
+two sides have the values $0$ and $2$ there, so neither side has $y$ in
+its gate, all gate variables of both sides have the value $0$, and each
+side is its payload. Inspecting the payloads, the formula is then false
+only if the payloads are $y$ and $0$, or $y$ and a variable $w$ whose
+value is $0$. Hence $\Q{y}E$ is true, or false, or equivalent to the
+statement that some variable of a fixed finite set is different from $0$.
+A formula of this last kind satisfies \eqref{disch:eq:convex}: if $v$
+belongs to the set it is true at $v=m$, and otherwise it does not depend
+on $v$. For
+$\D{x}{y}E$, the reading is the existence of a value of $x$ at which
+$\Q{y}E$ holds; if $x$ is in the fixed finite set the formula is true, and
+otherwise it is the same statement as before. Finally, if $B$ is true,
+false, or the statement that some variable of a finite set is different
+from $0$, then $\Q{y}B$ is true: if $y$ is not in the set the instances
+do not depend on $y$, and if it is, the instance at $y=0$ implies all
+instances. So $\D{x}{y}B$ is true as well, and so is every formula with
+more binders. % ed.: the classification of the term functions and of the formulas Q E is written out; the package states both without the case analysis.
+
+\emph{The introductions.} For \rulename{DI}, take the value of the witness
+$t$ for $x$. If $B(t,0)$ is true, the premise gives $B(t,\Suc z)$, that
+is, $B$ at $y=2$, and \eqref{disch:eq:convex} gives $B$ at $y=m$. For
+\rulename{QI}, if $E(0)$ is true, the premise with $z$ assigned $0$ gives
+$E$ at $2$, and \eqref{disch:eq:convex} gives $E$ at $m$.
+
+So every derivable sequent is valid. Under $x\mapsto 0$, $y\mapsto m$,
+$z\mapsto 2$ the equations $x=y$ and $y=z$ are true and $x=z$ is false.
+The contradiction $0=\Suc 0$ is false as well.
+\end{proof}
+
+Full normalization of the successor computation is outside the
+obstruction: it identifies values that the interpretation only relates.
+The proposition excludes this one deletion in the neighborhood of the
+kernel; it does not exclude other presentations of arithmetic.
+
+\section{Specialization without a term}
+\label{disch:sec:spec}
+
+This section draws on \pkg{deterministic\_specialization}. The calculus it
+restricts is the five-rule clause calculus of \pkg{uniform\_step}.
+
+\subsection{The calculus}
+
+In this section terms are \emph{zero-normal}: the normalization contracts
+$\It{0}{a}{u}{h}$ to $a$ in all subterms and does not contract an iterator
+whose counter is a successor. Terms are the fixed points of this map, and
+every substitution is followed by it, including a substitution that makes
+a counter the literal $0$; in particular $\sel(0,a,b)\equiv a$. Formulas
+are equations and $\D{x}{y}F$, so that every formula is a chain of binders
+ending in one equation; its \emph{rank} is the number of binders. A
+context is a finite list of clauses $[A;\,y.\,B(y)]$, written with the
+\emph{newest} occurrence first, and the parameters of a sequent form a
+list whose last member is the newest. An assumption $A$ is the clause
+$[0=0;\,v.\,A]$. The order is used only to choose the target of a
+specialization; clauses are reusable.
+
+\begin{definition}[Deterministic specialization]
+\label{disch:def:spec}
+The rules are
+\begin{align}
+ &\infrule{}{\Gamma\proves t=t}\ \rulename{Refl}
+ \qquad
+ \infrule{\Gamma\proves\It{c}{a}{u}{h}=t\qquad
+          \Gamma\proves\It{\Suc c}{a}{u}{h}=r}
+         {\Gamma\proves r=h\subst{t}{u}}\ \rulename{Step}
+ \label{disch:eq:step}\\[1ex]
+ &\infrule{\Gamma\proves\D{x}{y}B(x,y)\qquad
+           [B(b,0);\,y.\,B(b,y)],\ \Gamma\proves F}
+          {\Gamma\proves F}\ \rulename{DE}
+ \notag\\[1ex]
+ &\infrule{[0=0;\,v.\,B(t,\eta)],\ \Gamma\proves B(t,\Suc z)}
+          {\Gamma\proves\D{x}{y}B(x,y)}\ \rulename{DI},
+ \qquad
+ \eta=\begin{cases}
+ z,&B\text{ is a literal equation and }t\equiv 0,\\
+ 0,&\text{otherwise}
+ \end{cases}
+ \notag\\[1ex]
+ &\infrule{\Gamma\proves A}{\Gamma\proves B(t)}\ \rulename{Use},
+ \qquad [A;\,y.\,B(y)]\text{ an occurrence in }\Gamma,\ t\text{ arbitrary}
+ \notag\\[1ex]
+ &\infrule{\Gamma\proves A}{\Gamma\proves B(v_i)}\ \rulename{Use}_*,
+ \qquad [A;\,y.\,B(y)]=\Gamma_i,\quad
+ v_i=\begin{cases}1,&i=0,\\ b_*,&i>0.\end{cases}
+ \label{disch:eq:usestar}
+\end{align}
+In \rulename{Step} the first iterator is zero-normal, so it is $a$ when
+$c\equiv 0$; repeated expressions are literally identical. In
+\rulename{DE} the variable $b$ is fresh for $\Gamma$, $F$ and
+$\D{x}{y}B$, and in \rulename{DI} the variable $z$ is fresh for $\Gamma$,
+$t$ and $\D{x}{y}B$; each becomes the newest parameter of its premise, and
+the displayed clause becomes the newest clause. In $\rulename{Use}_*$,
+$\Gamma_0$ is the newest clause and $b_*$ is the newest parameter, or $0$
+if there is none. $\mathcal U$ is the calculus with \rulename{Refl},
+\rulename{Step}, \rulename{Use}, \rulename{DE} and \rulename{DI};
+$\mathcal U_*$ has $\rulename{Use}_*$ in place of \rulename{Use}.
+\end{definition}
+
+So the newest clause is used at $1$ and every older clause at the newest
+parameter. A certificate of $\rulename{Use}_*$ consists of the index of
+the clause and the proof of its antecedent; it contains no term and no
+mode. The witness of \rulename{DI} is still supplied, and the completeness
+proof uses that facility to name the desired term.
+
+$\mathcal U$ is the calculus of \pkg{uniform\_step} with clause contexts;
+its comparison with the kernel belongs to that package, and its arithmetic
+interface on the kernel is \Lean{NSPrf}, with \Lean{nsprf\_iff\_nprf}. The
+facts about it that are used here are the following.
+
+\begin{lemma}[Arithmetic from \rulename{Step}]
+\label{disch:lem:step}
+Using \rulename{Refl} and \rulename{Step} only, and opening no scope, both
+$\mathcal U$ and $\mathcal U_*$ derive: the pivot
+$s=t,\ s=r\proves r=t$; symmetry and transitivity; the congruence
+$s=t\proves h(s)=h(t)$; transport in every equation template; and the
+successor computation
+$\It{\Suc c}{a}{u}{h}=h\subst{\It{c}{a}{u}{h}}{u}$, in particular
+$\sel(\Suc z,a,b)=b$.
+\end{lemma}
+
+\begin{proof}
+Let $J_s\defeq\It{1}{s}{u}{u}$. Since $\It{0}{s}{u}{u}\equiv s$,
+\rulename{Step} with $c\equiv 0$ sends $s=t$ and $J_s=r$ to $r=t$. Given
+$p\colon s=t$ and $q\colon s=r$, \rulename{Step} applied to $q$ and the
+reflexive $J_s=J_s$ gives $J_s=r$, and \rulename{Step} applied to $p$ and
+this gives $r=t$. Symmetry is the pivot with the first premise $s=s$, and
+transitivity follows. For a template $h$ let $K\defeq\It{1}{s}{u}{h}$;
+\rulename{Step} applied to the reflexive $s=s$ and $K=K$ gives $K=h(s)$,
+and \rulename{Step} applied to $s=t$ and $K=h(s)$ gives $h(s)=h(t)$. An
+equation template $p(v)=q(v)$ is transported through $p(t)=p(s)$,
+$p(s)=q(s)$ and $q(s)=q(t)$. The successor computation is \rulename{Step}
+applied to the reflexivities of $\It{c}{a}{u}{h}$ and
+$\It{\Suc c}{a}{u}{h}$.
+\end{proof}
+
+Conversely the two computation equations and transport give
+\rulename{Step}: in the computation equation for $\It{\Suc c}{a}{u}{h}$
+replace $\It{c}{a}{u}{h}$ by $t$ in the body and the successor iterator by
+$r$. So \rulename{Step} adds no arithmetic strength.
+
+\begin{lemma}[The unrestricted calculus]
+\label{disch:lem:spec-unrestricted}
+In $\mathcal U$ cut of an assumption is admissible, and the following are
+derived: case introduction for every matrix and witness; for a literal
+equation $E$ and every witness $t$, the progress introduction from
+$\Gamma,E(t,z)\proves E(t,\Suc z)$ to $\Gamma\proves\D{x}{y}E$; and
+transport in every formula template.
+\end{lemma}
+
+\begin{proof}
+Cut is an induction on the derivation: a use of the assumption clause is
+replaced by the given proof. The term $c\defeq\It{1}{0}{u}{u}$ is
+zero-normal, is not the literal $0$, and \rulename{Step} proves $c=0$.
+Given a premise $\Gamma,E(0,0)\proves E(0,\Suc z)$ for a literal equation
+$E$, start from $E(c,0)$, transport to $E(0,0)$, insert the given
+derivation, and transport back to $E(c,\Suc z)$; \rulename{DI} at $c$ is
+in case mode. For progress at $t$, introduce $\D{w}{y}E(t,y)$ with an
+unused $w$ at the witness $0$; \rulename{DE} adds
+$[E(t,0);\,y.\,E(t,y)]$; under the base $E(t,0)$ use it at $\Suc z$ and
+apply the case introduction at $t$. Transport through a binder is as in
+\cref{disch:lem:formula}. A progress introduction for a compound matrix is
+never used; it would change the induction of the theory.
+\end{proof}
+
+\subsection{Naming a term}
+
+For a term $t$ let
+\[
+ \mathrm{Nm}_t\defeq\D{x}{y}\bigl(\sel(y,0,x)=\sel(y,0,t)\bigr),\qquad
+ \mathcal M_{b,t}\defeq[0=0;\,y.\,\sel(y,0,b)=\sel(y,0,t)].
+\]
+
+\begin{lemma}[Naming]
+\label{disch:lem:spec-name}
+In every context, $\mathcal U_*$ derives $\mathrm{Nm}_t$. Opening it by
+\rulename{DE} at a fresh $b$ adds the clause $\mathcal M_{b,t}$, and in
+the context of that premise, where $\mathcal M_{b,t}$ is the newest
+clause, $\mathcal U_*$ derives $b=t$.
+\end{lemma}
+
+\begin{proof}
+Apply \rulename{DI} at the witness $t$. The goal
+$\sel(\Suc z,0,t)=\sel(\Suc z,0,t)$ has literally equal sides and is
+proved by \rulename{Refl}, in either mode. The antecedent of the opened
+clause is $\sel(0,0,b)=\sel(0,0,t)$, that is, $0=0$. Since the clause is
+newest, $\rulename{Use}_*$ applies it at $1$, with \rulename{Refl} for its
+antecedent, and gives $\sel(1,0,b)=\sel(1,0,t)$; the computations
+$\sel(1,0,b)=b$ and $\sel(1,0,t)=t$ of \cref{disch:lem:step} give $b=t$.
+\end{proof}
+
+This derivation of $b=t$ is valid immediately after the opening. It does
+not remain a derivation when the context is extended, because the clause
+then ceases to be newest. An extension of the scope changes $b_*$, and the
+insertion of a clause changes which clause is newest; so weakening is not
+an operation that preserves the rule at each node of a derivation of
+$\mathcal U_*$. The completeness proof replaces weakening by procedures
+that produce a proof again in every larger context.
+
+\subsection{Persistent proofs}
+
+A \emph{situation} is a pair $(\Xi;\Gamma)$ of a parameter list and a
+context over it. An \emph{extension} of $(\Xi;\Gamma)$ is a situation
+$(\Xi';\Gamma')$ together with an injective map $\iota$ of the members of
+$\Xi$ to members of $\Xi'$ and an injective map of the occurrences of
+$\Gamma$ to occurrences of $\Gamma'$ that sends an occurrence of a clause
+$C$ to an occurrence of $C\iota$. Extensions compose, and neither map need
+preserve the order.
+
+\begin{definition}[Persistent proof]
+\label{disch:def:persistent}
+A \emph{persistent proof} of a formula $A$ over $(\Xi;\Gamma)$ is a
+function that assigns to every extension of $(\Xi;\Gamma)$ a derivation
+in $\mathcal U_*$ of $\Gamma'\proves A\iota$.
+\end{definition}
+
+A persistent proof is a finite proof-producing procedure of the
+metatheory; it is not an additional rule.
+
+\begin{lemma}[Elementary persistence]
+\label{disch:lem:persistent}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item A persistent proof over a situation restricts to a persistent proof
+ over each of its extensions.
+\item If $[0=0;\,v.\,A]$ occurs in $\Gamma$, then $A$ has a persistent
+ proof over $(\Xi;\Gamma)$.
+\item An equation $t=t$ has a persistent proof; if the two premises of a
+ \rulename{Step} have persistent proofs, so has its conclusion. Hence the
+ conclusions of the derivations of \cref{disch:lem:step} have persistent
+ proofs when their premises have.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) Compose extensions. (b) In every extension apply $\rulename{Use}_*$
+to the image of the occurrence, with \rulename{Refl} for the antecedent;
+the bound variable is unused, so either target gives $A\iota$. (c) Apply
+the rule in each extension; \rulename{Refl} and \rulename{Step} do not
+depend on the context or on the order of the parameters.
+\end{proof}
+
+\begin{lemma}[Specialization of an equation clause]
+\label{disch:lem:spec-atomic}
+Let $[A;\,y.\,E(y)]$ occur in $\Gamma$ with $E$ a literal equation, let
+$A$ have a persistent proof over $(\Xi;\Gamma)$, and let $t$ be a term
+over $\Xi$. Then $E(t)$ has a persistent proof over $(\Xi;\Gamma)$.
+Consequently, if $\mathcal M_{b,t}$ occurs in $\Gamma$, at any position,
+then $b=t$ has a persistent proof over $(\Xi;\Gamma)$.
+\end{lemma}
+
+\begin{proof}
+Let an extension be given; write $t$, $E$, $A$ for the renamed
+expressions. Derive $\mathrm{Nm}_t$ and open it by \rulename{DE} at a
+fresh $b$ (\cref{disch:lem:spec-name}). In the premise, $b$ is the newest
+parameter and $\mathcal M_{b,t}$ the newest clause. The persistent proof
+of $A$, taken at this larger situation, gives $A$. The given clause is now
+an older clause, so $\rulename{Use}_*$ applies it at $b_*\equiv b$ and
+gives $E(b)$. \Cref{disch:lem:spec-name} gives $b=t$, and transport in the
+equation template $E$ (\cref{disch:lem:step}), which opens no scope, gives
+$E(t)$. This formula does not contain $b$, and \rulename{DE} closes. The
+construction is uniform in the extension, so it is a persistent proof.
+
+For the second statement apply the first to the clause
+$\mathcal M_{b,t}$, the target $1$ and the antecedent $0=0$, which has the
+persistent proof \rulename{Refl}; this gives
+$\sel(1,0,b)=\sel(1,0,t)$ persistently, and
+\cref{disch:lem:persistent}(c) with the selector computations gives $b=t$.
+The argument is not circular: the auxiliary naming clause of the first
+part is newest when it is used at $1$, and the final transport there is
+between equations.
+\end{proof}
+
+\begin{lemma}[Transport and specialization at every rank]
+\label{disch:lem:spec-rank}
+For every $r\geq 0$ the following hold.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item[$(\mathrm T_r)$] Let $F(w)$ be a formula template of rank $r$ and
+ let $s=t$ have a persistent proof over $(\Xi;\Gamma)$. From a derivation
+ in $\mathcal U_*$ of $\Gamma\proves F(s)$ one obtains a derivation of
+ $\Gamma\proves F(t)$; and from a persistent proof of $F(s)$ over
+ $(\Xi;\Gamma)$ a persistent proof of $F(t)$.
+\item[$(\mathrm S_r)$] Let $[A;\,y.\,F(y)]$ occur in $\Gamma$ with $F$ of
+ rank $r$, let $A$ have a persistent proof over $(\Xi;\Gamma)$, and let
+ $t$ be a term over $\Xi$. Then $F(t)$ has a persistent proof over
+ $(\Xi;\Gamma)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+$(\mathrm T_0)$ is transport in an equation template
+(\cref{disch:lem:step}), with the persistent proof of $s=t$ taken at the
+identity extension; $(\mathrm S_0)$ is \cref{disch:lem:spec-atomic}. In
+every $(\mathrm T_r)$ the second statement follows from the first, applied
+in each extension to the restricted persistent proofs.
+
+$(\mathrm T_r)$ for $r>0$, from $(\mathrm T_{r-1})$ and
+$(\mathrm S_{r-1})$. Let $F(w)=\D{x}{y}G(w,x,y)$. Use the given derivation
+of $F(s)$ as the major premise of \rulename{DE}, with a fresh witness $c$;
+the context of the branch contains the clause
+$\mathcal C\defeq[G(s,c,0);\,y.\,G(s,c,y)]$. In the branch introduce
+$F(t)$ by \rulename{DI} at the witness $c$. As $c$ is a parameter it is
+not the literal $0$, so this is the case mode also when $G$ is an
+equation, and the premise has the assumption clause of $G(t,c,0)$ and the
+goal $G(t,c,\Suc z)$. In the situation of that premise:
+\begin{itemize}
+\item $G(t,c,0)$ has a persistent proof by
+ \cref{disch:lem:persistent}(b);
+\item $t=s$ has a persistent proof by \cref{disch:lem:persistent}(a),(c),
+ so $(\mathrm T_{r-1})$ for the template $G(w,c,0)$ gives a persistent
+ proof of $G(s,c,0)$;
+\item $(\mathrm S_{r-1})$ for the clause $\mathcal C$, this antecedent and
+ the target $\Suc z$ gives a persistent proof of $G(s,c,\Suc z)$;
+\item $(\mathrm T_{r-1})$ for the template $G(w,c,\Suc z)$, applied to the
+ derivation that this persistent proof yields at the identity extension,
+ gives a derivation of $G(t,c,\Suc z)$.
+\end{itemize}
+\rulename{DI} and \rulename{DE} close; $F(t)$ does not contain $c$. The
+given derivation of $F(s)$ is used outside the new scopes and is not
+weakened.
+
+$(\mathrm S_r)$ for $r>0$, from $(\mathrm T_r)$ and
+\cref{disch:lem:spec-atomic}. In a given extension derive $\mathrm{Nm}_t$
+and open it at a fresh $b$. In the premise, the persistent proof of $A$
+gives $A$, and $\rulename{Use}_*$ applies the given clause, now older, at
+$b$, which gives a derivation of $F(b)$. By \cref{disch:lem:spec-atomic},
+$b=t$ has a persistent proof over the situation of the premise; it is
+needed in persistent form because $(\mathrm T_r)$ opens further scopes.
+$(\mathrm T_r)$ gives $F(t)$, and \rulename{DE} closes. The construction
+is uniform in the extension.
+
+The recursion is well founded: $(\mathrm T_r)$ uses rank $r-1$ only, and
+$(\mathrm S_r)$ uses $(\mathrm T_r)$ and rank $0$.
+\end{proof}
+
+\subsection{Equivalence}
+
+\begin{theorem}[Deterministic specialization]
+\label{disch:thm:spec}
+For every parameter list, every context $\Gamma$ and every formula $A$,
+\[
+ \Gamma\proves_{\mathcal U}A\quad\Longleftrightarrow\quad
+ \Gamma\proves_{\mathcal U_*}A .
+\]
+The terms, the formulas and the ordinary reading are unchanged.
+\end{theorem}
+
+\begin{proof}
+Every instance of $\rulename{Use}_*$ is an instance of \rulename{Use}.
+Conversely, by induction on a derivation in $\mathcal U$ of
+$\Gamma\proves A$ over $\Xi$, the formula $A$ has a persistent proof over
+$(\Xi;\Gamma)$.
+
+\rulename{Refl} and \rulename{Step}: \cref{disch:lem:persistent}(c). A
+\rulename{Use} of $[A';\,y.\,B]$ at $t$: the induction hypothesis gives a
+persistent proof of $A'$, and $(\mathrm S_r)$ of
+\cref{disch:lem:spec-rank}, with $r$ the rank of $B$, gives a persistent
+proof of $B(t)$. \rulename{DE} with the major premise $\D{x}{y}B$ and the
+branch over $(\Xi,b;\,\mathcal C_B(b),\Gamma)$: in a given extension
+choose a fresh $b'$, take the derivation of the major premise that its
+persistent proof yields there, extend the extension by $b\mapsto b'$ and
+by sending the opened clause to the new opened clause, take the derivation
+that the persistent proof of the branch yields at this extension, and
+apply \rulename{DE}. \rulename{DI} is treated in the same way; an
+injective renaming preserves the root of the matrix and the literal test
+of the witness, hence the mode.
+
+The compilation recurses on the height of the given derivation, and the
+auxiliary procedures recurse on the rank of formulas; there is no
+recursion on a derivation that the procedure has produced. So every
+derivation in $\mathcal U$ yields a finite derivation in $\mathcal U_*$:
+evaluate the persistent proof at the identity extension.
+\end{proof}
+
+Composed with the comparison of \pkg{uniform\_step} between $\mathcal U$
+and the kernel and with \cref{base:thm:bridge}, the theorem gives the
+bi-interpretation of the ordinary reading of $\mathcal U_*$ with $\iPRA$,
+with whole domains, actual equality and identity numerical composites; the
+equivalence itself changes no term, no formula and no reading.
+
+\begin{remark}[The cost]
+\label{disch:rem:spec-cost}
+The argument of an arbitrary specialization is removed from the checker at
+the price of larger proofs: the translation wraps every use of a clause at
+a term in a naming formula, and at rank $r$ it nests the constructions of
+ranks below $r$. In the test suite of the package the largest expansion is
+from $699$ to $175{,}640$ bytes of compact JSON. No polynomial bound on the
+size of the translation is claimed.
+\end{remark}
+
+\begin{remark}[The kernel counterpart in Lean]
+\label{disch:rem:spec-lean}
+On the kernel the corresponding restriction concerns the term of
+\rulename{QE}. With \rulename{QE} allowed at a variable and at the numeral
+$1$ only, the kernel derives the same sequents: this is \Lean{VQPrf} with
+\Lean{vqprf\_iff\_nprf} (\Lean{NativeVariableQE}). An arbitrary target $t$
+is named by a fresh alias $b=t$, whose discharge uses \rulename{QE} at $1$
+once; \rulename{QE} is applied at $b$, and $B(b)$ is moved to $B(t)$ by
+the Leibniz rule, which is proved together with \rulename{QE} at
+$\Suc z$ by induction on the formula (\Lean{VQPrf.qELeib},
+\Lean{VQPrf.leibniz}). The numeral cannot be dropped
+(\Lean{vqprf\_var\_incomplete}): with \rulename{QE} at variables only, the
+kernel does not derive $0=1$ from $\Q{y}(\sel(y,0,1)=0)$, which $\Nat$
+derives by \rulename{QE} at $1$. The countermodel reads every variable as
+$0$, every equation by its value in the natural numbers, and every formula
+with root $\Q{}$ or $\D{}{}$ as true; each rule preserves truth, since
+$B(v)$ at a variable $v$ has the truth value of $B(0)$. The form of the
+package, on zero-normal terms with clause contexts and the choice of the
+target by position, is not formalized; that choice is not stable under
+renaming, which is why the proof above regenerates the proofs of premises.
+\end{remark}
+
+\section{A constancy rule in place of induction}
+\label{disch:sec:const}
+
+This section draws on an appendix of \pkg{substitutive\_discharge}. It is
+independent of the discharge rule: it presents an arithmetic whose one
+arithmetical inference has no induction hypothesis and no step function.
+The price is a primitive Boolean equality.
+
+\subsection{The theory}
+
+\begin{definition}[The constancy theory]
+\label{disch:def:const}
+The logic is intuitionistic first-order logic with equality over one sort.
+Terms are
+\[
+ t::=x\mid 0\mid\Suc(t)\mid\delta(t,t)\mid R(n,a;\,i,u.\,h),
+\]
+where the recursor binds $i$ and $u$ in $h$ only. With $1\defeq\Suc 0$ and
+$s\neq t\defeq(s=t\to\bot)$, the axioms are the universal closures of
+\begin{align}
+ R(0,a;\,i,u.\,h)&=a, \label{disch:eq:r0}\\
+ R(\Suc n,a;\,i,u.\,h)&=h[n/i,\ R(n,a;\,i,u.\,h)/u], \label{disch:eq:rs}\\
+ 0=1&\to\bot, \label{disch:eq:sep}\\
+ \bigl(s=t\land\delta(s,t)=0\bigr)&\lor
+ \bigl(s\neq t\land\delta(s,t)=1\bigr), \label{disch:eq:split}
+\end{align}
+the substitution in \eqref{disch:eq:rs} being simultaneous, and the one
+further rule is
+\begin{equation}
+ \infrule{\Gamma\proves f(\Suc z)=f(z)}{\Gamma\proves f(t)=f(0)}\
+ \rulename{Const}
+ \label{disch:eq:construle}
+\end{equation}
+for a term template $f(x)$, with $z$ fresh for $\Gamma$, $t$ and $f$. The
+context $\Gamma$ consists of arbitrary first-order formulas. There is no
+coverage axiom, no injectivity axiom for successor, no induction schema
+and no assumed reflection of equality.
+\end{definition}
+
+\subsection{Recovery of quantifier-free induction}
+
+Define
+\[
+ \sel(v,a,b)\defeq R(v,a;\,i,u.\,b),\qquad
+ a+b\defeq R(b,a;\,i,u.\,\Suc u),\qquad
+ \mathit{pd}(v)\defeq R(v,0;\,i,u.\,i).
+\]
+
+\begin{lemma}[Elementary computations]
+\label{disch:lem:const-elem}
+Without \rulename{Const}: $\sel(0,a,b)=a$ and $\sel(\Suc v,a,b)=b$;
+$a+0=a$, $a+\Suc b=\Suc(a+b)$ and $a+1=\Suc a$; $\mathit{pd}(0)=0$ and
+$\mathit{pd}(\Suc v)=v$; successor is injective; $\Suc v\neq 0$; and
+\begin{equation}
+ \delta(s,t)=0\lor\delta(s,t)=1,\qquad
+ \delta(s,t)=0\leftrightarrow s=t .
+ \label{disch:eq:deltabool}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The equations are instances of \eqref{disch:eq:r0} and
+\eqref{disch:eq:rs}, and injectivity follows from
+$\mathit{pd}(\Suc v)=v$. If $\Suc v=0$, applying $w\mapsto\sel(w,0,1)$
+gives $1=0$, against \eqref{disch:eq:sep}; no distinction of cases on a
+number is used. The disjunction in \eqref{disch:eq:deltabool} is read off
+\eqref{disch:eq:split}. If $s=t$, the second disjunct of
+\eqref{disch:eq:split} contradicts it, so $\delta(s,t)=0$. If
+$\delta(s,t)=0$, the second disjunct would give $0=1$, so $s=t$.
+\end{proof}
+
+For a quantifier-free formula $A$ define a term $q_A$, with the value $0$
+meaning that $A$ holds:
+\begin{align*}
+ q_{s=t}&\defeq\delta(s,t), & q_\bot&\defeq 1,\\
+ q_{A\land B}&\defeq\sel(q_A,q_B,1), &
+ q_{A\lor B}&\defeq\sel(q_A,0,q_B),\\
+ q_{A\to B}&\defeq\sel(q_A,q_B,0).
+\end{align*}
+
+\begin{lemma}[Boolean terms]
+\label{disch:lem:const-bool}
+For every quantifier-free $A$, without \rulename{Const},
+\[
+ q_A=0\lor q_A=1,\qquad q_A=0\leftrightarrow A .
+\]
+\end{lemma}
+
+\begin{proof}
+By induction on $A$ in the metatheory, with the two computations of
+$\sel$ and \eqref{disch:eq:deltabool}. In the case of an implication
+distinguish the two values of $q_A$: if it is $0$, then $A$ holds and
+$A\to B$ is equivalent to $B$; if it is $1$, then $\neg A$ follows and the
+implication holds. Only the decidability already proved for the
+quantifier-free antecedent is used.
+\end{proof}
+
+\begin{theorem}[Quantifier-free induction from constancy]
+\label{disch:thm:const-ind}
+The theory of \cref{disch:def:const} derives
+\[
+ \infrule{\Gamma\proves A(0)\qquad\Gamma,\ A(z)\proves A(\Suc z)}
+         {\Gamma\proves A(t)}
+\]
+for every quantifier-free $A$ and every context $\Gamma$ of first-order
+formulas, $z$ fresh. In particular it derives induction for literal
+equations under an arbitrary context.
+\end{theorem}
+
+\begin{proof}
+Write $q(n)\defeq q_{A(n)}$ and define the terms
+\[
+ e(n)\defeq\sel\bigl(q(n),0,\sel(q(\Suc n),1,0)\bigr),\qquad
+ a(n)\defeq R(n,0;\,i,u.\,u+e(i)),\qquad
+ F(n)\defeq a(n)+q(n).
+\]
+These are terms of the language: $e$ and the addition are expanded before
+the outer recursor is formed. The computations give $a(0)=0$ and
+$a(\Suc n)=a(n)+e(n)$. By \cref{disch:lem:const-bool} the pair
+$(q(n),q(\Suc n))$ has four possible values. Three of them give
+$F(\Suc n)=F(n)$ with no induction hypothesis:
+\[
+ \begin{array}{c|c|c|c}
+ q(n)&q(\Suc n)&e(n)&F(\Suc n)=F(n)\\ \hline
+ 0&0&0&a(n)=a(n)\\
+ 1&1&0&\Suc a(n)=\Suc a(n)\\
+ 1&0&1&\Suc a(n)=\Suc a(n)
+ \end{array}
+\]
+The fourth, $(0,1)$, is impossible under $\Gamma$: $q(n)=0$ gives $A(n)$,
+the step premise gives $A(\Suc n)$, and \cref{disch:lem:const-bool} gives
+$q(\Suc n)=0$, against $0\neq 1$. By elimination of the finitely many
+disjunctions, $\Gamma\proves F(\Suc z)=F(z)$. \rulename{Const} gives
+$F(t)=F(0)$. The base $A(0)$ gives $q(0)=0$, so $F(0)=0$. If $q(t)=1$,
+then $0=F(t)=a(t)+1=\Suc a(t)$, against $\Suc v\neq 0$. Hence $q(t)=0$,
+and $A(t)$ holds.
+\end{proof}
+
+The only identities of addition used are $a+0=a$ and $a+1=\Suc a$;
+commutativity and associativity are not used, so no induction is hidden in
+an algebraic rearrangement.
+
+\subsection{Both interpretations}
+
+\begin{theorem}[The constancy theory and $\iPRA$]
+\label{disch:thm:const-ipra}
+The theory of \cref{disch:def:const} is bi-interpretable with $\iPRA$,
+with whole domains, actual equality and both numerical composites provably
+the identity. In particular the two are equiconsistent.
+\end{theorem}
+
+\begin{proof}
+\emph{$\iPRA$ in the constancy theory.} \Cref{disch:thm:const-ind} applied
+to the quantifier-free formula $n=0\lor n=\Suc(\mathit{pd}(n))$ gives
+coverage: the case $0$ is immediate, and at a successor
+$\mathit{pd}(\Suc n)=n$ gives the second disjunct without the hypothesis.
+Injectivity of successor is in \cref{disch:lem:const-elem}. Every
+primitive recursive definition compiles into the recursor with a counter:
+zero, successor, projections and composition are term operations, and
+$f(0,\vec x)=g(\vec x)$,
+$f(\Suc n,\vec x)=h(n,f(n,\vec x),\vec x)$ is represented by
+$R\bigl(n,g(\vec x);\,i,u.\,h(i,u,\vec x)\bigr)$ after $g$ and $h$ are
+compiled; the defining equations are instances of \eqref{disch:eq:r0} and
+\eqref{disch:eq:rs}. With separation, injectivity and
+\cref{disch:thm:const-ind} this interprets $\iPRA$.
+
+\emph{The constancy theory in $\iPRA$.} Each fixed recursor term denotes a
+primitive recursive function, and its two equations hold by construction.
+\rulename{Const} is admissible: under its premise, induction for the
+equation $f(n)=f(0)$ gives the conclusion. For $\delta$ an equality
+characteristic is constructed as follows. Let
+\[
+ d(a,b)\defeq R(b,a;\,i,u.\,\mathit{pd}(u)).
+\]
+The computation equations and induction for equations give
+\[
+ d(a,0)=a,\quad d(a,\Suc b)=\mathit{pd}(d(a,b)),\quad
+ d(\Suc a,\Suc b)=d(a,b),\quad d(\Suc n,n)=1 ;
+\]
+the third by induction on $b$ at fixed $a$, with the base
+$\mathit{pd}(\Suc a)=a$ and the step obtained by applying $\mathit{pd}$ to
+the preceding equation, the fourth by induction on $n$ from the third.
+Inductions on the second argument of addition give $0+b=b$ and
+$\Suc a+b=\Suc(a+b)$. Quantifier-free induction on $b$, with $a$ as a
+parameter, proves
+\begin{equation}
+ d(a,b)\neq 0\ \to\ a=b+d(a,b).
+ \label{disch:eq:rec}
+\end{equation}
+The base uses $0+a=a$. For the step put $r\defeq d(a,b)$ and suppose
+$\mathit{pd}(r)=d(a,\Suc b)\neq 0$. Coverage for $r$ gives
+$r=\Suc(\mathit{pd}(r))$, the case $r=0$ contradicting
+$\mathit{pd}(r)\neq 0$. So $r\neq 0$, and the induction hypothesis gives
+$a=b+r=b+\Suc(\mathit{pd}(r))=\Suc b+\mathit{pd}(r)$. Now define
+\[
+ Z(a)\defeq\sel(a,1,0),\qquad
+ U(a)\defeq\sel\bigl(a,0,Z(\mathit{pd}(a))\bigr),\qquad
+ E(a,b)\defeq\sel\bigl(b,Z(a),U(d(a,\mathit{pd}(b)))\bigr).
+\]
+Coverage and separation give that $Z(a)$ and $U(a)$ are $0$ or $1$, that
+$Z(a)=1$ exactly if $a=0$, and that $U(a)=1$ exactly if $a=1$. If $b=0$,
+then $E(a,b)=1$ is equivalent to $a=0$. If $b=\Suc n$, then $E(a,b)=1$ is
+equivalent to $d(a,n)=1$, which implies $a=n+1=\Suc n=b$ by
+\eqref{disch:eq:rec}, and conversely $a=\Suc n$ gives $d(\Suc n,n)=1$. So
+$E(a,b)$ is $0$ or $1$ and equals $1$ exactly if $a=b$, and
+\[
+ \delta_*(a,b)\defeq Z(E(a,b))
+\]
+is $0$ or $1$ and equals $0$ exactly if $a=b$. It satisfies
+\eqref{disch:eq:split}. This derivation uses quantifier-free inductions of
+$\iPRA$; it is not part of the bootstrap of
+\cref{disch:thm:const-ind}.
+
+\emph{Composites.} In the constancy theory, induction for equations
+(\cref{disch:thm:const-ind}) proves the uniqueness of every fixed
+primitive recursive definition under arbitrary parameters; by induction on
+terms the round trip of every recursor term has the value of the original.
+The same argument in $\iPRA$ treats the round trip of each primitive
+recursive function symbol. For the primitive $\delta$, both $\delta$ and
+the translated $\delta_*$ satisfy \eqref{disch:eq:split} in the constancy
+theory, and the distinction of the two cases of the first shows
+$\delta(a,b)=\delta_*(a,b)$: both are $0$ if $a=b$ and both are $1$
+otherwise. Congruence and induction on formulas give both formula round
+trips. The numerical isomorphisms have graph $x=y$.
+\end{proof}
+
+\begin{remark}[What the rule does and does not simplify]
+\label{disch:rem:const}
+The arithmetical inference concerns one term and one unconditional
+recurrence with the identity as step; it has no discharged hypothesis and
+no step template, and the accumulator $a(n)$ is a construction of the
+proof and not of the rule. Against the kernel the presentation adds a
+binary term constructor, a primitive equality split in place of coverage,
+and a second bound variable of the recursor. The split
+\eqref{disch:eq:split} is essential to the proof above: replacing it by
+the assertion that an internally defined equality test is faithful,
+without proving that assertion in the induction-free base, would be
+circular. Likewise, for a tail-recursive iterator the equation
+$d(a,\Suc b)=d(\mathit{pd}(a),b)$ does not by itself give
+$d(a,\Suc b)=\mathit{pd}(d(a,b))$; the missing commutation is a fusion
+property. No checker is supplied for this theory, and nothing is claimed
+about its size.
+\end{remark}
+
+\section{Checkers and program equivalences}
+\label{disch:sec:impl}
+
+This section summarizes the programs of \pkg{witness\_discharge},
+\pkg{inferred\_witness}, \pkg{deterministic\_opening},
+\pkg{first\_instance}, \pkg{clause\_discharge},
+\pkg{substitutive\_discharge}, \pkg{variable\_substitution},
+\pkg{parameter\_substitution} and \pkg{deterministic\_specialization}.
+Sizes are in \cref{disch:sec:sizes}.
+
+\emph{Common contract.} Every checker is a standalone Python module that
+reads one JSON value, verifies a closed theorem, prints \texttt{ACCEPT}
+and exits with status zero on success, and rejects on any exception; no
+decision depends on an \texttt{assert}. The checkers of
+\pkg{variable\_substitution} and \pkg{deterministic\_specialization} code
+syntax by tagged lists. The others use integers and bare lists: $0$ is
+zero, a negative integer is a free parameter level, a positive integer is
+a de Bruijn index, \texttt{[0,t]} is a successor, \texttt{[n,a,h]} an
+iterator or recursor binding one variable in its last entry,
+\texttt{[s,t]} an equation and \texttt{[B]} a paired formula in whose
+matrix index $1$ is $y$ and index $2$ is $x$; the expected sort
+distinguishes a successor from an equation. Subterms are validated before
+a contraction can erase them. Inserted terms have no loose positive index,
+so insertion below a binder needs no lifting. The theorems of this chapter
+concern open sequents; the public interfaces check closed goals.
+
+\emph{\pkg{witness\_discharge}.} A goal-directed checker of
+$\mathcal W^{\mathcal R}$ with three packets, for \rulename{Use} (clause
+index, term, premise), \rulename{Intro} (witness, branch) and
+\rulename{Name} (matrix, local formula, target, major premise, equality
+premise, branch). The exported formula is compared with the already
+validated outer goal, which enforces the absence of the eigenparameter
+also below binders and after normalization has erased an occurrence.
+
+\emph{\pkg{inferred\_witness}.} A forward checker of
+$\mathcal O^{\mathcal R}$ that infers every conclusion once. It stores the
+antecedent $B(b,0)$ of the opened clause as computed and substitutes the
+selected witness in the body only: if the test succeeds the antecedent is
+$H$ and is unchanged by the substitution, and if it fails the substitution
+is the identity, so the stored clause is $\mathcal C_B(\rho_B(b))$ in both
+cases.
+
+\emph{\pkg{deterministic\_opening}.} The checker of
+\pkg{witness\_discharge} with the packet of the third rule shortened to
+matrix, major premise and branch. On validated syntax the test of the row
+at $0$ is that both entries are zero, and the test that the first entry of
+the row at $1$ is the integer of $b$ also establishes that the row is an
+equation, a paired formula having a list as its only entry.
+
+\emph{\pkg{first\_instance}.} A checker of $\mathcal X^{\mathcal R}$ in
+which every proof node is a triple; the depth of the clause context equals
+the number of parameters in scope.
+
+\emph{\pkg{clause\_discharge}.} Two goal-directed checkers on the input
+\texttt{[goal, proof]}, one of $\mathcal W^{\mathcal R}$ and one of
+$\mathcal X^{\mathcal R}$. The next fresh parameter is computed from the
+length of the context, and one traversal performs shifting and opening.
+The replacement acts on a parameter leaf exactly if it is the left side of
+the row and is the fresh witness. A variant that infers conclusions was
+tried and was not smaller.
+
+\emph{\pkg{substitutive\_discharge}.} A checker of $\mathcal K$ with four
+instructions and no fuel (\cref{disch:rem:sd}), its matched control with
+separate rules, and the raw companion with its control.
+
+\emph{\pkg{variable\_substitution}.} A goal-directed native checker of the
+six-rule form with the newest variable, obtained from the checker of
+\pkg{full\_normalization} by changing the equality packet, and a forward
+checker of $\mathcal V_0$ whose equality packet consists of two premise
+proofs. In the native checker the leaves for hypothesis and reflexivity
+ignore an unused hint, as in its control.
+
+\emph{\pkg{parameter\_substitution}.} A forward checker of $\mathcal P$
+with five instructions. The certificate of $0=0$ joins two copies of the
+computation $\It{0}{0}{u}{u}=0$. Substitution in a proper subterm acts on
+negative integers only, so it cannot rewrite the zero that marks a
+successor.
+
+\emph{\pkg{deterministic\_specialization}.} A goal-directed checker of
+$\mathcal U_*$ with one instruction for each of the five rules. The
+instruction for a clause contains the index and the proof of the
+antecedent; the target is computed from the index and the scope, and
+contexts are stored newest first. A translator in both directions is
+supplied and is not part of the checker.
+
+Three statements about programs, independent of the rules, are proved in
+the packages.
+
+\begin{proposition}[Scope from the context]
+\label{disch:prop:scope}
+In a checker whose public entry starts from the empty context and scope
+$0$, and in which the branch of every scope-extending rule adds exactly
+one clause and one parameter while no other call changes either, every
+reachable call satisfies $\mathit{scope}=|\mathit{context}|$. The scope
+argument can therefore be computed from the context.
+\end{proposition}
+
+\begin{proof}
+By induction on the tree of calls: the initial call satisfies the
+equation, the rules without a branch recur with both unchanged, and a
+branch increments both.
+\end{proof}
+
+\pkg{deterministic\_specialization} applies this to the checker of
+$\mathcal U_*$ and to its control, and \pkg{clause\_discharge} and
+\pkg{first\_instance} build it into their checkers. The statement concerns
+the public entry; it is not claimed for a direct call of an internal
+function with a context and a scope that do not match.
+
+\emph{Fusion of the rewrite with the continuation.}
+\pkg{deterministic\_opening} reorders, in three inherited compact checkers
+of an earlier guarded calculus, the rewriting of the goal by an
+elimination and the construction of the new hypothesis: the hypothesis is
+constructed first and the rewrite is an argument of the continuation call,
+evaluated before the scope is decremented by the left-to-right evaluation
+order of arguments. The two orders accept the same certificates. A rewrite
+changes the goal only if the major premise is a nonempty list, and then
+the construction of the hypothesis cannot perform the assignment of an
+introduction; conversely an introduction changes the goal only if the
+major premise is empty, and then the rewrite is the identity; so the two
+operations commute. The proof of the major premise runs in its own
+activation and does not affect the scope of the caller, and the rewrite
+consumes no proof packet. By induction on the number of packets each new
+program accepts exactly the certificates of its control and consumes the
+same suffix. These programs do not implement \rulename{Open}.
+
+\emph{One traversal for grammar and scope.} The supplement of
+\pkg{deterministic\_specialization} modifies the validated compact checker
+of \pkg{scalar\_uniqueness}, which checks the unchanged kernel. The
+control traverses the public goal twice, once for sorts and arities and
+once for scope; the new program does both in the first traversal, under a
+flag that is set for the public entry only and cleared before the first
+proof packet is read. By induction on the goal the fused traversal
+succeeds exactly if both old traversals succeed and then returns the goal;
+with the flag cleared every added guard is skipped and the remaining
+computation is that of the control.
+
+\section{Checker sizes}
+\label{disch:sec:sizes}
+
+This section lists the sizes reported by the nine packages named at the
+beginning of \cref{disch:sec:impl}. All figures follow the protocol of
+\cref{base:sec:measure} and are those stated by the packages. A control is
+matched if it shares the term and
+formula coding, the normalizer, the context representation and the public
+contract with the program and differs in the rule under comparison; where
+a package compares with an unmatched program this is said.
+
+\begin{longtable}{@{}p{0.34\textwidth}rrrp{0.40\textwidth}@{}}
+\caption{Complete checkers of the packages of this chapter.}
+\label{disch:tab:sizes}\\
+\toprule
+Program & Tokens & AST & Bytes & Control (tokens / AST / bytes)\\
+\midrule
+\endfirsthead
+\toprule
+Program & Tokens & AST & Bytes & Control (tokens / AST / bytes)\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\multicolumn{5}{@{}l}{\pkg{witness\_discharge}}\\
+$\mathcal W^{\mathcal R}$ & 732 & 813 & 2,273 &
+ separate elimination and transport: 769 / 841 / 2,362\\
+$\mathcal W^{\mathcal R}$ with fuel & 777 & 868 & 2,486 &
+ the same with fuel: 814 / 896 / 2,575\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{inferred\_witness}}\\
+$\mathcal O^{\mathcal R}$, forward & 683 & 771 & 1,990 &
+ explicit equation at opening: 676 / 765 / 1,998; explicit equation at
+ output: 663 / 751 / 1,983\\
+$\mathcal O^{\mathcal R}$ with fuel & 728 & 826 & 2,203 &
+ unmatched: \pkg{witness\_discharge} with fuel, 777 / 868 / 2,486\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{deterministic\_opening}}\\
+$\mathcal O^{\mathcal R}$, goal-directed & 730 & 809 & 2,253 &
+ checker of \pkg{witness\_discharge}: 732 / 813 / 2,273\\
+intermediate export variant & 745 & 828 & 2,296 &
+ the same control\\
+compact profile, fused (inherited calculus) & 267 & 302 & 508 &
+ 265 / 306 / 516\\
+AST profile, fused (inherited calculus) & 263 & 276 & 580 &
+ 260 / 278 / 602\\
+validated native profile, fused (inherited calculus) & 360 & 409 & 780 &
+ 358 / 413 / 788\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{first\_instance}}\\
+$\mathcal X^{\mathcal R}$, triples & 704 & 804 & 2,157 &
+ $\mathcal W^{\mathcal R}$, triples: 701 / 813 / 2,228\\
+$\mathcal X^{\mathcal R}$ with fuel & 752 & 863 & 2,340 &
+ $\mathcal W^{\mathcal R}$ with fuel: 749 / 872 / 2,411\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{clause\_discharge}}\\
+$\mathcal W^{\mathcal R}$ (explicit discharge) & 636 & 708 & 2,010 &
+ checker of \pkg{witness\_discharge}: 732 / 813 / 2,273\\
+$\mathcal X^{\mathcal R}$ (deterministic discharge) & 653 & 729 & 2,058 &
+ explicit discharge: 636 / 708 / 2,010\\
+explicit discharge with fuel & 673 & 755 & 2,139 & \\
+deterministic discharge with fuel & 690 & 776 & 2,187 &
+ explicit discharge with fuel: 673 / 755 / 2,139\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{substitutive\_discharge}}\\
+$\mathcal K$ & 713 & 798 & 2,267 &
+ $\mathcal K_{\mathrm{sep}}$: 726 / 809 / 2,318\\
+raw companion & 744 & 828 & 2,550 &
+ separate rules: 756 / 837 / 2,606\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{variable\_substitution}}\\
+native six rules, newest variable & 899 & 951 & 2,499 &
+ checker of \pkg{full\_normalization} with \rulename{Tr}:
+ 908 / 965 / 2,529\\
+$\mathcal V_0$ & 898 & 968 & 2,826 &
+ clausal \rulename{Tr}: 907 / 982 / 2,856\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{parameter\_substitution}}\\
+$\mathcal P$ & 769 & 892 & 2,857 &
+ template rule, unused code removed: 765 / 881 / 2,907; template rule,
+ shared opener: 777 / 895 / 2,937\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{deterministic\_specialization}}\\
+$\mathcal U_*$, scope from context & 819 & 896 & 2,914 &
+ $\mathcal U$, scope from context: 819 / 895 / 2,926\\
+$\mathcal U_*$, explicit scope & 829 & 903 & 2,938 &
+ $\mathcal U$, explicit scope (checker of \pkg{uniform\_step}, newest
+ first): 829 / 902 / 2,950\\
+kernel, fused grammar and scope traversal & 360 & 412 & 820 &
+ checker of \pkg{scalar\_uniqueness}: 381 / 439 / 866\\
+\end{longtable}
+
+The comparisons are local. In its matched pair, \rulename{Name} against
+separate rules is smaller in all three coordinates;
+\rulename{Open} against an explicit equation at the opening saves $8$
+bytes and costs $7$ tokens and $6$ nodes, and is $7$ bytes larger than the
+control with an explicit equation at the output; \rulename{Export} saves
+$71$ bytes and $9$ nodes and costs $3$ tokens in \pkg{first\_instance},
+and costs $48$ bytes, $17$ tokens and $21$ nodes in
+\pkg{clause\_discharge}; \rulename{SDis} is smaller in all three;
+\rulename{VSub} for the newest variable saves $30$ bytes, $9$ tokens and
+$14$ nodes in both profiles; \rulename{Param} saves $50$ bytes and costs
+$4$ tokens and $11$ nodes; $\rulename{Use}_*$ saves $12$ bytes, leaves the
+tokens unchanged and costs one node, and the computation of the scope
+from the context saves a further $24$ bytes, $10$ tokens and $7$ nodes.
+\pkg{parameter\_substitution} also supplies, as a comparison source and
+not as a new calculus, a refined checker of the two-case evaluation
+calculus with $741$ tokens, $862$ nodes and $2{,}731$ bytes. Every package
+states that shorter checkers of the repository with other certificate
+contracts, in particular the compact checker of $516$ bytes and, where it
+is named, the validated checker of $788$ bytes, remain smaller than its
+programs, and none claims a minimum.
+
+\section{Further questions}
+\label{disch:sec:further}
+
+This section collects the questions, limits and unproved claims stated by
+the nine packages named at the beginning of \cref{disch:sec:impl}, and one
+conjecture recorded in the repository.
+
+\begin{question}[Substitution for a variable on raw terms]
+On full normal forms substitution for a variable is the only equality rule
+needed (\cref{disch:thm:vsub}). On raw terms the rows of a packet are not
+literal, and \rulename{Param}, which also joins two equations at the root,
+suffices (\cref{disch:thm:param}). Is substitution for a variable alone,
+without joining at the root, strictly weaker on raw terms? The repository
+records the affirmative answer as a conjecture.
+\end{question}
+
+\begin{question}[The least equality interface on raw terms]
+The instances of \rulename{Param} that the completeness proof uses are
+joining at the root and substitution at a fresh variable; the third case
+of $\psi$ is a reversal. Is there a smaller total operation that expresses
+exactly the needed instances without a larger test on syntax? An answer
+has to account for arbitrary equations between closed terms as
+assumptions, and not only for the computation equations.
+\end{question}
+
+\begin{question}[Unary congruence on full normal forms]
+\Cref{disch:prop:unary} covers raw and zero-normal terms. Full
+normalization of the successor computation identifies values that its
+interpretation only relates. Whether unary congruence suffices on full
+normal forms is not decided.
+\end{question}
+
+\begin{question}[The source of the selected equation]
+In \rulename{Open} and \rulename{Export} the source of the selected
+equation is the witness opened by the same inference. A generalization in
+which the row at $1$ may name an older parameter was considered in
+\pkg{clause\_discharge} and discarded; the derivation of ordinary
+elimination by one \rulename{Export} fails for it. Whether a sound and
+complete rule of that kind exists is open.
+\end{question}
+
+\begin{question}[The normalization that naming needs]
+The packets use the two computations of $\sel$ and the two closed values
+$P(1)$ and $P(2)$. Is there a smaller discipline of normalization,
+coherent with substitution and with nested binders, that makes exactly
+these computations literal and keeps the theorems of
+\cref{disch:sec:name,disch:sec:inferred,disch:sec:vsub}? Can a syntax
+expose the rows at $0$ and $1$ of a matrix without full normalization and
+keep both formula round trips?
+\end{question}
+
+\begin{question}[A term template in the substitutive discharge]
+Can the formula template of \rulename{SDis} be restricted to a term
+template, with transport in compound formulas recovered, while the
+complete checker stays smaller than that of $\mathcal K_{\mathrm{sep}}$?
+The occurrences of the witness that the rule permits have to be tracked.
+\end{question}
+
+\begin{question}[An introduction that is stable under substitution]
+The mode of the single introduction depends on the literal spelling of
+the witness, and this is the reason why substitution does not preserve the
+rules of the calculi of this chapter. Is there a test that does not depend
+on the supplied witness, permits the recovery of the case introduction,
+and does not cost more in the checker than it saves?
+\end{question}
+
+\begin{question}[The equality split]
+Can the axiom \eqref{disch:eq:split} of \cref{disch:def:const} be derived
+from a small recursion base and \rulename{Const} alone? The split must not
+be assumed during such a bootstrap.
+\end{question}
+
+\begin{question}[Size of the translations]
+\Cref{disch:thm:spec} produces a finite derivation with no polynomial
+bound (\cref{disch:rem:spec-cost}). The translations of
+\cref{disch:thm:vsub-transport,disch:thm:param-congruence} add one packet
+or one alias per transport. What are the least expansions, for
+certificates as trees and with explicit sharing?
+\end{question}
+
+\begin{question}[Lower bounds]
+A lower bound on the size of a checker needs a fixed public grammar, a
+fixed contract for malformed input, a fixed source language and a fixed
+measure. No package of this chapter fixes these, and none proves a lower
+bound. Is there one complete program that improves the token, node and
+byte coordinates of the repository simultaneously under one contract? Can
+the rules of this chapter be represented in the smallest certificate
+languages based on arities without losing their savings to normalization
+and to the bookkeeping of scope?
+\end{question}
+
+The following are stated by the packages as not achieved or not claimed.
+\begin{itemize}
+\item \emph{Formalization.} No package contains a Lean or Rocq proof of
+ its theorems. The repository proves the kernel forms and the clause forms
+ named in
+ \cref{disch:rem:name-lean,disch:rem:sd,disch:rem:param,disch:rem:spec-lean}
+ and after \cref{disch:thm:inferred,disch:thm:newest}. Not formalized are:
+ the four families of $\mathcal K$ on the canonical recursor syntax, the
+ five families of $\mathcal P$ together, the positional calculus
+ $\mathcal U_*$, and the constancy theory of \cref{disch:sec:const}.
+\item \emph{Effectiveness.} The proof translations of this chapter are
+ effective; none is claimed to be primitive recursive. No primitive
+ recursive bound on normalization, and no bound on the fuel needed by a
+ derivable formula, is asserted (\cref{disch:rem:fuel}).
+ \pkg{clause\_discharge} does not claim an arithmetized equivalence of
+ consistency statements in a specified weak metatheory.
+\item \emph{Executable translations.} The tests of
+ \pkg{deterministic\_opening} supply, for each tested theorem, a matching
+ proof in $\mathcal W^{\mathcal R}$; they do not contain a general
+ executable compiler from $\mathcal O^{\mathcal R}$, nor certified
+ compilers between the calculi on normal forms and the raw kernel with
+ normalization traces and the repair of the introduction mode.
+\item \emph{The equality fragment.} The proofs of
+ \cref{disch:thm:vsub-transport,disch:thm:name-transport} use the logical
+ rules; no completeness statement is made for the equality rules alone.
+\item \emph{Size.} No package claims a smallest presentation or a smallest
+ checker, and the matched comparisons of \cref{disch:sec:sizes} are not
+ improvements in every coordinate.
+\item \emph{Arithmetic.} The restrictions of this chapter change the
+ equality interface and the use of clauses. They do not weaken the
+ arithmetic: the construction of the predecessor and the reflection of
+ equality (\cref{base:thm:pred,base:thm:reflect}) remain what a proposal
+ with weaker induction would have to redo, as \pkg{parameter\_substitution}
+ notes.
+\end{itemize}

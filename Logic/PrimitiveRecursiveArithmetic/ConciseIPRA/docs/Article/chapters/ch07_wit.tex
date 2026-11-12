@@ -1,0 +1,3340 @@
+\chapter{Introduction without a supplied witness}
+\label{prov:ch:wit}
+\label{wit:ch}
+
+The rule \rulename{DI} of the native scalar core takes a term: its witness.
+This chapter restricts that term.  The witness is first required to be a
+variable or the literal $0$, then to be the newest numerical parameter of the
+current scope, with $0$ in an empty scope, so that the rule takes no term at
+all.  Every restricted calculus of the chapter derives the same sequents as
+its unrestricted counterpart, on all open sequents and with the identity
+translation of terms and formulas.  The restriction of the witness cannot be
+combined with a restriction of the targets of \rulename{QE}
+(\cref{wit:thm:finite-range}).
+
+The chapter is organized by idea.  \Cref{wit:sec:restricted} states the
+restricted calculi and what they lose: a calculus with variable witnesses is
+closed under renaming and not under substitution, and a calculus with a
+scope-determined witness is not closed under the extension of its scope.
+\Cref{wit:sec:obstructions} contains the negative results.
+\Cref{wit:sec:names} reduces the completeness of a restricted calculus to the
+derivability of a name for every term, and \cref{wit:sec:packet} derives the
+names from a formula proved by numerical cases.  \Cref{wit:sec:newest} treats
+the newest parameter, where derivations must be regenerated instead of
+weakened.  \Cref{wit:sec:guarded} treats the raw guarded clause calculus, with
+and without a naming exception.  \Cref{wit:sec:recursor,wit:sec:copy} treat
+two calculi on a recursor whose predecessor computes; the second combines the
+restricted introduction with an inferred discharge by means of conditional
+copy.
+
+Throughout the chapter $1$ abbreviates $\Suc 0$ and $2$ abbreviates
+$\Suc\Suc 0$.
+
+% ---------------------------------------------------------------------
+\section{Restricted witnesses}
+\label{wit:sec:restricted}
+
+This section draws on \pkg{no\_witness}, \pkg{newest\_parameter},
+\pkg{parameter\_witness} and \pkg{deterministic\_introduction}.
+
+\subsection{Scopes and the restricted rules}
+
+In $\Nat$ as stated in \cref{base:sec:kernel} the variables available to a
+derivation are left implicit.  A restriction that mentions the variables in
+scope needs them explicit.
+
+\begin{definition}[Scopes]
+\label{wit:def:scope}
+A \emph{numerical scope} is a finite list $\Pi=(a_1,\dots,a_m)$ of distinct
+variables, called \emph{parameters}.  A term or formula is \emph{over $\Pi$}
+if its free variables are in $\Pi$.  The \emph{newest parameter} is
+\[
+ \nu(\Pi)\defeq
+ \begin{cases}
+  a_m, & m>0,\\
+  0, & m=0.
+ \end{cases}
+\]
+A judgment is $\Pi;\Gamma\proves A$, where $\Gamma$ and $A$ are over $\Pi$.
+The scope and the context are separate lists: an assumption added to $\Gamma$
+does not change $\Pi$.  The order of $\Pi$ is proof syntax and has no
+numerical meaning.
+\end{definition}
+
+With scopes the rules of $\Nat$ read as follows.  \rulename{Hyp},
+\rulename{I0}, \rulename{IS}, \rulename{Tr} and \rulename{QE} keep the scope,
+and the terms they mention are over $\Pi$.  The three rules with an
+eigenvariable append it to the scope of their premise:
+\begin{gather*}
+ \infrule{\Pi;\Gamma\proves\D{x}{y}B\qquad
+          \Pi,b;\ \Gamma,\Q{y}B(b,y)\proves A}
+         {\Pi;\Gamma\proves A}\ \rulename{DE}
+ \\[1.2ex]
+ \infrule{\Pi,z;\ \Gamma,B(t,0)\proves B(t,\Suc z)}
+         {\Pi;\Gamma\proves\D{x}{y}B}\ \rulename{DI}
+ \qquad
+ \infrule{\Pi,z;\ \Gamma,E(z)\proves E(\Suc z)}
+         {\Pi;\Gamma\proves\Q{y}E(y)}\ \rulename{QI}
+\end{gather*}
+The conclusions are over $\Pi$, the witness $t$ of \rulename{DI} is over
+$\Pi$, and $E$ is a literal equation.  A derivation of $\Nat$ in the sense of
+\cref{base:sec:kernel} is a derivation in this sense over any scope that
+contains its free variables, and conversely.
+
+\begin{definition}[Restrictions of the witness]
+\label{wit:def:calculi}
+Each of the following calculi has the terms, formulas and rules of $\Nat$,
+except that the witness $t$ of \rulename{DI} is restricted.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\Nat_{0}$: $t$ is the literal $0$.
+\item $\Nat_{\mathrm v}$: $t$ is a parameter of $\Pi$.
+\item $\Nat_{0\mathrm v}$: $t$ is the literal $0$ or a parameter of $\Pi$.
+\item $\Nat_{\nu}$: $t$ is $\nu(\Pi)$.  The rule takes no term:
+\[
+ \infrule{\Pi,z;\ \Gamma,B(\nu(\Pi),0)\proves B(\nu(\Pi),\Suc z)}
+         {\Pi;\Gamma\proves\D{x}{y}B}\ \rulename{DI}_{\nu}
+\]
+\end{enumerate}
+In \rulename{DI}$_\nu$ the witness is computed in the scope $\Pi$ of the
+conclusion, before the eigenvariable $z$ is appended.  The eigenvariable is
+never the witness.
+\end{definition}
+
+Every derivation of $\Nat_{\nu}$ is a derivation of $\Nat_{0\mathrm v}$, and
+every derivation of $\Nat_{0}$, $\Nat_{\mathrm v}$ or $\Nat_{0\mathrm v}$ is
+a derivation of $\Nat$.  Hence on derivable judgments
+\begin{equation}
+ \Nat_{\nu}\ \subseteq\ \Nat_{0\mathrm v}\ \subseteq\ \Nat .
+ \label{wit:eq:sandwich}
+\end{equation}
+The distinction between a variable and the constant $0$ is syntactic: a
+term that is provably equal to $0$ is not the literal $0$.
+
+The derivations of reflexivity, symmetry, transitivity and congruence of
+\cref{base:sec:structural} use \rulename{I0} and \rulename{Tr} only, and
+equation induction is \rulename{QI} followed by \rulename{QE}.  These rules
+are therefore available, with the same derivations, in every calculus of
+\cref{wit:def:calculi}; equations are transformed by them without further
+comment.  In particular the selector equations $\sel(0,a,b)=a$ and
+$\sel(\Suc c,a,b)=b$ are available.
+
+\subsection{What a restricted witness loses}
+
+\begin{lemma}[Structural rules for variable witnesses]
+\label{wit:lem:structural-0v}
+In $\Nat_{0\mathrm v}$ and in $\Nat_{\mathrm v}$ the following are
+admissible.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Renaming and weakening: if $\Pi;\Gamma\proves A$, $\rho$ is an
+ injective map from $\Pi$ into a scope $\Pi'$, and $\Delta$ is a context
+ over $\Pi'$ that contains $\rho\Gamma$, then $\Pi';\Delta\proves\rho A$.
+\item Cut: if $\Pi;\Gamma\proves A$ and $\Pi;\Gamma,A\proves B$, then
+ $\Pi;\Gamma\proves B$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) By induction on the derivation, for all $\rho$ and $\Delta$.  A renaming
+sends a variable witness to a variable witness and fixes the literal $0$.
+At a rule with an eigenvariable, choose a fresh parameter of the receiving
+scope, extend $\rho$ by it and extend $\Delta$ by the renamed assumption.
+(ii) By induction on the derivation of $\Pi;\Gamma,A\proves B$.  A use of
+\rulename{Hyp} for $A$ is replaced by the derivation of $A$, renamed along
+the inclusion of $\Pi$ into the scope of that leaf and weakened by the
+assumptions added on the way, by (i).  All other rule data are unchanged.
+\end{proof}
+
+The proof of (i) does not extend to substitution.  A derivation of
+$\Nat_{0\mathrm v}$ that introduces $\D{x}{y}B$ at a parameter $a$ is not
+turned into a derivation by substituting a compound term for $a$, because
+the image of the witness is not a variable.  Closure under substitution
+holds for $\Nat_{0\mathrm v}$ (\cref{wit:thm:zero-or-variable}), but only as
+a consequence of its completeness.  The arguments of the chapter therefore
+never substitute a term into a derivation of a restricted calculus; where a
+formula $B(t)$ is needed for a compound $t$, it is obtained by \rulename{QE}
+from a closure, or the derivation is constructed anew for that instance.
+
+In $\Nat_{\nu}$ less is available.
+
+\begin{lemma}[Weakening of the context at a fixed scope]
+\label{wit:lem:ctxweak}
+If $\Pi;\Gamma\proves A$ in $\Nat_{\nu}$ and $\Gamma\subseteq\Delta$ with
+$\Delta$ over $\Pi$, then $\Pi;\Delta\proves A$ in $\Nat_{\nu}$.
+\end{lemma}
+
+\begin{proof}
+By induction on the derivation.  The scope of every node is unchanged, so
+every \rulename{DI}$_\nu$ selects the same witness; the eigenvariables are
+not in $\Pi$ and hence not free in $\Delta$.
+\end{proof}
+
+\begin{example}[Extending the scope changes the witness]
+\label{wit:ex:weakening}
+In the empty scope $\Nat_{\nu}$ derives $\D{x}{y}(\sel(y,0,x)=0)$:
+the selected witness is $0$, and the premise asks for
+$\sel(\Suc z,0,0)=0$, an instance of \rulename{IS}.  The same tree is not a
+derivation over the scope $(a)$.  There the rule selects $a$ and its premise
+asks for $\sel(\Suc z,0,a)=0$ from $\sel(0,0,a)=0$, that is, for $a=0$,
+which is not derivable because it is false at $a=1$ in the standard reading.
+The judgment itself remains derivable over $(a)$, by
+\cref{wit:thm:newest}; its derivation there is a different tree.
+\end{example}
+
+Thus a derivation of $\Nat_{\nu}$ cannot be weakened to a larger scope by
+replaying its tree, and the usual proof of cut fails as well: when the
+receiving derivation enters a branch with a fresh parameter, the derivation
+to be inserted would have to be weakened to the larger scope.
+\Cref{wit:sec:newest} replaces the weakening of derivations by families of
+derivations that are constructed anew in every scope; in the raw guarded
+calculus with a naming exception, weakening is recovered by naming the old
+selection anew (\cref{wit:thm:weakening}).
+
+% ---------------------------------------------------------------------
+\section{Obstructions}
+\label{wit:sec:obstructions}
+
+This section draws on \pkg{newest\_parameter} for the two shapes and on
+\pkg{constructed\_computation} for the simultaneous restriction.
+
+\subsection{Each shape alone is incomplete}
+
+\begin{proposition}[One shape is not enough]
+\label{wit:prop:shapes}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\Nat_{0}$ does not derive $\D{x}{y}(\sel(y,1,x)=1)$ in the empty
+ scope and context.  $\Nat$ derives it.
+\item $\Nat_{\mathrm v}$ derives no formula $\D{x}{y}B$ in the empty scope
+ and the empty context.  $\Nat$ derives $\D{x}{y}(0=0)$ there.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i) Read the terms in the natural numbers, read $\Q{y}B$ as
+$B(0)\to\forall y\,B(y)$, and read $\D{x}{y}B$ at $x=0$, as
+$B(0,0)\to\forall y\,B(0,y)$.  A judgment is valid if its conclusion is true
+under every assignment of its parameters that makes its context true.  All
+rules of $\Nat_{0}$ preserve validity.  For \rulename{Hyp}, the computation
+equations, \rulename{Tr} and \rulename{QE} this is the usual verification,
+and \rulename{QI} is induction in the natural numbers.  For \rulename{DE},
+the premise is valid at $b=0$, where its assumption $\Q{y}B(0,y)$ is the
+reading of the major premise.  For \rulename{DI} at the witness $0$, the
+premise gives $B(0,\Suc z)$ for every $z$ from $B(0,0)$, and $B(0,0)$ gives
+itself.  The formula $\D{x}{y}(\sel(y,1,x)=1)$ is false in this reading: its
+instance at $y=0$ is $\sel(0,1,0)=1$, which is true, and its instance at
+$y=1$ is $\sel(1,1,0)=1$, which says $0=1$.  In $\Nat$ the rule
+\rulename{DI} with the witness $1$ asks for $\sel(\Suc z,1,1)=1$, an
+instance of \rulename{IS}.
+
+(ii) Call a formula \emph{simple} if it is an equation or a formula
+$\Q{y}E$ with $E$ an equation.  In $\Nat_{\mathrm v}$, every formula derived
+over the empty scope from a context of simple formulas is simple.  This is
+proved by induction on the derivation, the claim being made only for the
+nodes whose scope is empty.  \rulename{Hyp} yields a member of the context.
+\rulename{I0}, \rulename{IS} and \rulename{Tr} yield equations.  The major
+premise $\Q{y}B$ of \rulename{QE} has the same scope and context and is
+simple by the induction hypothesis, so $B$ is an equation and so is $B(t)$.
+The major premise of \rulename{DE} would be a formula $\D{x}{y}B$ derived
+over the empty scope from the same context, against the induction
+hypothesis; hence \rulename{DE} does not occur at such a node.
+\rulename{DI} needs a parameter of the empty scope as its witness and does
+not occur.  The conclusion $\Q{y}E$ of \rulename{QI} is simple by the form
+of the rule.  In $\Nat$ the rule \rulename{DI} with the witness $0$ derives
+$\D{x}{y}(0=0)$, its premise being reflexivity.
+\end{proof}
+
+The Lean development contains both statements: the calculus with the witness
+restricted by shape is \Lean{DWPrf}, and the two parts are
+\Lean{dwprf\_zero\_incomplete} and \Lean{dwprf\_var\_incomplete} in the
+module \Lean{NativeWitnessShape}.  Part (ii) explains why
+\rulename{DI}$_\nu$ uses $0$ in the empty scope, and part (i) why the
+parameters matter.  The proposition concerns the two shapes only; it is not a
+statement about all proof calculi.
+
+\subsection{The witness and the target cannot both be restricted}
+
+The target $t$ of \rulename{QE} can be restricted to a variable or the
+numeral $1$ without loss (Lean: \Lean{vqprf\_iff\_nprf}).  The two
+restrictions do not combine.
+
+\begin{theorem}[Finite-range obstruction]
+\label{wit:thm:finite-range}
+Let $\Nat_{\mathrm R}$ be $\Nat$ with the witness of \rulename{DI}
+restricted to $0$ or a parameter in scope and the target of \rulename{QE}
+restricted to $1$ or a parameter in scope.  Then $\Nat_{\mathrm R}$ does not
+derive
+\[
+ \D{x}{y}\bigl(\sel(y,1,x)=1\bigr),
+\]
+which $\Nat$ derives.  The same holds when $\Nat$ is replaced by the
+calculus of the reports, with transport in formula templates and with the
+witnessed introduction by progress for literal equations, and for the
+introduction by progress with a compound matrix.
+\end{theorem}
+
+\begin{proof}
+Evaluate terms in the natural numbers.  For a formula $A$ and an assignment
+$e$ of numbers to variables define a truth value $[A]_e$ by
+\begin{align*}
+ [s=t]_e &\iffdef \text{$s$ and $t$ have the same value under $e$},\\
+ [\Q{y}B]_e &\iffdef [B]_{e[y\mapsto 0]}\Rightarrow[B]_{e[y\mapsto 1]},\\
+ [\D{x}{y}B]_e &\iffdef
+   [B]_{e[x\mapsto 0,\,y\mapsto 0]}\Rightarrow[B]_{e[x\mapsto 0,\,y\mapsto 1]} .
+\end{align*}
+These clauses define an invariant of derivations; they are not an ordinary
+first-order interpretation.  By induction on $B$, the value
+$[B(t)]_e$ equals $[B]_{e[y\mapsto n]}$, where $n$ is the value of $t$ under
+$e$; bound variables are renamed away from $t$ before the substitution.
+Call a judgment \emph{valid} if its conclusion is true under the assignment
+$e_0$ that sends every parameter to $0$ whenever its context is true under
+$e_0$.  Every rule of $\Nat_{\mathrm R}$ preserves validity.
+
+\rulename{Hyp} is immediate.  The computation equations are true under every
+assignment, and \rulename{Tr}, as well as transport in a formula template,
+preserves truth by the substitution property.
+
+\rulename{DI}: an allowed witness has the value $0$ under $e_0$, and the
+eigenvariable $z$ has the value $0$, so $\Suc z$ has the value $1$.  The
+premise therefore supplies exactly the implication that defines
+$[\D{x}{y}B]_{e_0}$.  For the introduction by progress the premise has the
+assumption $B(t,z)$, which has the same value at $z=0$, and the same
+implication results; the matrix need not be an equation for this argument.
+\rulename{QI} is the same computation with the clause for $\Q{}$.  The
+context does not contain $z$ and is unaffected.
+% ed.: the package states the invariant for the calculus of the reports
+% (introduction by cases and by progress); the case of QI, needed for the
+% eight rules of N, is added here and is the same verification.
+
+\rulename{DE}: the fresh parameter $b$ has the value $0$.  The assumption
+$\Q{y}B(b,y)$ then has the truth value of the major premise
+$\D{x}{y}B$, so the validity of the second premise gives the conclusion.
+
+\rulename{QE}: at a parameter, the conclusion $B(t)$ has the truth value of
+the premise $B(0)$.  At the target $1$ the rule is the elimination of the
+implication that defines $[\Q{y}B]_{e_0}$.
+
+By induction on derivations every derivable judgment is valid.  For the
+displayed formula the instance at $x=0$, $y=0$ is $\sel(0,1,0)=1$, which is
+true, and the instance at $x=0$, $y=1$ is $\sel(1,1,0)=1$, which is false.
+In $\Nat$, \rulename{DI} with the witness $1$ derives the formula from
+$\sel(\Suc z,1,1)=1$.
+\end{proof}
+
+\begin{theorem}[Finitely many numeral targets do not help]
+\label{wit:thm:finite-range-general}
+Fix $N\ge 1$ and let $W=\{0,\dots,N\}$.  Let $\Nat_{\mathrm R,N}$ be $\Nat$
+with the witness of \rulename{DI} restricted to $0$ or a parameter and the
+target of \rulename{QE} restricted to a parameter or a numeral in $W$.
+Then $\Nat_{\mathrm R,N}$ does not derive
+\[
+ \D{x}{y}\bigl(\sel(y,N+1,x)=N+1\bigr),
+\]
+which $\Nat$ derives with the witness $N+1$.
+\end{theorem}
+
+\begin{proof}
+Evaluate terms in the natural numbers.  For an arbitrary assignment $e$ of
+numbers to variables define $[s=t]_e$ as before and
+\begin{align*}
+ [\Q{y}B]_e &\iffdef [B]_{e[y\mapsto 0]}\Rightarrow
+   \bigwedge_{j\in W}[B]_{e[y\mapsto j]},\\
+ [\D{x}{y}B]_e &\iffdef \bigvee_{i\in W}\Bigl([B]_{e[x\mapsto i,\,y\mapsto 0]}
+   \Rightarrow\bigwedge_{j\in W}[B]_{e[x\mapsto i,\,y\mapsto j]}\Bigr).
+\end{align*}
+The bound variables range over $W$; the values of terms, and hence the
+values at which a matrix is evaluated after a substitution, may lie outside
+$W$, and the substitution property holds as before.  A judgment is
+\emph{valid} if its conclusion is true under every assignment that sends
+its parameters into $W$ and makes its context true.  \rulename{DI} by cases
+preserves validity: the witness has a value
+$i\in W$, every positive $j\le N$ is $\Suc(j-1)$ with $j-1\in W$, and the
+case $j=0$ is the assumption.  The introductions by progress, and
+\rulename{QI}, preserve validity by the finite induction from $0$ to $N$.
+\rulename{DE} uses a witness $i\in W$ and the validity of its second premise
+at the assignment $b\mapsto i$.  \rulename{QE} has a target with a value in
+$W$.  Transport and the computation equations are as before.  The displayed
+formula is false: for every $i\in W$ the instance at $y=0$ is true, and the
+instance at $y=1$, which belongs to the conjunction because $1\in W$, says
+$i=N+1$.
+\end{proof}
+
+\begin{remark}[Scope of the obstruction]
+\label{wit:rem:obstruction-scope}
+The two theorems exclude the equality of the theorem sets in the identity
+language under the simultaneous restriction.  They do not show that a
+differently interpreted theory with both restrictions fails to be
+bi-interpretable with $\iPRA$.  The invariant of
+\cref{wit:thm:finite-range} is not the case $N=1$ of
+\cref{wit:thm:finite-range-general}: it fixes the witness at $0$ and gives a
+smaller separating formula.  Both invariants remain sound for the rule of
+\pkg{constructed\_computation} that supplies a variable from a known
+instance at zero,
+\[
+ \infrule{\Pi,w;\ \Gamma,H(w)\proves A\qquad\Pi;\Gamma\proves H(0)}
+         {\Pi;\Gamma\proves A}\qquad w\notin\FV(\Gamma,A).
+\]
+In the first invariant $H(w)$ and $H(0)$ have the same truth value.  In the
+second, extend the assignment by $w\mapsto 0$, which is allowed because
+$0\in W$; the second premise makes $H(w)$ true there and the first supplies
+$A$.  No rule that names an arbitrary term by a witness outside $W$ is
+covered.
+\end{remark}
+
+% ---------------------------------------------------------------------
+\section{Names}
+\label{wit:sec:names}
+
+This section draws on \pkg{deterministic\_introduction} for the naming
+matrix, on \pkg{no\_witness} and \pkg{parameter\_witness} for the derived
+rules of the calculus with variable witnesses, and on the Lean module
+\Lean{NativeNamedWitness} for the organization.
+
+A restricted introduction cannot introduce $\D{x}{y}B$ at a compound term
+$t$.  It can introduce it at a parameter $b$ that is provably equal to $t$.
+A \emph{name} of $t$ is a formula whose opening at a fresh $b$ yields the
+equation $b=t$.
+
+\subsection{Naming matrices}
+
+\begin{definition}[Gate, naming matrix, alias matrix]
+\label{wit:def:naming}
+For an equation $E\equiv(s=t)$ and a term $v$ the \emph{gate} of $E$ is
+\[
+ \gamma_v(E)\defeq\bigl(\sel(v,0,s)=\sel(v,0,t)\bigr).
+\]
+For a term $r$, and variables $x,y$ not free in $r$, the \emph{naming
+matrix} and the \emph{alias matrix} of $r$ are
+\[
+ \mathrm{Nm}_r(x,y)\defeq\gamma_y(x=r)
+   =\bigl(\sel(y,0,x)=\sel(y,0,r)\bigr),
+ \qquad
+ \mathrm{Al}_r(x,y)\defeq\bigl(\sel(y,r,x)=r\bigr).
+\]
+The formulas $\D{x}{y}\mathrm{Nm}_r$ and $\D{x}{y}\mathrm{Al}_r$ are the
+\emph{names} of $r$.
+\end{definition}
+
+By the selector equations, $\gamma_0(E)$ is derivable in every context, both
+sides being equal to $0$, and $\gamma_{\Suc z}(E)$ is interderivable with
+$E$.  The ordinary reading of either name is equivalent to
+$\exists x\,(x=r)$: the instance of the matrix at $y=0$ is provable and its
+instance at $y=1$ is equivalent to $x=r$.  The gate cannot be omitted.  The
+formula $\D{x}{v}(x=r)$, whose matrix does not contain $v$, reads
+$\exists x\,(x=r\to x=r)$ and says nothing about $r$.
+
+\begin{lemma}[A name is derivable with the witness it names]
+\label{wit:lem:name-in-N}
+For every term $r$ over $\Pi$, $\Nat$ derives
+$\Pi;\Gamma\proves\D{x}{y}\mathrm{Nm}_r$ and
+$\Pi;\Gamma\proves\D{x}{y}\mathrm{Al}_r$ by \rulename{DI} with the witness
+$r$.
+\end{lemma}
+
+\begin{proof}
+The premise for the naming matrix asks for
+$\sel(\Suc z,0,r)=\sel(\Suc z,0,r)$, which is reflexivity.  The premise for
+the alias matrix asks for $\sel(\Suc z,r,r)=r$, an instance of
+\rulename{IS}.  Neither uses its assumption.
+\end{proof}
+
+\begin{lemma}[Opening a name]
+\label{wit:lem:open-name}
+Let $\Gamma$ contain $\Q{y}\mathrm{Nm}_r(b,y)$ or
+$\Q{y}\mathrm{Al}_r(b,y)$.  Then $\Gamma\proves b=r$, by a derivation that
+uses \rulename{Hyp}, \rulename{I0}, \rulename{IS}, \rulename{Tr} and one
+\rulename{QE} with the target $1$.
+\end{lemma}
+
+\begin{proof}
+For the naming matrix, the instance at $0$ is
+$\sel(0,0,b)=\sel(0,0,r)$; both sides equal $0$ by \rulename{I0}.
+\rulename{QE} at $1$ gives $\sel(1,0,b)=\sel(1,0,r)$, and \rulename{IS}
+turns the two sides into $b$ and $r$.  For the alias matrix, the instance at
+$0$ is $\sel(0,r,b)=r$, an instance of \rulename{I0}.  \rulename{QE} at $1$
+gives $\sel(1,r,b)=r$, and \rulename{IS} gives $\sel(1,r,b)=b$.
+\end{proof}
+
+Opening the naming matrix uses reflexivity where opening the alias matrix
+uses one successor computation; otherwise the two are interchangeable.  The
+naming matrix is the one that \pkg{deterministic\_introduction} recognizes
+syntactically (\cref{wit:sec:guarded}); the alias matrix is the one of the
+Lean development.
+
+\subsection{Derived rules with variable witnesses}
+
+Let $\Nat_{\mathrm v}^{+}$ be $\Nat_{\mathrm v}$ together with the axiom
+scheme
+\[
+ \Pi;\Gamma\proves\D{x}{y}\mathrm{Al}_a\qquad\text{for every term $a$ over
+ $\Pi$.}
+\]
+A renaming sends an instance of the scheme to an instance, so
+\cref{wit:lem:structural-0v} holds for $\Nat_{\mathrm v}^{+}$ with the same
+proof.  The next two lemmas are stated for $\Nat_{\mathrm v}^{+}$ and for
+$\Nat_{0\mathrm v}$ at once.
+
+\begin{lemma}[Closure by cases]
+\label{wit:lem:qc-0v}
+If $\Pi,z;\ \Gamma,B(0)\proves B(\Suc z)$, then
+$\Pi;\Gamma\proves\Q{y}B(y)$.  Here $B$ is an arbitrary native formula.
+\end{lemma}
+
+\begin{proof}
+Choose $r$ not free in $B$.  In $\Nat_{0\mathrm v}$, \rulename{DI} with the
+witness $0$ derives $\D{r}{y}B(y)$ from the given premise.  \rulename{DE} at
+a fresh $b$ adds the assumption $\Q{y}B(y)$, which is the conclusion and
+does not contain $b$.  In $\Nat_{\mathrm v}^{+}$ a variable is needed as
+the witness.  Open the name $\D{x}{y}\mathrm{Al}_0$ of $0$ at a fresh
+parameter $c$ and introduce $\D{r}{y}B(y)$ at $c$; its premise is the given
+one, renamed along the inclusion of scopes and weakened by
+\cref{wit:lem:structural-0v}.  Eliminate $\D{r}{y}B(y)$ as before, and
+discharge $c$ by \rulename{DE}: the conclusion $\Q{y}B(y)$ does not contain
+it.
+\end{proof}
+
+\begin{lemma}[Leibniz rule]
+\label{wit:lem:leibniz-0v}
+For every native formula $F(v)$ with a distinguished variable $v$: if
+$\Pi;\Gamma\proves s=t$ and $\Pi;\Gamma\proves F(s)$, then
+$\Pi;\Gamma\proves F(t)$.
+\end{lemma}
+
+\begin{proof}
+By induction on the number of binders of $F$.  The statement is taken for
+all scopes, contexts and terms at once, because the induction hypothesis is
+applied to new instances of the matrix; no term is substituted into a
+derivation.
+
+If $F(v)$ is an equation $p(v)=q(v)$, congruence gives $p(s)=p(t)$ and
+$q(s)=q(t)$, and symmetry and transitivity give $p(t)=q(t)$.
+
+Let $F(v)=\Q{y}B(v,y)$.  By \cref{wit:lem:qc-0v} it suffices to derive
+$B(t,\Suc z)$ over $\Pi,z$ from $\Gamma,B(t,0)$.  The equation $t=s$ and the
+induction hypothesis for the matrix $B(v,0)$ give $B(s,0)$.  \rulename{QE}
+at $\Suc z$, applied to the weakened premise $\Q{y}B(s,y)$, gives
+$B(s,\Suc z)$.  The equation $s=t$ and the induction hypothesis for
+$B(v,\Suc z)$ give $B(t,\Suc z)$.
+
+Let $F(v)=\D{x}{y}B(v,x,y)$.  Apply \rulename{DE} to the premise at a fresh
+parameter $b$, which adds $\Q{y}B(s,b,y)$.  Introduce
+$\D{x}{y}B(t,x,y)$ at the variable $b$.  The premise of this introduction
+has the assumption $B(t,b,0)$ and asks for $B(t,b,\Suc z)$: the induction
+hypothesis gives $B(s,b,0)$, \rulename{QE} at $\Suc z$ gives
+$B(s,b,\Suc z)$, and the induction hypothesis gives $B(t,b,\Suc z)$.  The
+conclusion does not contain $b$, and \rulename{DE} discharges it.  Where a
+premise is used below a new parameter it is renamed and weakened by
+\cref{wit:lem:structural-0v}.
+\end{proof}
+
+\subsection{The introduction at a name}
+
+\begin{theorem}[Variable witnesses and a name for every term]
+\label{wit:thm:named}
+For every scope $\Pi$, context $\Gamma$ and formula $A$ over $\Pi$,
+\[
+ \Pi;\Gamma\proves_{\Nat_{\mathrm v}^{+}}A
+ \quad\Longleftrightarrow\quad
+ \Pi;\Gamma\proves_{\Nat}A .
+\]
+\end{theorem}
+
+\begin{proof}
+From left to right, an introduction at a variable is an instance of
+\rulename{DI}, and the axioms are derivable in $\Nat$ by
+\cref{wit:lem:name-in-N}.
+
+From right to left it suffices to show that \rulename{DI} at an arbitrary
+term $t$ over $\Pi$ is admissible in $\Nat_{\mathrm v}^{+}$; the claim then
+follows by induction on the derivation in $\Nat$.  Let a derivation of
+\[
+ \Pi,z;\ \Gamma,B(t,0)\proves B(t,\Suc z)
+\]
+be given.  Take the axiom $\D{x}{y}\mathrm{Al}_t$ and apply \rulename{DE} to
+it at a fresh parameter $b$.  The branch has the scope $\Pi,b$ and the
+context $\Gamma_b=\Gamma,\Q{y}\mathrm{Al}_t(b,y)$, and
+\cref{wit:lem:open-name} gives $\Gamma_b\proves b=t$.  In this branch
+introduce $\D{x}{y}B$ at the variable $b$.  The premise of the introduction
+has the scope $\Pi,b,z$ and the context $\Gamma_b,B(b,0)$.  The Leibniz rule
+gives $B(t,0)$ from $B(b,0)$ and $b=t$.  Rename the given derivation along
+the inclusion of $\Pi,z$ into $\Pi,b,z$, weaken it to the context
+$\Gamma_b,B(b,0),B(t,0)$, and cut $B(t,0)$; the result is $B(t,\Suc z)$.
+The Leibniz rule with $t=b$ gives $B(b,\Suc z)$.  The introduction at $b$
+yields $\Pi,b;\Gamma_b\proves\D{x}{y}B$, a formula over $\Pi$, and
+\rulename{DE} discharges $b$.
+\end{proof}
+
+\begin{corollary}[Completeness is the derivability of the names]
+\label{wit:cor:names-iff}
+$\Nat_{0\mathrm v}$ derives the same judgments as $\Nat$ if and only if it
+derives $\Pi;\varnothing\proves\D{x}{y}\mathrm{Al}_a$ for every scope $\Pi$
+and every term $a$ over $\Pi$.
+\end{corollary}
+
+\begin{proof}
+If the two calculi agree, the names are derivable by
+\cref{wit:lem:name-in-N}.  Conversely, suppose the names are derivable in
+$\Nat_{0\mathrm v}$.  A derivation of $\Nat_{\mathrm v}^{+}$ becomes a
+derivation of $\Nat_{0\mathrm v}$ when each axiom leaf is replaced by the
+derivation of that name, weakened to the context of the leaf by
+\cref{wit:lem:structural-0v}.  With \cref{wit:thm:named} and
+\eqref{wit:eq:sandwich} this gives
+$\Nat\subseteq\Nat_{\mathrm v}^{+}\subseteq\Nat_{0\mathrm v}\subseteq\Nat$.
+\end{proof}
+
+\begin{remark}[Lean status]
+\label{wit:rem:lean-names}
+\Cref{wit:thm:named} is \Lean{dnprf\_iff\_nprf} for the calculus
+\Lean{DNPrf}, and \cref{wit:cor:names-iff} is
+\Lean{dwprf\_complete\_iff\_names}; both are in \Lean{NativeNamedWitness}.
+The steps of the Lean proof are the ones above: the name, its opening, the
+introduction at the name, and a Leibniz rule proved over one context without
+substitution into derivations; a dummy witness in a scope without variables
+is a name of $0$, as in \cref{wit:lem:qc-0v}.  The derivation of the names
+inside the restricted calculus, which is the subject of the next section, is
+formalized as well (\cref{wit:rem:lean-complete}).
+\end{remark}
+
+% ---------------------------------------------------------------------
+\section{The coverage packet}
+\label{wit:sec:packet}
+
+This section draws on \pkg{no\_witness} (its restriction note),
+\pkg{parameter\_witness} (its appendix on restricted witnesses) and
+\pkg{newest\_parameter}.
+
+By \cref{wit:cor:names-iff} it remains to derive the name of an arbitrary
+term $t$ with variable witnesses.  The name cannot be introduced at $t$.
+The route is indirect: a formula $X(y)$ that says ``$y$ is $0$ or a
+successor'' is proved for all $y$ by numerical cases, where in the successor
+case the witness is the case variable; it is then instantiated at
+$y=\Suc t$ by \rulename{QE}, whose target is unrestricted; and the
+injectivity of the successor turns the opened instance into a name of $t$.
+
+\subsection{The predecessor}
+
+Let $\mathcal E$ be the equational fragment of \cref{base:def:E}:
+\rulename{Hyp}, the two computation equations, \rulename{Tr} and induction
+for an equation, on judgments whose assumptions and conclusions are
+equations.  By \cref{base:thm:pred}, $\mathcal E$ derives, for the
+predecessor term written $P$ there and $\operatorname{pred}$ in this
+chapter,
+\begin{equation}
+ \operatorname{pred}(0)=0,\qquad\operatorname{pred}(\Suc n)=n .
+ \label{wit:eq:pred}
+\end{equation}
+$\mathcal E$ is closed under substitution (\cref{base:lem:E}), so for every
+term $r$ it derives $\operatorname{pred}(\Suc r)=r$.  In a calculus that has
+\rulename{QI} and \rulename{QE}, a derivation of $\mathcal E$ is a
+derivation without any introduction of $\D{}{}$.  Hence in $\Nat_{0}$,
+$\Nat_{0\mathrm v}$ and $\Nat_{\nu}$, for all $\Pi$, $\Gamma$ and terms
+$r,s$ over $\Pi$,
+\begin{equation}
+ \Pi;\Gamma\proves\operatorname{pred}(\Suc r)=r,
+ \qquad
+ \Pi;\ \Gamma,\ \Suc r=\Suc s\proves r=s ,
+ \label{wit:eq:inj}
+\end{equation}
+the second by congruence with $\operatorname{pred}$.  The order of the
+argument matters.  The predecessor is obtained before any term is named;
+obtaining it from the bridge of \cref{base:thm:bridge}, which is proved for
+the unrestricted calculus, would be circular.  That the derivation needs no
+case distinction under a hypothesis, hence no \rulename{DI}, is the
+contribution of the four packages recorded in \cref{base:rem:predsources}.
+In Lean the fragment is \Lean{EqPrf}, with \Lean{EqPrf.pred\_zero},
+\Lean{EqPrf.pred\_succ} and \Lean{EqPrf.succ\_inj}, and \Lean{EqPrf.toDW}
+embeds it in the kernel under any restriction of the witness.
+
+\subsection{The packet and the names}
+
+\begin{definition}[Coverage packet]
+\label{wit:def:packet}
+For a term $y$ put
+\[
+ M_y(x,v)\defeq\gamma_v\bigl(\sel(y,0,\Suc x)=y\bigr)
+  =\bigl(\sel(v,0,\sel(y,0,\Suc x))=\sel(v,0,y)\bigr),
+ \qquad
+ X(y)\defeq\D{x}{v}M_y(x,v).
+\]
+\end{definition}
+
+The ordinary reading of $X(y)$ is equivalent to
+$\exists x\,(\sel(y,0,\Suc x)=y)$, which holds at $y=0$ for every $x$ and
+says $y=\Suc x$ at a successor.  The formula never asks for an introduction
+of $\exists x\,(x=t)$ at the witness $t$.
+
+\begin{lemma}[The packet with variable witnesses]
+\label{wit:lem:packet-0v}
+In $\Nat_{0\mathrm v}$, for every term $t$ over $\Pi$,
+$\Pi;\Gamma\proves X(t)$.
+\end{lemma}
+
+\begin{proof}
+$X(0)$: introduce at the witness $0$.  The premise asks for
+$M_0(0,\Suc z)$, that is, for
+$\sel(\Suc z,0,\sel(0,0,1))=\sel(\Suc z,0,0)$.  By \rulename{IS} and
+\rulename{I0} the left side equals $\sel(0,0,1)$ and then $0$, and the right
+side equals $0$.
+
+$X(\Suc z)$ over the scope $\Pi,z$: introduce at the variable $z$.  The
+premise asks for $M_{\Suc z}(z,\Suc z')$, that is, for
+$\sel(\Suc z',0,\sel(\Suc z,0,\Suc z))=\sel(\Suc z',0,\Suc z)$; both sides
+equal $\Suc z$ by \rulename{IS}.  Neither premise uses its assumption.
+
+By \cref{wit:lem:qc-0v}, with the assumption $X(0)$ unused,
+$\Pi;\Gamma\proves\Q{y}X(y)$.  \rulename{QE} with the base $X(0)$ and the
+target $t$ gives $X(t)$.  This is an application of \rulename{QE}, not a
+substitution into the derivation of $X(\Suc z)$.
+\end{proof}
+
+\begin{lemma}[The alias]
+\label{wit:lem:alias-0v}
+Let $t$ be over $\Pi$ and $b\notin\Pi$.  If $\Gamma$ contains
+$\Q{v}M_{\Suc t}(b,v)$, then $\Gamma\proves b=t$, by a derivation in which
+no $\D{}{}$ is introduced.
+\end{lemma}
+
+\begin{proof}
+The instance $M_{\Suc t}(b,0)$ is a gate at $0$ and is derivable.
+\rulename{QE} at $1$ gives
+$\sel(1,0,\sel(\Suc t,0,\Suc b))=\sel(1,0,\Suc t)$, and \rulename{IS},
+applied twice on the left and once on the right, gives $\Suc b=\Suc t$.
+By \eqref{wit:eq:inj}, $b=t$.
+\end{proof}
+
+\begin{theorem}[The literal $0$ and variables suffice]
+\label{wit:thm:zero-or-variable}
+For every scope $\Pi$, context $\Gamma$ and formula $A$ over $\Pi$,
+\[
+ \Pi;\Gamma\proves_{\Nat_{0\mathrm v}}A
+ \quad\Longleftrightarrow\quad
+ \Pi;\Gamma\proves_{\Nat}A .
+\]
+Consequently $\Nat_{0\mathrm v}$ is closed under substitution, and the
+bridge of \cref{base:thm:bridge} holds for it with the same translations.
+\end{theorem}
+
+\begin{proof}
+By \cref{wit:cor:names-iff} it suffices to derive
+$\Pi;\varnothing\proves\D{x}{y}\mathrm{Al}_t$ for $t$ over $\Pi$.  By
+\cref{wit:lem:packet-0v}, $X(\Suc t)$ is derivable.  Apply \rulename{DE} to
+it at a fresh $b$; by \cref{wit:lem:alias-0v} the branch derives $b=t$.
+Introduce $\D{x}{y}\mathrm{Al}_t$ at the variable $b$: the premise asks for
+$\sel(\Suc z,t,b)=t$, and $\sel(\Suc z,t,b)=b$ by \rulename{IS}.  The name
+does not contain $b$, and \rulename{DE} discharges it.  The two calculi have
+the same terms and formulas and the comparison is the identity, so every
+property of the consequence relation of $\Nat$ transfers.
+\end{proof}
+
+\begin{remark}[Versions of the packet and of the proof]
+\label{wit:rem:packet-versions}
+The formula $X(y)$ is $H(y)$ in \pkg{no\_witness}, $X(y)$ in
+\pkg{newest\_parameter} and $A(r)$ in \pkg{uniform\_raw}.
+\pkg{parameter\_witness} uses the ungated packet
+\[
+ T(v)\defeq\D{x}{y}\bigl(\sel(y,v,\sel(v,0,\Suc x))=v\bigr),
+\]
+whose instance at $y=0$ is $v=v$ and whose instances at successors are
+$\sel(v,0,\Suc x)=v$; it serves in a calculus where the mode of the
+introduction depends on the witness (\cref{wit:thm:R}).  The restriction
+note of \pkg{no\_witness} and the appendix of \pkg{parameter\_witness} prove
+\cref{wit:thm:zero-or-variable} directly, with the naming matrix
+$\D{x}{v}\gamma_v(x=t)$ and a derived rule
+\[
+ \infrule{\Pi,b;\ \Gamma,b=t\proves F}{\Pi;\Gamma\proves F}\qquad
+ b\notin\FV(\Gamma,t,F),
+\]
+obtained by opening $X(\Suc t)$ and cutting the alias.  The proof above
+factors the same argument through \cref{wit:thm:named}.  The theorem
+answers the question whether \rulename{DI} at the literal $0$ or at a
+variable is enough.
+\end{remark}
+
+\begin{remark}[Lean status]
+\label{wit:rem:lean-complete}
+\Cref{wit:thm:zero-or-variable} is formalized:
+\Lean{dwprf\_iff\_nprf}, in the module \Lean{NativeWitnessComplete}, states
+that the kernel with \rulename{DI} at the literal $0$ or at a variable, and
+at no other term, derives exactly what the kernel derives.  The names are
+derived there (\Lean{DWPrf.names}) from a packet in which the predecessor
+stands inside the matrix: the name
+$\D{x}{v}\mathrm{Al}_{\operatorname{pred}(y)}$ of
+$\operatorname{pred}(y)$ holds at $y=0$ with the witness $0$ and at
+$y=\Suc z$ with the witness $z$, by the closure by cases with the dummy
+witness $0$ (\Lean{DWPrf.namePQ}); it is used at $y=\Suc a$, and opening
+that name gives a variable equal to $\operatorname{pred}(\Suc a)=a$
+(\Lean{DWPrf.nameOf}).  The packet $X(y)$ applies the predecessor after the
+opening instead; the two differ in this order only.  The restriction to
+the newest parameter of \cref{wit:sec:newest} is not formalized.
+\end{remark}
+
+\subsection{A mode selected by the witness}
+\label{wit:sec:R}
+
+\pkg{parameter\_witness} states the restriction for a calculus with one
+introduction whose mode is read off the witness.  Let $\mathsf{R}$ be the
+seven-rule calculus $\mathsf{W}$ of \cref{kern:def:W}, with scopes, in which
+the witness $t$ of its introduction is the literal $0$ or a parameter of
+$\Pi$:
+\[
+ \infrule{\Pi,z;\ \Gamma,B(t,\eta_{B,t}(z))\proves B(t,\Suc z)}
+         {\Pi;\Gamma\proves\D{x}{y}B(x,y)}\ \rulename{RDI},
+\]
+where $\eta_{B,t}(z)$ is $z$ if $B$ is a literal equation and $t$ is the
+literal $0$, and $0$ otherwise.  There is no rule \rulename{QI}.  Every
+introduction at a variable is by cases.
+
+\begin{theorem}[The calculus with a witness-selected mode]
+\label{wit:thm:R}
+$\mathsf{R}$ and $\Nat$ derive the same judgments.
+\end{theorem}
+
+\begin{proof}
+Every derivation of $\mathsf{R}$ is a derivation of $\mathsf{W}$, which is
+equivalent to $\Nat$ by \cref{kern:thm:witness}.  For the converse, the
+proof of \cref{wit:thm:zero-or-variable} is repeated with the following
+changes.
+
+\emph{Structural rules.}  \Cref{wit:lem:structural-0v} holds for
+$\mathsf{R}$: a renaming sends variables to variables, fixes the literal $0$
+and preserves the root of a matrix, hence the mode.
+
+\emph{Closure by progress.}  If $\Pi,z;\Gamma,E(z)\proves E(\Suc z)$ for a
+literal equation $E$, then $\Pi;\Gamma\proves\Q{y}E(y)$: \rulename{RDI} at
+the witness $0$ on $\D{x}{y}E(y)$ with $x$ not free in $E$ is in the mode by
+progress, and \rulename{DE} returns the opened assumption.  With
+\rulename{QE} this is equation induction, so every derivation of
+$\mathcal E$ is a derivation of $\mathsf{R}$ rule by rule, and
+\eqref{wit:eq:inj} holds in $\mathsf{R}$.
+
+\emph{Closure by cases.}  The introduction of $\D{r}{y}B(y)$ at $0$ is by
+progress when $B$ is an equation, so a variable witness is used for every
+$B$.  The formula $\D{r}{w}(0=0)$ is derivable by \rulename{RDI} at $0$, its
+premise being reflexivity.  Open it at a fresh $b$ and introduce
+$\D{r}{y}B(y)$ at $b$; this is by cases.  Eliminate the unused coordinate to
+obtain $\Q{y}B(y)$ and discharge $b$.  This replaces
+\cref{wit:lem:qc-0v}.
+
+\emph{Leibniz rule.}  \Cref{wit:lem:leibniz-0v} holds with the same proof;
+the reintroduction in the case of $\D{}{}$ is at a variable and is by cases.
+
+\emph{Packet.}  With $T$ as in \cref{wit:rem:packet-versions}: $T(0)$ is
+introduced at $0$ by progress, its premise asking for
+$\sel(\Suc z,0,\sel(0,0,1))=0$, which holds by computation; $T(\Suc z)$ is
+introduced at $z$ by cases, its premise asking for
+$\sel(\Suc z',\Suc z,\sel(\Suc z,0,\Suc z))=\Suc z$, which holds by
+computation.  Closure by cases gives $\Q{v}T(v)$ and \rulename{QE} gives
+$T(t)$ for every $t$.  Opening $T(\Suc t)$ at a fresh $b$ gives a closure
+whose instance at $0$ is $\sel(0,\Suc t,\cdot)=\Suc t$, an instance of
+\rulename{I0}; \rulename{QE} at $1$ and two computations give
+$\Suc b=\Suc t$, hence $b=t$.
+
+\emph{Recovery of the rules of $\Nat$.}  \rulename{QI} is closure by
+progress.  For \rulename{DI} at an arbitrary term $t$, with an arbitrary
+matrix, open $T(\Suc t)$ at $b$, introduce at $b$, which is by cases, and
+transport the assumption and the conclusion as in the proof of
+\cref{wit:thm:named}.  This includes the introduction by cases of an
+equation at the literal $0$, which \rulename{RDI} does not offer directly.
+\end{proof}
+
+% ---------------------------------------------------------------------
+\section{The newest parameter}
+\label{wit:sec:newest}
+
+This section draws on \pkg{no\_witness} and \pkg{newest\_parameter} for the
+eight-rule calculus, on \pkg{no\_witness} for the seven-rule diagonal
+variant, and on \pkg{parameter\_witness} for the one-bit rule and its clause
+calculus.
+
+In $\Nat_{\nu}$ the introduction takes no term.  The proof of
+\cref{wit:thm:zero-or-variable} uses renaming, weakening to a larger scope
+and cut, none of which is available for the derivations of $\Nat_{\nu}$
+(\cref{wit:ex:weakening}).  The remedy is to work with families of
+derivations that are constructed anew in every scope.  A local derivation
+whose witness is a freshly chosen case variable $z$ is used while $z$ is the
+newest parameter; it is never moved to a scope in which $z$ is older.
+
+\subsection{Stable derivations and hereditary families}
+
+\begin{definition}[Stable derivations]
+\label{wit:def:stable}
+An application of \rulename{DI}$_\nu$ with the matrix $B(x,y)$ is
+\emph{dummy} if $x$ is not free in $B$.  A derivation of $\Nat_{\nu}$ is
+\emph{stable} if all its introductions are dummy.
+\end{definition}
+
+The premise of a dummy introduction does not depend on the selected witness.
+
+\begin{lemma}[Stability]
+\label{wit:lem:stable}
+Let $\Pi;\Gamma\proves A$ have a stable derivation.  Let $\theta$ assign to
+each parameter of $\Pi$ a term over a scope $\Pi'$, and let $\Delta$ be a
+context over $\Pi'$ that contains $\Gamma[\theta]$.  Then
+$\Pi';\Delta\proves A[\theta]$ has a stable derivation.  If
+$\Pi;\Gamma\proves A$ and $\Pi;\Gamma,A\proves B$ have stable derivations,
+so has $\Pi;\Gamma\proves B$.
+\end{lemma}
+
+\begin{proof}
+The first statement is proved as the substitution lemma of
+\cref{base:sec:structural}, by induction on the derivation for all $\theta$
+and $\Delta$.  At a dummy introduction the premise is
+$\Gamma,B(0)\proves B(\Suc z)$ whatever the witness is, and the rule applies
+in the scope $\Pi'$ to the matrix $B[\theta]$, in which $x$ is still not
+free.  The second statement is the usual induction on the derivation of
+$\Pi;\Gamma,A\proves B$; the inserted derivation of $A$ is moved to the
+scope of each leaf by the first statement.
+\end{proof}
+
+Derivations without any introduction of $\D{}{}$ are stable.  In particular
+the judgments \eqref{wit:eq:inj} and the derivation of
+\cref{wit:lem:alias-0v} are stable in $\Nat_{\nu}$.
+
+\begin{definition}[Hereditary derivability]
+\label{wit:def:hereditary}
+Write $\Pi;\Gamma\Vdash A$ if for every scope $\Pi'$, every injective map
+$\rho$ from $\Pi$ into $\Pi'$ and every context $\Delta$ over $\Pi'$ that
+contains $\rho\Gamma$, the calculus $\Nat_{\nu}$ derives
+$\Pi';\Delta\proves\rho A$.
+\end{definition}
+
+Hereditary derivability is a property of a family of derivations, one for
+each $(\Pi',\rho,\Delta)$; it is not a rule of the calculus.  The member of
+the family at the identity is a derivation of $\Pi;\Gamma\proves A$.  The
+families below are given by constructions that take the receiving scope and
+context as input and choose their eigenvariables there.
+
+\begin{lemma}[Closure properties]
+\label{wit:lem:hereditary-closure}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $A\in\Gamma$, then $\Pi;\Gamma\Vdash A$.
+\item If $\Pi;\Gamma\Vdash A$, $\rho$ is an injective map from $\Pi$ into
+ $\Pi'$ and $\Delta\supseteq\rho\Gamma$ is over $\Pi'$, then
+ $\Pi';\Delta\Vdash\rho A$.
+\item If $\Pi;\Gamma\proves A$ has a stable derivation, then
+ $\Pi;\Gamma\Vdash A$.
+\item The rules \rulename{I0}, \rulename{IS}, \rulename{Tr} and
+ \rulename{QE} hold with $\Vdash$ in place of $\proves$.
+\item If $\Pi;\Gamma\Vdash\D{x}{y}B$ and
+ $\Pi,b;\ \Gamma,\Q{y}B(b,y)\Vdash A$ with $A$ over $\Pi$, then
+ $\Pi;\Gamma\Vdash A$.
+\item If $\Pi,z;\ \Gamma,E(z)\Vdash E(\Suc z)$ for a literal equation $E$,
+ then $\Pi;\Gamma\Vdash\Q{y}E(y)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) is \rulename{Hyp} in every receiving context.  (ii) holds because
+injective maps compose.  (iii) is \cref{wit:lem:stable}.  For (iv), apply
+the rule to the members of the given families at $(\Pi',\rho,\Delta)$, with
+the terms renamed by $\rho$.  For (v), let $(\Pi',\rho,\Delta)$ be given.
+Choose $b'\notin\Pi'$ and extend $\rho$ by $b\mapsto b'$.  The member of the
+second family at $(\Pi',b')$ and the context $\Delta,\Q{y}\rho B(b',y)$
+derives $\rho A$, and \rulename{DE} applies to it and to the member of the
+first family.  (vi) is proved in the same way with \rulename{QI}.
+\end{proof}
+
+\begin{lemma}[Uniform cut]
+\label{wit:lem:uniform-cut}
+If $\Pi;\Gamma\Vdash A$ and $\Pi;\Gamma,A\proves B$ in $\Nat_{\nu}$, then
+$\Pi;\Gamma\proves B$ in $\Nat_{\nu}$.  Consequently, if
+$\Pi;\Gamma\Vdash A$ and $\Pi;\Gamma,A\Vdash B$, then $\Pi;\Gamma\Vdash B$.
+\end{lemma}
+
+\begin{proof}
+By induction on the derivation of $\Pi;\Gamma,A\proves B$, for all $\Pi$ and
+$\Gamma$.  At \rulename{Hyp} for $A$, take the member of the family at the
+identity; any other \rulename{Hyp} is kept.  A rule whose premises have the
+same scope and context is reapplied to the results of the induction
+hypothesis.  At a rule with an eigenvariable, say \rulename{DI}$_\nu$ with
+the premise $\Pi,z;\ \Gamma,A,B(w,0)\proves B(w,\Suc z)$ and $w=\nu(\Pi)$,
+\cref{wit:lem:hereditary-closure}(ii) gives
+$\Pi,z;\ \Gamma,B(w,0)\Vdash A$, the induction hypothesis gives
+$\Pi,z;\ \Gamma,B(w,0)\proves B(w,\Suc z)$, and the rule is reapplied in the
+scope $\Pi$, where it selects the same $w$.  \rulename{DE} and
+\rulename{QI} are treated in the same way.  Every node of the receiving
+derivation keeps its scope, and no derivation is moved to another scope:
+below a new parameter the family supplies a new member.
+
+For the second statement let $(\Pi',\rho,\Delta)$ be given.  The second
+family has a member deriving $\Pi';\Delta,\rho A\proves\rho B$, and
+$\Pi';\Delta\Vdash\rho A$ by \cref{wit:lem:hereditary-closure}(ii).
+\end{proof}
+
+\subsection{Closure by cases, the Leibniz rule and equation cases}
+
+\begin{lemma}[Closure by cases]
+\label{wit:lem:qc}
+In $\Nat_{\nu}$, if $\Pi,z;\ \Gamma,B(0)\proves B(\Suc z)$, then
+$\Pi;\Gamma\proves\Q{y}B(y)$; if the given derivation is stable, so is the
+result.  If $\Pi,z;\ \Gamma,B(0)\Vdash B(\Suc z)$, then
+$\Pi;\Gamma\Vdash\Q{y}B(y)$.
+\end{lemma}
+
+\begin{proof}
+Choose $r$ not free in $B$ and apply \rulename{DI}$_\nu$ to $\D{r}{y}B(y)$.
+The introduction is dummy, and its premise is the given one whatever
+$\nu(\Pi)$ is.  \rulename{DE} at a fresh $b$ adds the assumption
+$\Q{y}B(y)$, which is the conclusion.  For the hereditary statement, the
+member of the given family at $(\Pi',z')$, $\rho[z\mapsto z']$ and
+$\Delta,\rho B(0)$ is the premise needed in the scope $\Pi'$.
+\end{proof}
+
+\begin{lemma}[Hereditary Leibniz rule]
+\label{wit:lem:hl}
+For every native formula $F(v)$: if $\Pi;\Gamma\Vdash s=t$ and
+$\Pi;\Gamma\Vdash F(s)$, then $\Pi;\Gamma\Vdash F(t)$.
+\end{lemma}
+
+\begin{proof}
+By induction on the number of binders of $F$, for all scopes, contexts and
+terms.  For an equation the claim follows from
+\cref{wit:lem:hereditary-closure}(iv), as in \cref{wit:lem:leibniz-0v}.
+
+Let $F(v)=\Q{y}B(v,y)$.  By \cref{wit:lem:qc} it suffices to show
+$\Theta\Vdash B(t,\Suc z)$, where $\Theta$ stands for the scope $\Pi,z$ with
+the context $\Gamma,B(t,0)$.  By \cref{wit:lem:hereditary-closure},
+$\Theta\Vdash t=s$, $\Theta\Vdash B(t,0)$ and $\Theta\Vdash\Q{y}B(s,y)$.
+The induction hypothesis gives $\Theta\Vdash B(s,0)$, \rulename{QE} at
+$\Suc z$ gives $\Theta\Vdash B(s,\Suc z)$, and the induction hypothesis
+gives $\Theta\Vdash B(t,\Suc z)$.
+
+Let $F(v)=\D{x}{y}B(v,x,y)$, and let $(\Pi',\rho,\Delta)$ be given; write
+$s',t',B'$ for the images under $\rho$.  The first family gives
+$\Pi';\Delta\proves\D{x}{y}B'(s',x,y)$.  Apply \rulename{DE} at a fresh $b$.
+In the scope $\Pi',b$ the parameter $b$ is the newest, so
+\rulename{DI}$_\nu$ for $\D{x}{y}B'(t',x,y)$ selects $b$; its premise has
+the scope $\Pi',b,z$ and the context
+$\Delta,\Q{y}B'(s',b,y),B'(t',b,0)$, denoted $\Theta$.  As in the previous
+case, $\Theta\Vdash B'(s',b,0)$ by the induction hypothesis,
+$\Theta\Vdash B'(s',b,\Suc z)$ by \rulename{QE}, and
+$\Theta\Vdash B'(t',b,\Suc z)$ by the induction hypothesis.  The member at
+the identity is the premise of the introduction.  The conclusion does not
+contain $b$, and \rulename{DE} discharges it.  Whatever the receiving scope
+is, the parameter $b$ is generated after all its parameters, so the same
+recipe always introduces at the newest parameter.
+\end{proof}
+
+The derivation of \eqref{wit:eq:pred} needs only equation induction.
+\pkg{newest\_parameter} observes in addition that case distinctions on a
+term of the context are available in $\Nat_{\nu}$ for equational
+conclusions, without \rulename{DI} at a chosen witness.  The statement is
+\cref{guard:lem:np-imp} for hereditary families, with the implication
+$U\Rightarrow_{=}V$ between equations defined there.
+
+\begin{lemma}[Contextual equation cases]
+\label{wit:lem:eqcases}
+In $\Nat_{\nu}$, for equations $U$, $V$, $F$ and a term $e$ over $\Pi$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item if $\Pi;\Gamma,U\Vdash V$, then
+ $\Pi;\Gamma\Vdash U\Rightarrow_{=}V$;
+\item if $\Pi;\Gamma\Vdash U\Rightarrow_{=}V$ and
+ $\Pi;\Gamma\Vdash U$, then $\Pi;\Gamma\Vdash V$;
+\item if $\Pi;\Gamma,e=0\Vdash F$ and
+ $\Pi,z;\ \Gamma,e=\Suc z\Vdash F$, then $\Pi;\Gamma\Vdash F$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+The proof of \cref{guard:lem:np-imp} applies, with \cref{wit:lem:qc} for
+the closure by cases and \cref{wit:lem:uniform-cut} for the cut; in (iii)
+the two hypotheses give $(e=y)\Rightarrow_{=}F$ at $y=0$ and at
+$y=\Suc z$ by (i), the closure by cases and \rulename{QE} give it at $y=e$,
+and (ii) with $e=e$ gives $F$.
+\end{proof}
+
+All introductions in the constructions of
+\cref{wit:lem:qc,wit:lem:eqcases} are dummy; applied to stable derivations
+they yield stable derivations.
+
+\subsection{The packet in every scope}
+
+\begin{lemma}[The packet with the newest parameter]
+\label{wit:lem:packet}
+In $\Nat_{\nu}$, for every scope $\Pi$, every context $\Gamma$ and every
+term $t$ over $\Pi$: $\Pi;\Gamma\proves X(\Suc t)$.  Hence
+$\Pi;\Gamma\Vdash X(\Suc t)$.
+\end{lemma}
+
+\begin{proof}
+$X(0)$: the rule selects $w=\nu(\Pi)$, and its premise asks for
+$M_0(w,\Suc z)$, that is, for
+$\sel(\Suc z,0,\sel(0,0,\Suc w))=\sel(\Suc z,0,0)$.  Both sides equal $0$ by
+computation, whatever $w$ is.  So $X(0)$ is derivable in the empty scope and
+also when $w$ is an unrelated parameter.
+
+$\D{r}{y}X(y)$ with $r$ unused: the premise of this introduction has the
+scope $\Pi,z$ and asks for $X(\Suc z)$ from $X(0)$.  In the scope $\Pi,z$
+the newest parameter is $z$, so the introduction of $X(\Suc z)$ selects $z$;
+its premise asks for $M_{\Suc z}(z,\Suc z')$, both sides of which equal
+$\Suc z$ by computation.  The assumptions of both premises are unused.
+
+\rulename{DE} on $\D{r}{y}X(y)$ gives $\Q{y}X(y)$, and \rulename{QE} with
+the base $X(0)$ and the target $\Suc t$ gives $X(\Suc t)$.  The construction
+works in every scope and every context, and
+$\rho X(\Suc t)=X(\Suc\rho t)$; this is the hereditary statement.
+\end{proof}
+
+The construction is applied to the whole closure.  It is not claimed that
+$\Pi,z;\Gamma\Vdash X(\Suc z)$: a derivation that introduces $X(\Suc z)$ at
+$z$ is not a derivation in a scope in which $z$ is no longer the newest
+parameter.  In each receiving scope the case variable is chosen last.
+
+\begin{lemma}[The hereditary alias]
+\label{wit:lem:alias}
+Let $\Theta$ be a scope and context such that the context contains
+$\Q{v}M_{\Suc t}(b,v)$.  Then $\Theta\Vdash b=t$.
+\end{lemma}
+
+\begin{proof}
+The derivation of \cref{wit:lem:alias-0v} is stable.
+\end{proof}
+
+\subsection{The equivalence theorem}
+
+\begin{theorem}[No witness in the eight-rule calculus]
+\label{wit:thm:newest}
+For every scope $\Pi$, context $\Gamma$ and formula $A$ over $\Pi$,
+\[
+ \Pi;\Gamma\proves_{\Nat_{\nu}}A
+ \quad\Longleftrightarrow\quad
+ \Pi;\Gamma\proves_{\Nat}A .
+\]
+Both directions are effective transformations of derivations, and the terms
+and formulas of the judgment are unchanged.
+\end{theorem}
+
+\begin{proof}
+From left to right every rule of $\Nat_{\nu}$ is an instance of a rule of
+$\Nat$.  For the converse the following is proved by induction on a
+derivation of $\Nat$:
+\[
+ \text{if }\Pi;\Gamma\proves_{\Nat}A\text{, then }\Pi;\Gamma\Vdash A .
+\]
+\rulename{Hyp}, \rulename{I0}, \rulename{IS}, \rulename{Tr} and
+\rulename{QE} are \cref{wit:lem:hereditary-closure}(i) and (iv).
+\rulename{DE} and \rulename{QI} are
+\cref{wit:lem:hereditary-closure}(v) and (vi), applied to the families that
+the induction hypothesis gives for the premises.
+
+Consider \rulename{DI} with the witness $t$ and the matrix $B$.  The
+induction hypothesis is
+\begin{equation}
+ \Pi,z;\ \Gamma,B(t,0)\Vdash B(t,\Suc z).
+ \label{wit:eq:ih}
+\end{equation}
+Let $(\Pi',\rho,\Delta)$ be given and write $t'=\rho t$, $B'=\rho B$.
+By \cref{wit:lem:packet}, $\Pi';\Delta\proves X(\Suc t')$.  Apply
+\rulename{DE} to it at a fresh $b$; the branch has the scope $\Pi',b$ and
+the context $\Delta_b=\Delta,\Q{v}M_{\Suc t'}(b,v)$.  In this branch apply
+\rulename{DI}$_\nu$ to $\D{x}{y}B'$.  The newest parameter is $b$, so the
+rule selects $b$, and its eigenvariable $z'$ is appended after this
+selection.  Let $\Theta$ be the scope $\Pi',b,z'$ with the context
+$\Delta_b,B'(b,0)$; the premise to be derived is
+$\Theta\proves B'(b,\Suc z')$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $\Theta\Vdash b=t'$ by \cref{wit:lem:alias}, and
+ $\Theta\Vdash B'(b,0)$ by membership.  By \cref{wit:lem:hl},
+ $\Theta\Vdash B'(t',0)$.
+\item The map $\rho[z\mapsto z']$ from $\Pi,z$ into $\Pi',b,z'$ is
+ injective, and the context of $\Theta$ extended by $B'(t',0)$ contains the
+ image of $\Gamma,B(t,0)$.  By \eqref{wit:eq:ih} and
+ \cref{wit:lem:hereditary-closure}(ii),
+ $\Theta,B'(t',0)\Vdash B'(t',\Suc z')$.
+\item By (a), (b) and \cref{wit:lem:uniform-cut},
+ $\Theta\Vdash B'(t',\Suc z')$.
+\item By \cref{wit:lem:hl} with the equation $t'=b$,
+ $\Theta\Vdash B'(b,\Suc z')$.
+\end{enumerate}
+The member of the last family at the identity is the premise.  The
+introduction yields $\Pi',b;\Delta_b\proves\D{x}{y}B'$, a formula over
+$\Pi'$, and \rulename{DE} discharges $b$.  This was done for an arbitrary
+$(\Pi',\rho,\Delta)$, so $\Pi;\Gamma\Vdash\D{x}{y}B$.
+
+The construction is well founded.  The induction hypothesis is used for the
+premises of the given derivation only.  \Cref{wit:lem:hl} is an induction on
+formulas.  The packet, the alias and the predecessor are fixed
+constructions that precede the theorem.  No derivation of $\Nat_{\nu}$ is
+moved to another scope and no term is substituted into one.  Finally the
+member at the identity of $\Pi;\Gamma\Vdash A$ is the required derivation.
+\end{proof}
+
+\begin{corollary}[Structural rules and the three calculi]
+\label{wit:cor:structural}
+$\Nat_{\nu}$, $\Nat_{0\mathrm v}$ and $\Nat$ derive the same judgments.
+Substitution, weakening to a larger scope and cut are admissible in
+$\Nat_{\nu}$ as transformations of derivable judgments.  The ordinary
+realization of $\Nat_{\nu}$ is bi-interpretable and equiconsistent with
+$\iPRA$ by the translations of \cref{base:thm:bridge}, with whole domains,
+actual equality and the identity graph $x=y$ in both numerical composites.
+\end{corollary}
+
+\begin{proof}
+The first statement is \cref{wit:thm:newest} and \eqref{wit:eq:sandwich}.
+For the structural rules translate to $\Nat$, apply its rule
+(\cref{base:sec:structural}) and translate back; they are consequences of
+the theorem, not steps of its proof, and they do not say that an unchanged
+derivation tree is a derivation after an extension of the scope.  The
+comparison with $\Nat$ is the identity on terms, formulas and contexts, so
+the translations of the bridge, the derivations of both formula round trips
+and the preservation of $0=\Suc 0$ transfer unchanged.
+\end{proof}
+
+\begin{remark}[The three formulations of the proof families]
+\label{wit:rem:families}
+\pkg{no\_witness} calls the families \emph{portable}: a procedure that, for
+every extension of the scope by fresh parameters and of the context by
+assumptions, constructs a derivation of the unchanged formula.
+\pkg{newest\_parameter} calls them \emph{persistent builders}, with the same
+definition.  Both state the induction on the source derivation for an
+arbitrary substitution $\sigma$ of terms over a target scope for the source
+parameters, a target context $\Delta$, and a family for $E[\sigma]$ for each
+source assumption $E$; the result is a family for $A[\sigma]$.  The
+substitution takes the place of the renaming $\rho$, and stability under
+extension takes the place of stability under injective maps.
+\pkg{parameter\_witness} and \pkg{uniform\_raw} use hereditary derivability
+as in \cref{wit:def:hereditary}, and the proof above follows them.
+\Cref{wit:lem:uniform-cut} is the persistent cut of
+\pkg{newest\_parameter} and the uniform cut of \pkg{parameter\_witness}.
+\pkg{no\_witness} also derives the standalone name
+$\D{x}{v}\gamma_v(x=t)$ in $\Nat_{\nu}$: while $b=t$ is available and $b$ is
+the newest parameter, introduce the name, and then discharge the opening of
+$X(\Suc t)$.  None of the packages claims a Lean proof of
+\cref{wit:thm:newest}; a formalization has to encode the families, or an
+equivalent protected translation, and cannot assume the weakening of
+restricted derivations.
+\end{remark}
+
+\subsection{The seven-rule diagonal variant}
+\label{wit:sec:diagonal}
+
+The diagonal calculus is the seven-rule calculus $\Nat_{\mathrm{diag}}$ of
+\cref{guard:thm:diagonal}: the calculus $\Nat_P$ of
+\cref{guard:def:selector} for the selector $P$ that holds of the matrices
+diagonal in $y$ (\cref{guard:def:shapes}).  Its one introduction
+$\rulename{DI}_P$ takes a witness $t$ and reads its mode off the raw matrix,
+before the witness is inserted; write $\eta_B(z)$ for $\eta^{P}_B(z)$.  It
+derives the same judgments as $\Nat$ (\cref{guard:thm:diagonal}; Lean:
+\Lean{gprf\_iff\_nprf}).  Let $\Nat_{\mathrm{diag},\nu}$ be
+$\Nat_{\mathrm{diag}}$ with scopes and with $t=\nu(\Pi)$:
+\[
+ \infrule{\Pi,z;\ \Gamma,B(\nu(\Pi),\eta_B(z))\proves B(\nu(\Pi),\Suc z)}
+         {\Pi;\Gamma\proves\D{x}{y}B(x,y)} .
+\]
+The matrix selects the mode and the scope selects the witness.  No guard,
+axiom or auxiliary syntax is added.
+
+\begin{theorem}[No witness in the seven-rule calculus]
+\label{wit:thm:diagonal}
+$\Nat_{\mathrm{diag},\nu}$, $\Nat_{\mathrm{diag}}$ and $\Nat$ derive the
+same judgments.
+\end{theorem}
+
+\begin{proof}
+Every rule of $\Nat_{\mathrm{diag},\nu}$ is a rule of
+$\Nat_{\mathrm{diag}}$.  For the converse,
+\cref{wit:def:stable,wit:def:hereditary} and
+\cref{wit:lem:stable,wit:lem:hereditary-closure,wit:lem:uniform-cut} are
+taken for $\Nat_{\mathrm{diag},\nu}$, with item (vi) of
+\cref{wit:lem:hereditary-closure} omitted.  Their proofs are unchanged,
+because the diagonal shape is preserved and reflected by the substitution
+of terms for parameters (\cref{guard:thm:diagonal}(iii)).  The following
+steps differ from the proof of \cref{wit:thm:newest}; they are the steps of
+\cref{guard:thm:selector} carried out for families of derivations, since
+the structural rules of $\Nat_{\mathrm{diag}}$ are not available under the
+restriction.
+
+\emph{Closure by cases.}  Let $\Pi,z;\Gamma,B(0)\proves B(\Suc z)$ and $r$
+not free in $B$.  If $B$ is not diagonal, the introduction of
+$\D{r}{y}B(y)$ is by cases and \cref{wit:lem:qc} applies.  If $B$ is
+diagonal, $B(0)$ is derivable in every scope and context by a stable
+derivation; this is condition (S1) of \cref{guard:thm:diagonal}(i).
+\Cref{wit:lem:uniform-cut} removes the assumption $B(0)$ from the given
+premise, and \cref{wit:lem:ctxweak}, which holds for
+$\Nat_{\mathrm{diag},\nu}$ with the same proof, adds the assumption $B(z)$.
+The result is the premise of the introduction by progress.  In both cases
+\rulename{DE} yields $\Q{y}B(y)$.
+
+\emph{Equation induction.}  There is no rule \rulename{QI}.  For a term
+$s(y)$ let $L_s(y)\defeq\It{y}{y}{u}{s(y)}$ with $u$ not free in $s$, so
+that $L_s(y)=L_t(y)$ is the diagonal lift $\Delta_yE$ of
+\cref{guard:def:shapes} for $E(y)\equiv(s(y)=t(y))$; then $L_s(0)=0$ and
+$L_s(\Suc z)=s(\Suc z)$ by computation.  The decoder equation
+\begin{equation}
+ \sel\bigl(y,s(0),L_s(y)\bigr)=s(y)
+ \label{wit:eq:dec}
+\end{equation}
+holds at $y=0$ by \rulename{I0} and at $y=\Suc z$ by two successor
+computations; closure by cases and \rulename{QE} give it at every term, in
+every scope and context.  Let $E(y)\equiv(s(y)=t(y))$ and suppose
+$\Pi,z;\Gamma,E(z)\Vdash E(\Suc z)$.  Then $\Pi;\Gamma\Vdash\Q{y}E(y)$.
+Indeed, let $(\Pi',\rho,\Delta)$ be given, and drop $\rho$ from the
+notation.  By closure by cases it suffices to derive $E(\Suc z)$ in the
+scope $\Pi',z$ from $\Delta_0=\Delta,E(0)$.  The matrix
+$L_s(y)=L_t(y)$ is diagonal.  Introduce $\D{r}{y}(L_s(y)=L_t(y))$ with $r$
+unused; this is by progress, and the premise has a further eigenvariable
+$z_1$ and the context $\Delta_0,L_s(z_1)=L_t(z_1)$, denoted $\Theta$.  By
+\eqref{wit:eq:dec} for $s$ and for $t$, the assumption and the base $E(0)$,
+\[
+ \Theta\Vdash s(z_1)=\sel(z_1,s(0),L_s(z_1))
+       =\sel(z_1,t(0),L_t(z_1))=t(z_1).
+\]
+The step family, at the map $z\mapsto z_1$, gives
+$\Theta,E(z_1)\Vdash E(\Suc z_1)$; uniform cut gives
+$\Theta\Vdash E(\Suc z_1)$, and computation gives
+$\Theta\Vdash L_s(\Suc z_1)=L_t(\Suc z_1)$.  After the introduction,
+\rulename{DE} adds the closure $\Q{y}(L_s(y)=L_t(y))$.  Its instance at $0$
+is derivable, \rulename{QE} at $\Suc z$ gives
+$L_s(\Suc z)=L_t(\Suc z)$, and computation gives $E(\Suc z)$.  With
+\rulename{QE} this is equation induction for hereditary families.  Every
+rule of the fragment $\mathcal E$ therefore preserves $\Vdash$, and by
+induction on a derivation of $\mathcal E$ the judgments \eqref{wit:eq:inj}
+hold with $\Vdash$.  The construction uses closure by cases, computations
+and the equality rules; it uses no predecessor and no chosen witness.
+
+\emph{Leibniz rule.}  In the case $F(v)=\D{x}{y}B(v,x,y)$ of
+\cref{wit:lem:hl} the target is introduced at the opened parameter $b$.  If
+its matrix is not diagonal, the proof is unchanged.  If it is diagonal, the
+premise has the assumption $B'(t',b,z)$ in place of $B'(t',b,0)$; the
+latter is derivable outright, and the same three steps give
+$B'(t',b,\Suc z)$ without the assumption.
+
+\emph{Packet.}  The matrices $M_y(x,v)$ have outer iterators with the seed
+$0$, and the diagonal shape requires the seed to be the bound variable; the
+matrix of $\D{r}{y}X(y)$ is not an equation.  All introductions in the
+proof of \cref{wit:lem:packet} are therefore by cases, and the proof is
+unchanged.
+
+\emph{Translation.}  The induction is on a derivation of $\Nat_{\mathrm{diag}}$.
+The mode of an introduction is the same in source and target, because the
+alias changes the selected witness and not the raw matrix.  In the mode by
+progress, step (a) of the proof of \cref{wit:thm:newest} transports
+$B'(b,z')$ to $B'(t',z')$, step (b) uses the induction hypothesis with the
+assumption $B(t,z)$, and steps (c) and (d) are unchanged.
+
+The equivalence with $\Nat$ is the cited one for $\Nat_{\mathrm{diag}}$.
+\end{proof}
+
+\subsection{One bit}
+\label{wit:sec:bit}
+
+Let $\mathsf{R}_{\nu}$ be the calculus $\mathsf{R}$ of \cref{wit:sec:R}
+with the variable witnesses restricted to $\nu(\Pi)$ in a nonempty scope;
+the literal $0$ remains available, and in the empty scope it is the only
+witness.  For an implementation both choices are made total.  The calculus
+$\mathsf{R}_{\beta}$ has, in place of \rulename{RDI}, the rule
+\begin{gather*}
+ \infrule{\Pi,z;\ \Gamma,B(t_\beta,\eta)\proves B(t_\beta,\Suc z)}
+         {\Pi;\Gamma\proves\D{x}{y}B(x,y)}\ \rulename{Bit-DI}
+ \\[1.2ex]
+ t_\beta=\begin{cases}0,&\beta=0,\\ \nu(\Pi),&\beta=1,\end{cases}
+ \qquad
+ \eta=\begin{cases}
+  z,&\beta=0\text{ and $B$ is a literal equation,}\\
+  0,&\text{otherwise,}
+ \end{cases}
+\end{gather*}
+whose only datum is the bit $\beta\in\{0,1\}$.  The mode is selected by the
+bit and not by an inspection of the selected term: with $\beta=1$ in the
+empty scope the rule is an introduction by cases at $0$, also for an
+equation.
+
+\begin{theorem}[Zero or the newest parameter]
+\label{wit:thm:R-newest}
+$\mathsf{R}_{\nu}$, $\mathsf{R}_{\beta}$ and $\Nat$ derive the same
+judgments.
+\end{theorem}
+
+\begin{proof}
+Every rule of $\mathsf{R}_{\nu}$ is an instance of \rulename{Bit-DI}: an
+introduction at the literal $0$ is the bit $0$, with the same mode, and an
+introduction at the newest parameter is the bit $1$.  Every instance of
+\rulename{Bit-DI} is an introduction by cases or an introduction by progress
+at the witness $0$, and both are rules of $\Nat$, the second by
+\cref{base:cor:combined}.  It remains to show
+$\Nat\subseteq\mathsf{R}_{\nu}$.
+Hereditary derivability and
+\cref{wit:lem:hereditary-closure,wit:lem:uniform-cut} are taken for
+$\mathsf{R}_{\nu}$; a renaming preserves the mode of an introduction, and
+the proof of uniform cut is unchanged because each node keeps its scope.
+The following steps differ from the proof of \cref{wit:thm:newest}.
+
+\emph{Closure by progress and equation induction.}  If
+$\Pi,z;\Gamma,E(z)\Vdash E(\Suc z)$, then $\Pi;\Gamma\Vdash\Q{y}E(y)$, by
+the introduction of $\D{x}{y}E(y)$ at the literal $0$ in each receiving
+scope.  This replaces \cref{wit:lem:hereditary-closure}(vi), and with
+\rulename{QE} it gives \eqref{wit:eq:inj} with $\Vdash$ by induction on a
+derivation of $\mathcal E$.
+
+\emph{Closure by cases.}  Let $\Pi,z;\Gamma,B(0)\Vdash B(\Suc z)$ and let
+$(\Pi',\rho,\Delta)$ be given.  The formula $\D{r}{w}(0=0)$ is derivable at
+the witness $0$ by progress.  Open it at a fresh $b$, which is then the
+newest parameter, and introduce $\D{r}{y}\rho B(y)$ at $b$, by cases.  Its
+premise is the member of the given family in the scope $\Pi',b,z'$; it is
+not obtained by renaming a derivation.  Eliminate the two unused
+coordinates.
+
+\emph{Leibniz rule.}  As \cref{wit:lem:hl}.  The reintroduction is at the
+parameter just opened, which is the newest, and it is by cases.
+
+\emph{Packet.}  With $T$ as in \cref{wit:rem:packet-versions}, $T(0)$ is
+derivable in every scope by progress at $0$.  For $\Q{v}T(v)$, expand the
+closure by cases: open $\D{r}{w}(0=0)$ at a fresh $b$, introduce the dummy
+$\D{r}{v}T(v)$ at $b$, and in its premise, where the eigenvariable $z$ has
+just been appended and is the newest parameter although $b$ was added
+before, introduce $T(\Suc z)$ at $z$ by cases; the instance asked for holds
+by computation.  Eliminate the two unused coordinates.  \rulename{QE} gives
+$T(t)$ for every $t$, in every scope and context.  It is not claimed that
+$T(\Suc z)$ has a hereditary derivation.  Opening $T(\Suc t)$ at a fresh
+$b$ gives $b=t$ hereditarily, as in the proof of \cref{wit:thm:R}.
+
+\emph{Translation.}  The induction is on a derivation of $\Nat$.
+\rulename{QI} is closure by progress.  For \rulename{DI} at $t$ open
+$T(\Suc\rho t)$ at a fresh $b$ and introduce at $b$, by cases; steps (a) to
+(d) of the proof of \cref{wit:thm:newest} are unchanged.
+
+Finally $\Nat\subseteq\mathsf{R}_{\nu}\subseteq\mathsf{R}_{\beta}\subseteq
+\Nat$ on derivable judgments.
+\end{proof}
+
+\subsection{The five-family clause calculus}
+\label{wit:sec:clause}
+
+The checker of \pkg{parameter\_witness} uses the raw clause presentation
+without the binder $\Q{}$, and the restriction is proved directly for it: a
+translation of $\Nat_{\nu}$ into clauses may insert parameters and need not
+preserve which parameter is the newest.  Formulas are equations and
+$\D{x}{y}B$.  A clause $[A;\,y.B(y)]$ reads $A\to\forall y\,B(y)$
+(\cref{base:sec:clauses}); an assumption $F$ is the clause
+$\mathsf{a}(F)\defeq[0=0;\,v.F]$.  Contexts are lists of clauses.  The
+calculus $\mathsf{C}_{\beta}$ has five rule families:
+\begin{gather*}
+ \infrule{}{\Pi;\Gamma\proves t=t}\ \rulename{Refl}
+ \qquad
+ \infrule{\Pi;\Gamma\proves s=t\qquad\Pi;\Gamma\proves b=r}
+         {\Pi;\Gamma\proves r=\Phi}\ \rulename{Eval}
+ \qquad
+ \infrule{\Pi;\Gamma\proves A}{\Pi;\Gamma\proves B(t)}\ \rulename{Use}
+ \ \bigl([A;\,y.B(y)]\in\Gamma\bigr)
+ \\[1.2ex]
+ \infrule{\Pi;\Gamma\proves\D{x}{y}B\qquad
+          \Pi,b;\ \Gamma,[B(b,0);\,y.B(b,y)]\proves A}
+         {\Pi;\Gamma\proves A}\ \rulename{Elim}
+ \qquad
+ \infrule{\Pi,z;\ \Gamma,\mathsf{a}(B(t_\beta,\eta))\proves
+          B(t_\beta,\Suc z)}
+         {\Pi;\Gamma\proves\D{x}{y}B}\ \rulename{Bit-Intro}
+\end{gather*}
+\rulename{Eval} applies in exactly two cases, decided by literal identity of
+terms: $b$ is $\It{0}{a}{u}{h}$, $s$ is $a$ and $\Phi$ is $t$; or $b$ is
+$\It{\Suc c}{a}{u}{h}$, $s$ is $\It{c}{a}{u}{h}$ and $\Phi$ is
+$h\subst{t}{u}$.  In \rulename{Bit-Intro}, $t_\beta$ and $\eta$ are as in
+\rulename{Bit-DI}.  There are no other axioms or rules; an assumption is
+used by \rulename{Refl} at $0$ and \rulename{Use}.  The comparison calculus
+$\mathsf{C}$ has the same rules, except that its introduction takes an
+arbitrary term $t$ over $\Pi$ and is by progress exactly when $B$ is a
+literal equation and $t$ is the literal $0$.
+
+The equality rules are derived from \rulename{Refl} and \rulename{Eval}
+alone, as in the packages on two-case evaluation.  \rulename{Eval} on two
+reflexivities gives the two computation equations.  With
+$J=\It{0}{s}{u}{u}$, \rulename{Eval} on $s=r$ and $J=J$ gives $J=r$, and
+\rulename{Eval} on $s=t$ and $J=r$ gives $r=t$; this joining rule yields
+symmetry and transitivity.  For a term template $h(v)$ let
+$J=\It{0}{s}{u}{h(u)}$ and $K=\It{1}{s}{u}{h(u)}$: from $s=t$,
+\rulename{Eval} gives $J=t$ and then, with $K=K$, $K=h(t)$; the same with
+$s=s$ gives $K=h(s)$, and joining gives $h(s)=h(t)$.  These derivations
+contain no \rulename{Elim} and no introduction and are valid in every
+scope.
+
+\begin{theorem}[The one-bit clause calculus]
+\label{wit:thm:clause-bit}
+$\mathsf{C}_{\beta}$ and $\mathsf{C}$ derive the same judgments
+$\Pi;\Gamma\proves A$, for all clause contexts $\Gamma$.
+\end{theorem}
+
+\begin{proof}
+\emph{From $\mathsf{C}_{\beta}$ to $\mathsf{C}$.}  An introduction with the
+bit $0$ is the introduction of $\mathsf{C}$ at the literal $0$, with the
+same mode.  With the bit $1$ in a nonempty scope it is the introduction of
+$\mathsf{C}$ at a variable, by cases.  With the bit $1$ in the empty scope
+it is by cases at $0$.  For a compound matrix this is the introduction of
+$\mathsf{C}$ at $0$.  For an equation matrix, $\mathsf{C}$ introduces at
+the term $w=\It{0}{0}{u}{0}$, which is not the literal $0$, so the mode is
+by cases; the assumption $B(w,0)$ is transported along $w=0$ to $B(0,0)$,
+the given premise is applied, and its conclusion is transported back to
+$B(w,\Suc z)$.  The calculus $\mathsf{C}$ is closed under injective
+renaming and weakening and admits the cut of an assumption, by the direct
+inductions, so this composition is a derivation.
+% ed.: the package states the alias and the transport; the structural
+% facts of C that compose them are made explicit here.
+
+\emph{From $\mathsf{C}$ to $\mathsf{C}_{\beta}$.}  Write
+$\Pi;\Gamma\Vdash_{c}A$ if for every injective map $\rho$ from $\Pi$ into a
+scope $\Pi'$ and every clause context $\Delta$ over $\Pi'$ that contains
+$\rho\Gamma$, $\mathsf{C}_{\beta}$ derives $\Pi';\Delta\proves\rho A$.  The
+renaming acts on the antecedent and on the body of each clause, and the
+receiving context retains the clauses themselves.
+
+\emph{Cut of an assumption.}  If
+$\Pi;\Gamma,\mathsf{a}(A)\proves F$ and $\Pi;\Gamma\Vdash_{c}A$, then
+$\Pi;\Gamma\proves F$; this is proved as \cref{wit:lem:uniform-cut}.  A
+\rulename{Use} of the clause $\mathsf{a}(A)$ is replaced by the member of
+the family in the scope of that leaf, its premise $0=0$ being dropped; every
+other \rulename{Use} keeps its clause.  \rulename{Elim} and
+\rulename{Bit-Intro} add their clauses in both contexts.  No clause other
+than an assumption is cut.
+
+\emph{Rules.}  \rulename{Refl}, \rulename{Eval} and \rulename{Use} hold
+with $\Vdash_{c}$, the clause of a \rulename{Use} being a member of the
+renamed context; \rulename{Elim} holds with $\Vdash_{c}$ by sending its
+eigenvariable to a fresh parameter of the receiving scope and retaining the
+new clause there.
+
+\emph{Closures.}  Write $q_yA(y)$ for $\D{x}{y}A(y)$ with $x$ not free in
+$A$.  Its introduction by cases is \rulename{Bit-Intro} with the bit $1$:
+the witness is unused, and the fallback in the empty scope is still by
+cases.  For an equation $E$ its introduction by progress is the bit $0$.
+Its elimination is \rulename{Elim} followed by \rulename{Use} of the clause
+$[A(0);\,y.A(y)]$.  With hereditary premises these three operations hold
+for $\Vdash_{c}$, as in \cref{wit:lem:qc}.  In particular equation
+induction holds for $\Vdash_{c}$, and \eqref{wit:eq:inj} holds with
+$\Vdash_{c}$ by induction on a derivation of $\mathcal E$.
+
+\emph{Leibniz rule.}  If $\Pi;\Gamma\Vdash_{c}s=t$ and
+$\Pi;\Gamma\Vdash_{c}F(s)$, then $\Pi;\Gamma\Vdash_{c}F(t)$, by induction on
+$F$.  For an equation this is the equality rules.  For
+$\D{x}{y}B(s,x,y)$, open the formula at a fresh $b$ in the receiving scope,
+retaining the clause $[B(s,b,0);\,y.B(s,b,y)]$, and introduce the target
+with the bit $1$, which selects $b$.  From the assumption $B(t,b,0)$ the
+induction hypothesis gives $B(s,b,0)$, \rulename{Use} of the retained
+clause at $\Suc z$ gives $B(s,b,\Suc z)$, and the induction hypothesis
+gives $B(t,b,\Suc z)$; the cut of an assumption composes these steps.
+\rulename{Elim} discharges $b$.
+
+\emph{Packet.}  With $T$ as in \cref{wit:rem:packet-versions}, $T(0)$ is
+introduced with the bit $0$ in every scope: the matrix is an equation, the
+introduction is by progress, and the instance asked for holds by
+computation.  For $q_vT(v)$ use the bit $1$ on the outer formula; in its
+premise the eigenvariable $z$ is the newest parameter, and $T(\Suc z)$ is
+introduced with the bit $1$, which selects $z$.  The construction is
+repeated in every scope.  \rulename{Elim} and \rulename{Use} give
+$\Pi;\Gamma\Vdash_{c}T(t)$ for every $t$.  Opening $T(\Suc t)$ at a fresh
+$b$ and using its clause at $1$ gives $\Suc b=\Suc t$, hence $b=t$, with
+$\Vdash_{c}$ from the opened clause context.
+
+\emph{Translation.}  By induction on a derivation of $\mathsf{C}$ its
+conclusion is shown to be hereditarily derivable.  \rulename{Refl},
+\rulename{Eval}, \rulename{Use} and \rulename{Elim} are treated above.  An
+introduction by progress at the literal $0$ is the bit $0$.  For an
+introduction by cases at a term $t$, open $T(\Suc\rho t)$ at a fresh $b$,
+retain $\mathsf{a}(b=\rho t)$ for the moment, and introduce the formula with
+the bit $1$.  In the premise the Leibniz rule turns the assumption
+$B(b,0)$ into $B(\rho t,0)$.  The family given by the induction hypothesis
+is taken at the map that keeps the images of the source parameters, sends
+the source eigenvariable to the new one and skips $b$; the cut of an
+assumption supplies its assumption, and the Leibniz rule gives
+$B(b,\Suc z)$.  After the introduction, the cut of an assumption replaces
+$\mathsf{a}(b=\rho t)$ by its hereditary derivation from the opened packet,
+and \rulename{Elim} discharges $b$.
+\end{proof}
+
+\begin{corollary}
+\label{wit:cor:clause-bridge}
+The ordinary realizations of $\mathsf{R}_{\nu}$, $\mathsf{R}_{\beta}$,
+$\Nat_{\mathrm{diag},\nu}$ and $\mathsf{C}_{\beta}$ are bi-interpretable and
+equiconsistent with $\iPRA$, with whole numerical domains, actual equality
+and the identity graph in both numerical composites.
+\end{corollary}
+
+\begin{proof}
+Each calculus derives the same judgments, on the same terms and formulas, as
+a calculus for which the bridge of \cref{base:thm:bridge} is established:
+$\Nat$ for the first three, and the unrestricted clause calculus
+$\mathsf{C}$ for the last.  The translations and the derivations of both
+formula round trips transfer unchanged.
+\end{proof}
+
+% ---------------------------------------------------------------------
+\section{The raw guarded calculus}
+\label{wit:sec:guarded}
+
+This section draws on \pkg{deterministic\_introduction} for the naming
+exception, and on \pkg{uniform\_raw} and the guarded companion of
+\pkg{newest\_parameter} for the calculus without it.
+
+\subsection{The calculus and its three introductions}
+
+Terms are the raw terms of \cref{base:sec:terms}; no computation is built
+into syntactic identity or into substitution.  A \emph{canonical formula} is
+an equation or a formula $\D{x}{y}B$ in which $B$ is canonical and, if $B$
+is an equation, it has the literal shape
+\begin{equation}
+ \It{y}{0}{u}{h}=\It{y}{0}{v}{k}.
+ \label{wit:eq:guard}
+\end{equation}
+The bodies $h$ and $k$ may contain $x$, $y$ and parameters.  An equation at
+the root of a formula is unrestricted.  Substitution of terms for
+parameters preserves canonical formulas.  Contexts are lists of clauses
+$[A;\,y.B(y)]$ of canonical formulas, with $y$ not free in $A$.  Put
+$H\defeq(\It{0}{0}{u}{0}=0)$, an instance of \rulename{I0}; an assumption
+$A$ is the clause $\mathsf{a}(A)\defeq[H;\,v.A]$ and is used by
+\rulename{Use} with one computation.
+
+The calculus $\mathsf{G}$ has the two computation equations as axioms in
+every context and four inference rules:
+\begin{gather*}
+ \infrule{\Pi;\Gamma\proves A}{\Pi;\Gamma\proves B(t)}\ \rulename{Use}
+ \ \bigl([A;\,y.B(y)]\in\Gamma\bigr)
+ \qquad
+ \infrule{\Pi;\Gamma\proves s=t\qquad\Pi;\Gamma\proves F(s)}
+         {\Pi;\Gamma\proves F(t)}\ \rulename{Tr}
+ \\[1.2ex]
+ \infrule{\Pi;\Gamma\proves\D{x}{y}B\qquad
+          \Pi,b;\ \Gamma,[B(b,0);\,y.B(b,y)]\proves A}
+         {\Pi;\Gamma\proves A}\ \rulename{Open}
+ \qquad
+ \infrule{\Pi,z;\ \Gamma,\mathsf{a}(B(t,\eta_B(z)))\proves B(t,\Suc z)}
+         {\Pi;\Gamma\proves\D{x}{y}B}\ \rulename{Intro}
+\end{gather*}
+with $\eta_B(z)=z$ if $B$ is an equation and $\eta_B(z)=0$ if $B$ is
+compound.  In \rulename{Tr}, $F(v)$ is a canonical formula template.  The
+mode of \rulename{Intro} depends on the root of the matrix and not on the
+witness.  There is no primitive hypothesis rule, reflexivity, weakening,
+cut, coverage or induction rule.  The ordinary reading of $\D{x}{y}B$ is
+that of \cref{base:sec:reading}; the comparison of $\mathsf{G}$ with $\Nat$,
+by padding equation matrices, and hence the bridge to $\iPRA$, is
+established for $\mathsf{G}$ in \pkg{guarded\_core} and is inherited here.
+
+\begin{definition}[Three selections of the witness]
+\label{wit:def:guarded}
+In $\mathsf{G}$ the witness $t$ of \rulename{Intro} is an arbitrary term
+over $\Pi$.  In $\mathsf{G}_{\nu}$ it is $\nu(\Pi)$.  In
+$\mathsf{G}_{\mathrm d}$ it is
+\[
+ \omega(B,\Pi)\defeq
+ \begin{cases}
+  r, & \text{$B$ is literally $\mathrm{Nm}_r$ with $r$ over $\Pi$,}\\
+  \nu(\Pi), & \text{otherwise.}
+ \end{cases}
+\]
+A match with a naming matrix has priority, and it is literal up to the names
+of bound variables: $r$ contains neither $x$, $y$ nor the bound variables of
+the two iterators.  It is not a match up to provable equality.
+\end{definition}
+
+Every naming matrix has the shape \eqref{wit:eq:guard}.  The derivations of
+$\mathsf{G}_{\nu}$ and of $\mathsf{G}_{\mathrm d}$ are derivations of
+$\mathsf{G}$ once the selected witnesses are written in.  In all three
+calculi reflexivity and symmetry are derived from \rulename{I0} and
+\rulename{Tr}: with $q=\It{0}{r}{u}{0}$, the equation $q=r$ used as both
+premises of \rulename{Tr} in the template $v=r$ gives $r=r$, and from $s=t$
+the transport of $s=s$ in the template $v=s$ gives $t=s$.
+
+\subsection{The naming exception}
+
+In $\mathsf{G}_{\mathrm d}$ the names are immediate, and the work is
+structural: weakening to a larger scope can change the selected witness, and
+the general cut needs the weakening of the inserted derivation.  The order
+of the argument is a restricted cut, then weakening, then the general cut,
+then completeness.
+
+\begin{lemma}[Algebraic derivations and restricted cut]
+\label{wit:lem:algebraic}
+Call a derivation \emph{algebraic} if it uses only the computation axioms,
+\rulename{Use} and \rulename{Tr}.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item An algebraic derivation of $\Pi;\Gamma\proves A$ yields an algebraic
+ derivation of $\Pi';\Delta\proves\rho A$ for every injective map $\rho$
+ from $\Pi$ into $\Pi'$ and every clause context $\Delta$ over $\Pi'$ into
+ which $\rho\Gamma$ is embedded.
+\item If $\Pi;\Gamma\proves A$ has an algebraic derivation and
+ $\Pi;\Gamma,\mathsf{a}(A)\proves F$ in $\mathsf{G}_{\mathrm d}$, then
+ $\Pi;\Gamma\proves F$ in $\mathsf{G}_{\mathrm d}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) By induction on the derivation; its rules have no choice that depends
+on the scope and no eigenvariable.  (ii) By induction on the derivation of
+$F$.  A \rulename{Use} of the clause $\mathsf{a}(A)$ is replaced by the
+algebraic derivation of $A$, moved to the scope and context of that leaf by
+(i).  At \rulename{Intro} and \rulename{Open} the induction continues in
+the extended branch.  Deleting a clause does not change the scope, so every
+\rulename{Intro} selects the same witness before and after.  No weakening
+of a derivation that contains an \rulename{Intro} is used.
+\end{proof}
+
+\begin{lemma}[Every term has a name]
+\label{wit:lem:gd-name}
+For every term $r$ over $\Pi$, $\mathsf{G}_{\mathrm d}$ derives
+$\Pi;\Gamma\proves\D{x}{y}\mathrm{Nm}_r$.  If a clause context contains
+$[\mathrm{Nm}_r(b,0);\,y.\mathrm{Nm}_r(b,y)]$, then $b=r$ and $r=b$ have
+algebraic derivations from it.
+\end{lemma}
+
+\begin{proof}
+The rule selects $r$ by the naming alternative.  The matrix is an equation,
+so the premise asks for $\mathrm{Nm}_r(r,\Suc z)$ from
+$\mathrm{Nm}_r(r,z)$; the conclusion is literally
+$\sel(\Suc z,0,r)=\sel(\Suc z,0,r)$ and is a reflexivity.  For the second
+statement, both sides of $\mathrm{Nm}_r(b,0)$ equal $0$ by \rulename{I0}, so
+the antecedent of the clause is derivable; \rulename{Use} at $1$ gives
+$\sel(1,0,b)=\sel(1,0,r)$, and \rulename{IS} with \rulename{Tr} gives $b=r$;
+symmetry gives $r=b$.
+\end{proof}
+
+\begin{theorem}[Weakening by naming the old selection anew]
+\label{wit:thm:weakening}
+Let $\Pi;\Gamma\proves A$ be derivable in $\mathsf{G}_{\mathrm d}$.  For
+every injective map $\rho$ from $\Pi$ into a scope $\Pi'$ and every clause
+context $\Delta$ over $\Pi'$ into which $\rho\Gamma$ is embedded,
+$\Pi';\Delta\proves\rho A$ is derivable in $\mathsf{G}_{\mathrm d}$, by an
+effective construction.
+\end{theorem}
+
+\begin{proof}
+By induction on the height of the given derivation, for all $\rho$ and
+$\Delta$.  The computation axioms, \rulename{Use} and \rulename{Tr} are
+immediate.  At \rulename{Open}, choose a fresh parameter of the receiving
+scope, extend $\rho$ and the embedding of clauses, and apply the induction
+hypothesis to the two premises.
+
+Consider an \rulename{Intro} with the matrix $B$ and the selected witness
+$w$, and let $B'=\rho B$, $w'=\rho w$.  A match with a naming matrix is
+preserved and reflected by $\rho$: a bound variable does not become a
+parameter or conversely, and a parameter does not become a numeral or a
+compound term.  If $B=\mathrm{Nm}_r$, the witness selected in the receiving
+scope is $\rho r=w'$, and the induction hypothesis for the premise gives the
+rule directly.  The same holds if $B$ is not a naming matrix and
+$\nu(\Pi')=w'$.
+
+Suppose $B'$ is not a naming matrix and $\nu(\Pi')\neq w'$.  Derive
+$\D{x}{y}\mathrm{Nm}_{w'}$ by \cref{wit:lem:gd-name} and open it at a fresh
+parameter $e$, which is then the newest; its clause gives algebraic
+derivations of $e=w'$ and $w'=e$.  The formula $\D{x}{y}B'$ will be
+introduced in the scope $\Pi',e$, where the rule selects $e$.  Let $v$ be
+the eigenvariable of that introduction and put
+\[
+ A_{\mathrm{old}}=B'(w',\eta_{B'}(v)),\qquad
+ A_{\mathrm{new}}=B'(e,\eta_{B'}(v)).
+\]
+Apply the induction hypothesis to the premise of the given
+\rulename{Intro}, with $\rho$ extended by sending its eigenvariable to $v$,
+and with the receiving context consisting of $\Delta$, the clause of the
+name, $\mathsf{a}(A_{\mathrm{old}})$ and $\mathsf{a}(A_{\mathrm{new}})$.
+This is legitimate although $e$ and $v$ are new parameters of the receiving
+scope, because the induction statement quantifies over all injective maps of
+the smaller derivation.  The result derives $B'(w',\Suc v)$.  From
+$A_{\mathrm{new}}$, \rulename{Tr} along $e=w'$ gives $A_{\mathrm{old}}$;
+this derivation is algebraic.  \Cref{wit:lem:algebraic}(ii) removes the
+clause $\mathsf{a}(A_{\mathrm{old}})$.  \rulename{Tr} along $w'=e$ gives
+$B'(e,\Suc v)$.  Apply \rulename{Intro}, which selects $e$, and discharge
+the name by \rulename{Open}; the conclusion does not contain $e$.  If the
+old selection was $0$ in an empty scope, the name is that of $0$.
+
+Every use of the induction hypothesis is for a proper subderivation of the
+given derivation.  The naming and transport derivations built here are
+never fed back into the induction, and the restricted cut was established
+before.  The construction is therefore well founded and uses neither the
+general cut nor weakening.
+\end{proof}
+
+\begin{corollary}[Cut of an assumption]
+\label{wit:cor:gd-cut}
+If $\Pi;\Gamma\proves A$ and $\Pi;\Gamma,\mathsf{a}(A)\proves F$ in
+$\mathsf{G}_{\mathrm d}$, then $\Pi;\Gamma\proves F$ in
+$\mathsf{G}_{\mathrm d}$.
+\end{corollary}
+
+\begin{proof}
+By induction on the derivation of $F$.  A \rulename{Use} of
+$\mathsf{a}(A)$ is replaced by the derivation of $A$, moved to the scope and
+context of that leaf by \cref{wit:thm:weakening}.  Deleting a clause leaves
+the scope unchanged, so the introductions of the receiving derivation keep
+their selections.
+\end{proof}
+
+\begin{theorem}[The introduction with a naming exception is complete]
+\label{wit:thm:gd}
+For every scope $\Pi$, canonical clause context $\Gamma$ and canonical
+formula $A$,
+\[
+ \Pi;\Gamma\proves_{\mathsf{G}_{\mathrm d}}A
+ \quad\Longleftrightarrow\quad
+ \Pi;\Gamma\proves_{\mathsf{G}}A .
+\]
+\end{theorem}
+
+\begin{proof}
+From left to right the selected witness is a witness of \rulename{Intro} in
+$\mathsf{G}$.  For the converse induct on the derivation in $\mathsf{G}$.
+At an \rulename{Intro} whose matrix is a naming matrix $\mathrm{Nm}_r$,
+discard the supplied witness and the premise and use
+\cref{wit:lem:gd-name}.  At any other \rulename{Intro}, with the witness
+$t$, translate the premise by the induction hypothesis, derive
+$\D{x}{y}\mathrm{Nm}_t$ and open it at a fresh $b$.  In the context with the
+opened name and the assumption $B(b,\eta_B(z))$, \rulename{Tr} along $b=t$
+gives $B(t,\eta_B(z))$.  \Cref{wit:thm:weakening,wit:cor:gd-cut} insert the
+translated premise and give $B(t,\Suc z)$, and \rulename{Tr} along $t=b$
+gives $B(b,\Suc z)$.  The newest parameter of the scope is $b$ and $B$ is
+not a naming matrix, so the rule selects $b$.  Close the introduction and
+the opening of the name.
+\end{proof}
+
+\begin{remark}[Why the qualifications matter]
+\label{wit:rem:gd-qualifications}
+The simulation changes the witness from $t$ to $b$ and must not change the
+assumption of the premise.  In $\mathsf{G}$ the mode depends on the root of
+the matrix only.  A rule that selects progress exactly when the witness is
+the literal $0$ does not fit this argument as it stands: at $t=0$ it has the
+assumption $B(0,z)$ and at $b$ the assumption $B(b,0)$; the calculus
+$\mathsf{R}$ of \cref{wit:sec:R} is treated by recovering the two modes
+separately.  The diagonal selection of \cref{wit:sec:diagonal} is
+independent of the witness as well.  The recognition of a naming matrix is
+a fixed syntactic match.  Replacing it by the condition that some instance
+of the matrix names the witness would need additional data or a search, and
+a rule about a provable naming instance would reintroduce a premise.  The
+proof uses transport in arbitrary canonical formulas: the donor of the
+restricted cut converts $B(e,\eta)$, which may be compound.  Through the
+comparison, substitution is admissible in $\mathsf{G}_{\mathrm d}$ as a
+transformation of derivable judgments; a certificate is not claimed to
+remain valid after a substitution.
+\end{remark}
+
+\subsection{Uniform introduction: the stable fragment}
+
+In $\mathsf{G}_{\nu}$ the name $\D{x}{y}\mathrm{Nm}_r$ is no longer
+immediate, and the names are generated as in \cref{wit:sec:packet}.  The
+guarded calculus has no rule for equation induction, so the predecessor has
+to be obtained first, in a part of the calculus that is insensitive to the
+selected witness.
+
+\begin{definition}
+\label{wit:def:guarded-stable}
+An \rulename{Intro} of $\mathsf{G}_{\nu}$ with the matrix $B(x,y)$ is
+\emph{dummy} if $x$ is not free in $B$; a derivation is \emph{stable} if all
+its introductions are dummy.
+\end{definition}
+
+\begin{lemma}[Stability]
+\label{wit:lem:guarded-stable}
+Stable derivations of $\mathsf{G}_{\nu}$ are closed under the substitution
+of terms over a scope $\Pi'$ for the parameters, with any clause context
+over $\Pi'$ that contains the substituted clauses, and under the cut of an
+assumption by a stable derivation.
+\end{lemma}
+
+\begin{proof}
+As \cref{wit:lem:stable}.  The premise of a dummy introduction does not
+depend on the witness; a substitution does not change whether the matrix is
+an equation, and it preserves the shape \eqref{wit:eq:guard}.
+\end{proof}
+
+For an equation $E$ let the \emph{padding} be
+$L(E)\defeq\D{r}{v}\gamma_v(E)$ with $r,v$ not free in $E$; it is canonical.
+For equations $U\equiv(s=t)$ and $V\equiv(p=q)$ let
+\[
+ U\Rightarrow_{g}V\defeq\D{r}{w}L\bigl(\sel(w,s,p)=\sel(w,t,q)\bigr),
+\]
+a canonical formula with a compound matrix and an unused coordinate $r$.
+
+\begin{lemma}[Padding, implication and cases without names]
+\label{wit:lem:guarded-tools}
+The following hold for stable derivations of $\mathsf{G}_{\nu}$, in every
+scope and context.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $E$ and $L(E)$ are interderivable.
+\item If $\Pi;\Gamma,\mathsf{a}(U)\proves V$, then
+ $\Pi;\Gamma\proves U\Rightarrow_{g}V$; and $U\Rightarrow_{g}V$ together
+ with $U$ gives $V$.
+\item If $\Pi;\Gamma\proves F(0)$ and $\Pi,z;\Gamma\proves F(\Suc z)$,
+ then $\Pi;\Gamma\proves F(t)$ for every term $t$; here $F(y)$ is a
+ compound formula or an equation.
+\item If $E$ is an equation and $t$ a term over $\Pi$, and
+ $\Pi;\Gamma,\mathsf{a}(t=0)\proves E$ and
+ $\Pi,z;\ \Gamma,\mathsf{a}(t=\Suc z)\proves E$, then
+ $\Pi;\Gamma\proves E$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) From $E$: introduce $L(E)$.  The matrix $\gamma_v(E)$ is an equation,
+so the premise asks for $\gamma_{\Suc z}(E)$ from $\gamma_z(E)$; it follows
+from $E$ by \rulename{IS} and \rulename{Tr}, and the assumption is unused.
+From $L(E)$: open it at a fresh $b$; the antecedent $\gamma_0(E)$ of the
+clause holds by \rulename{I0}, \rulename{Use} at $1$ gives $\gamma_1(E)$,
+and \rulename{IS} gives $E$, which does not contain $b$.
+
+(ii) Write $\mathrm{row}_w$ for $\sel(w,s,p)=\sel(w,t,q)$.  The matrix is
+compound, so the introduction is by cases and asks for
+$L(\mathrm{row}_{\Suc z})$ from $L(\mathrm{row}_0)$.  By (i) and
+\rulename{I0} the assumption gives $U$; the cut of the given derivation
+gives $V$; \rulename{IS} gives $\mathrm{row}_{\Suc z}$, and (i) pads it.
+For the elimination open the formula at a fresh $b$, derive
+$L(\mathrm{row}_0)$ from $U$ by \rulename{I0} and (i), use the clause at
+$1$, and unpad and compute to obtain $V$.
+
+(iii) For a compound $F$, introduce $\D{r}{y}F(y)$ with $r$ unused; it is
+by cases, and its premise is the given derivation of $F(\Suc z)$ weakened by
+the assumption $F(0)$.  Open it at a fresh $b$ and use the clause
+$[F(0);\,y.F(y)]$ at $t$, the antecedent being the given derivation moved to
+the scope $\Pi,b$ by \cref{wit:lem:guarded-stable}.  For an equation $E(y)$
+apply this to $L(E(y))$ and use (i).
+
+(iv) Let $F(y)$ be $(t=y)\Rightarrow_{g}E$.  By (ii) the hypotheses give
+$F(0)$ and $F(\Suc z)$, by (iii) $F(t)$, and by (ii) with the reflexivity
+$t=t$ the equation $E$.
+\end{proof}
+
+\begin{lemma}[Equation induction in the stable fragment]
+\label{wit:lem:guarded-ei}
+Let $E(y)\equiv(s(y)=t(y))$.  If $\Pi;\Gamma\proves E(0)$ and
+$\Pi,z;\ \Gamma,\mathsf{a}(E(z))\proves E(\Suc z)$ have stable derivations
+in $\mathsf{G}_{\nu}$, then so has $\Pi;\Gamma\proves E(a)$ for every term
+$a$ over $\Pi$.  Consequently every derivation of the equational fragment
+$\mathcal E$ is translated into a stable derivation of $\mathsf{G}_{\nu}$,
+and for all terms $r,s$
+\[
+ \Pi;\Gamma\proves\operatorname{pred}(\Suc r)=r,
+ \qquad
+ \Pi;\ \Gamma,\mathsf{a}(\Suc r=\Suc s)\proves r=s
+\]
+by stable derivations.
+\end{lemma}
+
+\begin{proof}
+Let $G(y)\defeq\gamma_y(E(y))$, an equation of the shape
+\eqref{wit:eq:guard}.  First, $E(z)$ is derivable from $G(z)$: by
+\cref{wit:lem:guarded-tools}(iv) with the term $z$, in the branch $z=0$
+transport the base $E(0)$ along $0=z$, and in the branch $z=\Suc w$
+transport $G(z)$ to $G(\Suc w)$, compute the two gates to obtain
+$E(\Suc w)$, and transport back.  The step then gives $E(\Suc z)$, by
+\cref{wit:lem:guarded-stable}, and computation gives $G(\Suc z)$.  This is
+the premise of the introduction of $\D{r}{y}G(y)$ with $r$ unused, which is
+by progress.  Open it at a fresh $b$; the antecedent $G(0)$ of its clause
+holds by computation, and \rulename{Use} at $a$ gives $G(a)$.  A second
+application of \cref{wit:lem:guarded-tools}(iv), with the term $a$ and with
+$E(0)$ in the branch $a=0$, gives $E(a)$.  All introductions are dummy.
+
+For the translation of $\mathcal E$, an assumption $E$ is the clause
+$\mathsf{a}(E)$, the equality rules are instances of \rulename{Tr} and
+reflexivity, and induction is the first statement; the instances of earlier
+lemmas that an equational derivation uses are available by
+\cref{wit:lem:guarded-stable}.  The last statement follows from
+\cref{base:thm:pred}.
+\end{proof}
+
+\subsection{Uniform introduction: names and completeness}
+
+Hereditary derivability $\Pi;\Gamma\Vdash A$ is defined for
+$\mathsf{G}_{\nu}$ as in \cref{wit:def:hereditary}, with clause contexts.
+The computation axioms, \rulename{Use} and \rulename{Tr} hold with
+$\Vdash$; \rulename{Open} holds with $\Vdash$ by allocating its parameter in
+each receiving scope; a stable derivation is a member of a hereditary
+family; and, as in \cref{wit:lem:uniform-cut},
+\begin{equation}
+ \Pi;\Gamma\Vdash A\ \text{ and }\ \Pi;\Gamma,\mathsf{a}(A)\proves B
+ \quad\text{imply}\quad\Pi;\Gamma\proves B .
+ \label{wit:eq:guarded-cut}
+\end{equation}
+In the proof of \eqref{wit:eq:guarded-cut} the donor is generated at each
+\rulename{Use} of the removed clause in the scope and context of that leaf,
+the other clause addresses are adjusted, and every other node keeps its
+scope and therefore its selected witness.  The hypotheses of the donor must
+remain available after the deletion.
+
+The packet $X(y)$ of \cref{wit:def:packet} is canonical: both sides of its
+matrix are iterators with the counter $v$ and the seed $0$.
+
+\begin{lemma}[The packet in the guarded calculus]
+\label{wit:lem:guarded-packet}
+In $\mathsf{G}_{\nu}$, for every scope $\Pi$, clause context $\Gamma$ and
+term $t$ over $\Pi$: $\Pi;\Gamma\proves\D{a}{r}X(r)$ with $a$ unused, and
+$\Pi;\Gamma\proves X(\Suc t)$.
+\end{lemma}
+
+\begin{proof}
+$X(0)$ is introduced at whatever witness the scope selects.  Its matrix is
+an equation, the introduction is by progress, and the instance asked for
+computes to $0=0$ whatever the witness and the assumption are.  The matrix
+of $\D{a}{r}X(r)$ is compound, so its introduction is by cases and asks for
+$X(\Suc z)$ with a new eigenvariable $z$.  In that branch the scope ends in
+$z$, so the introduction of $X(\Suc z)$ selects $z$, and the instance asked
+for computes to $\Suc z=\Suc z$.  The assumption $X(0)$ of the outer
+introduction is unused.  Open $\D{a}{r}X(r)$ at a fresh parameter; its
+clause is $[X(0);\,r.X(r)]$.  Derive $X(0)$ again in the extended scope and
+use the clause at $\Suc t$.  The result does not contain the opened
+parameter, and \rulename{Open} discharges it.
+\end{proof}
+
+The lemma is about the whole construction, which allocates $z$ anew in each
+receiving scope.  A separate derivation of $X(\Suc z)$ is not claimed to
+remain a derivation after $z$ ceases to be the newest parameter.
+
+\begin{lemma}[The alias in the guarded calculus]
+\label{wit:lem:guarded-alias}
+If a clause context over a scope contains
+$[M_{\Suc t}(b,0);\,v.M_{\Suc t}(b,v)]$, then $b=t$ is hereditarily
+derivable from it.
+\end{lemma}
+
+\begin{proof}
+The antecedent holds by computation.  \rulename{Use} at $1$ and the
+successor computations give $\Suc b=\Suc t$, and
+\cref{wit:lem:guarded-ei} gives $b=t$.  The derivation is stable.
+\end{proof}
+
+\begin{theorem}[Uniform introduction on raw terms]
+\label{wit:thm:guarded-uniform}
+For every scope $\Pi$, canonical clause context $\Gamma$ and canonical
+formula $A$,
+\[
+ \Pi;\Gamma\proves_{\mathsf{G}_{\nu}}A
+ \quad\Longleftrightarrow\quad
+ \Pi;\Gamma\proves_{\mathsf{G}}A
+ \quad\Longleftrightarrow\quad
+ \Pi;\Gamma\proves_{\mathsf{G}_{\mathrm d}}A .
+\]
+The naming exception of $\mathsf{G}_{\mathrm d}$ is not needed.
+\end{theorem}
+
+\begin{proof}
+The second equivalence is \cref{wit:thm:gd}, and
+$\mathsf{G}_{\nu}\subseteq\mathsf{G}$ is immediate.  For
+$\mathsf{G}\subseteq\mathsf{G}_{\nu}$ it is shown by induction on a
+derivation of $\mathsf{G}$ that $\Pi;\Gamma\Vdash A$.  The computation
+axioms, \rulename{Use} and \rulename{Tr} are copied with their terms
+renamed.  For \rulename{Open}, allocate a parameter in the receiving scope
+and apply the induction hypothesis to the branch with the extended map.
+
+Consider an \rulename{Intro} at a term $t$ with the matrix $B$.  The
+induction hypothesis is
+$\Pi,z;\ \Gamma,\mathsf{a}(B(t,\eta_B(z)))\Vdash B(t,\Suc z)$.  Let
+$(\Pi',\rho,\Delta)$ be given and write $t'$, $B'$ for the images.  Derive
+$X(\Suc t')$ by \cref{wit:lem:guarded-packet} and open it at a fresh $b$.
+Introduce $\D{x}{y}B'$ in the scope $\Pi',b$; the rule selects $b$ and then
+allocates its eigenvariable $z'$.  Let $\Theta$ be the scope $\Pi',b,z'$
+with the context consisting of $\Delta$, the clause of the packet and
+$\mathsf{a}(B'(b,\eta_{B'}(z')))$.  By \cref{wit:lem:guarded-alias},
+$\Theta\Vdash b=t'$, and \rulename{Tr} gives
+$\Theta\Vdash B'(t',\eta_{B'}(z'))$.  The induction hypothesis at the map
+$\rho[z\mapsto z']$, with \eqref{wit:eq:guarded-cut}, gives
+$\Theta\Vdash B'(t',\Suc z')$, and \rulename{Tr} along $t'=b$ gives
+$\Theta\Vdash B'(b,\Suc z')$.  Its member at the identity is the premise of
+the introduction.  The conclusion does not contain $b$, and \rulename{Open}
+discharges it.  The two modes agree because $\eta_B$ depends on the root of
+the matrix, which neither $\rho$ nor the change of witness alters.  All uses
+of the induction hypothesis are for proper subderivations, and the packet
+and the alias were constructed before.
+\end{proof}
+
+\begin{corollary}[The literal naming theorem is derived]
+\label{wit:cor:guarded-name}
+For every term $t$, the formula $\D{x}{y}\mathrm{Nm}_t$ has a hereditary
+derivation in $\mathsf{G}_{\nu}$, without a selection by pattern.
+\end{corollary}
+
+\begin{proof}
+Derive $X(\Suc t)$, open it at a fresh $b$ and extract $b=t$.  Introduce
+$\D{x}{y}\mathrm{Nm}_t$; the selected witness is $b$.  In the premise the
+alias and the selector computations give $\mathrm{Nm}_t(b,\Suc z)$, the
+progress assumption being unused.  Discharge the packet.
+\end{proof}
+
+By \cref{wit:thm:guarded-uniform} and the inherited comparison of
+$\mathsf{G}$ with $\Nat$, the ordinary realizations of $\mathsf{G}_{\nu}$
+and of $\mathsf{G}_{\mathrm d}$ are bi-interpretable and equiconsistent with
+$\iPRA$, with whole domains, actual equality and the identity graph in both
+numerical composites; weakening, renaming, cut and substitution are
+admissible in $\mathsf{G}_{\nu}$ as consequences of the theorem.
+
+\begin{remark}[Versions]
+\label{wit:rem:guarded-versions}
+The stable fragment and the route to equation induction through
+\cref{wit:lem:guarded-tools}(iv) are those of the guarded companion of
+\pkg{newest\_parameter}, which states the translation with persistent
+builders and an arbitrary substitution, as in \cref{wit:rem:families}.
+\pkg{uniform\_raw} proves instead, by induction on a derivation of
+$\mathcal E$ and for all substitutions $\sigma$ at once, that
+$\Gamma\sigma\Vdash E\sigma$.  At an induction with the invariant $E(y)$ it
+regenerates the step at $y=0$ and at $y=\Suc w$ from the source
+derivation, proves $\Phi(y)\defeq G(y)\Rightarrow_{g}E(\Suc y)$ at $0$ and
+at $\Suc w$, obtains $\Phi(z)$ by cases, and concludes as above; no
+derivation of the target is substituted into.  A technical note of
+\pkg{uniform\_raw} also observes that, once the names are available, the
+proof of \cref{wit:thm:weakening} applies to $\mathsf{G}_{\nu}$ with no
+case for a naming matrix, which gives weakening and then cut directly.
+The checkers of \pkg{uniform\_raw} and of \pkg{newest\_parameter} for
+$\mathsf{G}_{\nu}$ are obtained from the checker of
+$\mathsf{G}_{\mathrm d}$ by deleting the function that selects the witness
+(\cref{wit:sec:sizes}).
+\end{remark}
+
+% ---------------------------------------------------------------------
+\section{A recursor whose predecessor computes}
+\label{wit:sec:recursor}
+
+This section draws on \pkg{parameter\_intro}; the normalization lemma and the
+extensionality lemma are also in \pkg{conditional\_copy}.
+
+On iterator terms no term $p$ satisfies $p(\Suc z)=z$ by computation, and the
+names of \cref{wit:sec:packet} need the derived predecessor and an equality
+rule.  With a recursor whose body receives the counter, and with terms taken
+in normal form, the predecessor computes, and the name of every term is
+obtained with clause specialization alone.  This makes the restricted
+introduction available in a calculus of three rule families in which
+equality transport is itself part of the discharge rule and is not available
+beforehand.
+
+\subsection{Terms in normal form}
+
+Raw terms are variables, $0$ and $R(n,a;\,i,u.\,h)$, where $i$ and $u$ are
+bound in $h$ only.  The successor is the abbreviation
+$\Suc a\defeq R(0,a;\,i,u.\,0)$.  The computation equations are
+\begin{equation}
+ R(0,a;\,i,u.\,h)=\Suc a,\qquad
+ R(\Suc n,a;\,i,u.\,h)=h[n/i,\ R(n,a;\,i,u.\,h)/u],
+ \label{wit:eq:R}
+\end{equation}
+with simultaneous substitution on the right.  To define normal forms without
+the circular rewrite of $R(0,a;\,i,u.\,0)$ to itself, take $0$, $\Suc$ and
+$R$ as distinct raw constructors, orient the two equations from left to
+right, allow reduction in every subterm including bodies, and print the
+normal constructor $\Suc a$ as $R(0,a;\,i,u.\,0)$.  The \emph{public terms}
+are the normal forms, and every substitution performed by a rule is followed
+by normalization, written $\nf$.  Computation is thus part of the syntax, and
+the normalizer is part of a checker and of its measured size.  The binding
+notation is a staged first-order language as in \cref{base:sec:terms}:
+variables range over numbers, and there is no term that evaluates
+descriptions.
+
+\begin{lemma}[Normalization]
+\label{wit:lem:nf}
+Every well-sorted term has a unique normal form.  Reduction introduces no
+free variable.  For every substitution $\sigma$,
+\[
+ \nf(t[\sigma])=\nf\bigl(\nf(t)[\nf\circ\sigma]\bigr),
+\]
+and the same holds for formulas and for templates with one distinguished
+variable.
+\end{lemma}
+
+\begin{proof}
+Embed the raw terms into the terms of ground type of the recursor over the
+natural numbers, with the starting value $\Suc a$ and the step
+$(i,u)\mapsto h(i,u)$; no variable is applied as a function.  The
+reducibility argument specializes to this fragment.  A recursor with
+computable arguments and a computable body is computable, by induction on
+the computable counter and its reducts: at zero it reduces to the computable
+starting value; at a successor the recursive call is computable at the
+predecessor and the computable body preserves computability; at a neutral
+counter the recursor is neutral and its reducts are those of computable
+proper subterms.  Induction on a term, with computable terms substituted for
+its variables, gives strong normalization; applying the argument under fresh
+variables covers reductions inside bodies.  The two root rules are disjoint
+and left-linear, and parallel reduction commutes with substitution, so
+nested reductions and duplicated reducts join; this gives confluence, and
+with strong normalization the uniqueness of normal forms.  A substitution
+instance of a conversion is a conversion, and normalizing its two sides
+gives the displayed law.  The right sides of the rules contain only
+variables of their left sides.
+\end{proof}
+
+The lemma is a statement about finite terms made from outside.  It gives no
+primitive recursive bound, uniform in the term, on the length of
+normalization.
+
+Three abbreviations have useful normal forms.  Put
+\begin{align*}
+ P(n)&\defeq R(n,0;\,i,u.\,i),
+ & P(0)&\equiv 1, & P(\Suc n)&\equiv n,\\
+ C(n,a,b)&\defeq P\bigl(R(n,a;\,i,u.\,\Suc b)\bigr),
+ & C(0,a,b)&\equiv a, & C(\Suc n,a,b)&\equiv b,
+\end{align*}
+and, with fresh $j,v$ and simultaneous substitution,
+\begin{gather*}
+ J(n,a;\,i,u.\,h)\defeq
+   P\bigl(R(n,a;\,j,v.\,\Suc(h[j/i,P(v)/u]))\bigr),\\
+ J(0,a;\,i,u.\,h)\equiv a,\qquad
+ J(\Suc n,a;\,i,u.\,h)\equiv h[n/i,\ J(n,a;\,i,u.\,h)/u].
+\end{gather*}
+Here $\equiv$ is literal identity of normal forms.  $P$ is a left inverse of
+the successor whose value at $0$ is $1$; a predecessor in the usual sense is
+$p(n)\defeq C(n,0,P(n))$, with $p(0)\equiv 0$ and $p(\Suc n)\equiv n$.  The
+iterator of \cref{base:sec:terms} is $J$ with the counter coordinate unused.
+In this section and the next, $C$ takes the place of $\sel$ in the gate and
+in the naming matrix of \cref{wit:def:naming}.
+
+\subsection{Three rule families}
+
+Formulas are equations and $\D{x}{y}B$.  A clause is $[\ ;\,y.B]$ or
+$[A;\,y.B]$ with $y$ not free in $A$; the first reads $\forall y\,B$.  Every
+derivation starts from the one clause
+\[
+ \mathsf{Rf}\defeq[\ ;\,y.\,y=y],
+\]
+and an assumption $A$ is the clause $[\ ;\,v.A]$.  For a matrix $B$ and a
+term $r$ write $B_r(y)$ for $\nf(B(r,y))$.  The calculus
+$\mathsf{P}_{\nu}$ has three rule families.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \rulename{Use}: for a clause of the context and a term $t$ over
+ $\Pi$, derive the antecedent of the clause, if it has one, and conclude
+ the normalized body at $t$.
+\item \rulename{Intro}: with $\ell=\nu(\Pi)$ and a fresh $z$,
+\[
+ \infrule{\Pi,z;\ \Gamma,[\ ;\,v.B_\ell(\eta)]\proves B_\ell(\Suc z)}
+         {\Pi;\Gamma\proves\D{x}{y}B}
+ \qquad
+ \eta=\begin{cases}
+  z,&\text{$B_\ell(0)$ is literally an equation $r=r$,}\\
+  0,&\text{otherwise.}
+ \end{cases}
+\]
+ The instruction supplies no witness, no mode and no proof of the instance
+ at $0$.
+\item \rulename{Discharge}: with a fresh $b$, the clause
+ $\mathcal{C}_B(b)\defeq[\nf(B(b,0));\,y.\nf(B(b,y))]$ and a template
+ $F(v)$,
+\[
+ \infrule{\Pi;\Gamma\proves\D{x}{y}B\qquad
+          \Pi,b;\ \Gamma,\mathcal{C}_B(b)\proves s=t\qquad
+          \Pi,b;\ \Gamma,\mathcal{C}_B(b)\proves\nf(F(s))}
+         {\Pi;\Gamma\proves\nf(F(t))}
+\]
+ provided $\nf(F(t))$ does not contain $b$.  The terms $s$, $t$ and the
+ template may contain $b$.
+\end{enumerate}
+There are no other logical, equality, arithmetic or structural rules; the
+computations \eqref{wit:eq:R} belong to the syntax.  The designated
+contradiction is $0=1$.
+
+\begin{proposition}[Soundness]
+\label{wit:prop:P-sound}
+Every rule of $\mathsf{P}_{\nu}$ is valid under the ordinary reading in
+intuitionistic logic with equality, the equations \eqref{wit:eq:R},
+numerical coverage, $0=1\to\bot$ and induction for literal equations.
+\end{proposition}
+
+\begin{proof}
+\rulename{Use} is the application of a clause.  \rulename{Discharge} is the
+elimination of the existential quantifier followed by the substitution of
+equals in the branch; the condition on $\nf(F(t))$ is the eigenvariable
+condition, and the rule is sound also when $t$ contains $b$.  For
+\rulename{Intro}: if the instance at $0$ is not reflexive, the mode is by
+cases, and coverage combines the retained instance at $0$ with the derived
+instance at successors.  If it is reflexive, the matrix is a literal
+equation, because normalization does not remove a binder of a formula; the
+instance at $0$ is provable and induction for that equation gives all
+instances.  In both cases $\ell$ is a witness of the existential
+quantifier.  No induction on a quantified formula is used.
+\end{proof}
+
+A premise by cases can be used at any witness.  If the rule selects progress
+instead, the discarded assumption at $0$ is literally reflexive: derive it
+by \rulename{Use} of $\mathsf{Rf}$ and ignore the progress assumption.  In
+the constructions below this is an operation on \emph{builders}, that is, on
+constructions that can be carried out again after fresh parameters and
+clauses have been adjoined; it is not a weakening principle for derivation
+trees.  A builder is called \emph{persistent}.
+
+\subsection{Constructions that precede equality}
+
+Write $q_yA$ for $\D{w}{y}A$ with $w$ not free in $A$.  The witness of its
+introduction is unused, so its instances do not depend on which parameter is
+the newest.  The elimination of $\D{x}{y}B$ without substitution is
+\rulename{Discharge} with $s=t=0$, the equation $0=0$ by \rulename{Use} of
+$\mathsf{Rf}$, and the constant template whose value is the conclusion.
+Hence the introduction by cases and the elimination of $q$ are available
+from the three rules, with the repair of the previous paragraph when the
+instance at $0$ is reflexive; this gives numerical cases for all formulas,
+with the branches constructed in their own scopes.  Neither equality
+transport nor equation induction is needed for these constructions.
+
+For a formula $A$ let $G_vA$ be $A$ with each side $s$ of its final equation
+replaced by $C(v,0,s)$, the binders being kept.  Then
+$G_{\Suc z}A\equiv A$, and $G_0A$ is a tower of binders over $0=0$, which is
+derivable in every scope by \rulename{Intro} and reflexivity, its witnesses
+being unused.  For persistent premises the padding $L(A)\defeq q_yG_yA$ is
+interderivable with $A$: one direction ignores its assumption at $0$ and
+uses $A$, the other uses the closure at $1$ with the provable instance at
+$0$.  Padding two formulas to the same number of binders permits their
+selector, sidewise by $C(v,\cdot,\cdot)$, and the implication
+$q_y\operatorname{Sel}(y,A,B)$ with its introduction and elimination.
+Every introduction in these constructions has an unused witness, except
+those of the towers over $0=0$, whose result does not depend on the witness.
+
+\begin{lemma}[A name without equality]
+\label{wit:lem:name-recursor}
+For every term $t$ over $\Pi$ there is a persistent derivation in
+$\mathsf{P}_{\nu}$ of
+\[
+ \operatorname{Name}(t)\defeq\D{x}{u}\bigl(C(u,0,x)=C(u,0,t)\bigr),
+\]
+and the clause obtained by opening $\operatorname{Name}(t)$ at a fresh $b$
+gives $b=t$ by one \rulename{Use}.
+\end{lemma}
+
+\begin{proof}
+The opened clause is $[0=0;\,u.\,C(u,0,b)=C(u,0,t)]$; \rulename{Use} at $1$,
+with the antecedent from $\mathsf{Rf}$, gives $b=t$.  For the derivation let
+\[
+ F(y)\defeq\D{x}{u}\Bigl(C\bigl(y,0,C(u,0,x)\bigr)
+   =C\bigl(y,0,C(u,0,P(y))\bigr)\Bigr).
+\]
+$F(0)$ normalizes to $\D{x}{u}(0=0)$ and is introduced at whatever parameter
+is the newest.  In the branch for $F(\Suc z)$ the parameter $z$ is the
+newest, and $F(\Suc z)$ normalizes to
+$\D{x}{u}(C(u,0,x)=C(u,0,P(\Suc z)))$, that is, to
+$\operatorname{Name}(z)$, because $P(\Suc z)\equiv z$.  Its introduction
+selects the witness $z$; the instance at $0$ is $0=0$, so the mode is by
+progress, and the instance asked for is $z=z$, by \rulename{Use} of
+$\mathsf{Rf}$.  Numerical cases give $q_yF(y)$, and its elimination at the
+term $\Suc t$ gives $\nf(F(\Suc t))$, which is literally
+$\operatorname{Name}(t)$, since $C(\Suc t,0,b)\equiv b$ and
+$P(\Suc t)\equiv t$.  The derivation is constructed anew in each scope.
+\end{proof}
+
+The proof uses no arbitrary witness, no equality substitution and no
+predecessor theorem.  The shift by one is necessary: the value $P(0)=1$ is
+erased by the outer selector.
+
+\subsection{Completeness}
+
+The source of the translation is the diagonal calculus $\Nat_{\mathrm{diag}}$ of
+\cref{wit:sec:diagonal}, over the terms of \cref{base:sec:terms} extended by
+the fixed descriptions $R$ with the equations \eqref{wit:eq:R}; it is stated
+with transport in formula templates, which is a derived rule of it.  The
+iterator is translated to $J$ with an unused counter coordinate, equations
+and binders are translated compositionally, $\Q{y}B$ is translated to
+$q_yB$, and all terms are normalized.  A diagonal matrix has the normalized
+instance $0=0$ at $y=0$, whatever its witness and its bodies are.
+
+\begin{theorem}[Completeness of the three families]
+\label{wit:thm:recursor}
+Let $\Gamma\proves A$ be derivable in $\Nat_{\mathrm{diag}}$ over the extended
+vocabulary.  In every scope that contains the parameters, and from the
+clauses $[\ ;\,v.B^{*}]$ for $B\in\Gamma$, $\mathsf{P}_{\nu}$ derives the
+normalized translation $A^{*}$.  In particular closed theorems and the
+contradiction are preserved.
+\end{theorem}
+
+\begin{proof}
+By induction on the source derivation the following is shown: for every
+target scope and context, every assignment of target terms to the source
+parameters, and persistent builders of the translations of the source
+assumptions, there is a persistent builder of the translation of the
+conclusion.  At the root the builder of an assumption is its use.  Every
+replacement of a local source assumption made below uses only the use of a
+clause, reflexivity, and transport through the dummy major premise
+$\D{x}{y}(0=0)$, whose introduction does not depend on the selected
+witness; the builders therefore remain persistent.
+
+\emph{Computation axioms} translate to reflexivity, their two sides having
+the same normal form.  \emph{Hypotheses} invoke their builders.
+
+\emph{Elimination of $\D{}{}$.}  Translate the major premise and apply
+\rulename{Discharge} with a constant template and $0=0$.  The source
+assumption $\Q{y}B(b,y)$ of the branch is represented by the clause
+$[B(b,0);\,y.B(b,y)]$.  Turn the clause into the formula $q_yB(b,y)$ by an
+introduction with an unused witness: in its premise use the clause at
+$\Suc z$, the antecedent being the local assumption, or reflexivity if the
+rule selected progress.  This builder is persistent and realizes the
+assumption that the induction hypothesis for the branch requires.
+
+\emph{Elimination of $\Q{}$.}  Translate the major premise to $q_yB(y)$ and
+open it first.  Then apply the induction hypothesis to the derivation of
+$B(0)$ in the extended context, use the new clause at the required term, and
+close the \rulename{Discharge} with a constant template and $0=0$.  The
+premise $B(0)$ is not translated outside the opening and then moved into the
+branch.
+
+\emph{Transport.}  Open the dummy major premise $\D{x}{y}(0=0)$, apply the
+induction hypothesis to the two source premises in the extended context,
+and finish the \rulename{Discharge} with the template of the source
+inference.
+
+\emph{Introduction at a witness $t$.}  Derive $\operatorname{Name}(t)$ by
+\cref{wit:lem:name-recursor} and open it at a fresh $b$.  The branch has the
+persistent equation $b=t$, and $b$ is the newest parameter, so
+\rulename{Intro} selects $b$.  If the source introduction is by progress,
+its matrix is diagonal, its normalized instance at $0$ is $0=0$ also at $b$,
+and the target rule selects progress: transport the assumption at $b$ to the
+assumption at $t$, apply the induction hypothesis to the source premise, and
+transport the result back to $b$.  If the source introduction is by cases
+and the target rule selects cases, do the same with the assumption at $0$.
+If the target rule selects progress, the instance at $0$ at the witness $b$
+is reflexive: derive it by \rulename{Use} of $\mathsf{Rf}$, transport it to
+the instance at $0$ at the witness $t$, apply the induction hypothesis, and
+transport back; the progress assumption is unused.  For each transport back,
+the dummy major premise is opened before the induction hypothesis is applied
+to the source premise, so that the recursive call is made in the extended
+context; the builders of its assumptions are persistent there.  The
+introduction yields $\D{x}{y}B$, which does not contain $b$, and the opening
+of the name is closed with a constant template and $0=0$.
+
+Every recursive call is for a proper subderivation of the source, and no
+completed derivation of the target is moved into a new scope.
+\end{proof}
+
+The translation covers formulas that contain $R$ essentially and not only
+the image of the iterator terms: the logical comparison and the diagonal
+argument treat the two sides of an equation as arbitrary term templates, and
+the additional computation axioms translate to reflexivity.
+
+\subsection{The ordinary theory and the bridge}
+
+Let $T_R$ be intuitionistic first-order logic with equality over the fixed
+descriptions $R$, with the equations \eqref{wit:eq:R}, numerical coverage,
+$0=1\to\bot$ and contextual induction for literal equations.  The
+implication $0=1\to\bot$ is stated explicitly: the equation $0=1$ is the
+native contradiction and is not by itself falsity in a structure with one
+element.
+
+\begin{lemma}[Extensionality for a fixed body]
+\label{wit:lem:ext}
+If $h(i,u)=k(i,u)$ is derivable in $T_R$ uniformly in $i$ and $u$, then
+$R(n,a;\,i,u.\,h)=R(n,a;\,i,u.\,k)$ is derivable for every $n$, with all
+other parameters fixed.
+\end{lemma}
+
+\begin{proof}
+By induction for the displayed equation.  At $0$ both sides are $\Suc a$.
+At a successor the computation exposes the two bodies; the induction
+equation replaces the previous value in one of them, and the given identity
+turns $h$ into $k$.
+\end{proof}
+
+Consequently every finite reduction of a term $t$ to $\nf(t)$, also inside a
+body, yields a derivation of $t=\nf(t)$ in $T_R$, and by induction on a
+formula its raw and its normalized readings are equivalent.  No truth or
+evaluation predicate is used.
+
+\begin{theorem}[Bridge for the recursor calculus]
+\label{wit:thm:recursor-bi}
+$\mathsf{P}_{\nu}$ is sound and complete for $T_R$, and $T_R$ is
+bi-interpretable with $\iPRA$: both domains are the whole numerical sort,
+equality is equality, both numerical comparison maps have the graph $x=y$,
+and every formula is provably equivalent to its double translation.  In
+particular $\mathsf{P}_{\nu}$ derives $0=1$ if and only if $\iPRA$ proves
+$\bot$.
+\end{theorem}
+
+\begin{proof}
+Soundness is \cref{wit:prop:P-sound} with \cref{wit:lem:ext}.  Completeness
+is \cref{wit:thm:recursor} together with the equivalence of
+$\Nat_{\mathrm{diag}}$ with $\Nat$ and the presentation of the ordinary theory by
+$\Nat$ (\cref{base:thm:bridge}), which are parametric in the additional
+fixed descriptions.
+
+A description $R(n,a;\,i,u.\,h)$ is interpreted in $\iPRA$ by the primitive
+recursion with the base $\Suc a$ and the step $h$, after its proper
+subdescriptions.  Conversely
+\begin{align*}
+ 0^{*}&=0,\qquad \Suc^{*}(x)=R(0,x;\,i,u.\,0),\qquad
+ \pi_j^{*}(\vec x)=x_j,\\
+ (f\circ\vec g)^{*}(\vec x)&=f^{*}(g_1^{*}(\vec x),\dots,g_m^{*}(\vec x)),\\
+ \operatorname{rec}(g,h)^{*}(n,\vec x)&=
+   J\bigl(n,g^{*}(\vec x);\,i,u.\,h^{*}(i,u,\vec x)\bigr).
+\end{align*}
+No pairing is needed, because the body receives the counter.  The compiled
+equations hold by the normal forms of $J$.  Applying $P$ to $\Suc x=\Suc y$
+gives the injectivity of the successor; applying $C(\cdot,0,1)$ to
+$\Suc x=0$ gives $1=0$, hence the separation axiom.  The iterator $J$
+carries the reflection of equality of \cref{base:thm:reflect}, so every
+quantifier-free formula is equivalent to the vanishing of a term and its
+induction follows from induction for an equation (see also
+\cref{wit:lem:reflection}).  For two descriptions with the same base and
+provably identical steps, induction for the equation of their values proves
+that they agree at every counter; by induction on a description from
+outside, its double translation has the same values as the original, for
+all arguments.  The formula round trips follow by induction on formulas
+from the reading of $\D{}{}$ and the logical macros
+(\cref{wit:sec:liberal}).  Falsity corresponds to $0=1$, and derivations of
+a contradiction translate in both directions.
+\end{proof}
+
+\subsection{Checking a template through its two instances}
+
+In \rulename{Discharge} the checker receives a template $F(v)$, terms $s,t$
+and derivations of $s=t$ and $\nf(F(s))$, and its result $\nf(F(t))$ must
+equal the conclusion, which is checked.  A separate check that $F$ is
+well-scoped and normal is redundant.
+
+\begin{lemma}[Completion of an accepted template]
+\label{wit:lem:template}
+Let $F$ be a finite expression such that the substitution of the checked
+terms $s$ and $t$ for its distinguished variable, followed by
+normalization, succeeds, and such that the two results are well-scoped
+formulas in the local scope.  Then there is a well-scoped template $F'(v)$
+in normal form with
+\[
+ \nf(F'(s))=\nf(F(s)),\qquad\nf(F'(t))=\nf(F(t))
+\]
+literally.
+\end{lemma}
+
+\begin{proof}
+\emph{Sorts.}  The traversal that substitutes and normalizes checks every
+proper child at its required sort, term or formula, before any reduction
+that erases it.  At the root it may accept an unclassified expression.  A
+root that is neither an equation, a binder nor a recursor does not reduce
+and yields no formula; a numerical root stays numerical under reduction.
+Since an instance is a formula, the root of $F$ is an equation or a binder,
+and $F$ is a sorted formula template that may contain additional numerical
+parameters and reducible subterms.
+
+\emph{Additional parameters.}  Read every parameter of $F$ outside the local
+scope, and every bound-variable index that exceeds the binders above it by
+more than the one position of the distinguished variable, as an additional
+free parameter; the reading is consistent under a binder because the excess
+is measured relative to the depth.  Let $\rho$ replace all additional
+parameters by $0$ and fix $v$, the local parameters and the bound variables.
+Neither $s$ nor $t$ contains an additional parameter.  For $r\in\{s,t\}$,
+by \cref{wit:lem:nf},
+\[
+ \nf\bigl((\rho F)[r/v]\bigr)=\nf\bigl(\rho(F[r/v])\bigr)
+ =\nf\bigl(\rho\,\nf(F[r/v])\bigr)=\nf(F[r/v]),
+\]
+the last step because the checked instance is normal and contains no
+additional parameter.  A reduction that becomes possible after an
+additional parameter is closed does not affect the argument, which uses the
+law of \cref{wit:lem:nf} and not an identity of reduction sequences.
+
+\emph{The template.}  Put $F'\defeq\nf(\rho F)$.  It is sorted, well-scoped
+and normal, and a second application of \cref{wit:lem:nf} gives the two
+identities.  The distinguished variable may occur any number of times.
+\end{proof}
+
+Replacing $F$ by $F'$ leaves the two premises and the conclusion unchanged,
+so every accepted use of the relaxed interface is an instance of
+\rulename{Discharge}, and every canonical template is still accepted.  The
+equation $s=t$ must be checked before the template is instantiated, so that
+$s$ and $t$ are known to be terms, and the instance in the branch and the
+conclusion keep their checks; the lemma does not justify omitting either.
+
+% ---------------------------------------------------------------------
+\section{Conditional copy}
+\label{wit:sec:copy}
+
+This section draws on \pkg{conditional\_copy}; the example of an unsound
+probe is from \pkg{deterministic\_introduction}.
+
+The calculus $\mathsf{P}_{\nu}$ takes no witness at its introduction and
+still takes an equation, with its derivation, and a template at its
+discharge.  Other calculi infer the substitution of a discharge from two
+instances of the opened matrix and take an arbitrary witness at their
+introduction.  The two restrictions are combined here.  The composition is
+not immediate: with an inferred discharge, equality transport is recovered
+from packets that are introduced at arbitrary witnesses, and the names of
+\cref{wit:lem:name-recursor} give an equation $b=t$, whose use would need
+the transport that is being recovered.  The combination rests on a formula
+that copies an instance of a formula to a fresh parameter without any
+equation.
+
+\subsection{Use, Close and Export}
+
+Terms, normal forms, the abbreviations $P$, $C$, $J$, formulas, clauses and
+the initial clause $\mathsf{Rf}$ are those of \cref{wit:sec:recursor}.
+Write $\top_{*}\defeq(0=0)$ and $\bot_{*}\defeq(0=1)$.  The calculus
+$\mathsf{K}$ has three rule families; all displayed instances are
+normalized.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \rulename{Use}: as in $\mathsf{P}_{\nu}$.
+\item \rulename{Close}: with $\ell=\nu(\Pi)$ and a fresh $z$,
+\[
+ \infrule{\Pi,z;\ \Gamma,[\ ;\,v.\nf(B(\ell,\eta))]\proves
+          \nf(B(\ell,\Suc z))}
+         {\Pi;\Gamma\proves\D{x}{y}B}
+ \qquad
+ \eta=\begin{cases}
+  z,&\text{$\nf(B(\ell,0))$ is literally $\top_{*}$,}\\
+  0,&\text{otherwise.}
+ \end{cases}
+\]
+ The test for $\top_{*}$ is narrower than the test for a reflexive equation
+ in $\mathsf{P}_{\nu}$ and suffices.
+\item \rulename{Export}: with a fresh $b$, put
+\[
+ B_0=\nf(B(b,0)),\qquad B_1=\nf(B(b,1)),\qquad
+ r_B=\begin{cases}
+  t,&\text{$B_0\equiv\top_{*}$ and $B_1\equiv(b=t)$,}\\
+  b,&\text{otherwise,}
+ \end{cases}
+\]
+ where $\equiv$ is literal identity, including the orientation of the
+ equation, and let $\mathcal{C}_B(b)=[B_0;\,y.\nf(B(b,y))]$.  Then
+\[
+ \infrule{\Pi;\Gamma\proves\D{x}{y}B\qquad
+          \Pi,b;\ \Gamma,\mathcal{C}_B(b)\proves F}
+         {\Pi;\Gamma\proves\nf(F[r_B/b])}
+ \qquad b\notin\FV\bigl(\nf(F[r_B/b])\bigr).
+\]
+ $F$ may contain $b$, and so may $r_B$; the substitution is one simultaneous
+ pass.  No equation, replacement term or template is supplied.
+\end{enumerate}
+Only \rulename{Use} takes a term.
+
+\begin{lemma}[Soundness]
+\label{wit:lem:k-sound}
+Every rule of $\mathsf{K}$ is valid in $T_R$ under the ordinary reading.
+\end{lemma}
+
+\begin{proof}
+\rulename{Use} and \rulename{Close} are as in \cref{wit:prop:P-sound}; if
+the instance at $0$ is $\top_{*}$, the matrix is a literal equation, since
+normalization does not remove a binder.  For \rulename{Export} open the
+existential quantifier.  In the selected case reflexivity proves $B_0$, the
+clause at $1$ gives $b=r_B$, and the substitution of equals turns $F$ into
+$F[r_B/b]$; in the default case the substitution is the identity.  The
+elimination of the quantifier is legitimate because the normalized result
+does not contain $b$.  Normalization is justified in $T_R$ by
+\cref{wit:lem:ext}.
+\end{proof}
+
+\begin{example}[The instance at $0$ must be tested]
+\label{wit:ex:first-row}
+An \rulename{Export} that inspected only the instance at $1$ would be
+unsound.  Let $f$ be a term with $f(0)=f(1)=0$ and $f(2)=1$, and let
+$B(x,y)$ be $x=f(y)$.  The reading of $\D{x}{y}B$,
+$\exists x\,(x=f(0)\to\forall y\,x=f(y))$, is provable with the witness $1$,
+whose antecedent is false.  The instance at $1$ at a fresh $b$ is $b=0$.  A
+rule that replaced $b$ by $0$ on this evidence would produce the clause
+$0=0\to\forall y\,0=f(y)$, which gives $0=1$ at $y=2$.  The test
+$B_0\equiv\top_{*}$ excludes this matrix.  For the same reason the name
+$\D{x}{y}\mathrm{Nm}_t$ of \cref{wit:sec:guarded} is not silently combined
+with an inferred opening: opening a name directly at $t$ removes the fresh
+alias $b=t$ on which the simulation of an arbitrary witness relies.
+\end{example}
+
+\subsection{Preparations without equality}
+
+If $F$ does not contain the opened parameter $b$, the substitution of
+\rulename{Export} does nothing to it; so the ordinary elimination of
+$\D{x}{y}B$ is available whatever $r_B$ is.  As in
+\cref{wit:sec:recursor}, $q_yA(y)$ is $\D{d}{y}A(y)$ with $d$ unused;
+opening it and using its clause gives $A(t)$ from $q_yA$ and $A(0)$, and the
+witness selected by \rulename{Close} for it is irrelevant.  Given persistent
+constructions of $A(0)$ and of $A(\Suc z)$, \rulename{Close} introduces
+$q_yA(y)$: if the instance at $0$ is $\top_{*}$, supply reflexivity in place
+of the assumption at $0$ and ignore the progress assumption; otherwise the
+rule is by cases.  The same holds for a premise that assumes $A(0)$.
+
+Every formula is a chain of binders ending in an equation.  For a formula
+$A$ with $d$ binders let $G_vA$ be as in \cref{wit:sec:recursor}; then
+\[
+ G_0A\equiv T_d,\qquad G_{\Suc z}A\equiv A,\qquad
+ T_0=\top_{*},\quad T_{d+1}=\D{x}{y}T_d .
+\]
+Every tower $T_d$ is derivable in every scope, by reflexivity at depth $0$
+and \rulename{Close} above it; none of its witnesses occurs in its body.
+For formulas $A$ and $B$ with the same number of binders, align the binders
+and replace corresponding sides $s,t$ of the final equations by $C(v,s,t)$.
+This defines $\operatorname{Sel}(v,A,B)$, with
+\[
+ \operatorname{Sel}(0,A,B)\equiv A,\qquad
+ \operatorname{Sel}(\Suc z,A,B)\equiv B .
+\]
+A substitution in terms does not change the number of binders, so $H(s)$
+and $H(x)$ always have the same depth.  For formulas of different depth the
+padding $L(A)=q_vG_vA$, interderivable with $A$, equalizes the depths.  All
+of these are constructions carried out in the scope where they are needed.
+
+\subsection{The conditional-copy theorem}
+
+\begin{theorem}[Conditional copy]
+\label{wit:thm:copy}
+For every formula $H(x)$ with a distinguished variable and every term $t$
+over $\Pi$, the formula
+\[
+ \Delta_t(H)\defeq\D{x}{y}\operatorname{Sel}\bigl(y,H(t),H(x)\bigr)
+\]
+is derivable in $\mathsf{K}$ in every scope and context, by a construction
+that uses no equality transport and no equation other than reflexivity.
+\end{theorem}
+
+\begin{proof}
+Construct the closure
+\begin{equation}
+ q_vG_v\Delta_{P(v)}(H).
+ \label{wit:eq:copy-closure}
+\end{equation}
+Its instance at $v=0$ is a tower.  In the branch for $v=\Suc z$, with $z$
+fresh, the conclusion normalizes to $\Delta_z(H)$, because
+$P(\Suc z)\equiv z$ and the gate disappears.  The parameter $z$ is the
+newest, so \rulename{Close} for $\Delta_z(H)$ selects $x=z$.  Its instance
+at $0$ and its instance at a successor are both literally $H(z)$:
+\[
+ \operatorname{Sel}(0,H(z),H(z))\equiv H(z),\qquad
+ \operatorname{Sel}(\Suc w,H(z),H(z))\equiv H(z).
+\]
+If $H(z)\not\equiv\top_{*}$, the rule is by cases and its assumption is its
+conclusion.  If $H(z)\equiv\top_{*}$, the rule is by progress and
+reflexivity derives the instance asked for.  The outer introduction is by
+cases, since its instance at $0$ has at least one binder; its assumption is
+unused.  Open \eqref{wit:eq:copy-closure} by the ordinary elimination,
+supply the tower as the instance at $0$, and use the clause at $\Suc t$.
+The gate disappears and $P(\Suc t)\equiv t$, so the result is literally
+$\Delta_t(H)$; it does not contain the opened parameter.  Every step can be
+carried out in every scope.
+\end{proof}
+
+The ordinary reading of $\Delta_t(H)$ is $\exists x\,(H(t)\to H(x))$.  The
+theorem neither proves $H(t)$ nor identifies $x$ with $t$.  Opening
+$\Delta_t(H)$ gives a fresh parameter $b$ and the clause
+$[H(t);\,v.\operatorname{Sel}(v,H(t),H(b))]$, which yields $H(b)$ at $v=1$
+once $H(t)$ is supplied.
+
+\subsection{Removal of the witness}
+
+Let $\mathsf{L}$, the \emph{liberal} calculus, have the syntax,
+\rulename{Use} and \rulename{Export} of $\mathsf{K}$ and a \rulename{Close}
+that takes an arbitrary term $t$ over $\Pi$ in place of $\ell$, with the
+same test: progress exactly when $\nf(B(t,0))\equiv\top_{*}$.
+
+\begin{theorem}[Witness removal]
+\label{wit:thm:witness-removal}
+For every scope $\Pi$, clause context $\Gamma$ and formula $A$, the calculi
+$\mathsf{K}$ and $\mathsf{L}$ derive the same judgments
+$\Pi;\Gamma\proves A$.
+\end{theorem}
+
+\begin{proof}
+A \rulename{Close} of $\mathsf{K}$ is a \rulename{Close} of $\mathsf{L}$.
+For the converse a derivation of $\mathsf{L}$ is translated by induction on
+its tree.  The induction statement admits an injective map $\theta$ from the
+source parameters into an arbitrary target scope and a map from the
+positions of the source clauses to positions of target clauses, such that
+the clause at each image position is literally the normalized
+$\theta$-image of the source clause; further target parameters and clauses
+are allowed.  This is an invariant of membership; it is not an assumption
+that completed target derivations can be weakened.
+
+\rulename{Use} follows the map of positions and translates the derivation
+of the antecedent.  \rulename{Export} translates its major premise, sends
+its eigenvariable to the new target parameter and extends the map of
+positions by the opened clause; its two tests are preserved and reflected by
+injective renaming and \cref{wit:lem:nf}.
+
+Consider a \rulename{Close} at a term $t$ with the matrix $B$ and the
+premise $\Gamma,[\ ;\,v.\nf(B(t,\eta))]\proves\nf(B(t,\Suc z))$.  Write
+$t$, $B$ also for their images, and put $H(x)\defeq q_yB(x,y)$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Derive $\Delta_t(H)$ by \cref{wit:thm:copy} and open it at a fresh
+ $b$; its clause is $[H(t);\,v.\operatorname{Sel}(v,H(t),H(b))]$.
+\item Apply \rulename{Close} to $\D{x}{y}B$.  The newest parameter is $b$,
+ so the rule selects $b$; let $z'$ be its eigenvariable.
+\item In the premise derive $H(t)$ by a \rulename{Close} with an unused
+ witness.  Its test is the source test at $t$, and its premise, with a
+ further eigenvariable, is the image of the source premise: the induction
+ hypothesis applies with the source eigenvariable sent to the new one and
+ the source assumption sent to the local clause of this \rulename{Close}.
+\item \rulename{Use} of the clause of (a) at $1$ gives $H(b)$.
+\item Open $H(b)$; its clause is $[B(b,0);\,y.B(b,y)]$.  If the
+ \rulename{Close} of (b) is by cases, its assumption is $B(b,0)$.  If it is
+ by progress, $B(b,0)$ is literally $\top_{*}$ and reflexivity supplies it.
+ \rulename{Use} at $\Suc z'$ gives $B(b,\Suc z')$, and the unused witness
+ of $H(b)$ is discharged.
+\end{enumerate}
+The \rulename{Close} of (b) yields $\D{x}{y}B$, which does not contain $b$,
+and the ordinary elimination discharges $b$.  Every recursive call is for
+the premise of the source \rulename{Close}, a proper subderivation, although
+it may be made several times; the packet and the towers are explicit
+constructions.  At each call the tests agree, because they are made on the
+same instantiated formula.
+\end{proof}
+
+\begin{remark}[The modes need not agree]
+\label{wit:rem:mode}
+The test at $t$ and the test at $b$ may differ.  The proof transfers the
+whole conditional closure $H$ and not a progressive premise; at $b$ a
+progressive mode has a reflexive instance at $0$, so the closure still
+yields the instance at a successor.  No equality reasoning repairs a failed
+test.  The same proof applies with the rule \rulename{Name} of
+\cref{wit:sec:name-variant} in place of \rulename{Export}.
+\end{remark}
+
+\subsection{The liberal calculus presents the ordinary theory}
+\label{wit:sec:liberal}
+
+\begin{lemma}[Structural facts of the liberal calculus]
+\label{wit:lem:liberal-structural}
+In $\mathsf{L}$, weakening by clauses, injective renaming of parameters and
+the cut of an assumption $[\ ;\,v.A]$ are admissible.
+\end{lemma}
+
+\begin{proof}
+By induction on derivations.  A supplied witness remains available after a
+renaming, an injective renaming preserves and reflects the literal tests of
+\rulename{Close} and \rulename{Export}, and normalization commutes with
+renaming.  For the cut, a \rulename{Use} of the clause is replaced by the
+given derivation, weakened and renamed into the scope of the leaf.  No
+equality transport and no substitution of terms into derivations is used.
+The lemma is about $\mathsf{L}$ and is not claimed for $\mathsf{K}$ at this
+stage.
+\end{proof}
+
+\begin{lemma}[Transport from an inferred discharge]
+\label{wit:lem:liberal-transport}
+In $\mathsf{L}$, from $s=t$ and $h(s)=u$ one derives $h(t)=u$.
+Consequently symmetry, transitivity, congruence and transport in arbitrary
+formulas are derived.
+\end{lemma}
+
+\begin{proof}
+Let
+\[
+ E(x,y)\defeq\Bigl(C\bigl(y,0,C(P(y),x,h(x))\bigr)
+   =C\bigl(y,0,C(P(y),t,u)\bigr)\Bigr).
+\]
+Its normalized instances are $E(x,0)\equiv\top_{*}$, $E(x,1)\equiv(x=t)$
+and $E(x,\Suc\Suc v)\equiv(h(x)=u)$.  Introduce $\D{x}{y}E$ at the witness
+$s$; the mode is by progress, and the instance asked for,
+$C(z,s,h(s))=C(z,t,u)$, is derived by numerical cases on $z$ from the two
+given equations, the progress assumption being unused.  Open the formula at
+$b$: the first two instances make \rulename{Export} select $t$.
+\rulename{Use} at $2$, with the reflexive antecedent, gives $h(b)=u$, and
+\rulename{Export} concludes $h(t)=u$.
+
+With reflexivity this rule gives symmetry, transitivity and congruence, and
+transport in an equation template is two such replacements.  Transport in a
+formula $\D{x}{y}B(v,x,y)$ follows by induction on the number of binders:
+open the given formula at its witness, introduce the target at that
+witness, transport the assumption at $0$ backwards through the matrix, use
+the opened clause at the successor and transport the result forwards; if
+the new instance at $0$ is $\top_{*}$, supply reflexivity instead.  The
+result does not contain the opened witness.  The premises are moved into the
+local scopes by \cref{wit:lem:liberal-structural}.
+\end{proof}
+
+\begin{lemma}[Cases and equation induction in the liberal calculus]
+\label{wit:lem:liberal-induction}
+In $\mathsf{L}$ the introduction by cases is available for every matrix and
+witness, and for a literal equation $E(y)\equiv(s(y)=t(y))$, from $E(0)$
+and a derivation of $E(\Suc z)$ from $E(z)$ one derives $E(a)$ for every
+term $a$.
+\end{lemma}
+
+\begin{proof}
+If an introduction by cases selects progress because its instance at $0$ is
+$\top_{*}$, replace the assumption at $0$ by reflexivity and ignore the
+progress assumption.  For the induction let
+\[
+ K(y)\defeq\bigl(C(y,0,s(y))=C(y,0,t(y))\bigr),
+\]
+whose instance at $0$ is literally $\top_{*}$.  Numerical cases, without
+induction, give the two decoder equations
+\[
+ C\bigl(y,s(0),C(y,0,s(y))\bigr)=s(y),\qquad
+ C\bigl(y,s(0),C(y,0,t(y))\bigr)=t(y);
+\]
+the first has reflexive branches, and the second uses $E(0)$ at $0$ and is
+reflexive at successors.  From $K(z)$, congruence with
+$v\mapsto C(z,s(0),v)$ and the decoders give $E(z)$.  The cut of this into
+the step gives $E(\Suc z)$, which is literally $K(\Suc z)$.  The
+introduction by progress gives $q_yK(y)$, \rulename{Use} with the reflexive
+antecedent gives $K(a)$, and the decoders give $E(a)$.  No compound term is
+substituted into a derivation.  A conditional closure $q_yE(y)$ is
+introduced by cases, with $E(0)$ as its assumption and the induction just
+derived for its successor instance.
+\end{proof}
+
+The ordinary logical vocabulary is given by the following macros, with the
+depths equalized by $L$ before each binary selector and all bound variables
+fresh:
+\begin{align*}
+ (A\to B)^{*}&=q_y\operatorname{Sel}(y,A^{*},B^{*}),
+ &(A\wedge B)^{*}&=q_yG_y\operatorname{Sel}(P(y),A^{*},B^{*}),\\
+ (\exists x\,A)^{*}&=\D{x}{y}G_yA^{*},
+ &(A\vee B)^{*}&=\D{v}{y}G_y\operatorname{Sel}(v,A^{*},B^{*}),\\
+ (\forall x\,A)^{*}&=q_yG_yA^{*}(P(y)),
+ &\bot^{*}&=\bot_{*}.
+\end{align*}
+The instances of the conjunction are a tower at $0$, $A^{*}$ at $1$ and
+$B^{*}$ at every $\Suc\Suc v$; two numerical case splits introduce it and
+\rulename{Use} at $1$ and $2$ eliminates it.  The implication has its
+antecedent at $0$ and its consequent at successors.  The existential gate
+has a tower at $0$.  Numerical cases give the elimination of the
+disjunction.  The universal macro has a tower at $0$ and $A^{*}(z)$ at
+$\Suc z$, because $P(\Suc z)\equiv z$; it is used at $\Suc t$ to obtain
+$A^{*}(t)$, and its introduction needs a fresh renaming of a derivation of
+$A^{*}(z)$ only.  Transport along $0=1$ turns the provable $G_0F$ into
+$G_1F\equiv F$, which is explosion for every $F$.  These constructions give
+the introduction and elimination rules of intuitionistic logic under
+arbitrary assumptions, and by induction on a formula the ordinary reading
+of each macro is equivalent to the intended connective.
+\pkg{parameter\_intro} uses the same macros with two differences: the
+conjunction selects by a parity term,
+$(A\wedge B)^{*}=q_yG_y\operatorname{Sel}(\operatorname{par}(y),A^{*},B^{*})$,
+and the universal quantifier is
+$(\forall x\,A)^{*}=A^{*}(0)\wedge q_xA^{*}(x)$.
+
+\begin{proposition}[The liberal calculus]
+\label{wit:prop:liberal}
+$\mathsf{L}$ is sound and complete for $T_R$.  Hence so is $\mathsf{K}$.
+\end{proposition}
+
+\begin{proof}
+Soundness is \cref{wit:lem:k-sound} with a supplied witness.  For
+completeness translate the diagonal calculus $\Nat_{\mathrm{diag}}$ over the
+vocabulary with the fixed descriptions $R$, as in \cref{wit:thm:recursor}:
+computation axioms become reflexivity after normalization; hypotheses are
+used; equality is \cref{wit:lem:liberal-transport}; the eliminations of
+$\Q{}$ and $\D{}{}$ are the derived ones; a diagonal matrix has the instance
+$0=0$ at $0$, so its introduction by progress is the progress mode of
+\rulename{Close}; an introduction by cases is
+\cref{wit:lem:liberal-induction}.  The structural facts of
+\cref{wit:lem:liberal-structural} move derivations between scopes.  This
+gives the full consequence relation and not only closed equations.  The
+statement for $\mathsf{K}$ follows by \cref{wit:thm:witness-removal}, which
+regenerates the branches in the target scopes.
+\end{proof}
+
+\subsection{Quantifier-free induction and the bridge}
+
+\begin{lemma}[Reflection of equality in $T_R$]
+\label{wit:lem:reflection}
+There is a term $e(a,b)$ such that $T_R$ proves $e(a,b)=0\vee e(a,b)=1$ and
+$e(a,b)=0\leftrightarrow a=b$.  For every quantifier-free formula $A$ there
+is a term $b_A$ with the same parameters such that $T_R$ proves
+$b_A=0\vee b_A=1$ and $A\leftrightarrow b_A=0$.  Hence $T_R$ proves every
+instance of contextual quantifier-free induction.
+\end{lemma}
+
+\begin{proof}
+Define addition and truncated subtraction by $J$, with
+\[
+ x+0=x,\quad x+\Suc y=\Suc(x+y),\qquad
+ d(x,0)=x,\quad d(x,\Suc y)=p(d(x,y)),
+\]
+and put $\operatorname{sg}(u)=C(u,0,1)$ and $K(u)=C(u,1,p(u))$.  Coverage
+and the separation of $0$ and $1$ give that $\operatorname{sg}(u)$ is $0$ or
+$1$, that $\operatorname{sg}(u)=0\leftrightarrow u=0$ and that
+$K(u)=0\leftrightarrow u=1$.  Four inductions for literal equations give
+\[
+ 0+y=y,\qquad \Suc x+y=\Suc(x+y),\qquad
+ d(\Suc x,\Suc y)=d(x,y),\qquad d(\Suc a,a)=1;
+\]
+the step of the third applies $p$ to the induction hypothesis, and the
+fourth follows from the third.
+
+The invariant is the single equation
+\begin{equation}
+ C\bigl(\operatorname{sg}(d(x,y)),\,x,\,y+d(x,y)\bigr)=x,
+ \label{wit:eq:residual}
+\end{equation}
+proved by induction on $y$ with $x$ fixed.  At $0$ both alternatives of the
+selector equal $x$, by $0+x=x$.  For the step put $r=d(x,y)$ and
+$r'=p(r)=d(x,\Suc y)$.  If $r'=0$, the selector returns $x$.  Otherwise
+coverage gives $r=\Suc r'$, the alternative $r=0$ contradicting $r'\neq 0$;
+the induction equation gives $y+r=x$, and
+$\Suc y+r'=y+\Suc r'=x$.  All case distinctions are coverage, and the
+induction formula is \eqref{wit:eq:residual}.
+
+Hence $d(\Suc a,b)=1\leftrightarrow a=b$: from left to right
+\eqref{wit:eq:residual} gives $b+1=\Suc a$ and the injectivity of the
+successor gives $a=b$; from right to left this is the fourth identity.  Put
+$e(a,b)=\operatorname{sg}(K(d(\Suc a,b)))$.  For a quantifier-free formula
+define, by recursion on its syntax,
+\[
+ b_{s=t}=e(s,t),\quad b_\bot=1,\quad
+ b_{A\wedge B}=C(b_A,b_B,1),\quad
+ b_{A\vee B}=C(b_A,0,b_B),\quad
+ b_{A\to B}=C(b_A,b_B,0).
+\]
+By induction on the syntax $b_A$ is $0$ or $1$ and
+$A\leftrightarrow b_A=0$; for the implication split the two values of
+$b_A$.  No excluded middle for formulas with quantifiers is used.
+Induction for the literal equation $b_{A(n)}=0$ gives the induction for $A$,
+under arbitrary assumptions.
+\end{proof}
+
+\begin{theorem}[Introduction and discharge without supplied terms]
+\label{wit:thm:k-bi}
+$\mathsf{K}$ is a sound and complete presentation of $T_R$, and $T_R$ is
+bi-interpretable with $\iPRA$, with the domains $x=x$, equality as
+equality, the graph $x=y$ in both numerical composites and a provable
+equivalence of every formula with its double translation.  Hence
+$\mathsf{K}$ and $\iPRA$ are equiconsistent.
+\end{theorem}
+
+\begin{proof}
+The first statement is \cref{wit:prop:liberal}.  The interpretations, the
+compilation of primitive recursion by $J$, the injectivity and separation
+of the successor and the uniqueness argument are those of the proof of
+\cref{wit:thm:recursor-bi}; quantifier-free induction is
+\cref{wit:lem:reflection}; the formula round trips follow from the macros
+of \cref{wit:sec:liberal} by induction on formulas.  Falsity is translated
+to $0=1$, whose reading implies $\bot$ by the separation axiom of $T_R$.
+\end{proof}
+
+Here $\iPRA$ has quantifier-free induction, and $T_R$ has induction for
+literal equations only; the words ``first-order'' refer to the logical
+language.
+
+\subsection{Discharge by a supplied name}
+\label{wit:sec:name-variant}
+
+Let $\mathsf{K}_{\mathrm N}$ have the syntax, the clause $\mathsf{Rf}$,
+\rulename{Use} and \rulename{Close} of $\mathsf{K}$, and in place of
+\rulename{Export} the rule
+\[
+ \infrule{\Pi;\Gamma\proves\D{x}{y}B\qquad
+          \Pi,b;\ \Gamma,\mathcal{C}_B(b)\proves b=t\qquad
+          \Pi,b;\ \Gamma,\mathcal{C}_B(b)\proves F}
+         {\Pi;\Gamma\proves\nf(F[t/b])}\ \rulename{Name}
+ \qquad b\notin\FV\bigl(\nf(F[t/b])\bigr).
+\]
+The term $t$ is over $\Pi,b$ and may contain $b$; it is inserted once.  The
+left side of the supplied equation is fixed to the opened parameter, whereas
+\rulename{Discharge} of $\mathsf{P}_{\nu}$ takes both sides of an equation
+and a template.
+
+\begin{proposition}[The name variant]
+\label{wit:prop:name-variant}
+$\mathsf{K}_{\mathrm N}$, $\mathsf{K}$ and $T_R$ have the same open
+consequences under their readings.
+\end{proposition}
+
+\begin{proof}
+\rulename{Name} is sound in $T_R$: equality gives the substituted formula
+and the condition on the scope permits the elimination of the quantifier.
+Every instance of \rulename{Export} is an instance of \rulename{Name} in the
+same scope: in the default case with the reflexivity $b=b$, in the selected
+case with the equation $b=t$ obtained from the opened clause by reflexivity
+and \rulename{Use} at $1$.  The replacement adds no parameter, so no
+\rulename{Close} changes its witness or its mode, and induction on the
+derivation gives $\mathsf{K}\subseteq\mathsf{K}_{\mathrm N}$.  The
+completeness of $\mathsf{K}$ and the soundness of $\mathsf{K}_{\mathrm N}$
+give the rest.
+\end{proof}
+
+A backward checker for $\mathsf{K}_{\mathrm N}$ receives a template $T(v)$
+and a term $t$, checks the conclusions $b=t$ and $F=\nf(T[b/v])$ in the
+branch, and requires the goal to be $A=\nf(T[t/v])$.  It does not forbid
+occurrences of $b$ in $T$.
+
+\begin{lemma}[Template representation]
+\label{wit:lem:name-template}
+Let $T(v)$ be a well-scoped template and $t$ a term of the local scope, and
+put $F=\nf(T[b/v])$ and $A=\nf(T[t/v])$.  If $A$ does not contain $b$, then
+$\nf(F[t/b])=A$ literally.
+\end{lemma}
+
+\begin{proof}
+A renaming of parameters, injective or not, preserves normal forms: the
+reductions test only for the constructors $0$ and $\Suc$ at a counter, and
+an identification of parameters creates neither; no reduction turns an
+equation with equal sides into $0=0$.  Choose a parameter $c$ not in $T$ or
+$t$ and let $U=\nf(T[v:=t,\,b:=c])$, with simultaneous substitution.
+Identifying $c$ with $b$ gives
+\[
+ U[c\mapsto b]=\nf(U[c\mapsto b])=\nf(T[t/v])=A .
+\]
+Since $A$ does not contain $b$, $U$ contains neither $b$ nor $c$, and
+$U=A$.  Substituting $t$ for $c$ and \cref{wit:lem:nf} give
+$\nf(T[v:=t,\,b:=t])=A$.  Finally
+\[
+ \nf(F[t/b])=\nf\bigl((T[b/v])[t/b]\bigr)=\nf(T[v:=t,\,b:=t])=A .
+\]
+No substitution is made inside an inserted copy of $t$.
+\end{proof}
+
+The checker validates a template through its two normalized instances, as
+in \cref{wit:lem:template}, and the same completion applies: the excess
+parameters of an accepted raw template are replaced by $0$, which preserves
+both checked instances literally because neither they nor the checked
+arguments $b$, $t$ contain an excess parameter; the normalized completed
+template is well-scoped, and \cref{wit:lem:name-template} applies to it.
+The equation premise validates $t$, and each instance is validated in its
+own scope; these checks are needed.  Conversely, abstracting all free
+occurrences of $b$ in $F$ into $v$ represents every instance of
+\rulename{Name}.  The backward representation is therefore exact.
+
+% ---------------------------------------------------------------------
+\section{Checkers and sizes}
+\label{wit:sec:sizes}
+
+This section draws on the checker reports of \pkg{no\_witness},
+\pkg{parameter\_witness}, \pkg{deterministic\_introduction},
+\pkg{newest\_parameter}, \pkg{uniform\_raw}, \pkg{parameter\_intro} and
+\pkg{conditional\_copy}.  The checker of \pkg{constructed\_computation}
+belongs to another chapter.
+
+All checkers are standalone Python modules that read one JSON certificate,
+validate syntax, scopes and every inference, and accept or reject; none
+calls a prover.  They share the encoding of syntax: the integer $0$ is
+zero, negative integers are parameters counted from the outside, positive
+integers are de Bruijn indices, and lists encode the constructors.  The
+sizes are measured by the protocol of \cref{base:sec:measure} under
+CPython 3.12.14.
+
+\begin{longtable}{@{}p{0.36\linewidth}rrrp{0.36\linewidth}@{}}
+\caption{Checkers of the chapter: significant tokens, AST nodes and
+normalized bytes, with the matched control as tokens / nodes / bytes.}
+\label{wit:tab:sizes}\\
+\toprule
+Program & Tokens & Nodes & Bytes & Matched control\\
+\midrule
+\endfirsthead
+\toprule
+Program & Tokens & Nodes & Bytes & Matched control\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\multicolumn{5}{@{}l}{\pkg{no\_witness}}\\
+eight rules, $\Nat_{\nu}$ & 971 & 1078 & 2817 &
+ supplied witness: 979 / 1086 / 2834\\
+seven rules, $\Nat_{\mathrm{diag},\nu}$ & 924 & 1021 & 2753 &
+ supplied witness: 932 / 1029 / 2770\\
+\multicolumn{5}{@{}l}{\pkg{parameter\_witness}}\\
+five families, $\mathsf{C}_{\beta}$ & 833 & 971 & 2947 &
+ two-case raw clause checker: 837 / 977 / 2956\\
+\multicolumn{5}{@{}l}{\pkg{deterministic\_introduction}}\\
+$\mathsf{G}_{\mathrm d}$ & 1159 & 1339 & 3688 &
+ $\mathsf{G}$: 1078 / 1252 / 3442\\
+inherited native calculus, shared first traversal & 333 & 379 & 656 &
+ incoming native control: 360 / 409 / 780\\
+inherited guarded compact module & 267 & 303 & 506 &
+ before the change: 267 / 302 / 508\\
+\multicolumn{5}{@{}l}{\pkg{newest\_parameter}}\\
+$\mathsf{G}_{\nu}$ & 1070 & 1243 & 3425 &
+ $\mathsf{G}$: 1078 / 1252 / 3442; $\mathsf{G}_{\mathrm d}$:
+ 1159 / 1339 / 3688\\
+\multicolumn{5}{@{}l}{\pkg{uniform\_raw}}\\
+$\mathsf{G}_{\nu}$ & 1073 & 1248 & 3439 &
+ $\mathsf{G}_{\mathrm d}$: 1159 / 1339 / 3688\\
+\multicolumn{5}{@{}l}{\pkg{parameter\_intro}}\\
+$\mathsf{P}_{\nu}$ & 630 & 701 & 1925 &
+ supplied witness: 636 / 707 / 1967\\
+$\mathsf{P}_{\nu}$ with a separate template check & 646 & 717 & 1985 & \\
+$\mathsf{P}_{\nu}$ with fuel & 667 & 748 & 2056 &
+ supplied witness, with fuel: 673 / 754 / 2098\\
+\multicolumn{5}{@{}l}{\pkg{conditional\_copy}}\\
+$\mathsf{K}$ & 646 & 748 & 1844 & $\mathsf{L}$: 651 / 755 / 1863\\
+$\mathsf{K}_{\mathrm N}$, backward & 619 & 686 & 1907 &
+ $\mathsf{P}_{\nu}$ of \pkg{parameter\_intro}: 630 / 701 / 1925\\
+explicit equation at \rulename{Name} & 634 & 742 & 1835 & \\
+$\mathsf{K}$ with fuel & 685 & 796 & 1995 & \\
+\end{longtable}
+
+The packages compare their programs with further programs of the corpus.
+\pkg{parameter\_intro} states 636 / 708 / 2010 for the incoming checker with
+an explicit name and 683 / 771 / 1990 for the incoming checker with an
+inferred opening; its gzip sizes are 778 for its checker, 790 for the
+matched control, 792 with the separate template check, and 826 and 838 for
+the two variants with fuel.  \pkg{conditional\_copy} states
+662 / 741 / 1950 for the checker of \pkg{uniform\_recursion}.  The compact
+programs of the corpus use other input contracts and are smaller: 267
+tokens, 302 nodes and 508 bytes; 256, 283 and 594; 263, 276 and 580; and,
+with a validator of the public goal, 360, 409 and 780.  The three minima
+256, 276 and 508 belong to different programs.  No package claims a global
+minimum or a lower bound.
+
+\paragraph{\pkg{no\_witness}.}
+An introduction is the instruction \texttt{['di', matrix, premise]}; its
+witness is the integer $-n$ in a scope of $n$ parameters, which is zero in
+the empty scope.  The controls differ only by a supplied and validated
+witness term.  Each matched pair differs by 8 tokens, 8 nodes and 17 bytes.
+In the tagged syntax of the pinned programs the same change saves 3 bytes
+and 1 node and adds 2 tokens.  Eighteen accepted and 33 rejected
+certificates are run in two modes; the certificate for $X(2)$ checks the
+part of the naming that uses numerical cases and not the predecessor or the
+equivalence theorem.
+
+\paragraph{\pkg{parameter\_witness}.}
+The introduction field is a bit, decoded by the truth value of the JSON
+value; it is never inserted as a term, and the witness is constructed from
+the scope.  Certificates for the packet $T$ at $0$, for its closure and for
+its instances at $1$ and $2$ are checked, and a certificate that uses the
+eigenvariable of an introduction as its witness is rejected.  A separate
+evaluator checks 447 numerical equalities of the predecessor construction,
+among them the values of the predecessor at $0,\dots,7$.
+
+\paragraph{\pkg{deterministic\_introduction}.}
+The naming matrix is recognized as the literal list pattern of
+$\mathrm{Nm}_r$ with $r$ valid in the parent scope.  The checker of
+$\mathsf{G}_{\mathrm d}$ is larger than its control by 81 tokens, 87 nodes
+and 246 bytes: the rule removes a datum from each introduction and costs
+more code to recognize the exception.  The fixtures contain an introduction
+that is valid before an extension of the scope, the rejected replay of the
+same tree after the extension, and the repaired derivation of
+\cref{wit:thm:weakening}.  The package also contains two changes to
+inherited programs that do not implement $\mathsf{G}_{\mathrm d}$.  One
+checks the grammar of the public goal during the first scope traversal,
+using the parity of the traversal depth as the distinction between formulas
+and terms; an induction on the goal shows that the shared pass succeeds
+exactly when the two separate passes do and that the subsequent traces are
+equal.  The other replaces $k-1$ by the bitwise complement of $-k$ in the
+compact module, which saves two bytes and adds one node.
+
+\paragraph{\pkg{newest\_parameter} and \pkg{uniform\_raw}.}
+Both obtain the checker of $\mathsf{G}_{\nu}$ from the checker of
+$\mathsf{G}_{\mathrm d}$ by deleting the function that selects the witness
+and instantiating the matrix at $-n$.  \pkg{newest\_parameter} also contains
+an unmeasured checker of the eight rules of $\Nat_{\nu}$, with certificates
+for $X(\Suc t)$ at a parameter $t$ in scopes of zero, one, two and five
+parameters, and a rejected replay of a closed derivation in a larger scope.
+\pkg{uniform\_raw} checks the whole closure $\D{a}{r}X(r)$ and its
+instance at the successor of a compound term.
+
+\paragraph{\pkg{parameter\_intro}.}
+The recursor and the binder $\D{}{}$ both bind two variables in their last
+child, so one traversal serves terms, formulas, scopes, substitution and
+normalization.  The reduction of a successor counter substitutes the
+previous counter first, into the outer of the two bound positions, and the
+previous value second; the opposite order without a shift would capture
+variables.  The witness of an introduction is the integer $1-n$ for a
+context of $n$ clauses.  Omitting the witness field saves 42 bytes, 6
+tokens and 6 nodes; omitting the separate template check, by
+\cref{wit:lem:template}, saves 60 bytes, 16 tokens and 16 nodes.  The
+variant with fuel decrements a budget at every call of the traversal and of
+the inference checker; every accepted certificate has a sufficient budget,
+so the two interfaces have the same theorems, and the bounded relation is
+primitive recursive.  The certificates that name $1$ and $2$ without a
+witness field need 1155 and 1345 units.
+
+\paragraph{\pkg{conditional\_copy}.}
+The forward checker of $\mathsf{K}$ infers every conclusion and compares
+the goal with it.  Omitting the witness saves 19 bytes, 5 tokens and 7
+nodes against $\mathsf{L}$.  The checker of $\mathsf{K}$ has fewer bytes
+and more tokens and nodes than that of \pkg{parameter\_intro}; the backward
+checker of $\mathsf{K}_{\mathrm N}$ is smaller in all three coordinates, by
+18 bytes, 11 tokens and 15 nodes.  The package contains a translator from
+$\mathsf{L}$ to $\mathsf{K}$ that implements the proof of
+\cref{wit:thm:witness-removal} on arbitrary derivations.  Its outputs show
+the growth of certificates, in inference nodes and bytes of JSON: an
+introduction at the witness $1$ grows from 2 nodes and 74 bytes to 15 and
+529; a conditional copy of depth one from 7 and 368 to 46 and 2527; a
+derivation with a used progress assumption from 15 and 421 to 80 and 2868;
+the congruence of the successor under two universal quantifiers from 25 and
+1335 to 142 and 8909; a derivation in an open scope from 4 and 76 to 17 and
+501.
+
+The restricted rules reduce the data of a certificate and, except for
+$\mathsf{G}_{\mathrm d}$, the measured checker by a small amount.  They
+increase the length of certificates, because a witness term is replaced by
+a derivation of its name.
+
+% ---------------------------------------------------------------------
+\section{Further questions}
+\label{wit:sec:questions}
+
+The following items are stated by the packages without proof, are open, or
+mark what the results of the chapter do not establish.
+
+\begin{question}[Formalization of the names]
+\label{wit:q:lean-names}
+By \cref{wit:cor:names-iff}, which is formalized, the completeness of
+$\Nat_{0\mathrm v}$ is the derivability of the names.  The derivation of
+the names (\cref{wit:lem:packet-0v,wit:lem:alias-0v}) and the derivation of
+the predecessor in the fragment $\mathcal E$ are written proofs.  Formalize
+them, with the predecessor as a theorem of the equational fragment
+separate from numerical coverage.
+\end{question}
+
+\begin{question}[Formalization of the scope-determined witness]
+\label{wit:q:lean-newest}
+None of
+\cref{wit:thm:newest,wit:thm:diagonal,wit:thm:R-newest,wit:thm:clause-bit,wit:thm:weakening,wit:thm:gd,wit:thm:guarded-uniform,wit:thm:recursor,wit:thm:copy,wit:thm:witness-removal}
+is formalized.  A formalization of the first has to take derivations of the
+source with realized contexts, or hereditary families, as its induction
+interface.  For $\mathsf{G}_{\mathrm d}$ the selection with priority for a
+naming matrix, the clause contexts and the guarded language are not
+formalized.  For the recursor calculi a syntax with a normalizer and its
+bi-interpretation with the iterator terms would be needed first;
+\pkg{conditional\_copy} proposes a small interface for
+\cref{wit:thm:copy} consisting of a predecessor that computes on
+successors, gates, clause specialization, \rulename{Close} at the newest
+parameter and the ordinary elimination, so that the theorem can be reused.
+\Cref{wit:lem:template} and the translation of \cref{wit:thm:recursor} are
+named by \pkg{parameter\_intro} as the next formalization task.
+\end{question}
+
+\begin{question}[Three families on raw iterator terms]
+\label{wit:q:raw-three}
+Can the introduction at the newest parameter be combined, on raw iterator
+terms without normalization, with a three-family calculus whose equality
+transport is recovered from packets?  The proofs of \cref{wit:sec:newest}
+keep \rulename{Tr} as a primitive rule, and transferring them unchanged
+would be circular.  \Cref{wit:sec:recursor,wit:sec:copy} answer the
+question on the recursor with normalization, where $P(\Suc z)\equiv z$
+holds by computation; on iterator terms no term has this property.  A
+technical note of \pkg{uniform\_raw} sketches a raw calculus with a
+universal reflexivity clause, a deterministic introduction, \rulename{Use}
+and a discharge that evaluates, in which the opening and the evaluation
+rules are recovered through the dummy major premise
+$\D{x}{y}(\It{y}{0}{u}{0}=\It{y}{0}{u}{0})$ and formula transport is proved
+before the names.  The note is not part of the proved results of that
+package.
+\end{question}
+
+\begin{question}[Transport in terms only]
+In $\mathsf{G}_{\mathrm d}$ and $\mathsf{G}_{\nu}$ the rule \rulename{Tr}
+acts on arbitrary canonical formulas, and the restricted cut of
+\cref{wit:lem:algebraic} uses this.  Can it be weakened to transport in
+terms before the bootstrap, with formula transport proved without
+unrestricted witnesses and without unrepaired weakening?
+\end{question}
+
+\begin{question}[The size of certificates]
+The translations are effective.  No linear or polynomial bound on the size
+of the translated certificates is claimed; the translations regenerate a
+premise inside additional scopes and may duplicate it.  Determine the
+growth, and whether sharing of regenerated subderivations in a checked
+directed acyclic graph reduces it without enlarging the trusted rules.
+\end{question}
+
+\begin{question}[Modes without a guard]
+Can the scope determine the witness while the mode of the introduction is
+also determined without a test on the matrix, with a direct proof of all
+native consequences?  In $\Nat_{\nu}$ the progress rule \rulename{QI} is
+kept; the result does not remove it, does not reduce the number of rules
+and does not settle the independence of progress.
+\end{question}
+
+\begin{question}[The specialization term]
+In all calculi of the chapter \rulename{QE}, or \rulename{Use}, still takes
+an arbitrary term; the proofs specialize a closure at $\Suc t$.  By
+\cref{wit:thm:finite-range,wit:thm:finite-range-general} the target cannot
+be restricted to a parameter or finitely many numerals together with the
+witness in the identity language.  Whether a differently interpreted theory
+with both restrictions is bi-interpretable with $\iPRA$ is not decided, and
+replacing the specialization by a fixed one needs another way to deliver
+$t$.
+\end{question}
+
+\begin{question}[Less normalization]
+The proofs of \cref{wit:sec:recursor,wit:sec:copy} use the literal
+identities $P(\Suc t)\equiv t$ and the two instances of the selector.  Is
+there a canonical syntax that guarantees these reductions without full
+normalization, with its own coherence law in place of \cref{wit:lem:nf}?
+\end{question}
+
+Further remarks of the packages on what is not shown:
+\begin{itemize}
+\item No package proves that its presentation is minimal, and none improves
+ the compact programs of the corpus.  Whether the restriction of the witness
+ improves the compact records under a matched contract is open, and a
+ comparison that fixes one validation contract for all competing calculi is
+ proposed.  The question of \pkg{deterministic\_introduction} whether the
+ selector by pattern can be recognized more cheaply is superseded by
+ \cref{wit:thm:guarded-uniform}, which removes the selector.
+\item \pkg{deterministic\_introduction} supplies a complete elaborator from
+ certificates of $\mathsf{G}_{\mathrm d}$ to certificates of $\mathsf{G}$
+ and illustrates the converse by one translated pair; \pkg{uniform\_raw}
+ supplies no translator; the translator of \pkg{conditional\_copy} is not
+ verified.  The correctness of the Python programs is supported by finite
+ tests only.
+\item In \cref{wit:thm:recursor-bi,wit:prop:liberal} the equivalence of the
+ diagonal calculus with $\Nat$ and the bridge are used over the vocabulary
+ extended by the fixed descriptions $R$.  The packages argue that the
+ proofs are parametric in additional terms; the Lean development covers the
+ iterator terms.
+\item The predecessor is used in the form stated in
+ \cref{wit:sec:packet}: derivable in the equational fragment.  The four
+ audits recorded after \cref{base:thm:pred} are written derivations,
+ supported by numerical checks of the defining terms and, in
+ \pkg{newest\_parameter}, by replayed symbolic certificates of seven
+ equation-case lemmas.
+\end{itemize}
+

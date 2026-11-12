@@ -1,0 +1,3644 @@
+\chapter{Obstructions}
+\label{prov:ch:obs}
+\label{obs:ch}
+
+The chapter collects the negative results: what a smaller numerical basis or a
+smaller rule inventory cannot do, together with the model or invariant that
+proves it. Each result names the exact class of theories or presentations that
+it excludes and states what it does not exclude. The results are grouped by
+method. \Cref{obs:sec:powers} uses coordinatewise powers of the standard model
+and exact truth transfer for conjunctive formulas. \Cref{obs:sec:symmetry} uses
+the automorphisms of such powers. \Cref{obs:sec:majorants,obs:sec:quotient} use
+growth invariants of term languages and a dimension argument for term
+interpretations. \Cref{obs:sec:profiles} counts definable values and reaches
+arbitrary relational bi-interpretations through witness extraction.
+\Cref{obs:sec:zeroprofile} classifies zero sets. \Cref{obs:sec:rules} collects
+small counter-interpretations of individual rule deletions.
+\Cref{obs:sec:progress-independence} builds a nonstandard model of all iterator
+computations, by a tower of ultrapowers, in which the progress rule fails. The
+packages that
+prove the obstructions also contain positive statements about the presentations
+that the obstructions are measured against; these are
+in \cref{obs:sec:progressive,obs:sec:cc,obs:sec:sources,obs:sec:partial}.
+
+None of the results is a lower bound on the size of a proof checker, and none
+excludes equiconsistency. \Cref{obs:tab:summary} lists the main statements.
+
+\begin{longtable}{@{}p{0.23\linewidth}p{0.36\linewidth}p{0.33\linewidth}@{}}
+\caption{The obstructions of the chapter.}\label{obs:tab:summary}\\
+\toprule
+Result & Excluded & Not excluded\\
+\midrule
+\endfirsthead
+\toprule
+Result & Excluded & Not excluded\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\Cref{obs:thm:direct-target} & case introduction with target $z$ in place of
+$\Suc z$, with all other native rules & other readings of the weaker calculus\\
+\Cref{obs:thm:boolcases} & deletion of Boolean cases from the progressive
+calculus & a weaker case principle\\
+\Cref{obs:thm:symmetry} & ordinary bi-interpretation with $\iPRA$ of any theory
+true in an eventually constant power: equation induction, conjunctive
+induction, all true conjunctive sequents, many sorts & one-way
+interpretations, equiconsistency, disjunctive axioms\\
+\Cref{obs:prop:monotone} & a term compiler into the zero-seeded recursor &
+relational interpretations\\
+\Cref{obs:thm:single-body,obs:thm:circuit} & terms for addition, selection and
+pairing when the initializer is computed from the update & an independent
+input, relational interpretations\\
+\Cref{obs:thm:quotient} & finite-dimensional interpretations with a
+term-defined addition, any quotient equality & graph-defined operations\\
+\Cref{obs:thm:fc} & terms for an equality test, minimum and truncated
+subtraction in the tied-seed language & formula-defined relations\\
+\Cref{obs:thm:no-biinterp} & every finite-dimensional bi-interpretation of
+$\iPRA$ with an existential-free theory true in the standard tied-seed
+algebra & one-way interpretations, theories with positive existence axioms\\
+\Cref{obs:thm:zeroprofile} & terms for predecessor, zero test, addition and
+initialized iteration from positive iteration & graph definitions\\
+\Cref{obs:prop:forced-progress,obs:prop:majors,obs:prop:root-vs-congruence,obs:thm:RL-independent,obs:prop:reversed}
+& five individual rule deletions or replacements & redesigned calculi with
+their own interpretation proofs\\
+\Cref{obs:thm:progress-independence} & deletion of \rulename{QI} by progress
+from the core: the other seven rules do not derive
+$\Q{y}(\It{y}{0}{u}{u}=0)$ & fusions of \rulename{QI} with another rule, weaker
+induction interfaces, equivalence of uniqueness of iteration with induction\\
+\end{longtable}
+
+\section{Conventions and the presentations under test}
+\label{obs:sec:setup}
+
+This section fixes the vocabulary shared by \pkg{adaptive\_seed},
+\pkg{research}, \pkg{local\_scopes}, \pkg{checker\_and\_barriers},
+\pkg{compact\_kernel}, \pkg{uniform\_predecessor}, \pkg{scope\_kernel},
+\pkg{constructed\_computation} and \pkg{counter\_congruence}.
+
+\subsection{Three kinds of exclusion}
+\label{obs:sec:kinds}
+
+The statements of the chapter have three strengths.
+
+\emph{Term definability.} A reduced term language is given a standard
+interpretation: every fixed term denotes a primitive recursive function on
+$\mathbb{N}$, by structural recursion on the term followed by numerical
+primitive recursion. No uniform evaluator of all descriptions is used. A
+term-definability obstruction is a statement about these functions. It
+excludes a direct compiler of the primitive recursive signature into terms with
+their usual meanings. It does not exclude a definition of the missing function
+by a formula.
+
+\emph{Derivability in a specified rule system.} A rule system is shown to lose
+a theorem of another one by a reading under which every rule of the first is
+sound and the theorem is false. A classical structure is a one-node Kripke
+model, so soundness in a classical structure is a sound test of intuitionistic
+derivability. Such a result concerns the displayed rules with the identity
+translation of formulas. It does not exclude a different translation.
+
+\emph{Ordinary bi-interpretability.} This is the strongest kind.
+
+\begin{definition}[Ordinary interpretations]
+\label{obs:def:biinterp}
+An \emph{ordinary interpretation} $\mathcal{I}$ of a theory $U$ in a theory $T$
+has a dimension $d\ge 0$ and consists of formulas of $T$: a domain formula
+$\delta(\vec x)$ in $d$ variables for each sort of $U$, an equality formula
+$\varepsilon(\vec x,\vec y)$, and a graph formula for each function and
+relation symbol of $U$. The formulas may contain finitely many parameters,
+subject to a parameter formula. $T$ proves that $\varepsilon$ is an equivalence
+on $\delta$ respected by the graphs, that the function graphs are total and
+single-valued modulo $\varepsilon$, and the translation of every axiom of $U$.
+The domain, the graphs and the quotient equality are arbitrary formulas.
+
+A \emph{bi-interpretation} of $T$ and $U$ is a pair of ordinary interpretations
+$\mathcal{I}$ of $U$ in $T$ and $\mathcal{J}$ of $T$ in $U$ such that $T$
+proves that a formula $\eta$ defines an isomorphism of the identity
+interpretation of $T$ onto $\mathcal{J}$ interpreted through $\mathcal{I}$, and
+$U$ proves the corresponding statement for the other composite. The formula
+$\eta$ of $T$ is the \emph{source-side return isomorphism}.
+\end{definition}
+
+The bridge of \cref{base:thm:bridge} is a bi-interpretation in this sense, of
+dimension one, with identity domains, actual equality and return isomorphisms
+with graph $x=y$. The obstructions of
+\cref{obs:sec:symmetry,obs:sec:profiles} exclude all bi-interpretations in the
+sense of \cref{obs:def:biinterp}, not only those of this special form. They
+use only the source-side return isomorphism.
+
+\subsection{The paired-introduction form of the native core}
+\label{obs:sec:paired}
+
+The packages of this chapter state the native calculus with a progress
+introduction that concludes a paired formula:
+\[
+\infrule{\Gamma,\ E(t,z)\proves E(t,\Suc z)}{\Gamma\proves \D{x}{y}E(x,y)}
+\quad\rulename{DI-progress},
+\qquad E \text{ a literal equation},\ z \text{ fresh for } \Gamma,t.
+\]
+The core $\Nat$ of \cref{base:sec:kernel} has \rulename{QI} by progress
+instead. The \emph{paired-introduction form} $\Nat_{\mathrm{p}}$ is $\Nat$ with
+\rulename{QI} replaced by \rulename{DI-progress}. Several packages also supply
+a computation instance as a discharged local assumption (rule \rulename{Comp},
+called \rulename{Supply} in some packages): from $\Gamma,H\proves A$ with $H$
+an instance of a computation equation infer $\Gamma\proves A$.
+
+\begin{lemma}
+\label{obs:lem:paired}
+$\Nat$ and $\Nat_{\mathrm{p}}$ derive the same sequents. \rulename{Comp} is
+admissible in both, and the computation equations are derivable from
+\rulename{Comp} and \rulename{Hyp}.
+\end{lemma}
+
+\begin{proof}
+Let $\Gamma,E(t,z)\proves E(t,\Suc z)$ with $z$ fresh. In $\Nat$,
+\rulename{QI} for the matrix $y\mapsto E(t,y)$ gives
+$\Gamma\proves\Q{y}E(t,y)$. Weaken by $E(t,0)$. \rulename{Hyp} gives $E(t,0)$,
+and \rulename{QE} at the target $\Suc z'$ gives
+$\Gamma,E(t,0)\proves E(t,\Suc z')$. \rulename{DI} by cases with witness $t$
+gives $\Gamma\proves\D{x}{y}E(x,y)$. Conversely, let
+$\Gamma,E(z)\proves E(\Suc z)$. In $\Nat_{\mathrm{p}}$, \rulename{DI-progress}
+with a witness coordinate $u$ that does not occur in $E$ gives
+$\Gamma\proves\D{u}{y}E(y)$. \rulename{DE} supplies the clause $\Q{y}E(y)$,
+which does not contain the fresh witness, and \rulename{Hyp} concludes
+$\Q{y}E(y)$. \rulename{Comp} is a cut with a computation equation
+(\cref{base:sec:structural}); conversely \rulename{Comp} followed by
+\rulename{Hyp} derives the equation.
+\end{proof}
+
+In the paired-introduction form the formula $\Q{y}B$ is interderivable with
+$\D{u}{y}B$ for an unused $u$: \rulename{DE} followed by \rulename{Hyp} gives
+one direction, and \rulename{DI} by cases at the witness $0$ with \rulename{QE}
+gives the other. The rule-level statements of \cref{obs:sec:rules} refer to
+$\Nat_{\mathrm{p}}$ where the difference matters.
+
+\subsection{Reduced term languages}
+\label{obs:sec:languages}
+
+\begin{definition}[Seedless recursors]
+\label{obs:def:languages}
+Each of the following languages has variables, $0$ and one recursion
+constructor. Only the update body binds the displayed bound variables; its
+other variables are passive parameters, fixed through the recursion. Bodies are
+fixed finite earlier terms.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Zero-seeded recursion} has, besides $0$ and $\Suc$, the
+constructor $\mathsf{L}(n;u,v.h)$ with
+\[
+\mathsf{L}(0;u,v.h)=0,\qquad
+\mathsf{L}(\Suc n;u,v.h)=h\subst{n}{u}\subst{\mathsf{L}(n;u,v.h)}{v}.
+\]
+\item \emph{Tied-seed recursion} has the constructor $\mathsf{B}(n;u,v.h)$ and
+the abbreviation $\Suc a\defeq\mathsf{B}(0;u,v.a)$ for $u,v$ not in $a$, with
+\begin{align}
+\mathsf{B}(0;u,v.h)&=\Suc\bigl(h\subst{0}{u}\subst{0}{v}\bigr),\label{obs:eq:B0}\\
+\mathsf{B}(\Suc n;u,v.h)&=h\subst{n}{u}\subst{\mathsf{B}(n;u,v.h)}{v}.\label{obs:eq:BS}
+\end{align}
+The two substitutions are simultaneous. The initial state is tied to the
+update; there is no independent initializer. The standard interpretation is
+\[
+\mathsf{B}_h(0,\vec p)=1+h(0,0,\vec p),\qquad
+\mathsf{B}_h(m+1,\vec p)=h(m,\mathsf{B}_h(m,\vec p),\vec p),
+\]
+so that $\Suc$ denotes the successor. The \emph{unary-update} variant
+$\mathsf{F}(n;v.h)$ is the case in which $u$ does not occur in $h$.
+\item \emph{Positive iteration} has, besides $0$ and $\Suc$, the constructor
+$\mathsf{R}^{+}(n,a;v.h)$, standing for $h^{n+1}(a)$:
+\[
+\mathsf{R}^{+}(0,a;v.h)=h\subst{a}{v},\qquad
+\mathsf{R}^{+}(\Suc n,a;v.h)=h\subst{\mathsf{R}^{+}(n,a;v.h)}{v}.
+\]
+\end{enumerate}
+For reference, the \emph{counter-aware initialized recursor} is
+$\mathsf{R}(n,a;u,v.h)$ with $\mathsf{R}(0,a;u,v.h)=a$ and
+$\mathsf{R}(\Suc n,a;u,v.h)=h\subst{n}{u}\subst{\mathsf{R}(n,a;u,v.h)}{v}$. It
+is ordinary primitive recursion and compiles every primitive recursive
+description directly.
+\end{definition}
+
+The tied-seed language is the most capable of the three. The next two lemmas
+record what it does define; they are the positive boundary of the obstructions
+of \cref{obs:sec:majorants,obs:sec:profiles}.
+
+\begin{lemma}[Terms of the tied-seed language]
+\label{obs:lem:Bterms}
+Put
+\[
+W(n)\defeq\mathsf{B}(n;u,v.u),\quad
+Z(n)\defeq\mathsf{B}(n;u,v.0),\quad
+H(n,a)\defeq\mathsf{B}(n;u,v.a),\quad
+P(n)\defeq W(H(n,n)).
+\]
+The computation equations \eqref{obs:eq:B0}, \eqref{obs:eq:BS} and equality
+reasoning prove
+\[
+W(0)=1,\ W(\Suc n)=n,\quad Z(0)=1,\ Z(\Suc n)=0,\quad
+H(0,a)=\Suc a,\ H(\Suc n,a)=a,\quad P(0)=0,\ P(\Suc n)=n .
+\]
+With induction for literal equations, the two gates
+\[
+G(n,a)\defeq P\bigl(P(\mathsf{B}(a;u,v.H(Z(n),v)))\bigr),\qquad
+G'(n,a)\defeq P\bigl(P(\mathsf{B}(a;u,v.H(n,v)))\bigr)
+\]
+satisfy $G(0,a)=0$, $G(\Suc q,a)=a$ and $G'(0,a)=a$, $G'(\Suc q,a)=0$.
+\end{lemma}
+
+\begin{proof}
+The equations for $W$, $Z$ and $H$ are instances of \eqref{obs:eq:B0} and
+\eqref{obs:eq:BS}. Then $P(0)=W(H(0,0))=W(\Suc 0)=0$ and
+$P(\Suc n)=W(H(\Suc n,\Suc n))=W(\Suc n)=n$. For $G$ at the control $0$, the
+update is $H(Z(0),v)=H(1,v)=v$. Induction on the literal equation
+$\mathsf{B}(a;u,v.H(Z(0),v))=1$ has the base $\Suc(H(1,0))=\Suc 0$ and a
+successor step that repeats the previous state. Two predecessors give
+$G(0,a)=0$. At the control $\Suc q$ the update is $H(0,v)=\Suc v$. Induction on
+$\mathsf{B}(a;u,v.H(Z(\Suc q),v))=\Suc\Suc a$ has the base
+$\Suc(H(0,0))=\Suc\Suc 0$ and a successor step that applies $\Suc$. Two
+predecessors give $G(\Suc q,a)=a$. The argument for $G'$ exchanges the two
+cases. The inductions keep the actual update bodies and the control parameter
+fixed; no extensionality principle for recursion descriptions and no induction
+on a compound formula is used.
+\end{proof}
+
+\begin{lemma}[Zero-start counter recursion is a macro]
+\label{obs:lem:zerostart}
+For a body $h$ with bound variables $u,v$ and fresh $r,s$, put
+\[
+L(n;u,v.h)\defeq
+\mathsf{B}\bigl(\Suc n;\,r,s.\,G(r,\,h\subst{P r}{u}\subst{s}{v})\bigr).
+\]
+Then $L(0;u,v.h)=0$ and
+$L(\Suc n;u,v.h)=h\subst{n}{u}\subst{L(n;u,v.h)}{v}$ follow from
+\cref{obs:lem:Bterms} without further induction.
+\end{lemma}
+
+\begin{proof}
+Let $K(r,s)=G(r,h\subst{P r}{u}\subst{s}{v})$. The gate equations and
+$P(\Suc r)=r$ give $K(0,s)=0$ and $K(\Suc r,s)=h\subst{r}{u}\subst{s}{v}$.
+Hence $\mathsf{B}_K(0)=\Suc(K(0,0))=1$ and
+$\mathsf{B}_K(1)=K(0,\mathsf{B}_K(0))=0$, which is $L(0)=0$. At a successor,
+$L(\Suc n)=\mathsf{B}_K(\Suc\Suc n)=K(\Suc n,\mathsf{B}_K(\Suc n))
+=h\subst{n}{u}\subst{L(n)}{v}$.
+\end{proof}
+
+\begin{remark}
+\Cref{obs:lem:Bterms} is in \pkg{counter\_congruence} (with the gate $G'$),
+\pkg{research} (with $P(n)=W(H(Z(n),W(n)))$, which computes the same function)
+and \pkg{local\_scopes} (with the gate $G$ and the internal proof).
+\Cref{obs:lem:zerostart} is in \pkg{local\_scopes}. Predecessor, a zero test, a
+one-sided gate and zero-start recursion are therefore not what the tied-seed
+language lacks. The obstruction is to combining two unbounded inputs.
+\end{remark}
+
+\subsection{The progressive calculus}
+\label{obs:sec:Hrules}
+
+\begin{definition}[Progressive binder calculus]
+\label{obs:def:progressive}
+Numerical terms are variables, $0$, $\Suc t$ and the counter-aware recursor
+$\mathsf{R}(n,a;u,v.h)$ with its two computation equations. Object formulas are
+\[
+A::=(s=t)\mid\mathsf{H}_{x,y}A .
+\]
+Internal clauses are $\mathsf{P}_{y}A(y)$ with $A$ an object formula. Contexts
+are finite reusable lists of object formulas and clauses. Write
+$\Gamma\mathrel{\triangleright}M$ when $M$ is a member of $\Gamma$ or a proved
+object formula; clauses are not goals. The ordinary readings are
+\[
+(\mathsf{P}_{y}B)^{\circ}=\forall y\,\bigl(B^{\circ}(y)\to B^{\circ}(\Suc y)\bigr),
+\qquad
+(\mathsf{H}_{x,y}B)^{\circ}=\exists x\,\forall y\,\bigl(B^{\circ}(x,y)\to B^{\circ}(x,\Suc y)\bigr).
+\]
+Besides the computation equations, the rules are
+\begin{gather*}
+\infrule{\Gamma\mathrel{\triangleright}s=t\quad\Gamma\proves A(s)}{\Gamma\proves A(t)}\ \rulename{Tr}
+\qquad
+\infrule{\Gamma,\ B(t,z)\proves B(t,\Suc z)}{\Gamma\proves\mathsf{H}_{x,y}B(x,y)}\ \rulename{HI}
+\\[4pt]
+\infrule{\Gamma\mathrel{\triangleright}\mathsf{H}_{x,y}B(x,y)\quad\Gamma,\ \mathsf{P}_{y}B(a,y)\proves A}{\Gamma\proves A}\ \rulename{HE}
+\qquad
+\infrule{\Gamma\mathrel{\triangleright}\mathsf{P}_{y}B(y)\quad\Gamma\proves B(t)}{\Gamma\proves B(\Suc t)}\ \rulename{Step}
+\\[4pt]
+\infrule{\Gamma\mathrel{\triangleright}\mathsf{P}_{y}E(y)\quad\Gamma\proves E(0)}{\Gamma\proves E(t)}\ \rulename{Iter}
+\qquad
+\infrule{\Gamma,\ \operatorname{sg}(t)=0\proves A\quad\Gamma,\ \operatorname{sg}(t)=1\proves A}{\Gamma\proves A}\ \rulename{BoolCases}
+\end{gather*}
+In \rulename{Iter} the matrix $E$ is a literal equation. In \rulename{HI} the
+variable $z$ is fresh for $\Gamma$, $t$ and the passive parameters; in
+\rulename{HE} the variable $a$ is fresh for $\Gamma$, $A$ and the passive
+parameters. Here $1=\Suc 0$ and $\operatorname{sg}(n)=\mathsf{R}(n,0;u,v.1)$,
+so $\operatorname{sg}(0)=0$ and $\operatorname{sg}(\Suc n)=1$. There is no
+primitive hypothesis rule and no other induction rule. The \emph{case-free
+progressive calculus} omits \rulename{BoolCases}.
+\end{definition}
+
+\rulename{HI} is an unrestricted logical introduction; the only induction is
+\rulename{Iter}, at literal equations, in an elimination. The calculus with
+\rulename{BoolCases} is a complete presentation of $\iPRA$
+(\cref{obs:thm:progressive}); \cref{obs:thm:boolcases} shows that
+\rulename{BoolCases} cannot be deleted.
+
+\section{Coordinatewise powers and truth transfer}
+\label{obs:sec:powers}
+
+This section draws on \pkg{research}, \pkg{compact\_kernel},
+\pkg{scope\_kernel} and \pkg{checker\_and\_barriers}. One family of structures
+serves four results: equation induction does not imply numerical cases
+(\cref{obs:thm:direct-target}), Boolean cases are not admissible in the
+progressive calculus (\cref{obs:thm:boolcases}), and, in
+\cref{obs:sec:symmetry}, positive axioms and conjunctive induction do not give
+a theory bi-interpretable with $\iPRA$.
+
+\subsection{The powers}
+
+\begin{definition}[Coordinatewise powers]
+\label{obs:def:power}
+Let $\mathcal{N}$ be a finitary expansion of the standard structure
+$(\mathbb{N},0,\Suc)$ by total functions and relations. The signature may be
+infinite; in particular it may contain a symbol for every primitive recursive
+description. $\mathcal{N}$ may be many-sorted, with nonempty sorts and with
+$(\mathbb{N},0,\Suc)$ as a distinguished numerical sort. For a nonempty index
+set $J$, the structure $\mathcal{N}^{(J)}$ has, in each sort, the families
+$a=(a(i))_{i\in J}$ of elements of that sort that are constant outside a finite
+subset of $J$. Functions are interpreted coordinatewise. A relation holds of
+families exactly when it holds at every coordinate. Equality is actual equality
+of families, and constants are constant families.
+
+For $J=\{1,2\}$ the structure is the full product
+$\mathcal{A}=\mathcal{N}\times\mathcal{N}$. For $J=\mathbb{N}$ it is the
+structure $\mathcal{E}$ of eventually constant sequences. For $i\in J$, the
+family $e_i$ of the numerical sort has the value $1$ at $i$ and $0$ elsewhere.
+\end{definition}
+
+Finitely many families are simultaneously constant outside the union of their
+exceptional sets, so coordinatewise functions preserve the domain. Each element
+of $\mathcal{E}$ has a finite description, so $\mathcal{E}$ is countable when
+the sorts of $\mathcal{N}$ are.
+
+\begin{definition}[Conjunctive formulas]
+\label{obs:def:conjunctive}
+The class $\mathcal{C}$ of \emph{conjunctive formulas} is generated from atomic
+formulas and $\top$ by $\wedge$, $\exists$ and $\forall$, with unrestricted
+quantifier alternation. A conjunctive formula without $\forall$ is
+\emph{primitive positive}. No disjunction, implication or negation occurs
+inside a conjunctive formula.
+\end{definition}
+
+\begin{theorem}[Conjunctive transfer]
+\label{obs:thm:transfer}
+For every $\varphi(\vec x)\in\mathcal{C}$, every nonempty $J$ and every tuple
+$\vec a$ of $\mathcal{N}^{(J)}$,
+\[
+\mathcal{N}^{(J)}\models\varphi(\vec a)
+\quad\Longleftrightarrow\quad
+\mathcal{N}\models\varphi(\vec a(i))\ \text{ for every } i\in J .
+\]
+\end{theorem}
+
+\begin{proof}
+Induction on the formula. Terms evaluate coordinatewise, so atomic formulas
+transfer by the definition of the relations and of equality. Conjunction is
+immediate.
+
+\emph{Existential quantifier.} If $\mathcal{N}^{(J)}\models\theta(b,\vec a)$,
+the induction hypothesis gives $\mathcal{N}\models\theta(b(i),\vec a(i))$ at
+every $i$. Conversely, suppose
+$\mathcal{N}\models\exists y\,\theta(y,\vec a(i))$ at every $i$. There is a
+finite set $F\subseteq J$ such that $\vec a(i)$ is one fixed tuple
+$\vec a_\infty$ for all $i\notin F$. Choose a witness $b_i$ for each of the
+finitely many $i\in F$ and one witness $b_\infty$ for $\vec a_\infty$ if
+$J\ne F$. The family with the values $b_i$ on $F$ and $b_\infty$ elsewhere
+belongs to $\mathcal{N}^{(J)}$, and the induction hypothesis gives
+$\mathcal{N}^{(J)}\models\theta(b,\vec a)$. Only finitely many witnesses are
+chosen.
+
+\emph{Universal quantifier.} Suppose
+$\mathcal{N}^{(J)}\models\forall y\,\theta(y,\vec a)$. Fix $i$ and an element
+$b$ of the relevant sort of $\mathcal{N}$. The constant family $\overline{b}$
+is an element of $\mathcal{N}^{(J)}$; instantiate at $\overline{b}$ and apply
+the induction hypothesis at $i$ to get $\mathcal{N}\models\theta(b,\vec a(i))$.
+Conversely, if every coordinate satisfies $\forall y\,\theta(y,\vec a(i))$,
+then for every family $b$ every coordinate satisfies
+$\theta(b(i),\vec a(i))$, and the induction hypothesis gives
+$\mathcal{N}^{(J)}\models\theta(b,\vec a)$.
+\end{proof}
+
+\begin{corollary}[Regular axioms and conjunctive induction]
+\label{obs:cor:power-axioms}
+Let $J$ be nonempty.
+\begin{enumerate}[label=(\roman*)]
+\item $\mathcal{N}^{(J)}$ satisfies every sentence
+$\forall\vec x\,(\varphi\to\psi)$ and every sentence
+$\forall\vec x\,(\varphi\to\bot)$ with $\varphi,\psi\in\mathcal{C}$ that is
+true in $\mathcal{N}$.
+\item For every $A(n,\vec p)\in\mathcal{C}$, with $n$ of the numerical sort,
+$\mathcal{N}^{(J)}$ satisfies
+\[
+\forall\vec p\,\Bigl[\bigl(A(0,\vec p)\wedge\forall n\,(A(n,\vec p)\to A(\Suc n,\vec p))\bigr)\to\forall n\,A(n,\vec p)\Bigr].
+\]
+\end{enumerate}
+Consequently the contextual induction rule for matrices in $\mathcal{C}$ is
+sound in $\mathcal{N}^{(J)}$ under arbitrary retained assumptions.
+\end{corollary}
+
+\begin{proof}
+(i) If $\varphi(\vec a)$ holds in $\mathcal{N}^{(J)}$, then
+$\varphi(\vec a(i))$ holds in $\mathcal{N}$ at every $i$ by
+\cref{obs:thm:transfer}; truth of the sentence in $\mathcal{N}$ gives
+$\psi(\vec a(i))$ at every $i$, and the converse direction of the theorem gives
+$\psi(\vec a)$. For a negative constraint, a true antecedent in
+$\mathcal{N}^{(J)}$ gives a true antecedent in $\mathcal{N}$ at any one
+coordinate, which contradicts the constraint.
+
+(ii) Fix $\vec p$ and suppose the base and the progress hypothesis hold in
+$\mathcal{N}^{(J)}$. Fix $i\in J$ and put
+$U_i=\{k:\mathcal{N}\models A(k,\vec p(i))\}$. Transfer of the base gives
+$0\in U_j$ for every $j$. Let $k\in U_i$ and let $a$ be the family with the
+value $k$ at $i$ and $0$ elsewhere. At $i$ the formula $A(a(i),\vec p(i))$
+holds by the choice of $k$, and at every other coordinate it is the transferred
+base; hence $\mathcal{N}^{(J)}\models A(a,\vec p)$. The progress hypothesis
+gives $A(\Suc a,\vec p)$, and transfer at $i$ gives $k+1\in U_i$. Ordinary
+induction in $\mathbb{N}$ gives $U_i=\mathbb{N}$ for every $i$, and the
+converse direction of the theorem gives $A(a,\vec p)$ for every $a$.
+
+For the contextual rule, fix an assignment that makes the retained assumptions
+true. The induction variable is fresh, so changing its value does not change
+their truth, and the argument applies under that assignment. The retained
+assumptions may be arbitrary formulas. Witnesses for $A$ are not assumed to be
+terms.
+\end{proof}
+
+In the primitive recursive signature the corollary covers every defining
+equation, the injectivity of $\Suc$, the separation $0=\Suc x\to\bot$, every
+universal Horn sentence
+$\forall\vec x\,(E_1\wedge\dots\wedge E_r\to F)$ with equations $E_k$ and an
+equation or $\bot$ as $F$ that is true in $\mathbb{N}$, and induction for
+literal equations with parameters.
+
+\begin{definition}
+\label{obs:def:Talg}
+$T_{\mathrm{alg}}$ is intuitionistic first-order logic with equality in the
+signature with a symbol for every primitive recursive description, with all
+defining equations, the separation axioms and induction for every literal
+equation. Coverage is absent. For a structure $\mathcal{N}$ as in
+\cref{obs:def:power}, $T_{\mathcal{C}}(\mathcal{N})$ is intuitionistic logic
+with equality together with all sentences of
+\cref{obs:cor:power-axioms}(i) that are true in $\mathcal{N}$ and all
+induction sentences of \cref{obs:cor:power-axioms}(ii);
+$T_{\mathrm{pp}}(\mathcal{N})$ is its restriction to primitive positive
+$\varphi,\psi,A$.
+\end{definition}
+
+By \cref{obs:cor:power-axioms}, every $\mathcal{N}^{(J)}$ is a model of
+$T_{\mathcal{C}}(\mathcal{N})$, hence of $T_{\mathrm{pp}}(\mathcal{N})$, and,
+for the primitive recursive signature, of $T_{\mathrm{alg}}$ together with all
+universal Horn sentences true in $\mathbb{N}$.
+
+\begin{proposition}[What fails in a power]
+\label{obs:prop:coverage-fails}
+Let $J$ have at least two elements and let the signature contain
+$\operatorname{sg}$. In $\mathcal{N}^{(J)}$:
+\begin{enumerate}[label=(\roman*)]
+\item $e_i$ is neither $0$ nor a successor, so coverage
+$\forall x\,(x=0\vee\exists y\,x=\Suc y)$ fails;
+\item the quantifier-free induction instance for
+$\varphi(n)\defeq(\operatorname{sg}(n)=0\vee\operatorname{sg}(n)=1)$ fails:
+$\varphi(0)$ and $\varphi(\Suc a)$ hold for every $a$, and $\varphi(e_i)$
+fails;
+\item no formula with finitely many parameters defines a linear order of the
+numerical sort when $J$ is infinite (\cref{obs:lem:involution}).
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Every successor family is positive at every coordinate, and $e_i$ is $0$ at
+some coordinate and $1$ at $i$. The family $\operatorname{sg}(\Suc a)$ is the
+constant $1$, while $\operatorname{sg}(e_i)=e_i$ is neither the constant $0$
+nor the constant $1$. For (iii), an order defined over a finite tuple of
+parameters is preserved by the involution of \cref{obs:lem:involution} that
+fixes the tuple, and an order-preserving involution of a linear order is the
+identity (\cref{obs:lem:rigid}).
+\end{proof}
+
+The same holds for the relation $x\le y$ of the primitive recursive signature:
+for $i\ne j$ neither $e_i\le e_j$ nor $e_j\le e_i$ holds, since each fails at
+one coordinate.
+
+\begin{remark}
+\label{obs:rem:boolean}
+The missing feature is a disjunctive range assertion, not numerical
+computation. A primitive recursive characteristic of equality still reflects
+equality in a power: its value is the zero family exactly when its arguments
+agree at every coordinate. What fails is the assertion that the value is
+globally $0$ or globally $1$. In the same way, equation induction proves the
+algebraic identities $t(\sel(n,a,b))=\sel(n,t(a),t(b))$ for each fixed term
+context $t$, and $\sel(b,0,1)=b$ for the Boolean value $b=\sel(n,0,1)$; these
+hold for the mixed values $(0,1)$ and $(1,0)$ of $\mathcal{A}$ and do not
+entail $b=0\vee b=1$. Coordinatewise predecessor satisfies $P(0)=0$ and
+$P(\Suc x)=x$ in every power, so adding valid predecessor equations does not
+restore coverage.
+\end{remark}
+
+\begin{remark}
+The product $\mathcal{A}$ with literal-equation induction is in
+\pkg{scope\_kernel} and \pkg{checker\_and\_barriers}; \pkg{research}
+attributes the product model of non-coverage to an earlier draft. The structure
+$\mathcal{E}$ with induction for equations and for finite conjunctions of
+atoms, universal Horn sentences and arbitrary finitary expansions is in
+\pkg{research}. Primitive positive transfer, the universal quantifier and the
+many-sorted form are in \pkg{compact\_kernel}. The statement for an arbitrary
+index set is the same proof. % ed.: the packages treat J = {1,2} and J = N separately; the proof of the existential case only needs finitely many exceptional coordinates.
+\end{remark}
+
+\subsection{Equation induction does not replace numerical cases}
+
+Consider the \emph{direct-target} replacement of case introduction:
+\[
+\infrule{\Gamma,\ B(t,0)\proves B(t,z)}{\Gamma\proves\D{x}{y}B(x,y)}
+\qquad z \text{ fresh for } \Gamma,t \text{ and the parameters of } B .
+\]
+It is sound for the ordinary reading of $\D{x}{y}$ in every structure, with no
+coverage axiom. Let $\Nat^{\mathrm{dt}}$ be $\Nat$ (or $\Nat_{\mathrm{p}}$)
+with \rulename{DI} by cases replaced by this rule.
+
+\begin{theorem}[\pkg{scope\_kernel}]
+\label{obs:thm:direct-target}
+Every theorem of $\Nat^{\mathrm{dt}}$ is valid in every power
+$\mathcal{N}^{(J)}$ of the standard model of the iterator language, under the
+ordinary reading. Write $1=\Suc 0$ and define
+\begin{align*}
+E(n,y,p)&\defeq\bigl(\sel(p,\,\sel(n,y,1),\,\sel(n,1,0))=0\bigr), &
+K(n,p)&\defeq\Q{y}E(n,y,p),\\
+M(p)&\defeq\Q{n}K(n,p), &
+F&\defeq\Q{p}M(p).
+\end{align*}
+The closed formula $F$ is derivable in $\Nat$ without the progress rule and is
+false in $\mathcal{A}$. Hence $\Nat^{\mathrm{dt}}$ does not derive $F$.
+\end{theorem}
+
+\begin{proof}
+\emph{Soundness.} Interpret $\Q{y}B$ and $\D{x}{y}B$ by their ordinary
+readings. \rulename{Hyp}, transport, \rulename{QE} and \rulename{DE} are sound
+in every structure with actual equality. The computation equations hold
+coordinatewise. The progress rule is sound by
+\cref{obs:cor:power-axioms}(ii). The direct-target rule is sound because its
+fresh variable already ranges over the whole domain.
+
+\emph{Derivation of $F$ in $\Nat$.} A closure $\Q{y}B(y)$ follows from a
+derivation of $B(\Suc z)$ with $z$ fresh: \rulename{DI} by cases with an unused
+witness gives $\D{u}{y}B(y)$, and \rulename{DE} with \rulename{Hyp} gives
+$\Q{y}B(y)$. At $n=\Suc z$ the computation equations give
+$\sel(\Suc z,y,1)=1$ and $\sel(\Suc z,1,0)=0$, so $E(\Suc z,y,p)$ is
+interderivable with $\sel(p,1,0)=0$, independently of $y$. Hence
+$E(\Suc z,0,p)\proves E(\Suc z,\Suc w,p)$ by transport, and $K(\Suc z,p)$ is
+derivable. This is the successor instance of $M(p)$, so $M(p)$ is derivable
+for a free $p$; its instance $M(\Suc w)$ is the successor instance of $F$.
+Only case introduction, \rulename{DE}, \rulename{QE}, the computations and
+transport are used.
+
+\emph{$F$ is false in $\mathcal{A}$.} Let $p_*=(0,1)$. Coordinatewise
+computation gives
+\[
+\mathcal{A}\models E(n,y,p_*)
+\quad\Longleftrightarrow\quad n_1=0,\ n_2>0,\ y_1=0 .
+\]
+Hence $K(0,p_*)$ holds, since its antecedent $E(0,0,p_*)$ is false, and
+$K((0,1),p_*)$ fails: its antecedent holds at $y=0$ and its consequent fails at
+$y=(1,0)$. So $M(p_*)$ is false. At $p=0$ the formula $E(0,y,0)$ is $y=0$, so
+$K(0,0)$, which reads $0=0\to\forall y\,(y=0)$, is false and $M(0)$ is true.
+Therefore $F$, which reads $M(0)\to\forall p\,M(p)$, is false.
+\end{proof}
+
+The theorem excludes this replacement with the identity translation of
+formulas. It does not show that every interpretation of the weaker calculus in
+$\iPRA$ fails, and it does not show that no restricted form of numerical cases
+suffices.
+
+\subsection{Boolean cases are not admissible in the progressive calculus}
+
+\begin{theorem}[\pkg{checker\_and\_barriers}]
+\label{obs:thm:boolcases}
+Let $C$ and $Z$ be the terms $C(n,a,b)=\mathsf{R}(n,a;u,v.b)$ and
+$Z(n)=\mathsf{R}(n,1;u,v.0)$, so that $C(0,a,b)=a$, $C(\Suc n,a,b)=b$,
+$Z(0)=1$ and $Z(\Suc n)=0$. For a numerical term $t$ put
+\[
+F(t)\defeq\mathsf{H}_{u,y}\,\mathsf{H}_{v,z}\bigl(C(t,Z(y),z)=0\bigr),
+\]
+with $u,v$ unused. The case-free progressive calculus of
+\cref{obs:def:progressive} derives $F(0)$ and $F(1)$ and does not derive
+$F(\operatorname{sg}(t))$. Hence \rulename{BoolCases}, with an arbitrary object
+formula as conclusion, is not admissible in the case-free calculus, in the
+presence of all primitive recursive symbols, their defining equations and
+contextual induction for literal equations.
+\end{theorem}
+
+\begin{proof}
+\emph{The endpoints.} The derivations use the derived identity
+$\Gamma,A\proves A$ of \cref{obs:lem:Hidentity}, which needs no cases. At
+$t=0$ the inner matrix is interderivable with $Z(y)=0$, independently of $z$.
+Its progress step is therefore an identity, and \rulename{HI} gives
+$\mathsf{H}_{v,z}(C(0,Z(y),z)=0)$ for arbitrary $y$. The outer \rulename{HI}
+ignores its local assumption. At $t=1$ the inner matrix is interderivable with
+$z=0$, independently of $y$. For the outer \rulename{HI}, open the assumed
+inner formula at $y$ by \rulename{HE}, introduce the inner formula at $\Suc y$
+by \rulename{HI} with the same witness, convert its local assumption to the
+matrix at $y$ by the computation equations, apply \rulename{Step}, and convert
+back.
+
+\emph{The model.} Let $\mathcal{A}$ be the product of the standard model of the
+primitive recursive signature. Under the readings of
+\cref{obs:def:progressive}, \rulename{Tr}, \rulename{HI}, \rulename{HE} and
+\rulename{Step} are logical rules, valid in every structure with actual
+equality, and \rulename{Iter} is induction for a literal equation, valid by
+\cref{obs:cor:power-axioms}(ii). The computation equations hold. So every
+theorem of the case-free calculus is valid in $\mathcal{A}$.
+
+Let $e=(0,1)$, so $\operatorname{sg}(e)=e$. For $y=(y_1,y_2)$ and
+$z=(z_1,z_2)$ the inner equation $C(e,Z(y),z)=0$ says
+$(Z(y_1),z_2)=(0,0)$. If $y_1=0$ it is false for every $z$, so the inner
+progress statement is vacuously true. If $y_1>0$ it says $z_2=0$; it holds at
+$z=(0,0)$ and fails at $\Suc z=(1,1)$, so the inner statement is false. Thus
+the inner formula is true at $y=(0,0)$ and false at $\Suc y=(1,1)$, which
+refutes the outer progress statement for every $u$. Hence
+$\mathcal{A}\not\models F(e)$, and $F(\operatorname{sg}(t))$ is not derivable.
+
+\emph{Non-admissibility.} From the assumption $\operatorname{sg}(t)=0$,
+transport of $F(0)$ gives $F(\operatorname{sg}(t))$; from
+$\operatorname{sg}(t)=1$, transport of $F(1)$ gives the same. An admissible
+\rulename{BoolCases} would derive $F(\operatorname{sg}(t))$.
+\end{proof}
+
+\begin{proposition}[The binder depth is sharp for this separation]
+\label{obs:prop:depth}
+Let $G(t)$ be an equation or a formula $\mathsf{H}_{x,y}E(x,y,t)$ with $E$ a
+literal equation. If $G(0)$ and $G(1)$ hold in the standard model, then
+$G((0,1))$ holds in $\mathcal{A}$.
+\end{proposition}
+
+\begin{proof}
+For an equation this is coordinatewise evaluation. Otherwise let $a_0$ and
+$a_1$ be standard witnesses for $t=0$ and $t=1$. If
+$E((a_0,a_1),(y_1,y_2),(0,1))$ holds in $\mathcal{A}$, then $E(a_0,y_1,0)$ and
+$E(a_1,y_2,1)$ hold in $\mathbb{N}$, so $E(a_0,y_1+1,0)$ and $E(a_1,y_2+1,1)$
+hold, which is $E$ at $\Suc y$ in $\mathcal{A}$.
+\end{proof}
+
+The first failure arises when an implication tests a compound premise: one
+coordinate makes an inner implication vacuous while the other would fail it.
+\Cref{obs:thm:boolcases} rejects the deletion of \rulename{BoolCases}. It is
+not a statement about other logical bases, other primitive operations or other
+interpretations; the stronger statement about bi-interpretations of the
+case-free calculus is \cref{obs:cor:casefree}.
+
+\section{Symmetry}
+\label{obs:sec:symmetry}
+
+This section draws on \pkg{research} and \pkg{compact\_kernel};
+\pkg{checker\_and\_barriers} applies the result to the case-free progressive
+calculus. \pkg{research} attributes the method, a finite-parameter involution
+against a definable linear order, to earlier drafts on unary arithmetic. The
+obstruction of \cref{obs:prop:coverage-fails} concerns the original domain. An
+interpretation on a different definable domain is not touched by it; the
+symmetry argument handles that freedom.
+
+\begin{lemma}[Finite parameters leave an involution]
+\label{obs:lem:involution}
+Let $J$ be infinite. For every finite tuple $\vec c$ of
+$\mathcal{N}^{(J)}$, the expansion $(\mathcal{N}^{(J)},\vec c)$ has an
+automorphism of order two that is not the identity on the numerical sort.
+\end{lemma}
+
+\begin{proof}
+Outside a finite set $F\subseteq J$ every component of $\vec c$ is constant.
+Choose distinct $i,j\notin F$ and exchange the coordinates $i$ and $j$ in every
+family of every sort. The exchange preserves the domain, commutes with every
+coordinatewise function and preserves every coordinatewise relation, whatever
+the size of the signature. It fixes $\vec c$, has order two, and moves $e_i$ to
+$e_j$.
+\end{proof}
+
+\begin{lemma}[Order rigidity]
+\label{obs:lem:rigid}
+Every classical model of $\iPRA$ has a parameter-free definable strict linear
+order, for example
+$x<y\iffdef\Suc x\mathbin{\dot{-}}y=0$ with truncated subtraction. An
+automorphism of finite order of a linearly ordered structure that preserves the
+order is the identity.
+\end{lemma}
+
+\begin{proof}
+The order laws are theorems of primitive recursive arithmetic with
+quantifier-free induction. If $a<\sigma(a)$, repeated application gives
+$a<\sigma(a)<\dots<\sigma^{r}(a)=a$ for the order $r$ of $\sigma$; the case
+$\sigma(a)<a$ is symmetric. Linearity gives $\sigma(a)=a$.
+\end{proof}
+
+\begin{lemma}[Automorphisms under a bi-interpretation]
+\label{obs:lem:aut}
+Let a structure $M$ interpret a structure $N$ by an ordinary interpretation
+with parameters among $\vec c$. Every automorphism of $M$ that fixes $\vec c$
+acts coordinatewise on representing tuples and induces an automorphism of $N$;
+this is a group homomorphism
+$\operatorname{Aut}(M/\vec c)\to\operatorname{Aut}(N)$. If in addition $N$
+interprets a copy of $M$, and an isomorphism $\eta$ of $M$ onto that copy is
+definable in $M$, and $\vec c$ contains the parameters of $\eta$ and
+representatives in $M$ of the parameters of the second interpretation, then the
+homomorphism is injective.
+\end{lemma}
+
+\begin{proof}
+The domain, the equality and the graphs of the interpretation are definable
+over $\vec c$, so they are preserved by $\sigma\in\operatorname{Aut}(M/\vec c)$;
+this gives the induced automorphism $\widehat\sigma$ and the homomorphism. The
+automorphism $\widehat\sigma$ fixes the parameters of the second
+interpretation, since $\sigma$ fixes their representatives, and so induces an
+automorphism $\widehat{\widehat\sigma}$ of the copy of $M$. Since $\eta$ is
+definable over parameters fixed by $\sigma$,
+$\eta(\sigma(a))=\widehat{\widehat\sigma}(\eta(a))$. If $\widehat\sigma$ is the
+identity, so is $\widehat{\widehat\sigma}$, hence $\eta(\sigma(a))=\eta(a)$,
+and injectivity of $\eta$ gives $\sigma(a)=a$. Only this one composite is used.
+The interpretations may have any finite dimension, quotient equality and
+domains different from the original ones.
+\end{proof}
+
+\begin{theorem}[Symmetry obstruction]
+\label{obs:thm:symmetry}
+Let $J$ be infinite and let $T$ be a theory, in the language of a structure
+$\mathcal{N}$ as in \cref{obs:def:power}, that has $\mathcal{N}^{(J)}$ as a
+model. Then $T$ and $\iPRA$ are not bi-interpretable in the sense of
+\cref{obs:def:biinterp}. Arbitrary formula-defined domains, graphs and quotient
+equality are allowed, in any finite dimension and over finite products of the
+sorts. Finite parameter tuples are allowed, including parameters of the return
+isomorphism, provided the interpretations and the isomorphism exist in
+$\mathcal{N}^{(J)}$; this covers a parameter condition that $T$ proves to be
+inhabited and under which $T$ proves all the required facts.
+\end{theorem}
+
+\begin{proof}
+Apply a hypothetical bi-interpretation in $\mathcal{N}^{(J)}$, which yields a
+classical model $\mathcal{M}$ of $\iPRA$. Let $\vec c$ collect the parameters
+of the first interpretation, of the return isomorphism, and representatives in
+$\mathcal{N}^{(J)}$ of the parameters of the second interpretation.
+\Cref{obs:lem:involution} gives a non-identity involution $\sigma$ of
+$(\mathcal{N}^{(J)},\vec c)$. Its image in $\operatorname{Aut}(\mathcal{M})$
+has order dividing two and preserves the definable order, so it is the identity
+by \cref{obs:lem:rigid}. By \cref{obs:lem:aut} the homomorphism is injective,
+so $\sigma$ is the identity on every sort, which contradicts its choice on the
+numerical sort. Faithfulness of the action on the other sorts is not needed.
+\end{proof}
+
+\begin{corollary}
+\label{obs:cor:symmetry-cases}
+None of the following theories is bi-interpretable with $\iPRA$ in the sense of
+\cref{obs:def:biinterp}:
+\begin{enumerate}[label=(\roman*)]
+\item $T_{\mathrm{alg}}$, also with every set of universal Horn sentences true
+in $\mathbb{N}$ adjoined;
+\item for every finitary expansion $\mathcal{N}$ of $(\mathbb{N},0,\Suc)$, the
+theory of all universal Horn sentences true in $\mathcal{N}$ with induction for
+atomic formulas or for finite conjunctions of atomic formulas;
+\item $T_{\mathrm{pp}}(\mathcal{N})$ and $T_{\mathcal{C}}(\mathcal{N})$, and
+every subtheory of them, recursively axiomatized or not;
+\item the many-sorted theories $T_{\mathcal{C}}(\mathcal{A}')$ for a
+many-sorted $\mathcal{A}'$ with numerical sort $(\mathbb{N},0,\Suc)$, with
+induction on the numerical sort for conjunctive matrices whose parameters and
+witnesses may range over the other sorts.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Each theory is true in $\mathcal{E}$ by \cref{obs:cor:power-axioms}. In the
+many-sorted case the family varied in the induction argument belongs to the
+numerical sort and the parameters of the other sorts stay fixed.
+\end{proof}
+
+\begin{remark}[Function objects]
+The many-sorted case applies when a sort consists of numerical functions and
+the signature has a total application operation. Extensionality,
+$\bigl(\forall n\,\operatorname{app}(f,n)=\operatorname{app}(g,n)\bigr)\to f=g$,
+has a conjunctive antecedent and is preserved. Adding function objects,
+application, extensionality and equational combinator laws does not by itself
+remove the symmetry.
+\end{remark}
+
+\begin{corollary}[The case-free progressive calculus]
+\label{obs:cor:casefree}
+Every rule of the case-free progressive calculus is sound in $T_{\mathrm{alg}}$
+under the readings of \cref{obs:def:progressive}; \rulename{Iter} is induction
+for a literal equation. Hence $\mathcal{E}$ is a model of its ordinary
+first-order realization, and that realization is not bi-interpretable with
+$\iPRA$ in the sense of \cref{obs:def:biinterp}.
+\end{corollary}
+
+\begin{remark}[Scope]
+\label{obs:rem:symmetry-scope}
+\Cref{obs:thm:symmetry} is about ordinary model-theoretic bi-interpretations,
+or about a native proposal whose claimed interpretations are proved to induce
+such interpretations under the displayed readings. Soundness of a native
+calculus in an ordinary theory does not show that the calculus derives the
+logical rules of that theory, and a proof translation that changes the meaning
+of the connectives need not give an ordinary interpretation; the theorem does
+not address such translations. It does not exclude equiconsistency, one-way
+interpretations, disjunctive axioms such as coverage or a Boolean range
+assertion, non-regular rules, or expansions that are not interpreted
+coordinatewise. A parameter condition that excludes $\mathcal{E}$ and is not
+proved inhabited there is outside the claim. Changing a term-defined operation
+to a positive existential graph does not escape the theorem, since existential
+witnesses and conjunctive induction of arbitrary alternation are allowed.
+\end{remark}
+
+\begin{remark}
+\pkg{research} proves \cref{obs:thm:symmetry} for $T_{\mathrm{alg}}$, universal
+Horn sentences and conjunctions of atoms. \pkg{compact\_kernel} proves it for
+$T_{\mathrm{pp}}$, for $T_{\mathcal{C}}$ and for many sorts, with the order
+$x\le y\iffdef\exists z\,(x+z=y)$ in place of the one in \cref{obs:lem:rigid}.
+\pkg{checker\_and\_barriers} restates the argument for
+\cref{obs:cor:casefree}.
+\end{remark}
+
+\section{Majorants: almost unary term languages}
+\label{obs:sec:majorants}
+
+This section draws on \pkg{counter\_congruence}, \pkg{research},
+\pkg{local\_scopes}, \pkg{adaptive\_seed} and \pkg{uniform\_predecessor}. All
+statements concern the standard interpretation of fixed finite terms. The
+bounding functions belong to the metatheory; they are not asserted to be terms
+of the reduced languages.
+
+\subsection{Zero-seeded recursion is monotone}
+
+\begin{proposition}[\pkg{counter\_congruence}]
+\label{obs:prop:monotone}
+Every function denoted by a term of the zero-seeded language of
+\cref{obs:def:languages}(a) is nondecreasing in each coordinate. Hence no term
+denotes the zero test $z(0)=1$, $z(\Suc n)=0$, and the terms do not denote all
+primitive recursive functions.
+\end{proposition}
+
+\begin{proof}
+Induction on terms. Variables, $0$ and $\Suc$ are monotone. For
+$\mathsf{L}(n;u,v.h)$ the update $h(u,v,\vec p)$ is coordinatewise
+nondecreasing by the induction hypothesis. Fix $\vec p$ and write $r_0=0$,
+$r_{k+1}=h(k,r_k,\vec p)$. Then $r_0\le r_1$, and $r_k\le r_{k+1}$ gives
+$r_{k+1}=h(k,r_k,\vec p)\le h(k+1,r_{k+1},\vec p)=r_{k+2}$. So the value is
+nondecreasing in the counter. Induction on $k$ gives
+$r_k(\vec p)\le r_k(\vec p\,')$ for $\vec p\le\vec p\,'$ coordinatewise.
+Substitution of the counter term and of parameter terms preserves monotonicity
+by the induction hypothesis. The zero test is not monotone at $0<1$.
+\end{proof}
+
+The statement is formalized as \Lean{ZTm.mono} and \Lean{ZTm.no\_zero\_test}
+in the module \Lean{ZeroSeedObstruction}; \Lean{Tm.val\_zf} records that
+$\sel(x,1,0)$ of the iterator language is the zero test. The proposition
+excludes the direct term compiler only. The tied-seed language of
+\cref{obs:def:languages}(b) escapes it, since $Z$ of \cref{obs:lem:Bterms} is
+the zero test.
+
+\subsection{Bounding coordinates}
+
+\begin{definition}
+\label{obs:def:bc}
+A function $f\colon\mathbb{N}^r\to\mathbb{N}$ has the \emph{bounding
+coordinate} $i$ if there is a nondecreasing unary primitive recursive function
+$F$ with $f(x_1,\dots,x_r)\le F(x_i)$ for all arguments. A function is
+\emph{almost unary} if it is globally bounded or has a bounding coordinate.
+\end{definition}
+
+The name is the one used in clone theory for functions bounded by a unary
+function of one coordinate, whose closure under composition is standard
+(Pinsker, \emph{Clones containing all almost unary functions}, Algebra
+Universalis 51 (2004)). The primitive recursive majorants are the additional
+content here.
+
+\begin{lemma}[Envelopes and composition]
+\label{obs:lem:envelope}
+\begin{enumerate}[label=(\roman*)]
+\item For a primitive recursive map $g\colon\mathbb{N}^r\to\mathbb{N}^s$ the
+function $\widehat g(z)=\max\{g(\vec z)_k: z_1,\dots,z_r\le z,\ k\le s\}$ is a
+nondecreasing unary primitive recursive function that bounds every output
+coordinate of $g$ whenever all inputs are at most $z$. In particular a unary
+bound $F$ may be replaced by its nondecreasing envelope
+$\widehat F(z)=\max_{m\le z}F(m)$.
+\item Constants, projections, unary primitive recursive functions and globally
+bounded functions are almost unary.
+\item If $f$ and $g_1,\dots,g_r$ are almost unary, so is
+$f(g_1(\vec x),\dots,g_r(\vec x))$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) and (ii) are immediate. For (iii), if $f$ is globally bounded so is the
+composite. If $f\le F(x_j)$, only $g_j$ matters: a constant bound $c$ of $g_j$
+gives the constant bound $F(c)$, and $g_j\le N(x_i)$ gives $F(N(x_i))$, by
+monotonicity of $F$.
+\end{proof}
+
+\subsection{Single-body constructors}
+
+\begin{definition}[\pkg{uniform\_predecessor}]
+\label{obs:def:single-body}
+A \emph{single-body constructor scheme} is given by integers $a,b,d,q\ge 1$ and
+fixed primitive recursive maps
+\[
+A_i\colon\mathbb{N}\to\mathbb{N}^q\ (i\le a),\quad
+U_j\colon\mathbb{N}^{d+2}\to\mathbb{N}^q\ (j\le b),\quad
+F_0\colon\mathbb{N}^a\to\mathbb{N}^d,\quad
+F_1\colon\mathbb{N}^b\to\mathbb{N}^d,\quad
+G\colon\mathbb{N}^d\to\mathbb{N}.
+\]
+Its supplied subdescriptions are a counter term $t$ and one body
+$h(\vec u,\vec p)$ with $q$ local variables $\vec u$ and passive variables
+$\vec p$. With $n=t(\vec p)$, the constructor denotes $G(\vec r_n)$, where
+\begin{align}
+\vec r_0&=F_0\bigl(h(A_1(n),\vec p),\dots,h(A_a(n),\vec p)\bigr),\label{obs:eq:seed}\\
+\vec r_{m+1}&=F_1\bigl(h(U_1(n,m,\vec r_m),\vec p),\dots,h(U_b(n,m,\vec r_m),\vec p)\bigr).\label{obs:eq:step}
+\end{align}
+The maps are fixed before the body is supplied. No passive parameter and no
+retained register enters $F_0$, $F_1$ or $G$ directly: passive data and
+retained state reach the seed and update combiners only through evaluations of
+the one body $h$. The target counter $n$ and the elapsed counter $m$ may enter
+the probe locations. The \emph{single-body term language} has variables, $0$,
+any primitive operations that are almost unary, composition, and the
+constructors of all schemes, arbitrarily nested.
+\end{definition}
+
+The tied-seed recursor is the scheme $d=1$, $q=2$, $a=b=1$, $A_1(n)=(0,0)$,
+$U_1(n,m,r)=(m,r)$, $F_0(z)=z+1$, $F_1(z)=z$, $G(r)=r$.
+
+\begin{theorem}[Single-body information barrier]
+\label{obs:thm:single-body}
+Every term of the single-body term language denotes an almost unary function.
+\end{theorem}
+
+\begin{proof}
+Induction on descriptions; the local and passive variables of a body are
+independent inputs for the induction hypothesis. The primitive cases hold by
+assumption and composition is \cref{obs:lem:envelope}(iii). Consider a
+constructor, and fix envelopes $f_0,f_1,g$ of $F_0,F_1,G$ by
+\cref{obs:lem:envelope}(i).
+
+\emph{$h$ is bounded by a constant $c$.} Every probe value is at most $c$, so
+every register at every stage is at most $\max(f_0(c),f_1(c))$, and the result
+is bounded by $g$ of that constant.
+
+\emph{$h(\vec u,\vec p)\le H(p_i)$ for a passive coordinate.} All seed and
+update probes obey this bound, whatever their local arguments. The result is at
+most $g\bigl(\max(f_0(H(p_i)),f_1(H(p_i)))\bigr)$, a nondecreasing primitive
+recursive function of $p_i$ alone.
+
+\emph{$h(\vec u,\vec p)\le H(u_\ell)$ for a local coordinate.} Choose
+nondecreasing primitive recursive envelopes $\alpha$ and $\upsilon$ such that
+all coordinates of every $A_i(n)$ are at most $\alpha(n)$, and all coordinates
+of every $U_j(n,m,\vec r)$ are at most $\upsilon(s)$ whenever
+$n,m,r_1,\dots,r_d\le s$. Define
+\[
+w(0,n)=f_0(H(\alpha(n))),\qquad
+w(m+1,n)=\max\Bigl(w(m,n),\ f_1\bigl(H(\upsilon(n+m+w(m,n)))\bigr)\Bigr).
+\]
+Induction on $m$ shows that every coordinate of $\vec r_m$ is at most
+$w(m,n)$: at the base the probe arguments are bounded by $\alpha(n)$; at the
+step the sum $n+m+w(m,n)$ bounds both counters and every register, so the
+probes are bounded by $H(\upsilon(n+m+w(m,n)))$ and the new registers by $f_1$
+of that. Hence the result is at most $g(w(n,n))$, and
+$K(n)=\max_{z\le n}g(w(z,z))$ is a nondecreasing unary primitive recursive
+bound, independent of every passive parameter.
+
+In the last case apply the induction hypothesis to the counter term: a
+constant bound $c$ of $t$ gives the bound $K(c)$, and $t(\vec p)\le N(p_i)$
+gives $K(N(p_i))$. The cases exhaust the induction hypotheses for $h$.
+\end{proof}
+
+\begin{remark}[Effectiveness]
+Given bounding-coordinate or global-bound witnesses for the primitive
+operations of a description, the proof constructs a coordinate and a majorant
+effectively. A bound of an arbitrary globally bounded primitive recursive
+function cannot be computed from its bare description: for a machine $e$, the
+function $b_e(x,y)$ equal to the first halting time of $e$ if it is at most
+$\max(x,y)$ and $0$ otherwise is globally bounded, and a uniform extractor of
+bounds would decide halting. Unary primitives have computable envelopes and
+Boolean predicates have the bound $1$, so these need no witness. The existence
+statement of the theorem needs no witnesses.
+\end{remark}
+
+\subsection{Adaptive query circuits}
+
+\begin{definition}[\pkg{adaptive\_seed}]
+\label{obs:def:circuit}
+A \emph{query circuit} $P$ is a finite acyclic circuit with no input nodes. Its
+nodes are numerals, applications of fixed primitive recursive functions to
+earlier nodes, and queries $\mathit{Q}(a,b)$ whose two arguments are earlier
+nodes; one node is the output. For an oracle
+$\mathit{Q}\colon\mathbb{N}^2\to\mathbb{N}$ the output is $P^{\mathit{Q}}$.
+Later queries may depend on earlier answers. For an update term
+$h(u,v,\vec p)$ put $h_{\vec p}(a,b)=h(a,b,\vec p)$; the \emph{tied-seed
+recursor with circuit $P$} is
+\[
+\mathsf{R}_P(0;u,v.h)=P^{h_{\vec p}},\qquad
+\mathsf{R}_P(n+1;u,v.h)=h(n,\mathsf{R}_P(n;u,v.h),\vec p).
+\]
+The circuit reaches $\vec p$ only through queries to $h_{\vec p}$; it receives
+no separate initializer, no counter and no passive parameter. The
+\emph{circuit term language} has constants, projections, any primitive
+operations that are almost unary, substitution, and the constructors
+$\mathsf{R}_P$ for all circuits $P$, arbitrarily nested. The combining
+operations inside a circuit are arbitrary primitive recursive functions.
+\end{definition}
+
+The tied-seed recursor $\mathsf{B}$ is the circuit with one query
+$\mathit{Q}(0,0)$ followed by successor. A circuit may, for example, compute
+$q=h(0,0,\vec p)$ and return $q+h(q,q+1,\vec p)^2$.
+
+\begin{lemma}
+\label{obs:lem:circuit}
+Let $P$ be a query circuit.
+\begin{enumerate}[label=(\roman*)]
+\item There is a unary primitive recursive $C_P$ such that
+$P^{\mathit{Q}}\le C_P(M)$ whenever $\mathit{Q}(a,b)\le M$ for all $a,b$.
+\item If $\mathit{Q}(a,b)\le F(a)$ for all $a,b$, with $F$ a fixed unary
+primitive recursive function, then $P^{\mathit{Q}}$ is bounded by a constant
+that depends on $P$ and $F$ only. The same holds with $F(b)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Traverse the circuit in topological order. For (i) give each numeral its
+value, each query the bound $M$, and each operation node the envelope
+$\widehat g$ of the maximum of the bounds of its inputs; every node bound is a
+unary primitive recursive function of $M$. For (ii) use constant bounds
+throughout: at a query, apply $\widehat F$ to the constant bound of the
+controlling argument, which is already available.
+\end{proof}
+
+\begin{theorem}[Tied-seed circuit obstruction]
+\label{obs:thm:circuit}
+Every term of the circuit term language denotes an almost unary function.
+\end{theorem}
+
+\begin{proof}
+Induction on terms, with \cref{obs:lem:envelope} for the primitives and for
+substitution. Consider $\mathsf{R}_P(n;u,v.h)$ and write $r_j(\vec p)$ for its
+state at the counter $j$.
+
+If $h\le c$ or $h(u,v,\vec p)\le F(p_i)$ for a passive coordinate, write $M$
+for $c$ or $F(p_i)$. \Cref{obs:lem:circuit}(i) gives $r_0\le C_P(M)$, and
+$r_{j+1}\le M$, so $\max(C_P(M),M)$ bounds the result independently of the
+counter.
+
+If $h(u,v,\vec p)\le F(u)$, \cref{obs:lem:circuit}(ii) bounds $r_0$ by a
+constant $b_0$, and $r_{j+1}\le F(j)$. The nondecreasing function
+$M(n)=\max(b_0,\widehat F(n))$ bounds $r_n$ for every $n$.
+
+If $h(u,v,\vec p)\le F(v)$, \cref{obs:lem:circuit}(ii) again bounds $r_0$ by a
+constant $b_0$. Put $K(z)=\max(z,\widehat F(z))$. Then $K$ is nondecreasing,
+$K\ge\operatorname{id}$, and induction gives $r_n\le K^{n}(b_0)$; the function
+$n\mapsto K^{n}(b_0)$ is primitive recursive and nondecreasing.
+
+In the last two cases compose the bound in $n$ with the bound of the counter
+term, as in \cref{obs:lem:envelope}(iii).
+\end{proof}
+
+\begin{corollary}[The tied-seed language]
+\label{obs:cor:tied-seed}
+Every term of the tied-seed language of \cref{obs:def:languages}(b), and of its
+unary-update variant, denotes an almost unary function. This remains true after
+adjoining all unary primitive recursive functions and any operations that are
+globally bounded or have a bounding coordinate, for example a primitive
+characteristic of equality with values in $\{0,1\}$, predecessor, zero tests
+and minimum.
+\end{corollary}
+
+\begin{proof}
+The language is a sublanguage of both the single-body and the circuit term
+language. Directly: if $h\le c$ the values are at most $c+1$; if
+$h\le F(p_i)$ they are at most $1+F(p_i)$; if $h\le F(u)$ the value at the
+counter $m$ is at most $1+F(m)$; if $h\le F(v)$ it is at most $\kappa(m)$ with
+$\kappa(0)=1+F(0)$ and $\kappa(m+1)=\max(\kappa(m),F(\kappa(m)))$.
+\end{proof}
+
+\begin{corollary}[What almost unary terms cannot denote]
+\label{obs:cor:no-addition}
+No term of the single-body term language or of the circuit term language
+denotes addition, maximum, the selector with $\sel(0,a,b)=a$ and
+$\sel(\Suc n,a,b)=b$, or an injection $\mathbb{N}^2\to\mathbb{N}$. In
+particular the tied-seed language has no such term and cannot compile the
+initialized iterator, since $\It{b}{a}{v}{\Suc v}=a+b$.
+\end{corollary}
+
+\begin{proof}
+For addition or maximum, fix the supposed bounding coordinate and increase the
+other argument; a global bound fails likewise. For the selector, a bound in the
+control fails at the control $0$ as $a$ grows; a bound in $a$ fails at $a=0$
+and control $1$ as $b$ grows; a bound in $b$ fails at $b=0$ and control $0$ as
+$a$ grows. Additional dummy coordinates can be fixed. For an injection, fixing
+the bounding coordinate at $0$ leaves infinitely many pairs whose values lie in
+one finite interval.
+\end{proof}
+
+\begin{remark}[The boundary of the hypotheses]
+\label{obs:rem:boundary}
+The data interface is what the theorems restrict. (i) If the initializer
+circuit receives one further passive input $y$, the update $h(u,v,x,y)=x$ and
+the initializer $y+h(0,0,x,y)$ give $x+y$ at the counter $0$. (ii) A circuit
+with two independent update oracles queries the constant updates $x$ and $y$
+and adds the answers. (iii) If a passive initializer enters a register
+directly, $r_0=a$, $r_{m+1}=\Suc r_m$ computes $a+n$. (iv) Direct register
+retention escapes \cref{obs:thm:single-body} even with a tied seed:
+$r_0=h(0,\vec p)$, $r_{m+1}=\Suc r_m$ with the constant body $h(u,a)=a$
+computes $a+n$; here the old register reaches the update combiner without
+passing through the body. (v) Finiteness of the circuit matters: for the oracle
+that is $1$ exactly at $(u,v)=(x,y)$, every answer is at most $1$, and an
+unbounded search over all pairs finds $(x,y)$ and returns $x+y$; such a search
+is not a fixed finite circuit and is not total for all oracles. These examples
+mark the boundary. None of them is claimed to give a complete basis or a
+smaller checker.
+\end{remark}
+
+\begin{remark}[Scope and sources]
+The theorems are term-definability obstructions. They do not exclude
+quantified graph definitions, a relational interpretation, a different
+interpretation domain or additional axioms; an independent unbounded
+initializer is one escape and is not asserted to be the only one. The
+one-coordinate bound for $\mathsf{B}$ and the exclusion of addition and
+selection are in \pkg{counter\_congruence}; \pkg{research} rederives them for
+$\mathsf{F}$ and $\mathsf{B}$; \pkg{local\_scopes} adds the bounded-valued
+primitives. \Cref{obs:thm:single-body} is from \pkg{uniform\_predecessor} and
+\cref{obs:thm:circuit} from \pkg{adaptive\_seed}. The two classes are
+incomparable: the first has register vectors, several probes in the update and
+counter-dependent probe locations, but a non-adaptive seed; the second has an
+adaptive seed, but a scalar state and the fixed update interface.
+\end{remark}
+
+\section{Finite-dimensional term interpretations}
+\label{obs:sec:quotient}
+
+This section draws on \pkg{adaptive\_seed} and \pkg{local\_scopes}, which prove
+the same theorem independently. It turns the bound of
+\cref{obs:sec:majorants} into an obstruction to interpretations that use finite
+tuples and a quotient equality, as long as the interpreted addition is given by
+a tuple of terms. The theorem is about functions on $\mathbb{N}$; the domain
+and the equivalence need not be definable.
+
+\begin{theorem}[Finite quotient from coordinate bounds]
+\label{obs:thm:quotient}
+Let $d\ge 1$, $D\subseteq\mathbb{N}^d$, let $\sim$ be an equivalence relation
+on $D$ and $e\in D$. Let $f\colon D\times D\to D$ satisfy
+\[
+f(e,z)\sim z\sim f(z,e)\qquad(z\in D).
+\]
+Suppose that for each output coordinate $i$ there are an input coordinate
+$j_i\le d$ and a nondecreasing unary $g_i$ such that, uniformly on
+$D\times D$, either $f(x,y)_i\le g_i(x_{j_i})$ or
+$f(x,y)_i\le g_i(y_{j_i})$, or that $f(x,y)_i$ has a constant bound. Then
+$D/{\sim}$ is finite. More precisely, with $L(z)=f(e,z)$ and $R(z)=f(z,e)$, a
+composition of at most $\ell_d=\lceil\log_2(d+1)\rceil$ maps chosen from
+$L,R$ sends every element of $D$ to a $\sim$-equivalent element of one finite
+box $\prod_{i\le d}\{0,\dots,C_i\}$, and $D/{\sim}$ has at most
+$\prod_i(C_i+1)$ elements.
+\end{theorem}
+
+\begin{proof}
+A coordinate bounded through an $x$-input has the constant bound
+$g_i(e_{j_i})$ under $L$ and the bound $g_i(z_{j_i})$ under $R$; for a
+coordinate bounded through a $y$-input the roles are exchanged; a constantly
+bounded coordinate is bounded under both. Regard $\{1,\dots,d\}$ as a set of
+states that track dependencies of bounds. A letter sends a state $i$ to the
+state $j_i$ if it leaves the dependence, and to an absorbing terminal state if
+it gives a constant bound. Each state is terminated by at least one of the two
+letters.
+
+Choose the letters from the outside of the composition inward. Let $S$ be the
+current set of live states, initially all $d$ states. The number of states of
+$S$ terminated by $L$ plus the number terminated by $R$ is at least $|S|$, so
+one letter terminates at least $\lceil|S|/2\rceil$ of them. Choose it and
+replace $S$ by the set of images of the survivors; each survivor has one
+image, so the new set has at most $\lfloor|S|/2\rfloor$ elements. After at most
+$\ell_d$ choices $S$ is empty, since $2^{\ell_d}>d$.
+
+Let the chosen letters be $V_1,\dots,V_k$ and $W=V_1\circ\dots\circ V_k$, so
+that $V_k$ is applied first. By induction on the number of letters, each
+coordinate of the partial composition $V_1\circ\dots\circ V_m$ is either
+uniformly bounded or bounded by a composition of the functions $g_i$ along one
+live dependency path, applied to a live coordinate of the argument; appending
+the next letter on the inside replaces that coordinate by its bound, which is
+legitimate because the $g_i$ are nondecreasing. When the path terminates the
+bound is a constant. The empty final set gives constants $C_1,\dots,C_d$ with
+$W(D)\subseteq\prod_i\{0,\dots,C_i\}$.
+
+Both $L$ and $R$ map $D$ into $D$ and send every element to an equivalent one,
+so $W(z)\sim z$ by transitivity. Every class meets the finite set
+$D\cap\prod_i\{0,\dots,C_i\}$.
+\end{proof}
+
+Associativity, commutativity and compatibility of $f$ with $\sim$ are not
+used. A unary bound may be replaced by its nondecreasing envelope, so
+monotonicity is no extra assumption for term majorants. For $d=0$ the domain
+has at most one element.
+
+\begin{proposition}[The word length is sharp]
+\label{obs:prop:sharp}
+For every $d\ge 1$ there are $D=\mathbb{N}^d$, the universal equivalence, $e$
+the zero tuple and an $f$ whose coordinates are projections or constants, such
+that the shortest composition of $L,R$ with finite image has length exactly
+$\lceil\log_2(d+1)\rceil$.
+\end{proposition}
+
+\begin{proof}
+Let $k=\lfloor\log_2 d\rfloor$. If $k=0$ then $d=1$; take $f(x,y)=x$, so $R$ is
+the identity and $L$ is constant, and the minimum is $1$. Let $k\ge 1$. Label
+$2^k$ of the coordinates by words $w\in\{L,R\}^k$ and let $\sigma(w)$ be $w$
+with its first letter removed and $R$ appended. Put
+$f(x,y)_w=y_{\sigma(w)}$ if $w$ starts with $L$ and
+$f(x,y)_w=x_{\sigma(w)}$ if $w$ starts with $R$; the remaining coordinates are
+$0$. Under a letter, the state $w$ survives exactly when the letter is its
+first letter, and then moves to $\sigma(w)$. For a word
+$\alpha\in\{L,R\}^k$, read from the outside inward, the state $\alpha$
+survives all $k$ letters, and the coordinate $\alpha$ of the composition is
+the projection to the coordinate $R^k$ of the argument. So no word of length
+$k$ has finite image, and neither has a shorter word, since extending a word
+with finite image on the inside keeps the image finite. The word $L^{k+1}$ has
+finite image: a state with an $R$ among its $k$ letters is terminated when that
+letter is reached, and the state $L^k$ has become $R^k$ after $k$ letters and
+is terminated by the last $L$. The minimum is $k+1=\lceil\log_2(d+1)\rceil$.
+\end{proof}
+
+\begin{corollary}[No finite-dimensional term interpretation of $\iPRA$]
+\label{obs:cor:no-term-interp}
+Let $T$ be a theory in a numerical language whose standard model on
+$\mathbb{N}$ satisfies $T$ and in which every term denotes an almost unary
+function; for example a theory true in the standard tied-seed algebra, in the
+single-body algebra or in the circuit algebra. There is no interpretation of
+$\iPRA$ in $T$ such that the interpreted domain is a nonempty subset of a
+finite power of the source domain, the interpreted equality is an arbitrary
+equivalence relation on it, and the interpreted addition has one fixed tuple of
+terms as realizers. Fixed numerical parameters are allowed, and successor may
+be interpreted in any way consistent with the axioms. In particular there is no
+bi-interpretation with these properties.
+\end{corollary}
+
+\begin{proof}
+Apply the interpretation in the standard model. Let $e$ represent the
+interpreted zero. The two zero laws of addition are theorems of $\iPRA$, so the
+addition tuple satisfies the unit hypothesis of \cref{obs:thm:quotient}; each
+of its coordinate terms is almost unary in the $2d$ input variables, and a
+majorant in a fixed parameter is a constant. So the interpreted quotient is
+finite. The interpreted successor is injective on the quotient and its image
+omits the class of zero, which is impossible on a finite nonempty set.
+\end{proof}
+
+\begin{remark}[Limits]
+\label{obs:rem:quotient-limits}
+(i) Both unit laws are needed: on $\mathbb{N}$ with equality, $f(x,y)=x$
+satisfies $f(z,e)=z$ and the coordinate bound, and the quotient is infinite.
+(ii) The realizers must be terms. With decidable equality to zero the
+quantifier-free graph
+$(x=0\wedge z=y)\vee(x\ne 0\wedge z=x)$ is total and single-valued and defines
+an associative operation on $\mathbb{N}$ with the two-sided unit $0$, which
+selects the first nonzero argument; it is not almost unary. Likewise
+$\max(x,y)$ has the unit $0$ and is defined by cases that choose different
+controlling coordinates. Neither example is an interpretation of $\iPRA$; they
+show that the relational route is not closed by \cref{obs:thm:quotient}. (iii)
+The qualifier about the standard model is needed: a theory whose axioms exclude
+the standard algebra is not covered. (iv) The logarithmic bound counts layers
+of unit multiplication in a metatheoretic construction; it is not a bound on
+term size, evaluation time or checker size.
+\end{remark}
+
+\begin{remark}
+\pkg{adaptive\_seed} proves \cref{obs:thm:quotient} by the halving argument
+given here and proves \cref{obs:prop:sharp}. \pkg{local\_scopes} proves the
+theorem by counting: from each starting coordinate at most one binary word of
+length $m$ keeps a dependence alive, so at most $d$ of the $2^m$ words are
+admitted, and a word admitted from no coordinate exists when $2^m>d$.
+\end{remark}
+
+\section{Finite profiles and relational bi-interpretations}
+\label{obs:sec:profiles}
+
+This section draws on \pkg{local\_scopes}. The coordinate bound leaves two
+questions open: whether the tied-seed language computes a bounded comparison of
+two unbounded inputs, and whether an interpretation that defines its operations
+by formulas escapes. A stronger invariant of tied-seed terms answers the first,
+and, combined with witness extraction from proofs, answers the second for a
+specified class of theories.
+
+\subsection{Finite control}
+
+\begin{definition}
+\label{obs:def:fc}
+A function $f\colon\mathbb{N}^r\to\mathbb{N}$, $r\ge 1$, has \emph{finite
+control} if there are an active coordinate $i$, finite nonempty sets $A_j$ and
+unary maps $\alpha_j\colon\mathbb{N}\to A_j$ for $j\ne i$, and unary functions
+$F_a$ indexed by $a\in\prod_{j\ne i}A_j$, such that
+\[
+f(x_1,\dots,x_r)=F_{(\alpha_j(x_j))_{j\ne i}}(x_i).
+\]
+The value may depend without bound on one coordinate; every other coordinate
+supplies only a member of a fixed finite set. The functions $F_a$ are the
+\emph{profiles}. For primitive recursive $f$ all displayed maps are taken
+primitive recursive, with finite encodings of the $A_j$; specified finite
+codomains replace exact ranges, and no decision procedure for attained ranges
+is assumed.
+\end{definition}
+
+A constant function has finite control with any active coordinate, and the
+definition imposes no restriction at arity one.
+
+\begin{lemma}
+\label{obs:lem:fc-comp}
+\begin{enumerate}[label=(\roman*)]
+\item If $f$ has finite control and $\rho$ is unary with finite range, then
+$\rho\circ f$ factors through finite-valued unary maps of all input
+coordinates.
+\item The functions with finite control contain the constants and projections
+and are closed under composition.
+\end{enumerate}
+Both preserve primitive recursiveness of the displayed maps.
+\end{lemma}
+
+\begin{proof}
+(i) Attach to the active coordinate the finite feature
+$\beta_i(x)=(\rho(F_a(x)))_a$. Together with the $\alpha_j(x_j)$ it determines
+$\rho(f(\vec x))$.
+
+(ii) Consider $f(g_1(\vec x),\dots,g_r(\vec x))$ where $f$ has the active
+input $i$ and $g_i$ has the active input $k$. Every other $g_j$ enters $f$
+through the finite-valued $\alpha_j\circ g_j$, which by (i) is determined by
+finite unary features of all coordinates of $\vec x$. Combine the features of
+the coordinates other than $k$ with the finite controls of $g_i$. With these
+combined controls fixed, the expression is one unary function of $x_k$; the
+features that depend on $x_k$ are evaluated inside it. There are finitely many
+combined controls.
+\end{proof}
+
+\begin{theorem}[Finite control of tied-seed terms]
+\label{obs:thm:fc}
+Every function of positive arity denoted by a term of the tied-seed language of
+\cref{obs:def:languages}(b) has finite control, with primitive recursive
+feature maps and profiles obtained by recursion on the term. A closed term is a
+constant.
+\end{theorem}
+
+\begin{proof}
+Variables and $0$ are covered by \cref{obs:lem:fc-comp}. It suffices to show
+that $\mathsf{B}_h(n,\vec p)$ has finite control when the update
+$h(u,v,\vec p)$ has; the actual counter term is then substituted by
+\cref{obs:lem:fc-comp}(ii). Write $\gamma(\vec p)$ for a tuple of finite unary
+features, one for each passive coordinate.
+
+\emph{The active input of $h$ is the previous state:}
+$h(u,v,\vec p)=F_{\alpha(u),\gamma(\vec p)}(v)$. For each of the finitely many
+values $c$ of $\gamma$ define
+$R_c(0)=1+F_{\alpha(0),c}(0)$ and $R_c(m+1)=F_{\alpha(m),c}(R_c(m))$. Then
+$\mathsf{B}_h(n,\vec p)=R_{\gamma(\vec p)}(n)$, with active coordinate $n$.
+
+\emph{The active input of $h$ is the old counter:}
+$h(u,v,\vec p)=F_{\beta(v),\gamma(\vec p)}(u)$. Define
+$R_c(0)=1+F_{\beta(0),c}(0)$ and $R_c(m+1)=F_{\beta(R_c(m)),c}(m)$. Again
+$\mathsf{B}_h(n,\vec p)=R_{\gamma(\vec p)}(n)$.
+
+\emph{The active input of $h$ is a passive parameter $p$.} Write $\vec q$ for
+the other passive parameters and
+$h(u,v,p,\vec q)=F_{\alpha(u),\beta(v),\gamma(\vec q)}(p)$. Form a finite
+catalogue $(V_j)_{j\in I}$ of unary functions that contains every profile
+$F_{a,b,c}$ and every initial profile
+$V_{0,c}(p)=1+F_{\alpha(0),\beta(0),c}(p)$, with separate indices for separate
+occurrences. Every state of the recursion is the value at $p$ of a catalogue
+function. The only observation of a state used by the update is its
+$\beta$-value; record all of them in the finite feature
+\[
+\kappa(p)=\bigl(\beta(V_j(p))\bigr)_{j\in I}.
+\]
+For each control value $c$ and each possible vector $k$, define a finite-state
+process: its initial state is the index of $V_{0,c}$, and at the counter $m$
+the state $j$ is followed by the index of $F_{\alpha(m),k_j,c}$. Let
+$\theta_{c,k}(n)\in I$ be its state after $n$ transitions and pack the finitely
+many processes into the finite-valued feature
+$\eta(n)=(\theta_{c,k}(n))_{c,k}$. Induction on the counter gives
+\[
+\mathsf{B}_h(n,p,\vec q)=V_{\eta(n)_{\gamma(\vec q),\kappa(p)}}(p):
+\]
+the initial case selects $V_{0,c}$, and the transition uses exactly the
+recorded observation $\beta(V_j(p))=\kappa(p)_j$. With
+$H_{e,c}(p)=V_{e_{c,\kappa(p)}}(p)$ this reads
+$\mathsf{B}_h(n,p,\vec q)=H_{\eta(n),\gamma(\vec q)}(p)$, with the active
+coordinate $p$ and finite controls on $n$ and on each remaining parameter. The
+processes are defined for all vectors $k$, including unrealized ones; only the
+realized ones are used.
+\end{proof}
+
+The bound of \cref{obs:cor:tied-seed} follows from the theorem by taking the
+maximum of the finitely many profiles and its running maximum. The new content
+is that the other inputs supply only finitely many distinct profiles.
+
+\begin{corollary}[No equality test, minimum or truncated subtraction]
+\label{obs:cor:fc-excluded}
+No term of the tied-seed language denotes the characteristic function of
+equality or of inequality, $\min(a,b)$, or
+$a\mathbin{\dot{-}}b=\max(a-b,0)$.
+\end{corollary}
+
+\begin{proof}
+A binary function with finite control and active first coordinate has finitely
+many distinct sections $a\mapsto f(a,b)$; with active second coordinate it has
+finitely many sections $b\mapsto f(a,b)$. Each displayed function has
+infinitely many distinct sections in both directions: for equality the section
+at $b$ is the characteristic function of $\{b\}$; the functions
+$x\mapsto\min(x,b)$ differ at an $x$ above both parameters; for truncated
+subtraction, distinct second arguments are separated at a large first argument,
+and distinct first arguments at the second argument $0$.
+\end{proof}
+
+\begin{remark}
+The theorem does not decide whether every unary primitive recursive function is
+denoted by a tied-seed term, since finite control is no restriction at arity
+one. It does not concern formula-defined relations: the source has logical
+equality $a=b$, which is not a term that returns its characteristic value.
+Bounded-valued primitives preserve the coordinate bound
+(\cref{obs:cor:tied-seed}) and need not preserve finite control; an adjoined
+equality characteristic violates it.
+\end{remark}
+
+\subsection{An existential-free presentation}
+
+Let $T_{\mathsf{B}}$ be intuitionistic first-order logic with equality in the
+staged signature of the tied-seed language, with the computation equations
+\eqref{obs:eq:B0}, \eqref{obs:eq:BS}, coverage
+$\forall x\,(x=0\vee\exists y\,x=\Suc y)$, separation $0=\Suc 0\to\bot$, and
+the universal closures of
+\[
+\bigl(E(0,\vec p)\wedge\forall n\,(E(n,\vec p)\to E(\Suc n,\vec p))\bigr)\to\forall n\,E(n,\vec p)
+\]
+for literal equations $E$. By \cref{obs:lem:Bterms} the term $P$ satisfies
+$P(0)=0$ and $P(\Suc y)=y$ by computation, so coverage is equivalent, without
+induction, to the existential-free sentence
+$\forall x\,(x=0\vee x=\Suc(Px))$. Equality is treated as a binary predicate
+with universal axioms of reflexivity, symmetry, transitivity and congruence for
+every function symbol; transport through formulas is derived. Thus
+$T_{\mathsf{B}}$ has an existential-free axiomatization in its own language.
+An infinite axiom scheme causes no difficulty, since a proof uses finitely many
+axioms.
+
+\begin{lemma}[Finite witness extraction]
+\label{obs:lem:witness}
+Let the language contain the closed term $0$ and let $\Gamma$ be a finite set
+of existential-free formulas. If intuitionistic first-order logic proves
+$\Gamma\proves\exists z_1\cdots\exists z_d\,R(\vec x,\vec z)$, then there are
+finitely many tuples of terms $\vec t_1(\vec x),\dots,\vec t_M(\vec x)$ with
+\[
+\Gamma\proves\bigvee_{\ell\le M}R(\vec x,\vec t_\ell(\vec x)).
+\]
+The formula $R$ is arbitrary; it may contain existential quantifiers. No
+uniqueness of witnesses is assumed.
+\end{lemma}
+
+\begin{proof}
+Take a cut-free intuitionistic sequent proof; cut elimination for
+intuitionistic first-order logic is standard (for instance Avigad,
+\emph{Algebraic proofs of cut elimination}, J.~Log.\ Algebr.\ Program.\ 49
+(2001), Theorem 7.6). Equality is handled by the existential-free axioms, so no
+equality extension of the theorem is needed.
+
+Starting at the end sequent, trace the branches whose succedent carries the
+displayed leading existential quantifiers, and keep the prefix of witness terms
+already selected. At a left implication rule keep the proof of the first
+premise unchanged and follow the second premise; at a left disjunction rule
+follow both premises; the other left and structural rules preserve the tracked
+succedent. Every antecedent formula on a tracked branch is a subformula
+instance of a formula of $\Gamma$ and is existential-free, so no left
+existential rule occurs there. While a leading existential quantifier remains,
+an initial sequent cannot close the branch, because the succedent is not an
+antecedent formula; the only applicable right rule is existential
+introduction. Record its witness term and continue. When all $d$ witnesses are
+introduced, stop and keep the remaining proof of the matrix instance
+unchanged; the matrix is not analyzed. If a tracked branch closes by falsity
+elimination, fill the unselected witnesses with $0$; the matrix instance
+follows from the same falsity. There are finitely many branches, so finitely
+many complete tuples $\vec t_\ell$ are recorded.
+
+Replace each stopped branch by its kept proof of $R(\vec x,\vec t_\ell)$
+followed by introductions into the common disjunction, and reassemble the
+tracked left and structural inferences. An existential introduction that
+supplied a recorded component is omitted, since the disjunction is already the
+succedent of its transformed premise. Left implication inferences are
+reconstructed from the unchanged first premise and the transformed second
+premise.
+
+No numerical parameter is bound on a tracked branch: left existential rules are
+absent, and right universal introduction cannot have the tracked succedent.
+Extraneous free variables of the proof are replaced by $0$ after renaming
+eigenvariables, so the witness terms contain only $\vec x$ and the retained
+parameters.
+\end{proof}
+
+The lemma does not give a single uniform witness term; a finite disjunction is
+what the next theorem needs.
+
+\subsection{No compression of scalars}
+
+\begin{theorem}[No provable compression from $k$ scalars to $d$ coordinates]
+\label{obs:thm:no-compression}
+Let $T$ be an intuitionistic theory in the tied-seed language with an
+existential-free axiomatization and with the standard tied-seed algebra as a
+model. Let $k>d\ge 1$ and let $R(\vec x,\vec z)$ be any formula with $k$
+variables $\vec x$ and $d$ variables $\vec z$. If
+$T\proves\forall\vec x\,\exists\vec z\,R(\vec x,\vec z)$, then in the standard
+model some output tuple $\vec z$ occurs with two different input tuples. In
+particular $T$ does not also prove
+\[
+R(\vec x,\vec z)\wedge R(\vec x\,',\vec z)\to\bigwedge_{i\le k}x_i=x_i' .
+\]
+The relation may have many outputs for each input.
+\end{theorem}
+
+\begin{proof}
+Instantiate at free $\vec x$ and collect the finitely many axioms used.
+\Cref{obs:lem:witness} gives $d$-tuples of terms
+$\vec t_1,\dots,\vec t_M$ such that for every input in the standard model some
+$\vec t_\ell(\vec x)$ is an $R$-output. By \cref{obs:thm:fc} each coordinate
+term $t_{\ell j}$ has finite control; let $q_{\ell j}$ be the number of its
+profiles. On the grid $X_N=\{0,\dots,N-1\}^k$ it takes at most $q_{\ell j}N$
+values, since its active argument takes at most $N$ values; constant terms are
+included by adding an unused active argument. So $\vec t_\ell$ takes at most
+$N^d\prod_j q_{\ell j}$ values on $X_N$, and the union of the images has at
+most $CN^d$ elements with $C=\sum_\ell\prod_j q_{\ell j}$. If every output
+belonged to at most one input, the $N^k$ inputs of $X_N$ would need $N^k$
+distinct outputs in this union, which fails for $N>C$. Soundness in the
+standard model turns a proof of the displayed implication into exactly that
+condition.
+\end{proof}
+
+\begin{corollary}[Scalar pairing is not provably total]
+\label{obs:cor:no-pairing}
+In $T_{\mathsf{B}}$ no formula is provably a total coding of pairs of numbers
+by single numbers with unique decoding. This includes a pairing relation
+$\pi_1(c)=a\wedge\pi_2(c)=b$ with unary terms as projections, and arbitrary
+formulas as projection relations, provided each code determines at most one
+pair.
+\end{corollary}
+
+\begin{proof}
+A provably total coding relation $R(a,b,c)$ with provably unique decoding is
+the case $k=2$, $d=1$ of \cref{obs:thm:no-compression}.
+\end{proof}
+
+Even a proof that every unary primitive recursive function is a tied-seed term
+would therefore not give pairing inside $T_{\mathsf{B}}$.
+
+\subsection{No finite-dimensional bi-interpretation}
+
+\begin{theorem}
+\label{obs:thm:no-biinterp}
+Let $T$ be an intuitionistic theory in the tied-seed language with an
+existential-free axiomatization and with the standard tied-seed algebra as a
+model; for example $T_{\mathsf{B}}$, or $T_{\mathsf{B}}$ with further
+existential-free axioms true in the standard algebra. Then $T$ and $\iPRA$ are
+not bi-interpretable in the sense of \cref{obs:def:biinterp}. The interpreted
+domains, the operation graphs and the quotient equality are arbitrary
+formulas. The statement is parameter-free, and it holds when fixed parameters
+are retained uniformly in the interpretation proofs without assumptions that
+are not existential-free.
+\end{theorem}
+
+\begin{proof}
+Let $\mathcal{I}$ interpret $\iPRA$ in $T$ with dimension $d$, domain
+$D\subseteq\mathbb{N}^d$ and interpreted equality $E$, and let $\mathcal{J}$
+interpret $T$ in $\iPRA$ with dimension $e$. A zero-dimensional domain has
+finitely many tuples and cannot take part in the source-side isomorphism with
+the infinite source domain, so $d,e\ge 1$.
+
+The composite represents source numbers by $e$-tuples of interpreted
+arithmetic elements, that is, by $de$ source coordinates. The source-side
+return isomorphism provides a formula $\eta(a,\vec u)$ of $T$, with
+$\vec u\in D^e$ and the domain conditions included, such that
+\[
+T\proves\forall a\,\exists\vec u\,\eta(a,\vec u),
+\qquad
+T\proves\eta(a,\vec u)\wedge\eta(a',\vec u\,')\wedge E^{\mathcal{I}}_{\mathcal{J}}(\vec u,\vec u\,')\to a=a',
+\]
+where $E^{\mathcal{I}}_{\mathcal{J}}$ is the translation under $\mathcal{I}$
+of the equality of $\mathcal{J}$. Only this part of the bi-interpretation is
+used.
+
+Fix $k\ge 1$. $\iPRA$ has a primitive recursive injective tupling of $ke$
+numbers with primitive recursive projections, and proves its decoding
+equations. Its translation under $\mathcal{I}$ is a provably total coding
+relation from $(D/E)^{ke}$ to $D/E$ that is injective on input tuples. Define
+$R_k(a_1,\dots,a_k,\vec c)$ in $T$: there are $\eta$-representatives
+$\vec u_i\in D^e$ of all $a_i$, and the interpreted tupling codes the $ke$
+arithmetic components of $(\vec u_1,\dots,\vec u_k)$ by $\vec c\in D$. From the
+totality of $\eta$ and of the tupling, finite existential reasoning gives
+\[
+T\proves\forall a_1\cdots\forall a_k\,\exists c_1\cdots\exists c_d\,R_k(\vec a,\vec c).
+\]
+The inputs $a_i$ range over the whole source domain; no choice is used.
+
+Suppose $R_k(\vec a,\vec c)$ and $R_k(\vec a\,',\vec c)$. The same tuple
+$\vec c$ represents the same arithmetic element, by reflexivity of $E$ on $D$.
+Injectivity of the interpreted tupling gives componentwise $E$-equality of the
+arithmetic components of $\vec u_i$ and $\vec u_i'$, hence
+$E^{\mathcal{I}}_{\mathcal{J}}(\vec u_i,\vec u_i')$ for each $i$, since
+interpretations respect equality. The second property of $\eta$ gives
+$a_i=a_i'$. So $T$ proves that the output fibers of $R_k$ are disjoint.
+Surjectivity of $\eta$ and uniqueness of representatives are not needed.
+
+With $k=d+1$ this contradicts \cref{obs:thm:no-compression}.
+\end{proof}
+
+\begin{corollary}[Provably inhabited parameter families]
+\label{obs:cor:parameters}
+The exclusion holds for a bi-interpretation with a finite tuple $\vec p$ of
+$r$ source parameters subject to a condition $\Theta(\vec p)$, when
+$T\proves\exists\vec p\,\Theta(\vec p)$ and $T$ proves the interpretation and
+return-isomorphism facts uniformly under $\Theta(\vec p)$.
+\end{corollary}
+
+\begin{proof}
+The construction with the parameters retained proves totality and disjoint
+fibers of $R_{k,\vec p}$ under $\Theta(\vec p)$. Put
+$\widehat R_k(\vec a,\vec p,\vec c)\defeq\Theta(\vec p)\wedge R_{k,\vec p}(\vec a,\vec c)$.
+Then $T\proves\forall\vec a\,\exists\vec p\,\exists\vec c\,\widehat R_k$, and an
+identical output $(\vec p,\vec c)$ uses identical parameters, so the fibers are
+disjoint. There are $d+r$ output coordinates; take $k=d+r+1$. The formula
+$\Theta$ is inside the output matrix, so no restriction on its quantifiers is
+needed.
+\end{proof}
+
+\begin{remark}[Scope]
+\label{obs:rem:biinterp-scope}
+Positive existential domain formulas do not rescue a bi-interpretation: they
+occur inside the matrix $R_k$, which witness extraction does not analyze, and
+the return isomorphism removes every domain condition from the unrestricted
+source inputs. The theorem does not exclude equiconsistency or one-way
+interpretations on complicated domains; the return isomorphism is essential.
+It does not cover a parameter condition that $T$ does not prove inhabited, a
+theory with positive existence axioms that cannot be eliminated in the
+tied-seed language, or every axiomatization in that language. It does not
+extend automatically to additional bounded numerical primitives, which preserve
+the coordinate bound and need not preserve finite control.
+\end{remark}
+
+\subsection{The selector boundary}
+
+The obstruction has an exact positive counterpart: a bounded primitive does not
+help (\cref{obs:cor:tied-seed}), and one unbounded selector restores primitive
+recursion.
+
+\begin{proposition}[\pkg{local\_scopes}]
+\label{obs:prop:selector-repair}
+Adjoin to the tied-seed language an operation $C$ with $C(0,a,b)=a$ and
+$C(\Suc n,a,b)=b$, allowed inside update bodies. For terms $g(\vec p)$ and
+$h(n,z,\vec p)$ and fresh $u,v$ put
+\[
+K(u,v,\vec p)\defeq C\bigl(u,\,g(\vec p),\,h(W(u),v,\vec p)\bigr),\qquad
+J(n,\vec p)\defeq\mathsf{B}\bigl(\Suc n;u,v.K(u,v,\vec p)\bigr),
+\]
+with $W$ as in \cref{obs:lem:Bterms}. Equality reasoning and the computation
+equations prove $J(0,\vec p)=g(\vec p)$ and
+$J(\Suc n,\vec p)=h(n,J(n,\vec p),\vec p)$, with no induction, predecessor
+search, equality characteristic, pairing or independent initializer.
+\end{proposition}
+
+\begin{proof}
+Suppress $\vec p$. The first update discards the tied initial state:
+$J(0)=\mathsf{B}(\Suc 0;u,v.K)=K(0,\mathsf{B}(0;u,v.K))=C(0,g,\dots)=g$. At a
+successor,
+$J(\Suc n)=\mathsf{B}(\Suc\Suc n;u,v.K)=K(\Suc n,\mathsf{B}(\Suc n;u,v.K))
+=C(\Suc n,g,h(W(\Suc n),J(n)))=h(n,J(n))$. These hold for arbitrary parameters.
+\end{proof}
+
+Zero, successor and projections are terms and composition is substitution, so
+every primitive recursive description compiles into the enlarged language, and
+conversely each description of the enlarged language is primitive recursive.
+This is numerical completeness only; the logical and interpretation claims for
+such a basis need their own proofs and their own size accounting.
+
+A formula definition of $C$ does not supply this compiler. With coverage and
+$0\ne\Suc 0$, the term $Z$ decides $z=0$, and
+$(z=0\wedge w=a)\vee(z\ne 0\wedge w=b)$ is provably total and single-valued, so
+a symbol with this graph is a definitional extension. Two things do not follow.
+The tied-seed signature has recursion symbols for its original update terms
+only; a recursion whose update contains the new symbol is a new graph whose
+totality and uniqueness need proof. And literal-equation induction for terms
+with the new symbol translates into induction for formulas that are not literal
+equations of the old language.
+
+\section{Zero profiles of positive iteration}
+\label{obs:sec:zeroprofile}
+
+This section draws on \pkg{checker\_and\_barriers}. Positive iteration
+$\mathsf{R}^{+}(n,a;v.h)=h^{n+1}(a)$ of \cref{obs:def:languages}(c) is not
+almost unary: $\mathsf{R}^{+}(n,a;v.\Suc v)=n+a+1$ grows in both arguments. A
+different invariant applies.
+
+\begin{theorem}[Zero-profile theorem]
+\label{obs:thm:zeroprofile}
+For every term $t(x_1,\dots,x_r)$ built from variables, $0$, $\Suc$ and
+$\mathsf{R}^{+}$, the zero set of $t$ in the standard interpretation is
+$\varnothing$, $\mathbb{N}^r$, or $\{\vec x:x_j=0\}$ for a single $j$. The
+profile and the coordinate are obtained by recursion on the term.
+\end{theorem}
+
+\begin{proof}
+Induction on terms, with bound update variables fresh. $0$ is always zero, a
+successor never, and $x_j$ exactly when $x_j=0$. Consider
+$\mathsf{R}^{+}(n,a;v.h)$ with update $h(v,\vec x)$. By the induction
+hypothesis the zero set of $h$ has one of four forms. If $h$ is never zero, the
+iterator is never zero. If $h$ is always zero, the iterator is always zero. If
+$h$ is zero exactly when a passive variable $x_j$ is zero, the iterator has the
+same profile. These three cases use that at least one update is applied. If
+$h$ is zero exactly when its state $v$ is zero, every update preserves the zero
+status of the state, so the final state has the zero profile of the seed $a$,
+which is classified by the induction hypothesis. The zero profile of the
+counter is not used: the number of updates is positive. A variable that occurs
+both in the counter and in the seed or the update keeps its role in the
+respective profile.
+\end{proof}
+
+\begin{corollary}
+\label{obs:cor:zeroprofile}
+No term of this language denotes the predecessor (zero set $\{0,1\}$), the zero
+test that is $1$ at $0$ and $0$ elsewhere (zero set $\mathbb{N}\setminus\{0\}$),
+addition (zero set $\{(0,0)\}$), or the initialized iterator, whose
+constant-update case $\It{n}{a}{v}{b}$ is the selector and gives the zero test
+at $a=1$, $b=0$.
+\end{corollary}
+
+The definable shifted addition $n+a+1$ is never zero and does not contradict
+the corollary.
+
+\begin{remark}[Scope]
+\label{obs:rem:zeroprofile-scope}
+This is a standard-model term-definability obstruction. In intuitionistic
+logic with coverage, injectivity of $\Suc$ and separation $0\ne\Suc m$, the
+formula
+\[
+(n=0\wedge z=a)\ \vee\ \exists m\,\bigl(n=\Suc m\wedge z=\mathsf{R}^{+}(m,a;v.h)\bigr)
+\]
+defines a total single-valued graph of the initialized iteration of each
+update $h$ of the old language. Separation is needed to exclude overlap of the
+two branches. The observation does not give a bi-interpretation with $\iPRA$:
+induction for the graph-defined expanded language and closure under nesting of
+newly defined updates remain to be proved, and in the native calculus the
+connectives of the graph formula are themselves reconstructed from a selector,
+so assuming them at that point is circular. The invariant does not survive a
+zero-test primitive: $\mathsf{R}^{+}(n,0;v.Z v)$ alternates between $1$ and
+$0$, so zero status then depends on the iteration count.
+\end{remark}
+
+The motivation is a raw encoding in which a two-field numerical array $[a,h]$
+has the value $a$ and a three-field array $[n,a,h]$ the value
+$\mathsf{R}^{+}(n,a;v.h)$, which would allow a uniform predecessor expansion in
+place of a zero/successor conditional. The theorem shows that this encoding
+cannot inherit the term compiler or the selector-based logical bootstrap.
+
+\section{Rule-level obstructions}
+\label{obs:sec:rules}
+
+This section draws on \pkg{research}, \pkg{adaptive\_seed},
+\pkg{local\_scopes}, \pkg{counter\_congruence} and
+\pkg{constructed\_computation}. Each result rejects one tempting deletion or
+replacement of a rule by a reading that validates the remaining rules. Each
+concerns the stated rule system with the identity translation of formulas.
+
+\subsection{Atomic case introduction cannot be made automatic}
+
+In $\Nat_{\mathrm{p}}$ a certificate chooses between the two introductions of
+$\D{x}{y}$. The \emph{forced-progress} variant removes the choice: it uses
+\rulename{DI-progress} when the matrix is a literal equation and \rulename{DI}
+by cases when the matrix is compound. Equivalently, it deletes \rulename{DI}
+by cases at literal-equation matrices.
+
+\begin{proposition}
+\label{obs:prop:forced-progress}
+$\Nat_{\mathrm{p}}$ derives $\D{x}{y}(y=1)$, with $x$ unused. The
+forced-progress variant does not.
+\end{proposition}
+
+\begin{proof}
+In $\Nat_{\mathrm{p}}$, \rulename{DI} by cases needs
+$0=1\proves\Suc z=1$. From $0=1$, transport through the selector gives
+$s=\sel(0,s,t)=\sel(1,s,t)=t$ for all terms $s,t$, in particular $\Suc z=1$. No
+induction on a compound formula is used.
+
+For the variant, evaluate terms in $\mathbb{N}$, read equations as equality
+and $\Q{y}B$ as $B(0)\to\forall y\,B(y)$, and read $\D{x}{y}$ by
+\[
+(\D{x}{y}B)^{\dagger}=
+\begin{cases}
+\exists x\,\forall y\,\bigl(B^{\dagger}(x,y)\to B^{\dagger}(x,\Suc y)\bigr), & B \text{ a literal equation},\\
+\exists x\,\bigl(B^{\dagger}(x,0)\to\forall y\,B^{\dagger}(x,y)\bigr), & B \text{ compound}.
+\end{cases}
+\]
+The reading is defined on each fixed formula. Forced progress introduction is
+sound by its direct meaning. Case introduction at a compound matrix is sound by
+the zero-or-successor property of $\mathbb{N}$. Paired elimination at an atomic
+matrix is sound because induction in $\mathbb{N}$ turns the supplied
+progressiveness into the conditional closure $\Q{y}B(a,y)$; at a compound
+matrix it is sound directly. \rulename{QE}, \rulename{Hyp} and the computation
+equations are sound. Transport is sound because numerical substitution does not
+change whether a matrix is a literal equation. Under $\dagger$ the formula
+$\D{x}{y}(y=1)$ says $\exists x\,\forall y\,(y=1\to\Suc y=1)$, which is false
+at $y=1$.
+\end{proof}
+
+The padding equivalence between a formula and a gated paired closure does not
+repair the counterexample: padding moves a proof obligation into a compound
+matrix, and the elimination returns only the conditional closure, not the
+progressiveness needed to introduce a raw atomic paired formula. A conditional
+closure can hold because its zero antecedent is false, without its matrix being
+progressive. A public language in which every atomic matrix is gated evades the
+obstruction at the cost of new grammar and decoder obligations.
+
+\begin{remark}
+\pkg{research} rederives the proposition from an earlier draft on flat
+computation certificates; \pkg{compact\_kernel} and \pkg{uniform\_predecessor}
+restate the conclusion. For the root-determined introduction with unrestricted
+transport the corresponding strictness is formalized as
+\Lean{rdprf\_not\_cases} and \Lean{rdprf\_strictly\_weaker}, with the
+progressive reading over the natural numbers as the sound reading.
+\end{remark}
+
+\subsection{Elimination majors must be proved, not only retained}
+
+\begin{proposition}[\pkg{adaptive\_seed}]
+\label{obs:prop:majors}
+$\Nat_{\mathrm{p}}$ derives $\Q{y}(0=0)$. Restrict $\Nat_{\mathrm{p}}$ so that
+the major premise of \rulename{QE} and of \rulename{DE} and the equation of a
+transport must be members of the retained context, keep \rulename{Comp}, the
+two introductions and, optionally, direct induction at equation goals, and add
+no cut rule. The restricted calculus does not derive $\Q{y}(0=0)$.
+\end{proposition}
+
+\begin{proof}
+In $\Nat_{\mathrm{p}}$, \rulename{DI} by cases with the witness $0$ derives
+$\D{x}{y}(0=0)$ from $0=0\proves 0=0$; \rulename{DE} applied to this derived
+major supplies $\Q{y}(0=0)$, and \rulename{Hyp} concludes.
+
+In the restricted calculus consider a goal that is a closure $\Q{y}B$ in a context
+of equations only, initially empty. \rulename{Hyp} does not close it. An
+introduction concludes a paired formula. \rulename{Comp} adds an equation and
+keeps the goal; induction applies to equation goals only. Transport along a
+retained equation leaves a minor that is again a closure, in the same context.
+\rulename{QE} and \rulename{DE} need a retained closure or paired formula, and
+there is none. Induction on the height of a derivation shows that no derivation
+exists.
+\end{proof}
+
+The proposition concerns this deletion with closures as public formulas and the
+paired-introduction form; in $\Nat$ the formula is immediate by \rulename{QI}.
+It does not show that the closure binder must remain an object connective, and an
+unrestricted cut repairs the displayed theorem. The package verifies the
+example by a mutation of a checker in which the recursive check of a major is
+replaced by a membership test.
+
+\subsection{Root replacement does not give congruence}
+
+A further merger encodes an equation $s=t$ as a clause that sends $r=s$ to
+$r=t$, so that equality transport and closure use become one clause
+elimination. This yields replacement at the root of an equation only.
+
+\begin{proposition}[\pkg{local\_scopes}]
+\label{obs:prop:root-vs-congruence}
+The computation equations, zero/successor cases, induction, reflexivity and
+root replacement do not derive congruence of $\Suc$ for a primitive equation
+predicate.
+\end{proposition}
+
+\begin{proof}
+Take $\mathbb{N}$ with the standard functions and interpret the equation
+predicate by the equivalence relation $\approx$ whose only non-singleton class
+is $\{2,3\}$. Every computation equation holds because both sides have the same
+value. Reflexivity and root replacement are sound for an equivalence relation.
+Cases and induction are sound on $\mathbb{N}$ for every interpreted formula.
+But $2\approx 3$ and $\Suc 2\not\approx\Suc 3$.
+\end{proof}
+
+The counter-model is not the equality of the complete theory, which is actual
+equality. \Cref{obs:thm:cc-congruence} shows what must be added: congruence in
+one fixed position, the counter of a recursor, suffices. A Leibniz clause
+$P(s)\to P(t)$ schematic in a formula context also merges the two
+eliminations, and moves the work into context application and higher-order
+substitution; no smaller checker for that route is established.
+
+\subsection{The witness order of the paired binder}
+
+A reversed binder
+$\mathsf{E}_{x,y}B\defeq\forall y\,\exists x\,(B(x,0)\to B(x,y))$ would merge
+the two eliminations and remove the reusable clause. Consider the naive
+introduction that fixes a witness term $t(z)$ in the instruction and checks
+$B(t(z),0)\proves B(t(z),\Suc z)$, its progress variant with a witness
+independent of $z$ at a literal equation, and the ordinary instance
+elimination.
+
+\begin{proposition}[\pkg{counter\_congruence}]
+\label{obs:prop:reversed}
+There is a literal equation matrix $B$ such that the ordinary reading
+$\forall y\,\exists x\,(B(x,0)\to B(x,y))$ is true in $\mathbb{N}$ and
+$\mathsf{E}_{x,y}B$ is false under a reading that validates the naive rules.
+Hence the naive rules do not derive the equivalence of every $\mathsf{E}$
+formula with its ordinary reading.
+\end{proposition}
+
+\begin{proof}
+Read $\mathsf{E}_{x,y}B$, with free parameters fixed, as: there is a unary
+primitive recursive $f$ with $\forall y\,(B(f(y),0)\to B(f(y),y))$. The naive
+case rule is sound with $f(0)=0$ and $f(\Suc z)=t(z)$; the progress rule is
+sound with a constant $f$; instance elimination and transport are sound. The
+gated macros for the connectives keep their two-valued meanings: an existential
+macro needs a constant selector, and the universal macro has an unused
+existential coordinate.
+
+Let $F$ be a total computable function that is not primitive recursive and let
+$T(n,c)$ be the primitive recursive predicate saying that $c$ is a halting
+computation trace of a fixed program for $F$ on the input $n$. Choose a literal
+equation $B$ with $B(x,0)\equiv\top$ and $B(x,\Suc n)\equiv T(n,x)$, by a
+primitive recursive characteristic and a case selector. The ordinary reading is
+true. The selector reading is false: a primitive recursive $f$ would give the
+trace $f(\Suc n)$, and the primitive recursive output decoder would compute
+$F(n)$.
+\end{proof}
+
+The source witness obtained at a fresh universal parameter may have to be
+chosen inside the proof scope of that parameter, after an existential
+elimination; a witness fixed before the subproof does not allow this
+interleaving. The proposition excludes this rule package with this reading. A
+repair with delayed witness choice or an intermediate introduction judgment is
+not excluded.
+
+\subsection{Two side conditions that cannot be dropped}
+
+\begin{example}[Freshness of the step variable for the witness]
+\label{obs:ex:fresh}
+The formula $\D{x}{y}\bigl(\It{y}{0}{v}{\Suc x}=y\bigr)$ is false in
+$\mathbb{N}$: its zero instance is true, and its reading requires every
+positive number to equal one fixed $\Suc x$. If an introduction could take the
+step variable $z$ as its witness, the step
+$\It{\Suc z}{0}{v}{\Suc z}=\Suc z$ would be a computation instance. The
+condition that $z$ is fresh for the witness is therefore necessary
+(\pkg{local\_scopes}).
+\end{example}
+
+\begin{example}[Local assumptions do not escape a major]
+\label{obs:ex:leak}
+Case introduction derives $\D{x}{y}(0=1)$ while locally assuming $0=1$. A
+checker that lets this assumption leak from the subproof of a major into the
+context of the caller accepts $0=1$ (\pkg{research}).
+\end{example}
+
+\pkg{constructed\_computation} proves, by a finite-range invariant, that
+restricting the witnesses of \rulename{DI} to $0$ or variables and at the same
+time the targets of \rulename{QE} to $1$, to finitely many numerals, or to
+variables loses the theorem $\D{x}{y}(\sel(y,N+1,x)=N+1)$ for a suitable $N$;
+the statement and its proof are given with the specialization rules in another
+chapter.
+
+\section{Independence of the progress rule}
+\label{obs:sec:progress-independence}
+
+This section draws on \pkg{progress\_independence}. It shows that
+\rulename{QI} by progress is not admissible over the other seven rules of the
+core. Write $\Nat^{-}$ for $\Nat$ without \rulename{QI}.
+
+The README of the repository records three facts that shape a countermodel.
+Each of the other seven rules is independent of the rest, by readings of the
+language over the natural numbers (\Lean{NativeModels}). Such a reading cannot
+work for \rulename{QI}: over the natural numbers the soundness conditions for
+\rulename{DI} and \rulename{DE} already imply the condition for \rulename{QI},
+whatever an equation means (\Lean{Sem.Sound.qIInd\_of}); so the numerical
+domain must be nonstandard. And $\Nat^{-}$ derives $0=1$ from every successor
+cycle of odd length (\Lean{NoInd.no\_odd\_cycle}), so the model has no such
+cycle; \cref{obs:thm:no-cycle} extends this to every length. The structures
+used earlier in the chapter do not serve. Every power $\mathcal{N}^{(J)}$
+satisfies induction for literal equations (\cref{obs:cor:power-axioms}), so
+\rulename{QI} is sound in it; what fails there is coverage, hence \rulename{DI}
+by cases (\cref{obs:prop:coverage-fails}). An ultrapower of the standard model
+with its internal iterator satisfies induction as well, by the theorem of
+\L o\'s. The countermodel has to do the opposite of a power: keep coverage and
+both computation equations at every count, nonstandard counts included, and
+lose induction for one equation. Coverage and acyclicity force the nonstandard
+part of the successor graph to consist of chains infinite in both directions,
+so every step function that is definable with parameters needs an orbit
+infinite in both directions along each chain.
+
+All arguments of this section are carried out in classical metamathematics with
+the axiom of choice. This adds no classical axiom to the object calculus: a
+classical structure is a sound test of intuitionistic derivability
+(\cref{obs:sec:kinds}).
+
+\subsection{Coherent iterator structures}
+
+\begin{definition}
+\label{obs:def:pi-coherent}
+An \emph{iterator language} is a first-order language $L$ with $0$, $\Suc$ and
+iterator symbols $I_h(n,a,\vec p)$, one for each member $h(u,\vec p)$ of a set
+of \emph{descriptors}: terms of $L$ with a designated state variable $u$ and a
+finite tuple of passive variables $\vec p$. The variable $u$ need not occur in
+$h$. The language is built in stages, so that the body of an iterator symbol is
+a term of an earlier stage. An $L$-structure is \emph{coherent} if it satisfies
+the following first-order sentences.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Successor conditions.} $\Suc$ is injective, $0$ is not a successor,
+every element is $0$ or a successor, and $\Suc^{k}x\ne x$ for each $k\ge 1$.
+\item \emph{Computation.} For every iterator symbol,
+$I_h(0,a,\vec p)=a$ and
+$I_h(\Suc n,a,\vec p)=h(I_h(n,a,\vec p),\vec p)$.
+\item \emph{Cross-extensionality.} For every two iterator symbols $I_h$, $I_g$
+of $L$, the case $h=g$ included,
+\[
+\forall\vec p\,\forall\vec q\,\Bigl[\forall u\,\bigl(h(u,\vec p)=g(u,\vec q)\bigr)\to
+\forall n\,\forall a\,\bigl(I_h(n,a,\vec p)=I_g(n,a,\vec q)\bigr)\Bigr].
+\tag{Ext}
+\]
+\end{enumerate}
+\end{definition}
+
+By (Ext) an iterator depends on the unary function $u\mapsto h(u,\vec p)$ and
+on its two numerical inputs, not on the presentation of the function;
+repetition, omission and reordering of parameters are included. An independent
+choice of an orbit for each written body would not have this property:
+substitution of terms for the passive parameters changes the written body
+without changing the function, and the substitution lemma for the native
+syntax would fail (\cref{obs:lem:pi-subst}).
+
+\begin{lemma}[Orbits in one ultrapower]
+\label{obs:lem:pi-orbit}
+Let $A$ be a nonempty $L$-structure, $\mathcal{U}$ a nonprincipal ultrafilter
+on $\mathbb{N}$ and $B=A^{\mathbb{N}}/\mathcal{U}$. For every term
+$h(u,\vec p)$ of $L$ and every tuple $\vec p$ of $B$, the function
+$f(v)=h^{B}(v,\vec p)$ has a two-sided orbit: a family $(x_j)_{j\in\mathbb{Z}}$
+of elements of $B$ with $f(x_j)=x_{j+1}$ for all $j$.
+\end{lemma}
+
+\begin{proof}
+Let $\vec p=[\vec p_i]$, put $f_i(v)=h^{A}(v,\vec p_i)$ and choose any
+$a_i\in A$. For $j\in\mathbb{Z}$ let
+$x_j=\bigl[f_i^{\max(0,i+j)}(a_i)\bigr]$, with finite external iteration in
+each coordinate. Term functions of $B$ are computed coordinatewise, and
+$\max(0,i+j)+1=\max(0,i+j+1)$ for all $i\ge -j$, a cofinite set of
+coordinates. Hence $f(x_j)=x_{j+1}$.
+\end{proof}
+
+The lemma concerns functions defined by terms with parameters. No induction
+axiom of $A$ is used, and the orbit need not pass through a prescribed
+element. In the structure $\mathfrak{M}_0$ of \cref{obs:lem:pi-seed} the
+function $u\mapsto\Suc(I_{\mathrm{id}}(u,u))$ maps everything into the standard
+ray and has no two-sided orbit; this is why the ultrapower precedes every
+adjunction of iterators.
+
+\begin{lemma}[Chains]
+\label{obs:lem:pi-chains}
+In a structure with the successor conditions, the elements $\Suc^{k}0$,
+$k\in\mathbb{N}$, are pairwise distinct and form one component of the successor
+graph, the \emph{standard ray}; every other component is a copy of
+$(\mathbb{Z},+1)$.
+\end{lemma}
+
+\begin{proof}
+Every nonzero element has exactly one predecessor and $0$ has none. An element
+outside the standard ray does not reach $0$ after finitely many predecessor
+steps, so its iterated predecessors and successors are all defined; they are
+pairwise distinct by injectivity and the absence of cycles. The same two
+properties make the numerals distinct.
+\end{proof}
+
+\begin{lemma}[Extension of a coherent structure]
+\label{obs:lem:pi-extension}
+Let $A$ be a coherent $L$-structure, $B=A^{\mathbb{N}}/\mathcal{U}$ as in
+\cref{obs:lem:pi-orbit}, and let $\mathcal{D}$ be a set of terms of $L$ with
+designated state variables that have no iterator symbol in $L$. Then $B$ is a
+coherent elementary extension of $A$, and $B$ has an expansion to
+$L\cup\{I_h:h\in\mathcal{D}\}$ that is coherent for the enlarged language. The
+expansion changes no element and no function of $B$.
+\end{lemma}
+
+\begin{proof}
+The conditions of \cref{obs:def:pi-coherent} are first-order, so they hold in
+$B$ by the theorem of \L o\'s, also for the parameter tuples that are new in
+$B$, and the diagonal embedding is elementary.
+
+By \cref{obs:lem:pi-chains} the successor graph of $B$ is the standard ray
+together with copies of $\mathbb{Z}$; choose an origin $b$ in each copy. Call a
+function $f\colon B\to B$ \emph{presented} if $f=h^{B}(-,\vec p)$ for a term
+$h$ of $L$ and a tuple $\vec p$ of $B$, and \emph{old} if $h$ can be taken with
+an iterator symbol in $L$. Assign to every presented function $f$ one map
+$\mathit{It}_f\colon B\times B\to B$ as follows.
+
+If $f$ is old, say $f=g^{B}(-,\vec q)$ with $I_g$ in $L$, put
+$\mathit{It}_f(n,a)=I_g^{B}(n,a,\vec q)$. This does not depend on the choice of
+$g$ and $\vec q$, by (Ext) in $B$.
+
+If $f$ is not old, put $\mathit{It}_f(\Suc^{k}0,a)=f^{k}(a)$ on the standard
+ray. For each copy of $\mathbb{Z}$ with origin $b$ and each seed $a$ choose a
+two-sided orbit $(x_j)_{j\in\mathbb{Z}}$ of $f$ by \cref{obs:lem:pi-orbit} and
+put $\mathit{It}_f(\Suc^{j}b,a)=x_j$, where negative powers are iterated
+predecessors. The axiom of choice provides the choices.
+
+In both cases $\mathit{It}_f(0,a)=a$ and
+$\mathit{It}_f(\Suc n,a)=f(\mathit{It}_f(n,a))$: for old $f$ by the computation
+axioms of $I_g$, on the standard ray by the definition, and on a copy of
+$\mathbb{Z}$ because $x_{j+1}=f(x_j)$. No condition links the values on a copy
+of $\mathbb{Z}$ to the seed, and none is required.
+
+For $h\in\mathcal{D}$ define
+$I_h(n,a,\vec p)=\mathit{It}_f(n,a)$ with $f=h^{B}(-,\vec p)$. The computation
+axioms of the new symbols hold. (Ext) holds for every pair of symbols of the
+enlarged language: for two old symbols it holds in $B$ already, and in the
+remaining cases two instances with the same function $f$ are both equal to
+$\mathit{It}_f$, an old instance by the first clause of the definition.
+\end{proof}
+
+\begin{lemma}[The seed]
+\label{obs:lem:pi-seed}
+Let $L_0=\{0,\Suc,I_{\mathrm{id}}\}$, where $I_{\mathrm{id}}$ is the iterator
+symbol of the descriptor $u$ without parameters. Let
+$\mathfrak{M}_0=\mathbb{N}\sqcup\mathbb{Z}$, with $0$ and $1=\Suc 0$ in the
+first summand, the ordinary successor on each summand, and
+\[
+I_{\mathrm{id}}(n,a)=
+\begin{cases}
+a, & n\in\mathbb{N},\\
+1, & n\in\mathbb{Z}.
+\end{cases}
+\]
+Then $\mathfrak{M}_0$ is coherent, and
+$I_{\mathrm{id}}(c,0)=1\ne 0$ for every $c$ in the second summand.
+\end{lemma}
+
+\begin{proof}
+The successor conditions are evident. $I_{\mathrm{id}}(0,a)=a$, and
+$I_{\mathrm{id}}(\Suc n,a)=I_{\mathrm{id}}(n,a)$ because $\Suc$ preserves the
+summands. (Ext) for the one symbol without parameters is trivial. No predicate
+that distinguishes the summands is in the language.
+\end{proof}
+
+\begin{proposition}[The tower]
+\label{obs:prop:pi-tower}
+Let $L_{i+1}$ be $L_i$ together with an iterator symbol for every term of
+$L_i$ with a designated state variable that has no symbol in $L_i$, and let
+$L_\omega=\bigcup_i L_i$. There is a coherent $L_\omega$-structure
+$\mathfrak{M}_\omega$ that extends $\mathfrak{M}_0$, in which every term of
+$L_\omega$ with a designated state variable has an iterator symbol, and in
+which $I_{\mathrm{id}}(c,0)=1\ne 0$ for the elements $c$ of the second summand
+of $\mathfrak{M}_0$.
+\end{proposition}
+
+\begin{proof}
+Given the coherent $L_i$-structure $\mathfrak{M}_i$, let $\mathfrak{M}_{i+1}$
+be the expansion to $L_{i+1}$ of its ultrapower given by
+\cref{obs:lem:pi-extension}; the ultrapower is taken in the whole language
+$L_i$, and only descriptors over $L_i$ receive symbols at this stage, so no
+body contains a symbol that is being introduced. Replace each ultrapower by an
+isomorphic copy that contains the preceding structure. Then for every $j$ the
+reducts $(\mathfrak{M}_i|L_j)_{i\ge j}$ form an elementary chain, and by the
+elementary chain theorem the reduct to $L_j$ of the union
+$\mathfrak{M}_\omega$ is an elementary extension of each of them. Every
+successor condition, every computation axiom and every instance of (Ext)
+mentions finitely many symbols, hence is a sentence of some $L_j$ that holds
+in $\mathfrak{M}_j$, and so holds in $\mathfrak{M}_\omega$. The equation
+$I_{\mathrm{id}}(c,0)=1$ and the inequation $1\ne 0$ hold in $\mathfrak{M}_0$
+and are preserved. A term of $L_\omega$ is a term of some $L_i$ and has a
+symbol in $L_{i+1}$.
+\end{proof}
+
+\subsection{Native terms in the tower}
+
+Translate native terms into $L_\omega$ by $x^{*}=x$, $0^{*}=0$,
+$(\Suc t)^{*}=\Suc t^{*}$ and
+\[
+\It{n}{a}{u}{h}^{*}=I_{h^{*}}(n^{*},a^{*},\vec p),
+\]
+where $\vec p$ lists the free variables of $h$ other than $u$ in a fixed order.
+Inner iterators are translated first, so $h^{*}$ is a term of some $L_i$ and
+its symbol belongs to $L_{i+1}$; the number of stages is the nesting depth of
+iterators. Parameters are numerical variables; there is no sort of functions
+and no internal evaluator. The value $[\![t]\!]_\rho$ of a native term under an
+assignment $\rho$ in $\mathfrak{M}_\omega$ is the value of $t^{*}$. The body
+$u$ is the descriptor of $I_{\mathrm{id}}$, so
+$[\![\It{y}{0}{u}{u}]\!]_\rho=I_{\mathrm{id}}(\rho(y),0)$. % ed.: the report interprets a native body by any staged descriptor that presents its function and appeals to (Ext); for the body u this is the symbol of the seed.
+
+\begin{lemma}[Substitution]
+\label{obs:lem:pi-subst}
+For native terms $t,s$, capture-avoiding substitution and every assignment
+$\rho$ in $\mathfrak{M}_\omega$,
+\[
+[\![t\subst{s}{x}]\!]_\rho=[\![t]\!]_{\rho[x\mapsto[\![s]\!]_\rho]},
+\]
+and the value of a term does not change under renaming of bound variables.
+The same holds for native formulas under the ordinary readings of
+$\Q{y}$ and $\D{x}{y}$ with actual equality.
+\end{lemma}
+
+\begin{proof}
+Induction on $t$. The cases of variables, $0$ and $\Suc$ are immediate. Let
+$t=\It{n}{a}{u}{h}$ with $u$ renamed away from $x$ and $s$. The translation of
+$t\subst{s}{x}$ is $I_{g}(\dots,\vec q)$ for the descriptor
+$g=(h\subst{s}{x})^{*}$, whose passive variables $\vec q$ are those of $h$
+other than $x$ together with those of $s$; in general $g$ is a different
+descriptor from $h^{*}$. By the induction hypothesis the counter and the seed
+have the required values, and for every element $v$
+\[
+[\![h\subst{s}{x}]\!]_{\rho[u\mapsto v]}=[\![h]\!]_{\rho[x\mapsto[\![s]\!]_\rho][u\mapsto v]},
+\]
+so the unary function of $g$ at the parameters $\rho(\vec q)$ equals the unary
+function of $h^{*}$ at the parameters given by
+$\rho[x\mapsto[\![s]\!]_\rho]$. (Ext) for the pair $I_g$, $I_{h^{*}}$ gives
+equal iterator values. Renaming of the bound variable is the same argument
+with equal functions. The statement for formulas follows by induction on
+formulas.
+\end{proof}
+
+This is the point at which independent choices for written bodies would be
+insufficient: the two descriptors are syntactically unrelated, and only (Ext),
+imposed for all parameter tuples and preserved through all stages, identifies
+their iterators.
+
+\subsection{The theorem}
+
+\begin{theorem}[Progress is not admissible]
+\label{obs:thm:progress-independence}
+Let $E(y)\defeq\bigl(\It{y}{0}{u}{u}=0\bigr)$.
+\begin{enumerate}[label=(\roman*)]
+\item $\Nat^{-}$ derives $E(0)$ and the sequent $E(z)\proves E(\Suc z)$.
+\item Every sequent derivable in $\Nat^{-}$ is valid in $\mathfrak{M}_\omega$
+under the ordinary readings, with actual equality.
+\item $\Q{y}E(y)$ is false in $\mathfrak{M}_\omega$, and so is
+$\D{x}{y}E(y)$ with $x$ unused.
+\end{enumerate}
+Hence $\Nat^{-}$ does not derive $\Q{y}E(y)$, which $\Nat$ derives by one
+application of \rulename{QI}: the rule \rulename{QI} is not admissible over the
+other seven rules, and \rulename{DI-progress} is not admissible over the other
+rules of the paired-introduction form. The countermodel is a classical
+structure with actual equality in which the successor is injective, coverage
+and separation hold, there is no successor cycle, and both computation
+equations hold for every finite iterator term at every count.
+\end{theorem}
+
+\begin{proof}
+(i) $E(0)$ is the zero computation. The successor computation gives
+$\It{\Suc z}{0}{u}{u}=\It{z}{0}{u}{u}$, and transitivity with the hypothesis
+gives $E(\Suc z)$. Reflexivity, symmetry and transitivity are derived from the
+zero computation and transport, without \rulename{QI}
+(\cref{base:sec:structural}).
+
+(ii) A sequent is valid if every assignment that satisfies its context
+satisfies its conclusion. \rulename{Hyp} is immediate. The zero computation is
+the computation axiom for $I_{h^{*}}$. For the successor computation, the left
+side has the value $h^{*}(I_{h^{*}}(n,a,\vec p),\vec p)$ by the computation
+axiom, and the right side $h\subst{\It{n}{a}{u}{h}}{u}$ has the same value by
+\cref{obs:lem:pi-subst}. Transport, from $s=t$ and $h(s)=r$ to $r=h(t)$, is
+sound because equality is actual and
+$[\![h(s)]\!]_\rho=[\![h(t)]\!]_\rho$ by \cref{obs:lem:pi-subst}.
+\rulename{QE} is modus ponens and instantiation, with
+\cref{obs:lem:pi-subst} for the instance $B(t)$. \rulename{DE} is existential
+elimination: the value of the fresh variable is the witness, and freshness
+keeps the context and the conclusion unchanged. For \rulename{DI} by cases let
+$\rho$ satisfy $\Gamma$ and take the value of $t$ as witness. Suppose $B(t,0)$
+holds under $\rho$. Every element is $0$ or $\Suc d$ for some $d$; in the
+second case $\rho[z\mapsto d]$ still satisfies $\Gamma$ and $B(t,0)$ and gives
+$t$ the same value, since $z$ is fresh, so the premise gives $B(t,\Suc z)$
+there. Hence $B(t,y)$ holds for every $y$. All seven arguments are first-order
+soundness arguments in one structure; coverage is used for \rulename{DI} only.
+
+(iii) By the translation, $E(y)$ says $I_{\mathrm{id}}(y,0)=0$. It holds at
+$y=0$ and fails at $y=c$ by \cref{obs:prop:pi-tower}. So
+$E(0)\to\forall y\,E(y)$ is false, and with an unused witness coordinate so is
+$\exists x\,(E(0)\to\forall y\,E(y))$.
+\end{proof}
+
+With the seven independence results recorded in the README
+(\Lean{NativeModels}), each of the eight rule families of $\Nat$ is independent
+of the other seven.
+
+\begin{remark}[What the construction needs]
+\label{obs:rem:pi-needs}
+Four requirements carry the proof, and dropping any of them leaves a gap. The
+iterator of a function that is not old is chosen once for the function, not for
+a written body. (Ext) is imposed for all pairs of symbols and all parameter
+tuples, so that it transfers to the parameters of later ultrapowers. Each
+ultrapower is taken in the whole current language, so that the earlier
+iterators and their coherence are carried along. And a stage adds symbols only
+for descriptors over the preceding language, so that the orbit lemma applies to
+them. The construction makes no assertion about iteration of arbitrary
+functions; \cref{obs:lem:pi-orbit} is false for arbitrary maps.
+\end{remark}
+
+\begin{remark}[A countable model]
+The languages $L_i$ and $L_\omega$ are countable. By the downward
+L\"owenheim--Skolem theorem $\mathfrak{M}_\omega$ has a countable elementary
+substructure that contains $c$; it satisfies the same sentences, hence is
+coherent and refutes $E(c)$, and the soundness argument applies to it. This
+does not contradict the obstruction to readings over the natural numbers: the
+successor of the countable carrier has nonstandard chains and is not the map
+$n\mapsto n+1$ under any enumeration that would make it a reading in that
+sense. No computable presentation of the model is claimed.
+\end{remark}
+
+\begin{proposition}[A seed with cancellative addition]
+\label{obs:prop:pi-cancellative}
+Let
+$M_0=\{(0,n):n\in\mathbb{N}\}\cup\{(k,z):k\ge 1,\ z\in\mathbb{Z}\}$ with
+componentwise addition, $0=(0,0)$, $1=(0,1)$ and $\Suc(k,z)=(k,z+1)$. Let
+$I_{\mathrm{id}}(n,a)$ be $a$ if the first coordinate of $n$ is $0$ and $1$
+otherwise, and let $K(n,a)=a+n$ be the iterator symbol of the descriptor
+$\Suc u$. Then $M_0$ is coherent for the language
+$\{0,\Suc,I_{\mathrm{id}},K\}$, $K(n,0)=n$ holds, addition $a+n=K(n,a)$ is
+associative, commutative and cancellative with the unit $0$, and
+$I_{\mathrm{id}}((1,0),0)=1$. The tower over $M_0$ gives a countermodel as in
+\cref{obs:thm:progress-independence} that satisfies these laws in addition.
+\end{proposition}
+
+\begin{proof}
+$M_0$ is a submonoid of the group $\mathbb{Z}^2$, so addition is associative,
+commutative and cancellative; it is conical, and $\Suc x=x+1$. The successor is
+injective, omits $0$, has no cycle, and every nonzero element has a
+predecessor in $M_0$. The computation axioms of $I_{\mathrm{id}}$ hold because
+$\Suc$ preserves the first coordinate, and those of $K$ are $a+0=a$ and
+$a+\Suc n=\Suc(a+n)$. (Ext) between the two symbols has a false antecedent,
+since the identity and the successor are different functions. The displayed
+laws are first-order sentences of the seed language and survive the tower.
+\end{proof}
+
+The stronger seed shows that the countermodel does not depend on a defect of
+addition. It does not separate uniqueness of iteration from induction: in
+$M_0$ the term $f(n)=n+I_{\mathrm{id}}(n,0)$ satisfies $f(0)=0$ and
+$f(\Suc n)=\Suc f(n)$, and $f(c)=\Suc c\ne c=K(c,0)$ at $c=(1,0)$, so the
+instance of the rule \rulename{UR} of \cref{obs:sec:partial} for the update
+$\Suc u$ fails there. The instance of \rulename{UR} for the identity update
+and the constant template $f(z)=0$ already excludes the witness of the theorem,
+since its conclusion is $0=\It{t}{0}{u}{u}$.
+
+\subsection{No successor cycle without progress}
+
+The countermodel has no successor cycle, and it cannot have one. Let $T^{-}$ be
+intuitionistic logic with equality, the two computation equations and
+coverage; there is no induction. Write $Z(x)\defeq\sel(x,1,0)$, so $Z(0)=1$ and
+$Z(\Suc x)=0$, write $\overline{j}$ for $\Suc^{j}0$, and $h^{[r]}$ for the
+$r$-fold composition of a unary term, which introduces no iterator. All
+inductions below are on the integer that specifies a term.
+
+\begin{lemma}[Finite clocks]
+\label{obs:lem:clocks}
+For every $m\ge 2$ there is a term $h_m(x)$, built from the leaves
+$\overline{0},\dots,\overline{m-1}$ by the selector with arbitrary counter
+terms, such that $T^{-}$ proves
+\[
+\bigvee_{j<m}h_m(x)=\overline{j},\qquad
+h_m(\overline{j})=\overline{j+1}\ (j<m-1),\qquad
+h_m(\overline{m-1})=0 .
+\]
+\end{lemma}
+
+\begin{proof}
+Let $h_2=Z$; coverage gives $Z(x)=0\vee Z(x)=1$. Given $h_m$, put
+$T_m(x)\defeq\It{x}{0}{u}{h_m(u)}$. By coverage on $x$ and the two
+computations, $T_m(x)$ is $0$ or a value of $h_m$, so it is one of
+$\overline{0},\dots,\overline{m-1}$; nothing is asserted about the preceding
+iterator value. Finite computation gives $T_m(\overline{j})=\overline{j}$ for
+$j<m$ and $T_m(\overline{m})=0$. For $1\le r<m$ put
+\[
+d_{m,r}(z)\defeq Z\bigl(h_m^{[m-r]}(z)\bigr),\qquad
+V_{m,0}(z)\defeq 0,\qquad
+V_{m,r}(z)\defeq\sel\bigl(d_{m,r}(z),\,V_{m,r-1}(z),\,\overline{r+1}\bigr),
+\]
+and $V_m\defeq V_{m,m-1}$. Ground computation gives $d_{m,r}(\overline{s})=1$
+for $s=r$ and $d_{m,r}(\overline{s})=0$ for $s<m$, $s\ne r$; hence
+$V_m(0)=0$ and $V_m(\overline{r})=\overline{r+1}$ for $1\le r<m$. At an
+arbitrary argument $V_m$ takes one of the values
+$0,\overline{2},\dots,\overline{m}$, by coverage on the selector counters. Put
+\[
+h_{m+1}(x)\defeq\sel\bigl(x,\,1,\,V_m(T_m(x))\bigr).
+\]
+Its values are among $\overline{0},\dots,\overline{m}$. At $0$ its value is
+$1$; at $\overline{j}$ with $1\le j<m$ it is
+$V_m(\overline{j})=\overline{j+1}$; at $\overline{m}$ it is $V_m(0)=0$.
+\end{proof}
+
+For example $h_3(x)=\sel\bigl(x,1,\sel(Z(Z(T_2(x))),0,2)\bigr)$ with
+$T_2(x)=\It{x}{0}{u}{Z(u)}$.
+
+\begin{lemma}[Separation of numerals]
+\label{obs:lem:numerals}
+For $m\ge 2$ and distinct $i,j<m$, $T^{-}$ proves
+$\overline{i}=\overline{j}\to 0=1$, without injectivity of the successor.
+\end{lemma}
+
+\begin{proof}
+Apply $h_m^{[r]}$ with $r\equiv -i\pmod m$, $0\le r<m$. The result is
+$0=\overline{s}$ with $1\le s<m$, and $Z$ gives $1=0$.
+\end{proof}
+
+\begin{theorem}[No finite successor cycle]
+\label{obs:thm:no-cycle}
+For every $k\ge 1$ and every term $c$, $T^{-}$ proves
+$\Suc^{k}c=c\to 0=1$, and $\Nat^{-}$ derives the sequent
+$\Suc^{k}c=c\proves 0=1$.
+\end{theorem}
+
+\begin{proof}
+Let $m=k+1$ and $v=T_m(c)$. The hypothesis and $k$ successor computations give
+$v=T_m(\Suc^{k}c)=h_m^{[k]}(v)$. By \cref{obs:lem:clocks}, $v=\overline{j}$ for
+some $j<m$, and the equation becomes
+$\overline{j}=\overline{(j+k)\bmod m}$. Since $k=m-1$ the two residues differ,
+and \cref{obs:lem:numerals} gives $0=1$.
+
+For $\Nat^{-}$ the finite disjunctions are removed. The cases rule for equation
+templates, from $E(0)$ and $E(\Suc z)$ to $E(t)$, is derivable in $\Nat^{-}$:
+\rulename{DI} by cases with an unused witness, \rulename{DE} and \rulename{QE}
+(\Lean{NoInd.cases}). First, if $E(\ell)$ is derivable for each leaf $\ell$ of
+a term built from finitely many leaves by the selector, then $E$ of the term is
+derivable, by induction on the term with the cases rule at each selector
+counter. Second, since $h_m$ is such a term over
+$\overline{0},\dots,\overline{m-1}$, the cases rule at the counter of $T_m$
+gives: if $E(\overline{j})$ is derivable for every $j<m$, then $E(T_m(c))$ is
+derivable; the zero branch is $E(0)$ and the successor branch is
+$E(h_m(T_m(z)))$. Third, put
+$b_r(a)\defeq Z\bigl(h_m^{[(-r)\bmod m]}(a)\bigr)$ for $r<m$, so that
+$b_r(\overline{j})=1$ exactly when $r=j$, and
+\[
+\operatorname{xor}(p,q)\defeq\sel(p,q,Z(q)),\qquad
+\operatorname{or}(p,q)\defeq\sel(p,q,1),
+\]
+and let $D_m(a,b)$ be the left-nested $\operatorname{or}$, starting at $0$, of
+the terms $\operatorname{xor}(b_r(a),b_r(b))$, $r<m$. The cases rule for the
+template $\operatorname{xor}(Z(w),Z(w))=0$, instantiated at the arguments of
+$Z$ in the terms $b_r(a)$, and the computation $\operatorname{or}(0,0)=0$ give
+$D_m(a,a)=0$ for every $a$.
+Ground computation gives
+$D_m(\overline{j},h_m^{[k]}(\overline{j}))=1$ for $j<m$, so the second step
+gives $D_m(v,h_m^{[k]}(v))=1$ at $v=T_m(c)$. Under the hypothesis
+$v=h_m^{[k]}(v)$, and transport gives $D_m(v,v)=1$, hence $0=1$. No
+disjunction, no characteristic of equality of arbitrary numbers and no
+\rulename{QI} is used.
+\end{proof}
+
+The README records the odd case in Lean (\Lean{NoInd.no\_odd\_cycle},
+\Lean{NoInd.no\_succ\_fixed}) and leaves the even case open, because it needs a
+counter of another period whose behavior has to be established without
+induction; the clocks $h_m$ are such counters. The theorem is a constraint on
+countermodels and does not make \rulename{QI} redundant.
+
+\begin{remark}[What is proved and what is not]
+\label{obs:rem:pi-scope}
+\Cref{obs:thm:progress-independence} is an independence result for one rule of
+one fixed kernel, with the identity translation of formulas. It is proved by a
+written model construction that uses a nonprincipal ultrafilter and the axiom
+of choice. It is not formalized: the README lists the package
+as filed and not formalized, and the Lean readings of \Lean{NativeModels} fix
+the standard successor, so they cannot express the model. The result does not
+bound the size of a checker, does not concern presentations in which
+\rulename{QI} is fused with another rule or replaced by a weaker induction
+interface, and does not show that the eight rules are a minimum: equivalent
+presentations with fewer rule families exist. It does not decide whether the
+uniqueness rule for the successor update is equivalent to induction for
+literal equations, since the seed of \cref{obs:prop:pi-cancellative} refutes
+that uniqueness instance.
+\end{remark}
+
+\section{The progressive binder presentation}
+\label{obs:sec:progressive}
+
+This section draws on \pkg{research}. It shows that the calculus of
+\cref{obs:def:progressive}, with \rulename{BoolCases}, is a complete
+presentation of $\iPRA$, so that \cref{obs:thm:boolcases} isolates the one rule
+that cannot be removed. Structural weakening, contraction, exchange,
+substitution, renaming and assumption cut are admissible by induction on
+derivations, with eigenparameters renamed first.
+
+\begin{lemma}[Identity and equation induction, without cases]
+\label{obs:lem:Hidentity}
+The case-free calculus derives $t=t$, symmetry, transitivity and numerical
+congruence; $\Gamma,A\proves A$ for every object formula $A$; and contextual
+induction for literal equations: from $\Gamma\proves E(0)$ and
+$\Gamma,E(z)\proves E(\Suc z)$ with $z$ fresh, $\Gamma\proves E(t)$.
+\end{lemma}
+
+\begin{proof}
+The computation $\mathsf{R}(0,t;u,v.0)=t$, used as the major and as the minor
+of \rulename{Tr} with the template $w=t$, gives $t=t$; the templates $w=s$,
+$s=w$ and $f(s)=f(w)$ give the other equality rules. An available equation
+$s=t$ transports $s=s$ to $s=t$. For an available $\mathsf{H}_{x,y}B$, induct
+on the binder depth: \rulename{HE} supplies a fresh $a$ and
+$\mathsf{P}_{y}B(a,y)$; reintroduce the formula by \rulename{HI} at the witness
+$a$, where the local assumption $B(a,z)$ yields a proof of itself by the
+induction hypothesis and \rulename{Step} gives $B(a,\Suc z)$. For induction,
+\rulename{HI} with an unused witness gives $\mathsf{H}_{x,y}E(y)$,
+\rulename{HE} supplies $\mathsf{P}_{y}E(y)$, and \rulename{Iter} gives $E(t)$.
+\end{proof}
+
+\begin{lemma}[Boolean cases and constructor cases]
+\label{obs:lem:Hcases}
+Put $P(n)=\mathsf{R}(n,0;u,v.u)$ and $C(n,a,b)=\mathsf{R}(n,a;u,v.b)$. The
+case-free calculus derives
+\[
+C(\operatorname{sg}(x),0,x)=x,\qquad C(\operatorname{sg}(x),x,\Suc(Px))=x .
+\]
+Over the case-free calculus, \rulename{BoolCases} is equivalent to the rule
+\[
+\infrule{\Gamma,\ t=0\proves A\quad\Gamma,\ t=\Suc z\proves A}{\Gamma\proves A}\ \rulename{Cases},
+\qquad z \text{ fresh for } \Gamma,t,A .
+\]
+\end{lemma}
+
+\begin{proof}
+Both identities follow by literal-equation induction; each base is a zero
+computation and each successor step is a successor computation that does not
+use its induction hypothesis. Hence $\operatorname{sg}(t)=0$ gives $t=0$ and
+$\operatorname{sg}(t)=1$ gives $t=\Suc(Pt)$. For \rulename{Cases} from
+\rulename{BoolCases}, substitute $P(t)$ for $z$ in the second premise.
+Conversely \rulename{Cases} gives \rulename{BoolCases} by the equations of
+$\operatorname{sg}$.
+\end{proof}
+
+The missing principle is thus the two-value range of $\operatorname{sg}$;
+equation induction supplies the numerical identities.
+
+\begin{lemma}[Binder congruence]
+\label{obs:lem:Hcong}
+If $A(x,y)$ and $B(x,y)$ are interderivable uniformly in $x,y$, with $x,y$ not
+in the retained context, then $\mathsf{H}_{x,y}A$ and $\mathsf{H}_{x,y}B$ are
+interderivable. No cases and no compound induction are used.
+\end{lemma}
+
+\begin{proof}
+From $\mathsf{H}_{x,y}A$, \rulename{HE} gives $\mathsf{P}_{y}A(a,y)$. Introduce
+$\mathsf{H}_{x,y}B$ at the witness $a$: convert the local $B(a,z)$ to $A(a,z)$,
+apply \rulename{Step}, convert $A(a,\Suc z)$ to $B(a,\Suc z)$.
+\end{proof}
+
+\begin{definition}[Gates, selectors and macros]
+\label{obs:def:Hmacros}
+With bound variables renamed apart, define by recursion on formulas
+\begin{align*}
+G_v(s=t)&\defeq\bigl(C(v,0,s)=C(v,0,t)\bigr), &
+G_v(\mathsf{H}_{x,y}A)&\defeq\mathsf{H}_{x,y}G_vA,\\
+M_v(s=t,\,r=w)&\defeq\bigl(C(v,s,r)=C(v,t,w)\bigr), &
+M_v(\mathsf{H}_{x,y}A,\mathsf{H}_{x,y}B)&\defeq\mathsf{H}_{x,y}M_v(A,B),\\
+M_v(E,\mathsf{H}_{x,y}B)&\defeq\mathsf{H}_{x,y}M_v(G_yE,B), &
+M_v(\mathsf{H}_{x,y}A,E)&\defeq\mathsf{H}_{x,y}M_v(A,G_yE),
+\end{align*}
+for equations $E$; the maximal binder depth decreases in each recursive call.
+Let $\mathsf{T}=(0=0)$ and let $p,q,d$ be the terms with
+\[
+p(0)=0,\ p(\Suc n)=C(p(n),1,0);\quad
+q(0)=0,\ q(\Suc n)=C(p(n),q(n),\Suc(q(n)));\quad
+d(0)=0,\ d(\Suc n)=\Suc\Suc(d(n)),
+\]
+which are parity, half and doubling in $\mathbb{N}$. The logical macros are
+\begin{align*}
+A\Rightarrow_{\mathsf{H}}B&\defeq\mathsf{H}_{u,z}M_z(A,B), &
+\exists_{\mathsf{H}}x\,A(x)&\defeq\mathsf{H}_{x,z}G_zA(x),\\
+A\wedge_{\mathsf{H}}B&\defeq\mathsf{H}_{u,z}G_zM_{p(z)}(A,B), &
+A\vee_{\mathsf{H}}B&\defeq\exists_{\mathsf{H}}x\,M_x(A,B),\\
+\forall_{\mathsf{H}}x\,A(x)&\defeq\mathsf{H}_{u,z}M_{p(z)}\bigl(\mathsf{T},A(q(z))\bigr), &
+\bot_{\mathsf{H}}&\defeq(0=\Suc 0),
+\end{align*}
+with all unused coordinates fresh. These are translations of fixed finite
+syntax, not truth predicates.
+\end{definition}
+
+\begin{lemma}
+\label{obs:lem:Hgates}
+The calculus of \cref{obs:def:progressive} derives:
+\begin{enumerate}[label=(\roman*)]
+\item $G_0A$, and $G_{\Suc v}A$ is interderivable with $A$;
+\item $A$ is interderivable with $\mathsf{H}_{u,y}G_yA$ for fresh $u,y$;
+\item $M_0(A,B)$ is interderivable with $A$ and $M_{\Suc v}(A,B)$ with $B$;
+\item $p(d(n))=0$, $p(\Suc d(n))=1$, $q(d(n))=n$ and $q(\Suc d(n))=n$.
+\end{enumerate}
+Items (i)--(iii) hold in the case-free calculus.
+\end{lemma}
+
+\begin{proof}
+(i) By induction on the formula, with the computations of $C$ at equations and
+\cref{obs:lem:Hcong} at binders; for $G_0$ at a binder, \rulename{HI} ignores
+its local assumption and uses the induction hypothesis for the successor
+matrix. (ii) Forward, \rulename{HI} ignores its assumption and uses
+$G_{\Suc z}A$ from $A$. Backward, \rulename{HE} supplies the progress clause,
+$G_0A$ is a theorem, and one \rulename{Step} gives $G_1A$, hence $A$. (iii) By
+computation, (ii) and congruence. (iv) Induct on the single equation
+$p(d(n))=0$: at a successor two parity updates send $0$ to $1$ and back. Then
+$p(\Suc d(n))=1$ by one computation. Induct on the single equation
+$q(d(n))=n$: the two half updates at $d(n)$ and $\Suc d(n)$ first keep the
+value and then increment it, by the parity equations. Then
+$q(\Suc d(n))=n$ by its defining update. Two single-equation inductions are
+used in sequence; no induction on a conjunction or a compound formula.
+\end{proof}
+
+\begin{proposition}[All intuitionistic rules]
+\label{obs:prop:Hlogic}
+The calculus of \cref{obs:def:progressive} derives the introduction and
+elimination rules of intuitionistic natural deduction for the macros of
+\cref{obs:def:Hmacros}, with the usual eigenvariable conditions, explosion from
+$\bot_{\mathsf{H}}$, and coverage
+$(n=0)\vee_{\mathsf{H}}\exists_{\mathsf{H}}v\,(n=\Suc v)$. No excluded middle
+for quantified formulas is used.
+\end{proposition}
+
+\begin{proof}
+By \cref{obs:lem:Hcases}, \rulename{Cases} is available, and with
+\cref{obs:lem:Hgates}(iii) it selects either endpoint of a selector at an
+arbitrary control, also when the context mentions the control; in particular
+proofs of $A$ and of $B$ give a proof of $M_t(A,B)$.
+
+\emph{Implication.} Given $\Gamma,A\proves B$, apply \rulename{HI}; the local
+assumption is $M_z(A,B)$, and \rulename{Cases} on $z$ gives $A$ and then $B$ at
+$z=0$, and $B$ at $z=\Suc w$; in both branches the successor matrix is $B$. For
+elimination, \rulename{HE} supplies the clause, $A$ is its zero matrix, and
+\rulename{Step} at $0$ gives $B$.
+
+\emph{Existential quantifier.} From $A(t)$, \rulename{HI} at the witness $t$
+ignores the local gate. For elimination, \rulename{HE} gives a fresh $a$ and
+the clause; the zero gate is a theorem and \rulename{Step} at $0$ gives
+$A(a)$.
+
+\emph{Conjunction.} If $A$ and $B$ are proved, \rulename{Cases} and the
+selector endpoints prove every successor matrix. Conversely the zero gate is a
+theorem, \rulename{Step} at $0$ gives the matrix at $1$, which is $B$ since
+$p(1)=1$, and a second \rulename{Step} gives the matrix at $2$, which is $A$
+since $p(2)=0$.
+
+\emph{Disjunction.} The introductions use the witnesses $0$ and $1$. For
+elimination, eliminate the existential at a fresh $a$ and apply
+\rulename{Cases} to $a$.
+
+\emph{Universal quantifier.} Let $\Gamma\proves A(x)$ with $x$ fresh. Then
+$\mathsf{T}$ and $A(q(\Suc z))$ are proved, so \rulename{Cases} and the
+selector endpoints prove the successor matrix, and \rulename{HI} ignores its
+assumption. For specialization, \rulename{HE} gives the clause; the matrix at
+$d(t)$ is a theorem by \cref{obs:lem:Hgates}(iv), and \rulename{Step} at
+$d(t)$ gives the matrix at $\Suc d(t)$, which is $A(t)$. No compound progress
+clause is iterated.
+
+\emph{Falsity and coverage.} Under $0=1$, computation and transport give
+$s=C(0,s,t)=C(1,s,t)=t$; induction on formulas then gives every object formula,
+since at a binder \rulename{HI} ignores its assumption. \rulename{Cases} proves
+coverage by its two introductions.
+\end{proof}
+
+\begin{theorem}[\pkg{research}]
+\label{obs:thm:progressive}
+Let $T_{\mathsf{H}}$ be intuitionistic first-order logic with equality in the
+staged signature of $\mathsf{R}$, with the computation equations, induction for
+literal equations, coverage and $0=1\to\bot$. The calculus of
+\cref{obs:def:progressive} is sound in $T_{\mathsf{H}}$ under its ordinary
+readings and derives the translations of all rules and axioms of
+$T_{\mathsf{H}}$. For every matrix $B$,
+\[
+\mathsf{H}_{x,y}B(x,y)\ \dashv\vdash\
+\exists_{\mathsf{H}}x\,\forall_{\mathsf{H}}y\,\bigl(B(x,y)\Rightarrow_{\mathsf{H}}B(x,\Suc y)\bigr).
+\]
+$T_{\mathsf{H}}$ and $\iPRA$ have the same theorems in the staged primitive
+recursive language. The progressive calculus is equiconsistent and
+bi-interpretable with $\iPRA$, with whole domains, actual equality and return
+isomorphisms with graph $x=y$.
+\end{theorem}
+
+\begin{proof}
+\emph{Soundness.} \rulename{HI}, \rulename{HE} and \rulename{Step} are logical
+rules under the readings; \rulename{Iter} is equation induction under the
+retained base; \rulename{BoolCases} is the range of $\operatorname{sg}$, which
+follows from coverage.
+
+\emph{Completeness.} \Cref{obs:prop:Hlogic} gives the logical rules and
+coverage, \cref{obs:lem:Hidentity} gives equation induction, and separation
+translates to the identity implication
+$(0=1)\Rightarrow_{\mathsf{H}}(0=1)$.
+
+\emph{The composite.} Forward, \rulename{HE} supplies a fresh $a$ and the
+clause; at a fresh $y$ assume $B(a,y)$ and use \rulename{Step}; introduce the
+implication, the universal and the existential macro and close \rulename{HE}.
+Backward, eliminate the existential at a fresh $a$, specialize the universal
+at the eigenparameter $z$ of \rulename{HI}, and eliminate the implication under
+the assumption $B(a,z)$. The clause composite is the universal progress
+formula. In $T_{\mathsf{H}}$ the gate, selector and clock equations prove the
+intended meaning of every macro; for the universal macro, the even-to-odd
+progress implications give every instance $A(n)$, and all instances of $A$ make
+every progress implication true, with no induction on $A$. Induction on
+formulas, with \cref{obs:lem:Hcong}, gives both formula composites.
+
+\emph{Arithmetic.} $T_{\mathsf{H}}$ has the computation equations of ordinary
+counter-aware primitive recursion, coverage, separation and equation
+induction. The scalar iterator is the case of $\mathsf{R}$ whose update ignores
+its counter, so the construction of a characteristic of actual equality and
+the derivation of quantifier-free induction from equation induction
+(\cref{base:thm:reflect}) apply to the terms of the larger language, and
+$T_{\mathsf{H}}$ proves every quantifier-free induction instance.
+Counter-aware recursion compiles every primitive recursive description
+directly, in place of the scalar compiler. Numerical descriptions are
+identified with themselves, and equation induction identifies two fixed
+recursions with the same equations, so both domain isomorphisms have the graph
+$x=y$.
+\end{proof}
+
+\begin{remark}
+The presentation has one unrestricted introduction and pays for it with the
+explicit \rulename{BoolCases} and with the distinction between \rulename{Step}
+and \rulename{Iter}. The universal quantifier is recovered with one progress
+step through the clock $p,q,d$. No smaller complete checker for this
+presentation is established, and the presentation is not assigned the
+measurements of the checkers of its package.
+\end{remark}
+
+\section{The counter-congruence form of the calculus}
+\label{obs:sec:cc}
+
+This section draws on \pkg{counter\_congruence}. General equality transport
+carries an arbitrary formula or term context as rule data. Here it is recovered
+from two specific operations: replacement of the complete left side of an
+equation, and congruence in the counter of a recursor. The result is a
+restriction of the primitive interface; it does not by itself give a shorter
+checker. \Cref{obs:prop:root-vs-congruence} shows that root replacement alone
+is not enough, and \cref{obs:thm:RL-independent} that counter congruence alone
+is not enough.
+
+\begin{definition}[The calculus $\mathcal{K}_{\mathrm{ctr}}$]
+\label{obs:def:cc}
+Terms are variables, $0$ and the successor-seeded counter-aware recursor
+$\mathsf{R}_{\Suc}(n,a;u,v.h)$, with $\Suc a\defeq\mathsf{R}_{\Suc}(0,a;u,v.0)$
+and $1\defeq\Suc 0$. The computation schemas are
+\begin{align*}
+\mathsf{R}_{\Suc}(0,a;u,v.h)&=\Suc a, \tag{R0}\\
+\mathsf{R}_{\Suc}(\Suc n,a;u,v.h)&=h\subst{n}{u}\subst{\mathsf{R}_{\Suc}(n,a;u,v.h)}{v}. \tag{RS}
+\end{align*}
+Object formulas are $A::=(s=t)\mid\D{x}{y}A$. Contexts are finite lists of
+object formulas and internal clauses $\Q{y}B$; a clause is available by
+membership only, and an object formula by membership or by a proof, written
+$\Gamma\mathrel{\triangleright}M$. The rules are \rulename{Hyp} for object
+formulas, R0, RS,
+\[
+\infrule{\Gamma\mathrel{\triangleright}s=t\quad\Gamma\proves s=r}{\Gamma\proves t=r}\ \rulename{RL}
+\qquad
+\infrule{\Gamma\mathrel{\triangleright}s=t}{\Gamma\proves\mathsf{R}_{\Suc}(s,a;u,v.h)=\mathsf{R}_{\Suc}(t,a;u,v.h)}\ \rulename{CC}
+\]
+and \rulename{QE}, \rulename{DE}, \rulename{DI} by cases and
+\rulename{DI-progress} as in $\Nat_{\mathrm{p}}$, with majors available in the
+sense of $\triangleright$. In \rulename{CC} the initializer, the update and the
+passive parameters are the same on both sides. There is no primitive
+reflexivity, no general transport and no other congruence. The designated
+contradiction is $0=1$.
+\end{definition}
+
+Weakening, exchange, contraction, renaming, substitution of a term for a
+parameter and cut of an object assumption are admissible by induction on
+derivations; substitution preserves the matching initializer and update of
+\rulename{CC} and the matching root of \rulename{RL}. These are operations on
+proof syntax and do not replace equal terms inside a formula.
+
+\begin{lemma}[Equality algebra from root replacement]
+\label{obs:lem:cc-eq}
+Reflexivity, symmetry and transitivity are derivable from RS and
+\rulename{RL}, without \rulename{CC}.
+\end{lemma}
+
+\begin{proof}
+For a term $s$ put $c_s\defeq\mathsf{R}_{\Suc}(\Suc s,0;u,v.u)$; RS gives
+$c_s=s$. With one copy as the major and one as the minor, \rulename{RL} gives
+$s=s$. An available $s=t$ with the minor $s=s$ gives $t=s$. For $s=t$ and
+$t=r$, symmetry gives $t=s$, and \rulename{RL} with this major and the minor
+$t=r$ gives $s=r$. Paths of equations are composed at their roots; no proper
+subterm changes.
+\end{proof}
+
+\begin{lemma}[Numerical cases]
+\label{obs:lem:cc-cases}
+For every object template $A(y)$, from $\Gamma\proves A(0)$ and
+$\Gamma\proves A(\Suc z)$ with $z$ fresh, $\Gamma\proves A(t)$ is derivable
+without either equality rule and without \rulename{DI-progress}.
+\end{lemma}
+
+\begin{proof}
+Weaken the second premise by $A(0)$ and apply \rulename{DI} by cases with the
+witness $0$ and an unused coordinate $x$, which gives $\D{x}{y}A(y)$.
+\rulename{DE} supplies the clause $\Q{y}A(y)$, and \rulename{QE} with the first
+premise gives $A(t)$.
+\end{proof}
+
+\begin{lemma}[Counter representation of a context]
+\label{obs:lem:cc-rep}
+Let $W(n)\defeq\mathsf{R}_{\Suc}(n,0;u,v.u)$, so that $W(0)=\Suc 0$ and
+$W(\Suc n)=n$ by R0 and RS. For a numerical template $F(x)$ put
+\[
+H_F(n)\defeq\mathsf{R}_{\Suc}\bigl(n,F(0);u,v.\Suc(F(\Suc u))\bigr),\qquad
+J_F(n)\defeq W(H_F(n)),
+\]
+with fresh bound variables. Then $\mathcal{K}_{\mathrm{ctr}}$ derives
+$J_F(n)=F(n)$ for arbitrary $n$ in every context, by cases and without
+\rulename{DI-progress}.
+\end{lemma}
+
+\begin{proof}
+The update of $H_F$ does not contain $v$, so R0 and RS give literally
+$H_F(0)=\Suc(F(0))$ and $H_F(\Suc z)=\Suc(F(\Suc z))$. Let $q$ be $0$ or
+$\Suc z$. \rulename{CC} for the recursor $W$ gives
+$W(H_F(q))=W(\Suc(F(q)))$, and RS gives $W(\Suc(F(q)))=F(q)$. Composition by
+\cref{obs:lem:cc-eq} gives $J_F(q)=F(q)$. \Cref{obs:lem:cc-cases} for the
+equation $J_F(y)=F(y)$ gives the claim. The only change of a proper subterm is
+the one \rulename{CC} instance through $W$; replacing $H_F(q)$ by
+$\Suc(F(q))$ under $W$ without it would assume the congruence that is being
+derived.
+\end{proof}
+
+\begin{theorem}[All numerical congruence from counter congruence]
+\label{obs:thm:cc-congruence}
+For every numerical template $F(x)$, from $\Gamma\mathrel{\triangleright}s=t$
+the calculus $\mathcal{K}_{\mathrm{ctr}}$ derives $\Gamma\proves F(s)=F(t)$.
+Hence for templates $U,V$, from $\Gamma\mathrel{\triangleright}s=t$ and
+$\Gamma\proves U(s)=V(s)$ it derives $\Gamma\proves U(t)=V(t)$.
+\end{theorem}
+
+\begin{proof}
+\rulename{CC} with the initializer $F(0)$ and the update $\Suc(F(\Suc u))$
+gives $H_F(s)=H_F(t)$; a second \rulename{CC} for $W$ gives $J_F(s)=J_F(t)$.
+\Cref{obs:lem:cc-rep} and \cref{obs:lem:cc-eq} give
+$F(s)=J_F(s)=J_F(t)=F(t)$. For the second claim,
+$U(t)=U(s)=V(s)=V(t)$.
+\end{proof}
+
+\begin{proposition}[Constant overhead in inference nodes]
+\label{obs:prop:cc-nodes}
+Count one node for each primitive inference, hypothesis lookups included, and
+count repeated subproofs repeatedly. If the supplied proof of $s=t$ has $p$
+nodes, the derivation of $F(s)=F(t)$ has $p+56$ nodes, independently of the
+syntactic depth of $F$.
+\end{proposition}
+
+\begin{proof}
+Reflexivity has three nodes; symmetry adds four nodes to its premise and
+transitivity five to the sum of its premises. Each of the two proofs of
+$J_F(q)=F(q)$ has eight nodes: a computation, a \rulename{CC} lifting, a second
+computation and the transitivity overhead. The cases construction adds
+\rulename{DE}, \rulename{DI}, \rulename{QE} and one clause lookup, so
+$J_F(t)=F(t)$ has twenty nodes. The two \rulename{CC} liftings of $s=t$ have
+$p+2$ nodes, the reversed left representation $20+4$, the right one $20$, and
+two transitivities give $(p+2)+24+20+5+5=p+56$.
+\end{proof}
+
+The count is not a bound on bytes or running time: term and formula labels
+contain copies of $F$. It is not a constant bound for the lifting to compound
+formulas below.
+
+\begin{theorem}[Transport in object formulas]
+\label{obs:thm:cc-transport}
+For every object template $A(w)$, from $\Gamma\mathrel{\triangleright}s=t$ and
+$\Gamma\proves A(s)$ the calculus $\mathcal{K}_{\mathrm{ctr}}$ derives
+$\Gamma\proves A(t)$, with no progress instance in the expansion. An available
+clause $\Q{y}B(s,y)$ together with an available $s=t$ has the force of
+$\Q{y}B(t,y)$: from a proof of $B(t,0)$ one obtains $B(t,r)$ for every $r$.
+\end{theorem}
+
+\begin{proof}
+Induction on the number of binders of $A$, uniformly in contexts, terms and
+parameters. An equation is \cref{obs:thm:cc-congruence}. Let
+$A(w)=\D{x}{y}B(w,x,y)$ with the bound variables renamed apart. Eliminate
+$A(s)$ at a fresh $a$, which retains $\Q{y}B(s,a,y)$. Introduce
+$\D{x}{y}B(t,x,y)$ by cases with the witness $a$ and a fresh $z$: the local
+assumption $B(t,a,0)$ is transported backward along $t=s$ by the induction
+hypothesis to $B(s,a,0)$; the clause at $\Suc z$ gives $B(s,a,\Suc z)$; the
+induction hypothesis transports it forward to $B(t,a,\Suc z)$. Close the
+introduction and the elimination. Both recursive uses concern the smaller
+matrix $B$, and the only introductions added are case introductions. For the
+clause, transport the base backward, specialize, and transport forward.
+\end{proof}
+
+\begin{corollary}[Identity-language equivalence]
+\label{obs:cor:cc-equiv}
+Let $\mathcal{K}_{\mathrm{tr}}$ be $\mathcal{K}_{\mathrm{ctr}}$ with
+\rulename{RL} and \rulename{CC} replaced by unrestricted transport in object
+formulas. For every context $\Gamma$ of object formulas and clauses and every
+object formula $A$, $\Gamma\proves A$ in $\mathcal{K}_{\mathrm{ctr}}$ if and
+only if $\Gamma\proves A$ in $\mathcal{K}_{\mathrm{tr}}$. The translations are
+effective and preserve end sequents literally.
+\end{corollary}
+
+\begin{proof}
+From $\mathcal{K}_{\mathrm{tr}}$, replace each transport by
+\cref{obs:thm:cc-transport}. Conversely \rulename{RL} is transport with the
+template $w=r$; reflexivity follows from a computation by the same instance;
+and \rulename{CC} is obtained by transporting the left occurrence of $s$ in
+$\mathsf{R}_{\Suc}(s,a;u,v.h)=\mathsf{R}_{\Suc}(s,a;u,v.h)$ to $t$ and applying
+symmetry.
+\end{proof}
+
+Since the language and the meaning of every primitive are unchanged, the
+bi-interpretation of $\mathcal{K}_{\mathrm{tr}}$ with $\iPRA$, with whole
+domains, actual equality and identity return isomorphisms, transfers to
+$\mathcal{K}_{\mathrm{ctr}}$. In the successor-seeded basis the numerical
+bridge is short: with $C(n,a,b)\defeq W(\mathsf{R}_{\Suc}(n,a;u,v.\Suc b))$
+and $P(n)\defeq C(n,0,W(n))$ one has $C(0,a,b)=a$, $C(\Suc n,a,b)=b$,
+$P(0)=0$, $P(\Suc n)=n$, and for terms $g$ and $h$ the term
+$W\bigl(\mathsf{R}_{\Suc}(n,g(\vec p);u,v.\Suc h(u,W(v),\vec p))\bigr)$
+satisfies the equations of the primitive recursion with base $g$ and step $h$,
+without predecessor search, pairing or induction. The package attributes this
+compiler, the logical macros and the lifting of \cref{obs:thm:cc-transport} to
+earlier drafts; its own contribution is \cref{obs:lem:cc-rep} and
+\cref{obs:thm:cc-congruence}, with the computation schemas unchanged and the
+counter as the only congruence position. An earlier draft on fixed-position
+transport uses replacement in the initializer of a scalar iterator together
+with an additional first-step computation schema.
+
+\begin{theorem}[Root replacement is not derivable]
+\label{obs:thm:RL-independent}
+Let $\mathcal{K}^{-}$ be $\mathcal{K}_{\mathrm{ctr}}$ without \rulename{RL},
+with no reflexivity or other equality rule added. Then $\mathcal{K}^{-}$ does
+not derive $0=0$ from the empty context. In particular \rulename{RL} is not
+admissible in $\mathcal{K}^{-}$.
+\end{theorem}
+
+\begin{proof}
+Interpret the atom $s=t$ by a binary predicate, not assumed to be equality.
+The domain is $\{0,1\}$, $0$ denotes $0$, and every recursion term denotes $1$
+under every assignment, whatever its counter, initializer, update and
+parameters; this is compatible with substitution and renaming. So $\Suc a$ is
+constantly $1$. Let $s=t$ be true exactly when $s$ has the value $1$; the right
+side is immaterial. Read $\Q{y}B$ and $\D{x}{y}B$ by their ordinary readings.
+
+R0, RS and the conclusion of \rulename{CC} have a recursion term on the left
+and are true. \rulename{Hyp}, availability, \rulename{QE} and \rulename{DE}
+are sound as logical rules. For \rulename{DI} by cases let $b$ be the value of
+the witness; a sound premise gives $B(b,0)\to B(b,1)$, because $\Suc z$ denotes
+$1$, and on the two-element domain this is $B(b,0)\to\forall y\,B(b,y)$. For
+\rulename{DI-progress}, with parameters and witness fixed, a term $U(y)$ has
+one of the value functions $y\mapsto 0$, $y\mapsto 1$, $y\mapsto y$, so the
+truth set of a literal equation $U(y)=V(y)$ is $\varnothing$, $\{0,1\}$ or
+$\{1\}$; in each case truth at $0$ implies truth everywhere, and the closure
+holds for every witness. So every rule of $\mathcal{K}^{-}$ is sound, and
+$0=0$ is false. In $\mathcal{K}_{\mathrm{ctr}}$ two copies of
+$\mathsf{R}_{\Suc}(\Suc 0,0;u,v.u)=0$ as major and minor of \rulename{RL} prove
+$0=0$.
+\end{proof}
+
+The theorem concerns the specified inference system. The interpretation is not
+a model of an ordinary theory whose equality carries its usual axioms, and the
+theorem does not exclude a bi-interpretation with a different equality or
+domain.
+
+\section{Constructed sources and certificate interfaces}
+\label{obs:sec:sources}
+
+This section draws on \pkg{constructed\_computation} and
+\pkg{uniform\_predecessor} for the computation interface, and on
+\pkg{checker\_and\_barriers}, \pkg{compact\_kernel}, \pkg{local\_scopes} and
+\pkg{research} for statements about their checkers. The object calculus is
+$\Nat_{\mathrm{p}}$ with \rulename{Comp} throughout; the results change the
+certificate format, not the theory.
+
+\subsection{Successor sources constructed from predecessors}
+
+Earlier certificate formats submit an iterator source $[c,a,h]$ and must check
+that the counter $c$ has successor shape before using a successor computation;
+deleting that check admits a false equation. The constructed-source formats
+submit the predecessor.
+
+\begin{definition}
+\label{obs:def:packets}
+A \emph{constructed computation packet} supplies a predecessor $p$, an
+initializer $a$, an update $h$ and a mode. In base mode the checker generates
+$\It{0}{a}{v}{h}=a$. In step mode it constructs the successor itself and
+generates
+\[
+\It{\Suc p}{a}{v}{h}=h\subst{\It{p}{a}{v}{h}}{v}.
+\]
+In \pkg{constructed\_computation} the mode is an explicit flag in a previously
+unused packet field, and the generated equation is opened at the fresh
+parameter of the continuation. In \pkg{uniform\_predecessor} the mode is read
+off the raw representation of $p$ (an empty representation selects the base
+equation), the packet is marked by a null major, and the generated equation is
+opened with the image zero. In both, the recursive image
+$\It{p}{a}{v}{h}$ is validated as a numerical term only when opening the update
+requests it.
+\end{definition}
+
+\begin{lemma}[Known-instance discharge]
+\label{obs:lem:known-instance}
+If $w\notin\FV(\Gamma,A)$, $\Gamma\proves H(0)$ and $\Gamma,H(w)\proves A$,
+then $\Gamma\proves A$.
+\end{lemma}
+
+\begin{proof}
+Rename the eigenparameters of the second derivation, substitute $0$ for $w$,
+which leaves $\Gamma$ and $A$ unchanged, and cut with the first derivation.
+\end{proof}
+
+\begin{lemma}[Boxed zero]
+\label{obs:lem:boxing}
+Put $B_0(p)\defeq\It{0}{p}{w}{0}$. The base computation and the successor
+computations at predecessors of the form $B_0(p)$ derive every instance of the
+successor computation.
+\end{lemma}
+
+\begin{proof}
+The base computation gives $B_0(p)=p$. Compute at $B_0(p)$ and transport along
+$B_0(p)=p$ with the template
+$\It{\Suc w}{a}{u}{h}=h\subst{\It{w}{a}{u}{h}}{u}$. The argument holds for
+every element of the domain.
+\end{proof}
+
+\begin{theorem}[Constructed computation supply]
+\label{obs:thm:constructed-supply}
+\begin{enumerate}[label=(\roman*)]
+\item In the format of \pkg{constructed\_computation}, every successfully
+generated equation $H(w)$ has a zero instance $H(0)$ derivable from the
+computation equations and transport. Hence its continuation is admissible by
+\cref{obs:lem:known-instance}.
+\item In the format of \pkg{uniform\_predecessor}, every successfully supplied
+equation is a theorem uniformly in every newly admitted parameter; no
+known-instance discharge is needed.
+\item Both formats derive exactly the closed theorems of $\Nat_{\mathrm{p}}$
+with \rulename{Comp}. In the first, the step at the predecessor $0$ is the
+packet with $p=0$ in step mode. In the second, a literal $0$ selects the base
+equation, and the step at $0$ is obtained by \cref{obs:lem:boxing}.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Validation separates into two obligations: the source counter is a successor,
+and a recursive image used in the result is a valid term. Construction
+establishes the first, and demand-driven substitution the second.
+
+(i) In base mode, after $w=0$ the initializer and its copy on the right agree
+by structural zero completion, and the equation is the base computation. In
+step mode, suppose first that opening the update requests the recursive image.
+The image $[p,a,h]$ is then validated at numerical root; successful validation
+is idempotent, so validating on demand gives the same substituted value as
+validating eagerly. The additional dummy slot below the constructed successor
+introduces no dependency, since root validation of the image rejects a
+meaningful reference to it. The two occurrences of the predecessor agree and
+the zero instance is the successor computation. If the update never requests
+its image, it is independent of the state on every meaningful path, and after
+zero completion the equation is $\It{\Suc p_0}{a_0}{v}{h_0}=h_0$ with $h_0$
+independent of $v$, which is a successor computation without the unused image.
+The old goal and context were checked before $w$ was allocated and do not
+contain it.
+
+(ii) With a null major the continuation opens the equation with the image zero,
+and the newly admitted parameters stay rigid. For a predecessor with empty
+representation the decoded counter is zero and the two occurrences of the
+initializer agree, so the equation is a base computation. Otherwise the source
+counter is the constructed successor, a successor whatever the value of the
+predecessor. If the update uses its state, the image is checked at the old
+parameter floor and the opening lemma of the inherited codec identifies the
+right side with the update at the preceding iterator. If not, the update is
+independent of the state, and the successor computation with a
+state-independent update holds for every predecessor and initializer, including
+new parameters.
+
+(iii) Soundness is (i), (ii) and the unchanged logical branches. For
+completeness, encode each instance of \rulename{Comp} by its packet and close
+its use by \rulename{Hyp}; the other instructions are unchanged.
+\end{proof}
+
+The raw codec is inherited. Input is a JSON array that ends with the closed
+goal; four-field packets are consumed from the end; membership in the context
+closes a goal without a packet. One list grammar is read in two sorts, with
+arities standing for truth or zero, closure or successor, equation, and paired
+binder or iterator. Negative coordinates name allocated rigid parameters and
+positive coordinates name protected binder slots. An opener substitutes a
+checked image at exposed numerical coordinates. These conventions are syntax,
+not arithmetic operations.
+
+The uniform format shortens certificates: a step at a scalar parameter is one
+record where the earlier flat format needs three (boxing, computation,
+transport). For the same named derivations and the delivered encoders the
+record counts are as follows; they are not lower bounds on shortest proofs.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Named derivation & Earlier format & Uniform predecessor\\
+\midrule
+Nonvacuous zero witness & 4 & 2\\
+Atomic progress closure & 6 & 4\\
+Arbitrary-term specialization & 8 & 6\\
+Contextual induction with seed congruence & 48 & 40\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Statements about the checkers of the packages}
+
+\emph{Composition of the arity codec with predecessor packets}
+(\pkg{checker\_and\_barriers}, \pkg{compact\_kernel}). The arity codec encodes
+$s=t$ as $[s,t]$, $\D{x}{y}B$ as $[B]$ and $\Q{y}B$ as $[B,B,B]$, with the
+depth increment $5-\mathrm{len}$ for every array, numerical root depth three,
+and fixed truth and zero aliases at the other arities. The composed checker
+uses the packet $[\mathtt{null},p,a,h]$ of \cref{obs:def:packets}. For a
+truthy $p$ it corresponds to the arity packet $[[\,],[p,a,h],1,0]$ and for a
+falsy $p$ to $[[\,],[0,a,h],p,0]$: the generated raw equation, the image
+checks at the old floor, the next floor and the opened goal and hypothesis are
+identical in the two executions, so the inherited supply proof applies. The
+literal $0$ stays available as a witness of an introduction, and the step at
+the predecessor $0$ is the three-node derivation of \cref{obs:lem:boxing}.
+
+\begin{theorem}[Composed verifier]
+\label{obs:thm:composed}
+Every successful execution of each of the supplied composed checkers has a
+decoded conclusion derivable in $\Nat_{\mathrm{p}}$, and every closed theorem
+of $\Nat_{\mathrm{p}}$ has a finite accepted canonical certificate, given
+sufficient resources.
+\end{theorem}
+
+\begin{proof}
+Induction on the successful trace. Membership is \rulename{Hyp}, by raw
+equality and the opening invariant: at a meaningful sorted root a successful
+opening implements capture-free filling of the distinguished hole, by
+induction on the tree, and the interpretation of a constant alias is unchanged
+by traversal of its children. A proved equality or closure major with matching
+endpoints is transport or \rulename{QE}; a mismatch leaves the goal and adds
+truth. Triplication of a unary major is \rulename{DE} at a fresh parameter. The
+positional argument check makes an introduction a genuine instance, with the
+restriction of progress to literal equations. Arithmetic supply is
+\cref{obs:thm:constructed-supply}. Parameters admitted inside a completed
+major and unused by its end sequent are replaced by $0$. For completeness,
+encode a derivation rule by rule, with the boxed step at the predecessor $0$.
+\end{proof}
+
+The invariant is conditional: opening is not idempotent on every raw tree
+below ignored annotations. The two packages obtain the same 612-byte program.
+
+\emph{Local eigenparameter scopes} (\pkg{local\_scopes}). The inherited checker
+decreases one global integer at every allocation, so the proof of a major
+permanently advances the allocator of the continuation. The local-scope checker
+passes the current floor to each call by value.
+
+\begin{theorem}[Local scope preserves the calculus]
+\label{obs:thm:local-scope}
+With the same sorted decoding and rule correspondence, the local-scope checker
+is sound for $\Nat_{\mathrm{p}}$ with \rulename{Comp}, and every finite
+canonical derivation has a local-scope certificate.
+\end{theorem}
+
+\begin{proof}
+At the entry of a call with floor $k$ and context $g$ the scope contains the
+labels $k,\dots,-1$, and $k=-|g|$, since each continuation appends one context
+entry and decreases the floor by one. Induct on a successful trace. The entry
+traversal checks the goal at the current scope before a name is allocated. A
+major is checked at the same scope, so its conclusion contains no name
+allocated inside its subproof, and context extension builds a new list, so its
+local assumptions do not escape. The caller then allocates $k-1$; the
+discharged side proof imposes no freshness requirement on this independent
+binding. The openings, the transport, the closure use, the paired rules and the
+generated arithmetic assumption are justified as before; the generated
+assumption needs only a derivable zero instance, by
+\cref{obs:lem:known-instance}. For completeness, rename the binders of a named
+derivation, label the active eigenparameters at a branch with $d$ context
+entries by members of $-1,\dots,-d$, serialize a major with the same
+environment and discard its private extensions on return.
+\end{proof}
+
+The theorem states preservation of the calculus under scope-respecting
+renaming, not equality of accepted byte strings: two sibling subproofs may
+reuse a raw label, and an old packet may mention a name from a finished side
+proof.
+
+\emph{Iterative continuations} (\pkg{research}). The loop checker keeps
+recursion for majors and runs continuations in a loop over an immutable
+context.
+
+\begin{lemma}[Continuation simulation]
+\label{obs:lem:continuation}
+On canonical certificates and with unbounded resources, the iterative checker
+has the same successful derivations as the recursive flat checker, with the
+same order of allocation of fresh names.
+\end{lemma}
+
+\begin{proof}
+The invariant is that the current goal, the contents of the context, the
+global freshness floor and the unconsumed instruction stack equal those of the
+corresponding recursive call. Hypothesis closure is the same membership test.
+The recursive call for a major uses the same preceding context, and its
+allocations persist in both programs. Every branch constructs the same next
+goal and added assumption; tuple concatenation has the contents of list
+concatenation and changes no earlier context. Opening the goal and opening the
+assumption have no effect on the floor, so their order is immaterial.
+Induction on the trace gives both directions.
+\end{proof}
+
+Persistence of the context is necessary by \cref{obs:ex:leak}. The loop removes
+the dependence of recursion depth on the number of continuation steps, not on
+nested majors, syntax traversal or parsing.
+
+\section{Two partial routes}
+\label{obs:sec:partial}
+
+This section draws on the second research note of \pkg{scope\_kernel} and on
+\pkg{local\_scopes}. Both results are conditional: each isolates the statement
+that is missing for a complete replacement of a rule.
+
+\subsection{From uniqueness of iteration toward induction}
+
+Work in intuitionistic logic with equality over the scalar iterator, with the
+two computation equations. The \emph{uniqueness rule} is
+\[
+\infrule{\Gamma\proves f(\Suc z)=h(f(z))}{\Gamma\proves f(t)=\It{t}{f(0)}{u}{h(u)}}\ \rulename{UR},
+\]
+where $f$ and $h$ are fixed term templates, $z$ is fresh for $\Gamma$, $t$ and
+the parameters, and $h(u)$ does not contain $z$. The premise has no discharged
+induction hypothesis and there is no separate base premise. Uniqueness of
+recursion as an arithmetic principle is classical for richer languages with
+counter-aware recursion and product types; the question here is the scalar
+update.
+
+\begin{lemma}
+\label{obs:lem:ur-basic}
+\begin{enumerate}[label=(\roman*)]
+\item Induction for literal equations derives \rulename{UR}, without coverage
+or an equality test.
+\item \rulename{UR} derives: from $f(0)=g(0)$, $f(\Suc z)=h(f(z))$ and
+$g(\Suc z)=h(g(z))$ with $z$ fresh, $f(t)=g(t)$.
+\item \rulename{UR} derives $\It{t}{0}{u}{\Suc u}=t$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) Induct on $f(n)=\It{n}{f(0)}{u}{h(u)}$: the base is the zero computation,
+and $f(\Suc n)=h(f(n))=h(\It{n}{f(0)}{u}{h(u)})=\It{\Suc n}{f(0)}{u}{h(u)}$.
+(ii) Apply \rulename{UR} to $f$ and to $g$ and use congruence in the
+initializer. (iii) Take $f(z)=z$ and $h(u)=\Suc u$; the premise is
+reflexivity.
+\end{proof}
+
+Part (i) is formalized for the kernel as \Lean{NPrf.uniq}.
+
+\begin{lemma}[Retraction lemma]
+\label{obs:lem:retraction}
+Let $e(x)$ be a term template such that $\Gamma$ proves, with $x$ fresh,
+\[
+e(0)=0,\qquad e(e(x))=e(x),\qquad e(\Suc(e(x)))=\Suc(e(x)).
+\]
+Then the computation equations, equality reasoning and \rulename{UR} prove
+$\Gamma\proves e(t)=t$. No induction is used.
+\end{lemma}
+
+\begin{proof}
+Put $h(u)=e(\Suc(e(u)))$ and $r(n)=\It{n}{0}{u}{h(u)}$. Idempotence at
+$\Suc(e(u))$ gives $e(h(u))=h(u)$, and idempotence under $\Suc$ and $e$ gives
+$h(e(u))=h(u)$; the third hypothesis is $h(u)=\Suc(e(u))$. For
+$f(n)=e(r(n))$: $f(0)=e(0)=0$ and
+$f(\Suc n)=e(h(r(n)))=h(r(n))=h(e(r(n)))=h(f(n))$. \rulename{UR} and
+replacement of the equal initializers give $e(r(n))=r(n)$; so the whole orbit
+of $h$ lies in the image of the retraction. Then
+$r(\Suc n)=h(r(n))=\Suc(e(r(n)))=\Suc(r(n))$ and $r(0)=0$, so \rulename{UR} for
+$r$ with the update $\Suc u$ and \cref{obs:lem:ur-basic}(iii) give $r(n)=n$.
+Hence $e(n)=e(r(n))=r(n)=n$.
+\end{proof}
+
+\begin{proposition}[Induction from a term-defined split]
+\label{obs:prop:ur-split}
+Let $E(n)$ be a formula with $\Gamma\proves E(0)$ and
+$\Gamma,E(z)\proves E(\Suc z)$, $z$ fresh. Suppose there is a term $e(n)$ such
+that, uniformly in a fresh $n$, $\Gamma\proves E(n)\vee\neg E(n)$,
+$\Gamma,E(n)\proves e(n)=n$ and $\Gamma,\neg E(n)\proves e(n)=0$. Then
+\rulename{UR} proves $\Gamma\proves E(t)$.
+\end{proposition}
+
+\begin{proof}
+A case split proves $E(e(n))$: in the first branch by $e(n)=n$, in the second
+by $e(n)=0$ and the base. The true-branch identity at $e(n)$ gives
+$e(e(n))=e(n)$. The step at $e(n)$ gives $E(\Suc(e(n)))$, and the true-branch
+identity gives $e(\Suc(e(n)))=\Suc(e(n))$. The base gives $e(0)=0$.
+\Cref{obs:lem:retraction} gives $e(n)=n$, and transport of $E(e(n))$ gives
+$E(n)$.
+\end{proof}
+
+\begin{corollary}[Induction for zero equations]
+\label{obs:cor:ur-zero}
+With coverage and separation, \rulename{UR} derives: from
+$\Gamma\proves q(0)=0$ and $\Gamma,q(z)=0\proves q(\Suc z)=0$,
+$\Gamma\proves q(t)=0$. Only coverage, separation, the selector computations,
+equality reasoning and \rulename{UR} are used.
+\end{corollary}
+
+\begin{proof}
+Coverage gives the case distinction for every term, and $\Suc x=0$ is
+contradictory: the template $v\mapsto\sel(v,0,\Suc 0)$ gives $\Suc 0=0$. So
+$q(n)=0$ is decidable. Put $e(n)=\sel(q(n),n,0)$. If $q(n)=0$ then $e(n)=n$;
+otherwise coverage for $q(n)$ leaves the successor alternative, where
+$e(n)=0$. Apply \cref{obs:prop:ur-split}.
+\end{proof}
+
+Coverage decides whether one number is zero; it does not give a term
+$\delta(a,b)$ with $\delta(a,b)=0\leftrightarrow a=b$. If the arithmetic with
+\rulename{UR} constructed such a term and proved the equivalence on its whole
+domain, \cref{obs:cor:ur-zero} applied to $\delta(s(n),t(n))=0$ would recover
+induction for literal equations, and with \cref{obs:lem:ur-basic}(i) the two
+principles would be equivalent over the common background. The note does not
+supply this: the available proofs of predecessor and of reflection of equality
+(\cref{base:thm:pred,base:thm:reflect}) use literal-equation inductions with
+non-constant right sides, and importing them would be circular. The note
+records one step of a translation. With $Z(u)=\sel(u,1,0)$,
+$N(n)=\It{n}{0}{u}{Z(u)}$, $a+b=\It{b}{a}{u}{\Suc u}$, $j(u)=Z(u)+2N(u)$,
+$M(n)=\It{n}{0}{u}{j(u)}$ and $G(n)=\It{n}{0}{u}{u+M(u)+1}$, the comparison
+$M(G(n))=N(n)$ can be set up as a comparison of two recurrences with the
+common update $k(v)=\It{\Suc v}{v}{u}{j(u)}$, and finite Boolean computations
+give $k(N(n))=Z(N(n))$. The README of the repository records that the package
+\pkg{scalar\_uniqueness} derives predecessor, reflection of equality and
+equation induction from \rulename{UR} and so closes this gap; that argument is
+not part of the note. A native kernel with \rulename{UR} in place of the
+progress rule would in addition have to derive its equality logic, case
+distinction and cut without the removed rule.
+
+\subsection{What fixed countdown uniqueness determines}
+
+A draft on scalar countdown uses a bouncing predecessor $W$ and a countdown
+$L$ with $L(0,a)=a$ and $L(\Suc n,a)=W(L(n,a))$, and the contextual rule
+\[
+\infrule{\Gamma\proves g(\Suc z,\vec p)=W(g(z,\vec p))}{\Gamma\proves g(t,\vec p)=L(t,g(0,\vec p))}\ (U_W),
+\]
+with $g$ a fixed template and $z$ fresh. It completes its theory with an
+additional faithfulness sentence.
+
+\begin{lemma}[\pkg{local\_scopes}]
+\label{obs:lem:action}
+If $\Gamma\proves f(0)=0$ and $\Gamma\proves f(\Suc z)=\Suc(f(z))$ with $z$
+fresh, then $\Gamma\proves L(f(t),a)=L(t,a)$ for every $t$ and $a$, by $U_W$
+alone. Consequently, if the theory also proves
+\[
+\forall x\,\forall y\,\bigl((\forall a\,L(x,a)=L(y,a))\to x=y\bigr),
+\]
+it derives $f(t)=t$ for every such $f$.
+\end{lemma}
+
+\begin{proof}
+Take $z$ fresh for $a$ and $g(n)=L(f(n),a)$. Then
+$g(\Suc z)=L(\Suc(f(z)),a)=W(L(f(z),a))=W(g(z))$ and $g(0)=L(0,a)=a$. Apply
+$U_W$ and substitute $g(0)=a$. The second claim instantiates the displayed
+sentence at $x=f(t)$, $y=t$.
+\end{proof}
+
+For example $L(A(t,0),a)=L(t,a)$ for an initialized successor iterator $A$.
+Equality of all countdown observations is a statement about an action and is
+not equality of the counters. No proof of the displayed faithfulness sentence
+from $U_W$ is given, and no equivalence with the stronger single-observation
+sentence $\forall a\,\forall b\,(L(b,\Suc\Suc a)=2\to a=b)$ of the draft is
+claimed.
+
+\section{Checker sizes}
+\label{obs:sec:sizes}
+
+\Cref{obs:tab:sizes} lists the complete standalone programs of the packages of
+this chapter with the sizes that the packages state, under the protocol of
+\cref{base:sec:measure}. The sizes of \pkg{scope\_kernel} and of
+\pkg{progress\_independence} belong to their checker work and are listed with
+it in another chapter. The observed minima at the
+snapshots of the packages are: 277 tokens, 311 nodes and 672 bytes, attained by
+different programs, for \pkg{adaptive\_seed}, \pkg{research},
+\pkg{local\_scopes} and \pkg{uniform\_predecessor}; 268, 300 and 616 for
+\pkg{checker\_and\_barriers} and \pkg{compact\_kernel}; 281, 315 and 685 for
+\pkg{constructed\_computation} and \pkg{counter\_congruence}. These minima are
+attained sizes, hence upper bounds on an unknown optimum; they are not lower
+bounds.
+
+\begingroup\small
+\begin{longtable}{@{}p{0.33\linewidth}rrrp{0.40\linewidth}@{}}
+\caption{Checker sizes as stated by the packages. The control column gives
+tokens / nodes / bytes of the matched control.}\label{obs:tab:sizes}\\
+\toprule
+Program & Tokens & Nodes & Bytes & Matched control\\
+\midrule
+\endfirsthead
+\toprule
+Program & Tokens & Nodes & Bytes & Matched control\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\multicolumn{5}{@{}l}{\pkg{adaptive\_seed}}\\
+rejected local-scope prototype & 279 & 322 & 685 & 277 / 317 / 684\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{research}}\\
+iterative checker & 276 & 305 & 749 & 278 / 314 / 679 (flat computation)\\
+byte profile & 280 & 319 & 652 & same\\
+explanatory checker & 303 & 339 & 1401 & ---\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{local\_scopes}}\\
+local-scope checker & 284 & 323 & 668 & 281 / 322 / 672 (zero-product control)\\
+readable checker & 320 & 363 & 1426 & ---\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{checker\_and\_barriers}}\\
+explicit list dispatch & 266 & 310 & 612 & 265 / 312 / 616 (old arity, explicit lists, same driver)\\
+compact list predicate & 266 & 312 & 604 & 265 / 314 / 608 (old arity, compact lists, same driver)\\
+Boolean-expression profile & 267 & 315 & 593 & 274 / 318 / 601 (old affine, same driver)\\
+guarded traversal, tuple context & 269 & 300 & 690 & see below\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{compact\_kernel}}\\
+selected composition & 266 & 310 & 612 & 269 / 306 / 628 (matched old-flat control)\\
+shorter-byte composition & 267 & 315 & 597 & ---\\
+smaller-AST composition & 267 & 298 & 639 & ---\\
+immutable-context loop & 266 & 296 & 689 & ---\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{uniform\_predecessor}}\\
+selected checker & 269 & 307 & 629 & 269 / 306 / 628 (flat computation, matched driver)\\
+predecessor packet, two verdicts & 278 & 315 & 680 & 278 / 314 / 679 (flat computation)\\
+ancillary byte profile & 269 & 311 & 616 & see below\\
+ancillary AST profile & 268 & 300 & 649 & see below\\
+readable checker & 312 & 359 & 1531 & ---\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{constructed\_computation}}\\
+selected profile & 279 & 314 & 682 & 283 / 315 / 683 (old generator, same initialization profile)\\
+explicit assignments & 277 & 317 & 684 & 281 / 318 / 685 (generated assumptions, principal)\\
+AST profile & 279 & 314 & 709 & 283 / 315 / 710 (generated assumptions, AST profile)\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{counter\_congruence}}\\
+readable checker of $\mathcal{K}_{\mathrm{ctr}}$ & 1617 & 1822 & 6834 & ---\\
+module import only & 281 & 320 & 680 & 281 / 318 / 685 (frozen principal baseline)\\
+module import, exact class & 280 & 321 & 680 & same\\
+module import, exact type & 281 & 322 & 676 & same\\
+module import, zero-product test & 281 & 322 & 672 & same\\
+inverted hypothesis guard & 283 & 314 & 751 & 283 / 315 / 710 (frozen AST baseline)\\
+compact, separate \rulename{RL}, \rulename{CC}, \rulename{QE} & 343 & 395 & 881 & 296 / 333 / 704 (general transport)\\
+compact, \rulename{CC} fused into local facts & 341 & 388 & 892 & same\\
+\end{longtable}
+\endgroup
+
+For \pkg{checker\_and\_barriers} the further same-driver controls are the old
+arity token profile, 264 / 303 / 641, and the old research loop,
+267 / 297 / 698; a screen of 105 old profiles under the same rejection driver
+gives the matched minima 264 tokens, 297 nodes and 601 bytes, of which only the
+byte minimum is improved, by the 593-byte profile. For
+\pkg{uniform\_predecessor} the matched-driver controls are: token leader
+268 / 309 / 633, AST leader 271 / 303 / 654, byte leader 272 / 314 / 621, flat
+computation 269 / 306 / 628, predecessor joint profile 271 / 306 / 637; the
+selected checker is one node and one byte larger than the matched flat checker,
+and its position below the unchanged minima comes from rejection by exit status
+in place of a printed verdict. In \pkg{constructed\_computation} the arithmetic
+generator alone changes the explicit program from 281 / 318 / 685 to
+277 / 317 / 684. The 612-byte programs of \pkg{checker\_and\_barriers} and
+\pkg{compact\_kernel} are the same file.
+
+The implementation devices are inherited source idioms and are not arithmetic
+principles. In short: the list test \texttt{a * 0 == []} on parsed JSON values;
+a short-circuit expression for guarded elimination; exception-based openers,
+which reject nonempty strings only through the recursion limit of the runtime
+and are therefore not compared with structurally terminating parsers; folding
+of initialization into a default argument; module import in place of a name
+import; and rejection by nonzero exit status. All programs import only the
+standard JSON library, and none imports a producer or a theorem library.
+
+\section{Further questions}
+\label{obs:sec:questions}
+
+The following statements of the packages are not results. First, what was not
+achieved.
+
+\begin{itemize}
+\item No package of this chapter obtains a complete axiomatization that is
+simpler than the common core under the measurement protocol. Where a checker
+improves a coordinate of the observed minima, the gain is an implementation
+change to an inherited theory. No delivered program is below all three
+coordinates in \pkg{research}, \pkg{local\_scopes},
+\pkg{checker\_and\_barriers}, \pkg{compact\_kernel} or
+\pkg{counter\_congruence}; \pkg{constructed\_computation} is below its three
+minima by two tokens, one node and three bytes; \pkg{uniform\_predecessor} is
+below the unchanged minima only through the rejection convention.
+\item No obstruction of the chapter is a lower bound on the size of a checker,
+and none excludes equiconsistency or all one-way interpretations. Apart from
+\cref{obs:prop:monotone}, \cref{obs:lem:ur-basic}(i), the strictness
+statement cited after \cref{obs:prop:forced-progress} and the odd case of
+\cref{obs:thm:no-cycle}, the README of the repository lists none of them as
+formalized in Lean. In particular the countermodel of
+\cref{obs:thm:progress-independence} and the finite clocks of
+\cref{obs:lem:clocks} are written proofs only.
+\item \pkg{progress\_independence}: the result is the independence of one rule
+of the fixed kernel. No smaller arithmetic basis follows from it, and the
+package does not decide whether uniqueness of iteration for the successor
+update is equivalent to induction for literal equations; its strengthened
+countermodel refutes that uniqueness instance and so gives no answer.
+\item No complete checker is given for the progressive calculus of
+\cref{obs:sec:progressive}. No implementation of $\mathcal{K}_{\mathrm{ctr}}$
+is below the inherited programs; the compact attempts of the package have no
+universal audit of their raw aliases.
+\item \pkg{adaptive\_seed}: the deletion of derived majors is rejected only in
+the form of \cref{obs:prop:majors}. For a redesigned calculus without public
+closure goals, logical normalization does not justify deleting all derived
+majors, because equation induction can produce an equality that is then used
+for transport into a compound formula, and at an arbitrary parameter that
+induction is not a reducible successor case. This is an open proof obligation,
+not an incompleteness theorem.
+\item \pkg{compact\_kernel}: two directions were examined without result.
+Replacing computation supply by numerical definitional conversion requires a
+reducer that respects dummy slots, the state binder, neutral counters and rigid
+parameters, and gave no smaller checker. Binders in the certificate grammar,
+with eigenparameters allocated by the opener, require a new proof-opening
+discipline, and no complete smaller construction was obtained.
+\item \pkg{uniform\_predecessor}: binary-tree domains and arithmetic whose
+behavior depends on the syntax of a body were examined; no reduction of the
+complete checking mechanism and no valid smaller presentation was found.
+\item \pkg{scope\_kernel}: the route from \rulename{UR} to induction is
+unfinished in the note (\cref{obs:sec:partial}); the note claims no
+bi-interpretation and no smaller checker for a calculus with \rulename{UR}.
+\end{itemize}
+
+\begin{question}[Relational escapes]
+\Cref{obs:thm:quotient} and the theorems of \cref{obs:sec:majorants} exclude
+term realizers only, and \cref{obs:thm:no-biinterp} requires an
+existential-free axiomatization and finite control. Is there a seedless basis,
+with positive existence axioms or with an additional primitive, that is
+bi-interpretable with $\iPRA$ through operations defined by graphs, and whose
+complete checker, with the defining equations and scope rules of the addition
+counted, is smaller? Under which witness-extraction property do graph
+interpretations reduce to the term case?
+\end{question}
+
+\begin{question}[Leaving the almost unary class]
+An independent initializer is one way to combine two unbounded inputs. Is there
+another operation, such as pairing or addition, that restores completeness of a
+seedless basis more cheaply, with both interpretation composites proved
+internally? \Cref{obs:prop:selector-repair} gives numerical completeness for an
+unbounded selector and no more.
+\end{question}
+
+\begin{question}[Extent of finite control]
+Does finite control, and with it \cref{obs:thm:no-biinterp}, survive the
+adjunction of bounded numerical primitives other than an equality
+characteristic? Is every unary primitive recursive function denoted by a
+tied-seed term? Neither is decided by \cref{obs:thm:fc}.
+\end{question}
+
+\begin{question}[A common barrier]
+\Cref{obs:thm:single-body} and \cref{obs:thm:circuit} are incomparable. Does
+the conclusion hold for constructors in which both the seed and the update are
+computed by adaptive circuits of queries to one body, with register vectors and
+counter-dependent probe locations? No package states this.
+\end{question}
+
+\begin{question}[Weaker case principles]
+Is there a primitive rule weaker in syntax than \rulename{BoolCases} that
+supplies the mixed-parameter elimination refuted by the separator of
+\cref{obs:thm:boolcases}, supports both formula round trips and admits a
+smaller checker? Is there a restriction of numerical cases that avoids the
+product model of \cref{obs:thm:direct-target} and still derives cases for all
+native formulas? A proposal must say where the global case distinction enters;
+predecessor identities do not supply it.
+\end{question}
+
+\begin{question}[Positive iteration]
+Is there a small operation, cheaper than the split into base and step, that
+destroys the zero-profile invariant of \cref{obs:thm:zeroprofile} and recovers
+a selector and the logical bootstrap? Can initialized iteration be introduced
+relationally from positive iteration without assuming the selector-based logic
+that it is meant to reconstruct, and how does induction transfer through the
+graph definitions when new updates are nested?
+\end{question}
+
+\begin{question}[Majors and cuts]
+Can atomic cuts be compiled away without induction on compound formulas, so
+that a focused calculus with fewer proved majors is complete? A normalization
+theorem would have to handle equation-induction proofs used for transport in
+arbitrary formulas, or an explicit generator of local induction clauses would
+have to be counted in the checker.
+\end{question}
+
+\begin{question}[Uniqueness and countdown]
+Does a complete checker for a calculus with \rulename{UR} improve the size
+coordinates? Removing an induction hypothesis does not decide this, since the
+conclusion of \rulename{UR} constructs several term instances and an iterator.
+Does $U_W$ alone prove the faithfulness sentence of \cref{obs:lem:action}, so
+that the additional observation axiom of the countdown draft can be removed?
+\end{question}
+
+\begin{question}[The countermodel to progress]
+Can \cref{obs:lem:pi-extension} and the tower of \cref{obs:prop:pi-tower} be
+formalized in the Lean development, with arbitrary carriers and an interpreted
+successor in place of readings over the natural numbers? Which parts of the
+extension lemma survive when further laws of iteration, such as fusion or
+uniqueness, are imposed on the coherent structures? Computation and
+extensionality in the update are compatible with the countermodel; uniqueness
+for the identity update excludes its particular witness, and excluding one
+model does not give arithmetic strength. Is there a counterpart of the model
+that satisfies the uniqueness rule for the successor update and still refutes
+an induction for a literal equation, which would separate the two principles?
+Is there a presentation that combines computational equality with an induction
+interface weaker than \rulename{QI} without moving the cost into syntax
+validation?
+\end{question}
+
+\begin{question}[Counter congruence and the reversed binder]
+Can \rulename{RL}, \rulename{CC} and numerical computation be encoded through
+one checked representation that deletes a trusted operation, so that the
+restricted interface of \cref{obs:sec:cc} removes code? Can a staged
+introduction with delayed witness choice repair the reversed binder of
+\cref{obs:prop:reversed}, with the reverse formula composite proved for nested
+formulas?
+\end{question}
+
+\begin{question}[Formalization]
+The packages name as formalization targets: the bi-interpretation of the native
+calculus with its ordinary realization, with formula composites, freshness and
+arbitrary contexts; the scalar predecessor and the reflection of equality,
+without reintroducing quantifier-free induction before the characteristic is
+proved correct; the derivation transformer for $J_F=F$ of
+\cref{obs:lem:cc-rep}, without use of the ambient equality substitution; the
+sorted codec with its opener, freshness conditions and input contract; and a
+proved decoder that connects the arity checker with the Lean semantics of the
+native core. None is supplied.
+\end{question}
+
+\begin{question}[Metric]
+A coordinatewise envelope is not one program and not a lower bound. Would a
+fixed implementation grammar, a fixed semantic contract, a fixed treatment of
+the host runtime and a policy on aliases make strict-improvement claims more
+informative? Triplicated closures make explicitly serialized certificates grow
+as $3^r$ in closure depth, and the protocol charges checker source only; how
+should certificate size and checking time enter the comparison? The empirical
+target left by \pkg{checker\_and\_barriers} is one structurally terminating
+complete program below 593 bytes, 264 tokens and 297 nodes under matched
+drivers.
+\end{question}
