@@ -7915,6 +7915,10 @@ The independently reviewed [79 read-only preflight](research/ordinary14-natural7
 checks selected static inputs and reports volatile resources, but cannot
 launch Lean, reserve resources or enforce a build guard. Provider closure
 and actual Lean checking remain open.
+The independently reviewed [corrected 79 recorded ancestry](research/ordinary14-natural79-corrected-recorded-ancestry-audit/README.md)
+finds that the additional `ReducedNormSigned` frontier seed already appears
+in the earlier recorded project closure. The retained observations are not a
+complete provider or runtime provenance proof.
 The independently source-reviewed [79-to-80 w-shift draft](research/ordinary14-natural79-wshift-model-draft/README.md)
 proposes related-valuation zero maps, conditional on w positivity at every
 79 zero. It remains unelaborated and does not discharge that premise.
