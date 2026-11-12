@@ -7422,6 +7422,11 @@ removes one more. The latter graph has 14 positive inputs, 79 operations and
 exact degree 60. Its positive-zero existence agrees with the preceding graph
 for integer ports with `β > 0`; its compact44 consistency connection retains
 the inherited source, model-proof and file-binding limitations.
+The distinct [q-squared 78-operation probe](research/ordinary14-q2-78-probe/README.md)
+has a reviewed symbolic actual-port zero with `q² ∣ Y` but `q³ ∤ Y`; its
+same-`q`, same-rank parent exclusion is conditional on the cited parent
+calibration. It does not settle unrestricted equivalence and is not an
+established replacement.
 The independently source-reviewed [84-operation Lean draft](research/ordinary14-qcube84-lean-draft/README.md)
 records the Mersenne and model-level obligations. It is uncompiled and does
 not establish the new graph's iPRA endpoint.
