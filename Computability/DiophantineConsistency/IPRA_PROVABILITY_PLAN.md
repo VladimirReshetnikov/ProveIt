@@ -7894,6 +7894,9 @@ The independently source-reviewed [beta-only 79 overlay](research/ordinary14-nat
 selects those four alternatives and has 195 reachable inert drafts; the older
 201-stage provider order does not apply to their changed bytes. The overlay
 remains unelaborated and does not establish an iPRA proof.
+The independently reviewed [beta-only provider order](research/ordinary14-natural79-beta-only-ordered-provider-plan/README.md)
+records 200 lexical stages for the revised source selection. It does not
+authorize a build or establish provider, companion or axiom closure.
 The independently reviewed [negative-beta obstruction](research/ordinary14-natural79-negative-beta-obstruction/README.md)
 exhibits a zero with w=0 for a different signed-port tuple, so beta's natural
 representation cannot be removed from that local argument for arbitrary ports.
