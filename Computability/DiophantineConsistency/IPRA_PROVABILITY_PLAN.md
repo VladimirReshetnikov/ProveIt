@@ -7803,6 +7803,11 @@ The independently reviewed [natural-82 lexical inventory](research/ordinary14-na
 records 169 draft modules and 36 directly named qualified sources. The prior
 slim overlay lacks 11 of those drafts; this comparison does not resolve Lean
 providers or establish that a combined overlay will build.
+The independently reviewed [physical-binding audit](research/ordinary14-natural82-86-physical-binding-audit/README.md)
+distinguishes the natural-82/86 compact P72 tuple from the displayed
+Carrier65 equation: their recorded beta numerals and graphs differ. Relating
+their no-zero statements requires separately checked endpoints or another
+equivalence argument, plus the appropriate graph, byte and page bindings.
 The independently reviewed [natural shifted-Pell graph](research/ordinary14-natural-shifted-pell83/README.md)
 combines those shifts with the degree reduction: 14 natural inputs, 83
 operations, and exact specialized degree 97. Its external zero maps inherit
