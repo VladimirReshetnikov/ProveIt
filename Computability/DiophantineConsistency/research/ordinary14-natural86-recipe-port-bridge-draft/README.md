@@ -25,4 +25,10 @@ read or identify physical raw, gzip, JSON or PDF bytes. A physical binding
 requires separately modeled and justified connections; external hash and
 payload checks alone do not establish one in Lean.
 
+The later [natural82 client review](../../reviews/ordinary14-natural82-recipe-port-bridge-independent/README.md)
+also identified a name-resolution question here: this draft uses unqualified
+`PolynomialBridge` without explicitly opening `HAExpressionAssembly`. Lean
+has not checked whether its imports make that name available. The natural82
+client explicitly opens the namespace; this 86 draft remains unchanged.
+
 Independent source review: [natural86 recipe-port bridge](../../reviews/ordinary14-natural86-recipe-port-bridge-draft-independent/README.md).

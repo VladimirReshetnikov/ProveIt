@@ -7804,6 +7804,10 @@ The independently source-reviewed [81-to-82 J-shift model draft](research/ordina
 proposes the changed-valuation identity and zero transfer using represented
 positive `K0`. The model argument and its imports remain unelaborated; the
 selected-port and iPRA endpoint connections are not yet checked.
+The independently source-reviewed [natural-81 endpoint draft](research/ordinary14-natural-forcedj81-ipra-draft/README.md)
+proposes those connections through native, standard and equality-only iPRA
+clients. Its declarations and five axiom-report commands remain unelaborated
+and unexecuted; provider and physical-equation bindings remain open.
 The independently source-reviewed [82-to-86 bridge draft](research/ordinary14-natural-forced82-ring-bridge-draft/README.md)
 proposes a changed-valuation ring identity and conditional model zero maps.
 Its natural-model existence equivalence assumes, rather than proves, that
