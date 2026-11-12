@@ -167,6 +167,14 @@ by progress as primitive, and proves that the derivable sequents are the same
   recovered through its diagonal lift `I(y, y; u.s) = I(y, y; u.t)` and the
   unconditional equation `sel(y, s(0), I(y, y; u.s(y))) = s(y)`. This is the
   calculus of [`diagonal_guard`](Research/diagonal_guard/).
+- *No template.* Transport can be replaced by a rule that is given no
+  template at all: from `s = t` and `u = v` infer `v = R(u)`, where `R`
+  replaces every occurrence of `s` in `u` by `t`, root first and in one pass
+  (`TPrf`, `tprf_iff_nprf`). The rule cannot choose which occurrences to
+  replace; transport in a chosen template `h` is recovered with the marker
+  `M = I(0, s; u.K)`, whose step term `K` is a numeral larger than `h`, so
+  that `h(M)` contains `M` at the template positions and nowhere else. This
+  is the rule of [`template_free`](Research/template_free/).
 - *Six rules.* Reflexivity and one rule Eval can replace both computation
   equations and transport. Eval infers `r = Φ(s, t, b)` from `s = t` and
   `b = r`, where `Φ` is `t` if `b` is `I(0, s; u.h)`, and `h[t/u]` if `b` is
@@ -421,6 +429,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | | `NPrf.trEq`, `NPrf.tr`, `NPrf.dIProg` | transport in an equation template (two steps) and the two inherited rules, as derived rules of the kernel |
 | no literal-zero source | `oprf_iff_nprf : OPrf Γ A ↔ NPrf Γ A` | the kernel's transport restricted to sources other than the literal `0` derives the same sequents, with no induction |
 | | `zprf_iff_nprf : ZPrf Γ A ↔ NPrf Γ A` | the same for uncrossed transport in an equation template, by an equation induction and a singleton test |
+| no template | `tprf_iff_nprf : TPrf Γ A ↔ NPrf Γ A`, `Tm.rep_marker`, `NPrf.repEq` | transport replaced by replacement of all occurrences of the source; a chosen template is recovered with an oversized marker |
 | uncrossed one-term transport | `uprf_iff_nprf : UPrf Γ A ↔ NPrf Γ A` | from `s = t` and `h(s) = r` infer `h(t) = r`: the crossing is not essential when sources are unrestricted |
 | one introduction rule | `wprf_iff_nprf : WPrf Γ A ↔ NPrf Γ A` | the seven-rule calculus with the single, syntax-directed introduction derives the same sequents |
 | seven rules | `mprf_iff_nprf`, `mprf_iff_iprf : MPrf Γ A ↔ IPrf Γ A` | one-term transport at sources other than the literal `0` and the single introduction together derive the sequents of the reports' calculus |
@@ -446,7 +455,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | | `native_roundTrip`, `pra_native_roundTrip` | both composites through iPRA are the identity up to equivalence |
 | | `native_inconsistent_iff` | `NPrf [] (0 = 1)` iff iPRA proves `⊥` |
 
-The main chain (every module except the twelve kernel comparisons,
+The main chain (every module except the thirteen kernel comparisons,
 `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroReflexive`,
 `NativeUniqueness` and
 `TeqClosure`) is 5,630
@@ -478,7 +487,7 @@ no `native_decide`.
 | closures in `T_eq` | `TeqClosure` | decidability of quantifier-free formulas; the criterion for agreement of the conditional and the progressive closure |
 | derived rule | `NativeUniqueness` | uniqueness of iteration |
 | native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, interderivability over a context, Leibniz and transport in every template, equation induction; selector and gate formulas |
-| kernel comparison | `NativeInherited`, `NativeOneContext`, `NativeOneIntro`, `NativeDiagonal`, `NativeSix`, `NativeMinimal`, `NativeEval`, `NativeClausal`, `NativeClausalDiagonal`, `NativeUniformClauses`, `NativeZeroSource`, `NativeReversal` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf`; no literal-zero transport sources, `OPrf`, generic over the class `OKernel`, and the uncrossed rule, `UPrf`; six rules with Eval, `EPrf`; the diagonal introduction, `GPrf`, with its own structural rules; Eval with the diagonal introduction, `SPrf`; the five-rule clause calculus, `CPrf`, with weakening, renaming and cut of assumptions; the clause calculus with the diagonal introduction, `KPrf`; uniform clause use, `VPrf`; one introduction rule, `WPrf`, generic over the class `WKernel`; both together, `MPrf`; the source restriction for uncrossed transport in an equation template, `ZPrf`, generic over the class `ZKernel`; root-reversing transport and QE, `RPrf` |
+| kernel comparison | `NativeInherited`, `NativeOneContext`, `NativeOneIntro`, `NativeDiagonal`, `NativeSix`, `NativeMinimal`, `NativeEval`, `NativeTemplateFree`, `NativeClausal`, `NativeClausalDiagonal`, `NativeUniformClauses`, `NativeZeroSource`, `NativeReversal` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf`; no literal-zero transport sources, `OPrf`, generic over the class `OKernel`, and the uncrossed rule, `UPrf`; six rules with Eval, `EPrf`; replacement without a template, `TPrf`; the diagonal introduction, `GPrf`, with its own structural rules; Eval with the diagonal introduction, `SPrf`; the five-rule clause calculus, `CPrf`, with weakening, renaming and cut of assumptions; the clause calculus with the diagonal introduction, `KPrf`; uniform clause use, `VPrf`; one introduction rule, `WPrf`, generic over the class `WKernel`; both together, `MPrf`; the source restriction for uncrossed transport in an equation template, `ZPrf`, generic over the class `ZKernel`; root-reversing transport and QE, `RPrf` |
 | native logic | `NativeLogic` | `⊥`, `→`, `∧`, `∨`, `∃`, `∀` as native macros with all their natural deduction rules |
 | native ≡ `T_eq` ≡ iPRA | `NativeTranslate`, `NativeComposite`, `NativeRoundTrip`, `NativeBiInterpretation` | translation of derivations, both round trips, the composite with `biInterp` |
 
@@ -516,7 +525,8 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `reflexive_base` | Proved: its six-rule calculus on zero-normal terms is `NRPrf`, with `nrprf_iff_nprf`, `NRPrf.normal` and `nrprf_iff_pra` (`NativeZeroReflexive`). Its raw seven-rule variant is not formalized. |
 | `zero_normal` | Its normalization layer is adopted as `ZeroNormalization`: the delivered module compiled unchanged. On top of it `NativeZeroNormal` proves the deletion of the zero computation rule for the kernel (`nzprf_iff_nprf`, `NZPrf.normal`, `nzprf_iff_pra`), with the kernel's two introductions and unrestricted sources. A six-rule form on zero-normal terms with a single introduction is proved as `NRPrf`, with the mode test of `reflexive_base` in place of the test on the witness. |
 | `diagonal_guard` | Proved: its calculus is `GPrf`, with `gprf_iff_nprf`, `gprf_iff_iprf` and substitution by direct induction (`NativeDiagonal`). Progress for an arbitrary equation is recovered by a shorter argument than the report's: no implication between equations and no substitution into the step premise. The equivalence uses neither `Classical.choice` nor the bi-interpretation. |
-| `template_free`, `target_closure` | Not formalized. Each is a further calculus on the native formula language: replacement of all occurrences in place of a template; a progressive closure with a target. |
+| `template_free` | Proved, for the equality rule: `TPrf` is the kernel with transport replaced by the replacement rule, and `tprf_iff_nprf` (`NativeTemplateFree`). The package's seven-rule form combines it with the witness-tested single introduction, which is not combined here. |
+| `target_closure` | Not formalized: a progressive closure with a target, on the changed reading of `Q`. |
 | `initializer_equality`, `scope_kernel` | Not formalized: the first is stated on the canonical recursor syntax; the second concerns Python programs, and its research notes are a model and an unfinished argument. |
 | `canonical_recursors` | Not formalized. It is a different term language (a recursor whose seed is a successor, with a canonical grammar and normalizing substitution), so it would need its own syntax, its equivalence with the raw calculus and a bi-interpretation with iPRA. |
 | `witness_rule` (first delivery) | Proved: `wprf_iff_nprf`. The kernel keeps two introductions, because the single rule is not stable under substitution by a direct induction (a substitution can turn a witness into the literal `0`). |
