@@ -12,7 +12,8 @@ Path('research/ordinary13-eta-natural-graph-early-index-model-draft/EtaNaturalGr
 Path('research/ordinary13-residue90-gamma-model-draft/Residue90GammaModel.lean.src'),
 Path('research/ordinary14-natural80-gamma-narrow-draft/GammaZeroNarrow.lean'),
 Path('research/ordinary13-eta-natural-norm-large-k-draft/EtaNaturalNormLargeK.lean.src'),
-Path('research/ordinary13-w86-to87-model-draft/W86To87Transport.lean.src')]
+Path('research/ordinary13-w86-to87-model-draft/W86To87Transport.lean.src'),
+p/'GammaDirectRankGap.lean.src']
 s=[f.read_text() for f in fs]
 with tempfile.TemporaryDirectory(prefix='gamma88-parent-') as d:
  root=Path(d)
@@ -24,7 +25,7 @@ g88,g87,g86,g85=map(json.loads,s[6:10]);assert [len(g['source']) for g in (g88,g
 for parent,child,name,var in [(g88,g87,'gamma','n_gamma'),(g87,g86,'w','n_w'),(g86,g85,'eta','n_eta')]:
  assert [[var if x==name else x for x in row] for row in parent['source'] if row!=[name,'+',var,1]]==child['source']
 for x in ['GammaZeroNarrowDraft.gamma_zero_impossible U X Y (eta+zeta) eta R',
- 'let P:=U*(X+a*c)+H*(U*(0:V)+R+1)','Residue90GammaModelDraft.enlarged_rank_gap']:
+ 'let P:=U*(X+a*c)+H*(U*(0:V)+R+1)','GammaDirectRankGapDraft.direct_rank_gap']:
  assert x in s[2],x
 for x in ['(heta : 0<v 9)','EtaNaturalGraphEarlyIndexDraft.main_pair_norm','have hcarrier : v 12=0',
  'EtaNaturalGapRankDraft.compact_rank_window','EtaNaturalNormLargeKDraft']:
@@ -34,6 +35,7 @@ for x in ['if i=12 then v i+1 else v i','if i=12 then v i-1 else v i',
  'GammaPrototypePositiveEtaDraft.gamma_positive','(h88 : PolynomialBridge',
  'EtaUnshift85TransportDraft.ForcedEta K']:
  assert x in s[4],x
+assert 'theorem direct_rank_gap' in s[15] and 'by omega' not in s[15] and 'GammaDirectRankGap' in s[2]
 assert 'ForcedEta' not in s[4].split('theorem gamma_positive',1)[1].split('theorem compact_no_zero_iff',1)[0]
 P=1000000007
 def calc(g,v):

@@ -7,8 +7,8 @@ the gamma increment removed. Both use the same compact natural port tuple.
 
 `GammaNoExtraFacts` isolates gamma forcing from explicit natural first and
 main norms, positive eta/zeta/X/U, q/Y and rank bounds, plus the **actual
-no-E*q** main pair norm at gamma zero. It reuses the existing enlarged-rank
-inequality only to infer the weaker `R+1<k`; it applies
+no-E*q** main pair norm at gamma zero. Its separate `GammaDirectRankGap` uses explicit model order arithmetic to
+derive `R+1<k` and `X<c` directly, with no abstract-model `omega`; it applies
 `GammaZeroNarrowDraft.gamma_zero_impossible` with **R itself**, not
 `R+X*Y*q`. The graph bridge must supply its rank, norms and signs.
 

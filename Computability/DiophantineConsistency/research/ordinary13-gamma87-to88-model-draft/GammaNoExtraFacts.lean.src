@@ -1,4 +1,5 @@
-import Residue90GammaModel
+import GammaDirectRankGap
+import GammaZeroNarrow
 import EtaNaturalNormLargeK
 
 /-! Source-only no-E*q gamma positivity cut. The carrier, two norms,
@@ -34,11 +35,8 @@ theorem gamma_positive (q X Y eta zeta R U tau d Delta gamma : V)
   have hlarge := EtaNaturalNormLargeKDraft.large_first_ordinate X Y eta zeta tau Delta d
     hXpos hYpos hzeta hDelta hfirst hmain
   have hlarge' : 8*(X*Y*Y)+4≤eta+zeta := by simpa only [mul_assoc] using hlarge.2
-  obtain ⟨henlarged,hc⟩ := Residue90GammaModelDraft.enlarged_rank_gap q X Y (eta+zeta) eta R
-    hq hX hY heta hlarge' hR
-  have hRle : R+1≤(R+X*Y*q)+1 := add_le_add_right
-    (le_add_of_nonneg_right (Arithmetic.zero_le (X*Y*q))) 1
-  have hgap : R+1<eta+zeta := lt_of_le_of_lt hRle henlarged
+  obtain ⟨hgap,hc⟩ := GammaDirectRankGapDraft.direct_rank_gap q X Y (eta+zeta) eta R
+    hq hX hY hlarge' hR
   exact GammaZeroNarrowDraft.gamma_zero_impossible U X Y (eta+zeta) eta R
     hU hY8 hkpos hgap hc (hcarrier hg)
 end DiophantineConsistency.GammaNoExtraFactsDraft
