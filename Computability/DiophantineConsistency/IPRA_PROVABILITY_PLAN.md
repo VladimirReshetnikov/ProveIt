@@ -7905,6 +7905,9 @@ The independently reviewed [corrected reflection provider projection](research/o
 retains five missing project candidates and observes the additional Foundation
 dependency. The source and object observations do not authenticate the provider
 closure or establish Lean build readiness.
+The independently source-reviewed [corrected 79 reflection overlay](research/ordinary14-natural79-corrected-reflection-overlay/README.md)
+selects the repaired helper and client in 196 inert snapshots. It remains
+unelaborated and does not establish actual provider or axiom closure.
 The independently source-reviewed [79-to-80 w-shift draft](research/ordinary14-natural79-wshift-model-draft/README.md)
 proposes related-valuation zero maps, conditional on w positivity at every
 79 zero. It remains unelaborated and does not discharge that premise.
