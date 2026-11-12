@@ -46,41 +46,8 @@ def Tm.pred (a : Tm n) : Tm n := Tm.sat a a
     Syn.subst σ (Tm.pred a) = Tm.pred (Syn.subst σ a) := by
   simp [Tm.pred]
 
-namespace Q
-
-variable {Γ : List (Fm Tm n)}
-
-/-- The saturating step on classes. -/
-def bump : Q Γ → Q Γ → Q Γ := op₂ (fun _ => Tm.bump) Tm.subst_bump
-
-/-- The saturating counter on classes. -/
-def sat : Q Γ → Q Γ → Q Γ := op₂ (fun _ => Tm.sat) Tm.subst_sat
-
-/-- The predecessor on classes. -/
-def pred : Q Γ → Q Γ := op₁ (fun _ => Tm.pred) Tm.subst_pred
-
-@[simp] theorem mk_bump (k u : Tm n) : mk Γ (Tm.bump k u) = bump (mk Γ k) (mk Γ u) := rfl
-@[simp] theorem mk_sat (t k : Tm n) : mk Γ (Tm.sat t k) = sat (mk Γ t) (mk Γ k) := rfl
-@[simp] theorem mk_pred (a : Tm n) : mk Γ (Tm.pred a) = pred (mk Γ a) := rfl
-
-end Q
-
-namespace Ext
-
-variable {Γ : List (Fm Tm n)} {Γ' : List (Fm Tm m)}
-
-@[simp] theorem map_bump (e : Ext Γ Γ') (k u : Q Γ) :
-    e.map (Q.bump k u) = Q.bump (e.map k) (e.map u) :=
-  map_op₂ e (fun _ => Tm.bump) Tm.subst_bump k u
-
-@[simp] theorem map_sat (e : Ext Γ Γ') (t k : Q Γ) :
-    e.map (Q.sat t k) = Q.sat (e.map t) (e.map k) :=
-  map_op₂ e (fun _ => Tm.sat) Tm.subst_sat t k
-
-@[simp] theorem map_pred (e : Ext Γ Γ') (x : Q Γ) : e.map (Q.pred x) = Q.pred (e.map x) :=
-  map_op₁ e (fun _ => Tm.pred) Tm.subst_pred x
-
-end Ext
+lift_op₂ bump sat
+lift_op₁ pred
 
 namespace Q
 

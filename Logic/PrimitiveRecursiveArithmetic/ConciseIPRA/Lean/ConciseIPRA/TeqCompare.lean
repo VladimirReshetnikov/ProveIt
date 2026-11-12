@@ -41,41 +41,8 @@ def Tm.cmp (x y : Tm n) : Tm n := Tm.par (Tm.hops y (Tm.pow2 x))
     Syn.subst σ (Tm.cmp x y) = Tm.cmp (Syn.subst σ x) (Syn.subst σ y) := by
   simp [Tm.cmp]
 
-namespace Q
-
-variable {Γ : List (Fm Tm n)}
-
-/-- The iterated factor map on classes. -/
-def hops : Q Γ → Q Γ → Q Γ := op₂ (fun _ => Tm.hops) Tm.subst_hops
-
-/-- The power of two on classes. -/
-def pow2 : Q Γ → Q Γ := op₁ (fun _ => Tm.pow2) Tm.subst_pow2
-
-/-- The comparator on classes. -/
-def cmp : Q Γ → Q Γ → Q Γ := op₂ (fun _ => Tm.cmp) Tm.subst_cmp
-
-@[simp] theorem mk_hops (y a : Tm n) : mk Γ (Tm.hops y a) = hops (mk Γ y) (mk Γ a) := rfl
-@[simp] theorem mk_pow2 (x : Tm n) : mk Γ (Tm.pow2 x) = pow2 (mk Γ x) := rfl
-@[simp] theorem mk_cmp (x y : Tm n) : mk Γ (Tm.cmp x y) = cmp (mk Γ x) (mk Γ y) := rfl
-
-end Q
-
-namespace Ext
-
-variable {Γ : List (Fm Tm n)} {Γ' : List (Fm Tm m)}
-
-@[simp] theorem map_hops (e : Ext Γ Γ') (y x : Q Γ) :
-    e.map (Q.hops y x) = Q.hops (e.map y) (e.map x) :=
-  map_op₂ e (fun _ => Tm.hops) Tm.subst_hops y x
-
-@[simp] theorem map_pow2 (e : Ext Γ Γ') (x : Q Γ) : e.map (Q.pow2 x) = Q.pow2 (e.map x) :=
-  map_op₁ e (fun _ => Tm.pow2) Tm.subst_pow2 x
-
-@[simp] theorem map_cmp (e : Ext Γ Γ') (x y : Q Γ) :
-    e.map (Q.cmp x y) = Q.cmp (e.map x) (e.map y) :=
-  map_op₂ e (fun _ => Tm.cmp) Tm.subst_cmp x y
-
-end Ext
+lift_op₂ hops cmp
+lift_op₁ pow2
 
 namespace Q
 
