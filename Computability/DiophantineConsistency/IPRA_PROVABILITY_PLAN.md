@@ -7637,6 +7637,10 @@ assumption. It remains unelaborated and does not establish exact indices.
 The source-reviewed [85 main-index draft](research/ordinary14-85-main-index-draft/README.md)
 proposes classification of the main root while retaining the direct carrier
 balance. It is unelaborated and does not identify the index with the rank.
+The source-reviewed [85 P72 first-input bundle](research/ordinary14-85-p72-first-inputs-draft/README.md)
+proposes the first-index congruence and rank window from the same 85 zero,
+without assuming `q ∣ X`. It is unelaborated and does not establish exact
+indices.
 The source-reviewed [84 main-index draft](research/ordinary14-84-main-index-draft/README.md)
 proposes classifying the main root while retaining the natural balance. It is
 unelaborated and does not identify that index with the rank.
