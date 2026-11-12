@@ -1,0 +1,74 @@
+import Natural79ZeroWDivisibility
+import Natural79WShift
+import Natural80Endpoint
+import Natural82Endpoint
+import StrictK0Symbolic
+import DiophantineConsistency.HAExpressionNoZeroEquiv
+import DiophantineConsistency.IPRAExpressionNative
+import DiophantineConsistency.IPRAStandardTheory
+import DiophantineConsistency.IPRAReferenceInductionConversion
+
+/-! Source-only proposed natural-79 endpoint clients. All graph, model,
+positivity, endpoint and provider dependencies remain unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Natural79EndpointDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation ModelDifferenceRing
+open CompactSymbolicKernel CompactSymbolicKernelOpaque CompactSymbolicPorts
+open Natural79WShiftDraft Natural79ZeroWDivisibilityDraft
+attribute [local irreducible] rho paramKernel CompactFixedBeta.betaNat lowNat highNat
+
+/-- Literal 79 graph at the same compact symbolic ports as the 80 endpoint. -/
+def expression : Expr (Fin 14) := (P79NaturalForcedW.graph CompactSymbolicModelIff.p).output
+
+/-- Proposed no-zero transport using w positivity at the selected symbolic
+ports. The witnesses differ at slot 6; no same-valuation equality is claimed. -/
+theorem sameNoZero : SameNoZero expression Natural80EndpointDraft.expression := by
+  intro V _ _
+  have hbeta : (CompactSymbolicModelIff.p 0 : DiffRing V)=ι (CompactFixedBeta.betaNat : V) :=
+    Natural82EndpointDraft.symbolic_beta_representation
+  have hb : 0 < (CompactFixedBeta.betaNat : V) :=
+    Natural82EndpointDraft.symbolic_beta_positive
+  have hK : (CompactSymbolicModelIff.p 1 : DiffRing V)=ι (paramKernel rho : V) :=
+    StrictK0SymbolicDraft.port_one_representation
+  have he := Natural79WShiftDraft.exists_zero_iff_of_positive (V:=V) CompactSymbolicModelIff.p
+    (fun v hv => Natural79ZeroWDivisibilityDraft.w_pos_of_zero CompactSymbolicModelIff.p
+      (CompactFixedBeta.betaNat : V) (paramKernel rho : V) v hbeta hK hb hv)
+  change (∃ v : Fin 14 → V, InternalZero expression v) ↔
+    ∃ w : Fin 14 → V, InternalZero Natural80EndpointDraft.expression w at he
+  constructor
+  · intro h w hw
+    obtain ⟨v,hv⟩ := he.mpr ⟨w,hw⟩
+    exact h v hv
+  · intro h v hv
+    obtain ⟨w,hw⟩ := he.mp ⟨v,hv⟩
+    exact h w hw
+
+theorem polynomialBridge : PolynomialBridge expression :=
+  HAExpressionNoZeroEquiv.bridge expression Natural80EndpointDraft.expression
+    sameNoZero Natural80EndpointDraft.polynomialBridge
+
+theorem native_equivalence : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero expression 🡘 ∼mappedNativeRefutation embedding :=
+  IPRAExpressionNative.equivalence_of_bridge expression polynomialBridge
+
+theorem standard_equivalence : IPRAStandardTheory.standardTheory ⊢
+    IPRAExpressionNative.nativeNoZero expression 🡘 ∼mappedNativeRefutation embedding :=
+  (IPRAStandardTheory.provable_iff _).2 native_equivalence
+
+theorem reference_equivalence : IPRAEqualityOnlyReference.referenceTheory ⊢
+    IPRAOrderErasure.erase (IPRAExpressionNative.nativeNoZero expression) 🡘
+      ∼IPRAOrderErasure.erase (mappedNativeRefutation embedding) :=
+  IPRAReferenceInductionConversion.nativeToReference native_equivalence
+
+end DiophantineConsistency.Natural79EndpointDraft
+
+#print axioms DiophantineConsistency.Natural79EndpointDraft.sameNoZero
+#print axioms DiophantineConsistency.Natural79EndpointDraft.polynomialBridge
+#print axioms DiophantineConsistency.Natural79EndpointDraft.native_equivalence
+#print axioms DiophantineConsistency.Natural79EndpointDraft.standard_equivalence
+#print axioms DiophantineConsistency.Natural79EndpointDraft.reference_equivalence

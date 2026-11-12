@@ -7886,6 +7886,10 @@ The independently source-reviewed [79 zero-w divisibility client](research/ordin
 proposes that reflection and contradiction, yielding a source-level w
 positivity claim under represented positive beta and nonnegative K0. The
 whole chain remains unelaborated and the iPRA endpoint is not established.
+The independently source-reviewed [natural-79 endpoint draft](research/ordinary14-natural-forced-w79-ipra-draft/README.md)
+proposes composing the w-positive transfer with native, standard and
+equality-only iPRA clients at the symbolic ports. Its declarations and five
+axiom reports remain unelaborated and unexecuted; this is not a checked proof.
 The independently source-reviewed [79-to-80 w-shift draft](research/ordinary14-natural79-wshift-model-draft/README.md)
 proposes related-valuation zero maps, conditional on w positivity at every
 79 zero. It remains unelaborated and does not discharge that premise.
