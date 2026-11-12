@@ -28,23 +28,18 @@ variable {Γ : List (Fm Tm n)}
 
 @[simp] theorem monus_self (x : Q Γ) : monus x x = 0 := by
   induction x using Q.ind with | _ a
-  have h := eqInd (Γ := Γ) (Tm.monus (var 0) (var 0)) Tm.zero (by simp)
+  simpa using eqInd (Γ := Γ) (Tm.monus (var 0) (var 0)) Tm.zero (by simp)
     (fun _ => by simp) a
-  simpa using h
 
 @[simp] theorem monus_add_left (a b : Q Γ) : monus (a + b) a = b := by
-  induction a using Q.ind with | _ a
-  induction b using Q.ind with | _ b
-  have h := eqInd (Γ := Γ) (Tm.monus (Tm.add (var 0) (shift b)) (var 0)) (shift b) (by simp)
+  induction a, b using Q.ind₂ with | _ a b
+  simpa using eqInd (Γ := Γ) (Tm.monus (Tm.add (var 0) (shift b)) (var 0)) (shift b) (by simp)
     (fun ih => by simp at ih; simp [succ_add, ih]) a
-  simpa using h
 
 @[simp] theorem monus_add_right (a b : Q Γ) : monus a (a + b) = 0 := by
-  induction a using Q.ind with | _ a
-  induction b using Q.ind with | _ b
-  have h := eqInd (Γ := Γ) (Tm.monus (shift a) (Tm.add (shift a) (var 0))) Tm.zero (by simp)
+  induction a, b using Q.ind₂ with | _ a b
+  simpa using eqInd (Γ := Γ) (Tm.monus (shift a) (Tm.add (shift a) (var 0))) Tm.zero (by simp)
     (fun ih => by simp at ih; simp [add_succ, ih]) b
-  simpa using h
 
 theorem monus_succ_add (x d : Q Γ) : monus (succ (x + d)) x = succ d := by
   rw [← add_succ, monus_add_left]
@@ -85,14 +80,12 @@ theorem add_monus_step (x y : Q Γ) (ih : sel (monus x y) (x + monus y x) y = y)
 
 /-- The witness invariant: if `x ∸ y = 0` then `x + (y ∸ x) = y`. -/
 theorem sel_monus_add (x y : Q Γ) : sel (monus x y) (x + monus y x) y = y := by
-  induction x using Q.ind with | _ a
-  induction y using Q.ind with | _ b
-  have h := eqInd (Γ := Γ)
+  induction x, y using Q.ind₂ with | _ a b
+  simpa using eqInd (Γ := Γ)
     (Tm.sel (Tm.monus (shift a) (var 0)) (Tm.add (shift a) (Tm.monus (var 0) (shift a)))
       (var 0))
     (var 0) (by simp [sel_witness_base])
     (fun ih => by simp at ih ⊢; exact add_monus_step _ _ ih) b
-  simpa using h
 
 theorem add_monus_of_le {x y : Q Γ} (h : monus x y = 0) : x + monus y x = y := by
   have h' := sel_monus_add x y
@@ -113,12 +106,10 @@ theorem monus_trans {x y z : Q Γ} (h₁ : monus x y = 0) (h₂ : monus y z = 0)
 
 /-- The powers of two are monotone. -/
 theorem pow2_le (x d : Q Γ) : monus (pow2 x) (pow2 (x + d)) = 0 := by
-  induction x using Q.ind with | _ a
-  induction d using Q.ind with | _ b
-  have h := eqInd (Γ := Γ)
+  induction x, d using Q.ind₂ with | _ a b
+  simpa using eqInd (Γ := Γ)
     (Tm.monus (Tm.pow2 (shift a)) (Tm.pow2 (Tm.add (shift a) (var 0)))) Tm.zero (by simp)
     (fun ih => by simp [add_succ] at ih ⊢; exact le_add_right ih _) b
-  simpa using h
 
 theorem pow2_mono {x y : Q Γ} (h : monus x y = 0) : monus (pow2 x) (pow2 y) = 0 := by
   have h' := pow2_le x (monus y x)
@@ -137,9 +128,8 @@ theorem succ_le_double {x p : Q Γ} (h : monus (succ x) p = 0) :
 /-- `S x ≤ 2 ^ x`. -/
 theorem succ_le_pow2 (x : Q Γ) : monus (succ x) (pow2 x) = 0 := by
   induction x using Q.ind with | _ a
-  have h := eqInd (Γ := Γ) (Tm.monus (Tm.succ (var 0)) (Tm.pow2 (var 0))) Tm.zero (by simp)
+  simpa using eqInd (Γ := Γ) (Tm.monus (Tm.succ (var 0)) (Tm.pow2 (var 0))) Tm.zero (by simp)
     (fun ih => by simp at ih ⊢; exact succ_le_double ih) a
-  simpa using h
 
 end Q
 

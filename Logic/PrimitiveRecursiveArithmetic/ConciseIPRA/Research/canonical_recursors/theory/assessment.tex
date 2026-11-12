@@ -1,0 +1,60 @@
+\section{Result and comparison contract}
+\label{sec:assessment}
+
+The proposed presentation has six primitive inference patterns and the
+numerical term constructors $0$ and $R$, in addition to variables. Successor
+is a derived notation. There is one explicit computation schema. Its
+ordinary realization is bi-interpretable with full first-order intuitionistic
+primitive recursive arithmetic, with the entire numerical domain in both
+directions and with identity graph $x=y$ for both numerical composites.
+
+The reduction is precise but has a cost: the zero computation becomes a
+canonical-syntax convention, and substitution must enforce that convention.
+We count this normalization in the complete implementation. A reduction from
+seven named proof rules to six is therefore not, on its own, a proof of a
+smaller complete checker.
+
+\begin{center}
+\small
+\begin{tabular}{lll}
+\toprule
+Feature & Current scalar presentation & Canonical $R$ presentation\\
+\midrule
+Numerical constructors & $0,S,I$ & $0,R$\\
+Explicit computation schemas & Two & One\\
+Primitive inference patterns & Seven & Six\\
+Term equality in the checker & Literal syntax & Canonical syntax\\
+Substitution & Capture avoiding & Capture avoiding, then normalize\\
+Numerical interpretation domain & Whole & Whole\\
+Numerical composite graph & $x=y$ & $x=y$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The comparison is pinned to ProveIt commit
+\texttt{8eb71c1e570e07ef45ead686628e77f18ef34798}, inspected on
+12 November 2026, UTC. The current seven-rule scalar calculus is
+\texttt{MPrf} in \texttt{NativeMinimal.lean}. The separate crossed calculus
+\texttt{RPrf} is in \texttt{NativeReversal.lean}. Their equivalences with the
+native scalar core are already formalized upstream. The present canonical
+$R$ reduction has a written proof and executable implementation tests; it is
+not a new Lean or Rocq formalization.
+
+The repository's smallest compact profiles are a different comparison
+category. The selected byte profile has 522 normalized source bytes, but its
+bi-interpretation theorem concerns a guarded public language, with broader
+auxiliary proof syntax. Its compact program does not itself validate that
+public grammar. Our strict canonical-$R$ checker validates its full public
+language. We therefore report two separate comparisons: matching strict
+implementations of the mathematical calculi, and small implementation
+changes to the existing compact calculus. No compact size is attributed to
+the new six-rule mathematics.
+
+The successor-seeded recursor, its predecessor construction, the scalar
+arithmetic bridge, crossed transport, and witness-directed introduction are
+inherited. The mathematical change developed here is canonicalization of the
+successor-seeded syntax and the proof that it preserves substitution,
+derivability, and both interpretation composites. A separate strengthening
+of the scalar self-seeded obstruction is proved in
+Section~\ref{sec:scalar-obstruction}.
+

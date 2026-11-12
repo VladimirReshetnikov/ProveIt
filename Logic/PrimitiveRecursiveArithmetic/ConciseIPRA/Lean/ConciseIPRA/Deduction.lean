@@ -86,73 +86,58 @@ namespace Prf
 
 variable {Ax : Theory T} {n m : ℕ} {Γ Δ : List (Fm T n)} {φ ψ χ : Fm T n}
 
-/-- Weakening. -/
-theorem weaken (h : Γ ⊢[Ax] φ) : ∀ {Δ : List (Fm T n)}, Γ ⊆ Δ → (Δ ⊢[Ax] φ) := by
+/-- Derivability is closed under substitution of terms for free variables and
+under weakening of the context, in one induction. -/
+theorem substWeaken (h : Γ ⊢[Ax] φ) : ∀ {m : ℕ} (σ : Fin n → T m) {Δ : List (Fm T m)},
+    Γ.map (fun ψ => ψ.subst σ) ⊆ Δ → (Δ ⊢[Ax] φ.subst σ) := by
   induction h with
-  | hyp h => intro Δ s; exact .hyp (s h)
-  | ax h σ => intro Δ s; exact .ax h σ
-  | botE φ _ ih => intro Δ s; exact .botE φ (ih s)
-  | andI _ _ ih₁ ih₂ => intro Δ s; exact .andI (ih₁ s) (ih₂ s)
-  | andE₁ _ ih => intro Δ s; exact .andE₁ (ih s)
-  | andE₂ _ ih => intro Δ s; exact .andE₂ (ih s)
-  | orI₁ _ ih => intro Δ s; exact .orI₁ (ih s)
-  | orI₂ _ ih => intro Δ s; exact .orI₂ (ih s)
+  | hyp h => intro m σ Δ s; exact .hyp (s (List.mem_map_of_mem h))
+  | ax h ρ => intro m σ Δ s; rw [Fm.subst_subst]; exact .ax h _
+  | botE φ _ ih => intro m σ Δ s; exact .botE _ (ih σ s)
+  | andI _ _ ih₁ ih₂ => intro m σ Δ s; exact .andI (ih₁ σ s) (ih₂ σ s)
+  | andE₁ _ ih => intro m σ Δ s; exact .andE₁ (ih σ s)
+  | andE₂ _ ih => intro m σ Δ s; exact .andE₂ (ih σ s)
+  | orI₁ _ ih => intro m σ Δ s; exact .orI₁ (ih σ s)
+  | orI₂ _ ih => intro m σ Δ s; exact .orI₂ (ih σ s)
   | orE _ _ _ ih ih₁ ih₂ =>
-    intro Δ s
-    exact .orE (ih s) (ih₁ (List.cons_subset_cons _ s)) (ih₂ (List.cons_subset_cons _ s))
-  | impI _ ih => intro Δ s; exact .impI (ih (List.cons_subset_cons _ s))
-  | impE _ _ ih₁ ih₂ => intro Δ s; exact .impE (ih₁ s) (ih₂ s)
-  | allI _ ih => intro Δ s; exact .allI (ih (List.map_subset _ s))
-  | allE t _ ih => intro Δ s; exact .allE t (ih s)
-  | exI t _ ih => intro Δ s; exact .exI t (ih s)
-  | exE _ _ ih₁ ih₂ =>
-    intro Δ s
-    exact .exE (ih₁ s) (ih₂ (List.cons_subset_cons _ (List.map_subset _ s)))
-  | eqRefl t => intro Δ s; exact .eqRefl t
-  | eqSubst φ σ σ' _ _ ih₁ ih₂ =>
-    intro Δ s
-    exact .eqSubst φ σ σ' (fun i => ih₁ i s) (ih₂ s)
-
-/-- Derivability is closed under substitution of terms for free variables. -/
-theorem subst (h : Γ ⊢[Ax] φ) :
-    ∀ {m : ℕ} (σ : Fin n → T m), (Γ.map (fun ψ => ψ.subst σ) ⊢[Ax] φ.subst σ) := by
-  induction h with
-  | hyp h => intro m σ; exact .hyp (List.mem_map_of_mem h)
-  | ax h ρ => intro m σ; rw [Fm.subst_subst]; exact .ax h _
-  | botE φ _ ih => intro m σ; exact .botE _ (ih σ)
-  | andI _ _ ih₁ ih₂ => intro m σ; exact .andI (ih₁ σ) (ih₂ σ)
-  | andE₁ _ ih => intro m σ; exact .andE₁ (ih σ)
-  | andE₂ _ ih => intro m σ; exact .andE₂ (ih σ)
-  | orI₁ _ ih => intro m σ; exact .orI₁ (ih σ)
-  | orI₂ _ ih => intro m σ; exact .orI₂ (ih σ)
-  | orE _ _ _ ih ih₁ ih₂ => intro m σ; exact .orE (ih σ) (ih₁ σ) (ih₂ σ)
-  | impI _ ih => intro m σ; exact .impI (ih σ)
-  | impE _ _ ih₁ ih₂ => intro m σ; exact .impE (ih₁ σ) (ih₂ σ)
+    intro m σ Δ s
+    exact .orE (ih σ s) (ih₁ σ (List.cons_subset_cons _ s)) (ih₂ σ (List.cons_subset_cons _ s))
+  | impI _ ih => intro m σ Δ s; exact .impI (ih σ (List.cons_subset_cons _ s))
+  | impE _ _ ih₁ ih₂ => intro m σ Δ s; exact .impE (ih₁ σ s) (ih₂ σ s)
   | allI _ ih =>
-    intro m σ
-    have h := ih (up σ)
-    rw [Fm.map_shift_subst] at h
-    exact .allI h
-  | allE t _ ih =>
-    intro m σ
-    rw [Fm.subst_inst]
-    exact .allE _ (ih σ)
+    intro m σ Δ s
+    exact .allI (ih (up σ) (by rw [Fm.map_shift_subst]; exact List.map_subset _ s))
+  | allE t _ ih => intro m σ Δ s; rw [Fm.subst_inst]; exact .allE _ (ih σ s)
   | exI t _ ih =>
-    intro m σ
-    have h := ih σ
+    intro m σ Δ s
+    have h := ih σ s
     rw [Fm.subst_inst] at h
     exact .exI _ h
   | exE _ _ ih₁ ih₂ =>
-    intro m σ
-    have h := ih₂ (up σ)
-    rw [List.map_cons, Fm.map_shift_subst, Fm.shift_subst_up] at h
-    exact .exE (ih₁ σ) h
-  | eqRefl t => intro m σ; exact .eqRefl _
+    intro m σ Δ s
+    have h := ih₂ (up σ) (Δ := _ :: Δ.map Fm.shift) (by
+      rw [List.map_cons, Fm.map_shift_subst]
+      exact List.cons_subset_cons _ (List.map_subset _ s))
+    rw [Fm.shift_subst_up] at h
+    exact .exE (ih₁ σ s) h
+  | eqRefl t => intro m σ Δ s; exact .eqRefl _
   | eqSubst φ ρ ρ' _ _ ih₁ ih₂ =>
-    intro m σ
-    have h := ih₂ σ
+    intro m σ Δ s
+    have h := ih₂ σ s
     rw [Fm.subst_subst] at h ⊢
-    exact .eqSubst φ _ _ (fun i => ih₁ i σ) h
+    exact .eqSubst φ _ _ (fun i => ih₁ i σ s) h
+
+/-- Weakening. -/
+theorem weaken (h : Γ ⊢[Ax] φ) {Δ : List (Fm T n)} (s : Γ ⊆ Δ) : Δ ⊢[Ax] φ := by
+  have h' := h.substWeaken var (Δ := Δ) fun ψ hψ => by
+    obtain ⟨χ, hχ, rfl⟩ := List.mem_map.1 hψ
+    rw [Fm.subst_id]; exact s hχ
+  rwa [Fm.subst_id] at h'
+
+/-- Derivability is closed under substitution of terms for free variables. -/
+theorem subst (h : Γ ⊢[Ax] φ) {m : ℕ} (σ : Fin n → T m) :
+    Γ.map (fun ψ => ψ.subst σ) ⊢[Ax] φ.subst σ :=
+  h.substWeaken σ (List.Subset.refl _)
 
 /-- Derivability is closed under weakening by a fresh variable. -/
 theorem shift (h : Γ ⊢[Ax] φ) : Γ.map Fm.shift ⊢[Ax] φ.shift :=
@@ -165,39 +150,14 @@ theorem liftCons (s : ∀ ψ ∈ Γ, Δ ⊢[Ax] ψ) (χ : Fm T n) :
   · exact .hyp List.mem_cons_self
   · exact (s ψ hψ).weaken (List.subset_cons_self _ _)
 
-theorem liftShift (s : ∀ ψ ∈ Γ, Δ ⊢[Ax] ψ) :
-    ∀ ψ ∈ Γ.map Fm.shift, (Δ.map Fm.shift ⊢[Ax] ψ) := by
-  intro ψ hψ
-  obtain ⟨χ, hχ, rfl⟩ := List.mem_map.mp hψ
-  exact (s χ hχ).shift
-
-/-- Simultaneous cut: the hypotheses may be replaced by anything deriving them. -/
-theorem trans (h : Γ ⊢[Ax] φ) :
-    ∀ {Δ : List (Fm T n)}, (∀ ψ ∈ Γ, Δ ⊢[Ax] ψ) → (Δ ⊢[Ax] φ) := by
-  induction h with
-  | hyp h => intro Δ s; exact s _ h
-  | ax h σ => intro Δ s; exact .ax h σ
-  | botE φ _ ih => intro Δ s; exact .botE φ (ih s)
-  | andI _ _ ih₁ ih₂ => intro Δ s; exact .andI (ih₁ s) (ih₂ s)
-  | andE₁ _ ih => intro Δ s; exact .andE₁ (ih s)
-  | andE₂ _ ih => intro Δ s; exact .andE₂ (ih s)
-  | orI₁ _ ih => intro Δ s; exact .orI₁ (ih s)
-  | orI₂ _ ih => intro Δ s; exact .orI₂ (ih s)
-  | orE _ _ _ ih ih₁ ih₂ =>
-    intro Δ s
-    exact .orE (ih s) (ih₁ (liftCons s _)) (ih₂ (liftCons s _))
-  | impI _ ih => intro Δ s; exact .impI (ih (liftCons s _))
-  | impE _ _ ih₁ ih₂ => intro Δ s; exact .impE (ih₁ s) (ih₂ s)
-  | allI _ ih => intro Δ s; exact .allI (ih (liftShift s))
-  | allE t _ ih => intro Δ s; exact .allE t (ih s)
-  | exI t _ ih => intro Δ s; exact .exI t (ih s)
-  | exE _ _ ih₁ ih₂ =>
-    intro Δ s
-    exact .exE (ih₁ s) (ih₂ (liftCons (liftShift s) _))
-  | eqRefl t => intro Δ s; exact .eqRefl t
-  | eqSubst φ σ σ' _ _ ih₁ ih₂ =>
-    intro Δ s
-    exact .eqSubst φ σ σ' (fun i => ih₁ i s) (ih₂ s)
+/-- Simultaneous cut: the hypotheses may be replaced by anything deriving them.
+Each hypothesis is discharged by an implication and restored by modus ponens. -/
+theorem trans (h : Γ ⊢[Ax] φ) {Δ : List (Fm T n)} (s : ∀ ψ ∈ Γ, Δ ⊢[Ax] ψ) : Δ ⊢[Ax] φ := by
+  induction Γ generalizing φ with
+  | nil => exact h.weaken (List.nil_subset _)
+  | cons ψ Γ ih =>
+    exact .impE (ih (.impI h) fun χ hχ => s χ (List.mem_cons_of_mem _ hχ))
+      (s ψ List.mem_cons_self)
 
 /-! ### Structural conveniences -/
 
@@ -261,21 +221,14 @@ theorem eqTrans {s t u : T n} (h₁ : Γ ⊢[Ax] s ≐ t) (h₂ : Γ ⊢[Ax] t �
 term. -/
 theorem eqCongr {k : ℕ} (t : T k) {σ σ' : Fin k → T n} (h : ∀ i, Γ ⊢[Ax] σ i ≐ σ' i) :
     Γ ⊢[Ax] Syn.subst σ t ≐ Syn.subst σ' t := by
-  have key := Prf.eqSubst (Ax := Ax) (Γ := Γ)
-    (Fm.eq (Syn.subst (fun i => var (Fin.castAdd k i)) t)
-      (Syn.subst (fun i => var (Fin.natAdd k i)) t))
-    (Fin.append σ σ) (Fin.append σ σ')
+  have key := Prf.eqSubst (Ax := Ax) (Γ := Γ) (Fm.eq (var 0) (Syn.shift t))
+    (Fin.cases (Syn.subst σ t) σ) (Fin.cases (Syn.subst σ t) σ')
     (fun i => by
-      refine Fin.addCases (fun j => ?_) (fun j => ?_) i
-      · rw [Fin.append_left, Fin.append_left]; exact .eqRefl _
-      · rw [Fin.append_right, Fin.append_right]; exact h j)
-    (by
-      rw [Fm.subst_eq, Syn.subst_subst, Syn.subst_subst]
-      simp only [Syn.subst_var, Fin.append_left, Fin.append_right]
-      exact .eqRefl _)
-  rw [Fm.subst_eq, Syn.subst_subst, Syn.subst_subst] at key
-  simp only [Syn.subst_var, Fin.append_left, Fin.append_right] at key
-  exact key
+      refine Fin.cases ?_ (fun j => ?_) i
+      · simpa using Prf.eqRefl (Ax := Ax) (Γ := Γ) (Syn.subst σ t)
+      · simpa using h j)
+    (by simpa [Syn.subst_shift] using Prf.eqRefl (Ax := Ax) (Γ := Γ) (Syn.subst σ t))
+  simpa [Syn.subst_shift] using key
 
 /-- Congruence for one variable. -/
 theorem eqCongr1 (u : T (n + 1)) {s t : T n} (h : Γ ⊢[Ax] s ≐ t) :

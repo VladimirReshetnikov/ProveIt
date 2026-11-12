@@ -1,0 +1,20 @@
+--- c7_checker.py
++++ m7_control.py
+@@ -75,12 +75,13 @@
+         require(a == ["=", ["I", ["S", v], b, h],
+                       replace(h, n, ["I", v, b, h])])
+     elif op == "x":
+-        require(len(p) == 6 and a[0] == "=")
+-        s, t, f, major, minor = p[1:]
++        require(len(p) == 7 and a[0] == "=")
++        s, t, f, g, major, minor = p[1:]
+         require(term(s, n) and s != ZERO and term(t, n) and
+-                term(f, n + 1) and a[2] == replace(f, n, t))
++                term(f, n + 1) and term(g, n + 1) and
++                a == ["=", replace(f, n, t), replace(g, n, t)])
+         check(["=", s, t], major, context, n)
+-        check(["=", replace(f, n, s), a[1]], minor, context, n)
++        check(["=", replace(f, n, s), replace(g, n, s)], minor, context, n)
+     elif op == "qe":
+         require(len(p) == 5)
+         b, t, major, minor = p[1:]

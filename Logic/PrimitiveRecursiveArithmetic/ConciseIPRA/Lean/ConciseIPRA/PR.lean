@@ -45,15 +45,11 @@ def sub (σ : Fin n → PTm m) : PTm n → PTm m
   | app f ts => app f (fun i => sub σ (ts i))
 
 theorem sub_var (t : PTm n) : sub var t = t := by
-  induction t with
-  | var i => rfl
-  | app f ts ih => simp only [sub, ih]
+  induction t <;> simp_all [sub]
 
 theorem sub_sub (σ : Fin n → PTm m) (τ : Fin m → PTm k) (t : PTm n) :
     sub τ (sub σ t) = sub (fun i => sub τ (σ i)) t := by
-  induction t with
-  | var i => rfl
-  | app f ts ih => simp only [sub, ih]
+  induction t <;> simp_all [sub]
 
 instance : Syn PTm where
   var := PTm.var

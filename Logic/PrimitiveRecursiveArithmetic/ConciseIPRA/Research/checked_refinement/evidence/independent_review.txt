@@ -1,0 +1,78 @@
+# Independent proof review of the final implementation refinements
+
+Reviewed the sources, not an additional broad test campaign:
+
+* `work/checker_520.py`
+* `work/checker_audit/checker_guard_shape.py`
+* `work/checker_audit/kernel/ipra_kernel_refinement_2026-11-11/code/checker_strict.py`
+* `work/checker_audit/checker_native_expression.py`
+* `work/checker_audit/one_context/ipra_one_context_2026-11-11/strict/code/checker_eqd.py`
+* `work/checker_notes.md`
+
+## 520-byte compact expression
+
+The sole changed expression replaces
+
+    [s,u] if s else [t]*3
+
+with
+
+    s and [s,u] or [t]*3.
+
+If s is truthy, the middle operand is a two-element list and is necessarily
+truthy, so the second expression returns exactly `[s,u]`. If s is falsy,
+both return `[t]*3`. The packet fields are ordinary JSON values, with no
+user-defined truthiness methods or side effects. All later equality tests,
+normalizations, instruction consumption, and scope transitions are unchanged.
+The replacement therefore preserves abstract execution on all parsed inputs.
+
+## 921-byte guarded strict validator
+
+The factorization proof is correct. The new shape predicate guarantees
+that every scalar leaf is an exact nonnegative integer in a numerical
+position, with canonical spelling zero or odd at least three. Formula
+positions have even opening depth, numerical positions odd depth. A D
+adds four, an equality adds three, a successor adds four, and an iterator
+adds two, exactly reproducing the old protected-slot increments.
+
+Consequently the initial kernel opener supplies exactly the old numerical
+upper bound. An out-of-range leaf is at odd depth and attempts to insert
+the unavailable default image, the checker function itself. Multiplying
+that function by zero raises before any proof instruction is consumed.
+An in-range leaf is preserved. No formula scalar or ignored extra-arity
+branch can conceal an invalid leaf because the shape validator excludes
+those nodes before the opener runs.
+
+The shortened guard also has exactly the old success condition. Recursive
+validation has already made each equation side either an integer, a unary
+term, or a ternary term. An integer fails the slice operation and rejects;
+a unary term cannot have a two-element prefix; a ternary term succeeds
+exactly when its prefix equals `[5,0]`. Malformed JSON types are rejected
+even when the old and new code reject through different exception paths.
+
+## 788-byte native strict conditional expression
+
+The conditional expression preserves the old integer branch and list branch
+with their evaluation order. Recursive calls receive the same sort flag.
+No shape or scope condition has been weakened. The kernel and driver are
+unchanged relative to the native 803-byte control.
+
+## Necessary qualification
+
+Universal equality of acceptance languages is an abstract execution claim
+that disregards implementation resource limits. Recursion depth, available
+memory, and time limits can distinguish source implementations even when
+their mathematical predicates coincide. In particular the guarded
+refactoring changes the validator's call-stack structure. Keep this
+qualification adjacent to any claim of exact acceptance preservation.
+
+The guarded programs inherit bi-interpretability only for canonical guarded
+public Eq/D formulas, with the stated auxiliary proof language. Their full
+raw administrative syntax is not thereby shown bi-interpretable with iPRA.
+The compact program is not a public-grammar validator. The native 788-byte
+program belongs to a different, full-native case/progress kernel and must
+not be mixed with the guarded compact kernel in a single size comparison.
+
+No substantive correctness defect was found in these three refinements.
+They simplify implementations of existing calculi; they do not remove a
+mathematical axiom or establish an absolute simplest axiomatization.

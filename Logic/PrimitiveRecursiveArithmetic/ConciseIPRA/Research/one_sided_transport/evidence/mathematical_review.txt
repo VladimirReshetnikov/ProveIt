@@ -1,0 +1,162 @@
+INDEPENDENT ADVERSARIAL AUDIT: C7 ONE-SIDED CROSSED TRANSPORT
+===========================================================
+
+Audited inputs:
+- formalization/NativeOneSided.lean
+- the written equality and calculus-comparison derivations
+- reference/lean/ConciseIPRA/NativeMinimal.lean
+- reference/lean/ConciseIPRA/NativeOneIntro.lean
+- reference/lean/ConciseIPRA/Native.lean
+- reference/lean/ConciseIPRA/NativeBiInterpretation.lean
+- reference/lean/ConciseIPRA/NativeReversal.lean
+- code/c7_checker.py (read audit only)
+
+All inherited sources are pinned to ProveIt commit
+8eb71c1e570e07ef45ead686628e77f18ef34798.
+
+VERDICT
+
+The mathematical equivalence argument is valid. No circularity was found.
+The optional pure equality recovery is also valid. The proposed Lean source
+is not compiled, so this audit does not certify its elaboration or syntax.
+The direct checker has no apparent scoping/capture defect in the inspected
+version; executable tests remain separate evidence, not a full proof of its
+soundness/completeness.
+
+1. EXACTLY WHAT THE NEW PRIMITIVE RULE ALLOWS
+
+    s=t, f(s)=r  ==>  r=f(t),  with s not literally 0.
+
+Here f is one term template with a fresh placeholder. The term r is in the
+old ambient scope, so its occurrences do not change in this application.
+It may contain the numerical parameters of s and t, or even a subterm
+syntactically equal to one of them. None of this makes r a second template.
+The placeholder must be fresh and capture-free substitution is essential.
+The source restriction is a decidable metasyntactic test, not s != 0 as an
+arithmetic proposition.
+
+2. TWO APPLICATIONS RECOVER THE PRECISE RESTRICTED BASELINE RULE
+
+From e:s=t and h:a(s)=b(s), with s not literally 0:
+
+    X_a(e,h)                proves b(s)=a(t).
+    X_b(e,X_a(e,h))         proves a(t)=b(t).
+
+The second application's fixed endpoint is a(t), in the ambient numerical
+scope. The same major equality and the same allowed source s are reused.
+No reflexivity, symmetry, equation induction, computation, logical rule,
+derivation substitution, or cut is needed in this local simulation.
+
+Consequently an external structural induction maps MPrf derivations into
+CPrf derivations, including all arbitrary formula contexts and eigenvariable
+premises. Every other rule is copied exactly. The number of new inference
+nodes for one old transport is two, but an unshared proof tree may duplicate
+the major derivation. No linear proof-tree-size claim follows automatically.
+
+3. THE REVERSE COMPARISON IS SOUND
+
+In NPrf, transport with templates f(v) and the constant r yields f(t)=r
+from the premises of X. The existing symmetry rule yields r=f(t).
+The existing NPrf.ofDI theorem interprets C7's single DI rule. All other
+rules are NPrf rules. Thus CPrf implies NPrf by external proof induction.
+
+Combining MPrf -> CPrf -> NPrf with the inherited equivalence MPrf <-> NPrf
+gives CPrf <-> NPrf for every well-scoped finite context and every formula.
+This is already a complete equivalence proof. It does not depend on the
+new pure equality normalization below, which is an independent strengthening.
+
+4. SOURCE-ZERO RECOVERY REALLY USES ONLY I0 AND X
+
+Let J(a)=I(0,a;u.0), c=J(0). Both J(a) and c are syntactically nonzero.
+The following derivations have all supplied hypotheses in one fixed context.
+
+Reflexivity: use J(a)=a as both premises of X with f(v)=v, obtaining a=a.
+
+Symmetry: use c=0 as major, f(v)=s as a constant template, and s=t as minor.
+The result is t=s, irrespective of whether either endpoint is literally 0.
+
+To-anchor: if p is syntactically nonzero and p=0, use f(v)=J(v) and the
+computation equation J(p)=p to obtain p=J(0)=c by X. This is a valid single
+X application; it does not presuppose congruence.
+
+Zero-join: from p=0 and q=0, with both sources syntactically nonzero, the
+preceding construction and symmetry give c=p and c=q. Using c=q as major
+and c=p as minor with f(v)=v yields p=q. Thus no zero-source inference has
+been invoked covertly.
+
+Transitivity: for r=s and s=t, if s is not literally 0, reverse the first
+equation and apply X with f(v)=v to s=t and s=r. If s is literally 0,
+the cases r literally 0 or t literally 0 return an existing premise; the
+remaining case is zero-join on r=0 and t=0. The case distinction is over
+finite term syntax, not an appeal to object-language excluded middle.
+
+Congruence: if s is not literally 0, apply X to s=t and f(s)=f(s). If
+s is literally 0 but t is not, apply this construction to t=0 and reverse
+the result. If both are literally 0, reflexivity suffices.
+
+Unrestricted TrEq: compose a(t)=a(s), a(s)=b(s), and b(s)=b(t), using the
+preceding symmetry, congruence and transitivity. Therefore the new CPrf is
+an instance of WKernel without any equation induction or arithmetic logic
+in the equality bootstrap. WKernel's inherited single-introduction proofs
+then apply. This yields an independent direct comparison CPrf <-> NPrf.
+
+5. CONTEXTS AND SUBSTITUTION DO NOT CREATE CIRCULARITY
+
+Each equality lemma above is uniform in an arbitrary fixed context. It
+combines existing proofs in that context; no application requires replacing
+variables inside a supplied derivation. Structural weakening and cut are
+not silently used to manufacture the anchor proofs: I0 itself is permitted
+in every context. Syntax-only case splits are finite metatheoretic dispatch.
+
+The direct primitive calculus is not stable under a naive node-by-node
+substitution: substituting 0 for a source variable can violate the source
+restriction, and substituting 0 for a DI witness changes its branch.
+Admissibility for the full consequence relation follows after the exact
+CPrf <-> NPrf theorem. Statements of substitution admissibility must use this
+route, not claim the primitive rules are individually substitution-stable.
+
+6. BOTH INTERPRETATIONS AND BOTH COMPOSITES ARE PRESERVED
+
+C7's term syntax, formula syntax and designated contradiction are exactly
+NPrf's. Consequently NFm.toPRA and NFm.ofPRA are used unchanged. Their
+ordinary readings keep equality literal and interpret Q and D as:
+
+    Q_y B       = B(0) -> forall y B(y),
+    D_{x,y} B   = exists x (B(x,0) -> forall y B(x,y)).
+
+Exact contextual equality of consequence relations transfers BOTH native
+round-trip derivations [VU(A)] |- A and [A] |- VU(A) to C7. The iPRA-side
+theorem phi <-> UV(phi) is literally unchanged. The numerical interpretations
+and the identity graphs x=y are the inherited ones: no relativized domain,
+quotient equality, negative translation or new coding is introduced.
+This is full bi-interpretability of the same native realization, not merely
+equiconsistency. Contradiction equivalence follows at 0=S0 and iPRA bottom.
+
+The mathematical proof is relative to the stated, pinned native/iPRA bridge.
+The paper should identify the inherited bridge as an input, state the ordinary
+translations, and supply references or appendices. It should not imply that
+all arithmetic compilation and logical-macro proofs were newly formalized.
+
+7. DIRECT-FORMULA CHECKER READ AUDIT
+
+The current c7_checker.py uses explicit equation, Q and D constructors.
+Its numerical variables are de Bruijn levels. X validates the template at
+scope n+1 and the passive endpoint at scope n. The substitution helper
+shifts bound variables of an inserted term below existing internal binders.
+DI removes witness level n while retaining the y coordinate, and then
+instantiates y in the enlarged fresh-variable scope. DE adds fresh witness
+level n and retains the original matrix under Q. The reading agrees with
+the mathematical rules. No scoping or fresh-variable bug was found by
+inspection. This statement is not a formal verification of the interpreter.
+
+8. CLAIM BOUNDARIES
+
+Sound claims: one scoped numerical template instead of two in primitive
+transport; unchanged ordinary QE; seven rule positions; exact contextual
+equivalence; pure I0+X equality recovery; inherited bi-interpretation.
+
+Not established by the mathematical theorem alone: an absolute smallest
+axiomatization; a global checker byte/token/AST record; linear proof-tree
+translation size; compiled Lean verification; literature-wide novelty.
+The modified primitive interface is simpler, but one passive endpoint
+remains and particular implementations may share old branches more cheaply.

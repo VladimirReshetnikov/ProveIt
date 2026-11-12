@@ -12,7 +12,7 @@ the kernel `NPrf` of `Native`:
 
 `IPrf` is that inherited calculus, rule for rule.  The kernel replaces them by
 
-* `trEq`: transport inside an equation only;
+* `trOne`: transport in one term, from `s = t` and `h(s) = u` infer `u = h(t)`;
 * `qIInd`: from `E(z) ⊢ E(S z)` infer `Q_y E(y)`, with no witness.
 
 `iprf_iff_nprf` proves that the two calculi derive the same sequents, for
@@ -92,15 +92,25 @@ theorem IPrf.toNPrf (h : IPrf Γ A) : NPrf Γ A := by
   | dICase B t _ ih => exact .dICase B t ih
   | dIProg s₁ s₂ t _ ih => exact .dIProg s₁ s₂ t ih
 
-/-- Every kernel rule is a derived rule of the inherited calculus: `trEq` is an
-instance of `tr`, and `qIInd` is `dIProg` at a dummy witness followed by
-`dE`. -/
+/-- Symmetry in the inherited calculus, by two transports in the template
+`v = s`. -/
+theorem IPrf.eqSymm {s t : Tm n} (h : IPrf Γ (.eq s t)) : IPrf Γ (.eq t s) := by
+  have r : IPrf Γ (.eq s s) := by
+    simpa using IPrf.tr (.eq (Syn.var 0) (Syn.shift s)) (.iterZero s (Syn.var 0))
+      (by simpa using IPrf.iterZero (Γ := Γ) s (Syn.var 0))
+  simpa using IPrf.tr (.eq (Syn.var 0) (Syn.shift s)) h (by simpa using r)
+
+/-- Every kernel rule is a derived rule of the inherited calculus: `trOne` is
+`tr` in the template `h(v) = u` followed by symmetry, and `qIInd` is `dIProg`
+at a dummy witness followed by `dE`. -/
 theorem NPrf.toIPrf (h : NPrf Γ A) : IPrf Γ A := by
   induction h with
   | hyp h => exact .hyp h
   | iterZero a h => exact .iterZero a h
   | iterSucc c a h => exact .iterSucc c a h
-  | trEq a b _ _ ih₁ ih₂ => exact .tr (.eq a b) ih₁ ih₂
+  | @trOne _ _ h s t u _ _ ih₁ ih₂ =>
+    have e := IPrf.tr (.eq h (Syn.shift u)) ih₁ (by simpa using ih₂)
+    exact IPrf.eqSymm (by simpa using e)
   | qE t _ _ ih₁ ih₂ => exact .qE t ih₁ ih₂
   | dE _ _ ih₁ ih₂ => exact .dE ih₁ ih₂
   | dICase B t _ ih => exact .dICase B t ih

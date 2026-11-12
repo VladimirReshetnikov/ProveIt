@@ -1,0 +1,37 @@
+Implementation and countermodel review
+====================================
+
+The strict checker family is generated from one common source template. Its three variants differ only where their arithmetic syntax and zero computation differ. Canonical R adds smart-constructor erasure and an input-canonicality guard; raw R instead adds a zero-computation rule; scalar I additionally has its own successor syntax. All public decoding, exact goal checking, scopes, contexts and logical rules are parallel.
+
+Every checker is self-contained and imports only json and sys. No Assert node occurs in an acceptance module. All supplied annotations are strictly type/scope checked before use; Boolean and float aliases for numerical indices are rejected. The recursor body alone receives a new state variable. DE shifts the old context and conclusion, while reusing the D body under the exported Q because its y/x de Bruijn positions then coincide exactly. WI checks its witness at the old scope, shifts old parameters above y and x, and then performs simultaneous substitution into the fresh-variable scope.
+
+The normalization cost is present in the rec smart constructor used by both traversals. In particular a counter variable replaced by literal zero erases the body after substitution. A named certificate requires exactly this behavior. Input validation also rejects noncanonical bodies even when semantically dead.
+
+The regression record includes 86 named certificates across the three modules, each replayed through both the raw and normalized executable, and 480 independent finite numerical-substitution comparisons. The used_induction_hypothesis certificate actually invokes the retained equation hypothesis to transport the computed next state. A separate certificate creates a DE witness, uses it in a nested introduction, and uses the shifted Q context. These finite controls supplement the written rule-correspondence argument; they are not a Lean or Rocq proof.
+
+Independent mathematical review of the zero-induction countermodel
+----------------------------------------------------------------
+
+The two-point-fiber model over a nonstandard arithmetic model is coherent.
+
+1. Standard fibers are singleton; nonstandard fibers have labels 0 and 1. Successor preserves labels and standardness, giving coverage, separation, and injectivity.
+2. The collection H is defined first as all actual D-to-D functions projecting to a primitive-recursive-with-parameters function on M. For a fixed actual projected function, equation induction in M proves independence of the iteration function from its PR description and parameters. This is essential to choosing an iterator by actual body function.
+3. On any nonstandard successor component, the prescribed output fibers are finite and nonempty, and the body maps each into the next. Every finite interval of compatibility constraints is solved by choosing its leftmost value and propagating forward. Compactness therefore supplies a bi-infinite compatible path, without requiring surjective transition maps.
+4. Choose the lifted iterator for every member of H before interpreting syntax. External structural induction then proves that every finite body denotes a member of H and that all terms commute with projection. This avoids circular definition and validates substitution beneath bodies.
+5. Equality to zero is reflected by the singleton zero fiber. Base and step premises for a zero equation project to M, where induction applies, and then reflect back to D. The same works for arbitrary fixed side assumptions: the assumptions themselves need not project. It also works for equality to each fixed standard numeral.
+6. For the actual identity body, a nonstandard counter component may choose the constant label-0 lift of the initializer's projection. A label-1 initializer then witnesses failure of I(n,a,id)=a despite provable base and step. This proves non-admissibility of full equation induction in the specified weak theory.
+7. A putative scalar equality-reflecting term e has identical projected values at e(x,x) and e(x,y) when x,y are distinct lifts of one nonstandard point. Singleton zero reflection makes the claimed actual-equality test impossible.
+
+The valid conclusion is failure to preserve the existing same-domain, actual-equality consequence relation under zero-equation induction. The construction does not exclude every changed-domain interpretation or bi-interpretation with iPRA.
+
+Earlier context-length experiment
+--------------------------------
+
+The first proposed 521-byte context-length rewrite was rejected during review. The entry relation k=1-len(g) is true, but the baseline decrements k before final opening; the naive rewrite kept g unchanged during that phase and rejected fresh eigenparameters. A concrete certificate for D(x,y).(y=y) exposed the error. This failed experiment is not part of the strict checker family and is not used in its size claims.
+
+Assembled report review
+-----------------------
+
+The assembled standalone report's canonical-R normalization theorem, complete six-rule inventory, unrestricted-comparison proof, restricted-rule recovery, numerical/formula composites, and strict implementation measurements were reviewed together. No mathematical contradiction was found. In particular, the retraction J(a)=R(S0,0;u.a) supplies reflexivity and crossed reversal before the witness-directed introduction repair, and the normalization proof establishes body extensionality in the unrestricted calculus before using it. Thus general numerical substitution is not circularly assumed for the restricted rules.
+
+The strict metrics and test counts in the report agree with results.json. The smaller strict implementation is explicitly distinguished from the separate existing compact scalar profile. Two editorial clarifications were recommended: identify the matched scalar control as the equivalent crossed-elimination/witness-directed presentation rather than a literal transcription of MPrf; and explicitly expand the meanings of ordinary QE and unrestricted transport in the comparison-calculus definition. These do not change the mathematical theorem or the implementation measurements.

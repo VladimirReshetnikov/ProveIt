@@ -220,10 +220,9 @@ inductive WPrf : {n : ℕ} → List (NFm n) → NFm n → Prop
       WPrf Γ (.eq (iter zero a h) a)
   | iterSucc {n : ℕ} {Γ : List (NFm n)} (c a : Tm n) (h : Tm (n + 1)) :
       WPrf Γ (.eq (iter (succ c) a h) (Syn.subst (inst (iter c a h)) h))
-  | trEq {n : ℕ} {Γ : List (NFm n)} (a b : Tm (n + 1)) {s t : Tm n}
-      (h₁ : WPrf Γ (.eq s t))
-      (h₂ : WPrf Γ (.eq (Syn.subst (inst s) a) (Syn.subst (inst s) b))) :
-      WPrf Γ (.eq (Syn.subst (inst t) a) (Syn.subst (inst t) b))
+  | trOne {n : ℕ} {Γ : List (NFm n)} (h : Tm (n + 1)) {s t u : Tm n}
+      (h₁ : WPrf Γ (.eq s t)) (h₂ : WPrf Γ (.eq (Syn.subst (inst s) h) u)) :
+      WPrf Γ (.eq u (Syn.subst (inst t) h))
   | qE {n : ℕ} {Γ : List (NFm n)} {B : NFm (n + 1)} (t : Tm n)
       (h₁ : WPrf Γ (.Q B)) (h₂ : WPrf Γ (B.subst (inst zero))) : WPrf Γ (B.subst (inst t))
   | dE {n : ℕ} {Γ : List (NFm n)} {B : NFm (n + 2)} {A : NFm n}
@@ -237,7 +236,8 @@ inductive WPrf : {n : ℕ} → List (NFm n) → NFm n → Prop
       WPrf Γ (.D B)
 
 instance : WKernel @WPrf :=
-  ⟨fun h => .hyp h, fun a h => .iterZero a h, fun a b => fun h₁ h₂ => .trEq a b h₁ h₂,
+  ⟨fun h => .hyp h, fun a h => .iterZero a h,
+    fun a b => fun h₁ h₂ => .trOne b h₁ (.trOne a h₁ h₂),
     fun t h₁ h₂ => .qE t h₁ h₂, fun h₁ h₂ => .dE h₁ h₂, fun B t h => .dI B t h⟩
 
 variable {Γ : List (NFm n)} {A : NFm n}
@@ -259,7 +259,7 @@ theorem WPrf.toNPrf (h : WPrf Γ A) : NPrf Γ A := by
   | hyp h => exact .hyp h
   | iterZero a h => exact .iterZero a h
   | iterSucc c a h => exact .iterSucc c a h
-  | trEq a b _ _ ih₁ ih₂ => exact .trEq a b ih₁ ih₂
+  | trOne h _ _ ih₁ ih₂ => exact .trOne h ih₁ ih₂
   | qE t _ _ ih₁ ih₂ => exact .qE t ih₁ ih₂
   | dE _ _ ih₁ ih₂ => exact .dE ih₁ ih₂
   | dI B t _ ih => exact .ofDI B t ih
@@ -270,7 +270,7 @@ theorem NPrf.toWPrf (h : NPrf Γ A) : WPrf Γ A := by
   | hyp h => exact .hyp h
   | iterZero a h => exact .iterZero a h
   | iterSucc c a h => exact .iterSucc c a h
-  | trEq a b _ _ ih₁ ih₂ => exact .trEq a b ih₁ ih₂
+  | trOne h _ _ ih₁ ih₂ => exact .trOne h ih₁ ih₂
   | qE t _ _ ih₁ ih₂ => exact .qE t ih₁ ih₂
   | dE _ _ ih₁ ih₂ => exact .dE ih₁ ih₂
   | dICase B t _ ih => exact WKernel.dICase B t ih

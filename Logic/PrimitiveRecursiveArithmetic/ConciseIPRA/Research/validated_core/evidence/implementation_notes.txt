@@ -1,0 +1,164 @@
+UNIVERSAL CORRECTNESS ARGUMENT FOR THE SHARED VALIDATOR
+
+This argument concerns a change of proof presentation and implementation.
+The native term constructors, equality, Q and D, arithmetic computation
+axioms, source-restricted transport, Q elimination, D elimination, and
+witnessed case/progress introductions are inherited unchanged. All claims
+of equivalence below use acceptance = normal exit with exactly ACCEPT.
+Exceptions reject. No assertion about shortest presentations is made.
+
+1. Raw mode is exact integer/list syntax.
+
+Let J(a) mean that a is an exact Python integer, or an exact list all of
+whose descendants satisfy J. This is the old whole-input check. On JSON
+values, the new V(a,0) accepts exactly J(a).
+
+For an exact integer, the first conditional branch returns true because
+its depth is zero. For a list, a*0 == [] is true; the arity restriction is
+bypassed and each child is checked at depth 0 because 0 and X is 0. The
+structural induction is immediate. Booleans do not satisfy type(a) is int;
+booleans, floats and strings fail the a*0 == [] test. Dictionaries and null
+raise an exception in that test. Each case rejects, just as the old J does.
+V need not be a total Boolean function on malformed inputs: rejection by
+exception is explicitly part of the public checker contract.
+
+2. Scoped mode reproduces the existing canonical grammar.
+
+Let W(a,d) be the old goal validator, at opener depth d. The new routine
+satisfies
+
+  W(a,d) accepts  iff  V(a,d+2) accepts,
+
+for each finite integer/list tree and every nonnegative d. The old
+numerical depths have the form 3+2p; formula depths are 2p. Adding 2 preserves
+the sort parity. Raw-mode depth zero can never be reached by a successful
+scoped traversal: the permitted constructor arities are 1,2,3 and the new
+child depth is D+5-n, at least D+2.
+
+At an integer leaf, the new numerical test is
+
+  D mod 2 and (a=0 or (2<a<D-2 and a odd)).
+
+With D=d+2 and exact integer a, this is precisely the old test
+
+  d mod 2 and (a=0 or (3<=a<d and a odd)).
+
+The array test for the full public language is
+
+  n in {1, 2+(D mod 2)} OR a=[a[0],a[0],a[0]].
+
+At odd numerical depth it admits exactly unary successor and ternary
+iteration; the diagonal alternative adds no arity beyond the already
+permitted ternary one. At even formula depth it admits unary D, binary
+equality, and exactly the diagonal ternary Q representation. This is
+exactly the old arity check together with its separate Q-diagonality check.
+The same child-depth increment 5-n is used on both sides. Apply the
+induction hypothesis to all children. An empty list rejects by IndexError
+in the new full validator, and by false in the old validator; neither is
+accepted. The Eq/D-only profile omits the diagonal alternative. Its allowed
+arities are exactly {1,2+(D mod 2)} and the same proof applies.
+
+3. Combining the input checks preserves the full input contract.
+
+For a nonempty JSON list L=prefix followed by goal, the old checks require
+J(L) and W(goal,0). The new checks require V(prefix,0) and V(goal,2).
+Scoped validity entails J(goal); therefore these conditions are equivalent
+by Parts 1 and 2. In particular, unused prefix elements still must be exact
+integers/lists: popping the goal has not discarded their type validation.
+An empty input list or a top-level value of another JSON type rejects at
+pop or at a validator in both programs. The new combined diagnostic has
+different wording but diagnostics are not part of the acceptance predicate.
+
+4. The proof-checking kernel is preserved.
+
+The new full and Eq/D programs keep the old c kernel, with one equivalent
+arithmetic test for list versus integer inside its opener. On every exact
+integer or list, a*0 == [] and a*0 != 0 select the list branch in exactly
+the same cases. Boolean values produced internally by Boolean expressions
+behave like the corresponding integer zero/one in both tests. A missing
+image represented by the default function sentinel raises in either test
+when a numerical image is actually needed. No untyped JSON node enters the
+kernel after Parts 1-3. Every subsequent arithmetic, scoping, matching,
+major-premise, induction-mode and continuation computation is unchanged.
+Consequently successful checking computations represent the same native
+derivations. The existing whole-domain bi-interpretation and equiconsistency
+with iPRA transfer without alteration to either numerical interpretation,
+interpreted equality, or either return map. This is reuse of the existing
+mathematical theorem, not a new proof-assistant formalization of the Python.
+
+5. The readable expansion.
+
+code/readable_native.py expresses the same raw/scoped invariant with named
+variables and explicit list cases. It uses tuple contexts constructed by
+concatenation. The compact kernel uses list contexts constructed by +;
+neither mutates an ancestor context. Its explicit conditional for replacing
+a goal preserves the compact program's truthy-replacement convention. The
+reproduction suite checks it on every full-profile case, including all
+invalid input controls. Its size is reported in full and it is not imported
+by any other checker.
+
+COMPACT GUARDED PROFILES
+
+6. Scalar administrative truth.
+
+The old local initial context retains [] as an administrative truth alias.
+The new local profile retains 0. At a formula position, raw scalar zero also
+means the derived theorem 0=0; it is not the contradiction 0=S0. Hence the
+change is sound. For completeness on the canonical public language, change
+only neutral packet majors [] to 0. Both are falsy and select the same
+computation/introduction branch; canonical public formulas do not use an
+administrative scalar truth leaf. All witness, target, mode and mathematical
+expression fields stay unchanged. This argument is inherited from the
+reversal package and is composed here with the exact-root guarded kernel.
+It is not asserted that every malformed or administrative raw spelling has
+the same acceptance behavior in the two protocols.
+
+7. Immutable tuple tail loop.
+
+The new global token profile replaces the old tail-recursive continuation
+by a while loop. The recursive call that proves the major premise remains.
+Both versions use the same global fresh-name supply and the same instruction
+stack. At the start of each loop iteration, (goal,context,k,remaining_input)
+equals the state of the corresponding old recursive continuation. Major
+proofs consume the same instructions, update k in the same way, and return
+None. The new context is an immutable tuple. Tuple += rebinds the local
+variable; it does not mutate the context passed into a nested major proof.
+Thus when the major call returns it has not leaked its temporary hypotheses.
+The retained hypothesis and successor goal are pure opening calculations
+at the same floor k. Updating these local variables in the loop therefore
+produces the state of the old tail call. A hypothesis hit exits normally in
+both. Induction on the number of consumed packets proves the simulation.
+Resource usage can differ because the loop saves tail-call stack frames.
+
+A version with list += would not satisfy this proof: it could mutate a
+context shared with the caller. That unsafe prototype is not in the package.
+The selected code/guarded_tokens.py uses tuples throughout its contexts.
+
+8. Why parity cannot simply be omitted.
+
+Let E be the canonical guarded public formula
+
+  D_{x,y}(I(y,0;u.0) = I(y,0;u.S0)).
+
+Its matrix is true at y=0 and false at y=1 in the ordinary natural numbers,
+so E is false under both the guarded conditional and progressive readings.
+In raw syntax, E is unary. The triple [E,E,E] simultaneously denotes Q(E)
+at a formula position and an iterator at a numerical position. The latter
+has a valid successor computation to E. If a scalar formula template can
+be filled numerically, it illegally transports the theorem Q(E) to E.
+The opener's even-depth factor prevents exactly this sort confusion.
+tests/parity_guard_original.json has four instruction packets exhibiting
+the failure in the inherited []-neutral guarded checker with that factor
+removed. The unchanged checker rejects it. This is an executable obstruction
+to that attempted simplification, not an assertion about arbitrary other
+possible smaller checkers.
+
+9. Scope and evidence.
+
+All metrics charge the entire module after CPython 3.12.14 ast.unparse
+normalization, including JSON input, every validator, opening, fresh scope,
+proof checking, and verdict output. Gzip level 9 with mtime=0 is informational.
+The tests are finite controls and cannot replace Parts 1-7 or the inherited
+mathematical bridge. The simulation assertions abstract from resource
+exhaustion; no claim is made of identical recursion-limit rejection for all
+finite inputs under a fixed interpreter configuration.
