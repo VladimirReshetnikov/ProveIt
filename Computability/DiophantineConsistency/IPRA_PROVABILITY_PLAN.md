@@ -7647,6 +7647,9 @@ It remains unelaborated and does not yet establish a checked model theorem.
 The source-reviewed [85 factor-three projection draft](research/ordinary14-85-divides-3x-draft/README.md)
 proposes `q ∣ 3X` from those same-graph facts, without assuming `q ∣ X`.
 It remains unelaborated and does not establish power recovery.
+The source-reviewed [85 growth draft](research/ordinary14-85-growth-draft/README.md)
+proposes the `X ≥ 16` and Pell-growth bounds under the stated port hypotheses.
+It remains unelaborated and does not establish `X = 2^R`.
 The source-reviewed [84 main-index draft](research/ordinary14-84-main-index-draft/README.md)
 proposes classifying the main root while retaining the natural balance. It is
 unelaborated and does not identify that index with the rank.
