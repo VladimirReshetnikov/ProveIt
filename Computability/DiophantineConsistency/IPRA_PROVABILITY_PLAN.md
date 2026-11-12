@@ -7963,6 +7963,10 @@ The independently reviewed [forced-gamma shifted-root variant](research/ordinary
 removes one more shift, giving 14 natural inputs, 81 operations and exact
 specialized degree 97 under the stated compact-port bounds and rank/Pell
 results. It remains an external reduction with the same endpoint gaps.
+The independently reviewed [forced-w shifted-root graph](research/ordinary14-natural-forced-w80-degree97/README.md)
+gives 14 natural inputs, 80 operations and exact specialized degree 97. Its
+external local map uses positive beta and nonnegative K0; the parent's
+rank, endpoint and physical-binding qualifications remain inherited.
 The independently reviewed [unshifted-s obstruction](research/ordinary14-natural80-unshift-s-obstruction/README.md)
 exhibits a zero with `s=0`, including at the authenticated compact ports,
 after deleting the `s` shift from the 81 graph. It rules out forced
