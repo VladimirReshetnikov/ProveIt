@@ -7461,6 +7461,11 @@ It and its dependencies remain unelaborated and are not an iPRA endpoint.
 The source-reviewed [85/86 model-equivalence wrapper](research/ordinary14-85-86-model-equivalence-draft/README.md)
 proposes both directions under positive `β` and the stated cast. It and its
 dependencies remain unelaborated; the bridge to the parent endpoint is open.
+The source-reviewed [86/87 ring client](research/ordinary14-86-87-ring-client-draft/README.md),
+[86 guard-gap draft](research/ordinary14-86-guard-gap-draft/README.md), and
+[positive 86-to-87 map](research/ordinary14-86-to-87-positive-map-draft/README.md)
+propose the forward reparameterization. They are unelaborated; the reverse
+map, provider compatibility and endpoint remain open.
 The source-reviewed [86 own-zero quotient composition](research/ordinary14-86-ownzero-quotient-draft/README.md)
 proposes deriving that quotient and a magnitude root from the graph's own
 first residual. It remains unelaborated and is not yet a complete model map.
@@ -7577,6 +7582,9 @@ The source-reviewed [84/78 model composition draft](research/ordinary14-84-to-78
 connects the proposed clients through their shared 79-operation graph. It
 and all component drafts remain unelaborated; provider verification, earlier
 parent bridges and the iPRA endpoint are still required.
+The source-reviewed [compact 78/86 composition](research/ordinary14-78-86-compact-model-composition-draft/README.md)
+extends the proposed symbolic-port chain through the 85 graph. It remains
+unelaborated and has no checked provider or iPRA endpoint.
 The source-reviewed [modified-carrier facts](research/ordinary14-modified-carrier-model-facts-draft/README.md)
 propose the orientation, rank congruence and compact-Mersenne cancellation
 needed for the preceding 84/85 comparison. They remain unelaborated; the
