@@ -7654,6 +7654,10 @@ The source-reviewed [85 power-recovery draft](research/ordinary14-85-power-recov
 proposes that equality from the same graph's facts without assuming `q ∣ X`.
 It and its dependencies remain unelaborated and do not yet prove the reverse
 graph map or iPRA endpoint.
+The source-reviewed [85-to-84 model-map draft](research/ordinary14-85-to-84-model-map-draft/README.md)
+proposes the reverse positive witness using that graph's own power facts and
+explicit Mersenne/radix hypotheses. It remains unelaborated and is not a
+checked compact-port theorem or iPRA endpoint.
 The source-reviewed [84 main-index draft](research/ordinary14-84-main-index-draft/README.md)
 proposes classifying the main root while retaining the natural balance. It is
 unelaborated and does not identify that index with the rank.
