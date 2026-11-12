@@ -1282,6 +1282,9 @@ The source-reviewed [fresh parent-root fact](research/ordinary14-fresh-parent-ro
 and [projected parent fields](research/ordinary14-88-parent-fields-draft/README.md)
 propose the positivity and nonfirst residual pieces. Both remain unelaborated;
 the first residual and complete parent model zero are still required.
+The source-reviewed [parent first-residual client](research/ordinary14-88-parent-first-draft/README.md)
+proposes that missing first-field identity under explicit quotient, root and
+cast hypotheses. It remains unelaborated and is not a complete model zero.
 The source-reviewed [88 guard draft](research/ordinary14-88-guard-draft/README.md)
 proposes the quotient-guard equality from that graph's own zero. It remains
 unelaborated and is one premise of the parent witness construction.
