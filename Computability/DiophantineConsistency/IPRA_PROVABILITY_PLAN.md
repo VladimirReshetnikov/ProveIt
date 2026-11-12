@@ -7452,6 +7452,10 @@ The independently reviewed [forced-J variant](research/ordinary13-natural-unit-p
 removes one more shift, giving 13 natural inputs and 88 operations at exact
 specialized degree 99. Its external zero map additionally assumes `K0 ≥ 0`;
 the iPRA and physical-file qualifications are unchanged.
+The independently reviewed [13-variable unshifted-s obstruction](research/ordinary13-natural87-unshift-s-obstruction/README.md)
+gives a zero with `s=0` at the authenticated ports after removing that shift.
+It rules out the proposed local positivity and tested same-coordinate map,
+not global zero-existence equivalence.
 The separate reviewed [degree-56 residue-adjusted form](research/ordinary13-residue-first82/README.md)
 has 13 positive inputs and 82 operations. Its local comparison uses the stated
 compact44 port bounds and the sign-free decoder, without requiring the
