@@ -7479,6 +7479,9 @@ Neither has been elaborated in Lean.
 The source-reviewed [calibrated 87-to-88 map](research/ordinary14-87-to-88-model-map-draft/README.md)
 proposes discharging that reverse assumption from the same graph zero under
 the stated port bounds. It remains unelaborated and has no iPRA endpoint.
+The source-reviewed [87/88 model-equivalence draft](research/ordinary14-87-88-model-equivalence-draft/README.md)
+proposes composing both directions under those bounds. It and its dependencies
+remain unelaborated; the parent and iPRA endpoint bridges are still open.
 The source-reviewed [87 rank-square growth draft](research/ordinary14-87-rank-square-growth-draft/README.md)
 proposes `R ≥ q²` and then `X > q²` from the same graph's power facts,
 without a Mersenne or `q ∣ X` assumption. It remains unelaborated and is
