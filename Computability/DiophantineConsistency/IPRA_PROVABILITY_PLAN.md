@@ -7650,6 +7650,10 @@ It remains unelaborated and does not establish power recovery.
 The source-reviewed [85 growth draft](research/ordinary14-85-growth-draft/README.md)
 proposes the `X ≥ 16` and Pell-growth bounds under the stated port hypotheses.
 It remains unelaborated and does not establish `X = 2^R`.
+The source-reviewed [85 power-recovery draft](research/ordinary14-85-power-recovery-draft/README.md)
+proposes that equality from the same graph's facts without assuming `q ∣ X`.
+It and its dependencies remain unelaborated and do not yet prove the reverse
+graph map or iPRA endpoint.
 The source-reviewed [84 main-index draft](research/ordinary14-84-main-index-draft/README.md)
 proposes classifying the main root while retaining the natural balance. It is
 unelaborated and does not identify that index with the rank.
