@@ -481,7 +481,6 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `clausal_canonical` | Not formalized: it is stated on the canonical recursor syntax with clause contexts. |
 | `computational_equality`, `equality_from_iteration` | Proved: the six-rule calculus is `EPrf`, with `eprf_iff_nprf` and `eprf_iff_iprf` (`NativeEval`). Eval has the two cases of `equality_from_iteration` as constructors; the third case of `computational_equality` is the derived rule `EPrf.evalId`. The zero-normal companion of `equality_from_iteration` is not formalized. |
 | `variable_substitution`, `parameter_substitution` | Not formalized: equality rules that substitute for a variable or a parameter only. |
-| `clausal_canonical`, `counter_evaluation` (clause part) | Not formalized: clause calculi on other term syntaxes. |
 | `uniform_step` | Proved: its arithmetic and equality interface on zero-normal terms is `NSPrf` (`nsprf_iff_nprf`, `NSPrf.normal`, `nsprf_iff_pra`; `NativeZeroStep`), with the kernel's two introductions and `Q` in place of clause contexts. On the unnormalized syntax the rule Step is the constructor `evalSucc` of `EPrf` and `SPrf`. |
 | `uniform_clauses`, `deterministic_specialization`, `clausal_single_evaluation` | Not formalized: variants of the clause calculus (reflexivity as a fixed axiom clause; clause use without a term argument; zero-normal terms). The calculus they vary is `CPrf`. |
 | `computation_normal`, `counter_evaluation` | Not formalized: full normalization; the counter-aware recursor syntax. |
