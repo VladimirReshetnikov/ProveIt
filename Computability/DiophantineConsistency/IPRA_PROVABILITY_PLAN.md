@@ -7488,6 +7488,10 @@ The source-reviewed [auxiliary-root model draft](research/ordinary14-aux-root-mo
 proposes the positive witness maps under explicit `1 < Q` and `1 < z²`
 assumptions. Those bounds have not yet been derived from the graph in Lean;
 the draft and its dependencies remain unelaborated.
+The independently source-reviewed [auxiliary-bound facts](research/ordinary14-aux-root-bounds-model-draft/README.md)
+propose the Pell growth and signed bounds under explicit premises. The
+model-level `k = 2` exclusion, polynomial bound on `Δ`, graph extraction and
+Lean elaboration are still required.
 The source-reviewed [87-operation Lean graph and decoder-route draft](research/ordinary14-shifted-guard87-lean-draft/README.md)
 records the fact-level replay needed for arbitrary models. It is uncompiled;
 the graph-specific model lemmas, parent bridges and iPRA endpoint remain open.
