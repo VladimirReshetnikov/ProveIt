@@ -1,0 +1,9 @@
+# Independent source review: AQ17/104 J forcing
+
+This is a static graph and source audit, not Lean elaboration. Run `python3 -I -S -B check.py` from any directory and compare with `result.json`; the author's source receipt reproduces. Tactics, imports, axiom reports and compiled providers remain unverified.
+
+The literal and residual sources transcribe all 104 graph rows; the residual vector and its declared type both have arity eight. Residual 5 is the first-root binding. When `J=v[0]=0`, its value is `Bt=(1−F−alpha)*(X+K0)−F`; because that residual equals zero, the draft's use of `linear_combination -h` has the correct orientation for its stated `0=Bt` branch. The separately supplied helper chooses the natural z argument as zero, so that its hypothesis is precisely this branch. Positive shifted F and nonnegative represented alpha, X and K0 make Bt negative. The second port must be represented by a model natural; the local reasoning does not cover arbitrary signed K0.
+
+`ModelThirteenCarrier.port1` is invoked for the fixed current second-port representation, with the selected `CurrentKernel2011.K : V`; the application and provider closure remain unelaborated. Independently comparing the JSON rows shows that the 105-row graph is the 104-row graph with only J increased by one. All eight proposed residual-relation signatures have matching indices, and the transport uses J positivity to take the reverse predecessor. The all-model equivalence is thus proposed only after the explicit J-force source and its represented-port requirement.
+
+The native client retains explicit AQ22, AQ20 and AQ17 graph obligations and depends on the unelaborated 105 residual extraction. Earlier strict-positive beta, historical provider ancestry and the interpretation of the selected consistency sentence remain separate. No internal iPRA theorem or physical PDF semantics is established here.
