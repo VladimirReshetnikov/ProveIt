@@ -7731,6 +7731,10 @@ propose the symbolic endpoint declarations. Their [static import inventory](rese
 is limited to source headers and direct qualified imports. The full chain is
 unelaborated; providers, axiom checks, physical-byte binding and the iPRA
 proof-existence claim remain open.
+The independently source-reviewed [isolated root-74 slim overlay](research/ordinary14-root74-slim-overlay/README.md)
+extends the earlier replacement to the 74 endpoint in copied draft sources.
+Its bounded source/object observations are not a Lean dependency resolution,
+provider-coherence audit or checked proof.
 The source-reviewed [74 own-zero product draft](research/ordinary14-74-ownzero-product-draft/README.md)
 proposes extracting the signed product from the literal graph. It remains
 unelaborated and leaves the graph's factor exclusions as explicit premises.
