@@ -7684,6 +7684,10 @@ The separately source-reviewed [mod-four client](research/ordinary14-five-unit-m
 proposes the other factor exclusions, and the [75/74 graph draft](research/ordinary14-unit75-guard74-lean-draft/README.md)
 transcribes both literal circuits. They remain unelaborated and are not yet
 connected into a model or iPRA endpoint.
+The source-reviewed [78/75 ring-factor client](research/ordinary14-78-75-ring-client-draft/README.md)
+and [78-to-75 forward map](research/ordinary14-78-to-75-model-map-draft/README.md)
+propose the same-coordinate forward direction. They remain unelaborated;
+the reverse factor extraction and endpoint are still open.
 The reviewed [direct-X unit-product tradeoff](research/ordinary14-direct-x-unit75/README.md)
 also has 14 positive inputs and 75 operations, at exact degree 100. Its
 positive-zero comparison uses the stated port bounds and a fact-level
