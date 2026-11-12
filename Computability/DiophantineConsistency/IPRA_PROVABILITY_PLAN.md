@@ -7908,6 +7908,9 @@ closure or establish Lean build readiness.
 The independently source-reviewed [corrected 79 reflection overlay](research/ordinary14-natural79-corrected-reflection-overlay/README.md)
 selects the repaired helper and client in 196 inert snapshots. It remains
 unelaborated and does not establish actual provider or axiom closure.
+The independently reviewed [corrected 79 provider order](research/ordinary14-natural79-corrected-ordered-provider-plan/README.md)
+records five qualified source candidates and 196 inert draft stages. This is
+a lexical candidate sequence, not a launch-ready Lean build or proof.
 The independently source-reviewed [79-to-80 w-shift draft](research/ordinary14-natural79-wshift-model-draft/README.md)
 proposes related-valuation zero maps, conditional on w positivity at every
 79 zero. It remains unelaborated and does not discharge that premise.
