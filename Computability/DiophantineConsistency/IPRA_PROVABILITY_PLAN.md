@@ -7777,6 +7777,11 @@ The independently source-reviewed [natural-82 Lean transcription](research/ordin
 proposes a literal graph and product shape. Its row-for-row correspondence
 is checked outside Lean; elaboration, model semantics and the zero-transfer
 proof have not been established.
+The independently source-reviewed [82-to-86 bridge draft](research/ordinary14-natural-forced82-ring-bridge-draft/README.md)
+proposes a changed-valuation ring identity and conditional model zero maps.
+Its natural-model existence equivalence assumes, rather than proves, that
+every 82 zero has predecessors in the three altered coordinates. The source
+and its dependencies remain unelaborated.
 The independently reviewed [natural shifted-Pell graph](research/ordinary14-natural-shifted-pell83/README.md)
 combines those shifts with the degree reduction: 14 natural inputs, 83
 operations, and exact specialized degree 97. Its external zero maps inherit
