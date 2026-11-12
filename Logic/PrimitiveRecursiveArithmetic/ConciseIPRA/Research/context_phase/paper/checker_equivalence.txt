@@ -1,0 +1,136 @@
+AUDIT OF THE CONTEXT-PHASE CHECKER
+================================
+
+Audited candidate: code/checker.py, the immutable-context primary checker
+of this package.  Frozen control:
+Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/
+deterministic_introduction/implementation/code/native.py
+at ProveIt commit 62396b06020f794fa6dc01b4025a6a5db9d4d28a.
+
+Claim
+-----
+
+Under the CPython runtime convention used by the measurements and with
+sufficient resources, the two standalone programs have the same successful
+certificate runs: they print the same ACCEPT line, pop the same sequence of
+input-stack entries, and leave the same unused prefix.  This is a checker
+refactoring of the inherited native calculus, not a deletion of a primitive
+mathematical axiom and not a global minimality theorem.
+
+The proof below concerns acceptance and stack consumption.  It does not
+assert that every internal object has the same Python type.  In particular,
+the new opener can use False where the old opener used administrative 0.
+
+1. INITIAL VALIDATION
+
+The control starts with context [0], scope floor k=0, and phase v=1.
+The candidate starts with context (), scope floor k=0, and uses emptiness of
+that context as the validation phase.  At this one initial traversal:
+
+    (not v or condition)  corresponds to  (g or condition),
+    (d % 2 or v)          corresponds to  (d % 2 or not g).
+
+Their truth values are identical.  The numeric-leaf predicate is changed
+from type(a) is int to int(a) is a.  For values produced by the default
+CPython JSON decoder, this recognizes exactly the same integer leaves:
+int(a) returns an exact int object unchanged when a is already an exact
+int; a Boolean is not identical to the int returned from it; and a float
+is not an int object.  Nonnumeric leaves fail earlier arithmetic or ordered
+comparison checks.  NaN and infinities do not pass the finite interval
+condition.  This argument is intentionally a CPython/builtin-JSON argument,
+not a claim about arbitrary user-defined numeric objects or JSON hooks.
+
+Successful public validation returns a nonempty list representing an Eq/D
+formula.  It cannot return the scalar neutral value 0: the validating
+fallback visits the non-JSON function sentinel and fails instead of silently
+admitting scalar formula padding.  Therefore the initial membership test
+fails both for the old context [0] and for the new empty context.  Invalid
+public goals fail before any instruction is consumed in both programs.
+
+2. ACTIVATING THE ORDINARY KERNEL
+
+After initial validation, the old program assigns v=0.  The new program
+executes g += (0,), making its context nonempty.  Every subsequent recursive
+call receives a nonempty context; hence all subsequent grammar conditions
+short-circuit exactly as the old v=0 conditions do.  The root's opener is a
+closure over the local binding g, so it also observes the rebinding to the
+nonempty tuple.  There is no second public-validation phase.
+
+At later non-hypothesis steps the candidate again appends 0.  This only adds
+another occurrence of a formula already retained.  It does not introduce a
+new assumption or new rule.  The kernel tests context membership, not context
+multiplicity or positions, and its scope floor is the separate variable k.
+In particular, this argument would be invalid for a version that recomputed
+k from the length of g.  The delivered version does not do that.
+
+3. INVARIANT FOR RECURSIVE CALLS
+
+Pair a call of the control with the corresponding call of the candidate.
+After the unique initial phase, their scope floors agree, their goals and
+retained formulas agree up to the harmless 0/False padding alias, and the
+candidate's tuple context contains the same formulas as the control's list
+context, with possibly additional copies of 0.  They also have identical
+remaining input stacks.
+
+The opener preserves this relation by structural recursion.  Both versions
+retain the same in-scope leaves, visit the same children, and make the same
+substitutions.  At an even-depth padding fallback the old expression yields
+integer 0 while the new expression can yield Boolean False.  These have the
+same truth value, compare equal, and behave identically under all subsequent
+kernel operations: arithmetic comparisons, multiplication, list equality,
+and context membership.  A scalar supplied to len or an iterable unpacking
+fails in either representation.  The int(a) is a test that distinguishes
+them is restricted to the initial validation phase and is never applied
+to these generated padding values.
+
+Thus hypothesis success is the same in paired calls.  Otherwise the same
+four-field instruction is popped.  The major-premise calls correspond by
+the invariant.  Computation, introduction, and elimination select the same
+branch and construct corresponding formulas.  Both implementations update
+k at the same point in Python's left-to-right evaluation of the continuation
+arguments, before opening the next hypothesis.  This is essential to the
+fresh-variable condition, and it has not been changed.
+
+The candidate's g += (0,) is tuple rebinding, not mutation.  A major-premise
+call cannot alter its caller's or a sibling's retained context.  The final
+continuation receives the matching additional hypothesis, plus only extra
+neutral zeros.  This re-establishes the invariant.
+
+Induction over a finite successful execution proves the claimed equivalence
+in both directions.  For the same reason, corresponding failures cannot
+turn into a successful run.  Recursion and memory exhaustion are excluded
+from this mathematical comparison, as for the source's own checker proof.
+
+4. CONSEQUENCES AND LIMITS
+
+Every accepted public theorem is inherited unchanged from the frozen
+checker, and every old successful certificate is accepted unchanged.  There
+is no certificate translator, renumbering of variables, new parameter, or
+new normalization oracle.  Because contexts are immutable tuples, repeated
+calls using the default context cannot retain assumptions from earlier calls.
+
+This proof establishes the correctness of the implementation transformation
+relative to the source checker's existing calculus/codec correctness theorem.
+It is not an independent formal verification of that entire codec, nor a new
+proof of its arithmetic bi-interpretation.  The same existing interpretation,
+domain, equality, and formula round-trip theorems apply to the unchanged
+theorem set.  Finite regression and adversarial tests supplement this proof;
+they are not substituted for it.
+
+5. OPTIONAL ONE-SHOT LIST PROFILE
+
+The optional code/checker_list.py replaces tuple contexts by lists and
+g += (0,) by g += [0]. Unlike a general list implementation that mutates
+contexts by adding arbitrary assumptions, this mutation adds only scalar
+neutral 0. After the initial step, 0 is already retained. Major-premise
+calls may therefore append zeros to a shared parent list, but cannot add a
+new non-neutral retained formula to it. The only addition of an actual
+hypothesis is still g + [new_hypothesis], which constructs a fresh list.
+The same relation by padding aliases and redundant neutral entries proves
+its one-shot command-line acceptance equivalence. This relies on k being
+independent of context length, just as in the tuple proof.
+
+The mutable empty default is populated during a public invocation, so a
+second direct call using that same default would not re-enable initial
+grammar validation. The list profile is supplied only as a standalone
+one-shot checker. The primary immutable profile has no such qualification.

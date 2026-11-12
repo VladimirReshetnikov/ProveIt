@@ -1,0 +1,670 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage{xcolor,listings}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={A smaller checker envelope for iPRA},
+  pdfauthor={Research note prepared for Vladimir Reshetnikov},
+  pdfsubject={Measured checker refinements and a finite-specialization obstruction}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small A smaller iPRA checker envelope}
+\fancyhead[R]{\small 12 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\D}{\mathsf D}
+\newcommand{\Q}{\mathsf Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\FV}{\operatorname{FV}}
+\newcommand{\Sel}{\operatorname{C}}
+\newcommand{\Name}{\operatorname{Name}}
+\lstset{language=Python,basicstyle=\ttfamily\footnotesize,
+  columns=fullflexible,keepspaces=true,showstringspaces=false,
+  breaklines=true,breakatwhitespace=false,frame=single,
+  rulecolor=\color{black!20},backgroundcolor=\color{black!2},
+  xleftmargin=0.4em,xrightmargin=0.4em,aboveskip=1em,belowskip=1em}
+\title{A smaller checker envelope for iPRA\\[0.4em]
+\large Inferred elimination premises and a finite-specialization obstruction}
+\author{Research note prepared for Vladimir Reshetnikov}
+\date{12 November 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We inspect the current \texttt{ConciseIPRA} proposals at commit
+\texttt{62396b06020f} (full hash recorded below).
+The published coordinatewise envelope of complete compact checkers is
+256 significant Python tokens, 278 AST nodes, and 516 normalized bytes.
+Three delivered programs lower the corresponding coordinates to
+\textbf{253 tokens, 275 AST nodes, and 515 bytes}.  The first two infer
+an elimination's major premise when its target instance matches the goal;
+the third uses the divisor pattern of the three meaningful formula arities.
+We give successful-trace and canonical-completeness arguments, exact
+controls, a readable strict checker, and reproducible executable evidence.
+
+These are three different programs implementing the inherited arithmetic
+presentation.  No single delivered program is below all three old minima,
+no mathematical axiom deletion is claimed, and the figures do not prove
+absolute minimality.  The compact input contract remains explicit.
+Separately, we prove a mathematical obstruction: if existential witnesses
+are restricted to parameters and zero, specialization by any fixed finite
+menu of primitive recursive operations, even under arbitrary composition,
+does not recover the native consequences.  A proper cut in a nonstandard
+model supplies a closed, guarded counterexample.  This explains why two
+separately complete restrictions in the current corpus cannot simply be
+combined.
+\end{abstract}
+
+\section{What improves, and what the benchmark means}
+
+The comparison is against the actual repository snapshot, not an older
+draft.  Its README records ninety packages and measures complete Python
+modules after removing docstrings, applying \texttt{ast.unparse}, and
+appending one line feed, under CPython 3.12.14~\cite{repo}.
+The counted module includes its JSON reader, scope handling, proof checking,
+and the final \texttt{ACCEPT} output.  The standard library and interpreter
+are common infrastructure for both old and new programs.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Complete program & Tokens & AST nodes & Bytes\\
+\midrule
+Pinned token control & 256 & 283 & 594\\
+New token profile & \textbf{253} & 280 & 599\\
+Pinned AST control & 260 & 278 & 602\\
+New AST profile & 257 & \textbf{275} & 607\\
+Pinned byte control & 265 & 306 & 516\\
+New byte profile & 264 & 304 & \textbf{515}\\
+\midrule
+Old coordinatewise envelope & 256 & 278 & 516\\
+New coordinatewise envelope & \textbf{253} & \textbf{275} & \textbf{515}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The token and AST controls are \texttt{kernel\_refinement}'s selected
+profiles~\cite{kernel}; the byte control is the separate compact supplement
+of \texttt{canonical\_recursors}~\cite{canonical}.  That supplement still
+implements the old scalar-iterator calculus: its 516-byte program is not
+the checker for its successor-seeded recursor theory.
+
+There is no proved global ``lower bound'' here.  There are empirical minima
+among inspected implementations.  The new envelope is strictly lower in
+each coordinate, by $3$, $3$, and $1$, respectively.  It is not the
+measurement of a fictional 253-token, 275-node, 515-byte single program.
+In particular, the token and AST profiles grow by five bytes against their
+own matched controls.  If the request is interpreted as requiring one
+program strictly below all three old minima, this report does not achieve
+that stronger requirement.  Nor does it provide a new smaller mathematical
+axiom basis.  Its positive result is a reproducible improvement under the
+repository's coordinatewise comparison, together with the obstruction
+theorem below.
+
+The compact programs assume a canonical closed guarded public goal.
+They are not exact validators of every possible claimed public formula.
+The strict readable companion checks the public grammar and rejects every
+input leaf except exact integers; its larger size is measured separately.
+We do not silently charge that additional validation as zero bytes.
+
+\section{The arithmetic and the complete logical interface}
+\label{sec:calculus}
+
+\subsection{The target theory}
+
+The target is full first-order \emph{intuitionistic} primitive recursive
+arithmetic: intuitionistic predicate logic with equality, symbols and
+defining equations for each finite primitive recursive description,
+successor injectivity and separation from zero, and induction for
+quantifier-free formulas, with passive parameters.  It is not merely
+equational PRA, its negative translation, or the set of its true numerical
+equations.
+
+We retain the scalar language already justified in the repository:
+\[
+ t ::= x\mid 0\mid S(t)\mid I(n,a;u.h),
+ \qquad
+ A ::= (s=t)\mid \Q_y A\mid\D_{x,y}A.
+\]
+Only $u$ is bound in $h$ in an iterator.  The bound variables of $\D$
+are distinct.  All substitutions are capture avoiding.  Write $1=S0$ and
+\[
+ \Sel(v,a,b)=I(v,a;u.b)
+\]
+with unused $u$.  The ordinary meanings of the two binders are
+\begin{align*}
+ (\Q_y B)^\circ&=B^\circ(0)\to\forall y\,B^\circ(y),\\
+ (\D_{x,y}B)^\circ&=\exists x\bigl(B^\circ(x,0)
+                     \to\forall y\,B^\circ(x,y)\bigr).
+\end{align*}
+The designated native contradiction is $0=1$.
+
+\subsection{A complete native reference basis}
+
+For clarity, the following is the native reference calculus.  No ambient
+classical logical rules are tacitly available.  Contexts retain formulas;
+a displayed local assumption is discharged.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.14\linewidth}p{0.79\linewidth}}
+\toprule
+Primitive & Axiom or inference schema\\
+\midrule
+Hypothesis & From $A\in\Gamma$, infer $\Gamma\vdash A$.\\[0.4em]
+Zero computation & $\Gamma\vdash I(0,a;u.h)=a$.\\[0.4em]
+Successor computation & $\Gamma\vdash I(Sn,a;u.h)=h[I(n,a;u.h)/u]$.\\[0.4em]
+Transport & From $\Gamma\vdash s=t$ and $\Gamma\vdash F(s)$,
+ infer $\Gamma\vdash F(t)$ for a native formula template $F$.\\[0.4em]
+Closure use & From $\Gamma\vdash\Q_y B$ and $\Gamma\vdash B(0)$,
+ infer $\Gamma\vdash B(t)$.\\[0.4em]
+Paired opening & From $\Gamma\vdash\D_{x,y}B$ and
+ $\Gamma,\Q_yB(b,y)\vdash A$, infer $\Gamma\vdash A$;
+ $b$ is fresh for the outer context, parameters, and $A$.\\[0.4em]
+Case introduction & From $\Gamma,B(t,0)\vdash B(t,Sz)$,
+ infer $\Gamma\vdash\D_{x,y}B$;
+ $z$ is fresh for the outer context and $t$.\\[0.4em]
+Equation progress & From $\Gamma,E(z)\vdash E(Sz)$,
+ infer $\Gamma\vdash\Q_yE(y)$;
+ $E$ is a literal equation and $z$ is fresh.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Reflexivity, symmetry, transitivity, congruence, explosion, numerical cases,
+quantifier-free induction, and the usual intuitionistic connectives are
+derived.  For example, if $r=I(0,t;u.0)$, transporting the computation
+$r=t$ along itself with template $v=t$ gives $t=t$.  The fact that a
+designated equation serves as contradiction is justified by derived
+explosion and the falsity bridge in Section~\ref{sec:bridge}; it is not a
+license to omit ordinary falsity from the target theory.
+
+\subsection{The smaller guarded presentation actually encoded}
+
+The compact checkers use an auxiliary calculus on the same terms and
+Eq/$\Q$/$\D$ formulas.  Its public formulas use Eq and $\D$ only, and every
+immediate equation matrix of a $\D_{x,y}$ must have the literal form
+\[
+ I(y,0;u.h)=I(y,0;u.k).
+ \tag{G}\label{eq:guard}
+\]
+The bodies may depend on passive parameters and on the displayed variables.
+Auxiliary formulas inside proofs need not all satisfy the public guard.
+This public/auxiliary distinction is inherited, and is essential.
+
+Replace the last two reference introduction schemes by the one
+root-determined scheme
+\[
+ \frac{\Gamma,B(t,\eta_B(z))\vdash B(t,Sz)}
+      {\Gamma\vdash\D_{x,y}B},
+ \qquad
+ \eta_B(z)=\begin{cases}
+ z,&B\text{ is a literal equation},\\
+ 0,&B\text{ is compound}.
+ \end{cases}
+ \tag{Intro}
+\]
+All eigenvariable conditions remain.  Restrict the source of transport to
+terms other than the literal $0$.  Combine transport and closure use into
+the following single interface.  Given a template $F$, a source $s$ and a
+target $t$, the required major is
+\[
+ M(s,t,F)=\begin{cases}s=t,&s\ne 0\text{ syntactically},\\
+                         \Q_vF(v),&s=0\text{ syntactically}.
+          \end{cases}
+\]
+The inference is
+\[
+ \frac{\Gamma\vdash M(s,t,F)\qquad\Gamma\vdash F(s)}
+      {\Gamma\vdash F(t)}.\tag{Use/transport}
+\]
+Together with hypothesis, the two computation schemas, paired opening,
+and Intro, this specifies the six inference families being encoded.
+There is no unlisted induction principle for compound formulas.
+
+At an atomic public matrix, the zero guard supplies its base, so progress
+suffices.  Equations elsewhere can be padded by
+\[
+ L(s=t)=\D_{r,v}\bigl(\Sel(v,0,s)=\Sel(v,0,t)\bigr),
+ \qquad r\text{ unused}.
+\]
+One proves $L(E)\dashv\vdash E$ by introducing its successor row from $E$,
+and conversely opening it and using the closure at $1$.  Padding permits
+numerical cases on equations through compound case introduction, and then
+recovers equation induction.  The source-zero restriction has an inherited
+admissibility proof, reproduced among the attributed foundation files.
+In particular, this restriction is not justified merely by saying that
+zero is ``another variable.''
+
+For a completely guarded translation, put
+\[
+ p(s=t)=L(s=t),\quad
+ p(\Q_yB)=\D_{r,y}p(B),\quad
+ p(\D_{x,y}B)=\D_{x,y}p(B),
+\]
+with fresh unused $r$.  The inherited guarded presentation theorem gives
+the same translated native consequences, with both formula round trips.
+The compact codecs use administrative zero-instance supply for computation;
+they are certificate implementations of this consequence relation, not
+additional arithmetic axiom schemas.  The full decoder and its checking
+proof are included as attributed reference material~\cite{arity}.
+
+\section{Why the interpretation is a bi-interpretation}
+\label{sec:bridge}
+
+This section states the inherited bridge precisely enough to expose what
+the new checker changes depend on.  The full arithmetic constructions are
+included under \texttt{reference/foundations/}; the new work does not claim
+to shorten those constructions or to reverify them in Lean.
+
+Elaborate each fixed iterator body $h(u,\vec p)$ into a staged first-order
+function symbol $i_h(n,a,\vec p)$, with its two defining equations.
+There is no internal universal evaluator for arbitrary function codes.
+Let $T_I$ use ordinary intuitionistic first-order logic with actual equality
+and genuine falsity, these equations, contextual induction for equations,
+and
+\[
+ \forall x\,(x=0\vee\exists y\,x=Sy),
+ \qquad (0=S0)\to\bot.
+\]
+The last sentence is explicit: a theory of positive equations alone would
+admit a singleton structure, so it would not provide the claimed ordinary
+interpretation.
+
+The arithmetic dependency order is as follows.  From scalar iteration,
+equation induction, and numerical cases one constructs a scalar predecessor
+$P$ with $P0=0$ and $P(Sn)=n$.  Next come truncated subtraction and a
+characteristic of actual equality on the whole domain.  These compile fixed
+quantifier-free formulas into characteristic equations and recover all
+quantifier-free induction instances.  Pairing and projections can then be
+constructed and used to compile general primitive recursion.  Pairing is
+not assumed in the predecessor proof.
+
+For example, with a proved pairing $\pi$ and projections $L,H$, the
+primitive recursion
+\[
+ f(0,\vec p)=g(\vec p),\qquad
+ f(Sn,\vec p)=h(n,f(n,\vec p),\vec p)
+\]
+is compiled using
+\begin{align*}
+ V(n,\vec p)&=I\bigl(n,\pi(0,g^*(\vec p));
+     u.\pi(SL(u),h^*(L(u),H(u),\vec p))\bigr),\\
+ f^*(n,\vec p)&=H(V(n,\vec p)).
+\end{align*}
+Equation induction proves $L(V(n,\vec p))=n$ and the required defining
+equations.  The other interpretation sends each fixed scalar iterator to
+ordinary primitive recursion ignoring the recursion-counter argument.
+
+For the composites, internal equation induction proves uniqueness of two
+iterations with the same seed and extensionally equal updates.  External
+induction on each finite description therefore proves that its double
+translation agrees with the original operation.  Both numerical domains
+are the whole domain, defined by $x=x$, equality remains actual equality,
+and the comparison isomorphism in each theory has graph $x=y$.  The
+ordinary meanings of $\D,\Q$ and the derived logical macros supply the
+formula composites.  Thus the bridge is a bi-interpretation, not an appeal
+to standard-model agreement or to equal proof-theoretic strength alone.
+
+\begin{proposition}[Inherited bridge preserved by the new programs]
+On the declared canonical guarded public language, each new checker
+accepts exactly the same theorem set as its matched control.  Consequently
+its ordinary realization is bi-interpretable and equiconsistent with full
+first-order $\ipra$, with the same whole-domain identity composites.
+\end{proposition}
+\begin{proof}
+Sections~\ref{sec:inferred} and~\ref{sec:remainder} establish soundness and
+canonical completeness relative to the matched controls.  Compose these
+proof translations with the inherited checking, guarded presentation,
+and arithmetic bridge theorems.  No arithmetic interpretation is changed.
+\end{proof}
+
+\section{The compact representation and its limits}
+
+Certificates are JSON arrays consumed from right to left.  The last element
+is the goal; each remaining consumed instruction has four fields
+$[m,s,u,t]$.  The fields are not a new numerical domain.  They encode a
+finite proof and its term/formula templates.  The meaning depends on the
+position, numerical or formula, in which an array is used.
+
+\begin{center}
+\begin{tabular}{cll}
+\toprule
+Arity & Numerical position & Formula position\\
+\midrule
+0 & $0$ & $\top$\\
+1 & successor & $\D$\\
+2 & ignored annotation, meaning $0$ & equality\\
+3 & scalar iterator & $\Q$ (third child is the body)\\
+$\ge4$ & ignored annotation, meaning $0$ & $\top$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Canonical closures are $[B,B,B]$; tripling a unary paired major produces
+its closure, whereas tripling another meaningful nonempty arity produces
+an administrative truth.  Here $\top$ is the fixed equation $0=0$.
+Scalar formula padding also denotes $\top$.  These are fixed semantic
+aliases, not arbitrary additional connectives.
+
+The opener $i(a,t,d)$ adds $5-\operatorname{len}(a)$ to its depth at every
+array.  Meaningful increments are therefore $4,3,2$ for arities $1,2,3$.
+Numerical root depth is $3$, formula root depth is $0$, and protected
+numerical slots have width two.  Under $p$ protected slots, coordinates
+$3+2j$ and $4+2j$ name slot $j$ for $0\le j<p$; the coordinates $0,1,2$
+denote zero.  Canonical terms choose the odd representative of each slot.
+Negative integers admitted by the floor $k$ denote rigid free parameters.
+A numerical hole is filled only after its image is checked at numerical
+root depth $3$.  Missing images at used holes reject.
+
+The scope floor decreases immediately before the continuation's goal and
+new hypothesis are opened.  This ordering is retained.  Although in a
+local profile $k=1-|\Gamma|$ on entry, it is false during that intermediate
+phase with the old context length.  Replacing the state by context length
+without repairing the phase would reject valid certificates and can spoil
+freshness reasoning.  We do not make that change.
+
+The compact acceptance protocol is successful process exit with exactly
+\texttt{ACCEPT} and one line feed.  Exceptions reject, including under
+\texttt{python -O}; no trusted check is an \texttt{assert}.  Unused
+certificate prefixes are inert.  Public theorem claims are for the
+canonical guarded input contract.  Neither the old nor the new compact
+profile is presented as an exact theorem recognizer for arbitrary strings,
+floats, Boolean leaves, or arbitrary public formula shapes.
+
+\section{Inferring the elimination major}
+\label{sec:inferred}
+
+The original packet supplied $m$ even when the source, target, and template
+already determined it.  Its relevant code was
+\begin{lstlisting}
+if m == ([s, u] if s else [t] * 3) and i(t, u) == a:
+    a = i(t, s)
+\end{lstlisting}
+The new token and AST profiles use
+\begin{lstlisting}
+if i(t, u) == a:
+    m = [s, u] if s else [t] * 3
+    a = i(t, s)
+\end{lstlisting}
+The rest of the module still recursively checks the actual major $m$.
+Only its redundant supplied spelling is ignored on the matching branch.
+This is target-directed premise inference, not omission of a premise.
+
+\begin{theorem}[Successful-trace repair]
+For every successful new execution on the inherited compact interface,
+there is a repaired packet stream accepted by the old profile.  Its goal
+is unchanged.  Repair each consumed packet by replacing its first field
+with the value of $m$ actually used after the new test.
+\end{theorem}
+\begin{proof}
+On a triggered instruction, the repaired first field is exactly
+$[s,u]$ when $s$ is true and $[t,t,t]$ otherwise.  The old major comparison
+and its target comparison therefore succeed, and both programs replace
+$a$ by $i(t,s)$.  On a non-triggered instruction the first field is left
+unchanged; the old conjunction cannot select an elimination because its
+target comparison is false whenever evaluated.
+
+Both programs next check the same major, consume the same repaired
+substream for that proof, build the same retained hypothesis, and open
+the same continuation at the same fresh floor.  Induct on the finite
+successful execution tree.  The token profile's global floor is also
+identical: constructing the inferred major is pure and occurs before
+the recursive major proof.  The local profile preserves the same tuple
+contexts.  The repairs are determined by the successful new trace, not
+by a guess at which instruction was intended.
+\end{proof}
+
+Eager evaluation of $i(t,u)$ may newly reject malformed packets which the
+old conjunction short-circuited.  This theorem does not assert equality of
+all raw acceptance languages.  It does show that an accepted new proof
+cannot acquire an unproved arithmetic major.
+
+\begin{lemma}[No accidental elimination in canonical nonelimination packets]
+A canonical numerical tree has no binary array node, whereas every
+canonical Eq/$\Q$/$\D$ formula contains a binary equality node.
+For numerical $t,u$, a successful formula-root opening $i(t,u)$ has no
+binary node.  It therefore cannot equal a canonical formula goal.
+\end{lemma}
+\begin{proof}
+Canonical numerical arrays have arity one or three.  Opening preserves
+those constructors and substitutes only numerical trees at numerical
+holes; scalar padding introduces no binary node.  Structural induction
+gives the claim.  Every finite canonical formula ends in equality.
+\end{proof}
+
+\begin{theorem}[Canonical completeness of inferred majors]
+Every canonical derivation supported by the control has a certificate
+accepted by the new profile.
+\end{theorem}
+\begin{proof}
+Compile intended transport and closure-use instructions normally; their
+target tests hold and their inferred majors are the required premises.
+Computation and introduction packets have numerical $t,u$, so the lemma
+prevents unintended selection.  At ordinary paired opening, set the
+inactive field $t$ to $0$; its target opening is scalar $0$, which cannot
+equal a canonical formula.  Hypothesis leaves need no instruction.
+The canonical compiler already establishes the required scope conditions.
+Induction on the derivation now completes the construction.
+\end{proof}
+
+Constructed elimination majors occur earlier in \texttt{uniform\_zero},
+and prevalidation occurs in \texttt{prevalidated\_elimination}~\cite{repo}.
+The measured change here is the target-match trigger and its placement
+in the two current smallest profiles.  It is not a claim to have invented
+premise inference or removed an arithmetic axiom.
+
+\section{The one-byte arity refinement}
+\label{sec:remainder}
+
+The 516-byte control selects a fresh progress parameter using
+\texttt{\string~len(a) \% 2}.  Replace only that expression by
+\texttt{3 \% len(a)}.  The three meaningful formula arities have the table
+\[
+\begin{array}{c|ccc}
+n&1&2&3\\\hline
+\mathord{\sim}n\bmod2&0&1&0\\
+3\bmod n&0&1&0
+\end{array}
+\]
+so the actual equality/case choice is unchanged.  The new expression
+has one fewer significant token, two fewer AST nodes, and one fewer
+normalized byte.
+
+\begin{theorem}[Soundness and canonical completeness of the remainder selector]
+The 515-byte profile has the same canonical guarded public theorems as
+its 516-byte control, under the inherited decoder and input contract.
+\end{theorem}
+\begin{proof}
+On arities $1,2,3$ the decision is exactly the displayed table.
+At arity zero the new modulo operation raises an exception; this can
+only remove traces involving an empty truth alias.  At arities at least
+four the formula is the fixed truth alias.  Changing its zero instance
+to a fresh-parameter instance cannot create a new meaningful formula:
+opening preserves the outer arity and all children are ignored by the
+formula decoder.  Introducing a paired truth or retaining a truth
+hypothesis is sound in either mode.  For a computation-supply step the
+inherited proof uses its known zero instance and the freshness of the
+new parameters; it does not require the displayed goal's arity to confer
+a new induction rule.  This same supply argument remains valid.
+
+Thus the inherited successful-call soundness induction still applies.
+Canonical meaningful goals and introduction matrices have arity $1,2,3$,
+so their compiled proofs keep the old mode.  Administrative truth exports
+can be retained without using an empty or surplus truth as a nontrivial
+pending goal.  The canonical completeness compiler is unchanged.
+\end{proof}
+
+There is deliberately no claim of raw trace equality on empty and surplus
+aliases.  In particular, applying a progress rule to a meaningful ternary
+closure would be wrong.  Both selectors give zero at arity three.
+
+\input{sections/finite_menu}
+
+\section{Executable evidence and reproducibility}
+
+The archive contains the three complete compact profiles, exact pinned
+controls, a readable strict companion, actual positive and negative
+certificates, source provenance, measurement code, and validation code.
+Run
+\begin{lstlisting}[language={}]
+python3 reproduce.py
+python3 build.py
+\end{lstlisting}
+from the archive's top directory.  The first command uses only Python's
+standard library.  The second requires pdfLaTeX and the packages named
+in this source.  CPython 3.12.14 reproduces the exact source measurements;
+other Python versions can have different \texttt{ast.unparse} output.
+
+The inference validation compares the local and global scope profiles
+against their own controls.  It exercises inherited valid certificates,
+future-witness capture and context-leak attacks, and deliberately erased
+major fields.  Repaired control certificates are actual files, not just
+descriptions of a proposed repair.  Normal and optimized Python runs are
+both checked.  The byte validation covers the meaningful arities and
+the intentional truth-alias differences.  Exact counts, outputs, and
+hashes are in the generated evidence files.
+
+The final reproduction ran 631 separate checker processes without an
+unexpected outcome: 423 for inferred-major validation, 152 for the byte
+selector, and 56 for the strict companion.  The inference suite includes
+31 generated certificates with 7,607 redundant major fields erased and
+31 actual repaired control certificates.  The readable strict companion
+measures 580 tokens, 666 AST nodes, and 2,473 normalized bytes; it is an
+audit interface, not a new strict-checker size record.
+
+These tests are finite executable evidence.  They do not prove universal
+soundness, the nonstandard-cut theorem, or bi-interpretability.  Those
+claims rest on the written arguments and the explicitly inherited bridge.
+No new Lean or Rocq verification is claimed.  The repository's Lean
+development concerns the mathematical calculus and its translations; it
+does not automatically verify the delivered Python implementations.
+Python recursion and memory limits can reject very large valid certificates;
+the theoretical checking algorithm is understood with unbounded finite
+resources, as are the matched controls.
+
+\section{Further research questions}
+
+\begin{enumerate}[label=\arabic*.]
+\item Can one complete program, with the same input and output contract,
+beat all three old minima simultaneously?  The three separate new
+profiles do not answer this question.
+\item Can a mathematical reduction lower the best complete strict checker,
+including public-language validation, instead of refining the compact
+codec?  Any comparison should count normalization, typing, and decoding
+that move into the trusted front end.
+\item Can a structurally generated infinite family of specialization
+targets be simpler than arbitrary terms while defeating the finite-menu
+obstruction?  The theorem does not cover an iterator constructor whose
+body is supplied freely.
+\item Does a useful quotient or different numerical domain evade the
+counterreading while retaining both interpretation composites?  Failure
+of the identity/native consequence translation alone does not settle
+that question.
+\item Can the semantic decoder and successful-call soundness theorem for
+the compact checker be formalized once, with verified small refinements
+as corollaries?  This would give a stronger assurance boundary than testing
+each tiny source independently.
+\item Can the arithmetic bridge itself be shortened, particularly the
+scalar predecessor and formula selector constructions, while retaining
+the full intuitionistic formula round trips?  Reducing those mathematical
+dependencies would be more substantial than another byte reduction.
+\end{enumerate}
+
+\clearpage
+\appendix
+\section{The complete selected programs}
+
+The following are the entire measured modules, not extracted kernels.
+The line wrapping in this PDF is typographical; the files in the archive
+are the executable sources.
+
+\noindent\begin{minipage}{\linewidth}
+\subsection{Token profile: 253 tokens}
+\lstinputlisting{checkers/tokens.py}
+\end{minipage}
+
+\medskip
+\noindent\begin{minipage}{\linewidth}
+\subsection{AST profile: 275 nodes}
+\lstinputlisting{checkers/ast.py}
+\end{minipage}
+
+\medskip
+\noindent\begin{minipage}{\linewidth}
+\subsection{Byte profile: 515 bytes}
+\lstinputlisting{checkers/bytes.py}
+\end{minipage}
+
+\section{Provenance and interpretation obligations}
+
+All frozen sources are pinned to
+\texttt{62396b06020f794fa6dc01b4025a6a5db9d4d28a}.
+\texttt{PROVENANCE.json} records full paths, original Git blob hashes,
+SHA-256 hashes, lengths, and permanent URLs.  The original permissive
+license is retained.  Foundation files are reproduced as reference
+material with their original notation and internal cross-references;
+they are not presented as newly authored lemmas or silently concatenated
+into this report.
+
+The logical dependence is:
+\[
+\begin{gathered}
+\text{new successful-checking and canonical-completeness arguments}\\
+\Downarrow\\
+\text{pinned codec soundness and guarded presentation}\\
+\Downarrow\\
+\text{native scalar calculus and ordinary realization }T_I\\
+\Downarrow\\
+\text{whole-domain bi-interpretation with full first-order }\ipra.
+\end{gathered}
+\]
+The finite-menu counterreading is a separate theorem about the displayed
+restricted native rules.  It is not used to establish the new checkers'
+soundness, and is not a proof that all alternative axiomatizations must
+have the same complexity.
+
+\begin{thebibliography}{9}
+\bibitem{repo} Vladimir Reshetnikov, \emph{Concise presentations of
+intuitionistic primitive recursive arithmetic}, ProveIt,
+README at commit \texttt{62396b06020f794fa6dc01b4025a6a5db9d4d28a},
+12 November 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/62396b06020f794fa6dc01b4025a6a5db9d4d28a/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}{Permanent repository source}.
+\bibitem{kernel} ProveIt, \texttt{ConciseIPRA/Research/kernel\_refinement},
+especially the selected complete programs, claims, measured evidence,
+and attributed foundation sources, same pinned commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/62396b06020f794fa6dc01b4025a6a5db9d4d28a/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/kernel_refinement}{Permanent package source}.
+\bibitem{canonical} ProveIt, the compact supplement of
+\texttt{canonical\_recursors},
+especially \texttt{checker\_compact\_zero.py} and \texttt{ARGUMENT.txt},
+same pinned commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/62396b06020f794fa6dc01b4025a6a5db9d4d28a/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/canonical_recursors/compact}{Permanent compact supplement}.
+\bibitem{arity} ProveIt, \emph{A uniform arity encoding and its checking
+theorem}, \texttt{inherited\_arity\_checker.tex}, reproduced under
+\texttt{reference/foundations/}.  Same pinned commit.
+\bibitem{bridge} ProveIt, \emph{Arithmetic strength and both ordinary
+interpretation composites}, \texttt{inherited\_ordinary\_bridge.tex},
+and the predecessor, equality-reflection, primitive-recursion, guarded-core,
+and zero-source-admissibility proofs, reproduced under
+\texttt{reference/foundations/}.  Same pinned commit.
+\bibitem{witnesses} ProveIt, the \texttt{newest\_parameter}
+and \texttt{deterministic\_specialization} packages,
+same pinned commit.  These establish separate restrictions; the finite-menu
+theorem in this report examines their simultaneous restriction.
+\end{thebibliography}
+\end{document}

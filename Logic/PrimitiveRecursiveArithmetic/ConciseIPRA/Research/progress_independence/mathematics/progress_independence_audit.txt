@@ -1,0 +1,78 @@
+Independent audit of the ultrapower construction
+================================================
+
+Status: The construction is sound as a written classical model-theoretic
+argument, provided the stage and coherence conditions below are stated. This
+is not a Lean/Rocq verification and is not a proof-checker-size result.
+
+1. Initial structure
+   Domain N disjoint-union Z; successor acts normally on each component;
+   zero and one lie in the N component. For a distinguished c in the Z
+   component, set J(n,a)=a on the N component and J(n,a)=1 on the Z component.
+   J(0,a)=a and J(Sn,a)=J(n,a) hold. In particular J(c,0)=1.
+
+2. Full-orbit lemma
+   For a unary term h(u,p) in the current first-order language and parameters
+   p=[p_i] in a nonprincipal ultrapower, choose a_i in the underlying model.
+   For each fixed integer j define x_j=[h_(p_i)^[max(0,i+j)](a_i)]. The
+   equality h_p(x_j)=x_(j+1) holds on a cofinite set of coordinates. Hence
+   every such term-defined function has a bi-infinite orbit. The lemma is
+   about term-defined functions; it is false for all arbitrary set maps.
+
+3. Well-founded schedule
+   At stage i+1 add iterator symbols ONLY for update terms in L_i. Their
+   bodies cannot contain any of the symbols being introduced at that same
+   stage. Every finite scalar term is nevertheless covered after finitely
+   many stages, by its iterator nesting depth.
+
+4. Extensionality invariant
+   For every pair of existing iterator symbols I_h and I_g include the
+   first-order universal sentence
+     (forall u, h(u,p)=g(u,q)) implies
+     (forall n,a, I_h(n,a,p)=I_g(n,a,q)).
+   After taking the ultrapower, group new update instances by their ACTUAL
+   unary functions. If a function already has an old iterator instance,
+   reuse its entire (n,a)-map; extensionality makes the reuse unambiguous.
+   Otherwise choose a full orbit and define its iterator along the Z
+   components of the counter domain; at each standard count k use h^k(a).
+   This yields all new computation and extensionality axioms simultaneously.
+
+5. Counter components
+   Successor is injective, omits zero, has no finite cycles, and every
+   nonzero element has a predecessor. Thus the counter domain decomposes
+   into the standard N ray and copies of Z. These first-order properties
+   are preserved by the ultrapower; choose an origin in each Z component.
+   The original c remains outside the standard ray.
+
+6. Old and new parameters
+   Old computation and extensionality axioms are first-order. The diagonal
+   elementary embedding therefore preserves them for ALL new parameters
+   after taking an ultrapower. Existing function interpretations are not
+   changed when the language is expanded.
+
+7. Union / colimit
+   The diagonal embeddings are not literal inclusions. Replace each
+   ultrapower by an isomorphic copy containing the previous stage, or take
+   the directed colimit. For each fixed L_i the tail is an elementary
+   chain, so its union satisfies all L_i axioms, including universal ones
+   at parameters introduced at later stages. It preserves J(c,0)=1.
+
+8. Binder semantics
+   Actual-function extensionality ensures that different term templates,
+   parameter reorderings, renamings, and substitutions presenting the same
+   unary update receive the same iterator. A direct syntax translation
+   into the L_i symbols consequently respects scalar substitution.
+
+9. Counterexample to progress
+   E(y) is the literal equation I(y,0;u.u)=0, interpreted by J(y,0)=0.
+   The base E(0) holds, and E(y) implies E(Sy) by the identity computation
+   equation. But E(c) fails since J(c,0)=1 and 0 is not 1. Thus
+   E(0) -> forall y E(y) is false. All remaining native rules are sound
+   in this ordinary actual-equality structure with numerical coverage.
+
+Sanity check: At the initial stage, the old-language function
+f(u)=S(J(u,u)) maps the entire initial structure into the standard N ray
+and has no bi-infinite orbit there. The ultrapower creates an orbit in
+the enlarged J-zero region. This confirms why the ultrapower must precede
+each adjoining of new iterators, and why no assertion of arbitrary-function
+iteration in the original structure is being made.

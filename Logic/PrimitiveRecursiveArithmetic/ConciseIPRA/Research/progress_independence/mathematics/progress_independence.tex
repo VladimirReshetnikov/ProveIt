@@ -1,0 +1,228 @@
+% Standalone inclusion fragment; requires amsmath, amssymb, amsthm.
+% Independent audit of the staged-ultrapower construction.
+\section{Independence of progress: a coherent model of scalar computation}
+\label{sec:progress-independence-audit}
+
+The following argument takes place in classical metamathematics with choice.
+Its conclusion is a countermodel to an intuitionistic calculus; using a
+classical structure as an intuitionistic countermodel is sufficient.
+No claim of a smaller complete axiomatization follows from this result.
+
+\subsection{The semantic issue that must be addressed}
+
+An arbitrary choice of an orbit for each \emph{written} update body is not
+enough. Substituting terms for the passive parameters can change the written
+body without changing its unary function. We therefore build an
+\emph{extensional family} of scalar iterators. This is a stronger semantic
+requirement than merely imposing each displayed computation equation, and
+it prevents a gap in the native substitution lemma.
+
+A body descriptor is a finite first-order term $h(u,\vec p)$ with one
+distinguished state variable $u$ and a finite tuple of passive variables.
+When an iterator for this descriptor is present, write its function symbol
+as $I_h(n,a,\vec p)$. Its computation axioms are
+\begin{align}
+ I_h(0,a,\vec p)&=a,\label{eq:audit-c0}\\
+ I_h(Sn,a,\vec p)&=h(I_h(n,a,\vec p),\vec p).
+ \label{eq:audit-cs}
+\end{align}
+For \emph{every pair} of available descriptors, including two copies of the
+same descriptor with different parameter values, require the first-order
+schema
+\begin{equation}
+\begin{split}
+ \forall\vec p\,\forall\vec q\bigl[
+  (\forall u\ h(u,\vec p)=g(u,\vec q))\ \longrightarrow {}&\\[-0.6em]
+  \forall n\,\forall a\ I_h(n,a,\vec p)=I_g(n,a,\vec q)
+ \bigr].&
+\end{split}
+\tag{Ext}\label{eq:audit-ext}
+\end{equation}
+Thus an available iterator depends on the actual unary function and the
+two numerical inputs, rather than on a particular presentation of that
+function. Parameter repetition, omission, and reordering are included.
+
+\subsection{The orbit supplied by one ultrapower}
+
+Let $A$ be any nonempty structure, let $U$ be a nonprincipal ultrafilter on
+$\mathbb N$, and put $B=A^{\mathbb N}/U$. Fix a unary term function of $B$,
+\[
+ f(v)=h^B(v,\vec p),\qquad \vec p=[\vec p_i],
+\]
+and an element $a=[a_i]$ of $B$. Write
+$f_i(v)=h^A(v,\vec p_i)$. For each ordinary integer $j\in\mathbb Z$, set
+\[
+ x_j=\bigl[f_i^{\,\max(0,i+j)}(a_i)\bigr].
+\]
+For all sufficiently large $i$,
+$\max(0,i+j+1)=\max(0,i+j)+1$. Hence
+\[
+                         f(x_j)=x_{j+1}
+                         \quad(j\in\mathbb Z).
+\]
+Every parameter-definable unary term function in this ultrapower therefore
+has a full two-sided orbit. The iterations in the coordinates are finite
+external iterations; no arithmetic induction axiom in $A$ is being used.
+The displayed sequence need not pass through $a$, and no such condition is
+required on a successor component that does not contain zero.
+
+\subsection{Extension of a coherent partial family}
+
+Suppose $A$ has successor injectivity, zero outside the image of successor,
+zero/successor coverage, and no finite successor cycles. Suppose it also has
+a collection of iterator symbols satisfying
+\eqref{eq:audit-c0}, \eqref{eq:audit-cs}, and all instances of
+\eqref{eq:audit-ext} for that collection.
+
+Take the ultrapower $B$ in the language containing \emph{all} those symbols.
+All the stated first-order conditions transfer by \L o\'s's theorem.
+In particular, the old iterator values are retained, and their coherence
+holds also for parameter tuples newly present in the ultrapower.
+
+The successor graph of $B$ consists of the standard ray
+$0,S0,S^2 0,\ldots$ and components isomorphic to $\mathbb Z$.
+Indeed, every nonzero point has a unique predecessor. A point outside the
+standard ray cannot reach zero after finitely many predecessor steps;
+injectivity and the absence of finite cycles ensure that all steps in its
+two-sided component are distinct. Choose an origin in each such component.
+
+Now add iterators for any set of descriptors in the \emph{old language}.
+Partition their parameter instances by the actual unary functions
+$f:B\to B$ that they define.
+
+If a function $f$ already has an iterator from the old family, use that
+iterator at every counter and every seed. This prescription is well-defined:
+if $f=h^B(-,\vec p)=g^B(-,\vec q)$ for two old descriptors, Ext says that
+their iterator values agree for all counters and seeds.
+
+For a function not represented in the old family, make one simultaneous
+choice for its entire equivalence class. At a standard counter $S^k0$ put
+\[
+                         I_f(S^k0,a)=f^k(a).
+\]
+On a nonstandard successor component with chosen origin $b$, choose a
+two-sided orbit $(x_j)_{j\in\mathbb Z}$ supplied by the preceding lemma,
+and set
+\[
+                         I_f(S^j b,a)=x_j.
+\]
+Here negative powers mean the unique iterated predecessor on that component.
+Choices may be made separately for each $f$, seed $a$, and component.
+The set-theoretic axiom of choice suffices for all these choices.
+
+Define every newly added $I_h(n,a,\vec p)$ by the chosen iterator for the
+actual function $h^B(-,\vec p)$. Its two computation equations hold by
+construction. Ext holds for every pair of old or new symbols, because
+equal unary functions were assigned the same entire iterator. The expansion
+changes no old function or old element.
+
+\subsection{A seed model in which identity iteration is not constant}
+
+Start with the disjoint union
+\[
+                         A_0=\mathbb N\ \sqcup\ \mathbb Z.
+\]
+Zero belongs to the first summand; successor is ordinary successor on each
+summand. Let $1=S0$. Interpret the iterator $J=I_u$ of the identity update by
+\[
+ J(n,a)=
+ \begin{cases}
+ a,&n\in\mathbb N,\\
+ 1,&n\in\mathbb Z.
+ \end{cases}
+\]
+Then $J(0,a)=a$ and $J(Sn,a)=J(n,a)$. All the required successor conditions
+hold. The initial extensionality condition for the sole descriptor $u$ is
+automatic. For any chosen $c$ in the $\mathbb Z$ summand,
+\[
+                           J(c,0)=1\ne0.
+\]
+No predicate distinguishing the two summands is required in the language.
+
+Iterate the extension construction through $\omega$ stages. At each stage,
+take an ultrapower in the entire current language and add iterators for all
+finite unary term descriptors of that language. Identify the preceding
+structure with its diagonal elementary image before adding the symbols.
+The languages and structures can then be regarded as increasing chains.
+The reduct at every later stage is an elementary extension in each earlier
+language. Their union $A_\omega$ retains all computation equations, all
+cross-extensionality schemas, all successor conditions, and the distinguished
+equation $J(c,0)=1\ne0$.
+
+To justify the union step explicitly, each fixed old-language sentence is
+handled by the elementary-chain theorem on the reducts to that language.
+Every computation or Ext instance uses only finitely many symbols and was
+imposed at a finite stage, so it holds in the union. Equivalently, Ext can
+be checked directly: if two final unary functions agree, they agree on
+every sufficiently late stage containing their parameters; applying Ext at
+a stage also containing the proposed counter and seed gives equality of
+the two iterator values there and hence in the union.
+
+\subsection{Returning to native scalar syntax}
+
+Every finite native term
+\[
+ t::=x\mid0\mid St\mid I(n,a;u.h)
+\]
+has an interpretation using finitely many staged symbols. Expand its inner
+iterators first. The translated update body is then a finite term of some
+stage language, so its descriptor has an iterator at the next stage.
+Parameters are ordinary numerical variables; there is no function sort and
+no internal universal evaluator.
+
+More intrinsically, for any unary function definable by a finite native
+body with parameters in $A_\omega$, choose a staged descriptor presenting
+it and use its iterator. Ext makes this choice independent of the
+descriptor. It follows by structural induction on native terms that
+capture-avoiding substitution has the usual semantics:
+\[
+ \llbracket t[s/x]\rrbracket_\rho
+ =\llbracket t\rrbracket_{\rho[x\mapsto\llbracket s\rrbracket_\rho]}.
+\]
+At an iterator, the induction hypothesis identifies its counter, seed, and
+pointwise update function; Ext identifies the resulting iterators. This is
+the exact point at which mere independent choices for written bodies would
+have been insufficient.
+
+\subsection{Soundness without progress and the refuted instance}
+
+Interpret native equality as actual equality, and use the ordinary readings
+\[
+ Q_y B=B(0)\to\forall y\,B(y),\qquad
+ D_{x,y}B=\exists x\bigl(B(x,0)\to\forall y\,B(x,y)\bigr).
+\]
+Hypothesis, equality transport, the two computations, closure elimination,
+and witness elimination are sound. Case introduction is sound because every
+element is zero or a successor: from $B(t,0)$ and all successor instances
+$B(t,Sz)$ one obtains every instance. The usual freshness conditions ensure
+that $t$ and the retained assumptions do not depend on the fresh $z$.
+All these arguments are ordinary first-order soundness arguments in the
+single structure $A_\omega$.
+
+Let
+\[
+                          E(y)\;:\equiv\;I(y,0;u.u)=0.
+\]
+The zero computation proves $E(0)$. The successor computation and ordinary
+derived equality reasoning prove
+\[
+                          E(z)\ \vdash\ E(Sz)
+\]
+without any induction, since
+$I(Sz,0;u.u)=I(z,0;u.u)=0$ under the displayed hypothesis.
+Nevertheless $E(c)$ is false in $A_\omega$. Consequently $Q_yE(y)$ is
+false there and is not derivable by the kernel without progress.
+Thus QI by progress is not admissible over the other seven rules.
+With an unused existential witness, the same model also refutes the
+witnessed progress conclusion $D_{x,y}E(y)$.
+
+\paragraph{Audit status and limits.}
+This is a written model construction, not a proof-assistant verification.
+The essential requirements are simultaneous extensional choice for actual
+unary functions; universal cross-extensionality for all parameter tuples;
+ultrapowers in the full current language; and adding only prior-language
+body descriptors at a given stage. Omitting any of those requirements would
+leave a genuine coherence or circularity gap. The result proves independence
+of progress. It does not prove a complexity lower bound for other
+presentations, and it does not satisfy a requirement for a smaller complete
+proof checker by itself.

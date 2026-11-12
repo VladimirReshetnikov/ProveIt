@@ -1,0 +1,63 @@
+CERTIFICATE INTERFACE
+=====================
+
+All three compact profiles read one JSON value from standard input. It is
+an array consumed from its right end. Its last element is the encoded goal.
+Every consumed instruction is a four-field array [m, s, u, t]. Extra unused
+prefix data is inert. Acceptance requires normal exit and exactly ACCEPT\n.
+Exceptions reject, with or without python -O.
+
+The public goal must be a canonical closed guarded Eq/D formula. The
+compact programs do not independently validate that declaration. Use
+readable_strict.py when exact integer/list data and public-goal validation
+are required. Its larger complete source is measured separately.
+
+FORMULA ARRAYS
+
+    [s,t]       Equality of the two numerical terms.
+    [B]         D binds two numerical slots in B.
+    [B,B,B]     Canonical auxiliary closure Q; only the last child matters.
+
+Public formulas omit Q. An equation immediately under D has the literal
+shape [[5,0,h],[5,0,k]] in the weighted-slot encoding. Deeper D matrices
+may be compound. In the permissive administrative decoder, empty arrays,
+arrays of arity >=4, and successfully admitted scalar formula padding
+mean the fixed true equation 0=0. They are not additional predicates.
+
+NUMERICAL ARRAYS
+
+    0           Canonical numerical zero.
+    [t]         Successor; its child receives two dummy zero slots.
+    [n,a,h]     Iterator; n and a receive one dummy slot, h one state slot.
+
+Numerical arrays of arity 0, 2, or >=4 mean zero in the administrative
+decoder. Canonical terms do not use those aliases. Numerical root depth
+is 3, formula root depth is 0. Under p protected slots, coordinates 3+2j
+and 4+2j name the j-th slot, 0 <= j < p; canonical terms use odd codes.
+Negative admitted coordinates are rigid proof parameters. Each array
+adds 5-len(array) to the opening depth. The paper and attributed decoder
+give all scope and substitution details.
+
+PACKETS
+
+When the current goal matches opening(t,u), an elimination may replace it
+by opening(t,s). Its required major is [s,u] if s is truthy, or [t,t,t]
+when s is zero. The token and AST profiles INFER this major, overwriting
+the redundant supplied m. The byte profile retains the old explicit-major
+comparison. Every selected major is recursively proved before the
+continuation. The inferred and repaired examples show the interface change.
+
+A nonzero major exports its paired-witness closure, or administrative
+truth for the other arities. A neutral-major computation packet supplies
+a constructed computation equation. A neutral-major packet with u=0
+opens a unary paired goal at the witness t. The fresh progress parameter
+is selected only for an atomic matrix; compound D and Q matrices use zero.
+The byte profile uses 3 % len(matrix); an empty matrix now rejects.
+
+The global token profile and local AST/byte profiles allocate names
+differently. Do not move fixtures between those conventions by guessing
+at a renaming. The fixture manifest records each scope profile.
+
+The complete executable definitions are the small standalone modules.
+No uncounted helper or oracle is imported into any of them. Validators,
+trace observers, and repair exporters are untrusted supporting artifacts.

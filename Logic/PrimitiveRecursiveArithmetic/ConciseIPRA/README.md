@@ -5,7 +5,7 @@ complete presentation of a theory bi-interpretable with full first-order
 intuitionistic primitive recursive arithmetic (iPRA), and the Lean
 formalization of the most concise of them.
 
-- [`Research/`](Research/) holds ninety delivered packages, one directory
+- [`Research/`](Research/) holds ninety-eight delivered packages, one directory
   each. They are written mathematics with executable Python proof checkers;
   none of them claims a proof-assistant verification.
 - `Lean/` is the formalization (see [Lean formalization](#lean-formalization)).
@@ -678,6 +678,11 @@ for separate coordinates, they are listed separately. Each package's own
 | [`uniform_raw`](Research/uniform_raw/) | The raw guarded calculus of `deterministic_introduction` without its naming exception: introduction always at the newest parameter, or `0`. The predecessor is constructed from computation, equality and equation induction only (equational interpolation in place of Boolean case splits), and a coverage packet supplies the names | 1073 tokens; 1248 AST nodes; 3439 bytes, against 1159 / 1339 / 3688 for the naming-exception control |
 | [`evaluation_discharge`](Research/evaluation_discharge/) | On raw iterator terms with clause contexts, three families: Use, Intro, and a discharge that opens `D B` at a fresh `b`, proves `E` and `F` there, performs one deterministic evaluation (the two Eval patterns, or identity) and exports the result. A zero-normal companion with SeedEval | raw: 643 tokens; 695 AST nodes; 1892 bytes. Zero-normal: 633; 697; 1858 |
 | [`one_body`](Research/one_body/) | A context entry is one body `B(y)`, read as `B(0) → ∀y B(y)`, with no separate antecedent; an ordinary assumption is stored under an iterator gate. Atomic reflexivity, the two Eval cases, Use, Open and Intro | 3130 bytes, against 2999 for the matched control |
+| [`progress_independence`](Research/progress_independence/) | QI by progress is not admissible over the other seven rules of the kernel: a model of all finite iterator computations, coverage and separation, built as a staged tower of ultrapowers, in which `I(c, 0; u.u) = 1 ≠ 0` for some `c`; so `Q_y (I(y, 0; u.u) = 0)` fails while its base and step are derivable without progress. Also two smaller checkers of the existing presentation | 251 tokens; 283 AST nodes; 605 bytes, and 269; 301; 502 |
+| [`orbit_closure`](Research/orbit_closure/) | Orbit uniqueness: from `f(S z) = h(f(z))` infer `∀y (f(y) = I(y, f(0); u.h))`, with no target term, equivalent to pointwise uniqueness over arbitrary contexts; a narrower successor-only uniqueness; an audit of every Python source of the corpus | no size record, as stated |
+| [`crossed_uniqueness`](Research/crossed_uniqueness/) | On fully normalized terms, seeded crossed uniqueness derives equality transport and equation induction; a six-rule calculus. Separately a compact checker of the existing guarded calculus | reference checker 1909 tokens; 2087 AST nodes; 5618 bytes. Compact: 269; 301; 502 against 506 bytes |
+| [`inferred_major`](Research/inferred_major/), [`smaller_envelope`](Research/smaller_envelope/) | The certificate no longer carries the major formula of an elimination: the checker reconstructs it from the target instance and still checks its proof. A mode selector `3 % len(a)` in place of the matrix-root test | compact envelope 253 tokens / 275 AST nodes / 503 bytes, by different programs; native public-goal checker 327; 375; 643 |
+| [`checked_presentation`](Research/checked_presentation/), [`context_phase`](Research/context_phase/), [`frontier_review`](Research/frontier_review/) | Smaller checkers of the existing calculi: a fully validated native Eq/D checker; an immutable-context checker in which the empty context marks the validation of the public goal, so that no phase flag is needed; a byte refinement of the guarded checker | 344 tokens; 393 AST nodes; 673 bytes against 370 / 426 / 849. 327; 375; 643 against 333 / 379 / 656. 513 bytes against 516 |
 | [`prefix_clauses`](Research/prefix_clauses/) | A `Q`-free formula is a chain of `D` binders ending in one equation, stored as `[k, s, t]` for `D^k (s = t)`; the four families of `uniform_clauses` on that representation. A separate theorem removes the antecedent field of a clause | as stated |
 | [`variable_substitution`](Research/variable_substitution/) | On zero-normal terms the equality rule substitutes for a variable only: from `x = t` and `u = v` infer `v = nf(u[t/x])`; the source can be restricted to the newest parameter | as stated |
 | [`parameter_substitution`](Research/parameter_substitution/) | On raw terms with clause contexts, replacement inside a term is restricted to free parameters; a nonvariable source is used only for joining at the root or reversing the minor equation, and a fresh alias recovers transport in a template. Five instruction families | as stated |
@@ -788,8 +793,18 @@ sources, three checksum ledgers and five build logs. The delivered module
 `Research/zero_normal/formal/ZeroNormalization.lean` compiled unchanged and
 is `Lean/ConciseIPRA/ZeroNormalization.lean`.
 
+`checked_presentation`, `context_phase`, `crossed_uniqueness`,
+`frontier_review`, `inferred_major`, `orbit_closure`, `progress_independence`
+and `smaller_envelope` arrived on 2026-11-12 (commits `1c5ecfe518`,
+`57aeafc84b`, `4326b27399`) and were filed on arrival. Not filed: six frozen
+Lean copies, three logs, one checksum ledger, three build transcripts that
+carry paths of the machine that produced them, twenty-one generated data
+files larger than 300 kB (13.7 MB in all), and two censuses of this
+corpus's own Python checkers (2,769 files under `audit/blobs` and
+`reference/research_census`); all remain in the delivered archives in the
+history of this repository.
 `conditional_copy`, `newest_parameter`, `no_witness`, `parameter_witness`,
-`single_constructor` and `uniform_raw` arrived on 2026-11-12 (commit
+`single_constructor` and `uniform_raw` arrived earlier on 2026-11-12 (commit
 `b16ed1b06e`) and were filed on arrival (eighteen frozen Lean copies and two
 checksum ledgers not filed).
 `deterministic_introduction`, `evaluation_discharge`, `one_body`,
@@ -1060,6 +1075,7 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `uniform_recursion` | Not formalized: its terms are variables, `0` and the counter-aware recursor `R(n, a; i, u.h)`, with the successor defined as `R(0, a; i, u.0)`. It needs its own syntax with a normalizer and a bi-interpretation with the iterator terms, like `uniform_binding` and `counter_evaluation`. Its three families Use, Close and Name are, by its own account, those of the control it is measured against (`inferred_witness`) on that syntax. |
 | `newest_parameter`, `no_witness`, `parameter_witness`, `uniform_raw` | Their common theorem is proved for the kernel, with a free choice among `0` and the variables: `dwprf_iff_nprf : DWPrf true true Γ A ↔ NPrf Γ A` (`NativeWitnessComplete`). Their audit of the predecessor is proved as stated: `EqPrf.pred_succ` and `EqPrf.pred_zero` in a calculus of equations with hypothesis, the two computations, one-template transport and equation induction only (`EqPred`), each Boolean split replaced by an equation case. The names follow the coverage packet of the packages: the name of `P(y)` by cases, used at `S t`. Not formalized: the deterministic selection (always the newest parameter, `0` in an empty scope) with its regeneration of proofs under scope extensions; the seven-rule diagonal variant, the one-bit clause calculus and the guarded calculus with that selection; the checker measurements. |
 | `conditional_copy`, `single_constructor` | Not formalized: both are stated on the counter-aware recursor on normal forms, a term syntax that is not formalized here. |
+| `progress_independence`, `orbit_closure`, `crossed_uniqueness`, `inferred_major`, `smaller_envelope`, `checked_presentation`, `context_phase`, `frontier_review` | Filed on 2026-11-12; the comparison with the Lean development is in progress. `progress_independence` answers further question 1 in writing (QI by progress is independent, by a tower of ultrapowers); it is not formalized. |
 | `register_graph` | Not formalized. It is a different term language (`J` with two bound variables) over ordinary logic, so it would need a second bi-interpretation with iPRA from scratch. |
 
 ### Further questions
