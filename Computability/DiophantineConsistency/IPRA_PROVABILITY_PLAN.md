@@ -7928,6 +7928,9 @@ The independently source-reviewed [combined 81 overlay](research/ordinary14-natu
 selects those alternatives alongside the earlier slim snapshots. It remains
 inert and unelaborated, and still retains a separately identified likely
 reserved helper name; provider closure and build readiness remain open.
+The independently source-reviewed [keyword alternatives](research/ordinary14-natural-partial-keyword-patch/README.md)
+rename that helper in inert snapshots. The parser hazard and proposed repair
+have not been confirmed by Lean and are not selected in the 81 overlay.
 The independently source-reviewed [natural-81 recipe-port client](research/ordinary14-natural81-recipe-port-bridge-draft/README.md)
 proposes transporting those endpoints to closed Lean byte recipes. It is
 unelaborated and does not bind those recipes to external payloads or the PDF.
