@@ -1,0 +1,65 @@
+import GammaNoExtraFacts
+import EtaNaturalGraphEarlyIndex
+import ResidueCompactQBound
+
+/-! Conditional prototype gamma positivity with eta>0, compact ports and
+exact no-E*q main carrier. All imported graph/model sources are unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.GammaPrototypePositiveEtaDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ArithmeticSignedPairs
+open EtaNaturalUnitGraphDraft EtaNaturalXPositiveDraft EtaNaturalGapRankDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem gamma_positive (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (Residue90CompactPortBoundsDraft.ports K j:ℤ))).output v)
+    (heta : 0<v 9) : 0<v 12 := by
+  let p := Residue90CompactPortBoundsDraft.ports K
+  have hJ := EtaNaturalJPositiveDraft.J_positive p v hz
+  obtain ⟨hb,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) hJ
+  have hp0 : (p 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  have hbeta : 0<(p 0:V) := by simpa only [hp0] using hb
+  have hq47 : (47:V)≤q p v := by
+    simpa only [q,Residue90GraphNormsDraft.q] using
+      (ResidueCompactQBoundDraft.compact_q_at_least_47 K v hJ)
+  have hq2 : (2:V)≤q p v := le_trans (by norm_num : (2:V)≤47) hq47
+  have hqpos : 0<q p v := lt_of_lt_of_le (by norm_num : (0:V)<2) hq2
+  have hX : 1≤X p v := pos_iff_one_le.mp (EtaNaturalXPositiveDraft.X_positive p v hz hbeta)
+  have hYeq : Y p v=(q p v)^3*(v 7+1) := by dsimp [Y]; ring
+  have hY : (q p v)^3≤Y p v := by rw [hYeq]; exact le_mul_of_one_le_right (Arithmetic.zero_le _) (by simp)
+  have hYpos : 0<Y p v := lt_of_lt_of_le (pow_pos hqpos 3) hY
+  have hU : 0<U p v := by dsimp [U]; exact mul_pos hYpos (mul_pos hqpos hqpos)
+  have hzeta : 0<v 10+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hk : k v=v 9+(v 10+1) := by dsimp [k]; ring
+  have hgap := EtaNaturalGapRankDraft.gap p v hz hbeta
+  have hFq : v 1+1≤q p v := le_trans (by simp) (le_of_lt hgap)
+  have hR := EtaNaturalGapRankDraft.compact_rank_window K v hz
+  obtain ⟨⟨tau,htau⟩,d,hd⟩ := EtaNaturalGraphNormsDraft.natural_norms_of_graph p v hz hbeta
+  let Delta : V := EtaNaturalGraphNormsDraft.delta p v
+  have hDelta : (X p v*Y p v+Y p v+2)*(X p v*Y p v+Y p v+2)=Delta+1 := by
+    dsimp [Delta,EtaNaturalGraphNormsDraft.delta,EtaNaturalGraphNormsDraft.a,
+      EtaNaturalGraphNormsDraft.X,X]; ring
+  have hfirst : tau*tau=1+(X p v*Y p v*Y p v)*(X p v*Y p v*Y p v+1)*
+      (v 9+(v 10+1))*(v 9+(v 10+1)) := by
+    simpa only [EtaNaturalGraphNormsDraft.m,EtaNaturalGraphNormsDraft.X,X,hk] using htau
+  have hmain : d*d=1+Delta*(v 9+Y p v*(v 9+(v 10+1)))*
+      (v 9+Y p v*(v 9+(v 10+1))) := by
+    simpa only [Delta,c,hk] using hd
+  have hcarrier : v 12=0 →
+      let a:=X p v*Y p v+Y p v; let c:=v 9+Y p v*(v 9+(v 10+1)); let H:=3+4*a
+      let P:=U p v*(X p v+a*c)+H*(U p v*(0:V)+rank p v+1); let N:=H*(v 9+(v 10+1))
+      magnitude (P,N)*magnitude (P,N)=U p v*U p v*(1+(H+a*a)*(c*c)) := by
+    intro hg
+    have hm := EtaNaturalGraphEarlyIndexDraft.main_pair_norm p v hz hFq
+    simpa only [EtaNaturalGraphEarlyIndexDraft.P,EtaNaturalGraphEarlyIndexDraft.N,
+      EtaNaturalGraphEarlyIndexDraft.H,EtaNaturalGraphNormsDraft.delta,
+      EtaNaturalGraphNormsDraft.a,EtaNaturalGraphNormsDraft.X,X,c,hk,hg] using hm
+  exact GammaNoExtraFactsDraft.gamma_positive (q p v) (X p v) (Y p v) (v 9) (v 10+1)
+    (rank p v) (U p v) tau d Delta (v 12) hq2 hX hY heta hzeta hU hR hDelta hfirst hmain hcarrier
+end DiophantineConsistency.GammaPrototypePositiveEtaDraft
+#print axioms DiophantineConsistency.GammaPrototypePositiveEtaDraft.gamma_positive

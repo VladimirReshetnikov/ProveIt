@@ -1,0 +1,93 @@
+import JShifted89Graph
+import Gamma87To88Transport
+import EtaNaturalJPositive
+import Mathlib.Tactic.Ring
+
+/-! Source-only J shift for the exact 88 and 89 graphs. All providers and
+forward graph maps are unelaborated; the 89 parent bridge is a premise. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.J88To89TransportDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+open Residue90CompactPortBoundsDraft
+
+def raiseJ {V : Type*} [Add V] [One V] (v : Fin 13 → V) (i : Fin 13) : V :=
+  if i=0 then v i+1 else v i
+def lowerJ {V : Type*} [Sub V] [One V] (v : Fin 13 → V) (i : Fin 13) : V :=
+  if i=0 then v i-1 else v i
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem raise_lower (v : Fin 13 → V) (h : 0<v 0) : raiseJ (lowerJ v)=v := by
+  funext i
+  fin_cases i <;> simp [raiseJ,lowerJ,tsub_add_cancel_of_le (pos_iff_one_le.mp h)]
+
+/-- Exact parent 89 evaluation at v and child 88 evaluation at raiseJ v. -/
+theorem evaluation (p : Fin 4 → ℤ) (v : Fin 13 → V) :
+    (JShifted89GraphDraft.literal p).evalRing (fun j => ι (v j)) =
+      (GammaShifted88GraphDraft.literal p).evalRing (fun j => ι (raiseJ v j)) := by
+  simp [JShifted89GraphDraft.literal,GammaShifted88GraphDraft.literal,raiseJ,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,
+    map_add,map_mul,map_one] <;> ring
+
+theorem zero_iff (p : Fin 4 → ℤ) (v : Fin 13 → V) :
+    InternalZero (JShifted89GraphDraft.literal p) v ↔
+      InternalZero (GammaShifted88GraphDraft.literal p) (raiseJ v) := by
+  rw [ModelDifferenceRing.internalZero_iff,ModelDifferenceRing.internalZero_iff,evaluation p v]
+
+/-- The forward gamma, w and eta maps preserve J; the exact prototype's
+first-norm argument then forces J>0. Natural K0 is supplied by the tuple.
+No eta, w or gamma reverse map, or positivity forcing, is used here. -/
+theorem J_positive (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (GammaShifted88GraphDraft.literal (fun j => (p j:ℤ))) v) : 0<v 0 := by
+  let g := Gamma87To88TransportDraft.raiseGamma v
+  let w := W86To87TransportDraft.raiseW g
+  let e := EtaUnshift85TransportDraft.raiseEta w
+  have hz87 := (Gamma87To88TransportDraft.zero_iff (fun j => (p j:ℤ)) v).mp hz
+  have hz86 := (W86To87TransportDraft.zero_iff (fun j => (p j:ℤ)) g).mp hz87
+  have hz85 := (EtaUnshift85TransportDraft.zero_iff (fun j => (p j:ℤ)) w).mp hz86
+  have hJ := EtaNaturalJPositiveDraft.J_positive p e hz85
+  simpa only [e,w,g,EtaUnshift85TransportDraft.raiseEta,W86To87TransportDraft.raiseW,
+    Gamma87To88TransportDraft.raiseGamma,show (0:Fin 13)≠9 by decide,
+    show (0:Fin 13)≠6 by decide,show (0:Fin 13)≠12 by decide,if_false] using hJ
+
+theorem compact_no_zero_iff (K : ℕ) :
+    (∀ v : Fin 13 → V, ¬InternalZero (GammaShifted88GraphDraft.literal (fun j => (ports K j:ℤ))) v) ↔
+      ∀ v : Fin 13 → V, ¬InternalZero (JShifted89GraphDraft.literal (fun j => (ports K j:ℤ))) v := by
+  constructor
+  · intro h v hz
+    exact h (raiseJ v) ((zero_iff _ v).mp hz)
+  · intro h v hz
+    have hp := J_positive (ports K) v hz
+    have he := raise_lower v hp
+    apply h (lowerJ v)
+    apply (zero_iff _ (lowerJ v)).mpr
+    simpa only [he] using hz
+
+theorem compact_sameNoZero (K : ℕ) : SameNoZero
+    (GammaShifted88GraphDraft.literal (fun j => (ports K j:ℤ)))
+    (JShifted89GraphDraft.literal (fun j => (ports K j:ℤ))) := by
+  intro V _ _
+  exact compact_no_zero_iff (V:=V) K
+
+/-- The exact 89 parent PolynomialBridge is an explicit open premise. -/
+theorem bridge88 (K : ℕ)
+    (h89 : PolynomialBridge (JShifted89GraphDraft.literal (fun j => (ports K j:ℤ)))) :
+    PolynomialBridge (GammaShifted88GraphDraft.literal (fun j => (ports K j:ℤ))) :=
+  HAExpressionNoZeroEquiv.bridge _ _ (compact_sameNoZero K) h89
+
+theorem native85 (K : ℕ) (heta : EtaUnshift85TransportDraft.ForcedEta K)
+    (h89 : PolynomialBridge (JShifted89GraphDraft.literal (fun j => (ports K j:ℤ)))) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output 🡘
+      ∼mappedNativeRefutation embedding :=
+  Gamma87To88TransportDraft.native85 K heta (bridge88 K h89)
+end DiophantineConsistency.J88To89TransportDraft
+#print axioms DiophantineConsistency.J88To89TransportDraft.J_positive
+#print axioms DiophantineConsistency.J88To89TransportDraft.compact_sameNoZero
+#print axioms DiophantineConsistency.J88To89TransportDraft.native85

@@ -1,0 +1,95 @@
+import WShifted87Graph
+import EtaUnshift85Transport
+import EtaNaturalXPositive
+import ResidueCompactQBound
+import Mathlib.Tactic.Ring
+
+/-! Unelaborated source-only 86↔87 w-coordinate transfer. The actual
+eta-natural X forcing and 85/86 evaluation are separate draft dependencies. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.W86To87TransportDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+open Residue90CompactPortBoundsDraft
+
+def raiseW {V : Type*} [Add V] [One V] (v : Fin 13 → V) (i : Fin 13) : V :=
+  if i=6 then v i+1 else v i
+
+def lowerW {V : Type*} [Sub V] [One V] (v : Fin 13 → V) (i : Fin 13) : V :=
+  if i=6 then v i-1 else v i
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem raise_lower (v : Fin 13 → V) (h : 0<v 6) : raiseW (lowerW v)=v := by
+  funext i
+  fin_cases i <;> simp [raiseW,lowerW,tsub_add_cancel_of_le (pos_iff_one_le.mp h)]
+
+/-- The exact 87 graph at v equals the 86 graph with coordinate 6 raised. -/
+theorem evaluation (p : Fin 4 → ℤ) (v : Fin 13 → V) :
+    (WShifted87GraphDraft.literal p).evalRing (fun j => ι (v j)) =
+      (EtaShifted86GraphDraft.literal p).evalRing (fun j => ι (raiseW v j)) := by
+  simp [WShifted87GraphDraft.literal,EtaShifted86GraphDraft.literal,raiseW,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,
+    map_add,map_mul,map_one] <;> ring
+
+theorem zero_iff (p : Fin 4 → ℤ) (v : Fin 13 → V) :
+    InternalZero (WShifted87GraphDraft.literal p) v ↔
+      InternalZero (EtaShifted86GraphDraft.literal p) (raiseW v) := by
+  rw [ModelDifferenceRing.internalZero_iff,ModelDifferenceRing.internalZero_iff,evaluation p v]
+
+/-- A zero of the actual 86 graph raises eta to a zero of the actual 85 graph.
+Its prototype-specific X argument yields the same coordinate w=v6 positive.
+This uses only the forward eta map; no `ForcedEta` premise is involved. -/
+theorem w_positive (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (EtaShifted86GraphDraft.literal (fun j => (p j:ℤ))) v)
+    (hbeta : 0<(p 0:V)) : 0<v 6 := by
+  have hz85 := (EtaUnshift85TransportDraft.zero_iff (fun j => (p j:ℤ)) v).mp hz
+  have hw := EtaNaturalXPositiveDraft.witness_positive p (EtaUnshift85TransportDraft.raiseEta v) hz85 hbeta
+  simpa only [EtaUnshift85TransportDraft.raiseEta,show (6:Fin 13)≠9 by decide,if_false] using hw
+
+theorem compact_no_zero_iff (K : ℕ) :
+    (∀ v : Fin 13 → V, ¬InternalZero (EtaShifted86GraphDraft.literal (fun j => (ports K j:ℤ))) v) ↔
+      ∀ v : Fin 13 → V, ¬InternalZero (WShifted87GraphDraft.literal (fun j => (ports K j:ℤ))) v := by
+  have hb46 : (46:V)≤(ports K 0:V) := by
+    change (46:V)≤(CompactFixedBeta.betaNat:V)
+    exact ResidueCompactQBoundDraft.beta_at_least_46
+  have hb : 0<(ports K 0:V) := lt_of_lt_of_le (by norm_num : (0:V)<46) hb46
+  constructor
+  · intro h v hz
+    exact h (raiseW v) ((zero_iff _ v).mp hz)
+  · intro h v hz
+    have hp := w_positive (ports K) v hz hb
+    have he := raise_lower v hp
+    apply h (lowerW v)
+    apply (zero_iff _ (lowerW v)).mpr
+    simpa only [he] using hz
+
+theorem compact_sameNoZero (K : ℕ) : SameNoZero
+    (EtaShifted86GraphDraft.literal (fun j => (ports K j:ℤ)))
+    (WShifted87GraphDraft.literal (fun j => (ports K j:ℤ))) := by
+  intro V _ _
+  exact compact_no_zero_iff (V:=V) K
+
+/-- The exact 87 parent bridge remains explicit. -/
+theorem parent86_bridge (K : ℕ)
+    (h87 : PolynomialBridge (WShifted87GraphDraft.literal (fun j => (ports K j:ℤ)))) :
+    PolynomialBridge (EtaShifted86GraphDraft.literal (fun j => (ports K j:ℤ))) :=
+  HAExpressionNoZeroEquiv.bridge _ _ (compact_sameNoZero K) h87
+
+/-- The 85 eta positivity and the exact 87 parent bridge remain explicit. -/
+theorem child85_native (K : ℕ) (heta : EtaUnshift85TransportDraft.ForcedEta K)
+    (h87 : PolynomialBridge (WShifted87GraphDraft.literal (fun j => (ports K j:ℤ)))) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output 🡘
+      ∼mappedNativeRefutation embedding :=
+  EtaUnshift85TransportDraft.native_equivalence K heta (parent86_bridge K h87)
+end DiophantineConsistency.W86To87TransportDraft
+#print axioms DiophantineConsistency.W86To87TransportDraft.w_positive
+#print axioms DiophantineConsistency.W86To87TransportDraft.compact_sameNoZero
+#print axioms DiophantineConsistency.W86To87TransportDraft.child85_native

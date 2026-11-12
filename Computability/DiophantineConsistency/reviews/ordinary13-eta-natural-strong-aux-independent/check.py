@@ -1,0 +1,70 @@
+#!/usr/bin/env python3
+"""Independent interface, ring and bounded offset controls; no Lean."""
+from pathlib import Path
+import hashlib,json,math,sys
+assert sys.flags.isolated and sys.flags.no_site and sys.dont_write_bytecode
+here=Path(__file__).resolve().parent;root=here.parents[1]
+pins={
+'research/ordinary13-eta-natural-strong-aux-adapter-draft/EtaNaturalStrongAux.lean.src':'c13a8d83acb13784027eb63dde7f61d0c4bd7f07b0f64e95afbf0eb9950e0abd',
+'research/ordinary13-eta-natural-strong-aux-adapter-draft/README.md':'58c79a583359f84571a5038200ca6788649a28d1954a358e314f76d13d69024b',
+'research/ordinary13-eta-natural-auxiliary-draft/AuxOffsetFacts.lean.src':'c00aae1d141ba5f065de39c304c717c2db8b25a581c19c4d36443a6b273fca31',
+'research/ordinary13-eta-natural-auxiliary-draft/AuxGeometryEtaNatural.lean.src':'5ccefb9efd90dad307ffcf55d67597b32a620d02e0a8b09eb88e642474a12782',
+'research/ordinary13-eta-natural-norm-large-k-draft/EtaNaturalNormLargeK.lean.src':'aac1707680c5894a8dde85b63fba8b4c1417f8e7296022a2c686ac3928caaa06',
+'research/ordinary13-eta-zero-index-parity-contradiction-draft/EtaZeroIndexParity.lean.src':'a5aac5250b0b4c05fa765ed1013e5287706f038ea60e5083d9c4cba4025e0e74',
+'research/ordinary13-eta-natural-unit-norm-bridge-draft/EtaNaturalUnitBridge.lean.src':'7bf4388808c8e463461f51972bbbbb4b93a5092f80fb7ac10b86ab49e7601851',
+'Lean/DiophantineConsistency/Compact44/P72Root.lean':'066fce52d35ab720519ee8817d9b56c2eacc9ac4f6bb7bf6e92286a87f44d091',
+'Lean/DiophantineConsistency/ArithmeticPellHalfIndex.lean':'7703193660d8ae98408d1ec3a83f6f8811927252e739bb7af18dbafb833a8877'}
+s={}
+for p,h in pins.items():
+ b=(root/p).read_bytes();assert hashlib.sha256(b).hexdigest()==h,p;s[p]=b.decode()
+x=s['research/ordinary13-eta-natural-strong-aux-adapter-draft/EtaNaturalStrongAux.lean.src']
+for t in ['theorem ordinary_strong_of_signed','theorem f_positive_of_strong','(hDelta : 0<Delta)',
+ '(hc : 1<c) (hi : 1≤i) (hDelta : 0<Delta) (hsmall : Delta<c*c*c)',
+ 'AuxOffsetFactsDraft.aux_strict_bounds','theorem index_aux_of_direct','(hf : 0<f)',
+ 'AuxOffsetFactsDraft.positive_offset_of_direct','P72Root.ι_magnitude_sq A B','P72Root.ι_magnitude_sq (A+u) B','P72Root.ι_tsub hf1']:
+ assert t in x,t
+fact=s['research/ordinary13-eta-natural-auxiliary-draft/AuxOffsetFacts.lean.src']
+assert '(hstrong : (i*c*c)*(i*c*c)+Delta=Delta*(f*f))' in fact
+assert '(he : z+c=f*f*t) (hQ : Q=(i*c*c)*(i*c*c))' in fact
+assert '(hQ : 1<Q) (hz : 1<z*z) (haux : directAux z Q (ι y)=0)' in fact
+assert '∃ u : V, 0<u ∧ z+ι u=ι y' in fact
+p=s['Lean/DiophantineConsistency/Compact44/P72Root.lean']
+assert 'theorem ι_tsub {a b : V} (h : b ≤ a)' in p
+assert 'theorem ι_magnitude_sq (P N : V)' in p
+assert 'def absdiff (x y : V) : V := (x-y)+(y-x)' in s['Lean/DiophantineConsistency/ArithmeticPellHalfIndex.lean']
+index=s['research/ordinary13-eta-zero-index-parity-contradiction-draft/EtaZeroIndexParity.lean.src']
+assert '(absdiff (f * f * (T * c)) (f * f * R + c)' in index
+assert 'absdiff (f * f * (T * c) + u) (f * f * R + c)' in index
+# Exhaustively sample strong equations by solving Delta*(f²−1)=I².
+strong=0
+for c in range(2,12):
+ for i in range(1,7):
+  I=i*c*c
+  for f in range(2,30):
+   den=f*f-1
+   if I*I%den:continue
+   D=I*I//den
+   if not 0<D<c**3:continue
+   Q=D*den
+   for T in range(8):
+    for R in range(8):
+     A=f*f*T*c;B=f*f*R+c;z=A-B
+     assert Q>1 and z*z>1 and z+c==f*f*(T*c-R)
+     strong+=1
+# Unconditional exact natural absdiff identity under true direct-unit equations.
+roots=0
+for Q in range(2,90):
+ for z in range(-80,81):
+  numer=Q*z*z-1
+  if numer<0 or numer%(Q-1):continue
+  y2=numer//(Q-1);y=math.isqrt(y2)
+  if y*y!=y2:continue
+  assert y*y-Q*(y*y-z*z)==1
+  if z*z<=1:continue
+  assert y>abs(z);u=y-z;assert u>0
+  A=max(z,0)+3;B=max(-z,0)+3
+  assert A-B==z and A+u-B==y
+  assert Q*abs(A-B)**2+abs(A+u-B)**2==1+Q*abs(A+u-B)**2
+  roots+=1
+assert strong>0 and roots>0
+print(json.dumps({'source_sha256':pins,'strong_gap_controls':strong,'direct_unit_offset_controls':roots,'lean_executed':False,'scope':'bounded arithmetic and lexical interface review; no Lean, graph zero, embeddings or iPRA endpoint'},sort_keys=True,indent=2))

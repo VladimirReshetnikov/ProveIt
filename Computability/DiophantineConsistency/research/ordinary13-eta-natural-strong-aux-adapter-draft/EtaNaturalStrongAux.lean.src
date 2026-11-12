@@ -1,0 +1,124 @@
+import AuxOffsetFacts
+import DiophantineConsistency.ArithmeticPellHalfIndex
+import DiophantineConsistency.Compact44.P72Root
+import Mathlib.Tactic.LinearCombination
+import Mathlib.Tactic.Ring
+
+/-! Fact-level prototype strong/auxiliary conversion. The actual graph,
+positive scales, strict bounds and source providers are not established here. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.EtaNaturalStrongAuxDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ModelDifferenceRing ArithmeticSignedPairs ArithmeticPellHalfIndex
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The prototype strong signed norm reflects to the precise natural strong
+hypothesis of the eta-zero exact-index client. -/
+theorem ordinary_strong_of_signed (c i Delta f : V)
+    (hs : (ι (c*c*i) : DiffRing V)*ι (c*c*i)=
+      ι Delta*(ι f*ι f-1)) :
+    (i*c*c)*(i*c*c)+Delta=Delta*(f*f) := by
+  apply ι_injective
+  simp only [map_add,map_mul]
+  simp only [map_mul] at hs
+  linear_combination hs
+
+/-- Positive discriminant and the ordinary strong norm force positive f;
+no separate graph-side f positivity is assumed by this fact-level lemma. -/
+theorem f_positive_of_strong (c i Delta f : V) (hDelta : 0<Delta)
+    (hs : (i*c*c)*(i*c*c)+Delta=Delta*(f*f)) : 0<f := by
+  by_contra hn
+  have hf : f=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le _)
+  have hzero : (i*c*c)*(i*c*c)+Delta=0 := by simpa only [hf,mul_zero] using hs
+  have hpos : 0<(i*c*c)*(i*c*c)+Delta :=
+    add_pos_of_nonneg_of_pos (Arithmetic.zero_le _) hDelta
+  exact (ne_of_gt hpos) hzero
+
+/-- Under natural geometry and the exact signed ordinate form, the existing
+eta-natural fact client proposes strict Q and ordinate bounds. -/
+theorem strict_bounds_of_strong (c i Delta f T R : V)
+    (hc : 1<c) (hi : 1≤i) (hDelta : 0<Delta) (hsmall : Delta<c*c*c)
+    (hs : (i*c*c)*(i*c*c)+Delta=Delta*(f*f)) :
+    let z : DiffRing V := ι (f*f*(T*c))-ι (f*f*R+c)
+    let Q : DiffRing V := ι Delta*(ι f*ι f-1)
+    1<Q ∧ 1<z*z := by
+  let z : DiffRing V := ι (f*f*(T*c))-ι (f*f*R+c)
+  let Q : DiffRing V := ι Delta*(ι f*ι f-1)
+  let t : DiffRing V := ι (T*c)-ι R
+  have hcR : (1:DiffRing V)<ι c := by
+    simpa only [map_one] using ((ι_lt_ι (a:=(1:V)) (b:=c)).mpr hc)
+  have hiR : (1:DiffRing V)≤ι i := by
+    simpa only [map_one] using ((ι_le_ι (a:=(1:V)) (b:=i)).mpr hi)
+  have hdR : (0:DiffRing V)<ι Delta := by
+    simpa only [map_zero] using ((ι_lt_ι (a:=(0:V)) (b:=Delta)).mpr hDelta)
+  have hsmallR : (ι Delta:DiffRing V)<ι c*ι c*ι c := by
+    simpa only [map_mul] using ((ι_lt_ι (a:=Delta) (b:=c*c*c)).mpr hsmall)
+  have hsR : (ι i*ι c*ι c)*(ι i*ι c*ι c)+ι Delta=ι Delta*(ι f*ι f) := by
+    have h := congrArg (ι : V →+* DiffRing V) hs
+    simpa only [map_add,map_mul] using h
+  have he : z+ι c=(ι f*ι f)*t := by
+    dsimp [z,t]
+    simp only [map_add,map_mul]
+    ring
+  have hQ : Q=(ι i*ι c*ι c)*(ι i*ι c*ι c) := by
+    dsimp [Q]
+    linear_combination -hsR
+  exact AuxOffsetFactsDraft.aux_strict_bounds (ι c) (ι i) (ι Delta) (ι f) t z Q
+    hcR hiR hdR hsmallR hsR he hQ
+
+/-- Conditional signed direct-auxiliary to the exact absdiff equation used by
+eta-zero exact index. The actual ordinate and port/rank representation remain
+explicit. No assumption that y or the offset is positive is needed. -/
+theorem index_aux_of_direct (c Delta f T R y : V)
+    (hf : 0<f)
+    (hQ : (1:DiffRing V)<ι Delta*(ι f*ι f-1))
+    (hz : (1:DiffRing V)<
+      (ι (f*f*(T*c))-ι (f*f*R+c))*(ι (f*f*(T*c))-ι (f*f*R+c)))
+    (haux : (ι y:DiffRing V)*ι y-ι Delta*(ι f*ι f-1)*
+      (ι y*ι y-(ι (f*f*(T*c))-ι (f*f*R+c))*
+        (ι (f*f*(T*c))-ι (f*f*R+c)))=1) :
+    ∃ u : V, 0<u ∧
+      Delta*(f*f-1)*(absdiff (f*f*(T*c)) (f*f*R+c)*absdiff (f*f*(T*c)) (f*f*R+c))+
+      absdiff (f*f*(T*c)+u) (f*f*R+c)*absdiff (f*f*(T*c)+u) (f*f*R+c)=
+      1+Delta*(f*f-1)*
+        (absdiff (f*f*(T*c)+u) (f*f*R+c)*absdiff (f*f*(T*c)+u) (f*f*R+c)) := by
+  let A : V := f*f*(T*c)
+  let B : V := f*f*R+c
+  let D : V := Delta*(f*f-1)
+  let z : DiffRing V := ι A-ι B
+  let Q : DiffRing V := ι Delta*(ι f*ι f-1)
+  have hdirect : AuxRootModelDraft.directAux z Q (ι y)=0 := by
+    dsimp [AuxRootModelDraft.directAux,z,Q,A,B]
+    linear_combination haux
+  obtain ⟨u,hu,hrep⟩ := AuxOffsetFactsDraft.positive_offset_of_direct z Q y hQ hz hdirect
+  have hf1 : 1≤f*f := one_le_mul (pos_iff_one_le.mp hf) (pos_iff_one_le.mp hf)
+  have hABu : (ι (A+u):DiffRing V)-ι B=ι y := by
+    simp only [map_add]
+    rw [←hrep]
+    dsimp [z]
+    ring
+  have hZsq : (ι (absdiff A B):DiffRing V)*ι (absdiff A B)=z*z := by
+    simpa only [absdiff,ArithmeticSignedPairs.magnitude,z] using (P72Root.ι_magnitude_sq A B)
+  have hYsq : (ι (absdiff (A+u) B):DiffRing V)*ι (absdiff (A+u) B)=ι y*ι y := by
+    simpa only [absdiff,ArithmeticSignedPairs.magnitude,hABu] using (P72Root.ι_magnitude_sq (A+u) B)
+  have hD : (ι D:DiffRing V)=Q := by
+    dsimp only [D,Q]
+    rw [map_mul,P72Root.ι_tsub hf1]
+    simp only [map_mul,map_one]
+  have hbalance : (ι D:DiffRing V)*(z*z)+ι y*ι y=1+ι D*(ι y*ι y) := by
+    rw [hD]
+    dsimp [Q,z,A,B] at *
+    linear_combination haux
+  refine ⟨u,hu,?_⟩
+  change D*(absdiff A B*absdiff A B)+absdiff (A+u) B*absdiff (A+u) B=
+    1+D*(absdiff (A+u) B*absdiff (A+u) B)
+  apply ι_injective
+  simpa only [map_add,map_mul,map_one,hZsq,hYsq] using hbalance
+end DiophantineConsistency.EtaNaturalStrongAuxDraft
+#print axioms DiophantineConsistency.EtaNaturalStrongAuxDraft.ordinary_strong_of_signed
+#print axioms DiophantineConsistency.EtaNaturalStrongAuxDraft.f_positive_of_strong
+#print axioms DiophantineConsistency.EtaNaturalStrongAuxDraft.strict_bounds_of_strong
+#print axioms DiophantineConsistency.EtaNaturalStrongAuxDraft.index_aux_of_direct

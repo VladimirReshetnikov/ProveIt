@@ -1,0 +1,78 @@
+import Natural89Positive80Transport
+import EtaNaturalGraphStrongAux
+import DiophantineConsistency.BFS943.Trace75IntegralTransport
+import Mathlib.Tactic.LinearCombination
+
+/-! Proposed f/y forcing for the exact 89 graph through the 85 prototype.
+All graph maps, signed factors, casts and providers remain unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Natural89DirectFYDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open EtaNaturalUnitGraphDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The prototype's own factors force f,y>0. For y=0 the exact auxiliary
+factor makes Delta divide 1 in the signed ring; reflection and Delta≥3
+contradict this. No positive eta, f, y or rank-representation premise. -/
+theorem prototype_fy (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (EtaNaturalGraphNormsDraft.pp p)).output v) : 0<v 3 ∧ 0<v 11 := by
+  let D : V := EtaNaturalGraphNormsDraft.delta p v
+  have hD3 : (3:V)≤D := by
+    dsimp [D,EtaNaturalGraphNormsDraft.delta]
+    calc
+      3≤3+4*EtaNaturalGraphNormsDraft.a p v := le_add_of_nonneg_right (Arithmetic.zero_le _)
+      _≤(3+4*EtaNaturalGraphNormsDraft.a p v)+
+        EtaNaturalGraphNormsDraft.a p v*EtaNaturalGraphNormsDraft.a p v :=
+          le_add_of_nonneg_right (Arithmetic.zero_le _)
+  have hDpos : 0<D := lt_of_lt_of_le (by simp : (0:V)<3) hD3
+  have hs := EtaNaturalGraphStrongAuxDraft.ordinary_strong p v hz
+  have hf : 0<v 3 := EtaNaturalStrongAuxDraft.f_positive_of_strong
+    (EtaNaturalXPositiveDraft.c p v) (EtaNaturalGraphStrongAuxDraft.i v) D (v 3) hDpos hs
+  have hy : 0<v 11 := by
+    by_contra hn
+    have hy0 : v 11=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le _)
+    obtain ⟨_,_,_,haux⟩ := EtaNaturalUnitBridgeDraft.signed_norms
+      (EtaNaturalGraphNormsDraft.pp p) v hz
+    rw [EtaNaturalGraphStrongAuxDraft.field_y,EtaNaturalGraphNormsDraft.field_delta,
+      EtaNaturalGraphStrongAuxDraft.field_f] at haux
+    let z : DiffRing V := (graph (EtaNaturalGraphNormsDraft.pp p)).vv.evalRing (EtaNaturalGraphNormsDraft.emb v)
+    have hunit : (ι D : DiffRing V)∣(1:DiffRing V) := by
+      refine ⟨(ι (v 3)*ι (v 3)-1)*z*z,?_⟩
+      simp only [hy0,map_zero,zero_mul] at haux
+      dsimp only [D,z]
+      linear_combination -haux
+    have hunit' : (ι D : DiffRing V)∣ι (1:V) := by simpa only [map_one] using hunit
+    have hnat : D∣(1:V) := Trace75IntegralTransport.natural_dvd_of_signed D 1 hunit'
+    have hle : D≤1 := Arithmetic.le_of_dvd (by simp : (0:V)<1) hnat
+    exact (not_lt_of_ge hle) (lt_of_lt_of_le (by simp : (1:V)<3) hD3)
+  exact ⟨hf,hy⟩
+
+/-- All four exact forward shifts preserve direct coordinates f=3 and y=11. -/
+theorem graph89_fy (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (JShifted89GraphDraft.literal (fun j => (Residue90CompactPortBoundsDraft.ports K j:ℤ))) v) :
+    0<v 3 ∧ 0<v 11 := by
+  let p := Residue90CompactPortBoundsDraft.ports K
+  let j := J88To89TransportDraft.raiseJ v
+  let g := Gamma87To88TransportDraft.raiseGamma j
+  let w := W86To87TransportDraft.raiseW g
+  let e := EtaUnshift85TransportDraft.raiseEta w
+  have hz88 := (J88To89TransportDraft.zero_iff (fun j => (p j:ℤ)) v).mp hz
+  have hz87 := (Gamma87To88TransportDraft.zero_iff (fun j => (p j:ℤ)) j).mp hz88
+  have hz86 := (W86To87TransportDraft.zero_iff (fun j => (p j:ℤ)) g).mp hz87
+  have hz85 := (EtaUnshift85TransportDraft.zero_iff (fun j => (p j:ℤ)) w).mp hz86
+  have h := prototype_fy p e hz85
+  simpa [e,w,g,j,EtaUnshift85TransportDraft.raiseEta,W86To87TransportDraft.raiseW,
+    Gamma87To88TransportDraft.raiseGamma,J88To89TransportDraft.raiseJ] using h
+
+theorem directFY (K : ℕ) : Natural89Positive80TransportDraft.DirectFY K := by
+  intro V _ _ v hz
+  exact graph89_fy K v hz
+end DiophantineConsistency.Natural89DirectFYDraft
+#print axioms DiophantineConsistency.Natural89DirectFYDraft.prototype_fy
+#print axioms DiophantineConsistency.Natural89DirectFYDraft.directFY

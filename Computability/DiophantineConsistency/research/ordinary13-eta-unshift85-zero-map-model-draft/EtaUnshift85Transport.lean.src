@@ -1,0 +1,91 @@
+import EtaNaturalUnitGraph
+import EtaShifted86Graph
+import Residue90CompactPortBounds
+import DiophantineConsistency.HAExpressionNoZeroEquiv
+import DiophantineConsistency.IPRAExpressionNative
+import Mathlib.Tactic.Ring
+
+/-! Conditional exact eta-coordinate transfer and native bridge. The model
+eta forcing, parent bridge, generated syntax and all providers are unproved
+inputs or unelaborated sources. No Lean has been run. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.EtaUnshift85TransportDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+open Residue90CompactPortBoundsDraft
+
+def raiseEta {V : Type*} [Add V] [One V] (v : Fin 13 → V) (i : Fin 13) : V :=
+  if i=9 then v i+1 else v i
+
+def lowerEta {V : Type*} [Sub V] [One V] (v : Fin 13 → V) (i : Fin 13) : V :=
+  if i=9 then v i-1 else v i
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem raise_lower (v : Fin 13 → V) (h : 0<v 9) : raiseEta (lowerEta v)=v := by
+  funext i
+  fin_cases i <;> simp [raiseEta,lowerEta,tsub_add_cancel_of_le (pos_iff_one_le.mp h)]
+
+/-- Parent at v and the actual 85 prototype at raiseEta v have the same
+polynomial value. This large generated expression identity is unelaborated. -/
+theorem evaluation (p : Fin 4 → ℤ) (v : Fin 13 → V) :
+    (EtaShifted86GraphDraft.literal p).evalRing (fun j => ι (v j)) =
+      (EtaNaturalUnitGraphDraft.graph p).output.evalRing (fun j => ι (raiseEta v j)) := by
+  simp [EtaShifted86GraphDraft.literal,EtaNaturalUnitGraphDraft.graph,raiseEta,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,
+    map_add,map_mul,map_one] <;> ring
+
+theorem zero_iff (p : Fin 4 → ℤ) (v : Fin 13 → V) :
+    InternalZero (EtaShifted86GraphDraft.literal p) v ↔
+      InternalZero (EtaNaturalUnitGraphDraft.graph p).output (raiseEta v) := by
+  rw [ModelDifferenceRing.internalZero_iff,ModelDifferenceRing.internalZero_iff,evaluation p v]
+
+/-- Explicit all-IΣ₁-model eta forcing for the exact 85 graph and tuple. -/
+def ForcedEta (K : ℕ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V),
+    InternalZero (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output v → 0<v 9
+
+theorem compact_no_zero_iff (K : ℕ)
+    (heta : ∀ v : Fin 13 → V,
+      InternalZero (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output v → 0<v 9) :
+    (∀ v : Fin 13 → V, ¬InternalZero (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output v) ↔
+      ∀ v : Fin 13 → V, ¬InternalZero (EtaShifted86GraphDraft.literal (fun j => (ports K j:ℤ))) v := by
+  constructor
+  · intro h v hz
+    exact h (raiseEta v) ((zero_iff _ v).mp hz)
+  · intro h v hz
+    have hp := heta v hz
+    have he := raise_lower v hp
+    apply h (lowerEta v)
+    apply (zero_iff _ (lowerEta v)).mpr
+    simpa only [he] using hz
+
+theorem compact_sameNoZero (K : ℕ) (heta : ForcedEta K) : SameNoZero
+    (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output
+    (EtaShifted86GraphDraft.literal (fun j => (ports K j:ℤ))) := by
+  intro V _ _
+  exact compact_no_zero_iff K (heta V)
+
+/-- The parent bridge and eta-forcing theorem are explicit, not established
+by graph editing, bounded tests, or source-only drafts. -/
+theorem polynomialBridge (K : ℕ) (heta : ForcedEta K)
+    (hparent : PolynomialBridge (EtaShifted86GraphDraft.literal (fun j => (ports K j:ℤ)))) :
+    PolynomialBridge (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output :=
+  HAExpressionNoZeroEquiv.bridge _ _ (compact_sameNoZero K heta) hparent
+
+theorem native_equivalence (K : ℕ) (heta : ForcedEta K)
+    (hparent : PolynomialBridge (EtaShifted86GraphDraft.literal (fun j => (ports K j:ℤ)))) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output 🡘
+      ∼mappedNativeRefutation embedding :=
+  IPRAExpressionNative.equivalence_of_bridge _ (polynomialBridge K heta hparent)
+end DiophantineConsistency.EtaUnshift85TransportDraft
+#print axioms DiophantineConsistency.EtaUnshift85TransportDraft.evaluation
+#print axioms DiophantineConsistency.EtaUnshift85TransportDraft.compact_no_zero_iff
+#print axioms DiophantineConsistency.EtaUnshift85TransportDraft.native_equivalence

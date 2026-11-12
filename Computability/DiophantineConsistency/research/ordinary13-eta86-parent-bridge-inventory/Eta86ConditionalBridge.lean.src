@@ -1,0 +1,50 @@
+import EtaUnshift85Transport
+import Residue90CompactTuple
+import DiophantineConsistency.Compact44.IPRAOrdinary13
+
+/-! Conditional connection from the 86 graph to the retained 87/51 endpoint.
+The all-model SameNoZero hypothesis is not proved by this source or by any
+finite or standard-integer graph review. Everything remains unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Eta86ConditionalBridgeDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+open Residue90CompactPortBoundsDraft
+
+def K : ℕ := Residue90CompactTupleDraft.chosenKernel
+
+theorem selected_ports : (fun j => (ports K j:ℤ))=CompactSymbolicModelIff.p := by
+  exact Residue90CompactTupleDraft.chosen_integer_ports
+
+/-- The retained endpoint supplies its own positive-shift bridge. The exact
+86-to-retained all-model zero equivalence is an explicit unproved input. -/
+theorem parent_bridge
+    (h86 : SameNoZero (EtaShifted86GraphDraft.literal (fun j => (ports K j:ℤ)))
+      (positiveShift IPRAOrdinary13.expression)) :
+    PolynomialBridge (EtaShifted86GraphDraft.literal (fun j => (ports K j:ℤ))) :=
+  HAExpressionNoZeroEquiv.bridge _ _ h86
+    (IPRAOrdinary12.bridge_of_positive _ IPRAOrdinary13.positiveBridge)
+
+/-- Both the actual 86 chain and all-model eta forcing remain premises. -/
+theorem child_bridge
+    (h86 : SameNoZero (EtaShifted86GraphDraft.literal (fun j => (ports K j:ℤ)))
+      (positiveShift IPRAOrdinary13.expression))
+    (heta : EtaUnshift85TransportDraft.ForcedEta K) :
+    PolynomialBridge (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output :=
+  EtaUnshift85TransportDraft.polynomialBridge K heta (parent_bridge h86)
+
+theorem child_native
+    (h86 : SameNoZero (EtaShifted86GraphDraft.literal (fun j => (ports K j:ℤ)))
+      (positiveShift IPRAOrdinary13.expression))
+    (heta : EtaUnshift85TransportDraft.ForcedEta K) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output 🡘
+      ∼mappedNativeRefutation embedding :=
+  IPRAExpressionNative.equivalence_of_bridge _ (child_bridge h86 heta)
+end DiophantineConsistency.Eta86ConditionalBridgeDraft
+#print axioms DiophantineConsistency.Eta86ConditionalBridgeDraft.selected_ports
+#print axioms DiophantineConsistency.Eta86ConditionalBridgeDraft.parent_bridge
+#print axioms DiophantineConsistency.Eta86ConditionalBridgeDraft.child_native

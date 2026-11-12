@@ -1,0 +1,93 @@
+import Residue90SignedNorms
+import EtaZeroEarlyCongruence
+import Mathlib.Tactic.LinearCombination
+import Mathlib.Tactic.Ring
+
+/-! Conditional fact-level eta-natural unit-to-norm adapter. The factors and
+all natural/model representations are explicit inputs, not extracted from
+any graph by this source. No Lean execution or endpoint claim. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.EtaNaturalUnitNormAdapterDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ModelDifferenceRing ArithmeticSignedPairs
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def m (X Y : V) : V := X*Y*Y
+def a (X Y : V) : V := X*Y+Y
+def c (Y eta k : V) : V := eta+Y*k
+def H (X Y : V) : V := 3+4*a X Y
+def delta (X Y : V) : V := H X Y+a X Y*a X Y
+def U (q Y : V) : V := Y*(q*q)
+def P (q X Y eta k R gamma : V) : V :=
+  U q Y*(X+a X Y*c Y eta k)+H X Y*(U q Y*gamma+R+1)
+def N (X Y k : V) : V := H X Y*k
+
+/-- The first exact +1 factor yields the signed square equation and, for
+positive represented b, a natural first Pell norm. The factor uses the graph's
+ell=m*k; its signed root z and the factor equation are explicit. -/
+theorem first_norm_of_unit (b X Y k : V) (z : DiffRing V) (hb : 0<b)
+    (hu : 1+z*z-ι b*ι b*ι (1+(m X Y*k)*(m X Y*k+k))=1) :
+    ∃ tau : V, tau*tau=1+(X*Y*Y)*(X*Y*Y+1)*k*k := by
+  have hm : 1+(m X Y*k)*(m X Y*k+k)=1+(m X Y)*(m X Y+1)*k*k := by ring
+  rw [hm] at hu
+  have hn : z*z=ι b*ι b*ι (1+(m X Y)*(m X Y+1)*k*k) := by
+    linear_combination hu
+  simpa only [m] using Residue90SignedNormsDraft.first_natural_norm b (m X Y) k z hb hn
+
+/-- The second exact +1 factor yields the natural magnitude square equation
+for the actual eta-natural main carrier. There is no extra X*Y*q term. -/
+theorem main_pair_of_unit (q X Y eta k R gamma : V)
+    (hu : 1+(ι (P q X Y eta k R gamma)-ι (N X Y k))*
+      (ι (P q X Y eta k R gamma)-ι (N X Y k))-
+      ι (U q Y)*ι (U q Y)*(1+ι (delta X Y)*(ι (c Y eta k)*ι (c Y eta k)))=1) :
+    magnitude (P q X Y eta k R gamma,N X Y k)*
+      magnitude (P q X Y eta k R gamma,N X Y k)=
+        U q Y*U q Y*(1+delta X Y*(c Y eta k*c Y eta k)) := by
+  have hn : (ι (P q X Y eta k R gamma)-ι (N X Y k))*
+      (ι (P q X Y eta k R gamma)-ι (N X Y k)) =
+      ι (U q Y)*ι (U q Y)*(1+ι (delta X Y)*(ι (c Y eta k)*ι (c Y eta k))) := by
+    linear_combination hu
+  exact Residue90SignedNormsDraft.main_pair_norm (U q Y) (delta X Y) (c Y eta k)
+    (P q X Y eta k R gamma) (N X Y k) hn
+
+/-- A positive U additionally yields the natural main Pell root. -/
+theorem main_natural_of_unit (q X Y eta k R gamma : V) (hU : 0<U q Y)
+    (hu : 1+(ι (P q X Y eta k R gamma)-ι (N X Y k))*
+      (ι (P q X Y eta k R gamma)-ι (N X Y k))-
+      ι (U q Y)*ι (U q Y)*(1+ι (delta X Y)*(ι (c Y eta k)*ι (c Y eta k)))=1) :
+    ∃ g : V, g*g=1+delta X Y*c Y eta k*c Y eta k := by
+  have hn : (ι (P q X Y eta k R gamma)-ι (N X Y k))*
+      (ι (P q X Y eta k R gamma)-ι (N X Y k)) =
+      ι (U q Y)*ι (U q Y)*(1+ι (delta X Y)*(ι (c Y eta k)*ι (c Y eta k))) := by
+    linear_combination hu
+  exact Residue90SignedNormsDraft.main_natural_norm (U q Y) (delta X Y) (c Y eta k)
+    (P q X Y eta k R gamma) (N X Y k) hU hn
+
+/-- The consumer's q⁴ congruence is conditional on this exact unit factor,
+q>0, Y=q³*s, Y≥8 and k>0; eta is an arbitrary model natural. -/
+theorem rank_congruence_of_main_unit (q X Y eta k R gamma s : V)
+    (hq : 0<q) (hY : Y=q^3*s) (hY8 : 8≤Y) (hk : 0<k)
+    (hu : 1+(ι (P q X Y eta k R gamma)-ι (N X Y k))*
+      (ι (P q X Y eta k R gamma)-ι (N X Y k))-
+      ι (U q Y)*ι (U q Y)*(1+ι (delta X Y)*(ι (c Y eta k)*ι (c Y eta k)))=1) :
+    q^4∣magnitude (R+1,k) := by
+  have hm := main_pair_of_unit q X Y eta k R gamma hu
+  apply EtaZeroEarlyCongruenceDraft.rank_congruence_of_main_norm q X Y k R eta gamma s hq hY hY8 hk
+  simpa only [P,N,U,delta,H,a,c] using hm
+
+/-- Remaining unit factors are still signed equations; no natural subtraction,
+positivity of f or y, or graph binding is inferred here. -/
+theorem strong_of_unit (I Q : DiffRing V) (hu : 1+I*I-Q=1) : I*I=Q := by
+  linear_combination hu
+
+theorem auxiliary_of_unit (y Q Z : DiffRing V)
+    (hu : y*y-Q*(y*y-Z*Z)=1) : y*y-Q*(y*y-Z*Z)=1 := hu
+end DiophantineConsistency.EtaNaturalUnitNormAdapterDraft
+#print axioms DiophantineConsistency.EtaNaturalUnitNormAdapterDraft.first_norm_of_unit
+#print axioms DiophantineConsistency.EtaNaturalUnitNormAdapterDraft.main_pair_of_unit
+#print axioms DiophantineConsistency.EtaNaturalUnitNormAdapterDraft.main_natural_of_unit
+#print axioms DiophantineConsistency.EtaNaturalUnitNormAdapterDraft.rank_congruence_of_main_unit
+#print axioms DiophantineConsistency.EtaNaturalUnitNormAdapterDraft.strong_of_unit

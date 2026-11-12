@@ -1,0 +1,168 @@
+import PositiveCarrier83Graph
+import Positive80To81Transport
+import CarrierWitnessFacts
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
+
+/-! Source-only 81/83 non-first residual transport. Positive target-first
+root witnesses and exact 83 parent bridge remain explicit assumptions. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Positive81To83TransportDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+open Residue90CompactPortBoundsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def putR (v : Fin 13 → V) (r : V) (i : Fin 13) : V := if i=8 then r else v i
+
+theorem positive_putR (v : Fin 13 → V) (hv : ∀ i, 0<v i) (r : V) (hr : 0<r) :
+    ∀ i, 0<putR v r i := by
+  intro i
+  by_cases h : i=8
+  · subst i; simpa [putR] using hr
+  · simpa [putR,h] using hv i
+
+theorem output83 (p : Fin 4 → ℤ) : (PositiveCarrier83GraphDraft.graph p).output =
+    ((PositiveCarrier83GraphDraft.graph p).first*(PositiveCarrier83GraphDraft.graph p).first+
+      (PositiveCarrier83GraphDraft.graph p).main*(PositiveCarrier83GraphDraft.graph p).main)+
+    (((PositiveCarrier83GraphDraft.graph p).aux-1)*((PositiveCarrier83GraphDraft.graph p).aux-1)+
+      (PositiveCarrier83GraphDraft.graph p).strongResidual*(PositiveCarrier83GraphDraft.graph p).strongResidual) := by rfl
+
+/-- The three non-first residuals are the same after changing only r. -/
+theorem shared83_at (p : Fin 4 → ℤ) (v : Fin 13 → V) (r : V) :
+    (PositiveCarrier83GraphDraft.graph p).main.evalRing (fun i => ι (putR v r i)) =
+      (PositiveSquare81GraphDraft.graph p).main.evalRing (fun i => ι (v i)) ∧
+    (PositiveCarrier83GraphDraft.graph p).aux.evalRing (fun i => ι (putR v r i)) =
+      (PositiveSquare81GraphDraft.graph p).aux.evalRing (fun i => ι (v i)) ∧
+    (PositiveCarrier83GraphDraft.graph p).strongResidual.evalRing (fun i => ι (putR v r i)) =
+      (PositiveSquare81GraphDraft.graph p).strongResidual.evalRing (fun i => ι (v i)) := by
+  simp [PositiveCarrier83GraphDraft.graph,PositiveSquare81GraphDraft.graph,putR,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat] <;> ring
+
+theorem shared81_at (p : Fin 4 → ℤ) (v : Fin 13 → V) (r : V) :
+    (PositiveSquare81GraphDraft.graph p).main.evalRing (fun i => ι (putR v r i)) =
+      (PositiveCarrier83GraphDraft.graph p).main.evalRing (fun i => ι (v i)) ∧
+    (PositiveSquare81GraphDraft.graph p).aux.evalRing (fun i => ι (putR v r i)) =
+      (PositiveCarrier83GraphDraft.graph p).aux.evalRing (fun i => ι (v i)) ∧
+    (PositiveSquare81GraphDraft.graph p).strongResidual.evalRing (fun i => ι (putR v r i)) =
+      (PositiveCarrier83GraphDraft.graph p).strongResidual.evalRing (fun i => ι (v i)) := by
+  simp [PositiveCarrier83GraphDraft.graph,PositiveSquare81GraphDraft.graph,putR,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat] <;> ring
+
+/-- A sum of squares equal to zero gives the three non-first values. -/
+theorem nonfirst_of_sum (a b c d : DiffRing V)
+    (h : (a*a+b*b)+((c-1)*(c-1)+d*d)=0) : b=0 ∧ c=1 ∧ d=0 := by
+  have hb : b*b=0 := by nlinarith [sq_nonneg a,sq_nonneg (c-1),sq_nonneg d]
+  have hc : (c-1)*(c-1)=0 := by nlinarith [sq_nonneg a,sq_nonneg b,sq_nonneg d]
+  have hd : d*d=0 := by nlinarith [sq_nonneg a,sq_nonneg b,sq_nonneg (c-1)]
+  exact ⟨mul_self_eq_zero.mp hb,sub_eq_zero.mp (mul_self_eq_zero.mp hc),mul_self_eq_zero.mp hd⟩
+
+theorem zero81_to83 (p : Fin 4 → ℤ) (v : Fin 13 → V) (r : V)
+    (hz : InternalZero (PositiveSquare81GraphDraft.graph p).output v)
+    (hfirst : (PositiveCarrier83GraphDraft.graph p).first.evalRing (fun i => ι (putR v r i))=0) :
+    InternalZero (PositiveCarrier83GraphDraft.graph p).output (putR v r) := by
+  have hh := (ModelDifferenceRing.internalZero_iff _ _).mp hz
+  rw [Positive80To81TransportDraft.output81] at hh
+  simp only [Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_ofNat] at hh
+  obtain ⟨hm,ha,hs⟩ := nonfirst_of_sum _ _ _ _ hh
+  obtain ⟨em,ea,es⟩ := shared83_at p v r
+  apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+  rw [output83]
+  simp only [Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_ofNat,
+    hfirst,em,ea,es,hm,ha,hs,zero_mul,add_zero,zero_add,sub_self]
+
+theorem zero83_to81 (p : Fin 4 → ℤ) (v : Fin 13 → V) (r : V)
+    (hz : InternalZero (PositiveCarrier83GraphDraft.graph p).output v)
+    (hfirst : (PositiveSquare81GraphDraft.graph p).first.evalRing (fun i => ι (putR v r i))=0) :
+    InternalZero (PositiveSquare81GraphDraft.graph p).output (putR v r) := by
+  have hh := (ModelDifferenceRing.internalZero_iff _ _).mp hz
+  rw [output83] at hh
+  simp only [Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_ofNat] at hh
+  obtain ⟨hm,ha,hs⟩ := nonfirst_of_sum _ _ _ _ hh
+  obtain ⟨em,ea,es⟩ := shared81_at p v r
+  apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+  rw [Positive80To81TransportDraft.output81]
+  simp only [Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_ofNat,
+    hfirst,em,ea,es,hm,ha,hs,zero_mul,add_zero,zero_add,sub_self]
+
+/-- Every positive 81 zero reaches the exact prototype through the
+81→80 residual direction and existing forward mixed shifts. No inverse eta,
+gamma, w or r replacement is used here. -/
+theorem prototype_zero_of81 (p : Fin 4 → ℤ) (v : Fin 13 → V)
+    (hv : ∀ i, 0<v i) (hz : InternalZero (PositiveSquare81GraphDraft.graph p).output v) :
+    InternalZero (EtaNaturalUnitGraphDraft.graph p).output (Positive80To81TransportDraft.image85 v) := by
+  let n := Natural89Positive80TransportDraft.lower v
+  have h80 := Positive80To81TransportDraft.zero81_to80 p v hz
+  have hlift := Natural89Positive80TransportDraft.lift_lower v hv
+  have h89 : InternalZero (JShifted89GraphDraft.literal p) n := by
+    apply (Natural89Positive80TransportDraft.zero_iff p n).mpr
+    simpa only [n,hlift] using h80
+  exact (Natural89RReplacementDraft.zero89_iff85 p n).mp h89
+
+/-- Exact all-model first-residual replacement obligations, one per
+orientation; these are not established by finite or standard-integer checks. -/
+def CrossRootCut (K : ℕ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V),
+    (∀ i, 0<v i) →
+    (InternalZero (PositiveSquare81GraphDraft.graph (fun j => (ports K j:ℤ))).output v →
+      ∃ r : V, 0<r ∧ (PositiveCarrier83GraphDraft.graph (fun j => (ports K j:ℤ))).first.evalRing
+        (fun i => ι (putR v r i))=0) ∧
+    (InternalZero (PositiveCarrier83GraphDraft.graph (fun j => (ports K j:ℤ))).output v →
+      ∃ r : V, 0<r ∧ (PositiveSquare81GraphDraft.graph (fun j => (ports K j:ℤ))).first.evalRing
+        (fun i => ι (putR v r i))=0)
+
+theorem sameNoZero (K : ℕ) (hc : CrossRootCut K) : SameNoZero
+    (positiveShift (PositiveSquare81GraphDraft.graph (fun j => (ports K j:ℤ))).output)
+    (positiveShift (PositiveCarrier83GraphDraft.graph (fun j => (ports K j:ℤ))).output) := by
+  intro V _ _
+  constructor
+  · intro h x hz
+    let v : Fin 13 → V := fun i => x i+1
+    have hv : ∀ i, 0<v i := fun i => lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+    have hz83 := (internalZero_positiveShift _ x).mp hz
+    obtain ⟨r,hr,hfirst⟩ := (hc V v hv).2 hz83
+    have hw : ∀ i, 0<putR v r i := positive_putR v hv r hr
+    let y : Fin 13 → V := fun i => putR v r i-1
+    have hy : (fun i => y i+1)=putR v r := by
+      funext i; exact tsub_add_cancel_of_le (pos_iff_one_le.mp (hw i))
+    apply h y
+    apply (internalZero_positiveShift _ y).mpr
+    rw [hy]
+    exact zero83_to81 _ v r hz83 hfirst
+  · intro h x hz
+    let v : Fin 13 → V := fun i => x i+1
+    have hv : ∀ i, 0<v i := fun i => lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+    have hz81 := (internalZero_positiveShift _ x).mp hz
+    obtain ⟨r,hr,hfirst⟩ := (hc V v hv).1 hz81
+    have hw : ∀ i, 0<putR v r i := positive_putR v hv r hr
+    let y : Fin 13 → V := fun i => putR v r i-1
+    have hy : (fun i => y i+1)=putR v r := by
+      funext i; exact tsub_add_cancel_of_le (pos_iff_one_le.mp (hw i))
+    apply h y
+    apply (internalZero_positiveShift _ y).mpr
+    rw [hy]
+    exact zero81_to83 _ v r hz81 hfirst
+
+theorem bridge81 (K : ℕ) (hc : CrossRootCut K)
+    (h83 : PolynomialBridge (positiveShift (PositiveCarrier83GraphDraft.graph (fun j => (ports K j:ℤ))).output)) :
+    PolynomialBridge (positiveShift (PositiveSquare81GraphDraft.graph (fun j => (ports K j:ℤ))).output) :=
+  HAExpressionNoZeroEquiv.bridge _ _ (sameNoZero K hc) h83
+
+theorem native85 (K : ℕ) (hc : CrossRootCut K)
+    (h83 : PolynomialBridge (positiveShift (PositiveCarrier83GraphDraft.graph (fun j => (ports K j:ℤ))).output)) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output 🡘
+      ∼mappedNativeRefutation embedding :=
+  Positive80To81TransportDraft.native85 K (bridge81 K hc h83)
+end DiophantineConsistency.Positive81To83TransportDraft
+#print axioms DiophantineConsistency.Positive81To83TransportDraft.prototype_zero_of81
+#print axioms DiophantineConsistency.Positive81To83TransportDraft.zero81_to83
+#print axioms DiophantineConsistency.Positive81To83TransportDraft.zero83_to81
+#print axioms DiophantineConsistency.Positive81To83TransportDraft.native85
