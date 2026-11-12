@@ -189,6 +189,18 @@ by progress as primitive, and proves that the derivable sequents are the same
   substitution can turn a variable source into a compound one, so `PPrf` is
   closed under injective renaming (`PPrf.ren`) and not under substitution by a
   direct induction.
+- *Substitution at the discharge of a witness.* Transport and DE can be one
+  rule: from `D_{x,y} B`, and from `s = t` and `F(s)` in the context opened at
+  a fresh `b`, infer `F(t)`, provided it does not mention `b`. With it in
+  place of both, the kernel has seven rules (`SDPrf`, `sdprf_iff_nprf`). The
+  closed theorem `D_{x,y} (I(0, 0; u.u) = 0)` is proved by cases from a
+  computation; a discharge of it that does not use its opened context is
+  transport in an arbitrary formula (`SDPrf.tr`), reflexivity is the
+  transport of `I(0, a; u.u) = a` along itself, and a constant template gives
+  DE (`SDPrf.dE`). Every rule is stable under substitution. This is the
+  discharge rule of
+  [`substitutive_discharge`](Research/substitutive_discharge/) on the raw
+  kernel.
 - *QE at a variable or at 1.* The term argument of QE can be restricted to a
   variable and to the numeral `1`: `VQPrf true` has the two rules `qEVar`
   and `qEOne` in place of QE, and derives the same sequents
@@ -544,6 +556,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | | `zprf_iff_nprf : ZPrf Γ A ↔ NPrf Γ A` | the same for uncrossed transport in an equation template, by an equation induction and a singleton test |
 | no template | `tprf_iff_nprf : TPrf Γ A ↔ NPrf Γ A`, `Tm.rep_marker`, `NPrf.repEq` | transport replaced by replacement of all occurrences of the source; a chosen template is recovered with an oversized marker |
 | substitution for a parameter | `pprf_iff_nprf : PPrf Γ A ↔ NPrf Γ A`, `PPrf.aliasE`, `PPrf.trOne`, `Tm.psi_rn` | transport replaced by Param: a proper subterm is replaced only when the source is a variable; a template is recovered under a fresh alias, discharged through a `D` formula |
+| substitutive discharge | `sdprf_iff_nprf : SDPrf Γ A ↔ NPrf Γ A`, `SDPrf.tr`, `SDPrf.dE`, `SDPrf.subst` | one rule in place of transport and DE; seven rules, each stable under substitution |
 | QE at a variable or at `1` | `vqprf_iff_nprf : VQPrf true Γ A ↔ NPrf Γ A`, `VQPrf.qE`, `VQPrf.leibniz`, `VQPrf.aliasE` | the term argument of QE restricted to a variable or the numeral `1`; an arbitrary target is named by a fresh alias and reached by the Leibniz rule |
 | QE at variables only is weaker | `vqprf_var_incomplete`, `VQPrf.zsound`, `NFm.zt` | `Q_y (sel(y, 0, 1) = 0) ⊢ 0 = 1` is derivable in the kernel and not with QE at variables only; the countermodel reads variables as `0` and `Q`, `D` formulas as true |
 | uncrossed one-term transport | `uprf_iff_nprf : UPrf Γ A ↔ NPrf Γ A` | from `s = t` and `h(s) = r` infer `h(t) = r`: the crossing is not essential when sources are unrestricted |
@@ -575,7 +588,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | | `native_roundTrip`, `pra_native_roundTrip` | both composites through iPRA are the identity up to equivalence |
 | | `native_inconsistent_iff` | `NPrf [] (0 = 1)` iff iPRA proves `⊥` |
 
-The main chain (every module except the sixteen kernel comparisons,
+The main chain (every module except the seventeen kernel comparisons,
 `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`,
 `NativeZeroReflexive`, `NativeZeroClausal`, `NativeUniqueness`, `NativeModels` and
 `TeqClosure`) is 5,565
@@ -614,7 +627,7 @@ no `native_decide`.
 | derived rule | `NativeUniqueness` | uniqueness of iteration |
 | readings over the natural numbers | `NativeModels` | evaluation of terms and formulas for a reading `Sem`; the kernel with rules switched by flags, `FPrf`, and its soundness; consistency of the three systems; independence of seven rules |
 | native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, interderivability over a context, Leibniz and transport in every template, equation induction; selector and gate formulas |
-| kernel comparison | `NativeInherited`, `NativeOneContext`, `NativeOneIntro`, `NativeDiagonal`, `NativeMirror`, `NativeSix`, `NativeMinimal`, `NativeEval`, `NativeTemplateFree`, `NativeParameter`, `NativeVariableQE`, `NativeClausal`, `NativeClausalDiagonal`, `NativeUniformClauses`, `NativeZeroSource`, `NativeReversal` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf`; no literal-zero transport sources, `OPrf`, generic over the class `OKernel`, and the uncrossed rule, `UPrf`; six rules with Eval, `EPrf`; replacement without a template, `TPrf`; substitution for a parameter, `PPrf`, with injective renaming, cut and the fresh alias; QE at a variable or at `1`, `VQPrf`, with its own Leibniz rule and the countermodel for variables alone; the diagonal introduction, `GPrf`, with its own structural rules; the mirror introduction, `MiPrf` and `M6Prf`; Eval with the diagonal introduction, `SPrf`; the five-rule clause calculus, `CPrf`, with weakening, renaming and cut of assumptions; the clause calculus with the diagonal introduction, `KPrf`; uniform clause use, `VPrf`; one introduction rule, `WPrf`, generic over the class `WKernel`; both together, `MPrf`; the source restriction for uncrossed transport in an equation template, `ZPrf`, generic over the class `ZKernel`; root-reversing transport and QE, `RPrf` |
+| kernel comparison | `NativeInherited`, `NativeOneContext`, `NativeOneIntro`, `NativeDiagonal`, `NativeMirror`, `NativeSix`, `NativeMinimal`, `NativeEval`, `NativeTemplateFree`, `NativeParameter`, `NativeVariableQE`, `NativeSubstitutiveDischarge`, `NativeClausal`, `NativeClausalDiagonal`, `NativeUniformClauses`, `NativeZeroSource`, `NativeReversal` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf`; no literal-zero transport sources, `OPrf`, generic over the class `OKernel`, and the uncrossed rule, `UPrf`; six rules with Eval, `EPrf`; replacement without a template, `TPrf`; substitution for a parameter, `PPrf`, with injective renaming, cut and the fresh alias; QE at a variable or at `1`, `VQPrf`, with its own Leibniz rule and the countermodel for variables alone; substitutive discharge, `SDPrf`; the diagonal introduction, `GPrf`, with its own structural rules; the mirror introduction, `MiPrf` and `M6Prf`; Eval with the diagonal introduction, `SPrf`; the five-rule clause calculus, `CPrf`, with weakening, renaming and cut of assumptions; the clause calculus with the diagonal introduction, `KPrf`; uniform clause use, `VPrf`; one introduction rule, `WPrf`, generic over the class `WKernel`; both together, `MPrf`; the source restriction for uncrossed transport in an equation template, `ZPrf`, generic over the class `ZKernel`; root-reversing transport and QE, `RPrf` |
 | native logic | `NativeLogic` | `⊥`, `→`, `∧`, `∨`, `∃`, `∀` as native macros with all their natural deduction rules |
 | native ≡ `T_eq` ≡ iPRA | `NativeTranslate`, `NativeComposite`, `NativeRoundTrip`, `NativeBiInterpretation` | translation of derivations, both round trips, the composite with `biInterp` |
 
@@ -648,7 +661,8 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `clause_contexts` | Proved: its four schemes with the reflexivity clause are `ZVPrf`, with `zvprf_iff_zcprf` and `zvprf_iff_nprf` (`NativeZeroClausal`). |
 | `witness_discharge` | Not formalized: its Name rule joins equality substitution with the discharge of a witness and relies on full computation normal forms. |
 | `inferred_witness`, `deterministic_opening`, `first_instance`, `clause_discharge` | Not formalized: the test that selects the witness compares rows of the matrix after full normalization, which is not formalized. |
-| `substitutive_discharge`, `prefix_clauses` | Filed; not yet examined against the Lean development. |
+| `substitutive_discharge` | Proved, for the kernel: its discharge rule in place of transport and DE is `SDPrf`, with `sdprf_iff_nprf` (`NativeSubstitutiveDischarge`). The package's four families are stated on the canonical recursor syntax with clause contexts, which is not formalized. |
+| `prefix_clauses` | Not formalized: a representation of the `Q`-free formulas, `D^k (s = t)`, for the calculus `VPrf`; its second theorem, on clauses without an antecedent field, is not examined. |
 | `uniform_binding` | Not formalized: the counter-aware recursor syntax. |
 | `parameter_substitution` | Proved, for the equality rule: `PPrf` is the kernel with transport replaced by Param, and `pprf_iff_nprf` (`NativeParameter`). The package's five instruction families combine it with clause contexts and the witness-tested single introduction, which are not formalized together with it. |
 | `variable_substitution` | Not formalized: its rule substitutes for a variable only and has no joining at the root, which it recovers from full computation normal forms, where `C(0, a, b)` and `a` are the same term. The normalizer with its termination and confluence is not formalized. On raw terms the nearest proved statement is `pprf_iff_nprf`. |
