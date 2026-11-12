@@ -7536,6 +7536,10 @@ The source-reviewed [slot-11 equivalence client draft](research/ordinary14-aux-g
 proposes both 78/79 positive-witness directions using bounds from each
 starting graph. It and its graph/norm dependencies remain unelaborated; no
 model endpoint or iPRA proof follows yet.
+The source-reviewed [84/78 model composition draft](research/ordinary14-84-to-78-model-composition-draft/README.md)
+connects the proposed clients through their shared 79-operation graph. It
+and all component drafts remain unelaborated; provider verification, earlier
+parent bridges and the iPRA endpoint are still required.
 The source-reviewed [87-operation Lean graph and decoder-route draft](research/ordinary14-shifted-guard87-lean-draft/README.md)
 records the fact-level replay needed for arbitrary models. It is uncompiled;
 the graph-specific model lemmas, parent bridges and iPRA endpoint remain open.
