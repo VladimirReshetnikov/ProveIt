@@ -7890,6 +7890,12 @@ The independently source-reviewed [natural-79 endpoint draft](research/ordinary1
 proposes composing the w-positive transfer with native, standard and
 equality-only iPRA clients at the symbolic ports. Its declarations and five
 axiom reports remain unelaborated and unexecuted; this is not a checked proof.
+The [statement-level comparison](reviews/ordinary14-natural79-conzfc-quote-statement-comparison/README.md)
+identifies a possible intuitionistic composition through the selected mapped
+Foundation consistency sentence. The independently source-reviewed
+[direct-BFS Carrier65 comparison draft](research/ordinary14-natural79-carrier65-bfs-direct-comparison-draft/README.md)
+proposes one such biconditional for a distinct BFS port instance. Neither
+draft elaboration nor a binding to the displayed 2011 page is established.
 The bounded [79-specific signature audit](reviews/ordinary14-natural79-signature-audit-independent/README.md)
 finds no definite mismatch in its selected unit, norm, divisibility and
 transport interfaces. It is source inspection only, not Lean elaboration or
