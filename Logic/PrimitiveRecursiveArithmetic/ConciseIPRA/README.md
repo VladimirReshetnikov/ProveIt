@@ -987,7 +987,7 @@ The main chain (every module except the twenty kernel comparisons,
 `ZeroSeedObstruction`,
 `NativePrefix`, `NativeUniqueness`, `NativeModels`, `NativeWitnessShape`,
 `NativeWitnessComplete`, `EqKernel`, `EqArith`, `EqParity`, `EqCompare`, `EqPred` and
-`TeqClosure`) is 5,224
+`TeqClosure`) is 5,220
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
 introduction and elimination, instead of an induction over the seventeen
@@ -1191,8 +1191,13 @@ marked as conjectures is proved here.
    substitution for a variable is the only equality rule needed
    (`vsprf_iff_nprf`). On raw terms the rows of the naming packet are not
    literal, and Param, which also joins two equations at the root, is proved
-   sufficient (`pprf_iff_nprf`). Conjecture: on raw terms substitution for a
-   variable alone, without joining, is strictly weaker.
+   sufficient (`pprf_iff_nprf`). Settled for open sequents in the article
+   (chapter "Computation, equality and normal forms", from
+   [`head_conversion`](Artifacts/head_conversion/)): on raw terms substitution
+   for a variable alone, without joining, is strictly weaker; a reading in
+   which values carry a colour separates `I(0,x;u.u) = y ⊢ x = y`. Open: the
+   reading validates every theorem in the empty context, so whether those
+   calculi derive all theorems of the kernel is not settled. Not in Lean.
 4. **The newest variable.** Settled: `variable_substitution` restricts the
    source of its rule to the newest variable, and `v0prf_iff_nprf` proves that
    restriction sufficient on full normal forms. The rule is not stable under
@@ -1221,7 +1226,7 @@ marked as conjectures is proved here.
    `deterministic_opening` (`OCPrf`), of `first_instance` and
    `clause_discharge` (`XCPrf`), and of `variable_substitution` (`VCPrf`)
    are proved equivalent to the kernel.
-8. **A shorter proof of the equivalence.** The main chain is 5,224 lines. A
+8. **A shorter proof of the equivalence.** The main chain is 5,220 lines. A
    dependency-closure computation shows that it contains nothing that the end
    results do not use. Three designs fix most of its size, and no shorter
    replacement for any of them is known: the predecessor of `T_eq` from

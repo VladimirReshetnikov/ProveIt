@@ -1,0 +1,102 @@
+CONCISE IPRA: PINNED BASELINE AND PROVENANCE
+12 November 2026
+
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Commit: e85c5e24dba535a296c46cd18fa66a146ce36b8e
+Root: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA
+Metric runtime: CPython 3.12.14
+
+CURRENT COMPARISON
+
+The comparison includes the current Artifacts tree and all ten pending ZIP
+archives in docs/incoming. The README package table alone is insufficient.
+
+Observed direct compact checker envelope:
+  244 significant tokens / 267 AST nodes / 479 normalized UTF-8 bytes.
+
+These three coordinates belong to DIFFERENT complete programs:
+  checked_presentation/code/checker_tokens.py  244 / 272 / 608
+  checked_presentation/code/checker_ast.py     249 / 267 / 606
+  479_predecessor57/checker/code/compact479.py  272 / 304 / 479
+
+The token and AST records read sequential JSON values, one per consumed
+physical line, permitting an unread suffix. The byte record retains the
+whole-JSON-array input interface. All three compact profiles assume exact
+integer/list trees and a canonical closed guarded Eq/D public goal. They
+check scope, but do not separately validate the full public grammar.
+
+The full native Eq/D public-grammar interface, under a promised certificate
+alphabet, has observed envelope 324 / 374 / 607 in different programs.
+The 607-byte program has actual vector 337 / 383 / 607.
+
+The native interface with whole-input integer/list alphabet validation has
+observed envelope 334 / 387 / 637 in different programs. The 637-byte program
+has actual vector 344 / 392 / 637. Thus a new 632-byte strict program improves
+this interface's byte record, but does not beat the compact envelope.
+
+No tuple in this note is a universal source-complexity lower bound. The
+coordinates are measured records under specified source and input contracts.
+
+SOURCE COVERAGE AND WHAT WAS ACTUALLY VERIFIED
+
+The ten archive files were checked against their exact pinned Git blob IDs
+and byte sizes. All 2,012 Python members were compared byte-for-byte with
+their extracted copies. They contain 1,605 distinct Python source blobs.
+All members were parsed and measured statically; the census did not execute
+historical checker, utility, or experimental code.
+
+The current pinned Artifacts tree contains 2,427 Python paths representing
+1,298 distinct Git blobs. Every one of those 1,298 blobs was recovered from
+source corpora inside the incoming archives, verified against its current
+Git blob SHA, and independently normalized and measured. No current source
+blob is missing. This establishes complete current source coverage without
+claiming that every source was separately downloaded from GitHub.
+
+The inherited predecessor57 audit ledger describes an older snapshot with
+1,314 distinct blobs. Against the current tree there are 20 added and 36
+removed blobs. All 1,278 shared metric triples agree with our independent
+measurements. The older 1,314 count must not be used as the current count.
+
+Seventy-eight current source blobs are below at least one compact record
+coordinate. Static inspection identifies them as report/checker builders,
+measurement or integrity programs, untrusted producers, and test drivers.
+Across the whole incoming corpus there are 129 such distinct sources: 127
+utilities and two packed fixed-source loaders. The latter use base85/zlib
+and measure 18 / 19 / 459; the established direct-checker category excludes
+them. Counting a wrapper without the checker it invokes is not a comparison
+of complete trusted checkers.
+
+The census establishes source identity, coverage, source metrics, and the
+stated comparison envelope. It does not prove soundness/completeness of every
+incumbent checker, rerun all historical regressions, or prove global optimality.
+
+MEASUREMENT CONVENTION
+
+Remove genuine docstrings; normalize with ast.unparse and append one LF;
+reparse; count all ast.walk nodes and normalized UTF-8 bytes. Significant
+tokens exclude ENCODING, ENDMARKER, NEWLINE, NL, INDENT, DEDENT, and COMMENT.
+If removing a docstring empties a function or class body, insert Pass. None
+of the selected record modules contains a docstring, so that convention
+does not affect the advertised record measurements.
+
+EVIDENCE FILES
+
+baseline_report.json
+  Exact commit, runtime, all ten archive paths/blob IDs/SHA-256 hashes,
+  member counts, current coverage, contracts, and selected control metrics
+  and hashes with exact archive members.
+current_python_metrics.json
+  All 1,298 current source records, repository path aliases, verified source
+  identity, reconstructed archive origins, and independently measured metrics.
+incoming_metrics.json
+  Measurements of all 2,012 extracted Python members, including duplicates.
+threshold_exclusions.json
+  Static classifications of the 129 below-threshold utility/loader sources.
+current_blob_coverage.json
+  Complete matching of current Git blob IDs to recovered local source files.
+
+build_baseline_report.py assembles the summary from the audit workspace.
+It requires the cited archives, extraction tree, pinned Git metadata and
+metric ledgers; it does not claim the full census is reproducible from a
+small delivery that omits those archival corpora. Selected checker metrics
+can be reproduced independently from the exact control modules.

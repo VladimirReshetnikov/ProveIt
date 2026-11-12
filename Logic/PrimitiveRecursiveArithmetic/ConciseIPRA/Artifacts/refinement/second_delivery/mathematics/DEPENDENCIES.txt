@@ -1,0 +1,79 @@
+Final comparison and mathematical provenance
+===========================================
+
+Final inspected repository revision:
+2c7617bb03bbbb15a4534c5468f7df8da22c7ab4.
+
+Current predecessor baseline:
+Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/incoming/
+ipra_absorbing_predecessor_2026-11-12.zip.
+
+The older 57-node package remains a historical source of the 13-node
+clock and 21-node ceiling ramp. The current comparison is against the
+50-node absorbing predecessor, not against 57. It is exactly 50 to 47,
+three nodes or six percent. The universal-macro family changes from the
+current 60*n+4 to 57*n+4. Historical 57-node terms give 67*n+4.
+
+Inherited from the current 50-node package
+----------------------------------------
+
+1. The absorbing factor H0(v)=C(N(v),R(v),0), its doubling/tripling
+   identities, and the absorbing comparison orbit.
+2. The selector identity C(Z(v),a,b)=C(v,b,a), including its use to
+   remove the comparator's final zero test.
+3. The full parameterized toggle lemma:
+      U(n,a)=I(n,0;w.C(w,a,0))=C(N(n),0,a).
+4. The weighted control U(v,v), its interchangeability with N(v) as
+   a selector control, and the 30-node factor
+      Hhat(v)=C(U(v,v),R(v),0).
+5. The sharp 30-node lower bound for the specified architecture
+      C(c(v),R(v),0)
+   with the fixed 21-node ramp and an independently represented
+   control. This is explicitly not a global bound for factor maps,
+   predecessors, or proof checkers.
+
+New beyond that current baseline
+-------------------------------
+
+1. Put the payload directly in the inherited toggle, with shifted
+   count:
+      H(v)=U(Sv,R(v))=C(N(v),R(v),0).
+   H has 28 raw nodes instead of 30. This is outside the architecture
+   of the current 30-node lower bound; the payload is integrated in
+   the toggle rather than selected by a separate control tree.
+2. Reverse the saturating comparison. The current predecessor uses
+      I(SSu,E(m);v.Hhat(v))
+   as its update signal. The reversed version uses
+      I(m,E(Su);v.Hhat(v))
+   and swaps the outer selector branches. It saves one successor
+   occurrence and has 49 nodes.
+3. Combine them:
+      P(m)=I(m,0;u.C(I(m,E(Su);v.H(v)),Su,u)).
+   The final expanded term has 47 nodes and obeys P(0)=0 and P(Sm)=m
+   in the equational fragment.
+
+The general toggle lemma is not claimed as new. Neither the absorbing
+idea nor selector cancellation is claimed as new. The manuscript
+includes their proofs to make the dependency chain auditable.
+
+Control integrity
+-----------------
+
+reference50/ contains the exact current control source, its mathematical
+report sections, its scoped lower-bound proof, license, README, and
+claims. PROVENANCE.json gives source archive and per-file hashes.
+The local builder current_predecessor50 is alpha-equivalent as an
+expanded AST to that exact current control source, not merely equal
+on tested numerical values. The equality was verified after converting
+bound names to de Bruijn indices; its receipt is in PROVENANCE.json.
+
+Claim boundary
+--------------
+
+This does not establish a lower bound on arbitrary predecessors and does
+not beat the compact standalone proof-checker envelope. It is a concrete
+arithmetic-term reduction inside the unchanged, inherited iPRA-equivalent
+calculus. Both predecessor equations and the identity interpretation of
+the numerical domain are preserved. The new theorem has a written
+equational proof and independently checked finite artifacts, not a new
+Lean/Rocq proof object.

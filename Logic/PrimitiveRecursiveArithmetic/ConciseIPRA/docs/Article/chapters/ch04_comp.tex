@@ -25,7 +25,11 @@ presented by the rules of
 \cref{comp:sec:reflexive,comp:sec:seed,comp:sec:step,comp:sec:seedeval}.
 A weaker zero normalization, which contracts only zero iterators with a
 variable or $0$ as initializer and is not coherent with substitution, is
-treated in \cref{comp:sec:atomic} with rules that keep their raw instances.
+treated in \cref{comp:sec:atomic} with rules that keep their raw instances,
+and the normalization of the heads of the endpoints of equations, with
+substitution for a variable as the only equality rule, in
+\cref{comp:sec:head}; the same section shows that this equality rule does
+not suffice on raw terms with the computation equations as axioms.
 Both computations are normalized in \cref{comp:sec:full}.
 
 Every calculus $\mathsf{K}$ of the chapter is given with its complete rule
@@ -55,6 +59,7 @@ $\mathsf{C}_{\mathrm{Step}}$ & zero-normal, clauses & \rulename{Use}, \rulename{
 $\mathsf{C}_{\mathrm{Seed}}$ & zero-normal, clauses & \rulename{Use}, \rulename{Refl}, \rulename{SeedEval}, \rulename{DE}, \rulename{WI} & \cref{comp:thm:seedeval}\\
 $\mathsf{C}_{\mathrm{App}}$ & unit-normal, clauses & \rulename{Use}, \rulename{Refl}, \rulename{App}, \rulename{DE}, \rulename{WI} & \cref{comp:thm:app}\\
 $\mathsf{A}_6$ & atomic-seed normal, raw metadata & \rulename{Hyp}, \rulename{IS}, \rulename{Tr}, \rulename{QE}, \rulename{DE}, \rulename{WI} & \cref{comp:thm:asix}\\
+$\mathsf{VH}$ & head-normal formulas, raw hints & \rulename{Hyp}, \rulename{Refl}, \rulename{VSub}, \rulename{QE}, \rulename{DE}, \rulename{WI} & \cref{comp:thm:vh}\\
 $\Nat^{\mathrm{f}}$ & full normal & \rulename{Hyp}, \rulename{Refl}, \rulename{Tr}, \rulename{QE}, \rulename{DE}, \rulename{DI}, \rulename{QI} & \cref{comp:thm:full}\\
 $\mathsf{F}$ & full normal & \rulename{Hyp}, \rulename{Refl}, \rulename{Tr}, \rulename{QE}, \rulename{DE}, \rulename{WI} & \cref{comp:thm:fsix}\\
 \bottomrule
@@ -67,12 +72,12 @@ $\mathsf{F}$ & full normal & \rulename{Hyp}, \rulename{Refl}, \rulename{Tr}, \ru
 \section{Conventions and shared lemmas}
 \label{comp:sec:conv}
 
-This section fixes the notation common to the ten packages of the chapter
-(\pkg{computational\_equality}, \pkg{equality\_from\_iteration},
+This section fixes the notation common to the eleven packages of the
+chapter (\pkg{computational\_equality}, \pkg{equality\_from\_iteration},
 \pkg{uniform\_step}, \pkg{seed\_evaluation}, \pkg{zero\_normal},
 \pkg{reflexive\_base}, \pkg{initializer\_equality},
 \pkg{full\_normalization}, \pkg{computation\_normal},
-\pkg{atomic\_seed\_refinement}) and proves once the
+\pkg{atomic\_seed\_refinement}, \pkg{head\_conversion}) and proves once the
 arguments that several of them repeat.
 
 \subsection{Notation}
@@ -2486,8 +2491,9 @@ instances. That normalizer is weaker than the zero normalization of
 coherence ($\nu$4), and \cref{comp:thm:transfer} does not apply to it. The
 first subsection gives the form of the transfer argument that needs no
 coherence, at the price of raw metadata in every rule; it applies to every
-normalizer that satisfies the other four conditions of
-\cref{comp:def:normalizer}. The remaining subsections
+normalizer that is the identity inside $\Nat$ and satisfies the structural
+conditions ($\nu$2), ($\nu$3) and a weak form of ($\nu$1). The remaining
+subsections
 apply it to the atomic-seed normalizer.
 
 \subsection{Normalization after raw instantiation}
@@ -2495,9 +2501,15 @@ apply it to the atomic-seed normalizer.
 \begin{definition}[Conversion normalizer]
 \label{comp:def:convnorm}
 A \emph{conversion normalizer} is a map $\nu$ from raw terms to raw terms
-that satisfies ($\nu$1), ($\nu$2), ($\nu$3) and ($\nu$5) of
-\cref{comp:def:normalizer}, extended to formulas and contexts as there.
-Every admissible normalizer is a conversion normalizer.
+that satisfies ($\nu$2), ($\nu$3) and ($\nu$5) of
+\cref{comp:def:normalizer} and the following weakening of ($\nu$1):
+\begin{enumerate}[label=($\nu$1$^{-}$)]
+\item $\nu(x)\equiv x$, $\nu(0)\equiv0$ and $\nu(\Suc0)\equiv\Suc0$.
+\end{enumerate}
+It is extended to formulas and contexts as in \cref{comp:def:normalizer}.
+Every admissible normalizer is a conversion normalizer. The successor
+clause of ($\nu$1) is not required: the weak-head normalizer of
+\cref{comp:sec:head} does not normalize below a successor.
 \end{definition}
 
 The proof of \cref{comp:lem:nusound} uses ($\nu$5) and the extension of
@@ -2511,8 +2523,12 @@ $\Gamma$.
 Let $\nu$ be a conversion normalizer. A \emph{sequent over $\nu$} is a
 sequent $\Sigma\proves C$ in which $\Sigma$ is a finite list of $\nu$-normal
 formulas and $C$ is $\nu$-normal. For each rule $R$ among the eight rules of
-$\Nat$ and \rulename{WI} (\cref{comp:def:wi}, on raw terms), the rule
-$R^{[\nu]}$ on sequents over $\nu$ is the following. $\rulename{Hyp}^{[\nu]}$
+$\Nat$, \rulename{WI} (\cref{comp:def:wi}, on raw terms), reflexivity
+\rulename{Refl}, $\Gamma\proves t=t$, and substitution for a variable
+\rulename{VSub}, from $\Gamma\proves x=t$ and $\Gamma\proves u=v$ infer
+$\Gamma\proves v=u\subst{t}{x}$ for a free variable $x$
+(\cref{disch:eq:vsub}, on raw terms), the rule $R^{[\nu]}$ on sequents over
+$\nu$ is the following. $\rulename{Hyp}^{[\nu]}$
 derives $\Sigma\proves C$ for $C\in\Sigma$. For every other $R$, take an
 instance of $R$ on raw syntax in the context $\Sigma$. It is fixed by its
 \emph{raw metadata}: the raw terms, templates, matrices and the witness that
@@ -2528,8 +2544,10 @@ The side conditions are tested on the raw instance. The eigenvariable ($b$
 of \rulename{DE}, $z$ of \rulename{DI}, \rulename{QI} and \rulename{WI}) is
 not free in $\Sigma$, in the conclusion, or in any of the raw metadata; the
 test of \rulename{QI} and \rulename{WI} for a literal equation is applied to
-the raw matrix, which has the root of its normal form; and the test
-$t\equiv0$ of \rulename{WI} is applied to the raw witness. A \emph{raw-metadata
+the raw matrix, which has the root of its normal form; the test
+$t\equiv0$ of \rulename{WI} is applied to the raw witness; and the source
+$x$ of \rulename{VSub} is a variable, which is its own normal form by
+($\nu$1$^{-}$), so that its first premise is $x=\nu(t)$. A \emph{raw-metadata
 calculus over $\nu$} is a calculus on sequents over $\nu$ whose rules are
 rules $R^{[\nu]}$. The calculus $\Nat^{[\nu]}$ has the eight rules
 $R^{[\nu]}$ for the rules $R$ of $\Nat$.
@@ -2537,8 +2555,8 @@ $R^{[\nu]}$ for the rules $R$ of $\Nat$.
 
 \begin{lemma}[Soundness of raw-metadata rules]
 \label{comp:lem:rawsound}
-Let $\nu$ be a conversion normalizer and let $R$ be one of the eight rules of
-$\Nat$ or \rulename{WI}. If the premises of an instance of $R^{[\nu]}$ are
+Let $\nu$ be a conversion normalizer and let $R$ be one of the rules of
+\cref{comp:def:rawmeta}. If the premises of an instance of $R^{[\nu]}$ are
 derivable in $\Nat$, read as raw sequents, then so is its conclusion. Hence
 $\Sigma\proves_{\mathsf K}C$ implies $\Sigma\proves_{\Nat}C$ for every
 raw-metadata calculus $\mathsf K$ over $\nu$.
@@ -2556,7 +2574,11 @@ in the context, in the conclusion, in the witness or in the formula
 $\D{x}{y}B$ or the parameters of the matrix, and all of these are among the
 data tested. For a rule of $\Nat$ the rule gives $\Sigma\proves_{\Nat}C_0$.
 For \rulename{WI} the mode is that of the raw instance, and \rulename{WI}
-on raw terms is admissible in $\Nat$ by \cref{comp:lem:single}(iii). For
+on raw terms is admissible in $\Nat$ by \cref{comp:lem:single}(iii).
+\rulename{Refl} is derivable in $\Nat$ (\cref{base:lem:eq}), and an instance
+of \rulename{VSub} is the instance of \rulename{Tr} with the template
+$K(w)\defeq u\subst{w}{x}$, $w$ fresh, since $K(x)\equiv u$ and
+$K(t)\equiv u\subst{t}{x}$, also when $t$ contains $x$. For
 \rulename{DE} the conclusion $C_0$ is $\nu$-normal; in the other cases
 \cref{comp:lem:nusound} and cut give $\Sigma\proves_{\Nat}\nu(C_0)$. The
 second statement follows by induction on derivations.
@@ -2653,7 +2675,9 @@ $s,t,F$.
 \begin{proof}
 Statement (a) of \cref{comp:cor:bridge} is \cref{comp:thm:rawtransfer}(b).
 The proof of statement (c) given there uses of $\nu$ only statement (a),
-\cref{comp:lem:nusound}, ($\nu$1) and ($\nu$2), and applies unchanged. For
+\cref{comp:lem:nusound}, ($\nu$2) and the instances $\nu(x)\equiv x$ and
+$\nu(0=\Suc0)\equiv(0=\Suc0)$ of ($\nu$1), which ($\nu$1$^{-}$) contains, and
+applies unchanged. For
 the admissible rules pass through $\Nat$. A derivation in $\mathsf K$ gives
 one in $\Nat$ by \cref{comp:lem:rawsound}. Weakening and substitution in
 $\Nat$ are \cref{base:lem:struct}, cut is \cref{base:lem:cut}, and the
@@ -3019,6 +3043,661 @@ weaker normalizer and raw metadata in every rule; the zero computation is
 not normalized away but derived. The calculus is not formalized in Lean; the
 package records finite tests of its reference checker
 (\cref{comp:sec:sizes}).
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Weak-head conversion with raw hints}
+\label{comp:sec:head}
+
+This section draws on \pkg{head\_conversion}: a six-rule calculus in which
+only the heads of the two endpoints of an equation are computed, whose only
+equality rule is substitution for a variable and whose rules keep raw terms
+as hints; and a reading which shows that on raw terms, with the computation
+equations as axioms, the same equality rule does not suffice. The
+normalizer is a conversion normalizer and not an admissible one, so the
+calculus is compared with $\Nat$ through \cref{comp:thm:rawtransfer}.
+
+\subsection{The head normalizer}
+
+\begin{definition}[Weak-head normalization]
+\label{comp:def:whnf}
+A \emph{head context} is generated by $H::=[\ ]\mid\It{H}{a}{u}{h}$, with
+arbitrary raw $a,h$. \emph{Head reduction} $\to_{\mathrm h}$ contracts a zero
+or successor redex of \cref{comp:def:reduction} in a head context. The
+\emph{neutral} terms are generated by $e::=x\mid\It{e}{a}{u}{h}$ with
+arbitrary raw $a,h$, and a raw term is \emph{head normal} if it is $0$, a
+successor $\Suc a$ with an arbitrary raw $a$, or neutral. The map $W$ on raw
+terms is
+\begin{align*}
+ W(x)&\defeq x,\qquad W(0)\defeq0,\qquad W(\Suc a)\defeq\Suc a,\\
+ W(\It{n}{a}{u}{h})&\defeq
+ \begin{cases}
+  W(a), & W(n)\equiv0,\\
+  W\bigl(h\subst{\It{k}{a}{u}{h}}{u}\bigr), & W(n)\equiv\Suc k,\\
+  \It{W(n)}{a}{u}{h}, & W(n)\text{ neutral}.
+ \end{cases}
+\end{align*}
+It is extended to formulas and contexts as in \cref{comp:def:normalizer}: on
+a formula it normalizes the two endpoints of every equation, below $\Q{y}$
+and $\D{x}{y}$. A formula $A$ is \emph{head normal} if $W(A)\equiv A$.
+\end{definition}
+
+The recursion is not structural; its termination is part of the next lemma.
+$W$ never looks below a successor, nor into the initializer or the body of an
+iterator whose counter is neutral. For example
+$W\bigl(\Suc\It{0}{0}{u}{u}\bigr)\equiv\Suc\It{0}{0}{u}{u}$, whereas
+$\Suc W(\It{0}{0}{u}{u})\equiv\Suc0$.
+
+\begin{lemma}[Head reduction]
+\label{comp:lem:whnf}
+\begin{enumerate}[label=(\alph*)]
+\item A raw term has at most one head redex, every head reduction sequence
+ is finite, and the head normal terms are the terms without a head redex.
+ The recursion defining $W$ terminates, and $W(t)$ is the last term of the
+ maximal head reduction sequence from $t$. In particular $W(t)$ is head
+ normal, $W$ is idempotent, and $t\to^{*}W(t)$.
+\item \emph{Left coherence.} $W(W(t)[\sigma])\equiv W(t[\sigma])$ for every
+ raw term $t$ and every capture-free simultaneous substitution $\sigma$, and
+ $W(W(A)[\sigma])\equiv W(A[\sigma])$ for every raw formula $A$.
+\item $W(t[\rho])\equiv W(t)[\rho]$ for every renaming $\rho$ of variables,
+ and $\FV(W(t))\subseteq\FV(t)$.
+\item $W$ is a conversion normalizer. It violates the successor clause of
+ ($\nu$1) and ($\nu$4): with $j_1\defeq\It{0}{0}{u}{u}$,
+ $W(\Suc j_1)\equiv\Suc j_1\not\equiv\Suc W(j_1)$, and for $t\equiv\Suc x$
+ and $\sigma\defeq[j_1/x]$,
+ \[
+  W(t[\sigma])\equiv\Suc j_1\not\equiv\Suc0\equiv
+  W\bigl(W(t)[W\circ\sigma]\bigr).
+ \]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) Only an iterator $\It{n}{a}{u}{h}$ can have a head redex. It is itself a
+redex if $n\equiv0$ or $n\equiv\Suc k$; otherwise its head redexes are those
+of $n$. By induction on the term there is at most one. Head reduction is a
+subrelation of $\to$, which terminates (\cref{comp:thm:sn}). By induction on
+the term, a term has no head redex exactly when it is head normal: an
+iterator without one has a counter without one that is neither $0$ nor a
+successor, hence neutral by the induction hypothesis. For the recursion argue
+by induction on the length of the maximal head reduction sequence from $t$,
+and then on the size of $t$. As long as the counter of $\It{n}{a}{u}{h}$ is
+not $0$ or a successor, the head redex of the iterator is that of $n$; so the
+sequence first reduces $n$ to $W(n)$, by the induction hypothesis for the
+smaller term $n$. If $W(n)$ is neutral, $\It{W(n)}{a}{u}{h}$ is head normal.
+Otherwise the next step contracts the root, to $a$ or to
+$h\subst{\It{k}{a}{u}{h}}{u}$, whose maximal sequences are shorter, and the
+induction hypothesis applies. The remaining assertions follow, since a head
+normal term is fixed by $W$.
+
+(b) If $t\to_{\mathrm h}t'$ then $t[\sigma]\to_{\mathrm h}t'[\sigma]$: the
+image of a head context is a head context, the image of a zero redex is a
+zero redex with the image of its result, and, with $u$ renamed away from
+$\sigma$ and $\sigma'$ the lifting of $\sigma$,
+$\It{\Suc n}{a}{u}{h}[\sigma]\equiv\It{\Suc n[\sigma]}{a[\sigma]}{u}{h[\sigma']}$
+contracts to
+$h[\sigma']\subst{\It{n[\sigma]}{a[\sigma]}{u}{h[\sigma']}}{u}\equiv
+(h\subst{\It{n}{a}{u}{h}}{u})[\sigma]$ by the composition law of
+substitution. Hence $t[\sigma]\to_{\mathrm h}^{*}W(t)[\sigma]$. By (a) the
+head reduction from $t[\sigma]$ is deterministic, so its maximal sequence
+passes through $W(t)[\sigma]$, and the remainder of that sequence is the
+maximal sequence from $W(t)[\sigma]$; both end at $W(t[\sigma])$. For
+formulas apply this to each endpoint, with $\sigma$ lifted below the binders.
+
+(c) A renaming sends variables to variables, $0$ to $0$, successors to
+successors and neutral terms to neutral terms, so it sends head normal terms
+to head normal terms, and (b) gives
+$W(t[\rho])\equiv W(W(t)[\rho])\equiv W(t)[\rho]$. A contraction creates no
+free variable.
+
+(d) Variables, $0$ and $\Suc0$ are head normal, which is ($\nu$1$^{-}$);
+($\nu$2) is (c), ($\nu$3) is (a), and ($\nu$5) follows from (a) and
+\cref{comp:lem:conversion}. In the examples $\Suc j_1$ is head normal and
+$W(j_1)\equiv0$.
+\end{proof}
+
+\paragraph{Relation to the transfer theorems and to the atomic-seed
+normalizer.}
+\Cref{comp:thm:transfer} does not apply to $W$, which violates ($\nu$1) and
+($\nu$4); \cref{comp:thm:rawtransfer} applies, since $W$ is a conversion
+normalizer. Between the two lies the left coherence (b), which is
+\cref{comp:lem:laws}(a) for $W$: normalizing a term \emph{before} a
+substitution does not change the normal form of the instance, while
+normalizing the \emph{substituted terms} does. The atomic-seed normalizer
+violates even left coherence: for its counterexample in
+\cref{comp:prop:nfatomic},
+$\nf_{\mathrm a}(\nf_{\mathrm a}(t)[\sigma])\equiv\Suc0$ and
+$\nf_{\mathrm a}(t[\sigma])\equiv\It{0}{\Suc0}{u}{0}$. The two normalizers
+are incomparable: $W$ performs both contractions, also with compound
+initializers, but only along the counter spine of the root; $\nf_{\mathrm a}$
+works at every depth, also below a successor, but performs only zero
+contractions with an atomic initializer. Both are reached by reductions of
+\cref{comp:def:reduction}, so $\nf(W(t))\equiv\nf(t)$ by
+\cref{comp:thm:confluence}.
+
+Left coherence determines which raw metadata are needed. In an instance of a
+rule $R^{[W]}$ the normal forms of the premises and of the conclusion are
+$W(B[\sigma])\equiv W(W(B)[\sigma])$ for the matrices and templates $B$ of the
+instance and the substitutions $\sigma$ that the schema applies. A raw matrix
+or template may therefore be replaced by its head normal form without
+changing the instance, while the terms that are substituted, namely the
+targets of \rulename{QE}, the witnesses of \rulename{WI} and the replacement
+and minor terms of \rulename{VSub}, must remain raw. In
+$\rulename{QE}^{[\nf_{\mathrm a}]}$ the matrix itself must remain raw
+(\cref{comp:thm:asizero}).
+
+\subsection{Six rules}
+
+\begin{definition}[The calculus $\mathsf{VH}$]
+\label{comp:def:vh}
+$\mathsf{VH}$ is the raw-metadata calculus over $W$ with the six rules
+$\rulename{Hyp}^{[W]}$, $\rulename{Refl}^{[W]}$, $\rulename{VSub}^{[W]}$,
+$\rulename{QE}^{[W]}$, $\rulename{DE}^{[W]}$ and $\rulename{WI}^{[W]}$.
+Explicitly, $\Sigma$ is a list of head normal formulas, $C$ is head normal,
+and $x$ is a variable, while $t,u,v,r,s$ and $B$ are raw:
+\begin{gather*}
+ \infrule{}{\Sigma\proves C}\ (C\in\Sigma),
+ \qquad
+ \infrule{}{\Sigma\proves W(t)=W(t)},
+ \qquad
+ \infrule{\Sigma\proves x=W(t)\qquad\Sigma\proves W(u)=W(v)}
+         {\Sigma\proves W(v)=W\bigl(u\subst{t}{x}\bigr)},
+ \\[4pt]
+ \infrule{\Sigma\proves W(\Q{y}B)\qquad\Sigma\proves W(B\subst{0}{y})}
+         {\Sigma\proves W(B\subst{r}{y})},
+ \qquad
+ \infrule{\Sigma\proves W(\D{x}{y}B)\qquad
+          \Sigma,\ W\bigl(\Q{y}B\subst{b}{x}\bigr)\proves C}
+         {\Sigma\proves C},
+ \\[4pt]
+ \infrule{\Sigma,\ W\bigl(B\subst{s}{x}\subst{\eta_{B,s}(z)}{y}\bigr)\proves
+          W\bigl(B\subst{s}{x}\subst{\Suc z}{y}\bigr)}
+         {\Sigma\proves W(\D{x}{y}B)}.
+\end{gather*}
+These are \rulename{Hyp}, \rulename{Refl}, \rulename{VSub}, \rulename{QE},
+\rulename{DE} and \rulename{WI}. In \rulename{DE} the variable $b$ is not
+free in $\Sigma$, in $C$ or in $\D{x}{y}B$; in \rulename{WI} the variable $z$
+is not free in $\Sigma$, in $s$ or in $\D{x}{y}B$, and $\eta_{B,s}(z)=z$
+exactly when $B$ is a literal equation and the raw witness $s$ is literally
+$0$, otherwise $\eta_{B,s}(z)=0$. By left coherence the matrices may be
+stored in head normal form, as \pkg{head\_conversion} does; the terms
+$t,u,v,r,s$ are raw hints. There is no primitive computation equation,
+transport, case rule, induction, weakening, substitution or cut. The formula
+$0=\Suc0$ is head normal.
+\end{definition}
+
+\begin{lemma}[Structural operations]
+\label{comp:lem:rawstruct}
+Let $\nu$ be a conversion normalizer and $\mathsf K$ a raw-metadata calculus
+over $\nu$ whose rules include $\rulename{Hyp}^{[\nu]}$. Weakening, injective
+renaming of free variables and cut on an assumption are admissible in
+$\mathsf K$ by direct induction on derivations; none of them substitutes a
+term in a derivation.
+\end{lemma}
+
+\begin{proof}
+For an injective renaming $\rho$, replace the raw metadata $m$ of each
+inference by $m[\rho]$, after renaming its eigenvariable away from $\rho$.
+By ($\nu$2) the normal forms of the premises and of the conclusion are the
+renamed ones; a renaming preserves the literal $0$, the root of a matrix and
+the property of being a variable, so every test of \cref{comp:def:rawmeta}
+gives the same result, and an injective renaming preserves freshness.
+Weakening renames the eigenvariables away from the added formulas and keeps
+every inference. For cut, replace each use of the cut formula by
+\rulename{Hyp} with its given derivation, weakened to the local context
+after the eigenvariables are renamed.
+\end{proof}
+
+\begin{lemma}[Derived rules carry over]
+\label{comp:lem:rawderived}
+Let $\nu$ be a conversion normalizer, and let a rule $R$ on raw sequents be
+derived from rules of \cref{comp:def:rawmeta} by a derivation, uniform in
+its raw metadata, whose open leaves are the premises of $R$. Then
+$R^{[\nu]}$, defined as in \cref{comp:def:rawmeta}, is derivable in every
+raw-metadata calculus over $\nu$ in which the readings of the rules used are
+derivable.
+\end{lemma}
+
+\begin{proof}
+Apply to the given derivation the translation of
+\cref{comp:thm:rawtransfer}(a): every sequent is replaced by its normal form
+and every inference by the reading of its rule with the same raw metadata.
+The open leaves become the premises of $R^{[\nu]}$ and the root its
+conclusion; only ($\nu$2) and ($\nu$3) are used.
+\end{proof}
+
+\begin{lemma}[Progress and independent cases]
+\label{comp:lem:whcases}
+Let $E$ be a raw literal equation and $z$ a variable not free in $\Sigma$ or
+in $\Q{y}E$.
+\begin{enumerate}[label=(\alph*)]
+\item If $\Sigma,W(E\subst{z}{y})\proves_{\mathsf{VH}}W(E\subst{\Suc z}{y})$, then
+ $\Sigma\proves_{\mathsf{VH}}W(\Q{y}E)$.
+\item If $\Sigma\proves_{\mathsf{VH}}W(E\subst{0}{y})$ and
+ $\Sigma\proves_{\mathsf{VH}}W(E\subst{\Suc z}{y})$, then
+ $\Sigma\proves_{\mathsf{VH}}W(E\subst{r}{y})$ for every raw term $r$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) is the second part of the proof of \cref{comp:lem:asintro}, with $W$ in
+place of $\nf_{\mathrm a}$: \rulename{WI} at the raw witness $0$ for the
+matrix $E(y)$ with an unused $x$ is in progress mode, and \rulename{DE} with
+\rulename{Hyp} returns $W(\Q{y}E)$. (b) Weaken the second derivation by the
+unused assumption $W(E\subst{z}{y})$ (\cref{comp:lem:rawstruct}), apply (a),
+and apply \rulename{QE} with the raw body $E$ at the target $r$.
+\end{proof}
+
+With the selector $\sel(v,a,b)\defeq\It{v}{a}{u}{b}$, $u\notin\FV(b)$, of
+\cref{base:sec:terms}, put
+\[
+ Z(v)\defeq\sel(v,1,0),\qquad p(v)\defeq\It{v}{0}{u}{Z(u)}.
+\]
+By \cref{comp:def:whnf}, for all raw $n,a,b$,
+\[
+ W(\sel(n,a,b))\equiv
+ \begin{cases}
+  W(a), & W(n)\equiv0,\\
+  W(b), & W(n)\text{ is a successor},
+ \end{cases}
+ \qquad
+ W(p(1))\equiv1,\qquad W(p(2))\equiv0.
+\]
+The first is one root step after the counter, since the state variable is
+not free in $b$. For the third, $p(1)$ steps to
+$\sel(\It{0}{0}{u}{Z(u)},1,0)$, whose counter has the head normal form $0$, so
+the result is $W(1)\equiv1$. For the fourth, $p(2)$ steps to
+$\sel(\It{1}{0}{u}{Z(u)},1,0)$, whose counter has, by the third computation,
+the head normal form $1$, so the result is $W(0)\equiv0$. No statement about
+parity at arbitrary numbers is used.
+
+\begin{definition}[The packet]
+\label{comp:def:whpacket}
+For raw terms $s,t,r$ and a raw template $h(w)$, and a variable $x$ that is
+not free in $s,t,r,h$, the \emph{packet} is the literal equation
+\[
+ \Pi(x,y)\defeq\Bigl(
+ \sel\bigl(y,0,\sel(p(y),x,h(x))\bigr)=
+ \sel\bigl(y,0,\sel(p(y),t,r)\bigr)\Bigr),
+\]
+with the state variables of the selectors chosen fresh.
+\end{definition}
+
+Its counters are the variable $y$, so $\Pi$ is head normal, and by the four
+computations its rows are
+\[
+ W(\Pi(x,0))\equiv(0=0),\qquad
+ W(\Pi(x,1))\equiv W(h(x)=r),\qquad
+ W(\Pi(x,2))\equiv(x=W(t)).
+\]
+The packet is the packet of \cref{disch:def:packet} with the rows
+$h(x)=r$ and $x=t$, read on raw terms with head normalization.
+
+\begin{lemma}[Packet introduction]
+\label{comp:lem:whpacket}
+If $\Sigma\proves_{\mathsf{VH}}W(s=t)$ and
+$\Sigma\proves_{\mathsf{VH}}W(h(s)=r)$, then
+$\Sigma\proves_{\mathsf{VH}}\D{x}{y}\Pi(x,y)$.
+\end{lemma}
+
+\begin{proof}
+Apply \rulename{WI} at the raw witness $s$, in whichever mode it selects.
+Its premise has the conclusion $W(\Pi(s,\Suc z))$, which by the computation
+of $W(\sel(\Suc z,0,b))$ is $W(F(p(\Suc z)))$ for the literal equation
+\[
+ F(v)\defeq\bigl(\sel(v,s,h(s))=\sel(v,t,r)\bigr),\qquad v\text{ fresh}.
+\]
+Since $W(F(0))\equiv W(s=t)$ and $W(F(\Suc z'))\equiv W(h(s)=r)$, the two
+given derivations and \cref{comp:lem:whcases}(b) at the raw target
+$p(\Suc z)$ derive it, after weakening by the local assumption, which is not
+used. The proof is the same in both modes, also when $s\equiv0$.
+\end{proof}
+
+\begin{lemma}[Transport]
+\label{comp:lem:whtr}
+$\rulename{Tr}^{[W]}$ is derivable in $\mathsf{VH}$: from
+$\Sigma\proves W(s=t)$ and $\Sigma\proves W(h(s)=r)$ infer
+$\Sigma\proves W(r=h(t))$, for raw $s,t,r$ and every raw template $h$.
+\end{lemma}
+
+\begin{proof}
+\Cref{comp:lem:whpacket} gives $\D{x}{y}\Pi$. Open it by \rulename{DE} at a
+fresh $b$, with the local assumption $\Q{y}\Pi(b,y)$, which is head normal
+by \cref{comp:lem:whnf}(c). Under it \rulename{Refl} gives $0=0$, the zero
+row, and \rulename{QE} at the targets $1$ and $2$ gives $W(h(b)=r)$ and
+$b=W(t)$. \rulename{VSub} with the source $b$, the raw replacement $t$ and
+the raw minor terms $u\equiv h(b)$ and $v\equiv r$ has exactly these two
+premises and the conclusion $W(r)=W(h(b)\subst{t}{b})\equiv W(r=h(t))$,
+since $b$ is not free in $h$. The conclusion contains no $b$, and
+\rulename{DE} discharges it.
+\end{proof}
+
+The replacement must be the raw $t$. The stored row is $b=W(t)$, and a
+substitution of its right side would give $W(r=h(W(t)))$, which differs from
+$W(r=h(t))$ when $h$ places its variable below a successor, because $W$
+does not normalize there.
+
+By \cref{comp:lem:rawderived} applied to the derivations of
+\cref{base:lem:eq}, which use reflexivity and \rulename{Tr} only, the
+readings with raw metadata of symmetry, transitivity, congruence and
+transport in literal equations are derivable in $\mathsf{VH}$.
+
+\begin{lemma}[The introductions]
+\label{comp:lem:whintro}
+$\rulename{QI}^{[W]}$ and $\rulename{DI}^{[W]}$ are admissible in
+$\mathsf{VH}$.
+\end{lemma}
+
+\begin{proof}
+$\rulename{QI}^{[W]}$ is \cref{comp:lem:whcases}(a). An instance of
+$\rulename{DI}^{[W]}$ is an instance of \rulename{WI} unless its matrix $B$
+is a literal equation and its raw witness is literally $0$. Let
+$\Sigma,W(B(0,0))\proves W(B(0,\Suc z))$ be derivable and put
+$j\defeq\It{0}{0}{u}{0}$, which is not literally $0$, with $W(j)\equiv0$. In
+the context $\Sigma_j\defeq\Sigma,W(B(j,0))$, \rulename{Refl} at $0$ derives
+$0=0$, which is both $W(j=0)$ and $W(0=j)$. Transport in the literal equation
+$B(w,0)$ along $W(j=0)$ gives $W(B(0,0))$; cut with the given derivation,
+weakened (\cref{comp:lem:rawstruct}), gives $W(B(0,\Suc z))$; transport in
+$B(w,\Suc z)$ along $W(0=j)$ gives $W(B(j,\Suc z))$. \rulename{WI} at the raw
+witness $j$ is in case mode, and $z$ is fresh for the closed $j$; it derives
+$W(\D{x}{y}B)$.
+\end{proof}
+
+Unlike \cref{comp:lem:asintro}, the normalized branch at $j$ is in general
+not literally the branch at $0$: for the matrix $\Suc x=\Suc x$ the
+assumption $W(B(j,0))$ is $\Suc j=\Suc j$. The repair therefore uses
+derived transport, as in \cref{comp:lem:single}(ii).
+
+\begin{theorem}[Weak-head presentation]
+\label{comp:thm:vh}
+$\mathsf{VH}$ derives exactly the sequents over $W$ that $\Nat$ derives. For
+every finite context $\Gamma$ of raw native formulas and every raw native
+formula $A$,
+\[
+ \Gamma\proves_{\Nat}A
+ \quad\Longleftrightarrow\quad
+ W(\Gamma)\proves_{\mathsf{VH}}W(A),
+\]
+effectively on finite derivations, and \cref{comp:cor:rawbridge} applies to
+$\mathsf{VH}$: it is equiconsistent and bi-interpretable with $\iPRA$, with
+whole numerical domains, equality interpreted by equality and numerical
+composites with the graph $x=y$.
+\end{theorem}
+
+\begin{proof}
+$W$ is a conversion normalizer (\cref{comp:lem:whnf}(d)), and $\mathsf{VH}$
+is a raw-metadata calculus over $W$. By \cref{comp:thm:rawtransfer}(b) it
+suffices that the eight rules of $\Nat^{[W]}$ are admissible in
+$\mathsf{VH}$. \rulename{Hyp}, \rulename{QE} and \rulename{DE} are rules of
+$\mathsf{VH}$. An instance of $\rulename{I0}^{[W]}$ is
+$W(\It{0}{a}{u}{h})=W(a)$, which is $W(a)=W(a)$ by \cref{comp:def:whnf}, an
+instance of \rulename{Refl}; an instance of $\rulename{IS}^{[W]}$ is
+$W(\It{\Suc n}{a}{u}{h})=W(h\subst{\It{n}{a}{u}{h}}{u})$, and its left side
+is its right side because $W(\Suc n)\equiv\Suc n$. \rulename{Tr} is
+\cref{comp:lem:whtr}, and \rulename{QI} and \rulename{DI} are
+\cref{comp:lem:whintro}.
+\end{proof}
+
+\begin{remark}
+\label{comp:rem:vh}
+On full normal forms the same six rules are the calculus of
+\cref{disch:prop:vsub-native}, where the rows of the packet are literal; the
+theorem shows that the head normalization of the endpoints suffices, provided
+the hints stay raw. \pkg{head\_conversion} proves the equivalence directly
+against $\Nat$: a derivation of $\Nat$ is translated rule by rule, with the
+computation equations as reflexivities and (b) of \cref{comp:lem:whnf} for
+the instances of the matrices; a derivation of $\mathsf{VH}$ is simulated in
+$\Nat$ by the conversions $t=W(t)$. The equivalence is not formalized in Lean
+or Rocq. The checker of the package substitutes the raw witness of
+\rulename{WI} first and normalizes the formula before it opens the other
+coordinate, an order that left coherence permits; the mode test examines the
+raw witness.
+\end{remark}
+
+\subsection{Raw computation equations do not replace conversion}
+\label{comp:sec:colour}
+
+On raw terms with the computation equations as axioms, substitution for a
+variable is not a complete equality rule. The proof is a reading in which
+the free variables carry colours.
+
+\begin{definition}[The colour reading]
+\label{comp:def:colour}
+Let $V\defeq\mathbb N\times\{0,1,2\}$ and $V^{+}\defeq\mathbb N\times\{1,2\}$,
+with $\pi(n,c)\defeq n$ and $\iota(n)\defeq(n,0)$; the colour $0$ is
+\emph{neutral}. For a map $\rho$ from variables to $V$ let
+$\llbracket x\rrbracket_\rho\defeq\rho(x)$ for a variable $x$, and
+$\llbracket t\rrbracket_\rho\defeq\iota(t^{\mathbb N}[\pi\circ\rho])$ for every
+term $t$ that is not a variable, where $t^{\mathbb N}[\pi\circ\rho]$ is the
+standard value of $t$ under the numerical valuation $\pi\circ\rho$. Put
+\[
+ R\bigl((n,c),(m,d)\bigr)\iffdef n=m\ \text{and}\ (c=0\ \text{or}\ d=0\
+ \text{or}\ c=d),
+\]
+and define truth $T(A,\rho)$ by
+\begin{align*}
+ T(s=t,\rho)&\iffdef R(\llbracket s\rrbracket_\rho,\llbracket t\rrbracket_\rho),\\
+ T(\Q{y}B,\rho)&\iffdef\bigl(T(B,\rho[y\mapsto\iota(0)])\Rightarrow
+  \forall n\,T(B,\rho[y\mapsto\iota(n)])\bigr),\\
+ T(\D{x}{y}B,\rho)&\iffdef\exists m\,T(\Q{y}B,\rho[x\mapsto\iota(m)]),
+\end{align*}
+and, for a clause, $T([A;\,y.\,B(y)],\rho)\iffdef\bigl(T(A,\rho)\Rightarrow
+\forall n\,T(B,\rho[y\mapsto\iota(n)])\bigr)$. A sequent, with a context of
+formulas or of clauses, is \emph{colour-valid} if every map $\rho$ from its
+free variables to $V^{+}$ that makes every member of the context true makes
+its conclusion true.
+\end{definition}
+
+The bound variables of $\Q{}$, $\D{}{}$ and clauses receive neutral values,
+the free variables coloured ones. $R$ is reflexive and symmetric and is not
+transitive: $(n,1)$ and $(n,2)$ are both related to $\iota(n)$ and not to
+each other. The reading is a device for proving that sequents are not
+derivable; it is not a structure with equality interpreted by equality.
+
+\begin{lemma}[Properties of the reading]
+\label{comp:lem:colour}
+Let $\rho$ be a map from variables to $V$.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Substitution.}
+ $\llbracket t\subst{s}{x}\rrbracket_\rho\equiv
+ \llbracket t\rrbracket_{\rho[x\mapsto\llbracket s\rrbracket_\rho]}$ and
+ $T(A\subst{s}{x},\rho)\Leftrightarrow
+ T(A,\rho[x\mapsto\llbracket s\rrbracket_\rho])$ for capture-free
+ substitutions.
+\item \emph{Compound formulas ignore colours.} If $A$ has the root $\Q{}$ or
+ $\D{}{}$ and $\pi\circ\rho=\pi\circ\rho'$, then
+ $T(A,\rho)\Leftrightarrow T(A,\rho')$.
+\item \emph{Neutral instances suffice.} If $T(B,\rho[y\mapsto\iota(n)])$ for
+ every $n$, then $T(B,\rho[y\mapsto w])$ for every $w\in V$.
+\item \emph{Coloured lift.} If $E$ is a literal equation and
+ $T(E,\rho[y\mapsto\iota(n)])$, then $T(E,\rho[y\mapsto(n,c)])$ for some
+ $c\in\{1,2\}$.
+\item \emph{Erasure.} If $R((n,c),w)$ then $R(\iota(n),w)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Note first that $\pi\llbracket s\rrbracket_\rho=s^{\mathbb N}[\pi\circ\rho]$
+for every term, and that $R(\iota(n),w)$ holds exactly when $\pi(w)=n$.
+
+(a) For the term statement, if $t\equiv x$ both sides are
+$\llbracket s\rrbracket_\rho$; if $t$ is another variable both are its value;
+otherwise $t\subst{s}{x}$ is not a variable, and both sides are $\iota$ of the
+standard value of $t$ under $\pi\circ\rho$ with $x$ sent to
+$s^{\mathbb N}[\pi\circ\rho]$. The formula statement follows by induction,
+with bound variables renamed away from $s$ and $x$.
+
+(b) By induction on the matrix $B$ simultaneously for $\Q{y}B$ and
+$\D{x}{y}B$; the case $\D{x}{y}B$ reduces to $\Q{y}B$ at the neutral values
+$\iota(m)$, which do not depend on $\rho$. For $\Q{y}B$ with a compound $B$
+the induction hypothesis applies to each $\rho[y\mapsto\iota(n)]$. Let $B$ be
+the equation $s=t$. If a side is not a variable, it is neutral, and by the
+note each $T(B,\rho[y\mapsto\iota(n)])$ depends on $\pi\circ\rho$ only. If
+both sides are variables other than $y$, the closure is $P\Rightarrow P$ for
+one truth value $P$ and holds. If both are $y$, every instance is true. If
+one side is $y$ and the other a variable $a\neq y$, the instance at
+$\iota(n)$ holds exactly when $n=\pi\rho(a)$, which depends on numbers only.
+
+(c) For a compound $B$ use (b) with the value $\iota(\pi w)$. For an equation
+$B$: if no side is the bare variable $y$, or a side is not a variable, the
+truth of $B$ at $\rho[y\mapsto w]$ is its truth at
+$\rho[y\mapsto\iota(\pi w)]$, by the note; $y=y$ is true. In the remaining
+case $B$ is $y=a$ or $a=y$ with a variable $a\neq y$, and the instances at
+$\iota(0)$ and $\iota(1)$ would give $\pi\rho(a)=0$ and $\pi\rho(a)=1$; the
+hypothesis is false.
+
+(d) If $E$ is $y=a$ or $a=y$ with a variable $a\neq y$, then
+$\pi\rho(a)=n$; take for $c$ the colour of $\rho(a)$ if it is not neutral and
+$c=1$ otherwise. In every other case the truth of $E$ does not depend on the
+colour of the value of $y$, as in (c).
+
+(e) $n=\pi(w)$, and the neutral colour is related to every colour.
+\end{proof}
+
+\begin{theorem}[Substitution for a variable on raw terms]
+\label{comp:thm:rawvsub}
+The following rules, with the side conditions of $\Nat$ and of the clause
+calculi, preserve colour-validity.
+\begin{enumerate}[label=(\roman*)]
+\item On raw native sequents: \rulename{Hyp}, \rulename{Refl},
+ \rulename{I0}, \rulename{IS}, \rulename{VSub}, symmetry (from $u=r$ infer
+ $r=u$), substitution for a variable in a formula (from $x=t$ and $A$ infer
+ $A\subst{t}{x}$, for a variable $x$), \rulename{QE}, \rulename{DE},
+ \rulename{DI}, \rulename{QI} and \rulename{WI}.
+\item On raw clause sequents, whose formulas are equations and formulas
+ with the root $\D{}{}$: \rulename{Refl}, \rulename{VSub} and symmetry as
+ in (i), \rulename{Compute}, \rulename{Use}, \rulename{Open} and
+ \rulename{Close} of \cref{disch:def:param}, and the instances of
+ \rulename{Param} in the first and in the third case of $\psi$, that is,
+ all instances except those that join at the root.
+\end{enumerate}
+Consequently no calculus whose rules are among these derives
+\[
+ \It{0}{x}{u}{u}=y\ \proves\ x=y,
+ \qquad\text{nor}\qquad
+ \operatorname{ord}\bigl(\It{0}{x}{u}{u}=y\bigr)\ \proves\ x=y,
+\]
+whereas $\Nat$ derives the first sequent and the calculus $\mathcal P$ of
+\cref{disch:def:param} derives the second (\cref{disch:thm:param}).
+\end{theorem}
+
+\begin{proof}
+Fix a map $\rho$ to $V^{+}$ of the free variables that makes the context of
+the conclusion true; for a rule with an eigenvariable, extend it as stated.
+
+\rulename{Hyp} is immediate, and \rulename{Refl} and symmetry hold because
+$R$ is reflexive and symmetric. In an instance of \rulename{I0},
+\rulename{IS} or \rulename{Compute} the left side is an iterator, hence
+neutral, and the two sides have the same standard value.
+
+\rulename{VSub}: let $x=t$ and $u=v$ be true; the conclusion is
+$v=u\subst{t}{x}$, and $\llbracket u\subst{t}{x}\rrbracket_\rho\equiv
+\llbracket u\rrbracket_{\rho'}$ with $\rho'\defeq\rho[x\mapsto\llbracket
+t\rrbracket_\rho]$ by \cref{comp:lem:colour}(a). If $t$ is a variable, its
+value and that of $x$ lie in $V^{+}$ and are related, so they are equal, and
+$\rho'=\rho$. Otherwise $\llbracket t\rrbracket_\rho=\iota(\pi\rho(x))$, so
+$\rho'$ erases the colour of $x$ and keeps its number. Then
+$\llbracket u\rrbracket_{\rho'}=\llbracket u\rrbracket_\rho$ unless $u\equiv x$,
+since a term that is not a variable has a neutral value determined by
+numbers; for $u\equiv x$ the value $\iota(\pi\rho(x))$ is related to
+$\llbracket v\rrbracket_\rho$ by (e). In every case symmetry of $R$ gives the
+conclusion. The first case of $\psi$ in \rulename{Param} is \rulename{VSub},
+and its third case concludes $r=u$ from $u=r$, which is symmetry. For
+substitution in a formula the same $\rho'$ arises; a compound $A$ is
+unaffected by (b), and in an equation erasing the colour of a bare
+occurrence of $x$ preserves $R$ by (e).
+
+\rulename{QE} and \rulename{Use}: the premises give
+$T(B,\rho[y\mapsto\iota(n)])$ for every $n$ (for \rulename{QE} the base is
+the instance at $\iota(0)$, since $0$ is neutral). By (c) and (a),
+$T(B\subst{t}{y},\rho)$.
+
+\rulename{DE} and \rulename{Open}: the major premise gives $m$ with
+$T(\Q{y}B,\rho[x\mapsto\iota(m)])$. Put $\rho'\defeq\rho[b\mapsto(m,1)]$,
+which makes the context true, since $b$ is not free in it. The local
+assumption $\Q{y}B(b,y)$, or the opened clause $[B(b,0);\,y.\,B(b,y)]$,
+whose reading is the same, is true under $\rho'$: by (a) it is
+$T(\Q{y}B,\rho[x\mapsto(m,1)])$, and by (b) this is
+$T(\Q{y}B,\rho[x\mapsto\iota(m)])$, since $b$ is not free in $\D{x}{y}B$. The
+minor premise gives the conclusion under $\rho'$, and $b$ is not free in it.
+
+\rulename{DI}, and \rulename{WI} or \rulename{Close} in case mode: let
+$w\defeq\llbracket t\rrbracket_\rho$ for the witness $t$ and assume
+$T(B,\rho[x\mapsto w,y\mapsto\iota(0)])$, which is $T(B(t,0),\rho)$ by (a).
+For each $n$ the map $\rho[z\mapsto(n,1)]$ makes the context and $B(t,0)$
+true, since $z$ is fresh, so the premise gives $B(t,\Suc z)$, which is
+$T(B,\rho[x\mapsto w,y\mapsto\iota(n+1)])$. Hence
+$T(\Q{y}B,\rho[x\mapsto w])$, and by (b)
+$T(\Q{y}B,\rho[x\mapsto\iota(\pi w)])$: the number $\pi w$ is a witness for
+$\D{x}{y}B$.
+
+\rulename{QI}, and \rulename{WI} or \rulename{Close} in progress mode at the
+witness $0$: let the literal equation $E(y)$, respectively $E(0,y)$, be true
+at $\iota(0)$. By induction on $n$ in the metatheory, if it is true at
+$\iota(n)$, (d) gives a colour $c$ with truth at $(n,c)$; the map
+$\rho[z\mapsto(n,c)]$ makes the context and the local assumption true, by
+(a), and the premise gives the truth at $\iota(n+1)$. Hence the closure
+holds, and for \rulename{WI} the number $0$ is a witness. No induction for a
+compound formula is used.
+
+By induction on derivations every derivable sequent is colour-valid. Let
+$\rho(x)\defeq(0,1)$ and $\rho(y)\defeq(0,2)$. The iterator
+$\It{0}{x}{u}{u}$ is not a variable and has the standard value $0$, so its
+value $\iota(0)$ is related to $(0,2)$, and the assumption, and its
+assumption clause $[0=0;\,v.\,\cdot\,]$, are true; the conclusion
+$R((0,1),(0,2))$ is false. $\Nat$ derives the sequent by \rulename{I0},
+symmetry and transitivity (\cref{base:lem:eq}), and \cref{disch:thm:param}
+transfers it to $\mathcal P$, where $\tau$ is the identity on equations.
+\end{proof}
+
+\begin{corollary}[Substitution for a variable alone is strictly weaker]
+\label{comp:cor:rawvsub}
+On raw terms, each of the following derives strictly fewer sequents
+$\operatorname{ord}(\tau\Gamma)\proves\tau A$, respectively
+$\Gamma\proves A$, than $\mathcal P$, respectively $\Nat$: the calculus
+$\mathcal P$ with \rulename{Param} restricted to sources that are variables,
+with or without the reversal of the third case of $\psi$ and with or without
+\rulename{Refl}; the five rules of the calculus $\mathcal V$ of
+\cref{disch:def:vsub} read on raw terms, with \rulename{Compute} added; and
+$\Nat$ with \rulename{Tr} replaced by \rulename{VSub} and \rulename{Refl}, also
+with formula-wide substitution for a variable added.
+\end{corollary}
+
+\begin{proof}
+Each calculus derives only sequents derived by the larger one: the rules of
+the first are instances of rules of $\mathcal P$, with \rulename{Refl}
+derived in $\mathcal P$ (\cref{disch:lem:root}); the rules of $\mathcal V$
+are \rulename{Refl}, \rulename{VSub}, \rulename{Use}, \rulename{Elim} and
+\rulename{Intro}, with \rulename{Elim} as \rulename{Open} and \rulename{Intro}
+as \rulename{Close}, and \rulename{VSub} is the first case of
+\rulename{Param}; and the rules of the last are derivable in $\Nat$,
+\rulename{VSub} as one \rulename{Tr} (proof of \cref{comp:lem:rawsound}) and
+formula-wide substitution by \cref{base:thm:leibniz}. All their rules
+preserve colour-validity by \cref{comp:thm:rawvsub}, which also gives the
+separating sequent.
+\end{proof}
+
+\begin{remark}[Scope of the separation]
+\label{comp:rem:rawvsub}
+The separating sequent has an assumption. Every sequent with the empty
+context that $\Nat$ derives is colour-valid, so the reading does not
+separate theorems. Under a map $\rho$ to $V^{+}$, a formula with the root
+$\Q{}$ or $\D{}{}$ has, by \cref{comp:lem:colour}(b), its truth value under
+the neutral map $\iota\circ\pi\circ\rho$, at which $R$ is numerical equality
+and $T$ is the standard reading; and an equation is true exactly when it is
+true in the standard reading, unless it equates two distinct variables,
+which $\Nat$ does not derive. $\Nat$ is sound for the standard reading. The reading also does not exclude another translation into a
+restricted language, or another interpretation. If the zero computation were
+a conversion, the assumption of the separating sequent would become $x=y$:
+the reading does not respect conversion, since the iterator is neutral and
+its normal form $x$ is coloured. This is the reason why
+\cref{disch:thm:vsub} on full normal forms and \cref{comp:thm:vh} on head
+normal forms do not carry over to raw terms with the computation equations
+as axioms. \pkg{head\_conversion} states the theorem for the native rules of
+(i) and the formula-wide corollary, and records 125\,256 finite checks of
+the reading; the clause rules of (ii) and \cref{comp:cor:rawvsub} are the
+application of the same reading to the calculi of
+\cref{disch:sec:param,disch:sec:vsub}.
 \end{remark}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -3511,7 +4190,7 @@ an implementation change for an unchanged calculus; its sizes are in
 \section{Checker sizes}
 \label{comp:sec:sizes}
 
-This section collects the measurements of all ten packages, by the protocol
+This section collects the measurements of all eleven packages, by the protocol
 of \cref{base:sec:measure}. Every row of \cref{comp:tab:sizes} is a complete
 standalone program, with its input handling, its validation of syntax and
 scope, its substitution and normalization, all rules and its output. The
@@ -3606,6 +4285,10 @@ $\mathsf{F}$, goal-directed, fuel & 1010 & 1044 & 3189 & 1001\\
 \multicolumn{5}{@{}l}{\pkg{atomic\_seed\_refinement} (tagged, closed native goals)}\\
 Matched raw control: identity normalizer, \rulename{I0} as seventh rule & 1319 & 1507 & 5348 & --\\
 $\mathsf{A}_6$ & 1333 & 1521 & 5373 & --\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{head\_conversion} (open native sequents, docstrings removed)}\\
+Matched control: full normalization of the endpoints & 1086 & 1150 & 3165 & --\\
+$\mathsf{VH}$ & 1059 & 1119 & 3102 & --\\
 \end{longtable}
 
 \paragraph{The matched differences.}
@@ -3663,6 +4346,11 @@ everything else, is as follows.
  control, which has the same syntax, raw metadata, validation and
  substitution, is larger by 14 tokens, 14 AST nodes and 25 bytes. The
  deletion of the zero computation rule does not pay for the normalizer.
+\item \pkg{head\_conversion}: $\mathsf{VH}$ against its matched control,
+ which has the same sequent interface, raw hints, rule families and command
+ line and normalizes the endpoints fully, saves 27 tokens, 31 AST nodes and
+ 63 bytes. The control is not the smallest earlier checker with full
+ normalization.
 \end{itemize}
 
 \paragraph{The checkers.}
@@ -3723,6 +4411,16 @@ The matched control has the identity normalizer and a seventh tag for
 derivation of \cref{comp:thm:asizero}, and the checker of $\mathsf{A}_6$
 rejects the tag for \rulename{I0}.
 
+The checker of $\mathsf{VH}$ in \pkg{head\_conversion} reads the number of
+free variables, a context, a goal and a proof, and certifies the open
+sequent; a theorem has the empty context. Formulas must have head normal
+endpoints; hints are raw and are validated for scope and sort before any
+evaluation, also in parts that a zero contraction later erases. $\Q{}$ binds
+one de Bruijn index, $\D{}{}$ two, with the universal coordinate at $0$, and
+the iterator one, in its body. The normalizer does not recurse below a
+successor and keeps the initializer and the body of a neutral iterator
+raw.
+
 \paragraph{Executed checks.}
 The packages record the following runs, none with an unexpected outcome;
 they support the implementations and are not proofs of the theorems.
@@ -3751,13 +4449,17 @@ hypothesis, the zero computation at a compound initializer, and a case
 introduction at the raw witness $\It{0}{0}{u}{0}$ that uses its case
 assumption, rejected when the witness is changed to $0$; with the
 malformed inputs and the control checks, 54 executions in ordinary and
-optimized Python.
+optimized Python. \pkg{head\_conversion}: 99 construction, rejection and
+command-line checks of the two checkers, in ordinary and optimized Python;
+6\,397 checks of an independent normalizer (idempotence, left coherence,
+stability of single steps under substitution, packet rows, and the failure
+of the stronger laws); and 125\,256 finite checks of the colour reading.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Further questions}
 \label{comp:sec:questions}
 
-This section collects, from all ten packages, the questions that they
+This section collects, from all eleven packages, the questions that they
 leave open, the claims that they state without proof and the results that
 they report as not achieved.
 
@@ -3801,6 +4503,9 @@ they report as not achieved.
  nodes and 479 bytes in three different programs. No minimality of six
  rules is claimed: the chapter already contains other six-rule calculi with
  stronger normalization.
+\item \pkg{head\_conversion} reports the same for $\mathsf{VH}$: its checker
+ is larger than the compact guarded programs, whose separate minima at its
+ snapshot are 244 tokens, 267 AST nodes and 478 bytes.
 \item The Lean formalization covers the calculi as recorded in the remarks
  of this chapter. It does not cover, in the forms stated here: the clause
  calculi $\mathsf{C}_{\mathrm{Step}}$ and $\mathsf{C}_{\mathrm{Seed}}$ with
@@ -3808,8 +4513,9 @@ they report as not achieved.
  unit normalization, $\mathsf{Z}_6$ and $\mathsf{S}$ with the single
  introduction, the fresh-zero lemma and the compound envelope, the fuelled
  relation of \cref{comp:prop:fuel}, the raw-metadata transfer of
- \cref{comp:thm:rawtransfer} and the calculus $\mathsf{A}_6$, and any of the
- Python checkers.
+ \cref{comp:thm:rawtransfer} and the calculus $\mathsf{A}_6$, the head
+ normalizer and $\mathsf{VH}$, the colour reading of
+ \cref{comp:thm:rawvsub}, and any of the Python checkers.
 \end{itemize}
 
 \subsection{Claims stated without proof}
@@ -3908,6 +4614,28 @@ derivation of the zero computation needs a body that is not normal. It also
 leaves open a compact implementation of atomic contraction in a level coding
 (\cref{comp:rem:rebasing}), with its sort test and the treatment of dummy
 slots, that is smaller than the present compact checkers.
+\end{question}
+
+\begin{question}[Substitution for a variable: theorems and translations]
+\Cref{comp:thm:rawvsub} separates the calculi of \cref{comp:cor:rawvsub}
+from $\Nat$ and $\mathcal P$ by a sequent with an assumption; their
+consequence relations are strictly weaker. The colour reading validates
+every theorem of $\Nat$ with the empty context (\cref{comp:rem:rawvsub}).
+Do these calculi derive every theorem of $\Nat$ with the empty context, or
+does a theorem separate them? \pkg{head\_conversion} asks whether
+substitution for a variable on raw terms becomes complete through another
+public translation, which would need a faithful translation with both
+formula round trips.
+\end{question}
+
+\begin{question}[The least conversion for the packet]
+The proof of \cref{comp:thm:vh} uses the closed rows of the packet and left
+coherence under raw substitution, and head normalization supplies both.
+\pkg{head\_conversion} asks whether a smaller certified reduction relation,
+which performs only the conversions used by a proof, suffices with its
+validation and its certificate contract counted, and whether head conversion
+can be combined with the compact arity coding for a joint improvement of all
+three coordinates.
 \end{question}
 
 \begin{question}[Classes of provable bases]

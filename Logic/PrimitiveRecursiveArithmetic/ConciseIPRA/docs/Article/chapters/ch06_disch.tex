@@ -3474,7 +3474,8 @@ bound on the size of the translation is claimed.
 \section{A constancy rule in place of induction}
 \label{disch:sec:const}
 
-This section draws on an appendix of \pkg{substitutive\_discharge}. It is
+This section draws on an appendix of \pkg{substitutive\_discharge}, and
+\cref{disch:sec:const-bool} on \pkg{boolean\_constancy}. It is
 independent of the discharge rule: it presents an arithmetic whose one
 arithmetical inference has no induction hypothesis and no step function.
 The price is a primitive Boolean equality.
@@ -3721,6 +3722,123 @@ $d(a,\Suc b)=\mathit{pd}(d(a,b))$; the missing commutation is a fusion
 property. No checker is supplied for this theory, and nothing is claimed
 about its size.
 \end{remark}
+
+\subsection{Constancy for Boolean tests}
+\label{disch:sec:const-bool}
+
+For a term template $g(x,\vec p)$ put
+$b_g(x,\vec p)\defeq\delta\bigl(g(x,\vec p),1\bigr)$. The rule
+\begin{equation}
+ \infrule{\Gamma\proves b_g(\Suc z,\vec p)=b_g(z,\vec p)}
+         {\Gamma\proves b_g(t,\vec p)=b_g(0,\vec p)}\ \rulename{BConst},
+ \label{disch:eq:bconst}
+\end{equation}
+with $z$ fresh for $\Gamma$, $t$ and the parameters $\vec p$, is the
+instance of \rulename{Const} \eqref{disch:eq:construle} for the templates
+$f\equiv b_g$, whose outermost constructor is the equality test against the
+numeral $1$. The restriction is syntactic; it does not assert that an
+arbitrary term is Boolean. The \emph{Boolean constancy theory} is the
+theory of \cref{disch:def:const} with \rulename{BConst} in the place of
+\rulename{Const}. \Cref{disch:lem:const-elem,disch:lem:const-bool} do not
+use \rulename{Const} and hold in it.
+
+\begin{proposition}[Boolean tests suffice]
+\label{disch:prop:const-bool}
+Over the axioms \eqref{disch:eq:r0}--\eqref{disch:eq:split}, under every
+context of first-order formulas:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item \rulename{BConst} derives \rulename{Const};
+\item for every quantifier-free $A(n)$, \rulename{BConst} derives the
+ induction rule of \cref{disch:thm:const-ind} with one application of
+ \rulename{BConst}, by the accumulator
+ \[
+  a(n)\defeq R\bigl(n,1;\,i,u.\,\sel(q(i),u,0)\bigr),\qquad
+  F(n)\defeq\sel\bigl(q(n),a(n),0\bigr),\qquad q(n)\defeq q_{A(n)} .
+ \]
+\end{enumerate}
+Consequently \rulename{BConst}, \rulename{Const} and quantifier-free
+induction are interderivable over this base, the Boolean constancy theory
+and the theory of \cref{disch:def:const} have the same theorems in the same
+language, and the Boolean constancy theory is bi-interpretable and
+equiconsistent with $\iPRA$, with whole domains, actual equality and both
+numerical composites provably the identity.
+\end{proposition}
+
+\begin{proof}
+All case distinctions below are eliminations of the disjunctions of
+\cref{disch:lem:const-elem,disch:lem:const-bool}; none is a distinction of
+cases on a number, and no induction is used.
+
+(a) Let $\Gamma\proves f(\Suc z)=f(z)$, and put
+$q(n)\defeq\delta(f(n),f(0))$ and $g(n)\defeq\sel(q(n),1,0)$. Congruence
+gives $q(\Suc z)=q(z)$, hence $g(\Suc z)=g(z)$ and
+$b_g(\Suc z)=b_g(z)$, with $z$ fresh for the parameters of $f$, which are
+those of $g$. By \eqref{disch:eq:deltabool}, $q(0)=0$, so $g(0)=1$ and
+$b_g(0)=\delta(1,1)=0$. \rulename{BConst} gives $\delta(g(t),1)=0$, and
+\eqref{disch:eq:deltabool} gives $g(t)=1$. If $q(t)=1$, then
+$g(t)=\sel(1,1,0)=0$ and $0=1$, against \eqref{disch:eq:sep}. So $q(t)=0$,
+that is, $f(t)=f(0)$.
+
+(b) Let $\Gamma\proves A(0)$ and $\Gamma,A(z)\proves A(\Suc z)$, the
+parameters of $A$ being suppressed. The bound variables $i,u$ do not occur
+in $q$, and the computations \eqref{disch:eq:r0}, \eqref{disch:eq:rs} give
+\[
+ a(0)=1,\qquad a(\Suc n)=\sel(q(n),a(n),0)=F(n),\qquad
+ F(\Suc n)=\sel\bigl(q(\Suc n),F(n),0\bigr).
+\]
+\emph{Stationarity}, with no induction hypothesis: if $q(z)=0$, then $A(z)$
+by \cref{disch:lem:const-bool}, the step gives $A(\Suc z)$, so
+$q(\Suc z)=0$ and $F(\Suc z)=\sel(0,F(z),0)=F(z)$. If $q(z)=1$, then
+$F(z)=\sel(1,a(z),0)=0$, and $F(\Suc z)=\sel(q(\Suc z),0,0)=0$ in both
+cases $q(\Suc z)=0$ and $q(\Suc z)=1$. So $\Gamma\proves F(\Suc z)=F(z)$,
+and congruence gives $\Gamma\proves b_F(\Suc z)=b_F(z)$.
+\emph{Conclusion}: \rulename{BConst} with $g\equiv F$ gives
+$\delta(F(t),1)=\delta(F(0),1)$. The base gives $q(0)=0$, so
+$F(0)=a(0)=1$ and $\delta(F(0),1)=0$; hence $F(t)=1$ by
+\eqref{disch:eq:deltabool}. If $q(t)=1$, then $F(t)=0$ and $0=1$, against
+\eqref{disch:eq:sep}. So $q(t)=0$, and $A(t)$ holds.
+
+\rulename{BConst} is an instance of \rulename{Const}, and quantifier-free
+induction derives \rulename{Const} by induction on the equation
+$f(n)=f(0)$, as in the proof of \cref{disch:thm:const-ipra}. So the three
+rules are interderivable, and the two theories, which have the same
+language and the same axioms, have the same theorems. The interpretations
+of \cref{disch:thm:const-ipra} and the proofs of their composites
+therefore apply unchanged.
+\end{proof}
+
+Part (a) together with \cref{disch:thm:const-ind} already gives the
+equivalence; part (b) is a direct recovery of induction that replaces the
+proof of \cref{disch:thm:const-ind}. Its accumulator absorbs the value $0$:
+once a test fails, $F$ stays $0$, and while the tests hold it carries the
+initial value $1$. Stationarity is a finite propositional case argument; it
+needs no statement that $a(n)$ is Boolean and no identity of addition. The
+proof of \cref{disch:thm:const-ind} instead adds a flag to an accumulator
+counting the downward changes of the test and excludes $\Suc a(t)=0$.
+
+\begin{remark}[Stationarity over an interface]
+\label{disch:rem:const-stationary}
+\Cref{obs:prop:stationary} proves the same equivalence between
+stationarity, which is \rulename{Const} with passive parameters, and
+quantifier-free induction, over a different base: full primitive recursive
+arithmetic with coverage and with assumed truth flags $\chi_A$. Its
+accumulator $\beta$ is clamped, and a case split on $n$ by coverage proves
+the Boolean invariant $(*)$ there before stationarity can be shown. Over
+\eqref{disch:eq:r0}--\eqref{disch:eq:split} coverage is not available
+before induction is recovered, and the truth flags are the terms $q_A$ of
+\cref{disch:lem:const-bool}, derived from the split. The selector
+accumulator of \cref{disch:prop:const-bool}(b) needs neither the coverage
+nor an invariant, and its rule is applied only to Boolean tests. The
+remark following \cref{obs:prop:stationary} concerns the installation of
+the interface in the scalar kernel; it does not apply here, because the
+split \eqref{disch:eq:split} is an axiom of the base and is not derived
+from a reflection theorem proved with induction.
+\end{remark}
+
+\pkg{boolean\_constancy} supplies no checker for the Boolean constancy
+theory, and nothing is claimed about the size of one; its programs check
+the native kernel. Neither the proposition nor the theory is formalized in
+Lean.
 
 \section{Checkers and program equivalences}
 \label{disch:sec:impl}
@@ -4042,20 +4160,24 @@ input alphabet.
 \label{disch:sec:further}
 
 This section collects the questions, limits and unproved claims stated by
-the eleven packages named at the beginning of \cref{disch:sec:impl}, and one
-conjecture recorded in the repository.
+the eleven packages named at the beginning of \cref{disch:sec:impl} and by
+\pkg{boolean\_constancy}, and one conjecture recorded in the repository.
 
-\begin{question}[Substitution for a variable on raw terms]
+\begin{question}[Substitution for a variable on raw terms: theorems]
+\label{disch:q:rawvsub}
 On full normal forms substitution for a variable is the only equality rule
 needed (\cref{disch:thm:vsub}). On raw terms the rows of a packet are not
 literal, and \rulename{Param}, which also joins two equations at the root,
-suffices (\cref{disch:thm:param}). Is substitution for a variable alone,
-without joining at the root, strictly weaker on raw terms? The repository
-records the affirmative answer as a conjecture. With the additional rule
-\rulename{Alias}, substitution for a parameter in the backward direction
-suffices (\cref{disch:cor:alias-newest}); \pkg{alias\_back} states that
-this does not settle the conjecture, which concerns substitution for a
-variable without such a rule.
+suffices (\cref{disch:thm:param}). For open sequents the repository's
+conjecture is now settled: substitution for a variable alone, without
+joining at the root, is strictly weaker on raw terms
+(\cref{comp:thm:rawvsub,comp:cor:rawvsub}, from \pkg{head\_conversion}); the
+sequent $I(0,x;u.u)=y\proves x=y$ separates them. The reading used there
+validates every theorem of $\Nat$ with an empty context, so it does not
+separate theorems. Do the calculi with substitution for a variable alone
+derive every theorem of $\Nat$ in the empty context? With the additional
+rule \rulename{Alias}, substitution for a parameter in the backward
+direction suffices for all sequents (\cref{disch:cor:alias-newest}).
 \end{question}
 
 \begin{question}[The least equality interface on raw terms]
@@ -4111,7 +4233,19 @@ and does not cost more in the checker than it saves?
 \begin{question}[The equality split]
 Can the axiom \eqref{disch:eq:split} of \cref{disch:def:const} be derived
 from a small recursion base and \rulename{Const} alone? The split must not
-be assumed during such a bootstrap.
+be assumed during such a bootstrap. \pkg{boolean\_constancy} asks the same
+for \rulename{BConst} \eqref{disch:eq:bconst}; an equality test that is
+correct in the standard model is not enough, since its reflection theorem
+has to be proved without the induction that the rule is meant to recover.
+\end{question}
+
+\begin{question}[A checker for Boolean constancy]
+\label{disch:q:const-bool}
+Do checkers of the theory of \cref{disch:def:const} and of the Boolean
+constancy theory, with the same logical kernel, recursor coding and input
+validation, differ in size, or does the test of the outer equality
+$\delta(g,1)$ cost more than the restriction removes? No checker of either
+theory exists. (\pkg{boolean\_constancy}.)
 \end{question}
 
 \begin{question}[Size of the translations]
@@ -4190,7 +4324,8 @@ The following are stated by the packages as not achieved or not claimed.
  and after \cref{disch:thm:inferred,disch:thm:newest}. Not formalized are:
  the four families of $\mathcal K$ on the canonical recursor syntax, the
  five families of $\mathcal P$ together, the positional calculus
- $\mathcal U_*$, the constancy theory of \cref{disch:sec:const}, and the
+ $\mathcal U_*$, the constancy theory of \cref{disch:sec:const} and its
+ Boolean variant (\cref{disch:prop:const-bool}), and the
  calculi $\Nat_{\mathrm{AB}}$, $\mathcal B_{\nu}$ and $\mathcal A$ with the
  compilers of \cref{disch:thm:alias-compiler,disch:thm:alias-rank,disch:thm:alias-atomic}.
  \pkg{alias\_back} and \pkg{equation\_aliases} ask for one formalization of

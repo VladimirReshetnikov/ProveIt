@@ -1,0 +1,87 @@
+Independent semantic review of compact477.py
+Reviewer: mathematical_reduction assistant instance
+Date: 2026-11-12
+
+Reviewed exact transformation
+----------------------------
+research_kernel/compact477.py is research_audit/selected/compact_header478.py
+with bool(m or 3 % len(a)) replaced by any((m, 3 % len(a))).
+The instruction and header syntax, opener, recursive checker and driver are
+otherwise unchanged. The compact interface promises finite integer/list
+certificate trees and a canonical closed guarded Eq/D public goal. It is not
+a complete JSON alphabet/public grammar validator.
+
+Theorem 1: finite accepting trace inclusion
+------------------------------------------
+Every successful finite execution of compact477 on the promised alphabet is
+a successful finite execution of compact_header478 on the same input.
+
+Proof. Couple both executions with the same initial input and state. Away
+from the replaced subexpression their operations coincide. At the changed
+subexpression, a successful execution of the new checker has already
+evaluated e = 3 % len(a) without an exception. Both e and m are built-in
+values with ordinary truth values, and any((m,e)) = bool(m or e). Evaluation
+of len(a) and the remainder has no side effects. The multiplication by the
+new floor, the opening, the context extension, and the recursive call are
+therefore identical. Induction on the finite execution gives the same final
+successful exit and ACCEPT output in the old checker. This argument does
+not require the old checker to evaluate e when m is true.
+
+The converse is not asserted. Eager evaluation can fail where the old
+short-circuit expression did not evaluate len(a). In particular, the
+inherited empty-auxiliary-goal certificate is accepted by the old checker
+and rejected by the new one. Calling this an exact raw-trace equivalence
+would be incorrect.
+
+Theorem 2: canonical completeness is preserved
+---------------------------------------------
+Every proof produced by the inherited canonical guarded-calculus compiler
+can be accepted by compact477, with header [goal,0].
+
+Proof. A genuine formula has root arity 1 (D), 2 (equation), or 3 (Q).
+Canonical instantiation preserves the root arity. Thus every genuine
+non-hypothesis goal encountered by the canonical compiler is a nonempty
+array. A major is either such a genuine formula or the neutral marker 0;
+the marker is discharged immediately because every context contains 0, and
+no instruction or selector is then evaluated. In each introduction,
+computation and elimination of a genuine formula, e = 3 % len(a) is defined.
+The two selectors are equal. Therefore the canonical successful proof
+trace in the old checker is also a successful trace in the new checker.
+This establishes the same theorem set, not equality of all raw certificate
+languages. Completeness still depends on the inherited canonical compiler
+and its proof; finite tests alone do not establish that premise.
+
+Header lemma
+------------
+The top-level header supplies an integer floor k. Any successful canonical
+closed guarded public goal has k <= 0.
+
+Proof. If the goal is a bare closed equation, a closed term has a literal
+zero in a numerical position: descend the child of S, or the counter of I,
+until reaching the finite term's base. If the goal contains D, choose its
+deepest atomic matrix. The guarded public grammar supplies a literal-zero
+initializer in its iterator guard. Thus the initial complete traversal
+reaches a numerical scalar 0 at an odd depth. At k > 0 this scalar fails
+k <= 0 < depth, so the default opener tries to instantiate the missing
+image, represented by a function object; the operation raises. Hence the
+checker cannot accept such a goal at a positive initial floor.
+
+At k <= 0 the extra initial negative integer names are arbitrary ambient
+parameters. The native soundness argument is uniform in their valuations.
+The initial hypothesis 0 reads as truth, and the public conclusion is closed,
+so these parameters add no axiom or closed theorem. Initial k = 0 remains
+available for every compiled proof, proving completeness.
+
+This header lemma does not apply to arbitrary native Eq/D goals with no
+protected zero, nor to arbitrary raw goals. In particular the header must
+not be transferred unchanged to the fully validated native checker. The
+integer/list and guarded-public-language promises are material hypotheses.
+
+Claim scope
+-----------
+The new result is a composition of two existing implementation ideas and a
+one-byte reduction against the selected 478-byte header control. It deletes
+no arithmetic or logical axiom and does not lower all compact coordinates.
+The candidate inherits the guarded theory's full iPRA bi-interpretation;
+these arguments are a checker-level simulation and completeness transfer,
+not a new independent formalization of that interpretation.

@@ -1,0 +1,247 @@
+Zero-alias presentation: independent proof and implementation audit
+Pinned source: f2e1d0f2d29042fa2d76244639c13425c46d16b4
+Audited candidate: agent_checker/alias_inverted.py
+
+STATUS AND SCOPE
+
+The mathematical result below is a conservative definitional change of the
+public alphabet, together with an unchanged proof protocol and an explicitly
+charged initial equality. It is not deletion of an arithmetic axiom.
+
+The precise complete-checker statement is:
+(S) every accepted raw goal has an ordinary reading provable in iPRA;
+(C) every abstract native theorem has an accepted distinguished canonical
+encoding in the new alphabet.
+
+We do NOT claim that every redundant spelling admitted by the sorted public
+grammar has a certificate whenever its ordinary reading is true/provable.
+The grammar admits references to administrative dummy slots, whereas the
+distinguished canonical encoder never uses them. Upstream's base completeness
+proof is stated for the encoder's image. The decoded theorem set is exactly
+the intended native theory, which is sufficient for its stated bi-interpretation.
+
+1. ABSTRACT THEORIES
+
+Write N_0 for the inherited full native calculus over 0,S,I and Eq,Q,D, or
+its Q-free public form; use the ordinary realization T_eq when discussing
+models. Write N_0[c] for its expansion by an extra fixed numerical constant c,
+and E for c=0. Let N_c be the literal renaming of the public constant 0 to c.
+Its terms are x,c,S(t),I(n,a;u.h); its public formulas are equations and D.
+The ordinary meaning of D in N_c is
+  D_{x,y}B := exists x (B(x,c) -> forall y B(x,y)).
+Its two iteration equations use c as the initial count, its contradiction is
+c=S(c), and its logic macros are the inherited macros with 0 replaced by c.
+
+The auxiliary language of the certificate checker still has the old zero 0
+and the original computations and rules, together with the initial equality
+E. Therefore auxiliary D uses the old 0. Under E this agrees with the public
+D reading: equality substitution gives B(x,c) <-> B(x,0), so their antecedents
+and their whole D formulas are equivalent.
+
+The public theory N_c is a renaming of N_0, and hence inherits its whole-domain,
+actual-equality bi-interpretation with iPRA. The checker establishes the same
+public consequences by proving them in N_0[c]+E. It does not ask the public
+user to trust an unimplemented translation: E occurs literally in its initial
+context, and the existing proof instructions can use it.
+
+2. CONSERVATIVE DEFINING-EQUALITY LEMMA
+
+For a formula A over 0,c,S,I write bar(A) for A[c:=0], and likewise for contexts.
+Then, for every finite context Gamma and formula A,
+
+  N_0[c], E, Gamma |- A  iff  N_0, bar(Gamma) |- bar(A).
+
+Left to right: translate the native derivation, not its encoded certificate,
+by the uniform replacement c:=0. Computation, equality, logical and equation-
+induction rules remain valid; c is a fixed parameter and no binder captures
+it. E becomes 0=0, which N_0 proves, and cut eliminates that assumption.
+If the source uses the restricted-source auxiliary calculus A-minus, first
+embed it into unrestricted N_0; literal-zero source restrictions need not be
+preserved by this substitution.
+
+Right to left: regard the given derivation as a derivation in N_0[c]. From E,
+full equality substitution gives each A <-> bar(A), also under every Q or D
+binder. Thus convert the hypotheses Gamma to bar(Gamma), apply the given
+derivation, then convert bar(A) to A.
+
+The required equality substitution is the already established full Leibniz
+rule of the native calculus. If desired its extension to c can be checked
+directly: term congruence is an induction on terms; at an iterator the bound
+state variable is fresh for c and the replacing term. At a Q or D formula,
+open the binder, apply the induction hypothesis to its matrix, and close it
+again using the inherited logical rules and binder congruence. Constants
+remain fixed throughout. The source restriction in A-minus has its inherited
+admissibility proof, which is schematic in all fixed parameters and therefore
+still applies with c in the language.
+
+Consequences: this is equivalence of open consequence relations, not merely
+equiconsistency or a theorem-level/Pi_2 conservation statement. Both numerical
+domains are the full number domain, equality is actual equality, and the
+graph of each domain round trip is x=y. Formula round trips are the inherited
+round trips for N_0 plus this explicit defining-equality lemma.
+
+3. RAW ALPHABET AND DECODER
+
+The inherited scalar codec uses negative integers for rigid eigenparameters,
+positive odd integers 3+2j for protected slot j, unary arrays for S or D by
+sort, binary formula arrays for equations, and ternary term arrays for I.
+Every term position has odd depth at least 3. The opening operation retains
+an integer a when k <= a < d, with k the current nonpositive floor.
+
+Use the parametric decoder of ch11_cert.tex, cert:prop:reserved: the reserved
+raw leaf 1 at a term position denotes the new global constant c. Raw leaf 0
+continues to denote auxiliary zero. Raw leaf 2 may denote a second arbitrary
+constant, or may be specialized to zero; it is excluded from public goals
+and is irrelevant to completeness. Positive odd protected coordinates >=3
+have precisely their previous binding meanings. Dummy slots retain their
+old zero reading. A scalar at a formula position has the old neutral reading.
+
+The new distinguished encoder sends the public zero constant c to raw 1.
+It is otherwise the inherited canonical encoder and never refers to a dummy
+slot. Thus it is exactly replacement of term leaves 0 by 1 in the old
+distinguished encoding. This statement is about encoded EXPRESSIONS only,
+not complete certificates: their dispatch markers and their auxiliary old-zero
+terms retain their original roles.
+
+At every term position, raw 1 lies in [k,d) and is retained by every opening.
+It is never the hole. An inserted term is checked at depth 3, where raw 1 is
+again retained, so copying it below further binders does not capture it. The
+semantic opening, exposure, fresh-parameter and supply lemmas therefore extend
+with c fixed. This is already proved in the source's cert:prop:reserved, even
+for TWO new constants. No new raw-decoder theorem is being silently assumed.
+
+4. INITIAL CONTEXT
+
+The candidate starts at floor 0 with g=[0,[1,0]]. The first member is the
+existing neutral formula (ordinary reading 0=0). The second is precisely E,
+whose parametric reading is c=0. Both trees are closed at floor 0. No
+eigenparameter has been allocated by adding E, so the correct initial floor
+remains 0. The program keeps k explicitly; it does not reconstruct k from
+the old formula 1-len(g). With two initial entries the corresponding length
+invariant would instead be k=2-len(g).
+
+The soundness invariant of the protocol is stated for an arbitrary list g of
+closed formulas, not for a singleton only (cert:thm:base-sound and subsequent
+native/parametric refinements). Thus an accepting run derives its goal's
+parametric reading from E. By the defining-equality lemma this yields an old
+native theorem when c is read as zero. The added equality is NOT a numerical
+contradiction: raw 1 is a syntactic constant code, not the numeral S(0).
+
+The inherited failure result for a relaxed validator says exactly that, in
+the unchanged old kernel and initial context, [1,0] has no certificate. The
+parametric decoder can give c a nonzero value. Our checker explicitly supplies
+the missing defining equality, and its source size is counted. Hence that
+countermodel is excluded for a stated, charged reason.
+
+5. EXACT TYPING AND PUBLIC GOAL CHECK
+
+The candidate retains the whole-input printed-form test. For standard JSON
+values, str(p).strip('0123456789-[], ') is empty exactly when all nodes of p
+are arrays or exact integers, apart from top-level exact integers which are
+then rejected because they have no pop method. Every string occurring inside
+an array contributes quotation marks; booleans/null/floats/objects contribute
+forbidden characters. An empty top-level array is rejected by pop. Thus the
+driver accepts only a nonempty array of integer/array trees, including all
+unused packets.
+
+If the stripped string is nonempty, q is a string and q() fails; if it is
+empty, q is p.pop. This is equivalent to the old inverted Boolean gating,
+with the same full-input validation and no eval or hidden dependency.
+
+During the first call v=1. The array condition is unchanged: at depth d,
+arity must be 1 or 2+(d mod 2). The scalar test is
+  k <= a < d and v <= (d % 2 & a).
+At initial k=0,v=1 this holds exactly when d and a are odd and 0<a<d.
+Therefore public leaves are c=raw1 or in-scope positive odd slots >=3.
+In particular 0 and2, negative/unbound leaves, every scalar at a formula
+position, and forbidden array arities are rejected. The missing-image path
+forces rejection rather than silently replacing an invalid goal leaf.
+
+After the first scan v becomes 0 before ANY major proof or subsequent
+opening. For every integer a and integer depth d, (d%2)&a is 0 or1, so
+0 <= ((d%2)&a) is always true. Thus the changed parity test imposes no new
+restriction in raw proof mode. All proof instructions use the inherited
+untyped raw protocol.
+
+The first scan completely traverses the goal before membership is checked.
+Consequently adding E to g cannot let a malformed goal evade validation.
+
+6. IMPLEMENTATION CONTROL FLOW
+
+The audited source uses a named def c which returns None on every successful
+call. The previous lambda version returned either True (membership success)
+or a nonempty list (recursive success). The old expression
+  c(g,m,k,...) and m*3 or H
+is therefore m*3 or H after a successful major check. The new expression
+  c(g,m,k,...) or m*3 or H
+has precisely the same value because the new call returns None. Both evaluate
+the major before the export, and both propagate a failed major as failure.
+If the checked goal is already in g, the named function falls through and
+returns None without reading an instruction. Otherwise it reads exactly one
+instruction and makes the same continuation call. Induction on successful
+finite calls establishes equivalent control flow after matching contexts.
+
+The assignment (v:=0) is evaluated as an argument of the major call, after
+the goal scan and before the later openings. The opener i closes over v and
+k in its own call of c, so it sees v=0 thereafter, and it sees the decreased
+k before the newly opened hypothesis and the continuation goal are formed.
+The decrement k:=~-k is k-1 for integer k. This is the crucial scope order;
+it was not deleted or moved.
+
+The main candidate never mutates g. Every continuation receives g+[entry],
+a new list; every major receives the current list without mutation. The
+input stack p alone is mutated by pop, as in the inherited protocol. The
+alternative alias_context.py intentionally mutates g and would need a
+different invariant; this audit and theorem concern alias_inverted.py.
+
+7. COMPLETENESS AND CERTIFICATE COMPILATION
+
+Let A be any theorem of the abstract public theory N_c, and let A_0 be its
+literal renaming c:=0. By the inherited equivalence, A_0 has a derivation in
+the old native calculus and in its source-restricted auxiliary presentation.
+Work now with the extra fixed constant c and hypothesis E. The defining-
+equality lemma gives A from A_0 by equality transport through the whole
+formula, including nested binders. Equivalently compile a derivation of
+E |- A in the expanded native calculus.
+
+The inherited canonical compiler extends verbatim to this fixed constant:
+encode c by raw1, which is in scope at every term depth and is true-valued.
+Canonical templates and openings commute because c is never exposed as a
+hole. Computation instructions still use raw0 at their actual zero counter;
+an initializer c is a true-valued term and uses the ordinary computation
+branch. The certified-zero repair applies to auxiliary literal0 exactly as
+before. In introduction instructions the case/progress control markers are
+unchanged; the witness is an expression field and may contain c. No extra
+induction rule or broader induction class is introduced.
+
+The compiler's stronger induction hypothesis permits arbitrary retained
+contexts containing the encodings of the assumptions (see
+cert:thm:base-complete). Instantiate it with g=[0,[1,0]] at floor0. The initial
+axiom is already retained, so the compiler uses membership when E is needed.
+If the extra retained axiom causes a goal to be solved earlier, the compiler
+prunes that subderivation; it does not leave an obsolete block of instructions
+to be consumed by the following subproof. Thus completeness is existential
+certificate generation, not reuse of the same old JSON stack.
+
+The goal enc(A) passes the new public validator by induction on A. This
+establishes (C). Together with (S), the images under ordinary decoding of all
+accepted goals are exactly the abstract native theorems. Open consequence
+equivalence follows from Section2 (or by the inherited deduction/quantifier
+macros for a closed-theorem interface).
+
+8. RELATION TO PREVIOUS WORK AND LIMITATIONS
+
+The source's uniform_zero package already encodes zero by1, but changes the
+opener so that a retained false scalar is normalized to1. Our candidate keeps
+the opener and all arithmetic proof instructions unchanged, and instead
+charges the explicit initial equality [1,0]. The source's reserved-coordinate
+obstruction explicitly allows this sort of repair if its cost and proof are
+counted. The new saving comes from exchanging a disjunctive public-leaf test
+for a parity test plus that defining equality.
+
+This is a definitional-alphabet reduction, with a small host-language control
+flow improvement. It establishes neither an absolute minimum nor a smaller
+raw guarded checker. Comparisons must identify the changed canonical public
+zero spelling and the same strict whole-input typing obligations. The native
+abstract theory and its iPRA strength are unchanged. No Lean formalization of
+this candidate, its Python semantics, or its compiler is claimed here.

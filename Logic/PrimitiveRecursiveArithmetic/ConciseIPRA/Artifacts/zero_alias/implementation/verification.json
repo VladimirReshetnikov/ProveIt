@@ -1,0 +1,4050 @@
+{
+  "python": "3.12.14",
+  "scope": "Canonical public encodings; arity grammar and entire input alphabet checked",
+  "structural_audit": {
+    "exact_ast_transformation": true,
+    "changes": [
+      "public numerical leaf guard",
+      "fixed c=0 hypothesis",
+      "equivalent malformed-input rejection",
+      "named checker with uniformly null successful return"
+    ]
+  },
+  "metrics": [
+    {
+      "file": "alias_inverted.py",
+      "tokens": 331,
+      "ast_nodes": 373,
+      "normalized_bytes": 625,
+      "source_sha256": "eb2ad612a9f6834d25c7d81c2c17c11ac460a644c209509ef46d12ed419d8af4"
+    },
+    {
+      "file": "checker_readable.py",
+      "tokens": 430,
+      "ast_nodes": 499,
+      "normalized_bytes": 2322,
+      "source_sha256": "2221748d5a51ffddbf26da1a729a4085f1b6382c73051c22f9eeaa181b3c1086"
+    },
+    {
+      "file": "ref/immediate_application/code/checker637.py",
+      "tokens": 344,
+      "ast_nodes": 392,
+      "normalized_bytes": 637,
+      "source_sha256": "c08ef700c290cbf3bb63993ee036d5bdeb9b12e87e04f9592f569980f98ee7fe"
+    },
+    {
+      "file": "ref/verified_refinements/strict/checker.py",
+      "tokens": 334,
+      "ast_nodes": 387,
+      "normalized_bytes": 654,
+      "source_sha256": "004c30c0c7760285647601561400fcdd44db6c25e28074856d1ea1500ec82b1f"
+    },
+    {
+      "file": "ref/immediate_application/code/checker479.py",
+      "tokens": 272,
+      "ast_nodes": 304,
+      "normalized_bytes": 479,
+      "source_sha256": "3c6aff3c403831aa979aa8572770ae5306554c45a9864d03ac005a255d8da59e"
+    }
+  ],
+  "candidate_distinct_cases": 51,
+  "candidate_executions": 204,
+  "candidate_failures": 0,
+  "upstream_distinct_cases": 121,
+  "upstream_executions": 242,
+  "upstream_failures": 0,
+  "without_alias_control": [
+    {
+      "optimized": false,
+      "accepted": false
+    },
+    {
+      "optimized": true,
+      "accepted": false
+    }
+  ],
+  "reference_blob_verification": {
+    "files": 146,
+    "all_matched": true
+  },
+  "candidate_checks": [
+    {
+      "group": "compiled_positive",
+      "fixture": "zero_computation",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "eb91e0eb34672850ac1fee1ba5a5e1f0c75fc9e3426b9c16080585fb56a6f69d"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "zero_computation",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "eb91e0eb34672850ac1fee1ba5a5e1f0c75fc9e3426b9c16080585fb56a6f69d"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "zero_computation",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "eb91e0eb34672850ac1fee1ba5a5e1f0c75fc9e3426b9c16080585fb56a6f69d"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "zero_computation",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "eb91e0eb34672850ac1fee1ba5a5e1f0c75fc9e3426b9c16080585fb56a6f69d"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "zero_computation_false_goal",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "0514c3e397d469bcb295faec4eb3a40fcfce3a3f5ffc833e4fbfec0fdffc86b6"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "zero_computation_false_goal",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "0514c3e397d469bcb295faec4eb3a40fcfce3a3f5ffc833e4fbfec0fdffc86b6"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "zero_computation_false_goal",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "0514c3e397d469bcb295faec4eb3a40fcfce3a3f5ffc833e4fbfec0fdffc86b6"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "zero_computation_false_goal",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "0514c3e397d469bcb295faec4eb3a40fcfce3a3f5ffc833e4fbfec0fdffc86b6"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "zero_computation_missing_certificate",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "e66760eab575356302785123d704132956c8f121ce111877cc387aef8302c4c0"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "zero_computation_missing_certificate",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "e66760eab575356302785123d704132956c8f121ce111877cc387aef8302c4c0"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "zero_computation_missing_certificate",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "e66760eab575356302785123d704132956c8f121ce111877cc387aef8302c4c0"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "zero_computation_missing_certificate",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "e66760eab575356302785123d704132956c8f121ce111877cc387aef8302c4c0"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "successor_computation",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "350b921675cba39ab2cb476de5e1f8b040f4f593c0f91545020bd981b6e0febc"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "successor_computation",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "350b921675cba39ab2cb476de5e1f8b040f4f593c0f91545020bd981b6e0febc"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "successor_computation",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "350b921675cba39ab2cb476de5e1f8b040f4f593c0f91545020bd981b6e0febc"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "successor_computation",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "350b921675cba39ab2cb476de5e1f8b040f4f593c0f91545020bd981b6e0febc"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "successor_computation_false_goal",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "62c33a6c7e5e59b6978295377f691e2e81821942bc36effab8615861716d9519"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "successor_computation_false_goal",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "62c33a6c7e5e59b6978295377f691e2e81821942bc36effab8615861716d9519"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "successor_computation_false_goal",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "62c33a6c7e5e59b6978295377f691e2e81821942bc36effab8615861716d9519"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "successor_computation_false_goal",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "62c33a6c7e5e59b6978295377f691e2e81821942bc36effab8615861716d9519"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "successor_computation_missing_certificate",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "71ed55583ac0bfa60ef4c8fc5e3075cec3a1133d7c53ae4aac40a7be2a735b6b"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "successor_computation_missing_certificate",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "71ed55583ac0bfa60ef4c8fc5e3075cec3a1133d7c53ae4aac40a7be2a735b6b"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "successor_computation_missing_certificate",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "71ed55583ac0bfa60ef4c8fc5e3075cec3a1133d7c53ae4aac40a7be2a735b6b"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "successor_computation_missing_certificate",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "71ed55583ac0bfa60ef4c8fc5e3075cec3a1133d7c53ae4aac40a7be2a735b6b"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "reflexivity",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "b76bb6d40586d15443eb079635743f70b2157717a78cd52e2e1c8c6f4831e062"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "reflexivity",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "b76bb6d40586d15443eb079635743f70b2157717a78cd52e2e1c8c6f4831e062"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "reflexivity",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "b76bb6d40586d15443eb079635743f70b2157717a78cd52e2e1c8c6f4831e062"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "reflexivity",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "b76bb6d40586d15443eb079635743f70b2157717a78cd52e2e1c8c6f4831e062"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "reflexivity_false_goal",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "253a2a4ac1e80a3d9c3bdf299b3a0647e9617854f4a37a1e7e3228c4dcde3585"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "reflexivity_false_goal",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "253a2a4ac1e80a3d9c3bdf299b3a0647e9617854f4a37a1e7e3228c4dcde3585"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "reflexivity_false_goal",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "253a2a4ac1e80a3d9c3bdf299b3a0647e9617854f4a37a1e7e3228c4dcde3585"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "reflexivity_false_goal",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "253a2a4ac1e80a3d9c3bdf299b3a0647e9617854f4a37a1e7e3228c4dcde3585"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "reflexivity_missing_certificate",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "4191b054a47045d87cffb741338c8f094d42b5292bcdc2e9e640b698c9f3015b"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "reflexivity_missing_certificate",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "4191b054a47045d87cffb741338c8f094d42b5292bcdc2e9e640b698c9f3015b"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "reflexivity_missing_certificate",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "4191b054a47045d87cffb741338c8f094d42b5292bcdc2e9e640b698c9f3015b"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "reflexivity_missing_certificate",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "4191b054a47045d87cffb741338c8f094d42b5292bcdc2e9e640b698c9f3015b"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "induction_uses_hypothesis",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "8b06d5b346f2d04afe31992ecc9d76924edd24bfee62c54dcd64fce202665406"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "induction_uses_hypothesis",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "8b06d5b346f2d04afe31992ecc9d76924edd24bfee62c54dcd64fce202665406"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "induction_uses_hypothesis",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "8b06d5b346f2d04afe31992ecc9d76924edd24bfee62c54dcd64fce202665406"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "induction_uses_hypothesis",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "8b06d5b346f2d04afe31992ecc9d76924edd24bfee62c54dcd64fce202665406"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "induction_uses_hypothesis_false_goal",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "142c5c49e995d3d0425393670a7a8e516d9d56f36afab4f9bde325fe85de38ca"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "induction_uses_hypothesis_false_goal",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "142c5c49e995d3d0425393670a7a8e516d9d56f36afab4f9bde325fe85de38ca"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "induction_uses_hypothesis_false_goal",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "142c5c49e995d3d0425393670a7a8e516d9d56f36afab4f9bde325fe85de38ca"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "induction_uses_hypothesis_false_goal",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "142c5c49e995d3d0425393670a7a8e516d9d56f36afab4f9bde325fe85de38ca"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "induction_uses_hypothesis_missing_certificate",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "ce3271037145d7b992feb8c9bf8fc09cf382642cba2d5402d50ed1a8afceacad"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "induction_uses_hypothesis_missing_certificate",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "ce3271037145d7b992feb8c9bf8fc09cf382642cba2d5402d50ed1a8afceacad"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "induction_uses_hypothesis_missing_certificate",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "ce3271037145d7b992feb8c9bf8fc09cf382642cba2d5402d50ed1a8afceacad"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "induction_uses_hypothesis_missing_certificate",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "ce3271037145d7b992feb8c9bf8fc09cf382642cba2d5402d50ed1a8afceacad"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "nested_D_transport",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "e0fdc85da847937ab8413cbc141668ffc6d486ba7be3190c3034c780680e3053"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "nested_D_transport",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "e0fdc85da847937ab8413cbc141668ffc6d486ba7be3190c3034c780680e3053"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "nested_D_transport",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "e0fdc85da847937ab8413cbc141668ffc6d486ba7be3190c3034c780680e3053"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "nested_D_transport",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "e0fdc85da847937ab8413cbc141668ffc6d486ba7be3190c3034c780680e3053"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "nested_D_transport_false_goal",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "5dd5f859dba803a3fd23faec36fa705244458d86712cf6ff38f701bbace420b8"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "nested_D_transport_false_goal",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "5dd5f859dba803a3fd23faec36fa705244458d86712cf6ff38f701bbace420b8"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "nested_D_transport_false_goal",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "5dd5f859dba803a3fd23faec36fa705244458d86712cf6ff38f701bbace420b8"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "nested_D_transport_false_goal",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "5dd5f859dba803a3fd23faec36fa705244458d86712cf6ff38f701bbace420b8"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "nested_D_transport_missing_certificate",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "1ad04d03c3b235ca7a3b4aa9884c7a01d9fef3630dc47cb236f9e94da98998f0"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "nested_D_transport_missing_certificate",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "1ad04d03c3b235ca7a3b4aa9884c7a01d9fef3630dc47cb236f9e94da98998f0"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "nested_D_transport_missing_certificate",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "1ad04d03c3b235ca7a3b4aa9884c7a01d9fef3630dc47cb236f9e94da98998f0"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "nested_D_transport_missing_certificate",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "1ad04d03c3b235ca7a3b4aa9884c7a01d9fef3630dc47cb236f9e94da98998f0"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "nonvacuous_witness",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "648406fef936c27ac784eb1e3fdb02850c7843be7d5531a36fb785d76f11f120"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "nonvacuous_witness",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "648406fef936c27ac784eb1e3fdb02850c7843be7d5531a36fb785d76f11f120"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "nonvacuous_witness",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "648406fef936c27ac784eb1e3fdb02850c7843be7d5531a36fb785d76f11f120"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "nonvacuous_witness",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "648406fef936c27ac784eb1e3fdb02850c7843be7d5531a36fb785d76f11f120"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "nonvacuous_witness_false_goal",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "f7a488b850b8fbd0cf1d1b40fa7d988d7d80d385ac264de4a8616474da76802c"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "nonvacuous_witness_false_goal",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "f7a488b850b8fbd0cf1d1b40fa7d988d7d80d385ac264de4a8616474da76802c"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "nonvacuous_witness_false_goal",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "f7a488b850b8fbd0cf1d1b40fa7d988d7d80d385ac264de4a8616474da76802c"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "nonvacuous_witness_false_goal",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "f7a488b850b8fbd0cf1d1b40fa7d988d7d80d385ac264de4a8616474da76802c"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "nonvacuous_witness_missing_certificate",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "007c4e7485b9896e15bb0ddc57706519d5f66880fc795488598eabce99089d86"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "nonvacuous_witness_missing_certificate",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "007c4e7485b9896e15bb0ddc57706519d5f66880fc795488598eabce99089d86"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "nonvacuous_witness_missing_certificate",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "007c4e7485b9896e15bb0ddc57706519d5f66880fc795488598eabce99089d86"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "nonvacuous_witness_missing_certificate",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "007c4e7485b9896e15bb0ddc57706519d5f66880fc795488598eabce99089d86"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "public_zero_reflexivity",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "004a8045cfdef6fe6ae8b719a440346293580699f4be0850d00cc7a1d746af58"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "public_zero_reflexivity",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "004a8045cfdef6fe6ae8b719a440346293580699f4be0850d00cc7a1d746af58"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "public_zero_reflexivity",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "004a8045cfdef6fe6ae8b719a440346293580699f4be0850d00cc7a1d746af58"
+    },
+    {
+      "group": "compiled_positive",
+      "fixture": "public_zero_reflexivity",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "004a8045cfdef6fe6ae8b719a440346293580699f4be0850d00cc7a1d746af58"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "public_zero_reflexivity_false_goal",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "25c61781069a5bfeb907d5eac943adf3555004dd9668e43f86432108c2f8540d"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "public_zero_reflexivity_false_goal",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "25c61781069a5bfeb907d5eac943adf3555004dd9668e43f86432108c2f8540d"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "public_zero_reflexivity_false_goal",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "25c61781069a5bfeb907d5eac943adf3555004dd9668e43f86432108c2f8540d"
+    },
+    {
+      "group": "false_conclusion",
+      "fixture": "public_zero_reflexivity_false_goal",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "25c61781069a5bfeb907d5eac943adf3555004dd9668e43f86432108c2f8540d"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "public_zero_reflexivity_missing_certificate",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "fe206f7dcea731693cc34d942cc09ac2ae45a346c8a863d9c25795c4fc999f70"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "public_zero_reflexivity_missing_certificate",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "fe206f7dcea731693cc34d942cc09ac2ae45a346c8a863d9c25795c4fc999f70"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "public_zero_reflexivity_missing_certificate",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "fe206f7dcea731693cc34d942cc09ac2ae45a346c8a863d9c25795c4fc999f70"
+    },
+    {
+      "group": "missing_premise",
+      "fixture": "public_zero_reflexivity_missing_certificate",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "fe206f7dcea731693cc34d942cc09ac2ae45a346c8a863d9c25795c4fc999f70"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_0",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "40ff62ec0054ffe4b289013a1eb346bfbba8155040dd5d07c299c510e0a4d96c"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_0",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "40ff62ec0054ffe4b289013a1eb346bfbba8155040dd5d07c299c510e0a4d96c"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_0",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "40ff62ec0054ffe4b289013a1eb346bfbba8155040dd5d07c299c510e0a4d96c"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_0",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "40ff62ec0054ffe4b289013a1eb346bfbba8155040dd5d07c299c510e0a4d96c"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_1",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "50dbf8a03ab0947bec4e247885c10b7c73d6d82db5ba47d4dd5eac385f418012"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_1",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "50dbf8a03ab0947bec4e247885c10b7c73d6d82db5ba47d4dd5eac385f418012"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_1",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "50dbf8a03ab0947bec4e247885c10b7c73d6d82db5ba47d4dd5eac385f418012"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_1",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "50dbf8a03ab0947bec4e247885c10b7c73d6d82db5ba47d4dd5eac385f418012"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_2",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "295a670fb09da0429f1bd1f90e85959d35e580393521b109e5d1367cdd7fdbb2"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_2",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "295a670fb09da0429f1bd1f90e85959d35e580393521b109e5d1367cdd7fdbb2"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_2",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "295a670fb09da0429f1bd1f90e85959d35e580393521b109e5d1367cdd7fdbb2"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_2",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "295a670fb09da0429f1bd1f90e85959d35e580393521b109e5d1367cdd7fdbb2"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_3",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "5e9b7c37fec620de73638ab8ce17b259d6d07fb6ac5360f39c15881e55f914d5"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_3",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "5e9b7c37fec620de73638ab8ce17b259d6d07fb6ac5360f39c15881e55f914d5"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_3",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "5e9b7c37fec620de73638ab8ce17b259d6d07fb6ac5360f39c15881e55f914d5"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_3",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "5e9b7c37fec620de73638ab8ce17b259d6d07fb6ac5360f39c15881e55f914d5"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_4",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "604fad320accdb7e9e3c2796b31ce8e4ea6cc8214becae591d4f1f785ac8d1ec"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_4",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "604fad320accdb7e9e3c2796b31ce8e4ea6cc8214becae591d4f1f785ac8d1ec"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_4",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "604fad320accdb7e9e3c2796b31ce8e4ea6cc8214becae591d4f1f785ac8d1ec"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_4",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "604fad320accdb7e9e3c2796b31ce8e4ea6cc8214becae591d4f1f785ac8d1ec"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_5",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "ae824ff2b0684b63c227d3f371d1db2cd086671345c0ced69a85317176921328"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_5",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "ae824ff2b0684b63c227d3f371d1db2cd086671345c0ced69a85317176921328"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_5",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "ae824ff2b0684b63c227d3f371d1db2cd086671345c0ced69a85317176921328"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_5",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "ae824ff2b0684b63c227d3f371d1db2cd086671345c0ced69a85317176921328"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_6",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "e27d24436bab846fb5193adbab65f1a010e10704b856ba5349198999387d39d6"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_6",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "e27d24436bab846fb5193adbab65f1a010e10704b856ba5349198999387d39d6"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_6",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "e27d24436bab846fb5193adbab65f1a010e10704b856ba5349198999387d39d6"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_6",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "e27d24436bab846fb5193adbab65f1a010e10704b856ba5349198999387d39d6"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_7",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "9092cb29bd801790bfc534b3b2106474a8c804fd79438847a8762d6cd627f433"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_7",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "9092cb29bd801790bfc534b3b2106474a8c804fd79438847a8762d6cd627f433"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_7",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "9092cb29bd801790bfc534b3b2106474a8c804fd79438847a8762d6cd627f433"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_invalid_prefix_7",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "9092cb29bd801790bfc534b3b2106474a8c804fd79438847a8762d6cd627f433"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_0",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "03e55ef51faf9480ce1e834b0924210e0325b9210eda6a68e1fab9b891830a68"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_0",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "03e55ef51faf9480ce1e834b0924210e0325b9210eda6a68e1fab9b891830a68"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_0",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "03e55ef51faf9480ce1e834b0924210e0325b9210eda6a68e1fab9b891830a68"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_0",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "03e55ef51faf9480ce1e834b0924210e0325b9210eda6a68e1fab9b891830a68"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_1",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "7167081beb275923a7496bb7af6a1927ee5f4f363f7f03d00975d84900e84a1e"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_1",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "7167081beb275923a7496bb7af6a1927ee5f4f363f7f03d00975d84900e84a1e"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_1",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "7167081beb275923a7496bb7af6a1927ee5f4f363f7f03d00975d84900e84a1e"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_1",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "7167081beb275923a7496bb7af6a1927ee5f4f363f7f03d00975d84900e84a1e"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_2",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "fff589f8b4594bba00d508432f77e505e240da2a97e982ff42f5701b7523b463"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_2",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "fff589f8b4594bba00d508432f77e505e240da2a97e982ff42f5701b7523b463"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_2",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "fff589f8b4594bba00d508432f77e505e240da2a97e982ff42f5701b7523b463"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_2",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "fff589f8b4594bba00d508432f77e505e240da2a97e982ff42f5701b7523b463"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_3",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "1334150a0ce8fe754538edaf8bdae0f0fdede88d6e74f55cddc4413f12ca2a77"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_3",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "1334150a0ce8fe754538edaf8bdae0f0fdede88d6e74f55cddc4413f12ca2a77"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_3",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "1334150a0ce8fe754538edaf8bdae0f0fdede88d6e74f55cddc4413f12ca2a77"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_3",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "1334150a0ce8fe754538edaf8bdae0f0fdede88d6e74f55cddc4413f12ca2a77"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_4",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "528adf25d049cb39692821cce4ed48e42c33962871933fc7e7c2ee03551cc5b5"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_4",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "528adf25d049cb39692821cce4ed48e42c33962871933fc7e7c2ee03551cc5b5"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_4",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "528adf25d049cb39692821cce4ed48e42c33962871933fc7e7c2ee03551cc5b5"
+    },
+    {
+      "group": "whole_input_types",
+      "fixture": "unused_valid_prefix_4",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true,
+      "input_sha256": "528adf25d049cb39692821cce4ed48e42c33962871933fc7e7c2ee03551cc5b5"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_0",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "a74be21ce463d8093364a6ee4d3d1b3ca03f77798888f64a0f0e97613c30036b"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_0",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "a74be21ce463d8093364a6ee4d3d1b3ca03f77798888f64a0f0e97613c30036b"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_0",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "a74be21ce463d8093364a6ee4d3d1b3ca03f77798888f64a0f0e97613c30036b"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_0",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "a74be21ce463d8093364a6ee4d3d1b3ca03f77798888f64a0f0e97613c30036b"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_1",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "0a8563d52037b20f2892c66521a8c2ac72679397cff8135df9d4353977e0fc4d"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_1",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "0a8563d52037b20f2892c66521a8c2ac72679397cff8135df9d4353977e0fc4d"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_1",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "0a8563d52037b20f2892c66521a8c2ac72679397cff8135df9d4353977e0fc4d"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_1",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "0a8563d52037b20f2892c66521a8c2ac72679397cff8135df9d4353977e0fc4d"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_2",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "0ae73ca064f743f610d7f3edf0a955b79761f6c154bd0a471ec209b26b0de461"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_2",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "0ae73ca064f743f610d7f3edf0a955b79761f6c154bd0a471ec209b26b0de461"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_2",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "0ae73ca064f743f610d7f3edf0a955b79761f6c154bd0a471ec209b26b0de461"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_2",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "0ae73ca064f743f610d7f3edf0a955b79761f6c154bd0a471ec209b26b0de461"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_3",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "e267622588caac4099bbe15059b0e0ba8c79caf756a96a2392af746e9e80d545"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_3",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "e267622588caac4099bbe15059b0e0ba8c79caf756a96a2392af746e9e80d545"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_3",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "e267622588caac4099bbe15059b0e0ba8c79caf756a96a2392af746e9e80d545"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_3",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "e267622588caac4099bbe15059b0e0ba8c79caf756a96a2392af746e9e80d545"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_4",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "a9f18b38a25d7495095029c7e08bfb6b81836257bb58e06a87ba07c2950e5d7f"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_4",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "a9f18b38a25d7495095029c7e08bfb6b81836257bb58e06a87ba07c2950e5d7f"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_4",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "a9f18b38a25d7495095029c7e08bfb6b81836257bb58e06a87ba07c2950e5d7f"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_4",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "a9f18b38a25d7495095029c7e08bfb6b81836257bb58e06a87ba07c2950e5d7f"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_5",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "bc9c9267b22886cddefe6dae277641e4e46cb0ad7e6223c914925d53eea784a6"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_5",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "bc9c9267b22886cddefe6dae277641e4e46cb0ad7e6223c914925d53eea784a6"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_5",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "bc9c9267b22886cddefe6dae277641e4e46cb0ad7e6223c914925d53eea784a6"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_5",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "bc9c9267b22886cddefe6dae277641e4e46cb0ad7e6223c914925d53eea784a6"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_6",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "9f5450ab6afd5d49d08bdaf7679dc47ae7fe57767aa17267f7e99330884c6a8c"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_6",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "9f5450ab6afd5d49d08bdaf7679dc47ae7fe57767aa17267f7e99330884c6a8c"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_6",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "9f5450ab6afd5d49d08bdaf7679dc47ae7fe57767aa17267f7e99330884c6a8c"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_6",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "9f5450ab6afd5d49d08bdaf7679dc47ae7fe57767aa17267f7e99330884c6a8c"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_7",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "cb33673a5e96515dede0ebec2c3bb69b8c821ceccebd95915043185b5d6acb24"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_7",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "cb33673a5e96515dede0ebec2c3bb69b8c821ceccebd95915043185b5d6acb24"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_7",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "cb33673a5e96515dede0ebec2c3bb69b8c821ceccebd95915043185b5d6acb24"
+    },
+    {
+      "group": "public_grammar",
+      "fixture": "invalid_public_root_7",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "cb33673a5e96515dede0ebec2c3bb69b8c821ceccebd95915043185b5d6acb24"
+    },
+    {
+      "group": "scope",
+      "fixture": "nonvacuous_witness_future_witness",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "26adbb144bef6c83440654ff289641b1fa61c2e31f3ae176bda29a6a6392678d"
+    },
+    {
+      "group": "scope",
+      "fixture": "nonvacuous_witness_future_witness",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "26adbb144bef6c83440654ff289641b1fa61c2e31f3ae176bda29a6a6392678d"
+    },
+    {
+      "group": "scope",
+      "fixture": "nonvacuous_witness_future_witness",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "26adbb144bef6c83440654ff289641b1fa61c2e31f3ae176bda29a6a6392678d"
+    },
+    {
+      "group": "scope",
+      "fixture": "nonvacuous_witness_future_witness",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "26adbb144bef6c83440654ff289641b1fa61c2e31f3ae176bda29a6a6392678d"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_unguarded_progressive_alias_local.json",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "9ff2b3ef265088f0041a7fcfc059d2a8b87e5f7854c6d49fb7b94b7735ae208e"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_unguarded_progressive_alias_local.json",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "9ff2b3ef265088f0041a7fcfc059d2a8b87e5f7854c6d49fb7b94b7735ae208e"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_unguarded_progressive_alias_local.json",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "9ff2b3ef265088f0041a7fcfc059d2a8b87e5f7854c6d49fb7b94b7735ae208e"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_unguarded_progressive_alias_local.json",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "9ff2b3ef265088f0041a7fcfc059d2a8b87e5f7854c6d49fb7b94b7735ae208e"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_context_leak_attack.json",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "0aeaffc2b0baf5a202e3c5b6486d0015ff2ebefc10504504e720a61cf1218570"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_context_leak_attack.json",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "0aeaffc2b0baf5a202e3c5b6486d0015ff2ebefc10504504e720a61cf1218570"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_context_leak_attack.json",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "0aeaffc2b0baf5a202e3c5b6486d0015ff2ebefc10504504e720a61cf1218570"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_context_leak_attack.json",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "0aeaffc2b0baf5a202e3c5b6486d0015ff2ebefc10504504e720a61cf1218570"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_false_float_capture.json",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "eb3cbe8e980d21417b1ad614ba029803564bf8577462ef010634634d97e15147"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_false_float_capture.json",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "eb3cbe8e980d21417b1ad614ba029803564bf8577462ef010634634d97e15147"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_false_float_capture.json",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "eb3cbe8e980d21417b1ad614ba029803564bf8577462ef010634634d97e15147"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_false_float_capture.json",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "eb3cbe8e980d21417b1ad614ba029803564bf8577462ef010634634d97e15147"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_future_witness_capture.json",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "4a87e88f46aac746c0dc8fa984df5edb73e8a4e73b908682bcd33e4b7ca20d2d"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_future_witness_capture.json",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "4a87e88f46aac746c0dc8fa984df5edb73e8a4e73b908682bcd33e4b7ca20d2d"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_future_witness_capture.json",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "4a87e88f46aac746c0dc8fa984df5edb73e8a4e73b908682bcd33e4b7ca20d2d"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_future_witness_capture.json",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "4a87e88f46aac746c0dc8fa984df5edb73e8a4e73b908682bcd33e4b7ca20d2d"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_old_atomic_case_global.json",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "2c47822f608a6244077c80c46b0ecdcd7642f3c0f02542e7bdbb2e4d84346c8d"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_old_atomic_case_global.json",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "2c47822f608a6244077c80c46b0ecdcd7642f3c0f02542e7bdbb2e4d84346c8d"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_old_atomic_case_global.json",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "2c47822f608a6244077c80c46b0ecdcd7642f3c0f02542e7bdbb2e4d84346c8d"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_old_atomic_case_global.json",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "2c47822f608a6244077c80c46b0ecdcd7642f3c0f02542e7bdbb2e4d84346c8d"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_phase_guard_counterexample.json",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "e76e8de4c160f5a1f8389745c2430855964d0de00efeac962a59b35eaed43698"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_phase_guard_counterexample.json",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "e76e8de4c160f5a1f8389745c2430855964d0de00efeac962a59b35eaed43698"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_phase_guard_counterexample.json",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "e76e8de4c160f5a1f8389745c2430855964d0de00efeac962a59b35eaed43698"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_phase_guard_counterexample.json",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "e76e8de4c160f5a1f8389745c2430855964d0de00efeac962a59b35eaed43698"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_scalar_false_sentinel_attack.json",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "9289725439cd0b267ea0c51d93fc4fbd56f2f9493e801501d8d65d4748891f1b"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_scalar_false_sentinel_attack.json",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "9289725439cd0b267ea0c51d93fc4fbd56f2f9493e801501d8d65d4748891f1b"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_scalar_false_sentinel_attack.json",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "9289725439cd0b267ea0c51d93fc4fbd56f2f9493e801501d8d65d4748891f1b"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_scalar_false_sentinel_attack.json",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "9289725439cd0b267ea0c51d93fc4fbd56f2f9493e801501d8d65d4748891f1b"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_unproved_contradiction.json",
+      "checker": "alias_inverted.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "7c6eef7ef0944b0d1036bbc4648516473b14fc6e5b275988353cc7d6cb6f3c2b"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_unproved_contradiction.json",
+      "checker": "alias_inverted.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "7c6eef7ef0944b0d1036bbc4648516473b14fc6e5b275988353cc7d6cb6f3c2b"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_unproved_contradiction.json",
+      "checker": "checker_readable.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "7c6eef7ef0944b0d1036bbc4648516473b14fc6e5b275988353cc7d6cb6f3c2b"
+    },
+    {
+      "group": "inherited_negative",
+      "fixture": "inherited_unproved_contradiction.json",
+      "checker": "checker_readable.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true,
+      "input_sha256": "7c6eef7ef0944b0d1036bbc4648516473b14fc6e5b275988353cc7d6cb6f3c2b"
+    }
+  ],
+  "upstream_checks": [
+    {
+      "file": "ref/immediate_application/tests/native/proofs/compound_case_introduction_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/compound_case_introduction_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/compound_implication_elimination_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/compound_implication_elimination_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/computation_successor_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/computation_successor_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/computation_zero_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/computation_zero_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/derived_zero_source_equational_transport_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/derived_zero_source_equational_transport_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/guarded_induction_with_used_hypothesis_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/guarded_induction_with_used_hypothesis_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/guarded_lift_elimination_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/guarded_lift_elimination_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/guarded_literal_equation_introduction_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/guarded_literal_equation_introduction_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/transport_reflexivity_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/transport_reflexivity_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/unguarded_progressive_alias_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/unguarded_progressive_alias_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/zero_symmetry_all_numbers_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/zero_symmetry_all_numbers_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/zero_symmetry_computable_zero_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/zero_symmetry_computable_zero_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/zero_symmetry_one_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/zero_symmetry_one_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/context_leak_attack.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/context_leak_attack.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/false_float_capture.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/false_float_capture.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/future_witness_capture.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/future_witness_capture.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/old_atomic_case_global.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/old_atomic_case_global.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/old_atomic_case_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/old_atomic_case_local.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/phase_guard_counterexample.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/phase_guard_counterexample.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/scalar_false_sentinel_attack.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/scalar_false_sentinel_attack.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/unproved_contradiction.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/proofs/unproved_contradiction.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_0_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_0_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_0_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_0_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_1_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_1_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_1_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_1_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_2_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_2_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_2_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_2_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_3_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_3_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_3_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_3_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_4_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_4_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_4_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_4_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_5_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_5_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_5_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_5_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_6_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_6_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_6_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_6_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_7_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_7_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_7_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_7_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_8_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_8_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_8_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_8_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_9_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_9_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_9_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_9_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_10_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_10_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_10_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/bad_prefix_10_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/valid_prefix_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/valid_prefix_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/valid_prefix_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/valid_prefix_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/valid_prefix_2.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/valid_prefix_2.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_0.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_1.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_2.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_2.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_3.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_3.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_4.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_4.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_5.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_5.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_6.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_6.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_7.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_7.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_8.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_8.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_9.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/native/boundary/invalid_root_9.json",
+      "checker": "ref/immediate_application/code/checker637.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/compound_case_introduction_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/compound_case_introduction_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/compound_implication_elimination_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/compound_implication_elimination_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/computation_successor_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/computation_successor_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/computation_zero_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/computation_zero_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/derived_zero_source_equational_transport_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/derived_zero_source_equational_transport_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/guarded_induction_with_used_hypothesis_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/guarded_induction_with_used_hypothesis_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/guarded_lift_elimination_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/guarded_lift_elimination_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/guarded_literal_equation_introduction_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/guarded_literal_equation_introduction_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/transport_reflexivity_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/transport_reflexivity_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/unguarded_progressive_alias_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/unguarded_progressive_alias_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/zero_symmetry_all_numbers_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/zero_symmetry_all_numbers_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/zero_symmetry_computable_zero_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/zero_symmetry_computable_zero_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/zero_symmetry_one_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/zero_symmetry_one_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/context_leak_attack.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/context_leak_attack.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/false_float_capture.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/false_float_capture.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/future_witness_capture.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/future_witness_capture.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/old_atomic_case_global.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/old_atomic_case_global.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/old_atomic_case_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/old_atomic_case_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/phase_guard_counterexample.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/phase_guard_counterexample.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/scalar_false_sentinel_attack.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/scalar_false_sentinel_attack.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/unproved_contradiction.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/unproved_contradiction.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_empty_truth_alias.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_empty_truth_alias.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_scalar_matrix_rejected.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_scalar_matrix_rejected.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_atomic_progress.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_atomic_progress.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_compound_D_cases.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_compound_D_cases.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_compound_Q_cases.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_compound_Q_cases.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_surplus_arity_4_truth.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_surplus_arity_4_truth.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_surplus_arity_5_truth.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_surplus_arity_5_truth.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_surplus_arity_7_truth.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_surplus_arity_7_truth.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_surplus_arity_9_truth.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_surplus_arity_9_truth.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_unproved_false_0_eq_1.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_unproved_false_0_eq_1.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_false_goal_with_intro_packet.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_false_goal_with_intro_packet.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_unused_malformed_object_prefix.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_unused_malformed_object_prefix.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_unused_malformed_string_prefix.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_unused_malformed_string_prefix.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_scalar_false_sentinel_attack.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_scalar_false_sentinel_attack.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_future_witness_capture.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_future_witness_capture.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_context_leak_attack.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_context_leak_attack.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_false_float_capture.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/arity_false_float_capture.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/eager_control_only.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/eager_control_only.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/strict_unused_boolean.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/strict_unused_boolean.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/strict_unused_float.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/strict_unused_float.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/strict_unused_null.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/strict_unused_null.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/strict_unused_string.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/strict_unused_string.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/strict_unused_object.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/progress/strict_unused_object.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/compound_case_introduction_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/compound_case_introduction_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/compound_implication_elimination_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/compound_implication_elimination_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/computation_successor_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/computation_successor_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/computation_zero_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/computation_zero_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/derived_zero_source_equational_transport_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/derived_zero_source_equational_transport_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/guarded_induction_with_used_hypothesis_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/guarded_induction_with_used_hypothesis_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/guarded_lift_elimination_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/guarded_lift_elimination_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/guarded_literal_equation_introduction_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/guarded_literal_equation_introduction_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/transport_reflexivity_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/transport_reflexivity_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/unguarded_progressive_alias_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/unguarded_progressive_alias_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/zero_symmetry_all_numbers_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/zero_symmetry_all_numbers_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/zero_symmetry_computable_zero_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/zero_symmetry_computable_zero_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/zero_symmetry_one_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/zero_symmetry_one_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/context_leak_attack.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/context_leak_attack.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/false_float_capture.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/false_float_capture.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/future_witness_capture.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/future_witness_capture.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/old_atomic_case_global.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/old_atomic_case_global.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/old_atomic_case_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/old_atomic_case_local.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/phase_guard_counterexample.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/phase_guard_counterexample.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/scalar_false_sentinel_attack.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/scalar_false_sentinel_attack.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/unproved_contradiction.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": false,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "file": "ref/immediate_application/tests/byte/context/unproved_contradiction.json",
+      "checker": "ref/immediate_application/code/checker479.py",
+      "optimized": true,
+      "accepted": false,
+      "expected": false,
+      "passed": true
+    }
+  ]
+}

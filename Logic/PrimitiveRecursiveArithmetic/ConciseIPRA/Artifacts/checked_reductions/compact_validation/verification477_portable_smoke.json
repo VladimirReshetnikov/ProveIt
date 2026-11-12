@@ -1,0 +1,113 @@
+{
+  "python": "3.12.14",
+  "mode": "smoke",
+  "all_source_and_fixture_hashes_match": true,
+  "exact_declared_source_change": true,
+  "metrics": {
+    "control": [
+      271,
+      305,
+      478
+    ],
+    "candidate": [
+      273,
+      305,
+      477
+    ]
+  },
+  "results": [
+    {
+      "fixture": "fixtures/compact_context/computation_zero_local.json",
+      "optimized": false,
+      "control": true,
+      "candidate": true
+    },
+    {
+      "fixture": "fixtures/compact_context/computation_zero_local.json",
+      "optimized": true,
+      "control": true,
+      "candidate": true
+    },
+    {
+      "fixture": "fixtures/compact_context/false_float_capture.json",
+      "optimized": false,
+      "control": false,
+      "candidate": false
+    },
+    {
+      "fixture": "fixtures/compact_context/false_float_capture.json",
+      "optimized": true,
+      "control": false,
+      "candidate": false
+    },
+    {
+      "fixture": "fixtures/compact_context/guarded_induction_with_used_hypothesis_local.json",
+      "optimized": false,
+      "control": true,
+      "candidate": true
+    },
+    {
+      "fixture": "fixtures/compact_context/guarded_induction_with_used_hypothesis_local.json",
+      "optimized": true,
+      "control": true,
+      "candidate": true
+    },
+    {
+      "fixture": "fixtures/inherited_empty_auxiliary_boundary.json",
+      "optimized": false,
+      "control": true,
+      "candidate": false
+    },
+    {
+      "fixture": "fixtures/inherited_empty_auxiliary_boundary.json",
+      "optimized": true,
+      "control": true,
+      "candidate": false
+    }
+  ],
+  "positive_floor_attacks": [
+    {
+      "fixture": "fixtures/compact_context/computation_zero_local.json",
+      "floor": 1,
+      "protected_zero_in_goal": true,
+      "accepted": false
+    },
+    {
+      "fixture": "fixtures/compact_context/computation_zero_local.json",
+      "floor": 2,
+      "protected_zero_in_goal": true,
+      "accepted": false
+    },
+    {
+      "fixture": "fixtures/compact_context/computation_zero_local.json",
+      "floor": 7,
+      "protected_zero_in_goal": true,
+      "accepted": false
+    },
+    {
+      "fixture": "fixtures/compact_context/guarded_induction_with_used_hypothesis_local.json",
+      "floor": 1,
+      "protected_zero_in_goal": true,
+      "accepted": false
+    },
+    {
+      "fixture": "fixtures/compact_context/guarded_induction_with_used_hypothesis_local.json",
+      "floor": 2,
+      "protected_zero_in_goal": true,
+      "accepted": false
+    },
+    {
+      "fixture": "fixtures/compact_context/guarded_induction_with_used_hypothesis_local.json",
+      "floor": 7,
+      "protected_zero_in_goal": true,
+      "accepted": false
+    }
+  ],
+  "executions": 25,
+  "summary": {
+    "paired_cases": 8,
+    "candidate_accept_control_reject": 0,
+    "control_accept_candidate_reject": 2,
+    "positive_floor_accepted_with_protected_zero": 0
+  }
+}

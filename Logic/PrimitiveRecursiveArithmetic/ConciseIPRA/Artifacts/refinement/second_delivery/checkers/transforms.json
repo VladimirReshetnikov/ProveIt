@@ -1,0 +1,70 @@
+[
+  {
+    "name": "native_tokens",
+    "baseline_path": "agent_incoming/repo/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Artifacts/verified_refinements/native/checker.py",
+    "baseline_sha256": "82d11d457b04239b25585b80bbc4f8bc64510e6e72e21fe82bdcaae32360d4a0",
+    "candidate_sha256": "5108b5e06a00b7f5dc4ceb52d519421866578d6cd6aed3be2f2fcdd37ffb9e5d",
+    "replacements": [
+      {
+        "from": "int(a) is a and d % 2 and (not a or a > 1 == a % 2)",
+        "to": "d % 2 * (int(a) is a and a % 2 == (a > 1))"
+      }
+    ]
+  },
+  {
+    "name": "native_ast",
+    "baseline_path": "agent_incoming/repo/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Artifacts/verified_refinements/native/checker.py",
+    "baseline_sha256": "82d11d457b04239b25585b80bbc4f8bc64510e6e72e21fe82bdcaae32360d4a0",
+    "candidate_sha256": "3b338822b346beb5ef792bd00c6896163fdd195610f0e89d9950ac42e03fd8cb",
+    "replacements": [
+      {
+        "from": "not a or a > 1 == a % 2",
+        "to": "a % 2 == (a > 1)"
+      }
+    ]
+  },
+  {
+    "name": "native_bytes",
+    "baseline_path": "agent_incoming/extracted/ipra_479_predecessor57/checker/code/native607.py",
+    "baseline_sha256": "b1db362308a0142b08a678f36da4e6c8365b91fb5cc0f0c2bc4ba0617d8a6026",
+    "candidate_sha256": "b511500010aa09e4955220483d500d7a81933768fa5d6b17093f4fc3aa9eda41",
+    "replacements": [
+      {
+        "from": "int(a) is a and d % 2 and (not a or a > 1 == a % 2)",
+        "to": "d % 2 * (int(a) is a and a % 2 == (a > 1))"
+      }
+    ]
+  },
+  {
+    "name": "strict_size",
+    "baseline_path": "agent_incoming/repo/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Artifacts/verified_refinements/strict/checker.py",
+    "baseline_sha256": "004c30c0c7760285647601561400fcdd44db6c25e28074856d1ea1500ec82b1f",
+    "candidate_sha256": "a29528ec4e3ac976f7b3789272e868dd6b06142facef017dfab0a98b62f1540b",
+    "replacements": [
+      {
+        "from": "d % 2 and (not a or a > 1 == a % 2)",
+        "to": "d % 2 * (a % 2 == (a > 1))"
+      },
+      {
+        "from": "not str(p).strip('0123456789-[], ') and p.pop",
+        "to": "str(p).strip('0123456789-[], ') or p.pop"
+      }
+    ]
+  },
+  {
+    "name": "strict_bytes",
+    "baseline_path": "agent_incoming/extracted/ipra_atomic_seed_refinement_2026-11-12/code/native_strict_checker.py",
+    "baseline_sha256": "ccf8a5ffd5fc7650f2bece9fab38f77e538e8bc2dcd8fc83f8e902dd0d3f5089",
+    "candidate_sha256": "17cdb0ae9332e7e973fa21d00ef1eb09243773df726a1bd07a9c9b8262189bf3",
+    "replacements": [
+      {
+        "from": "d % 2 and a % 2 == (a > 1)",
+        "to": "d % 2 * (a % 2 == (a > 1))"
+      },
+      {
+        "from": "not str(p).strip('0123456789-[], ') and p.pop",
+        "to": "str(p).strip('0123456789-[], ') or p.pop"
+      }
+    ]
+  }
+]

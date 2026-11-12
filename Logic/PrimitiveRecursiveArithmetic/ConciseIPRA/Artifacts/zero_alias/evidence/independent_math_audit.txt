@@ -1,0 +1,192 @@
+AUDIT OF THE FIXED ZERO-ALIAS RESOURCE
+====================================
+Candidate inspected: agent_checker/checker_zero_alias.py
+Pinned corpus: f2e1d0f2d29042fa2d76244639c13425c46d16b4
+
+1. Core conclusion
+------------------
+The new initial resource [1,0] is mathematically legitimate. Under the
+parametric raw-tree reading already proved in the article, scalar 1 is a
+new constant c, scalar 0 is the arithmetic zero, and [1,0] is exactly c=0.
+The new public spelling 1 for zero is therefore justified by a genuine
+fixed axiom, not merely by assigning two raw spellings the same meaning.
+The resulting theory is a conservative definitional extension of the
+inherited native theory. Its public c-only reduct is definitionally
+equivalent to the native theory with zero renamed c.
+
+This is a verified implementation-level presentation change, not a new
+arithmetic-strength theorem or a new logical basis.
+
+2. Soundness, including nesting
+------------------------------
+Article ch11_cert.tex, proposition cert:prop:reserved ('Reserved
+coordinates as constants', approximately lines 4270--4320), establishes
+that the raw native proof protocol is sound when scalar 1 means an
+arbitrary c_1 and scalar 2 an arbitrary c_2, rather than identifying them
+with zero. The proof explicitly covers transport, computation, closure
+specialization, witness discharge, the two introductions, and the
+zero-instance supply argument.
+
+The candidate changes the initial context from neutral truth alone to
+neutral truth together with c_1=0. The invariant is now derivability from
+this additional closed assumption. Weakening and the local-floor proof
+apply unchanged: c_1=0 contains no rigid negative eigenparameter and no
+unbound slot. The numerical floor still starts at k=0; its relation to
+context length is irrelevant because this checker passes k explicitly.
+
+At EVERY meaningful term position the depth is at least 3. Consequently
+scalar 1 is in the protected constant band, is never the opening hole,
+and remains the same constant when copied beneath further D, Q, I, or S
+syntax. In particular c cannot accidentally turn into a witness or state
+variable below binders. Existing dummy-slot conventions are unchanged.
+
+The extra raw constant c_2 may still occur inside certificates; it is
+absent from the new canonical public syntax. Soundness may assign it any
+number, or specialize it to zero after the run. It adds no public axiom.
+
+3. Exact definitional-equivalence argument
+-----------------------------------------
+Let T be the ordinary realization of the inherited complete native
+presentation. Let T+ be its extension by a constant c and the closed
+axiom c=0; equation induction is allowed to mention c, as an ordinary
+parameter. Let L_c be the public language in which c replaces zero.
+
+(i) Interpret T+ in T by c |-> 0 and identity on all other symbols and
+on the numerical domain. The extra axiom becomes 0=0; any induction
+instance mentioning c becomes the corresponding old instance at 0.
+Every derivation translates, so T+ is conservative over T and is
+consistent iff T is consistent.
+
+(ii) Interpret T in T+ by the inclusion. The composite on T is literally
+identity. The other composite sends c to 0; T+ proves c=0, so term
+congruence and formula Leibniz prove that every formula agrees with its
+composite translation. This is a definitional equivalence on the same
+numerical domain, with actual equality and identity return map x=y.
+
+(iii) Restricting to L_c loses nothing: the auxiliary zero is definable as
+c. Equivalently, the public theory is T with its zero symbol renamed c.
+The scalar iterator, its two computation schemes, coverage, separation,
+and equation induction are transported through c=0. Compose this
+identity-domain equivalence with the repository's inherited full
+bi-interpretation of T and iPRA. Both numerical round trips remain x=y.
+
+No new consistency assumption, quotient, nonstandard domain, or stronger
+induction is involved.
+
+4. Completeness and compilation caveat
+--------------------------------------
+For a canonical public formula A in L_c, replace c by 0 and use the
+inherited completeness theorem to obtain a native derivation. In T+,
+formula Leibniz under c=0 yields A iff A[c:=0], including all nested
+binders. More concretely, the inherited native calculus extended by the
+constant c and the fixed assumption c=0 derives A whenever its zero
+translation is a theorem. Its proof-to-packet completeness construction
+works with an arbitrary retained context and with constant symbols,
+because 1 is retained by every meaningful opening. Hence the candidate
+has a certificate for A.
+
+Do NOT implement this argument by replacing every numeric 0 in a packet
+by 1: packet zeroes also select instruction branches and closure
+specialization. Source-selected transport reserves literal raw 0 for QE.
+Instead use the extended native derivation/Leibniz argument, or compile a
+proved equality-conversion boundary using the inherited derived
+zero-source transport. The retained axiom itself is [1,0], and the internal
+zero remains 0.
+
+The public alphabet test v <= (d%2 & a), with v=1, means exactly that d is
+odd and a is odd; k=0 and a<d additionally force a positive in-scope
+scalar. Thus 1 is the public zero constant and 3,5,... are the protected
+slot coordinates of the inherited padded representation. The array arity
+check still separates Eq/D formulas from S/I terms. Lexical typing still
+rejects booleans, floats, strings, nulls, and objects anywhere in input.
+
+One inherited presentation caveat: the article's completeness proofs are
+explicitly for canonical encodings, whose definition forbids references
+to administrative dummy slots. The printed goal grammar P^ed allows odd
+in-scope coordinates without a separate dummy-slot occurrence check.
+The article identifies this predicate with a canonical grammar. I have
+not independently reconstructed whether every such dummy-slot spelling
+has a certificate whenever its ordinary reading is a theorem. This is an
+inherited issue, unchanged by replacing 0 with 1. Avoid strengthening the
+claim to a new theorem about every raw alias; state the public canonical
+syntax and inherited contract precisely. No counterexample was established.
+
+5. Novelty boundary
+-------------------
+The article already contains 'Uniform zero and constructed majors'
+(ch11_cert.tex ~740--920): canonical zero is encoded by scalar 1, and the
+opener is CHANGED so that retained raw 0 is normalized to 1. That is a
+prior uniform-zero implementation and must be cited.
+
+The article's reserved-coordinate obstruction later explains that the
+UNCHANGED raw opener treats 1 as an independent constant and cannot prove
+[1,0] from its old initial context. It explicitly says that a presentation
+could add an identification or normalize spellings, provided the cost and
+correctness are counted.
+
+The specific fixed-resource implementation [0,[1,0]], together with a
+strict positive-odd public leaf grammar and unchanged raw opener, was not
+found in the fetched unified article. Therefore a narrow novelty claim is
+supported: this is a measured implementation of the article's suggested
+identification repair, replacing per-opening zero normalization by one
+fixed equality resource. Do not claim that the idea of uniform zero or
+adding an identification was absent from prior work.
+
+6. Further guard deletion
+--------------------------
+Admitting raw 2 by deleting '& a' would require a second independent
+constant identification (e.g. c_2=0); c_1=0 alone does not justify it. The
+parametric-reading theorem proves that those constants are independent
+in the old raw kernel. Admitting even protected slot coordinates also
+introduces alternative spellings of bound variables, whose proof-level
+identification requires a separate argument. There is no justified free
+further deletion of the oddness test.
+
+7. Sharpened audit of the inherited dummy-slot issue
+--------------------------------------------------
+After discussion with independent_logic, there is a concrete parametric
+countermodel to the stronger completeness claim for all P^ed-admitted raw
+goals. Modify the sorted reading so that the SECOND dummy slot introduced
+by every unary TERM (successor) constructor has a fixed arbitrary value
+Delta, rather than zero. Keep the first successor dummy and the iterator
+counter/seed dummy at zero. Keep the actual successor and iterator as the
+standard arithmetic operations. The terms still denote primitive recursive
+functions with the additional parameter Delta.
+
+The raw tree [5], read at root term depth 3, denotes S(Delta): its child
+is read at depth 7 and scalar 5 is the second successor dummy. The tree
+[0] denotes S(0), and [1] denotes S(c_1).
+
+The raw protocol's soundness proof extends to this reading:
+* Openings preserve an internal successor dummy because it is never an
+  exposed hole and never becomes an outer bound slot. Thus semantic
+  substitution, equality transport, Q elimination, D elimination, and
+  the introductions are unchanged. Fresh numerical parameters are negative
+  and independent of Delta. Equation induction with Delta as a fixed
+  parameter is valid in standard arithmetic.
+* Zero-computation adds one zero-valued iterator dummy, not a changed
+  successor dummy; hence the zero-instance-supply proof remains valid.
+* In successor computation, the left predecessor appears below two extra
+  successor dummy slots. If the update uses its state, the generated
+  recursive image [s,u,t] must pass validation at the root term depth.
+  Its predecessor s is then read below only the iterator's zero dummy.
+  Any reference of s to the newly added SECOND successor dummy would be
+  out of scope in that recursive image and cause rejection. Thus all
+  successful state-using computations agree in their predecessor readings.
+  If the update does not use its state, no recursive image is needed and
+  I(S(n),a;u.h)=h for every n, so an arbitrary value Delta in the
+  predecessor does not affect soundness.
+
+Therefore every accepted old-protocol raw goal is valid for arbitrary
+Delta; for the alias candidate this is true under c_1=0. The old validator
+admits [[5],[0]], and the new validator admits [[5],[1]]. Both have the
+intended all-dummies-zero reading S0=S0, but under the modified reading
+at Delta=1 they say S1=S0 and are false. Thus no certificate exists for
+them. This explains precisely why the established completeness theorem
+must be stated for canonical encodings (which never reference dummy slots),
+not every raw goal passing the loose parity/depth validator.
+
+This argument is a new audit result relative to the fetched article; it
+has not been machine-formalized. The scalar constant-alias repair itself
+is valid and does not cause this inherited defect. The deliverable must
+not silently strengthen the inherited canonical-image completeness theorem.

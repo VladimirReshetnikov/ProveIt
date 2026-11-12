@@ -1,0 +1,120 @@
+EXACT FACTORIZATION OF THE GLOBAL-SCOPE THREE-FIELD CHECKER
+=========================================================
+
+Result
+------
+The complete control is 244 significant tokens, 272 AST nodes, and 608
+normalized UTF-8 bytes. The candidate is 244 tokens, 273 AST nodes, and 607
+normalized bytes. Measurements use CPython 3.12.14, ast.unparse plus one LF.
+This is one byte smaller than its matched control and has one more AST node.
+It is not a new coordinatewise frontier record. It removes no logical or
+arithmetic axiom and should not be described as a new axiomatization.
+
+Both modules read one JSON item per line: the goal first, followed by
+three-field proof packets in the order consumed by the recursive verifier.
+They print exactly ACCEPT followed by LF on normal successful completion.
+The public contract and the reader are unchanged. An unused suffix of input
+is permitted, exactly as in the control.
+
+Transformation
+--------------
+In the branch selected when u is falsy, write J for the expression
+
+    (a := i(*a, t, 2)).
+
+The old expression is
+
+    (c(s, *g) or s * 3) if s else J.
+
+The new expression is
+
+    (s and c(s, *g)) or s * 3 or J.
+
+Python's precedence gives precisely these parses. The surrounding branch
+selected by u, the scope traversal, the floor decrement, hypothesis opening,
+continuation opening, and every function call outside this expression are
+identical ASTs. verify.py checks that this single rewrite accounts for the
+entire source difference.
+
+Input domain and semantic model
+-------------------------------
+The equivalence concerns finite trees of exact Python integers and lists
+produced from the intended JSON alphabet. It includes empty lists and
+arbitrary administrative aliases; it does not assume that every packet is a
+well-formed logical instruction. There are no custom Python objects with
+overloaded arithmetic or truth tests. Ordinary failures reject. As with the
+reference mathematical checker model, incidental physical resource failures
+are not logical inference rules.
+
+Proof of exact acceptance equivalence
+------------------------------------
+Every successful invocation of c returns None: its body is a while loop and
+it has no return statement. Consider one evaluation of the rewritten branch.
+
+1. If s is truthy, the old branch evaluates c(s, *g). The new branch evaluates
+   the same call in the same state, before it evaluates any opening or changes
+   the floor. A failed or nonterminating recursive call has the same effect
+   in both programs. A successful call returns None in both. Then both
+   programs evaluate s * 3 and return it. For a nonzero integer this product
+   is a nonzero integer; for a nonempty list it is a nonempty list. Thus the
+   new expression cannot evaluate J in this case. No side effect is added.
+
+2. If s is falsy, the domain assumption gives exactly two possibilities:
+   s is the integer 0 or s is the empty list. The old expression skips the
+   recursive call and evaluates J. The new expression also skips the call;
+   its extra product s * 3 is respectively 0 or the empty list, hence falsy,
+   and it then evaluates the same J once. That extra product neither reads
+   proof input nor changes any state and cannot raise a type error on this
+   domain. In particular, the empty-list case is covered explicitly.
+
+Therefore the branches return the same value, produce the same updates to a
+and the global floor k, and consume the same proof packets. The surrounding
+operations are identical. Induction on a finite successful execution gives
+the same result and residual input stream; the same local correspondence
+also preserves finite rejection and divergence in the ordinary unbounded
+operational semantics. The initial call, empty initial context, and success
+print are unchanged. Hence the modules have the same acceptance relation on
+the stated input domain.
+
+Logical consequences
+--------------------
+For every canonical public goal A and every certificate in the intended
+alphabet, the candidate accepts that certificate for A exactly when the
+control does. Thus any established correspondence between the control and
+the guarded scalar calculus transfers without a new logical argument. This
+does not independently re-prove the inherited correspondence to iPRA, and it
+does not constitute a Lean or Rocq verification of Python semantics.
+
+Validation
+----------
+verify.py checks the exact AST rewrite and the two complete source sizes.
+It compares 27 fixtures in both normal and optimized Python, for 108 isolated
+executions. These include the inherited global three-field examples and
+adversarial examples, plus seven small boundaries covering literal-zero and
+empty-list sources and invalid roots. The fixtures supplement the universal
+case analysis above; their passage alone would not prove equivalence.
+
+Rejected alternatives
+---------------------
+A different change adds the neutral marker 0 to every context and replaces
+the major branch by c(s, *g) or s * 3 or J. It measures 244/270/604, but it is
+not an exact transformation of this raw acceptance relation. The literal
+goal 0 is then accepted immediately, whereas the old empty-context checker
+requests a packet. Moreover, a falsy source [] now calls c([]), whereas the
+old conditional skips that call. One could discuss a restricted canonical
+packet language separately, but these facts prohibit an all-stream exactness
+claim. That 604-byte candidate is not delivered as a validated improvement.
+
+Hoisting k -= 1 ahead of the raw-hypothesis construction measures well but
+changes eigenvariable scope before major checking and witness opening. It
+rejects multiple inherited valid local certificates and has no soundness
+proof; it is also excluded.
+
+Provenance
+----------
+The control comes from the repository incoming package
+ipra_checked_presentation_2026-11-12, code/checker_tokens.py, at ProveIt commit
+b9aa36102e523213ae956b474ec651bfde3e5665. The exact source and fixture hashes
+and the framing conversion are recorded in provenance.json. The upstream
+repository materials are under the MIT No Attribution license. This note
+and the one-expression derivative may be used on the same terms.

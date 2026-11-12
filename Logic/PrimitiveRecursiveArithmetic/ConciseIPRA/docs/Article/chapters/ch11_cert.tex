@@ -43,6 +43,10 @@ one parity comparison for the leaves of the goal & \cref{cert:sec:native-refinem
 initial floor supplied with the goal & \cref{cert:sec:native-refinements} & \pkg{zero\_test\_split}\\
 products of bits in the opener of the strict programs & \cref{cert:sec:native-refinements} & \pkg{equation\_aliases}\\
 two-field stream for the conditional-copy calculus & \cref{cert:sec:native-refinements} & \pkg{alias\_back}\\
+test of the printed form as a disjunction; eager mode selector & \cref{cert:sec:native-refinements} & \pkg{absorbing\_orbit}; \pkg{boolean\_constancy}\\
+compositions of these rewritings & \cref{cert:sec:native-refinements} & \pkg{checked\_reductions}, \pkg{refinement} (second delivery)\\
+zero as a defined alias in the public goal & \cref{cert:sec:native-refinements} & \pkg{zero\_alias}\\
+rewritings of single expressions of the stream programs & \cref{cert:sec:representation} & \pkg{fused\_iteration}, \pkg{pred50}\\
 certificates read one record per line & \cref{cert:sec:representation} & \pkg{checked\_presentation} (second delivery)\\
 \bottomrule
 \end{tabular}
@@ -54,13 +58,19 @@ part), \pkg{compact\_update}, \pkg{kernel\_refinement}, \pkg{checked\_refinement
 \pkg{immediate\_opening}, \pkg{479\_predecessor57} (in its checker part), the
 second delivery of \pkg{checked\_presentation}, and the checker parts of
 \pkg{checked\_frontier}, \pkg{zero\_test\_split},
-\pkg{atomic\_seed\_refinement}, \pkg{reductions}, \pkg{equation\_aliases} and
-\pkg{alias\_back} state that they contain no
+\pkg{atomic\_seed\_refinement}, \pkg{reductions}, \pkg{equation\_aliases},
+\pkg{alias\_back}, \pkg{absorbing\_orbit}, \pkg{absorbing\_predecessor},
+\pkg{boolean\_constancy}, \pkg{zero\_alias}, \pkg{checked\_reductions},
+\pkg{fused\_iteration}, \pkg{pred50} and the second delivery of
+\pkg{refinement} state that they contain no
 new rule and no new arithmetic; each composes devices of this list, and the
 composition is what is proved. The mathematical parts of
 \pkg{479\_predecessor57}, \pkg{zero\_test\_split},
-\pkg{atomic\_seed\_refinement}, \pkg{reductions}, \pkg{equation\_aliases} and
-\pkg{alias\_back} concern the rule basis and
+\pkg{atomic\_seed\_refinement}, \pkg{reductions}, \pkg{equation\_aliases},
+\pkg{alias\_back}, \pkg{absorbing\_orbit}, \pkg{absorbing\_predecessor},
+\pkg{boolean\_constancy}, \pkg{zero\_alias}, \pkg{checked\_reductions},
+\pkg{fused\_iteration}, \pkg{pred50} and the second delivery of
+\pkg{refinement} concern the rule basis and
 the arithmetic and are not treated in this chapter.
 
 Throughout, a checker reads one finite array of JSON values, except for the
@@ -3595,8 +3605,10 @@ against it.
 This subsection follows the checker parts of \pkg{checked\_frontier},
 \pkg{reductions}, the second delivery of \pkg{checked\_presentation},
 \pkg{479\_predecessor57}, \pkg{atomic\_seed\_refinement},
-\pkg{zero\_test\_split}, \pkg{equation\_aliases} and \pkg{alias\_back}, and
-records the deliveries of \pkg{immediate\_opening}.
+\pkg{zero\_test\_split}, \pkg{equation\_aliases}, \pkg{alias\_back},
+\pkg{absorbing\_orbit}, \pkg{boolean\_constancy}, \pkg{checked\_reductions},
+\pkg{zero\_alias} and the second delivery of \pkg{refinement}, and records the
+deliveries of \pkg{immediate\_opening} and \pkg{absorbing\_predecessor}.
 The controls are programs of \cref{cert:sec:after-first}: the composed native
 goal-validated program of \cref{cert:prop:native-composition} ($629$ bytes),
 the native immediate application of \cref{cert:prop:immediate}(b) ($637$
@@ -3628,7 +3640,11 @@ tests $J$ on the whole input and the goal by the recursive predicates of
 the latter is that of the kernel together with the definition of $J$ and
 \cref{cert:thm:guarded-validator}, as for the corresponding program of
 \pkg{single\_binder} on the kernel of $488$ bytes. Both are measured with their
-docstrings.
+docstrings. \pkg{absorbing\_predecessor} contains no new checker: its five
+baseline programs (\texttt{baseline/code/}) are, with identical text, the
+programs of $479$ and $637$ bytes, the program of $607$ bytes of
+\pkg{479\_predecessor57} and the two stream programs of the second delivery
+of \pkg{checked\_presentation}.
 \end{remark}
 
 \subsubsection*{The truth-valued result on the program of $629$ bytes}
@@ -3921,6 +3937,95 @@ the phase by an empty context ($334/387/654$) or the parity program of
 $628$ bytes. No package combines the product of bits with the parity
 comparison of \cref{cert:prop:parity}.
 
+\subsubsection*{The test of the printed form as a disjunction, and an eager mode selector}
+
+\pkg{absorbing\_orbit} and \pkg{boolean\_constancy} make two further changes
+to programs of this section; their arithmetic parts belong to another chapter.
+Write $r$ for the printed form of the parsed input with the admitted
+characters (digits, minus sign, brackets, comma, space) stripped from both
+ends; the test of the printed form of the program of $637$ bytes binds the
+removal function as $q\defeq(\neg r)\land p.\mathrm{pop}$.
+
+\begin{proposition}[Test of the printed form as a disjunction]\label{cert:prop:gate-or}
+Replace in the program of $637$ bytes the binding by $q\defeq r\lor
+p.\mathrm{pop}$. The resulting program accepts exactly the parsed inputs that
+the program of $637$ bytes accepts, with the same run.
+\end{proposition}
+\begin{proof}
+If $r$ is empty, both bindings evaluate $p.\mathrm{pop}$ and bind the same
+method, or both fail when $p$ has no such method; everything after the binding
+is identical. If $r$ is not empty, neither evaluates $p.\mathrm{pop}$; the old
+binding gives \texttt{False} and the new one the nonempty string $r$, and the
+next operation, the call $q()$ that removes the goal, fails on both, since
+neither value can be called. Malformed text is rejected by the parser before
+either binding.
+\end{proof}
+
+The program, of \pkg{absorbing\_orbit} (\texttt{checker/checkers/strict632.py}),
+has $343/390/632$ against $344/392/637$, under the typed contract for the
+language with equality and $D$. The package states the envelope $334/387/632$,
+at a revision without the programs of $628$ and $641$ bytes.
+
+\begin{proposition}[Eager mode selector]\label{cert:prop:eager-selector}
+In the program of $479$ bytes replace the selector $\mathrm{bool}(m\lor e)$ of
+the floor of the new hypothesis, with $e=3\bmod\lvert a\rvert$, by
+$\mathrm{any}((m,e))$, which evaluates $e$ also when $m$ is true-valued; in the
+program of $637$ bytes make the same change with $e$ the test
+$\lvert a\rvert\bmod 2=u$. In each case:
+\begin{enumerate}[label=(\alph*)]
+\item every input accepted by the new program is accepted by the old one, with
+the same run;
+\item every certificate of \cref{cert:prop:scalar}, with inert fields $0$, that
+the old program accepts is accepted by the new one, with the same run;
+\item for the program of $479$ bytes, some inputs accepted by the old program
+are rejected by the new one.
+\end{enumerate}
+Hence the two programs accept the same canonical goals.
+\end{proposition}
+\begin{proof}
+Where $e$ is defined, $\mathrm{bool}(m\lor e)$ and $\mathrm{any}((m,e))$ are
+the same truth value, and the evaluation of $e$ (a length, a remainder, an
+equality) changes no state. The selector is evaluated after the hypothesis and
+the new goal of an introduction are formed and before the decrement of the
+floor, in both programs.
+
+(a) In a returning run of the new program every evaluation of $e$ is defined.
+Replacing each of them by the old selector, including in major calls, gives a
+returning run of the old program with the same consumed packets.
+
+(b) The two programs differ only where $m$ is true-valued and $e$ is undefined,
+that is, where the goal $a$ at the selector has no length or, in the program
+of $479$ bytes, the length $0$.
+In the certificates of \cref{cert:prop:scalar} every goal that reaches a
+selector is the canonical encoding of a formula, or, after an introduction,
+the opened matrix, which is again a canonical formula; these are arrays of
+arity $1$, $2$ or $3$, and the neutral major $0$ is closed by membership before
+any selector. So $e$ is defined, and the argument of (a) in the other direction
+applies.
+
+(c) With $E=\texttt{[[0,[0],0],[0]]}$, the encoding of
+$\It{0}{\Suc 0}{u}{0}=\Suc 0$, the stack
+\[
+\texttt{[[0,0,0,}E\texttt{],[0,0,[0],0],[}E\texttt{,0,0,0],[[],0,[0],0],}E\texttt{]}
+\]
+(the boundary certificate of the package) is accepted by the program of $479$
+bytes and rejected by the new program: the first packet $[[\,],0,[0],0]$ has
+the major $[\,]$, and the call that proves it has the empty array as goal and
+reaches a selector with the true-valued major $E$, where the old selector does
+not evaluate $3\bmod\lvert[\,]\rvert$ and the new one fails on it. The direct certificate $[[0,0,[0],0],E]$ of the same goal
+is accepted by both.
+\end{proof}
+
+The programs, of \pkg{boolean\_constancy}, have $274/304/478$
+(\texttt{checkers/code/checker478.py}) against $272/304/479$, and
+$346/392/636$ (\texttt{checkers/code/checker636.py}) against $344/392/637$,
+under the typed contract for the language with equality and $D$. The program of
+$478$ bytes is not the program of \pkg{zero\_test\_split} of the same number of
+bytes ($271/305/478$): it reads the unchanged four-field format with the goal
+as last element, and its accepted stacks are a proper subset of those of the
+program of $479$ bytes, while the program of \pkg{zero\_test\_split} has, with
+the header $[A,0]$, exactly the runs of the program of $479$ bytes.
+
 \subsubsection*{An initial floor supplied with the goal}
 
 \begin{lemma}[A zero in every canonical public goal]\label{cert:lem:guarded-zero}
@@ -4017,6 +4122,192 @@ of $30$ packets that both modified programs accept and that the unmodified
 native program and the program of $478$ bytes at the floor $0$ reject; the
 certificate is not displayed in its report (\cref{cert:sec:questions}).
 \end{remark}
+
+\subsubsection*{Compositions of the preceding rewritings}
+
+\pkg{checked\_reductions} and the second delivery of \pkg{refinement} combine
+the rewritings of \cref{cert:prop:parity,cert:prop:bit-products,cert:prop:gate-or,cert:prop:eager-selector,cert:prop:header,cert:prop:inverted};
+their arithmetic parts belong to another chapter. The proofs of these
+propositions use, for the parity comparison and the product of bits, only that
+the leaf condition is evaluated in the first opening at the floor $0$ on exact
+integers and afterwards either not at all or inside a guard that holds
+whatever its value; for the disjunctive gate only the line that binds the
+removal function; for the eager selector only the definedness of $e$ on
+canonical certificates; and for the header only the first opening of a
+canonical guarded goal.
+
+\begin{proposition}[Compositions]\label{cert:prop:late-compositions}
+Each of the following programs has exactly the runs of its control, except
+(i), whose relation to its control is that of \cref{cert:prop:eager-selector}.
+\begin{enumerate}[label=(\alph*)]
+\item The program of $628$ bytes (\cref{cert:prop:parity}) with the gate of
+\cref{cert:prop:gate-or} (\pkg{checked\_reductions}, $340/385/623$).
+\item The phase by an empty context of \cref{cert:prop:empty-phase}
+($334/387/654$) with the parity comparison, the gate of
+\cref{cert:prop:gate-or} and the inverted entry test of
+\cref{cert:prop:inverted} (\pkg{checked\_reductions}, $330/379/641$; without the
+inverted entry test $330/380/640$, an intermediate program of the package).
+\item The program of $607$ bytes (\cref{cert:prop:native-int}) with the parity
+comparison (\pkg{checked\_reductions}, $336/378/600$).
+\item The program of $629$ bytes with the parity comparison
+(\pkg{checked\_reductions} and \pkg{refinement}, with identical text,
+$323/369/622$).
+\item The program of $629$ bytes with the parity comparison and the product of
+bits $e\cdot(\text{exact-integer test}\land P)$ (\pkg{refinement},
+$321/371/618$).
+\item The program of $607$ bytes with the same product (\pkg{refinement},
+$334/380/596$).
+\item The phase by an empty context with the parity comparison, the product of
+bits and the gate of \cref{cert:prop:gate-or} (\pkg{refinement},
+$330/380/638$).
+\item The program of $628$ bytes, that is, the program of $637$ bytes with the
+parity comparison, with the product of bits and the gate of
+\cref{cert:prop:gate-or} (\pkg{refinement}, $340/385/621$).
+\item The program of $478$ bytes of \pkg{zero\_test\_split}
+(\cref{cert:prop:header}) with the eager selector of
+\cref{cert:prop:eager-selector} (\pkg{checked\_reductions}, $273/305/477$).
+\end{enumerate}
+The programs (a), (b), (g) and (h) satisfy the typed contract for the language
+with equality and $D$, the programs (c)--(f) the goal contract, and (i) the
+raw contract with a canonical guarded goal assumed and the header of
+\cref{cert:prop:header}.
+\end{proposition}
+\begin{proof}
+The rewritings act on different expressions, so it suffices to check that each
+hypothesis used in its proof holds in the composed program.
+
+\emph{Parity and products.} In the programs with the phase by context ((b),
+(d), (e), (g)) the leaf condition stands inside ``$g$ or \dots'' and is
+evaluated only while the context is empty, in the first opening, at the floor
+$0$; the range test gives $a\ge 0$, and $a$ is an exact integer by the test of
+the printed form ((b), (g)) or by the exact-integer conjunct that precedes the
+parity comparison ((d), (e)). In the programs with the flag ((a), (c), (f),
+(h)) the condition is the guarded condition of $v\le p$, which holds whatever
+$p$ is when $v=0$; when $v=1$ the floor is $0$ and the leaf is an exact
+integer, by the printed form ((a), (h)) or by the exact-integer conjunct ((c),
+(f)). In the products of (e) and (f) the factor that is now evaluated also when
+$e=0$ is the conjunction of the exact-integer test with the parity comparison;
+the exact-integer test was already evaluated first in the controls, it is
+defined on every number that passes the range test, and the parity comparison
+is evaluated only after it has succeeded, on an exact integer. In (g) and (h)
+the factor is the parity comparison on an exact integer. So the identity of
+\cref{cert:prop:parity} and the argument of \cref{cert:prop:bit-products}
+apply, the values of the guards agree, and no new operation fails.
+
+\emph{Gate and entry test.} \Cref{cert:prop:gate-or} concerns only the binding
+of the removal function before the first call, and \cref{cert:prop:inverted}
+only the form of the entry test in a procedure whose body ends with the final
+call, which is the form of the program of $654$ bytes.
+
+\emph{Header and eager selector.} With the header $[A,0]$ the program of $478$
+bytes of \pkg{zero\_test\_split} has the runs of the program of $479$ bytes, and
+\cref{cert:prop:header}(b) shows that an accepted header has a floor
+$k_0\le 0$. The proof of \cref{cert:prop:eager-selector}(a) is a replacement of
+selectors in a returning run and does not depend on the initial floor; so every
+input accepted by (i) is accepted by its control with the same run, and the
+soundness of \cref{cert:prop:header} applies. The certificates of
+\cref{cert:prop:scalar}, with the last element $[A,0]$, are accepted by (i) by
+\cref{cert:prop:eager-selector}(b). The stack of
+\cref{cert:prop:eager-selector}(c) with its last element written $[E,0]$ is
+accepted by the control and rejected by (i).
+\end{proof}
+
+\subsubsection*{Zero as a defined alias in the public goal}
+
+\pkg{zero\_alias} changes the encoding of public goals. By
+\cref{cert:prop:reserved} the scalar $1$ at a term position behaves in the raw
+protocol as a constant $c$ about which nothing is known, and
+\cref{cert:cor:reserved} shows that a validator that merely admits it as a
+spelling of zero loses completeness. The remark after that corollary names an
+identification of spellings as a possible repair whose cost must be counted;
+\pkg{zero\_alias} implements it by an assumption in the initial context.
+
+\begin{definition}[Zero-alias encoding and checker]\label{cert:def:zero-alias}
+For a formula $B$ of the language with equality and $D$ let $B^{\sharp}$ be its
+canonical encoding with every scalar $0$ at a term position replaced by the
+scalar $1$; let $P^{\mathrm{ed}}_{1}$ be the predicate $P^{\mathrm{ed}}$ of
+\cref{cert:def:public} with the leaf alternative ``$a=0$, or $a$ odd with
+$3\le a<e$'' replaced by ``$a$ odd with $1\le a<e$''. The \emph{zero-alias
+checker} is the program (v) of \cref{cert:prop:compositions} with the guards
+of \cref{cert:prop:order}, the reset of the flag in the major call of
+\cref{cert:prop:native-first}, the inverted entry test of
+\cref{cert:prop:inverted} and the gate of \cref{cert:prop:gate-or}, with the
+leaf condition of the flagged opener replaced by $e\mathbin{\&}a$ (the depth
+is odd and $a$ is odd), and with the initial context $[0,[1,0]]$ instead of
+$[0]$.
+\end{definition}
+
+\begin{proposition}[Zero as a defined alias]\label{cert:prop:zero-alias}
+\begin{enumerate}[label=(\alph*)]
+\item The zero-alias checker accepts only inputs that satisfy $J$ and whose goal
+$a$ satisfies $P^{\mathrm{ed}}_{1}(a,0)$; in particular it accepts no goal
+that contains the scalar $0$ at a term position.
+\item If it accepts an input with goal $a$, then the sorted reading of $a$, in
+which the scalar $1$ reads as $0$, is a closed theorem of $\mathcal A^{-}$, and
+the parametric reading of \cref{cert:prop:reserved}, in which $1$ reads as
+$c_1$, is derivable in $\mathcal A^{-}$ over the language with $c_1$ from
+$c_1=0$.
+\item For every closed theorem $B$ of $\mathcal A^{-}$ in the language with
+equality and $D$, the checker accepts some certificate with goal $B^{\sharp}$.
+\end{enumerate}
+Hence the accepted canonical goals are exactly the encodings $B^{\sharp}$ of the
+closed theorems $B$.
+\end{proposition}
+\begin{proof}
+(a) The gate gives $J$ (\cref{cert:prop:gate-or,cert:thm:repr}). In the first
+opening, with the flag $1$ and the floor $0$, a leaf at an odd depth $d$ is
+retained exactly when $0\le a<d$ and $a$ is odd, that is, $a$ odd with
+$1\le a<d$; at an even depth the guarded condition is $0$, and the fallback
+consults the missing image and rejects. The arity conditions are those of the
+control. The argument of \cref{cert:lem:scope} gives $P^{\mathrm{ed}}_{1}$, and
+the opening returns the goal unchanged.
+
+(b) After the first opening the program is the kernel of the program (v), whose
+runs are not changed by the devices listed, and its soundness statement
+(\cref{cert:prop:context-first}(a) in its native form) holds for an arbitrary
+initial context of trees closed at the floor $0$. The member $[1,0]$ is closed
+at every floor, since $1$ lies in the range of every term position, and its
+sorted reading is $0=0$; so the sorted reading of the goal is derivable from
+$0=0$, hence outright. For the parametric reading, \cref{cert:prop:reserved}
+gives derivability from the parametric readings of the context, which are
+$0=0$ and $c_1=0$.
+
+(c) Let $z$ be a parameter and $F(v)$ the template obtained from $B$ by writing
+$v$ for each occurrence of the constant $0$ at a term position, so that
+$B=F(0)$. In $\mathcal A$ (\cref{cert:def:A}), \rulename{Tr} accepts every source,
+including $0$: from $z=0$ it derives $0=z$ (transport with the template
+$v=z$ and the reflexive $z=z$), and then $F(z)$ from $F(0)$, which is derivable
+since $B$ is a theorem. So $z=0\proves F(z)$ in $\mathcal A$, hence in
+$\mathcal A^{-}$ (\cref{cert:rem:imported}). Its eigenparameters are fresh, so
+they differ from $z$, and a source $z$ of \rulename{SE} is not the literal $0$.
+Compile this derivation by the completeness proof of the program
+(v) (\cref{cert:prop:compositions}, with \cref{cert:prop:context-first}(b)),
+with $z$ encoded by the scalar $1$ in place of a negative name. The compilation
+uses of a parameter only that it is retained by every opening, is never the hole
+and never equals a fresh name; the scalar $1$ has these properties, since every
+term position has depth at least $3$ and fresh names are negative
+(\cref{cert:prop:reserved}). The source field $1$ is true-valued, as the
+encoding of a parameter source is. The hypothesis $z=0$ is the member $[1,0]$
+of the initial context. The resulting certificate proves the goal $F(1)$ in the
+encoding, which is $B^{\sharp}$; it satisfies $P^{\mathrm{ed}}_{1}$, so the
+first opening passes, and the run is that of the kernel.
+\end{proof}
+% ed.: the package states completeness in one sentence ("compile a reference
+% proof, then use derived formula transport under c=0"); the derivation in A
+% with the parameter z, the passage to A^- and the encoding of z by the scalar
+% 1 are supplied here.
+
+The program, of \pkg{zero\_alias} (\texttt{implementation/alias\_inverted.py}),
+has $331/373/625$; its readable companion has $430/499/2322$. Its contract is
+not that of T/ed: it accepts the encodings $B^{\sharp}$ and rejects every
+canonical goal of T/ed that contains the scalar $0$, so it satisfies neither
+the completeness of T/ed nor the converse. It is listed under its own code. The
+package states that it is below the envelope $334/386/628$ of T/ed in all three
+coordinates, which is true of the figures and is a comparison across contracts
+related by the bijection $B\mapsto B^{\sharp}$ on goals; completeness is claimed
+for canonical encodings only, as under T/ed. The package's negative control,
+the same program with the initial context $[0]$, rejects a translated
+certificate of a computation, as \cref{cert:cor:reserved} predicts.
 
 \subsubsection*{Two fields for the conditional-copy calculus}
 
@@ -5098,6 +5389,7 @@ G/$\mathcal A^{-}$ & goal contract for the grammar with equality and $D$, calcul
 T/eqd & typed contract for the grammar with equality, $Q$ and $D$, calculus $\mathcal A^{-}$\\
 T/ed & typed contract for the grammar with equality and $D$, calculus $\mathcal A^{-}$\\
 T/g & typed contract for canonical closed guarded formulas, calculus $\mathcal U$\\
+T/ed$_1$ & typed contract for the grammar $P^{\mathrm{ed}}_{1}$ of \cref{cert:def:zero-alias}, public zero encoded by the scalar $1$, initial context $[0,[1,0]]$, calculus $\mathcal A^{-}$\\
 S & strict contract of \pkg{guarded\_register}: certificates $[A,\pi]$ with a proof tree $\pi$, every term and the goal validated; its own calculus, see the remarks below\\
 K & strict contract for the conditional-copy calculus $\mathsf K$: every active term and formula and the goal validated, in full normal form; tree or stream certificates (\cref{cert:def:k-stream})\\
 \bottomrule
@@ -5338,6 +5630,37 @@ immediate application (text of \pkg{immediate\_application}) & R/$\mathcal U$ & 
 two-field stream for $\mathsf K$ & K & 609 & 699 & 1644 & 629/732/1715\\
 matched control: tree checker of $\mathsf K$, simplified & K & 629 & 732 & 1715 & constructed by the package\\
 \midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{absorbing\_orbit}, checker part: \cref{cert:prop:gate-or}}\\
+test of the printed form as a disjunction & T/ed & 343 & 390 & 632 & 344/392/637\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{boolean\_constancy}, checker part: \cref{cert:prop:eager-selector}, \cref{cert:sec:representation}}\\
+three fields, global floor, one record per line, wildcard import\textsuperscript{\dag\ddag} & R/$\mathcal U$ & 244 & 272 & 604 & 244/272/608\textsuperscript{\dag\ddag}\\
+three fields, local floors, one record per line, wildcard import\textsuperscript{\dag\ddag} & R/$\mathcal U$ & 249 & 267 & 602 & 249/267/606\textsuperscript{\dag\ddag}\\
+eager mode selector & R/$\mathcal U$ & 274 & 304 & 478 & 272/304/479\\
+eager mode selector, native & T/ed & 346 & 392 & 636 & 344/392/637\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{zero\_alias}, checker part: \cref{cert:prop:zero-alias}}\\
+zero as a defined alias & T/ed$_1$ & 331 & 373 & 625 & none in its contract\\
+readable form of the same & T/ed$_1$ & 430 & 499 & 2322 & none\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{checked\_reductions}, checker part: \cref{cert:prop:late-compositions}}\\
+header and eager selector & R/$\mathcal U$ & 273 & 305 & 477 & 271/305/478\\
+parity and disjunctive gate on the program of $628$ bytes & T/ed & 340 & 385 & 623 & 341/387/628\\
+phase by an empty context, parity, gate, inverted entry & T/ed & 330 & 379 & 641 & 334/387/654\\
+parity on the program of $607$ bytes & G/$\mathcal A^{-}$ & 336 & 378 & 600 & 337/383/607\\
+parity on the program of $629$ bytes & G/$\mathcal A^{-}$ & 323 & 369 & 622 & 324/374/629\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{refinement}, second delivery: \cref{cert:prop:late-compositions}}\\
+parity on the program of $629$ bytes (text of \pkg{checked\_reductions}) & G/$\mathcal A^{-}$ & 323 & 369 & 622 & 324/374/629\\
+parity and product on the program of $629$ bytes & G/$\mathcal A^{-}$ & 321 & 371 & 618 & 324/374/629\\
+parity and product on the program of $607$ bytes & G/$\mathcal A^{-}$ & 334 & 380 & 596 & 337/383/607\\
+phase by an empty context, parity, product, gate & T/ed & 330 & 380 & 638 & 334/387/654\\
+product and gate on the program of $628$ bytes & T/ed & 340 & 385 & 621 & 341/387/628\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{fused\_iteration} and \pkg{pred50}, checker parts: \cref{cert:prop:stream-rewrites}}\\
+local stream program, product in the floor\textsuperscript{\dag\ddag} & R/$\mathcal U$ & 249 & 265 & 605 & 249/267/606\textsuperscript{\dag\ddag}\\
+global stream program, conjunction for the major\textsuperscript{\dag\ddag} & R/$\mathcal U$ & 244 & 273 & 607 & 244/272/608\textsuperscript{\dag\ddag}\\
+\midrule
 \multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{guarded\_register}: the guarded scalar $J$ of the chapter on canonical and counter-aware recursors}\\
 strict guarded-$J$ checker & S & 1041 & 1181 & 3467 & 1045/1193/3566 (strict scalar $I$)\\
 \midrule
@@ -5557,6 +5880,64 @@ the whole-input programs the change saves five tokens and six nodes at the cost
 of one byte, and six tokens and four nodes at no cost in bytes. These rows
 carry the double dagger.
 
+The framing by lines is due to the second delivery of
+\pkg{checked\_presentation}. \pkg{absorbing\_predecessor} lists the same two
+programs with identical text among its unchanged baselines, and
+\pkg{boolean\_constancy}, which credits the framing to
+\pkg{absorbing\_predecessor}, writes the import of the reader as the import of
+all public names of the standard JSON module. None of these names coincides
+with a name used by the programs, and the reader is the same function, so the
+runs are unchanged; the programs have $244/272/604$ and $249/267/602$, four
+bytes fewer than the stream programs and the same tokens and nodes.
+
+Two further packages rewrite one expression of a stream program;
+\pkg{fused\_iteration} and \pkg{pred50} take their controls from
+\pkg{absorbing\_predecessor} and from the second delivery of
+\pkg{checked\_presentation}, which have the same text.
+
+\begin{proposition}[Two rewritings of the stream programs]\label{cert:prop:stream-rewrites}
+On inputs whose values are integers and arrays:
+\begin{enumerate}[label=(\alph*)]
+\item in the local stream program, the floor argument
+$(k\defeq k-1)\land(s\lor\lvert a\rvert=2)\land k$ of the opening of the new
+hypothesis may be replaced by $(k\defeq k-1)\cdot(1$ if $s$ else
+$\lvert a\rvert=2)$; the runs agree up to the replacement of \texttt{False}
+by $0$ inside trees;
+\item in the global stream program, the expression ``$c(s,{*}g)\lor 3s$ if $s$
+else $J$'', with $J$ the opening of the introduction, may be replaced by
+$(s\land c(s,{*}g))\lor 3s\lor J$; the runs are the same.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Before the decrement $k\le 0$, so $j\defeq k-1$ is a nonzero integer. If $s$
+is true-valued both expressions have the value $j$, and neither evaluates
+$\lvert a\rvert$. If $s$ is false-valued, both evaluate $\lvert a\rvert=2$; if it
+holds both have the value $j$, and otherwise the old one has the value
+\texttt{False} and the new one $0$. The decrement is evaluated first in both. The
+two values are equal, are both false-valued, and behave alike under every
+operation of the program (arithmetic, comparison, membership, the failed
+traversal of a scalar by the opener); the program applies no exact-type test to
+internal trees. Relating trees up to this replacement, related states read the
+same lines and take the same branches, as in \cref{cert:thm:context-phase}.
+
+(b) Every returning call of the global program returns the null value, since
+its body is a loop without a return statement. If $s$ is true-valued, both
+forms make the same major call; after it returns, both evaluate $3s$, which is
+a nonzero integer or a nonempty array, so the new form does not evaluate $J$.
+If $s$ is false-valued, it is $0$ or $[\,]$ on this domain; neither form makes
+the call, the new form evaluates $3s$, which is $0$ or $[\,]$, false-valued and
+without effect, and both evaluate $J$ once.
+\end{proof}
+
+The programs have $249/265/605$ (\pkg{fused\_iteration},
+\texttt{code/checker\_refinement/checker.py}) against $249/267/606$, and
+$244/273/607$ (\pkg{pred50}, \texttt{code/checker/checker607.py}) against
+$244/272/608$. They carry the double dagger. \pkg{pred50} also records two
+rejected variants: a neutral $0$ in every context with an unconditional major
+call ($244/270/604$), which accepts the literal goal $0$ at once and calls the
+checker on the source $[\,]$, so that it is not an exact rewriting, and an
+early decrement, which rejects valid certificates; neither is delivered.
+
 None of these observations is a mathematical simplification. They show that the
 three coordinates depend on the charged interface (input framing, decoders,
 the success message) as well as on the checking procedure, and that a
@@ -5576,12 +5957,13 @@ one program only where this is said.
 Contract & Tokens & Nodes & Bytes & Attained by\\
 \midrule
 R/$\mathcal A$ & 261 & 288 & 528 & three programs: the traversal profiles of \pkg{monus\_and\_neutral\_major} and \pkg{prevalidated\_elimination} ($261$ tokens), the loop profile of \pkg{scope\_and\_closure} ($288$ nodes) and its zero-product profile ($528$ bytes)\\
-R/$\mathcal U$ & 249 & 271 & 478 & three programs: the global three-field profile ($249/278/607$) and the local three-field profile ($255/271/606$) of \pkg{three\_field}, and the program of \pkg{zero\_test\_split} with the initial floor ($271/305/478$); among programs whose last element is the goal $249/271/479$, the byte minimum attained by the immediate application of \pkg{immediate\_application} ($272/304/479$, delivered again by \pkg{immediate\_opening}, \pkg{checked\_presentation} and \pkg{479\_predecessor57}); among programs that read four-field certificates $250/273/478$, attained by the token program of \pkg{constantfree} ($250/283/603$), the loop profile of \pkg{context\_order} ($262/273/572$) and the program of $478$ bytes; programs marked with the double dagger are not counted (with them the minima are $244/267/478$, the first two attained by the stream programs of \pkg{checked\_presentation})\\
+R/$\mathcal U$ & 249 & 271 & 477 & three programs: the global three-field profile ($249/278/607$) and the local three-field profile ($255/271/606$) of \pkg{three\_field}, and the program of \pkg{checked\_reductions} with the header and the eager selector ($273/305/477$); among programs whose last element is the goal $249/271/478$, the byte minimum attained by the program of \pkg{boolean\_constancy} with the eager selector ($274/304/478$), and without the eager selector $249/271/479$, attained by the immediate application of \pkg{immediate\_application} ($272/304/479$, delivered again by \pkg{immediate\_opening}, \pkg{checked\_presentation}, \pkg{479\_predecessor57}, \pkg{alias\_back} and \pkg{absorbing\_predecessor}); among programs that read four-field certificates $250/273/477$, attained by the token program of \pkg{constantfree} ($250/283/603$), the loop profile of \pkg{context\_order} ($262/273/572$) and the program of $477$ bytes; programs marked with the double dagger are not counted (with them the minima are $244/265/477$, the first two attained by the global stream programs of \pkg{checked\_presentation} and \pkg{boolean\_constancy} and by the local stream program of \pkg{fused\_iteration})\\
 R/$\mathcal U^{\mathrm{Tr}}$ & 295 & 352 & 742 & one program, the two-field reference of \pkg{refinement}\\
 G/$\mathcal U$ & 407 & 459 & 921 & one program, of \pkg{checked\_refinement}\\
 T/g & 419 & 469 & 855 & two programs of \pkg{refinement}: the matched control ($419/469/862$) and the program on the kernel of $488$ bytes ($423/474/855$)\\
-G/$\mathcal A^{-}$ & 324 & 370 & 607 & three programs: the composed native goal-validated program of \pkg{verified\_refinements} ($324/374/629$), the parity program of \pkg{atomic\_seed\_refinement} ($326/370/636$) and the program of \pkg{479\_predecessor57} ($337/383/607$); the exact-integer test of the first and the third concerns one runtime, as does that of the programs of $641$ and $643$ bytes of \pkg{context\_phase}, while the second has an explicit type test\\
-T/ed & 334 & 386 & 628 & three programs: the phase by an empty context of \pkg{verified\_refinements} ($334/387/654$), the program of \pkg{equation\_aliases} with the reader in the initial call ($342/386/641$) and the parity program of \pkg{atomic\_seed\_refinement} ($341/387/628$)\\
+G/$\mathcal A^{-}$ & 321 & 369 & 596 & three programs, all from \cref{cert:prop:late-compositions}: the parity and product program of \pkg{refinement} on the program of $629$ bytes ($321/371/618$), the parity program on the program of $629$ bytes of \pkg{checked\_reductions} and \pkg{refinement} ($323/369/622$), and the parity and product program of \pkg{refinement} on the program of $607$ bytes ($334/380/596$); their exact-integer tests concern one runtime, as do those of the programs of $629$ and $607$ bytes\\
+T/ed & 330 & 379 & 621 & two programs: the program of \pkg{checked\_reductions} with the phase by an empty context, parity, gate and inverted entry ($330/379/641$), which attains two of the three minima, and the program of \pkg{refinement} with product and gate on the program of $628$ bytes ($340/385/621$)\\
+T/ed$_1$ & 331 & 373 & 625 & one program, of \pkg{zero\_alias}; not comparable with T/ed\\
 T/eqd & 383 & 442 & 870 & one program, of \pkg{validated\_presentation}\\
 S & 1041 & 1181 & 3467 & one program, of \pkg{guarded\_register}\\
 K & 609 & 699 & 1644 & one program, the two-field stream of \pkg{alias\_back}\\
@@ -5706,6 +6088,51 @@ companion of \pkg{immediate\_opening} does not change the envelope. Under K
 the two-field stream of \pkg{alias\_back} is below its matched tree control in
 all three coordinates; the two read different certificate formats.
 
+\pkg{absorbing\_orbit}, \pkg{absorbing\_predecessor} and
+\pkg{boolean\_constancy} change the envelope as follows. Under
+R/$\mathcal U$ the eager selector of \pkg{boolean\_constancy} gives a second
+program of $478$ bytes ($274/304/478$), two tokens more than its control and
+the same number of nodes, and incomparable with the program of
+\pkg{zero\_test\_split}; the envelope $249/271/478$ is unchanged and is now
+attained also among programs whose last element is the goal. With the
+programs of the double dagger the minima remain $244/267/478$; the wildcard
+import saves four bytes of each stream program and changes neither tokens nor
+nodes. \pkg{boolean\_constancy} states $244/267/478$ by this convention, and
+\pkg{absorbing\_predecessor}, which delivers no new checker, $244/267/479$.
+Under T/ed the program of \pkg{absorbing\_orbit} ($343/390/632$) and the
+native eager selector ($346/392/636$) improve their control of $637$ bytes,
+the first in all three coordinates and the second in bytes only; neither
+changes the envelope $334/386/628$.
+
+\pkg{checked\_reductions}, the second delivery of \pkg{refinement},
+\pkg{zero\_alias}, \pkg{fused\_iteration} and \pkg{pred50} change the envelope
+as follows. Under R/$\mathcal U$ the composition of the header with the eager
+selector gives $477$ bytes with $273$ tokens and $305$ nodes, two tokens more
+than its control of $478$ bytes and the same nodes; the envelope is
+$249/271/477$, attained by three programs, and $249/271/478$ among programs
+whose last element is the goal. With the programs of the double dagger the
+minima are $244/265/477$; the program of \pkg{fused\_iteration} lowers the node
+minimum of the stream programs from $267$ to $265$, and that of \pkg{pred50}
+saves one byte and costs one node against its control. Under
+G/$\mathcal A^{-}$ the compositions give the envelope $321/369/596$, attained
+by three programs; the program of $618$ bytes is below the program of $629$
+bytes in all three coordinates, and so is the program of $622$ bytes, which
+attains the node minimum. Under T/ed the compositions give the envelope
+$330/379/621$, attained by two programs; the program of $641$ bytes of
+\pkg{checked\_reductions} attains two of the three minima and is below the
+phase by an empty context in all three coordinates, and the program of $621$
+bytes is below its control of $628$ bytes in all three coordinates. The
+packages state $244/267/477$ (\pkg{checked\_reductions}), $330/379/623$ and
+$323/369/600$ (\pkg{checked\_reductions}, for T/ed and G/$\mathcal A^{-}$),
+$330/380/621$ and $321/369/596$ (\pkg{refinement}), $249/265/605$ as a single
+program (\pkg{fused\_iteration}) and $244/267/478$ unchanged (\pkg{pred50}),
+each at its own revision. The program of \pkg{zero\_alias} ($331/373/625$) is
+the only program of T/ed$_1$; it is below the earlier envelope $334/386/628$ of
+T/ed in all three coordinates, as the package states, but it is not below the
+present envelope $330/379/621$ in tokens or bytes, and the two contracts encode
+the public zero differently (\cref{cert:prop:zero-alias}), so no program of
+one contract supersedes a program of the other.
+
 \paragraph{Superseded programs.} A program of the table is \emph{superseded}
 if another complete program of the table with the same contract code, and
 with the same recognition of arrays (both or neither marked with a dagger), is
@@ -5743,24 +6170,39 @@ Newly superseded with the packages of \cref{cert:sec:native-refinements} is
 the readable form of \pkg{immediate\_opening} ($306/367/1995$,
 \texttt{code/checker\_readable.py}), by the immediate application
 ($272/304/479$). The programs of $478$, $479$, $488$ and $492$ bytes (the
-program of $478$ bytes being that of \pkg{zero\_test\_split},
-\texttt{checker/code/compact478.py}; the program of $479$ bytes that of
+programs of $478$ bytes being that of \pkg{zero\_test\_split},
+\texttt{checker/code/compact478.py}, and that of \pkg{boolean\_constancy},
+\texttt{checkers/code/checker478.py}, $274/304/478$; the program of $479$ bytes that of
 \pkg{immediate\_application}, \texttt{code/checker479.py}, of
 \pkg{immediate\_opening}, \texttt{code/checker479.py}, of the second delivery of
 \pkg{checked\_presentation}, \texttt{code/checker\_bytes.py}, and of
 \pkg{479\_predecessor57}, \texttt{checker/code/compact479.py}; the program of
 $488$ bytes that of \pkg{checker\_refinement}, \pkg{single\_binder} and
 \pkg{refinement}, \texttt{code/checker\_compact.py} in the last) are not
-superseded: each pair of them is incomparable (the program of $478$ bytes has
-one node more than the programs of $479$ and $488$ bytes and more tokens than
-that of $492$ bytes), the program of $487$ bytes has more tokens than each of
-them, and every other program of the contract has more than $492$ bytes.
+superseded: each pair of them is incomparable (the program of $478$ bytes of
+\pkg{zero\_test\_split} has one node more than the programs of $479$ and $488$
+bytes and more tokens than that of $492$ bytes; that of \pkg{boolean\_constancy}
+has more tokens than the programs of $479$, $488$ and $492$ bytes and than
+that of \pkg{zero\_test\_split}, which has one node more), the program of $487$
+bytes has more tokens than each of them, and every other program of the
+contract has more than $492$ bytes. The composition of \pkg{checked\_reductions}
+($273/305/477$, \texttt{checkers/compact477.py}) is not superseded and
+supersedes none of them: it has more tokens than the program of $478$ bytes of
+\pkg{zero\_test\_split} and the programs of $479$, $488$ and $492$ bytes, and one
+node more than that of \pkg{boolean\_constancy}.
 The stream programs of the second delivery of \pkg{checked\_presentation}
 ($244/272/608$, \texttt{code/checker\_tokens.py}; $249/267/606$,
 \texttt{code/checker\_ast.py}) are below the first-line programs of
 \pkg{single\_binder} in all three coordinates, but programs with the double
 dagger are not compared, and neither group is listed as superseding or
-superseded.
+superseded; the same holds for the stream programs with the wildcard import
+of \pkg{boolean\_constancy} ($244/272/604$, \texttt{checkers/code/checker244.py};
+$249/267/602$, \texttt{checkers/code/checker267.py}) and for the rewritten
+stream programs of \pkg{fused\_iteration} ($249/265/605$,
+\texttt{code/checker\_refinement/checker.py}) and \pkg{pred50}
+($244/273/607$, \texttt{code/checker/checker607.py}). Under T/ed$_1$ there is
+one program besides its readable form, which it supersedes
+(\pkg{zero\_alias}, $430/499/2322$, \texttt{implementation/checker\_readable.py}).
 The global loop of
 \pkg{progress\_independence} ($251/283/605$\textsuperscript{\dag}), by the
 token program of \pkg{constantfree} ($250/283/603$\textsuperscript{\dag});
@@ -5794,13 +6236,32 @@ the native immediate application ($344/392/637$), delivered as
 $637$ bytes also supersedes. The same program of $628$ bytes supersedes the
 product-of-bits program of \pkg{equation\_aliases} ($342/392/633$,
 \texttt{strict/checkers/bytes633.py}) and the control constructed by that
-package ($351/403/666$, \texttt{strict/controls/context\_phase\_strict666.py}).
-The program of $628$ bytes, the phase by an empty context ($334/387/654$) and
-the programs of \pkg{equation\_aliases} of $637$ bytes ($338/390/637$,
-\texttt{strict/checkers/tokens338.py}) and of $641$ bytes ($342/386/641$,
-\texttt{strict/checkers/ast386.py}) are not superseded: each pair of them is
-incomparable (by tokens $334<338<341<342$, the bytes are $654$, $637$, $628$,
-$641$, and the program of $641$ bytes has the fewest nodes).
+package ($351/403/666$, \texttt{strict/controls/context\_phase\_strict666.py}),
+the program of \pkg{absorbing\_orbit} ($343/390/632$,
+\texttt{checker/checkers/strict632.py}) and the native eager selector of
+\pkg{boolean\_constancy} ($346/392/636$, \texttt{checkers/code/checker636.py}).
+With the compositions of \cref{cert:prop:late-compositions} the following are
+newly superseded under T/ed: the phase by an empty context of
+\pkg{verified\_refinements} ($334/387/654$, \texttt{strict/checker.py}), by the
+programs of \pkg{checked\_reductions} ($330/379/641$,
+\texttt{checkers/strict330.py}) and of \pkg{refinement} ($330/380/638$,
+\texttt{checkers/code/strict\_size.py}); the parity program of
+\pkg{atomic\_seed\_refinement} ($341/387/628$,
+\texttt{code/native\_strict\_checker.py}), by the program of
+\pkg{checked\_reductions} with the gate ($340/385/623$,
+\texttt{checkers/strict623.py}) and by that of \pkg{refinement}
+($340/385/621$, \texttt{checkers/code/strict\_bytes.py}); the program of
+\pkg{equation\_aliases} with the reader in the initial call ($342/386/641$,
+\texttt{strict/checkers/ast386.py}), by the programs of $641$, $623$ and $621$
+bytes; and the program of $623$ bytes of \pkg{checked\_reductions}, by the
+program of $621$ bytes, which has the same tokens and nodes. The programs of
+$637$ bytes of \pkg{equation\_aliases} ($338/390/637$,
+\texttt{strict/checkers/tokens338.py}), of $641$ and $638$ bytes and of $621$
+bytes are not superseded: each pair of them is incomparable (the program of
+$637$ bytes has fewer bytes than those of $638$ and $641$ bytes and fewer tokens
+than that of $621$ bytes; the programs of $641$ and $638$ bytes have the same
+tokens and differ in nodes and bytes in opposite directions; both have fewer
+tokens than that of $621$ bytes, which has fewer bytes).
 Under T/g the strict guarded companion of \pkg{immediate\_opening}
 ($558/635/1761$, \texttt{code/checker\_strict.py}) is newly superseded by the
 matched control of \pkg{refinement} ($419/469/862$) and by the program of
@@ -5851,13 +6312,31 @@ program of \pkg{479\_predecessor57} ($337/383/607$,
 \pkg{atomic\_seed\_refinement} ($326/370/636$,
 \texttt{code/native\_goal\_checker.py}) is below the programs of $643$ bytes of
 \pkg{inferred\_major} and \pkg{context\_phase} and the variant with the explicit
-type test ($327/375/646$), which were already superseded. The six programs of
-$629$, $636$, $623$ (\pkg{checked\_frontier},
-\texttt{checkers/native\_append\_function.py}, $330/379/623$), $621$, $614$ and
-$607$ bytes are not superseded, and each pair of them is incomparable: in this
-order their tokens increase ($324$, $326$, $330$, $332$, $334$, $337$), their
-bytes decrease except from $629$ to $636$, and the program of $636$ bytes has
-fewer nodes ($370$) than that of $629$ bytes ($374$). Under T/eqd
+type test ($327/375/646$), which were already superseded. With the
+compositions of \cref{cert:prop:late-compositions} the following are newly
+superseded under G/$\mathcal A^{-}$: the composed program of
+\pkg{verified\_refinements} ($324/374/629$, \texttt{native/checker.py}), by the
+parity program of \pkg{checked\_reductions} and \pkg{refinement}
+($323/369/622$, \texttt{checkers/native323.py} in the first and
+\texttt{checkers/code/native\_ast.py} in the second) and by the parity and
+product program of \pkg{refinement} ($321/371/618$,
+\texttt{checkers/code/native\_tokens.py}); the parity program of
+\pkg{atomic\_seed\_refinement} ($326/370/636$,
+\texttt{code/native\_goal\_checker.py}), by the program of $622$ bytes; the
+function program of \pkg{checked\_frontier} ($330/379/623$,
+\texttt{checkers/native\_append\_function.py}), by the programs of $622$ and
+$618$ bytes; the function program of \pkg{reductions} ($332/381/621$,
+\texttt{checker/checker621.py}), by the program of $618$ bytes; the program of
+the second delivery of \pkg{checked\_presentation} ($334/381/614$,
+\texttt{code/checker\_native.py}), by the parity and product program of
+\pkg{refinement} on the program of $607$ bytes ($334/380/596$,
+\texttt{checkers/code/native\_bytes.py}); and the program of
+\pkg{479\_predecessor57} ($337/383/607$, \texttt{checker/code/native607.py}),
+by the parity program of \pkg{checked\_reductions} on it ($336/378/600$,
+\texttt{checkers/native600.py}) and by the program of $596$ bytes. The four
+programs of $618$, $622$, $596$ and $600$ bytes are not superseded: each pair of
+them is incomparable (by tokens $321<323<334<336$, the nodes are $371$, $369$,
+$380$, $378$ and the bytes $618$, $622$, $596$, $600$). Under T/eqd
 the programs of \pkg{validated\_core} ($401/468/897$) and \pkg{scope\_kernel}
 ($393/460/881$) are superseded by the program of
 \pkg{validated\_presentation} ($383/442/870$), whose lexical filter of $885$
@@ -6011,11 +6490,11 @@ results of \cref{cert:sec:validated}.)
 
 \begin{question}[The envelope of \cref{cert:sec:envelope}]
 Is there one complete program under the raw contract for $\mathcal U$ that is
-below $249$ tokens, $271$ nodes and $478$ bytes at once, or at least one that
+below $249$ tokens, $271$ nodes and $477$ bytes at once, or at least one that
 attains two of these minima? In particular, can one three-field program
 improve all three coordinates of the earlier envelope $251/273/499$, and is
 there a three-field byte program that allocates first and selects eagerly?
-The records of $478$, $479$, $488$ and $492$ bytes still read four fields, the
+The records of $477$, $478$, $479$, $488$ and $492$ bytes still read four fields, the
 token and node gains of three fields are offset by longer byte encodings, and
 the byte gains of \cref{cert:sec:after-first} cost tokens and nodes relative to
 the program of $495$ bytes, except the inverted entry test, which costs
@@ -6024,10 +6503,12 @@ coordinates but not the program of $488$ bytes in tokens, and the initial floor
 of \cref{cert:prop:header} saves a token and a byte and costs a node. The
 framing of \cref{cert:prop:stream} lowers tokens and nodes of the three-field
 programs but changes the accepted inputs. The same question is open under
-complete input validation, where the envelope $334/386/628$ under T/ed is
-attained by three programs, none of which attains two of its minima, and the
+complete input validation, where the envelope $330/379/621$ under T/ed is
+attained by two programs, one of which attains two of its minima, and the
 envelope $419/469/855$ under T/g by two programs, and under the goal contract,
-where $324/370/607$ under G/$\mathcal A^{-}$ is attained by three programs. No
+where $321/369/596$ under G/$\mathcal A^{-}$ is attained by three programs; the
+program of \pkg{zero\_alias} is the only one under T/ed$_1$ and answers the
+question for that contract only trivially. No
 package answers these questions. (\pkg{inferred\_major},
 \pkg{smaller\_envelope}, \pkg{frontier\_review}, \pkg{checked\_presentation},
 \pkg{progress\_independence}, \pkg{three\_field}, \pkg{constantfree},
@@ -6037,7 +6518,19 @@ package answers these questions. (\pkg{inferred\_major},
 \pkg{checked\_presentation}, \pkg{479\_predecessor57}, \pkg{immediate\_opening},
 \pkg{zero\_test\_split}, \pkg{checked\_frontier},
 \pkg{atomic\_seed\_refinement}, \pkg{reductions}, \pkg{equation\_aliases},
-\pkg{alias\_back}.)
+\pkg{alias\_back}, \pkg{absorbing\_orbit}, \pkg{absorbing\_predecessor},
+\pkg{boolean\_constancy}, \pkg{zero\_alias}, \pkg{checked\_reductions},
+\pkg{fused\_iteration}, \pkg{pred50}.)
+\end{question}
+
+\begin{question}[The defined alias]
+Can the identification of \cref{cert:prop:zero-alias} reduce the compact
+programs, whose goal grammar is not validated, so that the saving in the
+validator does not disappear? Can a validator recognize exactly the image of the
+canonical encoder, including the absence of references to dummy slots, so that
+completeness holds for every accepted spelling? Can the soundness of runs,
+with the reserved constants and the order of contexts, be mechanized against
+the programs? (\pkg{zero\_alias}.)
 \end{question}
 
 \begin{question}[Retained majors with a global floor]
@@ -6346,9 +6839,19 @@ variants, in \pkg{zero\_test\_split}; $440$, with $15$ comparisons of event
 traces, in \pkg{checked\_frontier}; $448$ in \pkg{atomic\_seed\_refinement};
 and $222$ in \pkg{reductions}; $336$ executions of the strict programs in
 \pkg{equation\_aliases}; and $886$ checker processes in \pkg{alias\_back},
-including the two-field stream; each package reports no unexpected outcome. None of these packages claims a formalization in a
+including the two-field stream; $424$ in \pkg{absorbing\_orbit}; $266$ runs
+of the unchanged baselines in \pkg{absorbing\_predecessor}; and $2576$ in
+\pkg{boolean\_constancy}; $204$ executions of the candidate programs, $242$ of
+the inherited cases and $2$ negative controls in \pkg{zero\_alias}; $1530$
+executions of the validated programs, $454$ of the compact program and $20$
+independent checks in \pkg{checked\_reductions}; $880$ in the second delivery of
+\pkg{refinement}; $40$ in \pkg{fused\_iteration}; and $108$ in \pkg{pred50};
+each package reports no unexpected outcome.
+\pkg{boolean\_constancy} also records that the stream programs do not read an
+unused malformed suffix, and that its program of $478$ bytes rejects the
+boundary certificate of \cref{cert:prop:eager-selector}(c). None of these packages claims a formalization in a
 proof assistant, a minimal program or a program below all coordinates of an
-envelope; all proofs of \cref{cert:prop:stream,cert:prop:native-append,cert:prop:native-int,cert:prop:parity,cert:prop:bit-products,cert:prop:k-stream,cert:prop:header,cert:prop:delayed-equality,cert:prop:delayed-closure}
+envelope; all proofs of \cref{cert:prop:stream,cert:prop:native-append,cert:prop:native-int,cert:prop:parity,cert:prop:bit-products,cert:prop:gate-or,cert:prop:eager-selector,cert:prop:late-compositions,cert:prop:zero-alias,cert:prop:stream-rewrites,cert:prop:k-stream,cert:prop:header,cert:prop:delayed-equality,cert:prop:delayed-closure}
 are written proofs for ideal executions, and the truth-valued results retain
 more memory than the controls.
 \item The certificate of $30$ packets that \pkg{zero\_test\_split} reports

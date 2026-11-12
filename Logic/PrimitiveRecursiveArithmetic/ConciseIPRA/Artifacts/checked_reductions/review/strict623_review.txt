@@ -1,0 +1,38 @@
+Independent review: strict623.py
+Reviewer: mathematical_reduction assistant instance
+Date: 2026-11-12
+
+Compared source files:
+  research_audit/selected/strict_bytes628.py
+  research_audit/strict623.py
+
+The only changed expression is the assignment to q:
+  old: q = not str(p).strip('0123456789-[], ') and p.pop
+  new: q = str(p).strip('0123456789-[], ') or p.pop
+
+Let z be the result of the common str(...).strip(...) evaluation.
+Case z == '': the old and new right-hand sides both evaluate p.pop.
+They therefore have identical values or raise the same AttributeError.
+Case z != '': the old value is False and the new value is a nonempty str.
+Neither value is callable. The next statement evaluates q() before entering
+c, so both executions raise TypeError before printing ACCEPT.
+The same reasoning covers every object produced by Python's JSON loader;
+if loading, string conversion, or stripping raises first, the executions
+share that prefix. Consequently successful acceptance is identical, although
+TypeError messages need not be identical on invalid alphabets.
+
+This is a complete argument for the acceptance-preserving transformation.
+It neither changes the arithmetic/logical axiomatization nor supplies a new
+proof of the inherited kernel-to-iPRA interpretation. The inherited whole-
+certificate integer/list gate and public-goal validator remain in place.
+
+Separate scope observation:
+Replacing the invariant floor k=1-len(g) by k=-len(g), with g initially [0],
+is semantically sound for closed public goals if all uses are changed
+consistently and fresh parameters are named -len(g)-1. It reserves the name
+-1 as an arbitrary ambient parameter. Soundness is uniform in its value;
+the closed final theorem is independent of it. Completeness renames each old
+negative parameter r as r-1. The strict root grammar must still exclude
+negative variables. This observation does not claim an implemented or
+measured improvement, and it is a shifted instance of the prior context-
+floor argument rather than a new arithmetic axiom reduction.

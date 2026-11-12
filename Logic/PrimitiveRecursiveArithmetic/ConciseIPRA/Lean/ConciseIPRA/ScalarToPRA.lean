@@ -252,8 +252,7 @@ theorem ax_cover : ([] : List (Fm PTm 1)) ⊢[PRAAx]
       ⋎ Fm.ex ((Syn.var 1 : PTm 2) ≐ PTm.succ (Syn.var 0)) := by
   have h := Prf.allE (Syn.var 0 : PTm 1) (pred_cases (n := 1))
   simp only [Fm.subst_or, Fm.subst_eq, Syn.subst_var, Syn.inst_zero, PTm.subst_zero] at h
-  refine Prf.orE h (Prf.orI₁ Prf.hyp0) (Prf.orI₂ ?_)
-  exact Prf.exI (app pd (fun _ => Syn.var 0)) Prf.hyp0
+  exact Prf.orE h (Prf.orI₁ Prf.hyp0) (Prf.orI₂ (Prf.exI (app pd (fun _ => Syn.var 0)) Prf.hyp0))
 
 theorem ax_ind (s t : Tm (n + 1)) :
     [] ⊢[PRAAx] (((s ≐ t).subst (inst Tm.zero) ⟶
