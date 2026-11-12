@@ -1,0 +1,65 @@
+import EtaNaturalParityBoundary
+import EtaNaturalGraphEarlyIndex
+import EtaNaturalGraphNorms
+
+/-! Conditional compact graph client. The signed strong and signed auxiliary
+graph representations are explicit premises. No Lean run. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.EtaNaturalCompactParityDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ArithmeticSignedPairs ModelDifferenceRing
+open EtaNaturalUnitGraphDraft EtaNaturalXPositiveDraft EtaNaturalGapRankDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The proposed remaining graph-to-model interfaces. R is the model-natural
+rank, c=Y*k because eta=v9=0, and the exact signed auxiliary root is A-B. -/
+theorem eta_zero_of_represented_factors (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (Residue90CompactPortBoundsDraft.ports K j:ℤ))).output v)
+    (heta : v 9=0)
+    (hstrong : let p:=Residue90CompactPortBoundsDraft.ports K
+      let a:=X p v*Y p v+Y p v; let D:=(3+4*a)+a*a; let c:=Y p v*k v
+      (ι (c*c*(v 4+1)):DiffRing V)*ι (c*c*(v 4+1))=
+        ι D*(ι (v 3)*ι (v 3)-1))
+    (haux : let p:=Residue90CompactPortBoundsDraft.ports K
+      let a:=X p v*Y p v+Y p v; let D:=(3+4*a)+a*a; let c:=Y p v*k v
+      let z:DiffRing V:=ι (v 3*v 3*((v 5+1)*c))-ι (v 3*v 3*rank p v+c)
+      (ι (v 11):DiffRing V)*ι (v 11)-ι D*(ι (v 3)*ι (v 3)-1)*
+        (ι (v 11)*ι (v 11)-z*z)=1) : False := by
+  let p := Residue90CompactPortBoundsDraft.ports K
+  have hJ := EtaNaturalJPositiveDraft.J_positive p v hz
+  obtain ⟨hb,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) hJ
+  have hp0 : (p 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  have hbeta : 0<(p 0:V) := by simpa only [hp0] using hb
+  have hq47 : (47:V)≤q p v := by
+    simpa only [q,Residue90GraphNormsDraft.q] using
+      (ResidueCompactQBoundDraft.compact_q_at_least_47 K v hJ)
+  have hq3 : (3:V)≤q p v := le_trans (by norm_num : (3:V)≤47) hq47
+  have hqpos : 0<q p v := lt_of_lt_of_le (by norm_num : (0:V)<3) hq3
+  have hX : 0<X p v := EtaNaturalXPositiveDraft.X_positive p v hz hbeta
+  have hs : 0<v 7+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hYeq : Y p v=q p v*(q p v*q p v)*(v 7+1) := rfl
+  have hk : 0<k v := by dsimp [k]; simp
+  have hi : 0<v 4+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hR26 := EtaNaturalRankIndexDraft.compact_rank_at_least_26 K v hz
+  have hwindow := EtaNaturalGapRankDraft.compact_rank_window K v hz
+  have hRmu : rank p v+1<(q p v)^4 := by
+    have hp : 0<(q p v)^3+q p v := add_pos (pow_pos hqpos _) hqpos
+    calc
+      rank p v+1<(rank p v+1)+((q p v)^3+q p v) := lt_add_of_pos_right _ hp
+      _=rank p v+(q p v)^3+q p v+1 := by ring
+      _≤(q p v)^4 := hwindow
+  obtain ⟨_,g,hg⟩ := EtaNaturalGraphNormsDraft.natural_norms_of_graph p v hz hbeta
+  obtain ⟨tau,n,w,hfirst,_,_,_,hny,hnmod,_,_,hks⟩ :=
+    EtaNaturalGraphEarlyIndexDraft.compact_early_index K v hz
+  have hmain : let a:=X p v*Y p v+Y p v; let D:=(3+4*a)+a*a; let c:=Y p v*k v
+      g*g=1+D*c*c := by
+    simpa only [EtaNaturalGraphNormsDraft.delta,EtaNaturalGraphNormsDraft.a,
+      EtaNaturalGraphNormsDraft.X,X,c,heta,zero_add] using hg
+  exact EtaNaturalParityBoundaryDraft.contradiction_of_facts (q p v) (X p v) (Y p v)
+    (k v) (rank p v) tau g (v 4+1) (v 3) (v 5+1) (v 11) n w (v 7+1)
+    hq3 hX hs hYeq hk hi hR26 hfirst hmain hny hks hRmu hnmod hstrong haux
+end DiophantineConsistency.EtaNaturalCompactParityDraft
+#print axioms DiophantineConsistency.EtaNaturalCompactParityDraft.eta_zero_of_represented_factors
