@@ -227,8 +227,7 @@ theorem exI {A : NFm (n + 1)} (t : Tm n) (h : NPrf Γ (A.subst (inst t))) :
 
 theorem exE {A : NFm (n + 1)} {C : NFm n} (h₁ : NPrf Γ (NFm.ex A))
     (h₂ : NPrf (A :: Γ.map NFm.shift) C.shift) : NPrf Γ C := by
-  refine .dE h₁ ?_
-  exact cut1 ((NEquiv.qGate A).mp hyp0) (wkUnder h₂)
+  exact .dE h₁ (cut1 ((NEquiv.qGate A).mp hyp0) (wkUnder h₂))
 
 /-! ### Disjunction -/
 
@@ -242,8 +241,7 @@ theorem orE {A B C : NFm n} (h : NPrf Γ (NFm.or A B)) (h₁ : NPrf (A :: Γ) C)
     (h₂ : NPrf (B :: Γ) C) : NPrf Γ C := by
   have h₁' : NPrf (A.shift :: Γ.map NFm.shift) C.shift := h₁.shift
   have h₂' : NPrf (B.shift :: Γ.map NFm.shift) C.shift := h₂.shift
-  refine exE h ?_
-  exact selE (Syn.var 0) hyp0 (wkUnder h₁') (wkUnder h₂')
+  exact exE h (selE (Syn.var 0) hyp0 (wkUnder h₁') (wkUnder h₂'))
 
 /-! ### Universal quantification -/
 

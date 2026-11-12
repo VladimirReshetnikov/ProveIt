@@ -138,8 +138,7 @@ theorem tau_code (f : PR k) :
   | succ =>
     show [] ⊢[PRAAx] PTm.app PR.succ (fun _ => Syn.var 0) ≐ PTm.app PR.succ Syn.var
     refine ToPRA.congr PR.succ (fun i => ?_)
-    refine Fin.cases ?_ (fun l => l.elim0) i
-    exact Prf.eqRefl _
+    exact Fin.cases (Prf.eqRefl _) (fun l => l.elim0) i
   | proj i => exact Prf.eqSymm (PRA.proj i Syn.var)
   | comp f gs ihf ihg =>
     rw [FromPRA.code_comp]
