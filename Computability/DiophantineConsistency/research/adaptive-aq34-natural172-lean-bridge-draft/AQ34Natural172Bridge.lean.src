@@ -1,0 +1,366 @@
+import AQ34Natural172Residuals
+import DiophantineConsistency.IPRAAQ34Native
+import DiophantineConsistency.IPRAStandardTheory
+import DiophantineConsistency.IPRAReferenceInductionConversion
+import DiophantineConsistency.ModelDifferenceRing
+import DiophantineConsistency.ModelJonesSyntax
+import Mathlib.Tactic.Ring
+
+/-! Source-only proposed all-port evaluation identity and conditional endpoint.
+The literal, residual proofs, sums, tactics and all axiom reports remain
+unelaborated. The historical AQ34 endpoint retains its provider boundaries. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.AQ34Natural172BridgeDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 HAExpressionAssembly HAExpressionNoZeroEquiv
+open ModelDifferenceRing PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+
+/-- The three canceled shifts all use this elementary ring identity. -/
+theorem signed_shift_cancel {R : Type*} [CommRing R] (a b : R) :
+    (a+1)-(b+1)=a-b := by ring
+
+theorem w_cancel {R : Type*} [CommRing R] (v : Fin 34 → R) :
+    (v 18+1)-(v 19+1)=v 18-v 19 := signed_shift_cancel _ _
+
+theorem d_cancel {R : Type*} [CommRing R] (v : Fin 34 → R) :
+    (v 23+1)-(v 24+1)=v 23-v 24 := signed_shift_cancel _ _
+
+theorem v_cancel {R : Type*} [CommRing R] (v : Fin 34 → R) :
+    (v 25+1)-(v 26+1)=v 25-v 26 := signed_shift_cancel _ _
+
+/-- Candidate residual 0: A0. -/
+theorem residual00 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 0).evalRing v =
+      (AdaptiveAQ34Context.residuals p 0).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 1: A1. -/
+theorem residual01 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 1).evalRing v =
+      (AdaptiveAQ34Context.residuals p 1).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 2: auxResidual. -/
+theorem residual02 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 2).evalRing v =
+      (AdaptiveAQ34Context.residuals p 2).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 3: g72. -/
+theorem residual03 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 3).evalRing v =
+      (AdaptiveAQ34Context.residuals p 3).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 4: scaleDifference. -/
+theorem residual04 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 4).evalRing v =
+      (AdaptiveAQ34Context.residuals p 4).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 5: mainScaleDifference. -/
+theorem residual05 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 5).evalRing v =
+      (AdaptiveAQ34Context.residuals p 5).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 6: rankDifference. -/
+theorem residual06 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 6).evalRing v =
+      (AdaptiveAQ34Context.residuals p 6).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 7: cDifference. -/
+theorem residual07 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 7).evalRing v =
+      (AdaptiveAQ34Context.residuals p 7).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 8: ellDifference. -/
+theorem residual08 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 8).evalRing v =
+      (AdaptiveAQ34Context.residuals p 8).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 9: wDifference. -/
+theorem residual09 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 9).evalRing v =
+      (AdaptiveAQ34Context.residuals p 9).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 10: fSquareDifference. -/
+theorem residual10 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 10).evalRing v =
+      (AdaptiveAQ34Context.residuals p 10).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 11: cSquareDifference. -/
+theorem residual11 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 11).evalRing v =
+      (AdaptiveAQ34Context.residuals p 11).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 12: zDifference. -/
+theorem residual12 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 12).evalRing v =
+      (AdaptiveAQ34Context.residuals p 12).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 13: dDifference. -/
+theorem residual13 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 13).evalRing v =
+      (AdaptiveAQ34Context.residuals p 13).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 14: vDifference. -/
+theorem residual14 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 14).evalRing v =
+      (AdaptiveAQ34Context.residuals p 14).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 15: deltaDifference. -/
+theorem residual15 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 15).evalRing v =
+      (AdaptiveAQ34Context.residuals p 15).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 16: qSquareDifference. -/
+theorem residual16 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 16).evalRing v =
+      (AdaptiveAQ34Context.residuals p 16).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 17: product2Difference. -/
+theorem residual17 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 17).evalRing v =
+      (AdaptiveAQ34Context.residuals p 17).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 18: ellProductDifference. -/
+theorem residual18 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 18).evalRing v =
+      (AdaptiveAQ34Context.residuals p 18).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 19: varphiSquareDifference. -/
+theorem residual19 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 19).evalRing v =
+      (AdaptiveAQ34Context.residuals p 19).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 20: scaledIndexDifference. -/
+theorem residual20 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 20).evalRing v =
+      (AdaptiveAQ34Context.residuals p 20).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Candidate residual 21: qSignedDifference. -/
+theorem residual21 {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172ResidualsDraft.residuals p 21).evalRing v =
+      (AdaptiveAQ34Context.residuals p 21).evalRing
+        (fun k => (AdaptiveAQ34Context.newFill k).evalRing (fun i => v i+1)) := by
+  simp [AQ34Natural172ResidualsDraft.residuals, AdaptiveAQ34Context.residuals,
+    AdaptiveAQ34Context.newFill, AdaptiveAQ34Context.newRest, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, signed_shift_cancel] <;> ring
+
+/-- Proposed exact polynomial evaluation at arbitrary integer ports and in
+any commutative ring. This proof is not yet checked. -/
+theorem evaluation_identity_candidate {R : Type*} [CommRing R]
+    (p : Fin 4 → ℤ) (v : Fin 34 → R) :
+    (AQ34Natural172LiteralDraft.literal p).evalRing v =
+      (positiveShift (AdaptiveAQ34Literal.literal p)).evalRing v := by
+  rw [positiveShift, ModelJonesSyntax.evalRing_subst]
+  simp only [Expr.evalRing_add, Expr.evalRing_var, Expr.evalRing_constant,
+    Expr.evalRing_ofNat, Int.cast_one]
+  rw [← AdaptiveAQ34Literal.new_literal, ModelJonesSyntax.evalRing_subst,
+    ← AQ34Natural172ResidualsDraft.sum_eq_literal]
+  simp only [AQ34Natural172ResidualsDraft.sum, AdaptiveAQ34Context.sum,
+    Expr.evalRing_add, Expr.evalRing_mul]
+  have h00 := residual00 p v
+  have h01 := residual01 p v
+  have h02 := residual02 p v
+  have h03 := residual03 p v
+  have h04 := residual04 p v
+  have h05 := residual05 p v
+  have h06 := residual06 p v
+  have h07 := residual07 p v
+  have h08 := residual08 p v
+  have h09 := residual09 p v
+  have h10 := residual10 p v
+  have h11 := residual11 p v
+  have h12 := residual12 p v
+  have h13 := residual13 p v
+  have h14 := residual14 p v
+  have h15 := residual15 p v
+  have h16 := residual16 p v
+  have h17 := residual17 p v
+  have h18 := residual18 p v
+  have h19 := residual19 p v
+  have h20 := residual20 p v
+  have h21 := residual21 p v
+  simp only [h00, h01, h02, h03, h04, h05, h06, h07, h08, h09, h10, h11, h12, h13, h14, h15, h16, h17, h18, h19, h20, h21]
+
+/-- Exact all-ring source statement required by the endpoint clients. -/
+def EvaluationIdentity : Prop :=
+  ∀ (R : Type) [CommRing R] (p : Fin 4 → ℤ) (v : Fin 34 → R),
+    (AQ34Natural172LiteralDraft.literal p).evalRing v =
+      (positiveShift (AdaptiveAQ34Literal.literal p)).evalRing v
+
+theorem evaluationIdentity_candidate : EvaluationIdentity := by
+  intro R _ p v
+  exact evaluation_identity_candidate p v
+
+variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem internalZero_iff (h : EvaluationIdentity) (p : Fin 4 → ℤ) (v : Fin 34 → V) :
+    InternalZero (AQ34Natural172LiteralDraft.literal p) v ↔
+      InternalZero (positiveShift (AdaptiveAQ34Literal.literal p)) v := by
+  rw [ModelDifferenceRing.internalZero_iff, ModelDifferenceRing.internalZero_iff,
+    h (DiffRing V) p (fun i => ι (v i))]
+
+def expression : Expr (Fin 34) :=
+  AQ34Natural172LiteralDraft.literal CurrentWindowCarry2011.ports
+
+theorem sameNoZero (h : EvaluationIdentity) :
+    SameNoZero expression IPRAAQ34Native.literalNatural := by
+  intro V _ _
+  apply forall_congr'
+  intro v
+  exact not_congr (internalZero_iff h CurrentWindowCarry2011.ports v)
+
+theorem polynomialBridge (h : EvaluationIdentity) : PolynomialBridge expression :=
+  HAExpressionNoZeroEquiv.bridge expression IPRAAQ34Native.literalNatural
+    (sameNoZero h) IPRAAQ34Native.bridge34
+
+theorem native_equivalence (h : EvaluationIdentity) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero expression 🡘 ∼mappedNativeRefutation embedding :=
+  IPRAExpressionNative.equivalence_of_bridge expression (polynomialBridge h)
+
+theorem standard_equivalence (h : EvaluationIdentity) : IPRAStandardTheory.standardTheory ⊢
+    IPRAExpressionNative.nativeNoZero expression 🡘 ∼mappedNativeRefutation embedding :=
+  (IPRAStandardTheory.provable_iff _).2 (native_equivalence h)
+
+theorem reference_equivalence (h : EvaluationIdentity) : IPRAEqualityOnlyReference.referenceTheory ⊢
+    IPRAOrderErasure.erase (IPRAExpressionNative.nativeNoZero expression) 🡘
+      ∼IPRAOrderErasure.erase (mappedNativeRefutation embedding) :=
+  IPRAReferenceInductionConversion.nativeToReference (native_equivalence h)
+
+end DiophantineConsistency.AQ34Natural172BridgeDraft
+#print axioms DiophantineConsistency.AQ34Natural172BridgeDraft.signed_shift_cancel
+#print axioms DiophantineConsistency.AQ34Natural172BridgeDraft.evaluation_identity_candidate
+#print axioms DiophantineConsistency.AQ34Natural172BridgeDraft.evaluationIdentity_candidate
+#print axioms DiophantineConsistency.AQ34Natural172BridgeDraft.native_equivalence
+#print axioms DiophantineConsistency.AQ34Natural172BridgeDraft.standard_equivalence
+#print axioms DiophantineConsistency.AQ34Natural172BridgeDraft.reference_equivalence
