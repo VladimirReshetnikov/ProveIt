@@ -7871,6 +7871,10 @@ The independently source-reviewed [80 guard-gap draft](research/ordinary14-natur
 proposes the rank-window premise `F + alpha < q` from an 80 zero and
 represented positive beta and K0, without assuming gamma positive. It remains
 unelaborated and does not discharge symbolic port or endpoint obligations.
+The independently source-reviewed [compact model-port draft](research/ordinary14-natural80-compact-model-ports-draft/README.md)
+proposes representations and the stated beta, K0, MC and shifted-MF bounds,
+including a low-digit positivity argument. Its casts, provider closure and
+connection to the iPRA endpoint remain unelaborated.
 The independently source-reviewed [natural-81 Lean transcription](research/ordinary14-natural-forcedj81-lean-draft/README.md)
 records its literal graph and product shape. Its source correspondence is
 checked externally; Lean semantics and endpoint equivalence remain open.
