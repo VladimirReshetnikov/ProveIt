@@ -7890,6 +7890,9 @@ The independently source-reviewed [beta-only zero-w alternatives](research/ordin
 propose weakening that local step to represented natural beta, allowing beta
 and J to be zero and other ports to be arbitrary. They are inert source and
 do not remove the stronger assumptions of the separate 80 endpoint chain.
+The independently reviewed [negative-beta obstruction](research/ordinary14-natural79-negative-beta-obstruction/README.md)
+exhibits a zero with w=0 for a different signed-port tuple, so beta's natural
+representation cannot be removed from that local argument for arbitrary ports.
 The independently source-reviewed [natural-79 endpoint draft](research/ordinary14-natural-forced-w79-ipra-draft/README.md)
 proposes composing the w-positive transfer with native, standard and
 equality-only iPRA clients at the symbolic ports. Its declarations and five
