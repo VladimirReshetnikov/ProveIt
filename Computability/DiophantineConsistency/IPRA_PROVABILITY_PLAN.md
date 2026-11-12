@@ -7911,6 +7911,10 @@ unelaborated and does not establish actual provider or axiom closure.
 The independently reviewed [corrected 79 provider order](research/ordinary14-natural79-corrected-ordered-provider-plan/README.md)
 records five qualified source candidates and 196 inert draft stages. This is
 a lexical candidate sequence, not a launch-ready Lean build or proof.
+The independently reviewed [79 read-only preflight](research/ordinary14-natural79-readonly-runtime-preflight/README.md)
+checks selected static inputs and reports volatile resources, but cannot
+launch Lean, reserve resources or enforce a build guard. Provider closure
+and actual Lean checking remain open.
 The independently source-reviewed [79-to-80 w-shift draft](research/ordinary14-natural79-wshift-model-draft/README.md)
 proposes related-valuation zero maps, conditional on w positivity at every
 79 zero. It remains unelaborated and does not discharge that premise.
