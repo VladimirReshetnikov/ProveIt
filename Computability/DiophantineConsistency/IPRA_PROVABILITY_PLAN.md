@@ -7527,6 +7527,10 @@ The source-reviewed [78/79 graph-norm client draft](research/ordinary14-aux-grap
 proposes extracting those bounds from each literal graph's own positive zero.
 It remains unelaborated and does not establish the auxiliary-coordinate map,
 provider compatibility or an iPRA endpoint.
+The source-reviewed [slot-11 equivalence client draft](research/ordinary14-aux-graph-equivalence-draft/README.md)
+proposes both 78/79 positive-witness directions using bounds from each
+starting graph. It and its graph/norm dependencies remain unelaborated; no
+model endpoint or iPRA proof follows yet.
 The source-reviewed [87-operation Lean graph and decoder-route draft](research/ordinary14-shifted-guard87-lean-draft/README.md)
 records the fact-level replay needed for arbitrary models. It is uncompiled;
 the graph-specific model lemmas, parent bridges and iPRA endpoint remain open.
