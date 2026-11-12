@@ -7444,6 +7444,10 @@ The independently reviewed [natural-input counterpart](research/ordinary13-natur
 uses 13 natural inputs, 89 operations and exact specialized degree 99. Its
 external zero map uses a root switch when one coordinate is zero and assumes
 positive beta; the parent endpoint and file-binding limitations remain.
+The independently reviewed [forced-J variant](research/ordinary13-natural-unit-product88/README.md)
+removes one more shift, giving 13 natural inputs and 88 operations at exact
+specialized degree 99. Its external zero map additionally assumes `K0 ≥ 0`;
+the iPRA and physical-file qualifications are unchanged.
 The separate reviewed [degree-56 residue-adjusted form](research/ordinary13-residue-first82/README.md)
 has 13 positive inputs and 82 operations. Its local comparison uses the stated
 compact44 port bounds and the sign-free decoder, without requiring the
