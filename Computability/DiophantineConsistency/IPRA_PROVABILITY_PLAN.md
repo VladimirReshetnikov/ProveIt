@@ -7782,6 +7782,11 @@ proposes a changed-valuation ring identity and conditional model zero maps.
 Its natural-model existence equivalence assumes, rather than proves, that
 every 82 zero has predecessors in the three altered coordinates. The source
 and its dependencies remain unelaborated.
+The independently source-reviewed [predecessor draft](research/ordinary14-natural-forced82-predecessor-draft/README.md)
+proposes deriving those witnesses from the partially shifted 74 graph's
+unit-factor equations under represented positive beta. Its arithmetic,
+graph linkage and dependencies have not been elaborated, and the selected
+ports and iPRA endpoint are not yet connected by checked theorems.
 The independently reviewed [natural shifted-Pell graph](research/ordinary14-natural-shifted-pell83/README.md)
 combines those shifts with the degree reduction: 14 natural inputs, 83
 operations, and exact specialized degree 97. Its external zero maps inherit
