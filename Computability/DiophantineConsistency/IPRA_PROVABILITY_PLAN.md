@@ -7759,6 +7759,9 @@ Lean or file-binding theorem.
 The source-reviewed [natural-86 Lean graph draft](research/ordinary14-natural-cancel86-lean-draft/README.md)
 transcribes that circuit. It is unelaborated and does not yet bind the graph
 to `positiveShift` in Lean.
+The source-reviewed [natural-86 ring/model bridge draft](research/ordinary14-natural-cancel86-ring-bridge-draft/README.md)
+proposes that same-valuation comparison. It remains unelaborated; symbolic
+and physical port binding and the iPRA endpoint remain open.
 The source-reviewed [bounded draft-API audit](research/ordinary14-root74-draft-api-audit/README.md)
 checks selected qualified draft references lexically; it does not establish
 Lean name/type/instance resolution or provider/axiom closure.
