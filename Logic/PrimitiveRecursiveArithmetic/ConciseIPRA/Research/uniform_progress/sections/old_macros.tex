@@ -1,0 +1,73 @@
+\section{Explicit logical macros in the reference language}
+\label{app:old-macros}
+
+This appendix fixes the finite macros used by the interpretations. All
+operators in this appendix belong to the old conditional language
+$\mathcal N$. They must be expanded there before applying the translation
+$T$. Applying these definitions unchanged to arbitrary new mixed
+closures would be incorrect. These definitions reproduce the interface
+of \texttt{NativeGate.lean} and \texttt{NativeLogic.lean}
+\cite{native}.
+
+Write $C(v,a,b)=I(v,a;u.b)$, where $u$ is unused, and $1=S0$.
+Bindings below are freshened so that no displayed passive parameter is
+captured. Define an equation--formula selector $U_v(s,t;B)$ by
+\[
+\begin{aligned}
+U_v(s,t;r=w)&=(C(v,s,r)=C(v,t,w)),\\
+U_v(s,t;Q_y B)&=Q_y U_v(C(y,0,s),C(y,0,t);B),\\
+U_v(s,t;D_{x,y} B)&=D_{x,y}U_v(C(y,0,s),C(y,0,t);B).
+\end{aligned}
+\]
+Its two endpoints are the equation $s=t$ and the formula $B$.
+Put $G_v A=U_v(0,0;A)$. Then $G_0 A$ is provable and
+$G_{Sz}A\eqv A$. A selector between arbitrary formulas is
+\[
+\begin{aligned}
+M_v(s=t,B)&=U_v(s,t;B),\\
+M_v(Q_y A,B)&=Q_y M_v(A,G_yB),\\
+M_v(D_{x,y} A,B)&=D_{x,y}M_v(A,G_yB).
+\end{aligned}
+\]
+This recursion terminates on the depth of its first argument; the
+separate recursion defining $U$ terminates on its formula argument.
+For every $A,B$, the old calculus derives
+$M_0(A,B)\eqv A$ and $M_{Sz}(A,B)\eqv B$.
+
+Let $p(y)=I(y,0;u.C(u,1,0))$. The logical operations are
+\[
+\begin{aligned}
+\bot_*&=(0=1),\\
+A\Rightarrow_* B&=Q_y M_y(A,B),\\
+A\wedge_* B&=Q_y G_y M_{p(y)}(A,B),\\
+\exists_* x\,A(x)&=D_{x,y}G_y A(x),\\
+A\vee_*B&=\exists_*v\,M_v(A,B),\\
+\forall_*x\,A(x)&=A(0)\wedge_* Q_x A(x).
+\end{aligned}
+\]
+All new bound variables are fresh. These are definitions by finite
+syntax, not additional primitive logical axioms or rules.
+
+\paragraph{Why they have the logical rules.}
+Implication introduction uses the zero selector as its local hypothesis
+and the successor selector as its conclusion; elimination specializes
+at $1$. Existential introduction chooses the witness and uses the
+successor gate. Existential elimination uses $D$ elimination, the
+zero-gate theorem, and specialization at $1$; its final conclusion can
+be any formula, independently of the existential matrix.
+
+For conjunction, the gate supplies the base theorem and the computations
+$p(1)=1$, $p(2)=0$ recover the two conjuncts. Numerical cases establish
+the selector at an arbitrary control from proofs of both alternatives.
+Disjunction uses witnesses $0$ and $1$; its elimination uses the derived
+case rule on an implication to the desired conclusion. The universal
+macro has its zero instance as one conjunct and every instance as the
+other conjunct's closure. Finally, $0=1$ and the selector computations
+give $s=C(0,s,t)=C(1,s,t)=t$ for arbitrary terms; structural induction
+on formulas gives falsity elimination.
+
+The full proofs and their substitution lemmas are preserved in the
+pinned source files included with the package. The new theory's
+normalization proof uses the translated versions of these derived-rule
+constructions on $T$-image principal formulas before it defines the
+ordinary logical operations on arbitrary new formulas.

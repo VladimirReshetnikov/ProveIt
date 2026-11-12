@@ -1,0 +1,145 @@
+\section{Proof audit and limits of the reduction}
+\label{sec:proof-audit}
+
+The seven-rule presentation changes the meaning of an atomic closure.
+Consequently its equivalence with the native kernel needs two formula
+translations.  It is not an identity-language deletion of one native rule.
+This section records the dependency checks that matter for that claim.
+
+\subsection{The order of the arithmetic bootstrap}
+
+Put $A(a,n)=I(a,n;u.Su)$.  The counter is the first argument.
+The following order avoids using a derived rule in its own proof.
+\begin{enumerate}
+\item Computation and equational transport give numerical reflexivity,
+      symmetry, transitivity, and term congruence.  For example, if
+      $W(t)=I(0,t;u.0)$, the equation $W(t)=t$ is a computation;
+      transporting that equation along itself yields $t=t$.
+\item A vacuous witness in DI, followed by DE, gives root-directed
+      Q-introduction.  This construction uses no numerical induction.
+\item Given an equation-induction step and a base proof $E(0)$,
+      Q-introduction gives the progressive closure of $E$.  Orbit
+      elimination with source $0$ and initializer $t$ gives
+      $E(A(0,t))$.  The computation $A(0,t)=t$ yields $E(t)$.
+\item Only after this recovery of contextual equation induction do we
+      prove $A(a,1)=Sa$.  Orbit elimination with source $a$ and initializer
+      $1$ then gives the immediate progress rule
+      $\mathsf Q_yE(y),E(a)\vdash E(Sa)$.
+\item Full formula transport is proved by structural induction, using
+      this immediate progress rule at atomic closure matrices and the
+      ordinary base-to-instance elimination at compound matrices.
+\end{enumerate}
+
+In particular, the proof does not begin by assuming $I(t,0;u.Su)=t$.
+That identity is a consequence of the recovered induction.  Replacing
+the target $I(a,n;u.Su)$ in the new elimination rule by
+$I(n,a;u.Su)$ would destroy the direct computation in the third item.
+The intended rule and the executable representation must retain the
+same argument order.
+
+The addition commutation law used to establish soundness in the ordinary
+scalar theory is harmless at that stage: the target scalar theory already
+has contextual equation induction.  That soundness argument is separate
+from the internal recovery of induction in the new calculus.
+
+\subsection{Why equational transport suffices}
+
+For a transport template headed by $\mathsf Q$, the induction hypothesis
+applies only to its strictly smaller matrix.  Reverse the supplied
+numerical equality to convert the target introduction hypothesis to the
+source hypothesis.  Apply the source closure, and convert the resulting
+successor instance forwards.  The atomic case uses the immediate progress
+rule established above; the compound case uses a zero source in orbit
+elimination.  Root-directed Q-introduction closes the argument.
+
+For a template headed by $\mathsf D$, first eliminate the source
+$\mathsf D$ at a fresh witness.  Introduce the target $\mathsf D$ at that
+same witness, performing the preceding conversion inside its matrix.
+Both eigenparameters are chosen outside the transport equality, the
+retained context, and the fixed matrix parameters.  Every invocation of
+formula transport in these arguments concerns the smaller matrix.
+Thus this proof does not silently replace the primitive equational
+transport rule by a stronger logical axiom.
+
+The same root invariance is useful for substitution: substituting numerical
+terms never turns a literal equation into a compound formula.  The new
+introduction and elimination modes therefore survive numerical substitution
+without a special witness-zero case.  Renaming eigenparameters first gives
+the usual substitution proof by induction on derivations.
+
+\subsection{Root-sensitive closure is not unrestricted congruence}
+
+Padding gives an equation $E$ and a compound formula $P(E)$ that are
+interderivable.  Nevertheless one must not infer
+\[
+               \mathsf Q_yE(y)\ \dashv\vdash\ 
+               \mathsf Q_yP(E(y))
+\]
+merely from that fact.  The first closure is progressive and the second
+is conditional.  Numerical transport is legitimate because it preserves
+the matrix root.  The binder-congruence lemma used in the formula
+composites requires the same mode on its two sides.
+
+The new-side round trip can be justified without assuming logical
+completeness for all new formulas in advance.  First translate the old
+logical rules for formulas in the image of the old-to-new translation,
+allowing an arbitrary passive new context.  Atomic new closures normalize
+to image formulas expressing
+$\forall y(E(y)\mathbin{\to}E(Sy))$, since $E(y)$ and $E(Sy)$ are
+already image formulas.  Atomic witnessed closures then normalize using
+the image existential.  Compound cases use the structural induction
+hypothesis and same-mode binder congruence.  The translations of compound
+formulas remain compound, so that last use of congruence is valid.
+
+One detail is necessary in the atomic witnessed case: elimination of an
+image existential must permit an arbitrary new conclusion, not only a
+conclusion already known to be an image formula.  Its translated native
+macro elimination has precisely this property.  It opens a $\mathsf D$
+resource, removes padding and the gate from the witness assumption, and
+uses the supplied minor derivation.  The conclusion is only carried
+through DE; it is not inspected or introduced beneath a mode-sensitive
+binder.  This prevents a circular appeal to the desired normalization
+theorem.
+
+\subsection{A concrete obstruction to keeping the old atomic reading}
+
+The change of reading is essential.  A short counterexample uses the
+primitive recursive parity term
+\[
+ p(n)=I(n,0;u.I(u,1;v.0)),\qquad E(y)\equiv p(y)=1.
+\]
+Direct computations give $p(0)=0$, $p(1)=1$, and $p(2)=0$ in the
+standard natural numbers.  Thus
+\[
+ E(0)\to\forall y E(y)
+ \quad\text{is true, whereas}\quad
+ \forall y\bigl(E(y)\to E(Sy)\bigr)
+ \quad\text{is false}.
+\]
+Indeed, the old conditional antecedent is false, while the proposed
+progress condition fails at $y=1$.
+
+The new orbit elimination would therefore be unsound if its atomic major
+kept the old conditional meaning: take source $1$ and initializer $1$.
+Its minor $E(1)$ holds and its target is $E(I(1,1;u.Su))=E(2)$, which
+fails.  Likewise, merely exporting an ordinary conditional closure from a
+progressive witnessed formula discards information needed for a full
+formula round trip.  The stronger atomic elimination and the changed
+atomic reading must be adopted together.
+
+\subsection{What the comparison establishes}
+
+The new calculus has unrestricted native formula syntax, a single
+root-directed introduction, and a direct substitution argument.  These
+are structural improvements over the guarded and witness-sensitive
+presentations.  They do not by themselves prove a smaller standalone
+Python checker.  The orbit elimination has a richer numerical target,
+and a faithful implementation must count that cost.  The report's
+checker measurements must therefore distinguish this calculus from any
+separate compact implementation of an earlier equivalent presentation.
+
+The arguments above are written metatheoretic proofs.  Finite executable
+certificates check particular derivations and implementation behavior;
+they are not a new Lean or Rocq verification of either formula
+interpretation.  No absolute minimality theorem follows from the
+seven-rule count or the measured source sizes.

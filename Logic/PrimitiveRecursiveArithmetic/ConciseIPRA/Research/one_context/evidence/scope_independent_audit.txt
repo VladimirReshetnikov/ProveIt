@@ -1,0 +1,108 @@
+Independent audit: shared scope validation and report macros
+===========================================================
+
+Scope of review
+---------------
+Reviewed proof.tex and all six new/comparator Python module pairs.
+Compared the report's K, Gate, Sel, and connective macros with the pinned
+upstream NativeGate.lean source. This is a written mathematical and source
+audit by a separate assistant instance, not proof-assistant verification
+or independent human peer review.
+
+Verdict
+-------
+No mathematical gap found in the factorization theorem or the claimed
+relative acceptance equivalence, with the stated finite-resource
+qualification. The named-variable selector macros agree with NativeGate.
+
+Validator equivalence
+--------------------
+Both public-goal validators use exact Python type tests. Consequently a
+Boolean is not admitted as an integer; floats, null, strings, mappings,
+and other wrong-type goal nodes are rejected by both validators.
+
+The new Boolean sort flag is exactly the parity of the old depth on every
+shape-admitted tree. Formula unary and ternary constructors preserve even
+parity; an equality switches to odd parity; admitted numerical unary and
+ternary constructors preserve odd parity. The old increments are 4, 3,
+and 2 respectively. Every numerical leaf is reached at odd depth at least
+three. The diagonal condition on public Q triples remains identical.
+
+The new scalar predicate enforces nonnegativity and either zero or an odd
+slot at least three. The only old scalar condition it omits is a < depth.
+Zero automatically meets that bound at every admitted numerical position.
+
+Initial opener and timing
+-------------------------
+The first condition in c evaluates i(a) before membership in g and before
+q() can consume any instruction. The initial floor is zero. At an admitted
+numerical leaf, i preserves the integer exactly when 0 <= a < depth.
+If that bound fails, odd depth forces i(default_image, d=3). The default
+image is the function object c. Evaluating its first a * 0 operation raises
+TypeError. There is no exception handler that continues to acceptance.
+
+Formula scalars could take a different padding branch in the raw opener,
+but both public validators exclude those scalars. Hence no public formula
+can use that branch to conceal an out-of-scope numerical leaf. No supplied
+proof packet can influence or bypass this first traversal.
+
+For every goal admitted by the old validator, the new validator accepts
+and the first opener returns exactly the original raw tree. Thus subsequent
+code, context, freshness floor, instruction state, and goal are identical.
+Goals newly admitted by the shape-only check fail during that first opener.
+
+Full certificate language
+-------------------------
+Parsing, extraction of the final goal, optional whole-certificate exact
+integer/list validation, the proof kernel, and the output driver are
+unchanged. Malformed auxiliary data and inert prefixes therefore have the
+same treatment after initial validation. If an inherited raw-data case
+diverges rather than rejects in an unbounded execution, both paired
+modules diverge from the same state. The theorem concerns acceptance, not
+a new totality claim about the inherited parser/kernel.
+
+Direct AST comparison confirmed that each of the following pairs has
+identical syntax trees after removing its unique function named v:
+
+  checker_eqd.py       / control_shared_strict_eqd.py
+  checker_full.py      / control_shared_strict_full.py
+  checker_typed.py     / control_shared_typed.py
+  checker_rev_eqd.py   / checker_rev_strict_eqd.py
+  checker_rev_full.py  / checker_rev_strict_full.py
+  checker_rev_typed.py / checker_rev_typed.py
+
+Resource boundary
+-----------------
+The universal equivalence is the abstract acceptance relation with adequate
+resources for each terminating run. It does not assert identical behavior
+at every particular machine's recursion, memory, CPU, or input-size limit.
+Different validators can cross a resource boundary at different inputs.
+Both versions retain the same proof-kernel resource limitations. The finite
+reported process tests are evidence for the actual implementations; they
+are not the proof of the universal equivalence.
+
+Soundness transfer remains relative to the comparator's precise public
+goal and raw-certificate contract. It does not independently mechanize
+the inherited compact kernel or justify a new interpretation of its raw
+administrative aliases. The new code does not change those aliases.
+
+Report selector macros
+----------------------
+The report's K is upstream NFm.selEq. At an atomic formula it places
+the term selector on both equality endpoints. Under Q or D it guards
+the equation endpoints using C(y,0,s) and C(y,0,t), where y is the inner
+bound variable. This matches upstream's one or two de Bruijn weakenings.
+
+Gate(v,A)=K(v;0,0;A) matches NFm.gate. Sel recurses on its first formula,
+using K at equality and Gate(y,B) under Q or D, matching NFm.sel. The
+report explicitly renames each newly displayed binder fresh for the
+fixed arguments; that convention correctly implements the otherwise
+implicit weakenings and avoids capture of v, s, t, or B.
+
+The parity term starts at zero and toggles via C(u,1,0). The displayed
+implication, conjunction, existential, disjunction and universal macros
+are consistent with the stated selector behavior and the pinned README.
+The gate in the conjunction and existential macros is essential and is
+present. No correction to these macro definitions is needed.
+
+No additional broad tests were run for this audit.

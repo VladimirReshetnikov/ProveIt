@@ -1,0 +1,119 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=.92in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,tabularx,array,enumitem}
+\usepackage{xcolor,listings,fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,urlcolor=blue!40!black,citecolor=blue!40!black]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\IPRA}{\mathrm{iPRA}}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\UU}{\mathcal U^{-}}
+\newcommand{\GG}{\mathcal G}
+\newcommand{\EE}{\mathcal E^{-}}
+\newcommand{\Q}{\mathsf Q}
+\newcommand{\D}{\mathsf D}
+\newcommand{\FV}{\operatorname{FV}}
+\newcommand{\synneq}{\not\equiv}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\file}[1]{{\small\path{#1}}}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{.3em}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=1.7em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small iPRA: inherited mathematical foundations}
+\fancyhead[R]{\small Attributed supplementary material}
+\fancyfoot[C]{\thepage}
+\hypersetup{pdftitle={iPRA: Inherited Mathematical Foundations},pdfauthor={ProveIt research sources; attributed compilation}}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries Inherited Mathematical Foundations}\\[8pt]
+{\large Companion to \emph{A Smaller Checked Presentation of iPRA}}\\[9pt]
+Attributed source compilation, November 11, 2026
+\end{center}
+\noindent This supplement compiles the mathematical chain inherited by the
+smaller checkers. The first part is reproduced from the mathematical
+sections of the incoming guarded-source report. The appendices reproduce
+the earlier guarded and scalar foundations supplied with it. These are
+\emph{not new mathematical results of the present package}. Historical
+phrases such as ``new'', ``current'', or ``proposed'' inside the reproduced
+sections refer to their original reports.
+
+The source snapshot is ProveIt commit
+\texttt{a4e5e96c456303cf231eab2aeeb3291d8889833f}, directory
+\file{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}; the immediate source
+is the archive \file{ipra_guarded_source_2026-11-11.zip} in
+\file{docs/incoming/}. Its full original report source is preserved as
+\file{reference/inherited_report.tex}. Every reproduced foundation module
+is preserved in \file{reference/foundations/}. The repository's MIT No
+Attribution license is included. Citation aliases in this compilation
+identify the inherited reports and do not assert an independent literature
+priority for their contents.
+
+The new checker changes and their finite tests are in the main report.
+This supplement is written mathematics. It is not a fresh build of the
+upstream Lean development or a formal verification of the new Python
+modules.
+The arity appendix describes its original predecessor protocol, including
+the old introduction-choice convention. Its theorem is used together with
+the guarded composition and the main report's preservation arguments;
+it is not presented as a literal description of every new checker line.
+In particular, the main report explains why computation-supply
+specialization is performed after translation into ordinary iPRA.
+\tableofcontents
+\clearpage
+\input{sections/inherited_composition.tex}
+\clearpage
+\appendix
+\input{reference/foundations/inherited_choice_basis.tex}
+\input{reference/foundations/guarded_core.tex}
+\input{reference/foundations/scalar_predecessor.tex}
+\input{reference/foundations/equality_reflection.tex}
+\input{reference/foundations/primitive_recursion.tex}
+\input{reference/foundations/inherited_ordinary_bridge.tex}
+\input{reference/foundations/inherited_arity_checker.tex}
+
+\begin{thebibliography}{99}
+\bibitem{repo} Vladimir Reshetnikov and ProveIt contributors,
+\emph{ConciseIPRA}, README and research corpus at the pinned commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/a4e5e96c456303cf231eab2aeeb3291d8889833f/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+\bibitem{source} ProveIt, \emph{source\_dispatch}, especially
+\file{proofs/zero_source_admissibility.tex}. The same source is included
+in \file{reference/foundations/zero_source_admissibility.tex}.
+\bibitem{guarded} ProveIt, \emph{guarded\_core}, especially
+\file{sections/guarded_core.tex}; reproduced in Appendix~\ref{sec:guarded-core}.
+\bibitem{foundations} ProveIt, \emph{certified\_zero/reference},
+the inherited choice basis, ordinary bridge, scalar predecessor,
+equality reflection, primitive recursion, and arity checker.
+\bibitem{lean} ProveIt, \emph{ConciseIPRA Lean development}, including
+\file{BiInterpretation.lean}, \file{NativeBiInterpretation.lean}, and
+\file{NativeZeroSource.lean}, at the pinned commit. The sources were read;
+the upstream project was not rebuilt for this package.
+\bibitem{generated} ProveIt research series, the generated-assumption and
+Choice-DI presentation; preserved in
+\file{reference/foundations/inherited_choice_basis.tex}.
+\bibitem{erasure} ProveIt research series, scalar predecessor development
+attributed in the inherited source to the unparenthesized one-hole report;
+preserved in \file{reference/foundations/scalar_predecessor.tex}.
+\bibitem{forward} ProveIt research series, equality-reflection development
+attributed in the inherited source to the forward-left report;
+preserved in \file{reference/foundations/equality_reflection.tex}.
+\bibitem{progress} ProveIt research series, progress-closure arithmetic and
+primitive-recursion compiler; preserved in
+\file{reference/foundations/primitive_recursion.tex}.
+\bibitem{constructed} ProveIt, \emph{constructed\_computation},
+\file{Research/constructed_computation/} in the pinned tree.
+\bibitem{transient} ProveIt, \emph{transient\_seed},
+\file{Research/transient_seed/} in the pinned tree.
+\bibitem{corpus} ProveIt research corpus, the filed packages and incoming
+archives in the pinned ConciseIPRA tree. This compilation preserves the
+original mathematical text and its attribution; the present measurements
+refer to the exact standalone modules in the main report.
+\end{thebibliography}
+\end{document}

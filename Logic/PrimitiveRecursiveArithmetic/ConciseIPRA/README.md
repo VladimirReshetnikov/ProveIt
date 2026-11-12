@@ -5,7 +5,7 @@ complete presentation of a theory bi-interpretable with full first-order
 intuitionistic primitive recursive arithmetic (iPRA), and the Lean
 formalization of the most concise of them.
 
-- [`Research/`](Research/) holds thirty-four delivered packages, one directory
+- [`Research/`](Research/) holds thirty-eight delivered packages, one directory
   each. They are written mathematics with executable Python proof checkers;
   none of them claims a proof-assistant verification.
 - `Lean/` is the formalization (see [Lean formalization](#lean-formalization)).
@@ -157,6 +157,10 @@ for separate coordinates, they are listed separately. Each package's own
 | [`deterministic_auxiliary`](Research/deterministic_auxiliary/) | Source-selected elimination with root-determined introduction, keeping unrestricted atomic progress formulas as auxiliary intermediates; the guarded public consequences are unchanged | 525 and 522 bytes |
 | [`mirror_guard`](Research/mirror_guard/) | A one-sided guard: canonical atomic matrices `a(x,y) = I(y, a(x,y); u.h)`, with one root-determined introduction and no literal-zero transport source | modest, as stated |
 | [`protected_core`](Research/protected_core/) | Public equality `s = t` represented as `W(s) = W(t)`, `W(r) = I(0,r;u.0)`, so that every transport source is iterator-headed | modest, as stated |
+| [`one_context`](Research/one_context/) | Transport with one term template instead of two, crossed: from `s = t` and `h(s) = u` infer `u = h(t)`. Two steps recover the two-template rule; sources are unrestricted and the rule is stable under substitution. Ships proposed Lean modules. Independently, strict goal validation reuses the kernel's scope check | matched tagged checker 3382 to 3358 bytes, 1101 to 1089 tokens; strict Eq/D validator 824 to 803 bytes |
+| [`kernel_refinement`](Research/kernel_refinement/) | The guarded-source checkers with a loop over immutable tuple contexts and the scalar neutral premise. An auxiliary note replaces equational transport by replacement of one occurrence in the left side of an equation, `C[s] = r` to `C[t] = r` for a linear term context `C` | 256 tokens; 278 AST nodes; 521 bytes (three programs) |
+| [`compact_update`](Research/compact_update/) | The scalar neutral-resource encoding of `reversal_core` applied to the `guarded_source` checkers; stated to be an implementation-level composition. Also an exact criterion for when the conditional closure `E(0) → ∀y E(y)` and the progressive closure `∀y (E(y) → E(S y))` of an equation agree: exactly when `¬E(0)` implies progress | 257 tokens; 278 AST nodes; 521 bytes (different programs) |
+| [`uniform_progress`](Research/uniform_progress/) | A seven-rule calculus `R` on the unrestricted formula grammar with a changed reading: `Q_y E` of a literal equation means progress, `∀y (E(y) → E(S y))`, and of a compound matrix the conditional closure. One introduction rule chooses its mode from the root of the matrix alone, so it commutes with substitution; one elimination `Q_y B, B(η) ⊢ B(I(η, n; u. S u))` serves both readings. Translations to and from the native calculus with both round trips, as written proofs | matched typed checker 4553 bytes against 4692 for the eight-rule kernel and 4456 for the seven-rule witness kernel |
 
 ### Other arithmetic bases
 
@@ -211,6 +215,14 @@ A third delivery of six archives arrived in `docs/incoming/` on 2026-11-11
 repository's Lean sources and three checksum ledgers. The proposed module
 `Research/reversal_core/formalization/Reversal.lean` is kept as delivered; its
 compiled form is `Lean/ConciseIPRA/NativeReversal.lean`.
+
+A fourth delivery of four archives arrived on 2026-11-11 (commits
+`ed0d9a32d7`, `b1f7e85b3f` and `7669726207`) and was filed the same day:
+`compact_update`, `one_context`, `kernel_refinement` and `uniform_progress`.
+They respond to the third delivery and to `NativeReversal`. Not filed:
+sixteen frozen copies of this repository's Lean sources and two checksum
+ledgers. The proposed modules
+`Research/one_context/lean/*.lean` are kept as delivered.
 
 ## Lean formalization
 

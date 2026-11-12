@@ -1,0 +1,38 @@
+{
+  "candidate_control_comparisons": 210,
+  "candidate_control_processes": 420,
+  "scope_control_processes": 4,
+  "total_process_executions": 424,
+  "mismatches": 0,
+  "scope_controls": [
+    {
+      "program": "correct_tuple_checker",
+      "optimized": false,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1
+    },
+    {
+      "program": "deliberately_unsound_list_mutant",
+      "optimized": false,
+      "expected_acceptance": true,
+      "accepted": true,
+      "exit_code": 0
+    },
+    {
+      "program": "correct_tuple_checker",
+      "optimized": true,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1
+    },
+    {
+      "program": "deliberately_unsound_list_mutant",
+      "optimized": true,
+      "expected_acceptance": true,
+      "accepted": true,
+      "exit_code": 0
+    }
+  ],
+  "limitation": "Finite process checks plus written preservation proofs; no new Lean/Rocq verification."
+}
