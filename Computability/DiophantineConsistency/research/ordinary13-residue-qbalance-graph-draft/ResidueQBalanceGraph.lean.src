@@ -1,0 +1,81 @@
+import ResidueQBalance
+import ResidueThreeProjectionGraph
+import ResidueSignFreePower
+
+/-! Conditional model binding to the actual 13/90 graph. All inputs are
+source-only unelaborated drafts; no graph-to-endpoint theorem is claimed. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.ResidueQBalanceGraphDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ArithmeticPellRecurrence
+open Residue90GraphNormsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The main root and exact-index w are the actual witnesses returned by the
+previous graph clients, and W=4*X*q*s*w for the graph's s=v7+1. -/
+theorem actual_q_balance (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v)
+    (hJ : 0<v 0) (hbeta : 0<(p 0:V)) (hX : 0<v 6)
+    (hgap : (v 1+1)+(v 2+1)<q p v)
+    (hwindow : rank p v+(q p v)^3+q p v+1≤(q p v)^4) :
+    ∃ main n w : V, 0<main ∧ 13≤n ∧ 2*n=rank p v+1 ∧
+      k v=rank p v+1+4*(v 6*Y p v*Y p v)*w ∧
+      q p v*(main+H p v*(4*v 6*q p v*(v 7+1)*w))=
+      q p v*(v 6+a p v*c p v+H p v*v 12)+H p v*v 6 := by
+  obtain ⟨_,hq2,hY,hU⟩ := Residue90CompactGraphGammaDraft.scale_facts p v hJ hbeta
+  have hqpos : 0<q p v := lt_of_lt_of_le (by simp : (0:V)<2) hq2
+  have hq8 : (8:V)≤(q p v)^3 := by
+    have hh := pow_le_pow_left₀ (by simp : (0:V)≤2) hq2 3
+    simpa using hh
+  have hY8 : 8≤Y p v := le_trans hq8 hY
+  have hYpos : 0<Y p v := lt_of_lt_of_le (by simp : (0:V)<8) hY8
+  have hk : 0<k v := add_pos
+    (lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _))
+    (lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _))
+  have hFq : v 1+1≤q p v := le_trans (by simp) (le_of_lt hgap)
+  obtain ⟨main,hmain,hroot⟩ :=
+    ResidueThreeProjectionGraphDraft.actual_main_balance p v hz hU hY8 hk hFq
+  obtain ⟨_,n,w,_,_,_,_,hn,_,_,heq,_,hks⟩ :=
+    ResidueExactIndexFromGraphDraft.exact_indices_of_graph p v hz hJ hbeta hX hgap hwindow
+  have hindex : k v=rank p v+1+4*(v 6*Y p v*Y p v)*w := by
+    simpa only [m,heq] using hks
+  have hYeq : Y p v=q p v*(q p v*q p v)*(v 7+1) := rfl
+  have hb := ResidueQBalanceDraft.q_balance (q p v) (v 6) (Y p v) (c p v)
+    (k v) (rank p v) (v 12) main (v 7+1) w hqpos hYpos hYeq hindex
+    (by simpa only [a,H,U] using hroot)
+  exact ⟨main,n,w,hmain,hn,heq,hindex,by simpa only [a,H] using hb⟩
+
+/-- Conditional client: the first index and both main coordinates are
+explicitly matched to the balance witness, rather than inferred from equality
+of Pell norms alone. hq46 is a separate represented compact-port bound. -/
+theorem actual_power_of_pell_coordinates (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (main n w : V) (hq46 : 46≤q p v) (hX : 0<v 6)
+    (hdiv : q p v∣3*v 6) (hn : 13≤n) (heq : 2*n=rank p v+1)
+    (hfirst : k v=2*ycoord n (2*(v 6*Y p v*Y p v-1)+1))
+    (hmainx : xcoord (rank p v) (Y p v*(v 6+1))=main)
+    (hmainy : ycoord (rank p v) (Y p v*(v 6+1))=c p v)
+    (hbalance : q p v*(main+H p v*(4*v 6*q p v*(v 7+1)*w))=
+      q p v*(v 6+a p v*c p v+H p v*v 12)+H p v*v 6) :
+    v 6=Exp.exp (rank p v) := by
+  have hqpos : 0<q p v := lt_of_lt_of_le (by simp : (0:V)<46) hq46
+  have hs : 0<v 7+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hYpos : 0<Y p v := by
+    dsimp only [Y]
+    exact mul_pos (mul_pos hqpos (mul_pos hqpos hqpos)) hs
+  have hY1 : 1≤Y p v := pos_iff_one_le.mp hYpos
+  have hzeta : 0<v 10+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hc : c p v=k v*Y p v+(v 9+1) := by dsimp [c]; ring
+  have hExp := ResidueSignFreePowerDraft.growth_of_coordinates (q p v) (v 6) (Y p v)
+    (rank p v) n (k v) (c p v) (v 9+1) (v 10+1)
+    hq46 hX hdiv hY1 hn heq hc rfl hzeta hmainy.symm hfirst
+  apply ResidueSignFreePowerDraft.power_of_oriented_balance (q p v) (v 6) (Y p v)
+    (rank p v) (c p v) main (v 12) (4*v 6*q p v*(v 7+1)*w)
+    hExp hmainx hmainy ⟨v 7+1,rfl⟩
+  have ha : a p v=Y p v*(v 6+1) := by dsimp [a]; ring
+  simpa only [H,ha] using hbalance
+end DiophantineConsistency.ResidueQBalanceGraphDraft
+#print axioms DiophantineConsistency.ResidueQBalanceGraphDraft.actual_q_balance
+#print axioms DiophantineConsistency.ResidueQBalanceGraphDraft.actual_power_of_pell_coordinates
