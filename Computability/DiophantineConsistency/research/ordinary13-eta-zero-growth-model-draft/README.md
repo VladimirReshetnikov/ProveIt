@@ -16,6 +16,9 @@ putting `r=n−1`. The **same** supplied first index n must satisfy `n≥13`,
 must be `ycoord R (Y*(X+1))=c`. The inputs also explicitly state
 `c=k*Y+eta`, `k=eta+zeta` and `zeta>0`. Eta is a natural with no positivity
 assumption, so eta=0 is included in the proposed fact-level statement. The
+index predecessor bounds use the explicit add-cancellation pattern from
+`ArithmeticAdaptivePowerGrowth2011.growth_of_facts`, avoiding `omega` over
+an abstract model. The
 source does not construct these recurrence coordinates from the graph.
 
 A second client composes growth with the separately unelaborated

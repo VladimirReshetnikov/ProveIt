@@ -4,6 +4,7 @@ import json
 p=Path('research/ordinary13-eta-zero-growth-model-draft')
 fs=[p/'EtaZeroGrowth.lean.src',p/'README.md',
 Path('Lean/DiophantineConsistency/ArithmeticPellPowerRecovery.lean'),
+Path('Lean/DiophantineConsistency/ArithmeticAdaptivePowerGrowth2011.lean'),
 Path('research/ordinary13-eta-zero-direct-projection-model-draft/EtaZeroDirectProjection.lean.src'),
 Path('research/ordinary13-eta-zero-graph-adapter-audit/prototype.json')]
 s=[f.read_text() for f in fs]
@@ -13,7 +14,9 @@ for x in ['theorem growth','(hq : 16≤q)','(hw0 : 0<w0)','(hX : X=q*w0)',
  'EtaZeroDirectProjectionDraft.power_of_direct_carrier']:
  assert x in s[0],x
 assert 'theorem power_bound (X Y r k c eta zeta : V)' in s[2]
-g=json.loads(s[4]);rows={r[0]:r for r in g['source']}
+assert 'theorem growth_of_facts' in s[3]
+assert 'by omega' not in s[0] and 'add_le_add_iff_right' in s[0] and 'add_right_cancel' in s[0]
+g=json.loads(s[5]);rows={r[0]:r for r in g['source']}
 assert rows['X']==['X','*','q','n_w'] and rows['Y']==['Y','*','q3','s']
 checks=0
 for q in range(16,40):
