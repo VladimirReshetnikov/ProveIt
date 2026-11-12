@@ -7469,6 +7469,9 @@ The source-reviewed [86/87 ring client](research/ordinary14-86-87-ring-client-dr
 [positive 86-to-87 map](research/ordinary14-86-to-87-positive-map-draft/README.md)
 propose the forward reparameterization. They are unelaborated; the reverse
 map, provider compatibility and endpoint remain open.
+The source-reviewed [88-to-87 ring client](research/ordinary14-88-87-ring-client-draft/README.md)
+proposes the quotient guard shift over a commutative ring. It is unelaborated
+and does not by itself prove the reverse positive witness.
 The source-reviewed [conditional 87-to-86 map](research/ordinary14-87-to-86-conditional-map-draft/README.md)
 proposes the reverse valuation assuming the scalar gap and quotient
 positivity. It remains unelaborated and those assumptions must still be
