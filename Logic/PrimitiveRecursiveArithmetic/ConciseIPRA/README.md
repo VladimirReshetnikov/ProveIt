@@ -5,7 +5,7 @@ complete presentation of a theory bi-interpretable with full first-order
 intuitionistic primitive recursive arithmetic (iPRA), and the Lean
 formalization of the most concise of them.
 
-- [`Research/`](Research/) holds fifty delivered packages, one directory
+- [`Research/`](Research/) holds fifty-two delivered packages, one directory
   each. They are written mathematics with executable Python proof checkers;
   none of them claims a proof-assistant verification.
 - `Lean/` is the formalization (see [Lean formalization](#lean-formalization)).
@@ -213,6 +213,7 @@ for separate coordinates, they are listed separately. Each package's own
 | [`validated_core`](Research/validated_core/) | One recursive validator shared between raw-tree typing and the public grammar, for the unchanged rule basis | fully validated Eq/Q/D checker 897 bytes against a matched 1049; compact envelope 256 tokens, 278 AST nodes, 521 bytes (different programs) |
 | [`validated_presentation`](Research/validated_presentation/) | The whole certificate is typed by one test on its printed form, so the public syntax validator loses its separate raw-type pass; the proof kernel is unchanged | fully validated Eq/Q/D checker 870 bytes against 897, 383 tokens against 401 |
 | [`checked_refinement`](Research/checked_refinement/) | Three smaller implementations of the existing presentations; stated to contain no new axiom deletion | guarded public-goal checker 921 bytes against 1201; native Eq/D public checker 788 against 803; compact guarded 520 against 521 |
+| [`scalar_uniqueness`](Research/scalar_uniqueness/) | Induction for literal equations replaced by uniqueness of iteration: from `f(S z) = h(f(z))` infer `f(t) = I(t, f(0); u.h(u))`, with no induction hypothesis in the premise. The report recovers predecessor, reflection of equality and equation induction from it, closing the gap left open in `scope_kernel` | matched raw checker grows from 3322 to 3393 bytes; validated checker of the existing calculus 866 against 870 |
 | [`computational_equality`](Research/computational_equality/) | Six rules on the unchanged language, with no normalization: Hyp, Refl, Eval, QE, DE, DI. Eval merges equality with one computation: from `s = t` and `b = r` infer `r = Φ(s, t, b)`, where `Φ` is `t` if `b` is `s` or `b` is `I(0, s; u.h)`, and `h[t/u]` if `b` is `I(S c, a; u.h)` and `s` is `I(c, a; u.h)`. Both computation equations and all congruence are derived | matched checker 3039 bytes against 3121, 959 tokens against 1008 |
 | [`zero_normal`](Research/zero_normal/) | Terms with no iterator whose counter is the literal `0`; substitution rebuilds terms with `I(0, a; u.h)` replaced by `a`, so the zero computation rule is deleted. With the single introduction and one-term transport: six rules. Ships a compiled Lean module for the normalization layer | matched strict tagged checkers, 8 and 7 rules: 3322 and 3272 bytes |
 | [`diagonal_guard`](Research/diagonal_guard/) | One introduction whose mode is chosen by a guard that substitution preserves and reflects: progress exactly when the matrix is literally `I(y, y; u.h) = I(y, y; v.k)`, cases otherwise. Seven rules on the full formula language with the original readings | matched typed checker 3244 bytes against 3382 for eight rules and 3205 for the witness rule |
@@ -231,6 +232,7 @@ for separate coordinates, they are listed separately. Each package's own
 | [`register_graph`](Research/register_graph/) | Terms `x`, `0` and a counter-aware register iterator `J(n; i, r. body)` only, over ordinary logic: successor `S(a) = J(a; i, r. 0)` and the initializer are derived, and primitive recursion compiles without pairing; also a 288-node AST checker for the native core |
 | [`canonical_recursors`](Research/canonical_recursors/) | A successor-seeded recursor `R(n, a; u.h)` with successor defined as `R(0, a; u.0)`; the zero computation is built into a canonical term grammar with normalizing substitution, so successor computation is the only explicit computation rule. Six rules; written proofs of the equivalence with the raw calculus and of the bi-interpretation with iPRA. Normalization is part of the trusted specification. Matched strict checker 4611 bytes against 4923 for the scalar iterator with independent `S`; separately, the compact guarded codec at 516 bytes against 522 |
 | [`initializer_equality`](Research/initializer_equality/) | On the canonical recursor syntax, equality transport is replacement of an iterator's initializer; zero iteration is definitional, so this includes replacement at the root, and one iteration applies any term template. Six rules; the equality step takes two proofs and no template |
+| [`clausal_canonical`](Research/clausal_canonical/) | Five rules on the canonical recursor syntax, with an Eq/D public language and contexts of reusable clauses in place of `Q`. Matched checker 3305 bytes against 3820 for the six-rule control |
 
 ## Intake record
 
@@ -304,6 +306,8 @@ sources, three checksum ledgers and five build logs. The delivered module
 `Research/zero_normal/formal/ZeroNormalization.lean` compiled unchanged and
 is `Lean/ConciseIPRA/ZeroNormalization.lean`.
 
+`clausal_canonical` and `scalar_uniqueness` arrived after these and were
+filed on arrival (two frozen Lean copies and one checksum ledger not filed).
 `computational_equality` arrived later the same day and was filed on arrival;
 four frozen copies of this repository's Lean sources and one build log are
 not filed.
@@ -353,6 +357,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | crossed transport | `rprf_iff_nprf : RPrf Γ A ↔ NPrf Γ A`, `reversal_iff_pra` | root-reversing transport and QE with nonzero sources; equality recovered without induction |
 | closure criterion | `Teq.closure_iff_progress` | for quantifier-free `φ`, with `B = φ(0)`, `C = B → ∀y φ(y)` and `P = ∀y (φ(y) → φ(S y))`: `T_eq ⊢ (C ↔ P) ↔ (¬B → P)`; and `P → C` always |
 | | `Teq.ex_closure_iff_progress` | after binding a parameter `x` existentially, as in the reading of `D`: `T_eq ⊢ (∃x C ↔ ∃x P) ↔ ((∃x ¬B) → ∃x P)` |
+| uniqueness of iteration | `NPrf.uniq` | from `f(S z) = h(f(z))` with `z` fresh, `f(t) = I(t, f(0); u.h)`: a derived rule of the kernel, by one equation induction |
 | native → `T_eq` | `NPrf.sound` | `NPrf Γ A → Γ.map toFm ⊢[TeqAx] A.toFm` for the ordinary readings of `Q` and `D` |
 | `T_eq` → native | `NPrf.ofPrf` | `Γ ⊢[TeqAx] φ → NPrf (Γ.map ofFm) (ofFm φ)`, where `ofFm` replaces each connective by its native macro |
 | native = `T_eq` | `NPrf.iff_teq`, `Teq.iff_native` | faithfulness of both readings |
@@ -362,7 +367,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | | `native_inconsistent_iff` | `NPrf [] (0 = 1)` iff iPRA proves `⊥` |
 
 The main chain (every module except the eight kernel comparisons,
-`ZeroNormalization`, `NativeZeroNormal` and `TeqClosure`) is 5,630
+`ZeroNormalization`, `NativeZeroNormal`, `NativeUniqueness` and `TeqClosure`) is 5,630
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
 introduction and elimination, instead of an induction over the seventeen
@@ -389,6 +394,7 @@ no `native_decide`.
 | `T_eq` ≡ iPRA | `ScalarToPRA`, `PRAToScalar`, `RoundTripScalar`, `RoundTripPRA`, `BiInterpretation` | the two interpretations and their composites |
 | zero-normal syntax | `ZeroNormalization`, `NativeZeroNormal` | contraction of iterators with a literal-zero counter, hereditary substitution, and the equivalence of a formula with its normal form (delivered); the kernel without the zero computation rule, `NZPrf` |
 | closures in `T_eq` | `TeqClosure` | decidability of quantifier-free formulas; the criterion for agreement of the conditional and the progressive closure |
+| derived rule | `NativeUniqueness` | uniqueness of iteration |
 | native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, interderivability over a context, Leibniz and transport in every template, equation induction; selector and gate formulas |
 | kernel comparison | `NativeInherited`, `NativeOneContext`, `NativeOneIntro`, `NativeDiagonal`, `NativeMinimal`, `NativeEval`, `NativeZeroSource`, `NativeReversal` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf`; no literal-zero transport sources, `OPrf`, generic over the class `OKernel`, and the uncrossed rule, `UPrf`; six rules with Eval, `EPrf`; the diagonal introduction, `GPrf`, with its own structural rules; one introduction rule, `WPrf`, generic over the class `WKernel`; both together, `MPrf`; the source restriction for uncrossed transport in an equation template, `ZPrf`, generic over the class `ZKernel`; root-reversing transport and QE, `RPrf` |
 | native logic | `NativeLogic` | `⊥`, `→`, `∧`, `∨`, `∃`, `∀` as native macros with all their natural deduction rules |
@@ -415,6 +421,8 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `compact_update` | Its checker results concern Python programs. Its closure criterion is proved in `T_eq` for every quantifier-free formula: `Teq.closure_iff_progress`, with `Teq.closure_of_progress` and the decidability lemma `Teq.qfDec` (`TeqClosure`). The variant after existential binding is `Teq.ex_closure_iff_progress`. |
 | `uniform_progress` | Not formalized. Its calculus changes the reading of `Q` at literal equations, so it needs its own soundness proof, its own structural rules and both formula translations with their round trips. |
 | `validated_core`, `validated_presentation`, `checked_refinement` | Their results concern Python programs; the rule basis is unchanged. |
+| `scalar_uniqueness` | Half proved: the uniqueness rule is a derived rule of the kernel (`NPrf.uniq`). The converse, that it recovers equation induction when induction is not a rule, needs the report's own predecessor and reflection of equality and is not formalized. |
+| `clausal_canonical` | Not formalized: it is stated on the canonical recursor syntax with clause contexts. |
 | `computational_equality` | Proved: its six-rule calculus is `EPrf`, with `eprf_iff_nprf` and `eprf_iff_iprf` (`NativeEval`). The three cases of Eval are three constructors. |
 | `zero_normal` | Its normalization layer is adopted as `ZeroNormalization`: the delivered module compiled unchanged. On top of it `NativeZeroNormal` proves the deletion of the zero computation rule for the kernel (`nzprf_iff_nprf`, `NZPrf.normal`, `nzprf_iff_pra`), with the kernel's two introductions and unrestricted sources. The six-rule form with the single introduction is not formalized. |
 | `diagonal_guard` | Proved: its calculus is `GPrf`, with `gprf_iff_nprf`, `gprf_iff_iprf` and substitution by direct induction (`NativeDiagonal`). Progress for an arbitrary equation is recovered by a shorter argument than the report's: no implication between equations and no substitution into the step premise. The equivalence uses neither `Classical.choice` nor the bi-interpretation. |

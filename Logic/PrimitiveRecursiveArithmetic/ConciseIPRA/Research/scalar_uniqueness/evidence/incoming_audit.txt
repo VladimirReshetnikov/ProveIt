@@ -1,0 +1,45 @@
+EDITORIAL STATUS NOTE
+This audit records the initial incoming-package inspection. Its closing
+research question is subsequently resolved by the new UR proof in report.tex;
+it is retained below as historical evidence of the starting point.
+
+Incoming-package audit at ProveIt commit 11be5aabc6b07262046e2553419bc6b05271d178
+Path: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/incoming
+
+All six ZIP files were fetched from the pinned raw.githubusercontent.com URLs and extracted under sources/incoming. No repository mutations were made.
+
+1. diagonal_guard
+   Mathematical change: a single D introduction uses progress exactly for matrices I(y,y;h)=I(y,y;k), and cases otherwise. The protected y occurs as both counter and seed, making the syntactic dispatch preserved and reflected by capture-free substitution. Guarded zero instances are 0=0; diagonal lifting recovers arbitrary equation progress. Same sequents and inherited whole-domain bi-interpretation are claimed.
+   Independently remeasured selected strict checker: 3244 normalized bytes, 1069 significant tokens, 1124 AST nodes, gzip-9 989. Larger than its seven-rule witness control (3205), smaller than eight-rule native control (3382). No compact record.
+
+2. initializer_equality
+   Mathematical change: zero-normalize I(0,a;h)=a, then replace general equality transport by seed replacement s=t, I(n,s;h)=r => I(n,t;h)=r. Its root case n=0 is included. The conclusion is inferred from two premise conclusions; no template or occurrence path is supplied. One-step computation realizes arbitrary f(u), and two computations plus two seed replacements recover congruence f(s)=f(t). Six primitive rules. Full raw/canonical and same-sequent translations are written out.
+   Independently remeasured selected checker: 3979 bytes, 1192 tokens, 1347 AST nodes, gzip-9 1175, with genuine docstrings removed as specified. Matched general-template control: 4029 bytes. No global record.
+
+3. scope_kernel
+   Implementation only: reuse an existing scope pass to validate the public goal and unpack JSON into prefix/conclusion. Same calculus.
+   Independently remeasured full Eq/Q/D module: 881 bytes, 393 tokens, 460 AST nodes, gzip-9 500. Eq/D variant reported at 862. Existing validated_presentation (870 full) is already smaller than this package.
+   Mathematical obstructions: coordinatewise N x N model satisfies contextual equation induction but refutes coverage; direct-target case replacement fails. Open positive direction: scalar uniqueness UR from f(Sz)=h(f(z)) infer f(t)=I(t,f(0);h), no discharged IH. Retraction rigidity and zero-equation induction are proved; full equality reflection is explicitly left open.
+
+4. target_closure
+   Mathematical change: seven-rule progressive calculus whose QE requests E(s) when its equation matrix has target S(s), otherwise its zero instance. Wrapping targets by I(0,t;0) restores arbitrary-target anchored closure. Same-sequent equivalence with uniform_progress is claimed with explicit substitution-shape repair.
+   Selected new-calculus checker independently remeasured with genuine docstrings removed: 4532 bytes, 1195 tokens, 1358 AST nodes, gzip-9 1220. This beats orbit control 4553 but not witness control 4456.
+   Separate unchanged-calculus lexical codec: 895 bytes. This is not the implementation of the new T calculus.
+
+5. template_free
+   Mathematical change: from s=t and u=v infer v=R_s^t(u), where R replaces every exact free occurrence once, root-first and capture-safely. An oversized I0 computation marker isolates a selected congruence context. Seven rules, same original term/formula syntax and native sequents.
+   Independently remeasured strict selected checker: 3147 bytes, 1027 tokens, 1072 AST nodes, gzip-9 983. Matched original one-template control: 3181. No compact record.
+
+6. zero_normal
+   Mathematical change: canonical terms erase literal-zero-counter iterators and substitution rebuilds them through a smart constructor. I0 is removed; I(1,0;0) is a remaining nonliteral zero needed for witness-sensitive introduction. Six rules, inherited one-context transport.
+   Independently remeasured selected strict checker: 3095 bytes, 1013 tokens, 1075 AST nodes, gzip-9 977, versus seven-rule control 3145 bytes. This is the smallest listed direct tagged implementation among these incoming packages, although it uses a different interface than initializer_equality.
+   Contains Lean ZeroNormalization.lean (255 lines) and recorded compiler output for normalization/substitution/internal-equivalence facts, not the complete six-rule calculus or Python checker.
+
+Comparison boundary:
+The current README already files canonical_recursors, whose compact canonical-R profile reports 516 bytes. None of these six incoming reports establishes a new global compact minimum or proves absolute minimality. Seven-to-six rule reduction, definitional zero computation, equality-template elimination, and substitution-stable DI already have concrete predecessors here.
+
+Correctness review:
+Inspected principal claims and detailed seed-rule proof; no definite mathematical error found. All checker figures above reproduce under the available CPython runtime when the package's specified docstring normalization is respected. No full proof-assistant re-verification or exhaustive test replay was performed in this audit. Universal proof claims remain written proofs except for the stated limited zero_normal Lean development.
+
+Potential new research:
+The UR gap in scope_kernel may be closable. A revised ramp g(u)=u+N(M(u))+1, rather than u+M(u)+1, makes M(g(u))=Z(M(u)) an unconditional finite-state identity because M ranges over {0,1,2}. Hence UR gives M(G(n))=N(n) without an induction hypothesis. Most later predecessor steps are already common-update uniqueness arguments. Equality reflection after predecessor remains the substantive issue; no completion is asserted here.
