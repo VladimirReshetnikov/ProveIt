@@ -202,6 +202,12 @@ by progress as primitive, and proves that the derivable sequents are the same
   `NSPrf.normal`). Equality comes from a pivot of two Steps through
   `I(S 0, x; v.v)`. This is the interface of
   [`uniform_step`](Research/uniform_step/).
+- *Seed evaluation.* On zero-normal terms the rule Step can in turn be replaced
+  by SeedEval, from `a = b` and `I(S c, a; u.h) = r` infer
+  `r = h[I(c, b; u.h)/u]`, whose equation premise is about the seed alone
+  (`NVPrf`, `nvprf_iff_nprf`). At the counter `0` the two rules are the same
+  inference, which is where the equality reasoning takes place. This is the
+  rule of [`seed_evaluation`](Research/seed_evaluation/).
 - *Other forms of the source restriction.* For transport in an equation
   template with an uncrossed conclusion, the same restriction needs an
   equation induction and a singleton test, though no logical rule
@@ -450,6 +456,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | six rules | `eprf_iff_nprf : EPrf Γ A ↔ NPrf Γ A`, `eprf_iff_iprf` | Hyp, Refl, Eval, QE, DE and the single DI: one rule for equality and computation, no computation axiom and no template |
 | one computation rule | `nzprf_iff_nprf : NZPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`, `nzprf_iff_pra` | the kernel without the zero computation rule, on zero-normal terms with normalizing substitution, derives the normal form of every kernel sequent and nothing else |
 | six rules, zero-normal | `nrprf_iff_nprf : NRPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`, `NRPrf.normal` | no zero computation rule and one introduction, progressive exactly at a literally reflexive normalized base |
+| seed evaluation | `nvprf_iff_nprf : NVPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`, `NVPrf.normal` | on zero-normal terms, reflexivity and SeedEval in place of successor computation and transport |
 | one successor step | `nsprf_iff_nprf : NSPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`, `NSPrf.normal` | on zero-normal terms, reflexivity and Step in place of successor computation and transport |
 | | `NZPrf.normal`, `nzprf_iff_nprf_of_normal` | it derives only zero-normal formulas from zero-normal hypotheses, and on those sequents it agrees with the kernel |
 | crossed transport | `rprf_iff_nprf : RPrf Γ A ↔ NPrf Γ A`, `reversal_iff_pra` | root-reversing transport and QE with nonzero sources; equality recovered without induction |
@@ -465,8 +472,8 @@ formalizes three systems and proves them mutually bi-interpretable:
 | | `native_inconsistent_iff` | `NPrf [] (0 = 1)` iff iPRA proves `⊥` |
 
 The main chain (every module except the thirteen kernel comparisons,
-`ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroReflexive`,
-`NativeUniqueness` and
+`ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`,
+`NativeZeroReflexive`, `NativeUniqueness` and
 `TeqClosure`) is 5,630
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
@@ -492,7 +499,7 @@ no `native_decide`.
 | theories | `Scalar`, `PR`, `Native` | `T_eq`, iPRA, the native calculus and its soundness |
 | `T_eq` arithmetic | `Lindenbaum`, `TeqArith`, `TeqParity`, `TeqCompare`, `TeqPred`, `TeqEq`, `TeqReflect`, `TeqOrder`, `TeqPair`, `TeqRec` | predecessor, reflection of equality into a term, quantifier-free induction, pairing, compilation of primitive recursion |
 | `T_eq` ≡ iPRA | `ScalarToPRA`, `PRAToScalar`, `RoundTripScalar`, `RoundTripPRA`, `BiInterpretation` | the two interpretations and their composites |
-| zero-normal syntax | `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroReflexive` | contraction of iterators with a literal-zero counter, hereditary substitution, and the equivalence of a formula with its normal form (delivered); the kernel without the zero computation rule, `NZPrf`; reflexivity and one successor step, `NSPrf`; six rules with the reflexive-base introduction, `NRPrf` |
+| zero-normal syntax | `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`, `NativeZeroReflexive` | contraction of iterators with a literal-zero counter, hereditary substitution, and the equivalence of a formula with its normal form (delivered); the kernel without the zero computation rule, `NZPrf`; reflexivity and one successor step, `NSPrf`; reflexivity and seed evaluation, `NVPrf`; six rules with the reflexive-base introduction, `NRPrf` |
 | closures in `T_eq` | `TeqClosure` | decidability of quantifier-free formulas; the criterion for agreement of the conditional and the progressive closure |
 | derived rule | `NativeUniqueness` | uniqueness of iteration |
 | native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, interderivability over a context, Leibniz and transport in every template, equation induction; selector and gate formulas |
@@ -526,7 +533,8 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `computational_equality`, `equality_from_iteration` | Proved: the six-rule calculus is `EPrf`, with `eprf_iff_nprf` and `eprf_iff_iprf` (`NativeEval`). Eval has the two cases of `equality_from_iteration` as constructors; the third case of `computational_equality` is the derived rule `EPrf.evalId`. The zero-normal companion of `equality_from_iteration` is not formalized. |
 | `clause_guards` | Proved: its calculus is `KPrf` (`kprf_iff_nprf_of_qfree`, `kprf_iff_nprf`, `KPrf.subst`; `NativeClausalDiagonal`), which was written here before the package arrived. |
 | `mirror_core` | Not formalized. Its selector is preserved by substitution but can be created by it, so the structural argument of `NativeDiagonal` does not transfer as it stands. |
-| `seed_evaluation`, `clause_contexts`, `witness_discharge` | Not formalized: further rule forms on zero-normal terms with clause contexts. |
+| `seed_evaluation` | Proved, for its arithmetic and equality interface: `NVPrf`, with `nvprf_iff_nprf`, `NVPrf.normal` and `nvprf_iff_pra` (`NativeZeroSeed`), with the kernel's two introductions and `Q` in place of clause contexts. |
+| `clause_contexts`, `witness_discharge` | Not formalized: further rule forms on zero-normal terms with clause contexts. |
 | `uniform_binding` | Not formalized: the counter-aware recursor syntax. |
 | `variable_substitution`, `parameter_substitution` | Not formalized: equality rules that substitute for a variable or a parameter only. |
 | `uniform_step` | Proved: its arithmetic and equality interface on zero-normal terms is `NSPrf` (`nsprf_iff_nprf`, `NSPrf.normal`, `nsprf_iff_pra`; `NativeZeroStep`), with the kernel's two introductions and `Q` in place of clause contexts. On the unnormalized syntax the rule Step is the constructor `evalSucc` of `EPrf` and `SPrf`. |
