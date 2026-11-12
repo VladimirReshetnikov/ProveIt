@@ -7853,6 +7853,10 @@ The independently reviewed [forced-w natural graph](research/ordinary14-natural-
 removes another shift, giving 14 natural inputs, 79 operations and exact
 specialized degree 107. Its local divisibility argument assumes positive beta
 and nonnegative K0; the stronger parent and endpoint qualifications remain.
+The independently reviewed [79-to-78 unshift-s probe](research/ordinary14-natural78-unshift-s-obstruction/README.md)
+has an explicit zero with `s=0`, including at the authenticated ports. It
+rules out forced positivity of s and the tested same-coordinate transfer,
+not global zero-existence equivalence.
 The independently source-reviewed [natural-79 Lean transcription](research/ordinary14-natural-forced-w79-lean-draft/README.md)
 records the literal graph and product shape. It remains unelaborated and has
 no checked model or iPRA endpoint.
@@ -7878,6 +7882,14 @@ elaboration, provider and endpoint checks remain open.
 The independently source-reviewed [79 zero-w root cut](research/ordinary14-natural79-zero-w-root-cut-draft/README.md)
 proposes deriving signed divisibility `(4Y+3) ∣ 3q²` from that norm. The
 natural-model reflection, size contradiction and Lean elaboration remain open.
+The independently source-reviewed [79 zero-w divisibility client](research/ordinary14-natural79-zero-w-divisibility-client-draft/README.md)
+proposes that reflection and contradiction, yielding a source-level w
+positivity claim under represented positive beta and nonnegative K0. The
+whole chain remains unelaborated and the iPRA endpoint is not established.
+The independently source-reviewed [natural-79 endpoint draft](research/ordinary14-natural-forced-w79-ipra-draft/README.md)
+proposes composing the w-positive transfer with native, standard and
+equality-only iPRA clients at the symbolic ports. Its declarations and five
+axiom reports remain unelaborated and unexecuted; this is not a checked proof.
 The independently source-reviewed [79-to-80 w-shift draft](research/ordinary14-natural79-wshift-model-draft/README.md)
 proposes related-valuation zero maps, conditional on w positivity at every
 79 zero. It remains unelaborated and does not discharge that premise.
@@ -7942,6 +7954,9 @@ The independently reviewed [80 qualified-provider cut](research/ordinary14-natur
 finds five source candidates absent from the selected object root and records
 bounded alternate-provider and collision observations. This is a lexical
 presence cut, not a coherent provider or build plan.
+The independently reviewed [80 ordered provider plan](research/ordinary14-natural80-ordered-provider-plan/README.md)
+records five qualified source candidates followed by 184 inert draft stages.
+It is a lexical candidate order, not a launch-ready build or provider proof.
 The independently source-reviewed [natural-81 Lean transcription](research/ordinary14-natural-forcedj81-lean-draft/README.md)
 records its literal graph and product shape. Its source correspondence is
 checked externally; Lean semantics and endpoint equivalence remain open.
