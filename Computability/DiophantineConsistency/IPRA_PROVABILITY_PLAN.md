@@ -7484,6 +7484,10 @@ facts from an 87-graph zero.
 The source-reviewed [87 four-field extraction draft](research/ordinary14-87-four-fields-draft/README.md)
 proposes extracting the shared non-guard residuals from the 87 graph's own
 zero. It remains unelaborated and does not identify the distinct guards.
+The source-reviewed [87 natural-rank](research/ordinary14-87-natural-rank-draft/README.md)
+and [auxiliary-norm](research/ordinary14-87-aux-norm-draft/README.md) drafts
+propose those facts from the same 87 zero. Both remain unelaborated and do not
+complete the direct calibration.
 The source-reviewed [87 strong-norm draft](research/ordinary14-87-strong-norm-draft/README.md)
 proposes the direct-Y strong identity from the 87 graph's own zero. It remains
 unelaborated and does not establish the rest of the calibration.
@@ -7537,6 +7541,10 @@ extends the `β = 4` example to all positive J, conditional on the documented
 source-theorem replay. A separate reviewed [odd-β, even-q toy](research/ordinary14-direct-x73-q10-toy/README.md)
 has `q = 10` and a symbolic zero with `q ∤ X`; its parent exclusion is
 source-dependent and restricted to fixed q. Neither is a compact44 result.
+The reviewed [β=47, q=48 toy](research/ordinary14-direct-x73-q48-toy/README.md)
+also has a symbolic zero with `q ∤ X` despite satisfying the stated scalar
+box and size assumptions. Its parent exclusion remains conditional and
+fixed-q; it does not use the actual Mersenne `β`.
 The reviewed [positive quotient shift](research/ordinary14-positive-guard74/README.md)
 reduces that parent to 14 strictly positive inputs and 74 operations at exact
 degree 107. Its positive-zero maps use `β > 0` and `K0 ≥ 0` locally; the
