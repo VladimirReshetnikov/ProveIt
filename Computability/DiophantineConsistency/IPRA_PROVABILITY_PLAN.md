@@ -7921,6 +7921,10 @@ The independently reviewed [natural-80 endpoint inventory](research/ordinary14-n
 records 184 lexical draft modules and 41 directly named qualified sources,
 along with a bounded token scan. It does not establish actual Lean resolution,
 provider or axiom closure, or build readiness.
+The independently source-reviewed [combined natural-80 overlay](research/ordinary14-natural80-combined-slim-overlay/README.md)
+extends the 81 snapshot with 11 endpoint drafts and selects both reviewed
+keyword alternatives. Its 184 snapshots are inert; actual Lean resolution,
+provider/companion closure and endpoint elaboration remain unverified.
 The independently source-reviewed [natural-81 Lean transcription](research/ordinary14-natural-forcedj81-lean-draft/README.md)
 records its literal graph and product shape. Its source correspondence is
 checked externally; Lean semantics and endpoint equivalence remain open.
