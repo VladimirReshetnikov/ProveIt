@@ -1293,6 +1293,9 @@ The source-reviewed [parent first-quotient facts](research/ordinary14-parent-fir
 propose the reverse direction's `q³ ∣ Y` and divisibility of `|Bt|` without
 choosing a sign. They remain unelaborated and are not yet bound to the parent
 graph or composed into a positive witness.
+The source-reviewed [13-parent scaled-norm binding](research/ordinary13-parent-scaled-norms-draft/README.md)
+proposes the same-valuation bridge to existing adaptive norms. It remains
+unelaborated and does not itself construct the reverse positive witness.
 The source-reviewed [88 guard draft](research/ordinary14-88-guard-draft/README.md)
 proposes the quotient-guard equality from that graph's own zero. It remains
 unelaborated and is one premise of the parent witness construction.
