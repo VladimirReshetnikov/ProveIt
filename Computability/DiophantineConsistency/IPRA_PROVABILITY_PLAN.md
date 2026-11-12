@@ -7466,6 +7466,10 @@ The source-reviewed [86/87 ring client](research/ordinary14-86-87-ring-client-dr
 [positive 86-to-87 map](research/ordinary14-86-to-87-positive-map-draft/README.md)
 propose the forward reparameterization. They are unelaborated; the reverse
 map, provider compatibility and endpoint remain open.
+The source-reviewed [conditional 87-to-86 map](research/ordinary14-87-to-86-conditional-map-draft/README.md)
+proposes the reverse valuation assuming the scalar gap and quotient
+positivity. It remains unelaborated and those assumptions must still be
+derived from the 87 graph's zero.
 The source-reviewed [86 own-zero quotient composition](research/ordinary14-86-ownzero-quotient-draft/README.md)
 proposes deriving that quotient and a magnitude root from the graph's own
 first residual. It remains unelaborated and is not yet a complete model map.
