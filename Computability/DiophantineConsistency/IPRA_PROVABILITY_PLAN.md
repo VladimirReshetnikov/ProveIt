@@ -7773,6 +7773,11 @@ unit-factor equations, so this is a zero-existence equivalence under the
 stated port assumptions, not equality with the 85-operation polynomial at the
 same coordinates. The result is external; Lean elaboration, iPRA derivability
 and physical-file binding remain open.
+The independently reviewed [natural shifted-Pell graph](research/ordinary14-natural-shifted-pell83/README.md)
+combines those shifts with the degree reduction: 14 natural inputs, 83
+operations, and exact specialized degree 97. Its external zero maps inherit
+the stated port and endpoint conditions; no Lean/iPRA, file-binding or
+minimality claim follows.
 The source-reviewed [natural-86 Lean graph draft](research/ordinary14-natural-cancel86-lean-draft/README.md)
 transcribes that circuit. It is unelaborated and does not yet bind the graph
 to `positiveShift` in Lean.
