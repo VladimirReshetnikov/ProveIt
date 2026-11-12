@@ -7513,6 +7513,9 @@ unelaborated and does not itself establish `q ∣ X` or an iPRA endpoint.
 The source-reviewed [87 growth draft](research/ordinary14-87-growth-draft/README.md)
 proposes the threshold and Pell-growth bounds from those facts. It remains
 unelaborated and does not itself establish power recovery.
+The source-reviewed [87 power-recovery draft](research/ordinary14-87-power-recovery-draft/README.md)
+proposes recovering the power from the same graph zero. It remains
+unelaborated and has not established the reverse map or iPRA endpoint.
 The source-reviewed [87 strong-norm draft](research/ordinary14-87-strong-norm-draft/README.md)
 proposes the direct-Y strong identity from the 87 graph's own zero. It remains
 unelaborated and does not establish the rest of the calibration.
