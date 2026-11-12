@@ -7680,6 +7680,10 @@ compact44 endpoint and Lean limitations remain inherited.
 The source-reviewed [five-unit model facts](research/ordinary14-five-unit-model-facts-draft/README.md)
 propose the negative-Pell exclusion and product-unit step under explicit
 premises. They remain unelaborated and are not yet bound to the 75 graph.
+The separately source-reviewed [mod-four client](research/ordinary14-five-unit-modfour-client-draft/README.md)
+proposes the other factor exclusions, and the [75/74 graph draft](research/ordinary14-unit75-guard74-lean-draft/README.md)
+transcribes both literal circuits. They remain unelaborated and are not yet
+connected into a model or iPRA endpoint.
 The reviewed [direct-X unit-product tradeoff](research/ordinary14-direct-x-unit75/README.md)
 also has 14 positive inputs and 75 operations, at exact degree 100. Its
 positive-zero comparison uses the stated port bounds and a fact-level
