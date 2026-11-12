@@ -7575,6 +7575,9 @@ draft is unelaborated and those hypotheses are not yet derived from the graph.
 The source-reviewed [84 main-balance draft](research/ordinary14-84-main-balance-draft/README.md)
 proposes the subsequent natural carrier equality under the same hypotheses.
 It is unelaborated and does not yet supply graph-derived rank or indices.
+The source-reviewed [84 strong-norm draft](research/ordinary14-84-strong-norm-draft/README.md)
+proposes extracting the strong identity from that graph's own zero. It remains
+unelaborated and does not establish the full index calibration.
 The source-reviewed [84 main-index draft](research/ordinary14-84-main-index-draft/README.md)
 proposes classifying the main root while retaining the natural balance. It is
 unelaborated and does not identify that index with the rank.
