@@ -7476,6 +7476,9 @@ The source-reviewed [positive 88-to-87 map](research/ordinary14-88-to-87-positiv
 and [conditional reverse map](research/ordinary14-87-to-88-conditional-map-draft/README.md)
 propose both valuation updates; the reverse still assumes `F < omega`.
 Neither has been elaborated in Lean.
+The source-reviewed [calibrated 87-to-88 map](research/ordinary14-87-to-88-model-map-draft/README.md)
+proposes discharging that reverse assumption from the same graph zero under
+the stated port bounds. It remains unelaborated and has no iPRA endpoint.
 The source-reviewed [87 rank-square growth draft](research/ordinary14-87-rank-square-growth-draft/README.md)
 proposes `R ≥ q²` and then `X > q²` from the same graph's power facts,
 without a Mersenne or `q ∣ X` assumption. It remains unelaborated and is
