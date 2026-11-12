@@ -7882,6 +7882,9 @@ The independently source-reviewed [natural-80 gamma client](research/ordinary14-
 proposes composing the factor, rank and Pell drafts into gamma positivity
 under explicit represented-port assumptions. Its model statement, imports,
 axiom reports and subsequent iPRA endpoint remain unelaborated.
+The independently source-reviewed [80-to-81 gamma-shift draft](research/ordinary14-natural80-gamma-shift-model-draft/README.md)
+proposes the related-valuation zero maps using the gamma client. Its model
+statements, selected-port discharge and iPRA endpoint remain unelaborated.
 The independently source-reviewed [natural-81 Lean transcription](research/ordinary14-natural-forcedj81-lean-draft/README.md)
 records its literal graph and product shape. Its source correspondence is
 checked externally; Lean semantics and endpoint equivalence remain open.
