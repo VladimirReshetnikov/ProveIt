@@ -7499,6 +7499,10 @@ derives an external trace bound for positive `X` under stated Pell and
 congruence hypotheses. Its 73-operation direct-`X` graph still lacks a proof
 of the `q ∣ X` condition needed for the parent map; its toy controls do not
 establish a full graph zero or unrestricted nonequivalence.
+The separately reviewed [q=5 toy construction](research/ordinary14-direct-x73-q5-toy/README.md)
+does give a symbolic full zero with `q ∤ X` at toy ports. Its stated parent
+exclusion depends on the cited calibration and is restricted to the same
+parameters; it is not an actual-compact44 or unrestricted result.
 The reviewed [positive quotient shift](research/ordinary14-positive-guard74/README.md)
 reduces that parent to 14 strictly positive inputs and 74 operations at exact
 degree 107. Its positive-zero maps use `β > 0` and `K0 ≥ 0` locally; the
