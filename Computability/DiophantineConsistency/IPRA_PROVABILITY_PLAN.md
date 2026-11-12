@@ -7482,6 +7482,9 @@ not establish the new graph's iPRA endpoint.
 The [79-operation Lean graph and model-route draft](research/ordinary14-direct-pell79-lean-draft/README.md)
 has also passed source review; its factor-cancellation and positive-root maps
 still require model-level proofs and elaboration.
+The source-reviewed [78-operation Lean graph draft](research/ordinary14-aux-root78-lean-draft/README.md)
+matches the literal circuit but remains unelaborated and has no model or
+iPRA endpoint.
 The independently source-reviewed [generic first-root model bridge draft](research/ordinary14-direct-first-root-model-draft/README.md)
 proposes scaled-root cancellation and positive witness maps with the other
 four residuals fixed. It is not elaborated or connected to either graph;
