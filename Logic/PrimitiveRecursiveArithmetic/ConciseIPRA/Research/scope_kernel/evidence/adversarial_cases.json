@@ -1,0 +1,493 @@
+[
+  {
+    "name": "root_null",
+    "input": null,
+    "expected": false
+  },
+  {
+    "name": "root_false",
+    "input": false,
+    "expected": false
+  },
+  {
+    "name": "root_true",
+    "input": true,
+    "expected": false
+  },
+  {
+    "name": "root_zero_float",
+    "input": 0.0,
+    "expected": false
+  },
+  {
+    "name": "root_positive_float",
+    "input": 1.5,
+    "expected": false
+  },
+  {
+    "name": "root_empty_string",
+    "input": "",
+    "expected": false
+  },
+  {
+    "name": "root_nonempty_string",
+    "input": "[]",
+    "expected": false
+  },
+  {
+    "name": "root_empty_object",
+    "input": {},
+    "expected": false
+  },
+  {
+    "name": "root_nonempty_object",
+    "input": {
+      "0": 0
+    },
+    "expected": false
+  },
+  {
+    "name": "root_number",
+    "input": 1,
+    "expected": false
+  },
+  {
+    "name": "root_empty_array",
+    "input": [],
+    "expected": false
+  },
+  {
+    "name": "unused_prefix_null",
+    "input": [
+      null,
+      [
+        0,
+        0,
+        [
+          0
+        ],
+        0
+      ],
+      [
+        [
+          0,
+          [
+            0
+          ],
+          0
+        ],
+        [
+          0
+        ]
+      ]
+    ],
+    "expected": false
+  },
+  {
+    "name": "unused_prefix_false",
+    "input": [
+      false,
+      [
+        0,
+        0,
+        [
+          0
+        ],
+        0
+      ],
+      [
+        [
+          0,
+          [
+            0
+          ],
+          0
+        ],
+        [
+          0
+        ]
+      ]
+    ],
+    "expected": false
+  },
+  {
+    "name": "unused_prefix_float",
+    "input": [
+      0.0,
+      [
+        0,
+        0,
+        [
+          0
+        ],
+        0
+      ],
+      [
+        [
+          0,
+          [
+            0
+          ],
+          0
+        ],
+        [
+          0
+        ]
+      ]
+    ],
+    "expected": false
+  },
+  {
+    "name": "unused_prefix_string",
+    "input": [
+      "x",
+      [
+        0,
+        0,
+        [
+          0
+        ],
+        0
+      ],
+      [
+        [
+          0,
+          [
+            0
+          ],
+          0
+        ],
+        [
+          0
+        ]
+      ]
+    ],
+    "expected": false
+  },
+  {
+    "name": "unused_prefix_object",
+    "input": [
+      {
+        "x": 0
+      },
+      [
+        0,
+        0,
+        [
+          0
+        ],
+        0
+      ],
+      [
+        [
+          0,
+          [
+            0
+          ],
+          0
+        ],
+        [
+          0
+        ]
+      ]
+    ],
+    "expected": false
+  },
+  {
+    "name": "unused_prefix_integer",
+    "input": [
+      123,
+      [
+        0,
+        0,
+        [
+          0
+        ],
+        0
+      ],
+      [
+        [
+          0,
+          [
+            0
+          ],
+          0
+        ],
+        [
+          0
+        ]
+      ]
+    ],
+    "expected": true
+  },
+  {
+    "name": "unused_prefix_negative_integer",
+    "input": [
+      -99,
+      [
+        0,
+        0,
+        [
+          0
+        ],
+        0
+      ],
+      [
+        [
+          0,
+          [
+            0
+          ],
+          0
+        ],
+        [
+          0
+        ]
+      ]
+    ],
+    "expected": true
+  },
+  {
+    "name": "unused_prefix_list",
+    "input": [
+      [],
+      [
+        0,
+        0,
+        [
+          0
+        ],
+        0
+      ],
+      [
+        [
+          0,
+          [
+            0
+          ],
+          0
+        ],
+        [
+          0
+        ]
+      ]
+    ],
+    "expected": true
+  },
+  {
+    "name": "high_slot",
+    "input": [
+      [
+        0,
+        0,
+        [
+          0
+        ],
+        0
+      ],
+      [
+        999,
+        999
+      ]
+    ],
+    "expected": false
+  },
+  {
+    "name": "negative_escape",
+    "input": [
+      [
+        0,
+        0,
+        [
+          0
+        ],
+        0
+      ],
+      [
+        -1,
+        -1
+      ]
+    ],
+    "expected": false
+  },
+  {
+    "name": "even_slot",
+    "input": [
+      [
+        0,
+        0,
+        [
+          0
+        ],
+        0
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "expected": false
+  },
+  {
+    "name": "small_slot",
+    "input": [
+      [
+        0,
+        0,
+        [
+          0
+        ],
+        0
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "expected": false
+  },
+  {
+    "name": "nested_high_slot",
+    "input": [
+      [
+        0,
+        0,
+        [
+          0
+        ],
+        0
+      ],
+      [
+        [
+          999
+        ],
+        [
+          999
+        ]
+      ]
+    ],
+    "expected": false
+  },
+  {
+    "name": "D_high_slot",
+    "input": [
+      [
+        0,
+        0,
+        [
+          0
+        ],
+        0
+      ],
+      [
+        [
+          999,
+          999
+        ]
+      ]
+    ],
+    "expected": false
+  },
+  {
+    "name": "Q_high_slot",
+    "input": [
+      [
+        0,
+        0,
+        [
+          0
+        ],
+        0
+      ],
+      [
+        [
+          999,
+          999
+        ],
+        [
+          999,
+          999
+        ],
+        [
+          999,
+          999
+        ]
+      ]
+    ],
+    "expected": false
+  },
+  {
+    "name": "bool_equation",
+    "input": [
+      [
+        0,
+        0,
+        [
+          0
+        ],
+        0
+      ],
+      [
+        false,
+        false
+      ]
+    ],
+    "expected": false
+  },
+  {
+    "name": "float_equation",
+    "input": [
+      [
+        0,
+        0,
+        [
+          0
+        ],
+        0
+      ],
+      [
+        0.0,
+        0.0
+      ]
+    ],
+    "expected": false
+  },
+  {
+    "name": "null_equation",
+    "input": [
+      [
+        0,
+        0,
+        [
+          0
+        ],
+        0
+      ],
+      [
+        null,
+        null
+      ]
+    ],
+    "expected": false
+  },
+  {
+    "name": "canonical_false",
+    "input": [
+      [
+        0,
+        0,
+        [
+          0
+        ],
+        0
+      ],
+      [
+        0,
+        [
+          0
+        ]
+      ]
+    ],
+    "expected": false
+  }
+]

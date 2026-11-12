@@ -1,0 +1,89 @@
+EXECUTABLE RESULTS AND LIMITS
+
+Run `python3 reproduce.py` from this directory. It requires only Python's
+standard library. It regenerates all measurements, normalized complete
+modules, deterministic gzip-9 streams, target-calculus certificates, and
+validation receipts. Measurements follow the inherited CPython convention:
+remove genuine docstrings, ast.unparse, append one newline, then measure the
+entire standalone module. Import statements, JSON parsing, syntax validation,
+proof checking, and acceptance output are all charged.
+
+FAMILY A: THE SAME FULL TYPED CHOICE-DI PRESENTATION
+
+reference/typed_original.py is an exact frozen source. Its initial recursive
+j predicate enforces that every value throughout the JSON certificate,
+including unused prefix data, is an exact integer or a list. The public goal
+validator then enforces canonical closed Eq/Q/D syntax. The raw proof kernel
+implements the inherited Choice-DI presentation; it is NOT the deterministic
+guarded calculus and is NOT the witness-selected seven-rule calculus.
+In particular, a falsy u=[] packet selects DI by cases even at an equation,
+whereas u=0 selects progress at an equation. Two explicit closed controls
+exercise these choices, and inherited used-induction-hypothesis controls
+exercise the difference between a base premise and a progress premise.
+
+code/lexical_explicit.py replaces recursive j by a lexical alphabet check:
+    q = open(0).read()
+    if q.strip('[],-0123456789 \t\r\n'):
+        raise ValueError(...)
+    q = json.loads(q).pop
+For a set of characters L, s.strip(L) is empty exactly when every character
+of s belongs to L. Any character outside L remains between the stripped
+prefix and suffix. Combined with successful JSON parsing, this particular
+alphabet permits only lists and integer literals: quoted strings, object
+punctuation, decimal points, exponents, true, false, null, NaN and Infinity
+are excluded. Conversely, JSON text whose recursively parsed value consists
+of exact integers and lists can use only these punctuation, digit, minus,
+and JSON-whitespace characters. JSON's parser, not the alphabet test, still
+checks brackets, commas, numeral syntax and trailing input.
+
+After this check, a*0 != [] is equivalent to `type(a) is int` on the admitted
+data. The repeated type predicates inside v may therefore be removed. The
+public grammar, source restriction, freshness discipline, raw proof packets,
+and the entire c kernel stay unchanged. Soundness and completeness transfer
+without changing an arithmetic or logical axiom.
+
+code/lexical_compact.py implements the same gate as a short-circuit assignment:
+    q = not q.strip(ALPHABET) and json.loads(q).pop
+Its next operation is q(). Forbidden input makes q False, whose attempted
+call raises TypeError. Since acceptance requires normal exit and exactly
+ACCEPT followed by a newline, this is rejection. It does not rely on assert,
+so Python -O does not disable validation. reference/typed_boolean_control.py
+applies the same error-branch simplification to the old recursive j checker;
+this separates the lexical gain from changing the rejection plumbing.
+
+All equivalences here are for the ideal finite-certificate contract. Removing
+recursive j can change finite stack failures on extremely deep unused prefix
+data. Memory/time/stack exhaustion is never a soundness claim or acceptance
+evidence. Normal and -O subprocess tests cover the delivered finite cases.
+
+FAMILY B: A NEW TARGET-DIRECTED QE RULE
+
+code/target_checker.py is derived from the frozen reference/orbit_checker.py
+by changing only the `use` branch. The certificate now supplies one numerical
+target instead of the old source and seed. At an atomic matrix E and literal
+successor target S(s), its minor premise must be E(s). Otherwise its minor
+premise must be B(0). Its conclusion is B(target). All six other rule branches,
+the tagged grammar, binder handling, scope checking, and the public closed
+judgment interface are unchanged. The mathematical paper specifies the
+root-dependent meanings of Q and D and proves equivalence with the orbit
+calculus. These meanings differ from the Choice-DI meanings in family A.
+
+The target rule removes orbit construction and one numerical certificate
+parameter from the old R calculus. The complete tagged checker is 4532
+normalized bytes versus R's 4553, but remains larger than the matched
+witness-selected control's 4456. It does not establish a new global minimum.
+It also must not be compared directly to the compact family-A module because
+their certificate encodings and admissibility contracts differ.
+
+The target producer is untrusted and uses an attributed independent named
+syntax compiler. Closed fixtures exercise all rules, both target branches,
+used-hypothesis induction, derived anchored closure via W(t)=I(0,t;u.0), and
+scope/type attacks. Open fixtures test genuine nonzero progress, rejection
+of compound progress, and the repair needed when a numerical substitution
+turns a variable target into a successor. The parity contradiction fixture
+has an explicitly false open assumption; it is not a closed contradiction.
+Independent named-syntax checks test capture-avoiding lift and substitution.
+
+Finite tests do not prove universal soundness, completeness, bi-interpretability
+or global optimality. No new Lean/Rocq verification is claimed for these files.
+Reference provenance and exact source hashes are in PROVENANCE.json.

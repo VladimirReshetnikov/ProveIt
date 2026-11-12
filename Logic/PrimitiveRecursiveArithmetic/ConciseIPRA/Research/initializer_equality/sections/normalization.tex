@@ -1,0 +1,361 @@
+% Raw/canonical equivalence proof. Inclusion fragment.
+% Requires amsmath, amssymb, amsthm and theorem/lemma/proposition environments.
+% This is a written proof, not a proof-assistant verification.
+
+\section{Zero-canonical scalar syntax and exact equivalence}
+\label{zeroI:section}
+
+\paragraph{Reference calculus.}
+Let $N$ be the pinned upstream native scalar calculus with raw terms
+\[
+ t::=x\mid 0\mid St\mid I(n,a;u.h),
+\]
+formulas $(s=t)$, $Q_yB$, and $D_{x,y}B$, and the eight inference patterns
+Hyp, $I_0$, $I_S$, equational transport, QE, DE, DI by cases, and QI by
+equational progress.  In particular,
+\[
+ I(0,a;u.h)=a,\qquad
+ I(Sn,a;u.h)=h[I(n,a;u.h)/u].
+\]
+We use the upstream admissibility of weakening, cut, capture-free numerical
+substitution, equality algebra, and transport in compound formulas.  None
+of the new normalization claims is needed to establish those upstream
+facts.  All terms and bodies below are fixed finite syntax; no numerical
+variable ranges over descriptions of functions.
+
+\subsection{A normalizer which only contracts zero counters}
+
+For already normalized $n,a,h$, define the smart constructor
+\[
+ C(n,a;u.h):=
+ \begin{cases}
+ a,&n\text{ is literally }0,\\
+ I(n,a;u.h),&\text{otherwise}.
+ \end{cases}
+\]
+Define $\nu$ on raw syntax by
+\[
+ \nu x=x,\quad \nu0=0,\quad \nu(St)=S\nu t,\quad
+ \nu I(n,a;u.h)=C(\nu n,\nu a;u.\nu h).
+\]
+A canonical term is a fixed point of $\nu$.  It contains no iterator with
+literal zero counter.  The bound variable belongs only to the body, so
+returning the initializer when a node contracts never removes a binder
+from the initializer's scope.  Extend $\nu$ to formulas and contexts by
+normalizing numerical terms and preserving every formula constructor.
+
+\textbf{Important distinction from the incoming canonical-$R$ report.}
+Here $\nu$ can change a nonzero outer constructor into literal zero.  The
+test at an iterator must therefore inspect $\nu n$, not the original $n$.
+For example,
+\[
+ I(I(0,0;v.0),a;u.h)
+ \quad\text{normalizes to}\quad \nu a.
+\]
+The false assertion $\nu t\equiv0\Longleftrightarrow t\equiv0$ must not be
+imported from the successor-seeded setting.
+
+\begin{lemma}[Elementary properties of normalization]
+The map $\nu$ is idempotent, commutes with renaming, introduces no new free
+variables, and is primitive recursive on codes of finite syntax trees.
+It produces a term no larger than its input tree.
+\end{lemma}
+\begin{proof}
+Structural recursion performs the displayed construction.  A contraction
+only deletes an iterator node and its counter and body, retaining its
+already normalized initializer; otherwise the recursively normalized
+subtrees are retained under the same constructor.  Consequently the
+result has no zero-counter node and has no more nodes than the input.
+Idempotence, renaming, and the free-variable assertion follow by induction.
+Structural recursion on finite coded trees, with these size bounds, is a
+primitive-recursive syntactic operation.  This procedure never executes
+successor-counter iteration: $I(Sn,a;h)$ is retained, even for a closed
+standard numeral $n$.  Thus no evaluator for arbitrary primitive-recursive
+programs is being treated as a primitive-recursive operation.
+\end{proof}
+
+For a capture-free simultaneous substitution $\sigma$, write
+\[
+ T\langle\sigma\rangle:=\nu(T[\sigma]).
+\]
+Under a binder, substitution is lifted in the usual capture-free manner
+(or by de Bruijn lifting).  Images may first be normalized without changing
+the result.
+
+\begin{lemma}[Substitution coherence]\label{zeroI:coherence}
+For every raw term or formula $T$ and every capture-free simultaneous
+substitution $\sigma$,
+\[
+ \nu(T[\sigma])=
+ \nu\bigl((\nu T)[\nu\circ\sigma]\bigr).
+\]
+In particular, normalized substitution is associative and has the usual
+identity and binder-lifting laws on canonical syntax.
+\end{lemma}
+\begin{proof}
+Induct on $T$, freshening bound names if names rather than indices are
+used.  At an iterator, normalize its substituted counter first.  The
+counter induction hypothesis says that both sides obtain exactly the
+same normalized counter.  If that counter is zero, both return the
+same normalized substituted initializer.  Otherwise both retain an
+iterator with the same normalized counter, initializer, and body.
+
+There is one apparently exceptional case: the original normalization
+may already have deleted the iterator because $\nu n=0$.  The counter
+induction hypothesis then says
+$\nu(n[\sigma])=\nu(0[\nu\circ\sigma])=0$, so it is deleted after
+substitution as well.  Formula constructors are preserved and their
+binder cases use the same argument with lifted substitutions.
+Associativity follows by applying the equation twice together with
+associativity of ordinary capture-free substitution.
+\end{proof}
+
+\subsection{Body extensionality is a proof obligation}
+
+The zero normalizer can simplify an iterator's body.  Numerical
+congruence for an ordinary argument of a function symbol does not by
+itself justify replacing the entire description of its body.  The
+following explicit lemma supplies what is needed.
+
+\begin{lemma}[Raw iterator body extensionality]\label{zeroI:body}
+Suppose $u$ is absent from $\Gamma,n,a$ and the raw calculus proves
+\[
+ \Gamma\vdash_N h(u)=k(u).
+\]
+Then
+\[
+ \Gamma\vdash_N I(n,a;u.h)=I(n,a;u.k).
+\]
+The derivation uses induction for a literal equation only.
+\end{lemma}
+\begin{proof}
+Choose $z$ fresh and put
+\[
+ H_z=I(z,a;u.h),\qquad K_z=I(z,a;u.k),\qquad E(z)=(H_z=K_z).
+\]
+The base $E(0)$ follows from two zero computations and equality algebra.
+In the step, assume $E(z)$.  Substituting $H_z$ for $u$ in the supplied
+proof gives $h(H_z)=k(H_z)$ in the same retained context, since $u$ is
+absent from $\Gamma$.  Congruence for $k$ applied to $H_z=K_z$ gives
+$k(H_z)=k(K_z)$.  The two successor computations then give the equality
+path
+\[
+ I(Sz,a;h)=h(H_z)=k(H_z)=k(K_z)=I(Sz,a;k).
+\]
+QI by equational progress supplies $Q_zE(z)$; QE with the base proves
+$E(n)$.  No induction on a quantified formula is used.
+\end{proof}
+
+\begin{lemma}[Normalization is provably sound]\label{zeroI:soundnorm}
+For each raw numerical term $t$, with all its free parameters retained,
+\[
+ \vdash_N t=\nu t.
+\]
+For each raw native formula $A$, the formulas $A$ and $\nu A$ are
+interderivable in every retained context.  In the ordinary first-order
+realization this is the provable biconditional $A\leftrightarrow\nu A$.
+\end{lemma}
+\begin{proof}
+Use external induction on finite term syntax.  Variables and zero use
+reflexivity; successor uses numerical congruence.  At $I(n,a;u.h)$,
+first use the counter and initializer induction hypotheses to replace
+$n,a$ by $\nu n,\nu a$.  The body induction hypothesis, with $u$ still
+a free numerical parameter, is $h(u)=\nu h(u)$.
+Lemma~\ref{zeroI:body} replaces the body.  We have reached
+$I(\nu n,\nu a;u.\nu h)$; if $\nu n=0$, one zero computation reaches
+$\nu a$, and otherwise this is already $\nu t$.
+
+For the formula assertion, equality atoms use the proved term equalities
+and equality algebra.  It remains to lift pointwise interderivability
+through the native binders; this must not be confused with capturing a
+bound variable in a single equality-transport template.
+
+Suppose $B(y)$ and $B'(y)$ are pointwise interderivable.  Under $Q_yB$,
+assume $B'(0)$, translate to $B(0)$, apply QE at $Sz$, and translate
+$B(Sz)$ to $B'(Sz)$.  Derived case-introduction for $Q$ gives $Q_yB'$.
+This derived rule follows from DI by cases with an unused existential
+coordinate, followed by DE whose local goal is its retained $Q$ clause.
+Reverse the pointwise translations for the converse implication.
+
+For $D_{x,y}B$, apply DE at a fresh $b$, retaining $Q_yB(b,y)$.  To
+introduce $D_{x,y}B'$ at witness $b$, assume $B'(b,0)$, translate to
+$B(b,0)$, use QE at $Sz$, and translate to $B'(b,Sz)$.  DI by cases and
+then DE finish the derivation.  Reverse the translations for the other
+direction.  Applying these two lifting constructions in an external
+induction on formula formation proves the assertion.  No arithmetic
+induction on a quantified formula is added.
+\end{proof}
+
+\subsection{An unrestricted canonical comparison calculus}
+
+Define $C_*$ on canonical syntax using precisely these eight patterns:
+Hyp, reflexivity, successor computation, equational transport, QE, DE,
+DI by cases, and QI by equational progress.  Every substitution in these
+rules is normalized.  Successor computation is
+\[
+ C(Sn,a;u.h)=h\langle C(n,a;u.h)/u\rangle.
+\]
+Equational transport has an arbitrary literal-equation template $E(v)$:
+from $s=t$ and $E\langle s/v\rangle$, infer
+$E\langle t/v\rangle$.  There is no source restriction and the two
+introduction modes are separate.  Thus this intermediate calculus is
+stable under canonical substitution and does not yet involve the
+literal-zero witness test.
+
+\begin{theorem}[Raw/canonical equivalence]\label{zeroI:equivalence}
+For every raw finite context $\Gamma$ and raw native formula $A$,
+\[
+ \Gamma\vdash_N A
+ \quad\Longleftrightarrow\quad
+ \nu\Gamma\vdash_{C_*}\nu A.
+\]
+Both directions are effective transformations of finite derivations.
+\end{theorem}
+\begin{proof}
+For the forward direction, normalize every label of the raw derivation.
+A zero computation becomes reflexivity.  A successor computation becomes
+the displayed canonical successor computation by
+Lemma~\ref{zeroI:coherence}.  Equational transport, QE, DI by cases, and
+QI by progress are instances of their canonical versions by the same
+coherence lemma.  Hyp and DE retain their shapes.  Freshness is preserved
+because normalization introduces no free variables.  The normalized
+matrix of an equation is still an equation.
+
+For the reverse direction, view canonical labels as raw syntax.  A
+normalized instance $B\langle\sigma\rangle$ is interderivable in $N$
+with the corresponding ordinary instance $B[\sigma]$ by
+Lemma~\ref{zeroI:soundnorm}.  Consequently each canonical logical or
+equational inference can be translated by undoing normalization on its
+premises, applying the raw rule, and normalizing its conclusion.
+Successor computation translates using the raw successor equation,
+$I(n,a;h)=C(n,a;h)$ (the zero equation if $n=0$, reflexivity otherwise),
+and normalization soundness on the substituted body.  Reflexivity is
+already derived in $N$.  Cut composes these finite derivations.
+This yields $\nu\Gamma\vdash_N\nu A$; use normalization soundness on
+each assumption and the conclusion to obtain $\Gamma\vdash_N A$.
+\end{proof}
+
+For a canonical context and goal, the theorem says exactly
+$\Gamma\vdash_{C_*}A$ iff $\Gamma\vdash_NA$.  The round trip from
+canonical syntax through raw syntax is literally the identity.  The
+other round trip is $\nu$ and is internally the identity by
+Lemma~\ref{zeroI:soundnorm}.
+
+\subsection{Interface to the six-rule seed calculus}
+
+Section~\ref{seed:main} supplies the equality and introduction reductions
+from $C_*$ to its six-rule calculus $K=\mathcal S$. The auxiliary calculus
+$\mathcal A$ there has seven rules; $C_*$ additionally lists reflexivity,
+which is already derived from IS and equational transport. Thus
+$C_*=\mathcal A$ on every canonical sequent.  The required seed rule is
+\[
+ \frac{s=t\qquad C(n,s;u.h)=r}{C(n,t;u.h)=r}.
+\]
+It has no source restriction.  At $n=0$ it becomes root replacement
+$s=t,\ s=r\;\Longrightarrow\;t=r$.  With
+$c_s:I(S0,s;u.u)=s$, two copies of $c_s$ in this root instance give
+$s=s$.  A major $s=t$ and minor $s=s$ then give symmetry $t=s$.
+A major $t=s$ and minor $t=r$ give transitivity $s=r$.
+
+At $n=1$, write $A_s=I(S0,s;u.h)$ and $A_t=I(S0,t;u.h)$.
+Successor computation gives $A_s=h\langle s/u\rangle$ and
+$A_t=h\langle t/u\rangle$.  Seed transport along $s=t$ gives
+$A_t=h\langle s/u\rangle$.  Now use this last equation as the major,
+the second computation as the minor, and the root instance of Seed.
+The result is exactly
+\[
+ h\langle s/u\rangle=h\langle t/u\rangle.
+\]
+Thus two successor computations and two Seed inferences give every
+term-template congruence.  From a supplied $P$-node proof of $s=t$ the
+construction has $P+4$ primitive-inference nodes, counting repeated
+subproofs separately.  This is not a bound on certificate bytes or
+runtime: the labels still contain the chosen template and endpoints.
+Equality algebra and congruence recover full equational transport.
+In the other direction the seed rule is directly a special case of
+equational transport in $C_*$.
+
+The one-introduction rule is the usual witness fold: use progress exactly
+when the matrix is an equation and the canonical witness is literally
+zero, and cases otherwise.  The closed canonical term
+\[
+ d:=I(S0,0;u.u)
+\]
+is not literal zero and has the one-step computation $d=0$.  Therefore
+the omitted equation-case instance with zero witness is recovered by
+transporting its hypothesis and conclusion between witnesses $0$ and
+$d$, then applying the permitted case instance at $d$.  Only atomic
+transport is required, since only an equation matrix loses that case.
+The unneeded existential coordinate of a progress instance is eliminated
+to recover QI by progress.  These reductions establish $K=C_*$ on all
+canonical sequents.
+
+The literal-zero witness test is not preserved by direct substitution
+into the same inference labels.  Do not prove substitution admissibility
+by silently assuming that it is.  Establish the unrestricted equivalence
+above first, then transfer admissibility through $K=C_*$.  Weakening and
+assumption cut themselves preserve labels and witness tests and have the
+usual direct proofs after freshening eigenparameters.
+
+\paragraph{Template-free checking of seed transport.}
+If the major equation is $s=t$ and the minor is $b=r$, its conclusion can
+be checked without supplying $n,h$, or any equality template in the
+certificate.  If $b$ is literally $s$, output $t=r$.  Otherwise require
+$b=I(n,s;u.h)$ and output $I(n,t;u.h)=r$.  The latter counter is already
+nonzero by canonical syntax.  These alternatives implement exactly the
+smart-constructor rule.  A finite acyclic term cannot both equal $s$ and
+contain $s$ as its immediate initializer, so the alternatives do not
+conflict.  This is a restriction of the equality inference interface,
+not omission of a template validator or a free appeal to arbitrary
+congruence.
+
+\subsection{Whole-domain bi-interpretability transfer}
+
+The pinned upstream result supplies ordinary whole-domain interpretations
+$F:N\to\mathsf{iPRA}$ and $G:\mathsf{iPRA}\to N$, actual equality,
+and both internal composite isomorphisms with graph $x=y$.  Let
+$e:C_*\to N$ be the raw reading of canonical syntax and
+$q:N\to C_*$ be normalization.  The preceding theorem and its term
+and formula lemmas prove
+\[
+ qe=\mathrm{id}\quad\text{literally on canonical syntax},
+ \qquad eq\simeq\mathrm{id}\quad\text{internally in }N.
+\]
+Define the interpretations for $K=C_*$ by
+\[
+ F_K:=F\circ e,\qquad G_K:=q\circ G.
+\]
+Both domains are still the entire numerical domain.  Normal forms are
+representatives of \emph{expressions}, not a restriction or quotient of
+the domain of numbers.  Equality is actual equality throughout.
+
+For a canonical term or formula, the composite is
+$qGFe\simeq qe=\mathrm{id}$ by the upstream round trip and
+normalization.  In the other direction it is
+$FeqG\simeq FG\simeq\mathrm{id}$.  The analogous assertions for term
+equalities and arbitrary formula biconditionals follow from the
+corresponding upstream assertions and
+Lemma~\ref{zeroI:soundnorm}.  Hence both numerical composite graphs
+remain $x=y$.  In particular $K$ and full first-order iPRA are
+bi-interpretable and equiconsistent.  The designated contradiction
+$0=S0$ is unchanged by normalization, so the exact derivability
+equivalence also transfers inconsistency directly.
+
+\paragraph{Ordinary first-order reading.}
+As upstream, binder notation for $I$ abbreviates a finite dependency
+ordered family of first-order function descriptions.  The canonical
+notation imposes the equation $I(0,a;h)=a$ as a definitional spelling
+convention and uses normalized substitution.  Expanding this convention
+gives its ordinary first-order realization.  Lemmas
+\ref{zeroI:coherence} and \ref{zeroI:soundnorm} are precisely what makes
+the expansion commute with substitution up to provable equality.
+The argument does not identify a normalization algorithm with an
+internal arithmetic evaluation function and does not postulate a
+function sort or a uniform evaluator.
+
+\paragraph{Scope of the claim.}
+This establishes a genuine finite inference-interface reduction and a
+whole-domain bi-interpretation.  It does not prove absolute minimality,
+does not establish any checker byte improvement without actual complete
+implementations and a matched comparison, and is a written proof rather
+than a new Lean or Rocq development.

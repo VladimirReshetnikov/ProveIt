@@ -1,0 +1,474 @@
+% Equality-interface proof. Inclusion fragment.
+% Requires amsmath, amssymb, amsthm and theorem/lemma/proposition environments.
+% All labels use the prefix seed:.
+
+\section{A deterministic equality rule with no template parameter}
+\label{seed:main}
+
+This reduction uses an initialized scalar iterator with its zero equation
+made definitional. It differs from successor-seeded canonicalization:
+here a zero-counter iterator disappears entirely. That feature lets a
+single fixed-position equality rule include root equality composition.
+
+\subsection{Canonical terms and the six rules}
+
+Canonical terms have the constructors $x$, $0$, $S(t)$ and
+$I(n,a;u.h)$, with canonical subterms and with the counter $n$ not
+literally $0$. Only $u$ in $h$ is bound. Define the smart constructor
+\[
+ \mathcal I(n,a;u.h)=
+ \begin{cases}
+ a,&n\equiv0,\\
+ I(n,a;u.h),&n\not\equiv0.
+ \end{cases}
+\]
+The symbol $\equiv$ denotes literal syntactic identity. In this display
+the arguments are already canonical. For arbitrary raw terms, normalize
+all three arguments recursively before applying this smart constructor.
+Thus normalization must test the \emph{normalized} counter.
+Write $t\langle\sigma\rangle$ for capture-free substitution followed by
+normalization. This operation is used throughout the calculus.
+
+Native formulas are $s=t$, $Q_y B$, and $D_{x,y}B$. Their ordinary
+readings are unchanged:
+\[
+ Q_yB=B(0)\to\forall y\,B(y),\qquad
+ D_{x,y}B=\exists x\bigl(B(x,0)\to\forall y\,B(x,y)\bigr).
+\]
+All displayed instances of a matrix use canonical substitution.
+Contexts are finite reusable lists of native formulas. Put $1=S0$.
+
+For canonical terms $s,t,b$, define the partial operation
+\[
+ \rho_{s,t}(b)=
+ \begin{cases}
+ t,&b\equiv s,\\
+ I(n,t;u.h),&b\equiv I(n,s;u.h),\\
+ \text{undefined},&\text{otherwise}.
+ \end{cases}
+ \tag{Seed replacement}\label{seed:rho}
+\]
+The second branch inspects one literal constructor and its initializer;
+it leaves the counter and update unchanged. The first and second branches
+are disjoint. If both matched, the finite term $s$ would equal a term
+having $s$ as a proper initializer subterm, which contradicts strict
+increase of syntax-tree size. The output of the second branch remains
+canonical because its counter is the same nonzero literal counter.
+No bound variable is substituted or renamed by this operation.
+
+Define
+\[
+ \eta_{B,t}(z)=
+ \begin{cases}
+ z,&B\text{ has equation root and }t\equiv0,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+The complete six-rule presentation, denoted $\mathcal S$, is:
+\begin{align*}
+ &\frac{A\in\Gamma}{\Gamma\vdash A}
+ &&\text{Hyp},\\[3pt]
+ &\frac{}{\Gamma\vdash
+ I(Sn,a;u.h)=h\langle\mathcal I(n,a;u.h)/u\rangle}
+ &&\text{IS},\\[3pt]
+ &\frac{\Gamma\vdash s=t\qquad\Gamma\vdash b=r}
+ {\Gamma\vdash \rho_{s,t}(b)=r}
+ \quad(\rho_{s,t}(b)\text{ defined})
+ &&\text{Seed},\\[3pt]
+ &\frac{\Gamma\vdash Q_yB(y)\qquad\Gamma\vdash B(0)}
+ {\Gamma\vdash B(t)}
+ &&\text{QE},\\[3pt]
+ &\frac{\Gamma\vdash D_{x,y}B(x,y)\qquad
+ \Gamma,Q_yB(b,y)\vdash A}{\Gamma\vdash A}
+ &&\text{DE},\\[3pt]
+ &\frac{\Gamma,B(t,\eta_{B,t}(z))\vdash B(t,Sz)}
+ {\Gamma\vdash D_{x,y}B(x,y)}
+ &&\text{DI}.
+\end{align*}
+In DE, $b$ is fresh for the retained context, conclusion, and passive
+matrix parameters. In DI, $z$ is fresh for the retained context, witness
+$t$, and passive matrix parameters. Local assumptions are discharged.
+The designated contradiction is $0=S0$.
+
+The seed rule has no numerical side parameter in a proof certificate:
+its two premise conclusions determine the conclusion, or determine
+rejection. In particular it has neither an arbitrary numerical template
+nor a user-supplied occurrence path. This does \emph{not} remove
+substitution from the whole proof checker: IS and the binder rules still
+require canonical, capture-free substitution.
+
+\begin{lemma}[Equivalent displayed seed schema]\label{seed:schema}
+The deterministic Seed rule is exactly the schema
+\[
+ \frac{\Gamma\vdash s=t\qquad
+ \Gamma\vdash\mathcal I(n,s;u.h)=r}
+ {\Gamma\vdash \mathcal I(n,t;u.h)=r},
+ \tag{K}\label{seed:K}
+\]
+where $n,h$ are arbitrary canonical data. They need not be supplied in
+certificates.
+\end{lemma}
+\begin{proof}
+At $n=0$, the schema is the first branch of
+\eqref{seed:rho}; the erased update is irrelevant, and may be chosen as
+$0$. At any other canonical counter, the second premise displays
+exactly the iterator node from which its counter and update are read.
+The branches cannot overlap by the finite-size argument above. Conversely,
+the first deterministic branch is the schema with $n=0,h=0$, and the
+second is its instance with the counter and update displayed by $b$.
+\end{proof}
+
+\begin{lemma}[Seed replacement commutes with canonical substitution]
+\label{seed:substitution}
+If $\rho_{s,t}(b)$ is defined, then for every admissible numerical
+substitution $\sigma$,
+\[
+ \rho_{s\langle\sigma\rangle,t\langle\sigma\rangle}
+       (b\langle\sigma\rangle)
+ =\rho_{s,t}(b)\langle\sigma\rangle.
+\]
+In particular the substituted partial operation is defined.
+\end{lemma}
+\begin{proof}
+In the root branch this is literal equality. In the iterator branch,
+canonical substitution changes $I(n,s;u.h)$ to the smart constructor
+with substituted counter, initializer and update. If the substituted
+counter normalizes to $0$, both the old minor and old conclusion lose
+their iterator nodes, and the new rule uses its root branch. Otherwise
+both retain their iterator nodes, and the new rule uses its initializer
+branch. The counter and update are unchanged between the compared
+expressions in either case. Canonical substitution coherence supplies
+the stated identity. Thus the equality rule itself is stable even when
+normalization changes its operational branch.
+\end{proof}
+
+\subsection{Complete equality reasoning from the seed rule}
+
+Every argument in this subsection works under an arbitrary retained
+context, including arbitrary equation hypotheses. It uses only IS and
+Seed, apart from using the supplied premise derivations. It uses no
+induction, numerical cases, or logical binder rule.
+
+The instance of \eqref{seed:K} at $n=0$ is
+\[
+ \frac{s=t\qquad s=r}{t=r}.
+ \tag{K0}\label{seed:K0}
+\]
+It is available for \emph{all} source terms, including literal $0$.
+No source restriction is part of this presentation.
+
+\begin{lemma}[Root equality algebra]\label{seed:algebra}
+Reflexivity, symmetry and transitivity are derivable.
+\end{lemma}
+\begin{proof}
+Put $L(a)=I(1,a;u.u)$. IS at predecessor zero gives $L(a)=a$,
+because the right-hand substituted term is $\mathcal I(0,a;u.u)=a$.
+Using two copies of this axiom as the premises of K0 gives $a=a$.
+
+For symmetry of a supplied $s=t$, use it as K0's major and $s=s$
+as its minor; the result is $t=s$. For transitivity of $s=t$ and
+$t=r$, first obtain $t=s$ by symmetry. K0 with major $t=s$ and
+minor $t=r$ gives $s=r$.
+\end{proof}
+
+\begin{lemma}[One-step application]\label{seed:beta}
+For every fixed canonical numerical template $f(u)$ and ambient term $a$,
+IS derives
+\[
+ I(1,a;u.f(u))=f\langle a/u\rangle.
+ \tag{Beta1}\label{seed:betaeq}
+\]
+\end{lemma}
+\begin{proof}
+IS with predecessor zero has right side
+$f\langle\mathcal I(0,a;u.f)/u\rangle$, which is literally
+$f\langle a/u\rangle$. No equality substitution into $f$ has been
+used. This is the point at which definitional zero computation is essential.
+\end{proof}
+
+\begin{theorem}[Arbitrary numerical congruence]\label{seed:congruence}
+For every fixed numerical template $f(u)$, the rule
+\[
+ \frac{\Gamma\vdash s=t}
+ {\Gamma\vdash f\langle s/u\rangle=f\langle t/u\rangle}
+\]
+is admissible in $\mathcal S$.
+\end{theorem}
+\begin{proof}
+Abbreviate $f\langle s/u\rangle$ by $f(s)$ and similarly for $t$,
+and put $A_a=I(1,a;u.f)$.
+The entire construction is
+\[
+ \frac{
+   \displaystyle\frac{s=t\qquad A_s=f(s)}{A_t=f(s)}\;\mathrm{Seed}_1
+   \qquad A_t=f(t)
+ }{f(s)=f(t)}\;\mathrm{Seed}_0.
+\]
+The two endpoint equations $A_s=f(s)$ and $A_t=f(t)$ are IS axioms
+from Lemma~\ref{seed:beta}. The last inference is K0.
+In particular this construction does not even use the derived
+symmetry, transitivity, or reflexivity lemmas.
+The template may contain zero, one, or several occurrences of its
+designated variable, including occurrences under nested iterator binders.
+All such occurrences are handled by IS's ordinary capture-free
+substitution, not by the primitive equality rule.
+\end{proof}
+
+\begin{proposition}[Four-node congruence expansion]\label{seed:nodes}
+If the supplied derivation of $s=t$ has $P$ inference nodes, the displayed
+derivation of $f(s)=f(t)$ has exactly $P+4$ nodes: two IS axioms and two
+Seed applications are added, and the supplied premise is inserted once.
+The bound is independent of the syntactic depth and number of occurrences
+of the distinguished variable in $f$.
+\end{proposition}
+\begin{proof}
+Count the four displayed additions in the preceding proof tree.
+\end{proof}
+
+This is a count of the specified inference tree. Its term labels contain
+copies of $f$, $s$, and $t$; it is not a constant bound on serialized
+certificate size, runtime, or the shortest possible proof. The prior
+wrapped counter-congruence rule in
+\texttt{witness\_rule/theory/restricted\_congruence.tex} has a specified
+$P+5$ construction using one counter-congruence inference, two endpoint
+computations, and two separate root replacements. The present rule fuses
+the lifting and the first root replacement at the inference interface;
+the zero-counter instance of that same rule supplies root replacement.
+The numerical language and its normalization convention differ, so this
+comparison should not be read as a uniform shortening of every old proof.
+
+\begin{corollary}[One-template transport]\label{seed:onesided}
+The admissible rule
+\[
+ \frac{s=t\qquad f(s)=r}{f(t)=r}
+\]
+holds with arbitrary source terms and arbitrary contexts.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{seed:congruence} supplies $f(s)=f(t)$. K0 with this
+major and the supplied minor gives the result.
+\end{proof}
+
+\begin{corollary}[One-template crossed transport]\label{seed:crossed}
+The admissible rule
+\[
+ \frac{s=t\qquad f(s)=r}{r=f(t)}
+\]
+holds with arbitrary source terms and arbitrary contexts.
+\end{corollary}
+\begin{proof}
+Corollary~\ref{seed:onesided} gives $f(t)=r$; apply derived symmetry.
+\end{proof}
+
+\begin{corollary}[Full equational transport]\label{seed:eqtransport}
+For arbitrary numerical templates $a(u),b(u)$,
+\[
+ \frac{s=t\qquad a(s)=b(s)}{a(t)=b(t)}
+\]
+is admissible.
+\end{corollary}
+\begin{proof}
+Apply Corollary~\ref{seed:crossed} first with $f=a,r=b(s)$,
+obtaining $b(s)=a(t)$, and then with $f=b,r=a(t)$, obtaining
+$a(t)=b(t)$. These are two uses of an admissible rule, not two
+primitive seed instructions; their numerical-congruence expansions
+contain computation and root-composition steps.
+\end{proof}
+
+Weakening, fresh renaming, and ordinary-assumption cut in $\mathcal S$
+follow directly by induction on derivations. They leave all numerical
+expressions at a rule instance unchanged, up to injective renaming.
+Thus neither the DI mode nor the deterministic Seed branch changes.
+General numerical substitution is addressed after the comparison theorem;
+it should not be claimed by a direct induction on restricted DI.
+
+\subsection{Recovering both ordinary introductions}
+
+\begin{lemma}[A canonical nonliteral zero]\label{seed:alias}
+The term
+\[
+ Z:=I(1,0;u.0)
+\]
+is canonical, is not literally $0$, and has an IS proof of $Z=0$.
+\end{lemma}
+\begin{proof}
+Its counter is $S0$, so canonicalization does not erase its outer node.
+IS with predecessor zero and constant-zero update has right side $0$.
+\end{proof}
+
+The old zero-counter alias $I(0,0;u.0)$ cannot serve here: it is literally
+$0$ in the canonical syntax. The one-step alias in
+Lemma~\ref{seed:alias} is the required replacement.
+
+\begin{lemma}[Unrestricted case introduction]\label{seed:case}
+For every matrix $B$, every witness $t$, and the usual fresh $z$,
+\[
+ \frac{\Gamma,B(t,0)\vdash B(t,Sz)}
+ {\Gamma\vdash D_{x,y}B(x,y)}
+ \tag{D-case}\label{seed:Dcase}
+\]
+is admissible in $\mathcal S$.
+\end{lemma}
+\begin{proof}
+The displayed instance already is primitive DI unless $B$ is an equation
+and $t$ is literally zero. In the exceptional case write $B=E$ and
+let the supplied derivation be
+\[
+ \pi:\quad\Gamma,E(0,0)\vdash E(0,Sz).
+\]
+Choose $Z$ from Lemma~\ref{seed:alias}. Under
+$\Gamma,E(Z,0)$, transport its local hypothesis along $Z=0$ using
+Corollary~\ref{seed:eqtransport}, obtaining $E(0,0)$.
+Ordinary-assumption cut with $\pi$ gives $E(0,Sz)$.
+Reverse-transport along $0=Z$ to obtain $E(Z,Sz)$.
+DI at the nonliteral witness $Z$ is in its case mode and concludes
+the desired $D_{x,y}E(x,y)$.
+
+Only equation transport is used, since $E$ has equation root.
+No transport through a binder, numerical substitution into $\pi$, or
+substitution-admissibility theorem for the restricted calculus is assumed.
+\end{proof}
+
+\begin{lemma}[Direct equation progress]\label{seed:progress}
+For every literal equation $E(y)$,
+\[
+ \frac{\Gamma,E(z)\vdash E(Sz)}{\Gamma\vdash Q_yE(y)}
+ \tag{Q-progress}\label{seed:Qprogress}
+\]
+is admissible in $\mathcal S$.
+\end{lemma}
+\begin{proof}
+Choose a witness variable $x$ absent from $E$ and apply primitive DI
+to $D_{x,y}E(y)$ at witness $0$. Its mode is progress, and its premise
+is precisely the given one. DE opens this formula with a fresh witness;
+the resulting local assumption is $Q_yE(y)$, independent of that witness.
+Hyp proves it in the opened context and DE exports it.
+\end{proof}
+
+\begin{lemma}[Conditional closure introduction]\label{seed:Qcase}
+For arbitrary $B$, D-case and DE derive
+\[
+ \frac{\Gamma,B(0)\vdash B(Sz)}{\Gamma\vdash Q_yB(y)}.
+ \tag{Q-case}\label{seed:qcase}
+\]
+\end{lemma}
+\begin{proof}
+Use D-case at an unused witness coordinate and then DE plus Hyp,
+exactly as in Lemma~\ref{seed:progress}.
+\end{proof}
+
+\subsection{The stable auxiliary calculus and formula transport}
+
+Let $\mathcal A$ use the same canonical terms, formulas, and contexts.
+Its rules are Hyp, IS, unrestricted equational transport,
+QE, DE, D-case, and Q-progress. This is the canonical counterpart of
+the native kernel with zero computation made definitional.
+
+\begin{theorem}[Exact sequent equivalence]\label{seed:auxequiv}
+For every finite context $\Gamma$ and native formula $A$,
+\[
+ \Gamma\vdash_{\mathcal S}A
+ \quad\Longleftrightarrow\quad
+ \Gamma\vdash_{\mathcal A}A.
+\]
+\end{theorem}
+\begin{proof}
+From $\mathcal A$ to $\mathcal S$, recursively translate premise
+derivations. Corollary~\ref{seed:eqtransport} replaces equational
+transport, Lemma~\ref{seed:case} replaces D-case, and
+Lemma~\ref{seed:progress} replaces Q-progress. Other rules are unchanged.
+
+Conversely, the standard equality algebra is derivable in
+$\mathcal A$ from IS and unrestricted equational transport, starting
+again with the computation $L(a)=a$. An instance of K follows by
+transport along $s=t$ inside the single numerical template
+$\mathcal I(n,v;u.h)$, keeping $n,h$ fixed.
+This also covers $n=0$, when that canonical template is just $v$.
+Each DI case-mode inference is already D-case.
+
+For a progress-mode DI, the witness is $0$ and its matrix is an equation
+$E(x,y)$. Q-progress applied to the supplied premise gives
+$Q_yE(0,y)$. Under $E(0,0)$, QE at $Sz$ yields $E(0,Sz)$.
+D-case with witness $0$ now concludes $D_{x,y}E(x,y)$.
+This translates every remaining primitive rule and preserves end sequents.
+\end{proof}
+
+\begin{theorem}[Full formula transport]\label{seed:fulltransport}
+For every native formula template $F(v)$,
+\[
+ s=t,\ F(s)\ \vdash_{\mathcal S}\ F(t).
+\]
+\end{theorem}
+\begin{proof}
+Use external structural induction on $F$, uniformly in the retained
+context and all passive parameters. Equation roots use
+Corollary~\ref{seed:eqtransport}.
+
+Suppose $F(v)=Q_yB(v,y)$. To introduce $Q_yB(t,y)$ by Q-case,
+assume $B(t,0)$. Symmetry and the induction hypothesis convert this
+to $B(s,0)$. QE for the given $Q_yB(s,y)$ gives $B(s,Sz)$,
+and the induction hypothesis transports this to $B(t,Sz)$.
+Discharge the base using Q-case.
+
+Suppose $F(v)=D_{x,y}B(v,x,y)$. DE opens the source at a fresh
+witness $b$, supplying $Q_yB(s,b,y)$. Introduce the target by
+D-case at the same witness. Its local base $B(t,b,0)$ is transported
+backwards to $B(s,b,0)$, QE gives $B(s,b,Sz)$, and forward transport
+gives $B(t,b,Sz)$. Close D-case and DE. Every recursive call concerns
+the strictly smaller matrix $B$; no arithmetic induction on a compound
+formula has been introduced.
+\end{proof}
+
+The auxiliary calculus is stable under canonical numerical substitution:
+normalization coherence handles IS and all instances, formula roots are
+preserved, and eigenvariables are freshened. Theorem~\ref{seed:auxequiv}
+therefore gives substitution admissibility for $\mathcal S$ as well.
+This is a derived admissibility result. A substitution can change a
+witness into literal $0$, so a direct rule-for-rule substitution proof
+for its six-rule presentation would be invalid.
+
+\subsection{Interpretations and the precise novelty claim}
+
+Once the raw/canonical comparison is established, the existing native
+kernel's whole-domain bi-interpretation with iPRA transfers by
+Theorem~\ref{seed:auxequiv}. The numerical domains remain whole,
+equality remains actual equality, and the numerical composite
+isomorphisms have graph $x=y$. The raw/canonical comparison must prove
+normalization correctness under iterator bodies; it cannot replace that
+obligation with a purely syntactic claim that the ordinary theories are
+identical. Literal equation induction supplies the needed body
+extensionality. Section~\ref{zeroI:section} proves that comparison and its full formula composites.
+
+The existing sources already contain several ingredients:
+\begin{itemize}
+\item \texttt{Research/counter\_congruence/theory/counter\_theorem.tex}
+derives arbitrary context congruence from root replacement plus
+counter-position congruence for a \emph{counter-aware}, successor-seeded
+recursor.
+\item \texttt{Research/witness\_rule/theory/restricted\_congruence.tex}
+further gives a wrapped, state-independent counter rule, a separate root
+rule, and a five-node congruence expansion. It explicitly factors arbitrary
+templates through a fixed computation shape.
+\item \texttt{Research/one\_context} and the incoming
+\texttt{ipra\_one\_sided\_transport\_2026-11-11.zip} use one-template
+crossed transport. The single witness-directed introduction is inherited
+from \texttt{witness\_rule} and \texttt{NativeOneIntro.lean}.
+\item The incoming \texttt{ipra\_canonical\_recursors\_2026-11-12.zip}
+makes the zero computation of a successor-seeded recursor canonical by
+erasing its update body. It does not erase the whole recursor node and
+does not make its zero step the identity function of the initializer.
+\end{itemize}
+
+The present specific change is that \emph{one initialized scalar seed
+rule}, with zero computation made definitional, supplies both root
+composition (counter $0$) and arbitrary context congruence (counter $1$).
+Its conclusion is determined by its two premise conclusions. No template,
+term, or occurrence path need be supplied to the equality instruction.
+This is a mathematical reduction of the equality interface, followed by
+an implementation opportunity. It is not a claim that fixed-position
+congruence is a new idea, that normalization has no trusted cost, or that
+an absolute smallest iPRA axiomatization has been found.
+
+All source paths above refer to the commit stated in
+Section~\ref{sec:assessment}, under
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.

@@ -1,0 +1,72 @@
+\subsection{Current comparison programs and their input contracts}
+
+The final comparison boundary is commit
+\code{2a724ea8ec6665f91aa74c892414584b36ca698d}, whose recorded commit time is
+2026-11-12 01:58:39 UTC. After the earlier filed snapshot, the last check
+adds the \code{checked_refinement}, \code{validated_core} and
+\code{one_sided_transport} archives. The first two explicitly refine
+implementations of existing mathematical theories. The last retains a
+supplied numerical template in its crossed equality rule. None of these
+three reports supplies the present global replacement primitive and
+oversized-marker proof. This bounds the comparison to inspected material.
+
+The current compact coordinate envelope is
+\[
+            256\text{ tokens}\;/\;278\text{ AST nodes}\;/\;520\text{ bytes}.
+\]
+Three different programs attain these coordinates. In particular, the
+520-byte program has 263 tokens and 303 AST nodes; it replaces the earlier
+521-byte profile. Its one-byte improvement increases that profile's AST
+count from 300 to 303. The complete sources and original package claims
+are copied unchanged under \code{reference/current_compact/}.
+
+\begin{center}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Comparison program & Tokens & AST nodes & Bytes & Gzip-9\\
+\midrule
+Compact byte profile & 263 & 303 & 520 & 329\\
+Compact token profile & 256 & 283 & 594 & 346\\
+Compact AST profile & 260 & 278 & 602 & 344\\
+Native Eq/D, goal checked & 358 & 413 & 788 & 460\\
+Guarded Eq/D, goal checked & 407 & 459 & 921 & 507\\
+Native Eq/D, fully typed & 390 & 454 & 878 & 498\\
+Native Eq/Q/D, fully typed & 401 & 468 & 897 & 505\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The compact profiles assume a canonical guarded public goal and omit an
+included public-goal validator. The 788-byte native profile validates
+the full Eq/D public grammar, with Q available internally, but does not
+require exact integer/list typing of every certificate field. The
+fully typed profiles impose that stronger contract; the 897-byte profile
+also admits every Eq/Q/D public formula. These distinctions prevent a
+raw byte comparison from being mistaken for a comparison of identical
+interfaces. The present tagged and compact implementations retain the
+contracts stated in their own preceding subsections.
+
+Every displayed source was remeasured locally with CPython 3.12.14 using
+the whole module after \code{ast.unparse(ast.parse(source))} plus one LF.
+The token count excludes comments, layout, encoding and end markers;
+all AST nodes are counted. Gzip uses level 9, timestamp zero and the
+complete wrapper, and is informational. These measurements reproduce
+the imported packages' recorded values.
+
+The three new ZIPs were authenticated against the Git blob identities
+returned by the repository API. Each copied member was then checked
+against its ZIP bytes. Archive identities, member paths, SHA-256 hashes,
+individual input contracts and reproduced metrics are recorded in
+\code{evidence/comparison_sources.json}; original claims and metric files
+are retained beside the sources. The imported packages' entire process
+test suites were not rerun for this size comparison.
+
+The one-template seven-rule matched control used earlier is a derived
+control, not an unchanged upstream file. Its exact ancestor is the
+archived \code{direct/one_context_checker.py}. Replacing its separate
+case/progress introduction branches by the existing witness-sensitive
+introduction produces \code{reference/one_context_seven.py}, with no
+other change. The exact difference is included as
+\code{evidence/one_context_seven_origin.diff}. Further shared-walker
+variants are identified separately in the matched implementation audit.

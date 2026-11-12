@@ -1,0 +1,410 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,xcolor,xurl}
+\usepackage{hyperref,listings,enumitem,fancyhdr}
+\definecolor{ink}{HTML}{18354A}
+\definecolor{muted}{HTML}{526777}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
+ pdftitle={Equality in the initializer: a simpler presentation of iPRA},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\lstset{language=Python,basicstyle=\ttfamily\footnotesize,
+ breaklines=true,columns=fullflexible,keepspaces=true,
+ showstringspaces=false,frame=single,rulecolor=\color{muted},
+ xleftmargin=3pt,xrightmargin=3pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[1]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}Equality in the initializer}
+\fancyhead[R]{\small\color{muted}Concise iPRA}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\input{evidence/macros.tex}
+\title{\color{ink}Equality in the initializer\\[3pt]
+\large A simpler equality interface for a six-rule presentation of iPRA}
+\author{Prepared for Vladimir Reshetnikov}
+\date{November 11, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a six-rule presentation of full first-order intuitionistic
+primitive recursive arithmetic in which the equality instruction has
+only two proof arguments. It carries no term template, no occurrence
+path, and no extra numerical parameter. The instruction changes either
+the root of a term or the initializer of one scalar iterator; the
+appropriate change is read from the two premise conclusions.
+Zero iteration is the identity on the initializer, whereas one iteration
+applies an arbitrary fixed numerical template. Thus the same initializer
+rule supplies root equality composition and all numerical congruence.
+General congruence adds just four primitive inference nodes to its
+supplied equality proof.
+
+The report proves exact consequence equivalence with the current native
+scalar kernel after zero-only normalization, including the iterator-body
+and substitution arguments required by both interpretation composites.
+The interpretation domains are whole, equality is actual equality,
+and both numerical isomorphisms have graph \(x=y\).
+Complete strict Python checkers, reproducible measurements, proof
+translations, and executable certificates accompany the written proof.
+This is a specific reduction of the equality interface, not a proof
+of absolute minimality or a new global compressed-checker record.
+\end{abstract}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Result and comparison standard}
+\label{sec:assessment}
+
+The proposed calculus \(\mathcal S\) is stated completely in
+Section~\ref{seed:main}. Its arithmetic syntax is a scalar iterator
+with only zero-counter computation built into syntax. It retains six
+inference patterns: hypothesis, successor computation, initializer
+replacement, closure elimination, paired-binder elimination, and one
+witness-directed introduction.
+
+The change is in equality. A usual one-template rule asks for
+\[
+ \frac{s=t\qquad f(s)=r}{f(t)=r}
+\]
+and makes the checker validate and instantiate the supplied template
+\(f\). Our primitive rule accepts only the initializer position of an
+iterator, together with its zero-step degeneration. This restriction
+makes the conclusion computable from the two proved premise formulas.
+Arbitrary-template transport is a derived rule.
+
+The comparison is pinned to ProveIt commit
+\[
+\texttt{6bf83d8765614b0af51b35747e07fb057d6b2f42}.
+\]
+The scoped baseline comprises the current
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA} README, the
+relevant filed equality and normalization reports, and all five archives
+then present in its \texttt{docs/incoming} directory.
+The incoming canonical-recursors report already gives a six-rule
+successor-seeded presentation. Reducing eight rules to six is therefore
+not the new result.
+
+The target called iPRA here is \emph{full first-order} intuitionistic
+logic with equality, one symbol for each finite primitive recursive
+definition, its defining equations, the successor axioms, and induction
+for quantifier-free formulas. It is not merely the quantifier-free
+equational fragment. First-order and quantifier-free presentations are
+distinguished in, for example, Avigad~\cite{avigad}. The new native
+calculus assumes no unlisted logical rules; ordinary logical connectives
+are derived macros.
+
+\subsection{Claims and limits}
+
+\begin{enumerate}
+\item \textbf{A smaller primitive equality interface.}
+One instruction, with two proof arguments and no template data, recovers
+all equality reasoning in arbitrary retained contexts. Its recovery
+uses no induction, cases, or binder rule.
+\item \textbf{Exact equivalence.}
+After normalization every native sequent is preserved in both
+directions. Both formula composites are proved; the numerical
+interpretation domains remain whole and equality remains actual.
+\item \textbf{A controlled software comparison.}
+The proposed checker and its one-template control use the same syntax,
+canonical substitution, logical rules, public validation, and execution
+contract. A separate shared traversal refactoring is measured separately.
+\end{enumerate}
+
+No absolute lower bound is proved. Source length is relative to the
+specified encoding and runtime; a rule count alone does not determine
+a shortest checker. The supplied modules are transparent implementations,
+not globally shortest alternatives to the repository's compressed codecs.
+
+\input{sections/seed_rule.tex}
+\input{sections/normalization.tex}
+
+\section{The arithmetic and logical bridge}
+\label{sec:bridge-summary}
+
+The new work is the initializer rule and its exact comparison proof.
+The arithmetic bridge is inherited from the pinned ConciseIPRA
+development~\cite{upstream}. Its five relevant written developments
+are reproduced with attribution in Appendices
+\ref{sec:choice-introduction}--\ref{sec:iterator-coding}.
+Their exact Git blob identities and SHA-256 hashes are recorded in
+\texttt{evidence/source\_provenance.json}.
+
+\subsection{Ordinary realization}
+
+Expand each fixed iterator body into a first-order function description.
+No variable ranges over programs. The ordinary theory \(T_I\) has
+intuitionistic first-order equality logic, the two raw iterator equations,
+numerical coverage
+\[
+ \forall x\,(x=0\vee\exists y\,x=Sy),
+\]
+the separation bridge \(0=S0\to\bot\), and contextual induction for
+literal equations. The native readings are
+\[
+ (Q_yB)^\circ=B^\circ(0)\to\forall y\,B^\circ(y),\qquad
+ (D_{x,y}B)^\circ=
+ \exists x\bigl(B^\circ(x,0)\to\forall y\,B^\circ(x,y)\bigr).
+\]
+The separation bridge must be stated in this ordinary realization:
+positive equations alone have a singleton model. In the native
+presentation, contradiction is designated as \(0=S0\) and explosion
+is derived.
+
+\subsection{Recovering all ordinary connectives}
+
+Put \(C(v,a,b)=\mathcal I(v,a;u.b)\), with \(u\) unused. This selects
+\(a\) at zero and \(b\) at successors. External recursion on finite
+formulas gives a gate \(G_vA\), provable at zero and interderivable
+with \(A\) at successors, and a selector \(M_v(A,B)\) choosing \(A\)
+at zero and \(B\) at successors. At equation roots,
+\[
+ G_v(s=t)=(C(v,0,s)=C(v,0,t)),\qquad
+ M_v(s=t,a=b)=(C(v,s,a)=C(v,t,b)).
+\]
+They extend through the paired binder by padding and congruence
+(Appendix~\ref{sec:choice-introduction}). An auxiliary \(Q_yB\)
+is interderivable with \(D_{w,y}B\) for an unused \(w\), so these
+constructions cover the full Eq/\(Q\)/\(D\) grammar.
+
+For example,
+\[
+ A\Rightarrow_*B=D_{w,y}M_y(A,B),\qquad
+ \exists_*x\,A(x)=D_{x,y}G_yA(x),\qquad
+ A\vee_*B=\exists_*v\,M_v(A,B).
+\]
+Conjunction uses a gate and a two-state parity iterator so that two
+instances extract its conjuncts. Universal quantification combines the
+zero instance with successor instances supplied by a paired closure.
+The appendix states every macro and proves its introduction,
+elimination, and round-trip rules. No induction for compound formulas
+is added.
+
+\subsection{Compiling primitive recursion and proving the composites}
+
+The inherited internal construction first obtains a scalar predecessor
+using equation induction and numerical cases. It then obtains a
+numerical reflection of actual equality, recovers quantifier-free
+induction, and constructs pairing and projections. This dependency
+order avoids assuming pairing or an equality test in the predecessor
+bootstrap.
+
+With derived pairing \(\pi\) and projections \(L,H\), a recursion
+\[
+ f(0,\vec p)=g(\vec p),\qquad
+ f(Sn,\vec p)=h(n,f(n,\vec p),\vec p)
+\]
+is represented by
+\[
+ V(n,\vec p)=I\!\left(n,\pi(0,g^*(\vec p));
+ u.\pi(SL(u),h^*(L(u),H(u),\vec p))\right),\qquad
+ f^*(n,\vec p)=H(V(n,\vec p)).
+\]
+The iterator binds only its state \(u\); the counter is stored in the
+paired state. Equation induction proves \(L(V(n,\vec p))=n\).
+This is an external compiler for each fixed finite PR description.
+
+Conversely, each fixed scalar iterator is a primitive recursion whose
+update ignores the recursion counter. Internal uniqueness by equation
+induction proves the numerical round trips for both compilers.
+Section~\ref{zeroI:section} proves the additional canonical-syntax
+round trip. The logical macros supply both formula composites.
+Hence both numerical composite maps are the identity with graph \(x=y\),
+and the ordinary realization is bi-interpretable and equiconsistent
+with full first-order iPRA.
+
+\section{Complete checker and measurement}
+\label{sec:implementation}
+
+\subsection{Public contract}
+
+Input is exactly a JSON object with fields \texttt{goal} and
+\texttt{proof}. The goal is a closed native formula and the proof is a
+finite tree of six tagged instructions. Terms use exact integers for
+zero and de Bruijn indices, one-element lists for successor, and
+three-element lists for iterators. Only the iterator body has an
+additional variable in scope. Formula tags distinguish equality,
+\(Q\), and \(D\), binding zero, one, and two variables respectively.
+
+The checker validates the public goal, every consumed certificate field,
+scopes, instruction arities, and premise and conclusion matches.
+Canonicality rejects a literal zero counter in a stored iterator.
+Smart substitution erases such a node when substitution exposes one.
+Exact integer checks reject booleans in numerical positions.
+Acceptance checks do not use \texttt{assert}, so optimized Python
+execution preserves the intended contract.
+
+Acceptance is exactly \texttt{ACCEPT} with exit status zero.
+Invalid inputs print \texttt{REJECT} and return a nonzero status.
+The mathematical certificate system contains all finite proof trees;
+an executable implementation is subject to ordinary finite resources.
+The Python standard library and JSON decoder are part of the stated
+execution environment.
+
+\subsection{Premise invariants and the equality instruction}
+
+Induction on successful calls to \texttt{derive} proves that its
+result is a canonical native formula in the current scope. A native
+formula has list arity three exactly when it is an equation;
+\(Q\) and \(D\) formulas have arity two. Both matched implementations
+therefore unpack an equation premise into three fields: a non-equation
+premise fails and is rejected by the public wrapper.
+
+For proved equations \(s=t\) and \(b=r\), Seed checks whether \(b=s\).
+If so it returns \(t=r\). Otherwise \(b\) must be an iterator
+\(I(n,s;u.h)\), and the result is \(I(n,t;u.h)=r\).
+The retained counter remains nonzero and the retained body keeps its
+scope. No equality-template substitution is performed.
+
+The selected version can reject impossible integer and successor
+shapes by an exception caught by the wrapper. This uses the proved
+well-formed-output invariant; it never grants permission to index an
+arbitrary unvalidated user term. An explicit-shape version is included
+for comparison. The matched control uses the same premise invariant
+and public boundary.
+
+\subsection{Whole-module measurements}
+
+\input{evidence/metrics_table.tex}
+
+Measurement removes actual Python docstrings, runs \texttt{ast.unparse},
+and appends one LF. Significant tokens exclude comments, encoding and
+end markers, indentation, dedentation, and newline tokens. AST nodes
+are counted in the normalized module. Gzip uses level 9 and timestamp
+zero; it is informational. The reference runtime is CPython 3.12.14.
+
+The one-template/initializer pair isolates the mathematical change.
+The canonical-\(R\) pair isolates sharing four binder-aware traversals
+in an otherwise unchanged calculus. Comparing the proposed \(I\)
+checker with the older \(R\) checker combines different grammars and
+implementation decisions; the whole difference must not be credited
+to the initializer theorem.
+
+The inspected incoming reports also contain a 516-byte guarded compact
+profile and an 870-byte fully validated Eq/\(Q\)/\(D\) profile. Their
+encodings differ from these transparent modules. This work does not
+claim a new global byte, token, or AST record.
+
+\section{Executable evidence and its limits}
+\label{sec:verification}
+
+\input{evidence/validation_summary.tex}
+
+The proof producer translates general one-template instructions into
+initializer proofs and translates initializer proofs back. It checks
+the translated conclusions. The fixtures include arithmetic
+computations, zero-source equality, nested iterator bodies, binder
+capture controls, logical rules, and invalid proofs. Independent
+evaluation/substitution comparisons cover bounded numerical examples.
+
+These are executable checks of particular certificates and programs.
+The universal equivalence and bi-interpretation claims rest on the
+written arguments above. No new Lean or Rocq proof has been compiled.
+The upstream README reports a Lean formalization of the inherited
+bridge; that project was inspected as a source, not rebuilt here.
+
+The delivered reproduction scripts run offline with Python's standard
+library. Run \texttt{python3 reproduce.py} from the archive root to
+check measurements and rerun the suites. Run \texttt{python3 build.py}
+to assemble the standalone \texttt{report.tex} and compile its PDF
+with pdfLaTeX. The selected checker itself needs no auxiliary files.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item \textbf{Formalize the new comparison.}
+Add zero-canonical scalar terms, normalized substitution, iterator-body
+extensionality, and Seed to the existing Lean project. First compare
+the stable calculus with separate case and progress rules; only then
+transfer to witness-directed DI.
+\item \textbf{Exploit the missing template field in a compact codec.}
+Determine whether premise-inferred equality improves the best
+validated compressed implementations after all normalization and
+boundary costs are counted.
+\item \textbf{Measure proof size and checking time.}
+The congruence construction adds four inference nodes, but its labels
+contain copies of the template and endpoints. Measure serialized proofs
+and runtime on the arithmetic library, distinguishing proof trees
+from explicitly shared proof DAGs.
+\item \textbf{Compare other recursor positions.}
+Which arithmetic primitives support both identity and arbitrary
+application through one distinguished argument? Require actual
+equality and both formula composites in every comparison.
+\item \textbf{Formulate meaningful lower bounds.}
+A lower-bound problem should fix the term grammar, certificate
+language, validation contract, and allowed primitive operations.
+No coding-independent absolute minimum is established here.
+\end{enumerate}
+
+\appendix
+\clearpage
+\section*{Inherited foundations and attribution}
+\addcontentsline{toc}{section}{Inherited foundations and attribution}
+
+The next five sections are included verbatim from the pinned upstream
+written development. They keep their original local notation:
+\(I\) is the raw scalar iterator with both computation equations, and
+their \(\mathcal C,\mathcal N\) denote earlier calculi.
+The proved raw/canonical comparison explains their applicability;
+they add no primitive rule to the present \(\mathcal S\).
+
+The MIT No Attribution license is included in
+\texttt{reference/LICENSE-ProveIt.txt}. Historical citation keys
+\texttt{erasure}, \texttt{forward}, and \texttt{progress} below refer
+to the corresponding inherited source files at the pinned commit.
+
+\input{reference/inherited_choice_basis.tex}
+\input{reference/inherited_ordinary_bridge.tex}
+\input{reference/scalar_predecessor.tex}
+\input{reference/equality_reflection.tex}
+\input{reference/primitive_recursion.tex}
+
+\clearpage
+\section{Complete selected checker}
+The following is the complete selected module, not an excerpt.
+The standalone file in \texttt{code/} is executable directly.
+\lstinputlisting{code/seed_only.py}
+
+\begin{thebibliography}{9}\raggedright
+\bibitem{upstream}
+Vladimir Reshetnikov, \emph{ProveIt: Concise presentations of intuitionistic
+primitive recursive arithmetic}, commit
+\texttt{6bf83d8765614b0af51b35747e07fb057d6b2f42}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/6bf83d8765614b0af51b35747e07fb057d6b2f42/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+\bibitem{avigad}
+Jeremy Avigad, \emph{Proof Theory and Proof Mining II: Formal Theories
+of Analysis}, July 2015, slides 4--7.
+\url{https://www.andrew.cmu.edu/user/avigad/Talks/helsinki/helsinki2.pdf}.
+\bibitem{erasure}
+ProveIt, inherited \emph{Internal scalar predecessor bootstrap},
+\path{Research/certified_zero/reference/scalar_predecessor.tex},
+at the snapshot in~\cite{upstream}.
+\bibitem{forward}
+ProveIt, inherited \emph{From literal-equation induction to full
+intuitionistic PRA},
+\path{Research/certified_zero/reference/equality_reflection.tex},
+at the snapshot in~\cite{upstream}.
+\bibitem{progress}
+ProveIt, inherited \emph{Pairing, primitive recursion, and internal
+numerical composites},
+\path{Research/certified_zero/reference/primitive_recursion.tex},
+at the snapshot in~\cite{upstream}.
+\end{thebibliography}
+\end{document}

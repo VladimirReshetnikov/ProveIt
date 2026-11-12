@@ -1,0 +1,11 @@
+--- reference/ConciseIPRA/OneContextOneIntro.lean
++++ build/lean/ConciseIPRA/OneContextOneIntro.lean
+@@ -61,7 +61,7 @@
+       (.eq (Syn.subst (inst s) h) (Syn.subst (inst s) (Syn.shift u))) := by
+     simpa using minor
+   have transported := WPrf.trEq h (Syn.shift u) major minor'
+-  simpa using WPrf.eqSymm transported
++  simpa using WKernel.eqSymm transported
+ 
+ end WPrf
+ 

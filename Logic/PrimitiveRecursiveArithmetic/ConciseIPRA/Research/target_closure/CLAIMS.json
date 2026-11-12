@@ -1,0 +1,57 @@
+{
+  "title": "Target-directed closure and smaller typed checking for iPRA",
+  "prepared_for": "Vladimir Reshetnikov",
+  "date_user_timezone": "2026-11-11",
+  "reference_commit": "76697262071ada91f29c14d9cf3801a64dacb994",
+  "overall_status": "Two proved local refinements; a new globally smallest axiomatization was not established.",
+  "mathematical_result": {
+    "calculus": "T: seven-rule target-directed progressive closure",
+    "new_primitive": "QE uses only t, requesting E(s) when the matrix is an equation and t is literally S(s), and requesting the zero instance otherwise.",
+    "bootstrap": "W(t)=I(0,t;u.0) recovers arbitrary-target atomic closure without an arithmetic orbit identity.",
+    "proved": [
+      "Equality reasoning and closure introduction",
+      "One-step progress and arbitrary-target anchored closure",
+      "Contextual equation induction",
+      "Capture-free numerical substitution with explicit target-shape repair",
+      "Full numerical transport and homogeneous binder congruence",
+      "Exact consequence equivalence with the inherited orbit calculus for all Eq/Q/D formulas and arbitrary contexts",
+      "Bi-interpretability and equiconsistency with full first-order iPRA by composition with attributed inherited translations",
+      "Whole numerical domains, actual equality, both numerical composite graphs x=y, and both full formula composites"
+    ],
+    "checker": "code/target_checker.py",
+    "matched_bytes": {"orbit_reference": 4553, "target": 4532, "existing_witness": 4456},
+    "qualification": "Smaller than the orbit comparator; larger than the existing witness-sensitive comparator. No new overall minimum."
+  },
+  "implementation_result": {
+    "theory": "Existing conditional Choice-DI, with source-restricted transport; full Eq/Q/D public syntax",
+    "checker": "code/lexical_compact.py",
+    "explicit_alternative": "code/lexical_explicit.py",
+    "unchanged": ["Proof kernel", "Canonical goal grammar", "Arity and scope conventions", "Both introduction choices at every witness", "Mathematical interpretations"],
+    "new": "Lexical integer/list validation before JSON decoding, removal of redundant exact-type tests, and separately measured Boolean error factoring",
+    "whole_program_metrics": {"tokens": 399, "ast_nodes": 453, "normalized_bytes": 895, "gzip9_bytes": 512},
+    "reference_metrics": {"tokens": 442, "ast_nodes": 502, "normalized_bytes": 1039, "gzip9_bytes": 547},
+    "not_an_implementation_of_T": true,
+    "equivalence_scope": "Identical ideal finite certificate acceptance; resource failures and error messages can differ."
+  },
+  "verification": {
+    "new_written_proofs": true,
+    "independent_same_run_review": true,
+    "new_compiled_Lean_or_Rocq": false,
+    "upstream_Lean_rebuilt": false,
+    "subprocess_executions": 652,
+    "mismatches": 0,
+    "gate_checks_per_profile": 3068,
+    "target_closed_cases": 30,
+    "target_open_controls": 5,
+    "named_substitution_checks": 600,
+    "finite_tests_do_not_prove_metatheorems": true
+  },
+  "not_claimed": [
+    "An absolutely simplest axiomatization",
+    "A new mathematical minimum below all current proposals",
+    "An improvement of the 521-byte canonical-goal checker frontier",
+    "One program attaining all coordinates of the separate 256-token / 278-AST / 521-byte envelope",
+    "A new arithmetic foundation, a new successor-injectivity proof, or a total universal primitive-recursive evaluator",
+    "A formal verification of the entire Python kernel"
+  ]
+}

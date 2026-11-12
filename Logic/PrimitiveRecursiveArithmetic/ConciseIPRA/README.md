@@ -5,7 +5,7 @@ complete presentation of a theory bi-interpretable with full first-order
 intuitionistic primitive recursive arithmetic (iPRA), and the Lean
 formalization of the most concise of them.
 
-- [`Research/`](Research/) holds forty-three delivered packages, one directory
+- [`Research/`](Research/) holds forty-nine delivered packages, one directory
   each. They are written mathematics with executable Python proof checkers;
   none of them claims a proof-assistant verification.
 - `Lean/` is the formalization (see [Lean formalization](#lean-formalization)).
@@ -179,6 +179,11 @@ for separate coordinates, they are listed separately. Each package's own
 | [`validated_core`](Research/validated_core/) | One recursive validator shared between raw-tree typing and the public grammar, for the unchanged rule basis | fully validated Eq/Q/D checker 897 bytes against a matched 1049; compact envelope 256 tokens, 278 AST nodes, 521 bytes (different programs) |
 | [`validated_presentation`](Research/validated_presentation/) | The whole certificate is typed by one test on its printed form, so the public syntax validator loses its separate raw-type pass; the proof kernel is unchanged | fully validated Eq/Q/D checker 870 bytes against 897, 383 tokens against 401 |
 | [`checked_refinement`](Research/checked_refinement/) | Three smaller implementations of the existing presentations; stated to contain no new axiom deletion | guarded public-goal checker 921 bytes against 1201; native Eq/D public checker 788 against 803; compact guarded 520 against 521 |
+| [`zero_normal`](Research/zero_normal/) | Terms with no iterator whose counter is the literal `0`; substitution rebuilds terms with `I(0, a; u.h)` replaced by `a`, so the zero computation rule is deleted. With the single introduction and one-term transport: six rules. Ships a compiled Lean module for the normalization layer | matched strict tagged checkers, 8 and 7 rules: 3322 and 3272 bytes |
+| [`diagonal_guard`](Research/diagonal_guard/) | One introduction whose mode is chosen by a guard that substitution preserves and reflects: progress exactly when the matrix is literally `I(y, y; u.h) = I(y, y; v.k)`, cases otherwise. Seven rules on the full formula language with the original readings | matched typed checker 3244 bytes against 3382 for eight rules and 3205 for the witness rule |
+| [`template_free`](Research/template_free/) | Equality with no supplied template: from `s = t` and `u = v` infer `v = R(u)`, where `R` replaces every free occurrence of `s` in `u` by `t` in one pass. Seven rules; congruence in a chosen context is recovered through an oversized computation marker | strict tagged checker, as stated |
+| [`target_closure`](Research/target_closure/) | A seven-rule progressive calculus `T` whose closure elimination supplies one numerical target, equivalent to the calculus of `uniform_progress`; separately, exact certificate typing by a lexical gate for the existing calculus | `T` checker 4532 bytes against 4553; typed checker of the existing calculus 895 bytes against 1039 |
+| [`scope_kernel`](Research/scope_kernel/) | Reuse of the kernel's first scope traversal in the validated checker. Two research notes: a coordinatewise model on `N × N` that validates equation induction and refutes coverage, and an unfinished attempt to replace equation induction by uniqueness of iteration | fully validated Eq/Q/D checker 881 bytes against 897 |
 
 ### Other arithmetic bases
 
@@ -190,6 +195,7 @@ for separate coordinates, they are listed separately. Each package's own
 | [`selfseed_scalar`](Research/selfseed_scalar/) | A self-seeded recursor `F(0;v.h) = S(h(0))`, `F(S n;v.h) = h(F(n;v.h))` over ordinary logic with successor injectivity, `0 ≠ S 0`, a Boolean equality test and literal-equation induction; also checkers of 554 bytes and of 291 AST nodes for the native core |
 | [`register_graph`](Research/register_graph/) | Terms `x`, `0` and a counter-aware register iterator `J(n; i, r. body)` only, over ordinary logic: successor `S(a) = J(a; i, r. 0)` and the initializer are derived, and primitive recursion compiles without pairing; also a 288-node AST checker for the native core |
 | [`canonical_recursors`](Research/canonical_recursors/) | A successor-seeded recursor `R(n, a; u.h)` with successor defined as `R(0, a; u.0)`; the zero computation is built into a canonical term grammar with normalizing substitution, so successor computation is the only explicit computation rule. Six rules; written proofs of the equivalence with the raw calculus and of the bi-interpretation with iPRA. Normalization is part of the trusted specification. Matched strict checker 4611 bytes against 4923 for the scalar iterator with independent `S`; separately, the compact guarded codec at 516 bytes against 522 |
+| [`initializer_equality`](Research/initializer_equality/) | On the canonical recursor syntax, equality transport is replacement of an iterator's initializer; zero iteration is definitional, so this includes replacement at the root, and one iteration applies any term template. Six rules; the equality step takes two proofs and no template |
 
 ## Intake record
 
@@ -254,6 +260,14 @@ A sixth delivery of three archives arrived on 2026-11-11 and 2026-11-12 and
 was filed on arrival: `canonical_recursors`, `checked_refinement` and
 `validated_presentation`. Not filed: four frozen copies of this repository's
 Lean sources and three checksum ledgers.
+
+A seventh delivery of six archives arrived on 2026-11-11 (commit
+`11be5aabc6`) and was filed the same day: `diagonal_guard`,
+`initializer_equality`, `scope_kernel`, `target_closure`, `template_free` and
+`zero_normal`. Not filed: fifty-five frozen copies of this repository's Lean
+sources, three checksum ledgers and five build logs. The delivered module
+`Research/zero_normal/formal/ZeroNormalization.lean` compiled unchanged and
+is `Lean/ConciseIPRA/ZeroNormalization.lean`.
 
 ## Lean formalization
 
@@ -357,6 +371,9 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `compact_update` | Its checker results concern Python programs. Its closure criterion is proved in `T_eq` for every quantifier-free formula: `Teq.closure_iff_progress`, with `Teq.closure_of_progress` and the decidability lemma `Teq.qfDec` (`TeqClosure`). The variant after existential binding is `Teq.ex_closure_iff_progress`. |
 | `uniform_progress` | Not formalized. Its calculus changes the reading of `Q` at literal equations, so it needs its own soundness proof, its own structural rules and both formula translations with their round trips. |
 | `validated_core`, `validated_presentation`, `checked_refinement` | Their results concern Python programs; the rule basis is unchanged. |
+| `zero_normal` | Its normalization layer is adopted as `ZeroNormalization`: the delivered module compiled unchanged (`nf`, hereditary substitution `hsub`, `nf_subst`, `nf_correct`, `fnf_correct`, `fnf_native_roundTrip`). |
+| `diagonal_guard`, `template_free`, `target_closure` | Not formalized. Each is a further calculus on the native formula language: a substitution-stable guard for the single introduction; replacement of all occurrences in place of a template; a progressive closure with a target. |
+| `initializer_equality`, `scope_kernel` | Not formalized: the first is stated on the canonical recursor syntax; the second concerns Python programs, and its research notes are a model and an unfinished argument. |
 | `canonical_recursors` | Not formalized. It is a different term language (a recursor whose seed is a successor, with a canonical grammar and normalizing substitution), so it would need its own syntax, its equivalence with the raw calculus and a bi-interpretation with iPRA. |
 | `witness_rule` (first delivery) | Proved: `wprf_iff_nprf`. The kernel keeps two introductions, because the single rule is not stable under substitution by a direct induction (a substitution can turn a witness into the literal `0`). |
 | `direct_closure`, `direct_closure_qprogress` | Adopted: `qIInd` is the kernel's progress rule. The delivered migration patch compiled as written. |
