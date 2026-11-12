@@ -1,0 +1,86 @@
+OVERSIZED COMPUTATION ALIASES RECOVER SELECTIVE CONGRUENCE
+
+Primitive replacement R is top-down, all-occurrence, and stops at a match:
+from s=t and u=v infer v=R_s^t(u). Its source and target are closed relative
+to the currently retained numerical parameters. Inserted targets are not
+visited again. Matching under an ordinary de Bruijn binder uses the lifted
+source; in the inherited arity codec the closed source can be matched raw.
+
+ROOT ALGEBRA
+Reflexivity: let J(a)=I(0,a;w.0). The computation J(a)=a, used as both major
+and minor, gives a=a by R. To handle the compact kernel's omitted literal-
+zero initializer uniformly, instead let C_a=I(2,1;w.a). One allowed successor
+computation gives C_a=a, and using it twice also gives a=a.
+
+Symmetry: from a=b, use major a=a and minor a=b. The result is b=a.
+Common-left joining: from a=b and a=c, the first as major and second as
+minor give c=b because replacement matches the entire source a.
+Transitivity: from a=b and b=c, reverse the first and join at b.
+
+SIZE LEMMA
+Let H[-] be a finite numerical term context, possibly with several holes,
+local iterator binders, and arbitrary passive parameter occurrences.
+Choose a closed numeral N whose syntax tree has more nodes than H[-],
+counting each hole as one node. Let K=I(0,s;w.N).
+Then K=s by computation and node_count(K)>node_count(H[-]).
+
+In H[K], every occurrence of a subtree with exactly the syntax of K is a
+designated inserted copy. A passive subtree inherited from H[-] is smaller
+than K. A proper subtree within an inserted K is smaller than K. A strict
+ancestor containing an inserted K is larger than K. These four categories,
+together with the designated copies themselves, exhaust every subtree.
+Therefore top-down replacement gives exactly
+    R_K^s(H[K])=H[s],    R_K^t(H[K])=H[t].
+The same proof works under binders: capture-free lifting changes variable
+indices but not node counts. Passive subterms still cannot have the needed
+size, and ancestors containing an inserted lifted K are still too large.
+
+CONGRUENCE
+Given s=t, transitivity gives K=t from K=s. Reflexivity gives H[K]=H[K].
+Using K=s as the replacement major gives H[K]=H[s]. Using K=t gives
+H[K]=H[t]. Common-left joining yields H[s]=H[t]. No existential naming,
+fresh eigenparameter, logical introduction, induction, path, mask, or
+selective replacement primitive is used.
+
+ACTUAL COMPACT COMPUTATION INTERFACE
+For all canonical source terms, including literal zero, use
+    C_s=I(2,1;w.s),    K=I(0,C_s;w.N).
+Both C_s=s and K=C_s are allowed computation packets: their initializer is
+nonempty, and the successor packet's predecessor is 1. Transitivity yields
+K=s. This avoids any circular appeal to omitted zero computation instances.
+It also gives uniform reflexivity at zero via C_0=0 as above.
+
+TWO-SIDED EQUATIONAL TRANSPORT
+Given a(s)=b(s), derive a(s)=a(t) and b(s)=b(t) by the congruence construction.
+Join the first with the retained minor to obtain b(s)=a(t); join that with
+the second to obtain a(t)=b(t). Thus the old equational transport is a
+derived rule. All other native rules can be left literally unchanged.
+
+FINITE EVIDENCE
+verify.py independently produces primitive proof trees. Its cases include
+H(z)=I(z,s;w.s), where primitive R_s^t would wrongly replace both passive
+occurrences of s, but the oversized-alias proof leaves them unchanged;
+two-sided transport for a(z)=I(0,z;w.s), b(z)=z; literal-zero sources; and
+replacement beneath two iterator binders. The final suite currently has
+50 successful process expectations (25 cases in normal and optimized modes).
+This evidence does not constitute a proof-assistant verification.
+
+SHARED OPENER CAUTIONS
+The replacement-source sentinel is the unforgeable function c; the default
+missing image is None. They must differ. Using c for both lets i(c,d=3)
+match the replacement sentinel and return instead of rejecting a scope
+violation. The source argument is keyword-only, preserving the old
+i(*goal,witness,2) guard that forces a nontrivial DI goal to be unary.
+Complex zero is not an equality sentinel because 0j==0 in Python.
+
+METRICS
+checker.py: 865 normalized bytes, 397 significant tokens,
+464 AST nodes, 437 gzip-9 bytes for the normalized source in this runtime.
+This is a finite-tested forward prototype using the inherited raw codec,
+not a record-size or strictly grammar-validating complete public interface.
+
+DE FLOOR ORDER
+Construct the fresh witness export after decreasing the local floor. Check
+the continuation at that floor, restore the old floor, then rescope its
+result. The positive regression uses the witness in QE and computation
+before discharging it; an unused-witness test alone would not check this.

@@ -1,0 +1,282 @@
+\section{A conditional route from iterator uniqueness to induction}
+\label{sec:uniqueness-research}
+
+This section records an arithmetic research direction, not a completed
+replacement for the delivered checker.  Its positive result is a precise
+retraction argument: scalar iterator uniqueness implies induction for
+every predicate for which a suitable numerical conditional is already
+available.  In particular, it implies induction for equations of the
+form $t(n)=0$ using only numerical coverage and the ordinary zero test.
+The missing step is an independent equality-reflection bootstrap for
+the scalar language.  No new bi-interpretation or smaller complete
+checker is claimed for the proposed uniqueness rule.
+
+\subsection{The rule and its elementary consequences}
+
+Uniqueness of recursion as an alternative arithmetic principle is
+classical: Tait states the equivalence for a richer language with
+counter-aware primitive recursion and product types \cite{tait}.
+That result alone does not settle the restricted scalar update
+$h(u)$ considered here. No novelty is claimed for the general idea
+of using recursion uniqueness.
+
+Work, for this arithmetic analysis, in ordinary intuitionistic
+first-order logic with actual equality.  The numerical terms are
+\[
+ t ::= x\mid 0\mid S(t)\mid I(n,a;u.h),
+\]
+with capture-free substitution; $u$ is bound only in $h$.  Retain the
+two computation equations
+\begin{align*}
+ I(0,a;u.h)&=a,\\
+ I(Sn,a;u.h)&=h[I(n,a;u.h)/u].
+\end{align*}
+Terms such as $f(z)$ and $h(u)$ below are fixed finite term templates,
+not variables of a function sort.  Passive parameters are suppressed.
+
+Consider replacing literal-equation induction by the rule
+\[
+ \frac{\Gamma\vdash f(Sz)=h(f(z))}
+      {\Gamma\vdash f(t)=I(t,f(0);u.h(u))}.
+ \tag{UR}\label{rule:scalar-ur}
+\]
+Here $z$ is fresh for $\Gamma$, the target term $t$, and all passive
+parameters; the update template $h(u)$ does not contain $z$.  Its only
+active argument is the previous state $u$.  The displayed premise is
+proved in $\Gamma$ itself: there is no discharged induction hypothesis.
+The seed $f(0)$ is determined by $f$, so no separate base premise or
+seed certificate occurs in this rule.
+
+\paragraph{Equation induction proves UR.}
+Assume the premise of UR and induct on the literal equation
+\[
+ f(n)=I(n,f(0);u.h(u)).
+\]
+The base is the zero computation equation and symmetry.  At a successor,
+the recurrence premise, the current induction equation, congruence,
+and the successor computation equation give
+\begin{align*}
+ f(Sn)&=h(f(n))\\
+      &=h(I(n,f(0);u.h(u)))\\
+      &=I(Sn,f(0);u.h(u)).
+\end{align*}
+Thus UR is sound in the old arithmetic.  This direction needs neither
+coverage nor a numerical equality test.
+
+\paragraph{Uniqueness with a common initial value.}
+UR implies the following useful derived rule.  If, with fresh $z$,
+\[
+ \Gamma\vdash f(0)=g(0),\qquad
+ \Gamma\vdash f(Sz)=h(f(z)),\qquad
+ \Gamma\vdash g(Sz)=h(g(z)),
+\]
+then $\Gamma\vdash f(t)=g(t)$.  Apply UR to $f$ and $g$ separately
+and use equality congruence in the seed of the iterator.  The argument
+is contextual: arbitrary retained first-order assumptions may occur
+in $\Gamma$, provided they do not contain the eigenvariable.
+
+\paragraph{The successor iterator is the identity.}
+Taking $f(z)=z$ and $h(u)=Su$, the premise of UR is reflexivity.
+Consequently
+\[
+ \Gamma\vdash I(t,0;u.Su)=t.
+ \tag{Id}\label{eq:ur-identity}
+\]
+This identity is a consequence of UR, not an additional axiom.  In
+particular, the retraction argument below does not silently assume
+that a successor orbit already exhausts the numerical domain.
+
+\subsection{Retractions closed under successor are the identity}
+
+\paragraph{Retraction lemma.}
+Let $e(x)$ be a fixed scalar term template.  Suppose that $\Gamma$
+proves the following equations, with $x$ fresh:
+\begin{align}
+ e(0)&=0,\label{eq:ur-e0}\\
+ e(e(x))&=e(x),\label{eq:ur-idempotence}\\
+ e(S(e(x)))&=S(e(x)).\label{eq:ur-closed}
+\end{align}
+Then the computation equations, equality reasoning, and UR prove
+$\Gamma\vdash e(t)=t$ for every target term $t$.
+
+\paragraph{Proof.}
+Define two finite term abbreviations
+\[
+ h(u)=e(S(e(u))),\qquad r(n)=I(n,0;u.h(u)).
+\]
+No new operation or function quantifier is introduced.  Idempotence
+implies the two global commutation equations
+\begin{align}
+ e(h(u))&=h(u),\label{eq:ur-eh}\\
+ h(e(u))&=h(u).\label{eq:ur-he}
+\end{align}
+For the first, substitute $S(e(u))$ for $x$ in
+\eqref{eq:ur-idempotence}.  For the second, unfold $h$ and replace
+$e(e(u))$ by $e(u)$ under $S$ and $e$.  The successor-closure
+assumption is exactly
+\[
+ h(u)=S(e(u)).
+ \tag{H}\label{eq:ur-h-successor}
+\]
+
+Now consider $f(n)=e(r(n))$.  Its base is
+$f(0)=e(0)=0$.  Its successor equation is, using the iterator
+computation and \eqref{eq:ur-eh}--\eqref{eq:ur-he},
+\[
+ f(Sn)=e(h(r(n)))=h(r(n))=h(e(r(n)))=h(f(n)).
+\]
+UR, followed by replacement of the equal seeds, therefore yields
+\[
+ e(r(n))=I(n,0;u.h(u))=r(n).
+ \tag{R1}\label{eq:ur-er}
+\]
+This is the first substantive use of uniqueness; it establishes that
+the entire $h$ orbit lies in the image of the retraction.
+
+Equation \eqref{eq:ur-h-successor} and \eqref{eq:ur-er} now give
+\[
+ r(Sn)=h(r(n))=S(e(r(n)))=S(r(n)),\qquad r(0)=0.
+\]
+Apply UR again, this time to $r$ with update $u\mapsto Su$.
+By \eqref{eq:ur-identity},
+\[
+ r(n)=I(n,0;u.Su)=n.
+ \tag{R2}\label{eq:ur-r-identity}
+\]
+Combining \eqref{eq:ur-er} and \eqref{eq:ur-r-identity} gives
+$e(n)=n$.  Every displayed calculation is an equality derivation
+under the fixed context.  No induction is used in the proof.
+\hfill$\square$
+
+\subsection{Induction from term-definable conditionals}
+
+The preceding lemma gives a useful sufficient condition for induction.
+Let $E(n)$ be a fixed formula.  Suppose that the retained context
+proves its base and that its step is derivable:
+\[
+ \Gamma\vdash E(0),\qquad
+ \Gamma,E(z)\vdash E(Sz),
+ \tag{P}\label{eq:ur-ind-premises}
+\]
+where $z$ is fresh.  Suppose also that $E$ is decidable in this
+context and has a term-defined split: there is a fixed term $e(n)$
+such that, uniformly in fresh $n$,
+\begin{align}
+ \Gamma&\vdash E(n)\lor\neg E(n),\label{eq:ur-dec}\\
+ \Gamma,E(n)&\vdash e(n)=n,\label{eq:ur-true-branch}\\
+ \Gamma,\neg E(n)&\vdash e(n)=0.\label{eq:ur-false-branch}
+\end{align}
+Then UR proves the induction conclusion $\Gamma\vdash E(t)$.
+
+Here is the complete reduction.  A case split using
+\eqref{eq:ur-dec} proves $E(e(n))$: in the $E(n)$ branch use
+\eqref{eq:ur-true-branch}; in the other branch use
+\eqref{eq:ur-false-branch} and the base $E(0)$.  The true-branch
+identity, instantiated at $e(n)$, gives
+\[
+ e(e(n))=e(n).
+\]
+The step from \eqref{eq:ur-ind-premises}, instantiated at $e(n)$,
+gives $E(S(e(n)))$.  Another use of the true-branch identity yields
+\[
+ e(S(e(n)))=S(e(n)).
+\]
+Finally, the base and the true-branch identity at zero yield
+$e(0)=0$.  Thus all three premises of the retraction lemma hold.
+It follows that $e(n)=n$, and transporting the already proved
+$E(e(n))$ along this equality gives $E(n)$, then $E(t)$.
+
+This result applies only to predicates whose displayed numerical
+split has been justified.  It does not supply induction for arbitrary
+quantified formulas.  In particular, no general principle of deciding
+first-order formulas or converting them to numerical tests is being
+assumed.
+
+\subsection{An unconditional application to zero equations}
+
+For this subsection also assume numerical coverage and separation:
+\[
+ \forall x\,(x=0\lor\exists y\,x=Sy),\qquad 0=S0\to\bot.
+\]
+Define the selector, as in the inherited scalar language, by
+\[
+ C(v,a,b)=I(v,a;u.b).
+\]
+Its two endpoint equations are immediate computation:
+\[
+ C(0,a,b)=a,\qquad C(Sv,a,b)=b.
+\]
+Coverage supplies the corresponding case distinction for every
+argument.  Moreover, $Sx=0$ is contradictory: applying the term
+$v\mapsto C(v,0,S0)$ gives $S0=0$, and separation then gives
+$\bot$.  Hence every zero equation $q(n)=0$ is decidable, without
+constructing a test for equality of two arbitrary terms.
+
+Take $E(n)$ to be the literal equation $q(n)=0$ and set
+\[
+ e(n)=C(q(n),n,0).
+\]
+If $E(n)$ holds, the zero selector equation gives $e(n)=n$.
+If $\neg E(n)$ holds, coverage for $q(n)$ eliminates its zero
+alternative; in its successor alternative the other selector
+equation gives $e(n)=0$.  Thus
+\eqref{eq:ur-dec}--\eqref{eq:ur-false-branch} have direct proofs.
+The conditional induction result proves the following derived rule:
+\[
+ \frac{\Gamma\vdash q(0)=0\qquad
+       \Gamma,q(z)=0\vdash q(Sz)=0}
+      {\Gamma\vdash q(t)=0}.
+ \tag{ZI}\label{rule:ur-zero-ind}
+\]
+Only coverage, separation, selector computation, equality reasoning,
+and UR were needed.  No predecessor, pairing, multiplication,
+general primitive-recursion compiler, or faithful equality
+characteristic was used.
+
+The distinction between zero equations and arbitrary equations is
+essential.  Coverage decides whether a single number is zero.  It
+does not itself give a term $\delta(a,b)$ satisfying
+$\delta(a,b)=0\leftrightarrow a=b$ for arbitrary $a,b$.
+
+\subsection{The remaining bootstrap and the comparison boundary}
+
+If the UR-based arithmetic could independently construct a scalar
+term $\delta(a,b)$ and prove
+\[
+ \delta(a,b)=0\quad\longleftrightarrow\quad a=b
+ \tag{EqRef}\label{eq:ur-missing-reflection}
+\]
+for actual equality throughout its domain, then ZI would recover
+literal-equation induction.  Given an induction on $s(n)=t(n)$,
+apply ZI to $\delta(s(n),t(n))=0$ and transport its base, step,
+and conclusion through \eqref{eq:ur-missing-reflection}.
+Together with the earlier proof that equation induction implies UR,
+this would establish equivalence of the two arithmetic principles
+over the stated common background.
+
+The existing scalar proof of \eqref{eq:ur-missing-reflection}
+cannot simply be imported at this point.  Its predecessor and
+reflection developments use literal-equation inductions with
+nonconstant right sides, including reconstruction invariants.
+Using those results to justify a replacement for that very induction
+would be circular unless their proofs were translated to UR or ZI.
+The argument above removes part of the obstacle by deriving ZI, but
+does not complete that translation.
+
+There is a separate logical bookkeeping issue for a proposed native
+$Q,D$ kernel.  The proofs in this section use ordinary intuitionistic
+equality logic, contextual case distinction, substitution, and cut.
+When replacing a primitive rule in the native kernel, the required
+native versions of these resources must be derived without appealing
+to the removed rule.  The ordinary arithmetic lemma alone is not a
+certificate of equivalence between the complete native calculi.
+
+Finally, a premise with no local induction hypothesis need not produce
+a smaller implementation.  UR replaces the hypothesis extension by
+construction of $f(t)$, $f(0)$, and an iterator with update $h$.
+Its complete syntax checks, eigenvariable checks, logical rules, and
+public theorem interface would all have to be measured.  No such
+complete smaller checker or completed bi-interpretation is asserted
+here.  The precise further research problem is to finish the
+equality-reflection bootstrap under UR, then perform a matched
+implementation comparison of the resulting complete calculus.

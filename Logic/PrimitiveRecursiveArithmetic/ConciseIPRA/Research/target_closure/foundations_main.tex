@@ -1,0 +1,118 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,listings,fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!50!black]{hyperref}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{paper}{HTML}{F5F7FA}
+\hypersetup{pdftitle={Inherited foundations for concise iPRA},pdfauthor={ProveIt research sources; compilation prepared for Vladimir Reshetnikov},pdfsubject={Attributed scalar, logical, and progressive-closure foundation proofs}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\textsc{iPRA: inherited foundations}}
+\fancyhead[R]{\small November 11, 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\Teq}{T_{\mathrm{eq}}}
+\newcommand{\eqv}{\dashv\vdash}
+\newcommand{\FV}{\operatorname{FV}}
+\newcommand{\llbracket}{\mathopen{[\![}}
+\newcommand{\rrbracket}{\mathclose{]\!]}}
+\lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,keepspaces=true,breaklines=true,showstringspaces=false,frame=single,framerule=.3pt,rulecolor=\color{black!20},backgroundcolor=\color{paper},aboveskip=9pt,belowskip=9pt}
+
+\newcommand{\IPRA}{\mathrm{iPRA}}
+\newcommand{\Q}{\mathsf Q}
+\newcommand{\D}{\mathsf D}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\file}[1]{{\small\path{#1}}}
+\title{\color{ink}\textbf{Inherited foundations for concise iPRA}\\[6pt]\large Attributed companion source compilation}
+\author{ProveIt research sources; compilation prepared for Vladimir Reshetnikov}
+\date{November 11, 2026}
+\begin{document}
+\maketitle
+This companion supplies the existing mathematical results used by the main
+report. The new target-directed rule and lexical validation theorem are in
+\emph{Target-directed closure and smaller typed checking for iPRA}; they are
+not claimed as results of the historical sections reproduced here.
+
+The source snapshot is ProveIt commit
+\texttt{76697262071ada91f29c14d9cf3801a64dacb994}, directory
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}. The five scalar
+foundation modules have been checked byte-for-byte against their Git blob
+identities in \path{Research/certified_zero/reference/}; the receipt is
+\path{evidence/foundation_identity.json}. The zero-source theorem was
+retrieved directly from the pinned \texttt{source\_dispatch} package. The
+progressive closure sections are reproduced from the incoming
+\texttt{ipra\_uniform\_progress\_2026-11-11.zip}, whose Git blob is
+\texttt{2b8392d6036daf0272b8697b549557aefc9e1cad}. The upstream MIT No
+Attribution license is retained in \path{reference/LICENSE-ProveIt.txt}.
+
+Historical phrases such as ``new'', ``current'', and ``the new calculus''
+in reproduced sections refer to their original reports. In particular,
+$\mathcal R$ in the progressive part is the inherited orbit calculus,
+not the target-directed $\mathcal T$ of the main report. Its forward
+translation is called $T$ in the historical text and $F$ in the main
+report. The native conditional theory is a different theory with the
+uniform reading $Q B=B(0)\to\forall y B(y)$.
+
+This is a compilation of written proofs, not a fresh verification of the
+upstream Lean project. The full-language progressive roundtrip theorem
+is an inherited written theorem; the native/scalar/iPRA bridge also has
+upstream Lean endpoint files, which were inspected but not rebuilt here.
+
+\setcounter{tocdepth}{1}
+{\small\tableofcontents}
+\clearpage
+\part{Conditional native logic and scalar arithmetic}
+\input{reference/foundations/inherited_choice_basis.tex}
+\input{reference/foundations/scalar_predecessor.tex}
+\input{reference/foundations/equality_reflection.tex}
+\input{reference/foundations/primitive_recursion.tex}
+\input{reference/foundations/inherited_ordinary_bridge.tex}
+\clearpage
+\part{The source restriction used by the compact checker}
+\input{reference/zero_source_admissibility.tex}
+\clearpage
+\part{The inherited progressive orbit calculus and its full round trips}
+\input{reference/progressive/new_theory.tex}
+\input{reference/progressive/old_macros.tex}
+\input{reference/progressive/arithmetic_bridge.tex}
+\begin{thebibliography}{99}
+\bibitem{native} ProveIt, \emph{Native scalar syntax, gates, and logic},
+\texttt{Native.lean}, \texttt{NativeGate.lean}, and \texttt{NativeLogic.lean},
+at the pinned commit.
+\bibitem{bridge} ProveIt, \emph{NativeBiInterpretation.lean} and
+\emph{BiInterpretation.lean}, at the pinned commit. The endpoint sources
+are retained with the archive.
+\bibitem{generated} ProveIt research series, \emph{Complementary introductions
+with one local assumption}, retained in
+\path{reference/foundations/inherited_choice_basis.tex}.
+\bibitem{erasure} ProveIt research series, scalar predecessor construction,
+retained in \path{reference/foundations/scalar_predecessor.tex}.
+\bibitem{forward} ProveIt research series, equality reflection,
+retained in \path{reference/foundations/equality_reflection.tex}.
+\bibitem{progress} ProveIt research series, full primitive recursion,
+retained in \path{reference/foundations/primitive_recursion.tex}.
+\bibitem{source} ProveIt, \emph{source\_dispatch},
+\path{proofs/zero_source_admissibility.tex}, pinned commit.
+\bibitem{witness} ProveIt, \emph{NativeOneIntro.lean}, witness-sensitive
+single-introduction equivalence theorem, pinned repository.
+\bibitem{progressive} ProveIt, \emph{Research/research/theory/progressive\_binder.tex},
+the earlier progressive-binder development cited by the inherited report.
+\bibitem{uniform} ProveIt incoming research, \emph{A uniform introduction
+rule for intuitionistic primitive recursive arithmetic}, archive
+\texttt{ipra\_uniform\_progress\_2026-11-11.zip}.
+\bibitem{repo} V. Reshetnikov and ProveIt contributors, \emph{ConciseIPRA}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/76697262071ada91f29c14d9cf3801a64dacb994/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+\end{thebibliography}
+\end{document}

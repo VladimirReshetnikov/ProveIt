@@ -1,0 +1,558 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,listings,fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!50!black]{hyperref}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{paper}{HTML}{F5F7FA}
+\hypersetup{pdftitle={Target-directed closure and smaller typed checking for iPRA},pdfauthor={Research prepared for Vladimir Reshetnikov},pdfsubject={Exact interpretation theorems and matched complete proof-checker measurements}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\textsc{Concise iPRA: closure and checking}}
+\fancyhead[R]{\small November 11, 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\Teq}{T_{\mathrm{eq}}}
+\newcommand{\eqv}{\dashv\vdash}
+\newcommand{\FV}{\operatorname{FV}}
+\newcommand{\llbracket}{\mathopen{[\![}}
+\newcommand{\rrbracket}{\mathclose{]\!]}}
+\lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,keepspaces=true,breaklines=true,showstringspaces=false,frame=single,framerule=.3pt,rulecolor=\color{black!20},backgroundcolor=\color{paper},aboveskip=9pt,belowskip=9pt}
+\title{\color{ink}\textbf{Target-directed closure and\\smaller typed checking for iPRA}\\[6pt]\large Exact presentation theorems, explicit rules, and an honest comparison}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{November 11, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Two distinct refinements are established. First, the recent progressive
+seven-rule presentation can eliminate a closure using only its target
+term. At an equation matrix, a literal successor target requests its
+predecessor instance; other targets request the zero instance. A
+zero-counter iterator wrapper recovers arbitrary-target closure and
+equation induction without an addition identity. We prove exact
+consequence equivalence with the existing orbit presentation, so its
+whole-language bi-interpretation with iPRA transfers. The matched checker
+shrinks from 4,553 to 4,532 normalized bytes, but the existing
+witness-sensitive checker remains smaller at 4,456 bytes.
+
+Second, an independent implementation theorem replaces recursive
+integer/list typing by a lexical gate before JSON decoding. The complete
+ordinary Choice-DI checker, including closed-goal validation and exact
+typing of the entire certificate, falls from 1,039 to 895 normalized
+bytes (442 to 399 significant tokens; 502 to 453 AST nodes). A more
+explicit error-reporting version is 963 bytes. The arithmetic and
+logical rules of these compact checkers are unchanged. Neither result
+beats the separate 521-byte canonical-goal core or establishes an
+absolutely simplest axiomatization. New metatheorems are written proofs,
+supported by executable certificates, not newly Lean-verified results.
+\end{abstract}
+
+\section{Result, comparison target, and the boundary of the claim}
+\label{sec:result}
+
+The requested comparison is against the actual current project, including
+incoming packages, at the immutable snapshot
+\begin{center}\small\ttfamily
+76697262071ada91f29c14d9cf3801a64dacb994.
+\end{center}
+The repository is \texttt{VladimirReshetnikov/ProveIt}, path
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}. The README and
+the four incoming archives were read; their Git blob identities are
+recorded in \path{evidence/provenance.json}.\cite{readme,incoming}
+
+The main result is deliberately divided into two objects.
+\begin{enumerate}
+\item \textbf{A mathematical presentation refinement:} the new calculus
+$\mathcal T$ in Section~\ref{target:section}. Its primitive closure
+elimination has one numerical parameter and contains no arithmetic orbit
+term. It is bi-interpretable with full first-order iPRA, by explicit proof
+translations and the inherited bridge. Its complete direct checker is
+\path{code/target_checker.py}.
+\item \textbf{A smaller checked implementation of the existing theory:}
+\path{code/lexical_compact.py}, the 895-byte typed Choice-DI checker. Its accepted
+mathematical proof language is preserved by a parser-boundary theorem.
+It is \emph{not} an implementation of $\mathcal T$.
+\end{enumerate}
+
+These distinctions prevent assigning the compact implementation's size to
+the new mathematical calculus. The target rule is simpler than the recent
+orbit rule in a matched implementation. It does not improve on every
+existing calculus. The typed checker improves a concrete complete
+interface, including validation, without deleting a mathematical axiom.
+
+\paragraph{What was already present.}
+The project already contains equational-only transport, direct closure
+introduction, source-selected elimination, a single witness-sensitive
+introduction, crossed transport, one-context equality transport,
+one-hole replacement, and root-sensitive progressive closures. These are
+not claimed as new here. The incoming \texttt{uniform\_progress} and
+\texttt{kernel\_refinement} packages already attain the coordinate
+envelope 256 tokens / 278 AST nodes / 521 bytes, using three different
+programs.\cite{readme,uniform,kernel,onecontext}
+
+\paragraph{Measurement contract.}
+Every reported module is standalone. Its proof checker, input handling,
+validation, and final acceptance output are all counted. A proof producer,
+test driver, normalization script, mathematical report, or theorem database
+is never imported by a checker. Significant tokens, AST nodes, and UTF-8
+bytes are measured after normalization with
+\texttt{ast.unparse(ast.parse(source))} and one trailing newline, removing
+genuine docstrings from the direct typed controls. Deterministic gzip at
+level 9 is supplied for information. Measurements use CPython 3.12.14 and
+zlib 1.3.2; regeneration records the actual versions used.
+
+\paragraph{No lower-bound claim.}
+The smallest exhibited checker is an upper bound on description size.
+There is no proved lower bound here and no proof that further reductions
+are impossible. The requested improvement over the entire current
+mathematical frontier has not been established. The archive preserves
+the two narrower positive results rather than relabelling them as that
+stronger result.
+
+\section{The unchanged conditional theory}
+\label{sec:conditional}
+
+This section specifies the mathematical system whose compact checker is
+reduced in Section~\ref{sec:lexical}. The language has one numerical sort,
+\[
+ t::=x\mid0\mid St\mid I(n,a;u.h),\qquad
+ A::=(s=t)\mid Q_y A\mid D_{x,y}A.
+\]
+Only $u$ in the iterator body is bound. The ordinary readings, uniform
+over all formula roots, are
+\[
+ Q_yB(y):=B(0)\to\forall y\,B(y),\qquad
+ D_{x,y}B:=\exists x\bigl(B(x,0)\to\forall y\,B(x,y)\bigr).
+\]
+The contradiction is $0=S0$. Contexts are finite reusable lists; all
+substitutions avoid capture. There are exactly the following primitive
+patterns:
+\begin{align*}
+ &\mathrm{Hyp}:\quad A\in\Gamma\Longrightarrow\Gamma\vdash A;\\
+ &\mathrm{I0}:\quad \Gamma\vdash I(0,a;u.h)=a;\\
+ &\mathrm{IS}:\quad \Gamma\vdash I(Sn,a;u.h)=h[I(n,a;u.h)/u];\\
+ &\mathrm{Tr}_{\ne0}:\quad
+   \Gamma\vdash s=t,\quad\Gamma\vdash F(s)
+   \Longrightarrow\Gamma\vdash F(t),\qquad s\not\equiv0;\\
+ &\mathrm{QE}:\quad
+   \Gamma\vdash Q_yB,\quad\Gamma\vdash B(0)
+   \Longrightarrow\Gamma\vdash B(t);\\
+ &\mathrm{DE}:\quad
+   \Gamma\vdash D_{x,y}B,\quad\Gamma,Q_yB(b,y)\vdash A
+   \Longrightarrow\Gamma\vdash A;\\
+ &\mathrm{DI}_{\rm case}:\quad
+   \Gamma,B(t,0)\vdash B(t,Sz)
+   \Longrightarrow\Gamma\vdash D_{x,y}B;\\
+ &\mathrm{DI}_{\rm prog}:\quad
+   \Gamma,E(t,z)\vdash E(t,Sz)
+   \Longrightarrow\Gamma\vdash D_{x,y}E,
+   \qquad E\text{ a literal equation}.
+\end{align*}
+Here $F$ is a native formula template. The source restriction means
+syntactic inequality with the literal zero term, not numerical
+nonzeroness. The DE eigenparameter $b$ is fresh for the context,
+conclusion, and fixed matrix parameters. The DI eigenparameter $z$ is
+fresh for the context, witness, and fixed parameters. Local assumptions
+are discharged. There are no other primitive equality, successor,
+logical, or induction axioms.
+
+The source restriction is the established admissible restriction of
+the project. With unrestricted transport, these are the inherited
+Choice-DI rules; source-dispatch recovers all omitted zero-source
+instances. The existing native/scalar/iPRA bridge therefore applies.
+\cite{readme,source,choice,bridge}
+
+\paragraph{A significant implementation distinction.}
+The 895-byte program preserves \emph{both} DI choices at every witness.
+In its four-field introduction packet, the false-valued field
+\texttt{u=0} selects atomic progress, whereas \texttt{u=[]} selects
+cases, even at an equation. These are distinct exact JSON types and
+remain distinct after lexical validation. The expression
+\texttt{len(a) \% 2 == u} must not be replaced by the root-only test
+\texttt{len(a) == 2}. Such a replacement would change the theory to a
+different auxiliary calculus and would require a separate public-language
+theorem. This is neither the seven-rule witness presentation nor the
+deterministic guarded presentation.
+
+\paragraph{Bi-interpretation being preserved.}
+The native-to-ordinary interpretation fixes every numerical term and
+literal equation and uses the two displayed binder readings. Conversely,
+the ordinary logical operators are finite macros in the native language;
+Appendix~\ref{sec:macros} states them. The scalar ordinary theory has the
+two iterator equations, numerical coverage, separation, and contextual
+equation induction. The inherited predecessor, equality reflection,
+pairing, and primitive-recursion constructions interpret it in iPRA and
+back with both numerical composite graphs $x=y$. Both formula composites
+are derivable equivalences for the full language. The present change to
+input checking changes none of these maps, axioms, or proofs.
+
+\input{sections/target_closure.tex}
+
+\section{A smaller complete integer/list input boundary}
+\label{sec:lexical}
+
+The second result applies to the unchanged conditional calculus of
+Section~\ref{sec:conditional}, not to the progressive reading of
+Section~\ref{target:section}. Its reference is the incoming
+\texttt{one\_context} package's complete
+\path{strict/code/checker_typed.py}.\cite{onecontext}
+That module checks every certificate value recursively:
+\begin{lstlisting}[language=Python]
+def j(a):
+    return type(a) is int or (type(a) is list and all(j(b) for b in a))
+\end{lstlisting}
+It also repeats exact integer/list checks in the canonical public-goal
+validator. These tests can be charged once at the text boundary.
+
+Let $\Sigma$ consist of the characters
+\[
+ \texttt{[ ] , - 0 1 2 3 4 5 6 7 8 9}
+\]
+and JSON's four whitespace characters: space, tab, carriage return, and
+newline. The explicit new gate is
+\begin{lstlisting}[language=Python]
+raw = open(0).read()
+if raw.strip('[],-0123456789 \t\r\n'):
+    raise ValueError('Only integer/list certificate syntax is allowed')
+data = json.loads(raw)
+\end{lstlisting}
+
+\begin{lemma}[Lexical characterization of recursive exact typing]
+\label{lem:alphabet}
+Suppose the unchanged Python JSON parser successfully decodes a finite
+input text $r$ to $a$. Then every character of $r$ lies in $\Sigma$ if
+and only if $a$ satisfies the recursive predicate $j$ above.
+\end{lemma}
+\begin{proof}
+A JSON string necessarily contains quotation marks, an object contains
+braces, and the spellings of true, false, and null contain letters. None
+of these characters is in $\Sigma$. A nonintegral JSON number contains
+a decimal point or exponent marker, also excluded. Python's additional
+NaN and Infinity spellings contain excluded letters. Consequently a
+successfully parsed value over $\Sigma$ is an integer or a list whose
+children have the same property. JSON integer decoding produces exact
+Python integers, not booleans. Structural recursion proves $j(a)$.
+
+Conversely, a successfully parsed integer is spelled with digits and
+possibly a leading minus; a list uses brackets and commas and the
+spellings of its elements. If $j(a)$ holds, no other JSON value kind can
+occur. Whitespace admitted by the JSON grammar is precisely the four
+listed characters. Thus the whole spelling lies in $\Sigma$.
+\end{proof}
+
+\begin{lemma}[The use of \texttt{strip} is exact]
+A finite string $r$ satisfies \texttt{r.strip(chars) == ''} precisely
+when every character of $r$ belongs to \texttt{chars}.
+\end{lemma}
+\begin{proof}
+If all characters are permitted, the complete string is stripped. If
+some character is forbidden, stripping either end cannot remove that
+character, so the result is nonempty. This test does not claim that
+\texttt{strip} deletes forbidden interior characters.
+\end{proof}
+
+The JSON parser remains responsible for punctuation and number syntax.
+For example, a leading-zero integer, an unterminated list, adjacent
+values, or a bare minus can pass the alphabet gate but still fails
+parsing. Negative zero is harmless: it decodes to integer zero in both
+programs. Strings containing digit escapes are rejected as strings; there
+is no evaluation of certificate text as Python code.
+
+\subsection{Removing duplicate tests without changing the goal grammar}
+
+After this gate and successful JSON decoding, every value is known to be
+an exact integer or exact list. For such values,
+\[
+              a*0=[]\quad\Longleftrightarrow\quad
+              a\text{ is a list}.
+\]
+The exact-type tests in the goal validator can therefore be replaced by
+this already-used arithmetic/list distinction. The canonical grammar,
+allowed arities, repeated-triple condition for $Q$, numerical-coordinate
+restrictions, and the kernel's initial scope opening are all unchanged.
+
+For reference, the compact encoding uses arrays of arity two for an
+equation, arity one for $D$, and a triple of identical entries for $Q$.
+Numerical zero is integer zero, successor is unary, and an iterator is
+ternary. The inherited opening operation accounts for binder scope using
+arity-dependent dummy slots. The public validator continues to permit
+only zero and odd coordinates at least three at numerical leaves;
+the opener enforces their scope. This report does not enlarge the public
+language with administrative zero aliases.
+
+\begin{theorem}[Exact preservation of the ideal certificate language]
+\label{thm:lexical}
+Replace recursive $j$ by the lexical gate, and replace the redundant
+exact-type tests in the public validator as just described. Keep every
+proof-kernel expression unchanged. The old and new programs accept the
+same finite certificates in their ideal, unbounded-resource semantics.
+\end{theorem}
+\begin{proof}
+On a valid JSON input rejected by $j$, Lemma~\ref{lem:alphabet} makes
+the new lexical gate reject as well. On a valid JSON input passing $j$,
+the gate passes and the decoded tree is the identical tree. The new
+public validator agrees with the old validator on that tree because
+its replaced predicates agree on every integer/list node. Thereafter
+the programs run the same kernel on the same goal, retained resources,
+fresh-name floor, and instruction stream.
+
+Invalid JSON cannot lead to acceptance in either program. A root value
+that is not a certificate list fails the subsequent unchanged extraction
+operations. Unused prefix instructions remain inert for proof checking,
+but their types remain constrained, since the lexical gate examines the
+entire input. This proves both directions.
+\end{proof}
+
+The theorem concerns accepted mathematical certificates, not equality of
+every exception message or machine-resource failure. The old recursive
+typing traversal can exhaust the Python stack on a deeply nested unused
+prefix that the lexical gate does not traverse. Parser limits, memory
+limits, and proof-recursion limits remain operational limitations;
+resource exhaustion never counts as acceptance.
+
+\subsection{Explicit and compact drivers}
+
+The explicit version retains a descriptive typing error and is 963
+normalized bytes. The recommended size profile additionally uses the
+following Boolean gate:
+\begin{lstlisting}[language=Python]
+q = open(0).read()
+q = not q.strip('[],-0123456789 \t\r\n') and json.loads(q).pop
+a = q()
+\end{lstlisting}
+For forbidden input, short-circuit evaluation assigns the Boolean
+\texttt{False} to \texttt{q}; the immediate call raises an exception, so
+the program cannot reach its acceptance output. For permitted input,
+\texttt{q} is precisely the same list-pop operation as before. The
+explicit variant is useful when a descriptive failure is preferred.
+Neither program uses assertions, so optimized Python does not remove a
+logical check.
+
+A separate frozen control applies the same Boolean-driver factoring to
+the old recursive predicate. It is 963 bytes, compared with 895 bytes for
+the Boolean lexical version. Thus the lexical contribution can be
+measured independently of shortening the error branch. The complete
+1039-to-895 change is not all assigned to a single optimization.
+
+\section{Measurements and executable evidence}
+\label{sec:measurements}
+
+\subsection{The same full typed certificate contract}
+
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Complete module & Tokens & AST & Bytes & Gzip 9\\
+\midrule
+Inherited recursive typed control & 442 & 502 & 1,039 & 547\\
+Explicit lexical gate & 404 & 455 & 963 & 549\\
+Boolean lexical gate (recommended) & 399 & 453 & 895 & 512\\
+\bottomrule
+\end{tabular}
+\end{center}
+The recommended module reduces bytes by 144 (13.86\%), tokens by 43
+(9.73\%), and AST nodes by 49 (9.76\%). Gzip decreases by 35 bytes in
+that profile; in the more explicit profile it increases by two bytes.
+Compression is not the optimization objective. The exact additionally
+factored control and its measurements are included in the machine-readable
+results.
+
+\subsection{The same direct typed rule-checker framework}
+
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Calculus & Tokens & AST & Bytes & Gzip 9\\
+\midrule
+Adopted native eight-rule control & 1,235 & 1,407 & 4,692 & 1,199\\
+Existing witness-sensitive seven-rule & 1,173 & 1,334 & 4,456 & 1,198\\
+Existing progressive orbit $\mathcal R$ & 1,206 & 1,366 & 4,553 & 1,211\\
+Target-directed $\mathcal T$ & 1,195 & 1,358 & 4,532 & 1,220\\
+\bottomrule
+\end{tabular}
+\end{center}
+The target-directed change saves 21 bytes, 11 tokens, and 8 AST nodes
+against its exact orbit comparator. It increases gzip by nine bytes.
+It remains 76 bytes, 22 tokens, and 24 AST nodes larger than the existing
+witness-sensitive calculus. Replacing the separate source/seed orbit
+instruction removes a mathematical dependency and a certificate parameter;
+that gain is local, not a new overall minimum.
+
+\subsection{The compact canonical-goal frontier is a different contract}
+
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Existing profile & Tokens & AST & Bytes & Gzip 9\\
+\midrule
+Token profile & 256 & 283 & 594 & 346\\
+AST profile & 260 & 278 & 602 & 344\\
+Byte profile & 263 & 300 & 521 & 327\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are three complete programs with a prescribed canonical public
+goal contract; they do not perform the full public validation and
+whole-certificate exact typing charged to the 895-byte module. No
+single program in this table has the combined tuple $(256,278,521)$.
+The new work does not improve any of these three compact minima.
+
+\subsection{What was checked}
+
+The reproduction script records exact hashes, Python and zlib versions,
+normalization conventions, positive and negative certificates, parser
+attacks, and process outcomes in \path{evidence/}. It checks that the
+compact proof kernel is syntactically identical before and after the
+lexical change, and exercises both false-valued DI modes. Whole-input
+typing controls include booleans, null, strings, floats, exponent syntax,
+objects, NaN/Infinity, malformed JSON, and forbidden data in an otherwise
+unused prefix. Runs use normal and optimized Python.
+
+The direct target-calculus controls exercise successor and nonsuccessor
+targets, a compound closure at a successor target, the wrapper recovery
+of an arbitrary target, induction with a used induction hypothesis,
+fresh-variable restrictions, malformed terms, and negative examples.
+The delivered reproduction records 652 subprocess executions with zero
+mismatches, 3,068 lexical-gate checks per profile, 30 closed target-calculus
+cases, five open-sequent controls, and 600 independent named-syntax
+substitution/lift checks. The frozen evidence files record the expected
+outcomes. These tests support the implementations. They do not replace
+the universal equivalence proofs or establish an absolute lower bound.
+
+\section{Assessment and reproducibility}
+\label{sec:assessment}
+
+The smaller fully typed checker is a justified implementation improvement
+of an existing complete iPRA presentation. The new target-directed
+calculus is a justified mathematical refinement of the recent orbit
+presentation, with a simpler induction bootstrap and exact full-language
+round trips. The existing witness-sensitive presentation remains smaller
+in the matched direct comparison. This is the precise extent to which the
+requested simplification was obtained.
+
+Other investigated routes did not supply a stronger result. Making the
+atomic guard implicit simplifies the public datatype but introduces an
+elaboration cost that loses against a similarly factored guarded
+validator. A stopped-clock construction in the self-seeded arithmetic
+precursor gives a useful diagonal equation, but does not prove successor
+injectivity. Neither failed route is used as an axiom deletion here.
+The audit notes record the limits; no independence or impossibility
+theorem is inferred from the failed searches.
+
+\paragraph{Archive contents.}
+\path{report.pdf} and its standalone \path{report.tex} contain the present
+results. \path{foundations.pdf} and \path{foundations.tex} retain the
+attributed inherited native/ordinary/arithmetic and progressive-closure
+proofs. \path{code/} contains complete new checkers; \path{reference/}
+contains exact controls and upstream attribution; \path{tests/} contains
+certificates and producers; \path{evidence/} contains measurements,
+verification receipts, and audits. Compressed normalized checker sources
+are supplied alongside the measurement artifacts.
+
+Run the standard-library-only verification script from the extracted
+directory, and compile either standalone LaTeX source with a normal
+TeX installation:
+\begin{lstlisting}
+python3 reproduce.py
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error foundations.tex
+pdflatex -interaction=nonstopmode -halt-on-error foundations.tex
+\end{lstlisting}
+Acceptance means normal process exit and exactly \texttt{ACCEPT} plus one
+newline. Every exception is rejection. The new metatheorems have been
+independently reviewed in writing. Lean and Lake were unavailable, so
+no new compiled Lean result or machine verification of the Python
+kernel is claimed.
+
+\appendix
+\section{Ordinary logical macros and the arithmetic bridge}
+\label{sec:macros}
+
+The following finite macros belong to the uniform conditional native
+language of Section~\ref{sec:conditional}. They must be expanded there
+before applying the translation $F$ into the progressive language.
+They are inherited from \texttt{NativeGate.lean} and
+\texttt{NativeLogic.lean}.\cite{native}
+Put $C(v,a,b)=I(v,a;u.b)$, with $u$ unused. Define the equation/formula
+selector recursively by
+\[
+\begin{aligned}
+U_v(s,t;r=w)&=(C(v,s,r)=C(v,t,w)),\\
+U_v(s,t;Q_yB)&=Q_yU_v(C(y,0,s),C(y,0,t);B),\\
+U_v(s,t;D_{x,y}B)&=D_{x,y}U_v(C(y,0,s),C(y,0,t);B).
+\end{aligned}
+\]
+Set $G_vA=U_v(0,0;A)$. Define the general selector by
+\[
+\begin{aligned}
+M_v(s=t,B)&=U_v(s,t;B),\\
+M_v(Q_yA,B)&=Q_yM_v(A,G_yB),\\
+M_v(D_{x,y}A,B)&=D_{x,y}M_v(A,G_yB).
+\end{aligned}
+\]
+Variables are freshened throughout. The native rules derive
+$G_0A$, $G_{Sz}A\eqv A$, $M_0(A,B)\eqv A$, and
+$M_{Sz}(A,B)\eqv B$. With
+$p(y)=I(y,0;u.C(u,1,0))$, the logical operations are
+\[
+\begin{aligned}
+\bot_*&=(0=1),&
+A\Rightarrow_*B&=Q_yM_y(A,B),\\
+A\wedge_*B&=Q_yG_yM_{p(y)}(A,B),&
+\exists_*x\,A(x)&=D_{x,y}G_yA(x),\\
+A\vee_*B&=\exists_*v\,M_v(A,B),&
+\forall_*x\,A(x)&=A(0)\wedge_*Q_xA(x).
+\end{aligned}
+\]
+These are macros, not extra primitive schemas. Implication elimination
+uses the selector at $1$; existential elimination uses DE, the zero gate,
+and QE at $1$; the two parity values recover conjunction; numerical
+cases supply disjunction elimination. From $0=1$, selector computations
+give arbitrary term equality, and structural recursion gives ex falso
+for every formula. The complete inherited arguments are compiled in
+the companion foundations document.
+
+The ordinary scalar theory $\Teq$ uses intuitionistic first-order
+equality logic, the two iterator equations, coverage
+$\forall n(n=0\vee\exists m\,n=Sm)$, separation
+$0=S0\to\bot$, and contextual induction on literal equations.
+The inherited chain constructs predecessor first, then equality
+reflection and quantifier-free induction, then pairing and projections,
+and finally a compiler for every fixed primitive recursive definition.
+The opposite translation interprets scalar iteration by primitive
+recursion. The two numerical composites are provably the identity;
+the formula composites are provable equivalences.\cite{bridge}
+
+No variable ranges over primitive-recursive program descriptions, and
+no total universal evaluator is postulated. The compiler is an external
+recursion on each fixed finite description. This preserves the intended
+strength of iPRA rather than silently adjoining a stronger evaluator.
+
+\begingroup\small\raggedright
+\begin{thebibliography}{9}
+\bibitem{readme} V. Reshetnikov, \emph{Concise presentations of intuitionistic primitive recursive arithmetic}, ProveIt README, pinned commit \texttt{76697262071ada91f29c14d9cf3801a64dacb994}.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/76697262071ada91f29c14d9cf3801a64dacb994/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}.
+\bibitem{incoming} ProveIt, \emph{ConciseIPRA/docs/incoming}, four archives at the same pinned commit. Blob identities are reproduced in \path{evidence/provenance.json}.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/76697262071ada91f29c14d9cf3801a64dacb994/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/incoming}.
+\bibitem{uniform} \emph{A uniform introduction rule for intuitionistic primitive recursive arithmetic}, incoming \path{ipra_uniform_progress_2026-11-11.zip}, blob \texttt{2b8392d6036daf0272b8697b549557aefc9e1cad}. Full mathematical core retained in the companion foundations document.
+\bibitem{kernel} \emph{A smaller checked presentation of iPRA}, incoming \path{ipra_kernel_refinement_2026-11-11.zip}, blob \texttt{d00ab53c90daec469ff17e1b36e9eede5be92779}.
+\bibitem{onecontext} \emph{One term context for equality}, incoming \path{ipra_one_context_2026-11-11.zip}, blob \texttt{46e1344d8ce4bd91c696f0eefe951a306ea6d3eb}. The exact complete typed module is frozen as the lexical comparison control.
+\bibitem{source} ProveIt, \emph{source\_dispatch}, source-restricted transport and its admissibility proof, under \path{ConciseIPRA/Research/source_dispatch/} at the pinned commit.
+\bibitem{choice} ProveIt, \emph{Complementary introductions with one local assumption}, \path{Research/certified_zero/reference/inherited_choice_basis.tex}, reproduced with attribution in the companion foundations document.
+\bibitem{native} ProveIt, \emph{NativeGate.lean}, \emph{NativeLogic.lean}, \emph{NativeInherited.lean}, and \emph{NativeZeroSource.lean}, under \path{ConciseIPRA/Lean/ConciseIPRA/} at the pinned commit.
+\bibitem{bridge} ProveIt, \emph{NativeBiInterpretation.lean}, \emph{BiInterpretation.lean}, and the scalar predecessor, equality reflection, and primitive-recursion sources. The relevant existing endpoints are \texttt{native\_iff\_pra}, \texttt{pra\_iff\_native}, \texttt{native\_roundTrip}, \texttt{pra\_native\_roundTrip}, and \texttt{native\_inconsistent\_iff}.
+\end{thebibliography}
+\endgroup
+\end{document}

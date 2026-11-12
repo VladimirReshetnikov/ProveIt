@@ -1,0 +1,2467 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "programs": [
+    "global_rewrite",
+    "one_context_original_walk",
+    "one_context_callback_walk",
+    "one_context_unified_walk"
+  ],
+  "cases_per_program": 38,
+  "process_runs": 304,
+  "expected_acceptances": 112,
+  "expected_rejections": 192,
+  "matched": 304,
+  "traversal_comparisons": {
+    "seed": 20261111,
+    "counts": {
+      "shift": 600,
+      "sub_drop_one": 200,
+      "sub_drop_zero": 200,
+      "root_rewrite": 200
+    },
+    "comparisons": 1200,
+    "mismatches": 0
+  },
+  "failures": [],
+  "runs": [
+    {
+      "program": "global_rewrite",
+      "case": "root_reflexivity_zero",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "root_symmetry_computation",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "fresh_alias_passive_occurrence",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "large_marker_passive_occurrence",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "two_sided_transport",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "large_marker_two_sided_transport",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "fresh_alias_nested_binders",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "large_marker_nested_binders",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "bound_variable_is_not_free_source",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_capture_of_bound_variable",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "rewrite_free_parameter_below_binders",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "top_down_overlapping_creation",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_bottom_up_new_match",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "closed_derived_congruence",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "closed_large_marker_congruence",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "used_hypothesis_progress",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_case_in_place_of_progress",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_extra_header_field",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_boolean_variable_count",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_negative_variable_count",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_free_variable_goal",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_boolean_variable_index",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_boolean_hypothesis_index",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_negative_hypothesis_index",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_out_of_range_hypothesis",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_invalid_initializer_scope",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_invalid_update_scope",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_invalid_counter_scope",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_wrong_zero_endpoint",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_formula_in_term_position",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_wrong_proof_arity",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_unknown_proof_rule",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_wrong_QE_base",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_equation_as_Q_major",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_non_equation_rewrite_major",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_non_equation_rewrite_minor",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_DI_witness_escape",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_DE_witness_escape",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "root_reflexivity_zero",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "root_symmetry_computation",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "fresh_alias_passive_occurrence",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "large_marker_passive_occurrence",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "two_sided_transport",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "large_marker_two_sided_transport",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "fresh_alias_nested_binders",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "large_marker_nested_binders",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "bound_variable_is_not_free_source",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_capture_of_bound_variable",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "rewrite_free_parameter_below_binders",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "top_down_overlapping_creation",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_bottom_up_new_match",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "closed_derived_congruence",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "closed_large_marker_congruence",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "used_hypothesis_progress",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_case_in_place_of_progress",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_extra_header_field",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_boolean_variable_count",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_negative_variable_count",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_free_variable_goal",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_boolean_variable_index",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_boolean_hypothesis_index",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_negative_hypothesis_index",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_out_of_range_hypothesis",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_invalid_initializer_scope",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_invalid_update_scope",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_invalid_counter_scope",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_wrong_zero_endpoint",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_formula_in_term_position",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_wrong_proof_arity",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_unknown_proof_rule",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_wrong_QE_base",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_equation_as_Q_major",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_non_equation_rewrite_major",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_non_equation_rewrite_minor",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_DI_witness_escape",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "global_rewrite",
+      "case": "reject_DE_witness_escape",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "root_reflexivity_zero",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "root_symmetry_computation",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "fresh_alias_passive_occurrence",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "large_marker_passive_occurrence",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "two_sided_transport",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "large_marker_two_sided_transport",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "fresh_alias_nested_binders",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "large_marker_nested_binders",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "bound_variable_is_not_free_source",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_capture_of_bound_variable",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "rewrite_free_parameter_below_binders",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "top_down_overlapping_creation",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_bottom_up_new_match",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "closed_derived_congruence",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "closed_large_marker_congruence",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "used_hypothesis_progress",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_case_in_place_of_progress",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_extra_header_field",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_boolean_variable_count",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_negative_variable_count",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_free_variable_goal",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_boolean_variable_index",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_boolean_hypothesis_index",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_negative_hypothesis_index",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_out_of_range_hypothesis",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_invalid_initializer_scope",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_invalid_update_scope",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_invalid_counter_scope",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_wrong_zero_endpoint",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_formula_in_term_position",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_wrong_proof_arity",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_unknown_proof_rule",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_wrong_QE_base",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_equation_as_Q_major",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_non_equation_rewrite_major",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_non_equation_rewrite_minor",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_DI_witness_escape",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_DE_witness_escape",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "root_reflexivity_zero",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "root_symmetry_computation",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "fresh_alias_passive_occurrence",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "large_marker_passive_occurrence",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "two_sided_transport",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "large_marker_two_sided_transport",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "fresh_alias_nested_binders",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "large_marker_nested_binders",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "bound_variable_is_not_free_source",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_capture_of_bound_variable",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "rewrite_free_parameter_below_binders",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "top_down_overlapping_creation",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_bottom_up_new_match",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "closed_derived_congruence",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "closed_large_marker_congruence",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "used_hypothesis_progress",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_case_in_place_of_progress",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_extra_header_field",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_boolean_variable_count",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_negative_variable_count",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_free_variable_goal",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_boolean_variable_index",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_boolean_hypothesis_index",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_negative_hypothesis_index",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_out_of_range_hypothesis",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_invalid_initializer_scope",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_invalid_update_scope",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_invalid_counter_scope",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_wrong_zero_endpoint",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_formula_in_term_position",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_wrong_proof_arity",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_unknown_proof_rule",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_wrong_QE_base",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_equation_as_Q_major",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_non_equation_rewrite_major",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_non_equation_rewrite_minor",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_DI_witness_escape",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_original_walk",
+      "case": "reject_DE_witness_escape",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "root_reflexivity_zero",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "root_symmetry_computation",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "fresh_alias_passive_occurrence",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "large_marker_passive_occurrence",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "two_sided_transport",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "large_marker_two_sided_transport",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "fresh_alias_nested_binders",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "large_marker_nested_binders",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "bound_variable_is_not_free_source",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_capture_of_bound_variable",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "rewrite_free_parameter_below_binders",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "top_down_overlapping_creation",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_bottom_up_new_match",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "closed_derived_congruence",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "closed_large_marker_congruence",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "used_hypothesis_progress",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_case_in_place_of_progress",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_extra_header_field",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_boolean_variable_count",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_negative_variable_count",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_free_variable_goal",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_boolean_variable_index",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_boolean_hypothesis_index",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_negative_hypothesis_index",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_out_of_range_hypothesis",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_invalid_initializer_scope",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_invalid_update_scope",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_invalid_counter_scope",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_wrong_zero_endpoint",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_formula_in_term_position",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_wrong_proof_arity",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_unknown_proof_rule",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_wrong_QE_base",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_equation_as_Q_major",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_non_equation_rewrite_major",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_non_equation_rewrite_minor",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_DI_witness_escape",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_DE_witness_escape",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "root_reflexivity_zero",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "root_symmetry_computation",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "fresh_alias_passive_occurrence",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "large_marker_passive_occurrence",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "two_sided_transport",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "large_marker_two_sided_transport",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "fresh_alias_nested_binders",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "large_marker_nested_binders",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "bound_variable_is_not_free_source",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_capture_of_bound_variable",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "rewrite_free_parameter_below_binders",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "top_down_overlapping_creation",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_bottom_up_new_match",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "closed_derived_congruence",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "closed_large_marker_congruence",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "used_hypothesis_progress",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_case_in_place_of_progress",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_extra_header_field",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_boolean_variable_count",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_negative_variable_count",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_free_variable_goal",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_boolean_variable_index",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_boolean_hypothesis_index",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_negative_hypothesis_index",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_out_of_range_hypothesis",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_invalid_initializer_scope",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_invalid_update_scope",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_invalid_counter_scope",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_wrong_zero_endpoint",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_formula_in_term_position",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_wrong_proof_arity",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_unknown_proof_rule",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_wrong_QE_base",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_equation_as_Q_major",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_non_equation_rewrite_major",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_non_equation_rewrite_minor",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_DI_witness_escape",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_callback_walk",
+      "case": "reject_DE_witness_escape",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "root_reflexivity_zero",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "root_symmetry_computation",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "fresh_alias_passive_occurrence",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "large_marker_passive_occurrence",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "two_sided_transport",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "large_marker_two_sided_transport",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "fresh_alias_nested_binders",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "large_marker_nested_binders",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "bound_variable_is_not_free_source",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_capture_of_bound_variable",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "rewrite_free_parameter_below_binders",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "top_down_overlapping_creation",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_bottom_up_new_match",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "closed_derived_congruence",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "closed_large_marker_congruence",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "used_hypothesis_progress",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_case_in_place_of_progress",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_extra_header_field",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_boolean_variable_count",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_negative_variable_count",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_free_variable_goal",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_boolean_variable_index",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_boolean_hypothesis_index",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_negative_hypothesis_index",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_out_of_range_hypothesis",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_invalid_initializer_scope",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_invalid_update_scope",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_invalid_counter_scope",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_wrong_zero_endpoint",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_formula_in_term_position",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_wrong_proof_arity",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_unknown_proof_rule",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_wrong_QE_base",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_equation_as_Q_major",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_non_equation_rewrite_major",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_non_equation_rewrite_minor",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_DI_witness_escape",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_DE_witness_escape",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "root_reflexivity_zero",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "root_symmetry_computation",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "fresh_alias_passive_occurrence",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "large_marker_passive_occurrence",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "two_sided_transport",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "large_marker_two_sided_transport",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "fresh_alias_nested_binders",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "large_marker_nested_binders",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "bound_variable_is_not_free_source",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_capture_of_bound_variable",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "rewrite_free_parameter_below_binders",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "top_down_overlapping_creation",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_bottom_up_new_match",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "closed_derived_congruence",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "closed_large_marker_congruence",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "used_hypothesis_progress",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_case_in_place_of_progress",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_extra_header_field",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_boolean_variable_count",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_negative_variable_count",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_free_variable_goal",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_boolean_variable_index",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_boolean_hypothesis_index",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_negative_hypothesis_index",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_out_of_range_hypothesis",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_invalid_initializer_scope",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_invalid_update_scope",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_invalid_counter_scope",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_wrong_zero_endpoint",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_formula_in_term_position",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_wrong_proof_arity",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_unknown_proof_rule",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_wrong_QE_base",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_equation_as_Q_major",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_non_equation_rewrite_major",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_non_equation_rewrite_minor",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_DI_witness_escape",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    },
+    {
+      "program": "one_context_unified_walk",
+      "case": "reject_DE_witness_escape",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "matched": true
+    }
+  ],
+  "source_hashes": {
+    "code/global_rewrite.py": "6c01d6b9012b045544a2896c960735802e8f044bd62e3e8c16451ec2605043d2",
+    "reference/one_context_seven.py": "d5dbe1224709082c179e155d6141e074e43eac26c6329c606fadd4954489d0e4",
+    "reference/one_context_seven_shared_walk.py": "1ebe6082d597755822be41854d0ea3ccc7a17efca13b9cfb211e4fefdbd03c2e",
+    "reference/one_context_seven_unified_walk.py": "505046149c6cedefcf786323c9d54d1339dade054268be057263fe3725b4a965"
+  },
+  "limits": "Finite implementation checks, not a formal proof of soundness or bi-interpretability."
+}

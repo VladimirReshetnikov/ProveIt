@@ -1,0 +1,32 @@
+--- general_context.py
++++ seed_only.py
+@@ -1,4 +1,4 @@
+-"""General one-context ordinary transport.
++"""Template-free transport using proved-term invariants.
+ Strict six-rule zero-canonical scalar arithmetic; ordinary Q elimination.
+ The entire command-line checker is contained in this one module.
+ """
+@@ -74,15 +74,14 @@
+             fail()
+         return ['=', rec(successor(n), a, h),
+                 subst(h, [rec(n, a, h)])]
+-    if tag == 'x' and len(proof) == 4:
+-        template, major, minor = proof[1:]
+-        if not term(template, scope + 1):
+-            fail()
+-        _, source, target = derive(major, context, scope)
+-        _, left, right = derive(minor, context, scope)
+-        if left != subst(template, [source]):
+-            fail()
+-        return ['=', subst(template, [target]), right]
++    if tag == 'x' and len(proof) == 3:
++        _, source, target = derive(proof[1], context, scope)
++        _, left, right = derive(proof[2], context, scope)
++        if left != source:
++            if left[1] != source:
++                fail()
++            target = [left[0], target, left[2]]
++        return ['=', target, right]
+     if tag == 'q' and len(proof) == 4:
+         witness, major, base = proof[1:]
+         if not term(witness, scope):

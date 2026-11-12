@@ -1,0 +1,510 @@
+\section{A substitution-stable single introduction}
+\label{sec:diagonal-core}
+
+The construction retains every numerical term and every formula of the
+native scalar calculus.  It also retains the ordinary readings of its two
+binders.  The change is confined to the introduction rule: a particular
+\emph{syntactic diagonal shape} selects progress; every other matrix selects
+cases.  The diagonal is chosen so that its zero instance is a theorem and
+its recognition commutes with capture-free substitution.
+
+\subsection{Syntax, readings, and all seven primitive rules}
+
+Numerical terms and native formulas are
+\[
+ t ::= x\mid 0\mid S(t)\mid I(n,a;u.h),
+ \qquad
+ A ::= (s=t)\mid Q_y A\mid D_{x,y}A.
+\]
+In an iterator only $u$ is bound, and only in $h$; in $D$ the variables
+$x,y$ are distinct.  We work up to renaming of bound variables, and all
+substitutions avoid capture.  No restriction is imposed on public formulas,
+intermediate formulas, iterator bodies, or witnesses.  The designated
+contradiction remains $0=S0$.  The ordinary readings remain
+\[
+ Q_y B := B(0)\to\forall y\,B(y),\qquad
+ D_{x,y}B := \exists x\bigl(B(x,0)\to\forall y\,B(x,y)\bigr).
+\]
+
+\begin{definition}[The diagonal predicate]
+For a matrix $B(x,y)$, let $\operatorname{Diag}_y(B)$ mean that its
+\emph{literal syntax} is
+\begin{equation}
+ B(x,y)=
+ \bigl(I(y,y;u.h)=I(y,y;v.k)\bigr)
+ \label{eq:diag-shape}
+\end{equation}
+for some bodies $h,k$.  The displayed counter and initializer on both sides
+are each the variable bound as $y$ by the impending $D$.
+The state binders $u,v$ may be renamed independently.  The bodies may use
+$x,y$, their own state variable, and any fixed parameters.
+This is syntactic recognition, without simplification or an equality test
+inside the arithmetic theory.  Put
+\[
+ \eta_B(z)=
+ \begin{cases}
+ z,&\operatorname{Diag}_y(B),\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+\end{definition}
+
+The calculus $\mathcal G$ has the following complete primitive inventory.
+Contexts are finite reusable lists of native formulas.
+\begin{align*}
+ \frac{A\in\Gamma}{\Gamma\vdash A}
+   &\quad\text{Hyp},\\[3pt]
+ \Gamma\vdash I(0,a;u.h)=a
+   &\quad\text{I0},\\[3pt]
+ \Gamma\vdash I(Sn,a;u.h)=h[I(n,a;u.h)/u]
+   &\quad\text{IS},\\[3pt]
+ \frac{\Gamma\vdash s=t\qquad
+       \Gamma\vdash a(s)=b(s)}
+      {\Gamma\vdash a(t)=b(t)}
+   &\quad\text{Tr}_{=},\\[6pt]
+ \frac{\Gamma\vdash Q_y B(y)\qquad\Gamma\vdash B(0)}
+      {\Gamma\vdash B(t)}
+   &\quad\text{QE},\\[6pt]
+ \frac{\Gamma\vdash D_{x,y}B(x,y)\qquad
+       \Gamma,Q_yB(b,y)\vdash A}
+      {\Gamma\vdash A}
+   &\quad\text{DE},\\[6pt]
+ \frac{\Gamma,B(t,\eta_B(z))\vdash B(t,Sz)}
+      {\Gamma\vdash D_{x,y}B(x,y)}
+   &\quad\text{DI}_{\mathcal G}.
+\end{align*}
+In $\mathrm{Tr}_{=}$, $a(v),b(v)$ are numerical term templates; transport
+inside a compound formula is not primitive.  In DE, $b$ is fresh for
+$\Gamma,A$ and the fixed parameters of $B$.  In DI, $z$ is fresh for
+$\Gamma,t$ and the fixed parameters of $B$.  The displayed local
+assumptions are discharged.  There is no primitive reflexivity,
+substitution, cut, ordinary connective, case, or additional induction
+rule.
+
+For comparison, $\mathcal N$ is the eight-rule native kernel of the
+repository: its first six rules are the ones displayed above, and its two
+introductions are
+\begin{equation}
+ \frac{\Gamma,B(t,0)\vdash B(t,Sz)}
+      {\Gamma\vdash D_{x,y}B(x,y)}
+ \quad\text{DI}_{\rm case},
+ \qquad
+ \frac{\Gamma,E(z)\vdash E(Sz)}
+      {\Gamma\vdash Q_y E(y)}
+ \quad\text{QI}_{\rm eq},
+ \label{eq:diag-native-intros}
+\end{equation}
+where $E$ is a literal equation and the same freshness conventions apply.
+
+\subsection{Why the diagonal survives substitution}
+
+\begin{lemma}[Preservation and reflection of the guard]
+\label{lem:diag-stable}
+Let $\sigma$ be a capture-free substitution for the free parameters of
+$B(x,y)$, with $x,y$ retained as the distinguished bound coordinates.
+Then
+\[
+ \operatorname{Diag}_y(B\sigma)
+ \quad\Longleftrightarrow\quad
+ \operatorname{Diag}_y(B).
+\]
+The same assertion holds when a witness is substituted for $x$, provided
+that the witness does not contain the bound coordinate $y$.
+\end{lemma}
+\begin{proof}
+Rename binders away from every term in the substitution range.
+A constructor-headed term remains headed by that constructor after
+substitution.  Moreover, a term becomes the distinguished bound variable
+$y$ if and only if it was already $y$: another retained variable stays
+different from $y$, a substituted parameter has an image not containing
+$y$, and a constructor-headed term cannot become a variable.
+Consequently an iterator becomes headed by the exact pair of arguments
+$(y,y)$ if and only if it had that pair before substitution.
+The root of a formula is also preserved.  An entire side that is a
+substituted parameter may become iterator-headed, but cannot acquire the
+specified shape, because its image has no free occurrence of the protected
+$y$.  An existing iterator matches the shape exactly when its two displayed
+arguments match $y$, by the preceding argument.  Applying these facts to
+both sides proves both directions of the equivalence.  The bodies are
+unrestricted, so they impose no further condition.  Witness substitution
+is the same argument with $x$ among the substituted parameters.
+\end{proof}
+
+The reflection direction is essential.  The superficially similar guard
+\[
+ I(y,0;u.h)=I(y,0;v.k)
+\]
+does not have it.  For a free parameter $p$, the matrix
+\[
+ I(y,p;u.0)=I(y,0;v.0)
+\]
+does not match the zero-initializer guard, whereas its substitution
+$p:=0$ does.  Thus that test can change a case instruction into a progress
+instruction.  Requiring the initializer itself to be the protected bound
+variable $y$ prevents this event.
+
+\begin{lemma}[Structural admissibility]
+\label{lem:diag-structural}
+Weakening, exchange, contraction, renaming, capture-free numerical
+substitution, and ordinary-assumption cut are admissible in $\mathcal G$.
+Numerical substitution can be performed by induction on a derivation
+without changing any last-rule constructor or either mode of
+$\mathrm{DI}_{\mathcal G}$.
+\end{lemma}
+\begin{proof}
+Weakening, exchange and contraction change only hypothesis membership;
+rename eigenparameters before inserting a context that could contain
+them.  For numerical substitution, induct on the derivation.  The
+computation and transport rules commute with capture-free substitution.
+For QE and DE use the usual interchange of lifted substitution and
+instantiation, after renaming their bound and eigenvariables.  In DI,
+Lemma~\ref{lem:diag-stable} says that the same one of $0,z$ is retained
+after substitution.  The substituted premise is therefore exactly the
+premise of the same mode of DI.  This proves the induction step directly.
+
+For cut, replace each use of a discharged ordinary hypothesis by its
+supplied derivation.  Induct on the derivation in which that hypothesis
+occurs, weakening the inserted proof in each local context.  Rename local
+eigenparameters away from the inserted proof.  The guard is independent
+of context and proof terms, so its mode is unchanged.  This proves both
+single-assumption cut and simultaneous replacement of hypotheses by
+derivations.  None of these arguments appeals to the equivalence with
+$\mathcal N$ proved below.
+\end{proof}
+
+\subsection{Recovering every case introduction first}
+
+\begin{lemma}[Elementary equality and the diagonal base]
+\label{lem:diag-base}
+Reflexivity, symmetry, transitivity and congruence for numerical terms are
+derivable using only I0 and $\mathrm{Tr}_{=}$.  If
+$\operatorname{Diag}_y(B)$, then $\Gamma\vdash B(t,0)$ for every
+context $\Gamma$ and witness $t$.
+\end{lemma}
+\begin{proof}
+Put $r=I(0,a;u.0)$.  The computation $r=a$, used as both transport
+premises with equation template $v=a$, gives $a=a$.
+From $s=t$ and $s=s$, the template $v=s$ gives $t=s$.
+The template $s=v$ gives transitivity, and the template
+$h(s)=h(v)$ gives congruence after reflexivity.
+At $y=0$, both sides of~\eqref{eq:diag-shape} are of the form
+$I(0,0;u.h')$, hence each equals $0$ by I0.
+Symmetry and transitivity give their equality.  No induction, body
+extensionality, or test for numerical equality is used.
+\end{proof}
+
+\begin{lemma}[Unrestricted case introduction]
+\label{lem:diag-all-cases}
+Every instance of $\mathrm{DI}_{\rm case}$ in
+\eqref{eq:diag-native-intros} is admissible in $\mathcal G$, for every
+native matrix $B$.
+\end{lemma}
+\begin{proof}
+If $B$ does not match the diagonal, the desired rule is primitive.
+Otherwise start with
+$\Gamma,B(t,0)\vdash B(t,Sz)$.
+By Lemma~\ref{lem:diag-base} the discharged base is already a theorem,
+so cut it out.  This gives $\Gamma\vdash B(t,Sz)$.
+Weaken by $B(t,z)$ and apply the progress mode of
+$\mathrm{DI}_{\mathcal G}$.
+This recovers the omitted case instance without any general equation
+induction.
+\end{proof}
+
+\begin{lemma}[Conditional closure and ordinary numerical cases]
+\label{lem:diag-case-interface}
+For every native formula template $F(y)$, the rules
+\[
+ \frac{\Gamma,F(0)\vdash F(Sz)}{\Gamma\vdash Q_yF(y)},
+ \qquad
+ \frac{\Gamma\vdash F(0)\qquad\Gamma,F(0)\vdash F(Sz)}
+      {\Gamma\vdash F(t)}
+\]
+are admissible in $\mathcal G$, with $z$ fresh for the retained
+context and fixed parameters.  In particular, the second successor
+premise may ignore its additional hypothesis $F(0)$.
+\end{lemma}
+\begin{proof}
+Choose an unused witness coordinate $x$.  The recovered case rule at
+witness $0$ introduces $D_{x,y}F(y)$ from the first displayed premise.
+DE opens $Q_yF(y)$, which is independent of the fresh witness; return
+that hypothesis as the conclusion of DE.  This proves the first rule.
+QE with the base proof proves the second rule.
+\end{proof}
+
+\subsection{A small logical tool with no hidden induction}
+
+Only implication between two equations is needed in the completeness
+proof.  It can be constructed directly, so no general formula selector,
+reflected equality, predecessor, or pairing theorem is needed at this
+stage.  Define the numerical selector
+\[
+ C(w,a,b):=I(w,a;u.b),\qquad u\notin\operatorname{FV}(b).
+\]
+Computation gives $C(0,a,b)=a$ and $C(Sw,a,b)=b$.
+For equations $U=(a=b)$ and $V=(c=d)$, with $w$ fresh, put
+\begin{equation}
+ U\Rightarrow_{=}V
+   :=Q_w\bigl(C(w,a,c)=C(w,b,d)\bigr).
+ \label{eq:diag-equational-implication}
+\end{equation}
+This is a native formula abbreviation, not an additional connective.
+
+\begin{lemma}[Implication for equations]
+\label{lem:diag-eq-implication}
+For literal equations $U,V$, the rules
+\[
+ \frac{\Gamma,U\vdash V}{\Gamma\vdash U\Rightarrow_{=}V},
+ \qquad
+ \frac{\Gamma\vdash U\Rightarrow_{=}V\qquad\Gamma\vdash U}
+      {\Gamma\vdash V}
+\]
+are derivable using computation, equational transport, and the
+case-derived closure rule of Lemma~\ref{lem:diag-case-interface}.
+\end{lemma}
+\begin{proof}
+Let $J(w)$ denote the equation inside the $Q$ in
+\eqref{eq:diag-equational-implication}.
+Its zero instance is interderivable with $U$, and each successor
+instance is interderivable with $V$, by the two selector computations
+and elementary equality reasoning.
+For introduction, convert the retained $J(0)$ to $U$, insert the given
+derivation of $V$, convert $V$ to $J(Sz)$, and apply case-derived
+$Q$ introduction.  For elimination, convert the proof of $U$ to
+$J(0)$, apply QE at $S0$, and convert $J(S0)$ to $V$.
+All conversions are between equations.  This argument uses neither
+compound transport nor general progress.
+\end{proof}
+
+\begin{lemma}[Cases in a context that mentions the inspected term]
+\label{lem:diag-dependent-cases}
+Let $E$ be an equation and let $r$ be any term.  The rule
+\[
+ \frac{\Gamma,r=0\vdash E\qquad\Gamma,r=Sv\vdash E}
+      {\Gamma\vdash E}
+\]
+is admissible when $v$ is fresh for $\Gamma,r,E$.
+The context $\Gamma$ may contain $r$ and its free variables.
+\end{lemma}
+\begin{proof}
+Keep $\Gamma,r,E$ fixed and choose a new variable $y$.
+Set $F(y):=((r=y)\Rightarrow_{=}E)$.
+Discharge the two branch equations by
+Lemma~\ref{lem:diag-eq-implication}; this gives proofs of $F(0)$ and
+$F(Sv)$ in $\Gamma$.  Apply the ordinary case rule of
+Lemma~\ref{lem:diag-case-interface} to $F(y)$ at target $r$.
+The result is $(r=r)\Rightarrow_{=}E$.
+Reflexivity and implication elimination give $E$.
+The variable being generalized in the case inference was the fresh
+$y$, not a variable occurring in $\Gamma$.  Thus the proof does not
+use the invalid convention of changing a context silently in each branch.
+\end{proof}
+
+\subsection{Recovering unrestricted equation progress}
+
+\begin{theorem}[The full native progress rule]
+\label{thm:diag-progress}
+For every literal equation $E(y)$, the rule
+\[
+ \frac{\Gamma,E(z)\vdash E(Sz)}{\Gamma\vdash Q_yE(y)}
+\]
+is admissible in $\mathcal G$, with the usual eigenparameter condition.
+\end{theorem}
+\begin{proof}
+Write $E(y)=(s(y)=t(y))$ and let $\pi$ be the supplied step derivation.
+Define the diagonal lift
+\begin{equation}
+ H(y):=
+ \bigl(I(y,y;u.s(y))=I(y,y;u.t(y))\bigr),
+ \qquad u\notin\operatorname{FV}(s,t).
+ \label{eq:diag-lift}
+\end{equation}
+By computation and equality alone,
+\begin{equation}
+ \vdash H(0),\qquad
+ H(Sv)\dashv\vdash E(Sv)
+ \label{eq:diag-lift-endpoints}
+\end{equation}
+for every term $v$.  The second statement uses constant state updates;
+it does not assert any identity between arbitrary iterator bodies.
+
+Work temporarily in the retained context
+$\Delta:=\Gamma,E(0)$, which contains no fresh induction variable.
+For fresh $y$ set
+\[
+ \Phi(y):=H(y)\Rightarrow_{=}E(Sy).
+\]
+There are two case proofs in this fixed context:
+\begin{itemize}
+\item At $y=0$, substitute $0$ for the eigenparameter of $\pi$.
+  The retained $E(0)$ gives $E(S0)$.
+  The assumption $H(0)$ may be ignored, so equation-implication
+  introduction gives $\Delta\vdash\Phi(0)$.
+\item At $y=Sv$, assume $H(Sv)$.
+  By~\eqref{eq:diag-lift-endpoints} it gives $E(Sv)$.
+  Substitute $Sv$ for the eigenparameter of $\pi$ and obtain $E(SSv)$.
+  Discharging $H(Sv)$ gives $\Delta\vdash\Phi(Sv)$.
+\end{itemize}
+These uses of substitution are justified directly by
+Lemma~\ref{lem:diag-structural}; they do not invoke the result currently
+being proved.
+The ordinary case rule applies to the \emph{compound} native formula
+$\Phi$ and yields $\Delta\vdash\Phi(z)$ for a fresh $z$.
+Now assume $H(z)$, use equation-implication elimination, and convert
+$E(Sz)$ back to $H(Sz)$.  We have proved
+\[
+ \Delta,H(z)\vdash H(Sz).
+\]
+The case inference was performed \emph{before} adding $H(z)$ to the
+context, so its freshness condition is satisfied.  Equivalently, one
+could use the explicitly justified contextual case rule of
+Lemma~\ref{lem:diag-dependent-cases}.
+
+Take an unused witness coordinate $x$ in the matrix $H(y)$.
+It has the exact diagonal shape, so primitive progress DI at witness
+$0$ gives $\Delta\vdash D_{x,y}H(y)$.
+DE, with its fresh witness unused, gives $\Delta\vdash Q_yH(y)$.
+Together with $H(0)$, QE at a fresh successor $Sz$ yields $H(Sz)$,
+hence $E(Sz)$.  We have therefore constructed
+\[
+ \Gamma,E(0)\vdash E(Sz).
+\]
+Finally apply the already recovered case-derived $Q$ introduction to
+obtain $\Gamma\vdash Q_yE(y)$.
+
+The temporary retention and final discharge of $E(0)$ are deliberate.
+No inference identifies conditional closure with unconditional progress.
+In particular, the argument also works when the base equation is false.
+\end{proof}
+
+\subsection{Exact equivalence and the arithmetic consequence}
+
+\begin{theorem}[Identity-language equivalence]
+\label{thm:diag-equivalence}
+For every finite context $\Gamma$ and every native formula $A$,
+\[
+ \boxed{\quad
+ \Gamma\vdash_{\mathcal G}A
+ \quad\Longleftrightarrow\quad
+ \Gamma\vdash_{\mathcal N}A.
+ \quad}
+\]
+Both translations act effectively on finite derivations, and neither
+translation changes a term, formula, or retained assumption.
+\end{theorem}
+\begin{proof}
+Translate a $\mathcal G$ derivation to $\mathcal N$ by induction.
+The first six rules are shared.  An unguarded DI instance is native
+case introduction.  In a guarded DI instance the matrix is an equation.
+The native progress rule applied to $E(y):=B(t,y)$ gives $Q_yB(t,y)$.
+Under the temporary base $B(t,0)$, QE supplies $B(t,Sz)$; native case
+DI then introduces the required $D_{x,y}B(x,y)$.
+
+Conversely, translate a native derivation recursively.
+The shared rules remain unchanged, every native case introduction is
+replaced by Lemma~\ref{lem:diag-all-cases}, and every native equation
+progress introduction is replaced by
+Theorem~\ref{thm:diag-progress}.  All constructions use the original
+retained context and satisfy the freshness conditions.
+\end{proof}
+
+The proof has a strict dependency order:
+guard stability; structural admissibility; elementary equality;
+all case introductions; case-derived closure and numerical cases;
+implication between equations; general equation progress.
+It does not use equality reflection, a scalar predecessor, pairing,
+primitive-recursion compilation, or the eventual bi-interpretation in
+order to establish equivalence.
+
+\begin{proposition}[Transfer of the established bi-interpretation]
+\label{prop:diag-ipra}
+Compose Theorem~\ref{thm:diag-equivalence} with the native scalar
+calculus's established bi-interpretation with iPRA.  This gives a
+bi-interpretation of $\mathcal G$ with iPRA, and equiconsistency.
+The numerical domains and interpreted equality are unchanged, and both
+numerical composites have the identity graph $x=y$.
+\end{proposition}
+\begin{proof}
+The first component of each composite, between $\mathcal G$ and
+$\mathcal N$, is literally the identity on the full syntax and on all
+sequents.  It therefore preserves the established whole-domain
+interpretations, their internal formula round trips, and their numerical
+identity graphs.  The equivalence also preserves the designated native
+contradiction $0=S0$ in the empty context.  Composing the finite proof
+translations in each direction preserves, and reflects, derivability of
+contradiction, which proves equiconsistency.
+\end{proof}
+
+\subsection{A sufficient criterion for other guards}
+
+\begin{proposition}[The guard criterion]
+\label{prop:diag-guard-criterion}
+Let $\mathsf P_y(B)$ be a decidable predicate on native matrices that
+respects capture-free renaming.  Suppose that:
+\begin{enumerate}
+\item Every matrix satisfying $\mathsf P$ is a literal equation, and
+  its instance $B(t,0)$ is derivable for every witness $t$ using only
+  computation and equational transport.
+\item Every equation $E(y)$ has an equation lift $H(y)$, independent
+  of an added unused witness coordinate $x$, such that
+  $\mathsf P_y(H)$ holds and
+  $H(Sv)\dashv\vdash E(Sv)$ is derivable using only computation
+  and equational transport, for arbitrary $v$.
+\end{enumerate}
+Replace the diagonal test in the seven-rule presentation by $\mathsf P$.
+The resulting calculus $\mathcal G_{\mathsf P}$ derives exactly the
+native sequents.  If, in addition, $\mathsf P$ is preserved and reflected
+by capture-free numerical substitution, its structural substitution
+theorem follows by direct rule-preserving induction.
+\end{proposition}
+\begin{proof}
+The first condition recovers every missing case introduction exactly as
+in Lemma~\ref{lem:diag-all-cases}.  Hence the case-derived closure,
+numerical cases and equation-implication rules are available.
+The second condition supplies the only properties of the lift used in
+Theorem~\ref{thm:diag-progress}.  Since the base and endpoint conversions
+belong to the fragment with computation and equational transport, neither
+condition presupposes the general progress rule being recovered.
+
+For clarity, equivalence does not silently assume numerical substitution
+in $\mathcal G_{\mathsf P}$ when the optional stability condition is
+absent.  Translate native derivations by strong induction on their height.
+In the native progress case, substitute $0$ and $Sv$ into its native
+premise derivation first.  Native substitution preserves derivation
+height, so both resulting proofs still have smaller height than the
+progress conclusion and can be translated by the induction hypothesis.
+They supply the two $\Phi$ branches in the displayed proof above.
+Renaming, weakening and cut require only the stated renaming invariance.
+The other native rules translate as before, and the reverse translation
+uses only the fact that a progress-selected matrix is an equation.
+This proves the sequent equivalence.  Under the additional preservation
+and reflection condition, numerical substitution instead follows directly
+from the proof of Lemma~\ref{lem:diag-structural}, with no change of mode.
+\end{proof}
+
+\subsection{What is simpler, and what is not being claimed}
+
+Relative to the eight-rule native kernel, this construction removes one
+primitive introduction while retaining its full language, all witnesses,
+and both original binder readings.  Relative to the earlier seven-rule
+witness-selected presentation, its improvement is structural: the mode
+depends only on protected bound-variable positions in the matrix, so
+ordinary substitution is proved by a direct rule-preserving induction.
+There is no exceptional substitution-repair proof.
+
+The earlier guarded-language proposal restricted the public atomic
+matrices; here every original formula remains available and the comparison
+theorem is the identity on \emph{all} sequents.  The earlier
+uniform-progress proposal changes the meaning of $Q$ at equations and
+modifies its elimination; here neither change is made.  The diagonal
+initializer supplies the missing combination of a provable zero base and
+a substitution-invariant test.
+
+This is not a proof of global minimality.  A seven-rule count is not a
+new record by itself, and the syntactic guard has an implementation cost.
+Any claim about a smaller complete checker must be supported by the
+separate matched source measurements, including syntax validation,
+substitution, freshness, and the public certificate interface.
+The new equivalence above is a written mathematical proof; it is not, by
+itself, a claim that a Lean or Rocq verification of this new kernel has
+been compiled.
