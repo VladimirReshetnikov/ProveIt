@@ -1,0 +1,58 @@
+import DiophantineConsistency.Compact44.DirectMainProjection
+import DiophantineConsistency.ArithmeticPellPowerRecovery
+
+/-! Conditional no-E*q carrier projection. All sources, model instances and
+proofs in this file are unelaborated; no graph or iPRA endpoint is claimed. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.EtaZeroDirectProjectionDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ArithmeticPellRecurrence ArithmeticPellPowerRecovery
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The same oriented main, exact-index w, graph quotient s, and recurrence
+coordinates yield X=2^R. The growth bound 2^R<Y is a separate premise. -/
+theorem power_of_direct_carrier (q X Y k R c gamma main s w : V)
+    (hq : 0<q) (hs : 0<s) (hY : Y=q^3*s)
+    (hindex : k=R+1+4*(X*Y*Y)*w)
+    (hcar : let a:=X*Y+Y; let H:=3+4*a; let U:=Y*(q*q)
+      U*main+H*k=U*(X+a*c)+H*(U*gamma+R+1))
+    (hbound : Exp.exp R<Y)
+    (hx : xcoord R (Y*(X+1))=main)
+    (hy : ycoord R (Y*(X+1))=c) : X=Exp.exp R := by
+  let a := X*Y+Y
+  let H := 3+4*a
+  let U := Y*(q*q)
+  let W := 4*X*q*s*w
+  have hYpos : 0<Y := by rw [hY]; exact mul_pos (pow_pos hq 3) hs
+  have hU : 0<U := mul_pos hYpos (mul_pos hq hq)
+  have hH : 0<H := by dsimp [H]; simp
+  have hscale : 4*(X*Y*Y)*w=U*W := by dsimp [U,W]; rw [hY]; ring
+  have hroot : U*(X+a*c)+H*(U*gamma+R+1)=H*(R+1+U*W)+U*main := by
+    calc
+      _=U*main+H*k := hcar.symm
+      _=H*(R+1+U*W)+U*main := by rw [hindex,hscale]; ring
+  have ha : a=Y*(X+1) := by dsimp [a]; ring
+  have hY1 : 1≤Y := pos_iff_one_le.mp hYpos
+  have hXa : X<a := by
+    have hh : X+1≤a := by rw [ha]; exact le_mul_of_one_le_left (by simp) hY1
+    exact lt_of_lt_of_le (lt_add_one X) hh
+  have hYa : Y≤a := by rw [ha]; exact le_mul_of_one_le_right (by simp) (by simp)
+  have haH : a<H := calc
+    a≤4*a := le_mul_of_one_le_left (by simp) (by simp : (1:V)≤4)
+    _<4*a+3 := lt_add_of_pos_right _ (by simp)
+    _=H := by dsimp [H]; ring
+  have hXH : X<H := lt_trans hXa haH
+  have hPH : Exp.exp R<H := lt_of_lt_of_le hbound (le_trans hYa (le_of_lt haH))
+  have hx' : xcoord R a=main := by rw [ha]; exact hx
+  have hy' : ycoord R a=c := by rw [ha]; exact hy
+  obtain ⟨t,ht⟩ := projection_quotient a R
+  rw [hx',hy'] at ht
+  have hHform : H=4*a+3 := by dsimp [H]; ring
+  have hproj : main=Exp.exp R+a*c+H*t := by rw [hHform]; exact ht
+  exact DirectMainProjection.direct_projection U X a c H gamma R W main (Exp.exp R) t
+    hU hH hXH hPH hroot hproj
+end DiophantineConsistency.EtaZeroDirectProjectionDraft
+#print axioms DiophantineConsistency.EtaZeroDirectProjectionDraft.power_of_direct_carrier
