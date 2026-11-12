@@ -1257,6 +1257,9 @@ A [20-witness degree-20 candidate](research/nine-sharing-sign20-degree20-e-candi
 eliminates E by a natural product and has exact external fixed-input degree 20
 when beta is nonzero. Its model bridge, Lean degree and byte binding, and iPRA
 endpoint remain open.
+The source-reviewed [78 positive bridge draft](research/ordinary14-root78-positive-bridge-draft/README.md)
+proposes composing that symbolic graph chain with the quotient-88 positive
+bridge. It remains unelaborated and is not a checked consistency endpoint.
 The source-reviewed [compact 78/88 composition](research/ordinary14-78-88-compact-model-composition-draft/README.md)
 proposes the next symbolic-port link. It remains unelaborated and is not an
 88-to-parent or iPRA endpoint theorem.
