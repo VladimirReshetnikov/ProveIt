@@ -1,5 +1,7 @@
 # Independent source review: AQ22 two-quotient residual maps
 
+The prior draft declared 17 residuals but supplied a 13-entry vector, a concrete elaboration blocker discovered during review. The author repaired the source and generator; this updated receipt pins the corrected `Fin 13` declaration and checks that its vector has 13 entries. All Lean elaboration remains untested.
+
 This is a source and finite-case audit, not a Lean build. Run `python3 -I -S -B check.py` from any directory and compare with `result.json`. The author's source receipt reproduces. All declarations, imports, tactics, definitional equalities and axiom reports remain unelaborated. The checker assumes `fin_cases` enumerates values in ascending order.
 
 The 13 residual relation statements use matching parent and child indices. Parent residuals 0 and 1 are the respective child residuals multiplied by the squares of child scale slots 13 and 14; the remaining 11 have identical values. The independent [graph review](../adaptive-aq22-two-quotients110-independent/README.md) verifies the corresponding external polynomial identities and proves that the full outputs are not generally equal. The draft's quotient slots are 18 and 19; projection replaces them with the two witnesses and extension multiplies them by their respective scales.

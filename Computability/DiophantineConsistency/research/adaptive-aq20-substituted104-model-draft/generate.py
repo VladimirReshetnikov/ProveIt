@@ -29,9 +29,10 @@ noncomputable section
 lit='import AQ22Quotient110Literal\n\n'+pre+'namespace DiophantineConsistency.AQ20Substituted104LiteralDraft\nopen AdaptiveEquationSyntax2011\n\ndef literal (p : Fin 4 → ℤ) : Expr (Fin 20) :=\n'+body+'\n  '+g['output']+'\n\nend DiophantineConsistency.AQ20Substituted104LiteralDraft\n'
 assert (P/'AQ20Substituted104Literal.lean.src').read_text() == lit
 sumexpr=' + '.join(f'(residuals p {i})*(residuals p {i})' for i in range(11))
-rs='import AQ20Substituted104Literal\n\n'+pre+'namespace DiophantineConsistency.AQ20Substituted104ResidualsDraft\nopen AdaptiveEquationSyntax2011\n\ndef residuals (p : Fin 4 → ℤ) : Fin 17 → Expr (Fin 20) :=\n'+body+'\n  !['+','.join(res)+']\n\ndef sum (p : Fin 4 → ℤ) : Expr (Fin 20) := '+sumexpr+'''\n\ntheorem sum_eq_literal (p : Fin 4 → ℤ) : sum p = AQ20Substituted104LiteralDraft.literal p := by rfl
+rs='import AQ20Substituted104Literal\n\n'+pre+'namespace DiophantineConsistency.AQ20Substituted104ResidualsDraft\nopen AdaptiveEquationSyntax2011\n\ndef residuals (p : Fin 4 → ℤ) : Fin 11 → Expr (Fin 20) :=\n'+body+'\n  !['+','.join(res)+']\n\ndef sum (p : Fin 4 → ℤ) : Expr (Fin 20) := '+sumexpr+'''\n\ntheorem sum_eq_literal (p : Fin 4 → ℤ) : sum p = AQ20Substituted104LiteralDraft.literal p := by rfl
 end DiophantineConsistency.AQ20Substituted104ResidualsDraft
 #print axioms DiophantineConsistency.AQ20Substituted104ResidualsDraft.sum_eq_literal
 '''
+assert ': Fin 11 → Expr (Fin 20)' in rs and len(res)==11
 assert (P/'AQ20Substituted104Residuals.lean.src').read_text() == rs
 print(json.dumps({'scope':'inert literal and ordered sum source; no Lean','rows':104,'variables':20,'residuals':11,'sum_exact_syntax_DAG':True,'literal_sha256':hashlib.sha256(lit.encode()).hexdigest(),'residual_sha256':hashlib.sha256(rs.encode()).hexdigest()},sort_keys=True,indent=2))

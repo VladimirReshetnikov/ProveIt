@@ -29,9 +29,10 @@ noncomputable section
 lit='import AQ20Substituted104Literal\n\n'+pre+'namespace DiophantineConsistency.AQ17Factored94LiteralDraft\nopen AdaptiveEquationSyntax2011\n\ndef literal (p : Fin 4 → ℤ) : Expr (Fin 17) :=\n'+body+'\n  '+g['output']+'\n\nend DiophantineConsistency.AQ17Factored94LiteralDraft\n'
 assert (P/'AQ17Factored94Literal.lean.src').read_text() == lit
 sumexpr=' + '.join(f'(residuals p {i})*(residuals p {i})' for i in range(8))
-rs='import AQ17Factored94Literal\n\n'+pre+'namespace DiophantineConsistency.AQ17Factored94ResidualsDraft\nopen AdaptiveEquationSyntax2011\n\ndef residuals (p : Fin 4 → ℤ) : Fin 17 → Expr (Fin 17) :=\n'+body+'\n  !['+','.join(res)+']\n\ndef sum (p : Fin 4 → ℤ) : Expr (Fin 17) := '+sumexpr+'''\n\ntheorem sum_eq_literal (p : Fin 4 → ℤ) : sum p = AQ17Factored94LiteralDraft.literal p := by rfl
+rs='import AQ17Factored94Literal\n\n'+pre+'namespace DiophantineConsistency.AQ17Factored94ResidualsDraft\nopen AdaptiveEquationSyntax2011\n\ndef residuals (p : Fin 4 → ℤ) : Fin 8 → Expr (Fin 17) :=\n'+body+'\n  !['+','.join(res)+']\n\ndef sum (p : Fin 4 → ℤ) : Expr (Fin 17) := '+sumexpr+'''\n\ntheorem sum_eq_literal (p : Fin 4 → ℤ) : sum p = AQ17Factored94LiteralDraft.literal p := by rfl
 end DiophantineConsistency.AQ17Factored94ResidualsDraft
 #print axioms DiophantineConsistency.AQ17Factored94ResidualsDraft.sum_eq_literal
 '''
+assert ': Fin 8 → Expr (Fin 17)' in rs and len(res)==8
 assert (P/'AQ17Factored94Residuals.lean.src').read_text() == rs
 print(json.dumps({'scope':'inert literal and ordered sum source; no Lean','rows':94,'variables':17,'residuals':8,'sum_exact_syntax_DAG':True,'literal_sha256':hashlib.sha256(lit.encode()).hexdigest(),'residual_sha256':hashlib.sha256(rs.encode()).hexdigest()},sort_keys=True,indent=2))

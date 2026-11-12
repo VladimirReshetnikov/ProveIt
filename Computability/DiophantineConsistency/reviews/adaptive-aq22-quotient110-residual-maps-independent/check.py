@@ -10,8 +10,8 @@ s=pin('research/adaptive-aq22-quotient110-residual-maps-draft/AQ22Quotient110Res
 pin('research/adaptive-aq22-quotient110-residual-maps-draft/receipt.json','68775dbd0ed9704bfb3a83aa3b414675da30b4c6c2a35e85bf0646d2d3969095')
 t=pin('research/adaptive-aq22-quotient110-model-draft/AQ22Quotient110ConditionalTransfer.lean.src','cf38af5ba1e2a24cfbf3d8e5005a3da31b26574e417dfae61ddf4e0cf42a4f31')
 w=pin('research/adaptive-aq22-quotient110-model-draft/AQ22Quotient110Witness.lean.src','501bf108b26cbd5e2d6c84e83a0996b8f3fd9f37949c5f0b2ba6940db3987d2a')
-r=pin('research/adaptive-aq22-quotient110-model-draft/AQ22Quotient110Residuals.lean.src','569bcc47ad1b0ad31f9b603f0f96afba70496d3feaf221d255cc31f05b41467b')
-pin('research/adaptive-aq22-quotient110-model-draft/receipt.json','908d966815a471c0b8a175a60bc0a4e402f7485b0f707f73fd653a5aa525b3fb')
+r=pin('research/adaptive-aq22-quotient110-model-draft/AQ22Quotient110Residuals.lean.src','711df4584209b4dcab07e32c55195ea9d9a82357b71d67b3345f37f447e3d7ca')
+pin('research/adaptive-aq22-quotient110-model-draft/receipt.json','d5e559f3c14f741ff7b433e2cec89486c343b73f6afcd19a49a28427962f6478')
 pin('reviews/adaptive-aq22-two-quotients110-independent/result.json','6cc3d19451dff340d051166103b9a0178258d975b22927976da794dd7d70147b')
 g=json.loads(pin('research/adaptive-aq22-two-quotients110/candidate.json','b82ef3f8e45cc260d8ffee26f3f8fa7ef2f207834829aee1a5ac357fcab0ffc1'))
 p=json.loads(pin('research/adaptive-square-sums22-degree10/candidate.json','1266b143c5512351739ea2c71fc8e0b8b0e5cecc599392f128c0803ff78ce106'))
@@ -19,6 +19,8 @@ assert [p['witnesses'][i] for i in (9,10,13,14,16,17,18,19,21)]==['eta','zeta','
 assert [g['witnesses'][i] for i in (13,14,18,19)]==['scaleVariable','mainScaleVariable','firstQuotient','mainQuotient']
 assert 'if i.val=18 then u else if i.val=19 then t else v i' in t
 assert 'if i.val=18 then v 13*v 18 else if i.val=19 then v 14*v 19 else v i' in t
+assert 'def residuals (p : Fin 4 → ℤ) : Fin 13 → Expr (Fin 22)' in r
+rv=re.findall(r'^  !\[([^\n]+)\]$',r,re.M);assert len(rv)==1 and len(rv[0].split(','))==13
 assert w.count('ArithmeticAdaptiveQuotients2011.scaled_quotient')==2
 for x in ['(v 13) (v 18) (1+v 16*(v 16+(v 9+v 10))) (hv 13) h0','(v 14) (v 19) (1+v 21*v 17) (hv 14) h1','rw [←hu]; exact hv 18','rw [←ht]; exact hv 19']:assert x in w,x
 def theorem(n):
