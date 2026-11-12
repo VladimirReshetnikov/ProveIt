@@ -7607,6 +7607,10 @@ The source-reviewed [84-to-85 model-map draft](research/ordinary14-84-to-85-mode
 proposes the positive witness using those exact-index and gamma facts. It is
 unelaborated along with its dependencies; the reverse map's graph-derived
 `q ∣ X`, providers and iPRA endpoint remain open.
+The source-reviewed [85 guard/rank draft](research/ordinary14-85-guard-rank-draft/README.md)
+starts the reverse calibration from the 85 graph's own zero, without assuming
+`q ∣ X` or an 84/FreeJ zero. It remains unelaborated and does not complete
+that calibration or the endpoint.
 The source-reviewed [84 main-index draft](research/ordinary14-84-main-index-draft/README.md)
 proposes classifying the main root while retaining the natural balance. It is
 unelaborated and does not identify that index with the rank.
