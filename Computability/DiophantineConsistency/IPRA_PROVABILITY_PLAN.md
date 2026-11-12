@@ -7477,6 +7477,10 @@ for the latter. They remain unelaborated; graph-derived growth is still open.
 The source-reviewed [linear guard-bound variant](research/ordinary14-87-guard-strict-linear-draft/README.md)
 weakens that sufficient hypothesis to `X ≥ q`; it is also unelaborated and
 does not derive the hypothesis from the graph.
+The source-reviewed [conditional Mersenne guard composition](research/ordinary14-87-mersenne-guard-draft/README.md)
+proposes the required `X ≥ q` from explicit `X = 2^R` and `q ∣ 3X`
+hypotheses. It remains unelaborated and does not derive those calibration
+facts from an 87-graph zero.
 The source-reviewed [87 first-quotient draft](research/ordinary14-87-first-quotient-draft/README.md)
 proposes deriving the quotient and first root from the 87 graph's own zero.
 It remains unelaborated and does not establish the needed growth condition.
