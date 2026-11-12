@@ -1,0 +1,5 @@
+# Independent review: all-J toy parent exclusion
+
+At beta=4 and positive J, q=1+4J is odd and greater than one. The scalar guard gap supplies the hypotheses of `scalar_rank_window` without a beta≥46 assumption; the separate elementary bound gives R≥q³>26. The first, main, strong and auxiliary factors, under the cited source applications, provide the same-index hypotheses of `P72Exact.indices_ordinary` with modulus q⁴ and direct positive auxiliary root. From `H=3+4q³s(X+1)`, `gcd(H,q⁵)` divides 3; hence the q⁵ congruence yields the required q⁴ divisibility even if 3 divides q. The first Pell residue then gives the unscaled trace congruence, and the reviewed universal trace bound recovers X=2^R. This conflicts with the parent's X=q*w for every positive J.
+
+This is a conditional source-hypothesis trace, not a completed provider or Lean replay. Together with the separate symbolic q=5 witness it concerns the toy ports only; it does not establish a result for compact44 or the PDF. The checker verifies source signatures and finite gcd/parity cases and replays both independent dependency receipts. Run `python3 -I -S -B check.py` and compare with `result.json`.
