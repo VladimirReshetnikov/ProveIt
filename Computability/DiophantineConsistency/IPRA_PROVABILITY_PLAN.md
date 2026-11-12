@@ -7896,6 +7896,10 @@ Foundation consistency sentence. The independently source-reviewed
 [direct-BFS Carrier65 comparison draft](research/ordinary14-natural79-carrier65-bfs-direct-comparison-draft/README.md)
 proposes one such biconditional for a distinct BFS port instance. Neither
 draft elaboration nor a binding to the displayed 2011 page is established.
+The independently source-reviewed [normalized-quote composition draft](research/ordinary14-natural79-carrier65-quoted-composition-draft/README.md)
+proposes direct and translated common-target routes to the historical
+Carrier65 quote. Its joint provider environment and Lean proofs remain
+unelaborated, and raw TeX/PDF semantics remain separate.
 The bounded [79-specific signature audit](reviews/ordinary14-natural79-signature-audit-independent/README.md)
 finds no definite mismatch in its selected unit, norm, divisibility and
 transport interfaces. It is source inspection only, not Lean elaboration or

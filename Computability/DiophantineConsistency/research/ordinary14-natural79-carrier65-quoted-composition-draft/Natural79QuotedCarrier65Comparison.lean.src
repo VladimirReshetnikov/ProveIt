@@ -1,0 +1,86 @@
+import Natural79Endpoint
+import DiophantineConsistency.Current14QuotedTranslatedEndpoint
+import DiophantineConsistency.IPRABoundedRhoZFC
+import DiophantineConsistency.IPRAReferenceInductionConversion
+
+/-! Inert source-only proposed composition. The selected natural79 endpoint,
+this file, and their joint provider environment have not been Lean checked.
+The normalized quote is token data, not a parser for TeX or PDF bytes. -/
+set_option autoImplicit false
+noncomputable section
+namespace DiophantineConsistency.Natural79QuotedCarrier65ComparisonDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open PRALanguage IPRANativeTheory IPRAStandardTheory
+open IPRAFoundationZFCMappedNegation FoundationZFCConsistencyNat
+
+/-- Compose three derivable biconditionals in intuitionistic logic. -/
+theorem standard_compose {A B C R : Sentenceᵢ language}
+    (hA : standardTheory ⊢ A 🡘 R)
+    (hC : standardTheory ⊢ C 🡘 R)
+    (hB : standardTheory ⊢ B 🡘 C) :
+    standardTheory ⊢ A 🡘 B := by
+  obtain ⟨a⟩ := hA
+  obtain ⟨c⟩ := hC
+  obtain ⟨b⟩ := hB
+  exact ⟨Entailment.K_intro
+    (Entailment.C_trans (Entailment.C_trans (Entailment.K_left a)
+      (Entailment.K_right c)) (Entailment.K_right b))
+    (Entailment.C_trans (Entailment.C_trans (Entailment.K_left b)
+      (Entailment.K_left c)) (Entailment.K_right a))⟩
+
+/-- Direct common-target composition, without a consistency-translation step. -/
+theorem standard_common_target {A B R : Sentenceᵢ language}
+    (hA : standardTheory ⊢ A 🡘 R)
+    (hB : standardTheory ⊢ B 🡘 R) :
+    standardTheory ⊢ A 🡘 B := by
+  obtain ⟨a⟩ := hA
+  obtain ⟨b⟩ := hB
+  exact ⟨Entailment.K_intro
+    (Entailment.C_trans (Entailment.K_left a) (Entailment.K_right b))
+    (Entailment.C_trans (Entailment.K_left b) (Entailment.K_right a))⟩
+
+/-- Derivability of equivalence with the existing normalized quote, provided
+its quoted endpoint and the selected natural79 endpoint are available in one
+compatible Lean environment. Neither side is asserted as a theorem itself. -/
+theorem quoted_standard_equivalence : ∃ φ,
+    Current14QuotedPrefix.quoteSentence = some φ ∧
+    (standardTheory ⊢
+      IPRAExpressionNative.nativeNoZero Natural79EndpointDraft.expression 🡘 φ) := by
+  obtain ⟨φ, hquote, hφ⟩ := Current14QuotedPrefix.quoted_endpoint
+  exact ⟨φ, hquote,
+    standard_common_target Natural79EndpointDraft.standard_equivalence hφ⟩
+
+/-- Alternative composition through the explicitly translated Foundation
+consistency endpoint; the same mapped refutation mediates the bridge. -/
+theorem quoted_standard_equivalence_via_translated : ∃ φ,
+    Current14QuotedPrefix.quoteSentence = some φ ∧
+    (standardTheory ⊢
+      IPRAExpressionNative.nativeNoZero Natural79EndpointDraft.expression 🡘 φ) := by
+  obtain ⟨φ, hquote, hφ⟩ := Current14QuotedPrefix.quoted_translated_endpoint
+  have hzfc : standardTheory ⊢
+      (Semiformula.lMap embedding sourceSentence)ᴺ 🡘
+        ∼mappedNativeRefutation embedding :=
+    (IPRAStandardTheory.provable_iff _).2 ⟨IPRABoundedRhoZFC.zfcEquiv⟩
+  exact ⟨φ, hquote,
+    standard_compose Natural79EndpointDraft.standard_equivalence hzfc hφ⟩
+
+/-- The same statement after the established translation to the equality-only
+reference presentation. -/
+theorem quoted_reference_equivalence : ∃ φ,
+    Current14QuotedPrefix.quoteSentence = some φ ∧
+    (IPRAEqualityOnlyReference.referenceTheory ⊢
+      IPRAOrderErasure.erase
+          (IPRAExpressionNative.nativeNoZero Natural79EndpointDraft.expression) 🡘
+        IPRAOrderErasure.erase φ) := by
+  obtain ⟨φ, hquote, h⟩ := quoted_standard_equivalence
+  have hn := (IPRAStandardTheory.provable_iff _).1 h
+  exact ⟨φ, hquote, IPRAReferenceInductionConversion.nativeToReference hn⟩
+
+end DiophantineConsistency.Natural79QuotedCarrier65ComparisonDraft
+
+#print axioms DiophantineConsistency.Natural79QuotedCarrier65ComparisonDraft.standard_compose
+#print axioms DiophantineConsistency.Natural79QuotedCarrier65ComparisonDraft.standard_common_target
+#print axioms DiophantineConsistency.Natural79QuotedCarrier65ComparisonDraft.quoted_standard_equivalence
+#print axioms DiophantineConsistency.Natural79QuotedCarrier65ComparisonDraft.quoted_standard_equivalence_via_translated
+#print axioms DiophantineConsistency.Natural79QuotedCarrier65ComparisonDraft.quoted_reference_equivalence
