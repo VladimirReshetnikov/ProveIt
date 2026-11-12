@@ -8,13 +8,15 @@ Path('research/ordinary13-natural89-direct-fy-model-draft/Natural89DirectFY.lean
 Path('research/ordinary13-residue-root-switch-extraction-draft/ResidueRootSwitchExtract.lean.src'),
 Path('research/ordinary13-eta-natural-gap-rank-model-draft/EtaNaturalGapRank.lean.src'),
 Path('research/ordinary13-eta-natural-unit-norm-bridge-draft/EtaNaturalUnitBridge.lean.src'),
-Path('research/ordinary13-eta-zero-graph-adapter-audit/prototype.json')]
+Path('research/ordinary13-eta-zero-graph-adapter-audit/prototype.json'),p/'Natural89MixedBridge.lean.src']
 s=[f.read_text() for f in fs]
 for x in ['def putR','def up','theorem up_putR','theorem zero89_iff85','theorem prototype_update',
  'EtaNaturalUnitBridgeDraft.output_eq','theorem replacement','ResidueRootSwitchExtractDraft.positive_replacement',
  'EtaNaturalGapRankDraft.first_norm','theorem rReplacement','Natural89Positive80TransportDraft.RReplacement K']:
  assert x in s[0],x
 assert 'theorem positive_replacement' in s[4]
+for x in ['replacement_of_cuts','Natural89DirectFYDraft.directFY','Natural89RReplacementDraft.rReplacement','(h80 : PolynomialBridge','ForcedEta K']:
+ assert x in s[8],x
 g=json.loads(s[7]);rows={r[0]:r for r in g['source']}
 def deps(name,seen=None):
  if isinstance(name,int):return set()

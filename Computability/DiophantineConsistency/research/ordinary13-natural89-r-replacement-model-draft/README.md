@@ -27,8 +27,10 @@ same f and y. No compact K upper bound or `ForcedEta` premise is used.
 The helper's sign cases, positive natural quotient, graph field/evaluation
 normalization, model casts, factor-unit first norm, all forward maps, compact
 beta, compatible providers and actual axiom reports remain unelaborated.
-The separate `DirectFY` source and exact positive-80 `PolynomialBridge` are
-still needed by the mixed 89/80 bridge. No physical file/PDF interpretation
+`Natural89MixedBridge` composes the separate source-only `DirectFY` and
+`RReplacement` clients, retaining an explicit exact positive-80
+`PolynomialBridge` and, for the 85 native client, `ForcedEta`. The whole
+composition remains unelaborated. No physical file/PDF interpretation
 or end-to-end iPRA/ZFC equivalence is asserted.
 
 Run `python3 -I -S -B research/ordinary13-natural89-r-replacement-model-draft/check.py`
