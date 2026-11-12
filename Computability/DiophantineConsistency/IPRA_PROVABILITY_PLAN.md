@@ -7557,6 +7557,9 @@ The source-reviewed [84/85 arithmetic composition draft](research/ordinary14-84-
 connects these conditional maps to the proposed gamma-growth and Mersenne
 facts with their Pell and carrier assumptions explicit. It remains
 unelaborated and does not extract those assumptions from graph zeros.
+The source-reviewed [84/85 zero-fields draft](research/ordinary14-84-85-zero-fields-draft/README.md)
+proposes extracting the five signed residuals from each graph's own zero.
+It remains unelaborated and does not supply the subsequent natural norms.
 The source-reviewed [modified-carrier gamma-growth draft](research/ordinary14-modified-carrier-gamma-model-draft/README.md)
 proposes the needed strict positivity using existing Pell growth lemmas under
 explicit index and carrier hypotheses. It is unelaborated and is not yet
