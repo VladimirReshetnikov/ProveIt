@@ -1289,6 +1289,9 @@ The source-reviewed [88-to-parent model-map draft](research/ordinary14-88-to-par
 proposes assembling the complete positive parent witness from the 88 zero,
 without a K bound in this direction. It remains unelaborated; the converse,
 provider verification and iPRA endpoint are still open.
+The source-reviewed [parent/88 model-equivalence draft](research/ordinary13-14-parent-88-model-equivalence-draft/README.md)
+proposes both positive-zero directions at the same natural ports. It and its
+dependencies remain unelaborated; no iPRA or file-binding theorem follows yet.
 The source-reviewed [parent first-quotient facts](research/ordinary14-parent-first-quotient-facts-draft/README.md)
 propose the reverse direction's `q³ ∣ Y` and divisibility of `|Bt|` without
 choosing a sign. They remain unelaborated and are not yet bound to the parent
