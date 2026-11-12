@@ -1302,6 +1302,9 @@ remains unelaborated and is not yet a 14-variable witness map.
 The source-reviewed [parent-to-88 ring client](research/ordinary13-parent-to-88-ring-client-draft/README.md)
 proposes the slot and fresh-root field identities. It remains unelaborated and
 does not establish the target guard or positive model witness.
+The source-reviewed [13-parent four-field draft](research/ordinary13-parent-four-fields-draft/README.md)
+proposes extracting its four residuals from its own zero. It remains
+unelaborated and does not by itself supply a target witness.
 The source-reviewed [88 guard draft](research/ordinary14-88-guard-draft/README.md)
 proposes the quotient-guard equality from that graph's own zero. It remains
 unelaborated and is one premise of the parent witness construction.
