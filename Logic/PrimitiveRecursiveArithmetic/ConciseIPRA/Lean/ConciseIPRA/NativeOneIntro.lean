@@ -1,4 +1,4 @@
-import ConciseIPRA.NativeEq
+import ConciseIPRA.NativeInherited
 
 /-!
 # One introduction rule
@@ -29,6 +29,10 @@ means; here it is stated for the kernel with equational transport.
 
 No structural rule of `WPrf` is used.  Substitution is not admissible in it by
 a direct induction, since it can turn a witness into the literal `0`.
+
+The argument uses six rules, collected in the class `WKernel`, and is carried
+out for every derivability predicate that has them.  `WPrf` is one instance;
+`NativeMinimal` uses another.
 -/
 
 namespace LeanProofs.ConciseIPRA
@@ -101,6 +105,114 @@ theorem subst_closure_inst (A : NFm (n + 2)) (u : Tm (n + 2)) :
 
 end NFm
 
+/-- The rules that the single introduction uses: hypothesis, the first
+computation equation, transport, `QE`, `DE` and the introduction `dI`. -/
+class WKernel (P : ∀ {n : ℕ}, List (NFm n) → NFm n → Prop) : Prop where
+  hyp : ∀ {n : ℕ} {Γ : List (NFm n)} {A : NFm n}, A ∈ Γ → P Γ A
+  iterZero : ∀ {n : ℕ} {Γ : List (NFm n)} (a : Tm n) (h : Tm (n + 1)),
+    P Γ (.eq (iter zero a h) a)
+  trEq : ∀ {n : ℕ} {Γ : List (NFm n)} (a b : Tm (n + 1)) {s t : Tm n}, P Γ (.eq s t) →
+    P Γ (.eq (Syn.subst (inst s) a) (Syn.subst (inst s) b)) →
+    P Γ (.eq (Syn.subst (inst t) a) (Syn.subst (inst t) b))
+  qE : ∀ {n : ℕ} {Γ : List (NFm n)} {B : NFm (n + 1)} (t : Tm n), P Γ (.Q B) →
+    P Γ (B.subst (inst zero)) → P Γ (B.subst (inst t))
+  dE : ∀ {n : ℕ} {Γ : List (NFm n)} {B : NFm (n + 2)} {A : NFm n}, P Γ (.D B) →
+    P (.Q B :: Γ.map NFm.shift) A.shift → P Γ A
+  dI : ∀ {n : ℕ} {Γ : List (NFm n)} (B : NFm (n + 2)) (t : Tm n),
+    P ((B.subst (up (inst t))).subst (repl (NFm.start B t)) :: Γ.map NFm.shift)
+      ((B.subst (up (inst t))).subst (repl (succ (Syn.var 0)))) → P Γ (.D B)
+
+namespace WKernel
+
+variable {P : ∀ {n : ℕ}, List (NFm n) → NFm n → Prop} [WKernel @P] {Γ : List (NFm n)}
+
+theorem trE {a b : Tm (n + 1)} (H : NFm (n + 1)) (hH : H = .eq a b) {s t : Tm n}
+    {A A' : NFm n} (h₁ : P Γ (.eq s t)) (hA : H.subst (inst s) = A)
+    (hA' : H.subst (inst t) = A') (h₂ : P Γ A) : P Γ A' := by
+  subst hH hA hA'
+  exact trEq a b h₁ h₂
+
+theorem eqRefl (t : Tm n) : P Γ (.eq t t) :=
+  trE (.eq (Syn.var 0) (Syn.shift t)) rfl (iterZero t (Syn.var 0)) (by simp) (by simp)
+    (iterZero t (Syn.var 0))
+
+theorem eqSymm {s t : Tm n} (h : P Γ (.eq s t)) : P Γ (.eq t s) :=
+  trE (.eq (Syn.var 0) (Syn.shift s)) rfl h (by simp) (by simp) (eqRefl s)
+
+/-- `Q` by progress: the introduction at a dummy witness coordinate and the
+witness `0`, followed by `dE`. -/
+theorem qInd (s t : Tm (n + 1))
+    (h : P (NFm.eq s t :: Γ.map NFm.shift) ((NFm.eq s t).subst (repl (succ (Syn.var 0))))) :
+    P Γ (.Q (.eq s t)) := by
+  have hD : P Γ (.D ((NFm.eq s t).subst (up (fun i => Syn.var i.succ)))) := by
+    refine dI _ zero ?_
+    rw [show (NFm.eq s t).subst (up (fun i => Syn.var i.succ))
+        = .eq (Syn.subst (up (fun i => Syn.var i.succ)) s)
+          (Syn.subst (up (fun i => Syn.var i.succ)) t) from rfl,
+      NFm.start_eq_zero, NFm.subst_repl_var,
+      show (NFm.eq (Syn.subst (up (fun i => Syn.var i.succ)) s)
+        (Syn.subst (up (fun i => Syn.var i.succ)) t)).subst (up (inst zero)) = .eq s t from
+      NFm.subst_dummy_inst (.eq s t) zero]
+    exact h
+  exact dE hD (hyp List.mem_cons_self)
+
+/-- `Q` by cases, at a dummy witness coordinate. -/
+theorem dDummy (B : NFm (n + 1))
+    (h : P ((B.subst (inst zero)).shift :: Γ.map NFm.shift)
+      (B.subst (repl (succ (Syn.var 0))))) :
+    P Γ (.D (B.subst (up (fun i => Syn.var i.succ)))) := by
+  refine dI _ (iter zero zero zero) ?_
+  rw [NFm.start_iter, NFm.subst_dummy_inst, ← NFm.shift_subst_inst_zero]
+  exact h
+
+/-- **`D` by cases for a literal equation at the literal witness `0`.** -/
+theorem dICaseEqZero (a b : Tm (n + 2))
+    (h : P ((((NFm.eq a b).subst (up (inst zero))).subst (inst zero)).shift
+        :: Γ.map NFm.shift)
+      (((NFm.eq a b).subst (up (inst zero))).subst (repl (succ (Syn.var 0))))) :
+    P Γ (.D (.eq a b)) := by
+  -- `Q_y E(0, y)` as a hypothesis, under a new variable
+  refine dE (dDummy _ h) ?_
+  show P _ (NFm.D ((NFm.eq a b).subst (up (up (fun i => Syn.var i.succ)))))
+  -- the introduction at the witness `I(0, 0; u. 0)`
+  refine dI _ (iter zero zero zero) ?_
+  rw [NFm.start_iter, NFm.subst_weak_inst, NFm.subst_weak_inst]
+  have hc : Syn.shift (iter zero zero zero : Tm (n + 1)) = iter zero zero zero := by simp
+  rw [hc]
+  -- from `E(c, 0)` to `E(0, 0)`
+  have h1 : P ((NFm.eq a b).subst (NFm.rho (iter zero zero zero) zero)
+        :: (NFm.Q (((NFm.eq a b).subst (up (inst zero))).subst (up (fun i => Syn.var i.succ)))
+          :: Γ.map NFm.shift).map NFm.shift)
+      ((NFm.eq a b).subst (NFm.rho zero zero)) :=
+    trE ((NFm.eq a b).subst (NFm.tau zero)) rfl (iterZero zero zero)
+      (NFm.subst_tau_inst _ _ _) (NFm.subst_tau_inst _ _ _) (hyp List.mem_cons_self)
+  -- the closure gives `E(0, S z)`
+  have hq : P ((NFm.eq a b).subst (NFm.rho (iter zero zero zero) zero)
+        :: (NFm.Q (((NFm.eq a b).subst (up (inst zero))).subst (up (fun i => Syn.var i.succ)))
+          :: Γ.map NFm.shift).map NFm.shift)
+      (.Q ((((NFm.eq a b).subst (up (inst zero))).subst (up (fun i => Syn.var i.succ))).subst
+        (up (fun i => Syn.var i.succ)))) :=
+    hyp (List.mem_cons_of_mem _ List.mem_cons_self)
+  rw [← NFm.subst_closure_inst] at h1
+  have h2 := qE (succ (Syn.var 0)) hq h1
+  rw [NFm.subst_closure_inst] at h2
+  -- from `E(0, S z)` to `E(c, S z)`
+  exact trE ((NFm.eq a b).subst (NFm.tau (succ (Syn.var 0)))) rfl
+    (eqSymm (iterZero zero zero)) (NFm.subst_tau_inst _ _ _) (NFm.subst_tau_inst _ _ _) h2
+
+/-- **`D` by cases**, for every matrix and witness. -/
+theorem dICase (B : NFm (n + 2)) (t : Tm n)
+    (h : P (((B.subst (up (inst t))).subst (inst zero)).shift :: Γ.map NFm.shift)
+      ((B.subst (up (inst t))).subst (repl (succ (Syn.var 0))))) : P Γ (.D B) := by
+  by_cases hc : (∃ a b, B = NFm.eq a b) ∧ t = zero
+  · obtain ⟨⟨a, b, rfl⟩, rfl⟩ := hc
+    exact dICaseEqZero a b h
+  · refine dI B t ?_
+    rw [NFm.start_of_not hc, ← NFm.shift_subst_inst_zero]
+    exact h
+
+end WKernel
+
 /-- Derivability with a single introduction rule. -/
 inductive WPrf : {n : ℕ} → List (NFm n) → NFm n → Prop
   | hyp {n : ℕ} {Γ : List (NFm n)} {A : NFm n} (h : A ∈ Γ) : WPrf Γ A
@@ -124,13 +236,25 @@ inductive WPrf : {n : ℕ} → List (NFm n) → NFm n → Prop
         ((B.subst (up (inst t))).subst (repl (succ (var 0))))) :
       WPrf Γ (.D B)
 
-namespace WPrf
+instance : WKernel @WPrf :=
+  ⟨fun h => .hyp h, fun a h => .iterZero a h, fun a b => fun h₁ h₂ => .trEq a b h₁ h₂,
+    fun t h₁ h₂ => .qE t h₁ h₂, fun h₁ h₂ => .dE h₁ h₂, fun B t h => .dI B t h⟩
 
 variable {Γ : List (NFm n)} {A : NFm n}
 
-/-- Every instance of the single introduction rule is an instance of a derived
-introduction rule of the kernel. -/
-theorem toNPrf (h : WPrf Γ A) : NPrf Γ A := by
+/-- An instance of the single introduction rule is an instance of one of the
+two introductions of the reports' calculus, both derived in the kernel. -/
+theorem NPrf.ofDI (B : NFm (n + 2)) (t : Tm n)
+    (h : NPrf ((B.subst (up (inst t))).subst (repl (NFm.start B t)) :: Γ.map NFm.shift)
+      ((B.subst (up (inst t))).subst (repl (succ (Syn.var 0))))) : NPrf Γ (.D B) := by
+  by_cases hc : (∃ a b, B = NFm.eq a b) ∧ t = zero
+  · obtain ⟨⟨a, b, rfl⟩, rfl⟩ := hc
+    rw [NFm.start_eq_zero, NFm.subst_repl_var] at h
+    exact .dIProg a b zero h
+  · rw [NFm.start_of_not hc, ← NFm.shift_subst_inst_zero] at h
+    exact .dICase B t h
+
+theorem WPrf.toNPrf (h : WPrf Γ A) : NPrf Γ A := by
   induction h with
   | hyp h => exact .hyp h
   | iterZero a h => exact .iterZero a h
@@ -138,74 +262,7 @@ theorem toNPrf (h : WPrf Γ A) : NPrf Γ A := by
   | trEq a b _ _ ih₁ ih₂ => exact .trEq a b ih₁ ih₂
   | qE t _ _ ih₁ ih₂ => exact .qE t ih₁ ih₂
   | dE _ _ ih₁ ih₂ => exact .dE ih₁ ih₂
-  | dI B t _ ih =>
-    by_cases hc : (∃ a b, B = NFm.eq a b) ∧ t = zero
-    · obtain ⟨⟨a, b, rfl⟩, rfl⟩ := hc
-      rw [NFm.start_eq_zero, NFm.subst_repl_var] at ih
-      exact .dIProg a b zero ih
-    · rw [NFm.start_of_not hc, ← NFm.shift_subst_inst_zero] at ih
-      exact .dICase B t ih
-
-theorem trE {a b : Tm (n + 1)} (H : NFm (n + 1)) (hH : H = .eq a b) {s t : Tm n}
-    {A A' : NFm n} (h₁ : WPrf Γ (.eq s t)) (hA : H.subst (inst s) = A)
-    (hA' : H.subst (inst t) = A') (h₂ : WPrf Γ A) : WPrf Γ A' := by
-  subst hH hA hA'
-  exact .trEq a b h₁ h₂
-
-theorem eqRefl (t : Tm n) : WPrf Γ (.eq t t) :=
-  trE (.eq (Syn.var 0) (Syn.shift t)) rfl (.iterZero t (Syn.var 0)) (by simp) (by simp)
-    (.iterZero t (Syn.var 0))
-
-theorem eqSymm {s t : Tm n} (h : WPrf Γ (.eq s t)) : WPrf Γ (.eq t s) :=
-  trE (.eq (Syn.var 0) (Syn.shift s)) rfl h (by simp) (by simp) (eqRefl s)
-
-/-- `Q` by cases, at a dummy witness coordinate. -/
-theorem dDummy (B : NFm (n + 1))
-    (h : WPrf ((B.subst (inst zero)).shift :: Γ.map NFm.shift)
-      (B.subst (repl (succ (Syn.var 0))))) :
-    WPrf Γ (.D (B.subst (up (fun i => Syn.var i.succ)))) := by
-  refine .dI _ (iter zero zero zero) ?_
-  rw [NFm.start_iter, NFm.subst_dummy_inst, ← NFm.shift_subst_inst_zero]
-  exact h
-
-/-- **`D` by cases for a literal equation at the literal witness `0`.** -/
-theorem dICaseEqZero (a b : Tm (n + 2))
-    (h : WPrf ((((NFm.eq a b).subst (up (inst zero))).subst (inst zero)).shift
-        :: Γ.map NFm.shift)
-      (((NFm.eq a b).subst (up (inst zero))).subst (repl (succ (Syn.var 0))))) :
-    WPrf Γ (.D (.eq a b)) := by
-  -- `Q_y E(0, y)` as a hypothesis, under a new variable
-  refine .dE (dDummy _ h) ?_
-  show WPrf _ (.D ((NFm.eq a b).subst (up (up (fun i => Syn.var i.succ)))))
-  -- the introduction at the witness `I(0, 0; u. 0)`
-  refine .dI _ (iter zero zero zero) ?_
-  rw [NFm.start_iter, NFm.subst_weak_inst, NFm.subst_weak_inst]
-  have hc : Syn.shift (iter zero zero zero : Tm (n + 1)) = iter zero zero zero := by simp
-  rw [hc]
-  -- from `E(c, 0)` to `E(0, 0)`
-  have h1 : WPrf ((NFm.eq a b).subst (NFm.rho (iter zero zero zero) zero)
-        :: (NFm.Q (((NFm.eq a b).subst (up (inst zero))).subst (up (fun i => Syn.var i.succ)))
-          :: Γ.map NFm.shift).map NFm.shift)
-      ((NFm.eq a b).subst (NFm.rho zero zero)) :=
-    trE ((NFm.eq a b).subst (NFm.tau zero)) rfl (.iterZero zero zero)
-      (NFm.subst_tau_inst _ _ _) (NFm.subst_tau_inst _ _ _) (.hyp List.mem_cons_self)
-  -- the closure gives `E(0, S z)`
-  have hq : WPrf ((NFm.eq a b).subst (NFm.rho (iter zero zero zero) zero)
-        :: (NFm.Q (((NFm.eq a b).subst (up (inst zero))).subst (up (fun i => Syn.var i.succ)))
-          :: Γ.map NFm.shift).map NFm.shift)
-      (.Q ((((NFm.eq a b).subst (up (inst zero))).subst (up (fun i => Syn.var i.succ))).subst
-        (up (fun i => Syn.var i.succ)))) :=
-    .hyp (List.mem_cons_of_mem _ List.mem_cons_self)
-  rw [← NFm.subst_closure_inst] at h1
-  have h2 := WPrf.qE (succ (Syn.var 0)) hq h1
-  rw [NFm.subst_closure_inst] at h2
-  -- from `E(0, S z)` to `E(c, S z)`
-  exact trE ((NFm.eq a b).subst (NFm.tau (succ (Syn.var 0)))) rfl
-    (eqSymm (.iterZero zero zero)) (NFm.subst_tau_inst _ _ _) (NFm.subst_tau_inst _ _ _) h2
-
-end WPrf
-
-variable {Γ : List (NFm n)} {A : NFm n}
+  | dI B t _ ih => exact .ofDI B t ih
 
 /-- Both introduction rules of the kernel are derived rules of `WPrf`. -/
 theorem NPrf.toWPrf (h : NPrf Γ A) : WPrf Γ A := by
@@ -216,25 +273,8 @@ theorem NPrf.toWPrf (h : NPrf Γ A) : WPrf Γ A := by
   | trEq a b _ _ ih₁ ih₂ => exact .trEq a b ih₁ ih₂
   | qE t _ _ ih₁ ih₂ => exact .qE t ih₁ ih₂
   | dE _ _ ih₁ ih₂ => exact .dE ih₁ ih₂
-  | dICase B t _ ih =>
-    by_cases hc : (∃ a b, B = NFm.eq a b) ∧ t = zero
-    · obtain ⟨⟨a, b, rfl⟩, rfl⟩ := hc
-      exact WPrf.dICaseEqZero a b ih
-    · refine .dI B t ?_
-      rw [NFm.start_of_not hc, ← NFm.shift_subst_inst_zero]
-      exact ih
-  | @qIInd _ Γ s t _ ih =>
-    have hD : WPrf Γ (.D ((NFm.eq s t).subst (up (fun i => Syn.var i.succ)))) := by
-      refine .dI _ zero ?_
-      rw [show (NFm.eq s t).subst (up (fun i => Syn.var i.succ))
-          = .eq (Syn.subst (up (fun i => Syn.var i.succ)) s)
-            (Syn.subst (up (fun i => Syn.var i.succ)) t) from rfl,
-        NFm.start_eq_zero, NFm.subst_repl_var,
-        show (NFm.eq (Syn.subst (up (fun i => Syn.var i.succ)) s)
-          (Syn.subst (up (fun i => Syn.var i.succ)) t)).subst (up (inst zero)) = .eq s t from
-        NFm.subst_dummy_inst (.eq s t) zero]
-      exact ih
-    exact .dE hD (.hyp List.mem_cons_self)
+  | dICase B t _ ih => exact WKernel.dICase B t ih
+  | qIInd s t _ ih => exact WKernel.qInd s t ih
 
 /-- **One introduction rule suffices**: `WPrf` and the kernel derive the same
 sequents. -/

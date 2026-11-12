@@ -30,14 +30,6 @@ def Tm.monus (x y : Tm n) : Tm n := Tm.iter y x (Tm.pred (Syn.var 0))
 def Tm.eqt (a b : Tm n) : Tm n :=
   Tm.sel (Tm.monus (Tm.succ a) b) Tm.one (Tm.pred (Tm.monus (Tm.succ a) b))
 
-@[simp] theorem Tm.subst_monus (σ : Fin n → Tm m) (x y : Tm n) :
-    Syn.subst σ (Tm.monus x y) = Tm.monus (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [Tm.monus]
-
-@[simp] theorem Tm.subst_eqt (σ : Fin n → Tm m) (a b : Tm n) :
-    Syn.subst σ (Tm.eqt a b) = Tm.eqt (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [Tm.eqt]
-
 lift_op₂ monus eqt
 
 namespace Q
@@ -57,10 +49,6 @@ variable {Γ : List (Fm Tm n)}
   simp only [Tm.subst_pred, Syn.subst_var, Syn.inst_zero] at h
   exact sound h
 
-@[simp] theorem monus_one (x : Q Γ) : monus x 1 = pred x := by
-  show monus x (succ 0) = pred x
-  rw [monus_succ, monus_zero]
-
 @[simp] theorem pred_monus_succ (x y : Q Γ) : pred (monus (succ x) y) = monus x y := by
   induction x using Q.ind with | _ a
   induction y using Q.ind with | _ b
@@ -68,9 +56,6 @@ variable {Γ : List (Fm Tm n)}
     (Tm.monus (shift a) (var 0)) (by simp)
     (fun ih => by simp at ih; simp [ih]) b
   simpa using h
-
-theorem monus_succ_succ (x y : Q Γ) : monus (succ x) (succ y) = monus x y := by
-  rw [monus_succ, pred_monus_succ]
 
 @[simp] theorem monus_succ_self (x : Q Γ) : monus (succ x) x = 1 := by
   induction x using Q.ind with | _ a
@@ -131,8 +116,6 @@ theorem eq_one_of_sel_pred (d : Q Γ) (h : sel d 1 (pred d) = 0) : d = 1 := by
   refine ⟨fun h => monus_succ_eq_one_iff.1 (eq_one_of_sel_pred _ (by rwa [eqt_eq] at h)),
     fun h => ?_⟩
   rw [eqt_eq, monus_succ_eq_one_iff.2 h, sel_one, pred_one]
-
-theorem eqt_self (a : Q Γ) : eqt a a = 0 := eqt_eq_zero_iff.2 rfl
 
 end Q
 

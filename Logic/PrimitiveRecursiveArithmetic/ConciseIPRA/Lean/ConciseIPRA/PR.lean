@@ -153,10 +153,6 @@ theorem succNeZero (t : PTm n) : Γ ⊢[PRAAx] (succ t ≐ zero) ⟶ Fm.bot := b
   have := Prf.ax (Γ := Γ) PRAAx.succNeZero (fun _ => t)
   simpa using this
 
-theorem succInj (s t : PTm n) : Γ ⊢[PRAAx] (succ s ≐ succ t) ⟶ (s ≐ t) := by
-  have := Prf.ax (Γ := Γ) PRAAx.succInj (Fin.cases s (fun _ => t))
-  simpa using this
-
 /-- Induction for a quantifier-free formula. -/
 theorem qfInd (φ : Fm PTm (n + 1)) (hφ : φ.QF) (h0 : Γ ⊢[PRAAx] φ.subst (inst zero))
     (hS : φ :: Γ.map Fm.shift ⊢[PRAAx] φ.subst (repl (succ (var 0)))) :

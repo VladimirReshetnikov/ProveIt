@@ -47,30 +47,6 @@ def Tm.ramp (a : Tm n) : Tm n :=
 /-- The factor map: the ramp at parity zero, the identity at parity one. -/
 def Tm.hop (a : Tm n) : Tm n := Tm.sel (Tm.par a) (Tm.ramp a) a
 
-@[simp] theorem Tm.subst_zf (σ : Fin n → Tm m) (a : Tm n) :
-    Syn.subst σ (Tm.zf a) = Tm.zf (Syn.subst σ a) := by
-  simp [Tm.zf]
-
-@[simp] theorem Tm.subst_par (σ : Fin n → Tm m) (a : Tm n) :
-    Syn.subst σ (Tm.par a) = Tm.par (Syn.subst σ a) := by
-  simp [Tm.par]
-
-@[simp] theorem Tm.subst_cyc (σ : Fin n → Tm m) (a : Tm n) :
-    Syn.subst σ (Tm.cyc a) = Tm.cyc (Syn.subst σ a) := by
-  simp [Tm.cyc]
-
-@[simp] theorem Tm.subst_mod3 (σ : Fin n → Tm m) (a : Tm n) :
-    Syn.subst σ (Tm.mod3 a) = Tm.mod3 (Syn.subst σ a) := by
-  simp [Tm.mod3]
-
-@[simp] theorem Tm.subst_ramp (σ : Fin n → Tm m) (a : Tm n) :
-    Syn.subst σ (Tm.ramp a) = Tm.ramp (Syn.subst σ a) := by
-  simp [Tm.ramp]
-
-@[simp] theorem Tm.subst_hop (σ : Fin n → Tm m) (a : Tm n) :
-    Syn.subst σ (Tm.hop a) = Tm.hop (Syn.subst σ a) := by
-  simp [Tm.hop]
-
 lift_op₁ zf par cyc mod3 ramp hop
 
 namespace Q

@@ -163,10 +163,6 @@ instance : Syn Tm where
 /-- The numeral `1`. -/
 def one : Tm n := succ zero
 
-theorem syn_var (i : Fin n) : (Syn.var i : Tm n) = var i := rfl
-
-theorem syn_subst (σ : Fin n → Tm m) (t : Tm n) : Syn.subst σ t = sub σ t := rfl
-
 theorem shift_eq_ren (t : Tm n) : Syn.shift t = ren Fin.succ t :=
   (ren_eq_sub t Fin.succ).symm
 

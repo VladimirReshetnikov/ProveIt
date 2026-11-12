@@ -146,15 +146,6 @@ def op₃ (f : ∀ k, Tm k → Tm k → Tm k → Tm k) (hf : Sub₃ f) (x y z : 
     (fun _ _ ha => Quotient.inductionOn₂ y z (fun b c =>
       sound (Teq.congr₃ hf ha (Prf.eqRefl b) (Prf.eqRefl c)))) x
 
-theorem op₁_mk (f : ∀ k, Tm k → Tm k) (hf : Sub₁ f) (a : Tm n) :
-    op₁ f hf (mk Γ a) = mk Γ (f n a) := rfl
-
-theorem op₂_mk (f : ∀ k, Tm k → Tm k → Tm k) (hf : Sub₂ f) (a b : Tm n) :
-    op₂ f hf (mk Γ a) (mk Γ b) = mk Γ (f n a b) := rfl
-
-theorem op₃_mk (f : ∀ k, Tm k → Tm k → Tm k → Tm k) (hf : Sub₃ f) (a b c : Tm n) :
-    op₃ f hf (mk Γ a) (mk Γ b) (mk Γ c) = mk Γ (f n a b c) := rfl
-
 instance : Zero (Q Γ) := ⟨mk Γ Tm.zero⟩
 
 instance : One (Q Γ) := ⟨mk Γ Tm.one⟩
@@ -267,10 +258,6 @@ theorem wk_map_mk (ψ : Fm Tm n) (a : Tm n) :
     (wk ψ : Ext Γ (ψ :: Γ)).map (Q.mk Γ a) = Q.mk (ψ :: Γ) a :=
   congrArg (Q.mk (ψ :: Γ)) (Syn.subst_id a)
 
-theorem shiftCons_map_mk (ψ : Fm Tm (n + 1)) (a : Tm n) :
-    (shiftCons ψ : Ext Γ (ψ :: Γ.map Fm.shift)).map (Q.mk Γ a)
-      = Q.mk (ψ :: Γ.map Fm.shift) (shift a) := rfl
-
 end Ext
 
 namespace Q
@@ -305,14 +292,16 @@ end Q
 
 /-! ## Lifting term operations to classes
 
-Every term operation `Tm.f` that commutes with substitution (`Tm.subst_f`)
-induces an operation `Q.f` on classes, with a lemma `Q.mk_f` for the class of
-`Tm.f a` and a lemma `Ext.map_f` for extensions of the context.  The commands
-`lift_op₁` and `lift_op₂` declare these three for unary and binary operations. -/
+Every term operation `Tm.f` defined from the iterator commutes with
+substitution (`Tm.subst_f`) and so induces an operation `Q.f` on classes, with
+a lemma `Q.mk_f` for the class of `Tm.f a` and a lemma `Ext.map_f` for
+extensions of the context.  The commands `lift_op₁` and `lift_op₂` prove the
+first and declare the other three, for unary and binary operations. -/
 
 open Lean in
-/-- `lift_op₁ f g …`: for each `f`, from `Tm.f` and `Tm.subst_f`, declare the unary
-operation `Q.f` on classes and the simp lemmas `Q.mk_f` and `Ext.map_f`. -/
+/-- `lift_op₁ f g …`: for each unary term operation `Tm.f`, prove that it commutes with
+substitution (`Tm.subst_f`), and declare the operation `Q.f` on classes with the simp lemmas
+`Q.mk_f` and `Ext.map_f`. -/
 macro "lift_op₁ " fs:ident+ : command => do
   let mut cmds : Array Syntax := #[]
   for f in fs do
@@ -322,6 +311,9 @@ macro "lift_op₁ " fs:ident+ : command => do
     let qF := mkIdent (.str `Q s)
     let mkF := mkIdent (.str `Q ("mk_" ++ s))
     let mapF := mkIdent (.str `Ext ("map_" ++ s))
+    cmds := cmds.push (← `(@[simp] theorem $sub {n m : ℕ} (σ : Fin n → Tm m) (a : Tm n) :
+      Syn.subst σ ($tmF a) = $tmF (Syn.subst σ a) := by
+      first | (simp [$tmF:ident]; done) | simp [$tmF:ident, Syn.subst_up_shift]))
     cmds := cmds.push (← `(def $qF {n : ℕ} {Γ : List (Fm Tm n)} : Q Γ → Q Γ :=
       Q.op₁ (fun _ => $tmF) $sub))
     cmds := cmds.push (← `(@[simp] theorem $mkF {n : ℕ} {Γ : List (Fm Tm n)} (a : Tm n) :
@@ -342,6 +334,9 @@ macro "lift_op₂ " fs:ident+ : command => do
     let qF := mkIdent (.str `Q s)
     let mkF := mkIdent (.str `Q ("mk_" ++ s))
     let mapF := mkIdent (.str `Ext ("map_" ++ s))
+    cmds := cmds.push (← `(@[simp] theorem $sub {n m : ℕ} (σ : Fin n → Tm m) (a b : Tm n) :
+      Syn.subst σ ($tmF a b) = $tmF (Syn.subst σ a) (Syn.subst σ b) := by
+      first | (simp [$tmF:ident]; done) | simp [$tmF:ident, Syn.subst_up_shift]))
     cmds := cmds.push (← `(def $qF {n : ℕ} {Γ : List (Fm Tm n)} : Q Γ → Q Γ → Q Γ :=
       Q.op₂ (fun _ => $tmF) $sub))
     cmds := cmds.push (← `(@[simp] theorem $mkF {n : ℕ} {Γ : List (Fm Tm n)} (a b : Tm n) :
