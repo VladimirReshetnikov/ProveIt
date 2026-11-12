@@ -59,10 +59,11 @@ established as a Lean theorem:
    `a = X*Y+Y` and `ellPart = (m*k)*(m*k+k)` as embedded natural values,
    hence nonnegative. Rewrite slots 3, 8, and 11 of `u` back to `w` and
    apply the conditional helper.
-4. Still required: elaborate all of the source drafts and prove the resulting predecessor assertion in the exact weaker internal
-   theory required by the project. The ambient `IΣ₁` model hypothesis and
-   the current external or source-only proofs do not establish an iPRA
-   theorem. Separately prove the coefficient and PDF bindings.
+4. Still required: elaborate the source drafts and validate their use in the
+   full conversion to the target iPRA derivation. An intermediate proof may
+   use a stronger metatheoretic model framework, but the ambient `IΣ₁` model
+   hypothesis and the current source-only drafts do not themselves establish
+   an iPRA theorem. Separately prove the coefficient and PDF bindings.
 
 The source check additionally compares the 82 and partially shifted 74
 graphs and the first, strong, and auxiliary factor formulas in 300 finite
