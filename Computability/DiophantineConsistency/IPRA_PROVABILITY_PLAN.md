@@ -1278,6 +1278,10 @@ unelaborated and does not yet construct a parent witness.
 The source-reviewed [88-to-parent ring client](research/ordinary14-88-parent-ring-client-draft/README.md)
 proposes the 14-to-13 field and fresh-root carrier identities. It is
 unelaborated and does not by itself prove a positive model witness.
+The source-reviewed [fresh parent-root fact](research/ordinary14-fresh-parent-root-draft/README.md)
+and [projected parent fields](research/ordinary14-88-parent-fields-draft/README.md)
+propose the positivity and nonfirst residual pieces. Both remain unelaborated;
+the first residual and complete parent model zero are still required.
 The source-reviewed [88 guard draft](research/ordinary14-88-guard-draft/README.md)
 proposes the quotient-guard equality from that graph's own zero. It remains
 unelaborated and is one premise of the parent witness construction.
