@@ -7563,6 +7563,9 @@ It remains unelaborated and does not supply the subsequent natural norms.
 The source-reviewed [84 main-norm client draft](research/ordinary14-84-main-norm-client-draft/README.md)
 proposes an unsigned natural main root from that graph's own zero. It has not
 been elaborated and does not yet establish the orientation or Pell indices.
+The separate source-reviewed [signed scaled-root draft](research/ordinary14-scaled-signed-root-draft/README.md)
+proposes retaining both sign branches under a positive scale; it remains
+unelaborated and is not itself an oriented graph theorem.
 The source-reviewed [modified-carrier gamma-growth draft](research/ordinary14-modified-carrier-gamma-model-draft/README.md)
 proposes the needed strict positivity using existing Pell growth lemmas under
 explicit index and carrier hypotheses. It is unelaborated and is not yet
