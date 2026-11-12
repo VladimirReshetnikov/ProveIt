@@ -7596,6 +7596,9 @@ been composed into an exact-index theorem.
 The source-reviewed [84 P72 first-input bundle](research/ordinary14-84-p72-first-inputs-draft/README.md)
 proposes combining the first-index congruence with both rank bounds. It remains
 unelaborated and does not provide the auxiliary norm or exact indices.
+The source-reviewed [84 auxiliary-norm draft](research/ordinary14-84-aux-norm-draft/README.md)
+proposes the signed absolute-value relation from that graph's own zero. It
+remains unelaborated and does not itself establish exact indices.
 The source-reviewed [84 main-index draft](research/ordinary14-84-main-index-draft/README.md)
 proposes classifying the main root while retaining the natural balance. It is
 unelaborated and does not identify that index with the rank.
