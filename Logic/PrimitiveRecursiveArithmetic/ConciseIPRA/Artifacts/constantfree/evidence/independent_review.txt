@@ -1,0 +1,105 @@
+INDEPENDENT REVIEW OF THE CONSTANT-FREE PRESENTATION
+
+Scope: the written constant-free mathematics, the adapted standalone checker,
+and the four explicit certificates for U(t)=1_a, Z(t)=Z(a), existence of a
+fixed point of Z, and uniqueness of that fixed point. This is a same-session
+independent assistant review, not external peer review or proof-assistant
+formalization of the complete bi-interpretation.
+
+MATHEMATICAL CHECKS
+
+1. The fixed-anchor proof of constants is noncircular. Write 0=Z(a),
+   S(t)=J(t;i,r.Z(r)), and 1=S(0). This successor abbreviation contains no
+   anchor parameter. CF0 gives K(0)=1. The increment branch
+   gives K(1)=S(1). CF0 gives U(0)=1, and the load branch under U(n)=1
+   gives U(S(n))=1 because the instruction is K(1)=S(1). The only induction
+   invariant is the literal equation U(x)=1. The load branch for
+   B(n)=J(n;i,r.r), at n=0, gives B(1)=0. Thus Z(t)=B(U(t))=0=Z(a).
+   The proof does not use successor injectivity, separation, or coverage.
+
+2. Parameter-free zero is represented by a definable element, not a closed
+   term. Z(t)=Z(a) implies Z(Z(a))=Z(a). In a nonempty numerical domain,
+   an arbitrary parameter a therefore supplies the existential witness
+   Z(a), and the parameter can be discharged because the existential
+   conclusion has no free occurrence of a. Two fixed points are equal by
+   the anchor-independence theorem. This justifies the temporary unique
+   definable-constant extension in the interpretation proof.
+
+3. The register bootstrap remains valid with this zero. For constant
+   instruction f(n,v)=J(n;i,r.v), CF0 and the load direction give
+   f(0,v)=1 and f(S(n),S(v))=v. The equality f(n,0)=S(n) is now a
+   theorem rather than a definition: the proved equation Z(r)=Z(a)
+   identifies the two instruction bodies, and body extensionality gives
+   equality of the computations. Body extensionality requires only
+   equation induction and the graph schema, so this change is noncircular.
+   The forward graph direction, instantiated at the actual output
+   W(v)=f(1,v), gives v=0 or v=S(W(v)), establishing coverage.
+   The stated q, D, p, G and C terms have the advertised equations.
+   In particular p(S(v))=v supplies injectivity, and q separates
+   successor values from zero using CFsep.
+
+4. The primitive-recursion compiler is internally justified by two load
+   instances. At old counter 0 it loads b; at old counter S(n) it loads
+   h(n,r), because the selector and predecessor equations already hold.
+   No induction on a non-equation is needed to establish its defining
+   equations. Equality reflection then uses literal-equation inductions;
+   coverage supplies constructive case splits inside those derivations.
+
+5. Both interpretation composites have a sound route. In iPRA, the fixed J
+   descriptor is a primitive-recursive function with its increment/load
+   transition. In the constant-free theory, the compiler recovers each
+   primitive-recursive descriptor. Pointwise body equality implies equality
+   of J outputs by equation induction: forward graph reasoning for one
+   output transports its disjunct to the other graph, whose backward
+   direction identifies that output. This also justifies binding syntax as
+   a notation for ordinary fixed first-order descriptors.
+
+6. The translation using exists z (z=Z(z) and A_z) is justified by provable
+   existence and uniqueness, including intuitionistic implication and
+   quantifiers. It is equivalent to a compositional function-graph
+   interpretation; it is not an appeal to unrestricted choice. Both
+   numerical domains can remain whole and both equality relations actual.
+
+CHECKER REVIEW
+
+7. Macro construction avoids capture. J binds only in its body, not its
+   counter. Simultaneous substitution renames conflicting body binders
+   before inserting free variables. Alpha comparison keeps free names
+   distinct and respects shadowing. Dedicated finite tests cover capture,
+   the external counter scope, and anchors named like generated binders.
+
+8. Every anchor is validated in the current numerical scope. The J0 and
+   graph rules compare their complete claimed instances with the expanded
+   macro formulas. The induction anchor, target term, and retained context
+   are fixed before introducing the induction eigenvariable. The invariant
+   is explicitly required to be a literal equation.
+
+9. Param is sound in ordinary nonempty-domain intuitionistic first-order
+   logic. Its conclusion is validated in the outer scope, so the fresh
+   numerical parameter cannot escape. Universal introduction and existential
+   elimination use the same scope discipline. All contexts arise from
+   previously validated formulas; freshness relative to scope therefore
+   implies freshness relative to retained free assumptions.
+
+10. The JSON front end rejects duplicate object keys and nonstandard numeric
+    constants. Proof nodes have exact field sets, and hypothesis indices
+    require actual integers rather than Python booleans. An uncaught malformed
+    input exception, if any, would be a rejected CLI run because acceptance
+    requires status zero and exactly ACCEPT on stdout.
+
+VALIDATION AND LIMITS
+
+The reproducible validation script checks 19 certificate cases under ordinary
+Python and -O, for 38 CLI executions, plus 6 capture/substitution checks.
+The four delivered mathematical proofs and one pure logical nonempty-domain
+proof are accepted. Fourteen altered or malformed certificates are rejected,
+including compound induction with otherwise matching premises, a future
+eigenvariable used as an anchor, and existence without a parameter scope.
+See validation.json for exact case descriptions, payload hashes, and results.
+
+The complete normalized new checker is larger than the matched register-graph
+control. The mathematical contribution is deletion of a primitive numerical
+constant from the term grammar; it is not a smaller complete checker, a
+proof of absolute minimality, or a proof-assistant verification of the entire
+bi-interpretation. The compact-profile improvements elsewhere in the archive
+are independent implementation compositions on the old scalar calculus.

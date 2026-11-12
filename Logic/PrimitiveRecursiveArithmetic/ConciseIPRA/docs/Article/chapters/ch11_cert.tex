@@ -29,6 +29,8 @@ elimination fixed before its major & \cref{cert:sec:order} & \pkg{prevalidated\_
 scalar neutral premise, tuple loop & \cref{cert:sec:scalar} & \pkg{kernel\_refinement}, \pkg{compact\_update}\\
 validators of goal and certificate & \cref{cert:sec:validated} & \pkg{validated\_core} and successors\\
 inferred major, eager selection, remainder selector, phase by context & \cref{cert:sec:later} & \pkg{inferred\_major}, \pkg{smaller\_envelope}, \pkg{frontier\_review}, \pkg{context\_phase}\\
+three fields, source reused as the major & \cref{cert:sec:three-field} & \pkg{three\_field}\\
+allocation before the elimination test & \cref{cert:sec:context-first} & \pkg{context\_order}, through \pkg{three\_field} and \pkg{constantfree}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -1917,8 +1919,14 @@ is the separation of the two sorts and cannot be removed.
 This section covers \pkg{inferred\_major} and \pkg{smaller\_envelope}, which
 overlap, \pkg{frontier\_review}, \pkg{checked\_presentation},
 \pkg{context\_phase}, the two checkers of \pkg{progress\_independence}, the
-compact checker of \pkg{crossed\_uniqueness}, and the audit of sources in
-\pkg{orbit\_closure}. All programs are checkers of $\mathcal U$ or
+compact checker of \pkg{crossed\_uniqueness}, the certificates and programs of
+\pkg{three\_field}, the compact part of \pkg{constantfree}, the programs of
+\pkg{context\_order}, and the audits of sources in \pkg{orbit\_closure} and
+\pkg{progress\_independence}. The archive \pkg{context\_order} is not one of
+the packages of the article; its two compact programs and its audit of the
+schedule of \cref{cert:sec:context-first} are reproduced, with hashes, in
+\pkg{three\_field} and \pkg{constantfree}, and are cited from there. All
+programs are checkers of $\mathcal U$ or
 $\mathcal A^{-}$ in the protocols of \cref{cert:def:gs}; no rule is changed.
 Each device is compared with a control, and for each device the set of
 accepted stacks is unchanged, or shrinks, or changes in a way that is
@@ -2352,6 +2360,356 @@ against the $1183$ bytes of \pkg{frontier\_review} in the second).
 ($869$ bytes, without a stated control). \pkg{smaller\_envelope} supplies a
 readable program of this contract ($2473$ bytes) as an interface for audit.
 
+\subsection{Three-field certificates}\label{cert:sec:three-field}
+
+This subsection follows \pkg{three\_field}. Its controls are the two loop
+profiles with inferred majors: the profile with a global floor of
+\pkg{progress\_independence}, which reuses the tail of a packet (the paragraph
+after \cref{cert:prop:truthy}), and the profile with local floors and the
+scalar neutral premise of \pkg{inferred\_major} and \pkg{smaller\_envelope}
+(\cref{cert:def:inferred}). In these controls the first field $m$ of a packet
+is overwritten whenever the test of step (3) succeeds; otherwise it is the
+major of a \rulename{DE} packet or a false-valued field without role, and in
+a \rulename{DE} packet the fields $s,u,t$ are inert. Three fields suffice:
+the major of a \rulename{DE} packet moves into the source field, and the
+inferred major is stored in the source field as well.
+
+\begin{definition}[Three-field protocol]\label{cert:def:three-field}
+A packet is an array $r=[s,u,t]$ of exactly three fields. The three-field
+protocol is obtained from its control by the following changes.
+\begin{enumerate}
+\item[(3$'$)] If $O_k(t;u,0)=a$, perform in this order: replace $a$ by
+$O_k(t;s,0)$; replace $s$ by $M^{\circ}$, that is, by $[s,u]$ if the field $s$
+of $r$ is true-valued and by $[t,t,t]$ otherwise; replace $u$ by the scalar
+$0$.
+\item[(4$'$)] If $u$ is true-valued, form $h$ from $r$ as in step (4ii) of
+\cref{cert:def:base}. If $u$ is false-valued, run the major call
+$\mathrm{Check}(s,g,k)$ (with local floors always; with the global floor only
+if $s$ is true-valued) and let $h$ be the threefold repetition of $s$ if this
+is true-valued; otherwise the packet is an introduction: the goal $a=[B]$ is
+replaced by $O_k(B;t,2)$ and $h=a$.
+\item[(6$'$)] Let $\iota=k$ if $s$ is true-valued or the arity of $a$ is $2$,
+and zero otherwise; the final step is that of the control.
+\end{enumerate}
+The \emph{global three-field profile} keeps the global floor, the empty initial
+context and the loop of the global control; the \emph{local three-field
+profile} keeps local floors, the initial context $[0]$ and the loop of the
+local control (\cref{cert:thm:loop}). The \emph{expansion} of a packet is
+\[
+E([s,u,t])\defeq
+\begin{cases}
+[0,s,u,t], & u\text{ true-valued},\\
+[s,s,u,t], & u\text{ false-valued},
+\end{cases}
+\]
+and $E(\sigma)$ is the stack $\sigma$ with every consumed packet expanded.
+\end{definition}
+
+After a successful test, $s$ holds the nonempty array $M^{\circ}$ and $u$ is
+$0$, so the packet takes the major branch of step (4$'$): the reconstructed
+major is proved in the unchanged context, not assumed. The new goal is formed
+from the original source before $s$ is overwritten. Without a successful test
+the fields keep their values, so a computation packet has the predecessor in
+$s$ and a \rulename{DE} packet its major. The only place where the three-field
+protocol and its control, run on the expanded packets, can differ is
+step (6$'$) at a computation packet: with a true-valued predecessor $s$ and a
+goal of arity other than $2$, the hypothesis is opened at the fresh parameter,
+where the control, whose $m$ is $0$, opens it at zero.
+
+\begin{theorem}[Soundness of three fields]\label{cert:thm:three-sound}
+In either three-field profile, let every member of $g$ be closed at floor $k$.
+If $\mathrm{Check}(a,g,k)$ returns, then $a$ is closed at floor $k$, and the
+auxiliary reading of $a$ is derivable in $\Teq$ from the auxiliary readings of
+the members of $g$.
+\end{theorem}
+\begin{proof}
+By induction on the run, as in \cref{cert:prop:scalar}; for the global profile
+the induction is the one stated after \cref{cert:thm:loop}. Step (1) is
+unchanged. Consider a packet that is consumed.
+
+If the test of (3$'$) succeeds, the major that is proved is $M^{\circ}$, the
+goal is replaced exactly as in the control with $m=M^{\circ}$, and the
+hypothesis is the threefold repetition of $M^{\circ}$, an array of arity $6$
+or $9$ that reads $0=0$. The analysis of step (3) in the proof of
+\cref{cert:prop:scalar} applies: for a true-valued source the major reads
+$\sigma=\upsilon$ and the replacement is a transport, for a false-valued one
+it reads $\Q{y}B(y)$ and the new goal reads $B(0)$. The hypothesis is
+discharged by \cref{cert:lem:neutral-resource}, and $\iota=k$ since $s$ is
+true-valued.
+
+If the test fails and $u$ is false-valued, the packet is processed exactly as
+the control processes $[s,s,u,t]$: the major call, the hypothesis, the
+introduction and the selector depend on $s$ in the same way as there on $m$.
+The cases of \cref{cert:prop:scalar} for a unary major (\rulename{DE} through
+the auxiliary reading), for a major of arity at least $2$ or a numeric scalar
+(the hypothesis reads $0=0$), and for an introduction apply.
+
+If the test fails and $u$ is true-valued, the packet is a computation and $h$
+is the raw tree formed in step (4ii) of \cref{cert:def:base} from $r$. Whether
+$\iota$ is the new floor or zero, \cref{cert:lem:zeroinstance} applies: its
+proof treats both readings of $\iota$. Hence the zero instance $H(\vec 0)$ of
+the reading $H(\vec b)$ of the opened hypothesis is an instance of
+\rulename{I0} or \rulename{IS}, where $\vec b$ are the parameters with names
+in $[k-1,k)$, which are fresh for $g$ and $a$ by \cref{cert:lem:fresh}.
+\Cref{cert:lem:supply}, applied in $\Teq$ as in \cref{cert:prop:scalar},
+derives the reading of $a$ from $g$, whatever the shape of $a$; it is not an
+induction rule and does not depend on the goal being an equation.
+\end{proof}
+
+\begin{lemma}[Stable computation hypotheses]\label{cert:lem:stable}
+Let $h$ be the canonical encoding of a closed computation equation whose
+parameters have names in $[k,0)$. Then $O_{k-1}(h;\iota,0)=h$ for every image
+$\iota$, in particular for $\iota=k-1$ and $\iota=0$.
+\end{lemma}
+\begin{proof}
+In the canonical encoding of a formula without free slots there is no scalar
+at a formula position, and every scalar at a term position of depth $d$ is
+$0$, a parameter name in $[k,0)$, or a slot scalar $3+2j$ below more than $j$
+slots, hence in $[k-1,d)$. Every scalar is retained, no hole occurs, the image
+is never consulted, and arrays are rebuilt with the same children.
+\end{proof}
+
+\begin{theorem}[Completeness with three fields]\label{cert:thm:three-complete}
+Every closed theorem of $\mathcal U$ has, for each three-field profile, a stack
+of triples on which the checker accepts its canonical encoding. The packets
+are
+\[
+[s,u,F],\qquad [0,u,B],\qquad [[B],0,0],\qquad [s,u,t]\ (u\text{ true-valued}),\qquad [0,0,w]
+\]
+for \rulename{SE} at a source other than the literal $0$, \rulename{SE} at
+the literal $0$, \rulename{DE}, a computation and the introduction.
+\end{theorem}
+\begin{proof}
+Take the certificate of \cref{cert:thm:inferred-complete} for the control of
+the same profile and replace each packet by the triple of the same inference.
+The two runs agree packet by packet, with the same goals and contexts as raw
+trees and the same floors. At \rulename{SE} the test succeeds as in the
+control, (3$'$) installs the major of the inference in $s$, and the run
+continues as the control's with $m=M^{\circ}$. At \rulename{DE} the test
+compares $O_k(0;0,0)=0$ with a canonical formula and fails; $s=[B]$ is proved
+and exported as $[B,B,B]$ with $\iota=k$, as in the control with $m=[B]$. At an
+introduction and at a computation the field $t$ is a canonical term, so by
+\cref{cert:lem:separation} the test is defined and fails. An introduction
+then proceeds as in the control (the major call on $s=0$ is closed by the
+initial context in the local profile and omitted in the global one). At a
+computation $h$ is the raw tree formed by the control, which is the canonical
+encoding of the computation equation (proof of
+\cref{cert:thm:base-complete}); by \cref{cert:lem:stable} the opening of $h$ at
+the fresh parameter and at zero coincide, so the change of step (6$'$) has no
+effect. Computations with a literal zero initializer or predecessor are first
+replaced as in \cref{cert:thm:certzero}, so $u$ is true-valued.
+\end{proof}
+
+\begin{proposition}[Relation to the inferred-major checker]\label{cert:prop:three-relation}
+Compare a three-field profile with its control.
+\begin{enumerate}[label=(\alph*)]
+\item For a stack $\sigma$ of triples, the run of the three-field checker on
+$\sigma$ and the run of the control on $E(\sigma)$ agree, with the same goals,
+contexts, floors and consumption of packets, up to the first computation
+packet without a successful test at which $s$ is true-valued, the goal has an
+arity other than $2$, and the two openings $O_{k-1}(h;k-1,0)$ and
+$O_{k-1}(h;0,0)$ are not both defined and equal. If neither run reaches such
+a packet, the three-field checker accepts $\sigma$ if and only if the control
+accepts $E(\sigma)$.
+\item The certificates of \cref{cert:thm:three-complete} reach no such packet;
+the control accepts their expansions, in which a \rulename{DE} packet reads
+$[[B],[B],0,0]$ instead of $[[B],0,0,0]$.
+\item The accepted canonical goals are the same for the three-field checker
+and its control: the closed theorems of $\mathcal U$, and for canonical public
+formulas exactly the public theorems (\cref{cert:rem:imported}).
+\item Deleting the first field of an accepted four-field stack is not a
+translation: the \rulename{DE} packet $[[B],0,0,0]$ becomes the introduction
+packet $[0,0,0]$. A stack in which a consumed packet has four fields is
+rejected by a three-field checker, and conversely.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) The test of step (3) of the control does not read $m$. If it succeeds, both
+checkers prove $M^{\circ}$, select the same goal and export the same
+hypothesis with $\iota=k$. If it fails and $u$ is false-valued, $E$ puts $s$
+into $m$, and the two checkers act identically. If it fails and $u$ is
+true-valued, $E$ puts $0$ into $m$: the control closes the major $0$ by its
+initial context or omits it, and both form $h$ from the same fields; the
+selectors agree unless $s$ is true-valued and the arity of the goal is not
+$2$. An induction on the run gives (a). Statement (b) is
+\cref{cert:lem:stable} applied to the run of \cref{cert:thm:three-complete},
+(c) follows from \cref{cert:thm:three-sound,cert:thm:three-complete} and
+\cref{cert:prop:scalar,cert:thm:inferred-complete}, and (d) is immediate from
+the destructuring of a packet.
+\end{proof}
+
+At a packet excluded in (a) the two checkers extend the context by different
+raw trees, both sound, and a later membership test can differ. The package
+exhibits no stack accepted by one side and rejected by the other, and claims
+neither inclusion; it claims the equality of the accepted canonical goals,
+from which the bridge of \cref{base:thm:bridge} transfers unchanged.
+The translation of certificates in the package is derivation-aware: it
+regenerates each triple from the role of the packet, as in
+\cref{cert:thm:three-complete}.
+
+\begin{remark}[Sources and evidence]\label{cert:rem:three-sources}
+\pkg{three\_field} states the separation of terms and formulas for trees of
+arity $0$, $1$ and $3$ opened at images of the same shape, which contains
+\cref{cert:lem:separation}. It passes through an \emph{intermediate protocol},
+which keeps an explicit temporary major, $0$ for a true-valued $u$ and $s$
+otherwise, and uses it in steps (4$'$) and (6$'$); by the proof of (a) of
+\cref{cert:prop:three-relation} the intermediate protocol on $\sigma$ is
+exactly the control on $E(\sigma)$. Its regression evidence
+regenerates $26$ canonical proofs ($9782$ consumed packets: $174$
+introductions, $158$ \rulename{DE}, $4716$ computations, $4734$ eliminations
+by \rulename{SE}) and checks seven rejected stacks, among them a four-field
+packet and a leak of a context; these are finite tests. Both programs pass
+the context as variadic arguments of the procedure, which changes no run
+(\cref{cert:prop:compositions}).
+\end{remark}
+
+The global three-field profile has $249$ tokens, $278$ nodes and $607$ bytes
+against $251/283/605$ for its control; the local profile has $255/271/606$
+against $257/275/607$, below its control in all three coordinates.
+
+\subsection{Allocation before the elimination test}\label{cert:sec:context-first}
+
+This subsection follows the audit of \pkg{context\_order} reproduced in
+\pkg{three\_field}, the compositions of \pkg{three\_field}, and the compact
+part of \pkg{constantfree}. In the arrangement of \cref{cert:lem:delayed} with
+the replacement test after step (4), the test is evaluated at the floor $k$,
+immediately before the decrement. The schedule of \pkg{context\_order} moves
+it after the decrement.
+
+\begin{definition}[Allocation first]\label{cert:def:context-first}
+A checker of the guarded-source protocol with local floors and the
+replacement test after step (4) \emph{allocates first} if it performs, in this
+order: step (4) at the floor $k$, including the major call, the formation of a
+computation hypothesis with its image check, and the opening of an
+introduction; the decrement to $b\defeq k-1$; the opening $O_b(h;\iota,0)$ of
+the hypothesis; and only then the test $m=M^{\circ}$ and $O_b(t;u,0)=a$, the
+selected goal $O_b(t;s,0)$ or $a$, and its opening at $[b]$. The native
+protocol allocates first in the same way.
+\end{definition}
+
+Compared with the arrangement of \cref{cert:lem:delayed}, only the two
+openings of the test are evaluated at a different floor. A scalar $b$ of the
+template at a term position is a hole at the floor $k$ and the parameter $b$
+at the floor $b$, so the test can change its value, not only its definedness.
+
+\begin{proposition}[Allocation first]\label{cert:prop:context-first}
+\begin{enumerate}[label=(\alph*)]
+\item A checker that allocates first satisfies the soundness statement of
+\cref{cert:prop:scalar}, for the auxiliary reading and $\mathcal U$, or for the
+ordinary reading and $\mathcal A^{-}$ in the native protocol.
+\item The certificates of \cref{cert:prop:scalar}, with all inert fields $0$,
+are accepted, with the run of the checker that tests at the floor $k$.
+\item The stack
+\[
+\texttt{[[0,0,[0],0],[0,0,0,0],[[[]],0,-1,[-1,0]],[[0,[0],0],[0]]]}
+\]
+with goal $\It{0}{\Suc 0}{u}{0}=\Suc 0$ is accepted by the checker that
+allocates first and rejected by the control of $506$ bytes.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Everything before the test is the computation of the control at the floor
+$k$, and the cases of \cref{cert:prop:scalar} for the hypothesis apply
+unchanged; the hypothesis is opened at the floor $b$ as before. It remains to
+treat a successful test at the floor $b$. The major $m=M^{\circ}$ was proved by
+a call at the floor $k$ and is closed there, and so is $a$; by
+\cref{cert:lem:fresh} both are closed at the floor $b$ with the same readings,
+which contain no parameter named $b$. If $s$ is true-valued, the major reads
+$\sigma=\upsilon$, and by \cref{cert:lem:opening}(c) at the floor $b$ the goal
+$a=O_b(t;u,0)$ reads $F(\upsilon)$ and the new goal $O_b(t;s,0)$ reads
+$F(\sigma)$, for the reading $F$ of $t$ at the floor $b$. Transport along
+$\sigma=\upsilon$ is valid in $\Teq$ for every template, so the reading of $a$
+follows from that of the new goal. If $s$ is false-valued, the major reads
+$\Q{y}B(y)$; by \cref{cert:lem:exposure} at the floor $b$ the goal reads
+$B(\tau)$ for some term $\tau$ and the new goal reads $B(0)$, and $B(\tau)$
+follows from $B(0)$ and the closure. In both cases the hypothesis is the
+threefold repetition of $M^{\circ}$ and reads $0=0$
+(\cref{cert:lem:neutral-resource}).
+
+(b) In these certificates every field is $0$ or a canonical encoding whose
+parameters have names in $[k,0)$. No scalar of such a tree lies in $[k-1,k)$,
+so every opening at the floor $k-1$ returns the same raw tree as at the floor
+$k$, and the test has the same value as in the control.
+
+(c) The packet consumed first, $[[[\,]],0,-1,[-1,0]]$, has the major
+$[[\,]]$, which reads $\D{x}{y}(0=0)$, and the template $[-1,0]$. The control evaluates $O_0([-1,0];-1,0)$ at the floor
+$0$: the scalar $-1$ is a hole, and the image $-1$ fails its validation at
+depth $3$, so the run rejects. The checker that allocates first evaluates the
+same opening at the floor $-1$, where $-1$ is retained; the test fails, since
+$m\neq M^{\circ}$, and the run proves the major with the introduction packet
+$[0,0,0,0]$ and then the goal with the computation packet $[0,0,[0],0]$.
+\end{proof}
+
+When the test succeeds, \cref{cert:lem:opening}(c) shows in addition that the
+reading of the template contains no parameter $b$ and that a used target image
+contains none: every occurrence of $b$ in the template or in a used image
+persists in the result, which is the goal $a$. The audit of
+\pkg{context\_order} states soundness in this form, as an instance of
+\rulename{SE} with data of the old scope; the proof above does not need it.
+By (c), the accepted stacks are not included in those of the control. The
+converse inclusion is not claimed either.
+
+\begin{proposition}[Compositions]\label{cert:prop:compositions}
+Each of the programs (i)--(iv) below satisfies \cref{cert:prop:scalar} for
+$\mathcal U$, and the program (v) satisfies \cref{cert:thm:typed-native} for
+the typed contract, in both cases with completeness for the certificates of
+\cref{cert:prop:scalar} with inert fields $0$.
+\begin{enumerate}[label=(\roman*)]
+\item The byte profile of \pkg{context\_order}: the control of $506$ bytes
+allocating first, with the goal and the context exchanged in the argument
+list.
+\item The loop profile of \pkg{context\_order}: the loop profile of
+\pkg{deterministic\_opening} allocating first.
+% ed.: no package names the control of this program; the identification is
+% read off the two program texts (Research/deterministic_opening/compact/code/
+% ast.py and three_field controls/incumbent_ast.py), which differ only in the
+% position of the decrement and of the test.
+\item The byte program of \pkg{constantfree}: (i) with the remainder selector
+of \cref{cert:prop:remainder}.
+\item The byte program of \pkg{three\_field}: (i) with eager selection
+(\cref{cert:thm:eager-selection}) and the remainder selector.
+\item The native program of \pkg{three\_field}: the typed native checker of
+\cref{cert:thm:typed-native} allocating first.
+\item The token program of \pkg{constantfree}: the global loop profile of
+\pkg{progress\_independence} with the context passed as variadic arguments.
+\end{enumerate}
+The program (vi) has the same returning runs as its control.
+\end{proposition}
+\begin{proof}
+(i) and (ii) are \cref{cert:prop:context-first}, with \cref{cert:thm:loop} for
+the loop; exchanging two arguments changes nothing. For (iii) the proof of
+\cref{cert:prop:remainder} applies verbatim, since it concerns only the value
+of $\iota$, which allocation first does not change: at the arities $1$, $2$ and
+$3$ the two selectors agree, at the arity $0$ the remainder rejects, and at
+arities of at least $4$ the matrix reads $0=0$. For (iv), the proof of
+\cref{cert:thm:eager-selection}(a) uses only that a false-valued result of an
+opening at the root arises from an empty array or a numeric template, whose
+opening does not depend on the image (\cref{cert:lem:root}); this holds at
+every floor, and both openings of the selection are evaluated at the same
+floor $b$. The proof of (c) of that theorem needs $O(s;\bot,3)$ to be defined
+for the inert fields, which holds at the floor $b$ since it holds at $k$.
+Selection and selector act on different steps, so the arguments compose. For
+(v), the first opening of the goal, with the flag of \cref{cert:thm:fused}
+set, precedes every packet; every later opening, including the two of the
+test at the floor $b$, is unflagged, and the native mode test (N4) is
+unchanged; the proof of \cref{cert:thm:typed-native} goes through with
+\cref{cert:prop:context-first} in its native form. For (vi), relate a call
+$\mathrm{Check}(a,g)$ of the control with the call that receives the members
+of the tuple $g$ as separate arguments; inside the call they form the same
+tuple, which is extended by forming a new tuple, so no caller's context
+changes, and the same packets are read in the same order at the same floor.
+\end{proof}
+
+Raw acceptance is not compared for (i)--(v): allocation first accepts further
+stacks, eager selection rejects further stacks, and the remainder selector
+treats surplus arities differently; the accepted canonical goals are those of
+$\mathcal U$, or of the typed contract for (v). An intermediate program with
+eager selection only, of $496$ bytes, occurs in a receipt of
+\pkg{three\_field} and is not one of its delivered programs. The program (v)
+retains the test of the whole input by its printed form and the full native
+goal grammar, and keeps the two false-valued modes $0$ and $[\,]$ of the
+field $u$ distinct.
+
 \subsection{The audit of sources}
 
 The audit in \pkg{orbit\_closure} measures every Python source of the ninety
@@ -2374,7 +2732,17 @@ the programs of $276$ nodes and of $506$ bytes, which lie in subdirectories
 of their packages, had been overlooked; and no smaller complete checker is
 hidden among the sources. \pkg{progress\_independence} extends the audit to
 the $1416$ Python files of three later archives with the same outcome below
-$506$ bytes. The audit is a census of a finite corpus. It does not verify any
+$506$ bytes. Its second write-up repeats the census of the repository at the
+same revision ($5825$ paths, $1380$ distinct contents, $1194$ after
+normalization, $25$ short-listed paths reviewed one by one) with the same
+minima $256/276/506$, and names one more program attaining $256$ tokens: the
+compact token profile of \pkg{uniform\_progress} for $\mathcal U$, with $283$
+nodes and $593$ bytes, one byte shorter than the program of
+\pkg{kernel\_refinement} and differing from it only by a default value for the
+context. \pkg{three\_field} checks by a live inventory that no path of that
+revision is missing from the census, and pools the repository with the
+incoming archives, which gives the minima $251/273/499$ of
+\cref{cert:sec:envelope}. The audit is a census of a finite corpus. It does not verify any
 checker, it is not a lower bound, and it keeps the compact contract apart
 from the validated ones.
 
@@ -2921,8 +3289,25 @@ phase by context, immutable tuple & G/$\mathcal A^{-}$ & 327 & 375 & 643 & 333/3
 the same, explicit type test & G/$\mathcal A^{-}$ & 327 & 375 & 646 & 333/379/656\\
 mutable list, one invocation only & G/$\mathcal A^{-}$ & 325 & 375 & 641 & 333/379/656\\
 \midrule
-\multicolumn{6}{@{}p{14.6cm}@{}}{Attested by the audit of \pkg{orbit\_closure} and not listed above}\\
-loop profile of \pkg{deterministic\_opening} & R/$\mathcal U$ & 263 & 276 & 580 & not in this chapter\\
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{context\_order} (archive; programs reproduced as controls by \pkg{three\_field} and \pkg{constantfree}): \cref{cert:prop:compositions}(i),(ii)}\\
+loop, local floors, allocation first\textsuperscript{\dag} & R/$\mathcal U$ & 262 & 273 & 572 & none stated\\
+zero-product test, allocation first & R/$\mathcal U$ & 265 & 301 & 499 & none stated\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{three\_field}: \cref{cert:sec:three-field}, \cref{cert:prop:compositions}(iv),(v)}\\
+three fields, global floor\textsuperscript{\dag} & R/$\mathcal U$ & 249 & 278 & 607 & 251/283/605\textsuperscript{\dag}\\
+three fields, local floors\textsuperscript{\dag} & R/$\mathcal U$ & 255 & 271 & 606 & 257/275/607\textsuperscript{\dag}\\
+four fields, allocation first, eager selection, remainder selector & R/$\mathcal U$ & 267 & 299 & 495 & 265/301/499\\
+typed native checker, allocation first & T/ed & 342 & 391 & 666 & 344/393/673\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{constantfree}, compact part: \cref{cert:prop:compositions}(iii),(vi)}\\
+global loop, variadic context\textsuperscript{\dag} & R/$\mathcal U$ & 250 & 283 & 603 & 251/283/605\textsuperscript{\dag}\\
+allocation first, remainder selector & R/$\mathcal U$ & 264 & 299 & 498 & 265/301/499\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{Attested by the audits of \pkg{orbit\_closure} and \pkg{progress\_independence} and not listed above}\\
+loop profile of \pkg{deterministic\_opening}\textsuperscript{\dag} & R/$\mathcal U$ & 263 & 276 & 580 & not in this chapter\\
+% ed.: the dagger is added; the program recognizes arrays by attempted traversal
+% (Research/deterministic_opening/compact/code/ast.py).
+global token profile of \pkg{uniform\_progress}\textsuperscript{\dag} & R/$\mathcal U$ & 256 & 283 & 593 & not in this chapter\\
 \end{longtable}}
 
 Some remarks on the reading of the table.
@@ -2942,14 +3327,25 @@ $780$ bytes is a program of \pkg{deterministic\_opening}; the control of $803$
 bytes is the native goal-validated checker current at the time of
 \pkg{checked\_refinement}, whose validator already omits the scope bounds in
 the manner that the report attributes to \pkg{one\_context}. The two
-experimental synthesis programs have a certificate format of their own.
+experimental synthesis programs have a certificate format of their own. The
+two three-field programs read certificates of \cref{cert:def:three-field}, and
+their controls, which read four-field certificates, are the global loop of
+\pkg{progress\_independence} and the local loop of \pkg{inferred\_major}; all
+other rows of $\mathcal U$ read four-field certificates. No package states a
+control for the two programs of \pkg{context\_order}; by
+\cref{cert:prop:compositions} they are the compact program of
+\pkg{deterministic\_introduction} ($267/303/506$) and the loop profile of
+\pkg{deterministic\_opening} ($263/276/580$) allocating first. The native
+program of \pkg{three\_field} and its control satisfy the same typed contract
+for the grammar with equality and $D$.
 
 Under the raw contract no package claims a program that improves tokens,
 nodes and bytes at once against all programs of its contract, with one
 exception that is qualified: the traversal profile of \pkg{certified\_zero} is
 below both envelopes of its package in all three coordinates. Wherever a
-package states a triple such as $256/278/521$ or $257/278/521$ for compact
-checkers, the three numbers belong to three programs. Under the goal contract
+package states a triple such as $256/278/521$, $257/278/521$, $251/273/499$ or
+$249/271/495$ for compact checkers, the three numbers belong to three
+programs. Under the goal contract
 and the typed contract single programs do improve all three coordinates of
 their controls; see the envelope below. In \pkg{uniform\_zero} the comparison with a matched control
 shows that the new devices cost source: the control without them has $545$
@@ -2976,11 +3372,11 @@ one program only where this is said.
 Contract & Tokens & Nodes & Bytes & Attained by\\
 \midrule
 R/$\mathcal A$ & 261 & 288 & 528 & three programs: the traversal profiles of \pkg{monus\_and\_neutral\_major} and \pkg{prevalidated\_elimination} ($261$ tokens), the loop profile of \pkg{scope\_and\_closure} ($288$ nodes) and its zero-product profile ($528$ bytes)\\
-R/$\mathcal U$ & 251 & 275 & 502 & three programs: the global loop profile of \pkg{progress\_independence} ($251/283/605$), the local loop profile with inferred major of \pkg{inferred\_major} and \pkg{smaller\_envelope} ($257/275/607$), and the program of \pkg{checked\_presentation}, \pkg{progress\_independence} and \pkg{crossed\_uniqueness} ($269/301/502$)\\
+R/$\mathcal U$ & 249 & 271 & 495 & three programs of \pkg{three\_field}: the global three-field profile ($249/278/607$), the local three-field profile ($255/271/606$), and the four-field byte program ($267/299/495$); among programs that read four-field certificates $250/273/495$, attained by the token program of \pkg{constantfree} ($250/283/603$), the loop profile of \pkg{context\_order} ($262/273/572$) and the byte program of \pkg{three\_field}\\
 G/$\mathcal U$ & 407 & 459 & 921 & one program, of \pkg{checked\_refinement}\\
 T/g & 421 & 471 & 869 & one program, of \pkg{progress\_independence}\\
 G/$\mathcal A^{-}$ & 325 & 375 & 641 & the one-invocation list variant of \pkg{context\_phase}; among programs without that qualification $327/375/643$, attained by one program in \pkg{inferred\_major} and by another in \pkg{context\_phase}\\
-T/ed & 344 & 393 & 673 & one program, of \pkg{checked\_presentation}\\
+T/ed & 342 & 391 & 666 & one program, of \pkg{three\_field}\\
 T/eqd & 383 & 442 & 870 & one program, of \pkg{validated\_presentation}\\
 \bottomrule
 \end{tabular}
@@ -2990,16 +3386,100 @@ The envelope under R/$\mathcal U$ has the following history. The audit of
 packages of \cref{cert:sec:later}. The inferred major gives $253$ tokens and
 $275$ nodes; the truth-valued result gives $503$ bytes; eager selection with
 the remainder selector gives $502$ bytes; the reuse of the packet tail gives
-$251$ tokens. The three attaining programs differ in more than size. The two
-loop profiles recognize arrays by attempted traversal and accept the changed
-set of stacks of \cref{cert:prop:inferred-change}; the program of $502$ bytes
-uses the zero-product test and accepts stacks as described after
-\cref{cert:prop:remainder}. All three accept the same canonical goals, by
-\cref{cert:prop:scalar}. No program attains two of the three minima, and the
-packages state that no single program is below $253/275/506$ in all
-coordinates. Smaller figures for T/eqd are reported by packages outside this
-chapter. Since T/g is a stronger contract than G/$\mathcal U$, the line for
-T/g also bounds the latter.
+$251$ tokens. The archive \pkg{context\_order}, by allocating first, gives
+$273$ nodes and $499$ bytes; these two programs were not in the table before,
+and the envelope $251/273/499$ that \pkg{three\_field} and \pkg{constantfree}
+take as their baseline is attained by the global loop of
+\pkg{progress\_independence} and by the two programs of
+\pkg{context\_order}. Three fields give $249$ tokens and $271$ nodes;
+\pkg{constantfree} gives $250$ tokens and $498$ bytes with four fields; the
+composition (iv) of \cref{cert:prop:compositions} gives $495$ bytes. The three
+attaining programs differ in more than size. The two three-field profiles
+recognize arrays by attempted traversal and read certificates of a different
+format; their relation to their controls is
+\cref{cert:prop:three-relation}. The program of $495$ bytes uses the
+zero-product test and four fields and allocates first; its accepted stacks
+are not compared with those of its control (the remarks after
+\cref{cert:prop:compositions}). All three accept the
+same canonical goals, the closed theorems of $\mathcal U$, by
+\cref{cert:thm:three-sound,cert:thm:three-complete,cert:prop:compositions}.
+No program attains two of the three minima $249/271/495$, and no single
+program is below the earlier envelope $251/273/499$ in all coordinates; the
+local three-field profile is below its own control in all three. Under T/ed
+the native program of \pkg{three\_field} is below its control
+$344/393/673$ in all three coordinates. Smaller figures for T/eqd are
+reported by packages outside this chapter. Since T/g is a stronger contract
+than G/$\mathcal U$, the line for T/g also bounds the latter.
+
+\paragraph{Superseded programs.} A program of the table is \emph{superseded}
+if another complete program of the table with the same contract code, and
+with the same recognition of arrays (both or neither marked with a dagger), is
+no larger in each of the three coordinates and smaller in at least one. Under
+R/$\mathcal U$ the following are superseded: the compact program of
+\pkg{deterministic\_introduction} ($267/303/506$), the two truth-valued
+programs of \pkg{inferred\_major} ($278/310/503$, $278/309/505$), the eager
+program of \pkg{frontier\_review} ($268/306/513$), the program of $502$ bytes
+of \pkg{checked\_presentation}, \pkg{progress\_independence} and
+\pkg{crossed\_uniqueness} ($269/301/502$) and the eager program of $503$ bytes
+of \pkg{progress\_independence} and \pkg{crossed\_uniqueness}
+($270/303/503$), all by the byte program of \pkg{three\_field}
+($267/299/495$); the remainder program of \pkg{smaller\_envelope}
+($264/304/515$), the remainder program of \pkg{crossed\_uniqueness}
+($266/301/505$) and the byte program of \pkg{context\_order} ($265/301/499$),
+by the byte program of \pkg{constantfree} ($264/299/498$); the global loop of
+\pkg{progress\_independence} ($251/283/605$\textsuperscript{\dag}), by the
+token program of \pkg{constantfree} ($250/283/603$\textsuperscript{\dag});
+the loop profile of \pkg{deterministic\_opening}
+($263/276/580$\textsuperscript{\dag}), by the loop profile of
+\pkg{context\_order} ($262/273/572$\textsuperscript{\dag}); and the global
+loop of \pkg{kernel\_refinement} and \pkg{validated\_core}
+($256/283/594$\textsuperscript{\dag}), by the token profile of
+\pkg{uniform\_progress} ($256/283/593$\textsuperscript{\dag}). The local loop
+with inferred major of \pkg{inferred\_major} and \pkg{smaller\_envelope}
+($257/275/607$\textsuperscript{\dag}) is below the local three-field profile
+($255/271/606$\textsuperscript{\dag}) under the same contract but in a
+different certificate format; no four-field program supersedes it. Under T/ed
+the native program of \pkg{three\_field} ($342/391/666$) supersedes the typed
+native checker of \pkg{checked\_presentation} ($344/393/673$), and the
+earlier programs of that contract, of \pkg{validated\_core} ($390/454/878$),
+\pkg{validated\_presentation} ($370/426/849$) and \pkg{scope\_kernel}
+($382/446/862$), were already superseded by the latter. Under the other
+contracts the new packages add no program; there the superseded programs
+are, under T/g, the wrappers of \pkg{frontier\_review} ($462/524/1183$) and of
+\pkg{checked\_presentation} and \pkg{crossed\_uniqueness} ($463/519/1172$)
+and the readable program of \pkg{smaller\_envelope} ($580/666/2473$), by the
+wrapper of \pkg{progress\_independence} ($421/471/869$); under G/$\mathcal U$
+the goal-validated program of \pkg{kernel\_refinement}, \pkg{compact\_update}
+and \pkg{validated\_core} ($489/560/1201$), by that of
+\pkg{checked\_refinement} ($407/459/921$); under G/$\mathcal A^{-}$ the programs of
+\pkg{checked\_refinement} ($358/413/788$), \pkg{uniform\_recursion}
+($340/385/685$, $336/381/661$) and \pkg{one\_body} ($357/412/778$,
+$357/415/777$), by the program of $656$ bytes of
+\pkg{deterministic\_introduction}, which in turn is superseded by the
+programs of $643$ bytes of \pkg{inferred\_major} and \pkg{context\_phase}
+(equal sizes, neither superseding the other), and the variant of
+\pkg{context\_phase} with the explicit type test ($327/375/646$) by its
+companion of $643$ bytes, whose correctness argument concerns one runtime
+(\cref{cert:sec:questions}); under T/eqd the programs of \pkg{validated\_core}
+($401/468/897$) and \pkg{scope\_kernel} ($393/460/881$), by the program of
+\pkg{validated\_presentation} ($383/442/870$), whose lexical filter of $885$
+bytes has no reported token or node count and is not compared. The
+one-invocation variant of \pkg{context\_phase} ($325/375/641$) carries a
+qualification that its companions do not and is not counted as superseding
+them. Under R/$\mathcal A$, which the new packages do not touch, the
+superseded programs are the three programs of \pkg{certified\_zero}
+($264/308/566$ by the explicit program of \pkg{uniform\_premise},
+$262/303/548$; $264/310/558$ by the zero-product program of
+\pkg{uniform\_premise}, $263/308/537$; $262/296/598$\textsuperscript{\dag} by
+the traversal profile of \pkg{prevalidated\_elimination},
+$261/292/576$\textsuperscript{\dag}); the seven programs of
+\pkg{uniform\_zero}, by the zero-product program of \pkg{scope\_and\_closure}
+($267/309/528$); the three programs of \pkg{monus\_and\_neutral\_major}, by the
+corresponding programs of \pkg{prevalidated\_elimination}; the explicit
+program of \pkg{neutral\_scope} ($266/308/537$) and the zero-product program
+of \pkg{prevalidated\_elimination} ($263/309/539$), by the zero-product program
+of \pkg{uniform\_premise}. Several superseded programs are matched controls of
+later rows; the table keeps their figures.
 
 \section{Further questions}\label{cert:sec:questions}
 
@@ -3035,8 +3515,10 @@ which a lower bound on checker size can be proved? The recorded sizes are
 upper bounds attained by particular programs, and a census of existing
 programs is not a lower bound. A benchmark of this kind should report the
 size of certificates and the work of checking together with the size of the
-checker. (\pkg{uniform\_zero}, \pkg{neutral\_scope},
-\pkg{validated\_presentation}, \pkg{scope\_and\_closure}.)
+checker; \pkg{three\_field} adds understandable source and resource usage to
+such a comparison, since the present measure does not order mathematical
+concepts uniquely. (\pkg{uniform\_zero}, \pkg{neutral\_scope},
+\pkg{validated\_presentation}, \pkg{scope\_and\_closure}, \pkg{three\_field}.)
 \end{question}
 
 \begin{question}[Removing a rule and shrinking a validated checker]
@@ -3109,24 +3591,30 @@ results of \cref{cert:sec:validated}.)
 
 \begin{question}[The envelope of \cref{cert:sec:envelope}]
 Is there one complete program under the raw contract for $\mathcal U$ that is
-below $251$ tokens, $275$ nodes and $502$ bytes at once, or at least one that
-attains two of these minima? The packages of \cref{cert:sec:later} answer
-neither; each of their compact programs improves one coordinate of its
-control and worsens another. (\pkg{inferred\_major}, \pkg{smaller\_envelope},
+below $249$ tokens, $271$ nodes and $495$ bytes at once, or at least one that
+attains two of these minima? In particular, can one three-field program
+improve all three coordinates of the earlier envelope $251/273/499$, and is
+there a three-field byte program that allocates first and selects eagerly?
+The record of $495$ bytes still reads four fields, and the token and node
+gains of three fields are offset by longer byte encodings. No package answers
+these questions. (\pkg{inferred\_major}, \pkg{smaller\_envelope},
 \pkg{frontier\_review}, \pkg{checked\_presentation},
-\pkg{progress\_independence}.)
+\pkg{progress\_independence}, \pkg{three\_field}, \pkg{constantfree}.)
 \end{question}
 
 \begin{question}[One verified decoder with the refinements as corollaries]
 Can the sorted reading and the soundness induction for the compact checker be
 formalized once, so that the refinements of \cref{cert:sec:later} (the
 inferred major, eager selection, the remainder selector, the phase by
-context) become verified corollaries, and can the acceptance relation of the
-programs, with its totalized decoder and its scope transitions, be linked to
-the Lean calculus by a verified compiler? The root-opening lemma
-(\cref{cert:lem:root}) is proposed as a starting point.
+context, three fields, allocation first) become verified corollaries, and can
+the acceptance relation of the programs, with its totalized decoder and its
+scope transitions, be linked to the Lean calculus by a verified compiler? The
+root-opening lemma (\cref{cert:lem:root}) is proposed as a starting point;
+for three fields the decisive step is the zero-instance supply
+(\cref{cert:lem:supply,cert:lem:zeroinstance}) for a compound conclusion,
+together with the sorted reading of administrative aliases.
 (\pkg{smaller\_envelope}, \pkg{frontier\_review},
-\pkg{checked\_presentation}.)
+\pkg{checked\_presentation}, \pkg{three\_field}.)
 \end{question}
 
 \begin{question}[Validation together with the kernel]
@@ -3155,6 +3643,39 @@ whether its accepted stacks are comparable with those of its control when
 formulas of arity $0$ or at least $4$ occur (\cref{cert:prop:remainder}).
 Neither point is settled by the packages, which claim only the equality of
 the accepted canonical goals.
+\end{question}
+
+\begin{question}[Raw acceptance under three fields and allocation first]
+Is there a stack $\sigma$ of triples that a three-field checker accepts while
+its control rejects $E(\sigma)$, or conversely
+(\cref{cert:prop:three-relation}(a))? Such a stack must reach a computation
+packet with a true-valued predecessor at a goal of arity other than $2$ whose
+two openings differ. Is there a stack that the control of $506$ bytes accepts
+and the checker that allocates first rejects
+(\cref{cert:prop:context-first})? \pkg{three\_field} and \pkg{constantfree}
+claim neither inclusion, and only the first failure of an inclusion, in
+\cref{cert:prop:context-first}(c), is exhibited.
+\end{question}
+
+\begin{question}[A native three-field checker]
+Can the validation of the whole input and of the full native goal grammar
+(\cref{cert:prop:compositions}(v)) be shared with the three-field dispatch
+without losing the introduction by cases at equations? \pkg{three\_field}
+proposes the introduction packet $[\varepsilon,0,w]$ with $\varepsilon=0$ for
+progress and $\varepsilon=[\,]$ for cases; by \cref{cert:lem:separation} the
+test fails, so $s=\varepsilon$ remains available to the mode test, but such a
+checker must skip false-valued major calls, as the global profile does, or
+keep the corresponding neutral resources in its initial context. No such
+program is given or measured; the native program of \pkg{three\_field} reads
+four fields. (\pkg{three\_field}.)
+\end{question}
+
+\begin{question}[Canonical unused fields]
+Can the compiler of certificates make every unused field canonical without a
+substantial increase in the size of certificates? Completeness
+(\cref{cert:thm:three-complete,cert:prop:compositions}) needs only the
+existence of a canonical certificate, not the preservation of every raw
+spelling. (\pkg{three\_field}.)
 \end{question}
 
 The following items are limits and claims that the packages state without a
@@ -3211,6 +3732,18 @@ in the left side of an equation helps a readable or verified checker; it
 does not help the compact programs.
 \item The experimental synthesis programs of \pkg{prevalidated\_elimination}
 are not established as complete checkers.
+\item \pkg{three\_field} asks whether a reduction of the rule basis can also
+reduce a complete checker, and records that replacing induction for literal
+equations by induction for equations at zero leaves a gap in the reflection of
+equality on the whole domain, which a new argument would have to close. This
+concerns the rule basis. The package gives a written proof of its protocol and
+finite tests ($132$ runs of the three-field programs, $484$ of the four-field
+programs, $26$ compiled proofs); no new formalization in a proof assistant is
+claimed.
+\item The main result of \pkg{constantfree} concerns another calculus and
+belongs to another chapter; its compact part contains only the compositions
+(iii) and (vi) of \cref{cert:prop:compositions}, supported by its written
+argument and by $61$ fixtures run $244$ times.
 \item None of the packages claims a minimal program, a simplest
 axiomatization, or a result about the arithmetic basis. The statements of
 \cref{cert:sec:notes} about eager iteration concern the theory

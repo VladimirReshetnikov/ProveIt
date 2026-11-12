@@ -2,7 +2,9 @@
 \label{prov:sec:packages}
 
 The article merges the research reports that were delivered as separate packages.
-The table lists each package with the chapters that draw on it.
+The table lists each package with the chapters that draw on it. The executable part
+of each package (checkers, certificates, evidence) is kept in the directory
+\texttt{Artifacts/} of the repository.
 
 \begin{longtable}{@{}p{0.34\textwidth}p{0.6\textwidth}@{}}
 \toprule
@@ -27,14 +29,16 @@ Package & Chapters \\
 \pkg{computation\_normal} & \ref{prov:ch:kern} (Refinements of the eight rules), \ref{prov:ch:comp} (Computation, equality and normal forms) \\
 \pkg{computational\_equality} & \ref{prov:ch:comp} (Computation, equality and normal forms), \ref{prov:ch:claus} (Clause calculi) \\
 \pkg{conditional\_copy} & \ref{prov:ch:wit} (Introduction without a supplied witness) \\
+\pkg{constantfree} & \ref{prov:ch:ctr} (Canonical and counter-aware recursors), \ref{prov:ch:cert} (Certificates and checkers) \\
 \pkg{constructed\_computation} & \ref{prov:ch:wit} (Introduction without a supplied witness), \ref{prov:ch:obs} (Obstructions) \\
+\pkg{context\_order} & \ref{prov:ch:cert} (Certificates and checkers) \\
 \pkg{context\_phase} & \ref{prov:ch:cert} (Certificates and checkers) \\
 \pkg{counter\_congruence} & \ref{prov:ch:kern} (Refinements of the eight rules), \ref{prov:ch:obs} (Obstructions) \\
 \pkg{counter\_evaluation} & \ref{prov:ch:comp} (Computation, equality and normal forms), \ref{prov:ch:ctr} (Canonical and counter-aware recursors) \\
 \pkg{coverage\_and\_kernel} & \ref{prov:ch:seed} (Recursors with a built-in seed), \ref{prov:ch:cert} (Certificates and checkers) \\
 \pkg{crossed\_uniqueness} & \ref{prov:ch:kern} (Refinements of the eight rules), \ref{prov:ch:cert} (Certificates and checkers) \\
 \pkg{deterministic\_auxiliary} & \ref{prov:ch:guard} (Guards and public languages) \\
-\pkg{deterministic\_introduction} & \ref{prov:ch:wit} (Introduction without a supplied witness), \ref{prov:ch:cert} (Certificates and checkers) \\
+\pkg{deterministic\_introduction} & \ref{prov:ch:kern} (Refinements of the eight rules), \ref{prov:ch:wit} (Introduction without a supplied witness), \ref{prov:ch:cert} (Certificates and checkers) \\
 \pkg{deterministic\_opening} & \ref{prov:ch:disch} (Discharge of a witness and restricted equality rules), \ref{prov:ch:ctr} (Canonical and counter-aware recursors), \ref{prov:ch:cert} (Certificates and checkers) \\
 \pkg{deterministic\_specialization} & \ref{prov:ch:disch} (Discharge of a witness and restricted equality rules) \\
 \pkg{diagonal\_guard} & \ref{prov:ch:guard} (Guards and public languages), \ref{prov:ch:comp} (Computation, equality and normal forms) \\
@@ -53,8 +57,8 @@ Package & Chapters \\
 \pkg{initializer\_equality} & \ref{prov:ch:comp} (Computation, equality and normal forms) \\
 \pkg{kernel\_refinement} & \ref{prov:ch:kern} (Refinements of the eight rules), \ref{prov:ch:cert} (Certificates and checkers) \\
 \pkg{local\_scopes} & \ref{prov:ch:seed} (Recursors with a built-in seed), \ref{prov:ch:ctr} (Canonical and counter-aware recursors), \ref{prov:ch:obs} (Obstructions), \ref{prov:ch:cert} (Certificates and checkers) \\
-\pkg{mirror\_core} & \ref{prov:ch:guard} (Guards and public languages), \ref{prov:ch:claus} (Clause calculi) \\
-\pkg{mirror\_guard} & \ref{prov:ch:guard} (Guards and public languages) \\
+\pkg{mirror\_core} & \ref{prov:ch:guard} (Guards and public languages) \\
+\pkg{mirror\_guard} & \ref{prov:ch:guard} (Guards and public languages), \ref{prov:ch:claus} (Clause calculi) \\
 \pkg{monus\_and\_neutral\_major} & \ref{prov:ch:seed} (Recursors with a built-in seed), \ref{prov:ch:cert} (Certificates and checkers) \\
 \pkg{neutral\_scope} & \ref{prov:ch:kern} (Refinements of the eight rules), \ref{prov:ch:cert} (Certificates and checkers) \\
 \pkg{newest\_parameter} & \ref{prov:ch:base} (The base theories and their bridge), \ref{prov:ch:wit} (Introduction without a supplied witness) \\
@@ -62,7 +66,7 @@ Package & Chapters \\
 \pkg{one\_body} & \ref{prov:ch:claus} (Clause calculi), \ref{prov:ch:cert} (Certificates and checkers) \\
 \pkg{one\_context} & \ref{prov:ch:base} (The base theories and their bridge), \ref{prov:ch:kern} (Refinements of the eight rules), \ref{prov:ch:cert} (Certificates and checkers) \\
 \pkg{one\_sided\_transport} & \ref{prov:ch:kern} (Refinements of the eight rules) \\
-\pkg{orbit\_closure} & \ref{prov:ch:kern} (Refinements of the eight rules), \ref{prov:ch:cert} (Certificates and checkers) \\
+\pkg{orbit\_closure} & \ref{prov:ch:kern} (Refinements of the eight rules), \ref{prov:ch:claus} (Clause calculi), \ref{prov:ch:ctr} (Canonical and counter-aware recursors), \ref{prov:ch:cert} (Certificates and checkers) \\
 \pkg{parameter\_intro} & \ref{prov:ch:wit} (Introduction without a supplied witness) \\
 \pkg{parameter\_substitution} & \ref{prov:ch:disch} (Discharge of a witness and restricted equality rules) \\
 \pkg{parameter\_witness} & \ref{prov:ch:base} (The base theories and their bridge), \ref{prov:ch:wit} (Introduction without a supplied witness) \\
@@ -91,12 +95,13 @@ Package & Chapters \\
 \pkg{successor\_seed\_completion} & \ref{prov:ch:seed} (Recursors with a built-in seed) \\
 \pkg{target\_closure} & \ref{prov:ch:kern} (Refinements of the eight rules) \\
 \pkg{template\_free} & \ref{prov:ch:kern} (Refinements of the eight rules), \ref{prov:ch:disch} (Discharge of a witness and restricted equality rules) \\
+\pkg{three\_field} & \ref{prov:ch:cert} (Certificates and checkers) \\
 \pkg{transient\_seed} & \ref{prov:ch:seed} (Recursors with a built-in seed) \\
 \pkg{uniform\_binding} & \ref{prov:ch:ctr} (Canonical and counter-aware recursors) \\
 \pkg{uniform\_clauses} & \ref{prov:ch:claus} (Clause calculi), \ref{prov:ch:disch} (Discharge of a witness and restricted equality rules) \\
-\pkg{uniform\_predecessor} & \ref{prov:ch:seed} (Recursors with a built-in seed), \ref{prov:ch:obs} (Obstructions), \ref{prov:ch:cert} (Certificates and checkers) \\
+\pkg{uniform\_predecessor} & \ref{prov:ch:obs} (Obstructions), \ref{prov:ch:cert} (Certificates and checkers) \\
 \pkg{uniform\_premise} & \ref{prov:ch:cert} (Certificates and checkers) \\
-\pkg{uniform\_progress} & \ref{prov:ch:kern} (Refinements of the eight rules) \\
+\pkg{uniform\_progress} & \ref{prov:ch:kern} (Refinements of the eight rules), \ref{prov:ch:cert} (Certificates and checkers) \\
 \pkg{uniform\_raw} & \ref{prov:ch:base} (The base theories and their bridge), \ref{prov:ch:wit} (Introduction without a supplied witness) \\
 \pkg{uniform\_recursion} & \ref{prov:ch:wit} (Introduction without a supplied witness), \ref{prov:ch:ctr} (Canonical and counter-aware recursors), \ref{prov:ch:cert} (Certificates and checkers) \\
 \pkg{uniform\_step} & \ref{prov:ch:comp} (Computation, equality and normal forms), \ref{prov:ch:claus} (Clause calculi), \ref{prov:ch:disch} (Discharge of a witness and restricted equality rules) \\

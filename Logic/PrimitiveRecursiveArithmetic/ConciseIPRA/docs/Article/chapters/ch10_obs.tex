@@ -61,9 +61,10 @@ initialized iteration from positive iteration & graph definitions\\
 \Cref{obs:prop:forced-progress,obs:prop:majors,obs:prop:root-vs-congruence,obs:thm:RL-independent,obs:prop:reversed}
 & five individual rule deletions or replacements & redesigned calculi with
 their own interpretation proofs\\
-\Cref{obs:thm:progress-independence} & deletion of \rulename{QI} by progress
-from the core: the other seven rules do not derive
-$\Q{y}(\It{y}{0}{u}{u}=0)$ & fusions of \rulename{QI} with another rule, weaker
+\Cref{obs:thm:progress-independence,obs:cor:pi-extensional} & deletion of
+\rulename{QI} by progress from the core: the other seven rules do not derive
+$\Q{y}(\It{y}{0}{u}{u}=0)$, nor does classical extensional computation with
+coverage derive its induction instance & fusions of \rulename{QI} with another rule, weaker
 induction interfaces, equivalence of uniqueness of iteration with induction\\
 \end{longtable}
 
@@ -1993,7 +1994,11 @@ chapter.
 \section{Independence of the progress rule}
 \label{obs:sec:progress-independence}
 
-This section draws on \pkg{progress\_independence}. It shows that
+This section draws on \pkg{progress\_independence}. The package has two
+independent write-ups of the same result; the section follows the first, takes
+the explicit derivation of the positive side and the extensional corollary
+from the second, and compares the two constructions in
+\cref{obs:rem:pi-saturation}. It shows that
 \rulename{QI} by progress is not admissible over the other seven rules of the
 core. Write $\Nat^{-}$ for $\Nat$ without \rulename{QI}.
 
@@ -2272,11 +2277,26 @@ equations hold for every finite iterator term at every count.
 \end{theorem}
 
 \begin{proof}
-(i) $E(0)$ is the zero computation. The successor computation gives
-$\It{\Suc z}{0}{u}{u}=\It{z}{0}{u}{u}$, and transitivity with the hypothesis
-gives $E(\Suc z)$. Reflexivity, symmetry and transitivity are derived from the
-zero computation and transport, without \rulename{QI}
-(\cref{base:sec:structural}).
+(i) $E(0)$ is the zero computation. For the step write
+$a\defeq\It{z}{0}{u}{u}$ and $b\defeq\It{\Suc z}{0}{u}{u}$, and work in the
+context $E(z)$, that is $a=0$. The derivation uses only primitive rules:
+\begin{enumerate}[label=(\arabic*)]
+\item \rulename{Hyp}: $a=0$.
+\item[(2), (3)] The successor computation, twice: $b=a$, since the body $u$
+with $a$ substituted for $u$ is $a$.
+\setcounter{enumi}{3}
+\item \rulename{Tr} with $s=b$, $t=a$, the constant template $h(v)=b$ and
+$r=a$; both premises, $s=t$ and $h(s)=r$, are the equation $b=a$ of (2) and
+(3), and the conclusion $r=h(t)$ is $a=b$.
+\item \rulename{Tr} with $s=a$, $t=0$, the identity template $h(v)=v$ and
+$r=b$; the premises are $a=0$ from (1) and $a=b$ from (4), and the conclusion
+$r=h(t)$ is $b=0$, that is $E(\Suc z)$.
+\end{enumerate}
+One application of \rulename{QI} to (5) gives $\Q{y}E(y)$ in $\Nat$. As a
+proof tree this has six nodes: one \rulename{Hyp} leaf, two successor
+computation leaves, two \rulename{Tr} nodes and one \rulename{QI} node. No
+derived equality rule and no induction lemma is used; derived reflexivity,
+symmetry and transitivity (\cref{base:sec:structural}) are not needed.
 
 (ii) A sequent is valid if every assignment that satisfies its context
 satisfies its conclusion. \rulename{Hyp} is immediate. The zero computation is
@@ -2307,6 +2327,51 @@ With the seven independence results recorded in the README
 (\Lean{NativeModels}), each of the eight rule families of $\Nat$ is independent
 of the other seven.
 
+The model also satisfies extensionality in the update, stated in the native
+term language. This strengthens the list of laws at the end of
+\cref{obs:thm:progress-independence} from the computation equations to the
+whole first-order theory of extensional computation.
+
+\begin{corollary}[Extensional computation does not give induction]
+\label{obs:cor:pi-extensional}
+Let $T_{\mathrm{ext}}$ be the classical first-order theory with equality over
+the native terms whose axioms are: $\Suc x=\Suc y\to x=y$, $\Suc x\ne 0$,
+$x=0\vee\exists y\,x=\Suc y$, $\Suc^{k}x\ne x$ for each $k\ge 1$, the two
+computation equations for every iterator term, and, for every two native bodies
+$h$ and $g$ with the free variables $\vec p$ of $h$ and $\vec q$ of $g$ other
+than $u$,
+\[
+\forall\vec p\,\forall\vec q\,\Bigl[\forall u\,(h=g)\to
+\forall n\,\forall a\,\bigl(\It{n}{a}{u}{h}=\It{n}{a}{u}{g}\bigr)\Bigr].
+\]
+Then $T_{\mathrm{ext}}$ does not prove
+$E(0)\wedge\forall y\,\bigl(E(y)\to E(\Suc y)\bigr)\to\forall y\,E(y)$ for
+$E(y)\defeq\bigl(\It{y}{0}{u}{u}=0\bigr)$. A fortiori no intuitionistic
+subtheory of $T_{\mathrm{ext}}$ proves it.
+\end{corollary}
+
+\begin{proof}
+All axioms hold in $\mathfrak{M}_\omega$ under the translation of native terms.
+The successor laws and coverage are successor conditions of
+\cref{obs:def:pi-coherent}, and the computation equations were verified in
+part (ii) of the proof of \cref{obs:thm:progress-independence}. For the
+extensionality axiom fix values of $\vec p$ and $\vec q$ under an assignment
+$\rho$. The value of $h$ at $\rho[u\mapsto v]$ is
+$(h^{*})^{\mathfrak{M}_\omega}(v,\rho(\vec p))$, and similarly for $g$, so the
+antecedent says that the unary functions of $h^{*}$ at $\rho(\vec p)$ and of
+$g^{*}$ at $\rho(\vec q)$ coincide. The translations of the two iterator terms
+are $I_{h^{*}}(n,a,\rho(\vec p))$ and $I_{g^{*}}(n,a,\rho(\vec q))$, and (Ext)
+for the pair $I_{h^{*}}$, $I_{g^{*}}$ gives their equality. The displayed
+induction implication is false in $\mathfrak{M}_\omega$: $E(0)$ holds, every
+$E(y)\to E(\Suc y)$ holds because
+$I_{\mathrm{id}}(\Suc y,0)=I_{\mathrm{id}}(y,0)$, and $E(c)$ fails by
+\cref{obs:prop:pi-tower}.
+\end{proof}
+
+Equality in $\mathfrak{M}_\omega$ is actual, so transport of equals in
+arbitrary formulas is also sound there; strengthening \rulename{Tr} to full
+equality substitution leaves the countermodel intact.
+
 \begin{remark}[What the construction needs]
 \label{obs:rem:pi-needs}
 Four requirements carry the proof, and dropping any of them leaves a gap. The
@@ -2328,7 +2393,54 @@ coherent and refutes $E(c)$, and the soundness argument applies to it. This
 does not contradict the obstruction to readings over the natural numbers: the
 successor of the countable carrier has nonstandard chains and is not the map
 $n\mapsto n+1$ under any enumeration that would make it a reading in that
-sense. No computable presentation of the model is claimed.
+sense. No computable presentation of the model is claimed. The second write-up
+of the package proves countability by the same argument, and so does not add to
+the statement here.
+\end{remark}
+
+\begin{remark}[The second construction: saturation in place of ultrapowers]
+\label{obs:rem:pi-saturation}
+The second write-up of \pkg{progress\_independence} builds the same kind of
+model with three differences, none of which changes the theorem.
+\begin{enumerate}[label=(\alph*)]
+\item The seed is $\mathbb{N}\sqcup\mathbb{Z}$ with the identity iterator
+$G(n,a)=a$ on the first summand and $G(n,a)=\Suc a$ on the second, and with a
+constant $c$ for an element of the second summand. The computation equations
+hold because $\Suc$ preserves the summands, and $G(c,0)=\Suc 0\ne 0$.
+\item Two-sided orbits come from $\omega$-saturation instead of
+\cref{obs:lem:pi-orbit}. Let $M$ be $\omega$-saturated and $f$ a unary function
+defined by a term with finitely many parameters. The type
+$\{\exists x\,f^{m}(x)=y:m\ge 1\}$ is finitely satisfiable, by $y=f^{N}(w)$ for
+any $w$, so some $b_0$ realizes it. If $b_j$ realizes it, the type
+$\{f(x)=b_j\}\cup\{\exists w\,f^{m}(w)=x:m\ge 1\}$ over the parameters of $f$
+and $b_j$ is finitely satisfiable as well: for the requirements up to $N$
+choose $w$ with $f^{N+1}(w)=b_j$ and put $x=f^{N}(w)$, so that
+$x=f^{m}(f^{N-m}(w))$ for $m\le N$. A realization is $b_{j-1}$, again with
+predecessors of every finite depth, and dependent choice gives all negative
+indices; the positive indices are $b_{j+1}=f(b_j)$ for $j\ge 0$. The orbit
+need not be injective.
+\item Each stage takes an $\omega$-saturated elementary extension of the
+preceding expansion, and the extension step groups the presented functions by
+equality: a class that contains a function with an old iterator keeps it, which
+is unambiguous by (Ext), and every other class receives one iterator
+$J_f(\Suc^{m}0,a)=f^{m}(a)$ on the standard ray and $J_f(\Suc^{i}d_C,a)=b_i$ on
+each copy $C$ of $\mathbb{Z}$ with origin $d_C$, for one orbit of $f$ chosen
+independently of the seed. All templates without a symbol receive symbols
+interpreted by these iterators, so (Ext) holds between old and new symbols and
+among new ones, as in \cref{obs:lem:pi-extension}.
+\end{enumerate}
+The write-up states the outcome in the generality of
+\cref{obs:lem:pi-extension} and \cref{obs:prop:pi-tower}: a structure in a
+countable language with the successor conditions and a countable coherent
+family of iterators has an elementary extension with an expansion by coherent
+iterators for all finite-depth templates, preserving the old iterators. The
+difference shows that two-sided orbits of term-defined functions are a
+compactness phenomenon: every $\omega$-saturated structure has them, and the
+ultrapower of \cref{obs:lem:pi-orbit}, which is $\aleph_1$-saturated for a
+countable language, is one instance. The proof of the second write-up is
+complete; each of its steps is checked above or coincides with a step of
+\cref{obs:lem:pi-extension,obs:prop:pi-tower,obs:lem:pi-subst} and of the
+soundness argument in the proof of \cref{obs:thm:progress-independence}.
 \end{remark}
 
 \begin{proposition}[A seed with cancellative addition]
@@ -3215,12 +3327,13 @@ Persistence of the context is necessary by \cref{obs:ex:leak}. The loop removes
 the dependence of recursion depth on the number of continuation steps, not on
 nested majors, syntax traversal or parsing.
 
-\section{Two partial routes}
+\section{Partial routes}
 \label{obs:sec:partial}
 
-This section draws on the second research note of \pkg{scope\_kernel} and on
-\pkg{local\_scopes}. Both results are conditional: each isolates the statement
-that is missing for a complete replacement of a rule.
+This section draws on the second research note of \pkg{scope\_kernel}, on
+\pkg{local\_scopes} and on the appendix on stationarity of the second write-up
+of \pkg{progress\_independence}. All three results are conditional: each
+isolates the statement that is missing for a complete replacement of a rule.
 
 \subsection{From uniqueness of iteration toward induction}
 
@@ -3370,6 +3483,89 @@ from $U_W$ is given, and no equivalence with the stronger single-observation
 sentence $\forall a\,\forall b\,(L(b,\Suc\Suc a)=2\to a=b)$ of the draft is
 claimed.
 
+\subsection{Stationarity over an explicit primitive recursive interface}
+
+The \emph{stationarity rule} is
+\[
+\infrule{\Gamma\proves f(\Suc z,\vec p)=f(z,\vec p)}{\Gamma\proves f(t,\vec p)=f(0,\vec p)}\ \rulename{Stat},
+\]
+for a term $f$ of the language below, with $z$ fresh for $\Gamma$, $t$ and
+$\vec p$. It has no induction hypothesis, and its conclusion mentions no
+iterator. Read in the native language over the computation equations, it is
+equivalent to the instance of \rulename{UR} for the identity update,
+$\Gamma\proves f(t)=\It{t}{f(0)}{u}{u}$, together with the scheme
+$\It{t}{a}{u}{u}=a$; the scheme is \rulename{Stat} for
+$f(z)=\It{z}{a}{u}{u}$, whose premise is a successor computation. The scheme
+fails at $t=c$, $a=0$ in the countermodel of
+\cref{obs:thm:progress-independence}, so \rulename{Stat} is not sound there.
+
+The \emph{interface} is intuitionistic first-order logic with equality over
+the terms of primitive recursive arithmetic, with the defining equations of
+all primitive recursive function symbols of fixed description, coverage
+$x=0\vee\exists y\,x=\Suc y$, separation $0\ne 1$, and, for each
+quantifier-free formula $A(\vec x)$, a fixed primitive recursive term
+$\chi_A$ with the truth-flag axioms
+\[
+\chi_A(\vec x)=0\leftrightarrow A(\vec x),\qquad
+\chi_A(\vec x)=0\vee\chi_A(\vec x)=1 .
+\]
+All interface axioms are theorems of $\iPRA$. They are not claimed to be
+derivable from the scalar computation equations without induction.
+
+\begin{proposition}[Stationarity recovers quantifier-free induction]
+\label{obs:prop:stationary}
+Over the interface, \rulename{Stat} and induction for quantifier-free formulas
+derive each other, with arbitrary contexts. Hence the interface with
+\rulename{Stat} has the same theorems as $\iPRA$ in its definitional expansion
+by the symbols $\chi_A$, with the identity numerical domain and actual
+equality.
+\end{proposition}
+
+\begin{proof}
+Let $A$ be quantifier-free with $\Gamma\proves A(0)$ and
+$\Gamma,A(z)\proves A(\Suc z)$, $z$ fresh; the parameters of $A$ are kept and
+suppressed. Write $e(n)\defeq\chi_A(n)$ and take primitive recursive symbols
+with
+\begin{gather*}
+\kappa(0)=0,\quad \kappa(\Suc x)=1,\qquad C(0,a,b)=a,\quad C(\Suc x,a,b)=b,\\
+\beta(0)=0,\quad \beta(\Suc n)=C\bigl(e(\Suc n),\,\kappa(\beta(n)),\,1\bigr).
+\end{gather*}
+Coverage at $v$ and the equations of the clamp $\kappa$ give
+$\kappa(v)=0\vee\kappa(v)=1$.
+For a fresh $n$, a case split on $n$ by coverage, with no induction, proves
+\[
+\beta(n)=0\vee\beta(n)=1,\qquad \beta(n)=0\to A(n).
+\tag{$*$}
+\]
+At $n=0$, $\beta(0)=0$ and the base gives $A(0)$. At $n=\Suc m$ split on the
+flag $e(\Suc m)$. If $e(\Suc m)=0$, then $\beta(\Suc m)=\kappa(\beta(m))$, which is
+$0$ or $1$, and $A(\Suc m)$ holds by the truth-flag axiom. If
+$e(\Suc m)=1$, then $\beta(\Suc m)=1$, and $\beta(\Suc m)=0$ gives $0=1$,
+hence $A(\Suc m)$ by separation. Only the outermost recursion equation of $\beta$ is used.
+
+The premise of \rulename{Stat}, $\beta(\Suc n)=\beta(n)$ for fresh $n$,
+follows by cases on the first part of $(*)$. If $\beta(n)=1$, then
+$\kappa(\beta(n))=1$, and
+both flag cases give $\beta(\Suc n)=1$. If $\beta(n)=0$, the second part of
+$(*)$ gives $A(n)$, the step gives $A(\Suc n)$, so $e(\Suc n)=0$ and
+$\beta(\Suc n)=\kappa(0)=0$. \rulename{Stat} gives $\beta(t)=\beta(0)=0$, and $(*)$
+at $t$ gives $A(t)$.
+
+Conversely, induction on the equation $f(n,\vec p)=f(0,\vec p)$ derives
+\rulename{Stat}: the base is reflexivity, and the step composes the premise
+$f(\Suc z,\vec p)=f(z,\vec p)$ with the hypothesis
+$f(z,\vec p)=f(0,\vec p)$. Since the interface axioms are $\iPRA$ theorems, the
+two theories prove the same formulas.
+\end{proof}
+
+The proposition is an alternative induction principle, not a smaller checker.
+Installing the interface inside the scalar kernel without \rulename{QI} would
+need predecessor and reflection of equality, and their proofs
+(\cref{base:thm:pred,base:thm:reflect}) use \rulename{QI}, so citing them would
+be circular. The rule \rulename{UR} of \pkg{scalar\_uniqueness} has an
+arbitrary update and does not by itself justify the restriction to the
+identity update.
+
 \section{Checker sizes}
 \label{obs:sec:sizes}
 
@@ -3500,7 +3696,11 @@ formalized in Lean. In particular the countermodel of
 of the fixed kernel. No smaller arithmetic basis follows from it, and the
 package does not decide whether uniqueness of iteration for the successor
 update is equivalent to induction for literal equations; its strengthened
-countermodel refutes that uniqueness instance and so gives no answer.
+countermodel refutes that uniqueness instance and so gives no answer. The second
+write-up likewise claims no smaller axiomatization, no new checker-size record
+and no global minimality of the eight rules, and \cref{obs:prop:stationary}
+gives no smaller native checker, since the interface it assumes is not derived
+in the scalar kernel without \rulename{QI}.
 \item No complete checker is given for the progressive calculus of
 \cref{obs:sec:progressive}. No implementation of $\mathcal{K}_{\mathrm{ctr}}$
 is below the inherited programs; the compact attempts of the package have no
@@ -3608,6 +3808,21 @@ an induction for a literal equation, which would separate the two principles?
 Is there a presentation that combines computational equality with an induction
 interface weaker than \rulename{QI} without moving the cost into syntax
 validation?
+\end{question}
+
+\begin{question}[After the countermodel to progress]
+The second write-up of \pkg{progress\_independence} asks three further
+questions. Is there an explicitly specified, for instance computable, algebra
+that supports all native substitutions and refutes $\It{t}{0}{u}{u}=0$ at some
+$t$? It would have to solve the problem of two-sided orbits for every update
+term, including updates that use earlier nonstandard iterators. If the scheme
+$\It{n}{a}{u}{u}=a$ is added to the seven retained rules, which destroys the
+witness of \cref{obs:thm:progress-independence}, does some induction instance
+for a literal equation remain underivable? The scheme would have to be counted
+in a complete checker. Can predecessor and reflection of equality be derived
+from \rulename{Stat} of \cref{obs:prop:stationary} in the bare scalar language,
+without \rulename{QI}, so that the interface of that proposition is supplied
+inside the kernel?
 \end{question}
 
 \begin{question}[Counter congruence and the reversed binder]

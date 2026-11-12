@@ -1025,17 +1025,18 @@ the instantiated zero base.
 \subsection{The diagonal guard}
 \label{claus:sec:diagonal}
 
-This subsection draws on \pkg{clause\_guards}.
+This subsection draws on \pkg{clause\_guards}. The diagonal shape, its
+instance at zero, its lift and its stability under substitution are those
+of the diagonal introduction with native contexts
+(\cref{guard:def:shapes,guard:def:selector,guard:thm:diagonal}); what
+follows places that introduction in the clause calculus $\mathsf{C}$.
 
 \begin{definition}[The calculus $\mathsf{K}$]
 \label{claus:def:k}
-A matrix $B(x,y)$ is \emph{diagonal}, written $\operatorname{diag}_y(B)$,
-if it has the literal shape
-\[
- \It{y}{y}{u}{h}=\It{y}{y}{v}{k},
-\]
-where the four displayed occurrences of $y$ are the inner variable of the
-enclosing $\D{x}{y}$ and $h,k$ are arbitrary. The test is made on the
+Write $\operatorname{diag}_y(B)$ if the matrix $B(x,y)$ is diagonal in $y$
+(\cref{guard:def:shapes}(c)), that is, literally
+$\It{y}{y}{u}{h}=\It{y}{y}{v}{k}$ with $y$ the inner variable of the
+enclosing $\D{x}{y}$ and $h,k$ arbitrary. The test is made on the
 matrix before the witness is substituted. $\mathsf{K}$ is $\mathsf{C}$ with
 the introduction
 \[
@@ -1051,8 +1052,8 @@ the introduction
 with $z$ fresh for $\Gamma$, $t$ and $B$.
 \end{definition}
 
-No rule of $\mathsf{K}$ inspects a witness. \Cref{claus:lem:struct},
-\cref{claus:lem:eq} and \cref{claus:lem:eq} hold in
+No rule of $\mathsf{K}$ inspects a witness. \Cref{claus:lem:struct} and
+\cref{claus:lem:eq} hold in
 $\mathsf{K}$ with the same proofs: they use \rulename{Refl},
 \rulename{Eval} and \rulename{Use} only, and injective renaming preserves
 the diagonal test.
@@ -1070,9 +1071,10 @@ numerical cases for every formula, and transport in every formula
 \end{enumerate}
 \end{lemma}
 \begin{proof}
-(i) The instance is $\It{0}{0}{u}{h'}=\It{0}{0}{v}{k'}$. Both sides equal
-$0$ by the zero computation, and symmetry and transitivity join them.
-Neither body is evaluated.
+(i) This is condition (S1) of \cref{guard:thm:diagonal}(i): the instance
+is $\It{0}{0}{u}{h'}=\It{0}{0}{v}{k'}$, both sides equal $0$ by the zero
+computation, and symmetry and transitivity join them. These are the
+derivations of \cref{claus:lem:eq}, which read no clause.
 
 (ii) For a matrix that is not diagonal this is \rulename{Intro}. For a
 diagonal matrix cut the theorem $B(t,0)$ of (i) into the given branch
@@ -1087,19 +1089,22 @@ and \rulename{Elim}. Numerical cases follow from interfaces (i) and (ii).
 
 Equation induction is not immediate in $\mathsf{K}$, since progress is
 restricted to diagonal matrices. For a literal equation
-$E(y)\equiv(s(y)=t(y))$ define the \emph{diagonal lift}
+$E(y)\equiv(s(y)=t(y))$ let $H_E(y)\equiv\Delta_yE$ be the diagonal lift
+of \cref{guard:def:shapes},
 \[
  H_E(y)\defeq\bigl(L_s(y)=L_t(y)\bigr),\qquad
  L_s(y)\defeq\It{y}{y}{u}{s(y)},\quad L_t(y)\defeq\It{y}{y}{u}{t(y)},
 \]
 with $u$ not in $s,t$. The matrix $H_E$ is diagonal and $H_E(0)$ is a
 theorem by \cref{claus:lem:k}(i). The successor computation gives
-$L_s(\Suc z)=s(\Suc z)$ and $L_t(\Suc z)=t(\Suc z)$, hence
+$L_s(\Suc z)=s(\Suc z)$ and $L_t(\Suc z)=t(\Suc z)$ (condition (S2) of
+\cref{guard:thm:diagonal}(i)), hence
 \begin{equation}
 \label{claus:eq:liftsucc}
  H_E(\Suc z)\dashv\proves E(\Suc z).
 \end{equation}
-Numerical cases prove the two equations
+Numerical cases prove the two equations of the equational decoder that
+follows \cref{guard:thm:diagonal},
 \begin{equation}
 \label{claus:eq:selrecover}
  \sel(y,s(0),L_s(y))=s(y),\qquad \sel(y,t(0),L_t(y))=t(y)
@@ -1155,19 +1160,11 @@ the introduction by cases and \cref{claus:thm:keqind} for the introduction
 of $Q$ by progress. (iii) and (iv) follow as there.
 \end{proof}
 
-\begin{lemma}[The diagonal shape under substitution]
-\label{claus:lem:diagsubst}
-Let $\sigma$ substitute terms for free variables of a matrix $B(x,y)$,
-lifted under $x$ and $y$. Then $\operatorname{diag}_y(B\sigma)$ if and only
-if $\operatorname{diag}_y(B)$.
-\end{lemma}
-\begin{proof}
-A substitution does not change an iterator constructor that is present and
-fixes the bound $y$. A term substituted for a free variable is free of the
-bound $y$, so it is neither the variable $y$ nor an iterator whose counter
-and initializer are $y$. Hence neither of the two required iterator heads
-can be created or destroyed, and a matrix with root $D$ keeps its root.
-\end{proof}
+If $\sigma$ substitutes terms for free variables of a matrix $B(x,y)$,
+lifted under $x$ and $y$, then $\operatorname{diag}_y(B\sigma)$ if and only
+if $\operatorname{diag}_y(B)$: the root is preserved and reflected, and so
+is the diagonal shape of a literal equation
+(\cref{guard:prop:subst-shapes}(i) and (iii)).
 
 \begin{theorem}[Substitution preserves the derivation tree]
 \label{claus:thm:ksubst}
@@ -1182,8 +1179,12 @@ Induction on the derivation. \rulename{Refl} is immediate. The literal
 matches of each row of $\Phi_2$ are preserved and substitution commutes with
 the instantiation of the body. \rulename{Use} keeps its occurrence and its
 antecedent. \rulename{Elim} uses a fresh variable in the substituted
-context. For \rulename{Intro}, \cref{claus:lem:diagsubst} fixes the mode,
-so the substituted branch is the branch that the same rule requires.
+context. For \rulename{Intro}, \cref{guard:prop:subst-shapes}(i) and (iii)
+fix the mode, so the substituted branch is the branch that the same rule
+requires. The argument is that of \cref{guard:thm:diagonal}(iii) and
+\cref{guard:prop:np-subst}(i); the clause setting adds only that
+\rulename{Use} and \rulename{Elim} commute with $\sigma$ and keep the
+selected occurrence.
 \end{proof}
 
 \begin{remark}
@@ -1194,9 +1195,15 @@ In the Lean development $\mathsf{K}$ is \Lean{KPrf}, the equivalences are
 (\Lean{NativeClausalDiagonal}). \pkg{clause\_guards} compares $\mathsf{K}$
 with the six-rule native calculus that has the diagonal introduction
 (\Lean{SPrf}), for which the translation $\tau$ preserves and reflects the
-diagonal shape, so that introductions are copied. $\mathsf{C}$ has
+diagonal shape, so that introductions are copied; the seven-rule native
+calculus with the same introduction is $\Nat_{\mathrm{diag}}$ of
+\cref{guard:thm:diagonal}. $\mathsf{C}$ has
 substitution as an admissible rule (\cref{claus:prop:subst}); the
 statement for $\mathsf{K}$ is that the derivation is not repaired.
+\Cref{claus:thm:keqind} differs from the derivation of \rulename{QI} in
+\cref{guard:thm:selector}: it uses the decoder \eqref{claus:eq:recovery}
+and the closure interfaces of the clause calculus in place of the
+implication between equations of \cref{guard:lem:np-imp}.
 \end{remark}
 
 \subsection{Guards with a derivable base}
@@ -1204,7 +1211,10 @@ statement for $\mathsf{K}$ is that the derivation is not repaired.
 
 This subsection draws on \pkg{clause\_guards}; the method of repairing an
 introduction after a one-way change of guard is that of
-\pkg{reflexive\_base}.
+\pkg{reflexive\_base}. It is the clause form of the selector criterion
+with native contexts (\cref{guard:def:selector,guard:thm:selector,guard:prop:np-subst}):
+conditions (a) and (b) below are the requirement on a selector and (S1),
+and (c) is (S2) together with a decoder of the lift.
 
 Let $G_y(B)$ be a decidable predicate on matrices that is invariant under
 renaming of bound variables and under injective renaming of free
@@ -1256,29 +1266,32 @@ The guard satisfies (a), (b) and (c) and is preserved by substitution. It
 is not reflected by substitution.
 \end{proposition}
 \begin{proof}
-(a) holds by definition. (b): the zero instance is
+The guard is the mirrored shape of \cref{guard:def:shapes}(b). (a) holds
+by definition. (b) is condition (S1) of
+\cref{guard:thm:mirror-selector}(i): the zero instance is
 $a'=\It{0}{a'}{u}{h'}$, the symmetric form of the zero computation. (c):
-for $E(y)\equiv(s(y)=t(y))$ let
-\[
- M_E(y)\defeq\bigl(s(y)=\It{y}{s(y)}{u}{t(y)}\bigr),\qquad u\notin\FV(t).
-\]
-The successor instance computes to $E(\Suc z)$. Numerical cases prove
-\[
- \sel(y,s(0),s(y))=s(y),\qquad
- \sel(y,t(0),\It{y}{s(y)}{u}{t(y)})=t(y),
-\]
-since at $0$ both sides are $s(0)$, respectively $t(0)$, and at $\Suc z$
-the selector returns its last argument, which computes to $t(\Suc z)$ in
-the second equation. Under $E(0)$ and $M_E(y)$ congruence joins the two
-left sides, hence $E(y)$. The shape $a=\It{y}{a}{u}{h}$ is preserved by
-substitution. For distinct free variables $p,q$ the matrix
-$p=\It{y}{q}{u}{h}$ is not guarded, and the substitution of $p$ for $q$
-makes it guarded.
+for $E(y)\equiv(s(y)=t(y))$ the lift is the mirror gate
+$M_E(y)\equiv H_yE\equiv\bigl(s(y)=\It{y}{s(y)}{u}{t(y)}\bigr)$,
+$u\notin\FV(t)$, whose successor instance computes to $E(\Suc z)$, and
+$E(0),M_E(y)\proves E(y)$ is the equational decoder of
+\cref{guard:lem:decoder}. Both derivations use the computation
+equations, equality and numerical cases only, which are available in the
+clause calculus by \cref{claus:lem:eq} and interfaces (i) and (ii) of
+\cref{claus:lem:closure}, the latter from introductions by cases,
+\rulename{Use} and \rulename{Elim}. Preservation and the failure of
+reflection are \cref{guard:prop:subst-shapes}(ii); for distinct free
+variables $p,q$ the matrix $p=\It{y}{q}{u}{h}$ is not guarded, and the
+substitution of $p$ for $q$ makes it guarded.
 \end{proof}
 
 Every matrix that is not guarded takes the case branch, so the mirror
-calculus is defined on the whole $Q$-free language; \pkg{mirror\_core}
-restricts the public language instead. By \cref{claus:thm:guard} the mirror
+calculus is defined on the whole $Q$-free language, as the mirror selector
+with native contexts is on the full native language
+(\cref{guard:thm:mirror-selector}); \pkg{mirror\_guard} restricts the
+public language instead (\cref{guard:thm:mirror}).
+% ed.: the earlier text attributed the public-language restriction to
+% mirror_core; per guard:sec:full and guard:sec:mirror it is mirror_guard.
+By \cref{claus:thm:guard} the mirror
 calculus is equivalent to $\Nat$ and has admissible substitution with a
 local repair, and it lacks the exact statement of
 \cref{claus:thm:ksubst}. A guard that tests one iterator side without its
@@ -1288,7 +1301,9 @@ relation to the initializer does not satisfy (b).
 \label{claus:sec:fixedzero}
 
 This subsection draws on \pkg{rootfree\_clausal}; the guard is that of
-\pkg{reflexive\_base}.
+\pkg{reflexive\_base} (\cref{comp:def:reflexive}), restricted from an
+arbitrary literally reflexive base $r=r$ to the fixed base $0=0$, and
+placed in the clause calculus $\mathsf{C}^{0}$.
 
 \begin{definition}[The calculus $\mathsf{C}^{0}_{\mathrm{b}}$]
 \label{claus:def:c0b}
@@ -1327,36 +1342,29 @@ The two calculi differ in the introduction only. \Cref{claus:lem:c0}(i) to
 $\Gamma,B\langle t,0\rangle\proves B\langle t,\Suc z\rangle$. If the base
 is not $0=0$ the rule applies. If it is $0=0$, cut \rulename{Refl} into
 the branch, weaken by the assumption $B\langle t,z\rangle$ and apply the
-rule in progress mode. No auxiliary witness is needed. The closure
+rule in progress mode, as in \cref{comp:lem:rcases}. No auxiliary witness
+is needed. The closure
 interfaces (i) to (iii) and transport in formulas follow.
 
 \emph{Equation progress in $\mathsf{C}^{0}_{\mathrm{b}}$.} Let
-$E(y)\equiv(s(y)=t(y))$ and let $\Gamma,E(z)\proves E(\Suc z)$ be given.
-Write $s_0\equiv s\langle 0\rangle$, and let the selector on zero-normal
-terms be $\sel(v,a,b)\equiv\overline{I}(v,a;\,u.\,b)$. Put
-\begin{align*}
- H(y)&\defeq\bigl(\sel(y,0,s(y))=\sel(y,0,t(y))\bigr),\\
- F_s(y)&\defeq\bigl(\sel(y,s_0,\sel(y,0,s(y)))=s(y)\bigr),\\
- F_t(y)&\defeq\bigl(\sel(y,s_0,\sel(y,0,t(y)))=t(y)\bigr).
-\end{align*}
-In zero-normal syntax $H\langle 0\rangle$ is literally $0=0$,
-$F_s\langle 0\rangle$ is $s_0=s_0$ and $F_t\langle 0\rangle$ is
-$E\langle 0\rangle$. Each successor instance of $F_s$ and of $F_t$ is
-derivable by two selector computations. Work in $\Gamma,E\langle 0\rangle$.
-The introduction by cases gives $q_yF_s$ and $q_yF_t$, and interface (ii)
-with the bases \rulename{Refl} and $E\langle 0\rangle$ gives
-$F_s\langle z\rangle$ and $F_t\langle z\rangle$. Under the further
-assumption $H\langle z\rangle$, congruence for the template
-$v\mapsto\sel(z,s_0,v)$ and the two decoder equations give
-$E\langle z\rangle$. Cut this into the given step derivation; the result
-is $E\langle\Suc z\rangle$, and one selector computation on each side
-gives $H\langle\Suc z\rangle$. The introduction of
-$\mathsf{C}^{0}_{\mathrm{b}}$ on the matrix $H$ with an unused first
-variable is in progress mode, because its base is $0=0$, and gives
-$q_yH$. \rulename{Refl} and interface (ii) give
-$H\langle\Suc w\rangle$, hence $E\langle\Suc w\rangle$, for a fresh $w$.
-The introduction by cases concludes $\Gamma\proves q_yE$. No equation
-induction is used before the guarded rule is applied.
+$E(y)\equiv(s(y)=t(y))$ and let $\Gamma,E(z)\proves E(\Suc z)$ be given;
+the conclusion is $\Gamma\proves q_yE$. The derivation is that of
+\cref{comp:thm:rprogress}, with the progressive lift
+$H(y)\equiv\bigl(\sel(y,0,s(y))=\sel(y,0,t(y))\bigr)$ and the two
+decoders $\mathrm{Dec}_{s,s_0}$ and $\mathrm{Dec}_{t,s_0}$ of
+\cref{comp:lem:decoder}, $s_0\equiv s\langle 0\rangle$, the selector on
+zero-normal terms being $\sel(v,a,b)\equiv\overline{I}(v,a;\,u.\,b)$. It
+transfers to the clause calculus as follows. The closure by cases
+\eqref{comp:eq:rqcase} is interface (i) of \cref{claus:lem:closure} with
+$q_y$ in the place of $\Q{y}$, by the introduction by cases just derived;
+\rulename{QE} is interface (ii); equality, congruence, weakening and cut
+are \cref{claus:lem:c0}(i) to (v). The zero instance $H\langle 0\rangle$
+is literally $0=0$, so the introduction of $\mathsf{C}^{0}_{\mathrm{b}}$ on
+the matrix $H$ with an unused first variable is in progress mode, as
+\rulename{RI} is there, and it concludes $q_yH$ directly, without the
+\rulename{DE} step of that proof. As there, nothing is substituted into
+the given derivation and no equation induction is used before the guarded
+rule is applied.
 
 \emph{From $\mathsf{C}^{0}$ to $\mathsf{C}^{0}_{\mathrm{b}}$.} An
 \rulename{Intro} of $\mathsf{C}^{0}$ in case mode is an introduction by
@@ -1377,8 +1385,9 @@ cases at the witness $t$ concludes $\D{x}{y}B$.
 If the base is literally $0=0$ it remains so under substitution, since
 $\nf_0(\nf_0(G)\sigma)\equiv\nf_0(G\sigma)$. A base that is not $0=0$ can become
 $0=0$, which changes an introduction by cases into a progressive one; the
-derived introduction by cases repairs that instance. So the guard is
-preserved and not reflected, as for the mirror guard.
+derived introduction by cases repairs that instance, as in
+\cref{comp:lem:rsubst}. So the guard is preserved and not reflected, as
+for the mirror guard.
 
 \section{Variants of the context}
 \label{claus:sec:context}
@@ -1628,14 +1637,15 @@ if $B$ is a literal equation and $w\equiv 0$, and $0$ otherwise.
 \end{definition}
 
 A context entry has no antecedent field, and there is no entry for an
-ordinary assumption. The gate is a construction on the existing grammar.
+ordinary assumption. The calculus is formalized in Lean as \Lean{OBPrf}
+(\Lean{NativeOneBody}); its theorems are listed in
+\cref{claus:rem:obpkgs}. The gate is a construction on the existing grammar.
 Its variable $v$ lies outside the binders of $A$, and the terms of the
 leaf are placed under the new iterator binder of the selector, which in a
 de Bruijn representation requires one lifting.
 
 The subsystem with \rulename{Refl} and the two evaluation rows gives the
-equality reasoning of \cref{claus:lem:eq} and
-\cref{claus:lem:eq} in every context. Write $s\simeq t$ if this
+equality reasoning of \cref{claus:lem:eq} in every context. Write $s\simeq t$ if this
 subsystem proves $s=t$. Its derivations have no mode test and are stable
 under substitution. In particular
 \begin{equation}
@@ -1775,11 +1785,11 @@ to the first.
 
 \begin{remark}
 \label{claus:rem:obpkgs}
-In the Lean development $\mathsf{OB}$ is \Lean{OBPrf}, the first
+In the Lean development the first
 equivalence is \Lean{obprf\_iff\_nprf}, its form for arbitrary native
 sequents through $\tau$ is \Lean{obprf\_unQ\_iff\_nprf}, and the
-equivalence with $\mathsf{C}$ is \Lean{obprf\_iff\_cprf}
-(\Lean{NativeOneBody}); \cref{claus:lem:access} is \Lean{OBPrf.conv} and
+equivalence with $\mathsf{C}$ is \Lean{obprf\_iff\_cprf};
+\cref{claus:lem:access} is \Lean{OBPrf.conv} and
 \Lean{OBPrf.acc}, and \cref{claus:thm:ctob} is \Lean{CPrf.toOB}. The Lean
 proof derives the gate at $0$ directly (\Lean{OBPrf.gtZero}) and does not
 convert it from deep reflexivity. \pkg{one\_body} proves soundness through
@@ -1842,8 +1852,7 @@ gate changes neither the number of binders nor the root of a formula.
 In $\mathsf{HB}$, in every context:
 \begin{enumerate}[label=(\roman*)]
 \item $t=t$ is derivable, every $D^j(r=r)$ is derivable, and the equality
-rules of \cref{claus:lem:eq} and
-\cref{claus:lem:eq} hold;
+rules of \cref{claus:lem:eq} hold;
 \item $\kappa_0A$ is derivable for every $A$;
 \item a derivation of $\kappa_1A$ converts to a derivation of $A$, and
 conversely;
@@ -1942,7 +1951,7 @@ The first case has a literal zero counter and the second a successor, so
 they do not overlap, and $\varrho$ is a total function of $(E,F)$. The
 replacement term, the body and the counter are read from the two
 formulas. An $E$ with root $D$ always selects the third case. In the Lean
-development the graph of $\varrho$ is the relation \Lean{Rho}, with
+development the graph of $\varrho$ is a relation, with
 \Lean{Rho.functional} and \Lean{Rho.total}.
 
 \begin{definition}[The calculus $\mathsf{ED}$]
@@ -1962,7 +1971,9 @@ $\varrho_E(F)$. The formulas $E$ and $F$ may contain $b$.
 
 The rule opens $\D{x}{y}B$ at $b$, proves $E$ and $F$ in that scope,
 performs one evaluation step, and exports the result if the step has
-removed $b$ or $b$ was absent. The third case does not derive $F$ without
+removed $b$ or $b$ was absent. The calculus is formalized in Lean as
+\Lean{E3Prf} (\Lean{NativeEvalDischarge}), with $\varrho$ as \Lean{Rho};
+its theorems are listed in \cref{claus:rem:e3pkgs}. The third case does not derive $F$ without
 a premise: the rule requires a derivation of $F$. The two patterns of
 $\varrho$ and its identity case are part of the specification.
 
@@ -2027,9 +2038,9 @@ leaves the scope because $b$ does not occur in it.
 
 \begin{remark}
 \label{claus:rem:e3pkgs}
-In the Lean development $\mathsf{ED}$ is \Lean{E3Prf}, with
+In the Lean development the equivalences are
 \Lean{e3prf\_iff\_vprf} on every clause context and
-\Lean{e3prf\_iff\_nprf\_of\_qfree} (\Lean{NativeEvalDischarge}). The Lean
+\Lean{e3prf\_iff\_nprf\_of\_qfree}. The Lean
 translation from $\mathsf{V}$ carries a renaming and an extension of the
 context through its induction, where the proof above uses
 \cref{claus:lem:theta}. The translation of \rulename{Elim} copies the
@@ -2066,18 +2077,14 @@ $\mathsf{ED}^{0}$ has zero-normal terms, normal substitution, uniform
 clauses, \rulename{Use} and \rulename{Close} of $\mathsf{V}^{0}$, and
 \rulename{Discharge} with $\sigma_E(F)$ in the place of $\varrho_E(F)$.
 The calculus $\mathsf{V}^{0}_{\mathrm{s}}$ is $\mathsf{V}^{0}$ with
-\rulename{Step} replaced by
-\[
- \infrule{\Gamma\proves s=t\quad\Gamma\proves\It{\Suc c}{s}{u}{h}=r}
-         {\Gamma\proves r=h\langle\overline{I}(c,t;\,u.\,h)/u\rangle}\
- \rulename{SeedEval}.
-\]
+\rulename{Step} replaced by the rule \rulename{SeedEval} of
+\pkg{seed\_evaluation} (\cref{comp:def:seedeval}): from $s=t$ and
+$\It{\Suc c}{s}{u}{h}=r$ infer
+$r=h\langle\overline{I}(c,t;\,u.\,h)/u\rangle$.
 \end{definition}
 
-The first premise of \rulename{SeedEval} equates the initializer, not the
-preceding iterate; the preceding iterate at the new initializer is
-constructed and is not a premise. The rule is that of
-\pkg{seed\_evaluation}.
+The case of $\sigma_E(F)$ that is not the identity is exactly
+\rulename{SeedEval}, with $E$ and $F$ as its two premises.
 
 \begin{lemma}[\rulename{SeedEval} and \rulename{Step}]
 \label{claus:lem:seed}
@@ -2087,24 +2094,11 @@ On zero-normal terms, in every context that contains $\mathcal{R}$,
 $\mathcal{R}$ and \rulename{SeedEval}. No logical rule is used.
 \end{lemma}
 \begin{proof}
-From \rulename{Step}: let $s=t$ and $\It{\Suc c}{s}{u}{h}=r$.
-\Cref{claus:lem:c0}(iv) for the template $v\mapsto\overline{I}(c,v;\,u.\,h)$
-gives $\overline{I}(c,s;\,u.\,h)=\overline{I}(c,t;\,u.\,h)$, and
-\rulename{Step} on this equation and the second premise gives
-$r=h\langle\overline{I}(c,t;\,u.\,h)/u\rangle$.
-
-From \rulename{SeedEval}: at the counter $0$ the rule reads
-$a=b,\ \It{\Suc 0}{a}{u}{h}=r\proves r=h\langle b/u\rangle$. With
-$K\equiv\It{\Suc 0}{s}{u}{u}$, the rule on $s=r$ and $K=K$ gives $K=r$,
-and on $s=t$ and $K=r$ gives $r=t$; hence symmetry and transitivity. The
-rule on $a=a$ and the reflexivity of $\It{\Suc c}{a}{u}{h}$ gives the
-successor computation. With $J\equiv\It{\Suc 0}{s}{u}{h}$, the rule on
-$s=s$ and $J=J$ gives $J=h\langle s/u\rangle$, and on $s=t$ and this
-equation gives $h\langle s/u\rangle=h\langle t/u\rangle$. For
-\rulename{Step} with premises $\overline{I}(c,a;\,u.\,h)=t$ and
-$\It{\Suc c}{a}{u}{h}=r$, the successor computation and congruence along
-the first premise give $\It{\Suc c}{a}{u}{h}=h\langle t/u\rangle$, and the
-second premise gives $r=h\langle t/u\rangle$.
+These are parts (b) and (c) of \cref{comp:lem:seedstep}. Their derivations
+consist of reflexivity, \rulename{Step} or \rulename{SeedEval}, and the
+given premises; they read no clause, so they are derivations over every
+clause context once each reflexivity leaf is replaced by \rulename{Use} of
+$\mathcal{R}$ at the term in question.
 \end{proof}
 
 \begin{theorem}[The zero-normal fusion]
@@ -2123,10 +2117,12 @@ $D$ recovers \rulename{Open}, and the major premise $\Theta$ recovers
 statement is \cref{claus:lem:seed}.
 \end{proof}
 
-The companion and its equivalence are not formalized in Lean. The
-arithmetic interface with \rulename{SeedEval}, with the introductions of
-the kernel and $Q$ in the place of clause contexts, is \Lean{NVPrf}
-(\Lean{NativeZeroSeed}).
+The companion and its equivalence are not formalized in Lean; the
+formalized calculus with \rulename{SeedEval} has native contexts
+(\Lean{NVPrf} in \Lean{NativeZeroSeed}, \cref{comp:thm:seedeval}). With clause contexts and a rule
+\rulename{Refl}, \rulename{SeedEval} gives the calculus
+$\mathsf{C}_{\mathrm{Seed}}$ of \cref{comp:thm:seedeval}, which is
+equivalent to $\mathsf{C}^{0}$.
 
 \section{The ordinary realization}
 \label{claus:sec:real}
@@ -2190,12 +2186,14 @@ $\Suc$ nor the separation of $0$ from $\Suc 0$ is used. The rule is
 where $f(z)$ is a term with a distinguished variable, not a function
 variable, and $z$ is fresh for $\Gamma$, $t$ and the parameters of $f$.
 The second premise has no local assumption. The rule is the uniqueness of
-iterators restricted to the initializer $0$ and the update $\Suc$.
-Induction for literal equations derives $\mathrm{SR}_0$: induct on
-$f(n)=n$, where the step is $f(\Suc z)=\Suc(f(z))=\Suc z$ under
-$f(z)=z$. Unrestricted uniqueness of scalar iterators also derives it,
-applied to $f$ and to the identity template with the common initializer
-$0$.
+iteration \rulename{UR} (\cref{kern:sec:ur}) restricted to the initializer
+$0$ and the update $\Suc$. Induction for literal equations derives
+$\mathrm{SR}_0$: induct on $f(n)=n$, where the step is
+$f(\Suc z)=\Suc(f(z))=\Suc z$ under $f(z)=z$. Successor uniqueness
+\rulename{SU} (\cref{kern:def:SU}) also derives it: \rulename{SU} gives
+$f(t)=\It{t}{f(0)}{u}{\Suc u}$, the first premise turns the seed into $0$,
+and $\It{t}{0}{u}{\Suc u}=t$ is \cref{kern:lem:cu}(iii), which is
+derivable in $T_{\mathrm{SU}}$.
 
 \begin{theorem}[Zero-equation induction from successor rigidity]
 \label{claus:thm:rigidity}
@@ -2235,10 +2233,27 @@ equality of two terms and no separation.
 \end{proof}
 
 The construction of $e$ and $r$ is effective on syntax, so the theorem
-is a transformation of derivations. The proof uses one trajectory and no
-idempotence lemma; \pkg{scope\_kernel} obtains induction from unrestricted
-uniqueness by a retraction argument. The theorem does not give full
+is a transformation of derivations. The theorem does not give full
 scalar arithmetic from $\mathrm{SR}_0$; see \cref{claus:q:rigidity}.
+
+\begin{remark}[Comparison with the rigidity of retractions]
+\label{claus:rem:rigidity}
+\Cref{kern:lem:rigid,kern:lem:split,kern:lem:zi,kern:thm:su} derive
+induction for zero equations from \rulename{SU} by the same kind of
+trajectory, $r(n)\equiv\It{n}{0}{u}{e(\Suc e(u))}$, and a retraction $e$
+with $e(0)=0$, $e(e(x))=e(x)$ and $e(\Suc e(x))=\Suc e(x)$; the argument
+is from \pkg{scope\_kernel} and \pkg{orbit\_closure}. Since $\mathrm{SR}_0$
+is derivable from \rulename{SU}, \cref{claus:thm:rigidity} implies
+\cref{kern:thm:su}. What it adds is the following. Its rule
+$\mathrm{SR}_0$ fixes the seed $0$ and concludes the identity, so it does
+not presuppose \cref{kern:lem:cu}(iii). Its trajectory
+$\It{n}{0}{u}{e(\Suc u)}$ needs no idempotence of $e$, and its two
+conditions on $e$ concern the formula $E$ and not $e$ alone, so the
+general statement applies to every formula $E$ with such an $e$. Its
+derivation of $\mathrm{ZI}$ uses coverage on $q(x)$ in place of a decided
+split (\cref{kern:lem:split}), so it needs neither the decidability of
+$q(n)=0$ nor separation, which \cref{kern:lem:zi} uses.
+\end{remark}
 
 \section{Checker sizes}
 \label{claus:sec:checkers}
@@ -2396,7 +2411,9 @@ Such a term would turn $\mathrm{ZI}$ into induction for every literal
 equation, and the bridge (\cref{base:thm:bridge}) would apply. The known
 proofs of the predecessor (\cref{base:thm:pred}) and of the reflection of
 equality (\cref{base:thm:reflect}) use inductions on general equations or
-uniqueness with updates other than $\Suc$, so importing them is circular.
+uniqueness with updates other than $\Suc$
+(\crefrange{kern:sec:urpred}{kern:sec:urreflect}), so importing them is
+circular.
 \pkg{raw\_clausal} claims no converse from $\mathrm{ZI}$ to
 $\mathrm{SR}_0$, no equivalence of $\mathrm{SR}_0$ with unrestricted
 uniqueness, and no checker for $\mathrm{SR}_0$.

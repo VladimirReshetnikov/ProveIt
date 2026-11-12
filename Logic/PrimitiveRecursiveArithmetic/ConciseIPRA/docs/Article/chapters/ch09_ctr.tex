@@ -10,7 +10,8 @@ normalizing substitution. \Cref{ctr:sec:terms} fixes the term languages and thei
 \Cref{ctr:sec:counter} shows what a counter-aware body provides: a decoder that computes, a
 selector, and a compiler for primitive recursion that uses no pairing. \Cref{ctr:sec:bridge}
 gives the translations to and from iterator terms and transfers the bi-interpretation of
-\cref{base:thm:bridge}. \Cref{ctr:sec:six,ctr:sec:five,ctr:sec:ce,ctr:sec:three} treat the
+\cref{base:thm:bridge}. \Cref{ctr:sec:constfree} removes the constant $0$ from the register
+language and defines zero by an equation. \Cref{ctr:sec:six,ctr:sec:five,ctr:sec:ce,ctr:sec:three} treat the
 proof calculi stated on these syntaxes. \Cref{ctr:sec:binding} treats the concrete syntax in
 which the recursor and the paired binder bind the same number of variables.
 \Cref{ctr:sec:bounds} collects the boundary results.
@@ -905,6 +906,487 @@ instances in this argument are literal equations. The argument is that of
 \cref{base:thm:reflect,base:thm:qfi} and is not repeated.
 \end{remark}
 
+\section{A register language without constants}\label{ctr:sec:constfree}
+
+This section draws on \pkg{constantfree}, which builds on \pkg{register\_graph}.
+
+The register language of \cref{ctr:def:languages}(3) has one constant, $0$. It can be
+removed. Three occurrences of $J$ over a variable form a term that is provably constant,
+and an equation $z=Z(z)$ then defines zero without a closed term. This section states the
+theory without constants, proves that it defines zero and the successor, translates it to
+and from $\mathsf T_J$, and obtains the bi-interpretation with $\iPRA$ from
+\cref{ctr:thm:transfer}. Only what the removal of the constant requires is proved here; the
+bootstrap, the compiler and the reflection argument are those of \cref{ctr:sec:register}
+and \cref{ctr:rem:reflection}.
+
+\subsection{The language and the theory}
+
+\begin{definition}[Terms without constants]\label{ctr:def:cfterms}
+The terms are
+\[
+ t ::= x\mid J(n;i,r.h),
+\]
+with $i,r$ bound in $h$ only. There is no numerical constant, no successor, no initializer
+and no pairing. With fresh bound variables in every abbreviation put
+\begin{align*}
+ \mathsf K(t)&\defeq J(t;i,r.i), & \mathsf U(t)&\defeq J(t;i,r.\mathsf K(r)),\\
+ \mathsf Z(t)&\defeq J(\mathsf U(t);i,r.r), & \mathsf S(t)&\defeq J(t;i,r.\mathsf Z(r)).
+\end{align*}
+Fully expanded, $\mathsf Z(t)=J\bigl(J(t;i,r.J(r;j,s.j));k,v.v\bigr)$; thus $\mathsf U$ has
+two occurrences of $J$ and $\mathsf Z$ has three. The successor $\mathsf S$ is a fixed term
+with the single free variable $t$. For an arbitrary term $a$, the \emph{anchor}, put
+\[
+ 0_a\defeq\mathsf Z(a),\qquad 1_a\defeq\mathsf S(0_a),\qquad 2_a\defeq\mathsf S(1_a).
+\]
+Here $a$ is not a distinguished element; it is a passive parameter.
+\end{definition}
+
+The sans-serif letters distinguish these terms from the successor $\Suc$ of $\mathsf T_J$
+and from the term $Z(x)=f(x,1)$ of \cref{ctr:lem:regboot}. \pkg{constantfree} writes
+$K,U,Z,S$ for $\mathsf K,\mathsf U,\mathsf Z,\mathsf S$ and $q$ for the term $Z$ of
+\cref{ctr:lem:regboot}.
+
+\begin{lemma}[No closed terms]\label{ctr:lem:cffree}
+Every term of \cref{ctr:def:cfterms} has a free variable.
+\end{lemma}
+\begin{proof}
+By induction on the term. A variable is free in itself. The counter $n$ of $J(n;i,r.h)$ is
+outside the binder, so a free variable of $n$ is free in $J(n;i,r.h)$.
+\end{proof}
+
+The schemas of $\mathsf T_J$ are written once more, with the zero and the successor as
+parameters, so that $\mathsf T_J$ and the theory without constants are two instances.
+
+\begin{definition}[Anchored register schemas]\label{ctr:def:anchored}
+Let $o$ be a term and $\sigma(x)$ a term with a distinguished variable $x$. For a fixed body
+$h(i,r,\vec p)$ write $j_n=J(n;i,r.h)$ and $e_n=h(n,j_n,\vec p)$. The \emph{anchored
+schemas at $[o,\sigma]$} are the universal closures of
+\begin{align}
+ & J(o;i,r.h)=\sigma(o), \tag{J0$[o,\sigma]$}\label{ctr:eq:aJ0}\\
+ & J(\sigma(n);i,r.h)=b\;\leftrightarrow\;
+   \bigl((e_n=o\land b=\sigma(j_n))\lor e_n=\sigma(b)\bigr), \tag{STEP$[o,\sigma]$}\label{ctr:eq:aSTEP}\\
+ & o=\sigma(o)\to\bot, \tag{Sep$[o,\sigma]$}\label{ctr:eq:aSep}
+\end{align}
+with $b$ a variable distinct from the parameters, together with the rule
+\begin{equation}\label{ctr:eq:aEI}
+ \infrule{\Gamma\proves E(o)\qquad \Gamma,\ E(z)\proves E(\sigma(z))}{\Gamma\proves E(t)}
+ \tag{EI$[o,\sigma]$}
+\end{equation}
+for literal equations $E$, with $z$ fresh for $\Gamma$, $t$, $o$ and the parameters.
+\end{definition}
+
+The theory $\mathsf T_J$ of \cref{ctr:def:TJ} is ordinary logic with the anchored schemas at
+$[0,\Suc]$, where $\Suc x=J(x;i,r.0)$: the instances are literally \eqref{ctr:eq:J0},
+\eqref{ctr:eq:STEP}, \eqref{ctr:eq:Sep} and \eqref{ctr:eq:EI}.
+
+\begin{definition}[The theory $\mathsf T_J^{\varnothing}$]\label{ctr:def:TJ0}
+The formulas of $\mathsf T_J^{\varnothing}$ are those of \cref{ctr:def:TJ} over the terms of
+\cref{ctr:def:cfterms}, and its logical rules are those of \cref{ctr:def:TJ}. Its arithmetic
+part is the anchored schemas at $[\mathsf Z(a),\mathsf S]$ for every term $a$, with bodies
+ranging over the terms without constants:
+\[
+ J(0_a;i,r.h)=1_a,\qquad
+ J(\mathsf S n;i,r.h)=b\leftrightarrow\bigl((e_n=0_a\land b=\mathsf S j_n)\lor e_n=\mathsf S b\bigr),
+ \qquad 0_a=1_a\to\bot,
+\]
+and the rule \eqref{ctr:eq:aEI} with base $E(0_a)$, step $E(z)\proves E(\mathsf S z)$ and
+$z$ fresh also for the anchor. The anchor is part of each instance and is universally
+quantified in the axioms.
+\end{definition}
+
+As in every first-order logic with a nonempty domain, a derivation may contain a free
+variable that occurs neither in its context nor in its conclusion. When the variables in
+scope are recorded in the judgment, as in the checker of \pkg{constantfree}, this is the
+explicit rule
+\begin{equation}\label{ctr:eq:param}
+ \infrule{\Gamma\proves_{V\cup\{a\}}A}{\Gamma\proves_V A}
+ \qquad a\notin V,\ a\notin\FV(\Gamma,A).
+ \tag{Param}
+\end{equation}
+It discharges an arbitrary element, not an assumption. By \cref{ctr:lem:cffree} it cannot be
+replaced by the instantiation of a closed term.
+
+\begin{proposition}[Param is needed in an empty scope]\label{ctr:prop:cfparam}
+In the calculus of \cref{ctr:def:TJ0} with variable scopes, in which every term of a
+derivation is in scope and every axiom instance is a universal closure or an instance of one
+at terms in scope, the sentence $\exists x\,(x=x)$ is not derivable in the empty scope
+without \eqref{ctr:eq:param}. With \eqref{ctr:eq:param} it is derivable.
+\end{proposition}
+% ed.: the package asserts that a scoped checker without Param is incomplete but gives no proof; the empty-structure argument below is supplied here.
+\begin{proof}
+Call a judgment $\Gamma\proves_V A$ valid if $V\neq\varnothing$, or if $V=\varnothing$ and
+$A$ is true in the structure with the empty domain whenever all formulas of $\Gamma$ are.
+Every rule other than \eqref{ctr:eq:param} preserves validity. A rule with a conclusion in a
+nonempty scope has a valid conclusion. In the empty scope there is no term, by
+\cref{ctr:lem:cffree}, so reflexivity, transport, $\forall$-elimination,
+$\exists$-introduction, the instances of axioms at terms, and \eqref{ctr:eq:aEI}, whose
+conclusion and anchor are terms, do not occur there. Universal closures are true in the
+empty structure, and so is every universal conclusion of $\forall$-introduction. The
+propositional rules preserve truth. For $\exists$-elimination in the empty scope, the
+major premise $\exists x\,A$ is false in the empty structure, so its validity makes the
+context false and the conclusion valid. Since $\exists x\,(x=x)$ is false in the empty
+structure, it has no derivation in the empty scope. With \eqref{ctr:eq:param}: in scope
+$\{a\}$, reflexivity gives $a=a$ and $\exists$-introduction gives $\exists x\,(x=x)$;
+\eqref{ctr:eq:param} discharges $a$.
+\end{proof}
+
+\begin{remark}[Bodies as function symbols]\label{ctr:rem:cfdescriptors}
+As in \cref{ctr:sec:bridge}, a fixed body is a function symbol $J_h(n,\vec p)$ of its
+parameters, and the schemas are supplied for each one. A capture-avoiding substitution
+into a body yields another symbol; its agreement with the substituted old one is not an
+axiom. It follows by external induction on the body: inner occurrences of $J$ are handled by
+the induction hypothesis, and the outer occurrence by \cref{ctr:lem:cfext} below.
+\pkg{constantfree} gives this argument; its auditors add that it needs neither injectivity
+of the successor nor coverage.
+\end{remark}
+
+\subsection{Zero and the successor}
+
+The following two lemmas hold for every instance of \cref{ctr:def:anchored}. They are
+applied to $\mathsf T_J^{\varnothing}$ at $[\mathsf Z(a),\mathsf S]$ and to $\mathsf T_J$
+at $[0,\Suc]$.
+
+\begin{lemma}[Constant one and zero]\label{ctr:lem:cfconst}
+Let a theory contain ordinary logic with equality, prove every instance of
+\eqref{ctr:eq:aJ0} and of the right-to-left direction of \eqref{ctr:eq:aSTEP}, and be
+closed under \eqref{ctr:eq:aEI}, at one pair $[o,\sigma]$. Then it proves, for every term
+$t$,
+\[
+ \mathsf K(o)=\sigma(o),\quad \mathsf K(\sigma(o))=\sigma(\sigma(o)),\quad
+ \mathsf U(t)=\sigma(o),\quad J(\sigma(o);i,r.r)=o,\quad \mathsf Z(t)=o .
+\]
+Neither \eqref{ctr:eq:aSep}, nor coverage, nor the left-to-right direction of
+\eqref{ctr:eq:aSTEP} is used, and the only induction is one instance of
+\eqref{ctr:eq:aEI} on the literal equation $\mathsf U(x)=\sigma(o)$.
+\end{lemma}
+\begin{proof}
+\eqref{ctr:eq:aJ0} for the body $i$ gives $\mathsf K(o)=\sigma(o)$. In
+\eqref{ctr:eq:aSTEP} for the body $i$ at the counter $n\defeq o$ the instruction is
+$e_o=o$, literally, and the old register is $j_o=\mathsf K(o)$. Take
+$b\defeq\sigma(\sigma(o))$. The increment disjunct $e_o=o\land b=\sigma(\mathsf K(o))$ holds
+by reflexivity and by congruence from $\mathsf K(o)=\sigma(o)$, so the right-to-left
+direction gives $\mathsf K(\sigma(o))=\sigma(\sigma(o))$.
+
+\eqref{ctr:eq:aJ0} for the body $\mathsf K(r)$ gives $\mathsf U(o)=\sigma(o)$. Assume
+$\mathsf U(z)=\sigma(o)$. In \eqref{ctr:eq:aSTEP} for the body $\mathsf K(r)$ at the counter
+$z$ the instruction is $\mathsf K(\mathsf U(z))$, which equals
+$\mathsf K(\sigma(o))=\sigma(\sigma(o))$ by congruence and the preceding paragraph. With
+$b\defeq\sigma(o)$ the load disjunct $e_z=\sigma(b)$ holds, and the right-to-left direction
+gives $\mathsf U(\sigma(z))=\sigma(o)$. Now \eqref{ctr:eq:aEI}, applied to the literal
+equation $\mathsf U(x)=\sigma(o)$ in the empty context, gives $\mathsf U(t)=\sigma(o)$.
+
+Let $B(n)\defeq J(n;i,r.r)$. \eqref{ctr:eq:aJ0} gives $B(o)=\sigma(o)$. In
+\eqref{ctr:eq:aSTEP} for the body $r$ at the counter $o$ the instruction is the old register
+$B(o)$; with $b\defeq o$ the load disjunct $B(o)=\sigma(o)$ holds, so $B(\sigma(o))=o$.
+Finally $\mathsf Z(t)=B(\mathsf U(t))$ literally, and transport along
+$\mathsf U(t)=\sigma(o)$ gives $\mathsf Z(t)=B(\sigma(o))=o$.
+\end{proof}
+
+\begin{lemma}[Register body extensionality]\label{ctr:lem:cfext}
+Let a theory contain ordinary logic with equality, prove every instance of
+\eqref{ctr:eq:aJ0} and of both directions of \eqref{ctr:eq:aSTEP}, and be closed under
+\eqref{ctr:eq:aEI}, at one pair $[o,\sigma]$. Let $h(i,r)$ and $k(i,r)$ be bodies, with
+arbitrary parameters, and let $i,r$ be fresh for $\Gamma$. If $\Gamma\proves h=k$, then
+$\Gamma\proves J(n;i,r.h)=J(n;i,r.k)$ for every term $n$. Coverage, separation and
+injectivity of the successor are not used.
+\end{lemma}
+\begin{proof}
+Apply \eqref{ctr:eq:aEI} to the literal equation $E(x)\colon J(x;i,r.h)=J(x;i,r.k)$ in the
+context $\Gamma$, with $z$ fresh. The base holds since both sides equal $\sigma(o)$ by
+\eqref{ctr:eq:aJ0}. For the step write $j=J(z;i,r.h)$, $j'=J(z;i,r.k)$, $e=h[z/i,j/r]$ and
+$e'=k[z/i,j'/r]$, and assume $j=j'$. Since $i,r$ are not free in $\Gamma$, the premise gives
+$h[z/i,j/r]=k[z/i,j/r]$, and congruence along $j=j'$ gives $e=e'$. Put
+$c\defeq J(\sigma(z);i,r.h)$. The left-to-right direction of \eqref{ctr:eq:aSTEP} for $h$
+at the counter $z$, applied to the reflexive equation $c=c$, gives
+\[
+ (e=o\land c=\sigma(j))\lor e=\sigma(c).
+\]
+Transport along $e=e'$ and $j=j'$ gives $(e'=o\land c=\sigma(j'))\lor e'=\sigma(c)$, and the
+right-to-left direction of \eqref{ctr:eq:aSTEP} for $k$ at the counter $z$ gives
+$J(\sigma(z);i,r.k)=c$, which is $E(\sigma(z))$ after symmetry.
+\end{proof}
+
+In $\mathsf T_J^{\varnothing}$ the lemma is applied with an anchor $a$ that is any term in
+scope, for instance the counter $n$ itself; by \cref{ctr:lem:cffree} the conclusion always
+contains one. For $\mathsf T_J$, \cref{ctr:lem:cfext} is a proof of the identification of
+two register computations without the coverage split used in part~(2) of the proof of
+\cref{ctr:thm:transfer}.
+
+\begin{corollary}[Zero without a zero term]\label{ctr:cor:cfzero}
+Write $\operatorname{Zero}(z)\defeq(z=\mathsf Z(z))$. The theory $\mathsf T_J^{\varnothing}$
+proves, for all terms $a,b,t$,
+\[
+ \mathsf U(t)=\mathsf S(\mathsf Z(a)),\qquad \mathsf Z(t)=\mathsf Z(a),\qquad
+ \mathsf S(t)=J(t;i,r.\mathsf Z(a)),
+\]
+and the sentences
+\[
+ \forall a\,\forall b\ \mathsf Z(a)=\mathsf Z(b),\qquad
+ \exists z\,\operatorname{Zero}(z),\qquad
+ \forall x\,\forall y\,\bigl(\operatorname{Zero}(x)\land\operatorname{Zero}(y)\to x=y\bigr).
+\]
+\end{corollary}
+\begin{proof}
+The first two equations are \cref{ctr:lem:cfconst} at $[\mathsf Z(a),\mathsf S]$. The third
+is \cref{ctr:lem:cfext} for the bodies $\mathsf Z(r)$ and $\mathsf Z(a)$, whose premise
+$\mathsf Z(r)=\mathsf Z(a)$ is the second equation with $r$ free; the anchor $a$ may be
+taken for the lemma. The first sentence follows by $\forall$-introduction. For existence,
+the second equation at $t\defeq\mathsf Z(a)$ gives $\mathsf Z(\mathsf Z(a))=\mathsf Z(a)$,
+so $\mathsf Z(a)$ is a witness; the free variable $a$ is discharged as in
+\eqref{ctr:eq:param}. For uniqueness, $x=\mathsf Z(x)=\mathsf Z(y)=y$.
+\end{proof}
+
+\begin{corollary}[The terms in $\mathsf T_J$]\label{ctr:cor:cfTJ}
+$\mathsf T_J$ proves $\mathsf U(t)=1$, $\mathsf Z(t)=0$, $\mathsf S(t)=\Suc t$ and
+$\operatorname{Zero}(z)\leftrightarrow z=0$ for all terms $t$ and variables $z$.
+\end{corollary}
+\begin{proof}
+\Cref{ctr:lem:cfconst} at $[0,\Suc]$ gives the first two. \Cref{ctr:lem:cfext} for the
+bodies $\mathsf Z(r)$ and $0$, with the premise $\mathsf Z(r)=0$, gives
+$\mathsf S(t)=J(t;i,r.0)=\Suc t$. Finally $\mathsf Z(z)=0$ gives the last equivalence.
+\end{proof}
+
+\begin{remark}[The bootstrap at an anchor]
+\pkg{constantfree} also carries out, at a fixed anchor, the bootstrap of
+\cref{ctr:lem:regboot} with $f(n,0)=\mathsf S n$ obtained from the third equation of
+\cref{ctr:cor:cfzero}, coverage as in \cref{ctr:lem:coverage}, the compiler of
+\cref{ctr:thm:regcompiler} in the variant with the instruction
+$\mathsf S(C(i,b,h(p(i),r)))$, and the reflection argument of \cref{ctr:rem:reflection} with
+characteristic terms that use $1$ for truth. These are the constructions of
+\cref{ctr:sec:register} with $\mathsf Z(a)$ for $0$ and $\mathsf S$ for $\Suc$. By
+\cref{ctr:thm:cfbridge} below they are not needed separately: they hold in
+$\mathsf T_J^{\varnothing}$ as translations of theorems of $\mathsf T_J$.
+\end{remark}
+
+\subsection{Translations and the bi-interpretation}
+
+\begin{definition}[Translations]\label{ctr:def:cftrans}
+The translation from $\mathsf T_J^{\varnothing}$ to $\mathsf T_J$ is the inclusion: every
+term and formula without constants is a term or formula of $\mathsf T_J$. For a term or
+formula $X$ of $\mathsf T_J$ and a variable $z$ that does not occur in $X$, let $X_z$ be
+$X$ with every occurrence of the constant $0$ replaced by $z$, including the occurrences
+inside the abbreviations $\Suc$ and $1$; thus $(\Suc t)_z=J(t_z;i,r.z)$. The translation
+from $\mathsf T_J$ to $\mathsf T_J^{\varnothing}$ is
+\[
+ A^\flat\defeq\exists z\,\bigl(\operatorname{Zero}(z)\land A_z\bigr),
+\]
+and it interprets a term $t$ of $\mathsf T_J$ by the graph
+$\exists z\,(\operatorname{Zero}(z)\land y=t_z)$, with $z$ chosen fresh. Both translations
+fix the variables, the domain and equality, and $\bot^\flat$ is provably equivalent to $\bot$
+(\cref{ctr:lem:cfflat}(3) below).
+\end{definition}
+
+The replacement commutes with substitution, $(X[s/x])_z=X_z[s_z/x]$, and with every
+connective and quantifier whose bound variable is not $z$.
+
+\begin{lemma}[Inclusion]\label{ctr:lem:cfdown}
+If $\Gamma\proves A$ in $\mathsf T_J^{\varnothing}$, then $\Gamma\proves A$ in
+$\mathsf T_J$.
+\end{lemma}
+\begin{proof}
+By induction on the derivation. The logical rules are shared. A use of \eqref{ctr:eq:param}
+is admissible in $\mathsf T_J$: substitute $0$ for the discharged variable throughout the
+derivation of its premise, renaming eigenvariables. By \cref{ctr:cor:cfTJ}, $\mathsf T_J$
+proves $\mathsf Z(a)=0$ and $\mathsf S(x)=\Suc x$ for all terms $a,x$. Transport along these
+equations, at each occurrence, turns every instance of an anchored schema at
+$[\mathsf Z(a),\mathsf S]$ into the instance with the same body at $[0,\Suc]$, which is an
+axiom of $\mathsf T_J$. For an instance of \eqref{ctr:eq:aEI} at $[\mathsf Z(a),\mathsf S]$
+the induction hypotheses give $\Gamma\proves E(\mathsf Z(a))$ and
+$\Gamma,E(z)\proves E(\mathsf S z)$ in $\mathsf T_J$; transport gives
+$\Gamma\proves E(0)$ and $\Gamma,E(z)\proves E(\Suc z)$, and \eqref{ctr:eq:EI} gives
+$\Gamma\proves E(t)$.
+\end{proof}
+
+\begin{lemma}[Zero as a parameter]\label{ctr:lem:cfup}
+Let $\Gamma\proves A$ in $\mathsf T_J$ and let $z$ be a variable that occurs nowhere in the
+derivation. Then $\Gamma_z,\operatorname{Zero}(z)\proves A_z$ in
+$\mathsf T_J^{\varnothing}$.
+\end{lemma}
+\begin{proof}
+Under the hypothesis $\operatorname{Zero}(z)$ the theory $\mathsf T_J^{\varnothing}$ proves
+\begin{equation}\label{ctr:eq:cfpar}
+ \mathsf Z(a)=z,\qquad J(t;i,r.z)=\mathsf S(t)
+\end{equation}
+for all terms $a,t$: the first is $\mathsf Z(a)=\mathsf Z(z)=z$ by
+\cref{ctr:cor:cfzero}, and the second is \cref{ctr:lem:cfext} for the bodies $z$ and
+$\mathsf Z(r)$, with the premise $z=\mathsf Z(r)$ given by the first. Now induct on the
+derivation. A logical rule maps to the same rule with $\operatorname{Zero}(z)$ added to the
+context; eigenvariables differ from $z$ and do not occur in $\Gamma$, hence not in
+$\Gamma_z,\operatorname{Zero}(z)$; transport and $\forall$-elimination commute with the
+replacement.
+
+Axioms. $(J(0;i,r.h)=\Suc 0)_z$ is $J(z;i,r.h_z)=J(z;i,r.z)$. The instance of
+\eqref{ctr:eq:aJ0} at the anchor $z$ is $J(\mathsf Z(z);i,r.h_z)=\mathsf S(\mathsf Z(z))$, and
+transport along $\mathsf Z(z)=z$ and $\mathsf S(z)=J(z;i,r.z)$ from \eqref{ctr:eq:cfpar}
+gives the translated axiom. The translation of \eqref{ctr:eq:STEP} is
+\[
+ J\bigl(J(n_z;i,r.z);i,r.h_z\bigr)=b\leftrightarrow
+ \bigl((e'=z\land b=J(j';i,r.z))\lor e'=J(b;i,r.z)\bigr),
+\]
+with $j'=J(n_z;i,r.h_z)$ and $e'=h_z[n_z/i,j'/r]$, since the replacement commutes with
+substitution. The instance of \eqref{ctr:eq:aSTEP} at the anchor $z$ for the body $h_z$ and
+the counter $n_z$ differs from it only by $\mathsf Z(z)$ in place of $z$ and $\mathsf S(x)$
+in place of $J(x;i,r.z)$ for $x=n_z,j',b$, so transport along \eqref{ctr:eq:cfpar} proves
+it. The translation of \eqref{ctr:eq:Sep} is $z=J(z;i,r.z)\to\bot$, and transport turns the
+instance $\mathsf Z(z)=\mathsf S(\mathsf Z(z))\to\bot$ of \eqref{ctr:eq:aSep} into it.
+
+Induction. For an instance of \eqref{ctr:eq:EI} with premises $\Gamma\proves E(0)$ and
+$\Gamma,E(y)\proves E(\Suc y)$, the induction hypotheses give
+$\Gamma_z,\operatorname{Zero}(z)\proves E_z(z)$ and
+$\Gamma_z,\operatorname{Zero}(z),E_z(y)\proves E_z(J(y;i,r.z))$. Transport along
+\eqref{ctr:eq:cfpar} gives $E_z(\mathsf Z(z))$ and $E_z(\mathsf S y)$, and
+\eqref{ctr:eq:aEI} at the anchor $z$ gives $E_z(t_z)$. The invariant $E_z$ is a literal
+equation, and $y$ differs from $z$ and is fresh for the extended context and the target.
+\end{proof}
+
+\begin{lemma}[The translation $\flat$]\label{ctr:lem:cfflat}
+In $\mathsf T_J^{\varnothing}$:
+\begin{enumerate}
+\item $\operatorname{Zero}(z)\proves A^\flat\leftrightarrow A_z$ for every formula $A$ of
+$\mathsf T_J$ and every variable $z$ not in $A$;
+\item $\flat$ commutes with every connective and quantifier up to provable equivalence:
+$(A\circ B)^\flat\leftrightarrow A^\flat\circ B^\flat$ for $\circ\in\{\land,\lor,\to\}$,
+$\bot^\flat\leftrightarrow\bot$, $(\forall x\,A)^\flat\leftrightarrow\forall x\,A^\flat$ and
+$(\exists x\,A)^\flat\leftrightarrow\exists x\,A^\flat$;
+\item $A^\flat\leftrightarrow A$ for every formula $A$ without constants.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(1) If $\operatorname{Zero}(w)$ and $A_w$, uniqueness in \cref{ctr:cor:cfzero} gives $w=z$,
+and transport gives $A_z$. Conversely $z$ is a witness. (2) Let $z$ be a variable free in
+neither side. By existence in \cref{ctr:cor:cfzero} and $\exists$-elimination it
+suffices to prove the equivalence under $\operatorname{Zero}(z)$. There,
+by (1), applied under the quantifier for $\forall x$ and $\exists x$ since $x$ is not $z$,
+both sides are equivalent to $(A\circ B)_z=A_z\circ B_z$, respectively to
+$\forall x\,A_z$ and $\exists x\,A_z$. (3) Here $A_z$ is $A$, and
+$\exists z\,(\operatorname{Zero}(z)\land A)\leftrightarrow A$ by existence.
+\end{proof}
+
+\begin{theorem}[Constant-free presentation]\label{ctr:thm:cfbridge}
+\leavevmode
+\begin{enumerate}
+\item If $\mathsf T_J^{\varnothing}\proves A$ then $\mathsf T_J\proves A$. If
+$\Gamma\proves A$ in $\mathsf T_J$ then $\Gamma^\flat\proves A^\flat$ in
+$\mathsf T_J^{\varnothing}$.
+\item $\mathsf T_J^{\varnothing}\proves A^\flat\leftrightarrow A$ for every formula $A$ of
+$\mathsf T_J^{\varnothing}$, and $\mathsf T_J\proves A^\flat\leftrightarrow A$ for every
+formula $A$ of $\mathsf T_J$. The graph of each numerical composite is $x=y$.
+\item With $\iota_\varnothing(A)\defeq A^\iota$ and
+$\kappa_\varnothing(B)\defeq(B^\kappa)^\flat$, where $\iota,\kappa$ are the translations of
+\cref{ctr:def:translations} for $\mathsf T_J$, the theory $\mathsf T_J^{\varnothing}$ is
+bi-interpretable with $\Teq$, and hence by \cref{base:thm:bridge} with $\Nat$ and with
+$\iPRA$, by interpretations whose domains are the whole numerical domain, whose equality is
+actual equality and whose numerical composites have the graph $x=y$. All these theories are
+equiconsistent.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(1) The first statement is \cref{ctr:lem:cfdown}. For the second take $z$ fresh. By
+\cref{ctr:lem:cfup}, $\Gamma_z,\operatorname{Zero}(z)\proves A_z$. Under
+$\operatorname{Zero}(z)$, \cref{ctr:lem:cfflat}(1) turns every formula of $\Gamma^\flat$ into
+the corresponding one of $\Gamma_z$ and $A_z$ into $A^\flat$. Hence
+$\Gamma^\flat,\operatorname{Zero}(z)\proves A^\flat$, and $\exists$-elimination on
+$\exists z\,\operatorname{Zero}(z)$ removes the hypothesis, since $z$ is free in neither
+$\Gamma^\flat$ nor $A^\flat$.
+
+(2) The first composite is \cref{ctr:lem:cfflat}(3). For the second, $\mathsf T_J$ proves
+$\operatorname{Zero}(z)\leftrightarrow z=0$ by \cref{ctr:cor:cfTJ}, so
+$A^\flat\leftrightarrow\exists z\,(z=0\land A_z)\leftrightarrow A$ by transport, since
+$A_z[0/z]$ is $A$. For a term $t$ of $\mathsf T_J$ the composite graph
+$\exists z\,(\operatorname{Zero}(z)\land y=t_z)$ is equivalent in $\mathsf T_J$ to $y=t$ in
+the same way, and a term without constants is mapped to itself by the inclusion and has the
+graph $\exists z\,(\operatorname{Zero}(z)\land y=t)$, equivalent to $y=t$ by
+\cref{ctr:lem:cfflat}(3).
+
+(3) By (1) and \cref{ctr:thm:transfer}(1), $\mathsf T_J^{\varnothing}\proves A$ implies
+$\Teq\proves A^\iota$, and $\Teq\proves B$ implies $\mathsf T_J\proves B^\kappa$ and
+$\mathsf T_J^{\varnothing}\proves(B^\kappa)^\flat$. For a formula $A$ of
+$\mathsf T_J^{\varnothing}$, \cref{ctr:thm:transfer}(3) gives
+$\mathsf T_J\proves A^{\iota\kappa}\leftrightarrow A$; by (1) and \cref{ctr:lem:cfflat}(2)
+the theory $\mathsf T_J^{\varnothing}$ proves $(A^{\iota\kappa})^\flat\leftrightarrow A^\flat$,
+and $A^\flat\leftrightarrow A$ by (2). For a formula $B$ of $\Teq$, (2) gives
+$\mathsf T_J\proves(B^\kappa)^\flat\leftrightarrow B^\kappa$; by
+\cref{ctr:thm:transfer}(1), since $\iota$ commutes with the connectives,
+$\Teq\proves((B^\kappa)^\flat)^\iota\leftrightarrow B^{\kappa\iota}$, and
+$B^{\kappa\iota}\leftrightarrow B$ by \cref{ctr:thm:transfer}(3). The four translations fix
+the domain, equality and the variables, so the numerical composites have the graph $x=y$,
+by (2) and \cref{ctr:thm:transfer}(2). Both translations preserve derivability and map
+$\bot$ to $\bot$ up to provable equivalence ($\bot^\iota=\bot$ and
+$\bot^\flat\leftrightarrow\bot$), so a derivation of $\bot$ in one theory yields one in the
+other.
+\end{proof}
+
+\begin{remark}[The direct proof of the package]
+\pkg{constantfree} proves \cref{ctr:thm:cfbridge}(3) against $\iPRA$ directly. A body is
+interpreted by the primitive recursive function $j_h$ with $j_h(0,\vec p)=1$ and
+$j_h(n+1,\vec p)=C(e,\,j_h(n,\vec p)+1,\,p(e))$, $e=h(n,j_h(n,\vec p),\vec p)$; in $\iPRA$
+the defining equations give $\mathsf K(1)=2$ and $J(1;i,r.r)=0$, one induction on an
+equation gives $\mathsf U(t)=1$ and $\mathsf Z(t)=0$, and a second gives $\mathsf S(n)=n+1$,
+before the anchored schemas are verified. In the other direction it adds a constant $c$
+with $c=\mathsf Z(c)$, which is a conservative definitional extension by
+\cref{ctr:cor:cfzero}, compiles primitive recursion at the anchor $c$, and removes $c$ by
+the translation $\flat$. \Cref{ctr:lem:cfup} is the same argument with $c$ kept as a
+variable $z$. The two routes give the same maps up to provable equality, by
+\cref{ctr:lem:unique} in $\Teq$ and \cref{ctr:lem:cfext} in $\mathsf T_J^{\varnothing}$. The
+package presents the bi-interpretation as a written proof, with an independent written
+audit; it is not formalized.
+\end{remark}
+
+\subsection{Sizes of the constant terms}
+
+Let the terms of \cref{ctr:def:cfterms} denote functions of their free variables on the
+natural numbers: $J(n;i,r.h)$ is $r_n$, where $r_0=1$, and $r_{m+1}=r_m+1$ if
+$h(m,r_m)=0$ and $r_{m+1}=h(m,r_m)-1$ otherwise. This is the standard model of
+$\mathsf T_J$, so by \cref{ctr:lem:cfdown} it satisfies $\mathsf T_J^{\varnothing}$.
+
+\begin{proposition}[Sharp sizes]\label{ctr:prop:cfsize}
+Count occurrences of $J$ in fully expanded terms. A term that denotes the constant function
+$1$ has at least two occurrences, and a term that denotes the constant function $0$ has at
+least three. The terms $\mathsf U(x)$ and $\mathsf Z(x)$ attain these bounds.
+\end{proposition}
+\begin{proof}
+A term without $J$ is a variable and is not constant. A term with exactly one $J$ is
+$J(x;i,r.v)$ with $x$ a free variable and $v$ a variable. It takes the value $1$ at $x=0$.
+It also takes the value $0$: if $v$ is $r$, at $x=1$ the instruction $r_0=1$ loads $0$; if
+$v$ is $i$, at $x=2$ the instructions $0$ and $1$ increment to $2$ and then load $0$; if
+$v$ is free, possibly $x$ itself, at $x=v=1$ the instruction $1$ loads $0$. Hence no term
+with at most one $J$ is constant, and every such term takes the value $0$ at some valuation.
+
+A term with exactly two occurrences is $J(n;i,r.h)$ with $n$ a variable or a term with one
+occurrence. The counter $n$ is outside the binder, so its free variables are free in the
+whole term, and by the preceding paragraph some valuation makes $n=0$. There the term takes
+the value $1$, whatever $h$ is. A term with at most two occurrences therefore takes the
+value $1$ somewhere and is not constantly $0$.
+
+$\mathsf U(x)$ has two occurrences and $\mathsf Z(x)$ three, and by \cref{ctr:cor:cfTJ} they
+denote $1$ and $0$.
+\end{proof}
+
+The bound concerns raw term size only. It is not a bound on the size of an axiomatization or
+of a checker.
+
+\subsection{The reference checker}
+
+The checker of \pkg{constantfree} is a standalone program for $\mathsf T_J^{\varnothing}$ in
+ordinary logic. Its numerical term tags are a variable and $J$ with a counter, two bound
+names and a body; zero and the successor are expanded raw terms. The input is a JSON object
+with a closed goal and a proof tree in which every node states its conclusion. Every
+arithmetic instance names its anchor, which is checked to be in scope; the anchor of an
+induction may not depend on its eigenvariable, and the invariant must be a literal
+equation. The biconditional \eqref{ctr:eq:aSTEP} is expanded into a conjunction of
+implications, so increments and loads are checked by logical rules and not by evaluation.
+\eqref{ctr:eq:param} is a primitive instruction. Four certificates are supplied:
+$\forall a\,\forall t\ \mathsf U(t)=\mathsf S(\mathsf Z(a))$,
+$\forall a\,\forall t\ \mathsf Z(t)=\mathsf Z(a)$, $\exists z\,(z=\mathsf Z(z))$, which uses
+\eqref{ctr:eq:param}, and
+$\forall x\,\forall y\,((x=\mathsf Z(x)\land y=\mathsf Z(y))\to x=y)$. The validation runs
+$19$ certificate cases in ordinary and optimized Python, $38$ executions, including the
+purely logical theorem $\exists x\,(x=x)$ and fourteen rejected variants (an escaping
+anchor, an anchor depending on the induction variable, a zero constructor, induction on a
+conjunction, malformed input), and $6$ checks of capture-avoiding substitution. These are
+finite evidence for the implementation. The compact refinements shipped in the same package
+concern the scalar kernel and are treated with the certificate checkers.
+
 \section{The seeded recursor: unrestricted calculi and six rules}\label{ctr:sec:six}
 
 This section draws on \pkg{canonical\_recursors}.
@@ -1329,10 +1811,11 @@ For every formula $B$ and term $t$ the rule ``from $\Gamma,B(t,0)\proves B(t,\Su
 $\D{x}{y}B(x,y)$'' is admissible in $\mathcal K_5$.
 \end{lemma}
 \begin{proof}
-The only instance that is not primitive has an equation matrix $E$ and the witness $0$. Use
-the witness $c$. Under $E(c,0)$, the theorem $c=0$ and \cref{ctr:lem:fiveeq} give $E(0,0)$;
-cut with the supplied branch gives $E(0,\Suc z)$; transport back gives $E(c,\Suc z)$. Rule
-(I) at the witness $c$ is in case mode and proves the original goal.
+This is the repair of \cref{claus:lem:cases}, at the second name $c=\operatorname{wr}(0)$
+of zero. The only instance that is not primitive has an equation matrix $E$ and the witness
+$0$. Under $E(c,0)$, the theorem $c=0$ and \cref{ctr:lem:fiveeq} give $E(0,0)$; cut with the
+supplied branch gives $E(0,\Suc z)$; transport back gives $E(c,\Suc z)$. Rule (I) at the
+witness $c$ is in case mode and proves the original goal.
 \end{proof}
 
 \begin{lemma}[Transport in every formula]\label{ctr:lem:fivetransport}
@@ -1340,12 +1823,9 @@ For every template $F(v)$, from $s=t$ and $F(s)$ one derives $F(t)$ in $\mathcal
 arbitrary retained clauses.
 \end{lemma}
 \begin{proof}
-Induct on the template. Equations are \cref{ctr:lem:fiveeq}. For
-$F(v)=\D{x}{y}B(v,x,y)$, eliminate $F(s)$ at a fresh $b$, which retains the clause
-$[B(s,b,0);\,y.\,B(s,b,y)]$. Introduce the target by \cref{ctr:lem:fivecase} at the witness
-$b$: convert the local $B(t,b,0)$ to $B(s,b,0)$ by symmetry and the induction hypothesis,
-apply (U) at $\Suc z$, and convert $B(s,b,\Suc z)$ to $B(t,b,\Suc z)$. The recursion uses
-only the smaller matrix.
+The proof of \cref{claus:lem:ftransport}, with rules (E) and (U) for \rulename{Elim} and
+\rulename{Use}, and \cref{ctr:lem:fiveeq,ctr:lem:fivecase} for
+\cref{claus:lem:eq,claus:lem:cases}.
 \end{proof}
 
 \subsection{Closure as an abbreviation}
@@ -1365,12 +1845,10 @@ derivable.
 \end{enumerate}
 \end{lemma}
 \begin{proof}
-(1) is \cref{ctr:lem:fivecase} with an unused witness. (2) Eliminate the paired formula, use
-the opened clause at $t$, and close the elimination. (3) Under the assumption $B(0)$ of the
-case introduction use the clause at $\Suc z$. (4) Rule (I) at the witness $0$ with an unused
-witness coordinate is in progress mode. With (2) this gives induction, and (1) with (2)
-gives numerical cases. For progress at a witness $t$, form $q_yE(t,y)$ by progress, and under
-the base $E(t,0)$ specialize it at $\Suc z$ and introduce by cases at $t$.
+Items (1)--(3) and the first part of (4) are \cref{claus:lem:closure}, and the derived rules
+of (4) are \cref{claus:cor:induction}; their proofs use only (E), (U), (I) and
+\cref{ctr:lem:fivecase}, which here play the parts of \rulename{Elim}, \rulename{Use},
+\rulename{Intro} and \cref{claus:lem:cases}.
 \end{proof}
 
 Items (1)--(3) are introduction, elimination and eta expansion of a closure resource. The
@@ -1417,10 +1895,10 @@ on an opened clause is ordinary \rulename{QE}, which $\mathcal K_6$ derives
 is (DE), and (I) is (WI). Induction on the derivation gives the claim.
 \end{proof}
 
-A clause $[A;\,y.\,B]$ supplied from outside, which is neither constant nor opened by (E),
-can be interpreted by the formula for $A\to\forall y\,B(y)$ built from the logical macros;
-(U) is then implication elimination followed by universal elimination. A checker for closed
-certificates needs no such clause.
+The two directions are those of \cref{claus:thm:five}(ii) and (i), with $\mathcal K_6$ in
+the place of $\Nat$. A clause supplied from outside, which is neither constant nor opened by
+(E), is treated as in \cref{claus:rem:external}; a checker for closed certificates needs no
+such clause.
 
 \begin{theorem}[Both composites]\label{ctr:thm:fivecomp}
 $T(U(F))=F$ literally for every formula $F$ of $\mathcal K_5$, and
@@ -1526,19 +2004,17 @@ uniformly in $x,y$, then so are $\D{x}{y}B$ and $\D{x}{y}B'$.
 $\operatorname{wr}$: to reverse $s=t$ apply \rulename{Tr} to the major $0=0$ and the
 constant template.
 
-(2), (3) For an unused coordinate $w$ write $q_yA\defeq\D{w}{y}A(y)$. \rulename{Case}
-introduces $q_yF$ from $\Gamma\proves F(\Suc z)$, ignoring the assumed base, and
-\rulename{Prog} introduces $q_yE$ from the step. \rulename{DE} opens the clause
-$[A(0);\,y.\,A(y)]$, the given base proves its antecedent, and \rulename{Use} at $t$
-finishes.
+(2), (3) are \cref{claus:cor:induction}, with \rulename{Case} for \cref{claus:lem:cases}
+and \rulename{Prog} at the witness $0$ for the progress closure: for an unused coordinate $w$
+and $q_yA\defeq\D{w}{y}A(y)$, \rulename{Case} introduces $q_yF$ from
+$\Gamma\proves F(\Suc z)$, ignoring the assumed base, \rulename{Prog} introduces $q_yE$
+from the step, and \rulename{DE} and \rulename{Use} at $t$ with the given base finish.
 
-(4) Induct on the template; equations are (1). For $F(v)=\D{x}{y}B(v,x,y)$, open $F(s)$ at
-a fresh $b$, which retains $[B(s,b,0);\,y.\,B(s,b,y)]$. Introduce $F(t)$ by \rulename{Case}
-at the witness $b$: convert the local assumption $B(t,b,0)$ backward along $s=t$ by the
-induction hypothesis, use the old clause at $\Suc z$, and convert the result forward to
-$B(t,b,\Suc z)$. Close \rulename{Case} and \rulename{DE}.
+(4) is \cref{claus:lem:ftransport}, with (1) for the equations and \rulename{Case} at the
+fresh witness.
 
-(5) The same construction with the two conversions given by the hypothesis.
+(5) The construction of (4) at the outer binder, with the two conversions given by the
+hypothesis.
 \end{proof}
 
 \subsection{The five patterns of counter evaluation}
@@ -1644,16 +2120,17 @@ The three structural operations do not change the literal-zero test of
 $[0=0;\,v.\,A]$ by the supplied proof of $A$ and discard the proof of its antecedent.
 
 The only instance of \rulename{Case} that is not an instance of \eqref{ctr:eq:CEDI} has an
-equation matrix $E$ and the witness $0$. Let $Z\defeq R(\Suc 0,0;i,u.0)$. It is not
-literally $0$, and \cref{ctr:thm:arith} proves $Z=0$. Under $E(Z,0)$, transport in the
-equation gives $E(0,0)$; cut with the premise gives $E(0,\Suc z)$; transport back gives
-$E(Z,\Suc z)$. \eqref{ctr:eq:CEDI} at the witness $Z$ is in case mode and concludes
-$\D{x}{y}E(x,y)$. Only transport in an equation is used, not transport through a binder.
+equation matrix $E$ and the witness $0$. It is repaired as in \cref{claus:lem:cases}, at
+the second name $Z\defeq R(\Suc 0,0;i,u.0)$ of zero, which is not literally $0$ and for
+which \cref{ctr:thm:arith} proves $Z=0$: under $E(Z,0)$, transport in the equation gives
+$E(0,0)$; cut with the premise gives $E(0,\Suc z)$; transport back gives $E(Z,\Suc z)$; and
+\eqref{ctr:eq:CEDI} at the witness $Z$ is in case mode. Only transport in an equation is
+used, not transport through a binder.
 
-For \rulename{Prog} at a witness $w$, introduce $\D{v}{y}E(w,y)$ with $v$ unused at the
-witness $0$; this is \eqref{ctr:eq:CEDI} in progress mode. \rulename{DE} opens
-$[E(w,0);\,y.\,E(w,y)]$. Under $E(w,0)$, \rulename{Use} gives $E(w,\Suc z)$, and
-\rulename{Case} at $w$ gives $\D{x}{y}E(x,y)$. Close \rulename{DE}.
+\rulename{Prog} at a witness $w$ is the third statement of \cref{claus:cor:induction}, with
+the same proof: \eqref{ctr:eq:CEDI} in progress mode at the witness $0$ of an unused
+coordinate gives $\D{v}{y}E(w,y)$, \rulename{DE} opens $[E(w,0);\,y.\,E(w,y)]$, and under
+$E(w,0)$ \rulename{Use} and \rulename{Case} at $w$ conclude.
 \end{proof}
 
 \begin{theorem}\label{ctr:thm:ceequiv}
@@ -1877,15 +2354,22 @@ the fixed clause
 \begin{equation}\label{ctr:eq:reflclause}
  \mathcal A\defeq[\,;\,y.\,y=y],
 \end{equation}
-which is the initial context of a closed proof. Reflexivity is thus an axiom clause; it has
-not been deleted without replacement. An ordinary assumption $F$ is $[\,;\,v.\,F]$. On
-iterator terms in full normal form, the two calculi are the clause calculi of the packages
-\pkg{witness\_discharge} and \pkg{inferred\_witness}, which are formalized as \Lean{WDPrf}
-(\Lean{wdprf\_iff\_nprf}) and \Lean{OCPrf} (\Lean{ocprf\_iff\_nprf}), with the normalizer
-\Lean{Tm.full}; the counter-aware forms below are not formalized. What the new syntax
-requires is proved here: the packets that carry transport use the decoder, and the repair of
-the introduction at the witness $0$ cannot use a closed term that is provably but not
-literally $0$, because normal terms have none.
+which is the initial context of a closed proof; it is the reflexivity clause $\mathcal R$ of
+\cref{claus:def:v}, and the convention is that of \cref{disch:lem:conventions}. Reflexivity
+is thus an axiom clause; it has not been deleted without replacement. An ordinary assumption
+$F$ is $[\,;\,v.\,F]$. On iterator terms in full normal form, the two calculi are the
+calculi $\mathcal W^{\mathcal R}$ and $\mathcal O^{\mathcal R}$ of \pkg{witness\_discharge}
+and \pkg{inferred\_witness}, treated with their Lean formalizations in
+\cref{disch:sec:name,disch:sec:inferred} (\cref{disch:thm:name,disch:thm:inferred}); the
+counter-aware forms below are not formalized. The arguments of that chapter are stated for
+calculi with the listed rules; apart from the packets, they use from the term syntax only
+the literal test for $0$, the endpoint identities of the selector and the coherence of
+normalization with substitution. On the normal terms of \cref{ctr:def:normal} these are
+\cref{ctr:lem:decoder} and \eqref{ctr:eq:SC}, so such arguments are cited and not repeated. What the new syntax requires
+is proved here: the packets that carry transport use the decoder, and the repair of the
+introduction at the witness $0$ cannot use a closed term that is provably but not literally
+$0$, because normal terms have none; the compound envelope of \cref{comp:lem:envelope} is
+used instead.
 
 \subsection{Use, Close and Name}
 
@@ -1912,10 +2396,12 @@ is permitted.
 \end{definition}
 
 There is no transport rule, no hypothesis rule apart from \rulename{Use}, no computation
-inference, no successor axiom and no separate induction rule. Weakening, exchange,
-contraction, injective renaming of parameters and cut of an ordinary assumption are
-admissible by induction on derivations; these operations preserve the test of
-\rulename{Close}.
+inference, no successor axiom and no separate induction rule. The rule \eqref{ctr:eq:name}
+is the rule \rulename{Name} of \cref{disch:sec:name} on the present normal terms, with the
+same soundness argument (\cref{disch:lem:name-sound}). Weakening, exchange, contraction,
+injective renaming of parameters and cut of an ordinary assumption are admissible by
+induction on derivations, as in \cref{disch:lem:structural}; these operations preserve the
+test of \rulename{Close}.
 
 \begin{lemma}[Elimination, closure and cases]\label{ctr:lem:nameelim}
 In $\mathcal K_{\mathrm{Name}}$:
@@ -1930,12 +2416,10 @@ one infers $\Gamma\proves A(t)$.
 \end{enumerate}
 \end{lemma}
 \begin{proof}
-(1) In \eqref{ctr:eq:name} take $t\equiv b$. The equality premise is $b=b$, from
-$\mathcal A$, and the export is literally $A$. (2) Introduce the unused witness at $1$,
-which is not literally $0$, so that \rulename{Close} is in case mode. For the elimination
-open the paired formula by (1); its clause is $[A(0);\,y.\,A(y)]$; use it with the supplied
-base at $t$. (3) Weaken the successor proof by the unused base assumption and compose the
-two steps of (2).
+(1) is the proof of \cref{disch:lem:name-elim}, with $\mathcal A$ for \rulename{Refl}: take
+$t\equiv b$ in \eqref{ctr:eq:name}. (2) and (3) are \cref{disch:lem:closure}, whose proof
+uses \rulename{Use}, the introduction at the unused witness $1$ (in case mode, since $1$ is
+not literally $0$), weakening, and (1) for a matrix with an unused witness coordinate.
 \end{proof}
 
 \begin{lemma}[Transport from one discharge]\label{ctr:lem:nametransport}
@@ -1958,10 +2442,10 @@ ignores the local assumption of \rulename{Close} and is valid in either mode, in
 $s\equiv 0$. Now apply \eqref{ctr:eq:name} with a fresh $b$. In the opened context the
 antecedent $0=0$ holds by $\mathcal A$; \rulename{Use} at $\Suc 1$ gives the equality
 premise $b=t$, and \rulename{Use} at $1$ gives the formula premise $h(b)=r$. The export is
-$h(t)=r$ by \eqref{ctr:eq:SC}; the passive data do not contain $b$.
-
-Symmetry is the case $h(w)=w$, $r\equiv s$ with the reflexive minor premise. Congruence
-uses a reflexive minor premise, and transitivity and the crossed form follow.
+$h(t)=r$ by \eqref{ctr:eq:SC}; the passive data do not contain $b$. This is the derivation
+of \cref{disch:thm:name-transport} with the packet above in place of that of
+\cref{disch:def:packet}. The remaining equality rules follow from this uncrossed transport
+and $\mathcal A$ by \cref{disch:lem:equality}.
 \end{proof}
 
 The argument is not circular: ordinary elimination, closure and numerical cases
@@ -1973,12 +2457,10 @@ From $s=t$ and $F(s)$ one derives $F(t)$ in $\mathcal K_{\mathrm{Name}}$, for ev
 template $F$.
 \end{lemma}
 \begin{proof}
-Induct on the number of paired binders. The atomic case is two applications of
-\cref{ctr:lem:nametransport}. For $F(v)=\D{x}{y}B(v,x,y)$, eliminate $F(s)$ at a fresh $c$
-and introduce $F(t)$ at the witness $c$, which is not literally $0$, so that
-\rulename{Close} is in case mode. Under $B(t,c,0)$ the induction hypothesis and symmetry
-give $B(s,c,0)$; use the old clause at $\Suc z$ and transport the result to
-$B(t,c,\Suc z)$.
+\Cref{disch:lem:formula}, whose hypotheses hold by
+\cref{ctr:lem:nameelim,ctr:lem:nametransport}: the atomic case is transport in an equation
+template, and at a paired binder the introduction is at a fresh parameter, which is not
+literally $0$, so that \rulename{Close} is in case mode.
 \end{proof}
 
 \begin{lemma}[The introduction at the witness $0$]\label{ctr:lem:envelope}
@@ -1989,21 +2471,18 @@ $\mathcal K_{\mathrm{Name}}$ for every matrix and witness, and so are \rulename{
 induction on literal equations.
 \end{lemma}
 \begin{proof}
-The interderivability is closure introduction and closure elimination at $1$
-(\cref{ctr:lem:nameelim}), without transport. Let $\Gamma,E(0,0)\proves E(0,\Suc z)$ be a
-case premise for an equation matrix at the witness $0$, the only instance of
-\rulename{Case} that \rulename{Close} does not provide. Consider the compound matrix
-$A(x,y)\defeq L(E(x,y))$. Unwrapping the base, applying the premise and wrapping the result
-gives $\Gamma,A(0,0)\proves A(0,\Suc z)$, and \rulename{Close} at the witness $0$ is in case
-mode because $A$ is compound; it proves $\D{x}{y}A$. Open this formula at a fresh $c$
-(\cref{ctr:lem:nameelim}). Introduce $\D{x}{y}E$ at the witness $c$, which is not literally
-$0$: wrap the assumption $E(c,0)$, use the opened clause at $\Suc z$, and unwrap. The
-conclusion does not contain $c$ and is exported.
-
-For \rulename{Prog} at a witness $t$, \rulename{Close} in progress mode at the witness $0$
-with a matrix independent of the witness coordinate gives $q_yE(t,y)$; under $E(t,0)$ its
-clause gives $E(t,\Suc z)$, and \rulename{Case} at $t$ concludes. Induction is the same
-closure used with a supplied base.
+The two literal identities are the endpoint equations of $C$ on normal forms
+(\cref{ctr:lem:decoder}). With them, $G_vE$ is a gate in the sense of
+\cref{comp:lem:envelope}, and the proof of that lemma gives $E\dashv\vdash L(E)$, with the
+closure rules of \cref{ctr:lem:nameelim}(2) in place of the closure by cases and
+\rulename{QE}, and $\mathcal A$ for the base $0=0$; no transport is used. The two
+unrestricted introductions are then \cref{disch:lem:repair}, whose hypotheses hold in
+$\mathcal K_{\mathrm{Name}}$ by \cref{ctr:lem:nameelim}(1): in the only instance of
+\rulename{Case} that \rulename{Close} does not provide, the compound matrix $L(E(x,y))$ is
+introduced at the witness $0$ in case mode, opened at a fresh $c$, and $\D{x}{y}E$ is
+introduced at the witness $c$, which is not literally $0$. Induction on literal equations is
+\rulename{Close} in progress mode at the witness $0$ of an unused coordinate, followed by the
+elimination of \cref{ctr:lem:nameelim}(2) with the supplied base.
 \end{proof}
 
 \begin{theorem}\label{ctr:thm:nameequiv}
@@ -2019,7 +2498,7 @@ is an instance of \rulename{Case} or \rulename{Prog}. For \eqref{ctr:eq:name}, a
 \rulename{DE}; in the opened context derive $F$ and $b=t$; transport in the template
 obtained from $F$ by replacing the free occurrences of $b$ by a new variable
 (\cref{ctr:lem:libderived}) gives $F\langle t/b\rangle$, which does not contain $b$; close
-\rulename{DE}.
+\rulename{DE}. This is the second half of the proof of \cref{disch:thm:name}.
 \end{proof}
 
 \subsection{Use, Introduce and Open with an inferred witness}
@@ -2036,8 +2515,9 @@ and the parameters of $B$, let $B_b(y)$ be the normalized instance $B(b,y)$ and
   b, & \text{otherwise.}
  \end{cases}
 \end{equation}
-The variable $b$ has to be the entire left side of the row at $1$; no search for a provable
-equality takes place. The rule is
+This is the selector $\rho_B$ of \cref{disch:def:selector} with the neutral antecedent
+$0=0$: the variable $b$ has to be the entire left side of the row at $1$, and no search for
+a provable equality takes place. The rule is
 \begin{equation}\label{ctr:eq:open}
  \infrule{\Gamma\proves\D{x}{y}B\qquad
           \Gamma,\ [B(\tau_B(b),0);\,y.\,B(\tau_B(b),y)]\proves A}
@@ -2048,14 +2528,10 @@ The branch is checked in the scope that contains $b$, also when the inferred ter
 $b$. The replacement of $b$ by $\tau_B(b)$ is simultaneous and occurs once.
 \end{definition}
 
-The rule \eqref{ctr:eq:open} is sound for the ordinary reading. Open the existential
-statement at $b$, which gives $B(b,0)\to\forall y\,B(b,y)$. If the probe succeeds,
-reflexivity supplies $B(b,0)$ and the instance at $1$ is $b=\tau_B(b)$; if it fails, this
-equation is $b=b$. Replacement of $b$ by an equal term converts the opened clause to the
-clause of the rule, and the branch gives $A$, which does not contain $b$.
-
-Weakening, injective renaming of parameters and cut of an ordinary assumption are
-admissible in $\mathcal K_{\mathrm{Open}}$ by induction on derivations; injective renaming
+The rule \eqref{ctr:eq:open} is the rule \rulename{Open} of \cref{disch:sec:inferred} on
+the present normal terms. It is sound for the ordinary reading by the proof of
+\cref{disch:prop:inferred-sound}, and weakening, injective renaming of parameters and cut of
+an ordinary assumption are admissible by \cref{disch:lem:structural}; injective renaming
 preserves the literal tests.
 
 \begin{lemma}[Safe openings and the repair of cases]\label{ctr:lem:safe}
@@ -2069,13 +2545,11 @@ $\tau_B(b)\equiv b$ and \eqref{ctr:eq:open} is the ordinary elimination \rulenam
 None of these uses a substitution theorem or an equality rule.
 \end{lemma}
 \begin{proof}
-(1) If $x$ is unused, the row at $1$ does not contain the fresh $b$, so its left side is not
-$b$. If the root of $B$ is compound, the row at $0$ is compound and is not $0=0$. (2)
-Introduce $q_yA$ at the unused witness $1$, in case mode; its opening is safe by (1). (3)
-The construction of \cref{ctr:lem:envelope} applies: the interderivability of $E$ and
-$L(E)$ uses closures only, the formula $\D{x}{y}L(E(x,y))$ has a compound matrix and is
-opened safely at a fresh $c$, and the final introduction at the witness $c$ is in case
-mode.
+(1) is \cref{disch:lem:selector}(b): if $x$ is unused, the row at $1$ does not contain the
+fresh $b$; if the root of $B$ is compound, the row at $0$ is compound and is not $0=0$.
+(2) and (3) follow as in \cref{disch:lem:fallback}: \cref{disch:lem:closure} and
+\cref{disch:lem:repair}, in the form of \cref{ctr:lem:envelope}, require the ordinary
+elimination only for the two kinds of matrices of (1).
 \end{proof}
 
 \begin{lemma}[Substitution]\label{ctr:lem:opensubst}
@@ -2084,23 +2558,15 @@ $\Gamma\langle\sigma\rangle\proves A\langle\sigma\rangle$ for every simultaneous
 substitution $\sigma$.
 \end{lemma}
 \begin{proof}
-Use induction on the original derivation, with the assertion quantified over all
-substitutions, after freshening the eigenparameters away from the images of $\sigma$.
-\rulename{Use} follows from \eqref{ctr:eq:SC}. An introduction in progress mode remains in
-progress mode. An introduction in case mode remains a case introduction unless its witness
-becomes $0$ under an equation matrix; then use \cref{ctr:lem:safe}(3).
-
-At an instance of \eqref{ctr:eq:open} let $B'$ be the normalized instance of $B$ under
-$\sigma$ and $\tau'=\tau_{B'}(b)$. If the old probe succeeded at $r$, its rows $0=0$ and
-$b=r$ remain rows of this form under $\sigma$ with $b$ fixed, so the new probe succeeds at
-$r\langle\sigma\rangle$, and the induction hypothesis for the branch with $b$ fixed gives
-the new branch. If the old probe failed, the old branch has the clause at $b$, and the new
-probe may succeed. Apply the induction hypothesis to the original branch with the
-substitution that extends $\sigma$ by $b\mapsto\tau'$. It produces exactly the new opened
-clause; the context and the conclusion did not contain $b$ and are not affected by the
-extra component; and an inserted image is not substituted into again. The induction is on
-a proper subderivation of the original derivation, so no transformed and possibly larger
-proof is used circularly.
+The proof of \cref{disch:thm:subst} applies without change, with \eqref{ctr:eq:SC} in place
+of the coherence of normalization with substitution on iterator terms, \cref{ctr:lem:safe}(3)
+for a case introduction whose witness becomes $0$ under an equation matrix, and the
+preservation of a successful probe under a substitution that fixes $b$
+(\cref{disch:lem:selector}(c), whose proof uses only that coherence). As there, a failed
+probe is not stable under substitution, and in that case the induction hypothesis is applied
+to the original branch with the substitution that extends $\sigma$ by $b\mapsto\tau_{B'}(b)$,
+$B'$ the normalized instance of $B$ under $\sigma$; the induction is on proper
+subderivations of the original derivation only.
 \end{proof}
 
 \begin{lemma}[Ordinary elimination, transport and induction]\label{ctr:lem:openrules}
@@ -2113,9 +2579,9 @@ symmetry, transitivity, congruence and transport in every formula template are d
 \end{enumerate}
 \end{lemma}
 \begin{proof}
-(1) Given a branch under the clause at $b$, apply \cref{ctr:lem:opensubst} to it with
-$b\mapsto\tau_B(b)$ and then \eqref{ctr:eq:open}; the context and the conclusion do not
-contain $b$. This is why the substitution lemma precedes unrestricted opening.
+(1) As in \cref{disch:cor:open-elim}: given a branch under the clause at $b$, apply
+\cref{ctr:lem:opensubst} to it with $b\mapsto\tau_B(b)$ and then \eqref{ctr:eq:open}; the
+context and the conclusion do not contain $b$.
 
 (2) Use the matrix
 \begin{equation}\label{ctr:eq:packet}
@@ -2129,17 +2595,21 @@ derivation ignores the local assumption of the introduction, so it is valid in e
 and proves $\D{x}{y}B$. Now \eqref{ctr:eq:open} infers the witness $t$: the row at $0$ is
 $0=0$ and the row at $1$ is $b=t$. The opened clause has the base $0=0$, which
 $\mathcal A$ proves, and \rulename{Use} at $\Suc 1$ gives $h(t)=r$, which is in the outer
-scope. The remaining statements follow as in
-\cref{ctr:lem:nametransport,ctr:lem:nameformula}, with (1) for the eliminations.
+scope. This is the derivation of \cref{disch:thm:open-transport} with the packet
+\eqref{ctr:eq:packet}. The remaining statements follow by
+\cref{disch:lem:equality,disch:lem:formula}, with (1) for the eliminations.
 
-(3) The introduction at the witness $0$ with an unused witness coordinate gives
-$q_yE(y)$ from $\Gamma,E(z)\proves E(\Suc z)$; its opening is safe, and \rulename{Use} with
-the base gives $E(t)$. \rulename{Prog} at a witness $t$ follows with \rulename{Case}.
+(3) is \cref{disch:lem:repair} (progress introduction) and \cref{claus:cor:induction}:
+the introduction at the witness $0$ with an unused witness coordinate gives $q_yE(y)$ from
+$\Gamma,E(z)\proves E(\Suc z)$, its opening is safe by \cref{ctr:lem:safe}(1), and
+\rulename{Use} with the base gives $E(t)$; \rulename{Prog} at a witness $t$ follows with
+\rulename{Case}.
 \end{proof}
 
 The decoder makes the packet \eqref{ctr:eq:packet} simpler than the packet of
-\cref{ctr:lem:nametransport} and than the parity packet of the calculus on iterator terms:
-one successor computation exposes the variable on which the numerical cases are taken.
+\cref{ctr:lem:nametransport} and than the parity packet of \cref{disch:def:packet} on
+iterator terms: one successor computation exposes the variable on which the numerical cases
+are taken.
 
 \begin{theorem}\label{ctr:thm:openequiv}
 On normal terms, with $\mathcal A$ in every context, $\mathcal K_{\mathrm{Open}}$ and
@@ -2152,7 +2622,9 @@ Conversely the introduction is an instance of \rulename{Case} or \rulename{Prog}
 clause has the antecedent $0=0$, and \rulename{Use} at $1$ gives $b=r$. For a fresh $y$,
 \rulename{Use} gives $B(b,y)$ and transport along $b=r$ gives $B(r,y)$; hence the clause
 $[B(r,0);\,y.\,B(r,y)]$ of the branch can be cut (\cref{ctr:lem:libstruct}), and the branch
-gives $A$. With a failed probe the rule is \rulename{DE}.
+gives $A$. With a failed probe the rule is \rulename{DE}. The comparison of $\mathcal O$ with
+the reference calculus in \cref{disch:thm:open} is the same argument with the clause cut
+replaced by a closure.
 \end{proof}
 
 \subsection{The scalar normal forms embed exactly}
@@ -2511,7 +2983,11 @@ $F(n;v.h)$ with the standard interpretation
  F(0;v.h)=\Suc(h(0)),\qquad F(\Suc n;v.h)=h\bigl(F(n;v.h)\bigr),
 \]
 with arbitrary nesting and passive parameters, and no further operation. The successor may
-be taken as the abbreviation $F(0;v.a)$, $v\notin\FV(a)$.
+be taken as the abbreviation $F(0;v.a)$, $v\notin\FV(a)$. This is the unary-update variant
+$\mathsf F$ of the tied-seed language of \cref{obs:def:languages}(b), the instance
+$\mathsf B(n;u,v.h)$ with $u$ not in $h$. Its terms are almost unary by
+\cref{obs:cor:tied-seed}, which is no restriction on unary functions; the theorem below is a
+lower bound for unary terms and uses the finite-control invariant of \cref{obs:thm:fc}.
 
 \begin{theorem}[Unary terms of the self-seeded language]\label{ctr:thm:unary}
 For every term $t(n)$ of this language with one free variable there is a natural number $C$
@@ -2550,61 +3026,47 @@ $r(n)\ge n$. Increase the constant to cover the finitely many earlier arguments.
 \end{proof}
 
 \begin{proof}[Proof of \cref{ctr:thm:unary}]
-% ed.: the package strengthens a finite-control invariant that it cites from a reference file; the invariant is stated explicitly here, with features of all coordinates, and the composition step is written out.
-Say that a function $g\colon\mathbb N^k\to\mathbb N$, $k\ge 1$, has \emph{finite-control
-form} if there are a coordinate $j$, maps $\beta_l$ from $\mathbb N$ into finite sets for
-$l=1,\dots,k$, and functions $T_e\in\mathcal U$ indexed by the tuples
-$e$ of feature values, such that
-\[
- g(x_1,\dots,x_k)=T_{(\beta_1(x_1),\dots,\beta_k(x_k))}(x_j).
-\]
-The coordinate $j$ is called active. More generally the index may be any function of the
-feature values, and dummy coordinates may be added. A unary function of this form is a
-pointwise selection from finitely many members of $\mathcal U$ and belongs to $\mathcal U$ by
-\cref{ctr:lem:Uclosure}. It therefore suffices to show that every term, as a function of any
-nonempty list of variables that contains its free variables, has finite-control form.
+% ed.: the package strengthens a finite-control invariant that it cites from a reference file; the invariant is that of obs:def:fc with profiles in U, and the steps that coincide with obs:lem:fc-comp and obs:thm:fc are cited.
+Say that a function $g\colon\mathbb N^k\to\mathbb N$, $k\ge 1$, has \emph{$\mathcal U$-control}
+if it has finite control in the sense of \cref{obs:def:fc} with every profile in
+$\mathcal U$. A finite-valued feature of the active coordinate may be added to the index:
+for fixed features of the other coordinates the function is then a pointwise selection from
+finitely many profiles, which belongs to $\mathcal U$ by \cref{ctr:lem:Uclosure}. A unary
+function with $\mathcal U$-control is its own profile and belongs to $\mathcal U$. It
+therefore suffices to show that every term, as a function of any nonempty list of variables
+that contains its free variables, has $\mathcal U$-control.
 
-\emph{Composition.} Let $g(m,\vec x)$ and $n(\vec x)$ have finite-control form, say
-$g(m,\vec x)=T_{(\beta(\vec x),\beta_m(m))}(y)$ with $y$ the active coordinate of $g$, and
-$n(\vec x)=N_{\gamma(\vec x)}(x_{j'})$. Then $g(n(\vec x),\vec x)$ has finite-control form.
-Indeed the value $\beta_m(n(\vec x))=\beta_m(N_{\gamma(\vec x)}(x_{j'}))$ is determined by
-$\gamma(\vec x)$ and by the feature
-$x_{j'}\mapsto(\beta_m(N_c(x_{j'})))_c$, which has finitely many values because $c$ ranges
-over a finite set. If $y$ is a coordinate $x_j$, the value is
-$T_{(\beta(\vec x),\beta_m(n(\vec x)))}(x_j)$ with an index determined by features of the
-individual coordinates. If $y$ is $m$, the value is
-$(T_{(b,f)}\circ N_c)(x_{j'})$ with $b=\beta(\vec x)$, $c=\gamma(\vec x)$ and
-$f=\beta_m(n(\vec x))$; the compositions belong to $\mathcal U$ by
-\cref{ctr:lem:Uclosure}, and the index is again determined by features of the coordinates.
+\emph{Composition.} Functions with $\mathcal U$-control are closed under composition. The
+proof of \cref{obs:lem:fc-comp}(ii) shows that the composite has finite control, and that
+for fixed combined controls its profile is $x_k\mapsto F_{a(x_k)}(G(x_k))$, where $G$ is a
+profile of the inner function, the $F_a$ are profiles of the outer function, and the index
+$a(x_k)$ ranges over finitely many values determined by finite features of $x_k$
+(\cref{obs:lem:fc-comp}(i)). This profile is a pointwise selection from finitely many
+compositions $F_a\circ G$ of members of $\mathcal U$, and belongs to $\mathcal U$ by
+\cref{ctr:lem:Uclosure}.
 
 \emph{Induction on terms.} Variables, $0$ and successors are immediate, the last by
 composition with the successor. For $F(n;v.h)$ first replace the counter by a fresh
-variable $m$. By the induction hypothesis
-$h(v,\vec x)=H_{(\beta_v(v),\beta(\vec x))}(y)$ with $y$ active.
+variable $m$. By the induction hypothesis $h(v,\vec x)$ has $\mathcal U$-control with an
+active coordinate $y$; write $c=\beta(\vec x)$ for the features of the passive coordinates
+other than $y$ and $\beta_v$ for the feature of $v$ when $v$ is not active.
 
-If $y$ is the state $v$, fix the features $c=\beta(\vec x)$. The update
-$h_c(v)=H_{(\beta_v(v),c)}(v)$ belongs to $\mathcal U$, and by \cref{ctr:lem:orbit} so does
-its orbit $r_c$. Then $F(m;v.h)=r_{\beta(\vec x)}(m)$ has finite-control form with the
-counter active.
+If $y$ is the state $v$, fix $c$. The update $h_c(v)=H_c(v)$ is a profile and belongs to
+$\mathcal U$, and by \cref{ctr:lem:orbit} so does its orbit $r_c$. Then
+$F(m;v.h)=r_{\beta(\vec x)}(m)$ has $\mathcal U$-control with the counter active.
 
-If $y$ is a passive parameter $p$, form the finite catalogue of the functions
-$V_k(p)$ of $p$ consisting of all update profiles $H_{(b,c)}(p)$ and all initial profiles
-$1+H_{(b,c)}(p)$; every member belongs to $\mathcal U$. For fixed $\vec x$ every state of
-the orbit is a catalogue value at $p$: the initial state is $1+H_{(\beta_v(0),c)}(p)$ and
-the state after a state $w$ is $H_{(\beta_v(w),c)}(p)$, with $c=\beta(\vec x)$. The
-finite-valued feature
+If $y$ is a passive parameter $p$, the catalogue argument of the third case of the proof of
+\cref{obs:thm:fc} applies to $F(m;v.h)=\mathsf B(m;u,v.h)$, with the old counter $u$
+absent, so that no feature of the counter enters the transitions. The catalogue consists of
+the update profiles $H_{(b,c)}(p)$ and the initial profiles $1+H_{(\beta_v(0),c)}(p)$; it
+yields
 \[
- \kappa(p)=\bigl(\beta_v(V_k(p))\bigr)_k
+ F(m;v.h)=V_{\eta(m)_{\beta(\vec x),\kappa(p)}}(p),\qquad
+ \kappa(p)=\bigl(\beta_v(V_k(p))\bigr)_k,
 \]
-determines, together with $c$, every transition of the catalogue indices. For each pair
-$(c,\kappa)$ let $\theta_{c,\kappa}(m)$ be the index reached by this finite-state process
-after $m$ updates, and pack these finitely many processes into the finite-valued feature
-$\eta(m)=(\theta_{c,\kappa}(m))_{c,\kappa}$ of the counter. Then
-\[
- F(m;v.h)=V_{\eta(m)_{\beta(\vec x),\kappa(p)}}(p),
-\]
-which is finite-control form with $p$ active. The argument uses only the displayed finite
-observations and no test of numerical equality.
+with a finite-valued feature $\eta$ of the counter and with every catalogue function $V_k$
+in $\mathcal U$ by \cref{ctr:lem:Uclosure}. This is $\mathcal U$-control with $p$ active.
+The argument uses only finite observations and no test of numerical equality.
 
 Finally substitute the actual counter term $n$ for $m$ by the composition step. This
 completes the induction and proves the bound. For the predecessor choose $n>C+1$: its
@@ -2614,9 +3076,12 @@ value exceeds $C$ and is less than $n$. Halving fails at every $n>2C+1$.
 \begin{remark}
 The theorem concerns definitions by terms under the standard interpretation. It is not an
 obstruction to interpretations by graphs or on changed domains. The counter-aware tied-seed
-language of the package \pkg{local\_scopes} has a finite-control obstruction of its own but
-defines the predecessor; the unary bound is specific to removing the access to the old
-counter together with the independent initializer.
+language of the package \pkg{local\_scopes} has the finite-control obstruction of
+\cref{obs:thm:fc} but defines the predecessor (\cref{obs:lem:Bterms}); the unary bound is
+specific to removing the access to the old counter together with the independent
+initializer. The majorant obstructions of \cref{obs:thm:single-body,obs:cor:tied-seed}
+bound terms from above by a function of one coordinate and say nothing about unary terms;
+the theorem above is a dichotomy for unary terms, which they do not give.
 \end{remark}
 
 \subsection{The two computation equations of the iterator are independent}
@@ -2784,6 +3249,16 @@ are valid in the same model, so the native rules do not evade the counterexample
 construction does not show that $\mathsf T_0$ has no interpretation of arithmetic on a
 quotient or on a changed domain (\cref{ctr:sec:questions}).
 
+\begin{remark}
+\Cref{ctr:thm:zeroind,ctr:cor:noreflection} are term-level model constructions for a
+restricted induction rule; the obstructions of \cref{obs:sec:profiles} concern
+term-definability, and the nonstandard model of \cref{obs:sec:progress-independence}
+concerns the deletion of the progress rule, not its restriction to zero equations; neither
+contains them. The model above refutes the rule of
+successor uniqueness of the package \pkg{orbit\_closure}, as recorded in
+\cref{kern:rem:sugap}, and therefore does not decide \cref{kern:q:su}.
+\end{remark}
+
 \subsection{The last computation rule}
 
 \begin{proposition}\label{ctr:prop:norule}
@@ -2811,7 +3286,8 @@ needs five rules.
 
 This section draws on the measurements stated by \pkg{register\_graph},
 \pkg{canonical\_recursors}, \pkg{clausal\_canonical}, \pkg{counter\_evaluation},
-\pkg{uniform\_binding}, \pkg{uniform\_recursion} and \pkg{single\_constructor}.
+\pkg{uniform\_binding}, \pkg{uniform\_recursion}, \pkg{single\_constructor} and
+\pkg{constantfree}.
 
 Each row is a complete standalone module in the sense of \cref{base:sec:measure}: imports,
 JSON decoding, validation of syntax and scope, normalization, substitution, every rule and
@@ -2881,6 +3357,10 @@ Compact control with a different contract$^\dagger$ & 267 & 302 & 508 & other\\
 \multicolumn{5}{@{}l}{\pkg{single\_constructor}}\\
 $\mathcal K_{\mathrm{Open}}$ & 683 & 764 & 1965 & new\\
 Iterator terms with inferred opening & 683 & 771 & 1990 & control\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{constantfree}}\\
+Reference checker for $\mathsf T_J^{\varnothing}$ & 3072 & 3349 & 13723 & new\\
+Reference checker for $\mathsf T_J$, as measured by \pkg{constantfree} & 2811 & 3054 & 12626 & control\\
 \end{longtable}
 
 The comparisons that isolate a change of calculus are those against a matched control. The
@@ -2896,21 +3376,29 @@ is $46$ bytes, $6$ tokens and $9$ nodes below the matched scalar control and $45
 $48$ tokens and $62$ nodes below the exact incoming checker. The checker for
 $\mathcal K_{\mathrm{Name}}$ is $33$ bytes, one token and $10$ nodes below its control, and
 the checker for $\mathcal K_{\mathrm{Open}}$ is $25$ bytes and $7$ nodes below its control
-with the same token count. Compressed sizes are reported by the packages as supplementary
+with the same token count. The checker for $\mathsf T_J^{\varnothing}$ is $261$ tokens, $295$
+nodes and $1097$ bytes above its control: removing the constant enlarges this
+implementation, through the construction of the expanded terms, the checks of anchors and
+the scoped rule \eqref{ctr:eq:param}. The control is the reference checker of
+\pkg{register\_graph}, but the figures that \pkg{constantfree} measures for it differ from
+the figures $2814$, $3060$, $13633$ that \pkg{register\_graph} states; the packages do not
+reconcile the two measurements. Compressed sizes are reported by the packages as supplementary
 data and are not an optimization target; they are omitted here.
 
 \section{Further questions}\label{ctr:sec:questions}
 
 This section draws on \pkg{register\_graph}, \pkg{canonical\_recursors},
 \pkg{clausal\_canonical}, \pkg{counter\_evaluation}, \pkg{uniform\_binding},
-\pkg{uniform\_recursion} and \pkg{single\_constructor}. It collects their open questions,
+\pkg{uniform\_recursion}, \pkg{single\_constructor} and \pkg{constantfree}. It collects their open questions,
 the claims that they state without proof, and what they report as not achieved.
 
 \paragraph{Status of formalization.}
 None of the calculi and term languages of this chapter is formalized in Lean or Rocq. The
-theorems of \cref{ctr:sec:terms,ctr:sec:counter,ctr:sec:bridge,ctr:sec:six,ctr:sec:five,ctr:sec:ce,ctr:sec:three,ctr:sec:bounds}
+theorems of \cref{ctr:sec:terms,ctr:sec:counter,ctr:sec:bridge,ctr:sec:constfree,ctr:sec:six,ctr:sec:five,ctr:sec:ce,ctr:sec:three,ctr:sec:bounds}
 are written proofs, and the executable tests of the packages are finite evidence for the
-implementations. The formalized results named in \cref{ctr:sec:six,ctr:sec:three} concern
+implementations. The four certificates of \pkg{constantfree} for
+\cref{ctr:lem:cfconst,ctr:cor:cfzero} are checked by its Python checker only. The formalized
+results named in \cref{ctr:sec:six,ctr:sec:three} concern
 iterator terms.
 
 \begin{question}[Formalization]
@@ -2952,6 +3440,32 @@ smaller complete checker after comparable implementations?
 Which parts of \eqref{ctr:eq:STEP} can be weakened while actual equality and the formula
 round trips on the whole domain are retained? \pkg{register\_graph} states without proof
 that one-sided operational membership and agreement on the standard model are insufficient.
+\pkg{constantfree} states in the same way, without proof, that replacing the biconditional
+of $\mathsf T_J^{\varnothing}$ by an unconditional evaluation equation gives a different
+theory, and asks whether fewer or cheaper inference patterns can supply both the
+computation and the coverage that the graph schema provides.
+\end{question}
+
+\begin{question}[The constant-free presentation]
+\begin{enumerate}
+\item Can the anchored schemas of \cref{ctr:def:TJ0} be compiled into a native calculus with
+$\Q{y}$ and $\D{x}{y}$, without a large selector, normalizer or second certificate
+language, and what is the size of the complete standalone checker, including validation of
+the public grammar?
+\item Can a certificate protocol recover the anchor of each arithmetic instance from a
+numerical parameter already in scope, instead of naming it? By
+\cref{ctr:prop:cfparam} an empty scope still needs \eqref{ctr:eq:param} or a definable
+constant.
+\item What is the least complete cost of eliminating the constant? \Cref{ctr:prop:cfsize}
+fixes the size of the zero term, but not the cost of the parser, the scoping discipline, the
+expansion of the abbreviations, the rules and the interpretation.
+\item Can \cref{ctr:thm:cfbridge}, in particular the equivalence with $\mathsf T_J$ and the
+definition of zero by $\operatorname{Zero}$, be formalized in Lean or Rocq? The register
+theory $\mathsf T_J$ itself is not among the formalized syntaxes, so that dependency has to
+be formalized as well.
+\item Is there one checker, for any presentation, below every coordinate of the currently
+observed compact minima, with its input contract and the theory it recognizes stated?
+\end{enumerate}
 \end{question}
 
 \begin{question}[Zero-equation induction]
@@ -3058,6 +3572,11 @@ rule can require that same goal as its premise.
 \item The translator of test fixtures of \pkg{uniform\_recursion} declines an inherited
 fixture whose witness becomes the literal $0$ under normalization; a direct proof of the
 same formula is supplied, and no universal executable proof compiler is claimed.
+\item Removing the constant reduces the numerical syntax and not the checker: the reference
+checker for $\mathsf T_J^{\varnothing}$ ($3072$ tokens, $3349$ nodes, $13723$ bytes) is
+larger in every coordinate than its control. No minimality of the axiomatization is
+claimed, \cref{ctr:prop:cfsize} is not a bound on checker size, and the measurement of the
+control differs from the one stated by \pkg{register\_graph} (\cref{ctr:sec:sizes}).
 \item Concrete limits of the interpreter on recursion depth and memory can reject a valid
 large certificate for every checker of the chapter; completeness is a statement about the
 calculi and about the checkers without such limits.

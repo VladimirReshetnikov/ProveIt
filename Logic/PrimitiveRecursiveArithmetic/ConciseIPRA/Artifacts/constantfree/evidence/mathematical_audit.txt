@@ -1,0 +1,131 @@
+Independent mathematical audit of constantfree_math.tex
+Date: 2026-11-12
+Reviewer role: math_breakthrough, independently of the author
+Scope: 543-line mathematical section, including the 2-J/3-J local bounds.
+
+Conclusion: no mathematical error found in the stated theorem or bounds.
+This is a written mathematical review, not formal proof-assistant verification.
+It does not establish a smaller complete proof checker.
+
+1. Anchors and the constant terms
+
+The theory is defined explicitly by CF0, CFstep, CFsep and CFEI for every
+anchor a. Consequently using 0_a=Z(a) while proving Z constant is not
+circular: these are the actual schemes of the new theory, and a separate
+iPRA interpretation later establishes their satisfiability and strength.
+
+Fixing a, K(0)=1 follows from CF0. At old counter 0, the increment branch
+gives K(1)=2. The equation U(n)=1 is progressive because its next
+instruction K(U(n)) is 2=S1 and therefore loads 1. One literal-equation
+induction gives U(t)=1. For B(n)=J(n;i,r.r), the first instruction is
+1=S0 and therefore B(1)=0. Hence Z(t)=B(U(t))=0_a. This proof uses no
+separation, predecessor, equality reflection or general PR compiler.
+
+2. Canonical zero and parameter discharge
+
+Z is internally constant on the entire domain. The formula x=Z(x) is
+inhabited by Z(a) for any arbitrary a and defines at most one element.
+The explicit Param rule is sound in nonempty-domain first-order logic and
+is necessary if the checker enforces a separate empty numerical scope.
+Adding c=Z(c) is thus an ordinary conservative definitional extension.
+No closed numerical term is falsely asserted to exist.
+
+3. Body extensionality and syntax aliases
+
+Literal-equation induction suffices to identify two J computations with
+equal initial values and pointwise equal instructions. The forward graph
+direction supplies a transition disjunct for the first actual output;
+transport and the reverse graph direction give that same output for the
+second. No successor injectivity is silently needed here.
+
+For a completely strict first-order exposition, derive substitution
+aliases by external induction on the substituted body syntax, using this
+extensionality lemma at the outer J. Ordinary substitution into function
+symbol arguments remains primitive first-order substitution. This is a
+clarification of the written proof, not a missing arithmetic axiom.
+
+4. Register bootstrap and primitive recursion
+
+All displayed equations check algebraically:
+q(0)=1, q(Sv)=0; W(0)=2, W(Sv)=v; D(0)=1, D(Sv)=Sv;
+p(0)=0, p(Sv)=v. Coverage follows from CFstep at f(1,v), not from
+induction or an unstated natural-number domain assumption. The G and C
+selector constructions return the claimed arbitrary numerical branches.
+
+The compiled primitive recursion uses only load instructions. At old
+counter 0 it loads b; at old counter Sn it loads h(n,r). Its displayed
+defining equations follow directly from CFstep and the proved selector
+and predecessor equations. No unproved pairing theorem is used.
+
+5. Actual equality reflection
+
+The residual equation C(d(x,y),x,y+d(x,y))=x has a valid equation-induction
+proof. In its nonzero successor case, coverage and p(Sv)=v identify
+r=S(r'), which reduces the old invariant to y+r=x and establishes the
+new branch. The implication d(Sa,b)=1 => a=b uses the already derived
+successor injectivity. The detector e(a,b)=q(W(d(Sa,b))) is Boolean and
+reflects actual equality. Therefore the Boolean formula translation
+correctly recovers all contextual quantifier-free induction.
+
+6. Both interpretations and their composites
+
+J_h translates to a fixed primitive-recursive operation for each finite
+body descriptor; no universal evaluator is asserted. Under this reading
+U=1, Z=0, and J(n;0)=n+1, validating the anchored axioms and induction.
+
+In the reverse direction, the unique definable zero allows the PR
+compiler to be applied in the conservative extension with c. The wrapper
+exists z (Zero(z) and A_z) is intuitionistically equivalent to the standard
+compositional interpretation by definable graphs, including for implication
+and universal quantification, because Zero is inhabited and unique.
+
+Operation round trips follow by external induction on finite descriptors
+and internal literal-equation induction. The numerical domains are whole,
+equality remains actual equality, and x=y is the graph of each composite
+isomorphism. No quotient equality, restricted cut, or merely standard-model
+equivalence has replaced the claimed bi-interpretation.
+
+7. The local size bounds
+
+The 2-J bound for constant one and 3-J bound for constant zero are valid
+for fully expanded terms under ordinary standard-number semantics. A
+one-J term has both a valuation giving 1 and a valuation giving 0. In a
+term with at most two J occurrences, the root counter is either a variable
+or a one-J term, hence can be made zero; the root then returns 1. Thus it
+cannot denote constant zero. U(x) and Z(x) attain the stated bounds.
+These bounds concern raw numerical term occurrences only, not an
+axiomatization metric or the repository's complete-checker frontier.
+
+Optional observation: once the anchor theorem is established, the unary
+operation S*(t)=J(t;i,r.Z(r)) is parameter-free and equals every S_a(t) by
+body extensionality. This does not change the present axioms or size claim.
+
+ADDENDUM: DEFINING S* FROM THE OUTSET
+
+The parent proposed taking S*(t)=J(t;i,r.Z(r)) as the successor macro
+in the original schemes, with z_a=Z(a), 1_a=S*(z_a), 2_a=S*(1_a).
+I independently checked this revision: it is valid and noncircular.
+
+Z is a raw finite term containing only J and variables; its definition
+does not use successor. Thus S* is also a finite raw term. CF0 and the
+revised graph give K(z_a)=1_a and K(1_a)=2_a. The equation U(n)=1_a
+is progressive for S* because its next instruction is 2_a=S*(1_a),
+which loads 1_a. Revised CFEI proves U(t)=1_a. B(1_a)=z_a follows
+from the load branch at z_a, and hence Z(t)=z_a follows as before.
+
+Body extensionality is then proved by equation induction using this
+same successor macro. Since Z(r)=Z(a) for all r, it proves
+J(t;i,r.Z(a))=J(t;i,r.Z(r))=S*(t). This recovers exactly the
+initialized register-graph interface used in the arithmetic bootstrap.
+The statement f(n,0)=Sn in that bootstrap is now justified by this
+extensionality lemma, rather than being a literal syntactic definition.
+
+For the iPRA interpretation, first prove U=1 and Z=0 directly from
+the ordinary primitive-recursive defining equations of J using ordinary
+successor and equation induction. Then S*=J(n;0)=n+1 follows. Only
+after those steps are the revised anchored axioms verified; no use of
+the target axioms is needed to establish their own validity.
+
+Proof certificates must use the revised raw S* expansions consistently.
+Old trees expanding S_a(t)=J(t;i,r.Z(a)) are extensionally equal but
+not syntactically identical to S* and must not silently replace them.
