@@ -7474,6 +7474,10 @@ trades degree for one operation, giving 13 natural inputs, 96 operations and
 exact specialized degree 50. Its local zero equivalence holds at every
 integer valuation and ports; the parent's calibration and endpoint
 qualifications remain inherited.
+The independently reviewed [C-fold unshifted-Y obstruction](research/ordinary13-natural96-unshift-y-obstruction/README.md)
+gives a zero with `Y=0` after deleting that shift, including at the
+authenticated ports. It rules out the local positivity argument and tested
+same-coordinate map, not global zero-existence equivalence.
 The separate reviewed [degree-56 residue-adjusted form](research/ordinary13-residue-first82/README.md)
 has 13 positive inputs and 82 operations. Its local comparison uses the stated
 compact44 port bounds and the sign-free decoder, without requiring the
