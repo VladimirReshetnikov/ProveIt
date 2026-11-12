@@ -7851,6 +7851,10 @@ The independently source-reviewed [narrow gamma draft](research/ordinary14-natur
 proposes fact-level Pell and gamma-zero contradictions under explicit
 hypotheses. The graph-to-hypothesis bindings, Lean elaboration and endpoint
 remain open; its axiom-report commands have not run.
+The independently source-reviewed [natural-80 J-positivity draft](research/ordinary14-natural80-jpos-model-draft/README.md)
+proposes deriving `J > 0` from an 80 zero and represented positive `K0`,
+without assuming positive beta or gamma. It and its dependencies have not
+been elaborated.
 The independently source-reviewed [natural-81 Lean transcription](research/ordinary14-natural-forcedj81-lean-draft/README.md)
 records its literal graph and product shape. Its source correspondence is
 checked externally; Lean semantics and endpoint equivalence remain open.
