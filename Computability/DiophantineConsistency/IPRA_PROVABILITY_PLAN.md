@@ -1271,6 +1271,10 @@ shared module; it does not certify that provider roots may be mixed. A
 source-reviewed [slim port-bounds helper](research/ordinary14-compact-port-bounds-slim-draft/README.md)
 copies the needed bounds lemma with narrower direct imports, but is not yet
 elaborated or substituted into the endpoint chain.
+The separately reviewed [isolated slim overlay](research/ordinary14-root78-slim-overlay/README.md)
+records the candidate substitutions in copies of the draft sources. It does
+not change the original clients or establish Lean name resolution, provider
+compatibility or a checked endpoint.
 The reviewed [parent-to-88 first-cut draft](research/ordinary14-parent-to-88-first-cut-draft/README.md)
 is now tracked as a dependency of the proposed parent witness; it remains
 unelaborated like the rest of that source chain.
