@@ -38,19 +38,11 @@ theorem ofN {Δ : List (NFm n)} {A : NFm n} (h : NPrf Δ A)
     exact hΔ B hB
 
 theorem ofN1 {A B : NFm n} (h : NPrf [A] B) (hA : Γ ⊢[TeqAx] A.toFm) : Γ ⊢[TeqAx] B.toFm :=
-  ofN h fun C hC => by
-    rw [List.mem_singleton] at hC
-    subst hC
-    exact hA
+  ofN h (by simpa using hA)
 
 theorem ofN2 {A A' B : NFm n} (h : NPrf [A, A'] B) (hA : Γ ⊢[TeqAx] A.toFm)
     (hA' : Γ ⊢[TeqAx] A'.toFm) : Γ ⊢[TeqAx] B.toFm :=
-  ofN h fun C hC => by
-    rcases List.mem_cons.1 hC with rfl | hC
-    · exact hA
-    · rw [List.mem_singleton] at hC
-      subst hC
-      exact hA'
+  ofN h (by simpa using ⟨hA, hA'⟩)
 
 /-- Interderivable native formulas have equivalent ordinary readings. -/
 theorem iffOfN {A B : NFm n} (e : NEquiv A B) : Γ ⊢[TeqAx] Fm.iff A.toFm B.toFm :=

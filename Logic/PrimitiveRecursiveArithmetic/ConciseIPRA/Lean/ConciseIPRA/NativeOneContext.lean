@@ -23,6 +23,12 @@ computation equation and the restricted transport, collected in the class
 * transport along `0 = t` is transport along `t = 0` followed by
   transitivity (`trOneF`).
 
+The crossing of the conclusion is not essential when sources are unrestricted:
+`UPrf` is the kernel with the uncrossed rule, from `s = t` and `h(s) = r` infer
+`h(t) = r`, and `uprf_iff_nprf` proves that it derives the same sequents.  This
+is the replacement rule of the note in `Research/kernel_refinement`, with a
+term template in place of a context with exactly one hole.
+
 No induction, no numerical cases and no successor computation is used.
 Compare `NativeZeroSource`: for transport in an equation template with an
 uncrossed conclusion, the same restriction needs an equation induction and a
@@ -163,5 +169,65 @@ theorem NPrf.toOPrf (h : NPrf Γ A) : OPrf Γ A := by
 
 /-- **The source restriction is free for one-context transport.** -/
 theorem oprf_iff_nprf : OPrf Γ A ↔ NPrf Γ A := ⟨OPrf.toNPrf, NPrf.toOPrf⟩
+
+/-- Derivability in the kernel with uncrossed transport in one term: from
+`s = t` and `h(s) = r` infer `h(t) = r`. -/
+inductive UPrf : {n : ℕ} → List (NFm n) → NFm n → Prop
+  | hyp {n : ℕ} {Γ : List (NFm n)} {A : NFm n} (h : A ∈ Γ) : UPrf Γ A
+  | iterZero {n : ℕ} {Γ : List (NFm n)} (a : Tm n) (h : Tm (n + 1)) :
+      UPrf Γ (.eq (iter zero a h) a)
+  | iterSucc {n : ℕ} {Γ : List (NFm n)} (c a : Tm n) (h : Tm (n + 1)) :
+      UPrf Γ (.eq (iter (succ c) a h) (Syn.subst (inst (iter c a h)) h))
+  | trL {n : ℕ} {Γ : List (NFm n)} (h : Tm (n + 1)) {s t r : Tm n}
+      (h₁ : UPrf Γ (.eq s t)) (h₂ : UPrf Γ (.eq (Syn.subst (inst s) h) r)) :
+      UPrf Γ (.eq (Syn.subst (inst t) h) r)
+  | qE {n : ℕ} {Γ : List (NFm n)} {B : NFm (n + 1)} (t : Tm n)
+      (h₁ : UPrf Γ (.Q B)) (h₂ : UPrf Γ (B.subst (inst zero))) : UPrf Γ (B.subst (inst t))
+  | dE {n : ℕ} {Γ : List (NFm n)} {B : NFm (n + 2)} {A : NFm n}
+      (h₁ : UPrf Γ (.D B)) (h₂ : UPrf (.Q B :: Γ.map NFm.shift) A.shift) : UPrf Γ A
+  | dICase {n : ℕ} {Γ : List (NFm n)} (B : NFm (n + 2)) (t : Tm n)
+      (h : UPrf (((B.subst (up (inst t))).subst (inst zero)).shift :: Γ.map NFm.shift)
+        ((B.subst (up (inst t))).subst (repl (succ (var 0))))) :
+      UPrf Γ (.D B)
+  | qIInd {n : ℕ} {Γ : List (NFm n)} (s₁ s₂ : Tm (n + 1))
+      (h : UPrf (NFm.eq s₁ s₂ :: Γ.map NFm.shift)
+        ((NFm.eq s₁ s₂).subst (repl (succ (var 0))))) :
+      UPrf Γ (.Q (.eq s₁ s₂))
+
+namespace UPrf
+
+theorem eqRefl (t : Tm n) : UPrf Γ (.eq t t) :=
+  .trL (s := iter zero t (Syn.var 0)) (t := t) (r := t) (Syn.var 0)
+    (.iterZero t (Syn.var 0)) (.iterZero t (Syn.var 0))
+
+theorem eqSymm {s t : Tm n} (h : UPrf Γ (.eq s t)) : UPrf Γ (.eq t s) :=
+  .trL (s := s) (t := t) (r := s) (Syn.var 0) h (eqRefl s)
+
+theorem toNPrf (h : UPrf Γ A) : NPrf Γ A := by
+  induction h with
+  | hyp h => exact .hyp h
+  | iterZero a h => exact .iterZero a h
+  | iterSucc c a h => exact .iterSucc c a h
+  | trL h _ _ ih₁ ih₂ => exact NPrf.eqSymm (.trOne h ih₁ ih₂)
+  | qE t _ _ ih₁ ih₂ => exact .qE t ih₁ ih₂
+  | dE _ _ ih₁ ih₂ => exact .dE ih₁ ih₂
+  | dICase B t _ ih => exact .dICase B t ih
+  | qIInd s t _ ih => exact .qIInd s t ih
+
+end UPrf
+
+theorem NPrf.toUPrf (h : NPrf Γ A) : UPrf Γ A := by
+  induction h with
+  | hyp h => exact .hyp h
+  | iterZero a h => exact .iterZero a h
+  | iterSucc c a h => exact .iterSucc c a h
+  | trOne h _ _ ih₁ ih₂ => exact UPrf.eqSymm (.trL h ih₁ ih₂)
+  | qE t _ _ ih₁ ih₂ => exact .qE t ih₁ ih₂
+  | dE _ _ ih₁ ih₂ => exact .dE ih₁ ih₂
+  | dICase B t _ ih => exact .dICase B t ih
+  | qIInd s t _ ih => exact .qIInd s t ih
+
+/-- **Uncrossed one-context transport derives the same sequents.** -/
+theorem uprf_iff_nprf : UPrf Γ A ↔ NPrf Γ A := ⟨UPrf.toNPrf, NPrf.toUPrf⟩
 
 end LeanProofs.ConciseIPRA

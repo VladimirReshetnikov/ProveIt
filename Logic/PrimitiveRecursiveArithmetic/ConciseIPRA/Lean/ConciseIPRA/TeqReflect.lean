@@ -81,86 +81,68 @@ def chi : {n : ℕ} → Fm Tm n → Tm n
   | _, .all _ => Tm.zero
   | _, .ex _ => Tm.zero
 
-/-- Reflection: a quantifier-free formula is equivalent to the vanishing of
-its characteristic term, in every context. -/
-theorem chi_iff : ∀ {n : ℕ} (φ : Fm Tm n), φ.QF → ∀ Γ : List (Fm Tm n),
-    Γ ⊢[TeqAx] Fm.iff (chi φ ≐ Tm.zero) φ := by
+/-- Reflection, at the level of derivability: the characteristic term of a
+quantifier-free formula vanishes in a context exactly when the formula is
+derivable there. -/
+theorem chi_zero_iff : ∀ {n : ℕ} (φ : Fm Tm n), φ.QF → ∀ Γ : List (Fm Tm n),
+    Q.mk Γ (chi φ) = 0 ↔ (Γ ⊢[TeqAx] φ) := by
   intro n φ
   induction φ with
   | eq s t =>
     intro _ Γ
-    refine Prf.iffI (.impI ?_) (.impI ?_)
-    · have h : Q.mk ((chi (s ≐ t) ≐ Tm.zero) :: Γ) (Tm.eqt s t) = 0 := Q.sound_zero Prf.hyp0
-      simp only [Q.mk_eqt] at h
-      exact Q.exact (Q.eqt_eq_zero_iff.1 h)
-    · have h : Q.mk ((s ≐ t) :: Γ) s = Q.mk _ t := Q.hyp0
-      refine Q.exact_zero ?_
-      show Q.eqt (Q.mk _ s) (Q.mk _ t) = 0
-      exact Q.eqt_eq_zero_iff.2 h
+    show Q.eqt (Q.mk Γ s) (Q.mk Γ t) = 0 ↔ _
+    exact Q.eqt_eq_zero_iff.trans ⟨Q.exact, Q.sound⟩
   | bot =>
     intro _ Γ
-    exact Prf.iffI (.impI (.impE Teq.sep (Prf.eqSymm Prf.hyp0))) (.impI (.botE _ Prf.hyp0))
+    exact ⟨fun h => .impE Teq.sep (Prf.eqSymm (Q.exact_zero h)), fun h => Q.sound_zero (.botE _ h)⟩
   | and A D ihA ihD =>
     intro hq Γ
-    obtain ⟨hA, hD⟩ : A.QF ∧ D.QF := hq
-    refine Prf.iffI (.impI ?_) (.impI ?_)
-    · have h : Q.mk ((chi (A ⋏ D) ≐ Tm.zero) :: Γ) (Tm.sel (chi A) (chi D) Tm.one) = 0 :=
-        Q.sound_zero Prf.hyp0
-      simp only [Q.mk_sel, Q.mk_one] at h
+    show Q.sel (Q.mk Γ (chi A)) (Q.mk Γ (chi D)) 1 = 0 ↔ _
+    constructor
+    · intro h
       have ha := Q.eq_zero_of_sel_one h
       rw [ha, Q.sel_zero] at h
-      exact .andI (Prf.iffMp (ihA hA _) (Q.exact_zero ha)) (Prf.iffMp (ihD hD _) (Q.exact_zero h))
-    · have ha : Q.mk ((A ⋏ D) :: Γ) (chi A) = 0 :=
-        Q.sound_zero (Prf.iffMpr (ihA hA _) (.andE₁ Prf.hyp0))
-      have hd : Q.mk ((A ⋏ D) :: Γ) (chi D) = 0 :=
-        Q.sound_zero (Prf.iffMpr (ihD hD _) (.andE₂ Prf.hyp0))
-      refine Q.exact_zero ?_
-      show Q.sel (Q.mk _ (chi A)) (Q.mk _ (chi D)) 1 = 0
-      rw [ha, hd, Q.sel_zero]
+      exact .andI ((ihA hq.1 Γ).1 ha) ((ihD hq.2 Γ).1 h)
+    · intro h
+      rw [(ihA hq.1 Γ).2 (.andE₁ h), (ihD hq.2 Γ).2 (.andE₂ h), Q.sel_zero]
   | or A D ihA ihD =>
     intro hq Γ
-    obtain ⟨hA, hD⟩ : A.QF ∧ D.QF := hq
-    refine Prf.iffI (.impI ?_) (.impI ?_)
-    · refine .orE (Teq.selCases (chi A) Tm.zero (chi D))
-        (.orI₁ (Prf.iffMp (ihA hA _) Prf.hyp0)) ?_
-      have h1 : Q.mk ((Tm.sel (chi A) Tm.zero (chi D) ≐ chi D)
-          :: (chi (A ⋎ D) ≐ Tm.zero) :: Γ) (Tm.sel (chi A) Tm.zero (chi D)) = Q.mk _ (chi D) :=
-        Q.hyp0
-      have h2 : Q.mk ((Tm.sel (chi A) Tm.zero (chi D) ≐ chi D)
-          :: (chi (A ⋎ D) ≐ Tm.zero) :: Γ) (Tm.sel (chi A) Tm.zero (chi D)) = 0 :=
-        Q.sound_zero Prf.hyp1
-      exact .orI₂ (Prf.iffMp (ihD hD _) (Q.exact_zero (h1.symm.trans h2)))
-    · refine .orE Prf.hyp0 ?_ ?_
-      · have ha : Q.mk (A :: (A ⋎ D) :: Γ) (chi A) = 0 :=
-          Q.sound_zero (Prf.iffMpr (ihA hA _) Prf.hyp0)
-        refine Q.exact_zero ?_
-        show Q.sel (Q.mk _ (chi A)) 0 (Q.mk _ (chi D)) = 0
-        rw [ha, Q.sel_zero]
-      · have hd : Q.mk (D :: (A ⋎ D) :: Γ) (chi D) = 0 :=
-          Q.sound_zero (Prf.iffMpr (ihD hD _) Prf.hyp0)
-        refine Q.exact_zero ?_
-        show Q.sel (Q.mk _ (chi A)) 0 (Q.mk _ (chi D)) = 0
-        rw [hd, Q.sel_self]
+    constructor
+    · intro (h : Q.mk Γ (Tm.sel (chi A) Tm.zero (chi D)) = 0)
+      refine .orE (Teq.selCases (chi A) Tm.zero (chi D))
+        (.orI₁ ((ihA hq.1 _).1 (Q.sound_zero Prf.hyp0))) (.orI₂ ((ihD hq.2 _).1 ?_))
+      exact (Q.sound (Prf.eqSymm Prf.hyp0)).trans (Q.sound_zero (Q.exact_zero h).wk)
+    · intro h
+      show Q.mk Γ (Tm.sel (chi A) Tm.zero (chi D)) = 0
+      refine Q.sound_zero (.orE h (Q.exact_zero ?_) (Q.exact_zero ?_))
+      · show Q.sel (Q.mk (A :: Γ) (chi A)) 0 (Q.mk _ (chi D)) = 0
+        rw [(ihA hq.1 _).2 Prf.hyp0, Q.sel_zero]
+      · show Q.sel (Q.mk (D :: Γ) (chi A)) 0 (Q.mk _ (chi D)) = 0
+        rw [(ihD hq.2 _).2 Prf.hyp0, Q.sel_self]
   | imp A D ihA ihD =>
     intro hq Γ
-    obtain ⟨hA, hD⟩ : A.QF ∧ D.QF := hq
-    refine Prf.iffI (.impI (.impI ?_)) (.impI ?_)
-    · have ha : Q.mk (A :: (chi (A ⟶ D) ≐ Tm.zero) :: Γ) (chi A) = 0 :=
-        Q.sound_zero (Prf.iffMpr (ihA hA _) Prf.hyp0)
-      have h : Q.mk (A :: (chi (A ⟶ D) ≐ Tm.zero) :: Γ)
-          (Tm.sel (chi A) (chi D) Tm.zero) = 0 := Q.sound_zero Prf.hyp1
-      simp only [Q.mk_sel, Q.mk_zero] at h
-      rw [ha, Q.sel_zero] at h
-      exact Prf.iffMp (ihD hD _) (Q.exact_zero h)
-    · refine .orE (Teq.selCases (chi A) (chi D) Tm.zero) ?_ Prf.hyp0
-      have ha : Q.mk ((chi A ≐ Tm.zero) :: (A ⟶ D) :: Γ) (chi A) = 0 := Q.sound_zero Prf.hyp0
-      have hd : Q.mk ((chi A ≐ Tm.zero) :: (A ⟶ D) :: Γ) (chi D) = 0 :=
-        Q.sound_zero (Prf.iffMpr (ihD hD _) (.impE Prf.hyp1 (Prf.iffMp (ihA hA _) Prf.hyp0)))
-      refine Q.exact_zero ?_
+    constructor
+    · intro (h : Q.mk Γ (Tm.sel (chi A) (chi D) Tm.zero) = 0)
+      refine .impI ((ihD hq.2 _).1 ?_)
+      have ha : Q.mk (A :: Γ) (chi A) = 0 := (ihA hq.1 _).2 Prf.hyp0
+      have h' : Q.sel (Q.mk (A :: Γ) (chi A)) (Q.mk _ (chi D)) 0 = 0 :=
+        Q.sound_zero (Q.exact_zero h).wk
+      rwa [ha, Q.sel_zero] at h'
+    · intro h
+      show Q.mk Γ (Tm.sel (chi A) (chi D) Tm.zero) = 0
+      refine Q.sound_zero (.orE (Teq.selCases (chi A) (chi D) Tm.zero) (Q.exact_zero ?_) Prf.hyp0)
+      have ha : Q.mk ((chi A ≐ Tm.zero) :: Γ) (chi A) = 0 := Q.sound_zero Prf.hyp0
       show Q.sel (Q.mk _ (chi A)) (Q.mk _ (chi D)) 0 = 0
-      rw [ha, hd, Q.sel_zero]
+      rw [ha, (ihD hq.2 _).2 (.impE h.wk ((ihA hq.1 _).1 ha)), Q.sel_zero]
   | all A _ => intro hq; exact False.elim hq
   | ex A _ => intro hq; exact False.elim hq
+
+/-- Reflection: a quantifier-free formula is equivalent to the vanishing of
+its characteristic term, in every context. -/
+theorem chi_iff (φ : Fm Tm n) (hφ : φ.QF) (Γ : List (Fm Tm n)) :
+    Γ ⊢[TeqAx] Fm.iff (chi φ ≐ Tm.zero) φ :=
+  Prf.iffI (.impI ((chi_zero_iff φ hφ _).1 (Q.sound_zero Prf.hyp0)))
+    (.impI (Q.exact_zero ((chi_zero_iff φ hφ _).2 Prf.hyp0)))
 
 /-- The reflection, transported along a substitution. -/
 theorem chi_iff_subst (φ : Fm Tm n) (hφ : φ.QF) (σ : Fin n → Tm m) (Δ : List (Fm Tm m)) :
