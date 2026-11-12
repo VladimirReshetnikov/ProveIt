@@ -1,0 +1,152 @@
+{
+  "parameters": [
+    "x",
+    "y"
+  ],
+  "assumptions": [
+    [
+      "eq",
+      [
+        "v",
+        "x"
+      ],
+      [
+        "v",
+        "y"
+      ]
+    ],
+    [
+      "pred",
+      "F",
+      [
+        "v",
+        "x"
+      ]
+    ]
+  ],
+  "goal": [
+    "pred",
+    "F",
+    [
+      "v",
+      "y"
+    ]
+  ],
+  "proof": {
+    "rule": "alias",
+    "parameter": "a2",
+    "term": [
+      "v",
+      "y"
+    ],
+    "body": {
+      "rule": "back",
+      "parameter": "a2",
+      "term": [
+        "v",
+        "x"
+      ],
+      "formula": [
+        "pred",
+        "F",
+        [
+          "v",
+          "a2"
+        ]
+      ],
+      "equality": {
+        "rule": "back",
+        "parameter": "a2",
+        "term": [
+          "v",
+          "y"
+        ],
+        "formula": [
+          "eq",
+          [
+            "v",
+            "a2"
+          ],
+          [
+            "v",
+            "x"
+          ]
+        ],
+        "equality": {
+          "rule": "hyp",
+          "index": 2
+        },
+        "instance": {
+          "rule": "alias",
+          "parameter": "a0",
+          "term": [
+            "v",
+            "x"
+          ],
+          "body": {
+            "rule": "back",
+            "parameter": "a0",
+            "term": [
+              "v",
+              "y"
+            ],
+            "formula": [
+              "eq",
+              [
+                "v",
+                "y"
+              ],
+              [
+                "v",
+                "a0"
+              ]
+            ],
+            "equality": {
+              "rule": "back",
+              "parameter": "a0",
+              "term": [
+                "v",
+                "x"
+              ],
+              "formula": [
+                "eq",
+                [
+                  "v",
+                  "a0"
+                ],
+                [
+                  "v",
+                  "y"
+                ]
+              ],
+              "equality": {
+                "rule": "hyp",
+                "index": 3
+              },
+              "instance": {
+                "rule": "hyp",
+                "index": 0
+              }
+            },
+            "instance": {
+              "rule": "alias",
+              "parameter": "a1",
+              "term": [
+                "v",
+                "y"
+              ],
+              "body": {
+                "rule": "hyp",
+                "index": 4
+              }
+            }
+          }
+        }
+      },
+      "instance": {
+        "rule": "hyp",
+        "index": 1
+      }
+    }
+  }
+}

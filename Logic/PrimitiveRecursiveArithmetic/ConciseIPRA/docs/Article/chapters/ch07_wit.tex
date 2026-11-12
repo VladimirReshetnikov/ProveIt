@@ -21,7 +21,8 @@ scope-determined witness is not closed under the extension of its scope.
 derivability of a name for every term, and \cref{wit:sec:packet} derives the
 names from a formula proved by numerical cases.  \Cref{wit:sec:newest} treats
 the newest parameter, where derivations must be regenerated instead of
-weakened.  \Cref{wit:sec:guarded} treats the raw guarded clause calculus, with
+weakened; in the Alias/Back calculus (\cref{wit:sec:aliasback}) a fresh
+alias takes the place of the names.  \Cref{wit:sec:guarded} treats the raw guarded clause calculus, with
 and without a naming exception.  \Cref{wit:sec:recursor,wit:sec:copy} treat
 two calculi on a recursor whose predecessor computes; the second combines the
 restricted introduction with an inferred discharge by means of conditional
@@ -848,8 +849,8 @@ equation at the literal $0$, which \rulename{RDI} does not offer directly.
 
 This section draws on \pkg{no\_witness} and \pkg{newest\_parameter} for the
 eight-rule calculus, on \pkg{no\_witness} for the seven-rule diagonal
-variant, and on \pkg{parameter\_witness} for the one-bit rule and its clause
-calculus.
+variant, on \pkg{parameter\_witness} for the one-bit rule and its clause
+calculus, and on \pkg{local\_introduction} for the Alias/Back calculus.
 
 In $\Nat_{\nu}$ the introduction takes no term.  The proof of
 \cref{wit:thm:zero-or-variable} uses renaming, weakening to a larger scope
@@ -1546,6 +1547,414 @@ $\mathsf{C}$ for the last, which derives the same sequents as $\Nat$ under
 the translation of \cref{claus:thm:five}.  The translations and the
 derivations of both formula round trips transfer unchanged.
 \end{proof}
+
+\subsection{The newest parameter in the Alias/Back calculus}
+\label{wit:sec:aliasback}
+
+This subsection draws on \pkg{local\_introduction}; its equality interface
+is the Alias/Back basis of the chapter on discharge, from
+\pkg{alias\_back}.
+
+\Cref{wit:thm:diagonal} removes the witness from the diagonal introduction
+in a calculus with the primitive transport \rulename{Tr}, and it recovers
+an arbitrary witness $t$ from the packet $X(\Suc t)$, whose opening supplies
+a parameter $b$ with $b=t$.  The Alias/Back basis has no primitive
+transport: equality is given by a fresh alias, discharged by substitution,
+and by a backward substitution at the newest parameter.  There the alias
+itself supplies the parameter $b$ with $b=t$, and the witness is removed
+without the packet, without names, without a predecessor and without
+normalization.  The mode of the introduction is the diagonal mode of
+\cref{wit:sec:diagonal}.  The proof below has the shape of the proof of
+\cref{wit:thm:newest} and differs from it in three respects: equality on
+families is built from \rulename{Alias} and \rulename{Back}
+(\cref{wit:lem:ab-eq}); the source clauses are given by realizers and not by
+literal membership, because the transported assumption of an introduction
+is not the image of the source assumption (this replaces the cut of an
+assumption in the proof of \cref{wit:thm:clause-bit}); and one induction
+removes, together with the witness, the arbitrary terms of \rulename{Use}
+and the arbitrary sources of \rulename{Back}.
+
+\begin{definition}[The calculi $\mathsf{A}_{\nu}$ and $\mathsf{A}_{\ast}$]
+\label{wit:def:ab}
+Terms are those of \cref{base:sec:terms}; formulas are equations and
+$\D{x}{y}B$, without $\Q{}$.  Substitution is capture avoiding and
+simultaneous, inserts each replacement once and performs no computation.
+A context is a list of clauses $[A;\,y.B(y)]$ and $[\ ;\,y.B(y)]$, read as
+$A\to\forall y\,B(y)$ and $\forall y\,B(y)$; an assumption $F$ is the clause
+$[\ ;\,v.F]$ with $v$ not in $F$.  Judgments are $\Pi;\Gamma\proves A$ as in
+\cref{wit:def:scope}, with the clauses of $\Gamma$ over $\Pi$.  Put
+\[
+ \epsilon_B(z)\defeq
+ \begin{cases}
+  z,&\text{$B$ is diagonal in $y$, that is, literally
+        $\It{y}{y}{u}{h}=\It{y}{y}{v}{k}$,}\\
+  0,&\text{otherwise,}
+ \end{cases}
+\]
+the diagonal test of \cref{guard:def:shapes} and \cref{claus:def:k}, made on
+the matrix $B(x,y)$ before a witness is substituted.  The calculus
+$\mathsf{A}_{\nu}$ has exactly the following seven rule patterns.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \rulename{I0}: $\Pi;\Gamma\proves\It{0}{a}{u}{h}=a$.
+\item \rulename{IS}: $\Pi;\Gamma\proves\It{\Suc n}{a}{u}{h}
+ =h\subst{\It{n}{a}{u}{h}}{u}$.
+\item \rulename{Use}: for a clause $[A;\,y.B]$ of $\Gamma$, from
+ $\Pi;\Gamma\proves A$ infer $\Pi;\Gamma\proves B(\nu(\Pi))$; for a clause
+ $[\ ;\,y.B]$ of $\Gamma$, infer $\Pi;\Gamma\proves B(\nu(\Pi))$ outright.
+\item \rulename{Back}: if $\Pi$ is not empty and $b=\nu(\Pi)$, from
+ $\Pi;\Gamma\proves b=t$ and $\Pi;\Gamma\proves F\subst{t}{b}$ infer
+ $\Pi;\Gamma\proves F$.  The term $t$ may contain $b$.
+\item \rulename{Alias}: if $b\notin\Pi$ and $t$ is over $\Pi$, from
+ $\Pi,b;\ \Gamma,b=t\proves F$ infer $\Pi;\Gamma\proves F\subst{t}{b}$.  The
+ formula $F$ may contain $b$.
+\item \rulename{Open}: if $b\notin\Pi$ and $A$ is over $\Pi$, from
+ $\Pi;\Gamma\proves\D{x}{y}B$ and
+ $\Pi,b;\ \Gamma,[B(b,0);\,y.B(b,y)]\proves A$ infer $\Pi;\Gamma\proves A$.
+\item \rulename{Close}: if $z\notin\Pi$, from
+ $\Pi,z;\ \Gamma,B(\nu(\Pi),\epsilon_B(z))\proves B(\nu(\Pi),\Suc z)$ infer
+ $\Pi;\Gamma\proves\D{x}{y}B$.
+\end{enumerate}
+The calculus $\mathsf{A}_{\ast}$ has the same syntax, \rulename{I0},
+\rulename{IS}, \rulename{Alias} and \rulename{Open}, a \rulename{Use} at an
+arbitrary term $r$ over $\Pi$ in place of $\nu(\Pi)$, a \rulename{Back} at
+an arbitrary parameter $b$ of $\Pi$, and a \rulename{Close} at an arbitrary
+witness $t$ over $\Pi$ in place of $\nu(\Pi)$, with the same mode
+$\epsilon_B$.
+\end{definition}
+
+\rulename{Close} of $\mathsf{A}_{\nu}$ takes no term.  There is no
+reflexivity rule, transport rule, normalizer, primitive specialization at
+a chosen term or logical connective.  The rules other than \rulename{Close}
+are those of the Alias/Back basis, whose \rulename{Use} and \rulename{Back}
+are already at the newest parameter; its introduction takes an arbitrary
+witness and is by progress exactly when the matrix is a literal equation
+and the witness is literally $0$.  $\mathsf{A}_{\nu}$ changes only the
+introduction: the witness is the newest parameter, and the mode is read off
+the matrix alone.  Every rule of $\mathsf{A}_{\nu}$ is a rule of
+$\mathsf{A}_{\ast}$.  Every rule that opens a branch appends one parameter
+and one clause, so along a derivation of a closed judgment the length of
+the scope equals the length of the context.
+
+\begin{lemma}[Soundness]
+\label{wit:lem:ab-sound}
+Every rule of $\mathsf{A}_{\ast}$ is valid in $\Teq$ under the ordinary
+reading of \cref{base:sec:reading} and of the clauses.
+\end{lemma}
+
+\begin{proof}
+The computations are axioms of $\Teq$ (\cref{base:sec:teq}).
+\rulename{Use} is the instantiation of the universal quantifier of the
+clause, after modus ponens for a clause with an antecedent.
+\rulename{Back} is the substitution of equals.  For \rulename{Alias}, the
+ordinary derivation of the branch is closed under the substitution of $t$
+for the variable $b$, which occurs neither in $\Gamma$ nor in $t$; the
+assumption becomes $t=t$, which reflexivity proves.  \rulename{Open} is the
+elimination of the existential quantifier of
+$\exists x\,(B(x,0)\to\forall y\,B(x,y))$ at the fresh $b$.  For
+\rulename{Close} at the witness $t$: if $B$ is diagonal it is a literal
+equation, its premise is a progressive step, and induction for literal
+equations proves $B(t,0)\to\forall y\,B(t,y)$; otherwise the premise is a
+case step, and coverage proves the same implication.  The existential
+quantifier is introduced at $t$.
+\end{proof}
+
+\begin{definition}[Persistent families and realizers]
+\label{wit:def:ab-family}
+A \emph{world} is a pair $w=(\Pi_w;\Gamma_w)$ of a scope and a context over
+it.  A world $w'$ \emph{extends} $w$, written $w'\succeq w$, if $\Pi_{w'}$
+is $\Pi_w$ followed by further parameters and $\Gamma_{w'}$ is $\Gamma_w$
+followed by further clauses over $\Pi_{w'}$.  For a formula $A$ over
+$\Pi_w$, write $w\Vdash A$ if there is a \emph{persistent family} for $A$
+at $w$: an effective procedure that assigns to every $w'\succeq w$ a
+derivation of $\mathsf{A}_{\nu}$ of $\Pi_{w'};\Gamma_{w'}\proves A$.  A
+\emph{persistent realizer} at $w$ of a clause $[A;\,y.B]$ over $\Pi_w$ is
+an effective procedure that assigns to every $w'\succeq w$, every term $r$
+over $\Pi_{w'}$ and every persistent family for $A$ at $w'$ a persistent
+family for $B(r)$ at $w'$; for a clause $[\ ;\,y.B]$ the family argument is
+absent.
+\end{definition}
+
+A family or realizer at $w$ is one at every $w'\succeq w$, by the same
+procedure.  A family for $E$ at $w$ is a realizer at $w$ of the assumption
+$[\ ;\,v.E]$: it ignores the term $r$, since $E\subst{r}{v}\equiv E$.
+Families are the hereditary derivability of \cref{wit:def:hereditary}
+restricted to extensions; the injective map is carried by the induction
+statement of \cref{wit:thm:ab-newest} instead.  They and the realizers are
+constructions of the metatheory and are not rules of the calculus.
+
+\begin{lemma}[Clauses and equality on families]
+\label{wit:lem:ab-eq}
+Let $w$ be a world, $s$, $t$ terms over $\Pi_w$ and $H(v)$ a formula with a
+distinguished variable $v$, which may occur any number of times and below
+binders.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Every clause of $\Gamma_w$ has a persistent realizer at $w$.
+\item $w\Vdash t=t$.
+\item If $w\Vdash s=t$ and $w\Vdash H(t)$, then $w\Vdash H(s)$.
+\item If $w\Vdash s=t$, then $w\Vdash t=s$; if moreover $w\Vdash H(s)$,
+ then $w\Vdash H(t)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+In each item let $w'\succeq w$ be given, and let $c$ be a parameter not in
+$\Pi_{w'}$ and not in $s$, $t$, $H$ or the terms named below.
+
+(i) Let $[A;\,y.B]$ be a clause of $\Gamma_w$, $w'\succeq w$, $r$ a term
+over $\Pi_{w'}$, and a family for $A$ at $w'$ be given; let $w''\succeq w'$.
+The world $w''_c=(\Pi_{w''},c;\ \Gamma_{w''},c=r)$ extends $w'$, so the
+family gives $A$ there.  The clause is a member of $\Gamma_{w''_c}$ and $c$
+is the newest parameter, so \rulename{Use} gives $B(c)$, and
+\rulename{Alias} gives $B(c)\subst{r}{c}\equiv B(r)$ at $w''$.  For a clause
+without antecedent the family is not needed.
+
+(ii) In $(\Pi_{w'},c;\ \Gamma_{w'},c=t)$, \rulename{Use} of the last clause
+gives $c=t$, and \rulename{Alias} gives $(c=t)\subst{t}{c}\equiv(t=t)$ at
+$w'$.
+
+(iii) Work in $w'_c=(\Pi_{w'},c;\ \Gamma_{w'},c=s)$, which extends $w$.
+\rulename{Use} of the last clause gives $c=s$, and the first family gives
+$s=t\equiv(c=t)\subst{s}{c}$; \rulename{Back} at $c$ gives $c=t$.  The
+second family gives $H(t)\equiv H(c)\subst{t}{c}$, and \rulename{Back} at $c$
+with the major premise $c=t$ gives $H(c)$.  \rulename{Alias} gives
+$H(c)\subst{s}{c}\equiv H(s)$ at $w'$.
+
+(iv) Apply (iii) to the template $t=v$, whose instance $t=t$ holds by
+(ii); the result is $t=s$.  For the second statement apply (iii) to $t=s$
+and $H(s)$.
+
+Both applications of \rulename{Back} in (iii) are at $c$, which is the
+newest parameter of $w'_c$; the derivations of their premises are the
+members of the given families at $w'_c$ itself, and no derivation is moved
+to another world.  These constructions use no computation, induction,
+coverage, weakening of a completed derivation or substitution into one.
+\end{proof}
+
+\begin{theorem}[No witness in the Alias/Back calculus]
+\label{wit:thm:ab-newest}
+For every scope $\Pi$, clause context $\Gamma$ and formula $A$ over $\Pi$,
+\[
+ \Pi;\Gamma\proves_{\mathsf{A}_{\nu}}A
+ \quad\Longleftrightarrow\quad
+ \Pi;\Gamma\proves_{\mathsf{A}_{\ast}}A ,
+\]
+by effective transformations of derivations that leave the terms, formulas
+and clauses of the judgment unchanged.
+\end{theorem}
+
+\begin{proof}
+From left to right every rule of $\mathsf{A}_{\nu}$ is a rule of
+$\mathsf{A}_{\ast}$.  For the converse the following \emph{induction
+statement} is proved by induction on a derivation of $\mathsf{A}_{\ast}$ of
+$\Pi;\Gamma\proves A$: for every world $w$, every injective map $\theta$
+from $\Pi$ into $\Pi_w$ and every assignment of a persistent realizer at
+$w$ of $\theta C$ to each clause $C$ of $\Gamma$, $w\Vdash\theta A$.
+Here $\theta$ acts on free parameters; since it is injective,
+$\theta(F\subst{t}{b})\equiv(\theta F)\subst{\theta t}{\theta b}$, and
+$\epsilon_{\theta B}=\epsilon_B$, because the diagonal shape concerns the
+bound variable $y$ and the literal identity of two iterator terms, both
+preserved and reflected by an injective renaming.  The required derivation
+of $\Pi;\Gamma\proves A$ is the member at $w=(\Pi;\Gamma)$ of the family
+that the induction statement gives for the identity map and the realizers of
+\cref{wit:lem:ab-eq}(i).  In the cases below, $w'\succeq w$ is the world at
+which a member is constructed.
+
+\emph{Computations.}  The image of an instance is an instance, in every
+world.
+
+\emph{Use} of a clause $C=[A;\,y.B]$ at the term $r$.  The induction
+hypothesis gives a family for $\theta A$ at $w$; the realizer of $\theta C$
+at the term $\theta r$ turns it into a family for
+$\theta B(\theta r)\equiv\theta(B(r))$.  For a clause without antecedent no
+family is needed.
+
+\emph{Back} at a parameter $b$ of $\Pi$, with premises $b=t$ and
+$F\subst{t}{b}$.  Let $H(v)\defeq(\theta F)\subst{v}{\theta b}$ with $v$
+fresh; then $H(\theta t)\equiv\theta(F\subst{t}{b})$ and
+$H(\theta b)\equiv\theta F$.  The induction hypothesis gives families for
+$\theta b=\theta t$ and for $H(\theta t)$, and \cref{wit:lem:ab-eq}(iii)
+gives $w\Vdash\theta F$.
+
+\emph{Alias} with the parameter $b$, the term $t$ and the branch
+$\Pi,b;\Gamma,b=t\proves F$.  Choose $b'\notin\Pi_{w'}$ and let $w''$ be
+$(\Pi_{w'},b';\ \Gamma_{w'},b'=\theta t)$.  The map
+$\theta'=\theta[b\mapsto b']$ is injective; the clauses of $\Gamma$ keep
+their realizers, restricted to $w''$, and the new clause $b=t$, whose
+image is $b'=\theta t$, is realized by \cref{wit:lem:ab-eq}(i).  The
+induction hypothesis gives $\theta'F$ at $w''$, and \rulename{Alias} gives
+$(\theta'F)\subst{\theta t}{b'}\equiv\theta(F\subst{t}{b})$ at $w'$.
+
+\emph{Open} with the major premise $\D{x}{y}B$ and the parameter $b$.  The
+induction hypothesis gives $\theta\D{x}{y}B$ at $w'$.  Choose
+$b'\notin\Pi_{w'}$ and extend $\theta$ by $b\mapsto b'$; the opened clause
+is realized in
+$w''=(\Pi_{w'},b';\ \Gamma_{w'},[\theta B(b',0);\,y.\theta B(b',y)])$ by
+\cref{wit:lem:ab-eq}(i).  The induction hypothesis gives $\theta A$ at
+$w''$, since $A$ does not contain $b$, and \rulename{Open} applies.
+
+\emph{Close} at the witness $t$ with the matrix $B$ and the premise
+$\Pi,z;\ \Gamma,B(t,\epsilon_B(z))\proves B(t,\Suc z)$.  Choose
+$b\notin\Pi_{w'}$ and apply \rulename{Alias} with the defining term
+$\theta t$; its branch is the world
+$w_b=(\Pi_{w'},b;\ \Gamma_{w'},b=\theta t)$.  In $w_b$ apply
+\rulename{Close} to $\D{x}{y}\theta B$.  The newest parameter is $b$, so the
+rule selects $b$; let $z'$ be its eigenvariable.  Its premise is to be
+derived in
+\[
+ w_z=\bigl(\Pi_{w'},b,z';\ \Gamma_{w'},\ b=\theta t,\
+ \theta B(b,\epsilon_B(z'))\bigr).
+\]
+Put $\theta'=\theta[z\mapsto z']$, an injective map from $\Pi,z$ into
+$\Pi_{w_z}$; the parameter $b$ is not in its image.  The clauses of
+$\Gamma$ keep their realizers, restricted to $w_z$.  The source assumption
+$B(t,\epsilon_B(z))$ has the image $\theta B(\theta t,\epsilon_B(z'))$,
+which is not a clause of $w_z$.  By \cref{wit:lem:ab-eq}(i) for the last
+two clauses of $w_z$, which are assumptions,
+$w_z\Vdash b=\theta t$ and $w_z\Vdash\theta B(b,\epsilon_B(z'))$, and
+\cref{wit:lem:ab-eq}(iv) with the template $\theta B(v,\epsilon_B(z'))$
+gives $w_z\Vdash\theta B(\theta t,\epsilon_B(z'))$; this family is the
+realizer of the source assumption.  The induction hypothesis for the
+premise gives $w_z\Vdash\theta B(\theta t,\Suc z')$, and
+\cref{wit:lem:ab-eq}(iii) with the template $\theta B(v,\Suc z')$ and the
+equation $b=\theta t$ gives $w_z\Vdash\theta B(b,\Suc z')$.  Its member at
+$w_z$ is the premise of the target \rulename{Close}, whose mode is
+$\epsilon_{\theta B}=\epsilon_B$.  The conclusion $\D{x}{y}\theta B$ does not
+contain $b$, so \rulename{Alias} yields
+$(\D{x}{y}\theta B)\subst{\theta t}{b}\equiv\theta\D{x}{y}B$ at $w'$.
+
+The eigenvariable $z'$ is newer than $b$; this does no harm, because every
+transport of \cref{wit:lem:ab-eq} opens its own auxiliary parameter, which
+is then the newest.  The construction is well founded.  The realizer of the
+source assumption in the case of \rulename{Close} is built from the actual
+clauses of $w_z$ and does not call the translation of the premise.  Every
+call of the induction hypothesis concerns a proper subderivation, although
+it may be made in several worlds; \rulename{Use} calls realizers on
+families of proper subderivations; the constructions of
+\cref{wit:lem:ab-eq} call the given families finitely often.  No derivation
+of $\mathsf{A}_{\nu}$ is moved to another world, and no term is substituted
+into one.
+\end{proof}
+
+\begin{corollary}[The Alias/Back calculi and $\iPRA$]
+\label{wit:cor:ab-bridge}
+For a clause context $\Gamma$ let $\Gamma^{\circ}$ be $\Gamma$ with every
+clause $[\ ;\,y.B]$ replaced by $[0=0;\,y.B]$.  Then
+\[
+ \Pi;\Gamma\proves_{\mathsf{A}_{\nu}}A
+ \iff \Pi;\Gamma\proves_{\mathsf{A}_{\ast}}A
+ \iff \Gamma^{\circ}\proves_{\mathsf{K}}A ,
+\]
+where $\mathsf{K}$ is the diagonal clause calculus of \cref{claus:def:k}.
+The ordinary realizations of $\mathsf{A}_{\nu}$ and $\mathsf{A}_{\ast}$ are
+bi-interpretable and equiconsistent with $\iPRA$, with whole numerical
+domains, actual equality and the identity graph in both numerical
+composites.
+\end{corollary}
+
+\begin{proof}
+The first equivalence is \cref{wit:thm:ab-newest}.  In $\mathsf{A}_{\ast}$,
+injective renaming and weakening by appended parameters and clauses are
+admissible, by induction on derivations after the eigenvariables are made
+fresh: no rule of $\mathsf{A}_{\ast}$ refers to the order of the scope, the
+source of a \rulename{Back} is renamed to a parameter, and $\epsilon_B$ is
+preserved.  A derivation of $\mathsf{A}_{\ast}$ therefore gives a
+derivation in every extension, and the constructions of
+\cref{wit:lem:ab-eq}, which are derivations of $\mathsf{A}_{\ast}$, give
+reflexivity, symmetry, transitivity and transport in every formula over
+every scope and context.  In $\mathsf{A}_{\ast}$ the clauses $[\ ;\,y.B]$
+and $[0=0;\,y.B]$ are interchangeable: a \rulename{Use} of the second drops
+its premise when it becomes a \rulename{Use} of the first, and a
+\rulename{Use} of the first becomes a \rulename{Use} of the second with the
+premise $0=0$ by reflexivity.
+
+\emph{From $\mathsf{K}$ to $\mathsf{A}_{\ast}$.}  By induction on a
+derivation of $\Gamma^{\circ}\proves_{\mathsf{K}}A$ in the scope $\Pi$.
+First its eigenvariables are made fresh for $\Pi$
+(\cref{claus:lem:struct}, which holds in $\mathsf{K}$), and every other
+variable that occurs in it and is not in $\Pi$ is replaced by $0$
+(\cref{claus:thm:ksubst}); the judgment is unchanged, and every term of the
+derivation is then over the scope of its node.
+\rulename{Refl} is reflexivity.  The zero row of \rulename{Eval}, from
+$a=t$ and $\It{0}{a}{u}{h}=r$, gives $r=t$ by \rulename{I0}, symmetry and
+transitivity; the successor row, from $\It{n}{a}{u}{h}=t$ and
+$\It{\Suc n}{a}{u}{h}=r$, gives $r=h\subst{t}{u}$ by \rulename{IS},
+transport in the template $\It{\Suc n}{a}{u}{h}=h\subst{v}{u}$, symmetry and
+transitivity.  \rulename{Use}, \rulename{Elim} and \rulename{Intro} are
+\rulename{Use}, \rulename{Open} and \rulename{Close} at the same term, the
+same parameter and the same witness, with the same mode, since
+$\epsilon_B$ is the mode $\eta_B$ of \cref{claus:def:k}.  The result is a
+derivation of $\Pi;\Gamma^{\circ}\proves A$, hence of $\Pi;\Gamma\proves A$.
+
+\emph{From $\mathsf{A}_{\ast}$ to $\mathsf{K}$.}  By induction on a
+derivation of $\Pi;\Gamma\proves A$, with the context $\Gamma^{\circ}$.  The
+computation equations, symmetry and transport in every formula hold in
+$\mathsf{K}$ (\cref{claus:lem:eq} and \cref{claus:lem:k}(iii)).
+\rulename{Use} is \rulename{Use}, with the premise $0=0$ by \rulename{Refl}
+for a clause without antecedent.  \rulename{Back} at $b$ is transport in
+the template $F\subst{v}{b}$ along $t=b$.  For \rulename{Alias}, the branch
+gives $\Gamma^{\circ},[0=0;\,v.\,b=t]\proves_{\mathsf{K}}F$; substitution of
+$t$ for $b$ (\cref{claus:thm:ksubst}) gives
+$\Gamma^{\circ},[0=0;\,v.\,t=t]\proves_{\mathsf{K}}F\subst{t}{b}$, since $b$
+is not in $\Gamma$, and the cut of the ordinary assumption against
+\rulename{Refl} (\cref{claus:lem:struct}) removes the clause.
+\rulename{Open} is \rulename{Elim} and \rulename{Close} is \rulename{Intro}
+at the same witness with the same mode; the side conditions of $\mathsf{K}$
+on fresh variables follow from those on scopes.
+
+By \cref{claus:thm:k}, $\mathsf{K}$ derives, for $Q$-free formulas and the
+translation $\tau$ of native formulas, the same judgments as $\Nat$
+(\Lean{kprf\_iff\_nprf} and \Lean{kprf\_iff\_nprf\_of\_qfree},
+\cref{claus:rem:kpkgs}).  The bridge of \cref{base:thm:bridge} applies as in
+\cref{wit:cor:clause-bridge}: the comparisons are the identity on terms and
+on $Q$-free formulas, $\Q{y}B$ is represented by $\D{x}{y}B$ with $x$ unused,
+and the translations, both formula round trips and the preservation of
+$0=\Suc 0$ transfer unchanged.
+\end{proof}
+
+\begin{remark}[What the proof uses of the mode]
+\label{wit:rem:ab-mode}
+The proof of \cref{wit:thm:ab-newest} uses the mode only in the case of
+\rulename{Close}, and there only through $\epsilon_{\theta B}=\epsilon_B$
+for injective renamings $\theta$.  The same proof therefore removes the
+witness from every introduction of the form
+$\Gamma,B(t,\epsilon_B(z))\proves B(t,\Suc z)$ over $\Gamma\proves\D{x}{y}B$,
+with $\epsilon_B(z)\in\{0,z\}$ determined by the uninstantiated matrix and
+preserved and reflected by injective renaming, in a calculus with the
+same \rulename{Alias}, \rulename{Use} and \rulename{Back}.  It is a theorem
+of relative derivability; soundness and arithmetic adequacy of the selected
+mode are separate obligations.  The mirror guard of
+\cref{claus:prop:mirror} qualifies: an injective renaming preserves and
+reflects the shape $a=\It{y}{a}{u}{h}$, although an arbitrary substitution
+can create it, and the proof uses no invariance under substitution.
+
+The mode of the introduction of the Alias/Back basis does not qualify: it
+tests whether the witness is literally $0$, and the alias $b$ is a
+parameter.  A source introduction at $0$ in the progress mode would become
+a target introduction at $b$ in the case mode, whose assumption
+$\theta B(b,0)$ does not transport to the source assumption
+$\theta B(0,z')$, and the proof does not apply.  Replacing the witness by
+the newest parameter while keeping that mode is not justified by it; the
+one-bit rule of \cref{wit:sec:bit} is a different repair.  The proof uses
+\rulename{Back} on compound formulas, in the two transports of the case of
+\rulename{Close}, when $B$ has a binder.
+\end{remark}
+
+\begin{remark}[The package]
+\label{wit:rem:ab-package}
+\pkg{local\_introduction} states the theorem for the temporary calculus
+$\mathsf{A}_{\ast}$ with persistent families over worlds and realizers, as
+above, and the corollary as the equality of the open consequences of the
+two diagonal alias calculi together with the inherited bridge; the
+comparison with $\mathsf{K}$ is made explicit by the adapters for
+\rulename{Refl}, the two rows of \rulename{Eval} and the clauses without
+antecedent, which are those of the proof above.  The package includes an
+independent reading of the argument, which records the six assumptions
+the proof needs: \rulename{Back} on compound formulas, the substitutive
+export of \rulename{Alias}, the mode tested on the raw matrix, the
+retention of old parameters in an extension, effective realizers quantified
+over all extensions, and capture-avoiding simultaneous substitution.  The
+theorem is not formalized in Lean or Rocq.
+\end{remark}
 
 % ---------------------------------------------------------------------
 \section{The raw guarded calculus}
@@ -2965,8 +3374,9 @@ occurrences of $b$ in $F$ into $v$ represents every instance of
 
 This section draws on the checker reports of \pkg{no\_witness},
 \pkg{parameter\_witness}, \pkg{deterministic\_introduction},
-\pkg{newest\_parameter}, \pkg{uniform\_raw}, \pkg{parameter\_intro} and
-\pkg{conditional\_copy}.  The checker of \pkg{constructed\_computation}
+\pkg{newest\_parameter}, \pkg{uniform\_raw}, \pkg{parameter\_intro},
+\pkg{conditional\_copy} and \pkg{local\_introduction}.  The checker of
+\pkg{constructed\_computation}
 belongs to another chapter.
 
 All checkers are standalone Python modules that read one JSON certificate,
@@ -3025,6 +3435,10 @@ $\mathsf{K}_{\mathrm N}$, backward & 619 & 686 & 1907 &
  $\mathsf{P}_{\nu}$ of \pkg{parameter\_intro}: 630 / 701 / 1925\\
 explicit equation at \rulename{Name} & 634 & 742 & 1835 & \\
 $\mathsf{K}$ with fuel & 685 & 796 & 1995 & \\
+\multicolumn{5}{@{}l}{\pkg{local\_introduction}}\\
+$\mathsf{A}_{\nu}$ & 862 & 1011 & 3245 &
+ $\mathsf{A}_{\nu}$ with a supplied \rulename{Close} witness:
+ 870 / 1022 / 3274\\
 \end{longtable}
 
 The packages compare their programs with further programs of the corpus.
@@ -3122,6 +3536,40 @@ the congruence of the successor under two universal quantifiers from 25 and
 1335 to 142 and 8909; a derivation in an open scope from 4 and 76 to 17 and
 501.
 
+\paragraph{\pkg{local\_introduction}.}
+The input is a JSON object with exactly the keys \texttt{goal} and
+\texttt{proof}; the goal is a closed formula with equations and $\D{}{}$,
+validated in full, and the proof is a tagged tree with six tags: one for
+each of \rulename{Use}, \rulename{Back}, \rulename{Alias}, \rulename{Open}
+and \rulename{Close}, and one for the two computations, given by a counter,
+a seed and a body.  Every consumed term is validated in
+its scope, including an iterator body that a zero computation does not
+evaluate; the source of \rulename{Back} must be the newest parameter and
+not $0$; the unused premise field of a \rulename{Use} of a clause without
+antecedent is ignored.  The checker of $\mathsf{A}_{\nu}$ and its control
+share all code, including the diagonal test, and differ only in the
+witness field of \rulename{Close}, supplied and validated in the control
+and computed from the scope in $\mathsf{A}_{\nu}$, by the invariant that
+the scope and the context have the same length.  The difference is 8
+tokens, 11 nodes and 29 bytes.  The diagonal test is absent from the
+witness-selected checkers of the Alias/Back basis; the short raw Alias/Back
+checker of \pkg{alias\_back}, 773 / 916 / 2903, is smaller than both
+programs of the row.  The package remeasures the compact incumbents of the
+corpus under their own contract, a closed guarded public goal without a
+grammar validator and a different certificate protocol: 248 / 277 / 609,
+254 / 270 / 608 and 272 / 304 / 479, and 344 / 392 / 637 with the full
+native goal and its alphabet validated; the envelope 248 / 270 / 479 is
+attained by three different programs.  An untrusted compiler implements
+the proof of \cref{wit:thm:ab-newest} for sources in the control calculus,
+in which \rulename{Use} and \rulename{Back} are already at the newest
+parameter, and replays every output through the checker of
+$\mathsf{A}_{\nu}$; it does not parse the larger calculus
+$\mathsf{A}_{\ast}$.  Eighteen source certificates are compiled and
+checked, eighteen adversarial certificates are rejected, and 108 process
+runs in the normal and the optimized interpreter mode pass; one open
+example uses an embedding of parameters that does not preserve their order
+and a map of clauses that is not contiguous.
+
 The restricted rules reduce the data of a certificate and, except for
 $\mathsf{G}_{\mathrm d}$, the measured checker by a small amount.  They
 increase the length of certificates, because a witness term is replaced by
@@ -3143,7 +3591,7 @@ fragment (\cref{wit:sec:packet}).  It does not formalize the deterministic
 selection of the witness, the newest parameter or $0$ in an empty scope,
 with the regeneration of derivations under an extension of the scope.
 Hence none of
-\cref{wit:thm:newest,wit:thm:diagonal,wit:thm:R-newest,wit:thm:clause-bit,wit:thm:weakening,wit:thm:gd,wit:thm:guarded-uniform}
+\cref{wit:thm:newest,wit:thm:diagonal,wit:thm:R-newest,wit:thm:clause-bit,wit:thm:ab-newest,wit:thm:weakening,wit:thm:gd,wit:thm:guarded-uniform}
 is formalized, and nothing in \cref{wit:sec:recursor,wit:sec:copy} on the
 counter-aware recursor is formalized, in particular
 \cref{wit:thm:recursor,wit:thm:copy,wit:thm:witness-removal}.  A
@@ -3160,6 +3608,25 @@ successors, gates, clause specialization, \rulename{Close} at the newest
 parameter and the ordinary elimination, so that the theorem can be reused.
 \Cref{wit:lem:template} and the translation of \cref{wit:thm:recursor} are
 named by \pkg{parameter\_intro} as the next formalization task.
+\pkg{local\_introduction} proposes a Lean definition of the calculus
+$\mathsf{A}_{\nu}$ with ordered scopes and the induction statement of
+\cref{wit:thm:ab-newest} over clause realizers, kept apart from the
+invariant of closed certificates that the scope and the context have the
+same length.
+\end{question}
+
+\begin{question}[Equation-only \rulename{Back} with the newest
+\rulename{Close}]
+\label{wit:q:ab-back}
+The proof of \cref{wit:thm:ab-newest} transports the assumption and the
+conclusion of a \rulename{Close}, which are compound when the matrix has a
+binder, by \rulename{Back} on compound formulas
+(\cref{wit:rem:ab-mode}).  \pkg{alias\_back} states that its presentation
+with a supplied witness admits the restriction of \rulename{Back} to
+equations.  Is $\mathsf{A}_{\nu}$ with \rulename{Back} restricted to
+equations still equivalent to $\mathsf{A}_{\ast}$?  A positive answer needs
+a noncircular recovery of formula transport from equational
+\rulename{Back}, the newest \rulename{Use} and the newest \rulename{Close}.
 \end{question}
 
 \begin{question}[Three families on raw iterator terms]
@@ -3194,6 +3661,9 @@ of the translated certificates is claimed; the translations regenerate a
 premise inside additional scopes and may duplicate it.  Determine the
 growth, and whether sharing of regenerated subderivations in a checked
 directed acyclic graph reduces it without enlarging the trusted rules.
+\pkg{local\_introduction} asks the same for the repeated production of
+persistent families in the proof of \cref{wit:thm:ab-newest}, and whether
+the sharing can be checked without erasing the saving of the interface.
 \end{question}
 
 \begin{question}[Modes without a guard]
@@ -3231,11 +3701,25 @@ Further remarks of the packages on what is not shown:
  proposed.  The question of \pkg{deterministic\_introduction} whether the
  selector by pattern can be recognized more cheaply is superseded by
  \cref{wit:thm:guarded-uniform}, which removes the selector.
+\item \pkg{local\_introduction} records that its target, a presentation
+ whose complete checker lies below the current compact programs, is not
+ attained: the checker of $\mathsf{A}_{\nu}$ is smaller than its matched
+ control only, and the diagonal test it needs is absent from the
+ witness-selected Alias/Back checkers.  Whether the removal of the witness
+ can reduce the smallest complete checker, with the diagonal or the mirror
+ test and the alias machinery made cheaper while exact freshness and a
+ stated input contract are kept, is open; no measurement of a mirror
+ variant is made.  The package also asks for a formulation of a genuine
+ lower bound on checker size, which has to fix the implementation
+ language, the input contract, the accounting of dependencies, the
+ convention for success and the resource model; the measured envelope and
+ the obstruction theorems of the article do not provide one.
 \item \pkg{deterministic\_introduction} supplies a complete elaborator from
  certificates of $\mathsf{G}_{\mathrm d}$ to certificates of $\mathsf{G}$
  and illustrates the converse by one translated pair; \pkg{uniform\_raw}
  supplies no translator; the translator of \pkg{conditional\_copy} is not
- verified.  The correctness of the Python programs is supported by finite
+ verified, and the compiler of \pkg{local\_introduction} is checked only by
+ the replay of its outputs.  The correctness of the Python programs is supported by finite
  tests only.
 \item In \cref{wit:thm:recursor-bi,wit:prop:liberal} the equivalence of the
  diagonal calculus with $\Nat$ and the bridge are used over the vocabulary

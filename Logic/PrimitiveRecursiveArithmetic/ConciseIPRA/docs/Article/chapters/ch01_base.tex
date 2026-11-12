@@ -971,7 +971,12 @@ for $\mathcal U$.  The cost is moved into the terms: every free occurrence
 of $x$ in $A$ is replaced by the fixed term $P(z)$, and the gate replaces
 each side $s$ of the terminal equation of $A$ by $\sel(z,a,s)$, where $a$
 is a nest of $r(A)$ selectors over $0$, one for each binder of $A$.  No
-formula is duplicated.
+formula is duplicated.  In the measure of \cref{base:def:termsize},
+$|P(z)|=75$, so each occurrence of $x$ adds $74$ nodes.  Any term with the
+two properties named in \cref{base:q:single-binder-inverse} may take the
+place of $P$; the predecessor $P_-$ of \cref{base:prop:pred57} has them and
+$|P_-(z)|=57$, so with it each occurrence adds $56$ nodes
+(\cref{base:rem:pred57}).
 \end{remark}
 
 \begin{remark}[The rules as \pkg{single\_binder} states them]
@@ -1124,7 +1129,9 @@ This section draws on the reference statements filed with
 \pkg{certified\_zero} (scalar predecessor, equality reflection, primitive
 recursion) and, for the predecessor, on the equational derivations of
 \pkg{uniform\_raw}, \pkg{newest\_parameter}, \pkg{parameter\_witness} and
-\pkg{no\_witness}.  The language has no predecessor and no pairing, and the
+\pkg{no\_witness}, with a smaller predecessor from \pkg{479\_predecessor57}
+and the replacement of coverage from \pkg{zero\_test\_split}.  The language
+has no predecessor and no pairing, and the
 body of an iterator does not see the counter.  The arithmetic is developed
 in this order: a
 predecessor term; truncated subtraction and a term that reflects equality;
@@ -1606,6 +1613,411 @@ kernel under any restriction of the witness of \rulename{DI}
 (\Lean{EqPrf.toDW}), because its derivations contain no introduction of $D$.
 The older modules \Lean{TeqParity}, \Lean{TeqCompare} and \Lean{TeqPred}
 prove the two equations in $\Teq$ and split the Boolean value by coverage.
+\end{remark}
+
+\subsection{A smaller predecessor}
+\label{base:sec:pred57}
+
+This subsection draws on \pkg{479\_predecessor57}, which shortens the
+three-cycle and the ramp of \cref{base:thm:pred} and reverses the
+comparison in the saturating counter.  The size of the resulting term is
+measured as follows.
+
+\begin{definition}[Size of a term]
+\label{base:def:termsize}
+$|x|\defeq|0|\defeq 1$, $|\Suc t|\defeq 1+|t|$ and
+$|\It{n}{a}{u}{h}|\defeq 1+|n|+|a|+|h|$.  Thus one node is counted for
+every occurrence of a variable, free or bound, of $0$, of $\Suc$ and of the
+iterator; the name of the bound variable is not counted.  The size of an
+abbreviation is the size of its full expansion, with every repeated
+subterm counted at each occurrence.
+\end{definition}
+
+Hence $|\sel(c,a,b)|=1+|c|+|a|+|b|$, $|Z(c)|=|c|+4$, $|N(c)|=|c|+7$,
+$|a+b|=|a|+|b|+3$ and $|2^{x}|=|x|+8$.  Put
+\[
+ J(u)\defeq\It{u}{2}{w}{Z(w)},\qquad
+ M_-(n)\defeq\It{n}{0}{u}{J(u)},\qquad
+ G_-(n)\defeq\It{n}{0}{u}{\Suc\sel\bigl(M_-(u),\,\Suc u,\,u\bigr)},
+\]
+\[
+ H_-(u)\defeq\sel\bigl(N(u),G_-(u),u\bigr),\qquad
+ L_-(x,y)\defeq N\bigl(\It{y}{2^{x}}{u}{H_-(u)}\bigr),
+\]
+and
+\[
+ \beta_-(k,u)\defeq\sel\bigl(L_-(k,\Suc u),\,\Suc u,\,u\bigr),\qquad
+ W_-(t,k)\defeq\It{t}{0}{u}{\beta_-(k,u)},\qquad
+ P_-(m)\defeq W_-(m,m).
+\]
+Written out,
+\[
+ P_-(m)=\It{m}{0}{u}{\sel\bigl(L_-(m,\Suc u),\,\Suc u,\,u\bigr)},
+\]
+a term whose only free variable is $m$.  The three-cycle $M_-$ iterates the
+zero test from the seed $2$ instead of evaluating $Z(u)+2N(u)$; the ramp
+$G_-$ adds $2$ or $1$ according to whether the state of $M_-$ is zero,
+instead of adding one more than the state of $M$; and the counter tests $L_-(k,\Suc u)$ and exchanges the two outputs
+of its selector.  On the natural numbers $M_-$ runs through $0,2,1,0,\dots$
+and $G_-(n)=\lceil 3n/2\rceil$, while $M$ runs through $0,1,2,0,\dots$ and
+$G(n)=\lfloor 3n/2\rfloor$.  These readings are not used.
+
+\begin{lemma}[Three-cycle and ramp of the smaller predecessor]
+\label{base:lem:ramp57}
+$\mathcal E$ derives
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $J(0)=2$, $J(1)=0$, $J(2)=1$, $M_-(0)=0$ and $M_-(\Suc n)=J(M_-(n))$;
+\item $M_-(G_-(n))=N(n)$;
+\item $G_-(0)=0$, $G_-(\Suc n)=\Suc\bigl(G_-(n)+Z(N(n))\bigr)$ and
+ $G_-(\Suc\Suc n)=\Suc\Suc\Suc G_-(n)$;
+\item $G_-(2n)=3n$;
+\item $G_-(3n)+N(n)=3G_-(n)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) $J(0)=2$ is \rulename{I0}.  By \rulename{IS} and
+\cref{base:lem:interp}(i), $J(1)=Z(J(0))=Z(\Suc 1)=0$ and
+$J(2)=Z(J(1))=Z(0)=1$.  The last two equations are \rulename{I0} and
+\rulename{IS}.
+
+(ii) As in the proof of \cref{base:lem:ramp}(i), two identities are derived
+first, for variables $g$ and $b$, in the context that consists of the one
+equation $Z(Z(b))=b$:
+\begin{align}
+ M_-\bigl(\Suc\sel(b,\Suc g,g)\bigr)
+ &=\sel\bigl(b,\ J(J(M_-(g))),\ J(M_-(g))\bigr), \label{base:eq:ramp57-a}\\
+ \sel\bigl(b,\ J(J(b)),\ J(b)\bigr)&=Z(b). \label{base:eq:ramp57-b}
+\end{align}
+Both are instances of the two-point rule.  For \eqref{base:eq:ramp57-a} the
+templates are $F(v)\defeq M_-(\Suc\sel(v,\Suc g,g))$ and
+$F'(v)\defeq\sel(v,J(J(M_-(g))),J(M_-(g)))$:
+$F(0)=M_-(\Suc\Suc g)=J(M_-(\Suc g))=J(J(M_-(g)))=F'(0)$ and
+$F(1)=M_-(\Suc g)=J(M_-(g))=F'(1)$, by $\sel(0,a,b)=a$, $\sel(1,a,b)=b$
+and (i).  For \eqref{base:eq:ramp57-b} the templates are
+$\sel(v,J(J(v)),J(v))$ and $Z(v)$: at $0$ both sides are $J(J(0))=J(2)=1=Z(0)$,
+and at $1$ they are $J(1)=0=Z(1)$.  By \cref{base:lem:parity} the hypothesis
+is derivable for $b=N(n)$, so both identities hold at $g=G_-(n)$ and
+$b=N(n)$ in every context.  Now \rulename{EI} on $n$.  The base is
+$M_-(G_-(0))=M_-(0)=0=N(0)$.  In the step the induction equation is
+$M_-(G_-(n))=N(n)$, and
+\begin{align*}
+ M_-(G_-(\Suc n))
+ &=M_-\bigl(\Suc\sel(M_-(G_-(n)),\Suc G_-(n),G_-(n))\bigr)
+  =M_-\bigl(\Suc\sel(N(n),\Suc G_-(n),G_-(n))\bigr)\\
+ &=\sel\bigl(N(n),\ J(J(M_-(G_-(n)))),\ J(M_-(G_-(n)))\bigr)\\
+ &=\sel\bigl(N(n),\ J(J(N(n))),\ J(N(n))\bigr)=Z(N(n))=N(\Suc n).
+\end{align*}
+The second and fourth steps use the induction equation by congruence, the
+third is \eqref{base:eq:ramp57-a} and the fifth is \eqref{base:eq:ramp57-b}.
+
+(iii) The first equation is \rulename{I0}.  The two-point rule gives, for
+variables $g$ and $b$ in the context $Z(Z(b))=b$,
+$\sel(b,\Suc g,g)=g+Z(b)$: at $0$ both sides are $\Suc g=g+1$, and at $1$
+both sides are $g=g+0$, by \cref{base:lem:add}.  Instantiating at
+$g=G_-(n)$ and $b=N(n)$, \rulename{IS} and (ii) give
+\[
+ G_-(\Suc n)=\Suc\sel\bigl(M_-(G_-(n)),\Suc G_-(n),G_-(n)\bigr)
+ =\Suc\sel\bigl(N(n),\Suc G_-(n),G_-(n)\bigr)=\Suc\bigl(G_-(n)+Z(N(n))\bigr).
+\]
+Applying it twice, with $N(\Suc n)=Z(N(n))$, $Z(Z(N(n)))=N(n)$ and
+$N(n)+Z(N(n))=1$ (\cref{base:lem:parity}),
+$G_-(\Suc\Suc n)=\Suc\bigl(\Suc(G_-(n)+Z(N(n)))+N(n)\bigr)
+ =\Suc\Suc\bigl(G_-(n)+(N(n)+Z(N(n)))\bigr)=\Suc\Suc(G_-(n)+1)
+ =\Suc\Suc\Suc G_-(n)$.
+
+(iv) \rulename{EI}: $G_-(2\cdot 0)=G_-(0)=0=3\cdot 0$, and
+$G_-(2(\Suc n))=G_-(\Suc\Suc(2n))=\Suc\Suc\Suc G_-(2n)=\Suc\Suc\Suc(3n)
+ =3(\Suc n)$.
+
+(v) \rulename{EI}.  The base is $G_-(3\cdot 0)+N(0)=G_-(0)+0=0=3G_-(0)$.  In
+the step write $b\defeq N(n)$ and $z\defeq Z(N(n))$.  By (iii) at
+$\Suc\Suc(3n)$ and at $3n$, and by $N(\Suc\Suc(3n))=N(3n)=N(n)$ and
+$N(\Suc n)=z$ (\cref{base:lem:parity}),
+\[
+ G_-(3(\Suc n))+N(\Suc n)
+ =G_-\bigl(\Suc\Suc\Suc(3n)\bigr)+z
+ =\Suc\bigl(\Suc\Suc\Suc G_-(3n)+z\bigr)+z
+ =\Suc\Suc\Suc\Suc\bigl(G_-(3n)+z+z\bigr).
+\]
+By (iii), \cref{base:lem:add}, the induction equation
+$3G_-(n)=G_-(3n)+b$ and $b+z=1$,
+\[
+ 3G_-(\Suc n)=3\,\Suc\bigl(G_-(n)+z\bigr)
+ =\Suc\Suc\Suc\bigl(3G_-(n)+3z\bigr)
+ =\Suc\Suc\Suc\bigl(G_-(3n)+(b+z)+z+z\bigr)
+ =\Suc\Suc\Suc\Suc\bigl(G_-(3n)+z+z\bigr).
+\]
+No cancellation is used.
+\end{proof}
+
+\begin{lemma}[Factor map and comparator of the smaller predecessor]
+\label{base:lem:factor57}
+$\mathcal E$ derives $H_-(2u)=3u$, $H_-(1)=1$, $H_-(3u)=3H_-(u)$ and
+\[
+ L_-(0,y)=1,\qquad L_-(\Suc x,0)=0,\qquad L_-(\Suc x,\Suc y)=L_-(x,y),\qquad
+ L_-(n,n)=1 .
+\]
+\end{lemma}
+
+\begin{proof}
+$H_-(2u)=\sel(N(2u),G_-(2u),2u)=\sel(0,3u,2u)=3u$ by
+\cref{base:lem:parity} and \cref{base:lem:ramp57}(iv), and
+$H_-(1)=\sel(N(1),G_-(1),1)=\sel(1,G_-(1),1)=1$.  For the third equation
+the two-point rule gives, for variables $a,c,d,e$ and $b$ in the context
+$Z(Z(b))=b$,
+\[
+ 3\,\sel(b,a,c)=\sel(b,3a,3c),\qquad \sel(b,d+b,e)=\sel(b,d,e):
+\]
+at $b=0$ the sides are $3a$, respectively $d+0=d$, and at $b=1$ they are
+$3c$, respectively $e$.  Instantiating at $b=N(u)$, $a=G_-(u)$, $c=u$,
+$d=G_-(3u)$ and $e=3u$, and using \cref{base:lem:ramp57}(v) and
+$N(3u)=N(u)$,
+\begin{align*}
+ 3H_-(u)&=3\,\sel\bigl(N(u),G_-(u),u\bigr)=\sel\bigl(N(u),3G_-(u),3u\bigr)
+  =\sel\bigl(N(u),G_-(3u)+N(u),3u\bigr)\\
+ &=\sel\bigl(N(u),G_-(3u),3u\bigr)=\sel\bigl(N(3u),G_-(3u),3u\bigr)=H_-(3u).
+\end{align*}
+The proofs of \cref{base:lem:orbit} and of the first three equations of
+\cref{base:lem:cmp} use of $H$ only the three equations of
+\cref{base:lem:factor}, together with rotation, computation and
+\cref{base:lem:parity}.  With $H_-$ in place of $H$ they derive
+$\It{y}{3a}{u}{H_-(u)}=3\,\It{y}{a}{u}{H_-(u)}$,
+$\It{y}{1}{u}{H_-(u)}=1$ and the first three equations for $L_-$.  The
+fourth is an equation induction: $L_-(0,0)=1$ by the first, and
+$L_-(\Suc n,\Suc n)=L_-(n,n)$ by the third.
+\end{proof}
+
+\begin{proposition}[A predecessor of $57$ nodes]
+\label{base:prop:pred57}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\proves_{\mathcal E}P_-(0)=0$ and $\proves_{\mathcal E}P_-(\Suc x)=x$;
+ hence the same sequents are derivable in $\Nat$ and in $\Teq$.
+\item For a variable $m$, $|P_-(m)|=57$, while the predecessor $P(m)$ of
+ \cref{base:thm:pred} has $|P(m)|=75$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i) By \rulename{I0} and \rulename{IS}, $W_-(0,k)=0$ and
+$W_-(\Suc t,k)=\beta_-(k,W_-(t,k))$.  By \cref{base:lem:factor57} and
+\cref{base:lem:interp}(ii),
+\begin{align*}
+ \beta_-(\Suc k,\Suc u)
+ &=\sel\bigl(L_-(\Suc k,\Suc\Suc u),\Suc\Suc u,\Suc u\bigr)
+  =\sel\bigl(L_-(k,\Suc u),\Suc\Suc u,\Suc u\bigr)=\Suc\beta_-(k,u),\\
+ \beta_-(\Suc\Suc k,0)
+ &=\sel\bigl(L_-(\Suc\Suc k,\Suc 0),1,0\bigr)
+  =\sel\bigl(L_-(\Suc k,0),1,0\bigr)=\sel(0,1,0)=1.
+\end{align*}
+\emph{Conjugacy.}  $W_-(\Suc t,\Suc\Suc k)=\Suc W_-(t,\Suc k)$, by
+\rulename{EI} on $t$ with $k$ fixed.  The base is
+$W_-(\Suc 0,\Suc\Suc k)=\beta_-(\Suc\Suc k,0)=1=\Suc W_-(0,\Suc k)$.  The
+step is
+\[
+ W_-(\Suc\Suc t,\Suc\Suc k)
+ =\beta_-\bigl(\Suc\Suc k,\ \Suc W_-(t,\Suc k)\bigr)
+ =\Suc\beta_-\bigl(\Suc k,\ W_-(t,\Suc k)\bigr)=\Suc W_-(\Suc t,\Suc k),
+\]
+by the induction equation and the first displayed identity.
+
+\emph{Below its cap the counter does not saturate.}  $W_-(n,\Suc n)=n$, by
+\rulename{EI} on $n$: $W_-(0,\Suc 0)=0$, and
+$W_-(\Suc n,\Suc\Suc n)=\Suc W_-(n,\Suc n)=\Suc n$ by the conjugacy,
+derived with independent variables and instantiated at $t=k=n$, and the
+induction equation.
+
+\emph{The two equations.}  $P_-(0)=W_-(0,0)=0$, and
+\begin{align*}
+ P_-(\Suc x)=W_-(\Suc x,\Suc x)
+ &=\beta_-\bigl(\Suc x,W_-(x,\Suc x)\bigr)=\beta_-(\Suc x,x)
+  =\sel\bigl(L_-(\Suc x,\Suc x),\Suc x,x\bigr)\\
+ &=\sel\bigl(L_-(x,x),\Suc x,x\bigr)=\sel(1,\Suc x,x)=x,
+\end{align*}
+by \cref{base:lem:factor57}.  The transfer is \cref{base:lem:E}(iv).
+
+(ii) By \cref{base:def:termsize}, with variables as arguments,
+$|J(u)|=10$, $|M_-(n)|=13$, $|G_-(n)|=21$ (its body has $18$ nodes),
+$|H_-(u)|=1+8+21+1=31$, $|L_-(x,y)|=|x|+|y|+47=49$,
+$|\beta_-(k,u)|=1+|L_-(k,\Suc u)|+2+1=54$ and
+$|P_-(m)|=1+1+1+54=57$.  For the terms of \cref{base:thm:pred},
+$|j(u)|=5+19+3=27$, $|M(n)|=30$, $|G(n)|=38$, $|H(u)|=48$,
+$|L(x,y)|=|x|+|y|+64=66$, $|\beta(k,u)|=1+|L(\Suc\Suc u,k)|+1+2=72$ and
+$|P(m)|=75$.
+\end{proof}
+
+The sizes of the pieces, with variables as arguments, are
+\begin{center}
+\begin{tabular}{lrr}
+\hline
+term & \cref{base:thm:pred} & \cref{base:prop:pred57}\\
+\hline
+three-cycle $M$, $M_-$ & $30$ & $13$\\
+ramp $G$, $G_-$ & $38$ & $21$\\
+factor map $H$, $H_-$ & $48$ & $31$\\
+comparator $L$, $L_-$ & $66$ & $49$\\
+predecessor $P$, $P_-$ & $75$ & $57$\\
+\hline
+\end{tabular}
+\end{center}
+The new three-cycle and ramp alone, with the counter of \cref{base:thm:pred}
+($\sel(L_-(\Suc\Suc u,m),u,\Suc u)$ as body), give $58$ nodes; the reversed
+counter alone, with $L$, gives $74$.  The saving of $18$ nodes concerns one
+expanded term, not the size of a checker or of a derivation.
+
+\begin{remark}[Use of the smaller predecessor; sources]
+\label{base:rem:pred57}
+The term $P_-$ has the two properties of $P$ that the later sections use:
+its only free variable is its argument, and it satisfies the two equations
+of \cref{base:thm:pred} in $\mathcal E$, hence in every context and at every
+term.  The constructions of the rest of this section, and the single-binder
+universal of \cref{base:sec:single-binder}, use $P$ only through these
+properties, so $P_-$ may replace $P$ in each of them; with $P_-$ every
+occurrence of a quantified variable in \cref{base:def:single-binder} costs
+$|P_-(z)|-1=56$ added nodes instead of $74$.  The article keeps $P$ as the
+reference term because its derivation is formalized in Lean.
+\pkg{479\_predecessor57} gives the construction with $J$, $M_-$, $G_-$
+and $H_-$ as above.  Its main report proves the invariant, the
+step law and $G_-(3n)+N(n)=3G_-(n)$ by splitting the Boolean value $N(n)$
+in the induction step, and its detailed note replaces those splits by the
+equational two-point argument, as in the proof above.  Its proof of the
+predecessor equations defines $W(t,m)=\It{t}{0}{u}{\sel(L_-(m,u),\Suc u,u)}$,
+proves $W(\Suc t,\Suc m)=\Suc W(t,m)$, $L_-(n,n)=1$ and $W(n,n)=n$, and
+then identifies the body of $P_-(\Suc m)$ with that of $W(\cdot,m)$ by a
+further equation induction (\cref{base:cor:rot}(ii)); the counter
+$W_-(t,k)$ and the conjugacy between the caps $\Suc\Suc k$ and $\Suc k$
+used above avoid that induction, as in \cref{base:thm:pred}.  The new
+terms are not formalized in Lean or Rocq.
+\end{remark}
+
+\subsection{Coverage from a zero-test split}
+\label{base:sec:split}
+
+This subsection draws on \pkg{zero\_test\_split}.  With the equational
+predecessor available, the coverage axiom (T2) of \cref{base:def:teq} can
+be replaced by a disjunction of two equations without an existential
+quantifier.  Let $\Teq^{-}$ be the theory with the axioms (T1) and (T4)
+of \cref{base:def:teq}, and consider the following schemas, for every
+term $n$:
+\[
+ \mathsf{Cov}:\ n=0\vee\exists m\,(n=\Suc m),\qquad
+ \mathsf{Split}:\ n=0\vee Z(n)=0,\qquad
+ \mathsf{BR}:\ Z(n)=0\vee Z(n)=1 .
+\]
+$\mathsf{Cov}$ is (T2), and $\mathsf{Split}$ written out is
+$n=0\vee\It{n}{1}{u}{0}=0$.  The proof of \cref{base:lem:E}(iv) derives
+\rulename{EI} from (T4) by \cref{base:lem:teqcases}(ii), which does not use
+(T2) or (T3), and \rulename{Tr} from the Leibniz rule.  Hence every
+sequent derivable in $\mathcal E$ is derivable in $\Teq^{-}$, in particular
+the equations of \cref{base:thm:pred}.
+
+\begin{lemma}[Decomposition]
+\label{base:lem:dec}
+$\mathcal E$ derives $n=\sel\bigl(Z(n),\Suc P(n),0\bigr)$.
+\end{lemma}
+
+\begin{proof}
+Equational cases (\cref{base:lem:E}(iii)) on $n$.  At $0$ the right side is
+$\sel(Z(0),\Suc P(0),0)=\sel(1,\Suc P(0),0)=0$.  At $\Suc x$ it is
+$\sel(Z(\Suc x),\Suc P(\Suc x),0)=\sel(0,\Suc P(\Suc x),0)=\Suc P(\Suc x)
+=\Suc x$, by \cref{base:thm:pred}.
+\end{proof}
+
+\begin{theorem}[Three equivalent case axioms]
+\label{base:thm:split}
+Over $\Teq^{-}$ the schemas $\mathsf{Cov}$, $\mathsf{Split}$ and
+$\mathsf{BR}$ are pairwise interderivable: each instance of one is
+derivable from the instances of another at the same term.  Separation is
+not used.
+\end{theorem}
+
+\begin{proof}
+$\mathsf{Cov}\Rightarrow\mathsf{Split}$: eliminate the disjunction.  The
+branch $n=0$ is the first disjunct.  In the other branch eliminate the
+existential quantifier at a fresh $m$; from $n=\Suc m$ the Leibniz rule
+gives $Z(n)=Z(\Suc m)=0$.
+
+$\mathsf{Split}\Rightarrow\mathsf{Cov}$: the branch $n=0$ is the first
+disjunct.  In the branch $Z(n)=0$, \cref{base:lem:dec} and the Leibniz rule
+give $n=\sel(0,\Suc P(n),0)=\Suc P(n)$, and $\exists$I at the witness $P(n)$
+gives the second disjunct.
+
+$\mathsf{Split}\Rightarrow\mathsf{BR}$: in the branch $n=0$, $Z(n)=Z(0)=1$;
+the branch $Z(n)=0$ is the first disjunct.
+
+$\mathsf{BR}\Rightarrow\mathsf{Split}$: the branch $Z(n)=0$ is the second
+disjunct.  In the branch $Z(n)=1$, \cref{base:lem:dec} gives
+$n=\sel(1,\Suc P(n),0)=0$.
+
+Each argument is one elimination of a disjunction, with at most one
+elimination of an existential quantifier.
+\end{proof}
+
+\begin{corollary}[Coverage replaced by the split]
+\label{base:cor:split}
+Let $\Teq^{\mathrm{Z}}$ be $\Teq$ with (T2) replaced by $\mathsf{Split}$.
+Then $\Teq^{\mathrm{Z}}$ and $\Teq$ have the same theorems, and
+\cref{base:thm:bridge} holds with $\Teq^{\mathrm{Z}}$ in place of $\Teq$.
+\end{corollary}
+
+\begin{proof}
+The two theories share the logic, the language and the axioms (T1), (T3)
+and (T4), and so both contain $\Teq^{-}$; they differ only in (T2) and
+$\mathsf{Split}$.  By \cref{base:thm:split} each of these is a theorem of
+the other theory, so a derivation in one becomes a derivation in the other
+by replacing each instance of the differing axiom with its derivation.  The identity translation is therefore
+a bi-interpretation of the two theories, and \cref{base:thm:bridge} transfers
+verbatim.
+\end{proof}
+
+\begin{proposition}[The split is not derivable without a case axiom]
+\label{base:prop:split-indep}
+The axioms (T1), (T3), (T4) do not derive $\mathsf{Split}$, $\mathsf{Cov}$ or
+$\mathsf{BR}$ at a variable, even together with every instance of excluded
+middle.  In particular $n=0\vee(n=0\to\bot)$ cannot replace $\mathsf{Split}$.
+\end{proposition}
+
+\begin{proof}
+Interpret the language in the classical structure with domain
+$\mathbb N\times\mathbb N$: $0$ is $(0,0)$, the successor acts on both
+coordinates, and the value of a term under an assignment $\rho$ is the pair
+of its values in $\mathbb N$ under the two coordinate assignments $\rho_0$
+and $\rho_1$; this is well defined and commutes with substitution, because
+the values in $\mathbb N$ do.  The computation equations (T1) hold in each
+coordinate, and (T3) holds because $(0,0)\neq(1,1)$.  For (T4) fix the
+parameters of an equation $E(z)$ and suppose that $E(0)$ holds and that
+$E(z)$ implies $E(\Suc z)$ for every $z$.  An induction in $\mathbb N$ gives
+$E((k,k))$ for every $k$.  An equation holds at a pair if and only if it
+holds in each coordinate, and the coordinate $i$ of $E((a_0,a_1))$ depends
+only on $a_i$ and the coordinate $i$ of the parameters.  Hence the
+coordinate $0$ of $E((a_0,a_1))$ is that of $E((a_0,a_0))$ and the
+coordinate $1$ is that of $E((a_1,a_1))$, and $E((a_0,a_1))$ holds.  The
+structure is classical, so it satisfies every instance of excluded middle,
+and intuitionistic derivations are sound in it.  At $n=(0,1)$, however,
+$n\neq(0,0)$ and $Z(n)=(Z(0),Z(1))=(1,0)$ differs from $(0,0)$ and from
+$(1,1)$, so $\mathsf{Split}$ and $\mathsf{BR}$ fail, and $\mathsf{Cov}$ fails
+by \cref{base:thm:split}.
+\end{proof}
+
+\begin{remark}[Scope of the split; sources]
+\label{base:rem:split}
+$\mathsf{Split}$ is quantifier free and has no witness; coverage becomes a
+theorem with the fixed witness $P(n)$.  Counting one node for each term node
+of \cref{base:def:termsize}, each equation, connective and quantifier, the
+universal closure of $\mathsf{Cov}$ has $10$ nodes and that of
+$\mathsf{Split}$, expanded, has $12$; the existential-free alternative
+$\forall n\,(n=0\vee n=\Suc P_-(n))$ has $8+57=65$.  The change removes an
+existential quantifier, not nodes.  Separation stays an axiom of
+$\Teq^{\mathrm{Z}}$ for the reason of \cref{base:rem:sep}: the one-element
+structure also satisfies $\mathsf{Split}$.  \pkg{zero\_test\_split} adds that
+computation and the Leibniz rule derive $0=1\proves s=t$, by transport into
+$\sel(\cdot,s,t)$, and hence, by induction on formulas with the witness $0$
+at an existential quantifier, $0=1\proves\varphi$ for every formula $\varphi$
+built from equations with $\wedge$, $\vee$, $\to$, $\forall$ and $\exists$;
+this does not make (T3) derivable, since $\bot$ is a logical constant.  The
+same product structure shows, in the chapter on the kernel rules, that
+coverage does not follow from the other scalar principles.  The
+equivalence is not formalized in Lean.
 \end{remark}
 
 \subsection{Successor laws, subtraction and the reflection of equality}
@@ -2857,7 +3269,9 @@ Three constructions account for most of the length of the proof of
 (\cref{base:thm:pred}), the conjunction of two formulas through the parity
 term (\cref{base:def:macros}), and the selector of two formulas by a double
 recursion on their binders (\cref{base:def:gate}).  No shorter replacement
-for any of them is known.  On the side of $\iPRA$, the extensionality of the
+for any of them is known; the predecessor $P_-$ of \cref{base:prop:pred57}
+is a smaller term, but its derivation has the same structure and length as
+that of \cref{base:thm:pred}.  On the side of $\iPRA$, the extensionality of the
 simulated iterator (\cref{base:lem:iota-ext}) and the round trip of a
 recursion (\cref{base:prop:termrt}(ii)) are two separate inductions; in
 $\Teq$ their counterparts are both instances of \cref{base:lem:uniq}.  Is
@@ -2895,7 +3309,17 @@ and that $\proves_{\Nat}P(\Suc x)=x$.  Every term with these two properties
 can replace $P$ in \cref{base:def:single-binder}.  \pkg{single\_binder} asks
 whether a term simpler than the predecessor serves, and reports that its
 expansion of the same predecessor construction, with all abbreviations
-unfolded, has $75$ nodes.  No smaller such term is known.
+unfolded, has $75$ nodes; in the measure of \cref{base:def:termsize} this is
+$|P(m)|=75$ (\cref{base:prop:pred57}(ii)).  The predecessor $P_-$ of
+\cref{base:prop:pred57}, from \pkg{479\_predecessor57}, is such a term with
+$57$ nodes.  Is there a smaller term $p(m)$, in the grammar of $0$,
+$\Suc$, variables and the iterator, with $\FV(p(m))=\{m\}$ and
+$\proves_{\Nat}p(\Suc x)=x$, or one with $p(0)=0$ as well?  No lower bound
+for the size of such a term is known, and the value $57$ is an achieved
+construction, not a minimum.  \pkg{479\_predecessor57} also asks whether
+the Lean development of the bridge can be stated with the predecessor as a
+parameter subject only to its two equations, so that $P_-$ inherits the
+formalization of $P$; this is not done.
 \end{question}
 
 \begin{question}[Size of the single-binder translation]
@@ -2914,4 +3338,44 @@ The counts are checked by a program for $n\le 10$ and the general bound is
 argued only in outline.  Neither is proved here, and the corresponding
 counts for the definitions of the article
 (\cref{base:rem:single-binder-size}) are not computed.
+\pkg{479\_predecessor57} states that with $P_-$ in place of $P$ the count
+$85n+4$ becomes $67n+4$ (at $n=10$: $674$), with the same binder rank $n$;
+in its accounting the atomic formula has $4n+4$ nodes and each universal
+adds $7$ nodes for its gate and binder and $74$, respectively $56$, for the
+expansion of the predecessor at the single occurrence of its variable.
+Since each $x_i$ occurs once in $F_n$, this follows from the count $85n+4$
+and $|P(z)|-|P_-(z)|=18$, but $85n+4$ itself is not proved here.
+\end{question}
+
+\begin{question}[Finite blocks under one binder]
+\label{base:q:blocks}
+\pkg{479\_predecessor57} states, for the inherited selector $M_v(A,B)$ of
+formulas built from equations and $D$ that aligns common binders and pads
+the shorter operand with gates (\cref{base:rem:single-binder-sources}), the
+following, with proofs given only in outline.  (a) Writing $r$ for the
+binder rank and $T$ for the number of nodes of the two terminal terms,
+$r(M_v(A,B))=\max(r(A),r(B))$ and
+$T(M_v(A,B))=T(A)+T(B)+2|v|+2+6|r(A)-r(B)|$; over all binary selector trees
+with leaves $A_0,\dots,A_{n-1}$ the total padding is at least
+$r_{\max}-r_{\min}$ levels, attained by a comb ordered by rank.  (b) With
+$\operatorname{Let}_{w=a}A$ the formula whose terminal equation $s=t$ is
+replaced by $\It{1}{a}{w}{s}=\It{1}{a}{w}{t}$, and operands ordered by
+nonincreasing rank, the finite selector
+$\Sigma_1(v;A_0)=A_0$,
+$\Sigma_{n+1}(v;A_0,\dots,A_n)=M_{N(v)}\bigl(\operatorname{Let}_{w=G_-(v)}
+\Sigma_n(w;A_1,\dots,A_n),A_0\bigr)$ satisfies
+$\Sigma_n(\omega_j;A_0,\dots,A_{n-1})\dashv\vdash A_j$ for
+$\omega_j\defeq\Suc\It{\bar j}{0}{u}{\Suc(u+u)}$, $j<n$.  (c) The formulas
+$\D{u}{z}\operatorname{gate}(z,\Sigma_n(z;\vec A))$ and
+$\D{x}{z}\operatorname{gate}(z,\Sigma_n(x;\vec A))$ satisfy the rules of a
+finite conjunction and a finite disjunction, have rank $r_{\max}+1$ and
+$\sum_j T(A_j)+66(n-1)+6(r_{\max}-r_{\min})+r_{\max}+8$ nodes.  (d) After
+pairing (\cref{base:thm:pair}), with tuple codes $e_n$ and decoders
+$d_1,\dots,d_n$, the formula
+$\D{u}{z}\operatorname{gate}\bigl(z,A(d_1(P_-(z)),\dots,d_n(P_-(z)))\bigr)$ is a
+universal quantifier over a block of $n$ variables, of rank $r(A)+1$.  The
+selector of the article stacks binders (\cref{base:rem:single-binder-size}),
+so (a) and the sizes in (c) do not apply to it as stated.  Are (a)--(d)
+derivable in $\Nat$ with complete proofs, and what are the corresponding
+counts for the selector of \cref{base:def:gate}?
 \end{question}

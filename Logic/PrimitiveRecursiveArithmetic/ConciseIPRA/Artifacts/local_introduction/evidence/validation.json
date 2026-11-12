@@ -1,0 +1,785 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "source_cases": 18,
+  "adversarial_cases": 18,
+  "process_runs": 108,
+  "failed_checks": 0,
+  "non_order_preserving_embedding": true,
+  "metrics": {
+    "diagonal_control": {
+      "significant_tokens": 870,
+      "ast_nodes": 1022,
+      "normalized_utf8_bytes": 3274,
+      "sha256": "33b8d0a8bde20155536873c6a3591d92af4798f131824dfb762f077276d82160"
+    },
+    "diagonal_newest": {
+      "significant_tokens": 862,
+      "ast_nodes": 1011,
+      "normalized_utf8_bytes": 3245,
+      "sha256": "2a77aee7283ebed77df78edcc16ae900f066e103445bf3acc678d991a46aead8"
+    }
+  },
+  "results": [
+    {
+      "case": "alias_reflexivity_zero",
+      "program": "control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "alias_reflexivity_zero",
+      "program": "control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "alias_reflexivity_zero",
+      "program": "newest",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "alias_reflexivity_zero",
+      "program": "newest",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "alias_reflexivity_iterator",
+      "program": "control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "alias_reflexivity_iterator",
+      "program": "control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "alias_reflexivity_iterator",
+      "program": "newest",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "alias_reflexivity_iterator",
+      "program": "newest",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "zero_computation",
+      "program": "control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "zero_computation",
+      "program": "control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "zero_computation",
+      "program": "newest",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "zero_computation",
+      "program": "newest",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "successor_computation",
+      "program": "control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "successor_computation",
+      "program": "control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "successor_computation",
+      "program": "newest",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "successor_computation",
+      "program": "newest",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "nested_alias_dependency",
+      "program": "control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "nested_alias_dependency",
+      "program": "control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "nested_alias_dependency",
+      "program": "newest",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "nested_alias_dependency",
+      "program": "newest",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "derived_symmetry",
+      "program": "control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "derived_symmetry",
+      "program": "control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "derived_symmetry",
+      "program": "newest",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "derived_symmetry",
+      "program": "newest",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "derived_zero_source_transport",
+      "program": "control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "derived_zero_source_transport",
+      "program": "control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "derived_zero_source_transport",
+      "program": "newest",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "derived_zero_source_transport",
+      "program": "newest",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "nonzero_close_witness",
+      "program": "control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "nonzero_close_witness",
+      "program": "control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "nonzero_close_witness",
+      "program": "newest",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "nonzero_close_witness",
+      "program": "newest",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "diagonal_progress_hypothesis_consumed",
+      "program": "control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "diagonal_progress_hypothesis_consumed",
+      "program": "control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "diagonal_progress_hypothesis_consumed",
+      "program": "newest",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "diagonal_progress_hypothesis_consumed",
+      "program": "newest",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "diagonal_progress_with_nonzero_witness",
+      "program": "control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "diagonal_progress_with_nonzero_witness",
+      "program": "control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "diagonal_progress_with_nonzero_witness",
+      "program": "newest",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "diagonal_progress_with_nonzero_witness",
+      "program": "newest",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "case_close_equation",
+      "program": "control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "case_close_equation",
+      "program": "control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "case_close_equation",
+      "program": "newest",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "case_close_equation",
+      "program": "newest",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "case_close_compound",
+      "program": "control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "case_close_compound",
+      "program": "control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "case_close_compound",
+      "program": "newest",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "case_close_compound",
+      "program": "newest",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "transport_beneath_D",
+      "program": "control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "transport_beneath_D",
+      "program": "control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "transport_beneath_D",
+      "program": "newest",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "transport_beneath_D",
+      "program": "newest",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "open_and_use_conditional_clause",
+      "program": "control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "open_and_use_conditional_clause",
+      "program": "control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "open_and_use_conditional_clause",
+      "program": "newest",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "open_and_use_conditional_clause",
+      "program": "newest",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "passive_source_1",
+      "program": "control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "passive_source_1",
+      "program": "control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "passive_source_1",
+      "program": "newest",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "passive_source_1",
+      "program": "newest",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "passive_source_2",
+      "program": "control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "passive_source_2",
+      "program": "control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "passive_source_2",
+      "program": "newest",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "passive_source_2",
+      "program": "newest",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "passive_source_3",
+      "program": "control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "passive_source_3",
+      "program": "control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "passive_source_3",
+      "program": "newest",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "passive_source_3",
+      "program": "newest",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "passive_source_4",
+      "program": "control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "passive_source_4",
+      "program": "control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "passive_source_4",
+      "program": "newest",
+      "optimized": false,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "passive_source_4",
+      "program": "newest",
+      "optimized": true,
+      "expected": true,
+      "accepted": true
+    },
+    {
+      "case": "fresh_alias_capture",
+      "program": "newest",
+      "optimized": false,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "fresh_alias_capture",
+      "program": "newest",
+      "optimized": true,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "bound_alias_capture",
+      "program": "newest",
+      "optimized": false,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "bound_alias_capture",
+      "program": "newest",
+      "optimized": true,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "boolean_alias",
+      "program": "newest",
+      "optimized": false,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "boolean_alias",
+      "program": "newest",
+      "optimized": true,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "float_alias",
+      "program": "newest",
+      "optimized": false,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "float_alias",
+      "program": "newest",
+      "optimized": true,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "future_parameter_in_computation",
+      "program": "newest",
+      "optimized": false,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "future_parameter_in_computation",
+      "program": "newest",
+      "optimized": true,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "erased_bad_body",
+      "program": "newest",
+      "optimized": false,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "erased_bad_body",
+      "program": "newest",
+      "optimized": true,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "wrong_counter_constructor",
+      "program": "newest",
+      "optimized": false,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "wrong_counter_constructor",
+      "program": "newest",
+      "optimized": true,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "back_zero_source",
+      "program": "newest",
+      "optimized": false,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "back_zero_source",
+      "program": "newest",
+      "optimized": true,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "old_back_source",
+      "program": "newest",
+      "optimized": false,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "old_back_source",
+      "program": "newest",
+      "optimized": true,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "unproved_false",
+      "program": "newest",
+      "optimized": false,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "unproved_false",
+      "program": "newest",
+      "optimized": true,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "negative_clause_index",
+      "program": "newest",
+      "optimized": false,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "negative_clause_index",
+      "program": "newest",
+      "optimized": true,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "boolean_clause_index",
+      "program": "newest",
+      "optimized": false,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "boolean_clause_index",
+      "program": "newest",
+      "optimized": true,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "unknown_rule",
+      "program": "newest",
+      "optimized": false,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "unknown_rule",
+      "program": "newest",
+      "optimized": true,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "boolean_public_goal",
+      "program": "newest",
+      "optimized": false,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "boolean_public_goal",
+      "program": "newest",
+      "optimized": true,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "free_public_goal",
+      "program": "newest",
+      "optimized": false,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "free_public_goal",
+      "program": "newest",
+      "optimized": true,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "extra_close_witness",
+      "program": "newest",
+      "optimized": false,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "extra_close_witness",
+      "program": "newest",
+      "optimized": true,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "equation_as_close_goal",
+      "program": "newest",
+      "optimized": false,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "equation_as_close_goal",
+      "program": "newest",
+      "optimized": true,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "open_equation_major",
+      "program": "newest",
+      "optimized": false,
+      "expected": false,
+      "accepted": false
+    },
+    {
+      "case": "open_equation_major",
+      "program": "newest",
+      "optimized": true,
+      "expected": false,
+      "accepted": false
+    }
+  ],
+  "limits": [
+    "Finite tests supplement the written general compiler proof.",
+    "No Lean or Rocq formalization of the new equivalence is claimed.",
+    "Progress fixtures consume the induction hypothesis; no claim is made that their theorems require induction."
+  ]
+}

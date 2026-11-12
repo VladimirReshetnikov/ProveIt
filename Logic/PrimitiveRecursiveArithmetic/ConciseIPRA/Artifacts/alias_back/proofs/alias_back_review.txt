@@ -1,0 +1,71 @@
+INDEPENDENT REVIEW: RAW FRESH ALIASES AND BACKWARD VARIABLE SUBSTITUTION
+Pinned comparison: 36d37fc1071fe289371f6bcd7dcfa0eac593a5a6
+
+STATUS
+The proposed two-rule equality interface is sound in ordinary intuitionistic
+first-order equality and recovers reflexivity, symmetry and arbitrary formula
+transport without computation, normalization, induction or cut. The derivations
+below use Back only at the newest active numerical variable. Alias must be
+counted as an additional primitive structural/equality rule. This does not prove
+that variable-only substitution in the unchanged raw calculus suffices.
+
+RULES
+Alias: from Gamma, b=t |- H infer Gamma |- H[t/b], with b fresh for Gamma,t.
+Back:  from Gamma |- b=t and Gamma |- H[t/b] infer Gamma |- H.
+All substitutions are simultaneous, capture avoiding, and act on free occurrences.
+Back may be restricted to the newest active numerical parameter b.
+
+DERIVATIONS
+1. Refl(t): introduce fresh b=t, use that hypothesis as H, then Alias exports
+   t=t. No computation axiom is used.
+2. Symmetry: given s=t, introduce fresh b=s. Back at b=s with H=(b=t)
+   gives b=t. Back at b=t with H=(t=b), using Refl(t), gives t=b.
+   Alias at b=s exports t=s.
+3. Transport: given s=t and F(s), first use (2) to obtain t=s. Introduce
+   fresh c=t. Back at c=t with H=(c=s) gives c=s. Back at c=s with H=F(c),
+   using F(s), gives F(c). Alias at c=t exports F(t).
+Every introduced alias is chosen fresh for the context, input terms and template.
+Consequently all displayed substitutions are literal identities of raw syntax.
+The Back source is the currently innermost alias throughout each branch.
+
+SOUNDNESS
+Back is ordinary equality substitution used in the reverse direction. Alias
+is validated by substituting t for its fresh b throughout the branch derivation,
+then discharging the reflexive hypothesis t=t. This is soundness into the
+ordinary reference theory, so using that theory's substitution metatheorem here
+does not presuppose substitution in the new calculus. For the reverse translation,
+replace each primitive reference transport by (3). All other rules are copied.
+General substitution, weakening or cut of the new calculus can then be obtained
+from the equivalence, or proved by a generalized renaming/parameter compiler;
+they must not be silently assumed in a restricted newest-variable presentation.
+
+FRESHNESS NEGATIVES FOR IMPLEMENTATION TESTS
+- If b may already occur in Gamma, let Gamma={b=S0}, t=0 and let the Alias
+  branch conclude H=(b=S0) by hypothesis. Incorrect discharge would yield
+  Gamma |- 0=S0, despite Gamma being consistent in the ordinary natural numbers.
+- If b is allowed in t, take t=S(b), H=(b=S(b)), and the Alias hypothesis itself.
+  Incorrect discharge yields S(b)=S(S(b)), false in the ordinary natural numbers.
+Validating t and Gamma in the outer numerical scope, and H in the scope with
+one new final parameter, enforces both requirements structurally.
+
+NOVELTY COMPARISON
+Current Article, chapters/ch06_disch.tex, subsection "Substitution for a parameter
+on raw terms" (label disch:sec:param), uses Param: variable substitution combined
+with joining at a common left side for nonvariable sources. Its Fresh aliases
+lemma (disch:lem:alias) discharges b=a only when b is absent from the exported
+formula; it derives that operation using computation, root joining and logic.
+The new primitive Alias instead exports H[t/b] for arbitrary H.
+The same chapter's VSub theorem (disch:thm:vsub-transport) assumes full normal
+forms and recovers transport by a naming packet with literal normalized rows.
+The proposed raw interface makes no such normalization assumption.
+No earlier literal Alias/Back rule pair was found in the current TeX corpus.
+This is repository-relative novelty, not a literature-wide priority claim.
+
+SIZE LIMIT
+The latest direct compact coordinate minima are 248 tokens, 270 AST nodes and
+487 normalized bytes, attained by three distinct single_binder modules. Token
+and AST records include one-line input framing; matched equally reframed controls
+are identical on those gains. A separate new 479-byte implementation refinement
+must not be described as the checker of this new mathematical calculus unless
+it actually implements it. Comparisons should list separate matched-rule and
+unchanged-theory implementation results. No global optimum is proved.

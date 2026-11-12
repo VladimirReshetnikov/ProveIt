@@ -1,0 +1,61 @@
+# Exact public-validator reduction
+
+## Identity
+
+For every integer `a >= 0`,
+
+```
+(not a or a > 1 == a % 2) == (a % 2 == (a > 1))
+```
+
+as truth values. At zero both sides are true. At one both are false. For
+`a >= 2`, both say that `a` is odd. Python compares Boolean values to zero
+and one in the usual way, so the right hand side implements exactly this
+predicate without a separate zero disjunct.
+
+## Why the nonnegativity hypothesis suffices
+
+The validator's strict phase is only its initial public-goal call, with
+`v=1` and `k=0`. The atom first passes `k <= a < d`. The unchanged exact-type
+guard in the 643-byte control, or the unchanged whole-alphabet guard in the
+637-byte control, ensures exact integer inputs at this point. Therefore
+the identity applies at every strict scalar visit.
+
+All later visits have `v=0`. Their scalar guard has the form
+`v <= (P and d % 2 and predicate)` (or the equivalent existing gate),
+where every result is zero or a Boolean. Replacing the predicate can
+change a result on negative integers, but `0 <= result` remains true.
+Both old and new predicates are total on integers. The exact-type guard
+in the older source rejects/short-circuits nonintegers before this point.
+
+Induction on a successful opening traversal therefore gives precisely the
+same output, with the same rejection behavior for invalid data. The two
+programs have identical surrounding code: input, scope updates, rule
+dispatch, recursive proof checks, and acceptance output are unchanged.
+Induction on the finite proof-checking call tree proves equality of their
+complete acceptance relations, subject to the shared sufficient-resource
+convention. No proof translator is needed.
+
+## Matched complete-module measurements
+
+| Program | Tokens | AST | Normalized bytes |
+|---|---:|---:|---:|
+| Filed `inferred_major/code/checker_native.py` | 327 | 375 | 643 |
+| `native_parity_tokens.py` | 326 | 370 | 636 |
+| Incoming `immediate_application/code/checker637.py` | 344 | 392 | 637 |
+| `native_parity_bytes.py` | 341 | 387 | 628 |
+
+Thus the distinct-program native-validation envelope improves from
+`(327,375,637)` to `(326,370,628)`. This statement does not compare those
+programs as though their whole-certificate alphabet contracts were identical:
+each source has an exact matched predecessor, and the envelope collects
+the same established native-interface profiles as the comparison record.
+The compact canonical-goal envelope `(248,270,479)` remains unbeaten.
+
+Optional one-line lexical frontend compositions give `(324,369,639)` and
+`(334,377,607)`; these have a different raw input grammar and are not the
+primary exact-acceptance result.
+
+This is a simplification of canonical scope validation, not the deletion of
+an arithmetic or logical axiom or a proof of absolute minimality. The theory,
+the interpretations, and their numerical round trips are inherited unchanged.

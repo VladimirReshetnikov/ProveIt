@@ -1,0 +1,157 @@
+INDEPENDENT REVIEW OF THE COMPACT 478-BYTE PRESENTATION
+Prepared within the research run, 2026-11-12.
+This is an independent assistant review, not external human peer review.
+
+RECOMMENDATION
+
+The compact478 candidate is defensible under the inherited canonical closed
+GUARDED Eq/D public-goal contract, with a new final certificate item [G,k].
+It is not a validated interface for unrestricted native Eq/D formulas.
+The proposed native606 and strict636 companions are UNSOUND and must not be
+delivered as working proof checkers. An exact counterexample is supplied.
+
+1. EXACT CHANGE AND MEASUREMENT
+
+The candidate removes the default '=0' from c(g,a,k=0), and replaces the
+root call c([0],q()) by c([0],*q()). Canonical proof producers wrap the old
+last item G as [G,0]. With this wrapping every operation of the old program
+is unchanged. The kernel body, input parser, and ACCEPT verdict are retained.
+
+Under CPython 3.12.14, with ast.unparse plus one final LF, the complete
+candidate is 271 significant tokens / 305 AST nodes / 478 UTF-8 bytes.
+The matched program is 272 / 304 / 479. Thus the byte coordinate improves
+by ONE byte and the token coordinate by one token against this particular
+program; the AST coordinate becomes one node larger.
+
+The inspected corpus envelope is 248 / 270 / 479 in DIFFERENT programs.
+Retaining its token and AST profiles and adding compact478 yields the
+exhibited family envelope 248 / 270 / 478. This is neither one program's
+size nor a mathematical lower bound. No absolute minimum is proved.
+
+2. WHY POSITIVE ROOT FLOORS ARE REJECTED UNDER THE GUARDED CONTRACT
+
+Every closed canonical guarded public formula contains a literal numerical
+zero. For a closed bare equation, a closed term must contain zero: follow
+the counter or initializer of an iterator, or the argument of a successor,
+until a leaf is reached. For a formula with D binders, every innermost
+guarded atomic matrix has a literal-zero iterator initializer.
+
+Every such zero is reached by the initial opener at odd depth. Equality
+adds three to the depth; S, I and D add respectively four, two and four.
+Thus the term-constructor and D shifts preserve parity. The initial scan
+is eager over all list children, so none of these zero leaves is skipped.
+
+If k>0, the leaf zero fails k <= 0 < d. Since d is odd, the fallback calls
+i(c,d=3), where c is the default image, a Python function object. The
+attempt to multiply that function by zero raises TypeError. Therefore the
+root scan rejects before any proof packet is consumed.
+
+3. WHY NONPOSITIVE ROOT FLOORS ARE HARMLESS
+
+For k=-m <= 0, the initial scope additionally declares the m numerical
+parameters -m,...,-1. No assumptions involving them are supplied: the
+retained initial context is still exactly [0]. The inherited decoder and
+soundness invariant extend by treating those coordinates as arbitrary
+rigid free parameters. Every subsequent fresh parameter is strictly below
+the current floor, hence fresh for this initial supply as well.
+
+An accepted derivation therefore proves the same closed public G in an
+empty logical context with extra free parameters. Their values are
+irrelevant to G, or may be uniformly replaced by zero in the ordinary
+realization. It follows that G is a theorem of that realization. Conversely
+every old certificate is reproduced exactly with k=0. This proves equality
+of public theorem sets, not equality of the two raw serialization languages.
+
+This argument is a written extension of the inherited decoder theorem. It
+is not a new end-to-end mechanization of the Python operational semantics.
+The conventional sufficient-resources qualification is shared with the
+incumbent checker.
+
+4. VERIFIED FAILURE OUTSIDE THE GUARDED PUBLIC CONTRACT
+
+The unguarded but canonical closed native formula
+
+  D_{x,y}( I(y,y;u.Su) = I(y,y;u.I(y,u;v.Sv)) )
+
+has ordinary reading
+
+  exists x ( E(0) -> forall y E(y) ),   E(n): 2n = n+n^2.
+
+E(0) and E(1) hold, but E(2) is 4=6, so the formula is false in N. Its
+raw native encoding is [[[5,5,[7]],[5,5,[7,5,[7]]]]]. It contains no
+literal zero, so a positive floor can pass the initial public scan.
+
+With initial floor 1, the first DI progress step allocates coordinate 0
+as if it were a fresh eigenparameter. It is actually literal zero. Thus
+the step becomes the ground equation E(S0), which is provable by finite
+computation. The supplied 30-packet certificate is ACCEPTED by native606
+and strict636, both with ordinary Python and with -O. The old native607
+control and the same candidate at root floor 0 reject it.
+
+Files: positive_floor_attack.json, positive_floor_receipt.json,
+positive_floor_attack.py. The generator uses an attributed repository
+producer for the ground arithmetic proof. The JSON certificate itself has
+no producer dependency. compact478 also accepts this stream, but the goal
+is outside its stated guarded public language. That fact must be disclosed
+if the program is shown as an input validator or general native checker.
+
+5. AUDIT OF THE MATHEMATICAL SPLIT AXIOM
+
+Work over ordinary intuitionistic first-order logic with equality, the
+scalar computation equations, literal-equation induction, and 0 != S0.
+Put C(v,a,b)=I(v,a;u.b), Z(n)=C(n,S0,0). The repository's independently
+equational predecessor theorem supplies P(0)=0 and P(Sn)=n without using
+coverage or logical case distinction.
+
+One literal-equation induction proves
+
+  n = C(Z(n), S(P(n)), 0).
+
+The zero instance is immediate. At Sx, the zero-test computation gives
+Z(Sx)=0, and P(Sx)=x reduces the right side to Sx. No disjunctive
+induction invariant or coverage assumption is needed.
+
+Consequently the quantifier-free schema
+
+  n=0 OR Z(n)=0
+
+implies ordinary coverage n=0 OR exists x(n=Sx): in the second branch use
+the displayed identity and choose x=P(n). Conversely coverage gives the
+schema by Z(Sx)=0. The two ordinary theories therefore have exactly the
+same consequences, by the identity translation, and their existing iPRA
+bi-interpretation transfers. This is a real simplification of the
+non-equational arithmetic axiom, not a smaller measured complete checker.
+
+The companion Boolean-range schema Z(n)=0 OR Z(n)=S0 is equivalent as
+well: Split gives it by Z(0)=S0, and the displayed identity gives n=0 in
+the Z(n)=S0 branch. Preserve 0 != S0 explicitly in the ordinary basis.
+
+6. CORPUS CENSUS AND ITS SCOPE
+
+Pinned checkout: f577c326a0e97bd956392d7426092ed6499da327, repository
+VladimirReshetnikov/ProveIt, Logic/PrimitiveRecursiveArithmetic/ConciseIPRA.
+All eight incoming ZIP archives were extracted with path-traversal checks.
+
+The independent CPython 3.12.14 source census scanned 2,899 Python paths
+under current Artifacts and those extracted incoming archives. It found
+914 paths with a direct top-level print('ACCEPT'), representing 340 unique
+sources, and confirmed minima 248 tokens, 270 AST nodes, and 479 bytes.
+The exact rows are in reference/frontier_census.json. This syntactic
+selector is an audit aid, not proof that every selected module is sound or
+every conceivable implementation is covered. In particular it can select
+explicitly unsound experiments. One source failed normalized re-parsing
+because removing a docstring left an empty class; no minimum depends on it.
+
+Smallest controls are in the immediate_opening incoming archive:
+  controls/tokens248.py : 248 / 277 / 609
+  controls/ast270.py    : 254 / 270 / 608
+  code/checker479.py   : 272 / 304 / 479
+
+THREE ESSENTIAL CAVEATS
+
+1. The exhibited improvement is one normalized byte, not an absolute
+   simplest axiomatization or one program below every corpus coordinate.
+2. compact478 assumes the canonical closed guarded public grammar. The
+   broader native grammar makes the unchecked positive root floor unsound.
+3. The new arguments are written proofs plus executable regressions; no
+   new Lean/Rocq proof or end-to-end checker formalization is claimed.

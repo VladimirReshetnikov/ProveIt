@@ -1,0 +1,96 @@
+{
+  "parameters": [
+    "x",
+    "y"
+  ],
+  "assumptions": [
+    [
+      "eq",
+      [
+        "v",
+        "x"
+      ],
+      [
+        "v",
+        "y"
+      ]
+    ]
+  ],
+  "goal": [
+    "eq",
+    [
+      "v",
+      "y"
+    ],
+    [
+      "v",
+      "x"
+    ]
+  ],
+  "proof": {
+    "rule": "alias",
+    "parameter": "a0",
+    "term": [
+      "v",
+      "x"
+    ],
+    "body": {
+      "rule": "back",
+      "parameter": "a0",
+      "term": [
+        "v",
+        "y"
+      ],
+      "formula": [
+        "eq",
+        [
+          "v",
+          "y"
+        ],
+        [
+          "v",
+          "a0"
+        ]
+      ],
+      "equality": {
+        "rule": "back",
+        "parameter": "a0",
+        "term": [
+          "v",
+          "x"
+        ],
+        "formula": [
+          "eq",
+          [
+            "v",
+            "a0"
+          ],
+          [
+            "v",
+            "y"
+          ]
+        ],
+        "equality": {
+          "rule": "hyp",
+          "index": 1
+        },
+        "instance": {
+          "rule": "hyp",
+          "index": 0
+        }
+      },
+      "instance": {
+        "rule": "alias",
+        "parameter": "a1",
+        "term": [
+          "v",
+          "y"
+        ],
+        "body": {
+          "rule": "hyp",
+          "index": 2
+        }
+      }
+    }
+  }
+}

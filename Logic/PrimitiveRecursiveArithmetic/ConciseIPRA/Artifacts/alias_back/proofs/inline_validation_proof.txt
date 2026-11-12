@@ -1,0 +1,52 @@
+A 479-BYTE CONTROL-PRESERVING REFACTOR
+===================================
+
+Control: incoming single_binder/code/bytes487.py.
+Candidate: inline_validation.py.
+Metric: CPython 3.12.14, ast.unparse followed by LF:
+  control    276 significant tokens / 308 AST nodes / 487 UTF-8 bytes;
+  candidate  272 significant tokens / 304 AST nodes / 479 UTF-8 bytes.
+
+The only change is the first expression in the body of c:
+
+  (i := (lambda ...)) and (i(a) in g or CONTINUATION)
+
+becomes
+
+  (i := (lambda ...))(a) in g or CONTINUATION.
+
+The lambda expression produces an ordinary Python function object, which is
+always truthy. Both expressions first evaluate that lambda (including its
+default arguments) and assign the same function to the same local cell i.
+Both next call the function with the same argument a, perform membership in
+the same g, and either return the same Boolean True or evaluate exactly the
+same continuation. The function still captures the same mutable k cell; in
+particular, it still observes k after the continuation's walrus decrement.
+This last point is essential for scope correctness.
+
+All function calls, JSON packet reads, substitutions, arithmetic, membership
+tests, and context additions therefore occur in the same order. The returned
+value at each c invocation is unchanged: True for a membership success or the
+same nonempty one-element continuation list. Any exception arising in lambda
+construction, i(a), membership, or the continuation is reached at the same
+stage. Induction on the finite dynamic call tree proves equality of every
+finite successful execution, packet consumption, and acceptance result.
+
+The source difference does not change the JSON frame, certificate protocol,
+public grammar contract, mathematical calculus, or validation boundary.
+Memory/time resource limits are operational limits rather than logical
+acceptance; the equivalence is stated with sufficient resources. No claim
+of a new axiom deletion or global source-size minimum is made.
+
+Observed finite validation: all 65 byte fixtures of single_binder were run
+against both modules under ordinary and optimized Python, for 260 process
+executions. There were zero mismatches. Fixtures include malformed scope,
+future eigenparameter capture, context escape, compound formulas, arithmetic
+computation, literal equation progress and uses of induction hypotheses.
+The evidence and reproduction script are in the same directory.
+
+Two explored candidates must NOT be delivered:
+- context_depth.py naively uses 1-len(g) as the scope floor. The entry invariant
+  is right but its floor fails to change while i constructs the next resource.
+- default_context.py reorders c arguments, thereby evaluating the goal before
+  the context addition and k decrement. Its smaller nominal size is invalid.

@@ -1,0 +1,125 @@
+INDEPENDENT AUDIT OF DELAYED TARGET OPENING
+=========================================
+
+Status: the typed, scoped export lemma below is valid in intuitionistic
+first-order logic, and the retained-equality opening identity follows from
+the repository's sorted decoder. This does NOT by itself prove soundness,
+completeness, or bi-interpretability of an entire new raw checker.
+
+1. General derived rule
+-----------------------
+
+Let J=(j_1,...,j_r) be pairwise distinct numerical parameters absent from
+Gamma and A. Let H be a formula with these parameters, and let sigma be a
+simultaneous capture-avoiding substitution j_i -> u_i, where no u_i contains
+a parameter of J. If
+
+    Gamma |- H sigma          Gamma,H |- A,
+
+then Gamma |- A. Introduce the r existential quantifiers from H sigma,
+using u_1,...,u_r as witnesses, to obtain Gamma |- exists J H. Eliminate them
+into the second derivation; its eigenvariable conditions hold because J is
+absent from Gamma,A. This proof is intuitionistic and works for arbitrary H.
+For r=0 it is just cut. The native scalar calculus may use its established
+existential macros and admissible substitution/cut to implement this rule.
+
+The right premise does not require H to be a theorem for arbitrary J.
+For example, H(j) may be j=u; it has an old-language instance and is
+existentially inhabited without being universally true. This is precisely
+why treating delayed targets as ordinary unconditional theorems is wrong.
+
+2. Retained equality branch
+---------------------------
+
+Suppose the old global floor is K and the minor check finishes at L<=K.
+Let J be the finite new negative names in [L,K). The old caller context and
+goal have already passed their old-scope checks and contain no meaningful
+occurrence of J. Ignore raw occurrences inside semantically ignored
+annotations; the sorted decoder maps them to constants or omits them.
+
+Suppose the retained raw major [s,u] decodes to S=U, and its meaningful
+numerical endpoints are closed in the old scope. Consequently S and U
+contain no free name of J. Decode the raw template T at floor K as the
+one-hole formula F(v). Successful old-source opening decodes to F(S), so
+the recursively checked minor gives Gamma |- F(S). The retained equality
+gives Gamma |- F(U) by ordinary equality transport.
+
+Let H be the sorted decoding of the successful target opening O_L(T,u).
+Then the identity needed by the export argument is
+
+    H[J := U] = F(U),
+
+where equality is literal equality of decoded formulas up to harmless
+renaming of bound variables. It is NOT equality of raw arrays. It need not
+be formulated by actually executing O_K(T,u): success of that extra raw
+call is unnecessary.
+
+Proof: structural induction through the sorted decoder. At a meaningful
+numerical leaf, an old protected coordinate or old rigid parameter stays
+the same. A coordinate newly admitted in J was an old hole and is now a
+free parameter j; substitution restores U. Any remaining old hole remains
+a hole and the successful new opening inserts U. Inserted U has no new
+free name and is checked at its own numerical root, so insertion is
+capture-free. The unary successor and ternary iterator cases follow with
+their protected zero/state slots. Equation, D and Q follow with the
+displayed slot environments. Scalar formula padding is Top at either
+floor; ignored numerical arities denote zero; surplus formula arities and
+the first two Q fields have no mathematical content. Those cases are
+immediate even when their raw arrays differ substantially.
+
+Thus Gamma |- H[J:=U]. The general derived rule discharges a continuation
+Gamma,H |- A and yields Gamma |- A. The new J may be explicitly treated as
+the existential aliases of the old term U.
+
+3. Retained closure branch
+--------------------------
+
+If [T,T,T] is retained, its meaningful third child decodes to B(y), with no
+new free parameters J. At old floor K, O_K(T,0) is B(0). A successful minor
+therefore supplies B(0), and the retained closure Q_y B is B(0)->forall y B.
+Hence Gamma proves forall y B.
+
+A successful delayed target opening decodes to B(U_L), where U_L is a
+well-formed numerical term in the enlarged scope. U_L may contain J. Give
+each new parameter the old-language witness 0. Then H[J:=0] is
+B(U_L[J:=0]), an instance of the established universal formula. Thus Gamma
+proves exists J H, and the same continuation discharge is valid. In this
+case H is in fact provable uniformly in J from the universal formula, but
+the existential version provides one common scoped-export formulation.
+
+4. Indispensable hypotheses
+---------------------------
+
+* The recursively checked minor must be a derivation from the original
+  caller context. Its locally added assumptions must not leak back. The
+  immutable tuple-context protocol satisfies this structural requirement.
+* Every caller context formula and caller goal must be closed at its old
+  floor at meaningful sorted positions. Freshness concerns decoded free
+  variables, not arbitrary integers in ignored raw annotations.
+* In the equality case, the retained endpoints must be closed at the old
+  floor, so U is independent of J. Membership in a properly maintained
+  checked context supplies this; it is not true for an arbitrary raw pair.
+* Opening is interpreted through the complete sorted decoder. Its parity
+  rules and ignored annotation cases cannot be replaced by an unsorted
+  literal-substitution claim.
+* Eigenvariables from the completed child proof may have the same printed
+  integers as new parameters now used in the continuation. They belong to
+  disjoint proof scopes. Alpha-renaming the child's bound eigenvariables
+  prevents capture when assembling the full derivation.
+* The new raw checker still needs a full global invariant and an induction
+  covering every instruction branch, including automatic branch collisions,
+  D opening, introduction mode selection, computation padding, continuation
+  scope checks, and a separate completeness compiler. This lemma establishes
+  one branch-preservation mechanism, not that complete theorem.
+
+5. Relevance and novelty limit
+-----------------------------
+
+The logical derived rule is standard existential introduction/elimination.
+The useful observation here is that a changed global floor can split an
+old syntactic hole into several new rigid names, and all of them may be
+existentially named by the old target term in the retained-equality branch.
+This removes the particular semantic objection to delayed target opening
+without pretending that two raw openings at different floors agree.
+It is a scoped export lemma for this protocol, not a new arithmetic axiom
+or a proof of a smaller complete iPRA presentation.

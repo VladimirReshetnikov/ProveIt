@@ -1,0 +1,35 @@
+# Independent review of atomic-seed zero contraction
+
+## Judgment
+
+The six-family mathematical presentation is valid with the exact **raw-schema, normalized-judgment** convention in `theory_work/atomic_seed_section.tex`. It should not be described as naive substitution on a free grammar of canonical normal forms. Under the stated convention, I found no circularity in the proof of zero computation or equivalence to the native calculus.
+
+## Essential points checked
+
+1. **Reflexivity is available without zero computation.** Let L=I(S0,S0;u.t) with u fresh for t. Successor computation gives L=t because the update is constant. Crossed one-term transport with identity template, taking that equation as both premises, gives t=t. This argument uses neither a zero-computation axiom nor a naming lemma.
+
+2. **Full zero computation follows through raw QE metadata.** From DI and reflexivity obtain D_xy(y=y), and open it to Q_y(y=y). The raw body B(y)=I(0,y;u.h)=y satisfies N(QB)=Q(y=y) and N(B0)=(0=0). QE at arbitrary raw t produces N(I(0,t;u.h)=t). This proof is shorter than the original naming-packet route and avoids its equality-transport bookkeeping.
+
+3. **Premature metadata normalization is invalid.** For H(X)=I(0,X;u.0), N(H)=X, while N(H[S0])=I(0,S0;u.0). Therefore N(H[t]) need not equal N((NH)[t]). The complete raw body H or B must remain available at rule checking time. The strict reference checker does this explicitly.
+
+4. **The exceptional DI case is repaired without new assumptions.** Raw j=I(0,0;u.0) is not literal zero, so it chooses cases, while Nj=0. The fixed-context congruence of N gives exactly the same normalized branch premises and target as a desired case introduction at zero. This uses fixed-context congruence, not false substitution coherence.
+
+5. **Forward equivalence is direct.** Translate native proof nodes by retaining their original raw metadata and normalizing complete node judgments. The six common rules become literal target rules; use the derived zero computation and separate-introduction lemmas for the removed cases. No arbitrary substitution into an already normalized body is assumed.
+
+6. **Reverse equivalence uses the already established native theory.** In the native calculus each term equals its partial normal form. For contraction inside an iterator's bound update, one needs the native pointwise iterator-congruence lemma, proved by equation induction. Formula conversion then uses the native derived full transport principle. These dependencies belong to the original native calculus, so using them to prove soundness of the new presentation is not circular.
+
+7. **Freshness must concern raw metadata.** A raw field may contain a variable erased by normalization. Checking only the normalized result would admit metadata outside the intended parameter scope. The strict reference checker validates the complete raw field before using or normalizing it.
+
+## Reference implementation audit
+
+The standalone checker in `review_work/atomic_checker/checker_atomic.py` uses zero-based de Bruijn indices. Iterator updates bind index zero; Q binds y at zero; D binds y at zero and x at one. Its generic binder-aware shift and simultaneous substitution operate on raw trees. Contexts store normalized formulas.
+
+For DI, outer variables are first shifted under the new numerical parameter while the matrix's two bound variables are protected. Then both bound variables are instantiated simultaneously with eta and the lifted witness. For DE, the old matrix becomes the Q-body under the fresh witness: its former witness index one now refers to that witness beneath Q's y binder. Retained contexts and the exported goal are shifted by one, and the raw goal must already be valid in the outer scope. This implements the stated freshness convention.
+
+The matched seven-family control uses the identical representation and raw metadata but an identity normalizer and an explicit zero-computation rule. The candidate's derived raw-Q certificate is correctly rejected by that control; its primitive zero certificate is correctly accepted. The candidate rejects the primitive zero-rule tag.
+
+The 54 recorded standalone normal/optimized executions all passed. Tests include an induction that actually transports its induction hypothesis, nested numerical and logical binders, compound-initializer zero computation, explicit false/future-variable certificates, and a used case assumption selected by a raw zero alias (replacing the alias with literal zero is rejected). This is finite implementation evidence, not formal verification of the metatheorem.
+
+## Complexity conclusion
+
+The complete readable candidate currently measures 1333 significant tokens, 1521 AST nodes and 5373 normalized UTF-8 bytes. Its matched raw control measures 1319, 1507 and 5348. Thus the new rule presentation is mathematically smaller in its explicit primitive inventory, while this measured implementation is larger. It does not establish the requested below-frontier checker-size result. A future compact codec would additionally need correct sorting and binder-coordinate rebasing; the abstract theorem does not discharge those implementation obligations.

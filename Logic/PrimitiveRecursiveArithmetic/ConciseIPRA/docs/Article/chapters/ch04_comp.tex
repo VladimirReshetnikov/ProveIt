@@ -23,6 +23,9 @@ computation alone is normalized in \cref{comp:sec:zero}; on the resulting
 zero-normal terms the remaining computation and the equality reasoning are
 presented by the rules of
 \cref{comp:sec:reflexive,comp:sec:seed,comp:sec:step,comp:sec:seedeval}.
+A weaker zero normalization, which contracts only zero iterators with a
+variable or $0$ as initializer and is not coherent with substitution, is
+treated in \cref{comp:sec:atomic} with rules that keep their raw instances.
 Both computations are normalized in \cref{comp:sec:full}.
 
 Every calculus $\mathsf{K}$ of the chapter is given with its complete rule
@@ -51,6 +54,7 @@ $\mathsf{U}$ & zero-normal & \rulename{Hyp}, \rulename{Refl}, \rulename{Step}, \
 $\mathsf{C}_{\mathrm{Step}}$ & zero-normal, clauses & \rulename{Use}, \rulename{Refl}, \rulename{Step}, \rulename{DE}, \rulename{WI} & \cref{comp:thm:clausal}\\
 $\mathsf{C}_{\mathrm{Seed}}$ & zero-normal, clauses & \rulename{Use}, \rulename{Refl}, \rulename{SeedEval}, \rulename{DE}, \rulename{WI} & \cref{comp:thm:seedeval}\\
 $\mathsf{C}_{\mathrm{App}}$ & unit-normal, clauses & \rulename{Use}, \rulename{Refl}, \rulename{App}, \rulename{DE}, \rulename{WI} & \cref{comp:thm:app}\\
+$\mathsf{A}_6$ & atomic-seed normal, raw metadata & \rulename{Hyp}, \rulename{IS}, \rulename{Tr}, \rulename{QE}, \rulename{DE}, \rulename{WI} & \cref{comp:thm:asix}\\
 $\Nat^{\mathrm{f}}$ & full normal & \rulename{Hyp}, \rulename{Refl}, \rulename{Tr}, \rulename{QE}, \rulename{DE}, \rulename{DI}, \rulename{QI} & \cref{comp:thm:full}\\
 $\mathsf{F}$ & full normal & \rulename{Hyp}, \rulename{Refl}, \rulename{Tr}, \rulename{QE}, \rulename{DE}, \rulename{WI} & \cref{comp:thm:fsix}\\
 \bottomrule
@@ -63,11 +67,12 @@ $\mathsf{F}$ & full normal & \rulename{Hyp}, \rulename{Refl}, \rulename{Tr}, \ru
 \section{Conventions and shared lemmas}
 \label{comp:sec:conv}
 
-This section fixes the notation common to the nine packages of the chapter
+This section fixes the notation common to the ten packages of the chapter
 (\pkg{computational\_equality}, \pkg{equality\_from\_iteration},
 \pkg{uniform\_step}, \pkg{seed\_evaluation}, \pkg{zero\_normal},
 \pkg{reflexive\_base}, \pkg{initializer\_equality},
-\pkg{full\_normalization}, \pkg{computation\_normal}) and proves once the
+\pkg{full\_normalization}, \pkg{computation\_normal},
+\pkg{atomic\_seed\_refinement}) and proves once the
 arguments that several of them repeat.
 
 \subsection{Notation}
@@ -2469,6 +2474,554 @@ iterator is never removed and its body is never exposed.
 \end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Atomic-seed zero contraction with raw rule metadata}
+\label{comp:sec:atomic}
+
+This section draws on the mathematical result of
+\pkg{atomic\_seed\_refinement}: a six-rule presentation of $\Nat$ whose
+normalizer contracts $\It{0}{a}{u}{h}$ only when the normalized initializer
+$a$ is a variable or the literal $0$, and whose rules keep their raw
+instances. That normalizer is weaker than the zero normalization of
+\cref{comp:sec:zero} and is not an admissible normalizer: it violates the
+coherence ($\nu$4), and \cref{comp:thm:transfer} does not apply to it. The
+first subsection gives the form of the transfer argument that needs no
+coherence, at the price of raw metadata in every rule; it applies to every
+normalizer that satisfies the other four conditions of
+\cref{comp:def:normalizer}. The remaining subsections
+apply it to the atomic-seed normalizer.
+
+\subsection{Normalization after raw instantiation}
+
+\begin{definition}[Conversion normalizer]
+\label{comp:def:convnorm}
+A \emph{conversion normalizer} is a map $\nu$ from raw terms to raw terms
+that satisfies ($\nu$1), ($\nu$2), ($\nu$3) and ($\nu$5) of
+\cref{comp:def:normalizer}, extended to formulas and contexts as there.
+Every admissible normalizer is a conversion normalizer.
+\end{definition}
+
+The proof of \cref{comp:lem:nusound} uses ($\nu$5) and the extension of
+$\nu$ to formulas only. The lemma therefore holds for every conversion
+normalizer: $\Gamma,A\proves_{\Nat}\nu(A)$ and
+$\Gamma,\nu(A)\proves_{\Nat}A$ for every raw formula $A$ and every context
+$\Gamma$.
+
+\begin{definition}[Raw-metadata reading]
+\label{comp:def:rawmeta}
+Let $\nu$ be a conversion normalizer. A \emph{sequent over $\nu$} is a
+sequent $\Sigma\proves C$ in which $\Sigma$ is a finite list of $\nu$-normal
+formulas and $C$ is $\nu$-normal. For each rule $R$ among the eight rules of
+$\Nat$ and \rulename{WI} (\cref{comp:def:wi}, on raw terms), the rule
+$R^{[\nu]}$ on sequents over $\nu$ is the following. $\rulename{Hyp}^{[\nu]}$
+derives $\Sigma\proves C$ for $C\in\Sigma$. For every other $R$, take an
+instance of $R$ on raw syntax in the context $\Sigma$. It is fixed by its
+\emph{raw metadata}: the raw terms, templates, matrices and the witness that
+the schema of $R$ mentions, and for \rulename{DE} the conclusion $A$, which is
+required to be $\nu$-normal. Let its premises be $\Sigma,L_i\proves P_i$,
+where $L_i$ is the local assumption of the premise if there is one, and let
+its conclusion be $\Sigma\proves C_0$. Then $R^{[\nu]}$ is the inference
+\[
+ \infrule{\Sigma,\nu(L_i)\proves\nu(P_i)\quad(\text{all }i)}
+         {\Sigma\proves\nu(C_0)}.
+\]
+The side conditions are tested on the raw instance. The eigenvariable ($b$
+of \rulename{DE}, $z$ of \rulename{DI}, \rulename{QI} and \rulename{WI}) is
+not free in $\Sigma$, in the conclusion, or in any of the raw metadata; the
+test of \rulename{QI} and \rulename{WI} for a literal equation is applied to
+the raw matrix, which has the root of its normal form; and the test
+$t\equiv0$ of \rulename{WI} is applied to the raw witness. A \emph{raw-metadata
+calculus over $\nu$} is a calculus on sequents over $\nu$ whose rules are
+rules $R^{[\nu]}$. The calculus $\Nat^{[\nu]}$ has the eight rules
+$R^{[\nu]}$ for the rules $R$ of $\Nat$.
+\end{definition}
+
+\begin{lemma}[Soundness of raw-metadata rules]
+\label{comp:lem:rawsound}
+Let $\nu$ be a conversion normalizer and let $R$ be one of the eight rules of
+$\Nat$ or \rulename{WI}. If the premises of an instance of $R^{[\nu]}$ are
+derivable in $\Nat$, read as raw sequents, then so is its conclusion. Hence
+$\Sigma\proves_{\mathsf K}C$ implies $\Sigma\proves_{\Nat}C$ for every
+raw-metadata calculus $\mathsf K$ over $\nu$.
+\end{lemma}
+
+\begin{proof}
+For \rulename{Hyp} there is nothing to prove. Otherwise let
+$\Sigma,\nu(L_i)\proves_{\Nat}\nu(P_i)$ for every premise. By
+\cref{comp:lem:nusound}, $\Sigma,L_i\proves_{\Nat}\nu(L_i)$ and
+$\Sigma,L_i,\nu(P_i)\proves_{\Nat}P_i$, and two cuts (\cref{base:lem:cut})
+give $\Sigma,L_i\proves_{\Nat}P_i$. These are the premises of the raw
+instance of $R$. Its side conditions hold in $\Nat$: the conditions of
+$\Nat$ and of \cref{kern:def:W} require that the eigenvariable is not free
+in the context, in the conclusion, in the witness or in the formula
+$\D{x}{y}B$ or the parameters of the matrix, and all of these are among the
+data tested. For a rule of $\Nat$ the rule gives $\Sigma\proves_{\Nat}C_0$.
+For \rulename{WI} the mode is that of the raw instance, and \rulename{WI}
+on raw terms is admissible in $\Nat$ by \cref{comp:lem:single}(iii). For
+\rulename{DE} the conclusion $C_0$ is $\nu$-normal; in the other cases
+\cref{comp:lem:nusound} and cut give $\Sigma\proves_{\Nat}\nu(C_0)$. The
+second statement follows by induction on derivations.
+\end{proof}
+
+\begin{theorem}[Transfer with raw metadata]
+\label{comp:thm:rawtransfer}
+Let $\nu$ be a conversion normalizer.
+\begin{enumerate}[label=(\alph*)]
+\item For every finite context $\Gamma$ of raw native formulas and every raw
+ native formula $A$,
+ \[
+  \Gamma\proves_{\Nat}A
+  \quad\Longleftrightarrow\quad
+  \nu(\Gamma)\proves_{\Nat^{[\nu]}}\nu(A).
+ \]
+\item Let $\mathsf K$ be a raw-metadata calculus over $\nu$ in which every
+ rule of $\Nat^{[\nu]}$ is admissible. Then $\mathsf K$ derives exactly the
+ sequents over $\nu$ that $\Nat$ derives, and (a) holds with $\mathsf K$ in
+ place of $\Nat^{[\nu]}$.
+\item If $\nu$ is an admissible normalizer, the rules of $\Nat^{[\nu]}$ and
+ the rules of $\Nat^{\nu}$ (\cref{comp:def:nukernel}) have the same
+ instances.
+\end{enumerate}
+Both directions of (a) and (b) are effective on finite derivations.
+\end{theorem}
+
+\begin{proof}
+(a) From left to right, by induction on the derivation in $\Nat$, replace
+each sequent $\Gamma'\proves A'$ by $\nu(\Gamma')\proves\nu(A')$ and each
+inference of a rule $R$ by the inference of $R^{[\nu]}$ with the same raw
+metadata. An assumption $A'\in\Gamma'$ gives $\nu(A')\in\nu(\Gamma')$. The
+premises, the local assumptions and the conclusion of the inference of
+$R^{[\nu]}$ are by definition the normal forms of those of the raw
+inference; for \rulename{DE} the conclusion $\nu(A')$ is $\nu$-normal by
+($\nu$3). An eigenvariable that is not free in $\Gamma'$, in $A'$ or in the
+raw metadata is not free in $\nu(\Gamma')$ or in $\nu(A')$ by ($\nu$2). No
+property of $\nu$ under substitution is used. From right to left,
+\cref{comp:lem:rawsound} gives $\nu(\Gamma)\proves_{\Nat}\nu(A)$, and
+\cref{comp:lem:nusound} with cut gives $\Gamma\proves_{\Nat}A$.
+
+(b) A sequent over $\nu$ that $\mathsf K$ derives is derivable in $\Nat$ by
+\cref{comp:lem:rawsound}. Conversely let $\Delta\proves_{\Nat}C$ with
+$\Delta$ and $C$ $\nu$-normal. By (a) and ($\nu$3),
+$\Delta\proves_{\Nat^{[\nu]}}C$, and induction on this derivation, with the
+admissibility of each rule in $\mathsf K$, gives $\Delta\proves_{\mathsf K}C$.
+For (a) with $\mathsf K$: $\Gamma\proves_{\Nat}A$ holds if and only if
+$\nu(\Gamma)\proves_{\Nat}\nu(A)$, by \cref{comp:lem:nusound} and cut, and
+the latter holds if and only if $\nu(\Gamma)\proves_{\mathsf K}\nu(A)$.
+
+(c) Let $m$ be the raw metadata of an instance of a rule of $\Nat^{[\nu]}$.
+By ($\nu$4) and \cref{comp:lem:laws}(a), the normal form of each premise,
+local assumption and conclusion is the corresponding formula of the instance
+at the metadata $\nu(m)$, formed with normalizing substitution; for example
+$\nu(h[s/v])\equiv\nu(h)\langle\nu(s)/v\rangle$, and
+$\nu(\Q{y}B[b/x])\equiv\Q{y}\nu(B)[b/x]$ by ($\nu$2). By ($\nu$2) an
+eigenvariable that is fresh for $m$ is fresh for $\nu(m)$, and the root of
+the matrix of \rulename{QI} is unchanged. Hence the instance is an instance of
+the same rule of $\Nat^{\nu}$; the instances of $\rulename{I0}^{[\nu]}$ and
+$\rulename{IS}^{[\nu]}$ are exactly those of \rulename{Comp}$^{\nu}$.
+Conversely an instance of a rule of $\Nat^{\nu}$ is the instance of the
+corresponding rule of $\Nat^{[\nu]}$ whose metadata are $\nu$-normal.
+\end{proof}
+
+For an admissible normalizer, (a) and (c) give a second proof of
+\cref{comp:thm:transfer}; in it, ($\nu$4) is used only to show that normal
+metadata suffice. For a conversion normalizer without ($\nu$4), normal
+metadata need not suffice, and the instances with raw metadata are the
+reason why the rule-by-rule translation in (a) works.
+
+\begin{remark}
+\label{comp:rem:rawwi}
+The rule $\rulename{WI}^{[\nu]}$ selects its mode from the raw witness and
+is sound for every conversion normalizer by \cref{comp:lem:rawsound}, also
+when the raw witness has the normal form $0$. The mode change of
+\cref{comp:ex:modechange} arises only when the witness is normalized before
+the mode is selected. Read as an inference of $\rulename{WI}^{[\nf]}$, the
+introduction of that example at the raw witness $\It{0}{0}{u}{0}$ stays in
+case mode, and its normalized premise is $0=1\proves\Suc z=1$.
+\end{remark}
+
+\begin{corollary}[Interpretation of raw-metadata calculi]
+\label{comp:cor:rawbridge}
+Let $\nu$ be a conversion normalizer and let $\mathsf K$ be a calculus as in
+\cref{comp:thm:rawtransfer}(b). Then statements (a) and (c) of
+\cref{comp:cor:bridge} hold for $\mathsf K$. Weakening and cut are admissible
+in $\mathsf K$, and so are the substitution of terms, from
+$\Delta\proves C$ infer $\nu(\Delta[\sigma])\proves\nu(C[\sigma])$, and the
+Leibniz rule with raw metadata, from $\Sigma\proves\nu(s=t)$ and
+$\Sigma\proves\nu(F[s/v])$ infer $\Sigma\proves\nu(F[t/v])$, for raw
+$s,t,F$.
+\end{corollary}
+
+\begin{proof}
+Statement (a) of \cref{comp:cor:bridge} is \cref{comp:thm:rawtransfer}(b).
+The proof of statement (c) given there uses of $\nu$ only statement (a),
+\cref{comp:lem:nusound}, ($\nu$1) and ($\nu$2), and applies unchanged. For
+the admissible rules pass through $\Nat$. A derivation in $\mathsf K$ gives
+one in $\Nat$ by \cref{comp:lem:rawsound}. Weakening and substitution in
+$\Nat$ are \cref{base:lem:struct}, cut is \cref{base:lem:cut}, and the
+Leibniz rule is \cref{base:thm:leibniz}, with \cref{comp:lem:nusound} to
+convert its premises from and its conclusion to normal form. The resulting
+sequent of $\Nat$ is returned to $\mathsf K$ by
+\cref{comp:thm:rawtransfer}(b), applied to its normal form.
+\end{proof}
+
+Unlike \cref{comp:lem:nustruct}, the corollary obtains substitution in
+derivations through $\Nat$ and not by a direct induction on derivations of
+$\mathsf K$; no coherence of $\nu$ with substitution is needed.
+
+\subsection{The atomic-seed normalizer}
+
+\begin{definition}[Atomic-seed zero contraction]
+\label{comp:def:nfatomic}
+A raw term is \emph{atomic} if it is a variable or the literal $0$. The map
+$\nf_{\mathrm a}$ on raw terms is defined by structural recursion:
+$\nf_{\mathrm a}(x)\defeq x$, $\nf_{\mathrm a}(0)\defeq0$,
+$\nf_{\mathrm a}(\Suc t)\defeq\Suc\nf_{\mathrm a}(t)$ and, with
+$n'\defeq\nf_{\mathrm a}(n)$, $a'\defeq\nf_{\mathrm a}(a)$ and
+$h'\defeq\nf_{\mathrm a}(h)$,
+\[
+ \nf_{\mathrm a}(\It{n}{a}{u}{h})\defeq
+ \begin{cases}
+  a', & n'\equiv0\text{ and }a'\text{ is atomic},\\
+  \It{n'}{a'}{u}{h'}, & \text{otherwise}.
+ \end{cases}
+\]
+It is extended to formulas and contexts as in \cref{comp:def:normalizer}. A
+raw term is \emph{atomic-seed normal} if no iterator in it, at any depth, has
+the literal $0$ as its counter and an atomic initializer.
+\end{definition}
+
+The recursion is that of $\nf_0$ (\cref{comp:def:nfzero}) with one more
+test, on the normalized initializer. For example
+$\nf_{\mathrm a}(\It{0}{x}{u}{h})\equiv x$ and
+$\nf_{\mathrm a}(\It{\It{0}{0}{v}{0}}{y}{u}{h})\equiv y$, while
+$\It{0}{\Suc0}{u}{0}$ is atomic-seed normal and is not zero-normal.
+
+\begin{lemma}[Properties of the atomic-seed normalizer]
+\label{comp:lem:nfatomic}
+\begin{enumerate}[label=(\alph*)]
+\item $\nf_{\mathrm a}(t)$ is atomic-seed normal; $\nf_{\mathrm a}(t)\equiv t$
+ if and only if $t$ is atomic-seed normal; $\nf_{\mathrm a}$ is idempotent.
+\item $\nf_{\mathrm a}(t[\rho])\equiv\nf_{\mathrm a}(t)[\rho]$ for every
+ renaming $\rho$ of variables, and
+ $\FV(\nf_{\mathrm a}(t))\subseteq\FV(t)$. $\nf_{\mathrm a}(t)$ has at most
+ as many nodes as $t$, and $\nf_{\mathrm a}$ is a primitive recursive
+ operation on codes of finite terms.
+\item $t\to^{*}\nf_{\mathrm a}(t)$ by zero contractions. Hence
+ $\nf_0(\nf_{\mathrm a}(t))\equiv\nf_0(t)$; every zero-normal term is
+ atomic-seed normal, and $\nf_{\mathrm a}(\nf_0(t))\equiv\nf_0(t)$.
+\item \emph{Fixed-context congruence.} Let $C$ be a raw term or formula, $x$
+ a variable, and $s,s'$ raw terms none of whose free variables is bound in
+ $C$ at a free occurrence of $x$. If
+ $\nf_{\mathrm a}(s)\equiv\nf_{\mathrm a}(s')$, then
+ $\nf_{\mathrm a}(C[s/x])\equiv\nf_{\mathrm a}(C[s'/x])$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) By structural induction. The children of a rebuilt iterator are
+atomic-seed normal and the iterator is rebuilt only when the test fails; a
+returned initializer is atomic-seed normal. On an atomic-seed normal term
+every clause returns its argument: the children are fixed by the induction
+hypothesis, and the test fails at a normal iterator.
+(b) A renaming sends variables to variables and fixes $0$, so it sends
+atomic terms to atomic terms, other terms to other terms, and a counter to
+the literal $0$ exactly when the counter is $0$; by induction it commutes
+with the test and with the recursion.
+% ed.: the package states commutation with injective renamings; the
+% argument covers every renaming of variables, as ($\nu$2) requires.
+A contraction deletes the counter and the body and keeps the normalized
+initializer, so it creates no variable and adds no node. The structural
+recursion with these size bounds is primitive recursive, as in
+\cref{comp:lem:nfzero}(c); no successor contraction is performed.
+(c) By structural induction: the children reduce to their normal forms by
+zero contractions in their positions, since the reduction of
+\cref{comp:def:reduction} is closed under all term contexts including the
+bodies of iterators, and the step at the root, if it is taken, is a zero
+contraction. By \cref{comp:lem:nfzero}(d) the zero normal form is unique,
+so $\nf_0(\nf_{\mathrm a}(t))\equiv\nf_0(t)$. A zero-normal term has no
+iterator with the counter $0$ and is atomic-seed normal, and (a) gives the
+last identity.
+(d) By induction on $C$. For each constructor, $\nf_{\mathrm a}$ of a node is
+a function of the values of $\nf_{\mathrm a}$ at its children; for an
+iterator the defining clause depends on $n'$, $a'$ and $h'$ only, and the
+formula constructors are kept. The substitution commutes with the
+constructors, because no free variable of $s$ or $s'$ is captured, and at
+an occurrence of $x$ the two values are $\nf_{\mathrm a}(s)$ and
+$\nf_{\mathrm a}(s')$.
+\end{proof}
+
+\begin{proposition}
+\label{comp:prop:nfatomic}
+$\nf_{\mathrm a}$ is a conversion normalizer and is not an admissible
+normalizer: it violates ($\nu$4).
+\end{proposition}
+
+\begin{proof}
+($\nu$1) holds by definition, ($\nu$2) and ($\nu$3) by
+\cref{comp:lem:nfatomic}(a),(b), and ($\nu$5) by
+\cref{comp:lem:nfatomic}(c) and \cref{comp:lem:conversion}. For ($\nu$4) let
+$t\equiv\It{0}{x}{u}{0}$ and $\sigma\defeq[\Suc0/x]$. Then
+\[
+ \nf_{\mathrm a}(t[\sigma])\equiv\It{0}{\Suc0}{u}{0},
+ \qquad
+ \nf_{\mathrm a}\bigl(\nf_{\mathrm a}(t)[\nf_{\mathrm a}\circ\sigma]\bigr)
+ \equiv\nf_{\mathrm a}(x[\Suc0/x])\equiv\Suc0,
+\]
+since $\Suc0$ is not atomic and $\nf_{\mathrm a}(t)\equiv x$. The two terms
+are different; their equation is derivable in $\Nat$ by ($\nu$5), and it is
+not an identity of syntax.
+\end{proof}
+
+The failure concerns substitution into a term that is not normal. If $t$ and
+the terms $\sigma(x)$ are atomic-seed normal, both sides of ($\nu$4) are
+$\nf_{\mathrm a}(t[\sigma])$. It matters for the rules: the calculus
+$\Nat^{\nf_{\mathrm a}}$ defined as in \cref{comp:def:nukernel} with
+$\nu\defeq\nf_{\mathrm a}$, whose metadata are normal, has only part of the
+instances of $\Nat^{[\nf_{\mathrm a}]}$. For the raw body $B(y)\defeq(\It{0}{y}{u}{h}=y)$,
+with $y$ not free in $h$, the normal body is $\nf_{\mathrm a}(B)\equiv(y=y)$,
+whose instance at a target $t$ is $\nf_{\mathrm a}(t)=\nf_{\mathrm a}(t)$,
+while the normal form of the raw instance $B(t)$ is
+$\It{0}{\nf_{\mathrm a}(t)}{u}{\nf_{\mathrm a}(h)}=\nf_{\mathrm a}(t)$ when
+$\nf_{\mathrm a}(t)$ is not atomic. The normal form of a premise therefore
+does not determine the normal form of the conclusion; the raw body does.
+
+\begin{remark}[Why the initializer is atomic]
+\label{comp:rem:rebasing}
+In the native syntax the binder $u$ of $\It{n}{a}{u}{h}$ covers $h$ only,
+and a zero contraction returns the initializer without changing an index
+(\cref{comp:sec:zero}). In an arity coding that places the initializer below
+a slot, a contraction must rebase the initializer (see the remark after
+\cref{comp:thm:zero}). \pkg{atomic\_seed\_refinement} gives an example for an
+arity coding with de Bruijn levels, which it calls the compact
+protected-level codec. A position has a depth. The children of an iterator array
+$[n,a,h]$ at depth $d$ lie at depth $d+2$, and the slot of depth $d$ is the
+state $u$ for $h$ and a dummy for $n$ and $a$. The child of a successor array
+$[t]$ at depth $d$ lies at depth $d+4$, and the slots of depths $d$ and $d+2$
+are dummies. The leaf $0$ is $0$, a leaf $k$ with $3\le k<d$ names the slot
+of depth $k$, and a dummy reads as $0$. At depth $3$ the array
+$[0,[[0],[0],[5]],0]$ is $\It{0}{\It{1}{1}{v}{\Suc v}}{u}{0}$, with value
+$2$: the inner body $[5]$ lies at depth $7$, and its leaf, at depth $11$,
+names the state $v$ of depth $5$. Replacing the outer array by its
+initializer array gives $[[0],[0],[5]]$ at depth $3$. Its body lies at depth
+$5$, its leaf at depth $9$ names the dummy of depth $5$ introduced by the
+successor, and the array is $\It{1}{1}{v}{\Suc0}$, with value $1$. The
+correct contraction is $[[0],[0],[3]]$, with value $2$. Both arrays are
+well-formed integer and list data, so a successful traversal does not detect
+the change of value. With an atomic initializer no binder below the
+initializer moves: a leaf that names an outer slot keeps its name, and a leaf
+that names the dummy of the contracted iterator denotes $0$. A correct sort
+test and the handling of dummy slots are still required; the article does
+not give a smaller implementation in such a coding.
+\end{remark}
+
+\subsection{Six rules}
+
+\begin{definition}[The calculus $\mathsf{A}_6$]
+\label{comp:def:asix}
+$\mathsf{A}_6$ is the raw-metadata calculus over $\nf_{\mathrm a}$ with the
+six rules $\rulename{Hyp}^{[\nf_{\mathrm a}]}$,
+$\rulename{IS}^{[\nf_{\mathrm a}]}$, $\rulename{Tr}^{[\nf_{\mathrm a}]}$,
+$\rulename{QE}^{[\nf_{\mathrm a}]}$, $\rulename{DE}^{[\nf_{\mathrm a}]}$ and
+$\rulename{WI}^{[\nf_{\mathrm a}]}$. Explicitly, $\Sigma$ is a list of
+atomic-seed normal formulas, $C$ is atomic-seed normal, $\overline{F}$ denotes
+$\nf_{\mathrm a}(F)$, and the letters $n,a,h,s,t,r,H,B$ denote raw metadata:
+\begin{gather*}
+ \infrule{}{\Sigma\proves C}\ (C\in\Sigma),
+ \qquad
+ \infrule{}{\Sigma\proves
+  \overline{\It{\Suc n}{a}{u}{h}=h\subst{\It{n}{a}{u}{h}}{u}}},
+ \\[4pt]
+ \infrule{\Sigma\proves\overline{s=t}\qquad\Sigma\proves\overline{H(s)=r}}
+         {\Sigma\proves\overline{r=H(t)}},
+ \qquad
+ \infrule{\Sigma\proves\overline{\Q{y}B(y)}\qquad\Sigma\proves\overline{B(0)}}
+         {\Sigma\proves\overline{B(t)}},
+ \\[4pt]
+ \infrule{\Sigma\proves\overline{\D{x}{y}B(x,y)}\qquad
+          \Sigma,\overline{\Q{y}B(b,y)}\proves C}
+         {\Sigma\proves C},
+ \\[4pt]
+ \infrule{\Sigma,\overline{B(t,\eta_{B,t}(z))}\proves\overline{B(t,\Suc z)}}
+         {\Sigma\proves\overline{\D{x}{y}B(x,y)}}.
+\end{gather*}
+They are \rulename{Hyp}, \rulename{IS}, \rulename{Tr}, \rulename{QE},
+\rulename{DE} and \rulename{WI}. Every bar is taken after the displayed raw
+substitution. In \rulename{DE} the variable $b$ is not free in $\Sigma$, in
+$C$ or in $\D{x}{y}B$. In \rulename{WI} the variable $z$ is not free in
+$\Sigma$, in $t$ or in $\D{x}{y}B$, and $\eta_{B,t}(z)=z$ exactly when $B$ is
+a literal equation and the raw witness $t$ is literally $0$, otherwise
+$\eta_{B,t}(z)=0$. There is no restriction on $a$ in \rulename{IS} or on $s$
+in \rulename{Tr}. There is no primitive zero computation, reflexivity,
+symmetry, transitivity, general transport, induction or cut. The normalizer
+and the raw metadata are part of the specification.
+\end{definition}
+
+\begin{lemma}[Reflexivity without zero computation]
+\label{comp:lem:asrefl}
+$\Sigma\proves_{\mathsf{A}_6}\overline{t=t}$ for every raw term $t$ and every
+$\Sigma$.
+\end{lemma}
+
+\begin{proof}
+Let $u$ be a variable not free in $t$ and put $L\defeq\It{\Suc0}{\Suc0}{u}{t}$.
+The raw instance of \rulename{IS} at $n\equiv0$, $a\equiv\Suc0$ and $h\equiv t$
+is $L=t\subst{\It{0}{\Suc0}{u}{t}}{u}\equiv(L=t)$, so \rulename{IS} gives
+$\Sigma\proves\overline{L=t}$. \rulename{Tr} with $s\equiv L$, the target
+$t$, the identity template $H(v)\equiv v$ and $r\equiv t$ has the premises
+$\overline{L=t}$ and $\overline{H(L)=t}\equiv\overline{L=t}$, and the
+conclusion $\overline{t=H(t)}\equiv\overline{t=t}$.
+\end{proof}
+
+The derivation does not use a zero computation, and its instance of
+\rulename{IS} has a nonzero initializer. The body of $L$ is constant. The
+term $\It{1}{t}{u}{u}$ of \cref{comp:lem:nzerorefl} does not serve here: the
+right side of its instance of \rulename{IS} is $\It{0}{t}{u}{u}$, whose normal
+form is $\It{0}{\nf_{\mathrm a}(t)}{u}{u}$ and not $\nf_{\mathrm a}(t)$ when
+$\nf_{\mathrm a}(t)$ is not atomic.
+
+\begin{lemma}[A reflexive closure]
+\label{comp:lem:asqrefl}
+$\Sigma\proves_{\mathsf{A}_6}\Q{y}(y=y)$ for every $\Sigma$.
+\end{lemma}
+
+\begin{proof}
+Apply \rulename{WI} to the matrix $B(x,y)\defeq(y=y)$, with $x$ unused, at
+the raw witness $0$. The matrix is a literal equation, so the mode is
+progress, and the premise, with $z$ not free in $\Sigma$, is
+$\Sigma,z=z\proves\Suc z=\Suc z$, which holds by \cref{comp:lem:asrefl}. This gives $\Sigma\proves\D{x}{y}(y=y)$. Apply
+\rulename{DE} with a fresh $b$: the local assumption is
+$\overline{\Q{y}B(b,y)}\equiv\Q{y}(y=y)$, and \rulename{Hyp} derives
+$\Sigma,\Q{y}(y=y)\proves\Q{y}(y=y)$. The conclusion $\Q{y}(y=y)$ is closed,
+so $b$ does not occur in it.
+\end{proof}
+
+\begin{theorem}[Zero computation from atomic contraction]
+\label{comp:thm:asizero}
+For all raw terms $t$, $h$ and every $\Sigma$,
+\[
+ \Sigma\proves_{\mathsf{A}_6}\overline{\It{0}{t}{u}{h}=t}.
+\]
+\end{theorem}
+
+\begin{proof}
+Let $y$ be a variable different from $u$ and not free in $t$ or $h$, and
+apply \rulename{QE} with the raw body
+\[
+ B(y)\defeq\bigl(\It{0}{y}{u}{h}=y\bigr).
+\]
+Since the counter is $0$ and the normalized initializer $y$ is atomic,
+\[
+ \overline{\Q{y}B(y)}\equiv\Q{y}(y=y),
+ \qquad
+ \overline{B(0)}\equiv(0=0).
+\]
+The first premise is \cref{comp:lem:asqrefl} and the second is
+\cref{comp:lem:asrefl}. At the target $t$ the conclusion is
+$\overline{B(t)}$; the initializer lies outside the binder $u$ and $y$ is not
+free in $h$, so $B(t)\equiv(\It{0}{t}{u}{h}=t)$.
+\end{proof}
+
+If the raw body were replaced by its normal form $y=y$ before the target is
+substituted, the same inference would conclude $\overline{t=t}$ and not the
+zero computation. The raw body of \rulename{QE} is therefore necessary for
+this derivation; that a calculus with normal metadata does not derive the
+zero computation in another way is not claimed.
+
+\begin{lemma}[The two introductions]
+\label{comp:lem:asintro}
+The rules $\rulename{DI}^{[\nf_{\mathrm a}]}$ and
+$\rulename{QI}^{[\nf_{\mathrm a}]}$ are admissible in $\mathsf{A}_6$.
+\end{lemma}
+
+\begin{proof}
+An instance of $\rulename{DI}^{[\nf_{\mathrm a}]}$ is an instance of
+\rulename{WI} unless its matrix $B$ is a literal equation and its raw witness
+is literally $0$. In that case let
+$\Sigma,\overline{B(0,0)}\proves\overline{B(0,\Suc z)}$ be derivable, and use
+\rulename{WI} at the raw witness $j\defeq\It{0}{0}{u}{0}$. It is not
+literally $0$, so the mode is case. Since $\nf_{\mathrm a}(j)\equiv0$ and $j$
+is closed, \cref{comp:lem:nfatomic}(d) gives
+$\overline{B(j,0)}\equiv\overline{B(0,0)}$ and
+$\overline{B(j,\Suc z)}\equiv\overline{B(0,\Suc z)}$, so the premise of
+\rulename{WI} is the given sequent, and the conclusion
+$\overline{\D{x}{y}B}$ does not depend on the witness. The variable $z$ is
+fresh for $j$, which is closed. No derivation is rewritten and no equation is
+transported.
+
+For $\rulename{QI}^{[\nf_{\mathrm a}]}$ let $E(y)$ be a literal equation and
+$\Sigma,\overline{E(z)}\proves\overline{E(\Suc z)}$ derivable, with $z$ not
+free in $\Sigma$ or in $\Q{y}E$. Let $x$ be a variable not free in $E$ and put
+$B(x,y)\defeq E(y)$. \rulename{WI} at the raw witness $0$ is in progress mode,
+and its premise $\Sigma,\overline{B(0,z)}\proves\overline{B(0,\Suc z)}$ is the
+given sequent; it derives $\Sigma\proves\overline{\D{x}{y}E(y)}$.
+\rulename{DE} at a fresh $b$ has the local assumption
+$\overline{\Q{y}B(b,y)}\equiv\overline{\Q{y}E(y)}$, and \rulename{Hyp}
+derives the conclusion $\overline{\Q{y}E(y)}$ from it; $b$ is not free in
+$\Sigma$, in that conclusion or in $\D{x}{y}E$.
+\end{proof}
+
+The alias $j$ is the raw alias of \cref{kern:lem:alias}. On zero-normal terms
+with normal metadata it is unavailable, and \cref{comp:lem:single}(ii) uses
+the alias $\It{1}{0}{u}{0}$ together with transport along its equation with
+$0$ (\cref{comp:thm:zsix}). With raw metadata the witness keeps its raw shape
+for the mode test, and its normal form makes the normalized branch literally
+the branch at $0$.
+
+\begin{theorem}[Six rules with atomic-seed contraction]
+\label{comp:thm:asix}
+$\mathsf{A}_6$ derives exactly the sequents over $\nf_{\mathrm a}$ that $\Nat$
+derives. For every finite context $\Gamma$ of raw native formulas and every
+raw native formula $A$,
+\[
+ \Gamma\proves_{\Nat}A
+ \quad\Longleftrightarrow\quad
+ \nf_{\mathrm a}(\Gamma)\proves_{\mathsf{A}_6}\nf_{\mathrm a}(A),
+\]
+effectively on finite derivations, and \cref{comp:cor:rawbridge} applies to
+$\mathsf{A}_6$. In particular $\mathsf{A}_6$ is equiconsistent and
+bi-interpretable with $\iPRA$, with whole numerical domains, equality
+interpreted by equality, and numerical composites with the graph $x=y$.
+\end{theorem}
+
+\begin{proof}
+$\mathsf{A}_6$ is a raw-metadata calculus over the conversion normalizer
+$\nf_{\mathrm a}$ (\cref{comp:prop:nfatomic}). By
+\cref{comp:thm:rawtransfer}(b) it suffices that each of the eight rules of
+$\Nat^{[\nf_{\mathrm a}]}$ is admissible in $\mathsf{A}_6$. Five of them are
+rules of $\mathsf{A}_6$. An instance of $\rulename{I0}^{[\nf_{\mathrm a}]}$
+is $\Sigma\proves\overline{\It{0}{a}{u}{h}=a}$ for raw $a,h$, which is
+\cref{comp:thm:asizero}. $\rulename{DI}^{[\nf_{\mathrm a}]}$ and
+$\rulename{QI}^{[\nf_{\mathrm a}]}$ are admissible by \cref{comp:lem:asintro}.
+The last statements are \cref{comp:cor:rawbridge} and statement (c) of
+\cref{comp:cor:bridge}; the contradiction $0=\Suc0$ is atomic-seed normal.
+\end{proof}
+
+\begin{remark}
+\label{comp:rem:asix}
+\pkg{atomic\_seed\_refinement} proves the equivalence directly against
+$\Nat$, in place of \cref{comp:thm:rawtransfer}: a derivation of $\Nat$ is
+translated rule by rule with its raw metadata kept, and a derivation of
+$\mathsf{A}_6$ is simulated in $\Nat$ by converting each normalized premise
+to its raw form, which uses that every raw term is provably equal to its
+partial normal form, by the zero computation and the congruence of iterator
+bodies (\cref{comp:lem:conversion}). Both directions of the comparison use
+only the derived rules of $\Nat$, so the argument is not circular. The
+package composes the equivalence with the bridge of \cref{base:thm:bridge}
+for the bi-interpretation with $\iPRA$, as in \cref{comp:cor:rawbridge}. The
+package also observes that \rulename{IS} can be restricted to raw
+initializers that are not literally $0$, and \rulename{Tr} to raw sources
+that are not literally $0$, without changing a normalized instance: by
+\cref{comp:lem:nfatomic}(d) the raw term $\It{0}{0}{u}{0}$ in place of an
+excluded $0$ gives the same normalized premises and conclusion. This
+concerns tests on raw data; it does not justify a restriction on normalized
+initializers or sources, and the primary calculus has neither restriction.
+Compared with $\mathsf{Z}_6$, $\mathsf{A}_6$ has the same six rule names, a
+weaker normalizer and raw metadata in every rule; the zero computation is
+not normalized away but derived. The calculus is not formalized in Lean; the
+package records finite tests of its reference checker
+(\cref{comp:sec:sizes}).
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Full normalization}
 \label{comp:sec:full}
 
@@ -2958,7 +3511,7 @@ an implementation change for an unchanged calculus; its sizes are in
 \section{Checker sizes}
 \label{comp:sec:sizes}
 
-This section collects the measurements of all nine packages, by the protocol
+This section collects the measurements of all ten packages, by the protocol
 of \cref{base:sec:measure}. Every row of \cref{comp:tab:sizes} is a complete
 standalone program, with its input handling, its validation of syntax and
 scope, its substitution and normalization, all rules and its output. The
@@ -3049,6 +3602,10 @@ $\mathsf{F}$, explicit fuel & 1024 & 1086 & 3204 & 1003\\
 $\mathsf{Z}_6$, goal-directed & 972 & 1004 & 2982 & 965\\
 $\mathsf{F}$, goal-directed & 982 & 1008 & 3063 & 961\\
 $\mathsf{F}$, goal-directed, fuel & 1010 & 1044 & 3189 & 1001\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{atomic\_seed\_refinement} (tagged, closed native goals)}\\
+Matched raw control: identity normalizer, \rulename{I0} as seventh rule & 1319 & 1507 & 5348 & --\\
+$\mathsf{A}_6$ & 1333 & 1521 & 5373 & --\\
 \end{longtable}
 
 \paragraph{The matched differences.}
@@ -3102,6 +3659,10 @@ everything else, is as follows.
  and 1 token larger, 3 AST nodes and 7 gzip bytes smaller. The goal-directed
  checker of $\mathsf{F}$ is larger than that of $\mathsf{Z}_6$, and fuel
  adds to both.
+\item \pkg{atomic\_seed\_refinement}: $\mathsf{A}_6$ against its matched raw
+ control, which has the same syntax, raw metadata, validation and
+ substitution, is larger by 14 tokens, 14 AST nodes and 25 bytes. The
+ deletion of the zero computation rule does not pay for the normalizer.
 \end{itemize}
 
 \paragraph{The checkers.}
@@ -3148,6 +3709,20 @@ controls. In \pkg{computation\_normal} a normal term is its own
 reflexivity certificate, and the fuelled variant adds the field
 \texttt{fuel}.
 
+The checker of $\mathsf{A}_6$ in \pkg{atomic\_seed\_refinement} takes the
+fields \texttt{goal} and \texttt{proof} and checks closed goals with $=$,
+$\Q{}$ and $\D{}{}$. Terms and formulas are tagged, with zero-based
+de Bruijn indices: the body of an iterator binds the index $0$, $\Q{y}$ binds
+$y$ at $0$, and $\D{x}{y}$ binds $y$ at $0$ and $x$ at $1$. The six proof
+tags carry the raw metadata of \cref{comp:def:asix}; the checker validates
+every raw field before it uses or normalizes it, since normalization can
+erase an ill-scoped subterm, forms the raw instance by capture-avoiding
+substitution, and normalizes afterwards. Contexts hold normalized formulas.
+The matched control has the identity normalizer and a seventh tag for
+\rulename{I0}; it accepts a primitive zero computation and rejects the
+derivation of \cref{comp:thm:asizero}, and the checker of $\mathsf{A}_6$
+rejects the tag for \rulename{I0}.
+
 \paragraph{Executed checks.}
 The packages record the following runs, none with an unexpected outcome;
 they support the implementations and are not proofs of the theorems.
@@ -3170,13 +3745,19 @@ goal-directed family and 132 of the forward checker, with the two
 certificates of \cref{comp:ex:modechange}. \pkg{computation\_normal}: 272
 runs and 9000 generated goals for \cref{comp:thm:scope}, and a recovered
 case introduction at the witness $0$ with the context $a=b$ and the matrix
-$\It{y}{a}{u}{b}=\It{y}{x}{u}{0}$.
+$\It{y}{a}{u}{b}=\It{y}{x}{u}{0}$. \pkg{atomic\_seed\_refinement}: 20
+persisted certificates, among them an equation induction that uses its
+hypothesis, the zero computation at a compound initializer, and a case
+introduction at the raw witness $\It{0}{0}{u}{0}$ that uses its case
+assumption, rejected when the witness is changed to $0$; with the
+malformed inputs and the control checks, 54 executions in ordinary and
+optimized Python.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Further questions}
 \label{comp:sec:questions}
 
-This section collects, from all nine packages, the questions that they
+This section collects, from all ten packages, the questions that they
 leave open, the claims that they state without proof and the results that
 they report as not achieved.
 
@@ -3211,13 +3792,24 @@ they report as not achieved.
  matched checker size does not improve uniformly, normal forms can be
  enormous, and the uniform normalizer is not primitive recursive
  (\cref{comp:prop:notpr}).
+\item \pkg{atomic\_seed\_refinement} reports that its target, a complete
+ checker of a calculus bi-interpretable with $\iPRA$ that is smaller than
+ the compact checkers of the repository, is not reached. The checker of
+ $\mathsf{A}_6$ is larger than its matched control
+ (\cref{comp:sec:sizes}), and the compact guarded checkers, with their
+ different interfaces, attain the separate minima of 248 tokens, 270 AST
+ nodes and 479 bytes in three different programs. No minimality of six
+ rules is claimed: the chapter already contains other six-rule calculi with
+ stronger normalization.
 \item The Lean formalization covers the calculi as recorded in the remarks
  of this chapter. It does not cover, in the forms stated here: the clause
  calculi $\mathsf{C}_{\mathrm{Step}}$ and $\mathsf{C}_{\mathrm{Seed}}$ with
  their clause contexts, the calculus $\mathsf{C}_{\mathrm{App}}$ and the
  unit normalization, $\mathsf{Z}_6$ and $\mathsf{S}$ with the single
  introduction, the fresh-zero lemma and the compound envelope, the fuelled
- relation of \cref{comp:prop:fuel}, and any of the Python checkers.
+ relation of \cref{comp:prop:fuel}, the raw-metadata transfer of
+ \cref{comp:thm:rawtransfer} and the calculus $\mathsf{A}_6$, and any of the
+ Python checkers.
 \end{itemize}
 
 \subsection{Claims stated without proof}
@@ -3301,6 +3893,21 @@ normalization that reduces both the arithmetic interface and the complete
 trusted implementation? The unit normalization of \cref{comp:sec:app} has a
 primitive recursive normalizer and a rule without a counter, and its
 measured checker is larger than its control.
+\end{question}
+
+\begin{question}[Normalization below zero normalization]
+For the atomic-seed normalizer, which violates ($\nu$4)
+(\cref{comp:prop:nfatomic}), \cref{comp:thm:asix} is proved with raw rule
+metadata. Does the calculus $\Nat^{\nf_{\mathrm a}}$, defined as in
+\cref{comp:def:nukernel} with atomic-seed normal metadata and normalizing
+substitution, still derive exactly the normalized sequents of $\Nat$, and is
+$\mathsf{A}_6$ complete when its metadata are restricted to normal terms?
+\pkg{atomic\_seed\_refinement} does not claim that the atomic-seed normal
+terms with normalizing substitution form a free term language, and its
+derivation of the zero computation needs a body that is not normal. It also
+leaves open a compact implementation of atomic contraction in a level coding
+(\cref{comp:rem:rebasing}), with its sort test and the treatment of dummy
+slots, that is smaller than the present compact checkers.
 \end{question}
 
 \begin{question}[Classes of provable bases]

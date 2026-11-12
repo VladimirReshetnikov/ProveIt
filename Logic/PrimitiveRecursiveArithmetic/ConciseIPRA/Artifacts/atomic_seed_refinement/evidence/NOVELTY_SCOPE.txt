@@ -1,0 +1,59 @@
+Scoped comparison of atomic-initializer erasure
+==============================================
+
+Snapshot: VladimirReshetnikov/ProveIt
+dbe0094df420f93f2d5be366b94a0d0c4318dc5b
+Logic/PrimitiveRecursiveArithmetic/ConciseIPRA
+
+This was a targeted comparison, not an exhaustive novelty or priority audit.
+No exact previous occurrence of the atomic-only initializer contraction plus
+raw-QE recovery was identified in the sources examined.
+
+Examined sources
+----------------
+
+* The pinned project README.
+* All text, TeX, Markdown, and Python sources extracted from the six incoming
+  archives in the pinned snapshot.
+* The locally retrieved article chapters 00, 01, 02, and 11, using targeted
+  searches for atomic/variable initializer contraction, partial normalization,
+  raw bodies, and reinstantiation.
+* The full fetched article chapter ch04_comp.tex, particularly its general
+  normalization-transfer theorem and zero-normal syntax sections.
+* The full fetched article chapter ch08_seed.tex, covering successor-seeded,
+  tied-seed, and self-seeded recursors.
+* bounded_initializer/README.txt and evidence/mathematical_review.txt.
+* initializer_equality/README.txt and code/PROOF_INVARIANTS.md.
+* canonical_recursors/README.md.
+
+Closest existing constructions
+------------------------------
+
+The general normalizer framework in ch04_comp.tex assumes substitution
+coherence as condition (nu4). Its rule templates and bodies are normal
+syntax. Atomic-initializer normalization violates that condition; retaining
+raw metadata and normalizing after each raw instantiation is therefore an
+actual difference, not an instance justified by that framework alone.
+
+The zero_normal and initializer_equality constructions contract every
+zero-counter iterator, with arbitrary initializer. The latter's new equality
+rule replaces an initializer and reconstructs arbitrary congruence through
+one iteration. Neither examined description uses atomic-only contraction
+or the raw-QE derivation of general zero computation.
+
+canonical_recursors builds full zero computation into canonical syntax for
+a successor-seeded R constructor. bounded_initializer studies tied-seed
+recursors, bounded initialization, and an internal compiler; it is a different
+arithmetic construction.
+
+Recommended wording
+-------------------
+
+Use "the presentation developed here" or "this separate candidate".
+Do not claim literature-wide priority, exhaustive novelty relative to every
+file in the repository, an absolute minimum, or a below-frontier checker.
+The general idea of moving computation into syntax and the six-rule count
+are already present in the repository and must not be attributed as new.
+
+All repository paths above are under the pinned ConciseIPRA directory.
+Article chapters are in docs/Article/chapters; package files are in Artifacts.

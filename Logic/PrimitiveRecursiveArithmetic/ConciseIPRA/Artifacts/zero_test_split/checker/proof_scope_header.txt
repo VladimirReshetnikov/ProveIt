@@ -1,0 +1,94 @@
+THE SCOPE HEADER ARGUMENT
+========================
+
+1. Exact change
+
+The c lambda of compact479 has formal arguments (g,a,k=0). Compact478 instead
+requires (g,a,k), and the initial invocation changes from c([0],q()) to
+c([0],*q()). The final JSON item changes from A to [A,k]. No acceptance
+operation, inference schema, substitution traversal, context, major check,
+fresh-name decrement, or final output is otherwise changed.
+
+Removing '=0' saves two normalized bytes; adding '*' costs one. CPython's
+normalizer therefore gives 478 rather than479 bytes. The new Starred AST node
+and its context outweigh removal of the old Constant node by one AST node.
+
+2. Canonical completeness and exact zero-floor simulation
+
+Take any old finite JSON certificate p whose final item is A. Replace only
+that item by [A,0]. Both parsers read the same data otherwise. The old call
+uses its default k=0, and the new splat supplies that very value. Both enter
+c with exactly the same g,a,k and the same remaining packet-pop stream. Their
+function bodies are literally identical. Induction over a finite execution
+therefore gives the same primitive operations, goals, contexts, scope floors,
+packet suffixes and successful return values. Corresponding exceptions also
+occur at corresponding operations, apart from resource limits.
+
+Thus every canonically certified theorem of the old guarded presentation has
+a certificate of the new presentation. This argument is not restricted to
+positive fixture data and requires no appeal to a proof search algorithm.
+
+3. Why the new free header does not add guarded public theorems
+
+Consider a successful new run on the stated finite integer/list input alphabet
+and on a canonical guarded public goal. Its root scope check visits a literal
+zero in a meaningful numerical position. The traversal depth there is odd
+and positive. If k is a list, the scalar comparison raises a type error. If k
+is a positive integer, the comparison k<=0 fails and the fallback attempts
+to traverse its default image, the function c, which is not an integer/list
+tree. That raises. Consequently any successful run on this public grammar has
+an integer floor k<=0.
+
+For such a floor the old soundness invariant generalizes literally: the rigid
+numerical parameters are the integers k,k+1,...,-1. They are arbitrary numbers,
+and there are no assumptions about them. Every fresh allocation decreases k
+by one; hence its new parameter is outside the old parameter set and is still
+negative. Protected bound-slot coordinates are nonnegative, so the two kinds
+of coordinate cannot collide. The major premise is checked before the floor
+decreases, exactly as in the control. The retained neutral formula is true in
+every assignment. The inherited proof of soundness by induction on the finite
+accepting call tree therefore applies with an arbitrary finite initial set of
+numerical parameters, not merely the empty set.
+
+The public conclusion is closed. Validity under arbitrary assignments to extra
+parameters proves the same closed sentence. Syntactically, one may substitute
+zero for the extra initial parameters in the ordinary interpreted derivation.
+No initial hypothesis is supplied by the header: only the floor varies.
+
+Together with Section2 and the inherited guarded/iPRA interpretations, this
+gives exactly the same closed guarded theorem set and equiconsistency. Both
+number domains and identity composites of the inherited bi-interpretation
+remain unchanged. This is a theorem about certificate initialization, not
+about a stronger or weaker arithmetic axiom system.
+
+4. Optional negative renaming
+
+For a canonical certificate, replace every negative rigid name n by n-r and
+the initial floor0 by -r, r>=0. At every later stage the floor changes from k
+to k-r. Comparisons between a negative name and the floor are preserved, bound
+slots are unchanged, and opening and fresh allocation commute with this
+renaming. Canonical formula majors are lists, so their tripling is ordinary
+list concatenation and also commutes with renaming. This proves the standard
+negative-offset compilation. No exact arbitrary-raw-alias equivalence under
+this renaming is claimed; scalar formula aliases may be multiplied by3.
+
+5. Essential restriction and a rejected extension
+
+The nonpositive-floor conclusion in Section3 uses the mandatory numerical zero
+of the GUARDED public grammar. It must not be asserted for the full native
+Eq/D grammar, which has zero-free closed formulas. The attempted native606
+and strict636 variants were rejected in review. At positive initial floor1,
+their first nominally fresh parameter becomes the numerical constant0.
+For example a zero-free public formula can express D_xy E(y), where
+
+ E(n): I(n,n;u.Su) = I(n,n;u.I(n,u;v.Sv)).
+
+In the standard reading this says 2n=n+n^2. It holds at0 and1 but not2.
+An erroneous floor1 introduction reduces its step to the ground true E(1),
+allowing the false closure E(0)->forall n E(n). A concrete30-packet attack was
+constructed during independent review. Those native/strict variants are not
+included among the deliverable acceptance programs.
+
+Nor does this experiment prove a shortest-checker theorem, improve the corpus
+token/AST minima, or constitute a mathematical breakthrough. It establishes
+one precisely scoped new normalized-byte incumbent.

@@ -1,0 +1,89 @@
+INDEPENDENT ACCEPTANCE-PRESERVATION AUDIT
+
+Scope: abstract execution on finite input, with sufficient finite resources.
+Acceptance means process exit zero with exactly ACCEPT followed by newline.
+The programs are ordinary CPython 3.12.14 sources; no assertions are added.
+This proves equivalence with the matched programs, not an independent proof
+of the inherited kernel or its arithmetic bi-interpretation.
+
+A. First-use binding: controls/bytes487.py to code/checker_bytes.py
+
+Old outer expression:
+    (i := L) and (i(a) in g or R)
+New outer expression:
+    (i := L)(a) in g or R
+Here L is the identical lambda expression, and R is the identical remaining
+expression. Lambda evaluation produces a function object, which is always
+truthy. The old and new expressions therefore (1) evaluate the same default
+arguments, (2) create and bind the same scanner closure, (3) call it once on
+a, (4) test the same membership, and (5) evaluate R precisely when that
+membership fails. The name i is bound before its recursive body is entered.
+The outer scope and every assignment expression in R remain unchanged.
+The expressions are identical as observations by the surrounding program:
+the same return value, or an exception before acceptance, and the same proof
+stream consumption and eigenparameter allocations. No syntax, data, or
+arithmetic assumption on the JSON values is needed for this change.
+The normalized size is 479 bytes. Metrics: 272 tokens/304 AST.
+
+B. Strict first-use: controls/strict646.py to code/checker_strict.py
+
+The old body first assigns i=L and then returns `i(a) in g or R`. Replace
+the outer FunctionDef by a lambda with the same parameters/defaults, and
+replace the first call of i by `(i:=L)(a)`. Python gives the inner lambda
+the same closure over g,k,v and the same recursively bound i. The assignment
+of v to zero inside R still targets the outer c-call's local cell. Every
+statement was already part of the returned expression; no statement order
+changes. Successful values and exceptions correspond exactly, so the
+public validator, full-certificate alphabet gate, scope scan, packet
+consumption, and acceptance verdict are unchanged. The c function object's
+name changes, but no program operation observes its name or representation;
+its use as an invalid default sentinel raises identically when reached.
+Metrics: 344 tokens/392 AST/637 bytes versus 343/392/646.
+
+C. Native context-phase: controls/native629.py to code/checker_native.py
+
+Three established transformations are composed:
+(1) Successful return None becomes True at a hypothesis, or a one-element
+    eager list of successful recursive results. Every successful return is
+    truthy. Consequently the old major expression `c(...) or m*3` and the
+    new `c(...) and m*3` both have exactly the value m*3 after success, and
+    propagate an exception after failure. No inference is skipped.
+(2) The old in-place `g += [0]` is replaced by the first-argument assignment
+    `(g := g+[0])`. Both add the neutral scalar 0 before the major subproof.
+    In-place extension can also leave extra 0 entries in an ancestor's
+    aliased context; the immutable version does not. Relate contexts by
+    deleting repeated occurrences of the exact administrative 0. All
+    retained nonzero formulas and their identities are unchanged. The
+    program observes a context only through membership, nonemptiness, and
+    extension. These observations are invariant under this relation, and
+    both sides contain 0 before any recursive call. No stored formula tree
+    is mutated by either program.
+(3) Bind the scanner at its first call, as in A and B.
+
+The eager singleton comprehension pops the next packet just before the
+new local context extension; the old code extends first and pops second.
+These actions commute for acceptance: q is a built-in pop on the independent
+parsed input list, which does not alias the freshly constructed context;
+no scanner is called between the pop and extension. If pop or unpacking
+fails, both programs reject. If it succeeds, the same packet is processed
+under equivalent contexts. The public root scan still occurs with empty
+g before extension. Later scanner calls see the locally updated nonempty
+g. In particular the important transition out of public-validation mode
+has not moved across any scanner evaluation.
+
+Induct on each finite successful call tree, carrying the remaining input
+suffix and numerical floor k. Major subcalls satisfy the induction
+hypothesis. The computation/introduction expression returns the same h;
+the floor is decreased at the same point; the same opened hypothesis and
+goal are produced; the continuation contexts remain related. This yields
+both directions of acceptance preservation and equal packet consumption.
+The analogous strict-context variant is sound but 640 bytes, larger than B.
+Metrics of C:334 tokens/381 AST/614 bytes versus 324/374/629.
+
+FINITE VERIFICATION
+
+verify_validated.py checks B and C against the pinned native
+and strict fixture suites, in ordinary and -O modes. All 368 subprocess
+executions match their expected acceptance outcomes. The full results and
+exact source hashes are in evidence/validated_results.json. These runs
+test implementation details; the all-input result is the simulation above.

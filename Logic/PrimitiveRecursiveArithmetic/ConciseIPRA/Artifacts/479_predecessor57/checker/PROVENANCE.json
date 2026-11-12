@@ -1,0 +1,39 @@
+{
+  "repository": "VladimirReshetnikov/ProveIt",
+  "commit": "ecae4653f69184a25ade2b1aeaa346f7a7817b78",
+  "origins": [
+    {
+      "file": "controls/compact487.py",
+      "origin": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/incoming/ipra_single_binder_2026-11-12.zip!ipra_single_binder/code/bytes487.py",
+      "sha256": "4a362b308a780b383a34fe9730eeb3330d8f44b454395b4208547784b5acb6b2"
+    },
+    {
+      "file": "controls/native629.py",
+      "origin": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/incoming/ipra_verified_refinements_2026-11-12.zip!ipra_verified_refinements_2026-11-12/native/checker.py",
+      "sha256": "82d11d457b04239b25585b80bbc4f8bc64510e6e72e21fe82bdcaae32360d4a0"
+    },
+    {
+      "file": "controls/strict646.py",
+      "origin": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/incoming/ipra_checker_refinement_2026-11-12.zip!ipra_checker_refinement/code/checker_native.py",
+      "sha256": "01bbcd85c34bbef99710b2e32b2962fe4ac1d22d0e02a1d43c921e26d82e0489"
+    }
+  ],
+  "derivations": {
+    "code/compact479.py": "Direct call of the assigned opener in controls/compact487.py. Exact successful-trace equivalence.",
+    "code/native607.py": "controls/strict646.py without the whole-input alphabet gate, with exact public-goal integer typing restored; outer lambda and direct opener call. Native public contract comparable with controls/native629.py.",
+    "code/strict637.py": "Outer lambda and direct opener call in controls/strict646.py. Exact successful-trace equivalence."
+  },
+  "fixture_sources": {
+    "compact_context": "audit/incoming/extracted/ipra_checker_refinement/tests/byte/context",
+    "compact_progress": "audit/incoming/extracted/ipra_checker_refinement/tests/byte/progress",
+    "native": "audit/incoming/extracted/ipra_verified_refinements_2026-11-12/native/fixtures",
+    "strict_proofs": "audit/incoming/extracted/ipra_checker_refinement/tests/native/proofs",
+    "strict_boundary": "audit/incoming/extracted/ipra_checker_refinement/tests/native/boundary"
+  },
+  "additional_root_scope_fixture": {
+    "source_archive": "docs/incoming/ipra_502_scope_audit_2026-11-12.zip",
+    "member": "ipra_502_scope_audit_2026-11-12/tests/counterexample/future_scope_attack.json",
+    "sha256": "2a8b02b8fb6136ead81ea1e31028cb696889c76cd6e3879a49ba0e54ab661b61",
+    "reason": "Explicit 17-packet regression against entry-scope-scan deletion; expected rejection by both exact compact variants."
+  }
+}

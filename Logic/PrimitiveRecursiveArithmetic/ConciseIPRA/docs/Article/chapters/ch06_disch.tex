@@ -20,8 +20,12 @@ syntax, where no normalization is available and reflexivity is derived. In
 \cref{disch:sec:restricted} the equality rule substitutes for a variable
 only, for the newest variable only, or, on raw terms, for a free parameter;
 an obstruction shows that unary congruence is not enough. In
-\cref{disch:sec:spec} the use of a clause takes no term argument.
-\Cref{disch:sec:const} records an induction interface that one of the
+\cref{disch:sec:spec} the use of a clause takes no term argument. In
+\cref{disch:sec:alias} a primitive fresh alias, whose discharge substitutes
+into the conclusion, and substitution for a parameter in the backward
+direction replace the equality rule; the source of equality and the target
+of every use of a clause are then the newest parameter, and both new rules
+can be restricted to literal equations. \Cref{disch:sec:const} records an induction interface that one of the
 packages treats separately. \Cref{disch:sec:impl,disch:sec:sizes} summarize
 the checkers, and \cref{disch:sec:further} lists what is left open.
 
@@ -2568,6 +2572,905 @@ target by position, is not formalized; that choice is not stable under
 renaming, which is why the proof above regenerates the proofs of premises.
 \end{remark}
 
+\section{Fresh aliases and backward substitution}
+\label{disch:sec:alias}
+
+This section draws on \pkg{alias\_back}
+(\cref{disch:sec:alias-rules,disch:sec:alias-eq,disch:sec:alias-kernel,disch:sec:alias-newest})
+and \pkg{equation\_aliases} (\cref{disch:sec:alias-atomic}).
+
+In \cref{disch:sec:param} an alias $b=a$ is discharged only from a
+conclusion that does not contain $b$ (\cref{disch:lem:alias}), and the
+discharge is derived from the computations, joining at the root and the
+logical rules. Here the discharge of a fresh alias is a primitive rule, and
+it substitutes the defining term into the conclusion. Together with
+substitution for a parameter in the backward direction it gives
+reflexivity, symmetry and transport in every formula on raw terms, with no
+computation, normalization or induction (\cref{disch:prop:alias-eq}). With
+it the source of the equality rule and the target of every use of a clause
+can both be restricted to the newest parameter
+(\cref{disch:thm:alias-compiler}), and, at the price of an induction on the
+rank of formulas, both new rules can be restricted to literal equations
+(\cref{disch:thm:alias-atomic}). The arithmetic is unchanged: the two
+computation equations, the elimination \rulename{Open} and the introduction
+\rulename{Close} with a supplied witness are retained.
+
+In this section terms are the raw terms of \cref{base:sec:terms}, and
+substitution is the capture-avoiding substitution of raw syntax; it is
+simultaneous and performed in one pass, so that $F\subst{t}{b}$ is defined
+also when $t$ contains $b$. Nothing is normalized. A judgment
+$\Pi;\Gamma\proves A$ carries its numerical scope $\Pi$ as in
+\cref{wit:def:scope}, and $\nu(\Pi)$ is the newest parameter of $\Pi$, or
+$0$ if $\Pi$ is empty; every rule with an eigenparameter appends it to the
+scope of its premise. Where the scope plays no role it is not written. The
+clause calculi of the section have the uniform clauses of
+\cref{claus:def:v}, with at most one antecedent, the assumption clause
+$\langle A\rangle=[\ ;\,v.\,A]$, and no reflexivity clause; $\Gamma,F$
+denotes $\Gamma$ extended by $\langle F\rangle$.
+
+\subsection{The two rules}
+\label{disch:sec:alias-rules}
+
+\begin{definition}[Alias and backward substitution]
+\label{disch:def:alias}
+\begin{align}
+ &\infrule{\Pi,b;\ \Gamma,\ b=t\proves F}
+          {\Pi;\Gamma\proves F\subst{t}{b}}\ \rulename{Alias}
+ \label{disch:eq:alias}\\[1ex]
+ &\infrule{\Pi;\Gamma\proves b=t\qquad\Pi;\Gamma\proves F\subst{t}{b}}
+          {\Pi;\Gamma\proves F}\ \rulename{Back}
+ \label{disch:eq:back}
+\end{align}
+In \rulename{Alias} the parameter $b$ is not in $\Pi$, hence fresh for
+$\Gamma$ and for the \emph{defining term} $t$, which is over $\Pi$; the
+formula $F$ is over $\Pi,b$ and may contain $b$, and every free occurrence
+of $b$ in $F$ is replaced in the conclusion. In a clause calculus the added
+assumption is the clause $\langle b=t\rangle$. In \rulename{Back} the
+\emph{source} $b$ is a parameter of $\Pi$, the term $t$ and the formula $F$
+are over $\Pi$, and $t$ may contain $b$. The conclusion $F$ is the goal: no
+template is supplied, and the second premise is computed from the goal and
+the first premise. The first premise is oriented; a derivation of $t=b$
+does not take its place. The restricted forms are
+$\rulename{Back}_{\nu}$, in which $\Pi$ is not empty and $b\equiv\nu(\Pi)$;
+$\rulename{Alias}^{=}$ and $\rulename{Back}^{=}$, in which $F$ is a literal
+equation; and $\rulename{Back}^{=}_{\nu}$, with both restrictions.
+\pkg{equation\_aliases} calls $\rulename{Alias}^{=}$ and
+$\rulename{Back}^{=}_{\nu}$ \rulename{EqAlias} and \rulename{EqBack}.
+\end{definition}
+
+The essential difference from \cref{disch:lem:alias} is that the
+conclusion of \rulename{Alias} may change on discharge: from its own
+assumption the rule exports $(b=t)\subst{t}{b}\equiv(t=t)$. This is the
+step that is missing from the rule of parameter substitution in the reverse
+direction with an ordinary elimination of a fresh name, which
+\pkg{uniform\_binding} considered and discarded (\cref{ctr:sec:questions}):
+once the goal no longer mentions the alias, that rule can require the goal
+itself as its premise. \rulename{Alias} is \rulename{Name}
+\eqref{disch:eq:name} without its paired formula: the equation $b=t$ is
+assumed instead of being proved from an opened clause. \rulename{Back}
+differs from \rulename{VSub} \eqref{disch:eq:vsub} in its direction and in
+its scope: \rulename{VSub} substitutes forward in the left side of an
+equation, and \rulename{Back} computes its premise from a goal that is an
+arbitrary formula. Like \rulename{BRep} of \cref{kern:def:B} it is
+goal-directed; unlike \rulename{BRep} it substitutes for a parameter and
+does not replace occurrences of a compound term.
+
+\begin{proposition}[The freshness conditions]
+\label{disch:prop:alias-fresh}
+Neither freshness condition of \rulename{Alias} can be dropped.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item If $b$ may be free in $\Gamma$, the rule derives $0=\Suc 0$ from the
+ assumption $b=\Suc 0$.
+\item If $b$ may occur in $t$, the rule derives $\Suc b=\Suc\Suc b$ from
+ the empty context.
+\end{enumerate}
+Both conclusions are false in the natural numbers under every assignment
+that makes the context true, while all other rules of the calculi of this
+section are sound for the ordinary reading in the natural numbers.
+\end{proposition}
+
+\begin{proof}
+(a) Let $\Gamma$ be the assumption $b=\Suc 0$ and $t\equiv 0$. The premise
+$\Gamma,\ b=0\proves b=\Suc 0$ is a use of an assumption, and the discharge
+would export $(b=\Suc 0)\subst{0}{b}\equiv(0=\Suc 0)$, although $\Gamma$ is
+true at $b=1$. (b) Let $t\equiv\Suc b$. The premise
+$b=\Suc b\proves b=\Suc b$ is a use of the assumption, and the discharge
+would export $(b=\Suc b)\subst{\Suc b}{b}\equiv(\Suc b=\Suc\Suc b)$, which
+is false at every value of $b$.
+\end{proof}
+
+The checkers of \pkg{alias\_back} validate the defining term in the outer
+scope before the alias parameter is added, so that both instances above are
+rejected. \rulename{Back} has no freshness condition: its replacement may
+contain its source, because \rulename{Back} discharges nothing.
+
+\begin{lemma}[Soundness in the kernel]
+\label{disch:lem:alias-sound}
+Both rules are admissible in $\Nat$. If $\Gamma,\ b=t\proves_{\Nat}F$ and
+$b$ is not free in $\Gamma$ or in $t$, then
+$\Gamma\proves_{\Nat}F\subst{t}{b}$. If $\Gamma\proves_{\Nat}b=t$ and
+$\Gamma\proves_{\Nat}F\subst{t}{b}$, then $\Gamma\proves_{\Nat}F$.
+\end{lemma}
+
+\begin{proof}
+For \rulename{Alias} apply \cref{base:lem:struct} with the substitution
+$\theta=[t/b]$ and the context $\Gamma,\ t=t$. Since $b$ is not free in
+$\Gamma$, every member of $\Gamma$ is unchanged by $\theta$, and since $b$
+is not free in $t$, $(b=t)[\theta]\equiv(t=t)$; so
+$\Gamma,\ t=t\proves F\subst{t}{b}$. Reflexivity
+(\cref{base:lem:eq}(i)) and \cref{base:lem:cut}, with \rulename{Hyp} for
+the members of $\Gamma$, give $\Gamma\proves F\subst{t}{b}$.
+
+For \rulename{Back} let $w$ be fresh and $K\defeq F\subst{w}{b}$. Then
+$K\subst{b}{w}\equiv F$ and $K\subst{t}{w}\equiv F\subst{t}{b}$, also when
+$t$ contains $b$, because the substitution is simultaneous. By
+\cref{base:thm:leibniz} with $\Gamma\proves b=t$, the formulas
+$K\subst{b}{w}$ and $K\subst{t}{w}$ are interderivable over $\Gamma$.
+\end{proof}
+
+\subsection{Equality from three rules}
+\label{disch:sec:alias-eq}
+
+\begin{lemma}[Structural operations with unrestricted sources]
+\label{disch:lem:alias-struct}
+Let $\mathcal S$ have the rules \rulename{Alias} and \rulename{Back}, or
+$\rulename{Alias}^{=}$ and $\rulename{Back}^{=}$, together with either the
+rules of $\Nat$ other than \rulename{Tr}, or the rules \rulename{I0},
+\rulename{IS}, \rulename{Use} at an arbitrary term, and \rulename{Open} and
+\rulename{Close} of \cref{disch:def:param} over uniform clauses, with
+$\langle B(t,\eta)\rangle$ as the assumption of \rulename{Close}. Then
+weakening and injective renaming are admissible in $\mathcal S$: if
+$\Pi;\Gamma\proves A$, every parameter of $\Pi$ is in $\Pi'$, in any
+order, and every occurrence of $\Gamma$ is an occurrence of a context
+$\Gamma'$ over $\Pi'$, then $\Pi';\Gamma'\proves A$; and if $\iota$ is an
+injective map of parameters, then $\Pi\iota;\Gamma\iota\proves A\iota$.
+Both transformations preserve the rule at each node and the height.
+\end{lemma}
+
+\begin{proof}
+By induction on the derivation, after the eigenparameters and the alias
+parameters of the derivation have been renamed away from $\Pi'$ and
+$\Gamma'$, respectively from the range of $\iota$. A use of an occurrence
+is a use of its image. The source of \rulename{Back} is a parameter of the
+old scope, hence of the new one, and
+$(F\iota)\subst{t\iota}{b\iota}\equiv(F\subst{t}{b})\iota$ for an injective
+$\iota$. The defining term of \rulename{Alias} is over the old scope, and
+its parameter is fresh for the new one. An injective renaming preserves the
+root of a matrix and the test $t\equiv 0$, hence the mode of
+\rulename{Close} and of \rulename{DI}, and it preserves literal equations.
+The remaining rules are treated as in \cref{base:lem:struct} and
+\cref{disch:lem:param-struct}.
+\end{proof}
+
+The lemma fails for $\rulename{Back}_{\nu}$ and for every rule whose
+argument is the newest parameter: inserting a newer parameter changes
+$\nu$, as in \cref{wit:ex:weakening}.
+
+\begin{proposition}[Equality from \rulename{Hyp}, \rulename{Alias} and
+\rulename{Back}]
+\label{disch:prop:alias-eq}
+Let $\mathcal S$ be as in \cref{disch:lem:alias-struct}. The following
+rules are derived in $\mathcal S$, under every context:
+\[
+ \text{(a)}\ \infrule{}{t=t}
+ \qquad
+ \text{(b)}\ \infrule{s=t}{t=s}
+ \qquad
+ \text{(c)}\ \infrule{s=t\qquad H(s)}{H(t)}
+ \qquad
+ \text{(d)}\ \infrule{s=t\qquad h(s)=r}{r=h(t)}\ \rulename{Tr}
+\]
+for every term $t$, every formula template $H(v)$, which is to be a literal
+equation if $\mathcal S$ has $\rulename{Alias}^{=}$ and
+$\rulename{Back}^{=}$, and every term template $h(v)$. The derivations
+consist of the given premises, weakened by
+\cref{disch:lem:alias-struct}, uses of assumptions, and instances of
+\rulename{Alias} and \rulename{Back}. The source of every instance of
+\rulename{Back} that they add is the parameter of the innermost
+\rulename{Alias} whose branch contains it, and it is the newest parameter
+at that node. In (a), (b) and (d), and in (c) when $H$ is a literal
+equation, every added instance of \rulename{Alias} and \rulename{Back} has a
+literal equation as its conclusion.
+\end{proposition}
+
+\begin{proof}
+(a) Choose $b$ fresh. Under the alias $b=t$ the use of its assumption
+proves $b=t$, and \rulename{Alias} exports $(b=t)\subst{t}{b}$, which is
+$t=t$ because $b$ does not occur in $t$.
+
+(b) Let $\Gamma\proves s=t$, and choose $b$ fresh for $\Gamma$, $s$ and
+$t$. Work under the alias $b=s$, where the given derivation is weakened.
+\rulename{Back} with the first premise $b=s$ and the goal $b=t$ has the
+second premise $(b=t)\subst{s}{b}\equiv(s=t)$; so it proves $b=t$. By (a),
+$t=t$; the alias of that derivation is opened and discharged before the
+next step, so $b$ is again the newest parameter. \rulename{Back} with the
+first premise $b=t$ and the goal $t=b$ has the second premise
+$(t=b)\subst{t}{b}\equiv(t=t)$; so it proves $t=b$. \rulename{Alias}
+discharges $b=s$ and exports $(t=b)\subst{s}{b}\equiv(t=s)$.
+
+(c) Let $\Gamma\proves s=t$ and $\Gamma\proves H(s)$. By (b),
+$\Gamma\proves t=s$. Choose $b$ fresh for $\Gamma$, $H$, $s$, $t$ and the
+names of the given derivations, and work under the alias $b=t$.
+\rulename{Back} with the first premise $b=t$ and the goal $b=s$ has the
+second premise $t=s$; so it proves $b=s$. \rulename{Back} with the first
+premise $b=s$ and the goal $H(b)$ has the second premise
+$H(b)\subst{s}{b}\equiv H(s)$, because $b$ does not occur in $H(v)$; so it
+proves $H(b)$. \rulename{Alias} exports $H(b)\subst{t}{b}\equiv H(t)$. The
+parameter $b$ marks exactly the distinguished positions of the template;
+the occurrences of $s$ and $t$ in its passive part are not touched, the
+distinguished variable may occur several times, under the binder of an
+iterator or of $\D{}{}$, or not at all, and capture is excluded by the
+choice of $b$ and by simultaneous substitution. If $H$ is a literal
+equation, the four conclusions $b=s$, $H(b)$, $H(t)$ and those of (b) are
+equations.
+
+(d) Apply (c) to $H(v)\equiv(h(v)=r)$, which gives $h(t)=r$, and then (b).
+\end{proof}
+
+Transitivity is (c) with $H(v)\equiv(s=v)$, and joining at a common left
+side is (d) with the identity template; so every instance of
+\rulename{Param} \eqref{disch:eq:param} is derived.
+
+\begin{remark}[The equality fragment]
+\label{disch:rem:alias-eq}
+The proposition is a completeness statement for an equality fragment alone,
+on raw terms: it uses neither a computation equation nor a logical rule,
+whereas the derivations of \rulename{Tr} in
+\cref{disch:thm:name-transport,disch:thm:vsub-transport,disch:thm:param-congruence}
+use packets, computations or joining at the root, and
+\cref{disch:lem:alias} uses all three. It does not bear on the conjecture
+recorded in \cref{disch:sec:further} that substitution for a variable
+alone is weaker on raw terms: \rulename{Alias} is an additional rule.
+In the raw calculus with substitution at a variable and no reflexivity,
+reflexivity is lost (\cref{cert:thm:vs}); its invariant is not preserved by
+\rulename{Alias}, whose premise $b=t\proves b=t$ is valid vacuously while
+its conclusion $t=t$ may fail the head test. \pkg{alias\_back} contains
+an independent checker of the fragment with \rulename{Hyp},
+\rulename{Alias} and \rulename{Back} only, with a schematic unary predicate
+for the template of (c); it accepts seven certificates, among them
+transport below $\D{}{}$ and iterator binders, nested premise derivations
+and a replacement that contains its source, and rejects twelve malformed
+ones.
+\end{remark}
+
+\subsection{The kernel with aliases}
+\label{disch:sec:alias-kernel}
+
+\begin{definition}
+\label{disch:def:alias-kernel}
+$\Nat_{\mathrm{AB}}$ is $\Nat$ with \rulename{Tr} replaced by
+\rulename{Alias} and \rulename{Back}; its rules are \rulename{Hyp},
+\rulename{I0}, \rulename{IS}, \rulename{Alias}, \rulename{Back},
+\rulename{QE}, \rulename{DE}, \rulename{DI} and \rulename{QI}.
+$\Nat^{=}_{\mathrm{AB}}$ has $\rulename{Alias}^{=}$ and
+$\rulename{Back}^{=}$ in their place. Contexts are lists of native
+formulas.
+\end{definition}
+
+\begin{theorem}[The kernel with aliases]
+\label{disch:thm:alias-kernel}
+For every context $\Gamma$ and every native formula $A$,
+\[
+ \Gamma\proves_{\Nat}A
+ \quad\Longleftrightarrow\quad
+ \Gamma\proves_{\Nat_{\mathrm{AB}}}A
+ \quad\Longleftrightarrow\quad
+ \Gamma\proves_{\Nat^{=}_{\mathrm{AB}}}A,
+\]
+by effective transformations of derivations that are the identity on the
+end sequent. Consequently the ordinary readings of $\Nat_{\mathrm{AB}}$ and
+$\Nat^{=}_{\mathrm{AB}}$ are bi-interpretable and equiconsistent with
+$\iPRA$, with whole domains, actual equality and both numerical composites
+with graph $x=y$.
+\end{theorem}
+
+\begin{proof}
+Every rule of $\Nat^{=}_{\mathrm{AB}}$ is a rule of $\Nat_{\mathrm{AB}}$.
+From $\Nat_{\mathrm{AB}}$ to $\Nat$: by induction on the derivation, with
+\cref{disch:lem:alias-sound} at \rulename{Alias} and \rulename{Back}; the
+other rules are rules of $\Nat$. The substitution in that lemma is a
+substitution in derivations of $\Nat$, where it is admissible; it is not
+assumed for the new calculi. From $\Nat$ to $\Nat^{=}_{\mathrm{AB}}$: by
+induction on the derivation, copying every rule other than \rulename{Tr}
+and replacing every \rulename{Tr} by the derivation of
+\cref{disch:prop:alias-eq}(d), whose alias parameters are chosen away from
+all names of the translated premises; the premises are weakened into the
+alias contexts by \cref{disch:lem:alias-struct}, applied to
+$\Nat^{=}_{\mathrm{AB}}$. The translations do not change terms, formulas
+or contexts, so the statement on $\iPRA$ follows from
+\cref{base:thm:bridge}, and $0=\Suc 0$ is fixed.
+\end{proof}
+
+One rule of transport is replaced by two schemes. The theorem is a
+different organization of equality, not a deletion of equality reasoning,
+and it does not reduce the number of rule families.
+
+\subsection{Seven rules on clause syntax and the newest parameter}
+\label{disch:sec:alias-newest}
+
+\begin{definition}[The raw template calculus]
+\label{disch:def:alias-tr}
+$\mathcal T_{\mathrm r}$ is the calculus over uniform clauses with the
+rules \rulename{I0} and \rulename{IS}, as axioms under every context,
+\rulename{Tr} \eqref{disch:eq:tr}, \rulename{Use} at an arbitrary term,
+without premise for a clause without antecedent, and \rulename{Open} and
+\rulename{Close} of \cref{disch:def:param}, the assumption of
+\rulename{Close} being $\langle B(t,\eta)\rangle$.
+\end{definition}
+
+$\mathcal T_{\mathrm r}$ is the raw template calculus of
+\pkg{parameter\_substitution} with assumptions without antecedent; both
+packages of this section use it as their matched control.
+
+\begin{lemma}[The raw template calculus]
+\label{disch:lem:alias-tr}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item For every context $\Gamma$ of uniform clauses and every formula $A$,
+ $\Gamma\proves_{\mathcal T_{\mathrm r}}A$ if and only if
+ $\Gamma^{\circ}\proves_{\mathcal P}A$, where $\Gamma^{\circ}$ replaces
+ every occurrence $[\ ;\,y.\,B]$ by $[H;\,y.\,B]$ as in
+ \cref{claus:def:v}.
+\item For every context $\Gamma$ of native formulas and every native
+ formula $A$, with $\tau$ as in \cref{disch:thm:param},
+ $\Gamma\proves_{\Nat}A$ if and only if
+ $\langle\tau\Gamma\rangle\proves_{\mathcal T_{\mathrm r}}\tau A$.
+\item In $\mathcal T_{\mathrm r}$, under every context of uniform clauses,
+ reflexivity, symmetry, transport in every formula template and the case
+ introduction for every matrix and every witness are derived, and
+ weakening, injective renaming, cut of an assumption and substitution of
+ terms for parameters ($\Gamma\proves A$ implies
+ $\Gamma\sigma\proves A\sigma$) are admissible.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) The occurrences of $\Gamma$ and $\Gamma^{\circ}$ correspond by
+position. From $\mathcal P$ to $\mathcal T_{\mathrm r}$: \rulename{Compute}
+is \rulename{I0} or \rulename{IS}; every instance of \rulename{Param} is an
+instance of \rulename{Tr}, with the template $u\subst{w}{s}$ if $s$ is a
+parameter, the identity template if $s$ is not a parameter and $u\equiv s$,
+and the constant template $u$ otherwise (proof of \cref{disch:thm:param});
+a \rulename{Use} of an occurrence $[H;\,y.\,B]$ that corresponds to
+$[\ ;\,y.\,B]$ becomes the \rulename{Use} without premise, the derivation
+of $H$ being discarded; every other \rulename{Use} keeps its translated
+premise; \rulename{Open} adds the same clause on both sides, and
+\rulename{Close} adds $\operatorname{ord}(B(t,\eta))$, which is
+$\langle B(t,\eta)\rangle^{\circ}$. From $\mathcal T_{\mathrm r}$ to
+$\mathcal P$: \rulename{I0} and \rulename{IS} are \rulename{Compute};
+\rulename{Tr} is derived in $\mathcal P$ under every context
+(\cref{disch:cor:param-eq}); a \rulename{Use} of $[\ ;\,y.\,B]$ becomes a
+\rulename{Use} of $[H;\,y.\,B]$ whose premise is reflexivity
+(\cref{disch:lem:root}); the other rules are copied.
+
+(b) $\langle\tau\Gamma\rangle^{\circ}=\operatorname{ord}(\tau\Gamma)$, so
+(a) and \cref{disch:thm:param} give the claim.
+
+(c) A rule derived in $\mathcal P$ under every context, whose premises have
+the context of the conclusion extended by assumption clauses, is derived
+in $\mathcal T_{\mathrm r}$ by (a), since
+$(\Gamma,\langle F\rangle)^{\circ}=\Gamma^{\circ},\operatorname{ord}(F)$;
+the same holds for admissible weakening, renaming and cut. Reflexivity and
+symmetry are \cref{disch:lem:root}, transport is
+\cref{disch:lem:param-closure}(e), the case introduction is
+\cref{disch:lem:param-case}, and weakening, renaming and cut are
+\cref{disch:lem:param-struct}. Substitution is proved directly by induction
+on the derivation, as \cref{claus:prop:subst}, with the eigenparameters made
+fresh for $\sigma$: the computation axioms go to computation axioms; for
+\rulename{Tr} the template variable is chosen fixed by $\sigma$ and not free
+in its values, as in \cref{base:lem:struct}; \rulename{Use} and
+\rulename{Open} commute with $\sigma$; a \rulename{Close} keeps its mode
+unless it is in case mode with a literal equation as matrix and a witness
+$t$ with $t\sigma\equiv 0$, and then the substituted premise is the premise
+of the case introduction at the witness $0$, which is derived.
+\end{proof}
+
+\begin{definition}[Clause calculi with aliases]
+\label{disch:def:alias-clause}
+$\mathcal B$ is the calculus over uniform clauses with the rules
+\rulename{I0}, \rulename{IS}, \rulename{Use} at an arbitrary term,
+\rulename{Back}, \rulename{Alias}, \rulename{Open} and \rulename{Close} (of
+$\mathcal T_{\mathrm r}$). $\mathcal B_{\nu}$ has the seven rules
+\rulename{I0}, \rulename{IS}, $\rulename{Use}_{\nu}$,
+$\rulename{Back}_{\nu}$, \rulename{Alias}, \rulename{Open} and
+\rulename{Close}, where
+\begin{equation}
+ \infrule{\Pi;\Gamma\proves A}{\Pi;\Gamma\proves B(\nu(\Pi))}\
+ \rulename{Use}_{\nu},
+ \qquad[A;\,y.\,B(y)]\text{ an occurrence in }\Gamma,
+ \label{disch:eq:usenu}
+\end{equation}
+without premise for a clause without antecedent.
+\end{definition}
+
+A certificate of $\rulename{Use}_{\nu}$ names the occurrence and contains
+no term, and a certificate of $\rulename{Back}_{\nu}$ contains no source
+and no template. $\mathcal B_{\nu}$ has no primitive reflexivity, symmetry,
+transitivity, joining at the root, transport, template, normalization,
+predecessor or logical connective. \rulename{I0} and \rulename{IS} are two
+equations even when a checker groups them. The witness of \rulename{Close}
+is still supplied, and its progress mode is restricted to literal
+equations, so no induction for compound formulas is added. A use of an
+assumption $\langle A\rangle$ by $\rulename{Use}_{\nu}$ gives $A$ whatever
+$\nu(\Pi)$ is.
+
+\begin{theorem}[The newest parameter suffices]
+\label{disch:thm:alias-compiler}
+Let $p$ be a derivation of $\Pi;\Gamma\proves A$ in $\mathcal B$. Let
+$\theta$ be an injective map of $\Pi$ into a scope $\Pi'$, in any order
+and with any further parameters, and let $\Delta$ be a context over $\Pi'$
+together with an injective map of the occurrences of $\Gamma$ to
+occurrences of $\Delta$ that sends an occurrence of $C$ to one of $\theta
+C$. Then a derivation of $\Pi';\Delta\proves\theta A$ in $\mathcal B_{\nu}$
+is constructed effectively. If every \rulename{Back} of $p$ has a literal
+equation as its conclusion, so has every $\rulename{Back}_{\nu}$ of the
+constructed derivation.
+\end{theorem}
+
+In the terms of the chapter, every derivation of $\mathcal B$ yields a
+persistent proof (\cref{disch:def:persistent}) in $\mathcal B_{\nu}$, that
+is, hereditary derivability in the sense of \cref{wit:def:hereditary},
+with clause occurrences in the place of members of the context.
+
+\begin{proof}
+By induction on $p$, simultaneously for all $\Pi'$, $\theta$, $\Delta$ and
+occurrence maps. The induction hypothesis for a premise of the last rule is
+used with data constructed at that node, and no derivation produced by the
+construction is weakened, renamed or substituted into.
+
+\emph{\rulename{I0}, \rulename{IS}.} The image under $\theta$ is an
+instance of the same axiom.
+
+\emph{\rulename{Open}.} The major premise is translated at
+$(\Pi',\theta,\Delta)$. For the branch, over $\Pi,b$ with the opened clause
+$\mathcal C_B(b)$, choose $b'\notin\Pi'$, extend $\theta$ by $b\mapsto b'$
+and the occurrence map by the opened clause to the new opened clause
+$\mathcal C_{\theta B}(b')$, and translate the branch at
+$(\Pi',b';\ \Delta,\mathcal C_{\theta B}(b'))$. \rulename{Open} concludes
+$\theta A$, which is over $\Pi'$.
+
+\emph{\rulename{Close}.} Choose $z'\notin\Pi'$, extend $\theta$ by
+$z\mapsto z'$, append $\langle\theta B(\theta t,\eta')\rangle$, where
+$\eta'$ is the image of $\eta$, and translate the branch there.
+\rulename{Close} at the witness $\theta t$ concludes $\theta(\D{x}{y}B)$.
+The mode is the same, since an injective map of parameters preserves the
+root of the matrix, and $\theta t\equiv 0$ exactly if $t\equiv 0$.
+
+\emph{\rulename{Alias}} with the defining term $t$ and the parameter $b$.
+Choose $b'\notin\Pi'$, extend $\theta$ by $b\mapsto b'$ to $\theta'$,
+append $\langle b'=\theta t\rangle$, and translate the branch there; it
+proves $\theta'F$. \rulename{Alias} exports
+$(\theta'F)\subst{\theta t}{b'}\equiv\theta(F\subst{t}{b})$.
+
+\emph{\rulename{Back}} with the premises $v=t$ and $F\subst{t}{v}$ and the
+conclusion $F$, where $v$ is a parameter of $\Pi$. Choose $b\notin\Pi'$
+and work under the alias $b=\theta v$, in the scope $\Pi',b$ and the
+context $\Delta,\langle b=\theta v\rangle$, where $b$ is the newest
+parameter. Translate both premises there, by the induction hypothesis with
+the same $\theta$ and the occurrence map into the extended context; they
+give $\theta v=\theta t$ and $\theta(F\subst{t}{v})$. Then:
+\begin{itemize}
+\item $\rulename{Back}_{\nu}$ with the first premise $b=\theta v$, the use
+ of the alias assumption, and the goal $b=\theta t$ has the second premise
+ $\theta v=\theta t$; it proves $b=\theta t$.
+\item Let $G\defeq(\theta F)\subst{b}{\theta v}$. Since $b$ does not occur
+ in $\theta F$, $G\subst{\theta t}{b}\equiv(\theta F)\subst{\theta
+ t}{\theta v}\equiv\theta(F\subst{t}{v})$, also when $t$ contains $v$.
+ $\rulename{Back}_{\nu}$ with the first premise $b=\theta t$ and the goal
+ $G$ proves $G$.
+\item \rulename{Alias} exports $G\subst{\theta v}{b}\equiv\theta F$.
+\end{itemize}
+If $F$ is a literal equation, so are $b=\theta t$ and $G$.
+
+\emph{\rulename{Use}} of an occurrence $[A';\,y.\,B]$ at a term $t$. Choose
+$b\notin\Pi'$ and work under the alias $b=\theta t$. If the clause has an
+antecedent, translate the derivation of $A'$ there.
+$\rulename{Use}_{\nu}$ of the image of the occurrence at the newest
+parameter $b$ proves $(\theta B)(b)$, and \rulename{Alias} exports
+$(\theta B)(\theta t)$, which is $\theta(B(t))$. No \rulename{Back} is
+used.
+
+Every call of the induction hypothesis concerns a proper subderivation of
+$p$, so the construction terminates, although contexts and terms grow.
+\end{proof}
+
+\begin{corollary}[Equivalence and bridge]
+\label{disch:cor:alias-newest}
+For every scope, every context $\Gamma$ of uniform clauses and every
+formula $A$,
+\[
+ \Gamma\proves_{\mathcal B_{\nu}}A
+ \quad\Longleftrightarrow\quad
+ \Gamma\proves_{\mathcal B}A
+ \quad\Longleftrightarrow\quad
+ \Gamma\proves_{\mathcal T_{\mathrm r}}A ,
+\]
+and for every native context $\Gamma$ and native formula $A$,
+$\Gamma\proves_{\Nat}A$ if and only if
+$\langle\tau\Gamma\rangle\proves_{\mathcal B_{\nu}}\tau A$. Weakening,
+renaming, substitution and cut are admissible in $\mathcal B_{\nu}$ as
+operations on derivable judgments. The ordinary reading of
+$\mathcal B_{\nu}$ is bi-interpretable and equiconsistent with $\iPRA$,
+with whole domains, actual equality and both numerical composites with
+graph $x=y$.
+\end{corollary}
+
+\begin{proof}
+$\mathcal B_{\nu}\subseteq\mathcal B$: $\rulename{Use}_{\nu}$ is
+\rulename{Use} at the term $\nu(\Pi)$, and $\rulename{Back}_{\nu}$ is an
+instance of \rulename{Back}.
+
+$\mathcal B\subseteq\mathcal T_{\mathrm r}$: by induction on the
+derivation. \rulename{I0}, \rulename{IS}, \rulename{Use}, \rulename{Open}
+and \rulename{Close} are rules of $\mathcal T_{\mathrm r}$. For
+\rulename{Back}, transport along the symmetric $t=b$ in the template
+$F\subst{w}{b}$, $w$ fresh, sends $F\subst{t}{b}$ to $F$
+(\cref{disch:lem:alias-tr}(c)). For \rulename{Alias}, the substitution
+$[t/b]$ in the translated branch gives
+$\Gamma,\langle t=t\rangle\proves F\subst{t}{b}$, since $b$ is not free in
+$\Gamma$ or $t$, and cut with reflexivity gives
+$\Gamma\proves F\subst{t}{b}$ (\cref{disch:lem:alias-tr}(c)).
+% ed.: the package proves this inclusion through the ordinary reading of the reference theory; the direct proof in T_r covers contexts of arbitrary uniform clauses, not only contexts of assumptions and opened clauses.
+
+$\mathcal T_{\mathrm r}\subseteq\mathcal B$: by induction on the
+derivation; \rulename{Tr} is \cref{disch:prop:alias-eq}(d), with the
+premises weakened by \cref{disch:lem:alias-struct}, and the other rules are
+copied.
+
+$\mathcal B\subseteq\mathcal B_{\nu}$: \cref{disch:thm:alias-compiler} at
+the identity map and the identity context.
+
+The statement on $\Nat$ is \cref{disch:lem:alias-tr}(b). The structural
+operations are transferred through $\mathcal T_{\mathrm r}$; they are
+consequences of the equivalence, not steps of its proof. The bridge is
+\cref{base:thm:bridge} composed with these translations, which leave terms
+unchanged and fix $0=\Suc 0$; both formula round trips are those of
+\cref{disch:thm:param}.
+\end{proof}
+
+\begin{corollary}[Backward substitution for equations only]
+\label{disch:cor:alias-eqback}
+\Cref{disch:cor:alias-newest} holds with $\rulename{Back}^{=}_{\nu}$ in the
+place of $\rulename{Back}_{\nu}$ in $\mathcal B_{\nu}$, \rulename{Alias}
+still exporting arbitrary formulas.
+\end{corollary}
+
+\begin{proof}
+The translation from $\mathcal T_{\mathrm r}$ to $\mathcal B$ adds only the
+instances of \rulename{Back} of \cref{disch:prop:alias-eq}(d), which have
+literal equations as conclusions, and weakening preserves this. The
+compiler of \cref{disch:thm:alias-compiler} then produces only instances of
+$\rulename{Back}^{=}_{\nu}$. Its \rulename{Use} case exports compound
+formulas by \rulename{Alias}.
+\end{proof}
+
+\begin{remark}[The kernel with the newest parameter]
+\label{disch:rem:alias-kernel-newest}
+The same induction applies to the kernel. Let $\Nat^{\nu}_{\mathrm{AB}}$
+be $\Nat_{\mathrm{AB}}$ with $\rulename{Back}_{\nu}$ in the place of
+\rulename{Back} and with \rulename{QE} restricted to the target $\nu(\Pi)$,
+the witness of \rulename{DI} being arbitrary. By induction on a derivation
+of $\Nat_{\mathrm{AB}}$, for all injective $\theta$ and all contexts
+$\Delta\supseteq\theta\Gamma$, $\Nat^{\nu}_{\mathrm{AB}}$ derives
+$\Pi';\Delta\proves\theta A$: \rulename{Hyp} is kept; \rulename{Back} is
+compiled as above; \rulename{QE} at $t$ is compiled as \rulename{Use},
+under the alias $b=\theta t$ with the translated major premise and base,
+\rulename{QE} at $b$ and \rulename{Alias}; and \rulename{DE}, \rulename{DI}
+and \rulename{QI} append a fresh eigenparameter as \rulename{Open} and
+\rulename{Close} do. So $\Nat^{\nu}_{\mathrm{AB}}$ and $\Nat$ derive the
+same sequents. If only \rulename{QE} is restricted and \rulename{Back} is
+not, weakening in $\Nat_{\mathrm{AB}}$ (\cref{disch:lem:alias-struct})
+preserves the height of a derivation, and an induction on the height
+suffices: the source premises of \rulename{QE} are weakened into the alias
+context in $\Nat_{\mathrm{AB}}$ and then translated, and no translated
+derivation is weakened.
+% ed.: the package states this lemma with ``regenerate or weaken the two premise proofs''; the weakening is admissible only for the unrestricted source derivations, before translation, and the induction is then on their height.
+In the Lean development the target of \rulename{QE} can be restricted to a
+variable or the numeral $1$ (\cref{disch:rem:spec-lean}), and the numeral
+cannot be dropped there (\Lean{vqprf\_var\_incomplete}). With
+\rulename{Alias} it can: the countermodel of
+\cref{disch:rem:spec-lean} does not validate \rulename{Alias}. In the
+context $\Q{y}(\sel(y,0,1)=0)$, under the alias $b=1$, \rulename{QE} at $b$
+with the base $\sel(0,0,1)=0$, an instance of \rulename{I0}, proves
+$\sel(b,0,1)=0$; \rulename{Alias} exports $\sel(1,0,1)=0$, and
+\rulename{IS} and the derived equality rules give $0=1$, which is false in
+the countermodel while the context is true there.
+\end{remark}
+
+\begin{remark}[Relation to the other restrictions of the chapter]
+\label{disch:rem:alias-relations}
+In $\mathcal V_0$ (\cref{disch:sec:newest}) the source of the equality rule
+is the newest variable too, but completeness rests on full normal forms,
+which make the rows of the packet literal, and on internally sourced
+derivations (\cref{disch:def:internal}). In the derivations produced by
+\cref{disch:thm:alias-compiler} every source of $\rulename{Back}_{\nu}$ is
+the parameter of an \rulename{Alias}, so the alias plays the role of the
+packet, raw terms suffice, and the invariant is replaced by the induction
+over all target data. In $\mathcal U_*$ (\cref{disch:sec:spec}) the use of
+a clause takes no term either; it uses the newest clause at $1$ and every
+other clause at the newest parameter, on zero-normal terms, and needs the
+naming formula $\mathrm{Nm}_t$ and an induction on rank. With an
+\rulename{Alias} that exports compound formulas, $\rulename{Use}_{\nu}$
+needs neither; \cref{disch:sec:alias-atomic} shows that the rank induction
+returns when \rulename{Alias} exports equations only. The selection
+$\nu(\Pi)$ is that of \cref{wit:def:scope}, and the families of
+derivations of the proof are those of \cref{wit:def:hereditary}
+(\cref{wit:rem:families}). In \cref{wit:sec:newest} the witness of the
+introduction is the newest parameter and the target of \rulename{QE} is
+free; here the target of specialization and the source of equality are the
+newest parameter and the witness of \rulename{Close} is supplied. The
+restriction of the target does not fall under
+\cref{wit:thm:finite-range}, where the witness and the target are
+restricted together and no rule supplies a term; here the witness is
+arbitrary and \rulename{Alias} supplies an arbitrary term.
+\end{remark}
+
+\subsection{Equation-only aliases and the rank of formulas}
+\label{disch:sec:alias-atomic}
+
+\begin{definition}[The calculus $\mathcal A$]
+\label{disch:def:alias-atomic}
+$\mathcal A$ has the seven rules \rulename{I0}, \rulename{IS},
+$\rulename{Use}_{\nu}$, $\rulename{Back}^{=}_{\nu}$,
+$\rulename{Alias}^{=}$, \rulename{Open} and \rulename{Close} over uniform
+clauses. The conclusion of \rulename{Open} is an arbitrary formula.
+\end{definition}
+
+So $\mathcal A$ is $\mathcal B_{\nu}$ with both new rules restricted to
+literal equations. No rule of $\mathcal A$ exports a compound formula from
+an alias, and no rule takes a term argument except the witness of
+\rulename{Close}. The rank of a formula is the number of its binders
+(\cref{disch:sec:spec}); substitution of terms does not change it.
+
+Situations $(\Pi;\Gamma)$, their extensions and persistent proofs are
+those of \cref{disch:def:persistent}, with the parameter list written $\Pi$
+and $\mathcal A$ in the place of $\mathcal U_*$; a persistent proof is the
+hereditary family of \cref{wit:def:hereditary}, and \pkg{equation\_aliases}
+calls it a \emph{uniform proof procedure}. A \emph{local derivation} over
+$(\Pi;\Gamma)$ is one derivation of $\Pi;\Gamma\proves A$ in $\mathcal A$.
+Both $\rulename{Use}_{\nu}$ and $\rulename{Back}^{=}_{\nu}$ change their
+meaning when a newer parameter is added, so a local derivation is not in
+general a persistent proof.
+
+\begin{lemma}[Elementary persistence]
+\label{disch:lem:alias-persist}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item A persistent proof over a situation restricts to a persistent proof
+ over each of its extensions.
+\item If $\langle A\rangle$ occurs in $\Gamma$, then $A$ has a persistent
+ proof over $(\Pi;\Gamma)$.
+\item The instances of \rulename{I0} and \rulename{IS} over $\Pi$ have
+ persistent proofs.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) Extensions compose. (b) In every extension apply
+$\rulename{Use}_{\nu}$ to the image of the occurrence; its body does not
+contain the bound variable, so the conclusion is the image of $A$ whatever
+the newest parameter is. (c) The image of an instance is an instance.
+\end{proof}
+
+\begin{lemma}[The equational base]
+\label{disch:lem:alias-atomic-base}
+Let $(\Pi;\Gamma)$ be a situation and $s,t$ terms over $\Pi$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $t=t$ has a persistent proof.
+\item If $s=t$ has a persistent proof, so has $t=s$.
+\item $(\mathrm T_0)$ If $E(v)$ is a literal equation and $s=t$ and $E(s)$
+ have persistent proofs, so has $E(t)$. In particular, if $s=t$ and
+ $h(s)=r$ have persistent proofs, so has $r=h(t)$.
+\item $(\mathrm S_0)$ If $[A;\,y.\,E(y)]$ occurs in $\Gamma$ with $E$ a
+ literal equation, and $A$ has a persistent proof (no condition for a
+ clause without antecedent), then $E(t)$ has a persistent proof.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Let an extension be given, and write $s,t,E,A$ for the renamed expressions.
+In each item the derivation is that of \cref{disch:prop:alias-eq},
+constructed in the extension, with every premise taken from its persistent
+proof at the situation in which it is needed; this situation is an
+extension of the given one, by (a) of \cref{disch:lem:alias-persist}. No
+derivation is weakened. Every \rulename{Alias} and \rulename{Back} of the
+constructions has a literal equation as its conclusion, and every
+\rulename{Back} uses the alias opened last, which is the newest parameter
+at its node; in (ii) the alias of the reflexivity is discharged before the
+second \rulename{Back}. The second statement of (iii) is (iii) with
+$E(v)\equiv(h(v)=r)$ followed by (ii). For (iv) choose $b$ fresh, open the
+alias $b=t$, take the antecedent from its persistent proof at the extended
+situation, apply $\rulename{Use}_{\nu}$ to the image of the occurrence at
+the newest parameter $b$, which proves $E(b)$, and export $E(t)$ by
+$\rulename{Alias}^{=}$.
+\end{proof}
+
+The antecedent $A$ in (iv) may have any rank; its persistent proof is
+given, not constructed by an induction on the rank of $E$.
+
+\begin{lemma}[Names]
+\label{disch:lem:alias-name}
+For a term $t$ over $\Pi$ let
+\[
+ \mathrm{Name}(t)\defeq\D{x}{y}\bigl(\sel(y,t,x)=t\bigr),\qquad
+ \mathcal N_{b,t}\defeq[\sel(0,t,b)=t;\ y.\ \sel(y,t,b)=t],
+\]
+the bound variable of the selector not being free in $t$; the matrix is
+that of \cref{disch:lem:alias} with $a\equiv t$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $\mathrm{Name}(t)$ has a persistent proof over every situation
+ $(\Pi;\Gamma)$, and opening it by \rulename{Open} at a fresh $b$ adds the
+ clause $\mathcal N_{b,t}$.
+\item If $\mathcal N_{b,t}$ occurs in $\Gamma$, at any position, and $b$ is
+ a parameter of $\Pi$ not occurring in $t$, then $b=t$ has a persistent
+ proof over $(\Pi;\Gamma)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) In every extension apply \rulename{Close} at the witness $t$. Its goal
+$\sel(\Suc z,t,t)=t$ is the instance of \rulename{IS} with the constant
+body $t$, and its assumption is not used; so the derivation is valid in
+either mode, also when $t\equiv 0$ and the rule is in progress mode. The
+opened clause at $b$ is $\mathcal N_{b,t}$.
+
+(b) The antecedent $\sel(0,t,b)=t$ is an instance of \rulename{I0}, with a
+persistent proof by \cref{disch:lem:alias-persist}(c). By
+\cref{disch:lem:alias-atomic-base}(iv) at the term $1$,
+$\sel(1,t,b)=t$ has a persistent proof, and \rulename{IS} gives
+$\sel(1,t,b)=b$ persistently. Transport (iii) along $\sel(1,t,b)=t$ in the
+equation template $v=b$ sends $\sel(1,t,b)=b$ to $t=b$, and (ii) gives
+$b=t$. The clause $\mathcal N_{b,t}$ need not be the newest clause and $b$
+need not be the newest parameter, because the specialization of (iv) opens
+its own alias.
+\end{proof}
+
+In contrast with \cref{disch:lem:spec-name}, where $b=t$ is derived only
+while the naming clause is newest, the equality here is persistent from the
+start. This is what allows it to be used after later binders have added
+newer parameters.
+
+\begin{theorem}[Transport and specialization at every rank]
+\label{disch:thm:alias-rank}
+For every $r\geq 0$ and every situation $(\Pi;\Gamma)$ the following hold
+in $\mathcal A$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item[$(\mathrm T_r)$] Let $F(w)$ be a formula template of rank at most
+ $r$. If $s=t$ and $F(s)$ have persistent proofs over $(\Pi;\Gamma)$, so
+ has $F(t)$.
+\item[$(\mathrm S_r)$] Let $[A;\,y.\,F(y)]$ occur in $\Gamma$ with $F$ of
+ rank at most $r$, let $A$ have a persistent proof over $(\Pi;\Gamma)$
+ (no condition without antecedent), and let $t$ be a term over $\Pi$. Then
+ $F(t)$ has a persistent proof over $(\Pi;\Gamma)$.
+\item[$(\mathrm L_r)$] For $r>0$, let $F(w)$ have rank exactly $r$. From a
+ local derivation of $\Pi;\Gamma\proves F(s)$ and a persistent proof of
+ $s=t$ over $(\Pi;\Gamma)$, a local derivation of
+ $\Pi;\Gamma\proves F(t)$ is constructed.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+$(\mathrm T_0)$ and $(\mathrm S_0)$ are (iii) and (iv) of
+\cref{disch:lem:alias-atomic-base}. No local form $(\mathrm L_0)$ is used.
+Let $r>0$ and suppose $(\mathrm T_{r-1})$ and $(\mathrm S_{r-1})$.
+
+\emph{$(\mathrm L_r)$.} Write $F(w)=\D{x}{y}B(w,x,y)$, with $B$ of rank
+$r-1$. Use the given local derivation of $F(s)$ as the major premise of
+\rulename{Open} at a fresh $c$; the branch has the situation
+$\Theta_1=(\Pi,c;\ \Gamma,\mathcal C)$ with
+$\mathcal C\defeq[B(s,c,0);\,y.\,B(s,c,y)]$. The local derivation is used
+in the situation in which it was given and is never moved under $c$ or a
+later parameter. In $\Theta_1$ introduce $F(t)$ by \rulename{Close} at the
+witness $c$. A parameter is not the literal $0$, so the rule is in case
+mode whatever $B$ is; its premise has the situation
+$\Theta_2=(\Pi,c,z;\ \Gamma,\mathcal C,\langle B(t,c,0)\rangle)$ and the
+goal $B(t,c,\Suc z)$. Over $\Theta_2$, which is an extension of
+$(\Pi;\Gamma)$:
+\begin{itemize}
+\item $B(t,c,0)$ has a persistent proof by
+ \cref{disch:lem:alias-persist}(b), and $t=s$ has one by restriction and
+ \cref{disch:lem:alias-atomic-base}(ii); $(\mathrm T_{r-1})$ for the
+ template $B(w,c,0)$ gives a persistent proof of $B(s,c,0)$;
+\item $(\mathrm S_{r-1})$ for the occurrence of $\mathcal C$, with this
+ antecedent, at the term $\Suc z$ gives a persistent proof of
+ $B(s,c,\Suc z)$;
+\item $(\mathrm T_{r-1})$ for the template $B(w,c,\Suc z)$ and the
+ restricted proof of $s=t$ gives a persistent proof of $B(t,c,\Suc z)$.
+\end{itemize}
+Its member at the identity extension is the premise of \rulename{Close},
+which proves $F(t)$ over $\Theta_1$. The formula $F(t)$ does not contain
+$c$, and \rulename{Open} concludes $F(t)$ over $(\Pi;\Gamma)$. Even for
+$r=1$ every appeal to transport meets the hypotheses of $(\mathrm T_0)$,
+since all its premises are persistent.
+
+\emph{$(\mathrm T_r)$.} Templates of rank below $r$ are covered by the
+hypothesis. For rank $r$, given an extension, take the member of the
+persistent proof of $F(s)$ there, which is a local derivation of the image
+of $F(s)$, restrict the persistent proof of $s=t$ to the extension, and
+apply $(\mathrm L_r)$ there.
+
+\emph{$(\mathrm S_r)$.} Formulas of rank below $r$ are covered by the
+hypothesis. For rank $r$, in a given extension, with renamed expressions,
+derive $\mathrm{Name}(t)$ (\cref{disch:lem:alias-name}(a)) and open it at
+a fresh $b$. In the situation $\Theta$ of the branch, $b=t$ has a
+persistent proof by \cref{disch:lem:alias-name}(b). Take $A$ from its
+persistent proof at $\Theta$. $\rulename{Use}_{\nu}$ of the image of the
+occurrence at the newest parameter $b$ gives a local derivation of $F(b)$
+over $\Theta$, and $(\mathrm L_r)$ with the persistent equation $b=t$ gives
+a local derivation of $F(t)$ over $\Theta$. The formula $F(t)$ does not
+contain $b$, and \rulename{Open} discharges it.
+
+The recursion is well founded: $(\mathrm L_r)$ uses $(\mathrm T_{r-1})$
+and $(\mathrm S_{r-1})$, $(\mathrm T_r)$ uses $(\mathrm L_r)$, and
+$(\mathrm S_r)$ uses $(\mathrm L_r)$ and the name, which uses rank $0$
+only.
+\end{proof}
+
+\begin{theorem}[Equation-only aliases]
+\label{disch:thm:alias-atomic}
+Every derivation of $\Pi;\Gamma\proves A$ in $\mathcal T_{\mathrm r}$ yields
+a persistent proof of $A$ over $(\Pi;\Gamma)$ in $\mathcal A$, effectively;
+in particular a derivation in $\mathcal A$. Consequently $\mathcal A$,
+$\mathcal B_{\nu}$, $\mathcal B$ and $\mathcal T_{\mathrm r}$ derive the
+same judgments over every context of uniform clauses,
+$\Gamma\proves_{\Nat}A$ if and only if
+$\langle\tau\Gamma\rangle\proves_{\mathcal A}\tau A$ for native $\Gamma$
+and $A$, weakening, renaming, substitution and cut are admissible in
+$\mathcal A$ as operations on derivable judgments, and the ordinary reading
+of $\mathcal A$ is bi-interpretable and equiconsistent with $\iPRA$ with
+whole domains, actual equality and both numerical composites with graph
+$x=y$.
+\end{theorem}
+
+\begin{proof}
+By induction on the derivation in $\mathcal T_{\mathrm r}$.
+\begin{itemize}
+\item \rulename{I0}, \rulename{IS}: \cref{disch:lem:alias-persist}(c).
+\item \rulename{Tr}: \cref{disch:lem:alias-atomic-base}(iii), applied to
+ the persistent proofs of the two premises.
+\item \rulename{Use} of $[A';\,y.\,B]$ at $t$: $(\mathrm S_r)$ of
+ \cref{disch:thm:alias-rank} with $r$ the rank of $B$, applied to the
+ persistent proof of the antecedent given by the induction hypothesis.
+ The antecedent may have a larger rank than $B$; its persistent proof comes
+ from the induction on the derivation, not from the induction on rank.
+\item \rulename{Open} with the major premise $\D{x}{y}B$: in a given
+ extension take the member of the persistent proof of the major premise,
+ choose a fresh $b'$, extend the extension by $b\mapsto b'$ and by the
+ opened clause to the new opened clause, take the member of the persistent
+ proof of the branch at this extension, and apply \rulename{Open}.
+\item \rulename{Close}: in the same way, with the fresh $z'$ and the
+ renamed assumption; the mode is preserved by injective renaming.
+\end{itemize}
+The calls of the induction hypothesis concern proper subderivations, and
+the operations of \cref{disch:thm:alias-rank} are constructed beforehand by
+the induction on rank, so the two recursions do not interact. No
+derivation of $\mathcal A$ is weakened, renamed or cut. The member at the
+identity extension is a derivation of $\Pi;\Gamma\proves A$ in
+$\mathcal A$.
+
+Every rule of $\mathcal A$ is an instance of a rule of $\mathcal B_{\nu}$,
+so $\mathcal A\subseteq\mathcal B_{\nu}$, and the remaining statements are
+\cref{disch:cor:alias-newest}.
+\end{proof}
+
+\begin{remark}[Comparison and cost]
+\label{disch:rem:alias-atomic}
+\Cref{disch:thm:alias-rank} has the pattern of \cref{disch:lem:spec-rank}.
+There the transport at rank $0$ is \rulename{Step}, which opens no scope,
+so $(\mathrm T_0)$ has a local form. Here every operation at rank $0$ opens
+an alias and is available only as a persistent proof; a local derivation of
+$F(b)$ obtained by $\rulename{Use}_{\nu}$ while $b$ is newest is consumed
+as the major premise of \rulename{Open} before any newer parameter is
+introduced, as the local derivation at the case variable is in
+\cref{wit:sec:newest}. The constructions $(\mathrm L_r)$ and
+$(\mathrm S_r)$ use \rulename{Open} with a compound conclusion; whether
+\rulename{Open} can be restricted as well is open
+(\cref{disch:sec:further}). The theorem answers the question of
+\pkg{alias\_back} whether \rulename{Alias} can be restricted to equations
+while every clause is used at the newest parameter only. The compiled
+certificates of the two examples of \pkg{equation\_aliases} with compound
+specialization at rank $1$ and $2$ have $1{,}308$ and $5{,}302$ bytes; no
+bound on the size of the translation is claimed.
+\end{remark}
+
 \section{A constancy rule in place of induction}
 \label{disch:sec:const}
 
@@ -2826,8 +3729,9 @@ This section summarizes the programs of \pkg{witness\_discharge},
 \pkg{inferred\_witness}, \pkg{deterministic\_opening},
 \pkg{first\_instance}, \pkg{clause\_discharge},
 \pkg{substitutive\_discharge}, \pkg{variable\_substitution},
-\pkg{parameter\_substitution} and \pkg{deterministic\_specialization}.
-Sizes are in \cref{disch:sec:sizes}.
+\pkg{parameter\_substitution}, \pkg{deterministic\_specialization},
+\pkg{alias\_back} and \pkg{equation\_aliases}. Sizes are in
+\cref{disch:sec:sizes}.
 
 \emph{Common contract.} Every checker is a standalone Python module that
 reads one JSON value, verifies a closed theorem, prints \texttt{ACCEPT}
@@ -2904,6 +3808,45 @@ antecedent; the target is computed from the index and the scope, and
 contexts are stored newest first. A translator in both directions is
 supplied and is not part of the checker.
 
+\emph{\pkg{alias\_back}.} Two checkers of $\mathcal B_{\nu}$
+on tagged trees: the input is an object with a closed goal and a proof, and
+the proof has one tag for each of the computations (grouped), for
+$\rulename{Use}_{\nu}$ (occurrence index and premise), for
+$\rulename{Back}_{\nu}$, \rulename{Alias} (defining term and branch),
+\rulename{Open} and \rulename{Close}. The public goal and every active term, formula, clause index and
+scope are validated, and nothing is normalized. \rulename{Alias} validates
+its defining term in the outer scope before it appends its parameter and
+the clause $\langle b=t\rangle$. A use of a clause without antecedent
+ignores its premise field, as in the control. The shorter checker computes
+the scope from the context by \cref{disch:prop:scope}, which applies since
+\rulename{Alias}, \rulename{Open} and \rulename{Close} each add one clause
+and one parameter. The matched controls check $\mathcal T_{\mathrm r}$ with
+the same coding and the same simplifications. Terms and formulas are coded by integers and bare
+lists as in the common contract. An untrusted translator
+compiles proofs of $\mathcal T_{\mathrm r}$ into $\mathcal B$ by
+\cref{disch:prop:alias-eq} and then into $\mathcal B_{\nu}$ by
+\cref{disch:thm:alias-compiler}; its results for $32$ inherited closed
+certificates, among them compound binders, specialization, induction
+hypotheses, capture avoidance and zero sources, are replayed by the
+checkers, and one open example uses a parameter map that does not preserve
+the order and a non-contiguous occurrence map. The checker of the equality
+fragment of \cref{disch:rem:alias-eq} is not a complete checker and has no
+size record.
+
+\emph{\pkg{equation\_aliases}.} The two checkers of $\mathcal B_{\nu}$ of
+\pkg{alias\_back} with the additional tests that the conclusions of
+\rulename{Alias} and $\rulename{Back}_{\nu}$ are literal equations. The
+readable checker keeps the scope separate from the context, for open
+examples; the shorter one computes it from the context. An untrusted
+compiler implements \cref{disch:thm:alias-atomic}; it compiles $34$ closed
+derivations, the $32$ inherited ones and two with compound specialization
+at rank $1$ and $2$, and three open examples with non-monotone parameter
+maps, non-contiguous occurrence maps, duplicated clauses and an antecedent
+of rank $2$ against bodies of rank $0$, $1$ and $2$. The matched controls
+are the checkers of \pkg{alias\_back}, which accept the certificates with
+compound \rulename{Alias} and \rulename{Back} that the new checkers
+reject.
+
 Three statements about programs, independent of the rules, are proved in
 the packages.
 
@@ -2959,7 +3902,7 @@ computation is that of the control.
 \section{Checker sizes}
 \label{disch:sec:sizes}
 
-This section lists the sizes reported by the nine packages named at the
+This section lists the sizes reported by the eleven packages named at the
 beginning of \cref{disch:sec:impl}. All figures follow the protocol of
 \cref{base:sec:measure} and are those stated by the packages. A control is
 matched if it shares the term and
@@ -3046,6 +3989,20 @@ $\mathcal U_*$, explicit scope & 829 & 903 & 2,938 &
  first): 829 / 902 / 2,950\\
 kernel, fused grammar and scope traversal & 360 & 412 & 820 &
  checker of \pkg{scalar\_uniqueness}: 381 / 439 / 866\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{alias\_back}}\\
+$\mathcal B_{\nu}$, readable & 825 & 966 & 3,149 &
+ $\mathcal T_{\mathrm r}$, readable: 764 / 883 / 2,918\\
+$\mathcal B_{\nu}$, scope from context, shorter interface & 773 & 916 &
+ 2,903 & $\mathcal T_{\mathrm r}$, the same simplifications:
+ 716 / 838 / 2,683\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{equation\_aliases}}\\
+$\mathcal A$, readable & 843 & 989 & 3,215 &
+ $\mathcal B_{\nu}$, readable (checker of \pkg{alias\_back}):
+ 825 / 966 / 3,149\\
+$\mathcal A$, scope from context & 791 & 939 & 2,969 &
+ $\mathcal B_{\nu}$, scope from context: 773 / 916 / 2,903\\
 \end{longtable}
 
 The comparisons are local. In its matched pair, \rulename{Name} against
@@ -3061,19 +4018,31 @@ $14$ nodes in both profiles; \rulename{Param} saves $50$ bytes and costs
 $4$ tokens and $11$ nodes; $\rulename{Use}_*$ saves $12$ bytes, leaves the
 tokens unchanged and costs one node, and the computation of the scope
 from the context saves a further $24$ bytes, $10$ tokens and $7$ nodes.
+\rulename{Alias} with the two restrictions to the newest parameter costs,
+against the template control, $61$ tokens, $83$ nodes and $231$ bytes in
+the readable pair and $57$ tokens, $78$ nodes and $220$ bytes in the
+shorter pair, and the restriction of both rules to equations costs a
+further $18$ tokens, $23$ nodes and $66$ bytes in each pair; the interface
+loses its supplied template and specialization term and gains a rule.
+The programs of \pkg{alias\_back} and \pkg{equation\_aliases} read their
+input as tagged trees with a fully validated closed goal.
 \pkg{parameter\_substitution} also supplies, as a comparison source and
 not as a new calculus, a refined checker of the two-case evaluation
 calculus with $741$ tokens, $862$ nodes and $2{,}731$ bytes. Every package
 states that shorter checkers of the repository with other certificate
 contracts, in particular the compact checker of $516$ bytes and, where it
 is named, the validated checker of $788$ bytes, remain smaller than its
-programs, and none claims a minimum.
+programs, and none claims a minimum. For \pkg{alias\_back} and
+\pkg{equation\_aliases} the compact programs named are those of the
+coordinatewise envelope of $248$ tokens, $270$ nodes and $487$ bytes,
+respectively $479$ bytes, attained by different programs under a promised
+input alphabet.
 
 \section{Further questions}
 \label{disch:sec:further}
 
 This section collects the questions, limits and unproved claims stated by
-the nine packages named at the beginning of \cref{disch:sec:impl}, and one
+the eleven packages named at the beginning of \cref{disch:sec:impl}, and one
 conjecture recorded in the repository.
 
 \begin{question}[Substitution for a variable on raw terms]
@@ -3082,7 +4051,11 @@ needed (\cref{disch:thm:vsub}). On raw terms the rows of a packet are not
 literal, and \rulename{Param}, which also joins two equations at the root,
 suffices (\cref{disch:thm:param}). Is substitution for a variable alone,
 without joining at the root, strictly weaker on raw terms? The repository
-records the affirmative answer as a conjecture.
+records the affirmative answer as a conjecture. With the additional rule
+\rulename{Alias}, substitution for a parameter in the backward direction
+suffices (\cref{disch:cor:alias-newest}); \pkg{alias\_back} states that
+this does not settle the conjecture, which concerns substitution for a
+variable without such a rule.
 \end{question}
 
 \begin{question}[The least equality interface on raw terms]
@@ -3145,8 +4118,54 @@ be assumed during such a bootstrap.
 \Cref{disch:thm:spec} produces a finite derivation with no polynomial
 bound (\cref{disch:rem:spec-cost}). The translations of
 \cref{disch:thm:vsub-transport,disch:thm:param-congruence} add one packet
-or one alias per transport. What are the least expansions, for
-certificates as trees and with explicit sharing?
+or one alias per transport. The compiler of \cref{disch:thm:alias-atomic}
+reconstructs persistent premises in every new scope and nests the
+constructions of lower ranks (\cref{disch:rem:alias-atomic}). What are the
+least expansions, for certificates as trees and with explicit sharing?
+Shared proof graphs need a validation of their references whose cost has to
+be measured as well.
+\end{question}
+
+\begin{question}[Restriction of opening]
+\label{disch:q:alias-open}
+In $\mathcal A$ the conclusion of \rulename{Open} is an arbitrary formula,
+and the constructions $(\mathrm L_r)$ and $(\mathrm S_r)$ of
+\cref{disch:thm:alias-rank} use compound conclusions essentially. Can
+\rulename{Open} be restricted to literal equations as conclusions, with a
+different logical encoding, while \rulename{Alias} and \rulename{Back} are
+restricted to equations and every clause is used at the newest parameter?
+(\pkg{equation\_aliases}.)
+\end{question}
+
+\begin{question}[The witness of \rulename{Close} in the alias calculi]
+\label{disch:q:alias-witness}
+In $\mathcal B_{\nu}$ and $\mathcal A$ the witness of \rulename{Close} is
+an arbitrary supplied term. Can it be restricted to the newest parameter,
+as in \cref{wit:sec:newest}, with a short generalized compiler?
+\rulename{Alias} supplies the names, but the assumption of the branch has
+to be transported through the new eigenparameter without a weakening of
+restricted derivations. (\pkg{alias\_back}.)
+\end{question}
+
+\begin{question}[The equality rule of $\mathcal A$]
+\label{disch:q:alias-crossed}
+Can $\rulename{Back}^{=}_{\nu}$ be replaced by a crossed replacement of one
+term, keeping the goal-directed form without a template, the newest source
+and the restriction of \rulename{Alias} to equations, so that the checker
+becomes smaller? An answer has to account for raw computations and for the
+checks of scope. (\pkg{equation\_aliases}.)
+\end{question}
+
+\begin{question}[A measured benefit of the aliases]
+\label{disch:q:alias-size}
+The matched checkers of $\mathcal B_{\nu}$ and $\mathcal A$ are larger than
+their controls in every coordinate (\cref{disch:sec:sizes}). Can
+\rulename{Alias} and \rulename{Open}, both of which append a parameter and
+a clause, share an implementation without hiding their different freshness
+and export conditions, or can the equation tests of $\mathcal A$ share a
+representation with $\rulename{Use}_{\nu}$, so that the restricted
+interface lowers the size of a complete checker? (\pkg{alias\_back},
+\pkg{equation\_aliases}.)
 \end{question}
 
 \begin{question}[Lower bounds]
@@ -3154,7 +4173,9 @@ A lower bound on the size of a checker needs a fixed public grammar, a
 fixed contract for malformed input, a fixed source language and a fixed
 measure. No package of this chapter fixes these, and none proves a lower
 bound. Is there one complete program that improves the token, node and
-byte coordinates of the repository simultaneously under one contract? Can
+byte coordinates of the repository simultaneously under one contract? Is
+there a presentation that removes a genuine arithmetic or logical principle
+and also has a smaller measured checker (\pkg{alias\_back})? Can
 the rules of this chapter be represented in the smallest certificate
 languages based on arities without losing their savings to normalization
 and to the bookkeeping of scope?
@@ -3169,7 +4190,15 @@ The following are stated by the packages as not achieved or not claimed.
  and after \cref{disch:thm:inferred,disch:thm:newest}. Not formalized are:
  the four families of $\mathcal K$ on the canonical recursor syntax, the
  five families of $\mathcal P$ together, the positional calculus
- $\mathcal U_*$, and the constancy theory of \cref{disch:sec:const}.
+ $\mathcal U_*$, the constancy theory of \cref{disch:sec:const}, and the
+ calculi $\Nat_{\mathrm{AB}}$, $\mathcal B_{\nu}$ and $\mathcal A$ with the
+ compilers of \cref{disch:thm:alias-compiler,disch:thm:alias-rank,disch:thm:alias-atomic}.
+ \pkg{alias\_back} and \pkg{equation\_aliases} ask for one formalization of
+ the compiler with arbitrary parameter embeddings and occurrence maps,
+ reusable for restrictions to the newest parameter, and of the distinction
+ between persistent proofs and local derivations; their finite tests
+ replay compiled certificates and are not a verification of the
+ metatheorems.
 \item \emph{Effectiveness.} The proof translations of this chapter are
  effective; none is claimed to be primitive recursive. No primitive
  recursive bound on normalization, and no bound on the fuel needed by a
@@ -3185,13 +4214,21 @@ The following are stated by the packages as not achieved or not claimed.
 \item \emph{The equality fragment.} The proofs of
  \cref{disch:thm:vsub-transport,disch:thm:name-transport} use the logical
  rules; no completeness statement is made for the equality rules alone.
+ The fragment of \rulename{Hyp}, \rulename{Alias} and \rulename{Back} is
+ the exception: it derives reflexivity, symmetry and transport by itself
+ (\cref{disch:prop:alias-eq}).
 \item \emph{Size.} No package claims a smallest presentation or a smallest
  checker, and the matched comparisons of \cref{disch:sec:sizes} are not
- improvements in every coordinate.
+ improvements in every coordinate. The checkers of \pkg{alias\_back} and
+ \pkg{equation\_aliases} are larger than their matched controls in every
+ coordinate; the packages claim a smaller equality and specialization
+ interface with a proof of completeness, not a smaller checker.
 \item \emph{Arithmetic.} The restrictions of this chapter change the
  equality interface and the use of clauses. They do not weaken the
  arithmetic: the construction of the predecessor and the reflection of
  equality (\cref{base:thm:pred,base:thm:reflect}) remain what a proposal
  with weaker induction would have to redo, as \pkg{parameter\_substitution}
- notes.
+ notes. The calculi of \cref{disch:sec:alias} keep the supplied witness of
+ \rulename{Close} and its progress mode for equations, so they keep the
+ induction of the theory.
 \end{itemize}

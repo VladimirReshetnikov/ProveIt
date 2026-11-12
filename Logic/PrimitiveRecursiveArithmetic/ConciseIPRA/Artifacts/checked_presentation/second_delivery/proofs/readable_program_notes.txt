@@ -1,0 +1,89 @@
+READABLE STANDALONE CHECKER: EXPANSION AND LIMITS
+===============================================
+
+code/readable_checker.py is a descriptive, sequential expansion of the
+637-byte strict module, code/checker_strict.py. It imports json only and
+contains its own whole-input alphabet check, public-goal validator, scope
+opening operation, inference execution, and acceptance signal. It favors
+readability and is not a source-size record. It accepts one whole JSON
+array, consumed from the right; it is not a streaming profile.
+
+Input and public language
+-------------------------
+The recursive integer_list_tree check accepts exactly integer/list trees.
+Its exact type comparison excludes Python bool as well as floats, strings,
+objects and null. It checks unused prefix cells too. On JSON-parsed inputs
+this is the same alphabet enforced by the strict compact module's printed-
+character gate. The top-level value must be an array. A missing final goal
+rejects when the array is popped.
+
+The initial opening traversal runs in public mode. Even-depth nodes must
+have arity one or two, giving D and equality. Odd-depth nodes must have
+arity one or three, giving successor and iterator. Numerical leaves are
+zero or odd coordinates greater than one, and must satisfy the current
+scope bound. The public root is a formula position, so a scalar cannot be
+a public formula. Public goals contain no auxiliary Q nodes and need not
+satisfy the stronger compact guarded-public restriction. This is the full
+native Eq/D public contract of checker_strict.py.
+
+All later calls use the inherited administrative decoder and scope check,
+without imposing the public grammar on auxiliary proof trees. Invalid or
+absent numerical images reject explicitly. The default missing image is
+None rather than a function object: both are outside the already checked
+integer/list syntax and reject whenever a numerical opening requests them.
+Different exception classes and diagnostic messages are not part of the
+acceptance contract.
+
+Expansion of one checker call
+-----------------------------
+The following evaluation order is explicit and matches the strict compact
+program, including cases where an internal tree is an administrative alias:
+
+1. Open and scope-check the current goal, with canonical validation enabled
+   at the public root only. Close a retained hypothesis without reading a
+   packet.
+2. Read and unpack one four-field packet, then leave public-validation mode.
+3. Check the major in the unchanged context and old local scope. This call
+   is unconditional, including a neutral major. Its local assumptions are
+   not exported into the parent context.
+4. On success construct major*3, or the computation equation, or the opened
+   introduction matrix, in that order. For an introduction the current
+   continuation goal changes at this stage. The raw star-argument opening
+   is retained, preserving the compact module's administrative behavior.
+5. Compute bool(major or len(goal)%2 == seed) before lowering the floor.
+   In particular, raw [] and raw 0 are both falsy but may select different
+   native introduction modes. The exact comparison is preserved.
+6. Decrement the local floor. Open the hypothesis at the chosen fresh
+   parameter or zero, then create the extended immutable context.
+7. Eagerly open the source endpoint, construct the expected major, and open
+   the target endpoint, all at the new floor. Compare the two endpoint/
+   major pairs and select the continuation goal.
+8. Open that goal at the successor of the new parameter, and recursively
+   check it under the extended context.
+
+The compact function returns a truthy Boolean or eager list on success.
+The readable function returns None. This does not alter control flow:
+a successful recursive major is followed explicitly by the same major*3
+construction that the compact expression computes using its truthy return.
+A failed major raises before any hypothesis is supplied in either program.
+For integer/list values the three-way major/computation/introduction branch
+matches the original short-circuit expression: any nonzero major times
+three is truthy, and a constructed computation is a nonempty equation list.
+
+An induction on a finite successful call/continuation tree relates equal
+contexts, goals, local floors and remaining packet stacks. The opening
+functions return equal integer/list trees or reject. Each numbered stage
+therefore produces the same next state, and the recursive calls satisfy the
+induction hypothesis. This proves acceptance preservation on the stated
+input contract, under sufficient resources. No new theorem about the
+underlying arithmetic calculus is required for this expansion.
+
+Reproduction
+------------
+Run python3 verify_readable.py from the package root. It compares the
+readable and strict compact modules on every existing tests/strict/proofs
+and tests/strict/boundary fixture, in ordinary Python and under -O. There
+are 56 fixtures and 224 isolated checker processes. The receipt is
+ evidence/readable_validation.json.
+The finite checks supplement the program simulation; they are not a proof
+of all-input soundness or of the iPRA bi-interpretation by themselves.
