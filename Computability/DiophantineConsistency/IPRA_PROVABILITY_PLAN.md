@@ -7847,6 +7847,10 @@ The independently source-reviewed [80-operation model route](research/ordinary14
 identifies reusable main-orientation and Pell interfaces and the extra
 graph, rank and model obligations. It is a proof plan, not an elaborated
 gamma-positivity or iPRA theorem.
+The independently source-reviewed [narrow gamma draft](research/ordinary14-natural80-gamma-narrow-draft/README.md)
+proposes fact-level Pell and gamma-zero contradictions under explicit
+hypotheses. The graph-to-hypothesis bindings, Lean elaboration and endpoint
+remain open; its axiom-report commands have not run.
 The independently source-reviewed [natural-81 Lean transcription](research/ordinary14-natural-forcedj81-lean-draft/README.md)
 records its literal graph and product shape. Its source correspondence is
 checked externally; Lean semantics and endpoint equivalence remain open.
