@@ -297,6 +297,15 @@ by progress as primitive, and proves that the derivable sequents are the same
   sequent exactly when `RPrf` derives its translation. Equation induction
   and transport in arbitrary formulas are derived inside `RPrf`
   (`RPrf.eqInd`, `RPrf.leibniz`).
+- *The target-directed elimination.* `TQPrf` is `RPrf` with another
+  elimination of `Q`, the rule of
+  [`target_closure`](Research/target_closure/): from `Q_y B` and `B(δ_B(t))`
+  infer `B(t)`, where `δ_B(t)` is `r` when `B` is a literal equation and `t`
+  is literally `S r`, and `0` otherwise. One target term is supplied and no
+  orbit term. `tqprf_iff_rprf : TQPrf Γ A ↔ RPrf Γ A` proves that the two
+  calculi derive the same sequents on the same formulas, so
+  `tqprf_emb_iff` gives the equivalence with the kernel. `TQPrf` is stable
+  under renaming and not under substitution.
 - *One introduction rule, stable under substitution.* The single
   introduction above tests the witness for being the literal `0`, and a
   substitution can turn a witness into `0`. If instead the fresh variable is
@@ -725,6 +734,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | three rule families with a deterministic discharge | `xcprf_iff_nprf : XCPrf (UCl.refl :: Γ.map fun X => UCl.asm (NFm.unQ X).full) (NFm.unQ A).full ↔ NPrf Γ A`, `xcprf_iff_nprf_of_qfree`, `xcprf_iff_pra`, `XCPrf.qfree`, `XCPrf.dE`, `XCPrf.packet`, `XCPrf.toWD`, `F6Prf.toXC` | Use, Intro and Discharge: the clause is opened at the fresh variable and the selected witness is substituted in the exported formula |
 | substitution for the newest variable | `v0prf_iff_nprf : V0Prf (Γ.map NFm.full) A.full ↔ NPrf Γ A` | the rule of `VSPrf` restricted to the variable of index `0` |
 | seven uniform rules, `Q` at an equation read as progressivity | `rprf_emb_iff : RPrf (Γ.map NFm.emb) A.emb ↔ NPrf Γ A`, `rprf_emb_iff_pra`, `RPrf.toNPrf`, `rprf_consistent`, `NPrf.toR`, `NEquiv.rd_emb`, `RPrf.eqInd`, `RPrf.leibniz`, `RPrf.subst` | QE, DE and DI read their mode off the matrix root; equivalence with the kernel through the padding translation |
+| the target-directed elimination of `Q` | `tqprf_iff_rprf : TQPrf Γ A ↔ RPrf Γ A`, `tqprf_emb_iff : TQPrf (Γ.map NFm.emb) A.emb ↔ NPrf Γ A`, `tqprf_consistent`, `TQPrf.eqInd`, `TQPrf.orbit`, `TQPrf.ren` | QE with one target: a successor target asks for the predecessor instance, any other target for the instance at zero |
 | five rules with clauses and substitution for the newest variable | `vcprf_iff_nprf : VCPrf (Γ.map fun X => Cl.asm (NFm.unQ X).full) (NFm.unQ A).full ↔ NPrf Γ A`, `vcprf_iff_nprf_of_qfree`, `vcprf_iff_pra`, `VCPrf.qfree`, `VCPrf.packet`, `Cl.rep`, `Cl.Inv`, `F6Prf.toVC` | Refl, Sub, Use, Elim and Intro with clause contexts; no `Q`, no transport in a template |
 | five rules on zero-normal terms | `zcprf_iff_nprf : ZCPrf (Γ.map fun X => Cl.asm (fnf (unQ X))) (fnf (unQ A)) ↔ NPrf Γ A`, `zcprf_iff_nprf_of_qfree`, `CPrf.toZC`, `Conv` | Refl, one Eval scheme, Use, Elim and Intro on zero-normal terms with clause contexts |
 | four schemes on zero-normal terms | `zvprf_iff_zcprf`, `zvprf_iff_nprf` | Use, Step, Open, Close with uniform clauses and the fixed reflexivity clause |
@@ -749,7 +759,7 @@ The main chain (every module except the seventeen kernel comparisons,
 `NativeInferredWitness`, `NativeVariableSubstitution`, `NativeNewestVariable`, `NativeWitnessDischarge`, `NativeFullSix`,
 `NativeFullFive`, `NativeNameClauses`, `NativeOpenClauses`, `NativeExportClauses`,
 `NativeVariableClauses`, `NativeProgressive`, `NativeProgressiveRules`,
-`NativeProgressiveLeibniz`, `NativeProgressiveEmbedding`, `NativePrefix`, `NativeUniqueness`, `NativeModels` and
+`NativeProgressiveLeibniz`, `NativeProgressiveEmbedding`, `NativeTargetClosure`, `NativePrefix`, `NativeUniqueness`, `NativeModels` and
 `TeqClosure`) is 5,481
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
@@ -792,7 +802,7 @@ no `native_decide`.
 | full normal forms | `FullNormalization`, `NativeFullNormal`, `NativeInferredWitness`, `NativeVariableSubstitution`, `NativeNewestVariable`, `NativeWitnessDischarge`, `NativeFullSix`, `NativeFullFive`, `NativeNameClauses`, `NativeOpenClauses`, `NativeExportClauses`, `NativeVariableClauses` | the normalizer for both computations, defined by evaluation, with its laws and its correctness; the kernel without computation rules, `FNPrf`; the same with the opening at an inferred witness, `FOPrf`; the same with substitution for a variable as its only equality rule, `VSPrf`; six rules with Name, `NMPrf`; six rules with one introduction, `F6Prf`; five rules, `N5Prf`; three rule families with clauses, `WDPrf`; the same with the opening at an inferred witness in place of Name, `OCPrf`; the same with a deterministic discharge, `XCPrf`; five rules with clauses and substitution for the newest variable, `VCPrf` |
 | derived rule | `NativeUniqueness` | uniqueness of iteration |
 | prefix form | `NativePrefix` | a `Q`-free formula is `k` binders `D` and one equation |
-| progressive reading | `NativeProgressive`, `NativeProgressiveRules`, `NativeProgressiveLeibniz`, `NativeProgressiveEmbedding` | the seven uniform rules of `uniform_progress`, `RPrf`; the reading `NFm.rd` of `Q` at a literal equation as progressivity; soundness in the kernel and in iPRA, and consistency; inside `RPrf`: substitution, weakening and cut, the equality rules, equation induction, and the Leibniz rule for all formulas; the padding translation `NFm.emb` and the equivalence `rprf_emb_iff : RPrf (Γ.map NFm.emb) A.emb ↔ NPrf Γ A` |
+| progressive reading | `NativeProgressive`, `NativeProgressiveRules`, `NativeProgressiveLeibniz`, `NativeProgressiveEmbedding`, `NativeTargetClosure` | the seven uniform rules of `uniform_progress`, `RPrf`; the reading `NFm.rd` of `Q` at a literal equation as progressivity; soundness in the kernel and in iPRA, and consistency; inside `RPrf`: substitution, weakening and cut, the equality rules, equation induction, and the Leibniz rule for all formulas; the padding translation `NFm.emb` and the equivalence `rprf_emb_iff : RPrf (Γ.map NFm.emb) A.emb ↔ NPrf Γ A`; the calculus `TQPrf` with the target-directed elimination, equivalent to `RPrf` on the same formulas |
 | readings over the natural numbers | `NativeModels` | evaluation of terms and formulas for a reading `Sem`; the kernel with rules switched by flags, `FPrf`, and its soundness; consistency of the three systems; independence of seven rules |
 | native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, interderivability over a context, Leibniz and transport in every template, equation induction; selector and gate formulas |
 | kernel comparison | `NativeInherited`, `NativeOneContext`, `NativeOneIntro`, `NativeDiagonal`, `NativeMirror`, `NativeSix`, `NativeMinimal`, `NativeEval`, `NativeTemplateFree`, `NativeParameter`, `NativeVariableQE`, `NativeSubstitutiveDischarge`, `NativeClausal`, `NativeClausalDiagonal`, `NativeUniformClauses`, `NativeZeroSource`, `NativeReversal` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf`; no literal-zero transport sources, `OPrf`, generic over the class `OKernel`, and the uncrossed rule, `UPrf`; six rules with Eval, `EPrf`; replacement without a template, `TPrf`; substitution for a parameter, `PPrf`, with injective renaming, cut and the fresh alias; QE at a variable or at `1`, `VQPrf`, with its own Leibniz rule and the countermodel for variables alone; substitutive discharge, `SDPrf`; the diagonal introduction, `GPrf`, with its own structural rules; the mirror introduction, `MiPrf` and `M6Prf`; Eval with the diagonal introduction, `SPrf`; the five-rule clause calculus, `CPrf`, with weakening, renaming and cut of assumptions; the clause calculus with the diagonal introduction, `KPrf`; uniform clause use, `VPrf`; one introduction rule, `WPrf`, generic over the class `WKernel`; both together, `MPrf`; the source restriction for uncrossed transport in an equation template, `ZPrf`, generic over the class `ZKernel`; root-reversing transport and QE, `RPrf` |
@@ -845,7 +855,7 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `zero_normal` | Its normalization layer is adopted as `ZeroNormalization`: the delivered module compiled unchanged. On top of it `NativeZeroNormal` proves the deletion of the zero computation rule for the kernel (`nzprf_iff_nprf`, `NZPrf.normal`, `nzprf_iff_pra`), with the kernel's two introductions and unrestricted sources. A six-rule form on zero-normal terms with a single introduction is proved as `NRPrf`, with the mode test of `reflexive_base` in place of the test on the witness. |
 | `diagonal_guard` | Proved: its calculus is `GPrf`, with `gprf_iff_nprf`, `gprf_iff_iprf` and substitution by direct induction (`NativeDiagonal`). Progress for an arbitrary equation is recovered by a shorter argument than the report's: no implication between equations and no substitution into the step premise. The equivalence uses neither `Classical.choice` nor the bi-interpretation. |
 | `template_free` | Proved, for the equality rule: `TPrf` is the kernel with transport replaced by the replacement rule, and `tprf_iff_nprf` (`NativeTemplateFree`). The package's seven-rule form combines it with the witness-tested single introduction, which is not combined here. |
-| `target_closure` | Not formalized: a progressive closure with a target, on the changed reading of `Q`. |
+| `target_closure` | Its calculus and its comparison theorem are proved (`NativeTargetClosure`). `TQPrf` has the rules of `RPrf` with the elimination `Q_y B`, `B(δ_B(t))` ⊢ `B(t)`. `tqprf_iff_rprf : TQPrf Γ A ↔ RPrf Γ A`: a step of `TQPrf` is the orbit elimination with the initializer `1`; a target that is not a successor is the orbit elimination from `0`, with the redex removed by the Leibniz rule; conversely the orbit elimination at an equation is an equation induction inside `TQPrf` (`TQPrf.orbit`), whose own induction uses the target `I(0, t; u.0)`. Hence `tqprf_emb_iff` and `tqprf_consistent`. The package's second part, a smaller checker for an existing theory, is not a statement about a calculus. |
 | `initializer_equality`, `scope_kernel` | Not formalized: the first is stated on the canonical recursor syntax; the second concerns Python programs, and its research notes are a model and an unfinished argument. |
 | `canonical_recursors` | Not formalized. It is a different term language (a recursor whose seed is a successor, with a canonical grammar and normalizing substitution), so it would need its own syntax, its equivalence with the raw calculus and a bi-interpretation with iPRA. |
 | `witness_rule` (first delivery) | Proved: `wprf_iff_nprf`. The kernel keeps two introductions, because the single rule is not stable under substitution by a direct induction (a substitution can turn a witness into the literal `0`). |
@@ -908,7 +918,9 @@ marked as conjectures is proved here.
    is the other formula round trip: that every formula `B` of `RPrf` is
    equivalent in `RPrf` to `emb (rd B)`. It needs the connectives of
    `NativeLogic`, which `rd` introduces, to be analysed inside `RPrf` after
-   translation. `target_closure` is not formalized.
+   translation. The calculus of `target_closure` is proved equivalent to
+   `RPrf` on the same formulas (`tqprf_iff_rprf`), so the same question is
+   the only one open for it.
 6. **Other term syntaxes.** `canonical_recursors`, `clausal_canonical`,
    `initializer_equality`, `counter_evaluation`, `uniform_binding`,
    `substitutive_discharge` in its own form, and `register_graph` are stated
