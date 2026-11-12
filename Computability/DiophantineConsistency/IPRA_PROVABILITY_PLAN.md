@@ -7856,6 +7856,11 @@ and nonnegative K0; the stronger parent and endpoint qualifications remain.
 The independently source-reviewed [natural-79 Lean transcription](research/ordinary14-natural-forced-w79-lean-draft/README.md)
 records the literal graph and product shape. It remains unelaborated and has
 no checked model or iPRA endpoint.
+The independently source-reviewed [natural-79 model route](research/ordinary14-natural79-w-model-route/README.md)
+identifies model square-divisibility interfaces and proposes ring identities
+for the forced-w argument. The existing 74 unit extractor requires positive
+w and cannot discharge the critical w=0 case; its replacement and the full
+Lean/iPRA proof remain open.
 The independently source-reviewed [natural-80 Lean transcription](research/ordinary14-natural-forced-gamma80-lean-draft/README.md)
 records its literal graph and product shape. Source correspondence is checked
 externally; elaboration and model semantics remain open.
