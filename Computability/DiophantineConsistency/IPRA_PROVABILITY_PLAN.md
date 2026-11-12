@@ -7470,6 +7470,11 @@ The reviewed [positive quotient shift](research/ordinary14-positive-guard74/READ
 reduces that parent to 14 strictly positive inputs and 74 operations at exact
 degree 107. Its positive-zero maps use `β > 0` and `K0 ≥ 0` locally; the
 compact44 consistency, Lean and file-binding limitations remain inherited.
+The distinct [73-operation direct-qF probe](research/ordinary14-direct-qf73-probe/README.md)
+has a reviewed symbolic positive zero at the actual ports for which the
+recovered parent coordinate `F` is negative. Its same-`q`, same-rank parent
+exclusion depends on the cited parent calibration; it does not settle
+unrestricted existence equivalence and is not an established replacement.
 The reviewed [mixed-domain shift](research/ordinary14-mixed-guard74/README.md)
 gives 14 inputs, 74 operations and exact degree 107 by allowing `F ≥ 0`
 while the other thirteen inputs remain positive. Its polynomial is identical
