@@ -1,0 +1,294 @@
+\documentclass[10pt]{article}
+\usepackage[letterpaper,margin=.5in]{geometry}
+\usepackage{amsmath,amssymb,multicol}
+\pdfinfoomitdate=1\pdftrailerid{}
+\pagestyle{empty}\setlength{\parindent}{0pt}\setlength{\parskip}{1pt}
+\newcommand{\fl}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\rg}[2]{\{#1,\ldots,#2\}}
+\let\bigsum\sum\renewcommand{\sum}{\bigsum\nolimits}
+\begin{document}
+\begin{center}{\Large A 38-variable quartic equation}\\
+Strictly positive integer unknowns; 160 binary-operation abbreviations; exact degree 4.
+\end{center}
+The 38 unknowns are the following distinct names, each a positive integer:
+\par\small
+\noindent\texttt{J, F, alpha, f, i, T, X}\par
+\noindent\texttt{Y, r, eta, zeta, y, gamma, square}\par
+\noindent\texttt{scale, mainScale, rank, ell, wguard, cube, product}\par
+\noindent\texttt{fSquare, cSquare, firstQ, mainQ, vroot, deltaValue, qSquare}\par
+\noindent\texttt{productX, scaledIndex, ySquare, qValue, ySum, offset, gammaProduct}\par
+\noindent\texttt{timeProduct, rankSeed, rootSkew}\par
+\normalsize
+Each monospaced G-name below is an abbreviation, not an additional unknown.
+The fixed integers $\beta,K,\mu,\omega$ are defined after the equation.
+\begin{multicols}{2}\fontsize{8}{9}\selectfont
+% BEGIN GATE GRAPH
+\noindent $\mathtt{G001}=\mathtt{J}\cdot \beta$\par
+\noindent $\mathtt{G002}=1+\mathtt{G001}$\par
+\noindent $\mathtt{G003}=\mathtt{G002}\cdot \mathtt{G002}$\par
+\noindent $\mathtt{G004}=\mathtt{G002}\cdot \mathtt{qSquare}$\par
+\noindent $\mathtt{G005}=\mathtt{Y}\cdot \mathtt{qSquare}$\par
+\noindent $\mathtt{G006}=\mathtt{G002}-\mathtt{F}$\par
+\noindent $\mathtt{G007}=\mathtt{G006}-\mathtt{alpha}$\par
+\noindent $\mathtt{G008}=\mathtt{X}\cdot \mathtt{Y}$\par
+\noindent $\mathtt{G009}=\mathtt{eta}+\mathtt{zeta}$\par
+\noindent $\mathtt{G010}=\mathtt{Y}\cdot \mathtt{G009}$\par
+\noindent $\mathtt{G011}=\mathtt{eta}+\mathtt{ySum}$\par
+\noindent $\mathtt{G012}=\mathtt{G011}\cdot \mathtt{G011}$\par
+\noindent $\mathtt{G013}=\mathtt{productX}+\mathtt{Y}$\par
+\noindent $\mathtt{G014}=4\cdot \mathtt{G013}$\par
+\noindent $\mathtt{G015}=3+\mathtt{G014}$\par
+\noindent $\mathtt{G016}=\mathtt{G013}\cdot \mathtt{G013}$\par
+\noindent $\mathtt{G017}=\mathtt{G015}+\mathtt{G016}$\par
+\noindent $\mathtt{G018}=\mathtt{G013}\cdot \mathtt{G011}$\par
+\noindent $\mathtt{G019}=\mathtt{X}+\mathtt{G018}$\par
+\noindent $\mathtt{G020}=\mathtt{productX}\cdot \mathtt{ySum}$\par
+\noindent $\mathtt{G021}=\mathtt{cube}\cdot \mathtt{G001}$\par
+\noindent $\mathtt{G022}=K\cdot \mathtt{G002}$\par
+\noindent $\mathtt{G023}=\mathtt{X}+\mathtt{G022}$\par
+\noindent $\mathtt{G024}=\mathtt{G007}\cdot \mathtt{G023}$\par
+\noindent $\mathtt{G025}=\mathtt{F}\cdot \mathtt{G002}$\par
+\noindent $\mathtt{G026}=\mathtt{G024}-\mathtt{G025}$\par
+\noindent $\mathtt{G027}=\mathtt{ell}+\mathtt{G009}$\par
+\noindent $\mathtt{G028}=\mathtt{G027}+\mathtt{r}$\par
+\noindent $\mathtt{G029}=\mathtt{G009}\cdot \mathtt{wguard}$\par
+\noindent $\mathtt{G030}=\mathtt{G028}-\mathtt{rootSkew}$\par
+\noindent $\mathtt{G031}=\mathtt{scale}\cdot \mathtt{G030}$\par
+\noindent $\mathtt{G032}=\mathtt{Y}\cdot \mathtt{G001}$\par
+\noindent $\mathtt{G033}=\mathtt{wguard}\cdot \mathtt{cube}$\par
+\noindent $\mathtt{G034}=\mathtt{G031}+\mathtt{G032}$\par
+\noindent $\mathtt{G035}=\mathtt{G034}-\mathtt{G033}$\par
+\noindent $\mathtt{G036}=\mathtt{firstQ}\cdot \mathtt{firstQ}$\par
+\noindent $\mathtt{G037}=\mathtt{ell}\cdot \mathtt{G027}$\par
+\noindent $\mathtt{G038}=1+\mathtt{G037}$\par
+\noindent $\mathtt{G039}=\mathtt{G036}-\mathtt{G038}$\par
+\noindent $\mathtt{G040}=\mathtt{G006}\cdot \mathtt{G001}$\par
+\noindent $\mathtt{G041}=\mathtt{alpha}+\mathtt{G040}$\par
+\noindent $\mathtt{G042}=\mathtt{qSquare}-1$\par
+\noindent $\mathtt{G043}=\mathtt{rankSeed}\cdot \mathtt{G042}$\par
+\noindent $\mathtt{G044}=\omega\cdot \mathtt{G002}$\par
+\noindent $\mathtt{G045}=\mu+\mathtt{G044}$\par
+\noindent $\mathtt{G046}=\mathtt{J}\cdot \mathtt{G045}$\par
+\noindent $\mathtt{G047}=\mathtt{G043}+\mathtt{G046}$\par
+\noindent $\mathtt{G048}=\mathtt{G009}-\mathtt{rank}$\par
+\noindent $\mathtt{G049}=\mathtt{G048}-1$\par
+\noindent $\mathtt{G050}=\mathtt{mainScale}\cdot \mathtt{gamma}$\par
+\noindent $\mathtt{G051}=\mathtt{productX}\cdot \mathtt{G002}$\par
+\noindent $\mathtt{G052}=\mathtt{gammaProduct}+\mathtt{product}$\par
+\noindent $\mathtt{G053}=\mathtt{G052}-\mathtt{G049}$\par
+\noindent $\mathtt{G054}=\mathtt{mainScale}\cdot \mathtt{offset}$\par
+\noindent $\mathtt{G055}=\mathtt{G015}\cdot \mathtt{G053}$\par
+\noindent $\mathtt{G056}=\mathtt{G054}+\mathtt{G055}$\par
+\noindent $\mathtt{G057}=\mathtt{mainQ}\cdot \mathtt{mainQ}$\par
+\noindent $\mathtt{G058}=\mathtt{deltaValue}\cdot \mathtt{cSquare}$\par
+\noindent $\mathtt{G059}=1+\mathtt{G058}$\par
+\noindent $\mathtt{G060}=\mathtt{G057}-\mathtt{G059}$\par
+\noindent $\mathtt{G061}=\mathtt{f}\cdot \mathtt{f}$\par
+\noindent $\mathtt{G062}=\mathtt{fSquare}-1$\par
+\noindent $\mathtt{G063}=\mathtt{deltaValue}\cdot \mathtt{G062}$\par
+\noindent $\mathtt{G064}=\mathtt{cSquare}\cdot \mathtt{i}$\par
+\noindent $\mathtt{G065}=\mathtt{scaledIndex}\cdot \mathtt{scaledIndex}$\par
+\noindent $\mathtt{G066}=\mathtt{G065}-\mathtt{qValue}$\par
+\noindent $\mathtt{G067}=\mathtt{T}\cdot \mathtt{G011}$\par
+\noindent $\mathtt{G068}=\mathtt{timeProduct}-\mathtt{rank}$\par
+\noindent $\mathtt{G069}=\mathtt{fSquare}\cdot \mathtt{G068}$\par
+\noindent $\mathtt{G070}=\mathtt{G069}-\mathtt{G011}$\par
+\noindent $\mathtt{G071}=\mathtt{y}\cdot \mathtt{y}$\par
+\noindent $\mathtt{G072}=\mathtt{vroot}\cdot \mathtt{vroot}$\par
+\noindent $\mathtt{G073}=\mathtt{ySquare}-\mathtt{square}$\par
+\noindent $\mathtt{G074}=\mathtt{qValue}\cdot \mathtt{G073}$\par
+\noindent $\mathtt{G075}=\mathtt{ySquare}-\mathtt{G074}$\par
+\noindent $\mathtt{G076}=\mathtt{G075}-1$\par
+\noindent $\mathtt{G077}=\mathtt{G039}\cdot \mathtt{G039}$\par
+\noindent $\mathtt{G078}=\mathtt{G060}\cdot \mathtt{G060}$\par
+\noindent $\mathtt{G079}=\mathtt{G076}\cdot \mathtt{G076}$\par
+\noindent $\mathtt{G080}=\mathtt{G066}\cdot \mathtt{G066}$\par
+\noindent $\mathtt{G081}=\mathtt{G077}+\mathtt{G078}$\par
+\noindent $\mathtt{G082}=\mathtt{G081}+\mathtt{G079}$\par
+\noindent $\mathtt{G083}=\mathtt{G082}+\mathtt{G080}$\par
+\noindent $\mathtt{G084}=\mathtt{square}-\mathtt{G072}$\par
+\noindent $\mathtt{G085}=\mathtt{G084}\cdot \mathtt{G084}$\par
+\noindent $\mathtt{G086}=\mathtt{G083}+\mathtt{G085}$\par
+\noindent $\mathtt{G087}=\mathtt{scale}-\mathtt{G021}$\par
+\noindent $\mathtt{G088}=\mathtt{G087}\cdot \mathtt{G087}$\par
+\noindent $\mathtt{G089}=\mathtt{G086}+\mathtt{G088}$\par
+\noindent $\mathtt{G090}=\mathtt{mainScale}-\mathtt{G005}$\par
+\noindent $\mathtt{G091}=\mathtt{G090}\cdot \mathtt{G090}$\par
+\noindent $\mathtt{G092}=\mathtt{G089}+\mathtt{G091}$\par
+\noindent $\mathtt{G093}=\mathtt{rank}-\mathtt{G047}$\par
+\noindent $\mathtt{G094}=\mathtt{G093}\cdot \mathtt{G093}$\par
+\noindent $\mathtt{G095}=\mathtt{G092}+\mathtt{G094}$\par
+\noindent $\mathtt{G096}=\mathtt{ell}-\mathtt{G020}$\par
+\noindent $\mathtt{G097}=\mathtt{G096}\cdot \mathtt{G096}$\par
+\noindent $\mathtt{G098}=\mathtt{wguard}-\mathtt{G026}$\par
+\noindent $\mathtt{G099}=\mathtt{G098}\cdot \mathtt{G098}$\par
+\noindent $\mathtt{G100}=\mathtt{G095}+\mathtt{G097}$\par
+\noindent $\mathtt{G101}=\mathtt{G100}+\mathtt{G099}$\par
+\noindent $\mathtt{G102}=\mathtt{cube}-\mathtt{G004}$\par
+\noindent $\mathtt{G103}=\mathtt{G102}\cdot \mathtt{G102}$\par
+\noindent $\mathtt{G104}=\mathtt{product}-\mathtt{G051}$\par
+\noindent $\mathtt{G105}=\mathtt{G104}\cdot \mathtt{G104}$\par
+\noindent $\mathtt{G106}=\mathtt{fSquare}-\mathtt{G061}$\par
+\noindent $\mathtt{G107}=\mathtt{G106}\cdot \mathtt{G106}$\par
+\noindent $\mathtt{G108}=\mathtt{cSquare}-\mathtt{G012}$\par
+\noindent $\mathtt{G109}=\mathtt{G108}\cdot \mathtt{G108}$\par
+\noindent $\mathtt{G110}=\mathtt{G101}+\mathtt{G103}$\par
+\noindent $\mathtt{G111}=\mathtt{G110}+\mathtt{G105}$\par
+\noindent $\mathtt{G112}=\mathtt{G111}+\mathtt{G107}$\par
+\noindent $\mathtt{G113}=\mathtt{G112}+\mathtt{G109}$\par
+\noindent $\mathtt{G114}=\mathtt{scale}\cdot \mathtt{firstQ}$\par
+\noindent $\mathtt{G115}=\mathtt{G114}-\mathtt{G035}$\par
+\noindent $\mathtt{G116}=\mathtt{G115}\cdot \mathtt{G115}$\par
+\noindent $\mathtt{G117}=\mathtt{mainScale}\cdot \mathtt{mainQ}$\par
+\noindent $\mathtt{G118}=\mathtt{G117}-\mathtt{G056}$\par
+\noindent $\mathtt{G119}=\mathtt{G118}\cdot \mathtt{G118}$\par
+\noindent $\mathtt{G120}=\mathtt{vroot}-\mathtt{G070}$\par
+\noindent $\mathtt{G121}=\mathtt{G120}\cdot \mathtt{G120}$\par
+\noindent $\mathtt{G122}=\mathtt{deltaValue}-\mathtt{G017}$\par
+\noindent $\mathtt{G123}=\mathtt{G122}\cdot \mathtt{G122}$\par
+\noindent $\mathtt{G124}=\mathtt{G113}+\mathtt{G116}$\par
+\noindent $\mathtt{G125}=\mathtt{G124}+\mathtt{G119}$\par
+\noindent $\mathtt{G126}=\mathtt{G125}+\mathtt{G121}$\par
+\noindent $\mathtt{G127}=\mathtt{G126}+\mathtt{G123}$\par
+\noindent $\mathtt{G128}=\mathtt{qSquare}-\mathtt{G003}$\par
+\noindent $\mathtt{G129}=\mathtt{G128}\cdot \mathtt{G128}$\par
+\noindent $\mathtt{G130}=\mathtt{productX}-\mathtt{G008}$\par
+\noindent $\mathtt{G131}=\mathtt{G130}\cdot \mathtt{G130}$\par
+\noindent $\mathtt{G132}=\mathtt{scaledIndex}-\mathtt{G064}$\par
+\noindent $\mathtt{G133}=\mathtt{G132}\cdot \mathtt{G132}$\par
+\noindent $\mathtt{G134}=\mathtt{ySquare}-\mathtt{G071}$\par
+\noindent $\mathtt{G135}=\mathtt{G134}\cdot \mathtt{G134}$\par
+\noindent $\mathtt{G136}=\mathtt{qValue}-\mathtt{G063}$\par
+\noindent $\mathtt{G137}=\mathtt{G136}\cdot \mathtt{G136}$\par
+\noindent $\mathtt{G138}=\mathtt{G127}+\mathtt{G129}$\par
+\noindent $\mathtt{G139}=\mathtt{G138}+\mathtt{G131}$\par
+\noindent $\mathtt{G140}=\mathtt{G139}+\mathtt{G133}$\par
+\noindent $\mathtt{G141}=\mathtt{G140}+\mathtt{G135}$\par
+\noindent $\mathtt{G142}=\mathtt{G141}+\mathtt{G137}$\par
+\noindent $\mathtt{G143}=\mathtt{rankSeed}-\mathtt{G041}$\par
+\noindent $\mathtt{G144}=\mathtt{G143}\cdot \mathtt{G143}$\par
+\noindent $\mathtt{G145}=\mathtt{ySum}-\mathtt{G010}$\par
+\noindent $\mathtt{G146}=\mathtt{G145}\cdot \mathtt{G145}$\par
+\noindent $\mathtt{G147}=\mathtt{rootSkew}-\mathtt{G029}$\par
+\noindent $\mathtt{G148}=\mathtt{G147}\cdot \mathtt{G147}$\par
+\noindent $\mathtt{G149}=\mathtt{offset}-\mathtt{G019}$\par
+\noindent $\mathtt{G150}=\mathtt{G149}\cdot \mathtt{G149}$\par
+\noindent $\mathtt{G151}=\mathtt{gammaProduct}-\mathtt{G050}$\par
+\noindent $\mathtt{G152}=\mathtt{G151}\cdot \mathtt{G151}$\par
+\noindent $\mathtt{G153}=\mathtt{timeProduct}-\mathtt{G067}$\par
+\noindent $\mathtt{G154}=\mathtt{G153}\cdot \mathtt{G153}$\par
+\noindent $\mathtt{G155}=\mathtt{G142}+\mathtt{G144}$\par
+\noindent $\mathtt{G156}=\mathtt{G155}+\mathtt{G146}$\par
+\noindent $\mathtt{G157}=\mathtt{G156}+\mathtt{G148}$\par
+\noindent $\mathtt{G158}=\mathtt{G157}+\mathtt{G150}$\par
+\noindent $\mathtt{G159}=\mathtt{G158}+\mathtt{G152}$\par
+\noindent $\mathtt{G160}=\mathtt{G159}+\mathtt{G154}$\par
+% END GATE GRAPH
+\end{multicols}
+\noindent The single equation is $\boxed{\mathtt{G160}=0}$.
+\par\medskip
+This is an external source-mapping candidate. Its zero set has been related to
+an earlier 40-variable quartic; a Lean proof of the new 38-variable endpoint
+has not been completed.
+\bigskip
+\begin{multicols}{2}\fontsize{7.7}{8.2}\selectfont
+\textbf{The four fixed integers.}
+Every index, set, sum, product and floor below defines a constant, not
+another unknown. Put
+\[
+\begin{gathered}
+\rho=2^{47},\quad B=\rho^{2011},\quad\beta=B-1,\\
+G_m(x)=\sum_{j=0}^{m-1}x^j,\quad
+\Lambda=\rho^{1005}.
+\end{gathered}
+\]
+\begin{align*}
+\mu={}&\beta-G_{951}(\rho)\\
+&-\rho^{960}G_{26}(\rho)-\rho^{1004},\\
+\omega={}&\beta+8G_{917}(\rho)-4+(2^{45}-4)\Lambda\\
+&+\rho^{960}G_9(\rho)+\rho^{987}G_8(\rho)
+  +\rho^{1004},\\
+K={}&\rho^{18}+\rho^{1004}+\rho^{2020}\\
+&+2\Lambda\Phi(1/\rho),
+\end{align*}
+where
+\[
+\begin{gathered}
+\chi_i=1+2^{10}(1+w_i+2^8n_i\\
+\qquad+2^{17}p_i+2^{25}s_i)\quad(0\le i\le941),\\
+\pi(0)=0,\quad\pi(i)=1+\sum_{j=1}^{941}
+\fl{\frac{2^{44}-1+\chi_j-\chi_i}{2^{44}}}\quad(1\le i\le941).
+\end{gathered}
+\]
+\[
+\begin{split}
+\Phi(x)={}&\sum_{i=0}^{941}\chi_i x^{\pi(i)}\\
+&+2^{10}x^{969}(x^9+2^{17})G_8(2x)\\
+&+2^{18}x^{942}(x^{18}+2^{17})G_9(2x).
+\end{split}
+\]
+The rational intermediate in K cancels exactly; all four results are positive integers.
+
+\textbf{The 942 indexed fixed tiles.}
+Use the actions $u_j,v_j,d_j$ decoded below. For $d=0,1$, let
+\[
+\begin{gathered}
+h(q,b)=2q+b+2,\quad
+\mathcal S_d=\{u_j:d_j=d,\ 0\le j<430\},\\
+r_{d,q}=205-199d+|\mathcal S_d\cap\rg0{q-1}|.
+\end{gathered}
+\]
+An interval ending at $-1$ is empty. The table defines $t_i$ for
+$0\le i\le941$; all index ranges are fixed:
+\[
+\setlength{\arraycolsep}{1.4pt}\begin{array}{c|l}
+\text{index }i&\text{tile }t_i=(w_i,n_i,p_i,s_i)\\\hline
+0&(2,435,3,1)\\
+j+1\ (j=2q+b<430)&((1-d_j)r_{0,u_j},h(q,b),d_jr_{1,u_j},v_j)\\
+433-2a+b\ (a,b=0,1)&(0,432a+b,0,432a+b)\\
+\substack{423+2r_{d,q}+b\\q\in\mathcal S_d,\ d,b=0,1}&(dr_{d,q},b,(1-d)r_{d,q},h(q,b))\\
+923+2a+b\ (a,b=0,1)&(0,432a+b,0,438)\\
+927&(2,434,2,0)\\
+928&(3,436,4,4)\\
+929&(4,436,4,0)\\
+496+t\ (t=434,435,436)&(1,438,1,t)\\
+933+3a+b\ (a,b=0,1,2)&(a^2,437,b,437)
+\end{array}
+\]
+\textbf{A closed decoder for the 430 actions.}
+Put $D_b(A,k)=\fl{A/b^k}\bmod b$, where
+$a\bmod b=a-b\fl{a/b}$. For $0\le q<215$, $b=0,1$, $j=2q+b$:
+\[
+\begin{gathered}
+\mathcal N=\mathcal A\bmod2^{636},\quad
+\mathcal T=\fl{\mathcal A/2^{636}},\\
+\nu_j=D_2(\mathcal N,j),\quad \kappa_j=(\sigma_j+2)^{1-\nu_j}\quad(0\le j<430),\\
+\sigma_j=\sum_{k=0}^{j-1}\nu_k,\quad
+\Pi_j=\prod_{k=0}^{j-1}\kappa_k\quad(0\le j\le430),\\
+m_q=D_2(\mathcal N,430+q),\quad \tau_q=\sum_{k=0}^{q-1}m_k,\\
+F_q=14+m_q(D_{16}(\fl{\mathcal T/\Pi_{430}},\tau_q)-14),\\
+u_j=(\sigma_{j+1}-(\fl{\mathcal T/\Pi_j}\bmod\kappa_j))\bmod216,\\
+v_j=D_2(F_q,2b),\quad d_j=D_2(F_q,2b+1).
+\end{gathered}
+\]
+Empty sums/products are $0/1$. Here $(v_0,d_0,u_0)=(1,1,1)$; the constructor tile
+uses this actual first target, including its state renaming.
+
+\textbf{The integer $\mathcal A$ in base 10.}
+Its complete decimal expansion is the concatenation of these lines:\par
+\begingroup\fontsize{7.7}{8.2}\selectfont\ttfamily
+12889260410359561746736540743515845134244260640012702033212621\par
+95398074180784058571518488282119861023093355389406939414042892\par
+97455773992193784795705001618777025966369137954859764532832722\par
+75411843410809038713502633204617333246733616940964578272360901\par
+56186216508504953649192752154519268024509952082950238865468307\par
+22999632482769253980274091217460707829023970817244790340704449\par
+09085581271192071656170732004937337082171141082486384269072884\par
+72778087419663417942892520175630649792329265834490253035577533\par
+96449689808375788457488971017043689875433162972390177936123032\par
+89025657757489526342497438772045714099661532481123050235898973\par
+27443609903800541199351405985754278307227777584454508422717998\par
+334113564409335346074892680328437\par
+\endgroup
+\end{multicols}
+\end{document}
