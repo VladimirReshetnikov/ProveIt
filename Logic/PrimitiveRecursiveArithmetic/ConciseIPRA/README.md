@@ -250,6 +250,20 @@ by progress as primitive, and proves that the derivable sequents are the same
   `wdprf_iff_nprf_of_qfree` is the same statement on `Q`-free sequents. This
   is [`witness_discharge`](Research/witness_discharge/) in its own form, and
   the calculus with the fewest rule families proved here.
+- *Three rule families with an inferred witness.* `OCPrf` has the same
+  formulas, clauses and reflexivity clause, and the rules Use, Intro and Open.
+  Open has one premise fewer than Name and no parameter: from `D_{x,y} B` and
+  a derivation of `A` under the clause `[B(r, 0); y.B(r, y)]` it infers `A`,
+  where `r` is read off the rows of `B` at a fresh `b` (`b = r` if `B(b, 0)`
+  is literally `0 = 0` and `B(b, 1)` is literally `b = r`, and `b` itself
+  otherwise). `ocprf_iff_nprf` proves the same equivalence with the kernel
+  as for `WDPrf`. Transport is recovered from a packet with the rows `0 = 0`,
+  `x = T`, `H(x) = U`, on which Open selects `T`; ordinary elimination of `D`
+  is not a derived rule, so kernel derivations are translated under an
+  arbitrary substitution. This is
+  [`inferred_witness`](Research/inferred_witness/) and
+  [`deterministic_opening`](Research/deterministic_opening/) in their own
+  form.
 - *One introduction rule, stable under substitution.* The single
   introduction above tests the witness for being the literal `0`, and a
   substitution can turn a witness into `0`. If instead the fresh variable is
@@ -674,6 +688,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | six rules on full normal forms | `f6prf_iff_nprf : F6Prf (Γ.map NFm.full) A.full ↔ NPrf Γ A`, `F6Prf.dIZero`, `FNPrf.toF6` | Hyp, Refl, Tr, QE, DE and one introduction selected by the matrix and the witness; no computation rule |
 | five rules on full normal forms | `n5prf_iff_nprf : N5Prf (Γ.map NFm.full) A.full ↔ NPrf Γ A`, `n5prf_iff_pra`, `NMPrf.toN5` | Hyp, Refl, Name, QE and one introduction; formula contexts |
 | three rule families on full normal forms | `wdprf_iff_nprf : WDPrf (UCl.refl :: Γ.map fun X => UCl.asm (NFm.unQ X).full) (NFm.unQ A).full ↔ NPrf Γ A`, `wdprf_iff_nprf_of_qfree`, `wdprf_iff_pra`, `WDPrf.qfree`, `N5Prf.toWD` | Use, Intro and Name with clause contexts and the reflexivity clause; no `Q` |
+| three rule families with an inferred witness | `ocprf_iff_nprf : OCPrf (UCl.refl :: Γ.map fun X => UCl.asm (NFm.unQ X).full) (NFm.unQ A).full ↔ NPrf Γ A`, `ocprf_iff_nprf_of_qfree`, `ocprf_iff_pra`, `OCPrf.qfree`, `OCPrf.packet`, `NFm.owit_rn`, `NFm.not_otest_tz`, `NPrf.toOC` | Use, Intro and Open at the witness read off two rows; no transport, no supplied term, no `Q` |
 | substitution for the newest variable | `v0prf_iff_nprf : V0Prf (Γ.map NFm.full) A.full ↔ NPrf Γ A` | the rule of `VSPrf` restricted to the variable of index `0` |
 | five rules on zero-normal terms | `zcprf_iff_nprf : ZCPrf (Γ.map fun X => Cl.asm (fnf (unQ X))) (fnf (unQ A)) ↔ NPrf Γ A`, `zcprf_iff_nprf_of_qfree`, `CPrf.toZC`, `Conv` | Refl, one Eval scheme, Use, Elim and Intro on zero-normal terms with clause contexts |
 | four schemes on zero-normal terms | `zvprf_iff_zcprf`, `zvprf_iff_nprf` | Use, Step, Open, Close with uniform clauses and the fixed reflexivity clause |
@@ -696,7 +711,7 @@ The main chain (every module except the seventeen kernel comparisons,
 `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`,
 `NativeZeroReflexive`, `NativeZeroClausal`, `FullNormalization`, `NativeFullNormal`,
 `NativeInferredWitness`, `NativeVariableSubstitution`, `NativeNewestVariable`, `NativeWitnessDischarge`, `NativeFullSix`,
-`NativeFullFive`, `NativeNameClauses`, `NativePrefix`, `NativeUniqueness`, `NativeModels` and
+`NativeFullFive`, `NativeNameClauses`, `NativeOpenClauses`, `NativePrefix`, `NativeUniqueness`, `NativeModels` and
 `TeqClosure`) is 5,498
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
@@ -736,7 +751,7 @@ no `native_decide`.
 | `T_eq` ≡ iPRA | `ScalarToPRA`, `PRAToScalar`, `RoundTripScalar`, `RoundTripPRA`, `BiInterpretation` | the two interpretations and their composites |
 | zero-normal syntax | `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`, `NativeZeroReflexive`, `NativeZeroClausal` | contraction of iterators with a literal-zero counter, hereditary substitution, and the equivalence of a formula with its normal form (delivered); the kernel without the zero computation rule, `NZPrf`; reflexivity and one successor step, `NSPrf`; reflexivity and seed evaluation, `NVPrf`; six rules with the reflexive-base introduction, `NRPrf`; five rules with clauses, `ZCPrf`, and four schemes with uniform clauses, `ZVPrf` |
 | closures in `T_eq` | `TeqClosure` | decidability of quantifier-free formulas; the criterion for agreement of the conditional and the progressive closure |
-| full normal forms | `FullNormalization`, `NativeFullNormal`, `NativeInferredWitness`, `NativeVariableSubstitution`, `NativeNewestVariable`, `NativeWitnessDischarge`, `NativeFullSix`, `NativeFullFive`, `NativeNameClauses` | the normalizer for both computations, defined by evaluation, with its laws and its correctness; the kernel without computation rules, `FNPrf`; the same with the opening at an inferred witness, `FOPrf`; the same with substitution for a variable as its only equality rule, `VSPrf`; six rules with Name, `NMPrf`; six rules with one introduction, `F6Prf`; five rules, `N5Prf`; three rule families with clauses, `WDPrf` |
+| full normal forms | `FullNormalization`, `NativeFullNormal`, `NativeInferredWitness`, `NativeVariableSubstitution`, `NativeNewestVariable`, `NativeWitnessDischarge`, `NativeFullSix`, `NativeFullFive`, `NativeNameClauses`, `NativeOpenClauses` | the normalizer for both computations, defined by evaluation, with its laws and its correctness; the kernel without computation rules, `FNPrf`; the same with the opening at an inferred witness, `FOPrf`; the same with substitution for a variable as its only equality rule, `VSPrf`; six rules with Name, `NMPrf`; six rules with one introduction, `F6Prf`; five rules, `N5Prf`; three rule families with clauses, `WDPrf`; the same with the opening at an inferred witness in place of Name, `OCPrf` |
 | derived rule | `NativeUniqueness` | uniqueness of iteration |
 | prefix form | `NativePrefix` | a `Q`-free formula is `k` binders `D` and one equation |
 | readings over the natural numbers | `NativeModels` | evaluation of terms and formulas for a reading `Sem`; the kernel with rules switched by flags, `FPrf`, and its soundness; consistency of the three systems; independence of seven rules |
@@ -774,7 +789,7 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `seed_evaluation` | Proved, for its arithmetic and equality interface: `NVPrf`, with `nvprf_iff_nprf`, `NVPrf.normal` and `nvprf_iff_pra` (`NativeZeroSeed`), with the kernel's two introductions and `Q` in place of clause contexts. |
 | `clause_contexts` | Proved: its four schemes with the reflexivity clause are `ZVPrf`, with `zvprf_iff_zcprf` and `zvprf_iff_nprf` (`NativeZeroClausal`). |
 | `witness_discharge` | Proved, for the kernel: `NMPrf` is the kernel on full normal forms with Name in place of transport and DE (six rules), and `nmprf_iff_nprf` (`NativeWitnessDischarge`). The package's own form is proved as well: `WDPrf` has clause contexts, the fixed reflexivity clause and the three families Use, Intro and Name, and `wdprf_iff_nprf` proves it equivalent to the kernel on `Q`-free forms in full normal form (`NativeNameClauses`). The proof translates the five-rule calculus `N5Prf`; weakening and renaming of `WDPrf` are direct inductions. |
-| `inferred_witness`, `deterministic_opening`, `first_instance`, `clause_discharge` | Proved, for the kernel: the opening at the witness read off the rows `B(b, 0)` and `B(b, 1)` of the normalized matrix, in place of DE, is `FOPrf`, with `foprf_iff_nprf` (`NativeInferredWitness`). The packages state it with clause contexts, three inference families and the reflexivity clause, and two of them substitute in the exported formula instead of opening at the witness; those forms are not formalized. |
+| `inferred_witness`, `deterministic_opening`, `first_instance`, `clause_discharge` | Proved, for the kernel: the opening at the witness read off the rows `B(b, 0)` and `B(b, 1)` of the normalized matrix, in place of DE, is `FOPrf`, with `foprf_iff_nprf` (`NativeInferredWitness`). The form with clause contexts, the three families Use, Intro and Open and the reflexivity clause is proved as well: `OCPrf` and `ocprf_iff_nprf` (`NativeOpenClauses`). It has no transport rule; transport comes from a packet on which Open selects the target, and the kernel's DE is translated under the substitution of the selected witness. That is the rule of `inferred_witness` and `deterministic_opening` (the clause is opened at the selected witness and the goal is unchanged). `first_instance` and `clause_discharge` instead open at the fresh variable and substitute the selected witness in the exported formula; that variant is not formalized. |
 | `substitutive_discharge` | Proved, for the kernel: its discharge rule in place of transport and DE is `SDPrf`, with `sdprf_iff_nprf` (`NativeSubstitutiveDischarge`). The package's four families are stated on the canonical recursor syntax with clause contexts, which is not formalized. |
 | `prefix_clauses` | Its representation is proved: `NFm.Pre k A` says that `A` is `k` binders `D` followed by one equation; a formula has that form exactly when it is `Q`-free (`NFm.qfree_iff_pre`), `k` is unique (`NFm.Pre.unique`) and unchanged by substitution (`NFm.Pre.subst`), and from `Q`-free assumptions `VPrf` derives only such formulas (`VPrf.pre`, `NativePrefix`). The calculus of the package is `VPrf` on that representation. Its second theorem, on clauses without an antecedent field, is not formalized. |
 | `uniform_binding` | Not formalized: the counter-aware recursor syntax. |
@@ -858,15 +873,16 @@ marked as conjectures is proved here.
    `substitutive_discharge` in its own form, and `register_graph` are stated
    on recursors with a counter or with a successor seed. Each needs its own
    syntax and a bi-interpretation with the iterator terms.
-7. **The clausal presentations.** The clausal form of `witness_discharge` on
-   full normal forms is proved (`WDPrf`, `wdprf_iff_nprf`). For the other
-   packages with clause contexts on full normal forms (`inferred_witness`,
-   `deterministic_opening`, `first_instance`, `clause_discharge`,
-   `variable_substitution`), the rule is proved on the kernel, with formulas
-   as hypotheses and `Q` in the language; their clausal forms are not
-   formalized. The same method should apply: translate the corresponding
-   calculus with formula contexts, keeping each hypothesis as a derivation
-   of its `Q`-free form.
+7. **The clausal presentations.** On full normal forms the clausal forms of
+   `witness_discharge` (`WDPrf`, `wdprf_iff_nprf`) and of `inferred_witness`
+   and `deterministic_opening` (`OCPrf`, `ocprf_iff_nprf`) are proved. Two
+   are not: the variant of `first_instance` and `clause_discharge`, which
+   opens at the fresh variable and substitutes the selected witness in the
+   exported formula, and the clausal form of `variable_substitution`, whose
+   rule is proved on the kernel with formulas as hypotheses and `Q` in the
+   language. For the second, the introduction by cases of an equation at the
+   literal `0` has to be recovered inside the calculus, as `OCPrf.dIZero`
+   does for Open.
 8. **A shorter proof of the equivalence.** The main chain is 5,498 lines. A
    dependency-closure computation shows that it contains nothing that the end
    results do not use. Three designs fix most of its size, and no shorter
