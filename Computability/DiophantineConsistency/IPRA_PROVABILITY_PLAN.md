@@ -7871,6 +7871,10 @@ and zero-w unit client remain unelaborated, and do not prove w positivity.
 The independently source-reviewed [79 zero-w J-positivity draft](research/ordinary14-natural79-zero-w-jpos-draft/README.md)
 proposes deriving J positivity using represented nonnegative K0. Its proof
 and imported zero-w units remain unelaborated; w positivity is still open.
+The independently source-reviewed [79 zero-w main norm draft](research/ordinary14-natural79-zero-w-main-norm-draft/README.md)
+proposes deriving the literal main square norm and a signed quotient in an
+arbitrary relevant model. The later divisibility contradiction and all Lean
+elaboration, provider and endpoint checks remain open.
 The independently source-reviewed [79-to-80 w-shift draft](research/ordinary14-natural79-wshift-model-draft/README.md)
 proposes related-valuation zero maps, conditional on w positivity at every
 79 zero. It remains unelaborated and does not discharge that premise.
