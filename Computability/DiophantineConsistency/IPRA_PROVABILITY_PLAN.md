@@ -7744,6 +7744,11 @@ records the exact mapped refutation target and the `positiveShift` used by
 the proposed declarations. The 74-operation count applies to the unshifted
 strictly-positive graph; a count for the shifted natural-input expression is
 separate. No Lean elaboration or byte/PDF binding has been established.
+The reviewed [natural-shift circuit](research/ordinary14-root74-natural-shift88/README.md)
+explicitly uses fourteen `x + 1` gates followed by the 74-gate graph: 14
+natural inputs, 88 live operations and exact specialized degree 107. This is
+a circuit upper bound, not a minimality result or a Lean `positiveShift` or
+physical-file binding theorem.
 The independently source-reviewed [isolated root-74 slim overlay](research/ordinary14-root74-slim-overlay/README.md)
 extends the earlier replacement to the 74 endpoint in copied draft sources.
 Its bounded source/object observations are not a Lean dependency resolution,
