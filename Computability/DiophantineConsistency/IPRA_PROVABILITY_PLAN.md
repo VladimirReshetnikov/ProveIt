@@ -1292,6 +1292,10 @@ provider verification and iPRA endpoint are still open.
 The source-reviewed [parent/88 model-equivalence draft](research/ordinary13-14-parent-88-model-equivalence-draft/README.md)
 proposes both positive-zero directions at the same natural ports. It and its
 dependencies remain unelaborated; no iPRA or file-binding theorem follows yet.
+The source-reviewed [quotient-88 positive bridge draft](research/ordinary14-quotient88-positive-bridge-draft/README.md)
+proposes composing that wrapper with the existing parent bridge at the same
+symbolic ports. It remains unelaborated and does not establish an endpoint or
+physical-byte association.
 The source-reviewed [parent first-quotient facts](research/ordinary14-parent-first-quotient-facts-draft/README.md)
 propose the reverse direction's `q³ ∣ Y` and divisibility of `|Bt|` without
 choosing a sign. They remain unelaborated and are not yet bound to the parent
