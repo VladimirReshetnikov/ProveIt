@@ -7889,6 +7889,10 @@ The independently reviewed [forced-J shifted-Pell variant](research/ordinary14-n
 reduces that natural graph to 82 operations at degree 97, assuming `β > 0`
 and `K0 > 0`. Its external zero map and authenticated degree certificate
 do not supply an iPRA theorem or physical-file binding.
+The independently reviewed [forced-gamma shifted-root variant](research/ordinary14-natural-forced-gamma81-degree97/README.md)
+removes one more shift, giving 14 natural inputs, 81 operations and exact
+specialized degree 97 under the stated compact-port bounds and rank/Pell
+results. It remains an external reduction with the same endpoint gaps.
 The independently reviewed [unshifted-s obstruction](research/ordinary14-natural80-unshift-s-obstruction/README.md)
 exhibits a zero with `s=0`, including at the authenticated compact ports,
 after deleting the `s` shift from the 81 graph. It rules out forced
