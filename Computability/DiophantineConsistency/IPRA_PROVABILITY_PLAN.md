@@ -7752,6 +7752,13 @@ explicitly uses fourteen `x + 1` gates followed by the 74-gate graph: 14
 natural inputs, 88 live operations and exact specialized degree 107. This is
 a circuit upper bound, not a minimality result or a Lean `positiveShift` or
 physical-file binding theorem.
+The reviewed [shift-cancellation circuit](research/ordinary14-root74-natural-cancel86/README.md)
+has the same polynomial with 14 natural inputs, 86 live operations and exact
+specialized degree 107. This is an external straight-line upper bound, not a
+Lean or file-binding theorem.
+The source-reviewed [bounded draft-API audit](research/ordinary14-root74-draft-api-audit/README.md)
+checks selected qualified draft references lexically; it does not establish
+Lean name/type/instance resolution or provider/axiom closure.
 The independently source-reviewed [isolated root-74 slim overlay](research/ordinary14-root74-slim-overlay/README.md)
 extends the earlier replacement to the 74 endpoint in copied draft sources.
 Its bounded source/object observations are not a Lean dependency resolution,
