@@ -7589,6 +7589,10 @@ The source-reviewed [84 scalar rank-window draft](research/ordinary14-84-rank-wi
 proposes the needed upper window under explicit mask bounds, while its stated
 lower bound is only 24. It remains unelaborated and does not yet discharge
 the exact-index theorem's lower bound of 26.
+The separately source-reviewed [rank-lower-40 draft](research/ordinary14-84-rank-lower40-draft/README.md)
+proposes a stronger lower bound from the positive scalar inputs and guard.
+It would meet the 26 requirement, but remains unelaborated and has not yet
+been composed into an exact-index theorem.
 The source-reviewed [84 main-index draft](research/ordinary14-84-main-index-draft/README.md)
 proposes classifying the main root while retaining the natural balance. It is
 unelaborated and does not identify that index with the rank.
