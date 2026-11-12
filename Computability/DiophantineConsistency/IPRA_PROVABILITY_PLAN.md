@@ -1311,6 +1311,9 @@ remains unelaborated and is not a complete target zero.
 The source-reviewed [parent-to-88 first-residual draft](research/ordinary13-parent-to-88-first-draft/README.md)
 proposes the fresh-root first identity. It remains unelaborated and is not
 itself a positive target witness.
+The source-reviewed [parent-to-88 model-map draft](research/ordinary13-parent-to-88-model-map-draft/README.md)
+proposes the complete positive target witness from a parent zero. It remains
+unelaborated; provider and iPRA endpoint verification are still required.
 The source-reviewed [88 guard draft](research/ordinary14-88-guard-draft/README.md)
 proposes the quotient-guard equality from that graph's own zero. It remains
 unelaborated and is one premise of the parent witness construction.
