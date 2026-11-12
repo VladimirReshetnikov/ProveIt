@@ -1,0 +1,149 @@
+import AdaptiveQM36Residuals155
+import AdaptiveQM37ConditionalTransfer
+import DiophantineConsistency.ModelDifferenceRing
+
+/-! Source-only proposed QM36→QM37 model transfer. The beta representation,
+graph maps, earlier model obligations and all Lean proofs remain explicit. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+noncomputable section
+namespace DiophantineConsistency.AdaptiveQM36ConditionalTransferDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 HAExpressionAssembly HAExpressionNoZeroEquiv
+open ModelDifferenceRing PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+
+/-- Combine parent product slots 20 and 33; omit the latter. -/
+def project {V : Type*} [Add V] (v : Fin 37 → V) (i : Fin 36) : V :=
+  if i.val=20 then v 20+v 33
+  else if h : i.val<33 then v ⟨i.val, by omega⟩
+  else v ⟨i.val+1, by omega⟩
+
+/-- Restore the two old positive products. Beta is a model-natural value. -/
+def extend {V : Type*} [Add V] [Mul V] [One V]
+    (beta : V) (v : Fin 36 → V) (i : Fin 37) : V :=
+  if i.val=20 then v 28*(1+v 0*beta)
+  else if i.val=33 then v 15*v 12
+  else if h : i.val<33 then v ⟨i.val, by omega⟩
+  else v ⟨i.val-1, by omega⟩
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem project_pos (v : Fin 37 → V) (hv : ∀ i, 0<v i) :
+    ∀ i, 0<project v i := by
+  intro i
+  unfold project
+  split
+  · exact add_pos (hv 20) (hv 33)
+  · split <;> exact hv _
+
+/-- Positivity of beta is not needed: all values of the model V are
+nonnegative, so `1 + J*beta` is positive. -/
+theorem extend_pos (beta : V) (v : Fin 36 → V) (hv : ∀ i, 0<v i) :
+    ∀ i, 0<extend beta v i := by
+  have hq : 0<1+v 0*beta := by
+    exact add_pos_of_pos_of_nonneg (by simp) (by simp)
+  intro i
+  unfold extend
+  split
+  · exact mul_pos (hv 28) hq
+  · split
+    · exact mul_pos (hv 15) (hv 12)
+    · split <;> exact hv _
+
+def child : Expr (Fin 36) :=
+  AdaptiveQM36Literal155Draft.literal CurrentWindowCarry2011.ports
+
+def parent : Expr (Fin 37) :=
+  AdaptiveQM37LiteralDraft.literal CurrentWindowCarry2011.ports
+
+/-- The two unproved graph implications are quantified over every IΣ₁ model
+and every beta whose image is exactly the cast of the fixed first port. -/
+def GraphZeroObligations : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (beta : V),
+    ((CurrentWindowCarry2011.ports 0 : ℤ) : DiffRing V)=ι beta →
+    (∀ v : Fin 37 → V, (∀ i, 0<v i) → InternalZero parent v →
+      InternalZero child (project v)) ∧
+    (∀ v : Fin 36 → V, (∀ i, 0<v i) → InternalZero child v →
+      InternalZero parent (extend beta v))
+
+/-- The fixed first port is represented by the model cast of the natural
+beta. This is a source-only adaptation of the existing model port identity. -/
+theorem fixed_beta_representation :
+    ((CurrentWindowCarry2011.ports 0 : ℤ) : DiffRing V) =
+      ι (CurrentMasks2011.beta : V) := by
+  rw [show CurrentWindowCarry2011.ports 0 = (CurrentMasks2011.beta : ℤ) from rfl,
+    Int.cast_natCast, map_natCast]
+
+theorem shifted_no_zero_iff (beta : V)
+    (hproject : ∀ v : Fin 37 → V, (∀ i, 0<v i) → InternalZero parent v →
+      InternalZero child (project v))
+    (hextend : ∀ v : Fin 36 → V, (∀ i, 0<v i) → InternalZero child v →
+      InternalZero parent (extend beta v)) :
+    (∀ v : Fin 36 → V, ¬InternalZero (positiveShift child) v) ↔
+      ∀ v : Fin 37 → V, ¬InternalZero (positiveShift parent) v := by
+  constructor
+  · intro h v hz
+    let old : Fin 37 → V := fun i => v i+1
+    have hp : ∀ i,0<old i := fun i => lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+    have hzero : InternalZero parent old := (internalZero_positiveShift _ _).mp hz
+    have hnew := hproject old hp hzero
+    have hnewpos := project_pos old hp
+    let shifted : Fin 36 → V := fun i => project old i-1
+    have hs : (fun i => shifted i+1)=project old := by
+      funext i
+      exact tsub_add_cancel_of_le (pos_iff_one_le.mp (hnewpos i))
+    apply h shifted
+    rw [internalZero_positiveShift,hs]
+    exact hnew
+  · intro h v hz
+    let new : Fin 36 → V := fun i => v i+1
+    have hp : ∀ i,0<new i := fun i => lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+    have hzero : InternalZero child new := (internalZero_positiveShift _ _).mp hz
+    have hold := hextend new hp hzero
+    have holdpos := extend_pos beta new hp
+    let shifted : Fin 37 → V := fun i => extend beta new i-1
+    have hs : (fun i => shifted i+1)=extend beta new := by
+      funext i
+      exact tsub_add_cancel_of_le (pos_iff_one_le.mp (holdpos i))
+    apply h shifted
+    rw [internalZero_positiveShift,hs]
+    exact hold
+
+theorem sameNoZero (h : GraphZeroObligations) :
+    SameNoZero (positiveShift child) (positiveShift parent) := by
+  intro V _ _
+  obtain ⟨hp,he⟩ := h V (CurrentMasks2011.beta : V) fixed_beta_representation
+  exact shifted_no_zero_iff (CurrentMasks2011.beta : V) hp he
+
+theorem polynomialBridge
+    (h38 : AdaptiveQM38ConditionalTransferDraft.ZeroPreservationObligations)
+    (h37 : AdaptiveQM37ConditionalTransferDraft.GraphZeroObligations)
+    (h36 : GraphZeroObligations) : PolynomialBridge (positiveShift child) :=
+  HAExpressionNoZeroEquiv.bridge (positiveShift child) (positiveShift parent)
+    (sameNoZero h36) (AdaptiveQM37ConditionalTransferDraft.polynomialBridge h38 h37)
+
+theorem native_equivalence
+    (h38 : AdaptiveQM38ConditionalTransferDraft.ZeroPreservationObligations)
+    (h37 : AdaptiveQM37ConditionalTransferDraft.GraphZeroObligations)
+    (h36 : GraphZeroObligations) : nativeTheory ⊢
+      IPRAExpressionNative.nativeNoZero (positiveShift child) 🡘
+        ∼mappedNativeRefutation embedding :=
+  IPRAExpressionNative.equivalence_of_bridge (positiveShift child) (polynomialBridge h38 h37 h36)
+
+theorem standard_equivalence
+    (h38 : AdaptiveQM38ConditionalTransferDraft.ZeroPreservationObligations)
+    (h37 : AdaptiveQM37ConditionalTransferDraft.GraphZeroObligations)
+    (h36 : GraphZeroObligations) : IPRAStandardTheory.standardTheory ⊢
+      IPRAExpressionNative.nativeNoZero (positiveShift child) 🡘
+        ∼mappedNativeRefutation embedding :=
+  (IPRAStandardTheory.provable_iff _).2 (native_equivalence h38 h37 h36)
+
+end DiophantineConsistency.AdaptiveQM36ConditionalTransferDraft
+#print axioms DiophantineConsistency.AdaptiveQM36ConditionalTransferDraft.project_pos
+#print axioms DiophantineConsistency.AdaptiveQM36ConditionalTransferDraft.extend_pos
+#print axioms DiophantineConsistency.AdaptiveQM36ConditionalTransferDraft.fixed_beta_representation
+#print axioms DiophantineConsistency.AdaptiveQM36ConditionalTransferDraft.shifted_no_zero_iff
+#print axioms DiophantineConsistency.AdaptiveQM36ConditionalTransferDraft.native_equivalence
+#print axioms DiophantineConsistency.AdaptiveQM36ConditionalTransferDraft.standard_equivalence

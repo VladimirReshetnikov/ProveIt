@@ -1,0 +1,42 @@
+import AdaptiveQM37ResidualZeros
+import DiophantineConsistency.ModelDifferenceRing
+
+/-! Proposed recovery of product slots from the parent residuals. The port
+cast equality is explicit and no theorem has been Lean checked. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+noncomputable section
+namespace DiophantineConsistency.AdaptiveQM36ParentSlotsDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem product_slot (p : Fin 4 → ℤ) (beta : V) (v : Fin 37 → V)
+    (hbeta : ((p 0 : ℤ) : DiffRing V)=ι beta)
+    (hz : InternalZero (AdaptiveQM37LiteralDraft.literal p) v) :
+    v 20=v 28*(1+v 0*beta) := by
+  have h := (AdaptiveQM37ResidualZerosDraft.all_residuals p v).mp hz 11
+  change InternalZero
+    ((.var 20)-(.var 28)*(1+(.var 0)*(.constant (p 0))) : Expr (Fin 37)) v at h
+  have hr := (ModelDifferenceRing.internalZero_iff _ v).mp h
+  simp only [Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_add,
+    Expr.evalRing_var,Expr.evalRing_ofNat,Expr.evalRing_constant] at hr
+  rw [hbeta] at hr
+  apply ι_injective
+  simpa only [map_add,map_mul,map_one] using (sub_eq_zero.mp hr)
+
+theorem gamma_slot (p : Fin 4 → ℤ) (v : Fin 37 → V)
+    (hz : InternalZero (AdaptiveQM37LiteralDraft.literal p) v) :
+    v 33=v 15*v 12 := by
+  have h := (AdaptiveQM37ResidualZerosDraft.all_residuals p v).mp hz 26
+  change InternalZero ((.var 33)-(.var 15)*(.var 12) : Expr (Fin 37)) v at h
+  have hr := (ModelDifferenceRing.internalZero_iff _ v).mp h
+  simp only [Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var] at hr
+  apply ι_injective
+  simpa only [map_mul] using (sub_eq_zero.mp hr)
+
+end DiophantineConsistency.AdaptiveQM36ParentSlotsDraft
+#print axioms DiophantineConsistency.AdaptiveQM36ParentSlotsDraft.product_slot
+#print axioms DiophantineConsistency.AdaptiveQM36ParentSlotsDraft.gamma_slot
