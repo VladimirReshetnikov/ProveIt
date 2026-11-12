@@ -7339,6 +7339,11 @@ The reviewed [residue-adjusted first carrier](research/ordinary13-residue-first8
 further gives 13 positive inputs, 81 operations and exact degree 60. Its
 positive-zero maps at the authenticated ports rely on the cited sign-free
 calibration; the modified graph has no Lean/iPRA or file-binding theorem.
+The reviewed [unit-product finalizer](research/ordinary13-unit-product80/README.md)
+replaces the four-square finalizer and gives 13 positive inputs, 80
+operations and exact degree 99. It has the same zero set as the 81/60
+parent at every integer valuation and arbitrary ports; its compact44
+consistency connection retains the parent's Lean and ancestry limitations.
 The separate reviewed [degree-56 residue-adjusted form](research/ordinary13-residue-first82/README.md)
 has 13 positive inputs and 82 operations. Its local comparison uses the stated
 compact44 port bounds and the sign-free decoder, without requiring the
