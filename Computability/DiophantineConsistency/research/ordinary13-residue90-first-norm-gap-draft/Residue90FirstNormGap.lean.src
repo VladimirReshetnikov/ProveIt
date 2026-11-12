@@ -26,8 +26,8 @@ theorem first_norm_gap (p : Fin 4 → ℕ) (v : Fin 13 → V)
   by_contra hn
   have hqle : q p v≤(v 1+1)+(v 2+1) := le_of_not_gt hn
   have hc : (ι (q p v) : DiffRing V)-ι (v 1+1)-ι (v 2+1)≤0 := by
-    have h := (ι_le_ι).mpr hqle
-    simp only [map_add] at h
+    have h : (ι (q p v) : DiffRing V)≤ι (v 1+1)+ι (v 2+1) := by
+      simpa only [map_add] using (ι_le_ι.mpr hqle)
     linarith
   have hxk : (0 : DiffRing V)≤ι (v 6)+ι (p 1:V) :=
     add_nonneg (ι_nonneg (v 6)) (ι_nonneg (p 1:V))
@@ -92,8 +92,8 @@ theorem first_norm_C_pos (p : Fin 4 → ℕ) (v : Fin 13 → V)
     (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v)
     (hJ : 0<v 0) (hbeta : 0<(p 0:V)) :
     (0 : DiffRing V)<ι (q p v)-ι (v 1+1)-ι (v 2+1) := by
-  have h := (ι_lt_ι).mpr (first_norm_gap p v hz hJ hbeta)
-  simp only [map_add] at h
+  have h : (ι (v 1+1) : DiffRing V)+ι (v 2+1)<ι (q p v) := by
+    simpa only [map_add] using (ι_lt_ι.mpr (first_norm_gap p v hz hJ hbeta))
   linarith
 
 /-- Proposed compact-symbolic gamma client after deriving C>0 from its own
