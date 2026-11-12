@@ -7482,6 +7482,9 @@ the stated port bounds. It remains unelaborated and has no iPRA endpoint.
 The source-reviewed [87/88 model-equivalence draft](research/ordinary14-87-88-model-equivalence-draft/README.md)
 proposes composing both directions under those bounds. It and its dependencies
 remain unelaborated; the parent and iPRA endpoint bridges are still open.
+The source-reviewed [compact 87/88 wrapper](research/ordinary14-87-88-compact-model-equivalence-draft/README.md)
+specializes that proposal to symbolic ports. It remains unelaborated and
+does not establish physical-byte binding or the iPRA endpoint.
 The source-reviewed [87 rank-square growth draft](research/ordinary14-87-rank-square-growth-draft/README.md)
 proposes `R ≥ q²` and then `X > q²` from the same graph's power facts,
 without a Mersenne or `q ∣ X` assumption. It remains unelaborated and is
