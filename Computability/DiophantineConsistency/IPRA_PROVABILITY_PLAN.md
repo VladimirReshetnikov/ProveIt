@@ -7766,6 +7766,10 @@ The source-reviewed [natural-86 direct iPRA adapter draft](research/ordinary14-n
 proposes deriving the native, standard and equality-only declarations without
 a second shift. It remains unelaborated and is not a checked proof-existence
 or physical-binding theorem.
+The source-reviewed [natural-86 recipe-port bridge draft](research/ordinary14-natural86-recipe-port-bridge-draft/README.md)
+proposes rewriting its ports using existing Lean byte-recipe equalities. It
+remains unelaborated and does not identify physical files or the PDF with
+those internally defined lists.
 The reviewed [natural-86 endpoint import inventory](research/ordinary14-natural86-endpoint-import-inventory/README.md)
 records 162 reachable bare drafts and 36 direct qualified sources. It is
 lexical and does not establish Lean resolution, providers or axiom closure.
