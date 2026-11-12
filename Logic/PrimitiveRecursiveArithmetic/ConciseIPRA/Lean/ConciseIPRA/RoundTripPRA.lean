@@ -57,26 +57,18 @@ namespace RoundTrip
 
 /-! ### The translation `tau` and the two substitutions of induction -/
 
-theorem tau_inst (a : Tm n) : (fun i => ToPRA.tau (inst a i)) = inst (ToPRA.tau a) := by
-  funext i
-  refine Fin.cases ?_ (fun i => ?_) i <;> rfl
-
-theorem tau_repl (s : Tm (n + 1)) : (fun i => ToPRA.tau (repl s i)) = repl (ToPRA.tau s) := by
-  funext i
-  refine Fin.cases ?_ (fun i => ?_) i <;> rfl
-
 theorem tau_subst_inst (a : Tm n) (t : Tm (n + 1)) {Γ : List (Fm PTm n)} :
     Γ ⊢[PRAAx] Syn.subst (inst (ToPRA.tau a)) (ToPRA.tau t)
       ≐ ToPRA.tau (Syn.subst (inst a) t) := by
-  have h := ToPRA.tau_subst (inst a) t
-  rw [tau_inst] at h
+  have h := ToPRA.morph.f_subst (inst a) t
+  rw [ToPRA.morph.f_inst] at h
   exact Prf.ofNil (Prf.eqSymm h)
 
 theorem tau_subst_repl (s t : Tm (n + 1)) {Γ : List (Fm PTm (n + 1))} :
     Γ ⊢[PRAAx] Syn.subst (repl (ToPRA.tau s)) (ToPRA.tau t)
       ≐ ToPRA.tau (Syn.subst (repl s) t) := by
-  have h := ToPRA.tau_subst (repl s) t
-  rw [tau_repl] at h
+  have h := ToPRA.morph.f_subst (repl s) t
+  rw [ToPRA.morph.f_repl] at h
   exact Prf.ofNil (Prf.eqSymm h)
 
 /-! ### The recursion equations of the code of a recursion, in `T_eq` -/

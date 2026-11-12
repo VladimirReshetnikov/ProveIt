@@ -77,10 +77,7 @@ theorem iterSym_succ (a : PR k) (h : PR (k + 1)) (y : PTm n) (xs : Fin k → PTm
   refine congr h (fun j => ?_)
   refine Fin.cases ?_ (fun l => ?_) j
   · exact PRA.proj 1 _
-  · have := PRA.proj (Γ := Γ) l.succ.succ
-      (Fin.cases y (Fin.cases (app (iterSym a h) (Fin.cases y xs)) xs))
-    simp only [Fin.cases_succ] at this ⊢
-    exact this
+  · exact PRA.proj l.succ.succ _
 
 /-- The function symbol of a term, applied to arguments, is the translation of
 the term with the arguments substituted. -/
@@ -104,9 +101,7 @@ theorem code_eval (t : Tm k) :
     refine congr _ (fun j => ?_)
     refine Fin.cases ?_ (fun l => ?_) j
     · exact ihc ts Γ
-    · have := PRA.proj (Γ := Γ) l ts
-      simp only [Fin.cases_succ] at this ⊢
-      exact this
+    · exact PRA.proj l ts
 
 /-! ### Extensionality of the simulated iterator -/
 
@@ -291,12 +286,8 @@ theorem ax_iterSucc (c a : Tm n) (h : Tm (n + 1)) :
       ≐ tau (Syn.subst (inst (Tm.iter c a h)) h) := by
   have h1 := iterSym_succ (Γ := ([] : List (Fm PTm n))) (code a) (code h) (tau c) Syn.var
   have h2 := code_eval h (Fin.cases (tau (Tm.iter c a h)) Syn.var) ([] : List (Fm PTm n))
-  have h3 := tau_subst (inst (Tm.iter c a h)) h
-  have e : (fun i => tau (inst (Tm.iter c a h) i))
-      = Fin.cases (tau (Tm.iter c a h)) Syn.var := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i <;> simp
-  rw [e] at h3
+  have h3 := morph.f_subst (inst (Tm.iter c a h)) h
+  rw [morph.f_inst] at h3
   exact Prf.eqTrans h1 (Prf.eqTrans h2 (Prf.eqSymm h3))
 
 theorem ax_sep :
