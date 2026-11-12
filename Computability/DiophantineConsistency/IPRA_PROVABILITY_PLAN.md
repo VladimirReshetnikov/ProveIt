@@ -7761,6 +7761,13 @@ computes the same polynomial with 85 live operations and exact specialized
 degree 107. Its identity holds for arbitrary integer inputs and ports; the
 degree certificate uses the externally authenticated P72/P115 port bytes.
 This is an upper bound, not a minimality, Lean or physical-file binding claim.
+The independently reviewed [forced-positive natural graph](research/ordinary14-root74-natural-forced82/README.md)
+removes three more shifts, giving 14 natural inputs, 82 operations and exact
+specialized degree 107. Explicit zero maps use positivity forced by the
+unit-factor equations, so this is a zero-existence equivalence under the
+stated port assumptions, not equality with the 85-operation polynomial at the
+same coordinates. The result is external; Lean elaboration, iPRA derivability
+and physical-file binding remain open.
 The source-reviewed [natural-86 Lean graph draft](research/ordinary14-natural-cancel86-lean-draft/README.md)
 transcribes that circuit. It is unelaborated and does not yet bind the graph
 to `positiveShift` in Lean.
