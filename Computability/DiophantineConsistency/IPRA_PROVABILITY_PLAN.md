@@ -7575,6 +7575,9 @@ draft is unelaborated and those hypotheses are not yet derived from the graph.
 The source-reviewed [84 main-balance draft](research/ordinary14-84-main-balance-draft/README.md)
 proposes the subsequent natural carrier equality under the same hypotheses.
 It is unelaborated and does not yet supply graph-derived rank or indices.
+The source-reviewed [84 first-norm client](research/ordinary14-84-first-norm-client-draft/README.md)
+proposes a positive magnitude root from the graph's own first residual. It is
+unelaborated and does not by itself classify the Pell index.
 The source-reviewed [84 guard-gap draft](research/ordinary14-84-guard-gap-draft/README.md)
 proposes deriving the strict scalar gap from that graph's own zero under
 explicit port casts. It remains unelaborated and does not alone give the rank
