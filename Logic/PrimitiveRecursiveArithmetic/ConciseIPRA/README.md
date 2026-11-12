@@ -175,6 +175,20 @@ by progress as primitive, and proves that the derivable sequents are the same
   `M = I(0, s; u.K)`, whose step term `K` is a numeral larger than `h`, so
   that `h(M)` contains `M` at the template positions and nowhere else. This
   is the rule of [`template_free`](Research/template_free/).
+- *Substitution for a parameter.* Transport can also be replaced by the rule
+  Param of [`parameter_substitution`](Research/parameter_substitution/): from
+  `s = t` and `u = r` infer `r = ψ(s, t, u)`, where `ψ` is `u[t/s]` if `s` is
+  a variable, `t` if `u` is `s`, and `u` otherwise. A proper subterm is
+  replaced only when the source is a variable (`PPrf`, `pprf_iff_nprf`).
+  Transport in a template `h` is recovered under a fresh alias `b = s`, where
+  Param at the variable `b` turns `h(b) = h(b)` into `h(b) = h(s)` and into
+  `h(b) = h(t)`; the alias is discharged through
+  `D_{x,y} (sel(y, s, x) = s)`, proved by cases with the witness `s` and
+  eliminated at `y = 1` (`PPrf.aliasE`). The proof of completeness uses the
+  variable case and joining at the root only, never the reversal. A
+  substitution can turn a variable source into a compound one, so `PPrf` is
+  closed under injective renaming (`PPrf.ren`) and not under substitution by a
+  direct induction.
 - *A one-iterator selector.* The mode of the single introduction can be read
   off a smaller shape than the diagonal one: progress exactly when the matrix
   is literally `a(x, y) = I(y, a(x, y); u.h)`. That calculus is `MiPrf`
@@ -454,6 +468,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | no literal-zero source | `oprf_iff_nprf : OPrf Γ A ↔ NPrf Γ A` | the kernel's transport restricted to sources other than the literal `0` derives the same sequents, with no induction |
 | | `zprf_iff_nprf : ZPrf Γ A ↔ NPrf Γ A` | the same for uncrossed transport in an equation template, by an equation induction and a singleton test |
 | no template | `tprf_iff_nprf : TPrf Γ A ↔ NPrf Γ A`, `Tm.rep_marker`, `NPrf.repEq` | transport replaced by replacement of all occurrences of the source; a chosen template is recovered with an oversized marker |
+| substitution for a parameter | `pprf_iff_nprf : PPrf Γ A ↔ NPrf Γ A`, `PPrf.aliasE`, `PPrf.trOne`, `Tm.psi_rn` | transport replaced by Param: a proper subterm is replaced only when the source is a variable; a template is recovered under a fresh alias, discharged through a `D` formula |
 | uncrossed one-term transport | `uprf_iff_nprf : UPrf Γ A ↔ NPrf Γ A` | from `s = t` and `h(s) = r` infer `h(t) = r`: the crossing is not essential when sources are unrestricted |
 | one introduction rule | `wprf_iff_nprf : WPrf Γ A ↔ NPrf Γ A` | the seven-rule calculus with the single, syntax-directed introduction derives the same sequents |
 | seven rules | `mprf_iff_nprf`, `mprf_iff_iprf : MPrf Γ A ↔ IPrf Γ A` | one-term transport at sources other than the literal `0` and the single introduction together derive the sequents of the reports' calculus |
@@ -481,7 +496,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | | `native_roundTrip`, `pra_native_roundTrip` | both composites through iPRA are the identity up to equivalence |
 | | `native_inconsistent_iff` | `NPrf [] (0 = 1)` iff iPRA proves `⊥` |
 
-The main chain (every module except the fourteen kernel comparisons,
+The main chain (every module except the fifteen kernel comparisons,
 `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`,
 `NativeZeroReflexive`, `NativeUniqueness` and
 `TeqClosure`) is 5,630
@@ -513,7 +528,7 @@ no `native_decide`.
 | closures in `T_eq` | `TeqClosure` | decidability of quantifier-free formulas; the criterion for agreement of the conditional and the progressive closure |
 | derived rule | `NativeUniqueness` | uniqueness of iteration |
 | native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, interderivability over a context, Leibniz and transport in every template, equation induction; selector and gate formulas |
-| kernel comparison | `NativeInherited`, `NativeOneContext`, `NativeOneIntro`, `NativeDiagonal`, `NativeMirror`, `NativeSix`, `NativeMinimal`, `NativeEval`, `NativeTemplateFree`, `NativeClausal`, `NativeClausalDiagonal`, `NativeUniformClauses`, `NativeZeroSource`, `NativeReversal` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf`; no literal-zero transport sources, `OPrf`, generic over the class `OKernel`, and the uncrossed rule, `UPrf`; six rules with Eval, `EPrf`; replacement without a template, `TPrf`; the diagonal introduction, `GPrf`, with its own structural rules; the mirror introduction, `MiPrf` and `M6Prf`; Eval with the diagonal introduction, `SPrf`; the five-rule clause calculus, `CPrf`, with weakening, renaming and cut of assumptions; the clause calculus with the diagonal introduction, `KPrf`; uniform clause use, `VPrf`; one introduction rule, `WPrf`, generic over the class `WKernel`; both together, `MPrf`; the source restriction for uncrossed transport in an equation template, `ZPrf`, generic over the class `ZKernel`; root-reversing transport and QE, `RPrf` |
+| kernel comparison | `NativeInherited`, `NativeOneContext`, `NativeOneIntro`, `NativeDiagonal`, `NativeMirror`, `NativeSix`, `NativeMinimal`, `NativeEval`, `NativeTemplateFree`, `NativeParameter`, `NativeClausal`, `NativeClausalDiagonal`, `NativeUniformClauses`, `NativeZeroSource`, `NativeReversal` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf`; no literal-zero transport sources, `OPrf`, generic over the class `OKernel`, and the uncrossed rule, `UPrf`; six rules with Eval, `EPrf`; replacement without a template, `TPrf`; substitution for a parameter, `PPrf`, with injective renaming, cut and the fresh alias; the diagonal introduction, `GPrf`, with its own structural rules; the mirror introduction, `MiPrf` and `M6Prf`; Eval with the diagonal introduction, `SPrf`; the five-rule clause calculus, `CPrf`, with weakening, renaming and cut of assumptions; the clause calculus with the diagonal introduction, `KPrf`; uniform clause use, `VPrf`; one introduction rule, `WPrf`, generic over the class `WKernel`; both together, `MPrf`; the source restriction for uncrossed transport in an equation template, `ZPrf`, generic over the class `ZKernel`; root-reversing transport and QE, `RPrf` |
 | native logic | `NativeLogic` | `⊥`, `→`, `∧`, `∨`, `∃`, `∀` as native macros with all their natural deduction rules |
 | native ≡ `T_eq` ≡ iPRA | `NativeTranslate`, `NativeComposite`, `NativeRoundTrip`, `NativeBiInterpretation` | translation of derivations, both round trips, the composite with `biInterp` |
 
@@ -546,7 +561,8 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `seed_evaluation` | Proved, for its arithmetic and equality interface: `NVPrf`, with `nvprf_iff_nprf`, `NVPrf.normal` and `nvprf_iff_pra` (`NativeZeroSeed`), with the kernel's two introductions and `Q` in place of clause contexts. |
 | `clause_contexts`, `witness_discharge` | Not formalized: further rule forms on zero-normal terms with clause contexts. |
 | `uniform_binding` | Not formalized: the counter-aware recursor syntax. |
-| `variable_substitution`, `parameter_substitution` | Not formalized: equality rules that substitute for a variable or a parameter only. |
+| `parameter_substitution` | Proved, for the equality rule: `PPrf` is the kernel with transport replaced by Param, and `pprf_iff_nprf` (`NativeParameter`). The package's five instruction families combine it with clause contexts and the witness-tested single introduction, which are not formalized together with it. |
+| `variable_substitution` | Not formalized: its rule substitutes for a variable only and has no joining at the root, which it recovers from full computation normal forms, where `C(0, a, b)` and `a` are the same term. The normalizer with its termination and confluence is not formalized. On raw terms the nearest proved statement is `pprf_iff_nprf`. |
 | `uniform_step` | Proved: its arithmetic and equality interface on zero-normal terms is `NSPrf` (`nsprf_iff_nprf`, `NSPrf.normal`, `nsprf_iff_pra`; `NativeZeroStep`), with the kernel's two introductions and `Q` in place of clause contexts. On the unnormalized syntax the rule Step is the constructor `evalSucc` of `EPrf` and `SPrf`. |
 | `uniform_clauses` | Proved: its calculus is `VPrf`, with `vprf_iff_cprf` and `vprf_iff_nprf_of_qfree` (`NativeUniformClauses`). |
 | `deterministic_specialization`, `clausal_single_evaluation` | Not formalized: variants of the clause calculus `CPrf` (clause use without a term argument; zero-normal terms). |
