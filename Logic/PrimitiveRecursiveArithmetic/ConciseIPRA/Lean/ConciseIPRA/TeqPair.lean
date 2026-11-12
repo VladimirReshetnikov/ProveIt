@@ -45,32 +45,10 @@ def Tm.pfst (w : Tm n) : Tm n := Tm.monus w (Tm.pow2 (Tm.lg w))
 /-- The second projection. -/
 def Tm.psnd (w : Tm n) : Tm n := Tm.monus (Tm.lg w) (Tm.pfst w)
 
-@[simp] theorem Tm.subst_lstep (σ : Fin n → Tm m) (k v : Tm n) :
-    Syn.subst σ (Tm.lstep k v) = Tm.lstep (Syn.subst σ k) (Syn.subst σ v) := by
-  simp [Tm.lstep]
-
-@[simp] theorem Tm.subst_lgc (σ : Fin n → Tm m) (t k : Tm n) :
-    Syn.subst σ (Tm.lgc t k) = Tm.lgc (Syn.subst σ t) (Syn.subst σ k) := by
-  simp [Tm.lgc, Syn.subst_up_shift]
-
-@[simp] theorem Tm.subst_lg (σ : Fin n → Tm m) (a : Tm n) :
-    Syn.subst σ (Tm.lg a) = Tm.lg (Syn.subst σ a) := by
-  simp [Tm.lg]
-
-@[simp] theorem Tm.subst_pair (σ : Fin n → Tm m) (a b : Tm n) :
-    Syn.subst σ (Tm.pair a b) = Tm.pair (Syn.subst σ a) (Syn.subst σ b) := by
-  simp [Tm.pair]
-
-@[simp] theorem Tm.subst_pfst (σ : Fin n → Tm m) (w : Tm n) :
-    Syn.subst σ (Tm.pfst w) = Tm.pfst (Syn.subst σ w) := by
-  simp [Tm.pfst]
-
-@[simp] theorem Tm.subst_psnd (σ : Fin n → Tm m) (w : Tm n) :
-    Syn.subst σ (Tm.psnd w) = Tm.psnd (Syn.subst σ w) := by
-  simp [Tm.psnd]
-
-lift_op₂ lstep lgc pair
-lift_op₁ lg pfst psnd
+lift_op₂ lstep lgc
+lift_op₁ lg
+lift_op₂ pair
+lift_op₁ pfst psnd
 
 namespace Q
 

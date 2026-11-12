@@ -58,6 +58,28 @@ inductive IPrf : {n : ℕ} → List (NFm n) → NFm n → Prop
 
 variable {n : ℕ} {Γ : List (NFm n)} {A : NFm n}
 
+/-- DI by progress, the witnessed form of the research reports: from
+`E(t, z) ⊢ E(t, S z)` with `z` fresh infer `D_{x,y} E`, for a literal equation
+`E`.  Derived from `qIInd`, `qE` and `dICase`. -/
+theorem NPrf.dIProg (s₁ s₂ : Tm (n + 2)) (t : Tm n)
+    (h : NPrf ((NFm.eq s₁ s₂).subst (up (inst t)) :: Γ.map NFm.shift)
+      (((NFm.eq s₁ s₂).subst (up (inst t))).subst (repl (succ (var 0))))) :
+    NPrf Γ (.D (.eq s₁ s₂)) := by
+  have hQ : NPrf Γ (.Q ((NFm.eq s₁ s₂).subst (up (inst t)))) := .qIInd _ _ h
+  refine .dICase (.eq s₁ s₂) t ?_
+  have hQ' : NPrf ((((NFm.eq s₁ s₂).subst (up (inst t))).subst (inst zero)).shift
+        :: Γ.map NFm.shift)
+      (.Q (((NFm.eq s₁ s₂).subst (up (inst t))).subst (up (fun i => Syn.var i.succ)))) :=
+    hQ.shift.wk
+  have h0 : NPrf ((((NFm.eq s₁ s₂).subst (up (inst t))).subst (inst zero)).shift
+        :: Γ.map NFm.shift)
+      ((((NFm.eq s₁ s₂).subst (up (inst t))).subst (up (fun i => Syn.var i.succ))).subst
+        (inst zero)) := by
+    rw [NFm.subst_dummy_up_inst, ← NFm.shift_subst_inst_zero]
+    exact NPrf.hyp0
+  have h' := NPrf.qE (succ (var 0)) hQ' h0
+  rwa [NFm.subst_dummy_up_inst] at h'
+
 /-- Every inherited rule is a derived rule of the kernel. -/
 theorem IPrf.toNPrf (h : IPrf Γ A) : NPrf Γ A := by
   induction h with

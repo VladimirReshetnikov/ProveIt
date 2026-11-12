@@ -99,10 +99,6 @@ theorem inst_comp_up (σ : Fin n → T m) (t : T n) :
   funext i
   refine Fin.cases ?_ (fun j => ?_) i <;> simp
 
-theorem up_shift_comm (σ : Fin n → T m) :
-    (fun i => subst (up σ) (var i.succ)) = fun i => shift (σ i) := by
-  funext i; simp
-
 end Syn
 
 open Syn
@@ -188,9 +184,6 @@ theorem subst_shift (φ : Fm T n) (σ : Fin (n + 1) → T m) :
 theorem shift_subst_up (φ : Fm T n) (σ : Fin n → T m) :
     φ.shift.subst (up σ) = (φ.subst σ).shift := by
   simp [subst_shift, shift_subst]
-
-@[simp] theorem subst_inst_shift (φ : Fm T n) (t : T n) : φ.shift.subst (inst t) = φ := by
-  simp [subst_shift]
 
 /-- Instantiation of the bound variable commutes with substitution. -/
 theorem subst_inst (φ : Fm T (n + 1)) (σ : Fin n → T m) (t : T n) :

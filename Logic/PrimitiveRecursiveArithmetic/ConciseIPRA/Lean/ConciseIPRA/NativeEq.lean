@@ -18,12 +18,10 @@ proves that it is a congruence for the quantifiers `Q` and `D`.  The quantifier
 By induction on the formula this gives
 
 * the simultaneous Leibniz rule `NPrf.leibniz` for every formula, and so
-  transport `NPrf.tr` in an arbitrary formula template;
-* the witnessed progress rule `NPrf.dIProg`.
+  transport `NPrf.tr` in an arbitrary formula template, which is the rule of
+  the research reports.
 
-These two are the rules of the research reports that the kernel `NPrf` does
-not take as primitive.  `NEquiv A B` is interderivability over the empty
-context.
+`NEquiv A B` is interderivability over the empty context.
 -/
 
 namespace LeanProofs.ConciseIPRA
@@ -271,28 +269,6 @@ theorem tr' (H : NFm (n + 1)) {s t : Tm n} {A A' : NFm n} (h₁ : NPrf Γ (.eq s
   subst hA hA'
   exact tr H h₁ h₂
 
-/-- DI by progress, the witnessed form of the research reports: from
-`E(t, z) ⊢ E(t, S z)` with `z` fresh infer `D_{x,y} E`, for a literal equation
-`E`.  Derived from `qIInd`, `qE` and `dICase`. -/
-theorem dIProg (s₁ s₂ : Tm (n + 2)) (t : Tm n)
-    (h : NPrf ((NFm.eq s₁ s₂).subst (up (inst t)) :: Γ.map NFm.shift)
-      (((NFm.eq s₁ s₂).subst (up (inst t))).subst (repl (succ (var 0))))) :
-    NPrf Γ (.D (.eq s₁ s₂)) := by
-  have hQ : NPrf Γ (.Q ((NFm.eq s₁ s₂).subst (up (inst t)))) := .qIInd _ _ h
-  refine .dICase (.eq s₁ s₂) t ?_
-  have hQ' : NPrf ((((NFm.eq s₁ s₂).subst (up (inst t))).subst (inst zero)).shift
-        :: Γ.map NFm.shift)
-      (.Q (((NFm.eq s₁ s₂).subst (up (inst t))).subst (up (fun i => Syn.var i.succ)))) :=
-    hQ.shift.wk
-  have h0 : NPrf ((((NFm.eq s₁ s₂).subst (up (inst t))).subst (inst zero)).shift
-        :: Γ.map NFm.shift)
-      ((((NFm.eq s₁ s₂).subst (up (inst t))).subst (up (fun i => Syn.var i.succ))).subst
-        (inst zero)) := by
-    rw [NFm.subst_dummy_up_inst, ← NFm.shift_subst_inst_zero]
-    exact hyp0
-  have h' := qE (succ (var 0)) hQ' h0
-  rwa [NFm.subst_dummy_up_inst] at h'
-
 end NPrf
 
 /-- Interderivability of two formulas of the native calculus. -/
@@ -317,8 +293,6 @@ theorem subst (e : NEquiv A B) (σ : Fin n → Tm m) : NEquiv (A.subst σ) (B.su
   ⟨e.1.subst σ, e.2.subst σ⟩
 
 theorem shift (e : NEquiv A B) : NEquiv A.shift B.shift := e.subst _
-
-theorem ofEq (h : A = B) : NEquiv A B := h ▸ refl A
 
 /-- The step shared by the congruence rules for `Q` and `D`. -/
 theorem qStep {B B' : NFm (n + 1)} (e : NEquiv B B') {Δ : List (NFm (n + 1))} :

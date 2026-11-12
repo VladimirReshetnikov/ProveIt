@@ -29,20 +29,9 @@ def Tm.pow2 (x : Tm n) : Tm n := Tm.iter x Tm.one (Tm.add (Syn.var 0) (Syn.var 0
 /-- The comparator: the indicator of `x ≤ y`. -/
 def Tm.cmp (x y : Tm n) : Tm n := Tm.par (Tm.hops y (Tm.pow2 x))
 
-@[simp] theorem Tm.subst_hops (σ : Fin n → Tm m) (y a : Tm n) :
-    Syn.subst σ (Tm.hops y a) = Tm.hops (Syn.subst σ y) (Syn.subst σ a) := by
-  simp [Tm.hops]
-
-@[simp] theorem Tm.subst_pow2 (σ : Fin n → Tm m) (x : Tm n) :
-    Syn.subst σ (Tm.pow2 x) = Tm.pow2 (Syn.subst σ x) := by
-  simp [Tm.pow2]
-
-@[simp] theorem Tm.subst_cmp (σ : Fin n → Tm m) (x y : Tm n) :
-    Syn.subst σ (Tm.cmp x y) = Tm.cmp (Syn.subst σ x) (Syn.subst σ y) := by
-  simp [Tm.cmp]
-
-lift_op₂ hops cmp
+lift_op₂ hops
 lift_op₁ pow2
+lift_op₂ cmp
 
 namespace Q
 
@@ -114,14 +103,6 @@ theorem cmp_eq (x y : Q Γ) : cmp x y = par (hops y (pow2 x)) := by
   rw [cmp_eq, cmp_eq, pow2_succ, hops_succ, hop_hops, hop_double, hops_triple, par_triple]
 
 @[simp] theorem cmp_one_zero : cmp (1 : Q Γ) 0 = 0 := cmp_succ_zero 0
-
-@[simp] theorem cmp_one_succ (y : Q Γ) : cmp 1 (succ y) = 1 := by
-  show cmp (succ 0) (succ y) = 1
-  rw [cmp_succ_succ, cmp_zero]
-
-@[simp] theorem cmp_succ_one (x : Q Γ) : cmp (succ x) 1 = cmp x 0 := by
-  show cmp (succ x) (succ 0) = cmp x 0
-  rw [cmp_succ_succ]
 
 /-- The diagonal just above the comparison threshold. -/
 @[simp] theorem cmp_succ_self (x : Q Γ) : cmp (succ x) x = 0 := by

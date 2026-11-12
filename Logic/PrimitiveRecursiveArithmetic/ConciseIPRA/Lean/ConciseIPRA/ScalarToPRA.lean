@@ -56,9 +56,6 @@ def tau : {n : ℕ} → Tm n → PTm n
 
 @[simp] theorem tau_succ (t : Tm n) : tau (Tm.succ t) = PTm.succ (tau t) := rfl
 
-theorem tau_iter (c a : Tm n) (h : Tm (n + 1)) :
-    tau (Tm.iter c a h) = app (iterSym (code a) (code h)) (Fin.cases (tau c) Syn.var) := rfl
-
 variable {Γ : List (Fm PTm n)}
 
 /-- Function symbols respect provable equality of their arguments. -/

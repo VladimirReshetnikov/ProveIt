@@ -54,8 +54,6 @@ def or (A B : NFm n) : NFm n := ex (sel (Syn.var 0) A.shift B.shift)
 /-- Universal quantification. -/
 def all (A : NFm (n + 1)) : NFm n := and (A.subst (inst zero)) (Q A)
 
-theorem bot_subst (σ : Fin n → Tm m) : (bot : NFm n).subst σ = bot := rfl
-
 theorem imp_subst (A B : NFm n) (σ : Fin n → Tm m) :
     (imp A B).subst σ = imp (A.subst σ) (B.subst σ) := by
   simp only [NFm.imp, subst_Q, sel_subst, Syn.subst_var, Syn.up_zero, shift_subst_up]

@@ -34,18 +34,6 @@ def Tm.sat (t k : Tm n) : Tm n := Tm.iter t Tm.zero (Tm.bump (Syn.shift k) (Syn.
 /-- The predecessor term. -/
 def Tm.pred (a : Tm n) : Tm n := Tm.sat a a
 
-@[simp] theorem Tm.subst_bump (σ : Fin n → Tm m) (k u : Tm n) :
-    Syn.subst σ (Tm.bump k u) = Tm.bump (Syn.subst σ k) (Syn.subst σ u) := by
-  simp [Tm.bump]
-
-@[simp] theorem Tm.subst_sat (σ : Fin n → Tm m) (t k : Tm n) :
-    Syn.subst σ (Tm.sat t k) = Tm.sat (Syn.subst σ t) (Syn.subst σ k) := by
-  simp [Tm.sat, Syn.subst_up_shift]
-
-@[simp] theorem Tm.subst_pred (σ : Fin n → Tm m) (a : Tm n) :
-    Syn.subst σ (Tm.pred a) = Tm.pred (Syn.subst σ a) := by
-  simp [Tm.pred]
-
 lift_op₂ bump sat
 lift_op₁ pred
 

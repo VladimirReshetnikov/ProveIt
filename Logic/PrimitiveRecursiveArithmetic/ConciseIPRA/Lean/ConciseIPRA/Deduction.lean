@@ -207,12 +207,8 @@ theorem hyp1 : ψ :: φ :: Γ ⊢[Ax] φ := .hyp (List.mem_cons_of_mem _ List.me
 
 theorem wk (h : Γ ⊢[Ax] φ) : ψ :: Γ ⊢[Ax] φ := h.weaken (List.subset_cons_self _ _)
 
-theorem cut (h₁ : Γ ⊢[Ax] φ) (h₂ : φ :: Γ ⊢[Ax] ψ) : Γ ⊢[Ax] ψ := .impE (.impI h₂) h₁
-
 /-- A closed derivation may be used under any hypotheses. -/
 theorem ofNil (h : [] ⊢[Ax] φ) : Γ ⊢[Ax] φ := h.weaken (List.nil_subset _)
-
-theorem mp (h₁ : Γ ⊢[Ax] φ ⟶ ψ) (h₂ : Γ ⊢[Ax] φ) : Γ ⊢[Ax] ψ := .impE h₁ h₂
 
 theorem impTrans (h₁ : Γ ⊢[Ax] φ ⟶ ψ) (h₂ : Γ ⊢[Ax] ψ ⟶ χ) : Γ ⊢[Ax] φ ⟶ χ :=
   .impI (.impE h₂.wk (.impE h₁.wk hyp0))
