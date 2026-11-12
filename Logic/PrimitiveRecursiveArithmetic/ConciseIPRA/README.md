@@ -784,6 +784,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | three rule families with a deterministic discharge | `xcprf_iff_nprf : XCPrf (UCl.refl :: Γ.map fun X => UCl.asm (NFm.unQ X).full) (NFm.unQ A).full ↔ NPrf Γ A`, `xcprf_iff_nprf_of_qfree`, `xcprf_iff_pra`, `XCPrf.qfree`, `XCPrf.dE`, `XCPrf.packet`, `XCPrf.toWD`, `F6Prf.toXC` | Use, Intro and Discharge: the clause is opened at the fresh variable and the selected witness is substituted in the exported formula |
 | substitution for the newest variable | `v0prf_iff_nprf : V0Prf (Γ.map NFm.full) A.full ↔ NPrf Γ A` | the rule of `VSPrf` restricted to the variable of index `0` |
 | seven uniform rules, `Q` at an equation read as progressivity | `rprf_emb_iff : RPrf (Γ.map NFm.emb) A.emb ↔ NPrf Γ A`, `rprf_iff_rd : RPrf Γ A ↔ NPrf (Γ.map NFm.rd) A.rd`, `REquivIn.emb_rd`, `rprf_iff_pra`, `rprf_emb_iff_pra`, `RPrf.toNPrf`, `rprf_consistent`, `NPrf.toR`, `NEquiv.rd_emb`, `RPrf.eqInd`, `RPrf.leibniz`, `RPrf.subst` | QE, DE and DI read their mode off the matrix root; equivalence with the kernel through the padding translation |
+| no fixed point of the successor without progress | `NoInd.no_succ_fixed : K Γ (S c = c) → K Γ (0 = 1)`, `NoInd.succ_ne_self`, `Rules.noInd`, `NoInd.cases` | the kernel without `Q` by progress refutes `S c = c`; a constraint on any countermodel for the independence of that rule |
 | the seed cannot be fixed to zero | `ZTm.mono`, `ZTm.no_zero_test`, `Tm.val_zf` | zero-seeded recursor terms denote monotone functions; the kernel's terms define the zero test |
 | replacement of one occurrence | `lprf_iff_nprf : LPrf Γ A ↔ NPrf Γ A`, `lprf_iff_uprf`, `Reach.subst`, `LPrf.ofReach`, `Tm.Hole`, `Tm.Free` | transport replaced by replacement at one hole of a term context, below binders as well |
 | the reflexive-base introduction on raw terms | `rrprf_iff_nprf : RRPrf Γ A ↔ NPrf Γ A`, `rrprf_iff_pra`, `NFm.isRefl_rn`, `RRPrf.ren`, `RRPrf.decS`, `RRPrf.decT`, `RRPrf.qInd` | seven rules without normalization; progress exactly when `B(t, 0)` is literally `r = r` |
@@ -820,10 +821,10 @@ The main chain (every module except the seventeen kernel comparisons,
 `NativeVariableClauses`, `NativeProgressive`, `NativeProgressiveRules`,
 `NativeProgressiveLeibniz`, `NativeProgressiveEmbedding`, `NativeTargetClosure`,
 `NativeProgressiveRoundTrip`, `NativeMixedClosure`, `NativePublic`, `NativePublicNecessary`, `NativeRootDetermined`,
-`NativeRawReflexive`, `NativeOneOccurrence`,
+`NativeRawReflexive`, `NativeOneOccurrence`, `NativeNoFixedPoint`,
 `ZeroSeedObstruction`,
 `NativePrefix`, `NativeUniqueness`, `NativeModels` and
-`TeqClosure`) is 5,350
+`TeqClosure`) is 5,337
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
 introduction and elimination, instead of an induction over the seventeen
@@ -870,6 +871,7 @@ no `native_decide`.
 | prefix form | `NativePrefix` | a `Q`-free formula is `k` binders `D` and one equation |
 | an obstruction | `ZeroSeedObstruction` | terms with a zero-seeded recursor denote monotone functions, so the seed of the iterator cannot simply be deleted |
 | progressive reading | `NativeProgressive`, `NativeProgressiveRules`, `NativeProgressiveLeibniz`, `NativeProgressiveEmbedding`, `NativeTargetClosure`, `NativeProgressiveRoundTrip`, `NativeMixedClosure` | the seven uniform rules of `uniform_progress`, `RPrf`; the reading `NFm.rd` of `Q` at a literal equation as progressivity; soundness in the kernel and in iPRA, and consistency; inside `RPrf`: substitution, weakening and cut, the equality rules, equation induction, and the Leibniz rule for all formulas; the padding translation `NFm.emb` and the equivalence `rprf_emb_iff : RPrf (Γ.map NFm.emb) A.emb ↔ NPrf Γ A`; the calculus `TQPrf` with the target-directed elimination, equivalent to `RPrf` on the same formulas; the second formula round trip and the faithfulness of the progressive reading |
+| without progress | `NativeNoFixedPoint` | the seven rules other than `Q` by progress derive `0 = 1` from `S c = c` |
 | readings over the natural numbers | `NativeModels` | evaluation of terms and formulas for a reading `Sem`; the kernel with rules switched by flags, `FPrf`, and its soundness; consistency of the three systems; independence of seven rules |
 | native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, interderivability over a context, Leibniz and transport in every template, equation induction; selector and gate formulas |
 | kernel comparison | `NativeInherited`, `NativeOneContext`, `NativeOneIntro`, `NativeDiagonal`, `NativeMirror`, `NativeSix`, `NativeMinimal`, `NativeEval`, `NativeTemplateFree`, `NativeParameter`, `NativeVariableQE`, `NativeSubstitutiveDischarge`, `NativeClausal`, `NativeClausalDiagonal`, `NativeUniformClauses`, `NativeZeroSource`, `NativeReversal` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf`; no literal-zero transport sources, `OPrf`, generic over the class `OKernel`, and the uncrossed rule, `UPrf`; six rules with Eval, `EPrf`; replacement without a template, `TPrf`; substitution for a parameter, `PPrf`, with injective renaming, cut and the fresh alias; QE at a variable or at `1`, `VQPrf`, with its own Leibniz rule and the countermodel for variables alone; substitutive discharge, `SDPrf`; the diagonal introduction, `GPrf`, with its own structural rules; the mirror introduction, `MiPrf` and `M6Prf`; Eval with the diagonal introduction, `SPrf`; the five-rule clause calculus, `CPrf`, with weakening, renaming and cut of assumptions; the clause calculus with the diagonal introduction, `KPrf`; uniform clause use, `VPrf`; one introduction rule, `WPrf`, generic over the class `WKernel`; both together, `MPrf`; the source restriction for uncrossed transport in an equation template, `ZPrf`, generic over the class `ZKernel`; root-reversing transport and QE, `RPrf` |
@@ -949,8 +951,10 @@ marked as conjectures is proved here.
    that the conditions for DI and DE already imply the condition for QI there.
    A countermodel must have nonstandard numbers. It can have no cycle of the
    successor: from `S c = c` the kernel without QI derives `0 = 1`, by the
-   iterator of `u ↦ sel(u, 1, 0)` at the count `c` and cases on its value
-   (an argument on paper, not formalized). So its nonstandard part consists of
+   iterator of `u ↦ sel(u, 1, 0)` at the count `c` and three equations proved
+   by cases (`NoInd.no_succ_fixed`, `NativeNoFixedPoint`; cycles of length
+   `k > 1` are excluded by the same argument with a counter modulo `k`, which
+   is not formalized). So its nonstandard part consists of
    chains infinite in both directions, and every step term definable with
    parameters needs an orbit infinite in both directions along each chain. An
    ultrapower with the internal iterator has such orbits and satisfies
@@ -1001,7 +1005,7 @@ marked as conjectures is proved here.
    `deterministic_opening` (`OCPrf`), of `first_instance` and
    `clause_discharge` (`XCPrf`), and of `variable_substitution` (`VCPrf`)
    are proved equivalent to the kernel.
-8. **A shorter proof of the equivalence.** The main chain is 5,350 lines. A
+8. **A shorter proof of the equivalence.** The main chain is 5,337 lines. A
    dependency-closure computation shows that it contains nothing that the end
    results do not use. Three designs fix most of its size, and no shorter
    replacement for any of them is known: the predecessor of `T_eq` from

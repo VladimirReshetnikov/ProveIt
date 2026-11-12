@@ -112,29 +112,16 @@ theorem ax_precSucc (f : PR k) (g : PR (k + 2)) :
     [] ⊢[TeqAx] sigma (PTm.app (.prec f g) (repl (PTm.succ (Syn.var 0))))
       ≐ sigma (PTm.app g
           (Fin.cases (Syn.var 0) (repl (PTm.app (.prec f g) Syn.var)))) := by
-  have e1 : sigma (PTm.app (.prec f g) (repl (PTm.succ (Syn.var 0))))
-      = Tm.prc (Tm.succ (Syn.var 0)) (shift (code f))
-          (Syn.subst (up (up (fun i => Syn.var i.succ))) (code g)) := by
-    rw [sigma_app, sigma_repl, sigma_succ, sigma_var, code_prec, Tm.subst_prc,
-      Syn.subst_var, Syn.repl_zero, Syn.subst_repl_shift, Syn.subst_up_up_repl_up_up_shift]
   have e : (fun j => sigma ((Fin.cases (Syn.var 0)
         (repl (PTm.app (.prec f g) Syn.var)) : Fin (k + 2) → PTm (k + 1)) j))
       = fun j => Syn.subst
           (Fin.cases (Syn.var 0) (Fin.cases (code (.prec f g)) Syn.var))
           ((up (up (fun i => Syn.var i.succ)) : Fin (k + 2) → Tm (k + 3)) j) := by
     funext j
-    refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun i => ?_) j) j
-    · simp only [Fin.cases_zero, sigma_var, Syn.up_zero, Syn.subst_var]
-    · simp only [Fin.cases_succ, Fin.cases_zero, Syn.repl_zero, sigma_app_var, Syn.up_succ,
-        Syn.up_zero, Syn.shift_var, Syn.subst_var]
-    · simp only [Fin.cases_succ, Syn.repl_succ, sigma_var, Syn.up_succ, Syn.shift_var,
-        Syn.subst_var]
-  have e2 : sigma (PTm.app g
-        (Fin.cases (Syn.var 0) (repl (PTm.app (.prec f g) Syn.var))))
-      = Syn.subst (Fin.cases (Syn.var 0) (Fin.cases (code (.prec f g)) Syn.var))
-          (Syn.subst (up (up (fun i => Syn.var i.succ))) (code g)) := by
-    rw [sigma_app, Syn.subst_subst, e]
-  rw [e1, e2]
+    refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun i => ?_) j) j <;> simp [sigma_app_var]
+  rw [sigma_app, sigma_repl, sigma_succ, sigma_var, code_prec, Tm.subst_prc, Syn.subst_var,
+    Syn.repl_zero, Syn.subst_repl_shift, Syn.subst_up_up_repl_up_up_shift, sigma_app, e,
+    ← Syn.subst_subst]
   exact Q.prc_succ _ _ _
 
 theorem ax_succNeZero :
