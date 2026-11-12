@@ -7864,6 +7864,10 @@ other 78-operation equations or establish a minimality result.
 The independently source-reviewed [natural-79 Lean transcription](research/ordinary14-natural-forced-w79-lean-draft/README.md)
 records the literal graph and product shape. It remains unelaborated and has
 no checked model or iPRA endpoint.
+The separately rendered [base-10 natural-79 candidate](research/ordinary14-natural79-decimal-render-candidate/README.md)
+uses distinct input names and external checks of all four compact ports, graph
+rows and decimal seed. The independently reviewed PDF is a candidate only;
+Lean port identities, the iPRA endpoint and formal document binding remain open.
 The independently source-reviewed [natural-79 model route](research/ordinary14-natural79-w-model-route/README.md)
 identifies model square-divisibility interfaces and proposes ring identities
 for the forced-w argument. The existing 74 unit extractor requires positive
