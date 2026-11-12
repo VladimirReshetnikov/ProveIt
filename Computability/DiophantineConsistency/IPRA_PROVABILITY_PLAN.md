@@ -87,6 +87,10 @@ The independently reviewed [prefix feasibility audit](research/current14-carrier
 checks retained outputs, direct-route records, guard slots and pending output
 names. Those non-atomic observations do not establish safe reuse, provider
 closure or a continuation runner.
+The independently reviewed [continuation design](research/current14-carrier65-retry05-continuation-design/README.md)
+projects the recorded prefix into a hypothetical separate root and identifies
+the new search-path, immutable-input, companion and postflight obligations.
+It is not an executable build or proof that the retained objects can be reused.
 
 The [65-gate graph-to-expression theorem](research/current14-carrier65-dag-expression-retry-check/README.md)
 now checks an explicit live circuit for the maintained Lean expression, with
