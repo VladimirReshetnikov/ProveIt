@@ -68,7 +68,7 @@ def ForcingCut (v : Fin 17 → V) : Prop :=
     ι q=(ι delta)*((ι (v 3))*(ι (v 3))-1) ∧
     v 11*v 11+q*(v 16*v 16)=1+q*(v 11*v 11) ∧
     (v 11=0 → q*(v 16*v 16)=1) ∧
-    ι (v 16)=(ι (v 3))*(ι (v 3))*((ι (v 5))*(ι c)-ι (v 13))-ι c
+    ι (v 16)=(ι (v 3))*(ι (v 3))*((ι (v 5))*(ι c)-ι (v 13+1))-ι c
 
 def ForcingCutExtraction : Prop :=
   ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
@@ -82,7 +82,7 @@ theorem sixForced_of_cut (h : ForcingCutExtraction) : SixForced := by
   have hqone : 1≤q := le_trans (by simp : (1:V)≤4) hq
   rcases hi with rfl | rfl | rfl | rfl | rfl | rfl
   · exact AQ17Forced105ArithmeticDraft.f_pos (v 3) delta q hd hqpos hqeq
-  · exact AQ17Forced105ArithmeticDraft.time_pos (v 3) (v 5) (v 16) (v 13) c hc htime
+  · exact AQ17Forced105ArithmeticDraft.time_pos (v 3) (v 5) (v 16) (v 13+1) c hc htime
   · exact AQ17Forced105ArithmeticDraft.y_pos_of_zero_product (v 11) (v 16) q hq hy0
   · exact AQ17Forced105ArithmeticDraft.positive_of_square_one_add (v 14) n0 hn0
   · exact AQ17Forced105ArithmeticDraft.positive_of_square_one_add (v 15) n1 hn1
