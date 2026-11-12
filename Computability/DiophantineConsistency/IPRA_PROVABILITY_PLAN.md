@@ -7865,6 +7865,9 @@ The independently source-reviewed [79 zero-w unit draft](research/ordinary14-nat
 proposes a zero-specific factor extraction without assuming positive w; it
 still takes three residue exclusions as explicit hypotheses. The source and
 its axiom reports remain unelaborated and unexecuted.
+The independently source-reviewed [79 residue-pattern draft](research/ordinary14-natural79-factor-residues-draft/README.md)
+proposes discharging those exclusions using literal graph patterns. The cuts
+and zero-w unit client remain unelaborated, and do not prove w positivity.
 The independently source-reviewed [natural-80 Lean transcription](research/ordinary14-natural-forced-gamma80-lean-draft/README.md)
 records its literal graph and product shape. Source correspondence is checked
 externally; elaboration and model semantics remain open.
