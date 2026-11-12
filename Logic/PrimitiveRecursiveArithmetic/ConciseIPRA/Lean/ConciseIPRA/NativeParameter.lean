@@ -118,6 +118,26 @@ theorem subst_inst_abs (i : Fin n) (t u : Tm n) :
 
 end Tm
 
+namespace NFm
+
+/-- The alias matrix `sel(y, a, x) = a`, where `y` is the variable `0` and `x`
+the variable `1`. -/
+def aliasM (a : Tm n) : NFm (n + 2) :=
+  .eq (Tm.sel (Syn.var 0) (Syn.shift (Syn.shift a)) (Syn.var 1)) (Syn.shift (Syn.shift a))
+
+/-- The successor instance of the alias matrix at the witness `a`. -/
+theorem aliasM_step (a : Tm n) :
+    ((aliasM a).subst (up (inst a))).subst (repl (succ (Syn.var 0)))
+      = .eq (Tm.sel (succ (Syn.var 0)) (Syn.shift a) (Syn.shift a)) (Syn.shift a) := by
+  simp [aliasM, Syn.subst_up_shift]
+
+/-- The instance of the alias matrix at `y = c`, for the fresh `x`. -/
+theorem aliasM_inst (a : Tm n) (c : Tm (n + 1)) :
+    (aliasM a).subst (inst c) = .eq (Tm.sel c (Syn.shift a) (Syn.var 0)) (Syn.shift a) := by
+  simp [aliasM]
+
+end NFm
+
 /-- The kernel with Param in place of transport in a template. -/
 inductive PPrf : {n : ℕ} → List (NFm n) → NFm n → Prop
   | hyp {n : ℕ} {Γ : List (NFm n)} {A : NFm n} (h : A ∈ Γ) : PPrf Γ A
@@ -277,17 +297,9 @@ theorem selSucc (c a b : Tm n) : PPrf Γ (.eq (Tm.sel (succ c) a b) b) := by
 
 /-! ### The fresh alias -/
 
-/-- The matrix `sel(y, a, x) = a`, where `y` is the variable `0` and `x` the
-variable `1`. -/
-def aliasM (a : Tm n) : NFm (n + 2) :=
-  .eq (Tm.sel (Syn.var 0) (Syn.shift (Syn.shift a)) (Syn.var 1)) (Syn.shift (Syn.shift a))
-
-theorem aliasD (a : Tm n) : PPrf Γ (.D (aliasM a)) := by
+theorem aliasD (a : Tm n) : PPrf Γ (.D (NFm.aliasM a)) := by
   refine .dICase _ a ?_
-  have e : ((aliasM a).subst (up (inst a))).subst (repl (succ (Syn.var 0)))
-      = .eq (Tm.sel (succ (Syn.var 0)) (Syn.shift a) (Syn.shift a)) (Syn.shift a) := by
-    simp [aliasM, Syn.subst_up_shift]
-  rw [e]
+  rw [NFm.aliasM_step]
   exact selSucc _ _ _
 
 /-- **The fresh alias.**  An assumption `b = a` with `b` fresh may be
@@ -295,18 +307,12 @@ discharged. -/
 theorem aliasE (a : Tm n)
     (h : PPrf (.eq (Syn.var 0) (Syn.shift a) :: Γ.map NFm.shift) A.shift) : PPrf Γ A := by
   refine .dE (aliasD a) ?_
-  have e0 : (aliasM a).subst (inst zero)
-      = .eq (Tm.sel zero (Syn.shift a) (Syn.var 0)) (Syn.shift a) := by
-    simp [aliasM]
-  have e1 : (aliasM a).subst (inst (succ zero))
-      = .eq (Tm.sel (succ zero) (Syn.shift a) (Syn.var 0)) (Syn.shift a) := by
-    simp [aliasM]
-  have k : PPrf (.Q (aliasM a) :: Γ.map NFm.shift)
-      ((aliasM a).subst (inst (succ zero))) := by
+  have k : PPrf (.Q (NFm.aliasM a) :: Γ.map NFm.shift)
+      ((NFm.aliasM a).subst (inst (succ zero))) := by
     refine .qE (succ zero) hyp0 ?_
-    rw [e0]
+    rw [NFm.aliasM_inst]
     exact .iterZero _ _
-  rw [e1] at k
+  rw [NFm.aliasM_inst] at k
   refine h.cut fun C hC => ?_
   rcases List.mem_cons.1 hC with rfl | hC
   · exact join k (selSucc zero _ _)
