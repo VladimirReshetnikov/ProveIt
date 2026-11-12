@@ -1,0 +1,125 @@
+import AQ26Quotient122Witness
+import AQ26Quotient122ResidualZeros
+import DiophantineConsistency.IPRAAQ26Native
+import DiophantineConsistency.IPRAStandardTheory
+
+/-! Conditional same-model zero and no-zero transfer. The two graph maps
+are explicit premises; the quotient extraction is source-only as well. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+noncomputable section
+namespace DiophantineConsistency.AQ26Quotient122ConditionalTransferDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+
+def project {V : Type*} (v : Fin 26 → V) (u t : V) (i : Fin 26) : V :=
+  if i.val=19 then u else if i.val=20 then t else v i
+
+def extend {V : Type*} [Mul V] (v : Fin 26 → V) (i : Fin 26) : V :=
+  if i.val=19 then v 13*v 19 else if i.val=20 then v 14*v 20 else v i
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem project_pos (v : Fin 26 → V) (u t : V) (hv : ∀ i, 0<v i)
+    (hu : 0<u) (ht : 0<t) : ∀ i, 0<project v u t i := by
+  intro i
+  unfold project
+  split
+  · exact hu
+  · split
+    · exact ht
+    · exact hv i
+
+theorem extend_pos (v : Fin 26 → V) (hv : ∀ i, 0<v i) :
+    ∀ i, 0<extend v i := by
+  intro i
+  unfold extend
+  split
+  · exact mul_pos (hv 13) (hv 19)
+  · split
+    · exact mul_pos (hv 14) (hv 20)
+    · exact hv i
+
+def child : Expr (Fin 26) :=
+  AQ26Quotient122LiteralDraft.literal CurrentWindowCarry2011.ports
+
+def parent : Expr (Fin 26) :=
+  AdaptiveAQ26Literal.literal CurrentWindowCarry2011.ports
+
+/-- The exact missing source obligations. The first map is only required for
+actual positive parent zeros with both quotient equations; the second is only
+required for positive child zeros. -/
+def GraphZeroObligations : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁],
+    (∀ (v : Fin 26 → V) (u t : V), (∀ i, 0<v i) → InternalZero parent v →
+      v 19=v 13*u → v 20=v 14*t →
+      u*u=1+v 17*(v 17+(v 9+v 10)) → t*t=1+v 22*v 18 →
+      InternalZero child (project v u t)) ∧
+    (∀ v : Fin 26 → V, (∀ i, 0<v i) → InternalZero child v →
+      InternalZero parent (extend v))
+
+theorem shifted_no_zero_iff
+    (hproject : ∀ (v : Fin 26 → V) (u t : V), (∀ i, 0<v i) → InternalZero parent v →
+      v 19=v 13*u → v 20=v 14*t →
+      u*u=1+v 17*(v 17+(v 9+v 10)) → t*t=1+v 22*v 18 →
+      InternalZero child (project v u t))
+    (hextend : ∀ v : Fin 26 → V, (∀ i, 0<v i) → InternalZero child v →
+      InternalZero parent (extend v)) :
+    (∀ v : Fin 26 → V, ¬InternalZero (positiveShift child) v) ↔
+      ∀ v : Fin 26 → V, ¬InternalZero (positiveShift parent) v := by
+  constructor
+  · intro h v hz
+    let old : Fin 26 → V := fun i => v i+1
+    have hp : ∀ i,0<old i := fun i => lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+    have hzero : InternalZero parent old := (internalZero_positiveShift _ _).mp hz
+    obtain ⟨u,t,hu,ht,hzu,hdt,hun,htn⟩ :=
+      AQ26Quotient122WitnessDraft.parent_quotients CurrentWindowCarry2011.ports old hp hzero
+    have hnew := hproject old u t hp hzero hzu hdt hun htn
+    have hnewpos := project_pos old u t hp hu ht
+    let shifted : Fin 26 → V := fun i => project old u t i-1
+    have hs : (fun i => shifted i+1)=project old u t := by
+      funext i
+      exact tsub_add_cancel_of_le (pos_iff_one_le.mp (hnewpos i))
+    apply h shifted
+    rw [internalZero_positiveShift,hs]
+    exact hnew
+  · intro h v hz
+    let new : Fin 26 → V := fun i => v i+1
+    have hp : ∀ i,0<new i := fun i => lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+    have hzero : InternalZero child new := (internalZero_positiveShift _ _).mp hz
+    have hold := hextend new hp hzero
+    have holdpos := extend_pos new hp
+    let shifted : Fin 26 → V := fun i => extend new i-1
+    have hs : (fun i => shifted i+1)=extend new := by
+      funext i
+      exact tsub_add_cancel_of_le (pos_iff_one_le.mp (holdpos i))
+    apply h shifted
+    rw [internalZero_positiveShift,hs]
+    exact hold
+
+theorem sameNoZero (h : GraphZeroObligations) :
+    SameNoZero (positiveShift child) (positiveShift parent) := by
+  intro V _ _
+  obtain ⟨hp,he⟩ := h V
+  exact shifted_no_zero_iff (V:=V) hp he
+
+theorem polynomialBridge (h : GraphZeroObligations) : PolynomialBridge (positiveShift child) :=
+  HAExpressionNoZeroEquiv.bridge (positiveShift child) (positiveShift parent)
+    (sameNoZero h) IPRAAQ26Native.bridge26
+
+theorem native_equivalence (h : GraphZeroObligations) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (positiveShift child) 🡘
+      ∼mappedNativeRefutation embedding :=
+  IPRAExpressionNative.equivalence_of_bridge (positiveShift child) (polynomialBridge h)
+
+theorem standard_equivalence (h : GraphZeroObligations) : IPRAStandardTheory.standardTheory ⊢
+    IPRAExpressionNative.nativeNoZero (positiveShift child) 🡘
+      ∼mappedNativeRefutation embedding :=
+  (IPRAStandardTheory.provable_iff _).2 (native_equivalence h)
+end DiophantineConsistency.AQ26Quotient122ConditionalTransferDraft
+#print axioms DiophantineConsistency.AQ26Quotient122ConditionalTransferDraft.shifted_no_zero_iff
+#print axioms DiophantineConsistency.AQ26Quotient122ConditionalTransferDraft.native_equivalence
+#print axioms DiophantineConsistency.AQ26Quotient122ConditionalTransferDraft.standard_equivalence
