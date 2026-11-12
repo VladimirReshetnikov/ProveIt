@@ -1285,6 +1285,10 @@ the first residual and complete parent model zero are still required.
 The source-reviewed [parent first-residual client](research/ordinary14-88-parent-first-draft/README.md)
 proposes that missing first-field identity under explicit quotient, root and
 cast hypotheses. It remains unelaborated and is not a complete model zero.
+The source-reviewed [88-to-parent model-map draft](research/ordinary14-88-to-parent-model-map-draft/README.md)
+proposes assembling the complete positive parent witness from the 88 zero,
+without a K bound in this direction. It remains unelaborated; the converse,
+provider verification and iPRA endpoint are still open.
 The source-reviewed [88 guard draft](research/ordinary14-88-guard-draft/README.md)
 proposes the quotient-guard equality from that graph's own zero. It remains
 unelaborated and is one premise of the parent witness construction.
