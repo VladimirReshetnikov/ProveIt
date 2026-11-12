@@ -7853,6 +7853,9 @@ The independently reviewed [forced-w natural graph](research/ordinary14-natural-
 removes another shift, giving 14 natural inputs, 79 operations and exact
 specialized degree 107. Its local divisibility argument assumes positive beta
 and nonnegative K0; the stronger parent and endpoint qualifications remain.
+The independently source-reviewed [natural-79 Lean transcription](research/ordinary14-natural-forced-w79-lean-draft/README.md)
+records the literal graph and product shape. It remains unelaborated and has
+no checked model or iPRA endpoint.
 The independently source-reviewed [natural-80 Lean transcription](research/ordinary14-natural-forced-gamma80-lean-draft/README.md)
 records its literal graph and product shape. Source correspondence is checked
 externally; elaboration and model semantics remain open.
