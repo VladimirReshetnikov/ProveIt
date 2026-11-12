@@ -1,0 +1,103 @@
+import ResidueRootSwitchArithmetic
+import DiophantineConsistency.Compact44.ReducedNormSigned
+import DiophantineConsistency.ArithmeticAdaptiveQuotients2011
+import DiophantineConsistency.BFS943.Trace75IntegralTransport
+
+/-! Source-only model extraction of the root-switch witnesses. The graph
+must supply its exact signed root and norm; no Lean or provider replay. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.ResidueRootSwitchExtractDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ModelDifferenceRing
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The norm rules out a nonpositive signed P without any representation or
+sign assumption on K0. -/
+theorem P_positive (b ell k : V) (P z : DiffRing V) (hb : 0<b) (hk : 2≤k)
+    (hz : z=ι b*(ι ell+ι k-ι k*P)-P)
+    (hnorm : z*z=ι b*ι b*(1+ι ell*(ι ell+ι k))) : 0<P := by
+  by_contra hn
+  have hP : P≤0 := le_of_not_gt hn
+  have hbR : (0 : DiffRing V)<ι b := by simpa only [map_zero] using (ι_lt_ι.mpr hb)
+  have hkR : (2 : DiffRing V)≤ι k := by simpa only [map_ofNat] using (ι_le_ι.mpr hk)
+  have hell : (0 : DiffRing V)≤ι ell := ι_nonneg ell
+  have hk0 : (0 : DiffRing V)≤ι k := ι_nonneg k
+  have hnegP : (0 : DiffRing V)≤ -P := neg_nonneg.mpr hP
+  have hkp : (0 : DiffRing V)≤ι k*(-P) := mul_nonneg hk0 hnegP
+  have hprod : (0 : DiffRing V)≤ι b*(ι k*(-P)) := mul_nonneg (le_of_lt hbR) hkp
+  have hbase : ι b*(ι ell+ι k)≤z := by rw [hz]; nlinarith
+  have hbasepos : (0 : DiffRing V)<ι b*(ι ell+ι k) := by
+    apply mul_pos hbR
+    linarith
+  have hsquare := mul_self_le_mul_self (le_of_lt hbasepos) hbase
+  have hellk : (0 : DiffRing V)≤ι ell*ι k := mul_nonneg hell hk0
+  have hsmall : (1 : DiffRing V)+ι ell*(ι ell+ι k)<(ι ell+ι k)*(ι ell+ι k) := by nlinarith
+  have hb2 : (0 : DiffRing V)<ι b*ι b := mul_pos hbR hbR
+  have hscaled := mul_lt_mul_of_pos_left hsmall hb2
+  nlinarith [hsquare,hscaled,hnorm]
+
+/-- Construct the natural P quotient and both signed-root alternatives in the
+same model. Only the signed norm and scale positivity are assumed. -/
+theorem root_data (b ell k : V) (P z : DiffRing V) (hb : 0<b) (hk : 2≤k)
+    (hz : z=ι b*(ι ell+ι k-ι k*P)-P)
+    (hnorm : z*z=ι b*ι b*(1+ι ell*(ι ell+ι k))) :
+    ∃ Pn t tau : V, 0<Pn ∧ 0<t ∧ P=ι Pn ∧ Pn=b*t ∧ ell<tau ∧
+      (z=ι b*ι tau ∨ z= -(ι b*ι tau)) := by
+  have hPpos := P_positive b ell k P z hb hk hz hnorm
+  obtain ⟨Pn,hPn⟩ := nonneg_iff.mp (le_of_lt hPpos)
+  have hPnPos : 0<Pn := (ι_lt_ι).mp (by rw [map_zero,←hPn]; exact hPpos)
+  obtain ⟨mag,hmagSign,hmagSq⟩ := ReducedNormSigned.natural_magnitude_square z
+  have hnat : mag*mag=b*b*(1+ell*(ell+k)) := by
+    apply ι_injective
+    simp only [map_add,map_mul,map_one]
+    calc
+      ι mag*ι mag=z*z := by simpa only [map_mul] using hmagSq.symm
+      _=ι b*ι b*(1+ι ell*(ι ell+ι k)) := hnorm
+  obtain ⟨tau,htauMag,htauNorm⟩ := ArithmeticAdaptiveQuotients2011.scaled_quotient
+    b mag (1+ell*(ell+k)) hb hnat
+  have htaugt : ell<tau := by
+    apply lt_of_mul_self_lt_mul_self₀ (Arithmetic.zero_le _)
+    rw [htauNorm]
+    have hnonneg := Arithmetic.zero_le (ell*k)
+    nlinarith
+  have hsign : z=ι b*ι tau ∨ z= -(ι b*ι tau) := by
+    rcases hmagSign with hs | hs
+    · left; simpa only [htauMag,map_mul] using hs
+    · right; simpa only [htauMag,map_mul] using hs
+  have hzdiv : (ι b : DiffRing V)∣z := by
+    rcases hsign with hs | hs
+    · exact ⟨ι tau,hs⟩
+    · refine ⟨-ι tau,?_⟩
+      rw [hs]
+      ring
+  obtain ⟨w,hw⟩ := hzdiv
+  have hPdiv : (ι b : DiffRing V)∣P := by
+    refine ⟨ι ell+ι k-ι k*P-w,?_⟩
+    linear_combination hz-hw
+  rw [hPn] at hPdiv
+  obtain ⟨t,ht⟩ := Trace75IntegralTransport.natural_dvd_of_signed b Pn hPdiv
+  have htpos : 0<t := pos_of_mul_pos_right (by rw [←ht]; exact hPnPos) (by simp)
+  exact ⟨Pn,t,tau,hPnPos,htpos,hPn,ht,htaugt,hsign⟩
+
+/-- The constructed data yield a positive replacement and preserve the first
+root square. The graph still has to show all other residuals survive. -/
+theorem positive_replacement (b ell k : V) (P z : DiffRing V) (hb : 0<b) (hk : 2≤k)
+    (hz : z=ι b*(ι ell+ι k-ι k*P)-P)
+    (hnorm : z*z=ι b*ι b*(1+ι ell*(ι ell+ι k))) :
+    ∃ r' : V, 0<r' ∧
+      (ι b*(ι ell+ι k+ι r'-ι k*P)-P)*
+      (ι b*(ι ell+ι k+ι r'-ι k*P)-P)=z*z := by
+  obtain ⟨Pn,t,tau,hPnPos,_,hPn,ht,htaugt,hsign⟩ := root_data b ell k P z hb hk hz hnorm
+  have hz' : z=ι b*(ι ell+ι k-ι k*ι Pn)-ι Pn := by simpa only [hPn] using hz
+  obtain ⟨r',hr',hroot⟩ := ResidueRootSwitchArithmeticDraft.switch_from_zero
+    b Pn t ell k tau z hb hPnPos ht htaugt hz' hsign
+  exact ⟨r',hr',by simpa only [hPn] using hroot⟩
+end DiophantineConsistency.ResidueRootSwitchExtractDraft
+#print axioms DiophantineConsistency.ResidueRootSwitchExtractDraft.P_positive
+#print axioms DiophantineConsistency.ResidueRootSwitchExtractDraft.root_data
+#print axioms DiophantineConsistency.ResidueRootSwitchExtractDraft.positive_replacement
