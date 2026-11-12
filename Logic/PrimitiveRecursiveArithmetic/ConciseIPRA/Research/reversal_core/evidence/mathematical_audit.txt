@@ -1,0 +1,122 @@
+INDEPENDENT AUDIT OF UNIFORM ROOT REVERSAL
+Reviewer role: arithmetic_reduction. Pinned comparison: 1517d9d79ce33f631e0f82960c849427cbba23bf.
+
+Proposal audited
+----------------
+rho(s=t) := t=s; rho(Q B) := Q B; rho(D B) := D B.
+Replace native equation transport by
+  X: s=t, F(s) |- rho(F(t)), provided s is not the literal term 0.
+Replace QE by
+  QX: Q_y B(y), B(0) |- rho(B(t)).
+Keep Hyp, the two iterator equations, DE, DI-case, and direct QI-progress.
+X may be stated either for literal-equation templates or for all native
+formula templates. These variants have the same consequence relation.
+
+Verdict
+-------
+The proposed equivalence with the native core is correct. The equality
+recovery uses no induction, coverage, successor injectivity, substitution
+into a derivation, cut, or already-unrestricted equality rule. It works in
+every retained context. Care is needed to state the checker/theory relation
+accurately if X is formally restricted to equation templates.
+
+Detailed noncircular derivation
+------------------------------
+Put J(a) := I(0,a;u.0), and c := J(0). For every a, the computation axiom is
+J(a)=a, and J(a) is syntactically nonzero. In particular c=0 is an axiom
+with a permitted nonzero source.
+
+1. Root reversal. Given any equation A, apply X to c=0 and A using the
+constant equation template F(v):=A. Its conclusion is rho(A). For a Q or D
+formula, rho is the identity, so the same operation is unnecessary. Thus
+A |- rho(A) holds for every native formula, and rho is involutive.
+
+2. Reflexivity. Use the same computation axiom J(a)=a as both premises of
+X, with source J(a), target a, and F(v):=(v=a). The conclusion is rho(a=a),
+which is a=a. This uses one X application and the computation axiom twice
+as its two premises; no equality theorem is presupposed.
+
+3. Ordinary nonzero-source transport. Apply X, then the root-reversal
+lemma to undo its final rho. This recovers ordinary Tr wherever the major
+source is not literally 0. In the equation-only variant, this statement
+is initially only for equation templates, which suffices below.
+
+4. Join at zero. Suppose p and q are syntactically nonzero and p=0, q=0
+have been derived. Using source p, target 0, and F(v):=(J(v)=p), the minor
+F(p) is the computation axiom J(p)=p. X concludes rho(c=p), namely p=c.
+Similarly q=c. Root reversal gives c=q. Ordinary permitted transport along
+c=q in the equation p=c (template p=v) gives p=q, because c is nonzero.
+This derivation does not assume transitivity or unrestricted transport.
+
+5. Full transitivity. Given r=s and s=t, use ordinary permitted transport
+when s is nonzero. If s is literally 0: when r is literally 0, use the
+second premise; when t is literally 0, use the first premise. Otherwise
+r,t are nonzero, symmetry gives t=0 from 0=t, and the join-at-zero lemma
+gives r=t. These are external finite cases on syntax, not arithmetic cases.
+
+6. Full term congruence. For a term template a(v), if source s is nonzero,
+rewrite the right side of a(s)=a(s) using s=t. If s is literally 0 and t is
+nonzero, reverse the major to t=0, use the previous permitted-source case
+to derive a(t)=a(0), then reverse that equation. If both are 0, use
+reflexivity. Thus s=t entails a(s)=a(t) without any source restriction.
+
+7. Full equation transport. From s=t and a(s)=b(s), obtain the chain
+  a(t)=a(s), a(s)=b(s), b(s)=b(t)
+using congruence and symmetry, then use full transitivity twice. This is
+exactly the primitive trEq of the pinned native core.
+
+8. Ordinary QE. QX yields rho(B(t)); root reversal removes rho. The
+other primitive native rules were retained verbatim. Therefore every native
+derivation translates into a derivation of the proposal, in every context.
+
+9. Reverse interpretation. In the native core, derive X by ordinary
+transport followed by equation symmetry when the result is atomic (and
+do nothing at Q or D). For general-template X, use the already proved
+native full-template transport theorem. QX is native QE followed by the
+same root reversal. Hence every proposed derivation translates back.
+
+Consequences and boundaries
+---------------------------
+* Both theories use literally the same terms, formulas, and contexts.
+  Their consequence relations agree, rather than merely their theorems.
+  The native-to-iPRA bi-interpretation therefore transfers directly.
+* This is a pure equality observation. Only the wrapper equations J(a)=a
+  and syntactic nonzeroness of J(a) are needed for the new equality proof.
+* No direct substitution lemma for restricted-source derivations is used.
+  Once equivalence is established, substitution is admissible by transfer.
+* The case distinctions above inspect syntax. Do not describe p!=0 or c!=0
+  as numerical inequalities: c denotes numerical zero.
+* In the compact encoding with an equation represented by a two-element
+  list, Q by three identical copies, and D by a singleton list, Python
+  root list reversal implements rho exactly on well-formed formulas.
+  This observation alone does not establish total parsing or soundness on
+  malformed certificates; those require the checker's existing invariant.
+
+Equation-only X and uniform dispatch
+-----------------------------------
+Equation-only X is mathematically sufficient: every step of items 1--7
+uses an equation template. Together with QX, it recovers the current native
+kernel; then arbitrary-template X is admissible via native full transport
+and the two translations. Thus unrestricted-template X is a conservative
+extension with exactly the same derivable sequents.
+
+However, a single source-selected checker branch which accepts arbitrary
+native F at nonzero s literally implements general-template X. It does
+not perform the equation-template side-condition of the smaller primitive
+inventory. There are two honest descriptions:
+  (a) make general-template source-selected X/QX the displayed primitive
+      rule, and mention equation-only X as an equivalent subcalculus; or
+  (b) state equation-only X as the core, and explicitly say the checker uses
+      the proved admissible general-template rule.
+There is no loss of theorem-checker correctness under (b), but a claim that
+its instructions match the smaller primitive inventory one-for-one would
+be inaccurate. No additional type-test saving should be charged to an
+equation-only restriction that the actual checker does not enforce.
+
+Complexity qualification
+------------------------
+This audit verifies the mathematical derivation, not a numerical source-size
+claim. Root reversal generally adds a slice/index operation to the source;
+any overall measured reduction may also rely on independent representation
+or control-flow changes. Report whole-module counts, the matched ablation,
+and the separation of the arithmetic theorem from implementation composition.

@@ -1,0 +1,454 @@
+% New mathematical result: complementary introduction choices.
+% Requires amsmath/amssymb/amsthm and theorem, lemma, proposition environments.
+% The inherited arithmetic-to-iPRA bridge must be supplied separately.
+
+\section{Complementary introductions with one local assumption}
+\label{sec:choice-introduction}
+
+The old paired introduction retains both the zero instance and an
+induction instance when its matrix is an equation. Both together are
+unnecessary. A certificate may choose either one, provided the induction
+choice is restricted to a literal equation. This changes neither the
+formula language nor the meaning of a formula. The omitted combination
+is recovered by a short nested introduction--elimination construction.
+
+\subsection{Complete native syntax and rule inventory}
+
+The scalar numerical language is
+\[
+ t::=x\mid0\mid St\mid I(n,a;u.h).
+\]
+Only $h$ binds the state variable $u$; $n$ and $a$ do not.
+The update may contain fixed numerical parameters. The computation
+axioms in every retained context are
+\[
+ I(0,a;u.h)=a,\qquad
+ I(Sn,a;u.h)=h[I(n,a;u.h)/u].
+ \tag{I0, IS}\label{eq:choice-computations}
+\]
+The argument also applies unchanged to the full fixed-description PR
+language with its projection, composition, and recursion equations.
+No numerical variable ranges over function descriptions, and no uniform
+evaluator is postulated.
+
+Native formulas and reusable context clauses are
+\[
+ A::=(s=t)\mid\mathsf D_{x,y}A,\qquad
+ \langle A;y.B(y)\rangle,\quad y\notin\operatorname{FV}(A).
+\]
+Bound variables are renamed before capture-free substitution.
+The two variables $x,y$ in a paired formula are distinct.
+An ordinary assumption $F$ is the constant clause
+$\langle H;v.F\rangle$, where $v$ is absent from $F$ and $H$ is the
+fixed computation theorem $I(0,0;u.0)=0$. Thus ordinary hypothesis
+use is a clause Use preceded by this computation proof.
+
+There are computation axioms and exactly the following inference
+patterns:
+\[
+\frac{\Gamma\vdash A}{\Gamma\vdash B(t)}
+\quad\mathsf{Use}
+\quad(\langle A;y.B(y)\rangle\in\Gamma),
+\]
+\[
+\frac{\Gamma\vdash\mathsf D_{x,y}B(x,y)\qquad
+      \Gamma,\langle B(a,0);y.B(a,y)\rangle\vdash F}
+     {\Gamma\vdash F}
+\quad\mathsf{DE},
+\qquad
+\frac{\Gamma\vdash s=t\qquad\Gamma\vdash F(s)}
+     {\Gamma\vdash F(t)}
+\quad\mathsf{Tr},
+\]
+\[
+\frac{\Gamma,B(t,\eta_\varepsilon(z))\vdash B(t,Sz)}
+     {\Gamma\vdash\mathsf D_{x,y}B(x,y)}
+\quad\mathsf{DI}_{\varepsilon},
+\qquad
+\eta_0(z)=0,\quad\eta_1(z)=z.
+\tag{Choice DI}\label{eq:choice-di}
+\]
+Here $\varepsilon$ is a certificate choice in $\{0,1\}$, and
+$\varepsilon=1$ is permitted only when $B$ has a literal equation
+root. An equation beneath a binder is not a literal equation.
+Call $\varepsilon=0$ the \emph{case choice} and $\varepsilon=1$
+the \emph{progress choice}. Both retain exactly one ordinary
+formula assumption. Compound matrices have only the case choice.
+
+In DI the eigenparameter $z$ is fresh for $\Gamma$, the witness
+$t$, and every fixed parameter of $B$. In DE the eigenparameter
+$a$ is fresh for $\Gamma$, the conclusion $F$, and every fixed
+parameter of $B$. In transport, $F(v)$ is any fixed native
+formula template. Displayed local assumptions and clauses are
+discharged. There are no primitive reflexivity, coverage,
+separation, ordinary logical, or additional induction rules.
+
+We call this calculus $\mathcal C$. The original comparison
+calculus $\mathcal N$ has identical syntax, computation,
+Use, DE, and transport, but its introduction is
+\[
+\frac{\Gamma,B(t,0),[B(t,z)]_{\mathrm{at}}\vdash B(t,Sz)}
+     {\Gamma\vdash\mathsf D_{x,y}B(x,y)}.
+\tag{Old DI}\label{eq:choice-old-di}
+\]
+The bracket supplies $B(t,z)$ exactly at a literal equation.
+
+\subsection{Exact equivalence and the unused-witness construction}
+
+\begin{lemma}[Structural admissibility]
+\label{lem:choice-structural}
+Weakening, exchange, contraction, renaming, ordinary-assumption cut,
+and capture-free numerical substitution are admissible in $\mathcal C$.
+\end{lemma}
+\begin{proof}
+Induct on derivations. Rename local eigenparameters before inserting
+proofs or terms. Numerical substitution preserves a formula's root
+constructor, so an allowed progress choice remains allowed.
+The selected choice does not change under substitution or cut.
+For ordinary-assumption cut, replace each use of its constant clause
+by the supplied proof. Computation schemas are closed under
+capture-free numerical substitution. These facts verify every case.
+\end{proof}
+
+\begin{theorem}[Identity-language equivalence]
+\label{thm:choice-equivalence}
+For every retained clause context $\Gamma$ and native formula $F$,
+\[
+ \Gamma\vdash_{\mathcal C}F
+ \quad\Longleftrightarrow\quad
+ \Gamma\vdash_{\mathcal N}F.
+\]
+The transformations are effective on finite derivations and leave
+all numerical and formula syntax unchanged.
+\end{theorem}
+\begin{proof}
+Each new introduction is an instance of the old one after weakening
+by the omitted local assumption. For the case choice at an equation,
+add the induction instance. For the progress choice, add the zero
+instance. Compound case introduction is already the old rule.
+Thus every new derivation translates to an old one.
+
+For the reverse direction, transform an old derivation recursively.
+Only its atomic DI case needs a construction. Suppose its matrix is
+the equation $E(x,y)$ and its transformed premise is
+\[
+ \pi:\quad\Gamma,E(t,0),E(t,z)\vdash E(t,Sz).
+\]
+The outer new inference will be case DI with witness $t$. It is
+therefore enough to prove $E(t,Sz)$ under
+$\Gamma,E(t,0)$.
+
+Rename the eigenvariable in $\pi$ to a fresh $v$. Choose a new
+variable $u$ absent from $E(t,y)$ and all retained data. Under
+$\Gamma,E(t,0)$, progress DI with witness zero introduces
+\[
+             \mathsf D_{u,y}E(t,y)
+\]
+from exactly the renamed premise $\pi[v/z]$.
+The bound coordinate $u$ is deliberately unused.
+
+Apply DE to this paired formula. Because $u$ is unused, the opened
+clause is exactly
+\[
+               \langle E(t,0);y.E(t,y)\rangle;
+\]
+it contains no new existential witness. The retained ordinary
+assumption $E(t,0)$ supplies its antecedent. Use at $Sz$ gives
+$E(t,Sz)$, and DE closes. Finally the outer case DI introduces
+the original $\mathsf D_{x,y}E(x,y)$ with witness $t$.
+The original premise proof $\pi$ has been inserted once.
+
+An old compound introduction already is the new case choice.
+All other rule cases are unchanged. This completes the induction
+on the original derivation.
+\end{proof}
+
+The unused inner coordinate is essential. Introducing
+$\mathsf D_{x,y}E(x,y)$ internally and then eliminating it would
+give an arbitrary fresh witness, not necessarily the original
+$t$. The construction instead keeps $t$ as a fixed parameter
+of $E(t,y)$ and binds only the unused coordinate $u$.
+
+\begin{proposition}[Linear bound on inference nodes]
+\label{prop:choice-node-bound}
+Count each computation axiom, Use, DI, DE, and transport as one
+inference node, expanding ordinary-assumption use as a computation
+of $H$ followed by Use. If an old derivation has $N$ nodes and
+$r$ atomic DI nodes, the displayed transformation has exactly
+\[
+                   N+5r\leq 6N
+\]
+nodes.
+\end{proposition}
+\begin{proof}
+Each atomic old DI node is replaced by six nodes: outer case DI,
+inner progress DI, DE, Use of the opened clause, Use of the
+retained base assumption, and the computation of $H$ needed for
+that last ordinary-assumption use. Its old premise subtree
+occurs once. All other inference nodes are copied once.
+\end{proof}
+
+This counts inference-tree nodes. It is not a bound on serialized
+JSON bytes, formula sizes, checker runtime, or the number of
+consumed packet cells when hypothesis closure is implicit.
+In the formula-context Q/D presentation, the corresponding
+replacement has outer case DI, inner progress DI, DE, QE,
+and two Hyp nodes, giving the same six-node count.
+
+\subsection{Induction and numerical cases separate cleanly}
+
+\begin{lemma}[Contextual equation induction]
+\label{lem:choice-ei}
+The progress choice, DE, and Use derive
+\[
+\frac{\Gamma\vdash E(0)\qquad
+      \Gamma,E(z)\vdash E(Sz)}
+     {\Gamma\vdash E(t)}
+\tag{EI}\label{eq:choice-ei}
+\]
+for every equation $E$, with the usual freshness condition.
+\end{lemma}
+\begin{proof}
+Choose an unused witness coordinate $u$. Progress DI introduces
+$\mathsf D_{u,y}E(y)$ from the given step. DE opens the clause
+$\langle E(0);y.E(y)\rangle$. Supply its antecedent using the given
+base proof and use the clause at $t$. Close DE.
+\end{proof}
+
+\begin{lemma}[Cases, equality, and binder congruence]
+\label{lem:choice-preinduction}
+The case choice derives, for arbitrary native formulas,
+\[
+\frac{\Gamma\vdash F(0)\qquad\Gamma\vdash F(Sz)}
+     {\Gamma\vdash F(t)}
+\tag{NC}\label{eq:choice-nc}
+\]
+with the usual freshness condition. Equality reflexivity,
+symmetry, transitivity, numerical congruence, and uniform
+matrix interderivability under $\mathsf D$ are derivable
+without using the progress choice.
+\end{lemma}
+\begin{proof}
+For cases, use case DI with an unused witness coordinate and
+matrix $F(y)$, ignoring its retained base in the successor
+premise. DE opens $\langle F(0);y.F(y)\rangle$; the given zero
+proof and Use at $t$ finish.
+
+For reflexivity put $r=I(0,t;u.0)$. Use the computation equation
+$r=t$ as both transport premises with motive $v=t$ to obtain
+$t=t$. The usual explicit equality motives give symmetry,
+transitivity, and numerical congruence.
+
+For binder congruence, open the old paired formula at a fresh
+witness $a$ and introduce the new one by case DI at $a$.
+Convert its retained base to the old base, use the opened
+old clause at the successor, and convert back. Ordinary cut
+closes the construction, and the reverse conversion gives
+the converse. No induction is used.
+\end{proof}
+
+The primitive progress choice is still restricted to equations.
+Allowing it at arbitrary compound matrices would, by the
+argument for \eqref{eq:choice-ei}, supply induction for
+arbitrary formulas and change the intended theory.
+
+\subsection{The entire ordinary logical interface}
+\label{subsec:choice-logic}
+
+Here is a predecessor-free reconstruction of the ordinary logical
+operations. It makes explicit that the case choice supplies the
+logical interface independently of progress induction.
+
+Let $C(v,a,b):=I(v,a;u.b)$ with $u$ unused. Computation gives
+$C(0,a,b)=a$ and $C(Sv,a,b)=b$. Define the gate on fixed finite
+formula syntax by
+\[
+ G_v(s=t):=(C(v,0,s)=C(v,0,t)),\qquad
+ G_v(\mathsf D_{x,y}B):=\mathsf D_{x,y}G_vB,
+\]
+renaming bound variables away from the control. Equality,
+binder congruence, and external structural induction give
+\[
+ \vdash G_0A,\qquad G_{Sv}A\dashv\vdash A,\qquad
+ A\dashv\vdash\mathsf D_{u,y}G_yA
+ \quad(u,y\notin\operatorname{FV}(A)).
+\tag{Gate and padding}\label{eq:choice-gate}
+\]
+For padding, case DI proves the forward direction. DE, the
+zero-gate theorem, and Use at $1$ prove the reverse direction.
+
+Define a selector between two arbitrary formulas by
+\[
+ M_v(s=t,u=w):=(C(v,s,u)=C(v,t,w))
+\]
+and, with aligned fresh paired variables, by
+\[
+\begin{aligned}
+ M_v(\mathsf D_{x,y}A,\mathsf D_{x,y}B)
+   &:=\mathsf D_{x,y}M_v(A,B),\\
+ M_v(E,\mathsf D_{x,y}B)
+   &:=\mathsf D_{x,y}M_v(G_yE,B),\\
+ M_v(\mathsf D_{x,y}A,E)
+   &:=\mathsf D_{x,y}M_v(A,G_yE),
+\end{aligned}
+\]
+where $E$ is an equation. Every call decreases maximum input
+binder depth. Padding and congruence prove
+$M_0(A,B)\dashv\vdash A$ and
+$M_{Sv}(A,B)\dashv\vdash B$.
+
+Put $\delta(v)=C(v,1,0)$ and $p(z)=I(z,0;u.\delta(u))$.
+Only the fixed computations $p(1)=1$ and $p(2)=0$ are needed.
+The full logical macro inventory is
+\[
+\begin{aligned}
+ A\Rightarrow_*B&:=\mathsf D_{u,z}M_z(A,B),\\
+ A\wedge_*B&:=\mathsf D_{u,z}G_zM_{p(z)}(A,B),\\
+ \exists_*x\,A(x)&:=\mathsf D_{x,y}G_yA(x),\\
+ A\vee_*B&:=\exists_*x\,M_x(A,B),\\
+ \forall_*x\,A(x)&:=
+        A(0)\wedge_*\mathsf D_{u,z}G_zA(z),\\
+ \bot_*&:=(0=1).
+\end{aligned}
+\tag{Logical macros}\label{eq:choice-macros}
+\]
+Newly bound variables are fresh; $u$ is unused.
+
+Implication introduction obtains its assumption from the zero
+selector and supplies the consequent at successors, then uses
+case DI. Elimination opens its clause and uses it at $1$.
+Existential introduction uses its witness and the successor
+gate; elimination opens at a fresh witness, supplies the
+zero-gate theorem, and uses the clause at $1$.
+
+Disjunction introduction uses witnesses $0$ and $1$.
+For elimination, discharge the two branch proofs as
+$A\Rightarrow_*F$ and $B\Rightarrow_*F$. NC applied to
+$M_z(A,B)\Rightarrow_*F$ gives this implication at every
+control: the two endpoint cases follow from the branch
+implications. Existential elimination provides $M_a(A,B)$
+and the implication gives $F$.
+
+Given $A$ and $B$, selector endpoints and NC give $M_v(A,B)$
+at an arbitrary control. Substitute $v=p(Sz)$ and use the
+successor gate for conjunction introduction. For projections,
+open its zero-gated clause and specialize at $1$ and $2$;
+the two fixed computations give $B$ and $A$, respectively.
+
+These rules prove existential numerical coverage:
+\[
+     (x=0)\vee_*\exists_*v\,(x=Sv).
+\tag{Coverage}\label{eq:choice-coverage}
+\]
+Use NC. Zero takes the left injection of reflexivity, and a
+successor takes the right injection with the evident witness.
+Coverage gives equality cases even when the retained context
+contains $x$; its elimination adds $x=0$ or $x=Sv$ rather
+than silently changing that retained context.
+
+Universal introduction follows from a fresh-parameter proof
+by substituting zero and successors and forming the two
+conjuncts. For elimination, take its $A(0)$ conjunct and
+open the paired conjunct. Its base is a zero-gate theorem.
+Coverage of the target chooses the zero instance from
+$A(0)$ or a successor instance from the opened clause
+and gate removal.
+
+Finally, under $0=1$, computation and transport give
+$s=C(0,s,t)=C(1,s,t)=t$ for arbitrary numerical terms.
+Every equation follows, and external induction on formula
+syntax with case DI gives every native formula. This
+supplies falsity elimination. No excluded middle for
+quantified formulas has entered the construction.
+
+\subsection{Whole-domain realizations and both formula composites}
+
+For a standard first-order reading, let $T_{\rm eq}$ have
+intuitionistic equality logic, the same numerical signature
+and computation equations, numerical coverage, separation
+$(0=1)\to\bot$, and contextual equation induction.
+Its interpretation of the native syntax is
+\[
+ (s=t)^\circ=(s=t),\qquad
+ (\mathsf D_{x,y}B)^\circ
+   =\exists x\bigl(B^\circ(x,0)\to\forall y B^\circ(x,y)\bigr),
+\]
+\[
+ \langle A;y.B\rangle^\circ
+       =A^\circ\to\forall y B^\circ.
+\]
+The domain is the entire numerical domain and interpreted
+equality is actual equality.
+
+Case DI is sound in this realization by numerical coverage.
+Progress DI is sound by contextual equation induction under
+the conditional base. Use, DE, transport, and computation
+have their displayed ordinary meanings. Conversely, the
+native macros derive every ordinary logical rule,
+\eqref{eq:choice-ei} derives equation induction, and
+\eqref{eq:choice-coverage} derives coverage. Separation
+translates to the identity implication
+$(0=1)\Rightarrow_*(0=1)$.
+
+For the essential paired formula composite,
+\[
+ \mathsf D_{x,y}B
+ \dashv\vdash
+ \exists_*x\bigl(B(x,0)\Rightarrow_*\forall_*y\,B(x,y)\bigr).
+\tag{Paired composite}\label{eq:choice-paired-composite}
+\]
+Forwards, DE opens its clause at a fresh $a$; under $B(a,0)$
+that clause supplies $B(a,y)$ at a fresh arbitrary $y$.
+Introduce the universal, implication, and existential
+macros and close DE. Backwards, eliminate the existential
+at a fresh $a$. Introduce the paired formula with witness
+$a$ by case DI: the retained base, supplied implication,
+and universal elimination at $Sz$ give its successor premise.
+
+The ordinary interpretations of the six logical macros
+have their ordinary round trips. For conjunction, its true
+base and the instances $1,2$ recover both operands;
+the converse uses selector cases. The universal has all
+successor instances in its paired conjunct and zero in
+its first conjunct; coverage gives exactly the ordinary
+universal. Implication, disjunction, and existential
+quantification use their selector or gate endpoints.
+Falsity uses the explicit ordinary separation bridge.
+External induction on finite formulas, together with
+\eqref{eq:choice-paired-composite}, gives both formula
+composites. Clauses correspond in both directions to
+$A\Rightarrow_*\forall_*yB$ by the derived logical rules.
+
+The numerical composites are literal identities with
+internally provable graph $x=y$. No standard-numeral
+restriction, retract, quotient, or equality reflection
+assumption is being inserted at this stage. The separately
+supplied arithmetic bridge identifies $T_{\rm eq}$ with
+full iPRA; the present change preserves that bridge
+unchanged because Theorem~\ref{thm:choice-equivalence}
+preserves every native sequent.
+
+\subsection{What the theorem does and does not claim}
+
+The new inference interface retains one ordinary assumption
+at every paired introduction. It preserves the entire
+consequence relation, not just equations or closed
+theorems. Consequently the established full-iPRA
+interpretations and equiconsistency transfer unchanged.
+
+This result is different from retaining only progress
+introduction and strengthening closure elimination.
+Here the original elimination rule is retained, and
+the case and progress introductions coexist. It is also
+different from allowing arbitrary compound progress,
+which would supply stronger induction.
+
+A complete-checker comparison must still count the
+certificate choice, its equation-root restriction,
+substitution, context handling, computation, and the
+public input/output interface. The mathematical theorem
+alone is not a byte-count or minimality theorem.
+The inference-node bound is distinct from source-size
+measurements and from serialized certificate size.
+The proof is a written universal proof; finite regression
+tests do not constitute a Lean/Rocq formalization of it.

@@ -1,0 +1,217 @@
+\section{Whole-program measurements and matched controls}
+\label{sec:measurements}
+
+The measurements use CPython 3.12.14, matching the pinned repository's
+convention. Remove genuine docstrings, apply \code{ast.unparse}, and add
+one final newline. Count significant tokens, AST nodes, and UTF-8 bytes
+of that entire normalized module. Standard-library JSON and the Python
+runtime are common infrastructure; input checks, proof rules, freshness,
+substitution, and the verdict driver are all included. Gzip uses maximum
+compression, level 9, with \code{mtime=0} and no embedded filename. Its
+size is reported for information and was not the optimization objective.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Complete program & Tokens & AST & Bytes & Gzip-9\\
+\midrule
+Old control, full typed contract & 532 & 618 & 1365 & 614\\
+Shared parser and neutral zero, no REV & 450 & 514 & 1049 & 540\\
+\textbf{Recommended typed REV} & \textbf{456} & \textbf{520} & \textbf{1055} & \textbf{545}\\
+\midrule
+Frozen old Eq/$D$ goal validator & 450 & 521 & 1109 & 538\\
+Shared Eq/$D$ goal validator, no REV & 373 & 426 & 824 & 460\\
+REV with Eq/$D$ goal validator & 379 & 432 & 830 & 466\\
+Old full-goal control & 481 & 560 & 1189 & 554\\
+Shared full-goal control, no REV & 399 & 456 & 873 & 477\\
+REV with full-goal validator & 405 & 462 & 879 & 482\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The full-goal and full-typed old controls are newly constructed comparison
+derivatives: they extend the frozen separate parser to canonical $Q$
+triples and, for the typed control, add the same exact integer/list
+predicate. They are not misrepresented as upstream files. The frozen
+Eq/$D$ control and three source-dispatch controls are checked against
+their upstream Git blob identifiers.
+
+The recommended checker is 310 normalized bytes smaller than its
+matched control, a reduction of approximately $22.71\%$. The
+same-refactor control is six bytes smaller than the REV checker:
+reversal is not responsible for the source-size gain. The Eq/$D$
+comparison against an unchanged upstream whole program is also given
+so that the conclusion does not depend solely on a newly extended
+control.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Compact protocol, no public-goal validator & Tokens & AST & Bytes & Gzip-9\\
+\midrule
+Frozen byte profile & 266 & 305 & 526 & 330\\
+Neutral-zero byte profile & 265 & 304 & \textbf{525} & 329\\
+Frozen AST profile & 263 & 283 & 607 & 348\\
+Neutral-zero AST profile & 262 & \textbf{282} & 606 & 348\\
+Frozen token profile & \textbf{259} & 289 & 572 & 339\\
+REV compact, neutral zero & 271 & 310 & 531 & 334\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The compact byte and AST improvements are one-coordinate changes to
+existing profiles. They do not turn the two records into one program,
+and they do not improve the token record. The 1,055-byte typed checker
+and 525-byte compact checker have different input contracts and must
+not be compared as if they did the same validation. The unreversed
+compact checkers prove exactly the same native sequents as $\Rcal$
+through the proved equivalence, but their instruction certificates use
+the older elimination orientation.
+
+\section{Executable evidence and verification limits}
+\label{sec:validation}
+
+The supplied finite validation covers actual derivations, public-goal
+validation, and the administrative boundary. It is separate from the
+universal written proofs.
+\begin{itemize}
+\item \textbf{REV certificates:} 36 cases, 362 process expectations across
+  five profiles, ordinary Python and \texttt{python -O}, and a matched
+  non-REV orientation control; zero mismatches.
+\item \textbf{Readable checker:} another 72 process expectations on the
+  same cases; zero mismatches. For the recommended typed interface each
+  execution mode has 16 accepts and 20 rejects.
+\item \textbf{Neutral premise:} 40 comparisons against frozen old
+  certificates and checkers, in ordinary and optimized Python; zero
+  mismatches.
+\item \textbf{Validator equivalence:} 260,500 comparisons over generated
+  canonical trees, malformed values, and five scope sizes; zero
+  mismatches. The mathematical justification is the structural induction
+  in Proposition~\ref{prop:validator}, not the sample count.
+\end{itemize}
+
+Positive certificates exercise the new reflexivity and constant-template
+reversal, literal-zero-source symmetry, joining at zero, congruence
+through nested iterator binders, unrestricted equation transport, QX
+specialization, nested $Q$ cases, a nonvacuous $D$ witness, contextual
+equation induction, and transport under both native binders. Negative
+controls include a false goal, an unproved major, a removed induction
+hypothesis, forbidden compound progress, unallocated witnesses and
+specialization targets, free labels in closed goals, and malformed
+public syntax. The exact REV orientation fixture is rejected by the
+matched unreversed checker, so the test suite distinguishes the new
+rule rather than exercising only common code paths.
+
+\subsection{A concrete proof-size improvement}
+
+The frozen \code{zero_symmetry_one_local.json} and the new
+\code{conditional_zero_symmetry.json} have exactly the same raw closed
+goal. Their compact certificate sizes are:
+\begin{center}\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Certificate & Instruction packets & Compact JSON bytes\\
+\midrule
+Old zero-source normalization & 114 & 5435\\
+REV construction & 37 & 1259\\
+\bottomrule
+\end{tabular}
+\end{center}
+This comparison demonstrates the practical effect of the elementary
+reversal proof for one theorem. It is not a general proof-length bound
+or a proof-checker-size measurement.
+
+The mathematical proof uses $c=I(0,0;u.0)$ as its anchor. The packet
+producer first uses $c_*=I(2,1;u.0)$, whose zero value follows from one
+permitted successor packet with a nonzero initializer and predecessor.
+It can then normalize computation leaves having a literal-zero
+initializer or successor predecessor by replacing those positions with
+$c_*$ and transporting along $c_*=0$. This prevents a circular call to
+the very zero-initializer computation being normalized. This packet
+normalization is inherited in method; the new equality derivations and
+orientation compiler are explicit in \code{tests/rev_producer.py}.
+
+\subsection{What has and has not been formally checked}
+
+The pinned repository contains a Lean formalization of the inherited
+kernel and its iPRA bi-interpretation. Its README reports successful
+builds without placeholders~\cite{baseline,leanbridge}. The new
+\code{formalization/Reversal.lean} is a proposed deeply embedded
+extension using those exact source names. It contains proof bodies,
+no added axioms, and no proof placeholders, but neither Lean nor Lake
+was available in the authoring environment. It has not been compiled
+and is not presented as machine verification. Its status is independent
+of the completed Python executions and of the written theorem.
+
+No external human peer review is claimed. The report establishes the
+new mathematical result in writing relative to the pinned native
+theory, includes the inherited bridge for inspection, and supplies
+reproducible implementation evidence. It does not claim a new lower
+bound on all possible proof checkers.
+
+\section{An obstruction and a precise upstream wording correction}
+\label{sec:limits}
+
+One tempting deletion does not work: keep QI-progress for equations
+but permit DI-case only at compound matrices, leaving the formula
+grammar unchanged. This loses even $D_{x,y}(0=0)$.
+
+To see this, interpret terms in standard $\mathbb N$, equations as
+actual equality, and $Q$ by its ordinary reading. Interpret $D_{x,y}B$
+as false when $B$ is literally an equation, and by its ordinary
+existential conditional-closure reading otherwise. Numerical
+substitution preserves the equation/compound distinction. Computation,
+transport, hypotheses, QE, and equation progress are sound. DE is
+vacuous at an atomic matrix and ordinary existential elimination
+otherwise; the remaining DI-case instances are sound by coverage.
+But $D_{x,y}(0=0)$ is false in this interpretation, although it is
+provable in the original calculus. Thus that rule deletion cannot
+replace the new construction. It would require a changed grammar or
+an additional generating principle, as the existing guarded proposals
+already recognize~\cite{guarded}.
+
+A separate wording correction concerns the upstream restricted-source
+calculus \code{ZPrf}. Substituting literal zero for a variable source
+does not preserve a primitive restricted rule instance. Nevertheless
+substitution is \emph{admissible} in its consequence relation, because
+\code{zprf_iff_nprf} translates to the unrestricted kernel, where
+substitution is admissible, and back. The failed property is direct
+rule-by-rule preservation, not admissibility. This distinction does not
+invalidate the existing equivalence theorem and is not used to shortcut
+the new equality proof.
+
+\section{Package and reproduction}
+
+The archive is self-contained for the Python checks and report source.
+The main \code{ipra_reversal_core.tex} embeds all sections and appendices.
+To compile the Lean draft, copy it into the pinned repository's configured
+Lean/Mathlib workspace; the included source snapshot does not replace
+that dependency environment.
+
+From the archive directory:
+\begin{lstlisting}[language=bash]
+python3 reproduce.py
+python3 reproduce.py --pdf
+python3 code/checker_rev_typed.py < tests/certificates/zero_neutral/conditional_zero_symmetry.json
+\end{lstlisting}
+The first command reproduces whole-program measurements and all
+REV/readable and neutral-marker checks. The second also runs
+\code{pdflatex} three times. The optional parser audit is
+\texttt{python3 tools/audit\_validators.py}. Each checker is standalone and
+imports only the standard library.
+
+\clearpage
+\appendix
+\section{Attribution and reading the inherited appendices}
+
+The following five mathematical sections are reproduced from the
+pinned \code{certified_zero/reference/} sources under the repository's
+MIT No Attribution license. Their historical statements such as
+``the new rule'' or ``this paper'' refer to their original source.
+They document the inherited Choice-DI interface and arithmetic bridge;
+the present contribution is the equivalence in
+Section~\ref{rev:section} and the implementation changes in
+Section~\ref{sec:checker}. The correspondence between their witnessed
+progress and the present direct-closure presentation is proved in
+Section~\ref{sec:progress-packet}. No inherited proof is being claimed
+as a new result of this report.

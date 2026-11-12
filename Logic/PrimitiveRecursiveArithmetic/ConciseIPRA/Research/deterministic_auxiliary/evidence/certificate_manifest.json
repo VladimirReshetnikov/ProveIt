@@ -1,0 +1,400 @@
+[
+  {
+    "name": "computation_zero",
+    "canonical_goal": true,
+    "description": "",
+    "audit": {
+      "nodes": 1,
+      "zero_source_transport": 0,
+      "atomic_case_introductions": 0,
+      "compound_progress": 0,
+      "unguarded_atomic_progress": 0,
+      "rules": {
+        "Computation": 1
+      }
+    },
+    "packets": {
+      "local": {
+        "file": "computation_zero_local.json",
+        "instructions": 1,
+        "bytes": 41
+      },
+      "global": {
+        "file": "computation_zero_global.json",
+        "instructions": 1,
+        "bytes": 43
+      }
+    }
+  },
+  {
+    "name": "computation_successor",
+    "canonical_goal": true,
+    "description": "",
+    "audit": {
+      "nodes": 1,
+      "zero_source_transport": 0,
+      "atomic_case_introductions": 0,
+      "compound_progress": 0,
+      "unguarded_atomic_progress": 0,
+      "rules": {
+        "Computation": 1
+      }
+    },
+    "packets": {
+      "local": {
+        "file": "computation_successor_local.json",
+        "instructions": 1,
+        "bytes": 53
+      },
+      "global": {
+        "file": "computation_successor_global.json",
+        "instructions": 1,
+        "bytes": 55
+      }
+    }
+  },
+  {
+    "name": "transport_reflexivity",
+    "canonical_goal": true,
+    "description": "",
+    "audit": {
+      "nodes": 2,
+      "zero_source_transport": 0,
+      "atomic_case_introductions": 0,
+      "compound_progress": 0,
+      "unguarded_atomic_progress": 0,
+      "rules": {
+        "Tr": 1,
+        "Computation": 1
+      }
+    },
+    "packets": {
+      "local": {
+        "file": "transport_reflexivity_local.json",
+        "instructions": 3,
+        "bytes": 96
+      },
+      "global": {
+        "file": "transport_reflexivity_global.json",
+        "instructions": 3,
+        "bytes": 100
+      }
+    }
+  },
+  {
+    "name": "guarded_literal_equation_introduction",
+    "canonical_goal": true,
+    "description": "",
+    "audit": {
+      "nodes": 13,
+      "zero_source_transport": 0,
+      "atomic_case_introductions": 0,
+      "compound_progress": 0,
+      "unguarded_atomic_progress": 0,
+      "rules": {
+        "DI": 1,
+        "Tr": 6,
+        "Computation": 6
+      }
+    },
+    "packets": {
+      "local": {
+        "file": "guarded_literal_equation_introduction_local.json",
+        "instructions": 14,
+        "bytes": 611
+      },
+      "global": {
+        "file": "guarded_literal_equation_introduction_global.json",
+        "instructions": 14,
+        "bytes": 624
+      }
+    }
+  },
+  {
+    "name": "guarded_lift_elimination",
+    "canonical_goal": true,
+    "description": "",
+    "audit": {
+      "nodes": 277,
+      "zero_source_transport": 0,
+      "atomic_case_introductions": 0,
+      "compound_progress": 0,
+      "unguarded_atomic_progress": 4,
+      "rules": {
+        "DE": 5,
+        "DI": 5,
+        "Tr": 146,
+        "Computation": 110,
+        "QE": 5,
+        "Hyp": 6
+      }
+    },
+    "packets": {
+      "local": {
+        "file": "guarded_lift_elimination_local.json",
+        "instructions": 312,
+        "bytes": 18363
+      },
+      "global": {
+        "file": "guarded_lift_elimination_global.json",
+        "instructions": 312,
+        "bytes": 18880
+      }
+    }
+  },
+  {
+    "name": "compound_case_introduction",
+    "canonical_goal": true,
+    "description": "",
+    "audit": {
+      "nodes": 292,
+      "zero_source_transport": 0,
+      "atomic_case_introductions": 0,
+      "compound_progress": 0,
+      "unguarded_atomic_progress": 4,
+      "rules": {
+        "DI": 6,
+        "Tr": 154,
+        "Computation": 115,
+        "DE": 5,
+        "Hyp": 7,
+        "QE": 5
+      }
+    },
+    "packets": {
+      "local": {
+        "file": "compound_case_introduction_local.json",
+        "instructions": 328,
+        "bytes": 21504
+      },
+      "global": {
+        "file": "compound_case_introduction_global.json",
+        "instructions": 328,
+        "bytes": 21893
+      }
+    }
+  },
+  {
+    "name": "compound_implication_elimination",
+    "canonical_goal": true,
+    "description": "",
+    "audit": {
+      "nodes": 591,
+      "zero_source_transport": 0,
+      "atomic_case_introductions": 0,
+      "compound_progress": 0,
+      "unguarded_atomic_progress": 8,
+      "rules": {
+        "DE": 11,
+        "DI": 11,
+        "Tr": 311,
+        "Computation": 233,
+        "Hyp": 14,
+        "QE": 11
+      }
+    },
+    "packets": {
+      "local": {
+        "file": "compound_implication_elimination_local.json",
+        "instructions": 664,
+        "bytes": 43602
+      },
+      "global": {
+        "file": "compound_implication_elimination_global.json",
+        "instructions": 664,
+        "bytes": 44686
+      }
+    }
+  },
+  {
+    "name": "guarded_induction_with_used_hypothesis",
+    "canonical_goal": true,
+    "description": "Guarded DI derives a lifted identity-iterator invariant. Its step uses the guarded IH via compound numerical cases and implication macros.",
+    "audit": {
+      "nodes": 1369,
+      "zero_source_transport": 0,
+      "atomic_case_introductions": 0,
+      "compound_progress": 0,
+      "unguarded_atomic_progress": 20,
+      "rules": {
+        "DI": 27,
+        "Tr": 724,
+        "Computation": 539,
+        "QE": 24,
+        "DE": 24,
+        "Hyp": 31
+      }
+    },
+    "packets": {
+      "local": {
+        "file": "guarded_induction_with_used_hypothesis_local.json",
+        "instructions": 1541,
+        "bytes": 101045
+      },
+      "global": {
+        "file": "guarded_induction_with_used_hypothesis_global.json",
+        "instructions": 1541,
+        "bytes": 105819
+      }
+    }
+  },
+  {
+    "name": "unguarded_progressive_alias",
+    "canonical_goal": false,
+    "description": "The final Q theorem is an administrative closure, outside the canonical object grammar; its proof contains an unguarded atomic D used with the H interpretation, and the step uses the literal equation IH.",
+    "audit": {
+      "nodes": 8,
+      "zero_source_transport": 0,
+      "atomic_case_introductions": 0,
+      "compound_progress": 0,
+      "unguarded_atomic_progress": 1,
+      "rules": {
+        "DE": 1,
+        "DI": 1,
+        "Tr": 2,
+        "Hyp": 2,
+        "Computation": 2
+      }
+    },
+    "packets": {
+      "local": {
+        "file": "unguarded_progressive_alias_local.json",
+        "instructions": 6,
+        "bytes": 211
+      },
+      "global": {
+        "file": "unguarded_progressive_alias_global.json",
+        "instructions": 6,
+        "bytes": 214
+      }
+    }
+  },
+  {
+    "name": "zero_symmetry_one",
+    "canonical_goal": true,
+    "description": "Canonical implication encoding 0=t implies t=0. The primitive proof uses an unguarded auxiliary induction invariant, but no primitive transport source is literal zero.",
+    "audit": {
+      "nodes": 782,
+      "zero_source_transport": 0,
+      "atomic_case_introductions": 0,
+      "compound_progress": 0,
+      "unguarded_atomic_progress": 12,
+      "rules": {
+        "DI": 14,
+        "Tr": 398,
+        "Computation": 327,
+        "QE": 13,
+        "DE": 13,
+        "Hyp": 17
+      }
+    },
+    "packets": {
+      "local": {
+        "file": "zero_symmetry_one_local.json",
+        "instructions": 846,
+        "bytes": 50449
+      },
+      "global": {
+        "file": "zero_symmetry_one_global.json",
+        "instructions": 846,
+        "bytes": 52006
+      }
+    }
+  },
+  {
+    "name": "zero_symmetry_computable_zero",
+    "canonical_goal": true,
+    "description": "Canonical implication encoding 0=t implies t=0. The primitive proof uses an unguarded auxiliary induction invariant, but no primitive transport source is literal zero.",
+    "audit": {
+      "nodes": 782,
+      "zero_source_transport": 0,
+      "atomic_case_introductions": 0,
+      "compound_progress": 0,
+      "unguarded_atomic_progress": 12,
+      "rules": {
+        "DI": 14,
+        "Tr": 398,
+        "Computation": 327,
+        "QE": 13,
+        "DE": 13,
+        "Hyp": 17
+      }
+    },
+    "packets": {
+      "local": {
+        "file": "zero_symmetry_computable_zero_local.json",
+        "instructions": 846,
+        "bytes": 55609
+      },
+      "global": {
+        "file": "zero_symmetry_computable_zero_global.json",
+        "instructions": 846,
+        "bytes": 57166
+      }
+    }
+  },
+  {
+    "name": "zero_symmetry_all_numbers",
+    "canonical_goal": true,
+    "description": "D with an unused witness and matrix (0=y implies y=0). Its zero matrix is independently provable, so its ordinary reading gives the universal zero-symmetry statement. The step keeps an arbitrary successor parameter fixed during auxiliary equation induction.",
+    "audit": {
+      "nodes": 783,
+      "zero_source_transport": 0,
+      "atomic_case_introductions": 0,
+      "compound_progress": 0,
+      "unguarded_atomic_progress": 12,
+      "rules": {
+        "DI": 15,
+        "Tr": 398,
+        "Computation": 327,
+        "QE": 13,
+        "DE": 13,
+        "Hyp": 17
+      }
+    },
+    "packets": {
+      "local": {
+        "file": "zero_symmetry_all_numbers_local.json",
+        "instructions": 847,
+        "bytes": 50975
+      },
+      "global": {
+        "file": "zero_symmetry_all_numbers_global.json",
+        "instructions": 847,
+        "bytes": 52531
+      }
+    }
+  },
+  {
+    "name": "derived_zero_source_equational_transport",
+    "canonical_goal": true,
+    "description": "A literal-zero primitive transport in the input proof is eliminated by the untrusted normalizer; the standalone kernel checks its expansion.",
+    "audit": {
+      "nodes": 460,
+      "zero_source_transport": 0,
+      "atomic_case_introductions": 0,
+      "compound_progress": 0,
+      "unguarded_atomic_progress": 8,
+      "rules": {
+        "Tr": 245,
+        "Computation": 181,
+        "QE": 8,
+        "DE": 8,
+        "DI": 8,
+        "Hyp": 10
+      }
+    },
+    "packets": {
+      "local": {
+        "file": "derived_zero_source_equational_transport_local.json",
+        "instructions": 521,
+        "bytes": 30328
+      },
+      "global": {
+        "file": "derived_zero_source_equational_transport_global.json",
+        "instructions": 521,
+        "bytes": 31402
+      }
+    }
+  }
+]

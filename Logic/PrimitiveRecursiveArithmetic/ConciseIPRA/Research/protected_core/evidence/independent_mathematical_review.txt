@@ -1,0 +1,233 @@
+INDEPENDENT REVIEW: PROTECTED ATOMS, GUARDED INTRODUCTION, AND SOURCE DISPATCH
+Reviewer: arithmetic_reduction subagent
+Comparison snapshot: 1517d9d79ce33f631e0f82960c849427cbba23bf
+
+STATUS
+The composition is mathematically viable with a protected PUBLIC formula
+language. It should not be claimed to preserve the consequence relation of
+all unprotected administrative formulas. In particular, do not try to apply
+the old zero-source admissibility theorem after changing the introduction
+rules: its equation-induction premise would create a circular bootstrap.
+
+1. USE A STABLE-SOURCE SUBCALCULUS FIRST
+
+Let H have the scalar numerical terms 0,S,I, both computation equations,
+the retained-clause / D elimination rules, and deterministic introduction:
+progress for literal equation matrices, cases for compound matrices. In H,
+allow primitive transport only when the major equation's LEFT term has an
+outer I constructor. Its right term is unrestricted. The formula template
+may be an administrative equation or a canonical formula.
+
+The larger raw checker may allow every source other than literal zero.
+For completeness, work only inside H. Numerical substitution is admissible
+in H by ordinary induction on derivations: an I-headed source remains
+I-headed after substitution. This fact is essential when the guarded EI
+construction specializes a supplied step derivation at 0 or at S(w).
+
+It is NOT sufficient merely to say that final equations are protected:
+an arbitrary raw proof could still contain a variable transport source,
+and substitution could turn that internal source into literal zero.
+H avoids this problem rather than assuming it away.
+
+2. PUBLIC GRAMMAR
+
+A protected equation has an I constructor on EACH side. This restriction
+is stable under numerical substitution. A public formula is either:
+  (a) a protected equation;
+  (b) D_{x,y} B, where B is a compound public formula;
+  (c) D_{x,y} B, where B is the protected equation
+      I(y,0;u.h) = I(y,0;u.k).
+The updates h,k may contain x,y and passive parameters. They need not be
+state-independent. Canonical clauses have public antecedents/consequents.
+
+Define W(t)=I(0,t;u.0). Every W(t) is I-headed. The public contradiction
+is W(0)=W(S0). It has the intended ordinary reading of 0=S0.
+
+Unprotected equations may occur as arithmetic bookkeeping judgments,
+notably the primitive computations I(0,a;h)=a. Their presence is not a
+new interpreted numerical sort. All such equations have their ordinary
+equality meaning; the public language is a restriction on statements.
+
+3. SAFE EQUALITY LEMMAS
+
+Reflexivity r=r is available even for unprotected r. Let b=W(r). The
+computation b=r used as both transport premises in the motive v=r gives
+r=r. The transport source is b, hence I-headed.
+
+For p=q with p I-headed, symmetry follows by transporting p=p in v=p;
+the result is q=p. Congruence K(p)=K(q) follows by transporting the
+reflexivity K(p)=K(p) in K(p)=K(v). These uses only require p I-headed.
+Transitivity of a=b and b=c is available whenever b is I-headed.
+Consequently full equality algebra is available between protected terms.
+
+ZERO JOIN is also available without a zero-source transport. If p,q are
+I-headed and p=0,q=0, put z=W(0), b_p=W(p). Computation gives b_p=p.
+Start with b_p=b_p and transport p=0 in W(v)=b_p, obtaining z=b_p.
+Reverse at z, then transport b_p=p to obtain p=z. Similarly q=z.
+Reverse the latter at q and compose through z to get p=q. Every source
+is one of p,q,z,b_p,b_q and hence I-headed.
+
+4. GUARDED ENDPOINTS AND PADDING
+
+For a protected equation E=(s=t), define
+  G_v(E) := C(v,0,s)=C(v,0,t), C(v,a,b)=I(v,a;u.b).
+The zero instance G_0(E) follows from two zero computations by zero join.
+At a successor, both endpoint computations have I-headed sources AND
+I-headed targets s,t. Thus both directions of the computation may safely
+be used as transport majors. This gives G_{Sz}(E) interderivable with E.
+
+Define L(E)=D_{u,v}G_v(E), with fresh u,v, and P(A)=L(A) for an equation,
+P(A)=A for a compound formula. From E, atomic progress introduces L(E)
+because G_{Sz}(E) follows independently of the local G_z(E). Conversely,
+DE opens G_0(E) => all v G_v(E), the zero theorem supplies its antecedent,
+and its instance at 1 gives E. No equation induction and no zero-source
+symmetry is used.
+
+For protected U=(s=t),V=(r=q), let
+  M_w(U,V) := C(w,s,r)=C(w,t,q),
+  U =>g V := D_{a,w} L(M_w(U,V)).
+All M_w endpoints are I-headed; at w=0 and w=S(z) they are safely
+interderivable with U and V respectively. Compound case introduction and
+DE therefore give both implication rules for =>g. Again no EI is used.
+
+5. NUMERICAL CASES AND PROTECTED EQUATION INDUCTION
+
+Numerical cases for compound A follows from case DI with an unused witness,
+DE, and clause use with the supplied base. Cases for protected E follows
+by applying compound cases to L(E) and padding/unpadding its endpoints.
+
+For protected E(y), suppose Gamma proves E(0), and a supplied H derivation
+proves E(Sz) from Gamma,E(z), with z fresh for Gamma. Put J(y)=G_y(E(y)).
+Prove the compound formula Phi(y) := J(y) =>g E(Sy) by numerical cases.
+At y=0, ignore J(0), apply the supplied step specialized at 0 to E(0).
+At y=Sw, use J(Sw)->E(Sw) and the supplied step specialized at Sw.
+These specializations are legal because H has stable I-headed sources.
+Cases gives Phi(z) under Gamma. From local J(z), implication elimination
+therefore gives E(Sz), then J(Sz). Atomic progress introduces D_{u,y}J(y).
+Its true base yields E(Sw) for every fresh w. Numerical cases, together
+with the originally supplied E(0), then yields E(t) for arbitrary t.
+
+The dependency order is acyclic:
+  computation + I-source transport
+  -> safe equality and zero join
+  -> guard endpoints, padding, equation implication
+  -> numerical cases
+  -> protected EI.
+Nothing in this list uses unrestricted zero-source symmetry.
+
+6. TRANSLATION OF UNRESTRICTED EQUALITY
+
+Translate an old atom s=t to W(s)=W(t). The translation of an old computation
+U=V is derivable: U is I-headed, so its primitive equation can be used for
+congruence with K=W, yielding W(U)=W(V).
+
+Given W(s)=W(t), one can derive W(K(s))=W(K(t)) for any numerical template K:
+let Khat(v)=W(K(v)). The computations W(s)=s and W(t)=t give
+  Khat(W(s))=Khat(s), Khat(W(t))=Khat(t)
+by safe congruence. The given equation gives
+  Khat(W(s))=Khat(W(t)).
+All displayed endpoints are I-headed, so reverse/compose to obtain the
+claim. Apply this to both sides of an old equational transport motive and
+join with the translated minor premise. This translates unrestricted
+equational transport without deriving or using transport from literal 0.
+
+For full formula transport, derive expansion/contraction
+  F(W(s)) <-> F(s)
+for every protected public template F. At atoms use the same safe links
+between I-headed endpoints. At D use the binder-congruence construction
+below. Now use the I-headed major W(s)=W(t) between F(W(s)),F(W(t)).
+
+7. BINDER CONGRUENCE AND ROUND TRIPS
+
+Suppose public matrices B,C are uniformly interderivable, with all
+substitutions and side contexts permitted. To convert D B to D C, open
+the source at fresh witness a.
+  * If target C is compound, introduce it by cases: convert local C(a,0)
+    back to B(a,0), use the source clause at Sz, then convert the result.
+  * If target C is a canonical guarded atom, its base C(a,0) is a theorem.
+    Convert that theorem to B(a,0), use the source clause at Sz, convert
+    to C(a,Sz), and introduce by progress, ignoring local C(a,z).
+This works in either direction and even when one matrix is compound and
+the other is a guarded atom. It requires no EI.
+
+The old D-only/clause calculus translates by
+  T(s=t)=W(s)=W(t),
+  T(D B)=D P(TB).
+Clauses translate their antecedent and consequent. Case DI translates
+using padding. Equation-progress DI translates using protected EI under
+the padded base, followed by compound case DI. DE translates by replacing
+each use of its old clause with pad/use/unpad. A first-class old Q B can
+instead translate to D_{dummy,y}P(TB), using a dummy witness.
+
+For the reverse inclusion, use the existing ordinary meanings and original
+native rules; protected public formulas are legitimate old formulas.
+The old composite is equivalent to identity by ordinary equality and
+padding. The new composite at a protected atom s=t is W(s)=W(t): forwards
+use congruence W with source s (I-headed); backwards transport W(s)=s and
+W(t)=t in the corresponding two sides. At D use the binder congruence
+above, together with the recursive equivalence and padding.
+
+The numerical sort and term translations are literal identities between
+the two native presentations. Equality W(x)=W(y) has ordinary meaning
+equivalent to x=y because computation proves W(x)=x. Composing with the
+repository's established scalar/iPRA bridge yields the requested whole-
+domain bi-interpretation and identity numerical composites.
+
+8. RAW ADMINISTRATIVE PROOFS: ORDINARY SEMANTIC SANDWICH
+
+Use the SAME ordinary reading on every administrative formula:
+  eq: ordinary equality;
+  Q_y B: B(0) -> forall y B(y);
+  D_xy B: exists x(B(x,0)->forall y B(x,y)).
+Clauses have their ordinary implication/universal reading.
+
+Every raw combined inference is already a permitted inference of the old
+Choice-DI calculus. Atomic deterministic DI is its equation-progress
+option, compound deterministic DI is its case option, and source dispatch
+only restricts transport. Thus raw derivations map literally into the old
+calculus. Under the Lean kernel inventory, full template transport and
+witnessed equation-progress DI are the existing derived rules NPrf.tr
+and NPrf.dIProg. Equivalently, ordinary soundness of atomic DI uses equation
+induction to turn its step proof into the conditional closure it asserts;
+DE is then ordinary existential/closure elimination.
+
+Consequently ALL administrative formulas have ordinary soundness. No mixed
+semantics is needed for this positive argument. The optional mixed reading
+in the old guarded_core paper is useful only to exhibit incompleteness at
+certain unguarded formulas; it is not required for the new soundness proof.
+
+For canonical contexts/conclusions, H provides the converse direction via
+translation and its canonical identity composites. Since H is included in
+the raw combined checker, this gives equality of canonical consequence
+relations by a sandwich. The public grammar restriction is needed for
+COMPLETENESS and the composites, not for raw ordinary soundness. Nothing
+here claims an identity round trip for all administrative formulas or
+unrestricted direct substitution into raw nonzero-source derivation trees.
+
+9. CHECKER ACCOUNTING QUALIFICATION
+
+The compact kernel admits administrative statements outside the public
+protected/guarded grammar. Thus its source size is a canonical-statement
+kernel measurement, NOT the size of an all-input validator that rejects
+every noncanonical final proposition. The existing guarded_core package
+has the same qualification. State this next to any record claim and measure
+a strict public-goal validator separately. Compare complete programs under
+the same input contract. Do not silently transfer a <526-byte measurement
+to a stronger input-validation contract.
+
+10. SEPARATE CORRECTION TO UPSTREAM README
+
+The claim that substitution is not admissible in ZPrf is too strong.
+The proved theorem zprf_iff_nprf for EVERY context immediately transports
+NPrf.subst to ZPrf. Only naive rule-preserving substitution into the same
+derivation tree fails. An optional Lean corollary can be obtained by first
+mapping to NPrf, applying NPrf.subst, and mapping back. This observation is
+independent of the new guarded/protected proof and is not its bootstrap.
+
+SOURCE BOUNDARY
+Safe zero join and source restrictions are adapted from
+Research/source_dispatch/proofs/zero_source_admissibility.tex.
+Guarded padding, numerical cases and EI are adapted from
+Research/guarded_core/sections/guarded_core.tex.
+The new composition is the protected public atom restriction, stable-source
+H subcalculus, and their noncircular translation/sandwich argument.

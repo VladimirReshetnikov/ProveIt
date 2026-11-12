@@ -1,0 +1,125 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.88in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,enumitem,fancyhdr,xcolor,listings,needspace}
+\usepackage[hyphens]{url}
+\usepackage{hyperref,bookmark}
+\definecolor{ink}{RGB}{28,47,62}
+\definecolor{pale}{RGB}{247,249,250}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=blue!50!black,
+  pdftitle={A Smaller Checked Presentation of Intuitionistic Primitive Recursive Arithmetic},
+  pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{0.25em}
+\setlist{itemsep=0.2em,topsep=0.35em,leftmargin=1.6em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\code}[1]{{\small\nolinkurl{#1}}}
+\newcommand{\Rcal}{\mathcal R}
+\newcommand{\Ncal}{\mathcal N}
+\lstset{basicstyle=\ttfamily\scriptsize,columns=fullflexible,keepspaces=true,
+  breaklines=true,showstringspaces=false,frame=single,rulecolor=\color{black!15},
+  backgroundcolor=\color{pale},xleftmargin=0.3em,xrightmargin=0.3em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Concise iPRA: syntax and reversible elimination}
+\fancyhead[R]{\small Pinned comparison and proofs}
+\fancyfoot[C]{\thepage}
+\title{\color{ink}\textbf{A Smaller Checked Presentation of\\Intuitionistic Primitive Recursive Arithmetic}\\[0.6em]
+  \large Shared syntax validation and reversible elimination}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{November 11, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a complete presentation with the same consequences as the current
+ConciseIPRA native kernel. Reversing the root equation after elimination
+makes unrestricted equality reasoning derivable from a single transparent
+term wrapper. The new source-elimination proof uses neither arithmetic
+induction nor successor computation. The established whole-domain,
+actual-equality bi-interpretation with full first-order iPRA therefore
+transfers unchanged, including both formula round trips.
+
+The implementation improvement is separate and explicitly measured. A
+single parity-indexed syntax validator replaces mutually recursive term
+and formula validators. The recommended standalone checker, including
+exact integer/list validation of the entire certificate and validation
+of the closed public goal, has 1,055 normalized bytes, versus 1,365 for a
+matched control. Reversal itself costs six bytes. Under the repository's
+more permissive compact convention, a neutral-premise change improves
+526 to 525 bytes and, in a separate program, 283 to 282 AST nodes; the
+259-token frontier is not improved. These are modest, reproducible
+improvements, not a global minimality theorem. The new mathematics is
+proved in writing; the supplied Lean extension has not been compiled.
+\end{abstract}
+
+\section{Result, benchmark, and attribution}
+\label{sec:result}
+
+The supplied repository was inspected at commit
+\begin{center}\code{1517d9d79ce33f631e0f82960c849427cbba23bf}.\end{center}
+All comparisons in this report are to that frozen snapshot, not to an
+earlier draft or to a moving branch. Its README describes the native
+kernel, twenty-eight research packages, and the existing Lean
+bi-interpretation~\cite{baseline}. The smallest listed compact coordinates
+are 259 significant tokens, 283 AST nodes, and 526 normalized bytes,
+attained by different programs in \code{source_dispatch}~\cite{source}.
+
+There are three distinct contributions.
+\begin{enumerate}
+\item \textbf{An elementary equality normalization theorem.} Change
+  transport and closure elimination to reverse a root equation in their
+  conclusion. A constant template now reverses any equation immediately.
+  This removes the arithmetic construction needed to repair a literal-zero
+  source in the older, unmodified transport rule. The whole new calculus
+  is contextually equivalent to the current kernel.
+\item \textbf{A smaller complete goal validator.} Term and formula
+  validation share one recursion, with a depth invariant encoding their
+  sorts. This is an implementation simplification available to either
+  calculus. Matched controls quantify its contribution independently of
+  reversal.
+\item \textbf{A small compact-checker reduction.} Use scalar formula
+  zero, an administrative truth, as the neutral retained premise. This
+  changes one representation choice and saves one normalized byte, one
+  token, and one AST node in each applicable local-scope profile. It does
+  not change any arithmetic or logical axiom.
+\end{enumerate}
+
+The numerical language, the two computation equations, the conditional
+binders, the reconstruction of intuitionistic logic, predecessor,
+equality reflection, pairing, and the primitive-recursion compiler are
+inherited. They are attributed and reproduced in the appendices. The
+report does not claim to have rediscovered these results.
+
+\paragraph{What ``simpler'' means here.}
+The recommended program is smaller than a matched program with the same
+input checks. The new equality argument has fewer mathematical
+dependencies. Neither statement says that the new reversal operation
+reduces the inherited compact kernel: it adds six normalized bytes.
+The one-byte compact improvement belongs to the equivalent unreversed
+calculus. No single delivered program attains all coordinate minima,
+and none improves the current 259-token record. Absolute simplestness
+would require a fixed description language and a lower-bound theorem;
+the attained source sizes are upper bounds, not lower bounds.
+
+\paragraph{Reproducibility and scope.}
+The archive contains the report source and PDF, standalone checkers,
+comparison controls, a certificate producer and fixtures, a reproduction
+script, the pinned Lean sources, and an explicitly uncompiled Lean
+extension. The source inventory verifies Git blob identities for the
+frozen files it lists. A novelty screen inspected the README and the
+eighty small primary Python modules retained in
+\code{reference/current_small_checkers/}; it is not a literature-wide
+priority search.
+
+\clearpage
+\setcounter{tocdepth}{1}
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage

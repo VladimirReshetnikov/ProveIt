@@ -1,0 +1,210 @@
+\section{A smaller complete checker and its exact contract}
+\label{sec:checker}
+
+\subsection{Three input contracts must not be conflated}
+
+All programs are whole standalone Python modules. They read a JSON
+array, consume instruction packets from its right-hand end, and print
+exactly \code{ACCEPT} on normal successful termination. Exceptions and
+nonzero exit codes are rejection. Unused prefix packets are inert.
+The recommended program additionally requires every node of the entire
+JSON value, including an unused prefix, to be an exact integer or list.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Contract & What the program checks\\
+\midrule
+Compact & The inherited proof protocol; canonical public statements and
+the advertised certificate representation are a caller contract.\\
+Goal-validating & The protocol plus an explicit canonical closed-goal
+parser. This does not assert that every internal expression is a canonical
+object formula: administrative aliases remain part of the protocol.\\
+Fully tree-typed & The goal-validating contract plus exact integer/list
+syntax throughout the whole JSON certificate. Booleans, floats, null,
+strings, and objects are rejected before proof checking.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The recommended \code{code/checker_rev_typed.py} uses the last contract
+and admits public Eq/$Q$/$D$ goals. Its rule certificates implement the
+witnessed-progress version explained in Section~\ref{sec:progress-packet}.
+The compact token/AST experiments are not substituted for this explicit
+input policy.
+
+\subsection{The arity representation}
+
+The inherited representation shares lists between numerical expressions
+and formulas. Their sort is determined by position. The table describes
+the relevant canonical constructors; the exact slot encoder is included
+with the certificate producer.
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Raw representation & Numerical position & Formula position\\
+\midrule
+$0$ & Numerical zero & Administrative truth\\
+$[a]$ & Successor & $D$ binder\\
+$[a,b]$ & Zero alias & Equation\\
+$[a,b,c]$ & Scalar iterator & Closure resource\\
+$[B,B,B]$ & --- & Canonical $Q_yB$\\
+Empty or longer lists & Zero aliases where applicable & Truth padding\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Public formulas contain only the canonical Eq/$Q$/$D$ forms, and their
+numerical leaves are zero or in-scope protected slot indices. The codec
+inserts dummy zero slots so that the opening routine can treat all
+children of a node uniformly. Protected indices are odd numbers starting
+at 3; rigid local parameters use allocated negative integers. Dummy slots
+denote zero, not extra free variables. The proof checker validates images
+against the current local freshness floor before substitution.
+
+An instruction is a quadruple $[m,s,u,t]$. The major $m$ is checked
+recursively before any supplied resource is trusted. Source $s$ selects
+the expected elimination major:
+\[
+ M(s,u,t)=
+ \begin{cases}
+ [s,u],&s\text{ is nonzero in the canonical raw representation},\\
+ [t,t,t],&s=0.
+ \end{cases}
+\]
+Thus a matched nonzero source performs X and a zero source performs QX.
+For a matched elimination, the goal is the reversal of the target
+instance and the continuation goal is the source instance. A proved
+unary major exports its closure resource; other major arities export
+only harmless padding. A neutral major instead supplies a computation
+equation or opens a $D$ introduction, depending on the initializer/mode
+field. These are the existing source-dispatch packet cases with the
+displayed reversal and neutral-premise changes.
+
+\subsection{The new shared syntax validator}
+
+Let $F(a,s)$ and $T(a,s)$ be the separate formula and term validators in
+the frozen strict Eq/$D$ control. The new validator $V(a,d)$ satisfies
+\[
+ F(a,s)\iff V(a,2s),\qquad T(a,s)\iff V(a,3+2s).
+ \tag{Scope invariant}\label{eq:validator-invariant}
+\]
+An odd depth is numerical; an even depth is a formula depth. Recursing
+through an array $a$ changes the depth by $5-|a|$, exactly as in the
+inherited opener. The principal checks, in readable pseudocode, are
+\begin{lstlisting}[language=Python]
+if type(tree) is int:
+    return depth % 2 and (tree == 0 or
+                          3 <= tree < depth and tree % 2)
+require type(tree) is list
+require arity in (1, 3) at numerical depth
+require arity in (1, 2, 3) at formula depth
+require a formula triple to have three identical children
+return all(valid(child, depth + 5 - arity) for child in tree)
+\end{lstlisting}
+
+\begin{proposition}[Validator equivalence]\label{prop:validator}
+For every JSON value and every nonnegative scope count, the shared
+validator agrees with the separate validators. This holds both for
+the frozen Eq/$D$ grammar and for its explicitly constructed Eq/$Q$/$D$
+extension.
+\end{proposition}
+\begin{proof}
+Prove the two statements in \eqref{eq:validator-invariant} simultaneously
+by structural induction. Exact type tests reject the same noninteger,
+nonlist values. At numerical depth $3+2s$, both admit exactly zero and
+odd indices $3\le a<3+2s$. At formula depth, both reject scalar leaves.
+A unary formula adds four to the depth and binds two slots; binary
+equality adds three and enters the numerical sort. Unary successor adds
+four, accounting for its two dummy slots; ternary iteration adds two,
+accounting for one protected slot. No other arity is accepted. For the
+full grammar, a diagonal formula triple adds two, corresponding to one
+$Q$ variable. The identical-child check is the same in both validators.
+\end{proof}
+
+The certificate-type predicate is separate and elementary: an integer
+passes, and a list passes exactly when all its children pass. It is
+counted in full in the recommended program and in its matched control.
+
+\subsection{Scalar zero as a neutral formula}
+
+At formula depth a scalar denotes administrative truth. The old local
+checker begins with the retained neutral formula \code{[]}; the new
+one begins with \code{0}. The new source is \code{g=[0]} instead of
+\code{g=[[]]}, or \code{g=(0,)} instead of \code{g=([],)} in the tuple
+profile. Each change saves one normalized character, token, and AST
+node in the applicable profile.
+
+This is sound because only the spelling of a true retained resource
+changes. For completeness, emit neutral packet majors as zero; the
+computation and introduction branches still see a falsy major. Their
+case/progress selection is carried by the unchanged mode field. Native
+public formulas do not contain an administrative truth leaf in formula
+position. Consequently the represented native theorems are unchanged.
+The serialized-certificate languages are not identical, and the
+provided certificate conversion changes neutral packet fields explicitly.
+Scalar formula zero is not the contradiction, which is the equation
+$0=S0$, encoded as a binary formula.
+
+\subsection{Why raw root reversal is safe}
+\label{sec:raw-reversal}
+
+For canonical formulas, array reversal swaps the two sides of an
+equation and leaves a unary $D$ or a diagonal $Q$ triple unchanged.
+Intermediate administrative triples need not be diagonal. It would be
+incorrect to reverse such a triple while retaining the old convention
+that only its last child supplies its meaning.
+
+We use a symmetric administrative reading instead:
+\[
+ [B_0,B_1,B_2]\quad\rightsquigarrow\quad
+ Q_yB_0\ \land\ Q_yB_1\ \land\ Q_yB_2.
+ \tag{Triple reading}\label{eq:triple-reading}
+\]
+This is a conjunction of closures, not the closure of a conjunction.
+A diagonal triple retains its ordinary $Q$ meaning by conjunction
+idempotence. Opening acts on all three children at the same depth, so
+substitution acts componentwise. Root reversal merely reverses the
+conjunct order and is an intuitionistic equivalence.
+
+All instruction cases respect this reading. The QX matcher requires an
+exact diagonal triple. A unary $D$ major exports precisely such a
+diagonal. A nonempty major of another array arity exports a list of
+arity at least six, which is administrative truth. X is sound in any
+decoded formula by equality and reversal. DI-case is sound for every
+decoded matrix by numerical coverage; its arithmetic progress alternative
+applies to genuine binary equations, or to harmless truth padding.
+The arithmetic codec and its opening lemma are unchanged.
+
+Thus arbitrary integer/list certificate aliases do not turn a canonical
+false goal into a theorem by swapping a noncanonical triple. The changed
+administrative reading is a real proof obligation, and is stated here
+rather than concealed behind the public-goal parser. A larger alternative
+can reverse only even roots and keep the old reading; it is not needed
+for the delivered recommendation.
+
+\subsection{Freshness and successful-trace invariant}
+
+The retained context is finite and reusable. Each recursive branch has
+its own floor $k$; allocated rigid parameters lie at or above that floor.
+Before a fresh parameter is used, the floor is decreased, and only then
+are the new assumption and successor target opened. The major premise
+is checked at the old floor. This order prevents a future witness from
+being captured by a parameter that has not yet been introduced.
+
+For a successful canonical trace, a retained resource is either a decoded
+assumption of the corresponding native derivation or a truth/computation
+resource justified by the inherited supply rule. Each non-hypothesis
+packet first verifies its major. A fresh auxiliary computation resource
+whose zero instance is a theorem is admissible: substitute zero for the
+fresh parameter in its continuation, then cut that theorem. The new
+equality equivalence transfers substitution and cut from the native
+kernel, so this argument does not assume a primitive substitution rule
+for the restricted-source calculus.
+
+A proposed shortcut replacing the mutable local floor by a static
+context-length expression was rejected during this work. It did not
+preserve the before/after opening phase and either rejected its own
+fresh parameter or admitted it prematurely. Its attractive source-size
+figures are not included as improvements and its code is not in the
+deliverable.

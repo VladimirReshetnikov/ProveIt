@@ -1,0 +1,192 @@
+\section{Complete executable checkers and measured scope}
+\label{sec:implementation}
+
+\subsection{Canonical statements and administrative proof data}
+
+The public mathematical language is precisely the canonical language
+of Section~\ref{mir:section}.  The small programs use the repository's
+arity encoding of that language.  The same raw arrays also provide
+administrative resources for proof construction, including closure
+clauses and harmless zero or truth aliases.  This is a specified decoding
+contract; the compact profiles do not reject every noncanonical
+end statement.  The separate \file{code/strict_checker.py} does validate
+the public goal before checking its proof, and its complete cost is
+reported separately.
+
+Input is one JSON array.  The last item is the goal; preceding items
+are instruction packets, consumed from right to left.  The sole
+successful outcome is normal termination with exactly
+\texttt{ACCEPT} and a newline.  An exception, a nonzero exit, a timeout,
+or resource exhaustion is not acceptance.  Unused prefix data is
+inert, as in the pinned protocol.  There is no imported producer,
+normalizer, axiom database, or metatheory package in a checker.
+
+The raw numerical and formula constructors are:
+\begin{center}
+\begin{tabular}{cll}
+\toprule
+Array length & Numerical position & Formula position\\
+\midrule
+0 & zero & a fixed true equation\\
+1 & successor & paired binder $D$\\
+2 & zero annotation & equality\\
+3 & iterator & administrative closure $Q$\\
+$\ge4$ & zero annotation & truth annotation\\
+\bottomrule
+\end{tabular}
+\end{center}
+A canonical closure resource has three copies of its matrix.  A unary
+major $[B]$ exports $[B,B,B]$ when its witness is opened; tripling any
+other nonempty formula arity creates only a truth annotation.  In the
+canonical numerical syntax, literal $0$ is the integer zero and
+$S0$ is \texttt{[0]}.
+
+Protected numerical slots have width two.  Numerical root depth is
+3, formula root depth is 0, and traversal increases depth by
+$5-\text{array length}$.  The coordinates $0,1,2$ denote zero;
+the odd coordinate $3+2j$ canonically names protected slot $j$.
+Negative coordinates name rigid parameters allowed by the current
+freshness floor.  Successors introduce two dummy slots; an iterator
+introduces one slot, dummy in its counter and initializer and genuine
+state in its update.  The inherited sorted-opening and freshness
+argument is retained in \file{reference/inherited_arity_checker.tex}.
+
+The strict validator checks the mirrored initializer after raising
+the left-hand numerical term across the iterator's additional slot.
+Comparing the two raw initializer arrays directly would incorrectly
+reject genuine bound-variable occurrences, including nonvacuous
+witnesses.  Its goal traversal and raising routine are included in
+the measured module.
+
+\subsection{The two dispatch simplifications}
+
+In a lexical-scope packet \texttt{[m,s,u,t]}, the first field is a
+major premise or the neutral truth marker.  Source selection is
+\begin{lstlisting}
+m == ([s, u] if s else [t] * 3)
+\end{lstlisting}
+For a canonical source other than literal zero, the major must be the
+equation $s=u$.  At a literal-zero source it must be the closure
+resource with body $t$.  The theorem restoring zero-source transport
+justifies this loss of a primitive equation-major alternative.
+
+The retained local assumption for an introduction uses
+\begin{lstlisting}
+(m or not len(a) % 2) and k
+\end{lstlisting}
+instead of the preceding protocol's comparison with a certificate
+mode field.  A meaningful even formula root is an equation and
+receives the fresh progress parameter.  A meaningful odd root is
+compound and receives zero.  The mirrored grammar and its
+bi-interpretation justify deleting this independent choice.
+
+Computation packets construct a zero or successor instance of the
+iterator equations.  The packet format requires a nonempty
+initializer and, for a successor computation, a nonempty predecessor.
+These restrictions are discharged by the inherited certified zero
+\[
+                       c_0=I(2,1;u.0),\qquad c_0=0.
+\]
+Its equation is directly admitted.  Replace the offending literal-zero
+positions of a desired computation by $c_0$, produce the admitted
+equation, then transport using $c_0=0$.  This uses an iterator-headed
+source and so remains available before zero-source restoration.
+It changes the proof, not the literal zero or initializer occurring
+in a public mirror matrix.
+
+\subsection{Soundness, completeness, and the trusted boundary}
+
+\begin{theorem}[Canonical checker theorem]
+For each closed canonical $\Mcal$ formula $A$, there exists an
+accepting finite certificate with encoded goal $A$ exactly when
+$\Mcal\vdash A$, in the ideal unbounded execution model.
+The strict checker additionally rejects noncanonical public goals.
+\end{theorem}
+\begin{proof}
+For soundness, interpret the administrative formulas by the ordinary
+anchored reading of the inherited native calculus: $Q_yB$ means
+$B(0)\to\forall yB(y)$, and $D_{x,y}B$ means its existential closure.
+An atomic progress introduction is sound for this reading by
+literal-equation induction; a compound case introduction is sound
+by numerical coverage.  Thus no progressive interpretation of a raw
+unguarded binder, and no formula-composite claim for arbitrary raw
+arrays, is needed.
+
+Induct on a finite successful call tree.  The inherited opening
+lemma verifies numerical substitution, dummy slots, and fresh
+parameters.  The major is checked before its result contributes
+any proof resource.  Source-selected transport and closure use are
+instances of the inherited rules.  A unary major supplies its
+correct clause; other exported arities are truth.  Constructed
+computations are discharged by the inherited computation-supply
+argument.  The root test admits progressive hypotheses only at
+literal equations or truth annotations; all compound matrices receive
+their zero instance.  These are sound inherited proof steps.  Hence
+every successful canonical end statement has a proof of its ordinary
+reading in iPRA.  The established faithfulness and round trips
+translate that proof back to $\Mcal$.
+
+For completeness, encode a finite $\Mcal$ derivation with fresh
+integer parameters.  Use the inherited packets for clause use,
+transport, and paired elimination.  Every permitted source is
+nonempty in canonical encoding, so its equation major is selected.
+Every atomic DI is progressive and every compound DI is by cases,
+exactly as the root test requires.  Certified-zero expansion supplies
+all computation instances.  This produces a finite accepting
+certificate.  The strict validator accepts the stipulated goal
+encoding, so it has the same canonical completeness.
+\end{proof}
+
+The program may accept an unguarded administrative goal whose ordinary
+reading is provable.  It is not asserted to be complete for all such
+goals, nor are they new object-language formulas of $\Mcal$.  The
+strict profile makes this public boundary executable.  A comparison
+requiring rejection of every out-of-language public input must use
+the strict rows, not the compact rows alone.
+
+The AST profile uses lexical scopes and an explicit loop; the byte
+profile uses a recursive continuation with the same lexical scopes.
+The token profile uses the inherited global supply of fresh parameter
+names.  Certificates for the global profile are emitted separately.
+All three are complete standalone programs rather than partial
+fragments.  A readable independent expansion is also included.
+
+\subsection{Reproduced measurements}
+
+\input{evidence/metrics_table}
+
+The comparison files are frozen verbatim from the pinned
+\texttt{source\_dispatch} package and retain their hashes.  The
+baseline coordinate minima are 259 significant tokens, 283 AST nodes,
+and 526 normalized bytes; they belong to three different programs.
+The supplementary gzip measurements use level 9 and timestamp zero.
+They are measurements, not an objective used to justify simplicity.
+The main reduction is small, and the strict syntax-validation cost
+does not disappear merely because the compact codec permits a
+canonical-encoding contract.
+
+\subsection{Executable evidence}
+
+\input{evidence/validation_summary}
+
+The central certificate tests the part most at risk of circularity:
+recovering a zero-source equality consequence after the two primitive
+restrictions have been imposed.  The named proof is audited for every
+atomic introduction and every transport source before serialization. A separate audit also traverses every formula goal
+and transport motive, including nested binders, rather than inspecting
+only introduction nodes.
+The accepted expansion uses only mirrored atomic matrices and no
+primitive zero-source transport.  The direct forbidden transport
+certificate is separately rejected.
+
+Additional cases exercise both computation equations, padding,
+shared-left implication, nonvacuous witnesses, compound case
+introduction, induction with a used hypothesis, and public grammar
+validation.  Negative controls cover context and eigenparameter
+escape, malformed packets, false goals, and forbidden compound
+progress.  These checks support the implementation claims; they
+are not substitutes for the universal proofs in the preceding sections.
+
+\subsection{The smallest byte profile in full}
+
+\lstinputlisting{code/checker_bytes.py}

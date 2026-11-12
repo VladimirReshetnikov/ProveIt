@@ -5,7 +5,7 @@ complete presentation of a theory bi-interpretable with full first-order
 intuitionistic primitive recursive arithmetic (iPRA), and the Lean
 formalization of the most concise of them.
 
-- [`Research/`](Research/) holds twenty-eight delivered packages, one directory
+- [`Research/`](Research/) holds thirty-four delivered packages, one directory
   each. They are written mathematics with executable Python proof checkers;
   none of them claims a proof-assistant verification.
 - `Lean/` is the formalization (see [Lean formalization](#lean-formalization)).
@@ -139,6 +139,12 @@ for separate coordinates, they are listed separately. Each package's own
 | [`source_dispatch`](Research/source_dispatch/) | Transport may be restricted to sources that are not literally `0`, every omitted instance being derivable; the source then selects the elimination major (`Q_v F(v)` at `0`, `s = t` otherwise) | 259 tokens; 283 AST nodes; 526 bytes (three programs) |
 | [`guarded_core`](Research/guarded_core/) | Atomic matrices under `D` restricted to the guarded shape `I(y,0;u.h) = I(y,0;u.k)`, so one root-determined introduction rule suffices: progress at equations, cases at compound matrices | 260 tokens; 286 AST nodes; 527 bytes (three programs) |
 | [`scope_and_closure`](Research/scope_and_closure/) | Checker composition only for the core; a "mixed closure" variant with progressive `Q` at literal equations and a deterministic introduction; an obstruction to zero-start iterators | 264 / 288 / 608, and 528 bytes |
+| [`reversal_core`](Research/reversal_core/) | Transport and QE reverse the root equation of their conclusion, with transport sources other than the literal `0`; a constant template then gives unrestricted symmetry in one step, and the source restriction is removed with no induction, cases or successor computation. Ships a proposed Lean module | 525 bytes; 282 AST nodes (two programs); typed checker 1055 bytes against a 1365-byte control |
+| [`guarded_source`](Research/guarded_source/) | Source dispatch and the guarded core coexist: the recovery of zero-source transport needs equation induction only, its case splits being inductions that ignore the hypothesis | 258 tokens; 281 AST nodes; 525 bytes (as stated, different programs) |
+| [`guarded_orbit`](Research/guarded_orbit/) | In a strictly guarded proof language the two do not compose (`0 = t` does not yield `t = 0`); the administrative orbit `D_{r,y}(y = I(y,t;u.Su))` repairs it | 258 tokens; 281 AST nodes; 525 bytes (three programs) |
+| [`deterministic_auxiliary`](Research/deterministic_auxiliary/) | Source-selected elimination with root-determined introduction, keeping unrestricted atomic progress formulas as auxiliary intermediates; the guarded public consequences are unchanged | 525 and 522 bytes |
+| [`mirror_guard`](Research/mirror_guard/) | A one-sided guard: canonical atomic matrices `a(x,y) = I(y, a(x,y); u.h)`, with one root-determined introduction and no literal-zero transport source | modest, as stated |
+| [`protected_core`](Research/protected_core/) | Public equality `s = t` represented as `W(s) = W(t)`, `W(r) = I(0,r;u.0)`, so that every transport source is iterator-headed | modest, as stated |
 
 ### Other arithmetic bases
 
@@ -184,6 +190,15 @@ formalization below. Not filed: their frozen copies of this repository's own
 Lean sources (byte-identical to the pinned commits), three checksum ledgers
 and one reproduction log. The archives remain in the repository history.
 Their scripts were not executed.
+
+A third delivery of six archives arrived in `docs/incoming/` on 2026-11-11
+(commit `df07a9111c`) and was filed the same day: `deterministic_auxiliary`,
+`guarded_orbit`, `guarded_source`, `mirror_guard`, `protected_core` and
+`reversal_core`. They respond to the kernel with equational transport and
+`zprf_iff_nprf`. Not filed, as before: fifty frozen copies of this
+repository's Lean sources and three checksum ledgers. The proposed module
+`Research/reversal_core/formalization/Reversal.lean` is kept as delivered; its
+compiled form is `Lean/ConciseIPRA/NativeReversal.lean`.
 
 ## Lean formalization
 

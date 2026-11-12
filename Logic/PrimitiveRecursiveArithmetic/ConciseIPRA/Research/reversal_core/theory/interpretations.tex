@@ -1,0 +1,169 @@
+\section{The interpretations, including both composites}
+\label{sec:interpretations}
+
+The equivalence in Theorem~\ref{rev:equivalence} is stronger than agreement
+on standard numerical computations: it holds for every sequent, with
+arbitrary retained assumptions. This is what permits reuse of the
+existing bi-interpretation rather than only an equiconsistency argument.
+For clarity we spell out the translations and the role of the inherited
+arithmetic results.
+
+\subsection{Which iPRA is intended}
+
+Here iPRA is full first-order intuitionistic logic with equality, a
+function symbol for every fixed primitive-recursive definition, its
+defining equations, the successor axioms, and induction for
+quantifier-free formulas. Quantified formulas are allowed everywhere
+in the logic; induction is not extended to arbitrary quantified formulas.
+The pinned \code{PR.lean} implements this convention~\cite{leanbridge}.
+
+The binding notation $I(n,a;u.h)$ denotes a fixed finite description.
+It can be elaborated into a staged first-order signature: for each
+earlier finite body $h(u,\vec p)$ introduce $i_h(n,a,\vec p)$ with
+the two iterator equations. Parameters in the description become
+ordinary first-order arguments. No variable ranges over functions or
+programs, and no uniformly total evaluator for all primitive-recursive
+descriptions is asserted.
+
+\subsection{Native formulas and ordinary intuitionistic logic}
+
+Let $T_I$ be ordinary intuitionistic first-order logic over the scalar
+terms, with the two computation equations, induction for literal
+equations, coverage
+\[
+  \forall x\,(x=0\vee\exists y\,x=Sy),
+\]
+and the explicit separation bridge $(0=S0)\to\bot$. Translate native
+equations identically, and translate $Q$ and $D$ by the meanings given
+in Section~\ref{rev:section}. Both interpretations use the full domain,
+defined by $x=x$, and interpret equality as equality.
+
+The reverse logical translation uses only native formulas. Put
+$C(v,a,b)=I(v,a;u.b)$, with the state variable unused. Its values at zero
+and successors are $a$ and $b$. The gate $G_vA$ is true at zero and
+equivalent to $A$ at a successor; the selector $M_v(A,B)$ selects $A$
+at zero and $B$ at successors. Both are constructed by external
+recursion on fixed finite formulas, using equation selectors and
+padding to align binder depth. Their full definitions and proof rules
+are reproduced in Appendix~\ref{sec:choice-introduction}.
+
+With $p$ the parity iterator, one convenient Eq/$D$ macro inventory is
+\[
+\begin{aligned}
+ \bot_*&=(0=S0),\\
+ A\to_*B&=D_{u,z}M_z(A,B),\\
+ A\land_*B&=D_{u,z}G_zM_{p(z)}(A,B),\\
+ \exists_*x A(x)&=D_{x,y}G_yA(x),\\
+ A\lor_*B&=\exists_*x M_x(A,B),\\
+ \forall_*x A(x)&=A(0)\land_*D_{u,z}G_zA(z).
+\end{aligned}
+\]
+Here the unused coordinate $u$ and all new bound variables are chosen
+fresh. These are definitions, not new axiom schemas. The logical
+introduction and elimination rules, falsity elimination, numerical
+coverage, and both native/ordinary formula composites follow by the
+explicit constructions in the appendix. An auxiliary $Q_yB$ is
+interderivable with $D_{u,y}B$ when $u$ is unused.
+
+The ordinary separation bridge must not be omitted: positive numerical
+equations alone admit a one-element model. Native falsity is a designated
+equation, and the bridge identifies its intended logical role in $T_I$.
+This is already part of the inherited presentation, not an additional
+assumption introduced for reversal.
+
+\subsection{Scalar arithmetic and primitive recursion}
+
+Interpret an iterator in iPRA by primitive recursion whose update ignores
+the recursion counter. This translates the scalar equations and literal
+equation induction directly. Coverage and separation are iPRA theorems.
+
+For the converse translation, the inherited internal derivations proceed
+in the following dependency order.
+\begin{enumerate}
+\item A scalar predecessor $P$ is constructed and proved to satisfy
+  $P0=0$ and $P(Sn)=n$ using equation induction and numerical cases.
+  Pairing and successor injectivity are not assumed in that bootstrap.
+\item Truncated subtraction and a Boolean reflection of actual equality
+  are derived. Each fixed quantifier-free formula is represented by a
+  characteristic equation, giving its induction instance.
+\item With quantifier-free induction available, pairing $\pi$ and
+  projections $L,H$ are constructed internally. They satisfy
+  $L(\pi(a,b))=a$ and $H(\pi(a,b))=b$ throughout the domain.
+\item Each fixed primitive recursion is compiled by storing its counter
+  and current value in one paired scalar state.
+\end{enumerate}
+
+For example, for
+\[
+ f(0,\vec p)=g(\vec p),\qquad
+ f(Sn,\vec p)=h(n,f(n,\vec p),\vec p),
+\]
+the translation uses
+\[
+\begin{split}
+ V(n,\vec p)&=I\bigl(n,\pi(0,g^*(\vec p));\,
+ u.\pi(SL(u),h^*(L(u),H(u),\vec p))\bigr),\\
+ f^*(n,\vec p)&=H(V(n,\vec p)).
+\end{split}
+\]
+Equation induction proves $L(V(n,\vec p))=n$, and the projection
+identities establish the defining equations of $f$. Translation is
+external recursion on a fixed finite definition, not an internal
+universal-recursion principle. The complete inherited constructions
+appear in the scalar predecessor, reflection, and primitive-recursion
+appendices.
+
+\subsection{Why both round trips are identities}
+
+For a fixed iterator, equation induction proves uniqueness from its
+zero and successor equations. The analogous uniqueness proof applies
+to each fixed primitive recursion. Inducting externally over a finite
+function description therefore proves that its double translation is
+equal to the original function inside the corresponding theory. The
+interpretation domain is never changed, so the graph of the resulting
+domain isomorphism is literally $x=y$.
+
+For formulas, use the proved meanings of the logical macros and the
+native $Q,D$ binders, then induct on formula structure. For example,
+the native paired composite is
+\[
+ D_{x,y}B\ \dashv\vdash\
+ \exists_*x\bigl(B(x,0)\to_*\forall_*y B(x,y)\bigr).
+\]
+The forward direction opens a fresh witness and introduces the three
+logical macros; the backward direction eliminates the existential
+macro and uses DI-case with that witness. The appendix gives both
+directions with their local assumptions.
+
+Combining these arithmetic and logical composites with
+Theorem~\ref{rev:equivalence} establishes the requested bi-interpretation
+for $\Rcal$. In particular,
+\[
+ \varnothing\vdash_{\Rcal}0=S0
+ \quad\Longleftrightarrow\quad
+ \ipra\vdash\bot.
+\]
+This is a relative consistency equivalence; no assertion of the
+consistency of either theory is needed as a premise.
+
+\subsection{Direct closure versus the implemented progress packet}
+\label{sec:progress-packet}
+
+The mathematical presentation in Section~\ref{rev:section} follows the
+current Lean kernel and introduces $Q_yE(y)$ directly by equation
+progress. The tiny inherited certificate format instead introduces
+$D_{x,y}E(x,y)$ from $E(t,z)\vdash E(t,Sz)$, with a witness $t$.
+These are equivalent interfaces, not literally the same instruction.
+
+To obtain witnessed progress from direct closure, set $F(y)=E(t,y)$.
+QI-progress gives $Q_yF(y)$. Under $F(0)$, ordinary QE gives $F(Sz)$;
+DI-case with witness $t$ finishes. Ordinary QE is already derived in
+$\Rcal$ by reversing QX's result.
+
+Conversely, apply witnessed progress with an unused witness coordinate
+$u$ to obtain $D_{u,y}E(y)$. Eliminate it. The supplied assumption is
+exactly $Q_yE(y)$, independent of the fresh witness, so hypothesis
+closes the branch. Both constructions are valid in arbitrary retained
+contexts and keep the progress matrix a literal equation. The supplied
+producer uses the witnessed packet convention; the Lean draft uses the
+direct-closure convention.

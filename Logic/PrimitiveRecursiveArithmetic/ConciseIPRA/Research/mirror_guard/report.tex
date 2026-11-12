@@ -1,0 +1,116 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,microtype,xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,citecolor=blue!45!black,pdftitle={A one-sided computation guard for intuitionistic primitive recursive arithmetic},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small A one-sided computation guard for iPRA}
+\fancyhead[R]{\small November 11, 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Mcal}{\mathcal M}
+\newcommand{\Ccal}{\mathcal C}
+\newcommand{\Teq}{T_{\mathrm{eq}}}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\D}{\mathsf D}
+\newcommand{\Q}{\mathsf Q}
+\newcommand{\FV}{\operatorname{FV}}
+\newcommand{\file}[1]{\path{#1}}
+\lstset{language=Python,basicstyle=\ttfamily\scriptsize,columns=fullflexible,keepspaces=true,breaklines=true,breakatwhitespace=false,frame=single,rulecolor=\color{black!15},backgroundcolor=\color{black!2},showstringspaces=false,tabsize=4}
+\title{\textbf{A one-sided computation guard for iPRA}\\[6pt]\large A smaller proof interface with full-domain bi-interpretations}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{November 11, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a new presentation of intuitionistic primitive recursive arithmetic
+by changing the guard beneath the paired logical binder.  Its atomic
+matrices have the form $a=I(y,a;u.h)$: the same initializer occurs on the
+left of equality and inside one iterator.  This orientation permits a
+single introduction schema selected by the matrix root and transport
+restricted to sources other than the literal term $0$.  Their compatibility
+is substantive: the corresponding combination with the previous
+left-iterator guards loses an equality consequence.
+
+The proof first recovers numerical cases and equation induction, without
+substituting into a restricted derivation, then restores unrestricted
+transport and gives both formula composites with the existing native
+calculus.  Composing with the pinned ConciseIPRA bridge gives
+bi-interpretability with full first-order iPRA, with whole numerical
+domains, actual equality, and identity numerical composites.
+
+The complete executable checkers and their separately reported size
+profiles improve the pinned repository frontier under its canonical
+encoding convention.  The reduction is modest; no absolute minimality or
+new proof-assistant verification is claimed.  A strict public-syntax
+validator, readable checker, reproducible measurements, and positive and
+negative certificate checks are supplied, with their costs made explicit.
+\end{abstract}
+\clearpage
+\setcounter{tocdepth}{2}
+\tableofcontents
+\newpage
+\input{proofs/overview}
+\input{proofs/mirror_basis}
+\input{proofs/source_compatibility}
+\input{proofs/mirror_equivalence}
+\input{proofs/bridge}
+\input{proofs/implementation}
+\input{proofs/assessment}
+\appendix
+\section{Reference boundary and reproduced arithmetic}
+The following five sections are inherited mathematical sources from the
+pinned repository, reproduced unchanged in substance and retained under
+its MIT-0 licence.  They are not claimed as new results of this report.
+Their references to an ``old'' calculus or to the novelty of a choice rule
+describe their original context.  Our new result is the mirror-guard
+calculus and its compatibility proof in the main text.  These sources make
+the arithmetic and ordinary-logic dependencies locally available; the
+independent new theorem is a written proof, not a Lean build.
+\input{reference/inherited_choice_basis}
+\input{reference/inherited_ordinary_bridge}
+\input{reference/scalar_predecessor}
+\input{reference/equality_reflection}
+\input{reference/primitive_recursion}
+\begin{thebibliography}{99}
+\small\raggedright
+\bibitem{snapshot} V. Reshetnikov and ProveIt contributors.
+\emph{Concise presentations of intuitionistic primitive recursive arithmetic}.
+ProveIt, commit \texttt{1517d9d79ce33f631e0f82960c849427cbba23bf}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1517d9d79ce33f631e0f82960c849427cbba23bf/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{Pinned repository snapshot}.
+\bibitem{guarded} ProveIt contributors. \emph{Guarded core with a deterministic introduction rule}.
+\texttt{Research/guarded\_core}, in~\cite{snapshot}; especially
+\texttt{sections/guarded\_core.tex} and \texttt{sections/implementation.tex}.
+\bibitem{dispatch} ProveIt contributors. \emph{Source dispatch and literal-zero source admissibility}.
+\texttt{Research/source\_dispatch}, in~\cite{snapshot}; especially
+\texttt{proofs/zero\_source\_admissibility.tex}.
+\bibitem{choice} ProveIt contributors. \emph{Complementary introductions with one local assumption}.
+\texttt{Research/certified\_zero/reference/inherited\_choice\_basis.tex}, in~\cite{snapshot}.
+\bibitem{lean} ProveIt contributors. \emph{NativeBiInterpretation.lean},
+\emph{BiInterpretation.lean}, and their transitive imports.
+\texttt{Lean/ConciseIPRA}, in~\cite{snapshot}.
+\bibitem{erasure} ProveIt contributors. \emph{Internal scalar predecessor bootstrap}.
+Frozen reference \texttt{Research/certified\_zero/reference/scalar\_predecessor.tex},
+in~\cite{snapshot}.  The historical attribution key is retained for the reproduced appendix.
+\bibitem{forward} ProveIt contributors. \emph{From literal-equation induction to full intuitionistic PRA}.
+Frozen reference \texttt{Research/certified\_zero/reference/equality\_reflection.tex},
+in~\cite{snapshot}.  The historical attribution key is retained for the reproduced appendix.
+\bibitem{progress} ProveIt contributors. \emph{Pairing, primitive recursion, and internal numerical composites}.
+Frozen reference \texttt{Research/certified\_zero/reference/primitive\_recursion.tex},
+in~\cite{snapshot}.  The historical attribution key is retained for the reproduced appendix.
+\end{thebibliography}
+\end{document}
