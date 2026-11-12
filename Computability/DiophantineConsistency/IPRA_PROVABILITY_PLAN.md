@@ -7829,6 +7829,11 @@ The independently reviewed [forced-J shifted-Pell variant](research/ordinary14-n
 reduces that natural graph to 82 operations at degree 97, assuming `β > 0`
 and `K0 > 0`. Its external zero map and authenticated degree certificate
 do not supply an iPRA theorem or physical-file binding.
+The independently reviewed [unshifted-s obstruction](research/ordinary14-natural80-unshift-s-obstruction/README.md)
+exhibits a zero with `s=0`, including at the authenticated compact ports,
+after deleting the `s` shift from the 81 graph. It rules out forced
+positivity and the tested unchanged-coordinate transfer; it does not settle
+global zero-existence equivalence of those graphs.
 The source-reviewed [natural-86 Lean graph draft](research/ordinary14-natural-cancel86-lean-draft/README.md)
 transcribes that circuit. It is unelaborated and does not yet bind the graph
 to `positiveShift` in Lean.
