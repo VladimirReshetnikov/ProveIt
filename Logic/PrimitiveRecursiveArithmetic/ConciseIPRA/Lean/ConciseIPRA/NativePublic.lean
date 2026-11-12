@@ -98,6 +98,35 @@ theorem Tm.subst_wr (σ : Fin n → Tm m) (a : Tm n) :
 
 theorem Tm.shift_wr (a : Tm n) : Syn.shift (Tm.wr a) = Tm.wr (Syn.shift a) := Tm.subst_wr _ a
 
+/-- An instance of the root-determined introduction is one of the two
+introductions of the kernel. -/
+theorem NPrf.ofDIEta {Γ : List (NFm n)} (B : NFm (n + 2)) (t : Tm n)
+    (h : NPrf ((B.subst (up (inst t))).subst (repl (NFm.eta B (Syn.var 0))) :: Γ.map NFm.shift)
+      ((B.subst (up (inst t))).subst (repl (succ (Syn.var 0))))) : NPrf Γ (.D B) := by
+  cases B with
+  | eq a b =>
+    rw [show NFm.eta (NFm.eq a b) (Syn.var 0 : Tm (n + 1)) = Syn.var 0 from rfl,
+      NFm.subst_repl_var] at h
+    -- progress for the equation `E(t, y)`, then cases with the closure
+    have hQ := NPrf.qIInd (Syn.subst (up (inst t)) a) (Syn.subst (up (inst t)) b) h
+    refine .dICase (.eq a b) t ?_
+    refine NPrf.cut1 hQ.shift.wk
+      ((NEquiv.qStep (Δ := Γ.map NFm.shift) (NEquiv.refl _)).weaken ?_)
+    intro X hX
+    rcases List.mem_cons.1 hX with rfl | hX
+    · exact List.mem_cons_of_mem _ List.mem_cons_self
+    · rcases List.mem_cons.1 hX with rfl | hX
+      · exact List.mem_cons_self
+      · exact List.mem_cons_of_mem _ (List.mem_cons_of_mem _ hX)
+  | Q B' =>
+    refine .dICase _ t ?_
+    rw [NFm.shift_subst_inst_zero]
+    exact h
+  | D B' =>
+    refine .dICase _ t ?_
+    rw [NFm.shift_subst_inst_zero]
+    exact h
+
 namespace PGPrf
 
 variable {Γ Δ : List (NFm n)} {A : NFm n}
@@ -111,36 +140,7 @@ theorem toNPrf (h : PGPrf Γ A) : NPrf Γ A := by
   | trI h c a g _ _ ih₁ ih₂ => exact .trOne h ih₁ ih₂
   | qE t _ _ ih₁ ih₂ => exact .qE t ih₁ ih₂
   | dE _ _ ih₁ ih₂ => exact .dE ih₁ ih₂
-  | @dI n Γ B t _ ih =>
-    cases B with
-    | eq a b =>
-      -- progress for the equation `E(t, y)`, then cases with the closure
-      have ih' : NPrf (NFm.eq (Syn.subst (up (inst t)) a) (Syn.subst (up (inst t)) b)
-            :: Γ.map NFm.shift)
-          ((NFm.eq (Syn.subst (up (inst t)) a) (Syn.subst (up (inst t)) b)).subst
-            (repl (succ (Syn.var 0)))) := by
-        have e := ih
-        rw [show NFm.eta (NFm.eq a b) (Syn.var 0 : Tm (n + 1)) = Syn.var 0 from rfl,
-          NFm.subst_repl_var] at e
-        exact e
-      have hQ := NPrf.qIInd _ _ ih'
-      refine .dICase (.eq a b) t ?_
-      refine NPrf.cut1 hQ.shift.wk
-        ((NEquiv.qStep (Δ := Γ.map NFm.shift) (NEquiv.refl _)).weaken ?_)
-      intro X hX
-      rcases List.mem_cons.1 hX with rfl | hX
-      · exact List.mem_cons_of_mem _ List.mem_cons_self
-      · rcases List.mem_cons.1 hX with rfl | hX
-        · exact List.mem_cons_self
-        · exact List.mem_cons_of_mem _ (List.mem_cons_of_mem _ hX)
-    | Q B' =>
-      refine .dICase _ t ?_
-      rw [NFm.shift_subst_inst_zero]
-      exact ih
-    | D B' =>
-      refine .dICase _ t ?_
-      rw [NFm.shift_subst_inst_zero]
-      exact ih
+  | dI B t _ ih => exact .ofDIEta B t ih
 
 theorem hyp0 : PGPrf (A :: Γ) A := .hyp List.mem_cons_self
 
