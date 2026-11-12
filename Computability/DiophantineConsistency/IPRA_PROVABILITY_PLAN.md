@@ -7795,6 +7795,10 @@ The independently source-reviewed [natural-82 endpoint draft](research/ordinary1
 proposes the selected symbolic-beta facts, no-zero transport and native,
 standard and equality-only iPRA clients. Its five axiom-report commands
 are unexecuted; the source chain and physical equation bindings remain open.
+The independently reviewed [natural-82 lexical inventory](research/ordinary14-natural82-endpoint-import-inventory/README.md)
+records 169 draft modules and 36 directly named qualified sources. The prior
+slim overlay lacks 11 of those drafts; this comparison does not resolve Lean
+providers or establish that a combined overlay will build.
 The independently reviewed [natural shifted-Pell graph](research/ordinary14-natural-shifted-pell83/README.md)
 combines those shifts with the degree reduction: 14 natural inputs, 83
 operations, and exact specialized degree 97. Its external zero maps inherit
