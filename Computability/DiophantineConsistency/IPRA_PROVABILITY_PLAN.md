@@ -7569,6 +7569,9 @@ unelaborated and is not itself an oriented graph theorem.
 The source-reviewed [84 signed main-norm composition](research/ordinary14-84-signed-main-norm-draft/README.md)
 retains both branches for that graph's own zero. It remains unelaborated and
 does not establish which branch holds or extract Pell indices.
+The source-reviewed [conditional 84 main-orientation draft](research/ordinary14-84-main-orientation-draft/README.md)
+selects the positive branch assuming explicit rank and size hypotheses; the
+draft is unelaborated and those hypotheses are not yet derived from the graph.
 The source-reviewed [modified-carrier gamma-growth draft](research/ordinary14-modified-carrier-gamma-model-draft/README.md)
 proposes the needed strict positivity using existing Pell growth lemmas under
 explicit index and carrier hypotheses. It is unelaborated and is not yet
