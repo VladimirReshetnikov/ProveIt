@@ -5,13 +5,18 @@ complete presentation of a theory bi-interpretable with full first-order
 intuitionistic primitive recursive arithmetic (iPRA), and the Lean
 formalization of the most concise of them.
 
+**The article:** [concise_ipra.pdf](https://raw.githubusercontent.com/VladimirReshetnikov/ProveIt/main/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/Article/concise_ipra.pdf)
+
 - [`docs/Article/`](docs/Article/) is the unified article
-  ([`concise_ipra.pdf`](docs/Article/concise_ipra.pdf), 443 pages): the
+  ([`concise_ipra.pdf`](https://raw.githubusercontent.com/VladimirReshetnikov/ProveIt/main/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/Article/concise_ipra.pdf)): the
   written mathematics of all delivered packages merged into eleven chapters,
   each result stated and proved once. New proposals are integrated there.
-- [`Research/`](Research/) holds ninety-eight delivered packages, one directory
-  each. They are written mathematics with executable Python proof checkers;
-  none of them claims a proof-assistant verification.
+- [`Artifacts/`](Artifacts/) holds the executable part of the delivered
+  packages, one directory each: the Python proof checkers, certificates,
+  fixtures and evidence. Their written reports are merged into the article
+  and are not kept separately (they remain in the history of this
+  repository). Frozen copies of other packages' sources and the larger
+  matched controls that a package's own checkers supersede were deleted.
 - `Lean/` is the formalization (see [Lean formalization](#lean-formalization)).
 
 ## The question
@@ -79,12 +84,12 @@ by progress as primitive, and proves that the derivable sequents are the same
   `a(s) = b(s)` to `a(t) = b(t)`, is two applications, and transport never has
   to look inside a `Q` or a `D`: for a compound template it follows by
   induction on the template from QE, DE and DI by cases. This is the rule of
-  [`one_context`](Research/one_context/).
+  [`one_context`](Artifacts/one_context/).
 - *Direct closure.* Progress introduces the closure `Q_y E(y)` itself, with
   no existential witness and one bound variable fewer; the witnessed rule
   follows by QE and DI by cases. This is the proposal of
-  [`direct_closure`](Research/direct_closure/) and
-  [`direct_closure_qprogress`](Research/direct_closure_qprogress/).
+  [`direct_closure`](Artifacts/direct_closure/) and
+  [`direct_closure_qprogress`](Artifacts/direct_closure_qprogress/).
 
 - *No literal-zero source, for free.* The source `s` of a transport may be
   restricted to terms other than the literal `0`, and for the one-term rule
@@ -96,9 +101,9 @@ by progress as primitive, and proves that the derivable sequents are the same
   numerical case distinction or successor computation is used; the argument
   needs the first computation equation and the rule itself (class `OKernel`).
   This is the theorem of
-  [`one_sided_transport`](Research/one_sided_transport/), and it lets the
+  [`one_sided_transport`](Artifacts/one_sided_transport/), and it lets the
   source of an elimination select its major premise
-  ([`source_dispatch`](Research/source_dispatch/)).
+  ([`source_dispatch`](Artifacts/source_dispatch/)).
 
 - *One introduction rule.* The two introductions can be replaced by one,
 
@@ -107,7 +112,7 @@ by progress as primitive, and proves that the derivable sequents are the same
   where `η` is `z` if `B` is a literal equation and `t` is the literal `0`,
   and `0` otherwise. That calculus has seven rules and derives the same
   sequents (`wprf_iff_nprf`). This is the idea of
-  [`witness_rule`](Research/witness_rule/); the case it removes, an equation
+  [`witness_rule`](Artifacts/witness_rule/); the case it removes, an equation
   by cases at the witness `0`, is recovered at the witness `I(0, 0; u. 0)`.
 
 - *All together.* One-term transport at sources other than the literal `0`,
@@ -132,7 +137,7 @@ by progress as primitive, and proves that the derivable sequents are the same
   kernel on `Q`-free sequents (`cprf_iff_nprf_of_qfree`), and derives the
   `Q`-free form of every native sequent, with `Q_y B` rewritten as `D_{x,y} B`
   with `x` unused (`cprf_iff_nprf`). This is the raw clause calculus of
-  [`raw_clausal`](Research/raw_clausal/) and its successors.
+  [`raw_clausal`](Artifacts/raw_clausal/) and its successors.
 - *One body per context entry.* A clause needs no antecedent field. In
   `OBPrf` a context entry is one body `B(y)`, read `B(0) → ∀y B(y)`, which is
   the kernel formula `Q_y B`; Use infers `B(t)` from `B(0)`, Open adds the
@@ -147,7 +152,7 @@ by progress as primitive, and proves that the derivable sequents are the same
   access one level down, so the two are proved together by induction on the
   number of binders (`OBPrf.conv`, `OBPrf.access`). No cut or weakening of
   `OBPrf` is used. This is the calculus of
-  [`one_body`](Research/one_body/).
+  [`one_body`](Artifacts/one_body/).
 - *Evaluation at the discharge.* The two cases of Eval and the elimination
   of `D` fuse into one rule. `E3Prf` has Use, Intro and Discharge: from
   `D_{x,y} B`, and from `E` and `F` under the clause of a fresh `b`, infer
@@ -163,7 +168,7 @@ by progress as primitive, and proves that the derivable sequents are the same
   are its premises moved under the fresh variable, so the translation
   carries a renaming and an extension of the context through its induction.
   This is the raw calculus of
-  [`evaluation_discharge`](Research/evaluation_discharge/).
+  [`evaluation_discharge`](Artifacts/evaluation_discharge/).
 - *Five rules, closed under substitution.* The clause calculus with the
   diagonal introduction in place of the witness-tested one is `KPrf`: Refl,
   Eval, Use, Elim and Intro on Eq/D formulas with clause contexts. No rule
@@ -177,7 +182,7 @@ by progress as primitive, and proves that the derivable sequents are the same
   none or one. With Eval, Elim and Intro this is `VPrf`; with the reflexivity
   clause in the context it derives what `CPrf` derives (`vprf_iff_cprf`,
   `vprf_iff_nprf_of_qfree`). This is the calculus of
-  [`uniform_clauses`](Research/uniform_clauses/).
+  [`uniform_clauses`](Artifacts/uniform_clauses/).
 - *One computation rule.* The zero computation `I(0, a; u.h) = a` can be
   moved from the rules into the syntax. Call a term zero-normal if no iterator
   in it has the literal `0` as its counter, and let every substitution of a
@@ -188,7 +193,7 @@ by progress as primitive, and proves that the derivable sequents are the same
   sequent (`nzprf_iff_nprf`). Reflexivity then comes from successor
   computation: `I(S 0, t; u.u) = t` is an instance, because its right-hand
   side `I(0, t; u.u)` is contracted. This is the proposal of
-  [`zero_normal`](Research/zero_normal/); the normalization is part of the
+  [`zero_normal`](Artifacts/zero_normal/); the normalization is part of the
   specification of the calculus.
 - *No computation rule.* Both computations can be moved into the syntax.
   Every term has a full normal form, in which no iterator has a counter `0`
@@ -206,8 +211,8 @@ by progress as primitive, and proves that the derivable sequents are the same
   without either computation rule, with reflexivity in their place, derives
   the full normal form of a sequent exactly when the kernel derives the
   sequent (`FNPrf`, `fnprf_iff_nprf`). This is the kernel form of
-  [`full_normalization`](Research/full_normalization/) and
-  [`computation_normal`](Research/computation_normal/).
+  [`full_normalization`](Artifacts/full_normalization/) and
+  [`computation_normal`](Artifacts/computation_normal/).
 - *Six rules on full normal forms.* With no computation rule and one
   introduction whose mode is read off the matrix and the witness, the
   calculus is Hyp, Refl, Tr, QE, DE and that introduction (`F6Prf`,
@@ -219,8 +224,8 @@ by progress as primitive, and proves that the derivable sequents are the same
   `D_{x,y} B(T(x), y)` is introduced at the witness `1` in case mode, opened
   at a fresh `b`, and `D_{x,y} B` is introduced at the neutral witness
   `T(b)` from the opened closure. This is the calculus of
-  [`full_normalization`](Research/full_normalization/) and
-  [`computation_normal`](Research/computation_normal/).
+  [`full_normalization`](Artifacts/full_normalization/) and
+  [`computation_normal`](Artifacts/computation_normal/).
 - *Opening with an inferred witness.* On full normal forms the elimination
   of `D_{x,y} B` need not be told anything: it reads its witness off the
   matrix. If `B(b, 0)` is literally `0 = 0` and `B(b, 1)` is literally
@@ -234,10 +239,10 @@ by progress as primitive, and proves that the derivable sequents are the same
   selected witness of the normalized matrix, whatever it is
   (`NPrf.toFO`); the test is not stable under substitution, and no case
   distinction on it is needed. This is the rule of
-  [`inferred_witness`](Research/inferred_witness/),
-  [`deterministic_opening`](Research/deterministic_opening/),
-  [`first_instance`](Research/first_instance/) and
-  [`clause_discharge`](Research/clause_discharge/), on the kernel.
+  [`inferred_witness`](Artifacts/inferred_witness/),
+  [`deterministic_opening`](Artifacts/deterministic_opening/),
+  [`first_instance`](Artifacts/first_instance/) and
+  [`clause_discharge`](Artifacts/clause_discharge/), on the kernel.
 - *Substitution for a variable only.* On full normal forms one equality rule
   suffices, with no template and no joining of two equations: from `x = t`,
   for a variable `x`, and `u = v` infer `v = u[t/x]` (`VSPrf`,
@@ -249,7 +254,7 @@ by progress as primitive, and proves that the derivable sequents are the same
   `s` by numerical cases on a parity, and opened at a fresh `b`, whose rows
   give `h(b) = u` and `b = t`, so that one substitution for `b` gives
   `u = h(t)` (`VSPrf.packet`). This is the rule of
-  [`variable_substitution`](Research/variable_substitution/). On raw terms the
+  [`variable_substitution`](Artifacts/variable_substitution/). On raw terms the
   rows are not literal, and the nearest statement there is Param above. The
   source can be restricted to the newest variable (`V0Prf`,
   `v0prf_iff_nprf`).
@@ -262,7 +267,7 @@ by progress as primitive, and proves that the derivable sequents are the same
   Name exports `h(t) = u`: transport without the crossing
   (`NMPrf.packet`). At the template `x` with a reflexive equation that is
   symmetry, and the transport of the kernel follows. This is the rule of
-  [`witness_discharge`](Research/witness_discharge/).
+  [`witness_discharge`](Artifacts/witness_discharge/).
 - *Five rules.* On full normal forms the two reductions above combine: Name
   in place of transport and DE, and one introduction in place of DI by cases
   and QI by progress. The calculus is Hyp, Refl, Name, QE and that
@@ -283,7 +288,7 @@ by progress as primitive, and proves that the derivable sequents are the same
   sequent exactly when `WDPrf` derives the full normal form of its `Q`-free
   form from the reflexivity clause and the corresponding assumptions, and
   `wdprf_iff_nprf_of_qfree` is the same statement on `Q`-free sequents. This
-  is [`witness_discharge`](Research/witness_discharge/) in its own form, and
+  is [`witness_discharge`](Artifacts/witness_discharge/) in its own form, and
   the calculus with the fewest rule families proved here.
 - *Three rule families with an inferred witness.* `OCPrf` has the same
   formulas, clauses and reflexivity clause, and the rules Use, Intro and Open.
@@ -296,8 +301,8 @@ by progress as primitive, and proves that the derivable sequents are the same
   `x = T`, `H(x) = U`, on which Open selects `T`; ordinary elimination of `D`
   is not a derived rule, so kernel derivations are translated under an
   arbitrary substitution. This is
-  [`inferred_witness`](Research/inferred_witness/) and
-  [`deterministic_opening`](Research/deterministic_opening/) in their own
+  [`inferred_witness`](Artifacts/inferred_witness/) and
+  [`deterministic_opening`](Artifacts/deterministic_opening/) in their own
   form.
 - *Three rule families with a deterministic discharge.* `XCPrf` has Use, Intro
   and Discharge: from `D_{x,y} B` and one derivation of `F` under the clause
@@ -308,11 +313,11 @@ by progress as primitive, and proves that the derivable sequents are the same
   to a formula that does not mention `b`; so `xcprf_iff_nprf` is proved by a
   rule-by-rule translation of the six-rule calculus `F6Prf`, and soundness by
   reading Discharge as Name at the selected witness. This is
-  [`first_instance`](Research/first_instance/) and
-  [`clause_discharge`](Research/clause_discharge/) in their own form.
+  [`first_instance`](Artifacts/first_instance/) and
+  [`clause_discharge`](Artifacts/clause_discharge/) in their own form.
 - *Five rules with substitution for the newest variable.* `VCPrf` is the
   forward clause calculus of
-  [`variable_substitution`](Research/variable_substitution/): Refl, Sub, Use,
+  [`variable_substitution`](Artifacts/variable_substitution/): Refl, Sub, Use,
   Elim and Intro on full normal forms, with clauses `[A; y.B(y)]` in the
   context and no `Q`. Sub infers `v = u[t/x]` from `x = t` and `u = v` for the
   newest variable `x` only. That rule is not stable under weakening by a new
@@ -321,7 +326,7 @@ by progress as primitive, and proves that the derivable sequents are the same
   under an arbitrary renaming of the source, with a context invariant that is
   a membership and not a derivability (`Cl.Inv`, `F6Prf.toVC`).
 - *Seven uniform rules, with another reading of `Q`.* `RPrf` is the calculus
-  of [`uniform_progress`](Research/uniform_progress/): hypothesis, the two
+  of [`uniform_progress`](Artifacts/uniform_progress/): hypothesis, the two
   computations, transport in an equation template, and QE, DE, DI whose mode
   is read off the root of the matrix alone. No rule looks at a witness, so
   substitution in derivations is a direct induction. The price is the meaning
@@ -339,7 +344,7 @@ by progress as primitive, and proves that the derivable sequents are the same
   trips, on all formulas and over arbitrary contexts.
 - *The target-directed elimination.* `TQPrf` is `RPrf` with another
   elimination of `Q`, the rule of
-  [`target_closure`](Research/target_closure/): from `Q_y B` and `B(δ_B(t))`
+  [`target_closure`](Artifacts/target_closure/): from `Q_y B` and `B(δ_B(t))`
   infer `B(t)`, where `δ_B(t)` is `r` when `B` is a literal equation and `t`
   is literally `S r`, and `0` otherwise. One target term is supplied and no
   orbit term. `tqprf_iff_rprf : TQPrf Γ A ↔ RPrf Γ A` proves that the two
@@ -357,7 +362,7 @@ by progress as primitive, and proves that the derivable sequents are the same
   (`gprf_iff_nprf`). Progress for an arbitrary equation `s(y) = t(y)` is
   recovered through its diagonal lift `I(y, y; u.s) = I(y, y; u.t)` and the
   unconditional equation `sel(y, s(0), I(y, y; u.s(y))) = s(y)`. This is the
-  calculus of [`diagonal_guard`](Research/diagonal_guard/).
+  calculus of [`diagonal_guard`](Artifacts/diagonal_guard/).
 - *No template.* Transport can be replaced by a rule that is given no
   template at all: from `s = t` and `u = v` infer `v = R(u)`, where `R`
   replaces every occurrence of `s` in `u` by `t`, root first and in one pass
@@ -365,9 +370,9 @@ by progress as primitive, and proves that the derivable sequents are the same
   replace; transport in a chosen template `h` is recovered with the marker
   `M = I(0, s; u.K)`, whose step term `K` is a numeral larger than `h`, so
   that `h(M)` contains `M` at the template positions and nowhere else. This
-  is the rule of [`template_free`](Research/template_free/).
+  is the rule of [`template_free`](Artifacts/template_free/).
 - *Substitution for a parameter.* Transport can also be replaced by the rule
-  Param of [`parameter_substitution`](Research/parameter_substitution/): from
+  Param of [`parameter_substitution`](Artifacts/parameter_substitution/): from
   `s = t` and `u = r` infer `r = ψ(s, t, u)`, where `ψ` is `u[t/s]` if `s` is
   a variable, `t` if `u` is `s`, and `u` otherwise. A proper subterm is
   replaced only when the source is a variable (`PPrf`, `pprf_iff_nprf`).
@@ -390,7 +395,7 @@ by progress as primitive, and proves that the derivable sequents are the same
   transport of `I(0, a; u.u) = a` along itself, and a constant template gives
   DE (`SDPrf.dE`). Every rule is stable under substitution. This is the
   discharge rule of
-  [`substitutive_discharge`](Research/substitutive_discharge/) on the raw
+  [`substitutive_discharge`](Artifacts/substitutive_discharge/) on the raw
   kernel.
 - *QE at a variable or at 1.* The term argument of QE can be restricted to a
   variable and to the numeral `1`: `VQPrf true` has the two rules `qEVar`
@@ -404,7 +409,7 @@ by progress as primitive, and proves that the derivable sequents are the same
   instances over one context, so that no substitution into a derivation is
   used. This is the counterpart, for the kernel, of the clause use without a
   term argument of
-  [`deterministic_specialization`](Research/deterministic_specialization/).
+  [`deterministic_specialization`](Artifacts/deterministic_specialization/).
   The numeral cannot be dropped: `VQPrf false`, with QE at variables only,
   does not derive `0 = 1` from `Q_y (sel(y, 0, 1) = 0)`, which the kernel
   derives (`vqprf_var_incomplete`). The countermodel reads every variable as
@@ -422,7 +427,7 @@ by progress as primitive, and proves that the derivable sequents are the same
   variable only and the axiom scheme `D_{x,y} (sel(y, a, x) = a)` for every
   term `a`, and `dnprf_iff_nprf : DNPrf Γ A ↔ NPrf Γ A`
   (`NativeNamedWitness`). The scheme is the naming matrix of
-  [`deterministic_introduction`](Research/deterministic_introduction/):
+  [`deterministic_introduction`](Artifacts/deterministic_introduction/):
   opened at a fresh `b` and used at `y = 1` it gives `b = a`, so DI at a term
   `t` is DI at a name of `t` followed by the Leibniz rule. That calculus is
   closed under renaming and not under substitution; its Leibniz rule is
@@ -449,16 +454,16 @@ by progress as primitive, and proves that the derivable sequents are the same
   `EQ.sel_self_zero`). `EqPrf` embeds in the kernel under any restriction of
   the witness (`EqPrf.toDW`): its induction is QI by progress followed by
   QE. This is the audit of the predecessor in
-  [`uniform_raw`](Research/uniform_raw/),
-  [`newest_parameter`](Research/newest_parameter/),
-  [`parameter_witness`](Research/parameter_witness/) and
-  [`no_witness`](Research/no_witness/).
+  [`uniform_raw`](Artifacts/uniform_raw/),
+  [`newest_parameter`](Artifacts/newest_parameter/),
+  [`parameter_witness`](Artifacts/parameter_witness/) and
+  [`no_witness`](Artifacts/no_witness/).
 - *A one-iterator selector.* The mode of the single introduction can be read
   off a smaller shape than the diagonal one: progress exactly when the matrix
   is literally `a(x, y) = I(y, a(x, y); u.h)`. That calculus is `MiPrf`
   (seven rules, `miprf_iff_nprf`), and with reflexivity and Eval it is the
   six-rule `M6Prf` (`m6prf_iff_nprf`) of
-  [`mirror_core`](Research/mirror_core/). The shape is preserved by
+  [`mirror_core`](Artifacts/mirror_core/). The shape is preserved by
   substitution but can be created by it, so `MiPrf` is closed under injective
   renaming (`MiPrf.ren`), which suffices for weakening under a binder and for
   cut, and not under substitution by a direct induction.
@@ -467,19 +472,19 @@ by progress as primitive, and proves that the derivable sequents are the same
   `b = r`, where `Φ` is `t` if `b` is `I(0, s; u.h)`, and `h[t/u]` if `b` is
   `I(S c, a; u.h)` and `s` is `I(c, a; u.h)`. A third case, `Φ = t` if `b` is
   `s`, is derivable from the first through the frame `I(0, s; u.u)`
-  ([`equality_from_iteration`](Research/equality_from_iteration/)). With QE, DE
+  ([`equality_from_iteration`](Artifacts/equality_from_iteration/)). With QE, DE
   and the single introduction this is a calculus of six rules, `EPrf`, on the
   unchanged terms and formulas with ordinary substitution, and it derives the
   same sequents (`eprf_iff_nprf`). The computation equations are Eval on two
   reflexivities; transport in a template `h` is one iteration of `h`. This is
   the calculus of
-  [`computational_equality`](Research/computational_equality/).
+  [`computational_equality`](Artifacts/computational_equality/).
 - *Six rules on zero-normal terms.* With the zero computation in the syntax,
   one introduction suffices there too: it is progressive exactly when the
   normalized zero instance of the matrix is literally `r = r`. Hypothesis,
   successor computation, transport in one term, QE, DE and this introduction
   are six rules, `NRPrf` (`nrprf_iff_nprf`, `NRPrf.normal`). This is the
-  calculus of [`reflexive_base`](Research/reflexive_base/). Its completeness
+  calculus of [`reflexive_base`](Artifacts/reflexive_base/). Its completeness
   is by translation of the diagonal calculus, with the invariant that a
   literally reflexive hypothesis may be dropped.
 - *One successor step.* On zero-normal terms the zero case of Eval is absorbed
@@ -488,16 +493,16 @@ by progress as primitive, and proves that the derivable sequents are the same
   both successor computation and transport (`NSPrf`, `nsprf_iff_nprf`,
   `NSPrf.normal`). Equality comes from a pivot of two Steps through
   `I(S 0, x; v.v)`. This is the interface of
-  [`uniform_step`](Research/uniform_step/).
+  [`uniform_step`](Artifacts/uniform_step/).
 - *Seed evaluation.* On zero-normal terms the rule Step can in turn be replaced
   by SeedEval, from `a = b` and `I(S c, a; u.h) = r` infer
   `r = h[I(c, b; u.h)/u]`, whose equation premise is about the seed alone
   (`NVPrf`, `nvprf_iff_nprf`). At the counter `0` the two rules are the same
   inference, which is where the equality reasoning takes place. This is the
-  rule of [`seed_evaluation`](Research/seed_evaluation/).
+  rule of [`seed_evaluation`](Artifacts/seed_evaluation/).
 - *One evaluation rule and one introduction on zero-normal terms.* The
   companion calculus of
-  [`equality_from_iteration`](Research/equality_from_iteration/) has six
+  [`equality_from_iteration`](Artifacts/equality_from_iteration/) has six
   rules: hypothesis, reflexivity, QE, DE, the single introduction with the
   literal test, and UE, from `I(c, a; u.h) = t` and `I(S c, a; u.h) = r` infer
   `r = h[t/u]` (`ZEPrf`, `zeprf_iff_nprf`). The introduction by cases of an
@@ -517,13 +522,13 @@ by progress as primitive, and proves that the derivable sequents are the same
   opened at `S 0` to the wrapped equation `wr s = wr t`,
   `wr s = I(S 0, 0; u.s)`, whose two sides are admissible sources, and is
   closed again by progress. This is the common content of the public
-  languages of [`guarded_core`](Research/guarded_core/),
-  [`guarded_source`](Research/guarded_source/),
-  [`guarded_orbit`](Research/guarded_orbit/),
-  [`deterministic_auxiliary`](Research/deterministic_auxiliary/) and
-  [`protected_core`](Research/protected_core/). The theorem is proved for
+  languages of [`guarded_core`](Artifacts/guarded_core/),
+  [`guarded_source`](Artifacts/guarded_source/),
+  [`guarded_orbit`](Artifacts/guarded_orbit/),
+  [`deterministic_auxiliary`](Artifacts/deterministic_auxiliary/) and
+  [`protected_core`](Artifacts/protected_core/). The theorem is proved for
   any gating of equations (`Gating`), and the one-sided guard
-  `s = I(w, s; u.t)` of [`mirror_guard`](Research/mirror_guard/) is a second
+  `s = I(w, s; u.t)` of [`mirror_guard`](Artifacts/mirror_guard/) is a second
   instance (`Gating.mirror`, `NFm.pub_mirrored`). `Q` can be removed from
   the public language as well: `NFm.pubD` uses the paired binder with an
   unused witness for every closure, its image has no `Q` and only guarded
@@ -556,10 +561,10 @@ by progress as primitive, and proves that the derivable sequents are the same
   computation: Refl, Eval, Use, Elim and Intro, each normalizing its
   conclusion, Intro reading its mode off the matrix and the witness (`ZCPrf`,
   `zcprf_iff_nprf`). This is the calculus `C5` of
-  [`clausal_single_evaluation`](Research/clausal_single_evaluation/). With
+  [`clausal_single_evaluation`](Artifacts/clausal_single_evaluation/). With
   uniform clauses and the fixed reflexivity clause it has the four schemes
   Use, Step, Open and Close of
-  [`clause_contexts`](Research/clause_contexts/) (`ZVPrf`, `zvprf_iff_zcprf`,
+  [`clause_contexts`](Artifacts/clause_contexts/) (`ZVPrf`, `zvprf_iff_zcprf`,
   `zvprf_iff_nprf`). Completeness normalizes a derivation of the raw clause
   calculus rule by rule. One case changes under normalization: an
   introduction by cases for an equation whose witness is not the literal `0`
@@ -573,11 +578,11 @@ by progress as primitive, and proves that the derivable sequents are the same
 - *Other forms of the source restriction.* For transport in an equation
   template with an uncrossed conclusion, the same restriction needs an
   equation induction and a singleton test, though no logical rule
-  (`zprf_iff_nprf`; [`guarded_source`](Research/guarded_source/); class
+  (`zprf_iff_nprf`; [`guarded_source`](Artifacts/guarded_source/); class
   `ZKernel`). If transport in arbitrary templates and QE both reverse the
   root equation of their conclusion, it again needs no induction
   (`rprf_iff_nprf`, the module proposed by
-  [`reversal_core`](Research/reversal_core/)).
+  [`reversal_core`](Artifacts/reversal_core/)).
 
 **Which rules cannot be dropped.** Seven of the eight rules of the kernel are
 independent of the others (`NativeModels`). A *reading* of the language over
@@ -617,7 +622,7 @@ all primitive recursive definitions, in that order, which gives the
 bi-interpretation with iPRA.
 
 The complete statement and the written proofs are in
-[`Research/certified_zero/reference/`](Research/certified_zero/reference/)
+[`Artifacts/certified_zero/reference/`](Artifacts/certified_zero/reference/)
 (`inherited_choice_basis.tex`, `inherited_ordinary_bridge.tex`,
 `scalar_predecessor.tex`, `equality_reflection.tex`,
 `primitive_recursion.tex`).
@@ -633,97 +638,97 @@ for separate coordinates, they are listed separately. Each package's own
 
 | Package | Contribution beyond the inherited basis | Checker |
 | --- | --- | --- |
-| [`constructed_computation`](Research/constructed_computation/) | Successor sources constructed from predecessors; a finite-range obstruction to restricting DI witnesses and QE targets at once | 279 / 314 / 682 |
-| [`counter_congruence`](Research/counter_congruence/) | A counter-congruence form of the calculus | 280 / 314 / 672 |
-| [`uniform_predecessor`](Research/uniform_predecessor/) | Uniform predecessor packets; single-body initializer fusion cannot define addition, selection or pairing | 269 / 307 / 629 |
-| [`adaptive_seed`](Research/adaptive_seed/) | An obstruction result only; no smaller checker | — |
-| [`research`](Research/research/) | A progressive binder `H_{x,y} B := ∃x ∀y (B(x,y) → B(x,S y))`; an eventually-constant obstruction | 276 / 305 / 749, and 652 bytes |
-| [`local_scopes`](Research/local_scopes/) | No finite-dimensional bi-interpretation of iPRA with the tied-seed `B` theory | 668 bytes |
-| [`checker_and_barriers`](Research/checker_and_barriers/) | Two further obstructions | 593 bytes |
-| [`compact_kernel`](Research/compact_kernel/) | Truth transfer in eventually constant powers for all `∧, ∃, ∀` formulas, hence a symmetry obstruction | 266 / 310 / 612 |
-| [`certified_zero`](Research/certified_zero/) | Certified zero sources; the reference statement of the inherited basis and bridge | 264 / 308 / 566; 558 bytes; joint 262 / 296 / 598 |
-| [`uniform_zero`](Research/uniform_zero/) | Uniform zero and constructed elimination majors; shorter certificates | 545 to 564 bytes over six profiles |
-| [`uniform_premise`](Research/uniform_premise/) | Every non-hypothesis instruction verifies a major premise against a retained neutral truth; a successful-trace invariant replaces the type guard | 262 / 303 / 548, and 537 bytes |
-| [`witness_rule`](Research/witness_rule/) | One introduction rule in place of the case/progress choice: progress exactly when the matrix is a literal equation and the witness is literally `0`, cases otherwise; the same sequents are derivable | 266 / 312 / 555 |
-| [`neutral_scope`](Research/neutral_scope/) | Composition of neutral premises with local scopes; no new mathematics | 266 / 310 / 529, and 290 AST nodes |
-| [`prevalidated_elimination`](Research/prevalidated_elimination/) | The elimination template and both instances are fixed before the major premise is proved; no new mathematics | 263 / 307 / 547; 539 bytes; 261 tokens |
-| [`scope_and_coverage`](Research/scope_and_coverage/) | Byte-profile checkers; for the self-seeded recursor without successor injectivity, `S^k(a) ≠ a` for each fixed `k ≥ 1` and a right predecessor with `n = 0 ∨ n = S(P n)` | 266 / 310 / 529, and 537 bytes |
-| [`coverage_and_kernel`](Research/coverage_and_kernel/) | For the self-seeded recursor without successor injectivity, whole-domain coverage from a protected orbit; one `D` over a literal equation represents exactly the prenex `∃∀` quantifier-free class | 531 and 539 bytes; 289 AST nodes |
-| [`direct_closure`](Research/direct_closure/), [`direct_closure_qprogress`](Research/direct_closure_qprogress/) | Two independent write-ups of one change of primitive: equation induction introduces `Q_y E(y)` directly, from `E(z) ⊢ E(S z)`, and the witnessed `D` progress rule becomes derived; the first also carries a Lean migration sketch and a counter-vector experiment | no new minimum (552 and 568 bytes; 533 for the experiment) |
-| [`source_dispatch`](Research/source_dispatch/) | Transport may be restricted to sources that are not literally `0`, every omitted instance being derivable; the source then selects the elimination major (`Q_v F(v)` at `0`, `s = t` otherwise) | 259 tokens; 283 AST nodes; 526 bytes (three programs) |
-| [`guarded_core`](Research/guarded_core/) | Atomic matrices under `D` restricted to the guarded shape `I(y,0;u.h) = I(y,0;u.k)`, so one root-determined introduction rule suffices: progress at equations, cases at compound matrices | 260 tokens; 286 AST nodes; 527 bytes (three programs) |
-| [`scope_and_closure`](Research/scope_and_closure/) | Checker composition only for the core; a "mixed closure" variant with progressive `Q` at literal equations and a deterministic introduction; an obstruction to zero-start iterators | 264 / 288 / 608, and 528 bytes |
-| [`reversal_core`](Research/reversal_core/) | Transport and QE reverse the root equation of their conclusion, with transport sources other than the literal `0`; a constant template then gives unrestricted symmetry in one step, and the source restriction is removed with no induction, cases or successor computation. Ships a proposed Lean module | 525 bytes; 282 AST nodes (two programs); typed checker 1055 bytes against a 1365-byte control |
-| [`guarded_source`](Research/guarded_source/) | Source dispatch and the guarded core coexist: the recovery of zero-source transport needs equation induction only, its case splits being inductions that ignore the hypothesis | 258 tokens; 281 AST nodes; 525 bytes (as stated, different programs) |
-| [`guarded_orbit`](Research/guarded_orbit/) | In a strictly guarded proof language the two do not compose (`0 = t` does not yield `t = 0`); the administrative orbit `D_{r,y}(y = I(y,t;u.Su))` repairs it | 258 tokens; 281 AST nodes; 525 bytes (three programs) |
-| [`deterministic_auxiliary`](Research/deterministic_auxiliary/) | Source-selected elimination with root-determined introduction, keeping unrestricted atomic progress formulas as auxiliary intermediates; the guarded public consequences are unchanged | 525 and 522 bytes |
-| [`mirror_guard`](Research/mirror_guard/) | A one-sided guard: canonical atomic matrices `a(x,y) = I(y, a(x,y); u.h)`, with one root-determined introduction and no literal-zero transport source | modest, as stated |
-| [`protected_core`](Research/protected_core/) | Public equality `s = t` represented as `W(s) = W(t)`, `W(r) = I(0,r;u.0)`, so that every transport source is iterator-headed | modest, as stated |
-| [`one_context`](Research/one_context/) | Transport with one term template instead of two, crossed: from `s = t` and `h(s) = u` infer `u = h(t)`. Two steps recover the two-template rule; sources are unrestricted and the rule is stable under substitution. Ships proposed Lean modules. Independently, strict goal validation reuses the kernel's scope check | matched tagged checker 3382 to 3358 bytes, 1101 to 1089 tokens; strict Eq/D validator 824 to 803 bytes |
-| [`kernel_refinement`](Research/kernel_refinement/) | The guarded-source checkers with a loop over immutable tuple contexts and the scalar neutral premise. An auxiliary note replaces equational transport by replacement of one occurrence in the left side of an equation, `C[s] = r` to `C[t] = r` for a linear term context `C` | 256 tokens; 278 AST nodes; 521 bytes (three programs) |
-| [`compact_update`](Research/compact_update/) | The scalar neutral-resource encoding of `reversal_core` applied to the `guarded_source` checkers; stated to be an implementation-level composition. Also an exact criterion for when the conditional closure `E(0) → ∀y E(y)` and the progressive closure `∀y (E(y) → E(S y))` of an equation agree: exactly when `¬E(0)` implies progress | 257 tokens; 278 AST nodes; 521 bytes (different programs) |
-| [`uniform_progress`](Research/uniform_progress/) | A seven-rule calculus `R` on the unrestricted formula grammar with a changed reading: `Q_y E` of a literal equation means progress, `∀y (E(y) → E(S y))`, and of a compound matrix the conditional closure. One introduction rule chooses its mode from the root of the matrix alone, so it commutes with substitution; one elimination `Q_y B, B(η) ⊢ B(I(η, n; u. S u))` serves both readings. Translations to and from the native calculus with both round trips, as written proofs | matched typed checker 4553 bytes against 4692 for the eight-rule kernel and 4456 for the seven-rule witness kernel |
-| [`one_sided_transport`](Research/one_sided_transport/) | The seven-rule calculus with its transport replaced by the one-template crossed rule at sources other than the literal `0`: from `s = t` and `f(s) = r` infer `r = f(t)`. The zero computation and this rule alone recover all equality reasoning, with no induction and no logical rule. Ships a proposed Lean module | matched strict checker 3246 bytes against 3302, 1171 tokens against 1196 |
-| [`validated_core`](Research/validated_core/) | One recursive validator shared between raw-tree typing and the public grammar, for the unchanged rule basis | fully validated Eq/Q/D checker 897 bytes against a matched 1049; compact envelope 256 tokens, 278 AST nodes, 521 bytes (different programs) |
-| [`validated_presentation`](Research/validated_presentation/) | The whole certificate is typed by one test on its printed form, so the public syntax validator loses its separate raw-type pass; the proof kernel is unchanged | fully validated Eq/Q/D checker 870 bytes against 897, 383 tokens against 401 |
-| [`checked_refinement`](Research/checked_refinement/) | Three smaller implementations of the existing presentations; stated to contain no new axiom deletion | guarded public-goal checker 921 bytes against 1201; native Eq/D public checker 788 against 803; compact guarded 520 against 521 |
-| [`equality_from_iteration`](Research/equality_from_iteration/) | The rule Eval of `computational_equality` without its first case: equality composition `s = t, s = r ⊢ r = t` follows from the zero-iteration case through the frame `I(0, s; u.u)`. A companion calculus on zero-normal terms has reflexivity and one successor-evaluation schema | as stated |
-| [`clause_guards`](Research/clause_guards/) | The raw Eq/D clause calculus with the two-case Eval and the diagonal introduction: five rule families, with ordinary substitution preserving the whole proof tree | as stated |
-| [`mirror_core`](Research/mirror_core/) | Six rules on the raw language (Hyp, Refl, Eval, QE, DE and one introduction), the introduction being progressive exactly at a matrix of the literal shape `a(x,y) = I(y, a(x,y); u.h)`: one iterator in the selector where the diagonal guard has two | as stated |
-| [`seed_evaluation`](Research/seed_evaluation/) | On zero-normal terms, the rule `a = b, I(S c, a; u.h) = r ⊢ r = h[I(c, b; u.h)/u]` with reflexivity, equivalent to the rule Step without any logical rule or induction | as stated |
-| [`clause_contexts`](Research/clause_contexts/) | Four inference schemes (Use, Step, Open, Close) and the reflexivity axiom clause, on zero-normal terms | as stated |
-| [`witness_discharge`](Research/witness_discharge/) | Three inference families (Use, Intro, Name) and the reflexivity axiom clause; Name combines equality substitution with the discharge of an existential witness | as stated |
-| [`inferred_witness`](Research/inferred_witness/), [`deterministic_opening`](Research/deterministic_opening/), [`first_instance`](Research/first_instance/), [`clause_discharge`](Research/clause_discharge/) | On full normal forms with clause contexts: the opening of `D_{x,y} B` at a fresh `b` reads its witness off the matrix. If `B(b, 0)` is literally `0 = 0` and `B(b, 1)` is literally `b = t`, the clause is opened at `t` (or `t` is substituted for `b` in the exported formula); otherwise at `b`. No replacement term and no equality proof are supplied. Three families (Use, Intro, Open) and the reflexivity clause | as stated; each reports a smaller matched complete checker and none claims a new minimum |
-| [`substitutive_discharge`](Research/substitutive_discharge/) | On the canonical recursor syntax, four families: one successor calculation, Use, Intro, and a discharge that opens `D` at a fresh `b`, proves `s = t` and `F(s)` there, and exports `F(t)`. Reflexivity is derived; no full normalization and no fixed clause | as stated |
-| [`deterministic_introduction`](Research/deterministic_introduction/) | In the raw guarded Eq/D calculus the introduction takes no witness: it selects `r` if the matrix is literally `C(y, 0, x) = C(y, 0, r)` with `C(y, a, b) = I(y, a; u.b)`, otherwise the newest numerical parameter, and `0` in an empty numerical scope. Proved equivalent to the unrestricted calculus on every open consequence; cut is proved before weakening | 1159 tokens; 1339 AST nodes; 3688 bytes, against 1078 / 1252 / 3442 for the matched control |
-| [`newest_parameter`](Research/newest_parameter/) | In the raw native calculus DI by cases takes no witness: always the newest numerical parameter, or `0` in an empty scope, with no naming-pattern exception; QI by progress is kept. Written proof of the same consequences as `NPrf` on all open sequents, with an audit that removes the Boolean and disjunctive case splits from the predecessor proof. Also for the strict guarded clause presentation | guarded: 1070 tokens; 1243 AST nodes; 3425 bytes, against 1078 / 1252 / 3442 for the unrestricted control |
-| [`no_witness`](Research/no_witness/) | The same restriction for the eight-rule native kernel and its seven-rule diagonal variant, on all native Eq/Q/D sequents | seven rules: 924; 1021; 2753, against 932 / 1029 / 2770. Eight rules: 971; 1078; 2817 |
-| [`parameter_witness`](Research/parameter_witness/) | A five-family raw clause calculus whose introduction carries one bit: `0` or the newest numerical parameter. The scalar predecessor is reorganized as a purely equational dependency, which removes the circularity of naming terms by a predecessor before logical completeness | as stated |
-| [`uniform_raw`](Research/uniform_raw/) | The raw guarded calculus of `deterministic_introduction` without its naming exception: introduction always at the newest parameter, or `0`. The predecessor is constructed from computation, equality and equation induction only (equational interpolation in place of Boolean case splits), and a coverage packet supplies the names | 1073 tokens; 1248 AST nodes; 3439 bytes, against 1159 / 1339 / 3688 for the naming-exception control |
-| [`evaluation_discharge`](Research/evaluation_discharge/) | On raw iterator terms with clause contexts, three families: Use, Intro, and a discharge that opens `D B` at a fresh `b`, proves `E` and `F` there, performs one deterministic evaluation (the two Eval patterns, or identity) and exports the result. A zero-normal companion with SeedEval | raw: 643 tokens; 695 AST nodes; 1892 bytes. Zero-normal: 633; 697; 1858 |
-| [`one_body`](Research/one_body/) | A context entry is one body `B(y)`, read as `B(0) → ∀y B(y)`, with no separate antecedent; an ordinary assumption is stored under an iterator gate. Atomic reflexivity, the two Eval cases, Use, Open and Intro | 3130 bytes, against 2999 for the matched control |
-| [`progress_independence`](Research/progress_independence/) | QI by progress is not admissible over the other seven rules of the kernel: a model of all finite iterator computations, coverage and separation, built as a staged tower of ultrapowers, in which `I(c, 0; u.u) = 1 ≠ 0` for some `c`; so `Q_y (I(y, 0; u.u) = 0)` fails while its base and step are derivable without progress. Also two smaller checkers of the existing presentation | 251 tokens; 283 AST nodes; 605 bytes, and 269; 301; 502 |
-| [`orbit_closure`](Research/orbit_closure/) | Orbit uniqueness: from `f(S z) = h(f(z))` infer `∀y (f(y) = I(y, f(0); u.h))`, with no target term, equivalent to pointwise uniqueness over arbitrary contexts; a narrower successor-only uniqueness; an audit of every Python source of the corpus | no size record, as stated |
-| [`crossed_uniqueness`](Research/crossed_uniqueness/) | On fully normalized terms, seeded crossed uniqueness derives equality transport and equation induction; a six-rule calculus. Separately a compact checker of the existing guarded calculus | reference checker 1909 tokens; 2087 AST nodes; 5618 bytes. Compact: 269; 301; 502 against 506 bytes |
-| [`inferred_major`](Research/inferred_major/), [`smaller_envelope`](Research/smaller_envelope/) | The certificate no longer carries the major formula of an elimination: the checker reconstructs it from the target instance and still checks its proof. A mode selector `3 % len(a)` in place of the matrix-root test | compact envelope 253 tokens / 275 AST nodes / 503 bytes, by different programs; native public-goal checker 327; 375; 643 |
-| [`checked_presentation`](Research/checked_presentation/), [`context_phase`](Research/context_phase/), [`frontier_review`](Research/frontier_review/) | Smaller checkers of the existing calculi: a fully validated native Eq/D checker; an immutable-context checker in which the empty context marks the validation of the public goal, so that no phase flag is needed; a byte refinement of the guarded checker | 344 tokens; 393 AST nodes; 673 bytes against 370 / 426 / 849. 327; 375; 643 against 333 / 379 / 656. 513 bytes against 516 |
-| [`prefix_clauses`](Research/prefix_clauses/) | A `Q`-free formula is a chain of `D` binders ending in one equation, stored as `[k, s, t]` for `D^k (s = t)`; the four families of `uniform_clauses` on that representation. A separate theorem removes the antecedent field of a clause | as stated |
-| [`variable_substitution`](Research/variable_substitution/) | On zero-normal terms the equality rule substitutes for a variable only: from `x = t` and `u = v` infer `v = nf(u[t/x])`; the source can be restricted to the newest parameter | as stated |
-| [`parameter_substitution`](Research/parameter_substitution/) | On raw terms with clause contexts, replacement inside a term is restricted to free parameters; a nonvariable source is used only for joining at the root or reversing the minor equation, and a fresh alias recovers transport in a template. Five instruction families | as stated |
-| [`deterministic_specialization`](Research/deterministic_specialization/) | Clause use takes no term argument: the newest clause is specialized at `S 0`, every older one at the newest eigenparameter, and an arbitrary term is reached by naming it with a `D` formula and transporting | as stated |
-| [`uniform_clauses`](Research/uniform_clauses/), [`clausal_two_case`](Research/clausal_two_case/), [`clausal_single_evaluation`](Research/clausal_single_evaluation/) | Further forms of the clause calculus: reflexivity as one fixed axiom clause with four instruction families; the two-case Eval; zero-normal terms with a single evaluation scheme | as stated |
-| [`uniform_step`](Research/uniform_step/) | On zero-normal terms, reflexivity and one rule Step, from `I(c, a; u.h) = t` and `I(S c, a; u.h) = r` infer `r = h[t/u]`, give all computation and equality; at `c = 0` the first source is `a` by the syntax. With clause contexts: five schemes | as stated |
-| [`rootfree_clausal`](Research/rootfree_clausal/), [`reduced_clause_calculus`](Research/reduced_clause_calculus/) | The clause calculus of `raw_clausal` with a two-case Eval, the equality-composition case being derived through a zero-iterator frame; `rootfree_clausal` adds a zero-normal variant whose introduction is progressive exactly when the instantiated zero base is literally `0 = 0` | as stated |
-| [`computation_normal`](Research/computation_normal/) | A six-rule calculus on fully normal terms, as in `full_normalization`, with the statement that it does not robustly reduce checker size; separately a validated checker of the unchanged calculus | 860 bytes against 870 |
-| [`full_normalization`](Research/full_normalization/) | Both iterator computations moved into the syntax: terms are in full normal form for `I(0, a; u.h) → a` and `I(S n, a; u.h) → h[I(n, a; u.h)/u]`, and there is no computation rule at all. Six patterns: Hyp, Refl, Tr, QE, DE and one witness-selected introduction, with a lemma that repairs case introduction when normalization turns a witness into the literal `0`. Written proofs of strong normalization, confluence and substitution coherence | selected checker 2529 bytes against 2532 for the zero-only control, with more tokens and AST nodes |
-| [`reflexive_base`](Research/reflexive_base/) | On zero-normal terms, the single introduction is progressive exactly when the normalized zero instance of the matrix is literally `r = r`. Six rules; a raw seven-rule variant with an asymmetric selector gate | matched strict checker 3084 bytes against 3095 |
-| [`raw_clausal`](Research/raw_clausal/) | Five rule patterns with ordinary substitution: reflexivity, Eval, use of a retained clause, paired elimination, witness-directed paired introduction; formulas `s = t` and `D` only, with clause contexts in place of `Q` | as stated |
-| [`scalar_uniqueness`](Research/scalar_uniqueness/) | Induction for literal equations replaced by uniqueness of iteration: from `f(S z) = h(f(z))` infer `f(t) = I(t, f(0); u.h(u))`, with no induction hypothesis in the premise. The report recovers predecessor, reflection of equality and equation induction from it, closing the gap left open in `scope_kernel` | matched raw checker grows from 3322 to 3393 bytes; validated checker of the existing calculus 866 against 870 |
-| [`computational_equality`](Research/computational_equality/) | Six rules on the unchanged language, with no normalization: Hyp, Refl, Eval, QE, DE, DI. Eval merges equality with one computation: from `s = t` and `b = r` infer `r = Φ(s, t, b)`, where `Φ` is `t` if `b` is `s` or `b` is `I(0, s; u.h)`, and `h[t/u]` if `b` is `I(S c, a; u.h)` and `s` is `I(c, a; u.h)`. Both computation equations and all congruence are derived | matched checker 3039 bytes against 3121, 959 tokens against 1008 |
-| [`zero_normal`](Research/zero_normal/) | Terms with no iterator whose counter is the literal `0`; substitution rebuilds terms with `I(0, a; u.h)` replaced by `a`, so the zero computation rule is deleted. With the single introduction and one-term transport: six rules. Ships a compiled Lean module for the normalization layer | matched strict tagged checkers, 8 and 7 rules: 3322 and 3272 bytes |
-| [`diagonal_guard`](Research/diagonal_guard/) | One introduction whose mode is chosen by a guard that substitution preserves and reflects: progress exactly when the matrix is literally `I(y, y; u.h) = I(y, y; v.k)`, cases otherwise. Seven rules on the full formula language with the original readings | matched typed checker 3244 bytes against 3382 for eight rules and 3205 for the witness rule |
-| [`template_free`](Research/template_free/) | Equality with no supplied template: from `s = t` and `u = v` infer `v = R(u)`, where `R` replaces every free occurrence of `s` in `u` by `t` in one pass. Seven rules; congruence in a chosen context is recovered through an oversized computation marker | strict tagged checker, as stated |
-| [`target_closure`](Research/target_closure/) | A seven-rule progressive calculus `T` whose closure elimination supplies one numerical target, equivalent to the calculus of `uniform_progress`; separately, exact certificate typing by a lexical gate for the existing calculus | `T` checker 4532 bytes against 4553; typed checker of the existing calculus 895 bytes against 1039 |
-| [`scope_kernel`](Research/scope_kernel/) | Reuse of the kernel's first scope traversal in the validated checker. Two research notes: a coordinatewise model on `N × N` that validates equation induction and refutes coverage, and an unfinished attempt to replace equation induction by uniqueness of iteration | fully validated Eq/Q/D checker 881 bytes against 897 |
+| [`constructed_computation`](Artifacts/constructed_computation/) | Successor sources constructed from predecessors; a finite-range obstruction to restricting DI witnesses and QE targets at once | 279 / 314 / 682 |
+| [`counter_congruence`](Artifacts/counter_congruence/) | A counter-congruence form of the calculus | 280 / 314 / 672 |
+| [`uniform_predecessor`](Artifacts/uniform_predecessor/) | Uniform predecessor packets; single-body initializer fusion cannot define addition, selection or pairing | 269 / 307 / 629 |
+| [`adaptive_seed`](Artifacts/adaptive_seed/) | An obstruction result only; no smaller checker | — |
+| [`research`](Artifacts/research/) | A progressive binder `H_{x,y} B := ∃x ∀y (B(x,y) → B(x,S y))`; an eventually-constant obstruction | 276 / 305 / 749, and 652 bytes |
+| [`local_scopes`](Artifacts/local_scopes/) | No finite-dimensional bi-interpretation of iPRA with the tied-seed `B` theory | 668 bytes |
+| [`checker_and_barriers`](Artifacts/checker_and_barriers/) | Two further obstructions | 593 bytes |
+| [`compact_kernel`](Artifacts/compact_kernel/) | Truth transfer in eventually constant powers for all `∧, ∃, ∀` formulas, hence a symmetry obstruction | 266 / 310 / 612 |
+| [`certified_zero`](Artifacts/certified_zero/) | Certified zero sources; the reference statement of the inherited basis and bridge | 264 / 308 / 566; 558 bytes; joint 262 / 296 / 598 |
+| [`uniform_zero`](Artifacts/uniform_zero/) | Uniform zero and constructed elimination majors; shorter certificates | 545 to 564 bytes over six profiles |
+| [`uniform_premise`](Artifacts/uniform_premise/) | Every non-hypothesis instruction verifies a major premise against a retained neutral truth; a successful-trace invariant replaces the type guard | 262 / 303 / 548, and 537 bytes |
+| [`witness_rule`](Artifacts/witness_rule/) | One introduction rule in place of the case/progress choice: progress exactly when the matrix is a literal equation and the witness is literally `0`, cases otherwise; the same sequents are derivable | 266 / 312 / 555 |
+| [`neutral_scope`](Artifacts/neutral_scope/) | Composition of neutral premises with local scopes; no new mathematics | 266 / 310 / 529, and 290 AST nodes |
+| [`prevalidated_elimination`](Artifacts/prevalidated_elimination/) | The elimination template and both instances are fixed before the major premise is proved; no new mathematics | 263 / 307 / 547; 539 bytes; 261 tokens |
+| [`scope_and_coverage`](Artifacts/scope_and_coverage/) | Byte-profile checkers; for the self-seeded recursor without successor injectivity, `S^k(a) ≠ a` for each fixed `k ≥ 1` and a right predecessor with `n = 0 ∨ n = S(P n)` | 266 / 310 / 529, and 537 bytes |
+| [`coverage_and_kernel`](Artifacts/coverage_and_kernel/) | For the self-seeded recursor without successor injectivity, whole-domain coverage from a protected orbit; one `D` over a literal equation represents exactly the prenex `∃∀` quantifier-free class | 531 and 539 bytes; 289 AST nodes |
+| [`direct_closure`](Artifacts/direct_closure/), [`direct_closure_qprogress`](Artifacts/direct_closure_qprogress/) | Two independent write-ups of one change of primitive: equation induction introduces `Q_y E(y)` directly, from `E(z) ⊢ E(S z)`, and the witnessed `D` progress rule becomes derived; the first also carries a Lean migration sketch and a counter-vector experiment | no new minimum (552 and 568 bytes; 533 for the experiment) |
+| [`source_dispatch`](Artifacts/source_dispatch/) | Transport may be restricted to sources that are not literally `0`, every omitted instance being derivable; the source then selects the elimination major (`Q_v F(v)` at `0`, `s = t` otherwise) | 259 tokens; 283 AST nodes; 526 bytes (three programs) |
+| [`guarded_core`](Artifacts/guarded_core/) | Atomic matrices under `D` restricted to the guarded shape `I(y,0;u.h) = I(y,0;u.k)`, so one root-determined introduction rule suffices: progress at equations, cases at compound matrices | 260 tokens; 286 AST nodes; 527 bytes (three programs) |
+| [`scope_and_closure`](Artifacts/scope_and_closure/) | Checker composition only for the core; a "mixed closure" variant with progressive `Q` at literal equations and a deterministic introduction; an obstruction to zero-start iterators | 264 / 288 / 608, and 528 bytes |
+| [`reversal_core`](Artifacts/reversal_core/) | Transport and QE reverse the root equation of their conclusion, with transport sources other than the literal `0`; a constant template then gives unrestricted symmetry in one step, and the source restriction is removed with no induction, cases or successor computation. Ships a proposed Lean module | 525 bytes; 282 AST nodes (two programs); typed checker 1055 bytes against a 1365-byte control |
+| [`guarded_source`](Artifacts/guarded_source/) | Source dispatch and the guarded core coexist: the recovery of zero-source transport needs equation induction only, its case splits being inductions that ignore the hypothesis | 258 tokens; 281 AST nodes; 525 bytes (as stated, different programs) |
+| [`guarded_orbit`](Artifacts/guarded_orbit/) | In a strictly guarded proof language the two do not compose (`0 = t` does not yield `t = 0`); the administrative orbit `D_{r,y}(y = I(y,t;u.Su))` repairs it | 258 tokens; 281 AST nodes; 525 bytes (three programs) |
+| [`deterministic_auxiliary`](Artifacts/deterministic_auxiliary/) | Source-selected elimination with root-determined introduction, keeping unrestricted atomic progress formulas as auxiliary intermediates; the guarded public consequences are unchanged | 525 and 522 bytes |
+| [`mirror_guard`](Artifacts/mirror_guard/) | A one-sided guard: canonical atomic matrices `a(x,y) = I(y, a(x,y); u.h)`, with one root-determined introduction and no literal-zero transport source | modest, as stated |
+| [`protected_core`](Artifacts/protected_core/) | Public equality `s = t` represented as `W(s) = W(t)`, `W(r) = I(0,r;u.0)`, so that every transport source is iterator-headed | modest, as stated |
+| [`one_context`](Artifacts/one_context/) | Transport with one term template instead of two, crossed: from `s = t` and `h(s) = u` infer `u = h(t)`. Two steps recover the two-template rule; sources are unrestricted and the rule is stable under substitution. Ships proposed Lean modules. Independently, strict goal validation reuses the kernel's scope check | matched tagged checker 3382 to 3358 bytes, 1101 to 1089 tokens; strict Eq/D validator 824 to 803 bytes |
+| [`kernel_refinement`](Artifacts/kernel_refinement/) | The guarded-source checkers with a loop over immutable tuple contexts and the scalar neutral premise. An auxiliary note replaces equational transport by replacement of one occurrence in the left side of an equation, `C[s] = r` to `C[t] = r` for a linear term context `C` | 256 tokens; 278 AST nodes; 521 bytes (three programs) |
+| [`compact_update`](Artifacts/compact_update/) | The scalar neutral-resource encoding of `reversal_core` applied to the `guarded_source` checkers; stated to be an implementation-level composition. Also an exact criterion for when the conditional closure `E(0) → ∀y E(y)` and the progressive closure `∀y (E(y) → E(S y))` of an equation agree: exactly when `¬E(0)` implies progress | 257 tokens; 278 AST nodes; 521 bytes (different programs) |
+| [`uniform_progress`](Artifacts/uniform_progress/) | A seven-rule calculus `R` on the unrestricted formula grammar with a changed reading: `Q_y E` of a literal equation means progress, `∀y (E(y) → E(S y))`, and of a compound matrix the conditional closure. One introduction rule chooses its mode from the root of the matrix alone, so it commutes with substitution; one elimination `Q_y B, B(η) ⊢ B(I(η, n; u. S u))` serves both readings. Translations to and from the native calculus with both round trips, as written proofs | matched typed checker 4553 bytes against 4692 for the eight-rule kernel and 4456 for the seven-rule witness kernel |
+| [`one_sided_transport`](Artifacts/one_sided_transport/) | The seven-rule calculus with its transport replaced by the one-template crossed rule at sources other than the literal `0`: from `s = t` and `f(s) = r` infer `r = f(t)`. The zero computation and this rule alone recover all equality reasoning, with no induction and no logical rule. Ships a proposed Lean module | matched strict checker 3246 bytes against 3302, 1171 tokens against 1196 |
+| [`validated_core`](Artifacts/validated_core/) | One recursive validator shared between raw-tree typing and the public grammar, for the unchanged rule basis | fully validated Eq/Q/D checker 897 bytes against a matched 1049; compact envelope 256 tokens, 278 AST nodes, 521 bytes (different programs) |
+| [`validated_presentation`](Artifacts/validated_presentation/) | The whole certificate is typed by one test on its printed form, so the public syntax validator loses its separate raw-type pass; the proof kernel is unchanged | fully validated Eq/Q/D checker 870 bytes against 897, 383 tokens against 401 |
+| [`checked_refinement`](Artifacts/checked_refinement/) | Three smaller implementations of the existing presentations; stated to contain no new axiom deletion | guarded public-goal checker 921 bytes against 1201; native Eq/D public checker 788 against 803; compact guarded 520 against 521 |
+| [`equality_from_iteration`](Artifacts/equality_from_iteration/) | The rule Eval of `computational_equality` without its first case: equality composition `s = t, s = r ⊢ r = t` follows from the zero-iteration case through the frame `I(0, s; u.u)`. A companion calculus on zero-normal terms has reflexivity and one successor-evaluation schema | as stated |
+| [`clause_guards`](Artifacts/clause_guards/) | The raw Eq/D clause calculus with the two-case Eval and the diagonal introduction: five rule families, with ordinary substitution preserving the whole proof tree | as stated |
+| [`mirror_core`](Artifacts/mirror_core/) | Six rules on the raw language (Hyp, Refl, Eval, QE, DE and one introduction), the introduction being progressive exactly at a matrix of the literal shape `a(x,y) = I(y, a(x,y); u.h)`: one iterator in the selector where the diagonal guard has two | as stated |
+| [`seed_evaluation`](Artifacts/seed_evaluation/) | On zero-normal terms, the rule `a = b, I(S c, a; u.h) = r ⊢ r = h[I(c, b; u.h)/u]` with reflexivity, equivalent to the rule Step without any logical rule or induction | as stated |
+| [`clause_contexts`](Artifacts/clause_contexts/) | Four inference schemes (Use, Step, Open, Close) and the reflexivity axiom clause, on zero-normal terms | as stated |
+| [`witness_discharge`](Artifacts/witness_discharge/) | Three inference families (Use, Intro, Name) and the reflexivity axiom clause; Name combines equality substitution with the discharge of an existential witness | as stated |
+| [`inferred_witness`](Artifacts/inferred_witness/), [`deterministic_opening`](Artifacts/deterministic_opening/), [`first_instance`](Artifacts/first_instance/), [`clause_discharge`](Artifacts/clause_discharge/) | On full normal forms with clause contexts: the opening of `D_{x,y} B` at a fresh `b` reads its witness off the matrix. If `B(b, 0)` is literally `0 = 0` and `B(b, 1)` is literally `b = t`, the clause is opened at `t` (or `t` is substituted for `b` in the exported formula); otherwise at `b`. No replacement term and no equality proof are supplied. Three families (Use, Intro, Open) and the reflexivity clause | as stated; each reports a smaller matched complete checker and none claims a new minimum |
+| [`substitutive_discharge`](Artifacts/substitutive_discharge/) | On the canonical recursor syntax, four families: one successor calculation, Use, Intro, and a discharge that opens `D` at a fresh `b`, proves `s = t` and `F(s)` there, and exports `F(t)`. Reflexivity is derived; no full normalization and no fixed clause | as stated |
+| [`deterministic_introduction`](Artifacts/deterministic_introduction/) | In the raw guarded Eq/D calculus the introduction takes no witness: it selects `r` if the matrix is literally `C(y, 0, x) = C(y, 0, r)` with `C(y, a, b) = I(y, a; u.b)`, otherwise the newest numerical parameter, and `0` in an empty numerical scope. Proved equivalent to the unrestricted calculus on every open consequence; cut is proved before weakening | 1159 tokens; 1339 AST nodes; 3688 bytes, against 1078 / 1252 / 3442 for the matched control |
+| [`newest_parameter`](Artifacts/newest_parameter/) | In the raw native calculus DI by cases takes no witness: always the newest numerical parameter, or `0` in an empty scope, with no naming-pattern exception; QI by progress is kept. Written proof of the same consequences as `NPrf` on all open sequents, with an audit that removes the Boolean and disjunctive case splits from the predecessor proof. Also for the strict guarded clause presentation | guarded: 1070 tokens; 1243 AST nodes; 3425 bytes, against 1078 / 1252 / 3442 for the unrestricted control |
+| [`no_witness`](Artifacts/no_witness/) | The same restriction for the eight-rule native kernel and its seven-rule diagonal variant, on all native Eq/Q/D sequents | seven rules: 924; 1021; 2753, against 932 / 1029 / 2770. Eight rules: 971; 1078; 2817 |
+| [`parameter_witness`](Artifacts/parameter_witness/) | A five-family raw clause calculus whose introduction carries one bit: `0` or the newest numerical parameter. The scalar predecessor is reorganized as a purely equational dependency, which removes the circularity of naming terms by a predecessor before logical completeness | as stated |
+| [`uniform_raw`](Artifacts/uniform_raw/) | The raw guarded calculus of `deterministic_introduction` without its naming exception: introduction always at the newest parameter, or `0`. The predecessor is constructed from computation, equality and equation induction only (equational interpolation in place of Boolean case splits), and a coverage packet supplies the names | 1073 tokens; 1248 AST nodes; 3439 bytes, against 1159 / 1339 / 3688 for the naming-exception control |
+| [`evaluation_discharge`](Artifacts/evaluation_discharge/) | On raw iterator terms with clause contexts, three families: Use, Intro, and a discharge that opens `D B` at a fresh `b`, proves `E` and `F` there, performs one deterministic evaluation (the two Eval patterns, or identity) and exports the result. A zero-normal companion with SeedEval | raw: 643 tokens; 695 AST nodes; 1892 bytes. Zero-normal: 633; 697; 1858 |
+| [`one_body`](Artifacts/one_body/) | A context entry is one body `B(y)`, read as `B(0) → ∀y B(y)`, with no separate antecedent; an ordinary assumption is stored under an iterator gate. Atomic reflexivity, the two Eval cases, Use, Open and Intro | 3130 bytes, against 2999 for the matched control |
+| [`progress_independence`](Artifacts/progress_independence/) | QI by progress is not admissible over the other seven rules of the kernel: a model of all finite iterator computations, coverage and separation, built as a staged tower of ultrapowers, in which `I(c, 0; u.u) = 1 ≠ 0` for some `c`; so `Q_y (I(y, 0; u.u) = 0)` fails while its base and step are derivable without progress. Also two smaller checkers of the existing presentation | 251 tokens; 283 AST nodes; 605 bytes, and 269; 301; 502 |
+| [`orbit_closure`](Artifacts/orbit_closure/) | Orbit uniqueness: from `f(S z) = h(f(z))` infer `∀y (f(y) = I(y, f(0); u.h))`, with no target term, equivalent to pointwise uniqueness over arbitrary contexts; a narrower successor-only uniqueness; an audit of every Python source of the corpus | no size record, as stated |
+| [`crossed_uniqueness`](Artifacts/crossed_uniqueness/) | On fully normalized terms, seeded crossed uniqueness derives equality transport and equation induction; a six-rule calculus. Separately a compact checker of the existing guarded calculus | reference checker 1909 tokens; 2087 AST nodes; 5618 bytes. Compact: 269; 301; 502 against 506 bytes |
+| [`inferred_major`](Artifacts/inferred_major/), [`smaller_envelope`](Artifacts/smaller_envelope/) | The certificate no longer carries the major formula of an elimination: the checker reconstructs it from the target instance and still checks its proof. A mode selector `3 % len(a)` in place of the matrix-root test | compact envelope 253 tokens / 275 AST nodes / 503 bytes, by different programs; native public-goal checker 327; 375; 643 |
+| [`checked_presentation`](Artifacts/checked_presentation/), [`context_phase`](Artifacts/context_phase/), [`frontier_review`](Artifacts/frontier_review/) | Smaller checkers of the existing calculi: a fully validated native Eq/D checker; an immutable-context checker in which the empty context marks the validation of the public goal, so that no phase flag is needed; a byte refinement of the guarded checker | 344 tokens; 393 AST nodes; 673 bytes against 370 / 426 / 849. 327; 375; 643 against 333 / 379 / 656. 513 bytes against 516 |
+| [`prefix_clauses`](Artifacts/prefix_clauses/) | A `Q`-free formula is a chain of `D` binders ending in one equation, stored as `[k, s, t]` for `D^k (s = t)`; the four families of `uniform_clauses` on that representation. A separate theorem removes the antecedent field of a clause | as stated |
+| [`variable_substitution`](Artifacts/variable_substitution/) | On zero-normal terms the equality rule substitutes for a variable only: from `x = t` and `u = v` infer `v = nf(u[t/x])`; the source can be restricted to the newest parameter | as stated |
+| [`parameter_substitution`](Artifacts/parameter_substitution/) | On raw terms with clause contexts, replacement inside a term is restricted to free parameters; a nonvariable source is used only for joining at the root or reversing the minor equation, and a fresh alias recovers transport in a template. Five instruction families | as stated |
+| [`deterministic_specialization`](Artifacts/deterministic_specialization/) | Clause use takes no term argument: the newest clause is specialized at `S 0`, every older one at the newest eigenparameter, and an arbitrary term is reached by naming it with a `D` formula and transporting | as stated |
+| [`uniform_clauses`](Artifacts/uniform_clauses/), [`clausal_two_case`](Artifacts/clausal_two_case/), [`clausal_single_evaluation`](Artifacts/clausal_single_evaluation/) | Further forms of the clause calculus: reflexivity as one fixed axiom clause with four instruction families; the two-case Eval; zero-normal terms with a single evaluation scheme | as stated |
+| [`uniform_step`](Artifacts/uniform_step/) | On zero-normal terms, reflexivity and one rule Step, from `I(c, a; u.h) = t` and `I(S c, a; u.h) = r` infer `r = h[t/u]`, give all computation and equality; at `c = 0` the first source is `a` by the syntax. With clause contexts: five schemes | as stated |
+| [`rootfree_clausal`](Artifacts/rootfree_clausal/), [`reduced_clause_calculus`](Artifacts/reduced_clause_calculus/) | The clause calculus of `raw_clausal` with a two-case Eval, the equality-composition case being derived through a zero-iterator frame; `rootfree_clausal` adds a zero-normal variant whose introduction is progressive exactly when the instantiated zero base is literally `0 = 0` | as stated |
+| [`computation_normal`](Artifacts/computation_normal/) | A six-rule calculus on fully normal terms, as in `full_normalization`, with the statement that it does not robustly reduce checker size; separately a validated checker of the unchanged calculus | 860 bytes against 870 |
+| [`full_normalization`](Artifacts/full_normalization/) | Both iterator computations moved into the syntax: terms are in full normal form for `I(0, a; u.h) → a` and `I(S n, a; u.h) → h[I(n, a; u.h)/u]`, and there is no computation rule at all. Six patterns: Hyp, Refl, Tr, QE, DE and one witness-selected introduction, with a lemma that repairs case introduction when normalization turns a witness into the literal `0`. Written proofs of strong normalization, confluence and substitution coherence | selected checker 2529 bytes against 2532 for the zero-only control, with more tokens and AST nodes |
+| [`reflexive_base`](Artifacts/reflexive_base/) | On zero-normal terms, the single introduction is progressive exactly when the normalized zero instance of the matrix is literally `r = r`. Six rules; a raw seven-rule variant with an asymmetric selector gate | matched strict checker 3084 bytes against 3095 |
+| [`raw_clausal`](Artifacts/raw_clausal/) | Five rule patterns with ordinary substitution: reflexivity, Eval, use of a retained clause, paired elimination, witness-directed paired introduction; formulas `s = t` and `D` only, with clause contexts in place of `Q` | as stated |
+| [`scalar_uniqueness`](Artifacts/scalar_uniqueness/) | Induction for literal equations replaced by uniqueness of iteration: from `f(S z) = h(f(z))` infer `f(t) = I(t, f(0); u.h(u))`, with no induction hypothesis in the premise. The report recovers predecessor, reflection of equality and equation induction from it, closing the gap left open in `scope_kernel` | matched raw checker grows from 3322 to 3393 bytes; validated checker of the existing calculus 866 against 870 |
+| [`computational_equality`](Artifacts/computational_equality/) | Six rules on the unchanged language, with no normalization: Hyp, Refl, Eval, QE, DE, DI. Eval merges equality with one computation: from `s = t` and `b = r` infer `r = Φ(s, t, b)`, where `Φ` is `t` if `b` is `s` or `b` is `I(0, s; u.h)`, and `h[t/u]` if `b` is `I(S c, a; u.h)` and `s` is `I(c, a; u.h)`. Both computation equations and all congruence are derived | matched checker 3039 bytes against 3121, 959 tokens against 1008 |
+| [`zero_normal`](Artifacts/zero_normal/) | Terms with no iterator whose counter is the literal `0`; substitution rebuilds terms with `I(0, a; u.h)` replaced by `a`, so the zero computation rule is deleted. With the single introduction and one-term transport: six rules. Ships a compiled Lean module for the normalization layer | matched strict tagged checkers, 8 and 7 rules: 3322 and 3272 bytes |
+| [`diagonal_guard`](Artifacts/diagonal_guard/) | One introduction whose mode is chosen by a guard that substitution preserves and reflects: progress exactly when the matrix is literally `I(y, y; u.h) = I(y, y; v.k)`, cases otherwise. Seven rules on the full formula language with the original readings | matched typed checker 3244 bytes against 3382 for eight rules and 3205 for the witness rule |
+| [`template_free`](Artifacts/template_free/) | Equality with no supplied template: from `s = t` and `u = v` infer `v = R(u)`, where `R` replaces every free occurrence of `s` in `u` by `t` in one pass. Seven rules; congruence in a chosen context is recovered through an oversized computation marker | strict tagged checker, as stated |
+| [`target_closure`](Artifacts/target_closure/) | A seven-rule progressive calculus `T` whose closure elimination supplies one numerical target, equivalent to the calculus of `uniform_progress`; separately, exact certificate typing by a lexical gate for the existing calculus | `T` checker 4532 bytes against 4553; typed checker of the existing calculus 895 bytes against 1039 |
+| [`scope_kernel`](Artifacts/scope_kernel/) | Reuse of the kernel's first scope traversal in the validated checker. Two research notes: a coordinatewise model on `N × N` that validates equation induction and refutes coverage, and an unfinished attempt to replace equation induction by uniqueness of iteration | fully validated Eq/Q/D checker 881 bytes against 897 |
 
 ### Other arithmetic bases
 
 | Package | Arithmetic basis |
 | --- | --- |
-| [`scalar_successor`](Research/scalar_successor/), [`transient_seed`](Research/transient_seed/), [`successor_seed_completion`](Research/successor_seed_completion/) | A successor-seeded recursor `R(0,a;u.h) = S(a)`, `R(S n,a;u.h) = h[R(n,a;u.h)/u]`, with `S(a) := R(0,a;u.0)`; three independent predecessor constructions |
-| [`bounded_initializer`](Research/bounded_initializer/) | A tied-seed recursor `B` with a Boolean equality test `ε` |
-| [`monus_and_neutral_major`](Research/monus_and_neutral_major/) | A tied-seed recursor with two truncated-subtraction equations, from which reflection of equality is derived; also a neutral-major certificate protocol for the native core |
-| [`selfseed_scalar`](Research/selfseed_scalar/) | A self-seeded recursor `F(0;v.h) = S(h(0))`, `F(S n;v.h) = h(F(n;v.h))` over ordinary logic with successor injectivity, `0 ≠ S 0`, a Boolean equality test and literal-equation induction; also checkers of 554 bytes and of 291 AST nodes for the native core |
-| [`register_graph`](Research/register_graph/) | Terms `x`, `0` and a counter-aware register iterator `J(n; i, r. body)` only, over ordinary logic: successor `S(a) = J(a; i, r. 0)` and the initializer are derived, and primitive recursion compiles without pairing; also a 288-node AST checker for the native core |
-| [`canonical_recursors`](Research/canonical_recursors/) | A successor-seeded recursor `R(n, a; u.h)` with successor defined as `R(0, a; u.0)`; the zero computation is built into a canonical term grammar with normalizing substitution, so successor computation is the only explicit computation rule. Six rules; written proofs of the equivalence with the raw calculus and of the bi-interpretation with iPRA. Normalization is part of the trusted specification. Matched strict checker 4611 bytes against 4923 for the scalar iterator with independent `S`; separately, the compact guarded codec at 516 bytes against 522 |
-| [`initializer_equality`](Research/initializer_equality/) | On zero-normal iterator terms, equality transport is replacement of an iterator's initializer; zero iteration is definitional, so this includes replacement at the root, and one iteration applies any term template. Six rules; the equality step takes two proofs and no template |
-| [`clausal_canonical`](Research/clausal_canonical/) | Five rules on the canonical recursor syntax, with an Eq/D public language and contexts of reusable clauses in place of `Q`. Matched checker 3305 bytes against 3820 for the six-rule control |
-| [`counter_evaluation`](Research/counter_evaluation/) | On the counter-aware successor-seeded recursor `R(n, a; i, u.h)`, reflexivity and one rule: from `s = t` and `R(S s, a; i,u.h) = r` infer `r = h(t, R(t, a; i,u.h))`. With clause contexts: five patterns |
-| [`uniform_binding`](Research/uniform_binding/) | The counter-aware clause calculus with one ternary recursor `R(n, a; i, u.h)`; `R` and `D` both bind exactly two variables in their last child, and one traversal handles validation, zero-body erasure and binder opening |
-| [`parameter_intro`](Research/parameter_intro/) | On the counter-aware successor-seeded recursor with full normalization and clause contexts, three families: Use, Introduction, and substitution with discharge. Introduction takes no witness: it uses the newest outer numerical parameter, or `0` at the closed root; arbitrary witnesses are recovered by naming through clause specialization. 630 tokens / 701 AST nodes / 1925 bytes |
-| [`conditional_copy`](Research/conditional_copy/) | Introduction at the newest parameter combined with a discharge that infers its replacement from two normalized rows; three families Use, Close and Export, and only Use supplies a term. The theorem that makes the combination possible is conditional copy, `D_{x,y} Sel(y, H(t), H(x))`, proved uniformly without equality transport |
-| [`single_constructor`](Research/single_constructor/) | Terms `x`, `0` and `R(n, a; i, u.h)` with the successor defined, a fixed reflexivity clause and three families Use, Introduce and Open with an inferred witness, on full canonical normal forms. 683 tokens / 764 AST nodes / 1965 bytes |
-| [`uniform_recursion`](Research/uniform_recursion/) | Variables, `0` and the one recursor `R(n, a; i, u.h)`, with the successor defined as `R(0, a; i, u.0)`; a fixed reflexivity clause and three families Use, Close and Name. 662 tokens / 741 AST nodes / 1950 bytes |
+| [`scalar_successor`](Artifacts/scalar_successor/), [`transient_seed`](Artifacts/transient_seed/), [`successor_seed_completion`](Artifacts/successor_seed_completion/) | A successor-seeded recursor `R(0,a;u.h) = S(a)`, `R(S n,a;u.h) = h[R(n,a;u.h)/u]`, with `S(a) := R(0,a;u.0)`; three independent predecessor constructions |
+| [`bounded_initializer`](Artifacts/bounded_initializer/) | A tied-seed recursor `B` with a Boolean equality test `ε` |
+| [`monus_and_neutral_major`](Artifacts/monus_and_neutral_major/) | A tied-seed recursor with two truncated-subtraction equations, from which reflection of equality is derived; also a neutral-major certificate protocol for the native core |
+| [`selfseed_scalar`](Artifacts/selfseed_scalar/) | A self-seeded recursor `F(0;v.h) = S(h(0))`, `F(S n;v.h) = h(F(n;v.h))` over ordinary logic with successor injectivity, `0 ≠ S 0`, a Boolean equality test and literal-equation induction; also checkers of 554 bytes and of 291 AST nodes for the native core |
+| [`register_graph`](Artifacts/register_graph/) | Terms `x`, `0` and a counter-aware register iterator `J(n; i, r. body)` only, over ordinary logic: successor `S(a) = J(a; i, r. 0)` and the initializer are derived, and primitive recursion compiles without pairing; also a 288-node AST checker for the native core |
+| [`canonical_recursors`](Artifacts/canonical_recursors/) | A successor-seeded recursor `R(n, a; u.h)` with successor defined as `R(0, a; u.0)`; the zero computation is built into a canonical term grammar with normalizing substitution, so successor computation is the only explicit computation rule. Six rules; written proofs of the equivalence with the raw calculus and of the bi-interpretation with iPRA. Normalization is part of the trusted specification. Matched strict checker 4611 bytes against 4923 for the scalar iterator with independent `S`; separately, the compact guarded codec at 516 bytes against 522 |
+| [`initializer_equality`](Artifacts/initializer_equality/) | On zero-normal iterator terms, equality transport is replacement of an iterator's initializer; zero iteration is definitional, so this includes replacement at the root, and one iteration applies any term template. Six rules; the equality step takes two proofs and no template |
+| [`clausal_canonical`](Artifacts/clausal_canonical/) | Five rules on the canonical recursor syntax, with an Eq/D public language and contexts of reusable clauses in place of `Q`. Matched checker 3305 bytes against 3820 for the six-rule control |
+| [`counter_evaluation`](Artifacts/counter_evaluation/) | On the counter-aware successor-seeded recursor `R(n, a; i, u.h)`, reflexivity and one rule: from `s = t` and `R(S s, a; i,u.h) = r` infer `r = h(t, R(t, a; i,u.h))`. With clause contexts: five patterns |
+| [`uniform_binding`](Artifacts/uniform_binding/) | The counter-aware clause calculus with one ternary recursor `R(n, a; i, u.h)`; `R` and `D` both bind exactly two variables in their last child, and one traversal handles validation, zero-body erasure and binder opening |
+| [`parameter_intro`](Artifacts/parameter_intro/) | On the counter-aware successor-seeded recursor with full normalization and clause contexts, three families: Use, Introduction, and substitution with discharge. Introduction takes no witness: it uses the newest outer numerical parameter, or `0` at the closed root; arbitrary witnesses are recovered by naming through clause specialization. 630 tokens / 701 AST nodes / 1925 bytes |
+| [`conditional_copy`](Artifacts/conditional_copy/) | Introduction at the newest parameter combined with a discharge that infers its replacement from two normalized rows; three families Use, Close and Export, and only Use supplies a term. The theorem that makes the combination possible is conditional copy, `D_{x,y} Sel(y, H(t), H(x))`, proved uniformly without equality transport |
+| [`single_constructor`](Artifacts/single_constructor/) | Terms `x`, `0` and `R(n, a; i, u.h)` with the successor defined, a fixed reflexivity clause and three families Use, Introduce and Open with an inferred witness, on full canonical normal forms. 683 tokens / 764 AST nodes / 1965 bytes |
+| [`uniform_recursion`](Artifacts/uniform_recursion/) | Variables, `0` and the one recursor `R(n, a; i, u.h)`, with the successor defined as `R(0, a; i, u.0)`; a fixed reflexivity clause and three families Use, Close and Name. 662 tokens / 741 AST nodes / 1950 bytes |
 
 ## Intake record
 
@@ -766,7 +771,7 @@ A third delivery of six archives arrived in `docs/incoming/` on 2026-11-11
 `reversal_core`. They respond to the kernel with equational transport and
 `zprf_iff_nprf`. Not filed, as before: fifty frozen copies of this
 repository's Lean sources and three checksum ledgers. The proposed module
-`Research/reversal_core/formalization/Reversal.lean` is kept as delivered; its
+`Artifacts/reversal_core/formalization/Reversal.lean` is kept as delivered; its
 compiled form is `Lean/ConciseIPRA/NativeReversal.lean`.
 
 A fourth delivery of four archives arrived on 2026-11-11 (commits
@@ -775,13 +780,13 @@ A fourth delivery of four archives arrived on 2026-11-11 (commits
 They respond to the third delivery and to `NativeReversal`. Not filed:
 sixteen frozen copies of this repository's Lean sources and two checksum
 ledgers. The proposed modules
-`Research/one_context/lean/*.lean` are kept as delivered.
+`Artifacts/one_context/lean/*.lean` are kept as delivered.
 
 A fifth delivery of two archives arrived on 2026-11-11 (commit `42a48d2f04`)
 and was filed the same day: `one_sided_transport` and `validated_core`. Not
 filed: thirty-nine frozen copies of this repository's Lean sources and one
 checksum ledger. The proposed module
-`Research/one_sided_transport/formalization/NativeOneSided.lean` is kept as
+`Artifacts/one_sided_transport/formalization/NativeOneSided.lean` is kept as
 delivered; `NativeOneContext` and `NativeMinimal` prove its theorems.
 
 A sixth delivery of three archives arrived on 2026-11-11 and 2026-11-12 and
@@ -794,7 +799,7 @@ A seventh delivery of six archives arrived on 2026-11-11 (commit
 `initializer_equality`, `scope_kernel`, `target_closure`, `template_free` and
 `zero_normal`. Not filed: fifty-five frozen copies of this repository's Lean
 sources, three checksum ledgers and five build logs. The delivered module
-`Research/zero_normal/formal/ZeroNormalization.lean` compiled unchanged and
+`Artifacts/zero_normal/formal/ZeroNormalization.lean` compiled unchanged and
 is `Lean/ConciseIPRA/ZeroNormalization.lean`.
 
 `checked_presentation`, `context_phase`, `crossed_uniqueness`,
