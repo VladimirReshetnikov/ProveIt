@@ -1,0 +1,139 @@
+import Positive81To83Transport
+import EtaNaturalGraphEarlyIndex
+import EtaZeroGrowth
+
+/-! Conditional 81 calibration via 81→80→89→85 only. Exact-index,
+oriented-main and rank-lower cuts are explicit; no 83→81 use or Lean run. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Positive81CalibrationDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ArithmeticPellRecurrence
+open EtaNaturalUnitGraphDraft EtaNaturalXPositiveDraft EtaNaturalGapRankDraft
+open Residue90CompactPortBoundsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Exact-index upgrade, for the same n and quotient w returned by the actual
+prototype early-index theorem. The strong/aux proof is not assumed done. -/
+def ExactIndexCut (p : Fin 4 → ℕ) (v : Fin 13 → V) : Prop :=
+  ∀ n w : V, 13≤n →
+    2*ycoord n (2*(X p v*Y p v*Y p v-1)+1)=k v →
+    k v=2*n+4*(X p v*Y p v*Y p v)*w →
+    (2*n)%((q p v)^4)=rank p v+1 → 2*n=rank p v+1
+
+/-- The same positive oriented main root must satisfy both Pell coordinates
+and the no-E*q carrier balance at the graph's exact natural rank. -/
+def OrientedMainCut (p : Fin 4 → ℕ) (v : Fin 13 → V) : Prop :=
+  ∃ main : V,
+    xcoord (rank p v) (Y p v*(X p v+1))=main ∧
+    ycoord (rank p v) (Y p v*(X p v+1))=c p v ∧
+    let a:=X p v*Y p v+Y p v; let H:=3+4*a; let U:=Y p v*(q p v*q p v)
+    U*main+H*k v=U*(X p v+a*c p v)+H*(U*v 12+rank p v+1)
+
+/-- Conditional graph power: actual early index plus exact-index and oriented
+main cuts supply the witnesses for the no-extra-term power theorem. -/
+theorem prototype_power (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (ports K j:ℤ))).output v)
+    (hexact : ExactIndexCut (ports K) v) (hmain : OrientedMainCut (ports K) v) :
+    X (ports K) v=Exp.exp (rank (ports K) v) := by
+  let p := ports K
+  have hJ := EtaNaturalJPositiveDraft.J_positive p v hz
+  obtain ⟨hb,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) hJ
+  have hp0 : (p 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  have hbeta : 0<(p 0:V) := by simpa only [hp0] using hb
+  have hq47 : (47:V)≤q p v := by
+    simpa only [q,Residue90GraphNormsDraft.q] using
+      (ResidueCompactQBoundDraft.compact_q_at_least_47 K v hJ)
+  have hq16 : (16:V)≤q p v := le_trans (by norm_num : (16:V)≤47) hq47
+  have hw0 : 0<v 6 := EtaNaturalXPositiveDraft.witness_positive p v hz hbeta
+  have hs : 0<v 7+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hzeta : 0<v 10+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hX : X p v=q p v*v 6 := rfl
+  have hY : Y p v=(q p v)^3*(v 7+1) := by dsimp [Y]; ring
+  have hk : k v=v 9+(v 10+1) := by dsimp [k]; ring
+  have hck : c p v=k v*Y p v+v 9 := by dsimp [c]; ring
+  obtain ⟨tau,n,w,_,hn,_,_,hny,hnmod,_,_,hks⟩ :=
+    EtaNaturalGraphEarlyIndexDraft.compact_early_index K v hz
+  have hpair : 2*n=rank p v+1 := hexact n w hn hny hks hnmod
+  have hindex : k v=rank p v+1+4*(X p v*Y p v*Y p v)*w := by rw [←hpair]; exact hks
+  obtain ⟨main,hmainx,hmainy,hcar⟩ := hmain
+  exact EtaZeroGrowthDraft.power (q p v) (X p v) (Y p v) (rank p v) n (k v) (c p v)
+    (v 9) (v 10+1) (v 12) main (v 7+1) (v 6) w
+    hq16 hs hw0 hX hY hn hpair hck hk hzeta hny.symm hmainx hmainy hindex hcar
+
+/-- Scalar natural-rank lower bound from q≥2, F<q and shifted alpha.
+The separate positive gap supplies F<q for the actual prototype. -/
+theorem rank_qsquare (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hq2 : 2≤q p v) (hFq : v 1+1<q p v) : q p v*q p v≤rank p v := by
+  let Q : V := q p v*q p v-1
+  let A : V := (q p v-1)*(q p v-(v 1+1))+(v 2+1)
+  have hqgt : (1:V)<q p v := lt_of_lt_of_le (by norm_num : (1:V)<2) hq2
+  have hqm : 1≤q p v-1 := pos_iff_one_le.mp (tsub_pos_iff_lt.mpr hqgt)
+  have hqF : 1≤q p v-(v 1+1) := pos_iff_one_le.mp (tsub_pos_iff_lt.mpr hFq)
+  have hA : (2:V)≤A := by
+    have hh := add_le_add (one_le_mul hqm hqF) (show (1:V)≤v 2+1 by simp)
+    simpa only [show (1:V)+1=2 by ring,A] using hh
+  have hq4 : (4:V)≤q p v*q p v := by
+    have hh := mul_le_mul hq2 hq2 (by simp : (0:V)≤2) (Arithmetic.zero_le (q p v))
+    simpa using hh
+  have hqgt1 : (1:V)<q p v*q p v := lt_of_lt_of_le (by norm_num : (1:V)<4) hq4
+  have hQ1 : 1≤Q := pos_iff_one_le.mp (tsub_pos_iff_lt.mpr hqgt1)
+  have hQeq : Q+1=q p v*q p v := tsub_add_cancel_of_le (le_of_lt hqgt1)
+  calc
+    q p v*q p v=Q+1 := hQeq.symm
+    _≤Q+Q := add_le_add_left hQ1 Q
+    _=2*Q := by ring
+    _≤A*Q := mul_le_mul_of_nonneg_right hA (Arithmetic.zero_le Q)
+    _≤rank p v := by dsimp [rank,A,Q]; exact le_add_of_nonneg_right (Arithmetic.zero_le _)
+
+/-- The exact graph gap and compact q bound provide the scalar inputs. -/
+theorem prototype_rank_qsquare (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (ports K j:ℤ))).output v) :
+    q (ports K) v*q (ports K) v≤rank (ports K) v := by
+  let p := ports K
+  have hJ := EtaNaturalJPositiveDraft.J_positive p v hz
+  obtain ⟨hb,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) hJ
+  have hp0 : (p 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  have hbeta : 0<(p 0:V) := by simpa only [hp0] using hb
+  have hgap := EtaNaturalGapRankDraft.gap p v hz hbeta
+  have hFq : v 1+1<q p v := lt_of_le_of_lt (by simp : v 1+1≤(v 1+1)+(v 2+1)) hgap
+  have hq47 : (47:V)≤q p v := by
+    simpa only [q,Residue90GraphNormsDraft.q] using
+      (ResidueCompactQBoundDraft.compact_q_at_least_47 K v hJ)
+  exact rank_qsquare p v (le_trans (by norm_num : (2:V)≤47) hq47) hFq
+
+/-- Conditional calibration uses the prototype's proposed rank bound;
+the exact-index and oriented-main cuts remain explicit. -/
+theorem prototype_power_and_qsquare (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (ports K j:ℤ))).output v)
+    (hexact : ExactIndexCut (ports K) v) (hmain : OrientedMainCut (ports K) v) :
+    X (ports K) v=Exp.exp (rank (ports K) v) ∧
+      q (ports K) v*q (ports K) v≤X (ports K) v := by
+  have hp := prototype_power K v hz hexact hmain
+  refine ⟨hp,?_⟩
+  rw [hp]
+  exact le_trans (prototype_rank_qsquare K v hz) (le_of_lt (lt_exp _))
+
+/-- The positive 81 graph supplies this prototype zero through the one-way
+81→80→89→85 map, independently of the unresolved reverse 83→81 direction. -/
+theorem calibration81 (K : ℕ) (v : Fin 13 → V) (hv : ∀ i, 0<v i)
+    (hz : InternalZero (PositiveSquare81GraphDraft.graph (fun j => (ports K j:ℤ))).output v)
+    (hexact : ExactIndexCut (ports K) (Positive80To81TransportDraft.image85 v))
+    (hmain : OrientedMainCut (ports K) (Positive80To81TransportDraft.image85 v)) :
+    X (ports K) (Positive80To81TransportDraft.image85 v)=
+      Exp.exp (rank (ports K) (Positive80To81TransportDraft.image85 v)) ∧
+    q (ports K) (Positive80To81TransportDraft.image85 v)*
+      q (ports K) (Positive80To81TransportDraft.image85 v)≤
+        X (ports K) (Positive80To81TransportDraft.image85 v) := by
+  have hz85 := Positive81To83TransportDraft.prototype_zero_of81
+    (fun j => (ports K j:ℤ)) v hv hz
+  exact prototype_power_and_qsquare K (Positive80To81TransportDraft.image85 v)
+    hz85 hexact hmain
+end DiophantineConsistency.Positive81CalibrationDraft
+#print axioms DiophantineConsistency.Positive81CalibrationDraft.prototype_rank_qsquare
+#print axioms DiophantineConsistency.Positive81CalibrationDraft.prototype_power
+#print axioms DiophantineConsistency.Positive81CalibrationDraft.calibration81

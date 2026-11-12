@@ -1,0 +1,33 @@
+import DiophantineConsistency.Compact44.P72Exact
+
+/-! Fact-level positive-eta exact-index interface. The graph must still
+supply its main-index, strong and absdiff witnesses with the same parameters. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Positive81ExactIndexCutDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ArithmeticPellRecurrence ArithmeticPellHalfIndex
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem exact_pair (q X Y k R g c a y0 i f T u n w mu m eta : V)
+    (hq3 : 3≤q) (hX : 0<X) (hy0 : 0<y0) (hYq : Y=q*(q*q)*y0)
+    (heta : 0<eta) (hc : c=eta+Y*k) (hi : 0<i) (hf : 0<f)
+    (ha : a=X*Y+Y) (hR26 : 26≤R)
+    (hny : 2*ycoord n (2*((X*Y)*Y-1)+1)=k)
+    (hks : k=2*n+4*((X*Y)*Y)*w) (hRmu : R+1<mu)
+    (hnmod : (2*n)%mu=R+1) (hmy : ycoord m a=c)
+    (hg : g*g=1+delta a*c*c)
+    (hstrong : (i*c*c)*(i*c*c)+delta a=delta a*(f*f))
+    (haux : ((3+4*a)+a*a)*(f*f-1)*
+      (absdiff (f*f*(T*c)) (f*f*R+c)*absdiff (f*f*(T*c)) (f*f*R+c))+
+      absdiff (f*f*(T*c)+u) (f*f*R+c)*absdiff (f*f*(T*c)+u) (f*f*R+c)=
+      1+((3+4*a)+a*a)*(f*f-1)*
+        (absdiff (f*f*(T*c)+u) (f*f*R+c)*absdiff (f*f*(T*c)+u) (f*f*R+c)) :
+    m=R ∧ 2*n=R+1 := by
+  obtain ⟨_,_,hm,hn⟩ := P72Exact.indices_ordinary q X Y k R g c a y0 i f T u n w mu m eta
+    hq3 hX hy0 hYq heta hc hi hf ha hR26 hny hks hRmu hnmod hmy hg hstrong haux
+  exact ⟨hm,hn⟩
+end DiophantineConsistency.Positive81ExactIndexCutDraft
+#print axioms DiophantineConsistency.Positive81ExactIndexCutDraft.exact_pair
