@@ -7482,6 +7482,10 @@ trades degree for one operation, giving 13 natural inputs, 96 operations and
 exact specialized degree 50. Its local zero equivalence holds at every
 integer valuation and ports; the parent's calibration and endpoint
 qualifications remain inherited.
+The independently reviewed [forced-gamma C-fold product](research/ordinary13-natural-cfold-forced-gamma95-degree50/README.md)
+gives 13 natural inputs, 95 operations and exact specialized degree 50. Its
+external map inherits the stated port, rank, Pell and calibration conditions;
+Lean/iPRA and physical-file bindings remain open.
 The independently reviewed [C-fold unshifted-Y obstruction](research/ordinary13-natural96-unshift-y-obstruction/README.md)
 gives a zero with `Y=0` after deleting that shift, including at the
 authenticated ports. It rules out the local positivity argument and tested
