@@ -1,0 +1,54 @@
+import AQ17Forced104ResidualZeros
+import AQ17Forced105Arithmetic
+import DiophantineConsistency.ModelThirteenCarrier
+import Mathlib.Tactic.LinearCombination
+
+/-! Optional seventh-coordinate extraction. Source only; no Lean check. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.AQ17Forced104JForceDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- From the factored first-root residual, the J=0 branch forces Bt=0.
+The second port is the embedding of a nonnegative model element. -/
+theorem root_zero_branch (p : Fin 4 → ℤ) (v : Fin 17 → V) (k : V)
+    (hrep : ((p 1 : ℤ) : DiffRing V)=ι k)
+    (hz : InternalZero (AQ17Forced104LiteralDraft.literal p) v) (hj : v 0=0) :
+    (0 : DiffRing V)=(1-ι (v 1+1)-ι (v 2+1))*(ι (v 6+1)+ι k)-ι (v 1+1) := by
+  have hr := (AQ17Forced104ResidualZerosDraft.all_residuals p v).mp hz 5
+  have h := (ModelDifferenceRing.internalZero_iff _ _).mp hr
+  simp [AQ17Forced104ResidualsDraft.residuals, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    hj,hrep,map_add,map_mul,map_one] at h
+  simp only [map_add,map_one]
+  linear_combination -h
+
+/-- J is positive at every zero under the exact represented-second-port cut. -/
+theorem j_positive (p : Fin 4 → ℤ) (v : Fin 17 → V) (k : V)
+    (hrep : ((p 1 : ℤ) : DiffRing V)=ι k)
+    (hz : InternalZero (AQ17Forced104LiteralDraft.literal p) v) : 0<v 0 := by
+  apply AQ17Forced105ArithmeticDraft.j_pos_of_root_branch p (v 0) (v 1+1)
+    (v 2+1) (v 6+1) 0 k hrep
+      (lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _))
+  intro hj
+  simpa only [map_zero] using root_zero_branch p v k hrep hz hj
+
+/-- Proposed application of the existing fixed-current-port representation. -/
+theorem current_port1_representation :
+    ((CurrentWindowCarry2011.ports 1 : ℤ) : DiffRing V)=ι (CurrentKernel2011.K : V) :=
+  ModelThirteenCarrier.port1 (V:=V)
+
+theorem current_j_positive (v : Fin 17 → V)
+    (hz : InternalZero (AQ17Forced104LiteralDraft.literal CurrentWindowCarry2011.ports) v) : 0<v 0 :=
+  j_positive CurrentWindowCarry2011.ports v (CurrentKernel2011.K : V)
+    current_port1_representation hz
+end DiophantineConsistency.AQ17Forced104JForceDraft
+#print axioms DiophantineConsistency.AQ17Forced104JForceDraft.root_zero_branch
+#print axioms DiophantineConsistency.AQ17Forced104JForceDraft.j_positive
+#print axioms DiophantineConsistency.AQ17Forced104JForceDraft.current_j_positive
