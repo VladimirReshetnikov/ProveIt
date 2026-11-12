@@ -7729,6 +7729,11 @@ The reviewed [positive quotient shift](research/ordinary14-positive-guard74/READ
 reduces that parent to 14 strictly positive inputs and 74 operations at exact
 degree 107. Its positive-zero maps use `β > 0` and `K0 ≥ 0` locally; the
 compact44 consistency, Lean and file-binding limitations remain inherited.
+The independently reviewed [shifted-Pell graph](research/ordinary14-shifted-pell75/README.md)
+trades one additional operation for exact specialized degree 97, with 14
+strictly positive inputs. Its explicit zero bijection and degree certificate
+are external and retain the parent's port and endpoint qualifications; this
+is not a Lean/iPRA proof, physical-file binding or minimality result.
 The source-reviewed [74 guard strictness fact](research/ordinary14-positive-guard74-model-fact-draft/README.md)
 proposes the positive quotient recovery from explicit order and size
 hypotheses. It is unelaborated and those hypotheses have not been bound to
