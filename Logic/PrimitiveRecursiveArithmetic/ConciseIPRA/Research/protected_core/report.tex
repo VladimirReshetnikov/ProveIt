@@ -1,0 +1,892 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem,microtype,xcolor}
+\usepackage{listings,fancyhdr,hyperref}
+\definecolor{ink}{HTML}{18354A}
+\definecolor{muted}{HTML}{526773}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=ink,citecolor=ink,pdftitle={Protected equations: a smaller iPRA proof kernel},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\urlstyle{same}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{muted}Protected equations for iPRA}
+\fancyhead[R]{\small\color{muted}11 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlist{topsep=4pt,itemsep=2pt,parsep=0pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\D}{\mathsf D}\newcommand{\Q}{\mathsf Q}
+\newcommand{\Hcal}{\mathcal H}\newcommand{\Kcal}{\mathcal K}
+\newcommand{\Ncal}{\mathcal N}\newcommand{\Pcal}{\mathcal P}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\eqv}{\mathrel{\dashv\vdash}}
+\newcommand{\headI}{\mathsf I}
+\newcommand{\file}[1]{{\urlstyle{tt}\nolinkurl{#1}}}
+\lstset{basicstyle=\ttfamily\scriptsize,breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{muted},xleftmargin=3pt,xrightmargin=3pt}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{0.65in}
+{\color{muted}\large CONCISE INTUITIONISTIC ARITHMETIC\par}
+\vspace{0.2in}
+{\color{ink}\Huge\bfseries Protected equations\par}
+\vspace{0.12in}
+{\color{ink}\LARGE A smaller iPRA proof kernel\par}
+\vspace{0.35in}
+{\large Construction, proof translations, and reproducible checker comparison\par}
+\vspace{0.25in}
+Prepared for Vladimir Reshetnikov\par
+11 November 2026\par
+\vspace{0.45in}
+\begin{abstract}
+The current ConciseIPRA collection contains two useful reductions: an
+introduction rule whose choice is determined by the matrix, and an
+elimination rule whose choice is determined by the substitution source.
+Combining their programs alone does not establish a bi-interpretation:
+the available proofs of completeness have incompatible equality
+bootstraps. We resolve that issue by restricting public atomic formulas
+to equations with an iterator at both roots. Ordinary equality is
+represented by
+\[
+ W(s)=W(t),\qquad W(r):=I(0,r;u.0).
+\]
+All required proof transformations can then use equality sources with a
+fixed iterator root. Such sources survive arbitrary numerical
+substitution, including substitution of zero. This permits a
+noncircular reconstruction of padding, numerical cases, equation
+induction, and both interpretation composites.
+
+Under the repository's canonical-statement measurement convention,
+the three delivered complete checker profiles improve its recorded
+coordinate minima from 259 to 258 significant tokens, from 283 to 281
+AST nodes, and from 526 to 525 normalized bytes. These minima belong to
+different programs. The improvement is small; no absolute minimality
+or literature-wide novelty is claimed. A separate strict checker
+validates the public statement grammar. The new equivalence proof is
+written mathematics, supported by executable certificates; it has not
+been formalized in Lean.
+\end{abstract}
+\vfill
+\small Baseline frozen at commit\par
+\file{1517d9d79ce33f631e0f82960c849427cbba23bf}\par
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1517d9d79ce33f631e0f82960c849427cbba23bf/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{ProveIt / Logic / PrimitiveRecursiveArithmetic / ConciseIPRA}
+\end{titlepage}
+\tableofcontents
+\newpage
+
+\section{The result and its precise scope}
+
+The proposed presentation is the \emph{protected core}. It uses the
+same numerical terms as the current native scalar core, one public
+formula binder, and a deterministic introduction schema. Its essential
+new ingredient is a syntactic invariant on public equations, which
+makes two previously separate reductions compatible.
+
+\begin{theorem}[Main result]\label{thm:main}
+The protected core is bi-interpretable and equiconsistent with full
+first-order intuitionistic primitive recursive arithmetic. Both
+numerical interpretation domains are whole. Interpreted equality is
+actual equality, represented in the protected syntax by
+\(W(x)=W(y)\). Both numerical composites are the identity up to this
+equality. For every public formula, both formula composites are
+provably equivalent to the original formula.
+\end{theorem}
+
+The comparison is against the pinned repository state, rather than an
+earlier draft. Its README records the native calculus, its Lean
+bi-interpretation, and the existing \file{source_dispatch} and
+\file{guarded_core} packages~\cite{repo,source,guarded}. The latter two
+packages supply the two reductions being combined. This report supplies
+the protected-equation compatibility argument, a canonical language for
+the combination, executable examples, and measured programs.
+
+The source-size gain is deliberately not described as a large
+breakthrough. It is a strict improvement under the existing comparison
+contract. The strict public-grammar checker is larger than the earlier
+guarded strict checker; the distinction is reported in
+Section~\ref{sec:metrics}. A proof of global optimality would require
+substantially more than comparison with the inspected implementations.
+
+\section{The inherited arithmetic and native reference system}
+
+There is one numerical sort. Terms are finite expressions
+\[
+ t ::= x\mid 0\mid S(t)\mid I(n,a;u.h).
+\]
+Only \(u\) in the update \(h\) is bound by the displayed iterator.
+The counter \(n\), initializer \(a\), and passive parameters are not
+bound by it. All substitutions below avoid capture. Put \(1=S0\).
+The two computation schemas are
+\begin{align}
+ I(0,a;u.h)&=a,\tag{I0}\label{eq:i0}\\
+ I(Sn,a;u.h)&=h[I(n,a;u.h)/u].\tag{IS}\label{eq:is}
+\end{align}
+
+The current Lean native system \(\Ncal\) has formulas
+\(s=t,\Q_yB,\D_{x,y}B\), with ordinary readings
+\[
+ \Q_yB=B(0)\to\forall yB(y),\qquad
+ \D_{x,y}B=\exists x\bigl(B(x,0)\to\forall yB(x,y)\bigr).
+\]
+Its eight constructors are hypothesis, I0, IS, equational transport,
+QE, DE, witnessed case introduction of D, and equation-progress
+introduction of Q. The repository proves transport in arbitrary
+formula templates and witnessed D-progress as derived rules. It also
+proves that these native rules present a theory bi-interpretable with
+iPRA~\cite{native,bridge}.
+
+For orientation, its ordinary arithmetic realization uses
+intuitionistic equality logic, I0 and IS, numerical coverage,
+\((0=1)\to\bot\), and contextual induction for literal equations.
+The inherited arithmetic bridge derives predecessor, equality
+reflection, quantifier-free induction, pairing, and a compiler for
+every fixed primitive recursive definition. It proves the two
+composites by internal uniqueness, not merely by standard-model
+agreement. The relevant written proofs and selected Lean statements
+are frozen in \file{reference/}.
+
+We retain this arithmetic bridge. In particular, we do not assert that
+positive computation equations alone, without a falsity bridge,
+exclude a singleton ordinary structure.
+
+\section{Complete specification of the protected core}\label{sec:theory}
+
+\subsection{Public formulas and equality}
+
+Call a term \emph{protected} when its outermost constructor is
+\(I\). This is a syntactic condition, not a claim that its numerical
+value is nonzero. Every protected term keeps its \(I\) root under
+capture-free numerical substitution.
+
+\begin{definition}[Public grammar]
+The public formulas are generated by the following clauses.
+\begin{enumerate}
+\item \(p=q\) is a public formula if both \(p\) and \(q\) are protected.
+\item \(\D_{x,y}B\) is public if \(B\) is a compound public formula.
+\item An atomic matrix directly below D is allowed exactly in the form
+\[
+ B(x,y)=\bigl(I(y,0;u.h)=I(y,0;u.k)\bigr).
+ \tag{Guard}\label{eq:guard}
+\]
+Thus \(\D_{x,y}B\) with this matrix is public. The updates may depend
+on \(x,y\), the state \(u\), and passive parameters.
+\end{enumerate}
+\end{definition}
+
+The bound variables \(x,y\) are distinct. There is no public Q
+constructor. Define
+\[
+ W(t):=I(0,t;u.0),\qquad
+ s\simeq t\quad:\!\!\equiv\quad W(s)=W(t),\qquad
+ \bot_{\Pcal}:=(W(0)=W(1)).
+\]
+The variables bound in \(W\) are always fresh. The equality
+\(\simeq\) is an abbreviation, not an additional primitive relation.
+Since I0 proves \(W(t)=t\) in the ordinary realization, its reading
+is actual equality throughout the entire numerical domain.
+
+\subsection{Auxiliary judgments and the seven rule forms}
+
+The proof calculus \(\Hcal\) also permits auxiliary equations with
+arbitrary term endpoints and closure resources \(\Q_yB\). These are
+needed, for example, to use the computation equation \(W(t)=t\)
+when \(t\) itself is not protected. Auxiliary equations are not
+additional public atomic predicates. A public theorem is a public
+formula having a finite derivation in the stated calculus.
+
+Retained contexts are finite reusable lists. They may include auxiliary
+judgments in intermediate derivations. Q may be used with a public
+matrix, and D formulas in \(\Hcal\) obey the public grammar. The
+ordinary interpretation of all these auxiliary judgments is the
+uniform conditional reading in Section~2.
+
+Besides I0 and IS, available in every context, the rules are precisely
+the following. \(F(v)\) is an allowed formula or auxiliary-equation
+template, with the indicated instances well formed.
+\[
+ \frac{A\in\Gamma}{\Gamma\vdash A}\ (\mathrm{Hyp}),\qquad
+ \frac{\Gamma\vdash p=q\quad\Gamma\vdash F(p)}
+      {\Gamma\vdash F(q)}\ (\mathrm{Tr}_{I}),
+ \quad p\text{ has an }I\text{ root}.
+ \tag{H,Tr}\label{eq:tr}
+\]
+\[
+ \frac{\Gamma\vdash\Q_yB(y)\quad\Gamma\vdash B(0)}
+      {\Gamma\vdash B(t)}\ (\mathrm{QE}),
+\]
+\[
+ \frac{\Gamma\vdash\D_{x,y}B(x,y)\quad
+       \Gamma,\Q_yB(b,y)\vdash A}
+      {\Gamma\vdash A}\ (\mathrm{DE}).
+\]
+In DE, \(b\) is fresh for the retained context, conclusion, and fixed
+parameters. The sole D-introduction schema is
+\[
+ \frac{\Gamma,B(t,\eta_B(z))\vdash B(t,Sz)}
+      {\Gamma\vdash\D_{x,y}B(x,y)},\qquad
+ \eta_B(z)=
+ \begin{cases}
+ z,&B\text{ is an equation},\\
+ 0,&B\text{ is compound}.
+ \end{cases}
+ \tag{DI}\label{eq:di}
+\]
+Here the conclusion must be public, \(z\) is fresh for \(\Gamma,t\)
+and the fixed parameters, and the displayed local resource is
+discharged. At an equation matrix the guard requirement
+\eqref{eq:guard} applies. The certificate does not choose between
+cases and progress; the matrix root determines the premise.
+
+Counting the two computation schemas separately gives seven forms:
+Hyp, I0, IS, Tr, QE, DE, and DI. There are no primitive reflexivity,
+successor-injectivity, separation, coverage, conventional connective,
+or induction axioms. Structural rules are admissible operations on
+finite derivations, not additional certificate instructions.
+
+\subsection{The executable extension \texorpdfstring{\(\Kcal\)}{K}}
+
+The compact programs permit more administrative syntax. In particular,
+their transport may use any source other than the literal zero, and
+their raw D formulas need not pass the public guard test. Introduction
+is still determined by the matrix root. This extension is denoted
+\(\Kcal\); every \(\Hcal\) inference has an encoding in it.
+
+Every such raw inference is sound under the \emph{same ordinary
+conditional reading}: equation-progress introduction is sound by
+equation induction under its conditional base; compound-case
+introduction is sound by numerical coverage. No progressive alternative
+meaning of D is necessary for our soundness argument. The restrictions
+on public formulas are needed for reverse translation and formula
+composites. We do not claim completeness or a bi-interpretation for
+every unrestricted raw statement.
+
+\section{The safe equality bootstrap}\label{sec:safe}
+
+The key invariant is stronger than ``the source is not zero'': every
+transport source used in the completeness proof has an \(I\) root.
+This makes the proof transformations stable under substitution.
+
+\begin{lemma}[Structural operations]\label{lem:struct}
+Weakening, exchange, contraction, fresh renaming, numerical substitution,
+and ordinary-assumption cut are admissible in \(\Hcal\).
+\end{lemma}
+\begin{proof}
+Induct on derivations, renaming eigenparameters before substitution or
+cut. Public guards retain their shape because their bound counter is
+not substituted by free-parameter substitution. An \(I\)-headed
+transport source retains its head. All other rule side conditions are
+the usual explicit freshness conditions. Cut replaces a hypothesis use
+by its supplied derivation. This proof would fail for a rule merely
+requiring a variable source to be syntactically nonzero; that weaker
+invariant is not being used here.
+\end{proof}
+
+\begin{lemma}[Safe equality operations]\label{lem:safe}
+The following operations have derivations whose transport sources all
+have \(I\) roots.
+\begin{enumerate}
+\item Reflexivity \(t=t\) for any term \(t\).
+\item From \(p=q\), symmetry \(q=p\), when \(p\) is protected.
+\item From \(r=p\) and \(p=q\), transitivity \(r=q\), when \(p\)
+is protected.
+\item From \(p=q\), the equation \(f(p)=f(q)\), when \(p\) is
+protected and \(f\) is a fixed numerical template.
+\end{enumerate}
+Consequently ordinary equality algebra is available between protected
+endpoints.
+\end{lemma}
+\begin{proof}
+Put \(a=W(t)\). I0 gives \(a=t\). Use this equation as both
+premises of transport with template \(v=t\); the result is \(t=t\).
+For symmetry transport \(p=p\) along \(p=q\) in the template
+\(v=p\). For transitivity use the template \(r=v\). For congruence
+transport reflexivity of \(f(p)\) in the template \(f(p)=f(v)\).
+The last operation may produce a nonprotected endpoint; such an
+endpoint is never silently used as a transport source in later
+arguments.
+\end{proof}
+
+\begin{lemma}[Joining at zero]\label{lem:zerojoin}
+For protected \(p,q\), from \(p=0\) and \(q=0\) one can derive
+\(p=q\) using only \(I\)-headed transport sources.
+\end{lemma}
+\begin{proof}
+Let \(w=W(0)\). From \(p=0\), transport reflexivity
+\(W(p)=W(p)\) on the left to obtain \(w=W(p)\).
+Its safe symmetry gives \(W(p)=w\). Now use the computation
+\(W(p)=p\) to obtain \(p=w\). Similarly obtain \(q=w\).
+All the endpoints \(p,q,w\) are protected, so safe symmetry and
+transitivity yield \(p=q\). At no point is \(0=p\) used as a
+transport major.
+\end{proof}
+
+\begin{lemma}[Lifting an arbitrary equality]\label{lem:lift}
+For arbitrary terms \(s,t\) and a numerical template \(a(v)\),
+\[
+ W(s)=W(t)\ \vdash_{\Hcal}\ W(a(s))=W(a(t)).
+\]
+Consequently the native equational transport rule translates under
+\(s=t\mapsto W(s)=W(t)\).
+\end{lemma}
+\begin{proof}
+Congruence on the given protected equation gives
+\(W(a(W(s)))=W(a(W(t)))\). The two computation equations
+\(W(s)=s\) and \(W(t)=t\), whose sources are protected, give
+\[
+ W(a(W(s)))=W(a(s)),\qquad
+ W(a(W(t)))=W(a(t)).
+\]
+Every endpoint in these three displayed equations has a fixed \(W\)
+root. They can therefore be reversed and composed safely, proving
+the claim. Apply this construction to both numerical sides of an old
+equation template, and compose with the translated minor premise.
+The argument still works when \(s\) is literally zero.
+\end{proof}
+
+This is the compatibility step absent from a bare composition of the
+two old programs. It replaces a demand for unrestricted zero-source
+symmetry by a translation of all public equalities into protected
+ones.
+
+\section{Padding, numerical cases, and equation induction}\label{sec:induction}
+
+Set \(C(v,a,b)=I(v,a;u.b)\), with the state variable unused. For a
+protected equation \(E=(p=q)\), define
+\[
+ G_vE=(C(v,0,p)=C(v,0,q)),\qquad
+ L(E)=\D_{a,v}G_vE,
+\]
+where \(a,v\) are fresh for \(E\). Let \(P(E)=L(E)\) for an
+equation, and \(P(B)=B\) for a compound public formula. Thus
+\(P(B)\) is always compound and public.
+
+\begin{lemma}[Guard endpoints and padding]\label{lem:pad}
+For every protected equation \(E\),
+\[
+ \vdash G_0E,\qquad G_{Sz}E\eqv E,\qquad L(E)\eqv E.
+\]
+These interderivabilities are uniform under additional retained context.
+\end{lemma}
+\begin{proof}
+The two sides of \(G_0E\) compute to zero. They are protected,
+so Lemma~\ref{lem:zerojoin} joins them. At a successor, the two sides
+compute to \(p\) and \(q\). Both are protected, so safe equality
+algebra gives the endpoint equivalence in both directions.
+Under \(E\), atomic DI proves \(L(E)\): its successor goal follows
+from \(E\), independently of its local induction assumption.
+Conversely, DE on \(L(E)\) supplies \(\Q_vG_vE\). Feed its proven
+zero instance and use QE at \(1\), then remove the successor guard.
+\end{proof}
+
+For protected equations \(U=(p=q)\), \(V=(r=s)\), put
+\[
+ M_v(U,V)=(C(v,p,r)=C(v,q,s)),\qquad
+ U\Rightarrow_g V:=\D_{a,v}L(M_v(U,V)).
+\]
+The outer matrix is compound. Endpoints and padding show that this
+macro has implication introduction and elimination between protected
+equations, using compound-case DI and DE followed by QE at \(1\).
+
+\begin{lemma}[Numerical cases]\label{lem:cases}
+For every public formula \(A(y)\),
+\[
+ \frac{\Gamma\vdash A(0)\qquad\Gamma\vdash A(Sz)}
+      {\Gamma\vdash A(t)}
+\]
+is admissible when \(z\) is fresh for the retained context and fixed
+parameters.
+\end{lemma}
+\begin{proof}
+If \(A\) is compound, introduce \(\D_{a,y}A(y)\) with unused
+\(a\) by cases, ignoring its local base assumption. Eliminate it,
+supply the given base, and use QE at \(t\). For an equation apply
+this compound case construction to \(L(A(y))\), padding both
+premises and unpadding the conclusion.
+\end{proof}
+
+\begin{theorem}[Contextual induction for protected equations]\label{thm:ei}
+For every equation \(E(y)\) whose two sides have fixed \(I\) roots,
+\[
+ \frac{\Gamma\vdash E(0)\qquad\Gamma,E(z)\vdash E(Sz)}
+      {\Gamma\vdash E(t)}
+ \tag{PEI}\label{eq:pei}
+\]
+is admissible, with the usual eigenvariable condition.
+\end{theorem}
+\begin{proof}
+Put \(J(y)=G_yE(y)\). We need its progress step without retaining
+a case-variable-dependent assumption during numerical cases.
+Use the compound formula
+\(\Phi(y)=J(y)\Rightarrow_g E(Sy)\).
+
+For \(y=0\), ignore the implication's local assumption, take the
+given \(E(0)\), and specialize the given step at zero to obtain
+\(E(1)\). For \(y=Sw\), the assumption \(J(Sw)\) gives
+\(E(Sw)\); the step specialized at \(Sw\) gives \(E(SSw)\).
+Both branch derivations have retained context \(\Gamma\), independent
+of the case variable. Lemma~\ref{lem:cases} yields \(\Phi(z)\).
+Under \(J(z)\), implication elimination therefore yields \(E(Sz)\),
+and the successor guard gives \(J(Sz)\).
+
+Atomic DI now proves \(\D_{a,y}J(y)\) with unused \(a\).
+DE and the theorem \(J(0)\) supply \(J(Sw)\), hence \(E(Sw)\),
+for fresh \(w\). Numerical cases combine these successor instances
+with the original \(E(0)\), yielding \(E(t)\).
+
+The substitutions into the supplied step are legitimate by
+Lemma~\ref{lem:struct}: its derivation is in \(\Hcal\), whose
+transport sources retain an \(I\) root. This is the point at which a
+naive appeal to arbitrary nonzero-source derivations would be circular.
+\end{proof}
+
+\section{Explicit translations and the two round trips}\label{sec:translations}
+
+\subsection{Translation from the formalized native calculus}
+
+Define \(T\) on finite native formulas, with all new binders fresh:
+\begin{align*}
+ T(s=t)&=W(s)=W(t),\\
+ T(\Q_y B)&=\D_{a,y}P(TB)\quad(a\text{ unused}),\\
+ T(\D_{x,y}B)&=\D_{x,y}P(TB).
+\end{align*}
+Numerical terms are unchanged. This translation is effective, commutes
+with capture-free numerical substitution up to renaming, and always
+produces public formulas. Translate contexts pointwise.
+
+Write \(\operatorname{Cl}_y B=\D_{a,y}P(B)\) for the translated
+closure. From \(\operatorname{Cl}_yB\) and \(B(0)\), DE, padding,
+QE, and unpadding derive \(B(t)\). From
+\(\Gamma,B(0)\vdash B(Sz)\), compound-case DI proves
+\(\operatorname{Cl}_yB\). These statements use the endpoint
+interderivabilities of Lemma~\ref{lem:pad}.
+
+\begin{theorem}[Native proof translation]\label{thm:translate}
+\[
+ \Gamma\vdash_{\Ncal}A\quad\Longrightarrow\quad
+ T\Gamma\vdash_{\Hcal}TA.
+\]
+The transformation is effective on finite derivations and uses only
+\(I\)-headed transport sources.
+\end{theorem}
+\begin{proof}
+Induct on the native derivation. Hypothesis use is immediate. Each
+computation equation has an \(I\)-headed source, so safe congruence
+through \(W\) gives its translated computation. Native equational
+transport is Lemma~\ref{lem:lift}, applied to both sides. QE uses
+the translated closure elimination just described.
+
+For native case DI, unpad its translated local base, apply the
+translated premise, and pad the successor result. The target matrix
+\(P(TB)\) is compound, so the root-determined rule uses cases.
+
+For native Q-progress on \(E\), its translated step is a step for
+the protected equation \(TE\). Under the translated base, use
+Theorem~\ref{thm:ei} at \(Sz\). Pad the result and use compound
+case introduction to prove \(\operatorname{Cl}_yTE\).
+
+For native DE, its translated major opens the raw resource
+\(\Q_yP(TB(b,y))\). This resource supplies its corresponding public
+closure \(\operatorname{Cl}_yTB(b,y)\): introduce that closure by
+cases, and use the retained raw Q resource at the successor. Cut this
+public closure into the recursively translated minor derivation, then
+close DE. Freshening all auxiliary binders preserves the original
+eigenvariable conditions.
+\end{proof}
+
+\subsection{Literal inclusion and the canonical round trip}
+
+Let \(J\) send a public formula to the identical native Eq/D formula.
+Every \(\Hcal\) inference is valid in \(\Ncal\): unrestricted
+formula transport and witnessed equation-progress are derived native
+rules. This provides the reverse proof interpretation.
+
+\begin{lemma}[Public round trip]\label{lem:roundtrip}
+For every public formula \(A\),
+\[
+             A\eqv_{\Hcal}T(JA).
+\]
+\end{lemma}
+\begin{proof}
+Induct on the number of D binders. For an equation \(p=q\), both
+endpoints are protected. The computations \(W(p)=p\) and
+\(W(q)=q\) therefore have protected endpoints, and safe equality
+algebra proves
+\(p=q\eqv W(p)=W(q)\).
+
+For a D formula with compound matrix, use compound binder congruence:
+eliminate the source at a fresh witness; introduce the target by
+cases; convert its base backwards, use the opened closure at the
+successor, and convert the result forwards. Matrix interderivability
+is given by the external induction hypothesis. All conversions use
+safe derivations.
+
+It remains to treat \(\D_{x,y}E\) with an atomic guard matrix.
+Its zero instance \(E(x,0)\) is a theorem, uniformly in \(x\), by
+Lemma~\ref{lem:zerojoin}. Its translation is
+\(\D_{x,y}L(TE)\).
+Forwards, DE opens \(\Q_yE(b,y)\). Supply its proven zero instance,
+obtain each successor instance, translate the protected equation by
+the atomic equivalence, and pad. Compound-case DI at witness \(b\)
+then proves \(\D_{x,y}L(TE)\).
+Backwards, DE opens \(\Q_yL(TE(b,y))\). Pad the translated zero
+theorem and use QE at \(Sz\). Unpadding and the atomic equivalence
+give \(E(b,Sz)\). Atomic-progress DI, ignoring its local induction
+assumption, proves \(\D_{x,y}E\). Close DE in both directions.
+This case does not assume a nonexistent atomic case-introduction rule.
+\end{proof}
+
+The other native formula composite follows by external induction:
+native equality proves \(W(t)=t\), native padding is equivalent to
+its matrix, and the unused-witness D represents Q. Thus
+\(JT(A)\eqv_{\Ncal}A\) for every native formula, including those
+with Q constructors.
+
+\begin{corollary}[Equality of canonical consequence relations]\label{cor:canonical}
+For finite public contexts \(\Gamma\) and public \(A\),
+\[
+ \Gamma\vdash_{\Hcal}A
+ \quad\Longleftrightarrow\quad
+ J\Gamma\vdash_{\Ncal}JA.
+\]
+For empty external context and closed canonical goals, the same
+equivalence holds for finite accepting compact certificates under the
+decoding contract in Section~\ref{sec:checker}.
+\end{corollary}
+\begin{proof}
+Left to right is literal native soundness. For the converse, translate
+the native proof by Theorem~\ref{thm:translate}, then use the public
+round trips on the retained assumptions and conclusion, with cut.
+The compact extension is native-sound, and every \(\Hcal\) proof
+has an encoding, so its canonical consequences lie between these
+equal consequence relations.
+\end{proof}
+
+\section{Full intuitionistic logic and bi-interpretability with iPRA}
+
+There is no restriction to the equational or quantifier-free fragment
+of iPRA. To specify the logical interface explicitly, let
+\(\operatorname{enc}\) be the existing native encoding of ordinary
+formulas, and define
+\[
+             \operatorname{enc}_{\Pcal}(F):=T(\operatorname{enc}(F)).
+\]
+This is a finite structural macro expansion, not an appeal to a
+provability oracle. The native encoding constructs implication,
+conjunction, disjunction, existence, and universality from its selector
+and gate operations~\cite{native}. For example, its macros are
+\begin{align*}
+ A\to B&:=\Q_y\operatorname{sel}(y,A,B),\\
+ A\wedge B&:=\Q_y\operatorname{gate}
+       (y,\operatorname{sel}(\operatorname{par}(y),A,B)),\\
+ \exists xA&:=\D_{x,y}\operatorname{gate}(y,A(x)),\\
+ A\vee B&:=\exists v\operatorname{sel}(v,A,B),\\
+ \forall xA&:=A(0)\wedge\Q_yA(y).
+\end{align*}
+Here the formula selector and gate are defined by recursion on finite
+formula syntax, using the numerical selector \(C\), binder congruence,
+and padding. Applying \(T\) removes the public Q constructors and
+protects all atoms. All introduction and elimination rules transfer by
+Theorem~\ref{thm:translate}. Thus the displayed complete native
+macro implementation in \file{reference/Lean/NativeLogic.lean},
+composed with our explicit \(T\), specifies all ordinary logical
+operations without adding axioms or trusted checker code.
+
+For numerical terms, the forward map to iPRA uses the inherited
+primitive-recursive implementation of each fixed iterator. The reverse
+map uses its scalar compiler for each fixed primitive-recursive
+definition. No universal evaluator over arbitrary function codes is
+postulated. The inherited round-trip equalities translate by \(T\)
+to protected equalities, so they hold internally in the new theory.
+
+The domain predicate in both directions is the whole domain. The
+numerical identity graph is \(x=y\) in the ordinary realization and
+\(W(x)=W(y)\) in the protected presentation. Since I0 identifies
+\(W(t)\) with \(t\) ordinarily, there is no quotient, retract,
+standard-numeral restriction, or hidden change in equality.
+The public round trip and the inherited native/iPRA round trips prove
+both full formula composites. Finally,
+\[
+ \Pcal\vdash W(0)=W(1)
+ \quad\Longleftrightarrow\quad
+ \Ncal\vdash0=1
+ \quad\Longleftrightarrow\quad
+ \ipra\vdash\bot.
+\]
+This proves Theorem~\ref{thm:main}. It is a metatheoretic
+equiconsistency statement, not a claim that either theory proves its
+own consistency.
+
+\section{Why the protected language matters}
+
+The words ``not literally zero'' alone do not supply the structural
+invariant needed in the proof. A variable source is permitted by that
+test, but substituting zero can turn its use into a forbidden rule
+instance. Moreover, guarding an arbitrary equation can require
+inserting wrappers around a zero endpoint; unrestricted equality can
+do this, whereas restricted forward transport cannot simply assume it.
+Using one old completeness argument inside the other without checking
+these dependencies would be circular.
+
+Protected atoms resolve both issues. All equality information that
+must later act as a major is represented at stable iterator roots.
+Zero computations are joined through \(W(0)\), and arbitrary native
+equalities are moved through the sandwich in
+Lemma~\ref{lem:lift}. Numerical substitution is first proved in
+\(\Hcal\), before it is used in the induction bootstrap.
+
+There is a related distinction in the upstream README. The statement
+that substitution is not \emph{admissible} in its already-equivalent
+\(\mathrm{ZPrf}\) system is too strong. Its equivalence theorem
+\file{zprf_iff_nprf} transports native substitution to ZPrf. What
+fails is direct substitution into the same derivation tree without
+repairing rule instances. This correction does not solve the guarded
+composition by itself, since equivalence of that new composition has
+not yet been established at that stage. Our stable-head proof avoids
+using such a corollary prematurely.
+
+\section{Executable certificate contract}\label{sec:checker}
+
+\subsection{Trusted programs and input}
+
+Each compact profile is a complete standalone Python module importing
+only the standard JSON parser. It reads a JSON array from standard
+input. The last element is the closed goal; preceding instruction
+packets are consumed backwards. Success is normal process exit with
+exactly \file{ACCEPT} followed by a newline. An exception, nonzero
+exit, timeout, or resource exhaustion is not acceptance. Unused prefix
+data is inert, as in the inherited protocol. No producer, normalizer,
+theorem database, or Python text supplied by the certificate is executed.
+
+The arity encoding is inherited. At numerical positions, unary arrays
+mean successor and ternary arrays mean iterator. At formula positions,
+unary arrays mean D, binary arrays mean equality, and ternary arrays
+mean Q. A canonical Q has three copies of its body. The opener adjusts
+depth by \(5-\text{array arity}\). Protected slots have width two;
+numerical root depth is three and formula root depth zero. The full
+sorted interpretation, including zero and truth aliases, is supplied
+in \file{reference/inherited_arity_checker.tex}.
+
+The public grammar adds two explicit requirements to this convention:
+both numerical children of every public equation have ternary iterator
+roots; and an atomic D matrix has both sides beginning with
+\file{[5, 0]}, the inherited encoding of the displayed guard. The
+strict checker enforces the closed canonical goal grammar before
+running the same kernel. It does not reject sound administrative
+intermediate resources merely because they are not public formulas.
+
+\subsection{The two combined changes}
+
+The source-dispatch matcher is
+\begin{lstlisting}
+m == ([s, u] if s else [t] * 3)
+\end{lstlisting}
+so the source determines whether the major is equality or Q.
+The root-determined introduction uses
+\begin{lstlisting}
+(m or not len(a) % 2) and k
+\end{lstlisting}
+so an atomic matrix takes its progress instance and a compound matrix
+takes its zero instance. The latter removes the old comparison with a
+certificate-supplied choice. The complete byte profile appears in
+Appendix~\ref{app:code}.
+
+Canonical \(\Hcal\) transport sources have a ternary iterator root
+and are therefore truthy in this encoding. The source matcher accepts
+them. Atomic progress and compound case introduction match the new
+root test. The inherited computation normalization supplies the
+restricted computation packets while preserving their conclusions;
+public guards need not be changed. A producer and concrete safe
+equality normalization are delivered, but are outside the trusted
+program.
+
+\subsection{Soundness and the scope of completeness}
+
+Soundness of a finite accepting trace uses the inherited opening,
+scope, and sorted-alias lemmas. The source-selected equality and Q
+major are still verified. The new introduction chooses one of the two
+already-sound Choice-DI rules. Thus every accepted raw proof has a
+native-provable ordinary reading.
+
+For a canonical public goal, Corollary~\ref{cor:canonical} turns that
+sound reading back into a protected proof. Conversely every finite
+\(\Hcal\) proof can be encoded with fresh integer parameters and
+the inherited computation expansions. This proves equality of
+canonical theorems in the ideal unbounded implementation. Physical
+Python stack and memory limits can reject large valid proofs; no
+completeness claim over a fixed finite resource bound is made.
+
+The compact profiles intentionally do not validate the exact public
+goal grammar. Their record is measured under the same
+canonical-statement convention used by the source packages. The
+strict profile supplies the additional public-boundary check and is
+counted in its entirety. We do not omit that validator while claiming
+an exact-public-grammar program of 525 bytes.
+
+\section{Reproducible size comparison}\label{sec:metrics}
+
+The measurements use CPython 3.12.14, the version used by the current
+repository. Normalized source is \file{ast.unparse} output with a
+final newline. Comments and non-executable docstrings do not contribute
+to significant-token or executable-AST counts. Every selected compact
+program includes JSON input, scope traversal, proof checking, and
+output. Gzip uses level 9 and \file{mtime=0}; it is an informational
+coordinate, not an optimization objective.
+
+\begin{center}\small
+\begin{tabular}{llrrrr}
+\toprule
+Profile & Program & Tokens & AST nodes & Bytes & Gzip-9\\
+\midrule
+Token & prior source-dispatch & 259 & 289 & 572 & 339\\
+      & protected core & \textbf{258} & 287 & 571 & 339\\
+AST   & prior source-dispatch & 263 & 283 & 607 & 348\\
+      & protected core & 262 & \textbf{281} & 606 & 348\\
+Byte  & prior source-dispatch & 266 & 305 & 526 & 330\\
+      & protected core & 265 & 303 & \textbf{525} & 331\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Thus the coordinate envelope decreases from \((259,283,526)\) to
+\((258,281,525)\). It is not the size triple of one program.
+The token and AST profiles improve their corresponding old programs
+in all three principal coordinates; the byte profile does too.
+Compression of the byte profile increases by one byte, which is
+reported rather than hidden.
+
+The prior guarded profiles have minima 260 tokens, 286 AST nodes,
+and 527 normalized bytes. Their combination with source dispatch
+therefore improves that frontier as well. This is a comparison with
+the recorded current implementations, not a lower-bound theorem for
+every possible proof checker.
+
+The strict protected checker has 505 significant tokens, 582 AST
+nodes, 1,251 normalized bytes, and 582 gzip-9 bytes. The previous
+guarded strict checker has 1,208 normalized bytes. There is therefore
+\emph{no strict-parser size improvement} in this comparison. The new
+global protected-atom check has a real cost. All raw and normalized
+measurements, frozen source hashes, and generated gzip files are
+included in the evidence directory.
+
+\section{Validation and research status}\label{sec:validation}
+
+\input{evidence/validation_summary.tex}
+
+The induction example is not a vacuous use of its induction
+hypothesis: the supplied audit records an actual use and verifies
+that the safe normalization introduces no literal-zero transport
+source. The certificates preserve the guarded matrices. The
+contradiction example uses the public contradiction
+\(W(0)=W(1)\), rather than relying on an unprotected equation
+\(0=1\) as an interchangeable raw assumption.
+
+These executable results verify the delivered programs and examples.
+They do not prove the universal interpretation theorem by finite
+testing. The theorem is supported by the explicit structural proof
+above and an independent written review supplied in the archive.
+The inherited native/iPRA bridge is formalized in the cited repository;
+its Lean build was not rerun here. The protected-core translation and
+the small raw Python kernel have not been verified in Lean or Rocq.
+
+\section{Using the archive}
+
+From the archive root, run
+\begin{lstlisting}
+python3 reproduce.py
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+The Python reproduction uses the standard library. It regenerates
+certificates, audits them, executes positive and negative controls,
+and reports size measurements. A TeX installation with the packages
+listed in the preamble is needed only to rebuild the PDF.
+
+\begin{center}\small
+\begin{tabular}{ll}
+\toprule
+File & Purpose\\
+\midrule
+\file{code/checker_bytes.py} & Smallest byte profile\\
+\file{code/checker_tokens.py} & Smallest token profile\\
+\file{code/checker_ast.py} & Smallest AST profile\\
+\file{code/readable_checker.py} & Expanded control flow for review\\
+\file{code/strict_checker.py} & Public-goal validation plus kernel\\
+\bottomrule
+\end{tabular}
+\end{center}
+Local-scope and global-scope certificate files are labeled separately;
+they are not claimed interchangeable.
+
+The reproducibility manifest identifies the precise original files
+and Git blobs used in the comparison. The inherited references retain
+their provenance. The novel contribution is the protected language,
+stable-source completeness proof, compatible combined kernels, and
+their validation. No repository files were changed remotely.
+
+\appendix
+\section{The complete byte-profile checker}\label{app:code}
+
+\lstinputlisting{code/checker_bytes.py}
+
+\section{A compact mathematical inventory}
+
+\begin{center}\small
+\begin{tabular}{p{0.25\linewidth}p{0.66\linewidth}}
+\toprule
+Component & Specification\\
+\midrule
+Numerical terms & \(x,0,S(t),I(n,a;u.h)\); one numerical sort.\\
+Public atoms & \(p=q\), both endpoints with a fixed iterator root.\\
+Public binder & \(\D_{x,y}B\); an atomic matrix must have the zero guard.\\
+Equality macro & \(s\simeq t\) abbreviates \(W(s)=W(t)\).\\
+Contradiction & \(W(0)=W(S0)\).\\
+Auxiliary resources & Arbitrary equations and conditional closures Q.\\
+Axioms & The two computation schemas I0 and IS.\\
+Rules & Hyp, stable-source Tr, QE, DE, and deterministic DI.\\
+Derived structure & Numerical substitution and cut; no structural kernel rules.\\
+Derived arithmetic & Protected equation induction, then the translated native arithmetic bridge.\\
+Domain composite & Whole numerical domain; identity graph represented by \(\simeq\).\\
+Formal status & New written proof and executable regression evidence; inherited Lean bridge.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{thebibliography}{9}
+\bibitem{repo} ProveIt contributors.
+\emph{Concise presentations of intuitionistic primitive recursive arithmetic}.
+README at commit \file{1517d9d79ce33f631e0f82960c849427cbba23bf}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1517d9d79ce33f631e0f82960c849427cbba23bf/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{Pinned repository version}.
+
+\bibitem{native} ProveIt contributors.
+\emph{Native.lean, NativeStruct.lean, NativeEq.lean, NativeLogic.lean}.
+Same pinned commit, \file{Lean/ConciseIPRA/}. Selected exact sources
+are frozen in the accompanying \file{reference/Lean/} directory.
+
+\bibitem{bridge} ProveIt contributors.
+\emph{NativeBiInterpretation.lean} and the inherited ordinary arithmetic
+bridge. Same pinned commit. The former states the faithful proof
+translations, both full formula round trips, and equiconsistency;
+the latter is reproduced with the predecessor, equality-reflection,
+and primitive-recursion arguments in \file{reference/}.
+
+\bibitem{source} ProveIt contributors.
+\emph{Source-dispatch research package} and \emph{NativeZeroSource.lean}.
+Same pinned commit, \file{Research/source_dispatch/} and
+\file{Lean/ConciseIPRA/NativeZeroSource.lean}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1517d9d79ce33f631e0f82960c849427cbba23bf/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/source_dispatch}{Pinned source-dispatch package}.
+
+\bibitem{guarded} ProveIt contributors.
+\emph{A guarded core with a deterministic introduction rule}.
+Same pinned commit, \file{Research/guarded_core/}. The guarded
+bootstrap is inherited; the restriction to protected atoms and the
+stable-source compatibility argument are the new work here.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1517d9d79ce33f631e0f82960c849427cbba23bf/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/guarded_core}{Pinned guarded-core package}.
+\end{thebibliography}
+\end{document}

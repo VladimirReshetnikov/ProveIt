@@ -1,0 +1,160 @@
+INDEPENDENT CHECKER AND CONTRACT REVIEW
+Comparison snapshot: ProveIt 1517d9d79ce33f631e0f82960c849427cbba23bf.
+Runtime used for measurements: CPython 3.12.14.
+
+Scope
+-----
+This review examines the complete executable modules, their differences from
+the source_dispatch and guarded_core modules, and the mathematical interface
+needed to justify combining the two restrictions. It is an independent
+assistant review, not a proof-assistant verification of the Python runtime or
+the entire arithmetic metatheory. Finite tests supplement the written
+argument; they do not prove universal soundness.
+
+Exact source changes
+--------------------
+AST comparison verifies that checker.py, checker_ast.py, and checker_tokens.py
+are their corresponding source_dispatch programs with precisely the
+continuation-image test replaced by the root-determined test. In the local
+profiles this is
+
+    len(a) % 2 == u   ->   not len(a) % 2
+
+and in the global token profile it is
+
+    len(a) % 2 == m   ->   not len(a) % 2.
+
+All imports, JSON input handling, major-premise verification, substitution,
+context management, computation supply, fresh-name allocation, and final
+ACCEPT output remain in the measured modules. No certificate producer,
+theorem table, validator, or arithmetic module is an uncounted trusted import.
+The AST comparisons and normalized-source hashes are recorded separately in
+source_change_audit.json.
+
+The source-selected major test is unchanged from source_dispatch. A truthy
+source selects an equality major [source, target]; a falsy source selects the
+three-copy Q major. This removes the literal-zero equality-transport case.
+Under the inherited sorted decoding, extra accepted aliases have explicit
+zero or truth meanings; they are not new uninterpreted symbols. Successful
+checking of a meaningful major remains mandatory. In the global profile,
+skipped falsy majors are administrative truth aliases, as in its baseline.
+
+Root-determined continuation
+---------------------------
+For an introduction, a meaningful even-arity matrix is an equation and gets
+its fresh-parameter progress hypothesis. A meaningful odd-arity matrix is a
+compound formula and gets its zero instance. Surplus even arities denote
+truth, so their progress instances are harmless. The same parity expression
+also occurs in computation continuations. The inherited zero-supply lemma
+permits either a zero instance or a fresh-parameter instance there.
+
+For soundness of a computation supply, perform the zero-substitution argument
+in iPRA after interpreting the accepting trace. One must not assume that raw
+substitution into a source-restricted derivation preserves its primitive
+source restriction. The required iPRA substitution and cut are available.
+
+Soundness of the combined proof language
+---------------------------------------
+Read an administrative D with equation matrix E progressively:
+
+    exists x, forall y, E(x,y) -> E(x,S y).
+
+Read a D with compound matrix B by the usual conditional closure:
+
+    exists x, B(x,0) -> forall y, B(x,y).
+
+Read Q by conditional closure. Numerical substitution preserves these matrix
+root classes. Thus the surviving equality transports are sound. Atomic DI
+proves the progressive reading directly. Compound DI is sound by numerical
+coverage. Equation induction in iPRA turns the progressive premise exported
+by atomic DE into precisely the conditional Q clause needed by elimination.
+The unchanged opener and freshness arguments apply to the accepting trace.
+
+Canonical completeness and the noncircular bootstrap
+--------------------------------------------------
+The public object language is the guarded G language, not all administrative
+arrays under the original D reading. Unguarded equation matrices are allowed
+inside proofs, with the progressive meaning just stated.
+
+Before recovering transport from literal zero, the administrative calculus
+already derives contextual equation induction: introduce an unused-witness
+D by atomic progress and eliminate its exported Q clause using the base.
+Numerical cases for equations follow by ignoring that induction hypothesis;
+numerical cases for compound formulas use compound case DI. These operations
+need no zero-source transport and no padding theorem. Therefore the existing
+source_dispatch zero-symmetry proof can be replayed without a circular use of
+guarded padding. It yields 0=t implies t=0 and then full numerical equality.
+
+Recover transport for canonical formulas by induction on their syntax. For a
+compound D matrix, use compound case introduction and transport the smaller
+matrix in both directions. For a guarded atomic matrix, prove its zero base
+by computation, use the opened old Q clause at S z, transport that equation,
+and introduce the target by atomic progress while ignoring its local IH.
+This establishes every transport instance required by the guarded calculus.
+It does not require, and this review does not assert, a full round-trip
+theorem for arbitrary unguarded administrative formulas.
+
+Consequently guarded derivations embed in the new proof system. Conversely,
+an accepted canonical conclusion has an iPRA proof under the mixed reading;
+the guard makes this reading equivalent to its ordinary reading, and the
+existing guarded/iPRA equivalence returns a guarded proof. This is the
+precise canonical-consequence equivalence supporting bi-interpretability.
+
+Optional Python spelling
+------------------------
+checker_bytes.py changes only `not len(a) % 2` to `~len(a) % 2` in checker.py.
+For every nonnegative integer n, Python's modulo rule gives
+
+    (~n) % 2 = 1 - (n % 2).
+
+The old values False/True and new values 0/1 have the same truth values and
+numeric equality. Their only consumer is `(m or parity) and k`, followed by
+the inherited arithmetic/structural opener; no relevant operation tests
+whether the zero image has Python type bool or int. This is a safe spelling
+optimization, separate from the mathematical restriction. An exact AST
+transformation check and 9,252 finite expression checks are recorded.
+
+Standalone public validator and fair comparison
+----------------------------------------------
+checker_strict.py contains the entire 525-byte core plus the exact term and
+formula validation functions and public driver of guarded_core's strict
+profile. AST identity of both validation functions was checked. It rejects
+noncanonical public goals while still permitting administrative intermediate
+formulas. It validates the same canonical arity convention as its baseline,
+including permitted odd coordinates naming dummy zero slots.
+
+Normalized source means ast.unparse(ast.parse(source)) followed by one LF.
+The measurements below include the complete module, with gzip at level 9
+and mtime=0. Significant tokens exclude whitespace, comments and stream
+markers, using the repository's convention.
+
+Program                  Tokens    AST    Bytes    gzip-9
+checker.py                  265    303      525       331
+checker_bytes.py            265    303      522       329
+checker_ast.py              262    281      606       348
+checker_tokens.py           258    287      571       339
+checker_strict.py           491    563     1205       572
+Prior guarded strict        491    568     1208       574
+
+Different compact programs attain the three coordinate minima. The main
+525-byte program is one byte smaller than source_dispatch's normalized
+526-byte byte profile, but its gzip size is one byte larger (331 versus
+330). Gzip is informational. The optional spelling gives 522/329 bytes.
+The guarded package's own best byte profile is 527 bytes; its direct
+checker.py is 528 bytes and must not be mislabeled the byte record.
+
+The strict result is a 1208-to-1205 comparison against the same guarded
+public grammar and validation code. It is not a claim that explicit public
+validation fits inside the compact 522-byte bound. The compact profiles
+have the inherited canonical-input contract; they are not public grammar
+recognizers. Nor is any observed minimum a mathematical lower bound.
+
+Checks performed for the newly constructed strict profile
+--------------------------------------------------------
+All 12 supplied canonical local certificates were accepted, both normally
+and with Python -O. The supplied administrative-only Q conclusion was
+rejected in both runs. Seven independent validator shape controls checked
+equations, guarded and unguarded D, Q, and zero/truth aliases. These 26
+process outcomes and seven shape controls are in strict_review_tests.json.
+The main reproduction harness supplies the broader proof and mutation
+regression suite; this review does not multiply its counts into this total.

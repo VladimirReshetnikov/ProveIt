@@ -1,0 +1,38 @@
+COMPOUND-ONLY D INTRODUCTION CANNOT PRESERVE THE NATIVE LANGUAGE
+
+Let N^- be the pinned native scalar core, retaining QI-progress on literal
+equations but restricting DI-case to matrices B that are not literal equations.
+Then N^- does not prove D_{x,y}(0=0), although the original core does.
+
+Proof. Interpret numerical terms in standard N with the intended iterator.
+Interpret equations as actual equality and Q_y B as B(0) -> forall y B(y).
+Interpret D_{x,y} B as false when B is literally an equation, and as
+exists x (B(x,0) -> forall y B(x,y)) otherwise. This is compositional and
+respects numerical substitution, since substitution cannot alter whether
+a formula has an equation, Q, or D at its root.
+
+Hyp, computation, and equational transport are sound. QE is immediate.
+DE at an atomic matrix has an impossible major premise, so is sound;
+DE at a compound matrix is ordinary existential elimination. DI-case is
+sound at every permitted compound matrix by zero/successor coverage of N.
+QI-progress is sound by ordinary induction on the equation's numerical
+truth value, with context and passive parameters fixed. All eigenvariable
+conditions have their usual interpretation.
+
+The proposed target D_{x,y}(0=0) is false in this model. In the original
+calculus, equality reflexivity gives the DI-case premise, so the target
+is provable. Thus the restriction fails to preserve the original sequents.
+
+The model also validates full formula transport and all ordinary admissible
+structural operations of the native system. Adding these does not repair
+the missing atomic D introductions. A nonempty atomic introduction family,
+a new bridge rule, or a changed formula language/reading is necessary.
+
+UPSTREAM WORDING CORRECTION
+
+The README claims substitution is not admissible for ZPrf because a
+substitution can change a nonzero source into literal zero. This explains
+why direct constructor-preserving substitution fails, but not admissibility.
+The proved equivalence zprf_iff_nprf for every context, together with
+NPrf.subst, implies admissibility by ZPrf -> NPrf -> subst -> ZPrf.
+No inference about formalization correctness is drawn from this wording.

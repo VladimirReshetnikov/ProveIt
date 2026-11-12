@@ -1,0 +1,103 @@
+MIRRORED GUARDED CHECKERS AND EXECUTABLE EXAMPLES
+
+Run with CPython 3.12.14 for the pinned measurements:
+
+    python3 reproduce.py
+
+No third-party Python packages are required. The script regenerates the
+named proof certificates, runs the standalone checkers in ordinary and -O
+mode, audits the named derivations, and writes evidence/metrics.json and
+evidence/validation.json. Subprocess exit status zero together with exactly
+ACCEPT followed by a newline is acceptance. An exception is rejection.
+
+TRUSTED PROGRAMS
+
+Each code/checker_*.py file is a complete, separate proof checker importing
+only Python's JSON parser. checker_tokens.py uses a global fresh-name supply;
+checker_ast.py and checker_bytes.py use lexical local scopes. Certificates
+for the two supply conventions are not interchangeable. readable_checker.py
+is an independent standalone expansion of the local-scope program.
+
+strict_checker.py is the complete local byte checker plus exact public-goal
+syntax validation. It rejects administrative zero aliases in dummy slots,
+unallocated names, Q-root public goals, and atomic D matrices not in the
+mirrored shape. Its entire source is measured. It is larger than the derived
+baseline checker equipped with the same general Eq/D and term validation;
+the report does not claim a reduction in the size of strict goal validation.
+
+No checker imports a proof producer, normalizer, theorem database, or another
+checker. The files under tests/ and reference/ and reproduce.py are untrusted.
+
+PUBLIC SYNTAX AND PROOF RESOURCES
+
+The numerical constructors are 0, successor, and scalar iteration I.
+Object formulas are equations and D_{x,y}B. When B is a literal equation it
+must be a = I(y,a;u.h), with literal repeated a and arbitrary update h; a
+may itself depend on x and y. Compound D matrices use the case rule, and
+atomic matrices use progress. There is no certificate mode switch selecting
+the two rules. Contexts additionally contain Q_yB closure resources generated
+by D elimination. The report specifies their ordinary anchored reading and
+the sound interpretation of administrative raw aliases.
+
+The raw codec is the inherited arity representation: unary arrays are D in
+formula position and successor in term position, binary formulas are
+equations, and ternary clauses encode Q by repeating the body. The depth
+increment is 5 minus array length. A protected numerical binder occupies two
+integer coordinates; root coordinates 0,1,2 denote zero semantically. Public
+canonical goals use 0 and odd coordinates of actual binders only. Dummy
+slots inserted below successor or iterator counter/initializer contain no
+canonical variable. The strict mirrored guard check compares its initializer
+to the left term with one outer protected slot inserted, including beneath
+nested term binders.
+
+EXAMPLES AND LIMITS
+
+The generated positive proofs cover both computations, a zero initializer,
+reflexivity, mirrored DI and DE, a nonvacuous witness, compound case
+introduction, implication elimination, derived equation induction, the
+contextual zero-source bootstrap, and a derived literal-zero transport.
+Every positive named derivation is expanded through actual computation
+normalization and audited: there are no primitive transports from literal
+zero, and every atomic D subformula in every goal or transport motive has
+the mirrored guard. Q resources are permitted in this audit.
+
+The contextual bootstrap proves the same-left implication (0=1) => (0=2)
+using the variable-left invariant n=I(n,1;u.Su). The normalized zero-transport
+example contains 507 instructions and uses 13 mirrored atomic introductions
+and 9 compound case introductions. These are worked derivations, not a
+claim that finite testing proves the general interpretation theorem.
+
+tests/normalizer.py is an inherited untrusted construction library. The
+mirrored_cases.py module replaces its equation induction and numerical case
+derivations by the new canonical constructions. Only equation-valued
+transport templates are exercised. Its frozen general Q/D transport
+branches are not advertised as a complete executable normalizer for the new
+calculus; the report's general theorem is mathematical.
+
+Two controls have deliberately different results by profile. A former
+case/progress-marker negative control is now accepted by the compact cores:
+its final Q_y(I(y,0;u.u)=0) is true, and the matrix root selects induction
+regardless of its old mode marker. The strict wrapper rejects this Q-root
+public goal. Similarly, a valid computation using a dummy-slot zero alias
+is accepted by the cores but rejected as noncanonical by strict_checker.py.
+These distinctions are explicit in evidence/validation.json.
+
+COMPARISON PROVENANCE
+
+The frozen checker sources and auxiliary producers come from
+VladimirReshetnikov/ProveIt at commit
+1517d9d79ce33f631e0f82960c849427cbba23bf, under
+Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/.
+The new programs combine source_dispatch's source-selected elimination
+with guarded_core's root-selected introduction. The report proves their
+compatibility for the new mirrored object language; the numeric source
+changes alone do not establish that theorem.
+
+source_strict_derived.py is a comparison derivative, not an upstream file:
+it adds the same canonical term and Eq/D validator to source_dispatch's
+byte program, without the new mirrored-matrix restriction.
+
+Measurements remove actual module/function/class docstrings and comments,
+then apply ast.unparse and one final newline. The outputs include
+significant Python tokens, AST nodes, normalized UTF-8 bytes, raw bytes,
+SHA-256, and gzip level-9 sizes with mtime=0. gzip is information only.

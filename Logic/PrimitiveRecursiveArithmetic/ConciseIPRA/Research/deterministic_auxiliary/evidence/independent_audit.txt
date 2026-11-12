@@ -1,0 +1,147 @@
+INDEPENDENT MATHEMATICAL AUDIT
+Reviewer: independent_research subagent
+Baseline: ProveIt 1517d9d79ce33f631e0f82960c849427cbba23bf
+Date: 11 November 2026 (user-local date)
+
+Scope
+-----
+This is an independent written audit of the proposed composition of the
+source-dispatch transport restriction with root-determined introduction.
+It is not a proof-assistant verification and does not certify Python code.
+The source proofs inspected were source_dispatch/proofs/
+zero_source_admissibility.tex and guarded_core/sections/guarded_core.tex.
+
+The correct system has TWO syntax levels.
+
+1. Public formulas are the canonical formulas G of guarded_core: numerical
+   equalities, and D_xy B where B is compound or, when atomic, has the
+   zero-initialized form I(y,0;u.h)=I(y,0;u.k).
+2. Auxiliary derivations permit unrestricted atomic matrices beneath D.
+   At atomic matrices the sole D-introduction is progress; at compound
+   matrices it is cases. D-elimination exports the ordinary Q clause.
+   Transport is permitted only when its source term is not literally 0.
+
+The intended claim is equality of consequence relations ON PUBLIC CANONICAL
+SEQUENTS. It must not be strengthened to an equivalence of all auxiliary
+formulas with their original conditional-universal reading.
+
+A. THE BOOTSTRAP IS ACYCLIC
+--------------------------
+In the auxiliary calculus, contextual equation induction is immediate.
+Given Gamma |- E(0) and Gamma,E(z) |- E(Sz), use atomic-progress D with
+an unused witness, eliminate its D to obtain Q_y E(y), and specialize Q
+using E(0). This uses no transport. The auxiliary D is essential here:
+E need not have the public zero-initialized guard.
+
+Numerical cases for equations follow by the same derived induction rule,
+ignoring the local induction hypothesis. Numerical cases for compound
+formulas follow by compound-case D, D-elimination and Q-specialization.
+Consequently every numerical-cases instance used by the source-dispatch
+zero-source proof is available, without padding and without any preceding
+unrestricted substitution theorem.
+
+The source-dispatch proof of numerical equality then applies literally:
+(i) reflexivity from I(0,r;u.0)=r using its I-headed source;
+(ii) safe symmetry/congruence at nonzero syntactic sources;
+(iii) joining two nonzero syntactic expressions known equal to zero;
+(iv) the unconditional singleton test L(Sv)=Z(v) and zero filter
+      v=C(Z(v),v,0), proved by numerical cases;
+(v) in the FIXED context {0=t}, equation induction on
+      n=I(n,t;u.Su), yielding 1=St;
+(vi) the singleton test yields Z(t)=1 and the filter yields t=0.
+
+Every use of equation induction here fixes its passive parameters. The
+argument never substitutes zero into a derivation whose transport source
+is a variable. Its arbitrary helper targets come from the derived cases
+rule, while substitutions into explicit helper derivations preserve the
+S/I root of every source, as documented in the source proof.
+
+After (v)-(vi), full numerical symmetry, congruence and transitivity follow
+by the existing zero-join argument. Thus transport is recovered for EVERY
+equation template, including a literal-zero source.
+
+B. CANONICAL FORMULA TRANSPORT IS RECOVERED
+------------------------------------------
+Use external structural induction on the public canonical template F(v).
+The equation case is full numerical equality algebra from A.
+
+For F(v)=D_xy B(v,x,y) with COMPOUND B, eliminate F(s), obtaining
+Q_y B(s,a,y). Introduce F(t) by compound-case D at the fresh witness a.
+Use the induction hypothesis and reversed source equality to convert the
+new local B(t,a,0) into B(s,a,0); use Q at Sz; use the induction hypothesis
+for the forward conversion to B(t,a,Sz). Close both inferences.
+
+For F(v)=D_xy B(v,x,y) with GUARDED ATOMIC B, eliminate F(s) at a.
+The equation B(s,a,0) is an unconditional theorem: both sides compute to 0.
+Q therefore gives B(s,a,Sz), and full equation transport gives B(t,a,Sz).
+Introduce F(t) by atomic-progress D, IGNORING its local B(t,a,z).
+This proof uses the guard's true base; it would be invalid for an arbitrary
+auxiliary atomic matrix.
+
+Thus every primitive full-transport instance of G is derivable. The other
+G rules already are auxiliary rules. This provides an effective translation
+of all G derivations, including derivations from retained assumptions.
+
+C. SOUNDNESS OF ALL AUXILIARY PROOFS
+-----------------------------------
+Interpret equations as actual equality. Interpret D_xy B as
+  exists x forall y (B -> B[Sy/y])          if B is literally an equation;
+  exists x (B(x,0) -> forall y B(x,y))      if B is compound.
+Interpret the exported Q resource as B(x,0) -> forall y B(x,y).
+
+Atomic-progress introduction is sound directly. Atomic D-elimination is
+sound because contextual equation induction converts progress into the
+exported ordinary Q. Compound introduction/elimination uses ordinary
+coverage. Restricted transport is sound because numerical substitution
+does not change whether a matrix is an equation. These checks also cover
+auxiliary intermediate formulas not belonging to the public grammar.
+
+On every public guarded atomic matrix, its base is provable, so progress
+and conditional-universal closure are equivalent in iPRA. Structural
+induction extends this agreement to all public formulas and their retained
+contexts. Soundness followed by the inherited G/iPRA completeness theorem
+therefore gives the converse inclusion for canonical sequents.
+
+The public calculus consequently inherits the established whole-domain
+bi-interpretation with iPRA. Numerical terms and actual equality are
+unchanged, so its numerical composites retain the identity graph x=y.
+
+D. A CLAIM THAT WOULD BE FALSE
+-----------------------------
+If the same syntactic restrictions are imposed but intermediate formulas
+are ALSO required to be canonical, the result is weaker. There is a
+syntactic counterinterpretation in the standard natural numbers:
+  (0=t)* = true,                           if the left side is literally 0;
+  (s=t)* = ordinary equality,              otherwise;
+  (D_xy B)* = exists x (B*(x,0) -> forall y B*(x,y)).
+Every atomic formula beneath a public D is guarded and has an I-headed
+left side. Its translation therefore commutes with numerical substitution.
+Translate a retained clause <A;y.B> as A* -> forall y B*.
+
+Computations have I-headed sources and are true. Guarded progress is sound
+by induction; compound cases and D-elimination are sound. Nonzero-source
+transport is sound: changing its source s to t can change a bare equation
+from ordinary equality to true when its left side becomes literal 0, but
+can never change true to ordinary equality. Instance formation for clauses
+has the same one-way property. Hence every rule remains sound.
+
+At x=1, the assumption 0=x is interpreted as true, while x=0 is false.
+Therefore 0=x |- x=0 is NOT derivable in that canonical-only restricted
+calculus. The unrestricted auxiliary equation induction in A is a real
+logical resource, not dispensable notation.
+
+E. DELIVERY QUALIFICATIONS
+--------------------------
+The written argument above has no unresolved mathematical gap identified
+in this review, provided the two syntax levels and inference rules are
+stated exactly as above. It does not establish:
+* completeness on every unrestricted auxiliary formula;
+* full zero-source transport through every auxiliary atomic D;
+* a smaller checker under an input contract that requires rejection of
+  every noncanonical goal unless that validator is included and measured;
+* global minimality or proof-assistant verification.
+
+In particular, do not import the final unrestricted-formula-transport
+lemma of source_dispatch wholesale: its D proof invokes case introduction
+at arbitrary atomic matrices. Replace it by section B of this audit.
+The numerical part of that proof is the reusable part.
