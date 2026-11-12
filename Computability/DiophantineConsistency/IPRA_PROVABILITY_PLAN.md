@@ -7720,6 +7720,9 @@ unelaborated and leaves the graph's factor exclusions as explicit premises.
 The source-reviewed [74 literal factor-residue draft](research/ordinary14-74-factor-residues-draft/README.md)
 proposes those modular exclusions from the circuit fields. It remains
 unelaborated and is not yet composed into the complete reverse witness.
+The source-reviewed [74 own-zero unit composition](research/ordinary14-74-ownzero-units-draft/README.md)
+proposes applying those exclusions to the graph's product. It remains
+unelaborated and does not yet establish the positive reverse coordinate.
 The source-reviewed [75/74 ring client](research/ordinary14-75-74-ring-client-draft/README.md)
 and [positive map draft](research/ordinary14-75-74-positive-map-draft/README.md)
 propose the forward and conditional reverse valuation updates. They are
