@@ -1265,6 +1265,9 @@ proposes native, standard and equality-only derivability declarations. Its
 [static import inventory](research/ordinary14-root78-endpoint-import-inventory/README.md)
 records draft headers and directly named qualified sources only. Neither is
 a Lean, provider/axiom, physical-byte or internal proof-existence check.
+The reviewed [parent-to-88 first-cut draft](research/ordinary14-parent-to-88-first-cut-draft/README.md)
+is now tracked as a dependency of the proposed parent witness; it remains
+unelaborated like the rest of that source chain.
 The source-reviewed [compact 78/88 composition](research/ordinary14-78-88-compact-model-composition-draft/README.md)
 proposes the next symbolic-port link. It remains unelaborated and is not an
 88-to-parent or iPRA endpoint theorem.
