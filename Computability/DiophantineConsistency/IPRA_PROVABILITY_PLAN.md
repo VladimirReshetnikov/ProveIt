@@ -7484,6 +7484,10 @@ The source-reviewed [all-positive valuation wrapper](research/ordinary14-direct-
 proposes the two slot updates and natural-port specialization, but remains
 unelaborated along with its dependencies. Provider compatibility and the
 end-to-end model and iPRA bridges remain open.
+The source-reviewed [auxiliary-root model draft](research/ordinary14-aux-root-model-draft/README.md)
+proposes the positive witness maps under explicit `1 < Q` and `1 < z²`
+assumptions. Those bounds have not yet been derived from the graph in Lean;
+the draft and its dependencies remain unelaborated.
 The source-reviewed [87-operation Lean graph and decoder-route draft](research/ordinary14-shifted-guard87-lean-draft/README.md)
 records the fact-level replay needed for arbitrary models. It is uncompiled;
 the graph-specific model lemmas, parent bridges and iPRA endpoint remain open.
