@@ -7868,6 +7868,9 @@ The separately rendered [base-10 natural-79 candidate](research/ordinary14-natur
 uses distinct input names and external checks of all four compact ports, graph
 rows and decimal seed. The independently reviewed PDF is a candidate only;
 Lean port identities, the iPRA endpoint and formal document binding remain open.
+The [decimal port-bridge source audit](reviews/ordinary14-natural79-decimal-port-bridge-source-audit/README.md)
+identifies radix, mask and byte-recipe interfaces and the missing finite seed,
+coefficient and document bindings. It is not an elaborated Lean proof.
 The independently source-reviewed [natural-79 model route](research/ordinary14-natural79-w-model-route/README.md)
 identifies model square-divisibility interfaces and proposes ring identities
 for the forced-w argument. The existing 74 unit extractor requires positive
