@@ -7540,6 +7540,11 @@ The source-reviewed [84/78 model composition draft](research/ordinary14-84-to-78
 connects the proposed clients through their shared 79-operation graph. It
 and all component drafts remain unelaborated; provider verification, earlier
 parent bridges and the iPRA endpoint are still required.
+The source-reviewed [modified-carrier facts](research/ordinary14-modified-carrier-model-facts-draft/README.md)
+propose the orientation, rank congruence and compact-Mersenne cancellation
+needed for the preceding 84/85 comparison. They remain unelaborated; the
+projection-growth, graph bindings, provider compatibility and endpoint are
+still open.
 The source-reviewed [87-operation Lean graph and decoder-route draft](research/ordinary14-shifted-guard87-lean-draft/README.md)
 records the fact-level replay needed for arbitrary models. It is uncompiled;
 the graph-specific model lemmas, parent bridges and iPRA endpoint remain open.
