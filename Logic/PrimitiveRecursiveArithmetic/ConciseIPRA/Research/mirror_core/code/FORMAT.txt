@@ -1,0 +1,87 @@
+MIRROR SIX-RULE CERTIFICATE FORMAT
+
+The standalone trusted checker is mirror_six.py. It imports only json and sys.
+diagonal_six.py is a matched implementation of the SPrf diagonal selector.
+transformations.py is untrusted proof-producing code and is not imported by
+either checker.
+
+INPUT AND ACCEPTANCE
+
+One decoded JSON object with exactly these four keys:
+  variables: a nonnegative integer n (Boolean values are rejected)
+  context:   a list of formulas in numerical scope n
+  goal:      a formula in numerical scope n
+  proof:     a proof tree from that context to that goal
+
+Acceptance is exit status 0 with exactly ACCEPT on standard output. Any
+other outcome is rejection. Ordinary interpreter resource limits apply.
+The standard JSON parser's last-key convention applies to repeated textual
+object keys; all subsequent checks concern the decoded JSON value.
+
+TERMS AND FORMULAS
+
+Terms in scope n are:
+  ["v", i]             0 <= i < n, type(i) is exactly int
+  ["z"]                zero
+  ["s", a]             successor
+  ["i", c, a, h]       iterator I(c,a;u.h); h has numerical scope n+1
+
+The iterator binds only in h. Its new state variable has de Bruijn index 0;
+outer variables in h have their indices increased by one. Terms are raw:
+zero and successor computation do not normalize the syntax.
+
+Formulas in scope n are:
+  ["=", s, t]          equality
+  ["q", b]             Q_y b, where b has scope n+1 and y has index 0
+  ["d", b]             D_(x,y) b, where b has scope n+2,
+                        y has index 0 and x has index 1
+
+Ordinary readings are Q_y B = (B(0) -> forall y B(y)) and
+D_(x,y) B = exists x (B(x,0) -> forall y B(x,y)).
+
+Every substitution is capture avoiding. The helper shift inserts a fresh
+outer numerical variable; sub opens the nearest binder. Public terms and
+formulas, hypothesis contexts, all proof constructors, and numerical scopes
+are checked explicitly. No arbitrary unused proof tail is accepted.
+
+PROOF CONSTRUCTORS
+
+  ["hyp", j]
+    Return context[j], with j an exact integer in range.
+
+  ["refl", a]
+    Return a=a, after checking a in the ambient numerical scope.
+
+  ["eval", p, q]
+    Let p prove s=t and q prove I(c,a;u.h)=r.
+    If c is literally zero and s is literally a, return r=t.
+    Otherwise c must literally be S(c0) and s must literally be
+    I(c0,a;u.h); return r=h[t/u]. No other case is admitted.
+
+  ["qe", t, p, q]
+    Let p prove Q_y B and q prove B(0); return B(t).
+
+  ["de", goal, p, q]
+    Let p prove D_(x,y) B. Open a fresh numerical parameter x at index 0.
+    Check q with Q_y B prepended to the shifted old context and require
+    its result to be the shifted displayed goal. Return goal.
+
+  ["di", B, t, p]
+    Check B in scope n+2 and witness t in scope n. Before substituting t,
+    test whether B is literally a = I(y,a;u.h), with y the index-0
+    variable and the left endpoint a literally identical to the seed.
+    If so use the progress hypothesis B(t,z); otherwise use B(t,0).
+    Open a fresh parameter z at index 0, prepend the selected hypothesis
+    to the shifted old context, and check p has conclusion B(t,Sz).
+    Return D_(x,y) B.
+
+There are six instruction tags. Eval has the two explicit alternatives
+above. DI has one syntax-directed selector. All arrays shown have exactly
+their displayed length. No further primitive rule or axiom is implemented.
+
+MATCHED CONTROL
+
+diagonal_six.py has the identical interface and implementation except that
+DI selects progress precisely at the uninstantiated matrix
+I(y,y;u.h) = I(y,y;v.k). The trusted input grammar and other five tags are
+unchanged. evidence/guard_change.diff records the normalized source change.

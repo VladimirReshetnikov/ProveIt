@@ -1,0 +1,621 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true}
+\hypersetup{pdftitle={Five-rule presentations of intuitionistic primitive recursive arithmetic},pdfauthor={Research note prepared for Vladimir Reshetnikov},pdfsubject={Clause presentations, interpretations and substitution},pdfkeywords={iPRA, primitive recursive arithmetic, proof checker, bi-interpretability}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{Five-rule presentations of iPRA}\fancyhead[R]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\Nat}{\mathbb N}
+\newcommand{\Cd}{\ensuremath{\mathcal C_{\Delta}}}
+\newcommand{\Cm}{\ensuremath{\mathcal C_{\mathrm M}}}
+\newcommand{\Cg}{\ensuremath{\mathcal C_G}}
+\newcommand{\Ssix}{\ensuremath{\mathcal S_6}}
+\newcommand{\assm}{\operatorname{assm}}
+\newcommand{\FV}{\operatorname{FV}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\mirror}{\operatorname{mirror}}
+\newcommand{\sel}{\operatorname{sel}}
+\newcommand{\gate}{\operatorname{gate}}
+\newcommand{\esel}{\operatorname{esel}}
+\newcommand{\parity}{\operatorname{par}}
+\newcommand{\qq}{\mathsf q}
+\newcommand{\srcbase}{https://github.com/VladimirReshetnikov/ProveIt/blob/443cff49563457a48ee0f663012d56c4bdb58fa0/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/}
+\title{Five-rule presentations of intuitionistic primitive recursive arithmetic\\[4pt]\large Closure erasure, a base-valid guard principle, and substitution}
+\author{Research note prepared for Vladimir Reshetnikov}
+\date{November 11, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The current \texttt{ConciseIPRA} repository already contains several substantial reductions, including a raw six-family calculus \texttt{SPrf} with substitution that preserves proof structure, and five-family clause calculi with a witness-dependent introduction. This note gives a five-family \emph{raw} clause calculus combining the former's two-case computational equality and diagonal introduction with the latter's removal of the closure constructor. Its formulas are just equations and one two-variable binder. Its five inference families are reflexivity, evaluation, clause use, binder elimination, and binder introduction. There is no term normalization, no primitive equality-transport template, and no witness-zero mode test.
+
+Both proof translations and both formula round trips are established. In combination with the repository's existing scalar-arithmetic bi-interpretation, the new theory is bi-interpretable and equiconsistent with full first-order \ipra, with the entire numerical domain and the identity graph in both composites. A general criterion, drawing on the earlier reflexive-base method, organizes the choice of introduction guard: preservation under substitution suffices, and preservation together with reflection gives unchanged proof-tree shape. This criterion also gives an unrestricted one-sided mirror variant.
+
+The simplification is relative and measured. The matched complete checker is smaller than a control implementing the six-family substitution-stable interface. It is not a new overall byte minimum: the earlier witness-mode clause checker and some compact encodings are smaller. Neither global minimality nor a new Lean verification of this note is claimed.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Result, comparison target, and limits}
+
+The comparison snapshot is commit
+\begin{center}\texttt{443cff49563457a48ee0f663012d56c4bdb58fa0}.\end{center}
+The source was read through the GitHub connection, including the current README, \texttt{NativeSix.lean}, \texttt{NativeDiagonal.lean}, the clause proposals, and their checkers. The last commit at this snapshot also formalizes the zero-normal successor-step interface. Thus a claim that reflexivity plus one computational step is a new reduction would be incorrect here.
+
+The construction recommended in this note is \Cd. It makes the following particular comparison:
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Feature & Current raw \texttt{SPrf} & \Cd\\
+\midrule
+Numerical constructors & $x,0,S,I$ & $x,0,S,I$\\
+Formula constructors & Eq, $Q$, $D$ & Eq, $D$\\
+Inference families & 6 & 5\\
+Evaluation subcases & 2 & 2\\
+Term normalization & absent & absent\\
+Supplied equality template & absent & absent\\
+Test on the numerical witness & absent & absent\\
+Substitution preserving proof shape & yes & yes\\
+\bottomrule
+\end{tabular}
+\end{center}
+The reduction comes from representing a retained conditional closure as a reusable clause. Clause syntax and its variable scope are part of the specification; they are not counted as free infrastructure. The complete implementations include parsing, validation, scope checking, substitution, and the public closed-theorem interface.
+
+This is a synthesis of two existing components, followed by an explicit equivalence and structural theorem. The clause idea occurs in \texttt{raw\_clausal} and related packages; the diagonal guard and two-case evaluation are already combined in \texttt{SPrf}. The new claim is the combined five-family interface with direct proof-shape-preserving substitution. The general guard principle in Section~\ref{sec:guards} explains which additional combinations are sound.
+
+\textbf{What this does not establish.} There is no meaningful proof here that five families is the smallest possible presentation, and no repository-wide checker-size record is established. Some older five-family clause checkers are smaller. The complete report therefore answers the research request with a concrete, rigorously justified simplification of the substitution-stable interface, not with an assertion that the entire existing size frontier has been beaten. All numerical comparisons identify their actual controls.
+
+\section{The complete presentation}
+\label{sec:calculus}
+
+\subsection{Raw numerical terms and formulas}
+
+There is one numerical sort. Terms are finite raw syntax trees
+\[
+ t::=x\mid 0\mid S(t)\mid I(n,a;u.h).
+\]
+Only $u$ is bound in $h$; the counter $n$ and initializer $a$ are outside that binder. The update $h$ may use passive parameters. Every substitution below is ordinary capture-avoiding substitution, including beneath nested iterator bodies. In particular,
+\[
+ I(0,a;u.h)\not\equiv a
+\]
+as syntax. Their equality will be proved. The symbol $\equiv$ always means literal syntax equality, up to the fixed representation of bound variables.
+
+Formulas have two constructors:
+\[
+ A::=(s=t)\mid D_{x,y}A.
+\]
+Both $x$ and $y$ are bound in $D_{x,y}A$. The numerical term $S0$ is abbreviated $1$. The designated contradiction is $0=1$.
+
+For explanation and for the eventual interpretation, the ordinary first-order reading is
+\begin{equation}\label{eq:Dreading}
+ (D_{x,y}B)^{\circ}:=\exists x\bigl(B^{\circ}(x,0)\to\forall y\,B^{\circ}(x,y)\bigr).
+\end{equation}
+This reading is not an additional inference rule.
+
+\subsection{Reusable clauses}
+
+A context is a finite list of clause \emph{occurrences}
+\[
+ [A;y.B(y)],\qquad y\notin\FV(A).
+\]
+The displayed $y$ is bound only in the consequent $B$. The ordinary reading is $A^{\circ}\to\forall yB^{\circ}(y)$. Two occurrences with identical values can have different positions and different origins.
+
+Let $H:=(0=0)$. An ordinary retained assumption $F$ abbreviates the constant clause
+\begin{equation}\label{eq:ordinary}
+ \assm(F):=[H;v.F],\qquad v\notin\FV(F).
+\end{equation}
+Under de Bruijn notation the body is weakened under its unused binder. With the implementation's locally nameless levels, a locally closed $F$ can be inserted unchanged. Writing $\Gamma,F$ is only shorthand for adjoining this clause.
+
+\subsection{The diagonal guard}
+
+The raw matrix $B(x,y)$ is diagonal when it has the literal shape
+\begin{equation}\label{eq:diagonal}
+ I(y,y;u.h)=I(y,y;v.k).
+\end{equation}
+All four displayed $y$ occurrences refer to the inner variable of the enclosing $D$. The update terms $h,k$ are unrestricted. The test is made on the matrix \emph{before} the witness is substituted and before $y$ is opened. Define
+\[
+ \eta_B(z)=\begin{cases}z,&\diag_y(B),\\0,&\text{otherwise}.\end{cases}
+\]
+
+\subsection{Computational equality}
+
+The partial operation $\Phi(s,t,b)$ has exactly the following cases:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Shape of $b$ & Required literal source $s$ & Result $\Phi(s,t,b)$\\
+\midrule
+$I(0,a;u.h)$ & $a$ & $t$\\
+$I(Sc,a;u.h)$ & $I(c,a;u.h)$ & $h[t/u]$\\
+\bottomrule
+\end{tabular}
+\end{center}
+It is undefined in every other case. A variable or a numeral merely provably equal to a successor does not satisfy the literal successor test. The two rows are disjoint. There is no third equality-composition case.
+
+\subsection{All five inference families}
+
+These are the entire primitive calculus:
+\begin{align*}
+ &\frac{}{\Gamma\vdash t=t} &&(\mathrm R)\\[7pt]
+ &\frac{\Gamma\vdash s=t\qquad\Gamma\vdash b=r}
+ {\Gamma\vdash r=\Phi(s,t,b)} &&(\mathrm V)\\[7pt]
+ &\frac{\Gamma\vdash A}{\Gamma\vdash B(q)}
+ \quad [A;y.B]\text{ is retained in }\Gamma &&(\mathrm U)\\[7pt]
+ &\frac{\Gamma\vdash D_{x,y}B\qquad
+ \Gamma,[B(b,0);y.B(b,y)]\vdash A}{\Gamma\vdash A} &&(\mathrm E)\\[7pt]
+ &\frac{\Gamma,\assm(B(t,\eta_B(z)))\vdash B(t,Sz)}
+ {\Gamma\vdash D_{x,y}B} &&(\mathrm I).
+\end{align*}
+V requires $\Phi$ to be defined. In E, $b$ is fresh for the outer context, the conclusion, and the passive parameters of $B$. In I, $z$ is fresh for the outer context, the witness $t$, and the passive parameters. Contexts are weakened into the new scope. All syntax is well formed and scoped.
+
+There are five inference \emph{families}, with two subcases in V. If those subcases are counted as separate constructors, the count is six, just as the repository's six-family \texttt{SPrf} has seven Lean constructors. No advantage is claimed by changing this counting convention. Hypothesis, weakening, cut, substitution, equality transport, both iterator equations, numerical cases, and equation induction are derived, not additional primitives.
+
+\section{Equality and structural rules}
+\label{sec:elementary}
+
+\begin{lemma}[Ordinary hypotheses, weakening, and ordinary cut]\label{lem:cut}
+An ordinary retained assumption can be used. Weakening and fresh renaming are admissible. If $\Gamma\vdash F$ and $\Gamma,\assm(F)\vdash A$, then $\Gamma\vdash A$.
+\end{lemma}
+\begin{proof}
+R at $0$ proves $H$; U on \eqref{eq:ordinary}, with any target, proves $F$. Weakening and injective fresh renaming are inductions on the derivation. The diagonal test is invariant under these renamings.
+
+For cut, distinguish the occurrence of $\assm(F)$. Replace every U selecting that occurrence by the supplied proof of $F$, weakened into the local scope. Its proof of $H$ can be discarded. Other nodes are translated recursively. Freshen eigenvariables before inserting proofs. The construction is sensitive to clause occurrences, so equal-looking clauses cause no ambiguity. It does not assume substitution of arbitrary numerical terms into derivations.
+\end{proof}
+
+\begin{lemma}[Root composition from two zero evaluations]\label{lem:pivot}
+From $s=t$ and $s=r$ one can derive $r=t$ using only R and V.
+\end{lemma}
+\begin{proof}
+Set $W_s=I(0,s;u.u)$. Apply the zero row of V to $s=r$ and $W_s=W_s$, obtaining $W_s=r$. Apply it again to $s=t$ and $W_s=r$, obtaining $r=t$.
+\end{proof}
+
+Write $\operatorname{pivot}(p,q)$ for this derived operation. Symmetry sends a proof $p:s=t$ to $\operatorname{pivot}(s=s,p):t=s$. If $p:s=t$ and $q:t=v$, then $\operatorname{pivot}(q,\operatorname{sym}(p))$ proves $s=v$.
+
+\begin{lemma}[Computation and arbitrary term congruence]\label{lem:computation}
+The calculus proves
+\[
+ I(0,a;u.h)=a,\qquad I(Sc,a;u.h)=h[I(c,a;u.h)/u].
+\]
+For every fixed term template $h(u)$, $s=t$ entails $h(s)=h(t)$.
+\end{lemma}
+\begin{proof}
+Each computation equation is one V node on two appropriate reflexivities. For congruence, put $A_s=I(0,s;u.h)$ and $B_s=I(S0,s;u.h)$. From $p:s=t$ construct
+\[
+\begin{array}{rl}
+ A_s=s&\text{by zero evaluation},\\
+ B_s=h(s)&\text{by successor evaluation using the preceding line},\\
+ A_s=t&\text{by zero evaluation using }p,\\
+ h(s)=h(t)&\text{by successor evaluation using the last two lines}.
+\end{array}
+\]
+The last application has first source exactly $A_s$ and second source exactly $B_s$. Thus the argument does not use a pre-existing congruence rule. Nested occurrences of $u$ are handled by the ordinary capture-avoiding substitution already used in V.
+\end{proof}
+
+Combining congruence with Lemma~\ref{lem:pivot} gives one-term crossed transport
+\[
+ s=t,\ h(s)=r\quad\Longrightarrow\quad r=h(t).
+\]
+Applying it twice gives transport in any equation template $a(s)=b(s)$. Both results hold at all sources, including literal $0$, with no induction.
+
+\section{Recovering the logical interface}
+\label{sec:logical}
+
+\begin{lemma}[The guarded base is a theorem]\label{lem:base}
+If $\diag_y(B)$, then $\Gamma\vdash B(t,0)$ for every witness $t$ and every context $\Gamma$.
+\end{lemma}
+\begin{proof}
+The instance has the form $I(0,0;u.h')=I(0,0;v.k')$. Both sides compute to $0$; symmetry and transitivity join them. Neither update body is evaluated.
+\end{proof}
+
+\begin{lemma}[Every case introduction]\label{lem:casesintro}
+For every matrix $B$ and every $t$, the following rule is admissible:
+\[
+ \frac{\Gamma,\assm(B(t,0))\vdash B(t,Sz)}
+ {\Gamma\vdash D_{x,y}B}.
+\]
+\end{lemma}
+\begin{proof}
+For a nondiagonal matrix this is primitive I. For a diagonal matrix cut the theorem $B(t,0)$ from Lemma~\ref{lem:base} into the supplied case branch. The result proves $B(t,Sz)$ without that local assumption. Weaken by $\assm(B(t,z))$ and use primitive I in progress mode.
+\end{proof}
+
+Define a closure \emph{abbreviation}, using an unused $w$,
+\begin{equation}\label{eq:qmacro}
+ \qq_y B(y):=D_{w,y}B(y),\qquad w\notin\FV(B).
+\end{equation}
+No $Q$ node is added to the public syntax.
+
+\begin{lemma}[Closure interfaces]\label{lem:closure}
+The following operations are derivable:
+\begin{enumerate}
+\item $\Gamma,B(0)\vdash B(Sz)$ entails $\Gamma\vdash\qq_yB$.
+\item $\Gamma\vdash\qq_yB$ and $\Gamma\vdash B(0)$ entail $\Gamma\vdash B(t)$.
+\item A retained clause $[B(0);y.B]$ entails $\qq_yB$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+The first is Lemma~\ref{lem:casesintro} with an unused witness. For the second, E opens the dummy-witness $D$, yielding the displayed canonical clause; U applies it to the supplied base proof. For the third, under the local assumption $B(0)$, use the retained clause at $Sz$, then apply the first operation. This argument is also valid when the matrix is diagonal, because all case introductions have already been recovered.
+\end{proof}
+
+Consequently numerical case distinction is available for every formula: proofs of $A(0)$ and $A(Sz)$ for fresh $z$ give a proof of $A(t)$ at any target. Use the successor proof in the first closure interface and the zero proof in the second. No induction is used.
+
+\begin{lemma}[Transport in arbitrary formulas]\label{lem:formula-transport}
+For every Eq/$D$ template $F(v)$, $s=t$ and $F(s)$ entail $F(t)$.
+\end{lemma}
+\begin{proof}
+Proceed by structural induction on $F$. The equation case was proved above. For $F(v)=D_{x,y}B(v,x,y)$, eliminate $F(s)$ at fresh $b$ to retain
+$[B(s,b,0);y.B(s,b,y)]$. Introduce $F(t)$ by case introduction with witness $b$. Its local assumption $B(t,b,0)$ transports backwards by the induction hypothesis. U produces $B(s,b,Sz)$; transport forwards gives $B(t,b,Sz)$. Close I and E. Only the strictly smaller matrix uses the induction hypothesis. This proof uses no arithmetic induction.
+\end{proof}
+
+\section{Equation induction is recovered}
+\label{sec:induction}
+
+We give an explicit proof so that the diagonal guard does not conceal a missing arithmetic principle. Put
+\[
+ C(v,a,b):=I(v,a;u.b),
+\]
+with $u$ unused in $b$. Computation gives $C(0,a,b)=a$ and $C(Sn,a,b)=b$.
+
+For an arbitrary equation $E(y)\equiv s(y)=t(y)$ define
+\begin{equation}\label{eq:lift}
+ H_E(y):=L_s(y)=L_t(y),\qquad
+ L_s(y):=I(y,y;u.s(y)),\quad L_t(y):=I(y,y;u.t(y)),
+\end{equation}
+where the update variable is unused in $s,t$. The lift is diagonal, its zero instance is a theorem, and computation gives
+\begin{equation}\label{eq:successor-equiv}
+ H_E(Sz)\ \dashv\vdash\ E(Sz).
+\end{equation}
+
+Numerical cases prove, without induction, the unconditional equations
+\begin{equation}\label{eq:selector-recover}
+ C(y,s(0),L_s(y))=s(y),\qquad
+ C(y,t(0),L_t(y))=t(y).
+\end{equation}
+At $0$ these are reflexive after computation; at a successor the inner and outer constant-update iterators compute to the displayed right side. Hence, under $E(0)$, congruence and \eqref{eq:selector-recover} give
+\begin{equation}\label{eq:recovery}
+ E(0),H_E(y)\quad\vdash\quad E(y).
+\end{equation}
+
+\begin{theorem}[Contextual equation induction]\label{thm:eqind}
+For every literal equation $E(y)$, every context $\Gamma$, and every numerical term $q$, proofs of
+\[
+ \Gamma\vdash E(0),\qquad
+ \Gamma,\assm(E(z))\vdash E(Sz)
+\]
+with fresh $z$ effectively yield $\Gamma\vdash E(q)$.
+\end{theorem}
+\begin{proof}
+Under the local assumption $H_E(z)$, recover $E(z)$ by \eqref{eq:recovery}. Cut the given step proof at its original fresh variable, obtaining $E(Sz)$, then use \eqref{eq:successor-equiv} to obtain $H_E(Sz)$. Primitive I with a dummy witness now proves $\qq_yH_E$. Its zero instance is a theorem, so closure elimination gives $H_E(q)$. Apply \eqref{eq:recovery} once more.
+
+No substitution is made into the supplied step proof. The equality induction being derived is not used to prove the selector identities. This makes the dependency order explicit.
+\end{proof}
+
+The usual progress introduction $E(z)\vdash E(Sz)\Rightarrow\qq_yE(y)$ also follows. Temporarily retain $E(0)$, perform the construction to obtain $E(Sw)$ at a fresh target, then close case introduction for $\qq_yE$. With arbitrary passive witness parameters, this recovers witnessed progress introduction as well.
+
+\section{All intuitionistic logical connectives}
+\label{sec:macros}
+
+The absence of primitive connective symbols does not mean that only an equational or positive fragment is represented. The following definitions expand to Eq/$D$ formulas. The construction is the native selector construction with every $Q$ replaced by \eqref{eq:qmacro}.
+
+First define a selector between an equation and an arbitrary formula:
+\begin{align*}
+ \esel_v(s,t;r=q)&:=(C(v,s,r)=C(v,t,q)),\\
+ \esel_v(s,t;D_{x,y}B)&:=D_{x,y}\esel_v(C(y,0,s),C(y,0,t);B).
+\end{align*}
+All bound names are freshened away from $v,s,t$. Put $\gate_v(A):=\esel_v(0,0;A)$. Recursively define a selector between any two formulas:
+\begin{align*}
+ \sel_v(s=t,B)&:=\esel_v(s,t;B),\\
+ \sel_v(D_{x,y}A,B)&:=D_{x,y}\sel_v(A,\gate_y(B)).
+\end{align*}
+Again the new binders are fresh for $v$ and $B$. Structural induction, computation, numerical cases, and the closure interfaces prove
+\[
+ \sel_0(A,B)\dashv\vdash A,\quad
+ \sel_{Sz}(A,B)\dashv\vdash B,\quad
+ \gate_0(A)\dashv\vdash H,\quad
+ \gate_{Sz}(A)\dashv\vdash A.
+\]
+For example, the binder step for an equation selector reduces at $v=0$ to
+$D_{x,y}(C(y,0,s)=C(y,0,t))$, whose base is true and whose successor instance is $s=t$. It is therefore equivalent to $s=t$.
+
+Let $\parity(y)=I(y,0;u.C(u,1,0))$. The logical abbreviations are
+\begin{align*}
+ \bot&:=(0=1),\\
+ A\to B&:=\qq_y\sel_y(A,B),\\
+ A\land B&:=\qq_y\gate_y\bigl(\sel_{\parity(y)}(A,B)\bigr),\\
+ \exists x\,A(x)&:=D_{x,y}\gate_y(A(x)),\\
+ A\lor B&:=\exists v\,\sel_v(A,B),\\
+ \forall x\,A(x)&:=A(0)\land\qq_xA(x).
+\end{align*}
+Every unused variable is fresh. The existential notation on the right side of the disjunction definition is the preceding macro.
+
+These have their usual intuitionistic introduction and elimination rules. Implication follows because the zero selector instance is $A$ and every successor instance is $B$. The conjunction gate has true zero base; its instances at $1$ and $2$ recover $B$ and $A$. Conversely, $A$ and $B$ imply every selector instance by numerical cases. The existential gate similarly has true zero base and its instance at $1$ recovers the witness formula. Universal quantification is its zero instance together with conditional closure. These are the same explicit native macros whose rule derivations are recorded in \texttt{NativeLogic.lean}~\cite{logic}.
+
+Finally, $0=1$ implies every equation $s=t$: transport through $C(v,s,t)$ and compute its two endpoints. Structural induction on Eq/$D$ formulas, using case introduction with witness $0$, gives ex falso for every formula. No law of excluded middle for arbitrary formulas is assumed or derived by the presentation.
+
+\section{Exact comparison with the verified native calculus}
+\label{sec:equivalence}
+
+Let \Ssix\ denote the repository's \texttt{SPrf}: Eq/$Q$/$D$ formulas, ordinary formula contexts, and Hyp, R, the same two-case V, QE, DE, and the same diagonal introduction. The source proves
+\[
+ \texttt{sprf\_iff\_nprf}:\quad
+ \texttt{SPrf}\,\Gamma\,A\ \longleftrightarrow\ \texttt{NPrf}\,\Gamma\,A.
+\]
+This theorem is part of the pinned repository, not a new machine-checked claim about the present checker~\cite{six}.
+
+Define $j$ to include Eq/$D$ syntax into native syntax, and define $\tau$ by
+\[
+\begin{split}
+ \tau(s=t)&:=s=t,\\
+ \tau(D_{x,y}B)&:=D_{x,y}\tau(B),\\
+ \tau(Q_yB)&:=D_{w,y}\tau(B),\qquad w\notin\FV(B).
+\end{split}
+\]
+Terms are unchanged. The translation commutes with capture-avoiding numerical substitution and preserves and reflects the diagonal predicate on matrices: an equation is unchanged in shape, and a compound formula stays compound.
+
+\begin{theorem}[Proof translations]\label{thm:prooftranslation}
+For every native context $\Gamma$ and formula $A$,
+\[
+ \Gamma\vdash_{\Ssix}A
+ \quad\Longrightarrow\quad
+ \assm(\tau\Gamma)\vdash_{\Cd}\tau A.
+\]
+For every Eq/$D$ context $\Delta$ and formula $F$,
+\[
+ \assm(\Delta)\vdash_{\Cd}F
+ \quad\Longleftrightarrow\quad
+ j\Delta\vdash_{\Ssix}jF.
+\]
+\end{theorem}
+\begin{proof}
+For the first implication induct on the native proof. Hyp becomes R at $0$ followed by U on the corresponding constant clause. R and V are copied. QE becomes closure elimination from Lemma~\ref{lem:closure}. I is copied because $\tau$ preserves the diagonal guard and the witness.
+
+For native DE, translate its major and use E to retain the canonical clause
+$[\tau B(b,0);y.\tau B(b,y)]$. Lemma~\ref{lem:closure} closes this clause to $\qq_y\tau B(b,y)$, precisely the translation of the old $Q$ assumption. Cut that proof into the translated old branch. Close E. The dummy witness and the branch eigenvariable are freshened as needed.
+
+For the reverse implication annotate every clause by its origin. An initial ordinary clause or I-branch clause is represented by its ordinary formula assumption in \Ssix. An E-branch clause is represented by the native assumption $Q_yjB(b,y)$. A U selecting the first kind becomes Hyp; a U selecting the second becomes QE applied to the translated antecedent proof. R and V are copied; E and I become native DE and DI. The annotation belongs to the occurrence, so identical-looking clauses of different origins are handled correctly. This is an induction on the clause derivation. The forward implication on the common language is the first statement because $\tau j$ is the identity.
+\end{proof}
+
+For arbitrary externally supplied clauses, their ordinary readings can instead be represented by the implication and universal macros of Section~\ref{sec:macros}. U then translates by implication and universal elimination. The common-language theorem already covers every finite ordinary-assumption sequent, not only closed theorems.
+
+\begin{theorem}[Both formula round trips]\label{thm:roundtrip}
+For every Eq/$D$ formula $F$, $\tau jF=F$ literally up to bound renaming. For every native formula $A$,
+\[
+ A\ \dashv\vdash_{\Ssix}\ j\tau A.
+\]
+Both numerical translations are the identity.
+\end{theorem}
+\begin{proof}
+The only nontrivial atomic step in the structural argument is
+\[
+ Q_yB\ \dashv\vdash\ D_{w,y}B,\qquad w\notin\FV(B).
+\]
+From the left, use QE under the local zero assumption and then case introduction with a dummy witness. From the right, native DE opens exactly the $Q$ assumption required for the conclusion.
+
+Uniform pointwise interderivability lifts through $D$: eliminate the source binder, introduce the target by cases, convert its zero assumption backwards, use the retained source closure at a successor, and convert forwards. It lifts through $Q$ by the same construction with a dummy witness. Structural induction proves the stated result. This establishes formula round trips, not merely mutual consistency.
+\end{proof}
+
+\section{Bi-interpretability with full first-order iPRA}
+\label{sec:biinterp}
+
+The target \ipra\ is the theory formalized in \texttt{PR.lean}: intuitionistic first-order logic with equality, one symbol for every primitive-recursive definition, its defining equations, successor injectivity and separation, and induction for quantifier-free formulas. This specifies the target precisely; the result is not only about its universal equational fragment.
+
+The repository supplies a verified intermediate theory $T_{\mathrm{eq}}$. It uses the raw scalar terms under ordinary intuitionistic logic, the two iterator equations, numerical coverage
+\[
+ x=0\lor\exists y\,x=Sy,
+\]
+separation $0=S0\to\bot$, and induction for literal equations. It proves both directions and both composites between this theory and \ipra, then between the native calculus and $T_{\mathrm{eq}}$~\cite{bridge,scalar}.
+
+\subsection{The interpretations as actual maps}
+
+In the direction from \Cd\ to \ipra, interpret $D$ by \eqref{eq:Dreading}; equality is actual equality. Compile every scalar term recursively. For a fixed update template $h(u,\vec p)$, use the primitive-recursive function defined by
+\[
+ f_h(0,a,\vec p)=a,\qquad
+ f_h(Sn,a,\vec p)=h(f_h(n,a,\vec p),\vec p).
+\]
+All free parameters of the update are included in $\vec p$, even if one also occurs in the counter expression. Thus no universal primitive-recursive evaluator is postulated.
+
+In the reverse direction use the repository's scalar compilation for primitive-recursive symbols, followed by the Eq/$D$ logical macros. The main primitive-recursion compilation has the explicit form
+\begin{equation}\label{eq:prcompile}
+ F(n,\vec p)=\pi_2 I\left(n,\langle 0,g(\vec p)\rangle;
+ z.\left\langle S\pi_1z,\ h(\pi_1z,\pi_2z,\vec p)\right\rangle\right)
+\end{equation}
+for $F(0,\vec p)=g(\vec p)$ and $F(Sn,\vec p)=h(n,F(n,\vec p),\vec p)$. Here the pairing and projection terms are the derived scalar terms verified in \texttt{TeqPair.lean}; they are macros, not new primitives. Composition is term substitution, and zero, successor, and projections translate directly. The existing arithmetic bridge proves the required pairing equations, quantifier-free reflection, and uniqueness needed for the round trips. This note reuses that bridge rather than purporting to reverify it with finite Python tests.
+
+\begin{theorem}[Bi-interpretability and equiconsistency]\label{thm:main}
+The ordinary realization of \Cd\ is bi-interpretable with full first-order \ipra. The numerical domains in both interpretations are the whole domains, equality is actual equality, and the numerical graph of both composites is $x=y$. In particular,
+\[
+ \Cd\vdash 0=S0\quad\Longleftrightarrow\quad\ipra\vdash\bot.
+\]
+\end{theorem}
+\begin{proof}
+Compose Theorems~\ref{thm:prooftranslation} and~\ref{thm:roundtrip} with the pinned native--$T_{\mathrm{eq}}$--\ipra\ bi-interpretation. The new maps leave numerical terms unchanged before the existing scalar translation, and $D$ retains exactly its native reading. One new formula composite is literal identity; the other is the provable equivalence $Q\leftrightarrow D$ with a dummy witness. The old composites are already internally provable identities. Composing these equivalences gives the required internal formula composites, with identity numerical graph. No proper numerical subdomain, quotient, nonstandard coding domain, or restriction to standard models is used.
+
+The contradiction translation is the existing native contradiction translation. Proof preservation in both directions therefore gives the final equivalence.
+\end{proof}
+
+The logical dependency on the existing verified bridge is explicit. The new proof translation and guard metatheorems are written proofs in this report. No Lean executable was available in this run, so the archive does not claim a newly compiled Lean proof of them.
+
+\section{Substitution preserves the entire proof shape}
+\label{sec:substitution}
+
+\begin{lemma}[Preservation and reflection of the diagonal shape]\label{lem:guard-reflection}
+Let $\sigma$ substitute terms for passive variables, lifted under the two variables of $D$. Then
+\[
+ \diag_y(B\sigma)\quad\Longleftrightarrow\quad\diag_y(B).
+\]
+\end{lemma}
+\begin{proof}
+Substitution cannot change an existing iterator constructor, and it fixes the bound $y$. It cannot turn a different bound variable into $y$. A substituted passive-variable term is capture-free and therefore has no occurrence of the surrounding bound $y$. Such a term cannot be the variable $y$, nor can it be an iterator with counter and initializer both $y$. Thus neither of the two required iterator heads can be manufactured by substituting a passive variable. The statement follows for both sides of the equation; compound formula roots remain compound.
+\end{proof}
+
+\begin{theorem}[Proof-shape-preserving numerical substitution]\label{thm:subst}
+If $\Gamma\vdash_{\Cd}A$ and $\sigma$ is any well-scoped capture-avoiding numerical substitution, then $\Gamma\sigma\vdash_{\Cd}A\sigma$. A derivation is obtained with the same inference-family tree, the same clause-occurrence selections, and the same evaluation subcases, after fresh eigenvariables are consistently renamed.
+\end{theorem}
+\begin{proof}
+Induct directly on the proof. R is immediate. Each V source identity is preserved by substitution, and capture-avoiding substitution composes with update-body instantiation. U preserves the selected clause occurrence and its antecedent identity. E uses a fresh variable in the substituted context. For I, Lemma~\ref{lem:guard-reflection} fixes whether its local assumption is the zero instance or the progress instance. Its substituted branch is therefore exactly the branch required by the same I node. There are no additional proof nodes.
+\end{proof}
+
+The existing witness-mode clause calculus also has substitution \emph{admissibility}, obtainable through its equivalence with the native calculus. The distinction is that its literal test ``the witness is $0$'' may change when a variable is substituted by $0$. Its proof cannot in general be transformed by copying every local rule instance. The result above concerns the stronger, directly checkable structural property, not a claim that the old system lacks substitution altogether.
+
+This matters when the presentation is used as an object language inside a proof assistant: substitution, renaming, and subsequent compiler-correctness arguments can share a structural induction without repairing introduction branches. It does not by itself imply a smaller standalone checker than every witness-mode implementation.
+
+\section{A general base-valid guard principle}
+\label{sec:guards}
+
+There is a useful generalization behind the construction. The one-way preservation and local-repair idea is already explicit in the filed reflexive-base proposal~\cite{reflexive}; the following criterion packages that method with closure erasure and the equation-lift requirement. Let $G_y(B)$ be a decidable raw-syntax predicate on matrices, invariant under alpha renaming and injective fresh renaming of passive variables. Replace the diagonal predicate in I by $G$, leaving every other definition unchanged. Call the result \Cg. Assume the following properties:
+\begin{enumerate}[label=(\alph*)]
+\item Every guarded matrix is a literal equation.
+\item Its zero instance $B(t,0)$ is uniformly derivable using R and V only.
+\item For every equation $E(y)$ there is a guarded lift $H_E(y)$ with theorem $H_E(0)$, and derivations
+\[
+ H_E(Sz)\dashv\vdash E(Sz),\qquad E(0),H_E(y)\vdash E(y),
+\]
+using equality reasoning and numerical cases only.
+\end{enumerate}
+The last requirement is an effective construction, not a semantic promise about standard natural numbers.
+
+\begin{theorem}[Guard criterion]\label{thm:guard-criterion}
+Under (a)--(c), \Cg\ is proof-equivalent on its common language to the native scalar core, and is bi-interpretable with \ipra. If in addition $G$ is preserved by capture-avoiding substitution of passive variables, substitution is admissible by a direct proof transformation. If $G$ is also reflected by substitution, that transformation preserves the proof tree exactly. Without reflection, a local repair can be needed.
+\end{theorem}
+\begin{proof}
+Property (b) recovers all case introductions exactly as in Lemma~\ref{lem:casesintro}. The closure interfaces, numerical cases, and formula transport then follow before equation induction. Property (c) recovers arbitrary equation induction exactly as in Theorem~\ref{thm:eqind}. Every primitive guarded I is sound in the native calculus because (a) makes it an ordinary equation-progress instance; every unguarded I is a case instance. Conversely, all native introduction and equality interfaces have now been derived. Closure erasure and the same two formula composites give the equivalence.
+
+For substitution use a direct induction. A guarded matrix stays guarded by the extra preservation assumption. A nondiagonal mode that remains unguarded is also immediate. The only new possibility is an originally unguarded matrix becoming guarded. The inductively substituted branch assumes the substituted zero instance. Property (b) supplies a proof of that base. Cut it into the branch, weaken by the substituted progress instance, and apply guarded I. This is a finite local proof transformation using ordinary cut. If $G$ also reflects substitution, that exceptional case cannot occur, and no proof nodes are inserted.
+\end{proof}
+
+\subsection{The unrestricted mirror instance}
+
+A simpler-looking, one-sided guard is
+\begin{equation}\label{eq:mirror}
+ \mirror_y(B)\quad\Longleftrightarrow\quad
+ B\equiv a=I(y,a;u.h).
+\end{equation}
+There is no restriction on the public Eq/$D$ grammar: every other matrix uses the case branch. This differs from the previously filed mirror proposal's guarded public-language presentation. The guard and its basic lift themselves are inherited ideas; the unrestricted dispatch and its position in the guard criterion are the refinement here.
+
+Property (b) is the symmetry of zero computation. For $E(y):s(y)=t(y)$ use
+\[
+ M_E(y):=s(y)=I(y,s(y);u.t(y)).
+\]
+The update variable is unused. The successor instance computes to $E(Sz)$. Numerical cases prove
+\[
+ C(y,s(0),s(y))=s(y),\qquad
+ C(y,t(0),I(y,s(y);u.t(y)))=t(y).
+\]
+Under $E(0)$ and $M_E(y)$, congruence joins the two left sides; hence $E(y)$. This verifies (c) without assuming induction.
+
+The mirror guard is preserved by passive substitution, but need not be reflected. For distinct passive variables $p,q$, the matrix
+\[
+ p=I(y,q;u.h)
+\]
+is not mirror-guarded, but a substitution identifying $p$ and $q$ makes it so. Theorem~\ref{thm:guard-criterion} handles this change by proving and cutting the now-trivial zero base. Thus the mirror calculus \Cm\ is a valid alternative, though it lacks \Cd's exact proof-shape theorem. The archive keeps this distinction visible.
+
+\section{The executable checker and its trust boundary}
+\label{sec:implementation}
+
+\subsection{Serialization and variable scope}
+
+The standalone checker uses JSON and Python's standard library. Numerical zero is integer $0$. A successor is \texttt{[0,t]}; an iterator is \texttt{[n,a,h]}. A formula is \texttt{[s,t]} for equality and \texttt{[B]} for $D$.
+
+Positive integers are bound de Bruijn indices: $1$ denotes the nearest binder. Negative integers name local free levels. At local scope $k$ and binder depth $d$, a numerical leaf must satisfy $-k\leq a\leq d$. Iteration adds one binder in its third child. A $D$ matrix adds two. Opening the outer $D$ witness removes index $2$ while keeping its inner control index $1$. Inserted terms are locally closed with respect to external positive indices: free parameters use negative levels. Consequently the opener need not shift an inserted value under surrounding binders; its internal bound indices remain internal. Branch scope introduces a new negative level $-k-1$.
+
+The diagonal test on a validated matrix is exactly that both equation sides have iterator prefix \texttt{[1,1]}. The shape is inspected before the witness is opened. This is a structural binding test, not a comparison of numerical values.
+
+The public input has exactly two keys, \texttt{goal} and \texttt{proof}. The goal must be a closed Eq/$D$ formula. Proof tags are \texttt{r,u,v,e,i}, with exact arities. Only genuine Python integers and lists are allowed as syntax; Boolean and floating-point aliases are rejected. Source and target scope checks are included. An elimination branch must return a conclusion already valid in the outer scope, preventing eigenvariable escape.
+
+\subsection{Rule checking and failure behavior}
+
+The checker reconstructs the conclusion of each proof node. It does not accept a supplied equation merely because that equation is true on tested numerals. V decomposes the two derived equation premises, checks the literal iterator source, and performs one body opening. The validity invariant ensures that term and formula roles cannot be exchanged in a successful derivation.
+
+Malformed structures, failed source matches, and out-of-scope variables reject. The driver prints \texttt{ACCEPT} and exits successfully only after the reconstructed result equals the validated closed goal. It uses explicit checks, not Python \texttt{assert}, so optimized execution with \texttt{-O} has the same acceptance behavior on the tested interface. As with ordinary Python recursive implementations, finite resource exhaustion can prevent completion on very large certificates; it does not provide an acceptance path.
+
+The following are untrusted conveniences: proof constructors, test generators, comparison tools, and the translator into the native control. They are not imported by the standalone checker. Their purpose is to produce auditable examples and to expose implementation mistakes. The executable translator handles closed primary certificates and the two clause origins generated by the public checker; the more general correspondence for arbitrary contexts and the reverse direction are mathematical proofs, not an additional implemented compiler.
+
+\section{Measurements and verification}
+\label{sec:measurements}
+
+The attached machine-readable results and reproduction script report the executed measurements. The final complete-module measurements use CPython 3.12.14, removal of actual module/function/class docstrings, \texttt{ast.unparse} normalization, and one final line feed:
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Complete program & Bytes & Tokens & AST nodes\\
+\midrule
+New diagonal clause checker & 3056 & 872 & 1013\\
+Matched native diagonal control & 3395 & 975 & 1138\\
+Existing witness-mode clause control & 2956 & 837 & 977\\
+\bottomrule
+\end{tabular}
+\end{center}
+Documentation strings are excluded identically in all three columns; the evidence separately records raw source sizes. Descriptive titles are therefore not credited as mathematical improvements. Common functions and variables retain the same names in the matched family. The matched native control retains the same numerical representation and equality code, but has a third formula constructor and separate hypothesis and closure-elimination interfaces.
+
+The complete-module reduction against that control is 339 bytes, approximately $10.0\%$; tokens and AST nodes also decrease. The earlier witness-mode clause checker is 100 bytes smaller than the new checker. The optional mirror checker measures 3,059 bytes, 874 tokens, and 1,012 AST nodes: three more bytes and two more tokens than the primary checker, with one fewer AST node. It is included for its structural comparison, not as a byte improvement. The repository additionally contains compact encodings, including a reported 516-byte core and an 860-byte validated Eq/$Q$/$D$ program under their respective contracts. Their tiny sizes must not be presented as directly comparable to the readable, independently structured reference checker in this archive. In particular, this note has not beaten those minima.
+
+The executed verification includes:
+\begin{itemize}
+\item Accepted certificates for both iterator computations, root composition, symmetry, nested-template congruence, genuine use of the induction hypothesis, nested binders, repeated clause use, and elimination using its opened clause.
+\item Translation of every positive primary fixture into the matched native diagonal control, with exact equality of the reconstructed final formula.
+\item Negative fixtures for malformed terms and tags, extra fields, Boolean and floating-point syntax, wrong evaluation sources, a nonliteral successor counter, invalid clause indices and antecedents, unbound witnesses, and eigenvariable escape.
+\item Numerical substitutions including a variable witness becoming zero, consistent eigenvariable renaming, and substitutions inside nested iterator bodies.
+\item Guard-invariance and manually specified capture-avoidance checks, together with normal and optimized public-driver runs.
+\end{itemize}
+The primary run passed 12 positive proofs, 17 rejection fixtures, 12 exact primary-to-native translations, 5 parameter substitutions, 600 guard cases, 4 explicit opening controls, and 82 public process checks. The mirror run passed 13 positive and 13 negative certificates, 300 guard-preservation cases, 52 process checks, and 5 explicit guard-creation substitutions whose naive proof images fail and whose repaired images succeed. The progressive-hypothesis fixture has a reflexive conclusion: it exercises genuine local hypothesis use and rule-mode preservation, not a new deep induction theorem.
+
+The evidence distinguishes finite tests from proofs. These tests check the executable implementation and translator on the stated families. They do not prove universal soundness, completeness, or bi-interpretability; those claims rest on the written derivations and the explicitly cited existing arithmetic bridge.
+
+\section{What has become simpler, and what has not}
+
+Three parts of the specification become smaller together: there is no closure formula constructor, no independent hypothesis instruction, and no separate closure-elimination instruction. Clause use covers ordinary assumptions and opened conditional closures, while a dummy witness supplies a closure whenever one must be concluded as a formula. The diagonal rule makes this elimination of $Q$ compatible with direct, shape-preserving substitution.
+
+The arithmetic base is unchanged. R plus the two rows of V already appeared in the current repository, and the diagonal guard is already formalized there. Presenting these as a new arithmetic breakthrough would misstate the result. Likewise, the mirror guard appeared previously in a restricted-language proposal. The general guard theorem explains why that language restriction can be dropped when unguarded matrices take the case branch, and why failure of guard reflection does not destroy substitution admissibility.
+
+A global simplicity order would need to fix more than the number of displayed rules. It would need a common syntax-validation contract, an encoding convention, the treatment of normalization and parser libraries, and a size metric that does not reward arbitrary name shortening. This report keeps its actual byte comparison separate from its mathematical rule comparison. It supplies a usable smaller interface for one important baseline, not a proof that every other presentation is worse.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item \textbf{Formalize clause origins directly.} A Lean embedding of \Cd\ could use a separate indexed clause context and a derivation relation. Its substitution theorem should then be one structural induction, while its equivalence proof can reuse \texttt{SPrf}. The occurrence annotations in the reverse compiler should be represented explicitly.
+\item \textbf{Find a smaller guard satisfying the criterion.} A proposed predicate must have a uniformly provable zero base and an effective guarded lift of every equation. Merely checking one iterator side, without its initializer relation, does not establish the base condition.
+\item \textbf{Compare proof size as well as checker size.} Closing and reopening a dummy-witness closure can increase certificate length. The present proof translations are effective, but this note does not assert a uniform linear serialized-size bound. Sharing and ordinary-cut expansion require separate analysis.
+\item \textbf{Use the guard criterion to compare repairs.} The mirror variant can require a cut repair after substitution; the diagonal variant cannot. The costs of those repairs in proof-assistant definitions and generated certificates can be measured independently of checker bytes.
+\item \textbf{Normalize comparisons before optimizing.} Reimplement the smallest existing protocols and the new one under a single exact malformed-input policy, a common naming convention, and an agreed documentation-free metric. That would make a further record claim meaningful.
+\item \textbf{Investigate a genuine arithmetic reduction.} Deleting reflexivity or replacing it with a finite set of closed true equality seeds is already obstructed in the filed clause work. A further reduction is likely to require a different equality interface or term language, with its own explicit whole-domain round trips.
+\end{enumerate}
+
+\section*{Reproduction and provenance}
+\addcontentsline{toc}{section}{Reproduction and provenance}
+
+The archive contains the complete \LaTeX\ source and compiled PDF, standalone checker, matched controls, proof construction and translation code, fixtures, test results, and a provenance record. The report can be rebuilt with two ordinary \texttt{pdflatex} invocations, without shell escape or network access. Run the supplied \texttt{reproduce.py} for the executable evidence. Use CPython 3.12.14 for the exact normalized-source measurements; the checker itself uses only standard-library facilities.
+
+No repository branch, commit, issue, or pull request was written during this work. The existing formalization was inspected as source. The new metatheorems have not been represented as newly checked Lean results.
+
+\begin{thebibliography}{9}
+\bibitem{readme} V. Reshetnikov, \emph{Concise presentations of intuitionistic primitive recursive arithmetic}, repository README, pinned commit above.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/443cff49563457a48ee0f663012d56c4bdb58fa0/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}{Pinned source on GitHub}.
+\bibitem{six} \emph{NativeSix.lean}: \texttt{SPrf}, \texttt{sprf\_iff\_nprf}, \texttt{SPrf.subst}; and \emph{NativeDiagonal.lean}: diagonal guard and its completeness.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/443cff49563457a48ee0f663012d56c4bdb58fa0/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeSix.lean}{Pinned source on GitHub}.
+\bibitem{clauses} \emph{Raw clausal}, \emph{reduced clause calculus}, and \emph{uniform step} research packages, especially the clause-origin translation and ordinary-cut construction.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/443cff49563457a48ee0f663012d56c4bdb58fa0/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/raw_clausal}{Pinned source on GitHub}.
+\bibitem{mirror} \emph{Mirror guard} research package, one-sided guarded formulas and their equation-induction lift.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/443cff49563457a48ee0f663012d56c4bdb58fa0/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/mirror_guard}{Pinned source on GitHub}.
+\bibitem{reflexive} \emph{Reflexive base} research package, particularly \texttt{proof.tex}: base-valid introduction and the substitution repair when a new reflexive base appears.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/443cff49563457a48ee0f663012d56c4bdb58fa0/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/reflexive_base}{Pinned source on GitHub}.
+\bibitem{logic} \emph{NativeGate.lean} and \emph{NativeLogic.lean}: structural selectors and full intuitionistic logical macros.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/443cff49563457a48ee0f663012d56c4bdb58fa0/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeLogic.lean}{Pinned source on GitHub}.
+\bibitem{scalar} \emph{Scalar.lean}, \emph{TeqPair.lean}, and \emph{PRAToScalar.lean}: precise scalar theory and primitive-recursive compilation.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/443cff49563457a48ee0f663012d56c4bdb58fa0/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Scalar.lean}{Pinned source on GitHub}.
+\bibitem{bridge} \emph{BiInterpretation.lean} and \emph{NativeBiInterpretation.lean}: verified scalar/native/iPRA interpretations, round trips, and equiconsistency.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/443cff49563457a48ee0f663012d56c4bdb58fa0/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}{Pinned source on GitHub}.
+\end{thebibliography}
+\end{document}

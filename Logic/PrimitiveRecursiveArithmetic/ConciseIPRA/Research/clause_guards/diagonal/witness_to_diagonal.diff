@@ -1,0 +1,30 @@
+--- witness_control.py
++++ checker.py
+@@ -1,4 +1,4 @@
+-"""Raw clausal iPRA with computational equality.
++"""Raw clausal iPRA with computational equality and diagonal introduction.
+ 
+ Terms: 0, negative free levels, positive bound indices, [0,t] (S),
+ [n,a,h] (I). Formulas: [s,t] (equality), [B] (D).
+@@ -34,6 +34,12 @@
+     size = len(a)
+     return [opening(t, value, depth + (2 if size == 1 else int(size == 3 and i == 2)))
+             for i, t in enumerate(a)]
++
++
++def diagonal(matrix):
++    return (len(matrix) == 2
++            and all(type(t) is list and t[:2] == [1, 1]
++                    for t in matrix))
+ 
+ 
+ def derive(proof, context, scope):
+@@ -81,7 +87,7 @@
+             if len(goal) != 1 or not term(data, scope):
+                 fail()
+             body = opening(goal[0], data, 1)
+-            eta = fresh if len(goal[0]) == 2 and data == 0 else 0
++            eta = fresh if diagonal(goal[0]) else 0
+             clause = ([0, 0], opening(body, eta))
+             target = opening(body, [0, fresh])
+         if derive(branch, context + [clause], scope + 1) != target:

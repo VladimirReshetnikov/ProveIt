@@ -1,0 +1,95 @@
+
+\section{Exact flattening of the unary formula spine}
+\subsection{The ranked formula grammar}
+The public grammar has only an equality leaf and a unary \(D\) constructor.
+Consequently every formula has the unique form \(D^k(s=t)\), for a natural
+number \(k\). Each \(D\) binds its own ordered pair of variables. This is
+an exact syntactic fact, without logical equivalence or normalization.
+In de Bruijn notation encode it by
+\[
+ \operatorname{code}(D^k(s=t))=(k,s,t).
+\]
+The numerical term codes are unchanged. At external scope \(m\), this
+triple is valid exactly when \(k\) is a nonnegative integer and its two
+terms are valid at external scope \(m\) with \(2k\) surrounding bound
+variables. Under a clause binder the depth is \(2k+1\).
+The decoder is
+\[
+ \operatorname{decode}(0,s,t)=(s=t),\qquad
+ \operatorname{decode}(k+1,s,t)=D(\operatorname{decode}(k,s,t)).
+\]
+Terms at the equality leaf refer to all enclosing binders, so no index
+is shifted by decoding. Structural induction gives exact inverses:
+\[
+ \operatorname{code}(\operatorname{decode}(k,s,t))=(k,s,t),\qquad
+ \operatorname{decode}(\operatorname{code}(A))=A.
+\]
+Starting with named variables, the second equation means equality after
+the standard de Bruijn encoding, equivalently up to alpha-renaming.
+
+\subsection{Opening and the order of the bound variables}
+Let \(o_d(t,v)\) be hereditary term opening at cutoff \(d\): replace
+index \(d+1\) by \(v\), decrement higher indices, account for iterator
+binders, and contract newly exposed zero iterators. Supplied values have
+no free positive index. Ranked formula opening is
+\[
+ O_d((k,s,t),v)
+   =(k,o_{d+2k}(s,v),o_{d+2k}(t,v)).
+\]
+This exactly matches old formula opening, which increases its cutoff
+by two at each \(D\) before reaching the equality leaf. Renaming and
+simultaneous substitution satisfy the analogous componentwise lemma.
+
+For a ranked \(D\) formula \((k,s,t)\), with \(k>0\), its matrix is
+\(M=(k-1,s,t)\). The outer \(y\) has term index \(2k-1\), while the
+outer \(x\) has index \(2k\). Therefore \(B_b=O_1(M,b)\) substitutes
+for \(x\) and leaves \(y\) as the one external clause binder.
+Its antecedent is \(O_0(B_b,0)\), and its instance at \(w\) is
+\(O_0(B_b,w)\). In particular ranked Open adds
+\[
+ [\,O_0(B_b,0)\,;\,B_b\,],\qquad B_b=O_1((k-1,s,t),b).
+\]
+For Close at witness \(a\), put \(B_a=O_1((k-1,s,t),a)\).
+The local unconditional assumption is \(O_0(B_a,\eta)\), and the
+branch target is \(O_0(B_a,Sz)\). The matrix is a literal equation
+exactly when \(k=1\). Thus the mode test becomes
+\[
+ \eta=z\ \Longleftrightarrow\ (k=1\text{ and }a=0\text{ literally}),
+ \qquad \eta=0\text{ otherwise}.
+\]
+These formulas account for all binder ordering and index decrements.
+
+\subsection{Proof equivalence and interpretation preservation}
+Map every formula in a proof, clause, and goal to its ranked code;
+leave numerical terms and proof-tree shape unchanged. The opening lemma
+shows that Use, Open and Close commute exactly with this map.
+The initial reflexivity clause becomes
+\([\,\,;(0,1,1)]\).
+Step is unchanged except that equation codes have rank zero.
+The validity predicate is preserved by the \(2k\) depth criterion.
+Induction on derivations therefore gives
+\[
+ \Gamma\vdash A\quad\Longleftrightarrow\quad
+ \operatorname{code}(\Gamma)\vdash_{\rm ranked}\operatorname{code}(A).
+\]
+Componentwise decoding is the inverse proof map. This is a syntax
+isomorphism, stronger than a mere consequence-equivalence theorem.
+
+Define the ordinary interpretation of a triple as that of its decoder.
+Then interpretation preservation is an identity:
+\[
+ (k,s,t)^*=(\operatorname{decode}(k,s,t))^*.
+\]
+All arithmetic derivations, the nonliteral-zero witness repair, and the
+bi-interpretation with iPRA transfer verbatim. There is no new satisfaction
+predicate, evaluator, choice principle, or induction instance.
+
+\paragraph{Exact scope of the simplification.}
+A recursive formula datatype is replaced by a natural rank and two terms.
+Formula validation and opening are two term operations at a computed
+depth. The arithmetic grammar and meaning of \(D\) are unchanged.
+A binary-coded rank compactly represents a finite string of binders;
+decoding can increase data length. This is a transparent certificate
+representation choice, not an implicit theorem oracle. Universal
+reflexivity remains in the fixed initial clause and is still counted.
+

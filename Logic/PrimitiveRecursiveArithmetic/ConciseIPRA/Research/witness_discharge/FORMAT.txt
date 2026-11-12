@@ -1,0 +1,94 @@
+PUBLIC CERTIFICATE FORMAT
+=========================
+
+Input is one JSON object with exactly keys "goal" and "proof".
+The fuel checker instead requires exactly "goal", "proof", and "fuel".
+"fuel" must be an exact nonnegative integer; booleans are not integers.
+
+The goal must be a closed, well-typed, full computation normal formula.
+ACCEPT with exit status zero is the sole success outcome. Exceptions print
+REJECT and exit unsuccessfully. No assert statements are used by the kernel.
+
+NUMERICAL SYNTAX
+---------------
+At numerical scope n and local binder depth d:
+  0            zero
+  -n,...,-1    free numerical parameters, as absolute negative levels
+  1,...,d      locally bound variables, one-based de Bruijn indices
+  [0,t]        successor S(t)
+  [c,a,h]      iterator I(c,a;u.h), binding u only in h
+
+The iterator body increases local depth by one. A numerical term is canonical
+precisely when all its subterms are canonical and no iterator counter is
+zero or successor-headed. Zero and successor iterator computations are fully
+normalized, including inside update bodies. Substitution is capture avoiding;
+an inserted copy is not recursively substituted into again.
+
+FORMULA SYNTAX
+--------------
+  [s,t]        equation s=t
+  [B]          paired formula D_{x,y}B, binding two numerical variables in B
+
+Within a D matrix, bound index 1 is y and bound index 2 is x. Under nested
+binders these indices shift in the usual way. No formula-level computation
+removes a D binder. The designated contradiction is [0,[0,0]] (0=S0).
+
+CONTEXTS (INTERNAL)
+------------------
+A context is an ordered reusable list of clauses (antecedent, body).
+The antecedent is either [] (no premise) or a canonical formula.
+The body has one additional locally bound numerical variable, absent from
+the antecedent. Every closed proof begins with [([], [1,1])], the explicit
+axiom clause forall y, y=y. Contexts are appended, never mutated in place.
+The first clause has index 0. All indices are exact nonnegative integers.
+
+PROOF INSTRUCTIONS
+------------------
+Each call checks a supplied current goal A at scope n and context G.
+
+["u", j, t, premise]
+  Select G[j]=(base,body). Check t at scope n and require A=nf(body[t/y]).
+  If base is a formula, recursively check premise against base in G,n.
+  If base=[], there is no premise and the payload is intentionally ignored.
+  Use null as the conventional ignored payload. It is not evidence for a
+  logical premise; this contract is tested explicitly.
+
+["i", t, branch]
+  A must be [B]. Check t at scope n and substitute it for x in B.
+  Let b=-n-1 be the fresh numerical parameter. Choose eta=b exactly when
+  B has equation root and t is literally canonical zero; otherwise eta=0.
+  Append the unconditional constant clause for nf(B(t,eta)) and check
+  branch against nf(B(t,S b)) at scope n+1. The new clause is discharged.
+
+["e", B, F, t, major, equality, branch]
+  Check major against [B] in G,n. Let b=-n-1 and append the clause
+  (nf(B(b,0)), B(b,y)) to obtain G'. In exactly G',n+1:
+    check equality against [b,t];
+    check branch against F.
+  Then require nf(F[t/b]) = A. Since A was validated in outer scope n,
+  the exported normalized formula cannot retain b.
+  t is allowed to contain b. The case t=b recovers ordinary elimination.
+  F may be an equation or an arbitrarily nested paired formula.
+  Substitution replaces only free occurrences of b and never visits an
+  inserted t again. Ordinary bound indices are preserved capture freely.
+
+All active goals are validated before their proof packets are interpreted.
+All user-supplied data used in computations are validated directly or through
+the two checked branch goals before transformation. Data in an ignored nullary
+Use payload are deliberately outside the proof relation.
+
+MINIMAL EXAMPLE
+---------------
+{"goal":[0,0],"proof":["u",0,0,null]}
+
+FUEL
+----
+The fuel variant decrements a global per-check budget at every walk/prove
+entry, rejects when negative, and resets that budget for each input document.
+Every finite accepting unbounded run has some accepting fuel annotation.
+There is no claim of a primitive-recursive function supplying sufficient fuel
+for every theorem or every normalizing computation uniformly.
+
+Algorithmic completeness uses the usual unbounded-finite-storage idealization.
+Concrete Python recursion or memory limits may reject a valid certificate,
+even if its fuel is mathematically sufficient. Resource exceptions reject.

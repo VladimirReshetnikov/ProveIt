@@ -1,0 +1,112 @@
+"""Six-rule mirror-guard proposal, with raw terms and two-case Eval."""
+import json
+import sys
+
+
+def require(condition):
+    if not condition:
+        raise ValueError('Invalid certificate')
+
+
+def term(a, n):
+    match a:
+        case ['v', i]:
+            require(type(i) is int and 0 <= i < n)
+        case ['z']:
+            pass
+        case ['s', b]:
+            term(b, n)
+        case ['i', c, b, h]:
+            term(c, n)
+            term(b, n)
+            term(h, n + 1)
+        case _:
+            raise ValueError('Invalid term')
+
+
+def formula(a, n):
+    match a:
+        case ['=', s, t]:
+            term(s, n)
+            term(t, n)
+        case ['q', b]:
+            formula(b, n + 1)
+        case ['d', b]:
+            formula(b, n + 2)
+        case _:
+            raise ValueError('Invalid formula')
+
+
+def walk(a, f, d=0):
+    if a[0] == 'v':
+        return f(a[1], d)
+    return [a[0]] + [walk(b, f, d + ({'i': [0, 0, 1], 'q': [1], 'd': [2]}.get(a[0], [0] * len(a)))[j])
+                     for j, b in enumerate(a[1:])]
+
+
+def shift(a, k=1):
+    return walk(a, lambda i, d: ['v', i + k if i >= d else i])
+
+
+def sub(a, t, drop=1):
+    return walk(a, lambda i, d: ['v', i] if i < d else shift(t, d) if i == d else ['v', i - drop])
+
+
+def infer(p, g, n):
+    match p:
+        case ['hyp', i]:
+            require(type(i) is int and 0 <= i < len(g))
+            return g[i]
+        case ['refl', a]:
+            term(a, n)
+            return ['=', a, a]
+        case ['eval', p, q]:
+            e, f = infer(p, g, n), infer(q, g, n)
+            require(e[0] == f[0] == '=' and f[1][0] == 'i')
+            s, t = e[1:]
+            _, c, a, h = f[1]
+            if c == ['z']:
+                require(s == a)
+                return ['=', f[2], t]
+            require(c[0] == 's' and s == ['i', c[1], a, h])
+            return ['=', f[2], sub(h, t)]
+        case ['qe', t, p, q]:
+            term(t, n)
+            a = infer(p, g, n)
+            require(a[0] == 'q')
+            require(infer(q, g, n) == sub(a[1], ['z']))
+            return sub(a[1], t)
+        case ['de', a, p, q]:
+            formula(a, n)
+            b = infer(p, g, n)
+            require(b[0] == 'd')
+            require(infer(q, [['q', b[1]]] + [shift(x) for x in g], n + 1) == shift(a))
+            return a
+        case ['di', b, t, p]:
+            formula(b, n + 2)
+            term(t, n)
+            a = sub(['q', b], t)[1]
+            h = a if b[0] == '=' and b[2][:3] == ['i', ['v', 0], b[1]] else shift(sub(a, ['z']))
+            require(infer(p, [h] + [shift(x) for x in g], n + 1) == sub(a, ['s', ['v', 0]], 0))
+            return ['d', b]
+        case _:
+            raise ValueError('Invalid proof')
+
+
+def check(c):
+    require(type(c) is dict and set(c) == {'variables', 'context', 'goal', 'proof'})
+    n, g, a, p = (c[k] for k in ['variables', 'context', 'goal', 'proof'])
+    require(type(n) is int and n >= 0 and type(g) is list)
+    for b in g:
+        formula(b, n)
+    formula(a, n)
+    require(infer(p, g, n) == a)
+
+
+if __name__ == '__main__':
+    try:
+        check(json.load(sys.stdin))
+    except (ValueError, TypeError, IndexError, KeyError, RecursionError):
+        sys.exit(1)
+    print('ACCEPT')
+

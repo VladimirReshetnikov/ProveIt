@@ -1,0 +1,267 @@
+\section{Why the five rules recover full intuitionistic logic}
+\label{sec:counter-logic}
+
+The clause method, gate construction, and logical completeness argument in
+this section are inherited from the ConciseIPRA developments \cite{basis,counter,single}. We give
+the details for the present counter-aware terms, including the
+witness-sensitive introduction. The immediate predecessor $P(Sn)=n$
+also shortens the conjunction and universal macros: no parity iterator is
+needed. All statements below concern arbitrary retained contexts.
+
+\subsection{The clause interface and its first admissible operations}
+
+Formulas are $F::=(s=t)\mid D_{x,y}F$. A context is a reusable list of
+clause occurrences $[A;y.B(y)]$, where $y$ is absent from $A$. Put
+$H=(0=0)$. An ordinary assumption $F$ means the constant clause
+$[H;v.F]$, with $v$ unused. In addition to Refl and counter evaluation
+CE, the logical instructions are exactly
+\[
+ \frac{\Gamma\vdash A}{\Gamma\vdash B(t)}\ \mathrm{Use}
+ \quad([A;y.B]\in\Gamma),
+\]
+\[
+ \frac{\Gamma\vdash D_{x,y}B(x,y)\quad
+       \Gamma,[B(b,0);y.B(b,y)]\vdash F}
+      {\Gamma\vdash F}\ \mathrm{Open},
+\]
+\[
+ \frac{\Gamma,B(t,\eta)\vdash B(t,Sz)}
+      {\Gamma\vdash D_{x,y}B(x,y)}\ \mathrm{Close},
+ \qquad
+ \eta=\begin{cases}
+ z,& B\text{ is a literal equation and }t\equiv0,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+Here $b$ in Open is fresh for the retained context, conclusion, and passive
+matrix parameters. In Close, $z$ is fresh for the context, witness, and
+passive matrix parameters. All substitutions are capture avoiding and
+canonical; $\equiv$ tests literal syntax. An equation under a $D$ is not
+a literal equation. Local assumptions and opened clauses are discharged.
+
+Refl proves $H$, so Use gives ordinary assumption use. Weakening,
+injective fresh renaming, and ordinary-assumption cut follow directly by
+induction on finite derivations. For cut, replace every Use selecting the
+distinguished constant clause $[H;v.F]$ by the supplied proof of $F$;
+the proof of its antecedent $H$ can be discarded. Freshen eigenparameters
+before inserting the proof. These operations preserve the literal-zero
+witness test. Arbitrary numerical substitution requires the repair below;
+it is not assumed at this stage.
+
+\subsection{Cases and induction, before compound formula transport}
+
+The arithmetic equality lemma from Refl and CE gives transport in every
+numerical template and hence every equation template. Put
+\[
+                 Z=R(S0,0;i,u.0).
+\]
+Its syntax is not the literal zero, while successor computation proves
+$Z=0$. Suppose an equation matrix $E$ has a case branch
+$\Gamma,E(0,0)\vdash E(0,Sz)$. Under the assumption $E(Z,0)$,
+equation transport gives $E(0,0)$; cut inserts the supplied branch; reverse
+transport gives $E(Z,Sz)$. Close at witness $Z$ is in case mode and
+concludes $D_{x,y}E(x,y)$. This proves every missing equation-case instance
+at witness zero. Every other case instance was already primitive. Thus
+\[
+ \frac{\Gamma,B(t,0)\vdash B(t,Sz)}
+      {\Gamma\vdash D_{x,y}B(x,y)}\quad\text{(Case)}
+\tag{Case}
+\]
+is admissible for every matrix and every witness. Its repair used only
+atomic equality transport, not transport through a binder.
+
+For an unused coordinate $u$, abbreviate $D_{u,y}A(y)$ temporarily by
+$q_yA$. Case introduces it from $A(0)\vdash A(Sz)$. Open and Use
+specialize it: from $q_yA$ and $A(0)$ derive $A(t)$.
+Consequently the following two derived rules hold:
+\[
+ \frac{\Gamma\vdash F(0)\quad\Gamma\vdash F(Sz)}
+      {\Gamma\vdash F(t)}\quad\text{(numerical cases)},
+ \qquad
+ \frac{\Gamma\vdash E(0)\quad\Gamma,E(z)\vdash E(Sz)}
+      {\Gamma\vdash E(t)}\quad\text{(equation induction)}.
+\tag{NC, EI}
+\]
+In the first rule, Case introduces $q_yF$ while ignoring its assumed base.
+In the second, Close at unused witness $0$ introduces $q_yE$ directly
+in progress mode. In both cases Open supplies the conditional clause,
+the given base supplies its antecedent, and Use at $t$ finishes. The
+displayed $z$ is fresh for the retained context and passive parameters.
+Only $E$ is required to be a literal equation.
+
+Capture-avoiding numerical substitution is now admissible by proof
+induction. A progress introduction keeps its equation root and literal-zero
+witness. A case introduction whose witness becomes zero is replaced by
+the derived Case rule. Refl, CE, Use, and Open commute with canonical
+substitution, using Lemma~\ref{lem:canonical} and
+freshening eigenparameters first. This justifies the substitutions of
+derivations used below without assuming witness-test invariance.
+
+\subsection{Transport, gates, and selection}
+
+Full formula transport is proved by external induction on $F(v)$.
+Equations were already handled. For $F(v)=D_{x,y}B(v,x,y)$, open
+$F(s)$ at fresh $b$, retaining $[B(s,b,0);y.B(s,b,y)]$.
+Introduce $F(t)$ by Case at witness $b$. Convert the local assumption
+$B(t,b,0)$ backwards along $s=t$ using the smaller-template induction
+hypothesis; Use the old clause at $Sz$; convert its result forwards to
+$B(t,b,Sz)$. Close Case and Open. This proves
+\[
+                  s=t,\ F(s)\vdash F(t).
+\]
+The same construction proves binder congruence for uniform pointwise
+interderivability: convert the target base backwards, specialize the old
+clause, and convert its successor instance forwards. It uses Case and cut,
+not induction on a compound arithmetic formula.
+
+The previously computed selector satisfies $C(0,a,b)=a$ and
+$C(Sz,a,b)=b$. Define gates on finite formula syntax by
+\[
+ G_v(s=t)=(C(v,0,s)=C(v,0,t)),\qquad
+ G_v(D_{x,y}B)=D_{x,y}G_vB,
+\]
+with binders renamed away from $v$. Atomic equality and binder congruence
+prove, by external formula induction,
+\[
+                 \vdash G_0F,\qquad G_{Sz}F\dashv\vdash F.
+\]
+For the first statement at a paired formula, use Case and the already
+proved gate theorem for its smaller matrix; the assumed base is unused.
+
+Padding $L(F)=D_{u,y}G_yF$, with fresh unused $u,y$, is interderivable
+with $F$. Forward, Case uses $F$ to prove the successor gate. Backward,
+Open, the zero-gate theorem, and Use at $1$ give $G_1F$, hence $F$.
+Every formula is a finite chain of paired binders ending in an equation.
+Pad the shorter of $A,B$ to equalize their depths and align bound names.
+At their atomic leaves set
+\[
+ M_v((s=t),(a=b))=(C(v,s,a)=C(v,t,b))
+\]
+and carry the matched binders outside. Thus
+\[
+                M_0(A,B)\dashv\vdash A,\qquad
+                M_{Sz}(A,B)\dashv\vdash B.
+\tag{Selector endpoints}
+\]
+All these are finite macros in the original Eq/$D$ language.
+
+\subsection{Every ordinary intuitionistic connective and quantifier}
+
+With all auxiliary binders fresh, and $u$ unused, define
+\[
+\begin{aligned}
+ \bot_*&=(0=1),\\
+ A\to_*B&=D_{u,y}M_y(A,B),\\
+ A\land_*B&=D_{u,y}G_yM_{P(y)}(A,B),\\
+ \exists_*x\,A(x)&=D_{x,y}G_yA(x),\\
+ A\lor_*B&=\exists_*x\,M_x(A,B),\\
+ \forall_*x\,A(x)&=D_{u,y}G_y A(P(y)).
+\end{aligned}
+\tag{Logical macros}
+\]
+Here $P(Sz)=z$, so $P(1)=0$ and $P(2)=1$. Its value $P(0)=1$
+causes no problem: the outer gate makes the zero instance provable.
+
+\paragraph{Implication.}
+Given a derivation of $B$ under ordinary assumption $A$, Case introduces
+$A\to_*B$: the selector's zero instance gives $A$, and its successor
+instance is equivalent to $B$. For elimination, Open retains the selector
+clause; the supplied $A$ gives its zero antecedent and Use at $1$ gives
+$B$. Discharge and eigenvariable conditions are exactly the ordinary ones.
+
+\paragraph{Conjunction.}
+From $A$ and $B$, numerical cases prove $M_v(A,B)$ for arbitrary $v$.
+Substitute $v=P(Sz)$, apply the successor gate, and use Case to introduce
+$A\land_*B$. Its zero antecedent is a gate theorem. For elimination,
+Open and Use at $1$ and $2$ give the selector at $P(1)=0$ and
+$P(2)=1$, hence $A$ and $B$. No parity or range theorem is used.
+
+\paragraph{Existential quantification.}
+From $A(t)$, Case at witness $t$ introduces its gated paired formula.
+Conversely Open at fresh $b$, prove the zero-gate antecedent, and Use at
+$1$ to obtain $A(b)$. Cut this into any supplied branch whose conclusion
+and retained context are free of $b$, then close Open.
+
+\paragraph{Disjunction.}
+Choose witness $0$ or $1$ in the existential macro to obtain the two
+injections. For elimination, first discharge the two supplied branches
+as $A\to_*F$ and $B\to_*F$. Numerical cases, in the original context,
+prove $M_v(A,B)\to_*F$ for arbitrary $v$, using the selector endpoints.
+Existential elimination supplies $M_b(A,B)$ at a fresh tag $b$;
+implication elimination gives $F$. This construction does not substitute
+the tag inside a retained assumption: numerical cases were performed
+before that assumption was added.
+
+\paragraph{Universal quantification.}
+For introduction, a derivation of $A(z)$ with $z$ fresh for the context
+gives the Case branch $G_{Sz}A(P(Sz))$, by $P(Sz)=z$ and the gate
+equivalence. Introduce the unused witness to obtain $\forall_*xA(x)$.
+For elimination, Open its clause and prove its zero-gate antecedent.
+Use at $St$ gives $G_{St}A(P(St))$, hence $A(t)$. Thus every numerical
+target is covered directly; no claim about $P(0)$ is needed.
+
+\paragraph{Falsity and numerical coverage.}
+Under $0=1$, transport through the term $C(v,s,t)$ gives every equation
+$s=t$ from its two selector computations. External induction on formula
+depth, using Case, gives every Eq/$D$ formula. This is ex falso.
+Numerical cases on
+$n=0\lor_*\exists_*m\,(n=Sm)$ prove coverage: use the left injection
+at zero, and the right injection with witness $z$ at $Sz$.
+Coverage can then be used in contexts already containing $n$, through
+ordinary disjunction elimination and equality transport.
+
+\subsection{Faithful ordinary realization and both formula composites}
+
+Let $T_R$ be ordinary intuitionistic first-order logic with equality over
+\emph{raw} $R$ terms, coverage, separation $0=1\to\bot$, contextual
+literal-equation induction, and both computation schemas
+\[
+ R(0,a;i,u.h)=Sa,\qquad
+ R(Sn,a;i,u.h)=h[n/i,R(n,a;i,u.h)/u].
+\]
+Canonical native terms are read as these raw terms. The semantic
+justification of canonical substitution uses the ordinary theory's
+body-extensionality argument in Section~\ref{sec:normalization-soundness};
+it is separate from the elementary syntactic coherence lemma. Read
+\[
+ (D_{x,y}B)^\circ=\exists x(B^\circ(x,0)\to\forall yB^\circ(x,y)),
+ \qquad [A;y.B]^\circ=A^\circ\to\forall yB^\circ(y).
+\]
+Refl and CE are sound by the arithmetic equality and canonical-substitution
+lemmas. Use and Open are ordinary implication/universal and existential
+elimination. Close in case mode is sound by coverage. In progress mode,
+assume $E(0,0)$ and use equation induction with its premise to prove
+$\forall yE(0,y)$, then choose witness $0$. Thus every primitive native
+derivation has its ordinary realization in $T_R$.
+
+Conversely the derived logical rules above translate every ordinary
+intuitionistic inference. Numerical equality and both computations are
+derived from Refl and CE; coverage and equation induction were derived
+above. The separation axiom translates to the immediate implication
+$(0=1)\to_*(0=1)$. Hence all $T_R$ derivations translate into the native
+calculus. The ordinary reading of each displayed macro is provably
+equivalent to its ordinary connective: use the gate and selector endpoints,
+coverage for arbitrary controls, and $P(St)=t$ for the universal macro.
+External induction on ordinary formulas proves this formula round trip.
+
+For the other composite, externally induct on a native formula. Equations
+are unchanged. For $D_{x,y}B$, first use the induction hypothesis for its
+matrix uniformly. From the original paired formula, Open at $b$. Under
+its base assumption, Use its clause at a fresh $z$ to obtain $B(b,z)$;
+universal introduction, implication introduction, and existential
+introduction then build the macro translation of
+$\exists x(B(x,0)\to\forall yB(x,y))$. Close Open.
+Conversely, existential elimination on that macro gives a fresh $b$ and
+the implication from $B(b,0)$ to its universal closure. Introduce the
+original paired formula by Case at $b$: its local base feeds the implication,
+and universal elimination at $Sz$ supplies the required successor instance.
+The matrix induction equivalences convert the occurrences in both directions.
+This proves native interderivability with its round trip under arbitrary
+ordinary side assumptions. Both numerical maps in this logical comparison
+are identities; no extra domain or equality quotient is introduced.
+
+The separation clause in the ordinary realization is explicit. Merely
+collecting the positive Eq/$D$ theorem images would admit singleton models
+and would not be the asserted ordinary theory. The argument establishes the
+full first-order consequence relation; it neither postulates excluded middle
+for quantified formulas nor introduces induction for compound native formulas.

@@ -1,0 +1,603 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor,listings,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={A smaller induction selector for iPRA},
+  pdfauthor={Research note prepared for Vladimir Reshetnikov},
+  pdfsubject={Unrestricted mirror-selected six-rule calculus and bi-interpretation with iPRA}}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small A smaller induction selector for iPRA}
+\fancyhead[R]{\small Mirror core}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newcommand{\Mcal}{\mathcal M}
+\newcommand{\Ncal}{\mathcal N}
+\newcommand{\Scal}{\mathcal S}
+\newcommand{\FV}{\operatorname{FV}}
+\newcommand{\Mir}{\operatorname{Mir}}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\ceq}{\mathrel{\equiv_{\rm syn}}}
+\lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,
+  keepspaces=true,breaklines=true,showstringspaces=false,
+  frame=single,rulecolor=\color{black!15},xleftmargin=4pt,xrightmargin=4pt,
+  keywordstyle=\color{blue!45!black},commentstyle=\color{black!55}}
+\title{A smaller induction selector for iPRA\\
+  \large An unrestricted six-rule presentation with one mirrored iterator}
+\author{Research note prepared for Vladimir Reshetnikov}
+\date{November 11, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The current ConciseIPRA core already has six rule families on raw iterator
+terms and unrestricted equality/$Q$/$D$ formulas. This note makes a modest
+further simplification: replace its two-iterator diagonal test for
+progressive introduction by the one-iterator pattern
+$a(x,y)=I(y,a(x,y);u.h)$. The language, ordinary readings, and remaining
+rules are unchanged. We prove equality of the complete contextual
+consequence relations, and hence transfer both interpretation composites
+and equiconsistency with full first-order intuitionistic primitive
+recursive arithmetic. Arbitrary numerical substitution is admissible by
+direct induction, using an inherited repair for newly selected bases.
+Matched standalone Python checkers differ only in the selector: the
+normalized source decreases from 3,125 to 3,109 bytes, from 1,022 to 1,012
+significant tokens, and from 1,091 to 1,082 AST nodes. The gain is a
+specialization and combination of existing ideas, not a new rule-count
+reduction, global checker-size record, or absolute minimality theorem.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Result, baseline, and scope}
+
+The comparison is pinned to ProveIt commit
+\texttt{e1d9e3b12edd642ea2f5b572bb43febceaa50d93}, in
+\texttt{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}. The current
+README indexes 67 research packages and a Lean development. In particular,
+\texttt{NativeSix.lean} defines the six-family calculus \texttt{SPrf},
+proves \texttt{sprf\_iff\_nprf}, and proves substitution admissibility
+\cite{readme,six}. That is the mathematical baseline used here.
+
+\begin{theorem}[Main result]\label{thm:main}
+Let $\Mcal$ be the calculus in Section~\ref{sec:spec}, and let $\Ncal$
+be the current eight-constructor native kernel \texttt{NPrf}.
+For every finite context $\Gamma$ and every native formula $A$,
+\[
+ \Gamma\vdash_{\Mcal}A
+ \quad\Longleftrightarrow\quad
+ \Gamma\vdash_{\Ncal}A.
+\]
+Both transformations are effective on finite derivations and leave the
+sequent syntax unchanged. Consequently $\Mcal$ presents a theory
+bi-interpretable and equiconsistent with full first-order $\ipra$.
+Both numerical interpretation domains are whole; equality is actual
+equality; and the two numerical composite isomorphisms have graph $x=y$.
+\end{theorem}
+
+The precise simplification is in the introduction selector:
+\[
+\begin{array}{ll}
+\text{Current diagonal:}&I(y,y;u.h)=I(y,y;v.k),\\[2pt]
+\text{Proposed mirror:}&a(x,y)=I(y,a(x,y);u.h).
+\end{array}
+\]
+The latter recognizes one iterator skeleton and a repeated term. It also
+allows a one-iterator lift of an arbitrary equation when recovering
+induction. It does not restrict the grammar of public or intermediate
+formulas. Neither a normalizer nor a primitive term-template parameter
+is added to the checker.
+
+\paragraph{Attribution.}
+The mirror shape is already present in \texttt{Research/mirror\_guard},
+where it is part of a restricted formula grammar and a different
+transport interface \cite{mirror}. Two-case Eval is already present in
+the current Lean development \cite{six}. The observation that a guard
+need only be preserved under substitution, with newly true cases repaired
+by a provable base, is explicitly established in
+\texttt{Research/reflexive\_base/proof.tex}, including a raw-syntax
+variant \cite{reflexive}. Those ingredients are inherited. The present
+contribution is their particular combination on the full raw grammar,
+the exact comparison with \texttt{SPrf}, and the supplied executable
+evidence. No priority beyond the inspected snapshot is claimed.
+
+\section{Complete specification of the proposed calculus}\label{sec:spec}
+
+\subsection{Numerical terms and formulas}
+There is one numerical sort. The raw term grammar is
+\[
+ t ::= x\mid 0\mid S(t)\mid I(n,a;u.h).
+\]
+Only the state variable $u$ is bound in $h$. The counter $n$ and
+initializer $a$ are outside that binder. An update can have fixed
+numerical parameters. Terms are finite syntax trees, not equivalence
+classes. Substitution is ordinary capture-free substitution, with no
+normalization step.
+
+The formula grammar is unrestricted:
+\[
+ A ::= (s=t)\mid Q_y A\mid D_{x,y}A.
+\]
+The variables bound by $D$ are distinct. Write $B(t,r)$ for simultaneous
+capture-free replacement of its distinguished free coordinates $x,y$ by
+$t,r$. The designated contradiction is $0=S0$. There are no primitive
+ordinary connectives, falsity symbol, predicate symbols other than
+equality, or additional numerical operations.
+
+For orientation, the ordinary readings are
+\[
+ Q_yB(y) := B(0)\to\forall y\,B(y),
+ \qquad
+ D_{x,y}B(x,y) :=
+ \exists x\bigl(B(x,0)\to\forall y\,B(x,y)\bigr).
+\]
+These are interpretation clauses, not extra axioms of the native
+calculus. Contexts are finite lists of reusable formulas. Their order
+and multiplicities have no logical effect, although a checker may use
+indices to identify a hypothesis.
+
+\subsection{The selector}
+Define $\Mir(B)$ to hold exactly when the \emph{uninstantiated} matrix
+$B(x,y)$ is literally
+\[
+             a(x,y)=I(y,a(x,y);u.h(x,y,u)).             \tag{M}
+\]
+The counter must be the distinguished bound variable $y$. The
+initializer must be the same raw term tree as the left side of the
+equation. The body $h$ is arbitrary, and its state binder is fresh.
+Define
+\[
+ \eta_B(z)=\begin{cases}z,&\Mir(B),\\0,&\neg\Mir(B).\end{cases}
+\]
+This is a syntactic test. It asks for neither arithmetic equality nor
+provability. It is performed before substituting the existential
+witness. For example $x=I(y,0;u.0)$ is not selected, even when the
+subsequently supplied witness is $0$.
+
+\subsection{All primitive rules}
+The following six families are the entire calculus:
+\begin{align*}
+ &\frac{A\in\Gamma}{\Gamma\vdash A}
+       &&\mathrm{Hyp},\\[5pt]
+ &\frac{}{\Gamma\vdash t=t}
+       &&\mathrm{Refl},\\[5pt]
+ &\frac{\Gamma\vdash a=t\qquad
+         \Gamma\vdash I(0,a;u.h)=r}
+        {\Gamma\vdash r=t}
+       &&\mathrm{Eval}_0,\\[5pt]
+ &\frac{\Gamma\vdash I(c,a;u.h)=t\qquad
+         \Gamma\vdash I(Sc,a;u.h)=r}
+        {\Gamma\vdash r=h[t/u]}
+       &&\mathrm{Eval}_S,\\[5pt]
+ &\frac{\Gamma\vdash Q_yB(y)\qquad\Gamma\vdash B(0)}
+        {\Gamma\vdash B(t)}
+       &&\mathrm{QE},\\[5pt]
+ &\frac{\Gamma\vdash D_{x,y}B(x,y)\qquad
+         \Gamma,Q_yB(b,y)\vdash A}
+        {\Gamma\vdash A}
+       &&\mathrm{DE},\\[5pt]
+ &\frac{\Gamma,B(t,\eta_B(z))\vdash B(t,Sz)}
+        {\Gamma\vdash D_{x,y}B(x,y)}
+       &&\mathrm{DI}_{M}.
+\end{align*}
+The two Eval rows are the two cases of one family, exactly as in the
+baseline's six-rule count. There are seven inference constructors if
+those cases are counted separately. This convention is explicit in both
+systems; no rule has been hidden by a change of counting convention.
+
+In DE, $b$ is fresh for $\Gamma$, $A$, and every passive parameter of
+$B$. In DI, $z$ is fresh for $\Gamma$, $t$, and every passive parameter
+of $B$. The displayed local assumptions are discharged. All substitutions
+avoid capture. There are no other logical or nonlogical axioms, no
+primitive structural rules, no successor axioms, no separate computation
+axioms, and no general induction rule. All of these needed operations
+are derived below.
+
+\section{Structural operations, equality, and computation}
+
+\subsection{The order of structural arguments}
+\begin{lemma}\label{lem:struct}
+Weakening, injective renaming of numerical variables, and simultaneous
+ordinary-assumption cut are admissible in $\Mcal$, without using
+general numerical substitution or equation induction.
+\end{lemma}
+\begin{proof}
+Weakening is induction on derivations. An injective renaming preserves
+constructor shapes and is injective on raw term trees. It therefore
+preserves and reflects both the distinguished counter test and equality
+of the two mirrored occurrences of $a$. It preserves every primitive
+rule, including the DI mode. Renaming a derivation into a larger fresh
+scope is a special case.
+
+For cut, induct on the derivation into which the supplied proofs are
+inserted. Replace a hypothesis leaf by its supplied derivation. At a
+binder rule, rename the eigenvariable away from the finitely many
+inserted data, lift the supplied derivations by the injective renaming
+just proved, and retain the local assumption by Hyp. The matrix of DI
+is unaffected by replacement of hypotheses, so its mode is unchanged.
+This proves simultaneous cut and its one-assumption specialization.
+\end{proof}
+
+Exchange and contraction are immediate consequences of reusable
+hypotheses and weakening. General numerical substitution is deliberately
+postponed: a noninjective substitution can make a previously false
+mirror test true.
+
+\subsection{Explicit equality derivations}
+All the following arguments use Refl and Eval alone, so they are the
+same elementary bootstrap as in \texttt{NativeSix} \cite{six}.
+
+\begin{lemma}[Joining equations]\label{lem:join}
+From $s=t$ and $s=r$ derive $r=t$.
+\end{lemma}
+\begin{proof}
+Put $J=I(0,s;u.u)$. Eval$_0$ on $s=r$ and $J=J$ gives $J=r$.
+Eval$_0$ on $s=t$ and this $J=r$ gives $r=t$.
+\end{proof}
+
+Symmetry follows by joining $s=s$ and $s=t$. To obtain transitivity
+from $s=t$ and $t=u$, reverse the first equation and join the two
+equations with common left side $t$.
+
+Both computation equations are derived:
+\[
+ I(0,a;u.h)=a,
+ \qquad I(Sc,a;u.h)=h[I(c,a;u.h)/u].             \tag{I0, IS}
+\]
+Use the appropriate Eval rule on reflexivities of its two sources.
+
+\begin{lemma}[One-term transport]\label{lem:transport}
+For any fixed term template $h(v)$, from $s=t$ and $h(s)=r$ derive
+$r=h(t)$. Consequently all numerical congruence and equational
+replacement rules are available.
+\end{lemma}
+\begin{proof}
+Let $J=I(0,s;v.h(v))$ and $K=I(S0,s;v.h(v))$.
+I0 gives $J=s$, hence $J=t$ by transitivity. Eval$_S$ on $J=s$ and
+$K=K$ gives $K=h(s)$, hence $K=r$. Eval$_S$ on $J=t$ and $K=r$
+now gives $r=h(t)$. Choosing the second premise as a reflexivity and
+using symmetry yields ordinary congruence. Transport in both sides of
+an equation is two applications with the corresponding templates.
+\end{proof}
+
+\section{Recovering cases before induction}
+
+\begin{lemma}[Provable mirror bases]\label{lem:base}
+If $\Mir(B)$, then $\Gamma\vdash B(t,0)$ for every context and witness.
+\end{lemma}
+\begin{proof}
+The instance is $a(t,0)=I(0,a(t,0);u.h(t,0,u))$. This is the symmetry
+of I0. No induction, coverage, or logical macro is used.
+\end{proof}
+
+\begin{lemma}[All case introductions]\label{lem:allcases}
+For every raw matrix $B$, the following rule is admissible:
+\[
+ \frac{\Gamma,B(t,0)\vdash B(t,Sz)}
+      {\Gamma\vdash D_{x,y}B}.
+\]
+\end{lemma}
+\begin{proof}
+If the matrix is not mirrored, this is primitive DI. If it is mirrored,
+cut the proof from Lemma~\ref{lem:base} into the supplied branch, obtaining
+$B(t,Sz)$ under $\Gamma$ alone. Weaken by $B(t,z)$ and use progressive
+DI. The step variable remains fresh because the removed base contains
+no $z$.
+\end{proof}
+
+\begin{lemma}[Case-closure introduction and numerical cases]\label{lem:ncases}
+For every native formula $F$, both rules are admissible:
+\[
+ \frac{\Gamma,F(0)\vdash F(Sz)}{\Gamma\vdash Q_yF(y)},
+ \qquad
+ \frac{\Gamma\vdash F(0)\qquad\Gamma\vdash F(Sz)}
+      {\Gamma\vdash F(v)}.
+\]
+In the second rule $z$ is fresh for the context, passive parameters,
+and requested target $v$.
+\end{lemma}
+\begin{proof}
+Introduce $D_{w,y}F(y)$ by the derived case rule with an unused witness
+coordinate $w$ and witness $0$. DE exposes $Q_yF(y)$, independent of
+the fresh witness, so Hyp returns that closure and DE closes. This is
+the first rule. For the second, weaken the successor premise by $F(0)$,
+apply the first rule, and apply QE to the supplied base at $v$.
+\end{proof}
+
+The case rule is available for arbitrary compound formulas. Its proof
+uses no equation induction. In particular, the numerical-case arguments
+in the next section do not assume the induction they are used to recover.
+
+\section{Recovering unrestricted equation induction}\label{sec:induction}
+
+Write $C(c,a,b)=I(c,a;u.b)$, with $u$ unused. Computation gives
+$C(0,a,b)=a$ and $C(Sv,a,b)=b$. Let
+\[
+ E(y)\equiv s(y)=r(y),\qquad
+ G(y)\equiv s(y)=C(y,s(y),r(y)).                      \tag{Lift}
+\]
+The latter is a mirrored equation with one iterator. It has a provable
+zero instance and its successor instance is interderivable with that
+of $E$, using only computation and equality.
+
+\begin{lemma}[Equational transfer]\label{lem:transfer}
+For every target $v$, from $E(0)$ and $G(v)$ derive $E(v)$ without
+equation induction.
+\end{lemma}
+\begin{proof}
+Numerical cases establish the following unconditional equations:
+\begin{align}
+ C(v,s(0),s(v))&=s(v),                               \label{eq:Ls}\\
+ C(v,r(0),C(v,s(v),r(v)))&=r(v).                     \label{eq:Lr}
+\end{align}
+At zero both left sides compute to the displayed zero seed. At a
+successor the first equation uses one constant-update computation and
+the second uses two. Apply Lemma~\ref{lem:ncases} to these equations
+\emph{before} retaining any assumption depending on $v$. Then weaken
+the proved equations into the desired context. This order is necessary
+for the eigenvariable condition.
+
+Under $G(v)$, congruence for the template $C(v,s(0),-)$ gives
+\[
+ C(v,s(0),s(v))=C(v,s(0),C(v,s(v),r(v))).
+\]
+The retained base $s(0)=r(0)$ changes the outer seed on the right.
+Using \eqref{eq:Ls} and \eqref{eq:Lr}, the complete chain is
+\begin{align*}
+ s(v)
+ &=C(v,s(0),s(v))\\
+ &=C(v,s(0),C(v,s(v),r(v)))\\
+ &=C(v,r(0),C(v,s(v),r(v)))\\
+ &=r(v).
+\end{align*}
+Each step is a previously available equational inference.
+\end{proof}
+
+\begin{theorem}[Contextual equation induction]\label{thm:induction}
+For every literal equation $E$ and arbitrary retained context $\Gamma$,
+\[
+ \frac{\Gamma\vdash E(0)\qquad\Gamma,E(z)\vdash E(Sz)}
+      {\Gamma\vdash E(t)}
+\]
+is admissible, with the usual fresh $z$.
+\end{theorem}
+\begin{proof}
+Use the lift $G$ above. Under $\Gamma,G(z)$, the base proof and
+Lemma~\ref{lem:transfer} give $E(z)$. Cut this into the supplied step
+derivation to get $E(Sz)$. The constant-update computation converts this
+to $G(Sz)$. Thus the progressive premise for $G$ has been obtained.
+
+With an unused existential coordinate $w$ and witness $0$, primitive
+DI gives $D_{w,y}G(y)$. DE exposes $Q_yG(y)$. The theorem $G(0)$
+and QE at $t$ yield $G(t)$; the retained base and
+Lemma~\ref{lem:transfer} yield $E(t)$. Close DE. No substitution into
+the supplied step derivation was needed, apart from injective fresh
+renaming of its eigenvariable.
+\end{proof}
+
+\begin{corollary}[Native equation-progress rule]\label{cor:qprogress}
+From $\Gamma,E(z)\vdash E(Sz)$ derive $\Gamma\vdash Q_yE(y)$.
+\end{corollary}
+\begin{proof}
+Use the first rule of Lemma~\ref{lem:ncases}. In its branch retain
+$E(0)$ and apply Theorem~\ref{thm:induction} at target $Sv$ to obtain
+the required $E(Sv)$. The step eigenvariable is renamed fresh from
+this outer $v$ and all retained data. Then discharge $E(0)$ by the
+case-closure rule.
+\end{proof}
+
+\section{Exact sequent equivalence and numerical substitution}
+
+\subsection{Proof of the main equivalence}
+For $\Mcal\to\Ncal$, Hyp, Refl, Eval, QE, and DE have the existing
+native derivations. A nonmirrored DI is the native case introduction.
+A mirrored DI has a literal equation matrix. The native equation-progress
+rule gives $Q_yB(t,y)$; under $B(t,0)$, QE supplies $B(t,Sz)$, and
+native case introduction with witness $t$ gives $D_{x,y}B$. This
+translates every primitive rule without changing the concluding sequent.
+
+For $\Ncal\to\Mcal$, derive I0, IS, and one-term transport as in
+Section~3. Hyp, QE, and DE are primitive. Replace native case introduction
+by Lemma~\ref{lem:allcases} and native equation-progress introduction by
+Corollary~\ref{cor:qprogress}. Induction on the native derivation completes
+the transformation. Together these prove the first assertion of
+Theorem~\ref{thm:main}. The existing equality of \texttt{SPrf} and
+\texttt{NPrf} gives exact equality with the six-rule baseline as well.
+
+\subsection{Substitution may change the mode}
+\begin{theorem}[Direct substitution admissibility]\label{thm:subst}
+If $\Gamma\vdash_{\Mcal}A$ and $\sigma$ is any capture-free substitution
+of terms for passive numerical variables, then
+$\Gamma\sigma\vdash_{\Mcal}A\sigma$.
+\end{theorem}
+\begin{proof}
+The mirror test is preserved by substitution: the repeated initializer
+and left side receive the same substitution, while the distinguished
+bound counter remains $y$. It need not be reflected. For example,
+$p=I(y,q;u.0)$ becomes mirrored after both $p,q$ are replaced by $0$.
+
+Induct on the derivation. Rename each eigenvariable fresh from the finite
+union of free variables in the relevant substitution images. All rules
+other than DI commute with the corresponding lifted substitutions. If
+DI originally used progress, preservation gives the same mode after
+substitution, so apply the induction hypothesis and primitive DI. If
+DI originally used cases, the induction hypothesis gives a substituted
+case premise; apply the already derived unrestricted case introduction
+of Lemma~\ref{lem:allcases}. That rule repairs a newly mirrored case by
+cutting its provable zero base and weakening to progress.
+\end{proof}
+
+This proof is internal to the new calculus; it does not translate to
+$\Ncal$ and back. The repair principle is inherited from
+\texttt{reflexive\_base} \cite{reflexive}. Unlike the current diagonal
+selector, the mirror selector is not preserved \emph{and reflected} by
+arbitrary substitutions. The theorem claims admissibility with an
+explicit proof repair, not that the primitive DI instance always keeps
+the same mode.
+
+% ORDINARY_BRIDGE_INSERT
+
+\section{Checker, exact comparison, and verification}\label{sec:implementation}
+
+\subsection{Public certificate contract}
+The standalone checker uses Python 3.10 or later and only the standard
+\texttt{json} and \texttt{sys} modules. The measured runtime is CPython
+3.12.14. Input is one JSON object with exactly four fields:
+\begin{lstlisting}
+{"variables": n, "context": [A0, A1, ...], "goal": A, "proof": p}
+\end{lstlisting}
+Here $n$ is an exact nonnegative integer, not a Boolean. Terms use
+\texttt{["v",i]}, \texttt{["z"]}, \texttt{["s",t]}, and
+\texttt{["i",n,a,h]}; formulas use \texttt{["=",s,t]},
+\texttt{["q",B]}, and \texttt{["d",B]}. Binding is de Bruijn:
+the distinguished $y$ is index $0$ and $x$ index $1$ in a $D$ matrix.
+The iterator increments binding depth only in its update body.
+
+The proof tags are \texttt{hyp}, \texttt{refl}, \texttt{eval},
+\texttt{qe}, \texttt{de}, and \texttt{di}. Tag fields and every supplied
+term and formula are checked at the appropriate scope; malformed active
+syntax, Boolean variable indices, invalid references, and escaping
+eigenvariables are rejected. Each recursive inference computes its
+conclusion and the top-level goal is checked against that result.
+The only successful public output is \texttt{ACCEPT} followed by a
+newline and exit status zero. A rejected input exits unsuccessfully.
+
+The checker is a direct implementation of Section~\ref{sec:spec}.
+Validation of terms/formulas and a structural induction on successful
+inference calls establish that accepted certificates are derivations of
+the specified calculus. Conversely, every finite derivation has the
+corresponding tree certificate. The completeness statement, like that
+of the repository checkers, assumes unbounded available resources;
+a fixed Python recursion or memory limit may reject a very large valid
+certificate. Such a failure is never acceptance.
+
+\subsection{Matched measurements}
+The comparator implements the current \texttt{SPrf} calculus in the
+same typed Python framework. It is a supplied matched implementation,
+not a claim that this exact Python file already appears upstream.
+Both files have the same parser, term and formula validators,
+capture-avoiding substitution, context interface, and all other rule
+branches. The only executable-source difference is the DI guard.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Complete normalized module & Bytes & Tokens & AST nodes\\
+\midrule
+Current diagonal selector & 3125 & 1022 & 1091\\
+Proposed mirror selector  & 3109 & 1012 & 1082\\
+Decrease                 &   16 &   10 &    9\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The measurement removes genuine docstrings, applies \texttt{ast.unparse},
+and appends one line feed. Bytes mean normalized UTF-8 bytes. Significant
+tokens exclude the end marker, encoding, comments, newlines, indentation,
+and dedentation. AST nodes are counted after docstring removal. The
+archive contains the complete source, measurement code, normalized
+copies, and a one-line executable diff.
+
+This is a 0.51\% byte reduction against the matched six-rule control.
+It is not a reduction below the repository's 516-byte compact codec,
+nor a new minimum among all of its public-goal or fully validated
+interfaces. Those smaller programs use different interfaces and
+encodings. A six-rule presentation and a shorter matched recognizer
+are the supported simplicity claims.
+
+The tradeoff is also concrete: the diagonal guard inspects fixed
+constructor/variable positions, whereas the mirror guard may compare
+two large term trees. That comparison is linear in their size in the
+worst case. The source reduction does not imply uniformly faster
+checking or shorter proofs for every theorem.
+
+\subsection{Evidence and limits}
+% VALIDATION_INSERT
+
+The general equivalence and interpretation claims are mathematical
+proofs in this note. Executed certificates support the implementation
+and selected proof transformations; finite testing cannot establish
+the universal metatheorems. The existing Lean source endpoints were
+read at the pinned revision. Their project was not rebuilt here, and
+there is no new Lean or Rocq formalization of the mirror calculus or
+of the Python checker. The included Lean files are reference excerpts
+with their original imports, not a standalone formalization project.
+
+\section{Further research questions}
+\begin{enumerate}
+\item Can the same selector be integrated into the repository's smallest
+complete certificate interface with a net source reduction after all
+validation and scope checks are counted? The present comparison does
+not answer that question.
+\item What is the smallest family of syntactic base recognizers that
+supports an equational decoder for every equation? The mirror and
+diagonal shapes give two concrete instances, but neither establishes
+a lower bound.
+\item Can the mirror comparison be made constant-time by syntax sharing
+without moving a larger validation obligation into the trusted input
+reader? Any complexity comparison must count the representation and
+its integrity checks.
+\item Can the equation-induction translator be formalized directly in
+Lean with fewer proof dependencies than the current diagonal
+construction? The two unconditional selector equations are a useful
+target for such a formalization.
+\item Can one prove a substantive lower bound for a precisely specified
+class of complete proof checkers? Absolute claims over unrestricted
+programming languages or encodings are not supported by the present
+experiments.
+\end{enumerate}
+
+\appendix
+\section{Complete standalone checker}\label{app:checker}
+The following is the complete selected acceptance module. No proof
+generator, source translator, reference theorem, or measurement helper
+is called by it.
+% CHECKER_INSERT
+
+\clearpage
+\section*{Inherited arithmetic appendices}
+\addcontentsline{toc}{section}{Inherited arithmetic appendices}
+The following three sections reproduce the pinned ConciseIPRA
+predecessor, equality-reflection, and primitive-recursion arguments
+\cite{erasure,forward,progress}. They are inherited foundations rather
+than new reductions. They make the dependency of the iPRA bridge
+reviewable without relying on standard-model agreement. The original
+source files and their license are also included in the archive.
+% ARITHMETIC_INSERT
+
+\clearpage
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{readme} V. Reshetnikov, ProveIt, ConciseIPRA README, pinned commit
+\texttt{e1d9e3b12edd642ea2f5b572bb43febceaa50d93}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e1d9e3b12edd642ea2f5b572bb43febceaa50d93/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}{Repository README}.
+\bibitem{six} ProveIt, \texttt{Lean/ConciseIPRA/NativeSix.lean} and
+\texttt{NativeDiagonal.lean}, same pinned commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e1d9e3b12edd642ea2f5b572bb43febceaa50d93/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeSix.lean}{Six-rule calculus and its theorems}.
+\bibitem{mirror} ProveIt, \texttt{Research/mirror\_guard}, same commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/e1d9e3b12edd642ea2f5b572bb43febceaa50d93/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/mirror_guard}{One-sided computation guard package}.
+\bibitem{reflexive} ProveIt, \texttt{Research/reflexive\_base/proof.tex},
+same commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e1d9e3b12edd642ea2f5b572bb43febceaa50d93/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/reflexive_base/proof.tex}{Reflexive-base introduction and substitution repair}.
+\bibitem{bridge} ProveIt, \texttt{Lean/ConciseIPRA/NativeBiInterpretation.lean},
+same commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/e1d9e3b12edd642ea2f5b572bb43febceaa50d93/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}{Faithful readings, both round trips, and equiconsistency}.
+\bibitem{erasure} ProveIt, \texttt{Research/certified\_zero/reference/}\allowbreak
+\texttt{scalar\_predecessor.tex}, same commit. Reproduced in the arithmetic appendix.
+\bibitem{forward} ProveIt, \texttt{Research/certified\_zero/reference/}\allowbreak
+\texttt{equality\_reflection.tex}, same commit. Reproduced in the arithmetic appendix.
+\bibitem{progress} ProveIt, \texttt{Research/certified\_zero/reference/}\allowbreak
+\texttt{primitive\_recursion.tex}, same commit. Reproduced in the arithmetic appendix.
+\end{thebibliography}
+\end{document}
