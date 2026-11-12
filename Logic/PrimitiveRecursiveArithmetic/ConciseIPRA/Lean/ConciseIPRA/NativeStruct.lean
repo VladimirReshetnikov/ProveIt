@@ -120,7 +120,7 @@ theorem weaken (h : NPrf Γ A) : ∀ {Δ : List (NFm n)}, Γ ⊆ Δ → NPrf Δ 
   | hyp h => intro Δ s; exact .hyp (s h)
   | iterZero a h => intro Δ _; exact .iterZero a h
   | iterSucc c a h => intro Δ _; exact .iterSucc c a h
-  | tr H _ _ ih₁ ih₂ => intro Δ s; exact .tr H (ih₁ s) (ih₂ s)
+  | trEq a b _ _ ih₁ ih₂ => intro Δ s; exact .trEq a b (ih₁ s) (ih₂ s)
   | qE t _ _ ih₁ ih₂ => intro Δ s; exact .qE t (ih₁ s) (ih₂ s)
   | dE _ _ ih₁ ih₂ =>
     intro Δ s
@@ -128,9 +128,9 @@ theorem weaken (h : NPrf Γ A) : ∀ {Δ : List (NFm n)}, Γ ⊆ Δ → NPrf Δ 
   | dICase B t _ ih =>
     intro Δ s
     exact .dICase B t (ih (List.cons_subset_cons _ (List.map_subset _ s)))
-  | dIProg s₁ s₂ t _ ih =>
+  | qIInd s₁ s₂ _ ih =>
     intro Δ s
-    exact .dIProg s₁ s₂ t (ih (List.cons_subset_cons _ (List.map_subset _ s)))
+    exact .qIInd s₁ s₂ (ih (List.cons_subset_cons _ (List.map_subset _ s)))
 
 theorem wk {B : NFm n} (h : NPrf Γ A) : NPrf (B :: Γ) A :=
   h.weaken (List.subset_cons_self _ _)
@@ -147,11 +147,11 @@ theorem subst (h : NPrf Γ A) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     intro m σ
     simp only [NFm.subst_eq, Tm.subst_iter, Tm.subst_succ, Syn.subst_subst_inst]
     exact .iterSucc _ _ _
-  | tr H _ _ ih₁ ih₂ =>
+  | trEq a b _ _ ih₁ ih₂ =>
     intro m σ
     have h₂ := ih₂ σ
-    rw [NFm.subst_inst] at h₂ ⊢
-    exact .tr _ (ih₁ σ) h₂
+    simp only [NFm.subst_eq, Syn.subst_subst_inst] at h₂ ⊢
+    exact .trEq _ _ (ih₁ σ) h₂
   | qE t _ _ ih₁ ih₂ =>
     intro m σ
     have h₂ := ih₂ σ
@@ -168,11 +168,11 @@ theorem subst (h : NPrf Γ A) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     rw [List.map_cons, NFm.map_shift_subst, NFm.shift_subst_up, NFm.subst_inst,
       NFm.subst_repl_succ, NFm.subst_up_inst] at h
     exact .dICase _ _ h
-  | dIProg s₁ s₂ t _ ih =>
+  | qIInd s₁ s₂ _ ih =>
     intro m σ
     have h := ih (up σ)
-    rw [List.map_cons, NFm.map_shift_subst, NFm.subst_repl_succ, NFm.subst_up_inst] at h
-    exact .dIProg (Syn.subst (up (up σ)) s₁) (Syn.subst (up (up σ)) s₂) (Syn.subst σ t) h
+    rw [List.map_cons, NFm.map_shift_subst, NFm.subst_repl_succ] at h
+    exact .qIInd (Syn.subst (up σ) s₁) (Syn.subst (up σ) s₂) h
 
 /-- A derivation may be moved under a fresh variable. -/
 theorem shift (h : NPrf Γ A) : NPrf (Γ.map NFm.shift) A.shift :=
@@ -192,11 +192,11 @@ theorem cut (h : NPrf Γ A) : ∀ {Δ : List (NFm n)}, (∀ B ∈ Γ, NPrf Δ B)
   | hyp h => intro Δ hΔ; exact hΔ _ h
   | iterZero a h => intro Δ _; exact .iterZero a h
   | iterSucc c a h => intro Δ _; exact .iterSucc c a h
-  | tr H _ _ ih₁ ih₂ => intro Δ hΔ; exact .tr H (ih₁ hΔ) (ih₂ hΔ)
+  | trEq a b _ _ ih₁ ih₂ => intro Δ hΔ; exact .trEq a b (ih₁ hΔ) (ih₂ hΔ)
   | qE t _ _ ih₁ ih₂ => intro Δ hΔ; exact .qE t (ih₁ hΔ) (ih₂ hΔ)
   | dE _ _ ih₁ ih₂ => intro Δ hΔ; exact .dE (ih₁ hΔ) (ih₂ (cutLift hΔ _))
   | dICase B t _ ih => intro Δ hΔ; exact .dICase B t (ih (cutLift hΔ _))
-  | dIProg s₁ s₂ t _ ih => intro Δ hΔ; exact .dIProg s₁ s₂ t (ih (cutLift hΔ _))
+  | qIInd s₁ s₂ _ ih => intro Δ hΔ; exact .qIInd s₁ s₂ (ih (cutLift hΔ _))
 
 /-- Cut of one hypothesis. -/
 theorem cut1 {B : NFm n} (h₁ : NPrf Γ B) (h₂ : NPrf (B :: Γ) A) : NPrf Γ A := by

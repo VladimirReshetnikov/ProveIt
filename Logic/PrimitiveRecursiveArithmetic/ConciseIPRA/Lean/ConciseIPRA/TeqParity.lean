@@ -71,60 +71,7 @@ def Tm.hop (a : Tm n) : Tm n := Tm.sel (Tm.par a) (Tm.ramp a) a
     Syn.subst σ (Tm.hop a) = Tm.hop (Syn.subst σ a) := by
   simp [Tm.hop]
 
-namespace Q
-
-variable {Γ : List (Fm Tm n)}
-
-/-- The zero test on classes. -/
-def zf : Q Γ → Q Γ := op₁ (fun _ => Tm.zf) Tm.subst_zf
-
-/-- The parity on classes. -/
-def par : Q Γ → Q Γ := op₁ (fun _ => Tm.par) Tm.subst_par
-
-/-- The three-cycle on classes. -/
-def cyc : Q Γ → Q Γ := op₁ (fun _ => Tm.cyc) Tm.subst_cyc
-
-/-- The iterated three-cycle on classes. -/
-def mod3 : Q Γ → Q Γ := op₁ (fun _ => Tm.mod3) Tm.subst_mod3
-
-/-- The ramp on classes. -/
-def ramp : Q Γ → Q Γ := op₁ (fun _ => Tm.ramp) Tm.subst_ramp
-
-/-- The factor map on classes. -/
-def hop : Q Γ → Q Γ := op₁ (fun _ => Tm.hop) Tm.subst_hop
-
-@[simp] theorem mk_zf (a : Tm n) : mk Γ (Tm.zf a) = zf (mk Γ a) := rfl
-@[simp] theorem mk_par (a : Tm n) : mk Γ (Tm.par a) = par (mk Γ a) := rfl
-@[simp] theorem mk_cyc (a : Tm n) : mk Γ (Tm.cyc a) = cyc (mk Γ a) := rfl
-@[simp] theorem mk_mod3 (a : Tm n) : mk Γ (Tm.mod3 a) = mod3 (mk Γ a) := rfl
-@[simp] theorem mk_ramp (a : Tm n) : mk Γ (Tm.ramp a) = ramp (mk Γ a) := rfl
-@[simp] theorem mk_hop (a : Tm n) : mk Γ (Tm.hop a) = hop (mk Γ a) := rfl
-
-end Q
-
-namespace Ext
-
-variable {Γ : List (Fm Tm n)} {Γ' : List (Fm Tm m)}
-
-@[simp] theorem map_zf (e : Ext Γ Γ') (x : Q Γ) : e.map (Q.zf x) = Q.zf (e.map x) :=
-  map_op₁ e (fun _ => Tm.zf) Tm.subst_zf x
-
-@[simp] theorem map_par (e : Ext Γ Γ') (x : Q Γ) : e.map (Q.par x) = Q.par (e.map x) :=
-  map_op₁ e (fun _ => Tm.par) Tm.subst_par x
-
-@[simp] theorem map_cyc (e : Ext Γ Γ') (x : Q Γ) : e.map (Q.cyc x) = Q.cyc (e.map x) :=
-  map_op₁ e (fun _ => Tm.cyc) Tm.subst_cyc x
-
-@[simp] theorem map_mod3 (e : Ext Γ Γ') (x : Q Γ) : e.map (Q.mod3 x) = Q.mod3 (e.map x) :=
-  map_op₁ e (fun _ => Tm.mod3) Tm.subst_mod3 x
-
-@[simp] theorem map_ramp (e : Ext Γ Γ') (x : Q Γ) : e.map (Q.ramp x) = Q.ramp (e.map x) :=
-  map_op₁ e (fun _ => Tm.ramp) Tm.subst_ramp x
-
-@[simp] theorem map_hop (e : Ext Γ Γ') (x : Q Γ) : e.map (Q.hop x) = Q.hop (e.map x) :=
-  map_op₁ e (fun _ => Tm.hop) Tm.subst_hop x
-
-end Ext
+lift_op₁ zf par cyc mod3 ramp hop
 
 namespace Q
 

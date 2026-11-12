@@ -38,34 +38,7 @@ def Tm.eqt (a b : Tm n) : Tm n :=
     Syn.subst σ (Tm.eqt a b) = Tm.eqt (Syn.subst σ a) (Syn.subst σ b) := by
   simp [Tm.eqt]
 
-namespace Q
-
-variable {Γ : List (Fm Tm n)}
-
-/-- Truncated subtraction on classes. -/
-def monus : Q Γ → Q Γ → Q Γ := op₂ (fun _ => Tm.monus) Tm.subst_monus
-
-/-- The equality test on classes. -/
-def eqt : Q Γ → Q Γ → Q Γ := op₂ (fun _ => Tm.eqt) Tm.subst_eqt
-
-@[simp] theorem mk_monus (x y : Tm n) : mk Γ (Tm.monus x y) = monus (mk Γ x) (mk Γ y) := rfl
-@[simp] theorem mk_eqt (a b : Tm n) : mk Γ (Tm.eqt a b) = eqt (mk Γ a) (mk Γ b) := rfl
-
-end Q
-
-namespace Ext
-
-variable {Γ : List (Fm Tm n)} {Γ' : List (Fm Tm m)}
-
-@[simp] theorem map_monus (e : Ext Γ Γ') (x y : Q Γ) :
-    e.map (Q.monus x y) = Q.monus (e.map x) (e.map y) :=
-  map_op₂ e (fun _ => Tm.monus) Tm.subst_monus x y
-
-@[simp] theorem map_eqt (e : Ext Γ Γ') (x y : Q Γ) :
-    e.map (Q.eqt x y) = Q.eqt (e.map x) (e.map y) :=
-  map_op₂ e (fun _ => Tm.eqt) Tm.subst_eqt x y
-
-end Ext
+lift_op₂ monus eqt
 
 namespace Q
 

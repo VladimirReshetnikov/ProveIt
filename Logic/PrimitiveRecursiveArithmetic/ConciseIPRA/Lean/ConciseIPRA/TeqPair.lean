@@ -69,63 +69,8 @@ def Tm.psnd (w : Tm n) : Tm n := Tm.monus (Tm.lg w) (Tm.pfst w)
     Syn.subst σ (Tm.psnd w) = Tm.psnd (Syn.subst σ w) := by
   simp [Tm.psnd]
 
-namespace Q
-
-variable {Γ : List (Fm Tm n)}
-
-/-- The logarithm step on classes. -/
-def lstep : Q Γ → Q Γ → Q Γ := op₂ (fun _ => Tm.lstep) Tm.subst_lstep
-
-/-- The logarithm counter on classes. -/
-def lgc : Q Γ → Q Γ → Q Γ := op₂ (fun _ => Tm.lgc) Tm.subst_lgc
-
-/-- The binary logarithm on classes. -/
-def lg : Q Γ → Q Γ := op₁ (fun _ => Tm.lg) Tm.subst_lg
-
-/-- Pairing on classes. -/
-def pair : Q Γ → Q Γ → Q Γ := op₂ (fun _ => Tm.pair) Tm.subst_pair
-
-/-- The first projection on classes. -/
-def pfst : Q Γ → Q Γ := op₁ (fun _ => Tm.pfst) Tm.subst_pfst
-
-/-- The second projection on classes. -/
-def psnd : Q Γ → Q Γ := op₁ (fun _ => Tm.psnd) Tm.subst_psnd
-
-@[simp] theorem mk_lstep (k v : Tm n) : mk Γ (Tm.lstep k v) = lstep (mk Γ k) (mk Γ v) := rfl
-@[simp] theorem mk_lgc (t k : Tm n) : mk Γ (Tm.lgc t k) = lgc (mk Γ t) (mk Γ k) := rfl
-@[simp] theorem mk_lg (a : Tm n) : mk Γ (Tm.lg a) = lg (mk Γ a) := rfl
-@[simp] theorem mk_pair (a b : Tm n) : mk Γ (Tm.pair a b) = pair (mk Γ a) (mk Γ b) := rfl
-@[simp] theorem mk_pfst (w : Tm n) : mk Γ (Tm.pfst w) = pfst (mk Γ w) := rfl
-@[simp] theorem mk_psnd (w : Tm n) : mk Γ (Tm.psnd w) = psnd (mk Γ w) := rfl
-
-end Q
-
-namespace Ext
-
-variable {Γ : List (Fm Tm n)} {Γ' : List (Fm Tm m)}
-
-@[simp] theorem map_lstep (e : Ext Γ Γ') (k v : Q Γ) :
-    e.map (Q.lstep k v) = Q.lstep (e.map k) (e.map v) :=
-  map_op₂ e (fun _ => Tm.lstep) Tm.subst_lstep k v
-
-@[simp] theorem map_lgc (e : Ext Γ Γ') (t k : Q Γ) :
-    e.map (Q.lgc t k) = Q.lgc (e.map t) (e.map k) :=
-  map_op₂ e (fun _ => Tm.lgc) Tm.subst_lgc t k
-
-@[simp] theorem map_lg (e : Ext Γ Γ') (x : Q Γ) : e.map (Q.lg x) = Q.lg (e.map x) :=
-  map_op₁ e (fun _ => Tm.lg) Tm.subst_lg x
-
-@[simp] theorem map_pair (e : Ext Γ Γ') (x y : Q Γ) :
-    e.map (Q.pair x y) = Q.pair (e.map x) (e.map y) :=
-  map_op₂ e (fun _ => Tm.pair) Tm.subst_pair x y
-
-@[simp] theorem map_pfst (e : Ext Γ Γ') (x : Q Γ) : e.map (Q.pfst x) = Q.pfst (e.map x) :=
-  map_op₁ e (fun _ => Tm.pfst) Tm.subst_pfst x
-
-@[simp] theorem map_psnd (e : Ext Γ Γ') (x : Q Γ) : e.map (Q.psnd x) = Q.psnd (e.map x) :=
-  map_op₁ e (fun _ => Tm.psnd) Tm.subst_psnd x
-
-end Ext
+lift_op₂ lstep lgc pair
+lift_op₁ lg pfst psnd
 
 namespace Q
 

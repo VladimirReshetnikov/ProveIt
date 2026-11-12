@@ -1,0 +1,391 @@
+% A research alternative, not a checker-size claim.
+% Requires amsmath, amssymb, amsthm; theorem/lemma/proposition/corollary defined.
+
+\section{An alternative with deterministic, matrix-sensitive closure}
+\label{sec:mixed-closure}
+
+This section gives a different logical presentation of the same arithmetic.
+It removes the independent case/progress choice from introduction by changing
+the meaning and elimination of an atomic closure.  It does \emph{not} claim
+a smaller complete checker: the additional arithmetic in elimination must
+be counted.  In particular, the existing witness-selected introduction
+already gives a deterministic introduction by another method.  The result
+here is an alternative bi-interpretation theorem, not an optimality theorem.
+
+The comparison is with the native scalar core in the pinned
+\texttt{ConciseIPRA} snapshot.  Its existing progressive-binder proposal uses
+progressive semantics at every matrix and a separate Boolean-cases principle.
+The construction below uses progressive semantics only at literal equations,
+retains anchored semantics at compound matrices, and derives numerical cases
+through the embedding proved below.  No literature-wide priority claim is made.
+
+\subsection{Complete native presentation}
+
+Terms and formulas are finite syntax:
+\[
+ t::=x\mid0\mid St\mid I(n,a;u.h),\qquad
+ B::=(s=t)\mid Q_yB\mid D_{x,y}B.
+\]
+Only $u$ is bound in $h$; $n$ and $a$ are outside that binding.
+The displayed binders avoid capture, and contexts are finite reusable
+lists of formulas.  Put $1=S0$ and introduce two metalinguistic
+abbreviations, neither of which adds a term constructor:
+\[
+ A(n,t):=I(n,t;u.Su),\qquad
+ d_B(n):=
+ \begin{cases}
+ n,&B\text{ is a literal equation},\\
+ 0,&B\text{ is compound}.
+ \end{cases}
+ \tag{MC1}\label{eq:mc-data}
+\]
+``Literal equation'' means that the outermost constructor of the fixed
+matrix is equality.  An equation beneath $Q$ or $D$ is compound at that
+outer level.  Numerical substitution preserves this classification.
+This is a syntax-sensitive presentation, equivalently a grammar with
+distinct atomic and compound closure forms.  It is not a claim that
+one ordinary logical connective changes meaning under replacement by
+an equivalent formula.  The rules below permit numerical substitution,
+not unrestricted substitution of formulas for their matrices.
+
+The two computation axioms, available in every context, are
+\[
+ I(0,a;u.h)=a,\qquad
+ I(Sn,a;u.h)=h[I(n,a;u.h)/u].
+ \tag{MC2}\label{eq:mc-comp}
+\]
+The remaining primitive rules are exactly
+\[
+ \frac{}{\Gamma\vdash B}\ (B\in\Gamma),
+ \qquad
+ \frac{\Gamma\vdash s=t\qquad\Gamma\vdash F(s)}
+      {\Gamma\vdash F(t)},
+ \tag{MC3}\label{eq:mc-hyp-tr}
+\]
+\[
+ \frac{\Gamma\vdash Q_yB(y)\qquad
+       \Gamma\vdash B(d_B(n))}
+      {\Gamma\vdash B(A(d_B(n),t))},
+ \tag{MC4}\label{eq:mc-qe}
+\]
+\[
+ \frac{\Gamma\vdash D_{x,y}B(x,y)\qquad
+       \Gamma,Q_yB(b,y)\vdash F}
+      {\Gamma\vdash F},
+ \tag{MC5}\label{eq:mc-de}
+\]
+\[
+ \frac{\Gamma,B(t,d_B(z))\vdash B(t,Sz)}
+      {\Gamma\vdash D_{x,y}B(x,y)}.
+ \tag{MC6}\label{eq:mc-di}
+\]
+In transport, $F$ is any native formula template.  In
+\eqref{eq:mc-de}, $b$ is fresh for $\Gamma$, $F$, and the passive
+parameters of $B$.  In \eqref{eq:mc-di}, $z$ is fresh for $\Gamma$,
+the witness $t$, and the passive parameters of $B$.  The displayed local
+assumptions are discharged.  Call this calculus $\mathcal C_{\mathrm m}$.
+There are no additional equality, successor, logical, or induction axioms.
+As in the inherited core, the designated contradiction is $0=1$.
+
+Rule \eqref{eq:mc-qe} has two numerical certificate parameters, $n,t$.
+For compound $B$, its source is $B(0)$ and its target reduces by a
+computation equation to $B(t)$.  For an equation $E$, it transports
+progress from $E(n)$ to $E(A(n,t))$.  The order of arguments matters:
+$A(0,t)=t$ is a direct computation, whereas $A(t,0)=t$ is a derived
+induction theorem.  Reversing those arguments would invalidate the
+bootstrap proof given next.
+
+\subsection{Induction and the logical padding operation}
+
+Weakening, renaming, ordinary-assumption cut, and capture-free numerical
+substitution are admissible by induction on proofs.  For substitution,
+the test defining $d_B$ is unchanged, and the computation equations are
+schemas over fixed finite terms.  At eigenvariable rules, rename the
+eigenvariable away from the substituted terms or inserted derivations.
+
+The usual elementary equality rules are derived from computation and
+transport.  For example, if $r=I(0,t;u.0)$, computation proves $r=t$;
+transporting that equation along itself gives $t=t$.  The standard
+equality motives then give symmetry, transitivity, and numerical congruence.
+
+\begin{lemma}[Closure introduction and equation induction]
+\label{lem:mc-ei}
+The following are admissible:
+\[
+ \frac{\Gamma,B(d_B(z))\vdash B(Sz)}{\Gamma\vdash Q_yB(y)},
+ \qquad
+ \frac{\Gamma\vdash E(0)\qquad\Gamma,E(z)\vdash E(Sz)}
+      {\Gamma\vdash E(t)},
+\]
+where the second rule requires a literal equation $E$, and the usual
+eigenvariable conditions apply.  Also, for every native matrix $B$,
+\[
+ Q_yB(y),B(0)\vdash B(t).
+ \tag{MC7}\label{eq:mc-zero-specialization}
+\]
+\end{lemma}
+\begin{proof}
+For closure introduction, apply \eqref{eq:mc-di} with an unused witness
+coordinate and witness $0$, then eliminate the resulting $D$ formula.
+Its opened $Q$ assumption is independent of the fresh witness, so it
+is also the desired conclusion.
+
+For \eqref{eq:mc-zero-specialization}, take $n=0$ in
+\eqref{eq:mc-qe}.  Both possible matrices have $d_B(0)=0$.
+Computation gives $A(0,t)=t$, and transport gives the stated target.
+For equation induction, closure introduction applied to the supplied
+step gives $Q_yE(y)$; use the supplied base and
+\eqref{eq:mc-zero-specialization}.  No ordinary logical connective
+or numerical-cases principle is used here.
+\end{proof}
+
+\begin{lemma}[A raw progress step]
+\label{lem:mc-step}
+For a literal equation $E$,
+\[
+ Q_yE(y),E(n)\vdash E(Sn).
+\]
+Moreover, $Q_yB(t,y)\vdash D_{x,y}B(x,y)$ for every matrix $B$.
+\end{lemma}
+\begin{proof}
+Equation induction proves $A(n,1)=Sn$: the base is a computation,
+and the successor computation reduces the induction step to congruence
+of successor.  Use \eqref{eq:mc-qe} with the specified source $n$ and
+with second parameter $1$, then transport along this equation.
+
+For the second assertion use \eqref{eq:mc-di} with witness $t$.
+For an equation matrix its premise follows from the raw progress step;
+for a compound matrix it follows from
+\eqref{eq:mc-zero-specialization} at $Sz$.
+\end{proof}
+
+We need a carefully restricted congruence fact.  If two matrices have
+the \emph{same root category} (both literal equations or both compound)
+and their instances are uniformly interderivable, then their $Q$
+closures and their $D$ closures are interderivable.  For $Q$, use
+closure introduction: convert its local antecedent to the old one,
+use Lemma~\ref{lem:mc-step} in the atomic case or
+\eqref{eq:mc-zero-specialization} in the compound case, and convert
+the successor back.  For $D$, first open its witness and then repeat
+that construction with the same witness.  The reverse proof is identical.
+This assertion does \emph{not} permit replacing an atomic matrix by
+an equivalent compound matrix beneath an already present closure.
+Their closure meanings need not agree.
+
+Define the selector term $C(v,a,b)=I(v,a;u.b)$, with unused $u$,
+and the gate on formula syntax by
+\[
+ G_v(s=t):=(C(v,0,s)=C(v,0,t)),\quad
+ G_v(Q_yB):=Q_yG_vB,\quad
+ G_v(D_{x,y}B):=D_{x,y}G_vB.
+\]
+Bound variables are first renamed away from $v$.  Computation,
+closure introduction, and the same-category congruence just proved
+give, by external induction on finite formula syntax,
+\[
+ \vdash G_0B,\qquad G_{Sv}B\dashv\vdash B.
+ \tag{MC8}\label{eq:mc-gate}
+\]
+The first induction uses the theorem for the smaller matrix to supply
+the successor premise, ignoring its local assumption.  The second
+uses the two selector computation equations at the atomic leaf and
+same-category congruence at binders.  A gate preserves every root category.
+
+\begin{lemma}[Compound padding]
+\label{lem:mc-padding}
+Let $r,v$ be fresh for $B$ and put
+\[
+                 P(B):=D_{r,v}G_vB.
+\]
+Then $P(B)$ is compound and $P(B)\dashv\vdash B$, uniformly in
+every retained context and under numerical substitution.
+\end{lemma}
+\begin{proof}
+Under the retained assumption $B$, introduce $P(B)$ with witness $0$.
+Whether \eqref{eq:mc-di} supplies $G_zB$ or $G_0B$ as its local
+assumption, its successor target $G_{Sz}B$ follows from the retained
+$B$ by \eqref{eq:mc-gate}.  Conversely, open $P(B)$, use the theorem
+$G_0B$ as the base of its $Q$ closure, and specialize at $1$ by
+\eqref{eq:mc-zero-specialization}.  The result $G_1B$ gives $B$.
+Fresh bound coordinates make these constructions commute with
+capture-free numerical substitution, up to harmless renaming.
+\end{proof}
+
+\subsection{An embedding of the existing native scalar core}
+
+Let $\mathcal C$ be the existing Eq/$Q$/$D$ core: its $Q$ elimination
+is \eqref{eq:mc-zero-specialization}, and it has separate case and
+literal-equation progress introductions for $D$.  Define a translation
+that leaves all terms unchanged and pads every translated matrix:
+\[
+ (s=t)^\dagger=(s=t),\qquad
+ (Q_yB)^\dagger=Q_yP(B^\dagger),\qquad
+ (D_{x,y}B)^\dagger=D_{x,y}P(B^\dagger).
+ \tag{MC9}\label{eq:mc-embed}
+\]
+All padding coordinates are fresh.  Contexts are translated pointwise.
+Every translated binder has a compound matrix, even when its original
+matrix was an equation.
+
+\begin{theorem}[Proof translation]
+\label{thm:mc-embed}
+If $\Gamma\vdash_{\mathcal C}B$, then
+$\Gamma^\dagger\vdash_{\mathcal C_{\mathrm m}}B^\dagger$.
+The transformation is effective on finite derivations.
+\end{theorem}
+\begin{proof}
+Induct on the derivation.  Hypotheses, computation, and transport are
+preserved; the last assertion uses commutation of the translation
+with numerical substitution.  Old $Q$ elimination first pads its
+base proof, specializes the new compound closure, and unpads its
+result.  Old $D$ elimination opens exactly the translated old $Q$
+assumption.
+
+For old case introduction, the translated old premise starts from
+$B^\dagger(t,0)$ and gives $B^\dagger(t,Sz)$.  The new introduction
+has compound matrix $P(B^\dagger)$: unpad its local base assumption,
+insert the translated premise by cut, and pad the conclusion.
+
+For old progress introduction with equation $E$, the translated
+premise is $\Gamma^\dagger,E(t,z)\vdash E(t,Sz)$.  Introduce the
+translated conclusion $D_{x,y}P(E(x,y))$ by the new compound case
+rule.  Under its base $P(E(t,0))$, unpad to $E(t,0)$.
+Lemma~\ref{lem:mc-ei}, with a separately fresh induction parameter,
+gives $E(t,Sz)$; pad this result to finish the premise.  This is the
+only old rule needing induction in the translation.
+\end{proof}
+
+The inherited scalar core reconstructs ordinary intuitionistic
+first-order logic, numerical coverage, separation, and contextual
+equation induction.  Theorem~\ref{thm:mc-embed} therefore imports
+their proofs and their logical introduction/elimination rules for
+translated formulas.  Those rules remain usable with arbitrary
+additional retained new formulas: their proof transformations only
+inspect the active assumptions, and weakening and cut were proved
+above.  This observation suffices for the composite proof below;
+it does not assume unrestricted cross-category binder congruence.
+
+\subsection{Ordinary interpretation and both composites}
+
+Let $T_{\mathrm{eq}}$ be the ordinary scalar realization of the existing
+proposal: intuitionistic first-order equality logic over the iterator
+terms, with \eqref{eq:mc-comp}, numerical coverage, separation
+$(0=1)\to\bot$, and induction for literal equations with side assumptions.
+The inherited arithmetic bridge identifies $T_{\mathrm{eq}}$ with
+full first-order iPRA.  Our interpretation $\rho$ of the new calculus
+in $T_{\mathrm{eq}}$ leaves terms and equality unchanged and sets
+\[
+ (Q_yB)^\rho=
+ \begin{cases}
+ \forall y\bigl(B^\rho(y)\to B^\rho(Sy)\bigr),
+       &B\text{ is a literal equation},\\
+ B^\rho(0)\to\forall y\,B^\rho(y),&B\text{ is compound},
+ \end{cases}
+ \qquad
+ (D_{x,y}B)^\rho=\exists x\,(Q_yB)^\rho.
+ \tag{MC10}\label{eq:mc-reading}
+\]
+Thus the atomic reading is genuinely changed; it is not the old
+anchored reading with a proof choice silently removed.
+
+\begin{lemma}[Soundness of the new rules]
+\label{lem:mc-sound}
+The interpretation $\rho$ sends new derivations to
+$T_{\mathrm{eq}}$ derivations.
+\end{lemma}
+\begin{proof}
+Only introduction and elimination merit comment.  Atomic introduction
+is directly a proof of the displayed progressive statement with a
+specified existential witness.  Compound introduction proves its
+anchored statement by numerical coverage: zero is its retained base,
+and successors are its supplied premise.
+
+For atomic elimination, equation induction first proves in
+$T_{\mathrm{eq}}$
+\[
+ A(n,0)=n,\qquad A(n,Sr)=S A(n,r).
+\]
+The first is induction on $n$.  The second is induction on $n$ with
+$r$ as a passive parameter; both steps reduce by computation and
+successor congruence.  Under the progressive premise and $E(n)$,
+equation induction on $r$ now proves $E(A(n,r))$.  Taking $r=t$
+gives \eqref{eq:mc-qe}.  The inducted formula is still one literal
+equation, not an arbitrary compound formula.  Compound elimination
+is ordinary anchored specialization, since $A(0,t)=t$.
+The other rules have their immediate ordinary meanings.
+\end{proof}
+
+Let $J$ be the existing native interpretation of $T_{\mathrm{eq}}$
+in $\mathcal C$, including its ordinary logical macros.  Define the
+reverse interpretation $K$ by $K(\varphi)=J(\varphi)^\dagger$.
+Its proof translation follows from Theorem~\ref{thm:mc-embed}.
+
+\begin{theorem}[Whole-domain bi-interpretation]
+\label{thm:mc-bi}
+The interpretations $\rho,K$ are a bi-interpretation between
+$\mathcal C_{\mathrm m}$ and $T_{\mathrm{eq}}$.  Both numerical
+domains are whole, equality is actual equality, and both numerical
+composites have the identity graph $x=y$.  Consequently the new
+calculus is bi-interpretable and equiconsistent with iPRA.
+\end{theorem}
+\begin{proof}
+First, for every old native formula $F$,
+$\rho(F^\dagger)$ is provably equivalent to the old ordinary reading
+of $F$.  Prove this externally by induction on $F$.
+Every translated matrix is compound; hence its new closure has the
+old anchored reading.  Lemma~\ref{lem:mc-padding}, transported by
+Lemma~\ref{lem:mc-sound}, removes the inserted padding.  The old
+ordinary composite theorem therefore gives
+$\rho(K\varphi)\leftrightarrow\varphi$ for every ordinary formula
+$\varphi$.
+
+For the new composite, prove externally on native formulas that
+$B\dashv\vdash K(B^\rho)$.  Equality is unchanged.  Suppose the
+assertion is established for a matrix $B$ and write
+$\widehat B=K(B^\rho)$; this is a formula in the image of $K$.
+
+If $B=E$ is atomic, a new $Q_yE$ supplies the raw step
+$E(z)\to E(Sz)$ by Lemma~\ref{lem:mc-step}.  Convert its two
+instances to their hats and use the imported ordinary implication
+and universal introductions.  This gives
+$K(\forall y(E^\rho(y)\to E^\rho(Sy)))$.
+Conversely, assume that imported progressive formula.  Under $E(z)$,
+convert to $\widehat E(z)$, eliminate the imported universal and
+implication, convert the result back to $E(Sz)$, and use derived
+closure introduction.  These are exactly the two directions of the
+atomic $Q$ composite.
+
+For compound $B$, start instead with an assumption
+$\widehat B(0)$, convert to $B(0)$, specialize the given new $Q_yB$
+at an arbitrary fresh parameter, and convert back to its hat.
+Imported implication and universal introduction yield the anchored
+ordinary formula.  Conversely, under the base $B(0)$, that imported
+formula supplies $B(Sz)$ after the same conversions; compound
+closure introduction finishes.  No congruence is applied across
+the potentially different roots of $B$ and $\widehat B$.
+
+Finally, for $D_{x,y}B$, open its fresh witness, apply the just-proved
+$Q$ equivalence for the matrix $B$, and introduce the imported
+existential.  Conversely, eliminate that existential at a fresh
+witness, convert its matrix back to $Q_yB$, and use the existential
+injection derived in Lemma~\ref{lem:mc-step}.  All ordinary logical
+rules here act on image formulas; arbitrary additional new assumptions
+are merely retained.  This completes the formula composite proof.
+
+Both interpretations leave every scalar term and numerical variable
+unchanged, so their numerical composites are literally the identity.
+Composition with the inherited $T_{\mathrm{eq}}$--iPRA
+bi-interpretation yields the assertion.  The contradiction $0=1$
+is unchanged, giving equiconsistency as well.
+\end{proof}
+
+\paragraph{Assessment.}
+The result removes the independent introduction mode and exposes a
+different distribution of arithmetic and logic: literal-equation
+closures are progressive, while compound closures are anchored.
+The padding embedding proves that this does not restrict ordinary
+intuitionistic arithmetic.  However, elimination now builds an iterator
+term and supplies an additional numerical parameter.  Counting only the
+single introduction schema would conceal that cost.  No measured
+improvement, proof-assistant verification, or minimality claim is made
+for this alternative.

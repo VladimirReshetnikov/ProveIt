@@ -14,6 +14,8 @@ rewriting.
   into `Γ'`.  It induces a map `Q Γ → Q Γ'` commuting with these operations.
 * `Q.eqInd` is induction for literal equations, and `Q.cases` is proof of an
   equation by cases on a number, stated over all extensions of the context.
+* The commands `lift_op₁` and `lift_op₂` declare the operation on classes
+  induced by a term operation, with its two compatibility lemmas.
 -/
 
 namespace LeanProofs.ConciseIPRA
@@ -300,5 +302,54 @@ theorem cases (x : Q Γ) {p q : Q Γ}
   · exact hS (Ext.shiftCons _) (mk _ (var 0)) hyp0
 
 end Q
+
+/-! ## Lifting term operations to classes
+
+Every term operation `Tm.f` that commutes with substitution (`Tm.subst_f`)
+induces an operation `Q.f` on classes, with a lemma `Q.mk_f` for the class of
+`Tm.f a` and a lemma `Ext.map_f` for extensions of the context.  The commands
+`lift_op₁` and `lift_op₂` declare these three for unary and binary operations. -/
+
+open Lean in
+/-- `lift_op₁ f g …`: for each `f`, from `Tm.f` and `Tm.subst_f`, declare the unary
+operation `Q.f` on classes and the simp lemmas `Q.mk_f` and `Ext.map_f`. -/
+macro "lift_op₁ " fs:ident+ : command => do
+  let mut cmds : Array Syntax := #[]
+  for f in fs do
+    let s := f.getId.toString
+    let tmF := mkIdent (.str `Tm s)
+    let sub := mkIdent (.str `Tm ("subst_" ++ s))
+    let qF := mkIdent (.str `Q s)
+    let mkF := mkIdent (.str `Q ("mk_" ++ s))
+    let mapF := mkIdent (.str `Ext ("map_" ++ s))
+    cmds := cmds.push (← `(def $qF {n : ℕ} {Γ : List (Fm Tm n)} : Q Γ → Q Γ :=
+      Q.op₁ (fun _ => $tmF) $sub))
+    cmds := cmds.push (← `(@[simp] theorem $mkF {n : ℕ} {Γ : List (Fm Tm n)} (a : Tm n) :
+      Q.mk Γ ($tmF a) = $qF (Q.mk Γ a) := rfl))
+    cmds := cmds.push (← `(@[simp] theorem $mapF {n m : ℕ} {Γ : List (Fm Tm n)}
+      {Γ' : List (Fm Tm m)} (e : Ext Γ Γ') (x : Q Γ) : e.map ($qF x) = $qF (e.map x) :=
+      Ext.map_op₁ e (fun _ => $tmF) $sub x))
+  return ⟨mkNullNode cmds⟩
+
+open Lean in
+/-- `lift_op₂ f g …`: the binary form of `lift_op₁`. -/
+macro "lift_op₂ " fs:ident+ : command => do
+  let mut cmds : Array Syntax := #[]
+  for f in fs do
+    let s := f.getId.toString
+    let tmF := mkIdent (.str `Tm s)
+    let sub := mkIdent (.str `Tm ("subst_" ++ s))
+    let qF := mkIdent (.str `Q s)
+    let mkF := mkIdent (.str `Q ("mk_" ++ s))
+    let mapF := mkIdent (.str `Ext ("map_" ++ s))
+    cmds := cmds.push (← `(def $qF {n : ℕ} {Γ : List (Fm Tm n)} : Q Γ → Q Γ → Q Γ :=
+      Q.op₂ (fun _ => $tmF) $sub))
+    cmds := cmds.push (← `(@[simp] theorem $mkF {n : ℕ} {Γ : List (Fm Tm n)} (a b : Tm n) :
+      Q.mk Γ ($tmF a b) = $qF (Q.mk Γ a) (Q.mk Γ b) := rfl))
+    cmds := cmds.push (← `(@[simp] theorem $mapF {n m : ℕ} {Γ : List (Fm Tm n)}
+      {Γ' : List (Fm Tm m)} (e : Ext Γ Γ') (x y : Q Γ) :
+      e.map ($qF x y) = $qF (e.map x) (e.map y) :=
+      Ext.map_op₂ e (fun _ => $tmF) $sub x y))
+  return ⟨mkNullNode cmds⟩
 
 end LeanProofs.ConciseIPRA

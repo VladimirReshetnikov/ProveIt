@@ -1,0 +1,188 @@
+{
+  "goal": [
+    "all",
+    "a",
+    [
+      "all",
+      "b",
+      [
+        "imp",
+        [
+          "=",
+          [
+            "v",
+            "a"
+          ],
+          [
+            "v",
+            "b"
+          ]
+        ],
+        [
+          "=",
+          [
+            "v",
+            "b"
+          ],
+          [
+            "v",
+            "a"
+          ]
+        ]
+      ]
+    ]
+  ],
+  "proof": {
+    "rule": "all_intro",
+    "conclusion": [
+      "all",
+      "a",
+      [
+        "all",
+        "b",
+        [
+          "imp",
+          [
+            "=",
+            [
+              "v",
+              "a"
+            ],
+            [
+              "v",
+              "b"
+            ]
+          ],
+          [
+            "=",
+            [
+              "v",
+              "b"
+            ],
+            [
+              "v",
+              "a"
+            ]
+          ]
+        ]
+      ]
+    ],
+    "eigen": "a",
+    "proof": {
+      "rule": "all_intro",
+      "conclusion": [
+        "all",
+        "b",
+        [
+          "imp",
+          [
+            "=",
+            [
+              "v",
+              "a"
+            ],
+            [
+              "v",
+              "b"
+            ]
+          ],
+          [
+            "=",
+            [
+              "v",
+              "b"
+            ],
+            [
+              "v",
+              "a"
+            ]
+          ]
+        ]
+      ],
+      "eigen": "b",
+      "proof": {
+        "rule": "imp_intro",
+        "conclusion": [
+          "imp",
+          [
+            "=",
+            [
+              "v",
+              "a"
+            ],
+            [
+              "v",
+              "b"
+            ]
+          ],
+          [
+            "=",
+            [
+              "v",
+              "b"
+            ],
+            [
+              "v",
+              "a"
+            ]
+          ]
+        ],
+        "proof": {
+          "rule": "eq_elim",
+          "conclusion": [
+            "=",
+            [
+              "v",
+              "b"
+            ],
+            [
+              "v",
+              "a"
+            ]
+          ],
+          "equality": {
+            "rule": "hyp",
+            "conclusion": [
+              "=",
+              [
+                "v",
+                "a"
+              ],
+              [
+                "v",
+                "b"
+              ]
+            ],
+            "index": 0
+          },
+          "premise": {
+            "rule": "refl",
+            "conclusion": [
+              "=",
+              [
+                "v",
+                "a"
+              ],
+              [
+                "v",
+                "a"
+              ]
+            ]
+          },
+          "variable": "hole",
+          "motive": [
+            "=",
+            [
+              "v",
+              "hole"
+            ],
+            [
+              "v",
+              "a"
+            ]
+          ]
+        }
+      }
+    }
+  }
+}
