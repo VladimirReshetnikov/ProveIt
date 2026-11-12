@@ -7488,6 +7488,9 @@ The source-reviewed [87 natural-rank](research/ordinary14-87-natural-rank-draft/
 and [auxiliary-norm](research/ordinary14-87-aux-norm-draft/README.md) drafts
 propose those facts from the same 87 zero. Both remain unelaborated and do not
 complete the direct calibration.
+The source-reviewed [87 first-index draft](research/ordinary14-87-first-index-draft/README.md)
+proposes the Pell classification and residue witnesses from that graph's own
+zero. It remains unelaborated and does not identify the index with the rank.
 The source-reviewed [87 strong-norm draft](research/ordinary14-87-strong-norm-draft/README.md)
 proposes the direct-Y strong identity from the 87 graph's own zero. It remains
 unelaborated and does not establish the rest of the calibration.
