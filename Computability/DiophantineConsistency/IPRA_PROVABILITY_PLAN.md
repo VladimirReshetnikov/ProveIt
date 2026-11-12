@@ -7861,6 +7861,10 @@ identifies model square-divisibility interfaces and proposes ring identities
 for the forced-w argument. The existing 74 unit extractor requires positive
 w and cannot discharge the critical w=0 case; its replacement and the full
 Lean/iPRA proof remain open.
+The independently source-reviewed [79 zero-w unit draft](research/ordinary14-natural79-zero-w-unit-draft/README.md)
+proposes a zero-specific factor extraction without assuming positive w; it
+still takes three residue exclusions as explicit hypotheses. The source and
+its axiom reports remain unelaborated and unexecuted.
 The independently source-reviewed [natural-80 Lean transcription](research/ordinary14-natural-forced-gamma80-lean-draft/README.md)
 records its literal graph and product shape. Source correspondence is checked
 externally; elaboration and model semantics remain open.
