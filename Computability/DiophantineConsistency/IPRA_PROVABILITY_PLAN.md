@@ -7325,6 +7325,11 @@ positive-zero existence as the 88/30 parent for integer ports with `β > 0`.
 A separate [C-fold auxiliary-root form](research/ordinary13-cfold-aux87/README.md)
 has the same numerical metrics and inherits the C-fold calibration. These
 are external comparisons, not new Lean endpoints.
+The reviewed [q-cubed unscaled carrier](research/ordinary13-qcube-unscale84/README.md)
+reduces the direct-parent form to 13 positive inputs and 84 operations at
+exact degree 56. Its positive-zero maps require only `β > 0` locally, with
+no sign condition on `K0`; the parent's consistency, Lean and file-binding
+limitations remain inherited.
 The reviewed [conditional sphere finalizer](research/ordinary13-freej88-conditional-sphere/README.md)
 gives a different 88-operation, degree-30 graph with the same positive zeros.
 It is an equal-metric search form, not a new Lean endpoint or improvement.
