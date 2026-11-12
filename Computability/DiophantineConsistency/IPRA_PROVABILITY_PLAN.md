@@ -7665,6 +7665,11 @@ follows yet.
 The source-reviewed [compact symbolic-port 84/85 wrapper](research/ordinary14-84-85-compact-model-equivalence-draft/README.md)
 specializes to `[β, K, low, β + high]`. It remains unelaborated and does
 not establish a physical-file association or iPRA theorem.
+The source-reviewed [compact 78/85 composition](research/ordinary14-78-85-compact-model-composition-draft/README.md)
+proposes connecting the two graph comparisons at the same symbolic ports. A
+separately reviewed [static import inventory](research/ordinary14-78-85-draft-import-inventory/README.md)
+records its direct draft source imports. Neither establishes Lean elaboration,
+transitive object/provider compatibility, file binding or an iPRA endpoint.
 The source-reviewed [84 main-index draft](research/ordinary14-84-main-index-draft/README.md)
 proposes classifying the main root while retaining the natural balance. It is
 unelaborated and does not identify that index with the rank.
