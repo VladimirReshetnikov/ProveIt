@@ -1,0 +1,118 @@
+import PositiveUnscaled84Graph
+import Positive81To83Transport
+import CarrierGamma
+
+/-! Proposed exact positive 83/84 transport, with the unresolved gamma and
+q-divisibility obligations stated explicitly. Source only; no Lean run. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Positive83To84TransportDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+open Residue90CompactPortBoundsDraft ArithmeticPellRecurrence
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def q (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := 1+v 0*(p 0:V)
+def X (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := q p v*v 6
+def Y (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := q p v*(q p v*q p v)*v 7
+def U (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := Y p v*(q p v*q p v)
+def a (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := X p v*Y p v+Y p v
+def H (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := 4*a p v+3
+def k (v : Fin 13 → V) : V := v 9+v 10
+def c (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := v 9+Y p v*k v
+
+/-- Image of a 84 valuation given a natural quotient w of its X. -/
+def to83 (v : Fin 13 → V) (w : V) (i : Fin 13) : V :=
+  if i=6 then w else if i=12 then v 12+w else v i
+/-- Candidate 84 image of an 83 valuation, requiring w<gamma for positivity. -/
+def to84 (p : Fin 4 → ℕ) (v : Fin 13 → V) (i : Fin 13) : V :=
+  if i=6 then X p v else if i=12 then v 12-v 6 else v i
+
+/-- Exact ring identity for q*w=X and gamma83=gamma84+w. -/
+theorem evaluation (p : Fin 4 → ℕ) (v : Fin 13 → V) (w : V)
+    (hX : v 6=q p v*w) :
+    (PositiveUnscaled84GraphDraft.graph (fun j => (p j:ℤ))).output.evalRing (fun j => ι (v j)) =
+      (PositiveCarrier83GraphDraft.graph (fun j => (p j:ℤ))).output.evalRing (fun j => ι (to83 v w j)) := by
+  have hxR := congrArg (ι : V →+* DiffRing V) hX
+  simp only [map_mul] at hxR
+  simp [PositiveUnscaled84GraphDraft.graph,PositiveCarrier83GraphDraft.graph,to83,q,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat,P72Root.cast_port,
+    map_add,map_mul,map_one,map_ofNat] at *
+  rw [hxR]
+  ring
+
+/-- Positive gamma subtraction followed by the reverse coordinate map is the
+original 83 tuple; no positivity of eta or prior 83→81 map is involved. -/
+theorem roundtrip (p : Fin 4 → ℕ) (v : Fin 13 → V) (hgamma : v 6<v 12) :
+    to83 (to84 p v) (v 6)=v := by
+  have hg : v 12-v 6+v 6=v 12 := tsub_add_cancel_of_le (le_of_lt hgamma)
+  funext i
+  fin_cases i <;> simp [to83,to84,hg]
+
+theorem positive84 (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hv : ∀ i, 0<v i) (hgamma : v 6<v 12) : ∀ i, 0<to84 p v i := by
+  have hq : 0<q p v := by dsimp [q]; exact add_pos_of_pos_of_nonneg (by simp) (Arithmetic.zero_le _)
+  intro i
+  by_cases hi : i=6
+  · subst i; simpa [to84,X] using mul_pos hq (hv 6)
+  · by_cases hj : i=12
+    · subst i; simpa [to84] using (tsub_pos_iff_lt.mpr hgamma)
+    · simpa [to84,hi,hj] using hv i
+
+theorem zero83_to84 (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (PositiveCarrier83GraphDraft.graph (fun j => (p j:ℤ))).output v)
+    (hgamma : v 6<v 12) :
+    InternalZero (PositiveUnscaled84GraphDraft.graph (fun j => (p j:ℤ))).output (to84 p v) := by
+  have hX : to84 p v 6=q p (to84 p v)*v 6 := by simp [to84,X,q]
+  have he := evaluation p (to84 p v) (v 6) hX
+  rw [roundtrip p v hgamma] at he
+  apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+  rw [he]
+  exact (ModelDifferenceRing.internalZero_iff _ _).mp hz
+
+theorem zero84_to83 (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hv : ∀ i, 0<v i) (hdiv : q p v∣v 6)
+    (hz : InternalZero (PositiveUnscaled84GraphDraft.graph (fun j => (p j:ℤ))).output v) :
+    ∃ u : Fin 13 → V, (∀ i, 0<u i) ∧
+      InternalZero (PositiveCarrier83GraphDraft.graph (fun j => (p j:ℤ))).output u := by
+  obtain ⟨w,hw⟩ := hdiv
+  have hwpos : 0<w := pos_of_mul_pos_right (by rw [←hw]; exact hv 6) (Arithmetic.zero_le _)
+  refine ⟨to83 v w,?_,?_⟩
+  · intro i
+    by_cases hi : i=6
+    · subst i; simpa [to83] using hwpos
+    · by_cases hj : i=12
+      · subst i; simpa [to83] using add_pos_of_pos_of_nonneg (hv 12) (Arithmetic.zero_le w)
+      · simpa [to83,hi,hj] using hv i
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [←evaluation p v w hw]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp hz
+
+/-- All graph-to-Pell and orientation facts are explicit; no original literal
+zero or 83→81 hypothesis occurs. These coordinates must be the same witnesses. -/
+def GammaCalibration (p : Fin 4 → ℕ) (v : Fin 13 → V) : Prop :=
+  ∃ R W d : V, 3≤R ∧ c p v=ycoord R (a p v) ∧ d=xcoord R (a p v) ∧
+    k v=R+1+U p v*W ∧
+    U p v*d+H p v*k v=U p v*(X p v+a p v*c p v)+H p v*(U p v*v 12+R+1)
+
+theorem gamma_of_calibration (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hv : ∀ i, 0<v i) (hcal : GammaCalibration p v) : v 6<v 12 := by
+  obtain ⟨R,W,d,hR,hc,hd,hk,hbal⟩ := hcal
+  have hq1 : 1≤q p v := by dsimp [q]; exact le_add_of_nonneg_right (Arithmetic.zero_le _)
+  have hq : 0<q p v := lt_of_lt_of_le (by simp) hq1
+  have hY : 0<Y p v := mul_pos (mul_pos hq (mul_pos hq hq)) (hv 7)
+  have hU : 0<U p v := mul_pos hY (mul_pos hq hq)
+  exact ModifiedCarrierGammaDraft.gamma_gt_from_modified_balance
+    (U p v) (H p v) d (X p v) (Y p v) (a p v) (c p v) (v 12) (k v) R W (q p v) (v 6)
+    hU hY hq1 rfl rfl rfl hR hc hd hk hbal
+end DiophantineConsistency.Positive83To84TransportDraft
+#print axioms DiophantineConsistency.Positive83To84TransportDraft.evaluation
+#print axioms DiophantineConsistency.Positive83To84TransportDraft.zero83_to84
+#print axioms DiophantineConsistency.Positive83To84TransportDraft.zero84_to83
+#print axioms DiophantineConsistency.Positive83To84TransportDraft.gamma_of_calibration

@@ -1,0 +1,79 @@
+import Positive83To84Transport
+
+/-! Conditional compact 83→84 bridge. Neither cut is supplied here. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Positive83To84BridgeDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+open Residue90CompactPortBoundsDraft Positive83To84TransportDraft
+
+def GammaCut (K : ℕ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V),
+    (∀ i, 0<v i) →
+    InternalZero (PositiveCarrier83GraphDraft.graph (fun j => (ports K j:ℤ))).output v → v 6<v 12
+
+def CalibrationCut (K : ℕ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V),
+    (∀ i, 0<v i) →
+    InternalZero (PositiveCarrier83GraphDraft.graph (fun j => (ports K j:ℤ))).output v → GammaCalibration (ports K) v
+
+def DivCut (K : ℕ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V),
+    (∀ i, 0<v i) →
+    InternalZero (PositiveUnscaled84GraphDraft.graph (fun j => (ports K j:ℤ))).output v → q (ports K) v∣v 6
+
+theorem gammaCut_of_calibration (K : ℕ) (hc : CalibrationCut K) : GammaCut K := by
+  intro V _ _ v hv hz
+  exact gamma_of_calibration (ports K) v hv (hc V v hv hz)
+
+theorem sameNoZero (K : ℕ) (hg : GammaCut K) (hd : DivCut K) : SameNoZero
+    (positiveShift (PositiveCarrier83GraphDraft.graph (fun j => (ports K j:ℤ))).output)
+    (positiveShift (PositiveUnscaled84GraphDraft.graph (fun j => (ports K j:ℤ))).output) := by
+  intro V _ _
+  constructor
+  · intro h x hz
+    let v : Fin 13 → V := fun i => x i+1
+    have hv : ∀ i, 0<v i := fun i => lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+    have hz84 := (internalZero_positiveShift _ x).mp hz
+    obtain ⟨u,hu,hzu⟩ := zero84_to83 (ports K) v hv (hd V v hv hz84) hz84
+    let y : Fin 13 → V := fun i => u i-1
+    have hy : (fun i => y i+1)=u := by
+      funext i; exact tsub_add_cancel_of_le (pos_iff_one_le.mp (hu i))
+    apply h y
+    apply (internalZero_positiveShift _ y).mpr
+    rw [hy]
+    exact hzu
+  · intro h x hz
+    let v : Fin 13 → V := fun i => x i+1
+    have hv : ∀ i, 0<v i := fun i => lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+    have hz83 := (internalZero_positiveShift _ x).mp hz
+    have hgamma := hg V v hv hz83
+    have hu := positive84 (ports K) v hv hgamma
+    let y : Fin 13 → V := fun i => to84 (ports K) v i-1
+    have hy : (fun i => y i+1)=to84 (ports K) v := by
+      funext i; exact tsub_add_cancel_of_le (pos_iff_one_le.mp (hu i))
+    apply h y
+    apply (internalZero_positiveShift _ y).mpr
+    rw [hy]
+    exact zero83_to84 (ports K) v hz83 hgamma
+
+theorem bridge83 (K : ℕ) (hg : GammaCut K) (hd : DivCut K)
+    (h84 : PolynomialBridge (positiveShift (PositiveUnscaled84GraphDraft.graph (fun j => (ports K j:ℤ))).output)) :
+    PolynomialBridge (positiveShift (PositiveCarrier83GraphDraft.graph (fun j => (ports K j:ℤ))).output) :=
+  HAExpressionNoZeroEquiv.bridge _ _ (sameNoZero K hg hd) h84
+
+theorem native85 (K : ℕ) (hc : Positive81To83TransportDraft.CrossRootCut K)
+    (hg : GammaCut K) (hd : DivCut K)
+    (h84 : PolynomialBridge (positiveShift (PositiveUnscaled84GraphDraft.graph (fun j => (ports K j:ℤ))).output)) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output 🡘
+      ∼mappedNativeRefutation embedding :=
+  Positive81To83TransportDraft.native85 K hc (bridge83 K hg hd h84)
+end DiophantineConsistency.Positive83To84BridgeDraft
+#print axioms DiophantineConsistency.Positive83To84BridgeDraft.gammaCut_of_calibration
+#print axioms DiophantineConsistency.Positive83To84BridgeDraft.sameNoZero
+#print axioms DiophantineConsistency.Positive83To84BridgeDraft.bridge83
+#print axioms DiophantineConsistency.Positive83To84BridgeDraft.native85
