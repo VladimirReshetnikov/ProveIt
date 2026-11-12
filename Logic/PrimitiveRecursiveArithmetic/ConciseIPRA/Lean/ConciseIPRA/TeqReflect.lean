@@ -48,14 +48,6 @@ namespace Teq
 
 variable {Γ : List (Fm Tm n)}
 
-/-- Case distinction on a term, with an unshifted conclusion. -/
-theorem casesOn (t : Tm n) {ψ : Fm Tm n}
-    (h0 : (t ≐ Tm.zero) :: Γ ⊢[TeqAx] ψ)
-    (hS : (Syn.shift t ≐ Tm.succ (var 0)) :: Γ.map Fm.shift ⊢[TeqAx] ψ.shift) :
-    Γ ⊢[TeqAx] ψ :=
-  .orE (Teq.cover t) h0 (.exE Prf.hyp0 (hS.weaken
-    (List.cons_subset_cons _ (List.map_subset _ (List.subset_cons_self _ _)))))
-
 /-- A selector either has a vanishing condition or takes its second branch. -/
 theorem selCases (c x y : Tm n) :
     Γ ⊢[TeqAx] (c ≐ Tm.zero) ⋎ (Tm.sel c x y ≐ y) := by
