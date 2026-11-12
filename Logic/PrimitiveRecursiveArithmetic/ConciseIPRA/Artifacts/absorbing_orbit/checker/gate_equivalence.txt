@@ -1,0 +1,48 @@
+EXACT LEXICAL-GATE EQUIVALENCE
+
+Write r = str(p).strip('0123456789-[], ') after the same json.load call.
+The old gate assigns q = (not r) and p.pop.
+The new gate assigns q = r or p.pop.
+
+If r is empty, both gates evaluate p.pop and assign the identical bound
+method, or both raise the same attribute error if p has no pop attribute.
+Everything after that assignment is byte-for-byte identical. The checked
+proof, consumed records, output, and termination behavior are consequently
+identical in this case.
+
+If r is nonempty, the old gate assigns the Boolean False and the new gate
+assigns the nonempty ordinary Python string r. Neither gate evaluates
+p.pop. The immediately following statement evaluates q() before calling
+the proof checker. Both False and an ordinary string are noncallable, so
+both executions raise TypeError before any proof is accepted. Their error
+messages can differ; acceptance does not.
+
+Malformed JSON is rejected by the unchanged parser before either gate.
+Empty lists pass the alphabet gate but then fail on the unchanged pop.
+Integer scalars can pass the alphabet gate but have no pop method; both
+versions fail there. Strings, objects, booleans, null, floats, NaN, and
+infinities retain a non-alphabet character in their parsed Python printed
+form and are rejected, including in an unread prefix of a valid proof.
+
+This argument establishes exact agreement on acceptance for every parsed
+JSON input, with the existing convention that an unhandled exception is
+rejection. It preserves the public proof checker contract: normal exit
+and exactly 'ACCEPT\n' on standard output.
+
+ASSERTION INDEPENDENCE
+
+Neither source contains an Assert AST node or a reference to __debug__.
+The only change is the gate assignment above. Validation is performed by
+ordinary expression evaluation, the parser, and the proof-checking code;
+no acceptance condition is removed by Python -O. The reproduction script
+checks these syntactic facts and also executes every fixture both normally
+and with -O. The universal gate argument is independent of these tests.
+
+REPRODUCING THE FINITE EVIDENCE
+
+Run python3 verify_checker.py from this directory, or pass its absolute
+path from any directory. Python's standard library is the only dependency.
+The program checks hashes of all fixtures, runs the two exact sources in
+isolated subprocesses with -I -S -B, checks ordinary and -O behavior, and
+writes verification.json. None of the verification support is imported by
+either measured checker.
