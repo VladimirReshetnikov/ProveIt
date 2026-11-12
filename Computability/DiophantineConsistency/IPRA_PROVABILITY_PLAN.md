@@ -7821,6 +7821,10 @@ combines those shifts with the degree reduction: 14 natural inputs, 83
 operations, and exact specialized degree 97. Its external zero maps inherit
 the stated port and endpoint conditions; no Lean/iPRA, file-binding or
 minimality claim follows.
+The independently reviewed [forced-J shifted-Pell variant](research/ordinary14-natural-forcedj82-degree97/README.md)
+reduces that natural graph to 82 operations at degree 97, assuming `β > 0`
+and `K0 > 0`. Its external zero map and authenticated degree certificate
+do not supply an iPRA theorem or physical-file binding.
 The source-reviewed [natural-86 Lean graph draft](research/ordinary14-natural-cancel86-lean-draft/README.md)
 transcribes that circuit. It is unelaborated and does not yet bind the graph
 to `positiveShift` in Lean.
