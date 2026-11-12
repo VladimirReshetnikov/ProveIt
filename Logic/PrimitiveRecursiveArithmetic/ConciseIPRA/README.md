@@ -203,6 +203,16 @@ by progress as primitive, and proves that the derivable sequents are the same
   `u = h(t)` (`VSPrf.packet`). This is the rule of
   [`variable_substitution`](Research/variable_substitution/). On raw terms the
   rows are not literal, and the nearest statement there is Param above.
+- *Equality at the discharge of a witness.* On full normal forms one rule,
+  Name, replaces both transport and DE: from `D_{x,y} B`, and from `b = t` and
+  `F` in the context opened at a fresh `b`, infer `F[t/b]`, provided it does
+  not mention `b`. With `t = b` it is DE. The kernel then has six rules, Hyp,
+  Refl, Name, QE, DI by cases and QI by progress (`NMPrf`, `nmprf_iff_nprf`).
+  The naming packet gives `b = t` and `h(b) = u` in the opened context, and
+  Name exports `h(t) = u`: transport without the crossing
+  (`NMPrf.packet`). At the template `x` with a reflexive equation that is
+  symmetry, and the transport of the kernel follows. This is the rule of
+  [`witness_discharge`](Research/witness_discharge/).
 - *One introduction rule, stable under substitution.* The single
   introduction above tests the witness for being the literal `0`, and a
   substitution can turn a witness into `0`. If instead the fresh variable is
@@ -623,6 +633,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | no computation rule | `fnprf_iff_nprf : FNPrf (Γ.map NFm.full) A.full ↔ NPrf Γ A`, `fnprf_iff_nprf_of_normal`, `fnprf_iff_pra` | Hyp, Refl, Tr, QE, DE, DI by cases and QI by progress on full normal forms; both computation equations hold by syntax |
 | opening with an inferred witness | `foprf_iff_nprf : FOPrf (Γ.map NFm.full) A.full ↔ NPrf Γ A`, `NFm.owit`, `NPrf.owitQ`, `NPrf.toFO` | DE replaced by the opening at the witness read off two rows of the normalized matrix |
 | substitution for a variable only | `vsprf_iff_nprf : VSPrf (Γ.map NFm.full) A.full ↔ NPrf Γ A`, `VSPrf.packet`, `NPrf.toVS` | on full normal forms, `x = t`, `u = v` ⊢ `v = u[t/x]` is the only equality rule; transport by a naming packet |
+| equality at the discharge of a witness | `nmprf_iff_nprf : NMPrf (Γ.map NFm.full) A.full ↔ NPrf Γ A`, `NMPrf.packet`, `NMPrf.dE` | six rules on full normal forms: Name in place of transport and DE |
 | five rules on zero-normal terms | `zcprf_iff_nprf : ZCPrf (Γ.map fun X => Cl.asm (fnf (unQ X))) (fnf (unQ A)) ↔ NPrf Γ A`, `zcprf_iff_nprf_of_qfree`, `CPrf.toZC`, `Conv` | Refl, one Eval scheme, Use, Elim and Intro on zero-normal terms with clause contexts |
 | four schemes on zero-normal terms | `zvprf_iff_zcprf`, `zvprf_iff_nprf` | Use, Step, Open, Close with uniform clauses and the fixed reflexivity clause |
 | seed evaluation | `nvprf_iff_nprf : NVPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`, `NVPrf.normal` | on zero-normal terms, reflexivity and SeedEval in place of successor computation and transport |
@@ -643,7 +654,8 @@ formalizes three systems and proves them mutually bi-interpretable:
 The main chain (every module except the seventeen kernel comparisons,
 `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`,
 `NativeZeroReflexive`, `NativeZeroClausal`, `FullNormalization`, `NativeFullNormal`,
-`NativeInferredWitness`, `NativeVariableSubstitution`, `NativeUniqueness`, `NativeModels` and
+`NativeInferredWitness`, `NativeVariableSubstitution`, `NativeWitnessDischarge`,
+`NativeUniqueness`, `NativeModels` and
 `TeqClosure`) is 5,561
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
@@ -680,7 +692,7 @@ no `native_decide`.
 | `T_eq` ≡ iPRA | `ScalarToPRA`, `PRAToScalar`, `RoundTripScalar`, `RoundTripPRA`, `BiInterpretation` | the two interpretations and their composites |
 | zero-normal syntax | `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`, `NativeZeroReflexive`, `NativeZeroClausal` | contraction of iterators with a literal-zero counter, hereditary substitution, and the equivalence of a formula with its normal form (delivered); the kernel without the zero computation rule, `NZPrf`; reflexivity and one successor step, `NSPrf`; reflexivity and seed evaluation, `NVPrf`; six rules with the reflexive-base introduction, `NRPrf`; five rules with clauses, `ZCPrf`, and four schemes with uniform clauses, `ZVPrf` |
 | closures in `T_eq` | `TeqClosure` | decidability of quantifier-free formulas; the criterion for agreement of the conditional and the progressive closure |
-| full normal forms | `FullNormalization`, `NativeFullNormal`, `NativeInferredWitness`, `NativeVariableSubstitution` | the normalizer for both computations, defined by evaluation, with its laws and its correctness; the kernel without computation rules, `FNPrf`; the same with the opening at an inferred witness, `FOPrf`; the same with substitution for a variable as its only equality rule, `VSPrf` |
+| full normal forms | `FullNormalization`, `NativeFullNormal`, `NativeInferredWitness`, `NativeVariableSubstitution`, `NativeWitnessDischarge` | the normalizer for both computations, defined by evaluation, with its laws and its correctness; the kernel without computation rules, `FNPrf`; the same with the opening at an inferred witness, `FOPrf`; the same with substitution for a variable as its only equality rule, `VSPrf`; six rules with Name, `NMPrf` |
 | derived rule | `NativeUniqueness` | uniqueness of iteration |
 | readings over the natural numbers | `NativeModels` | evaluation of terms and formulas for a reading `Sem`; the kernel with rules switched by flags, `FPrf`, and its soundness; consistency of the three systems; independence of seven rules |
 | native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, interderivability over a context, Leibniz and transport in every template, equation induction; selector and gate formulas |
@@ -716,7 +728,7 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `mirror_core` | Proved: its six-rule calculus is `M6Prf` (`m6prf_iff_nprf`), over the seven-rule `MiPrf` (`miprf_iff_nprf`; `NativeMirror`). Because the mirror shape can be created by a substitution, the structural rules are weakening, injective renaming and cut; progress for an arbitrary equation uses the lift `s = sel(y, s, t)`. |
 | `seed_evaluation` | Proved, for its arithmetic and equality interface: `NVPrf`, with `nvprf_iff_nprf`, `NVPrf.normal` and `nvprf_iff_pra` (`NativeZeroSeed`), with the kernel's two introductions and `Q` in place of clause contexts. |
 | `clause_contexts` | Proved: its four schemes with the reflexivity clause are `ZVPrf`, with `zvprf_iff_zcprf` and `zvprf_iff_nprf` (`NativeZeroClausal`). |
-| `witness_discharge` | Not formalized: its Name rule joins equality substitution with the discharge of a witness and relies on full computation normal forms. |
+| `witness_discharge` | Proved, for the kernel: `NMPrf` is the kernel on full normal forms with Name in place of transport and DE (six rules), and `nmprf_iff_nprf` (`NativeWitnessDischarge`). The package's form with clause contexts, three families and the reflexivity clause is not formalized. |
 | `inferred_witness`, `deterministic_opening`, `first_instance`, `clause_discharge` | Proved, for the kernel: the opening at the witness read off the rows `B(b, 0)` and `B(b, 1)` of the normalized matrix, in place of DE, is `FOPrf`, with `foprf_iff_nprf` (`NativeInferredWitness`). The packages state it with clause contexts, three inference families and the reflexivity clause, and two of them substitute in the exported formula instead of opening at the witness; those forms are not formalized. |
 | `substitutive_discharge` | Proved, for the kernel: its discharge rule in place of transport and DE is `SDPrf`, with `sdprf_iff_nprf` (`NativeSubstitutiveDischarge`). The package's four families are stated on the canonical recursor syntax with clause contexts, which is not formalized. |
 | `prefix_clauses` | Not formalized: a representation of the `Q`-free formulas, `D^k (s = t)`, for the calculus `VPrf`; its second theorem, on clauses without an antecedent field, is not examined. |
