@@ -175,6 +175,15 @@ by progress as primitive, and proves that the derivable sequents are the same
   `M = I(0, s; u.K)`, whose step term `K` is a numeral larger than `h`, so
   that `h(M)` contains `M` at the template positions and nowhere else. This
   is the rule of [`template_free`](Research/template_free/).
+- *A one-iterator selector.* The mode of the single introduction can be read
+  off a smaller shape than the diagonal one: progress exactly when the matrix
+  is literally `a(x, y) = I(y, a(x, y); u.h)`. That calculus is `MiPrf`
+  (seven rules, `miprf_iff_nprf`), and with reflexivity and Eval it is the
+  six-rule `M6Prf` (`m6prf_iff_nprf`) of
+  [`mirror_core`](Research/mirror_core/). The shape is preserved by
+  substitution but can be created by it, so `MiPrf` is closed under injective
+  renaming (`MiPrf.ren`), which suffices for weakening under a binder and for
+  cut, and not under substitution by a direct induction.
 - *Six rules.* Reflexivity and one rule Eval can replace both computation
   equations and transport. Eval infers `r = Φ(s, t, b)` from `s = t` and
   `b = r`, where `Φ` is `t` if `b` is `I(0, s; u.h)`, and `h[t/u]` if `b` is
@@ -449,6 +458,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | one introduction rule | `wprf_iff_nprf : WPrf Γ A ↔ NPrf Γ A` | the seven-rule calculus with the single, syntax-directed introduction derives the same sequents |
 | seven rules | `mprf_iff_nprf`, `mprf_iff_iprf : MPrf Γ A ↔ IPrf Γ A` | one-term transport at sources other than the literal `0` and the single introduction together derive the sequents of the reports' calculus |
 | substitution-stable introduction | `gprf_iff_nprf : GPrf Γ A ↔ NPrf Γ A`, `GPrf.subst` | one introduction whose mode is read off the diagonal shape of the matrix; closed under substitution by direct induction |
+| one-iterator selector | `miprf_iff_nprf : MiPrf Γ A ↔ NPrf Γ A`, `m6prf_iff_nprf : M6Prf Γ A ↔ NPrf Γ A`, `MiPrf.ren` | the single introduction with the mirror test `a = I(y, a; u.h)`; seven rules, and six with reflexivity and Eval; closed under injective renaming |
 | six rules, substitution-stable | `sprf_iff_nprf : SPrf Γ A ↔ NPrf Γ A`, `SPrf.subst` | Hyp, Refl, Eval, QE, DE and the diagonal DI: closed under substitution by direct induction; the equivalence uses `propext` and `Quot.sound` only |
 | five rules, clauses | `cprf_iff_nprf : CPrf (asm ∘ unQ) Γ (unQ A) ↔ NPrf Γ A`, `cprf_iff_nprf_of_qfree`, `CPrf.qfree` | Refl, Eval, Use, Elim and Intro on Eq/D formulas with clause contexts; no `Q`, no computation axiom, no transport rule |
 | five rules, clauses, substitution-stable | `kprf_iff_nprf_of_qfree`, `kprf_iff_nprf`, `KPrf.subst`, `KPrf.qfree` | the clause calculus with the diagonal introduction; closed under substitution by direct induction |
@@ -471,7 +481,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | | `native_roundTrip`, `pra_native_roundTrip` | both composites through iPRA are the identity up to equivalence |
 | | `native_inconsistent_iff` | `NPrf [] (0 = 1)` iff iPRA proves `⊥` |
 
-The main chain (every module except the thirteen kernel comparisons,
+The main chain (every module except the fourteen kernel comparisons,
 `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`,
 `NativeZeroReflexive`, `NativeUniqueness` and
 `TeqClosure`) is 5,630
@@ -503,7 +513,7 @@ no `native_decide`.
 | closures in `T_eq` | `TeqClosure` | decidability of quantifier-free formulas; the criterion for agreement of the conditional and the progressive closure |
 | derived rule | `NativeUniqueness` | uniqueness of iteration |
 | native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, interderivability over a context, Leibniz and transport in every template, equation induction; selector and gate formulas |
-| kernel comparison | `NativeInherited`, `NativeOneContext`, `NativeOneIntro`, `NativeDiagonal`, `NativeSix`, `NativeMinimal`, `NativeEval`, `NativeTemplateFree`, `NativeClausal`, `NativeClausalDiagonal`, `NativeUniformClauses`, `NativeZeroSource`, `NativeReversal` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf`; no literal-zero transport sources, `OPrf`, generic over the class `OKernel`, and the uncrossed rule, `UPrf`; six rules with Eval, `EPrf`; replacement without a template, `TPrf`; the diagonal introduction, `GPrf`, with its own structural rules; Eval with the diagonal introduction, `SPrf`; the five-rule clause calculus, `CPrf`, with weakening, renaming and cut of assumptions; the clause calculus with the diagonal introduction, `KPrf`; uniform clause use, `VPrf`; one introduction rule, `WPrf`, generic over the class `WKernel`; both together, `MPrf`; the source restriction for uncrossed transport in an equation template, `ZPrf`, generic over the class `ZKernel`; root-reversing transport and QE, `RPrf` |
+| kernel comparison | `NativeInherited`, `NativeOneContext`, `NativeOneIntro`, `NativeDiagonal`, `NativeMirror`, `NativeSix`, `NativeMinimal`, `NativeEval`, `NativeTemplateFree`, `NativeClausal`, `NativeClausalDiagonal`, `NativeUniformClauses`, `NativeZeroSource`, `NativeReversal` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf`; no literal-zero transport sources, `OPrf`, generic over the class `OKernel`, and the uncrossed rule, `UPrf`; six rules with Eval, `EPrf`; replacement without a template, `TPrf`; the diagonal introduction, `GPrf`, with its own structural rules; the mirror introduction, `MiPrf` and `M6Prf`; Eval with the diagonal introduction, `SPrf`; the five-rule clause calculus, `CPrf`, with weakening, renaming and cut of assumptions; the clause calculus with the diagonal introduction, `KPrf`; uniform clause use, `VPrf`; one introduction rule, `WPrf`, generic over the class `WKernel`; both together, `MPrf`; the source restriction for uncrossed transport in an equation template, `ZPrf`, generic over the class `ZKernel`; root-reversing transport and QE, `RPrf` |
 | native logic | `NativeLogic` | `⊥`, `→`, `∧`, `∨`, `∃`, `∀` as native macros with all their natural deduction rules |
 | native ≡ `T_eq` ≡ iPRA | `NativeTranslate`, `NativeComposite`, `NativeRoundTrip`, `NativeBiInterpretation` | translation of derivations, both round trips, the composite with `biInterp` |
 
@@ -532,7 +542,7 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `clausal_canonical` | Not formalized: it is stated on the canonical recursor syntax with clause contexts. |
 | `computational_equality`, `equality_from_iteration` | Proved: the six-rule calculus is `EPrf`, with `eprf_iff_nprf` and `eprf_iff_iprf` (`NativeEval`). Eval has the two cases of `equality_from_iteration` as constructors; the third case of `computational_equality` is the derived rule `EPrf.evalId`. The zero-normal companion of `equality_from_iteration` is not formalized. |
 | `clause_guards` | Proved: its calculus is `KPrf` (`kprf_iff_nprf_of_qfree`, `kprf_iff_nprf`, `KPrf.subst`; `NativeClausalDiagonal`), which was written here before the package arrived. |
-| `mirror_core` | Not formalized. Its selector is preserved by substitution but can be created by it, so the structural argument of `NativeDiagonal` does not transfer as it stands. |
+| `mirror_core` | Proved: its six-rule calculus is `M6Prf` (`m6prf_iff_nprf`), over the seven-rule `MiPrf` (`miprf_iff_nprf`; `NativeMirror`). Because the mirror shape can be created by a substitution, the structural rules are weakening, injective renaming and cut; progress for an arbitrary equation uses the lift `s = sel(y, s, t)`. |
 | `seed_evaluation` | Proved, for its arithmetic and equality interface: `NVPrf`, with `nvprf_iff_nprf`, `NVPrf.normal` and `nvprf_iff_pra` (`NativeZeroSeed`), with the kernel's two introductions and `Q` in place of clause contexts. |
 | `clause_contexts`, `witness_discharge` | Not formalized: further rule forms on zero-normal terms with clause contexts. |
 | `uniform_binding` | Not formalized: the counter-aware recursor syntax. |
