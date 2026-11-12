@@ -1263,6 +1263,9 @@ proposes the next symbolic-port link. It remains unelaborated and is not an
 The source-reviewed [88 first-quotient draft](research/ordinary14-88-first-quotient-draft/README.md)
 proposes the `q³` quotient and first root from the 88 graph's own zero. It
 remains unelaborated and is only one input to the parent bridge.
+The source-reviewed [first/main large-k draft](research/ordinary14-first-main-large-k-draft/README.md)
+proposes the required Pell growth from explicit first and main norms. It
+remains unelaborated and is not yet extracted from the 88 graph.
 A [sign20 syntax and squares client](research/nine-sharing-sign20-seed-squares-check/README.md),
 [independently audited](reviews/nine-sharing-sign20-seed-squares-terminal-independent/README.md),
 checks symbolic seed zero iff its 11 residuals vanish. It does not establish
