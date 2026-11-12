@@ -7465,6 +7465,11 @@ offers another tradeoff: 13 natural inputs, 97 operations and exact
 specialized degree 28. Its external zero transfer depends on the cited
 fixed-port bounds and sign-free calibration replay; Lean, iPRA and physical
 equation bindings remain open.
+The independently reviewed [natural C-fold product](research/ordinary13-natural-cfold-product96/README.md)
+trades degree for one operation, giving 13 natural inputs, 96 operations and
+exact specialized degree 50. Its local zero equivalence holds at every
+integer valuation and ports; the parent's calibration and endpoint
+qualifications remain inherited.
 The separate reviewed [degree-56 residue-adjusted form](research/ordinary13-residue-first82/README.md)
 has 13 positive inputs and 82 operations. Its local comparison uses the stated
 compact44 port bounds and the sign-free decoder, without requiring the
