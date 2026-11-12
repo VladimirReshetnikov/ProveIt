@@ -7868,6 +7868,9 @@ its axiom reports remain unelaborated and unexecuted.
 The independently source-reviewed [79 residue-pattern draft](research/ordinary14-natural79-factor-residues-draft/README.md)
 proposes discharging those exclusions using literal graph patterns. The cuts
 and zero-w unit client remain unelaborated, and do not prove w positivity.
+The independently source-reviewed [79-to-80 w-shift draft](research/ordinary14-natural79-wshift-model-draft/README.md)
+proposes related-valuation zero maps, conditional on w positivity at every
+79 zero. It remains unelaborated and does not discharge that premise.
 The independently source-reviewed [natural-80 Lean transcription](research/ordinary14-natural-forced-gamma80-lean-draft/README.md)
 records its literal graph and product shape. Source correspondence is checked
 externally; elaboration and model semantics remain open.
