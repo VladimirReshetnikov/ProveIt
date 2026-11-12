@@ -140,8 +140,7 @@ theorem prc_succ (c a : Tm n) (g : Tm (n + 2)) :
     rw [iterate_succ]
     rfl
   rw [h1, Tm.subst_inst_recStep, mk_pair, psnd_pair]
-  refine sound (Prf.eqCongr g (fun j => ?_))
-  refine Fin.cases ?_ (fun j => ?_) j
+  refine sound (Prf.eqCongr g (Fin.cases ?_ fun j => ?_))
   · exact exact (pfst_recAcc c a g)
   · simp only [Fin.cases_succ]
     exact Prf.eqRefl _

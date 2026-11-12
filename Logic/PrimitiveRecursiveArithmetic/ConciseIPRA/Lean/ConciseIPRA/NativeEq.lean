@@ -40,15 +40,13 @@ namespace NFm
 theorem subst_dummy_up_inst (B : NFm (n + 1)) (s : Tm (n + 1)) :
     (B.subst (up (fun i => Syn.var i.succ))).subst (inst s) = B.subst (repl s) := by
   rw [subst_subst]
-  refine B.subst_ext fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp
+  refine B.subst_ext (Fin.cases ?_ fun j => ?_) <;> simp
 
 theorem shift_subst_inst (B : NFm (n + 1)) (t : Tm n) :
     (B.subst (inst t)).shift = B.subst (repl (Syn.shift t)) := by
   unfold NFm.shift
   rw [subst_subst]
-  refine B.subst_ext fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp [Syn.shift]
+  refine B.subst_ext (Fin.cases ?_ fun j => ?_) <;> simp [Syn.shift]
 
 theorem shift_subst_inst_zero (B : NFm (n + 1)) :
     (B.subst (inst zero)).shift = B.subst (repl zero) :=
@@ -59,8 +57,7 @@ variable with the outer bound one. -/
 theorem subst_upup_inst_var (B : NFm (n + 2)) :
     (B.subst (up (up (fun i => Syn.var i.succ)))).subst (up (inst (Syn.var 0))) = B := by
   rw [subst_subst]
-  refine B.subst_eq_self fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine B.subst_eq_self (Fin.cases ?_ fun j => ?_)
   · simp
   · rw [up_succ, Syn.subst_up_shift]
     refine Fin.cases ?_ (fun l => ?_) j <;> simp
@@ -70,8 +67,7 @@ with the bound one. -/
 theorem subst_up_inst_var (B : NFm (n + 1)) :
     (B.subst (up (fun i => Syn.var i.succ))).subst (inst (Syn.var 0)) = B := by
   rw [subst_subst]
-  refine B.subst_eq_self fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp
+  refine B.subst_eq_self (Fin.cases ?_ fun j => ?_) <;> simp
 
 @[simp] theorem subst_repl_shift (A : NFm n) (s : Tm (n + 1)) :
     A.shift.subst (repl s) = A.shift := by
@@ -240,8 +236,7 @@ variable {Γ : List (NFm n)}
 /-- Equal substitutions stay equal under a binder. -/
 theorem upEq {σ σ' : Fin k → Tm n} (he : ∀ i, NPrf Γ (.eq (σ i) (σ' i))) :
     ∀ i, NPrf (Γ.map NFm.shift) (.eq (up σ i) (up σ' i)) := by
-  intro i
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine Fin.cases ?_ fun j => ?_
   · exact eqRefl _
   · rw [up_succ, up_succ]
     exact (he j).shift
@@ -249,13 +244,12 @@ theorem upEq {σ σ' : Fin k → Tm n} (he : ∀ i, NPrf Γ (.eq (σ i) (σ' i))
 /-- Substitutions that are provably equal give interderivable instances. -/
 theorem leibnizIn (A : NFm k) : ∀ {n : ℕ} {Γ : List (NFm n)} (σ σ' : Fin k → Tm n),
     (∀ i, NPrf Γ (.eq (σ i) (σ' i))) → NEquivIn Γ (A.subst σ) (A.subst σ') := by
-  induction A with
+  induction A with intro n Γ σ σ' he
   | eq a b =>
-    intro n Γ σ σ' he
     exact ⟨leibnizEq a b σ σ' (fun i => (he i).wk) hyp0,
       leibnizEq a b σ' σ (fun i => eqSymm (he i).wk) hyp0⟩
-  | Q B ih => intro n Γ σ σ' he; exact .Q (ih _ _ (upEq he))
-  | D B ih => intro n Γ σ σ' he; exact .D (ih _ _ (upEq (upEq he)))
+  | Q B ih => exact .Q (ih _ _ (upEq he))
+  | D B ih => exact .D (ih _ _ (upEq (upEq he)))
 
 /-- The simultaneous Leibniz rule. -/
 theorem leibniz (A : NFm k) (σ σ' : Fin k → Tm n) (he : ∀ i, NPrf Γ (.eq (σ i) (σ' i)))

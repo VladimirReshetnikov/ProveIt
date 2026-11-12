@@ -105,10 +105,9 @@ theorem botEq (h : NPrf Γ NFm.bot) (s t : Tm n) : NPrf Γ (.eq s t) :=
 
 theorem botSubst (A : NFm n) : ∀ {m : ℕ} (σ : Fin n → Tm m) {Γ : List (NFm m)},
     NPrf Γ NFm.bot → NPrf Γ (A.subst σ) := by
-  induction A with
-  | eq s t => intro m σ Γ h; exact botEq h _ _
+  induction A with intro m σ Γ h
+  | eq s t => exact botEq h _ _
   | Q B ih =>
-    intro m σ Γ h
     have key : ∀ {Δ : List (NFm (m + 1))}, NPrf Δ NFm.bot →
         NPrf Δ ((B.subst (up σ)).subst (repl (succ (Syn.var 0)))) := by
       intro Δ hΔ
@@ -116,7 +115,6 @@ theorem botSubst (A : NFm n) : ∀ {m : ℕ} (σ : Fin n → Tm m) {Γ : List (N
       exact ih _ hΔ
     exact qI _ (key h.shift.wk)
   | D B ih =>
-    intro m σ Γ h
     have key : ∀ {Δ : List (NFm (m + 1))}, NPrf Δ NFm.bot →
         NPrf Δ (((B.subst (up (up σ))).subst (up (inst zero))).subst
           (repl (succ (Syn.var 0)))) := by

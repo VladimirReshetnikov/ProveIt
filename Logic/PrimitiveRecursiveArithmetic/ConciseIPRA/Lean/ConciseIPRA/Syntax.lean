@@ -71,8 +71,7 @@ def repl (s : T (n + 1)) : Fin (n + 1) → T (n + 1) := Fin.cases s (fun i => va
 @[simp] theorem inst_one (t : T (n + 1)) : inst t 1 = var 0 := inst_succ t 0
 
 theorem up_var : up (var : Fin n → T n) = var := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp
+  refine funext (Fin.cases ?_ fun j => ?_) <;> simp
 
 theorem subst_shift (σ : Fin (n + 1) → T m) (t : T n) :
     subst σ (shift t) = subst (fun i => σ i.succ) t := by
@@ -84,8 +83,7 @@ theorem shift_subst (σ : Fin n → T m) (t : T n) :
 
 theorem up_comp (σ : Fin n → T m) (τ : Fin m → T k) :
     (fun i => subst (up τ) (up σ i)) = up (fun i => subst τ (σ i)) := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine funext (Fin.cases ?_ fun j => ?_)
   · simp
   · simp [subst_shift, shift_subst]
 
@@ -94,8 +92,7 @@ theorem up_comp (σ : Fin n → T m) (τ : Fin m → T k) :
 
 theorem inst_comp_up (σ : Fin n → T m) (t : T n) :
     (fun i => subst (inst (subst σ t)) (up σ i)) = fun i => subst σ (inst t i) := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp
+  refine funext (Fin.cases ?_ fun j => ?_) <;> simp
 
 end Syn
 

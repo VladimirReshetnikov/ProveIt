@@ -123,14 +123,14 @@ provably equivalent to its round trip. -/
 theorem iff_map_map {Ax : Theory T} (f : ∀ n, T n → T' n) (g : ∀ n, T' n → T n)
     (h : ∀ {n : ℕ} (t : T n), [] ⊢[Ax] t ≐ g n (f n t)) (φ : Fm T n) :
     ∀ Γ : List (Fm T n), Γ ⊢[Ax] Fm.iff φ ((φ.map f).map g) := by
-  induction φ with
-  | eq s t => intro Γ; exact Prf.eqIff (h s).ofNil (h t).ofNil
-  | bot => intro Γ; exact Prf.iffRefl _
-  | and φ ψ ih₁ ih₂ => intro Γ; exact Prf.iffAnd (ih₁ Γ) (ih₂ Γ)
-  | or φ ψ ih₁ ih₂ => intro Γ; exact Prf.iffOr (ih₁ Γ) (ih₂ Γ)
-  | imp φ ψ ih₁ ih₂ => intro Γ; exact Prf.iffImp (ih₁ Γ) (ih₂ Γ)
-  | all φ ih => intro Γ; exact Prf.iffAll (ih _)
-  | ex φ ih => intro Γ; exact Prf.iffEx (ih _)
+  induction φ with intro Γ
+  | eq s t => exact Prf.eqIff (h s).ofNil (h t).ofNil
+  | bot => exact Prf.iffRefl _
+  | and φ ψ ih₁ ih₂ => exact Prf.iffAnd (ih₁ Γ) (ih₂ Γ)
+  | or φ ψ ih₁ ih₂ => exact Prf.iffOr (ih₁ Γ) (ih₂ Γ)
+  | imp φ ψ ih₁ ih₂ => exact Prf.iffImp (ih₁ Γ) (ih₂ Γ)
+  | all φ ih => exact Prf.iffAll (ih _)
+  | ex φ ih => exact Prf.iffEx (ih _)
 
 end Fm
 
@@ -150,13 +150,11 @@ namespace TmMorph
 variable {Ax' : Theory T'} (F : TmMorph T Ax') {n m : ℕ}
 
 theorem f_inst (t : T n) : (fun i => F.f n (inst t i)) = inst (F.f n t) := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp [F.f_var]
+  refine funext (Fin.cases ?_ fun j => ?_) <;> simp [F.f_var]
 
 theorem f_repl (s : T (n + 1)) :
     (fun i => F.f (n + 1) (repl s i)) = repl (F.f (n + 1) s) := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp [F.f_var]
+  refine funext (Fin.cases ?_ fun j => ?_) <;> simp [F.f_var]
 
 theorem f_shift (t : T n) (Γ : List (Fm T' (n + 1))) :
     Γ ⊢[Ax'] F.f (n + 1) (Syn.shift t) ≐ Syn.shift (F.f n t) := by
@@ -175,17 +173,15 @@ equivalence. -/
 theorem map_subst (φ : Fm T n) :
     ∀ {m : ℕ} (ρ : Fin n → T m) (Γ : List (Fm T' m)),
       Γ ⊢[Ax'] Fm.iff ((φ.subst ρ).map F.f) ((φ.map F.f).subst (fun i => F.f m (ρ i))) := by
-  induction φ with
-  | eq s t => intro m ρ Γ; exact Prf.eqIff (F.f_subst ρ s).ofNil (F.f_subst ρ t).ofNil
-  | bot => intro m ρ Γ; exact Prf.iffRefl _
-  | and φ ψ ih₁ ih₂ => intro m ρ Γ; exact Prf.iffAnd (ih₁ ρ Γ) (ih₂ ρ Γ)
-  | or φ ψ ih₁ ih₂ => intro m ρ Γ; exact Prf.iffOr (ih₁ ρ Γ) (ih₂ ρ Γ)
-  | imp φ ψ ih₁ ih₂ => intro m ρ Γ; exact Prf.iffImp (ih₁ ρ Γ) (ih₂ ρ Γ)
+  induction φ with intro m ρ Γ
+  | eq s t => exact Prf.eqIff (F.f_subst ρ s).ofNil (F.f_subst ρ t).ofNil
+  | bot => exact Prf.iffRefl _
+  | and φ ψ ih₁ ih₂ => exact Prf.iffAnd (ih₁ ρ Γ) (ih₂ ρ Γ)
+  | or φ ψ ih₁ ih₂ => exact Prf.iffOr (ih₁ ρ Γ) (ih₂ ρ Γ)
+  | imp φ ψ ih₁ ih₂ => exact Prf.iffImp (ih₁ ρ Γ) (ih₂ ρ Γ)
   | all φ ih =>
-    intro m ρ Γ
     exact Prf.iffAll (Prf.iffTrans (ih (up ρ) _) (Prf.iffSubst _ (fun i => F.f_up ρ _ i)))
   | ex φ ih =>
-    intro m ρ Γ
     exact Prf.iffEx (Prf.iffTrans (ih (up ρ) _) (Prf.iffSubst _ (fun i => F.f_up ρ _ i)))
 
 theorem map_inst (φ : Fm T (n + 1)) (t : T n) (Γ : List (Fm T' n)) :

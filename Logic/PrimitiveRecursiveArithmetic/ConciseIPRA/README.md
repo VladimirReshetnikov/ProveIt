@@ -837,7 +837,7 @@ The main chain (every module except the seventeen kernel comparisons,
 `NativeRawReflexive`, `NativeOneOccurrence`, `NativeNoFixedPoint`,
 `ZeroSeedObstruction`,
 `NativePrefix`, `NativeUniqueness`, `NativeModels` and
-`TeqClosure`) is 5,312
+`TeqClosure`) is 5,233
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
 introduction and elimination, instead of an induction over the seventeen
@@ -1030,7 +1030,7 @@ marked as conjectures is proved here.
    `deterministic_opening` (`OCPrf`), of `first_instance` and
    `clause_discharge` (`XCPrf`), and of `variable_substitution` (`VCPrf`)
    are proved equivalent to the kernel.
-8. **A shorter proof of the equivalence.** The main chain is 5,312 lines. A
+8. **A shorter proof of the equivalence.** The main chain is 5,233 lines. A
    dependency-closure computation shows that it contains nothing that the end
    results do not use. Three designs fix most of its size, and no shorter
    replacement for any of them is known: the predecessor of `T_eq` from

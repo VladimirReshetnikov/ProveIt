@@ -31,8 +31,7 @@ theorem Tm.subst_itG (σ : Fin n → Tm m) (h : Tm (n + 1)) :
     Syn.subst (up (up σ)) (Tm.itG h) = Tm.itG (Syn.subst (up σ) h) := by
   unfold Tm.itG
   rw [subst_subst, subst_subst]
-  refine congrArg (fun ρ => Syn.subst ρ h) (funext fun j => ?_)
-  refine Fin.cases ?_ (fun l => ?_) j
+  refine congrArg (fun ρ => Syn.subst ρ h) (funext (Fin.cases ?_ fun l => ?_))
   · simp
   · simp only [Fin.cases_succ, Syn.subst_var, Syn.up_succ]
     rw [subst_shift]
@@ -42,8 +41,7 @@ theorem Tm.subst_itG_cases (c p : Tm n) (h : Tm (n + 1)) :
     Syn.subst (Fin.cases c (Fin.cases p Syn.var)) (Tm.itG h) = Syn.subst (inst p) h := by
   unfold Tm.itG
   rw [subst_subst]
-  refine congrArg (fun ρ => Syn.subst ρ h) (funext fun j => ?_)
-  refine Fin.cases ?_ (fun l => ?_) j <;> simp
+  refine congrArg (fun ρ => Syn.subst ρ h) (funext (Fin.cases ?_ fun l => ?_)) <;> simp
 
 /-- A closed equation holds under every substitution, in every context. -/
 theorem Teq.substNil {h h' : Tm n} (hh : [] ⊢[TeqAx] h ≐ h') {Γ' : List (Fm Tm m)}
@@ -133,8 +131,7 @@ theorem code_stepSym (H : PR (n + 1)) :
   have e : (fun j => FromPRA.code
         ((Fin.cases (PR.proj 1) (fun l => PR.proj l.succ.succ) : Fin (n + 1) → PR (n + 2)) j))
       = Fin.cases (Syn.var 1) (fun l => Syn.var l.succ.succ) := by
-    funext j
-    refine Fin.cases ?_ (fun l => ?_) j <;> rfl
+    refine funext (Fin.cases ?_ fun l => ?_) <;> rfl
   exact congrArg (fun ρ => Syn.subst ρ (FromPRA.code H)) e
 
 theorem subst_code_iterSym (C : Tm n) (A : PR n) (H : PR (n + 1)) :
@@ -147,8 +144,7 @@ theorem subst_code_iterSym (C : Tm n) (A : PR n) (H : PR (n + 1)) :
 theorem code_cases_proj (P : PR n) :
     (fun j => FromPRA.code ((Fin.cases P PR.proj : Fin (n + 1) → PR n) j))
       = inst (FromPRA.code P) := by
-  funext j
-  refine Fin.cases ?_ (fun l => ?_) j <;> rfl
+  refine funext (Fin.cases ?_ fun l => ?_) <;> rfl
 
 /-- Compiling a term to a function symbol and back gives the term. -/
 theorem code_code (t : Tm n) : [] ⊢[TeqAx] FromPRA.code (ToPRA.code t) ≐ t := by

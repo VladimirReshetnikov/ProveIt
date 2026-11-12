@@ -61,8 +61,7 @@ def sub : {n m : ℕ} → (Fin n → Tm m) → Tm n → Tm m
 
 theorem upRen_comp (ξ : Fin n → Fin m) (ζ : Fin m → Fin k) :
     (fun i => upRen ζ (upRen ξ i)) = upRen (fun i => ζ (ξ i)) := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp
+  refine funext (Fin.cases ?_ fun j => ?_) <;> simp
 
 theorem ren_ren (t : Tm n) :
     ∀ {m k : ℕ} (ξ : Fin n → Fin m) (ζ : Fin m → Fin k),
@@ -71,8 +70,7 @@ theorem ren_ren (t : Tm n) :
 
 theorem upS_upRen (ξ : Fin n → Fin m) (σ : Fin m → Tm k) :
     (fun i => upS σ (upRen ξ i)) = upS (fun i => σ (ξ i)) := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp
+  refine funext (Fin.cases ?_ fun j => ?_) <;> simp
 
 theorem sub_ren (t : Tm n) :
     ∀ {m k : ℕ} (ξ : Fin n → Fin m) (σ : Fin m → Tm k),
@@ -81,8 +79,7 @@ theorem sub_ren (t : Tm n) :
 
 theorem upRen_upS (σ : Fin n → Tm m) (ξ : Fin m → Fin k) :
     (fun i => ren (upRen ξ) (upS σ i)) = upS (fun i => ren ξ (σ i)) := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine funext (Fin.cases ?_ fun j => ?_)
   · simp [ren]
   · simp [ren_ren]
 
@@ -93,8 +90,7 @@ theorem ren_sub (t : Tm n) :
 
 theorem upS_comp (σ : Fin n → Tm m) (τ : Fin m → Tm k) :
     (fun i => sub (upS τ) (upS σ i)) = upS (fun i => sub τ (σ i)) := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine funext (Fin.cases ?_ fun j => ?_)
   · simp [sub]
   · simp [sub_ren, ren_sub]
 
@@ -104,16 +100,14 @@ theorem sub_sub (t : Tm n) :
   induction t <;> intro m k σ τ <;> simp_all [sub, upS_comp]
 
 theorem upS_var : upS (var : Fin n → Tm n) = var := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp [ren]
+  refine funext (Fin.cases ?_ fun j => ?_) <;> simp [ren]
 
 theorem sub_var (t : Tm n) : sub var t = t := by
   induction t <;> simp_all [sub, upS_var]
 
 theorem upS_ren (ξ : Fin n → Fin m) :
     upS (fun i => var (ξ i)) = fun i => var (upRen ξ i) := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp [ren]
+  refine funext (Fin.cases ?_ fun j => ?_) <;> simp [ren]
 
 theorem ren_eq_sub (t : Tm n) :
     ∀ {m : ℕ} (ξ : Fin n → Fin m), ren ξ t = sub (fun i => var (ξ i)) t := by
@@ -133,8 +127,7 @@ theorem shift_eq_ren (t : Tm n) : Syn.shift t = ren Fin.succ t :=
   (ren_eq_sub t Fin.succ).symm
 
 theorem up_eq_upS (σ : Fin n → Tm m) : Syn.up σ = upS σ := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine funext (Fin.cases ?_ fun j => ?_)
   · rfl
   · simp [shift_eq_ren]
 

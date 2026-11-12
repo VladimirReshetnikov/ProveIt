@@ -73,12 +73,10 @@ theorem sigma_subst (ρ : Fin n → PTm m) (t : PTm n) :
     simp only [PTm.subst_app, sigma_app, Syn.subst_subst, ih]
 
 theorem sigma_inst (t : PTm n) : (fun i => sigma (inst t i)) = inst (sigma t) := by
-  funext i
-  refine Fin.cases ?_ (fun i => ?_) i <;> simp
+  refine funext (Fin.cases ?_ fun i => ?_) <;> simp
 
 theorem sigma_repl (s : PTm (n + 1)) : (fun i => sigma (repl s i)) = repl (sigma s) := by
-  funext i
-  refine Fin.cases ?_ (fun i => ?_) i <;> simp
+  refine funext (Fin.cases ?_ fun i => ?_) <;> simp
 
 /-- The term translation from `iPRA` to `T_eq`. -/
 def morph : TmMorph PTm TeqAx where

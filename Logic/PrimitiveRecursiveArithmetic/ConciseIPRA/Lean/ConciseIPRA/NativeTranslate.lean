@@ -44,14 +44,14 @@ def ofFm : {n : ℕ} → Fm Tm n → NFm n
 /-- The native reading commutes with substitution. -/
 theorem ofFm_subst (φ : Fm Tm n) :
     ∀ {m : ℕ} (σ : Fin n → Tm m), ofFm (φ.subst σ) = (ofFm φ).subst σ := by
-  induction φ with
-  | eq s t => intro m σ; rfl
-  | bot => intro m σ; rfl
-  | and φ ψ ih₁ ih₂ => intro m σ; simp only [Fm.subst_and, ofFm_and, ih₁, ih₂, NFm.and_subst]
-  | or φ ψ ih₁ ih₂ => intro m σ; simp only [Fm.subst_or, ofFm_or, ih₁, ih₂, NFm.or_subst]
-  | imp φ ψ ih₁ ih₂ => intro m σ; simp only [Fm.subst_imp, ofFm_imp, ih₁, ih₂, NFm.imp_subst]
-  | all φ ih => intro m σ; simp only [Fm.subst_all, ofFm_all, ih, NFm.all_subst]
-  | ex φ ih => intro m σ; simp only [Fm.subst_ex, ofFm_ex, ih, NFm.ex_subst]
+  induction φ with intro m σ
+  | eq s t => rfl
+  | bot => rfl
+  | and φ ψ ih₁ ih₂ => simp only [Fm.subst_and, ofFm_and, ih₁, ih₂, NFm.and_subst]
+  | or φ ψ ih₁ ih₂ => simp only [Fm.subst_or, ofFm_or, ih₁, ih₂, NFm.or_subst]
+  | imp φ ψ ih₁ ih₂ => simp only [Fm.subst_imp, ofFm_imp, ih₁, ih₂, NFm.imp_subst]
+  | all φ ih => simp only [Fm.subst_all, ofFm_all, ih, NFm.all_subst]
+  | ex φ ih => simp only [Fm.subst_ex, ofFm_ex, ih, NFm.ex_subst]
 
 theorem ofFm_shift (φ : Fm Tm n) : ofFm φ.shift = (ofFm φ).shift := ofFm_subst φ _
 
@@ -70,11 +70,8 @@ variable {Γ : List (NFm n)}
 /-- A universal statement moved under a fresh variable holds of that variable. -/
 theorem allVar {A : NFm (n + 1)} {Δ : List (NFm (n + 1))} (h : NPrf Δ (NFm.all A).shift) :
     NPrf Δ A := by
-  have h₁ : NPrf Δ (NFm.all (A.subst (up (fun i => Syn.var i.succ)))) := by
-    rw [← NFm.all_subst]
-    exact h
-  have h₂ := allE (Syn.var 0) h₁
-  rwa [NFm.subst_up_inst_var] at h₂
+  rw [NFm.shift, NFm.all_subst] at h
+  simpa only [NFm.subst_up_inst_var] using allE (Syn.var 0) h
 
 /-- Coverage: every number is zero or a successor. -/
 theorem coverN (t : Tm n) :
@@ -114,15 +111,14 @@ theorem indN (s t : Tm (n + 1)) :
 
 /-- Every axiom of `T_eq` is derivable in the native calculus. -/
 theorem ofAx {φ : Fm Tm k} (h : TeqAx k φ) : ∀ {Γ : List (NFm k)}, NPrf Γ (NFm.ofFm φ) := by
-  cases h with
-  | iterZero a h => intro Γ; exact .iterZero a h
-  | iterSucc c a h => intro Γ; exact .iterSucc c a h
+  cases h with intro Γ
+  | iterZero a h => exact .iterZero a h
+  | iterSucc c a h => exact .iterSucc c a h
   | cover =>
-    intro Γ
     have h := coverN (Γ := Γ) (Syn.var 0)
     rwa [Syn.shift_var] at h
-  | sep => intro Γ; exact impI hyp0
-  | ind s t => intro Γ; exact indN s t
+  | sep => exact impI hyp0
+  | ind s t => exact indN s t
 
 /-- Translation of derivations: `T_eq` is interpreted in the native scalar
 core by the native reading of formulas. -/

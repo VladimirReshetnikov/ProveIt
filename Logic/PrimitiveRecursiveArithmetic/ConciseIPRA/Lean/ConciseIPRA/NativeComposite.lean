@@ -42,11 +42,8 @@ theorem qShiftE {B : NFm (n + 1)} {Δ : List (NFm (n + 1))} (t : Tm (n + 1))
 /-- Elimination of a universal statement moved under a fresh variable. -/
 theorem allShiftE {A : NFm (n + 1)} {Δ : List (NFm (n + 1))} (t : Tm (n + 1))
     (h : NPrf Δ (NFm.all A).shift) : NPrf Δ (A.subst (repl t)) := by
-  have h₁ : NPrf Δ (NFm.all (A.subst (up (fun i => Syn.var i.succ)))) := by
-    rw [← NFm.all_subst]
-    exact h
-  have h₂ := allE t h₁
-  rwa [NFm.subst_dummy_up_inst] at h₂
+  rw [NFm.shift, NFm.all_subst] at h
+  simpa only [NFm.subst_dummy_up_inst] using allE t h
 
 /-- Introduction of `D` from an instance of `Q`. -/
 theorem dI {B : NFm (n + 2)} (t : Tm n) (h : NPrf Γ (.Q (B.subst (up (inst t))))) :

@@ -57,10 +57,10 @@ theorem subst_eq_self (A : NFm n) {σ : Fin n → Tm n} (h : ∀ i, σ i = Syn.v
 
 theorem subst_subst (A : NFm n) : ∀ {m k : ℕ} (σ : Fin n → Tm m) (τ : Fin m → Tm k),
     (A.subst σ).subst τ = A.subst (fun i => Syn.subst τ (σ i)) := by
-  induction A with
-  | eq s t => intro m k σ τ; simp [Syn.subst_subst]
-  | Q B ih => intro m k σ τ; rw [subst_Q, subst_Q, ih, up_comp, subst_Q]
-  | D B ih => intro m k σ τ; rw [subst_D, subst_D, ih, up_comp, up_comp, subst_D]
+  induction A with intro m k σ τ
+  | eq s t => simp [Syn.subst_subst]
+  | Q B ih => rw [subst_Q, subst_Q, ih, up_comp, subst_Q]
+  | D B ih => rw [subst_D, subst_D, ih, up_comp, up_comp, subst_D]
 
 theorem shift_subst_up (A : NFm n) (σ : Fin n → Tm m) :
     A.shift.subst (up σ) = (A.subst σ).shift := by
@@ -88,8 +88,7 @@ theorem subst_repl_succ (A : NFm (n + 1)) (σ : Fin n → Tm m) :
     (A.subst (repl (succ (Syn.var 0)))).subst (up σ)
       = (A.subst (up σ)).subst (repl (succ (Syn.var 0))) := by
   rw [subst_subst, subst_subst]
-  refine A.subst_ext fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine A.subst_ext (Fin.cases ?_ fun j => ?_)
   · simp
   · rw [repl_succ, Syn.subst_var, up_succ, subst_repl_shift]
 
@@ -97,8 +96,7 @@ theorem subst_repl_succ (A : NFm (n + 1)) (σ : Fin n → Tm m) :
 theorem subst_dummy_inst (B : NFm (n + 1)) (t : Tm n) :
     (B.subst (up (fun i => Syn.var i.succ))).subst (up (inst t)) = B := by
   rw [subst_subst]
-  refine B.subst_eq_self fun i => ?_
-  refine Fin.cases ?_ (fun j => ?_) i <;> simp
+  refine B.subst_eq_self (Fin.cases ?_ fun j => ?_) <;> simp
 
 theorem map_shift_subst (Γ : List (NFm n)) (σ : Fin n → Tm m) :
     (Γ.map NFm.shift).map (fun A => A.subst (up σ))
@@ -140,36 +138,30 @@ theorem ofNil (h : NPrf [] A) : NPrf Γ A := h.weaken (List.nil_subset _)
 /-- Substitution of terms for the free variables of a derivation. -/
 theorem subst (h : NPrf Γ A) : ∀ {m : ℕ} (σ : Fin n → Tm m),
     NPrf (Γ.map fun B => B.subst σ) (A.subst σ) := by
-  induction h with
-  | hyp h => intro m σ; exact .hyp (List.mem_map_of_mem h)
-  | iterZero a h => intro m σ; exact .iterZero _ _
+  induction h with intro m σ
+  | hyp h => exact .hyp (List.mem_map_of_mem h)
+  | iterZero a h => exact .iterZero _ _
   | iterSucc c a h =>
-    intro m σ
     simp only [NFm.subst_eq, Tm.subst_iter, Tm.subst_succ, Syn.subst_subst_inst]
     exact .iterSucc _ _ _
   | trOne h _ _ ih₁ ih₂ =>
-    intro m σ
     have h₂ := ih₂ σ
     simp only [NFm.subst_eq, Syn.subst_subst_inst] at h₂ ⊢
     exact .trOne _ (ih₁ σ) h₂
   | qE t _ _ ih₁ ih₂ =>
-    intro m σ
     have h₂ := ih₂ σ
     rw [NFm.subst_inst] at h₂ ⊢
     exact .qE _ (ih₁ σ) h₂
   | dE _ _ ih₁ ih₂ =>
-    intro m σ
     have h := ih₂ (up σ)
     rw [List.map_cons, NFm.map_shift_subst, NFm.shift_subst_up] at h
     exact .dE (ih₁ σ) h
   | dICase B t _ ih =>
-    intro m σ
     have h := ih (up σ)
     rw [List.map_cons, NFm.map_shift_subst, NFm.shift_subst_up, NFm.subst_inst,
       NFm.subst_repl_succ, NFm.subst_up_inst] at h
     exact .dICase _ _ h
   | qIInd s₁ s₂ _ ih =>
-    intro m σ
     have h := ih (up σ)
     rw [List.map_cons, NFm.map_shift_subst, NFm.subst_repl_succ] at h
     exact .qIInd (Syn.subst (up σ) s₁) (Syn.subst (up σ) s₂) h

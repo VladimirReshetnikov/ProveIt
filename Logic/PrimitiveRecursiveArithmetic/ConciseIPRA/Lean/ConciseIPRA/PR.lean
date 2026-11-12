@@ -118,8 +118,7 @@ theorem precZero (f : PR k) (g : PR (k + 2)) (xs : Fin k → PTm n) :
     Γ ⊢[PRAAx] app (.prec f g) (Fin.cases zero xs) ≐ app f xs := by
   have h := Prf.ax (Γ := Γ) (PRAAx.precZero f g) xs
   have e : (fun i => Syn.subst xs (inst (zero : PTm k) i)) = Fin.cases zero xs := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i <;> simp
+    refine funext (Fin.cases ?_ fun j => ?_) <;> simp
   simpa [e] using h
 
 /-- Primitive recursion at a successor, at arbitrary arguments. -/
@@ -129,13 +128,11 @@ theorem precSucc (f : PR k) (g : PR (k + 2)) (y : PTm n) (xs : Fin k → PTm n) 
   have h := Prf.ax (Γ := Γ) (PRAAx.precSucc f g) (Fin.cases y xs)
   have e₁ : (fun i => Syn.subst (Fin.cases y xs : Fin (k + 1) → PTm n)
       (repl (succ (var 0)) i)) = Fin.cases (succ y) xs := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i <;> simp
+    refine funext (Fin.cases ?_ fun j => ?_) <;> simp
   have e₂ : (fun i => Syn.subst (Fin.cases y xs : Fin (k + 1) → PTm n)
       ((Fin.cases (var 0) (repl (app (.prec f g) var)) : Fin (k + 2) → PTm (k + 1)) i))
       = Fin.cases y (Fin.cases (app (.prec f g) (Fin.cases y xs)) xs) := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
+    refine funext (Fin.cases ?_ fun j => ?_)
     · simp
     · refine Fin.cases ?_ (fun l => ?_) j <;> simp
   simpa [e₁, e₂] using h
