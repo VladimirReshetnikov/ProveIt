@@ -1,0 +1,79 @@
+--- native_diagonal_control.py
++++ checker.py
+@@ -1,8 +1,8 @@
+-"""Native iPRA with computational equality and diagonal introduction.
++"""Raw clausal iPRA with computational equality and diagonal introduction.
+ 
+ Terms: 0, negative free levels, positive bound indices, [0,t] (S),
+-[n,a,h] (I). Formulas: [s,t] (equality), [B] (D), ['q',B] (Q).
+-Contexts contain formulas.
++[n,a,h] (I). Formulas: [s,t] (equality), [B] (D).
++Contexts contain (antecedent, one-bound-variable body) clauses.
+ Input: {'goal': a closed formula, 'proof': a finite proof tree}.
+ """
+ import json
+@@ -25,17 +25,13 @@
+ def formula(a, scope, depth=0):
+     return (type(a) is list
+             and ((len(a) == 2 and all(term(t, scope, depth) for t in a))
+-                 or (len(a) == 1 and formula(a[0], scope, depth + 2))
+-                 or (len(a) == 2 and a[0] == 'q'
+-                     and formula(a[1], scope, depth + 1))))
++                 or (len(a) == 1 and formula(a[0], scope, depth + 2))))
+ 
+ 
+ def opening(a, value, depth=0):
+     if type(a) is int:
+         return value if a == depth + 1 else a - (a > depth + 1)
+     size = len(a)
+-    if size == 2 and a[0] == 'q':
+-        return ['q', opening(a[1], value, depth + 1)]
+     return [opening(t, value, depth + (2 if size == 1 else int(size == 3 and i == 2)))
+             for i, t in enumerate(a)]
+ 
+@@ -50,21 +46,15 @@
+     if type(proof) is not list or not proof or type(proof[0]) is not str:
+         fail()
+     tag = proof[0]
+-    if tag == 'h' and len(proof) == 2:
+-        index = proof[1]
+-        if type(index) is not int or not 0 <= index < len(context):
++    if tag == 'u' and len(proof) == 4:
++        index, witness, premise = proof[1:]
++        if (type(index) is not int or not 0 <= index < len(context)
++                or not term(witness, scope)):
+             fail()
+-        return context[index]
+-    if tag == 'q' and len(proof) == 4:
+-        witness, major, minor = proof[1:]
+-        if not term(witness, scope):
++        antecedent, body = context[index]
++        if derive(premise, context, scope) != antecedent:
+             fail()
+-        closed = derive(major, context, scope)
+-        if len(closed) != 2 or closed[0] != 'q':
+-            fail()
+-        if derive(minor, context, scope) != opening(closed[1], 0):
+-            fail()
+-        return opening(closed[1], witness)
++        return opening(body, witness)
+     if tag == 'r' and len(proof) == 2:
+         a = proof[1]
+         if not term(a, scope):
+@@ -91,14 +81,14 @@
+             if len(paired) != 1:
+                 fail()
+             body = opening(paired[0], fresh, 1)
+-            clause = ['q', body]
++            clause = (opening(body, 0), body)
+             target = goal
+         else:
+             if len(goal) != 1 or not term(data, scope):
+                 fail()
+             body = opening(goal[0], data, 1)
+             eta = fresh if diagonal(goal[0]) else 0
+-            clause = opening(body, eta)
++            clause = ([0, 0], opening(body, eta))
+             target = opening(body, [0, fresh])
+         if derive(branch, context + [clause], scope + 1) != target:
+             fail()

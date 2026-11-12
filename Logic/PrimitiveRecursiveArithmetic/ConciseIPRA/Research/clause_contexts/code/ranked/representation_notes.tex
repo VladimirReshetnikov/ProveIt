@@ -1,0 +1,81 @@
+\section{A ranked equation language}
+
+The Eq/$D$ grammar has no branching at the formula level: every formula
+has a unique shape $D^k(s=t)$ for an integer $k\geq0$. Each $D$ binds two
+variables, so the endpoints $s,t$ are terms in a context with $2k$ additional
+bound variables. Store this formula as the triple $(k,s,t)$.
+This is a bijective presentation of the same formulas, not an axiom deletion.
+In particular, $k$ is explicit even when some of its bound variables are
+absent from both endpoints.
+
+With de Bruijn indices, a term variable is either a negative free level,
+zero, or a positive bound index. Opening an external binder of
+$(k,s,t)$ at offset $d$ opens its endpoints at depth $2k+d$.
+To eliminate the outer $D$, replace $(k,s,t)$ by the matrix
+$(k-1,s,t)$ and open its witness at depth $2(k-1)+1$.
+The remaining universal coordinate opens at depth $2(k-1)$.
+These formulas account for all binder arithmetic in the checker.
+
+\begin{lemma}[Ranked representation]
+Let $\rho(D^k(s=t))=(k,\rho_T(s),\rho_T(t))$, where $\rho_T$
+erases the term constructor tags and stores successor as a singleton and
+iteration as a triple. Then $\rho$ and its evident inverse are mutual
+inverses on well-scoped syntax. They commute with opening, including the
+contraction of an iterator whose counter becomes literal zero.
+\end{lemma}
+\begin{proof}
+The term assertion follows by structural induction. The only binder in
+a numerical term is the last argument of the ternary iterator, so its
+depth increases by one. The zero-contraction test is preserved because
+literal zero is represented by the same integer. A formula has exactly
+$k$ paired binders, contributing depth $2k$. Consequently opening its
+endpoints at depth $2k+d$ is exactly the recursive tagged opening through
+those binders. The inverse inserts the unique $k$ paired binders and the
+term tags determined by arity.
+\end{proof}
+
+The certificate translation preserves every rule tag, clause index,
+premise list, and proof-tree edge. It changes only the representation of
+terms and formulas. Induction on the proof tree therefore gives exact
+preservation and reflection of certificate acceptance. This representation
+theorem is logically independent of the proof that the four-rule Horn
+calculus presents iPRA.
+
+\paragraph{Scope from context length.}
+For closed certificates the context starts with one fixed reflexivity
+clause. Each introduction or elimination branch adds one clause and one
+fresh numerical parameter; no other rule changes either count.
+Therefore the number of available free levels is always
+$\lvert\Gamma\rvert-1$. The scoped implementation computes this count
+instead of passing it through every recursive call. This applies only to
+the closed-certificate entry point with its fixed initial context.
+It is an implementation simplification, not a change of theory.
+
+\paragraph{Measured comparison.}
+After removing only the initial documentation string and applying
+CPython 3.12.14's \texttt{ast.unparse} with a final newline, the tagged
+four-rule source has 2,888 bytes, 823 significant tokens, and 893 AST nodes.
+Ranked equations with arity-coded terms have 2,712 bytes, 789 tokens,
+and 857 AST nodes. Deriving scope from context length gives 2,692 bytes,
+781 tokens, and 853 AST nodes. Deterministic gzip at compression level
+nine has sizes 1,006, 963, and 964 bytes, respectively.
+These are matched comparisons with a straightforward checker. They are
+not lower than the repository's much more compact 788-byte validated
+codec or 516-byte compact profile.
+
+\paragraph{Verification.}
+Both ranked implementations accept 86 translated positive certificates
+and reject 38 additional malformed certificates. Each run was repeated
+with normal Python and with \texttt{-O}. The tests also check 2,000
+generated instances of opening/representation coherence and exact
+round trips of the 86 certificates. Finite tests support the implementation
+review; they are not a proof of arithmetic soundness or bi-interpretability.
+
+\paragraph{Rejected implementation experiment.}
+Omitting the public rank and inferring it from endpoint support requires
+canonicalizing vacuous outer paired binders and retaining explicit ranks
+in internal clause bodies. A support traversal can double as a term
+validator, but extra rank checks in Step and local-fact canonicalization
+increase the examined checker to 3,069 bytes, 854 tokens, and 957 AST
+nodes (1,061 gzip bytes). It is not the selected implementation, and its
+full mathematical normalization argument is not claimed here.

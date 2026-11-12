@@ -1,0 +1,85 @@
+INDEPENDENT MATHEMATICAL AUDIT: EQUALITY-AWARE PAIRED ELIMINATION
+
+Candidate base: canonical full-computation-normal iterator terms; Eq/D formulas;
+reusable clauses [A;y.B(y)]. Refl, Use, and witness-directed paired I unchanged.
+Let N denote normalization and [t/b] ordinary simultaneous capture-free substitution.
+
+Replacement for ordinary E and standalone equality transport:
+  Gamma |- D_(x,y) B
+  Gamma, [B(b,0);y.B(b,y)] |- b=t
+  Gamma, [B(b,0);y.B(b,y)] |- F
+  ----------------------------------------------------- E=
+                    Gamma |- N(F[t/b])
+Require b fresh for Gamma and passive matrix parameters, and N(F[t/b]) free of b.
+F and t are branch-scoped; t MAY contain b. t=b must be permitted.
+
+1. Soundness.
+In ordinary realization use D elimination to choose b, then equality substitution
+on the two branch conclusions, obtaining N(F[t/b]). Normalization is valid by
+iterator computation. Its b-freedom permits existential elimination. No restriction
+b notin FV(t) is needed: simultaneous substitution of t(b) into F is a valid equality
+inference from b=t(b); substituted copies of t are not traversed again.
+
+2. Ordinary E is immediate.
+Use t=b, Refl(b), and the original branch F. Since F is b-free, the conclusion is F.
+Thus every proof construction using only Refl, Use, I, ordinary E is already
+available before any equality transport has been recovered.
+
+3. Numerical cases before equality.
+q_y A := D_(w,y) A for w unused. Its case introduction uses witness 1, hence
+is in case mode even for an equation matrix. Ordinary E and Use give arbitrary
+specialization. Thus from A(0) and A(S z) with z fresh obtain A(v), without equality.
+
+4. Recover uncrossed term transport without circularity.
+Given s=t and N(h(s))=r, choose new bound x,y. Let C(v,a,b)=N(I(v,a;u.b));
+its endpoint equations are literal normal-form identities. Let
+P(y)=N(I(y,0;u.C(u,1,0))); then P(1)=1 and P(2)=0 literally.
+Use the inherited two-row naming matrix
+  B(x,y) :=
+    C(y,0,C(P(y),x,N(h(x)))) = C(y,0,C(P(y),t,r)).
+I at witness s proves D B: the successor equation is supplied by numerical cases
+on C(v,s,N(h(s)))=C(v,t,r), using the two given equations as endpoint proofs.
+The branch assumption of I is unused, so this works for s=0 and for other s.
+Open via E=. Since B(b,0) is literally H=(0=0), Use at 1 and 2, with Refl(0), gives
+  N(h(b))=r, and b=t.
+Choose F=N(h(b))=r in E=. Normalization/substitution coherence and freshness of b
+make the conclusion N(h(t))=r. This recovers uncrossed replacement of an arbitrary
+term inside an arbitrary fixed numerical template. No symmetry or congruence
+was assumed in forming the package.
+
+5. Recover symmetry, crossed transport, and the baseline.
+In step 4 take h(w)=w and r=s, with premises s=t and s=s. The conclusion is t=s.
+Then step 4 followed by symmetry yields crossed transport r=N(h(t)). The full
+canonical baseline is recovered: Refl, Use, ordinary E, I, crossed transport.
+The reverse simulation of E= uses baseline whole-formula equality transport
+(which follows from its ordinary case introductions and induction on formula
+rank) followed by ordinary E. Hence exact identity-language sequent equivalence.
+
+6. Structural facts.
+Weakening, injective renaming, and ordinary-assumption cut are direct inductions
+with alpha-freshening of each E= eigenparameter. The equality source is the parameter
+lexically bound by the E= node, not a dynamically chosen newest parameter throughout
+an arbitrary derivation. Thus the newest-source weakening problem from the prior
+variable_substitution proposal is absent. Arbitrary term substitution into I may
+change its witness-selected mode; do not claim primitive-tag-preserving substitution.
+It is transferred only after equivalence to the canonical baseline is established.
+
+7. Scope/implementation risks to test.
+- Allow t=b for recovering ordinary elimination.
+- Enforce that the NORMALIZED exported formula is outer-scoped; merely checking F
+  in inner scope is insufficient. A forged final goal containing the fresh b must fail.
+- Check both branch premises under exactly the same newly appended clause.
+- Do not let branch context mutations leak into the major premise or sibling proofs.
+- Substitute free b only, avoiding D and iterator capture. If numeric free levels are
+  negative, preserve all bound positive indices and deeper fresh negative levels.
+- If t contains b, substitution is simultaneous/one pass; do not recurse into inserted t.
+- Treat base/witness=0 tests on canonical syntax exactly as in the chosen baseline.
+- Full computation normalization must remain counted in the trusted checker.
+
+8. Novelty boundary.
+Scoped text search over all filed Research sources and six incoming packages found
+no previous rule fusing D elimination with substitution of its own eigenparameter.
+The two-row name packet and variable-only equality theorem are inherited explicitly
+from incoming ipra_variable_substitution, variable_substitution_proof.tex.
+Claim a new fusion/restriction in this repository review, not historical priority
+or a mathematically proved global checker-size minimum.

@@ -1,0 +1,169 @@
+% Optional mathematical quotient. Not a measured-checker claim.
+\section{Optional quotient: recover public depth from variable support}
+
+\subsection{Support and the public normal form}
+For a numerical term \(t\), let \(\mu(t)\) be the greatest positive
+de Bruijn index free relative to its own iterator binders, with value
+zero when there is none. Thus
+\[
+ \mu(j)=\max(j,0),\quad
+ \mu(St)=\mu(t),\quad
+ \mu(I(n,a;u.h))=\max(\mu(n),\mu(a),\max(\mu(h)-1,0)).
+\]
+Zero here also denotes the arithmetic constant. In a formula at depth
+\(2k\), these free positive indices refer to its surrounding \(D\)
+binders; negative indices still refer to external numerical parameters.
+
+For a well-scoped ranked formula \(F=(k,s,t)\), put
+\[
+ r(F)=\left\lceil\frac{\max(\mu(s),\mu(t))}{2}\right\rceil.
+\]
+Then \(r(F)\leq k\). Define its public normalization by
+\[
+ P(k,s,t)=
+ \begin{cases}
+ (s,t),&r(F)=k,\\
+ (0,0),&r(F)<k.
+ \end{cases}
+\]
+An unranked public pair \(a=(s,t)\) is decoded as
+\[
+ U(a)=(r,s,t),\qquad
+ r=\left\lceil\frac{\max(\mu(s),\mu(t))}{2}\right\rceil.
+\]
+All numerical terms are zero-normal before \(P\) is applied. The pair
+\((0,0)\) decodes to the ordinary equality \(0=0\).
+
+\begin{lemma}[The only lost public formulas are theorems]
+For every well-scoped ranked formula \(F\), the old calculus proves
+\(F\) and \(U(P(F))\) interderivable, with arbitrary retained context.
+Also \(P(U(a))=a\) for every well-formed public pair \(a\).
+\end{lemma}
+\begin{proof}
+When \(r(F)=k\), the first assertion is literal identity.
+When \(r(F)<k\), both variables of the outermost \(D\), whose indices
+are \(2k\) and \(2k-1\), are absent from both endpoint terms.
+Hence \(F=D_{x,y}B\) where \(x,y\) are absent from \(B\).
+Its ordinary reading is \(\exists x(B\to B)\), so it is a theorem.
+
+There is also a native proof without appealing to ordinary logic:
+Close at witness \(0\) has the same formula \(B\) as local assumption
+and target, whatever mode its test selects. Ordinary assumption use
+closes this premise. Thus \(F\) is a theorem. Its public normalization
+\(0=0\) is also a theorem, so each follows under the other's assumption
+by weakening. The last assertion follows because \(U\) uses exactly
+the support-derived rank that \(P\) tests.
+\end{proof}
+
+This quotient deliberately contracts only the case where both variables
+of the outer \(D\) are absent. Some other theorems, such as
+\(D_{x,y}(x=x)\), are retained; no completeness of the tautology detector
+is claimed.
+
+\subsection{Internal clauses must retain rank}
+The normal form is suitable for public formulas. It does not determine
+the rank of a clause body with one extra external bound variable.
+For example the same positive index \(1\) can be the distinguished
+clause variable of a rank-zero body or the innermost variable of a
+rank-one body with an unused clause variable. Therefore internal clause
+bodies retain their explicit rank (or would need a different,
+equally explicit binder representation).
+
+A precise quotient calculus can retain fully ranked internal clauses
+\([A_1,\ldots,A_m;y.B]\), with \(m\in\{0,1\}\), while judgments have
+unranked public pairs. Use asks for proofs of \(P(A_i)\) and returns
+\(P(B\langle t/y\rangle)\). Step acts on public pairs of inferred rank
+zero. Open decodes a nonzero-rank public major, exports its ranked
+canonical clause, and checks a branch for the original public goal.
+Close decodes a nonzero-rank public goal, installs its ranked ordinary
+assumption, and asks for the packed successor instance. The initial
+clause remains ranked \([\,\,;(0,1,1)]\).
+A variant may pack antecedents as well, provided conversions of their
+equivalent readings are included in the same argument.
+
+Only genuine formulas, with all extra clause binders instantiated,
+are passed to \(P\). Calling \(P\) prematurely on an open clause body
+would confuse its external clause variable with a logical binder.
+
+\subsection{Soundness in the ranked calculus}
+Interpret a public pair by \(U\), and retain the ordinary readings of
+internal ranked clauses. The preceding lemma converts any proof of
+\(U(P(A))\) into one of \(A\), and conversely.
+
+For Use, convert each packed antecedent proof to its ranked antecedent,
+apply old clause use, and convert the result to its packed version.
+For Step, all formulas have rank zero and no packing change is made.
+For Close, convert the local unnormalized base to the packed assumption
+used by its branch, and convert the packed target back to the true
+successor instance. Apply old Close. The decoded public goal has its
+support-derived rank, so it packs back to the same public goal.
+For Open, the decoded public major is an actual ranked \(D\); old Open
+exports exactly the internal ranked clause. Its branch conclusion is
+the decoded public goal and has the required fresh-variable condition.
+
+These conversions are formal cut/weakening operations in the old
+calculus. If internal antecedents have also been packed, replace a use
+of the exported antecedent by the corresponding conversion; the
+pointwise body instances are unchanged. Hence each quotient rule is
+sound under arbitrary side assumptions.
+
+\subsection{Completeness and a collapsed elimination major}
+Transform an old derivation recursively, packing its public conclusion.
+Use and Step transform directly. For a Close whose goal survives
+packing, the same Close applies, with packed local hypothesis and
+target. If its goal collapses, Use of the initial reflexivity clause
+at \(0\) proves its normalized goal \(0=0\), and the premise may be
+discarded. Open transforms directly whenever its major survives.
+
+It remains to handle an old Open whose major \(D_{x,y}B\) collapses.
+Then \(x,y\) are absent from \(B\), so the exported clause is exactly
+\([B;y.B]\). Every use of this identity clause returns the same packed
+formula as its own antecedent proof. Delete that Use and retain its
+antecedent derivation. Context weakening and index adjustment remove
+the obsolete clause occurrence from the remainder of the branch.
+The branch may still use the formerly fresh eigenvariable \(b\) in
+intermediate numerical terms, even though its outer conclusion does
+not contain \(b\). It must not simply be treated as a closed-scope proof.
+
+To discharge that parameter, use the fixed surviving theorem
+\[
+ T_D=D_{x,y}(x=x).
+\]
+It has rank \(1\) and support index \(2\), so this quotient does not
+collapse it. Close at witness zero proves \(T_D\): both progress
+instances are \(0=0\), supplied by reflexivity or the local assumption.
+Open \(T_D\) with a fresh \(b\). Its extra clause
+\([b=b;y.(b=b)]\) is harmless. Weaken the previously transformed branch
+into that clause and conclude its old-scope goal. This replaces the
+collapsed-major Open with a valid Open of \(T_D\), preserving the
+eigenvariable scope without a substitution-stability assumption.
+
+This proves completeness by induction on the old proof tree. The
+local transformation deleting an identity clause is itself a structural
+induction on the transformed branch: its selected Uses are replaced by
+their antecedent proofs, and all other nodes are translated recursively.
+The fresh parameter is therefore discharged by an actual inference,
+not erased by convention.
+
+\subsection{Substitution, ordinary interpretations, and limitations}
+Numerical hereditary opening is performed first. It may erase the
+highest variable occurrences by contracting a zero iterator; \(P\)
+must then be recomputed on the resulting endpoints. The lost formula
+is again an outer-vacuous \(D\) and the displayed theorem lemma applies.
+Keeping a stale support-derived depth after substitution would be
+incorrect.
+
+The old-to-new and new-to-old theorem equivalences above are effective.
+Their formula composite on the old side is \(F\mapsto U(P(F))\), proved
+equivalent to \(F\) by the theorem lemma; the other composite is literal
+identity. The ordinary numerical domain and actual equality are
+unchanged. Composing these translations with the baseline
+bi-interpretation yields bi-interpretability with iPRA and
+equiconsistency. No induction is needed for the new vacuity lemma.
+
+This is a genuine logical quotient, unlike mere spine flattening, but
+it does not automatically make the complete checker smaller. Computing
+relative positive-variable support and keeping internal clause ranks
+can cost more than the public rank field it removes. A measured
+implementation is required before claiming a complexity reduction.
+

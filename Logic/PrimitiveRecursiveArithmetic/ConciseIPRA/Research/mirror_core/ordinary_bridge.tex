@@ -1,0 +1,202 @@
+% Review contribution: ordinary realization and inherited bi-interpretation.
+% Not a new arithmetic-bootstrap proof. Citation keys may be adapted.
+\section{Ordinary realization and the precise iPRA equivalence}
+
+The new result changes one introduction selector.  Its arithmetic bridge is
+the existing ConciseIPRA bridge, and is transferred by equality of the
+\emph{entire contextual consequence relation}.  This distinction prevents
+agreement on the standard natural numbers from being mistaken for
+bi-interpretability.
+
+\subsection{A completely specified ordinary realization}
+Elaborate iterator syntax into a staged first-order signature.  Start with
+$0,S$.  For each fixed earlier-stage term $h(u,\vec p)$ introduce a symbol
+$i_h(n,a,\vec p)$.  Its defining axioms are the universal closures of
+\[
+ i_h(0,a,\vec p)=a,\qquad
+ i_h(Sn,a,\vec p)=h(i_h(n,a,\vec p),\vec p).
+\]
+Only finite descriptions are used.  There is no variable ranging over
+function descriptions and no universally total evaluator.
+
+Let $T_I$ have ordinary intuitionistic first-order logic with equality,
+the displayed computation schemas, the two axioms
+\[
+ \forall x\bigl(x=0\lor\exists y\,x=Sy\bigr),\qquad
+ (0=S0)\to\bot,
+\]
+and contextual literal-equation induction
+\[
+ \frac{\Gamma\vdash E(0)\qquad\Gamma,E(z)\vdash E(Sz)}
+      {\Gamma\vdash E(t)}.
+\]
+Here $E$ is a literal equation and $z$ is fresh for the retained context,
+the target, and the passive parameters.  No induction on a quantified
+formula is primitive.
+
+For completeness, the ordinary logic consists of reusable hypotheses;
+$\land$ introduction and both projections; both $\lor$ introductions and
+two-branch elimination; implication introduction discharging one
+assumption and modus ponens; universal introduction at a fresh
+eigenparameter and universal specialization at any term; existential
+introduction at a term and existential elimination at a fresh
+eigenparameter; falsity elimination; equality reflexivity; and equality
+replacement in any formula.  Context weakening, exchange, contraction,
+capture-free substitution, and cut are admissible.  Freshness for
+universal introduction concerns the retained context; freshness for
+existential elimination concerns both the retained context and its
+conclusion.  These are all the logical and nonlogical primitives of
+$T_I$.
+
+The ordinary reading of a native formula is
+\[
+ (s=t)^\circ=(s=t),\qquad
+ (Q_yB)^\circ=B^\circ(0)\to\forall y\,B^\circ(y),
+\]
+\[
+ (D_{x,y}B)^\circ=
+ \exists x\bigl(B^\circ(x,0)\to\forall y\,B^\circ(x,y)\bigr).
+\]
+The interpretation domain is $x=x$ and equality is identity.  The
+designated native contradiction $0=S0$ interprets as an actual
+contradiction because the separation axiom is explicit.  Omitting that
+axiom would leave the ordinary positive arithmetic axioms compatible
+with a singleton structure.
+
+The new mirrored introduction is sound in $T_I$: in its progressive
+branch its matrix is a literal equation, so contextual equation
+induction applies under the assumed base.  In its case branch numerical
+coverage combines the zero case and all successor cases.  The other
+five rule families have their displayed equality or ordinary logical
+readings.
+
+\subsection{Explicit inverse logical macros}\label{sec:choice-introduction}
+One can first erase auxiliary $Q$ occurrences by replacing
+$Q_yB(y)$ with $D_{u,y}B(y)$, with fresh unused $u$.  These formulas are
+interderivable: case introduction gives the forward implication, and
+paired elimination returns the opened closure in the reverse direction.
+Congruence under $Q$ and $D$ then gives this replacement inside every
+native formula.  Thus the following macros need only the Eq/$D$
+fragment, without restricting the public language.
+
+Write $C(v,a,b)=I(v,a;u.b)$, with $u$ unused, and $1=S0$.  On Eq/$D$
+formulas define the gate
+\[
+ G_v(s=t):=\bigl(C(v,0,s)=C(v,0,t)\bigr),\qquad
+ G_v(D_{x,y}A):=D_{x,y}G_vA,
+\]
+renaming all binders away from $v$.  Then $G_0A$ is a theorem,
+$G_{Sv}A\dashv\vdash A$, and
+$A\dashv\vdash D_{u,y}G_yA$ for fresh unused $u,y$.
+
+For two equations set
+\[
+ M_v(s=t,r=w):=\bigl(C(v,s,r)=C(v,t,w)\bigr).
+\]
+Extend by aligned fresh paired binders:
+\[
+\begin{aligned}
+ M_v(D_{x,y}A,D_{x,y}B)&:=D_{x,y}M_v(A,B),\\
+ M_v(E,D_{x,y}B)&:=D_{x,y}M_v(G_yE,B),\\
+ M_v(D_{x,y}A,E)&:=D_{x,y}M_v(A,G_yE),
+\end{aligned}
+\]
+where $E$ is an equation.  Each recursive call reduces maximum binder
+depth.  The endpoint equivalences are
+$M_0(A,B)\dashv\vdash A$ and $M_{Sv}(A,B)\dashv\vdash B$.
+
+Put $\delta(v)=C(v,1,0)$ and $p(z)=I(z,0;u.\delta(u))$.  Only
+$p(1)=1$ and $p(2)=0$ are needed.  The full inverse logical translation is
+\[
+\begin{aligned}
+ A\Rightarrow_*B&:=D_{u,z}M_z(A,B),\\
+ A\wedge_*B&:=D_{u,z}G_zM_{p(z)}(A,B),\\
+ \exists_*x\,A(x)&:=D_{x,y}G_yA(x),\\
+ A\vee_*B&:=\exists_*x\,M_x(A,B),\\
+ \forall_*x\,A(x)&:=A(0)\wedge_*D_{u,z}G_zA(z),\\
+ \bot_*&:=(0=1).
+\end{aligned}
+\]
+All newly bound variables are fresh, and $u$ is unused.
+
+Case introduction and the selector endpoints prove implication
+introduction; elimination opens its clause and specializes at $1$.
+The gate proves existential introduction and elimination.  Disjunction
+uses witnesses $0$ and $1$, while its elimination uses the derived
+numerical case rule.  Conjunction projections specialize at $1$ and
+$2$; introduction uses numerical cases for the selector.  The first
+universal conjunct supplies zero and the second supplies successors,
+so coverage proves universal elimination.  Finally $0=1$ gives
+$s=C(0,s,t)=C(1,s,t)=t$ for arbitrary terms; case introduction then
+extends explosion to every formula.  These are the inherited logical
+macro proofs, applicable because all case introductions and all
+contextual equation inductions have been recovered in the new calculus.
+
+The essential native formula composites are internally interderivable:
+\[
+ D_{x,y}B\dashv\vdash
+ \exists_*x\bigl(B(x,0)\Rightarrow_*\forall_*y\,B(x,y)\bigr),
+\]
+\[
+ Q_yB\dashv\vdash B(0)\Rightarrow_*\forall_*y\,B(y).
+\]
+For the first equivalence, paired elimination exposes the conditional
+universal at a fresh witness; the converse uses paired case introduction
+at the existential witness.  The second follows by closure elimination
+and derived case-closure introduction.  External structural induction
+on finite formulas proves both complete logical round trips.
+
+\subsection{The inherited arithmetic bridge, with both composites}
+The ConciseIPRA arithmetic development proves the following lemmas~\cite{bridge,readme}
+\emph{internally in $T_I$}, in this order: a scalar predecessor
+$P0=0$, $P(Sn)=n$; a term reflecting actual equality; a characteristic
+term for every quantifier-free formula; pairing with two projections;
+and a compiler for every fixed primitive-recursive description.  These
+are inherited results, not new consequences asserted solely from
+finite tests.  The source proofs are the reference files
+\texttt{scalar\_predecessor.tex}, \texttt{equality\_reflection.tex}, and
+\texttt{primitive\_recursion.tex}, with their corresponding Lean
+modules named in the pinned repository README.
+
+Here is the exact compiler step.  Suppose pairing $\pi$ and projections
+$L,H$ have already been established, and a target PR description is
+\[
+ f(0,\vec p)=g(\vec p),\qquad
+ f(Sn,\vec p)=h(n,f(n,\vec p),\vec p).
+\]
+For translations $g^*,h^*$ of its earlier descriptions put
+\[
+ V(n,\vec p)=I\bigl(n,\pi(0,g^*(\vec p));
+ u.\pi(SL(u),h^*(L(u),H(u),\vec p))\bigr),
+ \qquad f^*(n,\vec p)=H(V(n,\vec p)).
+\]
+Equation induction proves $L(V(n,\vec p))=n$.  The two projection
+identities then establish both required defining equations for $f^*$.
+The compiler recurses externally on a fixed finite PR description.
+
+Conversely, iPRA interprets each iterator by primitive recursion whose
+update ignores the old counter.  It proves the computation equations,
+coverage, separation, and every literal-equation induction instance.
+In the other direction, the predecessor gives successor injectivity,
+the zero test gives successor separation, and the characteristic terms
+reduce quantifier-free induction to literal-equation induction.
+
+For the numerical round trips, two recursive operations with the same
+seed and provably equal updates are internally equal: induction on the
+literal equation between their outputs proves this at every counter.
+External induction on finite descriptions therefore shows that every
+operation is provably equal to its double translation.  Both domains
+are whole and both interpreted equalities are actual equality, so
+$x=y$ is an internally definable isomorphism from each structure to its
+double interpretation.  Formula induction, using the logical composites
+above, gives both formula round trips.  Effective proof translations
+preserve contradiction in both directions and hence give
+equiconsistency; they make no assertion that either theory proves its
+own consistency.
+
+Consequently the new calculus is a faithful presentation of an ordinary
+theory bi-interpretable and equiconsistent with full first-order iPRA.
+The proof of this conclusion uses the new exact sequent equivalence and
+the inherited arithmetic bridge.  It does not rely on a standard-model
+test, a quotient equality, or an interpretation restricted to standard
+numerals.

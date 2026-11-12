@@ -1,0 +1,84 @@
+\subsection{The counter-evaluation equality rule}
+
+Reflexivity and the single counter-evaluation rule are
+\[
+ \frac{}{t=t},\qquad
+ \frac{s=t\qquad R(Ss,a;i,u.h)=r}
+      {r=h[t/i,R(t,a;i,u.h)/u]}.
+\tag{CE}
+\]
+Every term in this display denotes its canonical form, and body substitutions
+are simultaneous and capture avoiding. In particular the second occurrence
+of $R$ becomes $Sa$ when $t$ is literally zero. The seed and update body
+are read from the second premise and are not rewritten at passive occurrences
+of $s$.
+
+Two applications recover common-left equality composition. Put
+$K_s=R(Ss,0;i,u.i)$. Given $p:s=t$ and $q:s=r$, apply CE first to $q$
+and $K_s=K_s$, obtaining $K_s=r$, and then to $p$ and that result,
+obtaining $r=t$. Therefore symmetry follows from $s=s$ and $s=t$,
+and transitivity follows by reversing the first premise and joining at its
+common left endpoint. No induction or logical operation is used.
+
+For any fixed numerical template $f(v)$, put
+$L_s=R(Ss,0;i,u.f(i))$. CE on $s=s$ and $L_s=L_s$ gives
+$L_s=f(s)$. Applying CE again with $s=t$ gives $f(s)=f(t)$.
+This derives unrestricted term congruence, including repeated occurrences
+and occurrences under nested recursor binders. Joining this equation with
+$f(s)=r$ derives crossed transport $r=f(t)$. Finally, CE on the two
+appropriate reflexivities is exactly the successor computation equation stated by CE.
+
+\subsection{Predecessor and every ordinary primitive recursion}
+
+Define the following finite terms, with all auxiliary binders fresh:
+\[
+\begin{aligned}
+ P(n)&=R(n,0;i,u.i),\\
+ C(n,a,b)&=P(R(n,a;i,u.Sb)),\\
+ \operatorname{Rec}(n,a;i,u.h)
+   &=P\bigl(R(n,a;i,v.S(h(i,P(v))))\bigr).
+\end{aligned}
+\]
+Computation and congruence alone prove
+\[
+\begin{aligned}
+ P(0)&=1,& P(Sn)&=n,\\
+ C(0,a,b)&=a,& C(Sn,a,b)&=b,\\
+ \operatorname{Rec}(0,a;h)&=a,&
+ \operatorname{Rec}(Sn,a;h)&=h(n,\operatorname{Rec}(n,a;h)).
+\end{aligned}
+\tag{Compiler equations}
+\]
+Indeed the inner trajectory
+$T(n)=R(n,a;i,v.S(h(i,P(v))))$ has $T(0)=Sa$ and
+$T(Sn)=S(h(n,P(T(n))))$. Applying $P(Sx)=x$ gives both equations.
+This calculation explains why the successor seed does not restrict allowed
+initial states: the state is stored as a successor, and the outer $P$
+removes exactly that wrapper after each observation. No informal claim
+about a trajectory's values substitutes for the displayed equations.
+
+The term $P$ is not the usual predecessor at zero. Define instead
+\[
+ p(n)=C(n,0,P(n)),\qquad \operatorname{sg}(n)=C(n,0,1).
+\]
+Then $p(0)=0$, $p(Sn)=n$, $\operatorname{sg}(0)=0$, and
+$\operatorname{sg}(Sn)=1$. Applying $P$ to $Sx=Sy$ proves
+successor injectivity. Applying $\operatorname{sg}$ to $Sx=0$ gives
+$1=0$, contradicting the ordinary-realization separation axiom
+$0=1\to\bot$.
+
+Scalar iteration is the special case
+\[
+ I(n,a;u.h)=\operatorname{Rec}(n,a;i,u.h),
+ \qquad i\notin\operatorname{FV}(h).
+\]
+It has $I(0,a;h)=a$ and $I(Sn,a;h)=h(I(n,a;h))$ for every seed $a$.
+This recovers either raw scalar iteration up to provable equality or its
+zero-normal version under normalizing substitution. The counter-aware
+language can compile general primitive recursion directly: zero,
+successor, and projections have their evident finite terms; composition is
+substitution; recursion is the displayed $\operatorname{Rec}$ construction.
+There is no need to construct pairing before compiling recursion.
+This is an external compiler for each fixed primitive-recursive description,
+not an internally total universal evaluator for description codes.
+

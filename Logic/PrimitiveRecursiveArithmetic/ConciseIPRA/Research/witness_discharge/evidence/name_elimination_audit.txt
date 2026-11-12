@@ -1,0 +1,73 @@
+Independent audit: equality-aware name elimination
+
+The audited rule is:
+  Gamma |- D_{x,y} B(x,y)
+  Gamma, [B(b,0); y.B(b,y)] |- b=t
+  Gamma, [B(b,0); y.B(b,y)] |- F
+  ------------------------------------------------
+  Gamma |- N(F[t/b])
+where b is fresh for the outer context and the matrix's passive parameters,
+N is full computation normalization, and the final normalized formula is
+b-free. Both branch proofs live under the SAME local clause and numerical
+scope. The term t may contain b; substitution is one simultaneous pass,
+not a recursive rescan of inserted t. This is sound: within the existential
+scope use ordinary equality replacement on b=t and F, then existentially
+eliminate b because the resulting formula is b-free. Finite normalization
+conversions are provable in iPRA. No freshness condition t-free-of-b is needed.
+
+Ordinary D elimination is the t=b special case: the equality branch is
+Refl(b), and the F branch is required to have b-free result. Thus the rule
+does not weaken the existing logical interface.
+
+Numerical cases are available without ANY equality inference. From a
+proof of A(0) and a proof of A(Sz) for fresh z, introduce D_{x,y} A(y)
+at witness 0, ignoring the local Intro hypothesis even when the equation
+progress guard selects A(z). Open by ordinary D elimination and Use the
+exported clause at an arbitrary target u. Its antecedent is A(0).
+This is a direct proof construction, not substitution into an already
+proved derived rule. It avoids assuming general numerical substitution.
+
+Transport packet. Define C(v,a,b)=I(v,a;u.b) and
+  p(y)=I(y,0;u.C(u,1,0)).
+Then full normalization gives p(1)=1 and p(2)=0. Given supplied premises
+  Gamma |- s=t,      Gamma |- h(s)=r,
+with fresh x,y and h a fixed finite numerical template, put
+  B(x,y) := C(y,0,C(p(y),h(x),x))
+              = C(y,0,C(p(y),r,t)).
+The three endpoints normalize literally to
+  B(x,0) = (0=0), B(x,1) = (x=t), B(x,2) = (h(x)=r).
+To introduce D B at witness s, prove B(s,Sz) using numerical cases on
+p(Sz). At zero its normalized equation is h(s)=r; at a successor it is
+s=t. Both are the supplied premises. The local Intro hypothesis is unused,
+so it does not matter whether s is literal zero. In the Name scope, Use
+at 1 gives b=t and Use at 2 gives h(b)=r, both from Refl(0) for B(b,0).
+Name then concludes h(t)=r. This derives uncrossed one-term transport.
+
+Equality algebra now follows without circularity. For symmetry of s=t,
+take h(v)=v and minor s=s, obtaining t=s. Transitivity of s=t and t=u
+follows by one such transport with major t=u and minor t=s, then symmetry.
+Two applications give transport in both sides of an equation. Full formula
+transport follows by the usual external induction on the Eq/D grammar,
+after recovering unrestricted case introduction as below.
+
+Missing atomic case at witness zero. Full normalization destroys closed
+nonliteral zero aliases, so the old raw alias I(0,0;u.0) cannot be reused.
+Instead use Z(x,y):=C(y,0,x)=0. Intro at witness 0 proves D Z by Refl(0),
+ignoring its hypothesis. Its opened clause at 1 proves b=0. To simulate
+an equation case-introduction at witness 0, introduce at the variable b
+(hence case mode), translating its base and successor equations along b=0
+using the now-derived atomic transport, and discharge b by ordinary DE.
+The final D formula contains no b. Thus both old introduction modes can
+be recovered before asserting general numerical substitution admissibility.
+
+The route to equivalence is therefore noncircular:
+  Name -> ordinary DE -> numerical cases -> packet transport -> equality
+  algebra -> missing atomic case repair -> both introductions -> native
+  full-normal calculus -> inherited raw native/iPRA bridge.
+
+The rule is a genuine strengthened elimination interface, not ordinary DE
+alone. The complete trusted normalizer and scoping checks must be included
+in checker measurements. Full normalizing substitution can be expensive;
+termination is external (e.g. the System T embedding), not a uniform total
+normalizer theorem assumed inside iPRA. Both interpretation composites are
+provably identity, not literally identical when raw terms are compared.

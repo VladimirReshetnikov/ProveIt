@@ -1,0 +1,92 @@
+Full-language mirror dispatch: scoped result
+===========================================
+
+Pinned baseline: ProveIt 443cff49563457a48ee0f663012d56c4bdb58fa0.
+
+The checker is an exact copy of frontier_audit/diagonal_clausal/checker.py,
+apart from the module description and the predicate called diagonal. The
+function name is retained solely to preserve the common proof-producer API.
+It recognizes the mirror matrix
+
+    a(x,y) = I(y,a(x,y);u.h(x,y,u)).
+
+On all Eq/D formulas, introduction takes its progressive premise exactly
+for this matrix and its case premise otherwise. The predicate is not a
+restriction of the public formula grammar. Refl, two-case Eval, clause Use,
+and D elimination are unchanged. No normalization is added.
+
+The mirror shape and the lift
+
+    H_E(y) := s(y) = I(y,s(y);u.t(y))
+
+are inherited from Research/mirror_guard/proofs/mirror_basis.tex. That
+package restricts all atomic D matrices to the mirror grammar, uses two
+computation equations and restricted transport, and postpones arbitrary
+substitution until equivalence. The present complete-formula dispatch is
+a different combination. The broader principle of repairing a newly
+recognized guard by cutting in its zero-base theorem is already present
+in Research/reflexive_base and must not be claimed as an entirely new
+mathematical idea. A detailed independent written proof for the present
+combination is in ../logical_mirror_notes.tex.
+
+Guard substitution boundary
+---------------------------
+
+Capture-free substitution preserves an existing mirror guard. It need not
+reflect it: p = I(y,q;u.q) is not mirrored when p and q are distinct free
+parameters, but identifying the two parameters creates the guard.
+
+When the guard is created, the translated old case subderivation has local
+assumption B(t,0), whereas the new primitive inference expects B(t,z).
+The zero base B(t,0) is a theorem, by symmetry of the zero computation.
+Cut that theorem into the translated case subderivation, and then weaken
+by the desired progress assumption. This yields a valid proof image.
+The original proof tree need not itself remain valid after substitution.
+
+The verification script exhibits this exact distinction. For the open
+matrix p = I(y,q;u.q), its case proof first uses the local zero base to
+obtain p=q, then expands q to the successor iterator. Identifying p and q
+at five term images causes naive proof substitution to be rejected; the
+local cut repair is accepted in every case. Three of these are closed
+JSON certificates and two use open parameter contexts. Separately, mapping
+the parameters to distinct terms preserves case mode and is accepted
+without repair. Provably equal but syntactically different images also
+remain in case mode, as the specification requires.
+
+Measurements
+------------
+
+All figures are for the entire checker after removing the module docstring
+and applying ast.unparse plus a final newline, under CPython 3.12.14.
+
+                       bytes   tokens   AST nodes   gzip 9
+mirror clausal          3059      874       1012      1000
+diagonal clausal        3056      872       1013       997
+diagonal native         3395      975       1138      1048
+witness clausal         2956      837        977       962
+
+The mirror alternative saves one AST node relative to diagonal but costs
+three bytes and two tokens, and requires substitution repair. It therefore
+does not strengthen the primary size claim. The diagonal presentation is
+the recommended main result when literal proof-tree substitution is the
+intended advantage. Renaming the predicate to mirror would cosmetically
+save bytes but is not counted as a mathematical improvement.
+
+Verification
+------------
+
+Run: python3 mirror_clausal/verify.py
+
+The focused suite passes 13 accepted and 13 rejected closed certificates,
+52 actual process checks with and without Python -O, five guard-creation
+substitution repairs, and 300 random guard-preservation checks. Tests are
+finite implementation evidence; they do not replace the general proof.
+
+Reflexivity deletion is not an unused opportunity. The pinned source
+Research/raw_clausal/theory/reflexivity_obstruction.tex already proves that
+Eval/Use/DE/DI plus any finite set of true closed equation seeds does not
+derive all numeral reflexivities. Its rule-preserving countervaluation
+makes s=t true exactly when their equal numerical value lies in a fixed
+finite set. The same obstruction applies to the unchanged local equality
+interface; moving universal reflexivity into a permanent clause relocates
+its cost instead of removing the axiom.

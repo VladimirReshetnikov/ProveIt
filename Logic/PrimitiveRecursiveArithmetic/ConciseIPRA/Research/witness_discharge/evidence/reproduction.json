@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "python": "3.12.14",
+  "commands": [
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "measure.py"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "validation/verify.py"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "validation/audit_normalization.py",
+      "code/checker.py",
+      "--output",
+      "evidence/normalization_verification.json"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "validation/verify_fuel.py"
+    ]
+  ],
+  "note": "Finite executable evidence; universal theorems are written proofs."
+}

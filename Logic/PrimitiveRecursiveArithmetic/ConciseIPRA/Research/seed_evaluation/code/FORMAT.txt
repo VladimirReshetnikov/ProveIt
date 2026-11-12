@@ -1,0 +1,101 @@
+PRIMARY CHECKER CERTIFICATE FORMAT
+
+The file checker.py is the entire trusted acceptance module. No other local
+file is imported by it. The mathematical convention ignores finite machine
+resource limits; an actual run rejects any input causing an exception.
+
+1. NUMERICAL TERMS
+
+  0                          Numerical zero.
+  positive integer i         The i-th nearest surrounding numerical binder.
+  negative integer -j        Rigid free parameter j, when its scope is open.
+  ["s", t]                   Successor.
+  ["i", n, a, h]             Iterator I(n,a;u.h); only h binds u.
+
+The literal integer 1 is a bound variable index, not the numeral one.
+The numeral one is ["s",0]. Every input term must be zero-normal: the counter
+of every displayed iterator must not be the literal integer 0. Every child
+must be well typed and well scoped. Only exact Python integer types represent
+numeric leaves; booleans, floats, nulls, strings, and mappings are rejected.
+
+Zero-normal opening contracts an iterator when substitution exposes counter
+zero. It never unfolds successor iteration. Parameters outside local binders
+use negative labels, so well-scoped insertion images have no free positive
+indices; the opener therefore requires no positive-index lifting operation.
+All source syntax is checked before a zero contraction can erase a child.
+
+2. FORMULAS
+
+  ["=", s, t]                Equation.
+  ["d", B]                   D_(x,y) B.
+
+D binds two variables in B: index1 is y and index2 is x. No Q node is allowed.
+The ordinary meaning is exists x (B(x,0) -> forall y B(x,y)).
+Contradiction is ["=",0,["s",0]].
+
+3. RETAINED CLAUSES AND SCOPES
+
+The internal context is a list of pairs (antecedent, body). The body binds
+one variable, with ordinary meaning antecedent -> forall y body(y).
+Contexts initially are empty. Clauses are reusable; a proof does not consume
+one when using it. Entering a branch at scope count k creates rigid parameter
+-k-1. Earlier parameters keep their labels. Outer goals and witnesses are
+validated before this parameter is introduced, preventing escape.
+
+An ordinary assumption A is stored as (0=0, A), where the body ignores its
+bound variable. Its use needs a reflexivity proof of zero as the antecedent.
+
+4. PROOF TREES
+
+  ["r", t]
+      Validate t and derive t=t.
+
+  ["x", major, minor]
+      Recursively derive a=b from major and I(S c,a;u.h)=r from minor.
+      The iterator and its successor counter must have precisely these roots.
+      The left endpoint of the first equation must be exactly the initializer
+      read from the second equation. Return r=h[K(c,b;u.h)/u], with normalized
+      opening and K(0,b;u.h)=b, K(c,b;u.h)=I(c,b;u.h) otherwise. Leave c and h
+      unchanged, including any passive occurrences equal to the old seed.
+
+  ["u", index, witness, premise]
+      index is an exact nonnegative integer selecting a retained clause.
+      Validate the witness in the present scope. Derive precisely that
+      clause's antecedent from premise, then return its body at the witness.
+
+  ["e", goal, paired_proof, branch]
+      Validate goal in the outer scope. Derive a D formula from paired_proof.
+      Open its witness x at fresh rigid parameter b. Retain the clause
+      (B(b,0), y.B(b,y)) and check that branch derives exactly goal in the
+      extended scope. Discharge that clause and parameter; return goal.
+
+  ["i", goal, witness, branch]
+      Validate goal and witness in the outer scope; goal must be D_(x,y) B.
+      Open x at witness and create fresh parameter z. Set eta=z exactly when
+      B is a literal equation and witness is literal0; otherwise set eta=0.
+      Retain the ordinary assumption B(witness,eta). Check that branch derives
+      exactly B(witness,S z). Discharge the assumption and return goal.
+
+All displayed substitutions are capture avoiding and zero normalizing. There
+are no other proof tags or implicit computation, equality, or induction nodes.
+The mathematical admissibility of broader equality and logical rules is
+proved in the accompanying report.
+
+5. PUBLIC INPUT AND OUTPUT
+
+  {"goal": FORMULA, "proof": PROOF}
+
+These must be exactly the two dictionary keys. The goal must be closed.
+The checker derives from the empty context and compares its result to the
+supplied goal literally. Success prints ACCEPT and exits0; any exception
+exits1. No runtime assertions affect acceptance.
+
+6. CONTROLS
+
+control_step.py has identical grammar and public protocol. Its x instruction
+requires first source K(c,a;u.h), with first equation K(c,a;u.h)=t, and returns
+r=h[t/u]. The literal checker pair uses the same calculus and protocol with
+separate syntax traversals. control_computation_transport.py instead uses
+["r",counter,seed,body] for successor computation and
+["x",template,major,minor] for crossed one-term transport. Its logical protocol
+is identical. translate.py converts among these mathematical interfaces.

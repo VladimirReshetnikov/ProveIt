@@ -1,0 +1,68 @@
+LATE SOURCE AUDIT FOR INITIALIZER EVALUATION (SeedEval)
+
+Repository: VladimirReshetnikov/ProveIt
+Revision: 56aafa39cf53a47dc4ae9f3a030fd8ac279a5624
+Subtree: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research
+
+The three following newly filed packages were inspected through their
+README and full standalone LaTeX report, including the exact primitive
+rule specification. Local authenticated copies are in baseline/late_audit/.
+
+1. parameter_substitution
+   Source: ipra_parameter_substitution.tex, sections 2 and 3.
+   Terms are raw scalar iterator terms; no computation normalization.
+   Compute contains both zero and successor computation axiom schemas.
+   Param infers r = psi(s,t,u) from s=t and u=r. If s is a free numerical
+   variable, psi substitutes t for that variable in u. Otherwise psi
+   either performs common-root joining (u literally s) or reverses the
+   minor equation. Fresh aliases derive arbitrary template transport.
+   No SeedEval instance is a primitive rule here. No initializer-evaluation
+   fusion matching the proposed rule was found in the inspected report.
+
+2. variable_substitution
+   Source: report.tex, sections 2 and 3.
+   Both scalar computation equations are fully normalized in the syntax.
+   The changed arithmetic rule is VSub:
+       x=t, u=v  ==>  v=N(u[t/x]),
+   with x a free numerical variable, further restricted to the newest
+   parameter in the selected presentation. The package proves recovery
+   of general transport by a two-row existential naming construction.
+   It does not use zero-only SeedEval or a computation/initializer fusion.
+
+3. deterministic_specialization
+   Source: report.tex, section 2.
+   It retains exactly the current zero-normal Refl plus Step arithmetic:
+       K(c,a,h)=t, I(S c,a,h)=r  ==>  r=N(h[t/u]).
+   The changed rule is clause Use: the newest clause specializes at 1,
+   older clauses at the newest eigenparameter. Its proof handles the
+   associated failure of naive weakening with persistent procedures.
+   No SeedEval replacement is present.
+
+Novelty boundary
+
+These three packages do not duplicate the proposed new arithmetic rule
+       a=b, I(S c,a,h)=r  ==>  r=N(h[K(c,b,h)/u]).
+This is a scoped repository comparison, not a literature-wide priority
+claim. initializer_equality remains the nearest earlier arithmetic source:
+its old Seed is replacement in the initializer, with successor computation
+retained separately. The new rule should be called SeedEval or initializer
+evaluation to avoid confusing those two rules.
+
+deterministic_specialization already states the two-Step congruence proof
+that reuses the first computational equality as the next minor premise.
+Consequently the four-zero-step crossed transport macro must not itself
+be claimed as a new discovery relative to this updated snapshot. It is
+useful in the new SeedEval proof, and shorter than the particular expanded
+NativeZeroStep.trOneNf macro, but the idea has a newly filed predecessor.
+
+Compatibility observation
+
+The SeedEval/Step translations use only Refl and arithmetic nodes within
+the existing context and numerical scope. They neither add clauses nor
+open eigenparameters. Thus the same equivalence works after deterministic
+Use is adopted; it does not assume weakening of its restricted proofs.
+This is a direct consequence of the stated arithmetic-fragment theorem.
+
+The other late packages are being inspected separately by the logical
+simplification agent. No claims about those packages are made in this
+three-package audit.

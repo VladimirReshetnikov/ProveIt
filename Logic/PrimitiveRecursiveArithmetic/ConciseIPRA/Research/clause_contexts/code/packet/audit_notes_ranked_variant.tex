@@ -1,0 +1,139 @@
+% Independent proof audit of the right-to-left packet checker.
+\section{Proof audit of the packet certificate format}
+
+\subsection{Abstract judgment and context invariant}
+A formula is the ranked triple \((k,s,t)\), read as \(D^k(s=t)\).
+Numerical terms use \(0\), negative free levels, positive bound indices,
+a singleton successor, and a triple iterator with a nonzero literal
+counter. Every iterator opening contracts a newly exposed zero counter.
+
+The context is an ordered list of clauses \((A,B)\). Its first component
+is either the non-formula sentinel \(0\), indicating no antecedent, or a
+well-scoped ranked formula. Its second component is a ranked formula
+body with one additional external bound variable. The abstract reading
+is \(\forall y B(y)\) when the antecedent is absent and
+\(A\to\forall yB(y)\) otherwise.
+In every reachable state at scope \(m\), antecedents are well scoped at
+\(m\), and bodies are well scoped with the extra clause binder.
+Universal reflexivity is a fixed ambient clause, implemented by an
+automatic check rather than stored as a user-selectable context entry.
+
+Every successful call \(\operatorname{check}(G,\Gamma,m)\) first validates
+\(G\) at scope \(m\). For \(G=(0,t,t)\), it returns immediately, using the
+ambient reflexivity clause. Otherwise it consumes one packet and then
+recursively checks precisely the premises of one of the four rules.
+
+\subsection{The four packet forms}
+A packet has two fields \([b,d]\):
+\begin{enumerate}
+\item If \(b\) is a nonnegative integer, it selects clause \(\Gamma_b\),
+and \(d\) is its numerical target. The goal must equal the normalized
+instance of its body. If the clause has an antecedent, that antecedent
+is checked recursively; otherwise there is no premise.
+\item If \(b=-1\), the goal must have positive rank and \(d\) must be
+a numerical witness. This is Close. The single branch is checked under
+the unconditional local assumption, at one additional fresh level,
+against the normalized successor instance.
+\item If \(b\) is a formula of positive rank, first check \(b\) itself.
+The second field is required to be exactly the integer zero. Open then
+adds the canonical conditional clause at a fresh witness and checks
+the original goal in that enlarged scope.
+\item If \(b\) is a formula of rank zero, first check \(b\) and then
+the formula \(d\). They must have the Step shapes
+\[
+ b=(0,I(c,a;u.h),t),\qquad
+ d=(0,I(Sc,a;u.h),r),
+\]
+using the zero-normal convention for the first source.
+The goal must be exactly \((0,r,h\langle t/u\rangle)\).
+\end{enumerate}
+The integer/formula distinction and then the verified formula rank
+determine the cases. No certificate rule tag is omitted ambiguously.
+
+The automatic reflexivity check still implements a counted fixed axiom;
+it is not a proof that Step alone derives reflexivity. It consumes no
+packet because its term is already supplied by the checked goal.
+
+\subsection{Soundness: the suffix-consumption invariant}
+For any initial packet list \(P\), suppose a call with a well-scoped
+context returns successfully and leaves the list \(P'\).
+Then \(P'\) is a prefix of \(P\), and the removed suffix determines a
+finite derivation of the stated goal from the stated context and
+ambient reflexivity. Earlier, unconsumed packets are not assumptions.
+
+Prove this invariant by the finite call tree. Automatic reflexivity is
+the zero-packet case. Otherwise the last packet is removed. Each
+recursive premise call consumes a preceding suffix, and by induction
+provides the corresponding premise derivation. The four branches
+combine these derivations by Use, Close, Open, or Step exactly as above.
+The explicit goal equality tests ensure that the resulting conclusion
+is the goal requested by the caller.
+
+All fresh-variable conditions are enforced. Open validates its goal
+and major at the old scope before introducing level \(-m-1\); hence
+that level cannot occur in either outer formula. Close validates its
+goal and witness at the old scope, then constructs the local assumption
+and successor target using the new level. Negative free levels already
+present in the context retain their meanings as the scope increases.
+Consequently the context need not be renamed during an extension.
+
+Every nonautomatic call consumes a packet before its recursive calls.
+Thus a finite JSON certificate cannot create an infinite logical
+recursion: unsuccessful requests eventually exhaust the packet list
+or fail a check. Host-language resource exhaustion can reject a large
+certificate, but cannot certify a false inference.
+
+The top-level call takes the last JSON item as the closed goal, starts
+with the empty explicit context and scope zero, and finally requires
+the packet list to be empty. Hence successful execution proves the
+declared closed goal and rejects unused input.
+
+\subsection{Completeness: explicit serialization}
+Every finite derivation in the four-rule presentation has a packet
+certificate. First replace every subderivation whose conclusion is a
+literal reflexive equality by its ambient-clause proof. This pruning
+is sound and makes all such subderivations use no packets.
+
+Write \(E(p)\) for the packet list of a remaining derivation \(p\), in
+left-to-right storage order. Concatenation is denoted by juxtaposition.
+Then:
+\begin{align*}
+ E(\mathrm{Refl})&=[],\\
+ E(\mathrm{Use}_i(d,p))&=E(p)\,[i,d]
+       &&\text{for a conditional clause},\\
+ E(\mathrm{Use}_i(d))&=[[i,d]]
+       &&\text{for an unconditional clause},\\
+ E(\mathrm{Close}_d(p))&=E(p)\,[-1,d],\\
+ E(\mathrm{Open}_{B}(p_{\rm major},p_{\rm branch}))
+    &=E(p_{\rm branch})\,E(p_{\rm major})\,[B,0],\\
+ E(\mathrm{Step}_{B,C}(p_{\rm major},p_{\rm minor}))
+    &=E(p_{\rm minor})\,E(p_{\rm major})\,[B,C].
+\end{align*}
+In these displays a final bracketed packet is one list element.
+The major is checked before the minor or branch, so its serialization
+must lie immediately to the left of the outer packet.
+For an unconditional Use there is no dummy proof of \(0=0\).
+
+Induction on \(p\) proves that a call for its conclusion consumes
+exactly \(E(p)\), leaving any preceding packet prefix unchanged.
+Append the closed conclusion as the final JSON item to obtain the
+whole certificate. Context indices are those of the explicit context:
+the automatic reflexivity clause is omitted from this index list, so
+a translation from a checker that stored it subtracts one from every
+other context index.
+
+Conversely, the soundness construction reconstructs a derivation from
+the actual recursive call tree of any accepted certificate. The two
+formats therefore prove exactly the same closed formulas, even though
+one format may use shorter certificates or prune redundant reflexivity
+proofs.
+
+\subsection{Why the automatic protocol does not hide work}
+Every arithmetic template, numerical target, logical major and
+introduction witness is present either in the checked goal or in the
+two-field packet. The checker validates them before accepting their
+inference. It performs no proof search, no arithmetic theorem search,
+and no arbitrary code evaluation. The right-to-left ordering simply
+serializes a finite proof tree; its mathematics is the four-rule
+calculus with the fixed universal reflexivity clause.
+

@@ -1,0 +1,52 @@
+\section{A stronger matched implementation control}
+
+The apparent advantage of ranked equations must be separated from the
+advantage of arity-coded numerical terms. A straightforward recursive
+formula encoding stores an equation as $[s,t]$ and a paired binder as
+$[\texttt{d},B]$. Terms still use singleton successor and triple iterator.
+The string tag distinguishes the paired binder from every numerical term,
+so one opening traversal handles both formula constructors and numerical
+terms. This avoids the rank-specific instantiation helper.
+
+After the same code-only normalization, the resulting four-pattern
+checker has 2,677 bytes, 751 significant tokens, 823 AST nodes, and
+947 gzip bytes. It is smaller than the ranked version at 2,692 bytes,
+781 tokens, 853 AST nodes, and 964 gzip bytes.
+Therefore ranked equations are an optional lossless presentation of
+formulas, not the best measured implementation among these controls.
+
+The Step rule matches its major as a two-element list. If that list is
+a paired formula, its first field is the string \texttt{d}; the required
+source comparison with a numerical iterator term then fails.
+The minor's iterator-shaped left endpoint itself rules out a paired
+formula. Thus no additional equation-tag check is needed, provided the
+derived-formula well-formedness invariant is maintained.
+Malformed and compound-major/minor tests exercise this point explicitly.
+
+For the fairest comparison, the inherited five-pattern uniform-Step
+calculus was also implemented with exactly this recursive arity codec
+and scope derived from context length. Its context starts empty, so
+its scope is $\lvert\Gamma\rvert$, whereas the Horn version begins
+with its fixed reflexivity clause and has scope
+$\lvert\Gamma\rvert-1$.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+Presentation & Bytes & Tokens & AST & gzip\\
+Five-pattern matched control & 2730 & 753 & 828 & 939\\
+Four-pattern Horn, matched codec & 2677 & 751 & 823 & 947
+\end{tabular}
+\end{center}
+
+Accordingly, the Horn factorization itself saves 53 normalized bytes,
+two significant tokens, and five AST nodes in this matched implementation.
+Its gzip size increases by eight bytes. Most of the larger difference
+from the original fully tagged checker is a representation and scope
+change. These figures support a modest simplification of the primitive
+interface, not a large reduction in the trusted implementation.
+
+The recursive four-pattern codec passes 86 positive certificates, 35
+malformed-certificate cases, and 2,000 opening-coherence instances.
+Its 242 standalone process checks include ordinary Python and
+\texttt{-O}. The five-pattern control additionally passes all 86
+backward-translated pinned fixtures under both modes (172 process checks).

@@ -1,0 +1,80 @@
+CERTIFICATE FORMAT: UNIFORM-BINDING COUNTER CALCULUS
+
+The public JSON object has exactly:
+    {"goal": <closed canonical formula>, "proof": <certificate payload>}
+
+Terms
+    0             numerical zero
+    positive int  one-based bound variable index
+    negative int  free parameter level
+    [n,a,h]       R(n,a;i,u.h), binding counter and state in h
+
+State is bound index 1 and counter is bound index 2.
+Only a literal zero counter triggers canonicalization: [0,a,h] becomes
+[0,a,0]. Public syntax must already be canonical. Every input child is
+validated before erasure. Successor is [0,a,0], and one is [0,0,0].
+
+At scope n and depth d, exactly the actual integers -n <= i <= d are
+allowed as term leaves. True/False are not integer syntax. Internal
+indices increase by 2 under an R or D body's two binders.
+
+Formulas
+    [s,t]         equality
+    [B]           D_(x,y) B; y is index 1, x is index 2 in B
+
+No strings, nulls, booleans, floats, or objects are terms or formulas.
+A list of arity 2 is a formula, never a numerical constructor.
+
+The context is a list of clauses (antecedent, body). A clause body has
+one formal y slot, and denotes antecedent -> forall y body(y).
+An ordinary assumption B is stored as ([0,0],B) with that slot unused.
+The root context is empty. Each Open or Close branch adds one clause and
+one fresh negative level, so the checker derives scope=len(context).
+
+Proof payloads
+
+A validated reflexive goal [t,t] succeeds immediately. Its payload may be
+null or any other JSON value, intentionally matching the incoming baseline.
+All other goals require exactly one of:
+
+    ["v",s,t,a,h,p,q]
+        Counter evaluation. Prove [s,t] with p.
+        Prove [R(Ss,a;h),goal.left] with q.
+        The goal must be an equation whose right side is
+        h(t,R(t,a;h)), with canonical capture-avoiding opening.
+
+    ["u",j,t,p]
+        Select zero-based clause j. Prove its antecedent with p.
+        Open its body at the well-scoped term t; it must equal the goal.
+
+    ["e",B,p,q]
+        Prove [B] with p. Open x at fresh b=-len(context)-1.
+        Append clause (B(b,0), y.B(b,y)).
+        Prove the original goal with q in that scope.
+
+    ["i",t,p]
+        The goal must be [B]. Instantiate x with well-scoped t.
+        Let z=-len(context)-1.
+        Eta is z exactly if B is literally an equation and t is literally 0;
+        eta is 0 otherwise.
+        Append the ordinary assumption B(t,eta).
+        Prove B(t,Sz) with p in the extended scope.
+
+Capture-free opening protects bound indices beneath internal binders.
+In a counter-evaluation body, opening state first and counter second
+implements the specified simultaneous substitution.
+
+Extra top-level keys, extra fields in a used proof array, unknown used
+instructions, Boolean clause indices, negative/large indices, and
+out-of-scope witnesses are rejected. Python's standard JSON object parser
+retains the last value for duplicate textual keys. All fields actually
+used as terms/formulas or rule data are checked; an unused reflexive
+payload is deliberately outside the certificate's logical content.
+
+CLI
+    python3 code/checker.py < file.json
+Accepted: print ACCEPT, exit 0.
+Rejected: print REJECT, exit nonzero.
+The trusted module does not rely on Python assert.
+Finite runtime and recursion limits still apply.
+

@@ -5,7 +5,7 @@ complete presentation of a theory bi-interpretable with full first-order
 intuitionistic primitive recursive arithmetic (iPRA), and the Lean
 formalization of the most concise of them.
 
-- [`Research/`](Research/) holds sixty-seven delivered packages, one directory
+- [`Research/`](Research/) holds seventy-three delivered packages, one directory
   each. They are written mathematics with executable Python proof checkers;
   none of them claims a proof-assistant verification.
 - `Lean/` is the formalization (see [Lean formalization](#lean-formalization)).
@@ -271,6 +271,11 @@ for separate coordinates, they are listed separately. Each package's own
 | [`validated_presentation`](Research/validated_presentation/) | The whole certificate is typed by one test on its printed form, so the public syntax validator loses its separate raw-type pass; the proof kernel is unchanged | fully validated Eq/Q/D checker 870 bytes against 897, 383 tokens against 401 |
 | [`checked_refinement`](Research/checked_refinement/) | Three smaller implementations of the existing presentations; stated to contain no new axiom deletion | guarded public-goal checker 921 bytes against 1201; native Eq/D public checker 788 against 803; compact guarded 520 against 521 |
 | [`equality_from_iteration`](Research/equality_from_iteration/) | The rule Eval of `computational_equality` without its first case: equality composition `s = t, s = r ⊢ r = t` follows from the zero-iteration case through the frame `I(0, s; u.u)`. A companion calculus on zero-normal terms has reflexivity and one successor-evaluation schema | as stated |
+| [`clause_guards`](Research/clause_guards/) | The raw Eq/D clause calculus with the two-case Eval and the diagonal introduction: five rule families, with ordinary substitution preserving the whole proof tree | as stated |
+| [`mirror_core`](Research/mirror_core/) | Six rules on the raw language (Hyp, Refl, Eval, QE, DE and one introduction), the introduction being progressive exactly at a matrix of the literal shape `a(x,y) = I(y, a(x,y); u.h)`: one iterator in the selector where the diagonal guard has two | as stated |
+| [`seed_evaluation`](Research/seed_evaluation/) | On zero-normal terms, the rule `a = b, I(S c, a; u.h) = r ⊢ r = h[I(c, b; u.h)/u]` with reflexivity, equivalent to the rule Step without any logical rule or induction | as stated |
+| [`clause_contexts`](Research/clause_contexts/) | Four inference schemes (Use, Step, Open, Close) and the reflexivity axiom clause, on zero-normal terms | as stated |
+| [`witness_discharge`](Research/witness_discharge/) | Three inference families (Use, Intro, Name) and the reflexivity axiom clause; Name combines equality substitution with the discharge of an existential witness | as stated |
 | [`variable_substitution`](Research/variable_substitution/) | On zero-normal terms the equality rule substitutes for a variable only: from `x = t` and `u = v` infer `v = nf(u[t/x])`; the source can be restricted to the newest parameter | as stated |
 | [`parameter_substitution`](Research/parameter_substitution/) | On raw terms with clause contexts, replacement inside a term is restricted to free parameters; a nonvariable source is used only for joining at the root or reversing the minor equation, and a fresh alias recovers transport in a template. Five instruction families | as stated |
 | [`deterministic_specialization`](Research/deterministic_specialization/) | Clause use takes no term argument: the newest clause is specialized at `S 0`, every older one at the newest eigenparameter, and an arbitrary term is reached by naming it with a `D` formula and transporting | as stated |
@@ -302,6 +307,7 @@ for separate coordinates, they are listed separately. Each package's own
 | [`initializer_equality`](Research/initializer_equality/) | On the canonical recursor syntax, equality transport is replacement of an iterator's initializer; zero iteration is definitional, so this includes replacement at the root, and one iteration applies any term template. Six rules; the equality step takes two proofs and no template |
 | [`clausal_canonical`](Research/clausal_canonical/) | Five rules on the canonical recursor syntax, with an Eq/D public language and contexts of reusable clauses in place of `Q`. Matched checker 3305 bytes against 3820 for the six-rule control |
 | [`counter_evaluation`](Research/counter_evaluation/) | On the counter-aware successor-seeded recursor `R(n, a; i, u.h)`, reflexivity and one rule: from `s = t` and `R(S s, a; i,u.h) = r` infer `r = h(t, R(t, a; i,u.h))`. With clause contexts: five patterns |
+| [`uniform_binding`](Research/uniform_binding/) | The counter-aware clause calculus with one ternary recursor `R(n, a; i, u.h)`; `R` and `D` both bind exactly two variables in their last child, and one traversal handles validation, zero-body erasure and binder opening |
 
 ## Intake record
 
@@ -375,7 +381,10 @@ sources, three checksum ledgers and five build logs. The delivered module
 `Research/zero_normal/formal/ZeroNormalization.lean` compiled unchanged and
 is `Lean/ConciseIPRA/ZeroNormalization.lean`.
 
-`clausal_single_evaluation`, `clausal_two_case`,
+`clause_contexts`, `clause_guards`, `mirror_core`, `seed_evaluation`,
+`uniform_binding` and `witness_discharge` arrived last and were filed on
+arrival (nine frozen Lean copies, three logs and two checksum ledgers not
+filed). `clausal_single_evaluation`, `clausal_two_case`,
 `deterministic_specialization`, `parameter_substitution`, `uniform_clauses`
 and `variable_substitution` arrived after those below and were filed on
 arrival. Not filed: sixteen frozen Lean copies, four logs, one checksum ledger,
@@ -515,6 +524,10 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `scalar_uniqueness` | Half proved: the uniqueness rule is a derived rule of the kernel (`NPrf.uniq`). The converse, that it recovers equation induction when induction is not a rule, needs the report's own predecessor and reflection of equality and is not formalized. |
 | `clausal_canonical` | Not formalized: it is stated on the canonical recursor syntax with clause contexts. |
 | `computational_equality`, `equality_from_iteration` | Proved: the six-rule calculus is `EPrf`, with `eprf_iff_nprf` and `eprf_iff_iprf` (`NativeEval`). Eval has the two cases of `equality_from_iteration` as constructors; the third case of `computational_equality` is the derived rule `EPrf.evalId`. The zero-normal companion of `equality_from_iteration` is not formalized. |
+| `clause_guards` | Proved: its calculus is `KPrf` (`kprf_iff_nprf_of_qfree`, `kprf_iff_nprf`, `KPrf.subst`; `NativeClausalDiagonal`), which was written here before the package arrived. |
+| `mirror_core` | Not formalized. Its selector is preserved by substitution but can be created by it, so the structural argument of `NativeDiagonal` does not transfer as it stands. |
+| `seed_evaluation`, `clause_contexts`, `witness_discharge` | Not formalized: further rule forms on zero-normal terms with clause contexts. |
+| `uniform_binding` | Not formalized: the counter-aware recursor syntax. |
 | `variable_substitution`, `parameter_substitution` | Not formalized: equality rules that substitute for a variable or a parameter only. |
 | `uniform_step` | Proved: its arithmetic and equality interface on zero-normal terms is `NSPrf` (`nsprf_iff_nprf`, `NSPrf.normal`, `nsprf_iff_pra`; `NativeZeroStep`), with the kernel's two introductions and `Q` in place of clause contexts. On the unnormalized syntax the rule Step is the constructor `evalSucc` of `EPrf` and `SPrf`. |
 | `uniform_clauses` | Proved: its calculus is `VPrf`, with `vprf_iff_cprf` and `vprf_iff_nprf_of_qfree` (`NativeUniformClauses`). |
