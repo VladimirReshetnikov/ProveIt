@@ -7766,6 +7766,9 @@ The source-reviewed [natural-86 direct iPRA adapter draft](research/ordinary14-n
 proposes deriving the native, standard and equality-only declarations without
 a second shift. It remains unelaborated and is not a checked proof-existence
 or physical-binding theorem.
+The reviewed [natural-86 endpoint import inventory](research/ordinary14-natural86-endpoint-import-inventory/README.md)
+records 162 reachable bare drafts and 36 direct qualified sources. It is
+lexical and does not establish Lean resolution, providers or axiom closure.
 The source-reviewed [bounded draft-API audit](research/ordinary14-root74-draft-api-audit/README.md)
 checks selected qualified draft references lexically; it does not establish
 Lean name/type/instance resolution or provider/axiom closure.
