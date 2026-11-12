@@ -7475,6 +7475,10 @@ An independently source-reviewed [graph-client draft](research/ordinary14-direct
 proposes the corresponding first-residual evaluations and fixed-other-coordinate
 comparison for the 84- and 79-operation graphs. It has not been elaborated;
 the all-positive valuation client and endpoint remain open.
+The source-reviewed [all-positive valuation wrapper](research/ordinary14-direct-first-root-positive-client-draft/README.md)
+proposes the two slot updates and natural-port specialization, but remains
+unelaborated along with its dependencies. Provider compatibility and the
+end-to-end model and iPRA bridges remain open.
 The source-reviewed [87-operation Lean graph and decoder-route draft](research/ordinary14-shifted-guard87-lean-draft/README.md)
 records the fact-level replay needed for arbitrary models. It is uncompiled;
 the graph-specific model lemmas, parent bridges and iPRA endpoint remain open.
