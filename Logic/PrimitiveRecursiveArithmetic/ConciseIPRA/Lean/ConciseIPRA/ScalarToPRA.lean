@@ -61,8 +61,7 @@ variable {Γ : List (Fm PTm n)}
 /-- Function symbols respect provable equality of their arguments. -/
 theorem congr (f : PR k) {ts ts' : Fin k → PTm n} (h : ∀ i, Γ ⊢[PRAAx] ts i ≐ ts' i) :
     Γ ⊢[PRAAx] app f ts ≐ app f ts' := by
-  have := Prf.eqCongr (app f Syn.var) h
-  simpa using this
+  simpa using Prf.eqCongr (app f Syn.var) h
 
 /-- The simulated iterator at zero. -/
 theorem iterSym_zero (a : PR k) (h : PR (k + 1)) (xs : Fin k → PTm n) :

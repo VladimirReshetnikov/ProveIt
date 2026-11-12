@@ -175,8 +175,7 @@ theorem impTrans (h₁ : Γ ⊢[Ax] φ ⟶ ψ) (h₂ : Γ ⊢[Ax] ψ ⟶ χ) : �
 
 /-- An axiom, used as stated. -/
 theorem axm (h : Ax n φ) : Γ ⊢[Ax] φ := by
-  have := Prf.ax (Γ := Γ) h var
-  rwa [Fm.subst_id] at this
+  simpa only [Fm.subst_id] using Prf.ax (Γ := Γ) h var
 
 /-- Universal elimination onto the bound variable itself. -/
 theorem allOpen {φ : Fm T (n + 1)} (h : Γ ⊢[Ax] Fm.all φ) : Γ.map Fm.shift ⊢[Ax] φ := by
@@ -210,12 +209,10 @@ theorem eqSubst1 (φ : Fm T (n + 1)) {s t : T n} (h : Γ ⊢[Ax] s ≐ t)
   · simpa using Prf.eqRefl (Ax := Ax) (Γ := Γ) (var j)
 
 theorem eqSymm {s t : T n} (h : Γ ⊢[Ax] s ≐ t) : Γ ⊢[Ax] t ≐ s := by
-  have := eqSubst1 (Fm.eq (var 0) (Syn.shift s)) h (by simpa using Prf.eqRefl s)
-  simpa using this
+  simpa using eqSubst1 (Fm.eq (var 0) (Syn.shift s)) h (by simpa using Prf.eqRefl s)
 
 theorem eqTrans {s t u : T n} (h₁ : Γ ⊢[Ax] s ≐ t) (h₂ : Γ ⊢[Ax] t ≐ u) : Γ ⊢[Ax] s ≐ u := by
-  have := eqSubst1 (Fm.eq (Syn.shift s) (var 0)) h₂ (by simpa using h₁)
-  simpa using this
+  simpa using eqSubst1 (Fm.eq (Syn.shift s) (var 0)) h₂ (by simpa using h₁)
 
 /-- Congruence: provably equal substitutions give provably equal instances of a
 term. -/

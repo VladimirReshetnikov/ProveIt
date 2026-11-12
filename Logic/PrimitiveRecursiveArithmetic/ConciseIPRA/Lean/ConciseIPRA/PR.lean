@@ -109,14 +109,12 @@ variable {n k m : ℕ} {Γ : List (Fm PTm n)}
 
 /-- Projection, at arbitrary arguments. -/
 theorem proj (i : Fin k) (ts : Fin k → PTm n) : Γ ⊢[PRAAx] app (.proj i) ts ≐ ts i := by
-  have := Prf.ax (Γ := Γ) (PRAAx.proj i) ts
-  simpa using this
+  simpa using Prf.ax (Γ := Γ) (PRAAx.proj i) ts
 
 /-- Composition, at arbitrary arguments. -/
 theorem comp (f : PR m) (gs : Fin m → PR k) (ts : Fin k → PTm n) :
     Γ ⊢[PRAAx] app (.comp f gs) ts ≐ app f (fun j => app (gs j) ts) := by
-  have := Prf.ax (Γ := Γ) (PRAAx.comp f gs) ts
-  simpa using this
+  simpa using Prf.ax (Γ := Γ) (PRAAx.comp f gs) ts
 
 /-- Primitive recursion at zero, at arbitrary parameters. -/
 theorem precZero (f : PR k) (g : PR (k + 2)) (xs : Fin k → PTm n) :
@@ -146,8 +144,7 @@ theorem precSucc (f : PR k) (g : PR (k + 2)) (y : PTm n) (xs : Fin k → PTm n) 
   simpa [e₁, e₂] using h
 
 theorem succNeZero (t : PTm n) : Γ ⊢[PRAAx] (succ t ≐ zero) ⟶ Fm.bot := by
-  have := Prf.ax (Γ := Γ) PRAAx.succNeZero (fun _ => t)
-  simpa using this
+  simpa using Prf.ax (Γ := Γ) PRAAx.succNeZero (fun _ => t)
 
 /-- Induction for a quantifier-free formula. -/
 theorem qfInd (φ : Fm PTm (n + 1)) (hφ : φ.QF) (h0 : Γ ⊢[PRAAx] φ.subst (inst zero))
