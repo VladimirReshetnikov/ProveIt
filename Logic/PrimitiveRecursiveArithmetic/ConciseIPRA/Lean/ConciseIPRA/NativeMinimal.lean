@@ -21,9 +21,8 @@ otherwise.
 so (`mprf_iff_iprf`) as the calculus of the reports.  The two generic
 developments are instantiated in the order in which they depend on each other:
 
-1. numerical cases and equation induction in `MPrf` need no transport: cases
-   are the introduction at a dummy witness coordinate and the witness
-   `I(0, 0; u. 0)`, induction is the introduction at the witness `0`;
+1. equation induction in `MPrf` needs no transport: it is the introduction at
+   a dummy witness coordinate and the witness `0`, followed by `DE` and `QE`;
 2. so `MPrf` is a `ZKernel`, and transport at every source follows
    (`ZKernel.trF`);
 3. with that transport `MPrf` is a `WKernel`, which gives `D` by cases for
@@ -72,17 +71,6 @@ theorem toNPrf (h : MPrf Γ A) : NPrf Γ A := by
   | dE _ _ ih₁ ih₂ => exact .dE ih₁ ih₂
   | dI B t _ ih => exact .ofDI B t ih
 
-/-- Numerical cases, by the introduction at a dummy witness coordinate and the
-witness `I(0, 0; u. 0)`. -/
-theorem cases (B : NFm (n + 1)) (t : Tm n) (h0 : MPrf Γ (B.subst (inst zero)))
-    (hS : MPrf ((B.subst (inst zero)).shift :: Γ.map NFm.shift)
-      (B.subst (repl (succ (Syn.var 0))))) : MPrf Γ (B.subst (inst t)) := by
-  have hD : MPrf Γ (.D (B.subst (up (fun i => Syn.var i.succ)))) := by
-    refine .dI _ (iter zero zero zero) ?_
-    rw [NFm.start_iter, NFm.subst_dummy_inst, ← NFm.shift_subst_inst_zero]
-    exact hS
-  exact .qE t (.dE hD (.hyp List.mem_cons_self)) h0
-
 /-- Equation induction, by the introduction at a dummy witness coordinate and
 the witness `0`. -/
 theorem eqInd (s t : Tm (n + 1)) (u : Tm n) (h0 : MPrf Γ ((NFm.eq s t).subst (inst zero)))
@@ -103,7 +91,7 @@ theorem eqInd (s t : Tm (n + 1)) (u : Tm n) (h0 : MPrf Γ ((NFm.eq s t).subst (i
 
 instance : ZKernel @MPrf :=
   ⟨fun h => .hyp h, fun a h => .iterZero a h, fun c a h => .iterSucc c a h,
-    fun a b => fun hs h₁ h₂ => .trEq a b hs h₁ h₂, cases, eqInd⟩
+    fun a b => fun hs h₁ h₂ => .trEq a b hs h₁ h₂, eqInd⟩
 
 instance : WKernel @MPrf :=
   ⟨fun h => .hyp h, fun a h => .iterZero a h, fun a b => fun h₁ h₂ => ZKernel.trF a b h₁ h₂,
