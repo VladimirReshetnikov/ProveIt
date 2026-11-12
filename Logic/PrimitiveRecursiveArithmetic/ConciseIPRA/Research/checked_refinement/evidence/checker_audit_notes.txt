@@ -1,0 +1,114 @@
+PACKAGING NOTE
+This is the full internal audit/proof correspondence, retained with attribution. Historical test paths refer to the source archives, and those historical runs cover more fixtures than the portable subset. Run ../reproduce.py from this directory, or python3 reproduce.py at the package root, to reproduce the delivered subset and all module measurements. No new mathematical axiomatization or formal proof-assistant verification is asserted.
+
+# Audit of the pinned ConciseIPRA comparison and strict checker refinements
+
+## Snapshot and downloaded artifacts
+
+Inspected ProveIt commit `8eb71c1e570e07ef45ead686628e77f18ef34798`, directory `Logic/PrimitiveRecursiveArithmetic/ConciseIPRA`. All three currently incoming archives were read and their binary bytes compared to Git's blob hash:
+
+| File | Size | Git blob SHA1 |
+|---|---:|---|
+| ipra_compact_update_2026-11-11.zip | 851736 | 4a38b8f7e7e72a767526c8f7d68a77e50e7e21bb |
+| ipra_kernel_refinement_2026-11-11.zip | 1075261 | d00ab53c90daec469ff17e1b36e9eede5be92779 |
+| ipra_one_context_2026-11-11.zip | 542744 | 46e1344d8ce4bd91c696f0eefe951a306ea6d3eb |
+
+They are extracted under `work/checker_audit/{compact,kernel,one_context}/`.
+The package kernel's pinned *older comparison* is a4e5e96..., which must not be conflated with the current snapshot where we inspected the archives.
+
+## Verified current compact envelope
+
+Independent measurements are in `evidence/historical/incoming_metrics_verified.json`.
+Normalization: `ast.unparse(ast.parse(source)) + '\n'`, CPython 3.12.14, whole standalone module. Tokens exclude whitespace, indentation, newline markers, comments, encoding and end markers; AST counts every `ast.walk` node. gzip level9, mtime0, zlib1.3.2, informational only.
+
+| Current profile | Tokens | AST | Bytes | Gzip9 |
+|---|---:|---:|---:|---:|
+| kernel/code/checker_tokens.py | 256 | 283 | 594 | 346 |
+| kernel/code/checker_ast.py | 260 | 278 | 602 | 344 |
+| kernel/code/checker_bytes.py | 263 | 300 | 521 | 327 |
+| kernel/code/checker_strict.py (guarded public Eq/D) | 489 | 560 | 1201 | 571 |
+
+Thus the actual compact envelope is **256 / 278 / 521**, attained by different programs. Both compact_update and kernel_refinement carry exactly the same AST and byte profile source hashes. The one_context archive already proposes one-context crossed transport `s=t, h(s)=u => u=h(t)` and already factors public scope checking out of unguarded native strict interfaces. These must not be claimed new.
+
+The current strict native Eq/D profile at `one_context/.../strict/code/checker_eqd.py` has 359 tokens / 414 AST / 803 bytes / gzip463. Its Eq/Q/D version is 863 bytes, and the version adding exact int/list typing of the whole JSON certificate is1039. Those use the original full-native case/progress mode; their compact kernel is different from the deterministic guarded auxiliary kernel underlying521.
+
+## New guarded strict factorization: 1201 to921 bytes
+
+File: `code/checker_guarded.py`.
+Metrics: **407 tokens /459 AST /921 normalized bytes /gzip507**.
+The proof kernel and complete input/output driver are unchanged; only the public-goal validator differs. This is an implementation simplification of an inherited theory, not a new axiomatization and not a new compact-envelope minimum.
+
+### Exact contract
+
+Both old and new modules read any finite JSON certificate. A module accepts iff it exits normally with exactly `ACCEPT\n`. Errors, invalid input, failure, and exhaustion are not acceptance. As in the baseline, the mathematical universal theorem abstracts from finite machine resources. The claim is equivalence of accepted finite JSON certificates, including all malformed or unused certificate fields, not just valid mathematical statements.
+
+### The old predicate
+
+At numerical depth with p protected slots, old `term(t,p)` accepts exact Python integers iff
+
+`a == 0 or (3 <= a < 3+2*p and a % 2 == 1)`.
+
+It admits exact lists of arities1 and3, recursing with respectively p+2 and p+1. Old `formula(A,p)` admits equality `[s,t]` with both terms at p, or `[B]` with B at p+2. For a paired formula whose immediate matrix B is an equation, both sides of B must be ternary terms whose first two raw entries are `[5,0]`. A nested paired matrix has no extra immediate guard.
+
+### New predicate
+
+A Boolean d records only the sort: formula false, numerical true. Integers must be numerical and either zero or odd at least3. Admitted list arities are {1,2} for formulas and {1,3} for terms. The child sort is `d or n==2`, where n is the parent arity. After validating children, a formula of arity1 with an atomic matrix additionally checks `b[:2] == [5,0]` for each matrix side b. This is the entire guard test.
+
+### Lemma 1: the guard test needs no separate type or arity checks
+
+A side b is reached by the guard only after recursive shape validation of the matrix, hence b is already either an exact integer or an exact list with arity1 or3. If b is an integer, taking b[:2] raises and the new module rejects, just as the old guard's list-type check rejects. If b is unary, its two-entry prefix has length1 and cannot equal `[5,0]`. If b is ternary, the new and old guard conditions agree. Both validators require the same literal prefix and permit the same update term. Therefore, with exceptions classified as rejection, the guard checks have exactly the same success conditions.
+
+### Lemma 2: shape plus the existing initial opening equals the old validator
+
+The kernel's first action is the no-image traversal i(A) at numerical name floor k=0. At any list of arity n, the traversal increases the depth by5-n. At the root formula the depth is0; under p protected numerical slots it is2p. Equality adds3, obtaining numerical depth3+2p. A unary D adds4 and hence two slots. A unary successor adds4 and hence two dummy slots. A ternary iterator adds2 and hence one slot. Thus the sort tracked by d is exactly the parity of the traversal depth.
+
+On a numerical integer leaf, the opener preserves a precisely when `0 <= a < depth`. If a violates this test it tries to insert the unavailable image, which is the checker function object; the scalar arithmetic operation on that function raises TypeError. The new shape predicate already ensures each integer is nonnegative and has the required canonical spelling (zero or odd>=3). Therefore successful initial opening adds exactly the missing upper bound. Since public shape excludes formula scalars and high-arity ignored nodes, no meaningful leaf can hide in an administrative constant. When all bounds hold, opening preserves the entire tree literally.
+
+Combining the shape rules and Lemma1, for every finite JSON goal A:
+
+`old_formula(A,0) succeeds` iff `new_formula(A,False) succeeds and initial opening i(A) succeeds`.
+
+When either side holds, `i(A) == A` literally.
+
+### Theorem: exact acceptance preservation
+
+Input parsing, goal extraction, all kernel code, instruction consumption, fresh-name handling, retained context and final verdict are identical in the two modules. If the old validator accepts, the new validator accepts and the initial opener leaves exactly the same goal; all remaining execution agrees. If the new validator rejects then old validation also rejects. If the new validator succeeds but the old fails, the initial opener fails before consuming any proof instruction, so the new checker cannot accept. This proves both directions for all finite JSON certificates, independently of the contents of intermediate or inert data.
+
+Consequently the predecessor's soundness, completeness, public syntax contract, ordinary realization and bi-interpretation transfer unchanged. This proof does not claim a new full mechanization of the predecessor checker.
+
+### Evidence
+
+`verify_guard_shape.py` checks30,255 old-validator versus new-shape-plus-opening comparisons and284 full processes (71 distinct fixtures, both old/new programs, normal and optimized Python). Recorded result: zero mismatches, zero timeouts;42 accepted and100 rejected process pairs. See `guard_shape_validation.json`. These finite checks supplement, rather than replace, the proof.
+
+## New ordinary native strict expression: 803 to788 bytes
+
+File: `code/checker_native.py`.
+Metrics: **358 tokens /413 AST /788 bytes /gzip460**.
+The comparator is the actual803-byte strict native Eq/D module from one_context. This change replaces the validator's early integer return plus list return by one conditional expression, preserving all tests and their evaluation order:
+
+```
+return integer_result if type(a) is int else list_result
+```
+
+This is a small code-structure simplification only; it changes no mathematical rule or syntax condition. In particular it must not be presented as a new mathematical breakthrough. A separate lambda profile has780 bytes but415 AST nodes, so the788-byte profile is the cleaner all-coordinate matched improvement.
+
+### Universal proof
+
+For exact integer a, both versions evaluate only `d and (a == 0 or (a >= 3 and a % 2))`. For any other a, both evaluate exactly the same short-circuit expression testing exact list type, admitted arity and recursively validating children. Induction on finite input trees gives equal returned values or equal error behavior for every call. The AST of the rest of the complete modules is identical, as checked by `verify_native_expression.py`. Thus the accepted certificate languages are exactly equal, and all inherited metatheory transfers. Unlike the guarded factorization theorem, this proof does not even need the initial scope opener.
+
+### Evidence
+
+`verify_native_expression.py` compares10,255 validator calls and full-process old/new runs on the inherited native strict fixtures, both normal and optimized Python. Full receipt is `native_expression_validation.json`.
+
+## Mathematical routes considered but not claimed
+
+Restricting guarded atomic D matrices further to `0=I(y,0;u.h)` is expressively adequate after reflection of equality into a primitive-recursive term, but closely overlaps the existing mirror_guard family `a=I(y,a;u.h)` and does not obviously shorten the compact kernel. It is not presently offered as a new breakthrough.
+
+Simply admitting every unguarded auxiliary atomic D under ordinary conditional semantics is not valid for the deterministic auxiliary calculus. The rule has progressive soundness at those atoms, while elimination exports only conditional Q. Without a separate proof recovering progress, full auxiliary formula round trips must not be inferred from the public guarded theorem.
+
+
+## Compact Boolean selection: 521 to 520 bytes
+
+The delivered `code/checker_compact.py` replaces `[s,u] if s else [t]*3` by `s and [s,u] or [t]*3`. If s is false, both expressions produce `[t]*3`. If s is true, `[s,u]` is a nonempty two-element list and therefore true regardless of the contents, so both expressions produce that very list. Python truth testing of JSON values has no user-defined side effects. Therefore the selected value, every subsequent operation, and the accepted certificate language are unchanged. This is an implementation identity, not a mathematical axiom reduction. The complete normalized program has263 tokens,303 AST nodes,520 bytes and329 gzip9 bytes: the AST and compressed size are larger than the521-byte baseline, and the token count is unchanged.
+
+The portable reproduction verifies that this is the only AST modification in the compact pair; the native and guarded pairs are AST-identical outside their stated validator definitions. Its delivered subset contains39 distinct certificate files and60 profile/fixture cases, checked in both normal and optimized Python:240 processes,120 paired comparisons. Historical broader receipts are retained separately.

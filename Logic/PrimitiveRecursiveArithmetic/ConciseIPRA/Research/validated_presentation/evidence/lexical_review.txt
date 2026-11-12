@@ -1,0 +1,105 @@
+Independent review of whole-certificate type validation
+=====================================================
+
+Reviewed programs
+  Baseline: checker_audit/incoming/ipra_validated_core/code/native_typed_full.py
+  Candidate: arithmetic_reduction/native_typed_lexical.py
+  Candidate: arithmetic_reduction/native_typed_repr.py
+
+Conclusion
+----------
+Both revised programs preserve the intended whole-certificate integer/list
+type contract and the canonical closed Eq/Q/D goal grammar. Their arithmetic
+kernel c is unchanged. The repr-based form is valid only under the stated
+default-json-decoder precondition; it is not a general validator for arbitrary
+Python objects. Validation uses explicit if, so python -O does not disable it.
+
+Lexical lemma
+-------------
+For any finite string s and character alphabet A, s.strip(A) is empty iff
+every character of s belongs to A. If a forbidden character occurs, stripping
+the maximal allowed prefix and suffix cannot remove that character.
+Here A contains the ten ASCII digits, square brackets, comma, ASCII space,
+minus, horizontal tab, carriage return, and line feed.
+
+If json.loads(s) succeeds and every character belongs to A, the parsed value
+is recursively an exact int or list. JSON strings require a quote, objects
+require a brace, booleans/null require letters, and noninteger numeric tokens
+require a decimal point or exponent letter. The decoder's nonstandard NaN and
+Infinity tokens also require letters. All these characters are forbidden.
+Conversely, any successfully decoded integer/list JSON text contains only A.
+JSON itself still rejects invalid arrangement: leading-zero numbers, double
+minus, missing commas/brackets, extra data, and empty input are not rescued.
+Non-ASCII digits and Unicode whitespace are forbidden; the default JSON
+decoder does not admit them outside strings in the first place. Strings with
+Unicode escapes are rejected because they contain quotes. A UTF-8 BOM is
+rejected by the baseline text decoder and by the revised lexical guard.
+
+Repr lemma
+----------
+Default json.load produces only exact dict, list, str, int, float, bool, None.
+For those values, repr(q).strip('0123456789[], -') is empty exactly when q is
+an integer/list tree. Integer repr uses decimal digits with optional minus;
+list repr adds square brackets, commas, and spaces. Every string repr contains
+a quote; every dict repr contains braces; booleans and None contain letters;
+finite float repr contains a decimal point or exponent marker, and infinities
+or NaNs contain letters. A forbidden leaf character remains visible inside
+all enclosing list representations. There is no eval, custom object_hook,
+parse_int callback, custom repr method, or user-defined object in this claim.
+
+Top-level shape and unused prefix
+--------------------------------
+Both candidates check the entire input/tree before q.pop removes the goal,
+so an unused prefix cannot hide a forbidden type. The baseline checks that
+prefix with v(q,0), and checks the popped goal with v(a,2). For a top-level
+list, the two conditions cover exactly the same tree. A nonlist top-level
+value or an empty top-level list cannot proceed through q.pop in either
+program and is rejected. Exceptions as well as explicit guard failures mean
+rejection; exact exception classes and diagnostic wording are not part of
+the ACCEPT contract.
+
+Scope-validator rebasing
+-----------------------
+On integer/list trees, write V_old(a,D) for the baseline scoped call with
+D>=2, and V_new(a,d) for either candidate's call with d=D-2. Then
+V_old(a,D) and V_new(a,D-2) have the same truth result or the same structural
+failure, ignoring resource exhaustion. For integers, D and D-2 have the same
+parity, and the old bound 2<a<D-2 becomes exactly 2<a<d. The raw-mode
+alternative not D is false. For lists, a*0==[] is automatically true, while
+the new discriminator a*0==0 is false. The allowed lengths and diagonal
+triple condition are identical because parity is unchanged. Each recursive
+depth changes by 5-len(a), so the induction invariant D=d+2 is preserved.
+An empty list reaches the same failing a[0] access in both scoped validators.
+At the public goal D=2 corresponds to d=0.
+
+The kernel implication
+----------------------
+After validation, both programs supply the same parsed goal and instruction
+list to byte-identical c and opener logic. Thus every accepted result has the
+same inherited mathematical interpretation and soundness justification.
+Every canonical derivation certificate remains expressible by the same JSON
+tree. This is an implementation reduction, not a new axiom or stronger rule.
+
+Important operational qualification
+-----------------------------------
+Do NOT claim literal subprocess acceptance equivalence for every finite input
+under fixed CPython resource limits. I independently tested the inherited
+native_computation.json proof with a valid but unused integer/list prefix
+nested 600 levels. The baseline raises RecursionError in its recursive raw
+validator; BOTH revised programs print ACCEPT and exit normally. Depths 100,
+300, and 450 were accepted by all three; depth 800 had the same divergence
+as depth 600. The broader candidate acceptance is sound: the unused prefix
+has exactly the permitted type. The intended abstract contract is unchanged,
+while accidental resource failures differ. State equivalence for inputs on
+which the relevant validations complete, and preservation of the intended
+type/grammar and mathematical theorem contracts. A finite Python checker,
+including the baseline, is not literally complete under bounded resources.
+
+Review boundaries
+-----------------
+This review proves the local validation refinement from the default JSON
+type domain and checks the unchanged-kernel interface. It does not re-prove
+the inherited arithmetic checker theorem, the source-dispatch encoding, or
+the whole-domain bi-interpretation. Those remain attributed dependencies.
+It also makes no new checker-size claim; measurements belong to the build
+and reproduction scripts.

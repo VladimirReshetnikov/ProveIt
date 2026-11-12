@@ -1,0 +1,253 @@
+% Includable mathematical section; requires amsmath, amssymb, amsthm.
+% Requires theorem, lemma, corollary, proposition environments.
+% New countermodel, independently reviewed during this request.
+% This section proves failure of full equation-induction recovery.
+% It does NOT prove absence of every possible bi-interpretation with iPRA.
+
+\section{Zero-equation induction does not recover equation induction}
+\label{zi:section}
+
+Consider the initialized scalar language
+\[
+t::=x\mid0\mid St\mid I(n,a;u.h)
+\]
+with its two computation schemas
+\[
+I(0,a;u.h)=a,\qquad
+I(Sn,a;u.h)=h[I(n,a;u.h)/u].
+\]
+Only the state variable \(u\) is bound in \(h\); the other variables of the fixed finite body are numerical parameters. Use ordinary intuitionistic first-order logic with actual equality, numerical coverage
+\[
+\forall x\,(x=0\lor\exists y\,x=Sy),
+\]
+separation \(0=S0\to\bot\), and contextual induction restricted to equations
+\[
+0=t(n,\vec p)
+\]
+(or, equivalently, \(t(n,\vec p)=0\)). Call this theory \(T_0\).
+Adding successor injectivity will not affect the counterexample.
+
+A tempting simplification is to use progressive introduction only when a matrix equation has literal zero on one side, and to use the case introduction otherwise. The following theorem rules out the intended recovery of the existing full equation-induction rule from this restriction.
+
+\begin{theorem}[A model separating zero induction from equation induction]
+\label{zi:main}
+There is a classical model of \(T_0\), also satisfying successor injectivity, in which
+\[
+\forall n\,\forall a\; I(n,a;u.u)=a
+\]
+is false. Nevertheless its zero instance and its ordinary induction step are theorems of the computation equations and equality logic.
+Consequently induction on arbitrary literal equations is not admissible in \(T_0\).
+\end{theorem}
+
+The model is a classical one-world model and hence also a model for intuitionistic first-order logic. Its construction takes place in ordinary classical mathematics, using compactness and choices of compatible paths. These are metatheoretic resources for constructing a countermodel, not extra principles granted to \(T_0\).
+
+\subsection{An arithmetic base with two-point fibers}
+
+Fix a nonstandard model \(M\) of full Peano arithmetic expanded by the usual symbols for all fixed primitive-recursive descriptions. Such a model exists in ordinary mathematics: add a constant larger than each standard numeral, use the standard natural-number model for every finite subtheory, and apply first-order compactness. A countable model may be chosen. We use its full induction only in the external countermodel construction.
+
+For \(m\in M\), define the finite nonempty set
+\[
+A_m=
+\begin{cases}
+\{0\},&m\text{ is a standard numeral},\\
+\{0,1\},&m\text{ is nonstandard}.
+\end{cases}
+\]
+The distinction is external; it need not be definable in \(M\).
+Let
+\[
+D:=\{(m,i):m\in M,\ i\in A_m\},\qquad
+\pi(m,i):=m.
+\]
+Define
+\[
+0_D=(0_M,0),\qquad
+S_D(m,i)=(S_Mm,i).
+\]
+This is well defined because successor preserves standardness and nonstandardness.
+
+The map \(\pi\) is surjective and preserves zero and successor. Every standard numeral has a singleton fiber; every nonstandard element has two lifts. Successor is injective on \(D\), and zero is outside its image. Coverage holds: a positive standard numeral has its usual predecessor, and a nonstandard \((m,i)\) has predecessor \((m-1,i)\).
+
+The nonstandard part of \(M\), under successor and predecessor, is a disjoint union of externally bi-infinite chains. More precisely, each equivalence class under a difference of a standard integer is a copy of \(\mathbb Z\). On \(D\), the label \(i\) is retained along each such counter chain.
+
+\subsection{Compatible paths through finite fibers}
+
+\begin{lemma}[Finite-fiber path lemma]\label{zi:path}
+Let \((B_j)_{j\in\mathbb Z}\) be finite nonempty sets and let
+\(f_j:B_j\to B_{j+1}\) be total maps. There is a sequence
+\((b_j)_{j\in\mathbb Z}\) such that
+\[
+b_j\in B_j,\qquad b_{j+1}=f_j(b_j)
+\]
+for every \(j\).
+\end{lemma}
+\begin{proof}
+The product \(\prod_{j\in\mathbb Z}B_j\), with the finite discrete factors, is compact. Each adjacent-coordinate equation is a closed constraint. Every finite collection of these constraints is satisfiable: choose a value at the least involved index and propagate it forward, choosing arbitrary values elsewhere. The finite-intersection property therefore gives a simultaneous solution. Equivalently, this is the usual compactness argument for paths in a sequence of finite nonempty layers. Surjectivity of the transition maps is not required.
+\end{proof}
+
+\subsection{Choosing iterators by actual body functions}
+
+It is essential not to make independent choices merely for syntactic descriptions of bodies. Two bodies that denote the same actual function must receive the same iterator. The following construction ensures this and makes ordinary substitution under the binder legitimate.
+
+Let \(\mathscr H\) be the set of all actual functions \(h:D\to D\) for which there is a unary primitive-recursive function with parameters \(f:M\to M\) satisfying
+\[
+\pi(h(x))=f(\pi(x))\qquad(x\in D).
+\tag{Projection}\label{zi:projection}
+\]
+Surjectivity of \(\pi\) makes \(f\) unique as an actual function on \(M\).
+
+For such an \(f\), write \(\operatorname{It}_f(m,b)\) for its usual iteration in \(M\), with initial value \(b\). This notation does not depend on the chosen primitive-recursive description and parameter tuple for \(f\). Indeed, if two descriptions give the same function on all of \(M\), their two iterators have the same base value and pointwise identical updates; the equation-induction instance in \(M\) comparing them proves equality at every counter. This is a use of induction in the external base model, not in the weak theory \(T_0\).
+
+We define one external operation
+\[
+\mathcal I:D\times D\times\mathscr H\longrightarrow D.
+\]
+It will obey the scalar computation equations and satisfy
+\[
+\pi(\mathcal I(n,a,h))
+=\operatorname{It}_f(\pi(n),\pi(a)).
+\tag{Iterator projection}\label{zi:it-projection}
+\]
+
+If \(n\) is a standard counter \(k\), put
+\[
+\mathcal I(k,a,h):=h^k(a),
+\]
+where the right side is actual finite iteration on \(D\).
+
+Now fix \(a,h\) and one nonstandard counter chain
+\[
+n_j=(m_j,i),\qquad
+m_{j+1}=S_Mm_j,\qquad j\in\mathbb Z.
+\]
+Its counter label \(i\) is fixed. Put
+\[
+r_j:=\operatorname{It}_f(m_j,\pi(a)),\qquad
+B_j:=\pi^{-1}(r_j).
+\]
+The sets \(B_j\) have one or two elements. By the computation law in \(M\),
+\(r_{j+1}=f(r_j)\). Equation~\eqref{zi:projection} therefore makes the restriction of \(h\) a total map
+\[
+h:B_j\longrightarrow B_{j+1}.
+\]
+Lemma~\ref{zi:path} gives a compatible path \(b_j\in B_j\). Choose one such path and define
+\[
+\mathcal I(n_j,a,h):=b_j.
+\]
+Do this for every triple consisting of an actual function \(h\), an initializer \(a\), and a nonstandard counter chain. The choices may be made simultaneously in the metatheory.
+
+There is one specified family of choices. If \(h=\operatorname{id}_D\), choose on every nonstandard counter chain the constant path
+\[
+\mathcal I(n,a,\operatorname{id}_D):=(\pi(a),0).
+\tag{Identity choice}\label{zi:identity-choice}
+\]
+This is legitimate: the projected iterator is constantly \(\pi(a)\), the label-zero point always exists, and the identity update fixes it. These choices depend on the actual function \(h\), so every syntactic presentation of the identity body uses the same family.
+
+By construction,
+\[
+\mathcal I(0_D,a,h)=a,\qquad
+\mathcal I(S_Dn,a,h)=h(\mathcal I(n,a,h))
+\]
+for every \(n,a,h\), and \eqref{zi:it-projection} holds. The standard and nonstandard counter components never meet under a finite successor step, so their definitions are compatible.
+
+\subsection{Interpreting every finite scalar term}
+
+Interpret the binding constructor by
+\[
+\llbracket I(n,a;u.h)\rrbracket_D
+=
+\mathcal I\bigl(\llbracket n\rrbracket_D,
+              \llbracket a\rrbracket_D,
+              v\mapsto\llbracket h\rrbracket_{D,u:=v}\bigr).
+\]
+
+\begin{lemma}[Term projection and absence of syntactic circularity]
+\label{zi:term-projection}
+Every finite scalar term has a well-defined interpretation on \(D\). For every valuation \(\rho\),
+\[
+\pi(\llbracket t\rrbracket_{D,\rho})
+=
+\llbracket t\rrbracket_{M,\pi\circ\rho},
+\]
+where the right side uses the ordinary initialized scalar iterator in \(M\). In particular every body function supplied to \(\mathcal I\) belongs to \(\mathscr H\).
+\end{lemma}
+\begin{proof}
+Induct externally on the finite syntax, treating a body's bound variable as an additional free numerical input in the induction hypothesis. Zero, successor, and variables are immediate. The induction hypothesis for a body gives a function satisfying \eqref{zi:projection}, whose projected function is the fixed primitive-recursive interpretation of that body, with its fixed parameter values in \(M\). Thus it lies in \(\mathscr H\), and \eqref{zi:it-projection} proves the assertion for the enclosing iterator.
+
+The operation \(\mathcal I\) was chosen for actual functions in \(\mathscr H\) before this syntax induction; its definition does not call an evaluator for the term language. Finite nesting therefore creates no circular semantic definition. Equivalently, one obtains a first-order structure by taking one function symbol for every finite earlier-stage body and giving its numerical arguments the interpretation displayed above. Equal parameter values determine the same actual body function and hence the same iterator. The usual substitution lemma, including substitution under a recursor body after renaming bound variables, follows from compositional semantics.
+\end{proof}
+
+This also shows that the two scalar computation schemas hold for every fixed finite body, including nested descriptions. No uniform total evaluator is postulated in the object language.
+
+\subsection{Why every zero-equation induction instance holds}
+
+A singleton zero fiber gives
+\[
+\llbracket t\rrbracket_D=0_D
+\quad\Longleftrightarrow\quad
+\llbracket t\rrbracket_M=0_M
+\]
+after projecting the valuation.
+
+Fix numerical parameters \(\vec a\in D\) and a scalar term \(t(n,\vec a)\). Suppose in \(D\) that
+\[
+t(0,\vec a)=0,\qquad
+\forall n\,\bigl(t(n,\vec a)=0\to t(Sn,\vec a)=0\bigr).
+\]
+Write \(\overline t\) for the primitive-recursive interpretation in \(M\).
+Term projection and surjectivity of \(\pi\) imply
+\[
+\overline t(0,\pi\vec a)=0,\qquad
+\forall m\in M\,
+\bigl(\overline t(m,\pi\vec a)=0
+      \to\overline t(Sm,\pi\vec a)=0\bigr).
+\]
+Apply the relevant induction instance in \(M\), then reflect zero back through \(\pi\), to obtain \(\forall n\in D\,t(n,\vec a)=0\).
+
+This validates contextual zero-equation induction as well. At any valuation where the retained context is true, the two premises supply exactly the displayed base and universal step; no projection of the possibly complicated retained context is required. Thus arbitrary first-order side assumptions do not repair the missing induction strength.
+
+In fact the same argument validates induction on every equation
+\[
+\overline{k}=t(n,\vec a)
+\]
+with one side a fixed standard numeral, because every such numeral has a singleton fiber. Allowing every fixed numeral in place of zero still does not recover full equation induction.
+
+\subsection{Failure of identity-iterator uniqueness}
+
+Choose a nonstandard \(b\in M\) and let \(a=(b,1)\). For the identity body define
+\[
+E(n):\quad I(n,a;u.u)=a.
+\]
+Its base is a computation equation. Its step is provable using
+\[
+I(Sn,a;u.u)=I(n,a;u.u):
+\]
+under \(E(n)\), equality transitivity gives \(E(Sn)\). Hence these are genuinely provable induction premises, not merely premises accidentally true in the constructed model.
+
+For every nonstandard counter \(n\), however, \eqref{zi:identity-choice} gives
+\[
+I(n,a;u.u)=(b,0)\ne(b,1)=a.
+\]
+This proves Theorem~\ref{zi:main}. The failed equality is between two elements with the same projection; zero tests cannot distinguish the two labels.
+
+\begin{corollary}[No recovery of actual-equality reflection]
+\label{zi:no-reflection}
+The theory \(T_0\) cannot prove, for a scalar term \(e(x,y)\), the reflection law
+\[
+e(x,y)=0\quad\longleftrightarrow\quad x=y.
+\]
+\end{corollary}
+\begin{proof}
+Take the distinct points \(x=(b,0)\), \(y=(b,1)\) over one nonstandard \(b\). Term projection gives the same projected value to \(e(x,y)\) and \(e(x,x)\). If the proposed reflection law held, \(e(x,x)=0\); the singleton zero fiber would then force \(e(x,y)=0\) also, contradicting \(x\ne y\).
+\end{proof}
+
+The usual conversion of arbitrary equations into zero equations therefore cannot be used to justify this induction restriction: in this scalar presentation the required actual-equality reflection is precisely a missing conclusion.
+
+\paragraph{Exact scope.}
+The theorem refutes recovery of the current scalar equation-induction rule, even with full intuitionistic first-order equality logic, all numerical cases, both computation schemas, and successor injectivity available. In the native \(Q,D\) presentation, the ordinary readings make QE, DE, case introduction, and progress for zero equations valid in this same model; hence those logical rules do not evade the counterexample.
+
+The construction does not prove that \(T_0\) has no interpretation of arithmetic on a quotient, and does not prove that every possible changed-domain bi-interpretation with \(\ipra\) is impossible. Such claims require additional arguments. Its precise conclusion is that the proposed literal-zero progress restriction does not preserve the existing same-domain, actual-equality consequence relation.
+
+\paragraph{Further research suggested by the countermodel.}
+A useful remaining question is to characterize which additional zero-induction principles force the fibers invisible to zero tests to collapse. Actual-equality reflection suffices but is a substantial additional resource. Another candidate is a narrowly stated iterator-uniqueness or extensionality principle that excludes the identity-iterator defect above; its sufficiency for all equation induction, and its complete-checker cost, remain to be proved.
+

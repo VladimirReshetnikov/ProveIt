@@ -1,0 +1,92 @@
+# Logical simplification investigation
+
+Baseline: ProveIt `8eb71c1e570e07ef45ead686628e77f18ef34798`,
+`Logic/PrimitiveRecursiveArithmetic/ConciseIPRA`.
+
+## Prior art screened
+
+* The original Choice-DI already removes Q from the public formula grammar
+  in favor of reusable context clauses. Q-to-clause elimination is not new.
+* Restricting crossed transport to one term context, from `s=t` and
+  `h(s)=u` to `u=h(t)`, is already in the incoming `one_context` archive.
+  Two applications recover two-sided atomic transport.
+* Root-determined progress at every atomic matrix requires care: replacing
+  conditional D by progressive D on the entire unguarded language changes
+  formulas. With an unused witness and `E(y) := (y=1)`, the conditional
+  reading is true (`0=1` implies everything), whereas progress is false.
+  Existing guarded-core papers already avoid claiming full round trips for
+  their entire administrative language.
+
+## Exact context-length invariant
+
+Consider the current incoming `kernel_refinement/code/checker_bytes.py`.
+Every call reachable from `c(q())` satisfies
+
+    k = 1 - len(g)
+
+at function entry. Initially `g=[0]` and `k=0`. A recursive major-premise
+call receives the unchanged `g,k`. A continuation receives `g+[h']` and
+`k-1`. These two cases prove the invariant by induction on the call tree.
+
+Consequently the explicit `k` argument is eliminable by setting
+`k = 1 - len(g)` on entry and omitting it from both recursive calls. The
+local `k -= 1` before the final two traversals must remain. The program
+`scope_candidate/checker_valid.py` does exactly this.
+
+### Universal trace correspondence
+
+At related calls, the goal, context, unconsumed certificate stack and local
+integer k are identical. Thus their traversal functions are extensionally
+identical. The hypothesis test takes the same branch. Otherwise both consume
+the same packet, perform the same elimination test, and recursively verify
+the same major premise with related entry states. The recursive result and
+remaining stack therefore agree. Both calculate the same h, decrement k,
+normalize the same hypothesis and goal under the decremented lower bound,
+and make related continuation calls. This is a bisimulation of terminating
+executions, including exceptions and rejection, with the standard caveat
+that different Python source may have different implementation resource
+limits. No mathematical axiom changes.
+
+### Measurement
+
+CPython 3.12.14; source normalized by `ast.unparse` plus one LF; significant
+tokens exclude layout/end-marker/comment tokens; AST nodes count `ast.walk`;
+gzip uses level 9 and mtime 0.
+
+| Program | Bytes | Tokens | AST | Gzip |
+|---|---:|---:|---:|---:|
+| Pinned incoming byte profile | 521 | 263 | 300 | 327 |
+| Valid two-argument profile | 529 | 263 | 305 | 328 |
+
+Therefore this is a valid elimination of an independent proof-state
+parameter, but **not a size improvement** under the requested metrics.
+
+## Why the tempting 514-byte variant is invalid
+
+Setting `k=-len(g)`, changing `k <= a < d` to `k < a < d`, and deleting
+the decrement would match the original pre-step scope. But the old traversal
+closes over mutable k. After the decrement it admits the newly generated
+eigenname while normalizing an inserted term via `i(t,d=3)`. The naive
+variant does not admit its own new eigenname and rejects valid proofs.
+Nine of the 21 supplied local fixtures distinguish it from the baseline.
+It must not be delivered as an improvement.
+
+The valid two-argument variant agrees with the baseline on all 21 local
+fixtures. The universal trace proof, rather than those finite checks, is
+the reason it is correct. `scope_candidate/validation.json` records all
+results, including the invalid candidate's failures.
+
+## Novelty search limits
+
+Targeted `rg` over the three incoming archive contents, including their
+frozen references, found no occurrence of `1 - len(g)`, `-len(g)`, or the
+phrases `context length`, `length of the context`, or a scope-length/fresh-
+length combination. This is a narrow search, not an exhaustive novelty
+claim over the whole historical corpus.
+
+## Result
+
+No new mathematical simplification meeting the lower-envelope size target
+was established in this sub-investigation. The state invariant and its
+counterexample are useful audit results; presenting the naive candidate as
+a smaller axiomatization would be incorrect.

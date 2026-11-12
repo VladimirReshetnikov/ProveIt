@@ -5,7 +5,7 @@ complete presentation of a theory bi-interpretable with full first-order
 intuitionistic primitive recursive arithmetic (iPRA), and the Lean
 formalization of the most concise of them.
 
-- [`Research/`](Research/) holds forty delivered packages, one directory
+- [`Research/`](Research/) holds forty-three delivered packages, one directory
   each. They are written mathematics with executable Python proof checkers;
   none of them claims a proof-assistant verification.
 - `Lean/` is the formalization (see [Lean formalization](#lean-formalization)).
@@ -177,6 +177,8 @@ for separate coordinates, they are listed separately. Each package's own
 | [`uniform_progress`](Research/uniform_progress/) | A seven-rule calculus `R` on the unrestricted formula grammar with a changed reading: `Q_y E` of a literal equation means progress, `∀y (E(y) → E(S y))`, and of a compound matrix the conditional closure. One introduction rule chooses its mode from the root of the matrix alone, so it commutes with substitution; one elimination `Q_y B, B(η) ⊢ B(I(η, n; u. S u))` serves both readings. Translations to and from the native calculus with both round trips, as written proofs | matched typed checker 4553 bytes against 4692 for the eight-rule kernel and 4456 for the seven-rule witness kernel |
 | [`one_sided_transport`](Research/one_sided_transport/) | The seven-rule calculus with its transport replaced by the one-template crossed rule at sources other than the literal `0`: from `s = t` and `f(s) = r` infer `r = f(t)`. The zero computation and this rule alone recover all equality reasoning, with no induction and no logical rule. Ships a proposed Lean module | matched strict checker 3246 bytes against 3302, 1171 tokens against 1196 |
 | [`validated_core`](Research/validated_core/) | One recursive validator shared between raw-tree typing and the public grammar, for the unchanged rule basis | fully validated Eq/Q/D checker 897 bytes against a matched 1049; compact envelope 256 tokens, 278 AST nodes, 521 bytes (different programs) |
+| [`validated_presentation`](Research/validated_presentation/) | The whole certificate is typed by one test on its printed form, so the public syntax validator loses its separate raw-type pass; the proof kernel is unchanged | fully validated Eq/Q/D checker 870 bytes against 897, 383 tokens against 401 |
+| [`checked_refinement`](Research/checked_refinement/) | Three smaller implementations of the existing presentations; stated to contain no new axiom deletion | guarded public-goal checker 921 bytes against 1201; native Eq/D public checker 788 against 803; compact guarded 520 against 521 |
 
 ### Other arithmetic bases
 
@@ -187,6 +189,7 @@ for separate coordinates, they are listed separately. Each package's own
 | [`monus_and_neutral_major`](Research/monus_and_neutral_major/) | A tied-seed recursor with two truncated-subtraction equations, from which reflection of equality is derived; also a neutral-major certificate protocol for the native core |
 | [`selfseed_scalar`](Research/selfseed_scalar/) | A self-seeded recursor `F(0;v.h) = S(h(0))`, `F(S n;v.h) = h(F(n;v.h))` over ordinary logic with successor injectivity, `0 ≠ S 0`, a Boolean equality test and literal-equation induction; also checkers of 554 bytes and of 291 AST nodes for the native core |
 | [`register_graph`](Research/register_graph/) | Terms `x`, `0` and a counter-aware register iterator `J(n; i, r. body)` only, over ordinary logic: successor `S(a) = J(a; i, r. 0)` and the initializer are derived, and primitive recursion compiles without pairing; also a 288-node AST checker for the native core |
+| [`canonical_recursors`](Research/canonical_recursors/) | A successor-seeded recursor `R(n, a; u.h)` with successor defined as `R(0, a; u.0)`; the zero computation is built into a canonical term grammar with normalizing substitution, so successor computation is the only explicit computation rule. Six rules; written proofs of the equivalence with the raw calculus and of the bi-interpretation with iPRA. Normalization is part of the trusted specification. Matched strict checker 4611 bytes against 4923 for the scalar iterator with independent `S`; separately, the compact guarded codec at 516 bytes against 522 |
 
 ## Intake record
 
@@ -246,6 +249,11 @@ filed: thirty-nine frozen copies of this repository's Lean sources and one
 checksum ledger. The proposed module
 `Research/one_sided_transport/formalization/NativeOneSided.lean` is kept as
 delivered; `NativeOneContext` and `NativeMinimal` prove its theorems.
+
+A sixth delivery of three archives arrived on 2026-11-11 and 2026-11-12 and
+was filed on arrival: `canonical_recursors`, `checked_refinement` and
+`validated_presentation`. Not filed: four frozen copies of this repository's
+Lean sources and three checksum ledgers.
 
 ## Lean formalization
 
@@ -344,7 +352,8 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `kernel_refinement` | Its checker results concern Python programs. Its note on replacing one occurrence in the left side of an equation is not formalized; with a term template in place of a linear context it is the kernel's rule followed by symmetry. |
 | `compact_update` | Its checker results concern Python programs. Its closure criterion is proved in `T_eq` for every quantifier-free formula: `Teq.closure_iff_progress`, with `Teq.closure_of_progress` and the decidability lemma `Teq.qfDec` (`TeqClosure`). The variant after existential binding is not formalized. |
 | `uniform_progress` | Not formalized. Its calculus changes the reading of `Q` at literal equations, so it needs its own soundness proof, its own structural rules and both formula translations with their round trips. |
-| `validated_core` | Its results concern Python programs; the rule basis is unchanged. |
+| `validated_core`, `validated_presentation`, `checked_refinement` | Their results concern Python programs; the rule basis is unchanged. |
+| `canonical_recursors` | Not formalized. It is a different term language (a recursor whose seed is a successor, with a canonical grammar and normalizing substitution), so it would need its own syntax, its equivalence with the raw calculus and a bi-interpretation with iPRA. |
 | `witness_rule` (first delivery) | Proved: `wprf_iff_nprf`. The kernel keeps two introductions, because the single rule is not stable under substitution by a direct induction (a substitution can turn a witness into the literal `0`). |
 | `direct_closure`, `direct_closure_qprogress` | Adopted: `qIInd` is the kernel's progress rule. The delivered migration patch compiled as written. |
 | `source_dispatch` | Proved twice: `zprf_iff_nprf` for its own uncrossed rule, and `oprf_iff_nprf` for the kernel's rule, where it needs no induction. The kernel keeps unrestricted sources, because substitution into derivations (`NPrf.subst`) is not admissible in the restricted calculus. |

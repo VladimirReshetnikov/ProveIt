@@ -1,0 +1,388 @@
+% Inclusion fragment. Requires obstruction.tex and finite_profiles.tex.
+% Requires theorem, lemma, corollary, definition, remark environments.
+% Bibliography key: avigad-cut.
+% Scope: ordinary intuitionistic theories with existential-free axioms and
+% the standard B-algebra as a model. Not arbitrary axiomatizations in B syntax.
+
+\section{The obstruction to relational bi-interpretability}
+\label{sec:relational-obstruction}
+
+The preceding semantic obstructions concerned operation symbols realized
+by terms. The finite-profile theorem also has a proof-theoretic
+consequence. For the ordinary tied-seed arithmetic with literal-equation
+induction, it rules out \emph{every finite-dimensional
+bi-interpretation} with $\mathsf{iPRA}$, including interpretations with
+arbitrary formula-defined domains, operation graphs, and quotient
+equality. The additional ingredient is finite witness extraction from
+intuitionistic proofs with existential-free axioms.
+
+This conclusion concerns a specified theory, not every possible theory
+in the same numerical language. Adding positive existence axioms can
+invalidate the witness-extraction hypothesis. It also does not claim
+that the tied-seed theory has no one-way interpretation of arithmetic
+on a complicated domain. The source-side round trip required for
+bi-interpretability is essential to the final argument.
+
+\subsection{The ordinary tied-seed theory has an existential-free presentation}
+
+Let $T_B$ use ordinary intuitionistic first-order logic with equality and
+the staged $0,B$ numerical signature. It has the two computation schemas
+\eqref{obs:B0}--\eqref{obs:BS}, numerical coverage
+\[
+              \forall x\,(x=0\vee\exists y\,x=Sy),
+\]
+separation $(0=S0)\to\bot$, and literal-equation induction. The latter
+may be given as the universal closures of
+\[
+ \left(E(0,\vec p)\wedge
+       \forall n\,(E(n,\vec p)\to E(Sn,\vec p))\right)
+       \longrightarrow\forall n\,E(n,\vec p),
+ \tag{EI axiom}\label{rel:EI-axiom}
+\]
+where $E$ is a literal equation. This axiom presentation and the usual
+contextual induction rule are interderivable by implication and
+universal introduction and elimination, with the ordinary eigenvariable
+conditions.
+
+Every axiom in this list except the displayed coverage sentence is
+existential-free. The predecessor abbreviation $P$ already satisfies
+\[
+                         P0=0,\qquad P(Sy)=y
+\]
+by computation. Consequently coverage is equivalent to
+\[
+                      \forall x\,(x=0\vee x=S(Px)).
+                      \tag{Coverage$'$}\label{rel:coverage-prime}
+\]
+Indeed, a witness $y$ to $x=Sy$ is equal to $Px$, and the converse uses
+the explicit witness $Px$. Neither direction needs induction. Thus
+$T_B$ has an equivalent existential-free axiomatization in the same
+numerical language.
+
+For the proof-theoretic argument, equality can be treated as an ordinary
+binary predicate with universal axioms for reflexivity, symmetry,
+transitivity, and congruence of every function symbol and atomic predicate
+symbol. In the numerical $B$ language equality is the only predicate, so
+its predicate-congruence instances already follow from symmetry and
+transitivity. All these axioms
+are existential-free; transport through arbitrary formulas is derived
+by induction on formula syntax. This avoids invoking a primitive
+equality rule whose motive could obscure the subformula argument.
+The recursion notation is expanded into its staged first-order function
+symbols before applying first-order cut elimination.
+
+The argument below applies more generally to any ordinary intuitionistic
+theory $T$ in this numerical language that has an existential-free
+axiomatization and has the standard $B$-algebra as a model. An infinite
+axiom scheme causes no difficulty: a finite proof uses only finitely
+many axioms. Extra existential-free axioms that are true in the standard
+model do not evade the result.
+
+\subsection{Finite witnesses with an arbitrary matrix}
+
+\begin{lemma}[Finite witness extraction]
+\label{rel:finite-witnesses}
+Let the language contain a closed term $0$, and let $\Gamma$ be a finite
+set of existential-free formulas. If intuitionistic first-order logic
+proves
+\[
+                      \Gamma\vdash\exists z_1\cdots\exists z_d\,
+                                      R(\vec x,\vec z),
+\]
+then there are finitely many tuples of language terms
+$\vec t_1(\vec x),\ldots,\vec t_M(\vec x)$ for which
+\[
+                   \Gamma\vdash
+                   \bigvee_{\ell=1}^{M}R(\vec x,\vec t_\ell(\vec x)).
+                   \tag{Witness list}\label{rel:witness-list}
+\]
+Any additional fixed parameters are retained in the terms. The formula
+$R$ may contain arbitrary quantifiers, including existential quantifiers.
+No uniqueness of witnesses is assumed.
+\end{lemma}
+
+\begin{proof}
+Use a cut-free intuitionistic sequent proof. The required cut-elimination
+theorem is standard; for a published proof see
+Avigad~\cite{avigad-cut}, Theorem~7.6. Equality is handled by the
+existential-free axioms just specified, so no special equality extension
+of that theorem is needed.
+
+Starting at the end sequent, trace only the branches carrying the
+displayed leading existential quantifiers. Keep the finite prefix of
+witness terms already selected. At a left implication rule retain its
+first premise proof unchanged and follow its second premise, whose
+succedent remains the tracked existential formula. At a left
+disjunction rule follow both premises. The other applicable left and
+structural rules preserve the tracked succedent in the usual way.
+
+Every antecedent formula reached on these tracked branches is a
+subformula instance of a formula in $\Gamma$, and is therefore
+existential-free. In particular, no left existential rule can occur
+there. While at least one of the displayed leading existential
+quantifiers remains, an initial identity sequent cannot close the
+branch: its existential succedent is not an antecedent formula. The
+only applicable right introduction is existential introduction. Record
+its witness term and continue with the shorter leading prefix. When
+all $d$ witnesses have been introduced, stop tracing that branch and
+retain the remaining proof of its matrix instance unchanged. The
+matrix can be arbitrarily complicated because it is not analyzed.
+
+If a tracked branch instead closes by falsity elimination, fill any
+unselected witnesses with $0$; its resulting matrix instance follows
+from the same falsity. There are finitely many branches, so this process
+records finitely many complete tuples $\vec t_\ell$.
+
+Now replace each stopped branch by its retained proof of
+$R(\vec x,\vec t_\ell)$ followed by the appropriate introductions into
+the common finite disjunction in~\eqref{rel:witness-list}. Reassemble
+the tracked left and structural inferences. At an existential
+introduction that supplied a recorded component, the finite disjunction
+is already the succedent of the transformed premise, so that
+introduction is omitted. At left implication inferences the unchanged
+first premise and the transformed second premise reconstruct the
+inference. This gives the claimed proof.
+
+There are no newly bound numerical parameters on the tracked branches:
+left existential introduction is absent, and right universal
+introduction cannot have the tracked existential succedent. Any
+extraneous free parameters of the original finite proof can be replaced
+uniformly by $0$, after renaming local eigenvariables. Thus the witness
+terms need only the retained parameters and $\vec x$.
+\end{proof}
+
+This lemma is an application of cut elimination, not a claim that
+Avigad's paper contains the present arithmetic obstruction. It also
+does not assert a single uniform term witness. A finite disjunction is
+exactly what is needed below.
+
+\subsection{An arity obstruction for provably total coding relations}
+
+\begin{theorem}[No provable compression from $k$ scalars to $d$ coordinates]
+\label{rel:no-compression}
+Let $T$ have an existential-free axiomatization and the standard
+$B$-algebra as a model. Fix positive integers $k>d$ and any formula
+$R(\vec x,\vec z)$, where $\vec x$ has $k$ scalar coordinates and
+$\vec z$ has $d$. Suppose $T$ proves
+\[
+                        \forall\vec x\,\exists\vec z\,R(\vec x,\vec z).
+                        \tag{Total}\label{rel:total}
+\]
+Then it is impossible that, in the standard model, each output tuple
+$\vec z$ occurs with at most one input tuple $\vec x$. In particular,
+$T$ cannot also prove
+\[
+ R(\vec x,\vec z)\wedge R(\vec x\,',\vec z)
+             \longrightarrow\bigwedge_{i=1}^{k}x_i=x_i'.
+ \tag{Disjoint fibers}\label{rel:disjoint-fibers}
+\]
+The relation may have many outputs for each input.
+\end{theorem}
+
+\begin{proof}
+Instantiate~\eqref{rel:total} at free variables $\vec x$ and collect
+the finitely many axioms used by the proof in an existential-free
+antecedent. Lemma~\ref{rel:finite-witnesses} yields a finite list of
+$d$-tuples of $B$-terms $\vec t_1,\ldots,\vec t_M$ such that, for every
+input in the standard model, at least one listed tuple is an $R$-output.
+
+For each scalar coordinate term $t_{\ell j}$, apply
+Theorem~\ref{fc:B-theorem}. Let $q_{\ell j}$ be the finite number of
+its possible unary profiles. On the grid
+\[
+                         X_N=\{0,1,\ldots,N-1\}^{k},
+\]
+that term has at most $q_{\ell j}N$ possible values: its active argument
+has at most $N$ values, and there are at most $q_{\ell j}$ profiles.
+Constant terms can be treated by adding an unused active argument.
+Thus the vector $\vec t_\ell$ has at most
+\[
+                         N^d\prod_{j=1}^{d}q_{\ell j}
+\]
+possible values on $X_N$. The union of the images of all listed tuples
+has size at most $CN^d$, where
+\[
+                         C=\sum_{\ell=1}^{M}\prod_{j=1}^{d}q_{\ell j}
+\]
+is fixed independently of $N$.
+
+If each output belonged to at most one input, the $N^k$ inputs in $X_N$
+would require at least $N^k$ distinct outputs in this union. This is
+impossible for a sufficiently large standard $N$, since $k>d$.
+Taking $N>C$ already suffices. Soundness in the standard model turns any
+proved instance of~\eqref{rel:disjoint-fibers} into exactly the forbidden
+semantic condition.
+\end{proof}
+
+\begin{corollary}[Scalar pairing totality cannot be proved]
+\label{rel:no-scalar-pairing}
+In $T_B$, no formula can be proved to code every pair of source numbers
+by a single source number with unique decoding. This includes any
+proposed pairing relation
+\[
+                         \pi_1(c)=a\ \wedge\ \pi_2(c)=b
+\]
+using fixed unary $B$-terms as projections. The conclusion remains true
+even if the projection relations are arbitrary formulas, provided each
+code determines at most one pair.
+\end{corollary}
+
+Thus even a future proof of unary primitive-recursive completeness of
+the $B$ term language would not establish the required pairing totality
+inside $T_B$. The obstacle is proof-theoretic as well as term-theoretic.
+
+\subsection{Why bi-interpretability supplies forbidden compression}
+
+\begin{theorem}[No finite-dimensional bi-interpretation with $\mathsf{iPRA}$]
+\label{rel:no-biinterpretation}
+Let $T$ have an existential-free axiomatization in the $B$ numerical
+language and have the standard $B$-algebra as a model. Then $T$ and full
+first-order $\mathsf{iPRA}$ are not bi-interpretable by ordinary
+finite-dimensional first-order interpretations. The interpreted domains,
+operation graphs, and quotient equality formulas may be arbitrary.
+
+The statement is parameter-free, and also applies when fixed parameters
+are retained uniformly in the interpretation proofs without adding
+non-existential-free assumptions to $T$.
+\end{theorem}
+
+\begin{proof}
+Suppose that $I$ interprets arithmetic $A=\mathsf{iPRA}$ in $T$, and
+$J$ interprets $T$ in $A$. Write
+\[
+                          I:A\rightsquigarrow T,
+                          \qquad J:T\rightsquigarrow A.
+\]
+Let $I$ have dimension $d$, with numerical domain
+$D\subseteq\mathbb N^d$ and interpreted arithmetic equality $E$.
+Let $J$ have dimension $e$ over the arithmetic domain. A zero-dimensional
+domain has only finitely many tuples, so it cannot participate in the
+assumed source-side isomorphism with the infinite standard source
+domain. We may therefore take $d,e\ge1$.
+
+The composite $I\circ J$ interprets source numbers by suitable
+$e$-tuples of interpreted arithmetic elements, represented in the
+source by $de$ numerical coordinates. The source-side bi-interpretation
+isomorphism provides a $T$-definable relation $\eta(a,\vec u)$, with
+$\vec u\in D^e$, that is provably total for every source number $a$
+and is injective modulo the composite interpreted source equality.
+In particular, $T$ proves
+\[
+ \forall a\,\exists\vec u\,\eta(a,\vec u),
+ \qquad
+ \eta(a,\vec u)\wedge\eta(a',\vec u\,')\wedge
+       E_{J}^{I}(\vec u,\vec u\,')\longrightarrow a=a'.
+ \tag{Source round trip}\label{rel:source-round-trip}
+\]
+Domain conditions are included in $\eta$. Here $E_{J}^{I}$ denotes
+the interpretation under $I$ of the equality relation used by $J$.
+No restrictions are placed on the quantifiers in $\eta$ or the domain
+formulas. Only this source-side part of bi-interpretability will be used.
+
+Fix an external positive integer $k$. Arithmetic $A$ has
+primitive-recursive injective tupling for $ke$ numerical inputs, with
+primitive-recursive projections; its decoding equations are theorems
+of $A$. Interpret that tupling under $I$. It gives a provably total
+formula-defined coding relation from $(D/E)^{ke}$ to $D/E$, injective
+on its input tuples.
+
+Define $R_k(a_1,\ldots,a_k,\vec c)$ in $T$ as follows: there exist
+$\eta$-representatives $\vec u_i\in D^e$ of all $a_i$, and the
+interpreted arithmetic tupling relation codes the $ke$ arithmetic
+components of $(\vec u_1,\ldots,\vec u_k)$ by $\vec c\in D$.
+This is one first-order formula. Its matrix may contain arbitrary
+quantifiers. From the first clause of~\eqref{rel:source-round-trip} and
+the totality of arithmetic tupling, ordinary finite existential
+reasoning proves
+\[
+                      T\vdash\forall a_1\cdots\forall a_k\,
+                         \exists c_1\cdots\exists c_d\,
+                              R_k(\vec a,\vec c).
+                      \tag{Compression totality}\label{rel:compression-totality}
+\]
+There is no interpreted-domain assumption on the input scalars $a_i$:
+they range over the entire source domain. No form of choice is required;
+only the finitely many witnesses in this fixed formula are introduced.
+
+Suppose that $R_k(\vec a,\vec c)$ and
+$R_k(\vec a\,',\vec c)$ hold. The same output representative
+$\vec c$ represents the same arithmetic element, by reflexivity of $E$
+on $D$. Injectivity of interpreted arithmetic tupling therefore gives
+componentwise $E$-equality of all corresponding arithmetic components
+of $\vec u_i$ and $\vec u_i'$. Interpretations respect equality, so
+reflexivity and congruence for the interpreted $J$-equality imply
+\[
+                         E_{J}^{I}(\vec u_i,\vec u_i')
+                         \qquad(1\le i\le k).
+\]
+The second clause of~\eqref{rel:source-round-trip} gives
+$a_i=a_i'$ for every $i$. These are all legitimate interpreted
+first-order consequences, so $T$ proves that the output fibers of
+$R_k$ are disjoint in exactly the sense of
+\eqref{rel:disjoint-fibers}. Surjectivity of $\eta$, uniqueness of the
+chosen representatives, and uniqueness of the raw output tuples are
+not needed.
+
+Now choose $k=d+1$. Formula~\eqref{rel:compression-totality} is a
+provably total relation from $k$ unrestricted source scalars to $d$
+source coordinates with disjoint output fibers. This contradicts
+Theorem~\ref{rel:no-compression}.
+\end{proof}
+
+\begin{corollary}[Provably inhabited finite parameter families]
+\label{rel:parameter-families}
+The exclusion also applies to a finite parameterized bi-interpretation
+when $T$ proves that its parameter condition is inhabited and proves the
+required interpretation and source-round-trip facts uniformly under
+that condition.
+\end{corollary}
+
+\begin{proof}
+Let $\vec p$ be the finite tuple of source parameters, of length $r$,
+and let its condition be $\Theta(\vec p)$. Assume
+$T\vdash\exists\vec p\,\Theta(\vec p)$ and that all the preceding
+interpretation and isomorphism facts are proved uniformly under
+$\Theta(\vec p)$. Collect any additional finite parameter choices
+needed for those facts into the same tuple and condition.
+
+The preceding construction, with these parameters retained, proves
+the totality and disjoint-fiber properties of $R_{k,\vec p}$ under
+$\Theta(\vec p)$. Introduce the parameters as part of the output:
+\[
+ \widehat R_k(\vec a,\vec p,\vec c)
+       :=\Theta(\vec p)\wedge R_{k,\vec p}(\vec a,\vec c).
+\]
+Using the proved inhabitedness first, $T$ proves the unconditional
+sentence
+\[
+            \forall\vec a\,\exists\vec p\,\exists\vec c\,
+                  \widehat R_k(\vec a,\vec p,\vec c).
+\]
+An identical output pair $(\vec p,\vec c)$ uses identical parameter
+values. The disjoint-fiber argument for $R_{k,\vec p}$ therefore still
+gives equality of the input tuples. The number of output coordinates is
+now $d+r$, so choose $k=d+r+1$ and apply
+Theorem~\ref{rel:no-compression}. No restriction on the quantifiers in
+$\Theta$ is needed: it is inside the output matrix, rather than an
+extra assumption of the existential-free axiom theory.
+\end{proof}
+
+An externally chosen, model-specific parameter condition that $T$ does
+not prove to be inhabited is not covered by this extension. Fixed
+parameters for which the interpretation facts are proved without extra
+assumptions are already covered by Theorem~\ref{rel:no-biinterpretation}.
+
+The proof explains why arbitrary positive existential domain formulas
+do not rescue \emph{bi}-interpretability: they occur inside the matrix
+$R_k$, while the source-side isomorphism removes every domain condition
+from its unrestricted source inputs. Finite witness extraction makes no
+syntactic restriction on that matrix.
+
+The theorem is a completed negative result for the ordinary tied-seed
+candidate and for the stated class of its extensions. It does not
+provide a smaller positive axiomatization of $\mathsf{iPRA}$, does not
+rule out equiconsistency alone, and does not claim that every possible
+axiomatization in the $B$ language admits existential-free axioms.
+It also does not automatically extend to additional bounded numerical
+primitives: they preserve the weaker coordinate bound, but need not
+preserve the finite-profile invariant used here.
