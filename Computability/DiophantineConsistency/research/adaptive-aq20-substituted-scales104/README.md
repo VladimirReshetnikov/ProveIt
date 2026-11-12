@@ -32,7 +32,12 @@ The selected fixed beta satisfies the assumption: the pinned source defines
 uses that tuple, and `CurrentMasks2011.beta_pos_int` states `0 < beta` in the
 integers. The local checker pins and inspects those source declarations; it
 does not elaborate them or by itself establish the represented positivity in
-every desired model.
+every desired model. The existing source interfaces
+[`ModelThirteenCarrier.port0`](../../Lean/DiophantineConsistency/ModelThirteenCarrier.lean)
+and [`ModelCarrierCurrent.beta_pos`](../../Lean/DiophantineConsistency/ModelCarrierCurrent.lean)
+state the relevant cast representation and model-ring positivity respectively;
+using them in this candidate still requires a checked client and inherits their
+own provider provenance limits.
 
 ## Degree and comparison
 
