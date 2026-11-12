@@ -7498,6 +7498,10 @@ unelaborated and those hypotheses have not yet been extracted from the graph.
 The source-reviewed [auxiliary-geometry draft](research/ordinary14-aux-geometry-model-draft/README.md)
 proposes the needed `0 < Δ < c³` bound under explicit natural-number
 hypotheses. Its Lean elaboration and graph-to-hypothesis bridge remain open.
+The source-reviewed [norms-to-bounds composition](research/ordinary14-aux-norms-to-bounds-draft/README.md)
+proposes the two strict auxiliary inequalities from explicit first, main and
+strong norms. It is unelaborated, and those norms have not yet been extracted
+from the circuit in Lean.
 The source-reviewed [87-operation Lean graph and decoder-route draft](research/ordinary14-shifted-guard87-lean-draft/README.md)
 records the fact-level replay needed for arbitrary models. It is uncompiled;
 the graph-specific model lemmas, parent bridges and iPRA endpoint remain open.
