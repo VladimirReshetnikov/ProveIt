@@ -1289,6 +1289,10 @@ The source-reviewed [88-to-parent model-map draft](research/ordinary14-88-to-par
 proposes assembling the complete positive parent witness from the 88 zero,
 without a K bound in this direction. It remains unelaborated; the converse,
 provider verification and iPRA endpoint are still open.
+The source-reviewed [parent first-quotient facts](research/ordinary14-parent-first-quotient-facts-draft/README.md)
+propose the reverse direction's `q³ ∣ Y` and divisibility of `|Bt|` without
+choosing a sign. They remain unelaborated and are not yet bound to the parent
+graph or composed into a positive witness.
 The source-reviewed [88 guard draft](research/ordinary14-88-guard-draft/README.md)
 proposes the quotient-guard equality from that graph's own zero. It remains
 unelaborated and is one premise of the parent witness construction.
