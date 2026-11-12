@@ -7840,6 +7840,9 @@ The independently reviewed [forced-gamma natural graph](research/ordinary14-natu
 removes another shift, giving 14 natural inputs, 80 operations and exact
 specialized degree 107. Its external zero map uses the stated compact-port
 bounds and rank/Pell results; the iPRA and physical-binding gaps remain.
+The independently source-reviewed [natural-80 Lean transcription](research/ordinary14-natural-forced-gamma80-lean-draft/README.md)
+records its literal graph and product shape. Source correspondence is checked
+externally; elaboration and model semantics remain open.
 The independently source-reviewed [80-operation model route](research/ordinary14-natural80-gamma-model-route/README.md)
 identifies reusable main-orientation and Pell interfaces and the extra
 graph, rank and model obligations. It is a proof plan, not an elaborated
