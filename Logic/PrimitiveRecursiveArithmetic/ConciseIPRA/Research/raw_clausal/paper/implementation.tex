@@ -1,0 +1,101 @@
+\section{Complete checkers and verification}
+\label{sec:implementation}
+
+\subsection{Public contract}
+
+Each compared module reads one JSON object with exactly two fields,
+\code{goal} and \code{proof}. The goal must be a closed Eq/$D$ formula.
+The proof is a finite tagged tree. The process prints \code{ACCEPT} and
+returns success exactly when its inference routine returns that goal
+from the empty context, subject to ordinary finite machine resources.
+Otherwise it rejects. Unknown tags, extra fields, malformed trees,
+noninteger indices, scope violations, and escaped eigenparameters are
+rejected.
+
+The mathematical calculus also has arbitrary retained clauses and open
+sequents. The public executable interface checks closed theorems, as
+does the compared incoming clause checker. Arbitrary open consequences
+can be expressed using the derived implication and universal macros;
+this does not turn the public JSON contract into an open-sequent API.
+
+\subsection{A compact but explicit binder representation}
+
+The same numerical convention is used in the new checker and both
+matched controls. Zero is the integer $0$. A fresh free parameter is a
+negative integer level. Positive integers are local bound indices,
+counting outwards from $1$. At free scope $k$ and local binder depth $d$,
+a scalar integer leaf must lie in the interval $[-k,d]$.
+
+In the raw language, successor is \code{[0,t]}, iteration is
+\code{[n,a,h]}, equality is \code{[s,t]}, and $D$ is \code{[B]}.
+The expected sort distinguishes a successor from an equation.
+Iteration binds one variable in its third child, and $D$ binds two
+variables in its child. For $D_{x,y}B$, $y$ is index $1$ and $x$ is
+index $2$. This gives one structurally recursive binder-opening function.
+
+Opening replaces the relevant bound index and decreases larger indices
+by one. All inserted values are closed with respect to free positive
+indices: their free variables are negative levels. Therefore insertion
+does not require shifting those values under binders. Their own internal
+bound indices stay bound to their own constructors. Retained contexts
+also do not need shifting when a fresh negative level is introduced.
+
+This convention is an implementation choice shared by the controls; it
+is not credited as a new mathematical simplification. The canonical
+control additionally erases the body of an iterator whose rebuilt
+counter is literal zero. The new checker performs no such normalization.
+
+\subsection{The inference invariant}
+
+For every successful call to \code{derive(p,g,k)}, every retained clause
+is well scoped at $k$, its antecedent is a formula, its consequent is a
+one-variable formula template, and the returned value is a well-scoped
+formula at $k$. Induction on a successful finite inference trace proves
+this invariant.
+
+Reflexivity validates its term. Clause use validates the index and
+witness, proves the exact antecedent, and opens the consequent. Eval
+destructures two successfully derived formulas as equations. A compound
+formula has one child, so equation destructuring rejects it. A term being
+unfolded must destructure as a three-child iterator. A nonzero counter
+must have the successor shape; the validated raw grammar makes its
+two-child test exact. Hence the shorter structural destructuring does
+not bypass sort checking.
+
+Paired introduction validates its entire target and witness before
+opening the body. Its new hypothesis is retained as a constant clause
+with antecedent $0=0$. Paired elimination validates its target before
+opening the existential witness. In both branches the fresh negative
+level is outside the scope in which the target was validated, preventing
+eigenvariable escape. The exact branch result is checked before the
+parent result is returned.
+
+The canonical and raw computation/transport controls use the same
+contract and invariant. The comparisons count the full validation and
+input boundary, not only the small inference kernel.
+
+\subsection{Executed verification and its limits}
+
+\input{evidence/validation_summary}
+
+The package supplies bidirectional proof transformations for the matched
+raw equality interfaces. The mathematical derivations justify them for
+all finite derivations; the recorded executable checks exercise concrete
+instances, including nesting and parameter binding. Negative examples
+target violations that could change the theory: unrestricted compound
+induction, wrong Eval sources, escaped fresh parameters, wrong clause
+antecedents, and malformed or mistyped public input.
+
+The finite tests establish the stated execution results. They cannot prove
+that an arbitrary implementation is sound on every possible certificate.
+The universal equivalence is the written proof in this report; no new
+proof-assistant verification of these Python modules is asserted.
+
+\subsection{Reproducing the archive}
+
+Use Python 3.12 to run the verification and metric scripts documented in
+\code{README.md}. Check a supplied JSON certificate by redirecting it to
+\code{python3 code/clausal\_eval.py}. Run \code{latexmk -pdf report.tex}
+from the archive root to rebuild this document. The report source, its
+inputs, standalone modules, normalized forms, gzip-9 files, test evidence,
+and original-source attribution are all included.

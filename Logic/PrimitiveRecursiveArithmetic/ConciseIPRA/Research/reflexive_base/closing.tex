@@ -1,0 +1,320 @@
+\section{The interpretations and both composites}
+\label{sec:interpretations}
+
+The transfer to iPRA is separate from the new same-sequent theorem.
+Bi-interpretability is not inferred from equiconsistency alone.
+
+\subsection{The established scalar bridge}
+
+The intermediate theory \(\Teq\) uses ordinary intuitionistic first-order
+logic with equality over the scalar terms. Its arithmetic assumptions are
+the two iterator computations, coverage
+\[
+  \forall x\,\bigl(x=0\lor\exists y\,x=Sy\bigr),
+\]
+separation \(0=S0\to\bot\), and contextual induction for literal
+equations. The repository proves an interpretation of the native
+calculus into this theory using the displayed readings of \(Q,D\),
+and a reverse interpretation using native logical macros.
+Five inherited mathematical source files and all thirty-nine current
+Lean modules are supplied as reference material.
+
+For the scalar--iPRA comparison, each fixed iterator term compiles
+structurally into a fixed primitive-recursive definition. The reverse
+construction obtains predecessor, a numerical characteristic of equality,
+quantifier-free induction by Boolean reflection, pairing and projections,
+and finally a compiler for arbitrary primitive recursion. This order
+matters: pairing is not assumed while deriving predecessor or equality
+reflection. Both term translations have provably identity composites.
+The upstream statements include
+\file{biInterp}, \file{native_iff_pra}, \file{pra_iff_native},
+\file{native_roundTrip}, and
+\file{pra_native_roundTrip}~\cite{bridge}.
+
+The compiler acts on each fixed finite function description. The theory
+does not posit a primitive-recursive universal evaluator for all
+primitive-recursive programs.
+
+\subsection{Explicit composition for the new theory}
+
+Let \(J\) be the established native-to-iPRA translation and \(K\) the
+established translation back. On terms of the new calculus, \(J\)
+is the same scalar compilation. On formulas its readings are
+\begin{align*}
+ J(s=t)&=(J(s)=J(t)),\\
+ J(Q_yB)&=J(B(0))\to\forall y\,J(B(y)),\\
+ J(D_{x,y}B)&=\exists x\bigl(J(B(x,0))\to
+                          \forall y\,J(B(x,y))\bigr).
+\end{align*}
+Define the reverse translation into the new syntax by
+\[
+                         K_{\Rcal}(\varphi)=\fnf(K(\varphi)).
+\]
+Normalization erases literal-zero iterator counters, componentwise
+through formulas. It does not change a numerical variable or restrict
+a quantifier's domain.
+
+The existing normalization theorem is
+\[
+ \fnf(\Gamma)\vdash_{\Zcal}\fnf(A)
+ \quad\Longleftrightarrow\quad
+ \Gamma\vdash_{\mathcal N} A.
+\]
+Its Lean statement is \file{nzprf_iff_nprf}; the direct iPRA corollary
+is \file{nzprf_iff_pra}~\cite{normal}. Composition with the new theorem
+gives, for arbitrary contexts and free parameters,
+\begin{align*}
+ \Gamma\vdash_{\Rcal} A
+ &\ \Longleftrightarrow\
+   J\Gamma\vdash_{\iPRA}J(A),\\
+ \Delta\vdash_{\iPRA}\varphi
+ &\ \Longleftrightarrow\
+   K_{\Rcal}\Delta\vdash_{\Rcal}K_{\Rcal}(\varphi).
+\end{align*}
+
+For the native composite, normalize the established interderivability
+of \(KJ(A)\) and \(A\), then apply the new same-sequent theorem.
+Since \(A\) is normal, this proves
+\[
+                  K_{\Rcal}J(A)\dashv\vdash_{\Rcal}A.
+\]
+For the other composite, normalization correctness identifies
+\(J(\fnf K(\varphi))\) with \(JK(\varphi)\) inside iPRA, and the inherited
+round trip identifies the latter with \(\varphi\). Thus
+\[
+       \iPRA\vdash \varphi\leftrightarrow J K_{\Rcal}(\varphi).
+\]
+Both numerical interpretations use the whole domain and actual equality,
+and their composite isomorphism has graph \(x=y\). Finally \(0=S0\)
+is already normal, so the inherited inconsistency correspondence yields
+\[
+  \Rcal\vdash 0=S0
+  \quad\Longleftrightarrow\quad
+  \iPRA\vdash\bot.
+\]
+
+\section{Complete checker and input contract}
+\label{sec:checker}
+
+The selected checker is the entire standard-library-only module
+\file{code/checker.py}. It performs JSON decoding, public syntax
+validation, capture-avoiding normal substitution, scope checking,
+all six inference rules, and comparison with the advertised conclusion.
+It imports no theorem database, proof translator, or trusted helper.
+The more explicit \file{code/checker_readable.py} implements the same
+calculus and input contract.
+
+\subsection{Syntax and variables}
+
+An input is exactly a JSON object with keys \file{variables},
+\file{context}, \file{goal}, and \file{proof}.
+\file{variables} is a nonnegative exact integer. Terms use de Bruijn
+indices and these tagged arrays:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Mathematics & JSON form\\
+\midrule
+variable \(i\) & \file{["v", i]}\\
+zero & \file{["z"]}\\
+successor of \(a\) & \file{["s", a]}\\
+iterator & \file{["i", counter, seed, body]}\\
+equality & \file{["=", left, right]}\\
+\(Q\)-formula & \file{["q", matrix]}\\
+\(D\)-formula & \file{["d", matrix]}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Indices satisfy \(0\leq i<n\) at depth \(n\); Boolean values are not
+integer indices. An iterator binds one variable only in its body.
+\(Q\) binds one variable, and \(D\) binds two, with \(y\) at index
+zero and \(x\) at index one. Every literal-zero-counter iterator
+is rejected by the normal-syntax validator.
+
+The context is a list of formulas in \(n\) variables; the goal is
+another such formula. Every term and formula supplied by a proof
+instruction is checked at its appropriate depth. The DI and DE
+eigenvariable conditions are enforced by this representation.
+Certificates are finite data; no input is evaluated as Python.
+
+\Needspace{18\baselineskip}
+\subsection{The six instructions}
+
+\begin{longtable}{@{}p{.38\linewidth}p{.58\linewidth}@{}}
+\toprule
+Instruction & Checked meaning\\
+\midrule
+\endhead
+\file{["hyp", i]} &
+Return validated context entry \(i\).\\
+\file{["succ", c, a, h]} &
+Return the normal successor computation equation.\\
+\file{["tr", h, p, q]} &
+Infer \(s=t\) from \(p\), check \(h(s)=u\) from \(q\),
+and return \(u=h(t)\).\\
+\file{["qe", t, p, q]} &
+Infer \(QB\) from \(p\), check \(B(0)\) from \(q\),
+and return \(B(t)\).\\
+\file{["de", A, p, q]} &
+Infer \(DB\) from \(p\). Check \(q\) under the opened \(QB\)
+and shifted context in one extra variable; its conclusion must be
+the shifted \(A\). Return \(A\).\\
+\file{["di", B, t, p]} &
+Compute \(A(y)=B(t,y)\) and its normal zero instance.
+The local hypothesis is \(A(y)\) when that base is reflexive,
+and the shifted base otherwise. Check \(p\) against \(A(Sy)\)
+under that hypothesis and the shifted context. Return \(DB\).\\
+\bottomrule
+\end{longtable}
+
+Acceptance is exit status zero with exactly \file{ACCEPT} and a newline.
+Invalid syntax, a failed proof obligation or a mismatched conclusion
+is rejected with nonzero status. The checker uses no Python
+\file{assert}, so optimized execution retains its checks.
+Mathematical completeness concerns finite derivations with unbounded
+resources; an actual process has stack and memory limits.
+
+\subsection{Why the short base test is exact}
+
+A validated equality has three fields \file{["=", r, s]}, whereas
+\(Q,D\) have two. Thus
+\[
+                       \file{h[1:2] == h[2:]}
+\]
+is true exactly for a reflexive equation: it compares \file{[r]}
+with \file{[s]} at equality, and a nonempty singleton with the empty
+list at a binder. This is justified by complete grammar validation;
+it is not a test on unrestricted JSON.
+
+The new DI branch first computes \file{h = shift(sub(a, ["z"]))},
+then selects the hypothesis with that test. Its shift is an injective
+renaming, so it preserves and reflects syntactic reflexivity. Every
+other branch is unchanged from the matching control.
+
+\subsection{Soundness and completeness of the checker interface}
+
+Induction on an accepted instruction tree proves its conclusion
+well-scoped, normal, and derived by the corresponding displayed rule.
+The substitution walk increases its cutoff exactly at bound coordinates
+and contracts a rebuilt iterator exactly when its counter is zero.
+This implements the specified normal substitution. The DI discriminator
+is exact by the preceding argument; the shifted contexts in DI and DE
+ensure eigenvariable separation.
+
+Conversely, a finite derivation in the displayed calculus is encoded
+recursively by these instructions and context indices. Weakening, cut,
+symmetry, cases and general equation induction are proof-producing macros,
+not extra trusted instructions. The structural derivation supplies the
+universal argument; executable tests check its implementation.
+
+\section{Measurements and verification}
+\label{sec:verification}
+
+The reference runtime is CPython 3.12.14. Source normalization parses the
+entire module with \file{ast.parse}, prints the tree with
+\file{ast.unparse}, and appends one linefeed.
+Significant tokens exclude comments, indentation, dedentation and newline
+markers. AST nodes count every \file{ast.walk} node. Gzip uses level nine
+and timestamp zero, including the wrapper; it is informational.
+
+%%METRICS_TABLE%%
+
+The selected matched comparison saves eleven normalized bytes
+(\(0.36\%\)) and two AST nodes (\(0.19\%\)). Tokens are unchanged and
+gzip grows by four bytes. The explicit tag-and-sides version is slightly
+larger than the witness control; the small measured saving uses
+validated constructor arities. Mathematical bookkeeping and source
+size should therefore be assessed separately.
+
+The seven-rule zero-normal control connects the certificate translations
+to the directly formalized kernel. Although it is larger, its rule-count
+difference is not advertised as new: six rules had already been attained
+by the witness presentation.
+
+%%VALIDATION_SUMMARY%%
+
+Upstream reference files were authenticated against their Git blob hashes.
+The included Lean source is reference material, not a new standalone
+project. This report does not claim a new Lean/Rocq formalization of the
+reflexive-base rule, a formal verification of the Python checker, or a
+fresh rebuild of the inherited Lean development.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item Can the same-sequent theorem be formalized directly over
+\file{NativeZeroNormal.lean}, preserving the short structural bootstrap
+and the explicit repair when substitution changes the mode?
+\item Can the raw seven-rule version lower the cost of a complete
+compressed checker? Its asymmetric gate avoids normalization, but
+testing a base instance still costs code.
+\item Which recognizable classes of uniformly provable bases offer
+the best tradeoff between checker size and proof length? Exact
+\(0=0\) and arbitrary \(r=r\) already give different choices.
+\item Can the certificate translation be shortened while retaining
+arbitrary contexts, open terms and explicit freshness checks?
+\item Can another arithmetic or logical primitive be removed with a
+net reduction in the complete checking algorithm? Moving computation
+into a more powerful normalizer alone does not establish that result.
+\end{enumerate}
+
+\section{Reproduction and deliverables}
+
+From the extracted directory:
+\begin{lstlisting}
+python3 reproduce.py
+python3 code/checker.py < tests/certificates/reflexivity.json
+python3 build_report.py
+\end{lstlisting}
+The first command recomputes measurements and executable checks.
+The last assembles the standalone \file{report.tex} and compiles its PDF
+with pdfLaTeX. All Python uses only the standard library; document
+creation requires TeX Live. The delivered \file{report.tex} also
+compiles directly and contains all its text, tables and code listings.
+
+The archive includes the report, LaTeX, complete checkers and matched
+controls, certificate translations and examples, verification and
+measurement scripts, evidence records, source provenance, inherited
+mathematical appendices and Lean modules, and a checksum manifest.
+
+\appendix
+\section{The entire selected checker}
+
+This is the complete normalized acceptance program; no omitted helper
+is trusted by it.
+\begin{lstlisting}[language=Python]
+%%CHECKER_SOURCE%%
+\end{lstlisting}
+
+\clearpage
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{upstream}
+ProveIt contributors. \emph{Concise presentations of intuitionistic
+primitive recursive arithmetic}. Snapshot
+\file{d9383325b18d349b8bfdc54ef564c5784cc029ec}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/d9383325b18d349b8bfdc54ef564c5784cc029ec/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}.
+\bibitem{zero}
+ProveIt, \emph{One computation axiom for iPRA}, package
+\file{Research/zero_normal}, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/d9383325b18d349b8bfdc54ef564c5784cc029ec/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/zero_normal}.
+\bibitem{normal}
+ProveIt, \file{ZeroNormalization.lean} and
+\file{NativeZeroNormal.lean}, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/d9383325b18d349b8bfdc54ef564c5784cc029ec/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeZeroNormal.lean}.
+\bibitem{bridge}
+ProveIt, \file{NativeBiInterpretation.lean},
+\file{NativeRoundTrip.lean}, and \file{BiInterpretation.lean}, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/d9383325b18d349b8bfdc54ef564c5784cc029ec/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}.
+\bibitem{choice}
+ProveIt, \file{inherited_choice_basis.tex}, same snapshot.
+Contains the older cumulative rule and the logical bridge.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/d9383325b18d349b8bfdc54ef564c5784cc029ec/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/certified_zero/reference/inherited_choice_basis.tex}.
+\bibitem{diagonal}
+ProveIt, package \file{Research/diagonal_guard}, same snapshot.
+The general guarded-introduction strategy is inherited from this package.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/d9383325b18d349b8bfdc54ef564c5784cc029ec/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/diagonal_guard}.
+\end{thebibliography}
+\end{document}

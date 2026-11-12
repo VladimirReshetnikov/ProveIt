@@ -1,0 +1,427 @@
+% Mathematical fragment for the raw clausal computational-equality report.
+% Needs amsmath, amssymb, amsthm and theorem/lemma/corollary environments.
+% No normalization operation, external solver, or function variables are used.
+
+\section{A raw clausal calculus with five inference patterns}
+\label{sec:ce5-specification}
+
+Write $\mathsf{CE5}$ for the following presentation. Numerical terms are
+raw finite expressions
+\[
+ t ::= x\mid 0\mid S(t)\mid I(n,a;u.h).
+\]
+Only $u$ in $h$ is bound. All substitution is ordinary capture-avoiding
+substitution. In particular, the terms $I(0,a;u.h)$ and $a$ are distinct
+syntax, including after substitution. Formulas have just two constructors:
+\[
+ F::=(s=t)\mid D_{x,y}F.
+\]
+The two coordinates of $D$ are bound. All displayed binders may be
+renamed before a substitution.
+
+A context is a finite reusable list of \emph{clause occurrences}
+\[
+ [A;y.B(y)],\qquad y\notin\operatorname{FV}(A).
+\]
+The clause binds $y$ only in its consequent. It is a context object,
+not a third formula constructor. Put $H=(0=0)$. An ordinary formula
+assumption $F$ abbreviates the constant clause
+\[
+ \operatorname{ord}(F):=[H;v.F],
+ \qquad v\notin\operatorname{FV}(F).
+\]
+Thus $\Gamma,F$ below means $\Gamma,\operatorname{ord}(F)$.
+Clause occurrences, rather than only their values, are retained: a
+clause-use instruction selects an occurrence in the context.
+
+\subsection{The partial computational equality operation}
+
+For raw numerical terms $s,t,b$, define $\Phi(s,t,b)$ by these three
+cases, and leave it undefined otherwise:
+\[
+\begin{array}{c|c|c}
+ b&\hbox{required literal source}&\Phi(s,t,b)\\ \hline
+ s&b\equiv s&t\\
+ I(0,a;u.h)&s\equiv a&t\\
+ I(Sn,a;u.h)&s\equiv I(n,a;u.h)&h[t/u].
+\end{array}
+\]
+Here $\equiv$ is literal identity of well-scoped finite syntax, modulo
+the chosen representation of bound names. The rows are disjoint. In the
+second row the source is a proper subterm of $b$; in the third row $b$
+has one more successor node than its required source. Hence neither row
+can also satisfy $b\equiv s$. The last two rows have different counter
+constructors.
+
+This operation performs one specified equality/computation step. It
+does not normalize terms. Its last row uses equality of the whole
+preceding iterator value, not equality of an initializer.
+
+\subsection{Every primitive inference}
+
+The complete inventory consists of the following five patterns:
+\[
+ \frac{}{\Gamma\vdash s=s}.                              \tag{Refl}
+\]
+\[
+ \frac{\Gamma\vdash s=t\qquad\Gamma\vdash b=r}
+      {\Gamma\vdash r=\Phi(s,t,b)}
+ \quad\hbox{if $\Phi(s,t,b)$ is defined}.                \tag{Eval}
+\]
+\[
+ \frac{\Gamma\vdash A}{\Gamma\vdash B(t)}
+ \quad\hbox{if the occurrence $[A;y.B(y)]$ is in $\Gamma$}.
+                                                               \tag{U}
+\]
+\[
+ \frac{\Gamma\vdash D_{x,y}B(x,y)\qquad
+       \Gamma,[B(b,0);y.B(b,y)]\vdash F}
+      {\Gamma\vdash F}.                                 \tag{E}
+\]
+\[
+ \frac{\Gamma,B(t,\eta)\vdash B(t,Sz)}
+      {\Gamma\vdash D_{x,y}B(x,y)},\qquad
+ \eta=
+ \begin{cases}
+ z,&B\text{ has equation root and }t\equiv0,\\
+ 0,&\text{otherwise}.
+ \end{cases}                                           \tag{I}
+\]
+In E, $b$ is fresh for the retained context, the conclusion, and the
+passive parameters of the matrix. In I, $z$ is fresh for the retained
+context, witness $t$, and passive matrix parameters. In every instance,
+the supplied terms and formulas must be well scoped. There is no
+restriction that $t$ be a numeral.
+
+No further logical, equality, successor, computation, or induction axiom
+is primitive. In particular, neither a separate hypothesis rule nor a
+separate $Q$ constructor occurs. The designated contradiction is $0=S0$.
+The clause representation and the three cases of $\Phi$ are part of the
+trusted specification and must be included in a complete checker.
+
+\begin{lemma}[Ordinary assumptions and elementary proof operations]
+Ordinary assumption use is admissible. So are weakening, injective fresh
+renaming, and cut for ordinary formula assumptions.
+\end{lemma}
+\begin{proof}
+Refl proves $H$ in every context. U on the selected occurrence
+$[H;v.F]$, with any numerical target, then proves $F$.
+Weakening and fresh renaming follow by induction on the finite
+derivation. Fresh renaming preserves both the equation-root test and
+the literal-zero test in I.
+
+For ordinary-assumption cut, suppose a distinguished context occurrence
+is $[H;v.F]$ and a proof of $F$ is supplied without that occurrence.
+Induct on the derivation that uses it. At a U node selecting the
+distinguished occurrence, replace the node by the supplied proof,
+weakened into the local context. At every other node translate its
+premises recursively. Eigenvariables can first be freshened.
+This argument uses no arbitrary numerical-substitution theorem.
+\end{proof}
+
+\section{Recovering equality, computation, and the logical interface}
+\label{sec:ce5-recovery}
+
+The elementary equality constructions below are inherited from the
+computational-equality proposal~\cite{computational}; they are repeated to make the present
+rule inventory independently checkable. They work under arbitrary
+retained clauses.
+
+\begin{lemma}[Equality algebra and both computation equations]
+Refl and Eval derive symmetry, transitivity, and
+\[
+ I(0,a;u.h)=a,\qquad
+ I(Sn,a;u.h)=h[I(n,a;u.h)/u].
+\]
+\end{lemma}
+\begin{proof}
+Let $R_s$ denote Refl at $s$, and let $\operatorname{ev}(p,q)$ denote
+Eval on its two supplied proofs. Its root case is
+\[
+ \frac{s=t\qquad s=r}{r=t}.
+\]
+For $p:s=t$, $\operatorname{ev}(R_s,p)$ proves $t=s$.
+For $p:s=t$ and $q:t=v$,
+$\operatorname{ev}(q,\operatorname{ev}(R_s,p))$ proves $s=v$.
+
+For zero computation put $A=I(0,a;u.h)$; then
+$\operatorname{ev}(R_a,R_A)$ proves $A=a$.
+For successor computation put $C=I(n,a;u.h)$ and
+$B=I(Sn,a;u.h)$; then
+$\operatorname{ev}(R_C,R_B)$ proves $B=h[C/u]$.
+Each computation proof has two reflexivity leaves and one Eval node.
+\end{proof}
+
+\begin{lemma}[Unrestricted congruence from one iteration]
+\label{lem:ce5-congruence}
+For every fixed numerical term template $h(u)$, the rule
+\[
+ \frac{\Gamma\vdash s=t}
+      {\Gamma\vdash h[s/u]=h[t/u]}
+\]
+is admissible. The template may contain any number of occurrences of
+$u$, including occurrences inside nested iterator bodies.
+\end{lemma}
+\begin{proof}
+For the supplied proof $p:s=t$, set
+$A_s=I(0,s;u.h)$ and $B_s=I(S0,s;u.h)$. Construct
+\[
+\begin{aligned}
+ z_s&=\operatorname{ev}(R_s,R_{A_s})
+       &&: A_s=s,\\
+ c_s&=\operatorname{ev}(z_s,R_{B_s})
+       &&: B_s=h[s/u],\\
+ z_{s,t}&=\operatorname{ev}(p,R_{A_s})
+       &&: A_s=t,\\
+ \operatorname{Cong}_h(p)&=\operatorname{ev}(z_{s,t},c_s)
+       &&: h[s/u]=h[t/u].
+\end{aligned}
+\]
+The first and third lines use the zero row of $\Phi$. The second and
+fourth use its successor row, whose required source is literally
+$A_s$. Thus the construction assumes no prior congruence principle.
+The body substitution performed by Eval supplies all the displayed
+occurrences of $s$ and $t$.
+
+There are four new Refl leaves and four Eval nodes, and the input proof
+$p$ occurs once. This is a bound on inference nodes, not on the size of
+the copied term labels or the serialized certificate.
+\end{proof}
+
+\begin{corollary}[One-term and equation-template transport]
+The following rules are admissible, with no restriction on the source
+term:
+\[
+ \frac{s=t\qquad h(s)=r}{r=h(t)},\qquad
+ \frac{s=t\qquad a(s)=b(s)}{a(t)=b(t)}.
+\]
+\end{corollary}
+\begin{proof}
+For the first rule, apply the root case of Eval to the congruence
+equation from Lemma~\ref{lem:ce5-congruence} and the second premise.
+For the second, use the first rule twice:
+\[
+ s=t,\ a(s)=b(s)\ \Longrightarrow\ b(s)=a(t)
+ \ \Longrightarrow\ a(t)=b(t).
+\]
+The second use takes the term template $b$.
+\end{proof}
+
+\begin{lemma}[All case introductions]
+\label{lem:ce5-cases}
+For every matrix $B$ and every witness $t$, the rule
+\[
+ \frac{\Gamma,B(t,0)\vdash B(t,Sz)}
+      {\Gamma\vdash D_{x,y}B(x,y)}
+\]
+is admissible, with the usual freshness of $z$.
+\end{lemma}
+\begin{proof}
+The primitive I rule already has this form except when $B$ is an
+equation and $t$ is literally $0$. In that remaining case put
+$c=I(0,0;u.0)$. The term $c$ is not literally zero, and zero computation
+proves $c=0$.
+
+Under the local assumption $B(c,0)$, equation-template transport gives
+$B(0,0)$. By ordinary-assumption cut insert the supplied branch and
+obtain $B(0,Sz)$. Symmetry and equation-template transport give
+$B(c,Sz)$. Primitive I with witness $c$ is in its case mode, and its
+conclusion is the required $D_{x,y}B(x,y)$. The conclusion has not
+changed; only the proof's witnessing term has changed.
+\end{proof}
+
+\begin{lemma}[Transport in every formula]
+\label{lem:ce5-formula-transport}
+For each finite Eq/$D$ formula template $F(v)$, from
+$\Gamma\vdash s=t$ and $\Gamma\vdash F(s)$ one can derive
+$\Gamma\vdash F(t)$.
+\end{lemma}
+\begin{proof}
+Induct externally on the formula template. Equation templates were
+handled above. Suppose
+$F(v)=D_{x,y}B(v,x,y)$. Eliminate the supplied $F(s)$ at a fresh
+parameter $b$, retaining the clause
+\[
+ [B(s,b,0);y.B(s,b,y)].
+\]
+Introduce $F(t)$ by Lemma~\ref{lem:ce5-cases} with witness $b$.
+Its branch assumes $B(t,b,0)$. By the induction hypothesis and the
+symmetry of $s=t$, derive $B(s,b,0)$. U at $Sz$ gives
+$B(s,b,Sz)$; the forward induction hypothesis gives $B(t,b,Sz)$.
+Close the introduction and elimination. Every recursive transport
+concerns the strictly smaller matrix $B$, so the proof is not circular.
+\end{proof}
+
+\subsection{Conditional closure without a formula constructor}
+
+For a fresh unused $w$, abbreviate
+\[
+ q_yB(y):=D_{w,y}B(y).
+\]
+The dummy coordinate is a numerical binder, not a new sort or a domain
+restriction.
+
+\begin{lemma}[The three closure interfaces]
+\label{lem:ce5-q}
+The following operations are derivable:
+\begin{enumerate}
+\item From $\Gamma,B(0)\vdash B(Sz)$, derive $\Gamma\vdash q_yB$.
+\item From $\Gamma\vdash q_yB$ and $\Gamma\vdash B(0)$, derive
+      $\Gamma\vdash B(t)$ for every term $t$.
+\item In any context retaining $[B(0);y.B(y)]$, derive $q_yB$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+For the first operation use case introduction with unused witness.
+For the second eliminate $q_yB$; its fresh witness does not occur in
+$B$, and the resulting clause is exactly $[B(0);y.B(y)]$. U with the
+supplied base proves $B(t)$; close E.
+For the third, under the local case-introduction assumption $B(0)$,
+use the retained clause at $Sz$, then close the first operation.
+\end{proof}
+
+For an equation $E(y)$, primitive I at dummy witness $0$ derives
+$q_yE$ from $\Gamma,E(z)\vdash E(Sz)$. With its base and the second
+closure interface this is contextual induction for equations.
+For an equation $E(x,y)$ and any fixed term $t$, the same construction
+first proves $q_yE(t,y)$ and then, by case introduction at $t$, recovers
+the older witnessed progress conclusion $D_{x,y}E(x,y)$.
+Numerical cases for arbitrary formulas come from the first two closure
+interfaces. These are derived rules, not additional kernel instructions.
+
+\section{Exact translation to and from the raw six-rule calculus}
+\label{sec:ce5-equivalence}
+
+Let $\mathsf{E6}$ be the raw computational-equality calculus already
+present in the repository~\cite{computational}. Its formulas are Eq/$Q$/$D$, its contexts
+are ordinary retained formulas, and its six patterns are Hyp, Refl,
+Eval, QE, DE, and the same witness-directed DI. Refl and Eval are
+exactly the operations above. Hyp selects a formula assumption, and
+\[
+ \frac{\Gamma\vdash Q_yB\qquad\Gamma\vdash B(0)}
+      {\Gamma\vdash B(t)}
+ \quad\text{is QE},
+\]
+\[
+ \frac{\Gamma\vdash D_{x,y}B\qquad
+       \Gamma,Q_yB(b,y)\vdash F}{\Gamma\vdash F}
+ \quad\text{is DE}.
+\]
+DI has the displayed I conclusion and branch, with ordinary formula
+assumptions instead of their constant clauses. The same freshness
+conditions apply.
+
+Define the translation $\tau$ on native formulas by
+\[
+ \tau(s=t)=(s=t),\qquad
+ \tau(D_{x,y}B)=D_{x,y}\tau(B),\qquad
+ \tau(Q_yB)=D_{w,y}\tau(B),
+\]
+where each newly inserted $w$ is fresh and unused. Numerical terms are
+unchanged. Let $j$ include Eq/$D$ formulas into Eq/$Q$/$D$ formulas.
+The translation $\tau$ preserves free numerical variables, commutes
+with capture-free numerical substitution up to bound renaming, and
+preserves the distinction between equation-root and compound formulas.
+
+\begin{theorem}[Proof preservation and common-language equivalence]
+\label{thm:ce5-proof-equivalence}
+For every finite native context $\Gamma$ and native formula $A$,
+\[
+ \Gamma\vdash_{\mathsf{E6}} A
+ \quad\Longrightarrow\quad
+ \operatorname{ord}(\tau\Gamma)\vdash_{\mathsf{CE5}}\tau(A).
+\]
+For all finite Eq/$D$ contexts $\Delta$ and Eq/$D$ formulas $F$,
+\[
+ \operatorname{ord}(\Delta)\vdash_{\mathsf{CE5}}F
+ \quad\Longleftrightarrow\quad
+ j\Delta\vdash_{\mathsf{E6}}jF.
+\]
+The transformations are effective transformations of finite proof trees
+and preserve their numerical terms.
+\end{theorem}
+\begin{proof}
+For the first statement, induct on the $\mathsf{E6}$ proof.
+Hyp becomes Refl at $0$ followed by U on the appropriate constant
+clause. Refl and Eval are copied unchanged. QE becomes the second
+interface of Lemma~\ref{lem:ce5-q}. DI is copied with translated
+matrices and constant local clauses: $\tau$ preserves the matrix's
+equation/compound root and leaves its numerical witness unchanged,
+so the chosen mode is exactly the original mode.
+
+For DE, first translate its major premise. E then opens
+\[
+ [\,\tau(B)(b,0);y.\tau(B)(b,y)\,].
+\]
+The third interface of Lemma~\ref{lem:ce5-q} derives
+$q_y\tau(B)(b,y)$ in that context. This is exactly the translated old
+branch assumption $\tau(Q_yB(b,y))$. Weaken the inductively translated
+branch to the current context and cut in this proof of its ordinary
+assumption. Closing E gives the translated conclusion. All inserted
+dummy coordinates and eigenvariables are freshened first.
+
+For the reverse statement, annotate each retained clause occurrence
+by its introduction. An initial ordinary clause or an I branch clause
+$[H;v.G]$ is represented in $\mathsf{E6}$ by the ordinary assumption
+$jG$. A clause introduced by E is represented by the native assumption
+$Q_yjB(b,y)$. If equal-looking clause values have different origins,
+their occurrences retain their respective annotations.
+
+Induct on the $\mathsf{CE5}$ proof under this invariant. A U selecting
+an ordinary clause translates to Hyp; its proof of $H$ can be omitted.
+A U selecting an E clause translates to QE on its associated $Q$
+assumption and the translated antecedent proof. Refl and Eval are
+identical. E translates to native DE, and I translates to native DI
+with the same witness, matrix root, and local ordinary assumption.
+This proves the reverse implication. The forward implication on the
+common language is the first statement, since $\tau j$ is the identity.
+\end{proof}
+
+\begin{theorem}[Both formula composites]
+\label{thm:ce5-composites}
+For every Eq/$D$ formula $F$, $\tau jF=F$ literally, up to immaterial
+bound renaming. For every native Eq/$Q$/$D$ formula $A$,
+\[
+ A\ \dashv\vdash_{\mathsf{E6}}\ j\tau A.
+\]
+Both numerical translations are identities.
+\end{theorem}
+\begin{proof}
+The first claim follows from the definition. For the other one, the
+essential native equivalence is
+\[
+ Q_yB(y)\ \dashv\vdash\
+ D_{w,y}B(y),\qquad w\notin\operatorname{FV}(B).
+\]
+From $Q_yB$, assume $B(0)$, specialize the closure at $Sz$, and use
+derived case introduction at an unused witness. Conversely, native DE
+on the right-hand formula opens precisely $Q_yB$; Hyp closes the branch.
+
+This equivalence extends through all enclosing binders. More
+explicitly, a uniform pointwise interderivability of matrices lifts
+through $D$ by DE followed by case introduction: convert the target
+zero assumption back to the source zero instance, specialize the
+opened source closure at $Sz$, and convert forward to the target
+successor instance. It lifts through $Q$ by the same reasoning with
+an unused witness. These constructions use only the already
+established equality and case interfaces. External structural induction
+on $A$ now proves the result.
+\end{proof}
+
+These proofs deliberately avoid claiming that whole proofs can be
+substituted by reusing every rule tag. Although raw $\Phi$ commutes
+with capture-free numerical substitution, a substitution can change
+a nonliteral witness into literal $0$ and change I's mode. Full
+substitution admissibility for ordinary retained-formula sequents
+transfers from the native calculus through the equivalence above.
+Weakening, fresh renaming and the ordinary cuts
+used in the proof were established directly.
+
+For arbitrary externally supplied clauses, use the ordinary reading
+$[A;y.B]^\circ=A^\circ\to\forall yB^\circ(y)$. Its native representation
+is the corresponding derived implication/universal macro. Clause use
+then translates to implication elimination followed by universal
+elimination. The exact common-language theorem does not require
+external clauses beyond ordinary formula assumptions; it covers every
+such retained-context consequence, not only closed theorems.
+

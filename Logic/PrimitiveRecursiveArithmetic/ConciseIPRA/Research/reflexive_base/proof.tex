@@ -1,0 +1,442 @@
+% Proposed replacement section. This is a written metatheorem, not a Lean proof.
+% Baseline: ProveIt d9383325b18d349b8bfdc54ef564c5784cc029ec.
+\section{Introduction selected by a reflexive base}
+\label{sec:reflexive-base}
+
+The native zero-normal calculus admits a single introduction whose
+selection test uses the formula it would otherwise retain as the base.
+It requires no distinguished witness and no syntactically disguised zero.
+The construction is an instance of the guarded-introduction method, with
+a useful difference: its guard need only be preserved by substitution;
+it need not be reflected.  A newly reflexive base permits an elementary
+repair of the substituted inference.
+
+\subsection{Normal syntax and the complete rule inventory}
+
+Let $\operatorname{nf}$ be the existing structural zero normalization:
+it recursively normalizes the children of a term, then replaces
+$I(0,a;u.h)$ by $a$.  It performs no successor computation.
+Terms and formulas in this section are zero-normal.  Every displayed
+substitution means capture-free substitution followed by
+$\operatorname{nf}$ on all numerical terms.  Write $B(t,r)$ for this
+normal instance of a matrix whose distinguished coordinates are $x,y$.
+The formula constructors are still equality, $Q$, and $D$; their ordinary
+readings are unchanged:
+\[
+ Q_yB=B(0)\to\forall y\,B(y),\qquad
+ D_{x,y}B=\exists x\bigl(B(x,0)\to\forall y\,B(x,y)\bigr).
+\]
+The numerical syntax is $x,0,S(t),I(n,a;u.h)$, with the literal-zero
+counter excluded from a normal iterator node.  The equation $0=S0$ is
+the designated contradiction.
+
+Define the decidable metasyntactic predicate
+\[
+ \mathsf R(B,t)\quad\Longleftrightarrow\quad
+ B(t,0)\text{ is literally }r=r\text{ for some normal term }r.
+\]
+This is a comparison of two finite syntax trees, not a call to arithmetic
+equality or a theorem prover.  Since substitution preserves the formula
+root, $\mathsf R(B,t)$ entails that $B$ is a literal equation.
+Set
+\[
+ \eta_{B,t}(z)=
+ \begin{cases}z,&\mathsf R(B,t),\\0,&\text{otherwise}.\end{cases}
+\]
+The calculus $\mathcal R$ has exactly these six primitive rules:
+\begin{align*}
+ &\frac{A\in\Gamma}{\Gamma\vdash A} &&\mathrm{Hyp},\\[3pt]
+ &\Gamma\vdash
+ I(Sn,a;u.h)=h\bigl(I(n,a;u.h)\bigr) &&\mathrm{IS},\\[3pt]
+ &\frac{\Gamma\vdash s=t\qquad\Gamma\vdash h(s)=r}
+        {\Gamma\vdash r=h(t)} &&\mathrm{Tr},\\[5pt]
+ &\frac{\Gamma\vdash Q_yB\qquad\Gamma\vdash B(0)}
+        {\Gamma\vdash B(t)} &&\mathrm{QE},\\[5pt]
+ &\frac{\Gamma\vdash D_{x,y}B\qquad
+         \Gamma,Q_yB(b,y)\vdash A}{\Gamma\vdash A} &&\mathrm{DE},\\[5pt]
+ &\frac{\Gamma,B(t,\eta_{B,t}(z))\vdash B(t,Sz)}
+        {\Gamma\vdash D_{x,y}B} &&\mathrm{DI}_{\mathsf R}.
+\end{align*}
+All terms in IS and Tr are understood in the normal syntax, including
+the possible contraction of $I(n,a;u.h)$ when $n$ is literally zero.
+In DE, $b$ is fresh for the retained context, conclusion, and fixed
+parameters.  In DI, $z$ is fresh for the retained context, witness, and
+fixed parameters.  No other equality, logical, structural, induction,
+or computation rule is primitive.
+
+For comparison let $\mathcal Z$ be the repository's seven-rule
+zero-normal calculus: it has the first five rules above and, instead of
+$\mathrm{DI}_{\mathsf R}$, has unrestricted D introduction by cases and
+Q introduction by equation progress:
+\[
+ \frac{\Gamma,B(t,0)\vdash B(t,Sz)}{\Gamma\vdash D_{x,y}B},
+ \qquad
+ \frac{\Gamma,E(z)\vdash E(Sz)}{\Gamma\vdash Q_yE(y)}.
+\]
+In the second rule $E$ is a literal equation.  The repository proves
+that $\mathcal Z$ derives the normal form of exactly the native sequents.
+
+\subsection{The noncircular structural bootstrap}
+
+\paragraph{Normalization facts used.}
+The existing normalization layer proves idempotence and compatibility
+with substitution.  In particular the normal form of a substitution
+instance depends only on the normal forms of the term and the
+substitution's values.  Thus normal substitution is associative with
+the usual lifted substitutions under binders.  These facts are
+syntactic theorems; they do not use any rule of $\mathcal R$.
+
+\paragraph{Weakening, renaming, and cut come first.}
+Weakening, exchange, contraction, injective renaming of free variables,
+and simultaneous ordinary-assumption cut are admissible by induction on
+derivations.  These operations leave the matrix and witness unchanged,
+or apply an injective variable renaming.  A reflexive equation stays
+reflexive and a nonreflexive equation cannot become reflexive under
+such a renaming.  Hence no DI mode changes in these inductions.
+At rules with eigenvariables first choose fresh names away from the
+inserted derivations.  This argument does not yet invoke arbitrary
+numerical substitution.
+
+\paragraph{Equality comes before missing cases.}
+For any normal term $r$, let
+\[
+ J_r:=I(S0,r;u.u).
+\]
+IS gives $J_r=r$: its right-hand side is the zero-normal form of
+$I(0,r;u.u)$, namely $r$.  Apply Tr with identity template and with this
+same equation as both premises.  The conclusion is $r=r$.
+From a proof of $s=t$, Tr with identity template, major premise $s=s$,
+and minor premise $s=t$ gives $t=s$.  Tr then gives transitivity and
+term congruence.  These constructions use no introduction rule and no
+induction.  In particular, every base singled out by $\mathsf R$ is
+already provable in the retained context.
+
+\begin{lemma}[Every case introduction is admissible]
+\label{lem:reflexive-all-cases}
+For every normal native matrix $B$ and witness $t$,
+\[
+ \Gamma,B(t,0)\vdash_{\mathcal R}B(t,Sz)
+ \quad\Longrightarrow\quad
+ \Gamma\vdash_{\mathcal R}D_{x,y}B.
+\]
+\end{lemma}
+\begin{proof}
+When $\mathsf R(B,t)$ is false, this is primitive DI.  When it is true,
+the discharged base is literally $r=r$.  Use the equality proof above
+and ordinary-assumption cut to remove this base from the supplied
+derivation.  Weaken the resulting derivation of $B(t,Sz)$ by $B(t,z)$,
+then apply the progressive mode of primitive DI.  No substitution or
+general progress rule is used.
+\end{proof}
+
+\begin{lemma}[One-way preservation is sufficient]
+\label{lem:reflexive-substitution}
+Arbitrary capture-free normal numerical substitution is admissible in
+$\mathcal R$.
+\end{lemma}
+\begin{proof}
+If $B(t,0)$ is literally $r=r$, applying any normal substitution yields
+$\operatorname{nf}(r\sigma)=\operatorname{nf}(r\sigma)$.
+The compatibility laws identify this with the zero instance of the
+substituted matrix and witness.  Thus a true guard remains true.
+
+Now induct on a derivation.  IS, Tr, QE and DE commute with normal
+substitution by the normalization facts and the standard fresh-name
+convention.  In a progressive DI step the guard was true and remains
+true, so the induction hypothesis is the exact premise of progressive
+DI at the substituted matrix and witness.  In a case DI step the
+induction hypothesis is the substituted case premise.  Apply
+Lemma~\ref{lem:reflexive-all-cases}, whether or not its guard has newly
+become true.  This completes the induction.
+\end{proof}
+
+The reflection direction genuinely fails and is unnecessary.  For
+example, an equation with zero instance $p=q$ is initially nonreflexive
+when $p,q$ are distinct parameters, but becomes reflexive after
+$p:=0,q:=0$.  The substitution proof repairs precisely that change;
+it does not falsely claim that every rule label is preserved.
+
+The dependency order so far is normalization laws; weakening and cut;
+elementary equality; unrestricted case introduction; arbitrary
+substitution.  None of these steps presupposes the equivalence theorem.
+
+\subsection{Recovering progress by equational decoders}
+\label{sec:equational-decoders}
+
+The general equation-progress rule can be recovered without constructing
+an implication macro and without substituting numerical terms into the
+supplied step derivation.  This shorter proof uses only equality,
+case-derived closure, weakening, renaming, and ordinary-assumption cut.
+All formulas below are zero-normal, and substitutions into formulas mean
+the existing normal substitutions.
+
+The needed case-derived closure rule is
+\begin{equation}
+ \frac{\Lambda,F(0)\vdash F(Sz)}{\Lambda\vdash Q_yF(y)},
+ \label{eq:decoder-qcase}
+\end{equation}
+where $z$ is fresh for $\Lambda$ and the fixed parameters.  It is already
+available from unrestricted case DI, followed by DE with an unused
+witness.  Unrestricted case DI itself follows from the reflexive-base
+introduction: if its guard is true, prove the reflexive base, cut it out,
+and weaken by the progressive hypothesis.  Neither construction needs
+general equation progress or arbitrary numerical substitution on proofs.
+
+Let
+\[
+ C(v,a,b):=I(v,a;u.b),\qquad u\notin\operatorname{FV}(b).
+\]
+Its zero equation is definitional and its successor equation is a direct
+instance of the remaining computation rule.
+
+\begin{lemma}[Case decoder]
+\label{lem:case-decoder}
+Let $r(y)$ be a normal term template and let $a$ be a term independent of
+$y$.  Define
+\[
+ D_{r,a}(y):=
+ \bigl(C(y,a,C(y,0,r(y)))=r(y)\bigr).
+\]
+Then $Q_yD_{r,a}(y)$ is derivable without assumptions.  Consequently
+\[
+ \Lambda\vdash a=r(0)
+ \quad\Longrightarrow\quad
+ \Lambda\vdash D_{r,a}(v)
+\]
+for every term $v$.
+\end{lemma}
+\begin{proof}
+The zero instance of $D_{r,a}$ is literally $a=r(0)$ in zero-normal
+syntax.  At $y=Sz$, two successor computations and transitivity prove
+\[
+ C(Sz,a,C(Sz,0,r(Sz)))
+   =C(Sz,0,r(Sz))=r(Sz).
+\]
+This proof ignores the temporary base hypothesis.  Rule
+\eqref{eq:decoder-qcase} therefore gives $Q_yD_{r,a}(y)$ in the empty
+context.  Weaken this closure into $\Lambda$ and apply QE with the
+given base equation and target $v$.
+\end{proof}
+
+This is a valid fixed-context numerical case argument.  The context
+$\Lambda$ is held fixed and has no occurrence of the fresh generalized
+variable $z$.  The conclusion may later be instantiated at a variable
+that appears in other hypotheses because QE, unlike the introduction
+rule, imposes no freshness condition on its numerical target.
+
+\begin{theorem}[Unrestricted equation progress]
+\label{thm:decoder-progress}
+Suppose the supplied derivation is
+\[
+ \pi:\quad\Gamma,E(z)\vdash E(Sz),\qquad
+ E(y)\equiv s(y)=t(y),
+\]
+with $z$ fresh for $\Gamma$ and the fixed parameters.  Then the
+reflexive-base calculus derives $\Gamma\vdash Q_yE(y)$.
+\end{theorem}
+\begin{proof}
+Write $s_0=s(0)$, $t_0=t(0)$, and temporarily retain the original base:
+\[
+ \Delta:=\Gamma,E(0)=\Gamma,(s_0=t_0).
+\]
+The progressive lift is
+\[
+ H(y):=\bigl(C(y,0,s(y))=C(y,0,t(y))\bigr).
+\]
+Its zero-normal base is literally $0=0$, so it qualifies for primitive
+progressive DI.  Define the two decoder equations
+\begin{align*}
+ D_s(y)&:\quad C(y,s_0,C(y,0,s(y)))=s(y),\\
+ D_t(y)&:\quad C(y,s_0,C(y,0,t(y)))=t(y).
+\end{align*}
+Lemma~\ref{lem:case-decoder} gives their closures without assumptions.
+For $D_s$ the zero base is $s_0=s_0$, supplied by reflexivity; for
+$D_t$ it is $s_0=t_0$, supplied by the retained hypothesis $E(0)$.
+Hence, in the fixed context $\Delta$, QE gives both $D_s(z)$ and
+$D_t(z)$ at the fresh variable $z$.
+
+Now add $H(z)$.  Congruence in the one-term context
+\[
+ w\longmapsto C(z,s_0,w)
+\]
+converts it to
+\[
+ C(z,s_0,C(z,0,s(z)))
+   =C(z,s_0,C(z,0,t(z))).
+\]
+Symmetry of $D_s(z)$ followed by this equation and $D_t(z)$ yields
+$s(z)=t(z)$, that is, $E(z)$.
+
+Weaken the original step derivation $\pi$ into this enlarged retained
+context, and cut the just-derived $E(z)$ into its distinguished
+hypothesis.  The result is $\Delta,H(z)\vdash E(Sz)$.
+No substitution into $\pi$ has occurred: its induction variable is
+still the same $z$.  Successor computation on each side of $H(Sz)$
+then converts this to
+\[
+ \Delta,H(z)\vdash H(Sz).
+\]
+Use an unused witness coordinate and witness $0$ in primitive
+progressive DI.  The conclusion is $\Delta\vdash D_{x,y}H(y)$;
+DE returns $\Delta\vdash Q_yH(y)$ because the witness is unused.
+Reflexivity proves $H(0)=(0=0)$, and QE at $Sz$ gives $H(Sz)$, hence
+$E(Sz)$.  We have therefore constructed
+\[
+ \Gamma,E(0)\vdash E(Sz).
+\]
+Finally rule~\eqref{eq:decoder-qcase} discharges the retained base and
+gives $\Gamma\vdash Q_yE(y)$.
+\end{proof}
+
+The complete dependency order is especially short: normal-substitution
+identities; weakening and cut; elementary equality; unrestricted case
+DI; case-derived closure; the two decoders; general equation progress.
+Arbitrary numerical substitution on derivations can consequently be
+proved afterward, or transferred through the exact comparison with the
+seven-rule zero-normal calculus.  The decoder proof does not use that
+structural theorem as an unproved prerequisite.
+
+\paragraph{Relation to the executable translation.}
+In \texttt{proof\_translations.py}, \texttt{decoder\_closure} constructs
+the two case-derived closure proofs.  In \texttt{qi\_to\_six}, their QE
+instances are \texttt{dl} and \texttt{dr}; \texttt{decoded} is the
+congruence-and-transitivity derivation of $E(z)$; and \texttt{cut\_tree}
+inserts it into the supplied step proof.  The final two operations are
+guarded progress for $H$, then case-derived closure for $E$.
+Proof-tree numerical lifting merely renames free parameters away from
+new eigenvariables.  It is not arbitrary term substitution into the
+input step derivation.
+
+
+\subsection{Exact equivalence and bi-interpretation}
+
+\begin{theorem}[Same normal sequents]
+For every context $\Gamma$ and formula $A$ of the zero-normal language,
+\[
+ \Gamma\vdash_{\mathcal R}A
+ \quad\Longleftrightarrow\quad
+ \Gamma\vdash_{\mathcal Z}A.
+\]
+Both transformations are effective on finite derivations and are the
+identity on the sequent syntax.
+\end{theorem}
+\begin{proof}
+For $\mathcal R\to\mathcal Z$, the first five rules are shared.
+A case-selected DI is native case introduction.  If DI is
+progress-selected, its matrix must be an equation.  Apply the native
+equation-progress rule to $E(y):=B(t,y)$ to obtain $Q_yE(y)$.
+Under the temporary assumption $E(0)$, QE supplies $E(Sz)$.
+The native D case rule discharges $E(0)$ and produces the required
+$D_{x,y}B$.  Hence every primitive rule is sound in $\mathcal Z$.
+
+For $\mathcal Z\to\mathcal R$, translate recursively, retain the
+five shared rules, replace case introduction by
+Lemma~\ref{lem:reflexive-all-cases}, and replace equation progress by
+Theorem~\ref{thm:decoder-progress}.  Each construction preserves the
+retained context and its freshness conditions.
+\end{proof}
+
+Compose this exact normal-sequent equivalence with the repository's
+$\mathcal Z$--native normalization comparison and the established
+native--iPRA bi-interpretation.  This yields a bi-interpretation and
+equiconsistency with full first-order iPRA.  Both numerical domains
+remain whole and interpreted equality remains actual equality; the
+internal numerical round-trip graph is $x=y$.  Formula round trips are
+the inherited round trips composed with the provable equivalence of a
+formula and its zero-normal form.  The normalization layer is explicitly
+part of the presentation, and is included in any checker measurement.
+
+\subsection{The same guard on raw syntax}
+
+\begin{proposition}[Seven rules without normalization]
+On the original raw iterator syntax, retain Hyp, I0, IS, Tr, QE and DE,
+and replace the two introductions by $\mathrm{DI}_{\mathsf R}$, with
+$\mathsf R(B,t)$ now testing the unnormalized literal syntax of
+$B(t,0)$.  The resulting seven-rule calculus derives exactly the
+sequents of the original eight-rule native kernel.
+\end{proposition}
+\begin{proof}
+Use ordinary capture-free raw substitution throughout.  Reflexivity
+comes from I0 and crossed Tr: apply identity-template transport to the
+equation $I(0,r;u.u)=r$ twice.  Weakening and cut are direct inductions,
+every missing case introduction is recovered by reflexivity and cut,
+and true guards are preserved by substitution.  The false-to-true repair
+therefore proves arbitrary substitution exactly as above.  The case-derived closure rule is recovered exactly as above.
+
+The one modification is the lift used to recover unrestricted progress.
+For $E(y)=(s(y)=t(y))$, define the asymmetric equation
+\[
+ K(y):=
+ \bigl(C(y,t(y),s(y))=C(0,t(y),s(y))\bigr),
+ \qquad C(v,a,b):=I(v,a;u.b),
+\]
+with each accumulator binder fresh.  Its raw zero instance is literally
+\[
+ C(0,t(0),s(0))=C(0,t(0),s(0)),
+\]
+so it satisfies the reflexive-base guard before any computation.
+For every $v$, IS computes the left side of $K(Sv)$ to $s(Sv)$,
+while I0 computes its right side to $t(Sv)$.  Elementary equality
+therefore gives $K(Sv)\dashv\vdash E(Sv)$.
+
+Under the retained base $s(0)=t(0)$, the raw decoder equations are
+\begin{align*}
+ C(y,s(0),C(y,t(y),s(y)))&=s(y),\\
+ C(y,s(0),C(0,t(y),s(y)))&=t(y).
+\end{align*}
+Their zero cases follow from I0 and respectively reflexivity or the retained
+base.  Their successor cases follow from IS for the outer selector and
+IS or I0 for the inner selector.  Case-derived closure and QE supply both
+decoders.  Congruence of $K(y)$ under $C(y,s(0),-)$ therefore yields $E(y)$.
+Cut this into the unchanged supplied progress proof, convert $E(Sy)$
+to $K(Sy)$, and finish with primitive progress followed by case-derived
+closure, as in Theorem~\ref{thm:decoder-progress}.  The proof translations
+then give the same raw sequents without a normalization map.
+\end{proof}
+
+The asymmetric lift also works in the zero-normal presentation, where
+its base contracts to $t(0)=t(0)$.  Thus the broad reflexive-base guard
+is independent of the choice to make zero computation definitional.
+This raw proof does not establish the narrower exact-$0=0$ variant on
+raw syntax: the displayed raw base is reflexive but is generally not
+literally $0=0$.
+
+\subsection{Further variants and the implementation tradeoff}
+
+\paragraph{Exact-zero base.}
+One may replace $\mathsf R(B,t)$ by the smaller class
+\[
+ \mathsf Z(B,t)\quad\Longleftrightarrow\quad
+ B(t,0)\text{ is literally }0=0.
+\]
+Every proof above remains valid: selected bases are provable, a true
+guard is preserved by substitution, and every gate $H$ in the progress
+proof has exactly this base.  Thus this variant also derives precisely
+the native zero-normal sequents.  It uses a single comparison with a
+fixed formula, though it recognizes fewer usable progress matrices.
+
+\paragraph{Testing before the witness is inserted.}
+Alternatively test whether $B(x,0)$, with $x$ still a formal variable,
+is reflexive.  The same argument works: a true guard makes every
+$B(t,0)$ reflexive, arbitrary gate matrices still qualify, and true
+guards remain true under substitution of the retained parameters.
+This removes the witness from the test but usually costs an extra
+normal-substitution pass in a checker, because the instantiated base
+$B(t,0)$ must still be constructed for the unguarded local assumption.
+The post-witness test above reuses that already-needed base.
+
+\paragraph{Scope of the contribution.}
+The guarded-introduction completeness method is inherited from the
+repository's diagonal-guard package.  The new specialization tests a
+computed zero instance rather than an exact iterator shape or a literal
+witness, and its structural proof explicitly handles a guard that can
+change from false to true.  It is not a new arithmetic bridge or a
+proof of global minimality.  A reduction of mathematical bookkeeping
+does not by itself imply a new record in all checker-size coordinates.
+
+\paragraph{A distinct inherited rule must not be claimed as new.}
+Retaining both $B(t,0)$ and, at equations, $B(t,z)$ in a single
+introduction premise is another short equivalent presentation.  That
+cumulative introduction already appears as the old DI in the
+inherited Choice-DI material.  It may be used as a control or composed
+with zero normalization, but it is not a new result of this section.

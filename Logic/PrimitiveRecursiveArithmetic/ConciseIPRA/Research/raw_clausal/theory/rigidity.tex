@@ -1,0 +1,160 @@
+\section{A narrower arithmetic principle: successor rigidity}
+\label{sec:successor-rigidity}
+
+This section gives a proved reduction of an arithmetic principle, not
+a second completed axiomatization.  The existing
+\texttt{scope\_kernel} note obtains induction from scalar iterator
+uniqueness by a retraction argument.  The incoming
+\texttt{ipra\_scalar\_uniqueness} report completes the equality-reflection
+bootstrap for that unrestricted uniqueness rule.  The observation here
+is narrower: uniqueness just for zero-starting successor trajectories
+already gives induction for every literal equation with zero on one side.
+The proof uses one trajectory and does not require an idempotence lemma.
+
+\subsection{Exact background and the restricted rule}
+
+Use ordinary intuitionistic first-order logic with actual equality,
+the scalar terms $0$, $S$, and $I(n,a;u.h)$, and the equations
+\[
+ I(0,a;u.h)=a,\qquad
+ I(Sn,a;u.h)=h[I(n,a;u.h)/u].
+\]
+The bound variable $u$ occurs only in the body $h$.  Retain numerical
+coverage
+\[
+                 \forall n\,(n=0\lor\exists m\,n=Sm).
+\]
+For the theorem below, neither successor injectivity nor separation of
+$0$ from $S0$ is needed.  Define the selector
+\[
+ C(v,a,b):=I(v,a;u.b),\qquad
+ C(0,a,b)=a,\quad C(Sv,a,b)=b.
+\]
+
+The proposed restricted arithmetic rule is
+\[
+ \frac{\Gamma\vdash f(0)=0\qquad
+       \Gamma\vdash f(Sz)=S(f(z))}
+      {\Gamma\vdash f(t)=t}.
+ \tag{SR$_0$}\label{rule:sr-zero}
+\]
+Here $f(z)$ is one fixed finite scalar term template; it is not a
+function variable.  The variable $z$ is fresh for $\Gamma$, $t$, and
+all passive parameters.  In particular, the recurrence premise has
+no local induction hypothesis.  This rule is narrower than arbitrary
+scalar-iterator uniqueness: its seed is zero and its update is always
+successor.  It does have a separate base premise, which must be counted
+in any implementation comparison.
+
+Literal-equation induction derives \eqref{rule:sr-zero}: induct on
+$f(n)=n$.  The given base supplies the zero case.  Under $f(z)=z$,
+the recurrence gives
+$f(Sz)=S(f(z))=Sz$.  Unrestricted scalar uniqueness also derives the
+rule: apply it to $f$ with update $S$ and to the identity template
+$n\mapsto n$, then use the common zero seed.
+
+\subsection{Induction by a trajectory that stays inside the predicate}
+
+The following sufficient condition makes the proof transparent.  Let
+$E(x)$ be a fixed formula and suppose that the retained context proves
+its base and its successor step:
+\[
+ \Gamma\vdash E(0),\qquad
+ \Gamma,E(z)\vdash E(Sz),
+\]
+where $z$ is fresh.  Suppose also that there is a fixed scalar term
+$e(x)$ such that, uniformly in a fresh $x$,
+\[
+ \Gamma\vdash E(e(x)),\qquad
+ \Gamma,E(x)\vdash e(x)=x.                         \tag{Reset}
+\]
+No decidability of the whole formula $E$ is included in this condition.
+
+Define the finite term
+\[
+                     r(n):=I(n,0;u.e(Su)).
+\]
+We first prove $\Gamma\vdash E(r(n))$ using coverage on $n$.
+If $n=0$, computation gives $r(n)=0$, and the base gives the result.
+If $n=Sm$, computation gives $r(n)=e(S(r(m)))$, and the first
+\textnormal{(Reset)} statement, instantiated at $S(r(m))$, gives the
+result directly.  This argument does not assume $E(r(m))$ in its
+successor branch and does not use numerical induction.
+
+Now instantiate the given successor step at $r(z)$ and use the
+already proved $E(r(z))$.  It gives $E(S(r(z)))$.  The second
+\textnormal{(Reset)} statement consequently yields
+\[
+ e(S(r(z)))=S(r(z)).
+\]
+Thus the iterator equations prove, under the unchanged context,
+\[
+                   r(0)=0,\qquad r(Sz)=S(r(z)).
+\]
+One application of SR$_0$ gives $r(t)=t$.  Transport the theorem
+$E(r(t))$ along this equation to obtain $E(t)$.
+
+All substitutions in this proof are capture avoiding.  The eigenvariable
+of SR$_0$ is chosen fresh for the retained context and passive parameters;
+the auxiliary witness used when eliminating coverage is also fresh.
+Consequently the argument works with arbitrary first-order assumptions
+in $\Gamma$, including quantified assumptions.
+
+\subsection{Unconditional consequence for zero equations}
+
+Take $E(x)$ to be the literal equation $q(x)=0$ and assume its base
+and successor step as above.  Put
+\[
+                       e(x):=C(q(x),x,0).
+\]
+If $q(x)=0$, selector computation gives $e(x)=x$, which proves the
+second \textnormal{(Reset)} statement.  To prove the first, apply
+coverage to $q(x)$.
+
+If $q(x)=0$, then $e(x)=x$ and hence $q(e(x))=0$.  If
+$q(x)=Sv$, then $e(x)=0$ and the assumed base $q(0)=0$ again gives
+$q(e(x))=0$.  These are constructive numerical cases.  They require
+neither a test for equality of two arbitrary terms nor separation of
+zero and successor.
+
+It follows that the stated background plus SR$_0$ derives the complete
+contextual rule
+\[
+ \frac{\Gamma\vdash q(0)=0\qquad
+       \Gamma,q(z)=0\vdash q(Sz)=0}
+      {\Gamma\vdash q(t)=0}.
+ \tag{ZI}\label{rule:rigidity-zero-induction}
+\]
+The construction of $e$ and $r$ is effective on finite syntax, so the
+argument is a uniform finite proof transformation, not only a semantic
+observation about the standard natural numbers.
+
+\subsection{The exact unresolved step}
+
+This result does not establish full scalar iPRA from SR$_0$.
+The missing bootstrap is substantial.  A term $\delta(a,b)$ satisfying
+\[
+                 \delta(a,b)=0\quad\longleftrightarrow\quad a=b
+\]
+throughout the numerical domain would transfer ZI to induction on
+every literal equation.  The already established scalar bridge would
+then give the desired bi-interpretation with iPRA.  However, the current
+predecessor and equality-reflection proofs use inductions on general
+equations, or uniqueness with updates other than successor.  Importing
+them before establishing this bridge would be circular.
+
+For example, the completed unrestricted-uniqueness predecessor proof
+compares unbounded trajectories with updates such as $v\mapsto v+3$,
+$v\mapsto v+M(v)+4$, and its factor map $H$.  Those are not instances
+of SR$_0$.  Boolean finite-state invariants can often be translated to
+ZI, but that alone does not justify those unbounded trajectory
+equalities.  No converse ZI$\Rightarrow$SR$_0$, no full equivalence with
+unrestricted uniqueness, and no smaller complete checker for SR$_0$
+are claimed here.
+
+The precise further research question is whether scalar computation,
+coverage, separation, and SR$_0$ construct a faithful equality test
+without using any unrestricted equality induction.  A positive answer
+would remove the arbitrary update template from the arithmetic
+uniqueness rule; its two-premise implementation would then need a
+matched size comparison.

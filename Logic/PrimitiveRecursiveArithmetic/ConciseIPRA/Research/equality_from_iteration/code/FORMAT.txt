@@ -1,0 +1,194 @@
+STRICT CERTIFICATE FORMAT AND REPRODUCTION
+=========================================
+
+Main checker: raw_two_case.py
+Companion checker: checker.py (zero-normal syntax, one Eval clause)
+Controls: raw_control.py and normalized_control.py
+
+Each selected checker is a complete standalone Python module. It imports
+only json and sys from the standard library. The translators and test harness
+are untrusted auxiliary tools and are not imported by any acceptance module.
+
+Input is one JSON object with exactly these four keys:
+
+  variables : a nonnegative integer, excluding Boolean and floating values
+  context   : a list of formulas over those free numerical variables
+  goal      : a formula over those free numerical variables
+  proof     : a finite proof tree in the instruction syntax below
+
+A command accepts precisely by printing ACCEPT followed by one newline and
+exiting with status zero. A nonzero status is rejection. Ordinary memory,
+integer, and recursion resource limits of the Python implementation remain.
+The specification is the ideal finite-tree checker, not a resource bound.
+
+Run:
+
+  python3 raw_two_case.py < certificates/raw/upstream_used_hypothesis_progress.json
+  python3 checker.py < certificates/normalized/used_induction_hypothesis.json
+  python3 verify.py
+
+The last command reproduces normalized source, gzip-9 files, measurements,
+proof translations, fixtures, and results.json. No third-party Python package
+is required. Reference measurements use CPython 3.12.14.
+
+NUMERICAL SYNTAX
+---------------
+
+  ['v', i]       numerical variable i
+  ['z']          zero
+  ['s', a]       successor of a
+  ['i', c, a, h] iterator I(c,a;u.h)
+
+All examples use JSON double quotes in actual certificates. Variable indices
+are de Bruijn indices. In the iterator, h alone binds u, whose index is zero;
+all pre-existing free variables have their indices increased by one there.
+Indices must be exact integers and lie in scope.
+
+The main checker permits raw iterator syntax without normalization.
+The companion permits only zero-normal terms: no iterator anywhere has
+counter ['z']. Its capture-avoiding substitution rebuilds every iterator by
+
+  smartI(c,a,h) = a                      if c is literally ['z'];
+               = ['i',c,a,h]             otherwise.
+
+This contraction is performed recursively after the children are rebuilt,
+including when substitution first exposes a literal-zero counter. External
+terms are required to be canonical; they are rejected rather than silently
+normalized. A successor-counter iterator is never contracted by this syntax.
+
+FORMULAS
+--------
+
+  ['=', s, t]    equality
+  ['q', b]       Q_y b, binding one numerical variable
+  ['d', b]       D_{x,y} b, binding two numerical variables
+
+Inside D, index zero is y and index one is x. The ordinary readings are
+
+  Q_y b         = b(0) -> forall y b(y)
+  D_{x,y} b     = exists x (b(x,0) -> forall y b(x,y)).
+
+The designated contradiction is ['=', ['z'], ['s', ['z']]].
+
+PROOF INSTRUCTIONS
+------------------
+
+  ['hyp', i]
+    Return context[i]. The index is an exact integer in range.
+
+  ['refl', a]
+    Validate a in the current scope and return a=a.
+
+  ['ev', p, q]
+    Infer s=t from p and b=r from q. No term template is supplied.
+
+    Main raw checker: b must be an iterator.
+      b=I(0,a;u.h), s=a:
+        return r=t.
+      b=I(S c,a;u.h), s=I(c,a;u.h):
+        return r=h[t/u].
+    All source matching is syntactic; substitution is capture-free.
+    There is no separate case b=s.
+
+    Zero-normal companion: b must be I(S c,a;u.h), and
+    s must be smartI(c,a,h). Return r=norm(h[t/u]). This is the only case.
+
+  ['qe', t, p, q]
+    Validate t. Infer Q_y b(y) from p. Require q to infer b(0).
+    Return b(t).
+
+  ['de', a, p, q]
+    Validate the proposed conclusion a in the current scope. Infer D_{x,y}b
+    from p. Check q in a scope with one new numerical variable x and with
+    Q_y b(x,y) prepended to the shifted old context. Require its conclusion
+    to be the shifted a. Return a. Validating a before the scope extension
+    enforces the eigenvariable condition.
+
+  ['di', b, t, p]
+    Validate b in the current scope plus two bound variables, and validate
+    witness t in the current scope. Instantiate x with t, leaving y bound.
+    Let the resulting matrix be a(y). In a scope with a fresh z, prepend
+    a(z) to the shifted old context if the matrix is a literal equation and
+    t is literally zero; otherwise prepend a(0). Require p to conclude
+    a(S z). Return D_{x,y}b.
+
+The same zero-normal rebuilding is used by every companion substitution,
+including substitutions into formulas, contexts, QE, DE, and DI.
+
+SCOPE OPERATIONS
+----------------
+
+walk(a,f,d) tracks the number d of enclosing bound variables. An iterator
+adds one binder only in its last child; Q adds one; D adds two. shift(a,k)
+adds k to every free variable. sub(a,t) removes the outermost binder and
+replaces its variable by t with the required lifting under inner binders.
+The optional drop=0 used in DI keeps the newly allocated eigenvariable in
+scope. The companion smart-rebuilds after traversing children.
+
+CHECKER INVARIANT
+-----------------
+
+By induction on a successful call infer(p,g,n), its result is a well-formed
+formula in scope n, and it follows from g by the displayed calculus. Contexts,
+goals, and supplied terms/formulas are checked before they can be retained.
+Derived formulas are well-formed because capture-free substitution preserves
+scope (and, in the companion, canonicality).
+
+The equality branch uses list lengths to enforce its already-validated
+formula and term shapes: equality is the only formula with three entries,
+and an iterator is the only term with four entries. Q and D have two entries;
+variables and successors have two, while zero has one. An invalid shape
+therefore raises an exception before acceptance. This is an inductive shape
+invariant, not an unchecked promise by the certificate author.
+
+The public entry point checks the inferred conclusion against the complete
+claimed goal and rejects extra top-level keys. It does not rely on Python
+assert statements, so python -O preserves its acceptance conditions.
+
+CONTROL COMPARISONS AND TRANSLATORS
+----------------------------------
+
+raw_control.py is the exact upstream computational_equality/code/checker.py
+at the pinned source, Git blob fb0c113d07d3d25632e8c077f91268f089f71bf3.
+It has one additional Eval case: from s=t and s=r, infer r=t directly.
+raw_two_case.py removes only that branch. Every other acceptance operation
+is unchanged.
+
+normalized_control.py has the same zero-normal public interface as checker.py
+and also allows that root case. An explicit zero-computation case would be
+unreachable on its canonical terms, so it is not included in the control.
+
+translate.py compiles a valid control certificate to its selected checker
+without changing any part of its end-sequent. Each removed root step is
+replaced by two allowed Eval steps and a reflexivity leaf:
+
+  raw:        W(s)=I(0,s;u.0)
+  canonical:  W(s)=I(S0,s;u.u)
+
+  from q:s=r and Refl(W(s)), get W(s)=r;
+  from p:s=t and that equation, get r=t.
+
+The reverse translation is the identity proof tree. If the old proof has N
+inference occurrences, the compiled one has at most 3N. This is not a bound
+on certificate bytes or term sizes. Neither compiler here is a raw-to-
+canonical compiler; those normalization equivalences are proved in the paper.
+
+MEASUREMENTS AND LIMITS
+----------------------
+
+Metrics include the complete standalone modules. Source is parsed with ast,
+unparsed with ast.unparse, and terminated by one LF. Significant-token counts
+exclude comments, indentation, newlines, encoding, and the end marker. AST
+counts include every node visited by ast.walk. Gzip uses level 9 and mtime=0.
+Gzip is informational, not an optimization objective.
+
+The new raw module improves all four measured coordinates of its matched
+upstream control. The canonical companion has a simpler one-clause numerical
+rule but pays for normalization and canonical-input validation; it is not
+claimed to improve the raw module's token or AST coordinates. Neither module
+is a new global compact-codec minimum. Existing compact codecs have different
+syntax and validation contracts.
+
+The executable evidence consists of finite tests, independently evaluated
+numerical substitution instances, and checked finite proof translations.
+These are not proofs of the universal metatheorems or a Lean/Rocq verification.

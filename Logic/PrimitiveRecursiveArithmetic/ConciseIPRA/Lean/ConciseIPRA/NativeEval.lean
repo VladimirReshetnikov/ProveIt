@@ -3,19 +3,21 @@ import ConciseIPRA.NativeOneIntro
 /-!
 # Computational equality: six rules
 
-`EPrf` is the calculus of the package `Research/computational_equality`.
-Terms and formulas are those of the kernel, with ordinary substitution.  Its
-rules are hypothesis, reflexivity, `QE`, `DE`, the single introduction `dI` of
-`NativeOneIntro`, and one rule **Eval** that combines equality with one step of
-computation: from `s = t` and `b = r` infer `r = Φ(s, t, b)`, where `Φ` is
-defined in exactly three syntactic cases,
+`EPrf` is the calculus of the package `Research/computational_equality`, in
+the form of `Research/equality_from_iteration`.  Terms and formulas are those
+of the kernel, with ordinary substitution.  Its rules are hypothesis,
+reflexivity, `QE`, `DE`, the single introduction `dI` of `NativeOneIntro`, and
+one rule **Eval** that combines equality with one step of computation: from
+`s = t` and `b = r` infer `r = Φ(s, t, b)`, where `Φ` is defined in two
+syntactic cases,
 
-* `b` is `s`:                                  `Φ = t`;
-* `b` is `I(0, a; u.h)` and `s` is `a`:        `Φ = t`;
+* `b` is `I(0, s; u.h)`:                              `Φ = t`;
 * `b` is `I(S c, a; u.h)` and `s` is `I(c, a; u.h)`:  `Φ = h[t/u]`.
 
-The three cases are the constructors `evalId`, `evalZero` and `evalSucc`.
-There is no computation axiom and no transport rule with a template.
+The two cases are the constructors `evalZero` and `evalSucc`.  There is no
+computation axiom and no transport rule with a template.  The third case of
+the first package, `b` is `s` with `Φ = t`, is the derived rule `EPrf.evalId`:
+two zero steps through the frame `I(0, s; u.u)`.
 
 `eprf_iff_nprf` proves that `EPrf` derives the same sequents as the kernel.
 Both computation equations are Eval applied to two reflexivities.  Transport
@@ -36,14 +38,12 @@ computation equations and transport, and a single introduction rule. -/
 inductive EPrf : {n : ℕ} → List (NFm n) → NFm n → Prop
   | hyp {n : ℕ} {Γ : List (NFm n)} {A : NFm n} (h : A ∈ Γ) : EPrf Γ A
   | refl {n : ℕ} {Γ : List (NFm n)} (t : Tm n) : EPrf Γ (.eq t t)
-  /-- Eval, first case: from `s = t` and `s = r` infer `r = t`. -/
-  | evalId {n : ℕ} {Γ : List (NFm n)} {s t r : Tm n}
-      (h₁ : EPrf Γ (.eq s t)) (h₂ : EPrf Γ (.eq s r)) : EPrf Γ (.eq r t)
-  /-- Eval, second case: from `a = t` and `I(0, a; u.h) = r` infer `r = t`. -/
+  /-- Eval at a zero iteration: from `a = t` and `I(0, a; u.h) = r` infer
+  `r = t`. -/
   | evalZero {n : ℕ} {Γ : List (NFm n)} (h : Tm (n + 1)) {a t r : Tm n}
       (h₁ : EPrf Γ (.eq a t)) (h₂ : EPrf Γ (.eq (iter zero a h) r)) : EPrf Γ (.eq r t)
-  /-- Eval, third case: from `I(c, a; u.h) = t` and `I(S c, a; u.h) = r` infer
-  `r = h[t/u]`. -/
+  /-- Eval at a successor iteration: from `I(c, a; u.h) = t` and
+  `I(S c, a; u.h) = r` infer `r = h[t/u]`. -/
   | evalSucc {n : ℕ} {Γ : List (NFm n)} {c a : Tm n} {h : Tm (n + 1)} {t r : Tm n}
       (h₁ : EPrf Γ (.eq (iter c a h) t)) (h₂ : EPrf Γ (.eq (iter (succ c) a h) r)) :
       EPrf Γ (.eq r (Syn.subst (inst t) h))
@@ -60,11 +60,17 @@ namespace EPrf
 
 variable {Γ : List (NFm n)} {A : NFm n}
 
-theorem eqSymm {s t : Tm n} (h : EPrf Γ (.eq s t)) : EPrf Γ (.eq t s) := .evalId (.refl s) h
+/-- From `s = t` and `s = r` infer `r = t`: two zero steps through the frame
+`I(0, s; u.u)`. -/
+theorem evalId {s t r : Tm n} (h₁ : EPrf Γ (.eq s t)) (h₂ : EPrf Γ (.eq s r)) :
+    EPrf Γ (.eq r t) :=
+  .evalZero (Syn.var 0) h₁ (.evalZero (Syn.var 0) h₂ (.refl _))
+
+theorem eqSymm {s t : Tm n} (h : EPrf Γ (.eq s t)) : EPrf Γ (.eq t s) := evalId (.refl s) h
 
 theorem eqTrans {s t u : Tm n} (h₁ : EPrf Γ (.eq s t)) (h₂ : EPrf Γ (.eq t u)) :
     EPrf Γ (.eq s u) :=
-  .evalId h₂ (eqSymm h₁)
+  evalId h₂ (eqSymm h₁)
 
 /-- The zero computation, by Eval on two reflexivities. -/
 theorem iterZero (a : Tm n) (h : Tm (n + 1)) : EPrf Γ (.eq (iter zero a h) a) :=
@@ -90,7 +96,6 @@ theorem toNPrf (h : EPrf Γ A) : NPrf Γ A := by
   induction h with
   | hyp h => exact .hyp h
   | refl t => exact NPrf.eqRefl t
-  | @evalId _ _ s t r _ _ ih₁ ih₂ => exact .trOne (s := s) (t := t) (u := r) (Syn.var 0) ih₁ ih₂
   | evalZero h _ _ ih₁ ih₂ =>
     exact NPrf.eqTrans (NPrf.eqSymm ih₂) (NPrf.eqTrans (.iterZero _ h) ih₁)
   | @evalSucc _ _ c a h t r _ _ ih₁ ih₂ =>

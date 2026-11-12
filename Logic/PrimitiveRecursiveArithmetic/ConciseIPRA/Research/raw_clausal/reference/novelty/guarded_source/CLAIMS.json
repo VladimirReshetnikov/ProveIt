@@ -1,0 +1,88 @@
+{
+  "title": "A smaller guarded presentation of iPRA",
+  "date": "2026-11-11",
+  "comparison": {
+    "repository": "VladimirReshetnikov/ProveIt",
+    "commit": "1517d9d79ce33f631e0f82960c849427cbba23bf",
+    "subdirectory": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA",
+    "old_attained_coordinate_minima": {
+      "tokens": 259,
+      "ast_nodes": 283,
+      "normalized_bytes": 526
+    }
+  },
+  "new_mathematical_results": [
+    "Literal-zero-source transport is admissible in the purely equational iterator fragment with contextual equation induction; no logical case-introduction rule is needed.",
+    "The source-selected elimination and root-determined guarded introduction compose, preserving every canonical guarded public consequence when the specified auxiliary intermediates are permitted."
+  ],
+  "equivalence": {
+    "target": "full first-order intuitionistic primitive recursive arithmetic",
+    "equiconsistent": true,
+    "bi_interpretable": true,
+    "whole_numerical_domains": true,
+    "actual_equality": true,
+    "numerical_composite_graph": "x = y",
+    "formula_composites": "Inherited canonical guarded composites transfer through exact canonical consequence equivalence."
+  },
+  "public_language": "Equations and D binders; each atomic D matrix is I(y,0;u.h)=I(y,0;u.k).",
+  "auxiliary_language": "Equations, Q and D; unguarded atomic matrices permitted inside certificates, with the report's mixed reading.",
+  "measured_profiles": [
+    {
+      "file": "code/checker_tokens.py",
+      "tokens": 257,
+      "ast_nodes": 285,
+      "normalized_bytes": 568,
+      "gzip9_bytes": 338
+    },
+    {
+      "file": "code/checker_ast.py",
+      "tokens": 261,
+      "ast_nodes": 279,
+      "normalized_bytes": 603,
+      "gzip9_bytes": 345
+    },
+    {
+      "file": "code/checker_bytes.py",
+      "tokens": 264,
+      "ast_nodes": 301,
+      "normalized_bytes": 522,
+      "gzip9_bytes": 328
+    },
+    {
+      "file": "code/checker_strict.py",
+      "tokens": 490,
+      "ast_nodes": 561,
+      "normalized_bytes": 1202,
+      "gzip9_bytes": 571
+    }
+  ],
+  "measurement": {
+    "python": "3.12.14",
+    "normalization": "ast.unparse(ast.parse(source)) + '\\n'",
+    "gzip": "gzip.compress(normalized_bytes, compresslevel=9, mtime=0)",
+    "gzip_role": "Informational only; not minimized as a primary metric."
+  },
+  "validation": {
+    "executions": 150,
+    "expected_acceptances": 92,
+    "expected_rejections": 58,
+    "failures": 0,
+    "python_optimized_mode_tested": true,
+    "new_theory_formal_verification": false
+  },
+  "inherited": [
+    "scalar arithmetic and primitive-recursive compiler",
+    "native logical macros and iPRA bridge",
+    "guarded syntax, padding, and both guarded composites",
+    "singleton test and zero-source-symmetry construction",
+    "arity codec and raw-alias soundness"
+  ],
+  "limits": [
+    "The coordinate minima are attained by separate programs, not one program.",
+    "The smallest compact profiles use the canonical-goal contract and do not validate every final goal's public grammar; the strict profile includes that validation.",
+    "No completeness or identity-composite claim for all unguarded auxiliary formulas.",
+    "No proof that all intermediate formulas can be restricted to the public canonical grammar after imposing the source restriction.",
+    "No claim of absolute minimality, a large mathematical breakthrough, or a new Lean/Rocq verification."
+  ]
+}
+
