@@ -7470,6 +7470,10 @@ The source-reviewed [conditional 87-to-86 map](research/ordinary14-87-to-86-cond
 proposes the reverse valuation assuming the scalar gap and quotient
 positivity. It remains unelaborated and those assumptions must still be
 derived from the 87 graph's zero.
+The source-reviewed [87 guard-gap](research/ordinary14-87-guard-gap-draft/README.md)
+and [conditional strict-bound](research/ordinary14-87-guard-strict-draft/README.md)
+drafts propose these steps under explicit hypotheses, including `X ≥ q²`
+for the latter. They remain unelaborated; graph-derived growth is still open.
 The source-reviewed [86 own-zero quotient composition](research/ordinary14-86-ownzero-quotient-draft/README.md)
 proposes deriving that quotient and a magnitude root from the graph's own
 first residual. It remains unelaborated and is not yet a complete model map.
@@ -7512,6 +7516,11 @@ The separately reviewed [q=5 toy construction](research/ordinary14-direct-x73-q5
 does give a symbolic full zero with `q ∤ X` at toy ports. Its stated parent
 exclusion depends on the cited calibration and is restricted to the same
 parameters; it is not an actual-compact44 or unrestricted result.
+The source-reviewed [all-J toy parent exclusion](research/ordinary14-direct-x73-toy-odd-parent/README.md)
+extends the `β = 4` example to all positive J, conditional on the documented
+source-theorem replay. A separate reviewed [odd-β, even-q toy](research/ordinary14-direct-x73-q10-toy/README.md)
+has `q = 10` and a symbolic zero with `q ∤ X`; its parent exclusion is
+source-dependent and restricted to fixed q. Neither is a compact44 result.
 The reviewed [positive quotient shift](research/ordinary14-positive-guard74/README.md)
 reduces that parent to 14 strictly positive inputs and 74 operations at exact
 degree 107. Its positive-zero maps use `β > 0` and `K0 ≥ 0` locally; the
