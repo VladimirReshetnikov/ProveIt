@@ -34,7 +34,10 @@ fixed kernel.
 with the earlier fact-level gamma client. It **still assumes** positive first
 scale and U, `q≥2`, `X≥1`, `Y≥q³`, `F≤q`, and the model rank bound. It does
 not prove the graph's positive-C argument or derive those facts from a zero.
-No connection to the 90/91 zero maps, physical displayed equation, compact
+`Residue90CompactGraphGamma.lean.src` further proposes deriving the scale,
+`q` and `Y` bounds and the rank inequality for the symbolic mask tuple from
+`J>0`, `X≥1` and `F+alpha<q`; those three graph facts stay explicit, and K
+remains an arbitrary standard natural. No connection to the 90/91 zero maps, physical displayed equation, compact
 fixed-kernel endpoint or current-2011 ports is claimed.
 
 Run the bounded checks from `Computability/DiophantineConsistency`:
