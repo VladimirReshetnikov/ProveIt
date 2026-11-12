@@ -117,15 +117,6 @@ def map (f : ∀ n, T n → T' n) : {n : ℕ} → Fm T n → Fm T' n
 
 variable (f : ∀ n, T n → T' n)
 
-@[simp] theorem map_eq (s t : T n) : (eq s t).map f = eq (f n s) (f n t) := rfl
-@[simp] theorem map_bot : (bot : Fm T n).map f = bot := rfl
-@[simp] theorem map_and (φ ψ : Fm T n) : (and φ ψ).map f = and (φ.map f) (ψ.map f) := rfl
-@[simp] theorem map_or (φ ψ : Fm T n) : (or φ ψ).map f = or (φ.map f) (ψ.map f) := rfl
-@[simp] theorem map_imp (φ ψ : Fm T n) : (imp φ ψ).map f = imp (φ.map f) (ψ.map f) := rfl
-@[simp] theorem map_all (φ : Fm T (n + 1)) : (all φ).map f = all (φ.map f) := rfl
-@[simp] theorem map_ex (φ : Fm T (n + 1)) : (ex φ).map f = ex (φ.map f) := rfl
-@[simp] theorem map_iff (φ ψ : Fm T n) : (iff φ ψ).map f = iff (φ.map f) (ψ.map f) := rfl
-
 theorem map_QF {φ : Fm T n} (h : φ.QF) : (φ.map f).QF := by
   induction φ <;> simp_all [Fm.QF, Fm.map]
 

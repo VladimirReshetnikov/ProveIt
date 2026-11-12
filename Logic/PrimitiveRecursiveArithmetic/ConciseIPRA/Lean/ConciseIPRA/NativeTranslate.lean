@@ -35,8 +35,6 @@ def ofFm : {n : ℕ} → Fm Tm n → NFm n
   | _, .all φ => all (ofFm φ)
   | _, .ex φ => ex (ofFm φ)
 
-@[simp] theorem ofFm_eq (s t : Tm n) : ofFm (s ≐ t) = eq s t := rfl
-@[simp] theorem ofFm_bot : ofFm (Fm.bot : Fm Tm n) = bot := rfl
 @[simp] theorem ofFm_and (φ ψ : Fm Tm n) : ofFm (φ ⋏ ψ) = and (ofFm φ) (ofFm ψ) := rfl
 @[simp] theorem ofFm_or (φ ψ : Fm Tm n) : ofFm (φ ⋎ ψ) = or (ofFm φ) (ofFm ψ) := rfl
 @[simp] theorem ofFm_imp (φ ψ : Fm Tm n) : ofFm (φ ⟶ ψ) = imp (ofFm φ) (ofFm ψ) := rfl

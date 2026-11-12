@@ -64,9 +64,6 @@ instance : Syn PTm where
 @[simp] theorem subst_app (σ : Fin n → PTm m) (f : PR k) (ts : Fin k → PTm n) :
     Syn.subst σ (app f ts) = app f (fun i => Syn.subst σ (ts i)) := rfl
 
-@[simp] theorem shift_app (f : PR k) (ts : Fin k → PTm n) :
-    Syn.shift (app f ts) = app f (fun i => Syn.shift (ts i)) := rfl
-
 /-- The numeral `0`. -/
 def zero : PTm n := app .zero Fin.elim0
 

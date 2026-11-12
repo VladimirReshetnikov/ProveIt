@@ -36,10 +36,6 @@ def Tm.add (a b : Tm n) : Tm n := Tm.iter b a (Tm.succ (Syn.var 0))
     Syn.shift (Tm.sel c a b) = Tm.sel (Syn.shift c) (Syn.shift a) (Syn.shift b) :=
   Tm.subst_sel _ c a b
 
-@[simp] theorem Tm.shift_add (a b : Tm n) :
-    Syn.shift (Tm.add a b) = Tm.add (Syn.shift a) (Syn.shift b) :=
-  Tm.subst_add _ a b
-
 namespace Q
 
 variable {Γ : List (Fm Tm n)}

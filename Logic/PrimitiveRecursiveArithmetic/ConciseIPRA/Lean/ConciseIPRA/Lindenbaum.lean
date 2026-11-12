@@ -221,8 +221,6 @@ theorem prf (e : Ext Γ Γ') {φ : Fm Tm n} (h : Γ ⊢[TeqAx] φ) : Γ' ⊢[Teq
 def map (e : Ext Γ Γ') : Q Γ → Q Γ' :=
   Quotient.lift (fun a => Q.mk Γ' (Syn.subst e.σ a)) (fun _ _ h => Q.sound (e.prf h))
 
-theorem map_mk (e : Ext Γ Γ') (a : Tm n) : e.map (Q.mk Γ a) = Q.mk Γ' (Syn.subst e.σ a) := rfl
-
 @[simp] theorem map_zero (e : Ext Γ Γ') : e.map 0 = 0 := rfl
 
 @[simp] theorem map_one (e : Ext Γ Γ') : e.map 1 = 1 := rfl

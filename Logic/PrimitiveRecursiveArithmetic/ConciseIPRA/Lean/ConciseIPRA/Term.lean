@@ -157,8 +157,6 @@ theorem up_eq_upS (σ : Fin n → Tm m) : Syn.up σ = upS σ := by
 
 @[simp] theorem shift_succ (t : Tm n) : Syn.shift (succ t) = succ (Syn.shift t) := rfl
 
-@[simp] theorem shift_one : Syn.shift (one : Tm n) = one := rfl
-
 @[simp] theorem shift_iter (c a : Tm n) (h : Tm (n + 1)) :
     Syn.shift (iter c a h)
       = iter (Syn.shift c) (Syn.shift a)

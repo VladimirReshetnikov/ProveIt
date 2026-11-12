@@ -70,8 +70,6 @@ def repl (s : T (n + 1)) : Fin (n + 1) → T (n + 1) := Fin.cases s (fun i => va
 
 @[simp] theorem inst_one (t : T (n + 1)) : inst t 1 = var 0 := inst_succ t 0
 
-@[simp] theorem repl_one (s : T (n + 2)) : repl s 1 = var 1 := repl_succ s 0
-
 theorem up_var : up (var : Fin n → T n) = var := by
   funext i
   refine Fin.cases ?_ (fun j => ?_) i <;> simp
@@ -161,8 +159,6 @@ def QF : {n : ℕ} → Fm T n → Prop
     (all φ).subst σ = all (φ.subst (up σ)) := rfl
 @[simp] theorem subst_ex (φ : Fm T (n + 1)) (σ : Fin n → T m) :
     (ex φ).subst σ = ex (φ.subst (up σ)) := rfl
-@[simp] theorem subst_iff (φ ψ : Fm T n) (σ : Fin n → T m) :
-    (iff φ ψ).subst σ = iff (φ.subst σ) (ψ.subst σ) := rfl
 
 @[simp] theorem subst_id (φ : Fm T n) : φ.subst var = φ := by
   induction φ <;> simp_all [up_var]
