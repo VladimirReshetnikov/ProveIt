@@ -7339,6 +7339,11 @@ The reviewed [residue-adjusted first carrier](research/ordinary13-residue-first8
 further gives 13 positive inputs, 81 operations and exact degree 60. Its
 positive-zero maps at the authenticated ports rely on the cited sign-free
 calibration; the modified graph has no Lean/iPRA or file-binding theorem.
+The separate reviewed [degree-56 residue-adjusted form](research/ordinary13-residue-first82/README.md)
+has 13 positive inputs and 82 operations. Its local comparison uses the stated
+compact44 port bounds and the sign-free decoder, without requiring the
+Mersenne-specific step used by the 81-operation form. It is an external
+positive-zero result with the same inherited endpoint limitations.
 The reviewed [conditional sphere finalizer](research/ordinary13-freej88-conditional-sphere/README.md)
 gives a different 88-operation, degree-30 graph with the same positive zeros.
 It is an equal-metric search form, not a new Lean endpoint or improvement.
