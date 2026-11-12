@@ -7714,6 +7714,10 @@ The source-reviewed [74 guard strictness fact](research/ordinary14-positive-guar
 proposes the positive quotient recovery from explicit order and size
 hypotheses. It is unelaborated and those hypotheses have not been bound to
 the graph in Lean.
+The source-reviewed [75/74 ring client](research/ordinary14-75-74-ring-client-draft/README.md)
+and [positive map draft](research/ordinary14-75-74-positive-map-draft/README.md)
+propose the forward and conditional reverse valuation updates. They are
+unelaborated; the reverse guard condition remains to be derived from the graph.
 The distinct [73-operation direct-qF probe](research/ordinary14-direct-qf73-probe/README.md)
 has a reviewed symbolic positive zero at the actual ports for which the
 recovered parent coordinate `F` is negative. Its same-`q`, same-rank parent
