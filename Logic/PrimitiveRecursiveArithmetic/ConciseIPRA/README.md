@@ -257,6 +257,35 @@ by progress as primitive, and proves that the derivable sequents are the same
   (`rprf_iff_nprf`, the module proposed by
   [`reversal_core`](Research/reversal_core/)).
 
+**Which rules cannot be dropped.** Seven of the eight rules of the kernel are
+independent of the others (`NativeModels`). A *reading* of the language over
+the natural numbers fixes the value of the iterator and the meanings of an
+equation, of `Q` and of `D`; one soundness theorem (`FPrf.sound`) asks of a
+reading one condition for each rule in use, and each of the following readings
+meets the conditions of the other rules and refutes a sequent that the kernel
+derives:
+
+| Rule dropped | Reading | Sequent lost |
+| --- | --- | --- |
+| `I(0, a; u.h) = a` | `I(c, a; u.h)` is `h` applied `c + 1` times to `a` | `I(0, 0; u.S u) = 0` |
+| `I(S c, a; u.h) = h[I(c, a; u.h)/u]` | `I(c, a; u.h)` is `a` | `I(1, 0; u.S u) = S I(0, 0; u.S u)` |
+| Tr | `s = t` means `s ≤ t` | `0 = 1 ⊢ 1 = 0` |
+| QE | every `Q` and `D` formula is true | `Q_y (sel(y, 0, 1) = 0) ⊢ 0 = 1` |
+| DE | every `D` formula is true | `D_{x,y} (sel(y, 0, 1) = 0) ⊢ 0 = 1` |
+| DI | every `D` formula is false | `D_{x,y} (0 = 0)` |
+| Hyp | none: without Hyp a derivation does not depend on its context | `0 = 1 ⊢ 0 = 1` |
+
+The progress rule QI is the eighth. Its independence cannot be shown by a
+reading of this kind: over the natural numbers the conditions for DI and DE
+already imply the condition for QI, whatever an equation means
+(`Sem.Sound.qIInd_of`). It needs a structure with nonstandard numbers in which
+both computation equations hold at every count, and is left open here.
+
+The standard reading meets every condition, so the kernel does not derive
+`0 = 1` (`native_consistent`). Through the bi-interpretation this is the
+consistency of `T_eq` and of iPRA (`teq_consistent`, `pra_consistent`), by a
+proof that evaluates iterator terms only.
+
 **Ordinary realization.** `T_eq` is intuitionistic first-order logic with
 equality over the same terms, with the two computation equations, coverage
 `∀x (x = 0 ∨ ∃y x = S y)`, separation `0 = S 0 → ⊥`, and induction for literal
@@ -480,6 +509,9 @@ formalizes three systems and proves them mutually bi-interpretable:
 | | `teq_iff_pra`, `pra_iff_teq` | each theory proves a sequent iff the other proves its translation |
 | | `teq_roundTrip`, `pra_roundTrip` | every formula is provably equivalent to its round trip |
 | | `teq_consistent_iff` | equiconsistency |
+| consistency | `native_consistent`, `teq_consistent`, `pra_consistent` | none of the three systems derives `0 = 1`: the kernel is sound for the standard reading over the natural numbers (`NPrf.sound_std`), and the bi-interpretation carries this to `T_eq` and iPRA |
+| independence of the rules | `indep_hyp`, `indep_iterZero`, `indep_iterSucc`, `indep_trOne`, `indep_qE`, `indep_dE`, `indep_dICase` | for each of seven rules, a sequent that the kernel derives and the kernel without that rule (`FPrf`) does not; six by a reading over the natural numbers (`FPrf.sound`, `Sem.Sound`), Hyp by `FPrf.ctx` |
+| | `Sem.Sound.qIInd_of` | over the natural numbers the conditions for DI and DE imply the condition for QI by progress, so its independence is not reachable by such a reading |
 | kernel = reports' calculus | `iprf_iff_nprf : IPrf Γ A ↔ NPrf Γ A` | Tr in one term and QI by progress derive the same sequents as Tr in arbitrary templates and witnessed DI by progress |
 | | `NPrf.trEq`, `NPrf.tr`, `NPrf.dIProg` | transport in an equation template (two steps) and the two inherited rules, as derived rules of the kernel |
 | no literal-zero source | `oprf_iff_nprf : OPrf Γ A ↔ NPrf Γ A` | the kernel's transport restricted to sources other than the literal `0` derives the same sequents, with no induction |
@@ -487,7 +519,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | no template | `tprf_iff_nprf : TPrf Γ A ↔ NPrf Γ A`, `Tm.rep_marker`, `NPrf.repEq` | transport replaced by replacement of all occurrences of the source; a chosen template is recovered with an oversized marker |
 | substitution for a parameter | `pprf_iff_nprf : PPrf Γ A ↔ NPrf Γ A`, `PPrf.aliasE`, `PPrf.trOne`, `Tm.psi_rn` | transport replaced by Param: a proper subterm is replaced only when the source is a variable; a template is recovered under a fresh alias, discharged through a `D` formula |
 | QE at a variable or at `1` | `vqprf_iff_nprf : VQPrf true Γ A ↔ NPrf Γ A`, `VQPrf.qE`, `VQPrf.leibniz`, `VQPrf.aliasE` | the term argument of QE restricted to a variable or the numeral `1`; an arbitrary target is named by a fresh alias and reached by the Leibniz rule |
-| QE at variables only is weaker | `vqprf_var_incomplete`, `VQPrf.zsound`, `Tm.ev`, `NFm.zt` | `Q_y (sel(y, 0, 1) = 0) ⊢ 0 = 1` is derivable in the kernel and not with QE at variables only; the countermodel reads variables as `0` and `Q`, `D` formulas as true |
+| QE at variables only is weaker | `vqprf_var_incomplete`, `VQPrf.zsound`, `NFm.zt` | `Q_y (sel(y, 0, 1) = 0) ⊢ 0 = 1` is derivable in the kernel and not with QE at variables only; the countermodel reads variables as `0` and `Q`, `D` formulas as true |
 | uncrossed one-term transport | `uprf_iff_nprf : UPrf Γ A ↔ NPrf Γ A` | from `s = t` and `h(s) = r` infer `h(t) = r`: the crossing is not essential when sources are unrestricted |
 | one introduction rule | `wprf_iff_nprf : WPrf Γ A ↔ NPrf Γ A` | the seven-rule calculus with the single, syntax-directed introduction derives the same sequents |
 | seven rules | `mprf_iff_nprf`, `mprf_iff_iprf : MPrf Γ A ↔ IPrf Γ A` | one-term transport at sources other than the literal `0` and the single introduction together derive the sequents of the reports' calculus |
@@ -517,8 +549,8 @@ formalizes three systems and proves them mutually bi-interpretable:
 
 The main chain (every module except the sixteen kernel comparisons,
 `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`,
-`NativeZeroReflexive`, `NativeUniqueness` and
-`TeqClosure`) is 5,630
+`NativeZeroReflexive`, `NativeUniqueness`, `NativeModels` and
+`TeqClosure`) is 5,624
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
 introduction and elimination, instead of an induction over the seventeen
@@ -528,7 +560,9 @@ calculus is four single rule applications; reflection of quantifier-free
 formulas is proved as an equivalence of Lean propositions,
 `mk Γ (chi φ) = 0 ↔ Γ ⊢ φ`, from which the formula of `T_eq` follows. A dependency-closure scan of the
 end results, computed inside Lean from the proof terms, finds no further
-unused theorem apart from `rfl` lemmas that `simp` uses silently.
+unused theorem apart from `rfl` lemmas that `simp` uses silently and the
+derived rule `NPrf.eqInd`, which only the comparison modules use; a duplicate
+of `NFm.map_shift_subst_repl` was removed.
 
 All modules build without `sorry` or warnings. The final theorems depend
 only on Lean's `propext`, `Classical.choice` and `Quot.sound` (the `T_eq` ≡
@@ -546,6 +580,7 @@ no `native_decide`.
 | zero-normal syntax | `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`, `NativeZeroReflexive` | contraction of iterators with a literal-zero counter, hereditary substitution, and the equivalence of a formula with its normal form (delivered); the kernel without the zero computation rule, `NZPrf`; reflexivity and one successor step, `NSPrf`; reflexivity and seed evaluation, `NVPrf`; six rules with the reflexive-base introduction, `NRPrf` |
 | closures in `T_eq` | `TeqClosure` | decidability of quantifier-free formulas; the criterion for agreement of the conditional and the progressive closure |
 | derived rule | `NativeUniqueness` | uniqueness of iteration |
+| readings over the natural numbers | `NativeModels` | evaluation of terms and formulas for a reading `Sem`; the kernel with rules switched by flags, `FPrf`, and its soundness; consistency of the three systems; independence of seven rules |
 | native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, interderivability over a context, Leibniz and transport in every template, equation induction; selector and gate formulas |
 | kernel comparison | `NativeInherited`, `NativeOneContext`, `NativeOneIntro`, `NativeDiagonal`, `NativeMirror`, `NativeSix`, `NativeMinimal`, `NativeEval`, `NativeTemplateFree`, `NativeParameter`, `NativeVariableQE`, `NativeClausal`, `NativeClausalDiagonal`, `NativeUniformClauses`, `NativeZeroSource`, `NativeReversal` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf`; no literal-zero transport sources, `OPrf`, generic over the class `OKernel`, and the uncrossed rule, `UPrf`; six rules with Eval, `EPrf`; replacement without a template, `TPrf`; substitution for a parameter, `PPrf`, with injective renaming, cut and the fresh alias; QE at a variable or at `1`, `VQPrf`, with its own Leibniz rule and the countermodel for variables alone; the diagonal introduction, `GPrf`, with its own structural rules; the mirror introduction, `MiPrf` and `M6Prf`; Eval with the diagonal introduction, `SPrf`; the five-rule clause calculus, `CPrf`, with weakening, renaming and cut of assumptions; the clause calculus with the diagonal introduction, `KPrf`; uniform clause use, `VPrf`; one introduction rule, `WPrf`, generic over the class `WKernel`; both together, `MPrf`; the source restriction for uncrossed transport in an equation template, `ZPrf`, generic over the class `ZKernel`; root-reversing transport and QE, `RPrf` |
 | native logic | `NativeLogic` | `⊥`, `→`, `∧`, `∨`, `∃`, `∀` as native macros with all their natural deduction rules |

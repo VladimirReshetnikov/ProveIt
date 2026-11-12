@@ -1,4 +1,5 @@
 import ConciseIPRA.NativeParameter
+import ConciseIPRA.NativeModels
 
 /-!
 # `QE` at a variable or at the numeral one
@@ -26,8 +27,8 @@ a derivation is used.  The calculus is closed under renaming (`VQPrf.ren`),
 not under substitution.
 
 For the separation, read every variable as `0` and every `Q` and `D` formula
-as true (`NFm.zt`, over the evaluation `Tm.ev` of terms in the natural
-numbers).  `QE` at a variable is sound for this reading, since its conclusion
+as true (`NFm.zt`, over the standard evaluation `Tm.val Sem.std` of terms in
+the natural numbers).  `QE` at a variable is sound for this reading, since its conclusion
 is then its second premise, and `Q_y (sel(y, 0, 1) = 0) ⊢ 0 = 1` is not.
 -/
 
@@ -401,65 +402,19 @@ theorem vqprf_iff_nprf : VQPrf true Γ A ↔ NPrf Γ A := ⟨VQPrf.toNPrf, NPrf.
 
 /-! ### Variables alone are not enough -/
 
-namespace Tm
-
-/-- Evaluation of a term in the natural numbers. -/
-def ev : {n : ℕ} → Tm n → (Fin n → ℕ) → ℕ
-  | _, .var i, ρ => ρ i
-  | _, .zero, _ => 0
-  | _, .succ t, ρ => t.ev ρ + 1
-  | _, .iter c a h, ρ => Nat.rec (a.ev ρ) (fun _ u => h.ev (Fin.cases u ρ)) (c.ev ρ)
-
-theorem ev_ren (t : Tm n) : ∀ {m : ℕ} (ξ : Fin n → Fin m) (ρ : Fin m → ℕ),
-    (ren ξ t).ev ρ = t.ev fun i => ρ (ξ i) := by
-  induction t with
-  | var i => intro m ξ ρ; rfl
-  | zero => intro m ξ ρ; rfl
-  | succ t ih => intro m ξ ρ; simp only [ren, ev, ih]
-  | iter c a h ihc iha ihh =>
-    intro m ξ ρ
-    simp only [ren, ev, ihc, iha, ihh]
-    congr 1
-    funext _ u
-    congr 1
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i <;> simp
-
-theorem ev_sub (t : Tm n) : ∀ {m : ℕ} (σ : Fin n → Tm m) (ρ : Fin m → ℕ),
-    (sub σ t).ev ρ = t.ev fun i => (σ i).ev ρ := by
-  induction t with
-  | var i => intro m σ ρ; rfl
-  | zero => intro m σ ρ; rfl
-  | succ t ih => intro m σ ρ; simp only [sub, ev, ih]
-  | iter c a h ihc iha ihh =>
-    intro m σ ρ
-    simp only [sub, ev, ihc, iha, ihh]
-    congr 1
-    funext _ u
-    congr 1
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
-    · rfl
-    · simp [upS, ev_ren]
-
-theorem ev_subst (σ : Fin n → Tm m) (t : Tm n) (ρ : Fin m → ℕ) :
-    (Syn.subst σ t).ev ρ = t.ev fun i => (σ i).ev ρ := ev_sub t σ ρ
-
-end Tm
-
 /-- The reading in which every variable is `0` and every `Q` and `D` formula
 is true. -/
 def NFm.zt : {n : ℕ} → NFm n → Prop
-  | _, .eq s t => s.ev (fun _ => 0) = t.ev (fun _ => 0)
+  | _, .eq s t => s.val .std (fun _ => 0) = t.val .std (fun _ => 0)
   | _, .Q _ => True
   | _, .D _ => True
 
 theorem NFm.zt_subst_congr (B : NFm k) {σ τ : Fin k → Tm n}
-    (h : ∀ i, (σ i).ev (fun _ => 0) = (τ i).ev (fun _ => 0)) :
+    (h : ∀ i, (σ i).val .std (fun _ => 0) = (τ i).val .std (fun _ => 0)) :
     (B.subst σ).zt ↔ (B.subst τ).zt := by
   cases B with
   | eq s t =>
-    simp only [NFm.subst_eq, NFm.zt, Tm.ev_subst]
+    simp only [NFm.subst_eq, NFm.zt, Tm.val_subst]
     rw [funext h]
   | Q B => exact Iff.rfl
   | D B => exact Iff.rfl
@@ -468,7 +423,7 @@ theorem NFm.zt_shift (A : NFm n) : A.shift.zt ↔ A.zt := by
   cases A with
   | eq s t =>
     unfold NFm.shift
-    simp only [NFm.subst_eq, NFm.zt, Tm.ev_subst]
+    simp only [NFm.subst_eq, NFm.zt, Tm.val_subst]
     exact Iff.rfl
   | Q B => exact Iff.rfl
   | D B => exact Iff.rfl
@@ -480,9 +435,9 @@ theorem VQPrf.zsound (h : VQPrf false Γ A) : (∀ X ∈ Γ, X.zt) → A.zt := b
   | iterZero a h => intro _; rfl
   | iterSucc c a h =>
     intro _
-    show (iter (succ c) a h).ev _ = (Syn.subst (inst (iter c a h)) h).ev _
-    rw [Tm.ev_subst]
-    show h.ev (Fin.cases ((iter c a h).ev fun _ => 0) fun _ => 0) = _
+    show (iter (succ c) a h).val .std _ = (Syn.subst (inst (iter c a h)) h).val .std _
+    rw [Tm.val_subst]
+    show h.val .std (Fin.cases ((iter c a h).val .std fun _ => 0) fun _ => 0) = _
     congr 1
     funext i
     refine Fin.cases ?_ (fun j => ?_) i
@@ -493,7 +448,7 @@ theorem VQPrf.zsound (h : VQPrf false Γ A) : (∀ X ∈ Γ, X.zt) → A.zt := b
     intro hΓ
     have e₁ := ih₁ hΓ
     have e₂ := ih₂ hΓ
-    simp only [NFm.zt, Tm.ev_subst] at e₁ e₂ ⊢
+    simp only [NFm.zt, Tm.val_subst] at e₁ e₂ ⊢
     rw [← e₂]
     congr 1
     funext i
@@ -526,15 +481,7 @@ theorem vqprf_var_incomplete :
       ∧ ¬ VQPrf false [NFm.Q (.eq (Tm.sel (Syn.var 0) zero (succ zero)) zero)]
         (.eq (zero : Tm 0) (succ zero)) := by
   constructor
-  · have h := NPrf.qE
-      (Γ := ([NFm.Q (.eq (Tm.sel (Syn.var 0) zero (succ zero)) zero)] : List (NFm 0)))
-      (succ zero) NPrf.hyp0 (by
-        simp only [NFm.subst_eq, Tm.subst_sel, Syn.subst_var, Syn.inst_zero, Tm.subst_zero,
-          Tm.subst_succ]
-        exact NPrf.selZero _ _)
-    simp only [NFm.subst_eq, Tm.subst_sel, Syn.subst_var, Syn.inst_zero, Tm.subst_zero,
-      Tm.subst_succ] at h
-    exact NPrf.eqTrans (NPrf.eqSymm h) (NPrf.selSucc zero zero (succ zero))
+  · exact NPrf.selQBot NPrf.hyp0
   · intro h
     have k := h.zsound fun X hX => by
       rcases List.mem_singleton.1 hX with rfl
