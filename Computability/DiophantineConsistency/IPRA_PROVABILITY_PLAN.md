@@ -7756,6 +7756,9 @@ The reviewed [shift-cancellation circuit](research/ordinary14-root74-natural-can
 has the same polynomial with 14 natural inputs, 86 live operations and exact
 specialized degree 107. This is an external straight-line upper bound, not a
 Lean or file-binding theorem.
+The source-reviewed [natural-86 Lean graph draft](research/ordinary14-natural-cancel86-lean-draft/README.md)
+transcribes that circuit. It is unelaborated and does not yet bind the graph
+to `positiveShift` in Lean.
 The source-reviewed [bounded draft-API audit](research/ordinary14-root74-draft-api-audit/README.md)
 checks selected qualified draft references lexically; it does not establish
 Lean name/type/instance resolution or provider/axiom closure.
