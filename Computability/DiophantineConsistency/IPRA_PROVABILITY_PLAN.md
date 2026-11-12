@@ -1305,6 +1305,9 @@ does not establish the target guard or positive model witness.
 The source-reviewed [13-parent four-field draft](research/ordinary13-parent-four-fields-draft/README.md)
 proposes extracting its four residuals from its own zero. It remains
 unelaborated and does not by itself supply a target witness.
+The source-reviewed [parent-to-88 guard draft](research/ordinary13-parent-to-88-guard-draft/README.md)
+proposes the target guard identity from the parent transport balance. It
+remains unelaborated and is not a complete target zero.
 The source-reviewed [88 guard draft](research/ordinary14-88-guard-draft/README.md)
 proposes the quotient-guard equality from that graph's own zero. It remains
 unelaborated and is one premise of the parent witness construction.
