@@ -1,0 +1,75 @@
+NATIVE RAW EIGHT-RULE CHECKER
+=============================
+
+Run: python3 checker_native.py < certificate.json
+The object has exactly scope, context, goal, proof.
+scope is a nonnegative integer; context is a list of formulas.
+
+Numerical syntax
+  0                 zero
+  -1, ..., -scope   free parameter levels, newest = -scope
+  1, 2, ...         bound de Bruijn indices, only inside binders
+  ["s", t]          successor
+  ["i", n, a, h]    iterator; h binds one new variable at index 1
+
+Formula syntax
+  ["=", s, t]       equation
+  ["q", B]          Q; B binds one variable, y at index 1
+  ["d", B]          D; B binds two variables, y at 1 and x at 2
+
+Proof instructions
+  ["hyp", j]                 zero-based context index
+  ["zero", a, h]             I(0,a;h)=a
+  ["succ", n, a, h]          I(Sn,a;h)=h[I(n,a;h)]
+  ["tr", h, p, q]            p:s=t, q:h(s)=r; yields r=h(t)
+  ["qe", t, p, q]            p:Q B, q:B(0); yields B(t)
+  ["de", p, q]               p:D B; q in extended context with Q B(b,-)
+  ["di", B, p]               determined witness -scope; step at fresh z
+  ["qi", E, p]               E is an equation under one bound variable
+
+At de, di, qi the new eigenparameter is -scope-1. Local assumptions are
+appended to the context. The selected DI witness is -scope BEFORE adding
+the new eigenparameter (thus 0 if scope=0). The output of de must be
+well scoped in the old environment; this is the eigenparameter check.
+No normalization is performed by the kernel. All equality rewrites in
+generated examples are explicit proofs using I0, IS, and Tr1.
+
+GUARDED SIX-FAMILY CHECKER
+=========================
+
+Run: python3 checker_guarded.py < certificate.json
+The object has exactly goal and proof, with a closed goal.
+
+Terms use integer levels as above, [0,t] for S(t), and [n,a,h] for I.
+Formulas use [s,t] for equations and [B] for D. Inside D, x is bound
+index2 and y is bound index1. Every immediate equation matrix under D
+has both sides of the literal form [1,0,h]. This is the public guard.
+
+Instructions:
+  ["zero", a, h]
+  ["succ", n, a, h]
+  ["use", j, t, p]        select retained clause, prove antecedent p
+  ["tr", F, p, q]        arbitrary legal one-place formula transport
+  ["open", p, q]         open D in p, discharge branch q
+  ["intro", B, p]        witness is the newest outer parameter or 0
+
+The ordinary local hypothesis A is the clause [H;v.A], where
+H = I(0,0;u.0)=0. Introduction is progressive for a literal equation
+matrix and by cases for a compound matrix. A primitive equation matrix
+is guarded, so its zero instance is provable. There is no separate
+introduction witness field and no exceptional naming-pattern test.
+
+The reference unrestricted checker instead uses
+  ["intro", B, t, p].
+The previous deterministic checker uses the same packets as the new
+checker but selects special witnesses on a literal naming pattern.
+Proof trees are therefore NOT interchangeable without translation.
+
+IMPLEMENTATION LIMITS
+====================
+
+Certificates are finite JSON trees. The mathematical calculi are
+unbounded; practical Python recursion and memory limits can reject
+very large valid trees. The checkers fail closed on exceptions. They
+are standard-library programs and perform no network or external proof
+calls. The supplied builders are untrusted and their outputs are checked.

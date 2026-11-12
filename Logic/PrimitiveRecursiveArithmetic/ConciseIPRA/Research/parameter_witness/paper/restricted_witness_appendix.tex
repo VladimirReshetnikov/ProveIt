@@ -1,0 +1,289 @@
+% Input this file after defining theorem, lemma, definition, and proof environments.
+% Main document should supply amsmath, amssymb, amsthm, hyperref.
+\section{The restricted-witness theorem}
+\label{sec:restricted-witness}
+
+This section uses raw iterator terms, with ordinary capture-avoiding
+substitution.  No computation is built into the syntax.  Write
+\[
+ C(v,a,b):=I(v,a;u.b),\qquad 1:=S0,
+\]
+where the bound variable $u$ does not occur in $b$.  Thus
+$C(0,a,b)=a$ and $C(Sv,a,b)=b$ are derivable computation equations.
+Formulas are equations, $Q_y A$, and $D_{x,y}A$, with their unchanged
+ordinary readings
+\[
+ Q_yA=A(0)\to\forall y\,A(y),\qquad
+ D_{x,y}A=\exists x\bigl(A(x,0)\to\forall y\,A(x,y)\bigr).
+\]
+The distinction between a variable and the numerical constant $0$ is
+syntactic throughout.
+
+\subsection{Seven primitive rule patterns}
+
+Let $\mathcal R$ have Hyp, the two iterator computation equations, the
+one-term crossed transport rule
+\[
+ \frac{\Gamma\vdash s=t\qquad\Gamma\vdash h(s)=r}
+      {\Gamma\vdash r=h(t)},
+\]
+and the usual two eliminations
+\[
+ \frac{\Gamma\vdash Q_yA(y)\qquad\Gamma\vdash A(0)}
+      {\Gamma\vdash A(t)},
+ \qquad
+ \frac{\Gamma\vdash D_{x,y}B(x,y)\qquad
+       \Gamma,Q_yB(b,y)\vdash F}
+      {\Gamma\vdash F}.
+\]
+In the second rule $b$ is fresh in the conclusion and the undischarged
+context.  Its one introduction rule is
+\[
+ \frac{\Gamma,B(t,\eta)\vdash B(t,Sz)}
+      {\Gamma\vdash D_{x,y}B(x,y)},
+ \qquad
+ \eta=\begin{cases}
+ z,&B\text{ is a literal equation and }t\text{ is the literal }0,\\
+ 0,&\text{otherwise},
+ \end{cases}
+ \tag{RDI}
+\]
+where $z$ is fresh and the supplied witness $t$ must be either the literal
+$0$ or a variable.  In particular, every variable witness selects cases.
+There is no separate rule for introducing $Q$, and no general term
+substitution rule on proofs.
+
+\begin{lemma}[Structural rules available before completeness]
+Context weakening, injective renaming of numerical variables, and cut are
+admissible in $\mathcal R$.
+\end{lemma}
+\begin{proof}
+Each assertion follows by induction on the given derivation.  A numerical
+renaming sends a variable witness to a variable witness and fixes the
+literal $0$; it neither changes the root constructor of a formula nor the
+introduction mode.  Renamings are extended under each binder by choosing a
+fresh variable.  Context weakening does not change a witness.  In the cut
+induction the proof replacing a discharged hypothesis is weakened and
+injectively renamed under eigenvariables; all other rule data are
+unchanged.  This argument does not assert closure under substitution of an
+arbitrary term for a numerical variable.  That property will follow only
+after unrestricted introduction has been recovered.
+\end{proof}
+
+Reflexivity and the usual equational rules are already derived.  For
+example, transport $I(0,a;u.u)=a$ along itself, with the identity template,
+to obtain $a=a$.  Applying crossed transport with major premise $s=s$,
+minor premise $s=t$, and the identity template gives $t=s$.
+Transitivity and congruence follow
+from crossed transport and reflexivity.  These constructions need no
+logical introduction.
+
+\subsection{Unrestricted case introduction for a closure}
+
+\begin{lemma}[Closure introduction]
+Both of the following rules are admissible:
+\[
+ \frac{\Gamma,A(0)\vdash A(Sz)}{\Gamma\vdash Q_yA(y)},
+ \qquad
+ \frac{\Gamma,E(z)\vdash E(Sz)}{\Gamma\vdash Q_yE(y)},
+ \tag{QC, QP}
+\]
+where $z$ is fresh and $E$ is a literal equation.  The first rule permits
+an arbitrary native formula $A$, including an equation.
+\end{lemma}
+\begin{proof}
+For QP use RDI at witness $0$ on $D_{x,y}E(y)$, with $x$ unused, and
+then eliminate this dummy witness.  This leaves exactly $Q_yE(y)$.
+
+For QC first note the fixed theorem
+\[
+ R:=D_{r,w}(0=0).
+\]
+RDI at witness $0$ proves $R$: its progressive premise concludes the
+reflexive equation $0=0$.  Open $R$ at a fresh variable $b$.  In that
+context introduce $D_{x,y}A(y)$ at witness $b$.  This is case mode even
+when $A$ is an equation, and the required premise is precisely the given
+premise, injectively renamed and weakened.  Eliminate the dummy witness
+$x$ to obtain $Q_yA(y)$, and then discharge the opening of $R$; neither
+$b$ nor the unused assumption $Q_w(0=0)$ occurs in the result.  Thus QC
+does not use a forbidden case introduction of an equation at $0$, even
+when the original numerical context is empty.
+\end{proof}
+
+Consequently, ordinary induction for a literal equation follows by QP
+and closure elimination.  All arguments in the separate predecessor
+construction can therefore be performed inside $\mathcal R$ once their
+equational derivations have been established.
+
+\subsection{Full formula transport without term substitution on proofs}
+
+\begin{lemma}[Leibniz transport]
+For every native formula template $H(v)$, the rule
+\[
+ \Gamma\vdash s=t,\quad\Gamma\vdash H(s)
+ \quad\Longrightarrow\quad\Gamma\vdash H(t)
+ \tag{L}
+\]
+is admissible in $\mathcal R$.
+\end{lemma}
+\begin{proof}
+Induct on the number of formula binders in $H$.  State the induction
+hypothesis uniformly for every ambient context and every assignment of
+terms to the other free variables.  This uniform statement is essential:
+we apply the induction hypothesis to newly formed instances, rather than
+substitute terms into previously constructed derivations.
+
+For $H(v)=(a(v)=c(v))$, congruence transports both sides and transitivity
+joins the resulting equations.
+
+Suppose $H(v)=Q_yA(v,y)$.  Apply QC to the target closure.  Under its
+temporary assumption $A(t,0)$, the reverse equation $t=s$ and the
+induction hypothesis give $A(s,0)$.  Eliminate the available closure
+$Q_yA(s,y)$ at $Sz$ to obtain $A(s,Sz)$.  The forward equation $s=t$ and
+the induction hypothesis give $A(t,Sz)$.  This proves the QC premise.
+This explicitly handles the contravariant occurrence of the zero row
+in the ordinary meaning of $Q$.
+
+Suppose $H(v)=D_{x,y}B(v,x,y)$.  Open the given $H(s)$ at a fresh
+variable $b$, obtaining $Q_yB(s,b,y)$.  Introduce the target $H(t)$ at
+the permitted variable witness $b$.  Its case premise assumes
+$B(t,b,0)$.  Transport that assumption backwards to $B(s,b,0)$,
+eliminate the opened closure at $Sz$, and transport the result forwards
+to $B(t,b,Sz)$.  All three formulas have fewer binders than $H$.
+RDI at $b$ now proves $H(t)$, and the outer elimination discharges $b$.
+
+The equality premise and other existing derivations are only weakened
+or injectively renamed when entering a binder.  No application of an
+unproved term-substitution principle occurs.
+\end{proof}
+
+\subsection{Naming every term with a fresh variable}
+
+Assume the separately proved equational predecessor lemma: there is a
+raw iterator term $p(v)$ such that
+\[
+ \mathcal R\vdash p(Sv)=v.
+ \tag{P}
+\]
+Then successor injectivity is derived by congruence with $p$ followed by
+the two instances of (P).  This step must be justified before the
+following argument; importing predecessor from the full iPRA
+bi-interpretation would be circular.
+
+Put
+\[
+ A_v(x,y):=\bigl(C(y,v,C(v,0,Sx))=v\bigr),\qquad
+ T(v):=D_{x,y}A_v(x,y).
+\]
+The defining rows have the derived equations
+\[
+ A_v(x,0)\;\longleftrightarrow\;v=v,
+ \qquad
+ A_v(x,Sw)\;\longleftrightarrow\;C(v,0,Sx)=v.
+\]
+Here and below a displayed equivalence between equations abbreviates
+transport along the indicated computation equations.
+
+\begin{lemma}[The naming packet]
+For every term $t$, $\mathcal R$ proves $T(t)$.  Moreover, the following
+fresh-variable naming rule is admissible:
+\[
+ \frac{\Gamma,b=t\vdash F}{\Gamma\vdash F},
+ \qquad b\notin\mathrm{FV}(\Gamma,t,F).
+ \tag{Name}
+\]
+\end{lemma}
+\begin{proof}
+First prove $T(0)$ by RDI at witness $0$.  Its matrix is an equation, so
+the premise is progressive.  Its successor row reduces by the two
+selector computations to $0=0$, independently of the induction
+hypothesis.
+
+Next, with $z$ a parameter, prove $T(Sz)$ by RDI at the permitted
+variable witness $z$.  Its successor row reduces to
+$C(Sz,0,Sz)=Sz$, and then to $Sz=Sz$, independently of its case
+assumption.  QC applied to $v\mapsto T(v)$ now gives $Q_vT(v)$.
+Closure elimination at the arbitrary term $t$, using $T(0)$, gives
+$T(t)$.  This last step is an application of QE, not substitution into
+the derivation of $T(v)$.
+
+To prove Name, use the theorem $T(St)$ and open its witness at a fresh
+$b$.  The resulting assumption is $Q_yA_{St}(b,y)$.  Its zero row is
+a computation theorem, so specialization at $1$ gives
+\[
+ C(1,St,C(St,0,Sb))=St.
+\]
+The left side computes first to $C(St,0,Sb)$ and then to $Sb$.
+Hence $Sb=St$, and (P) gives $b=t$.  Cut this equation into the given
+derivation of $F$, and discharge the opened witness.  The conclusion
+does not contain $b$.
+\end{proof}
+
+\subsection{Recovery of every omitted introduction}
+
+\begin{theorem}[Restriction of witnesses to zero and variables]
+Subject to the equational predecessor lemma (P), $\mathcal R$ and the
+native scalar kernel derive exactly the same sequents.  In particular,
+the combined witness-mode introduction may be restricted to witnesses
+that are either $0$ or variables without changing the theory.
+\end{theorem}
+\begin{proof}
+It suffices to recover the native case introduction at an arbitrary term
+$t$; native equational progress was recovered by QP.  Suppose
+\[
+ \Gamma,B(t,0)\vdash B(t,Sz)
+ \tag{*}
+\]
+with the usual freshness conditions.  Name $t$ by a fresh variable $b$.
+Inside the context $\Gamma,b=t$, introduce $D_{x,y}B(x,y)$ at the
+allowed witness $b$.  Under its temporary assumption $B(b,0)$, full
+formula transport gives $B(t,0)$.  Cut this into a weakened and
+injectively renamed copy of (*) to obtain $B(t,Sz)$.  Full formula
+transport along $t=b$ gives $B(b,Sz)$.  RDI at $b$ proves the desired
+$D$ formula.  Name then removes $b=t$ and the fresh variable $b$.
+
+This argument also recovers the omitted case introduction at literal
+$0$ for an equation.  Conversely, every rule of $\mathcal R$ is
+derived in the native kernel: case mode is its case introduction,
+and progressive mode is obtained from its equation-progress closure
+followed by case introduction.  Induction on derivations in either
+direction completes the sequent equivalence.
+\end{proof}
+
+\begin{corollary}[Bi-interpretability and consistency strength]
+The ordinary realization of $\mathcal R$ is bi-interpretable with full
+first-order iPRA by the same interpretations as the native scalar
+kernel.  Both number domains remain whole, equality remains actual
+equality, and both domain composites are the identity graph.  In
+particular the theories are equiconsistent.
+\end{corollary}
+\begin{proof}
+The syntax and its ordinary reading have not changed, and the theorem
+gives equality of all contextual derivability relations, not merely
+equality of closed or arithmetically restricted consequences.  Therefore
+the already established native bi-interpretation transfers unchanged.
+\end{proof}
+
+\paragraph{Relation to the pinned baseline.}
+The README at the pinned commit
+\texttt{9f9545f5ffd9},
+under ``Further questions'', item 2, conjectures the sufficiency of
+case-introduction witnesses $0$ and variables, and correctly identifies
+the danger of silently using substitution into derivations of the
+restricted calculus.  The proof here resolves that particular logical
+gap through QC, the explicit packet $T$, and the independently
+equational predecessor lemma.  It does not assert any absolute
+minimality of the resulting checker, and its mathematical completeness
+claim is separate from any program-size measurement.
+
+\paragraph{Auditable source interfaces.}
+The pinned baseline's \texttt{NativeEq.lean} establishes the ordinary
+one-term equality interface and full formula transport;
+\texttt{NativeGate.lean} and \texttt{NativeLogic.lean} establish the
+standard logical encodings; and \texttt{NativeBiInterpretation.lean}
+states the native/iPRA comparison.  The argument above reproves the
+transport and closure steps in the restricted calculus instead of
+importing them with their unrestricted proof-substitution lemmas.
+The predecessor construction must likewise be given an independent
+equational proof; the statement (P) is displayed to make this
+dependency explicit.

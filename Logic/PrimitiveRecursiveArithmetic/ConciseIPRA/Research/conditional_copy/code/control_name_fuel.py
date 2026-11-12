@@ -1,0 +1,77 @@
+import json
+
+def need(condition):
+    if not condition:
+        raise ValueError('invalid certificate')
+
+def spend():
+    global fuel
+    need(fuel > 0)
+    fuel -= 1
+
+def walk(a, f, d=0, form=None):
+    spend()
+    if type(a) is int:
+        need(not form)
+        return f(a, d)
+    need(type(a) is list)
+    size = len(a)
+    need(form is None or size in ((1, 2) if form else (3,)))
+    a = [walk(b, f, d + 2 * (size != 2 and j == size - 1), size == 1)
+         for j, b in enumerate(a)]
+    if size == 3:
+        c, b, h = a
+        if c == 0:
+            return [0, b, 0]
+        if type(c) is list and c[0] == 0:
+            return sub(sub(h, c[1], 1), walk([c[1], b, h], lambda i, d: i))
+    return a
+
+def syntax(a, n, form=False):
+    need(walk(a, lambda i, d: need(1 - n <= i <= d) or i, form=form) == a)
+
+def sub(a, t, depth=0):
+    return walk(a, lambda i, d: walk(t, lambda j, e: j + d if j > e else j)
+                if i == d + 1 else i - (i > d + 1), depth)
+
+def prove(p, g):
+    spend()
+    n = len(g)
+    b = -n
+    code, *args = p
+    if type(code) is int:
+        t, q = args
+        need(0 <= code < n)
+        syntax(t, n)
+        base, B = g[code]
+        if base:
+            need(prove(q, g) == base)
+        A = sub(B, t)
+    elif code:
+        r, = args
+        B = sub(code, 1 - n, 1)
+        base = sub(B, 0)
+        hyp = sub(B, b) if base == [0, 0] else base
+        need(prove(r, g + [([], hyp)]) == sub(B, [0, b, 0]))
+        A = [code]
+    else:
+        need(code == [])
+        q, e, r = args
+        D, = prove(q, g)
+        B = sub(D, b, 1)
+        local = g + [(sub(B, 0), B)]
+        x, t = prove(e, local)
+        need(x == b)
+        A = walk(prove(r, local), lambda i, d: t if i == b else i)
+    syntax(A, n, True)
+    return A
+
+def check(data):
+    global fuel
+    goal, proof, fuel = data
+    need(type(fuel) is int and fuel >= 0)
+    need(repr(prove(proof, [([], [1, 1])])) == repr(goal))
+
+if __name__ == '__main__':
+    check(json.load(open(0)))
+    print('ACCEPT')

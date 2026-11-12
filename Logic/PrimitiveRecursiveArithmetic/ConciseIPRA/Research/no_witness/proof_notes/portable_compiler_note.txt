@@ -1,0 +1,83 @@
+DETERMINISTIC WITNESSES: RIGOROUS PORTABLE-PROOF COMPILER
+
+MAIN PRESENTATION (EIGHT RULES)
+Take exactly the raw native NPrf language and eight primitive rule families: Hyp; iterator zero; iterator successor; crossed one-term transport; QE; DE; DI by cases; and direct QI by equation progress. Change only DI by cases. A numerical scope is an ordered finite list V of ambient free parameters, and
+  nu(V) = its newest member if V is nonempty; 0 if V is empty.
+DI has NO witness argument:
+  from Gamma, B(nu(V),0) |- B(nu(V),S z)
+  infer Gamma |- D_{x,y}B(x,y),
+where z is fresh and appended AFTER nu(V) has been selected. The equation-progress rule is unchanged and has no existential witness. Raw capture-free substitution is unchanged. No normalization is introduced.
+
+Every new rule is an old rule instance. Thus soundness into NPrf is immediate for every scope and context. Completeness below shows exact equality of derivable sequents, not merely equivalence on a translated public fragment.
+
+WHY ORDINARY WEAKENING MUST NOT BE ASSUMED
+Appending a free parameter can invalidate an old DI node: its recorded witness would no longer be newest. Therefore do not copy, rename, or weaken target derivations. Instead generate a fresh derivation for each requested enlarged scope. A statement that all target derivations admit arbitrary substitution is a corollary of equivalence, not an ingredient of the proof.
+
+DEFINITION: WORLDS AND PORTABLE DERIVATIONS
+A world W=(V,Delta) consists of an ordered scope and a finite context of well-scoped native formulas. A fresh extension W<=W' appends finitely many parameters and retains every old context assumption, possibly adding assumptions mentioning the enlarged scope. Formulas already in W keep their free parameter names; use named free levels, or capture-free shifting in a de Bruijn representation.
+
+A portable derivation of A over W is an effective family P which, for every finite fresh extension W', returns a FINITE target derivation Delta'|-A. There is no coherence requirement between these returned derivations. In particular, the family is not obtained by weakening one target derivation.
+
+A portable realization of a source context Gamma under a capture-free raw substitution sigma is one such family P_C for each C in Gamma, proving C[sigma]. The substitution images lie in the base world's scope and remain the same raw terms in future extensions.
+
+Fresh-parameter branch schemes must be stated carefully. A branch scheme may be indexed by an outer extension W' and then a newly appended parameter z; it is only required to return a proof in THAT fresh world. It need not make a proof of H(S z) portable while z is held fixed and still more parameters are appended. This distinction is essential in the naming construction: its direct DI uses z precisely when z has just become newest. Whenever more parameters are needed BEFORE that DI, regenerate the branch with z chosen last.
+
+PORTABLE RULES AND LEMMAS
+1. Hypotheses and the equational subsystem.
+An actual retained hypothesis is portable, by Hyp in every extension. The two iterator equations and crossed term transport are portable pointwise. They give reflexivity, symmetry, transitivity and term congruence exactly as in the native kernel. Equation induction is obtained from direct QI-progress followed by QE, so every derivation in the pure equational iterator calculus, including the predecessor construction in predecessor_note.tex, is portable and can be instantiated at arbitrary RAW terms. This statement does not use DI or target structural substitution.
+
+2. Q by cases, with no chosen witness.
+For a matrix A(y), form D_{x,y}A(y) with x unused. At every requested outer world, its fixed witness nu has no occurrence in the matrix, so DI checks exactly the desired step A(0)->A(S z). DE exports the retained Q_y A(y). Thus QI-by-cases is admissible as a proof CONSTRUCTION, also for compound A. The branch input is a construction that can realize its local A(0) hypothesis by the actual retained assumption and can regenerate its other premise proofs in the required fresh world.
+
+More formally, one may supply a transformer which, at each outer extension and fresh z, accepts portable proofs of the old assumptions and of A(0), and returns a derivation of A(S z). This is stronger than necessary for the simple cases but is exactly what the main compiler induction provides. No cut theorem for arbitrary target proofs is being assumed.
+
+3. Full formula transport on portable premises.
+If portable families prove s=t and F(s), a portable family proves F(t). Prove this by external induction on formula depth.
+- Equation: use the derived equational laws; both equation sides may be transported separately.
+- Q_y B: use QI-by-cases. Given B(t,0), the smaller-depth induction transports it backwards to B(s,0); the retained Q_y B(s,y) gives B(s,S z) by QE; transport forwards to B(t,S z).
+- D_{a,y}B: obtain D_{a,y}B(s,a,y) from its supplied family and eliminate it at fresh c. At this exact point c is newest. Introduce D_{a,y}B(t,a,y) with the fixed witness c. Given B(t,c,0), transport backwards, use the opened closure at S z, then transport forwards. Discharge c.
+In every nested scope, evaluate the supplied portable premise families anew. The only recursive transport calls are on smaller matrices. This lemma does not use arbitrary witness introduction or the naming lemma.
+
+4. Naming an arbitrary raw term, without arbitrary witness introduction.
+Write C(v,a,b)=I(v,a;u.b) and define
+  H(v) = D_{x,y}(C(y,0,C(v,0,S x)) = C(y,0,v)).
+This is the gated existential form of C(v,0,S x)=v.
+
+At each requested world, H(0) is introduced with its fixed witness nu: both sides of the successor instance compute to 0, independently of nu; the base hypothesis is ignored. To derive H(S z) in a case branch, choose z freshly LAST. The fixed witness is z, and the successor instance computes to S z=S z; again its base is ignored. Consequently the preceding QI-by-cases construction gives Q_v H(v). With H(0), QE at S t gives H(S t) for an arbitrary raw term t.
+
+This is a PORTABLE proof of H(S t): in every outer extension, regenerate the whole construction and choose its case parameter z last. Do not claim the intermediate proof H(S z) is portable with a fixed z; that is unnecessary.
+
+Eliminate H(S t) at fresh b. The opened gate's zero row is provable by computation. QE at 1 and computation give
+  S b = S t.
+Applying the independently constructed predecessor term yields b=t. The resulting proof of b=t is portable relative to the opened world, because from that retained closure onward it uses only Hyp, QE, and equational reasoning. It introduces no witness and remains reproducible with b fixed in all later extensions.
+
+This gives the precise alias principle used below: a proof construction returning a b-free conclusion A while supplied with a portable realization of b=t may be run in the opened world, then DE discharges b. There is no need to introduce a separate Name(t) formula. The arbitrary term is obtained by specializing an existing closure at S t, an operation whose term argument was never restricted.
+
+MAIN COMPILER THEOREM
+For every source NPrf derivation pi:Gamma|-A, every raw substitution sigma into a target world W, and every portable realization of Gamma[sigma] over W, there is an effective portable family of target derivations of A[sigma].
+
+Proof: structural induction on pi. To return a portable family, define its value separately at each requested outer extension W'. All recursive calls use the induction hypothesis for a STRICT source subderivation.
+- Hyp selects the supplied realization family.
+- Computation gives the corresponding instantiated computation equation; iteration opening commutes with capture-free substitution.
+- TrOne and QE evaluate the inductively produced premise families in the current world and apply the unchanged target rule.
+- DE evaluates the major family, opens a fresh b, extends sigma by sending the source eigenparameter to b, realizes the new source Q-hypothesis by target Hyp, and invokes the smaller-derivation induction hypothesis on the minor. Its b-free conclusion is discharged.
+- QI-progress appends its fresh z and actual equation hypothesis. Extend sigma by z and use the smaller-derivation induction hypothesis with the new source equation realized by Hyp. Apply the unchanged target progress rule.
+- Source DI-by-cases is the only nontrivial case. Let t be the substituted source witness, and let B' be the source matrix with all OLD free parameters substituted but its two bound coordinates left formal. Use the naming construction to open a fresh b with a portable proof of b=t. Now b is newest. Apply the target's fixed-witness DI to B'. Its new branch parameter z is appended after b, and its actual new hypothesis is B'(b,0). Use portable full formula transport to realize the source step hypothesis B'(t,0). Invoke the induction hypothesis for the source step derivation, with its source eigenparameter mapped to z, obtaining B'(t,S z). Transport backwards along b=t to obtain B'(b,S z), as required by target DI. The resulting D B' contains no b, so discharge the alias opening.
+
+The source DI step proof is REGENERATED in the alias-and-step context, not weakened from an existing target proof. The original source-context realization families can be evaluated in that enlarged world. The added source-base realization is explicitly the portable formula-transport construction from the actual local hypothesis and the portable alias equation.
+
+Well-foundedness: the compiler recurses on source derivation height. The independent full-transport constructor recurses on formula depth. Naming uses only the fixed finite predecessor/equational derivations, Q-by-cases with explicit equational branches, and primitive rules. Its construction never calls the main compiler and never invokes full formula transport. When transport evaluates a supplied premise family, that family comes from a smaller source derivation or an already explicit finite hypothesis/equality construction. This is a finite structural proof transformation, not a proof-search fixed point.
+
+COROLLARIES
+Taking sigma to be the identity and realizing each context hypothesis by Hyp proves source-to-target completeness for every native sequent. Target-to-source soundness was immediate. Hence the languages, derivable sequents, ordinary readings, and all formula round trips are unchanged. Composing the IDENTICAL native presentation with the pinned native-iPRA bi-interpretation gives whole-domain bi-interpretability and equiconsistency. Both numerical composite graphs remain x=y.
+
+SEVEN-RULE DIAGONAL COROLLARY
+The same result applies to the existing seven-rule GPrf calculus when its DI witness is fixed to nu and its diagonal mode selector is retained. The new work above is unchanged except for bootstrapping the equational induction rule from diagonal progress. This bootstrap is available with unused witness coordinates only:
+- Q-by-cases uses the current nu at an unused witness. If its matrix is diagonal, its zero row is a theorem by computation; use that theorem to realize the case-step base and ignore the progressive hypothesis. Otherwise the ordinary case mode applies.
+- For E(y):s(y)=t(y), use L_s(y)=I(y,y;u.s(y)) and L_t similarly, with the update variable unused. Q-by-cases proves the unconditional decoder C(y,s(0),L_s(y))=s(y), and likewise for t.
+- Retain E(0). From L_s(z)=L_t(z), the decoder and congruence give E(z); apply the given equation step; compute to L_s(S z)=L_t(S z). Primitive diagonal introduction has an UNUSED witness coordinate, so fixing it to nu changes nothing. DE and QE at the desired target, with the reflexive zero row, give the lifted equality; the decoder and E(0) give E(target).
+Thus contextual equation induction and the predecessor are available. Full formula transport treats a diagonal target D matrix by supplying its provable zero row and ignoring its progress hypothesis. Naming gates have counter y and seed 0, hence are NEVER diagonal; H(0) uses arbitrary nu and H(S z) uses newest z as before.
+For the main source GPrf DI case, alias b=t makes b the target witness. The diagonal guard is preserved and reflected by substitution for old free parameters (pinned NFm.isDiag_subst); its mode therefore agrees. If progressive, the source step hypothesis is B'(t,z), realized by transporting the actual B'(b,z); if case mode it is B'(t,0), handled as above. No other change is needed. The elementary guard proof also covers substitution of a witness while protecting the counter binder; however the comparison only needs old-free-variable substitution because the matrix's witness coordinate remains formal when its mode is tested.
+
+STATUS
+These are written mathematical proofs. They use the pinned native equivalences and its existing isDiag_subst lemma, but no Lean module of this new deterministic-witness compiler has yet been checked. Do not label the new theorem as proof-assistant verified without adding and compiling that module.

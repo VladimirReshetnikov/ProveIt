@@ -1,0 +1,396 @@
+\section{A predecessor from equations and equation induction alone}
+\label{app:pure-equational-predecessor}
+
+This appendix supplies the arithmetic fact needed by the restricted-witness
+theorem: successor injectivity follows from a purely equational fragment,
+without case introduction for $D$.  The construction of the predecessor is inherited
+from the repository's scalar bootstrap.  The contribution of this appendix
+is its purely equational organization, in particular the replacement of
+case splits made under an induction hypothesis by unconditional finite
+identities proved in advance.  The argument below uses no numerical
+coverage axiom, no logical disjunction, and no successor injectivity.
+After equation induction is made available through the interface below,
+the arithmetic argument itself has no $D$ formulas.
+
+\subsection{Resources and a finite-value lemma}
+
+The available terms are variables, $0$, $S$, and the iterator
+$I(n,a;u.h)$, whose only bound variable is $u$ in $h$.  We use
+\begin{align}
+ I(0,a;u.h)&=a, \label{eq:pe-zero}\\
+ I(Sn,a;u.h)&=h[I(n,a;u.h)/u], \label{eq:pe-succ}
+\end{align}
+ordinary equality reasoning, and induction on a single equation.  In the
+native calculus the latter is obtained from QI by progress and QE:
+\[
+ \frac{\Gamma\vdash E(0)\qquad
+       \Gamma,E(z)\vdash E(Sz)}{\Gamma\vdash E(t)},
+ \qquad z\notin\operatorname{FV}(\Gamma),
+\]
+where $E$ is a literal equation and all its other parameters stay fixed.
+In a combined-introduction presentation, QI by progress is obtained by
+introducing an equation matrix with unused witness at $0$ and then opening
+that binder.  The equational argument itself needs only the displayed
+equation-induction interface.
+
+\paragraph{Instantiation in the equational fragment.}
+Capture-avoiding substitution of arbitrary terms for numerical parameters
+is admissible in this equational fragment.  This follows by induction on
+an equational derivation: computation and transport commute with
+substitution, and an induction eigenvariable is first renamed fresh for
+the terms being substituted.  In the combined-rule implementation of
+equation induction, the witness remains the literal $0$ and the matrix
+remains an equation.  Thus this argument never substitutes into a case
+introduction at a variable witness.  Completed equational identities may
+therefore be instantiated at arbitrary terms without presupposing a
+substitution theorem for the full restricted calculus.
+
+Ignoring the induction hypothesis gives \emph{equational cases}: proofs of
+$E(0)$ and $E(Sz)$ give $E(t)$ for every term $t$.  This is not a case rule
+for arbitrary formulas.  It is a derived rule only for equations.
+
+Write $1=S0$, with larger numerals defined similarly, and put
+\[
+ C(n,a,b)=I(n,a;u.b),\qquad
+ Z(n)=C(n,1,0),\qquad
+ N(n)=I(n,0;u.Z(u)).
+\]
+The update variable is absent from the body of $C$, so computation gives
+\begin{gather}
+ C(0,a,b)=a,\qquad C(Sn,a,b)=b,\label{eq:pe-selector}\\
+ Z(0)=1,\qquad Z(Sn)=0,\label{eq:pe-zero-test}\\
+ N(0)=0,\qquad N(Sn)=Z(N(n)).\label{eq:pe-parity-rec}
+\end{gather}
+
+\paragraph{Finite-value transfer.}
+Let $F(v)$ be an equation, and suppose that $F(0)$ and $F(1)$ have been
+proved over a fixed side context $\Gamma$.  Then $F(Z(t))$ and $F(N(t))$
+are derivable over $\Gamma$ for every term $t$.  The placeholder $v$ is
+fresh for $\Gamma$; all other parameters of $F$ remain fixed.
+
+For the first conclusion, use equational cases on a fresh variable $x$
+with equation $F(Z(x))$.  Its zero case is $F(1)$ and its successor case is
+$F(0)$, by \eqref{eq:pe-zero-test}.  For the second, use equational cases
+on $x$ with equation $F(N(x))$.  Its zero case is $F(0)$; its successor
+case is $F(Z(N(x)))$, already provided by the first conclusion.
+Finally instantiate the completed equations at $x=t$.
+
+In subsequent uses of this lemma, the two equations $F(0)$ and $F(1)$
+are unconditional computations.  We never infer an equation by splitting
+on $N(t)=0$ or $N(t)=1$ while a side assumption depends on that value.
+
+\subsection{Addition and parity identities}
+
+Define
+\[
+ a+b=I(b,a;u.Su),\qquad 2a=a+a,\qquad 3a=a+a+a.
+\]
+Thus $a+0=a$ and $a+Sb=S(a+b)$.  Equation induction on $b$ gives
+$0+b=b$ and $Sa+b=S(a+b)$.  Another induction on $b$ proves
+commutativity: the successor step is
+\[
+ a+Sb=S(a+b)=S(b+a)=Sb+a.
+\]
+Induction on the last summand proves associativity.  We shall reorder
+finite sums using these completed identities.  In particular,
+$a+1=Sa$, $2(Sa)=2a+2$, and $3(Sa)=3a+3$.
+
+The instances at $v=0,1$ of
+\[
+ v+Z(v)=1,\qquad Z(Z(v))=v
+\]
+compute directly.  Finite-value transfer therefore gives
+\begin{equation}
+ N(n)+Z(N(n))=1,\qquad Z(Z(N(n)))=N(n).
+ \label{eq:pe-parity-bool}
+\end{equation}
+Two successor computations in \eqref{eq:pe-parity-rec} now give
+\begin{equation}
+ N(n+2)=N(n).\label{eq:pe-period-two}
+\end{equation}
+An equation induction on $n$ proves $N(2n)=0$: the successor step reduces
+$N(2n+2)$ to $N(2n)$.  Consequently $N(2n+1)=Z(0)=1$.
+An independent equation induction proves $N(3n)=N(n)$: after increasing
+$n$, the left argument increases by three, so period two reduces the
+new left value to $Z(N(3n))$, and the induction equation changes this to
+$Z(N(n))=N(Sn)$.  We have proved
+\begin{equation}
+ N(2n)=0,\qquad N(2n+1)=1,\qquad N(3n)=N(n).
+ \label{eq:pe-parity-scaling}
+\end{equation}
+No assertion that every number is even or odd has been used.
+
+\subsection{A three-state update and a ramp}
+
+Put
+\[
+ j(u)=Z(u)+2N(u),\qquad
+ M(n)=I(n,0;u.j(u)),\qquad
+ G(n)=I(n,0;u.u+M(u)+1).
+\]
+Finite computations give
+\begin{equation}
+ j(0)=1,\qquad j(1)=2,\qquad j(2)=0.
+ \label{eq:pe-three-cycle}
+\end{equation}
+We need these values and $M(Sn)=j(M(n))$; we do not assume a remainder
+theorem for $M$.
+
+For arbitrary parameter $g$, the following equations hold whenever
+$b=N(v)$:
+\begin{align}
+ M(g+b+1)&=C\bigl(b,j(M(g)),j(j(M(g)))\bigr),
+    \label{eq:pe-ramp-finite-a}\\
+ C\bigl(b,j(b),j(j(b))\bigr)&=Z(b).
+    \label{eq:pe-ramp-finite-b}
+\end{align}
+To prove \eqref{eq:pe-ramp-finite-a}, apply finite-value transfer to the
+equation with placeholder $b$.  At $b=0$ it is
+$M(g+1)=j(M(g))$, and at $b=1$ it is
+$M(g+2)=j(j(M(g)))$, both computation identities.  For
+\eqref{eq:pe-ramp-finite-b}, the zero instance is
+$j(0)=Z(0)=1$, and the one instance is
+$j(j(1))=j(2)=Z(1)=0$.  These are again computations.  These two
+identities are proved \emph{before} the next induction.
+
+We claim
+\begin{equation}
+ M(G(n))=N(n).\label{eq:pe-ramp-invariant}
+\end{equation}
+The zero instance is immediate.  In the successor step retain the single
+induction equation $M(G(n))=N(n)$ and calculate
+\begin{align*}
+ M(G(Sn))
+ &=M\bigl(G(n)+M(G(n))+1\bigr)\\
+ &=M\bigl(G(n)+N(n)+1\bigr)\\
+ &=C\bigl(N(n),j(M(G(n))),j(j(M(G(n))))\bigr)\\
+ &=C\bigl(N(n),j(N(n)),j(j(N(n)))\bigr)\\
+ &=Z(N(n))=N(Sn).
+\end{align*}
+The second and fourth lines use the induction equation; the third and
+fifth use the two unconditional identities just proved.  In particular,
+there is no case split under the induction hypothesis.
+
+It follows that
+\begin{equation}
+ G(Sn)=G(n)+N(n)+1,\qquad G(n+2)=G(n)+3.
+ \label{eq:pe-ramp-step}
+\end{equation}
+The second equation follows from the first applied twice and
+$N(n)+Z(N(n))=1$.  Equation induction gives
+\begin{equation}
+ G(2n)=3n.\label{eq:pe-ramp-double}
+\end{equation}
+For the successor step, use $G(2n+2)=G(2n)+3$.
+
+A separate equation induction proves
+\begin{equation}
+ G(3n)=3G(n)+N(n).\label{eq:pe-ramp-triple}
+\end{equation}
+Indeed, \eqref{eq:pe-ramp-step} gives
+$G(x+3)=G(x)+N(x)+4$.  Assuming the induction equation and using
+$N(3n)=N(n)$, the new left side is
+\[
+ G(3Sn)=G(3n)+N(3n)+4=3G(n)+2N(n)+4.
+\]
+The new right side is
+\[
+ 3G(Sn)+N(Sn)=3G(n)+3N(n)+3+Z(N(n)).
+\]
+The two expressions are equal by $N(n)+Z(N(n))=1$ and the additive
+identities.  The base is $0=0$.  Again, no conditional case distinction
+occurs inside the induction.
+
+\subsection{The factor map}
+
+Define
+\[
+ H(u)=C(N(u),G(u),u).
+\]
+Then
+\begin{equation}
+ H(2u)=3u,\qquad H(1)=1,\qquad H(3u)=3H(u).
+ \label{eq:pe-factor}
+\end{equation}
+The first two equations follow immediately from
+\eqref{eq:pe-parity-scaling}, \eqref{eq:pe-ramp-double}, and the two
+selector computations.  For the third, first prove by finite-value
+transfer the unconditional equation
+\begin{equation}
+ C(b,3a+b,3c)=3C(b,a,c),\qquad b=N(v).
+ \label{eq:pe-factor-finite}
+\end{equation}
+At $b=0$ both sides are $3a$, and at $b=1$ both sides are $3c$.
+Now substitute $v=u$, $a=G(u)$, and $c=u$ into this completed identity:
+\begin{align*}
+ H(3u)
+ &=C\bigl(N(u),3G(u)+N(u),3u\bigr)\\
+ &=3C(N(u),G(u),u)=3H(u).
+\end{align*}
+This argument does not represent an arbitrary number as $2v$ or $2v+1$.
+
+\subsection{A comparator}
+
+For a fixed update term $h$, whose parameters do not include the variable
+being inducted on, equation induction proves the rotation identity
+\begin{equation}
+ I(Sy,a;h)=I(y,h(a);h).
+ \label{eq:pe-rotation}
+\end{equation}
+At $y=0$ both sides are $h(a)$.  In the step, the two successor
+computations apply the same fixed $h$ to the induction equation.
+Here $I(y,a;h)$ abbreviates $I(y,a;u.h(u))$; it is a term abbreviation,
+not quantification over functions.
+
+Using $H(3u)=3H(u)$, another equation induction on $y$, with $a$ fixed,
+gives
+\begin{equation}
+ I(y,3a;H)=3I(y,a;H).
+ \label{eq:pe-orbit-scaling}
+\end{equation}
+The base is $3a=3a$; the step rewrites
+$H(I(y,3a;H))$ to $H(3I(y,a;H))=3H(I(y,a;H))$.
+Similarly, $H(1)=1$ gives
+\begin{equation}
+ I(y,1;H)=1.\label{eq:pe-orbit-one}
+\end{equation}
+
+Set
+\[
+ A(x)=I(x,1;u.2u),\qquad
+ L(x,y)=N\bigl(I(y,A(x);H)\bigr).
+\]
+We obtain the three comparison equations
+\begin{equation}
+ L(0,y)=1,\qquad L(Sx,0)=0,\qquad L(Sx,Sy)=L(x,y).
+ \label{eq:pe-comparator}
+\end{equation}
+The first uses $A(0)=1$, \eqref{eq:pe-orbit-one}, and $N(1)=1$.
+The second uses $A(Sx)=2A(x)$ and $N(2u)=0$.  For the third,
+\begin{align*}
+ L(Sx,Sy)
+ &=N\bigl(I(Sy,2A(x);H)\bigr)\\
+ &=N\bigl(I(y,H(2A(x));H)\bigr)\\
+ &=N\bigl(I(y,3A(x);H)\bigr)\\
+ &=N\bigl(3I(y,A(x);H)\bigr)\\
+ &=N\bigl(I(y,A(x);H)\bigr)=L(x,y).
+\end{align*}
+The successive steps use rotation, $H(2u)=3u$, orbit scaling, and
+$N(3u)=N(u)$.  Thus \eqref{eq:pe-comparator} holds internally at all
+arguments.  The intended interpretation of $L(x,y)$ as the indicator of
+$x\leq y$ is not a premise.
+
+\subsection{Saturation and predecessor}
+
+Define the following open terms, with $m$ a fixed parameter:
+\[
+ B_m(u)=C(L(Su,m),u,Su),\qquad
+ W(t,m)=I(t,0;u.B_m(u)).
+\]
+Equational cases on a fresh variable $e$ prove
+\begin{equation}
+ C(e,Sa,Sb)=S C(e,a,b).
+ \label{eq:pe-selector-succ}
+\end{equation}
+At $e=0$ both sides are $Sa$, and at $e=Sz$ both are $Sb$.
+Using \eqref{eq:pe-comparator} and this selector equation gives
+\begin{align}
+ B_{Sm}(Su)
+ &=C(L(SSu,Sm),Su,SSu)\notag\\
+ &=C(L(Su,m),Su,SSu)=S B_m(u),
+ \label{eq:pe-saturation-conjugacy}\\
+ B_{Sm}(0)
+ &=C(L(S0,Sm),0,S0)\notag\\
+ &=C(L(0,m),0,S0)=C(1,0,S0)=S0.
+ \label{eq:pe-saturation-base}
+\end{align}
+
+Equation induction on $t$, with $m$ fixed, now proves
+\begin{equation}
+ W(St,Sm)=S W(t,m).
+ \label{eq:pe-saturation-shift}
+\end{equation}
+For $t=0$, the left side is $B_{Sm}(0)=S0$, as required.  The step is
+\begin{align*}
+ W(SSt,Sm)
+ &=B_{Sm}(W(St,Sm))\\
+ &=B_{Sm}(S W(t,m))\\
+ &=S B_m(W(t,m))=S W(St,m).
+\end{align*}
+Only the second line uses the active induction equation.
+
+Two more equation inductions give
+\begin{equation}
+ L(Sn,n)=0,\qquad W(n,n)=n.
+ \label{eq:pe-saturation-diagonals}
+\end{equation}
+For the first, the base is $L(S0,0)=0$ and the step reduces
+$L(SSn,Sn)$ to $L(Sn,n)$.  For the second, the base is $W(0,0)=0$,
+and the step uses the completed identity
+\eqref{eq:pe-saturation-shift} at $t=m=n$:
+$W(Sn,Sn)=S W(n,n)=Sn$.  This substitution is into an already proved
+identity, and does not change a parameter of an active induction
+hypothesis.  Consequently
+\begin{equation}
+ W(Sn,n)=B_n(n)=C(L(Sn,n),n,Sn)=n.
+ \label{eq:pe-saturation-extra}
+\end{equation}
+
+Finally define the finite scalar term
+\begin{equation}
+ P(m)=I\bigl(m,0;u.C(L(SSu,m),u,Su)\bigr).
+ \label{eq:pe-predecessor-term}
+\end{equation}
+Its zero equation is a computation.  For its successor equation put
+\[
+ V(t,m)=I\bigl(t,0;u.C(L(SSu,Sm),u,Su)\bigr).
+\]
+The third equation in \eqref{eq:pe-comparator} gives the pointwise
+identity
+\[
+ C(L(SSu,Sm),u,Su)=C(L(Su,m),u,Su)=B_m(u).
+\]
+Equation induction on $t$, with $m$ fixed, proves $V(t,m)=W(t,m)$.
+The base is $0=0$.  In the step, first apply the pointwise update
+identity at $u=V(t,m)$ and then the induction equation, obtaining
+$B_m(V(t,m))=B_m(W(t,m))$.  Thus no primitive extensionality rule for
+iterator bodies is being assumed.  From
+\eqref{eq:pe-saturation-extra} we conclude
+\begin{equation}
+ \boxed{\quad P(0)=0,\qquad
+ P(Sm)=V(Sm,m)=W(Sm,m)=m.\quad}
+ \label{eq:pe-predecessor-equations}
+\end{equation}
+Applying equality congruence for $P$ to $Sx=Sy$ and using
+\eqref{eq:pe-predecessor-equations} gives $x=y$.
+
+Every abbreviation in this appendix expands to a finite term over
+$0,S,I$.  Every induction invariant is one literal equation.  Equality
+reflection, pairing, general primitive-recursion compilation, numerical
+coverage, and logical case analysis were not used to obtain predecessor
+or successor injectivity.
+
+\subsection{Provenance and verification status}
+
+The arithmetic construction, including the factor map and the saturated
+iteration, comes from
+\texttt{Research/certified\_zero/reference/scalar\_predecessor.tex} in the
+user's ConciseIPRA project, read at commit
+\texttt{9f9545f5ffd9e0392d4a36639503aca12383450a}.
+The repository URL is
+\begin{center}\small
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/9f9545f5ffd9e0392d4a36639503aca12383450a/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{ConciseIPRA at the pinned commit}
+\end{center}
+The existing source explicitly allowed reconstructed numerical cases.
+The present appendix strengthens its dependency statement by giving
+equation-only proofs of the needed finite identities, particularly
+\eqref{eq:pe-ramp-finite-a}, \eqref{eq:pe-ramp-finite-b}, and
+\eqref{eq:pe-factor-finite}.  These identities remove the circularity that
+would arise if a proof of restricted logical introduction already assumed
+unrestricted logical case distinction.
+
+This appendix is a written internal derivation.  It does not claim a newly
+compiled Lean formalization of the equational dependency refinement or of
+the restricted-witness theorem.  The repository's pre-existing Lean
+formalization should not be presented as machine verification of this
+new dependency claim without the corresponding new formal proof.

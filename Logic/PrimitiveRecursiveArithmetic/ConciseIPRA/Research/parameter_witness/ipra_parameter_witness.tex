@@ -1,0 +1,639 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{xcolor,listings,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black,citecolor=blue!45!black]{hyperref}
+\usepackage{bookmark}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\IPRA}{\mathrm{iPRA}}
+\newcommand{\BC}{\mathcal B}
+\newcommand{\CC}{\mathcal C}
+\newcommand{\fv}{\operatorname{FV}}
+\newcommand{\cl}[2]{\langle #1;\,#2\rangle}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small iPRA with parameter witnesses}
+\fancyhead[R]{\small 12 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
+  keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{black!20},
+  xleftmargin=4pt,xrightmargin=4pt,aboveskip=8pt,belowskip=8pt}
+\hypersetup{pdftitle={iPRA with parameter witnesses},pdfauthor={OpenAI, prepared for Vladimir Reshetnikov}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.55in}
+{\Large Research report\par}
+\vspace{0.45in}
+{\huge\bfseries iPRA with parameter witnesses\par}
+\vspace{0.2in}
+{\Large A finite witness interface for a complete\par
+intuitionistic arithmetic calculus\par}
+\vspace{0.5in}
+{\large Prepared for Vladimir Reshetnikov\par}
+{12 November 2026\par}
+\vspace{0.5in}
+\begin{abstract}
+The current ConciseIPRA development asks whether its paired introduction
+rule needs arbitrary numerical witness terms. We prove that it does not.
+First, zero and numerical variables suffice. A protected proof translation
+then restricts the variable to the newest ambient parameter. The final
+presentation uses only one bit: it selects zero or that parameter, with
+zero as the empty-scope fallback. The language remains raw scalar iterator
+terms and equations with the paired binder $D$. A clause presentation has
+five primitive rule families and no separately postulated logical axioms.
+
+The critical arithmetic lemma is a predecessor construction using only
+computation, equality and literal-equation induction. Unconditional
+Boolean identities remove a circular appeal to numerical case distinction
+under an induction hypothesis. A paired formula then names every term by
+a fresh variable, recovering every omitted introduction. The resulting
+calculus proves exactly the same sequents as the pinned baseline and
+inherits both whole-domain interpretation composites with full
+first-order intuitionistic primitive recursive arithmetic.
+
+A matched, standalone, publicly scoped JSON proof checker decreases from
+2,956 to 2,947 normalized bytes, from 837 to 833 significant tokens, and
+from 977 to 971 AST nodes. This modest implementation reduction accompanies
+a substantive restriction of the primitive witness interface. It is not
+a claim to beat the repository's 516-byte compact codec, nor a proof of
+absolute minimality. The new mathematical result is a written proof;
+the accompanying executable checks are not a Lean formalization.
+\end{abstract}
+\vfill
+\small Baseline pinned to ProveIt commit
+\texttt{9f9545f5ffd9e0392d4a36639503aca12383450a}.\par
+\normalsize
+\end{titlepage}
+
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Result and comparison target}
+
+The proposed theory is the five-family calculus $\BC$ of
+Section~\ref{sec:bit-calculus}. Its introduction instruction contains
+\emph{one bit instead of an arbitrary term}. All arithmetic terms,
+ordinary numerical domains, equality, and the reading of the logical
+binder are unchanged. This is a restriction of the primitive rule
+interface, not a change to the set of mathematical consequences.
+
+The comparison is the repository at the full commit printed on the title
+page, inspected on 12 November 2026. The main README records seventy-nine
+research packages and several previously established reductions. In
+particular, raw clauses, five rule families, computational equality and
+two-case evaluation are already present. They are reused here and are
+not new claims. The README's further question 2 asks whether introduction
+at zero or at a variable suffices, and identifies the recovery of
+predecessor without illicit substitution as an obstruction
+\cite{baseline,readme}. The first theorem below answers that question;
+the strongest version keeps only zero and the newest variable.
+
+\begin{theorem}[Main result]
+\label{thm:main}
+For every finite numerical scope, every well-scoped context of native
+clauses $\Gamma$, and every native Eq/$D$ formula $A$,
+\[
+ \Gamma\vdash_{\BC} A
+ \quad\Longleftrightarrow\quad
+ \Gamma\vdash_{\CC} A,
+\]
+where $\CC$ is the baseline raw clause calculus with unrestricted
+witnesses. Consequently the ordinary realization of $\BC$ is
+bi-interpretable and equiconsistent with full first-order $\IPRA$.
+Both numerical domains are whole and both interpretation composites
+have the identity graph $x=y$.
+\end{theorem}
+
+The proof is constructive at the metalevel: a finite source derivation
+can be translated to a finite target derivation. It does not establish
+that the new certificates are shorter; the naming construction generally
+makes them longer. The resource being reduced is the trusted rule
+interface and its matched checker, not certificate length or checking time.
+
+There is no language-independent smallest checker without a fixed
+encoding and implementation model. Accordingly this report establishes
+an explicit strict matched reduction and a mathematical restriction. It
+does not infer an absolute lower bound from a collection of prior drafts.
+
+\section{Complete definition of the proposed calculus}
+\label{sec:bit-calculus}
+
+\subsection{Numerical terms, formulas and scopes}
+
+Terms have one numerical sort:
+\[
+ t ::= x\mid 0\mid S(t)\mid I(n,a;u.h).
+\]
+Only the last child $h$ binds $u$. The counter $n$ and seed $a$ do not
+bind anything. Every occurrence of $I$ is a finite term description;
+there is no object-language variable for a function or its code.
+Substitution is ordinary capture-avoiding substitution. Terms are raw:
+no normalization, conversion oracle or evaluator is hidden in equality
+of syntax trees.
+
+The numerical scope is a finite ordered list $x_1,\ldots,x_k$ of
+available free parameters. Local eigenparameters are appended to this
+list. Define
+\[
+ \ell_k=\begin{cases}x_k,&k>0,\\0,&k=0.\end{cases}
+\]
+This convention concerns proof syntax; it introduces no new numerical
+constant or interpretation-domain restriction.
+
+Formulas and clauses are
+\[
+ A ::= (s=t)\mid D_{x,y}A,
+ \qquad
+ \cl{A}{y.B(y)},\quad y\notin\fv(A).
+\]
+The paired binder binds both $x$ and $y$ in its matrix. A context is a
+finite list of reusable clauses. An ordinary temporary assumption $F$
+abbreviates the constant clause $\cl{0=0}{v.F}$, with $v$ unused.
+An empty context contains no implicit axiom clauses.
+
+The ordinary meanings, used in proving adequacy rather than by the
+checker, are
+\begin{align*}
+ (s=t)^\circ&=(s=t),\\
+ (D_{x,y}B)^\circ
+   &=\exists x\bigl(B^\circ(x,0)\to\forall y\,B^\circ(x,y)\bigr),\\
+ \cl{A}{y.B(y)}^\circ&=A^\circ\to\forall y\,B^\circ(y).
+\end{align*}
+The designated native contradiction is $0=S0$. Ordinary falsity is
+discussed explicitly in Section~\ref{sec:biinterpretation}.
+
+\subsection{Five primitive rule families}
+
+All premises retain the indicated context. These are the entire
+primitive inventory.
+
+\paragraph{1. Reflexivity.}
+For every in-scope term $t$,
+\[
+ \frac{}{\Gamma\vdash t=t}.\tag{Refl}
+\]
+
+\paragraph{2. Evaluation.}
+From equations $s=t$ and $b=r$, infer $r=\Phi$, in exactly either of
+these two syntactic cases:
+\[
+\begin{array}{c|c|c}
+ b&s&\Phi\\\hline
+ I(0,a;u.h)&a&t\\
+ I(Sc,a;u.h)&I(c,a;u.h)&h[t/u]
+\end{array}
+\qquad
+ \frac{\Gamma\vdash s=t\qquad\Gamma\vdash b=r}
+      {\Gamma\vdash r=\Phi}.
+\tag{Eval}
+\]
+All equalities in the case conditions are literal syntax equality. There
+is no third case for $b=s$. The familiar iterator computation equations
+and equality transport are derived, as explained below.
+
+\paragraph{3. Clause use.}
+For an in-scope term $t$,
+\[
+ \frac{\Gamma\vdash A}{\Gamma\vdash B(t)}
+ \quad\bigl(\cl{A}{y.B(y)}\in\Gamma\bigr).
+ \tag{Use}
+\]
+Clause specialization retains arbitrary terms. Restricting specialization
+as well as introduction is not part of this result.
+
+\paragraph{4. Paired elimination.}
+\[
+ \frac{\Gamma\vdash D_{x,y}B(x,y)\qquad
+ \Gamma,\cl{B(b,0)}{y.B(b,y)}\vdash A}
+ {\Gamma\vdash A}.
+ \tag{Elim}
+\]
+Here $b$ is fresh for $\Gamma,A$ and all free parameters of $B$.
+It is appended to the numerical scope in the second premise. The
+displayed clause is discharged.
+
+\paragraph{5. Introduction with one bit.}
+Choose $\beta\in\{0,1\}$ and set
+\[
+ t_\beta=\begin{cases}0,&\beta=0,\\\ell_k,&\beta=1,\end{cases}
+ \qquad
+ \eta=\begin{cases}
+ z,&\beta=0\text{ and }B\text{ is a literal equation},\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+Then
+\[
+ \frac{\Gamma,B(t_\beta,\eta)\vdash B(t_\beta,Sz)}
+      {\Gamma\vdash D_{x,y}B(x,y)}.
+ \tag{Bit-DI}
+\]
+The eigenparameter $z$ is fresh for the previous scope, context, witness
+and matrix parameters. The witness is selected \emph{before} $z$ is
+introduced. In particular $z$ itself can never serve as this witness.
+The temporary formula assumption is the constant clause defined above.
+At an empty numerical scope, bit 1 means a case introduction at zero;
+bit 0 at an equation means progress at zero. The two bits therefore still
+have different roles there.
+
+\subsection{What is derived}
+
+There are no further primitive logical axioms, successor axioms,
+computation axioms, equality schemas, or induction schemas. Hypothesis
+use is Refl at $0$ followed by Use of the constant assumption clause.
+
+Eval with reflexive premises gives
+\[
+ I(0,a;u.h)=a,\qquad I(Sc,a;u.h)=h[I(c,a;u.h)/u].
+\]
+The first evaluation case also derives the root composition rule
+$s=t,\ s=r\vdash r=t$. To see this explicitly, put
+$J=I(0,s;u.u)$. Evaluate $s=r$ against $J=J$ to get $J=r$;
+then evaluate $s=t$ against $J=r$ to get $r=t$.
+Consequently symmetry and transitivity are derived.
+
+For a term template $h(v)$, let
+$J=I(0,s;u.h(u))$ and $K=I(S0,s;u.h(u))$.
+Zero evaluation derives $J=t$ from $s=t$; successor evaluation with
+$K=K$ derives $K=h(t)$. The same calculation with $s=s$ gives
+$K=h(s)$, so root composition gives $h(s)=h(t)$. Thus term
+congruence and crossed transport follow without a separate transport
+instruction. These are the established two-case evaluation reductions
+\cite{rootfree,evallean}; they are repeated to make the rule inventory
+self-contained.
+
+The rest of the proof derives closure introduction and elimination,
+full formula transport, equation induction, predecessor and arbitrary
+witness introduction. The last derivation is the new restriction result.
+Ordinary intuitionistic connectives are definable, and their ordinary
+rules are recovered through the already established native interpretation.
+They are not built into the checker.
+
+\section{Why arbitrary witness terms can be removed}
+
+\subsection{The essential naming formula}
+
+Put
+\[
+ C(v,a,b)=I(v,a;u.b),\qquad
+ T(v)=D_{x,y}\bigl(C(y,v,C(v,0,Sx))=v\bigr).
+ \tag{Packet}
+\]
+The variable $u$ is unused in the definition of $C$. The two useful
+rows of the matrix are
+\[
+ y=0:\quad v=v,
+ \qquad y=Sw:\quad C(v,0,Sx)=v,
+\]
+up to the displayed computation equations.
+
+The zero instance $T(0)$ is introduced with bit 0. Its matrix is an
+equation, so this is progress; its successor row reduces to $0=0$,
+independently of its local hypothesis. The successor instance $T(Sa)$
+is introduced with bit 1 while $a$ is the newest parameter. Its successor
+row reduces to $Sa=Sa$. Thus an outer closure proves $T(v)$ for every
+term $v$ using clause specialization, which remains unrestricted.
+
+Open $T(St)$ at a fresh $b$. Its zero row is a theorem. Specializing
+the retained clause at $1=S0$ gives
+\[
+ C(1,St,C(St,0,Sb))=St,
+\]
+and computation gives $Sb=St$. A predecessor term $P$ satisfying
+$P(Sv)=v$ then gives $b=t$. Hence any proof needing an arbitrary term
+$t$ can use a fresh numerical name $b$, transport along $b=t$, and
+discharge that name.
+
+This addresses the concrete test case in the README: the ordinary
+existential assertion $\exists x\,(x=S0)$ is recoverable. Name $S0$
+by opening $T(S(S0))$, infer $b=S0$ by predecessor, introduce the
+existential encoding at the available variable $b$, and discharge the
+packet. No substitution of $S0$ for a variable in an unverified
+restricted derivation is assumed.
+
+\subsection{The arithmetic dependency that prevents circularity}
+
+It would be circular to obtain predecessor from full $\IPRA$
+bi-interpretability and then use predecessor to prove that the restricted
+theory has full $\IPRA$ strength. Appendix~\ref{app:pure-equational-predecessor}
+therefore supplies an internal predecessor construction from computation,
+equality and literal-equation induction alone.
+
+The scalar iterator has only a state argument in its update, so predecessor
+is not an immediate computation. The inherited construction uses parity,
+a three-state cycle, a ramp, a factor map, a comparator and a saturating
+counter. The new dependency refinement is important: numerical case
+splits under an induction hypothesis are replaced by unconditional
+equations proved in advance.
+
+For example, let $N$ be the parity iterator, $j$ the three-state update,
+$M$ its orbit, and $G$ the ramp, as defined in the appendix. Before
+inducting on $M(G(n))=N(n)$, prove for $b=N(v)$ the identities
+\begin{align*}
+ M(g+b+1)&=C\bigl(b,j(M(g)),j(j(M(g)))\bigr),\\
+ C\bigl(b,j(b),j(j(b))\bigr)&=Z(b).
+\end{align*}
+Each is obtained from its two direct computations at $b=0,1$ by
+equation induction. The ramp step then uses the induction hypothesis
+only as an equality, never as a side assumption in a Boolean case split.
+This is the precise repair that makes predecessor available before
+unrestricted witness introduction.
+
+\subsection{Why the newest variable needs a protected proof}
+
+With zero and arbitrary variables allowed, injective renaming,
+weakening and cut are proved directly by induction on derivations.
+Appendix~\ref{sec:restricted-witness} gives this simpler proof in full.
+
+Restricting the variable to the newest parameter changes that situation:
+inserting another parameter may make a previously permitted witness
+cease to be the newest. Thus one cannot silently shift a target proof
+under a binder. The proof for the final bit calculus instead maintains
+\emph{hereditary derivability}: it constructs a derivation under every
+injective renaming and every allowed extension of the retained context.
+Under a new eigenparameter, a premise is regenerated from this invariant.
+It is not obtained by a forbidden renaming of an existing target tree.
+
+At the final step of arbitrary witness introduction, the packet opens
+the name $b$. It is now the newest parameter, so bit 1 introduces at
+exactly that name. The step eigenparameter is added only after this
+selection. The protected translation and its direct clausal version
+are supplied in the proof appendices. This ordering is also exercised
+by the eigenvariable-capture rejection test.
+
+\section{Full intuitionistic bi-interpretability}
+\label{sec:biinterpretation}
+
+\subsection{The target is full first-order iPRA}
+
+Here $\IPRA$ means first-order intuitionistic predicate logic with
+equality, zero and successor, a function symbol for every fixed finite
+primitive-recursive description with its defining equations, the usual
+successor separation and injectivity axioms, and contextual induction
+for quantifier-free formulas. The claim is not restricted to closed
+equations, a classical fragment, or a collection of numerical sentences.
+
+The baseline proves native-to-$\IPRA$ and $\IPRA$-to-native translations
+for all formulas and contexts, together with both formula round trips.
+The pinned Lean endpoint explicitly states
+\texttt{native\_iff\_pra}, \texttt{pra\_iff\_native},
+\texttt{native\_roundTrip}, \texttt{pra\_native\_roundTrip} and
+\texttt{native\_inconsistent\_iff} \cite{biinterp}. These source files
+were inspected; the baseline Lean build was not rerun in this workspace.
+Our new proof is not included in that existing formalization.
+
+Theorem~\ref{thm:main} transfers this exact result because it identifies
+derivability on the unchanged native formulas, with unchanged numerical
+terms and clauses. It does not merely show agreement in the standard
+natural-number model.
+
+\subsection{The ordinary realization and falsity}
+
+For clarity, elaborate each fixed iterator body $h(u,\vec p)$ into an
+ordinary function symbol $i_h(n,a,\vec p)$, with its two defining
+equations. Bodies are introduced in finite stages. Let $T_I$ be ordinary
+intuitionistic first-order logic with actual equality, these symbols and
+equations, induction for literal equations, numerical coverage
+\[
+ \forall x\,(x=0\lor\exists y\,x=Sy),
+\]
+and the falsity bridge $(0=S0)\to\bot$.
+The native clauses and $D$ are read by the formulas in
+Section~\ref{sec:bit-calculus}. Coverage is recovered by the native
+logical interpretation. The falsity bridge is explicit in the ordinary
+realization and expresses the reading of the designated contradiction;
+it is not asserted to follow from positive iterator equations alone.
+Neither is an additional instruction in the five-family checker.
+Stating the bridge in $T_I$
+prevents a mistaken appeal to a singleton model of purely positive
+equations.
+
+The forward arithmetic interpretation sends each scalar iterator to its
+primitive-recursive iteration in $\IPRA$. The reverse interpretation
+first derives predecessor, a reflecting equality test, and quantifier-free
+induction. It then defines pairing with projections and compiles every
+fixed primitive recursion. For
+\[
+ f(0,\vec p)=g(\vec p),\qquad
+ f(Sn,\vec p)=h(n,f(n,\vec p),\vec p),
+\]
+the compiler stores the counter and current value in a pair:
+\begin{align*}
+ V(n,\vec p)&=I\bigl(n,\pi(0,g^*(\vec p));
+ u.\pi(SL(u),h^*(L(u),H(u),\vec p))\bigr),\\
+ f^*(n,\vec p)&=H(V(n,\vec p)).
+\end{align*}
+Induction proves $L(V(n,\vec p))=n$, and the projection equations give
+the defining equations for $f^*$. Pairing is a derived construction; it
+does not enlarge the proof-checking kernel.
+
+\subsection{Both composites, rather than equiconsistency alone}
+
+For each fixed description, its double translation satisfies the same
+defining equations. Equation induction proves uniqueness of an iterator
+with a fixed seed and update; the analogous argument proves uniqueness
+for primitive recursion. External induction on a finite function
+description therefore identifies its double translation internally.
+
+Both domains are given by $x=x$, equality is actual equality, and
+$x=y$ defines a provably total bijection preserving every fixed
+operation in both composites. The inherited logical macro theorems give
+the formula composites, including implication, disjunction, conjunction,
+both quantifiers and falsity. The two translations preserve contradiction,
+so effective translations of finite proofs establish equiconsistency.
+No self-consistency statement is asserted.
+
+The unchanged written bridge, equality-reflection and primitive-recursion
+sources are included in \texttt{reference/}, with their license and
+pinned provenance. The present report proves the new restriction rather
+than claiming those inherited constructions as new.
+
+\section{Executable comparison and validation}
+\label{sec:implementation}
+
+\subsection{A matched complete checker}
+
+The final module reads one JSON certificate from standard input. It
+validates the closed public formula, term and formula scopes, rule
+arities, premises and every eigenvariable boundary. It imports only
+Python's standard JSON and system modules. It contains no arithmetic
+axiom table, proof database, normalizer, or external theorem prover.
+Successful acceptance is exit status zero together with the line
+\texttt{ACCEPT}; malformed or incorrect certificates are rejected.
+As with an ordinary implementation of a proof calculus, practical
+recursion and memory limits can reject a valid certificate that exceeds
+the host's resources. The equivalence theorem concerns finite formal
+derivations, with no fixed machine resource bound.
+
+The baseline is the repository's existing two-case raw clause checker.
+Both files use the same representation, same public-goal validation,
+same evaluator, same clause handling and same normalization for size
+measurement. The change replaces the term-valued introduction field by
+a Boolean selector and removes its recursive term-validity check.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Complete standalone module & Tokens & AST nodes & Normalized bytes\\
+\midrule
+Pinned two-case control & 837 & 977 & 2,956\\
+Bit-witness proposal & 833 & 971 & 2,947\\
+Decrease & 4 & 6 & 9\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The source is normalized with \texttt{ast.unparse} under CPython 3.12.14;
+the exact scripts and results are included. Only the module docstring is
+removed before normalization, consistently for both programs. Comments, documentation and
+file formatting are not being used to manufacture the difference. The
+byte decrease is about $0.30\%$; token and AST decreases are about
+$0.48\%$ and $0.61\%$. The mathematical interface change is larger than
+these implementation percentages suggest because the same generic term
+validator remains necessary for clause specialization and other rule data.
+
+This comparison does not beat every coordinate of every implementation
+in the repository. Its compact 516-byte program is a different codec
+profile; the README also records smaller separate token and AST minima.
+We do not compare a fully scoped public checker against a compact codec
+as if the contracts were identical. There is no global-minimum claim.
+
+\subsection{The Boolean field is a decoder, not a term}
+
+Canonical certificates use the integers 0 and 1 in the introduction
+field. The provided checker defines a total Boolean projection of a JSON
+value by Python truthiness: false, null, numerical zero, and empty
+strings, arrays or objects select bit 0; other parsed values select bit 1.
+This is a serialization choice stated as part of the checker contract.
+The field is never inserted as a term. The selected numerical term is
+constructed internally as zero or the newest scoped free-variable level.
+
+Thus acceptance of a noncanonical truthy mode value cannot create a
+new arithmetic witness. An adapter that insists on literal 0 or 1 can
+be placed outside this trusted decoder, but no such adapter is silently
+excluded from the reported measurement. The measured module itself is
+the full specified checker.
+
+\subsection{What the executable evidence establishes}
+
+The package contains actual certificates for the zero naming packet,
+its closure, and its instances at 1 and 2. These are checked by the
+final restricted checker. Negative cases exercise ill-scoped terms,
+incorrect computations, malformed formulas and illicit use of the step
+eigenparameter as the introduction witness. The latter is a material
+risk: allowing the witness to depend on the new step parameter can
+validate a false paired assertion. The final checker constructs the
+witness from the preceding scope, so this dependency is excluded.
+
+An independent scalar evaluator also checks 447 finite equalities from
+the arithmetic appendix directly from the iterator definitions,
+including $P(0),\ldots,P(7)=0,0,1,2,3,4,5,6$. These computations help
+catch indexing mistakes. They do not replace the universal equational
+proof, prove soundness on nonstandard models, or mechanically certify
+bi-interpretability. The validation logs distinguish executed checks
+from written theorems.
+
+\section{Scope of the achievement}
+
+The new result is the finite witness interface and the proof that it
+preserves full contextual derivability. The arithmetic term language,
+the five-family clausal organization, two-case Eval, and the bridge to
+$\IPRA$ are inherited and explicitly attributed. The proof also supplies
+the missing equational dependency refinement for predecessor.
+
+The implementation result is a small strict reduction of a matched
+complete checker. The artifact does not prove an absolute minimum,
+establish a new compact-codec record, or provide a newly compiled Lean
+formalization. It provides a concrete simpler rule interface, written
+proofs of adequacy and both interpretation composites, executable
+certificates, exact source provenance and reproducible measurements.
+
+\appendix
+\input{paper/restricted_witness_appendix.tex}
+\input{paper/newest_witness_note.tex}
+\input{paper/clausal_transfer.tex}
+\input{paper/equational_predecessor.tex}
+
+\section{Archive map and reproduction}
+
+\begin{longtable}{p{0.40\linewidth}p{0.54\linewidth}}
+\toprule
+Path & Purpose\\\midrule
+\endhead
+\texttt{ipra\_parameter\_witness.tex}, PDF & Main report and complete new proof appendices.\\
+\texttt{paper/} & LaTeX sources for the restriction, protected translation and arithmetic.\\
+\texttt{checker/checker.py} & Standalone five-family bit-witness checker.\\
+\texttt{checker/reference/} & Exact pinned unrestricted checker controls.\\
+\texttt{checker/reproduce.py} & Exact source metrics and certificate checks.\\
+\texttt{code/check\_scalar\_arithmetic.py} & Finite evaluation from iterator definitions.\\
+\texttt{checker/fixtures/}, \texttt{evidence/} & Checked certificates, tests, metrics and validation logs.\\
+\texttt{reference/} & Attributed baseline bridge sources and inspected Lean endpoints.\\
+\texttt{PROVENANCE.json} & Exact repository paths, commit and source hashes.\\
+\texttt{CLAIMS.json} & Claims, dependencies and explicit limitations.\\
+\texttt{reproduce.py} & Re-run executable validation and measurements.\\
+\texttt{build.py} & Rebuild the PDF with installed pdfLaTeX.\\
+\bottomrule
+\end{longtable}
+
+Run \texttt{python3 reproduce.py} from the extracted directory.
+Run \texttt{python3 build.py} to rebuild the PDF; a normal LaTeX
+installation with the packages named in the source is required.
+The executable checker and validation scripts use only the Python
+standard library. Measured normalized sizes should be reproduced with
+CPython 3.12.14, since \texttt{ast.unparse} is version-dependent.
+
+\begin{thebibliography}{9}
+\bibitem{baseline} ProveIt contributors, \emph{Concise presentations of
+intuitionistic primitive recursive arithmetic}, repository snapshot,
+commit \texttt{9f9545f5ffd9} (full hash on the title page),
+12 November 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/9f9545f5ffd9e0392d4a36639503aca12383450a/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{Pinned repository snapshot}.
+
+\bibitem{readme} Same snapshot, \emph{README}, especially ``Further
+questions'', item 2, and the raw clause / two-case evaluation entries.
+The exact retrieved README is included in the source provenance.
+
+\bibitem{rootfree} Same snapshot,
+\texttt{Research/rootfree\_clausal} and
+\texttt{Research/reduced\_clause\_calculus}, existing two-case evaluation
+and raw clause presentation. The exact matched control path is recorded
+in \texttt{PROVENANCE.json}.
+
+\bibitem{evallean} Same snapshot,
+\texttt{Lean/ConciseIPRA/NativeEval.lean},
+\texttt{NativeClausal.lean} and the cited clause-calculus successors.
+
+\bibitem{biinterp} Same snapshot,
+\texttt{Lean/ConciseIPRA/NativeBiInterpretation.lean}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/9f9545f5ffd9e0392d4a36639503aca12383450a/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}{Pinned Lean bi-interpretation endpoint}.
+
+\bibitem{bridge} Same snapshot,
+\texttt{Research/certified\_zero/reference/}:
+\texttt{inherited\_choice\_basis.tex},
+\texttt{inherited\_ordinary\_bridge.tex},
+\texttt{scalar\_predecessor.tex},
+\texttt{equality\_reflection.tex},
+\texttt{primitive\_recursion.tex}.
+These are included unchanged under their repository license.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,476 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,enumitem,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\hypersetup{pdftitle={A determined witness for intuitionistic primitive recursive arithmetic},pdfauthor={Research report prepared for Vladimir Reshetnikov},pdfsubject={Exact equivalence of determined-witness and native iPRA calculi}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{A determined witness for iPRA}
+\rhead{12 November 2026}
+\cfoot{\thepage}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\iPRA}{\mathrm{iPRA}}
+\newcommand{\PR}{\mathrm{PR}}
+\newcommand{\FV}{\operatorname{FV}}
+\title{A determined witness for intuitionistic\ primitive recursive arithmetic\\[5pt]
+\large Removing the introduction witness without a naming exception}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{12 November 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+The native scalar calculus in the current ConciseIPRA proposal introduces
+$D_{x,y}B$ by supplying an arbitrary numerical term as witness. That choice
+can be removed. Always use the newest free numerical parameter, and use
+$0$ only when the numerical scope is empty. Keep the separate progress
+rule for literal equations. The resulting raw calculus proves exactly the
+same open sequents as the existing kernel, with the identity translation
+on terms and formulas. Consequently its ordinary realization remains
+equiconsistent and bi-interpretable with full first-order iPRA, with both
+numerical domains whole and both comparison graphs $x=y$.
+
+The key construction obtains a fresh name for any term through numerical
+cases and successor injectivity. No special naming-pattern test and no
+normalizer is needed. A careful proof uses procedures that rebuild proofs
+under additional numerical parameters; it does not assume the structural
+closure it is trying to establish. The same reduction applies to the
+guarded clause calculus. Its matched complete strict checker has
+1,070 significant Python tokens, 1,243 AST nodes, and 3,425 normalized
+bytes, versus 1,078/1,252/3,442 for the unrestricted control and
+1,159/1,339/3,688 for the previous deterministic proposal.
+
+This is a proved local simplification, not a theorem of absolute minimality.
+The new equivalence is a written proof. The archive includes executable
+checkers, checked symbolic proof packets, arithmetic checks, and the
+reproducible comparison; it does not claim a new Lean verification.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{The baseline and the precise improvement}
+
+The comparison is pinned to the ConciseIPRA directory at commit
+\texttt{8fa5ade009}, retrieved on
+12 November 2026~\cite{repository}. Its README lists eighty-four research
+packages. The native eight-rule calculus is defined by \texttt{NPrf};
+the existing Lean development proves its equivalence and formula round
+trips with iPRA~\cite{native,biinterp}. The README's Further question 2
+asks whether case-introduction witnesses restricted to $0$ and variables
+are sufficient. The present theorem answers that question affirmatively
+and eliminates even the choice between available variables.
+
+The improvement is an actual restriction of a rule on unchanged raw
+syntax. The terms supplied as introduction witnesses previously ranged
+over all finite scalar terms. In the proposed rule there is no supplied
+witness, no witness-shape check, and no naming-pattern exception. The
+scope alone determines the instance. The proof checker still checks
+capture avoidance, scopes, formula grammar, every premise, and the final
+conclusion. No computation or proof search has been hidden in a trusted
+helper.
+
+The distinction between mathematical simplicity and source-code
+compression is essential. Some existing compact codecs are much shorter
+than the strict implementations compared here. We do not claim to beat
+their unrelated global byte records, or to prove that a simpler theory
+cannot exist. The measured reduction concerns the same strict grammar,
+certificate format, error handling, and arithmetic basis. The mathematical
+contribution is the elimination of a previously required witness choice.
+
+\section{A complete raw axiomatization}
+\label{sec:axioms}
+
+\subsection{Terms, formulas, and numerical scopes}
+
+There is one numerical sort. Terms are the finite expressions
+\[
+ t ::= x\mid 0\mid S(t)\mid I(n,a;u.h).
+\]
+Only $u$ is bound in $h$; the counter $n$ and initializer $a$ are outside
+its scope. Other variables of $h$ are passive numerical parameters. An
+iterator is a finite term description, not a code passed to an
+object-language universal evaluator. Terms are raw syntax: no equation
+is built into syntactic equality and there is no normalization convention.
+
+Formulas are
+\[
+ A ::= (s=t)\mid Q_yA\mid D_{x,y}A.
+\]
+The two variables bound by $D$ are distinct. Their ordinary readings are
+\begin{align*}
+ Q_yB(y)&\;:=\;B(0)\to\forall y\,B(y),\\
+ D_{x,y}B(x,y)&\;:=\;\exists x\bigl(B(x,0)\to\forall y\,B(x,y)\bigr).
+\end{align*}
+These readings explain the interpretation; ordinary connectives and
+quantifiers are not additional primitives of the native proof language.
+The designated native contradiction is $0=S0$.
+
+A judgment has an ordered numerical parameter environment
+$\Pi=(a_1,\ldots,a_n)$, a finite list $\Gamma$ of formulas in that
+environment, and a conclusion $A$. Write $\Pi;\Gamma\vdash A$.
+The order is part of the proof state; unused parameters are permitted.
+Define
+\[
+ \ell(\Pi)=\begin{cases}a_n,&n>0,\\0,&n=0.\end{cases}
+\]
+A newly introduced eigenparameter is appended to $\Pi$. All substitution
+is capture avoiding. Bound variables are freshened when needed. Below,
+$\Pi$ is suppressed except where it determines a witness.
+
+\subsection{Exactly eight primitive rule families}
+
+The following is the entire primitive inventory. Computation equations
+are axiom schemas and may be used in any context.
+
+\paragraph{1. Hypothesis.}
+If $A$ occurs in $\Gamma$, then $\Gamma\vdash A$.
+
+\paragraph{2--3. Iterator computation.}
+For every well-scoped $n,a,h$,
+\[
+ \Gamma\vdash I(0,a;u.h)=a,
+ \qquad
+ \Gamma\vdash I(Sn,a;u.h)=h[I(n,a;u.h)/u].
+ \tag{I0, IS}
+\]
+
+\paragraph{4. Crossed transport in one term.}
+For any numerical term template $h(v)$,
+\[
+ \frac{\Gamma\vdash s=t\qquad\Gamma\vdash h(s)=r}
+      {\Gamma\vdash r=h(t)}.
+ \tag{Tr1}
+\]
+
+\paragraph{5. Closure elimination.}
+For any term $t$,
+\[
+ \frac{\Gamma\vdash Q_yB(y)\qquad\Gamma\vdash B(0)}
+      {\Gamma\vdash B(t)}.
+ \tag{QE}
+\]
+
+\paragraph{6. Witness elimination.}
+\[
+ \frac{\Pi;\Gamma\vdash D_{x,y}B(x,y)\qquad
+       \Pi,b;\Gamma,Q_yB(b,y)\vdash A}
+      {\Pi;\Gamma\vdash A}.
+ \tag{DE}
+\]
+Here $b$ is fresh for $\Pi,\Gamma,B,A$. It may occur only in the
+displayed local branch and is absent from the exported conclusion.
+
+\paragraph{7. Determined case introduction.}
+\[
+ \boxed{
+ \frac{\Pi,z;\Gamma,B(\ell(\Pi),0)\vdash B(\ell(\Pi),Sz)}
+      {\Pi;\Gamma\vdash D_{x,y}B(x,y)}.}
+ \tag{DI*}\label{eq:di-star}
+\]
+Here $z$ is fresh for the outer environment, context, and all fixed
+parameters of $B$. The witness is selected \emph{before} $z$ is added.
+There is no term argument in the inference certificate.
+
+\paragraph{8. Equation progress.}
+For a literal equation $E(y)$ only,
+\[
+ \frac{\Pi,z;\Gamma,E(z)\vdash E(Sz)}
+      {\Pi;\Gamma\vdash Q_yE(y)}.
+ \tag{QI}
+\]
+The parameter $z$ is fresh for the outer context and all passive
+parameters of $E$. A formula under a $Q$ or $D$ binder is not a literal
+equation and cannot be used as an induction invariant here.
+
+There are no additional primitive logical axioms, equality axioms,
+successor axioms, structural rules, or induction schemas. For example,
+reflexivity follows from I0 and Tr1: transport the equation
+$I(0,t;u.u)=t$ along itself with the identity template.
+Equation induction is QI followed by QE with a base proof. Full formula
+transport, ordinary logical rules, numerical substitution, and cut are
+derived later. This explicit boundary is necessary because DI* is not
+preserved by merely appending an unused numerical parameter to a proof
+tree.
+
+\input{logical_proof.tex}
+
+\section{The witness-shape question and its exact limit}
+
+Let $\mathcal W$ be the old native calculus with the witness of case
+introduction restricted to the literal $0$ or a free numerical variable.
+Let $\mathcal N$ and $\mathcal K$ denote the old and new calculi.
+Every DI* witness is allowed in $\mathcal W$, and every witness allowed
+in $\mathcal W$ is allowed in $\mathcal N$. Thus
+\[
+ \mathcal K\subseteq\mathcal W\subseteq\mathcal N.
+\]
+Theorem~\ref{thm:newest-equivalence} gives the opposite inclusion on
+derivable sequents. Hence all three consequence relations agree. This is
+the positive statement left open by \texttt{NativeWitnessShape.lean}
+at the pinned commit~\cite{witnessshape}.
+
+Both shapes are necessary if one restricts the witnesses solely by
+choosing a subset of $\{0,\text{variables}\}$. With $0$ alone, interpret
+$D_{x,y}B$ as its closure at $x=0$. The other rules remain sound in
+the natural numbers, but
+\[
+ D_{x,y}\bigl(C(y,1,x)=1\bigr)
+\]
+is false under that reading, whereas the unrestricted rule proves it
+at witness $1$. With variables alone, a closed empty-context derivation
+cannot produce a first $D$ formula. More formally, when the numerical
+scope is empty and the context contains only equations and closures of
+equations, every derivable formula has one of those two forms; induction
+on the rules proves this invariant. Yet the native kernel proves
+$D_{x,y}(0=0)$. The repository already formalizes both negative
+statements~\cite{witnessshape}.
+
+This is a small optimality result about the two witness shapes. It is
+not an optimality result about all proof calculi. It explains why DI*
+uses $0$ at the closed root and why the presence of fresh numerical
+parameters matters.
+
+\section{Why this is full iPRA, including both interpretations}
+\label{sec:ipra-bridge}
+
+Exact native consequence equivalence is stronger than agreement on
+standard numerical values or on closed equations. The existing
+interpretations between the native kernel and iPRA can be reused without
+changing a single term or formula. This section states those
+interpretations explicitly enough to identify the transferred theorem.
+
+\subsection{The ordinary arithmetic realization}
+
+Elaborate each fixed iterator description into a function symbol. For a
+previously defined term $h(u,\vec p)$, its symbol $i_h$ obeys
+\[
+ i_h(0,a,\vec p)=a,\qquad
+ i_h(Sn,a,\vec p)=h(i_h(n,a,\vec p),\vec p).
+\]
+This is a staged first-order signature of finite descriptions. Let
+$T_I$ have intuitionistic first-order equality logic over this signature,
+the displayed computation equations, contextual induction for literal
+equations, and
+\[
+ \forall x\,(x=0\lor\exists y\,x=Sy),\qquad
+ (0=S0)\to\bot.
+\]
+The last implication is an explicit bridge to ordinary falsity. Merely
+listing positive arithmetic equations would allow a singleton structure;
+we do not identify an equation with ordinary falsity without this bridge.
+
+The interpretation of native $Q,D$ is their displayed ordinary reading.
+Its domain formula is $x=x$, and interpreted equality is actual
+equality. DI* is sound because it is an instance of the old case rule;
+coverage justifies that old rule. QI is sound by equation induction.
+
+\subsection{Ordinary logical connectives as finite native macros}
+
+For a convenient description use the equivalent $D$-only notation,
+replacing $Q_yB$ by $D_{u,y}B$ with unused $u$. Set
+$C(v,a,b)=I(v,a;u.b)$. Gate every bottom equation by
+\[
+ G_v(s=t)=(C(v,0,s)=C(v,0,t)),\qquad
+ G_v(D_{x,y}B)=D_{x,y}G_vB.
+\]
+All bound variables are fresh for the control $v$. Then $G_0A$ is
+provable, $G_{Sw}A$ is equivalent to $A$, and
+$D_{u,y}G_yA$ is a padding of $A$ by one unused existential coordinate.
+
+A selector $M_v(A,B)$ between arbitrary formulas is defined externally
+by finite structural recursion. At equations it is
+\[
+ M_v(s=t,r=q)=(C(v,s,r)=C(v,t,q)).
+\]
+For two $D$ formulas, align their bound variables and apply $M$ to their
+matrices under one $D$. If only one side has a $D$ root, pad the
+equational side with $G_y$ before descending. Each call decreases the
+maximum binder depth. The selector has endpoint equivalences
+$M_0(A,B)\dashv\vdash A$ and $M_{Sw}(A,B)\dashv\vdash B$.
+
+Put $\delta(v)=C(v,1,0)$ and $p(z)=I(z,0;u.\delta(u))$. The following
+finite macros are the inherited ordinary logical interface~\cite{choice}:
+\begin{align*}
+ A\Rightarrow_*B&=D_{u,z}M_z(A,B),\\
+ A\wedge_*B&=D_{u,z}G_zM_{p(z)}(A,B),\\
+ \exists_*x\,A(x)&=D_{x,y}G_yA(x),\\
+ A\vee_*B&=\exists_*x\,M_x(A,B),\\
+ \forall_*x\,A(x)&=A(0)\wedge_*D_{u,z}G_zA(z),\\
+ \bot_*&=(0=S0).
+\end{align*}
+The coordinate $u$ is unused. The conjunction extracts its two operands
+at $z=1,2$, using $p(1)=1$ and $p(2)=0$. The universal macro combines
+the zero instance with all successor instances. Implication and
+existential introduction use the selector and gate endpoints. These
+macros have the ordinary introduction and elimination rules and both
+formula round trips in the existing kernel; exact consequence
+equivalence transfers their derivations to $\mathcal K$.
+
+In particular, the theorem is not a reduction to classical arithmetic
+or to the quantifier-free fragment. Quantified intuitionistic formulas
+and their proof rules are recovered through these finite syntactic
+translations. Progress remains restricted to equations.
+
+\subsection{Arithmetic translations and internal round trips}
+
+Interpret every fixed scalar iterator in iPRA by primitive recursion
+whose update ignores the counter argument. Conversely, the existing
+scalar construction first establishes predecessor, then an equality
+test reflecting actual equality, then quantifier-free induction, and
+then pairing with projections. This dependency order avoids assuming
+pairing or equality reflection in the proof of predecessor.
+
+Write the internally proved pairing and projections as $\pi,L,H$.
+For a fixed primitive recursion
+\[
+ f(0,\vec p)=g(\vec p),\qquad
+ f(Sn,\vec p)=h(n,f(n,\vec p),\vec p),
+\]
+its scalar compilation is
+\begin{align*}
+ V(n,\vec p)&=I\bigl(n,\pi(0,g^*(\vec p));
+   u.\pi(SL(u),h^*(L(u),H(u),\vec p))\bigr),\\
+ f^*(n,\vec p)&=H(V(n,\vec p)).
+\end{align*}
+Equation induction proves $L(V(n,\vec p))=n$; the projection identities
+then verify the defining equations. Compilation is external recursion
+on each fixed finite description. There is no universal PR evaluator
+in the object theory.
+
+Both composites are justified internally. Equality induction proves
+uniqueness of an iterator, and similarly uniqueness of each fixed
+primitive recursion, from its initial equation and update. An external
+induction on the finite function description shows that its double
+translation has the same equations and hence the same values in the
+theory. This proves preservation on all elements of every model, rather
+than merely on standard numerals. The whole numerical domain and actual
+equality are unchanged, so the comparison isomorphism in each direction
+has graph $x=y$. Structural induction on formulas, using the logical
+macros and the $Q,D$ readings, gives both formula composites.
+
+The pinned \texttt{NativeBiInterpretation.lean} establishes
+the following statements~\cite{biinterp}:
+\begin{itemize}
+\item Faithfulness: \texttt{native\_iff\_pra} and \texttt{pra\_iff\_native}.
+\item Formula composites: \texttt{native\_roundTrip} and
+      \texttt{pra\_native\_roundTrip}.
+\item Equiconsistency: \texttt{native\_inconsistent\_iff}.
+\end{itemize}
+The new part is the
+identity-language equivalence of Section~\ref{sec:logical-proof}; composing
+it with those established translations proves the required
+bi-interpretability and equiconsistency. There is no claim that a theory
+proves its own consistency.
+
+\input{guarded_reduction.tex}
+
+\section{Executable evidence and reproducibility}
+
+The archive contains two standalone checkers. The native checker is a
+readable implementation of the exact eight rules in
+Section~\ref{sec:axioms}. Its JSON input may specify an open numerical
+scope and assumptions. The guarded checker is the measured six-family
+implementation. Each checker reads a certificate, performs all checks
+locally, and returns \texttt{ACCEPT} or \texttt{REJECT}; neither imports
+a theorem library or calls an external prover.
+
+The native suite constructs actual raw proof trees for symbolic numerical
+coverage and for the opened successor-alias branch. In particular, it
+checks $X(St)$ with $t$ a free parameter; the proof is not a numerical
+sample. It also checks the construction in scopes with zero, one, two,
+and five ambient parameters. The scope-sensitive negative example
+deliberately reuses a closed proof after adding a parameter; the kernel
+rejects it, as the mathematical proof predicts. Other negative cases
+cover eigenparameter escape, invalid bound indices, a supplied witness
+field, a missing closure base, and compound progress.
+
+The arithmetic suite separately runs 412 checks using the literal scalar
+definitions, including $P(0),\ldots,P(7)$. It also checks seven symbolic
+equation-case lemmas through fourteen branches and 127 individually
+replayed rewrite steps, and rejects a damaged certificate. These checks
+test the delicate algebra in the predecessor dependency audit. They
+are not a complete formal proof of the predecessor theorem.
+
+Run \texttt{python3 reproduce.py} from any directory. It rebuilds the
+native certificates, runs the guarded and arithmetic suites, recomputes
+the matched whole-module metrics, and checks the native checker through
+its command-line interface. The evidence directory records the exact
+results. Run \texttt{python3 build\_pdf.py} to compile this document in three passes
+with pdfLaTeX. Only the document build requires a TeX installation;
+the proof checkers and verification scripts use the Python standard
+library.
+
+\paragraph{Verification boundary.}
+The proof of exact equivalence is a mathematical metaproof in this
+report. It is not a new theorem already checked by Lean or Rocq. The
+repository's existing Lean bridge is reused as an established result;
+it was inspected at the pinned source revision, not rebuilt in this
+environment. The finite checkers validate their supplied certificates,
+and the arithmetic tests validate the stated finite and symbolic
+instances. The report does not promote those tests to a machine-checked
+universal completeness theorem.
+
+\paragraph{What remains open.}
+The result removes the introduction witness on raw syntax and resolves
+the stated witness-shape question. It does not remove equation progress,
+reduce the raw native rule count, prove an absolute source-size lower
+bound, or settle the independence of progress. Further compression of
+the measured checker would require a new matched comparison.
+
+\appendix
+\input{arithmetic_audit.tex}
+\input{reference/scalar_predecessor.tex}
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{repository}
+V. Reshetnikov and ProveIt contributors,
+\emph{Concise presentations of intuitionistic primitive recursive arithmetic},
+README at commit \texttt{8fa5ade009}; the linked source records the full identifier.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/8fa5ade009b5cceba7b68f07b6a834fe77cf10c1/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}{Pinned README and package inventory}.
+
+\bibitem{native}
+ProveIt contributors, \emph{Native.lean and NativeEq.lean}, same revision.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/8fa5ade009b5cceba7b68f07b6a834fe77cf10c1/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/Native.lean}{Native syntax and eight-rule kernel}.
+
+\bibitem{biinterp}
+ProveIt contributors, \emph{NativeBiInterpretation.lean}, same revision.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/8fa5ade009b5cceba7b68f07b6a834fe77cf10c1/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}{Faithfulness, both formula round trips, and equiconsistency}.
+
+\bibitem{witnessshape}
+ProveIt contributors, \emph{NativeWitnessShape.lean}, same revision.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/8fa5ade009b5cceba7b68f07b6a834fe77cf10c1/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeWitnessShape.lean}{The two witness-shape obstructions and the open combined question}.
+
+\bibitem{choice}
+ProveIt contributors, \emph{Complementary introductions with one local
+assumption}, inherited reference in \texttt{Research/certified\_zero},
+same revision.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/8fa5ade009b5cceba7b68f07b6a834fe77cf10c1/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/certified_zero/reference/inherited_choice_basis.tex}{Logical macros and native round trips}.
+
+\bibitem{erasure}
+ProveIt contributors, \emph{Internal scalar predecessor bootstrap},
+\texttt{Research/certified\_zero/reference/scalar\_predecessor.tex},
+same revision. Reproduced in the final appendix with attribution;
+the preceding appendix audits its witness-free dependency boundary.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/8fa5ade009b5cceba7b68f07b6a834fe77cf10c1/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/certified_zero/reference/scalar_predecessor.tex}{Pinned scalar construction}.
+
+\bibitem{deterministic}
+ProveIt contributors, \emph{Deterministic introduction},
+\texttt{Research/deterministic\_introduction}, same revision.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/8fa5ade009b5cceba7b68f07b6a834fe77cf10c1/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/deterministic_introduction}{Matched control and previous naming-pattern checker}.
+\end{thebibliography}
+\end{document}

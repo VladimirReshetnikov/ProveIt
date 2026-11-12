@@ -1,0 +1,169 @@
+% Section fragment: all-variable restriction, with the eight-rule native kernel as control.
+\section{Only zero and variables are needed as witnesses}
+\label{sec:witness-restriction}
+
+Let $\mathcal N$ be the native scalar kernel with hypothesis, the two iterator
+computation equations, one-term equational transport, QE, DE, DI by cases, and
+direct QI by progress for a literal equation. Define $\mathcal V$ by changing
+only DI by cases:
+\[
+ \frac{\Gamma,B(w,0)\vdash B(w,Sz)}
+      {\Gamma\vdash D_{x,y}B(x,y)}
+ \qquad
+ \bigl(w=0\text{ or }w\text{ is a variable already in scope}\bigr).
+\]
+The usual freshness condition on $z$ is retained. Direct QI by progress
+is unchanged. In this section there is no claim that the two introductions
+have already been merged, or that ``a variable'' means ``the newest variable''.
+
+\paragraph{Theorem.}
+For every native context $\Gamma$ and formula $A$,
+\[
+ \boxed{\Gamma\vdash_{\mathcal V} A
+        \quad\Longleftrightarrow\quad
+        \Gamma\vdash_{\mathcal N} A.}
+\]
+The translations are the identity on terms, formulas, domains and equality.
+The nontrivial direction is a replacement of each unrestricted DI-by-cases
+inference by the construction below.
+
+\paragraph{Structural preliminaries.}
+Weakening, injective renaming of numerical parameters, and cut on a formula
+are admissible in $\mathcal V$ by the usual inductions on derivations.
+Renaming sends a variable witness to a variable witness and fixes $0$;
+cut does not replace numerical variables by terms. We do not assume
+admissibility of arbitrary numerical substitution in $\mathcal V$.
+The primitive equational rule and the computation equations yield
+reflexivity, symmetry, transitivity and congruence exactly as in the control
+kernel; no DI inference is needed for this part.
+
+\paragraph{Conditional closure by cases uses witness zero.}
+The rule
+\begin{equation}
+ \frac{\Gamma,B(0)\vdash B(Sz)}{\Gamma\vdash Q_yB(y)}
+ \tag{QC}\label{eq:q-cases-restricted}
+\end{equation}
+is available for every native $B$. Introduce $D_{r,y}B(y)$, with the
+witness coordinate $r$ unused, at witness $0$. Eliminate that $D$ at a fresh
+parameter $b$ and return the resulting assumption $Q_yB(y)$. The conclusion
+does not mention $b$. This uses only a permitted instance of DI.
+
+\paragraph{Transport in arbitrary formulas is available.}
+For every native template $F(v)$, the restricted calculus admits
+\begin{equation}
+ \frac{\Gamma\vdash s=t\qquad\Gamma\vdash F(s)}
+      {\Gamma\vdash F(t)}.\tag{L}\label{eq:full-leibniz-restricted}
+\end{equation}
+Prove this by induction on the formula template, uniformly in its numerical
+parameters. The equation case is equational congruence and transitivity.
+For $F(v)=Q_yB(v,y)$, use \eqref{eq:q-cases-restricted}. Under the extra
+assumption $B(t,0)$, the induction hypothesis first gives $B(s,0)$;
+QE at $Sz$ gives $B(s,Sz)$; the induction hypothesis gives $B(t,Sz)$.
+For $F(v)=D_{x,y}B(v,x,y)$, eliminate the premise at a fresh $b$, obtaining
+$Q_yB(s,b,y)$. Reintroduce the desired $D$ at the permitted witness $b$.
+Its case premise transfers $B(t,b,0)$ to $B(s,b,0)$, applies QE at $Sz$,
+and transfers the result back to $B(t,b,Sz)$. Then discharge $b$.
+These are direct uses of the formula-induction hypothesis at the indicated
+terms; no derivation is subjected to a numerical substitution.
+
+\paragraph{The required arithmetic is independent of DI.}
+The predecessor construction in Section~\ref{sec:eq-predecessor} uses only
+the iterator equations, equational reasoning and literal-equation induction.
+The latter is obtained from direct QI-progress followed by QE and the base
+equation. Hence $\mathcal V$ already proves
+\[
+ \operatorname{pred}(Sn)=n,
+ \qquad Sa=Sb\ \Longrightarrow\ a=b,
+\]
+before the term-naming argument begins. In particular the proof does not
+import numerical coverage from the unrestricted kernel.
+
+\paragraph{Gated equations.}
+For an equation $E\equiv(s=t)$ write
+\[
+ G_v(E)\;:=\;C(v,0,s)=C(v,0,t),
+ \qquad C(v,a,b):=I(v,a;u.b).
+\]
+The computation equations and equational reasoning give, uniformly in $s,t$,
+\[
+ \vdash G_0(s=t),\qquad
+ G_{Sz}(s=t)\;\dashv\vdash\;s=t.
+\]
+In particular, an opened closure $Q_vG_v(E)$ yields $E$ by QE at $1=S0$.
+The gate is essential: $D_{x,v}(x=t)$ without the gate is vacuous under its
+ordinary reading, because its matrix does not depend on $v$.
+
+\paragraph{First obtain a predecessor witness, uniformly.}
+Define
+\[
+ H(y):=D_{x,v}\,G_v\bigl(C(y,0,Sx)=y\bigr).
+\]
+There are direct restricted derivations of $H(0)$ and $H(Sz)$:
+for $H(0)$ use witness $0$, and for $H(Sz)$ use witness $z$.
+The respective successor rows compute to reflexive equations: the inner
+equation is $0=0$ in the first case and $Sz=Sz$ in the second.
+Thus \eqref{eq:q-cases-restricted} gives $Q_yH(y)$, and QE with the proved
+base $H(0)$ gives
+\begin{equation}
+ \Gamma\vdash H(St)\qquad\text{for every term }t.
+ \tag{H}\label{eq:predecessor-witness}
+\end{equation}
+This is an explicit case derivation followed by QE. It is not an appeal to
+a universal-generalization rule obtained by substituting into restricted
+derivations.
+
+Open \eqref{eq:predecessor-witness} at a fresh $b$. Its added closure is
+\[
+ Q_vG_v\bigl(C(St,0,Sb)=St\bigr).
+\]
+QE at $1$, using the gate's true zero row, gives
+$C(St,0,Sb)=St$, hence $Sb=St$ by computation. Applying the predecessor
+term gives $b=t$.
+
+\paragraph{Every term can therefore be named by a variable.}
+Put
+\[
+ N_t:=D_{x,v}G_v(x=t).
+\]
+While the fresh $b$ from the preceding construction is in scope, introduce
+$N_t$ at the permitted variable witness $b$. Its successor-row obligation
+is just $b=t$, which has already been proved. Elimination of the outer
+$H(St)$ then discharges $b$, leaving
+\begin{equation}
+ \Gamma\vdash N_t.\tag{Name}\label{eq:term-naming-restricted}
+\end{equation}
+Conversely, opening $N_t$ at a fresh $b$ gives the equation $b=t$ by the
+gate calculation. Consequently, if $A$ does not mention $b$, a derivation of
+$A$ under $b=t$ can be discharged using $N_t$. This is ordinary DE followed
+by cut on the formula $b=t$; again it is not substitution in a derivation.
+
+\paragraph{Recover arbitrary DI witnesses.}
+Suppose the premise of an unrestricted case introduction is already derived
+in $\mathcal V$:
+\[
+ \pi:\quad\Gamma,B(t,0)\vdash B(t,Sz).
+\]
+Open the theorem $N_t$ at a fresh $b$, and derive $b=t$. Introduce the
+desired $D_{x,y}B(x,y)$ at witness $b$. For its premise, under $B(b,0)$,
+use \eqref{eq:full-leibniz-restricted} to obtain $B(t,0)$; apply the weakened
+derivation $\pi$ by cut; then transport $B(t,Sz)$ back to $B(b,Sz)$.
+The witness $b$ is a variable, so this is a permitted DI inference.
+Finally discharge the opened naming formula. The conclusion contains no $b$.
+Thus every unrestricted DI-by-cases inference is admissible in
+$\mathcal V$.
+
+Induction on a derivation of $\mathcal N$ now proves the displayed
+consequence equivalence. The reverse implication is immediate because
+every primitive rule of $\mathcal V$ is an instance of a primitive rule
+of $\mathcal N$.
+
+\paragraph{Scope of the result.}
+This proves the zero-or-variable DI restriction posed as Question~2 in the
+pinned repository README. It retains equational transport as a primitive
+rule. One must not apply the proof unchanged to a three-family calculus
+whose transport is itself recovered from packets introduced at arbitrary
+witnesses: doing so would make the term-naming argument circular.
+The result transfers the existing native-kernel bi-interpretation with full
+first-order iPRA unchanged, including actual equality and identity numerical
+round trips. It is a new restriction of the rule's admissible instances,
+not a claim of an absolute minimum over all possible axiomatizations.

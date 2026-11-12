@@ -1,0 +1,108 @@
+COUNTER-AWARE SUCCESSOR-SEEDED RECURSION: CERTIFICATE FORMAT
+
+Trusted program: code/checker.py. Python standard library only.
+Run: python3 code/checker.py < certificate.json
+Acceptance is exit status zero and exactly ACCEPT followed by LF on stdout.
+Other results are rejection or an implementation resource limit.
+
+The input is a JSON object with exactly the keys goal and proof.
+The goal is a closed canonical formula. The proof is a finite proof tree.
+Integers must be Python integers, not Booleans or floats. Arrays are lists.
+
+TERMS AND BINDERS
+
+0 is the zero term. Negative integers are local eigenparameters.
+Positive integers are de Bruijn indices, starting with 1 for the innermost
+bound variable. The only compound term form is [counter,seed,body], denoting
+R(counter,seed;i,u.body). In body, u has index 1 and i has index 2; counter
+and seed are outside these two binders. Both binders are numerical.
+
+Successor is the canonical term S(a) = [0,a,0]. Full normalization uses
+
+  R(0,a;i,u.h)       --> S(a)
+  R(S(c),a;i,u.h)    --> h[i:=c,u:=R(c,a;i,u.h)].
+
+In the second rule both substitutions are capture avoiding. The program
+first substitutes the counter at depth 1, retaining the accumulator binder,
+and then substitutes the accumulator at depth 0. All substitution traversals
+normalize the terms they rebuild. A public term must already equal its full
+normal form: R(0,a,h) with h not literally 0 and successor-counter redexes
+are rejected at a public syntax check. The first rule is not oriented on its
+own canonical instance R(0,a,0).
+
+FORMULAS
+
+[s,t] is equality. [B] is D_(x,y) B. In B, y has index 1 and x index 2.
+No other formula constructor is allowed. D has the ordinary reading
+
+  exists x (B(x,0) implies forall y B(x,y)).
+
+The designated false equation is [0,[0,0,0]], namely 0=S(0).
+Arrays of size 1 bind two variables in their only child; arrays of size 3
+bind two variables in their last child. Equality binds no variables.
+
+CONTEXT AND SCOPES
+
+A context is an ordered list of pairs (antecedent,body), denoting the
+reusable clause antecedent implies forall y body(y). The antecedent may
+instead be [] to mean that no antecedent premise is required. Contexts are
+internal states, not user-supplied JSON fields. The initial context is
+
+  [([], [1,1])],
+
+the unconditional reflexivity clause forall y (y=y). If the context length
+is n, the active eigenparameters are -1,...,-(n-1), and the next fresh
+parameter is b=-n. Bound variables are validated separately by their depth.
+
+PROOF INSTRUCTIONS
+
+1. ["u", j, t, q] uses clause j, with zero-based indexing. t is a canonical
+   term in the current scope. If the clause is (A,B), q must prove A, and
+   the result is normalized B[t/y]. When A is [], q is deliberately unused
+   and need not itself be a proof. Examples use null for this inert payload.
+
+2. ["i", B0, t, r] introduces [B0]. t is a canonical term in the current
+   scope. Put B(y)=B0(t,y), b=-n, and eta=b if B0 is literally an equation
+   and t is literally 0; put eta=0 otherwise. The branch r must prove
+   B(S(b)) in the context extended by the unconditional assumption B(eta).
+   The returned formula [B0] must be canonical and in the original scope.
+   Thus the fresh parameter cannot escape. There is no separate mode bit.
+
+3. ["e", q, r] opens a paired formula. q must prove [D]. Put B(y)=D(b,y),
+   where b=-n is fresh, and let U=B(0), E=B(S(0)). If U is literally 0=0
+   and E is literally b=t, choose w=t; otherwise choose w=b. Replace the
+   fresh parameter b by w throughout B, in one pass, and extend the context
+   by (U,B[b:=w]). Check branch r there. Its conclusion is also the result
+   of the instruction and must be canonical and in the original scope.
+   The synthesized term w can itself contain b; the outer scope check is
+   therefore still necessary. No equality premise or witness is supplied
+   by the user for this instruction.
+
+There are no other inference rules. The program's normalizer is part of its
+trusted specification. It does not call an external arithmetic oracle.
+
+REFERENCE AND MEASUREMENTS
+
+The control is the exact upstream inferred_witness/code/checker.py at
+ProveIt commit 9f9545f5ffd9e0392d4a36639503aca12383450a, path
+Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/.
+Its SHA-256 is 79509b47cbbf20df923cc7b3e86952df33dcb3ce15b71f8e1d798212805a1902.
+
+The only changes in the new checker are the R term grammar, its uniform
+two-variable binding, its defining normalization, and the successor notation.
+Normalized module sizes on CPython 3.12.14 (one final LF):
+
+                         bytes  significant tokens  AST nodes
+  Exact upstream control  1990        683               771
+  Counter-aware R         1965        683               764
+
+This is a matched reduction, not a global repository minimum. Shorter
+existing compact and public-goal encodings use different interfaces.
+
+VERIFICATION
+
+Run python3 reproduce.py. It regenerates code/examples/ and
+evidence/verification.json and checks both ordinary and -O command
+line execution. Its compiler and independent evaluators are untrusted.
+Finite checks supplement the mathematical proof; they do not establish
+soundness, completeness, bi-interpretability, or a resource bound by testing.
