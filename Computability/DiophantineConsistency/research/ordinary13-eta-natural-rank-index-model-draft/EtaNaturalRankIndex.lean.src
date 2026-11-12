@@ -1,0 +1,101 @@
+import EtaNaturalGapRank
+import EtaZeroEarlyCongruence
+import ResidueCompactQBound
+import Mathlib.Tactic.NormNum
+
+/-! Compact rank lower bound and conditional early-index adapter for the exact
+eta-natural prototype. All graph, provider and tactic proofs are unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.EtaNaturalRankIndexDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ArithmeticSignedPairs ArithmeticPellRecurrence
+open EtaNaturalUnitGraphDraft EtaNaturalXPositiveDraft EtaNaturalGapRankDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Pure model arithmetic: the shifted alpha makes the rank coefficient at
+least one; q≥6 alone gives the needed lower bound. No gap is needed here. -/
+theorem rank_at_least_26 (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hq : 6≤q p v) : 26≤rank p v := by
+  let A : V := (q p v-1)*(q p v-(v 1+1))+(v 2+1)
+  have ha : 1≤A := calc
+    1≤v 2+1 := by simp
+    _≤A := by dsimp [A]; exact le_add_of_nonneg_left (Arithmetic.zero_le _)
+  have h36 : (36:V)≤q p v*q p v := by
+    have hh := mul_le_mul hq hq (by simp : (0:V)≤6) (Arithmetic.zero_le (q p v))
+    simpa using hh
+  have h1 : (1:V)≤q p v*q p v := le_trans (by norm_num : (1:V)≤36) h36
+  have hsub : q p v*q p v-1+1=q p v*q p v := tsub_add_cancel_of_le h1
+  have h26 : (26:V)≤q p v*q p v-1 := by
+    apply (add_le_add_iff_right (1:V)).mp
+    rw [hsub]
+    exact le_trans (by norm_num : (26:V)+1≤36) h36
+  have hprod : (26:V)≤A*(q p v*q p v-1) := calc
+    26=(1:V)*26 := by ring
+    _≤A*(q p v*q p v-1) := mul_le_mul ha h26 (by simp) (Arithmetic.zero_le A)
+  calc
+    26≤A*(q p v*q p v-1) := hprod
+    _≤rank p v := by dsimp [rank,A]; exact le_add_of_nonneg_right (Arithmetic.zero_le _)
+
+/-- The exact compact beta and the prototype's own J-positive draft give
+q≥47; arbitrary natural K is retained. -/
+theorem compact_rank_at_least_26 (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (Residue90CompactPortBoundsDraft.ports K j:ℤ))).output v) :
+    26≤rank (Residue90CompactPortBoundsDraft.ports K) v := by
+  let p := Residue90CompactPortBoundsDraft.ports K
+  have hJ := EtaNaturalJPositiveDraft.J_positive p v hz
+  have hq47 : (47:V)≤q p v := by
+    simpa only [q,Residue90GraphNormsDraft.q] using
+      (ResidueCompactQBoundDraft.compact_q_at_least_47 K v hJ)
+  exact rank_at_least_26 p v (le_trans (by norm_num : (6:V)≤47) hq47)
+
+/-- Conditional early-index binding. The actual prototype first natural norm
+and actual main signed-pair norm are explicit inputs; it preserves the same
+first root tau and index n. No eta-zero or contradiction is assumed. -/
+theorem compact_early_index_of_norms (K : ℕ) (v : Fin 13 → V) (tau : V)
+    (hz : InternalZero (graph (fun j => (Residue90CompactPortBoundsDraft.ports K j:ℤ))).output v)
+    (hfirst : let p:=Residue90CompactPortBoundsDraft.ports K
+      tau*tau=1+(X p v*Y p v*Y p v)*(X p v*Y p v*Y p v+1)*k v*k v)
+    (hmain : let p:=Residue90CompactPortBoundsDraft.ports K
+      let U:=Y p v*(q p v*q p v); let a:=X p v*Y p v+Y p v
+      let c:=v 9+Y p v*k v; let H:=3+4*a
+      let P:=U*(X p v+a*c)+H*(U*v 12+rank p v+1); let N:=H*k v
+      magnitude (P,N)*magnitude (P,N)=U*U*(1+(H+a*a)*(c*c))) :
+    let p:=Residue90CompactPortBoundsDraft.ports K
+    ∃ n w : V, 13≤n ∧ n≤k v ∧
+      xcoord n (2*(X p v*Y p v*Y p v-1)+1)=tau ∧
+      2*ycoord n (2*(X p v*Y p v*Y p v-1)+1)=k v ∧
+      (2*n)%((q p v)^4)=rank p v+1 ∧ rank p v+1≤2*n ∧
+      rank p v+1≤k v ∧ k v=2*n+4*(X p v*Y p v*Y p v)*w := by
+  let p := Residue90CompactPortBoundsDraft.ports K
+  have hJ := EtaNaturalJPositiveDraft.J_positive p v hz
+  obtain ⟨hb,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) hJ
+  have hp0 : (p 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  have hbeta : 0<(p 0:V) := by simpa only [hp0] using hb
+  have hX : 0<X p v := EtaNaturalXPositiveDraft.X_positive p v hz hbeta
+  have hq47 : (47:V)≤q p v := by
+    simpa only [q,Residue90GraphNormsDraft.q] using
+      (ResidueCompactQBoundDraft.compact_q_at_least_47 K v hJ)
+  have hqpos : 0<q p v := lt_of_lt_of_le (by norm_num : (0:V)<47) hq47
+  have hq2 : (2:V)≤q p v := le_trans (by norm_num : (2:V)≤47) hq47
+  have hYeq : Y p v=(q p v)^3*(v 7+1) := by dsimp [Y]; ring
+  have hY : (q p v)^3≤Y p v := by
+    rw [hYeq]
+    exact le_mul_of_one_le_right (Arithmetic.zero_le _) (by simp)
+  have hq8 : (8:V)≤(q p v)^3 := by
+    have hh := pow_le_pow_left₀ (by simp : (0:V)≤2) hq2 3
+    simpa using hh
+  have hY8 : 8≤Y p v := le_trans hq8 hY
+  have hk : 0<k v := by dsimp [k]; simp
+  have hR26 := compact_rank_at_least_26 K v hz
+  have hR24 : 24≤rank p v := le_trans (by norm_num : (24:V)≤26) hR26
+  have hwindow := EtaNaturalGapRankDraft.compact_rank_window K v hz
+  exact EtaZeroEarlyCongruenceDraft.early_index_of_actual_carrier (q p v) (X p v)
+    (Y p v) (k v) (rank p v) (v 9) (v 12) (v 7+1) tau
+    hqpos hX hYeq hY8 hk hR24 hwindow hfirst hmain
+end DiophantineConsistency.EtaNaturalRankIndexDraft
+#print axioms DiophantineConsistency.EtaNaturalRankIndexDraft.rank_at_least_26
+#print axioms DiophantineConsistency.EtaNaturalRankIndexDraft.compact_rank_at_least_26
+#print axioms DiophantineConsistency.EtaNaturalRankIndexDraft.compact_early_index_of_norms
