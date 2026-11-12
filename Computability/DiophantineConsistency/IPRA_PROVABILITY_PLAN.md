@@ -7480,6 +7480,9 @@ The source-reviewed [87 rank-square growth draft](research/ordinary14-87-rank-sq
 proposes `R ≥ q²` and then `X > q²` from the same graph's power facts,
 without a Mersenne or `q ∣ X` assumption. It remains unelaborated and is
 not yet a reverse model-map theorem.
+The source-reviewed [87 omega-bound draft](research/ordinary14-87-omega-gt-f-draft/README.md)
+proposes the remaining `F < omega` from that same graph zero and growth
+facts. It remains unelaborated and does not itself establish the endpoint.
 The source-reviewed [conditional 87-to-86 map](research/ordinary14-87-to-86-conditional-map-draft/README.md)
 proposes the reverse valuation assuming the scalar gap and quotient
 positivity. It remains unelaborated and those assumptions must still be
