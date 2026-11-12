@@ -1,0 +1,95 @@
+INDEPENDENT MATHEMATICAL REVIEW OF report.tex
+============================================
+
+Review scope
+------------
+A separate AI review agent read the complete main LaTeX source,
+including the primitive calculus, normalization, equality recovery, logical
+macros, equality reflection, bi-interpretation, implementation correspondence,
+comparison qualifications, and attribution. The three subsequent exposition
+corrections listed below were inspected after application.
+
+Conclusion
+----------
+No unresolved mathematical error was identified in the stated construction.
+This is a written mathematical review, not proof-assistant verification or
+an independently implemented complete formal proof of every metatheorem.
+Finite implementation tests and their results are recorded separately.
+
+Mathematical points checked
+--------------------------
+1. Successor-seeded counter-aware recursion has the stated endpoint rules.
+   W(0)=1, W(Sn)=n, the selector C, true predecessor P, and K(1)=1,K(2)=0
+   follow by literal normalization. The proof does not require K to be a
+   parity function or to satisfy an additional range theorem.
+
+2. The direct primitive-recursion compiler J has the literal zero and
+   successor identities stated in the paper. It uses the counter argument
+   explicitly and does not require pairing or an encoded counter state.
+
+3. Ordinary D elimination and numerical cases are recovered before general
+   equality transport. The two-row Name packet therefore does not assume
+   symmetry, transitivity, or the transport rule it is proving.
+
+4. Formula transport uses external induction on formula structure and a
+   fresh syntactically nonzero witness. No induction over arbitrary
+   quantified object-language formulas is smuggled into the construction.
+
+5. Atomic case introduction at witness zero uses the compound-envelope
+   repair. It does not incorrectly assume a nonliteral closed zero survives
+   full normalization.
+
+6. The gate, padding, and aligned-selector macros support the stated
+   implication, conjunction, disjunction, and quantifier interfaces. Padding
+   changes depth through the gated closure L(A), not an unused constant D,
+   which would generally be true rather than equivalent to A.
+
+7. The residual-reflection argument uses induction only on literal
+   equations. In its successor case, coverage and predecessor equations
+   justify r=S(Pr) when Pr is nonzero. The derived two-valued equality test
+   then supports the quantifier-free characteristic formulas, including
+   implication without excluded middle for arbitrary formulas.
+
+8. Both arithmetic translations use the whole numerical domain and actual
+   equality. Internal recurrence uniqueness establishes preservation of
+   operations in the double translations; agreement merely on standard
+   numerals would not have sufficed. Native/ordinary formula round trips
+   and the explicit separation convention address the logical boundary.
+
+9. The source distinguishes the external total normalizer from a uniform
+   primitive-recursive evaluator. The fuel-bounded interface is the stated
+   way to obtain a primitive-recursive certificate predicate without adding
+   an internal normalization-totality axiom.
+
+10. The paper specifies the one fixed reflexivity clause, all three
+    inference families, their scope/discharge requirements, and computation
+    as part of canonical syntax. No additional primitive equality,
+    hypothesis, ordinary logical, case, or induction rule was detected.
+
+Corrections prompted by review and incorporated
+-----------------------------------------------
+- The auxiliary normalization translation explicitly reads the canonical
+  R(0,a;0) node as the independent successor S(a), with additional zero
+  reductions when a reduction creates that canonical shape.
+- The logical section explicitly proves that D preserves pointwise
+  interderivability of matrices before invoking binder congruence.
+- Gate endpoint statements are explicitly pointwise when the gated formula
+  already depends on the control variable, as happens in conjunction and
+  universal-quantifier macros.
+
+Implementation issue found during the earlier independent audit
+---------------------------------------------------------------
+Two-binder recursor substitution must remove the counter slot first under
+the retained state slot. The initial accumulator-first prototype could
+capture ambient positive de Bruijn indices. The delivered implementation
+uses counter-first substitution, and the implementation suite includes the
+nested-binder regression identified by this review. For an ambient v,
+R(1,v;j,w.w) must normalize to S(v), not S(0).
+
+Claim boundaries
+----------------
+The result is a composition of credited existing ingredients with a smaller
+matched transparent checker. It is not an absolute minimum, a universal
+priority claim, or a new Lean/Rocq verification. Shared two-variable binding
+concerns the object-syntax constructors R and D; the implicit specialization
+variable of a retained clause remains unary.

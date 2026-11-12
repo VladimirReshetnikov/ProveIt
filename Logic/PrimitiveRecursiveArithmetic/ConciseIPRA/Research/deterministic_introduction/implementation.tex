@@ -1,0 +1,175 @@
+\section{Executable implementation and honest size comparison}
+
+\subsection{The new calculus and its matched control}
+
+The selected mathematical verifier is \path{code/checker.py}. Its comparison
+program \path{code/control.py} has the same terms, formulas, clauses,
+computation axioms, Use, full formula Tr, Open, scope checks, JSON interface,
+and acceptance convention. The control takes an explicit term in Intro;
+the candidate instead calls the deterministic witness selector. The formulas
+are raw finite syntax: no normalization or external solver is hidden in the
+trusted boundary.
+
+The complete certificate format is in \path{code/FORMAT.txt}. Numerical zero
+is the integer $0$; a free parameter is a negative level; positive indices
+are de Bruijn bound variables. The numerical constructors are $[0,t]$ for
+successor and $[n,a,h]$ for iteration, binding only in $h$. An equation is
+$[s,t]$ and a paired formula is $[B]$, whose matrix binds two variables.
+The formula validator enforces the guard at every atomic paired matrix.
+
+In this encoding a literal naming matrix is
+\[
+ \bigl[\,[1,0,3],\ [1,0,r],\bigr],
+\]
+provided $r$ validates in the parent scope with no extra bound slots. The
+index $3$ is the witness $x$ beneath the iterator's state binder; the row
+and state occupy the nearer two slots. Internally bound indices of $r$
+remain legal. The scope check rejects references to the matrix's witness,
+row, or state even when those references are nested inside other iterators.
+
+\begin{center}
+\begin{tabular}{lrrr}\toprule
+Whole standalone module & Bytes & Tokens & AST nodes\\\midrule
+Unrestricted-witness control & 3442 & 1078 & 1252\\
+Deterministic introduction & 3688 & 1159 & 1339\\
+Difference & $+246$ & $+81$ & $+87$\\\bottomrule
+\end{tabular}
+\end{center}
+
+These measurements count the entire acceptance program, including parsing,
+syntax, binding, scope, rule checking, and the final verdict. They use
+CPython 3.12.14, removal of actual docstrings, \texttt{ast.unparse}, and one
+final line feed. Significant tokens exclude whitespace, indentation,
+comments, and end markers; AST nodes are counted by \texttt{ast.walk}.
+The programs import only Python's standard library. Untrusted proof builders
+and audit scripts are outside both checker measurements.
+
+\textbf{The new mathematical calculus is not smaller under this matched
+checker-size metric.} It saves the independent witness datum at each
+introduction; recognizing the fixed naming exception costs more source in
+this implementation. The comparison is included to prevent the interface
+theorem from being mistaken for an achieved software minimum.
+
+\subsection{What the executable checks establish}
+
+The primary suite constructs ten accepted deterministic certificates and
+eleven control certificates, including an original proof using a compound
+iterator as its witness. It supplies an explicit deterministic proof of
+that identical conclusion. It also embeds each of the ten deterministic
+proofs into the control by restoring its inferred witness fields.
+
+The most relevant structural fixture exhibits all three stages:
+an introduction valid before scope extension, a rejected unchanged replay
+after a newer parameter is inserted, and the successful naming repair.
+Other positives use an equation induction hypothesis and a compound case
+base assumption. Eighteen negative certificates attack guards, pattern
+scope, bound-variable capture, witness escape, packet arities, and equality
+premises. The suite performs 78 standalone executions across ordinary and
+optimized Python, with five direct binding regressions.
+
+An independently written targeted audit adds three positive and three negative
+fixtures, twelve additional ordinary/optimized executions, and five direct
+checks. It exercises full formula transport beneath one and two guarded
+$D$ binders with nested iterator binders in the substituted term. It also
+rejects an opened parameter hidden in the unused body of a zero iterator;
+raw syntax cannot erase that escape.
+
+The deterministic-to-control elaborator is complete for accepted finite
+certificates in this format. The opposite direction is established by the
+general mathematical proof and illustrated by an explicit translated pair;
+this archive does not claim a complete implemented compiler in that direction.
+All executed results are included as JSON. Finite tests cannot establish the
+universal bi-interpretation theorem, and no new proof-assistant verification
+is asserted.
+
+\subsection{A separate smaller implementation of the inherited calculus}
+
+The incoming native control performs a public-formula grammar traversal and
+then a scope traversal. The selected refinement checks grammar during the
+first scope traversal, using its existing depth parity as the formula/term
+distinction. After that first traversal, a local phase flag is zero, and
+every subsequent proof operation is the inherited operation.
+
+The general idea of sharing these traversals already occurs in the
+repository~\cite{scope}; the present change applies it to the newer
+continuation-fused control. It is an implementation refinement of an existing
+calculus. It does not implement the deterministic introduction of this paper.
+
+\begin{center}
+\begin{tabular}{lrrr}\toprule
+Native public-goal-validated module & Bytes & Tokens & AST nodes\\\midrule
+Incoming control & 780 & 360 & 409\\
+Shared initial traversal & 656 & 333 & 379\\
+Difference & $-124$ & $-27$ & $-30$\\\bottomrule
+\end{tabular}
+\end{center}
+
+The refined complete source is 15.9\% shorter in normalized bytes. It retains
+the same public-goal grammar and accepts the same successful certificate
+traces, including the same unused instruction prefix. It is not comparable
+as a single strict typing contract to the new, readable guarded checker above:
+the inherited compact protocol has its own documented administrative syntax.
+Its native public-goal validator must also be distinguished from complete
+validation of every raw proof field.
+
+\paragraph{Universal equivalence argument.}
+The inherited traversal starts at depth $d=0$ and enters a list of length
+$r$ by adding $5-r$ to the depth. Formula lists have length $1$ or $2$;
+numerical lists have length $1$ or $3$. A formula $D$ preserves even parity,
+an equation changes even to odd, and both numerical constructors preserve
+odd parity. Thus $d\bmod2$ already is the separate validator's sort flag.
+During the initial pass the admissible list lengths are precisely
+\[
+                  r\in\{1,2+(d\bmod2)\}.
+\]
+Term integers must be exactly $0$ or odd integers at least $3$. The compact
+test \texttt{not a or a > 1 == a \% 2} expresses exactly this on actual
+integers, and a type test excludes booleans and floats.
+
+The first-pass rejection path is forced to fail even at formula depth, where
+the ordinary scope traversal would otherwise have a neutral scalar fallback.
+Induction on the finite goal tree proves that this pass succeeds exactly when
+both old passes succeed, and then returns the unchanged goal. A valid formula
+is a nonempty list and cannot equal the initial scalar context sentinel.
+Therefore the initial invocation necessarily clears its local phase flag
+before reading a proof packet. All recursive invocations start with flag zero.
+Their traversal and continuation expressions are exactly the old ones.
+Induction on the consumed packet suffix proves equality of successful traces.
+The full argument and finite checks are in \path{implementation/}.
+
+\paragraph{The separate 506-byte compact profile.}
+The archive also records a two-byte change to the inherited 508-byte
+guarded compact module: replace $k-1$ by $\mathord\sim(-k)$. Python integer
+complement gives $\mathord\sim(-k)=k-1$ for every integer, so all scopes
+and accepted traces remain the same. It has 506 bytes, 267 tokens and
+303 AST nodes, compared with 508, 267 and 302. This is arithmetic
+source compression only, and actually adds one AST node. It supplies no
+new mathematical simplification and no public-goal validator. We do not
+present this two-byte saving as a breakthrough or as the implementation of
+the new theory.
+
+\section{Reproduction and deliverable map}
+
+The archive contains the standalone report source and compiled PDF, the
+editable component sources, the new checker and matched control, accepted
+and rejected certificates, proof elaboration examples, reproducible
+measurements, exact inherited comparison sources, the attributed arithmetic
+bridge, and a checksum manifest. It does not contain nested copies of older
+delivery archives or an unbuilt proof-assistant project.
+
+Run from the extracted directory:
+\begin{lstlisting}[language={}]
+python3 verify_manifest.py
+python3 reproduce.py
+python3 build_report.py
+python3 code/checker.py < code/examples/accepted/arbitrary_witness_translated.json
+\end{lstlisting}
+The standalone \path{ipra_deterministic_introduction.tex} also builds directly
+with pdfLaTeX; it has no external input files or graphics. The modular builder
+regenerates it from the editable sources and the normalized checker listing.
+Compilation disables shell escape and requires standard TeX Live packages.
+The Python verifiers use only the standard library. Measurements are tied to
+the stated Python version. All theoretical verifier claims concern ideal
+finite executions with sufficient resources; a concrete process may exhaust
+memory or recursion limits on a valid large proof.
+

@@ -1,0 +1,99 @@
+COUNTER-AWARE NAME3: COMPLETE CERTIFICATE CONTRACT
+================================================
+
+The unbounded checker accepts one JSON object with exactly the keys goal and
+proof. The fuel checker additionally requires fuel, an exact nonnegative
+integer; Boolean values are not integers. Every accepting CLI run exits zero
+and prints ACCEPT. An exception, a nonzero exit, or failure to print ACCEPT
+is rejection. The complete acceptance checker imports only Python's json.
+
+TERMS
+-----
+0 is numerical zero. Negative integers are free numerical parameter levels;
+positive integers are one-based locally bound indices. The only compound
+numerical term is [n,a,h], the successor-seeded counter-aware recursor
+R(n,a;i,u.h). Within h, index 1 denotes the state u and index 2 denotes the
+counter i. The counter and initializer bind no variable.
+
+The equations are R(0,a;i,u.h)=S(a) and
+R(S(n),a;i,u.h)=h[n/i,R(n,a;i,u.h)/u]. Successor is not a separate constructor:
+S(a) is canonically [0,a,0]. A canonical term recursively has canonical
+children and either has counter zero and body zero, or has a nonzero counter
+that is not successor-headed. All computations are fully normalized, also
+inside recursor bodies and formula binders. All children are syntactically
+traversed before an erased body is discarded.
+
+Capture-avoiding successor reduction removes the counter binder FIRST:
+sub(sub(h,n,1),nf(R(n,a;i,u.h))). Removing the state first without lifting
+the inserted predecessor value would capture ambient bound variables.
+
+FORMULAS
+--------
+[s,t] is the equation s=t. [B] is D_{x,y}B, with index 1 denoting y and
+index 2 denoting x inside B. Its ordinary reading is
+exists x (B(x,0) -> forall y B(x,y)). Both R and D thus bind exactly two
+variables in their final child. The designated contradiction is 0=S(0),
+encoded [0,[0,0,0]]. No formula normalization removes a D binder.
+
+CONTEXTS
+--------
+A context is an ordered reusable list of clauses (base,body). An empty list
+base means no antecedent; otherwise it is a formula. The body binds one
+numerical variable, absent from the antecedent. The clause reads
+base -> forall y body(y), or simply forall y body(y) when base is empty.
+Every proof starts with the fixed reflexivity clause ([],[1,1]). If the
+context length is n, the allowed free levels are 1-n,...,-1, and the next
+fresh parameter is b=-n. Thus a closed proof starts with no free parameter.
+
+PROOF INSTRUCTIONS (FORWARD INFERENCE)
+-------------------------------------
+['u',j,t,q]
+  j selects a context clause (base,body), using a nonnegative exact integer.
+  t is a canonical term in the current scope. If base is nonempty, q must
+  synthesize exactly base. If base is empty, q is deliberately ignored;
+  null is conventional. Return nf(body[t/y]).
+
+['i',B,t,q]
+  t is a canonical term in the current scope. Let eta=b precisely when B
+  has equation root and t is literally zero; otherwise eta=0. Under the
+  extra unconditional clause for nf(B(t,eta)), q must return nf(B(t,S(b))).
+  Return [B]. The final output check ensures B was a well-formed canonical
+  matrix in the outer scope with its two local binders.
+
+['e',q,e,r]
+  q must return [B]. At the fresh witness b append the clause
+  (nf(B(b,0)), B(b,y)). In that same extended context e must return the
+  equation b=t and r must return a formula F. Return nf(F[t/b]), provided
+  this output is canonical and well scoped in the original context.
+  t may itself contain b; substitution does not recursively revisit inserted
+  copies of t. The target is inferred from the equality proof. Taking t=b
+  gives ordinary witness elimination.
+
+Every returned formula receives a full syntax, scope and canonicality check.
+The input goal receives the same check in the empty numerical scope and
+must equal the returned formula exactly. No supplied equality templates,
+computation certificates, or external theorem libraries are trusted.
+
+MINIMAL ACCEPTING DOCUMENT
+--------------------------
+{"goal":[0,0],"proof":["u",0,0,null]}
+
+FUEL
+----
+The bounded checker decrements a global budget at every proof-checking and
+normalization-walker entry. Each document resets its own budget. Every finite
+successful unbounded computation has a sufficiently large finite budget.
+The fuel-bounded certificate predicate is primitive recursive under the
+standard finite-string coding. No primitive-recursive bound supplying enough
+fuel for every unbounded computation is asserted. Concrete Python recursion
+or storage limits can reject a valid mathematical certificate.
+
+VALIDATION SCOPE
+----------------
+verify.py is untrusted test infrastructure. It includes explicit accepted
+certificates, goal-directed replay with separate rule dispatch, comparison
+to 36 existing zero-normal counter-recursor certificates, exact-fuel tests,
+malformed-input rejections, and a separate numerical evaluator. Its fixture
+translator deliberately reports one guard-changing zero-witness case as
+unsupported; an independently constructed direct proof of that same end
+formula is included. It is not advertised as a universal proof compiler.

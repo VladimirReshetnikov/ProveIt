@@ -1,0 +1,114 @@
+\section{The complete certificate checker}
+\label{sec:implementation}
+
+\subsection{Finite representation and scoping}
+
+The file \file{code/checker.py} is the complete trusted program. It uses
+only Python's standard JSON module. Input is a two-element JSON array
+\texttt{[goal, proof]}. Acceptance means a zero exit status and the line
+\texttt{ACCEPT}; an exception, nonzero exit, or exhausted resource is not
+acceptance. The \texttt{assert} statement is not used.
+
+Zero is integer $0$. Negative integers are free numerical parameters.
+Positive integers are de Bruijn bound indices, starting at $1$. A term
+is an integer or a triple \texttt{[n,a,h]}; the last child binds two
+variables, with the state at index $1$ and counter at index $2$.
+The canonical successor is \texttt{[0,a,0]}. A formula is
+\texttt{[s,t]} or \texttt{[B]}, the latter binding the inner variable
+$y$ at index $1$ and witness variable $x$ at index $2$.
+
+The initial context is the single unconditional clause
+\texttt{([], [1,1])}. Every scope-extending instruction appends one
+clause and introduces exactly one fresh numerical parameter. Thus for
+a context of length $n$, available parameters are
+$-1,\ldots,-(n-1)$, the fresh parameter is $-n$, and the automatically
+selected introduction witness is $1-n$. At the root it is $0$.
+Clause indices are zero based. Booleans are not accepted as integers.
+
+Both the recursor and $D$ bind two variables in their final child, whereas
+an equation binds none. One traversal therefore suffices for terms,
+formulas, scope checks, substitution, shifting, and normalization.
+Children are checked before a computation can erase them.
+
+\subsection{The three proof instructions}
+
+\begin{center}
+\begin{tabular}{p{0.40\linewidth}p{0.53\linewidth}}
+\toprule
+Packet & Meaning\\
+\midrule
+\texttt{['u',j,t,p]} & Use clause $j$ at $t$; $p$ proves its antecedent
+when it has one.\\[3pt]
+\texttt{['i',p]} & Introduce the goal's paired binder with its fixed
+environmental witness; $p$ proves the required successor instance.\\[3pt]
+\texttt{['e',B,F,s,t,p,q,r]} & $p$ proves $D B$; after opening at a
+fresh name, $q$ proves $s=t$, and $r$ proves $N(F(s))$; export $N(F(t))$.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The placeholder of $F$ is its one extra de Bruijn variable. The equality
+premise is checked before either substituted instance. The second
+instance must equal the outer goal, whose full syntax and scope were
+already checked. All active goals are normal forms. The payload $p$
+of an unconditional Use is deliberately unused; the examples put
+\texttt{null} there. This is the absence of a premise, not an accepted
+unverified derivation.
+
+\paragraph{Two substitutions, in the right order.}
+To reduce the successor recursor, the checker first substitutes the
+predecessor counter into the \emph{outer} of its two body slots, while
+protecting the inner state slot. It then substitutes the predecessor
+state into the inner slot:
+\[
+ \operatorname{sub}\bigl(\operatorname{sub}(h,c,1),
+                         N(R(c,a;i,u.h))\bigr).
+\]
+The first substitution shifts the inserted counter across the still-bound
+state variable; the second removes that slot again. This works when
+the counter and predecessor state themselves refer to surrounding
+binders. Substituting the state first without a compensating shift would
+capture those variables. A separate simultaneous-substitution implementation
+and a named-variable oracle check this distinction.
+
+\subsection{A bounded certificate relation}
+
+The companion \file{code/checker_fuel.py} takes
+\texttt{[goal,proof,fuel]}. It decrements a nonnegative integer budget on
+each call to the common traversal and to the inference checker, rejecting
+when the budget is exhausted. Every finite successful run of the main
+program has a sufficient finite budget, so the two interfaces have the
+same theorems. The bounded verifier supplies a primitive-recursive
+finite-certificate relation; there is no need to assume that an arbitrary
+normalization completes within a uniform primitive-recursive bound.
+The budget and its checking code are included in that program's separate
+measurements. Concrete Python recursion and memory limits still bound
+the certificates a particular process can execute.
+
+\subsection{What was verified}
+
+The accompanying scripts generate exact certificates and replay the
+standalone modules. They include the defining computations, capture-safe
+substitution under both binder kinds, full formula equality transport,
+an induction proof that uses its step hypothesis, and names for nonzero
+terms whose introductions contain no witness fields. Negative examples
+test escaping eigenparameters, a forged equality premise, false arithmetic,
+illegal clauses and indices, wrong predecessor slots, malformed syntax,
+and missing induction assumptions. Runs with \texttt{python -O} retain
+the same acceptance checks.
+
+The independent normalization audit uses a named-variable implementation
+and a numerical evaluator, rather than calling the checker's substitution
+to produce its expected answers. A separate template-completion experiment
+samples 5,000 raw sorted templates; 451 have two valid instances, and 109
+of those contain extra parameters erased by normalization. All checked
+instances agree with their legal canonical repairs. These finite checks
+support the implementation and catch concrete binding errors. The general
+soundness, completeness, and bi-interpretation claims rest on the written
+proofs above.
+
+The exact counts, hashes, subprocess results, and independently computed
+metrics are recorded in \file{evidence/}. The unchanged source Lean files
+are provided for attribution and inspection; they are not a newly built
+Lean project for this three-instruction calculus.
+

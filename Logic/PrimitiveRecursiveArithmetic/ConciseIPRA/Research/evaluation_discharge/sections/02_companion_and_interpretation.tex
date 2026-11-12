@@ -1,0 +1,229 @@
+\section{The smaller zero-normal companion}
+\label{sec:zero}
+
+There is a second presentation, $\mathcal E^0_3$, with the same three
+inference families and the same fixed axiom clause. Its terms are canonical
+only for the deletion
+\[
+                         I(0,a;u.h)\longrightarrow a.
+\]
+Let $N_0$ perform this deletion hereditarily. Every rule substitution is
+followed by $N_0$. A successor-headed iterator is not unfolded by this
+syntactic operation. The evaluation map is instead
+\[
+ \sigma_E(F)=
+ \begin{cases}
+  r=N_0\bigl(h[I(c,t;u.h)/u]\bigr),
+    &E\equiv(s=t),\quad F\equiv(I(Sc,s;u.h)=r),\\[3pt]
+  F,&\text{otherwise}.
+ \end{cases}
+\]
+The initializer in the equation $E$ must match the initializer of the
+iterator in $F$. The previous iterate is constructed from the replacement
+initializer $t$; it is not an additional premise. This is precisely the
+existing SeedEval rule, executed only at witness discharge.
+
+Use and Intro are those of Section~\ref{sec:raw}, with normalized
+substitution and the literal witness test on canonical syntax. Discharge
+exports $\sigma_E(F)$ instead of $\rho_E(F)$, subject to the same outer
+scope condition. There is one arithmetic pattern and the identity case.
+
+The proof of Theorem~\ref{thm:raw-equivalence} applies verbatim with
+SeedEval in place of the two raw Eval cases. Its separate-rule control has
+Use, Intro, Open and SeedEval. The compound major still recovers Open, and
+$\Theta$ still recovers SeedEval. In the reverse simulation no arbitrary
+substitution into an existing derivation is assumed.
+
+\paragraph{The arithmetic interface is unchanged.}
+At counter $0$, SeedEval reads
+\[
+             a=b,\ I(S0,a;u.h)=r\quad\Longrightarrow\quad r=N_0(h[b/u]).
+\]
+Taking $h=u$ and using two such evaluations derives the joining rule for
+equations. Taking arbitrary $h$ derives transport by the same two-step
+pivot construction. Two reflexivities give successor computation.
+Zero computation is canonical syntax. This interface is formalized in the
+pinned \texttt{NativeZeroSeed.lean} as \texttt{NVPrf}; the equivalence
+\texttt{nvprf\_iff\_pra} is already in that source~\cite{zeroformal}.
+The clause representation and its fixed reflexivity clause are formalized
+in \texttt{NativeZeroClausal.lean}. The present fusion is a new written
+equivalence on top of those interfaces, not a claim that its new checker
+has been verified by Lean.
+
+\paragraph{Only structural normalization is used.}
+Recursively normalize an iterator's children. If its normalized counter is
+$0$, return its normalized initializer; otherwise rebuild the iterator.
+Every contraction deletes nodes, and none duplicates a body. Structural
+induction proves termination, idempotence and substitution coherence
+\[
+              N_0(N_0(t)[\tau])=N_0(t[\tau]).
+\]
+Thus this companion does not reinstate the full computation normalizer
+removed from the main presentation.
+
+\section{Full first-order iPRA and both interpretation composites}
+\label{sec:interpretations}
+
+The reference theory is full first-order intuitionistic primitive recursive
+arithmetic: intuitionistic equality logic; a symbol for each fixed finite
+primitive-recursive description and its defining equations; separation of
+zero from successors; successor injectivity; and induction for every
+quantifier-free formula, with parameters and retained assumptions.
+In particular, the target is not merely equational PRA or a negative
+fragment of iPRA.
+
+\subsection{The intermediate ordinary scalar theory}
+
+Let $T_I$ be ordinary intuitionistic first-order equality logic over the
+staged scalar-iterator signature. Its nonlogical axioms and rules are exactly
+the two iterator equations, numerical coverage, separation, and contextual
+equation induction:
+\begin{gather*}
+ I(0,a;u.h)=a,\qquad I(Sn,a;u.h)=h[I(n,a;u.h)/u],\\
+ \forall x\,(x=0\vee\exists y\,x=Sy),\qquad (0=S0)\to\bot,\\
+ \frac{\Gamma\vdash E(0)\qquad\Gamma,E(z)\vdash E(Sz)}
+      {\Gamma\vdash E(t)}\quad(E\text{ an equation},\ z\text{ fresh}).
+\end{gather*}
+The displayed separation sentence is essential to the ordinary realization:
+positive equations by themselves do not prohibit a one-element structure.
+It is not an extra hidden axiom of the native calculus, where $0=S0$ is
+the designated contradiction and explosion is derived.
+
+The native-to-ordinary translation is
+\[
+ (s=t)^\circ=(s=t),\qquad
+ (D_{x,y}B)^\circ=\exists x\bigl(B^\circ(x,0)\to\forall y\,B^\circ(x,y)\bigr).
+\]
+Unconditional clauses translate to universals and conditional clauses to
+implications into universals. All numerical domains are the whole domain,
+defined by $x=x$, and equality is actual equality.
+
+\subsection{Explicit logical macros}
+
+Put $C(v,a,b)=I(v,a;u.b)$, with $u$ unused, and
+$p(z)=I(z,0;u.C(u,1,0))$. The derived computation equations give the
+selector endpoints and $p(1)=1$, $p(2)=0$.
+For a formula, define its gate recursively by
+\[
+ G_v(s=t)=(C(v,0,s)=C(v,0,t)),\qquad
+ G_v(D_{x,y}B)=D_{x,y}G_vB,
+\]
+with fresh bound variables. It is provable at $v=0$ and equivalent to the
+original formula at every successor. Formulas can be padded by
+$A\dashv\vdash D_{u,y}G_yA$.
+
+The formula selector $M_v(A,B)$ uses $C$ on corresponding sides of two
+equations and distributes through aligned $D$ binders. If one formula
+is an equation and the other has a $D$ binder, pad the equation using
+the preceding gate before continuing. This finite recursive definition,
+spelled out in Appendix~\ref{sec:choice-introduction}, gives
+$M_0(A,B)\dashv\vdash A$ and $M_{Sv}(A,B)\dashv\vdash B$.
+Write $Q_yA=D_{u,y}A$ with $u$ unused. One complete macro inventory is
+\[
+\begin{aligned}
+ \bot_*&=(0=S0),\\
+ A\to_*B&=D_{u,y}M_y(A,B),\\
+ A\wedge_*B&=D_{u,y}G_y M_{p(y)}(A,B),\\
+ \exists_*x\,A(x)&=D_{x,y}G_yA(x),\\
+ A\vee_*B&=\exists_*x\,M_x(A,B),\\
+ \forall_*x\,A(x)&=A(0)\wedge_* Q_y A(y).
+\end{aligned}
+\]
+Every newly bound variable is fresh, except the explicitly displayed
+argument of the formula being bound. These macros have all the usual
+intuitionistic introduction and elimination rules. For example,
+implication uses the selector's zero row as its assumption and its
+successor rows as its conclusion; conjunction is read at the two controls
+$1,2$; existential quantification uses the true zero gate. Universal
+elimination uses $A(0)$ to activate the $Q$ clause. Under $0=S0$,
+selector computation makes any two terms equal, and induction on finite
+formula syntax yields explosion.
+
+The appended inherited logical development proves these claims. Its
+equivalent universal macro uses a gated paired conjunct; the macro displayed
+here is the more direct $A(0)\wedge Q_yA(y)$ also used by the current
+Lean development. Both have the ordinary universal reading.
+
+\subsection{The numerical translations}
+
+From scalar terms to iPRA, translate each fixed body $h(u,\vec p)$ by
+structural recursion on its finite description. Its iterator is the
+primitive-recursive operation
+\[
+ i_h(0,a,\vec p)=a,\qquad
+ i_h(Sn,a,\vec p)=h(i_h(n,a,\vec p),\vec p).
+\]
+No number is asked to encode a function on which a universal total
+evaluator operates.
+
+In the other direction, the inherited scalar development first derives
+predecessor from scalar iteration and equation induction. It then proves
+successor injectivity, constructs an equality indicator that reflects
+actual equality internally, and obtains induction on all quantifier-free
+formulas. Pairing and its projections are derived next. For a fixed
+primitive recursion
+\[
+ f(0,\vec p)=g(\vec p),\qquad
+ f(Sn,\vec p)=h(n,f(n,\vec p),\vec p),
+\]
+the scalar state stores a pair consisting of the counter and the current
+value. If $L,H$ are its two projections, set
+\[
+\begin{aligned}
+ W(v,\vec p)&=\pi(SL(v),h^*(L(v),H(v),\vec p)),\\
+ V(n,\vec p)&=I(n,\pi(0,g^*(\vec p));v.W(v,\vec p)),\\
+ f^*(n,\vec p)&=H(V(n,\vec p)).
+\end{aligned}
+\]
+Equation induction proves $L(V(n,\vec p))=n$, and the two recursion
+equations for $f^*$ follow. The order of this argument matters: the
+predecessor and equality-reflection proofs do not presuppose the general
+primitive-recursion compiler. The appended foundations supply that order
+and the necessary internal proofs~\cite{choice,bridge,erasure,forward,progress}.
+
+\begin{theorem}[Required bi-interpretability and equiconsistency]
+\label{thm:biinterp}
+The ordinary realizations of $\mathcal E_3$ and $\mathcal E^0_3$ are
+bi-interpretable with full first-order iPRA. Both numerical interpretation
+domains are whole, equality is actual equality, and both numerical
+composite isomorphisms have graph $x=y$. Both formula composites are
+provably equivalent to the identity. Each presentation is equiconsistent
+with iPRA.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:raw-equivalence} transfers the full native consequence
+relation to the raw uniform-clause reference, whose scalar and iPRA
+interpretations are the ones just described. The zero companion has the
+same exact comparison with its SeedEval reference.
+
+For the numerical composites, induction on a fixed finite primitive-
+recursive description shows that its double translation satisfies the
+original defining equations. Internal equation induction proves uniqueness
+of that fixed recursion. The analogous induction on scalar syntax proves
+the other composite. These are statements for arbitrary internal counters,
+not just for standard numeral instances.
+
+The crucial native formula composite is
+\[
+ D_{x,y}B\dashv\vdash
+ \exists_*x\bigl(B(x,0)\to_*\forall_*y\,B(x,y)\bigr).
+\]
+Forward, open its witness clause, assume its base, and use that clause
+at a fresh variable before introducing the ordinary macros. Backward,
+eliminate the existential at a fresh witness and use case introduction
+with the supplied implication and universal at the successor instance.
+The other formula composites follow from the selector and gate identities
+and induction on finite formulas. The zero companion adds the internally
+provable equivalence of a term with its zero-normal form.
+
+The translations preserve contradiction: ordinary falsity maps to
+$0=S0$, and the ordinary reading of $0=S0$ implies falsity by separation.
+Effective translations of finite derivations in both directions therefore
+give equiconsistency. This proof does not replace the whole domain by a
+standard cut, a quotient, or a coded subset.
+\end{proof}
+
+The inherited numerical and logical bridge has a Lean formalization in
+the pinned repository. The new fusion theorem and the association of its
+Python checker with its stated rules are written proofs with executable
+validation. No new Lean or Rocq verification is claimed.

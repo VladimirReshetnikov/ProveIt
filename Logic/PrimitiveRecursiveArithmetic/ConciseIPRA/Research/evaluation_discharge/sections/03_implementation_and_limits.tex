@@ -1,0 +1,274 @@
+\section{Complete certificate checkers}
+\label{sec:implementation}
+
+Both delivered acceptance programs are standalone Python modules using only
+the standard library. Each reads one JSON value from standard input.
+Acceptance means exit status zero and the line \texttt{ACCEPT}. The
+document has exactly the keys \texttt{goal} and \texttt{proof}. The
+goal is a closed native formula, and the checker infers every intermediate
+conclusion from the proof tree. It compares the inferred final formula with
+the public goal. There are no trusted proof-producing helpers.
+
+\subsection{The complete public syntax}
+
+The same disjoint-by-sort encoding is used by both programs:
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Object & JSON representation\\
+\midrule
+Zero & \texttt{0}\\
+Free parameter level & a negative integer\\
+Bound variable index & a positive integer\\
+Successor $St$ & \texttt{[0,t]}\\
+Iterator $I(n,a;u.h)$ & \texttt{[n,a,h]}\\
+Equation $s=t$ & \texttt{[s,t]}\\
+Paired formula $D B$ & \texttt{[B]}\\
+\bottomrule
+\end{tabular}
+\end{center}
+An iterator adds one bound index in its last child only; $D$ adds two in
+its matrix. At a matrix's outer level, index $1$ is its induction/closure
+variable and index $2$ its witness variable. Integers are checked with exact
+type tests, so JSON Booleans are not accepted as numerical terms or indices.
+Constructor arities and the successor's zero tag are checked as well.
+
+A clause is internally stored as a pair \texttt{(antecedent,body)}.
+An empty list in the antecedent position denotes its absence; an actual
+formula cannot be an empty list. The initial clause is
+\texttt{([], [1,1])}, exactly $\mathcal R$.
+
+The three proof forms are
+\begin{lstlisting}[language={}]
+["u", clause_index, term, antecedent_proof]
+["i", matrix, witness, successor_branch]
+["e", major_proof, auxiliary_branch, formula_branch]
+\end{lstlisting}
+Use ignores its antecedent-proof payload for an unconditional clause. The
+payload may be any JSON value in that case; this is an intentional part of
+the format, not an unvalidated logical premise. Intro infers the paired
+formula from its supplied matrix. Discharge obtains the matrix by checking
+its major proof; its two branch conclusions determine the evaluation.
+No intermediate branch formula, replacement term or template is separately
+supplied to Discharge.
+
+\subsection{Scope and capture invariants}
+
+The proof starts with one clause and no free parameters. If a checking
+context contains $n$ clauses, its available free levels are
+$1-n,\ldots,-1$. Every Intro or Discharge creates exactly one new numerical
+parameter $b=-n$ and adds exactly one clause. This is why clause count can
+supply the scope bound in the closed-theorem interface. It is not a claim
+that arbitrary mathematical clause contexts determine their free variables.
+
+Every recursive proof result is checked for its formula sort and numerical
+scope. A discharge result is checked in the \emph{outer} scope, after its
+elementary evaluation. This admits a valid inference in which evaluation
+erases the witness from the intermediate formula; it rejects every
+inference whose exported formula still contains the witness. Premises
+are independently checked in their common local scope before evaluation.
+
+Every term substituted by the implementation is externally scoped and has
+no loose positive index. Its internal positive indices are already under
+its own binders. Consequently inserting it below an additional binder
+requires no index shift. The shared traversal only adjusts the index of
+the opened binder and decrements indices above it. In the successor Eval,
+the body comes from the root iterator of an equation, so there is precisely
+one open iterator variable to instantiate and no hidden surrounding formula
+binder. The zero companion has the same invariant.
+
+The checker does not validate an Intro matrix in a separate preliminary
+pass. It validates the complete original matrix in the synthesized result
+$[B]$ before returning successfully. Thus malformed material cannot become
+acceptable merely because branch substitution erases it. The adversarial
+suite includes such an attempt in the zero-normal variant.
+
+\subsection{Primitive-recursive checking without fuel}
+
+On standard finite-tree encodings, raw substitution is primitive recursive.
+For tree-node size, a conservative bound is
+\[
+                |\operatorname{sub}(a,t)|
+                \le |a|\max(1,|t|).
+\]
+The traversal visits the original tree and does not traverse newly inserted
+copies recursively. A raw successful evaluation performs either no
+substitution or one body substitution. The zero companion adds only
+structural deletions and at most one constructed predecessor iterator.
+
+Every recursive proof call consumes a proper subcertificate. The finitely
+many traversals and substitutions at one node have a fixed polynomial
+majorant in the sizes of that node's input data, retained context and
+already inferred subproof conclusions. Iterating a generous such majorant
+over the finite certificate tree gives primitive-recursive bounds on all
+intermediate sizes and verification time. The ideal certificate predicate
+is therefore primitive recursive in both presentations, with no additional
+fuel field.
+
+This differs from running a full normalizer on arbitrary primitive-
+recursive program descriptions. Neither checker asks for a uniform numerical
+evaluation of such descriptions or adds a totality assertion for one to
+iPRA. Ordinary Python parser, stack and memory limits still bound concrete
+runs; they are separate from this ideal finite-tree statement.
+
+\section{Measured comparison and executed evidence}
+\label{sec:metrics}
+
+All reported measurements include the entire acceptance module: parsing,
+syntax and scope validation, substitution, context operations, inference
+checking, final-goal comparison and the acceptance print. Under CPython
+3.12.14, remove actual docstrings, apply \texttt{ast.unparse}, and add one
+final LF. Count UTF-8 bytes, significant tokens and Python AST nodes.
+Gzip uses level $9$ and timestamp zero, and is informational.
+The bundled \texttt{measure.py} reproduces the table from the actual source
+files. Readable comments and documentation are not part of normalized
+source size.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}Xrrrr@{}}
+\toprule
+Complete acceptance program & Bytes & Tokens & AST & Gzip9\\
+\midrule
+Raw evaluation discharge & 1892 & 643 & 695 & 773\\
+Matched raw separate rules & 1995 & 665 & 717 & 786\\
+Zero-normal evaluation discharge & 1858 & 633 & 697 & 777\\
+Matched zero-normal separate rules & 1879 & 645 & 707 & 771\\
+Incoming inferred-witness output control & 1983 & 663 & 751 & 812\\
+Incoming inferred witness & 1990 & 683 & 771 & 819\\
+Incoming explicit clause discharge & 2010 & 636 & 708 & 791\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The isolated raw fusion saves 103 bytes, 22 tokens and 22 AST nodes
+(1,995 to 1,892 bytes, a 5.16\% reduction). Its gzip size is also 13 bytes
+smaller. The isolated zero-normal fusion saves 21 bytes, 12 tokens and
+10 AST nodes; its gzip size increases by six bytes. Against the incoming
+1,983-byte output-control program, the complete zero companion saves
+125 bytes (6.30\%), 30 tokens and 54 AST nodes.
+
+
+The matched controls use exactly the same syntax and public contract as
+their new checkers, with separate Eval/SeedEval and Open instructions.
+The difference from those controls isolates the rule fusion. Comparisons
+with the incoming full-normalization systems also change the term
+discipline and some implementation details; they must not be described as
+the isolated saving from fusion.
+
+The zero companion improves all three primary coordinates of the three
+listed incoming strict clause-checker programs. The raw checker prioritizes
+having no normalization machinery: it has fewer bytes and AST nodes than
+those programs, but its token count exceeds the 636-token explicit
+clause-discharge program. Neither is asserted to dominate every possible
+representation or every checker in the repository. The separate compact
+codec in incoming \texttt{deterministic\_opening} is 508 normalized bytes,
+and its validated public-goal companion is 780 bytes. They remain smaller
+by that coordinate and implement a different certificate interface.
+
+The delivered raw suite translates all 33 pinned upstream raw certificates
+into both the fused and separate kernels. It checks 38 accepted examples,
+38 exact-goal fused/separate round trips, and 38 reverse expansions in an
+independently implemented upstream raw checker. It rejects 34 adversarial
+inputs and passes 144 standalone ordinary/optimized-Python CLI checks.
+
+The zero suite replays all 85 pinned SeedEval certificates in their original
+checker, translates all 85 into each new kernel, checks both directions
+of the generic transformation and 85 fused round trips, and checks six
+additional positives and 27 adversaries. Its 66 standalone CLI outcomes
+also pass. The package-level reproduction runs both suites from their
+packaged paths and separately replays the independent reviewer fixtures.
+
+
+The tests include actual use of an induction hypothesis, nested $D$
+formulas, transport through nested iterators, active witness erasure before
+scope exit, ordinary elimination through a compound auxiliary, mismatched
+seed/predecessor rejection, malformed constructors, Boolean indices,
+unbound variables and non-object JSON envelopes. Both ordinary Python and
+\texttt{python -O} are used. No trusted acceptance condition uses
+\texttt{assert}.
+
+The independent reviewer constructed further fixtures separately from the
+main producers. The raw suite has five positives and seven adversaries,
+each checked with and without optimization (24 expected outcomes). The
+zero suite has two positives and four adversaries (12 expected outcomes).
+All passed. These are finite implementation checks and independent replay,
+not proof-assistant verification of the universal mathematical claims.
+The general equivalence and both interpretation composites are proved
+in the text.
+
+\section{Limitations and further research questions}
+\label{sec:questions}
+
+The result removes an independent inference family and, in the main
+presentation, all normalization from the trusted term specification. It
+does not reduce arithmetic strength, discover a new primitive-recursive
+function basis, or establish an absolute shortest proof checker. All the
+inherited mechanisms have been credited: the scalar iterator, paired
+binder, optional-antecedent clauses, selected introduction, Eval and
+SeedEval, and the whole-domain arithmetic bridge.
+
+The two computation patterns and identity fallback in $\rho$ are explicit.
+The fixed reflexivity clause is explicit too. Moving a rule into an
+unmeasured library or treating a normalizer as free would make an unfair
+comparison; neither occurs here. The raw and zero checkers are independent
+standalone acceptance programs, and their proof producers and translators
+are untrusted supporting artifacts.
+
+Several concrete questions remain:
+\begin{enumerate}
+\item \textbf{Formalize the fusion itself.} Add a deeply embedded
+      three-family derivability relation to the pinned Lean development,
+      and prove its equivalence with \texttt{VPrf} by the two local
+      translations in Theorem~\ref{thm:raw-equivalence}. The raw route
+      should be shorter because no normal-form conversion invariant is
+      needed.
+\item \textbf{Verify the inference-synthesizing checker.} Prove the
+      correspondence between its negative free levels, positive bound
+      indices, clause-count scope invariant and the embedded calculus.
+      Its small source size is useful only when all those obligations
+      remain visible.
+\item \textbf{Reduce proof duplication.} The reverse Open translation
+      may copy its major proof into the witness scope as a neutral
+      auxiliary. A DAG certificate could share that proof, but the cost
+      of reference validation and scope control must be measured.
+\item \textbf{Replace the identity fallback economically.} Can the
+      elimination simulation use a single always-active arithmetic pattern
+      with no extra template and without enlarging either the checker or
+      the arithmetic assumptions? A rule-count reduction alone would not
+      answer this.
+\item \textbf{Compare a fixed common certificate contract.} The compact
+      codecs and the strict tree checkers sit on different tradeoffs.
+      A useful next experiment would fix public syntax validation,
+      certificate grammar, host semantics and measurement convention,
+      then search for genuine dominance under that common contract.
+\end{enumerate}
+
+\section{Reproduction and attribution}
+
+The archive includes standalone editable LaTeX, its compiled PDF, both
+complete acceptance programs, matched controls, normalized sources,
+proof transformations, examples and adversaries, measured results,
+independent-review evidence and source provenance. Python reproduction
+uses only the standard library:
+\begin{lstlisting}[language={}]
+python3 verify_manifest.py
+python3 reproduce.py
+python3 measure.py
+python3 raw/checker.py < raw/examples/raw_zero_computation.json
+python3 build_pdf.py
+\end{lstlisting}
+The PDF build requires the standard TeX packages named in the source and
+runs with shell escape disabled. The main LaTeX source is flattened and
+does not require the auxiliary section files. Rebuilding may change PDF
+metadata; the manifest describes the delivered bytes.
+
+The following appendices reproduce, with attribution, the five mathematical
+foundation files from the pinned repository's
+\texttt{Research/certified\_zero/reference/}. They provide the inherited
+logical and arithmetic bridge in the delivered document. Their references
+to an earlier ``new'' interface describe that historical interface, not
+an additional novelty claim of this report. The present native primitives
+are only those in Section~\ref{sec:raw}, or the explicitly stated zero
+companion. Original copies and their hashes are retained in
+\texttt{reference/foundations/}.
+

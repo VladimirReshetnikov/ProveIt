@@ -1,0 +1,120 @@
+DETERMINED INTRODUCTION: COMPLETE CERTIFICATE FORMAT
+==================================================
+
+The input is exactly a JSON object with keys "goal" and "proof". Acceptance
+is exit code zero and the single line ACCEPT. REJECT, exceptions, resource
+exhaustion, and any nonzero exit status do not constitute acceptance.
+
+NUMERICAL SYNTAX
+
+  0          numerical zero
+  -j         free numerical parameter at level j, 1 <= j <= scope
+  j > 0      de Bruijn bound variable, nearest binder numbered 1
+  [0,t]      successor S(t)
+  [n,a,h]    I(n,a;u.h), with one variable bound in h only
+
+Integers must be exact JSON/Python integers: booleans and floats are rejected.
+Terms are raw finite syntax. Computation is not built into substitution.
+Iteration at a literal zero is not silently erased.
+
+FORMULAS
+
+  [s,t]      actual numerical equality s=t
+  [B]        D(x,y).B, binding outer x then inner y (y=1, x=2)
+
+A D formula whose matrix is an equation is permitted only when both terms
+have literal outer shape [1,0,h]: I(y,0;u.h). A compound D matrix is permitted
+without that additional guard. The bound counter is the immediate y of that
+D, not another variable. Updates may depend on x, y and their own state.
+All such syntax is checked, including subtrees that a computation could erase.
+
+The ordinary reading is D(x,y).B = exists x (B(x,0) -> forall y B(x,y)).
+The designated contradiction is [0,[0,0]], namely 0=S0.
+
+CLAUSES AND SCOPES
+
+A retained clause is a pair (A,B), meaning A -> forall y B(y). The body B
+has one bound y; A does not. Clauses are introduced only by proof rules,
+not supplied as arbitrary trusted input. The fixed computational theorem is
+
+  H = [[0,0,0],0], namely I(0,0;u.0)=0.
+
+An ordinary assumption A is represented by (H,A), with its clause y unused.
+The public proof begins with no clauses and numerical scope 0. Clause count
+and numerical scope are separate state components. The examples happen to
+extend both together in Intro and Open, but a structural clause transformation
+does not itself delete or introduce a numerical parameter.
+
+PROOF INSTRUCTIONS
+
+1. ["zero",a,h]
+
+   Infer I(0,a;u.h)=a. Validate a in the current scope and h with one extra
+   bound state variable.
+
+2. ["succ",n,a,h]
+
+   Infer I(Sn,a;u.h)=h[I(n,a;u.h)/u]. Validate all term fields. Substitution
+   avoids capture and removes the instantiated binder; it does not compute.
+
+3. ["use",j,t,p]
+
+   Choose retained clause j=(A,B), where j is a zero-based integer index.
+   Check p proves exactly A. Infer B(t), using capture-avoiding substitution.
+   The numerical target t is fully validated in the current scope.
+
+4. ["tr",F,p,q]
+
+   F is a canonical formula template with one extra bound variable.
+   Check p proves an equation s=t, and q proves exactly F(s). Infer F(t).
+   Transport ranges over all canonical formula templates, not only terms.
+
+5. ["open",p,q]
+
+   Check p proves D(x,y).B in the parent context and scope n. Allocate fresh
+   b=-(n+1), and append the clause (B(b,0), y.B(b,y)). Check q in scope n+1.
+   Its returned formula must be well formed back in the parent scope n,
+   so the fresh b cannot escape. Return that formula unchanged.
+
+6. ["intro",B,p]
+
+   Validate the full proposed D(x,y).B in the parent scope n. Determine its
+   witness before allocating a step parameter:
+
+   - If B is literally [[1,0,3],[1,0,r]] and r is a valid term in the parent
+     scope with no extra bound variables, select r. This is precisely
+     C(y,0,x)=C(y,0,r), C(y,0,v)=I(y,0;u.v). Requiring r to be parent-scoped
+     excludes dependence on x, y, or the iterator's state u.
+   - Otherwise select the newest available parameter -n. When n=0 this
+     expression is 0, the closed-scope default.
+
+   Allocate fresh z=-(n+1). Put C(y)=B(selected_witness,y). When B is an
+   equation, append the ordinary assumption C(z); when B is compound,
+   append C(0). In scope n+1, check p proves exactly C(Sz). Infer D(x,y).B.
+
+The naming alternative has priority. No witness term, index, or mode bit
+is supplied to this instruction. The tag/arity checks are exact; an old
+four-field Intro packet is rejected.
+
+MATCHED CONTROL
+
+control.py is identical except that it has no witness-selector function
+and uses ["intro",B,t,p], where t is any parent-scoped numerical term.
+Its branch and conclusion are exactly those above with witness t.
+
+MATHEMATICAL AND IMPLEMENTATION LIMITS
+
+The report proves consequence equivalence by first proving algebraic cut,
+then scope weakening by induction on the original proof height, then general
+ordinary-assumption cut. Arbitrary numerical substitution and scope extension
+need proof elaboration; they cannot always replay a certificate unchanged.
+
+verify.py includes an accepted proof using an outer parameter as the selected
+witness, a rejected naive replay after a newer parameter is inserted, and a
+successful repair by giving the old parameter a new name. It also includes
+an unrestricted-control proof at a compound iterator witness and an explicit
+deterministic proof of the identical conclusion using the naming construction.
+
+The strict standalone checker is larger than its matched control. Its purpose
+is to make the new witness-free interface concrete and checkable. No claim
+of a smaller Python implementation or a new Lean/Rocq formalization is made.

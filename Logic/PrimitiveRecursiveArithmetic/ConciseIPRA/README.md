@@ -5,7 +5,7 @@ complete presentation of a theory bi-interpretable with full first-order
 intuitionistic primitive recursive arithmetic (iPRA), and the Lean
 formalization of the most concise of them.
 
-- [`Research/`](Research/) holds seventy-nine delivered packages, one directory
+- [`Research/`](Research/) holds eighty-four delivered packages, one directory
   each. They are written mathematics with executable Python proof checkers;
   none of them claims a proof-assistant verification.
 - `Lean/` is the formalization (see [Lean formalization](#lean-formalization)).
@@ -606,6 +606,9 @@ for separate coordinates, they are listed separately. Each package's own
 | [`witness_discharge`](Research/witness_discharge/) | Three inference families (Use, Intro, Name) and the reflexivity axiom clause; Name combines equality substitution with the discharge of an existential witness | as stated |
 | [`inferred_witness`](Research/inferred_witness/), [`deterministic_opening`](Research/deterministic_opening/), [`first_instance`](Research/first_instance/), [`clause_discharge`](Research/clause_discharge/) | On full normal forms with clause contexts: the opening of `D_{x,y} B` at a fresh `b` reads its witness off the matrix. If `B(b, 0)` is literally `0 = 0` and `B(b, 1)` is literally `b = t`, the clause is opened at `t` (or `t` is substituted for `b` in the exported formula); otherwise at `b`. No replacement term and no equality proof are supplied. Three families (Use, Intro, Open) and the reflexivity clause | as stated; each reports a smaller matched complete checker and none claims a new minimum |
 | [`substitutive_discharge`](Research/substitutive_discharge/) | On the canonical recursor syntax, four families: one successor calculation, Use, Intro, and a discharge that opens `D` at a fresh `b`, proves `s = t` and `F(s)` there, and exports `F(t)`. Reflexivity is derived; no full normalization and no fixed clause | as stated |
+| [`deterministic_introduction`](Research/deterministic_introduction/) | In the raw guarded Eq/D calculus the introduction takes no witness: it selects `r` if the matrix is literally `C(y, 0, x) = C(y, 0, r)` with `C(y, a, b) = I(y, a; u.b)`, otherwise the newest numerical parameter, and `0` in an empty numerical scope. Proved equivalent to the unrestricted calculus on every open consequence; cut is proved before weakening | 1159 tokens; 1339 AST nodes; 3688 bytes, against 1078 / 1252 / 3442 for the matched control |
+| [`evaluation_discharge`](Research/evaluation_discharge/) | On raw iterator terms with clause contexts, three families: Use, Intro, and a discharge that opens `D B` at a fresh `b`, proves `E` and `F` there, performs one deterministic evaluation (the two Eval patterns, or identity) and exports the result. A zero-normal companion with SeedEval | raw: 643 tokens; 695 AST nodes; 1892 bytes. Zero-normal: 633; 697; 1858 |
+| [`one_body`](Research/one_body/) | A context entry is one body `B(y)`, read as `B(0) → ∀y B(y)`, with no separate antecedent; an ordinary assumption is stored under an iterator gate. Atomic reflexivity, the two Eval cases, Use, Open and Intro | 3130 bytes, against 2999 for the matched control |
 | [`prefix_clauses`](Research/prefix_clauses/) | A `Q`-free formula is a chain of `D` binders ending in one equation, stored as `[k, s, t]` for `D^k (s = t)`; the four families of `uniform_clauses` on that representation. A separate theorem removes the antecedent field of a clause | as stated |
 | [`variable_substitution`](Research/variable_substitution/) | On zero-normal terms the equality rule substitutes for a variable only: from `x = t` and `u = v` infer `v = nf(u[t/x])`; the source can be restricted to the newest parameter | as stated |
 | [`parameter_substitution`](Research/parameter_substitution/) | On raw terms with clause contexts, replacement inside a term is restricted to free parameters; a nonvariable source is used only for joining at the root or reversing the minor equation, and a fresh alias recovers transport in a template. Five instruction families | as stated |
@@ -639,6 +642,8 @@ for separate coordinates, they are listed separately. Each package's own
 | [`clausal_canonical`](Research/clausal_canonical/) | Five rules on the canonical recursor syntax, with an Eq/D public language and contexts of reusable clauses in place of `Q`. Matched checker 3305 bytes against 3820 for the six-rule control |
 | [`counter_evaluation`](Research/counter_evaluation/) | On the counter-aware successor-seeded recursor `R(n, a; i, u.h)`, reflexivity and one rule: from `s = t` and `R(S s, a; i,u.h) = r` infer `r = h(t, R(t, a; i,u.h))`. With clause contexts: five patterns |
 | [`uniform_binding`](Research/uniform_binding/) | The counter-aware clause calculus with one ternary recursor `R(n, a; i, u.h)`; `R` and `D` both bind exactly two variables in their last child, and one traversal handles validation, zero-body erasure and binder opening |
+| [`parameter_intro`](Research/parameter_intro/) | On the counter-aware successor-seeded recursor with full normalization and clause contexts, three families: Use, Introduction, and substitution with discharge. Introduction takes no witness: it uses the newest outer numerical parameter, or `0` at the closed root; arbitrary witnesses are recovered by naming through clause specialization. 630 tokens / 701 AST nodes / 1925 bytes |
+| [`uniform_recursion`](Research/uniform_recursion/) | Variables, `0` and the one recursor `R(n, a; i, u.h)`, with the successor defined as `R(0, a; i, u.0)`; a fixed reflexivity clause and three families Use, Close and Name. 662 tokens / 741 AST nodes / 1950 bytes |
 
 ## Intake record
 
@@ -712,9 +717,13 @@ sources, three checksum ledgers and five build logs. The delivered module
 `Research/zero_normal/formal/ZeroNormalization.lean` compiled unchanged and
 is `Lean/ConciseIPRA/ZeroNormalization.lean`.
 
+`deterministic_introduction`, `evaluation_discharge`, `one_body`,
+`parameter_intro` and `uniform_recursion` arrived on 2026-11-12 (commit
+`9f9545f5ff`) and were filed on arrival (twenty-two frozen Lean copies and two
+checksum ledgers not filed).
 `clause_discharge`, `deterministic_opening`, `first_instance`,
-`inferred_witness`, `prefix_clauses` and `substitutive_discharge` arrived last
-and were filed on arrival (sixteen frozen Lean copies, three logs and two
+`inferred_witness`, `prefix_clauses` and `substitutive_discharge` arrived
+before them and were filed on arrival (sixteen frozen Lean copies, three logs and two
 checksum ledgers not filed).
 `clause_contexts`, `clause_guards`, `mirror_core`, `seed_evaluation`,
 `uniform_binding` and `witness_discharge` arrived before them and were filed on
@@ -962,6 +971,7 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `mirror_guard` | Proved, in the native language (`NativePublic`): the one-sided guard `s = I(w, s; u.t)` is the gating `Gating.mirror`, every atomic matrix of a translated formula is mirrored (`NFm.pub_mirrored`), and `pgprf_pub_iff .mirror : PGPrf (Γ.map pub) (pub A) ↔ NPrf Γ A`, with the root-determined introduction and with transport at iterator sources only, which is stronger than the package's exclusion of the literal `0`. An opened mirror gate `s = J`, `J = I(S 0, s; u.t)`, gives `J = s` and `J = t`, hence the wrapped equation. The same differences from the package as for `protected_core` apply. |
 | `guarded_core` | Its aim, one root-determined introduction, is reached without changing the formula language by `wprf_iff_nprf`. Its own route through guarded atomic matrices is proved in the common form of `NativePublic` (`pgprf_pub_iff`), with `Q` kept as a formula; clause contexts in place of `Q` are not formalized. |
 | `scope_and_closure` | Its checker results concern Python programs. Its mixed closure is proved (`NativeMixedClosure`): `MCPrf` is the uniform calculus with transport in an arbitrary formula template as its primitive equality rule, and `mcprf_iff_rprf : MCPrf Γ A ↔ RPrf Γ A`, since that transport is a derived rule of `RPrf`. Hence `mcprf_iff_rd`, `mcprf_emb_iff` and `mcprf_consistent`. Its obstruction note is proved too (`ZeroSeedObstruction`): in a term language whose recursor has its seed fixed to zero, even with an update that sees the counter, every term denotes a function that is nondecreasing in each variable (`ZTm.mono`), so no term is the zero test (`ZTm.no_zero_test`), while `sel(x, 1, 0)` of the kernel's language is (`Tm.val_zf`). The statement is about denotations in the natural numbers only. |
+| `deterministic_introduction`, `evaluation_discharge`, `one_body`, `parameter_intro`, `uniform_recursion` | Filed on 2026-11-12; the comparison with the Lean development is in progress. |
 | `register_graph` | Not formalized. It is a different term language (`J` with two bound variables) over ordinary logic, so it would need a second bi-interpretation with iPRA from scratch. |
 
 ### Further questions

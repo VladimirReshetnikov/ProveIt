@@ -1,0 +1,305 @@
+\section{The result and its comparison target}
+\label{sec:result}
+
+The proposed simplification is a calculus with \textbf{three inference
+families on completely raw terms}: use a retained clause, introduce a
+paired formula, and discharge a witness while performing one elementary
+evaluation. There is one explicit initial axiom clause, universal
+reflexivity. Numerical computation is never an implicit conversion rule.
+Neither full iterator normalization nor zero normalization is needed in
+this primary presentation.
+
+The construction is compared with ProveIt's \texttt{ConciseIPRA} at commit
+\texttt{11814771b749}. The inspected frontier
+includes the seventy-three filed packages and all six archives then present
+in \texttt{docs/incoming}. In particular, the comparison includes
+\texttt{witness\_discharge}, \texttt{clause\_discharge},
+\texttt{deterministic\_opening}, \texttt{first\_instance},
+\texttt{inferred\_witness}, \texttt{prefix\_clauses}, and
+\texttt{substitutive\_discharge}. The last group matters: a proposal that
+only removes the supplied equality proof or replacement term from the
+earlier Name rule would already be present there.
+
+What is new here is the fusion of the existing \emph{computation-and-equality
+evaluation rule} with witness elimination. In contrast, the earlier
+three-family Name presentations put both iterator equations into numerical
+normal forms. The incoming raw contextual-discharge variant retains a
+separate computation family. The present raw calculus has three families
+while keeping ordinary, nonnormalizing substitution.
+
+An optional companion uses zero-normal terms and the existing single
+SeedEval pattern. It also has three families, and has the smaller complete
+checker. The raw variant is the cleaner recommendation when the priority
+is the trusted mathematical specification; the companion is preferable
+when normalized checker size is decisive. Both preserve the entire
+intuitionistic first-order theory, not merely its equations.
+
+The result is a local simplification of the current presentation. It does
+not prove an absolute minimum over all axiomatizations, encodings or
+programming languages. Nor does it beat the repository's separate
+508-byte compact codec, whose proof representation and validation boundary
+are different. The whole-program comparison in Section~\ref{sec:metrics}
+makes these boundaries explicit.
+
+\section{The complete raw presentation}
+\label{sec:raw}
+
+\subsection{Syntax, clauses, and the one fixed axiom}
+
+There is one numerical sort. Raw terms and native formulas are
+\[
+ t::=x\mid 0\mid S(t)\mid I(n,a;u.h),
+ \qquad A::=(s=t)\mid D_{x,y}A.
+\]
+Only $u$ in $h$ is bound by the iterator. The two variables of $D$ are
+bound in its matrix. Bound variables are renamed before capture-avoiding
+substitution; the executable representation instead uses bound indices.
+All finite expressions of this grammar are terms or formulas: there is
+no normal-form side condition and no identification by computation.
+In particular, $I(0,a;u.h)$ and $a$ are distinct terms.
+
+A reusable clause has the form $[\vec A;y.B(y)]$, where $\vec A$ is empty
+or consists of one formula, and $y$ is absent from that antecedent.
+Its ordinary reading is, respectively, $\forall y\,B(y)$ or
+$A\to\forall y\,B(y)$. A context is a finite list of clauses. The
+abbreviation $\Gamma,A$ means addition of the unconditional constant
+clause $[\,;v.A]$, with $v$ unused.
+
+Every arithmetic proof begins with the explicitly counted clause
+\[
+                  \boxed{\mathcal R=[\,;v.v=v].}
+\]
+It supplies equality reflexivity by clause use. The native contradiction
+is the formula $0=S0$. There are no other primitive axiom clauses.
+
+\subsection{One deterministic elementary evaluation}
+
+For arbitrary formulas $E,F$, define $\rho_E(F)$ by the following three
+disjoint cases. Every match is literal syntax, including equality of the
+displayed iterator bodies after the chosen representation of binders.
+\begin{align}
+ \rho_{s=t}\bigl(I(0,s;u.h)=r\bigr)&=(r=t),
+       \tag{Z}\label{eq:rho-zero}\\
+ \rho_{I(c,a;u.h)=t}\bigl(I(Sc,a;u.h)=r\bigr)
+       &=\bigl(r=h[t/u]\bigr),
+       \tag{S}\label{eq:rho-succ}\\
+ \rho_E(F)&=F\qquad\text{in every other case}.
+       \tag{Id}\label{eq:rho-id}
+\end{align}
+The zero case has a literal zero counter; the successor case has a
+successor constructor, so they cannot overlap. In the second case the
+entire predecessor iterator on the left of $E$ must match the one obtained
+from the left of $F$ by deleting its counter's outer successor.
+The replacement term, body, and counter are inferred from the two formulas;
+no term template or computation description is separate rule data.
+
+The substitution $h[t/u]$ is a single ordinary syntactic substitution.
+The result is not normalized. An auxiliary formula $E$ with a $D$ root
+always selects Id. The identity case does not derive $F$ without a premise:
+the rule below explicitly requires a proof of $F$.
+
+\subsection{All three inference families}
+
+\paragraph{Use.}
+For any retained clause $[\vec A;y.B]\in\Gamma$ and term $t$,
+\[
+ \frac{\{\Gamma\vdash A:A\in\vec A\}}
+      {\Gamma\vdash B[t/y]}.
+ \tag{Use}\label{eq:raw-use}
+\]
+There is no proof premise for an unconditional clause, and one for a
+conditional clause. This is the only leaf mechanism; reflexivity is an
+instance of Use at $\mathcal R$.
+
+\paragraph{Introduce.}
+\[
+ \frac{\Gamma,B(t,\eta)\vdash B(t,Sz)}
+      {\Gamma\vdash D_{x,y}B(x,y)},\qquad
+ \eta=\begin{cases}
+ z,&B\text{ is literally an equation and }t\equiv0,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+ \tag{Intro}\label{eq:raw-intro}
+\]
+Here $z$ is fresh for $\Gamma$, the witness $t$, and the passive parameters
+of $B$. The witness test is on raw syntax. The progress case is restricted
+to literal equations; it does not introduce induction on quantified formulas.
+
+\paragraph{Evaluate and discharge.}
+For a fresh numerical parameter $b$, write
+$\mathcal B_b=[B(b,0);y.B(b,y)]$. The third family is
+\[
+ \frac{\Gamma\vdash D_{x,y}B\qquad
+       \Gamma,\mathcal B_b\vdash E\qquad
+       \Gamma,\mathcal B_b\vdash F}
+      {\Gamma\vdash\rho_E(F)}.
+ \tag{Discharge}\label{eq:raw-discharge}
+\]
+The parameter $b$ is fresh for $\Gamma$ and the passive parameters of the
+major formula. Both branch proofs use the same extended context. The
+computed conclusion must be well scoped in the outer numerical scope;
+equivalently, it has no free occurrence of $b$. The intermediate formulas
+$E,F$ may contain $b$.
+
+These are the entire primitive rules of the calculus, denoted $\mathcal E_3$.
+There is no separate hypothesis, equality transport, computation,
+elimination, case, induction, normalization, weakening or cut instruction.
+The two nonidentity patterns inside $\rho$ remain explicitly counted in
+the specification. Calling this ``three families'' does not conceal their
+existence or establish a lower bound.
+
+\section{Exact equivalence on raw open sequents}
+\label{sec:raw-equivalence}
+
+Let $\mathcal V_4$ be the same syntax, clauses, Use and Intro, with ordinary
+paired elimination and the following two-case Eval family in place of
+Discharge:
+\[
+ \frac{\Gamma\vdash s=t\quad\Gamma\vdash I(0,s;u.h)=r}
+      {\Gamma\vdash r=t},\qquad
+ \frac{\Gamma\vdash I(c,a;u.h)=t\quad
+       \Gamma\vdash I(Sc,a;u.h)=r}
+      {\Gamma\vdash r=h[t/u]}.
+\]
+Its ordinary paired elimination is
+\[
+ \frac{\Gamma\vdash D_{x,y}B\quad
+       \Gamma,\mathcal B_b\vdash A}
+      {\Gamma\vdash A},\qquad b\notin\operatorname{FV}(A).
+\]
+This is the repository's raw uniform-clause calculus: Eval is the inherited
+two-case arithmetic interface, and $\mathcal R$ replaces a separate
+reflexivity rule. The pinned Lean files \texttt{NativeEval.lean},
+\texttt{NativeClausal.lean}, and \texttt{NativeUniformClauses.lean}
+establish the corresponding reference equivalences~\cite{repo,rawformal}.
+The new fusion theorem below is proved here, rather than attributed to
+those existing formalizations.
+
+\begin{lemma}[Structural operations]
+\label{lem:raw-structural}
+Weakening and injective renaming of free parameters are admissible in
+$\mathcal E_3$ and $\mathcal V_4$.
+\end{lemma}
+\begin{proof}
+Induct on derivations, freshening a bound eigenparameter before adding an
+outer parameter or clause. Injective renaming preserves and reflects the
+literal matches in $\rho$, preserves the zero/successor constructors,
+commutes with capture-avoiding substitution, and preserves the Intro mode.
+Weakening changes none of that data. No assertion that arbitrary numerical
+substitution preserves an instruction's selected case is needed.
+\end{proof}
+
+\begin{lemma}[A compound theorem with no arithmetic premise]
+\label{lem:theta}
+For every clause context, $\Theta=D_{x,y}(0=0)$ is derivable in both systems,
+even if that context does not contain $\mathcal R$.
+\end{lemma}
+\begin{proof}
+Introduce at witness $0$. The temporary progress assumption and the
+successor target are both $0=0$. Use that newly added unconditional
+assumption. Thus the proof uses only Intro and Use.
+\end{proof}
+
+\begin{theorem}[Identity on the complete consequence relation]
+\label{thm:raw-equivalence}
+For every well-scoped raw clause context $\Gamma$ and formula $A$,
+\[
+               \Gamma\vdash_{\mathcal E_3}A
+               \quad\Longleftrightarrow\quad
+               \Gamma\vdash_{\mathcal V_4}A.
+\]
+Both translations are effective transformations of finite proof trees and
+preserve the entire end sequent literally. The statement does not require
+$\mathcal R$ to be present.
+\end{theorem}
+\begin{proof}
+From left to right, translate a Discharge node's three premises. If its
+$\rho$ computation selects Z or S, apply the corresponding Eval inside the
+witness scope. If it selects Id, the translated branch proof of $F$ already
+has the required conclusion. Apply ordinary paired elimination. Its
+eigenparameter condition is exactly the outer-scope condition of Discharge.
+Use and Intro translate without change.
+
+Conversely, translate a reference elimination node by Discharge. Use as
+auxiliary $E$ the same compound major $D_{x,y}B$, weakened into the fresh
+branch. Since $E$ is compound, $\rho_E(A)=A$, so the original conclusion
+is unchanged.
+
+Translate either Eval node by Discharge with the fixed major proof of
+$\Theta$ from Lemma~\ref{lem:theta}. Weaken its original equation premises
+into that fresh scope, using them as $E,F$. The intended Z or S pattern
+matches and reproduces the Eval conclusion. All data of that conclusion
+are from the outer scope. Recursing over the finite tree, with fresh
+parameters at every inserted scope, proves the two transformations.
+\end{proof}
+
+\paragraph{Direct ordinary soundness.}
+Read $D_{x,y}B$ as
+$\exists x(B(x,0)\to\forall y\,B(x,y))$ and read equality as actual
+equality. Eliminate the existential at $b$. In case Z, the zero computation
+equation and $s=t$ turn the second branch equation into $r=t$.
+In case S, successor computation and the predecessor equation give
+$r=h[t/u]$. Id simply retains the branch formula. Each conclusion can
+leave the witness scope because its free occurrence of $b$ is forbidden.
+This is intuitionistic reasoning and does not use a truth-table argument
+or a restriction to the standard natural numbers.
+
+\section{Where equality, computation and induction come from}
+\label{sec:bootstrap}
+
+The exact comparison theorem already transfers completeness. The following
+derivations expose the arithmetic content and show that no equality law is
+being silently supplied by the checker. Write
+$J_s=I(0,s;u.0)$. All Eval applications below can be expanded by
+Theorem~\ref{thm:raw-equivalence} into the three-family calculus.
+
+\paragraph{Joining equations.}
+From $s=t$ and reflexivity of $J_s$, Z yields $J_s=t$.
+From $s=r$ and that equation, a second Z yields $t=r$.
+Consequently $s=t,s=r\vdash t=r$. Reflexivity supplies symmetry, and
+joining with symmetry supplies transitivity.
+
+\paragraph{Both computation equations.}
+Z on reflexivity of $a$ and of $I(0,a;u.h)$ yields
+$I(0,a;u.h)=a$. S on reflexivity of the predecessor and successor
+iterators yields
+\[
+           I(Sc,a;u.h)=h[I(c,a;u.h)/u].
+\]
+These are theorems. They are not reductions performed by raw substitution.
+
+\paragraph{Transport in any term.}
+Suppose $s=t$ and $h(s)=r$. Put
+$J=I(0,s;u.h)$ and $K=I(S0,s;u.h)$.
+Zero computation gives $J=s$; successor computation and that equation
+give $K=h(s)$, using S. Joining gives $K=r$.
+The zero Eval on $s=t$ and reflexivity of $J$ gives $J=t$.
+The successor Eval on $J=t$ and $K=r$ now yields $r=h(t)$.
+This is the inherited crossed transport rule in an arbitrary term template.
+It supplies congruence and transport in an equation. Transport through a
+compound formula follows by external induction on its $D$ depth, opening
+the old $D$, introducing the new $D$ at the fresh nonzero-syntax witness,
+and transporting its base and successor instances.
+
+\paragraph{Equation induction.}
+For a literal equation $E(y)$, choose an unused witness coordinate $x$.
+The progress instance of Intro at witness $0$ turns
+$\Gamma,E(z)\vdash E(Sz)$ into $D_{x,y}E(y)$. Derived ordinary elimination
+opens the clause $[E(0);y.E(y)]$. A supplied base proof of $E(0)$ and Use
+at any term $t$ derive $E(t)$. This is contextual induction on equations.
+No induction on compound formulas has been added.
+
+\paragraph{The case mode omitted at a literal zero witness.}
+It is recovered at the raw witness $w=I(0,0;u.0)$, which is not literally
+$0$ and is provably equal to $0$. Transport converts the local assumption
+and successor target between the witnesses $w$ and $0$. Ordinary-assumption
+cut, proved by induction on derivations after freshening parameters, inserts
+the original case proof. Thus the single introduction recovers both
+reference introductions. This argument uses raw syntax, and is one reason
+not to silently identify computed terms in the primary calculus.
+
+The full native logical interface and the arithmetic bridge are recorded
+in Sections~\ref{sec:interpretations} and the attributed appendices. The
+logical macros, predecessor construction, equality reflection and pairing
+compiler are inherited; the new theorem changes their proof interface
+without changing their conclusions.

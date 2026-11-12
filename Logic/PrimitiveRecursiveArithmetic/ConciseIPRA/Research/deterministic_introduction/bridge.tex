@@ -1,0 +1,207 @@
+\section{Why the result is full iPRA bi-interpretability}
+\label{sec:bridge}
+
+It would be insufficient to show that the new rules hold over the standard
+natural numbers. It would also be insufficient to recover the equations of
+primitive recursive functions while ignoring quantified intuitionistic
+formulas. Here the new comparison preserves the entire open consequence
+relation, and the remaining interpretation chain is the one already
+established in the pinned sources.
+
+\subsection{The guarded/native comparison}
+
+Let $\mathcal C$ be the unrestricted Choice-DI calculus: it has raw scalar
+terms, Eq/$D$ formulas, the two computation schemas, Use, full formula Tr,
+Open, case introduction at every matrix, and progress introduction at literal
+equations. Its ordinary reading is the one stated for $D$ above.
+
+For an equation $E=(s=t)$ define
+\[
+ G_vE=(I(v,0;u.s)=I(v,0;u.t)),\qquad
+ L(E)=D_{a,v}G_vE,
+\]
+where the added variables are fresh. Define $P(A)=L(A)$ when $A$ is an
+equation and $P(A)=A$ otherwise. Then $P(A)$ is always compound. The
+guarded-core proof~\cite{guarded} establishes, under arbitrary retained
+contexts,
+\[
+ L(E)\dashv\vdash E.
+\]
+Its forward direction opens the clause, supplies the true zero row, and
+specializes at $1$. Its reverse direction uses the retained $E$ to prove the
+successor row, ignoring the induction hypothesis.
+
+The structural translation into the guarded language is
+\[
+ T(s=t)=(s=t),\qquad
+ T(D_{x,y}B)=D_{x,y}P(TB).
+\]
+Literal inclusion is the interpretation in the other direction. Case
+introductions translate through padding. Equation progress translates using
+the guarded calculus's derived equation-induction rule. An opened padded
+clause is used by padding its antecedent and unpadding its consequence.
+These are transformations of arbitrary finite open derivations.
+
+The two formula composites are also proved, not assumed. In the unrestricted
+calculus, padding and general binder congruence give $A\dashv\vdash JT(A)$.
+In the guarded calculus, compound matrices use compound binder congruence;
+guarded atomic matrices use their provable zero row to establish
+\[
+ D_{x,y}B\dashv\vdash D_{x,y}L(B).
+\]
+This is why the zero guard in the public grammar is substantive. Dropping it
+would invalidate this argument. The source proof, supplied in
+\path{reference/guarded_core.tex}, gives the equation-induction bootstrap and
+both composites in detail. The new deterministic calculus proves exactly the
+same guarded sequents, so every one of those derivations transfers literally.
+
+\subsection{The ordinary scalar theory}
+
+The intermediary $T_{\rm eq}$ uses ordinary intuitionistic first-order logic
+with equality over scalar terms. Its nonlogical principles are
+\[
+ I(0,a;u.h)=a,\quad I(Sn,a;u.h)=h[I(n,a;u.h)/u],
+\]
+\[
+ \forall x\,(x=0\lor\exists y\,x=Sy),\qquad 0=S0\to\bot,
+\]
+together with contextual induction for literal equations. ``Contextual''
+means the retained side assumptions may themselves be quantified formulas;
+only the induction formula is restricted to an equation.
+
+The ordinary realization sends $D_{x,y}B$ to
+$\exists x(B(x,0)\to\forall y\,B(x,y))$ and sends a clause to
+$A\to\forall y B$. In $T_{\rm eq}$, compound case introduction is justified
+by coverage; guarded atomic progress is justified by equation induction and
+the true zero row. Equality transport and clause application use the usual
+intuitionistic equality and quantifier rules. Thus the reading is sound.
+
+Conversely, the native logical macros recover implication, conjunction,
+disjunction, both quantifiers, and falsity, with their introduction and
+elimination rules, and prove the formula round trips. This is the
+full native/ordinary bridge~\cite{choice,ordinary,lean}. No excluded-middle
+rule for arbitrary formulas is used. The code of a primitive recursive
+description is never an object-language numerical variable ranging over
+all programs.
+
+\subsection{The arithmetic interpretation and its inverses}
+
+In iPRA, each fixed scalar term has a primitive recursive interpretation.
+An occurrence $I(n,a;u.h)$ becomes the primitive recursion that starts at the
+translation of $a$ and repeatedly applies the already translated update $h$,
+ignoring the recursion counter in that update. This is external recursion
+over a fixed finite term description, not an internal universal evaluator.
+
+In the reverse direction the repository develops, in order, a scalar
+predecessor, reflection of actual equality into a Boolean-valued term,
+quantifier-free induction, pairing with projections, and a compiler for
+arbitrary fixed primitive-recursive descriptions~\cite{arithmetic}.
+For a recursion
+\[
+ f(0,\vec p)=g(\vec p),\qquad
+ f(Sn,\vec p)=h(n,f(n,\vec p),\vec p),
+\]
+the scalar compiler stores the counter and current output in one coded state.
+Writing $\pi$ for pairing and $\ell,r$ for its two projections, put
+\[
+ W(u,\vec p)=\pi(S\ell(u),h^*(\ell(u),r(u),\vec p)),
+\]
+\[
+ V(n,\vec p)=I(n,\pi(0,g^*(\vec p));u.W(u,\vec p)),
+ \qquad f^*(n,\vec p)=r(V(n,\vec p)).
+\]
+The invariant $\ell(V(n,\vec p))=n$, proved by equation induction,
+and the projection equations prove the two defining equations internally.
+Initial functions and composition translate directly.
+
+Equality reflection compiles each quantifier-free formula $A$ to a fixed
+term $b_A$ with $b_A=0\leftrightarrow A$ and a proved Boolean range. Equation
+induction on $b_A=0$ therefore yields full quantifier-free induction,
+including under arbitrary side assumptions. This is an inherited bootstrap;
+we do not use equality reflection to justify a restricted induction rule
+before reflection has been proved.
+
+Both numerical interpretation domains are $x=x$. The interpreted equality
+is actual equality, and the numerical isomorphisms for the composites have
+graph $x=y$. Internal uniqueness of a fixed primitive recursion, proved by
+equation induction, identifies each double-translated operation with the
+original one. Structural induction on each fixed description then proves
+preservation of every operation; the native formula round trips give the
+logical composites as well. These claims concern arbitrary internal numbers,
+not merely standard numerals.
+
+The precise downstream Lean statements in the pinned source include
+\path{native_iff_pra}, \path{pra_iff_native},
+\path{native_roundTrip}, \path{pra_native_roundTrip}, and
+\path{native_inconsistent_iff} in
+\path{Lean/ConciseIPRA/NativeBiInterpretation.lean}. This package includes
+that source for reference. It does not claim that this file alone is a
+standalone Lean project, or that the new deterministic-introduction theorem
+has been compiled in Lean.
+
+\section{A failed shortcut and the boundary it exposes}
+
+The current automatic-opening proposals inspect a zero row and a first row.
+One tempting simplification is to keep only the first-row check. It is
+unsound. This matters when trying to combine the new introduction rule with
+those proposals.
+
+Choose a primitive recursive $f$ with
+\[
+ f(0)=f(1)=0,\qquad f(2)=1,
+\]
+and let $B(x,y)$ be $x=f(y)$. In full iPRA,
+\[
+ D_{x,y}B=\exists x\bigl(x=f(0)\to\forall y\,x=f(y)\bigr)
+\]
+is provable with witness $1$: its antecedent is false. The first row at a
+fresh parameter $b$ is $b=0$. An unchecked first-row probe would therefore
+replace the opened witness by $0$. The resulting clause is
+\[
+ 0=0\to\forall y\,0=f(y),
+\]
+which gives $0=1$ at $y=2$.
+
+Our literal naming matrix has a computation-provable zero row and is used
+with ordinary Open; it does not make this invalid inference. Nor do we
+silently compose it with automatic opening: opening a successful name
+directly at $t$ can remove the fresh alias $b=t$ on which the present
+simulation relies. A composition needs an additional proof, rather than a
+simple replacement of one rule name by another.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item \textbf{Can automatic introduction and automatic opening share a
+      smaller bootstrap?} The present proof uses full formula transport and
+      ordinary opening. A useful next target is a simultaneous recovery of
+      transport, naming, and deterministic introduction in the three-family
+      full-normal-form calculus. The dependence of existing equality proofs
+      on unrestricted introduction must be removed explicitly.
+\item \textbf{Can the deterministic selector be made cheaper to recognize?}
+      Its mathematical data are smaller, but a pattern recognizer can exceed
+      the source cost of validating a supplied term. A redesigned formula
+      grammar may make the name structure intrinsic; any extra grammar and
+      translation costs must be counted.
+\item \textbf{Can full formula Tr be weakened before the bootstrap?}
+      The algebraic-cut argument uses transport through an arbitrary guarded
+      formula. Reducing it to term-only transport would require proving
+      formula transport without already using unrestricted witnesses or
+      unrepaired weakening.
+\item \textbf{What is the proof-size cost?} The construction is effective,
+      but this report does not claim a linear or polynomial bound on the
+      serialized certificates. An explicit compiler could measure duplication
+      caused by repaired weakening and naming.
+\item \textbf{Can the new structural theorem be formalized against the
+      existing Lean kernel?} A direct port using the substitution-stable
+      diagonal presentation is plausible, but the guarded presentation and
+      its exact source interpretation should first be pinned in the formal
+      interface. A source-level prototype is not a compiled theorem.
+\item \textbf{Which size metric captures the intended simplicity?}
+      Rule-data count, complete typed-checker size, compact encoding size,
+      and conceptual prerequisites reward different changes. A future
+      minimum claim should fix one public input contract and one measured
+      implementation language, and distinguish observed records from lower
+      bounds.
+\end{enumerate}
+

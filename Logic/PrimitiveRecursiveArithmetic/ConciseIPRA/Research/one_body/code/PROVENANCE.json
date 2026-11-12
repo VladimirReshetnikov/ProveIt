@@ -1,0 +1,26 @@
+{
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "commit": "11814771b7490dfbea0ed5fcf0f5b23586334764",
+  "fetched_sources": [
+    {
+      "output": "checker_native_control.py",
+      "path": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/checked_refinement/code/checker_native.py",
+      "git_blob_sha": "e00a9349e9b2d9c2472f921ad4b63c03da5013c3",
+      "size_bytes": 788,
+      "sha256": "df61df7daea190495d0fc86433116fdd6acaec97f62686b25d99c3dca0e28ee7",
+      "actual_git_blob_sha": "e00a9349e9b2d9c2472f921ad4b63c03da5013c3"
+    },
+    {
+      "output": "baseline_compact_516.py",
+      "path": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/canonical_recursors/compact/code/checker_compact_zero.py",
+      "git_blob_sha": "913bc91fa73bde3aad199e17ba42af5a3488b0d6",
+      "size_bytes": 516,
+      "sha256": "50712ba3b2616a5c45c0d0526fc32de4a52199bebbbc7e7e035e5f9debeca0ae",
+      "actual_git_blob_sha": "913bc91fa73bde3aad199e17ba42af5a3488b0d6"
+    }
+  ],
+  "control_derivation": "checker_clausal_control.py is the normalized raw_clausal/code/clausal_eval.normalized.py with the already known redundant root-equality Eval case removed. Candidate and matched control both use only the zero and successor Eval cases.",
+  "candidate_derivation": "checker_one_body.py changes clauses to single bodies, gates ordinary assumptions, and extends the capture-avoiding opening routine with a binder-lifting mode. It keeps atomic reflexivity and the same two-case Eval.",
+  "native_refinement": "checker_native_pareto.py uses three acceptance-preserving validator changes: exact-integer zero/lower-bound predicates; numeric Boolean default; list discrimination by multiplication. checker_native_refined.py additionally applies the already known exact Boolean-dispatch rewrite. Neither changes an arithmetic or logical rule.",
+  "native_fixtures": "Canonical fixture bytes from Research/canonical_recursors/compact/fixtures/zero at the pinned commit; copied as tests for both strict Eq/D interfaces. They do not turn the guarded compact checker into a full native validator."
+}
