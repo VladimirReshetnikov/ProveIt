@@ -7723,6 +7723,9 @@ unelaborated and is not yet composed into the complete reverse witness.
 The source-reviewed [74 own-zero unit composition](research/ordinary14-74-ownzero-units-draft/README.md)
 proposes applying those exclusions to the graph's product. It remains
 unelaborated and does not yet establish the positive reverse coordinate.
+The source-reviewed [74 own-zero strict-guard draft](research/ordinary14-74-ownzero-guard-strict-draft/README.md)
+proposes that coordinate bound from the graph's own zero under explicit
+port and discreteness hypotheses. It remains unelaborated.
 The source-reviewed [75/74 ring client](research/ordinary14-75-74-ring-client-draft/README.md)
 and [positive map draft](research/ordinary14-75-74-positive-map-draft/README.md)
 propose the forward and conditional reverse valuation updates. They are
