@@ -1275,6 +1275,10 @@ The separately reviewed [isolated slim overlay](research/ordinary14-root78-slim-
 records the candidate substitutions in copies of the draft sources. It does
 not change the original clients or establish Lean name resolution, provider
 compatibility or a checked endpoint.
+The reviewed [refusal-only preflight](research/ordinary14-root78-slim-no-lean-preflight/README.md)
+checks selected hashes, resources and collision observations, but always
+refuses to launch. Provider ancestry, exclusive slot allocation, actual Lean
+resolution and the monitored runner remain unresolved.
 The reviewed [parent-to-88 first-cut draft](research/ordinary14-parent-to-88-first-cut-draft/README.md)
 is now tracked as a dependency of the proposed parent witness; it remains
 unelaborated like the rest of that source chain.
