@@ -30,7 +30,7 @@ private theorem first_bad : ∀ b z x s k : ZMod 4,
     let q := 1+b
     let Y := q*(q*q)*s
     let ell := (x*Y)*(Y*k)
-    1+(z*z-b*b*(1+ell*(ell+k))) ≠ -1 := by decide
+    1+z^2-b^2*(1+ell*(ell+k)) ≠ -1 := by decide
 
 theorem first_ne {σ : Type*} (b z x s k : Expr σ) (v : σ → V) :
     (pairEval (firstPattern b z x s k) v).1+1 ≠
