@@ -1,0 +1,87 @@
+MANUAL STATIC AUDIT OF THE SELECTED CHECKERS
+
+Scope: raw_two_case.py, checker.py, and zero_base.py. This is a manual
+successful-derivation invariant argument, not a proof-assistant verification.
+
+PUBLIC BOUNDARY
+verify accepts only a dictionary with exactly goal/proof, validates a closed
+goal, and invokes derive from empty context and numerical scope zero.
+Direct calls to derive assume the context/scope invariant; they are not the
+validated public certificate interface. The CLI catches malformed-shape,
+type, index, recursion and other ordinary exceptions and rejects.
+
+TYPING INVARIANT
+For a well-scoped internal context at scope n, every successful derive
+returns an Eq/D formula scoped at n. A context clause has a scoped
+antecedent and a body with at most its one designated positive free bound
+index. Ordinary clauses have no such free index. All existing free-level
+variables lie among -1,...,-n. The canonical variants additionally preserve
+zero-normality throughout terms, formulas and clauses.
+
+Refl validates its input term before creating an equation. Clause use checks
+an exact antecedent and opens its well-scoped body with a validated term.
+Elimination and introduction validate their goal before extending scope,
+and introduction validates its witness at that original scope. Branch
+conclusions are compared to the exact required scoped target. Thus their
+returned goals preserve the invariant.
+
+EVAL SHAPE CHECKS
+The two-value unpacking of a successfully inferred formula can succeed only
+for Eq: a D formula has length one. Its sides are therefore well-scoped
+terms. Three-value unpacking of the second equation's left side can succeed
+only for an iterator: scalars are not iterable and S has length two. Its
+counter is already a valid term. Consequently a nonzero counter of length
+two must be a successor, because other nonzero terms are scalars or
+three-child iterators. There is no need for a second tag validator here.
+
+In the raw checker, counter zero is exactly the E0 case, and a successor
+counter is exactly ES. In canonical checkers the counter is nonzero by
+the normal grammar, the predecessor comparison uses the smart iterator,
+and the result is the normalized body substitution. A malformed extraction
+raises an exception; it cannot manufacture a formula of the wrong sort
+that is later accepted through an unchecked path.
+
+OPENING AND FRESHNESS
+Positive integers denote bound indices; negative integers denote rigid free
+levels. Inserted witnesses have no positive free indices, so insertion
+beneath a binder requires no lifting of the witness. Its internal bound
+indices already have their own scopes. Traversal increments depth by two
+under D and by one only in an iterator update body. The normal opener first
+normalizes children and then contracts a newly formed zero iteration.
+Inserted values are already normal, so returning one directly is sound.
+
+The value -n-1 is absent from every input scoped at n, automatically meeting
+the eigenvariable freshness requirements. Existing negative levels remain
+unchanged under context weakening. The separately validated goal and witness
+cannot contain the new level, preventing eigenvariable escape.
+
+EXACT-ZERO GUARD
+In zero_base.py, equality of the normalized base syntax with [0,0] entails
+that the matrix is an equation. No compound D formula has that two-child
+shape. This tests syntax, not arithmetic truth. True guards persist under
+normal substitution; false guards can become true and require the separate
+mathematical case-recovery argument.
+
+INDEPENDENT FINITE TRANSLATIONS
+The normal six-rule translator reverses context indices because clausal
+contexts append and the destination prepends. It retains clause-origin
+annotations, using Hyp for ordinary clauses and QE for closures. Negative
+levels map to de Bruijn indices depth+scope+level; bound positive indices
+map to index minus one. Every resulting certificate is passed to the exact
+inherited destination checker.
+
+The exact-zero translator instead targets the independent seven-rule
+checker with explicit successor computation and Tr. It replaces UE by
+one computation and two Tr nodes, Refl by computation and Tr, and progressive
+DI by QI followed by case DI. Its lift/weakening proof map follows the
+inherited guarded-introduction translation. Every delivered translated
+certificate was accepted by that destination checker.
+
+LIMITS
+No concrete soundness defect was found in this audit. This is not universal
+formal verification of the Python programs or their compilers. Python
+resource limits may reject sufficiently large valid finite certificates.
+The default JSON parser accepts duplicate object keys with last-key
+semantics; the checkers validate the decoded structure, not uniqueness of
+keys in the textual JSON representation. This parser convention does not
+permit a malformed decoded proof to bypass the stated checks.

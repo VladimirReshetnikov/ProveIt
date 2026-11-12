@@ -1,0 +1,862 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{textcomp}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,longtable,array}
+\usepackage{enumitem,xcolor,microtype,listings,fancyhdr,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!55!black,citecolor=blue!45!black,pdftitle={Computation-normal iPRA},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Computation-normal iPRA}
+\fancyhead[R]{\small Reduction and verification report}
+\fancyfoot[C]{\thepage}
+\setlist{topsep=4pt,itemsep=3pt}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,upquote=true,frame=single,rulecolor=\color{black!20},backgroundcolor=\color{black!2}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\ensuremath{\mathsf{iPRA}}}
+\newcommand{\Raw}{\ensuremath{\mathcal R}}
+\newcommand{\Six}{\ensuremath{\mathcal N_6}}
+\newcommand{\Seven}{\ensuremath{\mathcal N_7}}
+\newcommand{\nf}[1]{\operatorname{nf}(#1)}
+\newcommand{\I}[3]{I(#1,#2;\,#3)}
+\newcommand{\bnf}{\mathrel{::=}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\repo}{\texttt{d9383325b18d349b8bfdc54ef564c5784cc029ec}}
+\newcommand{\rulename}[1]{\textup{\textsc{#1}}}
+\title{\textbf{Computation-normal iPRA}\\[4pt]
+\large A six-rule calculus, a fresh-zero lemma,\\and a smaller validated checker}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{11 November 2026 (Pacific time)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We investigate a simplification of the current ConciseIPRA proposal at a
+fixed repository snapshot. There are two separate results.
+First, both iterator computation axioms are replaced by computation-normal
+syntax and reflexivity. We prove that a six-rule calculus results and give
+the round trips required for bi-interpretability with intuitionistic
+primitive recursive arithmetic. The main new completeness argument is a
+fresh-zero lemma: a locally introduced variable provably equal to zero
+replaces the closed zero alias that full normalization destroys.
+
+Second, two existing validation ideas are composed without changing the
+arithmetic calculus. The complete checker has 860 normalized source bytes,
+377 significant tokens and 433 AST nodes, versus 870, 383 and 442 for its
+matched public Eq/Q/D baseline. Maximum-level gzip is 508 bytes, versus
+507. The acceptance contract is preserved.
+
+These results do not establish an overall simplest axiomatization.
+The repository already contains a six-rule zero-normal presentation and a
+516-byte checker with a different arity-envelope interface. Fair comparisons
+show that full normalization does not robustly reduce complete checker
+size; it also introduces a total-recursive, non-primitive-recursive uniform
+normalizer. We recommend the small validation reduction as an
+implementation improvement and retain the new calculus as a proved
+mathematical alternative, with its costs explicit.
+\end{abstract}
+\vspace{1em}
+
+\section{Result and comparison contract}
+\label{sec:baseline}
+
+The requested objective is a simpler theory that is both equiconsistent
+and bi-interpretable with full first-order \ipra. Preserving only its
+equational fragment would not suffice. We use the size of a complete
+proof-checker implementation as the operative complexity criterion, and
+record gzip at compression level 9 as an informational measurement.
+
+The baseline is repository commit \repo, which introduces
+\code{NativeZeroNormal.lean}. Its UTC commit time is 12 November 2026,
+03:01:27, or 11 November in Pacific time. Comparisons are pinned to that
+snapshot rather than to a moving branch \cite{repository}.
+
+The snapshot distinguishes the eight-rule native kernel, the seven-rule
+single-introduction variant, the adopted seven-rule zero-normal kernel,
+and a delivered six-rule zero-normal variant. It also contains much
+smaller arity-coded Python checkers. Their validation contracts differ.
+The 516-byte compact source is an implementation refinement separate
+from its package's alternative recursor theory \cite{canonical}.
+
+\paragraph{Established results.}
+The calculus \Six\ below has six rule kinds, with reflexivity in place
+of computation equations. Its normalized sequents are exactly those of
+the native calculus, and both interpretation composites are provably
+the identity. The fresh-zero lemma makes its single introduction
+complete despite the loss of closed nonliteral zero aliases.
+Independently, deleting a duplicated public-syntax scope check produces
+a smaller complete checker for the unchanged existing theory.
+
+\paragraph{Limits of the claim.}
+Neither construction is a proof of global minimality. The 860-byte
+program does not beat the different 516-byte interface. Full
+normalization simplifies the explicit axiom table but does not win
+robustly in matched complete-checker measurements. No new Lean or Rocq
+formalization is claimed: the extension consists of written proofs,
+executable checkers, concrete certificates, and independent review.
+The native/\ipra\ bridge is inherited from the pinned repository.
+
+\section{The inherited arithmetic and logic}
+\label{sec:inherited}
+
+\subsection{The reference \ipra}
+
+We use the repository's first-order intuitionistic presentation. There
+is one numerical sort, actual equality, zero, successor, and one
+function symbol for each primitive-recursive definition built from
+zero, successor, projections, composition and primitive recursion.
+The nonlogical axioms are the defining equations, successor
+injectivity, $Sx=0\to\bot$, and induction for quantifier-free formulas,
+with parameters and side assumptions. The ambient logic is
+intuitionistic first-order natural deduction with equality. The
+primitive-recursive function family is an effective schema, not a
+hidden finite table.
+
+\subsection{The raw native calculus}
+
+Raw terms are
+\[
+ t\bnf x\mid0\mid S(t)\mid\I{c}{a}{u.h}.
+\]
+Only $u$ is bound in $h$, not in the counter $c$ or seed $a$. The
+computation equations are
+\begin{align}
+ \I{0}{a}{u.h}&=a,\label{eq:zero}\\
+ \I{Sc}{a}{u.h}&=h[\I{c}{a}{u.h}/u].\label{eq:succ}
+\end{align}
+Formulas have the grammar
+\[
+ A\bnf(s=t)\mid Q_yB\mid D_{x,y}B.
+\]
+The designated contradiction is $0=S0$. Their ordinary intuitionistic
+readings are
+\begin{align}
+ (Q_yB)^\circ&:=B^\circ(0)\to\forall y\,B^\circ(y),\label{eq:q}\\
+ (D_{x,y}B)^\circ&:=\exists x\,
+  \bigl(B^\circ(x,0)\to\forall y\,B^\circ(x,y)\bigr).\label{eq:d}
+\end{align}
+No classical principle is implicit in these readings.
+
+The raw reference calculus \Raw\ is \code{NPrf}: hypothesis, the two
+computation equations, crossed one-term transport, $Q$ elimination,
+$D$ elimination, $D$ introduction by cases and $Q$ introduction by
+equational progress. Its two introductions are
+\[
+ \frac{\Gamma,B(t,0)\vdash B(t,Sz)}
+      {\Gamma\vdash D_{x,y}B(x,y)}
+ \qquad
+ \frac{\Gamma,E(z)\vdash E(Sz)}
+      {\Gamma\vdash Q_yE(y)},
+\]
+where $z$ is fresh and $E$ is a literal equation.
+
+\subsection{The inherited bi-interpretation}
+
+The intermediate ordinary theory $T_{\rm eq}$ uses intuitionistic logic
+with equality, the iterator equations, coverage
+$\forall x(x=0\lor\exists y\,x=Sy)$, separation $0=S0\to\bot$,
+and equation induction with side assumptions. The pinned development
+proves that \Raw, $T_{\rm eq}$ and \ipra\ are bi-interpretable, with
+whole numerical domains and the identity graph $x=y$ on the composites.
+
+The final results are named as follows:
+\begin{quote}\small
+Equivalence: \code{native_iff_pra}, \code{pra_iff_native}.\\
+Composites: \code{native_roundTrip}, \code{pra_native_roundTrip}.\\
+Consistency: \code{native_inconsistent_iff}.
+\end{quote}
+Their definitions are in \code{NativeBiInterpretation.lean}.
+The archive includes that source
+for precise attribution; the dependency chain remains in the pinned
+repository. We do not replace it with a new unproved representation
+assertion.
+
+The bridge derives predecessor, reflection of equality into a term,
+quantifier-free induction, pairing, and a compiler for general
+primitive recursion. The logical layer defines
+$\bot,\to,\land,\lor,\exists,\forall$ by selector and gate formulas and
+proves all their intuitionistic natural-deduction rules.
+Consequently a faithful new presentation of \Raw\ retains full
+first-order intuitionistic arithmetic.
+
+\section{Computation-normal syntax}
+\label{sec:normal}
+
+Orient \eqref{eq:zero} and \eqref{eq:succ} from left to right, allowing
+reduction everywhere, including under iterator binders.
+
+\begin{definition}
+The normal syntax, with scopes understood, is
+\[
+ \begin{aligned}
+ n&\bnf x\mid\I{n}{a}{u.h},\\
+ a,h&\bnf n\mid0\mid S(a).
+ \end{aligned}
+\]
+The first line describes neutral terms. Every iterator counter has a
+neutral root, and all subterms are normal. Formula constructors are
+unchanged; their numerical terms must be normal.
+\end{definition}
+
+For example, $\I{x}{0}{u.0}$ is normal, although its intended value is
+always zero. In contrast, $\I{Sx}{0}{u.0}$ normalizes to $0$.
+Computation normalization does not decide arithmetic equality.
+
+Write $\nf{t}$ for the normal form. Substitution in the new calculus is
+always \emph{normal substitution}:
+\[
+ t\langle s/x\rangle:=\nf{t[s/x]}.
+\]
+We use ordinary substitution notation in rules with this convention in
+force. Formula normalization changes terms only and preserves the
+equation/$Q$/$D$ tree.
+
+\begin{lemma}[External normalization]
+Every finite well-scoped raw term has a unique normal form.
+Normalization is idempotent, preserves scope, and satisfies
+\[
+ \nf{t\sigma}=\nf{\nf{t}\,(\nf{\sigma})}.
+ \tag{N}
+\]
+\end{lemma}
+
+\begin{proof}
+For termination, embed the syntax in G\"odel's System T. All numerical
+variables have base type $\mathbb N$, and the iterator maps to
+\[
+ \operatorname{Rec}_{\mathbb N}
+ (a,\lambda k^{\mathbb N}.\lambda u^{\mathbb N}.h,c),
+\]
+with $k$ fresh and unused. A source zero contraction becomes a
+recursor contraction; a successor contraction becomes a recursor
+contraction followed by two beta contractions. Translation respects
+contexts and capture-avoiding substitution. Thus an infinite source
+reduction would give an infinite System-T reduction, contrary to
+strong normalization. A primary reference with a mechanized proof is
+Urciuoli \cite{urciuoli}. System T is used in the metatheory, not added
+to the arithmetic being presented.
+
+For confluence, use parallel reduction. The two left-hand sides have
+different constructor patterns and are left-linear. Reductions in
+counter, seed and body commute with root contraction after taking
+parallel reducts. The duplicated terms in a successor contraction are
+reduced in parallel. Induction proves the substitution property
+$h\Rightarrow h'$, $r\Rightarrow r'$
+implies $h[r/u]\Rightarrow h'[r'/u]$, and then the diamond property
+for parallel developments. Termination and confluence yield unique
+normal forms. Stability of reduction under substitution proves (N);
+idempotence and scope preservation follow.
+\end{proof}
+
+This is an external termination proof. It asserts no \ipra-internal
+uniform evaluator theorem. Injective variable renaming preserves
+neutral roots and normal syntax. In particular, eigenvariable shifts
+commute with normalization. Equation (N) supplies the identity and
+associativity laws of normal substitution.
+
+\begin{lemma}[Finite conversion soundness in \Raw]
+For every individual raw term $t$, \Raw\ proves $t=\nf{t}$.
+Every native formula is interderivable with its normalization, over
+all its free parameters.
+\end{lemma}
+
+\begin{proof}
+Root reductions are computation axioms; reductions in counter and seed
+use ordinary congruence. Reduction in a bound update body needs more
+care: the iterator is not an ordinary ternary function of three numbers.
+
+If $h(u)=h'(u)$ is provable with $u$ fresh, raw equation induction on
+$c$ proves
+$\I{c}{a}{u.h}=\I{c}{a}{u.h'}$.
+At zero both sides are $a$. At a successor, unfold, specialize the
+pointwise body equality at the recursive value, and use the induction
+hypothesis inside the other body. This is the required body-congruence
+lemma. Lift and compose the finitely many reduction steps.
+The established raw $Q$ and $D$ congruences then lift term equalities
+to formula interderivability.
+\end{proof}
+
+The body-congruence argument uses induction in the already established
+raw calculus. It does not assume the new calculus's target theorem.
+
+\section{The complete six-rule axiomatization}
+\label{sec:rules}
+
+Contexts are finite lists of normal formulas, and hypotheses may be
+reused. Every substitution below is normal substitution. In
+\rulename{DE}, $b$ is fresh for $\Gamma$, $A$, and $B$; in
+\rulename{DI}, $z$ is fresh for $\Gamma$, $B$, and the witness $t$. These
+six kinds are the entire primitive calculus \Six.
+
+\paragraph{Hypothesis and reflexivity.}
+\[
+ \frac{A\in\Gamma}{\Gamma\vdash A}\;(\rulename{Hyp}),
+ \qquad
+ \frac{}{\Gamma\vdash t=t}\;(\rulename{Refl}).
+\]
+The reflexivity term is any well-scoped normal term.
+
+\paragraph{Crossed transport in one term.}
+\[
+ \frac{\Gamma\vdash s=t\qquad\Gamma\vdash h(s)=r}
+      {\Gamma\vdash r=h(t)}\;(\rulename{Tr}).
+\]
+The normal template $h$ has one displayed argument in addition to
+ambient parameters; it may use the argument repeatedly or not at all.
+
+\paragraph{Closure elimination.}
+\[
+ \frac{\Gamma\vdash Q_yB(y)\qquad\Gamma\vdash B(0)}
+      {\Gamma\vdash B(t)}\;(\rulename{QE}).
+\]
+
+\paragraph{Witness elimination.}
+\[
+ \frac{\Gamma\vdash D_{x,y}B(x,y)
+       \qquad\Gamma,Q_yB(b,y)\vdash A}
+      {\Gamma\vdash A}\;(\rulename{DE}),\qquad b\text{ fresh}.
+\]
+
+\paragraph{Single witness introduction.}
+\[
+ \frac{\Gamma,B(t,\eta)\vdash B(t,Sz)}
+      {\Gamma\vdash D_{x,y}B(x,y)}\;(\rulename{DI}),\qquad z\text{ fresh},
+\]
+where
+\[
+ \eta=
+ \begin{cases}
+ z,& B\text{ is literally an equation and }t\text{ is literally }0,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+The guard is syntactic, not a test whether $t$ is provably zero.
+
+There are no other primitive logical axioms, equality laws, successor
+axioms, induction schemas, structural rules, or computation equations.
+The computation clauses belong to the \emph{specified substitution
+algorithm}; its implementation is fully counted. Arithmetic computation
+has not disappeared from the trusted machinery.
+
+\subsection{Ordinary soundness of introduction}
+
+In case mode, the premise gives $B(t,0)\to B(t,Sz)$ for arbitrary $z$.
+Coverage, using $B(t,0)$ in the zero case, yields
+$B(t,0)\to\forall yB(t,y)$; existential introduction gives the reading
+of $D$. In progress mode the matrix is a literal equation of
+primitive-recursive terms, so quantifier-free induction gives exactly
+the needed closure. There is no induction on arbitrary compound
+$Q/D$ formulas.
+
+\section{The fresh-zero completeness lemma}
+\label{sec:freshzero}
+
+\begin{lemma}
+Weakening, injective renaming and cut are admissible for \Six,
+without first assuming arbitrary numerical substitution.
+\end{lemma}
+
+\begin{proof}
+Use induction on derivations. Injective renaming preserves normality,
+literal zero, the matrix root, and freshness. For cut, under each
+eigenvariable rule first rename and weaken the inserted proof.
+No guard depends on membership or multiplicity of context formulas,
+so the ordinary substitution of derivations for hypotheses applies.
+\end{proof}
+
+Arbitrary numerical substitution can turn a syntactically nonzero
+witness into literal zero, changing the selected premise. A direct
+induction claiming substitution admissibility for the single
+introduction would therefore be invalid. We derive it later through
+a stable equivalent basis.
+
+\subsection{Atomic equality reasoning}
+
+Symmetry of $s=t$ is one \rulename{Tr} step with major $s=s$, identity
+template and second premise $s=t$. Congruence uses major $s=t$ and
+second premise $h(s)=h(s)$. For transitivity, reverse $s=t$ to $t=s$
+and transport it along $t=u$, obtaining $s=u$.
+
+Two applications give two-sided atomic transport:
+from $s=t$ and $a(s)=b(s)$ derive $b(s)=a(t)$ and then
+$a(t)=b(t)$. Equation (N) ensures the normalized template instances
+match exactly.
+
+\subsection{The lost zero alias}
+
+The old zero-normal six-rule argument can use
+$\I{S0}{0}{u.0}$ as a closed, nonliteral term provably zero.
+Full normalization erases that distinction. Indeed every closed
+full-normal term is a numeral: following the counter chain of a
+neutral term would otherwise eventually require a free variable.
+
+\begin{lemma}[A fresh name for zero]
+\label{lem:namedzero}
+Put $Z(x,y)\equiv\I{y}{0}{u.x}=0$. Then
+$\Six\vdash D_{x,y}Z(x,y)$. In its \rulename{DE} scope,
+the fresh witness $b$ satisfies $b=0$.
+\end{lemma}
+
+\begin{proof}
+Introduce $D Z$ at witness $0$. The matrix is an equation, so the rule
+selects progress mode. Its successor target normalizes to $0=0$,
+proved by reflexivity without using the progress hypothesis.
+
+In the elimination scope assume $Q_yZ(b,y)$. The base $Z(b,0)$
+normalizes to $0=0$. Use reflexivity for that base and \rulename{QE}
+at $S0$. The result $Z(b,S0)$ normalizes to $b=0$.
+\end{proof}
+
+The local witness is a variable, despite being provably zero. It is
+discharged before the final conclusion; no permanent constant or
+additional domain element has been introduced.
+
+\subsection{Recover the omitted atomic case}
+
+Suppose $E(x,y)$ is an equation and a proof is given of
+\[
+ \Gamma,E(0,0)\vdash E(0,Sz),\qquad z\text{ fresh}.
+ \tag{C0}
+\]
+The desired $D_{x,y}E(x,y)$ is not a primitive case introduction at
+witness zero, because the guard would demand progress.
+
+Open Lemma~\ref{lem:namedzero}, obtaining fresh $b$ and $b=0$.
+Under $E(b,0)$, atomic transport gives $E(0,0)$.
+Cut into (C0), then transport the resulting $E(0,Sz)$ back along
+$0=b$. This gives $E(b,Sz)$.
+Apply primitive \rulename{DI} at witness $b$, where case mode is
+selected. Its conclusion $D E$ and the context do not mention $b$,
+so \rulename{DE} closes the fresh-zero scope.
+
+Only atomic transport, weakening, injective renaming and cut have
+been used. Full formula transport and arbitrary term substitution
+were not premises of this recovery.
+
+\section{Equivalence and both interpretation composites}
+\label{sec:equivalence}
+
+Let \Seven\ have the same normal syntax and five shared rules, but
+replace the single \rulename{DI} by unrestricted $D$ introduction by
+cases and $Q$ introduction by equational progress:
+\[
+ \frac{\Gamma,B(t,0)\vdash B(t,Sz)}
+      {\Gamma\vdash D_{x,y}B(x,y)}
+ \qquad
+ \frac{\Gamma,E(z)\vdash E(Sz)}
+      {\Gamma\vdash Q_yE(y)}.
+\]
+The equation restriction and freshness conditions remain in force.
+
+\begin{theorem}
+\label{thm:sixseven}
+\Six\ and \Seven\ derive the same normal sequents.
+\end{theorem}
+
+\begin{proof}
+All case instances except the equation/witness-zero case are already
+primitive in \Six; Section~\ref{sec:freshzero} derives that last case.
+For progress, add a dummy witness $x$ to $E(y)$ and apply
+\rulename{DI} at zero. Eliminate $D_{x,y}E(y)$; the local hypothesis
+$Q_yE(y)$ gives the conclusion.
+
+Conversely, case-mode \rulename{DI} is the case rule of \Seven.
+For progress-mode \rulename{DI}, use equational progress to obtain
+$Q_yE(0,y)$. Under $E(0,0)$, \rulename{QE} gives $E(0,Sz)$.
+The case rule at witness zero gives $D_{x,y}E(x,y)$.
+\end{proof}
+
+Every \Seven\ rule is stable under arbitrary normal substitution.
+Its substitution induction is valid and transfers the admissibility
+result to \Six\ through this equivalence.
+
+\begin{theorem}[Faithfulness to the raw kernel]
+\label{thm:faith}
+For every raw native context $\Gamma$ and formula $A$,
+\[
+ \Gamma\vdash_{\Raw}A
+ \quad\Longleftrightarrow\quad
+ \nf{\Gamma}\vdash_{\Six}\nf{A}.
+ \tag{F}
+\]
+The translations preserve free variables.
+\end{theorem}
+
+\begin{proof}
+For the forward direction normalize every formula in a raw derivation,
+translating into \Seven. Both computation equations become reflexivity.
+Transport, closure elimination and the two introductions commute with
+normal substitution by (N). Witness elimination commutes with fresh
+renaming. Induction on the raw proof gives the result in \Seven,
+and Theorem~\ref{thm:sixseven} gives \Six.
+
+For the converse first translate \Six\ into \Seven. Include each
+normal term as a raw expression. Reflexivity is a raw theorem.
+Each normalized substitution instance is raw-provably equal or
+interderivable with the corresponding raw instance, by finite conversion
+soundness. The raw calculus's already established equality and formula
+transport then realize \rulename{Tr}, \rulename{QE} and the case rule.
+Raw equational induction realizes progress; witness elimination is
+unchanged up to renaming. The resulting raw proof of $\nf{A}$ from
+$\nf{\Gamma}$ converts back to the original sequent using the formula
+normalization equivalences.
+\end{proof}
+
+The reverse translation uses properties of the \emph{raw} calculus that
+precede the new result. This is not an appeal to the target theorem
+inside its own proof.
+
+\subsection{The round trips contain more than theorem preservation}
+
+Let $N$ normalize raw syntax and let $J$ include normal syntax into raw
+syntax. For a normal formula $A$, $N(J(A))=A$ literally.
+For each raw term $t$, the raw theory proves $J(N(t))=t$; for each
+raw formula it proves the corresponding interderivability over all
+free parameters.
+
+Compose $J$ with the existing native-to-\ipra\ interpretation, and
+compose the existing \ipra-to-native interpretation with $N$.
+The inherited round trips and the normalization round trips give:
+
+\begin{corollary}
+The ordinary realization of \Six\ is bi-interpretable with \ipra.
+Both numerical domains are whole, equality is actual equality, and
+each composite domain isomorphism is defined by $x=y$.
+\end{corollary}
+
+The normal language is a computational presentation: terms are
+canonical representatives and substitution computes representatives.
+Its ordinary realization reads them as raw iterator terms. This does
+not change the domain into codes for standard numbers or discard
+nonstandard model elements.
+
+\begin{corollary}[Equiconsistency]
+\[
+ \Six\vdash0=S0\quad\Longleftrightarrow\quad\ipra\vdash\bot.
+\]
+\end{corollary}
+
+\begin{proof}
+The contradiction is already normal. Apply (F), then use the inherited
+consistency theorem to identify raw contradiction with
+\ipra's contradiction.
+\end{proof}
+
+These are ordinary external mathematical statements. They do not
+silently assert a primitive-recursive uniform proof translator or an
+\ipra-internal normalization theorem.
+
+\section{The cost of full normalization}
+\label{sec:cost}
+
+\begin{proposition}
+A uniform full normalizer over codes for all iterator terms cannot
+be primitive recursive.
+\end{proposition}
+
+\begin{proof}
+Suppose it were. Enumerate finite well-formed unary iterator terms,
+replacing malformed descriptions by the constant-zero program.
+Syntax checking, forming a closed instance at a numeral, and reading
+the final numeral are primitive-recursive operations.
+The inherited representation theorem says these terms represent
+every primitive-recursive unary function.
+The assumed normalizer would therefore give a primitive-recursive
+universal evaluator $U(e,n)$ for those functions.
+
+Then $d(n)=U(n,n)+1$ would itself have a program code $e_d$.
+At $n=e_d$ this gives
+$U(e_d,e_d)=U(e_d,e_d)+1$, a contradiction.
+\end{proof}
+
+Each fixed term still defines a primitive-recursive function. The
+obstruction is to a single uniform evaluator over all descriptions.
+This is why eliminating a computation rule does not eliminate its
+cost from the trusted implementation.
+
+The mathematical unbounded checker is total recursive on well-formed
+syntax. Like the baseline recursive Python programs, physical execution
+is subject to memory and recursion limits. Source-size measurements do
+not imply efficient checking. Every closed full-normal term is an
+expanded numeral, so short closed expressions can have enormous
+normal forms.
+
+\subsection{A fuelled certificate interface}
+
+The archive includes a bounded version. A certificate supplies a
+nonnegative integer fuel, and each successor contraction spends one
+unit. Exhaustion rejects. Zero contractions and the intervening walks
+are structural.
+
+The corresponding abstract verification relation is primitive
+recursive: a bound on nonstructural contractions yields
+primitive-recursive bounds on intermediate syntax growth and structural
+work. Every successful unbounded proof has a finite execution and
+therefore some sufficient fuel. Existentially quantifying supplied
+fuel preserves the external theorem set. The extra checking code is
+included in its measured size.
+
+\section{The smaller checker for the existing theory}
+\label{sec:validator}
+
+The directly recommended implementation change is independent of
+\Six. It preserves the existing arithmetic and logical calculus,
+proof packets, and kernel function \code{c}.
+The matched file is
+\begin{center}\small
+\code{validated_presentation/code/native_typed_full.py}.
+\end{center}
+Only its public syntax validator \code{v} changes.
+
+\subsection{Exact input and acceptance contract}
+
+The input is a JSON array. The final element is the closed public goal;
+earlier elements are proof packets consumed from the end. An unused
+prefix is allowed. Acceptance means exit status zero and exactly
+\code{ACCEPT} followed by a newline.
+
+A lexical gate checks the \emph{entire} certificate for integer/list
+data. It rejects booleans, floats, strings, nulls and mappings, even in
+an unused prefix. The public validator checks canonical Eq/Q/D goal
+syntax. Intermediate resources use the inherited arity-envelope
+interpretation. Thus this contract is not the tagged typing of every
+packet field used by the readable checker in the earlier sections.
+
+Before reading any proof packet, the kernel performs an exact scope
+traversal. The old public validator separately checks an upper bound
+on each variable slot. That second copy of the upper-bound test is
+redundant.
+
+\subsection{The invariant justifying the deletion}
+
+The old validator carries integer depth $d$. In formula mode, arity
+two changes to term mode, while arities one and three preserve formula
+mode. In term mode, valid arities one and three preserve term mode.
+The new validator needs only the Boolean $\delta=d\bmod2$.
+Its update is \code{d or len(a) == 2}.
+
+The old scalar check allows zero or an odd slot satisfying $2<a<d$.
+The new check allows zero or an odd slot satisfying $a>2$.
+Parity and the lower bound remain. The upper bound is delegated to the
+kernel's unavoidable initial scope opener.
+
+\begin{theorem}[Same successful traces]
+The 860-byte checker and its 870-byte baseline accept exactly the
+same certificates, under their common mathematical execution semantics.
+\end{theorem}
+
+\begin{proof}
+On integer/list data, induction on shape shows that Boolean mode
+equals the old depth parity wherever shape is valid. All old checks
+remain except the scalar upper bound. Hence every old-valid goal
+is new-valid.
+
+Suppose a newly admitted goal has an out-of-scope slot. Before any
+packet is consumed, the unchanged kernel calls its opener \code{i(a)}.
+At that slot the condition \code{k <= a < d} fails, and the opener
+attempts to use its absent substitution argument. In the initial call
+that argument is the function \code{c}, not an integer/list term;
+the attempted term operation raises an exception. No proof packet
+can prevent or repair this failure.
+
+Therefore every newly admitted goal violating the old bound is still
+rejected before proof processing. All other inputs execute the same
+kernel with the same packets. The lexical gate, arity and parity
+checks, context rules and acceptance output are unchanged.
+\end{proof}
+
+This composes ideas already present in \code{scope_kernel} and
+\code{validated_presentation}. It is an implementation improvement
+for an unchanged axiomatization, not a new arithmetic axiom deletion.
+
+\section{Measurements and executable verification}
+\label{sec:metrics}
+
+\subsection{Whole-source measurement}
+
+Each row counts a complete standalone program, including input loading,
+validation, kernel and output. Tests, certificate producers and
+measurement scripts are not imported by a checker.
+Source is normalized with \code{ast.unparse(ast.parse(source))}
+and one final newline. Bytes are UTF-8 bytes of that source.
+Significant tokens exclude comments, encoding, endmarker and layout.
+AST nodes are counted by \code{ast.walk}.
+Gzip is \code{gzip.compress(source, compresslevel=9, mtime=0)},
+including its wrapper.
+The reference runtime is CPython 3.12.14 and zlib 1.3.2.
+
+\input{evidence/metrics_table.tex}
+
+The 860-byte program improves its matched baseline by ten bytes
+(about 1.15\%), six tokens and nine AST nodes. Its gzip is one byte
+larger. The different 516-byte arity-envelope program remains smaller
+in absolute size; we do not call the new result a repository-wide
+minimum.
+
+\subsection{The initially apparent full-normal saving does not survive}
+
+The original readable zero-normal checker is 3,095 normalized bytes.
+A full-normal version with a term-shaped reflexivity certificate is
+3,048, an apparent 47-byte gain. But the old computation certificate
+can equally be represented by its iterator term. That change reduces
+the old checker to 3,029 bytes without changing its calculus.
+The matched full-normal checker with a neutral-counter test is
+3,044 bytes: fifteen bytes and one token larger, although three AST
+nodes and seven gzip bytes smaller.
+
+A second comparison uses goal-directed programs. Both share an empty
+leaf certificate and inspect the supplied validated goal.
+The zero-normal program is 2,982 bytes, full-normal 3,063, and
+fuelled full-normal 3,189. Thus the simpler explicit axiom inventory
+does not by itself give a smaller complete checker.
+
+The negative comparison is part of the result: certificate ergonomics
+must not be advertised as a mathematical breakthrough.
+
+\subsection{Verification performed}
+
+The recommended validator change was checked on 68 fixtures through
+both old and new programs, under ordinary and optimized Python:
+272 complete process runs, all matching the expected outcomes.
+A separate 9,000-case comparison covers canonical, malformed and
+out-of-scope preflights, with no difference.
+
+For full normalization the suite checks a closed fresh-zero certificate
+and a recovered atomic case-at-zero proof that uses its hypothesis.
+The latter has context $a=b$ and matrix
+$\I{y}{a}{u.b}=\I{y}{x}{u.0}$.
+It also performs 1,000 small normalization, semantic, scope,
+idempotence and substitution checks with fixed random seed, plus
+rejections of a false equation, nonnormal goal, Boolean hypothesis
+index and escaped variable. Goal-directed translations and both
+sufficient-fuel acceptance and zero-fuel rejection are checked.
+
+These tests exercise substantive failure boundaries; they are not
+proof-assistant verification. The general mathematical arguments and
+their finite executable evidence are reported separately.
+
+\section{Recommendation}
+
+Retain the current arithmetic presentation for immediate repository
+use, and adopt the 860-byte validator composition if its canonical
+public Eq/Q/D contract is desired. Its benefit is modest and measured,
+and no new arithmetic soundness theorem is needed.
+
+The full-normal calculus is a useful research alternative.
+Its explicit equational axiom is simple, and the fresh-zero lemma
+solves a real completeness problem. Its costs are also clear:
+matched total checker size does not uniformly improve, normalization
+can be enormous, and the uniform evaluator is not primitive
+recursive. It should not replace the structural zero-normal kernel
+solely because its arithmetic rule table looks shorter.
+
+A valuable next formal step is to define full conversion with finite
+witnesses, prove normalized substitution laws, formalize the fresh-zero
+and omitted-case derivations, and connect them to
+\code{native_iff_pra}. This report does not claim that this Lean
+development has already been completed.
+
+\appendix
+\section{Tagged certificate format}
+
+The readable candidate uses the following JSON terms and formulas:
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Object & Encoding\\
+\midrule
+Variable & \code{["v", i]}\\
+Zero & \code{["z"]}\\
+Successor & \code{["s", t]}\\
+Iterator & \code{["i", c, a, h]}\\
+Equation & \code{["=", s, t]}\\
+Closure & \code{["q", B]}\\
+Paired binder & \code{["d", B]}\\
+\bottomrule
+\end{tabular}
+\end{center}
+In an iterator body, de Bruijn index zero is the accumulator.
+In a $Q$ body it is the bound variable.
+In a $D_{x,y}$ body, index zero is $y$ and index one is $x$.
+
+A certificate has exactly \code{variables}, \code{context},
+\code{goal} and \code{proof}; the bounded variant also has \code{fuel}.
+The first field is the ambient scope size.
+A normal term itself is its reflexivity certificate.
+Other nodes are
+\code{["hyp", i]}, \code{["tr", h, p, q]},
+\code{["qe", t, p, q]}, \code{["de", A, p, q]}, and
+\code{["di", B, t, p]}.
+The context, goal, templates, witnesses and used embedded
+term/formula fields are explicitly checked.
+
+\section{Reproduction and inventory}
+
+From the extracted package directory run:
+\begin{lstlisting}
+python3 reproduce.py
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+The reproduction script reruns verification, measures selected complete
+sources, and regenerates normalized source and deterministic gzip
+artifacts. It does not fetch a moving repository baseline.
+
+The archive contains this source and PDF, complete checkers,
+matched controls, proof certificates, tests, machine-readable evidence,
+source provenance, the independent completeness audit, and a
+SHA-256 manifest. The source license is preserved.
+
+\noindent\begin{minipage}{\textwidth}
+\section{The complete recommended checker}
+
+The following is the complete 860-byte normalized program.
+The arity codec is inherited; Section~\ref{sec:validator} identifies
+exactly which duplicated validation has been removed.
+\lstinputlisting[language=Python]{code/scope_lexical.py}
+\end{minipage}
+
+\begin{thebibliography}{9}
+\small\raggedright
+\setlength{\itemsep}{1pt}\setlength{\parsep}{0pt}
+\bibitem{repository}
+Vladimir Reshetnikov and ProveIt contributors.
+\emph{Concise presentations of intuitionistic primitive recursive arithmetic}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/d9383325b18d349b8bfdc54ef564c5784cc029ec/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{Commit-pinned project directory} (snapshot fixed in Section~1).
+See \code{README.md} and the modules \code{Native.lean} and
+\code{NativeBiInterpretation.lean} under \code{Lean/ConciseIPRA/}.
+
+\bibitem{canonical}
+ProveIt research package, \emph{canonical\_recursors}.
+Same snapshot, under \code{Research/canonical_recursors/compact/};
+file \code{code/checker_compact_zero.py}.
+The 516-byte source is distinct from that package's alternative
+recursor theory.
+
+\bibitem{zero}
+ProveIt research package, \emph{zero\_normal}.
+Same snapshot, \code{Research/zero_normal/code/zero_six.py}.
+The adopted normalization layer is
+\code{Lean/ConciseIPRA/ZeroNormalization.lean}.
+
+\bibitem{validated}
+ProveIt research packages, \emph{validated\_presentation} and
+\emph{scope\_kernel}. Same snapshot.
+The matched package is \code{Research/validated_presentation/};
+its source is \code{code/native_typed_full.py}.
+
+\bibitem{urciuoli}
+Sebasti\'an Urciuoli.
+\emph{A Formal Proof of the Strong Normalization Theorem for System T in Agda}.
+EPTCS 376 (2023), 81--99.
+DOI: \href{https://doi.org/10.4204/EPTCS.376.8}{10.4204/EPTCS.376.8}.
+\url{https://arxiv.org/abs/2303.13258}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,370 @@
+% Includable mathematical note. Uses only standard amsmath/amssymb commands.
+% Written for the pinned ProveIt baseline 6ca328039cafa1537d81ee6b67ee2dc54ffa5a4e.
+
+\section{Uniform successor evaluation on zero-normal terms}
+\label{sec:uniform-step-theory}
+
+\subsection{Canonical syntax and what it costs}
+
+Start with raw scalar terms
+\[
+ t ::= x\mid 0\mid S(t)\mid I(n,a;u.h),
+\]
+where $u$ binds only its occurrences in $h$. Define $N$ by structural
+recursion, normalizing all immediate subterms and replacing
+$I(0,a;u.h)$ by $a$ whenever the normalized counter is literally zero.
+Only this zero rule is contracted. In particular,
+$I(S0,a;u.h)$ is retained and is not definitionally $h[a/u]$.
+
+The numerical terms of the new calculus are the fixed points of $N$.
+Every displayed substitution means ordinary capture-free substitution
+followed by $N$; write $h\langle t\rangle=N(h[t/u])$. Normalization applies
+also under all term and formula binders. On formulas it changes numerical
+terms only. Freshness is computed in the usual free-variable sense.
+
+The elementary coherence equations are
+\begin{align*}
+ N(N(t))&=N(t),\\
+ N(t[\sigma])&=N(N(t)[N\circ\sigma]),\\
+ (t\langle\sigma\rangle)\langle\tau\rangle
+ &=t\langle x\mapsto\sigma(x)\langle\tau\rangle\rangle.
+\end{align*}
+They follow by structural induction, with the binder cases using lifted
+substitutions. Normalization commutes with renaming and introduces no
+free variables. The contraction procedure and normalized substitution
+belong to the trusted specification; deleting the zero computation from
+the inference rules does not delete this implementation cost.
+
+\subsection{One evaluation pattern suffices for equality and computation}
+
+Use reflexivity and just the following evaluation inference:
+\[
+ \frac{\Gamma\vdash I(c,a;u.h)=t
+       \qquad
+       \Gamma\vdash I(Sc,a;u.h)=r}
+      {\Gamma\vdash r=h\langle t\rangle}.
+ \tag{Step}\label{rule:uniform-step}
+\]
+All terms in the display are interpreted by the canonical convention.
+In particular, at $c=0$ the first source is simply $a$. The same
+$c,a,h$ must occur in both sources. There is one case of this rule, no
+comparison of a term with an arbitrary context and no search for an
+occurrence to replace.
+
+\paragraph{Successor computation.}
+Take reflexivity as both premises of Step. Its conclusion is precisely
+\[
+ I(Sc,a;u.h)=h\langle I(c,a;u.h)\rangle.
+ \tag{Succ}
+\]
+Zero computation is already the definition of the canonical constructor.
+
+\paragraph{Equality pivot.}
+For an arbitrary canonical term $s$, abbreviate
+\[
+ J_s=I(S0,s;v.v).
+\]
+Given $p:\Gamma\vdash s=t$ and $q:\Gamma\vdash s=r$, Step at
+$c=0,a=s,h(v)=v$, with major premise $q$ and minor premise the
+reflexivity of $J_s$, proves $J_s=r$. A second instance of the same
+Step, now with premises $p$ and $J_s=r$, proves $r=t$. Thus
+\[
+ \frac{\Gamma\vdash s=t\qquad\Gamma\vdash s=r}
+      {\Gamma\vdash r=t}
+ \tag{Pivot}\label{rule:pivot}
+\]
+is a derived rule using two Steps and one auxiliary reflexivity.
+This derivation is valid at every $s$, including literal zero.
+
+\paragraph{Symmetry and transitivity.}
+Pivot applied to $s=s$ and $s=t$ gives $t=s$. Given $s=t$ and $t=r$,
+first obtain $t=s$ by symmetry and then apply Pivot with common source
+$t$ to obtain $s=r$. Hence all equivalence-relation laws of equality
+are available.
+
+\paragraph{Congruence in every fixed term template.}
+Fix a canonical body $h(v)$, allowing passive parameters and nested
+iterators, and put $K=I(S0,s;v.h(v))$. Step with the reflexivities of
+$s$ and $K$ proves $K=h\langle s\rangle$. Step with $s=t$ and the
+reflexivity of $K$ proves $K=h\langle t\rangle$. Pivot gives
+\[
+ \Gamma\vdash h\langle s\rangle=h\langle t\rangle.
+\]
+Combining this with $h\langle s\rangle=r$ by Pivot gives the
+one-template crossed transport rule
+\[
+ \frac{\Gamma\vdash s=t\qquad
+       \Gamma\vdash h\langle s\rangle=r}
+      {\Gamma\vdash r=h\langle t\rangle}.
+ \tag{Tr}\label{rule:recovered-tr}
+\]
+Two instances give transport in an equation template. None of these
+arguments uses equation induction, numerical case distinction,
+successor injectivity, a logical connective, or a structural term
+substitution theorem for whole derivations.
+
+\paragraph{Reverse derivation.}
+In the zero-normal native kernel, successor computation gives
+$I(Sc,a;h)=h\langle I(c,a;h)\rangle$. The two premises of Step,
+symmetry, transitivity, and term congruence therefore imply
+$r=h\langle t\rangle$. Consequently Refl and Step are interderivable,
+with arbitrary side assumptions, with the normalized successor
+computation and the old one-template equality rule. This is an exact
+consequence-equivalence theorem, not merely a standard-model soundness
+observation.
+
+\subsection{A normal zero witness for the single introduction}
+
+The familiar single-introduction convention takes progress at a literal
+equation with literal witness $0$, and cases otherwise. Its old alternate
+zero witness $I(0,0;u.0)$ is no longer available: it is definitionally
+zero in the canonical grammar. Instead use
+\[
+ q:=I(S0,0;u.u).
+\]
+This is a closed canonical term which is not the literal $0$.
+Successor computation proves $q=0$; equivalently one Step on the
+reflexivities of $0$ and $q$ proves it directly. This syntactic distinction
+is the only property of the alternate witness needed below.
+
+\section{A five-pattern clausal calculus}
+\label{sec:five-pattern-clauses}
+
+This subsection gives the full logical interface. It is independent of
+whether a checker physically stores named variables, de Bruijn indices,
+or an equivalent scoped encoding.
+
+\subsection{Formulas and retained clauses}
+
+Formulas have only the constructors
+\[
+ A ::= (s=t)\mid D_{x,y}B(x,y).
+\]
+The variables $x,y$ are bound in $B$. The ordinary interpretation is
+\[
+ \bigl(D_{x,y}B\bigr)^*
+ :=\exists x\bigl(B(x,0)^*\to\forall y\,B(x,y)^*\bigr).
+\]
+The designated false formula is $0=S0$.
+A retained clause is written
+\[
+ [A\,;\,y.B(y)]
+\]
+and has ordinary reading $A^*\to\forall y\,B(y)^*$; its variable $y$
+is bound in $B$ and does not occur free in $A$. A context is a finite
+list of such clauses. Empty contexts are allowed. For a formula $A$,
+its ordinary-assumption encoding is
+\[
+ \operatorname{Assm}(A):=[0=0\,;\,y.A],\qquad y\notin\operatorname{FV}(A).
+\]
+This is an abbreviation for a clause, not a sixth inference rule.
+
+\subsection{Complete rule inventory}
+
+The following five patterns, and no further logical or arithmetic rules,
+are primitive:
+\begin{align*}
+ \text{Use:}\quad&
+ \frac{[A;y.B]\in\Gamma\qquad\Gamma\vdash A}
+      {\Gamma\vdash B\langle t\rangle};\\[2mm]
+ \text{Refl:}\quad&\Gamma\vdash t=t;\\[2mm]
+ \text{Step:}\quad&
+ \frac{\Gamma\vdash I(c,a;u.h)=t\qquad
+       \Gamma\vdash I(Sc,a;u.h)=r}
+      {\Gamma\vdash r=h\langle t\rangle};\\[2mm]
+ \text{DE:}\quad&
+ \frac{\Gamma\vdash D_{x,y}B\qquad
+       \Gamma,[B(b,0);y.B(b,y)]\vdash A}
+      {\Gamma\vdash A};\\[2mm]
+ \text{DI:}\quad&
+ \frac{\Gamma,\operatorname{Assm}(B(t,\eta))
+          \vdash B(t,Sz)}
+      {\Gamma\vdash D_{x,y}B}.
+\end{align*}
+For DE, $b$ is fresh for the outer context, the conclusion, and the
+passive parameters. For DI, $z$ is fresh for the outer context, the
+witness $t$, and all passive parameters; moreover
+\[
+ \eta=\begin{cases}
+ z,& B\text{ is a literal equation and }t\text{ is literally }0,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+Every term and formula substitution in these rules is normalized.
+Fresh variables used in a premise enlarge the scope of the entire outer
+context as well as the formulas. Omitting that weakening is unsound.
+
+All five patterns have one conclusion. Refl is an axiom schema.
+Step supplies both computation and equational inference. Use accesses
+retained clauses and thus includes the ordinary hypothesis rule:
+from $\operatorname{Assm}(A)\in\Gamma$, apply Use to Refl$(0)$.
+The only induction condition appears in the syntactic choice of
+$\eta$ at DI; no induction for compound matrices is permitted.
+
+\subsection{Structural bookkeeping}
+
+Context weakening and renaming of free variables are admissible by
+induction on derivations. Renaming preserves canonicality, literal zero,
+and the root constructor of a formula, so the DI mode is preserved.
+Ordinary formula cut is also admissible: if
+$\Gamma\vdash A$ and $\Gamma,\operatorname{Assm}(A)\vdash C$, then
+$\Gamma\vdash C$. Replace each Use of that assumption clause by the
+first derivation, weakened to the current eigenvariable scope; induction
+on the second derivation completes the argument. Its antecedent proof
+of $0=0$ can be discarded. Bound eigenvariables are renamed before the
+replacement when necessary.
+
+These arguments do not require a direct proof of arbitrary term
+substitution for the syntax-directed DI. Such a substitution may change
+a nonliteral witness into literal zero. General term substitution becomes
+admissible after equivalence with the ordinary native kernel has been
+proved; treating its preservation of the mode as automatic would be an
+error.
+
+\subsection{Conditional closures as formulas}
+
+Define the closure abbreviation
+\[
+ \widehat Q_y B(y):=D_{x,y}B(y),\qquad x\notin\operatorname{FV}(B).
+\]
+Its ordinary reading is equivalent to $B(0)\to\forall yB(y)$ because
+the numerical domain has the closed inhabitant $0$.
+
+\paragraph{Closure elimination.}
+From $\Gamma\vdash\widehat Q_yB$ and $\Gamma\vdash B(0)$, apply DE.
+Its retained clause is $[B(0);y.B(y)]$ and is independent of the fresh
+witness. Use at any target $t$, with the weakened base proof, gives
+$B(t)$. Thus QE is derived.
+
+\paragraph{Closing a retained canonical clause.}
+From a retained clause $[B(0);y.B(y)]$, derive $\widehat Q_yB$ by DI
+with dummy witness $q$. This is the case mode, since $q$ is not literal
+zero. Under the local assumption $B(0)$, Use proves $B(Sz)$.
+The same argument converts any derivation
+$\Gamma,\operatorname{Assm}(B(0))\vdash B(Sz)$, with $z$ fresh,
+into a derivation of $\widehat Q_yB$: take the displayed derivation
+as the premise of DI at dummy witness $q$.
+
+\paragraph{Equation progress.}
+Given
+\[
+ \Gamma,\operatorname{Assm}(E(z))\vdash E(Sz),
+ \qquad E\text{ a literal equation},
+\]
+apply DI to the dummy-witness matrix $E(y)$ at witness $0$.
+It produces $\widehat Q_yE$. Thus the native progress rule is derived
+with no equality reasoning or additional induction schema.
+
+\subsection{Recovering every case introduction}
+
+For a compound matrix, or for a witness other than literal zero, DI is
+already the desired case rule. Only a literal equation $E(x,y)$ with
+witness $0$ requires an argument. Suppose
+\[
+ \Gamma,\operatorname{Assm}(E(0,0))\vdash E(0,Sz).
+\]
+By closing the displayed derivation at the dummy witness $q$, obtain
+$\widehat Q_y E(0,y)$. Apply DE to retain
+$[E(0,0);y.E(0,y)]$ and introduce $D_{x,y}E(x,y)$ by DI at witness
+$q$, which uses the case mode. In its premise assume $E(q,0)$.
+Transport along $q=0$ gives $E(0,0)$; Use of the retained clause gives
+$E(0,Sz)$; transport back along $0=q$ gives $E(q,Sz)$, as required.
+The fresh eigenvariable from the outer DE does not occur in the final
+conclusion. All transports are in literal equation templates and are
+available from the arithmetic Pivot construction.
+
+Hence the five-pattern calculus derives both original introduction
+rules, including the otherwise missing atomic case at zero. This proof
+also explains why normalizing the old nonliteral zero witness without
+replacing it is insufficient.
+
+\section{Exact equivalence and the inherited iPRA bridge}
+\label{sec:uniform-step-equivalence}
+
+Let $N_0$ denote the original native calculus on raw scalar terms, and
+let $N_z$ be its zero-normal presentation, with ordinary Hyp, successor
+computation, one-template transport, QE, DE, case DI, and atomic QI.
+The pinned baseline proves
+\[
+ N_0:\Gamma\vdash A
+ \quad\Longleftrightarrow\quad
+ N_z:N\Gamma\vdash NA.
+\]
+Its formal source is \texttt{NativeZeroNormal.lean}; the normal-form
+coherence and interpretation facts are in
+\texttt{ZeroNormalization.lean}. The semantic fact that a raw term
+is provably equal to its normal form under an iterator body uses
+body congruence, which in that inherited development uses equation
+induction. The new equality bootstrap above does not claim to avoid
+that inherited requirement in the proof of the normalization theorem.
+
+Define $T$ on the formulas of $N_z$ by preserving equality and $D$,
+and replacing every $Q_yB$ by $\widehat Q_y(TB)$. Translate ordinary
+hypotheses $A$ to $\operatorname{Assm}(TA)$. The translation $T$
+commutes with normalized numerical substitution up to renaming bound
+variables: prove this by structural induction on formulas, choosing
+each dummy witness binder fresh for the substitution images.
+The preceding derivations
+translate every rule of $N_z$ into the five-pattern calculus $C$:
+Hyp becomes Use with Refl$(0)$; successor computation and transport
+are derived from Step; QE uses DE and Use; equation progress is DI
+at a dummy zero witness; every case introduction is recovered as
+above. In the translation of DE, the retained canonical clause derives
+the translated hypothetical closure, so admissible formula cut supplies
+the translated branch derivation.
+
+For the reverse direction, interpret retained clauses as
+$A^*\to\forall yB(y)^*$ in the ordinary scalar theory $T_{\rm eq}$.
+Use is implication elimination followed by universal elimination.
+Refl is equality reflexivity. Step follows from successor computation
+and equality. DE is ordinary existential elimination. In case-mode DI,
+coverage $n=0\lor\exists z\,n=Sz$ combines the base assumption and
+the successor premise to prove the conditional closure. In progress-mode
+DI, contextual induction for the literal equation supplies that closure.
+Existential introduction then supplies the stated witness in each mode.
+Thus the entire calculus is sound in $T_{\rm eq}$ with precisely the
+same domain and actual equality.
+
+The pinned ordinary/native equivalence and the rule translations yield,
+for every finite list $\Gamma$ of native formulas and every native $A$,
+\[
+ N_0:\Gamma\vdash A
+ \quad\Longleftrightarrow\quad
+ C:\operatorname{Assm}(T(N\Gamma))\vdash T(NA).
+ \tag{Faithfulness}
+\]
+Here the right-hand context means pointwise application to its entries.
+The reverse implication uses that the ordinary reading of
+$\operatorname{Assm}(B)$ is equivalent to $B$, and that the ordinary
+reading of the dummy-existential closure is equivalent to $Q$.
+Those equivalences are intuitionistically valid over an inhabited domain.
+
+\paragraph{Bi-interpretability, rather than only equiconsistency.}
+The inherited bridge interprets raw scalar terms as their fixed primitive
+recursive definitions in iPRA, and compiles each fixed primitive recursive
+definition back to a scalar term. Its round trips are provably the identity
+on numerical values. Compose those maps with $N$ and $T$. The normalizing
+map fixes variables and zero, preserves numerical values provably, and
+leaves the whole numerical domain unchanged. The closure replacement has
+no numerical effect. Consequently both composites retain the identity
+graph $x=y$; equality remains actual equality, and no quotient or proper
+subdomain is introduced.
+
+On formulas, inclusion followed by $T\circ N$ is the identity on the
+canonical Eq/$D$ language. The other round trip is provably equivalent
+to the input formula by zero-normalization equivalence and
+$Q_yB\leftrightarrow D_{x,y}B$ for a dummy $x$. Transporting the inherited
+ordinary/iPRA formula round-trip theorems through Faithfulness gives both
+full first-order round trips for $C$. In particular, the designated
+contradiction $0=S0$ is preserved, so the resulting theories are
+equiconsistent as well as bi-interpretable.
+
+\paragraph{Boundary of the claim.}
+The new mathematical deletion is the replacement of the multi-case
+arithmetic equality/computation mechanism by Refl and one uniform Step.
+Zero-normalization and clausal logical contexts are inherited design
+ideas and their implementation costs must be counted. A numerical size
+comparison is a separate claim about complete programs, not a theorem
+that no smaller presentation exists. Any proof-assistant status must be
+reported according to the files actually compiled; the written
+five-pattern equivalence is not automatically a machine-checked theorem.

@@ -1,0 +1,95 @@
+PRIMARY CERTIFICATE FORMAT
+
+The input is one JSON object with exactly these keys:
+
+    {"goal": FORMULA, "proof": PROOF}
+
+The goal must be closed and canonical. The checker reconstructs the
+proof conclusion and compares it with the declared goal.
+
+TERMS
+
+    0                       numerical zero
+    positive integer        bound-variable index, starting at 1
+    negative integer        rigid free level in a local proof scope
+    ["s", TERM]             successor
+    ["i", COUNTER, SEED, BODY]    initialized scalar iterator
+
+Only BODY binds one new variable. At binder depth d and local free
+scope k, integer terms satisfy -k <= value <= d. Exact integer types
+are required, so booleans and floating-point numbers are rejected.
+
+The counter of every stored iterator must not be literal zero.
+Opening/substitution rebuilds a zero-counter iterator as its seed;
+this happens recursively, including under all binders.
+No successor computation is performed as syntax normalization.
+
+FORMULAS
+
+    ["=", LEFT, RIGHT]      equality of numerical terms
+    ["d", MATRIX]           D with two bound numerical variables
+
+In MATRIX, index 1 is y, index 2 is x. The ordinary reading is
+exists x (MATRIX(x,0) -> forall y MATRIX(x,y)).
+The designated contradiction is ["=", 0, ["s", 0]].
+
+CLAUSES
+
+The checker stores reusable clauses internally as antecedent/body
+pairs. A body permits one additional bound variable y. The reading
+is ANTECEDENT -> forall y BODY(y). No externally supplied context is
+accepted by the primary interface.
+
+An ordinary local assumption A is the clause (0=0, A), with its
+body independent of the clause-bound variable.
+
+PROOFS
+
+    ["u", INDEX, TERM, PROOF]
+        Clause Use. INDEX is a nonnegative exact integer indexing the
+        current context in insertion order. PROOF must establish that
+        clause's antecedent; the result is its body opened at TERM.
+
+    ["r", TERM]
+        Reflexivity, yielding TERM=TERM.
+
+    ["x", MAJOR_PROOF, MINOR_PROOF]
+        Uniform Step. MAJOR proves s=t. MINOR proves
+        I(S n,a;u.h)=r. The checker requires
+        s to be literally the canonical I(n,a;u.h), and returns r=h(t).
+
+    ["e", GOAL, PAIRED_PROOF, BRANCH_PROOF]
+        D elimination. GOAL is validated at the outer scope.
+        PAIRED_PROOF proves D_(x,y) B. The branch opens x as a fresh
+        negative level b and adds the clause (B(b,0), y.B(b,y)).
+        It must derive exactly GOAL, so b cannot escape.
+
+    ["i", PAIRED_GOAL, WITNESS, BRANCH_PROOF]
+        D introduction. PAIRED_GOAL is D_(x,y) B, validated at the
+        outer scope. WITNESS is validated there as well.
+        A fresh negative level z is allocated. If B is a literal
+        equation and WITNESS is literal 0, eta=z; otherwise eta=0.
+        The branch adds the ordinary assumption B(WITNESS,eta)
+        and must derive B(WITNESS,S z).
+
+All indicated substitutions use canonical opening. Retained clauses
+are reusable. The fresh level at scope k is -(k+1). Scope extension
+preserves the identities of older negative free labels.
+
+EXAMPLE
+
+    {"goal":["=",0,0],"proof":["r",0]}
+
+ACCEPTANCE
+
+Successful checking has exit code zero and exactly ACCEPT plus LF
+on standard output. A rejection has nonzero exit code.
+The proof checker uses no eval, exec, external solver, imported
+proof kernel, or assert-based acceptance. The normalization,
+validation, variable-opening, clause, and reconstruction operations
+are all in code/checker.py.
+
+The mathematical consequence relation is stated for arbitrary retained
+clauses in the paper. The primary serialized interface checks closed
+theorems, as does its incoming clausal comparator. The separate modules
+in code/native/ expose open sequents for the translation audit.

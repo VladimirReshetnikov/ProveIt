@@ -1,0 +1,102 @@
+{
+  "title": "iPRA with one explicit computation schema",
+  "date_utc": "2026-11-12",
+  "main": {
+    "terms": "variables, 0, R(n,a;u.h)",
+    "successor": "S(a) = R(0,a;u.0)",
+    "canonical_law": "R(0,a;u.h) has the canonical spelling R(0,a;u.0)",
+    "substitution": "capture-free substitution followed by canonical normalization",
+    "rules": [
+      "Hyp",
+      "successor computation",
+      "crossed equation transport at nonliteral-zero source",
+      "crossed Q elimination",
+      "D elimination",
+      "witness-directed introduction"
+    ],
+    "rule_count": 6,
+    "explicit_computation_schemas": 1,
+    "equivalence": "Equiconsistent and bi-interpretable with full first-order iPRA",
+    "numerical_domains": "whole in both directions",
+    "equality": "actual equality",
+    "composite_isomorphism_graph": "x=y",
+    "proof_status": "written mathematical proof with independent review; no new proof-assistant verification"
+  },
+  "matched_strict": {
+    "canonical": {
+      "normalized_bytes": 4611,
+      "tokens": 1338,
+      "ast_nodes": 1485,
+      "gzip9": 1205
+    },
+    "raw_R": {
+      "normalized_bytes": 4753,
+      "tokens": 1378,
+      "ast_nodes": 1532,
+      "gzip9": 1209
+    },
+    "scalar_I": {
+      "normalized_bytes": 4923,
+      "tokens": 1433,
+      "ast_nodes": 1595,
+      "gzip9": 1224
+    },
+    "canonical_vs_scalar_saving_bytes": 312,
+    "canonical_vs_scalar_saving_percent": 6.337599024984765,
+    "contract": "Entire standalone modules, including all public validators, substitution, normalization, scopes, rule logic and JSON interface",
+    "control_scope": "Matched equivalent crossed/witness-directed scalar presentation, not a literal transcription of Lean MPrf"
+  },
+  "separate_compact_refinement": {
+    "calculus": "existing guarded scalar calculus; not canonical R",
+    "byte_profile": {
+      "old_bytes": 522,
+      "new_bytes": 516,
+      "old_gzip9": 329,
+      "new_gzip9": 332
+    },
+    "ast_profile": {
+      "old_ast": 281,
+      "new_ast": 280,
+      "new_bytes": 602
+    },
+    "strict_profile": {
+      "old_bytes": 1381,
+      "new_bytes": 1376
+    },
+    "different_programs_for_different_coordinates": true,
+    "token_frontier_258_improved": false,
+    "contract": "Compact profiles assume guarded public Eq/D grammar; strict profile validates that grammar and all integer/list certificate syntax"
+  },
+  "additional_results": [
+    {
+      "name": "Pure self-seeded unary obstruction",
+      "statement": "Every unary 0,S,F term has a C such that t(n)<=C or t(n)>=n for every natural n.",
+      "scope": "term definability only; not alone an obstruction to arbitrary graph interpretations"
+    },
+    {
+      "name": "Zero-equation induction countermodel",
+      "statement": "Zero-equation induction, even with both scalar computations, coverage, separation and successor injectivity, does not recover full equation induction.",
+      "scope": "same scalar domain and actual equality; not a general no-bi-interpretation theorem for all changed domains"
+    },
+    {
+      "name": "Scalar computation independence",
+      "statement": "Each of the two initialized-iterator computations can fail while the other holds on standard natural numbers with full induction."
+    }
+  ],
+  "validation": {
+    "strict_named_certificates": 86,
+    "strict_cli_replays": 172,
+    "independent_substitution_comparisons": 480,
+    "compact_checks": 311,
+    "all_expected_outcomes_passed": true,
+    "reference_python": "CPython 3.12.14"
+  },
+  "limits": [
+    "No absolute minimum theorem",
+    "No literature-wide priority theorem",
+    "No claim that the new R checker is 516 bytes",
+    "No new Lean or Rocq verification",
+    "No equality of arbitrary malformed-JSON behavior for every compact refinement"
+  ]
+}
+

@@ -1,0 +1,83 @@
+CERTIFICATE FORMAT
+
+Public input (exact decoded key set):
+    {"goal": FORMULA, "proof": PROOF}
+The goal must be closed. There is no external premise context in the CLI.
+
+TERMS AND FORMULAS
+    0                 numerical zero
+    negative integer  free eigenparameter level
+    positive integer  1-based de Bruijn index of a surrounding binder
+    [0, t]            successor
+    [n, a, h]         iterator; only h introduces one extra bound index
+
+    [s, t]            equation
+    [B]               D_{x,y} B; x has index 2 and y has index 1
+
+At scope k and binder depth d, an integer a is well scoped iff -k <= a <= d.
+Booleans are not integers for this validation. List shapes and scalar types
+are checked recursively. An iterator is the only length-3 term. A successor
+is the only length-2 term, and its first entry must be integer zero.
+
+Canonical checkers (checker.py and zero_base.py) reject all literal-zero
+iterator counters. Their opening operation contracts zero-counter iterators
+bottom-up, including ones exposed by substitution. The raw checker performs
+ordinary opening without contraction.
+
+OPENING
+At current binder depth d, replace index d+1 with the supplied term and
+decrease larger positive indices by one. Recurse one level deeper into an
+iterator body and two levels deeper into a D matrix. Free levels are negative;
+valid replacements have no dangling positive bound indices. Thus this opening
+does not capture any free eigenparameter. Fresh level at scope k is -k-1.
+
+PROOF TAGS
+    ["r", t]
+        Refl at the supplied well-scoped term.
+
+    ["v", p, q]
+        Infer equations s=t from p and b=r from q.
+        raw_two_case.py requires b=I(0,a;h), s=a, returning r=t;
+        or b=I(Sn,a;h), s=I(n,a;h), returning r=h[t/u].
+        It has no direct-composition case b=s.
+        Canonical checkers require b=I(Sn,a;h) and
+        s=normal(I(n,a;h)), returning r=normal(h[t/u]).
+
+    ["u", index, term, premise]
+        Select the zero-based occurrence in the current clause list.
+        A clause stores (antecedent, body with one distinguished binder).
+        The premise must infer its antecedent. Return the body opened
+        with the supplied term. Negative and Boolean indices are rejected.
+
+    ["e", conclusion, major_proof, branch_proof]
+        Validate conclusion at current scope; major_proof must infer [B].
+        Open the x binder of B at a fresh eigenparameter, leaving y bound.
+        Append (B(b,0), y.B(b,y)) to the context. Check branch at scope+1
+        against the unchanged conclusion. The fresh b cannot occur in
+        that conclusion because it was validated before scope extension.
+
+    ["i", conclusion, witness, branch_proof]
+        conclusion must be [B]. Validate conclusion and witness before
+        scope extension; open x in B with witness, leaving y bound.
+        Let z be the fresh parameter and body the resulting y.B(t,y).
+        For raw_two_case.py and checker.py, use eta=z exactly if B is an
+        equation matrix and witness is literally 0; otherwise eta=0.
+        For zero_base.py, compute base=normal(B(t,0)); use eta=z exactly
+        if base is the formula [0,0]; otherwise use the computed base.
+        Append the constant clause (0=0, unused.B(t,eta)); check branch
+        at scope+1 against B(t,Sz), normalized in canonical checkers.
+
+An ordinary local assumption F is the constant clause (0=0, unused.F).
+To use it, apply u with a proof ["r",0] of its antecedent.
+Clause contexts are append-based; the newest clause has the largest index.
+
+The recursive derive routine assumes its context invariants. verify and the
+CLI are the validated public entrypoints. Proof outputs are inferred, not
+trusted certificate annotations. Malformed shapes or source mismatches reject.
+
+EXAMPLE (shared by all selected profiles)
+    {"goal":[0,0],"proof":["r",0]}
+
+For substantial examples, use the supplied certificate directories. The raw
+translation compiler replaces each removed root-composition node by two
+zero evaluations and one reflexivity, leaving both input subproofs once.

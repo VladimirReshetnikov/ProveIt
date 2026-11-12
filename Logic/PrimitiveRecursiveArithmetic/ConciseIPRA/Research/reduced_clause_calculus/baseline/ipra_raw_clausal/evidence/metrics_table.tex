@@ -1,0 +1,15 @@
+\begin{center}
+\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Complete program & \shortstack{Normalized\\bytes} & Tokens & AST & Gzip-9\\
+\midrule
+Matched canonical five-rule control & 3,175 & 903 & 1,035 & 1,035\\
+Matched raw six-rule control & 3,252 & 930 & 1,072 & 1,020\\
+\textbf{Raw five-rule checker} & 3,046 & 853 & 993 & 990\\
+\midrule
+Upstream canonical checker (reference) & 3,305 & 946 & 1,072 & 1,073\\
+\bottomrule
+\end{tabular}
+\end{center}
+Relative to the matched canonical control, the new checker saves 129 normalized bytes (4.1\%), 50 significant tokens, and 42 AST nodes. Its normalized gzip-9 file is 45 bytes smaller.

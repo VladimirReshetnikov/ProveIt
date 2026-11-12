@@ -1,0 +1,53 @@
+{
+  "title": "A register-graph presentation of intuitionistic primitive recursive arithmetic",
+  "date": "2026-11-10",
+  "comparison_commit": "8662bc0a00f4e77e482f7d141d7a4f919f70f9aa",
+  "primary_theory": {
+    "name": "T_J, counter-aware register iteration",
+    "primitive_numerical_term_forms": ["variable", "zero", "J(counter; old_counter, old_register. body)"],
+    "primitive_logic": "ordinary full first-order intuitionistic natural deduction with actual equality and falsity",
+    "arithmetic_axioms": ["J0", "STEP graph biconditional", "0=1 implies falsity"],
+    "induction": "contextual induction for a literal equation",
+    "successor": "derived: S(a)=J(a;i,r.0)",
+    "independent_initializer": "derived",
+    "coverage": "derived from STEP",
+    "full_primitive_recursion_compiler_uses_pairing": false,
+    "bootstrap_and_recursion_compiler_use_induction": false,
+    "equality_reflection_and_round_trips_use_equation_induction": true,
+    "bi_interpretable_with_full_first_order_ipra": true,
+    "equiconsistent_with_ipra": true,
+    "interpretation_domains": "both whole numerical domains",
+    "interpreted_equality": "actual equality",
+    "composite_isomorphisms": "identity graph x=y",
+    "proof_status": "written internal derivations and external finite-description translations; independently reviewed, not proof-assistant verified"
+  },
+  "comparison": {
+    "smaller_numerical_grammar": true,
+    "shorter_arithmetic_bootstrap": true,
+    "counter_body_bound_variables_old": 1,
+    "counter_body_bound_variables_new": 2,
+    "richer_computation_axiom": true,
+    "new_theory_has_smaller_complete_checker": false,
+    "absolute_simplest_axiomatization_established": false,
+    "literature_wide_priority_established": false
+  },
+  "ancillary_checker": {
+    "implements": "inherited native scalar Choice-DI calculus, not T_J",
+    "normalized_bytes": 604,
+    "significant_tokens": 261,
+    "ast_nodes": 288,
+    "gzip9_normalized_bytes": 355,
+    "improves_inspected_ast_minimum_by": 1,
+    "improves_byte_minimum": false,
+    "generic_iterable_malformed_input_qualification": true
+  },
+  "validation": {
+    "j_checker_driver_runs": 104,
+    "ancillary_driver_runs": 150,
+    "scalar_semantic_assertions": 644,
+    "counter_semantic_assertions": 385,
+    "tests_prove_universal_metatheorems": false,
+    "details": "See evidence/*.json for exact cases, metrics and limitations."
+  }
+}
+

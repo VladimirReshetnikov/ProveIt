@@ -1,0 +1,46 @@
+# Counter evaluation prototype
+
+## Files and contract
+
+`counter_eval.py` is a complete standalone verifier. It accepts exactly a JSON object with `goal` and `proof`, checks a closed Eq/D goal, and prints `ACCEPT` on success. Exceptions reject in ordinary and optimized Python. No nonstandard imports or trusted helper files occur.
+
+Terms: integer `0`; negative free-parameter levels; positive de Bruijn bound indices; and `[n,a,h]` for the canonical counter-aware recursor. Its body binds the state at index 1 and the counter at index 2. A literal-zero counter requires literal-zero body. Successor is `[0,a,0]`. Equations are `[s,t]`; paired formulas are `[B]`.
+
+The five proof patterns are `r` (reflexivity), `v` (counter evaluation), `u` (clause use), `e` (paired elimination), and `i` (witness-directed paired introduction). U/E/I have the same clause-context convention as the incoming raw CE5 checker. Ordinary assumptions use the neutral antecedent `0=0`.
+
+Counter evaluation has only one successful shape:
+
+    s = t       R(Ss,a;i,u.h) = r
+    ---------------------------------
+    r = h(t,R(t,a;i,u.h))
+
+The matching counter is checked literally. Both substitutions are capture avoiding, and recursor normalization is fully included in the source.
+
+## Prior work and exact new interface
+
+The counter-aware successor-seeded recursor is NOT new. It appears in `Research/counter_congruence/theory/counter_theorem.tex`, and `Research/scalar_successor/report.tex` attributes its immediate predecessor and primitive-recursion compiler to `ipra_successor_recursion_2026-11-09.zip`.
+
+The old counter-congruence interface has separate R0/RS computations, root replacement, and congruence in a counter. CounterEval instead combines computation and shifted-counter replacement into one partial evaluation schema. With reflexivity, the counter projection body supplies an identity frame; the root rule is then derived by two CounterEval applications. State-independent bodies give arbitrary term congruence. These reductions do not need numerical induction or logical rules.
+
+Canonical zero normalization and the clausal Eq/D interface are also inherited ingredients. The complete five-pattern combination is the new proposal; no historical priority claim is made for any of its components.
+
+## Measured comparison
+
+CPython 3.12.14; remove the module docstring; `ast.unparse` followed by one line feed; all remaining source is counted. Gzip level 9 with timestamp zero is informational only.
+
+| Complete module | Bytes | Significant tokens | AST nodes | Gzip9 |
+|---|---:|---:|---:|---:|
+| Exact incoming canonical clausal five-rule checker | 3305 | 946 | 1072 | 1073 |
+| Matched counter-aware RS plus crossed-transport checker | 3272 | 929 | 1063 | 1070 |
+| Exact incoming raw CE5 checker | 3046 | 853 | 993 | 990 |
+| Matched raw two-case Eval checker | 2999 | 848 | 986 | 979 |
+| Matched zero-normal scalar I, one Eval case | 3061 | 884 | 1025 | 1006 |
+| CounterEval proposal | 3004 | 854 | 987 | 1001 |
+
+The same-counter comparison removes 268 bytes (8.19%), 75 tokens, and 76 AST nodes. The zero-normal single-case scalar comparison removes 57 bytes, 30 tokens, and 38 AST nodes. The exact incoming raw checker is 42 bytes and 6 AST nodes larger but has one fewer significant token. The raw two-case combination is 5 bytes, 6 tokens, and 1 AST node smaller than this prototype.
+
+Consequently the proposal is NOT a new global source-size record and does not beat the historical 516-byte compact codec. Its main advantage is a uniform single arithmetic/equality schema, plus controlled improvement against the same counter-aware language and against the single-case zero-normal scalar formulation. Do not merge minima from distinct programs into one fictional checker.
+
+## Validation
+
+The independent generator and checks are under `../ce_validation`. They compare sequential binder opening with an independent simultaneous-substitution implementation, test exact proof-node bounds, construct predecessor/selector/recursion certificates, use an induction hypothesis nontrivially, reject malformed and escaping-scope examples, and invoke the public CLI in ordinary and optimized modes. The counts and receipts are in that directory. Finite tests support the written proof; they do not prove universal correctness.
