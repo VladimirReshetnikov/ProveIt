@@ -91,6 +91,11 @@ The independently reviewed [continuation design](research/current14-carrier65-re
 projects the recorded prefix into a hypothetical separate root and identifies
 the new search-path, immutable-input, companion and postflight obligations.
 It is not an executable build or proof that the retained objects can be reused.
+The independently reviewed [external-frontier audit](research/current14-carrier65-external-frontier-audit/README.md)
+follows recorded prefix and base routes to 65 Mathlib modules, three Foundation
+modules and `Init`, and checks bounded retained evidence. Compiled-import,
+source-to-object and runtime closure, as well as actual Lean resolution,
+remain unverified.
 
 The [65-gate graph-to-expression theorem](research/current14-carrier65-dag-expression-retry-check/README.md)
 now checks an explicit live circuit for the maintained Lean expression, with
