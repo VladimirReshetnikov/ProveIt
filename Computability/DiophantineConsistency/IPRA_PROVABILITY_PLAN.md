@@ -7725,6 +7725,12 @@ The source-reviewed [74 guard strictness fact](research/ordinary14-positive-guar
 proposes the positive quotient recovery from explicit order and size
 hypotheses. It is unelaborated and those hypotheses have not been bound to
 the graph in Lean.
+The source-reviewed [74 positive bridge](research/ordinary14-root74-positive-bridge-draft/README.md)
+and [iPRA adapter](research/ordinary14-root74-ipra-endpoint-draft/README.md)
+propose the symbolic endpoint declarations. Their [static import inventory](research/ordinary14-root74-endpoint-import-inventory/README.md)
+is limited to source headers and direct qualified imports. The full chain is
+unelaborated; providers, axiom checks, physical-byte binding and the iPRA
+proof-existence claim remain open.
 The source-reviewed [74 own-zero product draft](research/ordinary14-74-ownzero-product-draft/README.md)
 proposes extracting the signed product from the literal graph. It remains
 unelaborated and leaves the graph's factor exclusions as explicit premises.
