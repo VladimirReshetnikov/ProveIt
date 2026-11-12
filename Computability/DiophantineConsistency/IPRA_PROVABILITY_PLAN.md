@@ -7889,6 +7889,10 @@ axiom reports and subsequent iPRA endpoint remain unelaborated.
 The independently source-reviewed [80-to-81 gamma-shift draft](research/ordinary14-natural80-gamma-shift-model-draft/README.md)
 proposes the related-valuation zero maps using the gamma client. Its model
 statements, selected-port discharge and iPRA endpoint remain unelaborated.
+The independently source-reviewed [natural-80 endpoint draft](research/ordinary14-natural-forced-gamma80-ipra-draft/README.md)
+proposes symbolic-port discharge and native, standard and equality-only
+iPRA clients. The full chain and seven requested axiom reports are unelaborated
+and unexecuted; this is not yet a checked iPRA theorem or PDF binding.
 The independently source-reviewed [natural-81 Lean transcription](research/ordinary14-natural-forcedj81-lean-draft/README.md)
 records its literal graph and product shape. Its source correspondence is
 checked externally; Lean semantics and endpoint equivalence remain open.
