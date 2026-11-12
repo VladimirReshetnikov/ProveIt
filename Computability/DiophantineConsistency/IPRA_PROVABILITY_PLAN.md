@@ -7935,6 +7935,10 @@ The independently source-reviewed [combined natural-80 overlay](research/ordinar
 extends the 81 snapshot with 11 endpoint drafts and selects both reviewed
 keyword alternatives. Its 184 snapshots are inert; actual Lean resolution,
 provider/companion closure and endpoint elaboration remain unverified.
+The independently reviewed [80 qualified-provider cut](research/ordinary14-natural80-qualified-provider-cut/README.md)
+finds five source candidates absent from the selected object root and records
+bounded alternate-provider and collision observations. This is a lexical
+presence cut, not a coherent provider or build plan.
 The independently source-reviewed [natural-81 Lean transcription](research/ordinary14-natural-forcedj81-lean-draft/README.md)
 records its literal graph and product shape. Its source correspondence is
 checked externally; Lean semantics and endpoint equivalence remain open.
