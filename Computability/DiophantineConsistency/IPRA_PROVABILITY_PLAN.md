@@ -7684,6 +7684,11 @@ The separately source-reviewed [mod-four client](research/ordinary14-five-unit-m
 proposes the other factor exclusions, and the [75/74 graph draft](research/ordinary14-unit75-guard74-lean-draft/README.md)
 transcribes both literal circuits. They remain unelaborated and are not yet
 connected into a model or iPRA endpoint.
+Reviewed, isolated [pair-eval](research/ordinary14-pair-eval-linear-combination-patch/README.md)
+and [guard](research/ordinary14-74-guard-linear-combination-patch/README.md)
+import patches and a [small first-factor cut](research/ordinary14-74-first-factor-small-cut-draft/README.md)
+are preventive source alternatives. The original chain is unchanged; no
+Lean failure, need for the imports, or resource improvement has been verified.
 The source-reviewed [78/75 ring-factor client](research/ordinary14-78-75-ring-client-draft/README.md)
 and [78-to-75 forward map](research/ordinary14-78-to-75-model-map-draft/README.md)
 propose the same-coordinate forward direction. They remain unelaborated;
