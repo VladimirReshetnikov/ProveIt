@@ -7545,6 +7545,10 @@ propose the orientation, rank congruence and compact-Mersenne cancellation
 needed for the preceding 84/85 comparison. They remain unelaborated; the
 projection-growth, graph bindings, provider compatibility and endpoint are
 still open.
+The source-reviewed [modified-carrier gamma-growth draft](research/ordinary14-modified-carrier-gamma-model-draft/README.md)
+proposes the needed strict positivity using existing Pell growth lemmas under
+explicit index and carrier hypotheses. It is unelaborated and is not yet
+connected to the graph or the endpoint.
 The source-reviewed [87-operation Lean graph and decoder-route draft](research/ordinary14-shifted-guard87-lean-draft/README.md)
 records the fact-level replay needed for arbitrary models. It is uncompiled;
 the graph-specific model lemmas, parent bridges and iPRA endpoint remain open.
