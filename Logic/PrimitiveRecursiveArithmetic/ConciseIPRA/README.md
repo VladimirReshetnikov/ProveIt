@@ -670,7 +670,7 @@ The main chain (every module except the seventeen kernel comparisons,
 `NativeZeroReflexive`, `NativeZeroClausal`, `FullNormalization`, `NativeFullNormal`,
 `NativeInferredWitness`, `NativeVariableSubstitution`, `NativeWitnessDischarge`, `NativeFullSix`,
 `NativeUniqueness`, `NativeModels` and
-`TeqClosure`) is 5,561
+`TeqClosure`) is 5,523
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
 introduction and elimination, instead of an induction over the seventeen
@@ -689,7 +689,10 @@ the instance of the computation equation is the statement up to unfolding, and
 a quotient induction with one closing step is one line. In the round trip
 through iPRA, that the iterator respects its body and that a recursion which
 ignores its counter is the iterator are two instances of one lemma, the
-uniqueness of iteration (`Q.iter_unique`), in place of two inductions.
+uniqueness of iteration (`Q.iter_unique`), in place of two inductions. In the
+round trip through `T_eq`, the steps of each chain of equations are composed
+directly instead of being stated twice, and the step shared by three of the
+chains is one lemma (`RoundTrip.tau_subst_code`).
 
 All modules build without `sorry` or warnings. The final theorems depend
 only on Lean's `propext`, `Classical.choice` and `Quot.sound` (the `T_eq` ≡
@@ -834,7 +837,7 @@ marked as conjectures is proved here.
    as hypotheses and `Q` in the language. The clausal forms with the fixed
    reflexivity clause are proved only for the raw and the zero-normal calculi
    (`VPrf`, `ZVPrf`).
-8. **A shorter proof of the equivalence.** The main chain is 5,561 lines. A
+8. **A shorter proof of the equivalence.** The main chain is 5,523 lines. A
    dependency-closure computation shows that it contains nothing that the end
    results do not use. Three designs fix most of its size, and no shorter
    replacement for any of them is known: the predecessor of `T_eq` from
