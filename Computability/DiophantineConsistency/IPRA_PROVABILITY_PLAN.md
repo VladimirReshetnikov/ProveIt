@@ -7867,6 +7867,10 @@ The independently source-reviewed [80 own-zero norm draft](research/ordinary14-n
 proposes first-Pell and unit extraction without positive gamma. Its main-norm
 conversion explicitly assumes two literal pair bindings; those bindings,
 Lean elaboration and the iPRA endpoint remain open.
+The independently source-reviewed [80 guard-gap draft](research/ordinary14-natural80-guard-gap-draft/README.md)
+proposes the rank-window premise `F + alpha < q` from an 80 zero and
+represented positive beta and K0, without assuming gamma positive. It remains
+unelaborated and does not discharge symbolic port or endpoint obligations.
 The independently source-reviewed [natural-81 Lean transcription](research/ordinary14-natural-forcedj81-lean-draft/README.md)
 records its literal graph and product shape. Its source correspondence is
 checked externally; Lean semantics and endpoint equivalence remain open.
