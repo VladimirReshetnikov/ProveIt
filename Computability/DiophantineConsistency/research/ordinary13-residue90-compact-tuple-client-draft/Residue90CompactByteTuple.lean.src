@@ -1,0 +1,18 @@
+import Residue90CompactTuple
+import DiophantineConsistency.Compact44.CompactBytePortsModelIff
+
+/-! Source-only equality to closed Lean byte recipes; no filesystem or PDF
+binding and no Lean elaboration are claimed. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Residue90CompactByteTupleDraft
+
+/-- The retained byte tuple decodes in naturals before casting to integers. -/
+theorem chosen_integer_ports_eq_byteP :
+    Residue90CompactTupleDraft.integerPorts Residue90CompactTupleDraft.chosenKernel =
+      CompactBytePortsModelIff.byteP :=
+  Residue90CompactTupleDraft.chosen_integer_ports.trans CompactBytePortsModelIff.byteP_eq.symm
+
+end DiophantineConsistency.Residue90CompactByteTupleDraft
+#print axioms DiophantineConsistency.Residue90CompactByteTupleDraft.chosen_integer_ports_eq_byteP

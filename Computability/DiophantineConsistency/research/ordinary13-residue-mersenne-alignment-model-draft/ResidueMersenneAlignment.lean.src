@@ -1,0 +1,42 @@
+import DiophantineConsistency.ArithmeticAdaptiveMersenne2011
+import DiophantineConsistency.ArithmeticRadixAlignment
+
+/-! Fact-level, conditional Mersenne cancellation and radix alignment.
+No graph, compact port or provider is implicitly bound here. No Lean run. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.ResidueMersenneAlignmentDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ArithmeticAdaptiveMersenne2011 ArithmeticRadixAlignment
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- After independently recovering X=2^R, cancellation is available for
+this explicit represented Mersenne form. No Bézout input is assumed. -/
+theorem divides_power (d R q J X : V) (hd : 4≤d)
+    (hq : q=(Exp.exp d-1)*J+1) (hpower : X=Exp.exp R)
+    (hthree : q∣3*X) : q∣X := by
+  rw [hpower] at hthree ⊢
+  exact cancel_three d R q J hd hq hthree
+
+/-- The existing factor alignment turns the supplied divisibility into a
+represented power-of-two base. Both positive J and the exact port form are
+necessary interfaces; this theorem alone does not prove them for any graph. -/
+theorem alignment (d R q J X : V) (hd : 4≤d) (hJ : 0<J)
+    (hq : q=(Exp.exp d-1)*J+1) (hpower : X=Exp.exp R)
+    (hthree : q∣3*X) :
+    ∃ N w : V, 0<N ∧ q=Exp.exp (d*N) ∧ d*N≤R ∧
+      w=Exp.exp (R-d*N) ∧ X=q*w := by
+  obtain ⟨w,hw⟩ := divides_power d R q J X hd hq hpower hthree
+  have hfact : Exp.exp R=w*((Exp.exp d-1)*J+1) := by
+    rw [←hq,←hpower,hw]
+    ring
+  have hd2 : 2≤d := le_trans (by simp : (2:V)≤4) hd
+  obtain ⟨_,N,hN,hqn,hNR,hwexp⟩ :=
+    factor_alignment d J R w hd2 hJ hfact
+  refine ⟨N,w,hN,hq.trans hqn,hNR,hwexp,?_⟩
+  exact hw
+end DiophantineConsistency.ResidueMersenneAlignmentDraft
+#print axioms DiophantineConsistency.ResidueMersenneAlignmentDraft.divides_power
+#print axioms DiophantineConsistency.ResidueMersenneAlignmentDraft.alignment
