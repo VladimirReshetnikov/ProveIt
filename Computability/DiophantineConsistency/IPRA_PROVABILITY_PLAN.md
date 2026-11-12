@@ -7706,6 +7706,10 @@ The reviewed [positive quotient shift](research/ordinary14-positive-guard74/READ
 reduces that parent to 14 strictly positive inputs and 74 operations at exact
 degree 107. Its positive-zero maps use `β > 0` and `K0 ≥ 0` locally; the
 compact44 consistency, Lean and file-binding limitations remain inherited.
+The source-reviewed [74 guard strictness fact](research/ordinary14-positive-guard74-model-fact-draft/README.md)
+proposes the positive quotient recovery from explicit order and size
+hypotheses. It is unelaborated and those hypotheses have not been bound to
+the graph in Lean.
 The distinct [73-operation direct-qF probe](research/ordinary14-direct-qf73-probe/README.md)
 has a reviewed symbolic positive zero at the actual ports for which the
 recovered parent coordinate `F` is negative. Its same-`q`, same-rank parent
