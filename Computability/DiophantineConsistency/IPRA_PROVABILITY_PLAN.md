@@ -7455,6 +7455,9 @@ It remains unelaborated and does not yet establish the quotient witness.
 The source-reviewed [86 fresh-root draft](research/ordinary14-86-fresh-root-draft/README.md)
 proposes a positive replacement root from an explicit `q³` quotient and
 Pell root. It remains unelaborated and is not yet a complete reverse map.
+The source-reviewed [86-to-85 fresh-map draft](research/ordinary14-86-to-85-fresh-map-draft/README.md)
+proposes the reverse positive valuation using that quotient and a fresh root.
+It and its dependencies remain unelaborated and are not an iPRA endpoint.
 The source-reviewed [86 own-zero quotient composition](research/ordinary14-86-ownzero-quotient-draft/README.md)
 proposes deriving that quotient and a magnitude root from the graph's own
 first residual. It remains unelaborated and is not yet a complete model map.
