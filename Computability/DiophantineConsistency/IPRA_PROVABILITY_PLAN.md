@@ -7512,6 +7512,10 @@ The source-reviewed [norms-to-bounds composition](research/ordinary14-aux-norms-
 proposes the two strict auxiliary inequalities from explicit first, main and
 strong norms. It is unelaborated, and those norms have not yet been extracted
 from the circuit in Lean.
+The source-reviewed [ring-norm extraction draft](research/ordinary14-aux-ring-norm-extraction-draft/README.md)
+proposes the signed main-carrier and natural norm conversions under explicit
+positive-scale hypotheses. It remains unelaborated and is not yet connected
+to the literal graph or an iPRA endpoint.
 The source-reviewed [87-operation Lean graph and decoder-route draft](research/ordinary14-shifted-guard87-lean-draft/README.md)
 records the fact-level replay needed for arbitrary models. It is uncompiled;
 the graph-specific model lemmas, parent bridges and iPRA endpoint remain open.
