@@ -1272,6 +1272,9 @@ unelaborated and is not yet a complete parent bridge.
 The source-reviewed [first-root gap draft](research/ordinary14-first-root-gap-draft/README.md)
 proposes the needed strict Pell-root inequality from explicit natural bounds.
 It remains unelaborated and must still be connected to the graph valuation.
+The source-reviewed [88 own-zero root-gap composition](research/ordinary14-88-first-root-gap-draft/README.md)
+proposes that connection using the same graph's first and main norms. It is
+unelaborated and does not yet construct a parent witness.
 A [sign20 syntax and squares client](research/nine-sharing-sign20-seed-squares-check/README.md),
 [independently audited](reviews/nine-sharing-sign20-seed-squares-terminal-independent/README.md),
 checks symbolic seed zero iff its 11 residuals vanish. It does not establish
