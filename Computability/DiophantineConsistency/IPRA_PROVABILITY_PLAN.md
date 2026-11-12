@@ -7960,6 +7960,10 @@ presence cut, not a coherent provider or build plan.
 The independently reviewed [80 ordered provider plan](research/ordinary14-natural80-ordered-provider-plan/README.md)
 records five qualified source candidates followed by 184 inert draft stages.
 It is a lexical candidate order, not a launch-ready build or provider proof.
+The independently reviewed [80 recorded ancestry](research/ordinary14-natural80-recorded-ancestry-audit/README.md)
+and [materialization blueprint](research/ordinary14-natural80-source-materialization-plan/README.md)
+extend the retained-source observations and map candidate names. They do not
+authenticate transitive runtime providers, reserve a build root or run Lean.
 The independently source-reviewed [natural-81 Lean transcription](research/ordinary14-natural-forcedj81-lean-draft/README.md)
 records its literal graph and product shape. Its source correspondence is
 checked externally; Lean semantics and endpoint equivalence remain open.
