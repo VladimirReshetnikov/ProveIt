@@ -831,7 +831,7 @@ The main chain (every module except the seventeen kernel comparisons,
 `NativeRawReflexive`, `NativeOneOccurrence`, `NativeNoFixedPoint`,
 `ZeroSeedObstruction`,
 `NativePrefix`, `NativeUniqueness`, `NativeModels` and
-`TeqClosure`) is 5,337
+`TeqClosure`) is 5,319
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
 introduction and elimination, instead of an induction over the seventeen
@@ -974,10 +974,16 @@ marked as conjectures is proved here.
    or the numeral `1` as its target (`vqprf_iff_nprf`), and a variable alone is
    not enough (`vqprf_var_incomplete`). The analogous statement for DI is a
    conjecture: DI by cases at the literal `0` or at a variable is enough. A
-   route: prove `Q_y D_{x,y'} (sel(y, 0, S x) = y)` by cases with the
-   witnesses `0` and the fresh variable, instantiate at `y = S t`, and use the
-   injectivity of the successor to name `t`. It needs the predecessor
-   equation `pred (S z) = z` inside the restricted calculus.
+   route that needs no predecessor: from the case step at a term `t`, the
+   introduction with an unused witness at `0` gives `Q_y B(t, y)`; for a
+   variable `w` and the hypothesis `w = t`, transport gives `Q_y B(w, y)` and
+   the introduction at the variable `w` gives `D B`; so
+   `Q_w (w = t → D B)` holds, by cases with an unused witness again, and its
+   instance at `t` gives `D B`. Every introduction in this argument, and in
+   the library's proofs of transport in formulas and of the rules for
+   implication, is at `0` or at a variable. What is missing is those proofs
+   for the restricted calculus: it is closed under renaming but not under
+   substitution, so they cannot be copied as they stand.
 3. **Substitution for a variable on raw terms.** On full normal forms,
    substitution for a variable is the only equality rule needed
    (`vsprf_iff_nprf`). On raw terms the rows of the naming packet are not
@@ -1012,7 +1018,7 @@ marked as conjectures is proved here.
    `deterministic_opening` (`OCPrf`), of `first_instance` and
    `clause_discharge` (`XCPrf`), and of `variable_substitution` (`VCPrf`)
    are proved equivalent to the kernel.
-8. **A shorter proof of the equivalence.** The main chain is 5,337 lines. A
+8. **A shorter proof of the equivalence.** The main chain is 5,319 lines. A
    dependency-closure computation shows that it contains nothing that the end
    results do not use. Three designs fix most of its size, and no shorter
    replacement for any of them is known: the predecessor of `T_eq` from

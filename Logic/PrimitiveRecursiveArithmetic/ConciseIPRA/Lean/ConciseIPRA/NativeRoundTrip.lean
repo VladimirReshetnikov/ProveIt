@@ -60,14 +60,10 @@ theorem nselCases {X Y : NFm n} {χ : Fm Tm n} (v : Tm n)
   · refine .exE Prf.hyp0 ?_
     have e : (NFm.sel v X Y).shift = NFm.sel (Syn.shift v) X.shift Y.shift :=
       NFm.sel_subst X v Y (fun i => Syn.var i.succ)
-    have hS : (Syn.shift v ≐ succ (Syn.var 0)) ::
-        (Fm.ex (Syn.shift v ≐ succ (Syn.var 0)) :: Γ).map Fm.shift ⊢[TeqAx]
-        (NFm.sel (Syn.shift v) X.shift Y.shift).toFm := by
-      have h' := h.shift.weaken (Δ := (Syn.shift v ≐ succ (Syn.var 0)) ::
-        (Fm.ex (Syn.shift v ≐ succ (Syn.var 0)) :: Γ).map Fm.shift)
-        (fun ψ hψ => List.mem_cons_of_mem _ (List.mem_cons_of_mem _ hψ))
-      rw [← NFm.toFm_shift, e] at h'
-      exact h'
+    have hS := h.shift.weaken (Δ := (Syn.shift v ≐ succ (Syn.var 0)) ::
+      (Fm.ex (Syn.shift v ≐ succ (Syn.var 0)) :: Γ).map Fm.shift)
+      (fun ψ hψ => List.mem_cons_of_mem _ (List.mem_cons_of_mem _ hψ))
+    rw [← NFm.toFm_shift, e] at hS
     have hY := ofN2 (A := .eq (Syn.shift v) (succ (Syn.var 0)))
       (A' := NFm.sel (Syn.shift v) X.shift Y.shift) (B := Y.shift)
       ((NEquiv.sel_succ X.shift (Syn.var 0) Y.shift).mp
@@ -112,21 +108,14 @@ theorem imp_iff (X Y : NFm n) : Γ ⊢[TeqAx] Fm.iff (NFm.imp X Y).toFm (X.toFm 
   · have e : (NFm.sel (Syn.var 0) X.shift Y.shift).toFm.subst (inst zero)
         = (NFm.sel zero X Y).toFm := by
       rw [← NFm.toFm_subst, NFm.sel_shift_inst]
-    show (X.toFm ⟶ Y.toFm) :: Γ ⊢[TeqAx]
-      (NFm.sel (Syn.var 0) X.shift Y.shift).toFm.subst (inst zero) ⟶
-        Fm.all (NFm.sel (Syn.var 0) X.shift Y.shift).toFm
-    rw [e]
     refine .impI ?_
-    have hX : (NFm.sel zero X Y).toFm :: (X.toFm ⟶ Y.toFm) :: Γ ⊢[TeqAx] X.toFm :=
-      ofN1 (A := NFm.sel zero X Y) (B := X) (NEquiv.sel_zero X Y).1 Prf.hyp0
-    have hY : (NFm.sel zero X Y).toFm :: (X.toFm ⟶ Y.toFm) :: Γ ⊢[TeqAx] Y.toFm :=
-      .impE Prf.hyp1 hX
-    have hI : (NFm.sel zero X Y).toFm :: (X.toFm ⟶ Y.toFm) :: Γ ⊢[TeqAx]
-        (NFm.sel (Syn.var 0) X.shift Y.shift).toFm.subst (inst zero) ⟶
-          Fm.all (NFm.sel (Syn.var 0) X.shift Y.shift).toFm :=
-      ofN1 (A := Y) (B := NFm.imp X Y) (NPrf.impI NPrf.hyp1) hY
-    rw [e] at hI
-    exact .impE hI Prf.hyp0
+    have h0 : (NFm.sel (Syn.var 0) X.shift Y.shift).toFm.subst (inst zero)
+        :: (X.toFm ⟶ Y.toFm) :: Γ ⊢[TeqAx] (NFm.sel zero X Y).toFm := by
+      rw [← e]
+      exact Prf.hyp0
+    exact .impE (ofN1 (A := Y) (B := NFm.imp X Y) (NPrf.impI NPrf.hyp1)
+      (.impE Prf.hyp1 (ofN1 (A := NFm.sel zero X Y) (B := X) (NEquiv.sel_zero X Y).1 h0)))
+      Prf.hyp0
 
 theorem all_iff (X : NFm (n + 1)) : Γ ⊢[TeqAx] Fm.iff (NFm.all X).toFm (Fm.all X.toFm) := by
   refine Prf.iffI (.impI ?_) (.impI ?_)

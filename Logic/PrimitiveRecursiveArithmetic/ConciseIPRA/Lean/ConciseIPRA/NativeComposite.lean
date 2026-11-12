@@ -58,23 +58,16 @@ theorem qComp {B C : NFm (n + 1)} (e : NEquiv C B) :
     NEquiv (NFm.imp (C.subst (inst zero)) (NFm.all C)) (.Q B) := by
   constructor
   · refine qI B ?_
-    have hC0 : NPrf ((B.subst (inst zero)).shift ::
-        [NFm.imp (C.subst (inst zero)) (NFm.all C)].map NFm.shift)
-        (C.subst (inst zero)).shift :=
-      ((e.subst (inst zero)).shift).mpr hyp0
     have hImp : NPrf ((B.subst (inst zero)).shift ::
         [NFm.imp (C.subst (inst zero)) (NFm.all C)].map NFm.shift)
         (NFm.imp (C.subst (inst zero)).shift (NFm.all C).shift) := by
       rw [← NFm.imp_shift]
       exact .hyp (List.mem_cons_of_mem _ List.mem_cons_self)
-    exact (e.subst _).mp (allShiftE (succ (Syn.var 0)) (impE hImp hC0))
+    exact (e.subst _).mp (allShiftE (succ (Syn.var 0))
+      (impE hImp (((e.subst (inst zero)).shift).mpr hyp0)))
   · refine impI (allI ?_)
-    have hQ : NPrf ((C.subst (inst zero) :: [NFm.Q B]).map NFm.shift) (NFm.Q B).shift :=
-      .hyp (List.mem_cons_of_mem _ List.mem_cons_self)
-    have hB0 : NPrf ((C.subst (inst zero) :: [NFm.Q B]).map NFm.shift)
-        (B.subst (inst zero)).shift :=
-      ((e.subst (inst zero)).shift).mp hyp0
-    have h := qShiftE (Syn.var 0) hQ hB0
+    have h := qShiftE (Δ := (C.subst (inst zero) :: [NFm.Q B]).map NFm.shift) (Syn.var 0)
+      (.hyp (List.mem_cons_of_mem _ List.mem_cons_self)) (((e.subst (inst zero)).shift).mp hyp0)
     rw [NFm.subst_repl_var] at h
     exact e.mpr h
 
