@@ -7579,6 +7579,9 @@ The source-reviewed [84 guard-gap draft](research/ordinary14-84-guard-gap-draft/
 proposes deriving the strict scalar gap from that graph's own zero under
 explicit port casts. It remains unelaborated and does not alone give the rank
 representation or the iPRA endpoint.
+The source-reviewed [own-zero main-balance composition](research/ordinary14-84-own-zero-main-balance-draft/README.md)
+removes the separate rank and `k > 0` assumptions but still assumes the
+size bound and port casts. It remains unelaborated and has no endpoint claim.
 The source-reviewed [84 natural-rank draft](research/ordinary14-84-natural-rank-draft/README.md)
 proposes the signed-to-natural rank representation using that gap and four
 explicit port casts. It has not been elaborated or connected to an endpoint.
