@@ -19,7 +19,7 @@ The proof follows the package:
 * two nonzero terms that are both provably `0` are provably equal
   (`zeroJoin`), through the term `I(0, 0; u. 0)`;
 * with `Z v = sel v 1 0`, `H v = sel v 1 2`, `N n = I(n, 0; u. Z u)`,
-  `R n = I(n, 0; u. H u)` and `L n = N (R n)`, numerical cases give the
+  `R n = I(n, 0; u. H u)` and `L n = N (R n)`, equation induction gives the
   unconditional equations `L (S v) = Z v` (`lS`) and `v = sel (Z v) v 0`
   (`filt`);
 * from `0 = t`, equation induction with `t` fixed gives `n = I(n, t; u. S u)`
@@ -33,7 +33,7 @@ No structural rule of the restricted calculus is needed: substitution is not
 admissible in it in general (it can turn a variable source into `0`), and the
 proof never substitutes into a derivation.
 
-The argument uses only six rules, collected in the class `ZKernel`, and is
+The argument uses only five rules, collected in the class `ZKernel`, and is
 carried out for every derivability predicate that has them.  `ZPrf` is one
 instance; `NativeMinimal` uses another.
 -/
@@ -115,7 +115,9 @@ open Tm (tZ tK tH tN tR tL iter_ne_zero succ_ne_zero var_ne_zero sel_ne_zero)
 
 /-- The rules that the elimination of literal-zero sources uses: hypothesis, the
 two computation equations, transport at a source other than the literal `0`,
-numerical cases and equation induction. -/
+and equation induction.  No logical rule is among them: the case distinctions
+of the argument are inductions that ignore their hypothesis (the observation of
+the package `Research/guarded_source`). -/
 class ZKernel (P : ∀ {n : ℕ}, List (NFm n) → NFm n → Prop) : Prop where
   hyp : ∀ {n : ℕ} {Γ : List (NFm n)} {A : NFm n}, A ∈ Γ → P Γ A
   iterZero : ∀ {n : ℕ} {Γ : List (NFm n)} (a : Tm n) (h : Tm (n + 1)),
@@ -125,10 +127,6 @@ class ZKernel (P : ∀ {n : ℕ}, List (NFm n) → NFm n → Prop) : Prop where
   trEq : ∀ {n : ℕ} {Γ : List (NFm n)} (a b : Tm (n + 1)) {s t : Tm n}, s ≠ zero →
     P Γ (.eq s t) → P Γ (.eq (Syn.subst (inst s) a) (Syn.subst (inst s) b)) →
     P Γ (.eq (Syn.subst (inst t) a) (Syn.subst (inst t) b))
-  cases : ∀ {n : ℕ} {Γ : List (NFm n)} (B : NFm (n + 1)) (t : Tm n),
-    P Γ (B.subst (inst zero)) →
-    P ((B.subst (inst zero)).shift :: Γ.map NFm.shift) (B.subst (repl (succ (Syn.var 0)))) →
-    P Γ (B.subst (inst t))
   eqInd : ∀ {n : ℕ} {Γ : List (NFm n)} (s t : Tm (n + 1)) (u : Tm n),
     P Γ ((NFm.eq s t).subst (inst zero)) →
     P (NFm.eq s t :: Γ.map NFm.shift) ((NFm.eq s t).subst (repl (succ (Syn.var 0)))) →
@@ -237,7 +235,7 @@ theorem hK_succ (z : Tm n) : P Γ (.eq (tH (succ z)) (succ (tK (succ z)))) := by
 
 /-- `H v = S (K v)`. -/
 theorem hK (v : Tm n) : P Γ (.eq (tH v) (succ (tK v))) :=
-  castEq (cases (.eq (tH (Syn.var 0)) (succ (tK (Syn.var 0)))) v (castEq hK_zero (by simp))
+  castEq (eqInd (tH (Syn.var 0)) (succ (tK (Syn.var 0))) v (castEq hK_zero (by simp))
     (castEq (hK_succ (Syn.var 0)) (by simp))) (by simp)
 
 theorem tR_one : P Γ (.eq (tR one) one) := by
@@ -284,7 +282,7 @@ theorem lS (v : Tm n) : P Γ (.eq (tL (succ v)) (tZ v)) := by
   have hS : ∀ {Δ : List (NFm (n + 1))},
       P Δ (.eq (tL (succ (succ (Syn.var 0)))) (tZ (succ (Syn.var 0)))) :=
     zeroJoin (iter_ne_zero _ _ _) (sel_ne_zero _ _ _) (tL_succ_succ _) (tZ_succ _)
-  exact castEq (cases (.eq (tL (succ (Syn.var 0))) (tZ (Syn.var 0))) v (castEq h0 (by simp))
+  exact castEq (eqInd (tL (succ (Syn.var 0))) (tZ (Syn.var 0)) v (castEq h0 (by simp))
     (castEq hS (by simp))) (by simp)
 
 theorem filt_zero : P Γ (.eq zero (Tm.sel (tZ zero) zero zero)) := by
@@ -304,7 +302,7 @@ theorem filt_succ (z : Tm n) :
 
 /-- **The filter identity** `v = sel (Z v) v 0`. -/
 theorem filt (v : Tm n) : P Γ (.eq v (Tm.sel (tZ v) v zero)) :=
-  castEq (cases (.eq (Syn.var 0) (Tm.sel (tZ (Syn.var 0)) (Syn.var 0) zero)) v
+  castEq (eqInd (Syn.var 0) (Tm.sel (tZ (Syn.var 0)) (Syn.var 0) zero) v
     (castEq filt_zero (by simp)) (castEq (filt_succ (Syn.var 0)) (by simp))) (by simp)
 
 /-! ## Turning a zero-source equation around -/
@@ -411,16 +409,6 @@ theorem toNPrf {A : NFm n} (h : ZPrf Γ A) : NPrf Γ A := by
   | dICase B t _ ih => exact .dICase B t ih
   | qIInd s t _ ih => exact .qIInd s t ih
 
-/-- Numerical cases: `B(t)` from `B(0)` and `B(0) ⊢ B(S z)`. -/
-theorem cases (B : NFm (n + 1)) (t : Tm n) (h0 : ZPrf Γ (B.subst (inst zero)))
-    (hS : ZPrf ((B.subst (inst zero)).shift :: Γ.map NFm.shift)
-      (B.subst (repl (succ (Syn.var 0))))) : ZPrf Γ (B.subst (inst t)) := by
-  have hD : ZPrf Γ (.D (B.subst (up (fun i => Syn.var i.succ)))) := by
-    refine .dICase _ zero ?_
-    rw [NFm.subst_dummy_inst]
-    exact hS
-  exact .qE t (.dE hD (.hyp List.mem_cons_self)) h0
-
 /-- Equation induction. -/
 theorem eqInd (s t : Tm (n + 1)) (u : Tm n) (h0 : ZPrf Γ ((NFm.eq s t).subst (inst zero)))
     (hS : ZPrf (NFm.eq s t :: Γ.map NFm.shift)
@@ -430,7 +418,7 @@ theorem eqInd (s t : Tm (n + 1)) (u : Tm n) (h0 : ZPrf Γ ((NFm.eq s t).subst (i
 
 instance : ZKernel @ZPrf :=
   ⟨fun h => .hyp h, fun a h => .iterZero a h, fun c a h => .iterSucc c a h,
-    fun a b => fun hs h₁ h₂ => .trEq a b hs h₁ h₂, cases, eqInd⟩
+    fun a b => fun hs h₁ h₂ => .trEq a b hs h₁ h₂, eqInd⟩
 
 end ZPrf
 

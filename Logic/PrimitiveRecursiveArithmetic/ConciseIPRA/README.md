@@ -94,6 +94,18 @@ by progress as primitive, and proves that the derivable sequents are the same
   [`witness_rule`](Research/witness_rule/); the case it removes, an equation
   by cases at the witness `0`, is recovered at the witness `I(0, 0; u. 0)`.
 
+- *All three together.* Equational transport at sources other than the
+  literal `0`, with the single introduction, is a calculus of seven rules,
+  `MPrf`, and it derives the same sequents as the calculus of the reports
+  (`mprf_iff_iprf`).
+- *Crossed transport.* If transport and QE reverse the root equation of their
+  conclusion, the restriction to nonzero sources costs nothing: a constant
+  template reverses any equation in one step, and unrestricted transport
+  follows without induction (`rprf_iff_nprf`, the module proposed by
+  [`reversal_core`](Research/reversal_core/)). With the uncrossed rule the
+  same restriction needs an equation induction and a singleton test, though no
+  logical rule ([`guarded_source`](Research/guarded_source/); class `ZKernel`).
+
 **Ordinary realization.** `T_eq` is intuitionistic first-order logic with
 equality over the same terms, with the two computation equations, coverage
 `∀x (x = 0 ∨ ∃y x = S y)`, separation `0 = S 0 → ⊥`, and induction for literal
@@ -235,6 +247,8 @@ formalizes three systems and proves them mutually bi-interpretable:
 | | `NPrf.tr`, `NPrf.dIProg` | the two inherited rules as derived rules of the kernel |
 | no literal-zero source | `zprf_iff_nprf : ZPrf Γ A ↔ NPrf Γ A` | transport restricted to sources other than the literal `0` derives the same sequents |
 | one introduction rule | `wprf_iff_nprf : WPrf Γ A ↔ NPrf Γ A` | the seven-rule calculus with the single, syntax-directed introduction derives the same sequents |
+| seven rules | `mprf_iff_nprf`, `mprf_iff_iprf : MPrf Γ A ↔ IPrf Γ A` | the three weakenings together derive the sequents of the reports' calculus |
+| crossed transport | `rprf_iff_nprf : RPrf Γ A ↔ NPrf Γ A`, `reversal_iff_pra` | root-reversing transport and QE with nonzero sources; equality recovered without induction |
 | native → `T_eq` | `NPrf.sound` | `NPrf Γ A → Γ.map toFm ⊢[TeqAx] A.toFm` for the ordinary readings of `Q` and `D` |
 | `T_eq` → native | `NPrf.ofPrf` | `Γ ⊢[TeqAx] φ → NPrf (Γ.map ofFm) (ofFm φ)`, where `ofFm` replaces each connective by its native macro |
 | native = `T_eq` | `NPrf.iff_teq`, `Teq.iff_native` | faithfulness of both readings |
@@ -242,6 +256,11 @@ formalizes three systems and proves them mutually bi-interpretable:
 | native ≡ iPRA | `native_iff_pra`, `pra_iff_native` | the native calculus proves a sequent iff iPRA proves its reading, and conversely |
 | | `native_roundTrip`, `pra_native_roundTrip` | both composites through iPRA are the identity up to equivalence |
 | | `native_inconsistent_iff` | `NPrf [] (0 = 1)` iff iPRA proves `⊥` |
+
+The main chain (every module except the five kernel comparisons) is 5,798
+lines. A dependency-closure scan of the end results, computed inside Lean from
+the proof terms, finds no further unused theorem in it apart from `rfl`
+lemmas that `simp` uses silently.
 
 All modules build without `sorry` or warnings. The final theorems depend
 only on Lean's `propext`, `Classical.choice` and `Quot.sound` (the `T_eq` ≡
@@ -257,7 +276,7 @@ no `native_decide`.
 | `T_eq` arithmetic | `Lindenbaum`, `TeqArith`, `TeqParity`, `TeqCompare`, `TeqPred`, `TeqEq`, `TeqReflect`, `TeqOrder`, `TeqPair`, `TeqRec` | predecessor, reflection of equality into a term, quantifier-free induction, pairing, compilation of primitive recursion |
 | `T_eq` ≡ iPRA | `ScalarToPRA`, `PRAToScalar`, `RoundTripScalar`, `RoundTripPRA`, `BiInterpretation` | the two interpretations and their composites |
 | native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, interderivability over a context, Leibniz and transport in every template, equation induction; selector and gate formulas |
-| kernel comparison | `NativeInherited`, `NativeZeroSource`, `NativeOneIntro` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf`; the calculus without literal-zero transport sources, `ZPrf`, and `zprf_iff_nprf`; the calculus with one introduction rule, `WPrf`, and `wprf_iff_nprf` |
+| kernel comparison | `NativeInherited`, `NativeZeroSource`, `NativeOneIntro`, `NativeMinimal`, `NativeReversal` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf`; no literal-zero transport sources, `ZPrf`, generic over the class `ZKernel`; one introduction rule, `WPrf`, generic over the class `WKernel`; both together, `MPrf`; crossed transport, `RPrf` |
 | native logic | `NativeLogic` | `⊥`, `→`, `∧`, `∨`, `∃`, `∀` as native macros with all their natural deduction rules |
 | native ≡ `T_eq` ≡ iPRA | `NativeTranslate`, `NativeComposite`, `NativeRoundTrip`, `NativeBiInterpretation` | translation of derivations, both round trips, the composite with `biInterp` |
 
@@ -279,6 +298,10 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `witness_rule` (first delivery) | Proved: `wprf_iff_nprf`, for the kernel with equational transport. The kernel keeps two introductions, because the single rule is not stable under substitution by a direct induction (a substitution can turn a witness into the literal `0`). |
 | `direct_closure`, `direct_closure_qprogress` | Adopted: `qIInd` is the kernel's progress rule. The delivered migration patch compiled as written. |
 | `source_dispatch` | Proved: `zprf_iff_nprf`. The kernel keeps unrestricted sources, because substitution into derivations (`NPrf.subst`) is not admissible in the restricted calculus. |
+| `reversal_core` | Adopted as `NativeReversal`: the delivered module compiled after four typed-target fixes (`rprf_iff_nprf`, `reversal_iff_pra`, `pra_iff_reversal`). |
+| `guarded_source` | Its key lemma is proved: the class `ZKernel` has no logical rule, only equation induction, and `ZKernel.trF` recovers unrestricted transport from it. Its guarded public language is not formalized. |
+| `deterministic_auxiliary`, `guarded_orbit` | Their aim, source selection together with a root-determined introduction, is proved on the full native language as `mprf_iff_nprf`. Their guarded public languages with auxiliary formulas are not formalized. |
+| `mirror_guard`, `protected_core` | Not formalized: each is a further restriction of the public formula language (a one-sided guard; equations wrapped as `W(s) = W(t)`), which needs its own embedding and both translations. |
 | `guarded_core` | Its aim, one root-determined introduction, is reached without changing the formula language by `wprf_iff_nprf`. Its own route (guarded atomic matrices, clause contexts in place of `Q`) is not formalized: it needs a second embedding and both translations. |
 | `scope_and_closure` | Its checker results concern Python programs. Its mixed closure also aims at a deterministic introduction, by giving `Q` a progressive reading at literal equations and adding arithmetic to QE; not formalized, for the same reason. |
 | `register_graph` | Not formalized. It is a different term language (`J` with two bound variables) over ordinary logic, so it would need a second bi-interpretation with iPRA from scratch. |
