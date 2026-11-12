@@ -7791,6 +7791,10 @@ The independently reviewed [model-transfer audit](research/ordinary14-natural82-
 records the intended factor, predecessor and no-zero interfaces and their
 assumptions. It is a source-level plan rather than a proof of elaboration,
 provider closure or iPRA derivability.
+The independently source-reviewed [natural-82 endpoint draft](research/ordinary14-natural-forced82-ipra-draft/README.md)
+proposes the selected symbolic-beta facts, no-zero transport and native,
+standard and equality-only iPRA clients. Its five axiom-report commands
+are unexecuted; the source chain and physical equation bindings remain open.
 The independently reviewed [natural shifted-Pell graph](research/ordinary14-natural-shifted-pell83/README.md)
 combines those shifts with the degree reduction: 14 natural inputs, 83
 operations, and exact specialized degree 97. Its external zero maps inherit
