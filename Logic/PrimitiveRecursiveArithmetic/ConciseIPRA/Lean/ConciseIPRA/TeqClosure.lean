@@ -1,4 +1,5 @@
 import ConciseIPRA.TeqReflect
+import ConciseIPRA.Interpretation
 
 /-!
 # Conditional and progressive closure
@@ -19,6 +20,13 @@ This is the criterion of the package `Research/compact_update`.  It explains
 why progress may replace the introduction by cases for a guarded matrix, whose
 base is a theorem, and not for an arbitrary equation: for `y = 1` the base is
 false and `P` fails.
+
+After existential binding of a parameter `x`, as in the reading of the native
+`D_{x,y} φ`, pointwise agreement is sufficient and not necessary, because the
+witness may change.  The exact criterion is
+(`Teq.ex_closure_iff_progress`)
+
+  `(∃ x, C ↔ ∃ x, P) ↔ ((∃ x, ¬ B) → ∃ x, P)`.
 
 The proof is intuitionistic logic over two facts of `T_eq`: quantifier-free
 induction, and the decidability of a quantifier-free formula (`Teq.qfDec`),
@@ -102,6 +110,35 @@ theorem closure_iff_progress (hφ : φ.QF) :
     · exact .impE (progress_of_all φ) (.impE Prf.hyp1 Prf.hyp0)
     · exact .impE (.hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ List.mem_cons_self)))
         Prf.hyp0
+
+/-- Existential quantification is monotone. -/
+theorem exImp {A B : Fm Tm (n + 1)} (h : Γ.map Fm.shift ⊢[TeqAx] A ⟶ B) :
+    Γ ⊢[TeqAx] Fm.ex A ⟶ Fm.ex B :=
+  .impI (.exE Prf.hyp0 (Prf.exOpen (.impE (h.weaken fun _ hχ =>
+    List.mem_cons_of_mem _ (List.map_subset _ (List.subset_cons_self _ _) hχ)) Prf.hyp0)))
+
+/-- **The closure criterion after existential binding.**  The existential
+closures agree exactly when a witness of a false base gives some witness of
+progress. -/
+theorem ex_closure_iff_progress (θ : Fm Tm (n + 2)) (hθ : θ.QF) :
+    Γ ⊢[TeqAx] Fm.iff
+      (Fm.iff (Fm.ex (θ.subst (inst Tm.zero) ⟶ Fm.all θ))
+        (Fm.ex (Fm.all (θ ⟶ θ.subst (repl (Tm.succ (var 0)))))))
+      (Fm.ex (θ.subst (inst Tm.zero) ⟶ Fm.bot) ⟶
+        Fm.ex (Fm.all (θ ⟶ θ.subst (repl (Tm.succ (var 0)))))) := by
+  refine Prf.iffI (.impI (.impI (.exE Prf.hyp0 ?_)))
+    (.impI (Prf.iffI (.impI (.exE Prf.hyp0 ?_)) (exImp (closure_of_progress θ hθ))))
+  · -- a witness of a false base satisfies the conditional closure vacuously
+    refine Prf.iffMp ?_ (Prf.exOpen (φ := θ.subst (inst Tm.zero) ⟶ Fm.all θ)
+      (.impI (.botE _ (.impE Prf.hyp1 Prf.hyp0))))
+    exact .hyp (List.mem_cons_of_mem _ (List.mem_map_of_mem (f := Fm.shift)
+      (List.mem_cons_of_mem _ List.mem_cons_self)))
+  · -- decide the base at the witness of the conditional closure
+    refine .orE (qfDec (θ.subst (inst Tm.zero)) (Fm.subst_QF hθ _)) ?_ ?_
+    · exact Prf.exOpen (.impE (progress_of_all θ) (.impE Prf.hyp1 Prf.hyp0))
+    · refine .impE ?_ (Prf.exOpen (φ := θ.subst (inst Tm.zero) ⟶ Fm.bot) Prf.hyp0)
+      exact .hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _
+        (List.mem_map_of_mem (f := Fm.shift) (List.mem_cons_of_mem _ List.mem_cons_self))))
 
 end Teq
 
