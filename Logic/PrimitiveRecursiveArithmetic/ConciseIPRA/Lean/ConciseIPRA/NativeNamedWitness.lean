@@ -1,4 +1,5 @@
 import ConciseIPRA.NativeVariableQE
+import ConciseIPRA.NativeWitnessShape
 
 /-!
 # Introduction at a variable, and a name for every term
@@ -27,7 +28,10 @@ needs a dummy witness; in a scope without variables it is the variable that a
 name of `0` provides (`DNPrf.qI`).
 
 Without the axiom the introduction at variables is incomplete, and so is the
-introduction at the literal `0` (`NativeWitnessShape`).  The package selects
+introduction at the literal `0` (`NativeWitnessShape`).  For the calculus
+`DWPrf z true` of that module, with variables (and `0` if `z`) as witnesses
+and no axiom, completeness is exactly the derivability of the names
+(`dwprf_complete_iff_names`).  The package selects
 the variable deterministically (the newest parameter, or `0` in an empty
 scope, with priority for a literal naming matrix); that refinement is not
 formalized here.
@@ -358,5 +362,29 @@ theorem NPrf.toDNPrf (h : NPrf Γ A) : DNPrf Γ A := by
 /-- **The introduction at a variable is enough, given a name for every
 term.** -/
 theorem dnprf_iff_nprf : DNPrf Γ A ↔ NPrf Γ A := ⟨DNPrf.toNPrf, NPrf.toDNPrf⟩
+
+/-- A derivation with the naming scheme, in the calculus with variables as
+witnesses, once that calculus derives the names. -/
+theorem DNPrf.toDW {z : Bool}
+    (hN : ∀ {n : ℕ} (Γ : List (NFm n)) (a : Tm n), DWPrf z true Γ (.D (NFm.aliasM a)))
+    (h : DNPrf Γ A) : DWPrf z true Γ A := by
+  induction h with
+  | hyp h => exact .hyp h
+  | iterZero a h => exact .iterZero a h
+  | iterSucc c a h => exact .iterSucc c a h
+  | trOne h _ _ ih₁ ih₂ => exact .trOne h ih₁ ih₂
+  | qE t _ _ ih₁ ih₂ => exact .qE t ih₁ ih₂
+  | dE _ _ ih₁ ih₂ => exact .dE ih₁ ih₂
+  | name a => exact hN _ a
+  | dIVar B i _ ih => exact .dICase B (Syn.var i) (show true = true from rfl) ih
+  | qIInd s₁ s₂ _ ih => exact .qIInd s₁ s₂ ih
+
+/-- **Without the naming scheme, the introduction at a variable (and at `0`
+if `z`) is complete exactly when it derives a name for every term.** -/
+theorem dwprf_complete_iff_names (z : Bool) :
+    (∀ {n : ℕ} (Γ : List (NFm n)) (A : NFm n), DWPrf z true Γ A ↔ NPrf Γ A)
+      ↔ ∀ {n : ℕ} (Γ : List (NFm n)) (a : Tm n), DWPrf z true Γ (.D (NFm.aliasM a)) :=
+  ⟨fun h {_} Γ a => (h Γ _).2 (DNPrf.name a).toNPrf,
+    fun hN {_} _ _ => ⟨DWPrf.toNPrf, fun h => (NPrf.toDNPrf h).toDW hN⟩⟩
 
 end LeanProofs.ConciseIPRA
