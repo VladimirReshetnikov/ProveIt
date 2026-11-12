@@ -1,0 +1,199 @@
+import Residue89RootSwitchTransport
+import ResidueRootSwitchExtract
+import DiophantineConsistency.Compact44.P72Root
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
+
+/-! Proposed 89 graph root-switch client. All declarations, tactics,
+imports, provider ancestry and parent bridge remain unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Residue89RootSwitchGraphDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open Residue90GraphNormsDraft Residue90CompactPortBoundsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def putR (v : Fin 13 → V) (r : V) (i : Fin 13) : V := if i=8 then r else v i
+def b (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := v 0*(p 0:V)
+def ell (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := m p v*k v
+def firstRoot89 (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  ι (b p v)*(ι (ell p v)+ι (k v)+ι (v 8)-ι (k v)*Bt p v)-Bt p v
+
+/-- The source graph is a sum of four nonnegative residual squares. -/
+theorem residuals_zero (p : Fin 4 → ℤ) (v : Fin 13 → V)
+    (hz : InternalZero (ResidueFoldP89Draft.literal p) v) :
+    ∀ i : Fin 4, InternalZero (ResidueFoldP89DraftResiduals.residuals p i) v := by
+  let r : Fin 4 → DiffRing V := fun i => (ResidueFoldP89DraftResiduals.residuals p i).evalRing (fun j => ι (v j))
+  have hzR := (ModelDifferenceRing.internalZero_iff _ _).mp hz
+  rw [←ResidueFoldP89DraftResiduals.sum_eq_literal] at hzR
+  have hsum : (r 0*r 0+r 1*r 1)+(r 2*r 2+r 3*r 3)=0 := by
+    simpa only [r,ResidueFoldP89DraftResiduals.sum,Expr.evalRing_add,Expr.evalRing_mul] using hzR
+  have h0 : r 0=0 := mul_self_eq_zero.mp (by nlinarith [sq_nonneg (r 1),sq_nonneg (r 2),sq_nonneg (r 3)])
+  have h1 : r 1=0 := mul_self_eq_zero.mp (by nlinarith [sq_nonneg (r 0),sq_nonneg (r 2),sq_nonneg (r 3)])
+  have h2 : r 2=0 := mul_self_eq_zero.mp (by nlinarith [sq_nonneg (r 0),sq_nonneg (r 1),sq_nonneg (r 3)])
+  have h3 : r 3=0 := mul_self_eq_zero.mp (by nlinarith [sq_nonneg (r 0),sq_nonneg (r 1),sq_nonneg (r 2)])
+  intro i
+  fin_cases i
+  · exact (ModelDifferenceRing.internalZero_iff _ _).mpr h0
+  · exact (ModelDifferenceRing.internalZero_iff _ _).mpr h1
+  · exact (ModelDifferenceRing.internalZero_iff _ _).mpr h2
+  · exact (ModelDifferenceRing.internalZero_iff _ _).mpr h3
+
+theorem zero_of_residuals (p : Fin 4 → ℤ) (v : Fin 13 → V)
+    (h : ∀ i : Fin 4, InternalZero (ResidueFoldP89DraftResiduals.residuals p i) v) :
+    InternalZero (ResidueFoldP89Draft.literal p) v := by
+  have h0 := (ModelDifferenceRing.internalZero_iff _ _).mp (h 0)
+  have h1 := (ModelDifferenceRing.internalZero_iff _ _).mp (h 1)
+  have h2 := (ModelDifferenceRing.internalZero_iff _ _).mp (h 2)
+  have h3 := (ModelDifferenceRing.internalZero_iff _ _).mp (h 3)
+  apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+  rw [←ResidueFoldP89DraftResiduals.sum_eq_literal]
+  simp only [ResidueFoldP89DraftResiduals.sum,Expr.evalRing_add,Expr.evalRing_mul,
+    h0,h1,h2,h3,mul_zero,add_zero,zero_add]
+
+theorem first_eval (p : Fin 4 → ℕ) (v : Fin 13 → V) :
+    (ResidueFoldP89DraftResiduals.residuals (fun j => (p j:ℤ)) 0).evalRing (fun j => ι (v j)) =
+      firstRoot89 p v*firstRoot89 p v-ι (b p v)*ι (b p v)*
+        (1+ι (ell p v)*(ι (ell p v)+ι (k v))) := by
+  simp [ResidueFoldP89DraftResiduals.residuals,firstRoot89,b,ell,m,Y,q,k,Bt,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat,P72Root.cast_port,
+    map_add,map_mul,map_one,map_ofNat] <;> ring
+
+theorem first_norm (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (ResidueFoldP89Draft.literal (fun j => (p j:ℤ))) v) :
+    firstRoot89 p v*firstRoot89 p v=ι (b p v)*ι (b p v)*
+      (1+ι (ell p v)*(ι (ell p v)+ι (k v))) := by
+  have h := (ModelDifferenceRing.internalZero_iff _ _).mp (residuals_zero _ v hz 0)
+  rw [first_eval] at h
+  exact sub_eq_zero.mp h
+
+theorem first_update (p : Fin 4 → ℕ) (v : Fin 13 → V) (r : V) :
+    (ResidueFoldP89DraftResiduals.residuals (fun j => (p j:ℤ)) 0).evalRing (fun j => ι (putR v r j)) =
+      (ι (b p v)*(ι (ell p v)+ι (k v)+ι r-ι (k v)*Bt p v)-Bt p v)*
+      (ι (b p v)*(ι (ell p v)+ι (k v)+ι r-ι (k v)*Bt p v)-Bt p v)-
+      ι (b p v)*ι (b p v)*(1+ι (ell p v)*(ι (ell p v)+ι (k v))) := by
+  rw [first_eval]
+  simp [firstRoot89,b,ell,m,Y,q,k,Bt,putR,map_add,map_mul,map_one,map_ofNat] <;> ring
+
+theorem unchanged1 (p : Fin 4 → ℕ) (v : Fin 13 → V) (r : V) :
+    (ResidueFoldP89DraftResiduals.residuals (fun j => (p j:ℤ)) 1).evalRing (fun j => ι (putR v r j)) =
+      (ResidueFoldP89DraftResiduals.residuals (fun j => (p j:ℤ)) 1).evalRing (fun j => ι (v j)) := by
+  simp [ResidueFoldP89DraftResiduals.residuals,putR,Expr.evalRing_add,Expr.evalRing_sub,
+    Expr.evalRing_mul,Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,
+    P72Root.cast_port,map_add,map_mul,map_one,map_ofNat] <;> ring
+
+theorem unchanged2 (p : Fin 4 → ℕ) (v : Fin 13 → V) (r : V) :
+    (ResidueFoldP89DraftResiduals.residuals (fun j => (p j:ℤ)) 2).evalRing (fun j => ι (putR v r j)) =
+      (ResidueFoldP89DraftResiduals.residuals (fun j => (p j:ℤ)) 2).evalRing (fun j => ι (v j)) := by
+  simp [ResidueFoldP89DraftResiduals.residuals,putR,Expr.evalRing_add,Expr.evalRing_sub,
+    Expr.evalRing_mul,Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,
+    P72Root.cast_port,map_add,map_mul,map_one,map_ofNat] <;> ring
+
+theorem unchanged3 (p : Fin 4 → ℕ) (v : Fin 13 → V) (r : V) :
+    (ResidueFoldP89DraftResiduals.residuals (fun j => (p j:ℤ)) 3).evalRing (fun j => ι (putR v r j)) =
+      (ResidueFoldP89DraftResiduals.residuals (fun j => (p j:ℤ)) 3).evalRing (fun j => ι (v j)) := by
+  simp [ResidueFoldP89DraftResiduals.residuals,putR,Expr.evalRing_add,Expr.evalRing_sub,
+    Expr.evalRing_mul,Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,
+    P72Root.cast_port,map_add,map_mul,map_one,map_ofNat] <;> ring
+
+/-- This existential replacement assumes only a positive first scale; it
+never assumes the original r is positive or an upper bound on K0. -/
+theorem replacement_of_scale (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (ResidueFoldP89Draft.literal (fun j => (p j:ℤ))) v)
+    (hb : 0<b p v) :
+    ∃ w : Fin 13 → V, InternalZero (ResidueFoldP89Draft.literal (fun j => (p j:ℤ))) w ∧ 0<w 8 := by
+  by_cases hr : 0<v 8
+  · exact ⟨v,hz,hr⟩
+  · have hr0 : v 8=0 := le_antisymm (le_of_not_gt hr) (Arithmetic.zero_le _)
+    have hk : (2:V)≤k v := by
+      have h9 := Arithmetic.zero_le (v 9)
+      have h10 := Arithmetic.zero_le (v 10)
+      dsimp [k]
+      omega
+    have hnorm := first_norm p v hz
+    have hzform : firstRoot89 p v=ι (b p v)*(ι (ell p v)+ι (k v)-ι (k v)*Bt p v)-Bt p v := by
+      simp [firstRoot89,hr0]
+    obtain ⟨r,hrpos,hsq⟩ := ResidueRootSwitchExtractDraft.positive_replacement
+      (b p v) (ell p v) (k v) (Bt p v) (firstRoot89 p v) hb hk hzform hnorm
+    let w : Fin 13 → V := putR v r
+    have hres := residuals_zero _ v hz
+    have hbase := (ModelDifferenceRing.internalZero_iff _ _).mp (hres 0)
+    rw [first_eval] at hbase
+    have hnew : ∀ i : Fin 4, InternalZero (ResidueFoldP89DraftResiduals.residuals (fun j => (p j:ℤ)) i) w := by
+      intro i
+      fin_cases i
+      · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+        change (ResidueFoldP89DraftResiduals.residuals (fun j => (p j:ℤ)) 0).evalRing (fun j => ι (putR v r j))=0
+        rw [first_update,hsq]
+        exact hbase
+      · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+        change (ResidueFoldP89DraftResiduals.residuals (fun j => (p j:ℤ)) 1).evalRing (fun j => ι (putR v r j))=0
+        rw [unchanged1]
+        exact (ModelDifferenceRing.internalZero_iff _ _).mp (hres 1)
+      · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+        change (ResidueFoldP89DraftResiduals.residuals (fun j => (p j:ℤ)) 2).evalRing (fun j => ι (putR v r j))=0
+        rw [unchanged2]
+        exact (ModelDifferenceRing.internalZero_iff _ _).mp (hres 2)
+      · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+        change (ResidueFoldP89DraftResiduals.residuals (fun j => (p j:ℤ)) 3).evalRing (fun j => ι (putR v r j))=0
+        rw [unchanged3]
+        exact (ModelDifferenceRing.internalZero_iff _ _).mp (hres 3)
+    refine ⟨w,zero_of_residuals _ w hnew,?_⟩
+    simpa [w,putR] using hrpos
+
+/-- At J=0 the first norm contradicts the strictly negative Bt; all ports
+are represented naturals, and beta itself need not yet be positive. -/
+theorem J_positive (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (ResidueFoldP89Draft.literal (fun j => (p j:ℤ))) v) : 0<v 0 := by
+  by_contra hn
+  have hj : v 0=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le _)
+  have hq : q p v=1 := by simp [q,hj]
+  have hF1 : (1 : DiffRing V)≤ι (v 1+1) := by
+    have hh : (1:V)≤v 1+1 := by simp
+    simpa only [map_one] using (ι_le_ι.mpr hh)
+  have hc : (ι (q p v) : DiffRing V)-ι (v 1+1)-ι (v 2+1)≤0 := by
+    have ha := ι_nonneg (v 2+1)
+    rw [hq,map_one]
+    linarith
+  have hxk : (0 : DiffRing V)≤ι (v 6)+ι (p 1:V) :=
+    add_nonneg (ι_nonneg (v 6)) (ι_nonneg (p 1:V))
+  have hcp := mul_nonpos_of_nonpos_of_nonneg hc hxk
+  have hF : (0 : DiffRing V)<ι (v 1+1) := by
+    have hh := lt_of_le_of_lt (Arithmetic.zero_le (v 1)) (lt_add_one (v 1))
+    simpa only [map_zero] using (ι_lt_ι.mpr hh)
+  have hBt : Bt p v<0 := by dsimp only [Bt]; linarith
+  have hroot : firstRoot89 p v= -Bt p v := by simp [firstRoot89,b,hj]
+  have hrootpos : 0<firstRoot89 p v := by rw [hroot]; exact neg_pos.mpr hBt
+  have hsquare : firstRoot89 p v*firstRoot89 p v=0 := by
+    simpa [b,hj] using first_norm p v hz
+  exact (ne_of_gt hrootpos) (mul_self_eq_zero.mp hsquare)
+
+theorem compact_positiveReplacement (K : ℕ) : Residue89RootSwitchTransportDraft.PositiveReplacement K := by
+  intro V _ _ v hz
+  have hJ := J_positive (ports K) v hz
+  obtain ⟨hbeta,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) hJ
+  have hp0 : (ports K 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  have hb : 0<b (ports K) v := by
+    dsimp only [b]
+    exact mul_pos hJ (by simpa only [hp0] using hbeta)
+  exact replacement_of_scale (ports K) v hz hb
+
+/-- Still conditional on the positive-82 parent bridge and all the source,
+port/kernel/provider assumptions inherited by the 90 client. -/
+theorem polynomialBridge (K : ℕ)
+    (h82 : HAExpressionAssembly.PolynomialBridge
+      (positiveShift (Residue82LiteralDraft.literal (fun j => (ports K j:ℤ))))) :
+    HAExpressionAssembly.PolynomialBridge (ResidueFoldP89Draft.literal (fun j => (ports K j:ℤ))) :=
+  Residue89RootSwitchTransportDraft.polynomialBridge K (compact_positiveReplacement K) h82
+end DiophantineConsistency.Residue89RootSwitchGraphDraft
+#print axioms DiophantineConsistency.Residue89RootSwitchGraphDraft.first_norm
+#print axioms DiophantineConsistency.Residue89RootSwitchGraphDraft.replacement_of_scale
+#print axioms DiophantineConsistency.Residue89RootSwitchGraphDraft.J_positive
+#print axioms DiophantineConsistency.Residue89RootSwitchGraphDraft.compact_positiveReplacement
+#print axioms DiophantineConsistency.Residue89RootSwitchGraphDraft.polynomialBridge
