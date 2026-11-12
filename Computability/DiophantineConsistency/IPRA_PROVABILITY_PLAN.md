@@ -7878,6 +7878,10 @@ The independently source-reviewed [compact model-port draft](research/ordinary14
 proposes representations and the stated beta, K0, MC and shifted-MF bounds,
 including a low-digit positivity argument. Its casts, provider closure and
 connection to the iPRA endpoint remain unelaborated.
+The independently source-reviewed [natural-80 gamma client](research/ordinary14-natural80-gamma-client-draft/README.md)
+proposes composing the factor, rank and Pell drafts into gamma positivity
+under explicit represented-port assumptions. Its model statement, imports,
+axiom reports and subsequent iPRA endpoint remain unelaborated.
 The independently source-reviewed [natural-81 Lean transcription](research/ordinary14-natural-forcedj81-lean-draft/README.md)
 records its literal graph and product shape. Its source correspondence is
 checked externally; Lean semantics and endpoint equivalence remain open.
