@@ -92,7 +92,9 @@ theorem gamma_pos_of_fact_cut (q X Y eta zeta R U tau d Delta gamma : V)
   have hkpos : 0<eta+zeta := add_pos heta hzeta
   have hklarge := FirstMainLargeKDraft.first_main_large_k X Y eta zeta tau d Delta
     hXpos hYpos heta hzeta hDelta hfirst hmain
-  obtain ⟨hgap,hc⟩ := enlarged_rank_gap q X Y (eta+zeta) eta R hq hX hY heta hklarge hR
+  have hklarge' : 8*(X*Y*Y)+4≤eta+zeta := by
+    simpa only [mul_assoc] using hklarge
+  obtain ⟨hgap,hc⟩ := enlarged_rank_gap q X Y (eta+zeta) eta R hq hX hY heta hklarge' hR
   exact GammaZeroNarrowDraft.gamma_zero_impossible U X Y (eta+zeta) eta (R+X*Y*q)
     hU hY8 hkpos hgap hc (hcarrier hg)
 end DiophantineConsistency.Residue90GammaModelDraft
