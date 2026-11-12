@@ -166,8 +166,7 @@ theorem selZero (a b : Tm n) : NPrf Γ (.eq (Tm.sel zero a b) a) := .iterZero a 
 
 theorem selSucc (c a b : Tm n) : NPrf Γ (.eq (Tm.sel (succ c) a b) b) := by
   have h := NPrf.iterSucc (Γ := Γ) c a (Syn.shift b)
-  rw [Syn.subst_inst_shift] at h
-  exact h
+  rwa [Syn.subst_inst_shift] at h
 
 end NPrf
 

@@ -122,8 +122,7 @@ theorem ofAx {φ : Fm Tm k} (h : TeqAx k φ) : ∀ {Γ : List (NFm k)}, NPrf Γ 
   | cover =>
     intro Γ
     have h := coverN (Γ := Γ) (Syn.var 0)
-    rw [Syn.shift_var] at h
-    exact h
+    rwa [Syn.shift_var] at h
   | sep => intro Γ; exact impI hyp0
   | ind s t => intro Γ; exact indN s t
 

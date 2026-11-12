@@ -183,27 +183,26 @@ theorem mk_iter (c a : Tm n) (h : Tm (n + 1)) :
 theorem app_mk (h : Tm (n + 1)) (a : Tm n) : app h (mk Γ a) = mk Γ (Syn.subst (inst a) h) := rfl
 
 @[simp] theorem iterate_zero (h : Tm (n + 1)) (x : Q Γ) : iterate h 0 x = x := by
-  induction x using Q.ind with | _ a
-  exact sound (Teq.iterZero a h)
+  induction x using Q.ind with | _ a => exact sound (Teq.iterZero a h)
 
 @[simp] theorem iterate_succ (h : Tm (n + 1)) (c x : Q Γ) :
     iterate h (succ c) x = app h (iterate h c x) := by
-  induction c, x using Q.ind₂ with | _ c a
-  exact sound (Teq.iterSucc c a h)
+  induction c, x using Q.ind₂ with | _ c a => exact sound (Teq.iterSucc c a h)
 
 /-- If `0 = 1` then all classes coincide. -/
 theorem absurd (h : (0 : Q Γ) = 1) (x y : Q Γ) : x = y := by
-  induction x, y using Q.ind₂ with | _ a b
-  exact sound (.botE _ (.impE Teq.sep (exact h)))
+  induction x, y using Q.ind₂ with | _ a b => exact sound (.botE _ (.impE Teq.sep (exact h)))
 
 /-- Induction for a literal equation, with the induction hypothesis available
-in the extended context. -/
-theorem eqInd (s t : Tm (n + 1))
-    (h0 : mk Γ (Syn.subst (inst Tm.zero) s) = mk Γ (Syn.subst (inst Tm.zero) t))
+in the extended context.  The base and the step are found by `simp` when they
+are not given. -/
+theorem eqInd (s t : Tm (n + 1)) (a : Tm n)
+    (h0 : mk Γ (Syn.subst (inst Tm.zero) s) = mk Γ (Syn.subst (inst Tm.zero) t) := by simp)
     (hS : mk ((s ≐ t) :: Γ.map Fm.shift) s = mk ((s ≐ t) :: Γ.map Fm.shift) t →
       mk ((s ≐ t) :: Γ.map Fm.shift) (Syn.subst (repl (Tm.succ (var 0))) s)
-        = mk ((s ≐ t) :: Γ.map Fm.shift) (Syn.subst (repl (Tm.succ (var 0))) t))
-    (a : Tm n) : mk Γ (Syn.subst (inst a) s) = mk Γ (Syn.subst (inst a) t) :=
+        = mk ((s ≐ t) :: Γ.map Fm.shift) (Syn.subst (repl (Tm.succ (var 0))) t) := by
+      intro ih; simp at ih; simp [ih]) :
+    mk Γ (Syn.subst (inst a) s) = mk Γ (Syn.subst (inst a) t) :=
   sound (Prf.allE a (Teq.eqInd s t (exact h0) (exact (hS hyp0))))
 
 end Q
@@ -230,18 +229,15 @@ theorem map_mk (e : Ext Γ Γ') (a : Tm n) : e.map (Q.mk Γ a) = Q.mk Γ' (Syn.s
 
 theorem map_op₁ (e : Ext Γ Γ') (f : ∀ k, Tm k → Tm k) (hf : Sub₁ f) (x : Q Γ) :
     e.map (Q.op₁ f hf x) = Q.op₁ f hf (e.map x) := by
-  induction x using Q.ind with | _ a
-  exact congrArg (Q.mk Γ') (hf e.σ a)
+  induction x using Q.ind with | _ a => exact congrArg (Q.mk Γ') (hf e.σ a)
 
 theorem map_op₂ (e : Ext Γ Γ') (f : ∀ k, Tm k → Tm k → Tm k) (hf : Sub₂ f) (x y : Q Γ) :
     e.map (Q.op₂ f hf x y) = Q.op₂ f hf (e.map x) (e.map y) := by
-  induction x, y using Q.ind₂ with | _ a b
-  exact congrArg (Q.mk Γ') (hf e.σ a b)
+  induction x, y using Q.ind₂ with | _ a b => exact congrArg (Q.mk Γ') (hf e.σ a b)
 
 theorem map_op₃ (e : Ext Γ Γ') (f : ∀ k, Tm k → Tm k → Tm k → Tm k) (hf : Sub₃ f)
     (x y z : Q Γ) : e.map (Q.op₃ f hf x y z) = Q.op₃ f hf (e.map x) (e.map y) (e.map z) := by
-  induction x, y, z using Q.ind₃ with | _ a b c
-  exact congrArg (Q.mk Γ') (hf e.σ a b c)
+  induction x, y, z using Q.ind₃ with | _ a b c => exact congrArg (Q.mk Γ') (hf e.σ a b c)
 
 @[simp] theorem map_succ (e : Ext Γ Γ') (x : Q Γ) : e.map (Q.succ x) = Q.succ (e.map x) :=
   map_op₁ e (fun _ => Tm.succ) (fun _ _ => rfl) x

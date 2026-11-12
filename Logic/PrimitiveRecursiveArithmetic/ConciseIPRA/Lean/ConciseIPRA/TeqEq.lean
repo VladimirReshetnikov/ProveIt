@@ -39,8 +39,7 @@ variable {Γ : List (Fm Tm n)}
 /-! ### Truncated subtraction -/
 
 @[simp] theorem monus_zero (x : Q Γ) : monus x 0 = x := by
-  induction x using Q.ind with | _ a
-  exact sound (Teq.iterZero a _)
+  induction x using Q.ind with | _ a => exact sound (Teq.iterZero a _)
 
 @[simp] theorem monus_succ (x y : Q Γ) : monus x (succ y) = pred (monus x y) := by
   induction x, y using Q.ind₂ with | _ a b
@@ -51,13 +50,11 @@ variable {Γ : List (Fm Tm n)}
 @[simp] theorem pred_monus_succ (x y : Q Γ) : pred (monus (succ x) y) = monus x y := by
   induction x, y using Q.ind₂ with | _ a b
   simpa using eqInd (Γ := Γ) (Tm.pred (Tm.monus (Tm.succ (shift a)) (var 0)))
-    (Tm.monus (shift a) (var 0)) (by simp)
-    (fun ih => by simp at ih; simp [ih]) b
+    (Tm.monus (shift a) (var 0)) b
 
 @[simp] theorem monus_succ_self (x : Q Γ) : monus (succ x) x = 1 := by
   induction x using Q.ind with | _ a
-  simpa using eqInd (Γ := Γ) (Tm.monus (Tm.succ (var 0)) (var 0)) Tm.one (by simp)
-    (fun ih => by simp at ih; simp [ih]) a
+  simpa using eqInd (Γ := Γ) (Tm.monus (Tm.succ (var 0)) (var 0)) Tm.one a
 
 /-- The step of the difference invariant. -/
 theorem monus_inv_step (x v u : Q Γ) (h : sel u x (v + u) = x) :
@@ -74,8 +71,8 @@ theorem sel_monus (x y : Q Γ) : sel (monus x y) x (y + monus x y) = x := by
   simpa using eqInd (Γ := Γ)
     (Tm.sel (Tm.monus (shift a) (var 0)) (shift a)
       (Tm.add (var 0) (Tm.monus (shift a) (var 0))))
-    (shift a) (by simp)
-    (fun ih => by simp at ih ⊢; exact monus_inv_step _ _ _ ih) b
+    (shift a) b
+    (hS := fun ih => by simp at ih ⊢; exact monus_inv_step _ _ _ ih)
 
 theorem add_succ_of_monus_eq_succ {x y z : Q Γ} (h : monus x y = succ z) :
     succ (y + z) = x := by
@@ -92,8 +89,7 @@ theorem monus_succ_eq_one_iff {a b : Q Γ} : monus (succ a) b = 1 ↔ a = b := b
 
 theorem eqt_eq (a b : Q Γ) :
     eqt a b = sel (monus (succ a) b) 1 (pred (monus (succ a) b)) := by
-  induction a, b using Q.ind₂ with | _ a b
-  rfl
+  induction a, b using Q.ind₂ with | _ a b => rfl
 
 theorem eq_one_of_sel_pred (d : Q Γ) (h : sel d 1 (pred d) = 0) : d = 1 := by
   refine Q.cases d (fun e he => ?_) (fun e z he => ?_)

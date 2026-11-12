@@ -177,8 +177,7 @@ theorem f_shift (t : T n) (Γ : List (Fm T' (n + 1))) :
   have h := (F.f_subst (fun i => var i.succ) t).ofNil (Γ := Γ)
   have e : (fun i : Fin n => F.f (n + 1) (var i.succ)) = fun i => var i.succ :=
     funext fun i => F.f_var _
-  rw [e] at h
-  exact h
+  rwa [e] at h
 
 theorem f_up (ρ : Fin n → T m) (Γ : List (Fm T' (m + 1))) (i : Fin (n + 1)) :
     Γ ⊢[Ax'] F.f (m + 1) (up ρ i) ≐ up (fun i => F.f m (ρ i)) i := by
@@ -214,8 +213,7 @@ theorem map_shift (φ : Fm T n) (Γ : List (Fm T' (n + 1))) :
   have h := F.map_subst φ (fun i => var i.succ) Γ
   have e : (fun i : Fin n => F.f (n + 1) (var i.succ)) = fun i => var i.succ :=
     funext fun i => F.f_var _
-  rw [e] at h
-  exact h
+  rwa [e] at h
 
 theorem shiftCtx (Γ : List (Fm T n)) :
     ∀ χ ∈ (Γ.map Fm.shift).map (Fm.map F.f),

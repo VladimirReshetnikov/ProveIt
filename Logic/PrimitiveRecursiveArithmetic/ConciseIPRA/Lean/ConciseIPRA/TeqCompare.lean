@@ -40,8 +40,7 @@ variable {Γ : List (Fm Tm n)}
 /-! ### The iterated factor map -/
 
 @[simp] theorem hops_zero (x : Q Γ) : hops 0 x = x := by
-  induction x using Q.ind with | _ a
-  exact sound (Teq.iterZero a _)
+  induction x using Q.ind with | _ a => exact sound (Teq.iterZero a _)
 
 @[simp] theorem hops_succ (y x : Q Γ) : hops (succ y) x = hop (hops y x) := by
   induction y, x using Q.ind₂ with | _ b a
@@ -53,8 +52,7 @@ variable {Γ : List (Fm Tm n)}
 theorem hop_hops (y x : Q Γ) : hop (hops y x) = hops y (hop x) := by
   induction y, x using Q.ind₂ with | _ b a
   simpa using eqInd (Γ := Γ) (Tm.hop (Tm.hops (var 0) (shift a)))
-    (Tm.hops (var 0) (Tm.hop (shift a))) (by simp)
-    (fun ih => by simp at ih; simp [ih]) b
+    (Tm.hops (var 0) (Tm.hop (shift a))) b
 
 /-- Scaling: the iterated factor map commutes with tripling. -/
 theorem hops_triple (y x : Q Γ) : hops y (x + x + x) = hops y x + hops y x + hops y x := by
@@ -62,29 +60,21 @@ theorem hops_triple (y x : Q Γ) : hops y (x + x + x) = hops y x + hops y x + ho
   simpa using eqInd (Γ := Γ)
     (Tm.hops (var 0) (Tm.add (Tm.add (shift a) (shift a)) (shift a)))
     (Tm.add (Tm.add (Tm.hops (var 0) (shift a)) (Tm.hops (var 0) (shift a)))
-      (Tm.hops (var 0) (shift a)))
-    (by simp) (fun ih => by simp at ih; simp [ih, hop_triple]) b
+      (Tm.hops (var 0) (shift a))) b (hS := fun ih => by simp at ih; simp [ih, hop_triple])
 
 @[simp] theorem hops_one (y : Q Γ) : hops y 1 = 1 := by
   induction y using Q.ind with | _ b
-  simpa using eqInd (Γ := Γ) (Tm.hops (var 0) Tm.one) Tm.one (by simp)
-    (fun ih => by simp at ih; simp [ih]) b
+  simpa using eqInd (Γ := Γ) (Tm.hops (var 0) Tm.one) Tm.one b
 
 /-! ### Powers of two and the comparator -/
 
-@[simp] theorem pow2_zero : pow2 (0 : Q Γ) = 1 := by
-  show mk Γ (Tm.pow2 Tm.zero) = mk Γ Tm.one
-  exact sound (Teq.iterZero _ _)
+@[simp] theorem pow2_zero : pow2 (0 : Q Γ) = 1 := sound (Teq.iterZero _ _)
 
 @[simp] theorem pow2_succ (x : Q Γ) : pow2 (succ x) = pow2 x + pow2 x := by
-  induction x using Q.ind with | _ a
-  have h := Teq.iterSucc (Γ := Γ) a Tm.one (Tm.add (var 0) (var 0))
-  simp only [Tm.subst_add, Syn.subst_var, Syn.inst_zero] at h
-  exact sound h
+  induction x using Q.ind with | _ a => exact sound (Teq.iterSucc a Tm.one (Tm.add (var 0) (var 0)))
 
 theorem cmp_eq (x y : Q Γ) : cmp x y = par (hops y (pow2 x)) := by
-  induction x, y using Q.ind₂ with | _ a b
-  rfl
+  induction x, y using Q.ind₂ with | _ a b => rfl
 
 @[simp] theorem cmp_zero (y : Q Γ) : cmp 0 y = 1 := by
   rw [cmp_eq, pow2_zero, hops_one, par_one]
@@ -100,8 +90,7 @@ theorem cmp_eq (x y : Q Γ) : cmp x y = par (hops y (pow2 x)) := by
 /-- The diagonal just above the comparison threshold. -/
 @[simp] theorem cmp_succ_self (x : Q Γ) : cmp (succ x) x = 0 := by
   induction x using Q.ind with | _ a
-  simpa using eqInd (Γ := Γ) (Tm.cmp (Tm.succ (var 0)) (var 0)) Tm.zero (by simp)
-    (fun ih => by simp at ih; simp [ih]) a
+  simpa using eqInd (Γ := Γ) (Tm.cmp (Tm.succ (var 0)) (var 0)) Tm.zero a
 
 end Q
 

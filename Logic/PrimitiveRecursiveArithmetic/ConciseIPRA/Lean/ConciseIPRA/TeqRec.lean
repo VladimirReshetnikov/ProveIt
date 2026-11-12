@@ -112,11 +112,11 @@ theorem pfst_iterate_step (R : Tm (n + 1)) (c a : Q Γ) :
   have h := eqInd (Γ := Γ)
     (Tm.pfst (Tm.iter (var 0) (Tm.pair Tm.zero (shift a))
       (Tm.pair (Tm.succ (Tm.pfst (var 0))) (Syn.subst (up (fun i => var i.succ)) R))))
-    (var 0)
+    (var 0) c
     (by simp [mk_iter])
     (fun ih => by
       simp [mk_iter] at ih
-      simp [mk_iter, Syn.subst_up_repl_up_shift, pfst_app_step, ih]) c
+      simp [mk_iter, Syn.subst_up_repl_up_shift, pfst_app_step, ih])
   simpa [mk_iter, Syn.subst_up_inst_up_shift] using h
 
 theorem pfst_recAcc (c a : Tm n) (g : Tm (n + 2)) :

@@ -72,7 +72,7 @@ theorem iter_body_congr {h h' : Tm (n + 1)} (hh : [] ⊢[TeqAx] h ≐ h') (c a :
   refine exact ?_
   have key := eqInd (Γ := Γ)
     (Tm.iter (var 0) (shift a) (Syn.subst (up (fun i => var i.succ)) h))
-    (Tm.iter (var 0) (shift a) (Syn.subst (up (fun i => var i.succ)) h'))
+    (Tm.iter (var 0) (shift a) (Syn.subst (up (fun i => var i.succ)) h')) c
     (by
       simp only [Tm.subst_iter, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
         Syn.subst_up_inst_up_shift]
@@ -82,7 +82,7 @@ theorem iter_body_congr {h h' : Tm (n + 1)} (hh : [] ⊢[TeqAx] h ≐ h') (c a :
         Syn.subst_up_repl_up_shift]
       refine iter_body_step (fun x => ?_) _ _ ih
       rw [subst_subst, subst_subst]
-      exact Teq.substNil hh _) c
+      exact Teq.substNil hh _)
   simpa only [Tm.subst_iter, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
     Syn.subst_up_inst_up_shift] using key
 
@@ -114,7 +114,7 @@ theorem prc_itG (c a : Tm n) (h : Tm (n + 1)) :
   refine exact ?_
   have key := eqInd (Γ := Γ)
     (Tm.prc (var 0) (shift a) (Tm.itG (Syn.subst (up (fun i => var i.succ)) h)))
-    (Tm.iter (var 0) (shift a) (Syn.subst (up (fun i => var i.succ)) h))
+    (Tm.iter (var 0) (shift a) (Syn.subst (up (fun i => var i.succ)) h)) c
     (by
       simp only [Tm.subst_prc, Tm.subst_iter, Tm.subst_itG, Syn.subst_var, Syn.inst_zero,
         Syn.subst_inst_shift, Syn.subst_up_inst_up_shift]
@@ -122,7 +122,7 @@ theorem prc_itG (c a : Tm n) (h : Tm (n + 1)) :
     (fun ih => by
       simp only [Tm.subst_prc, Tm.subst_iter, Tm.subst_itG, Syn.subst_var, Syn.repl_zero,
         Syn.subst_repl_shift, Syn.subst_up_repl_up_shift]
-      exact prc_itG_step _ _ _ ih) c
+      exact prc_itG_step _ _ _ ih)
   simpa only [Tm.subst_prc, Tm.subst_iter, Tm.subst_itG, Syn.subst_var, Syn.inst_zero,
     Syn.subst_inst_shift, Syn.subst_up_inst_up_shift] using key
 

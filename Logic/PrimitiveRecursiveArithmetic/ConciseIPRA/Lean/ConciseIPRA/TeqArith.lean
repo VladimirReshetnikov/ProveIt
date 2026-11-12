@@ -57,8 +57,7 @@ instance : Add (Q Γ) := ⟨op₂ (fun _ => Tm.add) Tm.subst_add⟩
 @[simp] theorem succ_zero : succ (0 : Q Γ) = 1 := rfl
 
 @[simp] theorem sel_zero (x y : Q Γ) : sel 0 x y = x := by
-  induction x, y using Q.ind₂ with | _ a b
-  exact sound (Teq.iterZero a (shift b))
+  induction x, y using Q.ind₂ with | _ a b => exact sound (Teq.iterZero a (shift b))
 
 @[simp] theorem sel_succ (c x y : Q Γ) : sel (succ c) x y = y := by
   induction c, x, y using Q.ind₃ with | _ c a b
@@ -69,38 +68,34 @@ instance : Add (Q Γ) := ⟨op₂ (fun _ => Tm.add) Tm.subst_add⟩
 @[simp] theorem sel_one (x y : Q Γ) : sel 1 x y = y := sel_succ 0 x y
 
 protected theorem add_zero (x : Q Γ) : x + 0 = x := by
-  induction x using Q.ind with | _ a
-  exact sound (Teq.iterZero a _)
+  induction x using Q.ind with | _ a => exact sound (Teq.iterZero a _)
 
 theorem add_succ (x y : Q Γ) : x + succ y = succ (x + y) := by
-  induction x, y using Q.ind₂ with | _ a b
-  have h := Teq.iterSucc (Γ := Γ) b a (Tm.succ (var 0))
-  simp only [Tm.subst_succ, Syn.subst_var, Syn.inst_zero] at h
-  exact sound h
+  induction x, y using Q.ind₂ with | _ a b => exact sound (Teq.iterSucc b a (Tm.succ (var 0)))
 
 protected theorem zero_add (y : Q Γ) : 0 + y = y := by
   induction y using Q.ind with | _ b
-  simpa using eqInd (Γ := Γ) (Tm.add Tm.zero (var 0)) (var 0)
-    (by simp [Q.add_zero]) (fun ih => by simp at ih ⊢; rw [add_succ, ih]) b
+  simpa using eqInd (Γ := Γ) (Tm.add Tm.zero (var 0)) (var 0) b
+    (by simp [Q.add_zero]) (fun ih => by simp at ih ⊢; rw [add_succ, ih])
 
 theorem succ_add (x y : Q Γ) : succ x + y = succ (x + y) := by
   induction x, y using Q.ind₂ with | _ a b
   simpa using eqInd (Γ := Γ) (Tm.add (Tm.succ (shift a)) (var 0))
-    (Tm.succ (Tm.add (shift a) (var 0)))
-    (by simp [Q.add_zero]) (fun ih => by simp at ih ⊢; rw [add_succ, add_succ, ih]) b
+    (Tm.succ (Tm.add (shift a) (var 0))) b
+    (by simp [Q.add_zero]) (fun ih => by simp at ih ⊢; rw [add_succ, add_succ, ih])
 
 protected theorem add_comm (x y : Q Γ) : x + y = y + x := by
   induction x, y using Q.ind₂ with | _ a b
-  simpa using eqInd (Γ := Γ) (Tm.add (shift a) (var 0)) (Tm.add (var 0) (shift a))
+  simpa using eqInd (Γ := Γ) (Tm.add (shift a) (var 0)) (Tm.add (var 0) (shift a)) b
     (by simp [Q.add_zero, Q.zero_add])
-    (fun ih => by simp at ih ⊢; rw [add_succ, succ_add, ih]) b
+    (fun ih => by simp at ih ⊢; rw [add_succ, succ_add, ih])
 
 protected theorem add_assoc (x y z : Q Γ) : x + y + z = x + (y + z) := by
   induction x, y, z using Q.ind₃ with | _ a b c
   simpa using eqInd (Γ := Γ) (Tm.add (Tm.add (shift a) (shift b)) (var 0))
-    (Tm.add (shift a) (Tm.add (shift b) (var 0)))
+    (Tm.add (shift a) (Tm.add (shift b) (var 0))) c
     (by simp [Q.add_zero])
-    (fun ih => by simp at ih ⊢; rw [add_succ, add_succ, add_succ, ih]) c
+    (fun ih => by simp at ih ⊢; rw [add_succ, add_succ, add_succ, ih])
 
 instance : AddCommMonoid (Q Γ) where
   add_assoc := Q.add_assoc
