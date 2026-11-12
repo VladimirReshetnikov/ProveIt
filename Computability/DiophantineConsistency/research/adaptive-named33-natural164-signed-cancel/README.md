@@ -17,7 +17,7 @@ The same check matches the parent JSON's 33 inputs, four ports and all 139 rows 
 
 The parent's `IPRANamedValues33Native.literal_equivalence` is recorded by a [historical matched native replay](../../reviews/ipra-named33-native-verification/README.md), with its stated inherited project, package and dynamic-ancestry limitations. A Lean proof binding the new 164-gate literal to that positive-shifted parent, followed by a new iPRA endpoint client, remains open. No document/PDF semantics or global minimality is asserted.
 
-The existing matched-endpoint 30/138/8 positive graph has a straightforward 30/168/8 natural shift, while the retained 31/141/6 positive graph shifts to 31/172/6. This 33/164/8 natural form trades more variables for fewer operations than those straightforward natural evaluators. These are specific comparisons, not an assertion about every other repository graph.
+The existing matched-endpoint 30/138/8 positive graph has a straightforward 30/168/8 natural shift, while the retained 31/141/6 positive graph shifts to 31/172/6. This 33/164/8 natural form trades more variables for fewer operations than those straightforward natural evaluators. However, the separately retained 27/129/8 positive candidate has a straightforward 27/156/8 natural shift, which numerically dominates 33/164/8; its associated AQ27 endpoint has author-only hybrid provenance rather than the 33 parent's matched native replay. This packet is therefore a provenance-specific comparison, not a numerical frontier or global minimum.
 
 From the repository root:
 
