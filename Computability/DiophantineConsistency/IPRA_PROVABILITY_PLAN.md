@@ -7942,6 +7942,9 @@ The independently reviewed [80 qualified-provider cut](research/ordinary14-natur
 finds five source candidates absent from the selected object root and records
 bounded alternate-provider and collision observations. This is a lexical
 presence cut, not a coherent provider or build plan.
+The independently reviewed [80 ordered provider plan](research/ordinary14-natural80-ordered-provider-plan/README.md)
+records five qualified source candidates followed by 184 inert draft stages.
+It is a lexical candidate order, not a launch-ready build or provider proof.
 The independently source-reviewed [natural-81 Lean transcription](research/ordinary14-natural-forcedj81-lean-draft/README.md)
 records its literal graph and product shape. Its source correspondence is
 checked externally; Lean semantics and endpoint equivalence remain open.
