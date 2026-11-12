@@ -1,0 +1,19 @@
+# Independent review: AQ26 two-quotient decimal display
+
+The [TeX/PDF candidate](../../research/adaptive-aq26-two-quotients122-decimal-display/README.md), both author read-only checks and this independent checker reproduce. No concrete graph or fixed-text transcription defect was found in this bounded review. This is not Lean elaboration, a new iPRA theorem, or a formal interpretation of TeX/PDF bytes.
+
+The display declares 26 distinct strictly positive inputs. Their descriptive `arg...` names avoid reusing the coefficient section's bound index `i` and other fixed-recipe symbols. The checker independently maps all 122 source graph rows to the TeX `G001`–`G122` abbreviations and the ordered PDF-extracted rows, including the final `G122=0`. The separate [graph review](../adaptive-aq26-two-quotients122-independent/README.md) checks the exact polynomial correction, zero-map argument, operation count and exact degree eight; those facts are not inferred merely from the display.
+
+The complete fixed-constant TeX block is byte-identical to the pinned maintained `equation.tex` block, including its 715-digit base-10 seed. The relevant floor, interval and sum macro definitions also match. The 12 seed lines match the source `DecimalMachine215.seed` numeral and PDF text exactly, including the leading zero of line seven. The parent endpoint source names `CurrentWindowCarry2011.ports`; its source tuple is `[beta, K, lowPort, highPort + beta]`, with the high shift once.
+
+For additional fixed-port evidence, the checker re-evaluates the displayed β, μ and ω formulas and matches their big-endian integer hashes against the pinned [historical independent four-port receipt](../equation14-historical-literal-binding-independent/README.md). It reruns the older read-only manually transcribed printed-recipe reconstruction and compares **all four** resulting port hashes, including K, with that same receipt; the reconstruction reports 942 tiles and 885,481 ranking comparisons. This is a finite external check linked to a historical Lean `#eval`, not a new Lean theorem about the displayed formulas or files. The K decoder/rank formula is manually transcribed in the reused reconstruction, rather than parsed as TeX by this audit.
+
+Both rendered PDF pages were visually inspected; the graph and fixed block are compact, and the candidate's external/unproved status is printed on page two. Text extraction flattens mathematical layout, so the PDF is not a faithful machine-readable formula syntax. The 122-operation model transfer and iPRA endpoint, historical provider ancestry, and formal physical file semantics all remain separate obligations. The candidate does not replace the maintained page.
+
+From the repository root, with `pdfinfo`, `pdftotext` and the retained historical source files available:
+
+```sh
+python3 -I -S -B Computability/DiophantineConsistency/research/adaptive-aq26-two-quotients122-decimal-display/generate.py | cmp - Computability/DiophantineConsistency/research/adaptive-aq26-two-quotients122-decimal-display/result.json
+python3 -I -S -B Computability/DiophantineConsistency/research/adaptive-aq26-two-quotients122-decimal-display/verify_display.py | cmp - Computability/DiophantineConsistency/research/adaptive-aq26-two-quotients122-decimal-display/render-result.json
+python3 -I -S -B Computability/DiophantineConsistency/reviews/adaptive-aq26-two-quotients122-decimal-display-independent/check.py | cmp - Computability/DiophantineConsistency/reviews/adaptive-aq26-two-quotients122-decimal-display-independent/result.json
+```
