@@ -7599,6 +7599,10 @@ unelaborated and does not provide the auxiliary norm or exact indices.
 The source-reviewed [84 auxiliary-norm draft](research/ordinary14-84-aux-norm-draft/README.md)
 proposes the signed absolute-value relation from that graph's own zero. It
 remains unelaborated and does not itself establish exact indices.
+The source-reviewed [84 P72 exact-index composition](research/ordinary14-84-p72-exact-indices-draft/README.md)
+proposes applying the existing theorem to the assembled own-zero hypotheses.
+It and its dependencies remain unelaborated; it is not yet a Lean-checked
+exact-index result or an iPRA endpoint.
 The source-reviewed [84 main-index draft](research/ordinary14-84-main-index-draft/README.md)
 proposes classifying the main root while retaining the natural balance. It is
 unelaborated and does not identify that index with the rank.
