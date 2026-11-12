@@ -7912,6 +7912,10 @@ The independently source-reviewed [natural-81 endpoint draft](research/ordinary1
 proposes those connections through native, standard and equality-only iPRA
 clients. Its declarations and five axiom-report commands remain unelaborated
 and unexecuted; provider and physical-equation bindings remain open.
+The independently reviewed [predecessor-order alternatives](research/ordinary14-natural-predecessor-order-patch/README.md)
+make the conversion from `1 + n` to `n + 1` explicit in two earlier drafts.
+They are inert source snapshots; the existing inventory still selects the
+originals, and neither version has been checked by Lean.
 The independently source-reviewed [natural-81 recipe-port client](research/ordinary14-natural81-recipe-port-bridge-draft/README.md)
 proposes transporting those endpoints to closed Lean byte recipes. It is
 unelaborated and does not bind those recipes to external payloads or the PDF.
