@@ -173,6 +173,23 @@ by progress as primitive, and proves that the derivable sequents are the same
   sequent (`FNPrf`, `fnprf_iff_nprf`). This is the kernel form of
   [`full_normalization`](Research/full_normalization/) and
   [`computation_normal`](Research/computation_normal/).
+- *Opening with an inferred witness.* On full normal forms the elimination
+  of `D_{x,y} B` need not be told anything: it reads its witness off the
+  matrix. If `B(b, 0)` is literally `0 = 0` and `B(b, 1)` is literally
+  `b = r` at the fresh `b`, the closure is opened at `r`, and otherwise at `b`
+  (`NFm.owit`). With this rule in place of DE the kernel on full normal forms
+  is `FOPrf`, and it derives the full normal form of a sequent exactly when
+  the kernel derives the sequent (`foprf_iff_nprf`). Soundness: the selected
+  rows make the closure at `b` yield `b = r`, and the closure at `r` follows
+  by transport (`NPrf.owitQ`). Completeness translates a kernel derivation
+  under an arbitrary substitution, and at DE sends the fresh variable to the
+  selected witness of the normalized matrix, whatever it is
+  (`NPrf.toFO`); the test is not stable under substitution, and no case
+  distinction on it is needed. This is the rule of
+  [`inferred_witness`](Research/inferred_witness/),
+  [`deterministic_opening`](Research/deterministic_opening/),
+  [`first_instance`](Research/first_instance/) and
+  [`clause_discharge`](Research/clause_discharge/), on the kernel.
 - *One introduction rule, stable under substitution.* The single
   introduction above tests the witness for being the literal `0`, and a
   substitution can turn a witness into `0`. If instead the fresh variable is
@@ -591,6 +608,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | six rules, zero-normal | `nrprf_iff_nprf : NRPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`, `NRPrf.normal` | no zero computation rule and one introduction, progressive exactly at a literally reflexive normalized base |
 | full normal forms | `Tm.full`, `Tm.nbe`, `Tm.nbe_sub`, `Tm.nbe_nbe`, `Tm.full_subst_congr`, `NPrf.eqFull`, `equivFull` | the normalizer for both computations, by evaluation; its coherence with substitution and renaming; correctness in the kernel |
 | no computation rule | `fnprf_iff_nprf : FNPrf (Γ.map NFm.full) A.full ↔ NPrf Γ A`, `fnprf_iff_nprf_of_normal`, `fnprf_iff_pra` | Hyp, Refl, Tr, QE, DE, DI by cases and QI by progress on full normal forms; both computation equations hold by syntax |
+| opening with an inferred witness | `foprf_iff_nprf : FOPrf (Γ.map NFm.full) A.full ↔ NPrf Γ A`, `NFm.owit`, `NPrf.owitQ`, `NPrf.toFO` | DE replaced by the opening at the witness read off two rows of the normalized matrix |
 | five rules on zero-normal terms | `zcprf_iff_nprf : ZCPrf (Γ.map fun X => Cl.asm (fnf (unQ X))) (fnf (unQ A)) ↔ NPrf Γ A`, `zcprf_iff_nprf_of_qfree`, `CPrf.toZC`, `Conv` | Refl, one Eval scheme, Use, Elim and Intro on zero-normal terms with clause contexts |
 | four schemes on zero-normal terms | `zvprf_iff_zcprf`, `zvprf_iff_nprf` | Use, Step, Open, Close with uniform clauses and the fixed reflexivity clause |
 | seed evaluation | `nvprf_iff_nprf : NVPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`, `NVPrf.normal` | on zero-normal terms, reflexivity and SeedEval in place of successor computation and transport |
@@ -611,7 +629,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 The main chain (every module except the seventeen kernel comparisons,
 `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`,
 `NativeZeroReflexive`, `NativeZeroClausal`, `FullNormalization`, `NativeFullNormal`,
-`NativeUniqueness`, `NativeModels` and
+`NativeInferredWitness`, `NativeUniqueness`, `NativeModels` and
 `TeqClosure`) is 5,561
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
@@ -648,7 +666,7 @@ no `native_decide`.
 | `T_eq` ≡ iPRA | `ScalarToPRA`, `PRAToScalar`, `RoundTripScalar`, `RoundTripPRA`, `BiInterpretation` | the two interpretations and their composites |
 | zero-normal syntax | `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`, `NativeZeroReflexive`, `NativeZeroClausal` | contraction of iterators with a literal-zero counter, hereditary substitution, and the equivalence of a formula with its normal form (delivered); the kernel without the zero computation rule, `NZPrf`; reflexivity and one successor step, `NSPrf`; reflexivity and seed evaluation, `NVPrf`; six rules with the reflexive-base introduction, `NRPrf`; five rules with clauses, `ZCPrf`, and four schemes with uniform clauses, `ZVPrf` |
 | closures in `T_eq` | `TeqClosure` | decidability of quantifier-free formulas; the criterion for agreement of the conditional and the progressive closure |
-| full normal forms | `FullNormalization`, `NativeFullNormal` | the normalizer for both computations, defined by evaluation, with its laws and its correctness; the kernel without computation rules, `FNPrf` |
+| full normal forms | `FullNormalization`, `NativeFullNormal`, `NativeInferredWitness` | the normalizer for both computations, defined by evaluation, with its laws and its correctness; the kernel without computation rules, `FNPrf`; the same with the opening at an inferred witness, `FOPrf` |
 | derived rule | `NativeUniqueness` | uniqueness of iteration |
 | readings over the natural numbers | `NativeModels` | evaluation of terms and formulas for a reading `Sem`; the kernel with rules switched by flags, `FPrf`, and its soundness; consistency of the three systems; independence of seven rules |
 | native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, interderivability over a context, Leibniz and transport in every template, equation induction; selector and gate formulas |
@@ -685,7 +703,7 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `seed_evaluation` | Proved, for its arithmetic and equality interface: `NVPrf`, with `nvprf_iff_nprf`, `NVPrf.normal` and `nvprf_iff_pra` (`NativeZeroSeed`), with the kernel's two introductions and `Q` in place of clause contexts. |
 | `clause_contexts` | Proved: its four schemes with the reflexivity clause are `ZVPrf`, with `zvprf_iff_zcprf` and `zvprf_iff_nprf` (`NativeZeroClausal`). |
 | `witness_discharge` | Not formalized: its Name rule joins equality substitution with the discharge of a witness and relies on full computation normal forms. |
-| `inferred_witness`, `deterministic_opening`, `first_instance`, `clause_discharge` | Not formalized: the test that selects the witness compares rows of the matrix after full normalization. The normalizer is now available (`FullNormalization`); the opening rule on top of it is not yet formalized. |
+| `inferred_witness`, `deterministic_opening`, `first_instance`, `clause_discharge` | Proved, for the kernel: the opening at the witness read off the rows `B(b, 0)` and `B(b, 1)` of the normalized matrix, in place of DE, is `FOPrf`, with `foprf_iff_nprf` (`NativeInferredWitness`). The packages state it with clause contexts, three inference families and the reflexivity clause, and two of them substitute in the exported formula instead of opening at the witness; those forms are not formalized. |
 | `substitutive_discharge` | Proved, for the kernel: its discharge rule in place of transport and DE is `SDPrf`, with `sdprf_iff_nprf` (`NativeSubstitutiveDischarge`). The package's four families are stated on the canonical recursor syntax with clause contexts, which is not formalized. |
 | `prefix_clauses` | Not formalized: a representation of the `Q`-free formulas, `D^k (s = t)`, for the calculus `VPrf`; its second theorem, on clauses without an antecedent field, is not examined. |
 | `uniform_binding` | Not formalized: the counter-aware recursor syntax. |
