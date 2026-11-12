@@ -1296,6 +1296,10 @@ The source-reviewed [quotient-88 positive bridge draft](research/ordinary14-quot
 proposes composing that wrapper with the existing parent bridge at the same
 symbolic ports. It remains unelaborated and does not establish an endpoint or
 physical-byte association.
+The source-reviewed [quotient-88 iPRA adapter draft](research/ordinary14-quotient88-ipra-endpoint-draft/README.md)
+proposes native, standard and equality-only derivability declarations using
+that bridge. The declarations and dependencies are unelaborated; they do not
+yet establish a checked internal proof-existence result.
 The source-reviewed [parent first-quotient facts](research/ordinary14-parent-first-quotient-facts-draft/README.md)
 propose the reverse direction's `q³ ∣ Y` and divisibility of `|Bt|` without
 choosing a sign. They remain unelaborated and are not yet bound to the parent
