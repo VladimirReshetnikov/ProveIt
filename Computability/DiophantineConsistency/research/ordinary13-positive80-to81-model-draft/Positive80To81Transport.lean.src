@@ -1,0 +1,130 @@
+import PositiveSquare81Graph
+import Natural89RReplacement
+import Eta85ToPositive80
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
+
+/-! Proposed exact positive 80-to-81 unit-factor transfer. The prototype
+unit bridge, generated graphs and all IΣ₁ providers are unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Positive80To81TransportDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+open Residue90CompactPortBoundsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def image85 (v : Fin 13 → V) : Fin 13 → V :=
+  Natural89RReplacementDraft.up (Natural89Positive80TransportDraft.lower v)
+
+/-- Each exact 81 residual evaluates to its prototype counterpart at the
+forward image of a strictly positive 80/81 valuation. The same unelaborated
+root maps and natural predecessors are used; no inverse eta forcing. -/
+theorem field_equalities (p : Fin 4 → ℤ) (v : Fin 13 → V) (hv : ∀ i, 0<v i) :
+    (PositiveSquare81GraphDraft.graph p).first.evalRing (fun i => ι (v i)) =
+      (EtaNaturalUnitGraphDraft.graph p).first.evalRing (fun i => ι (image85 v i)) ∧
+    (PositiveSquare81GraphDraft.graph p).main.evalRing (fun i => ι (v i)) =
+      (EtaNaturalUnitGraphDraft.graph p).main.evalRing (fun i => ι (image85 v i)) ∧
+    (PositiveSquare81GraphDraft.graph p).aux.evalRing (fun i => ι (v i)) =
+      (EtaNaturalUnitGraphDraft.graph p).aux.evalRing (fun i => ι (image85 v i)) ∧
+    (PositiveSquare81GraphDraft.graph p).strongResidual.evalRing (fun i => ι (v i)) =
+      (EtaNaturalUnitGraphDraft.graph p).strongResidual.evalRing (fun i => ι (image85 v i)) := by
+  have hv1 (i : Fin 13) : v i-1+1=v i := tsub_add_cancel_of_le (pos_iff_one_le.mp (hv i))
+  simp [PositiveSquare81GraphDraft.graph,EtaNaturalUnitGraphDraft.graph,image85,
+    Natural89RReplacementDraft.up,Natural89Positive80TransportDraft.lower,
+    EtaUnshift85TransportDraft.raiseEta,W86To87TransportDraft.raiseW,
+    Gamma87To88TransportDraft.raiseGamma,J88To89TransportDraft.raiseJ,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat,map_add,map_mul,map_one,hv1] <;> ring
+
+theorem output81 (p : Fin 4 → ℤ) : (PositiveSquare81GraphDraft.graph p).output =
+    ((PositiveSquare81GraphDraft.graph p).first*(PositiveSquare81GraphDraft.graph p).first+
+      (PositiveSquare81GraphDraft.graph p).main*(PositiveSquare81GraphDraft.graph p).main)+
+    (((PositiveSquare81GraphDraft.graph p).aux-1)*((PositiveSquare81GraphDraft.graph p).aux-1)+
+      (PositiveSquare81GraphDraft.graph p).strongResidual*(PositiveSquare81GraphDraft.graph p).strongResidual) := by rfl
+
+/-- The shared graph prefix makes this syntax identity exact. -/
+theorem output80 (p : Fin 4 → ℤ) : PositiveUnit80GraphDraft.literal p =
+    ((1+(PositiveSquare81GraphDraft.graph p).first)*(1+(PositiveSquare81GraphDraft.graph p).main))*
+      (PositiveSquare81GraphDraft.graph p).aux*(1+(PositiveSquare81GraphDraft.graph p).strongResidual)-1 := by rfl
+
+/-- At positive inputs the exact 80 zero gives the exact 81 zero: transport
+forward to the actual 85 graph, use its proposed signed factor-unit theorem,
+and return its same four residual values through `field_equalities`. -/
+theorem zero80_to81 (p : Fin 4 → ℤ) (v : Fin 13 → V) (hv : ∀ i, 0<v i)
+    (hz : InternalZero (PositiveUnit80GraphDraft.literal p) v) :
+    InternalZero (PositiveSquare81GraphDraft.graph p).output v := by
+  let n := Natural89Positive80TransportDraft.lower v
+  have hlift := Natural89Positive80TransportDraft.lift_lower v hv
+  have hz89 : InternalZero (JShifted89GraphDraft.literal p) n := by
+    apply (Natural89Positive80TransportDraft.zero_iff p n).mpr
+    simpa only [n,hlift] using hz
+  have hz85 := (Natural89RReplacementDraft.zero89_iff85 p n).mp hz89
+  obtain ⟨h0,h1,ha,hs⟩ := EtaNaturalUnitBridgeDraft.residuals_zero p (image85 v) hz85
+  obtain ⟨e0,e1,ea,es⟩ := field_equalities p v hv
+  apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+  rw [output81]
+  simp only [Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_ofNat,
+    e0,e1,ea,es,h0,h1,ha,hs,zero_mul,add_zero,zero_add,sub_self]
+
+/-- Four nonnegative squares force each residual to vanish, hence the shared
+product is one. This direction itself does not need positive inputs. -/
+theorem zero81_to80 (p : Fin 4 → ℤ) (v : Fin 13 → V)
+    (hz : InternalZero (PositiveSquare81GraphDraft.graph p).output v) :
+    InternalZero (PositiveUnit80GraphDraft.literal p) v := by
+  let a := (PositiveSquare81GraphDraft.graph p).first.evalRing (fun i => ι (v i))
+  let b := (PositiveSquare81GraphDraft.graph p).main.evalRing (fun i => ι (v i))
+  let c := (PositiveSquare81GraphDraft.graph p).aux.evalRing (fun i => ι (v i))-1
+  let d := (PositiveSquare81GraphDraft.graph p).strongResidual.evalRing (fun i => ι (v i))
+  have h := (ModelDifferenceRing.internalZero_iff _ _).mp hz
+  rw [output81] at h
+  have hsum : (a*a+b*b)+(c*c+d*d)=0 := by
+    simpa only [a,b,c,d,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_ofNat] using h
+  have ha : a=0 := mul_self_eq_zero.mp (by nlinarith [sq_nonneg b,sq_nonneg c,sq_nonneg d])
+  have hb : b=0 := mul_self_eq_zero.mp (by nlinarith [sq_nonneg a,sq_nonneg c,sq_nonneg d])
+  have hc : c=0 := mul_self_eq_zero.mp (by nlinarith [sq_nonneg a,sq_nonneg b,sq_nonneg d])
+  have hd : d=0 := mul_self_eq_zero.mp (by nlinarith [sq_nonneg a,sq_nonneg b,sq_nonneg c])
+  have hc' : (PositiveSquare81GraphDraft.graph p).aux.evalRing (fun i => ι (v i))=1 := sub_eq_zero.mp hc
+  apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+  rw [output80]
+  simp only [Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_ofNat,
+    show (PositiveSquare81GraphDraft.graph p).first.evalRing (fun i => ι (v i))=a from rfl,
+    show (PositiveSquare81GraphDraft.graph p).main.evalRing (fun i => ι (v i))=b from rfl,
+    show (PositiveSquare81GraphDraft.graph p).strongResidual.evalRing (fun i => ι (v i))=d from rfl,
+    ha,hb,hc',hd,zero_add,add_zero,mul_one,one_mul,sub_self]
+
+theorem sameNoZero (p : Fin 4 → ℤ) : SameNoZero
+    (positiveShift (PositiveUnit80GraphDraft.literal p))
+    (positiveShift (PositiveSquare81GraphDraft.graph p).output) := by
+  intro V _ _
+  constructor
+  · intro h v hz
+    apply h v
+    apply (internalZero_positiveShift _ v).mpr
+    exact zero81_to80 p (fun i => v i+1) ((internalZero_positiveShift _ v).mp hz)
+  · intro h v hz
+    apply h v
+    apply (internalZero_positiveShift _ v).mpr
+    exact zero80_to81 p (fun i => v i+1)
+      (fun i => lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _))
+      ((internalZero_positiveShift _ v).mp hz)
+
+theorem bridge80 (p : Fin 4 → ℤ)
+    (h81 : PolynomialBridge (positiveShift (PositiveSquare81GraphDraft.graph p).output)) :
+    PolynomialBridge (positiveShift (PositiveUnit80GraphDraft.literal p)) :=
+  HAExpressionNoZeroEquiv.bridge _ _ (sameNoZero p) h81
+
+theorem native85 (K : ℕ)
+    (h81 : PolynomialBridge (positiveShift (PositiveSquare81GraphDraft.graph (fun j => (ports K j:ℤ))).output)) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output 🡘
+      ∼mappedNativeRefutation embedding :=
+  Eta85ToPositive80Draft.native85 K (bridge80 (fun j => (ports K j:ℤ)) h81)
+end DiophantineConsistency.Positive80To81TransportDraft
+#print axioms DiophantineConsistency.Positive80To81TransportDraft.zero80_to81
+#print axioms DiophantineConsistency.Positive80To81TransportDraft.sameNoZero
+#print axioms DiophantineConsistency.Positive80To81TransportDraft.native85
