@@ -7905,6 +7905,10 @@ The independently source-reviewed [natural-80 endpoint draft](research/ordinary1
 proposes symbolic-port discharge and native, standard and equality-only
 iPRA clients. The full chain and seven requested axiom reports are unelaborated
 and unexecuted; this is not yet a checked iPRA theorem or PDF binding.
+The independently reviewed [natural-80 endpoint inventory](research/ordinary14-natural80-endpoint-import-inventory/README.md)
+records 184 lexical draft modules and 41 directly named qualified sources,
+along with a bounded token scan. It does not establish actual Lean resolution,
+provider or axiom closure, or build readiness.
 The independently source-reviewed [natural-81 Lean transcription](research/ordinary14-natural-forcedj81-lean-draft/README.md)
 records its literal graph and product shape. Its source correspondence is
 checked externally; Lean semantics and endpoint equivalence remain open.
