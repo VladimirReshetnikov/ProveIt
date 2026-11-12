@@ -1,0 +1,47 @@
+import EtaNaturalGraphParity
+import EtaUnshift85Transport
+
+/-! Source-only composition of prototype eta forcing and the conditional
+85-to-86 zero map. No Lean build or endpoint proof has been performed. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Eta85ForcedMapDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+open Residue90CompactPortBoundsDraft
+
+/-- The eta-positive graph client has exactly the all-IΣ₁-model type required
+by the 85-to-86 map at the same compact tuple, for arbitrary natural K. -/
+theorem forcedEta (K : ℕ) : EtaUnshift85TransportDraft.ForcedEta K := by
+  intro V _ _ v hz
+  exact EtaNaturalGraphParityDraft.eta_positive K v hz
+
+/-- Proposed all-model no-zero comparison, with child first and exact
+86-parent second. It inherits all graph/parity/zero-map source obligations. -/
+theorem compact_sameNoZero (K : ℕ) : SameNoZero
+    (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output
+    (EtaShifted86GraphDraft.literal (fun j => (ports K j:ℤ))) :=
+  EtaUnshift85TransportDraft.compact_sameNoZero K (forcedEta K)
+
+/-- Only the eta-forcing input is supplied here. The exact compact 86-parent
+PolynomialBridge remains an explicit hypothesis. -/
+theorem polynomialBridge (K : ℕ)
+    (hparent : PolynomialBridge (EtaShifted86GraphDraft.literal (fun j => (ports K j:ℤ)))) :
+    PolynomialBridge (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output :=
+  EtaUnshift85TransportDraft.polynomialBridge K (forcedEta K) hparent
+
+/-- Conditional native target for this exact child/tuple, retaining the
+parent bridge; source compilation and theory/physical bindings remain open. -/
+theorem native_equivalence (K : ℕ)
+    (hparent : PolynomialBridge (EtaShifted86GraphDraft.literal (fun j => (ports K j:ℤ)))) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output 🡘
+      ∼mappedNativeRefutation embedding :=
+  EtaUnshift85TransportDraft.native_equivalence K (forcedEta K) hparent
+end DiophantineConsistency.Eta85ForcedMapDraft
+#print axioms DiophantineConsistency.Eta85ForcedMapDraft.forcedEta
+#print axioms DiophantineConsistency.Eta85ForcedMapDraft.compact_sameNoZero
+#print axioms DiophantineConsistency.Eta85ForcedMapDraft.polynomialBridge
+#print axioms DiophantineConsistency.Eta85ForcedMapDraft.native_equivalence
