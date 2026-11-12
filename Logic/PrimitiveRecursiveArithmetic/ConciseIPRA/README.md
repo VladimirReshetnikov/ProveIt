@@ -215,7 +215,9 @@ by progress as primitive, and proves that the derivable sequents are the same
   give `h(b) = u` and `b = t`, so that one substitution for `b` gives
   `u = h(t)` (`VSPrf.packet`). This is the rule of
   [`variable_substitution`](Research/variable_substitution/). On raw terms the
-  rows are not literal, and the nearest statement there is Param above.
+  rows are not literal, and the nearest statement there is Param above. The
+  source can be restricted to the newest variable (`V0Prf`,
+  `v0prf_iff_nprf`).
 - *Equality at the discharge of a witness.* On full normal forms one rule,
   Name, replaces both transport and DE: from `D_{x,y} B`, and from `b = t` and
   `F` in the context opened at a fresh `b`, infer `F[t/b]`, provided it does
@@ -659,6 +661,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | equality at the discharge of a witness | `nmprf_iff_nprf : NMPrf (Γ.map NFm.full) A.full ↔ NPrf Γ A`, `NMPrf.packet`, `NMPrf.dE` | six rules on full normal forms: Name in place of transport and DE |
 | six rules on full normal forms | `f6prf_iff_nprf : F6Prf (Γ.map NFm.full) A.full ↔ NPrf Γ A`, `F6Prf.dIZero`, `FNPrf.toF6` | Hyp, Refl, Tr, QE, DE and one introduction selected by the matrix and the witness; no computation rule |
 | five rules on full normal forms | `n5prf_iff_nprf : N5Prf (Γ.map NFm.full) A.full ↔ NPrf Γ A`, `n5prf_iff_pra`, `NMPrf.toN5` | Hyp, Refl, Name, QE and one introduction; formula contexts |
+| substitution for the newest variable | `v0prf_iff_nprf : V0Prf (Γ.map NFm.full) A.full ↔ NPrf Γ A` | the rule of `VSPrf` restricted to the variable of index `0` |
 | five rules on zero-normal terms | `zcprf_iff_nprf : ZCPrf (Γ.map fun X => Cl.asm (fnf (unQ X))) (fnf (unQ A)) ↔ NPrf Γ A`, `zcprf_iff_nprf_of_qfree`, `CPrf.toZC`, `Conv` | Refl, one Eval scheme, Use, Elim and Intro on zero-normal terms with clause contexts |
 | four schemes on zero-normal terms | `zvprf_iff_zcprf`, `zvprf_iff_nprf` | Use, Step, Open, Close with uniform clauses and the fixed reflexivity clause |
 | seed evaluation | `nvprf_iff_nprf : NVPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`, `NVPrf.normal` | on zero-normal terms, reflexivity and SeedEval in place of successor computation and transport |
@@ -679,8 +682,8 @@ formalizes three systems and proves them mutually bi-interpretable:
 The main chain (every module except the seventeen kernel comparisons,
 `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`,
 `NativeZeroReflexive`, `NativeZeroClausal`, `FullNormalization`, `NativeFullNormal`,
-`NativeInferredWitness`, `NativeVariableSubstitution`, `NativeWitnessDischarge`, `NativeFullSix`, `NativeFullFive`,
-`NativePrefix`, `NativeUniqueness`, `NativeModels` and
+`NativeInferredWitness`, `NativeVariableSubstitution`, `NativeNewestVariable`, `NativeWitnessDischarge`, `NativeFullSix`,
+`NativeFullFive`, `NativePrefix`, `NativeUniqueness`, `NativeModels` and
 `TeqClosure`) is 5,523
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
@@ -720,7 +723,7 @@ no `native_decide`.
 | `T_eq` ≡ iPRA | `ScalarToPRA`, `PRAToScalar`, `RoundTripScalar`, `RoundTripPRA`, `BiInterpretation` | the two interpretations and their composites |
 | zero-normal syntax | `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`, `NativeZeroReflexive`, `NativeZeroClausal` | contraction of iterators with a literal-zero counter, hereditary substitution, and the equivalence of a formula with its normal form (delivered); the kernel without the zero computation rule, `NZPrf`; reflexivity and one successor step, `NSPrf`; reflexivity and seed evaluation, `NVPrf`; six rules with the reflexive-base introduction, `NRPrf`; five rules with clauses, `ZCPrf`, and four schemes with uniform clauses, `ZVPrf` |
 | closures in `T_eq` | `TeqClosure` | decidability of quantifier-free formulas; the criterion for agreement of the conditional and the progressive closure |
-| full normal forms | `FullNormalization`, `NativeFullNormal`, `NativeInferredWitness`, `NativeVariableSubstitution`, `NativeWitnessDischarge`, `NativeFullSix`, `NativeFullFive` | the normalizer for both computations, defined by evaluation, with its laws and its correctness; the kernel without computation rules, `FNPrf`; the same with the opening at an inferred witness, `FOPrf`; the same with substitution for a variable as its only equality rule, `VSPrf`; six rules with Name, `NMPrf`; six rules with one introduction, `F6Prf`; five rules, `N5Prf` |
+| full normal forms | `FullNormalization`, `NativeFullNormal`, `NativeInferredWitness`, `NativeVariableSubstitution`, `NativeNewestVariable`, `NativeWitnessDischarge`, `NativeFullSix`, `NativeFullFive` | the normalizer for both computations, defined by evaluation, with its laws and its correctness; the kernel without computation rules, `FNPrf`; the same with the opening at an inferred witness, `FOPrf`; the same with substitution for a variable as its only equality rule, `VSPrf`; six rules with Name, `NMPrf`; six rules with one introduction, `F6Prf`; five rules, `N5Prf` |
 | derived rule | `NativeUniqueness` | uniqueness of iteration |
 | prefix form | `NativePrefix` | a `Q`-free formula is `k` binders `D` and one equation |
 | readings over the natural numbers | `NativeModels` | evaluation of terms and formulas for a reading `Sem`; the kernel with rules switched by flags, `FPrf`, and its soundness; consistency of the three systems; independence of seven rules |
@@ -763,7 +766,7 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `prefix_clauses` | Its representation is proved: `NFm.Pre k A` says that `A` is `k` binders `D` followed by one equation; a formula has that form exactly when it is `Q`-free (`NFm.qfree_iff_pre`), `k` is unique (`NFm.Pre.unique`) and unchanged by substitution (`NFm.Pre.subst`), and from `Q`-free assumptions `VPrf` derives only such formulas (`VPrf.pre`, `NativePrefix`). The calculus of the package is `VPrf` on that representation. Its second theorem, on clauses without an antecedent field, is not formalized. |
 | `uniform_binding` | Not formalized: the counter-aware recursor syntax. |
 | `parameter_substitution` | Proved, for the equality rule: `PPrf` is the kernel with transport replaced by Param, and `pprf_iff_nprf` (`NativeParameter`). The package's five instruction families combine it with clause contexts and the witness-tested single introduction, which are not formalized together with it. |
-| `variable_substitution` | Proved, for the kernel: `VSPrf` is the kernel on full normal forms with the rule `x = t`, `u = v` ⊢ `v = u[t/x]` in place of transport, and `vsprf_iff_nprf` (`NativeVariableSubstitution`). Transport is recovered by the two-row naming packet (`VSPrf.packet`). The restriction of the source to the newest variable and the clausal five-rule form are not formalized. |
+| `variable_substitution` | Proved, for the kernel: `VSPrf` is the kernel on full normal forms with the rule `x = t`, `u = v` ⊢ `v = u[t/x]` in place of transport, and `vsprf_iff_nprf` (`NativeVariableSubstitution`). Transport is recovered by the two-row naming packet (`VSPrf.packet`). The restriction of the source to the newest variable is `V0Prf`, with `v0prf_iff_nprf` (`NativeNewestVariable`): the same proof applies, because the packet substitutes only for the witness it has just opened and no derivation is renamed. The clausal five-rule form is not formalized. |
 | `uniform_step` | Proved: its arithmetic and equality interface on zero-normal terms is `NSPrf` (`nsprf_iff_nprf`, `NSPrf.normal`, `nsprf_iff_pra`; `NativeZeroStep`), with the kernel's two introductions and `Q` in place of clause contexts. On the unnormalized syntax the rule Step is the constructor `evalSucc` of `EPrf` and `SPrf`. |
 | `uniform_clauses` | Proved: its calculus is `VPrf`, with `vprf_iff_cprf` and `vprf_iff_nprf_of_qfree` (`NativeUniformClauses`). |
 | `deterministic_specialization` | Proved, for the kernel: QE at a variable or at the numeral `1` derives the same sequents (`vqprf_iff_nprf`, `NativeVariableQE`), and QE at variables alone does not (`vqprf_var_incomplete`). The package's own form, on zero-normal terms with clause contexts and the positional choice of the target (the newest clause at `1`, an older one at the newest eigenparameter), is not formalized; that choice is not stable under renaming, and the package handles it by regenerating premise proofs. |
@@ -824,10 +827,10 @@ marked as conjectures is proved here.
    literal, and Param, which also joins two equations at the root, is proved
    sufficient (`pprf_iff_nprf`). Conjecture: on raw terms substitution for a
    variable alone, without joining, is strictly weaker.
-4. **The newest variable.** `variable_substitution` restricts the source of its
-   rule to the newest variable. That restriction is not stable under
-   renaming, so the translation used for `VSPrf` does not apply; the package
-   has a protected translation that is not formalized.
+4. **The newest variable.** Settled: `variable_substitution` restricts the
+   source of its rule to the newest variable, and `v0prf_iff_nprf` proves that
+   restriction sufficient on full normal forms. The rule is not stable under
+   renaming, but the proof never renames a derivation.
 5. **The progressive reading of `Q`.** In `uniform_progress`, and by its
    description in `target_closure`, `Q_y E` for a literal equation `E` means
    `∀y (E(y) → E(S y))`. The package proves on paper that its rules are sound
