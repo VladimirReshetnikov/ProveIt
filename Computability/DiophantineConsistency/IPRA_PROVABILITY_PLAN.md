@@ -7823,6 +7823,10 @@ The independently reviewed [forced-J natural graph](research/ordinary14-natural-
 uses 14 natural inputs and 81 operations at exact specialized degree 107.
 Its external zero map assumes `β > 0` and the stronger `K0 > 0`; its endpoint,
 Lean and physical-file qualifications are inherited.
+The independently reviewed [forced-gamma natural graph](research/ordinary14-natural-forced-gamma80/README.md)
+removes another shift, giving 14 natural inputs, 80 operations and exact
+specialized degree 107. Its external zero map uses the stated compact-port
+bounds and rank/Pell results; the iPRA and physical-binding gaps remain.
 The independently source-reviewed [natural-81 Lean transcription](research/ordinary14-natural-forcedj81-lean-draft/README.md)
 records its literal graph and product shape. Its source correspondence is
 checked externally; Lean semantics and endpoint equivalence remain open.
