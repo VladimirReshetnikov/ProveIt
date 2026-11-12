@@ -7868,6 +7868,9 @@ its axiom reports remain unelaborated and unexecuted.
 The independently source-reviewed [79 residue-pattern draft](research/ordinary14-natural79-factor-residues-draft/README.md)
 proposes discharging those exclusions using literal graph patterns. The cuts
 and zero-w unit client remain unelaborated, and do not prove w positivity.
+The independently source-reviewed [79 zero-w J-positivity draft](research/ordinary14-natural79-zero-w-jpos-draft/README.md)
+proposes deriving J positivity using represented nonnegative K0. Its proof
+and imported zero-w units remain unelaborated; w positivity is still open.
 The independently source-reviewed [79-to-80 w-shift draft](research/ordinary14-natural79-wshift-model-draft/README.md)
 proposes related-valuation zero maps, conditional on w positivity at every
 79 zero. It remains unelaborated and does not discharge that premise.
