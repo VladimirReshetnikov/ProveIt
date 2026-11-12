@@ -735,7 +735,8 @@ The main chain (every module except the seventeen kernel comparisons,
 `NativeZeroReflexive`, `NativeZeroClausal`, `FullNormalization`, `NativeFullNormal`,
 `NativeInferredWitness`, `NativeVariableSubstitution`, `NativeNewestVariable`, `NativeWitnessDischarge`, `NativeFullSix`,
 `NativeFullFive`, `NativeNameClauses`, `NativeOpenClauses`, `NativeExportClauses`,
-`NativeVariableClauses`, `NativePrefix`, `NativeUniqueness`, `NativeModels` and `TeqClosure`) is 5,498
+`NativeVariableClauses`, `NativeProgressive`, `NativePrefix`, `NativeUniqueness`, `NativeModels` and
+`TeqClosure`) is 5,498
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
 introduction and elimination, instead of an induction over the seventeen
