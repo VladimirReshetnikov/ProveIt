@@ -54,33 +54,42 @@ namespace Q
 
 variable {Γ : List (Fm Tm n)}
 
-/-! ### The iterator respects equality of its body -/
+/-! ### Uniqueness of iteration -/
 
-theorem iter_body_step {h h' : Tm (n + 1)}
-    (hh : ∀ x : Tm n, Γ ⊢[TeqAx] Syn.subst (inst x) h ≐ Syn.subst (inst x) h') (c a : Tm n)
-    (ih : mk Γ (Tm.iter c a h) = mk Γ (Tm.iter c a h')) :
-    mk Γ (Tm.iter (Tm.succ c) a h) = mk Γ (Tm.iter (Tm.succ c) a h') := by
-  have e1 : mk Γ (Tm.iter (Tm.succ c) a h) = app h (mk Γ (Tm.iter c a h)) :=
-    iterate_succ h (mk Γ c) (mk Γ a)
-  have e2 : mk Γ (Tm.iter (Tm.succ c) a h') = app h' (mk Γ (Tm.iter c a h')) :=
-    iterate_succ h' (mk Γ c) (mk Γ a)
-  rw [e1, e2, ih]
-  exact sound (hh (Tm.iter c a h'))
-
-theorem iter_body_congr {h h' : Tm (n + 1)} (hh : [] ⊢[TeqAx] h ≐ h') (c a : Tm n) :
-    Γ ⊢[TeqAx] Tm.iter c a h ≐ Tm.iter c a h' := by
-  refine exact ?_
-  have key := eqInd (Γ := Γ)
-    (Tm.iter (var 0) (shift a) (Syn.subst (up (fun i => var i.succ)) h))
-    (Tm.iter (var 0) (shift a) (Syn.subst (up (fun i => var i.succ)) h')) c
+/-- A term with the base and the step of an iterator is that iterator. -/
+theorem iter_unique (f : Tm (n + 1)) (a : Tm n) (h : Tm (n + 1)) (c : Tm n)
+    (h0 : mk Γ (Syn.subst (inst Tm.zero) f) = mk Γ a)
+    (hS : ∀ Δ : List (Fm Tm (n + 1)), mk Δ (Syn.subst (repl (Tm.succ (var 0))) f)
+      = app (Syn.subst (up fun i => var i.succ) h) (mk Δ f)) :
+    mk Γ (Syn.subst (inst c) f) = mk Γ (Tm.iter c a h) := by
+  have key := eqInd (Γ := Γ) f
+    (Tm.iter (var 0) (shift a) (Syn.subst (up (fun i => var i.succ)) h)) c
     (by
       simp only [Tm.subst_iter, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
         Syn.subst_up_inst_up_shift]
-      exact (sound (Teq.iterZero a h)).trans (sound (Teq.iterZero a h')).symm)
+      exact h0.trans (sound (Teq.iterZero a h)).symm)
     (fun ih => by
       simp only [Tm.subst_iter, Syn.subst_var, Syn.repl_zero, Syn.subst_repl_shift,
         Syn.subst_up_repl_up_shift]
-      refine iter_body_step (fun x => ?_) _ _ ih
+      rw [hS, ih]
+      exact (iterate_succ _ (mk _ (var 0)) (mk _ (shift a))).symm)
+  simpa only [Tm.subst_iter, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
+    Syn.subst_up_inst_up_shift] using key
+
+/-- The iterator respects equality of its body. -/
+theorem iter_body_congr {h h' : Tm (n + 1)} (hh : [] ⊢[TeqAx] h ≐ h') (c a : Tm n) :
+    Γ ⊢[TeqAx] Tm.iter c a h ≐ Tm.iter c a h' := by
+  refine exact ?_
+  have key := iter_unique (Γ := Γ)
+    (Tm.iter (var 0) (shift a) (Syn.subst (up (fun i => var i.succ)) h)) a h' c
+    (by
+      simp only [Tm.subst_iter, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
+        Syn.subst_up_inst_up_shift]
+      exact sound (Teq.iterZero a h))
+    (fun Δ => by
+      simp only [Tm.subst_iter, Syn.subst_var, Syn.repl_zero, Syn.subst_repl_shift,
+        Syn.subst_up_repl_up_shift]
+      refine (iterate_succ _ (mk Δ (var 0)) (mk Δ (shift a))).trans (sound ?_)
       rw [subst_subst, subst_subst]
       exact Teq.substNil hh _)
   simpa only [Tm.subst_iter, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
@@ -96,34 +105,21 @@ theorem iter_congr {c c' a a' : Tm n} {h h' : Tm (n + 1)} (hc : Γ ⊢[TeqAx] c 
     rw [sound hc, sound ha]
   exact e.trans (sound (iter_body_congr hh c' a'))
 
-/-! ### A recursion that ignores its counter is the iterator -/
-
-theorem prc_itG_step (c a : Tm n) (h : Tm (n + 1))
-    (ih : mk Γ (Tm.prc c a (Tm.itG h)) = mk Γ (Tm.iter c a h)) :
-    mk Γ (Tm.prc (Tm.succ c) a (Tm.itG h)) = mk Γ (Tm.iter (Tm.succ c) a h) := by
-  have e1 : mk Γ (Tm.prc (Tm.succ c) a (Tm.itG h))
-      = app h (mk Γ (Tm.prc c a (Tm.itG h))) :=
-    (sound (prc_succ c a (Tm.itG h))).trans
-      (congrArg (mk Γ) (Tm.subst_itG_cases c (Tm.prc c a (Tm.itG h)) h))
-  have e2 : mk Γ (Tm.iter (Tm.succ c) a h) = app h (mk Γ (Tm.iter c a h)) :=
-    iterate_succ h (mk Γ c) (mk Γ a)
-  rw [e1, e2, ih]
-
+/-- A recursion that ignores its counter is the iterator. -/
 theorem prc_itG (c a : Tm n) (h : Tm (n + 1)) :
     Γ ⊢[TeqAx] Tm.prc c a (Tm.itG h) ≐ Tm.iter c a h := by
   refine exact ?_
-  have key := eqInd (Γ := Γ)
-    (Tm.prc (var 0) (shift a) (Tm.itG (Syn.subst (up (fun i => var i.succ)) h)))
-    (Tm.iter (var 0) (shift a) (Syn.subst (up (fun i => var i.succ)) h)) c
+  have key := iter_unique (Γ := Γ)
+    (Tm.prc (var 0) (shift a) (Tm.itG (Syn.subst (up (fun i => var i.succ)) h))) a h c
     (by
-      simp only [Tm.subst_prc, Tm.subst_iter, Tm.subst_itG, Syn.subst_var, Syn.inst_zero,
+      simp only [Tm.subst_prc, Tm.subst_itG, Syn.subst_var, Syn.inst_zero,
         Syn.subst_inst_shift, Syn.subst_up_inst_up_shift]
-      exact (sound (prc_zero a _)).trans (sound (Teq.iterZero a h)).symm)
-    (fun ih => by
-      simp only [Tm.subst_prc, Tm.subst_iter, Tm.subst_itG, Syn.subst_var, Syn.repl_zero,
+      exact sound (prc_zero a _))
+    (fun Δ => by
+      simp only [Tm.subst_prc, Tm.subst_itG, Syn.subst_var, Syn.repl_zero,
         Syn.subst_repl_shift, Syn.subst_up_repl_up_shift]
-      exact prc_itG_step _ _ _ ih)
-  simpa only [Tm.subst_prc, Tm.subst_iter, Tm.subst_itG, Syn.subst_var, Syn.inst_zero,
+      exact (sound (prc_succ _ _ _)).trans (congrArg (mk Δ) (Tm.subst_itG_cases _ _ _)))
+  simpa only [Tm.subst_prc, Tm.subst_itG, Syn.subst_var, Syn.inst_zero,
     Syn.subst_inst_shift, Syn.subst_up_inst_up_shift] using key
 
 end Q

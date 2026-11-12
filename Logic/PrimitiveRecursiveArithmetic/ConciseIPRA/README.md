@@ -591,7 +591,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 The main chain (every module except the seventeen kernel comparisons,
 `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`,
 `NativeZeroReflexive`, `NativeZeroClausal`, `NativeUniqueness`, `NativeModels` and
-`TeqClosure`) is 5,565
+`TeqClosure`) is 5,561
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
 introduction and elimination, instead of an induction over the seventeen
@@ -607,7 +607,10 @@ of `NFm.map_shift_subst_repl` was removed. In the arithmetic of `T_eq`,
 `Q.eqInd` finds its base and its step by `simp` when they are not given, the
 computation lemmas of the iterator-defined operations are single terms where
 the instance of the computation equation is the statement up to unfolding, and
-a quotient induction with one closing step is one line.
+a quotient induction with one closing step is one line. In the round trip
+through iPRA, that the iterator respects its body and that a recursion which
+ignores its counter is the iterator are two instances of one lemma, the
+uniqueness of iteration (`Q.iter_unique`), in place of two inductions.
 
 All modules build without `sorry` or warnings. The final theorems depend
 only on Lean's `propext`, `Classical.choice` and `Quot.sound` (the `T_eq` ≡
