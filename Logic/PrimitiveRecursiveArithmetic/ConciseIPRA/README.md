@@ -226,6 +226,16 @@ by progress as primitive, and proves that the derivable sequents are the same
   (`NMPrf.packet`). At the template `x` with a reflexive equation that is
   symmetry, and the transport of the kernel follows. This is the rule of
   [`witness_discharge`](Research/witness_discharge/).
+- *Five rules.* On full normal forms the two reductions above combine: Name
+  in place of transport and DE, and one introduction in place of DI by cases
+  and QI by progress. The calculus is Hyp, Refl, Name, QE and that
+  introduction (`N5Prf`, `n5prf_iff_nprf`, `n5prf_iff_pra`), with lists of
+  formulas as contexts and `Q` in the language: no computation rule, no
+  transport, and no separate elimination of `D`. Among the calculi proved
+  here whose contexts are formulas it has the fewest rules; the clause
+  calculi also have five (`CPrf`, `ZCPrf`) or four families (`VPrf`, `ZVPrf`),
+  with clauses in their contexts. This combination is not taken from a
+  package.
 - *One introduction rule, stable under substitution.* The single
   introduction above tests the witness for being the literal `0`, and a
   substitution can turn a witness into `0`. If instead the fresh variable is
@@ -648,6 +658,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | substitution for a variable only | `vsprf_iff_nprf : VSPrf (Γ.map NFm.full) A.full ↔ NPrf Γ A`, `VSPrf.packet`, `NPrf.toVS` | on full normal forms, `x = t`, `u = v` ⊢ `v = u[t/x]` is the only equality rule; transport by a naming packet |
 | equality at the discharge of a witness | `nmprf_iff_nprf : NMPrf (Γ.map NFm.full) A.full ↔ NPrf Γ A`, `NMPrf.packet`, `NMPrf.dE` | six rules on full normal forms: Name in place of transport and DE |
 | six rules on full normal forms | `f6prf_iff_nprf : F6Prf (Γ.map NFm.full) A.full ↔ NPrf Γ A`, `F6Prf.dIZero`, `FNPrf.toF6` | Hyp, Refl, Tr, QE, DE and one introduction selected by the matrix and the witness; no computation rule |
+| five rules on full normal forms | `n5prf_iff_nprf : N5Prf (Γ.map NFm.full) A.full ↔ NPrf Γ A`, `n5prf_iff_pra`, `NMPrf.toN5` | Hyp, Refl, Name, QE and one introduction; formula contexts |
 | five rules on zero-normal terms | `zcprf_iff_nprf : ZCPrf (Γ.map fun X => Cl.asm (fnf (unQ X))) (fnf (unQ A)) ↔ NPrf Γ A`, `zcprf_iff_nprf_of_qfree`, `CPrf.toZC`, `Conv` | Refl, one Eval scheme, Use, Elim and Intro on zero-normal terms with clause contexts |
 | four schemes on zero-normal terms | `zvprf_iff_zcprf`, `zvprf_iff_nprf` | Use, Step, Open, Close with uniform clauses and the fixed reflexivity clause |
 | seed evaluation | `nvprf_iff_nprf : NVPrf (Γ.map fnf) (fnf A) ↔ NPrf Γ A`, `NVPrf.normal` | on zero-normal terms, reflexivity and SeedEval in place of successor computation and transport |
@@ -668,7 +679,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 The main chain (every module except the seventeen kernel comparisons,
 `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`,
 `NativeZeroReflexive`, `NativeZeroClausal`, `FullNormalization`, `NativeFullNormal`,
-`NativeInferredWitness`, `NativeVariableSubstitution`, `NativeWitnessDischarge`, `NativeFullSix`,
+`NativeInferredWitness`, `NativeVariableSubstitution`, `NativeWitnessDischarge`, `NativeFullSix`, `NativeFullFive`,
 `NativeUniqueness`, `NativeModels` and
 `TeqClosure`) is 5,523
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
@@ -709,7 +720,7 @@ no `native_decide`.
 | `T_eq` ≡ iPRA | `ScalarToPRA`, `PRAToScalar`, `RoundTripScalar`, `RoundTripPRA`, `BiInterpretation` | the two interpretations and their composites |
 | zero-normal syntax | `ZeroNormalization`, `NativeZeroNormal`, `NativeZeroStep`, `NativeZeroSeed`, `NativeZeroReflexive`, `NativeZeroClausal` | contraction of iterators with a literal-zero counter, hereditary substitution, and the equivalence of a formula with its normal form (delivered); the kernel without the zero computation rule, `NZPrf`; reflexivity and one successor step, `NSPrf`; reflexivity and seed evaluation, `NVPrf`; six rules with the reflexive-base introduction, `NRPrf`; five rules with clauses, `ZCPrf`, and four schemes with uniform clauses, `ZVPrf` |
 | closures in `T_eq` | `TeqClosure` | decidability of quantifier-free formulas; the criterion for agreement of the conditional and the progressive closure |
-| full normal forms | `FullNormalization`, `NativeFullNormal`, `NativeInferredWitness`, `NativeVariableSubstitution`, `NativeWitnessDischarge`, `NativeFullSix` | the normalizer for both computations, defined by evaluation, with its laws and its correctness; the kernel without computation rules, `FNPrf`; the same with the opening at an inferred witness, `FOPrf`; the same with substitution for a variable as its only equality rule, `VSPrf`; six rules with Name, `NMPrf`; six rules with one introduction, `F6Prf` |
+| full normal forms | `FullNormalization`, `NativeFullNormal`, `NativeInferredWitness`, `NativeVariableSubstitution`, `NativeWitnessDischarge`, `NativeFullSix`, `NativeFullFive` | the normalizer for both computations, defined by evaluation, with its laws and its correctness; the kernel without computation rules, `FNPrf`; the same with the opening at an inferred witness, `FOPrf`; the same with substitution for a variable as its only equality rule, `VSPrf`; six rules with Name, `NMPrf`; six rules with one introduction, `F6Prf`; five rules, `N5Prf` |
 | derived rule | `NativeUniqueness` | uniqueness of iteration |
 | readings over the natural numbers | `NativeModels` | evaluation of terms and formulas for a reading `Sem`; the kernel with rules switched by flags, `FPrf`, and its soundness; consistency of the three systems; independence of seven rules |
 | native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, interderivability over a context, Leibniz and transport in every template, equation induction; selector and gate formulas |
