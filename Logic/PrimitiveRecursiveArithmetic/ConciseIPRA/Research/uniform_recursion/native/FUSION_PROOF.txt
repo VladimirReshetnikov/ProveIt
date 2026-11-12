@@ -1,0 +1,148 @@
+PUBLIC GRAMMAR CHECKING INSIDE THE INITIAL SCOPE TRAVERSAL
+
+Result
+======
+The supplied incoming deterministic_opening archive contains a 780-byte
+complete checker for the full canonical native Eq/D public language. The
+685-byte fused_native.py and 661-byte fused_scoped.py implement exactly
+the same certificate acceptance relation, apart from failure diagnostics
+and physical implementation resource exhaustion. Their arithmetic and
+logical calculus is unchanged. This is a smaller proof-checker realization;
+it is NOT a newly deleted arithmetic or logical axiom and is NOT a
+repository-wide minimum over different certificate contracts. The incoming
+508-byte compact checker has no strict public-goal grammar validator.
+
+The idea of combining public grammar and first scope validation is already
+in scope_kernel/validated_core and deterministic_specialization. The present
+specific simplification uses the parity of the existing arity-depth counter
+to eliminate the independent Boolean sort state and its whole traversal,
+and composes it with the current 780-byte kernel. Claim the measured
+implementation refinement, not priority for traversal fusion.
+
+Files and measurements (complete normalized modules)
+==================================================
+                                      bytes tokens AST gzip9
+Exact incoming native control           780   360   409  458
+Explicit strict guard, fused_native.py   685   340   385  409
+Integrated cases, fused_scoped.py        661   336   381  390
+
+The source format is CPython ast.unparse plus one LF, all code counted.
+No helper used by the verifier is omitted from these modules.
+The first refinement saves 95 bytes, 20 tokens and 24 AST nodes. The
+integrated version saves 119 bytes, 24 tokens and 28 AST nodes. Maximum
+gzip-9 sizes use timestamp zero and are informational.
+
+Native public grammar and protected slots
+========================================
+Public formulas are unary D nodes [B] and binary equations [s,t]. A term
+is zero; an odd positive protected coordinate at least 3; a unary successor
+[t]; or a ternary iterator [n,a,h]. Negative coordinates denote temporary
+free parameters and are absent from closed public goals. Closure Q and
+administrative padding are internal certificate syntax, not public goals.
+
+At a formula position under p protected numerical slots, the existing
+walker has depth d=2p. At a numerical position it has d=3+2p. The walker
+increments depth by 5-arity at every list node. This single calculation
+implements the following sorted child environments:
+
+  D (arity 1): formula child, two additional protected slots;
+  Eq (arity 2): numerical children, no additional slot;
+  S (arity 1): numerical child, two dummy slots;
+  I (arity 3): numerical children, one additional slot.
+
+Thus depth parity determines the sort exactly on public canonical syntax:
+even is formula, odd is numerical. Admissible public list arities are
+therefore precisely (1, 2+d%2). An integer leaf is public exactly when
+the depth is odd and it is either zero or odd and at least three. The
+already present interval test k<=a<d then enforces the available protected
+slots; at the public entry k=0. Exact type(a) is int excludes JSON Boolean
+and floating-point aliases.
+
+Lemma 1: exact entry validation
+==============================
+For every finite JSON value a, the fused initial traversal succeeds iff
+(i) the old public validator v(a) succeeds, and (ii) the old no-image
+scope traversal i(a) succeeds. If it succeeds, it returns a unchanged.
+
+Proof. Induct on the finite tree while maintaining the two displayed
+depth/slot equations. A canonical scalar is preserved by both traversals
+precisely under the integer, parity, shape and interval tests above. For
+each canonical list constructor, 5-arity gives its stated child sort and
+protected-slot count. Induction applies to every child. All other JSON
+types or list arities are rejected, and all loose bound coordinates fail
+the interval test. There is no substitution image in this entry traversal;
+a failed interval therefore rejects instead of introducing a free value.
+
+The 685-byte version states the extra grammar predicate explicitly and
+raises an immediate ZeroDivisionError on its failure. The 661-byte version
+folds it into the list/scalar branches. An invalid list arity falls into
+the integer interval test, which immediately raises TypeError. An invalid
+scalar that reaches the final branch is forced into the absent-image call
+i(c,d=3), which immediately raises TypeError because the function object
+c cannot be multiplied by zero. Neither rejection relies on unbounded
+recursion or RecursionError. Nonempty strings and dictionaries also fail
+by immediate TypeError, and Booleans/floats fail the exact integer-type
+test before any acceptance. The integer flag is 1 only for this first
+traversal and zero thereafter.
+
+Lemma 2: exact kernel restoration
+================================
+After that initial traversal, the local flag is reset to zero before
+reading the first instruction. Recursive calls default to flag zero.
+For the 685-byte version, the outer condition 'not v' then immediately
+selects the unchanged old walker. For the 661-byte version, each
+'not v or ...' predicate is true and '(d%2 or v)' equals d%2 exactly,
+since v is the integer zero, not merely a false object. Consequently
+every subsequent traversal, packet pop, branch choice, generated
+hypothesis, scope decrement and recursive call is the original one.
+
+Theorem: exact acceptance preservation
+=====================================
+On any finite JSON certificate, the old and either new program accept
+the same public goal using the same instruction trace. Invalid public
+syntax or scope fails in both by Lemma 1; valid public syntax reaches
+the unchanged kernel by Lemma 2. This includes all accepted or rejected
+noncanonical internal certificate aliases, unused prefixes, and empty or
+malformed packet structures; the new predicate is never applied to
+those payloads. Failure diagnostics may differ. As with the control,
+actual interpreter memory/stack limitations are outside the abstract
+finite-certificate theorem, and no resource-based acceptance is used.
+
+Consequences and boundary
+=========================
+All established soundness, completeness and bi-interpretability theorems
+for the pinned full native interface transfer without any change of
+formula, numerical domain, equality, axiom or inference. Both directions
+of the proof translation are the identity on the complete JSON input.
+This is stronger than preserving just the closed numerical equations.
+
+Do not call the result a new mathematical axiomatization, a new induction
+principle, a 661-byte form of the 508-byte compact codec, or a proof that
+no smaller checker exists. Its improvement is within the stricter full
+native public-language contract.
+
+Executed validation
+===================
+Run python3 audit_fusion.py from this directory to reproduce the evidence.
+
+audit_fusion.py implements a separate sorted decoder parameterized by the
+number of protected slots, rather than by the checker's affine depth.
+It compares the initial acceptance gates of all three programs with that
+decoder. The corpus has 143580 generated test positions: all
+flat JSON arrays of arities 0 through 4 over a 19-value adversarial alphabet,
+the 19 atoms themselves, and 3000 recursive well-formed samples with 3000
+mutations. (Duplicated values can occur among the random positions, so do
+not call these 143580 distinct mathematical formulas.) The 430740 program
+checks have zero mismatches and zero RecursionError outcomes.
+
+The 18 pinned native proof fixtures are checked against their existing
+declared expectations, not merely old/new agreement. Each program is run
+in ordinary and optimized Python: 108 standalone CLI checks, all passing.
+The fixtures cover nested reflexivity, zero-source equality joining,
+arbitrary Q specialization, nonvacuous D elimination, transport under D,
+forbidden compound progress, unallocated witnesses/targets, false equations,
+malformed public goals and unused administrative prefixes.
+
+Finite checks support the implementation. Lemmas 1 and 2 are the reason
+for the universal preservation claim. No new Lean/Rocq verification is
+claimed. Detailed results and source SHA-256 values are in fusion_audit.json.

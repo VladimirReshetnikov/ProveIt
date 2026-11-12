@@ -1,0 +1,145 @@
+Independent audit of synthesized-name OPENING (the selected variant)
+
+This reviews the selected opening rule. An alternate output-substitution variant
+is included separately as reference/optional_output_discharge.tex.
+
+Rule E:
+  From Γ ⊢ D_{x,y} B(x,y), choose fresh b.
+  Let u = nf(B(b,0)) and e = nf(B(b,1)).
+  Let τ=r when u is literally 0=0 and e is literally b=r; otherwise τ=b.
+  Add the clause C_τ=[nf(B(τ,0)); y.nf(B(τ,y))].
+  If Γ,C_τ ⊢ A with b absent from A, conclude Γ ⊢ A.
+  The equality proof and replacement-term argument are absent from the certificate.
+
+1. Direct soundness, including τ containing b
+
+Read C_b as B(b,0)→∀y B(b,y). In the selected case, C_b together with
+reflexivity of 0 derives b=τ by specialization at 1. In fallback b=τ is
+reflexivity. Thus C_b yields C_τ by intuitionistic equality substitution.
+Given a witness b for the major D formula, the branch can be used under
+C_τ. Since A is b-free, ordinary existential elimination concludes A.
+No condition b∉FV(τ) is needed. The new local parameter still has to be
+absent from the exported branch conclusion.
+
+Equivalently, the selected syntactic map gives
+  ∃b C_b ↔ ∃b C_τ(b):
+left-to-right uses b=τ(b); right-to-left takes witness τ(b). This is an
+ordinary intuitionistic argument, not an extra native axiom.
+
+2. Retaining the original base in code is valid
+
+The selected code specializes only the body and keeps u rather than
+recomputing nf(B(τ,0)). In fallback τ=b. In selection u=H=0=0, and
+normalization/substitution coherence gives nf(B(τ,0))=nf(H[τ/b])=H.
+Hence the retained antecedent is exactly the correct new antecedent.
+
+3. No circularity in recovering ordinary elimination
+
+First establish the restricted case machinery without general numerical
+substitution or full ordinary DE:
+- q_y A := D_{w,y}A with w unused always has fallback opening. The fresh
+  elimination eigenvariable cannot occur in any passive part of A, hence
+  its unit row cannot have that eigenvariable as its left term.
+- A D formula with compound matrix always has fallback opening, because
+  normalization never changes formula root.
+- These two fallback classes suffice for numerical cases and for the
+  compound-envelope repair of atomic case introduction at zero witness.
+  The repair introduces L(E)=q_v(C(v,0,s)=C(v,0,t)), opens a compound
+  D_x,y L(E(x,y)), and reintroduces at a fresh nonzero-spelled variable.
+  Every elimination used in the repair lies in one of the fallback classes.
+
+Now prove arbitrary capture-free numerical substitution by strong induction
+on derivation height, universally quantified over the substitution.
+
+Use case: normalization/substitution coherence transports the antecedent
+and instantiated clause consequence exactly.
+
+Intro case: if a formerly nonzero witness normalizes to 0 and the matrix
+is an equation, the primitive mode may change from cases to progress.
+Use the already-established derived zero-witness case introduction. Other
+intro modes are preserved. Freshen eigenparameters outside substitution
+images before applying the induction hypothesis.
+
+Open case: rename the target eigenparameter to b', fresh outside all outer
+substitution images. If the OLD guard was selected, the new guard remains
+selected: H stays H and b=τ becomes b'=nf(τθ). Apply the IH to the old
+branch with b→b' and the outer substitution θ. Its specialized local
+clause becomes exactly the newly selected specialized clause.
+
+If the OLD guard was false, its local clause was C_b. The NEW guard may
+be false or true. Apply the IH to the strictly smaller ORIGINAL branch
+using the combined map θ on outer variables and old b→τ_new(b'). This
+maps C_b to the new clause C_{τ_new}. The conclusion is b-free, so its
+translation is just Aθ. The map is a legitimate simultaneous substitution
+even if τ_new contains b'. It does not require recursively substituting
+inside the term just inserted. Inner eigenparameters are freshly renamed.
+
+This is a well-founded induction on the original branch derivation; it
+does not invoke full ordinary DE as a lemma. The kept-base implementation
+agrees with this proof by the invariant in item 2.
+
+Once substitution admissibility is proved, an arbitrary old DE branch
+Γ,C_b ⊢ A with b-free A can be substituted at old b→τ(new b). It becomes
+Γ,C_τ ⊢ A and supplies exactly the new primitive opening branch. Thus
+full ordinary DE is recovered without a circular assumption.
+
+4. Equality recovery
+
+For premises s=t and h(s)=r, set
+  B(x,y) = C(y,0,C(P(y),h(x),x)) = C(y,0,C(P(y),r,t)),
+where P(1)=1 and P(2)=0 by computation.
+Then B(x,0)=H, B(x,1)=(x=t), B(x,2)=(h(x)=r).
+DI at s is proved by numerical cases on P(Sz), using h(s)=r at selector
+zero and s=t at selector successors. This ignores the DI hypothesis.
+Opening synthesizes τ=t and installs C_t. Use at 2 directly gives h(t)=r.
+There is no equality branch and no substitution on the exported formula.
+Symmetry, transitivity, term congruence, and full formula transport follow.
+The formula-depth induction for D uses the now-derived full ordinary DE.
+
+5. Implementation review
+
+Reviewed checker_work/checker.py after explicit public-goal syntax checking
+was added. Its parse and scope checks reject bool/float aliases of integer
+terms, out-of-scope eigenparameters, and ill-typed intermediate final outputs.
+Intro validates its unchanged matrix in the final returned [B0], so moving
+that validation to the end does not accept malformed matrices, even when
+a local computation erases malformed fragments before the final check.
+The proof of this uses the successful-trace invariant: every returned
+formula is validated; failed computations never print ACCEPT.
+
+Unit shape check: after u==[0,0], the unit formula is necessarily Eq.
+Independently, unit[0]==fresh negative integer itself forces Eq, because a
+D child is a formula list. Thus omitting an explicit len(unit)==2 check is
+safe and does not accept malformed D rows.
+
+The selected source's context length n includes the fixed reflexivity
+clause. Its free-variable interval 1-n≤i≤depth and fresh name -n implement
+exactly n-1 current eigenparameters. The public initial context has n=1,
+so no free numerical parameter is allowed in a closed goal.
+
+6. Independent executable evidence
+
+independent_validation.py checks the selected source against a separately
+written strict grammar parser and named-binder normalizer. A separate
+natural-number evaluator uses a loop, not rewriting or substitution.
+On the reviewed version it performs 6,292 checks, all passing:
+700 named normalizations; 700 canonical recognitions; 1,398 numerical
+semantic evaluations; 500 capture-avoiding openings with protected and
+older bound variables; 400 simultaneous free substitutions; 350 guard
+choices; 350 specialized clauses; 350 retained-base identities; 8 real
+opening rule edge derivations; 3 closed positive certificates; 16 adverse
+public certificates; 17 malformed erased terms; 1,500 arbitrary JSON
+grammar comparisons. Random seed is fixed and reported.
+
+These finite checks provide implementation evidence only. The universal
+equivalence and bi-interpretation rely on the written proofs and the
+explicitly attributed inherited scalar bridge, not on these counts.
+
+No mathematical flaw found in the selected opening variant. No Lean or
+Rocq formalization of the new rule or substitution theorem was performed.
+
+Final report review: no new substantive blocker was found. The derived
+case-introduction statement explicitly retains the primitive freshness
+condition on z; ordinary elimination explicitly makes its eigenparameter
+fresh for passive matrix parameters. The final PDF build helper was reviewed
+for an installed TeX distribution and executed successfully.

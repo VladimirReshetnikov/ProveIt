@@ -1,0 +1,21 @@
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Complete standalone module & Bytes & Tokens & AST & Gzip-9\\
+\midrule
+Scalar Name control & 1,983 & 663 & 751 & 812\\
+Uniform recursion, new & 1,950 & 662 & 741 & 806\\
+Scalar Name, with fuel & 2,169 & 711 & 810 & 880\\
+Uniform recursion, with fuel & 2,136 & 710 & 800 & 873\\
+\midrule
+Current strict native control & 780 & 360 & 409 & 458\\
+Strict native, explicit fusion & 685 & 340 & 385 & 409\\
+Strict native, integrated cases & 661 & 336 & 381 & 390\\
+\midrule
+Compact control, different contract & 508 & 267 & 302 & 330\\
+\bottomrule
+\end{tabular}
+\caption{Matched complete-checker measurements. The compact row has a different public-validation contract.}
+\label{tab:metrics}
+\end{table}

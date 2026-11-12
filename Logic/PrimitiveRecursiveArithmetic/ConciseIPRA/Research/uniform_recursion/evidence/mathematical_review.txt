@@ -1,0 +1,156 @@
+INDEPENDENT MATHEMATICAL REVIEW: COUNTER-AWARE R / NAME3
+======================================================
+
+Review provenance. This review was performed by a separate AI agent.
+
+Scope. This note reviews the proposed composition of the existing three-family
+Name calculus with full computation normal forms for a counter-aware,
+successor-seeded recursor. It is not a claim of absolute minimality or a new
+proof-assistant verification.
+
+1. DEFINITIONS AND LITERAL IDENTITIES
+
+Terms are variables, 0, and R(n,a;i,u.h), binding both i and u in h only.
+Put S(a)=R(0,a;i,u.0). The canonical zero rule erases the update body:
+  R(0,a;i,u.h) -> R(0,a;i,u.0)=S(a).
+The positive rule is
+  R(S n,a;i,u.h) -> h[n/i,R(n,a;i,u.h)/u].
+The canonical zero constructor R(0,a;0) is not itself reduced again.
+
+Define Praw(n)=R(n,0;i,u.i). Then
+  Praw(0)=1,  Praw(S n)=n
+are literal normalization identities. The unusual zero value is harmless.
+Define
+  C(n,a,b)=Praw(R(n,a;i,u.S b)),
+with i,u fresh for a,b. Then C(0,a,b)=a and C(S n,a,b)=b literally.
+Define K(y)=C(Praw(y),1,0). Only K(1)=1 and K(2)=0 are needed below;
+there is no claim that K is a parity function or that it has a range theorem.
+The ordinary predecessor is C(n,0,Praw(n)).
+
+Counter-aware primitive recursion is definable WITHOUT PAIRING:
+  J(n,a;i,u.h) = Praw(R(n,a;i,v.S h(i,Praw(v)))).
+All passive parameters of a,h remain passive. The equations are literal:
+  J(0,a;h)=a,
+  J(S n,a;h)=h(n,J(n,a;h)).
+This proves a structural compiler for primitive recursive definitions: zero,
+successor, projections and composition are immediate; primitive recursion
+uses J. Every fixed R term is itself primitive recursive in all free numeric
+parameters, by induction on term formation and ordinary primitive recursion.
+No uniform evaluator for all R term codes is asserted to be primitive recursive.
+
+2. CRITICAL TWO-BINDER IMPLEMENTATION CORRECTION
+
+For de Bruijn slots i=2,u=1, substitution must be simultaneous. A correct
+sequential implementation is COUNTER FIRST:
+  sub(sub(h,n,1), previous_state).
+The first substitution replaces slot 2 under retained slot u and lifts its
+inserted term; the second removes u. The tempting
+  sub(sub(h,previous_state),n)
+is incorrect whenever previous_state has positive ambient bound indices.
+For example, at one ambient binder, R(1,v;j,w.w) must normalize to S(v),
+not S(0). As trees, [[0,0,0],1,1] must normalize to [0,1,0].
+This bug has been reported to and corrected by the implementation agent.
+
+3. NAME COMPLETENESS IS NOT CIRCULAR
+
+Use the fixed reflexivity clause [ ; y.y=y]. Ordinary D elimination is Name
+with the equality b=b, so it is available before any general equality rule.
+For q_y A(y)=D_{w,y}A(y) with unused w, introduce at the witness 1, which
+always selects case mode. This yields conditional closure from
+Gamma,A(0) |- A(Sz). Eliminate q and use its clause to obtain arbitrary
+specialization. Thus numerical cases follow before transport is available.
+
+Given s=t and h(s)=r, use the existing two-row matrix with the new C and K:
+ B(x,y) = C(y,0,C(K(y),x,h(x))) = C(y,0,C(K(y),t,r)).
+The zero row is 0=0. At x=s, its positive row follows by numerical cases
+on K(Sz), using s=t at zero and h(s)=r at every successor. This proof
+ignores the temporary introduction assumption, so either introduction mode
+is valid, including s=0. After opening at b,
+ B(b,1)=h(b)=r and B(b,2)=b=t
+are literal normalized instances. A single Name discharge exports h(t)=r.
+The assumptions do not invoke symmetry, congruence, numerical induction,
+or an unproved equality rule. Symmetry then follows by choosing h(x)=x,
+r=s and using s=s. Standard two-step arguments yield crossed transport,
+transitivity and congruence.
+
+Formula transport is proved by external induction on formula depth. At a D
+formula, open the source D at a fresh c and introduce the target D at c.
+Since c is not literal zero, this always uses case mode. Transport its base
+backward using symmetry and the smaller-formula induction hypothesis, use
+the opened source clause at S z, and transport the result forward. This is
+not induction on arbitrary object-language formulas.
+
+4. ZERO-WITNESS CASE REPAIR
+
+Full normal forms have no nonliteral closed zero. Do NOT reuse the raw
+calculus's padding I(0,0;0), which normalizes away.
+
+The existing compound-envelope argument works with C above. For an equation
+E=(s=t), put G_v(E)=(C(v,0,s)=C(v,0,t)) and L(E)=q_v G_v(E).
+The two endpoints are G_0(E)=0=0 and G_(S w)(E)=E. Case closure and
+specialization give E |- L(E) and L(E) |- E without transport.
+If Gamma,E(0,0) |- E(0,S z), wrap its hypothesis/conclusion and introduce
+D L(E) at witness zero. Its matrix is compound, so this is case mode.
+Open it at fresh c. Introduce D E at witness c, wrapping E(c,0), using the
+opened clause at S z, and unwrapping the result. The witness c is nonzero
+syntactically, so this is again case mode. This gives every missing atomic
+case-introduction instance without any nonliteral closed zero or alias.
+
+5. ORDINARY THEORY AND BI-INTERPRETATION
+
+Use the ordinary realization T_R: intuitionistic first-order logic with
+actual equality, the displayed R computations, numerical coverage
+  x=0 or exists y, x=S y,
+separation 0=S0 -> bottom, and induction for equations with arbitrary side
+assumptions. The same selector-based native/ordinary bridge applies once
+Name has recovered full formula transport and both introduction variants.
+The selector identities used by that bridge are literal identities here.
+
+R is interpreted in iPRA by its successor-seeded primitive recursion, one
+fixed primitive recursive definition for each fixed update term. Conversely
+every iPRA primitive recursive symbol is compiled using J. Successor
+injectivity follows by applying Praw to an equality S a=S b; disjointness
+of zero from all successors follows from C and the separation instance.
+The usual quantifier-free characteristic functions and equality reflection
+can be compiled directly by J; only equation induction is used to verify
+their defining properties. This gives quantifier-free induction.
+
+Both numerical domains are the entire numerical sort and equality is actual.
+The roundtrip argument must include recurrence uniqueness: two fixed terms
+with the same primitive-recursive equations agree by equation induction.
+Apply this inductively to compiled iPRA symbols and to each fixed R term.
+Consequently both numeric composite isomorphisms have graph x=y. Formula
+roundtrips then follow by structural induction on ordinary formulas and the
+previous native/ordinary D bridge. Mutual consistency follows as a corollary;
+it is not being substituted for the stronger bi-interpretability claim.
+
+6. NORMALIZATION, FUEL, AND CLAIM BOUNDARIES
+
+Full normalization is metatheoretic. Translate R to the ordinary typed
+counter-aware primitive recursor at ground type with initial value S(a).
+This is the first-order fragment of the usual natural-number recursor
+calculus. Its reducibility proof gives strong normalization; the recursor
+case uses induction on reduction/predecessor accessibility of the counter,
+and computability of its update abstraction under computable substitutions.
+The zero-body-erasure presentation merely makes the constructor S(a)
+canonical. Alternatively present this typed recursor proof as a separate
+lemma rather than claiming termination from the numeral value alone: open
+terms and normalization beneath binders must be covered.
+
+The explicit-constructor recursor rules are orthogonal; compatibility with
+substitution gives confluence and therefore unique normal forms. Zero-body
+erasure has no conflicting observable branch: its erased subtree is unused.
+The canonical presentation inherits unique normal forms and
+N(N(t)[sigma])=N(t[sigma]); explain that equality as a metasyntactic identity.
+
+Uniform normalization on all finite term codes need not be primitive
+recursive. A fuel-bound checker or an explicit normalization-trace field
+makes the certificate predicate primitive recursive. Each finite accepting
+unbounded run has some sufficient finite budget, so its theorem set is
+unchanged. No internal normalizer-totality/reflection axiom is added to iPRA.
+
+The new result is the composition of Name3, counter-aware successor-seeded
+R, full normalization and one common two-binder traversal. Credit the old
+Name proof and existing R presentations. It can be a smaller matched
+transparent checker without beating the repository's different compact
+validated codecs; do not call it a universal or absolute minimum.

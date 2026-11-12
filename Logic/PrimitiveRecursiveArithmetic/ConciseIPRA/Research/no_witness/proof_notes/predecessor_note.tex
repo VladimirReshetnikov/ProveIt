@@ -1,0 +1,230 @@
+% Research note for the parent agent. This is a section fragment, not a standalone document.
+\section{Predecessor from equational induction alone}
+\label{sec:eq-predecessor}
+
+This section removes a possible circularity from the restriction of existential
+witnesses. The predecessor term is constructed before any general term-naming
+principle, and without numerical coverage, a separation axiom, existential
+introduction, or a case split under a hypothesis such as $c=0$.
+
+\paragraph{The equational interface.}
+Use the term constructors $0$, $S$, and
+$I(n,a;u.h)$, the two computation equations
+\[
+ I(0,a;u.h)=a,\qquad
+ I(Sn,a;u.h)=h[I(n,a;u.h)/u],
+\]
+ordinary equational reasoning, and induction for a literal equation. Thus,
+if $z$ is absent from the parameters and hypotheses $\Gamma$, then
+\[
+ \frac{\Gamma\vdash E(0)\qquad
+       \Gamma,E(z)\vdash E(Sz)}{\Gamma\vdash E(t)}.
+\]
+The unconditional cases rule
+\[
+ \frac{\Gamma\vdash E(0)\qquad\Gamma\vdash E(Sz)}
+      {\Gamma\vdash E(t)}
+\]
+is the special case that ignores the induction hypothesis. This rule does
+\emph{not} replace or specialize hypotheses of $\Gamma$ containing an
+arbitrary term $c$. Every use of cases below proves an unconditional identity
+with the displayed case variable and the other parameters independent.
+
+All definitions below are abbreviations for scalar iterator terms. Write
+\[
+ C(c,a,b)=I(c,a;u.b),\qquad
+ x+y=I(y,x;u.Su),\qquad 1=S0.
+\]
+Then $C(0,a,b)=a$, $C(Sz,a,b)=b$,
+$x+0=x$, and $x+Sy=S(x+y)$. Equation induction gives
+$0+x=x$, $Sx+y=S(x+y)$, associativity and commutativity of addition.
+For example the second identity is induction on $y$, commutativity is
+induction on $y$ using that identity, and associativity is induction on its
+last argument. Hence finite sums can be rearranged, and $Sx=x+1$.
+The notation $2x$ and $3x$ means $x+x$ and $x+x+x$.
+
+\paragraph{Zero test and parity.}
+Put
+\[
+ Z(x)=C(x,1,0),\qquad P(n)=I(n,0;u.Z(u)).
+\]
+The equations $Z(0)=1$, $Z(Sx)=0$, and
+\[
+ Z(Z(Zx))=Zx
+\]
+follow by computation and unconditional cases on $x$. Consequently
+\[
+ P(0)=0,\quad P(Sn)=Z(Pn),\quad Z(Z(Pn))=Pn.
+\]
+The last equation is induction on $n$: the base computes, and the step
+is the displayed triple-zero-test identity. It follows that
+$P(n+2)=Pn$. Induction on $n$ now gives
+\[
+ P(2n)=0,\qquad P(3n)=Pn.
+\]
+For the first step use $2(Sn)=2n+2$; for the second use
+$3(Sn)=3n+3$ and $P(m+3)=Z(Pm)$.
+
+\paragraph{Boolean interpolation without conditional cases.}
+For any term template $H(v)$, with arbitrary other parameters, unconditional
+cases on $y$ prove
+\begin{equation}
+ H(Z(Zy))=C(y,H(0),H(1)).
+ \tag{BI}\label{eq:boolean-interpolation}
+\end{equation}
+Indeed $Z(Z0)=0$ and $Z(Z(Sz))=1$. Thus if an equation $p=Z(Zp)$ is
+already available, equational congruence turns \eqref{eq:boolean-interpolation}
+into $H(p)=C(p,H(0),H(1))$. In particular an identity between two term
+templates at $0$ and at $1$ holds at such a $p$. This uses a previously proved
+unconditional identity; it never substitutes into a contextual hypothesis.
+
+\paragraph{The three-cycle and the ramp.}
+Define
+\[
+ c(u)=Z(u)+2P(u),\qquad M(n)=I(n,0;u.c(u)),\qquad
+ J(k,a)=I(k,a;u.c(u)).
+\]
+Computation gives $c(0)=1$, $c(1)=2$, and $c(2)=0$.
+The iterator equations give $M(0)=0$, $M(Sn)=c(Mn)$, and induction on $k$
+gives the addition law
+\begin{equation}
+ M(r+k)=J(k,M(r)).\tag{M+}\label{eq:mod3-add}
+\end{equation}
+Its step is $M(r+Sk)=c(M(r+k))=c(J(k,Mr))=J(Sk,Mr)$.
+
+Now put
+\[
+ R(n)=I(n,0;u.S(u+M(u))).
+\]
+We claim $M(Rn)=Pn$. For its induction step write $r=Rn$ and $p=Pn$,
+and use the induction hypothesis $Mr=p$. By \eqref{eq:mod3-add},
+\[
+ M(R(Sn))=c(M(r+Mr))=c(J(Mr,Mr))=c(J(p,p)).
+\]
+For a Boolean $p$, the identity
+\[
+ c(J(p,p))=Zp
+\]
+follows from (BI): at $p=0$ both sides are $1$, and at $p=1$ both sides
+are $0$, since $c(J(1,1))=c(c(1))=c(2)=0$.
+The already proved equation $p=Z(Zp)$ applies. This proves the induction
+step because $P(Sn)=Zp$. The base is immediate.
+We therefore have the simpler ramp recurrence
+\begin{equation}
+ R(0)=0,\qquad R(Sn)=Rn+Pn+1.\tag{R}\label{eq:ramp-rec}
+\end{equation}
+
+Induction now gives
+\begin{equation}
+ R(2n)=3n,\qquad R(3n)=3Rn+Pn.\tag{R23}\label{eq:ramp-multiples}
+\end{equation}
+For the first step, $P(2n)=0$ and $P(2n+1)=1$, so two applications of
+\eqref{eq:ramp-rec} increase $R(2n)$ by $3$.
+For the second, put $r=Rn$, $p=Pn$, and $q=Zp$.
+The three successive parities at $3n$, $3n+1$, $3n+2$ are $p,q,p$.
+Using the induction hypothesis, the next left side is therefore
+\[
+ R(3n+3)=3r+p+3+p+q+p=3r+3p+q+3,
+\]
+which is $3R(Sn)+P(Sn)=3(r+p+1)+q$. No conditional parity split is used.
+
+\paragraph{A factor map.}
+Let $H(x)=C(Px,Rx,x)$. Then
+\[
+ H(2x)=3x,\qquad H(1)=1,\qquad H(3x)=3H(x).
+\]
+The first two follow immediately. For the third put $p=Px$, $r=Rx$ and
+use \eqref{eq:ramp-multiples} to obtain
+\[
+ H(3x)=C(p,3r+p,3x)=C(p,3r,3x)=3C(p,r,x).
+\]
+The two identities used here,
+\[
+ C(v,a+v,b)=C(v,a,b),\qquad
+ C(v,3a,3b)=3C(v,a,b),
+\]
+are unconditional identities proved by cases on $v$. In particular this
+argument also avoids conditional parity cases.
+
+\paragraph{Comparison.}
+Define
+\[
+ F(y,a)=I(y,a;u.H(u)),\qquad W(x)=I(x,1;u.u+u),\qquad
+ K(x,y)=P(F(y,W(x))).
+\]
+Three elementary inductions on $y$ give
+\[
+ H(F(y,a))=F(y,H(a)),\qquad
+ F(y,3a)=3F(y,a),\qquad F(y,1)=1.
+\]
+Their steps use the iterator equation and, respectively, the preceding
+induction hypothesis, $H(3u)=3H(u)$, and $H(1)=1$.
+Since $W(0)=1$ and $W(Sx)=2W(x)$, we get
+\begin{align*}
+ K(0,y)&=1,\\
+ K(Sx,0)&=0,\\
+ K(Sx,Sy)
+ &=P(H(F(y,2W(x))))\\
+ &=P(F(y,H(2W(x))))\\
+ &=P(F(y,3W(x)))
+  =P(3F(y,W(x)))=K(x,y).
+\end{align*}
+Consequently $K(Sx,x)=0$ by induction on $x$.
+The intended reading of $K(x,y)$ is the Boolean indicator of $x\leq y$,
+but that semantic reading is not needed: only the three displayed equations
+and their diagonal consequence are used below.
+
+\paragraph{Saturation and predecessor.}
+Put
+\[
+ B(k,u)=C(K(S(Su),k),u,Su),\qquad
+ T(t,k)=I(t,0;u.B(k,u)).
+\]
+The comparison equations and the unconditional selector identity
+$C(v,Sa,Sb)=S(C(v,a,b))$ give
+\[
+ B(Sk,Su)=S(B(k,u)),\qquad B(S(Sk),0)=1.
+\]
+Induction on $t$ proves the conjugacy
+\begin{equation}
+ T(St,S(Sk))=S(T(t,Sk)).\tag{T}\label{eq:saturation-conjugacy}
+\end{equation}
+At $t=0$ it says $B(S(Sk),0)=1$. For the step, unfold the left side and
+rewrite its inner value by the induction hypothesis:
+\[
+ T(S(St),S(Sk))
+ =B(S(Sk),T(St,S(Sk)))
+ =B(S(Sk),S(T(t,Sk)))
+ =S(T(St,Sk)).
+\]
+An induction on $n$, applying \eqref{eq:saturation-conjugacy} at $t=k=n$
+in its step, now gives $T(n,Sn)=n$.
+
+Finally define the scalar iterator term
+\[
+ \operatorname{pred}(n)=T(n,n).
+\]
+Its base equation is immediate, and its successor equation is
+\begin{align*}
+ \operatorname{pred}(Sn)
+ &=B(Sn,T(n,Sn))=B(Sn,n)\\
+ &=C(K(S(Sn),Sn),n,Sn)
+  =C(K(Sn,n),n,Sn)=C(0,n,Sn)=n.
+\end{align*}
+Therefore
+\[
+ \boxed{\operatorname{pred}(0)=0,\qquad
+        \operatorname{pred}(Sn)=n.}
+\]
+Applying this term context to $Sa=Sb$ proves $a=b$.
+
+\paragraph{Dependency conclusion.}
+Every induction above has a literal equation as its invariant. Every case
+argument proves an unconditional equation and is itself an equation induction
+that ignores its induction hypothesis. The construction therefore belongs to
+the purely equational iterator fragment. It does not use the full numerical
+coverage principle, contextual case splitting, formula induction, successor
+injectivity, or a name for an arbitrary term. In a restricted native calculus
+with the two iterator equations, equational transport, QE and direct
+QI-progress, this entire fragment is available before DI is considered at all.
+This is the needed noncircular predecessor lemma for the witness restriction.

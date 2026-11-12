@@ -1,0 +1,85 @@
+% Independent mathematical audit of the deterministic-newest introduction.
+% This is an internal proof note, not a proof-assistant verification.
+\subsection{The structural bootstrap for a deterministic newest witness}
+
+Let $\Delta$ be an ordered numerical scope. The primitive introduction
+chooses its witness from the \emph{parent} scope, before adjoining its fresh
+step variable. It chooses the outer-scoped $r$ when its matrix is literally
+$N_r(x,y)=C(y,0,x)=C(y,0,r)$, and otherwise chooses the last parameter of
+$\Delta$, or $0$ if $\Delta$ is empty. The mode remains equation progress
+versus compound cases, independently of the selected witness.
+
+Call a derivation algebraic if its only nodes are computation axioms, Use,
+and full formula transport. Algebraic derivations admit arbitrary injective
+renaming and numerical or clause weakening by a direct induction. They do
+not contain the context-sensitive introduction rule.
+
+\paragraph{Algebraic cut.}
+Suppose $\Gamma\vdash A$ has an algebraic derivation. Then from an arbitrary
+new-calculus derivation of $\Gamma,A\vdash F$ one may construct a derivation
+of $\Gamma\vdash F$. Induct on the receiving derivation and replace a Use
+of the distinguished constant assumption clause by an algebraically weakened
+copy of the donor proof. Removing a clause does not change the ordered
+numerical scope, so it does not change any selected witness. The other
+clauses and all numeric scopes remain intact. Under a binder, only the
+algebraic donor is weakened; no general weakening theorem is being assumed.
+The donor must not use the assumption being cut.
+
+\paragraph{Unconditional names.}
+For every outer-scoped $r$, the rule's naming exception proves $D N_r$ in
+every context. Its step target is literally $C(Sz,0,r)=C(Sz,0,r)$, which
+has an algebraic proof by zero computation and transport. Its local
+assumption is unused. After opening the name at fresh $e$, the new clause
+gives $e=r$ algebraically: its zero antecedent follows from computation,
+Use at $1$ gives the unit equation, and both endpoints compute to $e,r$.
+
+\paragraph{Full weakening.}
+State the induction in its strong form: every derivation over $(\Delta,\Gamma)$
+can be transported along an arbitrary injective numerical-scope embedding
+$j:\Delta\hookrightarrow\Delta'$ and into any target clause context
+containing $j\Gamma$. Induct on the height of the \emph{original} derivation.
+Computation, Use, and transport are immediate. At Open, map its eigenparameter
+to a fresh target parameter and apply the induction hypotheses to its two
+proper premises.
+
+At an original introduction, let $w$ be its old selected witness, after
+applying $j$, and let $B$ be its mapped matrix. If $B$ is a naming matrix,
+use the unconditional name proof and ignore the old branch. Otherwise prove
+$D N_w$ in the enlarged outer context and open it at a new last parameter
+$e$. Its clause supplies $e=w$ and $w=e$ algebraically. The introduction
+of $D B$ in this scope must now select $e$.
+
+Choose a fresh step parameter $z$. Apply the induction hypothesis only to
+the original proper introduction branch, embedding its original step variable
+as $z$. Enlarge that branch context by the name clause, the new ordinary
+assumption $B(e,\eta_B(z))$, and, temporarily, the original ordinary
+assumption $B(w,\eta_B(z))$. The induction hypothesis yields the original
+target $B(w,Sz)$ in this context.
+
+There is an algebraic proof of $B(w,\eta_B(z))$ from the name clause and
+$B(e,\eta_B(z))$: Use retrieves the latter, and full formula transport along
+$e=w$ gives the former. Algebraic cut therefore removes the old assumption
+from the transformed branch. Transport along $w=e$ changes its conclusion
+to $B(e,Sz)$. Deterministic introduction at the newest parameter $e$ now
+proves $D B$, and Open discharges the name. Its final conclusion and retained
+outer clauses contain no $e$.
+
+This step invokes the height induction only on a strictly smaller original
+branch. It invokes algebraic cut on the newly transformed proof, but algebraic
+cut was established independently and has no height restriction. Thus the
+enlarged proof constructed in this step is never fed back into the weakening
+induction hypothesis.
+
+\paragraph{General ordinary-assumption cut and completeness.}
+After full weakening, ordinary-assumption cut follows by the standard
+derivation induction, inserting weakened donor proofs at the corresponding
+Use nodes. Every unrestricted old introduction is then simulated by naming
+its supplied witness $t$, opening the name at fresh newest $e$, transporting
+the new local assumption from $e$ to $t$, cutting the translated old branch,
+transporting its result back to $e$, introducing at $e$, and discharging the
+name. A naming-matrix goal is instead its unconditional theorem. No general
+term substitution into a proof is needed at any point in the bootstrap.
+
+The construction relies on full canonical-formula transport. Substituting a
+term-only equality rule here would require a new proof that the cut donor is
+stable, because its conversion of $B(e,\eta)$ can have a compound formula.

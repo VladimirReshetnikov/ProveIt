@@ -1,0 +1,67 @@
+CHECKER RESULT AND LIMITS
+========================
+
+The novel interface replaces a freely chosen introduction witness term
+by one bit. Mode 0 chooses zero; mode 1 chooses the newest available
+parameter. The numerical language, formula language, clause mechanism,
+reflexivity, and two-case Eval are inherited. In particular deletion of
+root-only Eval was already present in rootfree_clausal and is not new.
+
+Measured with CPython 3.12.14, using ast.unparse after removing the module
+docstring and appending one LF, over each entire standalone module:
+
+                                       Tokens   AST   Bytes
+Raw three-case control (older)            853    993    3046
+Pinned two-case control                   837    977    2956
+New one-bit introduction                  833    971    2947
+
+The matched new reduction is 4 tokens, 6 AST nodes and 9 bytes. The 90-byte
+three-case-to-two-case improvement is inherited and must not be counted
+as part of the new result. The complete checker includes input parsing,
+public syntax/scope validation, every proof rule, and its output protocol.
+It imports no theorem database, translator, normalizer or local helper.
+
+The repository also contains much shorter compact-encoding checkers,
+including a 516-byte guarded codec that omits public-goal validation and
+a 788-byte Eq/D public-goal checker in another representation. This package
+does not claim to beat their global size envelope. It establishes a strict
+reduction against a pinned matched straightforward implementation.
+
+The finite suite contains 36 distinct fixtures, 72 subprocess runs (normal
+and python -O), 20 accepting and 16 rejecting fixtures, with zero mismatches.
+It includes explicit scalar naming-packet proofs T(0), D_{a,n}T(n), T(1),
+and T(2); a proof that uses an induction hypothesis; arbitrary-term closure
+specialization; nested equality transport; two-parameter newest selection;
+mode aliases; malformed arithmetic and scope cases; and packet mutations.
+
+One regression targets the genuinely false formula
+    D_{x,y}(I(y,0;u.Sx)=y).
+If an introduction witness were allowed to be the NEW step parameter z,
+its successor rows would become reflexive and the false formula could be
+accepted. The final checker selects only the OLD newest parameter and
+rejects this certificate. Its parameter at scope 0 is0, not the fresh -1.
+
+The code and tests do not prove the mathematical completeness theorem.
+That theorem requires the written protected-translation argument: before
+introducing with an arbitrary term, produce a naming packet and open its
+witness as the newest parameter; regenerate premise derivations under the
+enlarged variable embedding. Ordinary renaming of a checked newest-only
+proof is not valid. There is no complete unrestricted-to-restricted proof
+compiler in this directory. The selected corpus converter handles only
+already-zero-or-newest introductions and inherited root Eval elimination.
+
+No Lean or Rocq verification of this checker or new theorem is claimed.
+The executable tests are finite regression evidence, not exhaustive proof
+search, a universal soundness proof, or formal verification.
+
+Files to reproduce:
+  checker.py              Standalone new checker.
+  reference/*.py          Exact pinned baseline checker sources.
+  generate_examples.py    Untrusted equational certificate generator.
+  reproduce.py            Metrics and finite subprocess validation.
+  FORMAT.txt              Complete certificate contract, including bits.
+  PROVENANCE.json         Pinned source and hash information.
+  METRICS.json            Exact whole-program measurements.
+  VALIDATION.json         All per-fixture process receipts.
+  fixtures/               Source, generated and checked certificates.
+  LICENSE-upstream.txt    Inherited MIT No Attribution license.

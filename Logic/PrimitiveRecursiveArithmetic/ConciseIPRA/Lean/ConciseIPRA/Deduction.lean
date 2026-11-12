@@ -76,8 +76,7 @@ theorem subst_up_succ_inst (φ : Fm T (n + 1)) :
     (φ.subst (up (fun i => var i.succ))).subst (inst (var 0)) = φ := by
   have e : (fun i => Syn.subst (inst (var 0 : T (n + 1)))
       (up (fun j : Fin n => (var j.succ : T (n + 1))) i)) = var := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i <;> simp
+    refine funext (Fin.cases ?_ fun j => ?_) <;> simp
   rw [Fm.subst_subst, e, Fm.subst_id]
 
 end Fm
@@ -90,39 +89,34 @@ variable {Ax : Theory T} {n m : ℕ} {Γ Δ : List (Fm T n)} {φ ψ χ : Fm T n}
 under weakening of the context, in one induction. -/
 theorem substWeaken (h : Γ ⊢[Ax] φ) : ∀ {m : ℕ} (σ : Fin n → T m) {Δ : List (Fm T m)},
     Γ.map (fun ψ => ψ.subst σ) ⊆ Δ → (Δ ⊢[Ax] φ.subst σ) := by
-  induction h with
-  | hyp h => intro m σ Δ s; exact .hyp (s (List.mem_map_of_mem h))
-  | ax h ρ => intro m σ Δ s; rw [Fm.subst_subst]; exact .ax h _
-  | botE φ _ ih => intro m σ Δ s; exact .botE _ (ih σ s)
-  | andI _ _ ih₁ ih₂ => intro m σ Δ s; exact .andI (ih₁ σ s) (ih₂ σ s)
-  | andE₁ _ ih => intro m σ Δ s; exact .andE₁ (ih σ s)
-  | andE₂ _ ih => intro m σ Δ s; exact .andE₂ (ih σ s)
-  | orI₁ _ ih => intro m σ Δ s; exact .orI₁ (ih σ s)
-  | orI₂ _ ih => intro m σ Δ s; exact .orI₂ (ih σ s)
+  induction h with intro m σ Δ s
+  | hyp h => exact .hyp (s (List.mem_map_of_mem h))
+  | ax h ρ => rw [Fm.subst_subst]; exact .ax h _
+  | botE φ _ ih => exact .botE _ (ih σ s)
+  | andI _ _ ih₁ ih₂ => exact .andI (ih₁ σ s) (ih₂ σ s)
+  | andE₁ _ ih => exact .andE₁ (ih σ s)
+  | andE₂ _ ih => exact .andE₂ (ih σ s)
+  | orI₁ _ ih => exact .orI₁ (ih σ s)
+  | orI₂ _ ih => exact .orI₂ (ih σ s)
   | orE _ _ _ ih ih₁ ih₂ =>
-    intro m σ Δ s
     exact .orE (ih σ s) (ih₁ σ (List.cons_subset_cons _ s)) (ih₂ σ (List.cons_subset_cons _ s))
-  | impI _ ih => intro m σ Δ s; exact .impI (ih σ (List.cons_subset_cons _ s))
-  | impE _ _ ih₁ ih₂ => intro m σ Δ s; exact .impE (ih₁ σ s) (ih₂ σ s)
+  | impI _ ih => exact .impI (ih σ (List.cons_subset_cons _ s))
+  | impE _ _ ih₁ ih₂ => exact .impE (ih₁ σ s) (ih₂ σ s)
   | allI _ ih =>
-    intro m σ Δ s
     exact .allI (ih (up σ) (by rw [Fm.map_shift_subst]; exact List.map_subset _ s))
-  | allE t _ ih => intro m σ Δ s; rw [Fm.subst_inst]; exact .allE _ (ih σ s)
+  | allE t _ ih => rw [Fm.subst_inst]; exact .allE _ (ih σ s)
   | exI t _ ih =>
-    intro m σ Δ s
     have h := ih σ s
     rw [Fm.subst_inst] at h
     exact .exI _ h
   | exE _ _ ih₁ ih₂ =>
-    intro m σ Δ s
     have h := ih₂ (up σ) (Δ := _ :: Δ.map Fm.shift) (by
       rw [List.map_cons, Fm.map_shift_subst]
       exact List.cons_subset_cons _ (List.map_subset _ s))
     rw [Fm.shift_subst_up] at h
     exact .exE (ih₁ σ s) h
-  | eqRefl t => intro m σ Δ s; exact .eqRefl _
+  | eqRefl t => exact .eqRefl _
   | eqSubst φ ρ ρ' _ _ ih₁ ih₂ =>
-    intro m σ Δ s
     have h := ih₂ σ s
     rw [Fm.subst_subst] at h ⊢
     exact .eqSubst φ _ _ (fun i => ih₁ i σ s) h
@@ -175,14 +169,12 @@ theorem impTrans (h₁ : Γ ⊢[Ax] φ ⟶ ψ) (h₂ : Γ ⊢[Ax] ψ ⟶ χ) : �
 
 /-- An axiom, used as stated. -/
 theorem axm (h : Ax n φ) : Γ ⊢[Ax] φ := by
-  have := Prf.ax (Γ := Γ) h var
-  rwa [Fm.subst_id] at this
+  simpa only [Fm.subst_id] using Prf.ax (Γ := Γ) h var
 
 /-- Universal elimination onto the bound variable itself. -/
 theorem allOpen {φ : Fm T (n + 1)} (h : Γ ⊢[Ax] Fm.all φ) : Γ.map Fm.shift ⊢[Ax] φ := by
-  have h' : Γ.map Fm.shift ⊢[Ax] Fm.all (φ.subst (up (fun i => var i.succ))) := h.shift
-  have := Prf.allE (var 0) h'
-  rwa [Fm.subst_up_succ_inst] at this
+  have h' := Prf.allE (var 0) h.shift
+  rwa [Fm.subst_up_succ_inst] at h'
 
 /-! ### Biimplication -/
 
@@ -204,18 +196,15 @@ theorem iffTrans (h₁ : Γ ⊢[Ax] Fm.iff φ ψ) (h₂ : Γ ⊢[Ax] Fm.iff ψ �
 /-- Leibniz' rule for one variable. -/
 theorem eqSubst1 (φ : Fm T (n + 1)) {s t : T n} (h : Γ ⊢[Ax] s ≐ t)
     (hφ : Γ ⊢[Ax] φ.subst (inst s)) : Γ ⊢[Ax] φ.subst (inst t) := by
-  refine .eqSubst φ (inst s) (inst t) (fun i => ?_) hφ
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine .eqSubst φ (inst s) (inst t) (Fin.cases ?_ fun j => ?_) hφ
   · simpa using h
   · simpa using Prf.eqRefl (Ax := Ax) (Γ := Γ) (var j)
 
 theorem eqSymm {s t : T n} (h : Γ ⊢[Ax] s ≐ t) : Γ ⊢[Ax] t ≐ s := by
-  have := eqSubst1 (Fm.eq (var 0) (Syn.shift s)) h (by simpa using Prf.eqRefl s)
-  simpa using this
+  simpa using eqSubst1 (Fm.eq (var 0) (Syn.shift s)) h (by simpa using Prf.eqRefl s)
 
 theorem eqTrans {s t u : T n} (h₁ : Γ ⊢[Ax] s ≐ t) (h₂ : Γ ⊢[Ax] t ≐ u) : Γ ⊢[Ax] s ≐ u := by
-  have := eqSubst1 (Fm.eq (Syn.shift s) (var 0)) h₂ (by simpa using h₁)
-  simpa using this
+  simpa using eqSubst1 (Fm.eq (Syn.shift s) (var 0)) h₂ (by simpa using h₁)
 
 /-- Congruence: provably equal substitutions give provably equal instances of a
 term. -/
@@ -233,8 +222,7 @@ theorem eqCongr {k : ℕ} (t : T k) {σ σ' : Fin k → T n} (h : ∀ i, Γ ⊢[
 /-- Congruence for one variable. -/
 theorem eqCongr1 (u : T (n + 1)) {s t : T n} (h : Γ ⊢[Ax] s ≐ t) :
     Γ ⊢[Ax] Syn.subst (inst s) u ≐ Syn.subst (inst t) u := by
-  refine eqCongr u (fun i => ?_)
-  refine Fin.cases ?_ (fun j => ?_) i
+  refine eqCongr u (Fin.cases ?_ fun j => ?_)
   · simpa using h
   · simpa using Prf.eqRefl (Ax := Ax) (Γ := Γ) (var j)
 

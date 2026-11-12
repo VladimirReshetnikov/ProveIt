@@ -1,0 +1,102 @@
+% Independent audit of the scalar-predecessor dependency boundary.
+\section{Predecessor in the fragment without witnessed introduction}
+\label{sec:predecessor-fragment}
+
+This appendix strengthens the dependency statement of the inherited scalar
+predecessor construction.  Its entire proof can be conducted using equations,
+the two iterator computations, ordinary equality reasoning, the progressive
+closure rule for literal equations, and closure specialization.  In particular,
+it needs no instance of witnessed introduction.  This matters because this
+fragment is closed under arbitrary numerical substitution, even when the full
+calculus restricts its existential witnesses to variables and zero.
+
+Write $C(n,a,b)=I(n,a;u.b)$, $Z(n)=C(n,1,0)$, and
+$a+b=I(b,a;u.Su)$.  Let $\mathcal E$ denote the fragment just described.
+An equation-case inference belongs to $\mathcal E$: from $E(0)$ and a proof
+of $E(Sz)$ for fresh $z$, add the unused assumption $E(z)$ in the latter
+proof, apply progressive closure, and specialize it using $E(0)$.
+This inference concerns an equation $E$; it does not presuppose a
+disjunction $t=0\lor\exists z\,t=Sz$.
+
+The arithmetic equations for a commutative monoid follow by equation
+induction.  Equation cases give the two unconditional identities
+\[
+ Z(v)+Z(Z(v))=1,\qquad Z(Z(Z(v)))=Z(v).
+\]
+For $N(n)=I(n,0;u.Z(u))$, equation induction consequently gives
+\[
+ N(n)+Z(N(n))=1,\qquad Z(Z(N(n)))=N(n).
+\]
+Thus every later use of the statement that $N(n)$ is Boolean can be
+replaced by explicit equations.  In particular $N(n+2)=N(n)$, followed
+by $N(2n)=0$, $N(2n+1)=1$, and $N(3n)=N(n)$, uses only equation induction.
+
+The potentially delicate point is the ramp invariant.  Put
+\[
+ j(u)=Z(u)+2N(u),\qquad M(n)=I(n,0;u.j(u)),\qquad
+ G(n)=I(n,0;u.u+M(u)+1).
+\]
+Finite computations give $j(0)=1$, $j(1)=2$, and $j(2)=0$.
+The following two unconditional equations are established by equation
+cases on the fresh variable $v$:
+\begin{align*}
+ M(g+Z(v)+1)&=C(v,j(j(M(g))),j(M(g))),\\
+ C(v,j(j(Z(v))),j(Z(v)))&=Z(Z(v)).
+\end{align*}
+For the first, the zero branch is the double successor computation for
+$M$, and the successor branch is its single successor computation.
+For the second, the zero branch computes $j(j(1))=0$ and the successor
+branch computes $j(0)=1$.
+
+Now suppose the single induction equation is $M(G(n))=N(n)$.
+Write $g=G(n)$ and $p=N(n)$.  Substitute $v=Z(p)$ into the two
+displayed equations and use $Z(Z(p))=p$.  Ordinary equality reasoning
+gives $M(g+p+1)=Z(p)$.  The update for $G$ and the current induction
+equation identify $G(Sn)$ with $g+p+1$, while $N(Sn)=Z(p)$.
+This proves $M(G(n))=N(n)$ by equation induction with no conditional
+Boolean splitting.
+
+The invariant gives $G(Sn)=G(n)+N(n)+1$ and
+$G(n+2)=G(n)+3$, the latter using $N(n)+Z(N(n))=1$.
+Consequently equation induction proves $G(2n)=3n$.  The successor
+calculation for $G(3n)=3G(n)+N(n)$ reduces, with $p=N(n)$, to
+\[
+ 2p+4=3p+3+Z(p).
+\]
+This is the monoid equation obtained from $p+Z(p)=1$; it requires no
+disjunctive Boolean range assertion.
+
+Finally put $H(u)=C(N(u),G(u),u)$.  The remaining apparent case split
+in $H(3u)=3H(u)$ also has a purely equational replacement.  Equation
+cases prove, for arbitrary parameters,
+\[
+ C(e,a+b,c+d)=C(e,a,c)+C(e,b,d),\qquad C(e,e,0)=0.
+\]
+Using $N(3u)=N(u)$ and $G(3u)=3G(u)+N(u)$, these yield
+\begin{align*}
+ H(3u)
+ &=C(N(u),3G(u)+N(u),3u)\\
+ &=3C(N(u),G(u),u)+C(N(u),N(u),0)=3H(u).
+\end{align*}
+The equations $H(2u)=3u$ and $H(1)=1$ are immediate.
+
+From this point the inherited comparator and saturation construction
+uses only equation induction and equality: the semigroup and rotation
+identities for iteration; $I(y,3a;H)=3I(y,a;H)$ and
+$I(y,1;H)=1$; the comparator
+$L(x,y)=N(I(y,I(x,1;u.2u);H))$; and the saturated iterator
+$W(t,m)=I(t,0;u.C(L(Su,m),u,Su))$.
+Its only subsequent numerical case, the identity
+$C(e,Sa,Sb)=S(C(e,a,b))$, is itself an equation case.
+The final finite scalar term
+\[
+ P(m)=I(m,0;u.C(L(SSu,m),u,Su))
+\]
+therefore satisfies
+\[
+ \mathcal E\vdash P(0)=0,\qquad
+ \mathcal E\vdash P(Sm)=m.
+\]
+The whole derivation, not merely its conclusion, is stable under numerical
+substitution.  Applying the already derived term $P$ to $Sx=Sy$ gives
+$x=y$ in the same fragment.

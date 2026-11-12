@@ -1,0 +1,212 @@
+\section{Reproduced comparisons and limits}
+\label{sec:comparisons}
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Complete standalone module & Bytes & Tokens & AST & Gzip-9\\
+\midrule
+\textbf{New, no witness field} & \textbf{1925}&\textbf{630}&\textbf{701}&778\\
+Matched explicit-witness control &1967&636&707&790\\
+New, separate template validation &1985&646&717&792\\
+New, finite fuel &2056&667&748&826\\
+Matched explicit-witness, finite fuel &2098&673&754&838\\
+\midrule
+Incoming explicit Name &2010&636&708&791\\
+Incoming inferred opening &1990&683&771&819\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The matched explicit-witness control has the same recursor, normalizer,
+clauses, discharge rule, template-completion treatment, and input contract.
+Only its introduction packet supplies and validates a witness term.
+Removing that field saves 42 bytes, six tokens, and six AST nodes.
+Equivalently, the main module is approximately $2.14\%$ smaller in
+normalized bytes than this tightly matched control. The stronger
+mathematical restriction on introductions is proved complete above.
+
+Removing the separate template-validation pass saves a further 60 bytes,
+16 tokens, and 16 AST nodes relative to the corresponding fixed-witness
+version that retains the pass. The underlying mathematical rule is still
+ordinary equality substitution; the completion lemma justifies the
+more permissive auxiliary-template representation.
+
+Against the two selected incoming strict modules, the new implementation
+has fewer bytes, tokens, and AST nodes in each comparison. Those comparisons
+also change the recursor and shared binding traversal, so the whole
+improvement must not be attributed to witness removal alone.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Separate compact profiles in the inspected corpus & Bytes & Tokens & AST\\
+\midrule
+Incoming compact byte profile &508&267&302\\
+Existing compact token profile &594&256&283\\
+Incoming compact AST profile &580&263&276\\
+Incoming native public-goal profile &780&360&409\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These programs remain smaller. The first three use the corpus's documented
+integer/list and guarded-public-goal contract, with surplus raw syntax
+given a separate interpretation; they are not independent validators of
+the complete public grammar. The last retains its native public-goal
+validator, but its internal proof protocol is still different from the
+strict clause modules. No row is a measurement of the new theory.
+The numbers $508$, $256$, and $276$ belong to different programs and
+must not be combined into a fictitious single checker.
+
+The result therefore establishes a smaller complete straightforward
+implementation in the inspected strict family, and a genuinely smaller
+introduction interface with exact consequence preservation. It does not
+settle the unrestricted optimization problem suggested by the word
+``simplest.'' There is no proven absolute lower bound here, and this
+package does not meet the smallest compact-program coordinates.
+
+\subsection{Verification ledger}
+
+The final reproduced implementation evidence records the following
+successful checks:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Check & Count\\
+\midrule
+Accepted theorem certificates &13\\
+Adversarial rejected certificates &23\\
+Translations to explicit-witness control &13\\
+Translations completing templates &13\\
+Standalone normal/optimized Python runs &140\\
+Exact and one-unit-short fuel boundaries &26\\
+Malformed fuel budgets &8\\
+Exact normal forms against named-variable oracle &400\\
+Independent numerical interpretations &1200\\
+Bound-variable openings against oracle &480\\
+Successor contractions against oracle &320\\
+Targeted capture controls &2\\
+\bottomrule
+\end{tabular}
+\end{center}
+The no-witness naming certificates for $1$ and $2$ require respectively
+1,155 and 1,345 charged entries in the supplied fuel convention. These
+examples test the mechanism that makes the restriction plausible: a
+closed root cannot select either numeral as an introduction witness,
+but the resulting naming theorems are nevertheless accepted.
+
+\section{Conclusions and the remaining mathematical work}
+
+The new restriction concerns how witnesses enter a proof. An introduction
+uses a parameter determined by its environment, and arbitrary numerical
+terms enter through clause specialization. The naming theorem transfers
+the expressive burden from existential introduction to that existing
+specialization operation. Counter-aware recursion makes its required
+predecessor identity computational, so the transfer does not presuppose
+the equality or induction principles being recovered.
+
+The most delicate part is structural: deterministic newest-parameter
+selection invalidates a naive proof of parameter weakening by direct
+induction on target derivations. The proof instead translates source
+derivations with persistent assumption builders, introducing auxiliary
+scopes before recursively translating the premises. Ordinary weakening
+and substitution become admissible consequences of the equivalence.
+
+The next substantive verification task is to formalize that relative
+translation and the template-completion lemma in the repository's Lean
+development. The current package supplies complete specifications,
+written proofs, executable checkers, matched controls, and reproducible
+finite evidence. It does not label the new theory as already Lean-checked.
+
+\appendix
+\section{The reference notion of iPRA}
+
+The arithmetic language has a symbol for every finite primitive-recursive
+description: zero, successor, projections, composition, and primitive
+recursion. Its nonlogical axiom schemas are the defining equations,
+successor injectivity, and $Sx=0\to\bot$. Its induction rule, allowing
+arbitrary retained side assumptions $\Gamma$, is
+\[
+ \frac{\Gamma\vdash A(0)\qquad\Gamma,A(z)\vdash A(Sz)}
+      {\Gamma\vdash A(t)},
+ \quad A\text{ quantifier-free},\quad
+ z\notin\FV(\Gamma,t,\text{passive parameters of }A).
+\]
+Quantifier-free formulas may contain all intuitionistic propositional
+connectives and equality. The logical system is single-conclusion
+intuitionistic natural deduction with the following schemas; eigenvariables
+are fresh for undischarged assumptions and the indicated outer conclusions:
+\begin{center}
+\begin{tabular}{p{0.19\linewidth}p{0.72\linewidth}}
+\toprule
+Operation & Inferences\\
+\midrule
+Assumption & From $A\in\Gamma$, infer $\Gamma\vdash A$.\\[2pt]
+Conjunction & From $A,B$, infer $A\land B$; from $A\land B$, infer either component.\\[2pt]
+Disjunction & From either component infer $A\lor B$; from $A\lor B$ and branches $A\vdash C$, $B\vdash C$, infer $C$.\\[2pt]
+Implication & From a branch $\Gamma,A\vdash B$ infer $\Gamma\vdash A\to B$; from $A\to B,A$ infer $B$.\\[2pt]
+Universal & From $A(z)$ with $z$ fresh infer $\forall x A(x)$; from $\forall x A(x)$ infer $A(t)$.\\[2pt]
+Existential & From $A(t)$ infer $\exists x A(x)$; from that formula and a fresh-witness branch $A(z)\vdash C$ infer $C$.\\[2pt]
+Falsehood & From $\bot$ infer any formula.\\[2pt]
+Equality & Infer $t=t$; from $s=t$ and $F(s)$ infer $F(t)$ for every capture-avoiding formula template.\\
+\bottomrule
+\end{tabular}
+\end{center}
+Contexts are reusable. Weakening and cut are admissible. This conventional
+system fixes the comparison target; its logical rules are derived, rather
+than additionally postulated, in the three-family presentation.
+
+\section{Source attribution and reproducibility}
+
+The archive includes unchanged upstream sources for the two strict
+comparison modules, the compact frontier, the relevant Lean theorem
+statements, and the five scalar-foundation fragments. Their original
+MIT No Attribution license is retained. The long scalar predecessor
+construction is background, not needed for the new naming proof.
+In the inherited equality-reflection fragment the letter $P$ denotes
+the conventional predecessor with $P(0)=0$; in this report that function
+is $p(n)=C(n,0,P(n))$, not the shorter left inverse whose value at zero
+is one.
+
+Run \file{reproduce.py} to verify the package hashes, execute the tests,
+rerun the completion experiment, and reproduce the module measurements.
+Run \file{build_pdf.py} to compile this standalone LaTeX source with
+pdfLaTeX. The independent artifacts are evidence and proof producers;
+none is imported by the standalone acceptance module.
+
+\begin{thebibliography}{9}
+\bibitem{repo} Vladimir Reshetnikov, \emph{Concise presentations of
+intuitionistic primitive recursive arithmetic}, ProveIt repository,
+snapshot \texttt{11814771b7490dfbea0ed5fcf0f5b23586334764}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/11814771b7490dfbea0ed5fcf0f5b23586334764/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+
+\bibitem{diagonal} ProveIt, \file{Lean/ConciseIPRA/NativeDiagonal.lean},
+especially \texttt{GPrf}, \texttt{GPrf.qInd}, and
+\file{gprf_iff_nprf}, same snapshot. A frozen copy is included.
+
+\bibitem{clausaldiag} ProveIt,
+\file{Lean/ConciseIPRA/NativeClausalDiagonal.lean},
+especially \texttt{KPrf} and \file{kprf_iff_nprf}, same snapshot.
+
+\bibitem{nativebi} ProveIt,
+\file{Lean/ConciseIPRA/NativeBiInterpretation.lean} and
+\file{BiInterpretation.lean}, same snapshot: native/ordinary arithmetic
+interpretations, both composites, and consistency equivalence.
+
+\bibitem{foundations} ProveIt,
+\file{Research/raw_clausal/reference/foundations/}:
+\file{inherited_choice_basis.tex},
+\file{inherited_ordinary_bridge.tex},
+\file{scalar_predecessor.tex},
+\file{equality_reflection.tex}, and
+\file{primitive_recursion.tex}, same snapshot.
+
+\bibitem{incoming} ProveIt, six archives in
+\file{docs/incoming/}, same snapshot. In particular
+\file{ipra_clause_discharge_2026-11-11.zip},
+\file{ipra_inferred_witness_2026-11-11.zip}, and
+\file{ipra_deterministic_opening_2026-11-11.zip}.
+Exact comparison modules and file hashes are included.
+\end{thebibliography}
+

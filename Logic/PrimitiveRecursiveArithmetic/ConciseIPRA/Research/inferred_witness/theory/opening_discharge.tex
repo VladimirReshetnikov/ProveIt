@@ -1,0 +1,432 @@
+% New mathematical fragment for synthesized naming AT OPENING.
+% The enclosing report supplies standard theorem/lemma/corollary environments.
+\section{Synthesizing a witness name when its clause is opened}
+\label{sec:named-opening}
+
+The new rule substitutes its inferred numerical name into
+the opened clause, so its branch proves the desired outer conclusion
+directly. The rule requires neither an equality proof, a supplied
+replacement term, nor a separate branch-result formula. The main
+completeness issue is admissibility of substitution. We resolve it before
+recovering unrestricted existential-style elimination, using only two
+guard-free forms of elimination that are immediately available.
+
+\subsection{Complete presentation}
+
+Numerical terms are full computation normal forms of
+\[
+ t::=x\mid0\mid S(t)\mid I(n,a;u.h)
+\]
+under
+\[
+ I(0,a;u.h)\longrightarrow a,\qquad
+ I(Sn,a;u.h)\longrightarrow h[I(n,a;u.h)/u].
+\]
+Only $u$ in $h$ is bound. Write $N$ for normalization. Substitution is
+simultaneous, capture avoiding, and followed by $N$. Inserting a term
+does not recursively substitute into that inserted copy. The inherited
+termination, confluence, and substitution-coherence results for $N$ are
+part of the metatheoretic foundation and of the trusted checker boundary.
+
+Formulas and optional-premise clauses are
+\[
+ A::=(s=t)\mid D_{x,y}B,\qquad
+ [\Delta;y.B(y)],\quad |\Delta|\in\{0,1\},
+ \quad y\notin\operatorname{FV}(\Delta).
+\]
+Each context is a finite list of clause occurrences containing the fixed
+axiom occurrence $\mathcal R=[\,;y.y=y]$. An ordinary assumption $A$
+means the unconditional constant clause $[\,;v.A]$. Put $H=(0=0)$,
+$1=S0$, and $2=S(S0)$.
+
+The intended ordinary readings are actual numerical equality,
+\[
+ (D_{x,y}B)^\circ=\exists x\bigl(B^\circ(x,0)\to
+                                      \forall y\,B^\circ(x,y)\bigr),
+\]
+and $[\,;y.B]^\circ=\forall y B^\circ(y)$,
+$[[A];y.B]^\circ=A^\circ\to\forall y B^\circ(y)$.
+The three primitive inference families are the following.
+
+\paragraph{Use.}
+For a retained clause $[\Delta;y.B]\in\Gamma$,
+\[
+ \frac{\{\,\Gamma\vdash A:A\text{ is the antecedent occurrence in }
+                                  \Delta\,\}}
+      {\Gamma\vdash N(B(t))}.
+ \tag{U}
+\]
+An empty antecedent requires no proof; a singleton requires one.
+In particular, a use of $\mathcal R$ proves $t=t$.
+
+\paragraph{Introduce.}
+\[
+ \frac{\Gamma,B(t,\eta)\vdash B(t,Sz)}
+      {\Gamma\vdash D_{x,y}B(x,y)},\qquad
+ \eta=\begin{cases}
+ z,&B\text{ has equation root and }t\equiv0,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+ \tag{I}
+\]
+The witness $t$ is canonical and $z$ is fresh for the retained context,
+the witness, and all passive matrix parameters. Literal syntax, not
+provable equality, determines the mode.
+
+\paragraph{Open with a synthesized name.}
+For a major $D_{x,y}B(x,y)$ choose a fresh parameter $b$ and put
+\[
+ B_b(y)=N(B(b,y)),\qquad
+ \tau_B(b)=\begin{cases}
+ r,&B_b(0)\equiv H\text{ and }B_b(1)\equiv(b=r),\\
+ b,&\text{otherwise}.
+ \end{cases}
+ \tag{P}
+\]
+Define the substituted clause
+\[
+ \mathcal C^*_B(b)=
+ [[N(B(\tau_B(b),0))];y.N(B(\tau_B(b),y))].
+\]
+Then the rule is
+\[
+ \frac{\Gamma\vdash D_{x,y}B(x,y)\qquad
+       \Gamma,\mathcal C^*_B(b)\vdash A}
+      {\Gamma\vdash A},
+ \qquad b\notin\operatorname{FV}(\Gamma,A).
+ \tag{O$^*$}
+\]
+The parameter $b$ is also fresh for the passive parameters of $B$.
+The synthesized $r$ may contain $b$; the branch still lives in the scope
+with $b$ available, and its conclusion must be in the outer scope. The
+primitive rule has exactly two proof premises. There is no additional
+computation, equality, hypothesis, induction, cut, or substitution rule.
+Computation is part of canonical syntax, and reflexivity is the explicit
+fixed axiom clause.
+
+\begin{lemma}[Direct ordinary soundness]
+\label{lem:opening-sound}
+O$^*$ is sound in intuitionistic first-order equality logic over the scalar
+computation equations.
+\end{lemma}
+\begin{proof}
+Open the existential major at $b$, obtaining
+$\mathcal C_B(b)=[[B_b(0)];y.B_b(y)]$. If P selects its first branch,
+the zero instance is reflexive and clause use at $1$ gives $b=\tau_B(b)$.
+Otherwise reflexivity gives the same equality because $\tau_B(b)=b$.
+Ordinary equality transport converts the whole clause reading
+$\mathcal C_B(b)^\circ$ to
+$\mathcal C^*_B(b)^\circ$. Apply the supplied branch derivation to this
+converted assumption. The conclusion contains no $b$, so ordinary
+existential elimination closes. Equality transport and simultaneous
+substitution are valid also for an equality $b=r(b)$.
+\end{proof}
+
+\subsection{The preliminary rules that do not need general substitution}
+
+Weakening by clause occurrences, injective fresh renaming, and cut of an
+ordinary formula assumption are admissible by direct induction on
+derivations. For renaming, the injectivity and freshness preserve and
+reflect the literal patterns in I and P; normalization is equivariant.
+For ordinary-assumption cut, replace only uses of the selected
+unconditional constant clause, retain all other clause occurrences, and
+freshen local parameters before insertion. These arguments do not
+substitute arbitrary numerical terms into a derivation.
+
+\begin{lemma}[Two immediately ordinary forms of opening]
+\label{lem:opening-safe}
+O$^*$ is exactly ordinary paired elimination in each of the following cases:
+\begin{enumerate}
+ \item the witness coordinate $x$ is unused in the matrix $B(x,y)$;
+ \item the matrix $B$ has compound, rather than equation, root.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+In the first case $B_b(1)$ contains no $b$, so its left-hand term cannot
+literally be the fresh parameter $b$. In the second case $B_b(0)$ still
+has compound root, because term normalization does not erase formula
+binders, and therefore cannot be $H$. In either case P returns $b$.
+\end{proof}
+
+For unused $w$ write $q_yA(y)=D_{w,y}A(y)$.
+\begin{lemma}[Closures and numerical cases]
+\label{lem:opening-cases}
+Before using general ordinary elimination or equality transport, the
+following rules are available:
+\[
+ \frac{\Gamma,A(0)\vdash A(Sz)}{\Gamma\vdash q_yA(y)},
+ \qquad
+ \frac{\Gamma\vdash q_yA(y)\qquad\Gamma\vdash A(0)}
+      {\Gamma\vdash A(t)}.
+\]
+Consequently $\Gamma\vdash A(0)$ and $\Gamma\vdash A(Sz)$, with $z$
+fresh, imply $\Gamma\vdash A(t)$ for every well-scoped $t$.
+\end{lemma}
+\begin{proof}
+Introduce the unused witness of $q$ at $1$, forcing I's case mode.
+For specialization, use the unused-witness case of
+Lemma~\ref{lem:opening-safe}, which opens the clause
+$[[A(0)];y.A(y)]$; U at $t$ with the given base proof gives the desired
+outer conclusion. The numerical-case rule follows by weakening the
+successor proof with the unused assumption $A(0)$ and composing the
+two constructions.
+\end{proof}
+
+\begin{lemma}[Unrestricted case introduction]
+\label{lem:opening-case-repair}
+For every canonical matrix $B$ and every canonical witness $t$, the rule
+\[
+ \frac{\Gamma,B(t,0)\vdash B(t,Sz)}
+      {\Gamma\vdash D_{x,y}B(x,y)}
+\]
+is derivable, with the same freshness condition on $z$ as in I. Its
+derivation uses only U, I, and the two ordinary opening forms of
+Lemma~\ref{lem:opening-safe}.
+\end{lemma}
+\begin{proof}
+The primitive I already suffices unless $B$ has equation root and $t=0$.
+Write the remaining matrix as $E(x,y)$. Put
+\[
+ C(v,a,c)=N(I(v,a;u.c)),\quad u\notin\operatorname{FV}(c),
+\]
+and for an equation $E=(s=t)$ define
+\[
+ G_vE=(C(v,0,s)=C(v,0,t)),\qquad L(E)=q_vG_vE.
+\]
+The literal endpoints are $G_0E=H$ and $G_{Sw}E=E$.
+Lemma~\ref{lem:opening-cases} gives $E\vdash L(E)$ by closure
+introduction and $L(E)\vdash E$ by specialization at $1$ and reflexivity
+of $H$. Only unused-witness opening is involved.
+
+Let $A(x,y)=L(E(x,y))$. Under $A(0,0)$, unwrap to $E(0,0)$, insert the
+supplied premise by ordinary-assumption cut, and wrap $E(0,Sz)$ as
+$A(0,Sz)$. Since $A$ is compound, primitive I at zero uses cases and
+gives $D_{x,y}A(x,y)$. Open this major at fresh $c$ using the
+compound-matrix case of Lemma~\ref{lem:opening-safe}. To introduce
+$D_{x,y}E(x,y)$ at witness $c$, assume $E(c,0)$, wrap it to $A(c,0)$,
+use the opened clause at $Sz$, and unwrap $A(c,Sz)$ to $E(c,Sz)$.
+The fresh witness $c$ is not literal zero, so I uses cases. The resulting
+$D_{x,y}E(x,y)$ is independent of $c$ and can be exported. No general
+substitution theorem and no unrestricted opening rule was used.
+\end{proof}
+
+\subsection{The substitution theorem and its noncircular proof}
+
+A simultaneous numerical substitution may send a parameter to a term
+containing that same parameter. Images are inserted once. Only the finitely
+many parameters appearing in a given derivation matter. As usual, bound
+variables and eigenparameters are freshened away from the images before
+the corresponding substitution is carried out.
+
+\begin{theorem}[Admissibility of arbitrary numerical substitution]
+\label{thm:opening-substitution}
+If $\Gamma\vdash A$ and $\sigma$ is any well-scoped simultaneous
+numerical substitution, then
+\[
+ N(\Gamma\sigma)\vdash N(A\sigma).
+\]
+This is an effective transformation of finite derivations. It is not a
+claim that substitution preserves every primitive rule instance.
+\end{theorem}
+\begin{proof}
+Use strong induction on the original derivation, with the induction
+assertion quantified over \emph{all} simultaneous substitutions. This
+quantification is essential: in one opening case the branch receives a
+different combined substitution from the major. The induction hypothesis
+is applied to original proper subderivations, never to an already
+translated derivation of potentially larger size.
+
+For U, substitute its selected clause occurrence and its zero or one
+premises, then use normalization--substitution coherence. The distinguished
+axiom $\mathcal R$ is unchanged because it has no free numerical parameter.
+For I, first freshen $z$ away from all images of $\sigma$. A progress
+instance stays progressive: its equation root and literal-zero witness
+are preserved. A case instance stays a case instance unless an equation
+matrix has a previously nonzero witness whose substituted normal form
+is zero. In that exceptional case, the induction hypothesis gives exactly
+the premise of the derived unrestricted case rule in
+Lemma~\ref{lem:opening-case-repair}; apply that rule. That lemma was proved
+before the present substitution theorem.
+
+It remains to treat O$^*$. Freshen its parameter $b$ away from the passive
+data and from the finitely many substitution images. Write
+$B'=N(B\sigma)$ and $\tau'=\tau_{B'}(b)$. Translate the major by the
+induction hypothesis. There are two cases according to the \emph{old}
+probe.
+
+If the old probe selected $r$, its two literal identities were
+$B_b(0)=H$ and $B_b(1)=(b=r)$. Applying $\sigma$ while leaving $b$ fixed
+preserves these identities after normalization: $H$ is closed and $b$
+is untouched. Formula roots are preserved. Therefore the new probe is
+also successful and $\tau'=N(r\sigma)$ literally. Apply the induction
+hypothesis to the original branch using $\sigma$ with $b$ fixed. Its
+substituted clause is, by coherence,
+\[
+ [[B'(\tau',0)];y.B'(\tau',y)],
+\]
+which is precisely the clause needed by the new O$^*$ instance.
+
+If the old probe used its fallback, its branch clause was the ordinary
+$[[B(b,0)];y.B(b,y)]$. The new probe may remain false or may become true.
+In \emph{both} cases apply the induction hypothesis once to the original
+branch with the combined simultaneous substitution that agrees with
+$\sigma$ on the outer parameters and sends $b$ to $\tau'$. Its image
+$\tau'$ is inserted once, including when it contains $b$. The resulting
+clause is exactly
+$[[B'(\tau',0)];y.B'(\tau',y)]$. The outer context and branch conclusion
+become $N(\Gamma\sigma)$ and $N(A\sigma)$ because neither originally
+contained $b$, and the freshening ensured that no outer image introduces
+$b$. This supplies the new branch whether or not the guard was newly
+created. Close the new O$^*$ instance.
+
+This exhausts the rules. The only proof transformation invoked outside
+the induction hypotheses was the already established case repair.
+\end{proof}
+
+\begin{corollary}[Unrestricted ordinary paired elimination]
+\label{cor:opening-ordinary}
+For arbitrary canonical $B$, the rule
+\[
+ \frac{\Gamma\vdash D_{x,y}B(x,y)\qquad
+       \Gamma,[[B(b,0)];y.B(b,y)]\vdash A}
+      {\Gamma\vdash A},\qquad
+ b\notin\operatorname{FV}(\Gamma,A),
+\]
+is admissible, where $b$ is also fresh for the passive parameters of $B$.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:opening-substitution} to the supplied branch,
+with the simultaneous substitution $b\mapsto\tau_B(b)$ and all outer
+parameters fixed. Since $\Gamma,A$ are $b$-free, the result is exactly
+the branch of O$^*$ with the same outer conclusion $A$.
+The major is unchanged. This proves general ordinary elimination only
+\emph{after} the substitution theorem, avoiding circularity.
+\end{proof}
+
+\subsection{Recovering every equality rule}
+
+With $C$ as above define
+\[
+ P(y)=N(I(y,0;u.C(u,1,0))).
+\]
+Computation gives $P(1)=1$ and $P(2)=0$ literally; no parity induction is
+needed.
+
+\begin{theorem}[Uncrossed transport]
+\label{thm:opening-transport}
+For every fixed numerical template $h(w)$,
+\[
+ \Gamma\vdash s=t,\quad\Gamma\vdash N(h(s))=r
+ \quad\Longrightarrow\quad\Gamma\vdash N(h(t))=r.
+\]
+\end{theorem}
+\begin{proof}
+Use the canonical equation matrix
+\[
+ B(x,y)=
+ \bigl(C(y,0,C(P(y),N(h(x)),x))
+      =C(y,0,C(P(y),r,t))\bigr).
+\]
+Its zero, first, and second rows are respectively
+\[
+ H,\qquad x=t,\qquad N(h(x))=r.
+\]
+At witness $s$, numerical cases for
+$C(v,N(h(s)),s)=C(v,r,t)$, with the two supplied premises as its zero
+and successor cases, give the successor row at $v=P(Sz)$. This ignores
+I's local assumption, so I introduces $D_{x,y}B(x,y)$ in either mode.
+Open that major. Its probe returns $t$, so its branch clause is
+\[
+ [[H];y.B(t,y)].
+\]
+Reflexivity proves $H$, and U at $2$ proves $N(h(t))=r$ directly.
+That equation is in the outer scope, so O$^*$ closes. The numerical-case
+construction was derived before equality, and the transport construction
+does not require a general substitution of the supplied equality proofs.
+\end{proof}
+
+Symmetry follows by taking $h(w)=w$ and the reflexive minor $s=s$;
+crossed transport follows by symmetry of the output. Transitivity and
+term congruence follow in the usual finite equational constructions.
+Replacing both sides of an equation uses two one-term transports and
+symmetry.
+
+Full formula transport follows by external induction on formula depth.
+For a compound template $D_{x,y}B(v,x,y)$, open the source formula by
+Corollary~\ref{cor:opening-ordinary} at a fresh $c$, and introduce the
+target formula at witness $c$, which forces case mode. Under its zero
+assumption, transport backward in the smaller matrix, specialize the
+source clause at $Sz$, and transport forward in the smaller matrix.
+Close introduction and ordinary elimination. This uses no object-theory
+induction on quantified formulas.
+
+\subsection{Identity-language equivalence and both interpretation composites}
+
+Let $\mathcal T$ be the inherited fully normalized clause calculus with
+the same syntax, Ax, U and I, together with ordinary paired elimination
+and crossed one-term transport. Let $\mathcal O$ be the new three-rule
+calculus U, I, O$^*$.
+
+\begin{theorem}[Exact equivalence on arbitrary clause sequents]
+\label{thm:opening-equivalence}
+For every canonical finite clause context $\Gamma$ containing Ax and
+every canonical formula $A$,
+\[
+ \Gamma\vdash_{\mathcal O}A
+ \quad\Longleftrightarrow\quad
+ \Gamma\vdash_{\mathcal T}A.
+\]
+Both translations are effective and leave the full end sequent literally
+unchanged.
+\end{theorem}
+\begin{proof}
+From $\mathcal T$ to $\mathcal O$, translate proof trees recursively,
+replacing ordinary elimination by Corollary~\ref{cor:opening-ordinary}
+and crossed transport by Theorem~\ref{thm:opening-transport} and derived
+symmetry. U and I are shared. The preliminary admissibility theorems were
+proved internally in $\mathcal O$ and do not rely on this translation.
+
+Conversely, $\mathcal T$ has full formula transport by the same
+formula-depth argument. Translate an O$^*$ major and open it ordinarily
+at $b$, retaining its clause $\mathcal C_B(b)$. Derive
+$b=\tau_B(b)$ by reflexivity and U at $1$ when the probe succeeds, or
+by reflexivity alone otherwise. In this opened context derive
+$q_y B(\tau_B(b),y)$ as follows. Under its zero assumption
+$B(\tau_B(b),0)$, transport backward along the derived equality to
+$B(b,0)$; use the old clause at $Sz$; transport forward to
+$B(\tau_B(b),Sz)$; and introduce the unused $q$ witness at $1$.
+Ordinary elimination of that $q$ opens exactly
+$\mathcal C^*_B(b)$. Insert the translated O$^*$ branch, weakened by
+the still-retained old clause, and close this unused-witness elimination.
+The branch conclusion is free of $b$, so the outer ordinary elimination
+also closes. All operations are on finite proof trees, with fresh
+parameters chosen before insertion.
+\end{proof}
+
+\begin{corollary}[Full iPRA and the identity numerical composites]
+\label{cor:opening-ipra}
+The new calculus is equiconsistent and bi-interpretable with full
+first-order intuitionistic primitive recursive arithmetic. Both
+interpretations use the whole numerical domains and actual equality;
+both numerical composite isomorphisms have graph $x=y$.
+\end{corollary}
+\begin{proof}
+Compose Theorem~\ref{thm:opening-equivalence} with the inherited canonical
+clause/native-scalar comparison and the inherited scalar/iPRA
+bi-interpretation. The new comparison is identity on every numerical term
+and formula, so it changes neither numerical map nor the formula
+translations. Each new composite therefore consists of identity legs
+and an inherited composite already provably equivalent to the original
+formula, with numerical graph $x=y$. The designated contradiction
+$0=S0$ is unchanged, giving equiconsistency as a special case.
+\end{proof}
+
+The new universal metatheorems are
+Theorems~\ref{thm:opening-substitution} and
+\ref{thm:opening-equivalence}. Their dependency order is: structural
+renaming and ordinary-assumption cut; the two guard-free openings;
+closure rules; case repair; strong-induction substitution; unrestricted
+ordinary opening; equality; exact comparison. The iPRA arithmetic
+compiler and normalization foundation remain explicitly inherited
+results. No newly proof-assistant-checked status or primitive-recursive
+bound on full normalization is asserted.

@@ -1,0 +1,115 @@
+CONTINUATION FUSION: EXACT ACCEPTED-TRACE EQUIVALENCE
+=================================================
+
+Baseline: ProveIt 17898ea7e6a1300dfdcad71040d5daeed67916d4.
+The byte control is Research/canonical_recursors/compact/code/
+checker_compact_zero.py (Git blob 913bc91fa73bde3aad199e17ba42af5a3488b0d6).
+The AST control is Research/kernel_refinement/code/checker_ast.py
+(Git blob 3fd8ae2addd0b43bcfa5cd6392ceeb618517cbe0).
+The goal-validated control is Research/checked_refinement/code/checker_native.py
+(Git blob e00a9349e9b2d9c2472f921ad4b63c03da5013c3).
+
+This is a control-flow simplification of the existing proof protocol. It
+does not delete a mathematical inference rule or define a new arithmetic
+theory. Its soundness and completeness boundary is exactly the boundary of
+the corresponding control. In particular the compact module assumes the
+documented closed guarded public Eq/D goal contract; it does not include a
+public-grammar validator. The native profile retains its existing validator.
+
+Claim. For every finite certificate made of actual Python integers and lists
+(the canonical JSON tree contract), each new checker accepts exactly when its
+matched control accepts, and on acceptance consumes the same instruction
+suffix. As usual, this is an idealized sufficient-resource statement, not a
+promise that two arrangements hit the same Python recursion limit. The proof
+does not assert equivalence on arbitrary malformed JSON, custom Python
+objects, or externally invoked checker functions at inconsistent states.
+
+1. State and purity.
+
+Write I_k(A,t,d) for the local opening function at scope floor k. It is a
+partial deterministic computation on finite trees and consumes no packets.
+Every nontrivial checker invocation first pops one packet (m,s,u,t). A major
+subproof is checked in a separate function activation with the same k and
+context g. Its updates cannot change the caller's k. Contexts are extended
+by copying in the recursive checker and by tuple concatenation in the
+iterative checker, so the major subproof cannot change the caller's g.
+
+2. The goal rewrite and the other goal update have disjoint support.
+
+Let R(A) denote the optional elimination rewrite. Its expected major is
+
+    [s,u], if s is truthy;       [t,t,t], otherwise.
+
+This is always a nonempty list. Hence R can change A only when m is truthy.
+For integer/list m, m truthy implies m*3 truthy. In that case the expression
+that constructs the new hypothesis stops at m*3 and does not execute the
+introduction assignment to A. If m is false, R is the identity, whereas the
+hypothesis expression may perform that introduction assignment. Therefore
+the elimination rewrite commutes with hypothesis construction.
+
+In the byte profile R includes the original fallback: if its candidate
+replacement is false, keep A. This fallback is preserved literally. In the
+AST profile the old if-statement assigned even a false replacement, so the
+new expression uses a conditional expression and preserves that value too.
+
+3. Reordering the major subproof.
+
+The control performs R before checking the major; the new checker checks
+the major first. R is pure, and the major's input, scope, context and packet
+position are independent of A. If either computation fails, both executions
+reject (they need not fail in the same order or with the same exception).
+If both succeed, the resulting data and remaining packets agree. The eager
+opening in the byte profile's paired comparison remains eager. In a false-
+major introduction its arguments are unchanged even though A has meanwhile
+been opened; the pair comparison necessarily fails on the first component.
+
+4. Allocation occurs between argument evaluation and opening.
+
+The new continuation has the form
+
+    c(i(R(A), [(k := k - 1)]), ... , k)
+
+Python evaluates call arguments from left to right before invoking the
+function. Thus R(A) is computed at the old scope floor. The second argument
+then decrements k and constructs the fresh successor image. Only afterward
+does i open the result, using the new k captured by its closure. This is
+exactly the control's order: rewrite; decrement; open. Moving the decrement
+before R would not have this justification and is not the transformation.
+
+5. The new hypothesis receives the same image.
+
+The byte profile selects its image by
+
+    (m or ~len(A)%2) and k.
+
+If m is truthy, this expression never inspects A. If m is false, R is the
+identity. Therefore the new inline rewrite need not assign its result back
+to A for the hypothesis image to agree. The same argument applies to the
+native profile's predicate len(A)%2 == u.
+
+In the AST profile the next goal is opened before the context is extended.
+Both openings are pure and use the new k. On every successful opening of a
+list the root list length is preserved. If a false-major computation has a
+scalar A, both versions reject at len(A): opening at formula depth zero also
+returns a scalar. Consequently the root-arity test gives the same result in
+all successful runs, including the AST profile's false replacement cases.
+
+6. Conclude by induction on available packets.
+
+Base cases have the identical hypothesis test. At a nonbase call, both
+versions pop the same packet. Their major subproofs start with fewer packets,
+so the induction hypothesis applies; Sections 2-5 then give identical
+continuation goals, contexts, floors and remaining packets. Apply the
+induction hypothesis to the continuation. Every nonbase call consumes a
+packet, so this establishes the claimed equivalence of successful finite
+traces, including the unused-prefix convention.
+
+Consequences. Every public theorem accepted by the new profile has the same
+certificate accepted by the old profile, and conversely. All inherited
+interpretation and equiconsistency claims transfer without changing any
+language, numerical domain, equality interpretation, or formula translation.
+This is stronger than a finite regression-test claim, but it is a written
+program-equivalence argument, not a new Lean or Rocq verification.
+
+Evaluation-order reference: Python 3.12 Language Reference, Section 6.16,
+https://docs.python.org/3.12/reference/expressions.html#evaluation-order

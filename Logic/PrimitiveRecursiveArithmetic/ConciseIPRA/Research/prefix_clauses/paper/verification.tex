@@ -1,0 +1,41 @@
+The main reproduction run constructed 37 positive certificates and
+translated each to the matched nested checker and the independently
+retrieved existing four-family checker. Each ran in all three programs
+under both ordinary Python and \code{python -O}. An additional 22 negative
+inputs ran in both modes against the prefix checker. This is 266 subprocess
+expectations, with zero mismatches. The positive cases include zero and
+successor computation, derived symmetry, nested paired binders, and a
+nontrivial equation-induction proof of
+\[
+ \I(y,0;u.Su)=y
+\]
+followed by specialization. The negative cases include incorrect induction
+steps, escaped eigenparameters, malformed or out-of-scope terms, invalid
+clause indices, nonintegral binder counts, and compound premises used as
+equations.
+
+There were also 2001 checks that opening commutes with expansion to the
+nested representation. A separately written audit used environment-based
+numerical semantics, rather than another syntactic substitution routine,
+for 400 matrix openings, 400 witness openings, and 300 iterator-body
+substitutions. It passed 20 additional rejection cases and 5 accepted
+examples. The scope attacks include a forbidden parameter beneath a dead
+zero-iterator body and beneath a formula binder; dead code is still
+checked for scope.
+
+The deterministic generators, concrete certificates, full results, and
+source hashes are included. The independent semantic checks use bounded
+samples and a finite test interpretation for formula-opening comparisons;
+they are not asserted to be a model of the entire arithmetic theory.
+Written derivation translations supply the metatheorems, while these
+checks supply evidence that the implementations follow them.
+
+From the package directory, run
+\begin{lstlisting}
+python3 code/reproduce_checker.py
+python3 code/audit_flat.py code/flat_control.py
+python3 code/flat_control.py < code/examples/equation_induction.json
+\end{lstlisting}
+The last command checks the supplied induction certificate. The example
+filenames and complete format description are also listed in
+\code{README.txt} and \code{code/FORMAT.txt}.

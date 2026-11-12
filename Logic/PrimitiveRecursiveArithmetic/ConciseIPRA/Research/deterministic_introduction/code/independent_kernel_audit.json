@@ -1,0 +1,88 @@
+{
+  "assessment": "No mismatch found in the independently inspected kernel operations.",
+  "positive_fixtures": 3,
+  "negative_fixtures": 3,
+  "direct_checks": [
+    "name_target_with_internal_binders_is_recognized",
+    "nested_matrix_witness_is_not_a_naming_target",
+    "full_formula_substitution_crosses_five_binders",
+    "successor_body_substitution_removes_outer_binder",
+    "hidden_eigenparameter_rejected_inside_infer"
+  ],
+  "cli_runs": 12,
+  "runs": [
+    {
+      "case": "transport_under_one_guarded_D",
+      "optimized": false,
+      "expected_accept": true,
+      "accepted": true
+    },
+    {
+      "case": "transport_under_one_guarded_D",
+      "optimized": true,
+      "expected_accept": true,
+      "accepted": true
+    },
+    {
+      "case": "transport_under_two_guarded_Ds",
+      "optimized": false,
+      "expected_accept": true,
+      "accepted": true
+    },
+    {
+      "case": "transport_under_two_guarded_Ds",
+      "optimized": true,
+      "expected_accept": true,
+      "accepted": true
+    },
+    {
+      "case": "successor_substitution_under_inner_iterator",
+      "optimized": false,
+      "expected_accept": true,
+      "accepted": true
+    },
+    {
+      "case": "successor_substitution_under_inner_iterator",
+      "optimized": true,
+      "expected_accept": true,
+      "accepted": true
+    },
+    {
+      "case": "transport_cannot_replace_bound_witness",
+      "optimized": false,
+      "expected_accept": false,
+      "accepted": false
+    },
+    {
+      "case": "transport_cannot_replace_bound_witness",
+      "optimized": true,
+      "expected_accept": false,
+      "accepted": false
+    },
+    {
+      "case": "transport_cannot_replace_outer_D_variable",
+      "optimized": false,
+      "expected_accept": false,
+      "accepted": false
+    },
+    {
+      "case": "transport_cannot_replace_outer_D_variable",
+      "optimized": true,
+      "expected_accept": false,
+      "accepted": false
+    },
+    {
+      "case": "opened_witness_hidden_in_dead_iterator_body",
+      "optimized": false,
+      "expected_accept": false,
+      "accepted": false
+    },
+    {
+      "case": "opened_witness_hidden_in_dead_iterator_body",
+      "optimized": true,
+      "expected_accept": false,
+      "accepted": false
+    }
+  ],
+  "formal_verification": false
+}

@@ -1,0 +1,47 @@
+CERTIFICATE FORMAT
+
+The input is exactly the object
+  {"variables":n,"context":[A0,...],"goal":A,"proof":p}
+where n is a nonnegative integer. Boolean values are not integers here.
+All contexts, goals, and every term/formula argument of a rule are validated.
+
+Terms:
+  0                       zero
+  -1,...,-n               ambient free variables, oldest to newest
+  1,2,...                 positive de Bruijn indices beneath binders
+  [0,t]                   successor S(t)
+  [c,a,h]                 I(c,a;u.h), only h binds one variable
+
+Formulas:
+  [s,t]                   s=t
+  ["q",B]                 Q_y B, binding one variable
+  [B]                     D_(x,y) B, binding x outside y
+In a D matrix the protected y is index 1 and x is index 2.
+Substitution is capture avoiding. There is no computation normalization.
+
+Rule nodes:
+  ["hyp",j]               retained context occurrence j, zero-based
+  ["zero",a,h]            I(0,a;u.h)=a
+  ["succ",c,a,h]          I(Sc,a;u.h)=h[I(c,a;u.h)/u]
+  ["tr",h,p,q]            from p:s=t, q:h(s)=r infer r=h(t)
+  ["qe",t,p,q]            p:Q_yB, q:B(0), infer B(t)
+  ["de",A,p,q]            p:D B; q proves A under the opened closure
+  ["di",B,p]              deterministic introduction, below
+  ["qi",E,p]              equation progress, eight-rule checker only
+
+At ambient scope n, the deterministic DI witness is -n. At n=0 this is
+literal zero; at n>0 it is the newest ambient variable. It is not read from
+any certificate field. The local eigenparameter is -n-1. Put
+  A(y)=B(-n,y).
+The eight-rule checker's DI branch proves A(S(-n-1)) from the appended
+assumption A(0), in scope n+1. The seven-rule checker's branch uses
+A(-n-1) instead exactly when B is literally [[1,1,h],[1,1,k]]; all other
+matrices use A(0). The guard is tested before instantiating any witness.
+
+DE appends the opened closure Q_y B(-n-1,y), checks its branch in scope
+n+1, and requires the exported goal A to have been valid in outer scope n.
+QI is restricted to literal equations E(y); its branch has appended E(-n-1)
+and must conclude E(S(-n-1)). Its result is Q_y E.
+
+The controls instead encode DI as ["di",B,t,p], with an arbitrary validated
+term t as witness. Everything else is the same.

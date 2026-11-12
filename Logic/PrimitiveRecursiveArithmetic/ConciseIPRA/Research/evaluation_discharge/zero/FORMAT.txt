@@ -1,0 +1,45 @@
+ZERO-NORMAL SCALAR COMPANION
+
+Run: python3 verify.py
+Check one certificate: python3 code/checker.py < examples/positive/fixed_reflexivity.json
+A certificate is accepted only if the process exits zero and prints ACCEPT.
+Errors, including resource exhaustion, reject. No acceptance gate uses assert.
+
+The document is exactly a JSON object with goal and proof members.
+Terms: 0; negative free levels; positive bound indices; [0,t] for successor;
+[n,a,h] for I(n,a;u.h). Only h binds one index. Stored terms are zero-normal:
+no iterator has literal counter0. Substitution contracts newly exposed zero
+iterators but never unfolds successor computation.
+Formulas: [s,t] for equality; [B] for D binding x then y (y=index1,x=index2).
+Every proof starts with the unconditional clause ([],[1,1]), universal reflexivity.
+A context of n clauses permits free levels 1-n through -1; new level is -n.
+Each i or e adds exactly one clause and one numerical scope.
+
+Proofs:
+ ["u", clause_index, term, premise]
+Use the selected clause at term; prove its antecedent when nonempty.
+An empty-antecedent clause deliberately ignores premise; null is conventional.
+ ["i", matrix, witness, branch]
+Introduce D(matrix). The local unconditional assumption is B(witness,eta),
+with eta=fresh if the matrix is an equation and witness literally0, otherwise0.
+The branch must infer B(witness,S fresh).
+ ["e", major, auxiliary, branch]
+Major must infer D B. Open its clause [B(b,0); y.B(b,y)] at fresh b.
+In the extended context infer E from auxiliary and F from branch.
+If E=s=t and F=I(S c,s;u.h)=r, output r=nf0(h[I(c,t;u.h)/u]);
+otherwise output F. The inferred result must be free of b.
+The auxiliary E may be any formula. A compound E forces identity fallback.
+All inferred formulas, including exported results, undergo full syntax/scope validation.
+
+The matched control has separate e=["e",major,branch] and x=["x",auxiliary,branch]
+instructions; x uses the identical total evaluation map. Both kernels have
+identical terms, formulas, initial axiom, Use, Introduce and public contract.
+
+The reference is ProveIt commit11814771b7490dfbea0ed5fcf0f5b23586334764,
+Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/seed_evaluation/code/,
+checker.py and fixtures/seed/*.json, under the included MIT-0 license.
+validation/translate_seed.py is an untrusted compiler of that independently
+written checker's certificates into both delivered kernels.
+validation/translations.py supplies both complete transformations between
+the delivered inference systems. Its results are rechecked by their kernels.
+The finite tests do not substitute for the general mathematical proof.

@@ -1,0 +1,175 @@
+\section{Direct transfer to the five-rule clause checker}
+\label{sec:clausal-transfer}
+
+The delivered checker uses the raw Eq/$D$ clause presentation, rather
+than formulas with a primitive $Q$.  The newest-witness restriction must
+therefore be proved directly for that presentation.  An unrestricted
+native-to-clause translation can insert numerical parameters, so it
+cannot simply be assumed to preserve the newest-witness condition.
+
+\subsection{The clause interface}
+
+Formulas are equations and $D_{x,y}B(x,y)$.  A retained clause
+\[
+ [A;y.B(y)]
+\]
+has ordinary reading $A\to\forall y B(y)$.  An ordinary assumption
+$F$ is represented by $\mathsf a(F):=[0=0;y.F]$, with $y$ unused.
+The five primitive families are Refl, the two-case Eval, Use, Elim,
+and Bit-Intro.  Use takes a proof of the antecedent of a retained
+clause and returns its body at a supplied term.  Elim opens a proved
+$D_{x,y}B$ at a fresh parameter $b$ by retaining
+\[
+ [B(b,0);y.B(b,y)]
+\]
+in its branch.  Bit-Intro adds the ordinary-assumption clause
+$\mathsf a(B(t_{n,\beta},\eta_{B,\beta}))$ in its step branch and
+checks the conclusion $B(t_{n,\beta},Sz)$, with the selectors from
+Bit-DI.  All terms are raw; no normalization is implicit.
+
+Refl and Eval alone derive both iterator computations and the whole
+equational interface.  For example, the zero case of Eval is
+\[
+ s=t,\quad I(0,s;u.h)=r\quad\Longrightarrow\quad r=t.
+\]
+Two uses, through the reflexive frame $I(0,s;u.h)$, derive the root
+joining rule $s=t,\ s=r\Longrightarrow r=t$.  The successor case
+applied to a one-step iterator then gives congruence in an arbitrary
+term template.  All these derivations are uniform in the numerical
+scope and use no introduction or elimination of $D$.  They therefore
+remain valid when regenerated under any numerical renaming.
+
+Define the closure abbreviation
+\[
+ q_yA(y):=D_{x,y}A(y),\qquad x\text{ unused}.
+\]
+For the total bit interface, case introduction of $qA$ is a direct
+Bit-Intro with $\beta=1$: the witness is unused, and the empty-scope
+fallback still selects cases.  Equational progress introduction of
+$qE$ is direct Bit-Intro with $\beta=0$.  Closure elimination is an
+Elim of $qA$, followed by Use of the resulting clause
+$[A(0);y.A(y)]$.  These observations implement the $Q$ interface
+without a primitive $Q$ constructor.  Hereditary premises, defined
+next, supply any proofs needed below the fresh dummy witness.
+
+\subsection{Hereditary derivations with clause contexts}
+
+Write $K\Vdash_c F$ if every injective numerical renaming of $K,F$
+into any larger finite numerical scope is derivable in the bit clause
+calculus from every clause-context extension of the renamed $K$.
+Renaming acts capture-avoidably on
+both the antecedent and the bound body of each clause.  The extension
+retains clauses, including their entire antecedent/body data; a
+retained clause is not replaced by the assertion that its antecedent
+or one instance of its body is true.
+
+The cut principle needed here concerns \emph{ordinary-assumption}
+clauses only:
+\[
+ K,\mathsf a(A)\vdash_c F,\qquad K\Vdash_c A
+ \quad\Longrightarrow\quad K\vdash_c F.
+ \tag{UC$_c$}
+\]
+It also holds when the other retained clauses are embedded in a
+larger target context.  Prove it by induction on the actual first
+derivation.  When Use selects the distinguished clause
+$\mathsf a(A)$, replace that use by the available member of the
+hereditary family for $A$; its antecedent proof of $0=0$ is no longer
+needed.  Every other clause use keeps the same clause and applies
+the induction hypothesis to its antecedent proof.  Elim and Intro
+add their own clauses in both contexts; the replacement family is
+regenerated in the enlarged numerical scope.  Thus no arbitrary
+clause is cut or semantically reconstructed, and no newest-sensitive
+proof is renamed.  The same argument gives cut for
+$\Vdash_c$ at an ordinary-assumption clause.
+
+Refl, Eval, and Use preserve $\Vdash_c$.  For Use the selected clause
+is a member of the renamed context, and the hereditary premise
+supplies its antecedent.  Elim preserves $\Vdash_c$ by extending
+the source injection to send its eigenparameter to the newest
+fresh target parameter; its new clause is retained literally in
+the target branch.
+
+Full formula transport is proved by induction on Eq/$D$ formulas
+at the hereditary level.  The equation case is the equational
+interface above.  For $D_{x,y}B(s,x,y)$, open its witness at the
+newest $b$ and retain the clause
+$[B(s,b,0);y.B(s,b,y)]$.  Introduce the target $D$ at $b$ with bit 1.
+From its temporary ordinary assumption $B(t,b,0)$, the induction
+hypothesis transports backwards to $B(s,b,0)$.  Use of the retained
+clause at $Sz$ gives $B(s,b,Sz)$; forward transport gives
+$B(t,b,Sz)$.  Hereditary ordinary cut composes these operations.
+The result is independent of $b$, so Elim discharges it.  This proves
+\[
+ K\Vdash_c s=t,\quad K\Vdash_c F(s)
+ \quad\Longrightarrow\quad K\Vdash_c F(t).
+ \tag{HL$_c$}
+\]
+The induction is uniform in actual term assignments to the other
+free slots.  No arbitrary term is substituted into a target proof.
+
+\subsection{The packet and the completeness induction}
+
+The same raw equation packet works:
+\[
+ T(v):=D_{x,y}\bigl(C(y,v,C(v,0,Sx))=v\bigr).
+\]
+At any ambient scope, $T(0)$ is obtained with bit 0 by a
+progressive introduction whose successor row is a computation
+theorem.  To construct $q_vT(v)$, use bit 1 on the outer dummy
+witness.  In its step branch the parameter $z$ is newest; construct
+$T(Sz)$ with bit 1, choosing exactly that $z$.  Its successor row
+again computes to reflexivity.  This construction is repeated in
+each ambient scope.  It does not assume that a direct proof of
+$T(Sz)$ remains valid after $z$ ceases to be newest.
+
+Elim followed by Use of the resulting closure clause gives
+$K\Vdash_c T(t)$ for every term $t$.  Opening $T(St)$ at the
+newest $b$ and using its clause at $1$ gives $Sb=St$.  The
+independently equational predecessor identity gives $b=t$.
+That equality has a hereditary proof in the opened clause context,
+because the calculation uses only retained-clause Use and the
+renaming-stable equational fragment.
+
+Now induct on an unrestricted clause-calculus derivation, proving
+hereditary derivability of its conclusion.  Refl, Eval, Use and
+Elim were handled above.  A progressive introduction at witness
+$0$ is directly bit 0.  For a case introduction at any term $t$,
+open $T(St)$ at a newest fresh $b$.  Temporarily retain
+$\mathsf a(b=t)$ and introduce the desired $D$ with bit 1.
+In its step branch, hereditary transport changes the temporary
+assumption $B(b,0)$ into $B(t,0)$.  Instantiate the induction
+hypothesis for the original source premise in the enlarged scope:
+the original source variables keep their chosen injection, the
+source step parameter maps to the newest target step parameter,
+and the alias parameter $b$ is skipped by this injection.
+Ordinary hereditary cut supplies the zero-row assumption, and
+transport backwards gives $B(b,Sz)$.
+
+After this introduction, UC$_c$ replaces the retained ordinary
+assumption $b=t$ by its hereditary proof from the opened packet.
+Elim discharges $b$.  The argument applies at every numerical
+renaming and clause-context extension, so it proves the hereditary
+induction claim.
+
+Conversely, every bit introduction is either ordinary cases or
+equational progress.  The only extra case relative to the
+baseline's witness-tested combined rule is bit 1 at an empty
+scope with an equation matrix: this is case introduction at $0$.
+It is derived in the unrestricted raw clause calculus by using the
+nonliteral alias $w=I(0,0;u.0)$ as its witness and transporting
+along $w=0$.  Since $w$ is not the literal $0$, the baseline rule
+selects cases.  Thus no semantic strengthening occurs at the
+empty-scope fallback.
+
+\begin{theorem}[Five-rule bit clause calculus]
+The five-rule raw Eq/$D$ clause calculus with Bit-Intro derives
+exactly the same sequents from the same clause contexts as the
+unrestricted clause calculus.  In particular it has the same
+ordinary realization, and hence the same full first-order
+bi-interpretation with iPRA.
+\end{theorem}
+
+The proof is a direct transformation into the restricted clause
+calculus.  It does not rely on an intermediate proof translation
+preserving which numerical parameter happens to be newest.

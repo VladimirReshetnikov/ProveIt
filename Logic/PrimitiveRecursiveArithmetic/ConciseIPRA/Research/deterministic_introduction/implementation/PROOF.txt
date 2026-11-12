@@ -1,0 +1,131 @@
+SUCCESSFUL-TRACE EQUIVALENCE OF THE TWO IMPLEMENTATION REFINEMENTS
+================================================================
+
+Pinned comparison: ProveIt 11814771b7490dfbea0ed5fcf0f5b23586334764,
+current incoming ipra_deterministic_opening, compact/code/{native,compact}.py.
+The two source controls are frozen under controls/. These are separate
+implementations of the inherited calculus, not the enclosing report's new
+mathematical presentation.
+
+PART I. NATIVE PUBLIC TYPING FUSED WITH THE FIRST SCOPE TRAVERSAL
+
+Control: controls/native780.py.
+Candidate: code/native.py (656 normalized bytes, 333 tokens, 379 AST nodes).
+The JSON certificate, public Eq/D formulas, and acceptance contract are
+unchanged. The local implementation parameter v is never supplied by JSON.
+The public driver calls c(q(),v=1); recursive calls use the default v=0.
+
+1. The control's two preliminary passes.
+
+Its recursive public validator starts at formula mode False. Formula lists
+have length 1 or 2. Term lists have length 1 or 3. An integer is a legal term
+leaf precisely when it is 0, or is odd and at least 3. Integers are not formulas.
+All other JSON leaf types reject. The control then calls c on the goal. The
+first operation i(goal) checks variable scope at k=0. On success it leaves
+the goal unchanged. A legal-syntax variable outside scope instead visits the
+default replacement sentinel c and raises an exception.
+
+2. Existing depth parity records the sort.
+
+The kernel's child-depth update is d -> d + 5 - len(a), starting at d=0.
+At an equation of length 2 it changes an even formula depth to an odd term
+depth. At a D formula of length 1 it preserves even parity. At a term of
+length 1 or 3 it preserves odd parity. Induction on a grammar-correct prefix
+therefore shows that d % 2 equals the old validator's term-mode flag.
+The required arities are consequently exactly
+
+    len(a) in (1, 2 + d % 2).
+
+For an actual integer,
+
+    not a or a > 1 == a % 2
+
+is equivalent to a=0 or (a>=3 and a odd): the chained comparison requires
+a>1 and a%2=1. The exact test type(a) is int excludes JSON booleans and floats.
+
+3. Initial-pass equivalence and explicit failure at invalid scalar formulas.
+
+In the public call v=1. While it has that value, i retains every original
+scope test and adds the arity and leaf conditions above. The discriminator
+a*0 == [] is true on actual lists and false on integers, booleans, finite
+floats, and strings. Objects and null raise and therefore cannot be accepted.
+
+The candidate's fallback is
+
+    (d % 2 or v) and i(t,d=3).
+
+This detail is essential. With v=1, an invalid scalar at an even formula
+depth must not silently become the neutral scalar 0. Instead the fallback
+visits the default function sentinel and raises. At odd depths the ordinary
+scope fallback already does so. A list with a forbidden arity cannot enter
+the list branch; its attempted scalar comparison raises. Thus malformed
+public formulas are rejected, not converted into another goal.
+
+Induction on the finite public-goal tree, using the parity invariant, proves
+that the candidate's initial scan succeeds exactly when both of the control's
+preliminary passes succeed. On success it returns the same unchanged goal.
+For a malformed tree, the programs may reject at different points or with
+different exceptions, which does not affect the acceptance contract.
+
+A valid public formula is a nonempty list. It cannot equal the initial
+context's scalar sentinel 0. Hence the public c invocation does not return
+at the first hypothesis test. It necessarily reaches v=0, immediately before
+the first proof packet is consumed.
+
+4. After the initial scan, the kernels are identical.
+
+The public activation's local v is set to 0 before any packet is processed.
+Every recursive c call also starts with v=0, its default. No call makes that
+local value nonzero again. With v=0 the extra grammar tests short-circuit,
+and (d % 2 or v) equals d % 2. Thus i is the control's original operation.
+All packet reads, major subproofs, contexts, scope-floor values and goal
+continuations are otherwise unchanged. Induction on the finite consumed
+packet suffix gives the same success or failure, and on success the same
+remaining unused prefix. The complete native modules therefore accept
+exactly the same finite JSON theorem certificates.
+
+This is an ideal sufficient-resource equivalence. Combining two traversals
+can hit physical Python recursion or memory limits differently. Neither the
+source nor this refinement claims a uniform finite-resource guarantee.
+
+PART II. OPTIONAL COMPACT INTEGER-DECREMENT SPELLING
+
+Control: controls/compact508.py.
+Candidate: code/compact_optional.py (506 bytes, 267 tokens, 303 AST nodes).
+Its existing canonical integer/list and guarded-public-goal contract is
+unchanged; no public-goal validator is silently charged to another file.
+
+The only source change replaces the assignment expression
+
+    (k := k - 1)
+
+by
+
+    (k := ~-k).
+
+In Python, on integers, ~x = -x-1. Therefore ~(-k)=k-1. The initial scope
+floor is the integer 0; recursive calls receive either that unchanged floor
+or its decrement. Induction on the actual calls shows that every evaluated
+k is an integer independently of the certificate's contents. The replacement
+therefore computes the identical integer at the identical evaluation point,
+before the same goal opening. It introduces no extra packet read, mutation,
+or exception. Every subsequent state, successful trace, and unused prefix
+is identical. The byte saving is two; the AST count increases by one. This
+is a minor implementation identity with no new mathematical content.
+
+PART III. FINITE EVIDENCE AND MEASUREMENT BOUNDARY
+
+reproduce.py imports no candidate helper into its acceptance modules; each
+selected checker is a complete standalone Python program using only json.
+The audit independently extracts functions only to compare initial-pass
+behavior and unused-prefix counts, and separately executes the actual CLIs
+under ordinary Python and python -O. The delivered verification.json records
+20,030 arbitrary JSON scans, 10,000 grammar/scope scans, 42 trace pairs,
+and 84 paired CLI cases (168 actual process executions), all agreeing.
+
+Measurements count the entire module after ast.unparse and one final LF.
+The common CPython/standard-library runtime is excluded exactly as in the
+frozen controls. No acceptance code is hidden in a translator, fixture,
+normalizer, external package, or supporting file. Gzip sizes are informational.
+The universal arguments are Parts I and II; finite tests alone would not
+establish soundness, completeness, bi-interpretability, or minimality.

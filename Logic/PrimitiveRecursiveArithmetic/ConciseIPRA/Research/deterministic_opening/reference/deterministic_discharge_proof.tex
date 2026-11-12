@@ -1,0 +1,411 @@
+% Mathematical contribution and independent audit for the parent report.
+% This is an intermediate LaTeX fragment, not a standalone deliverable.
+% Environments theorem, lemma, proposition, corollary, remark are assumed.
+% The named predecessor is the incoming witness_discharge package at the
+% parent's pinned repository snapshot.  Its source should be cited by parent.
+
+\section{Deterministic equality at witness discharge}
+\label{dd:main}
+
+The equality-aware witness-discharge presentation has three instruction
+families, but its discharge instruction still asks for an equality proof and
+a substitution target.  Both can be removed.  The opened clause itself can
+determine one equality to use; all other instances use the identity
+substitution.  The resulting instruction has only its major proof and one
+branch proof.  Its target is computed from the major formula.
+
+This change weakens a primitive inference.  It neither adds an arithmetic
+axiom nor changes the meaning of the paired binder.  In particular, the
+substitution target is not an unchecked hint, a hidden proof argument, or a
+search result: the following fixed syntactic prescription determines it.
+
+\subsection{Canonical syntax and the complete rule}
+
+Retain the full computation-normal form syntax of the predecessor.  Terms
+are the normal forms of
+\[
+ t ::= x\mid 0\mid S(t)\mid I(n,a;u.h)
+\]
+under the two context-closed reductions
+\[
+ I(0,a;u.h)\longrightarrow a,
+ \qquad
+ I(Sn,a;u.h)\longrightarrow h[I(n,a;u.h)/u].
+\]
+Only $u$ is bound in $h$.  Write $N$ for normalization.  Every substitution
+is capture avoiding and is followed by $N$ on numerical subterms.  Formulas
+are equations and $D_{x,y}B$; normalization does not remove formula binders.
+Set $H=(0=0)$ and $1=S0$, $2=S(S0)$.
+
+A clause $[\vec A;y.B(y)]$ has zero or one antecedent, and $y$ is absent
+from the antecedent.  Its ordinary reading is $\forall y\,B(y)$ when
+$\vec A$ is empty and $A\to\forall y\,B(y)$ otherwise.  An ordinary
+assumption $F$ is $[\,;v.F]$, where $v$ is unused.  As before, the initial
+context contains the one fixed axiom clause
+\[
+             \mathcal R=[\,;y.y=y].
+\]
+Thus reflexivity is an explicitly counted axiom, available by clause use.
+The ordinary reading of $D$ remains
+\[
+ (D_{x,y}B)^{\circ}
+   =\exists x\bigl(B^{\circ}(x,0)\to
+                       \forall y\,B^{\circ}(x,y)\bigr).
+\]
+The designated contradiction is still $0=S0$.
+
+For a fresh parameter $b$ and a matrix $B(x,y)$, compute
+\[
+ B_0=N(B(b,0)),\qquad B_1=N(B(b,1)),
+\]
+and define the term
+\[
+ \rho(B,b)=
+ \begin{cases}
+ t,& B_0\equiv(0=0)\ \text{and}\ B_1\equiv(b=t),\\
+ b,& \text{otherwise}.
+ \end{cases}
+ \tag{\(\rho\)}\label{dd:rho}
+\]
+The tests are literal comparisons of canonical syntax.  In particular, the
+successful case requires the left side of $B_1$ to be exactly the newly
+opened parameter.  No equation recognition up to provability is intended.
+The extracted right side $t$ may itself contain $b$.
+
+The new presentation $\mathsf{DD}$ has the following three instruction
+families.
+\begin{enumerate}
+\item \textbf{Use.} For $[\vec A;y.B]\in\Gamma$, prove the single
+antecedent when it is present and infer $N(B(t))$ at any well-scoped $t$.
+An empty-antecedent clause has no proof premise.
+\item \textbf{Introduce.} From
+\[
+ \Gamma,B(t,\eta)\vdash B(t,Sz)
+ \quad\text{infer}\quad
+ \Gamma\vdash D_{x,y}B(x,y),
+\]
+where $z$ is fresh and $\eta=z$ precisely when $B$ has equation root and
+the canonical witness $t$ is literally $0$; otherwise $\eta=0$.
+\item \textbf{Discharge.} Write
+\[
+  \mathcal B_b=[[N(B(b,0))];y.B(b,y)].
+\]
+From
+\[
+ \Gamma\vdash D_{x,y}B(x,y),\qquad
+ \Gamma,\mathcal B_b\vdash F
+\]
+infer
+\[
+       \Gamma\vdash N(F[\rho(B,b)/b]),
+ \tag{DD}\label{dd:rule}
+\]
+provided the displayed exported formula has no free $b$.
+The parameter $b$ is fresh for $\Gamma$ and the passive parameters of $B$.
+\end{enumerate}
+The substitution in DD is simultaneous: it does not recursively substitute
+inside inserted copies of $\rho(B,b)$.  The free-variable test is made after
+normalization.  There is no equality-proof premise and no user-supplied
+target term in DD.  These are all the primitive rules.  No separate
+computation, transport, paired-elimination, cut, weakening, or induction
+rule is added.  Computation normalization remains part of the trusted
+syntax and must be counted in every complete-checker comparison.
+
+\subsection{Soundness and the ordinary elimination rule}
+
+\begin{lemma}[The determined equality is available in its own branch]
+\label{dd:local-equality}
+For every opened matrix, $\Gamma,\mathcal B_b$ proves
+$b=\rho(B,b)$ by Use alone, with the fixed reflexivity clause $\mathcal R$.
+\end{lemma}
+\begin{proof}
+In the successful case, use $\mathcal R$ at $0$ to prove $H$ and use
+$\mathcal B_b$ at $1$.  Its antecedent is literally $H$ and its instance
+is literally $b=t$.  In the fallback case, use $\mathcal R$ at $b$.
+No equality-transport rule or arithmetic induction is used in either case.
+\end{proof}
+
+\begin{theorem}[Soundness of deterministic discharge]
+\label{dd:sound}
+Rule DD is sound in intuitionistic first-order equality logic over the
+ordinary scalar theory, including for an extracted target containing $b$.
+It is also a derived inference of the predecessor's equality-aware
+witness-discharge presentation.
+\end{theorem}
+\begin{proof}
+Open the ordinary existential of $D_{x,y}B$ at fresh $b$.  Its local
+assumption is the reading of $\mathcal B_b$.  Lemma~\ref{dd:local-equality}
+supplies $b=\rho(B,b)$, and the given branch supplies $F$.  Equality
+substitution gives $F[\rho(B,b)/b]$.  The computation equations identify
+this formula with its normal form.  The required absence of $b$ from that
+normal form permits ordinary existential elimination.
+
+Equality substitution is valid when its target contains its source
+parameter: the substitution is simultaneous.  It is the exported formula,
+not the target term by itself, that must be independent of the discharged
+parameter.  For the predecessor's rule, insert exactly the equality proof
+of Lemma~\ref{dd:local-equality} as its omitted equality branch, and supply
+its determined target $\rho(B,b)$.  The end formula is unchanged.
+\end{proof}
+
+\begin{lemma}[Ordinary paired elimination]
+\label{dd:ordinary-open}
+The rule
+\[
+ \frac{\Gamma\vdash D_{x,y}B\qquad
+       \Gamma,\mathcal B_b\vdash A}
+      {\Gamma\vdash A},
+ \qquad b\notin\operatorname{FV}(\Gamma,A),
+\]
+is derivable in $\mathsf{DD}$.
+\end{lemma}
+\begin{proof}
+Apply DD to the given branch.  Since $A$ has no free $b$, simultaneous
+substitution leaves it unchanged for every value of $\rho(B,b)$.
+This remains true when extraction is forced and when the extracted target
+contains $b$.  Therefore $N(A[\rho(B,b)/b])\equiv A$.
+\end{proof}
+
+This observation is essential: ordinary elimination does not require a
+certificate flag that disables extraction.  Independence of the exported
+formula already makes the determined equality harmless.
+
+Weakening, injective fresh renaming, and cut of an ordinary assumption are
+admissible by direct induction on finite derivations.  For DD the matrix
+and hence its determined target do not change when a proof of a retained
+ordinary assumption is inserted.  Freshen the local parameters before
+inserting proofs.  An occurrence of the unconditional constant clause for
+the cut assumption is replaced by its supplied proof.  These structural
+arguments require neither general term substitution in derivations nor
+equality transport.
+
+\subsection{Numerical cases before any equality transport}
+
+For an unused witness variable $w$, abbreviate
+$q_yA(y)=D_{w,y}A(y)$.  The following derived rules are available before
+recovering equality:
+\[
+ \frac{\Gamma,A(0)\vdash A(Sz)}{\Gamma\vdash q_yA(y)},
+ \qquad
+ \frac{\Gamma\vdash q_yA(y)\qquad\Gamma\vdash A(0)}
+      {\Gamma\vdash A(t)}.
+ \tag{Cases}\label{dd:cases}
+\]
+For the first rule use witness $1$ in Introduce; its mode is cases at every
+matrix root.  For the second, use Lemma~\ref{dd:ordinary-open}; the opened
+clause is $[A(0);y.A(y)]$ because $w$ is unused, and Use gives $A(t)$.
+Consequently, proofs of $A(0)$ and $A(Sz)$ with fresh $z$ give a proof of
+$A(t)$ for every numerical term $t$.  All needed uses of ordinary paired
+elimination remain valid under the forced extractor by the preceding lemma.
+
+\subsection{Unrestricted equality from the fixed probe at one}
+
+Use the inherited normalizing selector and parity terms
+\[
+ C(v,a,c)=N(I(v,a;u.c)),\qquad
+ P(y)=N(I(y,0;u.C(u,1,0))),
+\]
+where the selector body $c$ does not contain its displayed bound variable
+$u$.  Their relevant identities are identities of canonical syntax:
+\[
+ C(0,a,c)\equiv a,\quad C(Sv,a,c)\equiv c,
+ \quad P(1)\equiv1,\quad P(2)\equiv0.
+\]
+No arithmetic range theorem for $P$ and no induction on $P$ is required.
+
+\begin{theorem}[Uncrossed term transport]
+\label{dd:term-transport}
+For every numerical term template $h(w)$, the inference
+\[
+ \frac{\Gamma\vdash s=t\qquad\Gamma\vdash N(h(s))=r}
+      {\Gamma\vdash N(h(t))=r}
+\]
+is derivable in $\mathsf{DD}$.
+\end{theorem}
+\begin{proof}
+Choose $x,y$ fresh for all passive data and set
+\[
+ B(x,y)=\left(
+ C(y,0,C(P(y),N(h(x)),x))
+ =C(y,0,C(P(y),r,t))\right).
+ \tag{Package}\label{dd:package}
+\]
+The normalized endpoints are
+\[
+ B(x,0)\equiv H,\qquad
+ B(x,1)\equiv(x=t),\qquad
+ B(x,2)\equiv(N(h(x))=r).
+\]
+Introduce $D_{x,y}B$ at witness $s$.  Its successor goal is
+\[
+ C(P(Sz),N(h(s)),s)=C(P(Sz),r,t).
+\]
+Apply the numerical-case construction~\eqref{dd:cases}, at target $P(Sz)$,
+to the formula
+\[
+ A(v)=\bigl(C(v,N(h(s)),s)=C(v,r,t)\bigr).
+\]
+Its zero instance is the supplied equation $N(h(s))=r$; every successor
+instance is the supplied equation $s=t$.  Choose the case eigenparameter
+independently of $z$ and fresh for the current retained context.  This proof
+ignores Introduce's temporary hypothesis, so it is valid whether $s$ is
+literal zero and the mode is progress, or the mode is cases.
+
+Open the resulting $D$ formula at fresh $b$.  Its base is literally $H$,
+and its instance at $1$ is literally $b=t$.  Thus the fixed prescription
+extracts $\rho(B,b)=t$.  Use the opened clause at $2$, supplied with
+reflexivity of $0$, to prove the branch formula
+$F=(N(h(b))=r)$.  DD exports
+\[
+ N\bigl((N(h(b))=r)[t/b]\bigr)
+       \equiv (N(h(t))=r).
+\]
+The last identity is normalization--substitution coherence, rather than
+an equality inference inside the theory.  The fresh $b$ does not occur in
+$t$, $r$, $h$, or $\Gamma$, so the end formula is outer scoped.  There is
+no equality-proof branch at this discharge: the fixed probe at $1$ has
+selected its target from the package.
+\end{proof}
+
+The order of the two nonzero rows is deliberate.  The predecessor's naming
+package can put $b=t$ at $2$; exchanging its two selector branches puts that
+equation at the smaller fixed probe $1$.  The formula branch then uses $2$.
+The mathematical weakening is independent of this minor convention, but
+the complete checker should implement the stated convention exactly.
+
+\begin{corollary}[All ordinary equality reasoning]
+\label{dd:full-equality}
+The calculus derives symmetry, transitivity, term congruence, crossed
+transport, and transport through every Eq/$D$ formula template.
+\end{corollary}
+\begin{proof}
+Take $h(w)=w$ and the reflexive minor $s=s$ in
+Theorem~\ref{dd:term-transport}; from $s=t$ it yields $t=s$.  Applying this
+symmetry to the theorem's conclusion gives crossed transport.  Congruence
+follows by taking the reflexive minor $h(s)=h(s)$ and reversing the
+result.  Symmetry followed by transport at the identity template gives
+transitivity.  Applying term transport to each side, with symmetry between
+the applications, transports an entire equation template.
+
+For a compound template $D_{x,y}A(v,x,y)$ use external induction on formula
+depth.  Given $s=t$ and $D_{x,y}A(s,x,y)$, use ordinary paired elimination
+at fresh $c$.  Introduce $D_{x,y}A(t,x,y)$ at witness $c$.  This witness is
+a parameter rather than literal zero, so Introduce uses cases.  Under its
+temporary assumption $A(t,c,0)$, transport backward at the smaller matrix
+using $t=s$, obtaining $A(s,c,0)$.  Use the old opened clause at $Sz$ to
+obtain $A(s,c,Sz)$, and transport forward at the smaller matrix to
+$A(t,c,Sz)$.  Close Introduce and ordinary elimination.  Every recursive
+transport acts on a strictly smaller formula.  This proof never applies
+induction to a quantified formula.
+\end{proof}
+
+\subsection{Exact equivalence with equality-aware discharge}
+
+Let $\mathsf{WD}$ denote the predecessor on the same canonical terms,
+formulas, clause contexts, fixed reflexivity axiom, and introduction rule.
+Its discharge rule instead supplies the two branch proofs $b=t$ and $F$,
+and exports $N(F[t/b])$ if that result is independent of $b$.
+
+\begin{theorem}[Identity on every end sequent]
+\label{dd:equivalence}
+For every finite canonical context $\Delta$ of zero- or one-antecedent
+clauses and every canonical formula $F$,
+\[
+ \mathcal R,\Delta\vdash_{\mathsf{DD}}F
+ \quad\Longleftrightarrow\quad
+ \mathcal R,\Delta\vdash_{\mathsf{WD}}F.
+\]
+Both directions are effective transformations of finite proof trees and
+leave the entire end sequent unchanged.
+\end{theorem}
+\begin{proof}
+From DD to WD, translate the given major and branch recursively and insert
+the equality proof of Lemma~\ref{dd:local-equality}.  The target of WD is
+the computed term $\rho(B,b)$, and the result is literally the same as DD.
+Use and Introduce are unchanged.
+
+Conversely, translate a WD derivation recursively.  At a discharge node,
+ordinary paired elimination is available by Lemma~\ref{dd:ordinary-open}.
+Within its opened context, the recursively translated branches prove
+$b=t$ and $F$.  Corollary~\ref{dd:full-equality} gives
+$N(F[t/b])$.  The original WD node certifies that this formula is free of
+$b$, so ordinary paired elimination exports it unchanged.  The transport
+derivation in the corollary was constructed using DD, numerical cases,
+and Use, without an untranslated WD node.  Thus this recursive translation
+has no circular dependency.  Freshen local parameters at each insertion.
+\end{proof}
+
+Composing this identity-language equivalence with the predecessor's
+canonical/raw comparison and the native/scalar/iPRA bi-interpretation gives
+full first-order intuitionistic primitive recursive arithmetic.  Both
+numerical domains remain whole, interpreted equality is actual equality,
+and the inherited numerical composite isomorphisms still have graph $x=y$.
+Both formula round trips are preserved, because this comparison changes
+neither the formulas nor their ordinary readings.  The unchanged
+contradiction $0=S0$ and the two effective proof translations also give
+equiconsistency.  These conclusions do not rely on standard-model agreement
+alone and do not assert that iPRA proves its own consistency.
+
+\subsection{The new rule and numerical substitution}
+
+\begin{proposition}[The extractor introduces no substitution repair]
+\label{dd:subst}
+Consider a single valid DD inference and a capture-avoiding substitution
+$\sigma$ for its passive free parameters, leaving its fresh local parameter
+$b$ protected.  After normalized substitution in its premises, the same
+DD instruction gives the normalized substitution instance of its original
+conclusion.  This statement is about this rule; it does not assert that
+the inherited witness-tested introduction keeps its mode under every
+substitution.
+\end{proposition}
+\begin{proof}
+If extraction originally succeeds, the normalized base $H$ remains $H$.
+The normalized instance $b=t$ becomes $b=N(t\sigma)$, by coherence and
+the fact that $b$ is protected.  Extraction therefore still succeeds and
+chooses the substituted target.  The two conclusions agree by coherence
+of capture-avoiding substitution and normalization.
+
+If extraction originally fails, the original target is $b$, so its
+exported canonical formula is the branch formula itself.  The side
+condition therefore implies that this branch formula has no free $b$.
+Its substitution instance remains independent of $b$.  Whether or not
+substitution creates a successful extraction, substituting the newly
+determined target for $b$ leaves this branch formula unchanged.  It is
+exactly the substitution instance of the old conclusion.
+\end{proof}
+
+The successful guard cannot be destroyed by passive-parameter substitution,
+but it can be created.  The preceding argument addresses that latter case
+explicitly; unconditional preservation of a syntactic test would be false.
+Admissibility of numerical substitution for complete derivations still uses
+the inherited repair for Introduce when normalization turns a witness into
+literal zero, or equivalently the established comparison with the reference
+calculus.
+
+\subsection{Proof-checking and the scope of the improvement}
+
+The new discharge checks two proof subtrees, not three, and its certificate
+contains no explicit target term.  It adds two fixed normalized instances
+of the already supplied matrix, the literal tests in~\eqref{dd:rho}, and
+the same normalized substitution and export-scope check as its predecessor.
+These changes must all be counted in a matched whole-checker measurement.
+The mathematical weakening alone does not guarantee a reduction in every
+source-size coordinate or a repository-wide minimum.
+
+Full normalization is a trusted metasyntactic operation, not an
+object-language universal evaluator.  No uniform primitive-recursive
+normalization bound is asserted.  A fuel-bounded verifier can debit every
+normalization and recursive-check operation and reject on exhausted fuel.
+Any accepted finite proof has a sufficiently large finite fuel value;
+consequently this bounded interface presents the same theorems.  The
+additional calls needed to compute both probe instances must be charged to
+that same fuel account.  These resource facts neither add an arithmetic
+totality axiom nor change either interpretation domain.
+
+The specifically new result is the removal of the explicit equality-proof
+premise and target from witness discharge by a fixed, sound probe of the
+opened clause.  The canonical iterator syntax, paired binder, clause
+interface, fixed reflexivity axiom, two-row naming method, and arithmetic
+bi-interpretation are inherited and should be attributed as such.  The
+argument here is a written universal proof; finite implementation tests
+would not constitute a new proof-assistant verification.

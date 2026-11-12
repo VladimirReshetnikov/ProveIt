@@ -1,0 +1,448 @@
+% Mathematical fragment for deterministic clause-derived witness discharge.
+% Prepared in this session by the logical-reduction subagent.
+% Inherited sources: incoming ipra_witness_discharge_2026-11-11,
+% especially report.tex sections 2.1--2.8 and validation/macros.py.
+% The new result is the deterministic two-premise rule, not the scalar bridge.
+
+\section{Discharging a witness using its first clause instance}
+\label{sec:deterministic-name}
+
+The incoming witness-discharge presentation has a separate proof of an
+equality $b=t$ inside each eliminated witness scope. That premise is
+unnecessary. It suffices to recognize an equality in one fixed instance of
+the clause which the witness itself supplies. If that instance has no usable
+equality, the witness is discharged without substitution. The choice is
+determined by the major formula; the certificate supplies neither an
+equality proof nor a replacement term.
+
+This is a restriction of the previous inference, with a nontrivial
+completeness theorem. It does not rely on the numerical standard model,
+semantic truth testing, or an unlisted equality rule.
+
+\subsection{Complete native specification}
+
+Use one numerical sort. Let $N$ denote full computation normalization of
+the scalar terms
+\[
+ t ::= x\mid 0\mid St\mid I(n,a;u.h)
+\]
+for the context-closed reductions
+\[
+ I(0,a;u.h)\longrightarrow a,
+ \qquad I(Sn,a;u.h)\longrightarrow h[I(n,a;u.h)/u].
+ \tag{NF}
+\]
+Only the state variable $u$ in $h$ is bound. Every displayed term means
+its normal form, and every substitution is capture-avoiding and followed
+by $N$. Normalization of a formula acts on numerical terms and leaves its
+formula constructors intact. We use the established termination,
+confluence, and substitution-coherence results for these reductions.
+The normalization algorithm is part of the trusted syntax and must be
+included in a complete-checker measurement.
+
+Formulas are
+\[
+ A ::= (s=t)\mid D_{x,y}A,
+\]
+where $x,y$ are distinct bound numerical variables. A reusable context
+clause is $[\vec A;y.B]$, where $\vec A$ has zero or one antecedent,
+and $y$ is absent from every antecedent. Its ordinary reading is
+\[
+ [\,;y.B]^\circ=\forall y B^\circ,
+ \qquad [A;y.B]^\circ=A^\circ\to\forall y B^\circ.
+\]
+An ordinary assumption $A$ abbreviates $[\,;v.A]$, with $v$ unused.
+Contexts are finite lists of clause occurrences. Every proof starts with
+the single explicit initial clause
+\[
+                 \mathcal R=[\,;y.y=y]. \tag{Ax}
+\]
+Put $H=(0=0)$, $1=S0$, and $2=S1$. The designated contradiction is $0=1$.
+There are exactly the following three primitive inference families.
+
+\paragraph{Use.}
+For a retained $[\vec A;y.B]$ and any well-scoped term $t$, infer $N(B[t/y])$
+after proving the antecedent if there is one. There is no proof premise
+for a clause with no antecedent.
+\[
+ \frac{\{\Gamma\vdash A:A\text{ is the sole antecedent, if present}\}}
+      {\Gamma\vdash N(B[t/y])}.
+ \tag{Use}
+\]
+
+\paragraph{Intro.}
+For fresh $z$ and a well-scoped witness $t$,
+\[
+ \frac{\Gamma,N(B(t,\eta))\vdash N(B(t,Sz))}
+      {\Gamma\vdash D_{x,y}B(x,y)},
+ \qquad
+ \eta=\begin{cases}
+ z,& B\text{ is an equation and }t\text{ is literally }0,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+ \tag{Intro}
+\]
+Here $z$ is fresh for $\Gamma,t$ and all fixed parameters of $B$.
+The displayed ordinary assumption is discharged.
+
+\paragraph{Name.}
+After proving $D_{x,y}B$, take a fresh numerical parameter $b$ and form
+\[
+ B_b(y)=N(B(b,y)),\qquad
+ A_0=N(B_b(0)),\qquad A_1=N(B_b(1)),
+ \qquad \mathcal B_b=[A_0;y.B_b(y)].
+\]
+Define the replacement term \emph{deterministically} by
+\[
+ \tau_b(B)=
+ \begin{cases}
+ t,& A_0\text{ is literally }H\text{ and }A_1
+       \text{ is literally the equation }b=t,\\
+ b,&\text{otherwise}.
+ \end{cases}
+ \tag{First-instance test}\label{eq:first-instance-test}
+\]
+The literal equation test is ordered: a formula $t=b$ is not recognized
+unless its left side is itself literally $b$. The term $t$ is the right
+side of $A_1$, so no separate term argument is supplied. Then the rule is
+\[
+ \frac{\Gamma\vdash D_{x,y}B(x,y)\qquad
+       \Gamma,\mathcal B_b\vdash F}
+      {\Gamma\vdash N(F[\tau_b(B)/b])},
+ \tag{Name}\label{eq:deterministic-name}
+\]
+provided the exported normal form has no free $b$. The parameter $b$ is
+fresh for $\Gamma$ and every fixed parameter of $B$. The branch formula
+$F$ is well scoped in the extended numerical context. A recognized $t$
+may contain $b$; substitution is simultaneous, so an inserted copy of $t$
+is not substituted again.
+
+These are all the primitive inferences. Reflexivity is a Use of
+$\mathcal R$. Computation is accounted for by canonical syntax. There
+are no additional primitive equality, logical, induction, case, cut, or
+weakening rules.
+
+\subsection{Soundness and the escape condition}
+
+The ordinary formula reading is
+\[
+ (s=t)^\circ=(s=t),\qquad
+ (D_{x,y}B)^\circ=
+       \exists x\bigl(B^\circ(x,0)\to\forall y B^\circ(x,y)\bigr).
+\]
+For this subsection, use intuitionistic first-order equality logic with
+the scalar computation equations, numerical coverage, separation
+$0=1\to\bot$, and contextual induction for literal equations.
+This is the inherited scalar theory with a full-iPRA bi-interpretation.
+
+\begin{lemma}[The replacement equality is always available]
+\label{lem:det-replacement}
+In the context $\Gamma,\mathcal B_b$, one can derive
+$b=\tau_b(B)$ using only the initial reflexivity clause and Use.
+\end{lemma}
+\begin{proof}
+If the test fails, $\tau_b(B)=b$ and Use of $\mathcal R$ at $b$ proves
+$b=b$. If it succeeds, the antecedent of $\mathcal B_b$ is exactly
+$H$. Use of $\mathcal R$ at zero proves $H$, and Use of $\mathcal B_b$
+at $1$ proves its normalized first instance, which is exactly
+$b=\tau_b(B)$. No equality reasoning occurs in either derivation.
+\end{proof}
+
+\begin{proposition}[Soundness of Name]
+Rule~\eqref{eq:deterministic-name} is sound for the ordinary reading,
+including when the recognized replacement term contains $b$.
+\end{proposition}
+\begin{proof}
+Ordinary existential elimination opens the major formula at $b$ with
+the assumption represented by $\mathcal B_b$. The branch gives $F$.
+Lemma~\ref{lem:det-replacement} gives $b=\tau_b(B)$, and ordinary equality
+substitution gives $F[\tau_b(B)/b]$. Computation equations identify this
+with the exported normal form. That normal form contains no free $b$,
+so ordinary existential elimination discharges the witness and its clause.
+Equality substitution itself does not require $b$ to be absent from its
+right side; only existential discharge needs the stipulated absence from
+the final exported formula.
+\end{proof}
+
+Use has its displayed ordinary reading. Intro is sound by numerical
+coverage in case mode and literal-equation induction in progress mode.
+Thus the entire presentation is sound in the inherited scalar theory.
+
+\subsection{Ordinary elimination and numerical cases without equality}
+
+\begin{lemma}[Ordinary paired elimination]
+\label{lem:det-ordinary-elim}
+The usual rule
+\[
+ \frac{\Gamma\vdash D_{x,y}B\qquad
+       \Gamma,\mathcal B_b\vdash A}
+      {\Gamma\vdash A},\qquad b\notin\operatorname{FV}(A),
+\]
+is derivable with one use of Name.
+\end{lemma}
+\begin{proof}
+Apply Name with its supplied branch formula $A$. Since $A$ is a normal
+formula with no free $b$, substituting any term for $b$ leaves it unchanged.
+Thus $N(A[\tau_b(B)/b])=A$ regardless of whether the first-instance test
+succeeds. There is no need to force the test to fail or to choose a target.
+\end{proof}
+
+Weakening, injective fresh renaming, and ordinary-assumption cut are
+admissible by induction on proof trees. Freshen local eigenparameters
+before inserting proofs. The deterministic test depends only on the
+major formula and is unchanged by an injective renaming. An ordinary
+assumption is an unconditional constant clause, so its Use nodes can be
+replaced by the supplied proof. None of these structural constructions
+uses general equality transport or arbitrary numerical substitution of
+proof trees.
+
+For unused $u$, write $q_y A(y)=D_{u,y}A(y)$.
+\begin{lemma}[Conditional closure and numerical cases]
+\label{lem:det-cases}
+The calculus derives
+\[
+ \frac{\Gamma,A(0)\vdash A(Sz)}{\Gamma\vdash q_yA(y)},
+ \qquad
+ \frac{\Gamma\vdash q_yA(y)\qquad\Gamma\vdash A(0)}
+      {\Gamma\vdash A(t)},
+\]
+and consequently
+\[
+ \frac{\Gamma\vdash A(0)\qquad\Gamma\vdash A(Sz)}
+      {\Gamma\vdash A(t)}
+ \tag{Cases}\label{eq:det-cases}
+\]
+for every native formula $A$ and appropriate fresh $z$.
+These constructions use no equality transport or equation induction.
+\end{lemma}
+\begin{proof}
+For the first rule, introduce the unused witness at the numeral $1$.
+It is not literally zero, so Intro uses the case premise at every matrix
+root. For the second, use Lemma~\ref{lem:det-ordinary-elim}. The opened
+clause is $[A(0);y.A(y)]$, because the witness coordinate is unused.
+Supply its antecedent and apply Use at $t$. The result has no free
+existential witness, so ordinary elimination closes. For Cases, first
+weaken the successor proof by the unused ordinary assumption $A(0)$,
+then combine the preceding two constructions.
+\end{proof}
+
+\subsection{Recovering equality from the fixed first instance}
+
+Define normalizing selector and parity terms by
+\[
+ C(v,a,c)=N(I(v,a;u.c)),\qquad u\notin\operatorname{FV}(c),
+ \qquad P(y)=N(I(y,0;u.C(u,1,0))).
+\]
+Direct computation gives literal identities of canonical syntax:
+\[
+ C(0,a,c)\equiv a,\qquad C(Sv,a,c)\equiv c,
+ \qquad P(1)\equiv1,\qquad P(2)\equiv0.
+ \tag{Endpoints}\label{eq:det-endpoints}
+\]
+Only these fixed endpoints of $P$ are used; no parity induction or range
+theorem is required.
+
+\begin{theorem}[Uncrossed term transport]
+\label{thm:det-transport}
+For every fixed numerical template $h(w)$, the rule
+\[
+ \frac{\Gamma\vdash s=t\qquad\Gamma\vdash N(h(s))=r}
+      {\Gamma\vdash N(h(t))=r}
+\]
+is derivable. It uses no new arithmetic assumption and no supplied
+equality branch at Name.
+\end{theorem}
+\begin{proof}
+Choose $x,y$ fresh for all passive data. Let $h(x)$ denote its canonical
+instance and form the equation matrix
+\[
+ \begin{split}
+ B(x,y)=\bigl(&C(y,0,C(P(y),N(h(x)),x))\\
+             &{}=C(y,0,C(P(y),r,t))\bigr).
+ \end{split}
+ \tag{Naming matrix}\label{eq:det-naming-matrix}
+\]
+Introduce $D_{x,y}B(x,y)$ at witness $s$. Its successor instance is
+\[
+ C(P(Sz),N(h(s)),s)=C(P(Sz),r,t).
+\]
+Apply Cases to the template
+\[
+       A(v)=\bigl(C(v,N(h(s)),s)=C(v,r,t)\bigr)
+\]
+at target $P(Sz)$. Its zero instance is exactly the supplied equation
+$N(h(s))=r$, and its successor instance is exactly the supplied equation
+$s=t$. The eigenparameter used for this Cases argument is fresh for the
+current local context and is different from $z$.
+
+The resulting successor proof ignores the ordinary assumption of Intro.
+Consequently it is valid whether $s$ is literally zero, selecting progress,
+or any other term, selecting cases. This constructs the major formula
+without any equality substitution.
+
+Open that major at fresh $b$. By the endpoint computations,
+\[
+ B(b,0)\equiv H,\qquad B(b,1)\equiv(b=t),
+ \qquad B(b,2)\equiv(N(h(b))=r).
+\]
+The first-instance test therefore selects exactly $\tau_b(B)=t$.
+For the sole branch of Name, prove $H$ by the fixed reflexivity clause
+and specialize the opened clause at $2$. This yields
+$F=(N(h(b))=r)$. Name exports
+\[
+ N\bigl((N(h(b))=r)[t/b]\bigr)
+       \equiv (N(h(t))=r)
+\]
+by normalization--substitution coherence. The parameter $b$ was fresh
+for $h,t,r$, so the exported formula is outer scoped.
+
+The premise carrying $s=t$ is used while proving the major naming formula,
+not as a third premise of Name. Thus the proof does not smuggle the deleted
+equality branch back into the rule's checking interface.
+\end{proof}
+
+\begin{corollary}[All equality reasoning]
+\label{cor:det-equality}
+Symmetry, transitivity, congruence, crossed transport, and transport in
+every native formula template are derivable.
+\end{corollary}
+\begin{proof}
+For symmetry, take $h(w)=w$ and $r=s$ in
+Theorem~\ref{thm:det-transport}; the minor premise is reflexivity $s=s$.
+This proves $t=s$ from $s=t$. Uncrossed transport followed by symmetry
+gives crossed transport. A reflexive minor gives congruence, followed by
+symmetry if necessary. Symmetry of $a=b$ and transport of $b=c$ through
+the identity template give $a=c$.
+
+For transport in an equation $p(w)=q(w)$, transport its left side,
+reverse the resulting equation, transport its right side, and reverse
+again. This proves $p(t)=q(t)$ from $s=t$ and $p(s)=q(s)$.
+
+For a compound template $D_{x,y}E(w,x,y)$, argue by external induction
+on formula depth. Open $D_{x,y}E(s,x,y)$ at a fresh $c$ using ordinary
+elimination. Introduce $D_{x,y}E(t,x,y)$ at witness $c$. Since $c$ is
+a fresh parameter, its syntax is not literally zero, and Intro selects
+cases; no proposition $c\ne0$ is assumed. From the temporary base
+$E(t,c,0)$, use the induction hypothesis and symmetry to obtain
+$E(s,c,0)$. Use the opened old clause at $Sz$ to obtain $E(s,c,Sz)$,
+then transport forward by the induction hypothesis to $E(t,c,Sz)$.
+Close Intro and ordinary elimination. Every recursively transported
+matrix has smaller formula depth. This is not induction over quantified
+formulas inside the arithmetic theory.
+\end{proof}
+
+\subsection{Exact equivalence with unrestricted witness discharge}
+
+Let $\mathcal W$ be the incoming canonical witness-discharge calculus:
+the same terms, formulas, clauses, fixed axiom and Use/Intro rules, with
+\[
+ \frac{\Gamma\vdash D_{x,y}B\qquad
+       \Gamma,\mathcal B_b\vdash b=t\qquad
+       \Gamma,\mathcal B_b\vdash F}
+      {\Gamma\vdash N(F[t/b])}
+ \tag{Old Name}
+\]
+and the same freshness and export conditions. Let $\mathcal A$ denote
+the deterministic calculus just specified.
+
+\begin{theorem}[Identity-language sequent equivalence]
+\label{thm:det-equivalence}
+For every finite canonical clause context $\Gamma$ containing the
+distinguished reflexivity axiom and every well-scoped canonical formula
+$A$,
+\[
+               \Gamma\vdash_{\mathcal A} A
+          \quad\Longleftrightarrow\quad
+               \Gamma\vdash_{\mathcal W} A.
+\]
+The two translations are effective transformations of finite derivations
+and preserve the complete end sequent literally.
+\end{theorem}
+\begin{proof}
+From $\mathcal A$ to $\mathcal W$, translate the two premises of each
+new Name recursively and supply the missing equality proof from
+Lemma~\ref{lem:det-replacement}. All other rules are shared.
+
+In the converse direction, recursively translate the three premises of
+an Old Name inference. In its extended witness context, use
+Corollary~\ref{cor:det-equality} to transport the translated branch
+formula along the translated equation $b=t$. This gives the prescribed
+normal form $N(F[t/b])$. Its original export condition says that it has
+no free $b$, so Lemma~\ref{lem:det-ordinary-elim} closes the major
+existential. This works even when $t$ contains $b$, because the same
+ordinary equality substitution and final export condition apply.
+
+The apparent dependency is not circular: ordinary elimination and
+Cases were obtained before any equality transport; the naming-matrix
+proof of term transport uses only those constructions, the supplied
+premises, and one new Name. Formula transport then uses strictly
+smaller matrix depth. Every replacement is therefore a finite, explicitly
+defined proof construction.
+\end{proof}
+
+\begin{corollary}[Full iPRA, not just the equational fragment]
+The ordinary realization of $\mathcal A$ is bi-interpretable and
+equiconsistent with full first-order intuitionistic primitive recursive
+arithmetic. Both numerical interpretation domains are whole, equality
+is actual equality, and both numerical composite maps have graph $x=y$.
+\end{corollary}
+\begin{proof}
+Compose Theorem~\ref{thm:det-equivalence} with the incoming canonical
+calculus equivalence and its inherited scalar arithmetic and logical
+bi-interpretation. The present translation is the identity on the entire
+native language and every end sequent, so it preserves both inherited
+formula round trips and the numerical identity maps. In particular it
+preserves the designated contradiction $0=1$, yielding equiconsistency.
+The scalar compiler, equality reflection, predecessor, logical macros,
+and arithmetic bridge are inherited and must be included or precisely
+referenced; the local result does not replace their proofs.
+\end{proof}
+
+\subsection{Implementation invariants and claim boundaries}
+
+A forward checker may infer the major formula and the branch formula.
+At Name it checks that the major has a $D$ root, opens its matrix at the
+newest fresh parameter, computes its zero and first instances, and
+determines $\tau_b(B)$ by~\eqref{eq:first-instance-test}. It then checks
+the branch under the one new clause, performs simultaneous free-parameter
+substitution, normalizes, and verifies that the result has no free $b$.
+The original outer goal is compared with this inferred result.
+
+Scope validation is essential even if repeated formula-grammar checks are
+removed: a branch may use the fresh witness in an equation, but Name may
+export only an outer-scoped formula. The clause antecedent must be the
+actual normalized zero instance of the same opened matrix; replacing it
+by a claimed true formula would be unsound. The recognized first instance
+must be an equation with left side literally the current witness. Merely
+having an equation root, being provably equal to that shape, or having the
+witness on the right does not authorize the substitution in this rule.
+
+There is a useful implementation invariant: if the computed zero instance
+is literally $H$, then the matrix has an equation root, and so does its
+first instance. Normalization never deletes a $D$ constructor. A checker
+which has already validated the major formula may therefore omit a second
+equation-root test on the first instance; the test $A_0=H$ already ensures
+that its two equation fields exist. This is a structural fact about the
+validated grammar, not a relaxation of the mathematical guard.
+
+Numerical substitution can change the selected Intro mode or create the
+first-instance guard. A primitive-tag-preserving substitution theorem is
+not claimed. Admissibility follows through the exact equivalence with the
+reference calculus and its established substitution theorem or repairs.
+
+The simplification deletes one proof premise and two certificate payloads
+(the replacement term and, for a synthesizing checker, the claimed branch
+formula) from the earlier interface. It still has three inference families
+and one explicit reflexivity clause. A measured checker reduction must
+count the deterministic guard and normalization in full. It is neither a
+proof of absolute minimum size nor a claim that three families first
+occurred here. The new mathematical assertion is the exact completeness
+of the first-instance restriction.
+
+Uniform full normalization over arbitrary finite iterator descriptions is
+total recursive but need not be primitive recursive. A finite budget or
+explicit reduction certificates can give a primitive-recursive bounded
+certificate predicate without changing the provable formulas; that
+interface is distinct and its code must also be counted. No object-level
+uniform evaluator or new totality axiom is asserted by this metasyntactic
+operation.

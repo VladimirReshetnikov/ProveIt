@@ -1,0 +1,1090 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,pdftitle={A prefix presentation of intuitionistic primitive recursive arithmetic},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20}}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\I}{\mathsf I}
+\newcommand{\D}{\mathsf D}
+\newcommand{\Q}{\mathsf Q}
+\newcommand{\F}{\mathcal F}
+\newcommand{\Hcal}{\mathcal H}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\Teq}{T_{\rm eq}}
+\newcommand{\Eq}[3]{\langle #1;\,#2=#3\rangle}
+\newcommand{\Clause}[2]{\langle #1;\,y.#2\rangle}
+\newcommand{\one}{S0}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\srcbase}{https://github.com/VladimirReshetnikov/ProveIt/tree/17898ea7e6a1300dfdcad71040d5daeed67916d4/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}
+\title{A prefix presentation of intuitionistic\protect\\ primitive recursive arithmetic\large\protect\\ Four rule families, one recursive object syntax,\protect\\ and an antecedent-free alternative}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{November 11, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The current ConciseIPRA development already has four instruction families
+with a fixed reflexivity clause. We retain its arithmetic and intuitionistic
+logical strength and simplify its presentation: every native Eq/$D$ formula
+is a chain of paired binders ending in one equation, so it can be represented
+by a natural number and two terms. Only the numerical term syntax remains
+recursive. Substitution in a formula becomes substitution in its two terms
+at a depth determined by that number. We give the complete calculus, an
+executable checker, explicit translations to and from the current calculus,
+and the resulting whole-domain bi-interpretation with iPRA.
+
+A separate mathematical result removes the antecedent field of every
+context clause. An asymmetric iterator gate represents ordinary assumptions
+as homogeneous conditional closures and has a literally reflexive zero
+instance. This alternative is proved equivalent, but its measured checker
+is larger than the corresponding prefix checker with paired clauses.
+The package distinguishes these results from a claim of global minimality:
+it does not beat the repository's most compressed existing implementations.
+\end{abstract}
+
+\section{Result, comparison target, and limits}
+
+The inspected baseline is commit
+\begin{center}\small\ttfamily
+17898ea7e6a1300dfdcad71040d5daeed67916d4
+\end{center}
+of \emph{ProveIt}, under
+\code{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}~\cite{repo}.
+All comparisons in this report refer to that pinned snapshot.
+The baseline already contains the clause calculi \code{CPrf}, \code{KPrf},
+and \code{VPrf}. In particular, putting reflexivity into a fixed clause,
+using two-case computational equality, and using four instruction families
+are inherited results~\cite{clausal,uniform,eval}. They are not claimed as
+new here.
+
+The primary presentation $\F$ makes three precise choices:
+\begin{enumerate}
+\item A formula is $\Eq{k}{s}{t}$: a binder count and a pair of numerical
+terms. There is no recursive formula constructor in the certificate grammar.
+\item A clause has one antecedent and one unary consequent template. A
+reflexive-leaf antecedent may be discharged without a supplied proof.
+This includes the fixed reflexivity clause and ordinary assumptions.
+\item There are four proof constructors: Use, Eval, Elim, and Intro.
+Elim synthesizes its conclusion and checks that its local witness has not
+escaped.
+\end{enumerate}
+The first choice is the main representational reduction. The second and
+third make the complete interface uniform. Section~\ref{sec:measurements}
+separates the complete comparison from the comparison in which the control
+uses the same proof interface.
+
+The arithmetic basis itself is unchanged: a scalar iterator has a seed
+and a unary update, and the restricted induction mechanism is the inherited
+witness-directed introduction. The new claim is a smaller explicit
+presentation and implementation in the reported comparison, not a new
+strength theorem about arithmetic or a minimum over all programming
+languages and proof encodings. The existing compact checkers remain
+smaller in absolute source size. The additional homogeneous-context theorem
+is a mathematical simplification whose implementation cost is reported
+rather than omitted.
+
+\section{The complete prefix calculus}
+\label{sec:calculus}
+
+\subsection{Numerical terms and formula prefixes}
+
+There is one numerical sort. Terms are
+\[
+ t ::= x\mid 0\mid St\mid\I(n,a;u.h),
+\]
+where only $u$ is bound in $h$. A term may contain any finite nesting of
+iterators; there are no function variables or universal evaluator.
+
+A formula is the finite record $\Eq{k}{s}{t}$, with $k\in\mathbb N$.
+It binds $k$ ordered pairs of numerical variables in $s,t$. Its expansion is
+\[
+ \operatorname{unpack}\Eq{k}{s}{t}
+   =\D_{x_1,y_1}\cdots\D_{x_k,y_k}(s=t).
+ \tag{1}\label{eq:unpack}
+\]
+Thus $\Eq{0}{s}{t}$ is an equation. The names in (1) are explanatory;
+the checker uses bound indices. The binder count is syntactic data, not an
+object-level numerical variable quantified by the theory.
+
+For readability, $\D_{x,y}B$ below denotes adding one pair to a prefix.
+It is an operation on the record, not an additional recursive syntax.
+$B(a,b)$ denotes capture-free opening of its two designated external slots.
+A unary template $B(y)$ has one designated external slot. All other free
+parameters remain fixed.
+
+The intended ordinary reading of the prefix is recursively specified by
+\[
+ (s=t)^\circ=(s=t),\qquad
+ (\D_{x,y}B)^\circ
+  =\exists x\bigl(B^\circ(x,0)\to\forall y\,B^\circ(x,y)\bigr).
+ \tag{2}\label{eq:ordinary-D}
+\]
+This recursion defines a translation of each finite syntactic object.
+It does not assert the existence of an internal truth predicate.
+The designated contradiction is $\Eq{0}{0}{S0}$.
+
+\subsection{Contexts and their one fixed clause}
+
+A context is a finite reusable list of clauses $[A;y.B(y)]$. Its ordinary
+reading is $A^\circ\to\forall y B^\circ(y)$; $y$ is not free in $A$.
+Each proof begins with the clause
+\[
+ \rho=[\,0=0;\ y.y=y\,].
+ \tag{3}\label{eq:rho}
+\]
+In the closed-certificate protocol this is the sole initial entry, and
+the list grows only through Intro and Elim below. For mathematical
+statements about sequents, additional well-scoped clauses may be retained
+as external assumptions; the delivered verifier checks closed certificates.
+An ordinary local
+assumption $A$ is the constant clause $[0=0;v.A]$, where $v$ is unused.
+There is no separate hypothesis rule.
+
+Call $\Eq{k}{r}{r}$ \emph{reflexive at its leaf}. The two term trees must
+be literally identical. No numerical evaluation, provability test, or
+normalization is used in this test. Section~\ref{sec:reflexive}
+proves that every such formula is a theorem, including $k>0$.
+
+\subsection{Four primitive rule families}
+
+Write $\Gamma\vdash_\F A$ for derivability. Contexts always include $\rho$.
+The entire primitive inventory is as follows.
+
+\paragraph{Use.}
+For any retained clause $[A;y.B]\in\Gamma$ and any term $t$,
+\[
+ \frac{\Gamma\vdash_\F A}{\Gamma\vdash_\F B(t)}.
+ \tag{Use}
+\]
+The minor is omitted when $A$ is reflexive at its leaf. Otherwise one
+minor derivation is required. Clause use does not consume the clause.
+
+\paragraph{Eval.}
+From two equations,
+\[
+ \frac{\Gamma\vdash_\F s=t\qquad\Gamma\vdash_\F b=r}
+      {\Gamma\vdash_\F r=\Phi(s,t,b)},
+ \tag{Eval}
+\]
+where $\Phi$ is defined in exactly two cases:
+\[
+ \Phi(s,t,b)=
+ \begin{cases}
+ t,&b\equiv\I(0,s;u.h),\\[2pt]
+ h[t/u],&b\equiv\I(Sc,a;u.h)\text{ and }s\equiv\I(c,a;u.h).
+ \end{cases}
+ \tag{4}\label{eq:phi}
+\]
+All displayed matches are literal syntactic matches, with the usual
+capture-free interpretation of a binder. There is no extra equality-join
+case. The two lines of (4) are the inherited computational equality
+interface~\cite{eval,clausal}.
+
+\paragraph{Elim.}
+\[
+ \frac{\Gamma\vdash_\F\D_{x,y}B(x,y)\qquad
+       \Gamma,[B(b,0);y.B(b,y)]\vdash_\F A}
+      {\Gamma\vdash_\F A}.
+ \tag{Elim}
+\]
+The numerical parameter $b$ is fresh for $\Gamma$, the conclusion $A$,
+and the fixed parameters of the eliminated formula. The checker enforces
+this by assigning a new free level and validating the branch result in
+the outer scope, including occurrences in unused iterator bodies.
+
+\paragraph{Intro.}
+For $z$ fresh for $\Gamma$, $t$, and the conclusion's fixed parameters,
+\[
+ \frac{\Gamma,[0=0;v.B(t,\eta)]\vdash_\F B(t,Sz)}
+      {\Gamma\vdash_\F\D_{x,y}B(x,y)},
+ \qquad
+ \eta=\begin{cases}
+ z,&B\text{ is an equation and }t\equiv0,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+ \tag{Intro}\label{eq:intro}
+\]
+Here $v$ is unused. In the prefix representation the test ``$B$ is an
+equation'' means that the conclusion has binder count exactly $1$.
+This is the established single witness-directed introduction; its case at
+a witness that is not literally zero supplies numerical cases, and its
+atomic zero-witness case supplies equation induction~\cite{repo,witness}.
+
+There are no other primitive logical axioms, equality axioms, computation
+axioms, induction schemas, structural rules, or inference rules in $\F$.
+The fixed clause (3), the two syntactic cases of Eval, and the stated side
+conditions are part of this complete specification.
+
+\section{Why the reduced interface is sufficient}
+
+\subsection{Reflexive leaves and ordinary assumptions}
+\label{sec:reflexive}
+
+\begin{lemma}[Reflexivity]
+For every well-scoped term $t$, $\Gamma\vdash_\F t=t$.
+\end{lemma}
+\begin{proof}
+Use $\rho$ at $t$. Its antecedent is the literally reflexive equation
+$0=0$, so the minor is omitted.
+\end{proof}
+
+\begin{lemma}[Reflexive prefixes]
+Every well-scoped formula $\Eq{k}{r}{r}$ is derivable in every context.
+The same statement holds in the inherited \code{CPrf} and \code{VPrf}
+calculi after unpacking. The derivations can be constructed effectively
+from the formula, independently in each calculus.
+\end{lemma}
+\begin{proof}
+Induct on $k$. The case $k=0$ is the previous lemma in $\F$, primitive
+Refl in \code{CPrf}, and use of the unconditional fixed reflexivity clause
+in \code{VPrf}. If $k>0$, introduce
+the outer pair with witness $S0$. This is case mode regardless of the
+matrix's root. The target at the fresh successor has binder count $k-1$,
+and its two leaf terms are still identical after opening the witness and
+counter slots. Apply the induction hypothesis to this target and ignore
+the added clause. Close Intro. Consequently the optional minor in Use
+only abbreviates a derivation already available in the system.
+\end{proof}
+
+Use of the constant clause $[0=0;v.A]$ gives $A$ at any target, again
+without a minor. Thus the ordinary-assumption interface is available with
+no separate hypothesis constructor.
+
+\subsection{Computation and equality}
+
+Both iterator computation equations are Eval on two reflexivities:
+\[
+ \I(0,a;u.h)=a,\qquad
+ \I(Sn,a;u.h)=h[\I(n,a;u.h)/u].
+ \tag{5}\label{eq:compute}
+\]
+To see that no equality principle has disappeared, let
+$F(s)=\I(0,s;u.u)$. From $s=r$ and reflexivity of $F(s)$, the zero case
+of Eval gives $F(s)=r$. Applying the same zero case to $s=t$ and this
+last equation gives
+\[
+ s=t,\ s=r\ \vdash_\F\ r=t.
+ \tag{6}\label{eq:join}
+\]
+Taking one premise reflexive yields symmetry, and symmetry plus (6)
+yields transitivity.
+
+For an arbitrary term template $h(u)$ and a premise $s=t$, the zero
+case gives $\I(0,s;u.h)=t$. The successor case, with reflexivity of
+$\I(S0,s;u.h)$, gives $\I(S0,s;u.h)=h(t)$. Independently, zero Eval
+on $s=s$ and reflexivity of $\I(0,s;u.h)$ gives
+$\I(0,s;u.h)=s$. Successor Eval with reflexivity of $\I(S0,s;u.h)$
+then gives $\I(S0,s;u.h)=h(s)$. Joining these two equations yields
+$h(s)=h(t)$, without first rewriting under $h$. This supplies arbitrary numerical congruence
+and the inherited transport rule.
+
+Full formula transport then follows by induction on the number of
+$D$-blocks: eliminate the source paired formula, introduce the target at
+the fresh witness, convert its local base, use the retained clause at the
+successor, and convert back. The fresh witness forces case mode. All
+matrix conversions are at smaller binder count.
+
+\subsection{Induction is present and remains restricted}
+
+Let $E(y)$ be a literal equation. Given proofs of $E(0)$ and of
+$E(Sz)$ from the local assumption $E(z)$, Intro at the unused witness
+$0$ gives $\D_{x,y}E(y)$. Elim exports $[E(0);y.E(y)]$; Use with the
+base proof gives $E(t)$ for any term $t$. This is contextual equation
+induction. It applies to equations, not to arbitrary formulas.
+
+The inherited witness-rule equivalence also recovers the general case
+introduction. Its exceptional atomic case at witness $0$ can use the
+syntactically nonzero but provably zero term $\I(0,0;u.0)$ and the derived
+transport. This explains why the literal witness test is harmless, while
+also explaining why substitution admissibility is proved through the
+equivalence and cannot be read off from an invariant witness test alone.
+
+\section{Exact correspondence with the current calculus}
+\label{sec:equivalence}
+
+\begin{lemma}[Unique prefix decomposition]
+Every formula in the current Eq/$D$ grammar has a unique representation
+$\Eq{k}{s}{t}$, up to the ordinary representation of bound variables.
+Packing and unpacking are inverse operations on these finite trees.
+\end{lemma}
+\begin{proof}
+An equation supplies $k=0$. At a $D$ node there is exactly one formula
+child; strip that node and add one to the child's count. The grammar has
+no branching formula constructor. Repeatedly stripping $D$ therefore
+reaches exactly one equality leaf. Reconstruction adds exactly the
+stripped nodes in their original order.
+\end{proof}
+
+With de Bruijn indices starting at $1$, the two outer slots of the matrix
+of a rank-$k+1$ formula have indices $2k+2$ and $2k+1$ at its equality
+leaf. Its $k$ inner pairs occupy the smaller positive indices. All concrete substitution values are closed with respect to exterior
+positive indices; their free numerical parameters have negative levels.
+Opening
+the outer witness substitutes at $2k+2$; after that, opening the outer
+counter substitutes at $2k+1$. An additional iterator binder increments
+the index being sought by one. This gives the following commuting law.
+
+\begin{lemma}[Opening commutes with packing]
+Packing a capture-free opening of a nested formula equals opening its
+packed record by the preceding index rule. The same holds under every
+iterator binder and for simultaneous choices of the external slots.
+\end{lemma}
+\begin{proof}
+Strip the formula prefix. Each stripped pair adds exactly two to the
+substitution depth. At the equality leaf, induct on its two numerical
+terms. A variable is replaced exactly at the indicated index; larger
+indices decrease by one when that slot is removed. Successor adds no
+binder, and the update body of an iterator adds one. These are exactly
+the clauses of capture-free substitution on the nested representation.
+\end{proof}
+
+\begin{theorem}[Equivalence of finite derivations]
+The prefix calculus $\F$ and the Eq/$D$ (that is, $Q$-free) part of the
+pinned native clause calculus derive
+the same sequents after packing or unpacking formulas and clauses.
+The translations of derivations are effective. Both formula round trips
+are syntactic identities, not merely agreement in the standard model.
+\end{theorem}
+\begin{proof}
+First compare with \code{CPrf}, whose contexts already consist of pairs
+$[A;y.B]$ and whose ordinary assumptions are $[0=0;v.A]$.
+
+From \code{CPrf} to $\F$, pack all formulas and add the fixed clause
+$\rho$ to the context.  Primitive reflexivity becomes a zero-premise
+Use of $\rho$.  The two Eval patterns, ordinary Use, Elim and the
+witness-directed Intro otherwise translate directly.  Opening commutes
+with packing, and the sets of free numerical parameters are unchanged,
+so all substitutions and eigenvariable conditions agree.  An induction
+on the source derivation preserves the extra fixed clause under every
+scope extension.
+
+For the reverse direction, carry the context invariant that every
+retained clause is either the distinguished $\rho$ or the packing of a
+\code{CPrf} context clause.  Use of the distinguished $\rho$ becomes
+\code{CPrf} reflexivity.  Any other Use carries its translated
+antecedent derivation; if that derivation was omitted, supply the
+independently proved \code{CPrf} reflexive-prefix theorem instead.
+Then apply the ordinary \code{CPrf} Use rule.  Eval, Elim and Intro
+translate directly and preserve this invariant.  Thus no unproved
+clause-cut or context-extension principle is required.
+
+The pinned theorem \code{vprf\_iff\_cprf} gives the corresponding
+four-family \code{VPrf} formulation.  Its empty antecedent is represented
+by $0=0$, and its singleton antecedent remains the same formula.
+The above proof explains exactly how the fixed reflexivity clause and
+all skipped minors are handled; it does not assume identical certificate
+grammars.  Synthesizing Elim's conclusion instead of storing another
+copy preserves its outer-scope side condition.  Finally, the exact
+native equivalences of \code{CPrf}/\code{VPrf} are the pinned inherited
+results cited in the report.
+\end{proof}
+
+\section{Ordinary logic and the bi-interpretation with iPRA}
+\label{sec:biinterpretation}
+
+The preceding theorem is an equivalence of complete proof presentations.
+Here iPRA means intuitionistic first-order logic with equality, symbols
+for every finite primitive-recursive description and their defining
+equations, successor separation and injectivity, and contextual induction
+for quantifier-free formulas. We specify the arithmetic interpretation as well, so that the conclusion
+is stronger than equiconsistency or standard-model representability.
+
+\subsection{All ordinary logical operations are available}
+
+The logical macros below are inherited from the native construction.
+They can be packed into prefix records after expansion. Put
+$C(v,a,b)=\I(v,a;u.b)$ with $u$ unused. Define
+\[
+ G_v(s=t)=(C(v,0,s)=C(v,0,t)),\qquad G_v(\D B)=\D(G_v B).
+\]
+The native calculus proves $G_0 A$ and
+$G_{Sv}A\dashv\vdash A$. To select between formulas of different
+depths, pad the shallower one with
+$A\dashv\vdash\D_{u,y}G_yA$, using an unused witness $u$.
+After their depths are aligned, define the selector at the leaf by
+\[
+ M_v(s=t,a=b)=(C(v,s,a)=C(v,t,b)),
+\]
+and pass it through aligned $D$-blocks. Its zero and positive endpoints
+are $A$ and $B$, respectively. Let
+$\delta(v)=C(v,1,0)$ and $p(z)=\I(z,0;u.\delta(u))$.
+With all displayed dummy variables fresh, the macros are
+\[
+\begin{aligned}
+ A\Rightarrow_* B&=\D_{u,z}M_z(A,B),\\
+ A\wedge_*B&=\D_{u,z}G_zM_{p(z)}(A,B),\\
+ \exists_*x\,A(x)&=\D_{x,y}G_yA(x),\\
+ A\vee_*B&=\exists_*x\,M_x(A,B),\\
+ \forall_*x\,A(x)&=A(0)\wedge_*\D_{u,z}G_zA(z),\\
+ \bot_*&=(0=S0).
+\end{aligned}
+\tag{7}\label{eq:macros}
+\]
+The gate, selector, and paired introduction/elimination prove the usual
+intuitionistic introduction and elimination rules. Numerical cases derive
+$x=0\vee_*\exists_*v\,x=Sv$. Under $0=S0$, selector computation and
+transport give $s=C(0,s,t)=C(S0,s,t)=t$, and induction on formula depth
+gives explosion for every native formula. The inherited detailed proof is
+included as \code{reference/inherited\_choice\_basis.tex}; the corresponding
+Lean results are identified in \cite{repo,native-bi}.
+
+\subsection{The ordinary scalar realization}
+
+Let $\Teq$ be intuitionistic first-order logic with actual equality over
+the scalar iterator language, with equations (5), contextual induction
+for literal equations, and the sentences
+\[
+ \forall x\,(x=0\vee\exists y\,x=Sy),\qquad
+ (0=S0)\to\bot.
+ \tag{8}\label{eq:coverage}
+\]
+These are the ordinary counterpart of the derived native interface.
+The explicit falsity bridge is essential in this ordinary description:
+positive equations alone would admit a one-element structure.
+The prefix-to-ordinary map is (1)--(2), and an ordinary formula is mapped
+back by (7) followed by packing. Native completeness and both formula
+round trips are proved in the pinned development. Packing adds an exact
+syntactic isomorphism, so those results transfer to $\F$.
+
+\subsection{The numerical interpretations}
+
+Interpret $\I(n,a;u.h)$ in iPRA as the primitive recursion with initial
+value $a$ and update $h$, ignoring the recursion counter in that update.
+Each fixed nested term gives a finite primitive-recursive description.
+The interpretation domain is the entire numerical domain, and its
+equality is actual equality.
+
+Conversely, the scalar theory first derives a predecessor $P$ with
+$P0=0$ and $P(Sn)=n$, then a numerical test reflecting actual equality,
+then quantifier-free induction, and then pairing and projections.
+This order avoids assuming pairing or an equality detector in the
+predecessor argument. The inherited detailed proofs are supplied in the
+reference directory~\cite{bridge}.
+If $\pi,L,H$ satisfy
+$L(\pi(a,b))=a$ and $H(\pi(a,b))=b$, a fixed primitive recursion
+\[
+ f(0,\vec p)=g(\vec p),\qquad
+ f(Sn,\vec p)=h(n,f(n,\vec p),\vec p)
+\]
+is compiled to
+\[
+\begin{aligned}
+ V(n,\vec p)&=\I\bigl(n,\pi(0,g^*(\vec p));\,
+ u.\pi(SL(u),h^*(L(u),H(u),\vec p))\bigr),\\
+ f^*(n,\vec p)&=H(V(n,\vec p)).
+\end{aligned}
+\tag{9}\label{eq:compiler}
+\]
+Equation induction proves $L(V(n,\vec p))=n$, and the two projection
+identities prove the required recursion equations. Pairing stores a
+finite state; it does not replace the numerical universe by a range
+of codes.
+
+\begin{theorem}[Whole-domain bi-interpretability and equiconsistency]
+The ordinary realization of $\F$ is bi-interpretable with full
+first-order intuitionistic primitive recursive arithmetic. Both numerical
+domains are whole, both equality relations are actual equality, and
+both composite isomorphisms have graph $x=y$. The two theories are
+equiconsistent.
+\end{theorem}
+\begin{proof}
+Compose the exact prefix/native correspondence with the pinned
+native--$\Teq$ interpretation and the scalar--iPRA interpretation.
+For completeness, the numerical round-trip argument is as follows.
+External induction on each fixed scalar description shows that its
+double translation satisfies its original recursion equations. Equation
+induction, with the seed and passive parameters held fixed and only
+afterward instantiated, proves uniqueness of two iterators with the same
+seed and update. For each fixed
+ordinary primitive-recursive description, external induction on that
+description and internal uniqueness of primitive recursion give the
+same conclusion. Hence each composite fixes every numerical operation
+provably, at arbitrary internal arguments, and $x=y$ is the required
+internally definable isomorphism. Formula round trips follow from the
+native logical macro theorem and the inverse prefix translations.
+Contradiction is preserved in both directions by (8) and
+$\bot_*=0=S0$. Effective finite proof translations give equiconsistency.
+This does not claim that either theory proves its own consistency.
+\end{proof}
+
+\section{Executable specification and measurement}
+\label{sec:measurements}
+
+\subsection{JSON syntax and binding discipline}
+
+The standalone checker uses only the Python standard library.
+Its numerical terms are encoded by
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Mathematical object & JSON encoding\\
+\midrule
+Zero & \code{0}\\
+Bound variable, index $i>0$ & integer $i$\\
+Free eigenparameter, level $i<0$ & integer $i$\\
+Successor $St$ & \code{[t]}\\
+Iterator $\I(n,a;u.h)$ & \code{[n,a,h]}\\
+Formula $\Eq{k}{s}{t}$ & \code{[k,s,t]}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The context determines whether a three-element array is a formula record
+or an iterator term. The checker validates each use at its required sort.
+Booleans and floating-point numbers are not numerical indices.
+
+At outer scope $n$ and binder depth $d$, a numerical integer is admissible
+exactly when $-n\le i\le d$. Only an iterator's update adds one to $d$.
+A formula of count $k$ validates its leaf terms at depth $2k$.
+The fresh parameter introduced by a local branch is $-n-1$.
+All branches add exactly one context entry, so the implementation recovers
+$n$ as the context length minus the initial entry.
+
+Substitution inserts only terms that are closed with respect to exterior
+positive indices. Such inserted terms may have their own internal
+binders, but they contain no positive index referring to an ambient binder.
+Consequently the insertion itself needs no extra lifting; the traversal
+still increments the sought index under an iterator binder and decreases
+larger indices when an external slot is removed. This invariant is central
+to the short implementation and is checked at every certificate-supplied
+witness. The homogeneous alternative additionally needs lifting when it
+places an existing leaf term under a new iterator binder.
+
+Proof nodes are
+\begin{lstlisting}
+["u", clause_index, target_term, minor_proof]
+["v", major_equation_proof, minor_equation_proof]
+["e", paired_formula_proof, branch_proof]
+["i", paired_goal_formula, witness_term, branch_proof]
+\end{lstlisting}
+Input is exactly \code{\{"goal": F, "proof": P\}}. In a Use node whose
+antecedent is reflexive at its leaf, \code{minor\_proof} is an inert JSON
+field; the examples use \code{[]}. Its contents are not a claimed
+subderivation. Every active premise, supplied term, introduced formula,
+and elimination result is checked. The public goal must be a closed
+well-scoped formula. The program prints \code{ACCEPT} on success and
+\code{REJECT} on a detected exception; finite tests do not replace the
+soundness proof. As with the comparison programs, completeness refers
+to the ideal finite-derivation algorithm; a particular Python process
+can exhaust its recursion, parsing, or memory limits on large inputs.
+The binder count may encode a long finite prefix succinctly.
+
+\subsection{Measured comparisons}
+
+Measurements use CPython 3.12.14. Genuine module, function, and class
+docstrings are removed, the complete module is normalized by
+\code{ast.unparse} with one terminal newline, and significant Python
+tokens, all AST nodes, and UTF-8 bytes are counted. Layout, comments,
+encoding markers, and end markers are not significant tokens. Gzip level
+9 with a fixed zero timestamp is informational. No gate, scope checker,
+parser interface, or active inference routine is omitted from a measured
+module.
+
+\begin{center}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Complete implementation & Tokens & AST nodes & Bytes & Gzip-9\\
+\midrule
+Existing \code{uniform\_clauses} & 807 & 931 & 2912 & 994\\
+Matched nested control & 791 & 890 & 2763 & 931\\
+Prefix calculus $\F$ & \textbf{788} & 900 & \textbf{2700} & 941\\
+Homogeneous prefix variant & 840 & 965 & 2843 & 979\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Relative to the exact existing four-family program, the delivered prefix
+checker saves 19 tokens, 31 AST nodes, and 212 normalized bytes
+(approximately 2.35\%, 3.33\%, and 7.28\%, respectively). This comparison
+includes the simplified clause and certificate interfaces as well as the
+prefix representation.
+
+The matched nested control uses the same four proof tags, synthesized
+elimination result, single-antecedent clauses, implicit scope protocol,
+reflexive-leaf shortcut, and numerical term codec. It retains nested
+Eq/$D$ formulas. Against this control, the prefix representation alone
+saves 3 tokens and 63 bytes (approximately 2.28\% of bytes), while adding
+10 AST nodes and 10 gzip bytes. Thus it is not a reduction in every
+coordinate against that tighter control.
+
+The antecedent-free implementation in the last row pays for its gate and
+capture-free lifting. Its structural theorem does not yield the smallest
+checker in this table. The counts also do not establish a new repository-wide
+minimum: the existing validated native implementation has 788 \emph{bytes},
+and a separate compact implementation has 516 bytes under its canonical
+public-goal contract. Those frozen sources are included for transparency.
+The number 788 in the prefix row is a \emph{token count}; the prefix
+program has 2700 normalized bytes. These distinct units and contracts
+must not be conflated.
+
+The exact sources, source hashes, normalized copies, compressed copies,
+and measurement procedure are in \code{code/} and
+\code{code/evidence/checker\_metrics.json}.
+
+
+\subsection{Verification and limits of the executable evidence}
+
+The main reproduction run constructed 37 positive certificates and
+translated each to the matched nested checker and the independently
+retrieved existing four-family checker. Each ran in all three programs
+under both ordinary Python and \code{python -O}. An additional 22 negative
+inputs ran in both modes against the prefix checker. This is 266 subprocess
+expectations, with zero mismatches. The positive cases include zero and
+successor computation, derived symmetry, nested paired binders, and a
+nontrivial equation-induction proof of
+\[
+ \I(y,0;u.Su)=y
+\]
+followed by specialization. The negative cases include incorrect induction
+steps, escaped eigenparameters, malformed or out-of-scope terms, invalid
+clause indices, nonintegral binder counts, and compound premises used as
+equations.
+
+There were also 2001 checks that opening commutes with expansion to the
+nested representation. A separately written audit used environment-based
+numerical semantics, rather than another syntactic substitution routine,
+for 400 matrix openings, 400 witness openings, and 300 iterator-body
+substitutions. It passed 20 additional rejection cases and 5 accepted
+examples. The scope attacks include a forbidden parameter beneath a dead
+zero-iterator body and beneath a formula binder; dead code is still
+checked for scope.
+
+The deterministic generators, concrete certificates, full results, and
+source hashes are included. The independent semantic checks use bounded
+samples and a finite test interpretation for formula-opening comparisons;
+they are not asserted to be a model of the entire arithmetic theory.
+Written derivation translations supply the metatheorems, while these
+checks supply evidence that the implementations follow them.
+
+From the package directory, run
+\begin{lstlisting}
+python3 code/reproduce_checker.py
+python3 code/audit_flat.py code/flat_control.py
+python3 code/flat_control.py < code/examples/equation_induction.json
+\end{lstlisting}
+The last command checks the supplied induction certificate. The example
+filenames and complete format description are also listed in
+\code{README.txt} and \code{code/FORMAT.txt}.
+
+
+The correctness results in this report are written mathematical proofs.
+The inherited native equivalences and arithmetic bi-interpretation have
+Lean formalizations in the cited repository. This package does not claim
+a newly checked Lean or Rocq formalization of its prefix checker or of
+the homogeneous-context theorem. The Python programs verify certificates
+for the presented inference rules; they are not proof assistants checking
+the metatheory automatically.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item Can the prefix representation reduce the smallest fully validated
+compact checker while preserving that checker's exact public language and
+successful-trace invariant? The matched readable reduction does not
+settle this question.
+\item Can homogeneous contexts be implemented without paying for an
+additional gate operation, while keeping all compound assumptions and
+their exact conditional meaning? The theorem in Appendix~\ref{sec:homogeneous}
+shows that the antecedent field is mathematically eliminable, but the
+measured implementation still pays more for that elimination.
+\item Can a substitution-stable introduction, such as the existing
+diagonal introduction, be paired with the prefix interface at lower total
+checker cost than the witness-directed rule? Formula depth makes the
+atomic test trivial, but it does not eliminate the arithmetic guard.
+\item Can the prefix packing and opening lemmas, followed by the
+homogeneous gate lemma, be added as short modules over the existing Lean
+\code{CPrf}/\code{VPrf} development? This would check the new metatheory
+without redoing the inherited arithmetic bridge.
+\item What minimum is attainable under a fixed, explicit certificate
+contract? A useful comparison should fix goal grammar validation, scope
+checking, accepted padding, normalization, and the source measurement
+procedure before optimizing implementations.
+\end{enumerate}
+
+\clearpage
+\appendix
+\section{The homogeneous four-family calculus}
+\label{sec:homogeneous}
+
+The proposed calculus retains the scalar terms and the original ordinary
+meaning of the repository's Eq/$D$ language.  The change is in retained
+assumptions: every context entry is a single one-variable formula
+template.  No entry has a separately stored antecedent, a list of
+antecedents, or a flag distinguishing facts from conditional closures.
+
+\subsection{Language, ordinary reading, and the gate}
+
+The term language is
+\[
+ t ::= x\mid 0\mid St\mid I(n,a;u.h),
+\]
+where $u$ is bound only in $h$.  Formulas are
+\[
+ A ::= (s=t)\mid D_{x,y}A.
+\]
+The ordinary reading is unchanged:
+\[
+ D_{x,y}B(x,y)\ :=\ \exists x\,
+             \bigl(B(x,0)\to\forall y\,B(x,y)\bigr).
+\]
+Write $Q_yB$ as a metalinguistic abbreviation for
+$B(0)\to\forall yB(y)$, not as a constructor of the new formula language.
+A context $\Delta$ is a finite reusable list of templates $B(y)$; its
+ordinary reading is the list of formulas $Q_yB$.  The distinguished
+initial entry is
+\[
+ \rho(y)\equiv(y=y).
+\]
+It remains present in every context.  Its ordinary reading is a theorem.
+
+For a fresh variable $v$, define
+\[
+ \kappa_v(s=t)
+   :=\bigl(I(0,s;u.t)=I(v,s;u.t)\bigr),
+ \qquad
+ \kappa_v(D_{x,y}B):=D_{x,y}(\kappa_vB).
+\]
+Here $u$ is fresh and unused in $t$; all substitutions and insertions are
+capture-free.  In a de Bruijn implementation, placing $t$ in the new
+iterator body must lift its free indices.  The asymmetry is useful:
+\[
+ \kappa_0(s=t)\text{ is literally reflexive},\qquad
+ \kappa_{Sz}(s=t)\ \dashv\vdash\ (s=t).
+\]
+The second statement uses iterator computation and identifies the
+positive gate with the original equation.  Under nested
+$D$ binders, the outside variable $v$ remains free; the gate does not
+change the number of formula binders or an equation/compound root.
+
+\subsection{The four rule families}
+
+\paragraph{Use.}
+For an entry $B(y)$ and a target term $t$, infer $B(t)$ from one minor
+derivation of $B(0)$.  The minor may instead be omitted exactly when the
+raw substituted base $B(0)$ has the form $D^j(r=r)$ with identical
+leaf terms, for some $j\ge0$:
+\[
+ \frac{B(y)\in\Delta\qquad\Delta\vdash_H B(0)}
+      {\Delta\vdash_H B(t)},
+ \qquad
+ \frac{B(y)\in\Delta\qquad B(0)\equiv D^j(r=r)}
+      {\Delta\vdash_H B(t)}.
+ \tag{Use}
+\]
+These are the one-premise and zero-premise cases of one instruction
+family.  The omission test compares the two literal leaf terms and
+does not inspect their numerical values.  It is valid at every binder
+depth; an arbitrary compound theorem does not qualify.
+
+\paragraph{Eval.}
+From two equations, infer the result of one permitted computation:
+\[
+ \frac{\Delta\vdash_H s=t\qquad\Delta\vdash_H b=r}
+      {\Delta\vdash_H r=\Phi(s,t,b)}.
+ \tag{Eval}
+\]
+The partial operation $\Phi$ has exactly two cases:
+\[
+ \Phi(s,t,b)=
+ \begin{cases}
+ t,&b\equiv I(0,s;u.h),\\
+ h[t/u],&b\equiv I(Sc,a;u.h)\ \text{and }s\equiv I(c,a;u.h).
+ \end{cases}
+\]
+All other shapes are rejected.  In particular, no primitive root-joining
+or arbitrary transport case is included.
+
+\paragraph{Elim.}
+\[
+ \frac{\Delta\vdash_H D_{x,y}B(x,y)\qquad
+       \Delta,B(b,y)\vdash_H A}
+      {\Delta\vdash_H A}.
+ \tag{Elim}
+\]
+The eigenparameter $b$ is fresh for the conclusion, original context and
+fixed parameters.  The new retained entry is the single template
+$y\mapsto B(b,y)$, with no separately stored zero instance.
+
+\paragraph{Intro.}
+Define
+\[
+ \eta(B,t,z)=
+ \begin{cases}
+ z,&B\text{ is a literal equation and }t\equiv0,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+Then
+\[
+ \frac{\Delta,\kappa_v(B(t,\eta(B,t,z)))\vdash_H B(t,Sz)}
+      {\Delta\vdash_H D_{x,y}B(x,y)}.
+ \tag{Intro}
+\]
+The eigenparameter $z$ is fresh for $\Delta,t$ and all fixed parameters
+of $B$.  The displayed new entry is a template in its fresh argument $v$;
+$z$ is a free parameter there.  The witness-directed choice of cases or
+progress is exactly the repository's established witness rule.
+
+There are no further primitive rules or nonlogical axioms.  In
+particular, there is no Hyp rule and no Refl rule.  The designated
+contradiction is $0=S0$.
+
+\subsection{Recovering computation and numerical equality}
+
+\paragraph{Reflexivity.}
+Use the fixed entry $\rho(y)=(y=y)$ at target $t$.  Its base is literally
+$0=0$, so no minor is required and the conclusion is $t=t$.
+
+
+\paragraph{Reflexive prefixes.}
+Every well-scoped $D^j(r=r)$ is derivable in every context.  Prove this
+by induction on $j$, independently of the gate retrieval theorem.  The
+case $j=0$ is the preceding derived reflexivity.  For $j>0$, apply Intro
+with witness $1=S0$, which forces case mode.  Ignore its temporary gated
+assumption.  The required successor target has $j-1$ binders, and its
+leaf terms remain identical because both undergo the same substitutions.
+The induction hypothesis supplies that target.  Consequently every
+omitted Use minor can be expanded into an actual derivation using only
+the fixed initial matrix and the displayed rules.
+
+\paragraph{The two computations.}
+Zero computation is Eval on the reflexivities $a=a$ and
+$I(0,a;u.h)=I(0,a;u.h)$.  Successor computation is Eval on the
+reflexivities of $I(c,a;u.h)$ and $I(Sc,a;u.h)$.
+
+\paragraph{Root joining.}
+From $s=t$ and $s=r$, put $Z=I(0,s;u.0)$.  Eval on $s=r$ and $Z=Z$
+gives $Z=r$; Eval on $s=t$ and $Z=r$ gives $r=t$.  Symmetry is this
+derived joining rule with one premise reflexive; transitivity follows by
+one symmetry and one joining.
+
+\paragraph{Transport in a term template.}
+Suppose $s=t$ and $h(s)=r$.  Set
+\[
+ Z=I(0,s;u.h(u)),\qquad P=I(S0,s;u.h(u)).
+\]
+Zero-case Eval yields $Z=s$ and $Z=t$.  Successor-case Eval on $Z=s$
+and $P=P$ gives $P=h(s)$, hence $P=r$ by the preceding derived equality
+rules.  Successor-case Eval on $Z=t$ and $P=r$ now yields $r=h(t)$.
+This is the native kernel's crossed one-template transport rule.
+Consequently all numerical equality reasoning used below is derived
+inside the four-family calculus.
+
+\subsection{The gate retrieval theorem}
+\label{subsec:gate-retrieval}
+
+For every formula $A$ and every context containing $\rho$:
+\begin{enumerate}
+\item $\Delta\vdash_H\kappa_0A$.
+\item A derivation of $\kappa_1A$ can be converted effectively to a
+      derivation of $A$, and conversely.
+\item If $\kappa_vA$ is a retained context entry, then
+      $\Delta\vdash_H A$.
+\end{enumerate}
+The transformations are uniform under enlarging the context and under
+renaming eigenparameters.
+
+\paragraph{Proof of assertion 1.}
+The formula $\kappa_0A$ has the same $D$ prefix as $A$ and literally
+identical iterator terms at its leaf.  It is therefore an instance of
+the independently established reflexive-prefix theorem.  No retrieval
+lemma is used in this step.
+
+\paragraph{Simultaneous proof of assertions 2 and 3.}
+At an equation, assertion 2 is computation and equational transport.  Suppose assertion 3 has been proved for all formulas with
+fewer binders than $A=D_{x,y}B$.
+
+To convert $\kappa_1A=D_{x,y}\kappa_1B$ to $A$, eliminate the source
+at a fresh $b$, retaining the matrix $\kappa_1B(b,y)$.  Introduce the
+target with witness $b$.  Because $b$ is a variable rather than the
+literal zero, this is a case introduction.  Its local entry is
+$\kappa_v(B(b,0))$.  Assertion 3 at the smaller formula depth supplies
+$B(b,0)$.  Assertion 2 at that smaller depth converts it to
+$\kappa_1B(b,0)$.  Use the retained source matrix at target $Sz$ and
+convert its result $\kappa_1B(b,Sz)$ back to $B(b,Sz)$.  Close Intro
+and Elim.
+
+The reverse conversion starts by eliminating $D_{x,y}B$ and introducing
+$D_{x,y}\kappa_1B$ with the same fresh witness $b$.  Retrieve its local
+zero assumption by assertion 3 at the smaller depth, convert to the
+ungated zero instance, Use the retained $B(b,y)$ matrix at $Sz$, and
+convert back to the gated successor instance.  Thus assertion 2 at the
+current depth uses assertion 3 only at a strictly smaller depth.
+
+Finally, prove assertion 3 at the current depth.  Use the retained entry
+$\kappa_vA$ at target $1$.  Its zero instance is leaf-reflexive at every
+formula depth, so the minor is omitted by the explicitly stated Use
+rule.  The result is $\kappa_1A$, which assertion 2 converts to $A$.
+This completes a well-founded simultaneous induction.  If desired, the
+omitted minor can be expanded by assertion 1; no unproved compound
+assumption has been discarded.
+
+\subsection{Soundness in the original ordinary realization}
+
+Read context entries as their conditional closures in $T_{\rm eq}$.
+Formula induction in ordinary intuitionistic logic with equality proves
+\[
+ \kappa_0A,\qquad \kappa_{Sz}A\leftrightarrow A.
+\]
+At atoms the latter uses the two computations, and at a $D$ binder it
+uses the ordinary extensionality of the displayed existential conditional
+definition.  Numerical coverage therefore proves
+\[
+ A\ \longrightarrow\ Q_v\kappa_vA.
+ \tag{Gate introduction}
+\]
+Indeed, under $A$, a numerical argument is zero or a successor; the
+first gated instance is a theorem, and the second is equivalent to $A$.
+
+Induct now on a four-family derivation.  Eval is a valid equational
+consequence.  Use is conditional-universal specialization; when its
+minor is omitted, the reflexive-prefix theorem supplies exactly that
+missing minor.  Elim is ordinary existential elimination.  For Intro, its
+ordinary temporary fact $B(t,\eta)$ supplies the retained encoded
+assumption by Gate introduction.  When $\eta=0$, the successor premise
+and numerical coverage establish the conditional universal conclusion.
+When $\eta=z$, the matrix is an equation, and equation induction with
+retained side assumptions establishes the same conditional conclusion.
+Existential introduction at $t$ completes the argument.  The initial
+$\rho$ closure is an equality theorem.  Hence the calculus is sound
+under the unchanged ordinary reading.
+
+\subsection{Completeness and the interpretation composites}
+
+Let $W$ be the pinned seven-rule witness calculus \texttt{WPrf}.  The
+repository proves \texttt{wprf\_iff\_nprf}; its introduction uses the
+same witness test as above.  Translate its formulas by fixing equations
+and $D$ and putting
+\[
+ (Q_yB)^\circ=D_{r,y}B^\circ
+\]
+with $r$ fresh and unused.  The translation preserves root class, fixed
+parameters and capture-free numerical substitution.
+
+The precise derivation induction is: if $\Gamma\vdash_W A$, and every
+$C\in\Gamma$ has a proof of $C^\circ$ from a homogeneous context
+$\Delta$, then $\Delta\vdash_H A^\circ$.  Hyp uses the supplied proof.
+The computations and transport use the equational derivations above.
+For $Q$ elimination, eliminate the translated dummy-witness $D$ and Use
+its retained matrix at the original target.  For Intro, the gate
+retrieval theorem supplies precisely the translated local fact from the
+new entry $\kappa_v(B^\circ(t,\eta))$, so the induction hypothesis
+applies to the source premise.
+
+For source $D$ elimination, the newly retained matrix is
+$B^\circ(b,y)$.  It supplies the translated source assumption
+$(Q_yB(b,y))^\circ=D_{r,y}B^\circ(b,y)$ as follows: introduce this
+dummy-witness binder at witness $1$, ensuring case mode, retrieve its
+local zero fact through the gate theorem, and Use the retained matrix at
+$Sz$.  Thus the derivation induction also applies to the source
+elimination premise.  This strengthened context statement avoids any
+unproved primitive cut or clause-construction rule.
+
+For an explicit source context, take $\Delta$ to consist of $\rho$ and
+the entries $\kappa_v(C^\circ)$ for $C\in\Gamma$; gate retrieval
+provides all needed hypothesis proofs.  Hence every source derivation
+has an effective four-family derivation.
+
+Conversely, the soundness proof translates every new rule to the original
+ordinary scalar theory.  The pinned native completeness theorem returns
+it to the native calculus.  For context bookkeeping, the reading of a
+matrix entry is exactly its native $Q$ formula, and
+$Q_v\kappa_vA\leftrightarrow A$ follows from Gate introduction and
+specialization at $1$.  Thus the encoded-context composites are also
+provably equivalent, not merely equiconsistent.
+
+On formulas, the $H$-to-native translation is the inclusion of the
+Eq/$D$ language.  The other translation only replaces $Q$ by $D$ with
+an unused witness.  The native theory proves this replacement
+equivalent in both directions, so formula induction gives both
+round trips.  The $H$-side formula composite is literally the identity.
+Both term maps and both numerical domains are the identity; numerical
+equality remains actual equality.  Composing with the repository's
+native-to-iPRA bi-interpretation gives the requested bi-interpretability,
+both numerical composite graphs $x=y$, and equiconsistency.  The
+designated contradiction is fixed.  The arithmetic bridge and its
+existing proof-assistant verification are inherited results; the new
+gate and context theorem is a written proof unless separately formalized.
+
+\subsection{A flat formula representation}
+
+The Eq/$D$ grammar is unary above its atomic leaf.  Every formula is
+uniquely of the form
+\[
+ D_{x_1,y_1}\cdots D_{x_k,y_k}(s=t).
+\]
+It may therefore be represented by $(k,s,t)$ instead of a recursively
+nested formula tree, with the terms scoped under the $2k$ displayed
+bound variables.  A gate leaves $k$ unchanged and transforms the single
+leaf equation; a binder adds one to $k$.  Under a relative-index
+representation, the gate's external variable must be placed outside all
+$2k$ formula-bound variables, and placing the old right-hand term under the iterator binder
+requires lifting its exterior positive indices. In the mixed convention
+of the delivered checker, negative free-parameter levels remain unchanged.  This is a representation theorem with no change
+of language or interpretation.  Checker measurements must still include
+the integer and scope validation, capture-free substitutions and gate
+construction.
+
+\paragraph{Scope of the simplicity claim.}
+The mathematical deletion is the separate antecedent field of every
+retained clause.  Fact assumptions and conditional closures now use one
+homogeneous context grammar.  The omitted-minor reflexivity test and the
+gate are explicit parts of the trusted checker.  Four instruction
+families do not beat the repository's existing four-family count by
+themselves; any software-size improvement must be the result of a
+matched, complete, measured implementation.
+
+
+\paragraph{Implementation evidence.}
+The separate homogeneous implementation was checked on 400 generated
+formulas for its literally reflexive zero gate and on 800 positive-control
+instances against environment-based numerical evaluation. Six closed
+certificates passed, including equation induction whose local hypothesis
+is recovered from its gated context entry, followed by specialization.
+These finite checks are reproduced by \texttt{code/audit\_homogeneous.py};
+they are separate from the primary checker's subprocess comparison.
+
+
+\clearpage
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{repo} Vladimir Reshetnikov, \emph{Concise presentations of
+intuitionistic primitive recursive arithmetic}, pinned repository README,
+commit \code{17898ea7e6a1300dfdcad71040d5daeed67916d4}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/17898ea7e6a1300dfdcad71040d5daeed67916d4/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}.
+\bibitem{clausal} Same repository, \code{Lean/ConciseIPRA/NativeClausal.lean},
+including \code{CPrf}, \code{cprf\_iff\_nprf}, and the clause translations.
+\bibitem{uniform} Same repository,
+\code{Lean/ConciseIPRA/NativeUniformClauses.lean} and
+\code{Research/uniform\_clauses/code/checker.py}; the four-family clause
+interface and its original standalone implementation.
+\bibitem{eval} Same repository,
+\code{Lean/ConciseIPRA/NativeEval.lean} and
+\code{Research/clausal\_two\_case/}; computational equality and its
+two-case reduction.
+\bibitem{witness} Same repository,
+\code{Lean/ConciseIPRA/NativeOneIntro.lean}; the exact equivalence of
+the witness-directed single introduction and the native kernel.
+\bibitem{native-bi} Same repository,
+\code{Lean/ConciseIPRA/NativeBiInterpretation.lean},
+\code{NativeRoundTrip.lean}, and \code{BiInterpretation.lean}; ordinary
+readings, native round trips, and the scalar--iPRA bi-interpretation.
+\bibitem{bridge} Same repository,
+\code{Research/certified\_zero/reference/}: the inherited choice basis,
+ordinary bridge, scalar predecessor, equality reflection, and primitive
+recursion proofs. These five source files are included in this package
+with provenance and the repository's MIT-0 license.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,203 @@
+\section{Normalization and the arithmetic comparison}
+\label{sec:normalization}
+
+\subsection{A precise canonical syntax}
+
+For the metatheory, first distinguish the raw constructors $0,S,R$.
+Orient the two recursor equations as
+\[
+ R(0,a;i,u.h)\longrightarrow Sa,\qquad
+ R(Sn,a;i,u.h)\longrightarrow h[n/i,R(n,a;i,u.h)/u].
+\]
+Reductions may occur in every numerical subterm, including an update
+body under its two binders. The mathematical normal form is taken in
+this raw syntax. Its finite encoding then prints $Sa$ as $[0,a,0]$ and
+an unreduced $R(n,a;i,u.h)$ as $[n,a,h]$. Thus the implementation's
+zero-counter clause is a canonical constructor operation, not a rewrite
+of $R(0,a;0)$ to itself to be repeated forever.
+
+\begin{lemma}[Canonical computation]
+Every well-sorted finite term has a unique computation normal form.
+Reduction introduces no new free variable. For every capture-avoiding
+substitution $\sigma$,
+\[
+ N(t[\sigma])=N(N(t)[N\circ\sigma]).
+\]
+The corresponding statements hold for formulas and one-place templates.
+\end{lemma}
+\begin{proof}
+One standard strong-normalization proof embeds a raw recursor into the
+ground-type natural-number recursor: its starting value is $Sa$, and its
+step is the finite function $(i,u)\mapsto h(i,u)$. Variables in $h$ are
+bound numerical arguments; there is no application of a variable as a
+function. The usual reducibility proof specializes directly to this
+fragment. Its recursor case inducts on a computable counter and its
+reducts: at zero the result is the computable starting value, and at a
+successor the recursive call is computable at the predecessor and the
+computable update preserves computability. At a neutral counter the
+recursor is neutral and its reductions are those of computable proper
+subterms. Structural induction on a finite term, with computable terms
+substituted for its numerical variables, establishes computability and
+hence strong normalization. Applying the same argument under fresh
+variables handles reductions inside update bodies.
+
+The two root patterns are disjoint and left-linear. Nested reductions
+commute by the capture-avoiding substitution lemma; duplicating an update
+or an argument duplicates its reducts on the other branch of the diagram.
+The parallel-reduction argument therefore gives confluence. Strong
+normalization and confluence give a unique normal form. Applying a
+substitution to each computation equation yields another valid
+computation; normalizing the two sides of this conversion proves the
+displayed coherence identity. All right sides use only variables from
+their left sides, proving the free-variable assertion.
+\end{proof}
+
+This is an external metatheorem about finite expressions. There is no
+claim that normalization of arbitrary supplied descriptions admits a
+uniform primitive-recursive bound. In particular, a full normalizer is
+not free infrastructure in the complexity comparison: its whole source
+is included, and the bounded verifier charges every recursive traversal.
+
+\subsection{Computation is also provable in the ordinary theory}
+
+The ordinary realization $T_R$ mentioned above uses raw finite recursor
+descriptions. An instance nested in a counter or initializer is transported
+by equality. A reduction inside an update is justified by the following
+body-extensionality lemma, rather than by silently treating a bound
+function as a first-order numerical argument.
+
+\begin{lemma}[Extensionality for a fixed update]
+If $h(i,u)=k(i,u)$ is derivable uniformly in its two displayed variables,
+then
+\[
+ R(n,a;i,u.h)=R(n,a;i,u.k)
+\]
+is derivable for every $n$, with all passive parameters fixed.
+\end{lemma}
+\begin{proof}
+Use literal-equation induction on the displayed equality. At zero both
+sides are $Sa$. At a successor, computation exposes the two updates.
+The induction equation first replaces the old state in one update;
+the supplied pointwise update identity then changes $h$ into $k$.
+All inductions used here have a literal equation as their formula.
+\end{proof}
+
+Consequently each finite reduction to $N(t)$ yields an internal proof
+of $t=N(t)$. An external induction on a formula gives the corresponding
+equivalence between its raw and normalized readings. There is no use
+of a uniform internal truth or evaluation predicate.
+
+\subsection{The full comparison is over finite descriptions}
+
+The comparison theory for the proof translation is the diagonal native
+calculus, conservatively supplied with fixed $R$ descriptions and their
+computation equations. Each occurrence of $R(n,a;i,u.h)$ first compiles
+the proper subdescriptions of $a,h$ and then introduces the primitive
+recursion with that fixed update. The resulting description is finite.
+This construction is staged by syntax, not by a runtime code variable.
+
+The diagonal proof works uniformly in the enlarged numerical vocabulary:
+its selector identity and its equation-induction simulation treat the two
+sides of an equation as arbitrary term templates. The new computations
+translate to literal reflexivity after normalization. Conversely, iPRA
+interprets every such fixed description by primitive recursion. This
+supplies the whole target language, including equations with $R$ in their
+updates, to the source-to-target argument.
+
+For clarity, the forward compilation of an ordinary primitive-recursive
+definition is explicit:
+\[
+\begin{aligned}
+0^*&=0, & S^*(x)&=R(0,x;i,u.0), & \pi_j^*(\vec x)&=x_j,\\
+(f\circ\vec g)^*(\vec x)&=f^*(g_1^*(\vec x),\ldots,g_m^*(\vec x)),\\
+(\operatorname{rec}(g,h))^*(n,\vec x)
+  &=P\bigl(R(n,g^*(\vec x);i,v.
+        S(h^*(i,P(v),\vec x)))\bigr).
+\end{aligned}
+\]
+The reverse compilation sends $R(n,a;i,u.h)$ to the fixed ordinary
+primitive-recursive function with base $S(a)$ and step $h$. These are
+translations of descriptions; no quantification over functions is added.
+
+\begin{theorem}[Bi-interpretability and consistency]
+The ordinary realization of the three-instruction calculus is
+bi-interpretable with $\ipra$. Both domains are the full numerical sort,
+equality is genuine equality, and both numerical comparison maps have
+graph $x=y$. Each full formula is provably equivalent to its double
+translation. In particular the new calculus proves $0=S0$ if and only
+if $\ipra$ proves $\bot$.
+\end{theorem}
+\begin{proof}
+The rule-by-rule argument establishes the presentation theorem for
+$T_R$. The interpretation of its calculations in $\ipra$ is the fixed
+recursion just described. Coverage and separation hold in $\ipra$, and
+literal-equation induction is an instance of quantifier-free induction.
+For the reverse direction the displayed compilation validates the
+primitive-recursive equations; applying $P$ proves successor injectivity.
+If $Sx=0$, the selector equations force $0=S0$, so successor separation
+also holds. The scalar iterator $J$ supplies the already established
+scalar equality-reflection construction. Thus every quantifier-free
+formula is equivalent to the vanishing of a fixed numerical term, and
+its induction instance follows from equation induction. The attributed
+full equality-reflection derivation is reproduced in the reference folder
+\cite{foundations}.
+
+For a fixed recursive definition, equation induction proves uniqueness
+from its base and step equations. External induction on each finite
+description therefore proves that its double translation has the same
+value as the original, internally for every numerical argument and every
+passive parameter. The domain interpretations are unrestricted and the
+isomorphism is the identity. The native logical encodings below and the
+ordinary reading of $D$ supply both formula round trips. Falsehood is
+carried to the fixed equation $0=S0$, and its ordinary reading implies
+$\bot$ by the explicit separation axiom. Hence contradiction proofs
+translate both ways.
+\end{proof}
+
+The argument asserts effective finite proof translations and internal
+round-trip identities. It does not assert a uniform primitive-recursive
+normalization algorithm, a proof of consistency inside iPRA, or a new
+formal verification of the metatheory.
+
+\subsection{Recovering the ordinary logical vocabulary}
+
+Here is an explicit account of the logical language being recovered.
+Write $q_yA=D_{d,y}A$ with $d$ unused. Formula padding is
+$L(A)=q_yG_yA$, where $G$ gates the final equation by $C$. Padding is
+equivalent to $A$; it permits two formulas to be brought to the same
+number of paired binders. After freshening and aligning those binders,
+replace their two final equation endpoints componentwise by the selector
+$C(v,-,-)$. The resulting formula $\operatorname{sel}(v,A,B)$ is
+equivalent to $A$ at zero and $B$ at a successor. All temporary bound
+variables are distinct from $v$ and the free variables of $A,B$.
+
+Let $\operatorname{par}$ be the fixed primitive-recursive parity term.
+One standard native encoding is
+\[
+\begin{aligned}
+\bot^*&=(0=S0),\\
+(A\to B)^*&=q_y\operatorname{sel}(y,A^*,B^*),\\
+(A\land B)^*&=q_yG_y\operatorname{sel}(\operatorname{par}(y),A^*,B^*),\\
+(\exists x\,A)^*&=D_{x,y}G_yA^*,\\
+(A\lor B)^*&=\exists v\,\operatorname{sel}(v,A^*,B^*),\\
+(\forall x\,A)^*&=A^*(0)\land q_x A^*(x).
+\end{aligned}
+\]
+The last three displays use the macros defined in earlier lines.
+Bound variables in each line are fresh. Selecting $1$ and $2$ in the
+conjunction gives its two components. For implication, its zero row is
+the antecedent and each successor row is the consequent. Existential
+introduction and elimination are exactly the gated paired rules. Numerical
+coverage proves the disjunction case rule. Transport along $0=S0$ in
+a gate changes its provable zero instance into any chosen formula,
+giving explosion. These are intuitionistic derivations; no excluded
+middle for formulas with quantifiers is used.
+
+The diagonal native equivalence gives these rules under arbitrary retained
+assumptions, not just for closed arithmetic identities. By structural
+induction the ordinary reading of each macro is equivalent to its intended
+connective. Expanding the ordinary reading of a native $D$ back through
+the macros gives the original $D$, again under arbitrary assumptions.
+Together with the numerical uniqueness argument this proves both formula
+round trips, rather than only mutual interpretability of theorem sets.
+

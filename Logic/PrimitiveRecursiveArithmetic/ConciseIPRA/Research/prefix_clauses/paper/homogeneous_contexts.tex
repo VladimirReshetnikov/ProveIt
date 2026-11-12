@@ -1,0 +1,340 @@
+\section{The homogeneous four-family calculus}
+\label{sec:homogeneous}
+
+The proposed calculus retains the scalar terms and the original ordinary
+meaning of the repository's Eq/$D$ language.  The change is in retained
+assumptions: every context entry is a single one-variable formula
+template.  No entry has a separately stored antecedent, a list of
+antecedents, or a flag distinguishing facts from conditional closures.
+
+\subsection{Language, ordinary reading, and the gate}
+
+The term language is
+\[
+ t ::= x\mid 0\mid St\mid I(n,a;u.h),
+\]
+where $u$ is bound only in $h$.  Formulas are
+\[
+ A ::= (s=t)\mid D_{x,y}A.
+\]
+The ordinary reading is unchanged:
+\[
+ D_{x,y}B(x,y)\ :=\ \exists x\,
+             \bigl(B(x,0)\to\forall y\,B(x,y)\bigr).
+\]
+Write $Q_yB$ as a metalinguistic abbreviation for
+$B(0)\to\forall yB(y)$, not as a constructor of the new formula language.
+A context $\Delta$ is a finite reusable list of templates $B(y)$; its
+ordinary reading is the list of formulas $Q_yB$.  The distinguished
+initial entry is
+\[
+ \rho(y)\equiv(y=y).
+\]
+It remains present in every context.  Its ordinary reading is a theorem.
+
+For a fresh variable $v$, define
+\[
+ \kappa_v(s=t)
+   :=\bigl(I(0,s;u.t)=I(v,s;u.t)\bigr),
+ \qquad
+ \kappa_v(D_{x,y}B):=D_{x,y}(\kappa_vB).
+\]
+Here $u$ is fresh and unused in $t$; all substitutions and insertions are
+capture-free.  In a de Bruijn implementation, placing $t$ in the new
+iterator body must lift its free indices.  The asymmetry is useful:
+\[
+ \kappa_0(s=t)\text{ is literally reflexive},\qquad
+ \kappa_{Sz}(s=t)\ \dashv\vdash\ (s=t).
+\]
+The second statement uses iterator computation and identifies the
+positive gate with the original equation.  Under nested
+$D$ binders, the outside variable $v$ remains free; the gate does not
+change the number of formula binders or an equation/compound root.
+
+\subsection{The four rule families}
+
+\paragraph{Use.}
+For an entry $B(y)$ and a target term $t$, infer $B(t)$ from one minor
+derivation of $B(0)$.  The minor may instead be omitted exactly when the
+raw substituted base $B(0)$ has the form $D^j(r=r)$ with identical
+leaf terms, for some $j\ge0$:
+\[
+ \frac{B(y)\in\Delta\qquad\Delta\vdash_H B(0)}
+      {\Delta\vdash_H B(t)},
+ \qquad
+ \frac{B(y)\in\Delta\qquad B(0)\equiv D^j(r=r)}
+      {\Delta\vdash_H B(t)}.
+ \tag{Use}
+\]
+These are the one-premise and zero-premise cases of one instruction
+family.  The omission test compares the two literal leaf terms and
+does not inspect their numerical values.  It is valid at every binder
+depth; an arbitrary compound theorem does not qualify.
+
+\paragraph{Eval.}
+From two equations, infer the result of one permitted computation:
+\[
+ \frac{\Delta\vdash_H s=t\qquad\Delta\vdash_H b=r}
+      {\Delta\vdash_H r=\Phi(s,t,b)}.
+ \tag{Eval}
+\]
+The partial operation $\Phi$ has exactly two cases:
+\[
+ \Phi(s,t,b)=
+ \begin{cases}
+ t,&b\equiv I(0,s;u.h),\\
+ h[t/u],&b\equiv I(Sc,a;u.h)\ \text{and }s\equiv I(c,a;u.h).
+ \end{cases}
+\]
+All other shapes are rejected.  In particular, no primitive root-joining
+or arbitrary transport case is included.
+
+\paragraph{Elim.}
+\[
+ \frac{\Delta\vdash_H D_{x,y}B(x,y)\qquad
+       \Delta,B(b,y)\vdash_H A}
+      {\Delta\vdash_H A}.
+ \tag{Elim}
+\]
+The eigenparameter $b$ is fresh for the conclusion, original context and
+fixed parameters.  The new retained entry is the single template
+$y\mapsto B(b,y)$, with no separately stored zero instance.
+
+\paragraph{Intro.}
+Define
+\[
+ \eta(B,t,z)=
+ \begin{cases}
+ z,&B\text{ is a literal equation and }t\equiv0,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+Then
+\[
+ \frac{\Delta,\kappa_v(B(t,\eta(B,t,z)))\vdash_H B(t,Sz)}
+      {\Delta\vdash_H D_{x,y}B(x,y)}.
+ \tag{Intro}
+\]
+The eigenparameter $z$ is fresh for $\Delta,t$ and all fixed parameters
+of $B$.  The displayed new entry is a template in its fresh argument $v$;
+$z$ is a free parameter there.  The witness-directed choice of cases or
+progress is exactly the repository's established witness rule.
+
+There are no further primitive rules or nonlogical axioms.  In
+particular, there is no Hyp rule and no Refl rule.  The designated
+contradiction is $0=S0$.
+
+\subsection{Recovering computation and numerical equality}
+
+\paragraph{Reflexivity.}
+Use the fixed entry $\rho(y)=(y=y)$ at target $t$.  Its base is literally
+$0=0$, so no minor is required and the conclusion is $t=t$.
+
+
+\paragraph{Reflexive prefixes.}
+Every well-scoped $D^j(r=r)$ is derivable in every context.  Prove this
+by induction on $j$, independently of the gate retrieval theorem.  The
+case $j=0$ is the preceding derived reflexivity.  For $j>0$, apply Intro
+with witness $1=S0$, which forces case mode.  Ignore its temporary gated
+assumption.  The required successor target has $j-1$ binders, and its
+leaf terms remain identical because both undergo the same substitutions.
+The induction hypothesis supplies that target.  Consequently every
+omitted Use minor can be expanded into an actual derivation using only
+the fixed initial matrix and the displayed rules.
+
+\paragraph{The two computations.}
+Zero computation is Eval on the reflexivities $a=a$ and
+$I(0,a;u.h)=I(0,a;u.h)$.  Successor computation is Eval on the
+reflexivities of $I(c,a;u.h)$ and $I(Sc,a;u.h)$.
+
+\paragraph{Root joining.}
+From $s=t$ and $s=r$, put $Z=I(0,s;u.0)$.  Eval on $s=r$ and $Z=Z$
+gives $Z=r$; Eval on $s=t$ and $Z=r$ gives $r=t$.  Symmetry is this
+derived joining rule with one premise reflexive; transitivity follows by
+one symmetry and one joining.
+
+\paragraph{Transport in a term template.}
+Suppose $s=t$ and $h(s)=r$.  Set
+\[
+ Z=I(0,s;u.h(u)),\qquad P=I(S0,s;u.h(u)).
+\]
+Zero-case Eval yields $Z=s$ and $Z=t$.  Successor-case Eval on $Z=s$
+and $P=P$ gives $P=h(s)$, hence $P=r$ by the preceding derived equality
+rules.  Successor-case Eval on $Z=t$ and $P=r$ now yields $r=h(t)$.
+This is the native kernel's crossed one-template transport rule.
+Consequently all numerical equality reasoning used below is derived
+inside the four-family calculus.
+
+\subsection{The gate retrieval theorem}
+\label{subsec:gate-retrieval}
+
+For every formula $A$ and every context containing $\rho$:
+\begin{enumerate}
+\item $\Delta\vdash_H\kappa_0A$.
+\item A derivation of $\kappa_1A$ can be converted effectively to a
+      derivation of $A$, and conversely.
+\item If $\kappa_vA$ is a retained context entry, then
+      $\Delta\vdash_H A$.
+\end{enumerate}
+The transformations are uniform under enlarging the context and under
+renaming eigenparameters.
+
+\paragraph{Proof of assertion 1.}
+The formula $\kappa_0A$ has the same $D$ prefix as $A$ and literally
+identical iterator terms at its leaf.  It is therefore an instance of
+the independently established reflexive-prefix theorem.  No retrieval
+lemma is used in this step.
+
+\paragraph{Simultaneous proof of assertions 2 and 3.}
+At an equation, assertion 2 is computation and equational transport.  Suppose assertion 3 has been proved for all formulas with
+fewer binders than $A=D_{x,y}B$.
+
+To convert $\kappa_1A=D_{x,y}\kappa_1B$ to $A$, eliminate the source
+at a fresh $b$, retaining the matrix $\kappa_1B(b,y)$.  Introduce the
+target with witness $b$.  Because $b$ is a variable rather than the
+literal zero, this is a case introduction.  Its local entry is
+$\kappa_v(B(b,0))$.  Assertion 3 at the smaller formula depth supplies
+$B(b,0)$.  Assertion 2 at that smaller depth converts it to
+$\kappa_1B(b,0)$.  Use the retained source matrix at target $Sz$ and
+convert its result $\kappa_1B(b,Sz)$ back to $B(b,Sz)$.  Close Intro
+and Elim.
+
+The reverse conversion starts by eliminating $D_{x,y}B$ and introducing
+$D_{x,y}\kappa_1B$ with the same fresh witness $b$.  Retrieve its local
+zero assumption by assertion 3 at the smaller depth, convert to the
+ungated zero instance, Use the retained $B(b,y)$ matrix at $Sz$, and
+convert back to the gated successor instance.  Thus assertion 2 at the
+current depth uses assertion 3 only at a strictly smaller depth.
+
+Finally, prove assertion 3 at the current depth.  Use the retained entry
+$\kappa_vA$ at target $1$.  Its zero instance is leaf-reflexive at every
+formula depth, so the minor is omitted by the explicitly stated Use
+rule.  The result is $\kappa_1A$, which assertion 2 converts to $A$.
+This completes a well-founded simultaneous induction.  If desired, the
+omitted minor can be expanded by assertion 1; no unproved compound
+assumption has been discarded.
+
+\subsection{Soundness in the original ordinary realization}
+
+Read context entries as their conditional closures in $T_{\rm eq}$.
+Formula induction in ordinary intuitionistic logic with equality proves
+\[
+ \kappa_0A,\qquad \kappa_{Sz}A\leftrightarrow A.
+\]
+At atoms the latter uses the two computations, and at a $D$ binder it
+uses the ordinary extensionality of the displayed existential conditional
+definition.  Numerical coverage therefore proves
+\[
+ A\ \longrightarrow\ Q_v\kappa_vA.
+ \tag{Gate introduction}
+\]
+Indeed, under $A$, a numerical argument is zero or a successor; the
+first gated instance is a theorem, and the second is equivalent to $A$.
+
+Induct now on a four-family derivation.  Eval is a valid equational
+consequence.  Use is conditional-universal specialization; when its
+minor is omitted, the reflexive-prefix theorem supplies exactly that
+missing minor.  Elim is ordinary existential elimination.  For Intro, its
+ordinary temporary fact $B(t,\eta)$ supplies the retained encoded
+assumption by Gate introduction.  When $\eta=0$, the successor premise
+and numerical coverage establish the conditional universal conclusion.
+When $\eta=z$, the matrix is an equation, and equation induction with
+retained side assumptions establishes the same conditional conclusion.
+Existential introduction at $t$ completes the argument.  The initial
+$\rho$ closure is an equality theorem.  Hence the calculus is sound
+under the unchanged ordinary reading.
+
+\subsection{Completeness and the interpretation composites}
+
+Let $W$ be the pinned seven-rule witness calculus \texttt{WPrf}.  The
+repository proves \texttt{wprf\_iff\_nprf}; its introduction uses the
+same witness test as above.  Translate its formulas by fixing equations
+and $D$ and putting
+\[
+ (Q_yB)^\circ=D_{r,y}B^\circ
+\]
+with $r$ fresh and unused.  The translation preserves root class, fixed
+parameters and capture-free numerical substitution.
+
+The precise derivation induction is: if $\Gamma\vdash_W A$, and every
+$C\in\Gamma$ has a proof of $C^\circ$ from a homogeneous context
+$\Delta$, then $\Delta\vdash_H A^\circ$.  Hyp uses the supplied proof.
+The computations and transport use the equational derivations above.
+For $Q$ elimination, eliminate the translated dummy-witness $D$ and Use
+its retained matrix at the original target.  For Intro, the gate
+retrieval theorem supplies precisely the translated local fact from the
+new entry $\kappa_v(B^\circ(t,\eta))$, so the induction hypothesis
+applies to the source premise.
+
+For source $D$ elimination, the newly retained matrix is
+$B^\circ(b,y)$.  It supplies the translated source assumption
+$(Q_yB(b,y))^\circ=D_{r,y}B^\circ(b,y)$ as follows: introduce this
+dummy-witness binder at witness $1$, ensuring case mode, retrieve its
+local zero fact through the gate theorem, and Use the retained matrix at
+$Sz$.  Thus the derivation induction also applies to the source
+elimination premise.  This strengthened context statement avoids any
+unproved primitive cut or clause-construction rule.
+
+For an explicit source context, take $\Delta$ to consist of $\rho$ and
+the entries $\kappa_v(C^\circ)$ for $C\in\Gamma$; gate retrieval
+provides all needed hypothesis proofs.  Hence every source derivation
+has an effective four-family derivation.
+
+Conversely, the soundness proof translates every new rule to the original
+ordinary scalar theory.  The pinned native completeness theorem returns
+it to the native calculus.  For context bookkeeping, the reading of a
+matrix entry is exactly its native $Q$ formula, and
+$Q_v\kappa_vA\leftrightarrow A$ follows from Gate introduction and
+specialization at $1$.  Thus the encoded-context composites are also
+provably equivalent, not merely equiconsistent.
+
+On formulas, the $H$-to-native translation is the inclusion of the
+Eq/$D$ language.  The other translation only replaces $Q$ by $D$ with
+an unused witness.  The native theory proves this replacement
+equivalent in both directions, so formula induction gives both
+round trips.  The $H$-side formula composite is literally the identity.
+Both term maps and both numerical domains are the identity; numerical
+equality remains actual equality.  Composing with the repository's
+native-to-iPRA bi-interpretation gives the requested bi-interpretability,
+both numerical composite graphs $x=y$, and equiconsistency.  The
+designated contradiction is fixed.  The arithmetic bridge and its
+existing proof-assistant verification are inherited results; the new
+gate and context theorem is a written proof unless separately formalized.
+
+\subsection{A flat formula representation}
+
+The Eq/$D$ grammar is unary above its atomic leaf.  Every formula is
+uniquely of the form
+\[
+ D_{x_1,y_1}\cdots D_{x_k,y_k}(s=t).
+\]
+It may therefore be represented by $(k,s,t)$ instead of a recursively
+nested formula tree, with the terms scoped under the $2k$ displayed
+bound variables.  A gate leaves $k$ unchanged and transforms the single
+leaf equation; a binder adds one to $k$.  Under a relative-index
+representation, the gate's external variable must be placed outside all
+$2k$ formula-bound variables, and placing the old right-hand term under the iterator binder
+requires lifting its exterior positive indices. In the mixed convention
+of the delivered checker, negative free-parameter levels remain unchanged.  This is a representation theorem with no change
+of language or interpretation.  Checker measurements must still include
+the integer and scope validation, capture-free substitutions and gate
+construction.
+
+\paragraph{Scope of the simplicity claim.}
+The mathematical deletion is the separate antecedent field of every
+retained clause.  Fact assumptions and conditional closures now use one
+homogeneous context grammar.  The omitted-minor reflexivity test and the
+gate are explicit parts of the trusted checker.  Four instruction
+families do not beat the repository's existing four-family count by
+themselves; any software-size improvement must be the result of a
+matched, complete, measured implementation.
+
+
+\paragraph{Implementation evidence.}
+The separate homogeneous implementation was checked on 400 generated
+formulas for its literally reflexive zero gate and on 800 positive-control
+instances against environment-based numerical evaluation. Six closed
+certificates passed, including equation induction whose local hypothesis
+is recovered from its gated context entry, followed by specialization.
+These finite checks are reproduced by \texttt{code/audit\_homogeneous.py};
+they are separate from the primary checker's subprocess comparison.

@@ -64,9 +64,6 @@ instance : Syn PTm where
 @[simp] theorem subst_app (σ : Fin n → PTm m) (f : PR k) (ts : Fin k → PTm n) :
     Syn.subst σ (app f ts) = app f (fun i => Syn.subst σ (ts i)) := rfl
 
-@[simp] theorem shift_app (f : PR k) (ts : Fin k → PTm n) :
-    Syn.shift (app f ts) = app f (fun i => Syn.shift (ts i)) := rfl
-
 /-- The numeral `0`. -/
 def zero : PTm n := app .zero Fin.elim0
 
@@ -109,22 +106,19 @@ variable {n k m : ℕ} {Γ : List (Fm PTm n)}
 
 /-- Projection, at arbitrary arguments. -/
 theorem proj (i : Fin k) (ts : Fin k → PTm n) : Γ ⊢[PRAAx] app (.proj i) ts ≐ ts i := by
-  have := Prf.ax (Γ := Γ) (PRAAx.proj i) ts
-  simpa using this
+  simpa using Prf.ax (Γ := Γ) (PRAAx.proj i) ts
 
 /-- Composition, at arbitrary arguments. -/
 theorem comp (f : PR m) (gs : Fin m → PR k) (ts : Fin k → PTm n) :
     Γ ⊢[PRAAx] app (.comp f gs) ts ≐ app f (fun j => app (gs j) ts) := by
-  have := Prf.ax (Γ := Γ) (PRAAx.comp f gs) ts
-  simpa using this
+  simpa using Prf.ax (Γ := Γ) (PRAAx.comp f gs) ts
 
 /-- Primitive recursion at zero, at arbitrary parameters. -/
 theorem precZero (f : PR k) (g : PR (k + 2)) (xs : Fin k → PTm n) :
     Γ ⊢[PRAAx] app (.prec f g) (Fin.cases zero xs) ≐ app f xs := by
   have h := Prf.ax (Γ := Γ) (PRAAx.precZero f g) xs
   have e : (fun i => Syn.subst xs (inst (zero : PTm k) i)) = Fin.cases zero xs := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i <;> simp
+    refine funext (Fin.cases ?_ fun j => ?_) <;> simp
   simpa [e] using h
 
 /-- Primitive recursion at a successor, at arbitrary arguments. -/
@@ -134,20 +128,17 @@ theorem precSucc (f : PR k) (g : PR (k + 2)) (y : PTm n) (xs : Fin k → PTm n) 
   have h := Prf.ax (Γ := Γ) (PRAAx.precSucc f g) (Fin.cases y xs)
   have e₁ : (fun i => Syn.subst (Fin.cases y xs : Fin (k + 1) → PTm n)
       (repl (succ (var 0)) i)) = Fin.cases (succ y) xs := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i <;> simp
+    refine funext (Fin.cases ?_ fun j => ?_) <;> simp
   have e₂ : (fun i => Syn.subst (Fin.cases y xs : Fin (k + 1) → PTm n)
       ((Fin.cases (var 0) (repl (app (.prec f g) var)) : Fin (k + 2) → PTm (k + 1)) i))
       = Fin.cases y (Fin.cases (app (.prec f g) (Fin.cases y xs)) xs) := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
+    refine funext (Fin.cases ?_ fun j => ?_)
     · simp
     · refine Fin.cases ?_ (fun l => ?_) j <;> simp
   simpa [e₁, e₂] using h
 
 theorem succNeZero (t : PTm n) : Γ ⊢[PRAAx] (succ t ≐ zero) ⟶ Fm.bot := by
-  have := Prf.ax (Γ := Γ) PRAAx.succNeZero (fun _ => t)
-  simpa using this
+  simpa using Prf.ax (Γ := Γ) PRAAx.succNeZero (fun _ => t)
 
 /-- Induction for a quantifier-free formula. -/
 theorem qfInd (φ : Fm PTm (n + 1)) (hφ : φ.QF) (h0 : Γ ⊢[PRAAx] φ.subst (inst zero))

@@ -42,11 +42,8 @@ theorem qShiftE {B : NFm (n + 1)} {Δ : List (NFm (n + 1))} (t : Tm (n + 1))
 /-- Elimination of a universal statement moved under a fresh variable. -/
 theorem allShiftE {A : NFm (n + 1)} {Δ : List (NFm (n + 1))} (t : Tm (n + 1))
     (h : NPrf Δ (NFm.all A).shift) : NPrf Δ (A.subst (repl t)) := by
-  have h₁ : NPrf Δ (NFm.all (A.subst (up (fun i => Syn.var i.succ)))) := by
-    rw [← NFm.all_subst]
-    exact h
-  have h₂ := allE t h₁
-  rwa [NFm.subst_dummy_up_inst] at h₂
+  rw [NFm.shift, NFm.all_subst] at h
+  simpa only [NFm.subst_dummy_up_inst] using allE t h
 
 /-- Introduction of `D` from an instance of `Q`. -/
 theorem dI {B : NFm (n + 2)} (t : Tm n) (h : NPrf Γ (.Q (B.subst (up (inst t))))) :
@@ -58,23 +55,16 @@ theorem qComp {B C : NFm (n + 1)} (e : NEquiv C B) :
     NEquiv (NFm.imp (C.subst (inst zero)) (NFm.all C)) (.Q B) := by
   constructor
   · refine qI B ?_
-    have hC0 : NPrf ((B.subst (inst zero)).shift ::
-        [NFm.imp (C.subst (inst zero)) (NFm.all C)].map NFm.shift)
-        (C.subst (inst zero)).shift :=
-      ((e.subst (inst zero)).shift).mpr hyp0
     have hImp : NPrf ((B.subst (inst zero)).shift ::
         [NFm.imp (C.subst (inst zero)) (NFm.all C)].map NFm.shift)
         (NFm.imp (C.subst (inst zero)).shift (NFm.all C).shift) := by
       rw [← NFm.imp_shift]
       exact .hyp (List.mem_cons_of_mem _ List.mem_cons_self)
-    exact (e.subst _).mp (allShiftE (succ (Syn.var 0)) (impE hImp hC0))
+    exact (e.subst _).mp (allShiftE (succ (Syn.var 0))
+      (impE hImp (((e.subst (inst zero)).shift).mpr hyp0)))
   · refine impI (allI ?_)
-    have hQ : NPrf ((C.subst (inst zero) :: [NFm.Q B]).map NFm.shift) (NFm.Q B).shift :=
-      .hyp (List.mem_cons_of_mem _ List.mem_cons_self)
-    have hB0 : NPrf ((C.subst (inst zero) :: [NFm.Q B]).map NFm.shift)
-        (B.subst (inst zero)).shift :=
-      ((e.subst (inst zero)).shift).mp hyp0
-    have h := qShiftE (Syn.var 0) hQ hB0
+    have h := qShiftE (Δ := (C.subst (inst zero) :: [NFm.Q B]).map NFm.shift) (Syn.var 0)
+      (.hyp (List.mem_cons_of_mem _ List.mem_cons_self)) (((e.subst (inst zero)).shift).mp hyp0)
     rw [NFm.subst_repl_var] at h
     exact e.mpr h
 

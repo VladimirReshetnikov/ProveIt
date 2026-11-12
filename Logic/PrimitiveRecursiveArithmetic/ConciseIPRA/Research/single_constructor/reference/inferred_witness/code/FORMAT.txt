@@ -1,0 +1,135 @@
+AUTOMATIC CLAUSE SPECIALIZATION: CERTIFICATE FORMAT
+
+Primary program: checker.py.  It uses only Python's standard library.
+Run: python3 checker.py < examples/transport_at_zero.json
+Success prints exactly ACCEPT and exits with status zero. Any exception,
+nonzero exit, or absence of ACCEPT is rejection. Python -O has the same
+acceptance behavior; the checker contains no assertions.
+
+PUBLIC DOCUMENT
+
+Exactly a JSON object with two keys:
+  {"goal": <closed canonical formula>, "proof": <proof tree>}
+Both the asserted goal and the inferred conclusion are checked. Equality
+of Python values alone is not used to validate the public goal: booleans,
+floats, strings, unbound indices and free parameters are rejected.
+
+SYNTAX
+
+Terms:
+  0                 numerical zero
+  negative integer  an allocated free parameter
+  positive integer  a de Bruijn bound index, starting at 1
+  [0,t]             successor S(t)
+  [n,a,h]           iterator I(n,a;u.h), binding u only in h
+
+Formulas:
+  [s,t]             equation s=t
+  [B]               D_{x,y} B, binding two numerical variables
+
+In the immediate body of D, index 1 denotes y and index 2 denotes x.
+An iterator body adds one protected index; a nested D body adds two.
+
+All public terms and formulas are full computation normal forms for
+  I(0,a;u.h) -> a
+  I(S(n),a;u.h) -> h[I(n,a;u.h)/u].
+Substitution is capture-avoiding and normalizes its result. The complete
+normalizer and the complete grammar/scope validator are in checker.py.
+They are included in every reported checker-size measurement.
+
+A clause is a pair (base,body). A nonempty base denotes the conditional
+clause base -> forall y body. The empty list as base denotes an
+unconditional clause forall y body. Clauses are internal context objects,
+not additional public formula constructors.
+
+The initial context is [([], [1,1])], i.e. the single unconditional
+reflexivity clause forall y(y=y). It is the complete fixed axiom inventory.
+
+SCOPES
+
+Let n be the length of the current context. At the outer level n=1.
+Allowed free parameters are -1,...,-(n-1). Each introduction or elimination
+appends exactly one clause and allocates the fresh parameter b=-n. Every
+inferred conclusion is validated at the caller's scope. Consequently a
+fresh branch parameter cannot escape an elimination. It may be allocated
+even when specialization has removed all its occurrences in the clause.
+
+PROOF INSTRUCTIONS
+
+1. ["u",j,t,p]
+   j is an exact nonnegative integer index into the current clause list.
+   t is a well-scoped canonical term. For clause (A,B), infer B[t/y].
+   If A is nonempty, p must prove A. If A=[], p is unused: null is the
+   conventional payload. Its contents are intentionally not validated.
+
+2. ["i",B,t,p]
+   Infer [B]. The matrix B, as an unchanged public formula body, is checked
+   at the return of the instruction. The canonical term t is checked
+   before substitution. Put C(y)=B[t/x] and b=-n. Put eta=b when B is an
+   equation and t is the literal numerical zero; put eta=0 otherwise.
+   Check p under the added unconditional clause ([],C(eta)); it must infer
+   C(S(b)). The inferred conclusion of this instruction is [B].
+
+3. ["e",p,q]
+   First p must infer a D-formula [B]. Put b=-n and C(y)=B[b/x]. Compute
+   H=C(0) and E=C(1), in full normal form. If H is literally [0,0] and E
+   has the form [b,tau], choose tau. Otherwise choose tau=b. Specialize
+   C by one-pass substitution of the free parameter b with tau, followed
+   by computation normalization. Check q in the context extended by
+   (H,C[b:=tau]); its inferred conclusion is this instruction's result.
+   The common conclusion validator requires that result to be well-scoped
+   before b was introduced.
+
+   There is no supplied substitution term, no equality-proof branch and
+   no supplied branch conclusion. Both the replacement and the theorem
+   produced by q are inferred. In the nonidentity case H=[0,0], so its
+   own specialization is unchanged; in the fallback case substitution is
+   identity. This explains why the stored base H can be reused unchanged.
+
+   The target tau may contain b. Its inserted copies are not visited again
+   by the same substitution. This is ordinary one-pass substitution, not
+   repeated replacement to a fixed point. Normalization is performed after
+   rebuilding the surrounding syntax.
+
+FUELLED PROGRAM
+
+checker_fuel.py requires exactly goal, proof and fuel keys. fuel is an
+exact nonnegative integer; booleans are rejected. It spends one unit at
+every recursive walk and every proof invocation, and rejects when fuel
+runs out. It includes the same normalizer, scope checks and logical rules.
+
+The mathematical acceptance relation with explicit finite fuel is primitive
+recursive under standard encodings. Every recursive cycle crosses a fuel
+charge, so computation is bounded by the input and supplied fuel. This
+avoids claiming that unrestricted normalization, as a function of arbitrary
+iterator syntax, is primitive recursive. Every finite successful unbounded
+run has a sufficient finite fuel value. Actual Python executions also have
+ordinary memory and recursion limits; those are not extra logical axioms.
+
+CONTROLS
+
+control.py uses the same forward interface and implementation conventions,
+but its elimination is ["e",p,e,q]. After opening the major clause, e must
+infer b=tau in the original local context. It then specializes the clause
+body, recomputes its zero base and checks q in that specialized context.
+The replacement is inferred from the equality conclusion. This is an
+explicit-equality opening control, not a verbatim historical checker.
+
+output_checker.py is the output-specialization variant: it leaves the
+opened clause unchanged, checks the branch, then applies its synthesized
+substitution to the branch result. output_control.py is its matched
+explicit-equality variant. Neither is the selected primary presentation.
+
+proof_tools.to_control translates all primary derivations recursively to
+the explicit-equality opening control, inserting reflexivity or a single
+clause-use proof of the inferred naming equation. The 12 delivered closed
+certificates are checked against both programs with identical goals.
+
+OPEN-SEQUENT REGRESSION
+
+guard_creation.json is a test fixture for the substitution theorem, not a
+public two-key certificate. It supplies a well-formed external context to
+the internal proof function. A parameter substitution changes a failed
+name probe into a successful one. Naively reusing the old branch fails;
+the branch with its witness specialized to the inferred target succeeds.
+The written metatheory must account for this change of guard mode.

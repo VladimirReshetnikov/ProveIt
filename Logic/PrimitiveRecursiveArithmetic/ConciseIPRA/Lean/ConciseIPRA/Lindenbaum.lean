@@ -183,27 +183,26 @@ theorem mk_iter (c a : Tm n) (h : Tm (n + 1)) :
 theorem app_mk (h : Tm (n + 1)) (a : Tm n) : app h (mk Γ a) = mk Γ (Syn.subst (inst a) h) := rfl
 
 @[simp] theorem iterate_zero (h : Tm (n + 1)) (x : Q Γ) : iterate h 0 x = x := by
-  induction x using Q.ind with | _ a
-  exact sound (Teq.iterZero a h)
+  induction x using Q.ind with | _ a => exact sound (Teq.iterZero a h)
 
 @[simp] theorem iterate_succ (h : Tm (n + 1)) (c x : Q Γ) :
     iterate h (succ c) x = app h (iterate h c x) := by
-  induction c, x using Q.ind₂ with | _ c a
-  exact sound (Teq.iterSucc c a h)
+  induction c, x using Q.ind₂ with | _ c a => exact sound (Teq.iterSucc c a h)
 
 /-- If `0 = 1` then all classes coincide. -/
 theorem absurd (h : (0 : Q Γ) = 1) (x y : Q Γ) : x = y := by
-  induction x, y using Q.ind₂ with | _ a b
-  exact sound (.botE _ (.impE Teq.sep (exact h)))
+  induction x, y using Q.ind₂ with | _ a b => exact sound (.botE _ (.impE Teq.sep (exact h)))
 
 /-- Induction for a literal equation, with the induction hypothesis available
-in the extended context. -/
-theorem eqInd (s t : Tm (n + 1))
-    (h0 : mk Γ (Syn.subst (inst Tm.zero) s) = mk Γ (Syn.subst (inst Tm.zero) t))
+in the extended context.  The base and the step are found by `simp` when they
+are not given. -/
+theorem eqInd (s t : Tm (n + 1)) (a : Tm n)
+    (h0 : mk Γ (Syn.subst (inst Tm.zero) s) = mk Γ (Syn.subst (inst Tm.zero) t) := by simp)
     (hS : mk ((s ≐ t) :: Γ.map Fm.shift) s = mk ((s ≐ t) :: Γ.map Fm.shift) t →
       mk ((s ≐ t) :: Γ.map Fm.shift) (Syn.subst (repl (Tm.succ (var 0))) s)
-        = mk ((s ≐ t) :: Γ.map Fm.shift) (Syn.subst (repl (Tm.succ (var 0))) t))
-    (a : Tm n) : mk Γ (Syn.subst (inst a) s) = mk Γ (Syn.subst (inst a) t) :=
+        = mk ((s ≐ t) :: Γ.map Fm.shift) (Syn.subst (repl (Tm.succ (var 0))) t) := by
+      intro ih; simp at ih; simp [ih]) :
+    mk Γ (Syn.subst (inst a) s) = mk Γ (Syn.subst (inst a) t) :=
   sound (Prf.allE a (Teq.eqInd s t (exact h0) (exact (hS hyp0))))
 
 end Q
@@ -222,26 +221,21 @@ theorem prf (e : Ext Γ Γ') {φ : Fm Tm n} (h : Γ ⊢[TeqAx] φ) : Γ' ⊢[Teq
 def map (e : Ext Γ Γ') : Q Γ → Q Γ' :=
   Quotient.lift (fun a => Q.mk Γ' (Syn.subst e.σ a)) (fun _ _ h => Q.sound (e.prf h))
 
-theorem map_mk (e : Ext Γ Γ') (a : Tm n) : e.map (Q.mk Γ a) = Q.mk Γ' (Syn.subst e.σ a) := rfl
-
 @[simp] theorem map_zero (e : Ext Γ Γ') : e.map 0 = 0 := rfl
 
 @[simp] theorem map_one (e : Ext Γ Γ') : e.map 1 = 1 := rfl
 
 theorem map_op₁ (e : Ext Γ Γ') (f : ∀ k, Tm k → Tm k) (hf : Sub₁ f) (x : Q Γ) :
     e.map (Q.op₁ f hf x) = Q.op₁ f hf (e.map x) := by
-  induction x using Q.ind with | _ a
-  exact congrArg (Q.mk Γ') (hf e.σ a)
+  induction x using Q.ind with | _ a => exact congrArg (Q.mk Γ') (hf e.σ a)
 
 theorem map_op₂ (e : Ext Γ Γ') (f : ∀ k, Tm k → Tm k → Tm k) (hf : Sub₂ f) (x y : Q Γ) :
     e.map (Q.op₂ f hf x y) = Q.op₂ f hf (e.map x) (e.map y) := by
-  induction x, y using Q.ind₂ with | _ a b
-  exact congrArg (Q.mk Γ') (hf e.σ a b)
+  induction x, y using Q.ind₂ with | _ a b => exact congrArg (Q.mk Γ') (hf e.σ a b)
 
 theorem map_op₃ (e : Ext Γ Γ') (f : ∀ k, Tm k → Tm k → Tm k → Tm k) (hf : Sub₃ f)
     (x y z : Q Γ) : e.map (Q.op₃ f hf x y z) = Q.op₃ f hf (e.map x) (e.map y) (e.map z) := by
-  induction x, y, z using Q.ind₃ with | _ a b c
-  exact congrArg (Q.mk Γ') (hf e.σ a b c)
+  induction x, y, z using Q.ind₃ with | _ a b c => exact congrArg (Q.mk Γ') (hf e.σ a b c)
 
 @[simp] theorem map_succ (e : Ext Γ Γ') (x : Q Γ) : e.map (Q.succ x) = Q.succ (e.map x) :=
   map_op₁ e (fun _ => Tm.succ) (fun _ _ => rfl) x
@@ -262,6 +256,14 @@ theorem wk_map_mk (ψ : Fm Tm n) (a : Tm n) :
 
 end Ext
 
+/-- Case distinction on a term, with an unshifted conclusion. -/
+theorem Teq.casesOn {Γ : List (Fm Tm n)} (t : Tm n) {ψ : Fm Tm n}
+    (h0 : (t ≐ Tm.zero) :: Γ ⊢[TeqAx] ψ)
+    (hS : (Syn.shift t ≐ Tm.succ (var 0)) :: Γ.map Fm.shift ⊢[TeqAx] ψ.shift) :
+    Γ ⊢[TeqAx] ψ :=
+  .orE (Teq.cover t) h0 (.exE Prf.hyp0 (hS.weaken
+    (List.cons_subset_cons _ (List.map_subset _ (List.subset_cons_self _ _)))))
+
 namespace Q
 
 variable {Γ : List (Fm Tm n)}
@@ -271,10 +273,8 @@ theorem casesTm (a : Tm n) {s t : Tm n}
     (h0 : mk ((a ≐ Tm.zero) :: Γ) s = mk ((a ≐ Tm.zero) :: Γ) t)
     (hS : mk ((shift a ≐ Tm.succ (var 0)) :: Γ.map Fm.shift) (shift s)
       = mk ((shift a ≐ Tm.succ (var 0)) :: Γ.map Fm.shift) (shift t)) :
-    mk Γ s = mk Γ t := by
-  refine sound (.orE (Teq.cover a) (exact h0) (.exE Prf.hyp0 ?_))
-  exact (exact hS).weaken
-    (List.cons_subset_cons _ (List.map_subset _ (List.subset_cons_self _ _)))
+    mk Γ s = mk Γ t :=
+  sound (Teq.casesOn a (exact h0) (exact hS))
 
 /-- Proof of an equation by cases on a number: it is `0` or a successor in an
 extension of the context. -/
@@ -299,28 +299,38 @@ extensions of the context.  The commands `lift_op₁` and `lift_op₂` prove the
 first and declare the other three, for unary and binary operations. -/
 
 open Lean in
+/-- The four declarations made for one lifted operation: `op` and `mapOp` are the lifting
+and its compatibility with extensions, `as` the term variables and `xs` the class variables. -/
+def liftOp (op mapOp : Ident) (as xs : Array Ident) (f : Ident) : MacroM (Array Syntax) := do
+  let s := f.getId.toString
+  let tmF := mkIdent (.str `Tm s)
+  let sub := mkIdent (.str `Tm ("subst_" ++ s))
+  let qF := mkIdent (.str `Q s)
+  let mkF := mkIdent (.str `Q ("mk_" ++ s))
+  let mapF := mkIdent (.str `Ext ("map_" ++ s))
+  let sa ← as.mapM fun a => `(Syn.subst σ $a)
+  let ma ← as.mapM fun a => `(Q.mk Γ $a)
+  let mx ← xs.mapM fun x => `(e.map $x)
+  return #[
+    ← `(@[simp] theorem $sub {n m : ℕ} (σ : Fin n → Tm m) ($as* : Tm n) :
+      Syn.subst σ ($tmF $as*) = $tmF $sa* := by
+      first | (simp [$tmF:ident]; done) | simp [$tmF:ident, Syn.subst_up_shift]),
+    ← `(def $qF {n : ℕ} {Γ : List (Fm Tm n)} := $op (Γ := Γ) (fun _ => $tmF) $sub),
+    ← `(@[simp] theorem $mkF {n : ℕ} {Γ : List (Fm Tm n)} ($as* : Tm n) :
+      Q.mk Γ ($tmF $as*) = $qF $ma* := rfl),
+    ← `(@[simp] theorem $mapF {n m : ℕ} {Γ : List (Fm Tm n)} {Γ' : List (Fm Tm m)}
+      (e : Ext Γ Γ') ($xs* : Q Γ) : e.map ($qF $xs*) = $qF $mx* :=
+      $mapOp e (fun _ => $tmF) $sub $xs*)]
+
+open Lean in
 /-- `lift_op₁ f g …`: for each unary term operation `Tm.f`, prove that it commutes with
 substitution (`Tm.subst_f`), and declare the operation `Q.f` on classes with the simp lemmas
 `Q.mk_f` and `Ext.map_f`. -/
 macro "lift_op₁ " fs:ident+ : command => do
   let mut cmds : Array Syntax := #[]
   for f in fs do
-    let s := f.getId.toString
-    let tmF := mkIdent (.str `Tm s)
-    let sub := mkIdent (.str `Tm ("subst_" ++ s))
-    let qF := mkIdent (.str `Q s)
-    let mkF := mkIdent (.str `Q ("mk_" ++ s))
-    let mapF := mkIdent (.str `Ext ("map_" ++ s))
-    cmds := cmds.push (← `(@[simp] theorem $sub {n m : ℕ} (σ : Fin n → Tm m) (a : Tm n) :
-      Syn.subst σ ($tmF a) = $tmF (Syn.subst σ a) := by
-      first | (simp [$tmF:ident]; done) | simp [$tmF:ident, Syn.subst_up_shift]))
-    cmds := cmds.push (← `(def $qF {n : ℕ} {Γ : List (Fm Tm n)} : Q Γ → Q Γ :=
-      Q.op₁ (fun _ => $tmF) $sub))
-    cmds := cmds.push (← `(@[simp] theorem $mkF {n : ℕ} {Γ : List (Fm Tm n)} (a : Tm n) :
-      Q.mk Γ ($tmF a) = $qF (Q.mk Γ a) := rfl))
-    cmds := cmds.push (← `(@[simp] theorem $mapF {n m : ℕ} {Γ : List (Fm Tm n)}
-      {Γ' : List (Fm Tm m)} (e : Ext Γ Γ') (x : Q Γ) : e.map ($qF x) = $qF (e.map x) :=
-      Ext.map_op₁ e (fun _ => $tmF) $sub x))
+    cmds := cmds ++ (← liftOp (mkIdent ``Q.op₁) (mkIdent ``Ext.map_op₁) #[mkIdent `a]
+      #[mkIdent `x] f)
   return ⟨mkNullNode cmds⟩
 
 open Lean in
@@ -328,23 +338,8 @@ open Lean in
 macro "lift_op₂ " fs:ident+ : command => do
   let mut cmds : Array Syntax := #[]
   for f in fs do
-    let s := f.getId.toString
-    let tmF := mkIdent (.str `Tm s)
-    let sub := mkIdent (.str `Tm ("subst_" ++ s))
-    let qF := mkIdent (.str `Q s)
-    let mkF := mkIdent (.str `Q ("mk_" ++ s))
-    let mapF := mkIdent (.str `Ext ("map_" ++ s))
-    cmds := cmds.push (← `(@[simp] theorem $sub {n m : ℕ} (σ : Fin n → Tm m) (a b : Tm n) :
-      Syn.subst σ ($tmF a b) = $tmF (Syn.subst σ a) (Syn.subst σ b) := by
-      first | (simp [$tmF:ident]; done) | simp [$tmF:ident, Syn.subst_up_shift]))
-    cmds := cmds.push (← `(def $qF {n : ℕ} {Γ : List (Fm Tm n)} : Q Γ → Q Γ → Q Γ :=
-      Q.op₂ (fun _ => $tmF) $sub))
-    cmds := cmds.push (← `(@[simp] theorem $mkF {n : ℕ} {Γ : List (Fm Tm n)} (a b : Tm n) :
-      Q.mk Γ ($tmF a b) = $qF (Q.mk Γ a) (Q.mk Γ b) := rfl))
-    cmds := cmds.push (← `(@[simp] theorem $mapF {n m : ℕ} {Γ : List (Fm Tm n)}
-      {Γ' : List (Fm Tm m)} (e : Ext Γ Γ') (x y : Q Γ) :
-      e.map ($qF x y) = $qF (e.map x) (e.map y) :=
-      Ext.map_op₂ e (fun _ => $tmF) $sub x y))
+    cmds := cmds ++ (← liftOp (mkIdent ``Q.op₂) (mkIdent ``Ext.map_op₂)
+      #[mkIdent `a, mkIdent `b] #[mkIdent `x, mkIdent `y] f)
   return ⟨mkNullNode cmds⟩
 
 end LeanProofs.ConciseIPRA

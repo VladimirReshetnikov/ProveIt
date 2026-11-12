@@ -50,19 +50,12 @@ def tau : {n : ℕ} → Tm n → PTm n
   | _, .succ t => PTm.succ (tau t)
   | _, .iter c a h => app (iterSym (code a) (code h)) (Fin.cases (tau c) PTm.var)
 
-@[simp] theorem tau_var (i : Fin n) : tau (Syn.var i : Tm n) = Syn.var i := rfl
-
-@[simp] theorem tau_zero : tau (Tm.zero : Tm n) = PTm.zero := rfl
-
-@[simp] theorem tau_succ (t : Tm n) : tau (Tm.succ t) = PTm.succ (tau t) := rfl
-
 variable {Γ : List (Fm PTm n)}
 
 /-- Function symbols respect provable equality of their arguments. -/
 theorem congr (f : PR k) {ts ts' : Fin k → PTm n} (h : ∀ i, Γ ⊢[PRAAx] ts i ≐ ts' i) :
     Γ ⊢[PRAAx] app f ts ≐ app f ts' := by
-  have := Prf.eqCongr (app f Syn.var) h
-  simpa using this
+  simpa using Prf.eqCongr (app f Syn.var) h
 
 /-- The simulated iterator at zero. -/
 theorem iterSym_zero (a : PR k) (h : PR (k + 1)) (xs : Fin k → PTm n) :
@@ -75,56 +68,39 @@ theorem iterSym_succ (a : PR k) (h : PR (k + 1)) (y : PTm n) (xs : Fin k → PTm
       ≐ app h (Fin.cases (app (iterSym a h) (Fin.cases y xs)) xs) := by
   refine Prf.eqTrans (PRA.precSucc a (stepSym h) y xs) ?_
   refine Prf.eqTrans (PRA.comp h _ _) ?_
-  refine congr h (fun j => ?_)
-  refine Fin.cases ?_ (fun l => ?_) j
+  refine congr h (Fin.cases ?_ fun l => ?_)
   · exact PRA.proj 1 _
-  · have := PRA.proj (Γ := Γ) l.succ.succ
-      (Fin.cases y (Fin.cases (app (iterSym a h) (Fin.cases y xs)) xs))
-    simp only [Fin.cases_succ] at this ⊢
-    exact this
+  · exact PRA.proj l.succ.succ _
 
 /-- The function symbol of a term, applied to arguments, is the translation of
 the term with the arguments substituted. -/
 theorem code_eval (t : Tm k) :
     ∀ {n : ℕ} (ts : Fin k → PTm n) (Γ : List (Fm PTm n)),
       Γ ⊢[PRAAx] app (code t) ts ≐ Syn.subst ts (tau t) := by
-  induction t with
-  | var i => intro n ts Γ; exact PRA.proj i ts
+  induction t with intro n ts Γ
+  | var i => exact PRA.proj i ts
   | zero =>
-    intro n ts Γ
-    have e : Syn.subst ts (tau (Tm.zero : Tm _)) = PTm.zero := PTm.subst_zero ts
-    rw [e]
     exact Prf.eqTrans (PRA.comp PR.zero Fin.elim0 ts) (congr PR.zero (fun j => j.elim0))
   | succ t ih =>
-    intro n ts Γ
     exact Prf.eqTrans (PRA.comp PR.succ (fun _ => code t) ts)
       (congr PR.succ (fun _ => ih ts Γ))
   | iter c a h ihc _ _ =>
-    intro n ts Γ
     refine Prf.eqTrans (PRA.comp _ _ ts) ?_
-    refine congr _ (fun j => ?_)
-    refine Fin.cases ?_ (fun l => ?_) j
+    refine congr _ (Fin.cases ?_ fun l => ?_)
     · exact ihc ts Γ
-    · have := PRA.proj (Γ := Γ) l ts
-      simp only [Fin.cases_succ] at this ⊢
-      exact this
+    · exact PRA.proj l ts
 
 /-! ### Extensionality of the simulated iterator -/
 
 theorem subst_inst_up (t : PTm m) (σ : Fin k → PTm m) :
-    (fun i => Syn.subst (Fin.cases t Syn.var : Fin (m + 1) → PTm m) (Syn.up σ i))
-      = Fin.cases t σ := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i
+    (fun i => Syn.subst (inst t) (Syn.up σ i)) = Fin.cases t σ := by
+  refine funext (Fin.cases ?_ fun j => ?_)
   · simp
   · simp [Syn.shift, Syn.subst_subst]
 
-theorem subst_cases_up (s : PTm (m + 1)) (σ : Fin k → PTm m) :
-    (fun i => Syn.subst (Fin.cases s (fun j => Syn.var j.succ) : Fin (m + 1) → PTm (m + 1))
-        (Syn.up σ i))
-      = Fin.cases s (fun j => Syn.shift (σ j)) := by
-  funext i
-  refine Fin.cases ?_ (fun j => ?_) i
+theorem subst_repl_up (s : PTm (m + 1)) (σ : Fin k → PTm m) :
+    (fun i => Syn.subst (repl s) (Syn.up σ i)) = Fin.cases s (fun j => Syn.shift (σ j)) := by
+  refine funext (Fin.cases ?_ fun j => ?_)
   · simp
   · simp [Syn.shift, Syn.subst_subst]
 
@@ -136,49 +112,32 @@ theorem iterSym_ext {a' : PR m} {h' : PR (m + 1)} {a : PR k} {h : PR (k + 1)}
     (hh : [] ⊢[PRAAx] app h' Syn.var ≐ app h (Syn.up σ)) (t : PTm m) :
     [] ⊢[PRAAx] app (iterSym a' h') (Fin.cases t Syn.var)
       ≐ app (iterSym a h) (Fin.cases t σ) := by
+  have e : (repl (Syn.var 0) : Fin (m + 1) → PTm (m + 1)) = Syn.var := by
+    refine funext (Fin.cases ?_ fun j => ?_) <;> simp
   have key : [] ⊢[PRAAx]
       Fm.all (app (iterSym a' h') Syn.var ≐ app (iterSym a h) (Syn.up σ)) := by
     refine PRA.qfInd _ trivial ?_ ?_
-    · show [] ⊢[PRAAx] app (iterSym a' h') (Fin.cases PTm.zero Syn.var)
-        ≐ app (iterSym a h)
-          (fun i => Syn.subst (Fin.cases PTm.zero Syn.var : Fin (m + 1) → PTm m) (Syn.up σ i))
+    · simp only [Fm.subst_eq, PTm.subst_app, Syn.subst_var]
       rw [subst_inst_up]
       exact Prf.eqTrans (iterSym_zero a' h' Syn.var)
         (Prf.eqTrans ha (Prf.eqSymm (iterSym_zero a h σ)))
-    · have e5 : (Fin.cases (Syn.var 0) (fun i => Syn.var i.succ) : Fin (m + 1) → PTm (m + 1))
-          = Syn.var := by
-        funext i
-        refine Fin.cases ?_ (fun j => ?_) i <;> simp
-      have hL := iterSym_succ
+    · have hL := iterSym_succ
         (Γ := [app (iterSym a' h') Syn.var ≐ app (iterSym a h) (Syn.up σ)])
         a' h' (Syn.var 0) (fun i => Syn.var i.succ)
-      rw [e5] at hL
-      have hR := iterSym_succ
+      have hM := (hh.subst (repl (app (iterSym a' h') Syn.var))).ofNil
         (Γ := [app (iterSym a' h') Syn.var ≐ app (iterSym a h) (Syn.up σ)])
-        a h (Syn.var 0) (fun j => Syn.shift (σ j))
-      have hM : [app (iterSym a' h') Syn.var ≐ app (iterSym a h) (Syn.up σ)] ⊢[PRAAx]
-          app h' (Fin.cases (app (iterSym a' h') Syn.var) (fun i => Syn.var i.succ))
-            ≐ app h (fun i => Syn.subst
-                (Fin.cases (app (iterSym a' h') Syn.var) (fun j => Syn.var j.succ)
-                  : Fin (m + 1) → PTm (m + 1)) (Syn.up σ i)) :=
-        (hh.subst (Fin.cases (app (iterSym a' h') Syn.var) (fun i => Syn.var i.succ))).ofNil
-      rw [subst_cases_up] at hM
-      show [app (iterSym a' h') Syn.var ≐ app (iterSym a h) (Syn.up σ)] ⊢[PRAAx]
-        app (iterSym a' h') (Fin.cases (PTm.succ (Syn.var 0)) (fun i => Syn.var i.succ))
-          ≐ app (iterSym a h) (fun i => Syn.subst
-              (Fin.cases (PTm.succ (Syn.var 0)) (fun j => Syn.var j.succ)
-                : Fin (m + 1) → PTm (m + 1)) (Syn.up σ i))
-      rw [subst_cases_up]
-      refine Prf.eqTrans hL (Prf.eqTrans hM (Prf.eqTrans (congr h (fun i => ?_)) (Prf.eqSymm hR)))
+      simp only [Fm.subst_eq, PTm.subst_app, Syn.subst_var] at hM ⊢
+      rw [subst_repl_up] at hM ⊢
+      rw [show (Fin.cases (Syn.var 0) fun i => Syn.var i.succ : Fin (m + 1) → PTm (m + 1))
+        = Syn.var from e] at hL
+      refine Prf.eqTrans hL (Prf.eqTrans hM (Prf.eqTrans (congr h (fun i => ?_))
+        (Prf.eqSymm (iterSym_succ a h (Syn.var 0) (fun j => Syn.shift (σ j))))))
       refine Fin.cases ?_ (fun j => ?_) i
       · exact Prf.hyp0
-      · simp only [Fin.cases_succ]
-        exact Prf.eqRefl _
-  have h1 : [] ⊢[PRAAx] app (iterSym a' h') (Fin.cases t Syn.var)
-      ≐ app (iterSym a h)
-        (fun i => Syn.subst (Fin.cases t Syn.var : Fin (m + 1) → PTm m) (Syn.up σ i)) :=
-    Prf.allE t key
-  rwa [subst_inst_up] at h1
+      · exact Prf.eqRefl _
+  have h₁ := Prf.allE t key
+  simp only [Fm.subst_eq, PTm.subst_app, Syn.subst_var] at h₁
+  rwa [subst_inst_up] at h₁
 
 /-! ### The translation commutes with substitution -/
 
@@ -193,50 +152,24 @@ theorem Good.up {ρ : Fin n → Tm m} (hρ : Good ρ) : Good (Syn.up ρ) := by
   intro i k r
   refine Fin.cases ?_ (fun j => ?_) i
   · exact Prf.eqRefl _
-  · have e1 : Syn.up ρ j.succ = Syn.shift (ρ j) := Syn.up_succ ρ j
-    rw [e1]
-    have h1 := hρ j k (fun l => r l.succ)
-    have h3 : [] ⊢[PRAAx]
+  · have h3 : [] ⊢[PRAAx]
         Syn.subst (fun l => (Syn.var (r l) : PTm k)) (tau (Syn.shift (ρ j)))
           ≐ Syn.subst (fun l => (Syn.var (r l) : PTm k)) (Syn.shift (tau (ρ j))) :=
       (hρ j (m + 1) Fin.succ).subst (fun l => (Syn.var (r l) : PTm k))
     rw [Syn.subst_shift] at h3
-    have e2 : Syn.subst (fun l => (Syn.var (r l) : Tm k)) (Syn.shift (ρ j))
-        = Syn.subst (fun l => (Syn.var (r l.succ) : Tm k)) (ρ j) := Syn.subst_shift _ _
-    rw [e2]
-    exact Prf.eqTrans h1 (Prf.eqSymm h3)
+    rw [Syn.up_succ, Syn.subst_shift]
+    exact Prf.eqTrans (hρ j k (fun l => r l.succ)) (Prf.eqSymm h3)
 
 theorem tau_subst_of_good (t : Tm n) :
     ∀ {m : ℕ} (ρ : Fin n → Tm m), Good ρ →
       ([] ⊢[PRAAx] tau (Syn.subst ρ t) ≐ Syn.subst (fun i => tau (ρ i)) (tau t)) := by
   induction t with
   | var i => intro m ρ _; exact Prf.eqRefl _
-  | zero =>
-    intro m ρ _
-    have e : Syn.subst (fun i => tau (ρ i)) (tau (Tm.zero : Tm _)) = PTm.zero :=
-      PTm.subst_zero _
-    rw [e]
-    exact Prf.eqRefl _
-  | succ t ih =>
-    intro m ρ hρ
-    show [] ⊢[PRAAx] PTm.succ (tau (Syn.subst ρ t))
-      ≐ PTm.succ (Syn.subst (fun i => tau (ρ i)) (tau t))
-    exact congr PR.succ (fun _ => ih ρ hρ)
+  | zero => intro m ρ _; exact congr PR.zero (fun i => i.elim0)
+  | succ t ih => intro m ρ hρ; exact congr PR.succ (fun _ => ih ρ hρ)
   | iter c a h ihc iha ihh =>
     intro m ρ hρ
-    have e : (fun i => Syn.subst (fun i => tau (ρ i))
-        ((Fin.cases (tau c) Syn.var : Fin (_ + 1) → PTm _) i))
-        = Fin.cases (Syn.subst (fun i => tau (ρ i)) (tau c)) (fun i => tau (ρ i)) := by
-      funext i
-      refine Fin.cases ?_ (fun j => ?_) i <;> simp
     rw [Tm.subst_iter]
-    show [] ⊢[PRAAx]
-      app (iterSym (code (Syn.subst ρ a)) (code (Syn.subst (Syn.up ρ) h)))
-          (Fin.cases (tau (Syn.subst ρ c)) Syn.var)
-        ≐ app (iterSym (code a) (code h))
-          (fun i => Syn.subst (fun i => tau (ρ i))
-            ((Fin.cases (tau c) Syn.var : Fin (_ + 1) → PTm _) i))
-    rw [e]
     refine Prf.eqTrans
       (iterSym_ext (a := code a) (h := code h) (σ := fun i => tau (ρ i)) ?_ ?_ _)
       (congr _ (fun i => ?_))
@@ -246,15 +179,13 @@ theorem tau_subst_of_good (t : Tm n) :
     · have h1 := code_eval (Syn.subst (Syn.up ρ) h) Syn.var ([] : List (Fm PTm (m + 1)))
       rw [Syn.subst_id] at h1
       refine Prf.eqTrans h1 (Prf.eqTrans (ihh (Syn.up ρ) hρ.up) ?_)
-      refine Prf.eqTrans (Prf.eqSymm (code_eval h _ _)) (congr _ (fun i => ?_))
-      refine Fin.cases ?_ (fun j => ?_) i
+      refine Prf.eqTrans (Prf.eqSymm (code_eval h _ _)) (congr _ (Fin.cases ?_ fun j => ?_))
       · exact Prf.eqRefl _
       · simp only [Syn.up_succ]
         exact hρ j (m + 1) Fin.succ
     · refine Fin.cases ?_ (fun j => ?_) i
       · exact ihc ρ hρ
-      · simp only [Fin.cases_succ]
-        exact Prf.eqRefl _
+      · exact Prf.eqRefl _
 
 theorem good_ren (ξ : Fin n → Fin m) : Good (fun i => (Syn.var (ξ i) : Tm m)) := by
   intro i k r
@@ -292,12 +223,8 @@ theorem ax_iterSucc (c a : Tm n) (h : Tm (n + 1)) :
       ≐ tau (Syn.subst (inst (Tm.iter c a h)) h) := by
   have h1 := iterSym_succ (Γ := ([] : List (Fm PTm n))) (code a) (code h) (tau c) Syn.var
   have h2 := code_eval h (Fin.cases (tau (Tm.iter c a h)) Syn.var) ([] : List (Fm PTm n))
-  have h3 := tau_subst (inst (Tm.iter c a h)) h
-  have e : (fun i => tau (inst (Tm.iter c a h) i))
-      = Fin.cases (tau (Tm.iter c a h)) Syn.var := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i <;> simp
-  rw [e] at h3
+  have h3 := morph.f_subst (inst (Tm.iter c a h)) h
+  rw [morph.f_inst] at h3
   exact Prf.eqTrans h1 (Prf.eqTrans h2 (Prf.eqSymm h3))
 
 theorem ax_sep :
@@ -307,13 +234,9 @@ theorem ax_sep :
 /-- The predecessor function symbol. -/
 def pd : PR 1 := .prec .zero (.proj 0)
 
-theorem pd_succ (y : PTm n) : Γ ⊢[PRAAx] app pd (fun _ => PTm.succ y) ≐ y := by
-  have e : (fun _ : Fin 1 => PTm.succ y) = Fin.cases (PTm.succ y) Fin.elim0 := by
-    funext i
-    refine Fin.cases ?_ (fun j => j.elim0) i
-    rfl
-  rw [e]
-  exact Prf.eqTrans (PRA.precSucc PR.zero (PR.proj 0) y Fin.elim0) (PRA.proj 0 _)
+theorem pd_succ (y : PTm n) : Γ ⊢[PRAAx] app pd (fun _ => PTm.succ y) ≐ y :=
+  Prf.eqTrans (congr pd fun i => by refine Fin.cases ?_ (fun j => j.elim0) i; exact Prf.eqRefl _)
+    (Prf.eqTrans (PRA.precSucc PR.zero (PR.proj 0) y Fin.elim0) (PRA.proj 0 _))
 
 /-- Every number is zero or the successor of its predecessor. -/
 theorem pred_cases : ([] : List (Fm PTm n)) ⊢[PRAAx]

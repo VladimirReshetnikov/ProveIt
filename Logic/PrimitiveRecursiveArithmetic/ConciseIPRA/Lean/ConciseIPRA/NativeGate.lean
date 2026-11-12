@@ -37,30 +37,16 @@ def selEq : {n : ℕ} → Tm n → Tm n → Tm n → NFm n → NFm n
     D (selEq (Syn.shift (Syn.shift v)) (Tm.sel (Syn.var 0) zero (Syn.shift (Syn.shift s)))
       (Tm.sel (Syn.var 0) zero (Syn.shift (Syn.shift t))) B)
 
-@[simp] theorem selEq_eq (v s t u w : Tm n) :
-    selEq v s t (eq u w) = eq (Tm.sel v s u) (Tm.sel v t w) := rfl
-
-@[simp] theorem selEq_Q (v s t : Tm n) (B : NFm (n + 1)) :
-    selEq v s t (Q B) = Q (selEq (Syn.shift v) (Tm.sel (Syn.var 0) zero (Syn.shift s))
-      (Tm.sel (Syn.var 0) zero (Syn.shift t)) B) := rfl
-
-@[simp] theorem selEq_D (v s t : Tm n) (B : NFm (n + 2)) :
-    selEq v s t (D B) = D (selEq (Syn.shift (Syn.shift v))
-      (Tm.sel (Syn.var 0) zero (Syn.shift (Syn.shift s)))
-      (Tm.sel (Syn.var 0) zero (Syn.shift (Syn.shift t))) B) := rfl
-
 theorem selEq_subst (B : NFm n) : ∀ {m : ℕ} (v s t : Tm n) (σ : Fin n → Tm m),
     (selEq v s t B).subst σ
       = selEq (Syn.subst σ v) (Syn.subst σ s) (Syn.subst σ t) (B.subst σ) := by
-  induction B with
-  | eq u w => intro m v s t σ; simp only [selEq_eq, subst_eq, Tm.subst_sel]
+  induction B with intro m v s t σ
+  | eq u w => simp only [selEq, subst_eq, Tm.subst_sel]
   | Q B ih =>
-    intro m v s t σ
-    simp only [selEq_Q, subst_Q, ih, Tm.subst_sel, Syn.subst_var, Syn.up_zero,
+    simp only [selEq, subst_Q, ih, Tm.subst_sel, Syn.subst_var, Syn.up_zero,
       Syn.subst_up_shift, Tm.subst_zero]
   | D B ih =>
-    intro m v s t σ
-    simp only [selEq_D, subst_D, ih, Tm.subst_sel, Syn.subst_var, Syn.up_zero,
+    simp only [selEq, subst_D, ih, Tm.subst_sel, Syn.subst_var, Syn.up_zero,
       Syn.subst_up_shift, Tm.subst_zero]
 
 /-- The gate: trivially true at `v = 0`, the formula `A` at a successor. -/
@@ -84,26 +70,15 @@ def sel : {n : ℕ} → Tm n → NFm n → NFm n → NFm n
   | _, v, Q A, B => Q (sel (Syn.shift v) A (gate (Syn.var 0) B.shift))
   | _, v, D A, B => D (sel (Syn.shift (Syn.shift v)) A (gate (Syn.var 0) B.shift.shift))
 
-@[simp] theorem sel_eq (v s t : Tm n) (B : NFm n) : sel v (eq s t) B = selEq v s t B := rfl
-
-@[simp] theorem sel_Q (v : Tm n) (A : NFm (n + 1)) (B : NFm n) :
-    sel v (Q A) B = Q (sel (Syn.shift v) A (gate (Syn.var 0) B.shift)) := rfl
-
-@[simp] theorem sel_D (v : Tm n) (A : NFm (n + 2)) (B : NFm n) :
-    sel v (D A) B = D (sel (Syn.shift (Syn.shift v)) A (gate (Syn.var 0) B.shift.shift)) :=
-  rfl
-
 theorem sel_subst (A : NFm n) : ∀ {m : ℕ} (v : Tm n) (B : NFm n) (σ : Fin n → Tm m),
     (sel v A B).subst σ = sel (Syn.subst σ v) (A.subst σ) (B.subst σ) := by
-  induction A with
-  | eq s t => intro m v B σ; exact selEq_subst B v s t σ
+  induction A with intro m v B σ
+  | eq s t => exact selEq_subst B v s t σ
   | Q A ih =>
-    intro m v B σ
-    simp only [sel_Q, subst_Q, ih, gate_subst, Syn.subst_var, Syn.up_zero,
+    simp only [sel, subst_Q, ih, gate_subst, Syn.subst_var, Syn.up_zero,
       Syn.subst_up_shift, shift_subst_up]
   | D A ih =>
-    intro m v B σ
-    simp only [sel_D, subst_D, ih, gate_subst, Syn.subst_var, Syn.up_zero,
+    simp only [sel, subst_D, ih, gate_subst, Syn.subst_var, Syn.up_zero,
       Syn.subst_up_shift, shift_subst_up]
 
 theorem sel_shift_inst (A B : NFm n) (t : Tm n) :
@@ -175,29 +150,25 @@ theorem dSel (s t : Tm n) :
 
 /-- At zero, `selEq` is its equation. -/
 theorem selEq_zero (B : NFm n) : ∀ s t : Tm n, NEquiv (NFm.selEq zero s t B) (.eq s t) := by
-  induction B with
-  | eq u w => intro s t; exact eqs (NPrf.selZero _ _) (NPrf.selZero _ _)
+  induction B with intro s t
+  | eq u w => exact eqs (NPrf.selZero _ _) (NPrf.selZero _ _)
   | Q B ih =>
-    intro s t
     show NEquiv (.Q (NFm.selEq zero (Tm.sel (Syn.var 0) zero (Syn.shift s))
       (Tm.sel (Syn.var 0) zero (Syn.shift t)) B)) (.eq s t)
     exact (NEquiv.Q (ih _ _)).trans (qSel s t)
   | D B ih =>
-    intro s t
     show NEquiv (.D (NFm.selEq zero (Tm.sel (Syn.var 0) zero (Syn.shift (Syn.shift s)))
       (Tm.sel (Syn.var 0) zero (Syn.shift (Syn.shift t))) B)) (.eq s t)
     exact (NEquiv.D (ih _ _)).trans (dSel s t)
 
 /-- At a successor, `selEq` is its formula. -/
 theorem selEq_succ (B : NFm n) : ∀ v s t : Tm n, NEquiv (NFm.selEq (succ v) s t B) B := by
-  induction B with
-  | eq u w => intro v s t; exact eqs (NPrf.selSucc _ _ _) (NPrf.selSucc _ _ _)
+  induction B with intro v s t
+  | eq u w => exact eqs (NPrf.selSucc _ _ _) (NPrf.selSucc _ _ _)
   | Q B ih =>
-    intro v s t
     show NEquiv (.Q (NFm.selEq (succ (Syn.shift v)) _ _ B)) (.Q B)
     exact NEquiv.Q (ih _ _ _)
   | D B ih =>
-    intro v s t
     show NEquiv (.D (NFm.selEq (succ (Syn.shift (Syn.shift v))) _ _ B)) (.D B)
     exact NEquiv.D (ih _ _ _)
 
@@ -227,27 +198,23 @@ theorem dGate (A : NFm n) : NEquiv (.D (NFm.gate (Syn.var 0) A.shift.shift)) A :
 
 /-- At zero, `sel` is its first formula. -/
 theorem sel_zero (A : NFm n) : ∀ B : NFm n, NEquiv (NFm.sel zero A B) A := by
-  induction A with
-  | eq s t => intro B; exact selEq_zero B s t
+  induction A with intro B
+  | eq s t => exact selEq_zero B s t
   | Q A ih =>
-    intro B
     show NEquiv (.Q (NFm.sel zero A _)) (.Q A)
     exact NEquiv.Q (ih _)
   | D A ih =>
-    intro B
     show NEquiv (.D (NFm.sel zero A _)) (.D A)
     exact NEquiv.D (ih _)
 
 /-- At a successor, `sel` is its second formula. -/
 theorem sel_succ (A : NFm n) : ∀ (v : Tm n) (B : NFm n), NEquiv (NFm.sel (succ v) A B) B := by
-  induction A with
-  | eq s t => intro v B; exact selEq_succ B v s t
+  induction A with intro v B
+  | eq s t => exact selEq_succ B v s t
   | Q A ih =>
-    intro v B
     show NEquiv (.Q (NFm.sel (succ (Syn.shift v)) A (NFm.gate (Syn.var 0) B.shift))) B
     exact (NEquiv.Q (ih _ _)).trans (qGate B)
   | D A ih =>
-    intro v B
     show NEquiv (.D (NFm.sel (succ (Syn.shift (Syn.shift v))) A
       (NFm.gate (Syn.var 0) B.shift.shift))) B
     exact (NEquiv.D (ih _ _)).trans (dGate B)

@@ -1,0 +1,109 @@
+Independent source audit: canonical native checker refactor
+==========================================================
+
+Baseline:
+  checker_research/baseline/checked_refinement/code/checker_native.py
+  SHA-256 df61df7daea190495d0fc86433116fdd6acaec97f62686b25d99c3dca0e28ee7
+Candidate:
+  checker_research/checker_native_refined.py
+  SHA-256 620c3a3252dc999809a92701a729bf674a4992e745a805b47994f76ff4eb939a
+
+Verdict
+-------
+The two sources have the same accepting inputs under their public CLI
+contract: ordinary json.load decoding, followed by normal termination and
+the final ACCEPT line. This is a source-derived equivalence of accepting
+sets, not a conclusion inferred from fuzz testing. Their rejection
+diagnostics are not identical. In particular the candidate can raise
+TypeError where the baseline raises its explicit goal-validation ValueError.
+As with any such algorithmic comparison, execution-resource failures and
+external I/O failures are excluded; no identity of wall time, allocation
+behavior, traceback text, or behavior under arbitrary resource limits is
+claimed.
+
+1. The goal-validator domains and return conditions
+--------------------------------------------------
+The standard decoder used here produces only exact built-in dict, list,
+str, int, float, bool, and NoneType values, recursively. It is invoked with
+no object hooks or custom scalar constructors. The analysis also includes
+the decoder's accepted NaN, Infinity and -Infinity constants.
+
+For exact integers, the candidate changes a == 0 to not a, and a >= 3 to
+a > 2. These are equivalent for every Python integer, including zero,
+negative integers, and integers of arbitrary size. The remaining modulo
+test is unchanged. Exact type(a) is int excludes bool from this branch in
+both programs.
+
+The baseline's noninteger branch begins with type(a) is list. The
+candidate begins with a * 0 == []. For a JSON-decoded value:
+
+  list:    multiplication gives [], so the candidate test is true;
+  str:     multiplication gives '', whose equality with [] is false;
+  float:   multiplication gives a float, never equal to [];
+  bool:    multiplication gives integer 0, not equal to [];
+  dict:    multiplication raises TypeError;
+  None:    multiplication raises TypeError.
+
+The float case includes NaN, both infinities, and signed zero. NaN or
+infinity multiplied by zero remains a float NaN; it is still not equal to
+an empty list. No non-list scalar can pass the replacement type test.
+
+For lists, the remaining length test and recursive all(...) are unchanged.
+Both programs process the same children in the same order whenever the
+candidate continues. If a dict or None is encountered, the baseline
+returns false for that child and consequently rejects the goal; the
+candidate raises before the proof kernel runs and also rejects it. If an
+earlier invalid child stops all(...), neither program needs to inspect
+later children. Thus short-circuiting does not create an accepting case.
+
+The default d changes from False to integer 0. At the root they have the
+same truth value and give the same 2 + d. Every recursive child receives
+d or len(a) == 2: from either root default this is a Boolean, and once true
+it stays true. Therefore all corresponding list lengths and recursive
+validator truth values agree. At a scalar root v may return False versus
+0; the sole caller tests not v(a), so this difference is immaterial.
+
+Structural induction on the finite decoded goal now proves: the baseline
+validator is truthy exactly when the candidate validator is truthy. If
+the baseline is falsy, the candidate is either falsy or raises. Conversely,
+the candidate cannot become truthy where the baseline is falsy. This is
+the precise claim; the validators are not identical partial functions.
+
+2. The proof-kernel change
+-------------------------
+The only kernel edit is the replacement
+
+  [s, u] if s else [t] * 3
+
+by
+
+  s and [s, u] or [t] * 3.
+
+If s is truthy, [s,u] is a two-element list and is necessarily truthy, so
+the second expression returns exactly the same constructed list. If s is
+falsy, it returns [t]*3, again the same list. All involved values come from
+standard decoded built-ins or the kernel's own ordinary lists/numbers;
+truth testing has no user-defined side effects. The two expressions also
+retain the same component objects, including any NaN object identities.
+The subsequent equality comparisons and short-circuit operations are
+therefore the same. Every other operation in c and its opener is unchanged.
+Malformed proof instructions need not be well typed for this equivalence:
+whenever either expression is reached, the two branch expressions still
+have the same value, or the common surrounding computation has already
+failed. Thus the proof kernel has the same accepting runs on every goal
+that passes validation.
+
+3. The complete CLI
+-------------------
+Input loading, binding q to .pop, removing the last value as the goal,
+the call c(a), and printing ACCEPT are unchanged. Non-list top-level JSON
+values or an empty top-level list fail identically before validation.
+For a nonempty list, the validator argument above shows that both programs
+run the kernel on exactly the same goals, with exactly the same remaining
+instruction list. Section 2 then gives identical acceptance. Invalid
+goals rejected by differing exception types never reach c or print ACCEPT.
+
+This audit establishes that the refactor preserves the baseline's
+accepted set. It does not independently establish the baseline kernel's
+arithmetical soundness or completeness, and it must not be used to claim
+a new mathematical axiomatization or a new global checker-size minimum.

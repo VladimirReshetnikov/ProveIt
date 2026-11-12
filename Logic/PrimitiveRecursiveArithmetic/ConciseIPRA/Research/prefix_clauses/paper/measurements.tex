@@ -1,0 +1,50 @@
+Measurements use CPython 3.12.14. Genuine module, function, and class
+docstrings are removed, the complete module is normalized by
+\code{ast.unparse} with one terminal newline, and significant Python
+tokens, all AST nodes, and UTF-8 bytes are counted. Layout, comments,
+encoding markers, and end markers are not significant tokens. Gzip level
+9 with a fixed zero timestamp is informational. No gate, scope checker,
+parser interface, or active inference routine is omitted from a measured
+module.
+
+\begin{center}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Complete implementation & Tokens & AST nodes & Bytes & Gzip-9\\
+\midrule
+Existing \code{uniform\_clauses} & 807 & 931 & 2912 & 994\\
+Matched nested control & 791 & 890 & 2763 & 931\\
+Prefix calculus $\F$ & \textbf{788} & 900 & \textbf{2700} & 941\\
+Homogeneous prefix variant & 840 & 965 & 2843 & 979\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Relative to the exact existing four-family program, the delivered prefix
+checker saves 19 tokens, 31 AST nodes, and 212 normalized bytes
+(approximately 2.35\%, 3.33\%, and 7.28\%, respectively). This comparison
+includes the simplified clause and certificate interfaces as well as the
+prefix representation.
+
+The matched nested control uses the same four proof tags, synthesized
+elimination result, single-antecedent clauses, implicit scope protocol,
+reflexive-leaf shortcut, and numerical term codec. It retains nested
+Eq/$D$ formulas. Against this control, the prefix representation alone
+saves 3 tokens and 63 bytes (approximately 2.28\% of bytes), while adding
+10 AST nodes and 10 gzip bytes. Thus it is not a reduction in every
+coordinate against that tighter control.
+
+The antecedent-free implementation in the last row pays for its gate and
+capture-free lifting. Its structural theorem does not yield the smallest
+checker in this table. The counts also do not establish a new repository-wide
+minimum: the existing validated native implementation has 788 \emph{bytes},
+and a separate compact implementation has 516 bytes under its canonical
+public-goal contract. Those frozen sources are included for transparency.
+The number 788 in the prefix row is a \emph{token count}; the prefix
+program has 2700 normalized bytes. These distinct units and contracts
+must not be conflated.
+
+The exact sources, source hashes, normalized copies, compressed copies,
+and measurement procedure are in \code{code/} and
+\code{code/evidence/checker\_metrics.json}.

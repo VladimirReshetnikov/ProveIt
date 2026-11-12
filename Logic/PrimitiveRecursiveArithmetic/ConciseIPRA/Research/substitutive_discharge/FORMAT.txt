@@ -1,0 +1,73 @@
+SELECTED CANONICAL CHECKER: EXACT PUBLIC CERTIFICATE FORMAT
+
+The command-line interface reads one JSON object, with exactly these keys:
+  {"goal": FORMULA, "proof": PROOF}
+The goal has no free parameters. Only code/canonical_checker.py and the
+Python standard library belong to acceptance. Generators and translators
+are untrusted conveniences. Exceptions reject. Acceptance requires exit
+status zero and exactly ACCEPT on standard output.
+
+SYNTAX
+  0                numerical zero
+  -1,-2,...        free eigenparameter levels, allocated by proof nesting
+  1,2,...          bound indices (1 is innermost)
+  [counter,seed,h] R(counter,seed;u.h), binding one index in h only
+  [s,t]            equation
+  [B]              D_xy B, binding y at index 1 and x at index 2
+Thus the NUMBER 1 as syntax is a bound index. The numeral one is [0,0,0].
+S(a) is [0,a,0]. An R node with literal zero counter MUST have literal
+zero body. All its supplied children are validated before any erasure.
+Booleans, floats, strings, null, and lists of other sizes are not terms.
+
+At free scope n and binding depth d, an integer i is valid iff -n <= i <= d.
+Positive indices in any supplied replacement term must be bound by that
+term's own binders. Free parameters are negative, so replacing under a
+binder does not shift the inserted term. The traversal tracks depth in
+the expression being opened. Substitution canonically erases newly
+zero-counter R bodies; it does not unfold any successor iteration.
+
+CONTEXTS (not supplied as a public field)
+A context is a list of (antecedent, one-bound-variable body) pairs.
+An ordinary assumption A is ([0,0], A), with the body's binder unused.
+The initial context is empty; 0=0 is a derived theorem, not a fixed axiom.
+
+PROOF INSTRUCTIONS
+
+1. ["c"]
+The goal must be an equation whose left term is R(Sn,a;u.h). The right
+term must be exactly canonical h[R(n,a;u.h)/u]. The source counter is
+recognized syntactically as [0,n,0]. No predecessor proof is required.
+
+2. ["u", index, t, premise]
+index is an exact nonnegative integer selecting a retained clause (A,B).
+t is a well-scoped canonical term. The premise proves A in the same
+context. The requested goal must equal canonical B[t/1].
+
+3. ["i", t, branch]
+The goal is [B]. t is in the outer scope. Allocate z=-n-1. Open B's x
+binder with t, leaving y bound. If B is an equation and t is literally 0,
+the local assumption is B(t,z); otherwise it is B(t,0). Append its ordinary
+clause and check branch against B(t,Sz), in free scope n+1.
+
+4. ["e", B, F, s, t, major, eq, branch]
+major proves [B] in outer scope n. Allocate b=-n-1, open B's x binder
+with b, and append (B(b,0), y.B(b,y)). F is a formula template checked
+at free scope n+1 with ONE additional distinguished bound index.
+Its hole is separate from the numerical eigenparameter b. eq proves s=t
+in the extended context. branch proves canonical F[s/hole] there.
+The requested goal, validated at the OUTER scope n, must equal canonical
+F[t/hole]. This final check enforces witness discharge. s,t,F may contain
+b, including a term t containing b; only the exported formula must be
+b-free. Literal-zero canonicalization may erase such occurrences.
+
+All instruction list lengths are exact; unknown instructions reject.
+The final goal is validated before checking its proof. Public inputs have
+no user-supplied assumptions, scope counters, trusted theorems, or options.
+The mathematical calculus also permits open sequents through the internal
+proof-checking function, but that function is not an extra CLI entry point.
+
+MATCHED CONTROL
+code/canonical_separate.py has identical syntax and c/u/i instructions.
+Its ordinary elimination is ["e", B, major, branch]. Its separate transport
+is ["t", F, s, t, eq, branch], with F checked in the current free scope and
+one extra bound index. These are the only changes in the measured pair.

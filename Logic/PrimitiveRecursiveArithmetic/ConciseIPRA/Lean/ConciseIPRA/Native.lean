@@ -79,13 +79,11 @@ def toFm : {n : ℕ} → NFm n → Fm Tm n
 /-- The ordinary reading commutes with substitution. -/
 theorem toFm_subst (A : NFm n) :
     ∀ {m : ℕ} (σ : Fin n → Tm m), (A.subst σ).toFm = A.toFm.subst σ := by
-  induction A with
-  | eq s t => intro m σ; rfl
+  induction A with intro m σ
+  | eq s t => rfl
   | Q B ih =>
-    intro m σ
     simp only [subst_Q, toFm_Q, ih, Fm.subst_imp, Fm.subst_all, Fm.subst_inst, Tm.subst_zero]
   | D B ih =>
-    intro m σ
     simp only [subst_D, toFm_D, ih, Fm.subst_ex, Fm.subst_imp, Fm.subst_all, Fm.subst_inst,
       Tm.subst_zero]
 

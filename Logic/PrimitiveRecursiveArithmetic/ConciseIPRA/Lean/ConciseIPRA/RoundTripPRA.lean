@@ -57,26 +57,18 @@ namespace RoundTrip
 
 /-! ### The translation `tau` and the two substitutions of induction -/
 
-theorem tau_inst (a : Tm n) : (fun i => ToPRA.tau (inst a i)) = inst (ToPRA.tau a) := by
-  funext i
-  refine Fin.cases ?_ (fun i => ?_) i <;> rfl
-
-theorem tau_repl (s : Tm (n + 1)) : (fun i => ToPRA.tau (repl s i)) = repl (ToPRA.tau s) := by
-  funext i
-  refine Fin.cases ?_ (fun i => ?_) i <;> rfl
-
 theorem tau_subst_inst (a : Tm n) (t : Tm (n + 1)) {Γ : List (Fm PTm n)} :
     Γ ⊢[PRAAx] Syn.subst (inst (ToPRA.tau a)) (ToPRA.tau t)
       ≐ ToPRA.tau (Syn.subst (inst a) t) := by
-  have h := ToPRA.tau_subst (inst a) t
-  rw [tau_inst] at h
+  have h := ToPRA.morph.f_subst (inst a) t
+  rw [ToPRA.morph.f_inst] at h
   exact Prf.ofNil (Prf.eqSymm h)
 
 theorem tau_subst_repl (s t : Tm (n + 1)) {Γ : List (Fm PTm (n + 1))} :
     Γ ⊢[PRAAx] Syn.subst (repl (ToPRA.tau s)) (ToPRA.tau t)
       ≐ ToPRA.tau (Syn.subst (repl s) t) := by
-  have h := ToPRA.tau_subst (repl s) t
-  rw [tau_repl] at h
+  have h := ToPRA.morph.f_subst (repl s) t
+  rw [ToPRA.morph.f_repl] at h
   exact Prf.ofNil (Prf.eqSymm h)
 
 /-! ### The recursion equations of the code of a recursion, in `T_eq` -/
@@ -101,22 +93,23 @@ theorem code_prec_succ (f : PR k) (g : PR (k + 2)) :
 
 /-! ### The code of a function symbol denotes the symbol -/
 
+/-- A substitution instance of a code, given what the code denotes. -/
+theorem tau_subst_code {f : PR k}
+    (e : [] ⊢[PRAAx] ToPRA.tau (FromPRA.code f) ≐ PTm.app f Syn.var) (σ : Fin k → Tm n) :
+    [] ⊢[PRAAx] ToPRA.tau (Syn.subst σ (FromPRA.code f)) ≐ PTm.app f fun j => ToPRA.tau (σ j) := by
+  have h := PRA.substNil e (Γ := []) fun j => ToPRA.tau (σ j)
+  rw [PTm.subst_app_var] at h
+  exact Prf.eqTrans (ToPRA.tau_subst σ _) h
+
 theorem tau_code_prec_zero (f : PR k) (g : PR (k + 2))
     (ihf : [] ⊢[PRAAx] ToPRA.tau (FromPRA.code f) ≐ PTm.app f Syn.var)
     {Γ : List (Fm PTm k)} :
     Γ ⊢[PRAAx] (ToPRA.tau (FromPRA.code (.prec f g))
       ≐ PTm.app (.prec f g) Syn.var).subst (inst PTm.zero) := by
-  show Γ ⊢[PRAAx] Syn.subst (inst PTm.zero) (ToPRA.tau (FromPRA.code (.prec f g)))
-    ≐ Syn.subst (inst PTm.zero) (PTm.app (.prec f g) Syn.var)
-  rw [PTm.subst_app_var]
-  have a1 : Γ ⊢[PRAAx] Syn.subst (inst PTm.zero) (ToPRA.tau (FromPRA.code (.prec f g)))
-      ≐ ToPRA.tau (Syn.subst (inst Tm.zero) (FromPRA.code (.prec f g))) :=
-    tau_subst_inst Tm.zero _
-  have s := ToPRA.interp.sound (code_prec_zero f g)
-  have a2 : Γ ⊢[PRAAx] ToPRA.tau (Syn.subst (inst Tm.zero) (FromPRA.code (.prec f g)))
-      ≐ ToPRA.tau (FromPRA.code f) := Prf.ofNil s
-  exact Prf.eqTrans a1 (Prf.eqTrans a2
-    (Prf.eqTrans (Prf.ofNil ihf) (Prf.eqSymm (PRA.precZero f g Syn.var))))
+  simp only [Fm.subst_eq, PTm.subst_app_var]
+  exact Prf.eqTrans (tau_subst_inst Tm.zero _)
+    (Prf.eqTrans (Prf.ofNil (ToPRA.interp.sound (code_prec_zero f g)))
+      (Prf.eqTrans (Prf.ofNil ihf) (Prf.eqSymm (PRA.precZero f g Syn.var))))
 
 theorem tau_code_prec_succ (f : PR k) (g : PR (k + 2))
     (ihg : [] ⊢[PRAAx] ToPRA.tau (FromPRA.code g) ≐ PTm.app g Syn.var)
@@ -124,47 +117,16 @@ theorem tau_code_prec_succ (f : PR k) (g : PR (k + 2))
     (ih : Γ ⊢[PRAAx] ToPRA.tau (FromPRA.code (.prec f g)) ≐ PTm.app (.prec f g) Syn.var) :
     Γ ⊢[PRAAx] (ToPRA.tau (FromPRA.code (.prec f g))
       ≐ PTm.app (.prec f g) Syn.var).subst (repl (PTm.succ (Syn.var 0))) := by
-  show Γ ⊢[PRAAx]
-    Syn.subst (repl (PTm.succ (Syn.var 0))) (ToPRA.tau (FromPRA.code (.prec f g)))
-      ≐ Syn.subst (repl (PTm.succ (Syn.var 0))) (PTm.app (.prec f g) Syn.var)
-  rw [PTm.subst_app_var]
-  have a1 : Γ ⊢[PRAAx]
-      Syn.subst (repl (PTm.succ (Syn.var 0))) (ToPRA.tau (FromPRA.code (.prec f g)))
-        ≐ ToPRA.tau (Syn.subst (repl (Tm.succ (Syn.var 0))) (FromPRA.code (.prec f g))) :=
-    tau_subst_repl (Tm.succ (Syn.var 0)) _
-  have s := ToPRA.interp.sound (code_prec_succ f g)
-  have a2 : Γ ⊢[PRAAx]
-      ToPRA.tau (Syn.subst (repl (Tm.succ (Syn.var 0))) (FromPRA.code (.prec f g)))
-        ≐ ToPRA.tau (Syn.subst
-            (Fin.cases (Syn.var 0) (repl (FromPRA.code (.prec f g)))) (FromPRA.code g)) :=
-    Prf.ofNil s
-  have a3 : Γ ⊢[PRAAx]
-      ToPRA.tau (Syn.subst
-          (Fin.cases (Syn.var 0) (repl (FromPRA.code (.prec f g)))) (FromPRA.code g))
-        ≐ Syn.subst (fun j => ToPRA.tau ((Fin.cases (Syn.var 0)
-              (repl (FromPRA.code (.prec f g))) : Fin (k + 2) → Tm (k + 1)) j))
-            (ToPRA.tau (FromPRA.code g)) :=
-    Prf.ofNil (ToPRA.tau_subst _ _)
-  have a4 : Γ ⊢[PRAAx]
-      Syn.subst (fun j => ToPRA.tau ((Fin.cases (Syn.var 0)
-            (repl (FromPRA.code (.prec f g))) : Fin (k + 2) → Tm (k + 1)) j))
-          (ToPRA.tau (FromPRA.code g))
-        ≐ PTm.app g (fun j => ToPRA.tau ((Fin.cases (Syn.var 0)
-            (repl (FromPRA.code (.prec f g))) : Fin (k + 2) → Tm (k + 1)) j)) := by
-    have h := PRA.substNil ihg (Γ := Γ) (fun j => ToPRA.tau ((Fin.cases (Syn.var 0)
-      (repl (FromPRA.code (.prec f g))) : Fin (k + 2) → Tm (k + 1)) j))
-    rwa [PTm.subst_app_var] at h
-  have a5 : Γ ⊢[PRAAx]
-      PTm.app g (fun j => ToPRA.tau ((Fin.cases (Syn.var 0)
-          (repl (FromPRA.code (.prec f g))) : Fin (k + 2) → Tm (k + 1)) j))
-        ≐ PTm.app g (Fin.cases (Syn.var 0) (repl (PTm.app (.prec f g) Syn.var))) := by
-    refine ToPRA.congr g (fun j => ?_)
-    refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun i => ?_) j) j
-    · exact Prf.eqRefl _
-    · exact ih
-    · exact Prf.eqRefl _
-  exact Prf.eqTrans a1 (Prf.eqTrans a2 (Prf.eqTrans a3 (Prf.eqTrans a4 (Prf.eqTrans a5
-    (Prf.eqSymm (Prf.axm (PRAAx.precSucc f g)))))))
+  simp only [Fm.subst_eq, PTm.subst_app_var]
+  refine Prf.eqTrans (tau_subst_repl (Tm.succ (Syn.var 0)) _)
+    (Prf.eqTrans (Prf.ofNil (ToPRA.interp.sound (code_prec_succ f g)))
+      (Prf.eqTrans (Prf.ofNil (tau_subst_code ihg _))
+        (Prf.eqTrans (ToPRA.congr g fun j => ?_)
+          (Prf.eqSymm (Prf.axm (PRAAx.precSucc f g))))))
+  refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun i => ?_) j) j
+  · exact Prf.eqRefl _
+  · exact ih
+  · exact Prf.eqRefl _
 
 /-- The code of a function symbol denotes the symbol, provably in `iPRA`. -/
 theorem tau_code (f : PR k) :
@@ -181,14 +143,8 @@ theorem tau_code (f : PR k) :
   | proj i => exact Prf.eqSymm (PRA.proj i Syn.var)
   | comp f gs ihf ihg =>
     rw [FromPRA.code_comp]
-    have h1 := ToPRA.tau_subst (fun j => FromPRA.code (gs j)) (FromPRA.code f)
-    have h2 : [] ⊢[PRAAx]
-        Syn.subst (fun j => ToPRA.tau (FromPRA.code (gs j))) (ToPRA.tau (FromPRA.code f))
-          ≐ PTm.app f (fun j => ToPRA.tau (FromPRA.code (gs j))) := by
-      have h := PRA.substNil ihf (Γ := []) (fun j => ToPRA.tau (FromPRA.code (gs j)))
-      rwa [PTm.subst_app_var] at h
-    exact Prf.eqTrans h1 (Prf.eqTrans h2
-      (Prf.eqTrans (ToPRA.congr f ihg) (Prf.eqSymm (PRA.comp f gs Syn.var))))
+    exact Prf.eqTrans (tau_subst_code ihf _)
+      (Prf.eqTrans (ToPRA.congr f ihg) (Prf.eqSymm (PRA.comp f gs Syn.var)))
   | prec f g ihf ihg =>
     refine Prf.allOpen (Γ := []) (PRA.qfInd
       (ToPRA.tau (FromPRA.code (.prec f g)) ≐ PTm.app (.prec f g) Syn.var) trivial ?_ ?_)
@@ -201,14 +157,7 @@ theorem tau_sigma (t : PTm n) : [] ⊢[PRAAx] ToPRA.tau (FromPRA.sigma t) ≐ t 
   | var i => exact Prf.eqRefl _
   | app f ts ih =>
     rw [FromPRA.sigma_app]
-    have h1 := ToPRA.tau_subst (fun i => FromPRA.sigma (ts i)) (FromPRA.code f)
-    have h2 : [] ⊢[PRAAx]
-        Syn.subst (fun i => ToPRA.tau (FromPRA.sigma (ts i))) (ToPRA.tau (FromPRA.code f))
-          ≐ PTm.app f (fun i => ToPRA.tau (FromPRA.sigma (ts i))) := by
-      have h := PRA.substNil (tau_code f) (Γ := [])
-        (fun i => ToPRA.tau (FromPRA.sigma (ts i)))
-      rwa [PTm.subst_app_var] at h
-    exact Prf.eqTrans h1 (Prf.eqTrans h2 (ToPRA.congr f ih))
+    exact Prf.eqTrans (tau_subst_code (tau_code f) _) (ToPRA.congr f ih)
 
 end RoundTrip
 

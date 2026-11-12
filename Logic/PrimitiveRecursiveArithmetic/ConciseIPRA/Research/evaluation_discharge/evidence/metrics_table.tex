@@ -1,0 +1,22 @@
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}Xrrrr@{}}
+\toprule
+Complete acceptance program & Bytes & Tokens & AST & Gzip9\\
+\midrule
+Raw evaluation discharge & 1892 & 643 & 695 & 773\\
+Matched raw separate rules & 1995 & 665 & 717 & 786\\
+Zero-normal evaluation discharge & 1858 & 633 & 697 & 777\\
+Matched zero-normal separate rules & 1879 & 645 & 707 & 771\\
+Incoming inferred-witness output control & 1983 & 663 & 751 & 812\\
+Incoming inferred witness & 1990 & 683 & 771 & 819\\
+Incoming explicit clause discharge & 2010 & 636 & 708 & 791\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The isolated raw fusion saves 103 bytes, 22 tokens and 22 AST nodes
+(1,995 to 1,892 bytes, a 5.16\% reduction). Its gzip size is also 13 bytes
+smaller. The isolated zero-normal fusion saves 21 bytes, 12 tokens and
+10 AST nodes; its gzip size increases by six bytes. Against the incoming
+1,983-byte output-control program, the complete zero companion saves
+125 bytes (6.30\%), 30 tokens and 54 AST nodes.
