@@ -774,6 +774,79 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `scope_and_closure` | Its checker results concern Python programs. Its mixed closure also aims at a deterministic introduction, by giving `Q` a progressive reading at literal equations and adding arithmetic to QE; not formalized, for the same reason. |
 | `register_graph` | Not formalized. It is a different term language (`J` with two bound variables) over ordinary logic, so it would need a second bi-interpretation with iPRA from scratch. |
 
+### Further questions
+
+Questions that this work raised and did not settle. None of the statements
+marked as conjectures is proved here.
+
+1. **Is the progress rule independent?** Seven of the eight rules of the
+   kernel are independent (`NativeModels`). For QI by progress the method of
+   readings over the natural numbers cannot work: `Sem.Sound.qIInd_of` proves
+   that the conditions for DI and DE already imply the condition for QI there.
+   A countermodel must have nonstandard numbers. It can have no cycle of the
+   successor: from `S c = c` the kernel without QI derives `0 = 1`, by the
+   iterator of `u ↦ sel(u, 1, 0)` at the count `c` and cases on its value
+   (an argument on paper, not formalized). So its nonstandard part consists of
+   chains infinite in both directions, and every step term definable with
+   parameters needs an orbit infinite in both directions along each chain. An
+   ultrapower with the internal iterator has such orbits and satisfies
+   induction; the open point is a structure that has the orbits and refutes an
+   instance of progress, for example `Q_y (I(y, 0; u.u) = 0)`. The term model
+   of full normal forms in one variable refutes that instance and satisfies
+   both computation equations, but it has elements that are neither `0` nor a
+   successor, so DI by cases is not sound in it.
+2. **How far can the witness of DI be restricted?** QE needs only a variable
+   or the numeral `1` as its target (`vqprf_iff_nprf`), and a variable alone is
+   not enough (`vqprf_var_incomplete`). The analogous statement for DI is a
+   conjecture: DI by cases at the literal `0` or at a variable is enough. A
+   route: prove `Q_y D_{x,y'} (sel(y, 0, S x) = y)` by cases with the
+   witnesses `0` and the fresh variable, instantiate at `y = S t`, and use the
+   injectivity of the successor to name `t`. It needs the predecessor
+   equation `pred (S z) = z` inside the restricted calculus.
+3. **Substitution for a variable on raw terms.** On full normal forms,
+   substitution for a variable is the only equality rule needed
+   (`vsprf_iff_nprf`). On raw terms the rows of the naming packet are not
+   literal, and Param, which also joins two equations at the root, is proved
+   sufficient (`pprf_iff_nprf`). Conjecture: on raw terms substitution for a
+   variable alone, without joining, is strictly weaker.
+4. **The newest variable.** `variable_substitution` restricts the source of its
+   rule to the newest variable. That restriction is not stable under
+   renaming, so the translation used for `VSPrf` does not apply; the package
+   has a protected translation that is not formalized.
+5. **The progressive reading of `Q`.** In `uniform_progress`, and by its
+   description in `target_closure`, `Q_y E` for a literal equation `E` means
+   `∀y (E(y) → E(S y))`. The package proves on paper that its rules are sound
+   for that reading (its elimination infers `E(a + n)` from `E(a)`, an
+   equation induction on `n`); this is not formalized. An
+   equivalence with the kernel needs formula translations in both directions,
+   both round trips, and a bootstrap of equality and of the connectives inside
+   that calculus; that is a second bridge of the size of the layer between
+   the kernel and `T_eq`, and is not started.
+6. **Other term syntaxes.** `canonical_recursors`, `clausal_canonical`,
+   `initializer_equality`, `counter_evaluation`, `uniform_binding`,
+   `substitutive_discharge` in its own form, and `register_graph` are stated
+   on recursors with a counter or with a successor seed. Each needs its own
+   syntax and a bi-interpretation with the iterator terms.
+7. **The clausal presentations.** For the packages with clause contexts on
+   full normal forms (`witness_discharge`, `inferred_witness`,
+   `deterministic_opening`, `first_instance`, `clause_discharge`,
+   `variable_substitution`), the rule is proved on the kernel, with formulas
+   as hypotheses and `Q` in the language. The clausal forms with the fixed
+   reflexivity clause are proved only for the raw and the zero-normal calculi
+   (`VPrf`, `ZVPrf`).
+8. **A shorter proof of the equivalence.** The main chain is 5,561 lines. A
+   dependency-closure computation shows that it contains nothing that the end
+   results do not use. Three designs fix most of its size, and no shorter
+   replacement for any of them is known: the predecessor of `T_eq` from
+   iteration alone (parity, a ramp with residues modulo three, a factor map, a
+   comparator, a saturating counter); the conjunction of two formulas through
+   a parity; and the selector between two formulas by a double recursion on
+   their binders. On the iPRA side the extensionality of the simulated
+   iterator (`ToPRA.iterSym_ext`) and the round trip of primitive recursion
+   (`RoundTrip.tau_code_prec_succ`) are two inductions with explicit
+   substitutions that have not been brought under one lemma, as their `T_eq`
+   counterparts were (`Q.iter_unique`).
+
 Build with one module per invocation, for example
 
     $env:LAKE_JOBS = '1'; $env:LEAN_NUM_THREADS = '0'
