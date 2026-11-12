@@ -1,0 +1,216 @@
+import PositiveUnscale84Graph
+import PositiveUnscale87Graph
+import Ordinary13QCube93Arithmetic
+import Mathlib.Tactic
+
+/-! Proposed source-only model transfer. Literal ring identities are proposed
+proofs, not checked results. The first-norm graph binding and the reverse
+positive-root witness are explicit cuts, and no endpoint is asserted. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.PositiveUnscale84To87Draft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing Ordinary13QCube93ArithmeticDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def update (v : Fin 13 → V) (y r : V) (i : Fin 13) : V :=
+  if i=7 then y else if i=8 then r else v i
+
+theorem positive_update (v : Fin 13 → V) (hv : ∀ i, 0<v i) (y r : V)
+    (hy : 0<y) (hr : 0<r) : ∀ i, 0<update v y r i := by
+  intro i
+  by_cases hi : i=7
+  · subst i; simpa [update] using hy
+  · by_cases hj : i=8
+    · subst i; simpa [update,hi] using hr
+    · simpa [update,hi,hj] using hv i
+
+def e84 (p : Fin 4 → ℤ) (v : Fin 13 → V) (e : Expr (Fin 13)) : DiffRing V :=
+  e.evalRing (fun i => ι (v i))
+def e87 (p : Fin 4 → ℤ) (v : Fin 13 → V) (e : Expr (Fin 13)) : DiffRing V :=
+  e.evalRing (fun i => ι (v i))
+def q (p : Fin 4 → ℤ) (v : Fin 13 → V) : DiffRing V := 1+ι (v 0)*(p 0 : DiffRing V)
+
+theorem output84 (p : Fin 4 → ℤ) : (PositiveUnscale84GraphDraft.graph p).output =
+    ((PositiveUnscale84GraphDraft.graph p).first*(PositiveUnscale84GraphDraft.graph p).first+
+      (PositiveUnscale84GraphDraft.graph p).main*(PositiveUnscale84GraphDraft.graph p).main)+
+    (((PositiveUnscale84GraphDraft.graph p).aux-1)*((PositiveUnscale84GraphDraft.graph p).aux-1)+
+      (PositiveUnscale84GraphDraft.graph p).strong*(PositiveUnscale84GraphDraft.graph p).strong) := by rfl
+
+theorem output87 (p : Fin 4 → ℤ) : (PositiveUnscale87GraphDraft.graph p).output =
+    ((PositiveUnscale87GraphDraft.graph p).first*(PositiveUnscale87GraphDraft.graph p).first+
+      (PositiveUnscale87GraphDraft.graph p).main*(PositiveUnscale87GraphDraft.graph p).main)+
+    (((PositiveUnscale87GraphDraft.graph p).aux-1)*((PositiveUnscale87GraphDraft.graph p).aux-1)+
+      (PositiveUnscale87GraphDraft.graph p).strong*(PositiveUnscale87GraphDraft.graph p).strong) := by rfl
+
+/-- Actual 87 Y equals q³ times the proposed 84 s. -/
+def ScaledY (p : Fin 4 → ℤ) (v : Fin 13 → V) (s : V) : Prop :=
+  (ι (v 7) : DiffRing V)=q p v*q p v*q p v*ι s
+
+/-- Literal 87 first residual is q⁶ times 84 first residual after r ↦ r+s. -/
+theorem first_scale (p : Fin 4 → ℤ) (v : Fin 13 → V) (s : V)
+    (hy : ScaledY p v s) :
+    e87 p v (PositiveUnscale87GraphDraft.graph p).first =
+      (q p v*q p v*q p v)*(q p v*q p v*q p v)*
+      e84 p (update v s (v 8+s)) (PositiveUnscale84GraphDraft.graph p).first := by
+  dsimp [e87,e84,ScaledY] at *
+  simp [PositiveUnscale87GraphDraft.graph,PositiveUnscale84GraphDraft.graph,update,q,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat,map_add] at *
+  rw [hy]
+  ring
+
+/-- The main, auxiliary and strong fields are unchanged by this coordinate
+replacement, including an arbitrary choice of target r. -/
+theorem shared (p : Fin 4 → ℤ) (v : Fin 13 → V) (s r : V)
+    (hy : ScaledY p v s) :
+    e87 p v (PositiveUnscale87GraphDraft.graph p).main =
+      e84 p (update v s r) (PositiveUnscale84GraphDraft.graph p).main ∧
+    e87 p v (PositiveUnscale87GraphDraft.graph p).aux =
+      e84 p (update v s r) (PositiveUnscale84GraphDraft.graph p).aux ∧
+    e87 p v (PositiveUnscale87GraphDraft.graph p).strong =
+      e84 p (update v s r) (PositiveUnscale84GraphDraft.graph p).strong := by
+  dsimp [e87,e84,ScaledY] at *
+  simp [PositiveUnscale87GraphDraft.graph,PositiveUnscale84GraphDraft.graph,update,q,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat] at *
+  rw [hy]
+  constructor <;> try constructor <;> ring
+
+theorem squares_zero (a b c d : DiffRing V)
+    (h : (a*a+b*b)+((c-1)*(c-1)+d*d)=0) :
+    a=0 ∧ b=0 ∧ c=1 ∧ d=0 := by
+  have ha : a*a=0 := by nlinarith [sq_nonneg b,sq_nonneg (c-1),sq_nonneg d]
+  have hb : b*b=0 := by nlinarith [sq_nonneg a,sq_nonneg (c-1),sq_nonneg d]
+  have hc : (c-1)*(c-1)=0 := by nlinarith [sq_nonneg a,sq_nonneg b,sq_nonneg d]
+  have hd : d*d=0 := by nlinarith [sq_nonneg a,sq_nonneg b,sq_nonneg (c-1)]
+  exact ⟨mul_self_eq_zero.mp ha,mul_self_eq_zero.mp hb,
+    sub_eq_zero.mp (mul_self_eq_zero.mp hc),mul_self_eq_zero.mp hd⟩
+
+/-- Exact literal first-norm premises, awaiting graph extraction from a zero.
+The arbitrary signed core and Bt must satisfy the actual root equation; the
+second equation is the actual scaled norm, with n supplied as a natural. -/
+def ScaledFirstCut (p : Fin 4 → ℤ) (v : Fin 13 → V) (beta n : V) : Prop :=
+  let b := v 0*beta
+  let z := e87 p v (PositiveUnscale87GraphDraft.graph p).root
+  let bt := e87 p v (PositiveUnscale87GraphDraft.graph p).bt
+  ∃ t : DiffRing V,
+    z=ι (cubeScale b)*ι b*t+ι (v 7)*ι b-ι (cubeScale b)*bt ∧
+    z^2=(ι (cubeScale b)*ι b)^2*ι n
+
+/-- Exact quotient client; the port cast and norm binding remain explicit. -/
+theorem quotient_of_cut (p : Fin 4 → ℤ) (v : Fin 13 → V) (beta n : V)
+    (hy : 0<v 7) (hc : ScaledFirstCut p v beta n) :
+    ∃ s : V, 0<s ∧ v 7=cubeScale (v 0*beta)*s := by
+  obtain ⟨t,hz,hn⟩ := hc
+  exact positive_quotient_of_signed_norm (v 0*beta) (v 7) n hy _ t _ hz hn
+
+/-- All-model positive reverse-root obligation. It must construct an actual
+87 first-zero at Y=q³s; it is not supplied by the quotient lemma. -/
+def ReverseRootCut (p : Fin 4 → ℤ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V),
+    (∀ i, 0<v i) → InternalZero (PositiveUnscale84GraphDraft.graph p).output v →
+    ∃ y r : V, 0<y ∧ 0<r ∧
+      ScaledY p (update v y r) (v 7) ∧
+      e87 p (update v y r) (PositiveUnscale87GraphDraft.graph p).first=0
+
+/-- The forward graph cut packages exactly the remaining source binding:
+quotient extraction, represented port cast, and nonzero q. It does not assert
+any endpoint or root-switch direction. -/
+def ForwardGraphCut (p : Fin 4 → ℤ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V),
+    (∀ i, 0<v i) → InternalZero (PositiveUnscale87GraphDraft.graph p).output v →
+    ∃ s : V, 0<s ∧ ScaledY p v s ∧ q p v ≠ 0
+
+/-- A concrete norm-binding cut suffices for the forward cut. Its beta is
+explicitly represented in the very same difference ring as the graph port. -/
+def ForwardNormBinding (p : Fin 4 → ℤ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V),
+    (∀ i, 0<v i) → InternalZero (PositiveUnscale87GraphDraft.graph p).output v →
+    ∃ beta n : V, (p 0 : DiffRing V)=ι beta ∧ ScaledFirstCut p v beta n
+
+theorem forward_of_norm_binding (p : Fin 4 → ℤ) (hbind : ForwardNormBinding p) :
+    ForwardGraphCut p := by
+  intro V _ _ v hv hz
+  obtain ⟨beta,n,hport,hcut⟩ := hbind V v hv hz
+  obtain ⟨s,hs,he⟩ := quotient_of_cut p v beta n (hv 7) hcut
+  have hq : q p v = ι (1+v 0*beta) := by
+    simp only [q,hport,map_add,map_mul,map_one]
+  have hqpos : (0 : V)<1+v 0*beta :=
+    add_pos_of_pos_of_nonneg (by simp) (Arithmetic.zero_le _)
+  have hqR : (0 : DiffRing V)<q p v := by
+    rw [hq]
+    simpa only [map_zero] using (ι_lt_ι (a := (0:V)) (b := 1+v 0*beta)).mpr hqpos
+  have heR := congrArg (ι : V →+* DiffRing V) he
+  simp only [cubeScale,map_add,map_mul,map_one] at heR
+  refine ⟨s,hs,?_,ne_of_gt hqR⟩
+  dsimp only [ScaledY]
+  rw [hq]
+  simp only [map_add,map_mul,map_one]
+  linear_combination heR
+
+/-- With the two explicitly stated graph/root cuts, the positive-zero
+relations agree. This proposed client does not discharge either cut. -/
+theorem positive_zero_iff (p : Fin 4 → ℤ) (hf : ForwardGraphCut p) (hr : ReverseRootCut p) :
+    (∃ v : Fin 13 → V, (∀ i, 0<v i) ∧ InternalZero (PositiveUnscale84GraphDraft.graph p).output v) ↔
+    (∃ v : Fin 13 → V, (∀ i, 0<v i) ∧ InternalZero (PositiveUnscale87GraphDraft.graph p).output v) := by
+  constructor
+  · rintro ⟨v,hv,hz⟩
+    obtain ⟨y,r,hy,hrpos,hscale,hfirst⟩ := hr V v hv hz
+    let w := update v y r
+    have hpos : ∀ i, 0<w i := positive_update v hv y r hy hrpos
+    have hs := shared p w (v 7) (v 8) hscale
+    have heq : update w (v 7) (v 8)=v := by funext i; simp [w,update]; split_ifs <;> simp_all
+    rw [heq] at hs
+    have h := (internalZero_iff _ _).mp hz
+    rw [output84] at h
+    simp only [Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_ofNat] at h
+    obtain ⟨_,hm,ha,hstrong⟩ := squares_zero _ _ _ _ h
+    obtain ⟨hm',ha',hs'⟩ := hs
+    refine ⟨w,hpos,(internalZero_iff _ _).mpr ?_⟩
+    rw [output87]
+    change (e87 p w (PositiveUnscale87GraphDraft.graph p).first *
+      e87 p w (PositiveUnscale87GraphDraft.graph p).first +
+      e87 p w (PositiveUnscale87GraphDraft.graph p).main *
+      e87 p w (PositiveUnscale87GraphDraft.graph p).main) +
+      ((e87 p w (PositiveUnscale87GraphDraft.graph p).aux-1) *
+       (e87 p w (PositiveUnscale87GraphDraft.graph p).aux-1) +
+       e87 p w (PositiveUnscale87GraphDraft.graph p).strong *
+       e87 p w (PositiveUnscale87GraphDraft.graph p).strong)=0
+    rw [hfirst,hm',ha',hs',hm,ha,hstrong]
+    ring
+  · rintro ⟨v,hv,hz⟩
+    obtain ⟨s,hs,hscale,hq⟩ := hf V v hv hz
+    let w := update v s (v 8+s)
+    have hpos : ∀ i, 0<w i := positive_update v hv s (v 8+s) hs
+      (add_pos_of_pos_of_nonneg (hv 8) (Arithmetic.zero_le s))
+    have h := (internalZero_iff _ _).mp hz
+    rw [output87] at h
+    simp only [Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_ofNat] at h
+    obtain ⟨hfirst,hm,ha,hstrong⟩ := squares_zero _ _ _ _ h
+    have hscaleFirst := first_scale p v s hscale
+    have hfactor : q p v*q p v*q p v*(q p v*q p v*q p v) ≠ 0 := by
+      exact mul_ne_zero (mul_ne_zero (mul_ne_zero hq hq) hq) (mul_ne_zero (mul_ne_zero hq hq) hq)
+    have hfirst84 : e84 p w (PositiveUnscale84GraphDraft.graph p).first=0 := by
+      apply (mul_eq_zero.mp ?_).resolve_left hfactor
+      rw [← hscaleFirst]
+      exact hfirst
+    obtain ⟨hm',ha',hs'⟩ := shared p v s (v 8+s) hscale
+    refine ⟨w,hpos,(internalZero_iff _ _).mpr ?_⟩
+    rw [output84]
+    change (e84 p w (PositiveUnscale84GraphDraft.graph p).first *
+      e84 p w (PositiveUnscale84GraphDraft.graph p).first +
+      e84 p w (PositiveUnscale84GraphDraft.graph p).main *
+      e84 p w (PositiveUnscale84GraphDraft.graph p).main) +
+      ((e84 p w (PositiveUnscale84GraphDraft.graph p).aux-1) *
+       (e84 p w (PositiveUnscale84GraphDraft.graph p).aux-1) +
+       e84 p w (PositiveUnscale84GraphDraft.graph p).strong *
+       e84 p w (PositiveUnscale84GraphDraft.graph p).strong)=0
+    rw [hfirst84,← hm',← ha',← hs',hm,ha,hstrong]
+    ring
+end DiophantineConsistency.PositiveUnscale84To87Draft
+#print axioms DiophantineConsistency.PositiveUnscale84To87Draft.positive_zero_iff
