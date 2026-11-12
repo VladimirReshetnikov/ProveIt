@@ -1269,6 +1269,9 @@ remains unelaborated and is not yet extracted from the 88 graph.
 The source-reviewed [88 main-norm draft](research/ordinary14-88-main-norm-draft/README.md)
 proposes extracting the other Pell norm from that graph's own zero. It remains
 unelaborated and is not yet a complete parent bridge.
+The source-reviewed [first-root gap draft](research/ordinary14-first-root-gap-draft/README.md)
+proposes the needed strict Pell-root inequality from explicit natural bounds.
+It remains unelaborated and must still be connected to the graph valuation.
 A [sign20 syntax and squares client](research/nine-sharing-sign20-seed-squares-check/README.md),
 [independently audited](reviews/nine-sharing-sign20-seed-squares-terminal-independent/README.md),
 checks symbolic seed zero iff its 11 residuals vanish. It does not establish
