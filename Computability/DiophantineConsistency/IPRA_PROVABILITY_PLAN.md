@@ -7634,6 +7634,9 @@ explicit mask inequalities and without assuming `q ∣ X`. It is unelaborated.
 The source-reviewed [85 first-index mod-q⁴ draft](research/ordinary14-85-first-index-modq4-draft/README.md)
 proposes the corresponding rank congruence without that divisibility
 assumption. It remains unelaborated and does not establish exact indices.
+The source-reviewed [85 main-index draft](research/ordinary14-85-main-index-draft/README.md)
+proposes classification of the main root while retaining the direct carrier
+balance. It is unelaborated and does not identify the index with the rank.
 The source-reviewed [84 main-index draft](research/ordinary14-84-main-index-draft/README.md)
 proposes classifying the main root while retaining the natural balance. It is
 unelaborated and does not identify that index with the rank.
