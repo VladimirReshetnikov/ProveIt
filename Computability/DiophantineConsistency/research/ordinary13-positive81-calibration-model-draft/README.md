@@ -34,7 +34,10 @@ and F<q from the compact beta/J and positive-C graph drafts. Thus
 `prototype_power_and_qsquare` and `calibration81` propose `q²≤X` from that
 rank bound, `X=2^R`, and the model exponential inequality `R<2^R`. This is
 unelaborated, and the bound is not claimed to follow from the rank window
-alone. The 81 wrapper still exposes the exact-index and oriented-main cuts.
+alone. The 81 wrapper still exposes the exact-index and oriented-main cuts. Its
+`original81_coordinates` lemma proposes the explicit identification with
+the original positive-81 J and w values, so the conclusion is about that
+graph’s actual `X=(1+J*beta)*w`, not an unrelated prototype quantity.
 
 All graph-zero maps, factor units, model port casts, source/provider/axiom
 ancestry, fixed physical tuple and PDF bindings remain open. From

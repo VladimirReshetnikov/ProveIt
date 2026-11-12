@@ -133,7 +133,34 @@ theorem calibration81 (K : ℕ) (v : Fin 13 → V) (hv : ∀ i, 0<v i)
     (fun j => (ports K j:ℤ)) v hv hz
   exact prototype_power_and_qsquare K (Positive80To81TransportDraft.image85 v)
     hz85 hexact hmain
+/-- Bind the mapped prototype base and X to the actual positive 81 input
+coordinates J=0 and w=6, with the same exact natural compact ports. -/
+theorem original81_coordinates (K : ℕ) (v : Fin 13 → V) (hv : ∀ i, 0<v i) :
+    q (ports K) (Positive80To81TransportDraft.image85 v)=1+v 0*(ports K 0:V) ∧
+    X (ports K) (Positive80To81TransportDraft.image85 v)=
+      (1+v 0*(ports K 0:V))*v 6 := by
+  have h0 : v 0-1+1=v 0 := tsub_add_cancel_of_le (pos_iff_one_le.mp (hv 0))
+  have h6 : v 6-1+1=v 6 := tsub_add_cancel_of_le (pos_iff_one_le.mp (hv 6))
+  simp [X,q,Positive80To81TransportDraft.image85,Natural89RReplacementDraft.up,
+    Natural89Positive80TransportDraft.lower,EtaUnshift85TransportDraft.raiseEta,
+    W86To87TransportDraft.raiseW,Gamma87To88TransportDraft.raiseGamma,
+    J88To89TransportDraft.raiseJ,h0,h6]
+
+/-- Conditional calibration expressed in the positive-81 graph's own q and
+X coordinates; all exact-index and oriented-main cuts remain explicit. -/
+theorem calibration81_original (K : ℕ) (v : Fin 13 → V) (hv : ∀ i, 0<v i)
+    (hz : InternalZero (PositiveSquare81GraphDraft.graph (fun j => (ports K j:ℤ))).output v)
+    (hexact : ExactIndexCut (ports K) (Positive80To81TransportDraft.image85 v))
+    (hmain : OrientedMainCut (ports K) (Positive80To81TransportDraft.image85 v)) :
+    (1+v 0*(ports K 0:V))*v 6=
+      Exp.exp (rank (ports K) (Positive80To81TransportDraft.image85 v)) ∧
+    (1+v 0*(ports K 0:V))*(1+v 0*(ports K 0:V))≤
+      (1+v 0*(ports K 0:V))*v 6 := by
+  have h := calibration81 K v hv hz hexact hmain
+  obtain ⟨hq,hX⟩ := original81_coordinates K v hv
+  simpa only [hq,hX] using h
 end DiophantineConsistency.Positive81CalibrationDraft
 #print axioms DiophantineConsistency.Positive81CalibrationDraft.prototype_rank_qsquare
 #print axioms DiophantineConsistency.Positive81CalibrationDraft.prototype_power
 #print axioms DiophantineConsistency.Positive81CalibrationDraft.calibration81
+#print axioms DiophantineConsistency.Positive81CalibrationDraft.calibration81_original

@@ -13,7 +13,7 @@ for x in ['def ExactIndexCut','def OrientedMainCut','theorem prototype_power',
  'EtaNaturalGraphEarlyIndexDraft.compact_early_index','hexact n w hn hny hks hnmod',
  'EtaZeroGrowthDraft.power','theorem rank_qsquare','theorem prototype_rank_qsquare',
  'le_of_lt (lt_exp _)','theorem calibration81',
- 'Positive81To83TransportDraft.prototype_zero_of81']:
+ 'Positive81To83TransportDraft.prototype_zero_of81','theorem original81_coordinates','theorem calibration81_original']:
  assert x in s[0],x
 for x in ['theorem exact_pair','P72Exact.indices_ordinary','(heta : 0<eta)',
  '(hstrong :','(haux :','m=R ∧ 2*n=R+1']:
