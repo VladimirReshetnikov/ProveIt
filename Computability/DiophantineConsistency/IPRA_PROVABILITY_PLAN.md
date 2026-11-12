@@ -1260,6 +1260,11 @@ endpoint remain open.
 The source-reviewed [78 positive bridge draft](research/ordinary14-root78-positive-bridge-draft/README.md)
 proposes composing that symbolic graph chain with the quotient-88 positive
 bridge. It remains unelaborated and is not a checked consistency endpoint.
+The source-reviewed [78 iPRA adapter draft](research/ordinary14-root78-ipra-endpoint-draft/README.md)
+proposes native, standard and equality-only derivability declarations. Its
+[static import inventory](research/ordinary14-root78-endpoint-import-inventory/README.md)
+records draft headers and directly named qualified sources only. Neither is
+a Lean, provider/axiom, physical-byte or internal proof-existence check.
 The source-reviewed [compact 78/88 composition](research/ordinary14-78-88-compact-model-composition-draft/README.md)
 proposes the next symbolic-port link. It remains unelaborated and is not an
 88-to-parent or iPRA endpoint theorem.
