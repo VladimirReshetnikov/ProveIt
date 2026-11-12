@@ -234,7 +234,10 @@ on normalized $Q$-free formulas and fixes $0=\Suc 0$.
 \begin{proof}
 $\Nat$ derives $A$ from $\nf(A)$ and conversely by
 \cref{comp:lem:conversion}, and $\nf(A)$ from $A^\flat$ and conversely by
-\cref{claus:lem:unq}(iii). By \cref{comp:thm:fsix} it remains to show, for
+\cref{claus:lem:unq}(iii). By \cref{comp:thm:full}, $\Nat$ and the kernel
+$\Nat^{\mathrm f}$ of \cref{comp:def:nfull} on full normal forms have the
+same consequences, and by \cref{comp:thm:fsix} so does $\mathsf F$; it
+remains to show, for
 $\Gamma$ and $A$ in full normal form, that $\Gamma\proves_{\mathsf F}A$ if
 and only if $\operatorname{ord}(\tau\Gamma)\proves_{\mathcal T}\tau A$.
 This is the argument of \cref{claus:thm:five} with $\mathsf F$ in the
@@ -418,6 +421,10 @@ so are both, and so are symmetry, transitivity, the congruence
 $s=t\proves h(s)=h(t)$, and transport in every equation template:
 $s=t,\ p(s)=q(s)\proves p(t)=q(t)$.
 \end{lemma}
+
+On raw terms the same consequences are \cref{claus:lem:eq};
+what is specific here is that one term transport, crossed or uncrossed,
+suffices once reflexivity is available.
 
 \begin{proof}
 From \rulename{UTr}: with $h(w)=w$ and $r\equiv s$ the premises are $s=t$
@@ -1211,53 +1218,22 @@ derived from one computation schema.
 
 \subsection{Syntax}
 
-In this section the convention on normal forms is not in force. Raw terms
-are
-\[
- t::=x\mid 0\mid R(n,a;\,u.\,h),
-\]
-where $u$ is bound in the body $h$ only. Successor is defined,
-\[
- \Suc(a)\defeq R(0,a;\,u.\,0),\qquad 1\defeq\Suc 0,
-\]
-and the intended recursor is seeded by a successor:
-$R(0,a;u.h)=\Suc a$ and $R(\Suc n,a;u.h)=h\subst{R(n,a;u.h)}{u}$. The
-first equation is made part of the syntax. The \emph{canonicalization}
-$\operatorname{cn}$ canonicalizes all subterms and replaces the body of
-every $R$ whose counter is the literal $0$ by the literal $0$; a term is
-\emph{canonical} if every subterm $R(0,a;u.h)$ has $h\equiv 0$. The
-operation does not unfold a successor iteration, does not execute a body,
-and does not test whether a term denotes zero. It never changes the root
-constructor of a term, so
-\[
- \operatorname{cn}(t)\equiv 0\quad\Longleftrightarrow\quad t\equiv 0 .
-\]
-Terms and formulas of the calculus are canonical, and substitution means
-capture-avoiding raw substitution followed by $\operatorname{cn}$.
-
-\begin{lemma}[Coherence of canonicalization]
-\label{disch:lem:cn}
-For every term or formula $T$ and every capture-avoiding substitution
-$\sigma$,
-\[
- \operatorname{cn}(T\sigma)
- =\operatorname{cn}\bigl(\operatorname{cn}(T)[x\mapsto
- \operatorname{cn}(\sigma x)]\bigr).
-\]
-Canonical substitution is associative, commutes with renaming, and
-introduces no free variables beyond those of its arguments.
-\end{lemma}
-
-\begin{proof}
-By structural induction, after renaming bound variables apart. At a node
-$R$: if the counter is the literal $0$, both sides erase the body; if a
-counter different from $0$ becomes $0$ under the substitution, both sides
-erase it again; otherwise both sides keep the constructor and the
-induction hypotheses identify the three subterms. Canonicalization does not
-turn a constructor other than a variable into the literal $0$. Formula
-binders need only the usual lifted substitution. Associativity follows by
-applying the identity to two successive raw substitutions.
-\end{proof}
+In this section the convention on normal forms is not in force. The terms
+are those of the seeded recursor $R(n,a;u.h)$ with one bound variable of
+\cref{ctr:def:languages}, with the defined successor
+$\Suc a\defeq R(0,a;u.0)$ and the computation equations
+\eqref{ctr:eq:r1zero} and \eqref{ctr:eq:r1succ}. The zero computation is
+made part of the syntax: terms and formulas of the calculus are zero-body
+canonical, and substitution is the normalized substitution
+$T\langle\sigma\rangle$, both in the sense of \cref{ctr:def:nu}. The
+canonicalization $\nu$ does not unfold a successor iteration, does not
+execute a body and does not test whether a term denotes zero; it preserves
+the root constructor \eqref{ctr:eq:nuroot}, so that $\nu(t)\equiv 0$ if
+and only if $t\equiv 0$; and it is coherent with substitution, which is
+therefore associative, commutes with renaming and introduces no free
+variables beyond those of its arguments (\cref{ctr:lem:coherence}). The
+syntax is that of the calculi $\mathcal C_\nu$ and $\mathcal K_6$ of
+\cref{ctr:def:free,ctr:def:six}.
 
 Formulas are equations and $\D{x}{y}B$. A context is a finite list of
 clauses $[A;\,y.\,B(y)]$ with one antecedent, and an assumption $A$ is the
@@ -1291,8 +1267,8 @@ canonical.
           {\Gamma\proves F(t)}\ \rulename{SDis}
  \label{disch:eq:sdis}
 \end{align}
-In \rulename{Calc} the predecessor iterate on the right is canonicalized;
-at $n\equiv 0$ it is $\Suc a$. In \rulename{Intro}, $z$ is fresh for
+\rulename{Calc} is the schema \eqref{ctr:eq:Rplus}: the predecessor iterate
+on the right is canonicalized, and at $n\equiv 0$ it is $\Suc a$. In \rulename{Intro}, $z$ is fresh for
 $\Gamma$, $t$ and $\D{x}{y}B$, and the test is literal. In \rulename{SDis},
 $b$ is fresh for $\Gamma$ and $\D{x}{y}B$, the exported formula $F(t)$
 does not contain $b$, and $F(v)$ is an arbitrary formula template whose
@@ -1314,7 +1290,7 @@ separation axiom and no structural rule. The one computation schema is
 \rulename{Calc}; the progress mode of \rulename{Intro} carries the
 induction. Weakening, exchange, contraction, injective renaming and cut of
 an assumption are admissible by induction on derivations, as in
-\cref{disch:lem:structural}; injective renaming preserves the literal test
+\cref{disch:lem:structural,ctr:lem:struct}; injective renaming preserves the literal test
 of \rulename{Intro}. Substitution of a term for a parameter can turn a
 witness into the literal $0$; it is admissible through
 \cref{disch:prop:sd-basis}, not by an induction that preserves the rules.
@@ -1438,16 +1414,26 @@ witness $0$ of the unused coordinate, in progress mode.
 the clause at $\Suc z$.
 \end{proof}
 
-By (c) a derivation of the Eq/$Q$/$D$ basis of \pkg{canonical\_recursors}
+The term $W_0$ is the term $c=\operatorname{wr}(0)$ of \cref{ctr:lem:sixeq},
+and (a) is the repair of \cref{ctr:lem:sixcase}, with \rulename{TrF} in
+place of the equality of $\mathcal K_6$; (b) and (c) are the clause forms
+of \cref{ctr:lem:resources} and of \cref{claus:lem:closure}(i)--(iv).
+
+The Eq/$Q$/$D$ basis of \pkg{canonical\_recursors} is the six-rule calculus
+$\mathcal K_6$ of \cref{ctr:def:six}. By (c) a derivation of $\mathcal K_6$
 whose elimination of $\D{x}{y}$ keeps a formula $\Q{y}B(b,y)$ is
 translated by deriving $q_yB(b,y)$ from the opened clause and cutting it
 into the translated branch; the two representations of a context are
 related by derivations and are not identified by convention. Reflexivity,
-symmetry and \rulename{TrF} give the equality rule of that basis, and its
-elimination of $\Q{}$ is the second rule of (b). Conversely that basis
-derives formula transport and the elimination of $\D{x}{y}$, which
-validate \rulename{SDis}, a clause $[A;\,y.\,B]$ being represented by its
-ordinary reading. So the two have the same consequences on formulas.
+symmetry and \rulename{TrF} give the crossed equation transport (X) of
+$\mathcal K_6$, including its restriction on the source, and the crossed
+elimination (QX) is the second rule of (b) followed by symmetry when the
+conclusion is an equation. Conversely $\mathcal K_6$ derives formula
+transport (\cref{ctr:lem:sixtransport}) and the elimination of $\D{x}{y}$,
+which validate \rulename{SDis}, a clause $[A;\,y.\,B]$ being represented by
+its ordinary reading. So $\mathcal K$ and $\mathcal K_6$ have the same
+consequences on formulas, and by \cref{ctr:thm:six,ctr:thm:canonical} the
+same as $\mathcal C_\nu$ and $\mathcal R_{\mathrm{raw}}$.
 
 \begin{theorem}[Bridge for $\mathcal K$]
 \label{disch:thm:sd-ipra}
@@ -1457,6 +1443,13 @@ $x=y$, and both formula round trips. In particular they are equiconsistent.
 \end{theorem}
 
 \begin{proof}
+By the comparison above, $\mathcal K$ and $\mathcal K_6$ derive the same
+formulas from the same canonical contexts, so the statement is
+\cref{ctr:thm:sixbridge}, whose bi-interpretation is that of
+\cref{ctr:thm:transfer} for $\mathsf T_R^1$. The direct interpretations, in
+the form described in \cref{ctr:rem:direct}, read as follows on the rules
+of $\mathcal K$.
+
 From $\mathcal K$ to $\iPRA$: interpret each fixed term $R(n,a;u.h)$ by
 primitive recursion with the seed $\Suc a$ and the displayed step. The
 erasure of a body at the counter $0$ preserves the value. \rulename{Calc}
@@ -1465,36 +1458,30 @@ elimination, \rulename{Intro} is coverage in case mode and induction for
 an equation under its assumed base in progress mode, and \rulename{SDis}
 is equality substitution inside the scope of an existential elimination.
 
-From $\iPRA$ to $\mathcal K$: \pkg{canonical\_recursors} constructs, before
-any numerical selector, cancellation of successor or reflection of
-equality is available, a canonical term $p$ with $p(0)=0$ and
-$p(\Suc a)=a$. The iterator of \cref{base:sec:terms} is then the term
-\begin{equation}
- \widehat I(n,a;\,u.\,h)\defeq
- p\Bigl(R\bigl(n,a;\,v.\,\Suc(h\subst{p(v)}{u})\bigr)\Bigr),
- \label{disch:eq:init}
-\end{equation}
-which satisfies the two computation equations of the iterator: at the
-counter $0$ the value is $p(\Suc a)=a$, and at a successor \rulename{Calc}
-exposes an outer successor that $p$ removes. By
+From $\iPRA$ to $\mathcal K$: the predecessor $p$ of \eqref{ctr:eq:seedpred}
+(\cref{seed:thm:succ-pred}, written $P$ there) is constructed before any
+numerical selector, cancellation of successor or reflection of equality is
+available, and the iterator of \cref{base:sec:terms} is the initialized
+iteration $\widehat I(n,a;u.h)=p(R(n,a;v.\Suc(h\subst{p(v)}{u})))$ of
+\cref{seed:thm:succ-iter} and \cref{ctr:def:translations}: at the counter
+$0$ its value is $p(\Suc a)=a$, and at a successor \rulename{Calc} exposes
+an outer successor that $p$ removes. By
 \cref{disch:prop:sd-basis,disch:lem:sd-refl,disch:lem:sd-eq} the rules
 needed by the logical macros and by the arithmetic of
 \cref{base:thm:pred,base:thm:reflect,base:thm:primrec} are available in
 $\mathcal K$, with $\sel(v,a,b)$ read as $\widehat I(v,a;u.b)$. This
 gives the defining equations and the quantifier-free induction of $\iPRA$.
 
-For the numerical composites, work through each fixed primitive recursive
-description in the order of its dependencies. Once the earlier
-descriptions are identified, a description and its return translation have
-the same seed and the same step, and induction for the equation between
-the two trajectories proves them equal at every number of the whole
-domain. For the body of an $R$, pointwise equality of bodies is lifted to
-the iteration by the same argument; it is not assumed as a congruence. The
-interpretation of successor returns $\Suc a$. Hence both composites are
-the identity. The logical round trips of \cref{base:thm:bridge} identify
-the reading of $\D{x}{y}$ with its returned macro, and induction on
-formulas extends the numerical identities to both formula composites. The
-contradiction $0=\Suc 0$ corresponds to falsum in both directions.
+Both numerical composites are the identity by the argument of
+\cref{ctr:thm:transfer}(2): recurrence uniqueness (\cref{ctr:lem:unique}),
+applied to each fixed description in the order of its dependencies, with
+pointwise equality of bodies lifted to the iteration by body
+extensionality (\cref{ctr:lem:bodyext}) and not assumed as a congruence;
+the interpretation of successor returns $\Suc a$. The logical round trips
+of \cref{base:thm:bridge} identify the reading of $\D{x}{y}$ with its
+returned macro, and induction on formulas extends the numerical
+identities to both formula composites. The contradiction $0=\Suc 0$
+corresponds to falsum in both directions.
 \end{proof}
 
 \begin{remark}[Checking, the raw companion, Lean]
@@ -2628,6 +2615,10 @@ Define
  a+b\defeq R(b,a;\,i,u.\,\Suc u),\qquad
  \mathit{pd}(v)\defeq R(v,0;\,i,u.\,i).
 \]
+These are the counter-aware selector, addition and predecessor of
+\cref{ctr:lem:decoder,ctr:thm:compiler}, for a recursor whose value at the
+counter $0$ is its initializer and not the successor of it: no outer
+decoder is needed, and each equation below is one computation step.
 
 \begin{lemma}[Elementary computations]
 \label{disch:lem:const-elem}
@@ -2738,7 +2729,8 @@ to the quantifier-free formula $n=0\lor n=\Suc(\mathit{pd}(n))$ gives
 coverage: the case $0$ is immediate, and at a successor
 $\mathit{pd}(\Suc n)=n$ gives the second disjunct without the hypothesis.
 Injectivity of successor is in \cref{disch:lem:const-elem}. Every
-primitive recursive definition compiles into the recursor with a counter:
+primitive recursive definition compiles into the recursor with a counter,
+as in \cref{ctr:thm:compiler} with $R$ in place of $\operatorname{Rec}$:
 zero, successor, projections and composition are term operations, and
 $f(0,\vec x)=g(\vec x)$,
 $f(\Suc n,\vec x)=h(n,f(n,\vec x),\vec x)$ is represented by
@@ -2792,7 +2784,9 @@ $E(a,b)$ is $0$ or $1$ and equals $1$ exactly if $a=b$, and
 is $0$ or $1$ and equals $0$ exactly if $a=b$. It satisfies
 \eqref{disch:eq:split}. This derivation uses quantifier-free inductions of
 $\iPRA$; it is not part of the bootstrap of
-\cref{disch:thm:const-ind}.
+\cref{disch:thm:const-ind}. It is a variant of the reflection argument
+recorded in \cref{ctr:rem:reflection}, with the control $d$ and the test
+$E$ in place of the sign and the reflection term used there.
 
 \emph{Composites.} In the constancy theory, induction for equations
 (\cref{disch:thm:const-ind}) proves the uniqueness of every fixed

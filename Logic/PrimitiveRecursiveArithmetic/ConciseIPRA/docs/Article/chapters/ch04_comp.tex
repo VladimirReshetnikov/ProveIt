@@ -266,8 +266,9 @@ $\Gamma,A'\proves_{\Nat}A$ for every $\Gamma$.
 For one step $t\to t'$ argue by induction on the position of the contracted
 redex. At the root the equation is an instance of \rulename{I0} or
 \rulename{IS}. Below a successor, in the counter or in the initializer of an
-iterator, it follows from the induction hypothesis by congruence in the
-template with one hole at that position. In the body of
+iterator, it follows from the induction hypothesis by congruence
+(\cref{base:lem:eq}(iv)) in the template with one hole at that position. In
+the body of
 $\It{n}{a}{u}{h}$, with $h\to h'$, the induction hypothesis is
 $\proves_{\Nat}h=h'$ with $u$ free, in the empty context, and
 \cref{base:cor:rot}(ii) gives $\It{n}{a}{u}{h}=\It{n}{a}{u}{h'}$.
@@ -784,11 +785,9 @@ $\sigma$, $\proves_{\Nat}t[\sigma]=t\langle\sigma\rangle$.
 \end{lemma}
 
 \begin{proof}
-The term statement is ($\nu$5) for $t[\sigma]$. For formulas argue by
-induction on $A$. A literal equation uses ($\nu$5) at its two sides and the
-equality rules. For $\Q{y}B$ and $\D{x}{y}B$ the induction hypothesis holds
-for $B$ with its bound variables free, in both directions, and
-\cref{base:lem:bindercong} gives both directions for the formula.
+The term statement is ($\nu$5) for $t[\sigma]$. For formulas the induction
+on $A$ in the proof of \cref{comp:lem:conversion} applies, with ($\nu$5) at
+the two sides of a literal equation in place of the equation of a reduct.
 \end{proof}
 
 The inclusion of $\nu$-normal syntax into raw syntax therefore commutes with
@@ -1495,8 +1494,8 @@ Then $\mathsf{R}^{\mathrm{raw}}$ derives exactly the sequents of $\Nat$.
 \end{proposition}
 
 \begin{proof}
-Reflexivity follows from \rulename{I0} and \cref{comp:lem:eqalg}(a) applied
-to $\It{0}{r}{u}{u}=r$. Weakening, injective renaming and cut are direct
+Reflexivity and the equality rules are derived from \rulename{I0} and
+\rulename{Tr} as in \cref{base:lem:eq}. Weakening, injective renaming and cut are direct
 inductions; \cref{comp:lem:rcases} and rule \eqref{comp:eq:rqcase} are
 obtained as before, and a true guard is preserved by ordinary substitution,
 so \cref{comp:lem:rsubst} holds with the same proof. The translation from
@@ -1771,11 +1770,12 @@ conclusion. \rulename{WI} is admissible in $\Nat^{0}$ by
 
 By \cref{comp:cor:bridge}(b), substitution and the Leibniz rule are
 admissible in $\mathsf{S}$. \pkg{initializer\_equality} also proves the
-Leibniz rule directly, by induction on the matrix: at $\Q{y}B$ it
-introduces the closure by cases, transports the base backwards, applies the
-given closure and transports the result forwards; at $\D{x}{y}B$ it opens
-the given formula and introduces the target by cases at the same witness.
-Only the literal-equation case uses \cref{comp:cor:seedtr}.
+Leibniz rule directly in $\mathsf{S}$, by the induction on the matrix of
+\cref{base:thm:leibniz} with the binder steps of \cref{base:lem:bindercong}:
+at $\Q{y}B$ the closure by cases of \cref{comp:lem:single}(i) replaces
+\cref{base:lem:qI}, and at $\D{x}{y}B$ the target is introduced by
+\rulename{WI} at the variable opened by \rulename{DE}, which is in case
+mode. Only the literal-equation case uses \cref{comp:cor:seedtr}.
 
 \begin{remark}
 The Lean formalization of the rule is \Lean{NIPrf}, with

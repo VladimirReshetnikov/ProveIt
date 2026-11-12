@@ -1,0 +1,436 @@
+{
+  "python": "3.12.14",
+  "scope": "explicit certificate replay and soundness-boundary rejection checks",
+  "assurance": "finite implementation validation, not proof-assistant verification",
+  "cases": 19,
+  "process_executions": 38,
+  "failures": [],
+  "substitution_checks": [
+    {
+      "name": "avoids_body_capture",
+      "passed": true
+    },
+    {
+      "name": "counter_outside_body_binders",
+      "passed": true
+    },
+    {
+      "name": "macro_free_variables_2",
+      "passed": true
+    },
+    {
+      "name": "macro_free_variables_3",
+      "passed": true
+    },
+    {
+      "name": "macro_free_variables_4",
+      "passed": true
+    },
+    {
+      "name": "macro_free_variables_5",
+      "passed": true
+    }
+  ],
+  "metrics": [
+    {
+      "path": "code/checker_constantfree.py",
+      "raw_bytes": 14810,
+      "normalized_bytes": 13723,
+      "significant_tokens": 3072,
+      "ast_nodes": 3349,
+      "sha256": "12baa5d6ec6725f24ca11557ef08aae7a3f2465792b27f769333877949981eb3",
+      "normalized_sha256": "86aff15e0e73fed3c455baaab5731af501cc7ce4aa25e5d9a3df2698755fb1b4"
+    },
+    {
+      "path": "reference/checker_register_graph.py",
+      "raw_bytes": 13783,
+      "normalized_bytes": 12626,
+      "significant_tokens": 2811,
+      "ast_nodes": 3054,
+      "sha256": "8e4fda1bc61555b3001b32a6636f4ebb6241f47b05b5028307d3ba7ee7306185",
+      "normalized_sha256": "3c977c99eda213b9af7ca82a5f41862bd585f23a5879b48ede34986250c61d56"
+    }
+  ],
+  "results": [
+    {
+      "case": "unit_is_one",
+      "purpose": "delivered mathematical derivation",
+      "optimized": false,
+      "expected_acceptance": true,
+      "accepted": true,
+      "exit_code": 0,
+      "payload_sha256": "55c037fe37f18f1871dc25140f5f68d793f2b7e48ea8eb2ba3553a9733dd5120",
+      "verdict": "ACCEPT"
+    },
+    {
+      "case": "unit_is_one",
+      "purpose": "delivered mathematical derivation",
+      "optimized": true,
+      "expected_acceptance": true,
+      "accepted": true,
+      "exit_code": 0,
+      "payload_sha256": "55c037fe37f18f1871dc25140f5f68d793f2b7e48ea8eb2ba3553a9733dd5120",
+      "verdict": "ACCEPT"
+    },
+    {
+      "case": "anchor_independence",
+      "purpose": "delivered mathematical derivation",
+      "optimized": false,
+      "expected_acceptance": true,
+      "accepted": true,
+      "exit_code": 0,
+      "payload_sha256": "2141025a14cd09253dd910bede28de917f31e0d05760de40b176bf5cfcb1e508",
+      "verdict": "ACCEPT"
+    },
+    {
+      "case": "anchor_independence",
+      "purpose": "delivered mathematical derivation",
+      "optimized": true,
+      "expected_acceptance": true,
+      "accepted": true,
+      "exit_code": 0,
+      "payload_sha256": "2141025a14cd09253dd910bede28de917f31e0d05760de40b176bf5cfcb1e508",
+      "verdict": "ACCEPT"
+    },
+    {
+      "case": "zero_exists",
+      "purpose": "delivered mathematical derivation",
+      "optimized": false,
+      "expected_acceptance": true,
+      "accepted": true,
+      "exit_code": 0,
+      "payload_sha256": "dd526a9987dad28b85b26ef28e6451448adb2c6ee0f3eefa75a765f570111097",
+      "verdict": "ACCEPT"
+    },
+    {
+      "case": "zero_exists",
+      "purpose": "delivered mathematical derivation",
+      "optimized": true,
+      "expected_acceptance": true,
+      "accepted": true,
+      "exit_code": 0,
+      "payload_sha256": "dd526a9987dad28b85b26ef28e6451448adb2c6ee0f3eefa75a765f570111097",
+      "verdict": "ACCEPT"
+    },
+    {
+      "case": "zero_unique",
+      "purpose": "delivered mathematical derivation",
+      "optimized": false,
+      "expected_acceptance": true,
+      "accepted": true,
+      "exit_code": 0,
+      "payload_sha256": "8653912ac801bd5d068c11f6d1d5b95cdbbd355142d49d8991a3e98b59d1ff0a",
+      "verdict": "ACCEPT"
+    },
+    {
+      "case": "zero_unique",
+      "purpose": "delivered mathematical derivation",
+      "optimized": true,
+      "expected_acceptance": true,
+      "accepted": true,
+      "exit_code": 0,
+      "payload_sha256": "8653912ac801bd5d068c11f6d1d5b95cdbbd355142d49d8991a3e98b59d1ff0a",
+      "verdict": "ACCEPT"
+    },
+    {
+      "case": "ordinary_nonempty_domain",
+      "purpose": "Param proves existence without a closed term or arithmetic axiom",
+      "optimized": false,
+      "expected_acceptance": true,
+      "accepted": true,
+      "exit_code": 0,
+      "payload_sha256": "d3ccd0f8a75211d01a9cef0e042a2a042c686b57c2abcf422e1f18b91ad48d29",
+      "verdict": "ACCEPT"
+    },
+    {
+      "case": "ordinary_nonempty_domain",
+      "purpose": "Param proves existence without a closed term or arithmetic axiom",
+      "optimized": true,
+      "expected_acceptance": true,
+      "accepted": true,
+      "exit_code": 0,
+      "payload_sha256": "d3ccd0f8a75211d01a9cef0e042a2a042c686b57c2abcf422e1f18b91ad48d29",
+      "verdict": "ACCEPT"
+    },
+    {
+      "case": "unbound_axiom_anchor",
+      "purpose": "anchor terms must be in numerical scope",
+      "optimized": false,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "f64215d66702220a32021db1764b6cdc903838f0e44a74ea225951c2777c5bc3",
+      "verdict": "REJECT: unbound term variable"
+    },
+    {
+      "case": "unbound_axiom_anchor",
+      "purpose": "anchor terms must be in numerical scope",
+      "optimized": true,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "f64215d66702220a32021db1764b6cdc903838f0e44a74ea225951c2777c5bc3",
+      "verdict": "REJECT: unbound term variable"
+    },
+    {
+      "case": "mismatched_axiom_anchor",
+      "purpose": "an arithmetic instance must match its explicitly supplied anchor",
+      "optimized": false,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "34ff16d0bf06191a16c5c782e27d7fc9a21e573ce0ee450eb9172323b7ce965f",
+      "verdict": "REJECT: premise or conclusion does not match"
+    },
+    {
+      "case": "mismatched_axiom_anchor",
+      "purpose": "an arithmetic instance must match its explicitly supplied anchor",
+      "optimized": true,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "34ff16d0bf06191a16c5c782e27d7fc9a21e573ce0ee450eb9172323b7ce965f",
+      "verdict": "REJECT: premise or conclusion does not match"
+    },
+    {
+      "case": "changed_graph_output",
+      "purpose": "the claimed graph endpoint is checked",
+      "optimized": false,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "f482c5854188464d50b3fa377508b965b41d479e0ad762d9c036b63e8c32f71c",
+      "verdict": "REJECT: premise or conclusion does not match"
+    },
+    {
+      "case": "changed_graph_output",
+      "purpose": "the claimed graph endpoint is checked",
+      "optimized": true,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "f482c5854188464d50b3fa377508b965b41d479e0ad762d9c036b63e8c32f71c",
+      "verdict": "REJECT: premise or conclusion does not match"
+    },
+    {
+      "case": "unbound_step_body",
+      "purpose": "the body has only its stated binding scope",
+      "optimized": false,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "833efaa4d0c025f1e512f5f29899aafdc901c1416c48b195ed1528b90c38d02f",
+      "verdict": "REJECT: unbound term variable"
+    },
+    {
+      "case": "unbound_step_body",
+      "purpose": "the body has only its stated binding scope",
+      "optimized": true,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "833efaa4d0c025f1e512f5f29899aafdc901c1416c48b195ed1528b90c38d02f",
+      "verdict": "REJECT: unbound term variable"
+    },
+    {
+      "case": "induction_anchor_depends_on_eigenvariable",
+      "purpose": "the anchor is fixed before the induction eigenvariable is introduced",
+      "optimized": false,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "ba23c42e60c2c4a701fed84af740f228e8697c0c9bfcc6dde64eab519dcbd237",
+      "verdict": "REJECT: unbound term variable"
+    },
+    {
+      "case": "induction_anchor_depends_on_eigenvariable",
+      "purpose": "the anchor is fixed before the induction eigenvariable is introduced",
+      "optimized": true,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "ba23c42e60c2c4a701fed84af740f228e8697c0c9bfcc6dde64eab519dcbd237",
+      "verdict": "REJECT: unbound term variable"
+    },
+    {
+      "case": "induction_reuses_outer_parameter",
+      "purpose": "the induction eigenvariable cannot be an outer parameter",
+      "optimized": false,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "18372340dfd939f36fd4bf9dd50880914e393e96a2d1d224ce46f8927f47b9c8",
+      "verdict": "REJECT: eigenvariable is not fresh"
+    },
+    {
+      "case": "induction_reuses_outer_parameter",
+      "purpose": "the induction eigenvariable cannot be an outer parameter",
+      "optimized": true,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "18372340dfd939f36fd4bf9dd50880914e393e96a2d1d224ce46f8927f47b9c8",
+      "verdict": "REJECT: eigenvariable is not fresh"
+    },
+    {
+      "case": "universal_reuses_outer_parameter",
+      "purpose": "universal introduction enforces its eigenvariable condition",
+      "optimized": false,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "63b7a8d2eeded08cbb7b4697575fa02dc8541f73cdab2f673e16205a09bbdf24",
+      "verdict": "REJECT: eigenvariable is not fresh"
+    },
+    {
+      "case": "universal_reuses_outer_parameter",
+      "purpose": "universal introduction enforces its eigenvariable condition",
+      "optimized": true,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "63b7a8d2eeded08cbb7b4697575fa02dc8541f73cdab2f673e16205a09bbdf24",
+      "verdict": "REJECT: eigenvariable is not fresh"
+    },
+    {
+      "case": "zero_existence_without_parameter_scope",
+      "purpose": "the zero witness needs Param when the public numerical scope is empty",
+      "optimized": false,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "1eed403dc6c004558ead0e453f4bc563a5b2047a94e715b7ce9771d0d5a008f6",
+      "verdict": "REJECT: unbound term variable"
+    },
+    {
+      "case": "zero_existence_without_parameter_scope",
+      "purpose": "the zero witness needs Param when the public numerical scope is empty",
+      "optimized": true,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "1eed403dc6c004558ead0e453f4bc563a5b2047a94e715b7ce9771d0d5a008f6",
+      "verdict": "REJECT: unbound term variable"
+    },
+    {
+      "case": "forbidden_primitive_zero",
+      "purpose": "there is no literal-zero term constructor",
+      "optimized": false,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "b1c1cc93703a286bc0940ecf7036824fd368bd9298c281cc04bdd30e1ec57ab1",
+      "verdict": "REJECT: unknown term constructor"
+    },
+    {
+      "case": "forbidden_primitive_zero",
+      "purpose": "there is no literal-zero term constructor",
+      "optimized": true,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "b1c1cc93703a286bc0940ecf7036824fd368bd9298c281cc04bdd30e1ec57ab1",
+      "verdict": "REJECT: unknown term constructor"
+    },
+    {
+      "case": "compound_induction",
+      "purpose": "only literal equations may be induction invariants",
+      "optimized": false,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "1cb1aa2b4cf4bf9fa7273500e60e4a66b3f6a5f12975654997de3edf48a2fb47",
+      "verdict": "REJECT: induction is restricted to literal equations"
+    },
+    {
+      "case": "compound_induction",
+      "purpose": "only literal equations may be induction invariants",
+      "optimized": true,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "1cb1aa2b4cf4bf9fa7273500e60e4a66b3f6a5f12975654997de3edf48a2fb47",
+      "verdict": "REJECT: induction is restricted to literal equations"
+    },
+    {
+      "case": "boolean_hypothesis_index",
+      "purpose": "booleans are not integer indices",
+      "optimized": false,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "f5896f5e640bf03de29f741faf283c6b60439dc9a168a93b9c9adc1d18dadd7d",
+      "verdict": "REJECT: invalid hypothesis index"
+    },
+    {
+      "case": "boolean_hypothesis_index",
+      "purpose": "booleans are not integer indices",
+      "optimized": true,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "f5896f5e640bf03de29f741faf283c6b60439dc9a168a93b9c9adc1d18dadd7d",
+      "verdict": "REJECT: invalid hypothesis index"
+    },
+    {
+      "case": "extra_rule_field",
+      "purpose": "proof instructions have exact field sets",
+      "optimized": false,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "4fa665b23d87da0fe0d4e67a72a4b0a9bc278e7babd98df976a3e0e37fa6ae22",
+      "verdict": "REJECT: wrong rule fields"
+    },
+    {
+      "case": "extra_rule_field",
+      "purpose": "proof instructions have exact field sets",
+      "optimized": true,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "4fa665b23d87da0fe0d4e67a72a4b0a9bc278e7babd98df976a3e0e37fa6ae22",
+      "verdict": "REJECT: wrong rule fields"
+    },
+    {
+      "case": "duplicate_json_keys",
+      "purpose": "duplicate object keys are rejected by the JSON front end",
+      "optimized": false,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "f395baf1b48d4c6ed2d20abb11aa428ad36d60002e19dd1622f0b1cd46011b91",
+      "verdict": "REJECT: duplicate JSON object key"
+    },
+    {
+      "case": "duplicate_json_keys",
+      "purpose": "duplicate object keys are rejected by the JSON front end",
+      "optimized": true,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "f395baf1b48d4c6ed2d20abb11aa428ad36d60002e19dd1622f0b1cd46011b91",
+      "verdict": "REJECT: duplicate JSON object key"
+    },
+    {
+      "case": "nonstandard_json_number",
+      "purpose": "nonstandard JSON numeric constants are rejected",
+      "optimized": false,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "334dd8b64d394273c2c0cd651cb6d1a4ec1b0a52d8a2eae624bfc8459ba2d550",
+      "verdict": "REJECT: nonstandard JSON numeric constant"
+    },
+    {
+      "case": "nonstandard_json_number",
+      "purpose": "nonstandard JSON numeric constants are rejected",
+      "optimized": true,
+      "expected_acceptance": false,
+      "accepted": false,
+      "exit_code": 1,
+      "payload_sha256": "334dd8b64d394273c2c0cd651cb6d1a4ec1b0a52d8a2eae624bfc8459ba2d550",
+      "verdict": "REJECT: nonstandard JSON numeric constant"
+    }
+  ]
+}

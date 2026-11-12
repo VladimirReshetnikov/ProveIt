@@ -185,7 +185,9 @@ Then substitute $n$ for $z$.
 \end{proof}
 
 Two bodies with different syntax are thus identified by a proof, not by a
-primitive extensionality rule.
+primitive extensionality rule. The lemma is the counterpart for $R$ of
+\cref{base:lem:uniq}, proved by the same equation induction with
+\eqref{seed:eq:R0}, \eqref{seed:eq:RS} in place of the iterator equations.
 
 \begin{lemma}[Replacement]\label{seed:lem:succ-leibniz}
 Write $A\approx A'$ if $A$ and $A'$ are interderivable over the empty
@@ -354,6 +356,16 @@ computation, the equality laws, \textsc{nc}, \textsc{ei} for the displayed
 literal equation with its other parameters fixed, and
 \cref{seed:lem:succ-cases}. They are therefore derivable in $\mathsf{T}_R$.
 No step cancels a successor or uses a selector with unshifted branches.
+The plan is that of \cref{base:thm:pred}: parity, a three-cycle, a ramp, a
+factor map, a comparator and a saturating counter. The steps that
+\cref{base:thm:pred} takes by equational interpolation and the two-point rule
+(\cref{base:lem:interp}(iv), (v)) need the selector $\sel$ with unshifted
+branches; here they are replaced by the contextual cases of
+\cref{seed:lem:succ-cases}, which split a Boolean value under the induction
+hypothesis, and every term is adjusted to the seed $\Suc a$. The conjugacy
+and non-saturation inductions of \cref{seed:lem:succ-sat} and the last
+comparator equation have the shape of the corresponding steps of
+\cref{base:thm:pred,base:lem:cmp}, with the shifted values.
 
 \begin{lemma}[Shifted sum]\label{seed:lem:succ-oplus}
 Let $a\oplus b\defeq R(b,a;u.\Suc u)$. Then $a\oplus0=\Suc a$,
@@ -558,7 +570,7 @@ $H(A_3(\Phi(x,y)))$ into $A_3(\Phi(x,\Suc y))$. Applying $Z\circ N$ and
 $N(A_3(v))=N(v)$ gives $L(\Suc x,\Suc y)=L(x,y)$.
 
 Finally $L(\Suc n,n)=0$ by \textsc{ei} on $n$ from the second and third
-equations.
+equations, as in \cref{base:lem:cmp}.
 \end{proof}
 
 The standard value of $L(x,y)$ is $1$ if $x\leq y$ and $0$ otherwise.
@@ -791,7 +803,7 @@ B^{\iota}(t^{\iota},\It{0}{\Suc z}{u}{0})$, and the premise of
 \rulename{QI}, or of the induction rule of $\mathsf{T}_R$, to
 $\Gamma^{\iota},E^{\iota}(z)\proves E^{\iota}(\It{0}{\Suc z}{u}{0})$.
 Replacing $\It{0}{\Suc z}{u}{0}$ by $\Suc z$ along the zero computation
-equation, by the Leibniz property of \cref{base:sec:structural}, gives the
+equation, by the Leibniz rule \cref{base:thm:leibniz}, gives the
 premise of the same rule in $\Nat$ or $\Teq$. The translation of
 \eqref{seed:eq:R0} is
 $\It{0}{\Suc a^{\iota}}{u}{h^{\iota}}=\It{0}{\Suc a^{\iota}}{u}{0}$; both
@@ -850,8 +862,8 @@ For $t=\It{n}{a}{u}{h}$,
  {\It{0}{\Suc(h^{\rho\iota}\subst{P^{\iota}(v)}{u})}{w}{0}}\Bigr),
 \]
 which by the induction hypothesis, the zero computation equation and
-uniqueness of iteration for the iterator (the proof of
-\cref{seed:lem:succ-unique} with the iterator equations) equals
+uniqueness of iteration for the iterator (\cref{base:lem:uniq}, applied to
+the iteration with the first body as the template $f$) equals
 $P^{\iota}\bigl(\It{n}{\Suc a}{v}{\Suc(h\subst{P^{\iota}(v)}{u})}\bigr)$.
 Induction for the literal equation
 $P^{\iota}\bigl(\It{z}{\Suc a}{v}{\Suc(h\subst{P^{\iota}(v)}{u})}\bigr)
@@ -905,10 +917,9 @@ $F(s)$ infer $F(t)$ for every native formula template $F$; and progress
 introduces the paired binder, from $\Gamma,E(t,z)\proves E(t,\Suc z)$ infer
 $\Gamma\proves\D{x}{y}E(x,y)$ for a literal equation $E$. Both calculi derive
 the same sequents. Formula transport is
-\cref{seed:lem:succ-leibniz}(ii). The progress rule on $\D{x}{y}$ is derived
-from \rulename{QI}: the premise gives $\Q{y}E(t,y)$, and \rulename{DI} by
-cases with witness $t$ follows because its premise
-$E(t,0)\proves E(t,\Suc z)$ is \rulename{QE}. Conversely \rulename{QI} is
+\cref{seed:lem:succ-leibniz}(ii). The progress rule on $\D{x}{y}$ is the
+witnessed introduction \cref{base:cor:combined}(i), derived from
+\rulename{QI} and \cref{base:lem:dI}. Conversely \rulename{QI} is
 derived from the progress rule on $\D{v}{y}E(y)$ with $v$ unused, followed by
 \rulename{DE} and \rulename{Hyp}; and the transport rule of
 \cref{base:sec:kernel} is a case of formula transport combined with symmetry.
@@ -1008,58 +1019,38 @@ at $n=0$ and $0$ at $n=\Suc m$.
 
 \subsection{The one-coordinate bound}
 
-The independent initializer cannot be recovered by a term.
+The independent initializer cannot be recovered by a term. A function has a
+\emph{bounding coordinate} in the sense of \cref{obs:def:bc}: some argument
+$x_i$ and a nondecreasing unary primitive recursive $F$ with
+$f(\vec x)\leq F(x_i)$; the general obstruction for tied seeds is
+\cref{obs:cor:tied-seed}, and its two generalizations are
+\cref{obs:thm:single-body,obs:thm:circuit}. The case of this chapter is the
+following instance.
 
-\begin{definition}
-A function $f\colon\mathbb N^r\to\mathbb N$ has the \emph{bounding
-coordinate} $i$ if there is a nondecreasing $F\colon\mathbb N\to\mathbb N$
-with $f(x_1,\ldots,x_r)\leq F(x_i)$ for all arguments.
-\end{definition}
-
-\begin{theorem}[One-coordinate bound]\label{seed:thm:tied-bound}
+\begin{corollary}[One-coordinate bound]\label{seed:thm:tied-bound}
 Consider the terms built from variables, $0$, $\Suc$, $B$, and optionally a
 binary $\varepsilon$ with values in $\{0,1\}$ and a binary $d$ with
 $d(x,y)\leq x$, in the standard model with \eqref{seed:eq:B0},
 \eqref{seed:eq:BS}. The function denoted by a term is bounded by a constant
 or has a bounding coordinate among its free variables, with a nondecreasing
 primitive recursive bound that is obtained by recursion on the term.
-\end{theorem}
+\end{corollary}
 % ed.: the packages prove the bound for the terms x | 0 | B (transient_seed)
 % and with S and epsilon (bounded_initializer); monus_and_neutral_major
 % asserts it for its terms with d. The case of d is added here.
 
 \begin{proof}
-By induction on the term, treating the bound variables $u$, $v$ of a body as
-further input coordinates while the body is processed. A variable has the
-bound $F(z)=z$ in its own coordinate; $0$ and $\varepsilon(s,t)$ are bounded
-by constants; $\Suc t$ and $d(s,t)$ inherit the coordinate of $t$ and of $s$,
-with bounds $F+1$ and $F$.
-
-Let $t=B(n;u,v.h)$ and write $b(m,\vec p)$ for the value of the recursor with
-body $h$ at the counter value $m$. By the induction hypothesis $h$, as a
-function of $u,v,\vec p$, is bounded by a constant or has a bounding
-coordinate with bound $H$.
-\begin{enumerate}[label=\arabic*.,nosep]
-\item If $h\leq K$ for a constant $K$, then $b(0,\vec p)\leq K+1$ and
-$b(m+1,\vec p)\leq K$.
-\item If a parameter $p_j$ is the bounding coordinate, then
-$h(0,0,\vec p)$ and every $h(m,b(m,\vec p),\vec p)$ are at most $H(p_j)$,
-so $b(m,\vec p)\leq H(p_j)+1$ for all $m$. This holds whatever the counter
-term is.
-\item If $u$ is the bounding coordinate, put
-$K(m)\defeq1+\max_{q\leq m}H(q)$. Then $b(0,\vec p)\leq H(0)+1\leq K(0)$ and
-$b(m+1,\vec p)\leq H(m)\leq K(m+1)$.
-\item If $v$ is the bounding coordinate, put $K(0)\defeq H(0)+1$ and
-$K(m+1)\defeq\max\{K(m),H(K(m))\}$. Then $b(0,\vec p)\leq H(0)+1$, because
-the state argument of $h(0,0,\vec p)$ is $0$, and
-$b(m+1,\vec p)\leq H(b(m,\vec p))\leq H(K(m))\leq K(m+1)$ by induction on
-$m$ and monotonicity of $H$.
-\end{enumerate}
-In cases 3 and 4, $K$ is nondecreasing and primitive recursive and
-$t\leq K(n(\vec p))$. By the induction hypothesis for the counter term $n$,
-either $n\leq N$ for a constant $N$, and $K(N)$ bounds $t$, or
-$n(\vec p)\leq N(p_i)$ for a nondecreasing primitive recursive $N$, and
-$K(N(p_i))$ bounds $t$ in the coordinate $p_i$.
+The recursor $B$ is the constructor $\mathsf B$ of the tied-seed language of
+\cref{obs:def:languages}(b), with the same computation equations
+\eqref{obs:eq:B0}, \eqref{obs:eq:BS}. The successor is a unary primitive
+recursive operation; $\varepsilon$ is globally bounded by $1$; and $d$ has
+the bounding coordinate $x$ with the bound $F(z)=z$. By
+\cref{obs:cor:tied-seed} every term denotes a function that is globally
+bounded or has a bounding coordinate. The proof of that corollary, a
+recursion on the term with the four cases of a constant body and of a
+passive, counter or state coordinate of the body, composed with the bound of
+the counter term by \cref{obs:lem:envelope}(iii), constructs the
+nondecreasing primitive recursive bound.
 \end{proof}
 
 \begin{corollary}\label{seed:cor:tied-noterms}
@@ -1069,31 +1060,27 @@ $\sel(n+1,a,b)=b$; addition; an injection $\mathbb N^2\to\mathbb N$.
 \end{corollary}
 
 \begin{proof}
-The selector is unbounded. The coordinate $n$ does not bound it, since at
-$n=0$ it is $a$; the coordinate $a$ does not, since at $a=0$, $n=1$ it is
-$b$; the coordinate $b$ does not, since at $b=0$, $n=0$ it is $a$. Addition
-is unbounded when either argument is fixed at $0$. If a coordinate bounds a
-binary function, fixing that coordinate at $0$ confines infinitely many pairs
-to finitely many values; a bounded function is not injective either.
+By \cref{seed:thm:tied-bound} every such function would be globally bounded
+or have a bounding coordinate, and the argument of \cref{obs:cor:no-addition}
+shows that none of the three has either property.
 \end{proof}
 
 \begin{remark}\label{seed:rem:tied-bound-scope}
-The theorem is in \pkg{transient\_seed} for the terms $x\mid0\mid B$, and in
+The bound is in \pkg{transient\_seed} for the terms $x\mid0\mid B$, and in
 \pkg{bounded\_initializer} with $\Suc$ and $\varepsilon$; the case of $d$ is
-immediate from $d(x,y)\leq x$. The same four cases, with the value $1$ at the
-counter $0$ in place of $1+h(0,0,\vec p)$, give the bound for the recursor
-$J(0;h)=1$, $J(\Suc n;h)=h(n,J(n;h))$, which \pkg{scalar\_successor} mentions
-as the reason for keeping the initializer in $R$; additional unary primitive
-recursive operations compose with the bound of their argument and do not
-change the argument. The bound concerns the
+immediate from $d(x,y)\leq x$. The recursor $J(0;h)=1$,
+$J(\Suc n;h)=h(n,J(n;h))$, which \pkg{scalar\_successor} mentions as the
+reason for keeping the initializer in $R$, is a single-body constructor
+scheme of \cref{obs:def:single-body} (with the constant seed combiner $1$),
+so \cref{obs:thm:single-body} gives the same bound for it. The bound concerns the
 functions denoted by terms. Sound logical rules cannot change it, so there is
 no compiler from the iterator language to these terms. It does not show that
 a theory on these terms fails to be bi-interpretable with $\iPRA$:
 \cref{seed:thm:tied-biint} interprets each primitive recursive function by a
 graph with finitely many value terms. The successor-seeded recursor
 $R(n,a;u.h)$ escapes the bound because $a\oplus b$ is unbounded in each of
-its two arguments. Related obstructions for tied seeds are in the packages
-\pkg{local\_scopes} and \pkg{uniform\_predecessor}.
+its two arguments. Related obstructions for tied seeds are in the package
+\pkg{local\_scopes} and in \cref{obs:thm:single-body,obs:thm:circuit}.
 \end{remark}
 
 \subsection{The theory with a Boolean equality test}
@@ -2741,7 +2728,11 @@ formulas extends this to all formulas, and falsity is preserved.
 The packages of this chapter contain three results about the calculus
 $\Nat$ on iterator terms that do not concern a seeded recursor. They are
 recorded here from \pkg{coverage\_and\_kernel}, \pkg{transient\_seed} and
-\pkg{monus\_and\_neutral\_major}.
+\pkg{monus\_and\_neutral\_major}. The second coincides with
+\cref{kern:prop:compoundonly}(ii) and is recorded by a reference; the first
+and the third differ from the results of \cref{kern:sec:onesided} and
+\cref{claus:sec:prefix} with similar names, and the remarks below relate
+them.
 
 \subsection{One native binder over a literal equation}
 
@@ -2838,44 +2829,45 @@ At depth greater than one only this inclusion is claimed: the reading of a
 nested native formula contains implications with quantified antecedents, and
 moving quantifiers through them is not valid intuitionistically.
 
+\begin{remark}[Relation to the prefix representation]
+\label{seed:rem:prefix-claus}
+\Cref{claus:lem:prefix,claus:thm:prefix} concern a different statement with
+a similar name: every $Q$-free native formula is, uniquely and stably under
+substitution, a record $D^k(s=t)$, and a clause calculus on such records is
+equivalent to $\Nat$. That is a statement about syntax and derivations.
+\Cref{seed:prop:onebinder,seed:thm:prefix} concern what native formulas
+express under the reading in $\iPRA$. The two fit together: the formulas
+built in the proof of \cref{seed:thm:prefix}, and those for the
+$\Sigma_2^{\mathrm{qf}}$ case of \cref{seed:prop:onebinder}, use $\D{}{}$, an
+equation and the gate $G_z$ only, so they are $Q$-free and are records $D^{j}(s=t)$ with $j\leq k$ in the sense of
+\cref{claus:lem:prefix}.
+\end{remark}
+
 \subsection{The case rule at a literal equation cannot be deleted}
 
-\begin{proposition}\label{seed:prop:atomic-case}
-Consider the calculus on iterator terms with paired introduction by cases
-and the progress rule on $\D{x}{y}$ of \cref{seed:rem:succ-rules}, and
-restrict the introduction so
-that its local assumption is $E(t,z)$ whenever the matrix is a literal
-equation $E$, and $B(t,0)$ otherwise. The restricted calculus does not
-derive $\D{x}{y}(y=\Suc 0)$, which the unrestricted calculus derives.
-\end{proposition}
-
-\begin{proof}
-The unrestricted calculus derives the formula by \rulename{DI} by cases:
-under the local assumption $0=\Suc 0$ every equation follows. For the
-restricted calculus read equations as equality on the standard numbers,
-$\Q{y}B$ as $B(0)\to\forall y\,B(y)$, and
-\[
- (\D{x}{y}B)^{\dagger}\defeq
- \begin{cases}
- \exists x\,\forall y\,(B(x,y)\to B(x,\Suc y)),&B\ \text{a literal
- equation},\\
- \exists x\,(B^{\dagger}(x,0)\to\forall y\,B^{\dagger}(x,y)),&B\
- \text{compound}.
- \end{cases}
-\]
-Every rule of the restricted calculus is sound for this reading: a progress
-witness for an equation gives its closure by induction on the standard
-numbers, so \rulename{DE} is sound; compound case introduction is sound
-because every positive number is a successor; and transport preserves the
-distinction between literal and compound matrices. The formula
-$\D{x}{y}(y=\Suc 0)$ is false in this reading, because $y=1$ holds at $1$
-and fails at $2$.
-\end{proof}
+\begin{remark}[The atomic case introduction]\label{seed:prop:atomic-case}
+\pkg{transient\_seed} considers the calculus on iterator terms with paired
+introduction by cases and the progress rule on $\D{x}{y}$ of
+\cref{seed:rem:succ-rules}, with the introduction restricted so that its
+local assumption is $E(t,z)$ whenever the matrix is a literal equation $E$,
+and $B(t,0)$ otherwise, and shows that the restricted calculus does not
+derive $\D{x}{y}(y=\Suc 0)$, which the unrestricted calculus derives. At a
+literal equation the restricted introduction is the progress rule
+\rulename{DP}, so the restricted calculus is that of
+\cref{kern:prop:compoundonly}(ii) with transport in a formula template, and
+the statement and its proof, by the reading of an atomic $\D{x}{y}E$ as
+$\exists x\,\forall y\,(E(x,y)\to E(x,\Suc y))$, are given there.
+\Cref{guard:prop:strict} is the same statement for the root-determined
+introduction $\rulename{DI}_{\mathrm{root}}$, and
+\cref{kern:prop:nodi,kern:prop:compoundonly}(i) are the companion results
+for dropping \rulename{DI} altogether and for keeping \rulename{QI} in place
+of progress.
 
 Under the standard reading the same formula is true, since its zero instance
 is false. Hence the two readings of a $\D{x}{y}$ over an equation, closure
 and progress, cannot be exchanged by padding the equation into a compound
 formula without losing one direction of the formula round trip.
+\end{remark}
 
 \subsection{Transport from the literal zero alone}
 
@@ -2903,6 +2895,21 @@ The relation used in the proof is not equality. With unrestricted transport
 $0=0$ follows from the computation $\It{0}{0}{v}{0}=0$ used as both premises
 with the template $w=0$. The proposition does not apply to a calculus that
 has $0=0$ as an axiom or as an initial context entry.
+
+\begin{remark}[The opposite restriction of the source]
+\label{seed:rem:zero-source}
+The proposition restricts transport to the source $0$, which is the
+complement of the restriction $s\not\equiv0$ of \cref{kern:sec:onesided}.
+That restriction is harmless: reflexivity and the unrestricted rule
+\rulename{Tr} are derivable from \rulename{I0} and $\rulename{Tr}^{-}$
+(\cref{kern:lem:oseq}), and for transport in a formula template the calculus
+$\mathsf Z$, in which a source $0$ is served by \rulename{QE}, is equivalent
+to $\Nat$ (\cref{kern:thm:dispatch}). The restriction $s\not\equiv0$ is
+harmful only inside the strictly guarded composition of
+\cref{guard:cor:obstruction}, where a zero-left hypothesis is inert. Thus the
+sources other than $0$ suffice for equality in $\Nat$, and the source $0$
+alone does not.
+\end{remark}
 
 %======================================================================
 \section{Checker sizes}
@@ -3130,15 +3137,17 @@ stronger, is not decided; at depth greater than one only the inclusion of
 \end{question}
 
 \begin{question}[Variants of the two obstructions]
-\Cref{seed:prop:atomic-case} refutes the deletion of case introduction at
+\Cref{kern:prop:compoundonly}(ii), in the form of
+\cref{seed:prop:atomic-case}, refutes the deletion of case introduction at
 literal equations for the two displayed readings; it does not exclude a
 calculus in which a $\D{x}{y}$ over an equation is an auxiliary judgment and
 the object formulas are padded. \Cref{seed:prop:zero-source} does not
 exclude transport from the literal zero together with a reflexivity axiom.
 Neither variant is decided in the packages of this chapter; calculi with a
 single introduction rule are the subject of \pkg{witness\_rule} and
-\pkg{guarded\_core}, and restrictions on the source of transport of
-\pkg{source\_dispatch}.
+\pkg{guarded\_core} (\cref{kern:sec:witness,guard:prop:strict}), and
+restrictions on the source of transport of \pkg{source\_dispatch}
+(\cref{kern:thm:dispatch}).
 \end{question}
 
 \begin{question}[Checkers for the new bases]

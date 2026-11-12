@@ -1,6 +1,6 @@
 # Concise axiomatizations of iPRA — the unified article
 
-`concise_ipra.pdf` (443 pages) merges the written mathematics of every
+`concise_ipra.pdf` (461 pages) merges the written mathematics of every
 research package that was delivered to this directory, with the material
 deduplicated: each definition, rule inventory, theorem and proof is stated
 once, in one notation. Statements that the packages leave unproved are

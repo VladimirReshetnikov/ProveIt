@@ -728,6 +728,8 @@ for separate coordinates, they are listed separately. Each package's own
 | [`parameter_intro`](Artifacts/parameter_intro/) | On the counter-aware successor-seeded recursor with full normalization and clause contexts, three families: Use, Introduction, and substitution with discharge. Introduction takes no witness: it uses the newest outer numerical parameter, or `0` at the closed root; arbitrary witnesses are recovered by naming through clause specialization. 630 tokens / 701 AST nodes / 1925 bytes |
 | [`conditional_copy`](Artifacts/conditional_copy/) | Introduction at the newest parameter combined with a discharge that infers its replacement from two normalized rows; three families Use, Close and Export, and only Use supplies a term. The theorem that makes the combination possible is conditional copy, `D_{x,y} Sel(y, H(t), H(x))`, proved uniformly without equality transport |
 | [`single_constructor`](Artifacts/single_constructor/) | Terms `x`, `0` and `R(n, a; i, u.h)` with the successor defined, a fixed reflexivity clause and three families Use, Introduce and Open with an inferred witness, on full canonical normal forms. 683 tokens / 764 AST nodes / 1965 bytes |
+| [`constantfree`](Artifacts/constantfree/) | Terms `x` and `J(n; i,r.h)` only, with no numerical constant: `K(t) = J(t; i,r.i)`, `U(t) = J(t; i,r.K(r))`, `Z(t) = J(U(t); i,r.r)`, `S(t) = J(t; i,r.Z(r))`; zero is defined by `z = Z(z)`. Two `J` occurrences are necessary and sufficient for the constant one, three for zero. Also smaller compact checkers of the existing calculus | reference checker 3072 tokens; 3349 AST nodes; 13723 bytes against 2811 / 3054 / 12626. Compact: 250; 283; 603 and 264; 299; 498 |
+| [`three_field`](Artifacts/three_field/) | Three-field certificates: the elimination major is inferred from the endpoint, the source field is reused as that major, and a cleared seed selects the major-checking branch | 249; 278; 607 and 255; 271; 606; four-field byte program 267; 299; 495; validated native checker 342; 391; 666 against 344 / 393 / 673 |
 | [`uniform_recursion`](Artifacts/uniform_recursion/) | Variables, `0` and the one recursor `R(n, a; i, u.h)`, with the successor defined as `R(0, a; i, u.0)`; a fixed reflexivity clause and three families Use, Close and Name. 662 tokens / 741 AST nodes / 1950 bytes |
 
 ## Intake record
@@ -802,6 +804,17 @@ sources, three checksum ledgers and five build logs. The delivered module
 `Artifacts/zero_normal/formal/ZeroNormalization.lean` compiled unchanged and
 is `Lean/ConciseIPRA/ZeroNormalization.lean`.
 
+Since 2026-11-12 an arrival is integrated directly into the article: its
+mathematics into the chapter where it belongs, deduplicated, and its
+executable part into `Artifacts/<package>/`; a checker that a smaller one
+supersedes under the same input contract is deleted. The first such
+delivery (commit `42fba2a76a`) was `constantfree` (chapter "Canonical and
+counter-aware recursors"; compact checkers in "Certificates and checkers"),
+`three_field` ("Certificates and checkers") and a second write-up of
+`progress_independence` ("Obstructions", with its census under
+`Artifacts/progress_independence/second_writeup/`). With it, 83 superseded
+checker files were deleted from `Artifacts/` (the list is in the size
+section of the chapter "Certificates and checkers").
 `checked_presentation`, `context_phase`, `crossed_uniqueness`,
 `frontier_review`, `inferred_major`, `orbit_closure`, `progress_independence`
 and `smaller_envelope` arrived on 2026-11-12 (commits `1c5ecfe518`,

@@ -614,9 +614,10 @@ injectivity of the successor turns the opened instance into a name of $t$.
 Let $\mathcal E$ be the equational fragment of \cref{base:def:E}:
 \rulename{Hyp}, the two computation equations, \rulename{Tr} and induction
 for an equation, on judgments whose assumptions and conclusions are
-equations.  By \cref{base:thm:pred}, $\mathcal E$ derives, for the
-predecessor term written $P$ there and $\operatorname{pred}$ in this
-chapter,
+equations.  By \cref{base:thm:pred}, whose equational derivation replaces
+every numerical case distinction by the interpolation and the two-point
+rule of \cref{base:lem:interp}, $\mathcal E$ derives, for the predecessor
+term written $P$ there and $\operatorname{pred}$ in this chapter,
 \begin{equation}
  \operatorname{pred}(0)=0,\qquad\operatorname{pred}(\Suc n)=n .
  \label{wit:eq:pred}
@@ -639,9 +640,11 @@ obtaining it from the bridge of \cref{base:thm:bridge}, which is proved for
 the unrestricted calculus, would be circular.  That the derivation needs no
 case distinction under a hypothesis, hence no \rulename{DI}, is the
 contribution of the four packages recorded in \cref{base:rem:predsources}.
-In Lean the fragment is \Lean{EqPrf}, with \Lean{EqPrf.pred\_zero},
-\Lean{EqPrf.pred\_succ} and \Lean{EqPrf.succ\_inj}, and \Lean{EqPrf.toDW}
-embeds it in the kernel under any restriction of the witness.
+The predecessor is formalized in this fragment: in Lean the fragment is
+\Lean{EqPrf} (hypothesis, the two computations, transport in one template,
+equation induction), with \Lean{EqPrf.pred\_zero}, \Lean{EqPrf.pred\_succ}
+and \Lean{EqPrf.succ\_inj}, and \Lean{EqPrf.toDW} embeds it in the kernel
+under any restriction of the witness.
 
 \subsection{The packet and the names}
 
@@ -752,9 +755,11 @@ variable is enough.
 \label{wit:rem:lean-complete}
 \Cref{wit:thm:zero-or-variable} is formalized:
 \Lean{dwprf\_iff\_nprf}, in the module \Lean{NativeWitnessComplete}, states
-that the kernel with \rulename{DI} at the literal $0$ or at a variable, and
-at no other term, derives exactly what the kernel derives.  The names are
-derived there (\Lean{DWPrf.names}) from a packet in which the predecessor
+that \Lean{DWPrf true true} derives $\Gamma\proves A$ if and only if
+\Lean{NPrf} does, that is, the kernel with \rulename{DI} by cases at the
+literal $0$ or at a variable, and at no other term, derives exactly what
+the kernel derives.  The names are derived there (\Lean{DWPrf.names}) from
+the coverage packet in a form in which the predecessor
 stands inside the matrix: the name
 $\D{x}{v}\mathrm{Al}_{\operatorname{pred}(y)}$ of
 $\operatorname{pred}(y)$ holds at $y=0$ with the witness $0$ and at
@@ -762,8 +767,10 @@ $y=\Suc z$ with the witness $z$, by the closure by cases with the dummy
 witness $0$ (\Lean{DWPrf.namePQ}); it is used at $y=\Suc a$, and opening
 that name gives a variable equal to $\operatorname{pred}(\Suc a)=a$
 (\Lean{DWPrf.nameOf}).  The packet $X(y)$ applies the predecessor after the
-opening instead; the two differ in this order only.  The restriction to
-the newest parameter of \cref{wit:sec:newest} is not formalized.
+opening instead; the two differ in this order only.  The deterministic
+selection of \cref{wit:sec:newest}, with the regeneration of derivations
+under an extension of the scope, and the calculi built on it are not
+formalized (\cref{wit:q:lean-newest}).
 \end{remark}
 
 \subsection{A mode selected by the witness}
@@ -1401,49 +1408,35 @@ Finally $\Nat\subseteq\mathsf{R}_{\nu}\subseteq\mathsf{R}_{\beta}\subseteq
 The checker of \pkg{parameter\_witness} uses the raw clause presentation
 without the binder $\Q{}$, and the restriction is proved directly for it: a
 translation of $\Nat_{\nu}$ into clauses may insert parameters and need not
-preserve which parameter is the newest.  Formulas are equations and
-$\D{x}{y}B$.  A clause $[A;\,y.B(y)]$ reads $A\to\forall y\,B(y)$
-(\cref{base:sec:clauses}); an assumption $F$ is the clause
-$\mathsf{a}(F)\defeq[0=0;\,v.F]$.  Contexts are lists of clauses.  The
-calculus $\mathsf{C}_{\beta}$ has five rule families:
-\begin{gather*}
- \infrule{}{\Pi;\Gamma\proves t=t}\ \rulename{Refl}
- \qquad
- \infrule{\Pi;\Gamma\proves s=t\qquad\Pi;\Gamma\proves b=r}
-         {\Pi;\Gamma\proves r=\Phi}\ \rulename{Eval}
- \qquad
- \infrule{\Pi;\Gamma\proves A}{\Pi;\Gamma\proves B(t)}\ \rulename{Use}
- \ \bigl([A;\,y.B(y)]\in\Gamma\bigr)
- \\[1.2ex]
- \infrule{\Pi;\Gamma\proves\D{x}{y}B\qquad
-          \Pi,b;\ \Gamma,[B(b,0);\,y.B(b,y)]\proves A}
-         {\Pi;\Gamma\proves A}\ \rulename{Elim}
- \qquad
+preserve which parameter is the newest.  The comparison calculus
+$\mathsf{C}$ is the five-rule clause calculus $\mathsf{C}$ of
+\cref{claus:def:c3}, that is, $\mathsf{C}_3$ with the two-case evaluation
+$\Phi_2$: rules \rulename{Refl}, \rulename{Eval}, \rulename{Use},
+\rulename{Elim} and \rulename{Intro}, the last at an arbitrary witness $t$
+and by progress exactly when $B$ is a literal equation and $t$ is the
+literal $0$.  Its formulas are equations and $\D{x}{y}B$, its contexts are
+lists of clauses (\cref{base:sec:clauses}), and an assumption $F$ is the
+clause $\mathsf{a}(F)\defeq[0=0;\,v.F]$, used by \rulename{Refl} at $0$
+and \rulename{Use}.  Here the scope is written explicitly
+(\cref{wit:def:scope}): \rulename{Elim} appends its parameter $b$ and the
+introduction its eigenvariable $z$, and the witness of \rulename{Intro} is
+over $\Pi$.  The calculus $\mathsf{C}_{\beta}$ has the rules
+\rulename{Refl}, \rulename{Eval}, \rulename{Use} and \rulename{Elim} of
+$\mathsf{C}$ and, in place of \rulename{Intro},
+\[
  \infrule{\Pi,z;\ \Gamma,\mathsf{a}(B(t_\beta,\eta))\proves
           B(t_\beta,\Suc z)}
          {\Pi;\Gamma\proves\D{x}{y}B}\ \rulename{Bit-Intro}
-\end{gather*}
-\rulename{Eval} applies in exactly two cases, decided by literal identity of
-terms: $b$ is $\It{0}{a}{u}{h}$, $s$ is $a$ and $\Phi$ is $t$; or $b$ is
-$\It{\Suc c}{a}{u}{h}$, $s$ is $\It{c}{a}{u}{h}$ and $\Phi$ is
-$h\subst{t}{u}$.  In \rulename{Bit-Intro}, $t_\beta$ and $\eta$ are as in
-\rulename{Bit-DI}.  There are no other axioms or rules; an assumption is
-used by \rulename{Refl} at $0$ and \rulename{Use}.  The comparison calculus
-$\mathsf{C}$ has the same rules, except that its introduction takes an
-arbitrary term $t$ over $\Pi$ and is by progress exactly when $B$ is a
-literal equation and $t$ is the literal $0$.
+\]
+with $t_\beta$ and $\eta$ as in \rulename{Bit-DI}.  There are no other
+axioms or rules.
 
-The equality rules are derived from \rulename{Refl} and \rulename{Eval}
-alone, as in the packages on two-case evaluation.  \rulename{Eval} on two
-reflexivities gives the two computation equations.  With
-$J=\It{0}{s}{u}{u}$, \rulename{Eval} on $s=r$ and $J=J$ gives $J=r$, and
-\rulename{Eval} on $s=t$ and $J=r$ gives $r=t$; this joining rule yields
-symmetry and transitivity.  For a term template $h(v)$ let
-$J=\It{0}{s}{u}{h(u)}$ and $K=\It{1}{s}{u}{h(u)}$: from $s=t$,
-\rulename{Eval} gives $J=t$ and then, with $K=K$, $K=h(t)$; the same with
-$s=s$ gives $K=h(s)$, and joining gives $h(s)=h(t)$.  These derivations
-contain no \rulename{Elim} and no introduction and are valid in every
-scope.
+By \cref{claus:lem:eq}, \rulename{Refl} and the two cases of
+\rulename{Eval} derive, over every clause context, symmetry, transitivity,
+the two computation equations, congruence in every term template and
+transport in a term and in an equation.  These derivations contain no
+\rulename{Elim} and no introduction, so they are derivations of
+$\mathsf{C}_{\beta}$ as well and are valid in every scope.
 
 \begin{theorem}[The one-bit clause calculus]
 \label{wit:thm:clause-bit}
@@ -1462,8 +1455,8 @@ the term $w=\It{0}{0}{u}{0}$, which is not the literal $0$, so the mode is
 by cases; the assumption $B(w,0)$ is transported along $w=0$ to $B(0,0)$,
 the given premise is applied, and its conclusion is transported back to
 $B(w,\Suc z)$.  The calculus $\mathsf{C}$ is closed under injective
-renaming and weakening and admits the cut of an assumption, by the direct
-inductions, so this composition is a derivation.
+renaming and weakening and admits the cut of an assumption
+(\cref{claus:lem:struct}), so this composition is a derivation.
 % ed.: the package states the alias and the transport; the structural
 % facts of C that compose them are made explicit here.
 
@@ -1549,8 +1542,9 @@ and the identity graph in both numerical composites.
 Each calculus derives the same judgments, on the same terms and formulas, as
 a calculus for which the bridge of \cref{base:thm:bridge} is established:
 $\Nat$ for the first three, and the unrestricted clause calculus
-$\mathsf{C}$ for the last.  The translations and the derivations of both
-formula round trips transfer unchanged.
+$\mathsf{C}$ for the last, which derives the same sequents as $\Nat$ under
+the translation of \cref{claus:thm:five}.  The translations and the
+derivations of both formula round trips transfer unchanged.
 \end{proof}
 
 % ---------------------------------------------------------------------
@@ -2074,7 +2068,12 @@ $\mathsf{G}_{\mathrm d}$ by deleting the function that selects the witness
 \label{wit:sec:recursor}
 
 This section draws on \pkg{parameter\_intro}; the normalization lemma and the
-extensionality lemma are also in \pkg{conditional\_copy}.
+extensionality lemma are also in \pkg{conditional\_copy}.  The term
+language, its normal forms, the decoder and the ordinary theory with its
+bridge to $\iPRA$ are those of \cref{ctr:def:languages,ctr:lem:nf,ctr:lem:decoder,ctr:thm:transfer};
+the section states what the witness-free introduction adds to them.  The
+calculi on the same terms with a supplied witness are those of
+\cref{ctr:sec:three}.
 
 On iterator terms no term $p$ satisfies $p(\Suc z)=z$ by computation, and the
 names of \cref{wit:sec:packet} need the derived predecessor and an equality
@@ -2087,82 +2086,54 @@ beforehand.
 
 \subsection{Terms in normal form}
 
-Raw terms are variables, $0$ and $R(n,a;\,i,u.\,h)$, where $i$ and $u$ are
-bound in $h$ only.  The successor is the abbreviation
-$\Suc a\defeq R(0,a;\,i,u.\,0)$.  The computation equations are
-\begin{equation}
- R(0,a;\,i,u.\,h)=\Suc a,\qquad
- R(\Suc n,a;\,i,u.\,h)=h[n/i,\ R(n,a;\,i,u.\,h)/u],
- \label{wit:eq:R}
-\end{equation}
-with simultaneous substitution on the right.  To define normal forms without
-the circular rewrite of $R(0,a;\,i,u.\,0)$ to itself, take $0$, $\Suc$ and
-$R$ as distinct raw constructors, orient the two equations from left to
-right, allow reduction in every subterm including bodies, and print the
-normal constructor $\Suc a$ as $R(0,a;\,i,u.\,0)$.  The \emph{public terms}
-are the normal forms, and every substitution performed by a rule is followed
-by normalization, written $\nf$.  Computation is thus part of the syntax, and
-the normalizer is part of a checker and of its measured size.  The binding
-notation is a staged first-order language as in \cref{base:sec:terms}:
-variables range over numbers, and there is no term that evaluates
-descriptions.
-
-\begin{lemma}[Normalization]
-\label{wit:lem:nf}
-Every well-sorted term has a unique normal form.  Reduction introduces no
-free variable.  For every substitution $\sigma$,
+The raw terms are those of the counter-aware seeded recursor of
+\cref{ctr:def:languages}(2): variables, $0$ and $R(n,a;\,i,u.\,h)$, with
+$i,u$ bound in $h$ only, the successor $\Suc a\defeq R(0,a;\,i,u.\,0)$ and
+the computation equations \eqref{ctr:eq:r2zero} and \eqref{ctr:eq:r2succ}.
+The \emph{public terms} are the normal terms of \cref{ctr:def:normal}, and
+every substitution performed by a rule is followed by normalization $\nf$
+(\cref{ctr:def:eval}).  Computation is thus part of the syntax, and the
+normalizer is part of a checker and of its measured size; it is an external
+operation on finite terms, with no primitive recursive bound uniform in the
+term (\cref{ctr:rem:fuel}).  By \cref{ctr:lem:nf}, normal forms are unique,
+normalization respects both computation equations in every context, and
 \[
- \nf(t[\sigma])=\nf\bigl(\nf(t)[\nf\circ\sigma]\bigr),
+ \nf(t[\sigma])=\nf\bigl(\nf(t)[\nf\circ\sigma]\bigr)
 \]
-and the same holds for formulas and for templates with one distinguished
-variable.
-\end{lemma}
+for terms, formulas and templates with one distinguished variable
+\eqref{ctr:eq:SC}.  Normalization introduces no free variable: by
+induction on $t$, the free variables of $\operatorname{ev}(t,\rho)$ are
+among those of the values $\rho(x)$ for $x$ free in $t$.
 
-\begin{proof}
-Embed the raw terms into the terms of ground type of the recursor over the
-natural numbers, with the starting value $\Suc a$ and the step
-$(i,u)\mapsto h(i,u)$; no variable is applied as a function.  The
-reducibility argument specializes to this fragment.  A recursor with
-computable arguments and a computable body is computable, by induction on
-the computable counter and its reducts: at zero it reduces to the computable
-starting value; at a successor the recursive call is computable at the
-predecessor and the computable body preserves computability; at a neutral
-counter the recursor is neutral and its reducts are those of computable
-proper subterms.  Induction on a term, with computable terms substituted for
-its variables, gives strong normalization; applying the argument under fresh
-variables covers reductions inside bodies.  The two root rules are disjoint
-and left-linear, and parallel reduction commutes with substitution, so
-nested reductions and duplicated reducts join; this gives confluence, and
-with strong normalization the uniqueness of normal forms.  A substitution
-instance of a conversion is a conversion, and normalizing its two sides
-gives the displayed law.  The right sides of the rules contain only
-variables of their left sides.
-\end{proof}
+\begin{remark}[The normalization lemma in the packages]
+\label{wit:rem:nf}
+\pkg{parameter\_intro} and \pkg{conditional\_copy} define the normal forms
+by rewriting, taking $0$, $\Suc$ and $R$ as distinct raw constructors (to
+avoid the circular rewrite of $R(0,a;\,i,u.\,0)$ to itself), orienting the
+two equations from left to right, reducing in every subterm including
+bodies, and printing the normal constructor $\Suc a$ as
+$R(0,a;\,i,u.\,0)$.  They prove strong normalization and confluence by the
+reducibility argument for the base-type recursor of G\"odel's system $T$
+recorded in \cref{ctr:rem:nfvariants}; the resulting normal forms are those
+of \cref{ctr:def:eval}.
+\end{remark}
 
-The lemma is a statement about finite terms made from outside.  It gives no
-primitive recursive bound, uniform in the term, on the length of
-normalization.
-
-Three abbreviations have useful normal forms.  Put
-\begin{align*}
- P(n)&\defeq R(n,0;\,i,u.\,i),
- & P(0)&\equiv 1, & P(\Suc n)&\equiv n,\\
- C(n,a,b)&\defeq P\bigl(R(n,a;\,i,u.\,\Suc b)\bigr),
- & C(0,a,b)&\equiv a, & C(\Suc n,a,b)&\equiv b,
-\end{align*}
-and, with fresh $j,v$ and simultaneous substitution,
+The abbreviations are those of \eqref{ctr:eq:decoder}: the decoder $P$, the
+selector $C$, the predecessor $p$, and $J(n,a;\,i,u.\,h)$ for
+$\operatorname{Rec}(n,a;\,i,u.\,h)$.  By \cref{ctr:lem:decoder}, on normal
+terms
 \begin{gather*}
- J(n,a;\,i,u.\,h)\defeq
-   P\bigl(R(n,a;\,j,v.\,\Suc(h[j/i,P(v)/u]))\bigr),\\
+ P(0)\equiv 1,\quad P(\Suc n)\equiv n,\qquad
+ C(0,a,b)\equiv a,\quad C(\Suc n,a,b)\equiv b,\qquad
+ p(0)\equiv 0,\quad p(\Suc n)\equiv n,\\
  J(0,a;\,i,u.\,h)\equiv a,\qquad
- J(\Suc n,a;\,i,u.\,h)\equiv h[n/i,\ J(n,a;\,i,u.\,h)/u].
+ J(\Suc n,a;\,i,u.\,h)\equiv h[n/i,\ J(n,a;\,i,u.\,h)/u],
 \end{gather*}
-Here $\equiv$ is literal identity of normal forms.  $P$ is a left inverse of
-the successor whose value at $0$ is $1$; a predecessor in the usual sense is
-$p(n)\defeq C(n,0,P(n))$, with $p(0)\equiv 0$ and $p(\Suc n)\equiv n$.  The
-iterator of \cref{base:sec:terms} is $J$ with the counter coordinate unused.
-In this section and the next, $C$ takes the place of $\sel$ in the gate and
-in the naming matrix of \cref{wit:def:naming}.
+where $\equiv$ is literal identity of normal forms.  The iterator of
+\cref{base:sec:terms} is $J$ with the counter coordinate unused
+(\cref{ctr:thm:compiler}).  In this section and the next, $C$ takes the
+place of $\sel$ in the gate and in the naming matrix of
+\cref{wit:def:naming}.
 
 \subsection{Three rule families}
 
@@ -2204,13 +2175,13 @@ $\mathsf{P}_{\nu}$ has three rule families.
  template may contain $b$.
 \end{enumerate}
 There are no other logical, equality, arithmetic or structural rules; the
-computations \eqref{wit:eq:R} belong to the syntax.  The designated
+computations \eqref{ctr:eq:r2zero} and \eqref{ctr:eq:r2succ} belong to the syntax.  The designated
 contradiction is $0=1$.
 
 \begin{proposition}[Soundness]
 \label{wit:prop:P-sound}
 Every rule of $\mathsf{P}_{\nu}$ is valid under the ordinary reading in
-intuitionistic logic with equality, the equations \eqref{wit:eq:R},
+intuitionistic logic with equality, the equations \eqref{ctr:eq:r2zero} and \eqref{ctr:eq:r2succ},
 numerical coverage, $0=1\to\bot$ and induction for literal equations.
 \end{proposition}
 
@@ -2300,8 +2271,8 @@ erased by the outer selector.
 \subsection{Completeness}
 
 The source of the translation is the diagonal calculus $\Nat_{\mathrm{diag}}$ of
-\cref{wit:sec:diagonal}, over the terms of \cref{base:sec:terms} extended by
-the fixed descriptions $R$ with the equations \eqref{wit:eq:R}; it is stated
+\cref{guard:thm:diagonal} (see also \cref{wit:sec:diagonal}), over the terms of \cref{base:sec:terms} extended by
+the fixed descriptions $R$ with the equations \eqref{ctr:eq:r2zero} and \eqref{ctr:eq:r2succ}; it is stated
 with transport in formula templates, which is a derived rule of it.  The
 iterator is translated to $J$ with an unused counter coordinate, equations
 and binders are translated compositionally, $\Q{y}B$ is translated to
@@ -2382,31 +2353,15 @@ the additional computation axioms translate to reflexivity.
 
 \subsection{The ordinary theory and the bridge}
 
-Let $T_R$ be intuitionistic first-order logic with equality over the fixed
-descriptions $R$, with the equations \eqref{wit:eq:R}, numerical coverage,
-$0=1\to\bot$ and contextual induction for literal equations.  The
-implication $0=1\to\bot$ is stated explicitly: the equation $0=1$ is the
-native contradiction and is not by itself falsity in a structure with one
-element.
-
-\begin{lemma}[Extensionality for a fixed body]
-\label{wit:lem:ext}
-If $h(i,u)=k(i,u)$ is derivable in $T_R$ uniformly in $i$ and $u$, then
-$R(n,a;\,i,u.\,h)=R(n,a;\,i,u.\,k)$ is derivable for every $n$, with all
-other parameters fixed.
-\end{lemma}
-
-\begin{proof}
-By induction for the displayed equation.  At $0$ both sides are $\Suc a$.
-At a successor the computation exposes the two bodies; the induction
-equation replaces the previous value in one of them, and the given identity
-turns $h$ into $k$.
-\end{proof}
-
-Consequently every finite reduction of a term $t$ to $\nf(t)$, also inside a
-body, yields a derivation of $t=\nf(t)$ in $T_R$, and by induction on a
-formula its raw and its normalized readings are equivalent.  No truth or
-evaluation predicate is used.
+Let $T_R$ be the theory $\mathsf T_R^2$ of \cref{ctr:def:ordinary}:
+intuitionistic first-order logic with equality over the fixed descriptions
+$R$, with the equations \eqref{ctr:eq:r2zero} and \eqref{ctr:eq:r2succ},
+numerical coverage, the separation axiom $0=1\to\bot$ and contextual
+induction for literal equations.  By body extensionality
+(\cref{ctr:lem:bodyext}) $T_R$ proves $t=\nf(t)$ for every term, also with
+reductions inside bodies, and every formula is provably equivalent to its
+normalization (\cref{ctr:lem:normsound}).  No truth or evaluation predicate
+is used.
 
 \begin{theorem}[Bridge for the recursor calculus]
 \label{wit:thm:recursor-bi}
@@ -2419,37 +2374,27 @@ $\bot$.
 \end{theorem}
 
 \begin{proof}
-Soundness is \cref{wit:prop:P-sound} with \cref{wit:lem:ext}.  Completeness
-is \cref{wit:thm:recursor} together with the equivalence of
-$\Nat_{\mathrm{diag}}$ with $\Nat$ and the presentation of the ordinary theory by
-$\Nat$ (\cref{base:thm:bridge}), which are parametric in the additional
-fixed descriptions.
+Soundness is \cref{wit:prop:P-sound} with \cref{ctr:lem:normsound}.
+Completeness is \cref{wit:thm:recursor} together with the equivalence of
+$\Nat_{\mathrm{diag}}$ with $\Nat$ (\cref{guard:thm:diagonal}) and the
+presentation of the ordinary theory by $\Nat$ (\cref{base:thm:bridge}),
+which are parametric in the additional fixed descriptions.  The formula
+round trips between $\mathsf{P}_{\nu}$ and $T_R$ follow by induction on
+formulas from the reading of $\D{}{}$ and the logical macros
+(\cref{wit:sec:liberal}).
 
-A description $R(n,a;\,i,u.\,h)$ is interpreted in $\iPRA$ by the primitive
-recursion with the base $\Suc a$ and the step $h$, after its proper
-subdescriptions.  Conversely
-\begin{align*}
- 0^{*}&=0,\qquad \Suc^{*}(x)=R(0,x;\,i,u.\,0),\qquad
- \pi_j^{*}(\vec x)=x_j,\\
- (f\circ\vec g)^{*}(\vec x)&=f^{*}(g_1^{*}(\vec x),\dots,g_m^{*}(\vec x)),\\
- \operatorname{rec}(g,h)^{*}(n,\vec x)&=
-   J\bigl(n,g^{*}(\vec x);\,i,u.\,h^{*}(i,u,\vec x)\bigr).
-\end{align*}
-No pairing is needed, because the body receives the counter.  The compiled
-equations hold by the normal forms of $J$.  Applying $P$ to $\Suc x=\Suc y$
-gives the injectivity of the successor; applying $C(\cdot,0,1)$ to
-$\Suc x=0$ gives $1=0$, hence the separation axiom.  The iterator $J$
-carries the reflection of equality of \cref{base:thm:reflect}, so every
-quantifier-free formula is equivalent to the vanishing of a term and its
-induction follows from induction for an equation (see also
-\cref{wit:lem:reflection}).  For two descriptions with the same base and
-provably identical steps, induction for the equation of their values proves
-that they agree at every counter; by induction on a description from
-outside, its double translation has the same values as the original, for
-all arguments.  The formula round trips follow by induction on formulas
-from the reading of $\D{}{}$ and the logical macros
-(\cref{wit:sec:liberal}).  Falsity corresponds to $0=1$, and derivations of
-a contradiction translate in both directions.
+The bi-interpretation of $T_R$ with $\iPRA$, with the stated domains,
+equality, composites and double translations, is \cref{ctr:thm:transfer};
+quantifier-free induction in $T_R$ is \cref{ctr:prop:qfi}
+(\cref{wit:rem:reflection}).  The packages state the interpretations
+directly, as recorded in \cref{ctr:rem:direct}: a description is
+interpreted by the primitive recursion with the base $\Suc a$ and the step
+$h$, and primitive recursion is compiled by $J$ without pairing
+(\cref{ctr:thm:compiler}); $P$ applied to $\Suc x=\Suc y$ gives the
+injectivity of the successor, and $C(\cdot,0,1)$ applied to $\Suc x=0$
+gives $1=0$.  Falsity corresponds to $0=1$, which $T_R$ refutes by
+separation, and derivations of a contradiction translate in both
+directions.
 \end{proof}
 
 \subsection{Checking a template through its two instances}
@@ -2489,7 +2434,7 @@ free parameter; the reading is consistent under a binder because the excess
 is measured relative to the depth.  Let $\rho$ replace all additional
 parameters by $0$ and fix $v$, the local parameters and the bound variables.
 Neither $s$ nor $t$ contains an additional parameter.  For $r\in\{s,t\}$,
-by \cref{wit:lem:nf},
+by \cref{ctr:lem:nf},
 \[
  \nf\bigl((\rho F)[r/v]\bigr)=\nf\bigl(\rho(F[r/v])\bigr)
  =\nf\bigl(\rho\,\nf(F[r/v])\bigr)=\nf(F[r/v]),
@@ -2497,10 +2442,10 @@ by \cref{wit:lem:nf},
 the last step because the checked instance is normal and contains no
 additional parameter.  A reduction that becomes possible after an
 additional parameter is closed does not affect the argument, which uses the
-law of \cref{wit:lem:nf} and not an identity of reduction sequences.
+law of \cref{ctr:lem:nf} and not an identity of reduction sequences.
 
 \emph{The template.}  Put $F'\defeq\nf(\rho F)$.  It is sorted, well-scoped
-and normal, and a second application of \cref{wit:lem:nf} gives the two
+and normal, and a second application of \cref{ctr:lem:nf} gives the two
 identities.  The distinguished variable may occur any number of times.
 \end{proof}
 
@@ -2522,7 +2467,8 @@ The calculus $\mathsf{P}_{\nu}$ takes no witness at its introduction and
 still takes an equation, with its derivation, and a template at its
 discharge.  Other calculi infer the substitution of a discharge from two
 instances of the opened matrix and take an arbitrary witness at their
-introduction.  The two restrictions are combined here.  The composition is
+introduction (\cref{disch:def:selector,disch:thm:inferred}).  The two
+restrictions are combined here.  The composition is
 not immediate: with an inferred discharge, equality transport is recovered
 from packets that are introduced at arbitrary witnesses, and the names of
 \cref{wit:lem:name-recursor} give an equation $b=t$, whose use would need
@@ -2571,7 +2517,11 @@ normalized.
  $F$ may contain $b$, and so may $r_B$; the substitution is one simultaneous
  pass.  No equation, replacement term or template is supplied.
 \end{enumerate}
-Only \rulename{Use} takes a term.
+Only \rulename{Use} takes a term.  The term $r_B$ is the selected witness
+$\rho_B(b)$ of \cref{disch:def:selector}, and \rulename{Export} is the rule
+\eqref{disch:eq:export} of the inferred discharge, here on the normal terms
+of the counter-aware recursor (\cref{disch:thm:inferred} treats it with a
+supplied witness at the introduction, on iterator terms).
 
 \begin{lemma}[Soundness]
 \label{wit:lem:k-sound}
@@ -2581,13 +2531,13 @@ Every rule of $\mathsf{K}$ is valid in $T_R$ under the ordinary reading.
 \begin{proof}
 \rulename{Use} and \rulename{Close} are as in \cref{wit:prop:P-sound}; if
 the instance at $0$ is $\top_{*}$, the matrix is a literal equation, since
-normalization does not remove a binder.  For \rulename{Export} open the
-existential quantifier.  In the selected case reflexivity proves $B_0$, the
-clause at $1$ gives $b=r_B$, and the substitution of equals turns $F$ into
-$F[r_B/b]$; in the default case the substitution is the identity.  The
-elimination of the quantifier is legitimate because the normalized result
-does not contain $b$.  Normalization is justified in $T_R$ by
-\cref{wit:lem:ext}.
+normalization does not remove a binder.  For \rulename{Export} the argument
+is that of \cref{disch:prop:inferred-sound}: open the existential
+quantifier; in the selected case reflexivity proves $B_0$, the clause at $1$
+gives $b=r_B$, and the substitution of equals turns $F$ into $F[r_B/b]$; in
+the default case the substitution is the identity.  The elimination of the
+quantifier is legitimate because the normalized result does not contain
+$b$.  Normalization is justified in $T_R$ by \cref{ctr:lem:normsound}.
 \end{proof}
 
 \begin{example}[The instance at $0$ must be tested]
@@ -2599,13 +2549,16 @@ $\exists x\,(x=f(0)\to\forall y\,x=f(y))$, is provable with the witness $1$,
 whose antecedent is false.  The instance at $1$ at a fresh $b$ is $b=0$.  A
 rule that replaced $b$ by $0$ on this evidence would produce the clause
 $0=0\to\forall y\,0=f(y)$, which gives $0=1$ at $y=2$.  The test
-$B_0\equiv\top_{*}$ excludes this matrix.  For the same reason the name
+$B_0\equiv\top_{*}$ excludes this matrix; \cref{disch:rem:conditions}
+records a certificate for $1=0$ accepted without it.  For the same reason
+the name
 $\D{x}{y}\mathrm{Nm}_t$ of \cref{wit:sec:guarded} is not silently combined
 with an inferred opening: opening a name directly at $t$ removes the fresh
 alias $b=t$ on which the simulation of an arbitrary witness relies.
 \end{example}
 
 \subsection{Preparations without equality}
+\label{wit:sec:copy-prep}
 
 If $F$ does not contain the opened parameter $b$, the substitution of
 \rulename{Export} does nothing to it; so the ordinary elimination of
@@ -2712,7 +2665,7 @@ that completed target derivations can be weakened.
 of the antecedent.  \rulename{Export} translates its major premise, sends
 its eigenvariable to the new target parameter and extends the map of
 positions by the opened clause; its two tests are preserved and reflected by
-injective renaming and \cref{wit:lem:nf}.
+injective renaming and \cref{ctr:lem:nf}.
 
 Consider a \rulename{Close} at a term $t$ with the matrix $B$ and the
 premise $\Gamma,[\ ;\,v.\nf(B(t,\eta))]\proves\nf(B(t,\Suc z))$.  Write
@@ -2792,7 +2745,10 @@ $C(z,s,h(s))=C(z,t,u)$, is derived by numerical cases on $z$ from the two
 given equations, the progress assumption being unused.  Open the formula at
 $b$: the first two instances make \rulename{Export} select $t$.
 \rulename{Use} at $2$, with the reflexive antecedent, gives $h(b)=u$, and
-\rulename{Export} concludes $h(t)=u$.
+\rulename{Export} concludes $h(t)=u$.  This is the argument of
+\cref{disch:thm:export-transport}, with the decoder packet
+\eqref{ctr:eq:packet} of \cref{ctr:lem:openrules} in place of the packet on
+iterator terms.
 
 With reflexivity this rule gives symmetry, transitivity and congruence, and
 transport in an equation template is two such replacements.  Transport in a
@@ -2837,30 +2793,25 @@ introduced by cases, with $E(0)$ as its assumption and the induction just
 derived for its successor instance.
 \end{proof}
 
-The ordinary logical vocabulary is given by the following macros, with the
-depths equalized by $L$ before each binary selector and all bound variables
-fresh:
-\begin{align*}
- (A\to B)^{*}&=q_y\operatorname{Sel}(y,A^{*},B^{*}),
- &(A\wedge B)^{*}&=q_yG_y\operatorname{Sel}(P(y),A^{*},B^{*}),\\
- (\exists x\,A)^{*}&=\D{x}{y}G_yA^{*},
- &(A\vee B)^{*}&=\D{v}{y}G_y\operatorname{Sel}(v,A^{*},B^{*}),\\
- (\forall x\,A)^{*}&=q_yG_yA^{*}(P(y)),
- &\bot^{*}&=\bot_{*}.
-\end{align*}
-The instances of the conjunction are a tower at $0$, $A^{*}$ at $1$ and
-$B^{*}$ at every $\Suc\Suc v$; two numerical case splits introduce it and
-\rulename{Use} at $1$ and $2$ eliminates it.  The implication has its
-antecedent at $0$ and its consequent at successors.  The existential gate
-has a tower at $0$.  Numerical cases give the elimination of the
-disjunction.  The universal macro has a tower at $0$ and $A^{*}(z)$ at
-$\Suc z$, because $P(\Suc z)\equiv z$; it is used at $\Suc t$ to obtain
-$A^{*}(t)$, and its introduction needs a fresh renaming of a derivation of
-$A^{*}(z)$ only.  Transport along $0=1$ turns the provable $G_0F$ into
-$G_1F\equiv F$, which is explosion for every $F$.  These constructions give
-the introduction and elimination rules of intuitionistic logic under
-arbitrary assumptions, and by induction on a formula the ordinary reading
-of each macro is equivalent to the intended connective.
+The ordinary logical vocabulary is given by the macros
+\eqref{ctr:eq:macros} of \cref{ctr:def:macros}, with
+$\operatorname{Sel}(v,A,B)$ in the role of $M_v(A,B)$, the depths
+equalized by $L$ before each binary selector and all bound variables fresh;
+in particular $(A\to B)^{*}=q_y\operatorname{Sel}(y,A^{*},B^{*})$,
+$(A\wedge B)^{*}=q_yG_y\operatorname{Sel}(P(y),A^{*},B^{*})$,
+$(\forall x\,A)^{*}=q_yG_yA^{*}(P(y))$ and $\bot^{*}=\bot_{*}$.  The proofs
+of \cref{ctr:lem:gates,ctr:lem:macros} use \rulename{Use}, the ordinary
+elimination, numerical cases, the introduction by cases at an arbitrary
+witness, the introduction by progress, transport in formulas and binder
+congruence (proved as \cref{ctr:lem:libderived}(5)).  All of these are
+available in $\mathsf{L}$ by
+\cref{wit:lem:liberal-structural,wit:lem:liberal-transport,wit:lem:liberal-induction}
+and, for the ordinary elimination, \cref{wit:sec:copy-prep}, so the proofs
+apply unchanged: the macros admit the introduction and
+elimination rules of intuitionistic logic under arbitrary assumptions, with
+explosion for $\bot_{*}$, and by induction on a formula the ordinary reading
+of each macro is equivalent to the intended connective
+(\cref{ctr:thm:adequacy}(3)).
 \pkg{parameter\_intro} uses the same macros with two differences: the
 conjunction selects by a parity term,
 $(A\wedge B)^{*}=q_yG_y\operatorname{Sel}(\operatorname{par}(y),A^{*},B^{*})$,
@@ -2890,62 +2841,20 @@ regenerates the branches in the target scopes.
 
 \subsection{Quantifier-free induction and the bridge}
 
-\begin{lemma}[Reflection of equality in $T_R$]
-\label{wit:lem:reflection}
-There is a term $e(a,b)$ such that $T_R$ proves $e(a,b)=0\vee e(a,b)=1$ and
-$e(a,b)=0\leftrightarrow a=b$.  For every quantifier-free formula $A$ there
-is a term $b_A$ with the same parameters such that $T_R$ proves
-$b_A=0\vee b_A=1$ and $A\leftrightarrow b_A=0$.  Hence $T_R$ proves every
-instance of contextual quantifier-free induction.
-\end{lemma}
-
-\begin{proof}
-Define addition and truncated subtraction by $J$, with
-\[
- x+0=x,\quad x+\Suc y=\Suc(x+y),\qquad
- d(x,0)=x,\quad d(x,\Suc y)=p(d(x,y)),
-\]
-and put $\operatorname{sg}(u)=C(u,0,1)$ and $K(u)=C(u,1,p(u))$.  Coverage
-and the separation of $0$ and $1$ give that $\operatorname{sg}(u)$ is $0$ or
-$1$, that $\operatorname{sg}(u)=0\leftrightarrow u=0$ and that
-$K(u)=0\leftrightarrow u=1$.  Four inductions for literal equations give
-\[
- 0+y=y,\qquad \Suc x+y=\Suc(x+y),\qquad
- d(\Suc x,\Suc y)=d(x,y),\qquad d(\Suc a,a)=1;
-\]
-the step of the third applies $p$ to the induction hypothesis, and the
-fourth follows from the third.
-
-The invariant is the single equation
-\begin{equation}
- C\bigl(\operatorname{sg}(d(x,y)),\,x,\,y+d(x,y)\bigr)=x,
- \label{wit:eq:residual}
-\end{equation}
-proved by induction on $y$ with $x$ fixed.  At $0$ both alternatives of the
-selector equal $x$, by $0+x=x$.  For the step put $r=d(x,y)$ and
-$r'=p(r)=d(x,\Suc y)$.  If $r'=0$, the selector returns $x$.  Otherwise
-coverage gives $r=\Suc r'$, the alternative $r=0$ contradicting $r'\neq 0$;
-the induction equation gives $y+r=x$, and
-$\Suc y+r'=y+\Suc r'=x$.  All case distinctions are coverage, and the
-induction formula is \eqref{wit:eq:residual}.
-
-Hence $d(\Suc a,b)=1\leftrightarrow a=b$: from left to right
-\eqref{wit:eq:residual} gives $b+1=\Suc a$ and the injectivity of the
-successor gives $a=b$; from right to left this is the fourth identity.  Put
-$e(a,b)=\operatorname{sg}(K(d(\Suc a,b)))$.  For a quantifier-free formula
-define, by recursion on its syntax,
-\[
- b_{s=t}=e(s,t),\quad b_\bot=1,\quad
- b_{A\wedge B}=C(b_A,b_B,1),\quad
- b_{A\vee B}=C(b_A,0,b_B),\quad
- b_{A\to B}=C(b_A,b_B,0).
-\]
-By induction on the syntax $b_A$ is $0$ or $1$ and
-$A\leftrightarrow b_A=0$; for the implication split the two values of
-$b_A$.  No excluded middle for formulas with quantifiers is used.
-Induction for the literal equation $b_{A(n)}=0$ gives the induction for $A$,
-under arbitrary assumptions.
-\end{proof}
+\begin{remark}[Reflection of equality in $T_R$]
+\label{wit:rem:reflection}
+$T_R$ proves the successor injective and equality decidable, and it proves
+every instance of contextual quantifier-free induction
+(\cref{ctr:prop:qfi}); the reflection term of \cref{base:thm:reflect}
+transfers along \cref{ctr:thm:transfer}.  \pkg{parameter\_intro} and
+\pkg{conditional\_copy} prove this directly in $T_R$, with the terms of
+\cref{ctr:sec:counter}, by the argument recorded in
+\cref{ctr:rem:reflection}: addition and truncated subtraction $d$ compiled
+by $J$, four inductions on literal equations, one induction on the residual
+equation $C(\operatorname{sg}(d(x,y)),x,y+d(x,y))=x$ whose case splits are
+all coverage, the reflection term $e(a,b)=\operatorname{sg}(K(d(\Suc a,b)))$
+with $K(u)=C(u,1,p(u))$, and characteristic terms $b_A$ with $0$ for truth.
+\end{remark}
 
 \begin{theorem}[Introduction and discharge without supplied terms]
 \label{wit:thm:k-bi}
@@ -2957,13 +2866,14 @@ $\mathsf{K}$ and $\iPRA$ are equiconsistent.
 \end{theorem}
 
 \begin{proof}
-The first statement is \cref{wit:prop:liberal}.  The interpretations, the
-compilation of primitive recursion by $J$, the injectivity and separation
-of the successor and the uniqueness argument are those of the proof of
-\cref{wit:thm:recursor-bi}; quantifier-free induction is
-\cref{wit:lem:reflection}; the formula round trips follow from the macros
-of \cref{wit:sec:liberal} by induction on formulas.  Falsity is translated
-to $0=1$, whose reading implies $\bot$ by the separation axiom of $T_R$.
+The first statement is \cref{wit:prop:liberal}.  The bi-interpretation of
+$T_R$ with $\iPRA$, with the stated domains, equality, composites and
+double translations, is \cref{ctr:thm:transfer}, as in the proof of
+\cref{wit:thm:recursor-bi}; quantifier-free induction in $T_R$ is
+\cref{ctr:prop:qfi}; the formula round trips between $\mathsf{K}$ and $T_R$
+follow from the macros of \cref{wit:sec:liberal} by induction on formulas.
+Falsity is translated to $0=1$, whose reading implies $\bot$ by the
+separation axiom of $T_R$.
 \end{proof}
 
 Here $\iPRA$ has quantifier-free induction, and $T_R$ has induction for
@@ -3030,7 +2940,7 @@ Identifying $c$ with $b$ gives
  U[c\mapsto b]=\nf(U[c\mapsto b])=\nf(T[t/v])=A .
 \]
 Since $A$ does not contain $b$, $U$ contains neither $b$ nor $c$, and
-$U=A$.  Substituting $t$ for $c$ and \cref{wit:lem:nf} give
+$U=A$.  Substituting $t$ for $c$ and \eqref{ctr:eq:SC} give
 $\nf(T[v:=t,\,b:=t])=A$.  Finally
 \[
  \nf(F[t/b])=\nf\bigl((T[b/v])[t/b]\bigr)=\nf(T[v:=t,\,b:=t])=A .
@@ -3173,7 +3083,9 @@ $\mathsf{G}_{\mathrm d}$ by deleting the function that selects the witness
 and instantiating the matrix at $-n$.  \pkg{newest\_parameter} also contains
 an unmeasured checker of the eight rules of $\Nat_{\nu}$, with certificates
 for $X(\Suc t)$ at a parameter $t$ in scopes of zero, one, two and five
-parameters, and a rejected replay of a closed derivation in a larger scope.
+parameters, and a rejected replay of a closed derivation in a larger scope;
+it also replays symbolic certificates of seven equation-case lemmas of the
+predecessor construction.
 \pkg{uniform\_raw} checks the whole closure $\D{a}{r}X(r)$ and its
 instance at the successor of a compound term.
 
@@ -3222,26 +3134,26 @@ a derivation of its name.
 The following items are stated by the packages without proof, are open, or
 mark what the results of the chapter do not establish.
 
-\begin{question}[Formalization of the names]
-\label{wit:q:lean-names}
-By \cref{wit:cor:names-iff}, which is formalized, the completeness of
-$\Nat_{0\mathrm v}$ is the derivability of the names.  The derivation of
-the names (\cref{wit:lem:packet-0v,wit:lem:alias-0v}) and the derivation of
-the predecessor in the fragment $\mathcal E$ are written proofs.  Formalize
-them, with the predecessor as a theorem of the equational fragment
-separate from numerical coverage.
-\end{question}
-
 \begin{question}[Formalization of the scope-determined witness]
 \label{wit:q:lean-newest}
-None of
-\cref{wit:thm:newest,wit:thm:diagonal,wit:thm:R-newest,wit:thm:clause-bit,wit:thm:weakening,wit:thm:gd,wit:thm:guarded-uniform,wit:thm:recursor,wit:thm:copy,wit:thm:witness-removal}
-is formalized.  A formalization of the first has to take derivations of the
-source with realized contexts, or hereditary families, as its induction
-interface.  For $\mathsf{G}_{\mathrm d}$ the selection with priority for a
-naming matrix, the clause contexts and the guarded language are not
-formalized.  For the recursor calculi a syntax with a normalizer and its
-bi-interpretation with the iterator terms would be needed first;
+The Lean development formalizes the restriction of the witness to the
+literal $0$ or a variable, with the derivation of the names
+(\cref{wit:rem:lean-complete}), and the predecessor in the equational
+fragment (\cref{wit:sec:packet}).  It does not formalize the deterministic
+selection of the witness, the newest parameter or $0$ in an empty scope,
+with the regeneration of derivations under an extension of the scope.
+Hence none of
+\cref{wit:thm:newest,wit:thm:diagonal,wit:thm:R-newest,wit:thm:clause-bit,wit:thm:weakening,wit:thm:gd,wit:thm:guarded-uniform}
+is formalized, and nothing in \cref{wit:sec:recursor,wit:sec:copy} on the
+counter-aware recursor is formalized, in particular
+\cref{wit:thm:recursor,wit:thm:copy,wit:thm:witness-removal}.  A
+formalization of the first has to take derivations of the source with
+realized contexts, or hereditary families, as its induction interface.  For
+$\mathsf{G}_{\mathrm d}$ the selection with priority for a naming matrix,
+the clause contexts and the guarded language are not formalized.  For the
+recursor calculi a syntax with a normalizer and its bi-interpretation with
+the iterator terms (\cref{ctr:lem:nf,ctr:thm:transfer}) would be needed
+first;
 \pkg{conditional\_copy} proposes a small interface for
 \cref{wit:thm:copy} consisting of a predecessor that computes on
 successors, gates, clause specialization, \rulename{Close} at the newest
@@ -3307,7 +3219,7 @@ $t$.
 The proofs of \cref{wit:sec:recursor,wit:sec:copy} use the literal
 identities $P(\Suc t)\equiv t$ and the two instances of the selector.  Is
 there a canonical syntax that guarantees these reductions without full
-normalization, with its own coherence law in place of \cref{wit:lem:nf}?
+normalization, with its own coherence law in place of \cref{ctr:lem:nf}?
 \end{question}
 
 Further remarks of the packages on what is not shown:
@@ -3330,11 +3242,5 @@ Further remarks of the packages on what is not shown:
  extended by the fixed descriptions $R$.  The packages argue that the
  proofs are parametric in additional terms; the Lean development covers the
  iterator terms.
-\item The predecessor is used in the form stated in
- \cref{wit:sec:packet}: derivable in the equational fragment.  The four
- audits recorded after \cref{base:thm:pred} are written derivations,
- supported by numerical checks of the defining terms and, in
- \pkg{newest\_parameter}, by replayed symbolic certificates of seven
- equation-case lemmas.
 \end{itemize}
 

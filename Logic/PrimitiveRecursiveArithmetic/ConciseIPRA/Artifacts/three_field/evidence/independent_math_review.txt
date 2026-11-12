@@ -1,0 +1,159 @@
+INDEPENDENT MATHEMATICAL AND SOURCE REVIEW
+Three-field iPRA certificate protocol / 2026-11-12
+
+Scope
+-----
+This review examines the new three-field packet protocol, the elimination
+of its temporary major variable, the exact changed computation-supply
+case, and the canonical compiler used to transfer the existing scalar
+theory's consequence relation. It is a written mathematical audit and
+source inspection, not a Lean/Rocq formalization. Executable validation
+results are recorded separately and are not substituted for the proof.
+
+Reviewed delivered sources
+--------------------------
+code/checker_tokens.py
+  SHA-256 a4a92a3312178e59573f82eee8c84151a4fb7a3ddc54a3150d38b34a80ca5502
+  Independently recomputed CPython 3.12.14 normalized metrics:
+  249 significant tokens / 278 AST nodes / 607 UTF-8 bytes.
+
+code/checker_ast.py
+  SHA-256 4cb0ee3c3f1610837910e3f1e8984d6e94012ed2fad455d272eeab9b5a2350a7
+  Independently recomputed CPython 3.12.14 normalized metrics:
+  255 significant tokens / 271 AST nodes / 606 UTF-8 bytes.
+
+Both files are byte-identical to the independently inspected final
+trial_no_major.py and trial_no_major_ast.py. The complete module,
+including JSON input and ACCEPT output, was counted. Layout, comments,
+and the end marker were excluded from significant tokens; ast.unparse
+plus one newline defined the normalized source; every ast.walk node
+was counted. The inspected programs contain no docstrings to remove.
+
+Findings
+--------
+1. Removing the independent major field is sound.
+   The temporary-major form expands each consumed [s,u,t] to
+   [0 if u else s,s,u,t] in the previously justified inferred-major
+   protocol. The endpoint test has the same inputs, so it reconstructs
+   the same major and minor goal. Major proofs remain checks in the
+   unchanged retained context. No supplied major is trusted.
+
+2. Reusing s for the major is correct.
+   On a successful match, the next goal is computed with the old
+   source before s is overwritten, the original triple r is retained,
+   and u is set to zero. Consequently the reconstructed-major branch
+   cannot be confused with the computation branch. On an unmatched
+   computation, r remains the original source triple. On an unmatched
+   D opening, s already denotes the supplied major.
+
+3. There is one genuine semantic change, explicitly justified.
+   The image selector tests s rather than the discarded major M.
+   In a successor computation with a compound continuation goal, it
+   therefore supplies H(b), not the old H(0). This is valid because the
+   inherited constructed-computation theorem proves H(0), and the old
+   context and goal are fresh for b. Substitute b:=0 in the continuation
+   and cut in H(0). The conclusion may be any native formula.
+   This argument is not compound-formula induction.
+
+4. The exact inherited dependencies were inspected.
+   Source:
+   docs/incoming/ipra_inferred_major_2026-11-12.zip,
+   reference/inherited_arity_checker.tex, at repository snapshot
+   5c6c2d8d68da11f89cf2937cf7aca3b85805fd41.
+
+   Freshness invariant: lines 173-185.
+   Subsection "A computation hypothesis only needs a zero instance":
+     lines 187-286.
+   Lemma "Supply with a known zero instance": lines 194-207;
+     its conclusion F is unrestricted.
+   Lemma "Sound constructed computation": lines 235-279.
+   Lines 281-286 explicitly combine these lemmas to justify the
+     fresh-parameter computation hypothesis.
+
+   The recursive-source scope check in state-dependent computation is
+   essential to the inherited proof and remains present in both new
+   sources as i(t,r,3). Its omission would not be justified.
+
+5. Canonical completeness has a syntactic proof.
+   A canonical numerical tree has no arity-two node. Every genuine
+   Eq/Q/D formula has an arity-two equation node. Opening preserves
+   array nodes and preserves numerical shape for numerical images.
+   Thus the inferred-endpoint test cannot divert canonical computation
+   or introduction. A D opening uses t=0 and cannot match a genuine
+   formula either. Transport and Q specialization match by construction.
+
+   The five compilation cases are:
+     D opening: [M,0,0].
+     D introduction: [0,0,w] in the selected compact profiles.
+     Computation: [s,u,t] in the inherited nonempty-seed normal form.
+     Transport: [s,u,F] at goal O(F,u).
+     Q specialization: [0,u,B] at goal O(B,u).
+
+   The nonempty-seed normalization is inherited: the nonempty term
+   C=I(2,1;v.0) has a direct allowed computation C=0, allowing literal
+   zero seeds/predecessors to be replaced temporarily and restored by
+   transport. The new report must not attribute that lemma to this work.
+
+6. The changed computation image is literally inert on canonical proofs.
+   The generated canonical equation H is closed at the old scope.
+   Every scalar in H occurs at an odd numerical depth and survived the
+   old no-image scope check. It lies in the old protected interval,
+   hence also in the new one. No image is used:
+     O_new(H,0)=H=O_new(H,b).
+   This covers old rigid parameters and arbitrarily nested updates.
+   It is stronger than standard-model numerical agreement.
+
+7. Whole-domain bi-interpretability is preserved, not reproved from scratch.
+   The public theorem set is unchanged through the established guarded
+   translation. The ordinary scalar theory, its logical reading, and
+   all numerical function definitions are unchanged. Compose the new
+   consequence-equivalence theorem with the existing scalar-to-iPRA
+   bridge. Both numerical domains remain whole, equality remains
+   actual equality, and both numerical composite graphs remain x=y.
+   The logical macro round trips and the established equivalence of
+   native contradiction 0=S0 with ordinary falsity are unchanged.
+   Mutual translation of contradiction proofs gives equiconsistency;
+   no claim that iPRA proves its own consistency is made.
+
+Qualifications retained in the report
+-------------------------------------
+* The final no-major protocol is not asserted to have exactly the old
+  raw acceptance language; the H(b)/H(0) distinction precludes using
+  packet expansion alone as its full soundness argument.
+
+* A field-dropping map is not a compiler for arbitrary old raw traces.
+  The completeness proof uses a derivation-aware canonical compiler.
+
+* The selected compact profiles do not globally validate every JSON
+  certificate cell or the entire public grammar. Their theorem applies
+  to the stated canonical public/input contract; the separately measured
+  native validator must be compared under its own matched contract.
+
+* A hypothetical three-field full-native variant must preserve distinct
+  falsy case/progress markers where the old native calculus requires
+  them. The global token control flow skips falsy majors. The local AST
+  flow makes a neutral-major recursive call and initially has only 0:
+  an [] case marker would require a corresponding falsy-major skip or
+  neutral resource. The delivered compact local checker uses only 0.
+  The separate four-field native checker is not described as an
+  implemented three-field native extension.
+
+* Absolute minimality is not proved. The measured reductions concern
+  the explicitly audited repository envelope and specified metric.
+
+Conclusion
+----------
+The reviewed final three-field sources have a defensible written
+soundness proof and canonical completeness proof. The new semantic
+obligation caused by parameter reuse is identified and discharged by
+an inherited admissible supply rule with unrestricted conclusion.
+No new arithmetic axiom is needed, and no omitted induction or actual-
+equality-reflection argument is being assumed as a new result.
+
+Supporting exposition
+----------------------
+sections/protocol.tex contains the report-ready proof.
+The extended intermediate notes are candidate/threefield_theory.txt in
+the working research directory; they are not a prerequisite for reading
+the report's final proof.
+

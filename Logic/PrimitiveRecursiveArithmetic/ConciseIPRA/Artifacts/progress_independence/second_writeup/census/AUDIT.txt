@@ -1,0 +1,52 @@
+CHECKER SIZE AUDIT
+==================
+Pinned ProveIt commit: 5c6c2d8d68da11f89cf2937cf7aca3b85805fd41.
+
+Every one of the 5825 Python files below ConciseIPRA was considered, with no
+raw source-size or path-role exclusion. All 5825 successfully normalized;
+1380 distinct raw sources became 1194 distinct normalized sources. All source
+paths, including duplicates and reference copies, have rows in the CSV.
+The root snapshot contains 20,516,606 raw Python bytes.
+
+Metric: CPython 3.12.14; remove actual AST docstrings, ast.unparse, append LF;
+count significant tokenize tokens, every ast.walk node, and UTF-8 bytes of
+the entire module. An otherwise empty class/function gets pass to keep the
+normalization valid. This affects one historical test-helper source copied
+in ten locations; it does not affect any frontier checker.
+
+The JSON/ACCEPT substring heuristic yields 25 paths whose normalized source
+is <=256 tokens, <=276 AST nodes, or <=506 bytes. Manual review identifies
+code generators, regression drivers, the three checker profiles, and their
+copies. The complete review is recorded in shortlist_review.json. The
+heuristic is not a proof of semantic soundness/completeness and not a proof
+that arbitrary implementation languages cannot do better.
+
+Observed identified checker envelope (different programs):
+  Tokens: 256, attained by uniform_progress/code/ancillary/checker_tokens.py
+          (283 AST nodes, 593 bytes).
+  AST:    276, attained by deterministic_opening/compact/code/ast.py
+          (263 tokens, 580 bytes).
+  Bytes:  506, attained by deterministic_introduction/implementation/code/
+          compact_optional.py (267 tokens, 303 AST nodes).
+
+The byte/AST profiles use local scopes; the token profile uses global scopes.
+All three inherit a canonical guarded public-goal contract and do not include
+its public-grammar validator. They must not be reported as fully validated
+arbitrary-JSON front ends. The public Eq/D theory is bi-interpretable with
+iPRA according to the inherited proofs; no such interpretation is claimed
+for every auxiliary raw array. Their complete acceptance modules and the
+upstream MIT-0 license are preserved under baselines/, with source hashes.
+
+The top README's summary (256 / 278 / 516 across profiles) is stale. Packages
+and source measurements establish the stricter observed envelope above.
+This is an attained envelope, not a mathematical lower bound.
+
+No new improvement below this envelope was established in this research turn.
+The tested control reorders and context-length reformulations did not improve
+an envelope coordinate. Omitting the ACCEPT output would change the acceptance
+protocol and was deliberately excluded from the comparison.
+
+Reproduce the full source census:
+  python3 census.py PATH_TO_ConciseIPRA OUTPUT_DIRECTORY
+
+Source files are parsed and measured; they are never executed by the census.
