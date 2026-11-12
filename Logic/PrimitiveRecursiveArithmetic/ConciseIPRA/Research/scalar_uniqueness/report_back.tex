@@ -1,0 +1,158 @@
+\section{Implementation, scope reuse, and validation}
+
+\subsection{The uniqueness checker}
+The complete native checker uses a tagged JSON syntax with de Bruijn
+indices.  Terms are \texttt{["v",i]}, \texttt{["z"]},
+\texttt{["s",t]}, and \texttt{["i",n,a,h]}; only the last child of
+the iterator binds a numerical variable.  Formulas are
+\texttt{["=",s,t]}, \texttt{["q",B]}, and \texttt{["d",B]}.
+For $D$, the closure coordinate is index zero and the witness is index one.
+A certificate has exactly the fields \texttt{variables}, \texttt{context},
+\texttt{goal}, and \texttt{proof}.  All are checked by the standalone
+module, including malformed values and Boolean/integer aliases.
+
+The new proof instruction is
+\texttt{["ur",f,h,t,p]}.  It validates $f$ and $h$ at one extra numerical
+slot and $t$ at the original scope.  It checks $p$ in the lifted original
+context, with no added hypothesis, against
+\[
+ f(Sz)=h(f(z)).
+\]
+It returns $f(t)=I(t,f(0);h)$.  The state slot of $h$ is the sole active
+slot; the checker does not permit an additional counter slot in the
+update.  Its matched control uses exactly the same syntax, traversals,
+equality rule, logical rules, JSON interface, and errors, replacing UR
+by equation-progress introduction.  The 71-byte increase is therefore a
+real cost of this direct rule replacement, not a difference in validation.
+
+The supplied tests exercise correct and incorrect UR recurrences, retention
+of the original context, absence of an induction hypothesis, freshness
+of the target, nested iterator binders, passive-parameter shifts, and
+eigenparameter escape.  The 66 process checks run both normal Python and
+\texttt{python -O}; all have their expected outcomes.  These are kernel
+regression checks.  They are not a formal verification of the complete
+metatheorem or certificates for every arithmetic lemma in this report.
+
+\subsection{The separate four-byte refinement}
+The 866-byte program implements the existing scalar calculus, not UR.
+It composes two existing implementation observations: lexical validation
+of the entire integer/list certificate, and reuse of the first kernel
+scope traversal for public-goal bound-variable validation
+\cite{validated,scope}.  No numerical axiom or inference rule changes.
+
+The only source change is the following condition in the public grammar
+validator:
+\begin{center}
+\texttt{2 < a < d}\quad becomes\quad\texttt{a > 2}.
+\end{center}
+The remaining checks still establish the public term/formula arities,
+the permitted leaf roles, and integer/list types.  At the initial kernel
+call, the existing scope map traverses the entire goal before attempting
+any proof instruction.  A nonzero term variable outside its binder depth
+reaches the map's invalid-substitution sentinel and rejects.  Thus an
+additional goal admitted by the relaxed preliminary test cannot be
+accepted by the complete checker.  Valid goals reach the byte-identical
+kernel and the same proof stream.  This proves equality of the acceptance
+sets on the documented finite JSON interface; the accompanying detailed
+argument records the exact sentinel and depth convention.
+
+The improvement is four normalized bytes, two significant tokens, three
+AST nodes, and three gzip bytes in this implementation.  Its relevance is
+that it is a measured full-program improvement with the same public
+contract.  Its mathematical significance is limited: it is not a new
+axiomatization, and it does not beat the distinct compact guarded codec.
+The differential suite makes 332 standalone runs, equally split between
+ordinary and optimized Python, with 108 acceptances, 224 rejections, and
+zero mismatches.  It includes malformed JSON, unused-prefix type attacks,
+freshness regressions, and nine goals that pass the relaxed preliminary
+test but are rejected by the initial kernel scope traversal before any
+proof packet is consumed.  The exact code-change check and the scoped
+argument about recursion limits are included.
+
+\subsection{Arithmetic validation and assurance limits}
+Two independent standard-natural checks accompany the proof.  One checks
+the complete explicitly defined scalar predecessor construction and then
+the reflection identities using subtraction implemented by iterating that
+predecessor.  It reports 1884 successful checks.  The second checks 477760
+instances of the Boolean comparisons, accumulator, telescoping equations,
+and equality test, with an independent finite-sum oracle for the
+accumulator and four deliberately incorrect nearby variants that are
+detected.  Bounds and exact counts are recorded in the JSON results.
+
+The universal result rests on the written derivations.  Finite tests
+cannot establish it in nonstandard structures or intuitionistic models.
+The new equivalence has been reviewed independently at the predecessor,
+reflection, and logical-bootstrap boundaries, but is not yet formalized
+in Lean or Rocq.  The already existing scalar-to-iPRA bridge is the only
+proof-assistant verification inherited from the repository.  The new
+checkers are executable artifacts, not proof assistants verifying their
+own correctness.
+
+\section{Further research questions}
+\begin{enumerate}[leftmargin=*]
+\item Formalize scalar UR and the explicit accumulator in the existing Lean
+project, preserving the dependency order: cases and logic, UR predecessor,
+Boolean diagonal descent, reflection, then general equation induction.
+The Boolean descent lemma should isolate much of the new proof.
+\item Can the complete UR checker beat a matched induction checker after
+an architectural change that genuinely shares computation and uniqueness?
+The present direct replacement is larger; that negative measurement should
+guide the next attempt.
+\item Can the uniqueness rule be weakened to a restricted family of
+updates while retaining the predecessor bootstrap and retraction rigidity?
+The reflection stage mostly uses constant-recurrence uniqueness, whereas
+predecessor and retractions use nontrivial updates.  A justified reduction
+would need to cover both uses.
+\item Can the explicit scalar accumulator support a more direct
+primitive-recursion compiler or a shorter predecessor construction?
+Its recurrence is counter-dependent, yet its definition uses only
+composition of scalar subtraction and addition.  This distinction may
+help avoid premature tuple coding in other bootstraps.
+\item Can a smaller complete presentation be established under one fixed
+public syntax and validation contract?  Current reported minima span
+different languages and input envelopes.  A common contract is necessary
+before a meaningful lower-bound or absolute-minimality question can be
+posed.
+\end{enumerate}
+
+\section{Reproduction and files}
+The archive includes this standalone \file{report.tex} and its compiled
+\file{report.pdf}; editable proof sections; the two matched uniqueness
+checkers; the 866-byte existing-calculus checker and its exact control;
+finite arithmetic and checker tests; measurements and provenance; and
+the inherited mathematical source files used in the equivalence bridge.
+No network access is required for reproduction.
+
+Run \texttt{python3 reproduce.py} to repeat the supplied measurements and
+tests.  Run \texttt{python3 reproduce.py --pdf} to rebuild the report with
+pdfLaTeX.  To compile the standalone source directly, run
+\texttt{pdflatex -interaction=nonstopmode -halt-on-error report.tex} twice.
+The archive contains no claimed complete Lean project for the new theorem.
+
+\begin{thebibliography}{9}
+\footnotesize\setlength{\itemsep}{3pt}
+\bibitem{project} Vladimir Reshetnikov, \emph{ProveIt: Concise presentations
+of intuitionistic primitive recursive arithmetic}.  Repository snapshot
+\texttt{11be5aabc6b07262046e2553419bc6b05271d178}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/11be5aabc6b07262046e2553419bc6b05271d178/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+\bibitem{scope} \emph{Concise iPRA: scope reuse and mathematical limits},
+incoming package \file{ipra_scope_kernel_2026-11-11.zip}, especially
+\file{sections/uniqueness_note.tex}, in the pinned project snapshot.
+The exact inherited uniqueness note is reproduced in \file{reference/}.
+\bibitem{choice} \emph{Complementary introductions with one local assumption},
+\file{Research/certified_zero/reference/inherited_choice_basis.tex},
+in the pinned project snapshot.  Includes the logical reconstruction
+independent of progress induction.
+\bibitem{validated} \emph{Validated presentation},
+\file{Research/validated_presentation/code/native_typed_full.py}
+and its validator proof, in the pinned project snapshot.
+\bibitem{zero-normal} \emph{Zero-normal scalar iteration}, incoming package
+\file{ipra_zero_normal_2026-11-11.zip}, in the pinned project snapshot.
+\bibitem{template-free} \emph{Template-free equality transport}, incoming
+package \file{ipra_template_free.zip}, in the pinned project snapshot.
+\bibitem{okada-scott} M. Okada and P. J. Scott,
+\emph{A Note on Rewriting Theory for Uniqueness of Iteration},
+Theory and Applications of Categories \textbf{6} (1999), no.~4, 47--64.
+\url{https://tac.mta.ca/tac/volumes/6/n4/6-04abs.html}.
+\end{thebibliography}
+\end{document}

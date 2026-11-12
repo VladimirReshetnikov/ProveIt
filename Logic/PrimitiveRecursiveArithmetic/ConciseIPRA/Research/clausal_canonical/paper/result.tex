@@ -1,0 +1,29 @@
+\section{Result and comparison target}
+
+The current repository already contains a six-rule calculus with canonical successor-seeded terms. It also contains the mathematical ingredients needed to make its logical interface smaller: clauses as reusable assumptions, and transport in a single term template. The construction here puts those ingredients together and removes the source restriction on transport, which has no purpose in the straightforward verifier. It is a modest mathematical simplification, with a substantial improvement in the selected transparent implementation.
+
+The exact change is
+\[
+\begin{array}{c|c|c}
+&\text{canonical repository calculus }\Ksix&\text{this calculus }\Kfive\\\hline
+\text{terms}&x,0,R&x,0,R\\
+\text{public formulas}&=,Q,D&=,D\\
+\text{retained context}&\text{formulas}&\text{clauses }[A;y.B]\\
+\text{transport input}&\text{equation template}&\text{one term template}\\
+\text{primitive schemes}&6&5
+\end{array}
+\]
+The context change is part of the specification: a clause retains both an antecedent and a one-variable consequent. The cost of storing and opening it is counted. The ordinary hypothesis rule and closure specialization become one clause-use rule. The designated contradiction remains $0=S0$.
+
+\begin{theorem}[Main result]
+The calculus $\Kfive$ specified in Section~\ref{sec:clause-five} is equiconsistent and bi-interpretable with full first-order $\ipra$. Its numerical domain is the whole domain, interpreted equality is actual equality, and the numerical isomorphism in each composite has graph $x=y$.
+\end{theorem}
+
+The new part of the proof is an explicit equivalence with $\Ksix$. It changes no numerical term or arithmetic operation. The inherited canonical-recursor bridge then gives the displayed result by composition. The proof is written mathematics; this report does not claim a new Lean or Rocq verification.
+
+Throughout, $\ipra$ means intuitionistic first-order arithmetic with a function symbol for each finite primitive-recursive description, its defining equations, zero/successor separation, successor injectivity, and induction for quantifier-free formulas with parameters. It does not mean just the equational theorem fragment. In particular, preserving full intuitionistic logical structure and both interpretation composites is essential.
+
+\subsection{What is being minimized}
+The primary practical comparison is the complete acceptance program: parsing, public syntax and scope validation, canonical substitution, every inference, and final conclusion comparison. Source size is measured after docstring removal and CPython 3.12.14 \file{ast.unparse} normalization. Token and AST counts are also given. Gzip level 9 is informational, as requested in the earlier project conventions.
+
+There is no proved globally simplest axiomatization. Nor does this report beat every compressed checker in the repository. Its precise positive claims are a smaller interface, a complete equivalence proof, and a smaller matched transparent verifier. An implementation change alone is not described as a new arithmetic axiom deletion.

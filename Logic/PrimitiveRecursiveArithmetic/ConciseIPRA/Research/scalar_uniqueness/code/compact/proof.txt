@@ -1,0 +1,111 @@
+PUBLIC SCOPE REUSE: EXACT ACCEPTANCE COMPARISON
+
+Compared modules: control.py and checker.py.
+
+The control is the inherited fully validated Eq/Q/D compact presentation.
+The candidate changes only the integer branch of public validator v:
+
+  old: d % 2 and (not a or (2 < a < d and a % 2))
+  new: d % 2 and (not a or (a > 2 and a % 2))
+
+Every other statement, including the complete proof kernel c, is identical.
+Thus this is an implementation refinement of the same ordinary axiomatization.
+It is not an implementation of the report's scalar-uniqueness alternative.
+It is not a claim of global proof-checker minimality.
+
+Acceptance convention
+---------------------
+An input is accepted exactly when the complete standalone module exits zero
+and prints precisely ACCEPT followed by one newline. An exception, abnormal
+termination, or any other output is rejection. Inputs are byte strings read by
+Python's standard JSON decoder. All claims concern these complete modules,
+including the common lexical type gate and final public-goal validation.
+
+Lemma 1: the common type gate
+----------------------------
+After JSON decoding, repr(q).strip('0123456789[], -') must be empty. On values
+returned by the standard decoder, this admits only trees made from integers
+and lists. Boolean, float, null, string and mapping values contribute a
+non-admitted character to repr, even when nested in unused proof prefixes.
+The gate is byte-for-byte identical. Wrong root types, missing goals, decoder
+failures, and exceptions in repr are also rejected in both modules.
+
+Lemma 2: what the refined validator guarantees
+---------------------------------------------
+Suppose new v(a,0) returns true on an integer/list tree. Its list branch retains
+the original arity conditions, and all visited children are checked at
+d' = d + 5 - len(a). Its integer branch still requires an odd depth d and
+either a=0 or a positive odd integer a>2. In particular every integer leaf
+that can survive this public validation occurs at odd depth. The only omitted
+condition at such a leaf is a<d. The old validator returns true if and only if
+the new one returns true and every admitted nonzero leaf also satisfies a<d.
+
+Lemma 3: the first kernel walk checks precisely that omitted condition
+--------------------------------------------------------------------
+Immediately after public validation, both modules call c(a) with its default
+floor k=0. Before reading any proof instruction, c defines its traversal i
+and evaluates i(a) in the expression `if i(a) in g`.
+
+At a list, i recurses through every child with exactly the same depth update
+d' = d + 5 - len(a) used by v. At an integer, its default call is:
+
+  a if 0 <= a < d else d % 2 and i(t, d=3), with t=c.
+
+Every integer leaf admitted by new v is nonnegative and lies at odd depth.
+If a<d, i leaves it unchanged. If a>=d, its else branch is reached and the
+odd parity forces the recursive call i(c,d=3). At that call the expression
+`a * 0` attempts to multiply the Python function c by zero. This raises
+TypeError; no later branch can conceal it. This occurs before c reaches q(),
+so an invalid public goal cannot be repaired by supplied proof instructions.
+
+Thus a refined-public-valid goal that fails the old bound test is rejected
+by the first kernel traversal. In particular a=d is rejected; equality at
+the boundary is not accidentally admitted. Retaining the odd-parity check
+is essential: at even depth the failing traversal branch could return zero.
+
+Theorem: equality of accepted finite inputs
+------------------------------------------
+First suppose the control accepts. Every public leaf satisfies the bound,
+so the refined validator also accepts. Its recursive traversal visits exactly
+the same children in the same order. The proof kernel then receives the same
+goal, input stack and parameters, and is identical. It therefore accepts.
+
+Conversely suppose the candidate accepts. Its lexical gate and public shape
+test have succeeded. If any public leaf violated the old upper bound, Lemma 3
+would force a TypeError before proof checking, contrary to acceptance. Hence
+the old validator also accepts. The subsequent identical proof-kernel run
+has the same state and accepts. This proves exact equality of successful
+input sets in ideal finite execution semantics.
+
+The argument inherits the control's existing mathematical checking theorem;
+it does not replace that theorem with testing. Because the accepted input set
+and decoded public goals are unchanged, the same iPRA presentation, semantics,
+and interpretation composites are retained.
+
+CPython recursion and physical resource limits
+---------------------------------------------
+On inputs passing the old validator, both v implementations make the same
+recursive calls in the same order, with the same function/generator nesting.
+The removed operation is one integer comparison, not a recursive call. The
+JSON parse, repr gate, and complete c run are unchanged. Consequently the
+same fixed CPython recursion limit does not create an extra accepted input:
+old-valid runs have identical recursion-depth behavior, and newly public-valid
+but ill-scoped runs still reject, either by the intended TypeError or by an
+earlier resource exception. Old-invalid runs can take longer in the candidate,
+because it may traverse more of an ill-scoped goal before failing.
+
+This is not a claim that exact exceptions, traceback text, runtime, peak memory,
+or acceptance under externally imposed wall-clock/allocator budgets are
+identical. Such physical limits can interrupt otherwise successful executions
+and are excluded from the ideal theorem. The supplied regression script also
+compares deep valid computation certificates at recursion limits 100, 250 and
+1000, in both normal and optimized CPython, recording observed outcomes.
+
+Measurement and novelty boundary
+--------------------------------
+Whole-module ast.unparse normalization plus a final LF is used. The script
+counts significant Python tokens and all AST nodes and produces deterministic
+gzip level 9 streams (mtime=0). Gzip is informational. The implementation
+removes a scope check already performed immediately by the inherited kernel;
+it adds no new mathematical axiom deletion. No claim is made against the
+different compact guarded profile or the current 516-byte canonical-R profile.

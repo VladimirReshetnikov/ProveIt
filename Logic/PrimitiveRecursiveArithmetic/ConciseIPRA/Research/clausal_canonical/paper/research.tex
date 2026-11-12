@@ -1,0 +1,20 @@
+\section{Limits and further research questions}
+
+\paragraph{The achievement.}
+The public formula language has one fewer constructor, the primitive inference inventory has one fewer scheme, and the complete verifier is smaller under a controlled comparison. The numerical language and both numerical interpretation composites are unchanged. The five-rule presentation removes a separately represented logical closure; it does not delete primitive-recursive strength.
+
+\paragraph{The source of the improvement.}
+The three ingredients were already present separately in the repository: canonical successor-seeded recursion, clause contexts, and one-term transport. Combining them makes the array arities unambiguous: three children mean a recursor, two an equality, and one a paired formula. This allows one recursive opener. The free-level convention removes whole-context shifting. Negative rigid parameters and shared openers also have antecedents in the repository; no priority is claimed for those techniques. These are explicit representation choices whose implementations are included in the measured program, not additional semantic axioms.
+
+\paragraph{Why not erase the last computation rule as well?}
+Making both recursor computations definitional and then simply deleting R leaves no source of equation theorems. To see the local problem, keep ordinary natural-number meanings for terms but interpret every syntactic equation atom as false. This is a countervaluation for the remaining inference rules; it does not impose first-order logic's built-in equality axioms. Interpret $D$ and context clauses by their conditional-closure readings. T is vacuous, and U/E are valid logical uses. Case I is sound by coverage; equation-progress I has a false antecedent and therefore introduces a true conditional closure. With no R axiom, no equation, including $0=0$, follows from the empty context. Adding a reflexivity or conversion seed repairs the loss, but is a replacement rule, not a free deletion. This argument concerns this specific proposed deletion only; it is not a theorem that every iPRA presentation needs five rules.
+
+\subsection{Questions worth pursuing}
+\begin{enumerate}
+\item \textbf{Formalize the exact bridge.} Can the five-rule calculus be embedded in the existing Lean development with the context-occurrence invariant and the $Q$-eta expansion proved directly? The canonical recursor's existing written equivalence is a separate prerequisite.
+\item \textbf{Measure proof size as well as verifier size.} Ordinary assumption use now explicitly proves the fixed neutral theorem. Removing first-class $Q$ can add elimination and eta-expansion nodes. What are the optimal proof-DAG translations, and how much sharing avoids repeated neutral premises?
+\item \textbf{Port the disjoint-arity grammar to a compact validated kernel.} Does the absence of both an independent successor constructor and a $Q$ constructor yield a genuinely smaller fully validated compact program once normalization and every malformed-input case are charged? This report does not answer that question.
+\item \textbf{Separate a natural presentation from a minimal implementation.} The witness-directed introduction is concise but not syntactically stable under substitution: a substituted witness can become literal zero. Can a substitution-stable presentation with comparable full-checker size simplify the formal metatheory?
+\item \textbf{Prove meaningful restricted lower bounds.} One could fix the term grammar, class of decidable syntax operations, and certificate interface before asking whether five schemes can be reduced. A raw count of named rules is otherwise too easy to change by merging cases or moving work into syntax.
+\item \textbf{Seek a genuinely new arithmetic reduction.} Eliminating the initializer, changing the domain, or replacing the recursor may still be fruitful, but existing self-seeded constructions and finite-range obstructions must be respected. A new candidate must supply both complete interpretation composites, not just standard-model expressiveness.
+\end{enumerate}

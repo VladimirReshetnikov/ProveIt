@@ -1,0 +1,75 @@
+{
+  "title": "Scalar iteration uniqueness for iPRA",
+  "established_by_written_proof": [
+    {
+      "id": "UR_EQ",
+      "claim": "Over scalar I0/IS, numerical coverage, separation and intuitionistic first-order equality logic, contextual scalar UR and contextual literal-equation induction derive exactly the same first-order sequents.",
+      "location": "report.tex sections 3-7"
+    },
+    {
+      "id": "UR_PRED",
+      "claim": "Scalar UR constructs actual predecessor P0=0 and P(Sn)=n without numerical induction or separation.",
+      "location": "ur_predecessor.tex"
+    },
+    {
+      "id": "UR_REFLECTION",
+      "claim": "The finite scalar term Delta(a,b)=sg(d(a,b)+d(b,a)) reflects actual equality on the whole numerical domain.",
+      "location": "ur_reflection.tex"
+    },
+    {
+      "id": "BIINTERPRETATION",
+      "claim": "Composing identity equivalence with the included inherited scalar/iPRA bridge gives whole-domain bi-interpretability and equiconsistency; numerical composites have identity graph x=y.",
+      "location": "ur_complete.tex and reference/"
+    },
+    {
+      "id": "NATIVE",
+      "claim": "The eight-pattern native UR calculus is equivalent to the original native calculus; its logical reconstruction does not depend on the deleted equation-progress rule.",
+      "location": "report_front.tex and ur_complete.tex"
+    },
+    {
+      "id": "SCOPE_REUSE",
+      "claim": "The refined compact module has exactly the same accepted finite public certificates as its inherited control.",
+      "location": "code/compact/proof.txt"
+    }
+  ],
+  "measured_results": {
+    "new_UR_checker": {
+      "normalized_bytes": 3393,
+      "significant_tokens": 1124,
+      "ast_nodes": 1175,
+      "gzip9_bytes": 1011
+    },
+    "matched_induction_checker": {
+      "normalized_bytes": 3322,
+      "significant_tokens": 1084,
+      "ast_nodes": 1141,
+      "gzip9_bytes": 984
+    },
+    "unchanged_calculus_refined_checker": {
+      "normalized_bytes": 866,
+      "significant_tokens": 381,
+      "ast_nodes": 439,
+      "gzip9_bytes": 504
+    },
+    "unchanged_calculus_control": {
+      "normalized_bytes": 870,
+      "significant_tokens": 383,
+      "ast_nodes": 442,
+      "gzip9_bytes": 507
+    },
+    "UR_checker_process_tests": 66,
+    "compact_checker_process_tests": 332,
+    "actual_scalar_term_checks": 1884,
+    "reflection_finite_checks": 477760
+  },
+  "not_established": [
+    "That the new UR calculus has a smaller complete checker than its matched induction control: the supplied implementation is larger.",
+    "That eight native patterns beat the existing six-rule presentations.",
+    "That the 866-byte unchanged-calculus refinement is an implementation of UR.",
+    "A global compact-codec minimum or an absolute simplicity lower bound.",
+    "Historical priority for recursion uniqueness or a systematic literature novelty determination.",
+    "A Lean/Rocq formalization of the new UR-to-induction theorem or a complete machine-checked certificate for it."
+  ],
+  "finite_test_boundary": "Finite arithmetic tests and process regressions supplement the written proof. They do not prove the result in nonstandard structures or intuitionistic models.",
+  "overall_task_status": "Complete alternative axiomatization with written bi-interpretation proof; the stricter new-calculus checker-size improvement remains unachieved."
+}

@@ -1,0 +1,49 @@
+\section{Executable implementation and measurements}
+\label{sec:implementation}
+
+\subsection{Acceptance boundary}
+The primary verifier is \file{code/arity_checker.py}. Its input is one JSON object with exactly the keys \file{goal} and \file{proof}. The goal must be a closed canonical Eq/$D$ formula. The verifier starts with no retained clause and free scope zero. It accepts only when the derived conclusion is literally the submitted goal. Success means exit status zero and the line \file{ACCEPT}; rejected inputs return nonzero and \file{REJECT}. It uses no evaluated Python certificates, external theorem table, proof search, downloaded module, or hidden solver.
+
+The five instruction tags are \file{r}, \file{x}, \file{u}, \file{e}, and \file{i}. The complete field descriptions and scopes are in \file{FORMAT.md}. The rule tag is merely a certificate instruction; it is not part of the numerical or formula language. All public goals, numerical witnesses, templates, and computation data are validated before they can supply a substitution image. Generated clauses are valid by the derivation invariant. Invalid keys, malformed arrays, floats, booleans, free positive indices, future negative levels, and noncanonical zero-counter bodies reject.
+
+The mathematical calculus permits every finite proof. Python's ordinary recursion, memory, and running-time limits may reject or fail to finish sufficiently large valid certificates. These resource limits are not extra arithmetic axioms and do not establish an arithmetic decision procedure.
+
+\subsection{A comparison that separates the two savings}
+All programs in the following table are complete standalone acceptance modules. The first is a byte-authenticated copy of the current canonical six-rule checker. The second ports that same calculus to the new variable convention and shared opening operation. It retains its $Q$ constructor, restricted two-sided equation transport, and root-reversing QE. The third implements the five-rule construction. Thus the second-to-third comparison controls the variable representation and isolates the rule/formula-interface change.
+
+\input{evidence/metrics_table.tex}
+
+The primary checker saves 515 normalized bytes (13.48\%), 161 significant tokens (14.54\%), and 194 AST nodes (15.32\%) against the matched control. Relative to the exact shipped canonical checker it saves 1,306 bytes (28.32\%). The latter percentage combines the mathematical-interface change with the simpler concrete variable/constructor representation; it must not all be attributed to deleting one rule.
+
+The byte counts include JSON decoding, error handling, all scope checks, both syntax validators, the normalizing opener, all five or six rules, and final-goal checking. Each checker relies only on the Python standard library. The reference environment is CPython 3.12.14, and gzip uses compression level 9 and timestamp zero.
+
+The repository also ships much more compressed scalar encodings. For example, its current canonical-recursors package reports a separate 516-byte compact guarded scalar checker, while checked-refinement reports a 788-byte scalar Eq/$D$ public-goal checker. The present 3,305-byte program does not beat those sizes. They are different numerical/certificate presentations. No compressed-code frontier claim is made here, and no earlier obstruction report is treated as a universal lower bound.
+
+\paragraph{Late source update.}
+During final preparation the repository advanced to commit
+\texttt{f77135e4aa10}, filing six additional packages. The canonical
+six-rule comparator above was unchanged. The newly filed
+\file{zero_normal/code/zero_six.py} measures 3,095 bytes, 1,013 tokens,
+1,075 AST nodes, and 977 gzip bytes under the same normalization. It uses
+initialized $I$ with an independent successor and accepts validated
+general sequents. Our program has fewer rules and tokens but more bytes
+than that distinct presentation. The late package retains separate Hyp/QE
+and first-class $Q$; it does not duplicate the five-rule clause interface.
+The exact source and measurements are preserved in
+\file{evidence/late_source_comparison.json}. Thus the positive byte claim
+is specifically the matched comparison in the table.
+
+\subsection{Verification evidence and its scope}
+\input{evidence/validation_summary.tex}
+
+The evidence includes forward proof translations from the pinned six-rule calculus, reverse proof translations replayed through the pinned verifier, independent arithmetic evaluation/opening tests, and deliberate malformed/scope controls. Tests are run under ordinary Python and \file{python -O}; acceptance does not depend on assertions. Readable and normalized verifier copies are both exercised.
+
+These checks provide executable evidence for the implementation. The mathematical equivalence is proved in the report. Neither finite testing nor a Python proof translator is a proof-assistant verification of every possible input or derivation. The upstream scalar core has Lean results; the new clause representation and canonical recursor are not presented here as new Lean theorems.
+
+\subsection{Reproduction}
+From the extracted archive directory, run
+\begin{quote}\ttfamily
+python3 reproduce.py\\
+python3 reproduce.py --pdf
+\end{quote}
+The first regenerates measurements and executes the supplied checks. The second also assembles the standalone \file{report.tex} and builds \file{report.pdf} using three pdfLaTeX passes. The assembled TeX source has the main proof and the verifier listing embedded, so it can also be compiled directly. Reference sources are preserved separately for inspection of the inherited arithmetic bridge.
