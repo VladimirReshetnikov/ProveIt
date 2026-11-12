@@ -423,8 +423,32 @@ by progress as primitive, and proves that the derivable sequents are the same
   `t` is DI at a name of `t` followed by the Leibniz rule. That calculus is
   closed under renaming and not under substitution; its Leibniz rule is
   proved over one context, and a dummy witness in a scope without variables
-  is a name of `0`. Whether the two shapes together are enough without the
-  scheme is further question 2.
+  is a name of `0`. The two shapes together are enough without the scheme:
+  `dwprf_iff_nprf : DWPrf true true Γ A ↔ NPrf Γ A` (`NativeWitnessComplete`).
+  The names are derived. With `P` the predecessor term, the name of `P(y)`
+  holds at `0` with the witness `0`, and at `S z` with the witness `z`, since
+  `z = P(S z)`; so it holds for all `y` by cases with a dummy witness, in
+  particular at `S a`, and opening that name gives a variable equal to
+  `P(S a) = a`. The two equations of `P` come from a calculus with no
+  witness at all, below.
+- *The predecessor needs equations only.* `EqPrf` derives an equation from
+  equations by five rules: hypothesis, the two computations, transport in one
+  term template, and induction for a literal equation with parameters. It
+  has no formula other than equations, no coverage `x = 0 ∨ ∃y x = S y`, no
+  separation and no case rule. `EqPrf.pred_succ : EqPrf Γ (pred (S t)) t`,
+  `EqPrf.pred_zero` and `EqPrf.succ_inj` (`EqKernel`, `EqArith`, `EqParity`,
+  `EqCompare`, `EqPred`). The lemmas are those of the `T_eq` development on
+  the quotient `EQ Γ` of terms by `EqPrf Γ`; its three Boolean case splits
+  and two splits on a selector count become equation cases on a fresh
+  variable, that is, the induction rule with an unused hypothesis
+  (`EQ.zf_add_zf`, `EQ.mod3_step`, `EQ.sel_cyc_zf`, `EQ.sel_add`,
+  `EQ.sel_self_zero`). `EqPrf` embeds in the kernel under any restriction of
+  the witness (`EqPrf.toDW`): its induction is QI by progress followed by
+  QE. This is the audit of the predecessor in
+  [`uniform_raw`](Research/uniform_raw/),
+  [`newest_parameter`](Research/newest_parameter/),
+  [`parameter_witness`](Research/parameter_witness/) and
+  [`no_witness`](Research/no_witness/).
 - *A one-iterator selector.* The mode of the single introduction can be read
   off a smaller shape than the diagonal one: progress exactly when the matrix
   is literally `a(x, y) = I(y, a(x, y); u.h)`. That calculus is `MiPrf`
@@ -841,6 +865,8 @@ formalizes three systems and proves them mutually bi-interpretable:
 | substitutive discharge | `sdprf_iff_nprf : SDPrf Γ A ↔ NPrf Γ A`, `SDPrf.tr`, `SDPrf.dE`, `SDPrf.subst` | one rule in place of transport and DE; seven rules, each stable under substitution |
 | QE at a variable or at `1` | `vqprf_iff_nprf : VQPrf true Γ A ↔ NPrf Γ A`, `VQPrf.qE`, `VQPrf.leibniz`, `VQPrf.aliasE` | the term argument of QE restricted to a variable or the numeral `1`; an arbitrary target is named by a fresh alias and reached by the Leibniz rule |
 | the witness of DI needs both shapes | `DWPrf`, `Tm.IsWit`, `DWPrf.sound`, `dwprf_zero_incomplete`, `NFm.Simple`, `DWPrf.simple`, `dwprf_var_incomplete` | DI at the literal `0` alone does not derive `D_{x,y} (sel(y, 1, x) = 1)`, by the reading of `D` at `x = 0`; DI at variables alone derives no `D` formula in the empty context without free variables |
+| the literal `0` and variables suffice as witnesses of DI | `dwprf_iff_nprf : DWPrf true true Γ A ↔ NPrf Γ A`, `DWPrf.names`, `DWPrf.namePQ`, `DWPrf.nameOf`, `DWPrf.qI`, `DWPrf.ofEq`, `EqPrf.toDW`, `NFm.nameP` | DI by cases at `0` or at a variable, and at no other term, derives what the kernel derives; every term has a name there, through the predecessor |
+| the predecessor in the equational calculus | `EqPrf`, `EqPrf.pred_succ : EqPrf Γ (Tm.pred (succ t)) t`, `EqPrf.pred_zero`, `EqPrf.succ_inj`, `EqPrf.substW`, `EQ`, `EQ.eqInd`, `EQ.pred_succ`, `EQ.zf_add_zf`, `EQ.mod3_step`, `EQ.sel_cyc_zf`, `EQ.sel_add` | five rules on equations only (hypothesis, two computations, one-template transport, equation induction) derive `P(0) = 0` and `P(S t) = t`; no coverage, separation or case rule; no `Classical.choice` |
 | DI at a variable, with a name for every term | `DNPrf`, `dnprf_iff_nprf : DNPrf Γ A ↔ NPrf Γ A`, `dwprf_complete_iff_names`, `DNPrf.toDW`, `DNPrf.name`, `DNPrf.dIVar`, `DNPrf.aliasE`, `DNPrf.qI`, `DNPrf.leibniz`, `DNPrf.dIEq`, `DNPrf.dICase`, `DNPrf.ren`, `NFm.aliasM_subst` | the introduction takes no term: its witness is a variable, and the axiom scheme `D_{x,y} (sel(y, a, x) = a)` names every term; equivalent to the kernel on all sequents |
 | QE at variables only is weaker | `vqprf_var_incomplete`, `VQPrf.zsound`, `NFm.zt` | `Q_y (sel(y, 0, 1) = 0) ⊢ 0 = 1` is derivable in the kernel and not with QE at variables only; the countermodel reads variables as `0` and `Q`, `D` formulas as true |
 | uncrossed one-term transport | `uprf_iff_nprf : UPrf Γ A ↔ NPrf Γ A` | from `s = t` and `h(s) = r` infer `h(t) = r`: the crossing is not essential when sources are unrestricted |
@@ -910,7 +936,8 @@ The main chain (every module except the twenty kernel comparisons,
 `NativeProgressiveRoundTrip`, `NativeMixedClosure`, `NativePublic`, `NativePublicD`, `NativePublicNecessary`, `NativeRootDetermined`, `NativeIteratorSource`,
 `NativeRawReflexive`, `NativeOneOccurrence`, `NativeNoFixedPoint`,
 `ZeroSeedObstruction`,
-`NativePrefix`, `NativeUniqueness`, `NativeModels`, `NativeWitnessShape` and
+`NativePrefix`, `NativeUniqueness`, `NativeModels`, `NativeWitnessShape`,
+`NativeWitnessComplete`, `EqKernel`, `EqArith`, `EqParity`, `EqCompare`, `EqPred` and
 `TeqClosure`) is 5,226
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
@@ -959,6 +986,7 @@ no `native_decide`.
 | an obstruction | `ZeroSeedObstruction` | terms with a zero-seeded recursor denote monotone functions, so the seed of the iterator cannot simply be deleted |
 | progressive reading | `NativeProgressive`, `NativeProgressiveRules`, `NativeProgressiveLeibniz`, `NativeProgressiveEmbedding`, `NativeTargetClosure`, `NativeProgressiveRoundTrip`, `NativeMixedClosure` | the seven uniform rules of `uniform_progress`, `RPrf`; the reading `NFm.rd` of `Q` at a literal equation as progressivity; soundness in the kernel and in iPRA, and consistency; inside `RPrf`: substitution, weakening and cut, the equality rules, equation induction, and the Leibniz rule for all formulas; the padding translation `NFm.emb` and the equivalence `rprf_emb_iff : RPrf (Γ.map NFm.emb) A.emb ↔ NPrf Γ A`; the calculus `TQPrf` with the target-directed elimination, equivalent to `RPrf` on the same formulas; the second formula round trip and the faithfulness of the progressive reading |
 | without progress | `NativeNoFixedPoint` | the seven rules other than `Q` by progress derive `0 = 1` from `S c = c`, and from every successor cycle of odd length |
+| the equational calculus | `EqKernel`, `EqArith`, `EqParity`, `EqCompare`, `EqPred`, `NativeWitnessComplete` | `EqPrf` and the quotient `EQ Γ` with the interface of `Lindenbaum`; selector, addition, parity, three-cycle, ramp, factor map, comparator, saturating counter and predecessor, with equation cases in place of case splits; the embedding in `DWPrf` and the completeness of `0` and variables as witnesses |
 | readings over the natural numbers | `NativeModels`, `NativeWitnessShape` | evaluation of terms and formulas for a reading `Sem`; the kernel with rules switched by flags, `FPrf`, and its soundness; consistency of the three systems; independence of seven rules; the kernel with the witness of DI restricted by shape, `DWPrf`, and the incompleteness of each shape alone |
 | native admissible rules | `NativeStruct`, `NativeEq`, `NativeGate` | weakening, substitution, cut, `Q`-introduction, numerical cases; equality, interderivability over a context, Leibniz and transport in every template, equation induction; selector and gate formulas |
 | kernel comparison | `NativeInherited`, `NativeOneContext`, `NativeOneIntro`, `NativeDiagonal`, `NativeMirror`, `NativeSix`, `NativeMinimal`, `NativeEval`, `NativeTemplateFree`, `NativeParameter`, `NativeVariableQE`, `NativeSubstitutiveDischarge`, `NativeClausal`, `NativeClausalDiagonal`, `NativeUniformClauses`, `NativeZeroSource`, `NativeReversal`, `NativeNamedWitness`, `NativeOneBody`, `NativeEvalDischarge` | the calculus of the reports, `IPrf`, and `iprf_iff_nprf`; no literal-zero transport sources, `OPrf`, generic over the class `OKernel`, and the uncrossed rule, `UPrf`; six rules with Eval, `EPrf`; replacement without a template, `TPrf`; substitution for a parameter, `PPrf`, with injective renaming, cut and the fresh alias; QE at a variable or at `1`, `VQPrf`, with its own Leibniz rule and the countermodel for variables alone; substitutive discharge, `SDPrf`; the diagonal introduction, `GPrf`, with its own structural rules; the mirror introduction, `MiPrf` and `M6Prf`; Eval with the diagonal introduction, `SPrf`; the five-rule clause calculus, `CPrf`, with weakening, renaming and cut of assumptions; the clause calculus with the diagonal introduction, `KPrf`; uniform clause use, `VPrf`; one introduction rule, `WPrf`, generic over the class `WKernel`; both together, `MPrf`; the source restriction for uncrossed transport in an equation template, `ZPrf`, generic over the class `ZKernel`; root-reversing transport and QE, `RPrf`; DI at a variable with a name for every term, `DNPrf`, with renaming, cut and its own Leibniz rule; one-body contexts, `OBPrf`, with conversion and access by induction on the number of binders; evaluation at the discharge, `E3Prf` |
@@ -1030,7 +1058,8 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `evaluation_discharge` | Proved, for the raw calculus: its three families are `E3Prf`, with `e3prf_iff_vprf` on every clause context and `e3prf_iff_nprf_of_qfree` (`NativeEvalDischarge`). The evaluation step is the relation `Rho`, the graph of the package's `ρ`, proved functional and total. Both translations are the package's; the one from `VPrf` carries a renaming and a context extension through the induction, where the package first proves weakening and injective renaming. Not formalized: the zero-normal companion with SeedEval, and the checker measurements. |
 | `parameter_intro` | Not formalized: it is stated on the counter-aware recursor with full normalization. Its introduction without a witness is the subject of `NativeNamedWitness` and `NativeWitnessShape`. Its naming theorem proves `D_{x,u} (C(u, 0, x) = C(u, 0, t))` with variables as the only witnesses, by cases on `y` in a formula that mentions a predecessor `P(y)`: in the successor case the witness is the case variable `z`, and `z = P(S z)` holds by normalization. On iterator terms no term has `P(S z) = z` by computation, so the argument does not transfer as it stands. What does transfer is proved: for the kernel with variables (and `0`) as the only witnesses, completeness is equivalent to the derivability of those names (`dwprf_complete_iff_names`). |
 | `uniform_recursion` | Not formalized: its terms are variables, `0` and the counter-aware recursor `R(n, a; i, u.h)`, with the successor defined as `R(0, a; i, u.0)`. It needs its own syntax with a normalizer and a bi-interpretation with the iterator terms, like `uniform_binding` and `counter_evaluation`. Its three families Use, Close and Name are, by its own account, those of the control it is measured against (`inferred_witness`) on that syntax. |
-| `newest_parameter`, `no_witness`, `parameter_witness`, `uniform_raw`, `conditional_copy`, `single_constructor` | Filed on 2026-11-12; the comparison with the Lean development is in progress. The first four give written proofs that DI at `0` or at a variable suffices (further question 2); by `dwprf_complete_iff_names` what remains to formalize is the derivation of the names, which rests on a predecessor built from computation, equality and equation induction alone. |
+| `newest_parameter`, `no_witness`, `parameter_witness`, `uniform_raw` | Their common theorem is proved for the kernel, with a free choice among `0` and the variables: `dwprf_iff_nprf : DWPrf true true Γ A ↔ NPrf Γ A` (`NativeWitnessComplete`). Their audit of the predecessor is proved as stated: `EqPrf.pred_succ` and `EqPrf.pred_zero` in a calculus of equations with hypothesis, the two computations, one-template transport and equation induction only (`EqPred`), each Boolean split replaced by an equation case. The names follow the coverage packet of the packages: the name of `P(y)` by cases, used at `S t`. Not formalized: the deterministic selection (always the newest parameter, `0` in an empty scope) with its regeneration of proofs under scope extensions; the seven-rule diagonal variant, the one-bit clause calculus and the guarded calculus with that selection; the checker measurements. |
+| `conditional_copy`, `single_constructor` | Not formalized: both are stated on the counter-aware recursor on normal forms, a term syntax that is not formalized here. |
 | `register_graph` | Not formalized. It is a different term language (`J` with two bound variables) over ordinary logic, so it would need a second bi-interpretation with iPRA from scratch. |
 
 ### Further questions
@@ -1059,7 +1088,15 @@ marked as conjectures is proved here.
    of full normal forms in one variable refutes that instance and satisfies
    both computation equations, but it has elements that are neither `0` nor a
    successor, so DI by cases is not sound in it.
-2. **How far can the witness of DI be restricted?** QE needs only a variable
+2. **How far can the witness of DI be restricted?** Settled for the shape
+   of the witness: the literal `0` and variables are enough
+   (`dwprf_iff_nprf`, `NativeWitnessComplete`), and neither alone is
+   (`dwprf_zero_incomplete`, `dwprf_var_incomplete`). The predecessor that
+   the argument needs is derived in a calculus of equations only
+   (`EqPrf.pred_succ`). Still open in Lean: the deterministic choice of the
+   packages, the newest variable or `0` in an empty scope, which is not
+   stable under weakening. The rest of this item is the analysis that
+   preceded the proof. QE needs only a variable
    or the numeral `1` as its target (`vqprf_iff_nprf`), and a variable alone is
    not enough (`vqprf_var_incomplete`). For DI each of the two shapes alone
    is not enough (`dwprf_zero_incomplete`, `dwprf_var_incomplete`,
