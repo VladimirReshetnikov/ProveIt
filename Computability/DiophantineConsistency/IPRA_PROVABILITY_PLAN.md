@@ -83,6 +83,10 @@ The independently reviewed [Carrier65 resumption audit](research/current14-carri
 records that this runner requires a fresh output and has no resume path. It
 distinguishes the earlier checked normalized-quote standard-iPRA endpoint from
 the incomplete coherent replay and the external raw TeX/PDF association.
+The independently reviewed [prefix feasibility audit](research/current14-carrier65-retry05-prefix-feasibility/README.md)
+checks retained outputs, direct-route records, guard slots and pending output
+names. Those non-atomic observations do not establish safe reuse, provider
+closure or a continuation runner.
 
 The [65-gate graph-to-expression theorem](research/current14-carrier65-dag-expression-retry-check/README.md)
 now checks an explicit live circuit for the maintained Lean expression, with
