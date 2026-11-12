@@ -1,0 +1,101 @@
+import ResidueExactIndexGraphWitness
+import ResidueQBalanceGraph
+import DiophantineConsistency.ArithmeticPellClassification
+import DiophantineConsistency.ArithmeticPellCongruences
+
+/-! Source-only witness-preserving graph composition. The imported graph,
+IΣ₁ model providers and all tactics remain unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.ResiduePellCoordinatesDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ArithmeticPellRecurrence
+open Residue90GraphNormsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- A norm plus the actual ordinate at R identifies the same natural main
+root: classification supplies some time and strict monotonicity makes it R. -/
+theorem main_coordinate_of_norm (a c main R : V)
+    (hnorm : main*main=1+ArithmeticPellRecurrence.delta a*c*c)
+    (hy : ycoord R a=c) : xcoord R a=main := by
+  obtain ⟨t,_,htx,hty⟩ := ArithmeticPellClassification.solution_index a main c hnorm
+  have ht : t=R := (ArithmeticPellCongruences.y_strictMono a).injective (hty.trans hy.symm)
+  simpa only [ht] using htx
+
+/-- Preserve the same first n, quotient w and oriented main witness all the
+way to the paired Pell coordinates and oriented q-balance. -/
+theorem graph_coordinates_and_balance (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v)
+    (hJ : 0<v 0) (hbeta : 0<(p 0:V)) (hX : 0<v 6)
+    (hgap : (v 1+1)+(v 2+1)<q p v)
+    (hwindow : rank p v+(q p v)^3+q p v+1≤(q p v)^4) :
+    ∃ main n w : V, 0<main ∧ 13≤n ∧ 2*n=rank p v+1 ∧
+      k v=2*ycoord n (2*(v 6*Y p v*Y p v-1)+1) ∧
+      xcoord (rank p v) (Y p v*(v 6+1))=main ∧
+      ycoord (rank p v) (Y p v*(v 6+1))=c p v ∧
+      q p v*(main+H p v*(4*v 6*q p v*(v 7+1)*w))=
+      q p v*(v 6+a p v*c p v+H p v*v 12)+H p v*v 6 := by
+  obtain ⟨_,hq2,hY,hU⟩ := Residue90CompactGraphGammaDraft.scale_facts p v hJ hbeta
+  have hqpos : 0<q p v := lt_of_lt_of_le (by simp : (0:V)<2) hq2
+  have hq8 : (8:V)≤(q p v)^3 := by
+    have hh := pow_le_pow_left₀ (by simp : (0:V)≤2) hq2 3
+    simpa using hh
+  have hY8 : 8≤Y p v := le_trans hq8 hY
+  have hYpos : 0<Y p v := lt_of_lt_of_le (by simp : (0:V)<8) hY8
+  have hk : 0<k v := add_pos
+    (lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _))
+    (lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _))
+  have hFq : v 1+1≤q p v := le_trans (by simp) (le_of_lt hgap)
+  have hmag := ResidueMainCongruenceDraft.actual_main_magnitude_norm p v hz hFq
+  obtain ⟨main,hmain,hbalance,hnorm⟩ := DirectMainNorm.direct_main_orientation
+    (U p v) (v 6) (Y p v) (k v) (v 9+1) (v 12)
+    (rank p v+v 6*Y p v*q p v) hU hY8 hk (by
+      simpa only [ResidueMainCongruenceDraft.positivePart,
+        ResidueMainCongruenceDraft.negativePart,delta,H,a,c,k] using hmag)
+  have hroot : U p v*main+H p v*k v=U p v*(v 6+a p v*c p v)+
+        H p v*(U p v*v 12+v 6*Y p v*q p v+rank p v+1) := by
+    linear_combination -hbalance
+  obtain ⟨_,n,w,_,_,_,_,hn,_,_,heq,_,hks,hfirst,hmainy⟩ :=
+    ResidueExactIndexGraphWitnessDraft.exact_indices_of_graph p v hz hJ hbeta hX hgap hwindow
+  have hindex : k v=rank p v+1+4*(v 6*Y p v*Y p v)*w := by
+    simpa only [m,heq] using hks
+  have hYeq : Y p v=q p v*(q p v*q p v)*(v 7+1) := rfl
+  have hqbalance := ResidueQBalanceDraft.q_balance (q p v) (v 6) (Y p v) (c p v)
+    (k v) (rank p v) (v 12) main (v 7+1) w hqpos hYpos hYeq hindex
+    (by simpa only [a,H,U] using hroot)
+  have hdelta : delta p v=ArithmeticPellRecurrence.delta (a p v) := by
+    dsimp [delta,H,ArithmeticPellRecurrence.delta]
+    ring
+  have hnorm0 : main*main=1+delta p v*(c p v*c p v) := by
+    simpa only [delta,H,a,c,k] using hnorm
+  have hnorm' : main*main=1+ArithmeticPellRecurrence.delta (a p v)*c p v*c p v := by
+    rw [hdelta] at hnorm0
+    simpa only [mul_assoc] using hnorm0
+  have hmainx := main_coordinate_of_norm (a p v) (c p v) main (rank p v) hnorm' hmainy
+  have ha : a p v=Y p v*(v 6+1) := by dsimp [a]; ring
+  refine ⟨main,n,w,hmain,hn,heq,?_,?_,?_,?_⟩
+  · simpa only [m] using hfirst.symm
+  · simpa only [ha] using hmainx
+  · simpa only [ha] using hmainy
+  · simpa only [a,H] using hqbalance
+/-- Conditional graph power client. The exact graph zero, rank window and
+represented q≥46 bound remain explicit; all imported proofs are unelaborated. -/
+theorem graph_power (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v)
+    (hJ : 0<v 0) (hbeta : 0<(p 0:V)) (hX : 0<v 6)
+    (hgap : (v 1+1)+(v 2+1)<q p v)
+    (hwindow : rank p v+(q p v)^3+q p v+1≤(q p v)^4)
+    (hq46 : 46≤q p v) : v 6=Exp.exp (rank p v) := by
+  obtain ⟨main,n,w,_,hn,heq,hfirst,hmainx,hmainy,hbalance⟩ :=
+    graph_coordinates_and_balance p v hz hJ hbeta hX hgap hwindow
+  have hdiv := ResidueThreeProjectionGraphDraft.q_dvd_threeX_of_graph p v hz hJ hbeta hX hgap hwindow
+  exact ResidueQBalanceGraphDraft.actual_power_of_pell_coordinates p v main n w
+    hq46 hX hdiv hn heq hfirst hmainx hmainy hbalance
+end DiophantineConsistency.ResiduePellCoordinatesDraft
+#print axioms DiophantineConsistency.ResiduePellCoordinatesDraft.main_coordinate_of_norm
+#print axioms DiophantineConsistency.ResiduePellCoordinatesDraft.graph_coordinates_and_balance
+#print axioms DiophantineConsistency.ResiduePellCoordinatesDraft.graph_power
