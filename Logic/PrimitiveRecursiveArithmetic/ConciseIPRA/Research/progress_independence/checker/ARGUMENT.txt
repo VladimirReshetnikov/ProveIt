@@ -1,0 +1,159 @@
+MEASURED REFINEMENT: 506 TO 502 NORMALIZED BYTES
+================================================
+
+Status
+------
+This is a composition of implementation refinements already described in the
+current repository and incoming reports, together with an exact packet-tail
+reuse in the token profile. It is not a new axiomatization, a new mathematical
+axiom deletion, or an all-coordinate record. The compact byte candidate has
+269 significant tokens, 301 AST nodes, and 502 normalized bytes.
+The strongest observed coordinate envelope before this work is 253 / 275 / 506,
+attained by different programs. The byte candidate improves the byte coordinate
+only. A separate token profile has 251 significant tokens, 283 AST nodes, and
+605 normalized bytes, improving the token coordinate only. No supplied program
+improves the 275-node coordinate, and no single program attains the combined
+minima.
+
+The exact frozen control is the 506-byte optional compact checker from
+Research/deterministic_introduction/implementation/code/compact_optional.py,
+Git blob a0af7afb236b530eb30c63c5ab788151024271b7. Its source was included in the
+orbit_closure audit, whose independently recorded size is reproduced here.
+
+The canonical public input is a closed guarded Eq/D formula in the inherited
+weighted-slot encoding. The compact module does not validate the public-goal
+grammar or the entire JSON alphabet. The strict companion includes both, and
+is measured separately. No helper module or oracle is imported by either
+checker: the JSON library is their only import.
+
+1. Eager tuple selection: 506 to 503 bytes
+----------------------------------------
+Let J_r(t) denote opening(t, r) at formula depth zero and the current scope.
+Write
+
+  C := (m, a) == (s and [s,u] or [t]*3, J_u(t)).
+
+The control chooses its continuation by
+
+  C and J_s(t) or a,
+
+and the parity companion uses
+
+  (a, J_s(t))[C].
+
+For integer/list syntax, C is Boolean. If C is false and both openings are
+defined, both expressions return a. If C is true and J_s(t) is truthy, both
+return J_s(t). The only remaining case is C true and J_s(t) false. A successful
+opening of a nonempty list is a nonempty list; therefore a false result can
+come only from an empty root list or a scalar root. At formula depth zero an
+integer-root opening is independent of its proposed image, as the odd-depth
+image branch is not taken. An empty-list opening is also independent of its
+image. Consequently J_s(t)=J_u(t)=a in this remaining case, so both expressions
+again return the same value.
+
+The new expression computes J_s(t) even when C is false. Thus it can reject
+additional certificates, but every successful integer/list trace of the
+parity companion is a successful trace of the frozen control with exactly
+the same states and proof stream consumption. The fixture eager_control_only
+exhibits a strict difference: its certificate is accepted by the control and
+rejected by both eager companions. Its public theorem still has an ordinary
+canonical proof.
+
+Canonical completeness survives this extra evaluation. In a genuine
+elimination the source opening is already required. In a computation packet
+t is a canonical numerical update body, and in an introduction packet t is
+a canonical numerical witness. Every node in such a term has odd arity (1
+or 3), so starting the opener at depth zero keeps its depth even. At integer
+leaves it retains a legal coordinate or returns zero and never inspects the
+proposed image. Therefore J_s(t) is defined. In a D-elimination packet the
+unused fields can be standardized to zero, making both eager openings
+defined. These standardizations do not alter the native rule being compiled.
+
+The allocation expression k := ~-k is inherited verbatim from the control;
+it equals k-1 for integers. Openings in the continuation-selection expression
+are evaluated before that allocation, whereas the outer continuation opening
+and the context extension use the new k. The transformation preserves this
+order and does not reuse a future eigenparameter prematurely.
+
+2. Remainder selector: 503 to 502 bytes
+-------------------------------------
+The control's introduction selector ~len(a) % 2 is replaced by 3 % len(a),
+as in the smaller_envelope incoming report. On the meaningful formula arities
+the selectors agree:
+
+  matrix arity       1 (D)    2 (Eq)    3 (auxiliary Q)
+  old selector          0         1                  0
+  new selector          0         1                  0
+
+When m is nonzero, the selector is bypassed by `m or ...` in either module.
+When m is zero, the only nontrivial introduction cases therefore coincide.
+The permissive administrative decoder interprets root arities zero and at
+least four as the true equation 0=0. An empty matrix now raises division by
+zero and is rejected. For arity at least four, choosing the fresh parameter
+instead of zero changes only a truth alias. In a computation packet the added
+hypothesis is an instance of a computation equation with either substitution;
+in an introduction packet the relevant matrix itself has the truth-alias
+reading. Thus this administrative variation adds no false public consequence.
+All canonical proof compilations use the arities 1,2,3 and are unchanged.
+
+Unlike the parity companion, the 502-byte module is not claimed to have exactly
+the same raw success language as the control. Its soundness uses the inherited
+sorted decoder and the preceding truth-alias argument. The mathematical
+guarded public theorem set remains the same.
+
+3. Strict companion
+-------------------
+The strict module first rejects every JSON value whose Python printed form
+contains a character outside spaces, brackets, commas, minus, and decimal
+digits. On values already parsed by JSON this accepts exactly finite trees
+of integers and arrays; strings introduce quotes, objects braces/colons,
+booleans or null letters, and nonintegral numbers a decimal point or letters.
+This includes unused prefix data. The public validator then checks Eq/D
+arities, term arities 1/3, numerical leaves 0 or odd coordinates >=3, and the
+literal guarded shape [5,0,h] of both sides immediately under D. The initial
+scope traversal inside c rejects out-of-scope coordinates. There is no
+unmeasured grammar validator or data precondition in this companion.
+
+Finite runtime resource exhaustion is rejection, as for all compared modules.
+The mathematical completeness statement concerns unbounded finite resources.
+
+4. Arithmetic meaning and limits
+-------------------------------
+The arithmetic and bi-interpretability argument is inherited unchanged from
+the native scalar calculus and its guarded public presentation. Consequently
+the ordinary realization remains equiconsistent and whole-domain
+bi-interpretable with iPRA, with actual equality and numerical composites x=y.
+No new proof-assistant verification of that inherited bridge is asserted here.
+
+The executable validation is finite evidence, not a proof of all-input
+soundness. The written successful-trace and canonical-compiler arguments
+above provide the universal reasoning for the changes, relative to the
+inherited calculus and decoder. This package alone does not solve the user's
+stronger request for a new mathematical axiomatization below all current
+complexity coordinates.
+
+5. Exact packet-tail reuse: 253 to 251 significant tokens
+--------------------------------------------------------
+The independently measured incoming token checker supplies the comparison
+program for code/checker_tokens.py. Its 253-token source unpacks each packet
+as `m, s, u, t = q()` and reconstructs the vector `[s,u,t]` when forming the
+iterator endpoint. The new program instead uses
+
+  m, *r = q()
+  s, u, t = r
+
+and reuses r for that vector. It also writes r[:2] for [s,u] when constructing
+an inferred equality major. These operations are exact: successful execution
+of the second unpack forces r to have exactly three elements, in the same
+order and with the same identities as s,u,t. Thus r is exactly [s,u,t] and
+r[:2] is exactly [s,u]. A packet of any other arity is rejected by one of the
+unpack operations, just as the control rejects it. No mutation of r occurs.
+
+There is consequently a step-for-step equality of successful checker traces
+for every finite JSON certificate, disregarding finite memory/stack exhaustion.
+The theorem set, fresh-name convention, chosen majors, consumed stream, output
+signal, and data contract are unchanged. This is source factoring, not a
+mathematical simplification or a new certificate protocol. It costs three
+AST nodes against the 253-token profile (280 to 283) and six normalized bytes
+(599 to 605) while saving two significant tokens. That matched comparison
+must not be confused with the separate 275-node record.

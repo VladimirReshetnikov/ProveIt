@@ -1,0 +1,109 @@
+Independent audit of inferred elimination majors
+================================================
+
+Candidate files:
+  experiments/checker_tokens_infer.py
+  experiments/checker_ast_infer.py
+
+Controls:
+  Research/kernel_refinement/code/checker_tokens.py
+  Research/kernel_refinement/code/checker_ast.py
+at ProveIt commit 62396b06020f794fa6dc01b4025a6a5db9d4d28a.
+
+The change is exactly:
+
+  OLD: if m == expected(s,u,t) and i(t,u) == a:
+           a = i(t,s)
+
+  NEW: if i(t,u) == a:
+           m = expected(s,u,t)
+           a = i(t,s)
+
+where expected(s,u,t) is [s,u] if s is truthy, and [t]*3 otherwise.
+The recursive check c(m,...) is retained. Hence the new program infers a
+major premise; it does not omit a major-premise proof.
+
+SOUNDNESS: ACCEPTING-TRACE REPAIR
+
+Take a finite successful run of the new program. At each consumed packet,
+replace its supplied m by the m actually used after the inference test.
+If the test fired, this is expected(s,u,t); otherwise retain the original m.
+Keep all other packet fields, packet order, and the public goal fixed.
+
+The control on this repaired stream follows the same successful finite
+execution tree. On a firing packet, its first comparison is now true and
+the endpoint comparison is exactly the successful comparison of the new
+program. On a nonfiring packet, the endpoint comparison is false whenever
+it is evaluated, so the control also leaves a unchanged. Both programs
+then check the same actual major and construct the same hypothesis.
+
+This simulation is an induction over finite successful recursive calls
+and loop iterations, not a claim of identical behavior on rejected inputs.
+The new program eagerly evaluates i(t,u), whereas the old program may
+short-circuit that call. This can remove accepted malformed spellings but
+does not invalidate the simulation of a successful new run.
+
+The tuple context is immutable. Recursive major checks therefore cannot
+leak local assumptions into the caller. In the token profile, include the
+global fresh-name floor k in the simulation state. Reconstructing and
+comparing the expected major is pure. The assignment a=i(t,s) takes place
+before the recursive major check in both programs. Equal recursive calls
+consume the same packet suffix and leave the same global k. Consequently
+the following k decrement, context extension and goal opening coincide.
+
+The old raw-language soundness theorem can therefore be reused, subject
+to precisely its old public-goal contract. This change does not turn an
+unvalidated compact program into an exact syntax validator.
+
+COMPLETENESS: CANONICAL CERTIFICATE DISCIPLINE
+
+Do not claim every old raw certificate is accepted unchanged. Instead use
+the old completeness construction for canonical native derivations, with
+the following discipline on inactive fields.
+
+Canonical numerical terms have only scalar leaves and unary/ternary
+arrays (successor and iterator). They contain no binary array. Canonical
+Eq/Q/D formulas contain a binary equality array. Successful opening i(t,u)
+preserves absence of binary arrays when t and u are canonical numerical
+terms. It also preserves the binary equality node of a canonical formula.
+
+For computation and introduction packets, t and u are numerical terms,
+so i(t,u) cannot equal the current formula goal: no unintended elimination
+is selected. For an ordinary D-elimination packet choose the otherwise
+unused t=0. At formula depth zero, i(0,u)=0, which cannot equal a canonical
+nonempty Eq/Q/D formula. Actual transport and Q-specialization packets
+already have the required endpoint match and the expected major, so the
+new inference selects exactly their intended major.
+
+This proves completeness for the canonical public theorem set, assuming
+the inherited canonical certificate compiler and its arithmetic/logic
+bridge. It does not prove preservation of every raw alias or imply an
+unconditional fully validated public-input contract.
+
+NOVELTY AND METRIC LIMITS
+
+The repository already contains constructed elimination majors in
+uniform_zero, and prevalidated elimination in prevalidated_elimination.
+This small program change is defensible as a measured checker refinement.
+It must not be presented as a new arithmetic axiom deletion without a
+separate mathematical comparison. Each complete program has its own
+tokens/AST/bytes coordinates; minima from different programs must never
+be reported as the coordinates of one program.
+
+OTHER INVESTIGATIONS
+
+1. Removing m*3 is not a harmless code deletion. It changes D to Q,
+changes the protected binder width from four to two, and turns other
+formula majors into high-arity neutral truth. A one-body clause context
+can avoid it mathematically, but then simple formula membership ceases to
+be a valid hypothesis rule and antecedent checking must be restored.
+
+2. Focusing Use so that no separate Open rule exists encounters an
+induction cut: eliminating a progressive D-introduction normalizes to
+equation induction at a term. Merely removing Open hides that obligation.
+
+3. Newest-parameter introduction and deterministic specialization do not
+compose. The independent mathematical_reduction note supplies a cut
+counterreading. The existing specialization proof needs the unrestricted
+witness t to prove its initial naming formula. Conditional names and
+inferred discharges do not repair this missing existence claim.

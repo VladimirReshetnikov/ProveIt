@@ -1,0 +1,256 @@
+% Inclusion fragment. Requires amsmath, amssymb, and amsthm.
+% New scalar-only completion of the UR equality-reflection bootstrap.
+% No equation induction, pairing, general PR compiler, or equality test
+% is assumed in this fragment. The predecessor bootstrap is a prerequisite.
+
+\section{Actual equality from scalar iteration uniqueness}
+\label{sec:ur-reflection-completion}
+
+Work in intuitionistic first-order logic with actual equality, the scalar
+iterator computation equations, numerical zero/successor coverage, and
+$0\ne S0$. Assume the contextual scalar uniqueness rule
+\[
+ \frac{\Gamma\vdash f(Sz)=h(f(z))}
+      {\Gamma\vdash f(t)=I(t,f(0);u.h(u))},
+ \tag{UR}
+\]
+where $z$ is fresh for $\Gamma,t$ and all passive parameters. The update
+$h$ has no active counter argument. Every displayed function in what
+follows is a fixed finite scalar term abbreviation; there are no function
+variables and no hidden product-state iteration.
+
+The preceding scalar predecessor construction supplies a term $P$ with
+$P0=0$ and $P(Sx)=x$. Addition, defined by
+$a+b=I(b,a;u.Su)$, satisfies the commutative-monoid equations by common-update
+uniqueness. Define
+\[
+ d(a,b)=I(b,a;u.Pu),\qquad
+ Z(a)=C(a,1,0),\qquad \operatorname{sg}(a)=C(a,0,1),
+ \qquad C(v,a,b)=I(v,a;u.b).
+\]
+The following elementary equations use only UR and computation:
+\begin{equation}
+\begin{aligned}
+ d(a,0)&=a,&d(a,Sb)&=P(d(a,b)),\\
+ d(Sa,Sb)&=d(a,b),&d(a,a)&=0,&d(0,a)&=0.
+\end{aligned}
+ \label{eq:ur-monus-basics}
+\end{equation}
+For cancellation, the two terms $b\mapsto d(Sa,Sb)$ and $b\mapsto d(a,b)$
+have common initial value $a$ and common update $P$. The diagonal
+$a\mapsto d(a,a)$ has the identity update and initial value zero. The
+constant-zero function and $a\mapsto d(0,a)$ have common update $P$ and
+initial value zero. Thus no equation-induction assumption is hidden here.
+
+\subsection{A diagonal descent principle for numerical zero tests}
+
+UR implies the following constant-recurrence principle:
+\[
+ \Gamma\vdash f(Sz)=f(z)\quad\Longrightarrow\quad
+ \Gamma\vdash f(t)=f(0).
+ \tag{Const}
+\]
+Apply UR with identity update to $f$ and to the constant function $f(0)$.
+
+Fix a finite arity $r\geq1$ and a scalar term $q(x_1,\ldots,x_r)$.
+Suppose that, with any passive parameters fixed,
+\[
+ q(Sx_1,\ldots,Sx_r)=q(x_1,\ldots,x_r)
+\]
+and that $q$ is zero whenever any of its displayed arguments is zero.
+Then
+\[
+                         q(x_1,\ldots,x_r)=0.             \tag{DD}
+\]
+Indeed, coverage in each argument gives
+$q(Px_1,\ldots,Px_r)=q(x_1,\ldots,x_r)$: if any argument is zero,
+both sides are zero; otherwise the successor identity applies.
+Now put
+\[
+ f(k)=q(d(x_1,k),\ldots,d(x_r,k)).
+\]
+The defining equation for $d$ gives $f(Sk)=f(k)$, so Const makes $f$
+constant. At $k=x_1$ its first argument is $d(x_1,x_1)=0$; hence
+$f(x_1)=0$. At $k=0$ it is the desired $q(x_1,\ldots,x_r)$.
+This argument uses scalar common-update uniqueness. It does not quantify over
+tuples or invoke a simultaneous-recursion rule.
+
+For Boolean-valued terms $p,q$, use
+\[
+ \operatorname{or}(p,q)=C(p,q,1),\qquad
+ \operatorname{xor}(p,q)=C(p,q,Z(q)).
+\]
+Here Boolean-valued means that the term is provably either $0$ or $1$.
+Finite cases show that $\operatorname{xor}(p,q)=0$ if and only if $p=q$.
+This finite Boolean fact is not reflection of arbitrary numerical equality.
+
+\subsection{Two Boolean comparison identities}
+
+First, DD gives
+\[
+ Z(d(Sn,a))=\operatorname{sg}(d(a,n)).
+ \tag{B1}\label{eq:ur-strict-complement}
+\]
+To verify its DD premises, let $q(n,a)$ be the Boolean xor of the two
+displayed sides. Simultaneously replacing $n,a$ by $Sn,Sa$ cancels one
+successor in each subtraction, so $q(Sn,Sa)=q(n,a)$. If $a=0$, both
+sides are zero. If $n=0$, split $a$ into zero and successor: the former
+case again gives two zeros, while $a=Sb$ gives
+$d(1,Sb)=d(0,b)=0$ and $\operatorname{sg}(Sb)=1$, so both sides are one.
+Thus both zero-coordinate boundaries vanish and DD applies.
+
+Second, DD gives
+\[
+ Z\bigl(d(d(x,a),d(b,a))\bigr)
+ =\operatorname{or}\bigl(Z(d(x,a)),Z(d(x,b))\bigr).
+ \tag{B2}\label{eq:ur-comparison-join}
+\]
+Again use the Boolean xor $q(x,a,b)$ of the two sides.
+When all three arguments are successors, simultaneous cancellation
+reduces the expression to $q(x,a,b)$.
+The three zero-coordinate boundaries are as follows.
+If $x=0$, both displayed sides are one.
+If $a=0$, the left side is $Z(d(x,b))$, and the right side is
+$\operatorname{or}(Z(x),Z(d(x,b)))$; coverage on $x$ makes them equal.
+If $b=0$, the left side is $Z(d(x,a))$, and the right side is
+$\operatorname{or}(Z(d(x,a)),Z(x))$; coverage on $x$ again proves equality.
+In both latter arguments, the $x=0$ branch makes the other Boolean one,
+whereas the successor branch makes $Z(x)=0$.
+Consequently DD proves the vanishing of the xor, and Boolean cases
+give the stated identity.
+
+Coverage and the successor equation for addition also give
+\[
+ \operatorname{or}(\operatorname{sg}(u),\operatorname{sg}(v))
+       =\operatorname{sg}(u+v).
+ \tag{B3}\label{eq:ur-sign-or}
+\]
+For $u=0$ this reduces to the sign of $v$; for successor $u$, both
+sides are one.
+
+\subsection{An explicit scalar accumulator}
+
+Define the two scalar terms
+\begin{equation}
+\begin{aligned}
+ \mu(n,a)&=d(n,d(n,a)),\\
+ \phi(n,a,b)&=\mu(n,a)+\mu(d(n,a),d(b,a)).
+\end{aligned}
+ \label{eq:ur-scalar-accumulator}
+\end{equation}
+These are finite compositions of $d$ and addition. In particular,
+$\phi$ is not introduced by a counter-dependent recursion.
+We now prove its useful counter-dependent equation from its explicit term.
+
+Coverage on $a$ and the monus equations give
+\[
+                         P(d(Sn,a))=d(n,a).
+ \tag{Pd}
+\]
+At $a=0$ this is $P(Sn)=n$. At $a=Sa'$ it follows from
+$d(Sn,Sa')=d(n,a')$ and $P(d(n,a'))=d(n,Sa')$.
+Split the value $r'=d(Sn,a)$ into zero and successor.
+If $r'=0$, then $d(n,a)=0$ by Pd, so
+$\mu(Sn,a)=Sn$ and $\mu(n,a)=n$.
+If $r'=Sr$, then $d(n,a)=r$ and
+$\mu(Sn,a)=d(Sn,Sr)=d(n,r)=\mu(n,a)$.
+In both cases,
+\[
+             \mu(Sn,a)=\mu(n,a)+Z(d(Sn,a)).              \tag{M}
+\]
+
+Put $h=d(b,a)$ and repeat the same split of $r'=d(Sn,a)$.
+If $r'=0$, the first argument of the second $\mu$ term is zero at both
+$n$ and $Sn$, and $\phi(Sn,a,b)=Sn$, $\phi(n,a,b)=n$.
+If $r'=Sr$, the first summand is unchanged, while M gives
+\[
+                 \mu(Sr,h)=\mu(r,h)+Z(d(Sr,h)).
+\]
+Associativity therefore proves, in both cases,
+\[
+ \phi(Sn,a,b)=\phi(n,a,b)+Z(d(d(Sn,a),d(b,a))).
+\]
+Apply B2 at $x=Sn$, then B1 to each Boolean on its right, and finally B3.
+The resulting recursion specification is
+\[
+ \boxed{\quad
+ \phi(0,a,b)=0,\qquad
+ \phi(Sn,a,b)=\phi(n,a,b)+\operatorname{sg}(d(a,n)+d(b,n)).
+ \quad}                                                   \tag{Acc}
+\]
+All identities leading to Acc used scalar uniqueness, coverage, and
+finite case analysis. No equality-reflection or induction theorem has
+yet been used.
+
+\subsection{Commutativity of the arithmetic maximum expression}
+
+Put
+\[
+                              m(a,b)=a+d(b,a).
+\]
+The name is descriptive only; its order-theoretic properties are not
+assumptions. Four zero/successor cases prove
+\[
+                  m(a,b)=m(Pa,Pb)+\operatorname{sg}(a+b).
+ \tag{Red}\label{eq:ur-max-diagonal-reduction}
+\]
+At $(0,0)$ both sides are zero. At $(0,Sb)$ and $(Sa,0)$ it is the
+successor equation for addition. At $(Sa,Sb)$, simultaneous subtraction
+cancellation gives
+$m(Sa,Sb)=Sa+d(b,a)=S(m(a,b))$, and the sign of the sum is one.
+
+For fixed $a,b$, form the scalar terms
+\begin{align*}
+ F(n)&=m(d(a,n),d(b,n))+\phi(n,a,b),\\
+ G(n)&=m(d(b,n),d(a,n))+\phi(n,a,b).
+\end{align*}
+Red, Acc, and commutativity of addition give $F(Sn)=F(n)$ and
+$G(Sn)=G(n)$. Hence Const gives
+\[
+                          F(n)=m(a,b),\qquad G(n)=m(b,a).
+\]
+At $n=b$, the equality $d(b,b)=0$ and the identities
+$m(c,0)=c=m(0,c)$ make both terms equal, by these equations, to
+$d(a,b)+\phi(b,a,b)$. It follows that
+\[
+                    \boxed{\ a+d(b,a)=b+d(a,b).\ }       \tag{Max}
+\]
+This is the common-accumulator argument for maximum commutativity.
+The scalar-specific ingredient is the explicit accumulator in
+\eqref{eq:ur-scalar-accumulator} and its derivation through Boolean DD;
+no prior availability of arbitrary primitive recursion is required.
+
+\subsection{Reflection and recovery of equation induction}
+
+Define
+\[
+                       \Delta(a,b)=\operatorname{sg}(d(a,b)+d(b,a)).
+\]
+Coverage and separation imply $\operatorname{sg}(u)=0\leftrightarrow u=0$.
+They also imply $u+v=0\leftrightarrow(u=0\land v=0)$: a successor
+in either summand would make the sum a successor, contradicting separation.
+Thus $\Delta(a,b)=0$ forces $d(a,b)=0=d(b,a)$. Max then yields
+\[
+               a=a+d(b,a)=b+d(a,b)=b.
+\]
+Conversely $a=b$ gives both subtractions zero. Therefore
+\[
+ \boxed{\quad \Delta(a,b)=0\ \longleftrightarrow\ a=b,\qquad
+                  \Delta(a,b)=0\ \lor\ \Delta(a,b)=1.\quad}
+ \tag{EqRef}
+\]
+The equality on the right of EqRef is the logic's actual equality on
+the whole numerical domain. Nothing restricts $a,b$ to standard numerals
+or to the image of an encoding.
+
+Finally, the independently proved UR retraction lemma gives contextual
+induction for all zero equations $q(n)=0$. Given an induction premise
+for any equation $s(n)=t(n)$, use EqRef to transfer its base and step
+to the zero equation $\Delta(s(n),t(n))=0$, apply that zero-induction
+rule, and transfer the conclusion back. This recovers contextual
+literal-equation induction in arbitrary retained first-order contexts.
+The reverse derivation of UR from literal-equation induction is immediate
+by induction on $f(n)=I(n,f(0);h)$. Consequently scalar UR and contextual
+equation induction are equivalent over the common scalar computation,
+coverage, and separation background, once the preceding UR predecessor
+bootstrap is included.

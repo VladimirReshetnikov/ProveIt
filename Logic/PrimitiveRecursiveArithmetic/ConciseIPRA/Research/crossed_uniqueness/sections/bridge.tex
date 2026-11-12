@@ -1,0 +1,188 @@
+\section{The full logical and arithmetic bridge}\label{sec:bridge}
+\subsection{All intuitionistic operations}\label{sec:choice-introduction}
+The intended comparison is with full first-order iPRA. The following
+macros are the inherited induction-independent case-logic construction
+\cite{choice}; they now apply because equality was already recovered.
+
+Replace Q inside macros by its interderivable D form with unused witness.
+On Q-free formulas define
+\[
+ G_v(s=t):=(C(v,0,s)=C(v,0,t)),\qquad
+ G_v(\D_{x,y}B):=\D_{x,y}G_vB.
+\]
+With capture avoidance, computation, Ref and case introduction give
+\[
+ \vdash G_0A,\qquad G_{Sv}A\dashv\vdash A,\qquad
+ A\dashv\vdash\D_{w,y}G_yA.
+\]
+For reverse padding, open D, supply its true zero row, and specialize at 1.
+
+The selector between formulas is
+\[
+ M_v(s=t,r=q):=(C(v,s,r)=C(v,t,q))
+\]
+and, with aligned fresh binders,
+\[
+\begin{aligned}
+ M_v(\D_{x,y}A,\D_{x,y}B)&:=\D_{x,y}M_v(A,B),\\
+ M_v(E,\D_{x,y}B)&:=\D_{x,y}M_v(G_yE,B),\\
+ M_v(\D_{x,y}A,E)&:=\D_{x,y}M_v(A,G_yE),
+\end{aligned}
+\]
+where $E$ is an equation. Maximum input binder depth decreases.
+Padding and binder congruence yield
+$M_0(A,B)\dashv\vdash A$ and $M_{Sv}(A,B)\dashv\vdash B$.
+
+Put $\delta(v)=C(v,1,0)$ and $p(z)=I(z,0;u.\delta(u))$;
+$p(1)=1$ and $p(2)=0$ are computations. With fresh coordinates and unused
+$w$, set
+\[
+\begin{aligned}
+ \bot_*&:=(0=1),\\
+ A\Rightarrow_*B&:=\D_{w,z}M_z(A,B),\\
+ A\wedge_*B&:=\D_{w,z}G_zM_{p(z)}(A,B),\\
+ \exists_*x\,A(x)&:=\D_{x,y}G_yA(x),\\
+ A\vee_*B&:=\exists_*v\,M_v(A,B),\\
+ \forall_*x\,A(x)&:=A(0)\wedge_*\D_{w,z}G_zA(z).
+\end{aligned}                                                   \tag{Logic}
+\]
+
+Implication introduction is DI$_c$ using its zero row as the assumption;
+elimination opens and specializes at 1. Existential introduction supplies
+the witness, and elimination opens it freshly and removes the gate.
+Disjunction injections use 0 and 1; elimination uses numerical cases on
+the selector and the two retained branch implications.
+Conjunction introduction uses selector cases and elimination uses rows
+1 and 2. The universal keeps zero as a conjunct and supplies successors
+in the other conjunct; coverage yields every instance.
+Its introduction uses zero and successor substitutions of a proof at a
+fresh parameter.
+
+Coverage $(n=0)\vee_*\exists_*m(n=Sm)$ follows by cases and Ref.
+From $0=1$, congruence in $v\mapsto C(v,s,t)$ gives every equation;
+formula-structural induction gives explosion. These supply all ordinary
+intuitionistic rules with the usual eigenvariable conditions.
+No excluded middle for arbitrary formulas is added. The ordinary
+realization has the explicit falsity bridge $(0=S0)\to\bot$.
+
+\subsection{Scalar uniqueness and the noncircular induction bootstrap}
+In U choose $a=f(0)$, use Ref for the base and reverse its conclusion:
+\[
+ \frac{\Gamma\vdash f(Sz)=h(f(z))}
+      {\Gamma\vdash f(n)=I(n,f(0);u.h(u))}.                \tag{UR}\label{eq:ur}
+\]
+This is exactly the existing scalar uniqueness principle \cite{ur}.
+Its equality and logical background has already been recovered.
+
+Appendix~\ref{app:ur} gives the complete inherited proof that UR yields
+equation induction. Its dependency order is important:
+\begin{enumerate}
+\item UR gives $I(n,0;u.Su)=n$ and retraction rigidity. If
+$e(0)=0$, $e(e(x))=e(x)$ and $e(S(e(x)))=S(e(x))$, take
+$h(u)=e(S(e(u)))$, $r(n)=I(n,0;h)$. Common-update uniqueness gives
+$e(r(n))=r(n)$; then $r$ has successor update, so $r(n)=n$ and $e(n)=n$.
+For $q(n)=0$, coverage and separation decide the property and the term
+$e(n)=C(q(n),n,0)$ provides the retraction split. This derives contextual
+induction for zero equations.
+\item A scalar predecessor is constructed from finite clocks, a ramp, a
+comparison iterator and bounded growth. Common-update uniqueness proves
+$P0=0$ and $P(Sn)=n$, without using pairing, a general recursion compiler
+or equation induction.
+\item Define $d(a,b)=I(b,a;u.Pu)$ and
+$\operatorname{sg}(a)=C(a,0,1)$. A scalar diagonal-descent argument and the
+explicit accumulator
+\[
+ \mu(n,a)=d(n,d(n,a)),\quad
+ \phi(n,a,b)=\mu(n,a)+\mu(d(n,a),d(b,a))
+\]
+prove $a+d(b,a)=b+d(a,b)$. Thus
+\[
+ \Delta(a,b)=\operatorname{sg}(d(a,b)+d(b,a))
+\]
+is Boolean and $\Delta(a,b)=0\leftrightarrow a=b$ on the entire domain.
+\item Translate an equation-induction base and step for $s(n)=t(n)$ to
+$\Delta(s(n),t(n))=0$, use zero-equation induction, and reflect back.
+The retained context may contain arbitrary first-order formulas.
+\end{enumerate}
+The substantial scalar construction is inherited and attributed, not
+claimed as a new result of U. Its full equations and proofs appear in
+the appendix. Once equation induction is recovered, from
+$\Gamma,E(z)\vdash E(Sz)$ work under $E(0)$ to derive $E(Sw)$ and use
+conditional Q introduction. This recovers the old equation-progress rule.
+
+\section{Equiconsistency and both interpretation composites}
+\begin{theorem}[Exact native equivalence]
+For every finite sequent of the repository's native calculus $\mathcal N$,
+\[
+ \Gamma\vdash_{\mathcal N}A
+ \quad\Longleftrightarrow\quad
+ \nf(\Gamma)\vdash_{\mathcal U}\nf(A).
+\]
+\end{theorem}
+\begin{proof}
+Translate native rules to normal forms. Computation becomes Ref,
+transport is Section~\ref{sec:equality}, progress is
+Section~\ref{sec:bridge}, and the other rules are unchanged.
+
+Conversely, the native calculus proves normalization equalities and
+derives U by equation induction on $I(z,a;h)=f(z)$.
+Its base uses $f(0)=a$ and symmetry. Its successor step uses the
+induction equation, congruence under $h$, computation and the retained
+recurrence $f(Sz)=h(f(z))$. All the remaining U-calculus rules are native
+rules or derived reflexivity.
+\end{proof}
+
+\begin{theorem}[Full first-order iPRA]
+The ordinary realization of $\mathcal U$ is equiconsistent and
+bi-interpretable with full first-order iPRA. Both numerical domains are
+whole, equality is actual, and the two numerical composite isomorphisms
+have graph $x=y$.
+\end{theorem}
+\begin{proof}
+Compose the exact native equivalence with the scalar bridge
+\cite{bridge}. In iPRA interpret each fixed iterator by primitive
+recursion, and Q,D by \eqref{eq:read}. Equation induction validates U.
+
+Conversely, predecessor and equality reflection supply successor
+injectivity and characteristics for every fixed quantifier-free formula.
+Finite truth tables recover quantifier-free induction. The inherited
+scalar construction supplies pairing $\pi$ and projections $L,H$.
+For a fixed primitive recursion
+\[
+ f(0,\vec p)=g(\vec p),\qquad
+ f(Sn,\vec p)=h(n,f(n,\vec p),\vec p)
+\]
+use
+\[
+\begin{split}
+ V(n,\vec p)&=I\bigl(n,\pi(0,g^*(\vec p));
+        u.\pi(SL(u),h^*(L(u),H(u),\vec p))\bigr),\\
+ f^*(n,\vec p)&=H(V(n,\vec p)).
+\end{split}
+\]
+Equation induction proves the defining equations. This is an external
+compiler for fixed descriptions, not an object-language uniform evaluator.
+
+The domain formula is $x=x$ in each direction and equality is unchanged.
+Every double-translated operation satisfies its original defining
+recurrence. Internal uniqueness identifies the two operations, making
+$x=y$ internally total, bijective and operation preserving.
+
+For formulas the logical macros have their ordinary round trips.
+The essential paired composite is
+\[
+ \D_{x,y}B\dashv\vdash
+ \exists_*x\bigl(B(x,0)\Rightarrow_*\forall_*y\,B(x,y)\bigr).
+\]
+Forwards, open D, assume the base, use QE at a fresh parameter and
+introduce the macros. Backwards, eliminate the existential and use
+the implication and universal instances in DI$_c$.
+The Q composite is its conditional universal. Structural induction
+supplies both composites for all formulas, including quantified ones.
+The explicit falsity bridge preserves contradiction in both directions,
+giving equiconsistency.
+\end{proof}
+This is a written proof using the stated inherited scalar theorems.
+It is stronger than mutual interpretability or agreement on standard
+numerals, but is not a new proof-assistant verification.
+

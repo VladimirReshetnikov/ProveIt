@@ -1,0 +1,87 @@
+FINITE-TARGET OBSTRUCTION TO COMBINING TWO AUTOMATIC RULES
+
+Scope: this is a counterreading to exact native consequence equivalence,
+not an impossibility theorem for all alternative bi-interpretations.
+
+Let formulas be equations and D_{x,y} B. Numerical terms may use any
+ordinary primitive-recursive fixed descriptions, including scalar
+iteration or the counter-aware successor-seeded recursor. Terms are read
+over the ordinary natural numbers, and computation conversions retain
+their ordinary truth. They can be raw or fully normalized.
+
+Contexts contain clauses [A; y.B(y)] or antecedent-free clauses
+[; y.B(y)]. Suppose the calculus has:
+
+1. Refl/equational operations justified by genuine equality and genuine
+   computation (or a fixed reflexivity clause).
+2. Use specialized only at literal 0, literal 1, or an ambient free
+   parameter. This includes newest clause at 1 and all older clauses at
+   the newest numerical parameter, or 0 in an empty numerical scope.
+3. Close of D B at an ambient free parameter or literal 0. Its premise is
+   B(w,eta) |- B(w,S z), where z is fresh and eta is either literal 0 or z.
+   Any syntactic selector of these two modes is allowed.
+4. Ordinary D elimination; or automatic Export of conditional_copy:
+   open D B at fresh b, read r=t if B(b,0) is literally 0=0 and B(b,1)
+   is literally b=t, otherwise r=b, and export N(F[r/b]) if it is in the
+   outer scope. The term t can mention b; substitution is one pass.
+
+Counterreading:
+Interpret every ambient free numerical parameter as 0. For recursive
+formula evaluation, bound parameters have values as assigned in the
+following clause. Equations are actual equality of standard term values.
+Define
+
+   [[D_{x,y} B]]_rho = ([[B]]_{rho[x:=0,y:=0]}
+                       implies [[B]]_{rho[x:=0,y:=1]}).
+
+For a context clause define
+
+   [[ [A;y.B] ]]_rho = [[A]]_rho implies
+      ([[B]]_{rho[y:=0]} and [[B]]_{rho[y:=1]}).
+
+An antecedent-free clause is interpreted as the conjunction of its two
+body instances. All ambient rho are the all-zero assignment. These
+definitions are a classical Boolean counterreading of the native proof
+syntax, which is enough for a nonderivability theorem. They are not the
+intended ordinary first-order interpretation of D.
+
+Soundness:
+- Equality and numerical computations hold with their standard meanings.
+- Any permitted Use target has value 0 or 1, so the clause supplies it.
+- In Close, w has value 0 and the new z has value 0. Whether eta is 0 or z,
+  the branch assumption has the value of B(0,0). The successor branch
+  conclusion has the value of B(0,1). Hence the branch proves precisely
+  the implication assigned to D B. Neither the formula root nor the
+  progress selector matters for this argument.
+- For ordinary D elimination, b has value 0. The opened clause is
+  B(0,0) -> (B(0,0) and B(0,1)), classically equivalent to the value of
+  the major D formula. Thus the branch conclusion follows.
+- For Export, the default r=b changes no semantic value. In the selected
+  case, the major and the literal true zero row force the literal first
+  row b=t. Consequently t has value 0 under the enlarged all-zero
+  environment. The substitution lemma, proved by induction on the
+  native formula and term syntax, gives [[F[t/b]]] = [[F]] in that
+  environment. This remains true if t contains b, since only one pass is
+  substituted and t evaluates to the old b value. Normalization preserves
+  value. The scope check removes b from the conclusion, so its outer and
+  local values agree.
+
+Therefore all derivable closed theorems have value true.
+
+Counterexample:
+Let C(y,a,c) be the selector with C(0,a,c)=a and C(Sz,a,c)=c. Consider
+
+   N_1 = D_{x,y} (C(y,0,x) = C(y,0,1)).
+
+Its counterreading is (0=0) -> (0=1), which is false. Its intended ordinary
+reading is a theorem: take witness x=1, and both equation sides coincide
+for every y. Thus simply combining automatic newest-parameter/0
+introduction with the finite-target deterministic Use rule loses a closed
+theorem of the intended native theory.
+
+The argument also covers more liberal equality transport or substitution
+at discharge, when soundness is conditional on a genuine checked equation.
+It does NOT cover clause-specialization schemes whose selected terms can
+have values outside {0,1} under the all-zero assignment, such as a complete
+enumeration indexed by proof depth. Such schemes need a separate
+complexity and completeness analysis.

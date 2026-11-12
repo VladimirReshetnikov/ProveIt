@@ -1,0 +1,94 @@
+AUDIT OF byte_index.py AGAINST checker_compact_zero.py
+
+The sole intended change is the active-goal update. Write
+  C := (m,a)==(s and [s,u] or [t]*3, i(t,u))
+  R := i(t,s).
+The old update is `a = C and R or a`.
+The new update is `a = (a,R)[C]`.
+The new update evaluates R before C; the old update evaluates R only if C.
+
+Domain: finite acyclic integer/list JSON trees. The public theorem contract
+remains the inherited canonical closed guarded Eq/D language. This is not
+a strict validator for arbitrary JSON goals or arbitrary raw native goals.
+
+1. ROOT-SHAPE LEMMA
+
+Fix the local integer floor k. If i(t,s,0) and i(t,u,0) both terminate,
+then:
+  * for list t, each result is a list of exactly len(t) elements;
+  * for integer t, each result is t if k<=t<0, and 0 otherwise.
+Proof: immediate from the helper's root branch. At root depth 0 a scalar
+fallthrough returns 0 before inspecting the image.
+
+Consequently if R is false, then i(t,u,0)=R. (The only false outcomes are
+the common empty list or the common scalar 0.) If C is also true, then
+a=i(t,u,0)=R. Thus C and R or a agrees with (a,R)[C] whenever the latter
+has completed its eager evaluations, even in the false-replacement case.
+
+2. SUCCESSFUL-TRACE INCLUSION
+
+The helper i is pure: it constructs fresh lists, reads k, and consumes no
+proof instructions. Its evaluations do not mutate input trees or context.
+Tuple equality of finite integer/list trees is pure and returns a Boolean,
+so indexing selects exactly position 0 or 1.
+
+At every candidate frame that continues successfully, the old test C also
+terminates. If C is false, both versions retain a. If C is true, R already
+terminates in the candidate, and the root-shape lemma gives equal updated
+goals in all cases. The remaining code is identical, so the subsequent
+major check, hypothesis, fresh floor, continuation context and goal agree.
+Induct through the finite successful execution trace. Every candidate
+ACCEPT is therefore an old ACCEPT, consuming the same instruction suffix.
+
+Eager R can fail on a malformed or out-of-scope field which the old program
+would never inspect when C is false. The candidate can consequently reject
+some old certificates. No acceptance equivalence on all arbitrary JSON
+certificates is asserted. Resource-limit accidents are not logical
+inferences and are outside this idealized finite-execution argument.
+
+3. CANONICAL CERTIFICATE COMPLETENESS
+
+If the image s is a valid numerical term, so i(s,d=3) terminates, then
+i(t,s,d) terminates for every finite integer/list t and every integer d.
+Induct on t: the list branch descends into proper children; the scalar
+branch either returns immediately or calls the already terminating
+numerical validation i(s,d=3).
+
+The intended inference encoding can be standardized as follows:
+  * Transport: s is the valid numerical source term.
+  * Q elimination: s is literal 0, a valid numerical image.
+  * Computation: s is the valid numerical counter/predecessor term.
+  * Introduction: m=u=0; its unused s can be set to 0. Then the additional
+    R is identical to the i(t,u) evaluation already performed by C, and h
+    still depends only on the intended witness t and goal matrix.
+  * D opening: set the unused s=u=t=0. A unary D major cannot equal the
+    expected ternary [0,0,0], so C is false; h=m*3 is unchanged. Both extra
+    openings are the trivially terminating i(0,0)=0.
+
+Thus every intended guarded-core derivation has a certificate for which
+all extra eager evaluations terminate. The native derivations, formula
+translations and ordinary first-order axiomatization are unchanged.
+Together with trace inclusion, this preserves the inherited canonical
+public consequence relation. It does not prove a new arithmetic theorem
+or validate arbitrary raw administrative formulas as public goals.
+
+4. CONTEXT AND SCOPE
+
+The continuation uses `g + [hypothesis]`, which allocates a new list.
+No append, extend, item assignment or in-place += occurs. The default
+g=[0] is therefore never mutated. The major-proof recursive call cannot
+leak its hypotheses back into the calling context.
+
+k is a local integer argument. Changes to it in the recursive major proof
+do not affect the caller. The caller decrements k only after computing h,
+then uses the same new k for hypothesis opening and successor goal
+opening. The source change does not move any operation across that scope
+transition.
+
+5. CLAIM BOUNDARY
+
+This is an implementation-level byte reduction. It has more significant
+tokens and AST nodes than the separate incumbents and does not establish
+a construction below the full coordinatewise lower envelope. The source
+retains JSON load(open(0)), right-to-left pop consumption, unused-prefix
+tolerance, and the normal-exit plus exact ACCEPT-newline protocol.

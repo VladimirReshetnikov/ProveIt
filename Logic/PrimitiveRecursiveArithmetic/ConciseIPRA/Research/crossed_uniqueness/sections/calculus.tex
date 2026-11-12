@@ -1,0 +1,183 @@
+\section{A complete six-rule presentation}\label{sec:system}
+\subsection{Syntax and computation}
+There is one numerical sort with raw terms
+\[
+ t::=x\mid0\mid S(t)\mid I(n,a;u.h).
+\]
+Only $u$ in $h$ is bound. Updates are fixed finite numerical templates
+with passive parameters; there are no function variables or universal
+evaluators for primitive-recursive descriptions.
+
+Represent terms in full normal form for
+\[
+ I(0,a;u.h)\longrightarrow a,\qquad
+ I(Sn,a;u.h)\longrightarrow h[I(n,a;u.h)/u].
+ \tag{Comp}\label{eq:comp}
+\]
+Every substitution is capture avoiding and followed by normalization.
+For $C(v,a,b):=I(v,a;u.b)$ with unused $u$,
+\[
+ C(0,a,b)\equiv a,\quad C(Sv,a,b)\equiv b,\quad
+ I(1,a;u.h)\equiv h[a/u].
+\]
+Definitional equality here uses only the two computation equations,
+not arbitrary proved arithmetic equalities.
+
+Normalization is counted as part of the trusted specification.
+The repository supplies totality, canonical forms and
+\[
+ \nf(\nf(t)[\sigma])=\nf(t[\sigma]).                    \tag{NCoh}
+\]
+Its normalization-by-evaluation proof interprets a structurally smaller
+body as a total operation on normal terms, traverses the finite
+successor prefix of the normalized counter, and retains an iterator at
+a neutral counter. Environment laws establish substitution coherence.
+The reference checker uses equivalent direct reductions with capture
+avoidance and memoization \cite{normalization,current}.
+
+Formulas and their ordinary readings are
+\[
+ A::=(s=t)\mid\Q_yA\mid\D_{x,y}A,
+\]
+\[
+ \Q_yB:=B(0)\to\forall y\,B(y),\qquad
+ \D_{x,y}B:=\exists x\bigl(B(x,0)\to\forall y\,B(x,y)\bigr).
+ \tag{Read}\label{eq:read}
+\]
+D binds distinct $x,y$. Contexts are finite reusable lists of formulas.
+The native contradiction is $0=S0$. The readings do not silently insert
+ordinary equality logic.
+
+\subsection{All primitive rules}
+All displayed expressions are normalized. The six families are
+\[
+ \frac{A\in\Gamma}{\Gamma\vdash A}\ {\rm Hyp}
+ \qquad
+ \frac{\ }{\Gamma\vdash t=t}\ {\rm Ref},
+\]
+\[
+ \frac{\Gamma\vdash\Q_yB(y)\qquad\Gamma\vdash B(0)}
+      {\Gamma\vdash B(t)}\ {\rm QE},
+\]
+\[
+ \frac{\Gamma\vdash\D_{x,y}B(x,y)\qquad
+       \Gamma,\Q_yB(b,y)\vdash A}
+      {\Gamma\vdash A}\ {\rm DE},
+\]
+where $b$ is fresh for $\Gamma,A$ and the passive parameters of $B$;
+\[
+ \frac{\Gamma,B(t,0)\vdash B(t,Sz)}
+      {\Gamma\vdash\D_{x,y}B(x,y)}\ {\rm DI_c},
+\]
+where $z$ is fresh for $\Gamma,t$ and the passive parameters of $B$; and
+\[
+ \boxed{\quad
+ \frac{\Gamma\vdash f(0)=a\qquad
+       \Gamma\vdash f(Sz)=h(f(z))}
+      {\Gamma\vdash I(n,a;u.h(u))=f(n)}\ \U .
+ \quad}                                                \tag{U}\label{eq:U}
+\]
+In U, $f(z),h(u)$ are fixed finite numerical templates. The eigenparameter
+$z$ is fresh for $\Gamma,a,n,h$ and all passive parameters of $f$.
+Thus $h$ has no active-counter argument. The recurrence premise has no
+induction hypothesis. DI$_c$ always uses cases, even at equation matrices.
+
+There are no other logical axioms, computation axioms, transport rules
+or induction rules. Computation is exactly \eqref{eq:comp} in the syntax.
+
+\begin{lemma}[Structural admissibility]
+Weakening, renaming, ordinary-assumption cut and numerical substitution
+followed by normalization are admissible.
+\end{lemma}
+\begin{proof}
+Induct on finite derivations, freshening eigenparameters first.
+Normalization coherence identifies substituted premises and conclusions.
+Neither DI$_c$ nor U has a mode that can change under substitution.
+Replace each use of a cut assumption by its proof. These are
+metatheoretic inductions on finite syntax, not numerical induction.
+\end{proof}
+
+\section{Equality derived before induction}\label{sec:equality}
+\subsection{Numerical cases without transport}
+\begin{lemma}
+The case logic, without U, derives
+\[
+ \frac{\Gamma\vdash A(0)\qquad\Gamma\vdash A(Sz)}
+      {\Gamma\vdash A(n)}
+ \quad\text{and}\quad
+ \frac{\Gamma,A(0)\vdash A(Sz)}
+      {\Gamma\vdash\Q_yA(y)},                          \tag{Cases}\label{eq:cases}
+\]
+with fresh $z$.
+\end{lemma}
+\begin{proof}
+DI$_c$ with an unused coordinate $w$ introduces $\D_{w,y}A(y)$.
+For the first rule weaken the successor proof by $A(0)$.
+DE supplies $\Q_yA(y)$, and QE with the base gives $A(n)$,
+independent of the opened witness. For the second rule DE exports the
+opened Q assumption itself by Hyp.
+\end{proof}
+
+\subsection{Symmetry}
+Given $s=t$, choose
+\[
+ f(z)=s,\qquad a=t,\qquad h(u)=u,\qquad n=0
+\]
+in U. Its recurrence is Ref. Its conclusion normalizes to $t=s$.
+
+\subsection{Congruence in any numerical template}
+For a template $H(u)$ and given $s=t$, choose
+\[
+ f(z)=I(z,s;u.H(u)),\qquad a=t,\qquad h=H,\qquad n=1.
+\]
+The base is $s=t$, while both sides of the recurrence normalize to
+$H(I(z,s;H))$. Ref proves it. The conclusion is $H(t)=H(s)$;
+symmetry gives ordinary congruence. Templates may duplicate or omit
+the argument, or place it beneath additional iterator binders.
+
+\subsection{Joining and transitivity}
+\begin{lemma}[Common-source joining]
+From $s=t$ and $s=u$ in one retained context, derive $t=u$ without
+numerical induction.
+\end{lemma}
+\begin{proof}
+Let $f(z)=C(z,s,u)$ and use the identity update. Its recurrence is
+\[
+ u=C(z,s,u).
+\]
+At zero this is $u=s$, by symmetry of $s=u$; at a successor it is
+$u=u$, by Ref. Numerical cases prove the recurrence.
+U with $a=t,n=1$ has base $s=t$ and conclusion $t=u$.
+\end{proof}
+From $s=t,t=u$, first derive $t=s$ and join at $t$ to get $s=u$.
+Thus transitivity is derived. From $s=t,H(s)=r$, congruence supplies
+$H(s)=H(t)$ and joining gives $r=H(t)$, the repository's one-term
+crossed transport rule.
+
+\subsection{Full formula transport}
+\begin{theorem}[Leibniz transport]
+For every native formula template $F(v)$,
+\[
+ \Gamma\vdash s=t,\quad\Gamma\vdash F(s)
+       \quad\Longrightarrow\quad\Gamma\vdash F(t).
+\]
+\end{theorem}
+\begin{proof}
+Induct on $F$. At an equation use congruence on both sides, symmetry and
+transitivity.
+
+For $F(v)=\Q_yB(v,y)$, temporarily assume $B(t,0)$.
+Reverse matrix transport gives $B(s,0)$; QE at $Sz$ gives $B(s,Sz)$;
+forward matrix transport gives $B(t,Sz)$. Conditional Q introduction
+\eqref{eq:cases} finishes.
+
+For $F(v)=\D_{x,y}B(v,x,y)$, open at fresh $b$ and retain
+$\Q_yB(s,b,y)$. Introduce the desired D formula at witness $b$.
+From its base $B(t,b,0)$, reverse matrix transport gives $B(s,b,0)$,
+QE gives $B(s,b,Sz)$, and forward transport gives $B(t,b,Sz)$.
+DI$_c$ closes the desired formula and DE discharges $b$.
+Each binder case uses only the strictly smaller matrix.
+\end{proof}
+This elementary fusion theorem assumes neither predecessor, numerical
+equality tests, successor injectivity nor an induction-hypothesis rule.
+

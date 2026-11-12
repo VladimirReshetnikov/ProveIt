@@ -1,0 +1,81 @@
+% Self-contained retraction reduction from scalar UR to zero-equation induction.
+\section{Zero-equation induction from uniqueness}
+\label{sec:ur-retraction-complete}
+
+The argument in this section is the retraction argument already present in
+the incoming \texttt{scope\_kernel} report.  It is reproduced to make the
+dependency on equality reflection exact.  It uses neither predecessor nor
+a general numerical equality characteristic.
+
+All calculations are under one fixed retained first-order context
+$\Gamma$.  Fresh displayed variables are absent from $\Gamma$ and all
+passive parameters.  UR first gives
+\[
+                         I(n,0;u.Su)=n.                  \tag{Id}
+\]
+Use the template $f(z)=z$ and update $h(u)=Su$; its recurrence premise is
+reflexivity.  Common-update uniqueness, obtained by applying UR separately
+to two terms and replacing equal seeds, is used below.
+
+\subsection{Retraction rigidity}
+Let $e(x)$ be a fixed scalar term template.  Suppose $\Gamma$ proves
+\[
+ e(0)=0,\qquad e(e(x))=e(x),\qquad e(S(e(x)))=S(e(x)).    \tag{Ret}
+\]
+Then $\Gamma$ proves $e(t)=t$ for every target $t$.
+
+To see this, put $h(u)=e(S(e(u)))$ and $r(n)=I(n,0;u.h(u))$.
+Idempotence in Ret gives $e(h(u))=h(u)$ and $h(e(u))=h(u)$.
+Therefore the template $f(n)=e(r(n))$ has initial value zero and
+unconditional recurrence
+\[
+ f(Sn)=e(h(r(n)))=h(r(n))=h(e(r(n)))=h(f(n)).
+\]
+UR gives $e(r(n))=I(n,0;u.h(u))=r(n)$.
+The last equation of Ret now yields
+\[
+ r(Sn)=h(r(n))=S(e(r(n)))=S(r(n)),\qquad r(0)=0.
+\]
+A second application of UR, followed by Id, gives $r(n)=n$.
+Replacing $r(n)$ by $n$ in the previous equality proves $e(n)=n$.
+No induction was used, and no claim that the standard finite successor
+orbit exhausts a model was used.
+
+\subsection{A numerical split suffices for induction}
+For a fixed formula $A(n)$, suppose
+\[
+ \Gamma\vdash A(0),\qquad \Gamma,A(z)\vdash A(Sz).
+\]
+Suppose moreover that $A(n)$ is decidable under $\Gamma$ and that a term
+$e(n)$ satisfies $e(n)=n$ under $A(n)$ and $e(n)=0$ under $\neg A(n)$.
+Cases give $A(e(n))$: in the first case use $A(n)$, and in the second
+use the proved base $A(0)$.  Applying the true-case identity at $e(n)$
+gives $e(e(n))=e(n)$.  The induction-step derivation, instantiated at
+$e(n)$, gives $A(S(e(n)))$, hence $e(S(e(n)))=S(e(n))$.
+The base similarly gives $e(0)=0$.  Retraction rigidity proves $e(n)=n$;
+transporting $A(e(n))$ gives $A(n)$.
+
+This is a metatheorem about a justified numerical split.  It supplies no
+decision procedure, comprehension principle, or induction schema for
+arbitrary quantified formulas.
+
+\subsection{The unconditional zero-equation case}
+Write $1=S0$ and $C(v,a,b)=I(v,a;u.b)$.  The two computations give
+$C(0,a,b)=a$ and $C(Sv,a,b)=b$.
+The separation axiom $0=1\to\bot$ implies $Sv\ne0$: otherwise applying
+$w\mapsto C(w,0,1)$ gives $1=0$, hence a contradiction.
+Coverage therefore decides $q(n)=0$ for every fixed scalar term $q(n)$.
+The term
+\[
+                             e(n)=C(q(n),n,0)
+\]
+has exactly the split required in the preceding subsection.
+Consequently the following contextual rule is derived:
+\[
+ \frac{\Gamma\vdash q(0)=0\qquad
+       \Gamma,q(z)=0\vdash q(Sz)=0}
+      {\Gamma\vdash q(t)=0}.                            \tag{ZI}
+\]
+Every substitution and case distinction is intuitionistic.  The retained
+context can contain arbitrary quantified formulas, provided the fresh
+induction variable is absent from it.

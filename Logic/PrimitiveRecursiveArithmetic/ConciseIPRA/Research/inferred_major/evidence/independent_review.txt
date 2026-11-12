@@ -1,0 +1,228 @@
+INDEPENDENT REVIEW OF THE THREE SELECTED REDUCTIONS
+==================================================
+
+Baseline pin: 62396b06020f794fa6dc01b4025a6a5db9d4d28a
+Review scope: source inspection, preservation/completeness arguments,
+independent source measurements, and the finite executions stated below.
+This is an independent assistant review within the same research run, not
+external human peer review and not Lean/Rocq verification.
+
+1. MEASUREMENTS AND CONTRACTS
+----------------------------
+
+All sizes below are for the complete standalone source after CPython
+ast.unparse plus one final LF. Significant tokens exclude layout/comments.
+AST counts include operator and context nodes. Each source was parsed, and
+the byte and native candidates were additionally compiled successfully.
+
+                                             bytes tokens AST
+Guarded token incumbent                        594   256   283
+checker_tokens_inferred_major.py                599   253   280
+Guarded AST incumbent                          602   260   278
+checker_ast_inferred_major.py                   607   257   275
+Guarded byte incumbent compact_optional.py      506   267   303
+bool_tuple.py                                  503   278   310
+Full-native public-goal incumbent native.py     656   333   379
+native643_reviewed.py                          643   327   375
+
+The first, second and third new guarded programs attain different coordinate
+improvements. They must not be combined into a fictitious single checker.
+The identified old guarded coordinate envelope is 256/278/506; the new one
+is 253/275/503, in tokens/AST/bytes order, across three real programs.
+
+The guarded compact programs retain the incumbent canonical integer/list
+and guarded-public-language contract. They do not separately validate the
+guarded public grammar. Arbitrary auxiliary formula round trips are not
+claimed. The native 643-byte program has the distinct full native Eq/D
+public-goal validation contract and preserves its 656-byte control's whole
+certificate acceptance relation. 'Strict' does not mean every unused
+certificate field is typed: unused leading entries retain their behavior.
+
+These are implementation and certificate-interface simplifications of the
+existing theories. No new arithmetic or logical axiom deletion is proved.
+No absolute minimality, literature-wide priority, or exhaustive repository
+source census is claimed.
+
+2. INFERRED MAJOR PREMISES
+-------------------------
+
+Files reviewed:
+ research/compact/experiments/checker_tokens_inferred_major.py
+ research/compact/experiments/checker_ast_inferred_major.py
+
+The old branch was:
+ if m == expected(s,u,t) and i(t,u) == a:
+     a = i(t,s)
+The new branch is:
+ if i(t,u) == a:
+     m = expected(s,u,t)
+     a = i(t,s)
+where expected(s,u,t) is [s,u] for truthy raw s and [t]*3 for falsy raw s.
+This is the codec's truth test, not a decision about the numerical value
+of the term represented by s. For example, an empty array is falsy.
+In both programs, the selected major m is subsequently proved recursively.
+The new branch does not accept an unproved premise. It reconstructs the
+premise that the transfer rule actually needs.
+
+Soundness at the canonical integer/list boundary.
+For every successful finite new trace, replace the m field of each consumed
+instruction by the effective m used by that instruction after the branch.
+If the branch is taken, structural equality of finite integer/list trees
+makes the old major test true, and the old second test is the same successful
+i(t,u)==a calculation. Both traces set a to the same i(t,s), verify the same
+major, construct the same hypothesis, and change k at the same point. If the
+branch is not taken, its second test is false, so the old branch is not taken
+regardless of m. The successful new trace already establishes that this
+eagerly evaluated opening is defined. Induction on the finite actual
+execution tree gives a successful old certificate for the same public goal.
+Unused prefixes can be left unchanged. This argument applies to both global
+and local scope profiles, because their own scope updates and recursive
+major calls are left unchanged by the transformation.
+
+Completeness of the public theorem relation.
+Use the old calculus-to-canonical-certificate compiler. A non-hypothesis
+canonical goal is an Eq/D/Q formula containing at least one binary Eq node.
+A canonical numerical term has only scalar leaves and list arities 1 and 3.
+Opening such a numerical tree with i(t,u) at formula depth zero preserves
+every list arity. Its depth changes by 5-arity, hence remains even; at a scalar
+leaf the opener retains the scalar or returns padding zero, never inspecting
+the image u. This opening is total and contains no binary list node.
+Consequently it cannot equal a meaningful formula goal.
+
+In a nontransfer computation packet, t is the numerical update body. In an
+introduction packet, t is the numerical witness. Neither packet therefore
+accidentally selects the new transfer branch. In a D-elimination packet the
+unused t field can be chosen as zero, again different from the formula goal.
+Actual transfer packets select the intended branch. Hypothesis leaves use no
+instruction. These observations, by induction through a canonical derivation,
+show that the ordinary old proof compiler supplies new proofs of every old
+public theorem. Administrative padding leaves are not being confused with
+meaningful formula goals: the local profile returns immediately on its
+retained scalar zero, and the global profile skips a neutral zero major.
+
+Limit of this result.
+This is soundness and completeness of the public theorem relation, with a
+successful-trace compiler in the soundness direction. It is not equality of
+the raw accepted certificate languages. A new transfer can ignore a formerly
+incorrect supplied m field, while eager opening can reject old malformed
+packets. The canonical integer/list restriction also avoids JSON NaN and
+Python object-identity subtleties when serializing a reconstructed major.
+Do not claim arbitrary-JSON serialized replay without a separate argument.
+
+3. TRUTHY RETURNS AND A SINGLETON COMPREHENSION
+---------------------------------------------
+
+File reviewed: research/root/bool_tuple.py (503 bytes).
+Exact control:
+ research/audit/deterministic_introduction/implementation/code/compact_optional.py
+
+The selected candidate is the valid tuple-head comprehension. An earlier
+502-byte proposal placed a walrus inside a comprehension iterable and does
+not compile. That rejected proposal is not part of this result.
+
+The control returns None after a successful call. The candidate returns True
+at a hypothesis leaf and otherwise a list with exactly one pair (h,result).
+Every normally completed candidate call therefore returns a truthy value.
+This invariant follows by induction on its finite execution: the iteration
+source [q()] is a singleton, and failure propagates as an exception. The
+result list remains nonempty even when h itself is zero.
+
+Accordingly, after a successful recursive major check,
+ old: c(m,g,k) or m*3
+ new: c(m,g,k) and m*3
+both have precisely the value m*3. Subsequent Boolean alternatives for the
+computation equation or introduced matrix therefore select the same h.
+This also covers neutral m=0. It is essential that the candidate does not
+mistake the changed return value for a new logical resource.
+
+Evaluation order is preserved.
+The single outer comprehension item is q(), unpacked into m,s,u,t. Python
+evaluates tuple components left to right. Its first component assigns h,
+including the complete major proof and any introduction assignment to a.
+Only its second component calls the continuation. Within that call, the
+source/template tests still occur at the old k; evaluating the image argument
+then decrements k at the same place as the control. The closure i sees this
+updated containing-function cell when opening the final goal and hypothesis.
+The newly constructed context and recursive floor are identical to the
+control. Walrus assignments to a,h,k in the comprehension belong to the
+containing function; the iteration bindings m,s,u,t do not interfere with the
+opener's own parameters. The lambda uses its own tree/image/depth parameters
+and closes over the correct local k. Separate recursive calls have separate
+cells. No input list or retained context is mutated; g+[... ] creates a list.
+
+Universal conclusion.
+Induction through the actual execution gives the same consumed packets,
+goals, hypotheses, scope floors, and remaining unused prefix. The only
+semantic change is the ignored successful return object and the corresponding
+and/or adjustment. Built-in truth tests on True and nonempty lists are total.
+For every finite JSON input, successful acceptance agrees with the exact
+control, idealizing sufficient physical resources. Additional retained result
+lists can change physical memory/recursion limits; no bounded-resource
+equivalence is asserted. The JSON parser and final ACCEPT output are counted
+and unchanged.
+
+Independent finite verification.
+I ran the exact control and candidate on 21 local inherited fixtures, the
+allocated-fresh-scope regression from canonical_recursors, and an accepted
+proof carrying a NaN solely in its unused prefix. Each ran under ordinary
+Python and python -O: 46 matched cases, 92 separate CLI processes. All 46
+acceptance comparisons agreed; 28 control cases accepted. The substantive
+fixtures include successor/zero computation, transport, compound cases and
+implication elimination, guarded induction with a used hypothesis, fresh
+parameter and context-leak attacks, false goals, and malformed instructions.
+The archived receipt is evidence/independent_byte_checks.json (originally
+research/audit/experiments/bool_tuple_audit.json). Finite checks support the
+preservation proof, not replace it.
+
+4. THE 643-BYTE FULL-NATIVE PUBLIC VALIDATOR
+------------------------------------------
+
+Reviewed normalized plain-decrement copy:
+ research/audit/experiments/native643_reviewed.py
+Derived from research/compact/experiments/native_00111.py with k-1 in place
+of ~-k. It compiles and measures 643 bytes /327 tokens /375 AST nodes.
+Its exact incumbent is the 656-byte native.py copied above.
+
+The flag v is a program-controlled bit: the public call supplies 1, recursive
+calls default to 0, and the first activation resets it to 0 before reading
+any proof packet. JSON cannot assign it. The candidate replaces
+ (not v or P)
+by
+ v <= P
+in two guarded predicates, and replaces (d%2 or v) by d%2 | v.
+
+List predicate: it is evaluated only after a*0==[], which on every JSON value
+that reaches it identifies a list (other types either fail earlier or do not
+equal []). Thus len(a) and membership in (1,2+d%2) are total and Boolean.
+
+Scalar predicate: it is evaluated only after k<=a<d succeeds. Its expression
+ type(a) is int and d%2 and (not a or a>1==a%2)
+is total on such values. The exact type test rejects nonintegers before the
+remaining operations. On integers d%2 is 0 or 1, and the final expression is
+Boolean. Hence its result always belongs to {0,1}. Booleans and floats do not
+pass the exact integer test; no extra invalid operation is performed on them.
+
+For v,P in {0,1}, v<=P has exactly the truth value of not v or P. The new code
+evaluates P when v=0 whereas the control short-circuits it, but the guarded
+totality arguments above establish that this adds no exception or side
+effect. These pure predicates neither change scope nor consume a packet.
+Finally d%2 and v are integer bits, so their bitwise OR is exactly their old
+Boolean-or value. Parentheses removed by ast.unparse respect the language's
+operator precedence. The fallback therefore returns the same value or makes
+the same absent-image call. All proof-kernel operations remain unchanged.
+
+This proves identical acceptance on every finite JSON certificate at the
+full-native public-goal boundary, with the same sufficient-resource caveat.
+It is a normalization of two total Boolean guards, not a change in the
+arithmetic, logical rules, theory, or interpretation.
+
+5. OVERALL ASSESSMENT
+--------------------
+
+No defect was found in the selected inferred-major transformation at its
+stated canonical boundary, the valid 503-byte tuple comprehension against its
+exact compact control, or the plain 643-byte native validator against its
+exact native control. The improvements transfer the existing mathematical
+theories and their interpretation theorems. State this as a smaller complete
+proof presentation under explicit matched contracts, without claiming a
+new mathematical axiomatization or global minimality theorem.
