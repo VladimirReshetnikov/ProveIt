@@ -7,8 +7,8 @@ conditional theorem does **not** discharge either graph cut or establish an
 endpoint, iPRA proof, compact fixed-port equality, PDF semantics, or coherent
 provider ancestry. In particular, Lean tactic and cast behavior remains open.
 
-`first_scale` proposes the exact all-ring graph identity: for 87 valuation
-`v`, positive or signed s, and `ι(v 7)=q³ιs`, update coordinate 7 to s and
+`first_scale` proposes the exact all-ring graph identity: for 87 model-natural valuation
+`v`, model-natural s with no positivity assumption, and `ι(v 7)=q³ιs`, update coordinate 7 to s and
 coordinate 8 from r to r+s. The 87 first residual is q⁶ times the 84 first
 residual. `shared` proposes the exact matching of the other three graph fields
 for **any** target r. Four squares imply their residuals vanish, and positive
