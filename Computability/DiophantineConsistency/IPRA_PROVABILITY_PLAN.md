@@ -7800,6 +7800,10 @@ The independently source-reviewed [strict-K0 draft](research/ordinary14-strict-k
 proposes proving the needed symbolic model positivity from the kernel's
 positive leading term. Its casts, model argument and connection to the
 81-operation graph remain unelaborated.
+The independently source-reviewed [81-to-82 J-shift model draft](research/ordinary14-natural81-jshift-model-draft/README.md)
+proposes the changed-valuation identity and zero transfer using represented
+positive `K0`. The model argument and its imports remain unelaborated; the
+selected-port and iPRA endpoint connections are not yet checked.
 The independently source-reviewed [82-to-86 bridge draft](research/ordinary14-natural-forced82-ring-bridge-draft/README.md)
 proposes a changed-valuation ring identity and conditional model zero maps.
 Its natural-model existence equivalence assumes, rather than proves, that
