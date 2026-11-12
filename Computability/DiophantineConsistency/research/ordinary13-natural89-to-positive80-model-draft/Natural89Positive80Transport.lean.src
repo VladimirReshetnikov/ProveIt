@@ -1,0 +1,134 @@
+import PositiveUnit80Graph
+import J88To89Transport
+import Mathlib.Tactic.Ring
+
+/-! Source-only mixed valuation and conditional all-model bridge. The direct
+f/y positivity and r-replacement cuts remain explicit unproved assumptions. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Natural89Positive80TransportDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+open Residue90CompactPortBoundsDraft
+
+/-- f, r, y are direct; the other ten coordinates acquire one. -/
+def lift {V : Type*} [Add V] [One V] (v : Fin 13 → V) (i : Fin 13) : V :=
+  if i=3 ∨ i=8 ∨ i=11 then v i else v i+1
+def lower {V : Type*} [Sub V] [One V] (v : Fin 13 → V) (i : Fin 13) : V :=
+  if i=3 ∨ i=8 ∨ i=11 then v i else v i-1
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem lift_lower (v : Fin 13 → V) (h : ∀ i, 0<v i) : lift (lower v)=v := by
+  funext i
+  by_cases hi : i=3 ∨ i=8 ∨ i=11
+  · simp [lift,lower,hi]
+  · simp [lift,lower,hi,tsub_add_cancel_of_le (pos_iff_one_le.mp (h i))]
+
+theorem lift_positive (v : Fin 13 → V) (hf : 0<v 3) (hr : 0<v 8) (hy : 0<v 11) :
+    ∀ i, 0<lift v i := by
+  intro i
+  by_cases hi : i=3 ∨ i=8 ∨ i=11
+  · rcases hi with rfl | rfl | rfl
+    · simpa [lift] using hf
+    · simpa [lift] using hr
+    · simpa [lift] using hy
+  · simp only [lift,if_neg hi]
+    exact lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+
+/-- This is the exact valuation identity, including the two kbase/r0 folds;
+the generated expression reduction and ring normalization remain untested. -/
+theorem evaluation (p : Fin 4 → ℤ) (v : Fin 13 → V) :
+    (JShifted89GraphDraft.literal p).evalRing (fun j => ι (v j)) =
+      (PositiveUnit80GraphDraft.literal p).evalRing (fun j => ι (lift v j)) := by
+  simp [JShifted89GraphDraft.literal,PositiveUnit80GraphDraft.literal,lift,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,
+    map_add,map_mul,map_one] <;> ring
+
+theorem zero_iff (p : Fin 4 → ℤ) (v : Fin 13 → V) :
+    InternalZero (JShifted89GraphDraft.literal p) v ↔
+      InternalZero (PositiveUnit80GraphDraft.literal p) (lift v) := by
+  rw [ModelDifferenceRing.internalZero_iff,ModelDifferenceRing.internalZero_iff,evaluation p v]
+
+/-- The weakest existential cut used by the reverse map: a zero may be
+replaced by any zero whose direct f, r and y coordinates are all positive. -/
+def PositiveDirectReplacement (K : ℕ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V),
+    InternalZero (JShifted89GraphDraft.literal (fun j => (ports K j:ℤ))) v →
+      ∃ w : Fin 13 → V, InternalZero (JShifted89GraphDraft.literal (fun j => (ports K j:ℤ))) w ∧
+        0<w 3 ∧ 0<w 8 ∧ 0<w 11
+
+/-- More precise open cuts: prove f/y for every zero and a root-switch
+replacement which preserves those two coordinates and makes r positive. -/
+def DirectFY (K : ℕ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V),
+    InternalZero (JShifted89GraphDraft.literal (fun j => (ports K j:ℤ))) v → 0<v 3 ∧ 0<v 11
+
+def RReplacement (K : ℕ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V),
+    InternalZero (JShifted89GraphDraft.literal (fun j => (ports K j:ℤ))) v →
+      ∃ w : Fin 13 → V, InternalZero (JShifted89GraphDraft.literal (fun j => (ports K j:ℤ))) w ∧
+        0<w 8 ∧ w 3=v 3 ∧ w 11=v 11
+
+theorem replacement_of_cuts (K : ℕ) (hfy : DirectFY K) (hr : RReplacement K) :
+    PositiveDirectReplacement K := by
+  intro V _ _ v hz
+  obtain ⟨hf,hy⟩ := hfy V v hz
+  obtain ⟨w,hw,hwr,hwf,hwy⟩ := hr V v hz
+  exact ⟨w,hw,by simpa only [hwf] using hf,hwr,by simpa only [hwy] using hy⟩
+
+theorem compact_no_zero_iff (K : ℕ)
+    (hrep : ∀ v : Fin 13 → V,
+      InternalZero (JShifted89GraphDraft.literal (fun j => (ports K j:ℤ))) v →
+        ∃ w : Fin 13 → V, InternalZero (JShifted89GraphDraft.literal (fun j => (ports K j:ℤ))) w ∧
+          0<w 3 ∧ 0<w 8 ∧ 0<w 11) :
+    (∀ v : Fin 13 → V, ¬InternalZero (JShifted89GraphDraft.literal (fun j => (ports K j:ℤ))) v) ↔
+      ∀ v : Fin 13 → V, ¬InternalZero (positiveShift (PositiveUnit80GraphDraft.literal (fun j => (ports K j:ℤ)))) v := by
+  constructor
+  · intro h v hz
+    have h80 := (internalZero_positiveShift _ v).mp hz
+    let pos : Fin 13 → V := fun j => v j+1
+    have hpos : ∀ j, 0<pos j := fun j => lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+    have he := lift_lower pos hpos
+    apply h (lower pos)
+    apply (zero_iff _ (lower pos)).mpr
+    simpa only [he] using h80
+  · intro h v hz
+    obtain ⟨w,hw,hf,hr,hy⟩ := hrep v hz
+    have hpos := lift_positive w hf hr hy
+    let n : Fin 13 → V := fun j => lift w j-1
+    have hn : (fun j => n j+1)=lift w := by
+      funext j
+      exact tsub_add_cancel_of_le (pos_iff_one_le.mp (hpos j))
+    apply h n
+    apply (internalZero_positiveShift _ n).mpr
+    rw [hn]
+    exact (zero_iff _ w).mp hw
+
+theorem compact_sameNoZero (K : ℕ) (hrep : PositiveDirectReplacement K) : SameNoZero
+    (JShifted89GraphDraft.literal (fun j => (ports K j:ℤ)))
+    (positiveShift (PositiveUnit80GraphDraft.literal (fun j => (ports K j:ℤ)))) := by
+  intro V _ _
+  exact compact_no_zero_iff K (hrep V)
+
+/-- Both actual model replacement and the exact positive-80 bridge are open. -/
+theorem bridge89 (K : ℕ) (hrep : PositiveDirectReplacement K)
+    (h80 : PolynomialBridge (positiveShift (PositiveUnit80GraphDraft.literal (fun j => (ports K j:ℤ))))) :
+    PolynomialBridge (JShifted89GraphDraft.literal (fun j => (ports K j:ℤ))) :=
+  HAExpressionNoZeroEquiv.bridge _ _ (compact_sameNoZero K hrep) h80
+
+theorem native85 (K : ℕ) (heta : EtaUnshift85TransportDraft.ForcedEta K)
+    (hrep : PositiveDirectReplacement K)
+    (h80 : PolynomialBridge (positiveShift (PositiveUnit80GraphDraft.literal (fun j => (ports K j:ℤ))))) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output 🡘
+      ∼mappedNativeRefutation embedding :=
+  J88To89TransportDraft.native85 K heta (bridge89 K hrep h80)
+end DiophantineConsistency.Natural89Positive80TransportDraft
+#print axioms DiophantineConsistency.Natural89Positive80TransportDraft.evaluation
+#print axioms DiophantineConsistency.Natural89Positive80TransportDraft.compact_sameNoZero
+#print axioms DiophantineConsistency.Natural89Positive80TransportDraft.native85
