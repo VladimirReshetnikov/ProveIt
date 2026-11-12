@@ -70,9 +70,12 @@ The positive parent's [independent standard-integer review](../../reviews/ordina
 uses fact-level compact calibration, not an elaborated modified-graph model
 client. Neither this candidate nor its earlier chain has a new checked Lean
 model transfer, provider replay, iPRA endpoint or current-2011 PDF binding.
-The 13/86/99 natural candidate trades fewer operations for higher degree;
-13/89/56, 13/94/50 and 13/95/28 trade more operations for lower degree.
-These selected comparisons do not establish a global frontier.
+The exact [13/87/60 zeta/rank-offset fold](../ordinary13-natural-residue-eta-fold87-degree60/)
+saves one operation from this graph. The separate [13/88/56 natural graph](../ordinary13-natural-residue-eta-fold88-degree56/)
+has the same number of variables and operations at lower degree, although its
+source proof path differs. The 13/86/99 natural candidate trades fewer
+operations for higher degree; 13/94/50 and 13/95/28 trade more operations for
+lower degree. These selected comparisons do not establish a global frontier.
 
 From `Computability/DiophantineConsistency`:
 
