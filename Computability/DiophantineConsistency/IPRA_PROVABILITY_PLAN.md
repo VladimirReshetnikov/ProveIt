@@ -7890,6 +7890,10 @@ The independently source-reviewed [beta-only zero-w alternatives](research/ordin
 propose weakening that local step to represented natural beta, allowing beta
 and J to be zero and other ports to be arbitrary. They are inert source and
 do not remove the stronger assumptions of the separate 80 endpoint chain.
+The independently source-reviewed [beta-only 79 overlay](research/ordinary14-natural79-beta-only-overlay/README.md)
+selects those four alternatives and has 195 reachable inert drafts; the older
+201-stage provider order does not apply to their changed bytes. The overlay
+remains unelaborated and does not establish an iPRA proof.
 The independently reviewed [negative-beta obstruction](research/ordinary14-natural79-negative-beta-obstruction/README.md)
 exhibits a zero with w=0 for a different signed-port tuple, so beta's natural
 representation cannot be removed from that local argument for arbitrary ports.

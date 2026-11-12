@@ -1,0 +1,95 @@
+import Natural79ZeroWMainNorm
+import ForcedWDivisibility
+
+/-! Source-only root cut and signed divisibility bridge for natural79.
+All graph, model and proof dependencies are unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace DiophantineConsistency.Natural79ZeroWRootCutDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open Natural79ResidueShapesDraft Natural79ZeroWMainNormDraft
+open ForcedWDivisibilityDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Literal 79 X and signed shift expressions, with four arbitrary ports. -/
+def xExpr (p : Fin 4 → ℤ) : Expr (Fin 14) :=
+  (1+(.var 0)*(.constant (p 0)))*(.var 6)
+
+def shiftExpr (p : Fin 4 → ℤ) : Expr (Fin 14) :=
+  (atoms p).U*(.var 12)-(((.var 9+1)+.var 10)-(P79NaturalForcedW.graph p).rank)
+
+/-- Exact literal expression cut; the graph and `rfl` are unelaborated. -/
+theorem root_expr_shape (p : Fin 4 → ℤ) :
+    (atoms p).Dstar = (atoms p).U*(xExpr p+(atoms p).a*(atoms p).c)+
+      (3+4*(atoms p).a)*shiftExpr p := by rfl
+
+/-- Setting w=0 removes the X summand over the model's difference ring.
+This identity requires no represented or positive ports. -/
+theorem root_eval_zero_w (p : Fin 4 → ℤ) (v : Fin 14 → V) (hw : v 6=0) :
+    let e := fun j => ι (v j)
+    (atoms p).Dstar.evalRing e =
+      (atoms p).U.evalRing e*(atoms p).a.evalRing e*(atoms p).c.evalRing e+
+        (4*(atoms p).a.evalRing e+3)*(shiftExpr p).evalRing e := by
+  rw [root_expr_shape]
+  simp [xExpr,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,hw,map_zero] <;> ring
+
+/-- With represented beta the natural atoms in that cut are Y, c and U;
+the shift itself remains signed and needs no K0/MC/MF representation. -/
+theorem represented_root_zero_w (p : Fin 4 → ℤ) (beta : V) (v : Fin 14 → V)
+    (hbeta : (p 0 : DiffRing V)=ι beta) (hw : v 6=0) :
+    (atoms p).Dstar.evalRing (fun j => ι (v j)) =
+      ι (scale beta v)*ι (y beta v)*ι (c beta v)+
+        (4*ι (y beta v)+3)*(shiftExpr p).evalRing (fun j => ι (v j)) := by
+  have h := root_eval_zero_w p v hw
+  obtain ⟨ha,hc,hU⟩ := atoms_at_zero_w p beta v hbeta hw
+  simpa [ha,hc,hU] using h
+
+/-- The root and signed quotient imply the first divisibility premise,
+over any commutative ring and without assuming a sign for the root. -/
+theorem divisor_of_root_cut {R : Type*} [CommRing R] (H U a c D d shift : R)
+    (hroot : D=U*a*c+H*shift) (hquot : D=U*d) : H ∣ U*(d-a*c) := by
+  refine ⟨shift, ?_⟩
+  calc
+    U*(d-a*c)=U*d-U*a*c := by ring
+    _=D-U*a*c := by rw [hquot]
+    _=H*shift := by rw [hroot]; ring
+
+/-- A literal 79 zero at w=0 yields the signed difference-ring divisibility
+`(4Y+3) ∣ 3q²`, conditional only on the represented natural beta hypothesis used by the
+signed quotient client. No positivity of beta, J or gamma, no sign of Dstar,
+and no K0/MC/MF representation is assumed. -/
+theorem signed_dvd_three_square_of_zero_w_zero
+    (p : Fin 4 → ℤ) (beta : V) (v : Fin 14 → V)
+    (hbeta : (p 0 : DiffRing V)=ι beta)
+    (hz : InternalZero (P79NaturalForcedW.graph p).output v) (hw : v 6=0) :
+    (4*ι (y beta v)+3 : DiffRing V) ∣
+      3*ι (q beta v)*ι (q beta v) := by
+  let Y : DiffRing V := ι (y beta v)
+  let C : DiffRing V := ι (c beta v)
+  let U : DiffRing V := ι (scale beta v)
+  let Q : DiffRing V := ι (q beta v)
+  let H : DiffRing V := 4*Y+3
+  let D : DiffRing V := (atoms p).Dstar.evalRing (fun j => ι (v j))
+  let shift : DiffRing V := (shiftExpr p).evalRing (fun j => ι (v j))
+  obtain ⟨d,hquot,hnorm⟩ := signed_quotient_of_zero_w_zero p beta v hbeta hz hw
+  have hroot : D=U*Y*C+H*shift := by
+    simpa [D,U,Y,C,H,shift] using represented_root_zero_w p beta v hbeta hw
+  have hq : D=U*d := by simpa [D,U] using hquot
+  have hn : d*d=1+(Y*Y+H)*C*C := by
+    simpa [normRhs,Y,C,H,map_add,map_mul,map_one,map_ofNat,mul_assoc] using hnorm
+  have hd : H ∣ U*(d-Y*C) := divisor_of_root_cut H U Y C D d shift hroot hq
+  have hHU : H ∣ U := divisor_of_main_norm H U d Y C hd hn
+  have hU : U=Y*Q*Q := by simp [U,Y,Q,scale,map_mul,mul_assoc]
+  have h3 : H ∣ 3*Q*Q := divisor_of_three_square H U Q Y rfl hU hHU
+  simpa [H,Y,Q] using h3
+
+end DiophantineConsistency.Natural79ZeroWRootCutDraft
+
+#print axioms DiophantineConsistency.Natural79ZeroWRootCutDraft.root_expr_shape
+#print axioms DiophantineConsistency.Natural79ZeroWRootCutDraft.root_eval_zero_w
+#print axioms DiophantineConsistency.Natural79ZeroWRootCutDraft.signed_dvd_three_square_of_zero_w_zero
