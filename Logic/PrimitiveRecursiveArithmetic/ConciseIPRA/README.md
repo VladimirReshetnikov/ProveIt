@@ -864,7 +864,7 @@ The main chain (every module except the eighteen kernel comparisons,
 `NativeFullFive`, `NativeNameClauses`, `NativeOpenClauses`, `NativeExportClauses`,
 `NativeVariableClauses`, `NativeProgressive`, `NativeProgressiveRules`,
 `NativeProgressiveLeibniz`, `NativeProgressiveEmbedding`, `NativeTargetClosure`,
-`NativeProgressiveRoundTrip`, `NativeMixedClosure`, `NativePublic`, `NativePublicD`, `NativePublicNecessary`, `NativeRootDetermined`, `NativeIteratorSource`, `NativeNamedWitness`,
+`NativeProgressiveRoundTrip`, `NativeMixedClosure`, `NativePublic`, `NativePublicD`, `NativePublicNecessary`, `NativeRootDetermined`, `NativeIteratorSource`,
 `NativeRawReflexive`, `NativeOneOccurrence`, `NativeNoFixedPoint`,
 `ZeroSeedObstruction`,
 `NativePrefix`, `NativeUniqueness`, `NativeModels`, `NativeWitnessShape` and
