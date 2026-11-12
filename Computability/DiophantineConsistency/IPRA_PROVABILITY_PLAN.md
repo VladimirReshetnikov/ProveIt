@@ -7491,6 +7491,10 @@ complete the direct calibration.
 The source-reviewed [87 first-index draft](research/ordinary14-87-first-index-draft/README.md)
 proposes the Pell classification and residue witnesses from that graph's own
 zero. It remains unelaborated and does not identify the index with the rank.
+The source-reviewed [87 main-balance](research/ordinary14-87-main-balance-conditional-draft/README.md)
+and [q³ size](research/ordinary14-87-qcube-size-draft/README.md) drafts propose
+the direct-Y carrier balance and its size premise from the 87 zero. They remain
+unelaborated and do not establish exact indices or an iPRA endpoint.
 The source-reviewed [87 strong-norm draft](research/ordinary14-87-strong-norm-draft/README.md)
 proposes the direct-Y strong identity from the 87 graph's own zero. It remains
 unelaborated and does not establish the rest of the calibration.
