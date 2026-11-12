@@ -7476,6 +7476,10 @@ The source-reviewed [positive 88-to-87 map](research/ordinary14-88-to-87-positiv
 and [conditional reverse map](research/ordinary14-87-to-88-conditional-map-draft/README.md)
 propose both valuation updates; the reverse still assumes `F < omega`.
 Neither has been elaborated in Lean.
+The source-reviewed [87 rank-square growth draft](research/ordinary14-87-rank-square-growth-draft/README.md)
+proposes `R ≥ q²` and then `X > q²` from the same graph's power facts,
+without a Mersenne or `q ∣ X` assumption. It remains unelaborated and is
+not yet a reverse model-map theorem.
 The source-reviewed [conditional 87-to-86 map](research/ordinary14-87-to-86-conditional-map-draft/README.md)
 proposes the reverse valuation assuming the scalar gap and quotient
 positivity. It remains unelaborated and those assumptions must still be
