@@ -1,0 +1,88 @@
+import AdaptiveQM38ResidualZeros
+import DiophantineConsistency.ModelDifferenceRing
+import Mathlib.Tactic.LinearCombination
+
+/-! Proposed IΣ₁-model positive-difference construction. Source only:
+no lemma, tactic, cast or axiom report here has been Lean checked. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+noncomputable section
+namespace DiophantineConsistency.AdaptiveQM37DifferenceWitnessDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- In a positive parent zero, the retained square residuals identify
+`Ysq` and `Vsq` with the actual squares. -/
+theorem parent_square_values (p : Fin 4 → ℤ) (v : Fin 38 → V)
+    (hz : InternalZero (AdaptiveQM38LiteralDraft.literal p) v) :
+    v 13 = v 25*v 25 ∧ v 30 = v 11*v 11 := by
+  have h := (AdaptiveQM38ResidualZerosDraft.all_residuals p v).mp hz
+  have hs := h 4
+  have hy := h 21
+  change InternalZero ((.var 13)-(.var 25)*(.var 25) : Expr (Fin 38)) v at hs
+  change InternalZero ((.var 30)-(.var 11)*(.var 11) : Expr (Fin 38)) v at hy
+  constructor
+  · have hr := (ModelDifferenceRing.internalZero_iff _ v).mp hs
+    simp only [Expr.evalRing_sub, Expr.evalRing_mul, Expr.evalRing_var] at hr
+    apply ι_injective
+    simpa only [map_mul] using (sub_eq_zero.mp hr)
+  · have hr := (ModelDifferenceRing.internalZero_iff _ v).mp hy
+    simp only [Expr.evalRing_sub, Expr.evalRing_mul, Expr.evalRing_var] at hr
+    apply ι_injective
+    simpa only [map_mul] using (sub_eq_zero.mp hr)
+
+/-- The auxiliary unit residual gives the additive equation without any
+truncated subtraction on model elements. -/
+theorem parent_aux_equation (p : Fin 4 → ℤ) (v : Fin 38 → V)
+    (hz : InternalZero (AdaptiveQM38LiteralDraft.literal p) v) :
+    v 31*(v 11*v 11)+1 = v 31*(v 25*v 25)+v 11*v 11 := by
+  obtain ⟨hs,hy⟩ := parent_square_values p v hz
+  have h := (AdaptiveQM38ResidualZerosDraft.all_residuals p v).mp hz 2
+  change InternalZero
+    (((.var 30)-(.var 31)*((.var 30)-(.var 13)))-1 : Expr (Fin 38)) v at h
+  have hr := (ModelDifferenceRing.internalZero_iff _ v).mp h
+  simp only [Expr.evalRing_sub, Expr.evalRing_mul, Expr.evalRing_var,
+    Expr.evalRing_ofNat] at hr
+  rw [hs,hy] at hr
+  simp only [map_mul] at hr
+  apply ι_injective
+  simp only [map_add,map_mul,map_one]
+  linear_combination -hr
+
+/-- Positivity and the auxiliary equation force a natural nonnegative square
+difference. No integer subtraction or classical sign choice is assumed. -/
+theorem difference_of_aux (q y z : V) (hq : 0<q) (hy : 0<y)
+    (h : q*(y*y)+1 = q*(z*z)+y*y) :
+    ∃ d : V, y*y = z*z+d := by
+  have hy1 : 1≤y := pos_iff_one_le.mp hy
+  have hy2 : 1≤y*y := by
+    have hm := mul_le_mul hy1 hy1 (by simp : (0:V)≤1) (by simp : (0:V)≤y)
+    simpa using hm
+  have hle : z*z≤y*y := by
+    by_contra hn
+    have hlt : y*y<z*z := lt_of_not_ge hn
+    have hm : q*(y*y)<q*(z*z) := mul_lt_mul_of_pos_left hlt hq
+    have hh : q*(y*y)+1<q*(z*z)+y*y := by
+      calc
+        q*(y*y)+1 ≤ q*(y*y)+y*y := add_le_add_left hy2 _
+        _ < q*(z*z)+y*y := add_lt_add_right hm _
+    exact (ne_of_lt hh) h
+  obtain ⟨d,hd⟩ := exists_add_of_le hle
+  exact ⟨d, by simpa [add_comm] using hd⟩
+
+/-- Required witness for projection of a positive 38-variable zero. -/
+theorem parent_difference (p : Fin 4 → ℤ) (v : Fin 38 → V)
+    (hv : ∀ i, 0<v i)
+    (hz : InternalZero (AdaptiveQM38LiteralDraft.literal p) v) :
+    ∃ d : V, v 11*v 11 = v 25*v 25+d :=
+  difference_of_aux (v 31) (v 11) (v 25) (hv 31) (hv 11)
+    (parent_aux_equation p v hz)
+
+end DiophantineConsistency.AdaptiveQM37DifferenceWitnessDraft
+#print axioms DiophantineConsistency.AdaptiveQM37DifferenceWitnessDraft.parent_square_values
+#print axioms DiophantineConsistency.AdaptiveQM37DifferenceWitnessDraft.parent_aux_equation
+#print axioms DiophantineConsistency.AdaptiveQM37DifferenceWitnessDraft.difference_of_aux
+#print axioms DiophantineConsistency.AdaptiveQM37DifferenceWitnessDraft.parent_difference

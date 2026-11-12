@@ -1,0 +1,136 @@
+import AdaptiveQM37DifferenceWitness
+import AdaptiveQM37ResidualZeros
+import AdaptiveQM38ConditionalTransfer
+
+/-! Conditional 37↔38 model/no-zero transfer. The graph zero-preservation
+obligations and the earlier 38↔40 obligations remain explicit premises.
+Every theorem in this file remains unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+noncomputable section
+namespace DiophantineConsistency.AdaptiveQM37ConditionalTransferDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+
+/-- Replace old slot 13 by a positive difference-plus-one and drop old 30. -/
+def project {V : Type*} [Add V] [One V] (v : Fin 38 → V) (d : V) (i : Fin 37) : V :=
+  if i.val=13 then d+1
+  else if h : i.val<30 then v ⟨i.val, by omega⟩
+  else v ⟨i.val+1, by omega⟩
+
+/-- Restore the deleted named squares in old slots 13 and 30. -/
+def extend {V : Type*} [Mul V] (v : Fin 37 → V) (i : Fin 38) : V :=
+  if i.val=13 then v 25*v 25
+  else if i.val=30 then v 11*v 11
+  else if h : i.val<30 then v ⟨i.val, by omega⟩
+  else v ⟨i.val-1, by omega⟩
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem project_pos (v : Fin 38 → V) (d : V) (hv : ∀ i, 0<v i) :
+    ∀ i, 0<project v d i := by
+  intro i
+  unfold project
+  split
+  · exact lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  · split <;> exact hv _
+
+theorem extend_pos (v : Fin 37 → V) (hv : ∀ i, 0<v i) :
+    ∀ i, 0<extend v i := by
+  intro i
+  unfold extend
+  split
+  · exact mul_pos (hv 25) (hv 25)
+  · split
+    · exact mul_pos (hv 11) (hv 11)
+    · split <;> exact hv _
+
+def child : Expr (Fin 37) :=
+  AdaptiveQM37LiteralDraft.literal CurrentWindowCarry2011.ports
+
+def parent : Expr (Fin 38) :=
+  AdaptiveQM38LiteralDraft.literal CurrentWindowCarry2011.ports
+
+/-- Explicit model-level residual obligations, not yet supplied by the
+external polynomial identities. -/
+def GraphZeroObligations : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁],
+    (∀ (v : Fin 38 → V) (d : V), (∀ i, 0<v i) → InternalZero parent v →
+      v 11*v 11=v 25*v 25+d → InternalZero child (project v d)) ∧
+    (∀ v : Fin 37 → V, (∀ i, 0<v i) → InternalZero child v →
+      InternalZero parent (extend v))
+
+/-- The only new existential witness is constructed from the parent
+auxiliary unit, using the proposed `parent_difference` lemma. -/
+theorem shifted_no_zero_iff
+    (hproject : ∀ (v : Fin 38 → V) (d : V), (∀ i, 0<v i) → InternalZero parent v →
+      v 11*v 11=v 25*v 25+d → InternalZero child (project v d))
+    (hextend : ∀ v : Fin 37 → V, (∀ i, 0<v i) → InternalZero child v →
+      InternalZero parent (extend v)) :
+    (∀ v : Fin 37 → V, ¬InternalZero (positiveShift child) v) ↔
+      ∀ v : Fin 38 → V, ¬InternalZero (positiveShift parent) v := by
+  constructor
+  · intro h v hz
+    let old : Fin 38 → V := fun i => v i+1
+    have hp : ∀ i,0<old i := fun i => lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+    have hzero : InternalZero parent old := (internalZero_positiveShift _ _).mp hz
+    obtain ⟨d,hd⟩ := AdaptiveQM37DifferenceWitnessDraft.parent_difference
+      CurrentWindowCarry2011.ports old hp hzero
+    have hnew := hproject old d hp hzero hd
+    have hnewpos := project_pos old d hp
+    let shifted : Fin 37 → V := fun i => project old d i-1
+    have hs : (fun i => shifted i+1)=project old d := by
+      funext i
+      exact tsub_add_cancel_of_le (pos_iff_one_le.mp (hnewpos i))
+    apply h shifted
+    rw [internalZero_positiveShift,hs]
+    exact hnew
+  · intro h v hz
+    let new : Fin 37 → V := fun i => v i+1
+    have hp : ∀ i,0<new i := fun i => lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+    have hzero : InternalZero child new := (internalZero_positiveShift _ _).mp hz
+    have hold := hextend new hp hzero
+    have holdpos := extend_pos new hp
+    let shifted : Fin 38 → V := fun i => extend new i-1
+    have hs : (fun i => shifted i+1)=extend new := by
+      funext i
+      exact tsub_add_cancel_of_le (pos_iff_one_le.mp (holdpos i))
+    apply h shifted
+    rw [internalZero_positiveShift,hs]
+    exact hold
+
+theorem sameNoZero (h : GraphZeroObligations) :
+    SameNoZero (positiveShift child) (positiveShift parent) := by
+  intro V _ _
+  obtain ⟨hp,he⟩ := h V
+  exact shifted_no_zero_iff (V:=V) hp he
+
+theorem polynomialBridge
+    (h38 : AdaptiveQM38ConditionalTransferDraft.ZeroPreservationObligations)
+    (h37 : GraphZeroObligations) : PolynomialBridge (positiveShift child) :=
+  HAExpressionNoZeroEquiv.bridge (positiveShift child) (positiveShift parent)
+    (sameNoZero h37) (AdaptiveQM38ConditionalTransferDraft.polynomialBridge h38)
+
+theorem native_equivalence
+    (h38 : AdaptiveQM38ConditionalTransferDraft.ZeroPreservationObligations)
+    (h37 : GraphZeroObligations) : nativeTheory ⊢
+      IPRAExpressionNative.nativeNoZero (positiveShift child) 🡘
+        ∼mappedNativeRefutation embedding :=
+  IPRAExpressionNative.equivalence_of_bridge (positiveShift child) (polynomialBridge h38 h37)
+
+theorem standard_equivalence
+    (h38 : AdaptiveQM38ConditionalTransferDraft.ZeroPreservationObligations)
+    (h37 : GraphZeroObligations) : IPRAStandardTheory.standardTheory ⊢
+      IPRAExpressionNative.nativeNoZero (positiveShift child) 🡘
+        ∼mappedNativeRefutation embedding :=
+  (IPRAStandardTheory.provable_iff _).2 (native_equivalence h38 h37)
+
+end DiophantineConsistency.AdaptiveQM37ConditionalTransferDraft
+#print axioms DiophantineConsistency.AdaptiveQM37ConditionalTransferDraft.project_pos
+#print axioms DiophantineConsistency.AdaptiveQM37ConditionalTransferDraft.extend_pos
+#print axioms DiophantineConsistency.AdaptiveQM37ConditionalTransferDraft.shifted_no_zero_iff
+#print axioms DiophantineConsistency.AdaptiveQM37ConditionalTransferDraft.native_equivalence
+#print axioms DiophantineConsistency.AdaptiveQM37ConditionalTransferDraft.standard_equivalence
