@@ -1,0 +1,63 @@
+import ResiduePellCoordinates
+import Residue90CompactPortBounds
+import DiophantineConsistency.Compact44.CompactFixedBeta
+import Mathlib.Tactic.NormNum
+
+/-! Source-only compact beta/q bound and witness-preserving power client.
+No Lean execution, provider authentication, or external byte/PDF binding. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.ResidueCompactQBoundDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 Residue90GraphNormsDraft
+open Residue90CompactPortBoundsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Fixed model beta bound, using the existing cast identity without reducing
+its enormous standard numeral. -/
+theorem beta_at_least_46 : (46:V)≤(CompactFixedBeta.betaNat:V) := by
+  have h64 : (64:V)=Exp.exp (6:V) := by
+    have h := ArithmeticStandardCasts.cast_exp (V:=V) 6
+    norm_num at h
+    exact h.symm
+  have hbig : (64:V)≤(CompactFixedBeta.betaNat:V)+1 := by
+    rw [CompactFixedBeta.beta_identity, h64]
+    exact exp_monotone_le.mpr (by norm_num)
+  apply le_iff_lt_succ.mpr
+  exact lt_of_lt_of_le (by norm_num : (46:V)<64) hbig
+
+/-- For the compact first port and positive model J, q is at least 47. -/
+theorem compact_q_at_least_47 (K : ℕ) (v : Fin 13 → V)
+    (hJ : 0<v 0) : (47:V)≤q (ports K) v := by
+  have hb : (46:V)≤(ports K 0:V) := by
+    change (46:V)≤(CompactFixedBeta.betaNat:V)
+    exact beta_at_least_46
+  have hj : (1:V)≤v 0 := pos_iff_one_le.mp hJ
+  change (47:V)≤1+v 0*(ports K 0:V)
+  calc
+    47=1+46 := by ring
+    _≤1+v 0*(ports K 0:V) := _root_.add_le_add (le_refl 1)
+      (le_trans hb (le_mul_of_one_le_left (by simp) hj))
+
+/-- The q≥46 and beta-positivity inputs follow from the fixed first port.
+The graph zero, J/X positivity, gap, rank window, and all inherited imported
+proof/provider obligations remain explicit. K is still an arbitrary natural. -/
+theorem compact_graph_power (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (ports K j:ℤ))) v)
+    (hJ : 0<v 0) (hX : 0<v 6)
+    (hgap : (v 1+1)+(v 2+1)<q (ports K) v)
+    (hwindow : rank (ports K) v+(q (ports K) v)^3+q (ports K) v+1≤(q (ports K) v)^4) :
+    v 6=Exp.exp (rank (ports K) v) := by
+  have hb46 : (46:V)≤(ports K 0:V) := by
+    change (46:V)≤(CompactFixedBeta.betaNat:V)
+    exact beta_at_least_46
+  have hb : 0<(ports K 0:V) := lt_of_lt_of_le (by norm_num : (0:V)<46) hb46
+  have hq : (46:V)≤q (ports K) v :=
+    le_trans (by norm_num : (46:V)≤47) (compact_q_at_least_47 K v hJ)
+  exact ResiduePellCoordinatesDraft.graph_power (ports K) v hz hJ hb hX hgap hwindow hq
+end DiophantineConsistency.ResidueCompactQBoundDraft
+#print axioms DiophantineConsistency.ResidueCompactQBoundDraft.beta_at_least_46
+#print axioms DiophantineConsistency.ResidueCompactQBoundDraft.compact_q_at_least_47
+#print axioms DiophantineConsistency.ResidueCompactQBoundDraft.compact_graph_power
