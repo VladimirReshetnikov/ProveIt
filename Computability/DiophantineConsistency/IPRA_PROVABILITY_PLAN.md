@@ -7579,6 +7579,9 @@ The source-reviewed [84 guard-gap draft](research/ordinary14-84-guard-gap-draft/
 proposes deriving the strict scalar gap from that graph's own zero under
 explicit port casts. It remains unelaborated and does not alone give the rank
 representation or the iPRA endpoint.
+The source-reviewed [84 natural-rank draft](research/ordinary14-84-natural-rank-draft/README.md)
+proposes the signed-to-natural rank representation using that gap and four
+explicit port casts. It has not been elaborated or connected to an endpoint.
 The source-reviewed [modified-carrier gamma-growth draft](research/ordinary14-modified-carrier-gamma-model-draft/README.md)
 proposes the needed strict positivity using existing Pell growth lemmas under
 explicit index and carrier hypotheses. It is unelaborated and is not yet
