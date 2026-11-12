@@ -433,7 +433,7 @@ by progress as primitive, and proves that the derivable sequents are the same
   introduction by cases of an equation is missing. The gated translation
   `pub` replaces every equation `s = t` by `Q_w (I(w, 0; u.s) = I(w, 0; u.t))`.
   Its image is public: every atomic matrix has the guarded shape
-  `I(y, 0; u.h)` on both sides (`NFm.pub_public`). On it the two calculi
+  `I(y, 0; u.h)` on both sides (`NFm.pub_guarded`). On it the two calculi
   agree: `pgprf_pub_iff : PGPrf (Γ.map pub) (pub A) ↔ NPrf Γ A`. A gate is
   opened at `S 0` to the wrapped equation `wr s = wr t`,
   `wr s = I(S 0, 0; u.s)`, whose two sides are admissible sources, and is
@@ -442,7 +442,10 @@ by progress as primitive, and proves that the derivable sequents are the same
   [`guarded_source`](Research/guarded_source/),
   [`guarded_orbit`](Research/guarded_orbit/),
   [`deterministic_auxiliary`](Research/deterministic_auxiliary/) and
-  [`protected_core`](Research/protected_core/).
+  [`protected_core`](Research/protected_core/). The theorem is proved for
+  any gating of equations (`Gating`), and the one-sided guard
+  `s = I(w, s; u.t)` of [`mirror_guard`](Research/mirror_guard/) is a second
+  instance (`Gating.mirror`, `NFm.pub_mirrored`).
 - *Five rules on zero-normal terms, and four schemes.* The clause calculus
   can be put on zero-normal terms with the one successor step as its only
   computation: Refl, Eval, Use, Elim and Intro, each normalizing its
@@ -767,7 +770,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | substitution for the newest variable | `v0prf_iff_nprf : V0Prf (Γ.map NFm.full) A.full ↔ NPrf Γ A` | the rule of `VSPrf` restricted to the variable of index `0` |
 | seven uniform rules, `Q` at an equation read as progressivity | `rprf_emb_iff : RPrf (Γ.map NFm.emb) A.emb ↔ NPrf Γ A`, `rprf_iff_rd : RPrf Γ A ↔ NPrf (Γ.map NFm.rd) A.rd`, `REquivIn.emb_rd`, `rprf_iff_pra`, `rprf_emb_iff_pra`, `RPrf.toNPrf`, `rprf_consistent`, `NPrf.toR`, `NEquiv.rd_emb`, `RPrf.eqInd`, `RPrf.leibniz`, `RPrf.subst` | QE, DE and DI read their mode off the matrix root; equivalence with the kernel through the padding translation |
 | the seed cannot be fixed to zero | `ZTm.mono`, `ZTm.no_zero_test`, `Tm.val_zf` | zero-seeded recursor terms denote monotone functions; the kernel's terms define the zero test |
-| the guarded public language | `pgprf_pub_iff : PGPrf (Γ.map NFm.pub) A.pub ↔ NPrf Γ A`, `pgprf_pub_iff_pra`, `NFm.pub_public`, `NEquiv.pub`, `PGPrf.trW`, `PGPrf.gateE`, `PGPrf.gateI`, `PGPrf.subst` | the root-determined introduction and transport at iterator sources only, on formulas whose atomic matrices are guarded; no `Classical.choice` |
+| the guarded public languages | `pgprf_pub_iff (g : Gating) : PGPrf (Γ.map (NFm.pub g)) (A.pub g) ↔ NPrf Γ A`, `pgprf_pub_iff_pra`, `Gating.gate`, `Gating.mirror`, `NFm.pub_guarded`, `NFm.pub_mirrored`, `NEquiv.pub`, `PGPrf.trW`, `PGPrf.subst` | the root-determined introduction and transport at iterator sources only, on formulas whose atomic matrices are guarded (two-sided, or the one-sided mirror guard); no `Classical.choice` |
 | the mixed closure | `mcprf_iff_rprf : MCPrf Γ A ↔ RPrf Γ A`, `mcprf_iff_rd`, `mcprf_emb_iff`, `mcprf_consistent` | the uniform rules with transport in formula templates as primitive |
 | the target-directed elimination of `Q` | `tqprf_iff_rprf : TQPrf Γ A ↔ RPrf Γ A`, `tqprf_iff_rd : TQPrf Γ A ↔ NPrf (Γ.map NFm.rd) A.rd`, `tqprf_emb_iff : TQPrf (Γ.map NFm.emb) A.emb ↔ NPrf Γ A`, `tqprf_consistent`, `TQPrf.eqInd`, `TQPrf.orbit`, `TQPrf.ren` | QE with one target: a successor target asks for the predecessor instance, any other target for the instance at zero |
 | five rules with clauses and substitution for the newest variable | `vcprf_iff_nprf : VCPrf (Γ.map fun X => Cl.asm (NFm.unQ X).full) (NFm.unQ A).full ↔ NPrf Γ A`, `vcprf_iff_nprf_of_qfree`, `vcprf_iff_pra`, `VCPrf.qfree`, `VCPrf.packet`, `Cl.rep`, `Cl.Inv`, `F6Prf.toVC` | Refl, Sub, Use, Elim and Intro with clause contexts; no `Q`, no transport in a template |
@@ -839,7 +842,7 @@ no `native_decide`.
 | closures in `T_eq` | `TeqClosure` | decidability of quantifier-free formulas; the criterion for agreement of the conditional and the progressive closure |
 | full normal forms | `FullNormalization`, `NativeFullNormal`, `NativeInferredWitness`, `NativeVariableSubstitution`, `NativeNewestVariable`, `NativeWitnessDischarge`, `NativeFullSix`, `NativeFullFive`, `NativeNameClauses`, `NativeOpenClauses`, `NativeExportClauses`, `NativeVariableClauses` | the normalizer for both computations, defined by evaluation, with its laws and its correctness; the kernel without computation rules, `FNPrf`; the same with the opening at an inferred witness, `FOPrf`; the same with substitution for a variable as its only equality rule, `VSPrf`; six rules with Name, `NMPrf`; six rules with one introduction, `F6Prf`; five rules, `N5Prf`; three rule families with clauses, `WDPrf`; the same with the opening at an inferred witness in place of Name, `OCPrf`; the same with a deterministic discharge, `XCPrf`; five rules with clauses and substitution for the newest variable, `VCPrf` |
 | derived rule | `NativeUniqueness` | uniqueness of iteration |
-| public language | `NativePublic` | the calculus `PGPrf` with the root-determined introduction and transport at iterator sources; the gated translation `pub`, the predicate `Public`, and the equivalence with the kernel on translated sequents |
+| public language | `NativePublic` | the calculus `PGPrf` with the root-determined introduction and transport at iterator sources; gatings of equations (`Gating`), the translation `pub`, the predicate `PublicBy`, and the equivalence with the kernel on translated sequents |
 | prefix form | `NativePrefix` | a `Q`-free formula is `k` binders `D` and one equation |
 | an obstruction | `ZeroSeedObstruction` | terms with a zero-seeded recursor denote monotone functions, so the seed of the iterator cannot simply be deleted |
 | progressive reading | `NativeProgressive`, `NativeProgressiveRules`, `NativeProgressiveLeibniz`, `NativeProgressiveEmbedding`, `NativeTargetClosure`, `NativeProgressiveRoundTrip`, `NativeMixedClosure` | the seven uniform rules of `uniform_progress`, `RPrf`; the reading `NFm.rd` of `Q` at a literal equation as progressivity; soundness in the kernel and in iPRA, and consistency; inside `RPrf`: substitution, weakening and cut, the equality rules, equation induction, and the Leibniz rule for all formulas; the padding translation `NFm.emb` and the equivalence `rprf_emb_iff : RPrf (Γ.map NFm.emb) A.emb ↔ NPrf Γ A`; the calculus `TQPrf` with the target-directed elimination, equivalent to `RPrf` on the same formulas; the second formula round trip and the faithfulness of the progressive reading |
@@ -905,8 +908,8 @@ The connectives are native macros. With `sel(v, A, B)` the selector formula
 | `reversal_core` | Adopted as `NativeReversal`: the delivered module compiled after four typed-target fixes (`rprf_iff_nprf`, `reversal_iff_pra`, `pra_iff_reversal`). |
 | `guarded_source` | Its key lemma is proved: the class `ZKernel` has no logical rule, only equation induction, and `ZKernel.trF` recovers unrestricted transport from it. Its guarded public language is formalized in the common form of `NativePublic` (see `protected_core` below). |
 | `deterministic_auxiliary`, `guarded_orbit` | Their aim, source selection together with a root-determined introduction, is proved on the full native language as `mprf_iff_nprf`. The guarded public language is proved in a common form (`NativePublic`, `pgprf_pub_iff`); their auxiliary formulas are not formalized. |
-| `protected_core` | Proved, in the native language (`NativePublic`). `PGPrf` is the kernel with the root-determined introduction and with transport at iterator sources only; `NFm.pub` puts every equation under the closure of its gate, so that every atomic matrix is guarded and the two sides of an opened gate are iterators; `NFm.pub_public`, `NEquiv.pub : NEquiv A.pub A`, and `pgprf_pub_iff : PGPrf (Γ.map pub) (pub A) ↔ NPrf Γ A`. The proof uses neither `Classical.choice` nor the bi-interpretation. Differences from the package: the native language has `Q` as a formula, where the package has `D` only and `Q` as an administrative resource; equations at the root are gated, not wrapped as `W(s) = W(t)`; the certificate format is not modelled. |
-| `mirror_guard` | Not formalized: its guard is one-sided, `a = I(y, a; u.h)`, so the left side of an opened gate is not an iterator and its source restriction is the weaker one of `mirror_core` (no literal `0`). The route of `NativePublic` would need the renaming-only structural rules of `NativeMirror`. |
+| `protected_core` | Proved, in the native language (`NativePublic`). `PGPrf` is the kernel with the root-determined introduction and with transport at iterator sources only; `NFm.pub .gate` puts every equation under the closure of its gate, so that every atomic matrix is guarded and the two sides of an opened gate are iterators; `NFm.pub_guarded`, `NEquiv.pub`, and `pgprf_pub_iff .gate : PGPrf (Γ.map pub) (pub A) ↔ NPrf Γ A`. The proof uses neither `Classical.choice` nor the bi-interpretation. Differences from the package: the native language has `Q` as a formula, where the package has `D` only and `Q` as an administrative resource; equations at the root are gated, not wrapped as `W(s) = W(t)`; the certificate format is not modelled. |
+| `mirror_guard` | Proved, in the native language (`NativePublic`): the one-sided guard `s = I(w, s; u.t)` is the gating `Gating.mirror`, every atomic matrix of a translated formula is mirrored (`NFm.pub_mirrored`), and `pgprf_pub_iff .mirror : PGPrf (Γ.map pub) (pub A) ↔ NPrf Γ A`, with the root-determined introduction and with transport at iterator sources only, which is stronger than the package's exclusion of the literal `0`. An opened mirror gate `s = J`, `J = I(S 0, s; u.t)`, gives `J = s` and `J = t`, hence the wrapped equation. The same differences from the package as for `protected_core` apply. |
 | `guarded_core` | Its aim, one root-determined introduction, is reached without changing the formula language by `wprf_iff_nprf`. Its own route through guarded atomic matrices is proved in the common form of `NativePublic` (`pgprf_pub_iff`), with `Q` kept as a formula; clause contexts in place of `Q` are not formalized. |
 | `scope_and_closure` | Its checker results concern Python programs. Its mixed closure is proved (`NativeMixedClosure`): `MCPrf` is the uniform calculus with transport in an arbitrary formula template as its primitive equality rule, and `mcprf_iff_rprf : MCPrf Γ A ↔ RPrf Γ A`, since that transport is a derived rule of `RPrf`. Hence `mcprf_iff_rd`, `mcprf_emb_iff` and `mcprf_consistent`. Its obstruction note is proved too (`ZeroSeedObstruction`): in a term language whose recursor has its seed fixed to zero, even with an update that sees the counter, every term denotes a function that is nondecreasing in each variable (`ZTm.mono`), so no term is the zero test (`ZTm.no_zero_test`), while `sel(x, 1, 0)` of the kernel's language is (`Tm.val_zf`). The statement is about denotations in the natural numbers only. |
 | `register_graph` | Not formalized. It is a different term language (`J` with two bound variables) over ordinary logic, so it would need a second bi-interpretation with iPRA from scratch. |
@@ -995,8 +998,7 @@ marked as conjectures is proved here.
    hypothesis or its converse, is closed under transport at iterator
    sources, because a second premise outside computation can only be matched
    by a constant template. An invariant that also covers `QE`, `DE` and the
-   introduction is not known. The same question for the one-sided guard of
-   `mirror_guard` is open as well.
+   introduction is not known.
 
 Build with one module per invocation, for example
 

@@ -1,12 +1,12 @@
 import ConciseIPRA.NativeProgressiveRules
 
 /-!
-# The guarded public language
+# The guarded public languages
 
 The packages `Research/guarded_core`, `guarded_source`, `guarded_orbit`,
-`deterministic_auxiliary` and `protected_core` restrict the formulas of a
-certificate to a *public* language, on which two restrictions of the rules
-are compatible:
+`deterministic_auxiliary`, `protected_core` and `mirror_guard` restrict the
+formulas of a certificate to a *public* language, on which two restrictions
+of the rules are compatible:
 
 * the introduction is determined by the root of the matrix alone: progress at
   a literal equation, cases at a compound matrix, with no choice bit and no
@@ -23,25 +23,33 @@ converse is not claimed for arbitrary formulas: a hypothesis `x = y` between
 variables is not a transport source of `PGPrf`, and the introduction by cases
 of an equation is not an instance of the root-determined rule.  Whether
 `PGPrf` is strictly weaker than the kernel on arbitrary sequents is not
-proved here.  The public language removes both obstacles.
+proved here.  A public language removes both obstacles.
 
-* `NFm.pub` translates a formula by replacing every equation `s = t` with the
-  closure `Q_w (I(w, 0; u.s) = I(w, 0; u.t))` of its gate.  The matrix of that
-  closure has the guarded shape `I(y, 0; u.h)` on both sides, and no matrix
-  of a translated formula is a bare equation (`NFm.pub_public`).  The
-  translation commutes with substitution, and a formula is interderivable
-  with its translation in the kernel (`NEquiv.pub`).
-* `pgprf_pub_iff`: `PGPrf (Γ.map pub) (pub A) ↔ NPrf Γ A`.
+A `Gating` is an atomic matrix `G(s, t)(w)` whose closure `Q_w G(s, t)(w)`
+stands for the equation `s = t`.  Two gatings are given:
 
-In `PGPrf` the gate is opened at `S 0` to the *wrapped* equation
-`wr s = wr t`, where `wr s = I(S 0, 0; u.s)` is an iterator.  Wrapped
-equations are transported freely, because both of their sides are admissible
-sources (`PGPrf.trW`), and they are closed again by progress
-(`PGPrf.gateI`).  Equation induction is done on the wrapped matrix
-(`NPrf.toPG`, the case `qIInd`).
+* `Gating.gate`, the two-sided guard `I(w, 0; u.s) = I(w, 0; u.t)` of the
+  guarded packages;
+* `Gating.mirror`, the one-sided guard `s = I(w, s; u.t)` of `mirror_guard`.
+
+`NFm.pub g` translates a formula by replacing every equation with the
+closure of its matrix.  The only atomic matrices of a translated formula are
+matrices of the gating (`NFm.pub_guarded`, `NFm.pub_mirrored`), the
+translation commutes with substitution, and a formula is interderivable with
+its translation in the kernel (`NEquiv.pub`).
+
+* `pgprf_pub_iff g`: `PGPrf (Γ.map (pub g)) (pub g A) ↔ NPrf Γ A`.
+
+In `PGPrf` a closure of either gating is opened at `S 0` to the *wrapped*
+equation `wr s = wr t`, where `wr s = I(S 0, 0; u.s)` is an iterator.
+Wrapped equations are transported freely, because both of their sides are
+admissible sources (`PGPrf.trW`), and they are closed again by progress.
+Equation induction is done on the wrapped matrix (`NPrf.toPG`, the case
+`qIInd`).  The translation is the same for an equation in every position, so
+`QE`, `DE` and the introduction by cases are translated rule for rule.
 
 The native language has `Q` as a formula, and the translation uses it for the
-closure of a gate; in the packages a public formula has `D` only and `Q` is
+closure of a matrix; in the packages a public formula has `D` only and `Q` is
 an administrative resource.  The packages' own certificate formats (clause
 contexts in place of `Q`, auxiliary formulas, the wrapper
 `W(s) = I(0, s; u.0)` for equations at the root) are not formalized here.
@@ -88,91 +96,6 @@ theorem Tm.subst_wr (σ : Fin n → Tm m) (a : Tm n) :
   simp [Tm.wr]
 
 theorem Tm.shift_wr (a : Tm n) : Syn.shift (Tm.wr a) = Tm.wr (Syn.shift a) := Tm.subst_wr _ a
-
-namespace NFm
-
-/-- The gated translation: every equation is replaced by the closure of its
-gate. -/
-def pub : {n : ℕ} → NFm n → NFm n
-  | _, .eq s t => .Q (gate (Syn.var 0) (NFm.eq s t).shift)
-  | _, .Q B => .Q (pub B)
-  | _, .D B => .D (pub B)
-
-theorem pub_subst (A : NFm n) : ∀ {m : ℕ} (σ : Fin n → Tm m),
-    (A.subst σ).pub = A.pub.subst σ := by
-  induction A with
-  | eq s t =>
-    intro m σ
-    show NFm.Q (gate (Syn.var 0) ((NFm.eq s t).subst σ).shift)
-      = (NFm.Q (gate (Syn.var 0) (NFm.eq s t).shift)).subst σ
-    rw [subst_Q, gate_subst, Syn.subst_var, Syn.up_zero, shift_subst_up]
-  | Q B ih =>
-    intro m σ
-    show NFm.Q ((B.subst (up σ)).pub) = NFm.Q (B.pub.subst (up σ))
-    rw [ih]
-  | D B ih =>
-    intro m σ
-    show NFm.D ((B.subst (up (up σ))).pub) = NFm.D (B.pub.subst (up (up σ)))
-    rw [ih]
-
-theorem pub_shift (A : NFm n) : A.shift.pub = A.pub.shift := pub_subst A _
-
-theorem map_pub_shift (Γ : List (NFm n)) :
-    (Γ.map NFm.shift).map pub = (Γ.map pub).map NFm.shift := by
-  rw [List.map_map, List.map_map]
-  exact List.map_congr_left fun A _ => pub_shift A
-
-theorem pub_isEq (A : NFm n) : A.pub.isEq = false := by
-  cases A <;> rfl
-
-theorem eta_pub (A : NFm k) (a : Tm n) : eta A.pub a = zero := by
-  unfold eta
-  rw [pub_isEq]
-  rfl
-
-end NFm
-
-/-- The term is an iterator. -/
-def Tm.IsIter : {n : ℕ} → Tm n → Prop
-  | _, .iter _ _ _ => True
-  | _, _ => False
-
-/-- The term has the guarded shape `I(y, 0; u.h)`, where `y` is the variable
-with index `0`. -/
-def Tm.IsGuard : {n : ℕ} → Tm n → Prop
-  | _, .iter (.var i) .zero _ => i.val = 0
-  | _, _ => False
-
-namespace NFm
-
-/-- A guarded atomic matrix: an equation with both sides of the guarded
-shape. -/
-def Guarded : {n : ℕ} → NFm n → Prop
-  | _, .eq s t => s.IsGuard ∧ t.IsGuard
-  | _, _ => False
-
-/-- The public language: an equation between iterators; a binder over a
-guarded atomic matrix; a binder over a compound public matrix. -/
-def Public : {n : ℕ} → NFm n → Prop
-  | _, .eq s t => s.IsIter ∧ t.IsIter
-  | _, .Q B => B.Guarded ∨ (B.isEq = false ∧ Public B)
-  | _, .D B => B.Guarded ∨ (B.isEq = false ∧ Public B)
-
-/-- Every translated formula is public. -/
-theorem pub_public (A : NFm n) : A.pub.Public := by
-  induction A with
-  | eq s t => exact Or.inl ⟨rfl, rfl⟩
-  | Q B ih => exact Or.inr ⟨pub_isEq B, ih⟩
-  | D B ih => exact Or.inr ⟨pub_isEq B, ih⟩
-
-end NFm
-
-/-- A formula is interderivable with its translation, in the kernel. -/
-theorem NEquiv.pub (A : NFm n) : NEquiv A.pub A := by
-  induction A with
-  | eq s t => exact NEquiv.qGate (.eq s t)
-  | Q B ih => exact NEquiv.Q ih
-  | D B ih => exact NEquiv.D ih
 
 namespace PGPrf
 
@@ -419,7 +342,7 @@ theorem gateZero (s t : Tm n) : PGPrf Γ (.eq (Tm.sel zero zero s) (Tm.sel zero 
   exact k
 
 /-- Opening a gated equation: the wrapped equation. -/
-theorem gateE {s t : Tm n} (h : PGPrf Γ (NFm.eq s t).pub) :
+theorem gateE {s t : Tm n} (h : PGPrf Γ (.Q (NFm.gate (Syn.var 0) (NFm.eq s t).shift))) :
     PGPrf Γ (.eq (Tm.wr s) (Tm.wr t)) := by
   have k := PGPrf.qE (succ zero) h (by rw [NFm.gate_shift_inst]; exact gateZero s t)
   rw [NFm.gate_shift_inst] at k
@@ -427,7 +350,7 @@ theorem gateE {s t : Tm n} (h : PGPrf Γ (NFm.eq s t).pub) :
 
 /-- Closing a wrapped equation: the gated equation, by progress. -/
 theorem gateI {s t : Tm n} (h : PGPrf Γ (.eq (Tm.wr s) (Tm.wr t))) :
-    PGPrf Γ (NFm.eq s t).pub := by
+    PGPrf Γ (.Q (NFm.gate (Syn.var 0) (NFm.eq s t).shift)) := by
   show PGPrf Γ (.Q (.eq (Tm.sel (Syn.var 0) zero (Syn.shift s))
     (Tm.sel (Syn.var 0) zero (Syn.shift t))))
   refine qIProg _ _ ?_
@@ -449,18 +372,215 @@ theorem gateI {s t : Tm n} (h : PGPrf Γ (.eq (Tm.wr s) (Tm.wr t))) :
   exact trans (succ zero) zero (Syn.shift (Syn.shift t))
     (trans (succ zero) zero (Syn.shift (Syn.shift s)) a₁ hw) (eqSymm a₂)
 
+/-- Opening a mirrored equation: the wrapped equation. -/
+theorem mirE {s t : Tm n}
+    (h : PGPrf Γ (.Q (.eq (Syn.shift s) (Tm.sel (Syn.var 0) (Syn.shift s) (Syn.shift t))))) :
+    PGPrf Γ (.eq (Tm.wr s) (Tm.wr t)) := by
+  have h0 : PGPrf Γ ((NFm.eq (Syn.shift s)
+      (Tm.sel (Syn.var 0) (Syn.shift s) (Syn.shift t))).subst (inst zero)) := by
+    simp only [NFm.subst_eq, Tm.subst_sel, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+    exact eqSymm (selZero s t)
+  have k := PGPrf.qE (succ zero) h h0
+  simp only [NFm.subst_eq, Tm.subst_sel, Syn.subst_var, Syn.inst_zero,
+    Syn.subst_inst_shift] at k
+  -- `J = I(S 0, s; u.t)` is equal to both `s` and `t`
+  exact euclid (succ zero) zero (Syn.shift (Tm.sel (succ zero) s t))
+    (wrCong (succ zero) s (Syn.shift t) (selSucc zero s t))
+    (wrCong (succ zero) s (Syn.shift t) (eqSymm k))
+
+/-- Closing a wrapped equation: the mirrored equation, by progress. -/
+theorem mirI {s t : Tm n} (h : PGPrf Γ (.eq (Tm.wr s) (Tm.wr t))) :
+    PGPrf Γ (.Q (.eq (Syn.shift s) (Tm.sel (Syn.var 0) (Syn.shift s) (Syn.shift t)))) := by
+  refine qIProg _ _ ?_
+  simp only [NFm.subst_eq, Tm.subst_sel, Syn.subst_var, Syn.repl_zero, Syn.subst_repl_shift]
+  have hw : PGPrf (NFm.eq (Syn.shift s) (Tm.sel (Syn.var 0) (Syn.shift s) (Syn.shift t))
+        :: Γ.map NFm.shift)
+      (.eq (Tm.wr (Syn.shift s)) (Tm.wr (Syn.shift t))) := by
+    have k : PGPrf (Γ.map NFm.shift)
+        (.eq (Syn.shift (Tm.wr s)) (Syn.shift (Tm.wr t))) := h.shift
+    rw [Tm.shift_wr, Tm.shift_wr] at k
+    exact k.wk
+  have x₁ := euclid (succ zero) zero (Syn.shift (Syn.shift s)) hw (wrEq (Syn.shift s))
+  have x₂ := wrapR (succ (Syn.var 0)) (Syn.shift s) (Syn.shift (Syn.shift t))
+    (selSucc (Γ := NFm.eq (Syn.shift s) (Tm.sel (Syn.var 0) (Syn.shift s) (Syn.shift t))
+      :: Γ.map NFm.shift) (Syn.var 0) (Syn.shift s) (Syn.shift t))
+  exact trans (succ zero) zero (Syn.shift (Syn.shift t)) x₁ (eqSymm x₂)
+
 end PGPrf
+
+/-- A mirrored equation is interderivable with its equation, in the kernel. -/
+theorem NEquiv.qMirror (s t : Tm n) :
+    NEquiv (.Q (.eq (Syn.shift s) (Tm.sel (Syn.var 0) (Syn.shift s) (Syn.shift t))))
+      (.eq s t) := by
+  constructor
+  · have h0 : NPrf [NFm.Q (.eq (Syn.shift s) (Tm.sel (Syn.var 0) (Syn.shift s) (Syn.shift t)))]
+        ((NFm.eq (Syn.shift s) (Tm.sel (Syn.var 0) (Syn.shift s) (Syn.shift t))).subst
+          (inst zero)) := by
+      simp only [NFm.subst_eq, Tm.subst_sel, Syn.subst_var, Syn.inst_zero,
+        Syn.subst_inst_shift]
+      exact NPrf.eqSymm (NPrf.selZero s t)
+    have k := NPrf.qE (succ zero) NPrf.hyp0 h0
+    simp only [NFm.subst_eq, Tm.subst_sel, Syn.subst_var, Syn.inst_zero,
+      Syn.subst_inst_shift] at k
+    exact NPrf.eqTrans k (NPrf.selSucc zero s t)
+  · refine .qIProg _ _ ?_
+    simp only [NFm.subst_eq, Tm.subst_sel, Syn.subst_var, Syn.repl_zero, Syn.subst_repl_shift]
+    have h : NPrf (NFm.eq (Syn.shift s) (Tm.sel (Syn.var 0) (Syn.shift s) (Syn.shift t))
+          :: [NFm.eq s t].map NFm.shift)
+        (.eq (Syn.shift s) (Syn.shift t)) :=
+      .hyp (List.mem_cons_of_mem _ List.mem_cons_self)
+    exact NPrf.eqTrans h (NPrf.eqSymm (NPrf.selSucc _ _ _))
+
+/-- A gating of equations: an atomic matrix whose closure stands for an
+equation, in the kernel and, through the wrapped equation, in `PGPrf`. -/
+structure Gating where
+  /-- The matrix of the equation `s = t`; its variable has index `0`. -/
+  mat : ∀ {n : ℕ}, Tm n → Tm n → NFm (n + 1)
+  mat_isEq : ∀ {n : ℕ} (s t : Tm n), (mat s t).isEq = true
+  mat_subst : ∀ {n m : ℕ} (s t : Tm n) (σ : Fin n → Tm m),
+    (mat s t).subst (up σ) = mat (Syn.subst σ s) (Syn.subst σ t)
+  opn : ∀ {n : ℕ} {Γ : List (NFm n)} {s t : Tm n},
+    PGPrf Γ (.Q (mat s t)) → PGPrf Γ (.eq (Tm.wr s) (Tm.wr t))
+  cls : ∀ {n : ℕ} {Γ : List (NFm n)} {s t : Tm n},
+    PGPrf Γ (.eq (Tm.wr s) (Tm.wr t)) → PGPrf Γ (.Q (mat s t))
+  equiv : ∀ {n : ℕ} (s t : Tm n), NEquiv (.Q (mat s t)) (.eq s t)
+
+/-- The two-sided guard `I(w, 0; u.s) = I(w, 0; u.t)`. -/
+def Gating.gate : Gating where
+  mat s t := NFm.gate (Syn.var 0) (NFm.eq s t).shift
+  mat_isEq _ _ := rfl
+  mat_subst s t σ := by
+    show (NFm.gate (Syn.var 0) (NFm.eq s t).shift).subst (up σ)
+      = NFm.gate (Syn.var 0) ((NFm.eq s t).subst σ).shift
+    rw [NFm.gate_subst, Syn.subst_var, Syn.up_zero, NFm.shift_subst_up]
+  opn := PGPrf.gateE
+  cls := PGPrf.gateI
+  equiv s t := NEquiv.qGate (.eq s t)
+
+/-- The one-sided guard `s = I(w, s; u.t)`. -/
+def Gating.mirror : Gating where
+  mat s t := .eq (Syn.shift s) (Tm.sel (Syn.var 0) (Syn.shift s) (Syn.shift t))
+  mat_isEq _ _ := rfl
+  mat_subst s t σ := by
+    simp only [NFm.subst_eq, Tm.subst_sel, Syn.subst_var, Syn.up_zero, Syn.subst_up_shift]
+  opn := PGPrf.mirE
+  cls := PGPrf.mirI
+  equiv := NEquiv.qMirror
+
+namespace NFm
+
+/-- The translation into the public language of a gating: every equation is
+replaced by the closure of its matrix. -/
+def pub (g : Gating) : {n : ℕ} → NFm n → NFm n
+  | _, .eq s t => .Q (g.mat s t)
+  | _, .Q B => .Q (pub g B)
+  | _, .D B => .D (pub g B)
+
+variable (g : Gating)
+
+theorem pub_subst (A : NFm n) : ∀ {m : ℕ} (σ : Fin n → Tm m),
+    (A.subst σ).pub g = (A.pub g).subst σ := by
+  induction A with
+  | eq s t =>
+    intro m σ
+    show NFm.Q (g.mat (Syn.subst σ s) (Syn.subst σ t)) = NFm.Q ((g.mat s t).subst (up σ))
+    rw [g.mat_subst]
+  | Q B ih =>
+    intro m σ
+    show NFm.Q ((B.subst (up σ)).pub g) = NFm.Q ((B.pub g).subst (up σ))
+    rw [ih]
+  | D B ih =>
+    intro m σ
+    show NFm.D ((B.subst (up (up σ))).pub g) = NFm.D ((B.pub g).subst (up (up σ)))
+    rw [ih]
+
+theorem pub_shift (A : NFm n) : A.shift.pub g = (A.pub g).shift := pub_subst g A _
+
+theorem map_pub_shift (Γ : List (NFm n)) :
+    (Γ.map NFm.shift).map (pub g) = (Γ.map (pub g)).map NFm.shift := by
+  rw [List.map_map, List.map_map]
+  exact List.map_congr_left fun A _ => pub_shift g A
+
+theorem pub_isEq (A : NFm n) : (A.pub g).isEq = false := by
+  cases A <;> rfl
+
+theorem eta_pub (A : NFm k) (a : Tm n) : eta (A.pub g) a = zero := by
+  unfold eta
+  rw [pub_isEq]
+  rfl
+
+end NFm
+
+/-- The term is an iterator. -/
+def Tm.IsIter : {n : ℕ} → Tm n → Prop
+  | _, .iter _ _ _ => True
+  | _, _ => False
+
+/-- The term has the guarded shape `I(y, 0; u.h)`, where `y` is the variable
+with index `0`. -/
+def Tm.IsGuard : {n : ℕ} → Tm n → Prop
+  | _, .iter (.var i) .zero _ => i.val = 0
+  | _, _ => False
+
+namespace NFm
+
+/-- A guarded atomic matrix: an equation with both sides of the guarded
+shape. -/
+def Guarded : {n : ℕ} → NFm n → Prop
+  | _, .eq s t => s.IsGuard ∧ t.IsGuard
+  | _, _ => False
+
+/-- A mirrored atomic matrix: `a = I(y, a; u.h)`, where `y` is the variable
+with index `0`. -/
+def Mirrored : {n : ℕ} → NFm n → Prop
+  | _, .eq a (.iter (.var i) a' _) => i.val = 0 ∧ a' = a
+  | _, _ => False
+
+/-- The public language over a class `P` of atomic matrices: an equation
+between iterators; a binder over an atomic matrix in `P`; a binder over a
+compound public matrix. -/
+def PublicBy (P : ∀ {n : ℕ}, NFm n → Prop) : {n : ℕ} → NFm n → Prop
+  | _, .eq s t => s.IsIter ∧ t.IsIter
+  | _, .Q B => P B ∨ (B.isEq = false ∧ PublicBy P B)
+  | _, .D B => P B ∨ (B.isEq = false ∧ PublicBy P B)
+
+/-- Every translated formula is public, over the matrices of its gating. -/
+theorem pub_publicBy (g : Gating) {P : ∀ {n : ℕ}, NFm n → Prop}
+    (hP : ∀ {n : ℕ} (s t : Tm n), P (g.mat s t)) (A : NFm n) : (A.pub g).PublicBy @P := by
+  induction A with
+  | eq s t => exact Or.inl (hP s t)
+  | Q B ih => exact Or.inr ⟨pub_isEq g B, ih⟩
+  | D B ih => exact Or.inr ⟨pub_isEq g B, ih⟩
+
+/-- With the two-sided guard, every atomic matrix of a translated formula is
+guarded. -/
+theorem pub_guarded (A : NFm n) : (A.pub .gate).PublicBy @Guarded :=
+  pub_publicBy .gate (fun _ _ => ⟨rfl, rfl⟩) A
+
+/-- With the one-sided guard, every atomic matrix of a translated formula is
+mirrored. -/
+theorem pub_mirrored (A : NFm n) : (A.pub .mirror).PublicBy @Mirrored :=
+  pub_publicBy .mirror (fun _ _ => ⟨rfl, rfl⟩) A
+
+end NFm
+
+/-- A formula is interderivable with its translation, in the kernel. -/
+theorem NEquiv.pub (g : Gating) (A : NFm n) : NEquiv (A.pub g) A := by
+  induction A with
+  | eq s t => exact g.equiv s t
+  | Q B ih => exact NEquiv.Q ih
+  | D B ih => exact NEquiv.D ih
 
 variable {Γ : List (NFm n)} {A : NFm n}
 
 /-- Every kernel derivation becomes a derivation of `PGPrf` between the
 translations. -/
-theorem NPrf.toPG (h : NPrf Γ A) : PGPrf (Γ.map NFm.pub) A.pub := by
+theorem NPrf.toPG (g : Gating) (h : NPrf Γ A) : PGPrf (Γ.map (NFm.pub g)) (A.pub g) := by
   induction h with
   | hyp h => exact .hyp (List.mem_map_of_mem h)
-  | iterZero a h => exact PGPrf.gateI (PGPrf.wrCong zero a h (.iterZero a h))
-  | iterSucc c a h => exact PGPrf.gateI (PGPrf.wrCong (succ c) a h (.iterSucc c a h))
-  | trOne h _ _ ih₁ ih₂ => exact PGPrf.gateI (PGPrf.trW h (PGPrf.gateE ih₁) (PGPrf.gateE ih₂))
+  | iterZero a h => exact g.cls (PGPrf.wrCong zero a h (.iterZero a h))
+  | iterSucc c a h => exact g.cls (PGPrf.wrCong (succ c) a h (.iterSucc c a h))
+  | trOne h _ _ ih₁ ih₂ => exact g.cls (PGPrf.trW h (g.opn ih₁) (g.opn ih₂))
   | qE t _ _ ih₁ ih₂ =>
     rw [NFm.pub_subst] at ih₂ ⊢
     exact .qE t ih₁ ih₂
@@ -470,60 +590,64 @@ theorem NPrf.toPG (h : NPrf Γ A) : PGPrf (Γ.map NFm.pub) A.pub := by
   | @dICase _ Γ B t _ ih =>
     rw [List.map_cons, NFm.map_pub_shift, NFm.pub_shift] at ih
     simp only [NFm.pub_subst] at ih
-    refine .dI B.pub t ?_
+    refine .dI (B.pub g) t ?_
     rw [NFm.eta_pub, ← NFm.shift_subst_inst_zero]
     exact ih
   | @qIInd n Γ s t _ ih =>
     rw [List.map_cons, NFm.map_pub_shift, NFm.pub_subst] at ih
     -- equation induction on the wrapped matrix
-    have hM : PGPrf (Γ.map NFm.pub) (.Q (.eq (Tm.wr s) (Tm.wr t))) := by
+    have hM : PGPrf (Γ.map (NFm.pub g)) (.Q (.eq (Tm.wr s) (Tm.wr t))) := by
       refine PGPrf.qIProg _ _ ?_
-      have c := ih.cut (Δ := NFm.eq (Tm.wr s) (Tm.wr t) :: (Γ.map NFm.pub).map NFm.shift)
+      have c := ih.cut
+        (Δ := NFm.eq (Tm.wr s) (Tm.wr t) :: (Γ.map (NFm.pub g)).map NFm.shift)
         fun C hC => by
           rcases List.mem_cons.1 hC with rfl | hC
-          · exact PGPrf.gateI PGPrf.hyp0
+          · exact g.cls PGPrf.hyp0
           · exact .hyp (List.mem_cons_of_mem _ hC)
       rw [← NFm.pub_subst] at c
-      have c' : PGPrf (NFm.eq (Tm.wr s) (Tm.wr t) :: (Γ.map NFm.pub).map NFm.shift)
+      have c' : PGPrf (NFm.eq (Tm.wr s) (Tm.wr t) :: (Γ.map (NFm.pub g)).map NFm.shift)
           (.eq (Tm.wr (Syn.subst (repl (succ (Syn.var 0))) s))
-            (Tm.wr (Syn.subst (repl (succ (Syn.var 0))) t))) := PGPrf.gateE c
+            (Tm.wr (Syn.subst (repl (succ (Syn.var 0))) t))) := g.opn c
       show PGPrf _ (.eq (Syn.subst (repl (succ (Syn.var 0))) (Tm.wr s))
         (Syn.subst (repl (succ (Syn.var 0))) (Tm.wr t)))
       rw [Tm.subst_wr, Tm.subst_wr]
       exact c'
-    -- the closure of the gated matrix, by cases
-    show PGPrf (Γ.map NFm.pub) (.Q (NFm.eq s t).pub)
-    refine PGPrf.qICases _ (NFm.pub_isEq _) ?_
+    -- the closure of the translated matrix, by cases
+    show PGPrf (Γ.map (NFm.pub g)) (.Q ((NFm.eq s t).pub g))
+    refine PGPrf.qICases _ (NFm.pub_isEq g _) ?_
     rw [← NFm.pub_subst, ← NFm.pub_subst, ← NFm.pub_shift]
-    have b : PGPrf (((NFm.eq s t).subst (inst zero)).shift.pub :: (Γ.map NFm.pub).map NFm.shift)
+    have b : PGPrf ((((NFm.eq s t).subst (inst zero)).shift.pub g)
+          :: (Γ.map (NFm.pub g)).map NFm.shift)
         (.eq (Tm.wr (Syn.shift (Syn.subst (inst zero) s)))
-          (Tm.wr (Syn.shift (Syn.subst (inst zero) t)))) := PGPrf.gateE PGPrf.hyp0
-    have h0 : PGPrf (((NFm.eq s t).subst (inst zero)).shift.pub :: (Γ.map NFm.pub).map NFm.shift)
+          (Tm.wr (Syn.shift (Syn.subst (inst zero) t)))) := g.opn PGPrf.hyp0
+    have h0 : PGPrf ((((NFm.eq s t).subst (inst zero)).shift.pub g)
+          :: (Γ.map (NFm.pub g)).map NFm.shift)
         ((NFm.eq (Tm.wr s) (Tm.wr t)).subst (repl zero)) := by
       rw [← NFm.shift_subst_inst_zero]
       show PGPrf _ (.eq (Syn.shift (Syn.subst (inst zero) (Tm.wr s)))
         (Syn.shift (Syn.subst (inst zero) (Tm.wr t))))
       rw [Tm.subst_wr, Tm.subst_wr, Tm.shift_wr, Tm.shift_wr]
       exact b
-    have r : PGPrf (((NFm.eq s t).subst (inst zero)).shift.pub :: (Γ.map NFm.pub).map NFm.shift)
+    have r : PGPrf ((((NFm.eq s t).subst (inst zero)).shift.pub g)
+          :: (Γ.map (NFm.pub g)).map NFm.shift)
         (.eq (Syn.subst (repl (succ (Syn.var 0))) (Tm.wr s))
           (Syn.subst (repl (succ (Syn.var 0))) (Tm.wr t))) :=
       PGPrf.qStep (.eq (Tm.wr s) (Tm.wr t)) hM.shift.wk h0
     rw [Tm.subst_wr, Tm.subst_wr] at r
-    exact PGPrf.gateI r
+    exact g.cls r
 
-/-- **The guarded public language.**  The calculus with the root-determined
-introduction and transport at iterator sources only derives the translation
-of a sequent exactly when the kernel derives the sequent. -/
-theorem pgprf_pub_iff : PGPrf (Γ.map NFm.pub) A.pub ↔ NPrf Γ A :=
-  ⟨fun h => (NEquiv.pub A).mp (h.toNPrf.cut fun B hB => by
+/-- **The public language of a gating.**  The calculus with the
+root-determined introduction and transport at iterator sources only derives
+the translation of a sequent exactly when the kernel derives the sequent. -/
+theorem pgprf_pub_iff (g : Gating) : PGPrf (Γ.map (NFm.pub g)) (A.pub g) ↔ NPrf Γ A :=
+  ⟨fun h => (NEquiv.pub g A).mp (h.toNPrf.cut fun B hB => by
       obtain ⟨C, hC, rfl⟩ := List.mem_map.1 hB
-      exact (NEquiv.pub C).mpr (.hyp hC)), NPrf.toPG⟩
+      exact (NEquiv.pub g C).mpr (.hyp hC)), NPrf.toPG g⟩
 
 /-- The same calculus derives the translation of a sequent exactly when iPRA
 proves its reading. -/
-theorem pgprf_pub_iff_pra :
-    PGPrf (Γ.map NFm.pub) A.pub ↔ (Γ.map NFm.toPRA ⊢[PRAAx] A.toPRA) :=
-  pgprf_pub_iff.trans native_iff_pra
+theorem pgprf_pub_iff_pra (g : Gating) :
+    PGPrf (Γ.map (NFm.pub g)) (A.pub g) ↔ (Γ.map NFm.toPRA ⊢[PRAAx] A.toPRA) :=
+  (pgprf_pub_iff g).trans native_iff_pra
 
 end LeanProofs.ConciseIPRA
