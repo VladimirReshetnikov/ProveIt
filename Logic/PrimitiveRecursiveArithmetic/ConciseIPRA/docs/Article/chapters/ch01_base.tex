@@ -974,8 +974,8 @@ is a nest of $r(A)$ selectors over $0$, one for each binder of $A$.  No
 formula is duplicated.  In the measure of \cref{base:def:termsize},
 $|P(z)|=75$, so each occurrence of $x$ adds $74$ nodes.  Any term with the
 two properties named in \cref{base:q:single-binder-inverse} may take the
-place of $P$; the predecessor $P_-$ of \cref{base:prop:pred57} has them and
-$|P_-(z)|=50$, so with it each occurrence adds $49$ nodes
+place of $P$; the predecessor $P_{45}$ of \cref{base:prop:pred45} has them and
+$|P_{45}(z)|=45$, so with it each occurrence adds $44$ nodes
 (\cref{base:rem:pred57}).
 \end{remark}
 
@@ -1130,7 +1130,8 @@ This section draws on the reference statements filed with
 recursion) and, for the predecessor, on the equational derivations of
 \pkg{uniform\_raw}, \pkg{newest\_parameter}, \pkg{parameter\_witness} and
 \pkg{no\_witness}, with a smaller predecessor from \pkg{479\_predecessor57},
-\pkg{absorbing\_orbit} and \pkg{absorbing\_predecessor}, and the replacement of coverage from \pkg{zero\_test\_split}.  The language
+\pkg{absorbing\_orbit}, \pkg{absorbing\_predecessor}, \pkg{pred50} and
+\pkg{fused\_iteration}, and the replacement of coverage from \pkg{zero\_test\_split}.  The language
 has no predecessor and no pairing, and the
 body of an iterator does not see the counter.  The arithmetic is developed
 in this order: a
@@ -1622,8 +1623,11 @@ This subsection draws on \pkg{479\_predecessor57}, which shortens the
 three-cycle and the ramp of \cref{base:thm:pred} and reverses the
 comparison in the saturating counter, on \pkg{absorbing\_orbit}, which
 replaces the factor map by one that sends the odd numbers to $0$ and tests
-the orbit itself, and on \pkg{absorbing\_predecessor}, which has the same
-absorbing factor map and replaces its parity control by a shorter one.
+the orbit itself, on \pkg{absorbing\_predecessor}, which has the same
+absorbing factor map and replaces its parity control by a shorter one, on
+\pkg{pred50}, which tests the orbit with a different orientation, and on
+\pkg{fused\_iteration}, which shortens the three-cycle and fuses the parity
+control with the selection of the factor map.
 The size of the resulting term is measured as follows.
 
 \begin{definition}[Size of a term]
@@ -1637,47 +1641,67 @@ subterm counted at each occurrence.
 \end{definition}
 
 Hence $|\sel(c,a,b)|=1+|c|+|a|+|b|$, $|Z(c)|=|c|+4$, $|N(c)|=|c|+7$,
-$|a+b|=|a|+|b|+3$ and $|2^{x}|=|x|+8$.  Put
+$|a+b|=|a|+|b|+3$ and $|2^{x}|=|x|+8$.  Two three-cycles and ramps
+occur.  The \emph{ceiling} pair, of \pkg{479\_predecessor57}, is
 \[
  J(u)\defeq\It{u}{2}{w}{Z(w)},\qquad
  M_-(n)\defeq\It{n}{0}{u}{J(u)},\qquad
  G_-(n)\defeq\It{n}{0}{u}{\Suc\sel\bigl(M_-(u),\,\Suc u,\,u\bigr)},
 \]
+and the \emph{floor} pair, of \pkg{fused\_iteration}, is
+\[
+ J'(v)\defeq\It{\Suc v}{v}{w}{\sel(w,\Suc v,0)},\qquad
+ M'(n)\defeq\It{n}{0}{v}{J'(v)},\qquad
+ G'(n)\defeq\It{n}{0}{u}{\Suc\sel\bigl(M'(u),\,u,\,\Suc u\bigr)}.
+\]
+Put further
 \[
  \tilde N(k,a)\defeq\It{k}{0}{v}{\sel(v,a,0)},\qquad
  \tilde N(n)\defeq\tilde N(n,n),\qquad
- H_-(u)\defeq\sel\bigl(\tilde N(u),G_-(u),0\bigr),
+ H_-(n)\defeq\It{n}{n}{v}{\sel\bigl(v,G'(n),0\bigr)},
 \]
 \[
- O(y,a)\defeq\It{y}{a}{u}{H_-(u)},\qquad
- \Lambda(x,y)\defeq Z\bigl(O(\Suc y,2^{x})\bigr),
+ H_{51}(u)\defeq\sel\bigl(N(u),G_-(u),0\bigr),\qquad
+ H_{50}(u)\defeq\sel\bigl(\tilde N(u),G_-(u),0\bigr),
 \]
-and
+and, for $H$ one of $H_-$, $H_{51}$, $H_{50}$,
 \[
- \beta_-(k,u)\defeq\sel\bigl(O(\Suc\Suc u,2^{k}),\,u,\,\Suc u\bigr),\qquad
- W_-(t,k)\defeq\It{t}{0}{u}{\beta_-(k,u)},\qquad
- P_-(m)\defeq W_-(m,m).
+ O_H(y,a)\defeq\It{y}{a}{u}{H(u)},\qquad
+ \Lambda_H(x,y)\defeq Z\bigl(O_H(\Suc y,2^{x})\bigr),
 \]
-Written out,
+\[
+ \beta_H(k,u)\defeq\sel\bigl(O_H(\Suc\Suc u,2^{k}),\,u,\,\Suc u\bigr),\qquad
+ W_H(t,k)\defeq\It{t}{0}{u}{\beta_H(k,u)},\qquad
+ P_H(m)\defeq W_H(m,m).
+\]
+The main term is $P_-\defeq P_{H_-}$, and $P_{51}\defeq P_{H_{51}}$,
+$P_{50}\defeq P_{H_{50}}$; we write $O$, $\Lambda$, $\beta_-$, $W_-$ for
+$O_{H_-}$, $\Lambda_{H_-}$, $\beta_{H_-}$, $W_{H_-}$.  Written out,
 \[
  P_-(m)=\It{m}{0}{u}{\sel\bigl(\It{\Suc\Suc u}{2^{m}}{v}{H_-(v)},\,u,\,\Suc u\bigr)},
 \]
-a term whose only free variable is $m$.  The three-cycle $M_-$ iterates the
-zero test from the seed $2$ instead of evaluating $Z(u)+2N(u)$; the ramp
-$G_-$ adds $2$ or $1$ according to whether the state of $M_-$ is zero,
-instead of adding one more than the state of $M$; the factor map $H_-$
-selects $0$ instead of its argument, and its control $\tilde N$, the
-\emph{weighted parity}, is not normalized to $0$ and $1$; and the counter
-tests the orbit $O(\Suc\Suc u,2^k)$ itself, not its parity, with the two
-outputs of the selector in the order of \cref{base:thm:pred}.  On the
-natural numbers $M_-$ runs through $0,2,1,0,\dots$ and
-$G_-(n)=\lceil 3n/2\rceil$, while $M$ runs through $0,1,2,0,\dots$ and
-$G(n)=\lfloor 3n/2\rfloor$; $\tilde N(n)$ is $0$ at even $n$ and $n$ at odd
-$n$; $H_-$ sends $2u$ to $3u$ and every odd number to $0$; so the orbit
-$O(y,2^x)$ is $3^y2^{x-y}$ for $y\le x$ and $0$ for $y>x$, and $\Lambda(x,y)$
-is the indicator of $x\le y$.  These readings are not used.
+a term whose only free variable is $m$.
 
-\begin{lemma}[Three-cycle and ramp of the smaller predecessor]
+Against \cref{base:thm:pred}: the ceiling three-cycle $M_-$ iterates the zero
+test from the seed $2$, and the floor three-cycle $M'$ iterates, from the
+seed $v$ and $\Suc v$ times, the update $w\mapsto\sel(w,\Suc v,0)$, instead of
+evaluating $Z(u)+2N(u)$; the ramps add $1$ or $2$ according to whether the
+state of the three-cycle is zero, instead of adding one more than the state;
+the factor maps select $0$ instead of their argument; $H_{50}$ uses the
+\emph{weighted parity} $\tilde N$, which is not normalized to $0$ and $1$,
+and $H_-$ \emph{fuses} the parity test with the selection: one iteration
+seeded by its argument alternates between $0$ and $G'(n)$; and the counter
+tests the orbit $O_H(\Suc\Suc u,2^k)$ itself, not its parity, with the two
+outputs of the selector in the order of \cref{base:thm:pred}.  On the
+natural numbers $J'$ and $M$ map $0\mapsto 1\mapsto 2\mapsto 0$, $M_-$ runs
+through $0,2,1,0,\dots$, $G'(n)=G(n)=\lfloor 3n/2\rfloor$ and
+$G_-(n)=\lceil 3n/2\rceil$; $\tilde N(n)$ is $0$ at even $n$ and $n$ at odd
+$n$; each of $H_-$, $H_{51}$, $H_{50}$ sends $2u$ to $3u$ and every odd
+number to $0$; so the orbit $O_H(y,2^x)$ is $3^y2^{x-y}$ for $y\le x$ and
+$0$ for $y>x$, and $\Lambda_H(x,y)$ is the indicator of $x\le y$.  These
+readings are not used.
+
+\begin{lemma}[Ceiling three-cycle and ramp]
 \label{base:lem:ramp57}
 $\mathcal E$ derives
 \begin{enumerate}[label=\textup{(\roman*)}]
@@ -1766,6 +1790,53 @@ $3G_-(n)=G_-(3n)+b$ and $b+z=1$,
 No cancellation is used.
 \end{proof}
 
+\begin{lemma}[Floor three-cycle and ramp]
+\label{base:lem:ramp46}
+$\mathcal E$ derives
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $J'(0)=1$, $J'(1)=2$, $J'(2)=0$, $M'(0)=0$ and $M'(\Suc n)=J'(M'(n))$;
+\item $M'(G'(n))=N(n)$;
+\item $G'(0)=0$, $G'(\Suc n)=\Suc\bigl(G'(n)+N(n)\bigr)$ and
+ $G'(\Suc\Suc n)=\Suc\Suc\Suc G'(n)$;
+\item $G'(2n)=3n$;
+\item $G'(3n)=3G'(n)+N(n)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) Write $k_c(w)\defeq\sel(w,c,0)$.  By \rulename{IS}, \rulename{I0} and the
+selector equations, $J'(0)=k_1(0)=1$;
+$J'(1)=k_2(k_2(1))=k_2(0)=2$; and
+$J'(2)=k_3(k_3(k_3(2)))=k_3(k_3(0))=k_3(3)=0$.  The last two equations are
+\rulename{I0} and \rulename{IS}.
+
+(ii) As in the proof of \cref{base:lem:ramp57}(ii), the two-point rule gives,
+for variables $g$ and $b$ in the context $Z(Z(b))=b$,
+\[
+ M'\bigl(\Suc\sel(b,g,\Suc g)\bigr)=\sel\bigl(b,\ J'(M'(g)),\ J'(J'(M'(g)))\bigr),
+ \qquad
+ \sel\bigl(b,\ J'(b),\ J'(J'(b))\bigr)=Z(b):
+\]
+at $b=0$ the first is $M'(\Suc g)=J'(M'(g))$ and at $b=1$ it is
+$M'(\Suc\Suc g)=J'(J'(M'(g)))$; the second is $J'(0)=1=Z(0)$ at $0$ and
+$J'(J'(1))=J'(2)=0=Z(1)$ at $1$.  \rulename{EI} on $n$: the base is
+$M'(G'(0))=M'(0)=0=N(0)$, and in the step, by the induction equation and
+the two identities at $g=G'(n)$, $b=N(n)$,
+\[
+ M'(G'(\Suc n))=M'\bigl(\Suc\sel(N(n),G'(n),\Suc G'(n))\bigr)
+ =\sel\bigl(N(n),J'(N(n)),J'(J'(N(n)))\bigr)=Z(N(n))=N(\Suc n).
+\]
+
+(iii) The first equation is \rulename{I0}.  The two-point rule gives
+$\sel(b,g,\Suc g)=g+b$ in the context $Z(Z(b))=b$: at $0$ both sides are
+$g$, and at $1$ both are $\Suc g=g+1$.  With (ii), $G'(\Suc n)=\Suc\sel(N(n),G'(n),\Suc G'(n))=\Suc(G'(n)+N(n))$.
+These are the first two equations of \cref{base:lem:ramp}(ii) for $G'$ in
+place of $G$.  The proofs of the third equation of \cref{base:lem:ramp}(ii)
+and of \cref{base:lem:ramp}(iii) and (iv) use of $G$ only those two
+equations, \cref{base:lem:parity} and \cref{base:lem:add}; with $G'$ in place
+of $G$ they give the rest of (iii), and (iv) and (v).
+\end{proof}
+
 \begin{lemma}[Weighted parity]
 \label{base:lem:wparity}
 $\mathcal E$ derives, for all terms,
@@ -1806,32 +1877,52 @@ The equation $\tilde N(n)=N(n)$ is not claimed and is false on the natural
 numbers ($\tilde N(3)=3$, $N(3)=1$); (iii) says that the two terms are
 interchangeable as the control of a selector.  The size
 $|\tilde N(t)|=2|t|+5$ is smaller than $|N(t)|=|t|+7$ only when $|t|=1$, as
-in $H_-$.
+in $H_{50}$.
 
-\begin{lemma}[Absorbing factor map and comparator]
+\begin{lemma}[Absorbing factor maps and comparators]
 \label{base:lem:factor57}
-$\mathcal E$ derives $H_-(u)=\sel(N(u),G_-(u),0)$,
-\[
- H_-(0)=0,\qquad H_-(1)=0,\qquad H_-(2u)=3u,\qquad H_-(3u)=3H_-(u),
-\]
-\[
- O(\Suc y,a)=O(y,H_-(a)),\qquad O(y,0)=0,\qquad O(y,3a)=3\,O(y,a),\qquad
- Z(2^{x})=0,
-\]
-and
-\[
- \Lambda(0,y)=1,\qquad \Lambda(\Suc x,0)=0,\qquad
- \Lambda(\Suc x,\Suc y)=\Lambda(x,y),\qquad \Lambda(n,n)=1 .
-\]
+$\mathcal E$ derives
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $H_-(n)=\sel\bigl(N(n),G'(n),0\bigr)$ and $H_{50}(u)=H_{51}(u)$;
+\end{enumerate}
+and, for each $H$ among $H_-$, $H_{51}$, $H_{50}$,
+\begin{enumerate}[label=\textup{(\roman*)},resume]
+\item $H(0)=0$, $H(1)=0$, $H(2u)=3u$ and $H(3u)=3H(u)$;
+\item $O_H(\Suc y,a)=O_H(y,H(a))$, $O_H(y,0)=0$, $O_H(y,3a)=3\,O_H(y,a)$ and
+ $Z(2^{x})=0$;
+\item $\Lambda_H(0,y)=1$, $\Lambda_H(\Suc x,0)=0$,
+ $\Lambda_H(\Suc x,\Suc y)=\Lambda_H(x,y)$ and $\Lambda_H(n,n)=1$.
+\end{enumerate}
 \end{lemma}
 
 \begin{proof}
-The first equation is \cref{base:lem:wparity}(iii) at $a=G_-(u)$, $b=0$.
-With it, $H_-(0)=\sel(N(0),G_-(0),0)=\sel(0,0,0)=0$;
-$H_-(1)=\sel(N(1),G_-(1),0)=\sel(1,G_-(1),0)=0$; and
-$H_-(2u)=\sel(N(2u),G_-(2u),0)=\sel(0,3u,0)=3u$ by \cref{base:lem:parity}
-and \cref{base:lem:ramp57}(iv).  For the fourth equation the two-point rule
-gives, for variables $a,c,d,e$ and $b$ in the context $Z(Z(b))=b$,
+(i) \emph{Fusion.}  Equational cases on $n$.  At $0$,
+$H_-(0)=0=G'(0)=\sel(N(0),G'(0),0)$.  At $\Suc z$, write
+$h(v)\defeq\sel(v,G'(\Suc z),0)$, so that $h(\Suc z)=0$.  By rotation
+(\cref{base:cor:rot}(i)), \cref{base:lem:wparity}(ii) at $k=z$,
+$a=G'(\Suc z)$, and \cref{base:lem:wparity}(i),
+\begin{align*}
+ H_-(\Suc z)&=\It{\Suc z}{\Suc z}{v}{h(v)}=\It{z}{h(\Suc z)}{v}{h(v)}
+  =\It{z}{0}{v}{h(v)}=\tilde N\bigl(z,G'(\Suc z)\bigr)\\
+ &=\sel\bigl(N(z),0,G'(\Suc z)\bigr)=\sel\bigl(Z(N(z)),G'(\Suc z),0\bigr)
+  =\sel\bigl(N(\Suc z),G'(\Suc z),0\bigr).
+\end{align*}
+The second equation is \cref{base:lem:wparity}(iii) at $a=G_-(u)$, $b=0$.
+
+(ii) By (i) it suffices to treat $\sel(N(u),G(u),0)$ for $G$ either $G'$ or
+$G_-$.  Then $H(0)=\sel(0,G(0),0)=G(0)=0$,
+$H(1)=\sel(1,G(1),0)=0$ and $H(2u)=\sel(N(2u),G(2u),0)=\sel(0,3u,0)=3u$, by
+\cref{base:lem:parity} and \cref{base:lem:ramp46}(iv), respectively
+\cref{base:lem:ramp57}(iv).  For $H_-$, the identity
+$\sel(b,3a+b,3c)=3\,\sel(b,a,c)$ of the proof of \cref{base:lem:factor}, at
+$b=N(u)$, $a=G'(u)$, $c=0$, with $3\cdot 0=0$, \cref{base:lem:ramp46}(v) and
+$N(3u)=N(u)$, gives
+\[
+ H_-(3u)=\sel\bigl(N(3u),G'(3u),0\bigr)=\sel\bigl(N(u),3G'(u)+N(u),3\cdot 0\bigr)
+ =3\,\sel\bigl(N(u),G'(u),0\bigr)=3H_-(u).
+\]
+For $H_{51}$ the two-point rule gives, for variables $a,c,d,e$ and $b$ in the
+context $Z(Z(b))=b$,
 \[
  3\,\sel(b,a,c)=\sel(b,3a,3c),\qquad \sel(b,d+b,e)=\sel(b,d,e):
 \]
@@ -1840,44 +1931,51 @@ $3c$, respectively $e$.  Instantiating at $b=N(u)$, $a=G_-(u)$, $c=0$,
 $d=G_-(3u)$ and $e=0$, and using $3\cdot 0=0$, \cref{base:lem:ramp57}(v)
 and $N(3u)=N(u)$,
 \begin{align*}
- 3H_-(u)&=3\,\sel\bigl(N(u),G_-(u),0\bigr)=\sel\bigl(N(u),3G_-(u),0\bigr)
+ 3H_{51}(u)&=3\,\sel\bigl(N(u),G_-(u),0\bigr)=\sel\bigl(N(u),3G_-(u),0\bigr)
   =\sel\bigl(N(u),G_-(3u)+N(u),0\bigr)\\
- &=\sel\bigl(N(u),G_-(3u),0\bigr)=\sel\bigl(N(3u),G_-(3u),0\bigr)=H_-(3u).
+ &=\sel\bigl(N(u),G_-(3u),0\bigr)=\sel\bigl(N(3u),G_-(3u),0\bigr)=H_{51}(3u).
 \end{align*}
-The first orbit equation is rotation (\cref{base:cor:rot}(i)).  The second
+The equations for $H_{50}$ follow from those for $H_{51}$ by (i).
+
+(iii) The first equation is rotation (\cref{base:cor:rot}(i)).  The second
 and third are equation inductions on $y$ with $a$ fixed: the bases are
-\rulename{I0}, and the steps are $O(\Suc y,0)=H_-(O(y,0))=H_-(0)=0$ and
-$O(\Suc y,3a)=H_-(O(y,3a))=H_-(3\,O(y,a))=3H_-(O(y,a))=3\,O(\Suc y,a)$.
+\rulename{I0}, and the steps are $O_H(\Suc y,0)=H(O_H(y,0))=H(0)=0$ and
+$O_H(\Suc y,3a)=H(O_H(y,3a))=H(3\,O_H(y,a))=3H(O_H(y,a))=3\,O_H(\Suc y,a)$.
 Equational cases on $a$ give $Z(2a)=Z(a)$: $Z(2\cdot 0)=Z(0)$, and
 $Z(2(\Suc z))=Z(\Suc\Suc(2z))=0=Z(\Suc z)$; likewise $Z(3a)=Z(a)$, with
 $3(\Suc z)=\Suc\Suc\Suc(3z)$ (\cref{base:lem:add}).  Then $Z(2^{x})=0$ is an
 equation induction: $Z(2^{0})=Z(1)=0$, and $Z(2^{\Suc x})=Z(2\cdot 2^{x})
-=Z(2^{x})=0$, since $2^{\Suc x}=2\cdot 2^{x}$ is \rulename{IS}.  Note
-$O(\Suc 0,a)=H_-(a)$ by \rulename{IS} and \rulename{I0}.  Now
+=Z(2^{x})=0$, since $2^{\Suc x}=2\cdot 2^{x}$ is \rulename{IS}.
+
+(iv) Note $O_H(\Suc 0,a)=H(a)$ by \rulename{IS} and \rulename{I0}.  Now
 \begin{align*}
- \Lambda(0,y)&=Z\bigl(O(\Suc y,1)\bigr)=Z\bigl(O(y,H_-(1))\bigr)=Z\bigl(O(y,0)\bigr)=Z(0)=1,\\
- \Lambda(\Suc x,0)&=Z\bigl(H_-(2\cdot 2^{x})\bigr)=Z(3\cdot 2^{x})=Z(2^{x})=0,\\
- \Lambda(\Suc x,\Suc y)&=Z\bigl(O(\Suc\Suc y,2\cdot 2^{x})\bigr)
-  =Z\bigl(O(\Suc y,H_-(2\cdot 2^{x}))\bigr)=Z\bigl(O(\Suc y,3\cdot 2^{x})\bigr)\\
- &=Z\bigl(3\,O(\Suc y,2^{x})\bigr)=Z\bigl(O(\Suc y,2^{x})\bigr)=\Lambda(x,y).
+ \Lambda_H(0,y)&=Z\bigl(O_H(\Suc y,1)\bigr)=Z\bigl(O_H(y,H(1))\bigr)=Z\bigl(O_H(y,0)\bigr)=Z(0)=1,\\
+ \Lambda_H(\Suc x,0)&=Z\bigl(H(2\cdot 2^{x})\bigr)=Z(3\cdot 2^{x})=Z(2^{x})=0,\\
+ \Lambda_H(\Suc x,\Suc y)&=Z\bigl(O_H(\Suc\Suc y,2\cdot 2^{x})\bigr)
+  =Z\bigl(O_H(\Suc y,H(2\cdot 2^{x}))\bigr)=Z\bigl(O_H(\Suc y,3\cdot 2^{x})\bigr)\\
+ &=Z\bigl(3\,O_H(\Suc y,2^{x})\bigr)=Z\bigl(O_H(\Suc y,2^{x})\bigr)=\Lambda_H(x,y).
 \end{align*}
-The last equation is an equation induction: $\Lambda(0,0)=1$ by the first,
-and $\Lambda(\Suc n,\Suc n)=\Lambda(n,n)$ by the third.
+The last equation is an equation induction: $\Lambda_H(0,0)=1$ by the first,
+and $\Lambda_H(\Suc n,\Suc n)=\Lambda_H(n,n)$ by the third.
 \end{proof}
 
-\begin{proposition}[A predecessor of $50$ nodes]
+\begin{proposition}[A predecessor of $46$ nodes]
 \label{base:prop:pred57}
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item $\proves_{\mathcal E}P_-(0)=0$ and $\proves_{\mathcal E}P_-(\Suc x)=x$;
- hence the same sequents are derivable in $\Nat$ and in $\Teq$.
-\item For a variable $m$, $|P_-(m)|=50$, while the predecessor $P(m)$ of
- \cref{base:thm:pred} has $|P(m)|=75$.
+ hence the same sequents are derivable in $\Nat$ and in $\Teq$.  The same
+ holds for $P_{51}$ and $P_{50}$.
+\item For a variable $m$, $|P_-(m)|=46$, $|P_{50}(m)|=50$ and
+ $|P_{51}(m)|=51$, while the predecessor $P(m)$ of \cref{base:thm:pred} has
+ $|P(m)|=75$.
 \end{enumerate}
 \end{proposition}
 
 \begin{proof}
-(i) By \rulename{I0} and \rulename{IS}, $W_-(0,k)=0$ and
-$W_-(\Suc t,k)=\beta_-(k,W_-(t,k))$.  Since
+(i) Let $H$ be one of $H_-$, $H_{51}$, $H_{50}$, and write $O$, $\Lambda$,
+$\beta_-$, $W_-$, $P_-$ for $O_H$, $\Lambda_H$, $\beta_H$, $W_H$, $P_H$; only
+\cref{base:lem:factor57}(iv) is used.  By \rulename{I0} and \rulename{IS},
+$W_-(0,k)=0$ and $W_-(\Suc t,k)=\beta_-(k,W_-(t,k))$.  Since
 $\Lambda(k,\Suc u)=Z(O(\Suc\Suc u,2^{k}))$,
 \cref{base:lem:wparity}(i) gives
 \[
@@ -1920,48 +2018,157 @@ induction equation.
 by \cref{base:lem:factor57}.  The transfer is \cref{base:lem:E}(iv).
 
 (ii) By \cref{base:def:termsize}, with variables as arguments,
-$|J(u)|=10$, $|M_-(n)|=13$, $|G_-(n)|=21$ (its body has $18$ nodes),
-$|\tilde N(u)|=7$, $|H_-(u)|=1+7+21+1=30$, $|O(y,a)|=|y|+|a|+31$,
-$|\Lambda(x,y)|=4+|O(\Suc y,2^{x})|=|x|+|y|+44=46$,
-$|\beta_-(k,u)|=1+|O(\Suc\Suc u,2^{k})|+1+2=1+43+3=47$ and
-$|P_-(m)|=1+1+1+47=50$.  For the terms of \cref{base:thm:pred},
-$|j(u)|=5+19+3=27$, $|M(n)|=30$, $|G(n)|=38$, $|H(u)|=48$,
-$|L(x,y)|=|x|+|y|+64=66$, $|\beta(k,u)|=1+|L(\Suc\Suc u,k)|+1+2=72$ and
-$|P(m)|=75$.
+$|J'(v)|=1+2+1+(1+1+2+1)=9$, $|M'(n)|=12$, $|G'(n)|=20$ (its body has $17$
+nodes), $|H_-(n)|=1+1+1+(1+1+20+1)=26$, $|O(y,a)|=|y|+|a|+27$,
+$|\Lambda(x,y)|=4+|O(\Suc y,2^{x})|=|x|+|y|+40=42$,
+$|\beta_-(k,u)|=1+|O(\Suc\Suc u,2^{k})|+1+2=1+39+3=43$ and
+$|P_-(m)|=1+1+1+43=46$.  For the ceiling pair, $|J(u)|=10$, $|M_-(n)|=13$
+and $|G_-(n)|=21$; with $|\tilde N(u)|=7$, $|H_{50}(u)|=1+7+21+1=30$ and
+$|H_{51}(u)|=1+8+21+1=31$, so that $|O_H(y,a)|=|y|+|a|+|H(u)|+1$ and
+$|P_H(m)|=3+1+(3+9+|H(u)|+1)+3=|H(u)|+20$, which is $50$ and $51$.  For the
+terms of \cref{base:thm:pred}, $|j(u)|=5+19+3=27$, $|M(n)|=30$, $|G(n)|=38$,
+$|H(u)|=48$, $|L(x,y)|=|x|+|y|+64=66$,
+$|\beta(k,u)|=1+|L(\Suc\Suc u,k)|+1+2=72$ and $|P(m)|=75$.
 \end{proof}
 
-The two intermediate terms of the sources are
+The other terms of the sources are
 \begin{align*}
  H_{57}(u)&\defeq\sel\bigl(N(u),G_-(u),u\bigr),\qquad
  L_{57}(x,y)\defeq N\bigl(\It{y}{2^{x}}{u}{H_{57}(u)}\bigr),\\
- P_{57}(m)&\defeq\It{m}{0}{u}{\sel\bigl(L_{57}(m,\Suc u),\,\Suc u,\,u\bigr)},\\
- H_{51}(u)&\defeq\sel\bigl(N(u),G_-(u),0\bigr),\\
- P_{51}(m)&\defeq\It{m}{0}{u}{\sel\bigl(\It{\Suc\Suc u}{2^{m}}{v}{H_{51}(v)},\,u,\,\Suc u\bigr)}.
+ P_{57}(m)&\defeq\It{m}{0}{u}{\sel\bigl(L_{57}(m,\Suc u),\,\Suc u,\,u\bigr)}.
 \end{align*}
+The orientation of \pkg{pred50} runs the orbit the other way.  For $H$ one
+of $H_-$, $H_{51}$ put
+\[
+ K_H(x,y)\defeq Z\bigl(O_H(y,2^{x})\bigr),\qquad
+ \beta'_H(k,u)\defeq\sel\bigl(O_H(k,2^{\Suc u}),\,\Suc u,\,u\bigr),
+\]
+\[
+ W'_H(t,k)\defeq\It{t}{0}{u}{\beta'_H(k,u)},\qquad P'_H(m)\defeq W'_H(m,m),
+\]
+and $P_{45}\defeq P'_{H_-}$, $P'_{50}\defeq P'_{H_{51}}$.  Written out,
+\[
+ P_{45}(m)=\It{m}{0}{u}{\sel\bigl(\It{m}{2^{\Suc u}}{v}{H_-(v)},\,\Suc u,\,u\bigr)}.
+\]
+On the natural numbers $K_H(x,y)$ is the indicator of $x<y$.  The term
+$P'_{50}$ is the one of \pkg{pred50}; the term $P_{45}$, which combines its
+orientation with the fused factor map of \pkg{fused\_iteration}, is new in
+the article and is stated by no package, and its derivation below reuses the
+arguments of the two packages.
+
+\begin{proposition}[A predecessor of $45$ nodes]
+\label{base:prop:pred45}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For $H$ one of $H_-$, $H_{51}$, $\proves_{\mathcal E}P'_H(0)=0$ and
+ $\proves_{\mathcal E}P'_H(\Suc x)=x$; hence the same sequents are derivable
+ in $\Nat$ and in $\Teq$.
+\item For a variable $m$, $|P_{45}(m)|=45$ and $|P'_{50}(m)|=50$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i) Of the factor map $H$ the argument uses exactly the following
+equations, all proved for $H_-$ and for $H_{51}$ in \cref{base:lem:factor57}:
+$H(1)=0$ and $H(2a)=3a$ (part (ii)); rotation $O_H(\Suc y,a)=O_H(y,H(a))$,
+$O_H(y,0)=0$ and $O_H(y,3a)=3\,O_H(y,a)$ (part (iii), the last two proved
+there from $H(0)=0$ and $H(3a)=3H(a)$ of part (ii)).  It uses, besides,
+$Z(2^{x})=0$ and $Z(3a)=Z(a)$ (proof of part (iii)), which do not involve
+$H$, the selector laws \cref{base:lem:interp}(ii) and
+\cref{base:lem:wparity}(i), and the computation equations.  It uses no
+property of the parity $N$ and no other property of $H$; in particular the
+form $\sel(N(u),\cdot,0)$ of $H_{51}$, and the fusion of
+\cref{base:lem:factor57}(i), are not used.  Write $K$, $\beta'$, $W'$, $P'$
+for $K_H$, $\beta'_H$, $W'_H$, $P'_H$, and $O$ for $O_H$.
+
+\emph{Comparator.}  By \rulename{I0}, $K(x,0)=Z(2^{x})=0$.  By $2^{0}=1$
+(\rulename{I0}) and rotation, $K(0,\Suc y)=Z(O(\Suc y,1))=Z(O(y,H(1)))=Z(O(y,0))=Z(0)=1$.  By
+$2^{\Suc x}=2\cdot 2^{x}$ (\rulename{IS}), rotation, $H(2a)=3a$,
+$O(y,3a)=3\,O(y,a)$ and $Z(3a)=Z(a)$,
+\[
+ K(\Suc x,\Suc y)=Z\bigl(O(\Suc y,2\cdot 2^{x})\bigr)
+ =Z\bigl(O(y,H(2\cdot 2^{x}))\bigr)=Z\bigl(O(y,3\cdot 2^{x})\bigr)
+ =Z\bigl(3\,O(y,2^{x})\bigr)=Z\bigl(O(y,2^{x})\bigr)=K(x,y).
+\]
+Equation induction gives $K(n,n)=0$: $K(0,0)=0$ by the first equation, and
+$K(\Suc n,\Suc n)=K(n,n)$ by the third.
+
+\emph{Counter.}  Since $K(\Suc u,k)=Z(O(k,2^{\Suc u}))$,
+\cref{base:lem:wparity}(i) gives
+$\beta'(k,u)=\sel\bigl(Z(O(k,2^{\Suc u})),u,\Suc u\bigr)=\sel\bigl(K(\Suc u,k),u,\Suc u\bigr)$.
+Hence, by the comparator equations and \cref{base:lem:interp}(ii),
+\begin{align*}
+ \beta'(\Suc k,\Suc u)&=\sel\bigl(K(\Suc\Suc u,\Suc k),\Suc u,\Suc\Suc u\bigr)
+  =\sel\bigl(K(\Suc u,k),\Suc u,\Suc\Suc u\bigr)=\Suc\beta'(k,u),\\
+ \beta'(\Suc\Suc k,0)&=\sel\bigl(K(\Suc 0,\Suc\Suc k),0,1\bigr)
+  =\sel\bigl(K(0,\Suc k),0,1\bigr)=\sel(1,0,1)=1.
+\end{align*}
+By \rulename{I0} and \rulename{IS}, $W'(0,k)=0$ and
+$W'(\Suc t,k)=\beta'(k,W'(t,k))$.
+
+\emph{Conjugacy.}  $W'(\Suc t,\Suc\Suc k)=\Suc W'(t,\Suc k)$, by
+\rulename{EI} on $t$ with $k$ fixed: the base is
+$W'(\Suc 0,\Suc\Suc k)=\beta'(\Suc\Suc k,0)=1=\Suc W'(0,\Suc k)$, and the
+step is
+$W'(\Suc\Suc t,\Suc\Suc k)=\beta'(\Suc\Suc k,\Suc W'(t,\Suc k))
+ =\Suc\beta'(\Suc k,W'(t,\Suc k))=\Suc W'(\Suc t,\Suc k)$, by the induction
+equation and the first identity for $\beta'$.
+
+\emph{Below its cap the counter does not saturate.}  $W'(n,\Suc n)=n$, by
+\rulename{EI} on $n$: $W'(0,\Suc 0)=0$, and
+$W'(\Suc n,\Suc\Suc n)=\Suc W'(n,\Suc n)=\Suc n$, by the conjugacy, derived
+with independent variables and instantiated at $t=k=n$, and the induction
+equation.
+
+\emph{The two equations.}  $P'(0)=W'(0,0)=0$, and
+\begin{align*}
+ P'(\Suc x)=W'(\Suc x,\Suc x)
+ &=\beta'\bigl(\Suc x,W'(x,\Suc x)\bigr)=\beta'(\Suc x,x)
+  =\sel\bigl(K(\Suc x,\Suc x),x,\Suc x\bigr)\\
+ &=\sel\bigl(K(x,x),x,\Suc x\bigr)=\sel(0,x,\Suc x)=x.
+\end{align*}
+The transfer is \cref{base:lem:E}(iv).
+
+(ii) By \cref{base:def:termsize}, $|2^{\Suc u}|=1+2+2+5=10$ and
+$|O_H(m,2^{\Suc u})|=1+1+10+|H(v)|$.  For $H_-$, with $|H_-(v)|=26$
+(\cref{base:prop:pred57}(ii)), this is $38$; the body
+$\sel(O_{H_-}(m,2^{\Suc u}),\Suc u,u)$ has $1+38+2+1=42$ nodes; and
+$|P_{45}(m)|=1+1+1+42=45$.  For $H_{51}$, with $|H_{51}(v)|=31$, the same
+count gives $43$, $47$ and $|P'_{50}(m)|=50$.  The comparators have
+$|K_{H_-}(x,y)|=4+1+1+9+26=41$ and $|K_{H_{51}}(x,y)|=46$ nodes.
+\end{proof}
+
 The sizes of the pieces, with variables as arguments, are
 \begin{center}
-\begin{tabular}{lrrrr}
+\begin{tabular}{lrrrrrrr}
 \hline
-term & $P$ & $P_{57}$ & $P_{51}$ & $P_-$\\
+term & $P$ & $P_{57}$ & $P_{51}$ & $P_{50}$ & $P'_{50}$ & $P_-$ & $P_{45}$\\
 \hline
-three-cycle & $30$ & $13$ & $13$ & $13$\\
-ramp & $38$ & $21$ & $21$ & $21$\\
-parity control of the factor map & $8$ & $8$ & $8$ & $7$\\
-factor map & $48$ & $31$ & $31$ & $30$\\
-comparator ($L$, $L_{57}$, and $\Lambda$ with $H_{51}$ or $H_-$) & $66$ & $49$ & $47$ & $46$\\
-predecessor & $75$ & $57$ & $51$ & $50$\\
+three-cycle & $30$ & $13$ & $13$ & $13$ & $13$ & $12$ & $12$\\
+ramp & $38$ & $21$ & $21$ & $21$ & $21$ & $20$ & $20$\\
+parity control of the factor map & $8$ & $8$ & $8$ & $7$ & $8$ & fused & fused\\
+factor map & $48$ & $31$ & $31$ & $30$ & $31$ & $26$ & $26$\\
+comparator & $66$ & $49$ & $47$ & $46$ & $46$ & $42$ & $41$\\
+predecessor & $75$ & $57$ & $51$ & $50$ & $50$ & $46$ & $45$\\
 \hline
 \end{tabular}
 \end{center}
-In $P_{51}$ and $P_-$ the comparator $\Lambda$ is not a subterm: the counter
-tests the orbit $O(\Suc\Suc u,2^m)$ without the outer zero test, by
+The comparators are $L$, $L_{57}$, $\Lambda_{H_{51}}$, $\Lambda_{H_{50}}$,
+$K_{H_{51}}$, $\Lambda$ and $K_{H_-}$.  The orientation of \pkg{pred50} saves
+one node against the orientation of $\Lambda$, with either factor map: the
+orbit counter $m$ and the seed $2^{\Suc u}$ have $1+10$ nodes against $3+9$
+for $\Suc\Suc u$ and $2^{m}$.  In $P_{51}$, $P_{50}$, $P'_{50}$, $P_-$ and
+$P_{45}$ the comparator is
+not a subterm: the counter tests the orbit without the outer zero test, by
 \cref{base:lem:wparity}(i).  Against $P_{57}$ this removes the parity wrapper
-$N(\cdot)$ of $L_{57}$ ($7$ nodes) and costs one successor in the orbit
-counter; the weighted parity saves one more node.  The new three-cycle and
-ramp alone, with the counter of \cref{base:thm:pred}
-($\sel(L_{57}(\Suc\Suc u,m),u,\Suc u)$ as body), give $58$ nodes; the
-counter of $P_{57}$ alone, with $L$, gives $74$.  The saving of $25$ nodes
-concerns one expanded term, not the size of a checker or of a derivation.
+$N(\cdot)$ of $L_{57}$ ($7$ nodes) and costs one successor in the orbit;
+the weighted parity of $H_{50}$ saves one more node; and against $P_{50}$,
+the floor three-cycle saves one node in the clock and so in the ramp, and the
+fused factor map $H_-$ saves four nodes against $H_{50}$ ($26$ against
+$1+7+20+1=29$ with the floor ramp).  The ceiling three-cycle and ramp alone,
+with the counter of \cref{base:thm:pred} ($\sel(L_{57}(\Suc\Suc u,m),u,\Suc u)$
+as body), give $58$ nodes; the counter of $P_{57}$ alone, with $L$, gives
+$74$.  The saving of $30$ nodes, from $P$ to $P_{45}$, concerns one expanded
+term, not the size of a checker or of a derivation.
 
 \begin{proposition}[A lower bound for the parity control]
 \label{base:prop:control-bound}
@@ -1973,8 +2180,8 @@ the natural numbers at $n=k$.
 \item If $c(1)>0$ and $c(2)=0$, then $|c|\ge 7$; the term $\tilde N(n)$
  attains the bound.
 \item If $c$ is such a term and $\sel(c,G_-(n),0)(1)=0$ and
- $\sel(c,G_-(n),0)(2)=3$, then $|\sel(c,G_-(n),0)|\ge 30$; the term $H_-(n)$
- attains the bound.
+ $\sel(c,G_-(n),0)(2)=3$, then $|\sel(c,G_-(n),0)|\ge 30$; the term
+ $H_{50}(n)$ attains the bound.
 \end{enumerate}
 \end{proposition}
 
@@ -1996,13 +2203,84 @@ $\tilde N(2)=\sel(\sel(0,2,0),2,0)=\sel(2,2,0)=0$.
 
 (iii) $G_-(1)=2$ and $G_-(2)=3$.  The value at $1$ is $0$ only if $c(1)>0$,
 and the value at $2$ is $3$ only if $c(2)=0$.  By (ii) $|c|\ge 7$, so the
-size is $1+|c|+21+1\ge 30$.  $H_-(n)$ has $30$ nodes, and $H_-(1)=0$,
-$H_-(2)=3$ by \cref{base:lem:factor57} and $2=2\cdot 1$.
+size is $1+|c|+21+1\ge 30$.  $H_{50}(n)$ has $30$ nodes, and
+$H_{50}(1)=0$, $H_{50}(2)=3$ by \cref{base:lem:factor57} and $2=2\cdot 1$.
 \end{proof}
 
-The bound concerns the control alone and the factor map with the ramp $G_-$
-fixed; it is not a lower bound for a factor map with another ramp or for a
-predecessor.
+The bound concerns the control alone and the factor map of the form
+$\sel(c,G_-(n),0)$ with the ramp $G_-$ fixed; it is not a lower bound for a
+factor map of another form or with another ramp, or for a predecessor.  The
+fused factor map $H_-$, a single iteration seeded by its argument, is of
+another form, and its $26$ nodes do not contradict (iii).
+
+\begin{proposition}[A lower bound for the three-cycle]
+\label{base:prop:clock-bound}
+With the notation of \cref{base:prop:control-bound}, let $f$ be a term whose
+only free variable is $n$, and suppose that its values have a three-cycle
+through $0$: $f(0)=p$, $f(p)=q$ and $f(q)=0$ for distinct positive numbers
+$p$ and $q$.  Then $|f|\ge 9$.  The term $J'(n)$ attains the bound, and so a
+three-cycle of the form $\It{n}{0}{v}{f(v)}$ has at least $12$ nodes,
+attained by $M'$.
+\end{proposition}
+
+\begin{proof}
+By the count $|t|=1+3j+s$, for $j$ iterators and $s$ successors, of the
+proof of \cref{base:prop:control-bound}(ii), a term with at most $8$ nodes
+has $j\le 2$, and $s\le 1$ if $j=2$.
+
+\emph{At most one iterator.}  Then $f$ is $\Suc^\ell n$, $\Suc^\ell 0$ or
+$\Suc^\ell\It{k}{a}{u}{h}$ with $k,a\in\{\Suc^i n,\Suc^i 0\}$ and
+$h\in\{\Suc^r u,\Suc^r n,\Suc^r 0\}$.  A constant has no such cycle, since
+$f(0)=f(p)$ would give $p=q$.  If $\ell>0$ or $f=n$, then $f(q)>0$.  So
+$f=\It{k}{a}{u}{h}$.  If $k$ is the leaf $0$, then $f=a$, treated already.
+Otherwise $k(i)\ge 1$ for every positive $i$, and at positive $i$ the body
+$\Suc^r u$ gives $a(i)+r\,k(i)$, which vanishes at $q$ only if $a$ is the leaf
+$0$ and $r=0$, and then $f$ is identically $0$; the body $\Suc^r n$ gives
+$i+r>0$; and the body $\Suc^r 0$ gives the constant $r$, so that
+$q=f(p)=r=f(q)=0$.  None has the cycle.
+
+\emph{Two iterators and no successor.}  By induction on terms, a term
+without $\Suc$ has the value $0$ when all its free variables have the value
+$0$; so $f(0)=0\neq p$.
+
+\emph{Two iterators and one successor.}  Suppose that the successor is in the
+body of an iterator $X$, and let $Y$ be the other iterator.  If $X$ lies in
+the body of $Y$, then $Y$ is the whole term, its counter has neither a
+successor nor a bound variable, so it has the value $0$ at $n=0$, and $Y$
+returns its seed, which has no successor: $f(0)=0$.  Otherwise the counter of
+$X$ has neither a successor nor a bound variable, so it has the value $0$ at
+$n=0$, $X$ returns its seed, which has no successor, and every subterm has
+the value $0$ at $n=0$: again $f(0)=0$.  Hence the successor is in no body.
+If $f=\Suc t'$, then $f(q)>0$.  So $f=\It{k}{a}{u}{h}$ with the successor in
+$k$ or in $a$.  If it is in $k$, then $a$ and $h$ have no successor and
+$f(0)=0$ as before.  So the successor is in $a$, and $k$ and $h$ have none.
+The second iterator is in $k$, in $a$ or in $h$.
+(1) In $k$: then $a\in\{1,\Suc n\}$ and $h\in\{0,n,u\}$, and $k$ is an
+iterator over the leaves $0$, $n$ and its own state, whose value at a
+positive $i$ is uniformly $0$ or $i$; so at positive $i$ the value of $f$ is
+uniformly one of $0$, $i$, $1$, $i+1$, and $f(q)=0$ forces $f(i)=0$ for all
+positive $i$, whence $q=f(p)=0$.
+(2) In $a$: then $k\in\{0,n\}$ and $h\in\{0,n,u\}$.  If $k=0$ or $h=u$, then
+$f=a$, a term with one iterator, treated above.  Otherwise $k=n$,
+$h\in\{0,n\}$, and $f(i)$ is uniformly $0$ or $i$ at positive $i$, so that
+$q=f(p)$ is $0$ or $p$.
+(3) In $h$: then $a\in\{1,\Suc n\}$ and $k\in\{0,n\}$.  If $k=0$, then
+$f=a>0$.  If $k=n$, then $f(0)=a(0)=1$, so $p=1$; and $h$ is an iterator
+over the leaves $0$, $n$, $u$ and its own state, without successor, whose
+value at a positive $n$ and a positive $u$ is uniformly $0$, $n$ or $u$.
+Then $f(1)=h(1,a(1))\in\{0,1,a(1)\}$, and $q=f(1)\notin\{0,1\}$ forces $a=\Suc n$
+and a body that returns $u$; but then at every positive $i$ the state stays
+$i+1$, and $f(q)=q+1\neq 0$.
+
+So no term with at most $8$ nodes has the cycle.  The term
+$J'(n)=\It{\Suc n}{n}{w}{\sel(w,\Suc n,0)}$ has $9$ nodes and the cycle
+$0\mapsto 1\mapsto 2\mapsto 0$ by \cref{base:lem:ramp46}(i), which holds in
+the natural numbers.  The last claim follows from
+$|\It{n}{0}{v}{f(v)}|=3+|f|$.
+\end{proof}
+
+The bound concerns the update of a three-cycle of this form; it is not a
+lower bound for a clock of another form or for a predecessor.
 
 \begin{remark}[Use of the smaller predecessor; sources]
 \label{base:rem:pred57}
@@ -2011,48 +2289,58 @@ its only free variable is its argument, and it satisfies the two equations
 of \cref{base:thm:pred} in $\mathcal E$, hence in every context and at every
 term.  The constructions of the rest of this section, and the single-binder
 universal of \cref{base:sec:single-binder}, use $P$ only through these
-properties, so $P_-$ may replace $P$ in each of them; with $P_-$ every
-occurrence of a quantified variable in \cref{base:def:single-binder} costs
-$|P_-(z)|-1=49$ added nodes instead of $74$.  Moreover, if two terms $p$ and
+properties, and so do $P_-$ and $P_{45}$, which may replace $P$ in each of
+them; with $P_{45}$ every occurrence of a quantified variable in
+\cref{base:def:single-binder} costs $|P_{45}(z)|-1=44$ added nodes instead of
+$74$ ($45$ with $P_-$).  Moreover, if two terms $p$ and
 $p'$ both satisfy the two equations in $\mathcal E$, then equational cases
 give $p(x)=p'(x)$, so a replacement inside a term yields a provably equal
 term (inside an iterator body by \cref{base:cor:rot}(ii)).  The article keeps
 $P$ as the reference term because its derivation is formalized in Lean.
 
-The intermediate terms have the same derivation.  For $P_{51}$, from
-\pkg{absorbing\_orbit}, omit the first equation of \cref{base:lem:factor57}:
-$H_{51}$ is its right side, and the rest of the proofs of
-\cref{base:lem:factor57,base:prop:pred57} apply with $H_{51}$ in place of
-$H_-$.  For $P_{57}$, from \pkg{479\_predecessor57}, the two identities in
-the proof of \cref{base:lem:factor57}, instantiated at $c=u$ and $e=3u$,
-give $3H_{57}(u)=H_{57}(3u)$; with $H_{57}(2u)=\sel(0,3u,2u)=3u$ and
-$H_{57}(1)=\sel(1,G_-(1),1)=1$ these are the three equations of
-\cref{base:lem:factor}, so the proofs of \cref{base:lem:orbit,base:lem:cmp}
-give the four comparator equations of \cref{base:lem:factor57} for
-$L_{57}$ in place of $\Lambda$, the fourth by the same equation induction; the proof
-of \cref{base:prop:pred57}(i) then applies with $L_{57}(k,\Suc u)$ in place
-of $\Lambda(k,\Suc u)$, without the use of \cref{base:lem:wparity}(i).
-\pkg{absorbing\_predecessor} obtains $P_-$ from $P_{51}$ by two applications
-of the congruence of iterator bodies, using \cref{base:lem:wparity}(iii); the
-weighted parity is built into $H_-$ here, so that the derivation concerns
-$P_-$ directly.
+The terms of the table come from five packages: $P_{57}$ from
+\pkg{479\_predecessor57}, $P_{51}$ from \pkg{absorbing\_orbit}, $P_{50}$ from
+\pkg{absorbing\_predecessor}, $P'_{50}$ from \pkg{pred50}, and $P_-$ from
+\pkg{fused\_iteration}; $P_{45}$ is the combination of
+\cref{base:prop:pred45}.  $P_{50}$ and $P'_{50}$ are different terms of the
+same size: $P'_{50}$ keeps the parity $N$ in its factor map and saves its
+node in the comparator, whose orbit runs $m$ steps from the seed
+$2^{\Suc u}$ instead of $\Suc\Suc u$ steps from $2^m$.  The derivations of
+$P_{51}$ and $P_{50}$ are part of \cref{base:prop:pred57}, and that of
+$P'_{50}$ is part of \cref{base:prop:pred45}.  For $P_{57}$, the
+two identities in the proof of \cref{base:lem:factor57}(ii), instantiated at
+$c=u$ and $e=3u$, give $3H_{57}(u)=H_{57}(3u)$; with
+$H_{57}(2u)=\sel(0,3u,2u)=3u$ and $H_{57}(1)=\sel(1,G_-(1),1)=1$ these are the
+three equations of \cref{base:lem:factor}, so the proofs of
+\cref{base:lem:orbit,base:lem:cmp} give the four comparator equations of
+\cref{base:lem:factor57}(iv) for $L_{57}$ in place of $\Lambda_H$, the fourth
+by the same equation induction; the proof of \cref{base:prop:pred57}(i) then
+applies with $L_{57}(k,\Suc u)$ in place of $\Lambda(k,\Suc u)$, without the
+use of \cref{base:lem:wparity}(i).
 
-The three packages prove the ramp laws by the same induction; the main
-report of \pkg{479\_predecessor57} splits the Boolean value $N(n)$ in the
-induction step, and the detailed notes of all three replace those splits by
-the equational two-point argument, as in the proof above.
-\pkg{absorbing\_predecessor} proves $H_-(3u)=3H_-(u)$ by distributing the
-selector over a sum and $\sel(c,c,0)=0$ instead of the two identities used
-here.  All three prove the predecessor equations through the counter
-$W(t,m)=\It{t}{0}{u}{\sel(L'(m,u),\Suc u,u)}$, with $L'$ the respective
-comparator, the shift $W(\Suc t,\Suc m)=\Suc W(t,m)$, $L'(n,n)=1$ and
-$W(n,n)=n$, followed by a further equation induction that identifies the
-body of the predecessor at $\Suc m$ with that of $W(\cdot,m)$
-(\cref{base:cor:rot}(ii)); the counter $W_-(t,k)$ and the conjugacy between
-the caps $\Suc\Suc k$ and $\Suc k$ used above avoid that induction, as in
-\cref{base:thm:pred}.  \pkg{absorbing\_predecessor} also proves
-\cref{base:prop:control-bound}.  None of the new terms is formalized in Lean
-or Rocq.
+The packages prove the ramp laws by the same inductions; the main report of
+\pkg{479\_predecessor57} splits the Boolean value $N(n)$ in the induction
+step, and the detailed notes of all five replace those splits by the
+equational two-point argument, as in the proofs above.
+\pkg{absorbing\_predecessor} and \pkg{fused\_iteration} prove $H(3u)=3H(u)$
+by distributing the selector over a sum and $\sel(c,c,0)=0$ instead of the
+identities used here.  \pkg{absorbing\_predecessor} obtains $P_{50}$ from
+$P_{51}$ by two applications of the congruence of iterator bodies, using
+\cref{base:lem:wparity}(iii).  \pkg{fused\_iteration} states the fusion of
+\cref{base:lem:factor57}(i) for every template $A(n)$ with
+$\proves_{\mathcal E}A(0)=0$ in place of $G'(n)$, with the same proof.  All
+five prove the predecessor equations through a counter of the form
+$W(t,m)=\It{t}{0}{u}{\sel(L'(m,u),\Suc u,u)}$ (for \pkg{pred50},
+$\sel(K(u,m),u,\Suc u)$), with $L'$ the respective comparator, the shift
+$W(\Suc t,\Suc m)=\Suc W(t,m)$, $L'(n,n)=1$ and $W(n,n)=n$, followed by a
+further equation induction that identifies the body of the predecessor at
+$\Suc m$ with that of $W(\cdot,m)$ (\cref{base:cor:rot}(ii)), and by a
+further body congruence for the step to the final orbit test; the counters
+$W_H(t,k)$ and the conjugacy between the caps $\Suc\Suc k$ and $\Suc k$ used
+above avoid those inductions, as in \cref{base:thm:pred}.
+\pkg{absorbing\_predecessor} also proves \cref{base:prop:control-bound}, and
+\pkg{fused\_iteration} proves \cref{base:prop:clock-bound}.  None of the new
+terms is formalized in Lean or Rocq.
 \end{remark}
 
 \subsection{Coverage from a zero-test split}
@@ -2171,7 +2459,7 @@ theorem with the fixed witness $P(n)$.  Counting one node for each term node
 of \cref{base:def:termsize}, each equation, connective and quantifier, the
 universal closure of $\mathsf{Cov}$ has $10$ nodes and that of
 $\mathsf{Split}$, expanded, has $12$; the existential-free alternative
-$\forall n\,(n=0\vee n=\Suc P_-(n))$ has $8+50=58$ ($65$ with the term
+$\forall n\,(n=0\vee n=\Suc P_{45}(n))$ has $8+45=53$ ($65$ with the term
 $P_{57}$ of \cref{base:sec:pred57}, as \pkg{zero\_test\_split} counts it).  The change removes an
 existential quantifier, not nodes.  Separation stays an axiom of
 $\Teq^{\mathrm{Z}}$ for the reason of \cref{base:rem:sep}: the one-element
@@ -3476,20 +3764,26 @@ can replace $P$ in \cref{base:def:single-binder}.  \pkg{single\_binder} asks
 whether a term simpler than the predecessor serves, and reports that its
 expansion of the same predecessor construction, with all abbreviations
 unfolded, has $75$ nodes; in the measure of \cref{base:def:termsize} this is
-$|P(m)|=75$ (\cref{base:prop:pred57}(ii)).  The terms $P_{57}$, $P_{51}$
-and $P_-$ of \cref{base:sec:pred57}, from \pkg{479\_predecessor57},
-\pkg{absorbing\_orbit} and \pkg{absorbing\_predecessor}, are such terms with
-$57$, $51$ and $50$ nodes.  Is there a smaller term $p(m)$, in the grammar of
-$0$, $\Suc$, variables and the iterator, with $\FV(p(m))=\{m\}$ and
-$\proves_{\Nat}p(\Suc x)=x$, or one with $p(0)=0$ as well?  No lower bound
-for the size of such a term is known; \cref{base:prop:control-bound} bounds
-only the parity control and the factor map with the ramp $G_-$ fixed, and
-excludes neither another ramp nor a construction in which the ramp and the
-control are fused.  The value $50$ is an achieved construction, not a
-minimum.  \pkg{479\_predecessor57} and \pkg{absorbing\_predecessor} also
-ask whether the Lean development of the bridge can be stated with the
-predecessor as a parameter subject only to its two equations, so that $P_-$
-inherits the formalization of $P$; this is not done.
+$|P(m)|=75$ (\cref{base:prop:pred57}(ii)).  The terms $P_{57}$, $P_{51}$,
+$P_{50}$, $P'_{50}$ and $P_-$ of \cref{base:sec:pred57}, from
+\pkg{479\_predecessor57}, \pkg{absorbing\_orbit},
+\pkg{absorbing\_predecessor}, \pkg{pred50} and \pkg{fused\_iteration}, are
+such terms with $57$, $51$, $50$, $50$ and $46$ nodes, and so is the
+combination $P_{45}$ of \cref{base:prop:pred45}, with $45$ nodes.  Is there a smaller
+term $p(m)$, in the grammar of $0$, $\Suc$, variables and the iterator, with
+$\FV(p(m))=\{m\}$ and $\proves_{\Nat}p(\Suc x)=x$, or one with $p(0)=0$ as
+well?  No lower bound for the size of such a term is known.
+\Cref{base:prop:control-bound} bounds only the parity control and a factor
+map of the form $\sel(c,G_-(n),0)$, and \cref{base:prop:clock-bound} only the
+update of a three-cycle; neither bounds a factor map of another form, as the
+fused $H_-$ shows, nor a predecessor built without a three-cycle.  The value
+$45$ is an achieved construction, not a minimum.  \pkg{479\_predecessor57},
+\pkg{absorbing\_predecessor} and \pkg{fused\_iteration} also ask whether the
+Lean development of the bridge can be stated with the predecessor as a
+parameter subject only to its two equations, so that $P_-$ inherits the
+formalization of $P$; this is not done.  Whether the other constructions of
+\cref{base:sec:pred57} combine further, for instance the weighted parity
+$\tilde N$ with another ramp, is not examined.
 \end{question}
 
 \begin{question}[Weighted parity as a selector control]
@@ -3523,15 +3817,17 @@ The counts are checked by a program for $n\le 10$ and the general bound is
 argued only in outline.  Neither is proved here, and the corresponding
 counts for the definitions of the article
 (\cref{base:rem:single-binder-size}) are not computed.
-In the accounting of \pkg{479\_predecessor57}, \pkg{absorbing\_orbit} and
-\pkg{absorbing\_predecessor}, the atomic formula has $4n+4$ nodes and each
-universal adds $7$ nodes for its gate and binder and $p-1$ for the expansion
-of a predecessor of $p$ nodes at the single occurrence of its variable, so
-that the single-binder translation of $F_n$ has $(p+10)n+4$ nodes, with
-binder rank $n$: $85n+4$ for $P$, and $67n+4$, $61n+4$ and $60n+4$ for
-$P_{57}$, $P_{51}$ and $P_-$ (at $n=10$: $674$, $614$ and $604$).  Since each
-$x_i$ occurs once in $F_n$, the last three follow from the count $85n+4$ and
-the differences $|P(z)|-|p(z)|$, but $85n+4$ itself is not proved here.
+In the accounting of \pkg{479\_predecessor57}, \pkg{absorbing\_orbit},
+\pkg{absorbing\_predecessor}, \pkg{pred50} and \pkg{fused\_iteration}, the
+atomic formula has $4n+4$ nodes and each universal adds $7$ nodes for its
+gate and binder and $p-1$ for the expansion of a predecessor of $p$ nodes at
+the single occurrence of its variable, so that the single-binder translation
+of $F_n$ has $(p+10)n+4$ nodes, with binder rank $n$: $85n+4$ for $P$, and
+$67n+4$, $61n+4$, $60n+4$, $56n+4$ and $55n+4$ for $P_{57}$, $P_{51}$,
+$P_{50}$ or $P'_{50}$, $P_-$, and $P_{45}$ (at $n=10$: $674$, $614$, $604$,
+$564$ and $554$).  Since each
+$x_i$ occurs once in $F_n$, these follow from the count $85n+4$ and the
+differences $|P(z)|-|p(z)|$, but $85n+4$ itself is not proved here.
 \end{question}
 
 \begin{question}[Finite blocks under one binder]

@@ -1,0 +1,147 @@
+INDEPENDENT REVIEW OF THE 54-NODE PREDECESSOR
+
+Conclusion: the proposed construction is mathematically valid relative to
+the incoming 57-node package's equational ceiling-ramp lemmas. No coverage,
+successor injectivity, predecessor, general equality reflection or pairing
+is needed in the new part. All inductions below concern literal equations.
+
+Notation: C(v,a,b)=I(v,a;w.b), Z(v)=C(v,1,0), N(v) is parity,
+a+b=I(b,a;w.Sw), 2a=a+a, 3a=(a+a)+a. Associativity of addition permits
+either association for 3a. Inherited facts: N(2a)=0, N(3a)=N(a),
+Z(Z(N(a)))=N(a), R(0)=0, R(2a)=3a, R(3a)+N(a)=3R(a).
+
+1. Purely equational zero-test helpers
+
+C(v,0,0)=0 follows by induction on v, with unused step hypothesis.
+Induction on b with fixed a gives
+
+  Z(a+b)=C(a,Z(b),0).
+
+Base: Z(a)=C(a,1,0). Step: the left side is Z(S(a+b))=0;
+the right side is C(a,0,0)=0.
+
+Induction on a with unused step hypothesis gives
+
+  C(a,Z(a),0)=Z(a).
+
+At zero both sides are 1; at a successor both sides are 0.
+Consequently Z(a+a)=Z(a), and by association and the zero-test addition law
+
+  Z(3a)=Z(a+(a+a))=C(a,Z(a+a),0)=Z(a).
+
+For E(x)=I(x,1;v.v+v), induction on x gives Z(E(x))=0.
+The base is Z(1)=0; the step uses Z(E(x)+E(x))=Z(E(x)).
+
+2. The modified factor map
+
+Define H0(u)=C(N(u),R(u),0). Direct endpoints give H0(0)=H0(1)=0.
+The inherited scaling laws give H0(2u)=3u.
+
+For b=N(u), equation interpolation at b=0 and b=1 gives
+
+  C(b,a+b,0)=C(b,a,0).
+
+This is justified without disjunction: prove it at b=Z(v) by induction
+on v with unused induction hypothesis; substitute v=Z(N(u)) and use
+Z(Z(N(u)))=N(u). Similarly a selector commutes with multiplication by the
+fixed numeral 3. Thus
+
+  3H0(u)=C(b,3R(u),0)
+         =C(b,R(3u)+b,0)
+         =C(b,R(3u),0)
+         =H0(3u).
+
+3. Comparator recurrences
+
+General rotation I(Sy,a;h)=I(y,h(a);h) is an equation induction on y.
+Using H0(3u)=3H0(u), equation induction on y proves
+
+  I(y,3a;H0)=3I(y,a;H0).
+
+Using H0(0)=0, another equation induction gives I(y,0;H0)=0.
+Define K(x,y)=Z(I(y,E(x);H0)). Then
+
+  K(0,0)=Z(1)=0,
+  K(0,Sy)=Z(I(y,H0(1);H0))=Z(0)=1,
+  K(Sx,0)=Z(E(Sx))=0,
+  K(Sx,Sy)=Z(I(Sy,2E(x);H0))
+           =Z(I(y,H0(2E(x));H0))
+           =Z(I(y,3E(x);H0))
+           =Z(3I(y,E(x);H0))
+           =K(x,y).
+
+These equations are the entire interface required below. The informal
+standard-model interpretation K(x,y)=1 iff x<y is unnecessary for the proof.
+
+4. Saturation
+
+Let A_m(u)=C(K(u,m),u,Su) and W(t,m)=I(t,0;u.A_m(u)).
+The comparator equations give
+
+  A_Sm(0)=1,       A_Sm(Su)=S A_m(u).
+
+The second identity uses the generic selector identity
+C(e,Sa,Sb)=S C(e,a,b), proved by induction on e with unused hypothesis.
+Induction on t, keeping m fixed, now gives
+
+  W(St,Sm)=S W(t,m).
+
+At t=0 the first endpoint above proves the identity. In the step, first use
+the induction hypothesis W(St,Sm)=S W(t,m), then A_Sm(Su)=S A_m(u).
+
+Independent equation inductions give K(m,m)=0 and W(m,m)=m. In the latter,
+substitute t=m into the ALREADY PROVED two-variable shift identity; do not
+vary a parameter of an active induction hypothesis. Hence
+
+  W(Sm,m)=A_m(W(m,m))=A_m(m)=C(0,m,Sm)=m.
+
+5. Predecessor
+
+P54(m)=I(m,0;u.C(K(Su,m),u,Su)). Its zero equation is immediate.
+For fixed m define V(t,m)=I(t,0;u.C(K(Su,Sm),u,Su)).
+The comparator recurrence identifies the update pointwise with A_m(u).
+An equation induction on t proves V(t,m)=W(t,m). This is an internal
+iteration-extensionality argument; it is not an assumed binder congruence
+that permits arbitrary pointwise equal bodies to be identified.
+
+Therefore P54(Sm)=V(Sm,m)=W(Sm,m)=m.
+
+6. Scope of the result
+
+This is a term-complexity improvement within the inherited eight-rule
+theory. It is not a new primitive-rule deletion or a smaller proof checker.
+The claimed 54 versus 57 constructor count is a separate syntactic metric
+and must be reported separately from Python token/AST/normalized-byte size.
+
+7. The further 50-node reduction
+
+The subsequently proposed reduction is also valid. The generic equation
+
+  C(Z(v),a,b)=C(v,b,a)
+
+follows by literal-equation induction on v with unused step hypothesis:
+at v=0 both sides equal b, and at v=Sw both equal a. Let
+
+  V50(t,m)=I(t,0;u.C(I(m,E(Su);H0),Su,u)).
+
+For fixed m, the update of V50(t,Sm) equals
+
+  C(K(Su,Sm),u,Su)=C(K(u,m),u,Su)=A_m(u).
+
+The first equality is selector duality; the second is the comparator
+recurrence. Therefore equation induction on the independent counter t,
+holding m fixed, proves V50(t,Sm)=W(t,m). Set t=Sm to obtain
+
+  P50(Sm)=V50(Sm,Sm)=W(Sm,m)=m,
+
+where P50(m)=V50(m,m). Its zero equation is immediate.
+
+Alternatively, duality proves pointwise agreement with the updater of
+P54; equation induction on an independent outer counter proves equality
+of the two iterations before specializing the outer counter to m.
+One must not claim that changing m during the outer induction is permitted.
+
+The P54 construction may thus remain solely an auxiliary verification;
+the final statement can present P50 directly. Its reported 50-node count
+is still the separate fully expanded term-size metric. This does not
+establish the user's requested smaller-axiomatization/checker target.

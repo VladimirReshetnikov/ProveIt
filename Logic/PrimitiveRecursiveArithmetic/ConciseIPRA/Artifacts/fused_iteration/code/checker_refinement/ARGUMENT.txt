@@ -1,0 +1,69 @@
+A TWO-NODE REFINEMENT OF THE LOCAL THREE-FIELD CHECKER
+
+This is a source-level refactoring of an inherited calculus. It deletes no
+logical or arithmetic axiom and does not establish a globally smallest
+axiomatization. The complete module decreases from 267 to 265 AST nodes.
+Its other coordinates are 249 significant tokens and 605 normalized UTF-8
+bytes. Thus it improves the AST coordinate only, not the token/byte envelope.
+
+CONTROL: (k := k - 1) and (s or len(a) == 2) and k
+NEW:     (k := k - 1) * (1 if s else len(a) == 2)
+
+The replacement is the image argument of i in the context-extension operation.
+The preceding argument (the new raw hypothesis) is evaluated first in both
+programs. Python then evaluates the decrement before evaluating the mode test
+in both expressions. Hence the same updated k is visible to the opener and
+to the subsequent continuation. No eigenvariable allocation becomes optional.
+
+At every successful control/candidate frame, k is an integer at most zero
+before the decrement. Put j=k-1, which is strictly negative and truthy.
+The mode is progressive exactly when s is truthy or the current a has length 2.
+
+  condition                       control value       new value
+  s truthy                        j                   j
+  s falsy, len(a)=2                j                   j
+  s falsy, len(a) not equal to 2   False               0
+
+The conditional expression does not evaluate len(a) when s is truthy, exactly
+as the old short-circuit or does. Thus even the order and omission of potentially
+failing len operations are preserved.
+
+The only value difference is False versus integer 0. These are not asserted
+to have the same Python type. Define a relation on internal trees by identifying
+False with 0, True with 1, and applying the relation componentwise to lists and
+tuples. All input values in the integer/list certificate contract are identical
+in the two runs. Every operation of the measured checker respects this relation:
+
+* Truth tests, numeric comparisons, +, -, %, multiplication, and sequence
+  repetition give related values and make the same branch decision.
+* The opener's attempted iteration treats an integer and its Boolean alias
+  alike: both are noniterable, so the same except branch is entered.
+* len, tuple/list shape, unpacking, slicing, structural equality and membership
+  are unchanged; in particular Python compares False and 0 as equal.
+* The code does not use type, is, repr, str, hashing, or serialization on these
+  internal trees. Its only output is the fixed string ACCEPT.
+* Calling i with False or with 0 at root term depth 3 returns respectively
+  False or 0, and these remain related under every later opener traversal.
+
+Induction on the finite dynamic call tree, with an inner induction on loop
+iterations and opener traversals, therefore gives the same verdict and the
+same consumed JSON-line prefix for control and candidate. Their k values and
+mode choices agree exactly; their goals and contexts agree modulo the stated
+Boolean/numeric relation. Exceptions are rejection in both programs. The
+argument is restricted to the inherited finite integer/list certificate
+contract and sufficient implementation resources, not arbitrary Python objects.
+
+The hypothesis membership case consumes no further input in either program.
+Every other successful step consumes the same next line and applies the same
+underlying inference. Consequently the inherited theorem set and its existing
+whole-domain bi-interpretation with iPRA are unchanged. This proof is a written
+simulation argument; the supplied tests do not constitute formal verification
+of the full arithmetic bridge or a universal soundness proof from scratch.
+
+PROVENANCE
+The exact control.py bytes are the ast267.py module in the baseline/code
+subdirectory of ipra_absorbing_predecessor_2026-11-12.zip, retrieved as an
+incoming artifact from VladimirReshetnikov/ProveIt commit
+017961b8abf22b786f53f29ffdf5a51bdbeaac06. The archive's inherited snapshot is
+e85c5e24dba535a296c46cd18fa66a146ce36b8e. The ten tests are unchanged local-scope
+JSON-line fixtures from the same incoming archive.

@@ -1,0 +1,114 @@
+INDEPENDENT MATHEMATICAL AUDIT: THE 47-NODE SATURATING PREDECESSOR
+Final comparison: 2c7617bb03bbbb15a4534c5468f7df8da22c7ab4.
+This updated audit incorporates the three late incoming packages and
+supersedes the initial novelty comparison against the older b9 snapshot.
+
+Candidate (every abbreviation is expanded, no sharing):
+  C(c,a,b) = I(c,a;w.b),             Z(c) = C(c,S0,0),
+  a+b = I(b,a;w.Sw),                N(n) = I(n,0;w.Z(w)),
+  J(v) = I(v,SS0;w.Z(w)),           M(n) = I(n,0;v.J(v)),
+  R(n) = I(n,0;v.S(C(M(v),Sv,v))),  E(n) = I(n,S0;v.v+v),
+  H(v) = I(Sv,0;w.C(w,R(v),0)),
+  O(y,a) = I(y,a;v.H(v)),
+  P(m) = I(m,0;u.C(O(m,E(Su)),Su,u)).
+
+The last display is a 47-constructor scalar term, using only variables,
+zero, successor, and scalar iteration. H has 28 nodes. The independent
+fully expanded AST and literal evaluations at 0,...,6 are recorded in
+predecessor47_independent_values.json; values are 0,0,1,2,3,4,5.
+
+DEPENDENCIES
+The clock/ramp R is inherited from the authenticated 57-node predecessor
+package. Its equationally proved interface is
+  R(2u)=3u, R(3u)+N(u)=3R(u), R(0)=0,
+with N(Su)=Z(Nu), N(2u)=0, N(3u)=N(u), and Z(Z(Nu))=N(u).
+Here 2u and 3u are fixed additions; neither general multiplication nor
+division is used. The ramp proof requires only the two iterator equations,
+ordinary equational reasoning, and induction on literal equations. It
+precedes predecessor, successor injectivity, general recursion, and pairing.
+
+AUDITED PROOF CHAIN, WITH ALL INDUCTION INVARIANTS EQUATIONS
+1. Equational cases (an equation induction whose hypothesis is unused)
+give C(a,a,0)=0, C(Zc,a,b)=C(c,b,a), and
+C(c,Sa,Sb)=S C(c,a,b). The admissible Boolean two-point principle applies
+to N(n) because Z(Z(Nn))=Nn. It never uses excluded middle for formulas.
+
+2. Put U(n,a)=I(n,0;w.C(w,a,0)). Equation induction on n, with a fixed,
+gives U(n,a)=C(Nn,0,a). Its successor step is checked at Nn=0 and Nn=1;
+the latter endpoint uses C(a,a,0)=0. Therefore
+ H(v)=U(Sv,Rv)=C(N(Sv),0,Rv)=C(Nv,Rv,0).
+The substitution a=R(v) is made only after the independent two-parameter
+U identity has been proved; no active induction parameter is changed.
+
+3. Thus H(0)=H(1)=0 and H(2u)=3u. Also H(3u)=3H(u). For the latter, put
+b=N(u). Selector distribution over multiplication by fixed numeral 3 and
+the ramp identity give
+ 3H(u)=C(b,3R(u),0)=C(b,R(3u)+b,0)=C(b,R(3u),0)=H(3u).
+The third equality is the Boolean endpoint identity C(b,a+b,0)=C(b,a,0).
+It uses no cancellation and no assertion that every even integer has a half.
+
+4. Equation inductions yield O(y,3a)=3O(y,a), O(y,0)=0, and rotation
+O(Sy,a)=O(y,H(a)). Equation cases on a yield Z(2a)=Z(a)=Z(3a).
+Equation induction on x then gives Z(E(x))=0, using E(0)=1 and
+E(Sx)=2E(x).
+
+5. Define T(x,y)=Z(O(y,E(x))). The preceding results yield
+ T(x,0)=0, T(0,Sy)=1, T(Sx,Sy)=T(x,y).
+For the recurrence use rotation, H(2a)=3a, orbit scaling, and Z(3a)=Z(a),
+in that order. Equation induction gives T(n,n)=0. No informal order
+semantics, arbitrary predicate induction, or successor injectivity enters.
+
+6. Define the SATURATING UPDATE IN ITS FOLDED FORM
+ beta(k,u)=C(O(k,E(Su)),Su,u).
+By the selector-zero-test identity it also equals C(T(Su,k),u,Su).
+Consequently
+ beta(Sk,Su)=S beta(k,u),             beta(SSk,0)=1.
+The first uses T(SSu,Sk)=T(Su,k) and selector/successor commutation;
+the second uses T(1,SSk)=T(0,Sk)=1.
+
+7. Let W(t,k)=I(t,0;u.beta(k,u)), so P(m)=W(m,m) literally. An equation
+induction on t, with k fixed, gives
+ W(St,SSk)=S W(t,Sk).
+The base uses beta(SSk,0)=1, and the step uses beta-conjugacy. A second
+equation induction gives W(n,Sn)=n, substituting t=k=n in the completed
+conjugacy identity only after it has been proved. Hence
+ P(0)=0,
+ P(Sx)=W(Sx,Sx)=beta(Sx,W(x,Sx))=beta(Sx,x)
+       =C(T(Sx,Sx),x,Sx)=x.
+
+RIGOR CHECKS
+The proof is valid in the pure equational fragment. It never assumes
+coverage, separation, predecessor, injectivity, equality decision,
+general primitive recursion, or iterator-body extensionality. In particular,
+beta is defined using the actual compressed update, and its alternate
+expression is a proved pointwise equality; no silent replacement of
+iterator bodies is needed. Likewise H is the actual 28-node toggle term,
+and all orbit lemmas concern that H after its pointwise factor laws.
+
+NOVELTY SCOPE AT THE FINAL COMPARISON
+The late absorbing_predecessor package already proves the general toggle
+identity U(n,a)=C(N(n),0,a), the absorbing factor laws, and the selector
+zero-test cancellation. Those facts are inherited in the final manuscript.
+That package uses Hhat(v)=C(U(v,v),R(v),0), with30nodes, and a50-node
+predecessor. The new contributions are the direct-payload realization
+H(v)=U(Sv,R(v)), with28nodes, and reversed comparison saving one more node.
+The actual current comparison is50->49->47: three nodes, exactly6%.
+The historical57->47 reduction is10/57 but is not the current baseline.
+
+The late package's sharp30-node bound is confined to raw terms with the
+architecture C(c(v),R(v),0) and fixed21-node R. Our H is outside that
+architecture and therefore does not contradict the bound. No global
+minimum of factor maps, predecessors, or proof checkers is claimed.
+
+The updated predecessor47.tex and DEPENDENCIES.txt were reviewed after
+these corrections. They correctly credit the prior toggle/orbit/selector
+lemmas, state the exact current50-node and reversed49-node controls, and
+give the proper50-to47 and60n+4-to57n+4 comparisons. No mathematical defect
+was found in the updated proof. The overall compact checker target remains
+unmet; the predecessor improvement is a separate arithmetic-term result.
+
+STATUS
+The foregoing is an independent written proof audit plus finite AST evidence.
+It is not an end-to-end Lean/Rocq formalization. The inherited ramp's detailed
+equational proof is available in the authenticated 57-node package and should
+be included or clearly cited in the final deliverable.

@@ -1,0 +1,94 @@
+TWO COMPOSITIONS OF EXISTING VERIFIED CHECKER REFINEMENTS
+Pinned corpus: 203cbef70b358772a43d40ba340209b9ae1d6e32
+Metric: CPython 3.12.14, ast.unparse(ast.parse(source)) plus LF;
+significant tokens excluding layout/comments, all AST nodes, UTF-8 bytes.
+
+Strict 623: (340 tokens, 385 AST nodes, 623 bytes).
+Control strict628: (341,387,628), from incoming atomic_seed_refinement.
+Change only the final lexical alphabet dispatch:
+    old: q = not str(p).strip('0123456789-[], ') and p.pop
+    new: q = str(p).strip('0123456789-[], ') or p.pop
+Let r be the residue string. If r is empty, both evaluate p.pop and then
+make the identical initial q() call. If r is nonempty, neither evaluates
+p.pop; the old q is False and the new q is the nonempty string r. Both are
+noncallable and so the next q() fails before entering the checker. Errors
+while computing p or r are unchanged. Thus normal ACCEPT exits coincide
+for every JSON input, on the ordinary unbounded successful-finite-execution
+reading. No grammar/alphabet checks are removed and all scopes are unchanged.
+This is a composition of the atomic_seed_refinement numeric predicate and
+the absorbing_orbit noncallable-residue trick. No new axiom is deleted.
+
+Native 600: (336 tokens, 378 AST nodes, 600 bytes).
+Control native607: (337,383,607), from incoming 479_predecessor57.
+Retain the exact-integer check int(a) is a. Change only:
+    old: int(a) is a and d % 2 and (not a or a > 1 == a % 2)
+    new: int(a) is a and d % 2 and (a % 2 == (a > 1))
+During public validation v=1, k=0. An evaluated scalar branch first requires
+0 <= a < d, and only an exact integer passes int(a) is a. For nonnegative
+integers n, both predicates select exactly n=0 or odd n>=3. Proof by the
+four cases n=0, n=1, positive even n, odd n>=3. During proof checking v=0,
+the enclosing inequality 0 <= P is true whether the predicate P is true
+or false. The exact-integer guard and the d%2 guard are unchanged; when
+they are true both old and new remaining operations are defined on an
+integer. Hence changing the predicate does not create a new exception.
+The phase changes to zero at the existing first recursive major check,
+before proof-only negative parameters can be used. The complete execution
+therefore makes the same calls and selects the same retained facts and
+conclusions; ACCEPT exits coincide. Finite resource exhaustion is not part
+of the abstract equivalence claim.
+
+Validation: 56 inherited native proof/boundary fixtures plus 29 targeted
+invalid-alphabet/root fixtures, each tested against all four modules in
+normal and -O mode: 680 isolated processes, zero failures. The verifier
+also checks that the AST difference is exactly the stated text replacement,
+and checks the elementary natural-number predicate identity for n=0..5000.
+The written case proof, not this finite check, establishes the identity.
+
+Scope: These are implementation-level refinements of inherited native
+presentations. Strict623 improves the inspected strict normalized-byte
+minimum 628 and AST minimum 386, but not the strict token minimum 334.
+Native600 improves the native normalized-byte minimum607 but not the
+native token/AST envelope. Neither beats the compact guarded envelope
+244/267/478, whose programs use different promised-input contracts.
+
+TOKEN/AST PROFILE COMPOSITIONS
+
+Strict token profile: strict_tokens_candidate.py, (330,380,640), against
+verified_refinements/strict/checker.py, (334,387,654). It combines both
+predicate and residue simplifications. Native token profile:
+native_tokens_candidate.py, (323,369,622), against
+verified_refinements/native/checker.py, (324,374,629). It applies only the
+predicate identity and retains int(a) is a.
+
+In these function-based profiles the empty context g, rather than a v bit,
+marks public validation. Only the initial call has g=[] and k=0. After its
+first scan, the checker appends 0 before reading the instruction or making
+any recursive call. Each recursive context is therefore nonempty. Later
+syntax tests short-circuit through g and do not evaluate the changed parity
+predicate at all. The public scan is governed by k=0 and the same four-case
+nonnegative-integer identity proved above. The strict alphabet gate supplies
+exact-integer/list typing; the native profile retains int(a) is a. The live
+closure over g causes no problem: g first becomes nonempty only after the
+public scan has completed. Thus the entire acceptance relation is preserved.
+
+Both matched pairs passed the same 85 fixtures in normal and -O modes: 680
+additional isolated processes, zero mismatches or expected failures.
+
+A final AST variant strict_ast_candidate.py, (330,379,641), replaces
+    if i(a) in g:
+        return
+    REST
+by
+    if i(a) not in g:
+        REST
+inside the strict token profile. There is nothing following REST in the
+function. Both branches return None in both versions, and REST executes
+under precisely the same condition, with the same prior scan. This is an
+exact operational equivalence that removes one Return AST node. Its test
+script compares 170 new executions against the prior matched execution results.
+
+Combined family envelopes, attained by different programs:
+    strict: old (334,386,628), new (330,379,623);
+    native: old (324,370,607), new (323,369,600).
+The native old 370 AST coordinate was already supplied by incoming
+atomic_seed_refinement/native_goal_checker.py, so the README 374 is stale.

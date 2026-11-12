@@ -1,0 +1,43 @@
+INDEPENDENT REVIEW OF THE 50-NODE PREDECESSOR
+==========================================
+
+Reviewed math_reduction/pred50.tex and math_reduction/pred50.py.
+
+Conclusion: the new predecessor argument is mathematically sound relative
+to the explicitly listed inherited parity and ramp identities. This review
+does not independently reconstruct all of those inherited identities, and
+it is not a formal proof-assistant verification.
+
+The key new factor-map identity H0(3a)=3H0(a) uses the inherited equation
+R(3a)+N(a)=3R(a). For b=N(a), Boolean interpolation gives
+C(b,c+b,0)=C(b,c,0): at b=0 it is c+0=c, while at b=1 both sides are zero.
+Distribution of fixed multiplication by 3 through the selector has the
+same two-endpoint proof. Thus the new H0 homogeneity argument neither
+cancels a summand nor assumes that every even element has a half.
+
+For the comparator, iterator rotation is provable by literal-equation
+induction. The proof of I(y,3a;H0)=3I(y,a;H0) holds a fixed throughout its
+induction on y. Consequently the recurrence K(Sx,Sy)=K(x,y) follows from
+H0(2a)=3a and Z(3a)=Z(a), without any hidden variable-parameter induction.
+The base equations K(x,0)=0 and K(0,Sy)=1 follow respectively from the
+nonzero powers of two and the absorbing state H0(1)=H0(0)=0.
+
+The saturation proof has the correct dependency order. The two-parameter
+identity W(St,Sm)=S W(t,m) is first proved by induction on t with m fixed.
+Only after that theorem is obtained is t instantiated by m to prove
+W(m,m)=m. This avoids the common invalid maneuver of changing a parameter
+of an active induction hypothesis. The recurrence for the intermediate
+P54 then identifies it with W on successor inputs.
+
+The final selector identity C(Z(v),a,b)=C(v,b,a) is proved by equation
+induction with an unused hypothesis. It turns C(K(Su,m),u,Su) directly
+into C(O(Su,m),Su,u), deleting the terminal zero-test occurrence without
+changing the numerical update. Equality of the resulting outer iterators
+is itself an equation-induction theorem, so no extra body-extensionality
+rule is silently assumed.
+
+The Python syntax builder uses fresh binder identifiers and expands every
+macro. Its separate de Bruijn conversion and scope checker count the same
+50 constructor occurrences and leave only n free. The stated metric is
+therefore an expanded arithmetic-term count, not a DAG count or a complete
+proof-checker source count. The latter distinction must remain explicit.

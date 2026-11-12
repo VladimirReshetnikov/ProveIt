@@ -4163,17 +4163,21 @@ This section collects the questions, limits and unproved claims stated by
 the eleven packages named at the beginning of \cref{disch:sec:impl} and by
 \pkg{boolean\_constancy}, and one conjecture recorded in the repository.
 
-\begin{question}[Substitution for a variable on raw terms]
+\begin{question}[Substitution for a variable on raw terms: theorems]
+\label{disch:q:rawvsub}
 On full normal forms substitution for a variable is the only equality rule
 needed (\cref{disch:thm:vsub}). On raw terms the rows of a packet are not
 literal, and \rulename{Param}, which also joins two equations at the root,
-suffices (\cref{disch:thm:param}). Is substitution for a variable alone,
-without joining at the root, strictly weaker on raw terms? The repository
-records the affirmative answer as a conjecture. With the additional rule
-\rulename{Alias}, substitution for a parameter in the backward direction
-suffices (\cref{disch:cor:alias-newest}); \pkg{alias\_back} states that
-this does not settle the conjecture, which concerns substitution for a
-variable without such a rule.
+suffices (\cref{disch:thm:param}). For open sequents the repository's
+conjecture is now settled: substitution for a variable alone, without
+joining at the root, is strictly weaker on raw terms
+(\cref{comp:thm:rawvsub,comp:cor:rawvsub}, from \pkg{head\_conversion}); the
+sequent $I(0,x;u.u)=y\proves x=y$ separates them. The reading used there
+validates every theorem of $\Nat$ with an empty context, so it does not
+separate theorems. Do the calculi with substitution for a variable alone
+derive every theorem of $\Nat$ in the empty context? With the additional
+rule \rulename{Alias}, substitution for a parameter in the backward
+direction suffices for all sequents (\cref{disch:cor:alias-newest}).
 \end{question}
 
 \begin{question}[The least equality interface on raw terms]

@@ -1,0 +1,145 @@
+{
+  "title": "Checked reductions for concise iPRA presentations",
+  "date": "2026-11-12",
+  "repository": "VladimirReshetnikov/ProveIt",
+  "pinned_commit": "203cbef70b358772a43d40ba340209b9ae1d6e32",
+  "comparison_directory": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA",
+  "metric_runtime": "CPython 3.12.14",
+  "metric_normalization": "ast.unparse(ast.parse(source)) plus one LF, complete standalone module",
+  "programs": {
+    "compact477.py": {
+      "significant_tokens": 273,
+      "ast_nodes": 305,
+      "normalized_utf8_bytes": 477,
+      "sha256": "6e0e54494600728e71441e603ec8a7499d40541e64ed40c0e0f19fc367fd6261"
+    },
+    "native323.py": {
+      "significant_tokens": 323,
+      "ast_nodes": 369,
+      "normalized_utf8_bytes": 622,
+      "sha256": "3b338822b346beb5ef792bd00c6896163fdd195610f0e89d9950ac42e03fd8cb"
+    },
+    "native600.py": {
+      "significant_tokens": 336,
+      "ast_nodes": 378,
+      "normalized_utf8_bytes": 600,
+      "sha256": "03b52b47b53584cb1416a4ce8f842ce5883b5da6e9164be05d0aa30e22c4a005"
+    },
+    "strict330.py": {
+      "significant_tokens": 330,
+      "ast_nodes": 379,
+      "normalized_utf8_bytes": 641,
+      "sha256": "71e75876bace5428a369b247d87e8ffd9eb1484e7d556956ed82cc7bf5596fa0"
+    },
+    "strict623.py": {
+      "significant_tokens": 340,
+      "ast_nodes": 385,
+      "normalized_utf8_bytes": 623,
+      "sha256": "9dba596eb4a850039f9c32df55370a99b0655f2c6f839fe5c22077870d77c16d"
+    }
+  },
+  "observed_coordinate_envelopes": {
+    "compact": {
+      "before": [
+        244,
+        267,
+        478
+      ],
+      "after": [
+        244,
+        267,
+        477
+      ]
+    },
+    "strict_native": {
+      "before": [
+        334,
+        386,
+        628
+      ],
+      "after": [
+        330,
+        379,
+        623
+      ]
+    },
+    "native_goal_validated": {
+      "before": [
+        324,
+        370,
+        607
+      ],
+      "after": [
+        323,
+        369,
+        600
+      ]
+    },
+    "coordinate_order": [
+      "significant_tokens",
+      "AST_nodes",
+      "normalized_UTF8_bytes"
+    ],
+    "different_programs_attain_different_coordinates": true,
+    "universal_lower_bounds": false
+  },
+  "mathematics": {
+    "calculus": "Inherited native scalar iterator Eq/Q/D presentation with the explicit ordinary realization described in the report",
+    "new_logical_or_arithmetic_axiom_deleted": false,
+    "new_mathematical_axiomatization_claimed": false,
+    "whole_domain_bi_interpretation_with_full_first_order_ipra": "Inherited native/iPRA bridge, preserved by the proved checker transformations",
+    "equality": "Actual numerical equality",
+    "numerical_comparison_graphs": "x=y",
+    "formula_round_trips": "Inherited internal equivalences",
+    "equiconsistency": "Follows from the inherited bi-interpretation",
+    "new_lean_or_rocq_verification": false
+  },
+  "acceptance_proofs": {
+    "strict623.py": "Exact successful-finite-execution equivalence to strict628 via noncallable residue dispatch",
+    "strict330.py": "Exact equivalence to strict334 via natural-coordinate predicate, nonempty-context phase invariant, residue dispatch, and equivalent conditional-block form",
+    "native600.py": "Exact equivalence to native607 via natural-coordinate predicate with retained exact-integer guard and existing phase bit",
+    "native323.py": "Exact equivalence to native324 via natural-coordinate predicate with retained exact-integer guard and nonempty-context phase invariant",
+    "compact477.py": "Canonical guarded public-theorem preservation argument supplied separately; arbitrary raw-certificate acceptance equality is not asserted",
+    "resource_exhaustion_equivalence_claimed": false
+  },
+  "input_contracts": {
+    "strict623.py_and_strict330.py": "Validate the full native public Eq/D goal and the entire exact integer/list alphabet, including unused parsed entries",
+    "native600.py_and_native323.py": "Validate the full native public Eq/D goal; do not claim whole-input alphabet validation",
+    "compact477.py": "Assumes a canonical closed guarded Eq/D goal and finite exact integer/list certificate data; uses the header-based protocol and does not include independent public grammar/alphabet validation"
+  },
+  "validated_profile_evidence": {
+    "fixtures": 85,
+    "inherited_fixtures": 56,
+    "targeted_fixtures": 29,
+    "normal_and_optimized_python": true,
+    "process_executions": 1530,
+    "failures": 0,
+    "receipts": [
+      "validation/refinement_validation.json",
+      "validation/token_refinement_validation.json",
+      "validation/ast_refinement_validation.json"
+    ],
+    "exact_ast_transformation_checks": true,
+    "finite_tests_are_universal_proofs": false
+  },
+  "compact_evidence": "compact_validation/verification477.json",
+  "source_audit": {
+    "artifact_python_paths": 2543,
+    "incoming_python_members": 1709,
+    "total_python_paths": 4252,
+    "unique_sources": 1658,
+    "parse_errors": 0,
+    "normalized_duplicates_of_selected_candidates": false,
+    "reproduction": "python3 evidence/census.py --repo /path/to/pinned/ProveIt",
+    "novelty_scope": "Inspected pinned corpus, not literature-wide priority"
+  },
+  "limitations": {
+    "globally_simplest_axiomatization_proved": false,
+    "single_module_below_every_prior_compact_coordinate": false,
+    "compact_token_or_ast_record_improved": false,
+    "compact_byte_record_improved": true,
+    "all_three_strict_family_envelope_coordinates_improved": true,
+    "all_three_native_family_envelope_coordinates_improved": true,
+    "repository_modified": false
+  }
+}

@@ -1,0 +1,92 @@
+INDEPENDENT AUDIT: FOUR PARITY CHECKER REFINEMENTS
+Pinned comparison: b9aa36102e523213ae956b474ec651bfde3e5665.
+Final sources: agent_checker/parity_refinement/code/.
+
+Verdict: all four transformations preserve successful acceptance on their
+matched interfaces, including the same raw-JSON success language under the
+ordinary sufficient-resource convention. They introduce no new axiom and
+inherit the same public theorem set and bi-interpretation.
+
+Exact AST comparisons against the declared substitutions in transforms.json
+pass for all four programs. Every frozen baseline and candidate SHA256 agrees
+with the manifest. Normalization explains harmless source-parenthesis changes.
+The native_size baseline DOES contain int(a) is a; an earlier informal concern
+that this gate had been newly added was a misreading of a strict companion and
+is withdrawn. There is no type-contract strengthening in these refinements.
+
+Measured complete modules (tokens / AST nodes / normalized UTF-8 bytes):
+native_size.py:  323 / 369 / 622   (control 324 / 374 / 629)
+strict_size.py:  331 / 382 / 645   (control 334 / 387 / 654)
+native_bytes.py: 334 / 380 / 596   (control 337 / 383 / 607)
+strict_bytes.py: 341 / 387 / 626   (control 341 / 387 / 628)
+
+I. BOOLEAN IDENTITY AND ITS DOMAIN
+For every nonnegative integer a,
+   (not a or a > 1 == a % 2) == (a % 2 == (a > 1)).
+At zero both are true, at one both false, and at a>=2 both test oddness.
+They can differ on negative even integers, so the phase invariants below
+are essential; it would be wrong to assert the identity for all integers.
+
+II. CONTEXT-PHASE PROGRAMS native_size AND strict_size
+The initial call has empty g and k=0. The scalar guard first checks k<=a<d,
+so an evaluated public-grammar predicate sees a>=0. native_size keeps the
+exact-integer test int(a) is a. strict_size's whole-input lexical gate has
+already established that every parsed value is an exact integer or a list.
+Before any proof continuation or recursively checked major, g has acquired
+the neutral entry 0 and is nonempty. The expression `g or predicate` therefore
+skips the changed predicate throughout proof checking. The initial phase is
+equivalent by I, and the proof phase is literally unchanged. No additional
+arithmetic operation can become defined or undefined on arbitrary JSON.
+
+III. native_bytes
+The initial grammar traversal has v=1 and k=0; after it, v=0 is assigned
+before every proof operation and all recursive calls use v=0. The change is
+   int(a) is a and d%2 and (not a or a>1==a%2)
+to
+   d%2 * (int(a) is a and a%2==(a>1)),
+both underneath v <= (...), after the range test.
+
+In validation mode, a is nonnegative when it reaches the changed integer
+predicate. Section I applies. The product returns the numerical 0/1 value
+of the former short-circuit Boolean expression. In proof mode, negative
+even a can change the Boolean predicate but cannot change 0<=B, since
+each B is either 0, False, or True. The product may evaluate the parity test
+when d is even; this is safe because its own preceding int(a) is a gate
+ensures an exact integer, on which modulo and comparison are total.
+
+Changing evaluation order to compute d%2 earlier is harmless: d is always
+an integer binder coordinate and modulo 2 is total. int(a) is still evaluated
+at every place where it was evaluated before; float and bool fail its identity
+test and skip the newly eager parity arithmetic. Malformed nonnumeric values
+fail earlier unchanged operations, or the same int conversion. Thus the
+whole JSON success language is preserved, not just well-formed goal behavior.
+
+IV. strict_bytes
+Here the old and new expressions are
+   d%2 and a%2==(a>1)
+and
+   d%2 * (a%2==(a>1)).
+Every scalar reaching this site is an exact integer, guaranteed by the
+unchanged whole-input alphabet gate. Since d%2 is 0 or 1, the values are
+numerically identical. Eager parity evaluation for even d is total. Invalid
+JSON-tree alphabets fail at the identical gate before this code is reached.
+
+V. SCOPE OF EVIDENCE
+Induction on finite completed executions transfers the unchanged control
+flow, packet consumption, context updates, allocations, and eventual ACCEPT
+signal. Resource-exhaustion thresholds, timing, and bytecode equality are
+not claimed. The programs use no serialized source, eval, exec, or hidden
+proof engine.
+
+Focused scalar checks cover 3672 cases for each native predicate and 2970
+for each strict predicate (13,284 total; exact individual totals are recorded
+in parity_candidates_audit.json), with no mismatches. They include negative
+integers, zero, one, huge coordinates, bool, float, infinities, NaN, and invalid
+shapes where the interface permits the check to be reached. These finite
+checks supplement the proof above. They do not repeat the author's separate
+matched CLI fixture suite or replace its source-provenance evidence.
+
+The resulting exhibited native coordinate envelope is 323/369/596 and the
+strict native envelope is 331/382/626, each using two different programs.
+All compact guarded records remain lower; these are improvements to native
+validation interfaces, not a solution below the overall compact envelope.
