@@ -1,0 +1,254 @@
+import AQ17Factored94ConditionalTransfer
+import Mathlib.Tactic.Ring
+import Mathlib.Tactic.LinearCombination
+
+/-! Proposed AQ17/94 residual comparisons and graph maps; no Lean check. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.AQ17Factored94ResidualMapsDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open AQ17Factored94ConditionalTransferDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Parent residual 0 (A0) after extension. -/
+theorem relation00 (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ20Substituted104ResidualsDraft.residuals p 0).evalRing (fun k => ι (extend v k)) =
+      (AQ17Factored94ResidualsDraft.residuals p 0).evalRing (fun k => ι (v k)) := by
+  simp [AQ20Substituted104ResidualsDraft.residuals, AQ17Factored94ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul] <;> ring
+
+/-- Parent residual 1 (A1) after extension. -/
+theorem relation01 (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ20Substituted104ResidualsDraft.residuals p 1).evalRing (fun k => ι (extend v k)) =
+      (AQ17Factored94ResidualsDraft.residuals p 1).evalRing (fun k => ι (v k)) := by
+  simp [AQ20Substituted104ResidualsDraft.residuals, AQ17Factored94ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul] <;> ring
+
+/-- Parent residual 2 (auxResidual) after extension. -/
+theorem relation02 (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ20Substituted104ResidualsDraft.residuals p 2).evalRing (fun k => ι (extend v k)) =
+      (AQ17Factored94ResidualsDraft.residuals p 2).evalRing (fun k => ι (v k)) := by
+  simp [AQ20Substituted104ResidualsDraft.residuals, AQ17Factored94ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul] <;> ring
+
+/-- Parent residual 3 (g72) after extension. -/
+theorem relation03 (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ20Substituted104ResidualsDraft.residuals p 3).evalRing (fun k => ι (extend v k)) =
+      (AQ17Factored94ResidualsDraft.residuals p 3).evalRing (fun k => ι (v k)) := by
+  simp [AQ20Substituted104ResidualsDraft.residuals, AQ17Factored94ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul] <;> ring
+
+/-- Parent residual 4 (rankDifference) after extension. -/
+theorem relation04 (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ20Substituted104ResidualsDraft.residuals p 4).evalRing (fun k => ι (extend v k)) =
+      (AQ17Factored94ResidualsDraft.residuals p 4).evalRing (fun k => ι (v k)) := by
+  simp [AQ20Substituted104ResidualsDraft.residuals, AQ17Factored94ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul] <;> ring
+
+/-- Parent residual 7 (zDifference) after extension. -/
+theorem relation05 (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ20Substituted104ResidualsDraft.residuals p 7).evalRing (fun k => ι (extend v k)) =
+      (AQ17Factored94ResidualsDraft.residuals p 5).evalRing (fun k => ι (v k)) := by
+  simp [AQ20Substituted104ResidualsDraft.residuals, AQ17Factored94ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul] <;> ring
+
+/-- Parent residual 8 (dDifference) after extension. -/
+theorem relation06 (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ20Substituted104ResidualsDraft.residuals p 8).evalRing (fun k => ι (extend v k)) =
+      (AQ17Factored94ResidualsDraft.residuals p 6).evalRing (fun k => ι (v k)) := by
+  simp [AQ20Substituted104ResidualsDraft.residuals, AQ17Factored94ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul] <;> ring
+
+/-- Parent residual 9 (vDifference) after extension. -/
+theorem relation07 (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ20Substituted104ResidualsDraft.residuals p 9).evalRing (fun k => ι (extend v k)) =
+      (AQ17Factored94ResidualsDraft.residuals p 7).evalRing (fun k => ι (v k)) := by
+  simp [AQ20Substituted104ResidualsDraft.residuals, AQ17Factored94ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul] <;> ring
+
+/-- Parent binding residual 5 (ellDifference) vanishes after extension. -/
+theorem binding05 (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ20Substituted104ResidualsDraft.residuals p 5).evalRing (fun k => ι (extend v k)) = 0 := by
+  simp [AQ20Substituted104ResidualsDraft.residuals, AQ17Factored94ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul] <;> ring
+
+/-- Parent binding residual 6 (cSquareDifference) vanishes after extension. -/
+theorem binding06 (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ20Substituted104ResidualsDraft.residuals p 6).evalRing (fun k => ι (extend v k)) = 0 := by
+  simp [AQ20Substituted104ResidualsDraft.residuals, AQ17Factored94ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul] <;> ring
+
+/-- Parent binding residual 10 (deltaDifference) vanishes after extension. -/
+theorem binding10 (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    (AQ20Substituted104ResidualsDraft.residuals p 10).evalRing (fun k => ι (extend v k)) = 0 := by
+  simp [AQ20Substituted104ResidualsDraft.residuals, AQ17Factored94ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul] <;> ring
+
+/-- Recover the three parent bindings by injectivity of the model embedding. -/
+theorem parent_bindings (p : Fin 4 → ℤ) (v : Fin 20 → V)
+    (hz : InternalZero (AQ20Substituted104LiteralDraft.literal p) v) :
+    v 14=(v 6*v 7)*(v 7*(v 9+v 10)) ∧
+    v 15=(v 9+v 7*(v 9+v 10))*(v 9+v 7*(v 9+v 10)) ∧
+    v 19=3+4*(v 6*v 7+v 7)+(v 6*v 7+v 7)*(v 6*v 7+v 7) := by
+  have hp := (AQ20Substituted104ResidualZerosDraft.all_residuals p v).mp hz
+  have he := (ModelDifferenceRing.internalZero_iff _ _).mp (hp 5)
+  have hc := (ModelDifferenceRing.internalZero_iff _ _).mp (hp 6)
+  have hd := (ModelDifferenceRing.internalZero_iff _ _).mp (hp 10)
+  constructor
+  · apply ι_injective
+    simp only [map_add,map_mul]
+    simp [AQ20Substituted104ResidualsDraft.residuals, Expr.evalRing_add,
+      Expr.evalRing_sub, Expr.evalRing_mul, Expr.evalRing_var,
+      Expr.evalRing_constant, Expr.evalRing_ofNat] at he
+    linear_combination he
+  constructor
+  · apply ι_injective
+    simp only [map_add,map_mul]
+    simp [AQ20Substituted104ResidualsDraft.residuals, Expr.evalRing_add,
+      Expr.evalRing_sub, Expr.evalRing_mul, Expr.evalRing_var,
+      Expr.evalRing_constant, Expr.evalRing_ofNat] at hc
+    linear_combination hc
+  · apply ι_injective
+    simp only [map_add,map_mul,map_ofNat]
+    simp [AQ20Substituted104ResidualsDraft.residuals, Expr.evalRing_add,
+      Expr.evalRing_sub, Expr.evalRing_mul, Expr.evalRing_var,
+      Expr.evalRing_constant, Expr.evalRing_ofNat] at hd
+    linear_combination hd
+
+theorem extend_project (v : Fin 20 → V)
+    (he : v 14=(v 6*v 7)*(v 7*(v 9+v 10)))
+    (hc : v 15=(v 9+v 7*(v 9+v 10))*(v 9+v 7*(v 9+v 10)))
+    (hd : v 19=3+4*(v 6*v 7+v 7)+(v 6*v 7+v 7)*(v 6*v 7+v 7)) :
+    extend (project v)=v := by
+  funext i
+  fin_cases i <;> simp [extend, project, ←he, ←hc, ←hd]
+
+theorem extend_zero (p : Fin 4 → ℤ) (v : Fin 17 → V)
+    (hz : InternalZero (AQ17Factored94LiteralDraft.literal p) v) :
+    InternalZero (AQ20Substituted104LiteralDraft.literal p) (extend v) := by
+  have hc := (AQ17Factored94ResidualZerosDraft.all_residuals p v).mp hz
+  apply (AQ20Substituted104ResidualZerosDraft.all_residuals p (extend v)).mpr
+  intro i
+  fin_cases i
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [relation00 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 0)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [relation01 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 1)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [relation02 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 2)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [relation03 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 3)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [relation04 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 4)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    exact binding05 p v
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    exact binding06 p v
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [relation05 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 5)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [relation06 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 6)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [relation07 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 7)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    exact binding10 p v
+
+theorem project_zero (p : Fin 4 → ℤ) (v : Fin 20 → V)
+    (hz : InternalZero (AQ20Substituted104LiteralDraft.literal p) v) :
+    InternalZero (AQ17Factored94LiteralDraft.literal p) (project v) := by
+  have hp := (AQ20Substituted104ResidualZerosDraft.all_residuals p v).mp hz
+  obtain ⟨he,hc,hd⟩ := parent_bindings p v hz
+  have hlift := extend_project v he hc hd
+  apply (AQ17Factored94ResidualZerosDraft.all_residuals p (project v)).mpr
+  intro i
+  fin_cases i
+  · have hparent : InternalZero (AQ20Substituted104ResidualsDraft.residuals p 0)
+        (extend (project v)) := by simpa only [hlift] using hp 0
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [relation00 p (project v)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AQ20Substituted104ResidualsDraft.residuals p 1)
+        (extend (project v)) := by simpa only [hlift] using hp 1
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [relation01 p (project v)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AQ20Substituted104ResidualsDraft.residuals p 2)
+        (extend (project v)) := by simpa only [hlift] using hp 2
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [relation02 p (project v)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AQ20Substituted104ResidualsDraft.residuals p 3)
+        (extend (project v)) := by simpa only [hlift] using hp 3
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [relation03 p (project v)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AQ20Substituted104ResidualsDraft.residuals p 4)
+        (extend (project v)) := by simpa only [hlift] using hp 4
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [relation04 p (project v)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AQ20Substituted104ResidualsDraft.residuals p 7)
+        (extend (project v)) := by simpa only [hlift] using hp 7
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [relation05 p (project v)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AQ20Substituted104ResidualsDraft.residuals p 8)
+        (extend (project v)) := by simpa only [hlift] using hp 8
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [relation06 p (project v)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AQ20Substituted104ResidualsDraft.residuals p 9)
+        (extend (project v)) := by simpa only [hlift] using hp 9
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [relation07 p (project v)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+
+theorem graphZeroObligations : GraphZeroObligations := by
+  intro V _ _
+  constructor
+  · intro v _ hz
+    exact project_zero CurrentWindowCarry2011.ports v hz
+  · intro v _ hz
+    exact extend_zero CurrentWindowCarry2011.ports v hz
+
+end DiophantineConsistency.AQ17Factored94ResidualMapsDraft
+#print axioms DiophantineConsistency.AQ17Factored94ResidualMapsDraft.parent_bindings
+#print axioms DiophantineConsistency.AQ17Factored94ResidualMapsDraft.extend_project
+#print axioms DiophantineConsistency.AQ17Factored94ResidualMapsDraft.extend_zero
+#print axioms DiophantineConsistency.AQ17Factored94ResidualMapsDraft.project_zero
+#print axioms DiophantineConsistency.AQ17Factored94ResidualMapsDraft.graphZeroObligations
