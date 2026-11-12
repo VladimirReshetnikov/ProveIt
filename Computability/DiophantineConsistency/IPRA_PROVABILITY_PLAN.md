@@ -7658,6 +7658,10 @@ The source-reviewed [85-to-84 model-map draft](research/ordinary14-85-to-84-mode
 proposes the reverse positive witness using that graph's own power facts and
 explicit Mersenne/radix hypotheses. It remains unelaborated and is not a
 checked compact-port theorem or iPRA endpoint.
+The source-reviewed [84/85 model-equivalence wrapper](research/ordinary14-84-85-model-equivalence-draft/README.md)
+proposes composing both directions under explicit radix and port hypotheses.
+It and all dependencies remain unelaborated; no checked model or iPRA theorem
+follows yet.
 The source-reviewed [84 main-index draft](research/ordinary14-84-main-index-draft/README.md)
 proposes classifying the main root while retaining the natural balance. It is
 unelaborated and does not identify that index with the rank.
