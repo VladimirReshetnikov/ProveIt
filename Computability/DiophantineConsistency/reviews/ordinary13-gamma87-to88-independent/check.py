@@ -42,12 +42,16 @@ D=U*(X+a*c)+H*(U*gamma-(kbase-R));Pn=U*(X+a*c)+H*(U*gamma+R+1)
 assert D==Pn-H*k
 # Check stronger enlarged-rank arithmetic, including the weaker actual-R gap.
 count=0
-for q,X,s,eta,zeta in itertools.product(range(2,9),range(1,5),range(1,4),range(1,4),range(1,4)):
+for q,X,s,eta,zeta in itertools.product(range(2,9),range(1,5),range(1,4),range(0,4),range(1,4)):
  Y=q**3*s;m=X*Y*Y;R=q**4-q**3-q-1;k=8*m+4
- assert q<=Y and q**4<=m and X*Y*q<=m
- assert R+1<=q**4 and R+X*Y*q+1<k and R+1<k
- assert X<eta+Y*k
+ assert q<=Y and q**4<=m and X<=m
+ assert R+1<=q**4 and m<k and R+1<k
+ assert k<=Y*k and X<eta+Y*k
  count+=1
+direct=(r/'ordinary13-gamma87-to88-model-draft/GammaDirectRankGap.lean.src').read_text()
+facts=(r/'ordinary13-gamma87-to88-model-draft/GammaNoExtraFacts.lean.src').read_text()
+assert 'GammaDirectRankGapDraft.direct_rank_gap' in facts and 'Residue90GammaModelDraft.enlarged_rank_gap' not in facts
+assert 'theorem direct_rank_gap' in direct and 'omega' not in direct.split('theorem direct_rank_gap',1)[1] and 'nlinarith' not in direct.split('theorem direct_rank_gap',1)[1]
 s=(r/'ordinary13-gamma87-to88-model-draft/Gamma87To88Transport.lean.src').read_text()
 assert 'W86To87TransportDraft.zero_iff' in s and 'EtaUnshift85TransportDraft.zero_iff' in s
 part=s.split('theorem gamma_positive',1)[1].split('theorem compact_no_zero_iff',1)[0]

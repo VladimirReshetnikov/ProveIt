@@ -3,8 +3,8 @@
 The pinned packet `research/ordinary13-gamma87-to88-model-draft/` is an
 unelaborated source proposal. Its own checker reproduces. This review adds a
 separate pinned source receipt, exact 88→87→86→85 row substitutions, the
-no-extra-term main carrier as a free-ring identity, and 756 bounded rank
-controls. Reproduce with `python3 -I -S -B check.py | cmp - receipt.json`
+no-extra-term main carrier as a free-ring identity, and 1,008 bounded direct-rank
+controls (including eta=0). Reproduce with `python3 -I -S -B check.py | cmp - receipt.json`
 from this directory. These are not Lean or arbitrary-model proof checks.
 
 For the eta-natural 85 prototype, its literal main shift has
@@ -21,14 +21,16 @@ same no-extra-term carrier; it does not apply the old residue-90
 prototype client sources its pair norm from the separate actual graph
 main-pair draft and supplies its own positive-eta premise explicitly.
 
-The reused `enlarged_rank_gap` assumes `q≥2`, `X≥1`, `Y≥q³`, positive eta,
-`k≥8XY²+4`, and the stated rank window. These imply `q≤Y`,
-`q⁴≤XY²`, and `XYq≤XY²`, so the stronger conclusion
-`R+XYq+1<k` implies the weaker `R+1<k`. Its other conclusion gives
-`X<eta+Yk`. The actual narrower gamma contradiction uses the latter two
-bounds, the positive U/Y/k hypotheses, and the exact natural signed-pair
-norm. The large-k source is invoked with the first and main natural norms;
-eta and zeta are the graph's natural `v9` and shifted `v10+1`.
+The revised packet replaces the old imported `enlarged_rank_gap` with its
+own `GammaDirectRankGapDraft.direct_rank_gap`. With `q≥2`, `X≥1`, `Y≥q³`,
+`k≥8XY²+4` and the stated rank window, it derives `q≤Y` and
+`q⁴≤XY²`. Therefore `R+1≤q⁴≤XY²<k`. Independently,
+`X≤XY²<k≤Yk≤eta+Yk`, with eta merely model natural. These are exactly the
+two premises of the narrower gamma contradiction, which also requires
+positive U/Y/k and the exact natural signed-pair norm. The direct rank lemma
+does not assume eta>0; the larger gamma client still explicitly assumes it,
+and uses eta/zeta positivity and first/main norms in its own hypotheses.
+The former, stronger `R+XYq+1<k` inference is no longer used.
 
 For an 87 zero, the transport applies the w-increment map at coordinate 6 to
 reach an 86 zero and then the eta-increment map at coordinate 9 to reach an
@@ -46,8 +48,18 @@ requires `PolynomialBridge` for that exact 88 parent and tuple; the further
 may supply the latter, but it is not supplied inside this packet.
 
 No mathematical graph, inequality, map-direction or bridge-interface
-mismatch was found in the inspected cuts. The imported `Residue90GammaModelDraft.enlarged_rank_gap` uses `omega`;
-`nlinarith`, exact source casts, literal evaluation proofs, all imported positivity/zero-map theorems,
-provider compatibility and `#print axioms` remain unverified by Lean. This
+mismatch was found in the inspected cuts. The new direct-rank source uses explicit order lemmas and `ring`, with no
+`omega` or `nlinarith` in its proof body. This avoids the earlier imported
+`enlarged_rank_gap` source's abstract-model `omega` use; it is still
+unelaborated. The separately imported `GammaZeroNarrow` uses `nlinarith`,
+and exact source casts, literal evaluation proofs, imported
+positivity/zero-map theorems, provider compatibility and `#print axioms`
+remain unverified by Lean. This
 audit does not bind a selected concrete K or external bytes/PDF, prove an
 88-parent endpoint, or establish the requested iPRA equivalence.
+
+The initial review pinned the earlier enlarged-rank formulation. Following
+the author's source repair, this review repins the revised direct-rank and
+no-extra-facts sources and checks the revised interfaces and inequalities;
+the transport source itself was unchanged. The updated receipt supersedes
+the earlier review receipt for these bytes.
