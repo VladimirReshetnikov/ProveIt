@@ -21,9 +21,10 @@ introductions, and transport at iterator sources only.  It has seven rules.
 Every rule of `PGPrf` is a derived rule of the kernel (`PGPrf.toNPrf`).  The
 converse is not claimed for arbitrary formulas: a hypothesis `x = y` between
 variables is not a transport source of `PGPrf`, and the introduction by cases
-of an equation is not an instance of the root-determined rule.  Whether
-`PGPrf` is strictly weaker than the kernel on arbitrary sequents is not
-proved here.  A public language removes both obstacles.
+of an equation is not an instance of the root-determined rule.  On
+arbitrary sequents `PGPrf` is in fact strictly weaker than the kernel
+(`pgprf_strictly_weaker`, in `NativePublicNecessary`).  A public language
+removes both obstacles.
 
 A `Gating` is an atomic matrix `G(s, t)(w)` whose closure `Q_w G(s, t)(w)`
 stands for the equation `s = t`.  Two gatings are given:

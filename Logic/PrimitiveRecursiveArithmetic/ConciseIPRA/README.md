@@ -445,7 +445,13 @@ by progress as primitive, and proves that the derivable sequents are the same
   [`protected_core`](Research/protected_core/). The theorem is proved for
   any gating of equations (`Gating`), and the one-sided guard
   `s = I(w, s; u.t)` of [`mirror_guard`](Research/mirror_guard/) is a second
-  instance (`Gating.mirror`, `NFm.pub_mirrored`).
+  instance (`Gating.mirror`, `NFm.pub_mirrored`). The translation cannot be
+  dropped: `PGPrf` does not derive `x = z` from `x = y` and `y = z` between
+  variables (`pgprf_not_trans`), so on arbitrary sequents it is strictly
+  weaker than the kernel (`pgprf_strictly_weaker`). The proof is a reading in
+  which a value is a number with a colour, bound variables range over
+  ordinary numbers, and an equation holds by number or by adjacent colours;
+  every rule of `PGPrf` is sound for it and equality is not transitive.
 - *Five rules on zero-normal terms, and four schemes.* The clause calculus
   can be put on zero-normal terms with the one successor step as its only
   computation: Refl, Eval, Use, Elim and Intro, each normalizing its
@@ -772,6 +778,7 @@ formalizes three systems and proves them mutually bi-interpretable:
 | the seed cannot be fixed to zero | `ZTm.mono`, `ZTm.no_zero_test`, `Tm.val_zf` | zero-seeded recursor terms denote monotone functions; the kernel's terms define the zero test |
 | replacement of one occurrence | `lprf_iff_nprf : LPrf Γ A ↔ NPrf Γ A`, `lprf_iff_uprf`, `Reach.subst`, `LPrf.ofReach`, `Tm.Hole`, `Tm.Free` | transport replaced by replacement at one hole of a term context, below binders as well |
 | the reflexive-base introduction on raw terms | `rrprf_iff_nprf : RRPrf Γ A ↔ NPrf Γ A`, `rrprf_iff_pra`, `NFm.isRefl_rn`, `RRPrf.ren`, `RRPrf.decS`, `RRPrf.decT`, `RRPrf.qInd` | seven rules without normalization; progress exactly when `B(t, 0)` is literally `r = r` |
+| the public language is necessary | `pgprf_not_trans`, `pgprf_strictly_weaker : ∃ Γ A, NPrf Γ A ∧ ¬ PGPrf Γ A`, `PGPrf.sound`, `Colour.T_recolor`, `Colour.T_Q_eq`, `Colour.tr_sound` | transitivity between variables is not derivable with the root-determined introduction and transport at iterator sources; a sound reading with a non-transitive equality |
 | the guarded public languages | `pgprf_pub_iff (g : Gating) : PGPrf (Γ.map (NFm.pub g)) (A.pub g) ↔ NPrf Γ A`, `pgprf_pub_iff_pra`, `Gating.gate`, `Gating.mirror`, `NFm.pub_guarded`, `NFm.pub_mirrored`, `NEquiv.pub`, `PGPrf.trW`, `PGPrf.subst` | the root-determined introduction and transport at iterator sources only, on formulas whose atomic matrices are guarded (two-sided, or the one-sided mirror guard); no `Classical.choice` |
 | the mixed closure | `mcprf_iff_rprf : MCPrf Γ A ↔ RPrf Γ A`, `mcprf_iff_rd`, `mcprf_emb_iff`, `mcprf_consistent` | the uniform rules with transport in formula templates as primitive |
 | the target-directed elimination of `Q` | `tqprf_iff_rprf : TQPrf Γ A ↔ RPrf Γ A`, `tqprf_iff_rd : TQPrf Γ A ↔ NPrf (Γ.map NFm.rd) A.rd`, `tqprf_emb_iff : TQPrf (Γ.map NFm.emb) A.emb ↔ NPrf Γ A`, `tqprf_consistent`, `TQPrf.eqInd`, `TQPrf.orbit`, `TQPrf.ren` | QE with one target: a successor target asks for the predecessor instance, any other target for the instance at zero |
@@ -802,7 +809,8 @@ The main chain (every module except the seventeen kernel comparisons,
 `NativeFullFive`, `NativeNameClauses`, `NativeOpenClauses`, `NativeExportClauses`,
 `NativeVariableClauses`, `NativeProgressive`, `NativeProgressiveRules`,
 `NativeProgressiveLeibniz`, `NativeProgressiveEmbedding`, `NativeTargetClosure`,
-`NativeProgressiveRoundTrip`, `NativeMixedClosure`, `NativePublic`, `NativeRawReflexive`, `NativeOneOccurrence`, `ZeroSeedObstruction`,
+`NativeProgressiveRoundTrip`, `NativeMixedClosure`, `NativePublic`, `NativePublicNecessary`, `NativeRawReflexive`, `NativeOneOccurrence`,
+`ZeroSeedObstruction`,
 `NativePrefix`, `NativeUniqueness`, `NativeModels` and
 `TeqClosure`) is 5,421
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
@@ -847,7 +855,7 @@ no `native_decide`.
 | derived rule | `NativeUniqueness` | uniqueness of iteration |
 | one occurrence | `NativeOneOccurrence` | contexts with exactly one hole (`Tm.Hole`), chains of single replacements (`Reach`), and the calculus `LPrf` of `kernel_refinement` |
 | raw reflexive base | `NativeRawReflexive` | the calculus `RRPrf` of `reflexive_base` on raw terms, its structural rules by injective renaming, and the equivalence with the kernel |
-| public language | `NativePublic` | the calculus `PGPrf` with the root-determined introduction and transport at iterator sources; gatings of equations (`Gating`), the translation `pub`, the predicate `PublicBy`, and the equivalence with the kernel on translated sequents |
+| public language | `NativePublic`, `NativePublicNecessary` | the calculus `PGPrf` with the root-determined introduction and transport at iterator sources; gatings of equations (`Gating`), the translation `pub`, the predicate `PublicBy`, and the equivalence with the kernel on translated sequents; the coloured reading and the strictness of `PGPrf` on arbitrary sequents |
 | prefix form | `NativePrefix` | a `Q`-free formula is `k` binders `D` and one equation |
 | an obstruction | `ZeroSeedObstruction` | terms with a zero-seeded recursor denote monotone functions, so the seed of the iterator cannot simply be deleted |
 | progressive reading | `NativeProgressive`, `NativeProgressiveRules`, `NativeProgressiveLeibniz`, `NativeProgressiveEmbedding`, `NativeTargetClosure`, `NativeProgressiveRoundTrip`, `NativeMixedClosure` | the seven uniform rules of `uniform_progress`, `RPrf`; the reading `NFm.rd` of `Q` at a literal equation as progressivity; soundness in the kernel and in iPRA, and consistency; inside `RPrf`: substitution, weakening and cut, the equality rules, equation induction, and the Leibniz rule for all formulas; the padding translation `NFm.emb` and the equivalence `rprf_emb_iff : RPrf (Γ.map NFm.emb) A.emb ↔ NPrf Γ A`; the calculus `TQPrf` with the target-directed elimination, equivalent to `RPrf` on the same formulas; the second formula round trip and the faithfulness of the progressive reading |
@@ -994,16 +1002,19 @@ marked as conjectures is proved here.
    (`RoundTrip.tau_code_prec_succ`) are two inductions with explicit
    substitutions that have not been brought under one lemma, as their `T_eq`
    counterparts were (`Q.iter_unique`).
-9. **Is the public language necessary?** `PGPrf` is equivalent to the kernel
-   on translated sequents (`pgprf_pub_iff`). Conjecture: on arbitrary
-   sequents it is strictly weaker, and already `x = y, y = z ⊢ x = z` between
-   variables is not derivable in it. For the rules without `Q` and `D` there
-   is a short argument: the relation that holds between two terms when they
-   are equal by computation, or when both are among `x`, `y`, `z` and are a
-   hypothesis or its converse, is closed under transport at iterator
-   sources, because a second premise outside computation can only be matched
-   by a constant template. An invariant that also covers `QE`, `DE` and the
-   introduction is not known.
+9. **Is the public language necessary?** Settled: yes. `PGPrf` is equivalent
+   to the kernel on translated sequents (`pgprf_pub_iff`) and strictly weaker
+   on arbitrary ones: `x = y, y = z ⊢ x = z` between variables is not
+   derivable in it (`pgprf_not_trans`, `pgprf_strictly_weaker`). The
+   invariant that covers `QE`, `DE` and the introduction is semantic. A value
+   is a number with a colour; a variable may hold any value, every other term
+   has an ordinary number as its value, bound variables range over ordinary
+   numbers, and an equation holds by number or by adjacent colours. A matrix
+   that holds by colours does not depend on its bound variables, so closures
+   over it hold trivially (`Colour.T_Q_eq`) and compound formulas do not see
+   colours (`Colour.T_recolor`). What is not settled is the same question
+   for the weaker source restriction of the packages (no literal `0`), where
+   a variable is an admissible source.
 
 Build with one module per invocation, for example
 
