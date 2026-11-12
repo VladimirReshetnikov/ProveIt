@@ -7510,6 +7510,9 @@ dependencies remain unelaborated and do not constitute a checked model result.
 The source-reviewed [87 factor-three projection draft](research/ordinary14-87-divides-3x-draft/README.md)
 proposes `q ∣ 3X` from the same graph zero and its index facts. It remains
 unelaborated and does not itself establish `q ∣ X` or an iPRA endpoint.
+The source-reviewed [87 growth draft](research/ordinary14-87-growth-draft/README.md)
+proposes the threshold and Pell-growth bounds from those facts. It remains
+unelaborated and does not itself establish power recovery.
 The source-reviewed [87 strong-norm draft](research/ordinary14-87-strong-norm-draft/README.md)
 proposes the direct-Y strong identity from the 87 graph's own zero. It remains
 unelaborated and does not establish the rest of the calibration.
