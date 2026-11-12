@@ -7582,6 +7582,9 @@ representation or the iPRA endpoint.
 The source-reviewed [own-zero main-balance composition](research/ordinary14-84-own-zero-main-balance-draft/README.md)
 removes the separate rank and `k > 0` assumptions but still assumes the
 size bound and port casts. It remains unelaborated and has no endpoint claim.
+The source-reviewed [q-cubed size draft](research/ordinary14-84-qcube-size-draft/README.md)
+proposes that bound using explicit discrete positivity and product
+monotonicity; it is not yet elaborated or connected to the full endpoint.
 The source-reviewed [84 natural-rank draft](research/ordinary14-84-natural-rank-draft/README.md)
 proposes the signed-to-natural rank representation using that gap and four
 explicit port casts. It has not been elaborated or connected to an endpoint.
