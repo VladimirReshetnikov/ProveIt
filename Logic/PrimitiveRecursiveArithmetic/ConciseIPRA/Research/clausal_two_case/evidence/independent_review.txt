@@ -1,0 +1,65 @@
+Independent mathematical and scope review of checker_work/ce5_two.py
+
+Theorem-level result. The two-case calculus is exactly equivalent, on the
+same raw Eq/D formulas and clause contexts, to raw_clausal's three-case CE5.
+The only deleted case is the root equality-composition case.
+
+Root-case derivation. Given p:s=t and q:s=r, put Z=I(0,s;u.u).
+Eval(q, Refl(Z)) gives Z=r using zero evaluation. Applying Eval to p and
+that result gives r=t using zero evaluation again. This inserts exactly one
+new reflexivity leaf and two Eval nodes, with p and q each appearing once.
+No logical rule, numerical induction, normalization, or derived equality
+principle is used. The derivation works in every retained clause context.
+
+Thus translation from three-case CE5 to the two-case system proceeds by
+structural recursion on the proof, replacing root Eval nodes by this frame.
+The reverse map is inclusion. Both term and formula translations are literal
+identities. Composing with raw_clausal's Eq/D <-> native Eq/Q/D equivalence
+and the inherited scalar <-> iPRA bridge gives the required bi-interpretation.
+The component root-deletion lemma already exists in equality_from_iteration;
+the present contribution is its composition with the clause formulation.
+
+Checker invariant. At derive(P,C,k), every clause antecedent in C is a
+well-scoped formula at k; every clause body is a well-scoped formula with
+one extra bound index. Every successful return is a well-scoped Eq/D formula
+at k. Initially C is empty. The invariant is proved by recursion on P:
+- r validates its term, so its returned equality is well scoped.
+- u checks the index and target, recursively checks the antecedent proof,
+  and opens the one-bound-variable body with an ambient term.
+- v recursively obtains equations: the first return must have length 3,
+  the second must have length 3 and an iterator-headed left term of length 4.
+  Formula/term typing from the invariant makes these arities unambiguous.
+  The zero row checks equality of the iterator seed with the major source.
+  The successor row checks the actual 's' tag and the whole preceding
+  iterator, preventing the false-iterator-counter attack.
+- e opens a D matrix at fresh free level -k-1, retains its conditional
+  universal clause, and checks the inferred result at the old scope k.
+  This final syntax check is exactly the no-eigenvariable-escape condition.
+- i validates its D matrix and witness at k, opens the witness, and adds
+  a constant clause for the prescribed local equation/formula assumption.
+  Its recursive result must equal the exact successor instance. The fresh
+  level -k-1 cannot have been in the validated outer data.
+
+The opener is capture avoiding because ambient free variables use negative
+levels and bound indices are positive. Supplied values have no free positive
+indices; they need no depth shift when inserted under surviving binders.
+Internal bound indices in the inserted term still refer to its own binders.
+Opening the outer D coordinate starts at depth 1 and leaves its inner
+coordinate intact. Walk uses one additional binder for an iterator body and
+two for a D matrix. Ordinary assumption bodies have no free positive index,
+so their subsequent clause-use opening is a no-op as required.
+
+No scope/type soundness bug found in this review. This is a written review,
+not a machine-checked proof of the Python implementation. Public JSON parsing
+and syntax checks reject Python booleans as variable indices and reject
+unrecognized/malformed constructors; resource exhaustion is a rejection.
+
+Research boundaries. Full-normalization plus clauses is a combination of
+already existing reductions and did not give a measured source-size gain.
+Replacing general reflexivity with finitely many true closed equation seeds
+is blocked by raw_clausal's finite-value counterinterpretation. A permanent
+universal reflexivity clause only relocates that axiom. The SR0-to-full-iPRA
+bootstrap remains unfinished: zero-equation induction does not by itself
+justify the unbounded addition/rotation identities used to construct the
+scalar predecessor and faithful equality test. No claim of its solution
+should appear in the delivered theory.

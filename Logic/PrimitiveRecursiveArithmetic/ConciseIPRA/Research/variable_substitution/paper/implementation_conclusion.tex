@@ -1,0 +1,231 @@
+\section{Complete implementations and reproducible comparison}
+\label{sec:implementation}
+
+\subsection{The selected programs}
+
+The delivered checkers use Python's standard library only. Each acceptance
+module contains its own JSON reader, syntax and scope checks, capture-safe
+substitution, complete computation normalizer, proof-rule checks, final
+goal check, and output convention. There is no imported proof kernel,
+trusted theorem database, compressed payload, dynamic evaluation, or
+external normalization service.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Complete module & Bytes & Tokens & AST nodes & Gzip-9\\
+\midrule
+Native transport, exact upstream & 2529 & 908 & 965 & 963\\
+Native newest-variable substitution & \textbf{2499} & \textbf{899} & \textbf{951} & 955\\
+\midrule
+Clausal transport, matched control & 2856 & 907 & 982 & 1061\\
+Clausal newest-variable substitution & \textbf{2826} & \textbf{898} & \textbf{968} & 1055\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All measurements use CPython 3.12.14. The complete source is parsed with
+\code{ast.parse}, normalized with \code{ast.unparse}, and terminated by one
+line feed. Comments disappear under this operation. Significant-token
+counts omit encoding, end-marker, indentation, dedentation, newline and
+comment tokens. AST nodes are the nodes visited by \code{ast.walk}.
+The compared modules have no docstrings. Gzip is informational, with
+compression level 9 and timestamp zero.
+
+The native control is a byte-for-byte copy of
+\nolinkurl{full_normalization/goal_checker/code/full_expression_checker.py}
+at the pinned commit. Its source SHA-256 is
+\begin{center}\small
+\texttt{869fc1ded752a0364284b9b4f53fddcc8b197200f8e5c73aed7bec55ca56252d}.
+\end{center}
+The selected native change saves 30 normalized bytes (about 1.19\%),
+9 significant tokens, and 14 AST nodes. It changes the equality packet
+and its checking branch; the original substitution and normalization
+implementation is unchanged. The clausal pair is a newly constructed
+matched pair with identical syntax, normalizer, clauses, and input contract.
+It saves the same 30 bytes, 9 tokens, and 14 nodes.
+
+These are gains against the stated complete controls. The repository also
+contains much shorter arity-encoded programs, including sub-kilobyte
+validated profiles. The present programs do not establish a new global
+byte, token, or AST minimum across that heterogeneous corpus.
+The five-rule program is larger than the six-rule program because its
+explicit clause administration costs more in this encoding.
+
+\subsection{Native input and inference packets}
+
+The native checker accepts a JSON object with exactly
+\code{variables}, \code{context}, \code{goal}, and \code{proof}.
+Variables use zero-based de Bruijn indices. The numerical syntax is
+\[
+\begin{array}{ll}
+\code{["z"]}&0,\\
+\code{["v",i]}&v_i,\\
+\code{["s",t]}&S(t),\\
+\code{["i",n,a,h]}&I(n,a;u.h).
+\end{array}
+\]
+The update's state binder is index zero in $h$ and binds nowhere else.
+Formula tags are \code{"="}, \code{"q"}, and \code{"d"}.
+In the matrix of $D_{x,y}B$, index zero is $y$ and index one is $x$.
+Canonicality is checked, not presumed: supplying an uncontracted
+computation in a goal or used term fails the canonical-syntax check.
+Boolean JSON values are not accepted as integer variable indices or scope
+counts.
+
+The only changed packet is
+\[
+ \code{["vs",t,u,p,q]}.
+\]
+It verifies $p$ against $v_0=t$, verifies $q$ against $u=v$ where $v$
+is the left endpoint of the requested goal, and checks that the right
+endpoint is $\nf(u[t/v_0])$. Substitution uses the existing nondropping
+operation: the current variable is replaced, while all other numerical
+parameters remain in scope. There is no new traversal.
+
+Hypothesis and reflexivity are automatic goal checks. As in the exact
+upstream control, their unused proof hint is ignored. This is an explicit
+part of the certificate contract: the checker validates every requested
+goal and every used rule argument, but does not promise to validate
+irrelevant hint subtrees. The final claim is still checked.
+The remaining packets are \code{qe}, \code{de}, and \code{di}, with
+the same behavior as the source control.
+
+\subsection{Five-rule forward checker}
+
+The clausal checker accepts exactly \code{goal} and \code{proof}, for a
+closed Eq/$D$ theorem. It derives the conclusion from its proof tree and
+then compares it with the supplied goal. Its five packets are
+\code{r}, \code{x}, \code{u}, \code{e}, and \code{i}.
+The equality packet \code{["x",p,q]} has only two premise proofs.
+Their conclusions determine the replacement target and minor equation;
+the major source must be \code{["v",0]}.
+There is no supplied term template or supplied composite source.
+
+Retained clauses are an implementation context, not a new formula
+constructor. Scope extension shifts both their antecedents and their
+consequents, protecting the consequent's own binder. The accompanying
+arbitrary-variable checker is retained as an auditable intermediate
+comparison and as a control for rejection of an older primitive source.
+
+\subsection{Verification evidence and its limits}
+
+The executable tests construct actual primitive proof trees for the
+direct transport simulation, rather than calling a trusted congruence
+operation. They exercise a zero witness, composite sources, repeated
+template occurrences, nested iterator bodies, passive occurrences of
+the source, and computations exposed by substitution.
+
+The tests also nest translated transport proofs, carry the resulting
+proofs into extra I/E scopes, permute initial parameters, and replay the
+same derivations through the native goal checker. These cases address
+the newest-source invariant directly. An attempted primitive use of an
+older parameter is rejected by the newest-source kernel and accepted
+by the arbitrary-variable control.
+
+The final evidence records 57 derivation and rejection checks, 804
+independent direct-evaluation checks, and 74 command-line replays, all
+passing with no skipped semantic cases. The 804 semantic checks comprise
+200 each for normalization, nondropping substitution, dropping substitution,
+and shifting, plus four explicit nested-binder capture checks. The CLI
+replays run both ordinary Python and optimization mode. Negative cases
+cover malformed syntax, scope escape, incorrect binder handling, and false
+conclusions. Reproduction requires no network access.
+
+Finite tests do not prove bi-interpretability, normalization termination,
+or universal proof-translation correctness. Those are the mathematical
+arguments in this report. Conversely, the mathematical arguments do not
+by themselves certify the Python implementation; the source listings,
+matched controls, proof compiler, and tests make that implementation
+reviewable. No new Lean or Rocq proof is claimed.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item \textbf{Formalize the new proof translation.}
+Deeply embed the newest-variable kernel and prove the protected
+translation invariant, followed by exact equivalence with the normalized
+transport calculus. The original native/iPRA bridge can then be reused.
+The normalization layer must cover both computation rules, not just the
+already formalized literal-zero contraction.
+
+\item \textbf{Transfer the reduction to the smallest arity codecs.}
+The mathematical change is independent of tagged JSON, but a fair
+measurement must count the entire validator and normalizer. The short
+raw codecs cannot simply inherit this theorem: the naming proof currently
+uses literal normal-form selector instances before general equality
+transport has been recovered.
+
+\item \textbf{Reduce the proof expansion.}
+The direct simulation uses one new VSub inference and each supplied
+premise proof once. Its existential package adds logical scaffolding
+and enlarges repeated term labels. Compare tree and DAG certificate
+costs, including the complete checker, rather than moving an uncounted
+compiler into the trusted boundary.
+
+\item \textbf{Identify the weakest normalization sufficient for naming.}
+The proof uses selector equations and two closed parity computations.
+Can a smaller, substitution-coherent normalization discipline enforce
+exactly those computations while retaining the same variable-source
+theorem? A few chosen rewrite abbreviations are insufficient unless
+their interaction with substitution and nested binders is specified.
+
+\item \textbf{Determine a defensible lower bound.}
+A meaningful optimum needs a fixed implementation language, accepted
+certificate interface, primitive operations, validation requirements,
+and resource convention. In their absence, a smaller program is a
+comparison result rather than a lower bound on all possible
+axiomatizations.
+\end{enumerate}
+
+\section{Deliverable status}
+
+The completed result is the equivalence theorem for variable-source and
+newest-variable substitution, together with both ordinary iPRA composites,
+two complete newest-source checkers, their matched controls, and reproducible
+evidence. The arithmetic and logical bridge is attributed to the pinned
+project. The program-size improvement is modest and measured on the
+specified profiles; the primitive equality restriction is substantially
+stronger than an exclusion of a single source term.
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{repo}
+V.~Reshetnikov and ProveIt contributors,
+\emph{Concise presentations of intuitionistic primitive recursive arithmetic},
+pinned commit \texttt{5d85023b0688e03b75f0ec3a04bb43ef0bb51705}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/5d85023b0688e03b75f0ec3a04bb43ef0bb51705/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}.
+
+\bibitem{normal}
+ProveIt, \emph{Full computation normalization},
+\nolinkurl{Research/full_normalization/sections/normalization.tex} and
+\code{sections/calculus.tex}, at the pinned commit.
+Exact source copies are included in \code{reference/}.
+
+\bibitem{clauses}
+ProveIt, \emph{Raw clausal computational equality},
+\nolinkurl{Research/raw_clausal/theory/equivalence.tex}, at the pinned commit.
+The clause representation and its logical interpretation are inherited.
+
+\bibitem{templates}
+ProveIt, \emph{Template-free equality in a seven-rule presentation of iPRA},
+\code{Research/template_free/README.md} and its report, at the pinned commit.
+The arbitrary-source replacement rule and raw-marker argument are prior work.
+
+\bibitem{bridge}
+ProveIt, \emph{Native scalar logic and the ordinary arithmetic bridge},
+\code{Research/certified_zero/reference/}:
+\code{inherited_choice_basis.tex},
+\code{inherited_ordinary_bridge.tex},
+\code{scalar_predecessor.tex},
+\code{equality_reflection.tex}, and
+\code{primitive_recursion.tex}, at the pinned commit.
+Exact source copies and the upstream license are included.
+\end{thebibliography}
+
+\appendix
+\section{Selected complete native checker}
+
+This is the entire acceptance module used in the 2,499-byte normalized
+measurement. Its readable source includes the comments shown below.
+

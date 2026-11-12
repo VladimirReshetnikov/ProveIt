@@ -1,0 +1,34 @@
+INDEPENDENT MATHEMATICAL REVIEW
+
+The direct variable-source recovery of crossed transport was reviewed from
+two directions. The reviewed proof uses initialized scalar I, not the
+successor-seeded scalar R: the selector endpoints must normalize literally
+before equality transport is available.
+
+The following obligations were checked:
+
+1. Numerical cases are derived without equality transport, using dummy
+   witness 1 and closure elimination. No general atomic case at witness
+   zero is needed for that preliminary construction.
+2. The two-row witness package uses only the given transport premises at
+   its selector endpoints. Its introduction branch ignores the new
+   assumption, so zero-witness progress mode is harmless.
+3. One fresh-name elimination supplies h(b)=r and b=t. One variable
+   substitution gives r=nf(h(t)); b does not occur in the final sequent.
+4. Normalization/substitution coherence covers iterator bodies and
+   duplication or erasure of occurrences.
+5. The newest-variable refinement does not use unrestricted target
+   weakening. Its translation invariant protects internally introduced
+   sources while initial parameters and clauses are extended.
+6. The reverse translation is a special case of unrestricted transport.
+   General numerical substitution becomes admissible afterward.
+7. The raw/canonical bridge treats unrestricted case introduction and
+   progress separately; a witness may normalize to zero.
+8. Reductions under update binders use derived iterator-body extensionality
+   from equation induction in the raw theory.
+9. Composing exact comparisons with the pinned native/iPRA bridge preserves
+   whole numerical domains, actual equality, and both identity composites.
+
+No mathematical defect was found in these arguments. This is a written
+review and executable regression evidence, not a Lean/Rocq verification.
+No claim of a new global checker-size minimum is made.

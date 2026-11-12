@@ -1,0 +1,137 @@
+\section{A shorter expansion of equality transport}
+\label{sec:short-transport}
+
+This appendix concerns the zero-normal scalar term language.  Write
+\(\mathcal I(c,a;u.h)\) for the smart iterator, equal to \(a\) when
+\(c\) is literally zero and otherwise equal to \(I(c,a;u.h)\).
+Angle brackets denote capture-free substitution followed by zero
+normalization.  No successor computation is performed by normalization.
+The two arithmetic rules used here are
+\[
+ \frac{}{\Gamma\vdash v=v}\;{\mathsf{Refl}},
+ \qquad
+ \frac{\Gamma\vdash\mathcal I(c,a;u.h)=t
+       \qquad\Gamma\vdash I(Sc,a;u.h)=r}
+      {\Gamma\vdash r=h\langle t/u\rangle}\;{\mathsf{UE}}.
+\]
+All the following constructions work under an arbitrary retained context.
+They use neither numerical induction nor a logical rule.
+
+\paragraph{The inherited identity frame.}
+For a term \(v\), put \(K(v)=I(S0,v;u.u)\).  The smart predecessor
+iterate of \(K(v)\) is exactly \(v\).  Thus, given proofs
+\(P:v=w\) and \(Q:v=r\), define
+\[
+ \mathsf{Root}(P,Q)
+  :=\mathsf{UE}\bigl(P,\,
+       \mathsf{UE}(Q,\mathsf{Refl}(K(v)))\bigr).
+ \tag{R}
+\]
+The inner inference proves \(K(v)=r\), and the outer inference proves
+\(r=w\).  This is the identity-frame construction from the incoming
+\texttt{equality\_from\_iteration} package, reused here.  It adds exactly
+two UE nodes and one reflexivity node, and uses each supplied proof once.
+
+\paragraph{Congruence by two evaluations.}
+Let \(h(u)\) be any fixed numerical template and let \(P:s=t\).
+The template may contain any finite number of occurrences of \(u\),
+including occurrences under further iterator binders.  Freshen the bound
+variables to make every displayed substitution capture-free.  Put
+\[
+ H:=I(S0,s;u.h),\qquad
+ h_s:=h\langle s/u\rangle,\qquad h_t:=h\langle t/u\rangle .
+\]
+The minor equation
+\[
+ e_s:=
+ \mathsf{UE}\bigl(\mathsf{Refl}(s),\mathsf{Refl}(H)\bigr)
+ \quad:\quad H=h_s
+\]
+is a one-step computation.  It already has exactly the left-hand side
+needed by a second UE inference.  Therefore
+\[
+ \mathsf{Cong}_h(P)
+   :=\mathsf{UE}(P,e_s)
+   \quad:\quad h_s=h_t.
+ \tag{C}
+\]
+Indeed, in the second inference the predecessor iterate is
+\(\mathcal I(0,s;u.h)=s\); its major is \(s=t\), its minor is \(H=h_s\),
+and its conclusion is \(h_s=h\langle t/u\rangle\).
+This directly verifies the match, without an intervening equality
+composition.
+
+Consequently arbitrary numerical congruence adds exactly two UE nodes
+and two reflexivity nodes to its supplied proof.  That proof occurs
+once.  In particular, if \(P\) has \(p\) nodes, the displayed proof of
+\(h_s=h_t\) has exactly \(p+4\) nodes.  The bound is independent of the
+depth of \(h\) and the number of occurrences of \(u\), but not a bound
+on serialized term or certificate size.
+
+The incoming package instead first constructs both endpoint equations
+\(H=h_s\) and \(H=h_t\), then composes them by (R).  Construction (C)
+uses the first endpoint equation directly as the minor premise of UE.
+The saving is in this explicit proof expansion; it does not constitute
+a new axiom deletion or a claim of global proof-length optimality.
+
+\paragraph{Crossed one-template transport.}
+For \(P:s=t\) and \(Q:h_s=r\), define
+\[
+ \mathsf{Transport}_h(P,Q)
+   :=\mathsf{Root}(\mathsf{Cong}_h(P),Q).
+ \tag{T}
+\]
+Its conclusion is \(r=h_t\), which is precisely crossed one-template
+transport.  Expanded without abbreviations, its proof is
+\[
+ \mathsf{UE}\!\left(
+   \mathsf{UE}\!\left(
+      P,\mathsf{UE}(\mathsf{Refl}(s),\mathsf{Refl}(H))
+   \right),
+   \mathsf{UE}\!\left(Q,\mathsf{Refl}(K(h_s))\right)
+ \right).
+\]
+The inner right-hand inference proves \(K(h_s)=r\); the outer inference
+then uses major \(h_s=h_t\) and the identity update to conclude
+\(r=h_t\).
+
+There are exactly four UE nodes and three reflexivity nodes in this
+expansion.  Each supplied proof appears once.  Thus the complete tree
+has \(p+q+7\) nodes when \(P,Q\) have \(p,q\) nodes.  The prior specified
+expansion used six UE nodes and five reflexivity nodes, so this
+construction removes four administrative inference nodes per replaced
+transport instance.
+
+\paragraph{Exact compilation count.}
+Consider a proof tree in an intermediate calculus that already has all
+the target rules and, in addition, the crossed one-template transport
+rule.  Let the tree have \(N\) nodes, of which \(k\) are instances of
+that extra rule.  Recursively replace every such instance by (T).
+The resulting tree has exactly
+\[
+                         N+6k
+\]
+nodes.  Each source transport node is replaced by seven target nodes,
+and neither of its recursively translated premise trees is duplicated.
+This count is an external statement about finite proof trees.  If
+other source rules are translated in a separate pass, their overhead
+must be counted separately.  No uniform bound on certificate bytes,
+checking time, or normal-form size follows from this node count.
+
+\paragraph{Two-sided equation transport and sharing.}
+For a supplied equation \(a(s)=b(s)\), applying (T) first to the template
+\(a\) gives \(b(s)=a(t)\).  Applying (T) to the template \(b\) then gives
+\(a(t)=b(t)\).  The second application needs a second occurrence of the
+proof \(s=t\).  If the two supplied proof trees have \(p,q\) nodes, the
+literal two-application expansion has
+\[
+                         2p+q+14
+\]
+nodes.  It is therefore incorrect to claim an additive constant
+tree-size overhead for this particular two-sided expansion.  With
+shared proof graphs the proof of \(s=t\) can be referenced twice
+instead of copied, but that is a different representation and requires
+its own checker and size convention.  The exact \(N+6k\) count above
+applies to the one-template rule, for which no sharing assumption is
+needed.
+
