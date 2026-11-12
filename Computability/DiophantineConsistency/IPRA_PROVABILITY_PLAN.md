@@ -7484,6 +7484,9 @@ facts from an 87-graph zero.
 The source-reviewed [87 four-field extraction draft](research/ordinary14-87-four-fields-draft/README.md)
 proposes extracting the shared non-guard residuals from the 87 graph's own
 zero. It remains unelaborated and does not identify the distinct guards.
+The source-reviewed [87 strong-norm draft](research/ordinary14-87-strong-norm-draft/README.md)
+proposes the direct-Y strong identity from the 87 graph's own zero. It remains
+unelaborated and does not establish the rest of the calibration.
 The source-reviewed [87 first-quotient draft](research/ordinary14-87-first-quotient-draft/README.md)
 proposes deriving the quotient and first root from the 87 graph's own zero.
 It remains unelaborated and does not establish the needed growth condition.
