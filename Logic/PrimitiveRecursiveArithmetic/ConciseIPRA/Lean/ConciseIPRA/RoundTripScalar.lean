@@ -155,18 +155,12 @@ theorem code_code (t : Tm n) : [] ⊢[TeqAx] FromPRA.code (ToPRA.code t) ≐ t :
   induction t with
   | var i => exact Prf.eqRefl _
   | zero => exact Prf.eqRefl _
-  | succ t ih =>
-    refine Q.exact ?_
-    exact congrArg Q.succ (Q.sound ih)
+  | succ t ih => exact Q.exact (congrArg Q.succ (Q.sound ih))
   | iter c a h ihc iha ihh =>
-    have e : FromPRA.code (ToPRA.code (Tm.iter c a h))
-        = Tm.prc (FromPRA.code (ToPRA.code c)) (FromPRA.code (ToPRA.code a))
-            (Tm.itG (FromPRA.code (ToPRA.code h))) := by
-      show Syn.subst (fun j => FromPRA.code
-          ((Fin.cases (ToPRA.code c) PR.proj : Fin (_ + 1) → PR _) j))
-          (FromPRA.code (ToPRA.iterSym (ToPRA.code a) (ToPRA.code h))) = _
-      rw [code_cases_proj, subst_code_iterSym]
-    rw [e]
+    show [] ⊢[TeqAx] Syn.subst (fun j => FromPRA.code
+        ((Fin.cases (ToPRA.code c) PR.proj : Fin (_ + 1) → PR _) j))
+        (FromPRA.code (ToPRA.iterSym (ToPRA.code a) (ToPRA.code h))) ≐ _
+    rw [code_cases_proj, subst_code_iterSym]
     exact Prf.eqTrans (Q.prc_itG _ _ _) (Q.iter_congr ihc iha ihh)
 
 /-- The round trip `T_eq → iPRA → T_eq` is provably the identity on terms. -/
@@ -174,17 +168,11 @@ theorem sigma_tau (t : Tm n) : [] ⊢[TeqAx] FromPRA.sigma (ToPRA.tau t) ≐ t :
   induction t with
   | var i => exact Prf.eqRefl _
   | zero => exact Prf.eqRefl _
-  | succ t ih =>
-    refine Q.exact ?_
-    exact congrArg Q.succ (Q.sound ih)
+  | succ t ih => exact Q.exact (congrArg Q.succ (Q.sound ih))
   | iter c a h ihc _ _ =>
-    have e : FromPRA.sigma (ToPRA.tau (Tm.iter c a h))
-        = Tm.prc (FromPRA.sigma (ToPRA.tau c)) (FromPRA.code (ToPRA.code a))
-            (Tm.itG (FromPRA.code (ToPRA.code h))) := by
-      show Syn.subst (fun i => FromPRA.sigma (inst (ToPRA.tau c) i))
-          (FromPRA.code (ToPRA.iterSym (ToPRA.code a) (ToPRA.code h))) = _
-      rw [FromPRA.sigma_inst, subst_code_iterSym]
-    rw [e]
+    show [] ⊢[TeqAx] Syn.subst (fun i => FromPRA.sigma (inst (ToPRA.tau c) i))
+        (FromPRA.code (ToPRA.iterSym (ToPRA.code a) (ToPRA.code h))) ≐ _
+    rw [FromPRA.sigma_inst, subst_code_iterSym]
     exact Prf.eqTrans (Q.prc_itG _ _ _) (Q.iter_congr ihc (code_code a) (code_code h))
 
 end RoundTrip

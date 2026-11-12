@@ -68,9 +68,7 @@ theorem sigma_app_var (f : PR k) : sigma (PTm.app f Syn.var) = code f := by
 theorem sigma_subst (ρ : Fin n → PTm m) (t : PTm n) :
     sigma (Syn.subst ρ t) = Syn.subst (fun i => sigma (ρ i)) (sigma t) := by
   induction t with
-  | var i =>
-    show sigma (Syn.subst ρ (Syn.var i)) = Syn.subst (fun i => sigma (ρ i)) (Syn.var i)
-    rw [Syn.subst_var, Syn.subst_var]
+  | var i => rfl
   | app f ts ih =>
     simp only [PTm.subst_app, sigma_app, Syn.subst_subst, ih]
 

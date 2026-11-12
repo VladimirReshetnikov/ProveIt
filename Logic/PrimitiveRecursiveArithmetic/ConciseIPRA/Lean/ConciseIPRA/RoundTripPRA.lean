@@ -106,9 +106,7 @@ theorem tau_code_prec_zero (f : PR k) (g : PR (k + 2))
     {Γ : List (Fm PTm k)} :
     Γ ⊢[PRAAx] (ToPRA.tau (FromPRA.code (.prec f g))
       ≐ PTm.app (.prec f g) Syn.var).subst (inst PTm.zero) := by
-  show Γ ⊢[PRAAx] Syn.subst (inst PTm.zero) (ToPRA.tau (FromPRA.code (.prec f g)))
-    ≐ Syn.subst (inst PTm.zero) (PTm.app (.prec f g) Syn.var)
-  rw [PTm.subst_app_var]
+  simp only [Fm.subst_eq, PTm.subst_app_var]
   exact Prf.eqTrans (tau_subst_inst Tm.zero _)
     (Prf.eqTrans (Prf.ofNil (ToPRA.interp.sound (code_prec_zero f g)))
       (Prf.eqTrans (Prf.ofNil ihf) (Prf.eqSymm (PRA.precZero f g Syn.var))))
@@ -119,10 +117,7 @@ theorem tau_code_prec_succ (f : PR k) (g : PR (k + 2))
     (ih : Γ ⊢[PRAAx] ToPRA.tau (FromPRA.code (.prec f g)) ≐ PTm.app (.prec f g) Syn.var) :
     Γ ⊢[PRAAx] (ToPRA.tau (FromPRA.code (.prec f g))
       ≐ PTm.app (.prec f g) Syn.var).subst (repl (PTm.succ (Syn.var 0))) := by
-  show Γ ⊢[PRAAx]
-    Syn.subst (repl (PTm.succ (Syn.var 0))) (ToPRA.tau (FromPRA.code (.prec f g)))
-      ≐ Syn.subst (repl (PTm.succ (Syn.var 0))) (PTm.app (.prec f g) Syn.var)
-  rw [PTm.subst_app_var]
+  simp only [Fm.subst_eq, PTm.subst_app_var]
   refine Prf.eqTrans (tau_subst_repl (Tm.succ (Syn.var 0)) _)
     (Prf.eqTrans (Prf.ofNil (ToPRA.interp.sound (code_prec_succ f g)))
       (Prf.eqTrans (Prf.ofNil (tau_subst_code ihg _))
