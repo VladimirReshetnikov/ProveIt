@@ -7452,6 +7452,9 @@ unelaborated and does not establish the reverse map or an endpoint.
 The source-reviewed [86 first-fields draft](research/ordinary14-86-first-fields-draft/README.md)
 proposes the signed first residual and slot independence from its own zero.
 It remains unelaborated and does not yet establish the quotient witness.
+The source-reviewed [86 fresh-root draft](research/ordinary14-86-fresh-root-draft/README.md)
+proposes a positive replacement root from an explicit `q³` quotient and
+Pell root. It remains unelaborated and is not yet a complete reverse map.
 The source-reviewed [86 own-zero quotient composition](research/ordinary14-86-ownzero-quotient-draft/README.md)
 proposes deriving that quotient and a magnitude root from the graph's own
 first residual. It remains unelaborated and is not yet a complete model map.
@@ -7485,6 +7488,11 @@ reduces the 14-positive-input degree-60 parent to 75 operations at exact
 degree 107. Its five-factor product has the same zeros on the positive domain;
 the proof uses a negative-Pell descent and modular factor exclusions. The
 compact44 endpoint and Lean limitations remain inherited.
+The reviewed [universal trace-bound probe](research/ordinary14-universal-trace-bound/README.md)
+derives an external trace bound for positive `X` under stated Pell and
+congruence hypotheses. Its 73-operation direct-`X` graph still lacks a proof
+of the `q ∣ X` condition needed for the parent map; its toy controls do not
+establish a full graph zero or unrestricted nonequivalence.
 The reviewed [positive quotient shift](research/ordinary14-positive-guard74/README.md)
 reduces that parent to 14 strictly positive inputs and 74 operations at exact
 degree 107. Its positive-zero maps use `β > 0` and `K0 ≥ 0` locally; the
