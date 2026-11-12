@@ -7507,6 +7507,9 @@ They are unelaborated and do not yet establish exact indices.
 The source-reviewed [87 P72 exact-index draft](research/ordinary14-87-p72-exact-indices-draft/README.md)
 proposes applying the theorem to those same-zero facts. It and its
 dependencies remain unelaborated and do not constitute a checked model result.
+The source-reviewed [87 factor-three projection draft](research/ordinary14-87-divides-3x-draft/README.md)
+proposes `q ∣ 3X` from the same graph zero and its index facts. It remains
+unelaborated and does not itself establish `q ∣ X` or an iPRA endpoint.
 The source-reviewed [87 strong-norm draft](research/ordinary14-87-strong-norm-draft/README.md)
 proposes the direct-Y strong identity from the 87 graph's own zero. It remains
 unelaborated and does not establish the rest of the calibration.
