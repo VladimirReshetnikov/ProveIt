@@ -1,0 +1,146 @@
+import Positive84Division
+import ResidueQBalance
+import Positive84OrientedPower
+import ResidueCompactQBound
+import DiophantineConsistency.ArithmeticPellPowerRecovery
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Ring
+
+/-! Conditional direct power recovery for the actual positive-84 carrier.
+All graph witness extraction, Lean elaboration and provider checks remain open. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Positive84PowerDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ArithmeticPellRecurrence ArithmeticPellPowerRecovery
+open Residue90CompactPortBoundsDraft Positive84DivisionDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def rank84 (p : Fin 4 → ℕ) (v : Fin 13 → V) : V :=
+  ((q84 p v-1)*(q84 p v-v 1)+v 2)*(q84 p v*q84 p v-1)+
+    ((p 2:V)+q84 p v*(p 3:V))*v 0
+
+/-- Exact graph-rank and same-index Pell witnesses for one 84 valuation.
+The natural balance includes the 84 graph's actual extra X*Y*q term. -/
+def ExactPowerFacts (p : Fin 4 → ℕ) (v : Fin 13 → V) : Prop :=
+  ∃ R n main w : V,
+    R=rank84 p v ∧ 13≤n ∧ 2*n=R+1 ∧
+    k84 v=2*ycoord n (2*(v 6*Y84 p v*Y84 p v-1)+1) ∧
+    xcoord R (Y84 p v*(v 6+1))=main ∧
+    ycoord R (Y84 p v*(v 6+1))=c84 p v ∧
+    k84 v=R+1+4*(v 6*Y84 p v*Y84 p v)*w ∧
+    let a:=v 6*Y84 p v+Y84 p v
+    let H:=3+4*a
+    let U:=Y84 p v*(q84 p v*q84 p v)
+    U*main+H*k84 v=U*(v 6+a*c84 p v)+
+      H*(U*v 12+v 6*Y84 p v*q84 p v+R+1)
+
+/-- Avoid an omega call on abstract model naturals: the projection and q≥46
+already imply the coefficient lower bound. -/
+theorem sixteen_of_three (q X : V) (hq : 46≤q) (hX : 0<X) (hd : q∣3*X) : 16≤X := by
+  have hle : q≤3*X := Arithmetic.le_of_dvd (mul_pos (by simp) hX) hd
+  by_contra hn
+  have hlt : X<16 := lt_of_not_ge hn
+  have h15 : X≤15 := by
+    apply lt_succ_iff_le.mp
+    simpa only [show (15:V)+1=16 by ring] using hlt
+  have hm : 3*X≤(45:V) := by
+    have hh := mul_le_mul_of_nonneg_left h15 (by simp : (0:V)≤3)
+    simpa only [show (3:V)*15=45 by ring] using hh
+  have hb : (46:V)≤45 := le_trans hq (le_trans hle hm)
+  exact (not_lt_of_ge hb) (by norm_num : (45:V)<46)
+
+/-- The matching recurrence coordinates give the growth bound; this uses
+explicit predecessor arithmetic and does not assume q∣X. -/
+theorem growth (q X Y R n k c eta zeta : V)
+    (hq : 46≤q) (hX : 0<X) (hd : q∣3*X) (hY : 1≤Y)
+    (hn : 13≤n) (hindex : 2*n=R+1)
+    (hck : c=k*Y+eta) (hk : k=eta+zeta) (hzeta : 0<zeta)
+    (hc : c=ycoord R (Y*(X+1)))
+    (hfirst : k=2*ycoord n (2*(X*Y*Y-1)+1)) : Exp.exp R<Y := by
+  have h16 := sixteen_of_three q X hq hX hd
+  let r := n-1
+  have hn1 : 1≤n := le_trans (by simp : (1:V)≤13) hn
+  have hrn : r+1=n := tsub_add_cancel_of_le hn1
+  have hr : 2≤r := by
+    apply (add_le_add_iff_right (1:V)).mp
+    rw [hrn]
+    have h3 : (3:V)≤13 := by
+      simpa only [show (3:V)+10=13 by ring] using (show (3:V)≤3+10 by simp)
+    simpa only [show (2:V)+1=3 by ring] using le_trans h3 hn
+  have hR : R=2*r+1 := by
+    apply add_right_cancel (b:=(1:V))
+    calc
+      R+1=2*n := hindex.symm
+      _=2*(r+1) := by rw [hrn]
+      _=(2*r+1)+1 := by ring
+  rw [hR]
+  apply power_bound X Y r k c eta zeta h16 hY hr hck hk hzeta
+  · simpa only [hR] using hc
+  · simpa only [hrn] using hfirst
+
+/-- The actual extra-term balance and identical Pell witnesses yield power
+without a q-divides-X assumption or any 84→83 transport. -/
+theorem power_of_facts (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hv : ∀ i, 0<v i) (hq46 : 46≤q84 p v) (hf : ExactPowerFacts p v) :
+    v 6=Exp.exp (rank84 p v) := by
+  obtain ⟨R,n,main,w,hR,hn,hnR,hfirst,hx,hy,hindex,hbalance⟩ := hf
+  have hi : OrientedIndexCut p v := ⟨R,main,w,hindex,hbalance⟩
+  have hthree := three_of_oriented p v hv hi
+  have hq : 0<q84 p v := lt_of_lt_of_le (by norm_num : (0:V)<46) hq46
+  have hY : 0<Y84 p v := by
+    dsimp [Y84]
+    exact mul_pos (mul_pos hq (mul_pos hq hq)) (hv 7)
+  have hY1 : 1≤Y84 p v := pos_iff_one_le.mp hY
+  have hck : c84 p v=k84 v*Y84 p v+v 9 := by dsimp [c84]; ring
+  have hgrowth := growth (q84 p v) (v 6) (Y84 p v) R n (k84 v) (c84 p v)
+    (v 9) (v 10) hq46 (hv 6) hthree hY1 hn hnR hck rfl (hv 10) hy.symm hfirst
+  have hbal := ResidueQBalanceDraft.q_balance (q84 p v) (v 6) (Y84 p v) (c84 p v)
+    (k84 v) R (v 12) main (v 7) w hq hY rfl hindex hbalance
+  have ha : v 6*Y84 p v+Y84 p v=Y84 p v*(v 6+1) := by ring
+  have hp : v 6=Exp.exp R := Positive84OrientedPowerDraft.power_of_oriented_balance
+    (q84 p v) (v 6) (Y84 p v) R (c84 p v) main (v 12)
+    (4*v 6*q84 p v*v 7*w) hgrowth hx hy ⟨v 7,rfl⟩ (by simpa only [ha] using hbal)
+  simpa only [hR] using hp
+
+/-- The remaining graph fact obligation. It must extract the literal rank,
+first index, main-root coordinates and balance from the actual 84 zero. -/
+def ExactPowerGraphCut (K : ℕ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V),
+    (∀ i, 0<v i) →
+    InternalZero (PositiveUnscaled84GraphDraft.graph (fun j => (ports K j:ℤ))).output v →
+      ExactPowerFacts (ports K) v
+
+/-- Compact beta gives q≥46; the exact power graph cut remains explicit. -/
+theorem powerGraphCut (K : ℕ) (hf : ExactPowerGraphCut K) : PowerGraphCut K := by
+  intro V _ _ v hv hz
+  have hb : (46:V)≤(ports K 0:V) := by
+    change (46:V)≤(CompactFixedBeta.betaNat:V)
+    exact ResidueCompactQBoundDraft.beta_at_least_46
+  have hj : 1≤v 0 := pos_iff_one_le.mp (hv 0)
+  have hq : (46:V)≤q84 (ports K) v := calc
+    46≤(ports K 0:V) := hb
+    _≤v 0*(ports K 0:V) := le_mul_of_one_le_left (Arithmetic.zero_le _) hj
+    _≤1+v 0*(ports K 0:V) := le_add_of_nonneg_left (by simp)
+  exact ⟨rank84 (ports K) v,power_of_facts (ports K) v hv hq (hf V v hv hz)⟩
+/-- The same graph fact witness supplies the exact 84 oriented/index cut. -/
+theorem indexGraphCut (K : ℕ) (hf : ExactPowerGraphCut K) : IndexGraphCut K := by
+  intro V _ _ v hv hz
+  obtain ⟨R,n,main,w,_,_,_,_,_,_,hindex,hbalance⟩ := hf V v hv hz
+  exact ⟨R,main,w,hindex,hbalance⟩
+
+/-- The existing compact cancellation then gives q∣X, still conditional on
+actual-graph witnesses and the unvalidated source/provider chain. -/
+theorem divCut (K : ℕ) (hf : ExactPowerGraphCut K) : Positive83To84BridgeDraft.DivCut K :=
+  Positive84DivisionDraft.divCut_of_index_and_power K (indexGraphCut K hf) (powerGraphCut K hf)
+end DiophantineConsistency.Positive84PowerDraft
+#print axioms DiophantineConsistency.Positive84PowerDraft.sixteen_of_three
+#print axioms DiophantineConsistency.Positive84PowerDraft.growth
+#print axioms DiophantineConsistency.Positive84PowerDraft.power_of_facts
+#print axioms DiophantineConsistency.Positive84PowerDraft.powerGraphCut
+#print axioms DiophantineConsistency.Positive84PowerDraft.indexGraphCut
+#print axioms DiophantineConsistency.Positive84PowerDraft.divCut
