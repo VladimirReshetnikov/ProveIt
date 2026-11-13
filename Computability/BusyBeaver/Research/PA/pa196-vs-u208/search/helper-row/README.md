@@ -14,13 +14,15 @@ python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/search/helper-row/
 python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/search/helper-row/adverse.py --output /tmp/pa196-helper-adverse.json
 python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/search/helper-row/blank_prefix.py --steps 100000000 --output /tmp/pa196-helper-prefix.json
 python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/search/helper-row/source_witness.py --output /tmp/pa196-helper-source.json
+python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/search/helper-row/source_actual_witness.py --output /tmp/pa196-helper-source-actual.json
 ```
 
 The outputs match [receipt.json](receipt.json),
 [adverse-receipt.json](adverse-receipt.json),
-[blank-prefix-receipt.json](blank-prefix-receipt.json), and
-[source-witness-receipt.json](source-witness-receipt.json), respectively. All
-four commands pin the literal PA196 input by SHA-256
+[blank-prefix-receipt.json](blank-prefix-receipt.json),
+[source-witness-receipt.json](source-witness-receipt.json), and
+[source-actual-witness-receipt.json](source-actual-witness-receipt.json),
+respectively. All five commands pin the literal PA196 input by SHA-256
 `e8bbccd4cfa325251ca95066db116b5aa766e404b0971c33c02772be1c3617a8`.
 The first three compile C++ helpers in temporary directories, and all leave
 this research tree unchanged. The third command checks a **finite** run prefix;
@@ -125,6 +127,36 @@ endpoint tapes, affected-state visits, source paths, and hashes of the full
 traces. This is a counterexample to a general source-cycle preservation
 argument for the candidate; it is not an actual blank-run counterexample and
 does not rule out a later rejoining or a different proof of equivalence.
+
+### A source-reached frame
+
+[source_actual_witness.py](source_actual_witness.py) independently resolves
+the source graph in two ways and executes it exactly from site 25 with logical
+registers `[2,0,0,0,0,0,0,0,0]`. At source step 32,037 it reaches site 604
+with registers `[4,1,75,0,0,0,0,0,0]`. This is an exact source execution,
+not an abstract reachability claim. During that prefix there are 10,544
+increments and 10,466 positive decrements.
+
+The corresponding original-machine frame has marker at position 10,514 and
+physical file `[75,0,1,0,0,0,4,0,0]` followed by 10,570 ones. From this
+frame the original reaches the site-605 frame in 84,142 steps, while the
+candidate reaches a different site-615 frame in 147,964 steps without
+visiting that exact original endpoint in the checked prefix. The script
+compares the entire tapes, state, and head, and records transition-trace
+hashes in [source-actual-witness-receipt.json](source-actual-witness-receipt.json).
+
+The frame accounting follows the imported
+[startup and clean-frame connection](../../../jamesyc-upstream/pa196/PA196/PhysicalEndpoint.lean),
+[coverage checks](../../../jamesyc-upstream/pa196/PA196/CheckCoverage.lean), and
+[checked progress lemma](../../../jamesyc-upstream/pa196/PA196/PrimitiveSimulation.lean):
+increment leaves the gap unchanged and appends a spare 1; positive decrement
+increases the gap by one; zero decrement and jump leave the gap and file
+unchanged. The startup file has 26 trailing ones. Together with the imported
+coverage proofs, the exact source trace supplies a route to the original
+physical frame; this composition has not itself been formalized here or
+replayed as one literal blank-input trace. It also does not establish that
+the modified machine arrives at that same frame: an earlier divergence remains
+possible.
 
 The screen allows only one changed row total, not two changed helper rows,
 multistep parent matching, a different tape/head representation, or state
