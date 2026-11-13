@@ -47,3 +47,46 @@ proof-producing updates for every command, a connection to PA196's actual
 checker, translation of accepted derivations into PA proofs, and extraction of
 an appropriate command run from an arbitrary model-length halting trace. None
 of those end-to-end obligations is discharged by this lemma.
+
+## Lean prerequisite for the command extractor
+
+[CertificateStack.lean](CertificateStack.lean) kernel-checks the bounded
+numeric/ghost-certificate stack invariant for the exact PA196 Cantor pairing,
+including the `pair(0,0)=0` alias. Its `Commands` namespace defines the Shift, MP and AX numeric store update
+shapes; the AX `heads` and `gate` numeric functions are parameters rather
+than imported PA196 definitions. Given explicit assumptions for the native
+checker's truth, modus-ponens, AX-head and gate constructors, it proves
+that each update preserves the certificate invariant and defines a
+deterministic extractor whose returned certificate checks formula 1 whenever
+a finite command word halts from a sound store. The initial zero-store case is
+also stated. The AX head certificates are checked in stack order by an
+inductive aligned-list predicate.
+
+Run from the repository root:
+
+```sh
+lean Computability/BusyBeaver/Research/PA/pa196-vs-u208/reverse-cert-stack/CertificateStack.lean
+```
+
+On Lean 4.32, the printed theorems depend on `propext` and `Quot.sound`, with
+no `sorryAx`. This is an ordinary-natural-number theorem with conditional
+checker-constructor hypotheses, not a theorem of iPRA, not an instantiation of
+the exact imported checker, and not a PA196 tape-machine halt theorem. The
+constructor hypotheses must be connected to the native checker in the chosen
+object theory, and the source, physical, and proof-translation bridges must
+still be established internally.
+
+[UpstreamCommandAudit.lean](UpstreamCommandAudit.lean) imports the actual
+pinned upstream Cantor, command-code, and command-store definitions, proves
+that the standalone definitions agree with them for all inputs, and derives
+the conditional certificate result for a word of actual upstream commands.
+It also proves a concrete counterexample to the previous head-3/head-4
+parameter ordering. From the repository root, run:
+
+```sh
+python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/reverse-cert-stack/check_upstream.py
+```
+
+The tiny Lean build uses a private temporary directory; its deterministic
+output is [upstream-command-audit-receipt.json](upstream-command-audit-receipt.json). The actual native checker equations remain explicit
+hypotheses, and this is still not an iPRA derivation.

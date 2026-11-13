@@ -59,8 +59,8 @@ Let a nonhalting store have numeric fields `(t,w,d,h)` and certificates
   | --- | --- |
   | `head6(D,A,H)` | `leaf(7,D,A,H)` |
   | `head5(D,H)` | `leaf(6,D,H)` |
-  | `head4(H,D,A)` | `leaf(5,H,D,A)` |
-  | `head3(H,D,A)` | `leaf(4,H,D,A)` |
+  | `head4(D,A,H)` | `leaf(5,D,A,H)` |
+  | `head3(D,A,H)` | `leaf(4,D,A,H)` |
   | `head2(D,A,H)` | `leaf(3,D,A,H)` |
   | `head1(D,H)` | `leaf(2,D,H)` |
   | `rho8(D,A,H,d)` | `leaf(8,D,A,H,d)` |
@@ -117,3 +117,19 @@ only the needed entries of the checker table by the fuel recurrence and the
 imported `CheckerRows.rows_nth` equation; it does not allocate a table with one
 entry per enormous tree code. It is a Python transcription with finite
 examples, not a replacement for the imported theorems or a PA proof.
+
+### Corrected head-order transcription
+
+An earlier version of this prototype passed `(H,D,A)` to heads 3 and 4.
+That was wrong: the imported `Code.heads D H A d h` calls both with
+`(D,A,H)`. Its finite checker examples originally repeated the same permutation
+on the formula and certificate sides, so those controls did not detect it.
+The prototype and its receipts now use the upstream order.
+
+The independently kernel-checked [upstream command audit](../UpstreamCommandAudit.lean)
+imports the actual pinned PA196 `Commands.Code` and `Commands.Store` files.
+For `D=1,H=0,A=0`, it verifies that the real fourth-head code is `144136`,
+whereas the earlier permutation gives `119544`. It also proves that the
+standalone Lean command formulas and store step agree with the imported ones.
+The checker constructor interfaces remain hypotheses; this audit is not an
+internal iPRA theorem.

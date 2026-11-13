@@ -120,11 +120,11 @@ def verify(code):
     return entry(fuel,tree,tree)
 
 def ax_heads(D,H,A,d,h):
-    return [head6(D,A,H),head5(D,H),head4(H,D,A),head3(H,D,A),
+    return [head6(D,A,H),head5(D,H),head4(D,A,H),head3(D,A,H),
             head2(D,A,H),head1(D,H),rho8(D,A,H,d),U(d,h)]
 
 def ax_proofs(D,H,A,d,ph):
-    return [leaf(7,D,A,H),leaf(6,D,H),leaf(5,H,D,A),leaf(4,H,D,A),
+    return [leaf(7,D,A,H),leaf(6,D,H),leaf(5,D,A,H),leaf(4,D,A,H),
             leaf(3,D,A,H),leaf(2,D,H),leaf(8,D,A,H,d),gen(d,ph)]
 
 def main():
@@ -139,6 +139,10 @@ def main():
     proof=gen(0,truth); need(verify(proof)==U(0,0)+1,'GEN mismatch')
     proof=mp(0,truth,truth);need(verify(proof)==1,'MP at I(0,0)=0 mismatch')
     need(verify(mp(1,truth,truth))==0,'MP implication mismatch accepted')
+    # These constants are independently checked against the imported
+    # PA196.Commands.Code.head4 in UpstreamCommandAudit.lean.
+    need(ax_heads(1,0,0,0,0)[2] == 144136, 'upstream head4 order changed')
+    need(head4(0,1,0) == 119544, 'old head4 counterexample changed')
     results=[]
     for D,H,A,d in [(0,0,0,0),(0,0,1,0),(3,2,1,1),(3,2,2,1),(3,2,3,1)]:
         heads=ax_heads(D,H,A,d,0); proofs=ax_proofs(D,H,A,d,truth)
@@ -151,6 +155,8 @@ def main():
     # Check literal numeric underflow with a nonzero ghost certificate stack.
     ghost=pair(truth,0); need(decode(0)==(0,0) and ghost!=0 and verify(truth)==1,'underflow control')
     out={'source_pins':PINS,'truth_certificate':truth,'truth_tree':36,'truth_checker_result':verify(truth),
+         'upstream_head4_order_counterexample': {'D':1,'H':0,'A':0,
+             'correct':144136,'previously_permuted':119544},
          'gen_zero_truth_checker_result':verify(gen(0,truth)),
          'mp_truth_truth_checker_result':verify(mp(0,truth,truth)),
          'negative_controls':['zero fuel','rho8 domination','bundle guard','MP implication mismatch'],
