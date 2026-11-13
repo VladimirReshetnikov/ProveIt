@@ -2663,6 +2663,11 @@ formula or a predecessor.
 \end{proof}
 % ed.: the package proves the separation by the sequent 1=2 |- 0=1 only; the closed theorem Q_y(A(y)=B(y)), which shows that the reading also separates theorems in the empty context, is editorial.
 
+The Lean module \Lean{NativeZeroSourceRefl} formalizes the proposition
+(\Lean{zero\_refl\_separation}): the calculus $\Nat^{0}$ is \Lean{Z0Prf}, the
+reading is a reading \Lean{zsem} of \Lean{NativeModels} whose equality is
+``both zero or both nonzero'', and \Lean{Z0Prf.sound} is the soundness above.
+
 The reading also refutes the congruence of the equation $1=2$ through $N$,
 and it is not a structure with actual equality; like
 \cref{disch:prop:unary} it tests derivability in a custom rule calculus
@@ -5853,7 +5858,7 @@ The following are stated by the packages as not achieved or not claimed.
  Boolean variant (\cref{disch:prop:const-bool}), the scalar theory
  $\mathsf{SC}$ with \cref{disch:thm:sc-ipra}, the obstructions
  \cref{disch:thm:sc-obs,disch:thm:sc-cov} and the two structures of
- \cref{disch:sec:scalar-cov}, \cref{disch:prop:zero-refl}, and the
+ \cref{disch:sec:scalar-cov}, and the
  calculi $\Nat_{\mathrm{AB}}$, $\mathcal B_{\nu}$ and $\mathcal A$ with the
  compilers of \cref{disch:thm:alias-compiler,disch:thm:alias-rank,disch:thm:alias-atomic},
  and the calculus $\mathcal H$ with

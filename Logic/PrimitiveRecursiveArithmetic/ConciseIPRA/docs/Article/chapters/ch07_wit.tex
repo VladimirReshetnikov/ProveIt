@@ -34,6 +34,9 @@ copy.  \Cref{wit:sec:spec} restricts the use of a clause to the newest
 parameter as well: first with an arbitrary witness of the introduction, and
 then, by a vacuous case of the selector, together with the introduction at
 the newest parameter, so that no rule takes a term.
+\Cref{wit:sec:recon} keeps the witness and removes the matrix instead: the
+matrix of the introduction is reconstructed from the proved conclusion of its
+premise.
 
 Throughout the chapter $1$ abbreviates $\Suc 0$ and $2$ abbreviates
 $\Suc\Suc 0$.
@@ -4994,6 +4997,436 @@ open (\cref{wit:q:raw-three}).
 \end{remark}
 
 % ---------------------------------------------------------------------
+\section{Introduction with a reconstructed matrix}
+\label{wit:sec:recon}
+
+This section draws on \pkg{reconstructed\_introduction}.
+
+The calculi of the preceding sections remove the witness of the
+introduction and keep its matrix.  The calculus below keeps the witness and
+removes the matrix.  The rule $\rulename{DI}_{\mathrm{w}}$ of
+\cref{kern:def:W} is given a matrix, a witness and a derivation of its
+premise.  Its reconstructed form is given the witness, the eigenvariable, the
+assumption of the premise and the derivation; the matrix is computed from the
+conclusion of that derivation by abstraction, after the derivation has been
+checked.  This is the counterpart for the introduction of the rule
+\rulename{AQE} of \cref{kern:sec:aqe}, which computes the matrix of the
+elimination of a closure from its conclusion.  The calculus is a different
+presentation of the same consequence relation, not the deletion of an
+arithmetic principle: its equivalence with $\mathsf{W}$ and $\Nat$
+(\cref{wit:thm:recon}) refines \cref{kern:thm:witness}.
+
+\subsection{The rule and the calculus}
+\label{wit:sec:recon-rule}
+
+$\operatorname{Rep}_{t}^{s}$ is the replacement in terms and native formulas
+of \cref{kern:sec:abstr}: one traversal from the root in which every term node
+identical with $t$ is replaced by $s$ and not traversed further, inserted
+copies of $s$ are not traversed, formula nodes are never compared with $t$,
+and bound variables are renamed away from $\FV(s)\cup\FV(t)$.
+
+\begin{definition}[Reconstructed introduction; the calculus
+$\mathsf{W}_{\mathrm r}$]
+\label{wit:def:recon}
+Let $\Gamma$ be a context, $w$ a term, $z$ a variable not free in $\Gamma$ or
+in $w$, and $A$ and $C$ formulas.  Let $x$ and $y$ be distinct variables,
+different from $z$ and not free in $\Gamma$, $w$, $A$ or $C$, and let the
+bound variables of $C$ be renamed away from $\FV(w)\cup\{x,y,z\}$.  The
+\emph{reconstructed body} is
+\[
+ \rho_{w,z}(C)\defeq
+ \begin{cases}
+  \operatorname{Rep}_{\Suc z}^{y}(C),
+   & w\equiv 0\text{ and }C\text{ is a literal equation}
+     \quad(\text{mode of progress}),\\[0.5ex]
+  \operatorname{Rep}_{\Suc z}^{y}\bigl(\operatorname{Rep}_{w}^{x}(C)\bigr),
+   & \text{otherwise}\quad(\text{mode of cases}).
+ \end{cases}
+\]
+The rule of \emph{reconstructed introduction} is
+\[
+ \infrule{\Gamma,\ A\proves C}
+         {\Gamma\proves\D{x}{y}\rho_{w,z}(C)}\ \rulename{DI}_{\mathrm{r}},
+\]
+with the side conditions that $z$ is not free in $\rho_{w,z}(C)$ and that
+\[
+ A\equiv\rho_{w,z}(C)\subst{z}{y}\ \text{ in the mode of progress},\qquad
+ A\equiv\rho_{w,z}(C)\subst{w}{x}\subst{0}{y}\ \text{ in the mode of cases}.
+\]
+The data of an instance are $w$, $z$, $A$ and the derivation of the premise;
+an instance carries no matrix.  $\mathsf{W}_{\mathrm r}$ has the seven rules
+\rulename{Hyp}, \rulename{I0}, \rulename{IS}, \rulename{Tr}, \rulename{QE},
+\rulename{DE} and $\rulename{DI}_{\mathrm{r}}$.
+% ed.: the package states the calculus with transport in equation templates in place of Tr; the two forms are interderivable over I0 (wit:rem:recon-package).
+\end{definition}
+
+The replacement maps an equation to an equation and keeps the root $\Q{}$ or
+$\D{}{}$ of a compound formula, so $\rho_{w,z}(C)$ is a literal equation
+exactly when $C$ is one.  The mode of progress is therefore selected exactly
+when the witness is the literal $0$ and the reconstructed matrix is a literal
+equation, as in $\rulename{DI}_{\mathrm{w}}$.  In that mode $x$ is not free in
+$\rho_{w,z}(C)$, since it is not free in $C$, and the coordinate $x$ of the
+conclusion is unused.  Since $w$ contains no $y$, the two substitutions in the
+condition of the mode of cases may be performed in either order.
+
+The operation $\operatorname{Rep}$ is total and deterministic, so
+$\rho_{w,z}(C)$ is a function of $w$, $z$ and $C$; another choice of the
+placeholders $x$, $y$ changes only the names of the bound variables of the
+conclusion.  The seed $A$ is part of the instance and is fixed before the
+premise is derived; the derivation of the premise may use $A$ through
+\rulename{Hyp}.  The body is computed only after $C$ is known and is then
+compared with the seed.  A checker that infers the conclusion of every node
+therefore needs no matrix: it checks the derivation of the premise in the
+context $\Gamma,A$, computes $\rho_{w,z}(C)$, tests that $z$ is not free in
+it and compares $A$ with the required instance.  Neither the context of the
+premise nor the seed is chosen retrospectively.
+
+The test that $z$ is not free in $\rho_{w,z}(C)$ is not implied by the
+reconstruction.  With $w\defeq 1$ and the premise $\Gamma,A\proves z=z$, the
+two abstractions leave $z=z$ unchanged, and without the test the rule would
+conclude $\D{x}{y}(z=z)$, which still contains the discharged eigenvariable.
+
+\begin{lemma}[Syntax of the reconstruction]
+\label{wit:lem:recon-syntax}
+\leavevmode
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Let $H(y)$ be a formula with the designated variable $y$, let $z$ be a
+ variable different from $y$ and not free in $H(y)$, and let the bound
+ variables of $H$ be renamed away from $\{y,z\}$.  Then
+ $\operatorname{Rep}_{\Suc z}^{y}\bigl(H(\Suc z)\bigr)\equiv H(y)$.
+\item In the situation of \cref{wit:def:recon}, in the mode of progress
+ $\rho_{w,z}(C)\subst{\Suc z}{y}\equiv C$, and in the mode of cases
+ $\rho_{w,z}(C)\subst{w}{x}\subst{\Suc z}{y}\equiv C$.
+\item Let $B(x,y)$ be a formula, $t$ a term in which $x$ and $y$ are not
+ free, and $z$ a variable not free in $B(x,y)$ or in $t$, with the bound
+ variables of $B$ renamed away from $\FV(t)\cup\{x,y,z\}$.  Put
+ \[
+  n\defeq 1+\bigl|B(x,\Suc z)\bigr|,\qquad
+  K\defeq\It{0}{t}{u}{\Suc^{n}0},
+ \]
+ with $|\cdot|$ the number of nodes of \cref{kern:lem:fmarker}.  Then
+ $K\not\equiv 0$, $K=t$ is an instance of \rulename{I0},
+ $\FV(K)=\FV(t)$, so that $z$ is not free in $K$, and
+ \[
+  \rho_{K,z}\bigl(B(K,\Suc z)\bigr)\equiv B(x,y),
+ \]
+ computed in the mode of cases.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) The variable $z$ is not free in $H(y)$, so the free occurrences of $z$ in
+$H(\Suc z)$ are exactly the arguments of the inserted copies of $\Suc z$.  A
+term node identical with $\Suc z$ is the successor of a free occurrence of
+$z$, hence the successor node of an inserted copy.  Conversely, a node that
+properly contains an inserted copy has more than two nodes and is not
+identical with $\Suc z$, so the traversal reaches every inserted copy,
+replaces it by $y$ and does not descend further.  Nothing else is replaced,
+and the result is $H$ with $y$ at the positions of its designated variable,
+that is $H(y)$.
+
+(ii) By \cref{kern:lem:abstr}(i), applied to $C$ and the source $\Suc z$,
+the replaced occurrences give a template $H$ with $C\equiv H(\Suc z)$ and
+$\operatorname{Rep}_{\Suc z}^{y}(C)\equiv H(y)$.  Since $y$ is not free in $C$,
+the free occurrences of $y$ in $H(y)$ are exactly the replaced positions, and
+$H(y)\subst{\Suc z}{y}\equiv H(\Suc z)\equiv C$; no variable of $\Suc z$ is
+captured, because the bound variables of $C$ avoid $z$.  This is the mode of
+progress.  In the mode of cases put $C_1\defeq\operatorname{Rep}_{w}^{x}(C)$.
+By \cref{kern:lem:abstr}(i) there is a template $H_1$ with $C\equiv H_1(w)$ and
+$C_1\equiv H_1(x)$, and since $x$ is not free in $C$, the free occurrences of
+$x$ in $C_1$ are exactly the replaced positions.  By the argument of the mode
+of progress applied to $C_1$, in which $y$ is not free,
+$\rho_{w,z}(C)\subst{\Suc z}{y}\equiv C_1$.  The second abstraction does not
+remove an occurrence of $x$: a replaced node is identical with $\Suc z$, and
+its only variable is $z\neq x$.  Hence the free occurrences of $x$ in
+$\rho_{w,z}(C)$ are those of $C_1$.  Since $w$ contains no $y$ and $\Suc z$
+contains no $x$, the two substitutions commute, and
+\[
+ \rho_{w,z}(C)\subst{w}{x}\subst{\Suc z}{y}
+ \equiv\rho_{w,z}(C)\subst{\Suc z}{y}\subst{w}{x}
+ \equiv C_1\subst{w}{x}\equiv H_1(w)\equiv C .
+\]
+
+(iii) $K$ is an iterator, so $K\not\equiv 0$ and $\rho_{K,z}$ is computed in
+the mode of cases; $K=t$ is \rulename{I0}, and $\FV(K)=\FV(t)$ because the
+body $\Suc^{n}0$ is closed.  Apply \cref{kern:lem:fmarker} to the template
+$C(v)\defeq B(v,\Suc z)$, the term $p\defeq t$ and $a\defeq x$; its bound
+$1+|C|$ is $n$.  It gives
+$\operatorname{Rep}_{K}^{x}\bigl(B(K,\Suc z)\bigr)\equiv B(x,\Suc z)$.  The
+variable $z$ is different from $x$ and $y$ and not free in $B(x,y)$, so (i)
+with $H(y)\defeq B(x,y)$ gives
+$\operatorname{Rep}_{\Suc z}^{y}\bigl(B(x,\Suc z)\bigr)\equiv B(x,y)$.  The
+placeholders $x$, $y$ are admissible: they are not free in $t$, $z$ or $K$,
+hence not in $B(K,\Suc z)$.
+\end{proof}
+
+Without the marker the matrix need not be recovered.  If $B(x,y)$ is $x=1$ and
+the witness is $1$, the conclusion of the premise is $1=1$; the abstraction of
+every occurrence of $1$ gives $x=x$, and the rule concludes $\D{x}{y}(x=x)$,
+not $\D{x}{y}(x=1)$.  The proof below therefore introduces $\D{x}{y}B$ at the
+marker $K$ of \cref{wit:lem:recon-syntax}(iii), whose occurrences in
+$B(K,\Suc z)$ are exactly the copies at the positions of $x$, and moves the
+derivation of the premise from $t$ to $K$ by transport.
+
+\begin{lemma}[Instances of $\rulename{DI}_{\mathrm{r}}$]
+\label{wit:lem:recon-instance}
+Every instance of $\rulename{DI}_{\mathrm{r}}$ is an instance of
+$\rulename{DI}_{\mathrm{w}}$ of \cref{kern:def:W}, with the matrix
+$\rho_{w,z}(C)$, the witness $w$, and the same premise and conclusion.
+\end{lemma}
+
+\begin{proof}
+Let $B(x,y)\defeq\rho_{w,z}(C)$.  The two rules select the same mode, by the
+remark after \cref{wit:def:recon}.  In the mode of progress $w\equiv 0$, $B$ is
+a literal equation in which $x$ is not free, and the premise of
+$\rulename{DI}_{\mathrm{w}}$ is $\Gamma,B(0,z)\proves B(0,\Suc z)$, that is
+$\Gamma,\rho_{w,z}(C)\subst{z}{y}\proves\rho_{w,z}(C)\subst{\Suc z}{y}$; by the
+side condition and \cref{wit:lem:recon-syntax}(ii) this is
+$\Gamma,A\proves C$.  In the mode of cases the premise of
+$\rulename{DI}_{\mathrm{w}}$ is $\Gamma,B(w,0)\proves B(w,\Suc z)$, which is
+$\Gamma,A\proves C$ by the side condition and
+\cref{wit:lem:recon-syntax}(ii).  The variable $z$ is not free in $\Gamma$, in
+$w$ or in $\D{x}{y}B$, which is the condition on the eigenvariable of
+$\rulename{DI}_{\mathrm{w}}$.
+\end{proof}
+
+\subsection{Equivalence with the native calculus}
+\label{wit:sec:recon-equiv}
+
+Let $r(A)$ be the binder rank of \cref{base:rem:single-binder-size}.  For
+$r\ge 0$ consider the following statements about $\mathsf{W}_{\mathrm r}$,
+for every context $\Gamma$.
+\begin{itemize}
+\item[$(\mathrm T_r)$] If $F(v)$ is a formula template with $r(F)\le r$,
+ $\Gamma\proves_{\mathsf{W}_{\mathrm r}}s=t$ and
+ $\Gamma\proves_{\mathsf{W}_{\mathrm r}}F(s)$, then
+ $\Gamma\proves_{\mathsf{W}_{\mathrm r}}F(t)$.
+\item[$(\mathrm J_r)$] If $B(x,y)$ is a matrix with $r(B)\le r$, $t$ a term,
+ $z$ a variable not free in $\Gamma$, in $t$ or in $\D{x}{y}B$, and
+ $\Gamma,B(t,0)\proves_{\mathsf{W}_{\mathrm r}}B(t,\Suc z)$, then
+ $\Gamma\proves_{\mathsf{W}_{\mathrm r}}\D{x}{y}B(x,y)$.
+\end{itemize}
+$(\mathrm J_r)$ is the admissibility of \rulename{DI} of $\Nat$ at matrices
+of rank at most $r$, and $(\mathrm T_r)$ is the admissibility of transport in
+templates of rank at most $r$.
+
+\begin{lemma}[Structural rules and the introductions]
+\label{wit:lem:recon-rules}
+\leavevmode
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Weakening, injective renaming of free variables and cut are
+ admissible in $\mathsf{W}_{\mathrm r}$ by induction on derivations.
+\item $\mathsf{W}_{\mathrm r}$ derives reflexivity, symmetry and transport in
+ an equation template; in particular $(\mathrm T_0)$ holds.
+\item \rulename{QI} of $\Nat$ is derivable in $\mathsf{W}_{\mathrm r}$ by a
+ derivation that uses \rulename{DI}$_{\mathrm r}$, \rulename{DE} and
+ \rulename{Hyp} only.
+\item $(\mathrm T_r)$ implies $(\mathrm J_r)$.
+\item $(\mathrm T_r)$ and $(\mathrm J_r)$ imply $(\mathrm T_{r+1})$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) The proof of \cref{kern:lem:struct} applies.  The side conditions of
+$\rulename{DI}_{\mathrm{r}}$ are the freshness of $z$, the test whether $w$ is
+the literal $0$, the test whether $C$ is an equation, the matches of the
+replacements, the test that $z$ is not free in the body and the comparison of
+$A$ with an instance of the body.  An injective renaming $\theta$ of free
+variables, with the placeholders chosen outside its range, preserves and
+reflects identity of syntax, so it commutes with $\operatorname{Rep}$ and
+$\rho_{\theta w,\theta z}(\theta C)\equiv\theta\,\rho_{w,z}(C)$; it maps a
+variable to a variable, so it preserves the literal $0$ and the root of a
+formula.  Hence it maps an instance to an instance with the renamed data.
+Weakening, after the eigenvariables are renamed away from the added formulas,
+and cut change neither $w$, $z$, $A$ nor the conclusion $C$ of the premise of
+an instance: cut replaces the derivation of a retained assumption and leaves
+every formula of the instance unchanged.  So both keep every side condition.
+No substitution into a derivation is used.
+
+(ii) $\mathsf{W}_{\mathrm r}$ contains \rulename{I0} and \rulename{Tr};
+\cref{kern:lem:local}(iii).
+
+(iii) Let $\Gamma,E(z)\proves_{\mathsf{W}_{\mathrm r}}E(\Suc z)$, with $E$ a
+literal equation and $z$ not free in $\Gamma$ or in $\Q{y}E(y)$.  Apply
+$\rulename{DI}_{\mathrm{r}}$ with the witness $0$, the eigenvariable $z$ and
+the seed $E(z)$.  The conclusion $E(\Suc z)$ is a literal equation and the
+witness is $0$, so the mode is progress, and by
+\cref{wit:lem:recon-syntax}(i) the body is
+$\operatorname{Rep}_{\Suc z}^{y}\bigl(E(\Suc z)\bigr)\equiv E(y)$.  The variable
+$z$ is not free in $E(y)$, and the seed is $E(y)\subst{z}{y}\equiv E(z)$.  The
+rule concludes $\Gamma\proves\D{x}{y}E(y)$, with $x$ unused.  \rulename{DE}
+with a fresh eigenvariable $b$ and the second premise
+$\Gamma,\Q{y}E(y)\proves\Q{y}E(y)$, an instance of \rulename{Hyp}, gives
+$\Gamma\proves\Q{y}E(y)$.
+
+(iv) Assume $(\mathrm T_r)$, and let $B$, $t$, $z$ be as in $(\mathrm J_r)$
+with a derivation $\pi$ of $\Gamma,B(t,0)\proves B(t,\Suc z)$.  Rename the
+bound variables of $B$ away from $\FV(t)\cup\{z\}$ and the bound variables
+$x$, $y$ of the conclusion away from $\FV(\Gamma)\cup\FV(t)\cup\{z\}$, so that
+they serve as the placeholders of \cref{wit:def:recon}, and let $K$ be the
+marker of
+\cref{wit:lem:recon-syntax}(iii) for $B$ and $t$.  Put
+$\Gamma'\defeq\Gamma,B(K,0)$.  Over $\Gamma'$: \rulename{Hyp} gives $B(K,0)$;
+\rulename{I0} gives $K=t$; $(\mathrm T_r)$ with the template $B(v,0)$, of rank
+$r(B)\le r$, gives $B(t,0)$; $\pi$ weakened to $\Gamma',B(t,0)$ and cut with
+$B(t,0)$ give $B(t,\Suc z)$, by (i); symmetry gives $t=K$, and $(\mathrm T_r)$
+with the template $B(v,\Suc z)$ gives $B(K,\Suc z)$.  Thus
+\[
+ \Gamma,\ B(K,0)\proves_{\mathsf{W}_{\mathrm r}}B(K,\Suc z).
+\]
+Apply $\rulename{DI}_{\mathrm{r}}$ with the witness $K$, the eigenvariable $z$
+and the seed $B(K,0)$.  The variable $z$ is not free in $\Gamma$ or in $K$.
+By \cref{wit:lem:recon-syntax}(iii) the mode is cases and the body is $B(x,y)$,
+in which $z$ is not free, and the seed is
+$B(x,y)\subst{K}{x}\subst{0}{y}\equiv B(K,0)$.  The rule concludes
+$\Gamma\proves\D{x}{y}B(x,y)$.  The mode is cases also when $B$ is a literal
+equation and $t\equiv 0$, because $K\not\equiv 0$.
+
+(v) Assume $(\mathrm T_r)$ and $(\mathrm J_r)$, and let $F(v)$ be a template
+with $r(F)\le r+1$, $\Gamma\proves s=t$ and $\Gamma\proves F(s)$.  The bound
+variables of $F$ are chosen fresh for the other data.  If $F$ is a literal
+equation, (ii) applies.
+
+\emph{$F(v)\equiv\Q{y}B(v,y)$}, with $r(B)\le r$.  Let $z$ be a variable not
+free in $\Gamma$, $s$, $t$ or $B$.  Over $\Gamma,B(t,0)$, by weakening: $s=t$,
+symmetry $t=s$, and $\Q{y}B(s,y)$; $(\mathrm T_r)$ with the template $B(v,0)$
+and $t=s$ gives $B(s,0)$; \rulename{QE} with the matrix $B(s,y)$, the premise
+$B(s,0)$ and the term $\Suc z$ gives $B(s,\Suc z)$; and $(\mathrm T_r)$ with
+the template $B(v,\Suc z)$ and $s=t$ gives $B(t,\Suc z)$.  Hence
+$\Gamma,B(t,0)\proves B(t,\Suc z)$.  Regard $B(t,y)$ as a matrix in $x$ and
+$y$ in which $x$ is not used; its rank is at most $r$, and its instance at
+the witness $0$ is the given premise.  $(\mathrm J_r)$ gives
+$\Gamma\proves\D{x}{y}B(t,y)$, and \rulename{DE} with a fresh eigenvariable
+and \rulename{Hyp} give $\Gamma\proves\Q{y}B(t,y)$, as in (iii).
+
+\emph{$F(v)\equiv\D{x}{y}B(v,x,y)$}, with $r(B)\le r$.  Let $b$, $z$ be distinct
+variables not free in $\Gamma$, $s$, $t$ or $B$, and
+$\Delta\defeq\Gamma,\Q{y}B(s,b,y)$.  Over $\Delta,B(t,b,0)$ the steps of the
+preceding case, with the templates $B(v,b,0)$ and $B(v,b,\Suc z)$ and the
+matrix $B(s,b,y)$ of \rulename{QE}, give $B(t,b,\Suc z)$.  $(\mathrm J_r)$ with
+the matrix $B(t,x,y)$ and the witness $b$ gives
+$\Delta\proves\D{x}{y}B(t,x,y)$; $z$ is not free in $\Delta$, $b$ or the
+conclusion.  \rulename{DE} with the major premise
+$\Gamma\proves\D{x}{y}B(s,x,y)$ and the eigenvariable $b$, which is not free in
+$\Gamma$, in the major premise or in $\D{x}{y}B(t,x,y)$, gives
+$\Gamma\proves\D{x}{y}B(t,x,y)$.
+
+Every formula of rank at most $r+1$ is an equation or has one of the two
+forms, with a matrix of rank at most $r$.
+\end{proof}
+
+The order $(\mathrm T_0),(\mathrm J_0),(\mathrm T_1),(\mathrm J_1),\dots$ is
+not circular.  $(\mathrm T_0)$ is primitive transport.  $(\mathrm J_r)$ uses
+transport at rank $r$ only in the templates $B(v,0)$ and $B(v,\Suc z)$, and
+one instance of $\rulename{DI}_{\mathrm{r}}$, at the marker.
+$(\mathrm T_{r+1})$ uses transport and introduction at rank $r$, the primitive
+\rulename{QE} and \rulename{DE}, and \rulename{Hyp}; the extraction of
+$\Q{y}B$ from $\D{x}{y}B$ with $x$ unused uses no transport at all.  The
+derivation of \rulename{QI} in (iii) uses no transport.  Compared with
+\cref{kern:lem:aqerank} the roles are exchanged: in $\mathsf{A}_7$ the
+introductions are primitive and the elimination of a closure is recovered
+jointly with transport, whereas in $\mathsf{W}_{\mathrm r}$ the elimination is
+primitive and the introduction by cases is recovered jointly with transport.
+
+\begin{theorem}[Reconstructed introduction]
+\label{wit:thm:recon}
+$\mathsf{W}_{\mathrm r}$, $\mathsf{W}$ and $\Nat$ are equivalent: for every
+context $\Gamma$ and every native formula $A$,
+\[
+ \Gamma\proves_{\mathsf{W}_{\mathrm r}}A
+ \iff\Gamma\proves_{\mathsf{W}}A
+ \iff\Gamma\proves_{\Nat}A .
+\]
+The translations leave terms, formulas, contexts and conclusions unchanged.
+\end{theorem}
+
+\begin{proof}
+$\mathsf{W}$ and $\Nat$ are equivalent by \cref{kern:thm:witness}.
+
+\emph{From $\mathsf{W}_{\mathrm r}$ to $\mathsf{W}$.}  The rules \rulename{Hyp},
+\rulename{I0}, \rulename{IS}, \rulename{Tr}, \rulename{QE} and \rulename{DE}
+are common, and an instance of $\rulename{DI}_{\mathrm{r}}$ is an instance of
+$\rulename{DI}_{\mathrm{w}}$ with the same premise and conclusion
+(\cref{wit:lem:recon-instance}).  So a derivation of
+$\mathsf{W}_{\mathrm r}$ is a derivation of $\mathsf{W}$.
+
+\emph{From $\Nat$ to $\mathsf{W}_{\mathrm r}$.}  By
+\cref{wit:lem:recon-rules}(ii), (iv) and (v) and induction on $r$,
+$(\mathrm T_r)$ and $(\mathrm J_r)$ hold for every $r$.  Translate a
+derivation of $\Nat$ by induction on it.  \rulename{Hyp}, \rulename{I0},
+\rulename{IS}, \rulename{Tr}, \rulename{QE} and \rulename{DE} are copied, the
+premises being translated.  An instance of \rulename{QI} is replaced by the
+derivation of \cref{wit:lem:recon-rules}(iii) from its translated premise, and
+an instance of \rulename{DI} with the matrix $B$ by $(\mathrm J_{r(B)})$
+applied to its translated premise.  Each replacement acts over the context of
+the inference it replaces and introduces only fresh variables, so the
+conditions on the eigenvariables of enclosing inferences are kept.
+\end{proof}
+
+\begin{corollary}[The bridge for $\mathsf{W}_{\mathrm r}$]
+\label{wit:cor:recon-bridge}
+$\mathsf{W}_{\mathrm r}$, $\Teq$ and $\iPRA$ are bi-interpretable with whole
+numerical domains, actual equality, the identity graph $x=y$ in both numerical
+composites and both formula round trips;
+$\proves_{\mathsf{W}_{\mathrm r}}0=\Suc 0$ holds exactly when $\iPRA$ is
+inconsistent; and weakening, substitution of terms, cut and the Leibniz rule
+are admissible in $\mathsf{W}_{\mathrm r}$.
+\end{corollary}
+
+\begin{proof}
+\Cref{wit:thm:recon,kern:prop:transfer}.  The calculus has the terms and
+formulas of $\Nat$ and the same derivable sequents, so the translations of
+\cref{base:thm:bridge} and the derivations of the round trips are used
+unchanged.
+\end{proof}
+
+\begin{remark}[Substitution in $\mathsf{W}_{\mathrm r}$]
+\label{wit:rem:recon-subst}
+Substitution is admissible in $\mathsf{W}_{\mathrm r}$ through
+\cref{wit:thm:recon}, not by a direct induction on its derivations.  Let $a$,
+$b$ be distinct variables, $\Gamma$ a context containing $a=b$, and $z$ fresh.
+$\rulename{DI}_{\mathrm{r}}$ with the witness $a$, the seed $a=b$ and the
+premise $\Gamma,a=b\proves a=b$ by \rulename{Hyp} is in the mode of cases, has
+the body $x=b$ and concludes $\D{x}{y}(x=b)$.  The substitution of $a$ for
+$b$ turns the premise into $\Gamma',a=a\proves a=a$, whose body is $x=x$; the
+rule then concludes $\D{x}{y}(x=x)$, whereas the substituted conclusion is
+$\D{x}{y}(x=a)$.  A substitution can also turn a variable witness into the
+literal $0$ and so change the mode, as in \cref{kern:rem:wsubst}.  The proof
+of \cref{wit:thm:recon} therefore uses weakening, injective renaming and cut
+only, which change no datum of an instance except the names of
+eigenvariables.
+\end{remark}
+
+\begin{remark}[The package]
+\label{wit:rem:recon-package}
+\pkg{reconstructed\_introduction} calls the calculus $\mathcal S_7$ and the
+rule synthesized introduction.  Its transport rule is transport in a literal
+equation template, from $s=t$ and $E(s)$ to $E(t)$, in place of
+\rulename{Tr}.  The two forms are interderivable over \rulename{I0}:
+\cref{kern:lem:local}(iii) derives the transport in equation templates from
+\rulename{Tr}; conversely the transport in equation templates derives
+reflexivity, by transporting $\It{0}{t}{u}{u}=t$ along itself in the template
+$v=t$, then symmetry, by transporting $s=s$ in the template $v=s$, and then
+\rulename{Tr}, from $s=t$ and $h(s)=u$, by transporting $u=h(s)$ in the
+template $u=h(v)$.  So \cref{wit:thm:recon} holds for both forms.  The package
+proves soundness directly in $\Nat$, deriving an introduction in the mode of
+progress by \rulename{QI}, \rulename{QE} and \rulename{DI} at the witness $0$;
+the proof above goes through $\rulename{DI}_{\mathrm{w}}$ and
+\cref{kern:thm:witness}.  Its binder rank counts nested binders instead of
+occurrences of binders; the induction is the same, since the matrix of a
+compound formula has smaller rank in both senses.
+\Cref{wit:lem:recon-syntax}(iii) is the oversized marker of
+\pkg{abstraction\_and\_refinements} (\cref{kern:lem:fmarker}) applied, before
+the abstraction of $\Suc z$, to the template $B(v,\Suc z)$.  The package
+contains an independent written review of the equivalence proof and of its
+readable checker.  The theorem is not formalized in Lean or Rocq; the bridge
+it uses is that of \cref{base:thm:bridge}, which is not proved again.  The
+package's
+separate exact-binding checkers of the native calculus do not implement
+$\mathsf{W}_{\mathrm r}$.
+\end{remark}
+
+% ---------------------------------------------------------------------
 \section{Checkers and sizes}
 \label{wit:sec:sizes}
 
@@ -5002,13 +5435,15 @@ This section draws on the checker reports of \pkg{no\_witness},
 \pkg{newest\_parameter}, \pkg{uniform\_raw}, \pkg{parameter\_intro},
 \pkg{conditional\_copy}, \pkg{local\_introduction},
 \pkg{equational\_transport}, \pkg{names\_and\_scopes},
-\pkg{export\_specialization} and
-\pkg{vacuous\_specialization}.  The checker
+\pkg{export\_specialization},
+\pkg{vacuous\_specialization} and \pkg{reconstructed\_introduction}.  The checker
 of \pkg{constructed\_computation} and the compact checkers of
 \pkg{export\_specialization} and \pkg{vacuous\_specialization}, which check
 the guarded scalar calculus and not the calculi of this chapter, belong to
 another chapter, as do the exact-binding refinements of the native scalar
-checker in \pkg{names\_and\_scopes}.
+checker in \pkg{names\_and\_scopes}.  The exact-binding and padded sorted
+checkers of the native calculus in \pkg{reconstructed\_introduction}
+(313 / 357 / 590 and 298 / 336 / 573) belong to \cref{prov:ch:cert}.
 
 All checkers are standalone Python modules that read one JSON certificate,
 validate syntax, scopes and every inference, and accept or reject; none
@@ -5087,6 +5522,10 @@ $\mathcal X^{\mathcal R}_\nu$, target of $\mathcal R$ read off the goal &
 \multicolumn{5}{@{}l}{\pkg{vacuous\_specialization}}\\
 $\mathsf V$ & 645 & 745 & 1830 &
  $\mathsf K$ of \pkg{conditional\_copy}: 646 / 748 / 1844\\
+\multicolumn{5}{@{}l}{\pkg{reconstructed\_introduction}}\\
+$\mathsf{W}_{\mathrm r}$, readable reference module with documentation
+ string & 1896 & 2182 & 7639 & none stated; gzip-9 of the normalized
+ source: 2249 bytes\\
 \end{longtable}
 
 The packages compare their programs with further programs of the corpus.
@@ -5320,6 +5759,31 @@ embeddings of parameters and clauses, and the rejection of a surviving
 fresh parameter and of rows at $0$ and $1$ that agree without a constant
 matrix.
 
+\paragraph{\pkg{reconstructed\_introduction}.}
+The checker of $\mathsf{W}_{\mathrm r}$ reads one JSON pair of a closed goal
+and a proof, in a locally nameless syntax with free parameters as strings,
+bound indices $[\texttt{v},i]$, and the constructors $[\texttt{s},t]$,
+$[\texttt{i},n,a,h]$, $[\texttt{=},s,t]$, $[\texttt{q},B]$ and $[\texttt{d},B]$,
+with $y$ of index $0$ and $x$ of index $1$ below $\texttt{d}$.  It infers the
+conclusion of every node and accepts when the conclusion of the root equals
+the goal.  There is one record for each of the seven rules; an introduction
+is $[\texttt{j},w,z,A,p]$.  The checker validates $w$ in the current scope,
+extends the scope by $z$, validates the seed $A$ there, checks $p$ in the
+context extended by $A$, and only then computes the body by root-first
+replacement, tests that $z$ is not free in it and compares $A$ with the
+required instance; the mode of progress requires the exact integer $0$ as
+witness, so that Boolean and floating-point zeros are rejected, and an
+equation as conclusion.  Every result is validated in the scope in which it
+is returned, and \rulename{DE} rejects an escaping eigenvariable.  The
+module is a readable reference implementation and is not compared with a
+matched control.  It is checked by 21 positive and negative certificates in
+42 runs under normal and optimized interpretation and by 1501 deterministic
+checks of the syntax laws (opening and closing of binders, recovery at the
+marker, separation of free labels from bound indices); among the negative
+certificates are a wrong seed, the unmarked collision of
+\cref{wit:sec:recon-rule} against the goal $\D{x}{y}(x=1)$, an escaping
+eigenvariable and a progress step at a compound formula.
+
 The restricted rules reduce the data of a certificate and, except for
 $\mathsf{G}_{\mathrm d}$, the measured checker by a small amount.  They
 increase the length of certificates, because a witness term is replaced by
@@ -5501,6 +5965,31 @@ The negative theorems are separations of the stated consequence relations.
 Whether a calculus with equation-only \rulename{Back} and \rulename{Alias},
 the introduction at the newest parameter and some other finite addition, or
 a different interpretation, presents $\iPRA$ is not decided by them.
+\end{question}
+
+\begin{question}[Reconstructed introduction]
+\label{wit:q:recon}
+\pkg{reconstructed\_introduction} leaves the following open.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Its target, a presentation whose complete checker lies below the
+ compact envelope 238 / 255 / 455 of the corpus, is not attained: the
+ readable checker of $\mathsf{W}_{\mathrm r}$ (\cref{wit:tab:sizes}) pays for
+ the reverse replacement, the freshness test and the comparison of the seed.
+ Can abstraction and the opening of binders share one traversal in a compact
+ complete checker of $\mathsf{W}_{\mathrm r}$?
+\item (Raised by the article.)  Can the matrix of the introduction and that
+ of the elimination of a closure both be reconstructed, that is, is
+ $\mathsf{W}_{\mathrm r}$ with \rulename{QE} replaced by \rulename{AQE} of
+ \cref{kern:def:A7} equivalent to $\Nat$?  The proofs of
+ \cref{wit:lem:recon-rules} and \cref{kern:lem:aqerank} suggest the order
+ transport, elimination, introduction at each rank, but neither
+ \pkg{reconstructed\_introduction} nor \pkg{abstraction\_and\_refinements}
+ states or proves the combination.
+\item \Cref{wit:thm:recon} is a written proof with an independent written
+ review; it is not formalized in Lean or Rocq, and the correctness of the
+ reference checker is supported by finite tests only.  No minimality of
+ $\mathsf{W}_{\mathrm r}$ is claimed.
+\end{enumerate}
 \end{question}
 
 \begin{question}[Less normalization]
