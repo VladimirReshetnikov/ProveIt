@@ -1,0 +1,62 @@
+import IndependentKZeroGraphFacts
+import IndependentKRankRepresentationCorrected
+import Mathlib.Tactic.Ring
+
+/-! Proposed source-only composition for the exact fixed compact child.
+All imported graph facts, proofs, providers and this client are unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.IndependentKPositiveCorrectedCompositionDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open IndependentKUnitGraphDraft IndependentKFixedCompactPortsDraft
+open IndependentKZeroGraphFactsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Proposed equality between the graph client's signed rank expression
+and the separately reconstructed exact R-row expression. -/
+theorem rankRing_eq_expr (v : Fin 13 → V) :
+    rankRing v = (IndependentKRankRepresentationCorrectedDraft.rankExpr intPorts).evalRing (emb v) := by
+  simp [rankRing,IndependentKRankRepresentationCorrectedDraft.rankExpr,emb,intPorts,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat,P72Root.cast_port,
+    q,map_add,map_mul,map_one,map_ofNat] <;> ring
+
+/-- An actual fixed-child zero and k=0 supply a natural representation of
+its signed rank, conditional on the imported source claims. -/
+theorem rank_represented (v : Fin 13 → V)
+    (hz : InternalZero (graph intPorts).output v) (hk : v 10=0) :
+    rankRing v=ι (Residue90GraphNormsDraft.rank natPorts v) := by
+  have hJ := child_J_positive v hz
+  obtain ⟨hb,_,_,_⟩ := bounds (V:=V)
+  have hF : 0<v 1+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hf := first_norm v hz hk
+  have hFq := IndependentKRankRepresentationCorrectedDraft.first_norm_F_lt_q
+    (q v) (natPorts 0:V) (v 0) (v 1+1) (v 2+1)
+    (X v+(natPorts 1:V)) (v 8) rfl hb hJ hF hf
+  have hq : Residue90GraphNormsDraft.q natPorts v=q v := by
+    simp only [Residue90GraphNormsDraft.q,q]
+    ring
+  have hFq' : v 1+1≤Residue90GraphNormsDraft.q natPorts v := by
+    rw [hq]
+    exact le_of_lt hFq
+  have hrank := IndependentKRankRepresentationCorrectedDraft.rank_representation natPorts v hFq'
+  rw [rankRing_eq_expr v]
+  simpa only [intPorts,emb] using hrank
+
+/-- Conditional source-level endpoint for the new literal: no extra rank
+hypothesis appears here; the inherited source claims remain unelaborated. -/
+theorem k_positive (v : Fin 13 → V)
+    (hz : InternalZero (graph intPorts).output v) : 0<v 10 := by
+  apply pos_iff_ne_zero.mpr
+  intro hk
+  exact zero_k_impossible_of_rank_representation v
+    (Residue90GraphNormsDraft.rank natPorts v) hz hk (rank_represented v hz hk)
+end DiophantineConsistency.IndependentKPositiveCorrectedCompositionDraft
+#print axioms DiophantineConsistency.IndependentKPositiveCorrectedCompositionDraft.rankRing_eq_expr
+#print axioms DiophantineConsistency.IndependentKPositiveCorrectedCompositionDraft.rank_represented
+#print axioms DiophantineConsistency.IndependentKPositiveCorrectedCompositionDraft.k_positive
