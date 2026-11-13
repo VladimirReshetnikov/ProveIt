@@ -64,3 +64,9 @@ note. It remains to construct and verify the concrete certificates, bind an
 arbitrary model-length **literal machine** halting trace to such a command
 sequence, and translate the resulting formula-1 derivation to a PA
 refutation. A standard-model run or finite test does not supply those steps.
+
+The [imported checker inventory](imported-checker/README.md) identifies
+existing all-model checker equations for the four constructor families above,
+including a concrete certificate of formula 0 and the exact AX parameter
+order. Joining those equations to the represented command run and PA induction
+remains open.
