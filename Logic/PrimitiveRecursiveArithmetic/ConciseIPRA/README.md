@@ -987,7 +987,7 @@ The main chain (every module except the twenty kernel comparisons,
 `ZeroSeedObstruction`,
 `NativePrefix`, `NativeUniqueness`, `NativeModels`, `NativeWitnessShape`,
 `NativeWitnessComplete`, `EqKernel`, `EqArith`, `EqParity`, `EqCompare`, `EqPred` and
-`TeqClosure`) is 5,132
+`TeqClosure`) is 5,091
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
 introduction and elimination, instead of an induction over the seventeen
@@ -1011,7 +1011,13 @@ or body-congruence induction remains. In the native calculus, ex falso is one
 transport of the selector `sel(v, 0 = 0, A)` along `0 = 1` (`NPrf.botE`),
 in place of an induction on the formula, and the two collapses of a
 trivially guarded `Q` (`NEquiv.qSel`, `NEquiv.qGate`) are instances of one
-lemma (`NEquiv.qTriv`). In the
+lemma (`NEquiv.qTriv`). The round trip `T_eq → iPRA → T_eq` of a term is
+the soundness of the back translation applied to the evaluation equation of
+its code (`RoundTrip.sigma_tau`), not a fourth induction on terms; the
+native universal quantifier `all X = X(0) ∧ Q X` is read through the
+conjunction lemma and one propositional step; and case distinctions use
+`Teq.casesOn` in place of coverage followed by an explicit existential
+elimination and weakening. In the
 round trip through `T_eq`, the steps of each chain of equations are composed
 directly instead of being stated twice, and the step shared by three of the
 chains is one lemma (`RoundTrip.tau_subst_code`).
@@ -1231,7 +1237,7 @@ marked as conjectures is proved here.
    `deterministic_opening` (`OCPrf`), of `first_instance` and
    `clause_discharge` (`XCPrf`), and of `variable_substitution` (`VCPrf`)
    are proved equivalent to the kernel.
-8. **A shorter proof of the equivalence.** The main chain is 5,132 lines. A
+8. **A shorter proof of the equivalence.** The main chain is 5,091 lines. A
    dependency-closure computation shows that it contains nothing that the end
    results do not use. Three designs fix most of its size, and no shorter
    replacement for any of them is known: the predecessor of `T_eq` from

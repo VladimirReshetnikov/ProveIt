@@ -53,27 +53,29 @@ theorem cover (t : Tm n) :
 theorem sep : Γ ⊢[TeqAx] (zero ≐ succ zero) ⟶ Fm.bot := by
   simpa using Prf.ax (Γ := Γ) TeqAx.sep Fin.elim0
 
+/-- Case distinction on a term, with an unshifted conclusion. -/
+theorem casesOn (t : Tm n) {ψ : Fm Tm n}
+    (h0 : (t ≐ zero) :: Γ ⊢[TeqAx] ψ)
+    (hS : (Syn.shift t ≐ succ (var 0)) :: Γ.map Fm.shift ⊢[TeqAx] ψ.shift) :
+    Γ ⊢[TeqAx] ψ :=
+  .orE (cover t) h0 (.exE Prf.hyp0 (hS.weaken
+    (List.cons_subset_cons _ (List.map_subset _ (List.subset_cons_self _ _)))))
+
 /-- Proof by cases on a number: `φ(0)` and `φ(S z)` for a fresh `z` give
 `∀ y, φ(y)`.  Only coverage is used. -/
 theorem caseAll (φ : Fm Tm (n + 1)) (h0 : Γ ⊢[TeqAx] φ.subst (inst zero))
     (hS : Γ.map Fm.shift ⊢[TeqAx] φ.subst (repl (succ (var 0)))) :
     Γ ⊢[TeqAx] Fm.all φ := by
-  refine .allI (.orE (cover (var 0)) ?_ ?_)
+  refine .allI (casesOn (var 0) ?_ ?_)
   · have key : (var 0 ≐ zero) :: Γ.map Fm.shift ⊢[TeqAx] φ.subst var := by
-      refine .eqSubst φ (fun i => Syn.shift (inst zero i)) var (fun i => ?_) ?_
-      · refine Fin.cases ?_ (fun j => ?_) i
-        · exact Prf.eqSymm Prf.hyp0
-        · exact Prf.eqRefl _
-      · rw [← Fm.shift_subst]; exact h0.shift.wk
+      refine .eqSubst φ (fun i => Syn.shift (inst zero i)) var
+        (fun i => Fin.cases (Prf.eqSymm Prf.hyp0) (fun _ => Prf.eqRefl _) i) ?_
+      rw [← Fm.shift_subst]; exact h0.shift.wk
     rwa [Fm.subst_id] at key
-  · refine .exE Prf.hyp0 ?_
-    have h1 := hS.subst (up (fun i => (var i.succ : Tm (n + 1))))
+  · have h1 := hS.subst (up (fun i => (var i.succ : Tm (n + 1))))
     rw [Fm.map_shift_subst, Fm.subst_subst] at h1
-    refine .eqSubst φ _ (fun i => var i.succ) (fun i => ?_)
-      (h1.weaken fun ψ hψ => List.mem_cons_of_mem _ (List.mem_cons_of_mem _ hψ))
-    refine Fin.cases ?_ (fun j => ?_) i
-    · exact Prf.eqSymm Prf.hyp0
-    · exact Prf.eqRefl _
+    exact .eqSubst φ _ (fun i => var i.succ)
+      (fun i => Fin.cases (Prf.eqSymm Prf.hyp0) (fun _ => Prf.eqRefl _) i) h1.wk
 
 /-- Induction for a literal equation. -/
 theorem eqInd (s t : Tm (n + 1)) (h0 : Γ ⊢[TeqAx] (s ≐ t).subst (inst zero))

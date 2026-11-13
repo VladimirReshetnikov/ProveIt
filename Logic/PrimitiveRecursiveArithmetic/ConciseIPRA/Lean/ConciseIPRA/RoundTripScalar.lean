@@ -118,15 +118,11 @@ theorem code_code (t : Tm n) : [] ⊢[TeqAx] FromPRA.code (ToPRA.code t) ≐ t :
 
 /-- The round trip `T_eq → iPRA → T_eq` is provably the identity on terms. -/
 theorem sigma_tau (t : Tm n) : [] ⊢[TeqAx] FromPRA.sigma (ToPRA.tau t) ≐ t := by
-  induction t with
-  | var i => exact Prf.eqRefl _
-  | zero => exact Prf.eqRefl _
-  | succ t ih => exact Q.exact (congrArg Q.succ (Q.sound ih))
-  | iter c a h ihc _ _ =>
-    show [] ⊢[TeqAx] Syn.subst (fun i => FromPRA.sigma (inst (ToPRA.tau c) i))
-        (FromPRA.code (ToPRA.iterSym (ToPRA.code a) (ToPRA.code h))) ≐ _
-    rw [FromPRA.sigma_inst, subst_code_iterSym]
-    exact Prf.eqTrans (Q.prc_itG _ _ (code_code h)) (Teq.iterCongr h ihc (code_code a))
+  have h : [] ⊢[TeqAx] FromPRA.sigma (PTm.app (ToPRA.code t) Syn.var)
+      ≐ FromPRA.sigma (Syn.subst Syn.var (ToPRA.tau t)) :=
+    FromPRA.interp.sound (ToPRA.code_eval t Syn.var [])
+  rw [FromPRA.sigma_app_var, Syn.subst_id] at h
+  exact Prf.eqTrans (Prf.eqSymm h) (code_code t)
 
 end RoundTrip
 
