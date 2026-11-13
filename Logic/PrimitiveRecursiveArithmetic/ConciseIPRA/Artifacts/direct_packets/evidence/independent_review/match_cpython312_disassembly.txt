@@ -1,0 +1,139 @@
+ 10           0 RESUME                   0
+
+ 12           2 LOAD_GLOBAL              1 (NULL + loads)
+             12 LOAD_GLOBAL              3 (NULL + input)
+             22 CALL                     0
+             30 CALL                     1
+
+ 13          38 COPY                     1
+             40 MATCH_SEQUENCE
+             42 POP_JUMP_IF_FALSE       12 (to 68)
+             44 GET_LEN
+             46 LOAD_CONST               1 (3)
+             48 COMPARE_OP              40 (==)
+             52 POP_JUMP_IF_FALSE        7 (to 68)
+             54 UNPACK_SEQUENCE          3
+             58 STORE_FAST               2 (s)
+             60 STORE_FAST               3 (u)
+             62 STORE_FAST               4 (t)
+             64 STORE_FAST               5 (r)
+
+ 14          66 JUMP_FORWARD             2 (to 72)
+
+ 13     >>   68 POP_TOP
+             70 POP_TOP
+
+ 15     >>   72 LOAD_GLOBAL              5 (NULL + i)
+             82 LOAD_FAST                1 (a)
+             84 CALL                     1
+             92 BUILD_LIST               0
+             94 LOAD_FAST                0 (g)
+             96 LIST_EXTEND              1
+             98 LOAD_FAST_CHECK          2 (s)
+            100 COPY                     1
+            102 POP_JUMP_IF_FALSE        3 (to 110)
+            104 POP_TOP
+            106 LOAD_FAST                2 (s)
+            108 BUILD_LIST               1
+        >>  110 LOAD_FAST_CHECK          3 (u)
+            112 LOAD_FAST_CHECK          4 (t)
+            114 BUILD_LIST               3
+            116 LOAD_FAST                2 (s)
+            118 POP_JUMP_IF_FALSE       13 (to 146)
+            120 LOAD_GLOBAL              5 (NULL + i)
+            130 LOAD_FAST                4 (t)
+            132 LOAD_FAST_CHECK          5 (r)
+            134 LOAD_CONST               1 (3)
+            136 CALL                     3
+            144 JUMP_FORWARD             1 (to 148)
+        >>  146 LOAD_FAST                3 (u)
+        >>  148 BUILD_LIST               2
+            150 LIST_APPEND              1
+            152 CALL_INTRINSIC_1         6 (INTRINSIC_LIST_TO_TUPLE)
+            154 CONTAINS_OP              1
+            156 POP_JUMP_IF_FALSE      146 (to 450)
+
+ 16         158 LOAD_GLOBAL              5 (NULL + i)
+            168 LOAD_FAST                4 (t)
+            170 LOAD_FAST                3 (u)
+            172 CALL                     2
+            180 LOAD_FAST                1 (a)
+            182 COMPARE_OP              40 (==)
+            186 POP_JUMP_IF_FALSE       25 (to 238)
+
+ 17         188 LOAD_GLOBAL              5 (NULL + i)
+            198 LOAD_FAST                4 (t)
+            200 LOAD_FAST                2 (s)
+            202 CALL                     2
+            210 STORE_FAST               1 (a)
+
+ 18         212 LOAD_FAST                2 (s)
+            214 POP_JUMP_IF_FALSE        5 (to 226)
+            216 LOAD_FAST_CHECK          5 (r)
+            218 LOAD_CONST               0 (None)
+            220 LOAD_CONST               2 (2)
+            222 BINARY_SLICE
+            224 JUMP_FORWARD             5 (to 236)
+        >>  226 LOAD_FAST                4 (t)
+            228 BUILD_LIST               1
+            230 LOAD_CONST               1 (3)
+            232 BINARY_OP                5 (*)
+        >>  236 STORE_FAST               2 (s)
+
+ 19     >>  238 LOAD_GLOBAL              7 (NULL + c)
+            248 BUILD_LIST               0
+            250 LOAD_FAST                0 (g)
+            252 LIST_EXTEND              1
+            254 LOAD_GLOBAL              5 (NULL + i)
+            264 LOAD_GLOBAL              7 (NULL + c)
+            274 LOAD_FAST                0 (g)
+            276 LOAD_FAST                2 (s)
+            278 CALL                     2
+            286 COPY                     1
+            288 POP_JUMP_IF_TRUE        24 (to 338)
+            290 POP_TOP
+            292 LOAD_FAST                2 (s)
+            294 LOAD_CONST               1 (3)
+            296 BINARY_OP                5 (*)
+            300 COPY                     1
+            302 POP_JUMP_IF_TRUE        17 (to 338)
+            304 POP_TOP
+            306 LOAD_GLOBAL              5 (NULL + i)
+            316 BUILD_LIST               0
+            318 LOAD_FAST                1 (a)
+            320 LIST_EXTEND              1
+            322 LOAD_FAST                4 (t)
+            324 LIST_APPEND              1
+            326 LOAD_CONST               2 (2)
+            328 LIST_APPEND              1
+            330 CALL_INTRINSIC_1         6 (INTRINSIC_LIST_TO_TUPLE)
+            332 CALL_FUNCTION_EX         0
+            334 COPY                     1
+            336 STORE_FAST               1 (a)
+        >>  338 LOAD_GLOBAL              8 (k)
+            348 LOAD_CONST               3 (1)
+            350 BINARY_OP               10 (-)
+            354 COPY                     1
+            356 STORE_GLOBAL             4 (k)
+            358 LOAD_FAST                2 (s)
+            360 POP_JUMP_IF_FALSE        2 (to 366)
+            362 LOAD_CONST               3 (1)
+            364 JUMP_FORWARD            13 (to 392)
+        >>  366 LOAD_GLOBAL             11 (NULL + len)
+            376 LOAD_FAST                1 (a)
+            378 CALL                     1
+            386 LOAD_CONST               2 (2)
+            388 COMPARE_OP              40 (==)
+        >>  392 BINARY_OP                5 (*)
+            396 CALL                     2
+            404 LIST_APPEND              1
+            406 LOAD_GLOBAL              5 (NULL + i)
+            416 LOAD_FAST                1 (a)
+            418 LOAD_GLOBAL              8 (k)
+            428 BUILD_LIST               1
+            430 CALL                     2
+            438 CALL                     2
+            446 POP_TOP
+            448 RETURN_CONST             0 (None)
+
+ 15     >>  450 RETURN_CONST             0 (None)

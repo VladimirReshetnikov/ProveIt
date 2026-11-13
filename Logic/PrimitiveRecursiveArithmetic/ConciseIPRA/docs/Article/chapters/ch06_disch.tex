@@ -25,8 +25,10 @@ an obstruction shows that unary congruence is not enough. In
 into the conclusion, and substitution for a parameter in the backward
 direction replace the equality rule; the source of equality and the target
 of every use of a clause are then the newest parameter, and both new rules
-can be restricted to literal equations. \Cref{disch:sec:const} records an induction interface that one of the
-packages treats separately. \Cref{disch:sec:impl,disch:sec:sizes} summarize
+can be restricted to literal equations. \Cref{disch:sec:const} records an induction interface by a
+constancy rule, with a recursor that sees its counter and with a scalar
+iterator, together with an obstruction for the scalar form without its
+comparison equation. \Cref{disch:sec:impl,disch:sec:sizes} summarize
 the checkers, and \cref{disch:sec:further} lists what is left open.
 
 Throughout, $\equiv$ is literal identity of syntax up to the names of bound
@@ -3474,8 +3476,10 @@ bound on the size of the translation is claimed.
 \section{A constancy rule in place of induction}
 \label{disch:sec:const}
 
-This section draws on an appendix of \pkg{substitutive\_discharge}, and
-\cref{disch:sec:const-bool} on \pkg{boolean\_constancy}. It is
+This section draws on an appendix of \pkg{substitutive\_discharge},
+\cref{disch:sec:const-bool} on \pkg{boolean\_constancy}, and
+\cref{disch:sec:scalar-const,disch:sec:scalar-obs} on
+\pkg{scalar\_constancy}. It is
 independent of the discharge rule: it presents an arithmetic whose one
 arithmetical inference has no induction hypothesis and no step function.
 The price is a primitive Boolean equality.
@@ -3840,6 +3844,525 @@ theory, and nothing is claimed about the size of one; its programs check
 the native kernel. Neither the proposition nor the theory is formalized in
 Lean.
 
+\subsection{A scalar iterator with one comparison equation}
+\label{disch:sec:scalar-const}
+
+This subsection draws on \pkg{scalar\_constancy}. The recursor of
+\cref{disch:def:const}, whose body sees the old counter and the old state,
+is replaced by the iterator of \cref{base:def:terms}, whose body sees only
+the state. The counter is paid for by one unconditional equation for the
+Boolean test.
+
+\begin{definition}[Scalar constancy]
+\label{disch:def:sc}
+The theory $\mathsf{SC}$ is formulated in intuitionistic first-order logic
+with equality over the terms
+\[
+ t::=x\mid 0\mid\Suc(t)\mid\delta(t,t)\mid\It{n}{a}{u}{h},
+\]
+where the iterator binds $u$ in $h$ only, as in \cref{base:def:terms}. Its
+axioms are the universal closures of the computation equations
+\eqref{base:eq:I0} and \eqref{base:eq:IS} for all these terms, of the
+separation \eqref{disch:eq:sep}, of the split \eqref{disch:eq:split}, and of
+the \emph{comparison equation}
+\begin{equation}
+ \delta(\Suc s,\Suc t)=\delta(s,t).
+ \label{disch:eq:dc}
+\end{equation}
+Its one further rule is \rulename{Const} \eqref{disch:eq:construle}, for term
+templates $f$ of this language, with $z$ fresh for $\Gamma$, $t$ and the
+parameters of $f$; contexts consist of arbitrary first-order formulas. The
+theory $\mathsf{SC}^{-}$ is $\mathsf{SC}$ without \eqref{disch:eq:dc}.
+Neither theory has an induction schema, a coverage axiom or an injectivity
+axiom.
+\end{definition}
+
+The binder is a finite term constructor. Equivalently the language is a
+staged first-order signature: for each body $h(u,\vec p)$ formed at an
+earlier stage there is a function symbol $I_h(n,a,\vec p)$ with its two
+computation equations. No variable ranges over functions, and every formula
+and derivation uses finitely many of these symbols. The structures of
+\cref{disch:sec:scalar-obs} are structures for this signature. The selector
+$\sel(c,a,b)=\It{c}{a}{v}{b}$, $v$ not in $b$, is that of the common core,
+and $q_A$ is defined from it as before \cref{disch:lem:const-bool}.
+
+\begin{lemma}[Elementary facts]
+\label{disch:lem:sc-elem}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Without \rulename{Const}, $\mathsf{SC}^{-}$ proves $\sel(0,a,b)=a$,
+ $\sel(\Suc v,a,b)=b$, $\Suc v\neq 0$, \eqref{disch:eq:deltabool}, and the
+ two statements of \cref{disch:lem:const-bool} for every quantifier-free
+ $A$.
+\item Over $\mathsf{SC}^{-}$, without \rulename{Const}, the comparison
+ equation \eqref{disch:eq:dc} and the injectivity
+ $\Suc s=\Suc t\to s=t$ are interderivable.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) The selector equations are instances of \eqref{base:eq:I0} and
+\eqref{base:eq:IS}. The proofs of $\Suc v\neq 0$ and of
+\eqref{disch:eq:deltabool} in \cref{disch:lem:const-elem}, and the proof of
+\cref{disch:lem:const-bool}, use only these selector equations,
+\eqref{disch:eq:sep} and \eqref{disch:eq:split}.
+
+(b) Assume \eqref{disch:eq:dc} and $\Suc s=\Suc t$. Then
+$\delta(\Suc s,\Suc t)=0$ by \eqref{disch:eq:deltabool}, so
+$\delta(s,t)=0$, and $s=t$ by \eqref{disch:eq:deltabool}. Conversely assume
+injectivity and eliminate the split \eqref{disch:eq:split} at $(s,t)$. If
+$s=t$ and $\delta(s,t)=0$, then $\Suc s=\Suc t$, so
+$\delta(\Suc s,\Suc t)=0=\delta(s,t)$. If $s\neq t$ and $\delta(s,t)=1$,
+then $\Suc s=\Suc t$ would give $s=t$, so $\Suc s\neq\Suc t$, and the split at
+$(\Suc s,\Suc t)$ gives $\delta(\Suc s,\Suc t)=1=\delta(s,t)$, its first
+disjunct being contradictory. Only eliminations of disjunctions are used.
+\end{proof}
+
+The rule $\mathrm{SR}_0$ of \cref{claus:sec:rigidity} concludes
+$\Gamma\proves f(t)=t$ from $\Gamma\proves f(0)=0$ and
+$\Gamma\proves f(\Suc z)=\Suc f(z)$, $z$ fresh for $\Gamma$, $t$ and the
+parameters of $f$.
+
+\begin{lemma}[Successor rigidity from constancy]
+\label{disch:lem:sc-rigid}
+$\mathsf{SC}$ derives $\mathrm{SR}_0$, with one application of
+\rulename{Const}.
+\end{lemma}
+
+\begin{proof}
+Put $d(n)\defeq\delta(f(n),n)$; its parameters are those of $f$. Under
+$\Gamma$, congruence and \eqref{disch:eq:dc} give
+\[
+ d(\Suc z)=\delta\bigl(\Suc f(z),\Suc z\bigr)=\delta\bigl(f(z),z\bigr)=d(z).
+\]
+\rulename{Const} gives $d(t)=d(0)=\delta(f(0),0)=\delta(0,0)=0$, the last
+step by \eqref{disch:eq:deltabool}. Hence $f(t)=t$ by
+\eqref{disch:eq:deltabool}.
+\end{proof}
+
+\begin{theorem}[Quantifier-free induction from scalar constancy]
+\label{disch:thm:sc-ind}
+$\mathsf{SC}$ derives the contextual induction rule of
+\cref{disch:thm:const-ind} for every quantifier-free $A$ and every context
+$\Gamma$ of first-order formulas, with one application of \rulename{Const}.
+The comparison equation enters only through \cref{disch:lem:sc-rigid}.
+\end{theorem}
+
+\begin{proof}
+Let $\Gamma\proves A(0)$ and $\Gamma,A(z)\proves A(\Suc z)$ with $z$ fresh;
+the parameters of $A$ are suppressed. Put $q(n)\defeq q_{A(n)}$ and
+\[
+ e(n)\defeq\sel\bigl(q(n),n,0\bigr),
+\]
+and let $x$ be a variable not free in $\Gamma$ and $A$. By
+\cref{disch:lem:sc-elem}(a), $q(x)=0\lor q(x)=1$. If $q(x)=0$, then $A(x)$
+and $e(x)=x$, so $A(e(x))$; if $q(x)=1$, then $e(x)=0$, and $\Gamma\proves A(0)$
+gives $A(e(x))$. Moreover $A(x)$ gives $q(x)=0$ and so $e(x)=x$. Hence
+\[
+ \Gamma\proves A(e(x)),\qquad \Gamma,\ A(x)\proves e(x)=x,
+\]
+and, $x$ not being free in $\Gamma$, both hold with an arbitrary term in place
+of $x$. Define, with $u$ fresh,
+\[
+ r(n)\defeq\It{n}{0}{u}{\Suc(e(u))},\qquad f(n)\defeq e(r(n)),
+\]
+and let $w$ be fresh. The second property at $0$ and the base give
+$f(0)=e(0)=0$. The first property at $r(w)$ gives $A(f(w))$, the step
+instantiated at $f(w)$ gives $A(\Suc f(w))$, and the second property at
+$\Suc f(w)$ gives $e(\Suc f(w))=\Suc f(w)$. With \eqref{base:eq:IS},
+\[
+ f(\Suc w)=e\bigl(\Suc(e(r(w)))\bigr)=e\bigl(\Suc f(w)\bigr)=\Suc f(w).
+\]
+\Cref{disch:lem:sc-rigid} gives $\Gamma\proves f(t)=t$. The first property
+at $r(t)$ gives $A(f(t))$, and the Leibniz rule gives $A(t)$.
+% ed.: the package also proves e(e(x))=e(x) and concludes through e(t)=t; A(f(t)) is already an instance of the first property, so idempotence is not needed.
+\end{proof}
+
+For a parameter $a$ define
+\[
+ F_a(u)\defeq\sel\bigl(\delta(\Suc u,a),u,\Suc u\bigr),\qquad
+ O_a(n)\defeq\It{n}{0}{u}{F_a(u)},\qquad
+ P(a)\defeq O_a(a),
+\]
+so that $P(a)\equiv\It{a}{0}{u}{\It{\delta(\Suc u,a)}{u}{v}{\Suc u}}$. The
+orbit $O_a$ holds its state exactly when the successor of the state is the
+target $a$.
+
+\begin{proposition}[A predecessor and coverage]
+\label{disch:prop:sc-pred}
+Over $\mathsf{SC}^{-}$ together with the contextual induction rule for
+quantifier-free formulas:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $O_a(n)=n\ \lor\ \Suc(O_a(n))=a$;
+\item $n=0\ \lor\ n=\Suc(P(n))$, and hence coverage
+ $n=0\lor\exists m\,(n=\Suc m)$;
+\item if successor is injective, then $P(0)=0$ and $P(\Suc b)=b$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(a) Induction on $n$ with $a$ fixed. At $0$ the first disjunct holds by
+\eqref{base:eq:I0}. For the step, $O_a(\Suc n)=F_a(O_a(n))$, and
+$\delta(\Suc O_a(n),a)$ is $0$ or $1$. If it is $0$, then
+$\Suc O_a(n)=a$ and $F_a(O_a(n))=O_a(n)$, so $\Suc O_a(\Suc n)=a$. If it is
+$1$, then $\Suc O_a(n)\neq a$, the second disjunct of the hypothesis is
+refuted, so $O_a(n)=n$, and $O_a(\Suc n)=\Suc O_a(n)=\Suc n$.
+
+(b) Induction on $n$; the base is the first disjunct. The step needs no
+hypothesis: $P(\Suc n)=F_{\Suc n}(O_{\Suc n}(n))$, and (a) at $a\defeq\Suc n$
+gives two cases. If $O_{\Suc n}(n)=n$, then
+$F_{\Suc n}(n)=\sel(\delta(\Suc n,\Suc n),n,\Suc n)=n$, since
+$\delta(\Suc n,\Suc n)=0$. If $\Suc O_{\Suc n}(n)=\Suc n$, then the test is
+$0$ and $P(\Suc n)=O_{\Suc n}(n)$. In both cases $\Suc P(\Suc n)=\Suc n$.
+Coverage follows by $\exists$-introduction.
+
+(c) $P(0)=O_0(0)=0$ by \eqref{base:eq:I0}. By (b) at $\Suc b$, either
+$\Suc b=0$, which contradicts $\Suc v\neq 0$, or $\Suc b=\Suc P(\Suc b)$,
+and injectivity gives $P(\Suc b)=b$.
+% ed.: the package derives P(Sb)=b from (a) at a=Sb, n=b and injectivity, and coverage from P(Sb)=b; (b) shows that coverage does not need injectivity, which is used in disch:prop:sc-equiv.
+\end{proof}
+
+The term $P(a)$ has eleven nodes when each variable occurrence, constant,
+successor, test and iterator counts once and bound names are not counted.
+It uses the primitive test and its axioms, so it is not comparable with the
+predecessors of \cref{base:thm:pred}, which are built from the iterator
+alone.
+
+\begin{proposition}[Four equivalent completions]
+\label{disch:prop:sc-equiv}
+Over $\mathsf{SC}^{-}$ the following are interderivable: the comparison
+equation \eqref{disch:eq:dc}; injectivity of successor; the rule
+$\mathrm{SR}_0$; and the contextual induction rule for quantifier-free
+formulas. Only the passage from \eqref{disch:eq:dc} to $\mathrm{SR}_0$ uses
+\rulename{Const}. In particular $\mathsf{SC}$ contains $\Teq$: every theorem
+of $\Teq$ is a theorem of $\mathsf{SC}$.
+\end{proposition}
+
+\begin{proof}
+\eqref{disch:eq:dc} gives $\mathrm{SR}_0$ by \cref{disch:lem:sc-rigid}. The
+proof of \cref{disch:thm:sc-ind} uses \eqref{disch:eq:dc} only through
+$\mathrm{SR}_0$, so $\mathrm{SR}_0$ gives quantifier-free induction. Under
+quantifier-free induction every axiom of $\Teq$ (\cref{base:def:teq}) is a
+theorem: (T1) and (T3) are axioms, (T2) is
+\cref{disch:prop:sc-pred}(b), and (T4) follows from the rule with
+$\Gamma\defeq\{E(0),\forall z\,(E(z)\to E(\Suc z))\}$, a fresh conclusion
+variable, $\forall$-introduction and two $\to$-introductions. Both theories
+use the same logic, and the language of $\Teq$ is the part of the present
+language without $\delta$, so every theorem of $\Teq$ is a theorem;
+\cref{base:lem:succ} gives injectivity. Injectivity gives
+\eqref{disch:eq:dc} by \cref{disch:lem:sc-elem}(b).
+% ed.: the package proves the equivalence of the comparison equation with injectivity and the derivation of induction; the closing of the cycle through disch:prop:sc-pred(b) and base:lem:succ is editorial.
+\end{proof}
+
+\begin{theorem}[Scalar constancy and $\iPRA$]
+\label{disch:thm:sc-ipra}
+$\mathsf{SC}$ and $\iPRA$ are bi-interpretable, with whole domains, actual
+equality and both numerical composites provably the identity, of graph
+$x=y$. In particular the two are equiconsistent.
+\end{theorem}
+
+\begin{proof}
+\emph{$\iPRA$ in $\mathsf{SC}$.} By \cref{disch:prop:sc-equiv}, $\mathsf{SC}$
+contains $\Teq$. The proof of \cref{base:prop:sigma} uses only theorems of
+$\Teq$, so $\sigma$ is a term interpretation of $\iPRA$ in $\mathsf{SC}$.
+
+\emph{$\mathsf{SC}$ in $\iPRA$.} Let $\varepsilon$ be the term of
+\cref{base:thm:reflect} and $\kappa(a,b)\defeq\sel(\varepsilon(a,b),0,1)$.
+$\Teq$ proves the split \eqref{disch:eq:split} for $\kappa$ in the place of
+$\delta$: by coverage on $\varepsilon(a,b)$, if it is $0$, then
+$\kappa(a,b)=0$ and $a=b$ by \cref{base:thm:reflect}; if it is $\Suc z$, then
+$\kappa(a,b)=1$, and $a=b$ would give $\Suc z=0$ by
+\cref{base:thm:reflect}, against \cref{base:lem:succ}. Extend the symbols
+$[\cdot]_{\vec x}$ and the translation $\tau$ of \cref{base:def:tau} by
+\[
+ [\delta(s,t)]_{\vec x}\defeq
+ \mathrm{comp}\bigl([\kappa]_{a\,b};[s]_{\vec x},[t]_{\vec x}\bigr),\qquad
+ \tau(\delta(s,t))\defeq[\kappa]_{a\,b}\bigl(\tau(s),\tau(t)\bigr).
+\]
+The proofs of \cref{base:lem:iota-ext,base:lem:tau,base:prop:tau} are
+inductions on terms, and the new case is the composition axiom; so $\tau$
+interprets the computation equations for all bodies, and the separation. By
+\cref{base:lem:tau}(i), $\iPRA\proves[\kappa]_{a\,b}(a,b)=\tau(\kappa(a,b))$,
+and by \cref{base:thm:bridge}(ii) $\iPRA$ proves the image of the split for
+$\kappa$; this is the image of \eqref{disch:eq:split}. The comparison
+equation follows from the split and injectivity in $\iPRA$, by the
+argument of \cref{disch:lem:sc-elem}(b). \rulename{Const} is admissible:
+under $\Gamma^\tau$, with \cref{base:lem:tau}(ii), quantifier-free induction
+on a fresh $n$ in the equation $\tau(f)(n)=\tau(f)(0)$ has a trivial base,
+and its step combines the premise at $n$ with the hypothesis. Connectives,
+quantifiers and equality are translated identically.
+
+\emph{Composites.} $\iPRA\proves\tau(\sigma(t))=t$ is
+\cref{base:prop:termrt}(ii), since $\sigma(t)$ contains no $\delta$. For
+$\mathsf{SC}\proves\sigma(\tau(t))=t$, the two inductions on terms in the
+proof of \cref{base:prop:termrt}(i) use the computation equations,
+congruence, \cref{base:lem:uniq} and \cref{base:cor:rot}(ii), whose proofs
+are inductions for equations; these hold in $\mathsf{SC}$ for all its terms
+by \cref{disch:thm:sc-ind}. The new case of both inductions is the equation
+$\ulcorner[\kappa]_{a\,b}\urcorner(a,b)=\delta(a,b)$, with congruence and
+the induction hypotheses for $s$ and $t$. The first induction of that
+proof, applied to the term $\kappa$ of $\Teq$, gives
+$\ulcorner[\kappa]_{a\,b}\urcorner(a,b)=\kappa(a,b)$. Both $\kappa$ and $\delta$
+satisfy the split in $\mathsf{SC}$; eliminating the split for $\delta$, if
+$a=b$ both values are $0$, and if $a\neq b$, then $\delta(a,b)=1$ and the
+first disjunct of the split for $\kappa$ is contradictory, so
+$\kappa(a,b)=1$. Induction on formulas gives both formula round trips, and
+both numerical isomorphisms have graph $x=y$. Consistency transfers in both
+directions, since $\bot$ is translated to $\bot$.
+\end{proof}
+
+\begin{remark}[Constancy restricted to comparisons with the counter]
+\label{disch:rem:sc-dconst}
+The recovery of induction applies \rulename{Const} only to templates
+$\delta(f(n),n)$ (\cref{disch:lem:sc-rigid}). The same theory therefore
+results if \rulename{Const} is replaced by
+\begin{equation}
+ \infrule{\Gamma\proves\delta\bigl(f(\Suc z),\Suc z\bigr)=\delta\bigl(f(z),z\bigr)}
+         {\Gamma\proves\delta\bigl(f(t),t\bigr)=\delta\bigl(f(0),0\bigr)},
+ \label{disch:eq:dconst}
+\end{equation}
+with the same freshness conditions: \cref{disch:thm:sc-ind} holds with
+\eqref{disch:eq:dconst}, and quantifier-free induction then derives
+\rulename{Const} by induction on $f(n)=f(0)$. The restriction is syntactic,
+like \rulename{BConst} \eqref{disch:eq:bconst}, whose templates compare with
+the numeral $1$ instead of the counter. Full \rulename{Const} has the
+shorter statement, and no measurement favors either.
+\end{remark}
+
+\begin{remark}[Relation to the other derivations of induction]
+\label{disch:rem:sc}
+Against \cref{disch:def:const}, the scalar theory has one bound variable
+fewer in the arithmetic term constructor and one more nonlogical equation,
+\eqref{disch:eq:dc}; it is not a deletion of an axiom, and
+\cref{disch:sec:scalar-obs} shows that the equation cannot be omitted. The
+induction proofs differ accordingly. \Cref{disch:thm:const-ind} and
+\cref{disch:prop:const-bool}(b) build accumulators with a recursor that
+reads the counter; \cref{disch:thm:sc-ind} uses the retraction $e$ and the
+trajectory $r$ of \cref{claus:thm:rigidity} (\pkg{raw\_clausal}) and of
+\cref{kern:prop:rinv}, with $\mathrm{SR}_0$ obtained from \rulename{Const}
+by comparing the trajectory with the identity. \Cref{claus:thm:rigidity}
+assumes coverage to prove $E(r(n))$ for $r(n)=\It{n}{0}{u}{e(\Suc u)}$; here
+the projection $f=e\circ r$ satisfies $A(f(n))$ outright, so coverage is not
+needed before it is derived in \cref{disch:prop:sc-pred}. The pairing and
+the compiler of primitive recursion are those of
+\cref{base:thm:primrec}; \pkg{scalar\_constancy} restates them in an
+appendix with the coding $\langle a,b\rangle=2^{a+b}+a$ and the derived
+recursor $\pi_1\bigl(\It{n}{\langle 0,a\rangle}{w}{H(w)}\bigr)$, which is the
+construction of the common core. A finite script of the package checks
+instances of the predecessor, its orbit invariant, the comparison equation
+and the equivariance of \cref{disch:lem:sc-swap}; these instances are not
+proofs. Nothing in this subsection is formalized in Lean.
+\end{remark}
+
+\subsection{Omitting the comparison equation}
+\label{disch:sec:scalar-obs}
+
+This subsection draws on \pkg{scalar\_constancy}. It applies the symmetry
+method of \cref{obs:sec:symmetry} to an explicit model of
+$\mathsf{SC}^{-}$. The obstruction concerns this chapter's theory and is
+stated here; its two general lemmas, \cref{obs:lem:rigid,obs:lem:aut}, are
+cited. Besides \eqref{base:eq:I0}--\eqref{base:eq:IS} the following
+principles are considered, each read under an arbitrary context, with the
+freshness conditions stated with \rulename{Fusion} before
+\cref{obs:prop:fusion}:
+\begin{itemize}
+\item the \emph{clock} scheme
+ \begin{equation}
+  \It{t}{0}{u}{\Suc u}=t ;
+  \label{disch:eq:clock}
+ \end{equation}
+\item \rulename{Fusion}, the rule displayed before \cref{obs:prop:fusion};
+\item \emph{fixed points}: from $\Gamma\proves h(a)=a$ infer
+ $\Gamma\proves\It{t}{a}{u}{h(u)}=a$;
+\item \emph{seed shift}: $h\bigl(\It{t}{a}{u}{h(u)}\bigr)=\It{t}{h(a)}{v}{h(v)}$;
+\item \emph{extensionality}: from $\Gamma\proves h(u)=h'(u)$, $u$ not free in
+ $\Gamma$, infer $\Gamma\proves\It{t}{a}{u}{h}=\It{t}{a}{u}{h'}$.
+\end{itemize}
+A rule is \emph{valid} in a classical structure if, for every assignment that
+satisfies $\Gamma$, the premise for all values of the eigenvariable implies
+the conclusion. A classical structure in which every axiom holds and every
+rule is valid satisfies every theorem; intuitionistic derivability is
+sound for it.
+
+\begin{definition}[Three copies]
+\label{disch:def:sc-model}
+Let $M\defeq\mathbb N\times\{0,1,2\}$, with \emph{level}
+$\ell(n,c)\defeq n$ and $\iota(n)\defeq(n,0)$. Put $0^M\defeq\iota(0)$,
+$\Suc^M(x)\defeq\iota(\ell(x)+1)$, and $\delta^M(x,y)\defeq\iota(0)$ if $x=y$
+and $\iota(1)$ otherwise; equality is identity. For an assignment $\rho$,
+terms are evaluated by recursion on their structure, the iterator by
+\[
+ [\![\It{n}{a}{u}{h}]\!]_\rho\defeq
+ \mathcal I\bigl([\![n]\!]_\rho,[\![a]\!]_\rho,G\bigr),\qquad
+ G(v)\defeq[\![h]\!]_{\rho[u\mapsto v]},
+\]
+so that the body, a proper subterm, is evaluated first. The structure
+$\mathcal M$ has $\mathcal I(x,a,G)\defeq G^{\ell(x)}(a)$. The structure
+$\mathcal M^{\mathrm c}$ has
+\[
+ \mathcal I(x,a,G)\defeq
+ \begin{cases}
+  x, & \text{if } a=0^M \text{ and } G=\Suc^M \text{ as maps on } M,\\
+  G^{\ell(x)}(a), & \text{otherwise.}
+ \end{cases}
+\]
+Every exponent is a natural number, so nested iterators need no further
+construction. The condition $G=\Suc^M$ is a condition of the metatheory, not
+an operation of the language.
+\end{definition}
+
+\begin{lemma}[Validity in the three copies]
+\label{disch:lem:sc-model}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item The computation equations, \eqref{disch:eq:sep}, \eqref{disch:eq:split}
+ and \rulename{Const} are valid in $\mathcal M$ and in
+ $\mathcal M^{\mathrm c}$. \rulename{Const} is valid in the strong form: every
+ map $F:M\to M$ with $F(\Suc^M x)=F(x)$ for all $x$ is constant.
+\item Fixed points, seed shift and extensionality are valid in both
+ structures; \rulename{Fusion} is valid in $\mathcal M$, and the clock
+ \eqref{disch:eq:clock} holds in $\mathcal M^{\mathrm c}$.
+\item In both structures successor is not injective and coverage fails. In
+ $\mathcal M$ the clock fails, and with it an instance of the contextual
+ induction rule for a literal equation whose base and step are derivable in
+ $\mathsf{SC}^{-}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) Since $\ell(0^M)=0$ and $\ell(\Suc^M x)=\ell(x)+1$, both equations hold for
+the ordinary case of $\mathcal I$. In the exceptional case of
+$\mathcal M^{\mathrm c}$ the seed and the update are $0^M$ and $\Suc^M$ on
+both sides, and $\mathcal I(0^M,0^M,\Suc^M)=0^M$ and
+$\mathcal I(\Suc^M x,0^M,\Suc^M)=\Suc^M x=\Suc^M(\mathcal I(x,0^M,\Suc^M))$.
+The split and the separation hold by the definition of $\delta^M$, because
+$1^M=\iota(1)\neq\iota(0)$. If $F(\Suc^M x)=F(x)$ for all $x$, then for
+$x=(n,c)$, $F(x)=F(\iota(n+1))$, and $n+1$ external steps along
+$\iota(k+1)=\Suc^M\iota(k)$ give $F(\iota(n+1))=F(\iota(0))$. For
+\rulename{Const}, fix an assignment that satisfies $\Gamma$ and apply this to
+$F(v)\defeq[\![f(z)]\!]_{\rho[z\mapsto v]}$; the eigenvariable is fresh, so
+the premise holds for all $v$.
+
+(b) In $\mathcal M$ the laws follow from $\mathcal I(x,a,G)=G^{k}(a)$,
+$k=\ell(x)$, by external induction on $k$: $G(a)=a$ gives $G^k(a)=a$;
+$G(G^k(a))=G^k(G(a))$; and $F\circ G=G'\circ F$ gives
+$F(G^k(a))=G'^k(F(a))$, which is \rulename{Fusion}. Extensionality holds in
+both structures, since $\mathcal I$ depends on the denoted map $G$ only. In
+$\mathcal M^{\mathrm c}$, \eqref{disch:eq:clock} is the exceptional case. For
+fixed points, $G(a)=a$ excludes the exceptional case, since $\Suc^M$ has no
+fixed point, and ordinary iteration applies. For seed shift, the two sides
+are computed by ordinary iteration unless $G=\Suc^M$ and $a=0^M$; the seed
+$\Suc^M a$ is never $0^M$. In that case, for $x=(k,c)$, the left side
+$\Suc^M\mathcal I(x,0^M,\Suc^M)=\Suc^M x$ and the right side
+$(\Suc^M)^k(\iota(1))$ both equal $\iota(k+1)$.
+
+(c) $\Suc^M(n,1)=\Suc^M(n,2)$ while $(n,1)\neq(n,2)$. The point $(0,1)$ is
+not $0^M$ and, having color $1$, is not a successor. Let $E(x)$ be
+$\It{x}{0}{u}{\Suc u}=x$. Its base is an instance of \eqref{base:eq:I0}, and
+its step follows from \eqref{base:eq:IS} and the Leibniz rule. In
+$\mathcal M$, $[\![\It{x}{0}{u}{\Suc u}]\!]=\iota(0)\neq(0,1)$ at
+$x\mapsto(0,1)$.
+\end{proof}
+
+By \cref{disch:prop:sc-equiv} and \cref{disch:lem:sc-model}(c),
+$\mathsf{SC}^{-}$ derives neither \eqref{disch:eq:dc}, nor injectivity, nor
+$\mathrm{SR}_0$, nor quantifier-free induction.
+
+\begin{lemma}[An involution at one level]
+\label{disch:lem:sc-swap}
+For $m\in\mathbb N$ let $\sigma_m$ exchange $(m,1)$ and $(m,2)$ and fix every
+other point. In $\mathcal M$ and in $\mathcal M^{\mathrm c}$, for every term
+$t$ and every assignment $\rho$,
+$\sigma_m([\![t]\!]_\rho)=[\![t]\!]_{\sigma_m\circ\rho}$. Hence $\sigma_m$ is
+an automorphism of both structures in the staged signature, and it preserves
+every formula.
+\end{lemma}
+
+\begin{proof}
+Write $\sigma$ for $\sigma_m$; it is an involution, preserves levels and fixes
+every point of color $0$. Induction on $t$. Variables are immediate, and
+$0^M$ is fixed. $\Suc^M(\sigma x)=\iota(\ell(x)+1)=\Suc^M x=\sigma(\Suc^M x)$,
+so $\sigma$ commutes with $\Suc^M$. $\sigma$ is injective and fixes $\iota(0)$
+and $\iota(1)$, so it commutes with $\delta^M$. For an iterator let $G$ and
+$G'$ be the update maps of $\rho$ and $\sigma\circ\rho$. The induction
+hypothesis for $h$ at $\rho[u\mapsto v]$ gives $\sigma(G(v))=G'(\sigma v)$,
+so $G'=\sigma G\sigma^{-1}$; the hypotheses for $n$ and $a$ give their values
+at $\sigma\circ\rho$ as $\sigma x$ and $\sigma a$. In the ordinary case
+$G'^{\ell(\sigma x)}(\sigma a)=\sigma(G^{\ell(x)}(a))$, since
+$\ell(\sigma x)=\ell(x)$. In $\mathcal M^{\mathrm c}$ the exceptional
+condition is preserved and reflected: $\sigma a=0^M$ if and only if $a=0^M$,
+and $\sigma G\sigma^{-1}=\Suc^M$ if and only if $G=\sigma^{-1}\Suc^M\sigma=\Suc^M$;
+in the exceptional case the value $x$ becomes $\sigma x$. Induction on
+formulas transfers the statement to satisfaction.
+\end{proof}
+
+\begin{theorem}[Omitting the comparison equation]
+\label{disch:thm:sc-obs}
+Let $U$ be $\mathsf{SC}^{-}$ together with any of fixed points, seed shift,
+extensionality and \rulename{Fusion}, or $\mathsf{SC}^{-}$ together with the
+clock \eqref{disch:eq:clock} and any of fixed points, seed shift and
+extensionality. Then $U$ and $\iPRA$ are not bi-interpretable in the sense of
+\cref{obs:def:biinterp}: arbitrary definable domains, quotient equality and
+finite dimension are allowed, as are finite parameter tuples, provided the
+interpretations and the return isomorphism exist in $\mathcal M$,
+respectively $\mathcal M^{\mathrm c}$; this covers parameter conditions that
+$U$ proves to be inhabited.
+\end{theorem}
+
+\begin{proof}
+By \cref{disch:lem:sc-model}, $\mathcal M$ satisfies every theorem of a
+theory $U$ of the first kind and $\mathcal M^{\mathrm c}$ every theorem of
+one of the second kind; write $\mathcal M_U$ for the structure. Suppose a
+bi-interpretation existed. Applied in $\mathcal M_U$, the interpretation of
+$\iPRA$ yields a classical model $\mathcal N$ of $\iPRA$. Let $\vec c$ collect
+the parameters of that interpretation, of the source-side return
+isomorphism, and representatives in $\mathcal M_U$ of the parameters of the
+reverse interpretation, and choose $m$ larger than every level of a component
+of $\vec c$. By \cref{disch:lem:sc-swap}, $\sigma_m$ is an automorphism of
+$\mathcal M_U$ that fixes $\vec c$ and is not the identity. By
+\cref{obs:lem:aut} it induces an automorphism $\widehat\sigma_m$ of
+$\mathcal N$, and the induced homomorphism is injective. The automorphism
+$\widehat\sigma_m$ has order dividing two and preserves the parameter-free
+definable order of \cref{obs:lem:rigid}, so it is the identity. Hence
+$\sigma_m$ is the identity, a contradiction.
+\end{proof}
+
+\begin{remark}[Why the second model fails fusion]
+\label{disch:rem:sc-fusion}
+In $\mathcal M^{\mathrm c}$ let $a\defeq(k,1)$, $b\defeq(k,2)$ be the values
+of two parameters, and
+\[
+ p(v)\defeq\sel\bigl(\delta(v,a),\,b,\,\sel(\delta(v,b),a,v)\bigr).
+\]
+A constant update is not $\Suc^M$, so the selector has its two values at the
+counts $0^M$ and $1^M$, and $p$ exchanges $a$ and $b$ and fixes every other
+point. It fixes $0^M$ and commutes with $\Suc^M$, since successors have color
+$0$ and $p$ preserves levels. The premise $p(\Suc z)=\Suc p(z)$ of
+\rulename{Fusion}, with both updates $\Suc u$ and the seed $0$, therefore holds
+for every $z$, while its conclusion
+$p(\It{t}{0}{u}{\Suc u})=\It{t}{p(0)}{v}{\Suc v}$ reads $p(t)=t$ by
+\eqref{disch:eq:clock} and fails at $t\mapsto a$. This failure is
+necessary. Over $\mathsf{SC}^{-}$ with \eqref{disch:eq:clock},
+\rulename{Fusion} derives $\mathrm{SR}_0$: from $\Gamma\proves f(0)=0$ and
+$\Gamma\proves f(\Suc z)=\Suc f(z)$ it gives
+$f(\It{t}{0}{u}{\Suc u})=\It{t}{f(0)}{v}{\Suc v}=\It{t}{0}{v}{\Suc v}$, and
+\eqref{disch:eq:clock} on both sides gives $f(t)=t$. By
+\cref{disch:prop:sc-equiv} the theory then contains $\mathsf{SC}$. Every
+principle listed above is derivable in $\mathsf{SC}$ by induction for
+equations, so the theory has the theorems of $\mathsf{SC}$ and is
+bi-interpretable with $\iPRA$ by \cref{disch:thm:sc-ipra}.
+% ed.: the package notes only that the modified model fails full mixed fusion; the derivation of SR_0 from Fusion and the clock, and the resulting completeness, are editorial.
+Thus $\mathcal M$ separates \rulename{Fusion} from the clock, and
+$\mathcal M^{\mathrm c}$ the clock from \rulename{Fusion}; together they
+recover the comparison equation.
+\end{remark}
+
+The obstruction does not exclude equiconsistency or one-way
+interpretations; $\iPRA$ interprets $\mathsf{SC}^{-}$ through
+\cref{disch:thm:sc-ipra}. It does not show that successor injectivity is the
+only principle whose addition to $\mathsf{SC}^{-}$ yields a bi-interpretation
+on another domain, and it does not concern constancy over the scalar
+interface with coverage and without a primitive test, which is item 4 of
+\cref{ctr:q:root}.
+
 \section{Checkers and program equivalences}
 \label{disch:sec:impl}
 
@@ -4154,14 +4677,19 @@ programs, and none claims a minimum. For \pkg{alias\_back} and
 \pkg{equation\_aliases} the compact programs named are those of the
 coordinatewise envelope of $248$ tokens, $270$ nodes and $487$ bytes,
 respectively $479$ bytes, attained by different programs under a promised
-input alphabet.
+input alphabet. \pkg{scalar\_constancy} supplies no checker of
+$\mathsf{SC}$; its two programs check the inherited guarded public calculus,
+with $247$ tokens, $261$ nodes and $557$ bytes against $246/262/556$, and
+$271$ tokens, $305$ nodes and $468$ bytes against $272/306/469$, and are
+recorded in \cref{cert:chapter}.
 
 \section{Further questions}
 \label{disch:sec:further}
 
 This section collects the questions, limits and unproved claims stated by
-the eleven packages named at the beginning of \cref{disch:sec:impl} and by
-\pkg{boolean\_constancy}, and one conjecture recorded in the repository.
+the eleven packages named at the beginning of \cref{disch:sec:impl}, by
+\pkg{boolean\_constancy} and by \pkg{scalar\_constancy}, and one conjecture
+recorded in the repository.
 
 \begin{question}[Substitution for a variable on raw terms: theorems]
 \label{disch:q:rawvsub}
@@ -4248,6 +4776,34 @@ $\delta(g,1)$ cost more than the restriction removes? No checker of either
 theory exists. (\pkg{boolean\_constancy}.)
 \end{question}
 
+\begin{question}[Scalar constancy]
+\label{disch:q:sc}
+\begin{enumerate}
+\item Over $\mathsf{SC}^{-}$ the comparison equation \eqref{disch:eq:dc} is
+ equivalent to injectivity, to $\mathrm{SR}_0$ and to quantifier-free
+ induction (\cref{disch:prop:sc-equiv}), and \cref{disch:thm:sc-obs} excludes
+ every ordinary bi-interpretation of $\mathsf{SC}^{-}$, also with the clock.
+ Both models refute coverage. Is $\mathsf{SC}^{-}$ together with coverage
+ $x=0\lor\exists y\,(x=\Suc y)$ bi-interpretable with $\iPRA$, and does it
+ derive \eqref{disch:eq:dc}?
+\item Is there a principle that $\mathsf{SC}^{-}$ does not derive, strictly
+ weaker over $\mathsf{SC}^{-}$ than \eqref{disch:eq:dc}, whose addition gives
+ a theory bi-interpretable with $\iPRA$ on another domain? By
+ \cref{disch:prop:sc-equiv} such a theory does not derive quantifier-free
+ induction on the original domain. The package states that it does not
+ assert successor injectivity to be the only repair.
+\item No checker of $\mathsf{SC}$ exists. Does a complete checker of
+ $\mathsf{SC}$, or of its restriction \eqref{disch:eq:dconst}, differ in size
+ from a checker of the theory of \cref{disch:def:const} with the same
+ logical kernel, term coding and input validation, given that the scalar
+ iterator binds one variable fewer and \eqref{disch:eq:dc} adds an axiom?
+\end{enumerate}
+Constancy over scalar computation with coverage and without a primitive test
+is item 4 of \cref{ctr:q:root}; the present results do not settle it, since
+both models refute coverage and \cref{disch:thm:sc-ind} uses the split.
+(\pkg{scalar\_constancy}.)
+\end{question}
+
 \begin{question}[Size of the translations]
 \Cref{disch:thm:spec} produces a finite derivation with no polynomial
 bound (\cref{disch:rem:spec-cost}). The translations of
@@ -4324,8 +4880,10 @@ The following are stated by the packages as not achieved or not claimed.
  and after \cref{disch:thm:inferred,disch:thm:newest}. Not formalized are:
  the four families of $\mathcal K$ on the canonical recursor syntax, the
  five families of $\mathcal P$ together, the positional calculus
- $\mathcal U_*$, the constancy theory of \cref{disch:sec:const} and its
- Boolean variant (\cref{disch:prop:const-bool}), and the
+ $\mathcal U_*$, the constancy theory of \cref{disch:sec:const}, its
+ Boolean variant (\cref{disch:prop:const-bool}), the scalar theory
+ $\mathsf{SC}$ with \cref{disch:thm:sc-ipra} and the obstruction
+ \cref{disch:thm:sc-obs}, and the
  calculi $\Nat_{\mathrm{AB}}$, $\mathcal B_{\nu}$ and $\mathcal A$ with the
  compilers of \cref{disch:thm:alias-compiler,disch:thm:alias-rank,disch:thm:alias-atomic}.
  \pkg{alias\_back} and \pkg{equation\_aliases} ask for one formalization of

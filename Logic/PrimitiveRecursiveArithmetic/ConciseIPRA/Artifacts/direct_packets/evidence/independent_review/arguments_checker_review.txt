@@ -1,0 +1,19 @@
+INDEPENDENT REVIEW: PACKET FIELDS AS CHECKER ARGUMENTS
+
+Reviewed source: agent_checker/checker_arguments.py.
+Control: the incoming compact 469-byte singleton-list-comprehension checker.
+Review scope: exact finite successful-run equivalence after the stated framing bijection, on the same canonical guarded public-goal and finite exact-integer/list certificate contract. This review does not establish a new arithmetic theorem or reprove the inherited iPRA interpretation bridge.
+
+Change. The control receives (g,a,k), consumes one four-field packet by a singleton comprehension, and returns a nonempty singleton list upon every successful finite return. The candidate receives (g,a,k,m,s,u,t) and obtains the four packet fields by expansion of q() at each call site. Its body is membership OR a recursive call and returns True upon every successful finite return.
+
+Framing. A control stack has the form R + [[m,s,u,t], [a,k]] at its top. Replace those last two entries by [a,k,m,s,u,t], leaving R unchanged. Conversely split the six-field candidate header after its first two fields. Every later four-field packet is unchanged. This is a bijection between such stack shapes, preserving the public goal, floor, packet order, and any unused prefix.
+
+Evaluation order. Python evaluates positional argument expressions from left to right. In the candidate, q() for the child packet is evaluated after the same g,a,k argument expressions that the control evaluates before entering the child call. The control then consumes that packet before testing its leaf condition. Hence packet consumption occurs at the same point in the arithmetic/proof control flow. In particular, construction of the major proof, updates of the local floor, openings of the exported hypothesis, and openings of the continuation goal occur in the same order. The default missing-image sentinel t=c is still a function object and still rejects invalid numerical comparisons/multiplication in the opener; its changed formal arity is irrelevant because the sentinel is never invoked as a function by the opener.
+
+Return invariant. If control c returns, its singleton list is nonempty and truthy. If candidate c returns, structural induction on its finite call tree gives exactly Boolean True: either the membership test yields True or its recursively called continuation yields True. The major-proof return is used only by a truth test, so replacing a truthy singleton list by True preserves all later selected trees.
+
+Product refinement. In the candidate, c(g,m,k,*q()) and m*3 can be replaced by c(g,m,k,*q())*m*3. On success c(...) is exactly True. For integer m the products equal m*3 numerically. For a finite list m the first product is a shallow list copy, and multiplying it by three yields the same tree as m*3. The checker never tests list identity or mutates these trees. Both versions reject if the major call fails. This statement uses the exact integer/list input promise; it is not asserted as arbitrary-Python-object equivalence.
+
+Malformed framing. Wrong child packet lengths fail by tuple destructuring in the control and by argument count in the candidate. A numeric packet cannot be expanded or destructured. Wrong root header lengths likewise fail before a body can succeed. The exact error messages and resource-exhaustion timing may differ. Successful finite executions correspond in both directions under the root framing map; arbitrary unrelated malformed streams need not have identical exception traces.
+
+Conclusion. No defect was found in the framing transformation or in the Boolean-return product refinement under the stated contract. Neither removes a mathematical axiom or strengthens the introduction selector. The proof preserves the already-proved theorem set through a certificate representation change.
