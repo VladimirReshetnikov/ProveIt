@@ -98,31 +98,23 @@ theorem subst_code_iterSym (C : Tm n) (A : PR n) (H : PR (n + 1)) :
   rw [FromPRA.code_prec, code_stepSym, Tm.subst_prc, Syn.subst_var, Syn.inst_zero,
     Syn.subst_inst_shift, Tm.subst_itG, Tm.subst_itG, Syn.subst_up_inst_up_shift]
 
-theorem code_cases_proj (P : PR n) :
-    (fun j => FromPRA.code ((Fin.cases P PR.proj : Fin (n + 1) → PR n) j))
-      = inst (FromPRA.code P) := by
-  refine funext (Fin.cases ?_ fun l => ?_) <;> rfl
+/-- Compiling a term of `iPRA` to a function symbol and translating the symbol
+gives the translation of the term. -/
+theorem code_pcode (t : PTm n) : FromPRA.code (ToPRA.pcode t) = FromPRA.sigma t := by
+  induction t with
+  | var i => rfl
+  | app f ts ih => exact congrArg (fun ρ => Syn.subst ρ (FromPRA.code f)) (funext ih)
 
-/-- Compiling a term to a function symbol and back gives the term. -/
-theorem code_code (t : Tm n) : [] ⊢[TeqAx] FromPRA.code (ToPRA.code t) ≐ t := by
+/-- The round trip `T_eq → iPRA → T_eq` is provably the identity on terms. -/
+theorem sigma_tau (t : Tm n) : [] ⊢[TeqAx] FromPRA.sigma (ToPRA.tau t) ≐ t := by
   induction t with
   | var i => exact Prf.eqRefl _
   | zero => exact Prf.eqRefl _
   | succ t ih => exact Q.exact (congrArg Q.succ (Q.sound ih))
   | iter c a h ihc iha ihh =>
-    show [] ⊢[TeqAx] Syn.subst (fun j => FromPRA.code
-        ((Fin.cases (ToPRA.code c) PR.proj : Fin (_ + 1) → PR _) j))
-        (FromPRA.code (ToPRA.iterSym (ToPRA.code a) (ToPRA.code h))) ≐ _
-    rw [code_cases_proj, subst_code_iterSym]
+    rw [ToPRA.tau, FromPRA.sigma_app, FromPRA.sigma_inst, subst_code_iterSym, code_pcode,
+      code_pcode]
     exact Prf.eqTrans (Q.prc_itG _ _ ihh) (Teq.iterCongr h ihc iha)
-
-/-- The round trip `T_eq → iPRA → T_eq` is provably the identity on terms. -/
-theorem sigma_tau (t : Tm n) : [] ⊢[TeqAx] FromPRA.sigma (ToPRA.tau t) ≐ t := by
-  have h : [] ⊢[TeqAx] FromPRA.sigma (PTm.app (ToPRA.code t) Syn.var)
-      ≐ FromPRA.sigma (Syn.subst Syn.var (ToPRA.tau t)) :=
-    FromPRA.interp.sound (ToPRA.code_eval t Syn.var [])
-  rw [FromPRA.sigma_app_var, Syn.subst_id] at h
-  exact Prf.eqTrans (Prf.eqSymm h) (code_code t)
 
 end RoundTrip
 

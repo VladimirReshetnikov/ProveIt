@@ -3714,6 +3714,26 @@ $\tau(\sigma(f(\vec t)))=\tau(\ulcorner f\urcorner)
 by \cref{base:lem:tau}(ii), the first step and the induction hypothesis.
 \end{proof}
 
+\begin{remark}[The route of the Lean modules]
+\label{base:rem:tau-lean}
+The modules \Lean{ScalarToPRA} and \Lean{RoundTripScalar} compile terms of
+$\iPRA$ rather than iterator terms.  For a term $p$ of $\iPRA$ the symbol
+$\langle p\rangle_{\vec x}$ is $\pi^k_i$ at the variable $x_i$ and
+$\mathrm{comp}(f;\langle p_1\rangle_{\vec x},\dots,\langle p_m\rangle_{\vec x})$
+at $f(p_1,\dots,p_m)$, and the iterator case of $\tau$ reads
+$\iota\bigl(\langle\tau(a)\rangle_{\vec y},\langle\tau(h)\rangle_{u\vec y}\bigr)
+(\tau(c),\vec y)$.  Then $\langle p\rangle_{\vec x}(\vec s)=p\subst{\vec s}{\vec x}$
+is a fact about $\iPRA$ alone, proved by an induction with two cases, so
+\cref{base:lem:tau}(i) needs no induction on iterator terms; the hypotheses of
+\cref{base:lem:iota-ext} are equations between terms; and
+$\sigma(\langle p\rangle_{\vec x})$ coincides syntactically with $\sigma(p)$, so
+the first step of the proof of \cref{base:prop:termrt}(i) disappears and
+$\sigma(\tau(t))=t$ is one induction on $t$.  The recursion equations of the
+code of $\mathrm{prec}(f,g)$ are proved once, from those of the recursor of
+\cref{base:thm:primrec}, and the translations of the two defining axioms of
+$\mathrm{prec}(f,g)$ are derived from them.
+\end{remark}
+
 \subsection{The bi-interpretation theorem}
 
 \begin{theorem}[Bi-interpretation]
