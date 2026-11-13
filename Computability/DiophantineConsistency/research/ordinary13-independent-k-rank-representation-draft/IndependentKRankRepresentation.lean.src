@@ -1,0 +1,104 @@
+import IndependentKUnitGraph
+import Residue90GraphNorms
+import DiophantineConsistency.Compact44.P72Root
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.LinearCombination
+
+/-! Source-only first-norm F<q and child-rank representation. Actual graph
+first-norm extraction, provider closure and all elaboration remain open. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.IndependentKRankRepresentationDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open IndependentKUnitGraphDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- At k=0, this signed first norm forces F<q without a positive-C,
+positive-k, positive-X or positive-d premise. -/
+theorem first_norm_F_lt_q
+    (q beta J F alpha d r : V)
+    (hq : q=beta*J+1) (hbeta : 0<beta) (hJ : 0<J) (hF : 0<F)
+    (hnorm : let b : DiffRing V := ι beta*ι J
+      let C : DiffRing V := ι q-ι F-ι alpha
+      let Bt : DiffRing V := C*ι d-ι F
+      (b*ι r-Bt)*(b*ι r-Bt)=b*b) : F<q := by
+  let Q : DiffRing V := ι q
+  let B : DiffRing V := ι beta*ι J
+  let F' : DiffRing V := ι F
+  let A : DiffRing V := ι alpha
+  let D : DiffRing V := ι d
+  let C : DiffRing V := Q-F'-A
+  let Bt : DiffRing V := C*D-F'
+  have hb : 0<B := mul_pos (by simpa [B] using (ι_lt_ι.mpr hbeta))
+    (by simpa [B] using (ι_lt_ι.mpr hJ))
+  have hq' : Q=B+1 := by dsimp [Q,B]; rw [hq]; simp
+  have hf : 0<F' := by simpa [F'] using (ι_lt_ι.mpr hF)
+  have ha : 0≤A := ι_nonneg alpha
+  have hd : 0≤D := ι_nonneg d
+  have hr : 0≤(ι r : DiffRing V) := ι_nonneg r
+  by_cases hc : 0<C
+  · apply ι_lt_ι.mp
+    change F'<Q
+    dsimp [C] at hc
+    linarith
+  · have hc0 : C≤0 := le_of_not_gt hc
+    have hprod : C*D≤0 := mul_nonpos_of_nonpos_of_nonneg hc0 hd
+    have hBt : Bt<0 := by dsimp [Bt]; linarith
+    have hroot : 0<B*(ι r)-Bt := by
+      have hh := mul_nonneg (le_of_lt hb) hr
+      linarith
+    have hnorm' : (B*(ι r)-Bt)*(B*(ι r)-Bt)=B*B := by
+      simpa [B,C,Bt,Q,F',A,D] using hnorm
+    have hroot_eq : B*(ι r)-Bt=B := by
+      rcases mul_self_eq_mul_self_iff.mp hnorm' with heq | heq
+      · exact heq
+      · linarith
+    have hrzero : r=0 := by
+      by_contra hn
+      have hrpos : 0<r := lt_of_le_of_ne (Arithmetic.zero_le r) (Ne.symm hn)
+      have hrone : (1:DiffRing V)≤ι r := by
+        simpa only [map_one] using (ι_le_ι.mpr (pos_iff_one_le.mp hrpos))
+      have hh := mul_nonneg (le_of_lt hb) (show 0≤(ι r : DiffRing V)-1 by linarith)
+      nlinarith
+    have hBt_eq : Bt= -B := by
+      simp only [hrzero,map_zero,mul_zero,zero_sub] at hroot_eq
+      linarith
+    apply ι_lt_ι.mp
+    change F'<Q
+    dsimp [Bt] at hBt_eq
+    linarith
+
+/-- Literal independent-k rank subexpression reconstructed from the 84 rows.
+The checker separately verifies its exact ordered graph tree. -/
+def rankExpr (p : Fin 4 → ℤ) : Expr (Fin 13) :=
+  let J : Expr (Fin 13) := .var 0
+  let F : Expr (Fin 13) := .var 1+1
+  let alpha : Expr (Fin 13) := .var 2+1
+  let beta : Expr (Fin 13) := .constant (p 0)
+  let MC : Expr (Fin 13) := .constant (p 2)
+  let MF : Expr (Fin 13) := .constant (p 3)
+  let b := J*beta
+  let q := 1+b
+  let G := alpha+(q-F)*b
+  G*(q*q-1)+J*(MC+MF*q)
+
+/-- The candidate rank expression is represented by the retained model
+natural rank whenever F≤q. It does not require eta≤k or k>0. -/
+theorem rank_representation (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hFq : v 1+1≤Residue90GraphNormsDraft.q p v) :
+    (rankExpr (fun j => (p j:ℤ))).evalRing (fun j => ι (v j)) =
+      ι (Residue90GraphNormsDraft.rank p v) := by
+  have h := Residue90GraphNormsDraft.rank_representation p v hFq
+  simp [rankExpr,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,
+    P72Root.cast_port,Residue90GraphNormsDraft.q,
+    map_add,map_mul,map_one,map_ofNat] at h ⊢
+  linear_combination h
+end DiophantineConsistency.IndependentKRankRepresentationDraft
+#print axioms DiophantineConsistency.IndependentKRankRepresentationDraft.first_norm_F_lt_q
+#print axioms DiophantineConsistency.IndependentKRankRepresentationDraft.rank_representation
