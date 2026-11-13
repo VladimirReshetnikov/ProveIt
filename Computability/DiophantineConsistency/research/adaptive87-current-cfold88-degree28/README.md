@@ -1,5 +1,14 @@
 # Current-port C-fold candidate: 13 variables, 88 operations, degree 28
 
+**Later status:** The calibration premise isolated below has since been
+derived in the standard integers using the cited Pell and rank theorems; see
+the [fact-level replay](../adaptive87-current-cfold-cal-fact-replay/README.md)
+and its [independent review](../../reviews/adaptive87-current-cfold-cal-fact-replay-second-independent/README.md).
+Together with the witness maps below, this gives both directions of the
+ordinary positive-integer zero-existence comparison under the stated port
+assumptions. The discussion below records the original conditional cut;
+no all-model Lean or iPRA bridge has been checked.
+
 This is a **conditional standard-integer candidate**, not a checked Lean, all-model, iPRA, or unconditional no-zero equivalence. The literal [graph](graph.json) changes exactly one gate of the current2011 [13/88/30 four-square parent](../adaptive87-four-square-current88-30/README.md): `root_skew = k*Bt` becomes `root_skew = k*C`. It has the same thirteen strictly positive integer inputs, four fixed ports, zero-output convention and 88 live binary operations. Its exact degree at the authenticated current2011 ports is 28. The degree improvement is unconditional as a polynomial calculation; the zero-existence comparison in one direction depends on the explicit calibration cut below.
 
 The complete current2011 port bytes are checked by `check.py`; they satisfy `beta>=46`, `K0>=0`, `0<MC<beta`, and `0<MF<2*beta`. The checker pins the parent graph, the port binding, the earlier compact C-fold and sign-free calibration documents and reviews, and the specific source files whose fact-level statements are relevant. It does **not** establish that those source theorems have been applied to this new graph or that their provider closure is current.

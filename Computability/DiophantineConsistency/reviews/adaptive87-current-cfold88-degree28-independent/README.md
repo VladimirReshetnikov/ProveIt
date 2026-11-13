@@ -1,5 +1,10 @@
 # Independent review: current 88/28 C-fold candidate
 
+**Later status:** The Cal premise left open in this review has subsequently
+received a [fact-level derivation](../../research/adaptive87-current-cfold-cal-fact-replay/README.md)
+and [independent review](../adaptive87-current-cfold-cal-fact-replay-second-independent/README.md).
+This later work does not establish a Lean all-model or iPRA bridge.
+
 No concrete mismatch was found in the bounded source and mathematical review.
 The candidate changes exactly `root_skew = k*Bt` to `root_skew = k*C` in the
 pinned current 88/30 graph. It retains 13 inputs, four formal port positions,
