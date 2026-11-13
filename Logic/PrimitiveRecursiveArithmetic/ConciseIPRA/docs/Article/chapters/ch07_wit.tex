@@ -3506,6 +3506,22 @@ leaf, and the $\rulename{Use}_\nu$, above the translated antecedent, which
 is translated once.  Induction on the derivation gives $n+3u$.
 \end{proof}
 
+\begin{remark}[The Lean module]
+\label{wit:rem:x-lean}
+\Lean{NativeNewestUse} formalizes $\mathcal X_\nu$ (\Lean{XNPrf}) over the
+calculus \Lean{XCPrf} of $\mathcal X$: \rulename{Use} at \Lean{Tm.newest},
+the variable $0$ of the de Bruijn scope or the literal $0$ in an empty scope,
+and \rulename{Refl} at every term.  \Lean{xnprf\_iff\_xcprf} is
+\cref{wit:thm:x-newest} with the reflexivity clause in the context, and
+\Lean{xnprf\_iff\_nprf\_of\_qfree} the bridge on $Q$-free sequents.  The
+translation is the one of the proof above: it carries a renaming and an
+extension of the context (\Lean{XCPrf.toXN}); the name formula is introduced
+at the normal form of the witness (\Lean{XNPrf.nm}, \Lean{NFm.nm\_step}),
+its rows at the fresh variable select it (\Lean{NFm.nm\_otest}), and the
+exported formula is the image of the source conclusion up to full normal
+forms.  The count $n+3u$ is not formalized.
+\end{remark}
+
 The count is in inference nodes.  A name copies its term, and normalization
 can enlarge formulas, so no bound on the size of certificates in bytes or
 on the time of checking follows.
@@ -4310,9 +4326,9 @@ bi-interpretable with $\iPRA$ is not decided.
 \begin{question}[Newest specialization]
 \label{wit:q:spec}
 \begin{enumerate}[label=\textup{(\roman*)}]
-\item Neither \cref{wit:thm:x-newest} nor \cref{wit:thm:v-equiv} is
- formalized.  \pkg{export\_specialization} proposes a formalization against
- \Lean{XCPrf}, and \pkg{vacuous\_specialization} one of its compiler with
+\item \Cref{wit:thm:x-newest} is formalized against \Lean{XCPrf}, as
+ \pkg{export\_specialization} proposes (\cref{wit:rem:x-lean}), without the
+ node count; \cref{wit:thm:v-equiv} is not formalized, and \pkg{vacuous\_specialization} one of its compiler with
  the invariant on parameter and clause embeddings, beyond the soundness of
  the vacuous case.  Their translators are untrusted programs whose outputs
  are rechecked; their correctness is supported by finite tests only.
