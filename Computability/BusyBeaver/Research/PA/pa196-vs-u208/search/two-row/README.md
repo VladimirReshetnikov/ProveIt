@@ -89,6 +89,21 @@ projected boundary at child step 5,624 and PA196 parent step 5,620. Thus these
 two candidates do not preserve PA196's nonhalting. This finite finding gives no
 halting or nonhalting conclusion for either `{96,103}` orientation.
 
+Both `{96,103}` orientations also fail the proposed projected-step
+simulation on the actual blank run. [blank_projection_96_103.py](blank_projection_96_103.py)
+checks entire parent and candidate tapes at every projected boundary, arriving
+at parent step 5,620 and candidate step 5,624 with parent state 96 reading 1,
+head position 8, and five-cell mask 22. It then attempts 512 candidate steps
+and finds no matching projected endpoint. The checked boundary tapes and trace
+hashes are recorded in [blank-projection-96-103-receipt.json](blank-projection-96-103-receipt.json).
+This excludes that bounded step-matching proof on blank input; the machines
+could rejoin later, and no halting inequivalence follows from the witness.
+Run the replay from the repository root with:
+
+```sh
+python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/search/two-row/blank_projection_96_103.py --output /tmp/pa196-96-103.json
+```
+
 The search excludes multi-parent-step blocks, different head/tape encodings,
 more than one state identification, modifications outside the retained rows,
 and any proof using a sharper invariant that excludes the counterexample. The

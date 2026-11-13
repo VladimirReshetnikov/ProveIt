@@ -25,7 +25,8 @@ imported project:
    the `.halt` case the source successor has control 0. **In every other
    instruction case**, the proof constructs a positive auxiliary segment
    ending in a frame refining `stepValue c`; it does not use the halt branch.
-3. [`startup_all_models` and `startup_refines_all_models`](../../jamesyc-upstream/pa196/PA196/Arithmetic/Machine/EndpointInternalStartupFrame.lean)
+3. [`startup_all_models`](../../jamesyc-upstream/pa196/PA196/Arithmetic/Machine/EndpointInternalStartupTrace.lean)
+   and [`startup_refines_all_models`](../../jamesyc-upstream/pa196/PA196/Arithmetic/Machine/EndpointInternalStartupFrame.lean)
    provide the fixed blank-to-entry auxiliary segment and its exact entry
    frame. The existing physical-trace lift already composes model-length
    segments using PA induction.
