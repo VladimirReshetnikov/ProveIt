@@ -27,6 +27,7 @@ TABLES = [
  ('candidate','pa_consistency_reduction.zip','pa_consistency_reduction/comparison/audit/rebracketed196_dense.tm','e212e359837cff6d1b3ab665855b0e9b4a2b471d23e77db447680d494d943b80',0,196),
  ('candidate','pa_consistency_reduction.zip','pa_consistency_reduction/comparison/audit/h_catalan_node170_3_133_37.tm','5e7e8daf0fbd91d27389de054023bc5959e0246f4001c0ec1381dc3f53a55dac',0,196),
  ('candidate','pa_consistency_research_2026-11-13 (2).zip','pa_consistency_research_2026-11-13/rotated196/machine.tm','b9873b89df4189414d0f443922ca9227bf2f76d8c81a0d0951c06cd608d6a90b',0,196),
+ ('candidate','conpa_tm_study_2026-11-13.zip','conpa_tm_study/machines/h_only_mp_h.tm','bd74754d75e7b8ba97fa7bfc104374de33ae603fc183ae7f08f053ab8c9ea592',0,196),
 ]
 
 def need(ok, message):
