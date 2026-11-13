@@ -10,7 +10,7 @@ Here `q=beta*J+1`, `F` and `alpha` are positive model naturals, and all displaye
 
 The main helper and this file are drafts, including proposed imports, tactics, instance and cast interfaces. `#print axioms` lines are requests for a future elaboration, not observed output. There has been **no Lean execution, provider selection, proof replay, axiom audit or model-theoretic validation**. In particular, this packet does not extract `A0=A1=0` from the child product, bind the new 84-row graph to these hypotheses, prove `eta≤k`, establish a parent-child zero correspondence, or prove an iPRA endpoint. The prose proof for standard integers and exact graph wiring is pinned separately in `ordinary13-independent-k-two-norm-kpositive-audit`.
 
-An [independent source review](../../reviews/ordinary13-independent-k-first-rank-source-independent/README.md) identified a specific gap in the proposed `C>0` proof: its ring-order `linarith` step needs an explicit model-natural discreteness argument to obtain a unit gap. The reviewed source is preserved as a draft; no successful elaboration of that step is claimed.
+An [independent source review](../../reviews/ordinary13-independent-k-first-rank-source-independent/README.md) identified a specific gap in the proposed `C>0` proof: its ring-order `linarith` step needs an explicit model-natural discreteness argument to obtain a unit gap. A separately [drafted repair](../ordinary13-independent-k-first-rank-discrete-repair/README.md) has a further [source-level review](../../reviews/ordinary13-independent-k-first-rank-discrete-repair-independent/README.md). Both sources remain unelaborated; no successful Lean check of that step is claimed.
 
 From `Computability/DiophantineConsistency`, run:
 
