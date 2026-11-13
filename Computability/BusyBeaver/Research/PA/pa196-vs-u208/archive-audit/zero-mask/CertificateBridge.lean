@@ -26,6 +26,36 @@ structure TableClosed (lookup : Nat → Option Instruction) (certificate : Nat �
   jump : ∀ pc target, lookup pc = some (.jump (some target)) →
     maskSub (certificate pc) (certificate target) = true
 
+/-- A single executable check for all applicable transfers of one table row. -/
+def rowOK (lookup : Nat → Option Instruction) (certificate : Nat → Nat) (i : Nat) : Bool :=
+  match lookup i with
+  | some (.inc r (some target)) =>
+    incCheck (certificate i) (certificate target) (positiveSet r) (zeroSet r) (2^r.val)
+  | some (.dec r z p) =>
+    (match z with | some target => maskSub (certificate i &&& zeroSet r) (certificate target) | none => true) &&
+    (match p with | some target => maskSub ((certificate i &&& positiveSet r) |||
+      ((certificate i &&& positiveSet r) >>> (2^r.val))) (certificate target) | none => true)
+  | some (.jump (some target)) => maskSub (certificate i) (certificate target)
+  | _ => true
+
+theorem table_closed_of_rows (lookup : Nat → Option Instruction) (certificate : Nat → Nat)
+    (all : ∀ pc, rowOK lookup certificate pc = true) : TableClosed lookup certificate := by
+  constructor
+  · intro pc r target hr
+    have h := all pc
+    simpa [rowOK, hr] using h
+  · intro pc r target positive hr
+    have h := all pc
+    simp [rowOK, hr] at h
+    exact h.1
+  · intro pc r zero target hr
+    have h := all pc
+    simp [rowOK, hr] at h
+    exact h.2
+  · intro pc target hr
+    have h := all pc
+    simpa [rowOK, hr] using h
+
 theorem closed_of_table (sites : Array Site) (lookup : Nat → Option Instruction)
     (certificate : Nat → Nat)
     (binding : ∀ pc, resolveAt sites pc = lookup pc)
@@ -75,5 +105,6 @@ theorem closed_of_table (sites : Array Site) (lookup : Nat → Option Instructio
 
 #print axioms positiveSet_bit
 #print axioms zeroSet_bit
+#print axioms table_closed_of_rows
 #print axioms closed_of_table
 end PA196ZeroMask

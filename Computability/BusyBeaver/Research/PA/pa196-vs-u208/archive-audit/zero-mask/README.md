@@ -37,6 +37,9 @@ and generates Lean files for the following kernel checks:
   assumptions: a `TableClosed` proof of the checks for every relevant row in
   an extracted instruction table, and equality of that entire table with the
   source resolver. The proof checks the finite encoding identities in Lean.
+  The `table_closed_of_rows` theorem reduces `TableClosed` to one Boolean
+  `rowOK` check for every ordinal, but that universal check has not yet been
+  proved for the extracted table.
 
 The source-run result is **conditional**: `Closed` has not been proved for the
 archive certificate. The generated checks are separate closed facts, and the
