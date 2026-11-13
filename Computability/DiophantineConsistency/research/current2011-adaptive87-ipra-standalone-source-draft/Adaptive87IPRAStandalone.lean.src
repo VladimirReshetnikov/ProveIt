@@ -1,0 +1,44 @@
+import DiophantineConsistency.IPRA87TranslatedRefutation
+import DiophantineConsistency.IPRAEquationComposition
+import DiophantineConsistency.IPRABoundedRhoZFC
+import DiophantineConsistency.IPRAStandardTheory
+
+/-! SOURCE ONLY. This 87-specific client avoids a direct 86-client import.
+    It and its combined providers have not been elaborated in this packet. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Adaptive87IPRAStandaloneDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open PRALanguage PRATheory PRANoZeroUnary FoundationHANoZero
+open IPRANativeTheory IPRAFoundationZFCMappedNegation FoundationZFCConsistencyNat
+
+/-- Exact positive-shifted 87-expression no-zero sentence from the existing
+    combined 86/87 endpoint, copied here without importing that client. -/
+def noZero87 : Sentenceᵢ language := ∀⁰* (∼(Semiformulaᵢ.rel Language.ORing.Rel.eq
+  ![Semiterm.lMap embedding (sourceTerm 13 (ArithmeticExpression.term Fin.val AdaptiveFirstRootFactor87Literal.naturalExpression87.splitNatural.1)),
+    Semiterm.lMap embedding (sourceTerm 13 (ArithmeticExpression.term Fin.val AdaptiveFirstRootFactor87Literal.naturalExpression87.splitNatural.2))]))
+
+/-- Proposed existence of the native-theory proof, not a proof of either side. -/
+theorem native_equivalence87 : nativeTheory ⊢ noZero87 🡘 ∼mappedNativeRefutation embedding :=
+  IPRAEquationComposition.equationComparison noZero87
+    IPRA87TranslatedRefutation.translated_refutation IPRABoundedRhoZFC.zfcEquiv
+
+theorem standard_equivalence87 : IPRAStandardTheory.standardTheory ⊢
+    noZero87 🡘 ∼mappedNativeRefutation embedding :=
+  (IPRAStandardTheory.provable_iff _).2 native_equivalence87
+
+theorem standard_translated_equivalence87 : IPRAStandardTheory.standardTheory ⊢
+    noZero87 🡘 (Semiformula.lMap embedding sourceSentence)ᴺ := by
+  apply (IPRAStandardTheory.provable_iff _).2
+  obtain ⟨h⟩ := native_equivalence87
+  have z := IPRABoundedRhoZFC.zfcEquiv
+  exact ⟨Entailment.K_intro
+    (Entailment.C_trans (Entailment.K_left h) (Entailment.K_right z))
+    (Entailment.C_trans (Entailment.K_left z) (Entailment.K_right h))⟩
+
+end DiophantineConsistency.Adaptive87IPRAStandaloneDraft
+#print axioms DiophantineConsistency.Adaptive87IPRAStandaloneDraft.native_equivalence87
+#print axioms DiophantineConsistency.Adaptive87IPRAStandaloneDraft.standard_equivalence87
+#print axioms DiophantineConsistency.Adaptive87IPRAStandaloneDraft.standard_translated_equivalence87
