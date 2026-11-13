@@ -1,0 +1,30 @@
+INDEPENDENT REVIEW OF THE 259-NODE AST CHECKER
+
+Candidate: agent_checker/checker_match.py.
+Control: incoming_sources/ipra_fixed_points_and_checker/ipra_fixed_points_and_checker/code/control_ast262.py.
+Target runtime: CPython 3.12.14, the runtime used by the repository's metric.
+Candidate measurements: 252 significant tokens, 259 AST nodes, 595 normalized UTF-8 bytes, 349 gzip9 bytes.
+
+Exact source change. The control has
+
+    s, u, t = r = loads(input())
+
+and the candidate has
+
+    match loads(input()):
+        case [s, u, t] as r:
+            pass
+
+Every subsequent statement, including the membership/computation test outside the match block, is unchanged.
+
+Valid packets. Under the promised exact integer/list data contract, a successful packet match is precisely a list of length three. The sequence pattern then binds s,u,t to its three elements, and the outer as-pattern binds r to the same list. This is exactly the store produced by the control assignment. No tuple or other sequence can be parsed from the promised JSON input. The packet is read once in either program, and the pass has no effect. Thus all later evaluations and global-floor changes are identical.
+
+Failed packets. A scalar or a list of length other than three fails before any of the four bindings on CPython 3.12.14. The emitted bytecode first executes MATCH_SEQUENCE and GET_LEN/COMPARE_OP(==3); only their success reaches UNPACK_SEQUENCE and STORE_FAST(s), STORE_FAST(u), STORE_FAST(t), STORE_FAST(r). There is no guard or refutable element subpattern: all three element patterns are captures. Consequently the general warning about partial bindings after failed patterns causes no gap for this fixed interpreter and this particular pattern.
+
+The following if is outside the match block. Python eagerly constructs the entire tuple on the right of `not in` before performing membership; construction begins by reading local s. Therefore a failed packet match raises UnboundLocalError before a membership result is available, even if the goal is already in g. A same-named global cannot supply the value, since the pattern captures and subsequent assignments make s,u,t,r local variables throughout c. The control rejects the same malformed packet while unpacking. Both failures occur before any recursive proof call or floor update.
+
+Induction. Couple the two executions with equal input streams, equal k, and structurally equal arguments g,a. At every entered c-call the same next line is parsed. If its packet is invalid neither call successfully returns. If valid, the local stores coincide and the remaining bodies are identical, so their recursive calls couple in order. Induction on finite successful call trees proves equivalence in both directions, with the same consumed packet prefix and final global k. Extra unconsumed lines are ignored equally. Parsing failures, EOF, and opcode-independent exceptions reject in either program. Physical resource exhaustion and exact exception text are outside the equivalence assertion.
+
+Focused implementation verification. The independent script verify_match.py ran 40 standalone processes across normal and -O modes, covering valid zero-computation packets and malformed scalar/wrong-length packets. It also ran 20 direct kernel cases with an already-retained goal and globals prebound under the names s,u,t,r. All expectations passed. match_validation.json records the cases, and match_cpython312_disassembly.txt records the relevant emitted bytecode. These finite checks support the universal store-equivalence proof; they are not a substitute for it.
+
+Conclusion. The 259-AST-node program accepts exactly the same promised JSONL theorem certificates as the 262-node control, under ideal finite execution on the fixed runtime. No new arithmetic or logical rule is introduced, deleted, or broadened.

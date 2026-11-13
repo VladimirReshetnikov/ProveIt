@@ -1,0 +1,659 @@
+Smaller complete checkers for iPRA
+A verified refinement of the ConciseIPRA presentations
+Research report prepared for Vladimir Reshetnikov
+November 12, 2026
+Abstract
+Thecomplete-checkercomplexityofthecurrentConciseIPRApresentationscanbereduced
+further. Against repository commit dd308d5d938b20dce41a1150fa5db49fc53c5d4e, the
+fully validated presentation has new separate minima of 320 significant Python tokens, 362
+AST nodes, and 600 normalized UTF-8 bytes, compared with 322, 364, and 606. A compact
+guarded companion has 462 normalized bytes, compared with 469. Including two explicitly
+attributed earlier return-reservation programs gives a compact coordinate envelope of 240
+tokens, 261 AST nodes, and 462 bytes. Different programs attain these coordinates.
+The refinements preserve the existing arithmetic and logical axioms. Their proofs concern
+the operational presentation of finite derivations: successful verification calls can return no
+data, and a list’s neutral resource can be extended by a one-byte iterable. The compact
+companion also composes an existing change of binding-index origin. The report specifies
+the theory and the interpretation requirements, proves the implementation transformations,
+records reproducible comparisons and tests, and identifies exactly which results are inherited.
+It does not establish an absolute minimum or a new reduction of the mathematical rule basis.
+Contents
+1 Result, comparison contract, and provenance 2
+2 The unchanged theory and its interpretation in iPRA 3
+3 The new program transformations 9
+4 Correctness and interpretation of the delivered family 11
+5 Verification and reproduction 12
+6 Scope of the answer 13
+A The compact complete module 13
+B The fully validated byte-oriented module 14
+C Source references 14
+1
+
+Smaller complete checkers for iPRA November 12, 2026
+1 Result, comparison contract, and provenance
+The requested complexity criterion is the size of a complete standalone proof checker. Under that
+criterion the new fully validated programs are strictly below the separate minima of their current
+comparison class. They read a complete JSON certificate, check the numerical and formula
+grammar as specified by that class, and print ACCEPT only on successful verification. They import
+no proof library, compressed checker, theorem oracle, or external verification module.
+The complete compact companion is smaller in normalized bytes than every compact program
+selected by the pinned baseline census. Its public language is connected to full first-order
+intuitionistic primitive recursive arithmetic by the inherited interpretations detailed in Section 2.
+This is a comparison with measured programs, not with a mathematically proved lower bound
+over all possible languages or implementations.
+1.1 Frozen comparison
+The repository was read through the GitHub connection and then frozen at
+dd308d5d938b20dce41a1150fa5db49fc53c5d4e.
+Every one of the 15,935 files materialized from the ConciseIPRA subtree was checked against its
+Git blob identifier. No discrepancy or extra file was found. The source census includes the 19
+archives in docs/incoming; using the README’s older summary alone would give the wrong
+current minima. The census and its reproducible script are included in reference/.
+There are distinct validation contracts:
+Compact guarded.
+Integer/list proof certificates use the arity-based auxiliary language and its guarded public
+interpretation. The smallest stream programs have a stated integer/list input contract. They
+are not advertised as complete validators of arbitrary JSON values.
+Native goal validation.
+ThepublicgoalhastheunrestrictednativeEq/Dgrammar; anexplicitmodefielddistinguishes
+equation progress from numerical cases. The integer/list certificate contract is inherited.
+Fully validated.
+The whole JSON value is checked to contain only integers and lists, including unused prefixes,
+and the native Eq/D public goal is validated. This is the strongest of the three input contracts
+compared here.
+The contracts are not silently interchanged.
+Complete module Tokens AST Bytes Gzip-9
+Compact baseline: tokens 241 267 566 331
+Compact baseline: AST 246 262 556 335
+Compact baseline: bytes 272 306 469 309
+Inherited return: tokens 240 266 551 333
+Inherited return: AST 242 261 563 333
+New offset procedure 267 298 462 310
+Table 1: Compact profiles. The pinned coordinate envelope is 241/262/469. The consolidated
+envelope is 240/261/462; its token and AST records are inherited unchanged from the earlier
+return-reservation package.
+The 240-token and 261-AST files in this archive are unchanged copies of the earlier
+ipra_return_reservation_2026-11-12 research package available in the workspace. They are
+2
+
+Smaller complete checkers for iPRA November 12, 2026
+Complete module Tokens AST Bytes Gzip-9
+Strict baseline: tokens 322 373 626 393
+Strict baseline: AST 329 364 635 394
+Strict baseline: bytes 334 379 606 387
+New strict: tokens 320 371 630 398
+New strict: AST 327 362 639 399
+New strict: bytes 330 372 600 387
+Native baseline: bytes 328 373 579 362
+New native procedure 324 366 573 362
+Table 2: Stronger validation contracts, compared separately. The fully validated envelope
+improves from 322/364/606 to 320/362/600. The native goal-validated byte profile improves
+from 579 to 573.
+included with their proof, translator, fixtures, and attribution. They are not new discoveries of
+this report. The new work here is the compact offset composition and the refinements of the
+latest native and fully validated controls. The source manifests distinguish these origins.
+1.2 Measurement method
+All numbers are computed by CPython 3.12.14. Given the complete source file s, normalize it to
+n = ast.unparse(ast.parse(s))+one final line feed.
+Count significant tokens of n, omitting comments, indentation, dedentation and line/end markers.
+Count every node of ast.parse(n) using ast.walk. Count UTF-8 bytes of n. No imports, input
+parsing, printing, docstrings, or executable statements are stripped. The selected compact files
+have no docstrings.
+The informational compression measure is
+|gzip.compress(n,compresslevel = 9,mtime = 0)|.
+A reproducible gzip archive of each selected normalized program is supplied. Gzip size is not an
+optimization coordinate of the repository’s primary comparison. Nor is the smallest number in a
+table column claimed to be attained by the program that minimizes another column.
+2 The unchanged theory and its interpretation in iPRA
+The mathematical foundation in this section is inherited from Concise presentations of intu-
+itionistic primitive recursive arithmetic, especially Chapter 1, “The base theories and their
+bridge,” and Chapter 3, “Guards and public languages.” The source is frozen at ProveIt commit
+dd308d5d938b20dce41a1150fa5db49fc53c5d4e. The relevant source files are ch01_base.tex
+and ch03_guard.tex. The definitions below specify the theory completely. The interpretation
+resultsarestatedasinheritedtheorems; theaccompanyingexplanationsgivetheirproofstructure,
+rather than a new formalization or a replacement for the upstream arithmetic development. The
+new contribution of this report concerns the presentation of finite proof certificates.
+2.1 Terms, formulas, and the native rules
+There is one numerical sort. Terms are finite expressions
+t ::= x | 0 | S(t) | I(n,a;u.h).
+3
+
+Smaller complete checkers for iPRA November 12, 2026
+In the iterator only u in h is bound. The body can have other free numerical parameters;
+there is no variable ranging over functions and no uniform evaluator for codes of primitive
+recursive functions. All substitutions below avoid capture, and bound variables are identified up
+to renaming. Write 1 = S(0) and 2 = S(S(0)). The two computation schemes are
+I(0,a;u.h) = a, (1)
+I(S(n),a;u.h) = h[I(n,a;u.h)/u]. (2)
+These are axioms about raw terms, not identifications performed silently by the syntax. Define
+the selector
+sel(v,a,b) = I(v,a;u.b), u ∈/ FV(b).
+Consequently sel(0,a,b) = a and sel(S(v),a,b) = b are derivable.
+Native formulas have the grammar
+A ::= (s = t) | Q A | D A.
+y x,y
+Q binds one variable, and D binds two distinct variables. A literal equation has equality as its
+outermost constructor; a formula containing an equation below a binder is not a literal equation.
+The designated contradiction is 0 = 1.
+A context Γ is a finite list of formulas. The native calculus N consists of the following eight
+schemes and no additional logical or arithmetic primitives:
+A ∈ Γ
+Hyp I0,
+Γ ⊢ A Γ ⊢ I(0,a;u.h) = a
+IS,
+Γ ⊢ I(S(n),a;u.h) = h[I(n,a;u.h)/u]
+Γ ⊢ s = t Γ ⊢ h(s) = r Γ ⊢ Q B(y) Γ ⊢ B(0)
+y
+Tr, QE,
+Γ ⊢ r = h(t) Γ ⊢ B(t)
+Γ ⊢ D B(x,y) Γ,Q B(b,y) ⊢ A
+x,y y
+DE,
+Γ ⊢ A
+Γ,B(t,0) ⊢ B(t,S(z)) Γ,E(z) ⊢ E(S(z))
+DI, QI.
+Γ ⊢ D B(x,y) Γ ⊢ Q E(y)
+x,y y
+In Tr, h is a numerical term template. In DE, b is fresh for Γ,A,D B. In DI, z is fresh for
+x,y
+Γ,t,D B. In QI, E is a literal equation and z is fresh for Γ,Q E. The displayed additional
+x,y y
+assumptions are discharged. These conditions allow arbitrary quantified side assumptions in Γ,
+but they do not permit induction on quantified formulas.
+Weakening, capture-free substitution, and cut are admissible. Equality reflexivity follows
+by applying Tr to I(0,t;u.0) = t twice, using the identity template. From reflexivity and Tr
+one obtains symmetry, transitivity, and congruence. Transport in arbitrary formula templates
+then follows by induction on their binders using QE, DE, and DI. Thus the absence of primitive
+logical connectives or a reflexivity axiom does not signify their absence from the derived theory.
+2.2 The ordinary first-order theory
+The ordinary reading fixes terms and equality and is recursive on formulas:
+(s = t)◦ = (s = t),
+(Q B)◦ = B◦(0) → ∀yB◦(y), (3)
+y
+(D B)◦ = ∃x (cid:0) B◦(x,0) → ∀yB◦(x,y) (cid:1) .
+x,y
+The quantifiers range over the whole numerical domain.
+4
+
+Smaller complete checkers for iPRA November 12, 2026
+Let T use ordinary intuitionistic first-order logic with equality over these iterator terms. To
+eq
+fix the logic explicitly: its rules are hypothesis, elimination of ⊥, introduction and elimination
+of ∧, ∨, →, ∀, and ∃, equality reflexivity, and Leibniz substitution. Implication introduction
+discharges its antecedent; disjunction elimination discharges the two case assumptions. Universal
+introduction requires its generalized variable to be absent from the undischarged context; existen-
+tial elimination requires its fresh witness to be absent from the remaining context and conclusion.
+Universal elimination and existential introduction permit every numerical term. Leibniz substitu-
+tion infers F(t) from s = t and F(s) for every formula template F. Weakening, substitution, and
+cut are allowed as admissible operations. No excluded-middle or double-negation-elimination
+scheme is included.
+The nonlogical axioms of T , with all their parameter instances, are (1)–(2) and
+eq
+x = 0 ∨ ∃y(x = S(y)), (4)
+0 = 1 → ⊥, (5)
+(cid:0) (cid:1)
+E(0) → ∀z(E(z) → E(S(z))) → ∀zE(z) (E a literal equation). (6)
+In particular, successor injectivity is not an axiom here. Separation (5) is indispensable to this
+ordinary realization: the one-element structure satisfies the computations, coverage, and equation
+induction, but not separation. It must not be omitted on the ground that the native calculus
+has designated 0 = 1 as its contradiction.
+Inherited logical completeness theorem. There is an effective translation φ 7→ φ∗ of every
+ordinaryformulaintonativesyntax, fixingequationsandnumericalterms, suchthat, forarbitrary
+finite contexts,
+Γ ⊢ A ⇐⇒ Γ◦ ⊢ A◦, (7)
+N Teq
+(A◦)∗ ⊣⊢ A, T ⊢ φ ↔ (φ∗)◦. (8)
+N eq
+Here ⊣⊢ denotes interderivability, since ↔ is not a primitive native connective. This theorem
+includes all first-order formulas, not only a quantifier-free or prenex fragment.
+Proof structure of the inherited theorem. The forward direction checks the eight rules
+under (3). In particular, DI uses numerical cases from coverage, while QI uses only equation
+induction. For the reverse direction, selectors are extended recursively to formulas, padding
+unmatched binders by the gate gate(v,A) = sel(v,0 = 0,A). The resulting selector satisfies
+sel(0,A,B) ⊣⊢ A and sel(S(v),A,B) ⊣⊢ B. With Z(v) = sel(v,1,0) and p(y) = I(y,0;u.Z(u)),
+one choice of the native macros is
+⊥ = (0 = 1), A ⇒ B = Q sel(y,A,B),
+∗ ∗ y
+A∧ B = Q gate(y,sel(p(y),A,B)), ∃ xA = D gate(y,A),
+∗ y ∗ x,y
+A∨ B = ∃ xsel(x,A,B), ∀ xA = A(0)∧ Q A.
+∗ ∗ ∗ ∗ x
+Auxiliary bound variables are chosen fresh for unrelated data; the x in the existential and
+universal macros binds the intended occurrences in A. The values p(1) = 1 and p(2) = 0 expose
+the two conjunction components. The introduction and elimination rules of these macros give
+the translation ∗; structural induction on formulas proves both (8). The recursive selector and
+the arithmetic lemmas used here are established in the cited upstream chapter; this paragraph
+records the dependency structure, not an independent proof of every one of those lemmas.
+2.3 The bridge from equation induction to full iPRA
+For specificity, iPRA means intuitionistic first-order arithmetic with a symbol for every finite
+primitive recursive description. Descriptions are generated from zero, successor, projections,
+5
+
+Smaller complete checkers for iPRA November 12, 2026
+composition, and primitive recursion. The defining axioms include
+πk(⃗x) = x , comp(f;⃗g)(⃗x) = f(g (⃗x),...,g (⃗x)),
+i i 1 m
+rec(f,g)(0,⃗x) = f(⃗x),
+rec(f,g)(S(n),⃗x) = g(n,rec(f,g)(n,⃗x),⃗x).
+There are also S(x) = 0 → ⊥, S(x) = S(y) → x = y, and (6) with E replaced by every quantifier-
+free formula, allowing parameters. First-order quantifiers in other formulas are unrestricted.
+Distinct function descriptions remain distinct symbols, even if they define the same standard
+function.
+Inherited arithmetic theorem. There are effective term interpretations τ : T → iPRA
+eq
+and σ : iPRA → T which fix variables, zero, and successor, preserve equality and all ordinary
+eq
+logical operations, and satisfy
+T ⊢ σ(τ(t)) = t, iPRA ⊢ τ(σ(r)) = r. (9)
+eq
+They preserve and reflect derivability on all open sequents, and hence
+T ⊢ φ ↔ (φτ)σ, iPRA ⊢ ψ ↔ (ψσ)τ. (10)
+eq
+The two interpreted domains are the whole domain. The definable maps for the numerical
+composites are the identity, with graph x = y.
+The nontrivial direction is σ. The upstream construction, in its dependency order, proves the
+following facts inside T :
+eq
+1. An iterator term P is a predecessor: P(0) = 0 and P(S(n)) = n. This gives successor
+injectivity; separation and further elementary computations give S(n) ̸= 0.
+2. Truncated subtraction and a numerical equality test are definable. More generally, for
+every quantifier-free formula θ there is a term χ with T ⊢ θ ↔ χ = 0. The construction
+θ eq θ
+is intuitionistically justified because the relevant numerical tests are decidable. Equation
+induction on χ = 0 therefore yields quantifier-free induction.
+θ
+3. Pairing and its two projections are represented by iterator terms. A state storing a counter
+and an accumulator lets scalar iteration implement counter-aware primitive recursion. For
+every previously constructed a(⃗x) and h(n,v,⃗x), a term R satisfies
+R(0,⃗x) = a(⃗x), R(S(n),⃗x) = h(n,R(n,⃗x),⃗x).
+Structural recursion on primitive recursive descriptions now defines σ and proves every
+translated defining axiom.
+These are inherited construction theorems, not additional axioms of T . In particular, using
+eq
+pairingbeforederivingthepredecessorandtherequirednumericaltestswouldconcealanessential
+part of the argument.
+In the other direction, τ sends each iterator to primitive recursion whose step ignores its
+counter. This respects substitution provably, although not necessarily as literal syntax: changing
+a free parameter in an iterator body can change its compiled function description. Equality
+induction proves extensionality of the compiled iterator. Finally, uniqueness of iteration and of
+primitive recursion proves (9); induction on formulas gives (10). These round trips, rather than
+expressibility in the standard natural numbers alone, establish bi-interpretability.
+6
+
+Smaller complete checkers for iPRA November 12, 2026
+2.4 The guarded public theory used by small certificates
+The smallest certificate programs use a restricted public language and may use a larger auxiliary
+proof language. This distinction is part of the specification. For the explicit bi-interpretation
+below, the protected public subclass P suffices. The compact codec can also admit unwrapped
+equationsatitspublicroot;thedefinitionheredoesnotimposeanewinput-validationrequirement
+or claim to enumerate that codec’s entire goal grammar. Put
+(cid:0) (cid:1)
+W(s) = I(0,s;u.0), G (s = t) = I(y,0;u.s) = I(y,0;v.t) ,
+y
+where u,v are fresh. A protected equation has an iterator at the root of each endpoint. Let P be
+generated by protected equations and formulas D B, where either B is already a compound
+x,y
+public formula or B has the literal shape
+I(y,0;u.h) = I(y,0;v.k).
+The bodies h,k may depend on the displayed parameters, including x,y. Thus the last equation
+has a provable zero instance. Public formulas contain no Q. Public equality is expressed by
+s ≃ t := (W(s) = W(t)), and public contradiction is W(0) = W(1).
+For comparison with executable kernels, let U− have the full native auxiliary language. Its
+seven rules are Hyp, I0, IS, QE, DE, and
+Γ ⊢ s = t Γ ⊢ F(s) Γ,B(t,η (z)) ⊢ B(t,S(z))
+B
+(s ̸≡ 0), ,
+Γ ⊢ F(t) Γ ⊢ D B
+x,y
+where F is a native formula template, η (z) = z for a literal equation and η (z) = 0 otherwise.
+B B
+The freshness conditions are those above. The exclusion s ̸≡ 0 is syntactic: a compound term
+provably equal to zero is allowed. The source test merges transport with closure use in compact
+certificate formats; the matrix root selects the introduction mode.
+Here is an explicit translation into the public language. Set
+(
+L(A), A an equation,
+ϵ(s = t) = (W(s) = W(t)), L(E) = D G (E), pad(A) =
+a,v v
+A, A compound,
+with a,v fresh. Define T recursively by
+T(s = t) = ϵ(s = t),
+T(Q B) = D pad(TB) (a fresh),
+y a,y
+T(D B) = D pad(TB).
+x,y x,y
+This translation preserves the numerical terms apart from the displayed equation wrappers,
+commutes with substitution, and always produces a public formula.
+Inherited public-language theorem. For all native A,Γ and public B,∆,
+Γ ⊢ A =⇒ TΓ ⊢ TA, (11)
+N U−
+A ⊣⊢ TA, B ⊣⊢ TB, (12)
+N U−
+∆ ⊢ B ⇐⇒ ∆ ⊢ B. (13)
+U− N
+The last equivalence is asserted on public sequents. It is not an assertion that the root-selected
+auxiliary calculus agrees with N on every raw formula.
+For orientation, the proof first works in the smaller protected calculus whose transport
+sources must be iterator-headed. The equations W(s) = s and the computation of G (E) and
+0
+G (E)givepadding,numericalcases,andcontextualequationinductiononprotectedequations.
+S(z)
+7
+
+Smaller complete checkers for iPRA November 12, 2026
+Induction on native derivations proves (11); induction on formulas gives both composites in (12).
+Every rule of U− is admissible in N, and the protected calculus is contained in U−. These two
+inclusions establish (13). This argument does not recover unrestricted raw reasoning by treating
+an unguarded atomic matrix as a guarded one.
+There is no conflict with the auxiliary progressive reading used in Chapter 11 of the upstream
+article to prove correctness of raw certificate operations. That reading assigns ∃x∀y(E(x,y) →
+E(x,S(y))) to D E when E is a literal equation. It can differ from (3) on unguarded auxiliary
+x,y
+formulas. On a guarded matrix E(x,0) is provable, so equation induction makes the progressive
+and conditional readings equivalent; induction on public formulas extends this agreement to P.
+Separately, the syntactic inclusion in N claimed above is valid: from the progressive premise for
+E(t,y), QI derives Q E(t,y), and QE under E(t,0) followed by DI derives D E. Thus every
+y x,y
+formal rule of U− is sound for the ordinary reading as well. This syntactic observation does not
+replace the upstream scope and decoding argument for arbitrary raw certificates.
+2.5 What the interpretation theorem certifies
+Combining the three inherited bridges gives interpretations of thepublic theory and full first-order
+iPRA in both directions: read a public formula ordinarily and apply τ; in the other direction
+apply σ, the native logical translation ∗, and then T. Equations (8), (10), and (12) prove both
+formula round trips. Variables and numerical domains are unchanged. The identity graph is
+written W(x) = W(y) in the public syntax and is provably x = y under the ordinary reading.
+Equality is therefore actual numerical equality; there is no quotient, restriction to standard
+numerals, or replacement of equality by mere observational equivalence.
+In particular, effective translations of finite proofs give
+U− ⊢ W(0) = W(1) ⇐⇒ N ⊢ 0 = 1 ⇐⇒ T ⊢ ⊥ ⇐⇒ iPRA ⊢ ⊥.
+eq
+A new certificate presentation inherits this conclusion only after its accepted finite certificates
+are shown to present the same public derivability relation. Finite regression tests alone do not
+establish that statement; the certificate-equivalence argument is the remaining mathematical
+obligation addressed separately in this report.
+2.6 The unrestricted native companions
+The native573 and strict600 companion procedures use the full native protocol inherited from
+the incoming package ipra_validated_leaves_2026-11-12.zip. Their public formulas are
+arbitrary equations and D formulas, with no zero-seeded or protected matrix restriction. The
+protocol retains both introduction modes: cases are permitted for every matrix, and progress is
+selected by the explicit marker u = 2 only when the matrix is a literal equation. The underlying
+source-selected calculus is the upstream A−, which derives the same native sequents as N. Shared
+computation leaves alter the certificate interface without deleting either computation scheme.
+The ordinary reading (3) therefore applies throughout this native comparison; no progressive
+reading of public formulas is required.
+Omitting Q from this public grammar loses no expressive power. Recursively replace Q B by
+y
+D B, with r fresh and unused, and translate the body recursively. Native introduction with
+r,y
+the dummy witness 0 and elimination of that witness prove both directions of this replacement.
+Unlike the guarded translation, it needs no extra padding, since the full native protocol retains
+introduction by cases at equations. Composing this equivalence with the inherited native and
+arithmetic bridges gives the same whole-domain, actual-equality bi-interpretation and the same
+identity numerical composites. The two companion procedures differ in their input contracts:
+native573 validates the public goal under its integer/list certificate contract, whereas strict600
+also validates the complete input alphabet. These validation differences do not change the native
+mathematical theory.
+8
+
+Smaller complete checkers for iPRA November 12, 2026
+3 The new program transformations
+3.1 Verification as a procedure
+The latest byte-oriented controls use a lambda whose body is a one-element list comprehension.
+Its sole purpose is to unpack one certificate record and run the recursive verification expression.
+A successful call always returns a nonempty list. The caller uses only the truth of that result to
+sequence the checked major premise with its associated context resource.
+Replace that lambda by a function with a statement body: unpack the same record, evaluate
+the same checking expression, and return implicitly. A successful call now returns None. At the
+recursive major-premise site replace
+c(...) and m * 3 by c(...) or m * 3.
+The two expressions have exactly the same value after successful verification: m * 3. The order of
+allotheroperationsstaysfixed. Inparticularthegoalisvalidatedbeforetheinitialgoal-validation
+phase is cleared, and a fresh parameter is allocated before it is substituted into the new local
+resource and successor goal.
+Theorem 3.1 (Procedure equivalence). Let L be one of the frozen singleton-list controls, and let
+P be its procedure version with the single recursive return-value use changed as above. Under ideal
+finite execution, L and P accept the same input certificates. Corresponding successful executions
+consume the same records and construct the same intermediate formulas, contexts, substitutions,
+and scope floors.
+Proof. Induct on a successful finite recursive call tree.
+In a terminal call, both programs read and unpack the same record, perform the same
+opening of the requested formula, construct the same computation preview, and perform the
+same membership test. The result of that test terminates the logical work in either program.
+The original call returns a singleton list, whereas the procedure returns None.
+In a nonterminal call, the major-premise verification is executed first, at the same context
+and floor. Apply the induction hypothesis to it. Its successful return is truthy in L and is None
+in P. Both revised sequencing expressions therefore evaluate to m * 3. If this value is false,
+the same subsequent introduction expression is evaluated in both programs. Every assignment
+expression and every opening operation is in the same order, so the generated local resource,
+fresh floor and minor goal agree literally. Apply the induction hypothesis to the minor-premise
+call.
+For the converse, induct on a successful P-call tree in exactly the same way. Each terminal or
+recursive phase has a corresponding successful L-phase. A failing comparison, malformed packet,
+exhausted input, failed scope check, or other logical failure occurs before any point at which
+the differing successful return values could matter. The internal no-image sentinel is a function
+object in both versions; it is never serialized into a certificate and fails the same attempted
+numerical comparisons. Thus it introduces no additional successful branch.
+The theorem concerns the mathematical checking relation. Concrete interpreter recursion
+limits need not be identical: removing the comprehension removes execution frames. This
+qualification is the same ideal-execution convention used by the baseline.
+For the 579-byte native control the result has 573 normalized bytes. For the 606-byte fully
+validated control it has 600. Their source modules also include the same output marker and
+the same input parsing and validation. Moving the JSON import below the function definition
+changes neither its availability at call time nor the validation contract; that placement is reflected
+in the normalized measurements.
+9
+
+Smaller complete checkers for iPRA November 12, 2026
+3.2 A neutral list extension
+Two fully validated profiles extend the context by a neutral resource using
+g += [0].
+At every entry, g is a Python list: the initial context is a list and recursive context construction
+produces lists. Consequently this statement can be replaced by
+g += b’\x00’.
+Iterating the byte string yields precisely the integer 0. Both statements extend the same existing
+list object by the same one element. The neutral resource and all aliases of the context therefore
+remain identical. This is an ordinary Python representation change, not a new mathematical
+axiom or an encoded proof-checking program.
+Proposition 3.2 (Neutral-extension equivalence). The two matched token/AST programs pre-
+serve every execution state at the changed statement. They accept the same certificates as their
+respective controls, with the same input contract.
+Proof. The list invariant follows from the initial call and the recursive context constructor. For a
+list g, in-place extension by [0] and by the bytes object of length one with value zero has the
+same effect on g. No program operation inspects the source iterable after extension. All later
+states are therefore identical, by ordinary induction on execution steps.
+This reduces the token-oriented profile from 322 to 320 significant tokens and the AST-
+oriented profile from 364 to 362 nodes. It does not minimize bytes; the procedure profile supplies
+that coordinate. The compactly encoded literal is confined to the measured programs. The
+explanatory implementation uses the explicit neutral list.
+3.3 The compact 462-byte composition
+The compact program composes the procedure transformation with the already established offset
+presentation. The arity-based decoder normally starts a formula at depth 0 and a term at depth
+3. The offset starts them at 2 and 5. Each child still has depth
+d+5−r,
+where r is the parent array’s arity. Sort parity is unchanged.
+For canonical syntax, negative rigid parameters and the numerical zero remain unchanged;
+protected-slot and hole spellings starting at 3 increase by 2. The scalar 0 can now be retained at
+formula depth 2, so the initial neutral resource can be written as [0] instead of [[]]. Witness
+opening, term-root validation and every corresponding fixed depth are shifted consistently.
+The offset theorem is a semantic soundness theorem plus a compilation of canonical proofs.
+It is not a bijection between all arbitrary raw certificate languages: extra scalar aliases and inert
+annotations can behave differently after the offset. The frozen offset source and the compiler
+fixtures are provided in the archive. There is one further certificate step before the procedure
+transformation:
+offset472 −→ offset_shared468 −→ procedure462.
+The intermediate 468-byte module composes the offset with the established shared-leaf protocol.
+Its proof obligation is distinct from return-value equivalence.
+Lemma 3.3 (Shared leaves in the offset codec). The 472-byte offset control and the intermediate
+468-byte shared-leaf control present the same public theorem set. Finite accepted proofs compile
+between them on the stated integer/list certificate language.
+10
+
+Smaller complete checkers for iPRA November 12, 2026
+Proof. The old control validates the requested goal, returns immediately if it is retained, and
+otherwise reads a packet. That packet either supplies a matching computation equation or
+governs the same recursive checking step. The new control reads a packet at every call and tests
+membership in the context augmented by that packet’s computation equation.
+Compile an accepted old proof by inserting the harmless packet [0,0,0,0] at each retained-
+hypothesis return. This packet’s preview is the closed zero computation, so its construction is
+defined; the existing retained goal still closes the call. Every other record and recursive branch
+remains the same. For the converse, erase the packet of a successful new call whenever the
+validated goal is already retained. At every other call keep its identical computation comparison
+or recursive checking step.
+On integer/list inputs the eager no-image opener is literally the identity whenever it succeeds:
+an out-of-scope scalar forces validation of the missing image even if the multiplier is zero, and
+therefore fails. Hence the new membership comparison with a computation equation uses exactly
+the old raw goal. The remaining operations and scopes agree, inductively through the call tree.
+Both compilations preserve the public header. An arbitrary unused packet can fail preview
+construction in the new format, so same-input acceptance is not claimed for this step.
+Within the intermediate offset/shared representation, Theorem 3.1 is an exact finite opera-
+tional equivalence: it is applied to the 468-byte control and the 462-byte procedure.
+The resulting module has 267 tokens, 298 AST nodes and 462 normalized bytes. Its smaller
+byte count is obtained without claiming that it also has the smallest token or AST count. It uses
+the inherited guarded public theory of Section 2.4; its arithmetic primitives, induction strength
+and public interpretation have not changed.
+3.4 Why the boundary checks are preserved
+Several short expressions carry mathematical obligations that cannot be deleted merely because
+simple examples still pass:
+1. The no-image traversal of a goal checks that an eigenparameter has not escaped. With the
+eager decoder, successful validation is literal. With the lazy decoder, the general statement
+is semantic retraction.
+2. The computation preview is not an arbitrary new assumption. In a successor preview that
+uses its state, the recursive source is independently opened at term-root depth. That check
+prevents capture through dummy slots under the outer successor. If the update does not
+use its state, the constant-update case has its own soundness argument.
+3. The fully validated program checks its initial public goal before the phase flag is cleared.
+Clearing it early would admit formulas outside the promised grammar.
+4. Context resources opened under a fresh parameter remain local. A monotone supply of
+fresh names alone does not justify leaking their assumptions into another proof branch.
+None of the new transformations removes these checks. The written equivalence proofs preserve
+them, and the independent tests exercise their boundaries.
+4 Correctness and interpretation of the delivered family
+Theorem 4.1 (Preservation of the presented theories). The new fully validated profiles present
+the same native Eq/D theorem set as their pinned controls. The new compact profile presents
+the same guarded public theorem set as the offset control, after the specified canonical proof
+compilation. The interpretation maps, actual equality, whole numerical domains, and both formula
+and numerical round trips are the inherited ones. In particular, each corresponding presented
+theory is equiconsistent and bi-interpretable with full first-order iPRA.
+11
+
+Smaller complete checkers for iPRA November 12, 2026
+Proof. ForthefullyvalidatedprocedureprofileuseTheorem3.1;forthetokenandASTprofilesuse
+neutral-extension equivalence. These transformations preserve the complete accepted-certificate
+relation of their controls, so every existing soundness proof, completeness compiler, and formula
+translation continues to apply without alteration.
+For the compact profile first use the existing offset soundness and canonical completeness
+theorem, then Lemma 3.3, and finally the procedure equivalence between the intermediate
+468-byte control and the 462-byte program. This preserves the public proof relation used in
+Section 2. Compose its effective proof translations with the native and ordinary arithmetic
+interpretations there. All numerical maps remain the identity on the whole domain. Formula
+round trips remain the inherited interderivabilities, so the conclusion is stronger than mutual
+consistency alone.
+The implementation transformations above are proved in this report. The foundational
+arithmetic bridge and the controls’ complete decoder theorems are inherited research results, with
+their sources frozen in the package. The repository’s Lean development formalizes substantial
+mathematics of the native theory; this report does not claim a new Lean verification of the
+Python interpreter, parser, or whole checker. The small Lean lemma retained with the earlier
+return-reservation artifact has its original limited scope.
+5 Verification and reproduction
+The packaged reproduction run used CPython 3.12.14. The four suites for the new refinements
+performed 1024 complete subprocess executions, with zero unexpected outcomes: 344 for the
+native/strict procedures, 304 for neutral-list extension, 120 for the compact composition, and
+256 in an independent boundary audit. The attributed earlier stream suite adds 126 executions.
+All suites run positive and negative cases in normal and optimized Python.
+Theproceduresuiteadditionallycompares132instrumentedtraces, including8,004callstates;
+theneutral-extensionsuitecompares76traces. Thecompactsuitechecks12translatedcertificates
+and 1,158 corresponding packet events. No trace mismatch was found. The commented fully
+validated module has an AST identical to the measured 600-byte module.
+Run python3 reproduce.py from the extracted directory. It recomputes source metrics,
+runs the focused control comparisons and the included earlier return-reservation regression suite,
+and checks the expected size coordinates. The complete source census can also be rerun against
+another checkout by the separate census script; the included census fixes the commit and every
+selected source identity.
+Thecomparisonsuiteincludespositivearithmeticcomputations,equalitytransport,compound
+introduction and elimination, and induction whose progressive hypothesis is actually used.
+Negative cases include false public equations, future-variable capture, invalid binders and arities,
+malformed records, and forbidden JSON values in an otherwise unused prefix. The checks
+run in normal Python and under optimization so that correctness does not depend on assert
+statements.
+The tests support the implementation correspondence; they do not replace the universal
+operational proofs or the inherited interpretation theorem. The recorded results identify the
+exact fixtures, controls, source digests and interpreter version, rather than treating a finite sample
+as a consistency proof.
+5.1 Contents of the archive
+report.tex, report.pdf, and foundations.tex
+The result, full theory specification, interpretation requirements, implementation proofs,
+comparisons, and limitations.
+12
+
+Smaller complete checkers for iPRA November 12, 2026
+code/ and controls/
+Complete standalone programs, frozen matched controls, and reproducible gzip files. The
+names beginning with inherited_ identify earlier programs included unchanged.
+validation/ and evidence/
+Reproducible comparisons, positive and adversarial certificates, machine-readable results,
+independent audit notes, and exact metrics.
+reference/
+The pinned source census, Git blob manifest, source provenance, relevant upstream mathe-
+matical source chapters, and control identities.
+inherited/return_reservation/
+The explicitly attributed earlier 240-token/261-AST programs, their translator, proof argu-
+ment and focused tests.
+6 Scope of the answer
+The concrete improvement is a smaller complete implementation of the presented proof relation.
+The strongest newly compared family improves all three coordinates within the fully validated
+contract, and the compact companion improves the overall compact byte record at the pinned
+snapshot. The mathematical axioms, schemas and inference principles remain those specified in
+Section 2.
+A globally simplest axiomatization is not established. Neither the repository nor this work
+supplies a representation-independent lower bound for all theories bi-interpretable with iPRA.
+Several seemingly promising new directions were checked against the incoming archives: counter-
+aware root-only conversion, fixed-point preservation, and orbit equality already have proposals
+there. The scalar root-only conversion route still lacks the needed proof: its tempting two-row
+closure packet expresses an implication, while the transport argument needs both equations; the
+usual conjunction packet evaluates parity below an iterator counter. This explains why that
+route was not substituted for a proved construction.
+Accordingly, the deliverable meets the empirical size comparison by explicitly stated imple-
+mentation refinements. It records no claim of a new arithmetic principle, an absolute minimum,
+or a mathematical breakthrough that the evidence does not establish.
+A The compact complete module
+def c(g, a, k):
+m, s, u, t = q()
+(i := (lambda a, t=c, d=2: [i(b, t, d + 5 - len(a)) for b in a] if a * 0 != 0 else a if k
+<= a < d else d % 2 * i(t, d=5)))(a) in g + [[[s and [s], u, t], i(t, [s, u, t], 5) if s
+else u]] or c(g + [i(c(g, m, k) or m * 3 or (a := i(*a, t, 4)), any((m, 3 % len(a))) * (k
+:= (~-k)))], i((a, i(t, s))[(m, a) == (s and [s, u] or [t] * 3, i(t, u))], [k]), k)
+import json
+q = json.load(open(0)).pop
+c([0], *q())
+print(’ACCEPT’)
+13
+
+Smaller complete checkers for iPRA November 12, 2026
+B The fully validated byte-oriented module
+def c(g, a, k=0, v=0):
+m, s, u, t = q()
+(i := (lambda a, t=c, d=0: [i(b, t, d + 5 - len(a)) for b in a] if a * 0 != 0 and v <= (
+len(a) in (1, 2 + d % 2)) else a or 1 if k <= a < d and v <= d & a % 2 else d % 2 | v and
+i(t, d=3)))(a) in ((v := 0), *g, [[s and [s] or 1, u, t], i(t, [s, u, t], 3) if s else u])
+or c(g + [i(c(g, m, k) or m * 3 or (a := i(*a, t, 2)), any((m, len(a) == 2 == u)) * (k :=
+(~-k)))], i((a, i(t, s))[(m, a) == (s and [s, u] or [t] * 3, i(t, u))], [k]), k)
+import json
+p = json.load(open(0))
+q = str(p).strip(’0123456789-[], ’) or p.pop
+c([], q(), v=1)
+print(’ACCEPT’)
+C Source references
+[1] Vladimir Reshetnikov, ProveIt, ConciseIPRA, pinned commit
+dd308d5d938b20dce41a1150fa5db49fc53c5d4e.
+Pinned ConciseIPRA source tree on GitHub.
+[2] Concise presentations of intuitionistic primitive recursive arithmetic, Chapters 1, 3, and
+11, in the same pinned tree. The corresponding original .tex sources are in reference/.
+[3] Pinned incoming archives:
+ipra_shared_leaf_2026-11-12.zip
+ipra_fixed_points_and_checker.zip
+ipra_offset472.zip
+ipra_scope_refinement_2026-11-12.zip
+ipra_validated_leaves_2026-11-12.zip
+The exact selected members and hashes are recorded in the provenance files.
+[4] Earlier workspace research package ipra_return_reservation_2026-11-12. The selected
+programs are included unchanged and explicitly marked inherited.
+14

@@ -211,10 +211,7 @@ namespace Ext
 variable {Γ : List (Fm Tm n)} {Γ' : List (Fm Tm m)}
 
 theorem prf (e : Ext Γ Γ') {φ : Fm Tm n} (h : Γ ⊢[TeqAx] φ) : Γ' ⊢[TeqAx] φ.subst e.σ :=
-  (h.subst e.σ).weaken (by
-    intro ψ hψ
-    obtain ⟨φ, hφ, rfl⟩ := List.mem_map.1 hψ
-    exact e.sub φ hφ)
+  h.substWeaken e.σ (List.forall_mem_map.2 e.sub)
 
 /-- The map of classes induced by an extension. -/
 def map (e : Ext Γ Γ') : Q Γ → Q Γ' :=

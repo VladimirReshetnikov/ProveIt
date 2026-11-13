@@ -987,7 +987,7 @@ The main chain (every module except the twenty kernel comparisons,
 `ZeroSeedObstruction`,
 `NativePrefix`, `NativeUniqueness`, `NativeModels`, `NativeWitnessShape`,
 `NativeWitnessComplete`, `EqKernel`, `EqArith`, `EqParity`, `EqCompare`, `EqPred` and
-`TeqClosure`) is 5,026
+`TeqClosure`) is 4,872
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
 introduction and elimination, instead of an induction over the seventeen
@@ -1025,7 +1025,36 @@ equation of that round trip is the translated axiom `FromPRA.ax_precSucc`
 rather than a second proof of the same recursion equation. The equality test
 of `T_eq` is the symmetric `sel(a ∸ b, b ∸ a, 1)`, whose reflection follows
 from the additive witness of the order in four lines, and nine composition
-lemmas of native substitution are instances of `NFm.subst_comp`. In the
+lemmas of native substitution are instances of `NFm.subst_comp`. The
+predecessor follows the diagonal lemma of `orbit_equality`: `Q.pred_succ` is
+one equation induction on `pred (S x) = x` from the conjugacy of the
+saturating counters and `bump 1 0 = 0`, so the comparator diagonal
+`cmp (S x) x = 0` and the invariant `sat x (S x) = x` below the cap, each an
+induction of its own, are gone (likewise in `EqPred`). The order is
+obtained from the maximum identity `x + (y ∸ x) = y + (x ∸ y)` (one equation
+induction) in place of a selector-guarded witness invariant, and the
+logarithm counter of the pairing from the one-parameter invariant
+"`2 ^ i ≤ k` implies `lgc i k = i`", so the monotonicity of `2 ^ x` and
+transitivity of the order are not needed. In the native round trip, a
+disjunction is read back by closure by cases on a formula (`Teq.caseAll`)
+instead of coverage, existential elimination and transport of the selector;
+`Q` introduction factors through `D` introduction at the witness `0` and the
+dummy-witness elimination `NPrf.dDummyE`, as the article states it; the
+forward half of the composite reading of `Q` is derived unshifted and then
+shifted; and the elimination of a universal statement at its own variable is
+one instance of `NPrf.allShiftE`. The translation into iPRA compiles iPRA
+terms rather than iterator terms (`ToPRA.pcode`: projections and
+compositions), so the evaluation of a code is a two-case fact about iPRA,
+`FromPRA.code (pcode p)` is `sigma p` syntactically, and
+`RoundTrip.sigma_tau` is one direct induction; the recursion equations of the
+code of `prec f g` are proved once (`FromPRA.code_prec_zero/succ`) and the
+translated defining axioms follow from them. In the foundations,
+composition of renamings is a corollary of the substitution laws
+(`Tm.ren_ren` via `ren_eq_sub`), the congruence and one-variable Leibniz
+rules hand `Fin.cases` straight to the Leibniz rule of the calculus,
+weakening and the extension maps of `Lindenbaum` are single instances of
+`substWeaken`, and the quantifier congruences of `Interpretation` weaken by
+`wk` without subset lemmas. In the
 round trip through `T_eq`, the steps of each chain of equations are composed
 directly instead of being stated twice, and the step shared by three of the
 chains is one lemma (`RoundTrip.tau_subst_code`).
@@ -1245,7 +1274,7 @@ marked as conjectures is proved here.
    `deterministic_opening` (`OCPrf`), of `first_instance` and
    `clause_discharge` (`XCPrf`), and of `variable_substitution` (`VCPrf`)
    are proved equivalent to the kernel.
-8. **A shorter proof of the equivalence.** The main chain is 5,026 lines. A
+8. **A shorter proof of the equivalence.** The main chain is 4,872 lines. A
    dependency-closure computation shows that it contains nothing that the end
    results do not use. Three designs fix most of its size, and no shorter
    replacement for any of them is known: the predecessor of `T_eq` from

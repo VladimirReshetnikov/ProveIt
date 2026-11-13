@@ -117,15 +117,8 @@ theorem qSel (s t : Tm n) :
 
 /-- A `D` whose witness variable is a dummy is a `Q`. -/
 theorem dDummy (B : NFm (n + 1)) :
-    NEquiv (.D (B.subst (up (fun i => Syn.var i.succ)))) (.Q B) := by
-  constructor
-  · refine .dE NPrf.hyp0 ?_
-    show NPrf (.Q (B.subst (up (fun i => Syn.var i.succ))) :: _)
-      (.Q (B.subst (up (fun i => Syn.var i.succ))))
-    exact NPrf.hyp0
-  · refine .dICase _ zero ?_
-    rw [NFm.subst_dummy_inst]
-    exact qStep (refl B)
+    NEquiv (.D (B.subst (up (fun i => Syn.var i.succ)))) (.Q B) :=
+  ⟨NPrf.dDummyE NPrf.hyp0, .dICase _ zero (by rw [NFm.subst_dummy_inst]; exact qStep (refl B))⟩
 
 /-- `D_{x,y} (sel(y, 0, s) = sel(y, 0, t))` is interderivable with `s = t`. -/
 theorem dSel (s t : Tm n) :

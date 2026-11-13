@@ -1,0 +1,152 @@
+PACKET ARGUMENTS AND BOOLEAN SUCCESS
+==================================
+
+Status and scope
+----------------
+This is a smaller implementation of the inherited guarded scalar iPRA
+calculus, not a deletion of an arithmetic or logical axiom. The new measured
+module has 465 normalized UTF-8 bytes, against the inspected compact byte
+frontier of 469. It has 274 significant tokens and 303 AST nodes: these do
+not beat the independent token and AST frontiers (241 and 262). It is not a
+single program attaining the coordinatewise minimum of all profiles.
+
+The reference program is the 469-byte checker in
+docs/incoming/ipra_shared_leaf_2026-11-12.zip, member
+ipra_shared_leaf_2026-11-12/code/checker_bytes.py, in the inspected ProveIt
+ConciseIPRA corpus. control.py is its exact source. Both modules include
+their JSON reader and acceptance output and import only the standard json
+module. No theorem database, compressed program, dynamic code execution,
+external normalizer or imported proof kernel is hidden from the measurement.
+
+Input contracts
+---------------
+Both programs have the existing compact promise: the public goal is a
+canonical closed guarded Eq/D formula and proof data are finite trees of
+exact integers and lists. This is not the independently validated native
+Eq/D or whole-input-alphabet profile. Acceptance means finite normal
+termination with exactly ACCEPT and a newline. Exceptions reject. Resource
+exhaustion may reject valid certificates; the theorem concerns unbounded
+finite successful evaluations and says nothing about equal memory use.
+
+The reference input is one JSON array. Its last record is [A,0]. Its
+penultimate record is the first four-field instruction [m,s,u,t]. Remaining
+four-field instructions are consumed by pop in reverse array order; unused
+prefixes are allowed.
+
+The new root record is [A,0,m,s,u,t]. Every remaining record is unchanged.
+The first two fields are the same public goal and initial floor. Python's
+ordinary argument binding enforces six fields at the root and four fields
+at all nested packet positions. A root with a nonzero floor is outside the
+canonical compact input contract, as it already was in the reference.
+
+Let F replace the last two records of a reference certificate by their
+concatenation in header-then-instruction order. Let B split a new last
+record after its first two fields and place the instruction before the
+header. These maps are literal inverses on their framing domains; all
+earlier records are retained, including an unused prefix. translate.py
+implements these untrusted maps. It is not called by either checker.
+
+First refactoring: bind the packet in the checker call
+----------------------------------------------------
+The reference checker has the form
+
+  c(g,a,k) = [E(g,a,k,m,s,u,t) for m,s,u,t in [q()]],
+
+where q is the packet reader and E is a hypothesis/computation test or a
+recursive continuation. Its first action in every invocation is to read
+one packet, even if E immediately finishes at a leaf. The new checker has
+seven formal arguments and body E itself. Its recursive invocations are
+
+  c(g,m,k,*q())
+  c(g_next,a_next,k_next,*q()).
+
+Argument evaluation computes g, a and k in the same left-to-right order as
+before; the starred q() is evaluated only afterward. It therefore consumes
+the same packet at precisely the point at which entering the old c would
+have consumed it. This includes the recursive major-premise proof, all
+scope checks and both eager alternatives in elimination dispatch. At the
+root F puts the formerly separate header and first packet into the one
+argument list; there is no scope change or expression evaluation between
+those two reads in the reference program.
+
+Induction on the tree of a finite successful reference evaluation now
+gives a corresponding successful evaluation of the new program, with the
+same context trees, goal trees, numerical floors and unread packet suffix
+at corresponding points. The induction is reversible. On malformed frames,
+the reference rejects through tuple destructuring while the new program
+rejects through function argument binding; neither truncates a packet or
+silently ignores extra fields. The corresponding failure need not have the
+same Python exception text. The function object c remains only the opener's
+invalid default image; changing its arity does not make that object a valid
+numeric or array image.
+
+Second refactoring: Boolean success replaces a singleton container
+-----------------------------------------------------------------
+In the old program each successfully returned list has exactly one entry,
+so every successful return is truthy. Its only uses are Boolean tests in
+the parent; its elements and identity are not observed. In the new program
+the body is a membership test OR a recursive continuation. A terminating
+leaf returns True. By induction on the successful call tree a terminating
+nonleaf returns the True returned by its continuation. Thus EVERY finite
+successful return of the new c is exactly the Boolean True, not merely an
+arbitrary truthy object.
+
+Consequently the major-proof expression
+
+  c(g,m,k,*q()) and m*3
+
+may be replaced by
+
+  c(g,m,k,*q()) * m * 3.
+
+For exact integer or list m, multiplication by True has exactly the value
+of m. The list version may allocate a new list, but no identity test or
+in-place mutation observes that allocation. On failure c returns no value,
+so multiplication never supplies a success that was absent in the first
+version. Python evaluates the same recursive proof before evaluating the
+same subsequent operations. This produces the final 465-byte program.
+
+Theorem and transfer
+--------------------
+For every certificate in the stated compact framing and syntax domain,
+
+  control accepts C  iff  checker accepts F(C).
+
+The converse follows using B. F leaves the public goal literally unchanged.
+Therefore the represented public theory is exactly the inherited guarded
+scalar theory. The inherited interpretations into and out of full
+first-order iPRA transfer unchanged: their numerical domain formulas remain
+x=x; equality remains actual equality; both numerical composites are the
+identity graph x=y; and the inherited internal formula round-trip
+equivalences remain valid. Equiconsistency follows. This transfer does not
+by itself prove the inherited iPRA bridge or machine-verify the Python
+implementation. No new Lean or Rocq proof is claimed.
+
+Reproduction and evidence
+-------------------------
+Run python3 verify.py with CPython 3.12.14. The size convention is
+ast.unparse(ast.parse(source)) plus one newline, counting the complete
+module. Significant tokens exclude comments, newlines, indentation,
+encoding and end markers. Gzip uses level 9 and mtime=0.
+
+The supplied fixtures include zero and successor computation, equality
+transport, derived zero-source transport, compound introduction and
+implication elimination, induction using its hypothesis, and the future
+witness capture rejection. Each runs against both checkers, in ordinary
+and -O modes. False-public-goal mutations and malformed root arities reject.
+The forward/backward transformations reproduce each source exactly. These
+finite checks support the implementation review; the universal conclusion
+rests on the evaluation and return-value arguments above, together with the
+explicitly attributed inherited bridge.
+
+Measurements in the verified run
+-------------------------------
+                         tokens    AST    normalized bytes    gzip -9
+control.py                 272     306           469             309
+checker.py                 274     303           465             307
+
+The byte saving is four bytes (about 0.85 percent); the AST saving against
+this same byte-oriented control is three nodes. Token size increases by
+two. The smallest inspected token and AST programs remain smaller in their
+respective coordinates. No universal lower bound or absolute minimality
+claim is made.

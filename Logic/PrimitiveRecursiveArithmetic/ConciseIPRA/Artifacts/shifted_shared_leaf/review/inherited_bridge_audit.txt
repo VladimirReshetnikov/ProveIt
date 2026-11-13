@@ -1,0 +1,208 @@
+FOUNDATIONAL BRIDGE AUDIT
+Pinned repository: VladimirReshetnikov/ProveIt
+Commit: 78edba03ee060644464f76e388578584b356520a
+Subtree: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA
+This is an outline of inspected inherited proofs, not a new Lean build.
+
+1. EXACT TARGET THEORY
+
+The target is full FIRST-ORDER INTUITIONISTIC primitive recursive arithmetic,
+not merely its equational theorem fragment, not classical PRA, and not HA.
+PR.lean defines one symbol for every finite primitive-recursive DESCRIPTION:
+zero (arity 0), successor (arity 1), projections, composition, and primitive
+recursion. Distinct descriptions remain distinct symbols even when their
+standard functions agree. PTm consists of variables and applications.
+PRAAx consists of projection, composition and the two recursion equations,
+S(x)=0 -> bottom, S(x)=S(y) -> x=y, and induction for quantifier-free formulas.
+Induction is the axiom schema
+  A(0) -> ((forall n (A(n) -> A(S n))) -> forall n A(n)).
+QF formulas contain equality, bottom, conjunction, disjunction and implication;
+negation is implication to bottom. The logic has unrestricted quantifiers.
+Deduction.lean deeply embeds ordinary intuitionistic natural deduction with
+equality reflexivity and simultaneous Leibniz substitution. In particular
+there is no object-language excluded-middle rule. The derived contextual
+induction rule allows arbitrary, even quantified, side assumptions Gamma,
+provided the fresh induction variable is absent from Gamma.
+
+2. ORDINARY SCALAR THEORY T_eq
+
+Terms: variables, 0, S(t), I(c,a;u.h), with u bound only in h. Ordinary
+intuitionistic first-order logic with actual equality. Primitive axioms:
+  I(0,a;u.h)=a;
+  I(S c,a;u.h)=h[I(c,a;u.h)/u];
+  x=0 or exists y (x=S y);
+  0=S 0 -> bottom;
+  the preceding induction schema restricted to literal equations A.
+These are exactly TeqAx in Scalar.lean. Successor injectivity and general
+S(x) != 0 are DERIVED. Separation is essential: a one-element algebra
+validates the remaining axioms. The public native falsity 0=S0 must therefore
+be explicitly connected to ordinary bottom in this realization.
+
+3. EFFICIENT ARITHMETIC BRIDGE OUTLINE
+
+All auxiliary symbols below are finite terms, not additional primitives.
+Write C(c,a,b)=I(c,a;u.b), 1=S0, Z(c)=C(c,1,0),
+  N(c)=I(c,0;u.Z(u)),       a+b=I(b,a;u.Su),
+  pow2(c)=I(c,1;u.u+u).
+C selects a at zero and b at every successor; N is parity. Equation induction
+derives the addition laws and N(2a)=0, N(S(2a))=1, N(3a)=N(a).
+
+A completely explicit inherited predecessor (75 nodes in the article's
+expansion convention) avoids assuming pairing or primitive recursion:
+  j(u)=Z(u)+2N(u);
+  M(n)=I(n,0;u.j(u));
+  G(n)=I(n,0;u.S(u+M(u)));
+  H(u)=C(N(u),G(u),u);
+  L(x,y)=N(I(y,pow2(x);u.H(u)));
+  beta(k,u)=C(L(S(Su),k),u,Su);
+  W(t,k)=I(t,0;u.beta(k,u));       P(m)=W(m,m).
+Here 2a=a+a and 3a=(a+a)+a; neither multiplication nor predecessor occurs in
+these definitions. Key equation-induction lemmas, in dependency order:
+  j(0)=1, j(1)=2, j(2)=0;
+  M(G(n))=N(n), G(Sn)=S(G(n)+N(n)), G(S(Sn))=S(S(S(G(n))));
+  G(2n)=3n, G(3n)=3G(n)+N(n);
+  H(2n)=3n, H(1)=1, H(3n)=3H(n);
+  I(y,3a;u.Hu)=3I(y,a;u.Hu), I(y,1;u.Hu)=1;
+  L(0,y)=1, L(Sx,0)=0, L(Sx,Sy)=L(x,y), L(Sn,n)=0.
+The comparator step uses iterator rotation
+I(Sy,a;u.Hu)=I(y,H(a);u.Hu), derived by equation induction.
+Now beta(Sk,Su)=S(beta(k,u)) and beta(S(Sk),0)=1. Induct on t to get
+W(St,S(Sk))=S(W(t,Sk)); then induct on n to get W(n,Sn)=n. Consequently
+P(0)=0 and P(Sx)=beta(Sx,x)=x. Congruence gives successor injectivity.
+These derivations use only computation, equality and equation induction.
+The potentially tempting Boolean case splits can be replaced by the proved
+interpolation F(Z(c))=C(c,F(1),F(0)) and the two-point rule for b satisfying
+Z(Z(b))=b; see EqParity, EqCompare and EqPred. In ordinary T_eq, numerical
+coverage also permits those case splits, as in TeqParity/TeqPred. This order
+prevents circular use of names, pairing, or equality reflection.
+
+Define a dotminus b = I(b,a;u.P(u)). Congruence through Z and separation
+give Sx != 0. Coverage plus P(Sx)=x gives x=0 or x=S(P(x)). Equation
+induction and numerical cases prove
+  (a+b) dotminus a=b,
+  a dotminus(a+b)=0,
+  a dotminus b=0 -> a+(b dotminus a)=b.
+Use the symmetric equality characteristic employed in Lean:
+  e(a,b)=C(a dotminus b, b dotminus a, 1).
+If e(a,b)=0, cases on a dotminus b force it to vanish, then b dotminus a
+also vanishes, and the displayed order identity yields a=b. Conversely
+e(a,a)=0. Thus e(a,b)=0 iff a=b over the WHOLE domain. Coverage on e(a,b)
+also gives decidability of atomic equality without classical logic.
+
+For each QF formula define its zero-true characteristic term recursively:
+  chi(s=t)=e(s,t);                chi(bottom)=1;
+  chi(A and B)=C(chi(A),chi(B),1);
+  chi(A or B)=C(chi(A),0,chi(B));
+  chi(A -> B)=C(chi(A),chi(B),0).
+Induction on syntax, using term cases, proves chi(A)=0 iff A in every context.
+Literal-equation induction on chi(A(n))=0 therefore gives all QF induction.
+This includes implication: its converse uses cases on chi(A), not excluded
+middle for an arbitrary quantified formula.
+
+The Lean pairing avoids a vague appeal to generic bounded search:
+  step(k,v)=C(pow2(Sv) dotminus k,Sv,v);
+  log(w)=I(w,0;v.step(w,v));
+  pair(a,b)=pow2(a+b)+a;
+  fst(w)=w dotminus pow2(log(w));
+  snd(w)=log(w) dotminus fst(w).
+The counter reaches a+b and stays there on pair(a,b), so log(pair(a,b))=a+b,
+fst(pair(a,b))=a, snd(pair(a,b))=b. The exact invariants and equation-induction
+proofs are TeqOrder/TeqPair and article section 'Order, powers of two and
+pairing'. Pairing need not be surjective and DOES NOT restrict the domain.
+
+Compile genuine counter-aware primitive recursion by carrying the counter:
+  A(c)=I(c,pair(0,a);w.pair(S(fst(w)),g(fst(w),snd(w))));
+  R(c,a;y,v.g)=snd(A(c)).
+One equation induction gives fst(A(c))=c. Computation and projections then
+give R(0,a;g)=a and R(Sc,a;g)=g(c,R(c,a;g)). The syntax-recursive compiler
+sigma maps PR zero/successor/projection literally, composition by substitution,
+and prec to R. It respects substitution literally. All defining equations,
+successor axioms and QF induction translate to theorems of T_eq.
+
+In the other direction tau codes each iterator term (and its finite free
+variable context) as a PR definition. The simulated recursion step ignores
+its counter and applies the code of the update body to the preceding value.
+Tau respects substitution UP TO PROVABLE EQUALITY, not necessarily literally,
+because the body code is part of a function-symbol description. A single
+parameter-relative recursion-uniqueness lemma, proved by QF induction,
+establishes this property. ScalarToPRA's ToPRA.prec_uniq is the exact lemma.
+Coverage in iPRA is derived via its ordinary PR predecessor and QF induction;
+the remaining scalar axioms translate immediately.
+
+For round trips: induction on scalar term syntax plus uniqueness of iteration
+proves T_eq |- sigma(tau(t))=t. Induction on PR descriptions proves
+iPRA |- tau(sigma(f(x)))=f(x); the prec step is equation/QF induction using
+the translated recursion equations. Extend to arbitrary terms by congruence.
+Term round trips imply formula round trips by structural induction, including
+implication and BOTH quantifiers. This is stronger than merely mutual
+interpretability or equiconsistency.
+
+4. NATIVE LOGICAL BRIDGE
+
+The native scalar calculus has equations, Q_y B and D_(x,y) B, with readings
+  Q_y B := B(0) -> forall y B(y),
+  D_(x,y) B := exists x (B(x,0) -> forall y B(x,y)).
+The eight-rule Lean NPrf has Hyp, two computations, crossed one-term transport,
+QE, DE, DI by cases, and QI for equation progress. It is equivalent to the
+reports' IPrf with arbitrary-formula transport and witnessed progress.
+
+Formula selection C(v,A,B) pushes numeric selection to the terminal equation,
+aligning unmatched binders with gate(y,X)=C(y,0=0,X). Its proved laws are
+C(0,A,B) equivalent to A, C(Sv,A,B) equivalent to B, gate(0,B) provable,
+and Q_y gate(y,B) equivalent to B (with y fresh). Define
+  bottom*=0=S0;
+  A ->* B = Q_y C(y,A,B);
+  A and* B = Q_y gate(y,C(N(y),A,B));
+  exists* x A = D_(x,y) gate(y,A);
+  A or* B = exists* x C(x,A,B);
+  forall* x A = A(0) and* Q_x A.
+The inherited proof derives all ordinary intuitionistic natural-deduction
+rules for these macros. Native DI needs ordinary coverage in its soundness
+proof; equation QI needs only equation induction. No full formula induction
+schema is introduced. Conversely the macros translate every T_eq axiom and
+logical rule to a native derivation. Structural induction proves both native
+and ordinary formula round trips. In particular native falsity corresponds
+to ordinary bottom using separation; omission of this step would be a gap.
+
+Compose the native logical translations with tau and sigma. Variables are
+fixed, both numerical domains are the whole domain, quantifiers are never
+relativized, equality is actual equality, and BOTH numerical composite
+isomorphisms have graph x=y. Consistency equivalence follows by translating
+bottom (native bottom being 0=S0); no self-consistency claim is involved.
+
+5. WHAT IS FORMALIZED AND WHAT MAY BE CLAIMED
+
+The pin contains substantive completed Lean source proofs in 97 ConciseIPRA
+modules. A static scan outside comments/strings found no sorry, admit,
+axiom declarations, sorryAx, or native_decide in those modules. The root
+toolchain is leanprover/lean4:v4.32.0; lakefile.toml registers ConciseIPRA's
+source directory. README states that all modules build without warnings and
+that the final native theorems use only propext, Classical.choice, Quot.sound;
+the T_eq/iPRA synonymy uses propext and Quot.sound only. THIS RUN DID NOT
+COMPILE THEM OR RUN #print axioms, so cite these as inspected upstream source
+and upstream build claims, not as newly reproduced machine verification.
+
+Exact foundational declarations:
+  PR.lean: PR, PTm, PRAAx, PRA.qfInd.
+  Scalar.lean: TeqAx, Teq.eqInd.
+  BiInterpretation.lean: biInterp : BiInterp TeqAx PRAAx;
+    teq_iff_pra, pra_iff_teq, teq_roundTrip, pra_roundTrip,
+    teq_consistent_iff.
+  NativeBiInterpretation.lean: native_iff_pra, pra_iff_native,
+    native_roundTrip, pra_native_roundTrip, native_inconsistent_iff.
+  NativePublicD.lean: pgprf_pubD_iff, pgprf_pubD_iff_pra.
+
+IMPORTANT BOUNDARY: NativePublicD formalizes a guarded public formula
+translation and its consequence equivalence with NPrf/iPRA. It does not
+formalize the tiny Python checker, Python/JSON behavior, the exact certificate
+protocol, or its untyped auxiliary-resource encoding. NativePublic.lean says
+so explicitly. Root-determined introduction is NOT equivalent on all arbitrary
+raw sequents: there is a proved strictness theorem. Transfer a new compact
+program's claim via a universal operational/refinement argument under its
+stated canonical PUBLIC contract, not by asserting that every raw intermediate
+is an ordinary first-order formula or that Lean has checked the Python.
+
+The source article ch01_base.tex, 'The base theories and their bridge',
+contains the full written arguments in the section sequence summarized here.
+The report can cite that pinned chapter and the exact Lean modules as inherited
+dependencies; it should distinguish new proofs from these inherited bridges.

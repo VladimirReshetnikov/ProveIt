@@ -1,0 +1,95 @@
+Independent mathematical audit of the shifted shared-leaf composition
+====================================================================
+
+Audited sources (repository snapshot 78edba03ee060644464f76e388578584b356520a):
+docs/incoming/ipra_offset472.zip, members offset472.py and ipra_offset472.tex;
+docs/incoming/ipra_shared_leaf_2026-11-12.zip, members code/checker_bytes.py
+and new_proofs.tex. Paths above are relative to ConciseIPRA.
+
+Conclusion
+----------
+The composition is sound and canonically complete provided its only changes
+from shared_leaf's byte checker are the consistent even-depth shift (formula
+default 0->2, term depth 3->5, D-witness opening 2->4) and scalar neutral
+context [[]]->[0]. It is not a new arithmetic axiom deletion. Its simplest
+correctness proof compares it to offset472's checker, without claiming that
+the two distinct offset codecs accept the same arbitrary raw certificates.
+
+The comparison
+--------------
+Fix the shifted opener and the unchanged nonleaf branch. Write O(a) for a
+no-image opening of a goal, and H(p) for the computation preview of packet p.
+The offset checker first accepts when O(a) belongs to context g; otherwise
+it consumes a packet p and accepts when a=H(p), or executes the nonleaf
+branch. The composition consumes p at every invocation, accepts when O(a)
+belongs to g+[H(p)], or executes that identical nonleaf branch.
+
+Lemma 1 (literal validation). For every finite exact integer/list tree a,
+at any numerical floor and any traversal depth, if the eager no-image
+opening O(a) terminates successfully, then O(a)=a literally.
+
+Proof. At a list, the opener reconstructs the same list shape and applies
+itself to every child. At a retained scalar it returns that scalar. At any
+scalar not retained by the range test, eager multiplication evaluates the
+missing substitution-image sentinel, which is the checker function object.
+Multiplication of that function by zero raises TypeError. Thus no scalar
+fallback occurs in a successful no-image opening, even at an even depth or
+inside an ignored annotation. Structural induction proves the claim.
+
+Lemma 2 (safe padding). The packet [0,0,0,0] has the defined computation
+preview [[0,0,0],0] at every floor. Its preview requires no substitution
+evaluation. It may therefore pad any hypothesis return of the offset
+checker without introducing an eigenparameter or changing the context.
+
+Lemma 3 (successful-return abstraction). Every successful offset-checker
+return is truthy, and every successful composed-checker return is a
+nonempty singleton list and hence truthy. Recursive checker return values
+are used only for truthiness, in the major-premise expression. Substituting
+one successful return shape for another does not change any formula, floor,
+branch selection, or certificate consumption outside that subcall.
+
+Theorem (certificate correspondence). Every finite successful offset run
+has a successful composed run with the same goal and all the same nonleaf
+states, obtained by inserting the safe padding packet at each hypothesis
+return. Conversely, from every successful composed run, deleting the
+current packet whenever O(a) is already in g gives a successful offset run.
+
+Proof. Induct on the finite call-and-continuation tree. At an old hypothesis
+leaf, Lemma 2 supplies a new successful leaf; in the reverse direction the
+old checker returns before needing its deleted packet. If the validated
+goal is not in g, Lemma 1 identifies membership O(a) in [H(p)] with the old
+literal test a=H(p). All remaining operations and recursive-call order are
+identical. Apply the inductive correspondence to major and continuation
+subcalls and use Lemma 3. The transformation acts on the successful trace,
+so packets are inserted/deleted at the actual call position, rather than by
+blindly padding the raw input. Any unused prefix stays irrelevant.
+
+Corollary. The two shifted checkers have the same set of provable goals
+under the stated integer/list contract. The inherited offset472 soundness
+and canonical-completeness theorems therefore transfer to the composition.
+They in turn identify its canonical guarded public theory with the inherited
+scalar calculus, whose ordinary realization is bi-interpretable with full
+first-order iPRA, with whole numerical domains, actual equality, and identity
+comparison graphs. This last arithmetic/logical bridge is inherited, not
+newly formalized by this audit.
+
+Important distinction
+---------------------
+This proof compares two checkers using the SAME shifted opener. It avoids
+an invalid universal raw-conjugacy assertion between the old and shifted
+codecs: offset472 correctly notes that scalar aliases and annotations can
+behave differently across those representations. The proof above also
+does not assert that every individual raw certificate is accepted by both
+checkers: a formerly packet-free hypothesis leaf needs one packet now.
+
+Further research: proof-position freshness
+-----------------------------------------
+A possible new discipline uses remaining certificate length to assign
+globally fresh parameter names, potentially removing a per-call floor. A
+naive version is incomplete: after choosing b=-len(stack), the existing
+opener validates b in a premise before the next child consumes its packet,
+so b is still outside the admitted interval. Admitting it earlier risks
+allowing the introduction witness to depend on its own eigenparameter.
+A phase threshold can repair this, but then a longer interval test and local
+mutable state appear. No smaller sound implementation of that idea has
+been obtained, and it is not part of the delivered construction.

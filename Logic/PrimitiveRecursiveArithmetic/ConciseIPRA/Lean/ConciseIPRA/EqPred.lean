@@ -60,19 +60,18 @@ theorem bump_sat_succ (t k : EQ Γ) :
     (Tm.bump (Tm.succ (Tm.succ (shift b))) (Tm.sat (var 0) (Tm.succ (Tm.succ (shift b)))))
     (Tm.succ (Tm.sat (var 0) (Tm.succ (shift b)))) a
 
-/-- Below its cap the counter does not saturate. -/
-@[simp] theorem sat_self_succ (x : EQ Γ) : sat x (succ x) = x := by
-  induction x using EQ.ind with | _ a
-  simpa using eqInd (Γ := Γ) (Tm.sat (var 0) (Tm.succ (var 0))) (var 0) a
-    (hS := fun ih => by simp at ih; simp [bump_sat_succ, ih])
-
 theorem pred_eq (x : EQ Γ) : pred x = sat x x := by
   induction x using EQ.ind with | _ a => rfl
 
 @[simp] theorem pred_zero : pred (0 : EQ Γ) = 0 := by rw [pred_eq, sat_zero]
 
+/-- The diagonal lemma: conjugacy and `pred 1 = 0`, by one equation induction. -/
 @[simp] theorem pred_succ (x : EQ Γ) : pred (succ x) = x := by
-  rw [pred_eq, sat_succ, sat_self_succ, bump_eq, cmp_succ_succ, cmp_succ_self, sel_zero]
+  induction x using EQ.ind with | _ a
+  simpa using eqInd (Γ := Γ) (Tm.pred (Tm.succ (var 0))) (var 0) a
+    (by simp; rw [pred_eq, one_eq, sat_succ, sat_zero, bump_eq, cmp_succ_succ, cmp_succ_zero,
+      sel_zero])
+    (fun ih => by simp at ih ⊢; rw [pred_eq, sat_succ, bump_sat_succ, ← pred_eq, ih])
 
 @[simp] theorem pred_one : pred (1 : EQ Γ) = 0 := pred_succ 0
 

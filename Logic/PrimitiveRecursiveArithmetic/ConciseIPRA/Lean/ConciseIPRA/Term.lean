@@ -59,14 +59,13 @@ def sub : {n m : ℕ} → (Fin n → Tm m) → Tm n → Tm m
   | _, _, σ, succ t => succ (sub σ t)
   | _, _, σ, iter c a h => iter (sub σ c) (sub σ a) (sub (upS σ) h)
 
-theorem upRen_comp (ξ : Fin n → Fin m) (ζ : Fin m → Fin k) :
-    (fun i => upRen ζ (upRen ξ i)) = upRen (fun i => ζ (ξ i)) := by
-  refine funext (Fin.cases ?_ fun j => ?_) <;> simp
+theorem upS_ren (ξ : Fin n → Fin m) :
+    upS (fun i => var (ξ i)) = fun i => var (upRen ξ i) := by
+  refine funext (Fin.cases ?_ fun j => ?_) <;> simp [ren]
 
-theorem ren_ren (t : Tm n) :
-    ∀ {m k : ℕ} (ξ : Fin n → Fin m) (ζ : Fin m → Fin k),
-      ren ζ (ren ξ t) = ren (fun i => ζ (ξ i)) t := by
-  induction t <;> intro m k ξ ζ <;> simp_all [ren, upRen_comp]
+theorem ren_eq_sub (t : Tm n) :
+    ∀ {m : ℕ} (ξ : Fin n → Fin m), ren ξ t = sub (fun i => var (ξ i)) t := by
+  induction t <;> intro m ξ <;> simp_all [ren, sub, upS_ren]
 
 theorem upS_upRen (ξ : Fin n → Fin m) (σ : Fin m → Tm k) :
     (fun i => upS σ (upRen ξ i)) = upS (fun i => σ (ξ i)) := by
@@ -76,6 +75,11 @@ theorem sub_ren (t : Tm n) :
     ∀ {m k : ℕ} (ξ : Fin n → Fin m) (σ : Fin m → Tm k),
       sub σ (ren ξ t) = sub (fun i => σ (ξ i)) t := by
   induction t <;> intro m k ξ σ <;> simp_all [ren, sub, upS_upRen]
+
+theorem ren_ren (t : Tm n) :
+    ∀ {m k : ℕ} (ξ : Fin n → Fin m) (ζ : Fin m → Fin k),
+      ren ζ (ren ξ t) = ren (fun i => ζ (ξ i)) t := by
+  intro m k ξ ζ; rw [ren_eq_sub (ren ξ t), sub_ren, ren_eq_sub t]
 
 theorem upRen_upS (σ : Fin n → Tm m) (ξ : Fin m → Fin k) :
     (fun i => ren (upRen ξ) (upS σ i)) = upS (fun i => ren ξ (σ i)) := by
@@ -104,14 +108,6 @@ theorem upS_var : upS (var : Fin n → Tm n) = var := by
 
 theorem sub_var (t : Tm n) : sub var t = t := by
   induction t <;> simp_all [sub, upS_var]
-
-theorem upS_ren (ξ : Fin n → Fin m) :
-    upS (fun i => var (ξ i)) = fun i => var (upRen ξ i) := by
-  refine funext (Fin.cases ?_ fun j => ?_) <;> simp [ren]
-
-theorem ren_eq_sub (t : Tm n) :
-    ∀ {m : ℕ} (ξ : Fin n → Fin m), ren ξ t = sub (fun i => var (ξ i)) t := by
-  induction t <;> intro m ξ <;> simp_all [ren, sub, upS_ren]
 
 instance : Syn Tm where
   var := Tm.var

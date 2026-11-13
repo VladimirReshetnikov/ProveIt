@@ -7,14 +7,16 @@ A saturating counter turns the comparator into a predecessor term.  Put
 
   `bump k u = sel (cmp (S (S u)) k) u (S u)`,  `sat t k = I(t, 0; u. bump k u)`,
 
-so that `sat t k` counts up to `t` but stops below `k`.  The conjugacy
-`bump (S k) (S u) = S (bump k u)` gives `sat (S t) (S (S m)) = S (sat t (S m))`,
-hence `sat n (S n) = n`, and the term
+so that `sat t k` counts up to `t` but stops below `k`.  The term
 
   `pred m = sat m m`
 
-satisfies `pred 0 = 0` and `pred (S m) = m`.  Consequently the successor is
-injective, and `S x = 0` collapses the context.
+satisfies `pred 0 = 0` and `pred (S m) = m` by the diagonal lemma of the
+article: the conjugacy `bump (S k) (S u) = S (bump k u)` gives
+`sat (S t) (S (S k)) = S (sat t (S k))`, whose diagonal instance is
+`pred (S (S x)) = S (pred (S x))`, and `pred 1 = bump 1 0 = 0`; one equation
+induction on `x` finishes.  Consequently the successor is injective, and
+`S x = 0` collapses the context.
 -/
 
 namespace LeanProofs.ConciseIPRA
@@ -76,19 +78,18 @@ theorem bump_sat_succ (t k : Q Γ) :
     (Tm.bump (Tm.succ (Tm.succ (shift b))) (Tm.sat (var 0) (Tm.succ (Tm.succ (shift b)))))
     (Tm.succ (Tm.sat (var 0) (Tm.succ (shift b)))) a
 
-/-- Below its cap the counter does not saturate. -/
-@[simp] theorem sat_self_succ (x : Q Γ) : sat x (succ x) = x := by
-  induction x using Q.ind with | _ a
-  simpa using eqInd (Γ := Γ) (Tm.sat (var 0) (Tm.succ (var 0))) (var 0) a
-    (hS := fun ih => by simp at ih; simp [bump_sat_succ, ih])
-
 theorem pred_eq (x : Q Γ) : pred x = sat x x := by
   induction x using Q.ind with | _ a => rfl
 
 @[simp] theorem pred_zero : pred (0 : Q Γ) = 0 := by rw [pred_eq, sat_zero]
 
+/-- The diagonal lemma: conjugacy and `pred 1 = 0`, by one equation induction. -/
 @[simp] theorem pred_succ (x : Q Γ) : pred (succ x) = x := by
-  rw [pred_eq, sat_succ, sat_self_succ, bump_eq, cmp_succ_succ, cmp_succ_self, sel_zero]
+  induction x using Q.ind with | _ a
+  simpa using eqInd (Γ := Γ) (Tm.pred (Tm.succ (var 0))) (var 0) a
+    (by simp; rw [pred_eq, one_eq, sat_succ, sat_zero, bump_eq, cmp_succ_succ, cmp_succ_zero,
+      sel_zero])
+    (fun ih => by simp at ih ⊢; rw [pred_eq, sat_succ, bump_sat_succ, ← pred_eq, ih])
 
 @[simp] theorem pred_one : pred (1 : Q Γ) = 0 := pred_succ 0
 

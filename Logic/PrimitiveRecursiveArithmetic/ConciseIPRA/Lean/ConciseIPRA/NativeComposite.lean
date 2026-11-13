@@ -17,24 +17,9 @@ open Tm (zero succ iter one)
 
 variable {n m k : ℕ}
 
-namespace NFm
-
-theorem subst_repl_var (B : NFm (n + 1)) : B.subst (repl (Syn.var 0)) = B :=
-  B.subst_eq_self fun i => by refine Fin.cases ?_ (fun j => ?_) i <;> simp
-
-theorem imp_shift (A B : NFm n) : (imp A B).shift = imp A.shift B.shift := imp_subst A B _
-
-end NFm
-
 namespace NPrf
 
 variable {Γ : List (NFm n)}
-
-/-- Elimination of a universal statement moved under a fresh variable. -/
-theorem allShiftE {A : NFm (n + 1)} {Δ : List (NFm (n + 1))} (t : Tm (n + 1))
-    (h : NPrf Δ (NFm.all A).shift) : NPrf Δ (A.subst (repl t)) := by
-  rw [NFm.shift, NFm.all_subst] at h
-  simpa only [NFm.subst_dummy_up_inst] using allE t h
 
 /-- Introduction of `D` from an instance of `Q`. -/
 theorem dI {B : NFm (n + 2)} (t : Tm n) (h : NPrf Γ (.Q (B.subst (up (inst t))))) :
@@ -46,13 +31,9 @@ theorem qComp {B C : NFm (n + 1)} (e : NEquiv C B) :
     NEquiv (NFm.imp (C.subst (inst zero)) (NFm.all C)) (.Q B) := by
   constructor
   · refine qI B ?_
-    have hImp : NPrf ((B.subst (inst zero)).shift ::
-        [NFm.imp (C.subst (inst zero)) (NFm.all C)].map NFm.shift)
-        (NFm.imp (C.subst (inst zero)).shift (NFm.all C).shift) := by
-      rw [← NFm.imp_shift]
-      exact .hyp (List.mem_cons_of_mem _ List.mem_cons_self)
-    exact (e.subst _).mp (allShiftE (succ (Syn.var 0))
-      (impE hImp (((e.subst (inst zero)).shift).mpr hyp0)))
+    have h : NPrf [B.subst (inst zero), NFm.imp (C.subst (inst zero)) (NFm.all C)] (NFm.all C) :=
+      impE (.wk hyp0) ((e.subst (inst zero)).mpr hyp0)
+    exact (e.subst _).mp (allShiftE (succ (Syn.var 0)) h.shift)
   · refine impI (allI ?_)
     have h := qShiftE (Δ := (C.subst (inst zero) :: [NFm.Q B]).map NFm.shift) (Syn.var 0)
       (.hyp (List.mem_cons_of_mem _ List.mem_cons_self)) (((e.subst (inst zero)).shift).mp hyp0)

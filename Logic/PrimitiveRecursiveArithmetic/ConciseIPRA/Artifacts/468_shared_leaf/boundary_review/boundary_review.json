@@ -1,0 +1,95 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "candidate_file": "checker468.py",
+  "candidate_sha256": "fc938318f33835408bea48f37e52379ce5abe4072e3ac5b0bb61b485fccb69b0",
+  "cases": [
+    {
+      "name": "parity",
+      "file": "false_parity_goal.json",
+      "packets": 7,
+      "sha256": "60dd370f2bc1ed1b4dcc4b3cb4966aca1f5eb805e1fcb7ddcb370ee20105cd80",
+      "mutation": {
+        "from": "d % 2 * i(t, d=5)",
+        "to": "i(t, d=5)"
+      }
+    },
+    {
+      "name": "early_floor",
+      "file": "false_early_floor_goal.json",
+      "packets": 5,
+      "sha256": "de04ca06934f59694f62a92e37d2f1158121d9f1524aaa9e02089b47958769ee",
+      "mutation": {
+        "from": "k <= a < d",
+        "to": "k - 1 <= a < d"
+      }
+    }
+  ],
+  "executions": 8,
+  "failures": [],
+  "results": [
+    {
+      "case": "parity",
+      "program": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "parity",
+      "program": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "parity",
+      "program": "unsound_control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true
+    },
+    {
+      "case": "parity",
+      "program": "unsound_control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true
+    },
+    {
+      "case": "early_floor",
+      "program": "candidate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "early_floor",
+      "program": "candidate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "passed": true
+    },
+    {
+      "case": "early_floor",
+      "program": "unsound_control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true
+    },
+    {
+      "case": "early_floor",
+      "program": "unsound_control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true
+    }
+  ]
+}

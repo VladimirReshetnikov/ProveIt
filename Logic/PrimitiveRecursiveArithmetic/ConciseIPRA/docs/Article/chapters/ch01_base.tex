@@ -2191,13 +2191,17 @@ $\beta(1,0)=\sel(L(2,1),0,1)=\sel(L(1,0),0,1)=\sel(0,0,1)=0$, and by
 $\beta_-(1,0)=\sel(\Lambda(1,1),1,0)=\sel(\Lambda(0,0),1,0)=\sel(1,1,0)=0$;
 the other two hypotheses are \eqref{base:eq:beta-conj},
 \eqref{base:eq:beta-base} and their counterparts in the proof of
-\cref{base:prop:pred57}.  The proofs given there are kept, the first because
-it is the one formalized in Lean.  \pkg{orbit\_equality} checks
+\cref{base:prop:pred57}.  The proofs given there are kept.  The Lean
+modules \Lean{TeqPred} and \Lean{EqPred} prove the predecessor equation of
+\cref{base:thm:pred} by this route: \Lean{Q.pred\_succ} is one equation
+induction on $P(\Suc x)=x$ from the conjugacy \Lean{Q.bump\_sat\_succ} and
+$\beta(1,0)=0$, so neither the comparator diagonal nor the invariant below the
+cap is formalized there.  \pkg{orbit\_equality} checks
 \cref{base:lem:diag} by a symbolic certificate of $37$ equality-proof nodes
 with exactly two equation inductions, in the schematic equational theory
 whose only axioms are $W(0,n)=0$, $W(\Suc t,n)=F(n,W(t,n))$ and the three
-hypotheses of the lemma for $F$ in place of $f$.  The lemma is not
-formalized in Lean or Rocq.
+hypotheses of the lemma for $F$ in place of $f$.  The lemma itself, for an
+arbitrary template $f$, is not formalized in Lean or Rocq.
 \end{remark}
 
 The sizes of the pieces, with variables as arguments, are
@@ -3000,6 +3004,20 @@ $d\defeq y\mathbin{\dot-}\Suc x$, and (i) applies.  If $x\le y$ and
 $y\le z$, then $z=y+(z\mathbin{\dot-}y)$ and the first part applies.
 \end{proof}
 
+\begin{remark}[The route of the Lean module]
+\label{base:rem:orderlean}
+The module \Lean{TeqOrder} proves (iii) through the maximum identity
+$x+(y\mathbin{\dot-}x)=y+(x\mathbin{\dot-}y)$ instead of (ii): equation
+induction on $y$, with base $x+0=0+x$ by $0\mathbin{\dot-}x=0$, and a step
+by cases on $x\mathbin{\dot-}y$ that uses only (i) and
+\cref{base:lem:monus}(iii); then $x\le y$ gives $x+(y\mathbin{\dot-}x)=y$
+at once.  Of the transitivity laws in (iv) it needs only
+$x+y\le k\to x\le k$, and it does not use the monotonicity of $2^{x}$ in
+\cref{base:lem:pow}: the logarithm counter of \cref{base:thm:pair} is
+proved from the invariant ``$2^{i}\le k$ implies $\mathrm{lgc}(i,k)=i$'',
+whose step needs only $2^{i}\le 2^{i}+2^{i}\le k$.
+\end{remark}
+
 \begin{lemma}[Powers of two]
 \label{base:lem:pow}
 $\Teq$ proves $2^{0}=1$, $2^{\Suc x}=2^{x}+2^{x}$, $2^{x}\le 2^{x+d}$,
@@ -3311,12 +3329,14 @@ $Y$.
  $X^\circ$, hence $Y^\circ$.  Transfer of $Y\proves X\Rightarrow_* Y$ gives
  $(X\Rightarrow_* Y)^\circ$, and its antecedent is the assumption.
 \item $(X\vee_* Y)^\circ\leftrightarrow X^\circ\vee Y^\circ$: by (c) the left
- side is equivalent to $\exists x\,\sel(x,X,Y)^\circ$.  Given
- $\sel(x,X,Y)^\circ$, eliminate (T2) at $x$.  If $x=0$, transfer of
- $x=0,\ \sel(x,X,Y)\proves X$ gives $X^\circ$; if $x=\Suc z$, transfer of
- $x=\Suc z,\ \sel(x,X,Y)\proves Y$ gives $Y^\circ$.  Both native sequents
- hold by \cref{base:lem:selIE}(ii) and \cref{base:lem:gate}(iv), (v).  The
- converse is transfer of $\vee_*$I.
+ side is equivalent to $\exists x\,\sel(x,X,Y)^\circ$.  It suffices to
+ derive $\forall x\,(\sel(x,X,Y)^\circ\to X^\circ\vee Y^\circ)$, and by
+ \cref{base:lem:teqcases}(i) its two instances at $0$ and at $\Suc z$
+ suffice.  They are transfers of $\sel(0,X,Y)\proves X$ and
+ $\sel(\Suc z,X,Y)\proves Y$, which hold by \cref{base:lem:gate}(iv), (v),
+ followed by $\vee$I.  No coverage of the witness $x$ and no transport along
+ $x=0$ or $x=\Suc z$ is needed; this is the route of the Lean module
+ \Lean{NativeRoundTrip}.  The converse is transfer of $\vee_*$I.
 \item $(\forall_* x\,X)^\circ\leftrightarrow\forall x\,X^\circ$: transfer of
  $\wedge_*$E gives $X^\circ(0)$ and
  $(\Q{x}X)^\circ=X^\circ(0)\to\forall x\,X^\circ$ from the left side, hence
@@ -3694,6 +3714,26 @@ $\tau(\sigma(f(\vec t)))=\tau(\ulcorner f\urcorner)
 by \cref{base:lem:tau}(ii), the first step and the induction hypothesis.
 \end{proof}
 
+\begin{remark}[The route of the Lean modules]
+\label{base:rem:tau-lean}
+The modules \Lean{ScalarToPRA} and \Lean{RoundTripScalar} compile terms of
+$\iPRA$ rather than iterator terms.  For a term $p$ of $\iPRA$ the symbol
+$\langle p\rangle_{\vec x}$ is $\pi^k_i$ at the variable $x_i$ and
+$\mathrm{comp}(f;\langle p_1\rangle_{\vec x},\dots,\langle p_m\rangle_{\vec x})$
+at $f(p_1,\dots,p_m)$, and the iterator case of $\tau$ reads
+$\iota\bigl(\langle\tau(a)\rangle_{\vec y},\langle\tau(h)\rangle_{u\vec y}\bigr)
+(\tau(c),\vec y)$.  Then $\langle p\rangle_{\vec x}(\vec s)=p\subst{\vec s}{\vec x}$
+is a fact about $\iPRA$ alone, proved by an induction with two cases, so
+\cref{base:lem:tau}(i) needs no induction on iterator terms; the hypotheses of
+\cref{base:lem:iota-ext} are equations between terms; and
+$\sigma(\langle p\rangle_{\vec x})$ coincides syntactically with $\sigma(p)$, so
+the first step of the proof of \cref{base:prop:termrt}(i) disappears and
+$\sigma(\tau(t))=t$ is one induction on $t$.  The recursion equations of the
+code of $\mathrm{prec}(f,g)$ are proved once, from those of the recursor of
+\cref{base:thm:primrec}, and the translations of the two defining axioms of
+$\mathrm{prec}(f,g)$ are derived from them.
+\end{remark}
+
 \subsection{The bi-interpretation theorem}
 
 \begin{theorem}[Bi-interpretation]
@@ -4049,8 +4089,10 @@ delivered with the package do not use $\eta$; the package also records that
 no new axiomatization below every current checker minimum is obtained.
 (d) The package proposes formalizing \cref{base:lem:diag} in the Lean
 development, so that the predecessor proofs need neither the comparator
-diagonal nor the invariant below the cap; this, and a formalization of
-\cref{base:lem:orbiteq,base:thm:orbitreflect}, is not done.
+diagonal nor the invariant below the cap.  Its instance for the predecessor
+of \cref{base:thm:pred} is now the Lean proof (\cref{base:rem:diag}); the
+generic lemma, and a formalization of
+\cref{base:lem:orbiteq,base:thm:orbitreflect}, are not done.
 \end{question}
 
 \begin{question}[The square-root pairing]

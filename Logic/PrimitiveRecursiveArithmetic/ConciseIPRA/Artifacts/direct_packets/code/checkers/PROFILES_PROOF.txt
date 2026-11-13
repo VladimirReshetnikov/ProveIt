@@ -1,0 +1,159 @@
+STRUCTURAL PATTERN BINDING AND WHOLE-JSON FRAMING
+================================================
+
+Results and limits
+------------------
+Three independent whole-JSON programs improve all three coordinates of the
+inspected whole-JSON compact envelope:
+
+                         tokens    AST    normalized bytes    gzip -9
+checker_tokens_json.py      246     273           565             339
+checker_ast_json.py         258     263           595             356
+checker.py                 274     303           465             307
+
+Envelope before: (248 tokens, 268 AST nodes, 469 normalized bytes).
+Envelope after:  (246 tokens, 263 AST nodes, 465 normalized bytes).
+
+The minima are attained by DIFFERENT complete programs. The first two use
+the inherited three-field global-scope protocol, and the byte program uses
+the four-field local-scope protocol explained in PROOF.txt. All are complete
+modules with their own JSON reader and acceptance output; none imports a
+separate mathematical kernel, producer, theorem database or validator.
+
+A JSONL companion checker_ast_jsonl.py has 252 tokens, 259 AST nodes,
+595 normalized bytes and gzip size 349. It improves the mixed corpus AST
+minimum from 262 to 259. The mixed corpus token minimum of 241 is NOT
+improved. The existing JSONL token program and the new whole-JSON token
+program must not be conflated; whole JSON and a stream of JSON records are
+different input interfaces with different parsing overheads.
+
+No mathematical axiom or rule is deleted by these changes. The represented
+guarded scalar theory and its whole-domain iPRA bi-interpretation are
+inherited. The reported numbers are attained upper bounds, not a universal
+minimality theorem.
+
+Structural pattern binding
+--------------------------
+Start with control_ast262_jsonl.py, the 262-node inherited program. Replace
+
+  s, u, t = r = loads(input())
+
+by
+
+  match loads(input()):
+      case [s, u, t] as r:
+          pass
+
+Keep the following membership/computation test OUTSIDE this match.
+
+For every three-element list packet the bindings are exactly the same:
+r is the original list, and s,u,t are its three entries. The source has no
+identity-sensitive use of any packet, so this is also literal value
+equivalence. All subsequent statements are byte-for-byte the inherited
+statements.
+
+Malformed packets still reject. In CPython 3.12.14 the sequence-pattern
+bytecode first checks that the subject is a sequence and that its length
+is three, and only then performs the captures. On a scalar or a list of
+the wrong length the four local variables are unbound. The next test is
+
+  i(a) not in (*g, [[s and [s],u,t], i(t,r,3) if s else u]).
+
+Python constructs the entire tuple before performing membership. The
+computation equation therefore reads s,u,t eagerly even if i(a) is already
+an assumption. An unbound local raises and rejects. The parsed input
+contract is finite exact-integer/list trees; strings, dictionaries and
+arbitrary sequence objects are not silently admitted by this proof.
+
+Each recursive call has its own local bindings. No capture is carried from
+a previous call, and global variables with these names do not supply a
+value for a statically local variable. The pattern has no value tests or
+nested patterns that could fail after some captures have succeeded. The
+checked CPython execution of the length mismatch is thus unambiguous; no
+claim about preserving particular exception messages is required.
+
+It follows by induction on finite evaluations that the match program and
+its reference have the same accepted finite traces on the promised parsed
+syntax. The optimization replaces ordinary assignment targets (including
+their AST Store nodes) by the interpreter's native pattern captures. It
+adds tokens and bytes but removes three AST nodes. That is an implementation
+profile tradeoff, not a mathematical simplification of iPRA.
+
+One JSON array instead of JSONL records
+-------------------------------------
+Let a finite JSONL input consist of parsed records
+
+  G, P1, P2, ..., Pn,
+
+with the goal first and proof packets in consumption order. The records
+are finite exact-integer/list trees, each given by valid JSON on its own
+line. Define W to be the single parsed JSON array
+
+  [Pn, ..., P2, P1, G].
+
+The new reader q=load(open(0)).pop returns G first and then exactly the same
+packets P1,P2,... as successive loads(input()) calls. If a proof stops early,
+the old unread suffix corresponds to the new unused prefix. If more data
+are needed than supplied, input/JSON exhaustion and pop exhaustion both
+reject. Whitespace and particular exception text are not part of the
+claim. A syntactically malformed unconsumed line is outside this stated
+framing domain: unlike a line reader, a whole-JSON parser reads all its
+input before proof checking. This distinction cannot add a false theorem
+or remove the existence of a well-formed certificate for a theorem.
+
+checker_tokens_json.py is the exact 241-token JSONL token program with
+loads(input()) replaced by q() at its two read sites and one whole-JSON
+reader definition. All rule checking statements remain unchanged. Its
+header and proof packets are obtained by W, so the same finite successful
+trace induction proves acceptance equivalence on the framing domain.
+
+checker_ast_json.py makes the same framing change to the 259-node match
+program. The reader is initialized by a walrus expression at the root call
+instead of by a separate assignment. Evaluation binds q to the pop method
+before calling q to obtain G and before invoking c. This changes no packet
+read or checker state and removes two AST nodes relative to a separate
+assignment. Its final count is 263.
+
+The inverse of W reverses the array and prints each parsed record as one
+JSON line. It preserves the exact sequence of parsed trees. The framing
+maps are implemented by untrusted translate_stream.py, which no checker
+imports or executes.
+
+Soundness, completeness and iPRA
+--------------------------------
+On the canonical public-goal contract, the inherited token and AST controls
+represent the same guarded scalar iPRA theory. The match transformation
+preserves finite accepted traces; W preserves their parsed record sequence;
+the root reader placement preserves evaluation order. Every inherited
+certificate therefore gives a new certificate of the same literal goal,
+and every accepted new certificate has a corresponding inherited
+certificate. All public theorem sets are unchanged.
+
+Accordingly the ordinary realizations, interpreters, logical macro
+expansions and numerical comparison maps of the inherited theory can be
+used without alteration. Equiconsistency and both formula round trips
+transfer. Both numerical domains remain whole, equality remains actual,
+and both numerical comparison graphs remain x=y. These are transfers from
+the attributed iPRA bridge, not newly formalized Python soundness proofs.
+
+Verification
+------------
+Run python3 verify_profiles.py with CPython 3.12.14. Fourteen inherited
+substantial and negative JSONL fixtures run against both exact controls,
+the JSONL match program, and the two whole-JSON programs, in ordinary and
+-O modes. Positive fixtures are also mutated to conclude 0=S0. Invalid
+packet lengths and scalar packets are tested at an immediate neutral leaf
+to ensure that pattern failure cannot accidentally skip checking. The
+correct three-field neutral packet succeeds. All 255 isolated process
+executions pass their expected outcomes. The framing maps are checked on
+the exact parsed record trees. These finite tests supplement the written
+source-level arguments; they are not a substitute for them.
+
+Metric conventions
+------------------
+All figures measure the complete standalone source after
+ast.unparse(ast.parse(source)) plus one trailing LF in CPython 3.12.14.
+Significant tokens exclude whitespace, comments, indentation, encoding
+and end markers. AST counts include operator/context nodes as in ast.walk.
+Gzip uses maximum level 9 and mtime=0. Normalized SHA-256 hashes, individual
+outcomes and exact measurements are in profiles_verification.json.

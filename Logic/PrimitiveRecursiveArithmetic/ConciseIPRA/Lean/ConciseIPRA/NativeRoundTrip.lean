@@ -11,8 +11,8 @@ native calculus proves its native reading (`Teq.iff_native`).
 Most of the work is borrowed from the native calculus: by soundness, a native
 derivation is usable inside `T_eq` under arbitrary hypotheses (`Teq.ofN`).
 Only two directions mention a non-native formula where soundness cannot
-reach it: a disjunction as a conclusion (handled by numerical cases on the
-selector, `Teq.selCases`) and an implication as a hypothesis.
+reach it: a disjunction as a conclusion (handled by closure by cases on a
+formula, `Teq.caseAll`) and an implication as a hypothesis.
 -/
 
 namespace LeanProofs.ConciseIPRA
@@ -48,26 +48,6 @@ theorem ofN2 {A A' B : NFm n} (h : NPrf [A, A'] B) (hA : Γ ⊢[TeqAx] A.toFm)
 theorem iffOfN {A B : NFm n} (e : NEquiv A B) : Γ ⊢[TeqAx] Fm.iff A.toFm B.toFm :=
   Prf.iffI (.impI (ofN1 e.1 Prf.hyp0)) (.impI (ofN1 e.2 Prf.hyp0))
 
-/-- Case analysis on a native selector inside `T_eq`. -/
-theorem nselCases {X Y : NFm n} {χ : Fm Tm n} (v : Tm n)
-    (h : Γ ⊢[TeqAx] (NFm.sel v X Y).toFm)
-    (h₁ : X.toFm :: Γ ⊢[TeqAx] χ) (h₂ : Y.toFm :: Γ ⊢[TeqAx] χ) : Γ ⊢[TeqAx] χ := by
-  refine casesOn v ?_ ?_
-  · have hX : (v ≐ zero) :: Γ ⊢[TeqAx] X.toFm :=
-      ofN2 (A := .eq v zero) (A' := NFm.sel v X Y) (B := X)
-        ((NEquiv.sel_zero X Y).mp (NPrf.selTr X Y NPrf.hyp0 NPrf.hyp1)) Prf.hyp0 h.wk
-    exact .impE (Prf.impI h₁).wk hX
-  · have e : (NFm.sel v X Y).shift = NFm.sel (Syn.shift v) X.shift Y.shift :=
-      NFm.sel_subst X v Y (fun i => Syn.var i.succ)
-    have hS := h.shift.wk (ψ := Syn.shift v ≐ succ (Syn.var 0))
-    rw [← NFm.toFm_shift, e] at hS
-    have hY := ofN2 (A := .eq (Syn.shift v) (succ (Syn.var 0)))
-      (A' := NFm.sel (Syn.shift v) X.shift Y.shift) (B := Y.shift)
-      ((NEquiv.sel_succ X.shift (Syn.var 0) Y.shift).mp
-        (NPrf.selTr X.shift Y.shift NPrf.hyp0 NPrf.hyp1)) Prf.hyp0 hS
-    rw [NFm.toFm_shift] at hY
-    exact .impE (Prf.impI h₂).shift.wk hY
-
 /-! ### The connectives -/
 
 theorem bot_iff : Γ ⊢[TeqAx] Fm.iff (NFm.bot : NFm n).toFm Fm.bot :=
@@ -85,15 +65,15 @@ theorem ex_iff (A : NFm (n + 1)) : Γ ⊢[TeqAx] Fm.iff (NFm.ex A).toFm (Fm.ex A
 
 theorem or_iff (X Y : NFm n) : Γ ⊢[TeqAx] Fm.iff (NFm.or X Y).toFm (X.toFm ⋎ Y.toFm) := by
   refine Prf.iffI (.impI ?_) (.impI (.orE Prf.hyp0 ?_ ?_))
-  · have hE : (NFm.or X Y).toFm :: Γ ⊢[TeqAx]
-        Fm.ex (NFm.sel (Syn.var 0) X.shift Y.shift).toFm :=
-      Prf.iffMp (ex_iff _) Prf.hyp0
-    refine .exE hE ?_
-    refine nselCases (Syn.var 0) Prf.hyp0 ?_ ?_
-    · rw [NFm.toFm_shift]
-      exact .orI₁ Prf.hyp0
-    · rw [NFm.toFm_shift]
-      exact .orI₂ Prf.hyp0
+  · refine .exE (Prf.iffMp (ex_iff _) Prf.hyp0) (.impE (Prf.allOpen (caseAll
+      ((NFm.sel (Syn.var 0) X.shift Y.shift).toFm ⟶ X.toFm.shift ⋎ Y.toFm.shift) ?_ ?_)).wk
+      Prf.hyp0)
+    · simp only [Fm.subst_imp, Fm.subst_or, ← NFm.toFm_shift, ← NFm.toFm_subst,
+        NFm.sel_shift_inst, NFm.subst_inst_shift]
+      exact .impI (.orI₁ (ofN1 (NEquiv.sel_zero X Y).1 Prf.hyp0))
+    · simp only [Fm.subst_imp, Fm.subst_or, ← NFm.toFm_shift, ← NFm.toFm_subst,
+        NFm.sel_shift_repl, NFm.subst_repl_shift]
+      exact .impI (.orI₂ (ofN1 (NEquiv.sel_succ _ _ _).1 Prf.hyp0))
   · exact ofN1 (A := X) (B := NFm.or X Y) (NPrf.orI₁ NPrf.hyp0) Prf.hyp0
   · exact ofN1 (A := Y) (B := NFm.or X Y) (NPrf.orI₂ NPrf.hyp0) Prf.hyp0
 

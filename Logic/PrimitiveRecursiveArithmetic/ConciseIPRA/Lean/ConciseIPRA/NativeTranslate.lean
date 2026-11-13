@@ -61,17 +61,20 @@ theorem map_ofFm_shift (Γ : List (Fm Tm n)) :
   | nil => rfl
   | cons φ Γ ih => simp only [List.map_cons, ih, ofFm_shift]
 
+theorem subst_repl_var (B : NFm (n + 1)) : B.subst (repl (Syn.var 0)) = B :=
+  B.subst_eq_self fun i => by refine Fin.cases ?_ (fun j => ?_) i <;> simp
+
 end NFm
 
 namespace NPrf
 
 variable {Γ : List (NFm n)}
 
-/-- A universal statement moved under a fresh variable holds of that variable. -/
-theorem allVar {A : NFm (n + 1)} {Δ : List (NFm (n + 1))} (h : NPrf Δ (NFm.all A).shift) :
-    NPrf Δ A := by
+/-- Elimination of a universal statement moved under a fresh variable. -/
+theorem allShiftE {A : NFm (n + 1)} {Δ : List (NFm (n + 1))} (t : Tm (n + 1))
+    (h : NPrf Δ (NFm.all A).shift) : NPrf Δ (A.subst (repl t)) := by
   rw [NFm.shift, NFm.all_subst] at h
-  simpa only [NFm.subst_up_inst_var] using allE (Syn.var 0) h
+  simpa only [NFm.subst_dummy_up_inst] using allE t h
 
 /-- Coverage: every number is zero or a successor. -/
 theorem coverN (t : Tm n) :
@@ -107,7 +110,7 @@ theorem indN (s t : Tm (n + 1)) :
     .hyp (List.mem_cons_of_mem _ (List.mem_map_of_mem List.mem_cons_self))
   show NPrf _ (NFm.and ((NFm.eq s t).subst (inst zero)) (.Q (.eq s t)))
   exact andI (.hyp (List.mem_cons_of_mem _ List.mem_cons_self))
-    (qIProg s t (impE (allVar hX) hyp0))
+    (qIProg s t (impE (by simpa only [NFm.subst_repl_var] using allShiftE (Syn.var 0) hX) hyp0))
 
 /-- Every axiom of `T_eq` is derivable in the native calculus. -/
 theorem ofAx {φ : Fm Tm k} (h : TeqAx k φ) : ∀ {Γ : List (NFm k)}, NPrf Γ (NFm.ofFm φ) := by

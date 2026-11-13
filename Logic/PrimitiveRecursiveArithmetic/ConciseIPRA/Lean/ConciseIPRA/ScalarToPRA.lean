@@ -7,14 +7,14 @@ import ConciseIPRA.Interpretation
 
 An iterator term `I(c, a; u.h)` binds a variable in its step term, whereas a
 term of `iPRA` has no binders.  The interpretation therefore compiles every
-iterator term `t` over `n` variables into a primitive recursive function symbol
-`code t` of arity `n`; the iterator becomes primitive recursion whose step
-ignores the counter.  The term translation `tau` uses these symbols:
+term `p` of `iPRA` over `n` variables into a primitive recursive function symbol
+`pcode p` of arity `n` (projections and compositions), and the iterator becomes
+primitive recursion, whose step ignores the counter, of the compiled translations:
 
-`tau (I(c, a; u.h)) = iterSym (code a) (code h) (tau c, x⃗)`.
+`tau (I(c, a; u.h)) = iterSym (pcode (tau a)) (pcode (tau h)) (tau c, x⃗)`.
 
-`code_eval` relates the two: `code t` applied to arguments is provably the
-translation `tau t` with those arguments substituted.
+`pcode_eval` relates the two: `pcode p` applied to arguments is provably the
+term `p` with those arguments substituted.
 -/
 
 namespace LeanProofs.ConciseIPRA
@@ -35,20 +35,18 @@ def stepSym (g : PR (n + 1)) : PR (n + 2) :=
 /-- The function symbol `(c, x⃗) ↦ I(c, a(x⃗); u.h(u, x⃗))`. -/
 def iterSym (a : PR n) (h : PR (n + 1)) : PR (n + 1) := .prec a (stepSym h)
 
-/-- An iterator term as a primitive recursive function symbol of its free
+/-- A term of `iPRA` as a primitive recursive function symbol of its free
 variables. -/
-def code : {n : ℕ} → Tm n → PR n
-  | _, .var i => .proj i
-  | _, .zero => .comp .zero Fin.elim0
-  | _, .succ t => .comp .succ (fun _ => code t)
-  | _, .iter c a h => .comp (iterSym (code a) (code h)) (Fin.cases (code c) .proj)
+def pcode : PTm n → PR n
+  | .var i => .proj i
+  | .app f ts => .comp f (fun i => pcode (ts i))
 
 /-- The translation of iterator terms into terms of `iPRA`. -/
 def tau : {n : ℕ} → Tm n → PTm n
   | _, .var i => PTm.var i
   | _, .zero => PTm.zero
   | _, .succ t => PTm.succ (tau t)
-  | _, .iter c a h => app (iterSym (code a) (code h)) (Fin.cases (tau c) PTm.var)
+  | _, .iter c a h => app (iterSym (pcode (tau a)) (pcode (tau h))) (inst (tau c))
 
 variable {Γ : List (Fm PTm n)}
 
@@ -76,23 +74,16 @@ theorem iterSym_succ (a : PR k) (h : PR (k + 1)) (y : PTm n) (xs : Fin k → PTm
       ≐ app h (Fin.cases (app (iterSym a h) (Fin.cases y xs)) xs) :=
   Prf.eqTrans (PRA.precSucc a (stepSym h) y xs) (stepSym_app h _ _ _)
 
-/-- The function symbol of a term, applied to arguments, is the translation of
-the term with the arguments substituted. -/
-theorem code_eval (t : Tm k) :
-    ∀ {n : ℕ} (ts : Fin k → PTm n) (Γ : List (Fm PTm n)),
-      Γ ⊢[PRAAx] app (code t) ts ≐ Syn.subst ts (tau t) := by
-  induction t with intro n ts Γ
+/-- The function symbol of a term, applied to arguments, is the term with the
+arguments substituted. -/
+theorem pcode_eval (t : PTm k) (ts : Fin k → PTm n) :
+    Γ ⊢[PRAAx] app (pcode t) ts ≐ Syn.subst ts t := by
+  induction t with
   | var i => exact PRA.proj i ts
-  | zero =>
-    exact Prf.eqTrans (PRA.comp PR.zero Fin.elim0 ts) (congr PR.zero (fun j => j.elim0))
-  | succ t ih =>
-    exact Prf.eqTrans (PRA.comp PR.succ (fun _ => code t) ts)
-      (congr PR.succ (fun _ => ih ts Γ))
-  | iter c a h ihc _ _ =>
-    refine Prf.eqTrans (PRA.comp _ _ ts) ?_
-    refine congr _ (Fin.cases ?_ fun l => ?_)
-    · exact ihc ts Γ
-    · exact PRA.proj l ts
+  | app f us ih => exact Prf.eqTrans (PRA.comp f _ ts) (congr f ih)
+
+theorem pcode_var (t : PTm n) : Γ ⊢[PRAAx] app (pcode t) Syn.var ≐ t := by
+  simpa using pcode_eval (Γ := Γ) t Syn.var
 
 /-! ### Extensionality of the simulated iterator -/
 
@@ -131,23 +122,24 @@ theorem prec_uniq {f : PR k} {g : PR (k + 2)} {σ : Fin k → PTm m} (F : PTm (m
 
 /-- Two simulated iterators whose bases and steps agree along a substitution
 agree at every count, by uniqueness of primitive recursion. -/
-theorem iterSym_ext {a' : PR m} {h' : PR (m + 1)} {a : PR k} {h : PR (k + 1)}
-    {σ : Fin k → PTm m}
-    (ha : [] ⊢[PRAAx] app a' Syn.var ≐ app a σ)
-    (hh : [] ⊢[PRAAx] app h' Syn.var ≐ app h (Syn.up σ)) (t : PTm m) :
-    [] ⊢[PRAAx] app (iterSym a' h') (Fin.cases t Syn.var)
-      ≐ app (iterSym a h) (Fin.cases t σ) := by
+theorem iterSym_ext {A' : PTm m} {H' : PTm (m + 1)} {A : PTm k} {H : PTm (k + 1)}
+    {σ : Fin k → PTm m} (ha : [] ⊢[PRAAx] A' ≐ Syn.subst σ A)
+    (hh : [] ⊢[PRAAx] H' ≐ Syn.subst (Syn.up σ) H) (t : PTm m) :
+    [] ⊢[PRAAx] app (iterSym (pcode A') (pcode H')) (Fin.cases t Syn.var)
+      ≐ app (iterSym (pcode A) (pcode H)) (Fin.cases t σ) := by
+  replace ha := Prf.eqTrans (pcode_var A') (Prf.eqTrans ha (Prf.eqSymm (pcode_eval A σ)))
+  replace hh := Prf.eqTrans (pcode_var H') (Prf.eqTrans hh (Prf.eqSymm (pcode_eval H _)))
   have e : (repl (Syn.var 0) : Fin (m + 1) → PTm (m + 1)) = Syn.var := by
     refine funext (Fin.cases ?_ fun j => ?_) <;> simp
-  have hL := iterSym_succ (Γ := []) a' h' (Syn.var 0) (fun i => Syn.var i.succ)
+  have hL := iterSym_succ (Γ := []) (pcode A') (pcode H') (Syn.var 0) (fun i => Syn.var i.succ)
   rw [show (Fin.cases (Syn.var 0) fun i => Syn.var i.succ : Fin (m + 1) → PTm (m + 1))
     = Syn.var from e] at hL
-  have hM := (hh.subst (repl (app (iterSym a' h') Syn.var))).ofNil (Γ := [])
+  have hM := (hh.subst (repl (app (iterSym (pcode A') (pcode H')) Syn.var))).ofNil (Γ := [])
   simp only [Fm.subst_eq, PTm.subst_app, Syn.subst_var] at hM
   rw [subst_repl_up] at hM
-  have h₁ := (prec_uniq (app (iterSym a' h') Syn.var)
-    (Prf.eqTrans (iterSym_zero a' h' Syn.var) ha)
-    (Prf.eqTrans hL (Prf.eqTrans hM (Prf.eqSymm (stepSym_app h _ _ _))))).subst (inst t)
+  have h₁ := (prec_uniq (app (iterSym (pcode A') (pcode H')) Syn.var)
+    (Prf.eqTrans (iterSym_zero _ _ Syn.var) ha)
+    (Prf.eqTrans hL (Prf.eqTrans hM (Prf.eqSymm (stepSym_app _ _ _ _))))).subst (inst t)
   simp only [Fm.subst_eq, PTm.subst_app, Syn.subst_var] at h₁
   rwa [subst_inst_up] at h₁
 
@@ -181,22 +173,15 @@ theorem tau_subst_of_good (t : Tm n) :
   | succ t ih => exact congr PR.succ (fun _ => ih ρ hρ)
   | iter c a h ihc iha ihh =>
     rw [Tm.subst_iter]
-    refine Prf.eqTrans
-      (iterSym_ext (a := code a) (h := code h) (σ := fun i => tau (ρ i)) ?_ ?_ _)
-      (congr _ (fun i => ?_))
-    · have h1 := code_eval (Syn.subst ρ a) Syn.var ([] : List (Fm PTm m))
-      rw [Syn.subst_id] at h1
-      exact Prf.eqTrans h1 (Prf.eqTrans (iha ρ hρ) (Prf.eqSymm (code_eval a _ _)))
-    · have h1 := code_eval (Syn.subst (Syn.up ρ) h) Syn.var ([] : List (Fm PTm (m + 1)))
-      rw [Syn.subst_id] at h1
-      refine Prf.eqTrans h1 (Prf.eqTrans (ihh (Syn.up ρ) hρ.up) ?_)
-      refine Prf.eqTrans (Prf.eqSymm (code_eval h _ _)) (congr _ (Fin.cases ?_ fun j => ?_))
+    have hh : [] ⊢[PRAAx] tau (Syn.subst (Syn.up ρ) h)
+        ≐ Syn.subst (Syn.up fun i => tau (ρ i)) (tau h) := by
+      refine Prf.eqTrans (ihh (Syn.up ρ) hρ.up) (Prf.eqCongr _ (Fin.cases ?_ fun j => ?_))
       · exact Prf.eqRefl _
       · simp only [Syn.up_succ]
         exact hρ j (m + 1) Fin.succ
-    · refine Fin.cases ?_ (fun j => ?_) i
-      · exact ihc ρ hρ
-      · exact Prf.eqRefl _
+    refine Prf.eqTrans (iterSym_ext (iha ρ hρ) hh _) (congr _ (Fin.cases ?_ fun j => ?_))
+    · exact ihc ρ hρ
+    · exact Prf.eqRefl _
 
 theorem good_ren (ξ : Fin n → Fin m) : Good (fun i => (Syn.var (ξ i) : Tm m)) := by
   intro i k r
@@ -221,22 +206,24 @@ def morph : TmMorph Tm PRAAx where
   f_var _ := rfl
   f_subst := tau_subst
 
+theorem tau_subst_inst (a : Tm n) (t : Tm (n + 1)) :
+    Γ ⊢[PRAAx] Syn.subst (inst (tau a)) (tau t) ≐ tau (Syn.subst (inst a) t) := by
+  have h := morph.f_subst (inst a) t
+  rw [morph.f_inst] at h
+  exact Prf.ofNil (Prf.eqSymm h)
+
 /-! ### The axioms of `T_eq` hold in `iPRA` under the translation -/
 
 theorem ax_iterZero (a : Tm n) (h : Tm (n + 1)) :
-    [] ⊢[PRAAx] tau (Tm.iter Tm.zero a h) ≐ tau a := by
-  have h1 := code_eval a Syn.var ([] : List (Fm PTm n))
-  rw [Syn.subst_id] at h1
-  exact Prf.eqTrans (iterSym_zero (code a) (code h) Syn.var) h1
+    [] ⊢[PRAAx] tau (Tm.iter Tm.zero a h) ≐ tau a :=
+  Prf.eqTrans (iterSym_zero _ _ Syn.var) (pcode_var _)
 
 theorem ax_iterSucc (c a : Tm n) (h : Tm (n + 1)) :
     [] ⊢[PRAAx] tau (Tm.iter (Tm.succ c) a h)
       ≐ tau (Syn.subst (inst (Tm.iter c a h)) h) := by
-  have h1 := iterSym_succ (Γ := ([] : List (Fm PTm n))) (code a) (code h) (tau c) Syn.var
-  have h2 := code_eval h (Fin.cases (tau (Tm.iter c a h)) Syn.var) ([] : List (Fm PTm n))
-  have h3 := morph.f_subst (inst (Tm.iter c a h)) h
-  rw [morph.f_inst] at h3
-  exact Prf.eqTrans h1 (Prf.eqTrans h2 (Prf.eqSymm h3))
+  have h1 := iterSym_succ (Γ := []) (pcode (tau a)) (pcode (tau h)) (tau c) Syn.var
+  have h2 := pcode_eval (Γ := []) (tau h) (Fin.cases (tau (Tm.iter c a h)) Syn.var)
+  exact Prf.eqTrans h1 (Prf.eqTrans h2 (tau_subst_inst _ _))
 
 theorem ax_sep :
     [] ⊢[PRAAx] ((PTm.zero : PTm 0) ≐ PTm.succ PTm.zero) ⟶ Fm.bot :=

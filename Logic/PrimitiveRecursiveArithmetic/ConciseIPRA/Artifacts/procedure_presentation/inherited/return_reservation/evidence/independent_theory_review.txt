@@ -1,0 +1,151 @@
+# Independent mathematical audit
+
+Snapshot: `6874c85a4cea45d881de73620284fcc75d740942` and the twelve incoming
+archives unpacked by the parent agent.
+
+## Status
+
+I did not establish a new axiomatization below the current complexity
+envelope. The source already contains the obvious candidates: scalar and
+counter-aware iteration; constructor/constant elimination; full and selective
+normalization; single introductions; one-term, one-occurrence, variable-only,
+and template-free equality; clause and one-body contexts; inferred witnesses;
+deterministic specialization; merged computation/discharge; goal abstraction;
+and computation/hypothesis leaf fusion. These should not be represented as
+new discoveries in a resulting report.
+
+The incoming `shared_leaf` package lowers the observed compact envelope to
+242 significant tokens, 262 AST nodes, and 469 normalized bytes, in distinct
+programs. These are attained upper bounds under the canonical-goal contract,
+not a mathematical lower-bound theorem or a single program attaining all
+three coordinates.
+
+## A precise obstruction to successor-only transport
+
+This statement was checked against the article's references to
+"successor-headed" terms. The passages in `ch03_guard.tex` around lines
+1101, 1279, and 1465 concern *iterator-headed or successor-headed* terms and
+the removal of literal-zero sources, not a restriction to successors alone.
+The subsection "Successor sources constructed from predecessors" in
+`ch10_obs.tex` concerns the counter of a computation packet, not a
+successor-only equality rule. I did not find this particular reading in
+those sections. This is a local novelty check, not a claim that no equivalent
+observation occurs anywhere in the full corpus or literature.
+
+An apparent code simplification would encode the computation counter directly
+as zero or a successor term, avoiding the present conditional wrapping. Its
+eager leaf construction is safe only if nonzero transport sources are also
+successor-headed. That restriction is incomplete with the inherited oriented
+computation axioms.
+
+Consider the rule inventory with hypotheses, the two equations
+
+    I(0,a;u.h)=a
+    I(S(n),a;u.h)=h[I(n,a;u.h)/u],
+
+the native logical rules, and transport allowed only when its major source
+is literally `S(t)`. Use the following reading over the standard natural
+numbers:
+
+- zero and successor have their usual meanings;
+- every iterator expression has value zero;
+- the atomic formula `s=t` is true iff the value of `s` is zero;
+- closures and paired binders have the same ordinary/progressive readings
+  used in the source calculus.
+
+Both computation axioms are true because their left side is an iterator.
+Every allowed transport major is false, so transport is sound vacuously.
+Hypotheses and the binder introduction/elimination rules are sound by their
+usual semantic arguments. Cases and equation progress are sound because the
+numerical domain is the standard natural numbers; their soundness does not
+require the atomic relation to be actual equality.
+
+However, `S(0)=S(0)` is false in this reading. Thus the restricted calculus
+does not even derive that reflexivity instance. Any viable constructor
+restriction must change the computation axioms, the equality representation,
+or another part of the calculus as well. It cannot inherit the usual bridge
+merely by asserting that every term has a successor-coded name.
+
+### Exact theorem and contextual soundness proof
+
+Let `N_S` be the eight-rule native calculus of the article, except that every
+instance of transport has source syntactically `S(r)`. The conclusion holds
+for both the original ordinary transport rule
+
+    s=t, F(s) / F(t)
+
+and the one-term crossed form
+
+    s=t, h(s)=u / u=h(t).
+
+In both cases reflexivity is **not** an additional primitive axiom. Then
+`N_S` is strictly incomplete for the open native consequences of `NPrf`:
+indeed `NPrf` proves `S(0)=S(0)` in the empty context whereas `N_S` does not.
+The same argument works with witnessed progress in place of direct closure.
+
+For a valuation `v` of the free variables, let term evaluation be the usual
+evaluation of variables, zero, and successor, with every iterator assigned
+zero regardless of its arguments. The evaluation/substitution lemma follows
+by structural induction; the iterator case is constant on both sides.
+Interpret an equation `s=t` by `eval_v(s)=0`; interpret `Q_y B` as
+`B(0) -> forall y B(y)`, and `D_{x,y} B` as
+`exists x (B(x,0) -> forall y B(x,y))`. These are meta-level Boolean truth
+conditions over the standard natural numbers. This is a proof-system reading,
+not an ordinary model with actual equality.
+
+Prove by induction on derivations that if all assumptions of `Gamma` are
+true at `v`, every derivable conclusion is true at `v`.
+
+1. Hypothesis is immediate. Each computation axiom is true because its left
+   side is an iterator and hence evaluates to zero.
+2. A transport major with source `S(r)` would have to assert
+   `eval_v(r)+1=0`. This is false for every valuation. Therefore the soundness
+   implication is vacuous, independently of its minor premise, template,
+   and whether the conclusion is crossed.
+3. Closure elimination is the direct use of implication and universal
+   instantiation in the stated reading.
+4. Paired-binder elimination chooses a witness for its existential premise.
+   Extend `v` by this witness at the fresh variable. The old assumptions and
+   the conclusion retain their truth values by freshness; apply the induction
+   hypothesis to the branch with the opened closure assumption.
+5. For introduction by cases, fix the value of the supplied witness term.
+   Assuming the zero instance, the zero row is already true. Every other
+   natural number is `S(n)`; apply the induction hypothesis to the premise
+   with its fresh index variable assigned `n`. Thus all rows are true, giving
+   the conditional closure and then its existential witness.
+6. For direct equation progress, assume the zero instance. Freshness makes
+   the premise yield `E(n) -> E(n+1)` for every standard natural number,
+   with `Gamma` unchanged. External induction on the standard `n` proves
+   every row. Thus the conditional closure is true. The witnessed-progress
+   variant adds the value of its supplied witness term to this argument.
+
+This proves contextual soundness. The sentence `S(0)=S(0)` is false because
+its left side evaluates to one. In the unrestricted native calculus it is
+derived by transporting the computation `I(0,S(0);u.0)=S(0)` along itself,
+using the equation template `F(v) := (v=S(0))`. Hence the asserted strict
+incompleteness follows.
+
+### Limit of this obstruction
+
+This theorem rules out deletion of equality sources while preserving the
+native theorem set, including the allowed top-level public equation
+`S(0)=S(0)`. It does **not** prove that no different guarded public language,
+no different interpretation of equality, or no different interpreted domain
+can be bi-interpretable with iPRA. For example, iterator-headed gated atoms
+all happen to be true in this reading, so it does not refute completeness
+on a fully gated translation image. It must not be advertised as a universal
+barrier to successor-only presentations.
+
+## Other cautions
+
+- Replacing `3 % len(a)` by `len(a)-1` is unsafe: auxiliary closure matrices
+  of arity three must select case introduction, not progressive introduction.
+  Public formulas omit `Q`, but arbitrary certificates may introduce it as
+  an auxiliary matrix.
+- A context-length scope bound has two phases (entry and the fresh parameter
+  introduced by a continuation). Collapsing these bounds loses eigenvariable
+  freshness. The article already documents counterexamples to that shortcut.
+- Fold fusion or dinaturality is an interesting mathematical direction, but
+  no proof was obtained that a smaller such principle recovers contextual
+  equation induction. It should remain a research question.
+

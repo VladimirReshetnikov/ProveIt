@@ -123,10 +123,7 @@ theorem substWeaken (h : Γ ⊢[Ax] φ) : ∀ {m : ℕ} (σ : Fin n → T m) {Δ
 
 /-- Weakening. -/
 theorem weaken (h : Γ ⊢[Ax] φ) {Δ : List (Fm T n)} (s : Γ ⊆ Δ) : Δ ⊢[Ax] φ := by
-  have h' := h.substWeaken var (Δ := Δ) fun ψ hψ => by
-    obtain ⟨χ, hχ, rfl⟩ := List.mem_map.1 hψ
-    rw [Fm.subst_id]; exact s hχ
-  rwa [Fm.subst_id] at h'
+  simpa using h.substWeaken var (Δ := Δ) (by simpa using s)
 
 /-- Derivability is closed under substitution of terms for free variables. -/
 theorem subst (h : Γ ⊢[Ax] φ) {m : ℕ} (σ : Fin n → T m) :
@@ -138,11 +135,8 @@ theorem shift (h : Γ ⊢[Ax] φ) : Γ.map Fm.shift ⊢[Ax] φ.shift :=
   h.subst _
 
 theorem liftCons (s : ∀ ψ ∈ Γ, Δ ⊢[Ax] ψ) (χ : Fm T n) :
-    ∀ ψ ∈ χ :: Γ, (χ :: Δ ⊢[Ax] ψ) := by
-  intro ψ hψ
-  rcases List.mem_cons.mp hψ with rfl | hψ
-  · exact .hyp List.mem_cons_self
-  · exact (s ψ hψ).weaken (List.subset_cons_self _ _)
+    ∀ ψ ∈ χ :: Γ, (χ :: Δ ⊢[Ax] ψ) :=
+  List.forall_mem_cons.2 ⟨.hyp List.mem_cons_self, fun ψ hψ => (s ψ hψ).weaken (by simp)⟩
 
 /-- Simultaneous cut: the hypotheses may be replaced by anything deriving them.
 Each hypothesis is discharged by an implication and restored by modus ponens. -/
@@ -195,10 +189,8 @@ theorem iffTrans (h₁ : Γ ⊢[Ax] Fm.iff φ ψ) (h₂ : Γ ⊢[Ax] Fm.iff ψ �
 
 /-- Leibniz' rule for one variable. -/
 theorem eqSubst1 (φ : Fm T (n + 1)) {s t : T n} (h : Γ ⊢[Ax] s ≐ t)
-    (hφ : Γ ⊢[Ax] φ.subst (inst s)) : Γ ⊢[Ax] φ.subst (inst t) := by
-  refine .eqSubst φ (inst s) (inst t) (Fin.cases ?_ fun j => ?_) hφ
-  · simpa using h
-  · simpa using Prf.eqRefl (Ax := Ax) (Γ := Γ) (var j)
+    (hφ : Γ ⊢[Ax] φ.subst (inst s)) : Γ ⊢[Ax] φ.subst (inst t) :=
+  .eqSubst φ (inst s) (inst t) (fun i => Fin.cases h (fun _ => .eqRefl _) i) hφ
 
 theorem eqSymm {s t : T n} (h : Γ ⊢[Ax] s ≐ t) : Γ ⊢[Ax] t ≐ s := by
   simpa using eqSubst1 (Fm.eq (var 0) (Syn.shift s)) h (by simpa using Prf.eqRefl s)
@@ -210,21 +202,15 @@ theorem eqTrans {s t u : T n} (h₁ : Γ ⊢[Ax] s ≐ t) (h₂ : Γ ⊢[Ax] t �
 term. -/
 theorem eqCongr {k : ℕ} (t : T k) {σ σ' : Fin k → T n} (h : ∀ i, Γ ⊢[Ax] σ i ≐ σ' i) :
     Γ ⊢[Ax] Syn.subst σ t ≐ Syn.subst σ' t := by
-  have key := Prf.eqSubst (Ax := Ax) (Γ := Γ) (Fm.eq (var 0) (Syn.shift t))
+  simpa [Syn.subst_shift] using Prf.eqSubst (Fm.eq (var 0) (Syn.shift t))
     (Fin.cases (Syn.subst σ t) σ) (Fin.cases (Syn.subst σ t) σ')
-    (fun i => by
-      refine Fin.cases ?_ (fun j => ?_) i
-      · simpa using Prf.eqRefl (Ax := Ax) (Γ := Γ) (Syn.subst σ t)
-      · simpa using h j)
+    (fun i => Fin.cases (.eqRefl _) h i)
     (by simpa [Syn.subst_shift] using Prf.eqRefl (Ax := Ax) (Γ := Γ) (Syn.subst σ t))
-  simpa [Syn.subst_shift] using key
 
 /-- Congruence for one variable. -/
 theorem eqCongr1 (u : T (n + 1)) {s t : T n} (h : Γ ⊢[Ax] s ≐ t) :
-    Γ ⊢[Ax] Syn.subst (inst s) u ≐ Syn.subst (inst t) u := by
-  refine eqCongr u (Fin.cases ?_ fun j => ?_)
-  · simpa using h
-  · simpa using Prf.eqRefl (Ax := Ax) (Γ := Γ) (var j)
+    Γ ⊢[Ax] Syn.subst (inst s) u ≐ Syn.subst (inst t) u :=
+  eqCongr u fun i => Fin.cases h (fun _ => .eqRefl _) i
 
 end Prf
 

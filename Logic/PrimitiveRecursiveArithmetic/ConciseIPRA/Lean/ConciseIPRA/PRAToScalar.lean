@@ -100,27 +100,37 @@ theorem ax_comp {l : ℕ} (f : PR l) (gs : Fin l → PR k) :
   simp only [sigma_app_var]
   exact Prf.eqRefl _
 
+/-! ### The recursion equations of the code of a recursion, in `T_eq` -/
+
+theorem code_prec_zero (f : PR k) (g : PR (k + 2)) :
+    [] ⊢[TeqAx] Syn.subst (inst Tm.zero) (code (.prec f g)) ≐ code f := by
+  rw [code_prec, Tm.subst_prc, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
+  exact Q.prc_zero _ _
+
+theorem code_prec_succ (f : PR k) (g : PR (k + 2)) :
+    [] ⊢[TeqAx] Syn.subst (repl (Tm.succ (Syn.var 0))) (code (.prec f g))
+      ≐ Syn.subst (Fin.cases (Syn.var 0) (repl (code (.prec f g)))) (code g) := by
+  rw [code_prec, Tm.subst_prc, Syn.subst_var, Syn.repl_zero, Syn.subst_repl_shift,
+    Syn.subst_up_up_repl_up_up_shift]
+  convert Q.prc_succ (Γ := []) _ _ _ using 2
+  rw [Syn.subst_subst]
+  congr 1
+  funext j
+  refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun i => ?_) j) j <;> simp
+
 theorem ax_precZero (f : PR k) (g : PR (k + 2)) :
     [] ⊢[TeqAx] sigma (PTm.app (.prec f g) (inst PTm.zero)) ≐ sigma (PTm.app f Syn.var) := by
-  rw [sigma_app_var, sigma_app, sigma_inst, sigma_zero, code_prec, Tm.subst_prc,
-    Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift]
-  exact Q.prc_zero _ _
+  rw [sigma_app_var, sigma_app, sigma_inst, sigma_zero]
+  exact code_prec_zero f g
 
 theorem ax_precSucc (f : PR k) (g : PR (k + 2)) :
     [] ⊢[TeqAx] sigma (PTm.app (.prec f g) (repl (PTm.succ (Syn.var 0))))
       ≐ sigma (PTm.app g
           (Fin.cases (Syn.var 0) (repl (PTm.app (.prec f g) Syn.var)))) := by
-  have e : (fun j => sigma ((Fin.cases (Syn.var 0)
-        (repl (PTm.app (.prec f g) Syn.var)) : Fin (k + 2) → PTm (k + 1)) j))
-      = fun j => Syn.subst
-          (Fin.cases (Syn.var 0) (Fin.cases (code (.prec f g)) Syn.var))
-          ((up (up (fun i => Syn.var i.succ)) : Fin (k + 2) → Tm (k + 3)) j) := by
-    funext j
-    refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun i => ?_) j) j <;> simp [sigma_app_var]
-  rw [sigma_app, sigma_repl, sigma_succ, sigma_var, code_prec, Tm.subst_prc, Syn.subst_var,
-    Syn.repl_zero, Syn.subst_repl_shift, Syn.subst_up_up_repl_up_up_shift, sigma_app, e,
-    ← Syn.subst_subst]
-  exact Q.prc_succ _ _ _
+  rw [sigma_app, sigma_repl, sigma_succ, sigma_var, sigma_app]
+  convert code_prec_succ f g using 3
+  funext j
+  refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun i => ?_) j) j <;> simp [sigma_app_var]
 
 theorem ax_succNeZero :
     [] ⊢[TeqAx] ((Tm.succ (Syn.var 0) ≐ Tm.zero : Fm Tm 1) ⟶ Fm.bot) := by

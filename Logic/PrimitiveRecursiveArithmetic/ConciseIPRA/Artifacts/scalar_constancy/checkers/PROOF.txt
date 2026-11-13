@@ -1,0 +1,170 @@
+TWO COMPOSITIONS OF EXISTING iPRA CHECKER REFINEMENTS
+===================================================
+
+Source snapshot: VladimirReshetnikov/ProveIt,
+78edba03ee060644464f76e388578584b356520a,
+Logic/PrimitiveRecursiveArithmetic/ConciseIPRA.
+
+These are smaller implementations of the established presentations, not new
+arithmetic axioms, new logical primitives, or a global simplicity theorem.
+
+1. PRECISE COMPARISON
+
+The inspected direct-source compact checker family has observed coordinate
+minima 241 significant tokens, 262 AST nodes, and 469 normalized UTF-8 bytes.
+Those numbers belong to different programs. The baseline token checker is in
+docs/incoming/ipra_fixed_points_and_checker.zip; the node and byte checkers
+are in docs/incoming/ipra_shared_leaf_2026-11-12.zip. The latter byte checker
+is also present in ipra_uniform_terminals_2026-11-12.zip.
+
+The two new measured programs have vectors, in that order,
+
+  checker_ast261.py:   247 / 261 / 557;
+  checker_bytes468.py: 271 / 305 / 468.
+
+The observed envelope after adjoining them is 241 / 261 / 468. No one program
+attains that vector. Neither program improves the 241-token coordinate.
+This is a one-node and a one-byte improvement in two separate programs.
+
+The compact contract promises finite exact-integer/list certificate data and
+a canonical closed guarded public Eq/D formula. Internal raw formulas and
+terms need not be canonical. Neither candidate validates the entire public
+grammar or arbitrary JSON alphabet. The node profile is a JSON-lines stream;
+the byte profile is one JSON array, popped from the end, with [A,0] as its
+last element. In the byte profile A uses the shifted codec specified below.
+Unused suffixes/prefixes are permitted according to those reading orders.
+Success means normal termination with exactly ACCEPT and one LF. All other
+outcomes are rejection. Theorems concern ideal finite executions with
+unbounded resources, not a fixed hardware memory or recursion-depth cap.
+
+2. NODE COMPOSITION: DEFAULT-ARGUMENT INITIALIZATION
+
+The control has the module assignment k=0 and the function definition
+
+    def i(a,t=0j,d=0): ...
+
+The candidate removes that module assignment and changes the definition to
+
+    def i(a,t=0j,d=(k:=0)): ...
+
+No other source change is made before ast.unparse normalization. This is the
+initialization technique already exhibited in uniform_terminals, composed
+with the smaller shared_leaf node profile.
+
+Python evaluates function default expressions once when the definition
+executes, in the surrounding scope. The expression (k:=0) binds the same
+module variable k to the same integer zero and has value zero. Therefore
+after the definition executes, both modules have the same k binding, the
+same recursive function body, and the same default tuple (0j,0). Neither
+module has read input at this point. All later source statements are equal.
+Consequently they have identical acceptance behavior, input consumption,
+and normal output. Exception behavior agrees up to traceback source
+locations and the resource limitations stated above. The argument is unchanged by -O
+because neither program uses assert. The initialization cost decreases by
+one AST node: an Assign statement and a separate Constant default are
+replaced by one NamedExpr default. The entire normalized source is measured.
+
+3. BYTE COMPOSITION: TWO RESERVED COORDINATES
+
+This candidate composes the even depth offset of ipra_offset472.zip with
+the shared computation/hypothesis leaf of ipra_shared_leaf. Both ingredients
+are existing repository proposals. Relative to the exact 469-byte control:
+
+  default formula depth             0 -> 2;
+  inserted-image term depth         3 -> 5;
+  successor-computation term depth   3 -> 5;
+  D-witness exposure depth           2 -> 4;
+  initial neutral context        [[]] -> [0].
+
+The positive canonical binder coordinates are shifted by two. Numerical
+zero and negative rigid-parameter names are unchanged. The arity increment
+d+5-len(a), both computation equations, all nonterminal instructions and
+negative freshness allocation k:=k-1 are unchanged.
+
+The direct-leaf offset472 control, its detailed sorted-decoder argument and
+its canonical-fixture translator are included under controls/. That report
+proves the generic even-offset opening, exposure and freshness statements.
+Here is the additional argument required for the shared leaf.
+
+At every call the candidate first consumes one instruction [m,s,u,t]. It
+then checks the current no-image opening against the old context together
+with the one generated computation equation. If that membership succeeds,
+the call returns; otherwise it executes the existing nonterminal branches.
+
+Let O_k be the actual eager opening operation. At either codec depth, if
+O_k(a) with its invalid missing-image sentinel terminates, it returns
+literally a. Indeed, every scalar must have passed the retained-scope test:
+otherwise eager evaluation would recurse into the function-object sentinel
+and fail. An induction through arrays then proves literal identity, including
+annotation positions and empty arrays. This is stronger than a statement
+about canonical syntax, and is the only retraction property needed here.
+
+Thus a successful membership test yields one of two facts. Either a is a
+retained hypothesis, or a is exactly the generated computation equation.
+The first is Hyp. The second is one of the two iterator equations by the
+shifted sorted-decoder argument in controls/OFFSET_PROOF.txt, Sections 3-4.
+In particular the generated right side is subject to the actual eager
+opening and scope checks. At a nonterminal, the branches are literally the
+offset472 branches, so the same successful-call induction applies.
+
+For completeness, begin with the shifted direct-leaf compiler. A hypothesis
+call in that protocol consumes no packet. In the shared-leaf protocol insert
+the harmless packet [0,0,0,0] at that call. Its preview is [[0,0,0],0], whose
+evaluation is defined at every floor. The retained goal closes by membership.
+This includes the scalar neutral major 0, which is retained because formula
+depth 2 admits it directly. Every non-hypothesis call consumes the same
+packet as in the direct-leaf protocol, and its preview and continuation
+computations coincide. Recursively inserting the dummy packets at actual
+hypothesis leaves preserves branch structure, local floors, context entries
+and the exact end of each descendant packet stack. This last invariant
+prevents an early successful subcall from leaving packets in front of its
+parent's continuation.
+
+Consequently every successful shifted direct-leaf derivation has a shared-
+leaf certificate. Conversely, deleting the extra packet at shared hypothesis
+leaves translates a successful shared trace to the direct-leaf protocol.
+Both translations use successful finite call trees; they do not assert that
+the naive positive-integer shift translates every unshifted raw certificate.
+The supplied fixture translator is deliberately limited to canonical inputs.
+
+The retained term depth intervals at p protected variables are 2+2p for
+formulas and 5+2p for terms. Canonical binder slot j is 5+2j, numerical zero
+is 0, and rigid names lie in [k,0). Lowering k to k-1 therefore preserves all
+old closed meanings and allocates a fresh parameter. The reserved positive
+positions are zero aliases, not additional free variables. The source change
+from [[]] to [0] removes one token, one AST node and one byte; the other
+changes replace single-digit constants by single-digit constants.
+
+4. INTERPRETATION AND LIMITS
+
+The public theory is unchanged. Its ordinary realization is the inherited
+guarded scalar presentation, with the repository's full first-order iPRA
+bridge. Both numerical domains are whole, equality is actual equality, and
+both numerical comparison graphs are x=y. Both formula round trips are
+inherited, because these changes only alter certificate representation and
+Python initialization. Equiconsistency follows in particular by preservation
+of the ordinary interpretation of 0=S0.
+
+No claim is made that ordinary reading is complete for every unguarded raw
+auxiliary formula. The established public guarded restriction is essential.
+No new Lean/Rocq formalization of these Python programs is supplied. The
+universal arguments above are written proofs; finite checks are supporting
+evidence. The inspected source minima are upper bounds exhibited by current
+programs, not mathematical lower bounds on every possible iPRA presentation.
+
+5. ATTRIBUTION AND CENSUS BOUNDARY
+
+The new result is the specified composition of existing techniques. The
+calculus, codec, interpretation theorem, shared leaf and even-offset method
+are all inherited. The archive includes exact controls, their license,
+an independent fresh census CSV and the small isolated verification script.
+The census reads .py and .py.gz sources in Artifacts and all current incoming
+archives, recursively including nested archives. It does not execute them.
+It counts 5,232 occurrences and 1,881 distinct source contents, with zero
+parse errors under CPython 3.12.14. Two apparent low-token/node hits are
+source-generating builders, not checkers: upstream artifact blobs
+3ce42379f9a2bb53b272a99fb4ce7f482c685d1f and
+7ca4fe599cd0d13a2a803d6b45615ba914033abc. Compressed execution wrappers and
+deliberately unsound negative controls are separate, excluded categories.
+This is a measured-source census with stated classifications, not an
+automatic semantic certification of every program in the corpus.
