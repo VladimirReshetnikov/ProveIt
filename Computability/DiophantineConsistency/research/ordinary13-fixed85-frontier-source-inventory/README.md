@@ -7,7 +7,7 @@ After the Foundation submodule was initialized, the current snapshot classifies 
 | Classification | Names | Location or limit |
 |---|---:|---|
 | Other repository source roots | 24 | 19 BusyBeaver, 4 ZFCinPA and 1 PAHF files exist under their configured `lakefile.toml` source roots. The earlier scanner searched `Computability/DiophantineConsistency/Lean` for qualified names, so it did not find these roots. |
-| Configured Mathlib package | 42 | Exact `.lean` paths exist under the worktree's `.lake/packages/mathlib` link. |
+| Configured Mathlib package | 42 | Exact `.lean` paths exist under the worktree's `.lake/packages/mathlib` directory. |
 | Lean toolchain | 1 | `Lean.Elab.Tactic.Omega` exists in the current toolchain source. |
 | Configured Foundation source root | 26 | All exact paths now exist under this worktree’s `lib/FormalizedFormalLogic-Foundation`. Its clean HEAD equals the gitlink `32e1a0956a8622fad067328ca1959729a7634428`. |
 | Missing in checked roots | 1 | `Mathlib.Tactic.Omega` has no exact source under the configured Mathlib v4.32.0 checkout, and its expected Mathlib-package `.olean` is also absent. Another source root or compiled provider may exist; none has been authenticated. |
