@@ -1,0 +1,50 @@
+import ForwardCoordinateMap
+import DiophantineConsistency.ShearReverseCoordinateMap
+import DiophantineConsistency.Shear72ConditionalIPRA
+
+/-! SOURCE ONLY: the selected draft closure and every provider are unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Shear72JointIPRADraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation FoundationZFCConsistencyNat
+open Shear72ConditionalIPRADraft
+
+/-- The candidate coordinate map provides the parent-to-child witness. -/
+theorem parent_to_child : ParentToChild := by
+  intro V _ _ v hz
+  exact ShearForwardCoordinateMapDraft.forward_zero v hz
+
+/-- The magnitude map provides the child-to-parent witness. -/
+theorem child_to_parent : ChildToParent := by
+  intro V _ _ v hz
+  exact ShearReverseCoordinateMapDraft.reverse_zero v hz
+
+/-- Existential zeros may use different valuations in both directions. -/
+theorem same_no_zero : SameNoZero child parent :=
+  Shear72ConditionalIPRADraft.same_no_zero parent_to_child child_to_parent
+
+theorem bridge72 : PolynomialBridge child :=
+  Shear72ConditionalIPRADraft.bridge72 parent_to_child child_to_parent
+
+theorem native_equivalence : nativeTheory ⊢ IPRAExpressionNative.nativeNoZero child 🡘
+    ∼mappedNativeRefutation embedding :=
+  native_equivalence72 parent_to_child child_to_parent
+
+theorem standard_equivalence : IPRAStandardTheory.standardTheory ⊢
+    IPRAExpressionNative.nativeNoZero child 🡘 ∼mappedNativeRefutation embedding :=
+  standard_equivalence72 parent_to_child child_to_parent
+
+theorem standard_translated_equivalence : IPRAStandardTheory.standardTheory ⊢
+    IPRAExpressionNative.nativeNoZero child 🡘
+      (Semiformula.lMap embedding sourceSentence)ᴺ :=
+  standard_translated_equivalence72 parent_to_child child_to_parent
+
+end DiophantineConsistency.Shear72JointIPRADraft
+#print axioms DiophantineConsistency.Shear72JointIPRADraft.parent_to_child
+#print axioms DiophantineConsistency.Shear72JointIPRADraft.child_to_parent
+#print axioms DiophantineConsistency.Shear72JointIPRADraft.bridge72
+#print axioms DiophantineConsistency.Shear72JointIPRADraft.standard_translated_equivalence

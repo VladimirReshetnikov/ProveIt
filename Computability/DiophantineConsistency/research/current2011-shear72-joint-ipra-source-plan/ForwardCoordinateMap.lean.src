@@ -1,0 +1,92 @@
+import ForwardIndex
+import DiophantineConsistency.Shear72Literal
+import PositiveGapRepresentation
+import CurrentPortCast
+import ForwardNormOrder
+
+/-! Source-only draft; local imports denote inert draft predecessors. -/
+set_option autoImplicit false
+noncomputable section
+namespace DiophantineConsistency.ShearForwardCoordinateMapDraft
+open AdaptiveEquationSyntax2011 ModelDifferenceRing ModelArithmetic
+open ShearForwardIndexDraft Shear72LiteralDraft
+open ShearPositiveGapRepresentationDraft ShearCurrentPortCastDraft ShearForwardNormOrderDraft
+
+section Ring
+variable {R : Type*} [CommRing R]
+
+/-- V is independent of the y coordinate, even though the auxiliary factor is not. -/
+theorem V_update_y (p : Fin 4 → R) (u : Fin 14 → R) (x : R) :
+    (Carrier65.core p (Function.update u 12 x)).V = (Carrier65.core p u).V := by
+  simp [Carrier65.core,Function.update]
+
+/-- The signed shear of the inverse update recovers every parent coordinate. -/
+theorem shear_inverse (p : Fin 4 → R) (u : Fin 14 → R) (x : R)
+    (hx : x = u 12-(Carrier65.core p u).V) :
+    shearedValuation p (Function.update u 12 x) = u := by
+  funext j
+  by_cases hj : j = 12
+  · subst j
+    simp only [shearedValuation,Function.update_self,V_update_y]
+    rw [hx]
+    ring
+  · simp [shearedValuation,Function.update_of_ne,hj,Ne.symm hj]
+end Ring
+
+section Model
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def childValuation (v : Fin 14 → V) (n : V) : Fin 14 → V := Function.update v 12 n
+
+/-- The substituted natural coordinate is shifted by one before embedding. -/
+theorem shifted_child_eq_update (v : Fin 14 → V) (n : V) :
+    shiftedRing (childValuation v n) = Function.update (shiftedRing v) 12 (ι (n+1)) := by
+  funext j
+  by_cases hj : j = 12
+  · subst j; simp [shiftedRing,shifted,childValuation]
+  · simp [shiftedRing,shifted,childValuation,Function.update_of_ne,hj,Ne.symm hj]
+
+/-- Forward zero map with the positive model-natural representative supplied explicitly. -/
+theorem forward_zero_of_rep (v : Fin 14 → V) (n : V)
+    (hrep : ι (n+1) = shiftedRing v 12 - (Carrier65.core currentP (shiftedRing v)).V)
+    (hz : InternalZero (positiveShift
+      (OrdinarySphere7160Literal.expressionAt CurrentWindowCarry2011.ports)) v) :
+    InternalZero (positiveShift (Shear72LiteralDraft.expressionAt CurrentWindowCarry2011.ports))
+      (childValuation v n) := by
+  have hp : (OrdinarySphere7160Literal.expressionAt CurrentWindowCarry2011.ports).evalRing
+      (shiftedRing v) = 0 := by
+    apply (internalZero_iff _ _).mp
+    exact (internalZero_positiveShift _ v).mp hz
+  have hc : (Shear72LiteralDraft.expressionAt CurrentWindowCarry2011.ports).evalRing
+      (shiftedRing (childValuation v n)) = 0 := by
+    rw [shifted_child_eq_update,Shear72LiteralDraft.eval_eq_sheared71,
+      shear_inverse currentP (shiftedRing v) (ι (n+1)) hrep]
+    exact hp
+  apply (internalZero_positiveShift _ _).mpr
+  exact (internalZero_iff _ _).mpr hc
+
+/-- Proposed full forward model witness, conditional on all imported drafts. -/
+theorem forward_zero (v : Fin 14 → V)
+    (hz : InternalZero (positiveShift
+      (OrdinarySphere7160Literal.expressionAt CurrentWindowCarry2011.ports)) v) :
+    ∃ w : Fin 14 → V,
+      InternalZero (positiveShift (Shear72LiteralDraft.expressionAt CurrentWindowCarry2011.ports)) w := by
+  have hp : (OrdinarySphere7160Literal.expressionAt CurrentWindowCarry2011.ports).evalRing
+      (shiftedRing v) = 0 := by
+    apply (internalZero_iff _ _).mp
+    exact (internalZero_positiveShift _ v).mp hz
+  have hb : 0 < currentP 0 := by simpa only [currentP] using (FreshModel106.beta_pos (V:=V))
+  have hv : ∀ j, 0 < shiftedRing v j := by
+    intro j; simpa only [shiftedRing,shifted] using (FreshModel106.shifted_pos v j)
+  have hhalf := ring_half_at_parent_zero v hz
+  have hgap := literal_positive_shear FreshCarrierSpheres.modelFacts
+    CurrentWindowCarry2011.ports (shiftedRing v) hb hv hhalf hp
+  have hy : (Carrier65.core currentP (shiftedRing v)).y = shiftedRing v 12 := rfl
+  obtain ⟨n,hn⟩ := positive_gap_as_successor (shiftedRing v 12)
+    (Carrier65.core currentP (shiftedRing v)).V (by simpa only [hy] using hgap)
+  exact ⟨childValuation v n,forward_zero_of_rep v n hn hz⟩
+
+end Model
+end DiophantineConsistency.ShearForwardCoordinateMapDraft
