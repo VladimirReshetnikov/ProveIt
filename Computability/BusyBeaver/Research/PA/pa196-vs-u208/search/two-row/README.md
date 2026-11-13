@@ -11,6 +11,7 @@ as `g++`:
 ```sh
 python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/search/two-row/replay.py --output /tmp/pa196-two-rows.json
 python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/search/two-row/wide_near_misses.py --output /tmp/pa196-wide.json
+python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/search/two-row/blank_halt_control.py --output /tmp/pa196-blank-halt.json
 ```
 
 The first command compiles the C++ engine in a temporary directory, pins and
@@ -23,6 +24,8 @@ fold**. The JSON output is deterministic and matches [receipt.json](receipt.json
 The second command checks the four near misses in thirteen-cell windows and
 verifies finite full-tape traces to infinite right-moving sweeps. Its output
 matches [wide-receipt.json](wide-receipt.json), which records all four traces.
+The third command directly replays the two `{56,96}` mutations from the blank
+tape and matches [blank-halt-receipt.json](blank-halt-receipt.json).
 
 ## Search template and sound pruning
 
@@ -77,6 +80,14 @@ state/window has been proved reachable in the actual blank run: membership in
 an overapproximation is not reachability evidence. This is a counterexample to
 the attempted local proof over all admitted window completions, not a proof
 that the modified machine differs from PA196 on blank input.
+
+Independently of that overapproximation, both `{56,96}` orientations actually
+**halt from the all-zero tape after exactly 12,039 steps**. Their resulting
+machines each have 195 working states and the separate halt label 196. The
+blank replay verifies no earlier halt, the full final tape, and the identical
+projected boundary at child step 5,624 and PA196 parent step 5,620. Thus these
+two candidates do not preserve PA196's nonhalting. This finite finding gives no
+halting or nonhalting conclusion for either `{96,103}` orientation.
 
 The search excludes multi-parent-step blocks, different head/tape encodings,
 more than one state identification, modifications outside the retained rows,
