@@ -1,0 +1,46 @@
+import FourSquare88Model
+import DiophantineConsistency.HAAdaptiveFactor87
+import DiophantineConsistency.IPRAStandardTheory
+
+/-! SOURCE ONLY. The graph/model import is prospective; this client and the
+    selected combined providers have not been elaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.AdaptiveFourSquare88IPRADraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open HAExpressionAssembly AdaptiveFourSquare88ModelDraft
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation FoundationZFCConsistencyNat
+
+/-- Proposed same-model bridge for the exact shifted 88 expression. -/
+theorem bridge88 : PolynomialBridge naturalExpression :=
+  AdaptiveFourSquare88ModelDraft.bridge HAAdaptiveFactor87.polynomialBridge
+
+/-- Proposed native iPRA derivability, not either side of the equivalence. -/
+theorem native_equivalence88 : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero naturalExpression 🡘
+      ∼mappedNativeRefutation embedding :=
+  IPRAExpressionNative.equivalence_of_bridge naturalExpression bridge88
+
+theorem standard_equivalence88 : IPRAStandardTheory.standardTheory ⊢
+    IPRAExpressionNative.nativeNoZero naturalExpression 🡘
+      ∼mappedNativeRefutation embedding :=
+  (IPRAStandardTheory.provable_iff _).2 native_equivalence88
+
+/-- The mapped Gödel–Gentzen translation of Foundation's source sentence. -/
+theorem standard_translated_equivalence88 : IPRAStandardTheory.standardTheory ⊢
+    IPRAExpressionNative.nativeNoZero naturalExpression 🡘
+      (Semiformula.lMap embedding sourceSentence)ᴺ := by
+  apply (IPRAStandardTheory.provable_iff _).2
+  obtain ⟨h⟩ := native_equivalence88
+  have z := IPRABoundedRhoZFC.zfcEquiv
+  exact ⟨Entailment.K_intro
+    (Entailment.C_trans (Entailment.K_left h) (Entailment.K_right z))
+    (Entailment.C_trans (Entailment.K_left z) (Entailment.K_right h))⟩
+
+end DiophantineConsistency.AdaptiveFourSquare88IPRADraft
+#print axioms DiophantineConsistency.AdaptiveFourSquare88IPRADraft.bridge88
+#print axioms DiophantineConsistency.AdaptiveFourSquare88IPRADraft.native_equivalence88
+#print axioms DiophantineConsistency.AdaptiveFourSquare88IPRADraft.standard_equivalence88
+#print axioms DiophantineConsistency.AdaptiveFourSquare88IPRADraft.standard_translated_equivalence88
