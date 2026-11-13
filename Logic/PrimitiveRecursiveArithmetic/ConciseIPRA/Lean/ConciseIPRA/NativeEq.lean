@@ -38,15 +38,12 @@ namespace NFm
 
 /-- Instantiating a variable that was weakened under one binder. -/
 theorem subst_dummy_up_inst (B : NFm (n + 1)) (s : Tm (n + 1)) :
-    (B.subst (up (fun i => Syn.var i.succ))).subst (inst s) = B.subst (repl s) := by
-  rw [subst_subst]
-  refine B.subst_ext (Fin.cases ?_ fun j => ?_) <;> simp
+    (B.subst (up (fun i => Syn.var i.succ))).subst (inst s) = B.subst (repl s) :=
+  B.subst_comp fun i => by refine Fin.cases ?_ (fun j => ?_) i <;> simp
 
 theorem shift_subst_inst (B : NFm (n + 1)) (t : Tm n) :
-    (B.subst (inst t)).shift = B.subst (repl (Syn.shift t)) := by
-  unfold NFm.shift
-  rw [subst_subst]
-  refine B.subst_ext (Fin.cases ?_ fun j => ?_) <;> simp [Syn.shift]
+    (B.subst (inst t)).shift = B.subst (repl (Syn.shift t)) :=
+  B.subst_comp fun i => by refine Fin.cases ?_ (fun j => ?_) i <;> simp [Syn.shift]
 
 theorem shift_subst_inst_zero (B : NFm (n + 1)) :
     (B.subst (inst zero)).shift = B.subst (repl zero) :=
@@ -56,24 +53,19 @@ theorem shift_subst_inst_zero (B : NFm (n + 1)) :
 variable with the outer bound one. -/
 theorem subst_upup_inst_var (B : NFm (n + 2)) :
     (B.subst (up (up (fun i => Syn.var i.succ)))).subst (up (inst (Syn.var 0))) = B := by
-  rw [subst_subst]
-  refine B.subst_eq_self (Fin.cases ?_ fun j => ?_)
-  · simp
-  · rw [up_succ, Syn.subst_up_shift]
-    refine Fin.cases ?_ (fun l => ?_) j <;> simp
+  refine (B.subst_comp fun i => Fin.cases (by simp) (fun j => ?_) i).trans B.subst_id
+  rw [up_succ, Syn.subst_up_shift]
+  refine Fin.cases ?_ (fun l => ?_) j <;> simp
 
 /-- Weakening under one binder followed by identification of the new variable
 with the bound one. -/
 theorem subst_up_inst_var (B : NFm (n + 1)) :
-    (B.subst (up (fun i => Syn.var i.succ))).subst (inst (Syn.var 0)) = B := by
-  rw [subst_subst]
-  refine B.subst_eq_self (Fin.cases ?_ fun j => ?_) <;> simp
+    (B.subst (up (fun i => Syn.var i.succ))).subst (inst (Syn.var 0)) = B :=
+  (B.subst_comp fun i => by refine Fin.cases ?_ (fun j => ?_) i <;> simp).trans B.subst_id
 
 @[simp] theorem subst_repl_shift (A : NFm n) (s : Tm (n + 1)) :
-    A.shift.subst (repl s) = A.shift := by
-  unfold NFm.shift
-  rw [subst_subst]
-  exact A.subst_ext fun i => by simp
+    A.shift.subst (repl s) = A.shift :=
+  A.subst_comp fun i => by simp
 
 theorem map_shift_subst_repl (Γ : List (NFm n)) (c : Tm (n + 1)) :
     (Γ.map NFm.shift).map (fun A => A.subst (repl c)) = Γ.map NFm.shift := by

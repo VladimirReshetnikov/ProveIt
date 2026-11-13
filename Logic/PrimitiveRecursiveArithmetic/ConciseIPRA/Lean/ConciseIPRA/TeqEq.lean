@@ -1,19 +1,15 @@
 import ConciseIPRA.TeqPred
 
 /-!
-# Truncated subtraction and the equality test in `T_eq`
+# Truncated subtraction in `T_eq`
 
 `monus x y = I(y, x; u. pred u)` is truncated subtraction.  A single equation
 invariant,
 
   `sel (monus x y) x (y + monus x y) = x`,
 
-says that a positive difference is an actual difference; with
-`monus (S a) a = 1` it gives `monus (S a) b = 1 ↔ a = b`.  The term
-
-  `eqt a b = sel d 1 (pred d)`,  `d = monus (S a) b`,
-
-vanishes exactly when `d = 1`, so `eqt a b = 0 ↔ a = b` in every context.
+says that a positive difference is an actual difference.  The equality test
+built from it is in `TeqReflect`.
 -/
 
 namespace LeanProofs.ConciseIPRA
@@ -26,11 +22,7 @@ variable {n m : ℕ}
 /-- Truncated subtraction `I(y, x; u. pred u)`. -/
 def Tm.monus (x y : Tm n) : Tm n := Tm.iter y x (Tm.pred (Syn.var 0))
 
-/-- The equality test: zero exactly at equal arguments. -/
-def Tm.eqt (a b : Tm n) : Tm n :=
-  Tm.sel (Tm.monus (Tm.succ a) b) Tm.one (Tm.pred (Tm.monus (Tm.succ a) b))
-
-lift_op₂ monus eqt
+lift_op₂ monus
 
 namespace Q
 
@@ -78,33 +70,6 @@ theorem add_succ_of_monus_eq_succ {x y z : Q Γ} (h : monus x y = succ z) :
     succ (y + z) = x := by
   have h' := sel_monus x y
   rwa [h, sel_succ, add_succ] at h'
-
-theorem monus_succ_eq_one_iff {a b : Q Γ} : monus (succ a) b = 1 ↔ a = b := by
-  refine ⟨fun h => ?_, fun h => by rw [h, monus_succ_self]⟩
-  have h' := add_succ_of_monus_eq_succ (z := 0) h
-  rw [add_zero] at h'
-  exact (succ_inj h').symm
-
-/-! ### The equality test -/
-
-theorem eqt_eq (a b : Q Γ) :
-    eqt a b = sel (monus (succ a) b) 1 (pred (monus (succ a) b)) := by
-  induction a, b using Q.ind₂ with | _ a b => rfl
-
-theorem eq_one_of_sel_pred (d : Q Γ) (h : sel d 1 (pred d) = 0) : d = 1 := by
-  refine Q.cases d (fun e he => ?_) (fun e z he => ?_)
-  · have h' := congrArg e.map h
-    simp [he] at h'
-    exact Q.absurd h'.symm _ _
-  · have h' := congrArg e.map h
-    simp [he] at h'
-    simp [he, h']
-
-/-- The equality test reflects equality, in every context. -/
-@[simp] theorem eqt_eq_zero_iff {a b : Q Γ} : eqt a b = 0 ↔ a = b := by
-  refine ⟨fun h => monus_succ_eq_one_iff.1 (eq_one_of_sel_pred _ (by rwa [eqt_eq] at h)),
-    fun h => ?_⟩
-  rw [eqt_eq, monus_succ_eq_one_iff.2 h, sel_one, pred_one]
 
 end Q
 

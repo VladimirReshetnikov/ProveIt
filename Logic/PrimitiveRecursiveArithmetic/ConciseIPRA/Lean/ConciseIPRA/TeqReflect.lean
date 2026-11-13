@@ -1,4 +1,4 @@
-import ConciseIPRA.TeqEq
+import ConciseIPRA.TeqOrder
 
 /-!
 # Quantifier-free reflection and induction in `T_eq`
@@ -26,6 +26,11 @@ open scoped Fm
 
 variable {n m : ℕ}
 
+/-- The equality test: zero exactly when both truncated differences vanish. -/
+def Tm.eqt (a b : Tm n) : Tm n := Tm.sel (Tm.monus a b) (Tm.monus b a) Tm.one
+
+lift_op₂ eqt
+
 namespace Q
 
 variable {Γ : List (Fm Tm n)}
@@ -41,6 +46,18 @@ theorem eq_zero_of_sel_one {a d : Q Γ} (h : sel a d 1 = 0) : a = 0 := by
   · have h' := congrArg e.map h
     simp [he] at h'
     exact Q.absurd h'.symm _ _
+
+theorem eqt_eq (a b : Q Γ) : eqt a b = sel (monus a b) (monus b a) 1 := by
+  induction a, b using Q.ind₂ with | _ a b => rfl
+
+/-- The equality test reflects equality, in every context. -/
+@[simp] theorem eqt_eq_zero_iff {a b : Q Γ} : eqt a b = 0 ↔ a = b := by
+  rw [eqt_eq]
+  refine ⟨fun h => ?_, fun h => by rw [h, monus_self, sel_zero]⟩
+  have h₁ := eq_zero_of_sel_one h
+  rw [h₁, sel_zero] at h
+  have h' := add_monus_of_le h₁
+  rwa [h, add_zero] at h'
 
 end Q
 

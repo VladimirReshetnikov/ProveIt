@@ -101,17 +101,10 @@ theorem imp_iff (X Y : NFm n) : Γ ⊢[TeqAx] Fm.iff (NFm.imp X Y).toFm (X.toFm 
   refine Prf.iffI (.impI (.impI ?_)) (.impI ?_)
   · exact ofN2 (A := NFm.imp X Y) (A' := X) (B := Y) (NPrf.impE NPrf.hyp0 NPrf.hyp1)
       Prf.hyp1 Prf.hyp0
-  · have e : (NFm.sel (Syn.var 0) X.shift Y.shift).toFm.subst (inst zero)
-        = (NFm.sel zero X Y).toFm := by
-      rw [← NFm.toFm_subst, NFm.sel_shift_inst]
-    refine .impI ?_
-    have h0 : (NFm.sel (Syn.var 0) X.shift Y.shift).toFm.subst (inst zero)
-        :: (X.toFm ⟶ Y.toFm) :: Γ ⊢[TeqAx] (NFm.sel zero X Y).toFm := by
-      rw [← e]
-      exact Prf.hyp0
-    exact .impE (ofN1 (A := Y) (B := NFm.imp X Y) (NPrf.impI NPrf.hyp1)
-      (.impE Prf.hyp1 (ofN1 (A := NFm.sel zero X Y) (B := X) (NEquiv.sel_zero X Y).1 h0)))
-      Prf.hyp0
+  · refine .impI (.impE (ofN1 (A := Y) (B := NFm.imp X Y) (NPrf.impI NPrf.hyp1)
+      (.impE Prf.hyp1 (ofN1 (A := (NFm.sel (Syn.var 0) X.shift Y.shift).subst (inst zero))
+        (B := X) (by rw [NFm.sel_shift_inst]; exact (NEquiv.sel_zero X Y).1)
+        (by rw [NFm.toFm_subst]; exact Prf.hyp0)))) Prf.hyp0)
 
 theorem all_iff (X : NFm (n + 1)) : Γ ⊢[TeqAx] Fm.iff (NFm.all X).toFm (Fm.all X.toFm) := by
   refine Prf.iffTrans (and_iff _ _) ?_
