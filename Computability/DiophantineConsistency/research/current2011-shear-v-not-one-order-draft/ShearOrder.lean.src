@@ -1,0 +1,50 @@
+import DiophantineConsistency.ModelCarrierSpheres
+
+/-! Source-only proof draft; not elaborated or kernel checked. -/
+set_option autoImplicit false
+noncomputable section
+namespace DiophantineConsistency.ShearOrderDraft
+open Carrier65
+
+variable {R : Type*} [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+
+/-- A direct order proof; no residue of `f²` modulo `c` is assumed. -/
+theorem carrier_ne_one (c f T rank : R)
+    (hc : 1 ≤ c) (hf : 2 ≤ f) (hT : 1 ≤ T) (hhalf : 2*rank < c) :
+    f^2*(c*T-rank)-c ≠ 1 := by
+  intro h
+  have hc0 : 0 ≤ c := by linarith
+  have hct : c ≤ c*T := by
+    have := mul_nonneg hc0 (sub_nonneg.mpr hT)
+    nlinarith
+  have hgap : 0 ≤ c*T-rank := by linarith
+  have hf4 : 4 ≤ f^2 := by nlinarith
+  have hproduct : 0 ≤ (f^2-4)*(c*T-rank) :=
+    mul_nonneg (sub_nonneg.mpr hf4) hgap
+  nlinarith only [hc,hhalf,hct,h,hproduct]
+
+/-- At a unit auxiliary norm, only `V=1` can obstruct the positive shear. -/
+theorem positive_shear (A V y : R)
+    (hA : 1 ≤ A) (hy : 1 ≤ y)
+    (hnorm : A*(V^2-y^2)+y^2 = 1) (hV : V ≠ 1) : V < y := by
+  by_contra hn
+  have hle : y ≤ V := le_of_not_gt hn
+  have hdiff : 0 ≤ V^2-y^2 := by
+    have := mul_nonneg (sub_nonneg.mpr hle) (show 0 ≤ V+y by linarith)
+    nlinarith
+  have haux : 0 ≤ A*(V^2-y^2) := mul_nonneg (by linarith) hdiff
+  have hyone : y = 1 := by nlinarith
+  have hprod : A*(V^2-y^2) = 0 := by linarith [hnorm,hyone]
+  have hbound : 0 ≤ (A-1)*(V^2-y^2) := mul_nonneg (sub_nonneg.mpr hA) hdiff
+  have hVone : V = 1 := by nlinarith [hbound,hprod,hdiff,hyone]
+  exact hV hVone
+
+/-- Exact Carrier65 carrier expression, with all order bounds explicit. -/
+theorem graph_carrier_ne_one (p : Fin 4 → R) (v : Fin 14 → R)
+    (hc : 1 ≤ (core p v).c) (hf : 2 ≤ (core p v).f)
+    (hT : 1 ≤ v 6) (hhalf : 2*(core p v).rank < (core p v).c) :
+    (core p v).V ≠ 1 := by
+  change (core p v).f^2*((core p v).c*v 6-(core p v).rank)-(core p v).c ≠ 1
+  exact carrier_ne_one _ _ _ _ hc hf hT hhalf
+
+end DiophantineConsistency.ShearOrderDraft
