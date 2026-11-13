@@ -1,0 +1,15 @@
+# Independent review: actual-rank slice and first-root obstruction
+
+The [reviewed construction](../../research/ordinary13-independent-k-actual-rank-boundary-audit/README.md) is a valid standard-integer partial-witness construction and a valid obstruction to its **specific** coordinate slice at the stated fixed symbolic compact tuple. I found no error in its parity, rank window, Pell-growth comparison, first-root divisibility, or symbolic kernel remainder bound. It does not produce a full graph zero or settle eta≤k, a replacement map, or the global zero-set question.
+
+For J=1, F=1, alpha=2, w=1 and s=1, direct inspection of the child rows gives `q=beta+1`, `X=q`, `Y=q³`, and `R=(beta²+2)(q²−1)+MC+q*MF`. The radix rho is even, so beta=rho⁸⁸⁰⁷−1 is odd and q is even. The zero-index mask digit is rho−2: zero is in the support and is not the special or removed index. Thus MC is even and R is odd. With `MC≤q−2` and `MF≤2q−3`, the rank has the stated cap; the difference between q⁴ and the cap plus the desired window terms is exactly `(q−4)(q²−1)≥0`. Also R is large enough that `n=(R+1)/2≥14` and R=2n−1.
+
+There is an important application boundary: this chosen n can be much larger than q, so the earlier example family's assumption `q≥2n+2` cannot be imported wholesale. The earlier **growth estimate itself** only needs q≥24 and n≥9. It gives `k≤2*6^(n−1)*q^(7n−7)` and `c≥q^(8n−8)`, and `q^(n−4)>4*6^(n−1)` yields `c>(Y+1)k`. The actual-rank cap supplies the q⁴ window independently; R+1=2n makes its congruence immediate. The checker exercises the growth comparison even where q<2n+2. Thus the mathematical use of the earlier estimate is justified without that old family hypothesis.
+
+The graph's first root has `Z=beta*(ell+k+r−kB)−B`. A vanishing first residual gives beta²|Z², hence beta|Z and beta|B over the integers. On the selected slice `B=beta*(beta+K0−1)−(2K0+3)`, so beta must divide 2K0+3. For `K'=K0−rho⁴² beta`, the positive rho⁴² term and all remaining kernel terms yield `0<K'≤T*rho⁵⁴⁹⁵<rho⁵⁴⁹⁶`: there are four small monomials plus the rho⁴² term, two powers per 943 selectors bounded by `1+2⁵¹`, and two per 41 copy coefficients bounded by `2⁵⁰`. The receipt checks `T<rho`; every remaining power has exponent at most 5495. Since rho⁸⁸⁰⁷≥8rho⁵⁴⁹⁶, `0<2K'+3<beta`, so beta cannot divide `2K0+3`. The first residual therefore cannot vanish on this slice, regardless of the other witness coordinates.
+
+The receipt reproduces the author's and shared-index receipts, separately checks relevant graph rows and digit/kernel source recipes, verifies the rank-cap polynomial coefficients, and exercises the divisibility and growth inequalities. The symbolic compact tuple is not expanded. These checks provide no Lean or arbitrary-model proof, compiled-provider audit, physical-PDF link, or result for other coordinate slices. From `Computability/DiophantineConsistency` run:
+
+```
+python3 -I -S -B reviews/ordinary13-independent-k-actual-rank-boundary-independent/check.py | cmp - reviews/ordinary13-independent-k-actual-rank-boundary-independent/receipt.json
+```

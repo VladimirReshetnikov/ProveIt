@@ -1,0 +1,90 @@
+import IndependentKFirstRankDiscrete
+import IndependentKJPositive
+import DiophantineConsistency.Compact44.C44Short15Facts
+import DiophantineConsistency.Compact44.CompactSymbolicModelIff
+import DiophantineConsistency.Compact44.P72Root
+import Mathlib.Tactic.Linarith
+
+/-! Source-only fixed compact tuple client. Child graph-to-norm/rank bindings,
+Lean elaboration and provider closure are not supplied here. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.IndependentKFixedCompactPortsDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open IndependentKUnitGraphDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The tuple named by the retained fixed-symbolic compact source. -/
+def natPorts : Fin 4 → ℕ := C44Short15Facts.c44
+
+def intPorts : Fin 4 → ℤ := fun j => (natPorts j : ℤ)
+
+theorem fixed_ports_eq_retained : intPorts=CompactSymbolicModelIff.p := by rfl
+
+/-- Natural-to-integer-to-model signed cast, at each exact child port. -/
+theorem port_cast (j : Fin 4) :
+    ((intPorts j : ℤ) : DiffRing V)=ι (natPorts j : V) := by
+  simpa only [intPorts] using (P72Root.cast_port (V:=V) natPorts j)
+
+/-- The fixed K is the source's chosen symbolic kernel, rather than an
+arbitrary externally supplied integer. -/
+theorem bounds :
+    0<(natPorts 0:V) ∧ 0<(natPorts 1:V) ∧
+      (natPorts 2:V)<(natPorts 0:V) ∧
+      (natPorts 3:V)<2*(natPorts 0:V) := by
+  have hp := C44Short15Facts.port_bounds (V:=V) CompactFixedBeta.betaNat
+    (CompactSymbolicKernelOpaque.paramKernel CompactSymbolicKernel.rho)
+    CompactSymbolicPorts.lowNat CompactSymbolicPorts.highNat
+    CompactFixedBeta.beta_identity rfl rfl
+  have hk := C44Short15Facts.K_pos (V:=V) CompactFixedBeta.betaNat
+    (CompactSymbolicKernelOpaque.paramKernel CompactSymbolicKernel.rho)
+    CompactSymbolicPorts.lowNat CompactSymbolicPorts.highNat rfl
+  change 0<(natPorts 0:V) ∧ (natPorts 2:V)<(natPorts 0:V) ∧
+    (natPorts 3:V)<2*(natPorts 0:V) ∧ (46:V)≤(natPorts 0:V) at hp
+  change 0<(natPorts 1:V) at hk
+  exact ⟨hp.1,hk,hp.2.1,hp.2.2.1⟩
+
+/-- Source-level use of the separately drafted exact-child J argument. -/
+theorem child_J_positive (v : Fin 13 → V)
+    (hz : InternalZero (graph intPorts).output v) : 0<v 0 := by
+  apply IndependentKJPositiveDraft.J_positive natPorts v
+  simpa only [intPorts] using hz
+
+/-- Fixed-port specialization of the conditional zero-k contradiction.
+The exact child identities are still explicit inputs; the theorem does not
+supply a graph-to-first-norm, rank, or main-norm binding. -/
+theorem zero_k_fact_cut
+    (v : Fin 13 → V) (q R X Y : V) (z : DiffRing V)
+    (hJ : 0<v 0)
+    (hq : q=(natPorts 0:V)*v 0+1)
+    (hfirst : let b : DiffRing V := ι (natPorts 0:V)*ι (v 0)
+      let C : DiffRing V := ι q-ι (v 1+1)-ι (v 2+1)
+      let B : DiffRing V := C*ι (X+(natPorts 1:V))-ι (v 1+1)
+      (b*ι (v 8)-B)*(b*ι (v 8)-B)=b*b)
+    (hrank : (ι R : DiffRing V)=
+      ((ι (v 2+1))+((ι q)-(ι (v 1+1)))*((ι (natPorts 0:V))*(ι (v 0))))*
+      ((ι q)*(ι q)-1)+(ι (v 0))*(ι (natPorts 2:V)+(ι q)*(ι (natPorts 3:V))))
+    (hY : Y=q^3*(v 7+1))
+    (hshape : let a:=X*Y+Y; let H:=3+4*a; let U:=Y*(q*q)
+      z=ι U*(ι X+ι a*ι (v 9))+ι H*(ι U*ι (v 12)+ι (R+1)))
+    (hnorm : let a:=X*Y+Y; let H:=3+4*a; let U:=Y*(q*q)
+      z*z=ι U*ι U*(1+(ι H+ι a*ι a)*(ι (v 9)*ι (v 9)))) : False := by
+  obtain ⟨hb,hK,hMC,hMF⟩ := bounds (V:=V)
+  have hF : 0<v 1+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have ha : 0<v 2+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hs : 0<v 7+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hd : 0<X+(natPorts 1:V) := add_pos_of_nonneg_of_pos (Arithmetic.zero_le X) hK
+  have hqpos : 0<q := by rw [hq]; exact add_pos_of_nonneg_of_pos (Arithmetic.zero_le _) (by simp)
+  exact IndependentKFirstRankDiscreteDraft.zero_k_impossible
+    q (natPorts 0:V) (v 0) (natPorts 2:V) (natPorts 3:V)
+    (v 1+1) (v 2+1) (X+(natPorts 1:V)) (v 8) R X Y (v 7+1)
+    (v 9) (v 12) z hq hb hJ hMC hMF hF ha hd hfirst hrank hqpos hs hY hshape hnorm
+end DiophantineConsistency.IndependentKFixedCompactPortsDraft
+#print axioms DiophantineConsistency.IndependentKFixedCompactPortsDraft.fixed_ports_eq_retained
+#print axioms DiophantineConsistency.IndependentKFixedCompactPortsDraft.port_cast
+#print axioms DiophantineConsistency.IndependentKFixedCompactPortsDraft.bounds
+#print axioms DiophantineConsistency.IndependentKFixedCompactPortsDraft.child_J_positive
+#print axioms DiophantineConsistency.IndependentKFixedCompactPortsDraft.zero_k_fact_cut
