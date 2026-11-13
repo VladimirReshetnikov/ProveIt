@@ -27,7 +27,7 @@ mkdir -p "$task_dir/M6" "$task_dir/PA196" "$task_dir/DiophantineConsistency"
 # PA-consistency module below does not hide its other imports.
 for task_dep in "$IPRA_LEAN_OVERLAY"/DiophantineConsistency/*; do
   task_name=${task_dep##*/}
-  case "$task_name" in IPRAPA196Consistency.olean*) continue ;; esac
+  case "$task_name" in IPRAPA196Consistency.olean*|PRAWitnessRefutationOuter.olean*) continue ;; esac
   ln -s "$task_dep" "$task_dir/DiophantineConsistency/$task_name"
 done
 export PA196_TASK_CHECK_DIR="$task_dir" IPRA_LEAN_OVERLAY IPRA_FOUNDATION_OVERLAY
@@ -42,12 +42,15 @@ lean -M6000 -j1 "$upstream/PA196/Literal.lean" -o "$PA196_TASK_CHECK_DIR/PA196/L
 lean -M6000 -j1 "$bridge/PA196Bounded.lean" -o "$PA196_TASK_CHECK_DIR/PA196Bounded.olean"
 lean -M6000 -j1 Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRAPA196Consistency.lean \
   -o "$PA196_TASK_CHECK_DIR/DiophantineConsistency/IPRAPA196Consistency.olean"
+lean -M6000 -j1 Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAWitnessRefutationOuter.lean \
+  -o "$PA196_TASK_CHECK_DIR/DiophantineConsistency/PRAWitnessRefutationOuter.olean"
 lean -M6000 -j1 "$bridge/PA196BoundedChecks.lean" | tee "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196Endpoint.lean" -o "$PA196_TASK_CHECK_DIR/PA196Endpoint.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196StandardSemantics.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196ForwardGG.lean" -o "$PA196_TASK_CHECK_DIR/PA196ForwardGG.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196ReverseGG.lean" -o "$PA196_TASK_CHECK_DIR/PA196ReverseGG.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PRAAssembly.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PACoreBound.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 if rg -q "sorryAx" "$PA196_TASK_CHECK_DIR/axioms.log"; then
   echo "Unexpected sorryAx in theorem dependencies" >&2
   exit 1

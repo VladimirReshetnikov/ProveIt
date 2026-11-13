@@ -56,6 +56,9 @@ both polarities of the PA derivation core. The existing proofs of those bounds
 are specialized to the set-theory language. Reusing them for PA requires, in
 particular, bounds for the actual arithmetic induction-axiom recognizer;
 its Δ₁ definability in IΣ₁ alone does not supply the required PRA certificate.
+`PA196PACoreBound.lean` instantiates the generic theorem for the exact PA
+refutation predicate. Its two all-model core bounds are explicit hypotheses
+and remain unproved.
 
 `PA196PRAAssembly.lean` composes the two conditional transfers with the
 intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
