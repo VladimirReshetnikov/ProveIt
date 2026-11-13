@@ -1554,8 +1554,12 @@ The subsection is \pkg{backward\_replacement}, which presents itself as an
 executable demonstrator of correctness for $\mathsf{B}$ and states
 \cref{kern:thm:brep,kern:thm:bminus}; it takes the marker and the bridge to
 $\iPRA$ from \pkg{template\_free} and \cref{base:thm:bridge}, and finds no
-earlier statement of \rulename{BRep} in the corpus.  No calculus of the
-subsection is formalized in Lean.  The checker of the package implements
+earlier statement of \rulename{BRep} in the corpus.  The Lean module
+\Lean{NativeReplacementCalculi} formalizes $\mathsf{B}$ and $\mathsf{B}_{7}$
+(\Lean{bprf\_iff\_nprf}, \Lean{b7prf\_iff\_nprf}); the equality rules and
+\rulename{Tr} are derived from \rulename{I0} and \rulename{BRep} generically
+(\Lean{BRKernel}), and the introductions come from \Lean{WKernel}.  The
+restricted calculi are not formalized.  The checker of the package implements
 $\mathsf{B}$ with unrestricted sources; $\mathsf{B}_{7}$, $\mathsf{B}^{-}$
 and $\mathsf{B}^{-}_{7}$ are written proofs only.  Its tests are finite: 18
 accepted open or closed sequents, with instances of all eight rules, zero
@@ -5128,9 +5132,11 @@ results that were not achieved.
  formalized in Lean, and both rest on the written proof of
  \cref{kern:thm:ur}.
 \item \pkg{template\_free}: the calculus $\mathsf{G}_7$, with \rulename{Rep}
- and the single introduction together, is not formalized in Lean.
-\item \pkg{backward\_replacement}: none of $\mathsf{B}$, $\mathsf{B}_{7}$,
- $\mathsf{B}^{-}$, $\mathsf{B}^{-}_{7}$ is formalized in Lean; the package
+ and the single introduction together, is formalized in Lean
+ (\Lean{g7prf\_iff\_nprf}, generically over \Lean{TFKernel}).
+\item \pkg{backward\_replacement}: $\mathsf{B}$ and $\mathsf{B}_{7}$ are
+ formalized in Lean (\Lean{NativeReplacementCalculi}), $\mathsf{B}^{-}$ and
+ $\mathsf{B}^{-}_{7}$ are not; the package
  suggests extending the Lean calculus \Lean{TPrf} of $\mathsf{G}$ and reusing its marker
  lemma \Lean{Tm.rep\_marker}, with the bridge unchanged.  Its checker is not
  formally verified, and the restricted calculi are not implemented.  No
