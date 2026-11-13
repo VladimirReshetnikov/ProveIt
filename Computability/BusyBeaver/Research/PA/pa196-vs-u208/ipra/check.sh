@@ -7,6 +7,9 @@ set -euo pipefail
 : "${IPRA_FOUNDATION_OVERLAY:?Set IPRA_FOUNDATION_OVERLAY to the built Foundation module directory}"
 repo=$(git -C "$(dirname "$0")" rev-parse --show-toplevel)
 cd "$repo"
+IPRA_LEAN_OVERLAY=$(realpath "$IPRA_LEAN_OVERLAY")
+IPRA_FOUNDATION_OVERLAY=$(realpath "$IPRA_FOUNDATION_OVERLAY")
+test -d "$IPRA_LEAN_OVERLAY/DiophantineConsistency"
 
 sha256sum -c <<'PINS'
 152d1d552b27baca8db0ac05b16092d9083c2ab979bb0b4e7f96a95803d9a9b0  Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/M6/Zip.lean
@@ -18,7 +21,15 @@ PINS
 
 task_dir=$(mktemp -d "${TMPDIR:-/tmp}/pa196-ipra-check.XXXXXXXX")
 trap 'rm -rf "$task_dir"' EXIT
-mkdir -p "$task_dir/M6" "$task_dir/PA196"
+mkdir -p "$task_dir/M6" "$task_dir/PA196" "$task_dir/DiophantineConsistency"
+# A module namespace is resolved from one search-path root.  Link the
+# existing dependency objects into our private overlay so that rebuilding the
+# PA-consistency module below does not hide its other imports.
+for task_dep in "$IPRA_LEAN_OVERLAY"/DiophantineConsistency/*; do
+  task_name=${task_dep##*/}
+  case "$task_name" in IPRAPA196Consistency.olean*) continue ;; esac
+  ln -s "$task_dep" "$task_dir/DiophantineConsistency/$task_name"
+done
 export PA196_TASK_CHECK_DIR="$task_dir" IPRA_LEAN_OVERLAY IPRA_FOUNDATION_OVERLAY
 lake env bash -c '
 set -euo pipefail
@@ -29,7 +40,10 @@ bridge=Computability/BusyBeaver/Research/PA/pa196-vs-u208/ipra
 lean -M6000 -j1 "$upstream/M6/Zip.lean" -o "$PA196_TASK_CHECK_DIR/M6/Zip.olean"
 lean -M6000 -j1 "$upstream/PA196/Literal.lean" -o "$PA196_TASK_CHECK_DIR/PA196/Literal.olean"
 lean -M6000 -j1 "$bridge/PA196Bounded.lean" -o "$PA196_TASK_CHECK_DIR/PA196Bounded.olean"
+lean -M6000 -j1 Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRAPA196Consistency.lean \
+  -o "$PA196_TASK_CHECK_DIR/DiophantineConsistency/IPRAPA196Consistency.olean"
 lean -M6000 -j1 "$bridge/PA196BoundedChecks.lean" | tee "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196Endpoint.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 if rg -q "sorryAx" "$PA196_TASK_CHECK_DIR/axioms.log"; then
   echo "Unexpected sorryAx in theorem dependencies" >&2
   exit 1

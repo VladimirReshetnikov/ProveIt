@@ -17,12 +17,21 @@ standard-model results do **not** prove either reduction inside iPRA, nor do
 they prove an equivalence with PA consistency. In particular, they do not
 formalize the correctness of the machine's proof search.
 
+`PA196Endpoint.lean` connects this particular halting sentence to the native
+intuitionistic reading of the PA-consistency formula. Its conclusion is an
+iPRA derivation, but it explicitly assumes iPRA derivations of both
+machine-specific implications: PA refutability implies halting, and halting
+implies double-negated PA refutability. Neither implication is established
+here. The comparison of this native consistency formula with the separately
+defined Gödel–Gentzen reading also remains conditional.
+
 ## Checking
 
 The check uses Lean 4.32.0 and the root project's Lake environment. It checks
 source hashes for the imported zipper, literal machine, table, and two direct
-iPRA sources; rebuilds the upstream zipper and literal modules and this bridge
-in a private temporary directory; and prints axiom dependencies. Its two
+iPRA sources; rebuilds the upstream zipper, literal machine, consistency module,
+and these bridge modules in a private temporary directory; and prints axiom
+dependencies. Its two
 dependency overlays must already exist and must themselves be built from the
 matching sources and toolchain. It does not rebuild or independently verify
 their transitive dependencies.
