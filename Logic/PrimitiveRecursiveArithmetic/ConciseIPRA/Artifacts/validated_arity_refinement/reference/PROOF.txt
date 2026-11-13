@@ -1,0 +1,64 @@
+EXACT ARITY-MODE REFINEMENT OF THE FULLY VALIDATED iPRA CHECKER
+
+The candidate differs from the pinned 599-byte control by precisely one
+predicate replacement:
+
+    v <= (len(a) in (1, 2 + d % 2))
+
+becomes
+
+    len(a) ** v in (1, 2 + d % 2).
+
+Invariant: at every evaluation of this predicate, v is either 0 or 1.
+The initial public-goal call explicitly supplies v=1. Every recursive call
+uses the default v=0. In the initial call, v is assigned 0 after the first
+opening has completed and before subsequent proof operations. The recursive
+opening closure uses that same local flag. There is no user assignment to v.
+
+The preceding short-circuit condition a*0 != 0 ensures that, on inputs that
+pass the whole-JSON alphabet validation, this predicate is evaluated only
+for a list. Hence n=len(a) is an ordinary nonnegative integer. The candidate
+does not change the preceding condition, the JSON parser, or the alphabet
+validation; values of forbidden JSON types are rejected before checking.
+
+For v=1, n**v=n, and 1 <= Boolean(P) holds exactly when P holds. Thus the
+two predicates agree. For v=0, 0 <= Boolean(P) always holds; n**0=1,
+including 0**0=1; and 1 belongs to (1,2+d%2). They again agree. This proof
+does not require d to be nonnegative, nor any fixed arity bound.
+
+The predicates have no side effects and raise no exceptions for finite
+integer/list inputs under ideal finite-resource semantics. Replacing one
+with the other therefore preserves every branch, returned value, input
+packet read, context mutation, and scope-allocation event. Both the public
+grammar check and the subsequent proof execution are identical. Consequently
+the two complete modules have the same successful finite input/output
+relation, with no certificate translator and no change in the input contract.
+The test harness rotates legacy fixture packets only because those inherited
+fixtures predate BOTH the control and candidate; both receive identical input.
+
+The existing control's ordinary Eq/D calculus, full iPRA bi-interpretation,
+whole domains, actual equality, both formula round trips, and identity
+comparison graphs transfer without alteration. This change deletes no
+mathematical axiom or inference rule. It is a strict source-size improvement
+for the fully validated presentation, not a new mathematical foundation.
+
+CPython 3.12.14 whole-module ast.unparse normalization plus one LF:
+
+                         tokens  AST nodes  bytes  gzip-9
+    pinned control         330      372      599     391
+    candidate              328      372      597     392
+
+Gzip uses level 9 and mtime=0 on normalized source. Its one-byte regression
+is reported explicitly. The candidate does not beat the separate 319-token
+or 358-node strict records, nor the compact unvalidated byte record.
+
+Validation: 43 inherited positive/negative/malformed/scope fixtures against
+both modules in ordinary and optimized Python, 172 subprocess executions,
+zero unexpected results. An additional 4810 finite predicate comparisons
+cover n=0..64, d=-12..24 and v in {0,1}. These tests support implementation
+validation; the universal argument is the case split above. No new Lean or
+Rocq verification is claimed.
+
+Run `python3 verify.py` from this directory to reproduce the measurements
+and the fixture checks. Python's fixed physical resource limits may reject
+large legitimate certificates; they are not part of mathematical completeness.

@@ -1,0 +1,43 @@
+{
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "commit": "95d3dd192e97a19bd4f8783c764331ec41126264",
+  "root": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA",
+  "date": "2026-11-13",
+  "controls": [
+    {
+      "file": "controls/strict_tokens.py",
+      "upstream": "Artifacts/checked_presentations/strict/code/strict_tokens.py",
+      "sha256": "ce77166485842821a52869353519df612f40e42801cb5cde34b093d77faf28e3"
+    },
+    {
+      "file": "controls/strict_ast.py",
+      "upstream": "Artifacts/checked_presentations/strict/code/strict_ast.py",
+      "sha256": "dae2e331312e3b649df50acbfd52e812db380a8f9364f9a4d4e565c62e2a4698"
+    },
+    {
+      "file": "controls/checker_strict599.py",
+      "upstream_archive": "docs/incoming/ipra_prefix_conditional_2026-11-12.zip",
+      "member": "ipra_prefix_conditional_2026-11-12/code/checker_strict599.py",
+      "sha256": "5720b1d444343c72a15d345b347f607862ff540c2f93de713628b436b139b91e"
+    }
+  ],
+  "transformations": [
+    {
+      "candidates": [
+        "code/checker_strict_tokens317.py",
+        "code/checker_strict_ast356.py"
+      ],
+      "operation": "Replace g += [0] by g += b'\\x00'",
+      "attribution": "The byte-iterable device is inherited from procedure_presentation; these normalized combinations are absent from the source census."
+    },
+    {
+      "candidates": [
+        "code/checker_strict597.py"
+      ],
+      "operation": "Replace v <= (len(a) in (1, 2 + d % 2)) by len(a) ** v in (1, 2 + d % 2)",
+      "attribution": "New predicate rewrite, proved for the internal Boolean phase invariant."
+    }
+  ],
+  "pdf_builder": "Adapted with report filenames from Artifacts/absorbing_predecessor/pdf_build.py, MIT-0.",
+  "mathematical_foundations": "Inherited native calculus, ordinary T_eq, and full iPRA bridge from pinned repository. No new primitive basis claimed."
+}
