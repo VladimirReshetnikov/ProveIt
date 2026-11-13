@@ -1,6 +1,6 @@
 # Fixed-85 lexical frontier: bounded source-location inventory
 
-This inventory classifies the 94 names left unresolved by `ordinary13-fixed85-native-composition-draft/scan.py`. It uses the exact source-root paths configured in the present worktree and the Mathlib package linked by this worktree, plus one explicitly identified alternate Foundation checkout. It does not copy, build, modify or authenticate providers, and it does not claim that the selected sources elaborate.
+This inventory classifies the 94 names left unresolved by `ordinary13-fixed85-native-composition-draft/scan.py`. It uses the exact source-root paths configured in the present worktree and the Mathlib package present in this worktree, plus one explicitly identified alternate Foundation checkout. It does not copy, build, modify or authenticate providers, and it does not claim that the selected sources elaborate.
 
 After the Foundation submodule was initialized, the current snapshot classifies the names as follows:
 
