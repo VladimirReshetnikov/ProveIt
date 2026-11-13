@@ -32,13 +32,19 @@ and generates Lean files for the following kernel checks:
   `PA196.Program.sites`, a source run starting at ordinal 25 with register 0
   equal to 2 and the others zero reaches ordinal 3692 only with registers
   3, 4, 5, and 6 zero.
+* `MaskEncoding.lean`, `MaskSets.lean`, and `CertificateBridge.lean` prove
+  that the bitset transfer checks imply `Closed`, conditional on two explicit
+  assumptions: a `TableClosed` proof of the checks for every relevant row in
+  an extracted instruction table, and equality of that entire table with the
+  source resolver. The proof checks the finite encoding identities in Lean.
 
 The source-run result is **conditional**: `Closed` has not been proved for the
 archive certificate. The generated checks are separate closed facts, and the
 extraction of the remaining 3,779 source instructions has not been bound to
-`Program.sites` in Lean. The bitset transfer lemmas have not yet been assembled
-into that `Closed` hypothesis. No correspondence between the assumed source
-seed and a blank-tape run is proved here. This also does not establish any
+`Program.sites` in Lean. The generated chunks have not yet been assembled into
+the universal `TableClosed` hypothesis for an extracted instruction table.
+No correspondence between the assumed source seed and a blank-tape run is
+proved here. This also does not establish any
 physical-machine simulation, equivalence between the
 four variants and PA196, iPRA theorem, or PA consistency result. Hash checks
 and the archive's parser are part of the reproduction procedure, not Lean

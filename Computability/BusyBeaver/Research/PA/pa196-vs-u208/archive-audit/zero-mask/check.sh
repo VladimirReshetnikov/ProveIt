@@ -31,6 +31,10 @@ lean -M4000 -j1 Computability/BusyBeaver/Research/PA/pa196-vs-u208/archive-audit
   -o "$PA196_ZERO_TASK_DIR/Transfer.olean" | tee "$PA196_ZERO_TASK_DIR/axioms.log"
 lean -M4000 -j1 Computability/BusyBeaver/Research/PA/pa196-vs-u208/archive-audit/zero-mask/Abstraction.lean \
   -o "$PA196_ZERO_TASK_DIR/Abstraction.olean" | tee -a "$PA196_ZERO_TASK_DIR/axioms.log"
+for file in MaskEncoding MaskSets CertificateBridge; do
+  lean -M4000 -j1 "Computability/BusyBeaver/Research/PA/pa196-vs-u208/archive-audit/zero-mask/$file.lean" \
+    -o "$PA196_ZERO_TASK_DIR/$file.olean" | tee -a "$PA196_ZERO_TASK_DIR/axioms.log"
+done
 cd "$PA196_ZERO_TASK_DIR"
 for file in Closure Zero Rows; do
   lean -M4000 -j1 "$file.lean" -o "$file.olean" | tee -a "$PA196_ZERO_TASK_DIR/axioms.log"

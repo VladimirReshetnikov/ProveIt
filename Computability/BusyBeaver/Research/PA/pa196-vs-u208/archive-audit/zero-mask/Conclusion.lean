@@ -1,4 +1,5 @@
 import Abstraction
+import CertificateBridge
 import Zero
 import PA196.Program
 
@@ -46,6 +47,20 @@ theorem source_3692_zero_if_closed
   exact ⟨by simpa [mask] using hm3, by simpa [mask] using hm4,
     by simpa [mask] using hm5, by simpa [mask] using hm6⟩
 
+/-- The same conclusion directly from table checks and an exact resolver
+    binding. Both table hypotheses remain to be proved for the archive. -/
+theorem source_3692_zero_if_table
+    (certificate : Nat → Nat) (lookup : Nat → Option Instruction)
+    (h25 : certificate 25 = site25) (h3692 : certificate 3692 = site3692)
+    (binding : ∀ pc, resolveAt PA196.Program.sites pc = lookup pc)
+    (checks : TableClosed lookup certificate)
+    (registers : Registers) {n : Nat}
+    (run : Steps PA196.Program.sites n ⟨.at 25, seedRegisters⟩ ⟨.at 3692, registers⟩) :
+    registers 3 = 0 ∧ registers 4 = 0 ∧ registers 5 = 0 ∧ registers 6 = 0 :=
+  source_3692_zero_if_closed certificate h25 h3692
+    (closed_of_table PA196.Program.sites lookup certificate binding checks) registers run
+
 #print axioms seed_mask
 #print axioms source_3692_zero_if_closed
+#print axioms source_3692_zero_if_table
 end PA196ZeroMask
