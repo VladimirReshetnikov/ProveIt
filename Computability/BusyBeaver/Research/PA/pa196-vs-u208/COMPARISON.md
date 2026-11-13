@@ -99,6 +99,14 @@ print(matches)  # []
 PY
 ```
 
+The accompanying [local-fold search](search/README.md) checks a wider but
+still bounded family, including the U208 fold as a positive control. The
+[source search](source-search/README.md) tests directional reassociations.
+Neither produced a smaller physical machine. A separate
+[zero-transfer specialization](source-search/ZERO-TRANSFER.md) removes three
+source sites while preserving halting from the clean seed, but increases the
+number of distinct source nodes from 159 to 160; no state saving follows.
+
 ## The missing internal consistency direction
 
 To obtain the requested *PA-provable* biconditional for PA196, and for any
