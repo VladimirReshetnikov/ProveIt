@@ -1,0 +1,63 @@
+Independent audit of root_work/adaptive_barrier.tex
+==================================================
+Reference: pinned ProveIt commit 6874c85a4cea45d881de73620284fcc75d740942,
+Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/Article/chapters/ch10_obs.tex.
+Compared labels obs:thm:single-body, obs:thm:circuit, obs:thm:quotient,
+obs:cor:no-term-interp, and the 'A common barrier' question.
+
+VERDICT: the combined almost-unary theorem and stated finite-dimensional
+term-interpretation corollary are mathematically justified under the explicit
+interface. No new positive axiomatization or general impossibility of
+formula-defined bi-interpretations follows or is claimed.
+
+The proof preserves one FIXED controlling coordinate of each term. Branching
+cannot choose the bound's coordinate because the body h has a globally chosen
+majorant: either a constant, H of one passive input, or H of one local input.
+For passive control, every answer is bounded by the same H(p_i), independently
+of how large any query location becomes. Finitely many output leaves and a
+fixed query count then give a bound independent of all control inputs. The
+update overwrites the registers using only those answers: direct state
+retention would invalidate this step and is explicitly prohibited.
+For local control, the query circuit's envelopes bound every answer through
+the maximum control value. Seed bounds depend only on n. The W recurrence
+simultaneously bounds all registers at every stage from n, and K(n) is PR by
+primitive recursion plus bounded maximization. Composition with the counter
+term's almost-unary majorant returns a fixed external coordinate.
+G has only register inputs; it cannot reintroduce an independent counter or
+passive parameter. Its arbitrary PR combining behavior is covered by its
+unary envelope because all registers share the same bound.
+
+The original statement omitted an explicit requirement that decision tests
+be primitive recursive. This does not invalidate the numerical bound (a
+finite collection of output leaves is bounded regardless of which is chosen),
+but it would invalidate the separate claim that every constructor remains PR.
+The edited version now explicitly requires fixed PR branch predicates.
+
+Boundary examples were corrected to instantiate the entire constructor:
+- If output combiners receive n directly, BOTH seed and update return n+h(0),
+  giving n+a at every stage, without separately violating register retention.
+- If the query budget depends on n, BOTH seed and update sum n answers of the
+  constant body a, giving na at every stage.
+The old seed-only statements were sufficient for failure of the local lemma,
+but did not specify how the final r_n retained the result.
+
+FINITE QUOTIENT: correct. Each coordinate of a fixed addition-realizing tuple
+is almost unary in the 2d numerical inputs and any fixed parameters. A bound
+through a fixed parameter is constant. The two unit maps L(z)=f(e,z),
+R(z)=f(z,e) each preserve the interpreted equivalence class, and each output
+dependency coordinate is cut by at least one of L/R. Choosing maps from
+outside inward halves the live dependency-state set at each stage. The
+resulting word maps every representative into a fixed finite box and hence
+the quotient is finite. Interpreted successor injectivity and omission of
+zero contradict a finite nonempty quotient. This requires the term tuple
+actually to map D x D into D and to realize addition modulo the equivalence,
+as in the reference theorem. It does not extend to arbitrary formula-defined
+operation graphs or finite-case selection of different terms.
+
+NOVELTY WITHIN REVIEWED CORPUS: the pinned chapter explicitly asks for the
+combined adaptive/register/counter-dependent theorem. The new statement covers
+both old classes and permits adaptive queries in every update as well as the
+seed. A text search of extracted incoming TeX found the combined question in
+a reference chapter copy but no other main report answering it. The method is
+still the existing majorant method; describe this as a common extension or an
+answer to the repository question, not a new lower-bound technique.

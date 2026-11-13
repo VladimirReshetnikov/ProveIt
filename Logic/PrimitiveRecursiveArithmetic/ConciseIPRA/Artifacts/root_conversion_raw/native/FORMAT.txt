@@ -1,0 +1,138 @@
+ROOT CONVERSION CERTIFICATES
+===========================
+
+Program: code/root_checker.py. One complete JSON object is read from stdin.
+Successful checking prints exactly ACCEPT and exits with code zero. Any parser
+error, exception, malformed active hint or failed rule check rejects. The
+checker imports only Python's json and sys; the producer and test runner are
+outside the trusted boundary. Every leaf must be literal JSON null, even if
+the requested formula is reflexive or already in the context.
+
+Top-level object, with exactly these keys:
+
+  {"variables": n, "context": [A0, ...], "goal": A, "proof": p}
+
+n is an exact nonnegative integer (a Boolean is not an integer here). Free
+numerical variables are de Bruijn indices 0,...,n-1. All raw formulas in the
+context and goal are checked before the proof. Entering a binder inserts its
+variables at the front and shifts all older free coordinates.
+
+Terms:
+
+  ["v", j]            variable, exact integer 0 <= j < current scope
+  ["z"]               zero
+  ["s", t]            successor
+  ["r", n, a, h]      primitive recursor; h alone binds TWO variables
+
+In h, index 0 is the prior recursive state u and index 1 is the prior
+counter i. Thus R(0,a;i,u.h)=a and
+R(S n,a;i,u.h)=h[n/i,R(n,a;i,u.h)/u]. The numerical sort is unchanged.
+
+Formulas:
+
+  ["=", s, t]         equation
+  ["q", B]            Q_y B; B binds y at index 0
+  ["d", B]            D_x,y B; B binds y at 0 and x at 1
+
+Ordinary meanings:
+
+  Q_y B(y) = B(0) -> forall y B(y)
+  D_x,y B(x,y) = exists x (B(x,0) -> forall y B(x,y))
+
+All syntax is raw. No normalization, equality decision procedure, redex
+search, computation beneath a term constructor, or proof search is used.
+
+Proof forms, checked against an expected goal A:
+
+  null
+    A is literally a retained assumption, or literally the equation t=t.
+
+  ["vs", j, t, u, major, minor]
+    j is a literal in-scope free variable. If the goal is r=u[t/j], prove
+    j=t and u=r. Replacement is capture-free, simultaneous at all free
+    occurrences, and performed only once. It does not delete j's numerical
+    coordinate, and t may itself contain j. Both hints t and u are checked
+    for term sort and scope before the premises.
+
+  ["qe", B, t, major, base]
+    The goal must be literally B(t). Prove Q B and B(0). B is validated in
+    numerical scope n+1 and t in scope n, including unused occurrences.
+
+  ["de", B, major, branch]
+    Prove D B. In the branch, introduce a fresh numerical parameter b,
+    shift the old context and goal, and add the assumption Q_y B(b,y).
+    The expected conclusion is supplied outside b's scope and cannot let b
+    escape. The matrix B is checked in scope n+2 before either premise.
+
+  ["di", t, branch]
+    The expected goal must be D B. Check t in scope n; substitute it for x.
+    With z fresh, prove B(t,S z). The added assumption is B(t,z) when the
+    matrix is an equation and t is literally ["z"], and B(t,0) otherwise.
+    A raw nonliteral term provably equal to zero still chooses the case
+    premise. This test is syntactic, without normalization.
+
+  ["rc", previous, branch]
+    The goal must be a=r. Check previous's raw term sort and scope. Exactly
+    one ROOT contraction of previous must produce a, or exactly one ROOT
+    contraction of a must produce previous. Then prove previous=r.
+
+    Permitted root contractions:
+      R(0,a;i,u.h)   -> a
+      R(S n,a;i,u.h) -> h[n/i,R(n,a;i,u.h)/u]
+
+    This rule cannot descend into a recursor counter, seed, body, successor
+    child, or the right equation endpoint. In particular an inner zero
+    recursor in the counter does not authorize a root contraction. Reverse
+    steps are primitive; right-endpoint conversion is derived by symmetry.
+
+THE NAMING PACKET
+-----------------
+
+C(v,a,b) := R(v,a;i,u.b).
+T(y;a,b,c) := R(y,a;i,u.C(i,b,c)).
+
+Root contractions alone give the rows
+  T(0;a,b,c) -> a
+  T(1;a,b,c) -> C(0,b,c) -> b
+  T(2;a,b,c) -> C(1,b,c) -> c.
+For a symbolic successor the same discipline gives
+  T(S z;a,b,c) -> C(z,b,c).
+
+The transport certificate starts with s=t and h(s)=r and concludes r=h(t).
+It introduces the paired matrix
+  T(y;0,h(x),x) = T(y;0,r,t),
+whose rows give 0=0, h(x)=r, and x=t. The successor row is justified by the
+derived case closure of C(z,h(s),s)=C(z,r,t). Opening the paired matrix at a
+fresh b supplies h(b)=r and b=t; one VSub concludes r=h(t). The producer's
+symbolic template contains multiple occurrences beneath nested recursors,
+including references to the counter binder.
+
+Symmetry itself does not need computation: introduce D_x,y(0=0), eliminate
+it at a fresh b, and use VSub with reflexivity b=b and the original equation.
+Because b is absent from its endpoints, substitution is the identity and
+the crossed rule reverses the equation. This also works at a closed root.
+
+REPRODUCTION AND COMPARISON
+--------------------------
+
+  python3 code/verify.py
+  python3 code/root_checker.py < tests/transport_symbolic.json
+
+The code-only metric removes an explanatory module docstring if present,
+then counts tokens, AST nodes and UTF-8 bytes after ast.unparse plus one newline.
+The new checker has comments rather than a docstring: its entire normalized
+module is counted without removal. The inherited control has a docstring,
+whose included counts are separately reported.
+The complete parser, validators, rules, substitution routines and verdict
+driver are counted. Gzip uses compression level 9 and mtime 0. The metric
+receipt also includes raw-source counts, including comments and blank lines.
+
+controls/scalar_bh3_checker.py is the exact bounded_head checker from the
+pinned ProveIt checkout. It has the same interface, scope discipline and
+proof architecture, but its scalar iterator body binds one variable and
+its hc instruction permits at most three iterator-counter edges. These are
+different raw languages and computational rule grammars. The comparison is
+a matched architecture, not a claim of identical JSON certificate languages.
+
+Finite tests supplement the mathematical proof. They do not constitute a
+Lean or Rocq formalization or a proof of universal soundness/completeness.

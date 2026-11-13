@@ -1,0 +1,100 @@
+INDEPENDENT REVIEW: STREAM KERNELS WITH A WHOLE-JSON STACK READER
+
+Reviewed files:
+  research/tokens_stream_whole.py
+  research/ast_stream_whole.py
+Controls:
+  ipra_computation_leaves/code/checker_tokens.py
+  ipra_computation_leaves/code/checker_ast.py
+from docs/incoming/ipra_computation_leaves_2026-11-12.zip in repository
+snapshot 6c6a164d211f0af34e913d55c9f46f8ef7cb560f.
+
+VERDICT
+The framing changes preserve the accepted public theorem set under the
+inherited compact contract. This is a reader composition of an established
+calculus, not a new mathematical axiom deletion or a global minimum proof.
+The two candidates preserve their respective local/global allocation
+policies; certificates must be paired with the corresponding source profile.
+
+CONTRACT
+Input is one complete JSON value whose top level is a nonempty list. Every
+record is a finite tree of exact integers and lists; the final element is a
+canonical, closed, guarded Eq/D public formula in the inherited arity codec.
+Earlier elements are three-field instruction packets, consumed by pop().
+Acceptance means normal termination with ACCEPT followed by LF. Unused
+prefix records are permitted. Resource-unbounded finite executions are meant
+in the soundness/completeness theorem. These compact programs do not validate
+the complete public grammar or the exact-integer/list promise.
+
+FRAMING THEOREM
+Let R=(r0,r1,...,rm) be a finite sequence of valid JSON records, with r0 the
+public goal. Encode the old stream as one JSON serialization of each rj per
+line. Encode the new input as the single JSON array [rm,...,r1,r0]. Then the
+old and new executions of the corresponding profile have exactly the same
+proof-checking states after each consumed record, apart from the reader's
+state and the old/new parser's already-parsed representation of the suffix.
+Consequently the stream accepts if and only if the array checker accepts.
+
+Proof. The initial reads yield the same tree r0. Suppose j records have been
+consumed. In the stream the next input()/loads() returns rj; in the array the
+next pop() returns rj, because the remaining array is [rm,...,rj]. No other
+function state differs: the syntax opener, goal, context tuple, global floor
+(token profile) or local floor (AST profile), recursive stack, and all
+branch decisions are identical. Each recursive read consumes one more
+record in either representation. Induction on the finite run proves lockstep
+until a successful return, a nonreader error, or exhaustion. Exhaustion raises
+different exception classes (EOFError versus IndexError), but both reject.
+An unused stream suffix corresponds to an unused array prefix. Hence success
+and rejection agree on this promised class. QED.
+
+The record transducer is simply reverse: no scope-index renaming, formula
+translation, proof-tree reconstruction, or changes to the packet contents
+are required. A JSON-lines certificate is converted by parsing all lines
+into records, reversing this outer list, and serializing it as one JSON
+value. The reverse transducer applies the same outer-list reversal and emits
+one record per line. Arrays inside records must NOT be reversed.
+
+The AST comparison performed during review confirms that, after replacing
+the source expression loads(input()) by q(), the complete function ASTs of
+each candidate are identical to the corresponding source function ASTs.
+The remaining edits are the json import and the fully counted input driver.
+
+LIMIT OF RAW-BYTE EQUIVALENCE
+The theorem is about valid finite records, not all byte strings. The new
+json.load parses the whole value before checking, whereas the old stream
+need not read an unused trailing line. Therefore an old successful stream
+with malformed unread trailing text need not have a corresponding valid
+whole-JSON encoding. This has no effect on the promised certificate class
+or on completeness for public theorems. Do not claim unrestricted raw-byte
+language equality or arbitrary-JSON soundness for either compact program.
+
+INHERITED COMPUTATION-LEAF DEPENDENCY
+The upstream leaf proof was inspected in report.tex and
+reference/direct_leaf_review.tex from the cited incoming archive. It does
+not use the invalid inference that a supplied equation true only at a fresh
+variable's zero instance is universally true. Before a direct leaf can
+return, the goal has already passed the no-image opener. If a zero packet
+matches, the initializer appears independently at the right endpoint, which
+forbids a live reference to the iterator's extra dummy slot. If a successor
+packet matches and its update uses the state, opening that state necessarily
+checks the whole recursive source at term-root depth, which excludes
+successor-only dummy-slot references. If the update does not use the state,
+the successor result is independent of the predecessor/initializer. Thus a
+successful match reads as a genuine computation equation. The argument is
+conditional on the inherited sorted raw-tree decoder and semantic opening
+lemma, rather than on ordinary well-typed syntax for every auxiliary tree.
+
+Completeness retains the upstream repair for successor computation with
+literal-zero predecessor: name zero by Z=I(0,0;u.0), use the truthy iterator
+representation of Z as predecessor, then transport along Z=0. The reader
+change does not touch this argument or any logical rule. The checked native
+calculus's existing whole-domain, actual-equality bi-interpretation with iPRA
+therefore transfers by exact preservation of public theoremhood.
+
+NOVELTY AND MEASUREMENT
+This review certifies the framing composition only. It does not prove a new
+rule reduction, globally smallest axiomatization, or validity of an arbitrary
+new mathematical companion. Whole-JSON token/AST minima may improve even
+though the pre-existing JSON-lines token/AST minima remain smaller. Those
+framing classes and their coordinate envelopes must be reported separately.
+An envelope assembled from different programs is not a single checker.

@@ -1,0 +1,320 @@
+INDEPENDENT MATHEMATICAL AND SCOPE AUDIT
+ConciseIPRA candidate checkers, 12 November 2026 (client date)
+
+Reviewed candidates
+  code/strict_tokens.py
+  code/strict_ast.py
+  code/strict_bytes.py
+
+Reference commit
+  31e1e9220868788a85ca5fea351d7ab4097cfa4a
+
+The audit below is a written proof review, not a proof-assistant verification.
+It relies on the pinned article's native/iPRA bridge and semantic-opening
+lemmas, and on the incoming computation-leaf and uniform-zero proofs.
+Finite tests may supplement this argument but do not establish its universal
+claims. All execution statements concern ideal finite successful runs;
+resource-exhaustion equivalence is not asserted.
+
+1. WHAT THE COMPLEXITY COMPARISON MEANS
+
+The pinned article, ch01_base.tex, section "The measurement protocol", says
+explicitly that its checker sizes are achieved upper bounds on an unknown
+optimum, not lower bounds for all calculi or implementations. A coordinatewise
+minimum across a fixed corpus is an observed lower envelope of that corpus.
+It need not be achieved by one program.
+
+A comparison is meaningful only within the same input contract. The strict
+profile validates the entire parsed JSON integer/list alphabet and the full
+native Eq/D public goal. The compact profile assumes a canonical guarded
+public goal and an integer/list promise. Beating the strict envelope does
+not mean beating the smaller compact programs. If three different programs
+improve three coordinates, report them separately, and do not describe their
+coordinatewise minimum as the size of a single program.
+
+These candidates are implementations/presentations of the inherited native
+theory. Their proof establishes no new deletion of an arithmetic or logical
+axiom, no global minimum, and no breakthrough resolving the scalar successor-
+uniqueness bootstrap. The meaningful new claim is the measured improvement
+of a precisely stated profile, if the independent source census confirms it.
+
+2. CANONICAL UNIFORM-ZERO CODING
+
+Let R replace a numerical zero leaf 0 by 1 in a canonical expression. Bound
+slots 3,5,7,..., negative rigid parameters, constructor arities, and meanings
+are unchanged. In particular, numerical one is [1], not the scalar 1.
+Administrative record fields are not uniformly rewritten: source marker 0
+still selects zero computation or closure elimination, and neutral majors
+remain neutral markers. Recoding must be field-aware.
+
+The proof-phase opener is the pinned O+ operation:
+
+  O+_k(a;t,d) = [O+_k(b;t,d+5-r) : b in a] if a is an array of arity r;
+               a or 1                         if k <= a < d;
+               O+_k(t;missing,3)               otherwise, d odd;
+               0                              otherwise, d even.
+
+The article proves semantic opening, outer-slot exposure, and freshness for
+O+. The only altered retained scalar is zero, and both 0 and 1 have the same
+sorted reading: numerical zero at term positions and true (0=0) at formula
+positions. Inserted terms are still checked at root term depth 3. This scope
+check is essential and is present in all reviewed candidates.
+
+On canonical expressions, opening commutes with R. This is not a literal
+commutation theorem on arbitrary malformed raw aliases. In particular O+
+need not be an idempotent raw-tree retraction at an ignored formula annotation:
+an even-depth fallback may return 0, and a subsequent retained-zero pass may
+return 1. Both have the same reading, which is all soundness requires.
+
+3. WHOLE-INPUT AND PUBLIC-GOAL VALIDATION
+
+For a value returned by json.load, str(p).strip('0123456789-[], ') is empty
+exactly when every recursive component is an exact integer or a list.
+Strings retain quotation marks, objects braces, and floats, booleans and null
+have excluded characters. This rejects malformed unused prefixes too. A
+top-level integer subsequently fails pop. A nonempty lexical residue is a
+string, and attempting to call it rejects; no acceptance follows that branch.
+
+Initially k=0. At even (formula) depths the arity gate admits 1 or 2; at odd
+(term) depths it admits 1 or 3. The scalar gate requires k <= a < d, d odd,
+and a odd. Thus it admits the canonical zero 1 and legal odd bound slots.
+It rejects scalar formula roots, old zero spelling 0, escaping parameters,
+and wrong arities. Inherited dummy-slot aliases retain their harmless zero
+reading. Completeness is stated for the fixed canonical public encoding.
+
+4. THE CONTEXT REPRESENTS THE PHASE IN THE TOKEN AND AST PROFILES
+
+The initial context is empty. During the first no-image traversal, the empty
+context activates the public arity and scalar gates. If this traversal
+rejects, no subsequent instruction can undo the rejection.
+
+After successful initial validation, before any auxiliary opening, g += [0]
+makes the context nonempty. Every recursive major receives that nonempty
+context, and every continuation receives it with another resource appended.
+Hence every auxiliary traversal is in proof phase. No context can become
+empty later. Mutations performed by a major can only append neutral 0 entries
+to a shared list; duplicate neutral truths change neither membership of a
+meaningful formula nor derivability. The phase therefore cannot revert.
+
+Consequently the g-dependent predicates are exactly the initial validator
+followed by O+ in all proof-phase calls. They compose the established
+context-phase invariant with uniform-zero coding. The update of k still
+occurs after the major proof and locally in the continuation. It creates
+the fresh parameter k-1; inserted terms retain the root-depth scope check.
+
+5. CONDITIONAL SELECTION IN THE TOKEN AND AST PROFILES
+
+Write M for the elimination-pattern comparison
+
+  (m,a) == (s and [s,u] or [t]*3, i(t,u)).
+
+The old expression eagerly computed i(t,s) in the tuple (a,i(t,s)) and
+selected a or that computed value by M. The new expression computes
+
+  i(t,s) if M else a.
+
+The comparison M still checks i(t,u). If M is true, i(t,s) is still computed
+and validated, so every equality-transport or closure-elimination premise
+needed by the transition remains checked. If M is false, the goal is a;
+the unselected source instance is not a premise of any inference made by
+that step. The helper i is pure: it consumes no records, does not mutate
+contexts, and does not allocate or change a scope floor. Omitting the unused
+opening can only avoid an irrelevant rejection; it cannot change the selected
+goal or establish an otherwise unsupported inference.
+
+This is a theorem-set preservation argument, not equality of raw acceptance
+languages. Canonical certificates have all required openings defined, so
+their transitions and successful proof compilation are preserved.
+
+The multiplier (1 if m else len(a)%2==u) in strict_ast is arithmetically
+identical to bool(m or len(a)%2==u) in strict_tokens when multiplied by the
+integer floor. A truthy m gives 1 in either case; otherwise both use the same
+Boolean comparison. Both forms short-circuit the comparison for truthy m.
+Imports, input walruses, the two equivalent conditional-block forms, and the
+placement of the binding of i do not alter this invariant.
+
+6. THE SHARED TERMINAL IN THE BYTE PROFILE
+
+Each call first reads [m,s,u,t]. It then validates/opens the goal and tests
+membership in the retained context augmented, for this terminal test only,
+by neutral 0 and the projected computation resource O+_k(H(s,u,t)), where
+
+  H(s,u,t) = [[[s],u,t], O+_k(t;[s,u,t],3)]   if s is truthy;
+             [[s,u,t],u]                     if s is falsy.
+
+Python evaluates the left membership operand first. Thus at the root the
+public-goal traversal is completed with v=1 before (v:=0) is evaluated in
+the right operand. The explicit assignment then changes the very closure
+used to construct H to proof phase. Major and continuation calls use v=0.
+Malformed public syntax cannot exploit the phase change to bypass validation.
+
+The terminal succeeds only through a retained resource, neutral truth, or
+the validated computation resource. A projected H is a computation theorem,
+not merely an equation with a true zero specialization:
+
+  - Falsy s is 0 or [], both numerical zero. The right occurrence of u is
+    checked at term-root depth. This excludes meaningful dependence on the
+    extra dummy slot available under the left iterator, so the two seeds
+    have the same reading and I0 proves the equation.
+
+  - Truthy s gives a successor counter. If the update uses its state in a
+    meaningful position, the construction of the right side validates the
+    recursive source [s,u,t] at term-root depth before substitution. This
+    excludes a meaningful dependence on dummy slots that are available only
+    under the additional successor node. Semantic opening then gives IS.
+    If the update is state-independent, IS gives the same constant-update
+    result on both sides. Ignored annotations may cause rejection but do not
+    change the equation's reading.
+
+The outer no-image traversal O+ of H is explicitly present. The O+ semantic
+opening lemma transfers the direct-leaf proof from the zero-coded controls.
+Canonical zero1 also makes IS at predecessor zero available directly: the
+source code 1 is truthy, so the produced counter is [1]. No certified
+nonliteral-zero workaround is needed for that canonical computation.
+
+The computation resource is transient. If the terminal test fails, that
+resource is not retained as an assumption. The continuation adds only the
+resource justified by its checked major or by its introduction premise.
+
+7. THE CRITICAL MODE REPAIR
+
+The reviewed terminal checker uses
+
+  any((m, len(a) == u == 2)).
+
+For a neutral major m, an introduction has first exposed the D matrix into
+a. Progress is then selected exactly when this matrix is a literal equation
+(arity two) and u is the scalar marker 2. Every other meaningful matrix uses
+cases. In particular compound D and Q matrices can never select progress.
+For a nonneutral major, the fresh-witness mode remains selected as before.
+
+This exact-arity test is necessary. The unrepaired candidate used
+len(a)%2==u after deleting the old truthy-u computation branch. That deletion
+made truthy u newly available to introductions; u=1 at a compound matrix
+would select progress, allowing induction for compound formulas and exceeding
+iPRA. The repair is therefore a substantive soundness correction, not merely
+a coding style choice.
+
+The marker 2 is proof-only; the public zero code remains 1. Scalar 2 is a
+numerical-zero alias in raw proof expressions, so its incidental computation
+preview is defined. A canonical progressive introduction must use marker 2
+rather than the supply protocol's old marker 0. Case introduction can use [].
+Neutral raw matrices have the truth reading and cannot add a nontrivial
+induction principle, whatever their irrelevant annotations.
+
+8. CANONICAL COMPLETENESS OF THE TERMINAL PROTOCOL
+
+Use the inherited native proof calculus, with contextual hypotheses and the
+two computation axioms. Replace Hyp, I0 and IS leaves by one rule:
+
+     C is a computation instance, A belongs to Gamma union {C}
+     -------------------------------------------------------
+                         Gamma |- A.
+
+This preserves every open sequent. A computation leaf chooses its own C;
+a hypothesis leaf chooses the fixed I(0,0;u.0)=0. Conversely choose Hyp if
+A belongs to Gamma and otherwise the supplied computation axiom. No scope
+or assumption is discharged by a terminal.
+
+At each such leaf emit one harmless/correct four-field record. For a
+hypothesis or neutral major, [0,0,0,0] gives a total true computation preview.
+For I0 emit a zero source marker and the recoded seed/body; for IS emit the
+recoded predecessor, which is truthy even when numerically zero. At logical
+nonleaves use the inherited major-first continuation compilation, replacing
+the progressive-introduction marker by 2. The shift from root formula depth
+0 to computation-preview depth 3 protects the canonical free-hole spelling;
+allocated negative parameters remain protected. Opening and introduction can
+choose harmless zero preview fields. Thus canonical previews are defined.
+
+An old certificate that retained a computation resource need not be translated
+record-for-record. Its mathematical derivation can inline that computation at
+each use (equivalently use admissible cut), and then be compiled by the direct
+leaf protocol. Dropping administrative supply steps may change fresh integer
+names; the ordinary eigenvariable-renaming theorem handles this. Literal raw
+certificate equivalence is not asserted.
+
+9. PRECISE THEOREM AND TRANSFER OF THE BI-INTERPRETATION
+
+The logical reading here is the FULL native one: Q_y B means
+B(0) -> forall y B(y), and D_{x,y} B means
+exists x (B(x,0) -> forall y B(x,y)), INCLUDING when B is an equation.
+The two permitted introductions are cases at arbitrary matrices and progress
+only at literal equations. The explicit marker keeps both introductions.
+The final public grammar is arbitrary Eq/D, not just guarded atomic matrices.
+
+Do not substitute the compact guarded calculus's auxiliary reading: in that
+calculus a D over an equation can instead mean existential progressivity,
+and the equivalence with the ordinary conditional reading holds only after
+the public guarding translation. That distinction does not arise for the
+reviewed strict native candidates. The direct computation-leaf lemma imported
+from the compact paper concerns arithmetic computations and raw opening only;
+it does not import its different auxiliary D reading or its public restriction.
+
+For each reviewed checker P:
+
+  (Soundness) Every accepted arbitrary JSON certificate has a decoded closed
+  public Eq/D goal derivable in the full native theory.
+
+  (Canonical completeness) Every closed public Eq/D theorem of that native
+  theory, in uniform-zero canonical coding, has an accepted certificate of P.
+
+The proof is induction over a finite successful run using the invariants
+above and the inherited raw-case native soundness proof; completeness is the
+canonical compiler or the common-leaf translation just described.
+
+Therefore the induced mathematical theory is unchanged. If J interprets iPRA
+in its ordinary realization and I interprets that realization in iPRA, the
+same proof translations establish both formula round trips
+
+  iPRA |- A <-> (A^J)^I,
+  T    |- B <-> (B^I)^J.
+
+R preserves term meanings, has the canonical inverse 1-to-0 on numerical
+leaves, and neither changes the numerical domain nor replaces equality.
+Both numerical comparison graphs remain x=y. Thus full bi-interpretability
+and equiconsistency transfer from the pinned bridge. This is stronger than
+equiconsistency alone, but remains an inherited mathematical bridge rather
+than a new proof of a smaller axiomatic basis.
+
+10. INHERITED BRIDGE OBLIGATIONS THAT MUST REMAIN EXPLICIT
+
+The bridge has four logically distinct dependencies:
+
+  (a) The native Eq/Q/D calculus and its Eq/D public fragment reproduce the
+      ordinary intuitionistic connectives and quantifiers through the pinned
+      selector/gate translations. Eliminating Q by a D with unused witness
+      preserves both directions of derivability.
+
+  (b) The ordinary realization is intuitionistic first-order logic with
+      equality on scalar iterator terms, the two iterator computations,
+      numerical coverage x=0 or exists y x=S(y), separation 0=S(0)->false,
+      and induction for literal equations under fixed side assumptions.
+
+  (c) Internally this realization derives predecessor, reflected/decidable
+      equality, quantifier-free induction, pairing/unpairing, and a compiler
+      for each primitive-recursive description. The compiler is external
+      recursion on finite descriptions, not a total internal universal
+      primitive-recursive evaluator.
+
+  (d) The interpretations prove both term round trips and, by structural
+      induction and the logical translation, both formula round trips.
+      Neither arithmetic domain is relativized; equality is actual equality;
+      the two numerical comparison relations are the graph x=y.
+
+Equiconsistency alone, a standard-model evaluation, a one-way interpretation,
+or matching finite fixture results would not establish (a)-(d). These are
+proved dependencies of the pinned article, not consequences of the code-size
+measurements. Our new work preserves the theorem set and hence reuses these
+proofs unchanged. No new Lean/Rocq verification is claimed.
+
+Reviewed file hashes before packaging:
+  strict_tokens.py
+    ce77166485842821a52869353519df612f40e42801cb5cde34b093d77faf28e3
+  strict_ast.py
+    dae2e331312e3b649df50acbfd52e812db380a8f9364f9a4d4e565c62e2a4698
+  strict_bytes.py
+    1c8f837bb28af5d320a85a558074ace02f208cbad66ceee98df7be1cfd98f968
+
+If an implementation changes after these hashes, that change requires a
+separate code-sensitive review; the abstract arguments are not a blanket
+approval of arbitrary subsequent rewrites.

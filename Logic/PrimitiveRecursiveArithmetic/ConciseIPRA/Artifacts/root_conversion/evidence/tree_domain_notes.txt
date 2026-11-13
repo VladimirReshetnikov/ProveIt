@@ -1,0 +1,237 @@
+# Binary-tree arithmetic: a precise alternative, not a size improvement
+
+## Status and relation to the corpus
+
+This gives a fully specified ordinary first-order arithmetic theory on finite
+binary trees and a detailed proof route for bi-interpretability with iPRA. It
+is not a claim to improve the 244-token / 265-AST / 477-byte coordinatewise
+frontier. No checker for it has been implemented or measured. The underlying
+tree-arithmetic idea is standard, and the existing corpus explicitly mentions
+binary-tree domains as an uncompleted avenue:
+`Artifacts/uniform_predecessor/evidence/arithmetic_research_status.txt`, item 2.
+The corresponding article mention is in `chapters/ch10_obs.tex`, near line 3721.
+The specific theory and inverse coding argument below were not found in the
+inspected corpus.
+
+## Theory BT
+
+There is one sort. Terms are variables, a constant `e`, a binary constructor
+`N(s,t)`, and a paramorphic term
+
+    R(t; a; u,v,p,q.h).
+
+Only `u,v,p,q` are bound in `h`; no variable is bound in `t` or `a`.
+The intended domain is the finite full ordered binary trees, with leaf `e`.
+The two computation schemes, for every term body `h`, are
+
+    R(e; a; u,v,p,q.h) = a,
+    R(N(s,t); a; u,v,p,q.h)
+      = h[s/u, t/v, R(s;a;h)/p, R(t;a;h)/q].
+
+The only other nonlogical axiom is
+
+    e != N(e,e).
+
+There is a structural induction rule for every quantifier-free formula A(x),
+with parameters and side assumptions Gamma:
+
+    Gamma |- A(e)
+    Gamma, A(u), A(v) |- A(N(u,v))
+    --------------------------------
+    Gamma |- A(t)
+
+Here u,v are distinct and fresh for Gamma, t, and the parameters of A. The
+formula A may use all intuitionistic connectives, but no quantifier.
+
+### Logical rules
+
+Use full single-conclusion intuitionistic first-order natural deduction.
+Contexts are finite lists of formulas; assumptions are reusable, so weakening,
+exchange, and contraction are implicit. The rules are assumption; conjunction
+introduction and its two eliminations; disjunction's two introductions and
+case elimination with two branches discharging their respective assumptions;
+implication introduction discharging its premise and modus ponens; falsum
+elimination; universal introduction at a variable fresh for the undischarged
+context and universal elimination at any term; existential introduction at
+any term and existential elimination with a fresh eigenvariable and the
+usual no-escape condition; equality reflexivity and capture-avoiding
+substitution in any formula. Negation is A -> falsum. There is no excluded
+middle, double-negation elimination, choice, or quantifier induction.
+
+## Constructor properties are derived
+
+Write 1=N(e,e). Define
+
+    H(x)=R(x;e;u,v,p,q.u),
+    T(x)=R(x;e;u,v,p,q.v),
+    Z(x;a,b)=R(x;a;u,v,p,q.b).
+
+Then H(N(s,t))=s, T(N(s,t))=t, Z(e;a,b)=a, and
+Z(N(s,t);a,b)=b by computation alone. Consequently constructor injectivity
+is derived by applying H and T to an equality of nodes. If e=N(s,t), apply
+Z(-;e,1) to obtain e=1, contradicting separation. Thus every node is nonempty.
+
+Coverage is also derived, by structural induction on the quantifier-free
+formula
+
+    x=e OR x=N(H(x),T(x)).
+
+Its induction hypotheses are unused. Therefore e and N really are an
+exhaustive disjoint injective constructor pair in every model of BT.
+
+## Unary naturals inside BT
+
+Define
+
+    F(x)=R(x;e;u,v,p,q.Z(u;q,1)),
+    U(x) :<=> F(x)=e,
+    S(x)=N(e,x).
+
+F(e)=e and F(N(u,v))=Z(u;F(v),1). Using coverage of u and separation,
+
+    U(e),
+    U(N(u,v)) <=> (u=e AND U(v)).
+
+The intended U-elements are the unary trees. The equations above, not an
+appeal to standard-model finiteness, are what is used internally.
+
+Every primitive recursive function on U is denoted by a BT term. Zero,
+successor, projections, and composition are immediate. For primitive
+recursion f(0,z)=g(z), f(n+1,z)=h(n,f(n,z),z), use R on the unary input;
+in its node branch ignore the left child and its recursive value and use
+`h(v,q,z)`. Type preservation U(f(...)) follows by structural induction
+conditioned on U of the input, with U of the parameters retained.
+
+Quantifier-free induction on U follows from structural induction applied to
+
+    U(x) -> A(x).
+
+At a node U(N(u,v)) implies u=e and U(v), so the right-child induction
+hypothesis supplies A(v), and the numerical step supplies A(S(v)). This
+argument works for any quantifier-free formula of the entire BT language,
+including formulas comparing arbitrary trees; it is stronger than merely
+checking the translated original iPRA syntax. Thus iPRA is interpreted in BT
+with domain U and actual equality.
+
+## BT inside iPRA
+
+Code e by 0 and N(s,t) by
+
+    pi(a,b)=2^a(2b+1).
+
+Every positive n has a unique such pair (a,b), found by primitive-recursive
+bounded valuation and division. Both a and b are strictly below n. The
+constructor is injective, disjoint from 0, and exhausts positive numbers.
+
+Each fixed paramorphism R has a primitive-recursive interpretation by
+course-of-values recursion on n: at n=0 return a; at n=pi(i,j) evaluate the
+fixed translated h at i,j and the already computed values at i,j. A finite
+table of previous values supplies the course-of-values recursion. The
+translation is defined externally by induction on the finite term syntax;
+no uniform total evaluator for all primitive-recursive programs is assumed.
+
+The computation equations and separation are iPRA theorems. Structural
+induction becomes quantifier-free strong numerical induction. For each
+fixed quantifier-free formula A, iPRA proves decidability and gives a
+primitive-recursive characteristic term. The bounded conjunction
+"A(k) for all k<n" is therefore represented by a quantifier-free equation,
+and ordinary quantifier-free induction proves strong induction. Since the
+two child codes are smaller than the node code, the translated structural
+rule follows. This interprets BT in iPRA using the whole numerical domain
+and actual equality.
+
+## Explicit inverse coding in BT
+
+All arithmetic in this section is on U, using the PR operations just
+constructed. Define the unary-valued tree code
+
+    c(e)=0,
+    c(N(s,t))=pi(c(s),c(t))
+
+by one R term. Structural induction proves U(c(t)). Define unary inverse
+pairing functions a(n),b(n) for positive n, assigning any fixed values at
+zero. Their usual arithmetic identities hold in the interpreted iPRA.
+
+Lists of arbitrary trees are represented by e and N(item,rest). Head and
+tail are H and T. Define drop(k,L) by unary recursion, with drop(0,L)=L and
+drop(k+1,L)=T(drop(k,L)), and get(L,k)=H(drop(k,L)).
+
+Define a table of decoded values in reverse order:
+
+    Tab(0)=N(e,e),
+    Tab(n+1)=N(
+      N(get(Tab(n), n-a(n+1)), get(Tab(n), n-b(n+1))),
+      Tab(n)).
+
+Here subtraction is unary truncated subtraction. The child-index bounds
+a(n+1),b(n+1)<=n ensure that every lookup is in range. Put
+d(n)=H(Tab(n)). These are genuine fixed BT terms, because Tab uses primitive
+recursion on a unary argument with an arbitrary-tree-valued state.
+
+The table lemma is
+
+    k<=n -> get(Tab(n),n-k)=d(k).
+
+It is proved by unary quantifier-free induction on n with k as a parameter.
+At the step split k=n+1 versus k<=n, a decidable arithmetical case distinction;
+the head case is immediate, and the tail case uses the induction hypothesis.
+This proves the recursive equations
+
+    d(0)=e,
+    d(pi(a,b))=N(d(a),d(b))
+
+for unary a,b.
+
+For an elementary proof of c(d(n))=n that avoids using strong induction for
+arbitrary-tree predicates, define MapC on lists by
+
+    MapC(e)=e,
+    MapC(N(u,v))=N(c(u),MapC(v)),
+
+using R and ignoring the recursive result for u. Define the expected unary
+list E(0)=N(0,e), E(n+1)=N(n+1,E(n)). Prove by unary induction
+
+    MapC(Tab(n))=E(n).
+
+In the step, get commutes with MapC (a separate unary induction on its
+index), so the two child codes are a(n+1),b(n+1), and their paired code is
+n+1. The tail is exactly the induction hypothesis. Applying H gives
+c(d(n))=n. Finally structural induction, using the displayed d equations,
+proves d(c(t))=t. Thus c and d are internally proved inverse definable maps
+between all trees and the unary domain U.
+
+## Both bi-interpretation round trips
+
+For the BT round trip the isomorphism is t |-> c(t), with inverse d.
+Every primitive symbol is respected: e and N by the defining coding
+equations, and each R term by structural induction and uniqueness of its
+two recursion equations. An induction on formulas gives the round trip for
+all intuitionistic formulas, including both quantifiers, because c,d are
+an internal bijection. There is no appeal to double negation.
+
+For the iPRA round trip, unary trees coded with pi are
+
+    u(0)=0,  u(n+1)=2u(n)+1,  hence u(n)=2^n-1.
+
+The isomorphism from the original numerical domain to the interpreted
+unary-tree subset is n |-> 2^n-1. Its inverse on that subset is the
+primitive-recursive binary-length function. The U characterization proves
+internally that these maps are inverse on exactly the required domain.
+The arithmetic defining equations and primitive-recursion uniqueness show
+that all function symbols are respected. Formula induction then proves
+the second full round trip.
+
+Consequently the two theories are bi-interpretable and equiconsistent.
+The graph of either isomorphism is explicitly definable; it need not be
+the identity graph, which the user's current request does not require.
+
+## Costs and limitations
+
+The gain is conceptual: pairing and projections are structural and the
+scalar predecessor construction disappears. The price is one constant,
+one binary constructor, a recursion binder with four bound variables,
+two computation schemes, one separation axiom, and two recursive induction
+hypotheses. Standard intuitionistic first-order logic remains explicit.
+Those costs cannot be omitted from a checker comparison. This does not
+establish a smaller axiomatization by the stipulated proof-checker metric,
+and should not be presented as a breakthrough below the current frontier.

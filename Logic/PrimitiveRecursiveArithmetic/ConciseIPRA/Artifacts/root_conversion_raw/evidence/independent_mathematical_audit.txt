@@ -1,0 +1,220 @@
+Independent audit of the root-only conversion construction
+=========================================================
+
+Status: the construction below has a complete written open-sequent equivalence
+argument. It is a proposed new mathematical reduction relative to the inspected
+ConciseIPRA snapshot, not a claimed checker-size record. No machine-checked Lean
+proof has been supplied by this audit.
+
+TERMS
+
+Raw terms: variables, 0, S(t), R(n,a;i,u.h), with i and u bound only in h.
+The two one-step root reductions are
+
+  R(0,a;i,u.h) -> a
+  R(S n,a;i,u.h) -> h[n/i, R(n,a;i,u.h)/u].
+
+The substitutions on the right are simultaneous and capture-avoiding. Neither
+the counter nor a proper subterm is normalized. Reversible conversion is a
+proof rule for the left endpoint of a literal equation, in either direction,
+using exactly one displayed root step.
+
+FORMULAS AND RULES
+
+Formulas are s=t, Q_y B, D_{x,y} B, with their usual conditional-closure and
+existential-closure readings. Retain Hyp, Refl, QE and DE. Add VSub:
+
+  Gamma |- b=t      Gamma |- u=v
+  --------------------------------  b a free numerical variable
+  Gamma |- v = u[t/b].
+
+WI is the existing single introduction: from Gamma,B(w,eta) |- B(w,S z)
+infer Gamma |- D_{x,y} B, with z fresh and eta=z exactly when B is literally
+an equation and w is literally 0; otherwise eta=0.
+
+Together with root conversion, these are seven rule families. Root conversion
+has zero/successor and forward/backward cases. Those cases must be charged in
+any implementation comparison; counting seven families is not a size proof.
+
+DERIVED SYMMETRY (NO TRANSPORT USED)
+
+1. D_{x,y}(0=0) is a theorem by WI at witness 0: its progressive branch proves
+   0=0 under the identical hypothesis (or by Refl).
+2. To reverse u=v, eliminate this dummy theorem at a fresh b.
+3. Refl yields b=b in the extended context. VSub on this major and u=v yields
+   v=u[b/b]=u.
+4. DE exports v=u since b was fresh for u,v and Gamma.
+
+Consequently reversible root conversion is available at either endpoint:
+reverse, convert the left endpoint, reverse back. No conversion below a term
+constructor or under a logical binder has been used.
+
+DERIVED EQUATION CASES (NO TRANSPORT USED)
+
+If Gamma proves E(0) and Gamma proves E(S z), with z fresh, then Gamma proves
+E(t). Apply WI to D_{x,y} E(y), x unused, at witness 1=S0. This selects cases,
+even for an atomic E. Its extra assumption E(0) can be ignored. Eliminate D
+and use its Q-closure with the known E(0), then specialize at t by QE.
+
+THREE ROW PACKET
+
+Define
+
+  C(v,a,b) = R(v,a;i,u.b),
+  T(y;a,b,c) = R(y,a;i,u.C(i,b,c)).
+
+The parameters a,b,c do not contain the bound i,u. At root only:
+
+  T(0;a,b,c) -> a,
+  T(1;a,b,c) -> C(0,b,c) -> b,
+  T(2;a,b,c) -> C(1,b,c) -> c,
+  T(S z;a,b,c) -> C(z,b,c).
+
+Given Gamma |- h(s)=r and Gamma |- s=t, form
+
+  P(x,y) := T(y;0,h(x),x) = T(y;0,r,t).
+
+To introduce D P with witness s, its successor instance is root-convertible
+to C(z,h(s),s)=C(z,r,t). Its zero instance follows from h(s)=r, and its
+successor instance from s=t, by root conversion at the two endpoints. Derived
+equation cases proves it for arbitrary z. This proof uses only Gamma, so it
+can ignore whichever assumption WI supplies. In particular the case s=0,
+which selects the progressive mode, needs no special alias or congruence.
+
+Open D P at a fresh b. The base P(b,0) follows by Refl 0=0 and reverse root
+conversion. QE at 1 and 2 and root conversion give respectively h(b)=r and
+b=t. VSub yields r=h(t), independent of b, and DE exports it. This is exactly
+the unrestricted one-template crossed transport rule.
+
+RECOVERY OF THE FULL RAW R KERNEL
+
+Computation equations follow by Refl and root conversion. The preceding
+packet derives unrestricted transport. WI at witness 0 with an unused
+existential variable, followed by DE, derives QI by equation progress.
+
+WI already gives DI by cases except when its matrix is a literal equation
+and its selected witness is literally 0. For that case use the nonliteral
+alias w=R(0,0;i,u.0), which has w=0 by root computation. The recovered
+transport moves both endpoints of each equation between witness w and
+witness 0, so the assumed case derivation at 0 gives the required case
+derivation at w. Apply WI at w. The resulting D formula is the desired
+original D formula; w is only the chosen witness, not part of its matrix.
+
+Weakening, injective renaming and cut are straightforward inductions on proof
+trees. The above argument needs these, but does not assume a direct arbitrary
+term-substitution theorem for WI, whose literal witness test is not stable
+under substitution.
+
+Conversely, root conversion and VSub are sound in the full R kernel by its
+computation equations and equality transport, and WI is one of its case or
+equation-induction instances. Thus the calculi agree on all open sequents.
+
+IPRA BRIDGE
+
+The full counter-aware R kernel contains the scalar kernel by translating
+I(n,a;u.h) to R(n,a;i,u.h) with i unused. Alternatively the usual native
+logical macros can be derived directly. Each fixed R term denotes a fixed
+primitive recursive function in iPRA; conversely every PR definition compiles
+compositionally to R. Equation induction proves uniqueness of each fixed
+recursion in both theories and hence both term round trips. Formula induction
+and the existing native logic/readback equivalence give formula round trips.
+The numerical domain is whole and the comparison graph is x=y.
+
+NOVELTY BOUNDARY
+
+The snapshot already has raw scalar variable substitution with weak-head
+conversion, including a color obstruction without conversion; full-normal
+counter-aware presentations; and naming packets with three rows. What is new
+here is the combination of counter-aware recursion with the explicit T packet
+whose rows are exposed by *root-only* conversion. No search for a redex inside
+a counter and no general term normalizer are needed. This is a precise
+mathematical claim; it does not imply the new standalone checker will beat
+the empirical compact envelope.
+
+ANCILLARY CU RESULT
+
+Over scalar computation, cases and the constancy rule CU, suppose Gamma proves
+q(0)=0 and Gamma,q(x)=0 proves q(Sx)=0. Let
+
+  h(u)=C(q(u),S u,u),   r(n)=I(n,0;u.h(u)).
+
+Cases on q(u) give q(h(u))=q(u): the zero branch uses the given step and the
+successor branch has h(u)=u. Therefore q(r(Sn))=q(r(n)), so CU yields q(r(n))=0.
+Consequently r(0)=0 and r(Sn)=S r(n). This gives a successor-preserving copy
+whose image lies in the desired set, but it does NOT prove that the copy is
+the identity or surjective. Claiming full induction from this would leave a
+real gap unless successor rigidity is established independently.
+
+GENERAL FINITE TABLE LEMMA
+
+For a fixed finite list of terms a_0,...,a_k, define a term template in y by
+
+  T_0(y;a_0) = a_0,
+  T_{k+1}(y;a_0,...,a_{k+1})
+    = R(y,a_0;i,u.T_k(i;a_1,...,a_{k+1})).
+
+At each constructor choose i,u fresh for all entries a_j and other enclosing
+binders. The register u is unused. For 0 <= j <= k, T_k(S^j 0;entries)
+reduces to a_j by root steps only. More strongly,
+
+  T_k(S^k z;a_0,...,a_k) ->* a_k
+
+for an arbitrary raw term z, also by root steps only. Proof is metatheoretic
+induction on k: the zero rule exposes a_0, and a successor root step exposes
+T_{k-1}(z;a_1,...,a_k). It uses no object-level induction, equality transport,
+recursor-body extensionality, or normalization theorem. For j<k the reduction
+has j successor root steps and one zero root step; at j=k it has k successor
+root steps. The three-row packet is T_2.
+
+The T notation in the packet above is exactly T_2; C is T_1. The finite-table
+lemma gives arbitrary fixed finite observations, not a universal evaluator
+for a coded table and not an assertion that a variable-length table can be
+processed with a fixed normalization bound.
+
+EXACT NEAREST BASELINE LOCATIONS
+
+Pinned snapshot: 31e1e9220868788a85ca5fea351d7ab4097cfa4a.
+
+docs/Article/chapters/ch09_ctr.tex:
+  - ctr:lem:nametransport (approximately line 2960) works on full normal
+    forms and uses C(y,0,C(K(y),x,h(x))) with K(y)=C(P(y),1,0).
+  - ctr:eq:packet and ctr:lem:openrules (approximately line 3120) work on
+    full normal forms and use C(y,0,C(P(y),x,h(x))). Its successor row is
+    C(z,x,h(x)) because P(S z) normalizes to z.
+
+docs/Article/chapters/ch04_comp.tex:
+  - comp:sec:colour and comp:thm:rawvsub show that raw scalar variable
+    substitution without suitable conversion is weaker on open sequents.
+  - Section 'Weak-head conversion with raw hints' gives the scalar-iterator
+    predecessor, using recursive access to a head redex.
+
+Thus the safe novelty claim is a root-only finite-observation construction and
+its application to transport on raw counter-aware terms. It is not the first
+three-row naming packet, the first variable-substitution calculus, or the first
+counter-aware arithmetic presentation.
+
+INDEPENDENT CHECKER REVIEW
+
+Reviewed research/root_conversion/code/root_checker.py and the named producer
+build_certificates.py. No concrete mathematical mismatch was found. In step,
+the state occupies de Bruijn index 0 and the prior counter occupies index 1.
+Replacing index 1 by shift(predecessor), dropping that binder, then replacing
+index 0 by the prior recursive value is a correct simultaneous substitution:
+the first lift protects the counter replacement while the state binder still
+exists, and the second substitution removes that lift without recursively
+substituting into an inserted replacement.
+
+One targeted independent calculation used a body containing a nested recursor,
+both outer bound variables, and older free parameters; the computed root step
+matched the manually specified simultaneous substitution and both sides passed
+raw scope validation. This supplements, rather than repeats, the existing
+29-fixture / 58-process validation run.
+
+The validator checks every active raw hint before conversion/substitution can
+erase it. DE handles freshness by adding a new outer de Bruijn variable and
+shifting the target and old context; no fresh variable can leak into the
+export. WI at literal-zero witness uses its unsubstituted matrix as the
+progress hypothesis. RC invokes step solely at the whole left endpoint, so
+there is no implicit recursion into a counter, seed, state body, or successor
+child. These are code-review conclusions, not a proof of implementation
+correctness in a proof assistant.

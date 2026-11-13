@@ -1,0 +1,214 @@
+INDEPENDENT REVIEW OF THE 468-BYTE COMPOSITION
+============================================
+
+Reviewed candidate: compact468.py
+SHA-256: fc938318f33835408bea48f37e52379ce5abe4072e3ac5b0bb61b485fccb69b0
+Complete normalized metrics: 271 tokens / 305 AST nodes / 468 UTF-8 bytes.
+Measurement runtime: CPython 3.12.14.
+Normalization removes leading module/class/function docstrings recursively,
+repairs emptied nonmodule bodies with Pass, then applies ast.unparse plus LF.
+The measured compact candidate and controls contain no docstrings, so this
+protocol correction does not change their measurements or source hashes.
+
+Conclusion
+----------
+
+The candidate is a valid composition of two existing transformations under
+the inherited compact public-goal and proof-alphabet contract. Its new local
+correctness argument is especially clean when it is compared with offset472,
+not by claiming a literal raw recoding of shared_leaf's 469-byte program.
+The exact nonterminal inference body, opener, counters, parser and initial
+context coincide with offset472. Only its terminal protocol is changed.
+
+This is a written independent review within the current research task. It is
+not external peer review or a new Lean/Rocq formalization. The inherited
+offset472 soundness/completeness proof and arithmetic bi-interpretation are
+explicit dependencies. The review establishes the new relative composition.
+
+The fixed source is at ProveIt commit
+dd308d5d938b20dce41a1150fa5db49fc53c5d4e. Baseline source and archive hashes
+are recorded in baseline_manifest.json.
+
+1. Precise contract
+-------------------
+
+Input is a finite JSON array used as a reverse-consumed stack. Its last
+entry is [A,0], where A is a canonical closed guarded public Eq/D goal in
+the shifted codec. Consumed instruction entries have four fields [m,s,u,t].
+Every datum is a finite tree of exact Python integers and lists: Boolean,
+float, string, null and object values are outside the promise. No canonical
+syntax promise is added for internal raw instruction trees. Unused input
+prefixes remain permitted. Normal termination with exactly ACCEPT plus LF
+accepts; exceptions reject. Mathematical completeness concerns ideal finite
+execution, without imposing a fixed physical call-stack/memory bound.
+
+The candidate does not independently validate the full public syntax and
+alphabet promise. It must not be described as the 468-byte arbitrary-JSON
+whole-input checker. The current whole-input comparison class is separate.
+
+2. Exact structural comparison
+------------------------------
+
+Let B be the existing shifted offset472.py. Its terminal behavior is:
+
+    validate A;
+    if A belongs to retained context G: return success;
+    consume a packet and generate H(s,u,t);
+    if A equals H: return success;
+    perform the nonterminal continuation.
+
+Let N be compact468.py. Its behavior is:
+
+    consume a packet;
+    validate A and generate H(s,u,t);
+    if A belongs to G + [H]: return success;
+    perform the identical nonterminal continuation.
+
+The two occurrences of "validate A" use the same eager partial opener O_k.
+The displayed pseudocode uses its fixed-point property proved below.
+The computation preview is precisely the existing one, including its
+conditional right-hand-side validation and zero/source dispatch. H is used
+only for this terminal lookup. The program uses list addition; H is never
+retained in G and cannot become an unproved hypothesis of a continuation.
+
+verify_composition.py checks the following AST identities without executing
+either measured source: lambda arguments, every other module statement,
+packet generator, opener, H expression, retained context, and the entire
+nonterminal continuation. It also checks the raw-goal comparison in B and
+the pure temporary-list membership in N. All thirteen checks passed.
+
+3. Successful eager validation is literally the identity
+-------------------------------------------------------
+
+Lemma. For every finite exact-integer/list raw tree A and fixed floor k,
+if the no-image call O_k(A) succeeds, its returned raw tree is exactly A.
+
+Proof. Induct on the finite raw tree. At a list, the operation preserves
+the list and recursively processes each child. At an integer a, it returns
+a when k <= a < d. Otherwise it evaluates
+
+    (d modulo 2) * O_k(missing_image; depth=5).
+
+The missing image is the checker function object. Processing this object
+attempts unsupported multiplication by integer zero and raises TypeError.
+Python eagerly evaluates the right operand of multiplication even when
+d modulo 2 is zero. Therefore an out-of-range scalar cannot occur in any
+successful no-image call. Every scalar and every list is unchanged. QED.
+
+This argument includes annotation children with unusual arities or negative
+traversal depths. It does not silently replace the actual eager opener by
+a lazy formula-sort erasure. It relies on the exact-integer/list promise:
+for example a string is iterable but would not be preserved as a string.
+
+Consequently the candidate's equality to the generated preview, when its
+validation succeeds, has exactly the old meaning A=H. It does not accept
+a computation merely because a projected noncanonical goal becomes H.
+
+4. Trace correspondence with terminal packet insertion/deletion
+--------------------------------------------------------------
+
+We compare existence of finite successful certificates at the same shifted
+raw goal/context/floor. We do not compare acceptance of one identical JSON
+array. Packet positions necessarily change.
+
+N to B. Traverse a finite successful N call tree in packet-consumption
+order. If its validated current goal A belongs to G, delete the packet
+consumed by that call. B returns at its hypothesis check without reading
+a packet. Otherwise retain the packet. By the lemma, its computation
+comparison is identical in N and B. If it closes, both calls terminate;
+otherwise translate the major subcall and continuation recursively. Their
+raw goals, contexts and local floors are identical, since the complete
+nonterminal expressions are identical. No terminal call allocates a fresh
+parameter or alters the retained context.
+
+B to N. Traverse a finite successful B call tree. At every hypothesis
+return insert the harmless four-field packet [0,0,0,0]. Its preview is the
+fixed computation equation [[0,0,0],0], so constructing it is defined in
+every scope with k <= 0. The current goal already belongs to G, so N
+returns successfully. Retain all other B packets and recursively translate
+their major and continuation subcalls.
+
+Packet accounting is local to EACH recursive call. A transformed subcall
+consumes exactly its transformed finite packet segment and leaves its
+caller's continuation segment untouched. Serializing the consumption trace
+in reverse gives the input-stack order. It is insufficient to say that an
+accidental unused prefix is harmless: an interior premature return could
+otherwise leave records in front of a sibling continuation. The call-tree
+construction above rules this out explicitly.
+
+Successful calls of B return either True or a nonempty singleton list.
+Successful calls of N return a nonempty singleton list, possibly containing
+a nested result. These concrete return values differ, but all are truthy.
+The only uses of recursive results in the nonterminal body are Boolean
+short-circuit tests, so this representational difference has no effect on
+scope, major verification, or the selected continuation. The parser and
+the ultimate output action are identical.
+
+The two constructions prove that B and N have exactly the same possible
+successful judgments at this interface. They establish existential
+certificate correspondence, not identical accepted raw certificate arrays.
+
+5. Scoped opening, scalar zero, and the inherited arithmetic reading
+------------------------------------------------------------------
+
+The shifted codec's formula depth is 2+2p and term depth is 5+2p. Protected
+slot intervals are shifted by two; negative rigid parameter names remain
+unchanged. Formula-position scalars read as the theorem 0=0, whereas the
+scalar 0 at a term position denotes numerical zero. Thus the initial
+context [0] supplies a neutral true formula, not an arbitrary numerical
+equation. Context membership checks whole raw formulas, not subterm leaves.
+
+These facts are already proved in offset472/OFFSET_PROOF.txt by its sorted
+reading, opening, outer-slot exposure, freshness, and direct computation
+lemmas. The candidate does not change any operation involved in those
+proofs. In particular it retains the same eager checks, the same fresh
+negative floor, the same timing of witness opening before floor decrement,
+and the same atomic-versus-compound introduction selector.
+
+The generated computation is not placed in the retained context. When the
+goal equals it, offset472's direct computation lemma applies. When the goal
+is already retained, the preview can be discarded. This is exactly the
+case distinction used in the trace correspondence; no new computational
+axiom or extension of equality transport is involved.
+
+The initial state of B and N is literally identical. Composing the trace
+correspondence with offset472's canonical public soundness/completeness
+therefore gives the same canonical public theorem set. Composing with the
+existing native-scalar ordinary realization gives the inherited full
+first-order iPRA bi-interpretation, with whole domains, actual equality and
+identity comparison graphs. Neither interpretation map changes.
+
+The original depth shift does NOT preserve every arbitrary raw auxiliary
+annotation by a literal map. For example, annotations below a tripled
+binary major can have different raw erasure behavior at the old and new
+depths. The relative proof here does not assume that false raw equivalence:
+B and N already use the SAME shifted syntax, and offset472's theorem uses
+sorted soundness plus canonical completeness, not arbitrary raw recoding.
+
+6. A rejected stronger mode simplification
+-----------------------------------------
+
+Replacing `(s or len(a)==2) and k` in the token profile by
+`(len(h)-1) and k`, where h=s*3 or the opened matrix, does NOT preserve the
+canonical cases. A compound auxiliary Q matrix has raw arity three. The
+old selector chooses zero (case introduction); the proposed selector
+chooses k (progressive introduction). Q is excluded from public goals but
+is expressly allowed in auxiliary proofs. Consequently this is not merely
+a malformed-input issue. It adds progress at compound closures and needs
+a new mathematical conservativity proof; the existing iPRA equivalence
+does not justify it. No such mode change is in the reviewed compact468.
+
+7. Scope of the size claim
+-------------------------
+
+The matched 469-byte profile has 272 tokens / 306 nodes / 469 bytes. The
+candidate has 271 / 305 / 468, improving each coordinate against THAT
+specific program. The qualified compact coordinate minima over the current
+pinned corpus are 241 / 262 / 469, attained separately. The candidate
+improves only the class-wide byte coordinate, to 468. It does not improve
+the class-wide token or AST records and does not achieve one program below
+all old minima. No global minimality or general lower-bound theorem follows.
+
+Both underlying transformations and the arithmetic bridge are inherited.
+The new contribution is their checked composition and resulting measured
+source refinement. It is not a newly smaller mathematical axiom inventory.

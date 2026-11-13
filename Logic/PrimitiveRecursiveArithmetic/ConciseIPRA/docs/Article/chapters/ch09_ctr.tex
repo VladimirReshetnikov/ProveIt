@@ -15,7 +15,12 @@ language and defines zero by an equation. \Cref{ctr:sec:guarded} restricts the b
 register with one bound variable so that two unconditional equations replace its graph
 axiom, and proves the resulting native calculus equivalent to $\Nat$.
 \Cref{ctr:sec:six,ctr:sec:five,ctr:sec:ce,ctr:sec:three} treat the
-proof calculi stated on these syntaxes. \Cref{ctr:sec:binding} treats the concrete syntax in
+proof calculi stated on these syntaxes. \Cref{ctr:sec:root} keeps the successor as a
+constructor, gives the recursor the old counter and the initializer as its value at $0$, and
+shows that on these raw terms one computation step at the root of the left endpoint of an
+equation, with substitution for a variable as the only equality rule, gives a complete
+calculus. \Cref{ctr:sec:tree} records a bi-interpretation of $\iPRA$ with an arithmetic of
+binary trees whose comparison maps are not the identity. \Cref{ctr:sec:binding} treats the concrete syntax in
 which the recursor and the paired binder bind the same number of variables.
 \Cref{ctr:sec:bounds} collects the boundary results.
 
@@ -306,6 +311,8 @@ zero-body canonical $R$, two binders (\cref{ctr:sec:ce}) & $R(0,a;i,u.0)$ &
 identity of spelling & derived from reflexivity and counter evaluation\\
 normal $R$, two binders (\cref{ctr:sec:three}) & $R(0,a;i,u.0)$ & identity of spelling &
 identity of spelling\\
+raw $0,\Suc,\hat R$, two binders (\cref{ctr:sec:root}) & constructor & one root step, either
+direction & one root step, either direction\\
 register $J$ (\cref{ctr:sec:counter}) & $J(a;i,r.0)$ & axiom $J(0;i,r.h)=1$ &
 graph biconditional\\
 guarded scalar $J$ (\cref{ctr:sec:guarded}) & $J(a;v.0)$ & rule
@@ -3234,6 +3241,826 @@ On normal terms the coverage theorem of \cref{ctr:lem:macros} strengthens to
 $t=0\lor_*t=\Suc(p(t))$, since $p(\Suc z)\equiv z$; this is the form used by
 \pkg{uniform\_recursion} and \pkg{single\_constructor}.
 
+\section{Root conversion on the counter-aware recursor with successor}\label{ctr:sec:root}
+
+This section draws on \pkg{root\_conversion} and on a second, independent delivery of the
+same calculus, \pkg{root\_conversion\_raw} (\cref{ctr:rem:rootraw}).
+
+The term language of this section keeps the successor as a constructor and gives the body of
+the recursor the old counter; the value of the recursor at $0$ is its initializer, not the
+successor of it. The recursor is the primitive form of the recursor that \cref{base:def:rec}
+defines in $\Teq$ by pairing. On these raw terms the bounded conversion of
+\cref{comp:sec:bounded} can be restricted to depth $0$: one computation step at the root of the
+left endpoint of an equation, in either direction, together with substitution for a variable
+as the only equality rule and the single introduction, gives a complete calculus with seven
+rules. The counter of the recursor is what makes depth $0$ sufficient: a staged packet exposes
+each premise of transport at a root that an earlier root step has uncovered, so that no step
+inside a counter is needed. Whether depth $0$ suffices on the iterator terms of
+\cref{base:sec:terms}, whose bodies do not see the counter, is not settled
+(\cref{ctr:sec:questions}).
+
+\subsection{Terms and root steps}
+
+\begin{definition}[The counter-aware recursor with successor]\label{ctr:def:rhterms}
+Terms are $t ::= x\mid 0\mid \Suc t\mid \hat R(n,a;i,u.h)$; the variables $i,u$ are bound in
+$h$ only, $i$ receiving the old counter and $u$ the preceding value. The computation equations
+are
+\begin{align}
+ \hat R(0,a;i,u.h)&=a, \label{ctr:eq:rhzero}\\
+ \hat R(\Suc n,a;i,u.h)&=h[n/i,\,\hat R(n,a;i,u.h)/u], \label{ctr:eq:rhsucc}
+\end{align}
+with simultaneous capture-avoiding substitution on the right. Terms are raw syntax up to the
+renaming of bound variables. In particular $\hat R(0,a;i,u.h)$ is not identical to $a$, and no
+normalization is part of the identity of terms. As in \cref{ctr:def:languages}, each fixed body
+is a function symbol of the counter, the initializer and the passive parameters of the body.
+With all bound variables fresh, and $i,u\notin\FV(b)$ in the selector, put
+\begin{equation}\label{ctr:eq:rhabbrev}
+ \hat C(n,a,b)\defeq\hat R(n,a;i,u.b),\qquad
+ \hat p(n)\defeq\hat R(n,0;i,u.i),\qquad
+ \It{n}{a}{u}{h}\defeq\hat R(n,a;i,u.h)\quad(i\notin\FV(h)).
+\end{equation}
+\end{definition}
+
+The last abbreviation embeds the iterator terms of \cref{base:sec:terms}: with $i$ unused,
+\eqref{ctr:eq:rhzero} and \eqref{ctr:eq:rhsucc} are literally \eqref{base:eq:I0} and
+\eqref{base:eq:IS}.
+
+\begin{definition}[Root steps]\label{ctr:def:rootstep}
+For terms $r,r'$ write $r\to_0 r'$ if $r$ is the left side of an instance of
+\eqref{ctr:eq:rhzero} or \eqref{ctr:eq:rhsucc} and $r'$ is its displayed right side, and
+$r\leftrightarrow_0 r'$ if $r\to_0 r'$ or $r'\to_0 r$.
+\end{definition}
+
+The counter of the redex has to be literally $0$ or literally a successor $\Suc n$. There is no
+step below a successor, in the counter, initializer or body of a recursor, or below a formula
+binder, and $\leftrightarrow_0$ is a single step, not its reflexive and transitive closure. For
+example $\Suc(\hat R(0,0;i,u.u))$ and $\Suc 0$ are not related by $\leftrightarrow_0$; the
+equation between them is derived in \cref{ctr:cor:rootsubst}. The abbreviations
+\eqref{ctr:eq:rhabbrev} have the root steps
+\[
+ \hat C(0,a,b)\to_0 a,\qquad \hat C(\Suc n,a,b)\to_0 b,\qquad
+ \hat p(0)\to_0 0,\qquad \hat p(\Suc n)\to_0 n .
+\]
+
+\begin{proposition}[Direct compiler]\label{ctr:prop:rhcompiler}
+Every fixed primitive recursive description compiles to a term of \cref{ctr:def:rhterms}
+whose defining equations are instances of \eqref{ctr:eq:rhzero} and \eqref{ctr:eq:rhsucc}:
+zero, successor and projections are terms, composition is substitution, and a recursion
+$f(0,\vec p)=g(\vec p)$, $f(\Suc n,\vec p)=h(n,f(n,\vec p),\vec p)$ compiles to
+\[
+ f^*(n,\vec p)\defeq\hat R\bigl(n,g^*(\vec p);i,u.h^*(i,u,\vec p)\bigr).
+\]
+\end{proposition}
+\begin{proof}
+By external induction on the description. At a recursion,
+$f^*(0,\vec p)=g^*(\vec p)$ is an instance of \eqref{ctr:eq:rhzero}, and
+$h^*(i,u,\vec p)[n/i,f^*(n,\vec p)/u]$ is $h^*(n,f^*(n,\vec p),\vec p)$, so the successor
+equation is an instance of \eqref{ctr:eq:rhsucc}.
+\end{proof}
+
+For example $\hat p(\Suc n)=n$, $x+y\defeq\hat R(y,x;i,u.\Suc u)$ and
+$x\mathbin{\dot-}y\defeq\hat R(y,x;i,u.\hat p(u))$. The compiler of \cref{ctr:thm:compiler}
+needs the decoder because the seeded recursor starts at $\Suc a$; here no wrapper is needed,
+and no pairing as in \cref{base:thm:primrec}. The compiler is an external recursion on finite
+descriptions, not an evaluator inside a theory.
+
+\subsection{The calculus}
+
+\begin{definition}[$\mathcal K_{\mathrm{Root}}$ and $\Nat_{\hat R}$]\label{ctr:def:root}
+Formulas are the native formulas $A::=(s=t)\mid\Q{y}A\mid\D{x}{y}A$ of
+\cref{base:sec:reading} over the terms of \cref{ctr:def:rhterms}, with the reading of that
+section. Contexts are finite reusable lists of formulas, and the designated contradiction is
+$0=\Suc 0$. The calculus $\mathcal K_{\mathrm{Root}}$ has the following seven rules:
+\begin{gather*}
+ \infrule{A\in\Gamma}{\Gamma\proves A}\ \rulename{Hyp}
+ \qquad
+ \infrule{}{\Gamma\proves t=t}\ \rulename{Refl}
+ \qquad
+ \infrule{\Gamma\proves r=v}{\Gamma\proves r'=v}\ \rulename{HC}_0\quad(r\leftrightarrow_0 r')
+ \\[1.2ex]
+ \infrule{\Gamma\proves x=t\qquad\Gamma\proves u=v}
+         {\Gamma\proves v=u\subst{t}{x}}\ \rulename{VSub}
+ \qquad
+ \infrule{\Gamma\proves\Q{y}B(y)\qquad\Gamma\proves B(0)}
+         {\Gamma\proves B(t)}\ \rulename{QE}
+ \\[1.2ex]
+ \infrule{\Gamma\proves\D{x}{y}B(x,y)\qquad\Gamma,\ \Q{y}B(b,y)\proves A}
+         {\Gamma\proves A}\ \rulename{DE}
+ \qquad
+ \infrule{\Gamma,\ B(t,\eta)\proves B(t,\Suc z)}
+         {\Gamma\proves\D{x}{y}B(x,y)}\ \rulename{WI}
+\end{gather*}
+In \rulename{VSub} the source $x$ is a variable; the term $t$ is arbitrary and may contain
+$x$, and the replacement is performed once. In \rulename{DE} the variable $b$ is not free in
+$\Gamma$, $A$ or $\D{x}{y}B$. In \rulename{WI} the variable $z$ is not free in $\Gamma$, in the
+witness $t$ or in $\D{x}{y}B$, and $\eta=z$ if $B$ is a literal equation and $t\equiv 0$,
+otherwise $\eta=0$. The displayed assumptions are discharged. The kernel $\Nat_{\hat R}$ is
+the calculus $\Nat$ of \cref{base:def:kernel} over the same terms and formulas, with
+\eqref{ctr:eq:rhzero} and \eqref{ctr:eq:rhsucc} in place of \rulename{I0} and \rulename{IS}.
+\end{definition}
+
+There is no primitive computation equation, transport, symmetry, case rule, induction rule,
+successor axiom, logical connective or structural rule. $\rulename{HC}_0$ changes only the left
+endpoint, by one step at its root; the right endpoint and formulas below binders are not
+converted. $\mathcal K_{\mathrm{Root}}$ is the calculus $\mathsf{BH}_3$ of \cref{comp:def:bh}
+with $\rulename{HC}_3$ replaced by its instances of depth $0$, on the terms of
+\cref{ctr:def:rhterms}. The package names the rules Hyp, Refl, Root, Var, Use, Open and
+Intro. Its eight-rule control has \rulename{DI} and \rulename{QI} of \cref{base:def:kernel} in
+place of \rulename{WI}; the passage between the two inventories is \cref{comp:lem:single} and
+is not new.
+
+\subsection{Equality from root steps}
+
+\begin{lemma}[Structure, symmetry and cases before transport]\label{ctr:lem:rootstruct}
+In $\mathcal K_{\mathrm{Root}}$:
+\begin{enumerate}
+\item weakening, injective renaming of free variables and cut on an assumption are
+admissible;
+\item symmetry is derivable without $\rulename{HC}_0$; hence $\rulename{HC}_0$ at the right
+endpoint is admissible, and every instance of \eqref{ctr:eq:rhzero} and
+\eqref{ctr:eq:rhsucc} is derivable in every context;
+\item numerical cases: if $\Gamma\proves A(0)$ and $\Gamma\proves A(\Suc z)$ with $z$ not
+free in $\Gamma$ and $A(y)$, then $\Gamma\proves A(t)$ for every term $t$, for every native
+formula $A$;
+\item \rulename{QI} of \cref{base:def:kernel} is derivable.
+\end{enumerate}
+None of these derivations uses transport.
+\end{lemma}
+\begin{proof}
+(1) and the first part of (2) are \cref{comp:lem:bhsym}, whose proof applies word for word:
+an injective renaming commutes with capture-free substitution, so it sends a root step to a
+root step, a variable to a variable and the literal $0$ only to itself, and symmetry is
+\rulename{Refl} at a variable $x$ followed by \rulename{VSub} with the source $x$, the
+replacement $x$ and the minor premise $s=t$, whose conclusion is $t=s\subst{x}{x}\equiv t=s$.
+A step at the right endpoint is symmetry, $\rulename{HC}_0$ and symmetry. For $r\to_0 r'$,
+\rulename{Refl} gives $r'=r'$ and $\rulename{HC}_0$ with $r'\leftrightarrow_0 r$ gives
+$r=r'$.
+
+(3) Let $w$ be a variable not free in $A$. The matrix $A(y)$ of $\D{w}{y}A(y)$ at the witness
+$1$, which is not literally $0$, puts \rulename{WI} in case mode, with the premise
+$\Gamma,A(0)\proves A(\Suc z)$; it is the second given derivation weakened by (1). This gives
+$\Gamma\proves\D{w}{y}A(y)$. \rulename{DE} at a fresh $b$ adds $\Q{y}A(y)$, and \rulename{QE}
+with this hypothesis and the first given derivation, weakened, gives $A(t)$, which does not
+contain $b$.
+
+(4) For a literal equation $E(y)$ and the premise $\Gamma,E(z)\proves E(\Suc z)$,
+\rulename{WI} for $\D{w}{y}E(y)$, $w$ unused, at the witness $0$ is in progress mode and has
+this premise; \rulename{DE} with \rulename{Hyp} exports $\Q{y}E(y)$, which does not contain
+the fresh witness. These are the constructions of \cref{comp:lem:single}(i).
+\end{proof}
+
+The package \pkg{root\_conversion} derives symmetry in the scoped form that \cref{comp:rem:bhsym}
+describes for \pkg{bounded\_conversion}: it introduces $\D{a}{y}(0=0)$, opens it at a fresh
+$b$, applies \rulename{VSub} to $b=b$ and $u=v$, and discharges $b$. Its checker declares
+the numerical scope of every sequent, so that a closed sequent has no variable to serve as
+the source.
+
+\begin{definition}[The staged packet]\label{ctr:def:rootpacket}
+Let $s,t,r$ be terms and $h(w)$ a term template, let $x,y$ be variables not free in $s,t,r,h$,
+and let all bound variables be fresh. Put
+\[
+ \hat F(c;a,b)\defeq\hat R\bigl(c,0;i,u.\hat C(i,a,b)\bigr),\qquad
+ \Pi(x,y)\defeq\Bigl(\hat F\bigl(y;x,h(x)\bigr)=\hat F(y;t,r)\Bigr).
+\]
+\end{definition}
+
+The bodies ignore the state $u$, and the old counter $i$ is the control of the inner
+selector. Since $i,u$ are not free in $a,b$,
+\[
+ \hat F(0;a,b)\to_0 0,\qquad \hat F(\Suc n;a,b)\to_0\hat C(n,a,b).
+\]
+Hence, on each endpoint, the rows of the packet are reached by root steps only:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Row & Equation reached & Root steps per endpoint\\
+\midrule
+$\Pi(x,0)$ & $0=0$ & one\\
+$\Pi(x,1)$ & $x=t$ & two: $\hat F(1;a,b)\to_0\hat C(0,a,b)\to_0 a$\\
+$\Pi(x,\Suc\Suc z)$ & $h(x)=r$ & two: $\hat F(\Suc\Suc z;a,b)\to_0\hat C(\Suc z,a,b)\to_0 b$\\
+$\Pi(x,\Suc z)$ & $\hat C(z,x,h(x))=\hat C(z,t,r)$ & one\\
+\bottomrule
+\end{tabular}
+\end{center}
+The second step of a row acts at the root that the first step exposes. No step acts inside a
+counter or inside the payloads $x,h(x),t,r$.
+
+\begin{lemma}[Packet introduction]\label{ctr:lem:rootpacket}
+If $\Gamma\proves s=t$ and $\Gamma\proves h(s)=r$ in $\mathcal K_{\mathrm{Root}}$, then
+$\Gamma\proves\D{x}{y}\Pi(x,y)$.
+\end{lemma}
+\begin{proof}
+Let $z$ be fresh for $\Gamma,s,t,r,h$ and put $E(v)\defeq\bigl(\hat C(v,s,h(s))=\hat C(v,t,r)\bigr)$
+with $v$ fresh. From $s=t$, a step at the right endpoint (\cref{ctr:lem:rootstruct}(2))
+with $\hat C(0,t,r)\to_0 t$ and a step at the left endpoint with $\hat C(0,s,h(s))\to_0 s$,
+both read as expansions, give $E(0)$. From $h(s)=r$ the same two expansions with
+$\hat C(\Suc w,\cdot,\cdot)$, $w$ fresh, give $E(\Suc w)$. Numerical cases
+(\cref{ctr:lem:rootstruct}(3)) give $E(z)$. Two further expansions, with
+$\hat F(\Suc z;s,h(s))\to_0\hat C(z,s,h(s))$ on the left and
+$\hat F(\Suc z;t,r)\to_0\hat C(z,t,r)$ on the right, give $\Gamma\proves\Pi(s,\Suc z)$.
+Weaken by the local assumption $\Pi(s,\eta)$ of \rulename{WI} at the witness $s$, which is not
+used, and apply \rulename{WI}; $z$ is fresh for $\Gamma$, $s$ and $\D{x}{y}\Pi$. The
+derivation is the same in both modes, so the case $s\equiv 0$, where \rulename{WI} selects
+progress, is not exceptional.
+\end{proof}
+
+\begin{theorem}[Transport from root steps]\label{ctr:thm:roottransport}
+For every term template $h$, the rule \rulename{Tr} of \cref{base:def:kernel},
+\[
+ \infrule{\Gamma\proves s=t\qquad\Gamma\proves h(s)=r}{\Gamma\proves r=h(t)},
+\]
+is admissible in $\mathcal K_{\mathrm{Root}}$. Its derivation uses \rulename{VSub} only in
+symmetry and in its last step, and no transport, congruence or transitivity.
+\end{theorem}
+\begin{proof}
+\Cref{ctr:lem:rootpacket} gives $\D{x}{y}\Pi$. Apply \rulename{DE} at a variable $b$ fresh
+for $\Gamma$, $s,t,r,h$; the added hypothesis is $\Q{y}\Pi(b,y)$. \rulename{Refl} gives
+$0=0$, and one expansion at each endpoint gives $\Pi(b,0)$. \rulename{QE} at $1$ and at
+$\Suc 1$, followed by the two contractions of each row on each endpoint
+(\cref{ctr:lem:rootstruct}(2) for the right endpoint), gives
+\[
+ b=t\qquad\text{and}\qquad h(b)=r.
+\]
+\rulename{VSub} with the source $b$, the major premise $b=t$ and the minor premise $h(b)=r$
+concludes $r=h(b)\subst{t}{b}$, which is $r=h(t)$ because $b$ is not free in $h$ and $r$. The
+conclusion does not contain $b$, and \rulename{DE} discharges it.
+\end{proof}
+
+\begin{remark}[The packet and its predecessors]\label{ctr:rem:rootpacket}
+The three rows $0=0$, $x=t$ and $h(x)=r$ and the use of a fresh name with \rulename{VSub} are
+those of the packets of \cref{disch:def:packet}, of \cref{comp:def:whpacket} and of
+\eqref{ctr:eq:packet}. In \eqref{ctr:eq:packet} the rows are literal identities of normal
+forms, through the decoder $P(\Suc z)=z$ on normal terms; on raw iterator terms
+\cref{comp:lem:bhtr} reaches them by steps at depths up to $3$ inside the counter of a
+selector, which computes a parity. The packet of \cref{ctr:def:rootpacket} moves the test of
+the row into the counter variable of the body, so that every step is at a root. The proof uses
+expansions as well as contractions: the rows $\Pi(s,\Suc z)$ and $\Pi(b,0)$ are built from
+smaller equations. It does not show that contractions alone suffice, and since it uses the
+counter of the body, it says nothing about the iterator terms of \cref{base:sec:terms}
+(\cref{ctr:sec:questions}).
+\end{remark}
+
+The packet is the case of three entries of a family of finite tables, all of whose entries
+are reached by root steps; the family is from \pkg{root\_conversion\_raw}.
+
+\begin{lemma}[Finite tables]\label{ctr:lem:roottable}
+For an external number $k$ and terms $a_0,\dots,a_k$ define, by recursion on $k$ and with all
+bound variables fresh for the entries and for one another,
+\[
+ T_0(y;a_0)\defeq a_0,\qquad
+ T_{k+1}(y;a_0,\dots,a_{k+1})\defeq\hat R\bigl(y,a_0;\,i,u.\,T_k(i;a_1,\dots,a_{k+1})\bigr).
+\]
+Write $\bar\jmath\defeq\Suc^j0$. For every $m\le k$ and every term $z$ there is a chain of
+$m$ root steps
+\[
+ T_k(\Suc^mz;a_0,\dots,a_k)\to_0\cdots\to_0 T_{k-m}(z;a_m,\dots,a_k).
+\]
+Consequently $T_k(\bar\jmath;a_0,\dots,a_k)$ reaches $a_j$ by $j+1$ root steps if $j<k$, and
+$T_k(\Suc^kz;a_0,\dots,a_k)$ reaches $a_k$ by $k$ root steps for every term $z$. Each step acts
+at the root of the term that the preceding step produced, and no step acts inside an entry.
+In $\mathcal K_{\mathrm{Root}}$, for every term $v$ and every context, $\Gamma\proves a_j=v$
+and $\Gamma\proves T_k(\bar\jmath;a_0,\dots,a_k)=v$ are interderivable for $j<k$, and so are
+$\Gamma\proves v=a_j$ and $\Gamma\proves v=T_k(\bar\jmath;a_0,\dots,a_k)$.
+\end{lemma}
+\begin{proof}
+Induction on $m$, for all $k\ge m$ simultaneously. For $m=0$ the chain is empty. Let
+$m+1\le k$. Then $T_k(\Suc^{m+1}z;a_0,\dots,a_k)$ is
+$\hat R\bigl(\Suc(\Suc^mz),a_0;\,i,u.\,T_{k-1}(i;a_1,\dots,a_k)\bigr)$, and
+\eqref{ctr:eq:rhsucc} gives the root step to
+$T_{k-1}(i;a_1,\dots,a_k)[\Suc^mz/i,\ \ldots/u]$. The variable $u$ is not free in the body,
+so the recursive call is discarded without being computed; $i$ is not free in the entries, and
+it occurs in $T_{k-1}(i;\dots)$ only as the counter of the outer recursor if $k-1\ge 1$, and not
+at all if $k-1=0$; after renaming the inner bound variables away from $z$ the result is
+$T_{k-1}(\Suc^mz;a_1,\dots,a_k)$. The induction hypothesis for $k-1$ and $m$ supplies the
+remaining $m$ steps. For $j<k$ take $m=j$ and $z=0$: the term
+$T_{k-j}(0;a_j,\dots,a_k)$ has $k-j\ge1$, so it is a recursor with the counter $0$ and the
+initializer $a_j$, and \eqref{ctr:eq:rhzero} is one more step. For $m=k$ the last term is
+$T_0(z;a_k)\equiv a_k$. In $\mathcal K_{\mathrm{Root}}$ each step of the chain is one
+application of $\rulename{HC}_0$ at the left endpoint, read as a contraction or as an
+expansion, and at the right endpoint by \cref{ctr:lem:rootstruct}(2).
+\end{proof}
+
+The proof is an external induction on the syntax of the table, not an induction inside the
+calculus. $T_1(y;a,b)\equiv\hat C(y,a,b)$, and the table of the packet of
+\cref{ctr:def:rootpacket} is $\hat F(c;a,b)\equiv T_2(c;0,a,b)$. The lemma gives every fixed
+finite set of observations, not an evaluator of coded tables of variable length.
+
+\subsection{Equivalence with the native kernel}
+
+\begin{lemma}[The structural theory of $\Nat_{\hat R}$]\label{ctr:lem:rhnative}
+\Cref{base:lem:struct,base:lem:cut,base:lem:eq,base:lem:cong,base:lem:eqind,base:lem:bindercong,base:thm:leibniz,base:cor:cases}
+hold for $\Nat_{\hat R}$, with the same proofs; in \cref{base:lem:eq}(i) the instance
+$\hat R(0,t;i,u.u)=t$ of \eqref{ctr:eq:rhzero} replaces \rulename{I0}. Moreover:
+\begin{enumerate}
+\item \emph{Body congruence.} If $\Gamma\proves h=k$ with $i,u$ not free in $\Gamma$, then
+$\Gamma\proves\hat R(n,a;i,u.h)=\hat R(n,a;i,u.k)$ for all terms $n,a$.
+\item \emph{Conversion.} Let $\to$ be the closure of $\to_0$ under all term contexts,
+including the bodies of recursors. If $t\to t'$, then $\Gamma\proves t=t'$; if $A'$ arises from
+$A$ by replacing terms by such reducts, then $A$ and $A'$ are interderivable over every
+$\Gamma$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+The cited proofs use of the term language only that a substitution instance of a
+computation equation is an instance of it, which holds for \eqref{ctr:eq:rhsucc} by the
+composition of simultaneous capture-free substitutions as in \cref{base:lem:subst}, with $i,u$
+renamed away from the substitution; all other steps are applications of the rules.
+
+(1) Rename $i,u$ away from $n,a$ and let $z$ be fresh. Apply \cref{base:lem:eqind} to the
+literal equation $\hat R(z,a;i,u.h)=\hat R(z,a;i,u.k)$ and then substitute $n$ for $z$. At $0$
+both sides equal $a$ by \eqref{ctr:eq:rhzero}. Under the induction hypothesis,
+\[
+ \hat R(\Suc z,a;i,u.h)=h[z/i,\hat R(z,a;i,u.h)/u]=h[z/i,\hat R(z,a;i,u.k)/u]
+ =k[z/i,\hat R(z,a;i,u.k)/u]=\hat R(\Suc z,a;i,u.k),
+\]
+by \eqref{ctr:eq:rhsucc}, congruence in the argument $u$ of $h$, the instance of the premise
+under $[z/i,\hat R(z,a;i,u.k)/u]$, which fixes $\Gamma$ (\cref{base:lem:struct}), and
+\eqref{ctr:eq:rhsucc}.
+
+(2) As in \cref{comp:lem:conversion}: induct on the position of the redex. At the root the
+equation is a computation equation; below a successor, in a counter or in an initializer use
+congruence; in a body use (1) with the induction hypothesis, derived in the empty context with
+$i,u$ free and weakened. For formulas use \cref{base:lem:bindercong}.
+\end{proof}
+
+\begin{theorem}[Root conversion and the native kernel]\label{ctr:thm:rootequiv}
+For every context $\Gamma$ and native formula $A$ over the terms of \cref{ctr:def:rhterms},
+\[
+ \Gamma\proves_{\mathcal K_{\mathrm{Root}}}A\iff\Gamma\proves_{\Nat_{\hat R}}A,
+\]
+by effective translations of derivations that leave the end sequent unchanged.
+\end{theorem}
+\begin{proof}
+\emph{From $\Nat_{\hat R}$ to $\mathcal K_{\mathrm{Root}}$}, rule by rule. \rulename{Hyp},
+\rulename{QE} and \rulename{DE} are common. The computation equations are
+\cref{ctr:lem:rootstruct}(2), \rulename{Tr} is \cref{ctr:thm:roottransport} and
+\rulename{QI} is \cref{ctr:lem:rootstruct}(4). With \rulename{Tr} and \rulename{Refl},
+symmetry, transitivity, congruence and transport in literal equations are admissible
+(\cref{comp:lem:eqalg}(b)). An instance of \rulename{DI} is an instance of \rulename{WI}
+unless its matrix is a literal equation and its witness is literally $0$. In that case apply
+\cref{comp:lem:single}(ii) with the term $Z\defeq\hat R(0,0;i,u.0)$, which is not literally $0$
+and for which \rulename{Refl} at $0$ and one expansion at the left endpoint give $Z=0$; the
+lemma needs only \rulename{Hyp}, \rulename{QE}, \rulename{DE}, \rulename{WI}, the structural
+operations of \cref{ctr:lem:rootstruct}(1), symmetry and transport in literal equations.
+
+\emph{From $\mathcal K_{\mathrm{Root}}$ to $\Nat_{\hat R}$}, rule by rule. \rulename{Hyp},
+\rulename{QE} and \rulename{DE} are common. \rulename{Refl} is \cref{base:lem:eq}(i). A step
+$\rulename{HC}_0$ from $r=v$ to $r'=v$ is the computation equation $r=r'$ or $r'=r$, symmetry if
+needed, and transitivity. \rulename{VSub} is one \rulename{Tr}, as in the proof of
+\cref{disch:thm:vsub}: with $w$ fresh and $K(w)\defeq u\subst{w}{x}$, \rulename{Tr} from $x=t$
+and $K(x)\equiv u=v$ concludes $v=K(t)\equiv u\subst{t}{x}$, also when $t$ contains $x$.
+\rulename{WI} is \cref{comp:lem:single}(iii): in case mode it is an instance of \rulename{DI};
+in progress mode its premise is $\Gamma,E(0,z)\proves E(0,\Suc z)$, and \rulename{QI} for
+$E(0,y)$, \rulename{QE} under the assumption $E(0,0)$ and \rulename{DI} at the witness $0$
+derive the conclusion.
+\end{proof}
+
+\begin{corollary}\label{ctr:cor:rootsubst}
+In $\mathcal K_{\mathrm{Root}}$ the substitution of arbitrary terms into derivations, transport
+in every native formula template, and conversion at every position of a term and below
+binders (\cref{ctr:lem:rhnative}(2)) are admissible, and so are all instances of \rulename{DI}
+and \rulename{QI}. In particular $\proves\Suc(\hat R(0,0;i,u.u))=\Suc 0$, which no single
+root step proves.
+\end{corollary}
+\begin{proof}
+These hold in $\Nat_{\hat R}$ by \cref{ctr:lem:rhnative}, and \cref{ctr:thm:rootequiv} carries
+them over with the end sequents unchanged. The example is congruence in the template $\Suc v$
+along the computation $\hat R(0,0;i,u.u)=0$.
+\end{proof}
+
+The stronger operations of the corollary are not used in the proofs of
+\cref{ctr:lem:rootstruct,ctr:lem:rootpacket,ctr:thm:roottransport}. Substitution is not proved
+for $\mathcal K_{\mathrm{Root}}$ by a direct induction on derivations: a substituted witness can
+become the literal $0$, and \rulename{VSub} needs a variable source (\cref{comp:rem:single}).
+
+\subsection{The bridge}
+
+\begin{definition}[Translations and the ordinary theory]\label{ctr:def:rhtrans}
+The translation $t\mapsto t^\iota$ to the iterator terms of \cref{base:sec:terms} fixes
+variables, $0$ and $\Suc$, and sends $\hat R(n,a;i,u.h)$ to the term
+$R(n^\iota,a^\iota;\,i\,u.\,h^\iota)$ of \cref{base:def:rec}. The translation $s\mapsto s^\kappa$
+in the other direction fixes variables, $0$ and $\Suc$, and sends $\It{n}{a}{u}{h}$ to
+$\hat R(n^\kappa,a^\kappa;i,u.h^\kappa)$ with $i$ fresh. Both are extended to native formulas,
+fixing $=$, $\Q{y}$ and $\D{x}{y}$, and to ordinary formulas, fixing every connective and
+quantifier. The ordinary theory $\mathsf T_{\hat R}$ has the terms of \cref{ctr:def:rhterms}, the
+formulas and logical rules of \cref{ctr:def:TJ}, the computation equations
+\eqref{ctr:eq:rhzero} and \eqref{ctr:eq:rhsucc}, coverage
+$\forall x\,(x=0\lor\exists y\,x=\Suc y)$, separation $0=\Suc 0\to\bot$, and the rule
+\eqref{ctr:eq:EI} of induction for literal equations with an arbitrary context.
+\end{definition}
+
+The term of \cref{base:def:rec} is built from $a$ and $g$ by substitution and pairing, with its
+own bound variables renamed away, so $\iota$ commutes with capture-free substitution and
+$\FV(t^\iota)\subseteq\FV(t)$; $\kappa$ commutes with substitution and preserves free variables.
+Under $\kappa$, \eqref{base:eq:I0} and \eqref{base:eq:IS} become instances of
+\eqref{ctr:eq:rhzero} and \eqref{ctr:eq:rhsucc}, because $i$ is not free in $h^\kappa$.
+
+\begin{theorem}[Bridge for root conversion]\label{ctr:thm:rootbridge}
+\begin{enumerate}
+\item If $\Gamma\proves_{\Nat_{\hat R}}A$ then $\Gamma^\iota\proves_{\Nat}A^\iota$, and if
+$\Gamma\proves_{\Nat}A$ then $\Gamma^\kappa\proves_{\Nat_{\hat R}}A^\kappa$.
+\item $\Nat_{\hat R}\proves t^{\iota\kappa}=t$ for every term $t$ of \cref{ctr:def:rhterms},
+and $\Nat\proves s^{\kappa\iota}=s$ for every iterator term $s$.
+\item Every native formula is interderivable with its double translation, in $\Nat_{\hat R}$
+and in $\Nat$, and $\Gamma\proves_{\Nat_{\hat R}}A$ if and only if
+$\Gamma^\iota\proves_{\Nat}A^\iota$.
+\item The same statements hold for $\mathsf T_{\hat R}$ and $\Teq$ with ordinary formulas, and
+$\Gamma\proves_{\Nat_{\hat R}}A$ if and only if $\mathsf T_{\hat R}$ proves $A^\circ$ from
+$\Gamma^\circ$.
+\end{enumerate}
+Consequently $\mathcal K_{\mathrm{Root}}$ and $\Nat_{\hat R}$ are sound and faithful for
+$\mathsf T_{\hat R}$ under the ordinary reading, and the three systems are equiconsistent and bi-interpretable with $\iPRA$, by
+interpretations whose domains are the whole numerical domain, whose equality is actual
+equality and whose numerical composites have the graph $x=y$; every formula is provably
+equivalent to its double translation.
+\end{theorem}
+\begin{proof}
+(1) Under $\kappa$ every instance of a rule of $\Nat$ is an instance of the same rule of
+$\Nat_{\hat R}$: the computation equations by the remark before the theorem, the other rules
+because $\kappa$ commutes with substitution, preserves free variables and preserves the root of
+a formula. Under $\iota$, the instances of \eqref{ctr:eq:rhzero} and \eqref{ctr:eq:rhsucc}
+become, by commutation with substitution,
+\[
+ R(0,a^\iota;\,i\,u.\,h^\iota)=a^\iota,\qquad
+ R(\Suc n^\iota,a^\iota;\,i\,u.\,h^\iota)
+ =h^\iota\bigl[n^\iota/i,\ R(n^\iota,a^\iota;\,i\,u.\,h^\iota)/u\bigr],
+\]
+which $\Teq$ proves by \cref{base:thm:primrec}(i), hence $\Nat$ proves them by
+\cref{base:cor:nteq}, since the reading and its inverse fix equations; weakening gives them in
+every context. The other rules translate to the same rules; the freshness conditions survive
+because $\FV(X^\iota)\subseteq\FV(X)$.
+
+(2) Induct on the term. Variables, $0$ and $\Suc$ are fixed. For $t=\hat R(n,a;i,u.h)$, the
+counter of the term of \cref{base:def:rec} occurs only as the counter of its iterator, so
+$t^{\iota\kappa}=G(n^{\iota\kappa})$ for $G(z)\defeq R(z,a^\iota;\,i\,u.\,h^\iota)^\kappa$. By
+(1) applied to the derivations in $\Nat$ of the two equations displayed above,
+$\Nat_{\hat R}$ proves $G(0)=a^{\iota\kappa}$ and
+$G(\Suc z)=h^{\iota\kappa}[z/i,G(z)/u]$. By the induction hypotheses,
+$a^{\iota\kappa}=a$ and $h^{\iota\kappa}=h$ with $i,u$ free. The term $\hat R(z,a;i,u.h)$ has the
+base $a$ and the update $h$, so the proof of \cref{ctr:lem:unique}, which uses induction on a
+literal equation, congruence and an instance of a derived equation and is available in
+$\Nat_{\hat R}$ by \cref{ctr:lem:rhnative}, gives $G(z)=\hat R(z,a;i,u.h)$; the instance at
+$n^{\iota\kappa}$ and congruence with $n^{\iota\kappa}=n$ give the claim. For
+$s=\It{n}{a}{u}{h}$, the term $s^{\kappa\iota}$ is $R(n^{\kappa\iota},a^{\kappa\iota};\,i\,u.\,h^{\kappa\iota})$
+with $i$ not free in $h^{\kappa\iota}$. By \cref{base:thm:primrec}(i) and \cref{base:cor:nteq}
+it satisfies the two iterator equations with the base $a^{\kappa\iota}$ and the update
+$h^{\kappa\iota}$, and the proof of \cref{ctr:lem:unique} in $\Nat$, with the induction
+hypotheses, gives $s^{\kappa\iota}=s$.
+
+(3) Induct on the formula: an equation differs from its double translation by the term
+identities of (2) and equality reasoning, and the binder cases are
+\cref{base:lem:bindercong}, in $\Nat$ and, by \cref{ctr:lem:rhnative}, in $\Nat_{\hat R}$, with
+the induction hypothesis for the matrix with its bound variables free. If
+$\Gamma^\iota\proves_{\Nat}A^\iota$, then (1) gives
+$\Gamma^{\iota\kappa}\proves_{\Nat_{\hat R}}A^{\iota\kappa}$, and the interderivabilities with
+cut give $\Gamma\proves A$. The other direction is (1).
+
+(4) For $\mathsf T_{\hat R}$ the proof of \cref{ctr:thm:transfer} applies with the present
+$\iota$ and $\kappa$ in place of those of \cref{ctr:def:translations}(2): the successor is fixed,
+so \eqref{ctr:eq:succiota} is an identity; the computation equations translate as in (1); coverage,
+separation and \eqref{ctr:eq:EI} translate to the corresponding axioms and rule of $\Teq$; and
+the term round trips are those of (2), with \cref{ctr:lem:unique} for $\mathsf T_{\hat R}$,
+whose proof applies unchanged. The reading commutes with $\iota$, since it does not change
+terms, so $(A^\iota)^\circ=(A^\circ)^\iota$. Hence
+$\Gamma\proves_{\Nat_{\hat R}}A$ if and only if $\Gamma^\iota\proves_{\Nat}A^\iota$ by (3), if
+and only if $(\Gamma^\circ)^\iota\proves_{\Teq}(A^\circ)^\iota$ by \cref{base:cor:nteq}, if and
+only if $\Gamma^\circ\proves_{\mathsf T_{\hat R}}A^\circ$ by the faithfulness of $\iota$ for
+$\mathsf T_{\hat R}$, used with the deduction theorem for the finite context.
+
+The consequences follow from \cref{ctr:thm:rootequiv} and \cref{base:thm:bridge}: the
+translations fix variables, the domain, equality and the contradiction $0=\Suc 0$, so the
+composites with the interpretations of \cref{base:thm:bridge} have the stated shape, and
+inconsistency transfers in both directions.
+\end{proof}
+
+\begin{remark}[The route of the package]\label{ctr:rem:rootroute}
+The package \pkg{root\_conversion} proves the equivalence of \cref{ctr:thm:rootequiv} in the same way,
+except that it simulates \rulename{VSub} by transport in the equation template
+$u\subst{w}{x}=v$ followed by symmetry and recovers the zero-witness case at the alias
+$\hat R(0,0;i,u.0)$ by transport in equations. For the bridge it states the realization
+$\mathsf T_{\hat R}$, checks the soundness of each rule of $\mathcal K_{\mathrm{Root}}$ in it
+(introduction by cases from coverage, the progress mode from induction on equations,
+\rulename{VSub} from actual equality, a root step from one computation equation and
+symmetry), and invokes the inherited adequacy of the native binders. It interprets
+$\iPRA$ directly, a recursion by \cref{ctr:prop:rhcompiler} and a fixed body by its primitive
+recursive description, with term round trips by recurrence uniqueness. It also writes the
+connectives as the macros \eqref{ctr:eq:macros} with $\hat C$ for $C$ and $\hat p$ for $P$, since
+$\hat p(1)=0$, $\hat p(\Suc 1)=1$ and $\hat p(\Suc t)=t$ hold by root steps, and states
+quantifier-free induction through characteristic terms built from $+$, $\mathbin{\dot-}$ and
+the selector, as in \cref{ctr:rem:reflection}. The article obtains the bridge through
+$\Nat$ instead, by \cref{ctr:thm:rootbridge}, and does not need these constructions.
+\end{remark}
+
+\begin{remark}[The second delivery]\label{ctr:rem:rootraw}
+\pkg{root\_conversion\_raw} presents the same calculus $\mathcal K_{\mathrm{Root}}$, with the
+same kernel and the same bridge; it differs from \pkg{root\_conversion} only in presentation.
+\begin{enumerate}
+\item \emph{Terms.} The raw terms of \cref{ctr:def:rhterms}, with the recursor
+$R(n,a;i,u.h)$, $i$ the old counter and $u$ the state, the root steps of
+\cref{ctr:def:rootstep}, and no normal forms; the same abbreviations $\hat C$ and $\hat p$.
+\item \emph{Rules.} The seven rules of \cref{ctr:def:root}, named Hyp, Refl, VSub, Root, QE,
+DE and WI, with the same side conditions; Root is $\rulename{HC}_0$. The full kernel
+$\mathsf N_R$ of the package is $\Nat_{\hat R}$ of \cref{ctr:def:root}.
+\item \emph{Packet.} The table $T(y;a,b,c)\defeq\hat R(y,a;i,u.\hat C(i,b,c))$, which is
+$T_2$ of \cref{ctr:lem:roottable}, and the matrix
+$T(y;0,h(x),x)=T(y;0,r,t)$. This is $\Pi(x,y)$ of \cref{ctr:def:rootpacket} with the rows at $1$
+and $\Suc 1$ exchanged: the row at $1$ is $h(x)=r$ and the row at $\Suc 1$ is $x=t$. In the
+introduction the zero instance of the selector equation comes from $h(s)=r$ and the successor
+instance from $s=t$; the proofs of \cref{ctr:lem:rootpacket,ctr:thm:roottransport} apply with
+the two roles exchanged.
+\item \emph{Proof order.} Symmetry is derived as in the scoped form described after
+\cref{ctr:lem:rootstruct}, the theorem $\D{x}{y}(0=0)$ coming from \rulename{WI} at the witness
+$0$ in progress mode, whose premise $0=0\proves 0=0$ is \rulename{Hyp}. Numerical cases are
+stated for literal equations only and obtained either as in \cref{ctr:lem:rootstruct}(3) or
+from \cref{ctr:lem:rootstruct}(4): weaken the successor premise by the unused assumption
+$E(z)$, derive $\Q{y}E(y)$, and apply \rulename{QE} with $E(0)$. The zero-witness case of
+\rulename{DI} uses the alias $\hat R(0,0;i,u.0)$ of the proof of \cref{ctr:thm:rootequiv},
+transporting both endpoints of the atomic matrix between the alias and $0$ before and after a
+cut with the given premise.
+\item \emph{Bridge.} The ordinary realization is $\mathsf T_{\hat R}$ of \cref{ctr:def:rhtrans},
+read as a staged signature with one function symbol for each fixed body, as in
+\cref{ctr:def:languages}; the connectives are the macros \eqref{ctr:eq:macros} with $\hat C$
+for $C$ and $\hat p$ for $P$, and the bi-interpretation is the direct route of
+\cref{ctr:rem:rootroute}, with quantifier-free induction through the reflection of
+\cref{base:thm:reflect} applied after substituting recursor terms for variables. Successor
+injectivity is $\hat p(\Suc x)=x$, and $0=\Suc x$ gives $1=0$ through
+$\hat C(\cdot,1,0)$.
+\end{enumerate}
+The only mathematical addition is \cref{ctr:lem:roottable}. The checker differs from that of
+\pkg{root\_conversion} in its public interface and in its matched control
+(\cref{ctr:sec:rootcheckers,ctr:sec:sizes}).
+\end{remark}
+
+\subsection{The checkers}\label{ctr:sec:rootcheckers}
+
+The package \pkg{root\_conversion} supplies a standalone checker for $\mathcal K_{\mathrm{Root}}$ and an
+eight-rule control with \rulename{DI} and \rulename{QI} in place of \rulename{WI}. Terms and
+formulas are JSON arrays with the tags \texttt{z}, \texttt{s}, \texttt{r} (two bound variables
+in the body, $u$ at index $0$ and $i$ at index $1$), \texttt{=}, \texttt{q} and \texttt{d}, and
+variables are de Bruijn indices; Boolean values are rejected as indices. The public interface
+accepts an object with a closed goal and a proof, validates syntax and scope, and checks a
+root step by one comparison with a contraction, without normalizing; the branch of
+\rulename{DE} must return the shifted outer conclusion, so the witness cannot escape. Open
+sequents are checked through an internal interface with an explicit scope and context. The
+untrusted generator builds five positive certificates for each checker: open transport from
+$x=y$ and $\Suc x=z$ to $z=\Suc y$; transport at the literal witness $0$, where \rulename{WI}
+is in progress mode; transport inside a recursor body with a retained parameter; the closed
+theorem $\Suc(\hat R(0,0;i,u.u))=\Suc 0$ of \cref{ctr:cor:rootsubst}, whose direct
+derivation by one root step is rejected; and the progress closure of induction for
+$\hat R(n,0;i,u.u)=0$. Nine negative controls are rejected: an unjustified false equation, a
+nested conversion presented as a root step, a Boolean index, an out-of-scope variable, an
+invalid induction mode, a source of \rulename{VSub} that is not a variable, an escaping
+witness, an incorrect zero computation, and a compound induction matrix (in the seven-rule
+checker, the removed tag of \rulename{QI}). These finite runs are evidence for the
+implementation, not a proof of its soundness; the metatheorems above are written proofs.
+
+The checker of \pkg{root\_conversion\_raw} checks open sequents through its public interface:
+the input is one object with a number of free variables, a context, a goal and a proof, and all
+formulas of the context and the goal are validated before the proof. A leaf is \rulename{Hyp}
+or \rulename{Refl}. A \rulename{VSub} node carries the source index and the two terms of the
+premises; a \rulename{QE} node carries the matrix and the instance, which are validated in
+their scopes even where the substitution erases them; a \rulename{DE} node carries the matrix
+and checks the branch at a new outermost variable against the shifted goal; a \rulename{WI}
+node carries the witness and selects the mode by the literal test of \cref{ctr:def:root}. A
+root node carries the previous left endpoint $r'$ and checks that one root contraction leads
+from $r'$ to the current left endpoint or from the current left endpoint to $r'$; a contraction
+at the right endpoint is rejected as a primitive node and derived by symmetry. The untrusted
+producer builds $29$ positive and negative fixtures, replayed in $58$ separate runs, with and
+without the optimization flag of the interpreter. The main positive certificate is open
+transport in a template with several occurrences of the variable below nested recursor
+binders, including the counter binder ($4268$ bytes, $18$ root steps); further fixtures cover
+a source that is literally $0$, which puts \rulename{WI} in progress mode, a replacement with
+older free parameters, the two computation equations and the projections to the counter and to
+the state, the alias of $0$, derived symmetry and derived conversion at the right endpoint,
+and a replacement that contains its source. The negative fixtures cover exchanged binders of
+the recursor, malformed and erased scopes, wrong sorts, unbound variables of the interface,
+unused but active hints, a wrong introduction mode, attempted steps inside a counter, an
+initializer, a successor or the right endpoint, and an unproved $0=\Suc 0$.
+
+\section{Binary trees with a paramorphism}\label{ctr:sec:tree}
+
+This section draws on the appendix of \pkg{root\_conversion}.
+
+The section records an ordinary theory $\mathsf{BT}$ of finite binary trees and a
+bi-interpretation of $\mathsf{BT}$ with $\iPRA$ in which neither comparison map is the
+identity: $\iPRA$ is interpreted in $\mathsf{BT}$ on the quantifier-free definable subdomain of
+unary trees, $\mathsf{BT}$ is interpreted in $\iPRA$ on the whole domain by a pairing code, and
+the comparison maps are internally definable and provably inverse. It is not a countermodel
+and not a semantics of a native calculus. No calculus or checker of the article uses it, and
+no checker for it is supplied. Binary-tree domains are listed among the directions that
+\pkg{uniform\_predecessor} examined without result, in the chapter on obstructions.
+
+\begin{definition}[The theory $\mathsf{BT}$]\label{ctr:def:bt}
+Terms are $t ::= x\mid e\mid N(s,t)\mid \Phi(t;a;u,v,p,q.h)$; the four variables $u,v,p,q$ are
+bound in $h$ only. The logic is intuitionistic logic with equality (\cref{base:def:logic}).
+The axioms are the universal closures of
+\begin{align}
+ \Phi(e;a;u,v,p,q.h)&=a, \label{ctr:eq:btleaf}\\
+ \Phi(N(s,t);a;u,v,p,q.h)&=h\bigl[s/u,\,t/v,\,\Phi(s;a;u,v,p,q.h)/p,\,\Phi(t;a;u,v,p,q.h)/q\bigr],
+ \label{ctr:eq:btnode}
+\end{align}
+and $e=N(e,e)\to\bot$. The one further rule is quantifier-free structural induction: for a
+quantifier-free formula $A(x)$, which may contain every connective,
+\[
+ \infrule{\Gamma\proves A(e)\qquad\Gamma,\ A(u),\ A(v)\proves A(N(u,v))}{\Gamma\proves A(t)}
+ \qquad(u,v\text{ distinct and not free in }\Gamma,\ t,\ A).
+ \tag{SI}
+\]
+Induction on formulas with quantifiers is not part of $\mathsf{BT}$.
+\end{definition}
+
+Write $\underline 1\defeq N(e,e)$ and, with the four bound variables fresh,
+\[
+ H(x)\defeq\Phi(x;e;u,v,p,q.u),\qquad T(x)\defeq\Phi(x;e;u,v,p,q.v),\qquad
+ Z(x;a,b)\defeq\Phi(x;a;u,v,p,q.b).
+\]
+
+\begin{lemma}[Constructors]\label{ctr:lem:btconstr}
+$\mathsf{BT}$ proves $H(e)=T(e)=e$, $H(N(s,t))=s$, $T(N(s,t))=t$, $Z(e;a,b)=a$,
+$Z(N(s,t);a,b)=b$, the injectivity of $N$, $e\neq N(s,t)$, and coverage
+$x=e\lor x=N(H(x),T(x))$.
+\end{lemma}
+\begin{proof}
+The equations are instances of \eqref{ctr:eq:btleaf} and \eqref{ctr:eq:btnode}. Applying $H$
+and $T$ to $N(s,t)=N(s',t')$ gives injectivity. From $e=N(s,t)$, applying $Z(\,\cdot\,;e,\underline 1)$
+gives $e=\underline 1$, which separation refutes. Coverage is (SI) for the quantifier-free
+formula $x=e\lor x=N(H(x),T(x))$: the base is the left disjunct, and at $N(u,v)$ the right
+disjunct holds by the equations for $H$ and $T$; the induction hypotheses are not used.
+\end{proof}
+
+\begin{lemma}[Unary trees]\label{ctr:lem:btunary}
+Put $f(x)\defeq\Phi\bigl(x;e;u,v,p,q.Z(u;q,\underline 1)\bigr)$, $U(x)\iffdef f(x)=e$ and
+$S_U(x)\defeq N(e,x)$. Then $\mathsf{BT}$ proves $U(e)$ and
+$U(N(u,v))\leftrightarrow(u=e\land U(v))$.
+\end{lemma}
+\begin{proof}
+$f(e)=e$ and $f(N(u,v))=Z(u;f(v),\underline 1)$. Split coverage for $u$. If $u=e$, then
+$f(N(u,v))=f(v)$, and both sides of the biconditional are equivalent to $U(v)$. If
+$u=N(u_1,u_2)$, then $f(N(u,v))=\underline 1$, so $U(N(u,v))$ gives $e=\underline 1$, which is
+refuted, and $u=e$ is refuted by \cref{ctr:lem:btconstr}; both sides are false.
+\end{proof}
+
+\begin{proposition}[$\iPRA$ in $\mathsf{BT}$]\label{ctr:prop:btJ}
+Let $J$ interpret $\iPRA$ in $\mathsf{BT}$ with the domain $U$, actual equality, $0^J\defeq e$,
+$\mathrm{succ}^J\defeq S_U$, projections and composition by themselves, and
+\[
+ \mathrm{prec}(g_0,g_1)^J(x,\vec z)\defeq
+ \Phi\bigl(x;\,g_0^J(\vec z);\,u,v,p,q.\,g_1^J(v,q,\vec z)\bigr),
+\]
+defined by external recursion on descriptions, quantifiers relativized to $U$. Then
+$\mathsf{BT}$ proves $U(\vec z)\to U(f^J(\vec z))$ for every function symbol $f$, and if
+$\iPRA\proves\varphi$ then $\mathsf{BT}$ proves $\varphi^J$ under the assumptions $U(x)$ for the
+free variables $x$ of $\varphi$.
+\end{proposition}
+\begin{proof}
+The defining equations of a recursion hold for all trees: at $e$ by \eqref{ctr:eq:btleaf},
+and at $S_U(n)=N(e,n)$ by \eqref{ctr:eq:btnode}, since the body ignores $u$ and $p$. Closure
+under $U$ is proved by (SI) on $U(x)\to U(f^J(x,\vec z))$ with $U(\vec z)$ in the context: the
+base is closure of $g_0^J$, and at $N(u,v)$, \cref{ctr:lem:btunary} gives $u=e$ and $U(v)$, the
+induction hypothesis for $v$ and closure of $g_1^J$ give the claim. Separation of the successor
+is $N(e,x)\neq e$, and injectivity is the injectivity of $N$ (\cref{ctr:lem:btconstr}). A
+quantifier-free formula translates to a quantifier-free formula. For induction, assume
+$\varphi^J(e)$ and $\forall x\,(U(x)\to\varphi^J(x)\to\varphi^J(S_U x))$, and apply (SI) to the
+quantifier-free formula $U(x)\to\varphi^J(x)$: at $N(u,v)$, the hypothesis $U(N(u,v))$ gives
+$u=e$ and $U(v)$, the induction hypothesis for $v$ gives $\varphi^J(v)$, the assumed step gives
+$\varphi^J(N(e,v))$, and transport along $e=u$ gives $\varphi^J(N(u,v))$. The logical rules
+translate under relativization, since $U(e)$ holds and $U$ is closed under the translated
+function symbols.
+\end{proof}
+
+\begin{proposition}[$\mathsf{BT}$ in $\iPRA$]\label{ctr:prop:btI}
+Let $I$ interpret $\mathsf{BT}$ in $\iPRA$ with the whole domain, actual equality, $e^I\defeq 0$,
+$N^I(a,b)\defeq\pi(a,b)\defeq 2^a(2b+1)$, and $\Phi(t;a;u,v,p,q.h)^I\defeq\phi(t^I)$, where
+$\phi$ is defined by course-of-values recursion, by external recursion on the term, from
+\[
+ \phi(0)=a^I,\qquad \phi(\pi(i,j))=h^I\bigl[i/u,j/v,\phi(i)/p,\phi(j)/q\bigr],
+\]
+with the passive parameters as arguments. Then every axiom of $\mathsf{BT}$ is translated to a
+theorem of $\iPRA$, and (SI) to a derivable rule.
+\end{proposition}
+\begin{proof}
+The proof uses the following standard facts of primitive recursive arithmetic.
+(a) $\pi$ is primitive recursive; $\iPRA$ proves that it is injective and never $0$, and there
+are primitive recursive $\alpha,\beta$, defined by bounded search, with
+$n\neq 0\to n=\pi(\alpha(n),\beta(n))\land\alpha(n)<n\land\beta(n)<n$. (b) A function defined by
+course-of-values recursion from fixed primitive recursive functions is primitive recursive,
+through the history function, and $\iPRA$ proves its recursion equations. (c) For a
+quantifier-free $A$, the bounded formula $\forall k<n\,A(k)$ has a primitive recursive
+characteristic function, so quantifier-free induction on it gives strong induction for $A$.
+With these, \eqref{ctr:eq:btleaf} and \eqref{ctr:eq:btnode} are the recursion equations of
+$\phi$, and separation is $\pi(0,0)=1\neq 0$. For (SI), assume $A(0)$ and
+$A(i)\land A(j)\to A(\pi(i,j))$; by (a) every $n$ is $0$ or $\pi(\alpha(n),\beta(n))$ with
+smaller components, and strong induction (c) gives $A(n)$.
+\end{proof}
+
+\begin{theorem}[A bi-interpretation on a changed domain]\label{ctr:thm:bt}
+$I$ and $J$ form a bi-interpretation of $\mathsf{BT}$ and $\iPRA$, with the following comparison
+maps.
+\begin{enumerate}
+\item In $\mathsf{BT}$, for the composite $J\circ I$: the map $c$ from all trees to $U$ and its
+inverse $d$ defined below; $\mathsf{BT}$ proves $U(c(x))$, $d(c(x))=x$, and
+$U(n)\to c(d(n))=n$.
+\item In $\iPRA$, for the composite $I\circ J$: the map $\gamma(n)\defeq 2^n-1$ onto the
+codes of unary trees and its inverse, the binary length $\ell$.
+\end{enumerate}
+Both maps preserve the interpreted constants, constructors and function symbols, and every
+formula is provably equivalent to its double translation, including formulas with
+quantifiers. Hence $\mathsf{BT}$ and $\iPRA$ are equiconsistent.
+\end{theorem}
+\begin{proof}
+All arithmetic in $\mathsf{BT}$ below is on $U$, through $J$; by \cref{ctr:prop:btJ} the
+theorems of $\iPRA$ about it hold, and induction on $U$ applies to every quantifier-free
+formula of $\mathsf{BT}$, also when it compares arbitrary trees, since the proof of the
+induction case of \cref{ctr:prop:btJ} uses only (SI). Write $\pi_U,\alpha_U,\beta_U$,
+$+$ and $\mathbin{\dot-}$ for the $J$-images.
+
+\emph{The maps $c$ and $d$.} Put $c(x)\defeq\Phi(x;e;u,v,p,q.\pi_U(p,q))$, so that $c(e)=e$ and
+$c(N(s,t))=\pi_U(c(s),c(t))$; (SI) proves $U(c(x))$. Represent lists of trees by $e$ and
+$N(\text{item},\text{rest})$, and put
+\[
+ \operatorname{drop}(k,L)\defeq\Phi(k;L;u,v,p,q.T(q)),\qquad
+ \operatorname{get}(L,k)\defeq H(\operatorname{drop}(k,L)),
+\]
+so that $\operatorname{drop}(0,L)=L$ and $\operatorname{drop}(S_Uk,L)=T(\operatorname{drop}(k,L))$.
+Define the table $\tau$ by recursion on a unary argument with a tree-valued state,
+\[
+ \tau(0)=\underline 1,\qquad
+ \tau(S_Un)=N\bigl(N(\operatorname{get}(\tau(n),n\mathbin{\dot-}\alpha_U(S_Un)),\
+ \operatorname{get}(\tau(n),n\mathbin{\dot-}\beta_U(S_Un))),\ \tau(n)\bigr),
+\]
+that is, $\tau(n)\defeq\Phi(n;\underline 1;u,v,p,q.N(N(\operatorname{get}(q,v\mathbin{\dot-}\alpha_U(S_Uv)),\operatorname{get}(q,v\mathbin{\dot-}\beta_U(S_Uv))),q))$,
+and put $d(n)\defeq H(\tau(n))$. Unary induction on $k$ proves
+$\operatorname{drop}(S_Uk,N(x,L))=\operatorname{drop}(k,L)$.
+% ed.: this shift lemma, used in the table identity, is not stated by the package; it follows from drop(1,N(x,L))=T(N(x,L))=L and drop(S_U S_U k,N(x,L))=T(drop(S_U k,N(x,L))).
+Unary induction on $n$, with $k$ as a parameter, proves the table identity
+\[
+ k\le n\ \to\ \operatorname{get}(\tau(n),n\mathbin{\dot-}k)=d(k):
+\]
+at $S_Un$, if $k=S_Un$ the left side is $H(\tau(S_Un))$; if $k\le n$, then
+$S_Un\mathbin{\dot-}k=S_U(n\mathbin{\dot-}k)$, the shift lemma removes the new head, and the
+induction hypothesis applies. This case distinction is decidable arithmetic on $U$. Since
+$\alpha_U(S_Un),\beta_U(S_Un)\le n$, it gives $d(0)=e$ and, for $U(a)$ and $U(b)$,
+$d(\pi_U(a,b))=N(d(a),d(b))$, because $\pi_U(a,b)$ is a successor $S_Um$ with
+$\alpha_U(S_Um)=a$ and $\beta_U(S_Um)=b$.
+
+\emph{$d(c(x))=x$.} (SI) on this equation: $d(c(e))=d(e)=e$, and
+$d(c(N(u,v)))=d(\pi_U(c(u),c(v)))=N(d(c(u)),d(c(v)))=N(u,v)$, using $U(c(u))$ and $U(c(v))$.
+
+\emph{$c(d(n))=n$ for $U(n)$.} Put $\operatorname{Mc}(x)\defeq\Phi(x;e;u,v,p,q.N(c(u),q))$,
+so that $\operatorname{Mc}(e)=e$ and $\operatorname{Mc}(N(x,L))=N(c(x),\operatorname{Mc}(L))$,
+and the list $\varepsilon(0)\defeq N(e,e)$, $\varepsilon(S_Un)\defeq N(S_Un,\varepsilon(n))$.
+Coverage for $L$ and $c(e)=e$ give $H(\operatorname{Mc}(L))=c(H(L))$ and
+$\operatorname{Mc}(T(L))=T(\operatorname{Mc}(L))$ for every tree $L$; unary induction on $k$
+with $L$ as a parameter then gives
+$\operatorname{Mc}(\operatorname{drop}(k,L))=\operatorname{drop}(k,\operatorname{Mc}(L))$, hence
+$c(\operatorname{get}(L,k))=\operatorname{get}(\operatorname{Mc}(L),k)$. Unary induction gives
+$k\le n\to\operatorname{get}(\varepsilon(n),n\mathbin{\dot-}k)=k$, as for the table identity.
+% ed.: the package states the commuting identity and the list [n,...,0] without the two head/tail identities at e and without the lookup identity for the list; they are supplied here.
+Now unary induction on the single equation $\operatorname{Mc}(\tau(n))=\varepsilon(n)$: at $0$
+both sides are $N(e,e)$; at $S_Un$ the new head of $\tau(S_Un)$ has the code
+\[
+ \pi_U\bigl(\operatorname{get}(\varepsilon(n),n\mathbin{\dot-}\alpha_U(S_Un)),\
+ \operatorname{get}(\varepsilon(n),n\mathbin{\dot-}\beta_U(S_Un))\bigr)
+ =\pi_U\bigl(\alpha_U(S_Un),\beta_U(S_Un)\bigr)=S_Un,
+\]
+and the tail is the induction hypothesis. Applying $H$ gives
+$c(d(n))=H(\operatorname{Mc}(\tau(n)))=H(\varepsilon(n))=n$. The induction formulas are
+equations; no universally quantified statement about lists is used as an invariant.
+
+\emph{Preservation by $c$.} For the composite $J\circ I$, the tree $e$ goes to $e$, the
+constructor $N$ to $\pi_U$, and $\Phi$ to the $J$-image $\phi^J$ of the course-of-values
+function of \cref{ctr:prop:btI}, which satisfies the $J$-images of its recursion equations.
+The equations $c(e)=e$ and $c(N(s,t))=\pi_U(c(s),c(t))$ are those above, and
+$c(\Phi(t;a;u,v,p,q.h))=\phi^J(c(t))$, with $c$ applied to the parameters, follows by (SI) on
+$t$ from the two recursion equations and the corresponding statement for $a$ and $h$, by
+external induction on the term.
+
+\emph{The map $\gamma$.} Under $I\circ J$, the number $0$ goes to $0$, the successor to
+$x\mapsto\pi(0,x)=2x+1$, and the domain is the set of codes $m$ with $U^I(m)$, the $I$-image
+of $U$. By \cref{ctr:lem:btunary} translated by $I$, $U^I(0)$ and
+$U^I(\pi(i,j))\leftrightarrow(i=0\land U^I(j))$. Quantifier-free induction proves
+$\gamma(\Suc n)=2\gamma(n)+1$, $U^I(\gamma(n))$ and $\ell(\gamma(n))=n$, and strong
+quantifier-free induction (fact (c) of \cref{ctr:prop:btI}) proves
+$U^I(m)\to\gamma(\ell(m))=m$. That $\gamma$ commutes with each function symbol and its
+$I\circ J$-image follows by induction on descriptions, with recurrence uniqueness at a
+recursion; for a recursion the image satisfies the translated recursion equations by
+\cref{ctr:prop:btJ,ctr:prop:btI}.
+
+\emph{Formulas.} By induction on formulas: an atomic formula is preserved because the maps
+preserve the terms and are injective; connectives commute with the translations; a quantifier
+over the whole domain corresponds to the relativized quantifier, because the maps are
+bijections onto the relativizing domain with provable inverses ($d$ and $\ell$). The
+contradiction is preserved, so inconsistency transfers.
+\end{proof}
+
+Each fixed paramorphism and each fixed recursion is translated by external recursion on finite
+syntax; no evaluator for descriptions is assumed in either theory. The bi-interpretation is of
+a different shape from those of \cref{base:thm:bridge,ctr:thm:transfer}, whose numerical
+composites have the graph $x=y$: here the composites are the definable bijections $c$ and
+$\gamma$. A checker for a calculus on $\mathsf{BT}$ would have to charge the four bound
+variables of $\Phi$, the binary step of (SI) and the logical rules; the package does not claim
+an implementation or a size advantage.
+
 \section{Uniform binding and one traversal}\label{ctr:sec:binding}
 
 This section draws on \pkg{clausal\_canonical}, \pkg{counter\_evaluation},
@@ -3820,7 +4647,8 @@ needs five rules.
 This section draws on the measurements stated by \pkg{register\_graph},
 \pkg{canonical\_recursors}, \pkg{clausal\_canonical}, \pkg{counter\_evaluation},
 \pkg{uniform\_binding}, \pkg{uniform\_recursion}, \pkg{single\_constructor},
-\pkg{constantfree} and \pkg{guarded\_register}.
+\pkg{constantfree}, \pkg{guarded\_register}, \pkg{root\_conversion} and
+\pkg{root\_conversion\_raw}.
 
 Each row is a complete standalone module in the sense of \cref{base:sec:measure}: imports,
 JSON decoding, validation of syntax and scope, normalization, substitution, every rule and
@@ -3898,6 +4726,10 @@ Reference checker for $\mathsf T_J$, as measured by \pkg{constantfree} & 2811 & 
 \multicolumn{5}{@{}l}{\pkg{guarded\_register}}\\
 Strict checker for $\mathcal K_{\mathrm G}$ & 1041 & 1181 & 3467 & new\\
 Strict checker for $\Nat$ on iterator terms, same interface$^\dagger$ & 1045 & 1193 & 3566 & control\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{root\_conversion\_raw}, open-sequent interface}\\
+$\mathcal K_{\mathrm{Root}}$, seven rules & 1029 & 1096 & 3003 & new\\
+$\mathsf{BH}_3$ of \cref{comp:def:bh} on iterator terms (\pkg{bounded\_head}) & 1056 & 1127 & 3089 & control\\
 \end{longtable}
 
 The comparisons that isolate a change of calculus are those against a matched control. The
@@ -3922,20 +4754,33 @@ the figures $2814$, $3060$, $13633$ that \pkg{register\_graph} states; the packa
 reconcile the two measurements. The strict checker for $\mathcal K_{\mathrm G}$ is $4$
 tokens, $12$ nodes and $99$ bytes ($2.78\%$) below its control, which has the same JSON
 interface, variable representation, logical nodes, scope checks and acceptance convention;
-the guard, the state-free test and the successor-head test are counted in it. Compressed sizes are reported by the packages as supplementary
+the guard, the state-free test and the successor-head test are counted in it. The checker of
+\pkg{root\_conversion} for $\mathcal K_{\mathrm{Root}}$ (\cref{ctr:sec:root}), which validates the
+complete syntax and scope of a closed goal and its proof, measures $1108$ tokens, $1301$ nodes and
+$3875$ normalized bytes, against $1173$, $1379$ and $4096$ for its matched eight-rule control
+with \rulename{DI} and \rulename{QI}, both measured by the package with docstrings retained.
+The checker of \pkg{root\_conversion\_raw} for the same calculus, which checks open sequents
+with full validation of the goal, the context and every active hint, is $27$ tokens, $31$ nodes
+and $86$ bytes below the checker of $\mathsf{BH}_3$ of \pkg{bounded\_head}, which has the same
+interface, scope discipline and proof architecture but the scalar iterator and conversion up to
+three counter edges, so that the two programs differ in the term language as well as in the
+computation rule; the new module is counted whole, the control without its docstring, and the
+difference to the checker of \pkg{root\_conversion}, a separate program with another interface,
+is not attributed to the calculus. Compressed sizes are reported by the packages as supplementary
 data and are not an optimization target; they are omitted here.
 
 \section{Further questions}\label{ctr:sec:questions}
 
 This section draws on \pkg{register\_graph}, \pkg{canonical\_recursors},
 \pkg{clausal\_canonical}, \pkg{counter\_evaluation}, \pkg{uniform\_binding},
-\pkg{uniform\_recursion}, \pkg{single\_constructor}, \pkg{constantfree} and
-\pkg{guarded\_register}. It collects their open questions, the claims that they state
-without proof, and what they report as not achieved.
+\pkg{uniform\_recursion}, \pkg{single\_constructor}, \pkg{constantfree},
+\pkg{guarded\_register}, \pkg{root\_conversion} and \pkg{root\_conversion\_raw}. It collects
+their open questions, the claims
+that they state without proof, and what they report as not achieved.
 
 \paragraph{Status of formalization.}
 None of the calculi and term languages of this chapter is formalized in Lean or Rocq. The
-theorems of \cref{ctr:sec:terms,ctr:sec:counter,ctr:sec:bridge,ctr:sec:constfree,ctr:sec:guarded,ctr:sec:six,ctr:sec:five,ctr:sec:ce,ctr:sec:three,ctr:sec:bounds}
+theorems of \cref{ctr:sec:terms,ctr:sec:counter,ctr:sec:bridge,ctr:sec:constfree,ctr:sec:guarded,ctr:sec:six,ctr:sec:five,ctr:sec:ce,ctr:sec:three,ctr:sec:root,ctr:sec:tree,ctr:sec:bounds}
 are written proofs, and the executable tests of the packages are finite evidence for the
 implementations. The four certificates of \pkg{constantfree} for
 \cref{ctr:lem:cfconst,ctr:cor:cfzero}, and the twelve certificates of
@@ -4063,6 +4908,38 @@ algorithm that extracts an optimal bound from a term. Is there an obstruction fo
 interpretations by graphs or on changed domains?
 \end{question}
 
+\begin{question}[Root conversion]\label{ctr:q:root}
+\begin{enumerate}
+\item Is root-only conversion complete on the iterator terms of \cref{base:sec:terms}, whose
+bodies do not see the counter: does $\mathsf{BH}_3$ of \cref{comp:def:bh} with
+$\rulename{HC}_3$ restricted to depth $0$, or to depth $1$, derive the sequents of $\Nat$?
+The package \pkg{root\_conversion} leaves this open; the proof of \cref{ctr:thm:roottransport} uses the old
+counter of the body, and the embedding \eqref{ctr:eq:rhabbrev} of the iterator does not
+transfer it. It is a special case of the question in the computation chapter whether a bound
+smaller than three suffices.
+\item Is $\mathcal K_{\mathrm{Root}}$ complete when $\rulename{HC}_0$ performs contractions
+only? The proofs of \cref{ctr:lem:rootpacket,ctr:thm:roottransport} expand the left endpoint,
+and the package states that the reverse direction must not be omitted without a new proof.
+\item Can \cref{ctr:thm:rootequiv,ctr:thm:rootbridge} be formalized on the existing development
+of $\Nat$? No Lean or Rocq proof is claimed by either package, and neither rebuilt the
+inherited Lean development.
+\item \pkg{root\_conversion\_raw} records two routes to equation induction that it examined and
+did not establish. Whether successor uniqueness alone recovers induction for all literal
+equations is \cref{kern:q:su}. For the constancy rule \eqref{disch:eq:construle} without the
+equality split, over scalar computation, numerical cases with the case hypothesis and the
+selector $\sel$: if $\Gamma\proves q(0)=0$ and $\Gamma,\ q(x)=0\proves q(\Suc x)=0$, put
+$h(u)\defeq\sel(q(u),\Suc u,u)$ and $r(n)\defeq\It{n}{0}{u}{h(u)}$. Cases on $q(u)$ give
+$q(h(u))=q(u)$, by the step when $q(u)=0$ and because $h(u)=u$ otherwise; hence
+$q(r(\Suc n))=q(r(n))$, the constancy rule gives $q(r(n))=q(r(0))=0$, and then
+$r(\Suc n)=\Suc r(n)$. So $r$ is a successor-preserving map from $0$ into the set
+$\{x: q(x)=0\}$. Does a rule of this kind prove $r(n)=n$, or otherwise recover induction for
+literal equations, without successor rigidity or a reflection of equality assumed beforehand?
+\item Does the theory $\mathsf{BT}$ of \cref{ctr:sec:tree}, or a native calculus on binary
+trees, yield a smaller complete checker once the four bound variables of the paramorphism, the
+binary induction step and the logical rules are charged? No implementation exists.
+\end{enumerate}
+\end{question}
+
 \begin{question}[Tests on literal syntax]
 The witness-directed introduction is concise but not stable under substitution: a
 substituted witness can become the literal $0$. Is there a substitution-stable presentation
@@ -4158,6 +5035,30 @@ ninety package trees; the threshold limits the audit, and it is not a lower boun
 larger sources that normalize to smaller programs. No minimality of the axiomatization or of
 the checker is claimed, and a smaller number of constructors or rule names is not by itself
 a smaller checker.
+\item The checker for $\mathcal K_{\mathrm{Root}}$ ($1108$ tokens, $1301$ nodes, $3875$ bytes)
+improves only its eight-rule control, by $221$ bytes, through the inherited single introduction.
+\pkg{root\_conversion} measured the compact profiles of the incoming shared-leaf package, a token
+profile ($242$, $268$, $565$), a node profile ($246$, $262$, $556$) and a byte profile ($272$,
+$306$, $469$), whose coordinatewise minima $242$, $262$ and $469$ are attained by different
+programs with a compact input contract in which the public goal already has the canonical
+guarded grammar; the integrated packages alone give $244$, $265$ and $477$. The package does
+not reach its stated target of a checker below these minima, which are upper bounds on the
+optimum and not lower bounds. \Cref{ctr:thm:roottransport} restricts the computation that the
+calculus trusts; it is not a smaller axiomatization, and it changes the term language from the
+counter-blind iterator to the counter-aware recursor.
+\item The checker of \pkg{root\_conversion\_raw} for $\mathcal K_{\mathrm{Root}}$ ($1029$
+tokens, $1096$ nodes, $3003$ bytes) improves only its matched control. The package compares it
+with the incoming-inclusive compact envelope $244$, $265$, $477$, attained by different
+programs (a token program of \pkg{boolean\_constancy}, $244/272/604$; a node program of
+\pkg{fused\_iteration}, $249/265/605$; byte programs of \pkg{head\_conversion},
+$272/306/477$, and of \pkg{checked\_reductions}, $273/305/477$), and with the whole-input
+envelope $249$, $271$, $477$, and reaches neither. Its compact program ($274/306/476$) is the
+composition of \cref{cert:prop:leaf-compositions}(b) and implements the inherited guarded
+scalar presentation, not $\mathcal K_{\mathrm{Root}}$. No minimality of the axiomatization or
+of a checker is claimed.
+\item The bi-interpretation of \cref{ctr:thm:bt} has no checker and no size advantage, and the
+underlying arithmetic of trees is standard; it is recorded to show what comparison maps that are
+not the identity require.
 \item Concrete limits of the interpreter on recursion depth and memory can reject a valid
 large certificate for every checker of the chapter; completeness is a statement about the
 calculi and about the checkers without such limits.

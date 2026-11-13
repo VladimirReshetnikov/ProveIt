@@ -1,0 +1,86 @@
+RELEASED STRICT INTERFACES
+
+All programs read one JSON array. The last item is the public formula.
+Earlier items are four-field instructions, consumed from right to left.
+Unused prefix objects are allowed, but the ENTIRE parsed input must consist
+of exact integers and lists. Booleans, floats, strings, dictionaries, and
+null are rejected, including in an unused prefix.
+
+The public formula uses the inherited closed Eq/D representation. A traversal
+starts at depth d=0 and changes to d+5-len(node) at every array child.
+At even (formula) depths, permitted array arities are 1 (D) and 2 (equality).
+At odd (numerical) depths, they are 1 (successor) and 3 (initialized iterator).
+Scalar leaves must be odd, nonnegative, and less than the current depth;
+formula scalars are rejected. Numerical zero is code1. In particular,
+the numeral one is [1], not scalar1. Protected slots 3,5,... represent bound
+parameters or inherited dummy slots; dummy-slot references read as zero.
+The canonical compiler does not use dummy-slot references, but the public
+admission grammar permits them, as did the inherited native interface.
+
+Auxiliary instruction fields have the broader inherited sorted integer/list
+reading. That broader grammar is necessary to the kernel's protocol and
+does not weaken its strict public-goal check or whole-input alphabet gate.
+
+For the precise operational definition use readable_strict.py. The two
+arithmetic computation laws and all logical rules are listed in report.pdf.
+
+BYTE PROFILE: strict_bytes.py
+
+Each check, including a hypothesis leaf, consumes a packet [m,s,u,t].
+The packet supplies a major, numerical source/dispatch marker, seed/mode,
+and template/witness. The goal is opened without an image. A computation
+equation is built from s,u,t and also opened without an image. Membership
+in the old context plus that ephemeral equation closes a leaf.
+The computed equation is not retained in a continuation context.
+
+A non-leaf verifies its major in the old scope, opens an introduction
+witness there if necessary, then allocates a new parameter and checks the
+continuation under its justified additional premise. Both candidate
+substitution instances are evaluated eagerly in the new scope.
+
+At an introduction, scalar2 is the CASES marker for an atomic matrix.
+Other markers permit progress only if the matrix is a literal equation.
+Compound matrices always use cases. Canonical producers use0 for equation
+progress and2 for cases. Administrative0 still selects the neutral major
+and closure-elimination dispatch; it must not be globally changed to1.
+
+TOKEN AND AST PROFILES: strict_tokens.py, strict_ast.py
+
+These retain the inherited computation-supply protocol and apply the
+odd-zero spelling. Their source fixtures belong in fixtures/odd/.
+They are not byte-for-byte interchangeable with fixtures/shared/.
+The byte profile and its readable expansion use fixtures/shared/.
+
+EXAMPLES
+
+  python3 code/strict_bytes.py < fixtures/shared/computation_zero_local.json
+  python3 code/readable_strict.py < fixtures/shared/old_atomic_case_local.json
+  python3 code/strict_tokens.py < fixtures/odd/guarded_induction_with_used_hypothesis_local.json
+
+All commands above are run from the extracted package root and print ACCEPT.
+
+CONVERTER
+
+  python3 code/translate.py --profile odd < fixtures/source/computation_zero_local.json
+  python3 code/translate.py --profile shared < fixtures/source/old_atomic_case_local.json
+
+translate.py is untrusted producer code. Its --profile shared conversion
+supports canonical proofs whose computation supplies close as direct leaves.
+It raises on a non-leaf retained computation wrapper; that case requires
+the mathematical zero-substitution/cut translation described in the report.
+The converter does NOT implement the universal completeness theorem.
+Every produced certificate is checked independently by its standalone module.
+
+THE ACTUAL SCALAR CHECK MATTERS
+
+In the released byte program the validation predicate is
+  k <= a < d and v <= d & a % 2
+and the protected-scalar result is a or 1.
+Deleting the final %2 changes the public language and is not authorized by
+the size claim. The opener is semantically preserving but is not literally
+idempotent on all raw administrative trees: at k=0,d=2, 2 opens to0, which
+opens to1. Both scalar results have the neutral formula reading.
+
+Acceptance means normal exit with exactly ACCEPT followed by LF. Runtime
+resource exhaustion may prevent a finite implementation from checking a
+large valid certificate; it is not a mathematical extra axiom or rule.

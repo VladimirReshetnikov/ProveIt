@@ -1,0 +1,440 @@
+SHIFTED SORTED CODEC: INDEPENDENT MATHEMATICAL AUDIT
+=================================================
+
+Candidate: offset472.py
+Control:   control473.py (the current 473-byte profile)
+All file references in this note are relative to the delivered archive root.
+Snapshot:  VladimirReshetnikov/ProveIt,
+           6c6a164d211f0af34e913d55c9f46f8ef7cb560f
+
+Status: written proof for the explicit input contract below. This is not a
+new Lean/Rocq verification, and not a claim that arbitrary raw certificates
+have identical acceptance behavior in the candidate and control.
+
+1. EXACT CLAIM AND INPUT CONTRACT
+--------------------------------
+
+The input is one finite JSON array used as a stack. Its final element is
+[A,0], where A is the canonical shifted encoding of a closed public guarded
+Eq/D formula. Every consumed instruction is a four-element array [m,s,u,t].
+Every certificate datum is a finite tree of EXACT integers and arrays;
+Booleans, floats, strings, dictionaries and null are outside this promise.
+Unused prefixes are allowed, as in the control. There is no additional
+promise that consumed internal raw formulas or terms have canonical syntax.
+
+The public formulas and the guarded atomic matrices are exactly those of
+the inherited compact presentation. They contain equations and D binders,
+with the innermost matrix immediately under D guarded as in that presentation.
+The auxiliary decoding also permits Q formulas. The numerical header floor
+is exactly zero; replacing it by a positive or arbitrary supplied integer
+is outside the contract. Acceptance means normal termination with exactly
+ACCEPT followed by a line feed. Exceptions reject.
+
+Claim: the candidate accepts exactly the canonical encodings of the public
+theorems of the inherited guarded calculus, equivalently its native iPRA
+presentation. An arbitrary accepted certificate need not be the recoding of
+an accepted control certificate. Soundness is proved by a sorted reading of
+EVERY successful raw trace. Completeness is proved by canonical compilation
+of derivations, ignoring semantically neutral administrative context entries.
+
+The source metric includes the entire module: parser, checker and success
+output. The candidate changes the index origin and the neutral context
+resource. It does not delete a mathematical arithmetic or logical primitive.
+
+2. THE SHIFTED SORTED READING
+----------------------------
+
+Fix an integer floor k <= 0. A meaningful position has one of two sorts and
+p >= 0 protected numerical slots. Its depth is
+
+    formula: 2 + 2p;                  term: 5 + 2p.
+
+The parity still distinguishes the two sorts. Slots are numbered from the
+innermost, starting at zero. At a term position a scalar r is read as follows:
+
+    0 <= r < 5:                       numerical zero;
+    5+2j <= r < 7+2j, j < p:          slot j;
+    k <= r < 0:                       rigid parameter named r;
+    otherwise:                        the distinguished hole w.
+
+All formula-position scalars read as the true equation 0=0. Arrays have the
+same sorted reading as the inherited codec:
+
+    arity     term                         formula
+      0       0                            0=0
+      1       successor of child           D_{x,y} of child
+      2       0                            equality of the two children
+      3       I(n,a;u.h)                   Q_y of the last child
+     >=4      0                            0=0
+
+The child of a unary term is read below two dummy slots, both denoting zero.
+The counter and initializer of an iterator are read below one dummy slot;
+its update is read below the one state slot. An equation changes to term
+sort without adding slots. D adds y and x; Q adds y. Other array children
+are annotations and have no semantic reading. All of these depth changes
+are expressed by the unchanged traversal law
+
+    child_depth = parent_depth + 5 - array_arity.
+
+This is the old sorted codec with every meaningful depth and every protected
+slot interval translated by two. Negative rigid names are NOT translated.
+Numerical zero remains scalar 0. The new spare scalar aliases 3 and 4 also
+read as zero; they are not free parameters and cannot name future witnesses.
+
+Canonical syntax uses 0 for zero, the negative integer names for parameters,
+5+2j for slot j, [a] for successor, [n,a,h] for iteration, [s,t] for equality,
+[B] for D, and [B,B,B] for Q. Canonical syntax never refers to a dummy slot.
+This encoding is obtained from the old canonical encoding by adding two to
+every nonnegative bound/hole code >=3, leaving zero and negative names fixed.
+
+3. THE ACTUAL OPENER, INCLUDING EAGER IMAGE VALIDATION
+----------------------------------------------------
+
+Write O_k(a;t,d) for the partial operation actually computed by the local
+function i, with a distinguished missing-image value bottom. Its default
+depth is now 2; inserted images are validated at root term depth 5. On arrays
+it traverses every child at depth d+5-arity. On an integer scalar it retains
+the scalar if k <= a < d. Otherwise it first computes O_k(t;bottom,5) and
+then multiplies that result by d modulo 2, using Python integer/list
+multiplication. Thus at odd depth it returns the validated image. At even
+depth it returns either scalar 0 or the empty array, depending on the image.
+Both results have the same formula reading 0=0. With the missing image the
+recursive call fails. The default missing image is the checker function
+object, which cannot pass the integer/list operations of the traversal.
+
+The eager evaluation is essential to state correctly. One may use an
+abstract semantic opener that returns false-sort truth without examining
+the image, but that abstract opener can succeed where the Python program
+rejects. Therefore no equality of their partial raw functions is claimed.
+For soundness we use only the direction: if the ACTUAL operation succeeds,
+its result has the substitution reading specified below. For completeness,
+the canonical construction arranges that every eager image check needed by
+its instructions is defined.
+
+Lemma 1 (semantic opening).
+At a meaningful position, if O_k(a;t,d) succeeds, its output is closed at
+that position. If t is missing, the original a is closed and the output
+has the same reading. If t is present and the reading of a contains the
+hole, then t is validated at root term depth 5; its reading is a numerical
+term tau with rigid names in [k,0), and the output reads as a with tau
+substituted capture-avoidably for the hole. If the reading contains no hole,
+the output has the same reading as a.
+
+Proof. Induct on the raw tree along all children that have readings. At a
+term scalar, which has odd depth, success retains exactly a non-hole scalar
+or inserts the validated image. A formula scalar and either possible even
+replacement have reading 0=0. Arrays preserve their arities and the depth
+law sends each meaningful child to its specified sort and slot count.
+Traversals through annotations can cause rejection but cannot change a
+reading. A root-validated image has, below q of its own binders, scalars
+only in [k,5+2q) at meaningful term positions. Those scalars refer to zero,
+old rigid names, or its own q binders. Inserting it below additional outer
+slots cannot capture it. This proves the asserted substitution law. The
+same observation proves closedness. For a missing image, every actual term
+hole would evaluate the invalid missing-image object and reject, so the
+input has no hole. QED.
+
+Lemma 2 (outer-slot exposure).
+If a is closed at depth d+2, lowering its reading depth to d changes precisely
+the formerly outermost slot into the hole. Consequently O_k(a;t,d), when
+defined, substitutes the root term reading of t for that outermost slot.
+
+Proof. At a meaningful term position below q additional local slots, the
+only interval removed by lowering the depth is
+[5+2(p+q),7+2(p+q)). That is exactly the former outermost slot. Other scalar
+readings do not change. Apply Lemma 1. QED.
+
+In particular: a D matrix is read at formula depth 6. Opening it at depth
+4 substitutes its witness x while retaining its index y. Opening the result
+at depth 2 substitutes y. Tripling [B] into [B,B,B] and opening at depth 2
+also opens x while retaining y, yielding Q_y B(b,y).
+
+Lemma 3 (canonical opening).
+On canonical syntax, opening the outermost slot with a canonical old-scope
+term gives exactly the canonical encoding of the ordinary substitution.
+Validation at the original depth fixes canonical syntax. The proof is the
+tree induction using the exact codes 5+2j and the unchanged constructor law.
+
+Lemma 4 (freshness).
+A closed reading at floor k uses only rigid parameters in [k,0). At every
+lower floor k' <= k it remains closed with the same reading. In particular,
+the single newly allocated integer b=k-1 is fresh for every old closed
+reading. Lowering the floor can change only scalars below the old floor;
+such a scalar at a meaningful term position would previously be a hole,
+which closedness excludes. The +2 depth shift does not alter this argument
+or the negative-name interval. QED.
+
+These are the shifted versions of the integrated article's sorted-reading,
+opening, exposure, canonical-opening and freshness lemmas in Chapter 11,
+labels cert:def:reading, cert:lem:opening, cert:lem:exposure,
+cert:lem:canonical and cert:lem:fresh.
+
+4. DIRECT COMPUTATION LEAVES ARE SOUND
+------------------------------------
+
+After validating the current goal, the checker may close it when its raw
+tree is exactly
+
+    [[s and [s], u, t], O_k(t;[s,u,t],5) if s else u].
+
+The four-field packet's m is irrelevant in this branch. This is the direct
+computation-leaf mechanism of the current incoming computation_leaves package.
+
+If s is false-valued, the exact-integer/list promise makes it either 0 or
+[]. Both read as zero. The raw equation is [[s,u,t],u]. Its right occurrence
+of u is closed at root term depth 5, so adding the dummy slot used by the
+iterator initializer does not change its reading. The two occurrences
+therefore have the same reading alpha, and the equation reads
+
+    I(0,alpha;v.eta(v)) = alpha.
+
+If s is true-valued, the left counter is [s]. Let eta(v) be the reading of
+the update t below its state slot. When eta uses v, computing the right
+side validates [s,u,t] at root term depth 5. The counter and initializer in
+this validated image are closed below their dummy slot. The extra two dummy
+slots around s on the left can therefore change only one zero-valued dummy
+reference into another zero-valued dummy reference, so the two predecessor
+readings agree. Write them sigma, and write the initializer alpha. Lemma 1
+gives the equation
+
+    I(S sigma,alpha;v.eta(v)) = eta(I(sigma,alpha;v.eta(v))).
+
+If eta does not use v, the right side has the reading eta independently of
+the image. The validated left side still has some closed predecessor sigma
+and initializer alpha; the same successor computation equation holds with
+a constant update. An image that is semantically unused may still be
+validated through annotations, but that only adds possible rejection.
+
+Thus every successful computation leaf is an instance of one of the two
+native iterator equations. This proves the direct branch for arbitrary
+accepted raw integer/list trees, not merely for canonical source packets.
+
+5. SOUNDNESS OF EVERY SUCCESSFUL RAW CHECKER TRACE
+------------------------------------------------
+
+Use the full native scalar calculus as the soundness target: its two
+computation equations, Hyp, equality transport, QE, DE, DI by cases and
+literal-equation progress. This avoids identifying a syntactically nonzero
+raw source with a semantically nonzero numerical term. The public guarded
+equivalence is needed for completeness, not for this soundness argument.
+
+Clarification on auxiliary readings. This ordinary native soundness target
+is legitimate: a proof of E(w,z) -> E(w,Sz) gives
+E(w,0) -> forall y E(w,y) by equation induction, hence the ordinary D reading.
+For the stronger auxiliary soundness assertion used in the main report one
+can instead work in T_eq, reading an atomic D E as
+exists x forall y (E(x,y) -> E(x,Sy)), while leaving Q as conditional closure
+and compound D as existential conditional closure. The same trace proof
+then applies: atomic Close proves progress directly, and atomic Open first
+uses equation induction to convert the witnessed progress into the Q
+assumption required by its branch. Equality transport, computational leaves,
+and compound cases are unchanged. Thus BOTH readings give soundness by
+their own rule-by-rule arguments. Ordinary auxiliary reading is not faithful
+on all unguarded matrices, so no converse is asserted there. For example,
+E(y)=(y=1) has a provable ordinary conditional closure because E(0) is false,
+but its progressive reading fails at y=1. Faithfulness is claimed only on
+the guarded public language, where the zero-instance theorem equates the
+two readings. It would be incorrect to call ordinary-reading soundness
+itself invalid, or to infer all-auxiliary completeness from it.
+
+Invariant. If every member of raw context g is closed at floor k, and the
+call c(g,a,k) terminates normally, then the reading of a is a native
+consequence of the readings of g. Its parameters are old-scope parameters.
+The invariant is proved by induction on the finite call tree of the run.
+
+The initial operation O_k(a;bottom,2) validates a. If its result is literally
+in g, equality of raw trees implies equality of readings, so Hyp applies.
+This reasoning needs no idempotence assertion about irrelevant annotations.
+The direct computation leaf is justified by Section 4.
+
+Every other successful instruction first checks c(g,m,k). Inductively its
+reading is derivable. A successful call returns either True or a nonempty
+one-element list, hence a true-valued result; this follows immediately from
+the expression defining c. Thus the Boolean use of that result never omits
+major-premise verification. The local floor is then lowered to b=k-1.
+
+5a. A true-valued major m.
+
+The extra context entry is the opening at b of the raw triple repetition
+m*3. If m is unary [B], that entry reads as Q_y B(b,y), the usual assumption
+for eliminating D_{x,y} B. If m is an array of arity >=2, its triple has
+arity >=6 and reads as 0=0. If m is a scalar, its triple is a scalar and
+also reads as 0=0. All these entries are closed by Lemma 1.
+
+The optional replacement test compares
+
+    (m,a)  with  (s and [s,u] or [t,t,t], O_b(t;u,2)).
+
+If it fails, the continuation has the old goal reading. If it succeeds
+with s true-valued, m is [s,u], so its reading supplies sigma=upsilon.
+The old goal reads F(upsilon) and the replacement goal reads F(sigma),
+where F is the formula-template reading of t at the new floor. Lemma 1
+justifies these readings, including capture avoidance. Equality transport
+therefore recovers the old goal from the continuation.
+
+If the test succeeds with s false-valued, m is [t,t,t] and reads as Q_y B.
+Exposure (Lemma 2) identifies the old goal with B(tau) and the replacement
+with B(0). QE recovers the former from the latter and the checked major.
+
+Important evaluation-order detail: the actual lambda evaluates this test
+AFTER lowering its local floor. In the equality case F may consequently
+mention the new b. This is harmless: perform equality transport within the
+new scope to obtain the OLD goal, which is b-free by Lemma 4, and then
+discard the fresh parameter. In the QE case specialization at a term in
+the new scope is likewise sound. No claim that the arbitrary raw template
+was validated before allocation is needed.
+
+The unary-major DE case cannot pass the replacement test, whose proposed
+major has arity two or three. Its continuation consequently proves the
+old goal under Q_y B(b,y), with b fresh for that goal, the old context and
+the free parameters of B. DE discharges this assumption. In every other
+true-major case the added assumption is the theorem 0=0 and can be removed;
+the fresh parameter can be discarded. This concludes the true-major case.
+
+Literal-zero caveat: a true-valued raw scalar such as 1 or 4 can read as
+the numerical zero when used in a term position. It may therefore select
+the equality branch even though its semantic source is zero. This does
+not compromise soundness: full native equality transport permits any
+source. Such zero-source transport is also a derived operation of the
+guarded/source-restricted presentation by the existing source-dispatch
+theorem. The proof never equates raw truthiness with numerical nonzeroness.
+
+5b. A false-valued major m.
+
+After verifying its tautological reading, the program evaluates
+O_k(*a;t,4). For a nontrivial accepted formula this requires a=[B]; it
+opens the D witness and produces a1=O_k(B;t,4). An empty-array original
+goal has reading 0=0 already; other impossible arities reject or have a
+constant true reading. Let the witness term reading be tau if it is used,
+and choose tau=0 if it is unused. By Lemmas 1 and 2, tau has only old
+parameters: its validation occurs before the floor is lowered.
+
+At the new parameter b, the final goal reads B(tau,Sb). The extra hypothesis
+reads B(tau,b) when the matrix is binary, because 3 modulo 2 is nonzero;
+otherwise, for the meaningful compound arities one and three, it reads
+B(tau,0). These are precisely literal-equation progress and DI by cases.
+The parameter b is fresh for tau, the old context and the matrix's old
+parameters by Lemma 4. Arrays of arity >=4 read as truth, so any remaining
+successful such introduction has the independently derivable conclusion
+D_{x,y}(0=0). Scalar matrices cannot reach the length test successfully.
+
+The replacement test cannot activate in this case: its proposed major
+is a nonempty binary or ternary array and cannot equal 0 or []. Thus the
+continuation obligation is exactly the stated successor instance. The
+native introduction rule discharges the extra hypothesis and yields the
+old goal.
+
+This completes the trace induction. Initially g=[0], whose sole reading
+is the theorem 0=0, so every accepted canonical public goal is a theorem
+of the native scalar calculus. The fresh-name argument is unchanged by
+the offset and rules out future-witness capture in meaningful term positions.
+
+6. CANONICAL COMPLETENESS
+-------------------------
+
+Use the already established public equivalence between the guarded/source-
+selected core and the full native scalar calculus. Compile a derivation in
+that guarded core using the same backward instruction forms as the current
+computation-leaf presentation, but use the shifted canonical encoding and
+scalar 0 for its neutral administrative major.
+
+The induction invariant is that the raw context contains canonical encodings
+of every genuine source hypothesis needed by the derivation. Extra entries
+may be scalar 0 or the semantically neutral triples produced by elimination.
+They are ignored when compiling source hypotheses. Such extra entries are
+permitted in the canonical proof construction and do not require literal
+agreement with the corresponding control-run annotations.
+
+Hypotheses succeed by membership, since validation fixes their canonical
+encodings. A canonical computation equation is accepted by the direct leaf
+test, by Lemma 3. Iterator-successor computation at the literal-zero
+predecessor can be arranged exactly as in the inherited computation-leaf
+compiler, using its existing repair for the source-selected predecessor
+convention; the +2 offset changes neither the terms nor that repair.
+
+For equality transport and QE, supply the same genuine major, source,
+endpoint and template, all in shifted canonical syntax. Lemma 3 makes the
+pattern comparison identify exactly the desired minor premise. Compile the
+major recursively at the old floor; compile the minor in the context with
+the extra neutral resource at the new local floor. For DE, the canonical
+unary major triples into the canonical Q assumption and opens at the new
+negative eigenparameter, exactly as Lemma 2 states; compile its branch with
+that hypothesis. For DI, use the canonical witness and the scalar-zero
+neutral major. The witness opening is at depth 4, the subsequent index
+openings at depth 2, and root image checks at depth 5. Lemma 3 gives the
+required canonical hypothesis and successor instance. The inherited guarded
+introduction mode is unchanged because array arities are unchanged.
+
+Every genuine numerical image used in these canonical instructions is
+closed in its required scope, so the eager image validation succeeds.
+Canonical unused fields can be chosen as zero. The neutral major 0 succeeds
+immediately because O_k(0;bottom,2)=0 for k<=0 and the initial resource 0
+remains retained in every context. As in the old compiler, a packet is
+serialized after its continuation and its major-proof stack, so it is
+popped first and its recursive calls consume the intended suffixes.
+
+Exact packet consumption must be part of the compiler invariant. Before
+serializing descendants at a node, test whether its goal is already a
+retained hypothesis; if so, emit no packet. Otherwise form that node's
+proposed instruction and test its computation preview. If the preview
+already closes the goal, emit only that instruction and omit all descendant
+stacks. Only when neither short circuit applies are the major and
+continuation stacks recursively emitted. This finite branch-aware procedure
+ensures that EACH subcall consumes exactly its intended suffix. It is not
+enough to say that an accidental early leaf leaves an allowed unused
+prefix: inside a major subcall, unconsumed descendant packets would obstruct
+its caller's continuation. Allowed unused prefixes are harmless only at
+the returned outer boundary. The construction just described prevents
+such interior leftovers.
+
+Consequently every public theorem has a finite accepted candidate certificate.
+This is a direct derivation-to-certificate argument. It deliberately does
+not assert literal recoding equivalence for every possible control proof.
+
+Why that distinction matters: tripling a binary major produces an arity-six
+neutral array. Its children are traversed at depth -1 in the old codec and
+depth 1 in the shifted codec. A zero annotation can be replaced in one and
+retained in the other. Both arrays read as truth, and no needed canonical
+source hypothesis is lost, but their raw trees need not be recodings of one
+another. Similarly formula scalar 1 can be retained by the shifted root
+validation whereas the old root behaves differently. Neither fact threatens
+the semantic soundness or direct canonical completeness theorem.
+
+7. THE iPRA CONSEQUENCE AND THE PRECISE LIMIT
+-------------------------------------------
+
+Sections 5 and 6 prove exact equality of canonical PUBLIC THEOREM SETS with
+the inherited guarded presentation. They do not claim equality of arbitrary
+raw acceptance languages or of individual certificate traces. Formula and
+term readings, logical and arithmetic primitives, and ordinary realizations
+are unchanged; only the integer representation of slots and the administrative
+neutral resource differ.
+
+Compose this exact public correspondence with the existing native scalar
+bridge inventoried in ConciseIPRA/README.md and proved in the article's
+base-theory/bridge chapters and NativeBiInterpretation Lean development.
+The same ordinary realization is bi-interpretable with full first-order
+intuitionistic primitive recursive arithmetic. Both numerical domains remain
+whole, equality is actual equality, and both numerical comparison graphs
+are x=y. Both formula round trips are inherited unchanged. The contradiction
+0=S0 has the same reading, so equiconsistency follows as well.
+
+This establishes a smaller explicit checking presentation under the same
+public-goal and certificate-alphabet promises. It does not establish a new
+smaller mathematical axiom inventory, a single program below all existing
+coordinate minima, or a universal lower bound/minimum theorem.
+
+8. INDEPENDENT FINITE REGRESSION CHECK
+-------------------------------------
+
+Before writing this proof I independently enumerated all 19^4=130,321
+single-packet certificates over a set of 19 small scalar/list values for
+each of four false closed public goals: 0=1, 1=0, 1=2, and the guarded
+D matrix expressing equality of zero and one for every nonzero index.
+All 521,284 trials rejected. The set included 0,1,2,3,4,5,6,7,-1,-2,
+[], [0],[1],[4],[5],[6],[7], [0,0] and [0,1]. The receipt is
+evidence/offset_independent_false_search.json. The complete search is
+reproducible with verify_boundaries.py; its four goal definitions and its
+19-value enumeration are explicit in that standalone script.
+This is useful boundary evidence, not a substitute for the universal
+sorted-reading proof above.

@@ -1,0 +1,84 @@
+VALIDATED PUBLIC INTERFACE
+==========================
+
+checker_validated.py is a complete standalone module. Its inference kernel
+is the identical lambda assignment c from compact468.py; verify_validated.py
+compares their parsed ASTs. There is no import of a private checker/helper
+and no subprocess or encoded payload in the delivered validated checker.
+Its extra code validates the promises of the compact interface and makes no
+size-record claim.
+
+Whole-input alphabet
+--------------------
+alphabet accepts an exact Python int or a list whose every element passes
+alphabet. Python booleans are excluded because type(True) is bool, not int.
+Thus floats (including NaN/Infinity), strings, dictionaries and null are
+rejected even in unused prefixes. Induction on the finite parsed JSON tree
+establishes that the accepted alphabet is exactly the intended finite
+integer/list trees.
+
+The top-level tree is additionally a nonempty list, and its final item must
+be a two-element list [A,k] with exact integer k=0. Any consumed earlier
+item is forced by the unchanged kernel's unpacking to have four fields.
+Unused prefixes may contain arbitrary exact integer/list trees; this
+preserves the compact interface's unused-prefix convention.
+
+Canonical public term grammar
+-----------------------------
+The validator carries a tuple of numerical slots, innermost first. True
+denotes a genuine bound variable; False denotes a dummy coordinate that
+must not be referenced in canonical syntax. The initial tuple is empty.
+
+  integer 0:             canonical numerical zero;
+  integer 5+2j:          accepted exactly when slot j exists and is True;
+  [t]:                   successor, checking t after prepending two dummy slots;
+  [n,a,h]:               iterator, checking n,a after one dummy slot and h
+                         after one genuine state slot;
+  all other shapes:      rejected.
+
+The positive-coordinate check precedes tuple lookup, so a negative index
+cannot use Python's negative-index semantics. All positive aliases 1..4,
+all even aliases, every free index and all dummy-slot references are
+rejected. Induction on the term tree proves agreement with the shifted
+canonical sorted grammar. The dummy increments are precisely those of the
+generic kernel opener: unary term arity adds four to depth (two slots),
+and ternary iterator arity adds two (one slot).
+
+Canonical public formula grammar and the guard
+---------------------------------------------
+An equation [s,t] checks both numerical terms under the current slots.
+A unary formula [B] is D_{x,y}B and checks B after prepending [y,x], two
+genuine slots. No other formula arity is accepted: in particular the
+auxiliary Q constructor cannot occur in the public goal.
+
+If B is literally an equation, both sides must have the exact raw shape
+  [7,0,h].
+At the D matrix, y is slot zero; at an iterator counter, the extra dummy
+slot makes it slot one, whose shifted coordinate is 5+2=7. The initializer
+must be canonical zero. The body h is still fully checked by term, and may
+use its genuine state variable and the enclosing genuine slots. This is
+exactly the inherited atomic guard I(y,0;u.h)=I(y,0;u.k), not a semantic
+approximation of it. If B is itself a D formula, recursive checking applies
+the guard at its innermost atomic matrix.
+
+Conclusion
+----------
+The validated program accepts only inputs satisfying the compact kernel's
+formal public/alphabet/framing contract. Conversely, every canonical proof
+certificate supplied by compact468's completeness construction passes these
+checks. It therefore presents the same public theorem set. This correctness
+argument is relative to the compact kernel proof and the inherited guarded
+iPRA bridge, and is not advertised as a newly mechanized Lean/Rocq theorem.
+
+Reproduction
+------------
+  python3 checker_validated.py < example_zero.json
+prints ACCEPT and verifies I(0,0;u.0)=0.
+
+verify_validated.py replays 173 cases, in ordinary and optimized Python:
+37 positive cases and 136 negative cases, including malformed unused
+prefixes, invalid public constructors, unguarded matrices, bad root floors,
+dummy references, numeral aliases, incorrect guards and false 0=1 goals.
+The recorded 346 process executions have zero failed expectations.
+Those tests supplement the structural arguments above; they do not replace
+the universal mathematical proof.

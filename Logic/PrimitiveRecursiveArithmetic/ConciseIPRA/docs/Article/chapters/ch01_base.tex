@@ -1131,7 +1131,9 @@ recursion) and, for the predecessor, on the equational derivations of
 \pkg{uniform\_raw}, \pkg{newest\_parameter}, \pkg{parameter\_witness} and
 \pkg{no\_witness}, with a smaller predecessor from \pkg{479\_predecessor57},
 \pkg{absorbing\_orbit}, \pkg{absorbing\_predecessor}, \pkg{pred50} and
-\pkg{fused\_iteration}, and the replacement of coverage from \pkg{zero\_test\_split}.  The language
+\pkg{fused\_iteration}, the replacement of coverage from \pkg{zero\_test\_split},
+and the diagonal counter and the orbit equality test from
+\pkg{orbit\_equality}.  The language
 has no predecessor and no pairing, and the
 body of an iterator does not see the counter.  The arithmetic is developed
 in this order: a
@@ -1627,7 +1629,9 @@ the orbit itself, on \pkg{absorbing\_predecessor}, which has the same
 absorbing factor map and replaces its parity control by a shorter one, on
 \pkg{pred50}, which tests the orbit with a different orientation, and on
 \pkg{fused\_iteration}, which shortens the three-cycle and fuses the parity
-control with the selection of the factor map.
+control with the selection of the factor map, and on \pkg{orbit\_equality},
+whose diagonal counter lemma shortens the derivation of the $45$-node
+predecessor.
 The size of the resulting term is measured as follows.
 
 \begin{definition}[Size of a term]
@@ -2057,7 +2061,55 @@ first assembled in this article; \pkg{abstraction\_and\_refinements} and
 \pkg{computation\_leaves} later deliver the same term independently, with the
 same reduction to the factor interface $F(0)=F(1)=0$, $F(2a)=3a$,
 $F(3a)=3F(a)$ and the reversed comparator.  The derivation below reuses the
-arguments of \pkg{pred50} and \pkg{fused\_iteration}.
+arguments of \pkg{pred50} and \pkg{fused\_iteration} for the factor map and
+the comparator, and concludes with the following lemma of
+\pkg{orbit\_equality} on counters of the form $\It{t}{0}{u}{f(k,u)}$.
+
+\begin{lemma}[Diagonal counter]
+\label{base:lem:diag}
+Let $f(k,u)$ be a term template in the variables $k$ and $u$, whose other
+free variables are distinct from $t$ and $x$, and put
+\[
+ W_f(t,k)\defeq\It{t}{0}{u}{f(k,u)},\qquad P_f(m)\defeq W_f(m,m).
+\]
+If $\mathcal E$ derives
+\[
+ f(1,0)=0,\qquad f(\Suc\Suc k,0)=1,\qquad f(\Suc k,\Suc u)=\Suc f(k,u),
+\]
+then $\proves_{\mathcal E}P_f(0)=0$ and $\proves_{\mathcal E}P_f(\Suc x)=x$.
+\end{lemma}
+
+\begin{proof}
+By \rulename{I0} and \rulename{IS}, $W_f(0,k)=0$ and
+$W_f(\Suc t,k)=f(k,W_f(t,k))$.  By \cref{base:lem:E}(i) the three
+hypotheses may be instantiated at arbitrary terms.
+
+\emph{Conjugacy.}  $W_f(\Suc t,\Suc\Suc k)=\Suc W_f(t,\Suc k)$, by
+\rulename{EI} on $t$ with $k$ fixed.  The base is
+$W_f(\Suc 0,\Suc\Suc k)=f(\Suc\Suc k,W_f(0,\Suc\Suc k))=f(\Suc\Suc k,0)=1
+ =\Suc W_f(0,\Suc k)$.  In the step the induction equation is
+$W_f(\Suc t,\Suc\Suc k)=\Suc W_f(t,\Suc k)$, and
+\[
+ W_f(\Suc\Suc t,\Suc\Suc k)=f\bigl(\Suc\Suc k,W_f(\Suc t,\Suc\Suc k)\bigr)
+ =f\bigl(\Suc\Suc k,\Suc W_f(t,\Suc k)\bigr)
+ =\Suc f\bigl(\Suc k,W_f(t,\Suc k)\bigr)=\Suc W_f(\Suc t,\Suc k),
+\]
+by \rulename{IS}, the induction equation by congruence, the third hypothesis
+at $k\defeq\Suc k$ and $u\defeq W_f(t,\Suc k)$, and \rulename{IS}.
+
+\emph{The diagonal.}  The conjugacy is derived in the empty context with the
+independent variables $t$ and $k$; its instance at $t\defeq\Suc x$ and
+$k\defeq x$ is $W_f(\Suc\Suc x,\Suc\Suc x)=\Suc W_f(\Suc x,\Suc x)$, that is
+\[
+ P_f(\Suc\Suc x)=\Suc P_f(\Suc x).
+\]
+Also $P_f(1)=W_f(\Suc 0,\Suc 0)=f(1,W_f(0,1))=f(1,0)=0$.  Now
+$P_f(\Suc x)=x$ by \rulename{EI} on $x$: the base is $P_f(1)=0$, and in the
+step $P_f(\Suc\Suc x)=\Suc P_f(\Suc x)=\Suc x$, by the displayed instance
+and the induction equation by congruence.  Finally $P_f(0)=W_f(0,0)=0$ is
+\rulename{I0}.  The first induction is complete before it is instantiated,
+so no parameter of an active induction hypothesis is changed.
+\end{proof}
 
 \begin{proposition}[A predecessor of $45$ nodes]
 \label{base:prop:pred45}
@@ -2092,44 +2144,24 @@ $O(y,3a)=3\,O(y,a)$ and $Z(3a)=Z(a)$,
  =Z\bigl(O(y,H(2\cdot 2^{x}))\bigr)=Z\bigl(O(y,3\cdot 2^{x})\bigr)
  =Z\bigl(3\,O(y,2^{x})\bigr)=Z\bigl(O(y,2^{x})\bigr)=K(x,y).
 \]
-Equation induction gives $K(n,n)=0$: $K(0,0)=0$ by the first equation, and
-$K(\Suc n,\Suc n)=K(n,n)$ by the third.
+In particular $K(1,1)=K(0,0)=0$, by the third and the first equation.
 
 \emph{Counter.}  Since $K(\Suc u,k)=Z(O(k,2^{\Suc u}))$,
 \cref{base:lem:wparity}(i) gives
 $\beta'(k,u)=\sel\bigl(Z(O(k,2^{\Suc u})),u,\Suc u\bigr)=\sel\bigl(K(\Suc u,k),u,\Suc u\bigr)$.
 Hence, by the comparator equations and \cref{base:lem:interp}(ii),
 \begin{align*}
- \beta'(\Suc k,\Suc u)&=\sel\bigl(K(\Suc\Suc u,\Suc k),\Suc u,\Suc\Suc u\bigr)
-  =\sel\bigl(K(\Suc u,k),\Suc u,\Suc\Suc u\bigr)=\Suc\beta'(k,u),\\
+ \beta'(1,0)&=\sel\bigl(K(1,1),0,1\bigr)=\sel(0,0,1)=0,\\
  \beta'(\Suc\Suc k,0)&=\sel\bigl(K(\Suc 0,\Suc\Suc k),0,1\bigr)
-  =\sel\bigl(K(0,\Suc k),0,1\bigr)=\sel(1,0,1)=1.
+  =\sel\bigl(K(0,\Suc k),0,1\bigr)=\sel(1,0,1)=1,\\
+ \beta'(\Suc k,\Suc u)&=\sel\bigl(K(\Suc\Suc u,\Suc k),\Suc u,\Suc\Suc u\bigr)
+  =\sel\bigl(K(\Suc u,k),\Suc u,\Suc\Suc u\bigr)=\Suc\beta'(k,u).
 \end{align*}
-By \rulename{I0} and \rulename{IS}, $W'(0,k)=0$ and
-$W'(\Suc t,k)=\beta'(k,W'(t,k))$.
 
-\emph{Conjugacy.}  $W'(\Suc t,\Suc\Suc k)=\Suc W'(t,\Suc k)$, by
-\rulename{EI} on $t$ with $k$ fixed: the base is
-$W'(\Suc 0,\Suc\Suc k)=\beta'(\Suc\Suc k,0)=1=\Suc W'(0,\Suc k)$, and the
-step is
-$W'(\Suc\Suc t,\Suc\Suc k)=\beta'(\Suc\Suc k,\Suc W'(t,\Suc k))
- =\Suc\beta'(\Suc k,W'(t,\Suc k))=\Suc W'(\Suc t,\Suc k)$, by the induction
-equation and the first identity for $\beta'$.
-
-\emph{Below its cap the counter does not saturate.}  $W'(n,\Suc n)=n$, by
-\rulename{EI} on $n$: $W'(0,\Suc 0)=0$, and
-$W'(\Suc n,\Suc\Suc n)=\Suc W'(n,\Suc n)=\Suc n$, by the conjugacy, derived
-with independent variables and instantiated at $t=k=n$, and the induction
-equation.
-
-\emph{The two equations.}  $P'(0)=W'(0,0)=0$, and
-\begin{align*}
- P'(\Suc x)=W'(\Suc x,\Suc x)
- &=\beta'\bigl(\Suc x,W'(x,\Suc x)\bigr)=\beta'(\Suc x,x)
-  =\sel\bigl(K(\Suc x,\Suc x),x,\Suc x\bigr)\\
- &=\sel\bigl(K(x,x),x,\Suc x\bigr)=\sel(0,x,\Suc x)=x.
-\end{align*}
-The transfer is \cref{base:lem:E}(iv).
+\emph{The two equations.}  These are the three hypotheses of
+\cref{base:lem:diag} for $f(k,u)\defeq\beta'(k,u)$, for which
+$W_f=W'$ and $P_f=P'$.  The lemma gives $\proves_{\mathcal E}P'(0)=0$ and
+$\proves_{\mathcal E}P'(\Suc x)=x$.  The transfer is \cref{base:lem:E}(iv).
 
 (ii) By \cref{base:def:termsize}, $|2^{\Suc u}|=1+2+2+5=10$ and
 $|O_H(m,2^{\Suc u})|=1+1+10+|H(v)|$.  For $H_-$, with $|H_-(v)|=26$
@@ -2139,6 +2171,34 @@ $|P_{45}(m)|=1+1+1+42=45$.  For $H_{51}$, with $|H_{51}(v)|=31$, the same
 count gives $43$, $47$ and $|P'_{50}(m)|=50$.  The comparators have
 $|K_{H_-}(x,y)|=4+1+1+9+26=41$ and $|K_{H_{51}}(x,y)|=46$ nodes.
 \end{proof}
+
+\begin{remark}[The diagonal counter; sources]
+\label{base:rem:diag}
+The route through \cref{base:lem:diag} is that of \pkg{orbit\_equality}.
+The derivation that it replaces, which follows \pkg{pred50} and
+\pkg{fused\_iteration}, proves the comparator diagonal $K(n,n)=0$ by an
+equation induction, the conjugacy as in \cref{base:lem:diag}, the invariant
+$W'(n,\Suc n)=n$ below the cap by a second induction, and then
+$P'(\Suc x)=\beta'(\Suc x,W'(x,\Suc x))=\beta'(\Suc x,x)
+ =\sel(K(x,x),x,\Suc x)=x$.  The lemma needs only the instance
+$K(1,1)=0$, which is a computation, and replaces the invariant and the final
+calculation by one induction on $P'(\Suc x)=x$: two equation inductions
+instead of three.  The term $P_{45}$ and its size are unchanged.  The lemma
+applies in the same way to the counters of \cref{base:thm:pred} and
+\cref{base:prop:pred57}: by \cref{base:lem:cmp},
+$\beta(1,0)=\sel(L(2,1),0,1)=\sel(L(1,0),0,1)=\sel(0,0,1)=0$, and by
+\cref{base:lem:factor57}(iv),
+$\beta_-(1,0)=\sel(\Lambda(1,1),1,0)=\sel(\Lambda(0,0),1,0)=\sel(1,1,0)=0$;
+the other two hypotheses are \eqref{base:eq:beta-conj},
+\eqref{base:eq:beta-base} and their counterparts in the proof of
+\cref{base:prop:pred57}.  The proofs given there are kept, the first because
+it is the one formalized in Lean.  \pkg{orbit\_equality} checks
+\cref{base:lem:diag} by a symbolic certificate of $37$ equality-proof nodes
+with exactly two equation inductions, in the schematic equational theory
+whose only axioms are $W(0,n)=0$, $W(\Suc t,n)=F(n,W(t,n))$ and the three
+hypotheses of the lemma for $F$ in place of $f$.  The lemma is not
+formalized in Lean or Rocq.
+\end{remark}
 
 The sizes of the pieces, with variables as arguments, are
 \begin{center}
@@ -2582,7 +2642,234 @@ instead, whose reflection needs neither $K$ nor \cref{base:lem:monus}(iv).  If
 $\varepsilon'(a,b)=0$, then $a\mathbin{\dot-}b=0$, since a successor would
 give $1=0$; hence $\varepsilon'(a,b)=b\mathbin{\dot-}a=0$, and
 \cref{base:lem:order}(iii) gives $a=a+(b\mathbin{\dot-}a)=b$.  Conversely
-$\varepsilon'(a,a)=\sel(0,0,1)=0$ by \cref{base:lem:order}(i).
+$\varepsilon'(a,a)=\sel(0,0,1)=0$ by \cref{base:lem:order}(i).  The
+test $\varepsilon$ contains each argument three times and $\varepsilon'$
+twice; \cref{base:sec:orbiteq} gives a test that contains each once.
+\end{remark}
+
+\subsection{Equality from the absorbing orbit}
+\label{base:sec:orbiteq}
+
+This subsection draws on \pkg{orbit\_equality}.  The absorbing factor map
+$H_-$ of \cref{base:sec:pred57} gives a second equality test.  With
+$O=O_{H_-}$, put
+\[
+ \delta(a,b)\defeq N\bigl(O(b,2^{a})\bigr),\qquad
+ \eta(a,b)\defeq\It{O(b,2^{a})}{1}{v}{Z(v)} .
+\]
+Each of $a$ and $b$ occurs once in either term.  On the natural numbers the
+orbit $O(b,2^{a})$ is $3^{b}2^{a-b}$ for $b\le a$ and $0$ for $b>a$
+(\cref{base:sec:pred57}), whose parity is $1$ exactly when $b=a$; so
+$\delta$ is the indicator of $a=b$ and $\eta=1-\delta$.  This reading is not
+used.
+
+\begin{lemma}[Recurrences of the orbit test]
+\label{base:lem:orbiteq}
+$\mathcal E$ derives, for all terms,
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\delta(0,0)=1$, $\delta(\Suc a,0)=0$, $\delta(0,\Suc b)=0$ and
+ $\delta(\Suc a,\Suc b)=\delta(a,b)$;
+\item $\delta(a,a)=1$, $\delta(0,b)=Z(b)$ and $\delta(a,0)=Z(a)$;
+\item $\eta(a,b)=Z\bigl(\delta(a,b)\bigr)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) The equations $2^{0}=1$, $2^{\Suc a}=2\cdot 2^{a}$ and $O(0,c)=c$ are
+\rulename{I0} and \rulename{IS}.  With \cref{base:lem:factor57}(ii) and (iii)
+for $H_-$ and \cref{base:lem:parity},
+\begin{align*}
+ \delta(0,0)&=N\bigl(O(0,1)\bigr)=N(1)=1,\qquad
+ \delta(\Suc a,0)=N\bigl(2\cdot 2^{a}\bigr)=0,\\
+ \delta(0,\Suc b)&=N\bigl(O(\Suc b,1)\bigr)=N\bigl(O(b,H_-(1))\bigr)
+  =N\bigl(O(b,0)\bigr)=N(0)=0,\\
+ \delta(\Suc a,\Suc b)&=N\bigl(O(\Suc b,2\cdot 2^{a})\bigr)
+  =N\bigl(O(b,H_-(2\cdot 2^{a}))\bigr)=N\bigl(O(b,3\cdot 2^{a})\bigr)\\
+ &=N\bigl(3\,O(b,2^{a})\bigr)=N\bigl(O(b,2^{a})\bigr)=\delta(a,b),
+\end{align*}
+by rotation, $H_-(1)=0$, $O(y,0)=0$, $H_-(2c)=3c$, $O(y,3c)=3\,O(y,c)$,
+$N(2n)=0$ and $N(3n)=N(n)$.
+
+(ii) $\delta(a,a)=1$ is an equation induction on $a$: the base is
+$\delta(0,0)=1$, and $\delta(\Suc a,\Suc a)=\delta(a,a)=1$ by (i) and the
+induction equation.  $\delta(0,b)=Z(b)$ is equational cases on $b$:
+$\delta(0,0)=1=Z(0)$ and $\delta(0,\Suc z)=0=Z(\Suc z)$, by (i) and
+\cref{base:lem:interp}(i).  Likewise $\delta(a,0)=Z(a)$ by cases on $a$.
+
+(iii) Put $B(q)\defeq\It{q}{1}{v}{Z(v)}$ for a variable $q$.  Then
+$B(q)=Z(N(q))$ by \rulename{EI} on $q$: the base is $B(0)=1=Z(0)=Z(N(0))$,
+and $B(\Suc q)=Z(B(q))=Z(Z(N(q)))=Z(N(\Suc q))$, by \rulename{IS}, the
+induction equation by congruence, and $N(\Suc q)=Z(N(q))$
+(\cref{base:lem:parity}).  The instance at $q\defeq O(b,2^{a})$ is
+$\eta(a,b)=Z(\delta(a,b))$.
+\end{proof}
+
+The derivation uses no predecessor, no order and no equality test; it uses
+of $H_-$ only the equations of \cref{base:lem:factor57}(ii) and (iii), and so
+holds for $H_{51}$ in place of $H_-$ as well.
+
+\begin{theorem}[Reflection of equality by the orbit test]
+\label{base:thm:orbitreflect}
+$\Teq$ proves, for all terms $a$ and $b$,
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\delta(a,b)=1\leftrightarrow a=b$ and $\eta(a,b)=0\leftrightarrow a=b$;
+\item $\delta(a,b)=0\vee\delta(a,b)=1$ and $\eta(a,b)=0\vee\eta(a,b)=1$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The proof uses the predecessor $P$, truncated subtraction and
+\cref{base:lem:monus}(i)--(iii); it does not use \cref{base:thm:reflect},
+\cref{base:lem:monus}(iv) or induction for compound formulas.  Every
+induction is \cref{base:lem:teqcases}(ii) for a literal equation.
+
+\emph{Zero fibre.}  $Z(r)=1\to r=0$.  By cases on $r$: if $r=0$ there is
+nothing to prove; if $r=\Suc y$, then $1=Z(r)=Z(\Suc y)=0$, so $0=\Suc 0$
+and (T3) gives $\bot$, from which $r=0$ follows.  By
+\cref{base:lem:orbiteq}(ii), $\delta(0,r)=1\to r=0$.
+
+\emph{One fibre.}  $\delta(1,r)=1\to r=1$.  By cases on $r$: if $r=0$, then
+$\delta(1,0)=0$ by \cref{base:lem:orbiteq}(i), so $1=0$, a contradiction by
+(T3); if $r=\Suc s$, then
+$1=\delta(\Suc 0,\Suc s)=\delta(0,s)=Z(s)$ by
+\cref{base:lem:orbiteq}(i),(ii), so $s=0$ by the zero fibre, and $r=1$.
+
+\emph{Residual invariant.}  For variables $a$, $b$ and $t$,
+\[
+ \delta(a,b)=1\ \proves_{\Teq}\ \delta\bigl(a\mathbin{\dot-}t,\ b\mathbin{\dot-}t\bigr)=1,
+\]
+by \cref{base:lem:teqcases}(ii) on $t$ in the context
+$\Gamma\defeq\{\delta(a,b)=1\}$, in which $t$ is not free.  The base is
+the hypothesis, since $a\mathbin{\dot-}0=a$ and $b\mathbin{\dot-}0=b$.  In
+the step write $A\defeq a\mathbin{\dot-}t$ and $B\defeq b\mathbin{\dot-}t$;
+the induction equation is $\delta(A,B)=1$, and by
+\cref{base:lem:monus}(i) the goal is $\delta(P(A),P(B))=1$.  Argue by cases
+on $A$ and on $B$.  If $A=B=0$, then $P(A)=P(B)=0$ and the goal is
+$\delta(0,0)=1$.  If $A=0$ and $B=\Suc d$, the induction equation becomes
+$\delta(0,\Suc d)=1$, while $\delta(0,\Suc d)=0$, so $0=\Suc 0$, and (T3)
+gives $\bot$ and hence the goal; the case $A=\Suc c$, $B=0$ is the same
+with $\delta(\Suc c,0)=0$.  If $A=\Suc c$ and $B=\Suc d$, then
+$\delta(P(A),P(B))=\delta(c,d)=\delta(\Suc c,\Suc d)=\delta(A,B)=1$, by
+\cref{base:thm:pred} and \cref{base:lem:orbiteq}(i).  The induction formula
+is the one equation displayed; $a$, $b$ and the hypothesis stay fixed.
+
+(i) Assume $\delta(a,b)=1$ and argue by cases on $a$.  If $a=0$, the
+zero fibre gives $b=0=a$.  If $a=\Suc c$, the residual invariant at
+$t\defeq c$ gives $\delta(\Suc c\mathbin{\dot-}c,\ b\mathbin{\dot-}c)=1$,
+that is $\delta(1,b\mathbin{\dot-}c)=1$ by \cref{base:lem:monus}(ii), and
+the one fibre gives $b\mathbin{\dot-}c=1$.  \Cref{base:lem:monus}(iii) at
+$x\defeq b$, $y\defeq c$ then gives
+\[
+ b=\sel\bigl(b\mathbin{\dot-}c,\ b,\ c+(b\mathbin{\dot-}c)\bigr)
+  =\sel(1,b,c+1)=c+1=\Suc c=a .
+\]
+Conversely, $a=b$ gives $\delta(a,b)=\delta(a,a)=1$ by the Leibniz rule and
+\cref{base:lem:orbiteq}(ii).
+
+(ii) Put $q\defeq O(b,2^{a})$, so that $\delta(a,b)=N(q)$, and recall
+$N(q)+Z(N(q))=1$ (\cref{base:lem:parity}).  By cases on $N(q)$: if
+$N(q)=0$, the first disjunct holds; if $N(q)=\Suc y$, then
+$Z(N(q))=0$, and $N(q)=N(q)+0=1$.  By \cref{base:lem:orbiteq}(iii),
+$\eta(a,b)=Z(\delta(a,b))$ is $Z(0)=1$ in the first case and $Z(1)=0$ in
+the second.
+
+The second equivalence of (i) follows: if $a=b$, then $\delta(a,b)=1$ and
+$\eta(a,b)=Z(1)=0$; if $\eta(a,b)=0$, then by (ii) either $\delta(a,b)=0$,
+whence $\eta(a,b)=Z(0)=1$ and $1=0$, a contradiction by (T3), or
+$\delta(a,b)=1$, whence $a=b$.
+\end{proof}
+
+Like \cref{base:thm:reflect}, the theorem concerns the equality of the logic
+on the whole domain, and it gives $\Teq\proves a=b\vee(a=b\to\bot)$ by
+(ii).  It is not a predecessor-free reconstruction: the residual invariant
+and the last step use $P$ and \cref{base:lem:monus}.
+
+\begin{corollary}[A predecessor from the orbit test]
+\label{base:cor:pdelta}
+Put $P_\delta(m)\defeq\It{m}{0}{u}{\sel\bigl(\delta(\Suc u,m),\Suc u,u\bigr)}$.
+Then $\proves_{\mathcal E}P_\delta(0)=0$ and
+$\proves_{\mathcal E}P_\delta(\Suc x)=x$, and $|P_\delta(m)|=52$.
+\end{corollary}
+
+\begin{proof}
+Take $f(k,u)\defeq\sel(\delta(\Suc u,k),\Suc u,u)$ in
+\cref{base:lem:diag}, so that $P_f=P_\delta$.  By
+\cref{base:lem:orbiteq}(i) and \cref{base:lem:interp}(ii),
+\begin{align*}
+ f(1,0)&=\sel\bigl(\delta(1,1),1,0\bigr)=\sel\bigl(\delta(0,0),1,0\bigr)=\sel(1,1,0)=0,\\
+ f(\Suc\Suc k,0)&=\sel\bigl(\delta(1,\Suc\Suc k),1,0\bigr)
+  =\sel\bigl(\delta(0,\Suc k),1,0\bigr)=\sel(0,1,0)=1,\\
+ f(\Suc k,\Suc u)&=\sel\bigl(\delta(\Suc\Suc u,\Suc k),\Suc\Suc u,\Suc u\bigr)
+  =\sel\bigl(\delta(\Suc u,k),\Suc\Suc u,\Suc u\bigr)=\Suc f(k,u).
+\end{align*}
+The lemma gives the two equations.  By \cref{base:prop:orbitsize}(i),
+$|\delta(\Suc u,m)|=42+2+1=45$; the body has $1+45+2+1=49$ nodes and
+$|P_\delta(m)|=1+1+1+49=52$.
+\end{proof}
+
+The derivation uses only \cref{base:lem:orbiteq}(i), not the reflection of
+equality.  The body of $P_\delta$ is that of $P_{45}$ with the parity term
+$N$ around the orbit $O(m,2^{\Suc u})$, which accounts for the $7$ further
+nodes; $P_\delta$ is larger than $P_{45}$ and is not used below.
+
+\begin{proposition}[Sizes of the equality tests]
+\label{base:prop:orbitsize}
+In the measure of \cref{base:def:termsize}, for all terms $s$ and $t$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $|\delta(s,t)|=42+|s|+|t|$ and $|\eta(s,t)|=43+|s|+|t|$; at variables
+ $44$ and $45$;
+\item with $P_{45}$ in place of $P$, $|\varepsilon(s,t)|=187+3|s|+3|t|$ and
+ $|\varepsilon'(s,t)|=95+2|s|+2|t|$; at variables $193$ and $99$;
+\item with $P$ itself, $|\varepsilon(s,t)|=307+3|s|+3|t|$ and
+ $|\varepsilon'(s,t)|=155+2|s|+2|t|$; at variables $313$ and $159$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+All bound variables of the abbreviations are fresh, so a size is additive in
+the sizes of the arguments.  (i) $|2^{s}|=|s|+8$ and $|H_-(v)|=26$
+(\cref{base:prop:pred57}(ii)), so
+$|O(t,2^{s})|=1+|t|+(|s|+8)+26=35+|s|+|t|$.  Then
+$|\delta(s,t)|=7+|O(t,2^{s})|$, since $|N(c)|=|c|+7$, and
+$|\eta(s,t)|=1+|O(t,2^{s})|+|1|+|Z(v)|=1+|O(t,2^{s})|+2+5$.
+(ii) The term $P_{45}(m)$ has $45$ nodes and two occurrences of $m$, so
+$|P_{45}(c)|=43+2|c|$ and $|P_{45}(u)|=45$.  Hence
+$|r|=1+|t|+(1+|s|)+45=47+|s|+|t|$ for $r\defeq\Suc s\mathbin{\dot-}t$, and
+$|\varepsilon(s,t)|=|\sel(r,1,P_{45}(r))|=1+|r|+2+43+2|r|=46+3|r|$.
+Further $|s\mathbin{\dot-}t|=1+|t|+|s|+45$, and
+$|\varepsilon'(s,t)|=1+|s\mathbin{\dot-}t|+|t\mathbin{\dot-}s|+2$.
+(iii) The same count with $|P(m)|=75$ (\cref{base:prop:pred57}(ii)), whose
+argument also occurs twice, so that $|P(c)|=73+2|c|$.
+\end{proof}
+
+\begin{remark}[Use of the orbit test; sources]
+\label{base:rem:orbiteq}
+By \cref{base:rem:pred57} the predecessor $P_{45}$ may replace $P$ in the
+definition of truncated subtraction, and so in $\varepsilon$.
+\pkg{orbit\_equality} compares $\eta$ with $\varepsilon$ expanded with
+$P_{45}$, the $193$ nodes of \cref{base:prop:orbitsize}(ii): $\eta$ saves
+$148$ nodes, and contains each argument once instead of three times.  The
+figure $193$ is not stated elsewhere in the article; it is the expansion of
+the test $\varepsilon$ defined before \cref{base:lem:monus}.  Against the
+symmetric test $\varepsilon'$ of \cref{base:rem:reflectvariants}, also
+expanded with $P_{45}$, the saving is $54$ nodes.
+% ed.: the sizes of varepsilon' and the sizes with P are computed here; the package compares eta only with varepsilon expanded with P_45.
+Neither $45$ nor any other of these sizes is claimed to be minimal, and the
+counts concern one expanded term, not a checker or a derivation.
+
+In \cref{base:def:chi} the atomic clause may be
+$\chi_{s=t}\defeq\eta(s,t)$ instead of $\varepsilon(s,t)$; the proof of
+\cref{base:prop:chi} is unchanged, its atomic case being
+\cref{base:thm:orbitreflect}(i), and so is that of \cref{base:thm:qfi}.  No
+axiom, rule, domain or interpretation changes, so \cref{base:thm:bridge}
+holds verbatim with either atomic clause.  The order of the construction is
+kept: the recurrences of \cref{base:lem:orbiteq} are available after
+\cref{base:lem:factor57}, and the reflection after
+\cref{base:lem:monus}(iii).  The checkers delivered with
+\pkg{orbit\_equality} implement the inherited guarded calculus and do not use
+$\eta$; they are recorded with the other checkers in the chapter on
+certificates.  None of the terms of this subsection is formalized in Lean or
+Rocq.
 \end{remark}
 
 \subsection{Induction for quantifier-free formulas}
@@ -3734,11 +4021,36 @@ term (\cref{base:def:macros}), and the selector of two formulas by a double
 recursion on their binders (\cref{base:def:gate}).  No shorter replacement
 for any of them is known; the predecessor $P_-$ of \cref{base:prop:pred57}
 is a smaller term, but its derivation has the same structure and length as
-that of \cref{base:thm:pred}.  On the side of $\iPRA$, the extensionality of the
+that of \cref{base:thm:pred}.  The diagonal counter of \cref{base:lem:diag}
+saves one equation induction and the final calculation in the last stage of
+every one of these derivations (\cref{base:rem:diag}); the factor map, the
+three-cycle, the ramp and the comparator remain.  On the side of $\iPRA$, the extensionality of the
 simulated iterator (\cref{base:lem:iota-ext}) and the round trip of a
 recursion (\cref{base:prop:termrt}(ii)) are two separate inductions; in
 $\Teq$ their counterparts are both instances of \cref{base:lem:uniq}.  Is
 there one lemma of $\iPRA$ that covers both?
+\end{question}
+
+\begin{question}[The orbit equality test]
+\label{base:q:orbiteq}
+\pkg{orbit\_equality} asks the following.  (a) Is there a zero-true
+equality test smaller than the $45$ nodes of $\eta$
+(\cref{base:prop:orbitsize})?  No lower bound is known; the package
+suggests fusing the parity term with the absorbing iterator, keeping each
+argument in a single occurrence.  (b) Can the reflection of
+\cref{base:thm:orbitreflect} be proved without the predecessor and truncated
+subtraction, for instance by an equational interpolation identity?  The
+recurrences of \cref{base:lem:orbiteq} use neither; the residual invariant
+and the last step of the proof use both.  (c) Does a characteristic term
+with the atomic clause $\eta(s,t)$, or a primitive basis built on it, reduce
+the size of a complete checker under a fixed public syntax and framing
+contract?  A smaller derived term does not establish this, and the checkers
+delivered with the package do not use $\eta$; the package also records that
+no new axiomatization below every current checker minimum is obtained.
+(d) The package proposes formalizing \cref{base:lem:diag} in the Lean
+development, so that the predecessor proofs need neither the comparator
+diagonal nor the invariant below the cap; this, and a formalization of
+\cref{base:lem:orbiteq,base:thm:orbitreflect}, is not done.
 \end{question}
 
 \begin{question}[The square-root pairing]

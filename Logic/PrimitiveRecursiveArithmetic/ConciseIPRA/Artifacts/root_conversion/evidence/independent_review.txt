@@ -1,0 +1,138 @@
+# Independent audit: counter-aware root conversion
+
+## Result
+
+The proposed naming packet recovers unrestricted one-term crossed transport
+from variable-only substitution, reflexivity, the native logical rules, and
+reversible computation at the root of an equation endpoint. No conversion
+inside a successor, recursor counter, seed, body, or compound formula is
+needed. In particular there is no normalization algorithm in this argument.
+
+This audit is a written derivation, not a mechanized proof. It assumes the
+standard capture-avoiding substitution and eigenvariable checks stated below.
+
+## Exact arithmetic assumptions
+
+Terms contain 0, S, and the ordinary counter-aware primitive recursor
+
+    R(0,a;i,u.h) -> a,
+    R(S n,a;i,u.h) -> h[n/i,R(n,a;i,u.h)/u].
+
+The arrow is a one-step root contraction. Only i,u are bound in h.
+Define C(z,a,b)=R(z,a;i,u.b), with unused fresh i,u. Therefore
+
+    C(0,a,b) -> a,
+    C(S z,a,b) -> b.
+
+The proposed restricted equality rule is
+
+    x=t, u=v  /  v=u[t/x],
+
+where x is a literal variable and replacement is capture-avoiding, affecting
+free occurrences only. It is sound even if t contains x: equality gives
+u=u[t/x], and together with u=v gives the displayed conclusion. No occurs
+check is needed for soundness; replacement is performed once.
+
+## Numerical cases precede transport
+
+Given proofs of A(0) and A(S z) with z fresh, a closure of A is introduced
+with an unused witness coordinate at the witness 1=S0. This is case mode
+even in the witness-tested single-introduction system. Open the resulting
+D formula, retain its Q closure, and use QE with A(0) to obtain A(t).
+The witness coordinate is unused, so no equality transport is involved.
+
+The same derivation works when A is an equation. It therefore applies to
+the successor-row formula in the packet below before transport is known.
+
+## Packet and its rows
+
+Fix premises s=t and h(s)=r, with h a one-variable term template. Choose
+x,y fresh for all passive data and all bound variables fresh for those data.
+Let
+
+    P(x,y) :=
+      R(y,0;i,u.C(i,x,h(x)))
+      = R(y,0;i,u.C(i,t,r)).
+
+Both recursor bodies ignore their recursive-result variable u. At the
+three required kinds of rows:
+
+1. P(x,0) converts to 0=0 by one R0 step on each endpoint.
+2. P(x,1) converts to x=t by an RS step followed by C0 on each endpoint.
+3. P(x,S(S z)) converts to h(x)=r by an RS step followed by CS on each
+   endpoint.
+
+All of these conversions are at the current root. The second contraction
+is at the root exposed by the first one; it is not a below-root contraction.
+
+By numerical cases on z, the two supplied premises prove P(s,S z): the
+zero case is s=t and the successor case is h(s)=r, with the displayed
+root conversions in reverse. Thus DI at s proves D_{x,y}P(x,y), ignoring
+its local hypothesis. This works in either case or progress mode, so a
+literal-zero witness is not an exception.
+
+Open this D formula at a fresh b. Refl 0=0 and the reverse R0 steps prove
+P(b,0). QE at 1 and 2, followed by the row conversions, give
+
+    b=t,  h(b)=r.
+
+Variable substitution with source b then gives r=h(t). The variables b,x,y
+were chosen absent from h's passive parameters, s,t,r, so this is exactly
+the required capture-free instance and b does not escape the discharge.
+
+## Completeness consequence
+
+The result is the native one-term crossed transport rule
+
+    s=t, h(s)=r  /  r=h(t).
+
+Reflexivity and root conversion yield both defining computation equations
+as theorems. Therefore all rules of the unrestricted counter-aware native
+calculus are recovered. Conversely, every new primitive rule is valid in
+that calculus: variable substitution is an equality consequence and each
+root conversion is an instance of a computation equation used in an
+equation context. The logical rules are unchanged.
+
+After that equality recovery, computation in arbitrary term contexts and
+formula transport are derived. They are not used to establish the packet.
+The usual definitional equivalence of counter-aware primitive recursion
+with iPRA gives the arithmetic bridge; that bridge must still be stated and
+attributed in a complete paper.
+
+## Optional left-endpoint restriction
+
+Even conversion on both endpoints need not be primitive. General symmetry
+can be proved before transport. Introduce the true formula
+D_{a,y}(0=0), open it at a fresh b, and use Refl b=b as the major premise
+of variable substitution on any given u=v, with b absent from u,v. The
+result is v=u. Discharge b. Thus right-endpoint conversion is simulated by
+symmetry, a left-endpoint conversion, and symmetry. Reversible root
+conversion on the left endpoint alone is sufficient.
+
+The present proof does not show that root contractions alone suffice:
+its construction of the packet rows uses expansions. Do not omit the
+reverse direction without a new proof.
+
+## Prior-art boundary within the inspected repository
+
+`docs/Article/chapters/ch09_ctr.tex`, equation `ctr:eq:packet` near line 3120,
+already uses the normalized packet
+
+    C(y,0,C(Pred(y),x,h(x))) = C(y,0,C(Pred(y),t,r)),
+
+with rows truth, x=t, h(x)=r, to obtain transport. Its calculus uses fully
+normalized terms. The current packet moves the numerical case variable
+directly into the recursor body's counter variable, so the row exposing
+Pred(S z) no longer needs internal computation.
+
+`Artifacts/head_conversion` / chapter 4 provides variable-only substitution
+with weak-head normalization. `Artifacts/bounded_head` proves completeness
+for the scalar iterator with conversions at root or at up to three counter
+edges. Its selected checker is 1056 tokens, 1127 AST nodes, 3089 normalized
+bytes; it explicitly does not meet the global frontier.
+
+No raw counter-aware, root-only conversion theorem was found in the inspected
+chapter or package descriptions. The warranted novelty claim is therefore
+the reduction in the required computation discipline for counter-aware
+recursion. The naming-packet mechanism and its three-row proof are inherited
+and should be attributed, not claimed as independently new.

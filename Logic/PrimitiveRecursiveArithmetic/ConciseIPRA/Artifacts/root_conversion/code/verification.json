@@ -1,0 +1,140 @@
+{
+  "scope": "finite certificate checks, not a proof of universal soundness",
+  "rule_families": 8,
+  "positive_cases": [
+    {
+      "name": "open_transport",
+      "goal": [
+        "=",
+        2,
+        [
+          "s",
+          1
+        ]
+      ],
+      "scope": 3
+    },
+    {
+      "name": "literal_zero_witness_transport",
+      "goal": [
+        "=",
+        1,
+        [
+          "s",
+          0
+        ]
+      ],
+      "scope": 2
+    },
+    {
+      "name": "transport_below_recursor_binder",
+      "goal": [
+        "=",
+        2,
+        [
+          "r",
+          0,
+          [
+            "s",
+            1
+          ],
+          [
+            "r",
+            3,
+            0,
+            0
+          ]
+        ]
+      ],
+      "scope": 3
+    },
+    {
+      "name": "nested_conversion_via_transport",
+      "goal": [
+        "=",
+        [
+          "s",
+          [
+            "r",
+            [
+              "z"
+            ],
+            [
+              "z"
+            ],
+            0
+          ]
+        ],
+        [
+          "s",
+          [
+            "z"
+          ]
+        ]
+      ],
+      "scope": 0
+    },
+    {
+      "name": "identity_iteration_induction",
+      "goal": [
+        "q",
+        [
+          "=",
+          [
+            "r",
+            0,
+            [
+              "z"
+            ],
+            0
+          ],
+          [
+            "z"
+          ]
+        ]
+      ],
+      "scope": 0
+    }
+  ],
+  "negative_cases": [
+    "nested_step_forbidden",
+    "unproved_false_equation",
+    "boolean_variable",
+    "out_of_scope_variable",
+    "compound_induction_forbidden",
+    "nonzero_witness_cannot_select_progress",
+    "variable_source_required",
+    "fresh_witness_escape",
+    "zero_step_cannot_compute_body"
+  ],
+  "cli": [
+    {
+      "file": "identity_iteration_induction.json",
+      "optimized": false,
+      "accepted": true
+    },
+    {
+      "file": "identity_iteration_induction.json",
+      "optimized": true,
+      "accepted": true
+    },
+    {
+      "file": "nested_conversion.json",
+      "optimized": false,
+      "accepted": true
+    },
+    {
+      "file": "nested_conversion.json",
+      "optimized": true,
+      "accepted": true
+    }
+  ],
+  "checker_sha256": "29beedfbf65017aead2baa87325e134f5d593f414d001c2f1ef72e2acbd9e05c",
+  "raw_bytes": 4131,
+  "normalized_bytes": 4096,
+  "significant_tokens": 1173,
+  "ast_nodes": 1379,
+  "gzip9_raw_bytes": 1419,
+  "gzip9_normalized_bytes": 1419,
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+}

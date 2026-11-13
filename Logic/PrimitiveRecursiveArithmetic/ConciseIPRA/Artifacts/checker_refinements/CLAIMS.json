@@ -1,0 +1,78 @@
+{
+  "title": "Guarded iPRA: two verified checker refinements",
+  "date": "2026-11-12",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "commit": "6874c85a4cea45d881de73620284fcc75d740942",
+  "reference_runtime": "CPython 3.12.14",
+  "metric_order": ["significant_tokens", "ast_nodes", "normalized_utf8_bytes"],
+  "candidates": [
+    {
+      "path": "checkers/byte476/checker476.py",
+      "metrics": [274, 306, 476],
+      "control_path": "checkers/byte476/control477.py",
+      "control_metrics": [272, 306, 477],
+      "control_git_blob_sha1": "48cc9c417ea9e011edf5f1c5fafd91f33a205fbf",
+      "new_source_sha256": "fa42d6bbf935d93b3bcd89306df4b98d0a080abb7afcaab7968689c87a0e8306",
+      "new_result": "Compose the existing eager selector with the product-erasure opener and empty-array neutral resource.",
+      "proof": "Exact accepted-certificate equivalence in ideal execution on finite exact-integer/list inputs with the [goal, 0] header; array-goal invariant proves every additional eager length calculation is defined."
+    },
+    {
+      "path": "checkers/ast269/checker269.py",
+      "metrics": [255, 269, 605],
+      "control_path": "checkers/ast269/control271.py",
+      "control_metrics": [255, 271, 606],
+      "control_git_blob_sha1": "6b7b3bbba4ffc95f9d10081477096d910be1ace9",
+      "new_source_sha256": "8ad173d4669dc2f30f33c8fd12f374e52cdb47d20a9b82108079d093c4563723",
+      "new_result": "Apply the established floor-expression rewrite to the whole-input three-field checker without changing its reader.",
+      "proof": "Symmetric returning-execution simulation identifying internal False with integer zero, preserving reads and floor allocation."
+    }
+  ],
+  "main_whole_input_coordinatewise_envelope": {
+    "before": [249, 271, 477],
+    "after": [249, 269, 476],
+    "attained_by_different_programs": true
+  },
+  "stream_inclusive_coordinatewise_envelope": {
+    "before": [244, 265, 477],
+    "after": [244, 265, 476],
+    "attained_by_different_programs": true,
+    "different_input_framings": true
+  },
+  "mathematical_theorem_contract": [
+    "Finite exact-integer/list certificate data.",
+    "Canonical closed guarded Eq/D public goal; the compact programs assume rather than independently validate this grammar.",
+    "One JSON array; reverse packet consumption; unused prefix permitted.",
+    "Byte candidate: four-field packets and final [goal, 0] header.",
+    "Node candidate: three-field packets and final goal.",
+    "Acceptance means normal exit with exactly ACCEPT followed by one LF.",
+    "Completeness and operational equivalence use ideal execution with sufficient resources."
+  ],
+  "inherited_mathematics": {
+    "calculus": "Six-family guarded scalar presentation U; no axiom deletion claimed.",
+    "theory": "Full first-order intuitionistic primitive recursive arithmetic with quantifier-free induction.",
+    "interpretation": "Ordinary guarded public realization through scalar equation-induction arithmetic; whole domains, actual equality, identity numerical comparison graphs and formula round trips.",
+    "source": "Pinned upstream base and certificate chapters, not a newly established arithmetic metatheorem."
+  },
+  "verification": {
+    "selected_pinned_baselines": 14,
+    "byte_fixture_labels": 66,
+    "byte_unique_payloads": 40,
+    "byte_process_executions": 264,
+    "node_fixture_labels": 20,
+    "node_unique_payloads": 19,
+    "node_process_executions": 80,
+    "total_process_executions": 344,
+    "failed_expectations": 0,
+    "finite_tests_are_not_a_soundness_or_completeness_proof": true
+  },
+  "nonclaims": [
+    "No new smaller mathematical axiom basis.",
+    "No single checker below all three prior main coordinate minima.",
+    "No improvement on the 244-token or 265-node line-stream records.",
+    "No universal lower bound or absolute simplest axiomatization.",
+    "No arbitrary-JSON validation theorem or removal of the public-language precondition.",
+    "No new Lean or Rocq verification of concrete Python code, JSON parsing or the runtime.",
+    "No exhaustive new census of every archived checker.",
+    "No resolution of the successor-only uniqueness problem."
+  ]
+}

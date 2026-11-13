@@ -1,0 +1,323 @@
+# Strict native profiles: proof obligations and established claims
+
+The three measured programs are complete, standalone strict JSON checkers of
+the inherited native intuitionistic arithmetic. They have different proof
+protocols. `strict_tokens.py` and `strict_ast.py` apply the previously supplied
+odd-coordinate zero representation to two further strict profiles.
+`strict_bytes.py` additionally composes normalized computation leaves,
+hypothesis/computation membership, and a new reserved cases marker.
+
+The last composition is a modest presentation improvement. It removes no
+arithmetic axiom and proves no absolute minimality theorem. The byte profile
+has 607 normalized bytes, compared with the previously delivered 608-byte
+odd-coordinate profile and the pinned repository's 616-byte strict profile.
+The token and AST profiles improve different coordinates; there is no single
+program attaining all minima.
+
+## 1. Input contract and public grammar
+
+Input is one finite JSON array. Its last item is the public goal. Earlier
+items are consumed backwards as four-field packets `[m,s,u,t]`. Unused prefix
+data are permitted, but the entire array, including that prefix, must be a
+finite tree of **exact integers and lists**. Booleans are not integers for
+this contract. Strings, floats, objects and null are rejected everywhere.
+The unchanged `str(p).strip('0123456789-[], ')` gate enforces this exact
+alphabet on JSON values: every excluded JSON kind has a character outside
+that alphabet in its Python representation. A non-list top-level value has
+no `.pop` and rejects. Nothing executes certificate text as code.
+
+The public grammar is the inherited closed native Eq/D representation, with
+zero represented by coordinate **1**. A tree is read at an integer depth `d`.
+At formula positions (`d` even), arrays have length 1 or 2. At term positions
+(`d` odd), arrays have length 1 or 3. Child depth is `d + 5 - arity`.
+Numerical scalar coordinates must be odd and satisfy `0 <= a < d`.
+Consequently numerical zero is 1, and genuine bound coordinates are
+3,5,7,... when in scope. Scalars at formula positions are rejected. The
+root is a formula at depth zero. Closure/Q arrays are auxiliary, not public.
+
+This admitted grammar permits the inherited dummy-slot references, whose
+numerical reading is zero. A canonical compiler uses no references to dummy
+slots. Do not conflate that smaller canonical encoding with the complete
+admitted public grammar.
+
+In the byte program the public scalar gate is exactly
+
+```
+k <= a < d and v <= d & a % 2
+```
+
+with `k=0,v=1` at public validation. The final `% 2` is essential:
+`v <= d & a` would incorrectly admit some even coordinates. The gate is
+performed before the public phase is cleared and before any computation
+preview is used. Complete public validation and complete alphabet validation
+are both charged to all reported sizes.
+
+## 2. Ordinary language and inherited semantic decoding
+
+The mathematical language has one numerical sort and terms
+
+`x`, `0`, `S(t)`, `I(n,a;u.h)`.
+
+The variable `u` is bound only in `h`. Auxiliary formulas are equality,
+`Q_y B`, and `D_{x,y} B`. The native calculus has both iterator computation
+equations, hypotheses, equality transport, Q elimination, D elimination,
+D introduction by numerical cases, and D introduction by progress for a
+literal equation. Its source-selected encoding combines transport and Q
+elimination. Its full scalar/iPRA bridge is inherited.
+
+The sorted decoder is the one specified in the pinned Article, chapter 11,
+Definitions `cert:def:reading`, `cert:def:opener`, and Lemma
+`cert:lem:opening`. At a numerical position, scalar coordinates 0,1,2 denote
+zero; protected coordinate pairs 3/4,5/6,... denote slots; allocated negative
+coordinates denote rigid parameters. At a formula position a scalar denotes
+the harmless theorem `0=0`. Array arities have the following readings:
+
+| Arity | Numerical reading | Formula reading |
+| --- | --- | --- |
+| 0 | zero | truth |
+| 1 | successor | D |
+| 2 | zero | equality |
+| 3 | iterator | Q of the last child |
+| at least 4 | zero | truth |
+
+Unmentioned children are annotations with no semantic reading. Successor
+adds two dummy zero slots; iterator counter/initializer add one dummy slot,
+and its step adds one actual state slot. This accounts for the unified depth
+increment. Canonical/public well-formed trees have the intended ordinary
+native reading. The larger decoder is needed for soundness on arbitrary
+integer/list auxiliary certificate data, which the strict interface does
+not promise to be canonical.
+
+## 3. The modified opener: semantic preservation, not literal idempotence
+
+The proof-phase opener is the inherited opener with one change: a protected
+scalar is returned as `a or 1`, rather than `a`. Out-of-scope formula-sorted
+scalars still become 0; a meaningful out-of-scope numerical scalar is
+replaced by the supplied image after that image is checked at depth 3.
+Without an image, that numerical occurrence rejects.
+
+At every meaningful numerical position the depth is at least 3. Therefore
+changing a protected 0 to 1 leaves a protected coordinate denoting zero.
+At every meaningful formula position, both scalar 0 and scalar 1 denote
+truth. All other scalars are unchanged. An annotation may be traversed at a
+different depth, and its traversal can reject, but it has no reading.
+
+Structural induction gives the semantic opening lemma with the same
+statement as the inherited lemma: a successful no-image opening closes every
+meaningful hole and preserves the sorted reading; opening with an image
+performs capture-avoiding substitution in that reading. At an array, apply
+the induction hypothesis to each child with a reading; ignored annotations
+affect definedness only. At a numerical substitution hole, the image's
+successful depth-3 check supplies the usual closed-image premise. The new
+protected-zero case changes one zero alias to another and requires no new
+arithmetic fact.
+
+**No literal retraction theorem is claimed on all raw trees.** For example,
+at floor 0 and even depth 2, an out-of-range scalar 2 opens to 0, and that
+result opens to 1 on a second application. Both have the formula reading
+truth. Canonical public representations are fixed by successful no-image
+opening. General raw correspondences in this note are modulo the sorted
+decoder, not byte equality and not unrestricted literal idempotence.
+
+## 4. The normalized computation leaf
+
+Given packet fields `(s,u,t)`, let
+
+```
+H(s,u,t) = [[s and [s],u,t], O(t,[s,u,t],3) if s else u].
+```
+
+The byte checker first opens the current goal without an image, clears its
+public-validation phase, constructs `H`, and then opens **H itself** without
+an image. It closes a leaf when the opened goal belongs to the retained
+context together with this opened computation. The explicit outer opening
+of H is important both for scope soundness and for the odd zero spelling.
+The computation is ephemeral; it is not added to the continuation context.
+
+The relevant universal statement is already proved for the inherited
+opener in `ipra_computation_leaves/reference/direct_leaf_review.tex`:
+if construction of H and no-image opening of H succeed, its decoded equation
+is an instance of a computation law. The following details show why the
+statement also holds for the modified opener and arbitrary raw auxiliaries.
+
+* If `s` is false-valued, exact-integer/list typing makes it 0 or `[]`,
+  either denoting zero. The right endpoint `u` is independently checked at
+  numerical root depth 3. It cannot meaningfully name the dummy slot that
+  is additionally available to the initializer on the left. Thus both
+  initializers have the same reading, and H reads `I(0,a;v.h)=a`.
+* If `s` is true-valued, its singleton occurrence on the left is successor.
+  When `t` meaningfully uses the iterator state, opening `t` checks the whole
+  inserted image `[s,u,t]` at depth 3. That check excludes a meaningful
+  dependence of the predecessor/initializer on the extra dummy slots under
+  the outer successor. Semantic opening then makes the right endpoint
+  exactly `h[I(n,a;v.h)/v]`.
+* If `t` does not meaningfully use its state, the right endpoint is the
+  constant update, so the successor equation is valid independently of the
+  otherwise inaccessible dummy coordinates. Traversals in annotations may
+  reject but cannot create a false decoded equality.
+
+The new 0-to-1 normalization preserves each of those readings by Section 3.
+In particular a raw seed `[]` still denotes numerical zero; it does not need
+to be excluded merely because the old supply dispatcher used seed truthiness
+to choose its branch. This resolves the falsey-seed issue without weakening
+the JSON contract or assuming canonical auxiliary fields.
+
+If the opened goal matches an opened H, both have the same decoded formula,
+which is therefore an arithmetic theorem. If it matches the context, the
+inherited hypothesis invariant applies. A dummy packet `[0,0,0,0]` has a
+defined preview in every allocated scope, so ordinary hypothesis use remains
+available. Every such leaf allocates no parameter and retains no new premise.
+
+## 5. The reserved cases marker and full native induction modes
+
+Removing the old computation-supply branch makes every seed value available
+at a logical introduction. One must consequently replace the old selector:
+`len(a)%2 == u` by itself would allow compound progress at `u=1`.
+
+After opening the D matrix, the byte program uses
+
+```
+any((m, len(a) == 2 != u))
+```
+
+For a false-valued major this means precisely: progress if and only if the
+opened matrix is a literal equation and the marker is not the exact integer
+2. Scalar 2 is outside the public numerical-coordinate alphabet, making it a
+convenient administrative cases marker. Choose marker 0 for equational
+progress and marker 2 for numerical cases. Compound matrices always use
+cases, regardless of the marker. Thus both native introduction rules remain
+available, including atomic cases; induction is never extended to compound
+formulas. Extra raw array arities select cases and keep their inherited
+truth reading. For a true-valued checked major the selector is true exactly
+as in the inherited elimination transition.
+
+The unmodified token/AST supply profiles retain their old 0-versus-empty-list
+mode protocol. Their certificate files therefore differ from the byte profile.
+
+## 6. Scope allocation and the remaining logical transitions
+
+Every non-leaf first checks its major at the **old** floor. An introduction
+opens its supplied witness at that old floor as well. Only after those
+operations succeed is the floor decremented. The newly supplied hypothesis
+is then opened at the new floor, and the continuation is opened with the
+successor of that new parameter. The byte composition changes none of those
+orders. In particular a future witness is not made available before its
+scope check.
+
+Source-selected use and D opening are the inherited transitions. Their
+soundness proof uses the semantic opening lemma and the maintained list of
+retained decoded premises. An already retained resource is available in a
+recursive call at the same floor; a continuation receives exactly the old
+context plus its one justified hypothetical premise. Computations are no
+longer silently retained. The neutral scalar 0 remains available as the
+decoded theorem `0=0`. Successful recursive calls are used only for their
+truth value, so the byte program's nonempty-list return and the readable
+program's `True` return are equivalent.
+
+Induction on a finite successful execution, using Sections 3--5 for leaves
+and the inherited logical transition lemmas here, proves soundness for
+**every accepted exact-integer/list input**, including arbitrary auxiliary
+aliases. The independently validated public goal then has its stated native
+Eq/D reading. This is stronger than checking a collection of canonical
+positive proofs, and is separate from those finite tests.
+
+## 7. Canonical completeness and the old supply's fresh parameters
+
+For the full theorem-set equivalence, first work in the ordinary native
+calculus, where weakening, renaming, substitution and cut are admissible.
+The old supply checker can introduce a formula H in new parameters for which
+only the simultaneous-zero instance is known. One must **not** simply call
+every such open H an axiom and erase its allocation.
+
+Instead use the inherited zero-instance supply lemma. If the new parameters
+`b` do not occur in the retained context Gamma or conclusion A, and the
+source node provides `|- H(0)` and `Gamma,H(b) |- A`, rename later
+eigenparameters away, substitute zero for all components of b, and obtain
+`Gamma,H(0) |- A`. Cut the proved `H(0)`. This removes that supply at the
+ordinary derivation level, with its context and conclusion unchanged. An
+ordinary actual computation assumption can similarly be cut against its
+computation axiom. Continue by induction over the old derivation, then choose
+a canonical native derivation with freshly renamed logical eigenparameters.
+This step explicitly accounts for parameters allocated by removed supplies.
+It does not assert that arbitrary raw source certificates are closed under
+naive textual substitution.
+
+Compile that derivation into the new byte protocol:
+
+* Hypotheses get the harmless dummy packet; computation axioms get their
+  own computation packet. Numerical zero is now the truthy coordinate 1,
+  so a successor computation with predecessor zero can also be selected
+  directly with `s=1`; administrative `s=0` selects the base computation.
+* Transport uses its numerical source, including source 1 for numerical
+  zero. Q use employs administrative source 0. D elimination uses its old
+  major/continuation structure. This preserves all ordinary rules.
+* Equation progress uses marker 0. Both atomic and compound cases can use
+  marker 2. Allocate only the fresh parameters of genuine logical nodes.
+
+The eager computation preview does not obstruct this canonical compilation.
+A canonical elimination template has hole coordinates at its first
+unprotected slot, or the paired alias. When the same template is traversed
+in the preview at depth 3 instead of depth 0, these coordinates are protected.
+Its occurrence as the iterator step has still more protected slots.
+Canonical numerical source/initializer trees are similarly read under
+additional protected slots. A D-elimination dummy template is closed, and
+an introduction has administrative source 0 and a closed-in-scope numerical
+witness. Consequently construction and no-image opening of every preview
+are defined. If a preview already matches the goal, it is a valid computation
+theorem and the remaining proof can be omitted; otherwise the intended
+logical transition is available. This proves completeness without claiming
+identity of invalid or noncanonical raw acceptance languages.
+
+## 8. Exact executable converter boundary
+
+`translate.py` is an **untrusted, partial canonical-certificate converter**,
+not the universal proof just given. Its field-aware zero recoding preserves
+administrative marker zero: major fields and formula templates use formula
+depth, numerical source/target/witness fields use numerical depth. In an
+elimination packet, a target `u=0` is numerical and becomes 1. In an
+introduction, marker `u=0` stays zero and marker `u=[]` becomes 2 only for the
+shared byte profile. Unused alphabet-valid prefix objects are permitted.
+
+For the byte profile it traces the fixed prior strict608 control, adds dummy
+packets at hypothesis returns, closes matching computations directly, and
+prunes their old administrative children. It **raises** on a retained
+computation wrapper that is not a direct computation leaf. Such an input
+requires the derivation-level zero-substitution/cut transformation of
+Section 7, which this small executable converter does not implement.
+All 16 supplied canonical source fixtures are in its supported class.
+The stronger mathematical completeness theorem is not inferred from that
+finite success and does not depend on the converter being total.
+
+## 9. Bi-interpretability and limits
+
+Soundness and completeness identify the native public theorem/consequence
+relation with the inherited native calculus. The number domain, arithmetic
+operations, actual equality, logical macros and the two interpretation maps
+are unchanged; zero's integer spelling is merely a syntax code. Hence the
+repository's established whole-domain bi-interpretation with full
+intuitionistic PRA transfers. Both numerical comparison graphs remain `x=y`,
+and every interpreted formula round trip is the inherited one. Equiconsistency
+follows. This is not a standard-model-only argument, and it does not discard
+nonstandard elements.
+
+These are written metatheoretic proofs with inherited dependencies. There is
+no new Lean/Rocq proof of the Python correspondence. The standalone executable
+checks support implementation review; they do not prove universal soundness.
+No compact 469-byte record is beaten by the strict 607-byte interface, since
+the validation responsibilities differ. No absolute shortestness is claimed.
+
+## References within the pinned source
+
+1. `docs/Article/chapters/ch11_cert.tex`: sorted decoder, semantic opening,
+   zero-instance supply, neutral resource and checker context invariants.
+2. `docs/incoming/ipra_computation_leaves_2026-11-12.zip`,
+   `reference/direct_leaf_review.tex` and `evidence/stream_proof_note.md`:
+   universal direct-computation leaf lemma, aliases, and canonical preview
+   totality.
+3. `docs/incoming/ipra_shared_leaf_2026-11-12.zip`, `new_proofs.tex`:
+   hypothesis/computation leaf equivalence on every open sequent.
+4. `docs/incoming/ipra_abstraction_and_refinements_2026-11-12.zip`,
+   `code/checkers/PROOF_NOTES.txt`: full native/strict validation contract and
+   the exact pinned strict controls.
+
+All source references are frozen at `a0687e8082b7354005d91b0ee105b4fd5ec8cf40`.
