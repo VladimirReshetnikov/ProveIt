@@ -7,12 +7,13 @@ import ConciseIPRA.ScalarToPRA
 The translation `tau` of `T_eq` into `iPRA` turns an iterator into the function
 symbol `prec a (stepSym h)`, and the translation `sigma` back turns that symbol
 into the term `prc c a (itG h)`: a primitive recursion whose step ignores the
-counter.  One equation induction shows that such a recursion is the iterator,
+counter.  One equation induction shows that such a recursion is the iterator
+of any provably equal body,
 
-  `prc c a (itG h) = I(c, a; u. h)`,
+  `prc c a (itG h) = I(c, a; u. h')`  when  `⊢ h = h'`,
 
-and a second one that the iterator respects provable equality of its body.
-Hence `T_eq ⊢ sigma (tau t) = t` for every term `t`.
+and two instances of it show that the iterator respects provable equality of
+its body.  Hence `T_eq ⊢ sigma (tau t) = t` for every term `t`.
 -/
 
 namespace LeanProofs.ConciseIPRA
@@ -43,82 +44,38 @@ theorem Tm.subst_itG_cases (c p : Tm n) (h : Tm (n + 1)) :
   rw [subst_subst]
   refine congrArg (fun ρ => Syn.subst ρ h) (funext (Fin.cases ?_ fun l => ?_)) <;> simp
 
-/-- A closed equation holds under every substitution, in every context. -/
-theorem Teq.substNil {h h' : Tm n} (hh : [] ⊢[TeqAx] h ≐ h') {Γ' : List (Fm Tm m)}
-    (σ : Fin n → Tm m) : Γ' ⊢[TeqAx] Syn.subst σ h ≐ Syn.subst σ h' :=
-  Prf.ofNil (hh.subst σ)
-
 namespace Q
 
 variable {Γ : List (Fm Tm n)}
 
-/-! ### Uniqueness of iteration -/
-
-/-- A term with the base and the step of an iterator is that iterator. -/
-theorem iter_unique (f : Tm (n + 1)) (a : Tm n) (h : Tm (n + 1)) (c : Tm n)
-    (h0 : mk Γ (Syn.subst (inst Tm.zero) f) = mk Γ a)
-    (hS : ∀ Δ : List (Fm Tm (n + 1)), mk Δ (Syn.subst (repl (Tm.succ (var 0))) f)
-      = app (Syn.subst (up fun i => var i.succ) h) (mk Δ f)) :
-    mk Γ (Syn.subst (inst c) f) = mk Γ (Tm.iter c a h) := by
-  have key := eqInd (Γ := Γ) f
-    (Tm.iter (var 0) (shift a) (Syn.subst (up (fun i => var i.succ)) h)) c
-    (by
-      simp only [Tm.subst_iter, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        Syn.subst_up_inst_up_shift]
-      exact h0.trans (sound (Teq.iterZero a h)).symm)
-    (fun ih => by
-      simp only [Tm.subst_iter, Syn.subst_var, Syn.repl_zero, Syn.subst_repl_shift,
-        Syn.subst_up_repl_up_shift]
-      rw [hS, ih]
-      exact (iterate_succ _ (mk _ (var 0)) (mk _ (shift a))).symm)
-  simpa only [Tm.subst_iter, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    Syn.subst_up_inst_up_shift] using key
-
-/-- The iterator respects equality of its body. -/
-theorem iter_body_congr {h h' : Tm (n + 1)} (hh : [] ⊢[TeqAx] h ≐ h') (c a : Tm n) :
-    Γ ⊢[TeqAx] Tm.iter c a h ≐ Tm.iter c a h' := by
+/-- A recursion that ignores its counter is the iterator of a provably equal body. -/
+theorem prc_itG (c a : Tm n) {h h' : Tm (n + 1)} (hh : [] ⊢[TeqAx] h ≐ h') :
+    Γ ⊢[TeqAx] Tm.prc c a (Tm.itG h) ≐ Tm.iter c a h' := by
   refine exact ?_
-  have key := iter_unique (Γ := Γ)
-    (Tm.iter (var 0) (shift a) (Syn.subst (up (fun i => var i.succ)) h)) a h' c
+  have key := eqInd (Γ := Γ)
+    (Tm.prc (var 0) (shift a) (Tm.itG (Syn.subst (up (fun i => var i.succ)) h)))
+    (Tm.iter (var 0) (shift a) (Syn.subst (up (fun i => var i.succ)) h')) c
     (by
-      simp only [Tm.subst_iter, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-        Syn.subst_up_inst_up_shift]
-      exact sound (Teq.iterZero a h))
-    (fun Δ => by
-      simp only [Tm.subst_iter, Syn.subst_var, Syn.repl_zero, Syn.subst_repl_shift,
-        Syn.subst_up_repl_up_shift]
-      refine (iterate_succ _ (mk Δ (var 0)) (mk Δ (shift a))).trans (sound ?_)
+      simp only [Tm.subst_prc, Tm.subst_itG, Tm.subst_iter, Syn.subst_var, Syn.inst_zero,
+        Syn.subst_inst_shift, Syn.subst_up_inst_up_shift]
+      exact (sound (prc_zero a _)).trans (sound (Teq.iterZero a h')).symm)
+    (fun ih => by
+      simp only [Tm.subst_prc, Tm.subst_itG, Tm.subst_iter, Syn.subst_var, Syn.repl_zero,
+        Syn.subst_repl_shift, Syn.subst_up_repl_up_shift]
+      refine (sound (prc_succ _ _ _)).trans ((congrArg (mk _) (Tm.subst_itG_cases _ _ _)).trans
+        ((sound ?_).trans ((congrArg (app (Syn.subst (up fun i => var i.succ) h')) ih).trans
+          (iterate_succ _ (mk _ (var 0)) (mk _ (shift a))).symm)))
       rw [subst_subst, subst_subst]
-      exact Teq.substNil hh _)
-  simpa only [Tm.subst_iter, Syn.subst_var, Syn.inst_zero, Syn.subst_inst_shift,
-    Syn.subst_up_inst_up_shift] using key
+      exact (hh.subst _).ofNil)
+  simpa only [Tm.subst_prc, Tm.subst_itG, Tm.subst_iter, Syn.subst_var, Syn.inst_zero,
+    Syn.subst_inst_shift, Syn.subst_up_inst_up_shift] using key
 
 /-- The iterator respects provable equality in all three arguments. -/
 theorem iter_congr {c c' a a' : Tm n} {h h' : Tm (n + 1)} (hc : Γ ⊢[TeqAx] c ≐ c')
     (ha : Γ ⊢[TeqAx] a ≐ a') (hh : [] ⊢[TeqAx] h ≐ h') :
-    Γ ⊢[TeqAx] Tm.iter c a h ≐ Tm.iter c' a' h' := by
-  refine exact ?_
-  have e : mk Γ (Tm.iter c a h) = mk Γ (Tm.iter c' a' h) := by
-    show iterate h (mk Γ c) (mk Γ a) = iterate h (mk Γ c') (mk Γ a')
-    rw [sound hc, sound ha]
-  exact e.trans (sound (iter_body_congr hh c' a'))
-
-/-- A recursion that ignores its counter is the iterator. -/
-theorem prc_itG (c a : Tm n) (h : Tm (n + 1)) :
-    Γ ⊢[TeqAx] Tm.prc c a (Tm.itG h) ≐ Tm.iter c a h := by
-  refine exact ?_
-  have key := iter_unique (Γ := Γ)
-    (Tm.prc (var 0) (shift a) (Tm.itG (Syn.subst (up (fun i => var i.succ)) h))) a h c
-    (by
-      simp only [Tm.subst_prc, Tm.subst_itG, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, Syn.subst_up_inst_up_shift]
-      exact sound (prc_zero a _))
-    (fun Δ => by
-      simp only [Tm.subst_prc, Tm.subst_itG, Syn.subst_var, Syn.repl_zero,
-        Syn.subst_repl_shift, Syn.subst_up_repl_up_shift]
-      exact (sound (prc_succ _ _ _)).trans (congrArg (mk Δ) (Tm.subst_itG_cases _ _ _)))
-  simpa only [Tm.subst_prc, Tm.subst_itG, Syn.subst_var, Syn.inst_zero,
-    Syn.subst_inst_shift, Syn.subst_up_inst_up_shift] using key
+    Γ ⊢[TeqAx] Tm.iter c a h ≐ Tm.iter c' a' h' :=
+  Prf.eqTrans (Teq.iterCongr h hc ha)
+    (Prf.eqTrans (Prf.eqSymm (prc_itG c' a' (Prf.eqRefl h))) (prc_itG c' a' hh))
 
 end Q
 
@@ -157,7 +114,7 @@ theorem code_code (t : Tm n) : [] ⊢[TeqAx] FromPRA.code (ToPRA.code t) ≐ t :
         ((Fin.cases (ToPRA.code c) PR.proj : Fin (_ + 1) → PR _) j))
         (FromPRA.code (ToPRA.iterSym (ToPRA.code a) (ToPRA.code h))) ≐ _
     rw [code_cases_proj, subst_code_iterSym]
-    exact Prf.eqTrans (Q.prc_itG _ _ _) (Q.iter_congr ihc iha ihh)
+    exact Prf.eqTrans (Q.prc_itG _ _ ihh) (Teq.iterCongr h ihc iha)
 
 /-- The round trip `T_eq → iPRA → T_eq` is provably the identity on terms. -/
 theorem sigma_tau (t : Tm n) : [] ⊢[TeqAx] FromPRA.sigma (ToPRA.tau t) ≐ t := by
@@ -169,7 +126,7 @@ theorem sigma_tau (t : Tm n) : [] ⊢[TeqAx] FromPRA.sigma (ToPRA.tau t) ≐ t :
     show [] ⊢[TeqAx] Syn.subst (fun i => FromPRA.sigma (inst (ToPRA.tau c) i))
         (FromPRA.code (ToPRA.iterSym (ToPRA.code a) (ToPRA.code h))) ≐ _
     rw [FromPRA.sigma_inst, subst_code_iterSym]
-    exact Prf.eqTrans (Q.prc_itG _ _ _) (Q.iter_congr ihc (code_code a) (code_code h))
+    exact Prf.eqTrans (Q.prc_itG _ _ (code_code h)) (Teq.iterCongr h ihc (code_code a))
 
 end RoundTrip
 
