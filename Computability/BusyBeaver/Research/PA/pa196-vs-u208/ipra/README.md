@@ -66,6 +66,15 @@ shows that bounds for the unrestricted induction-schema component suffice
 for the complete axiom recognizer. Those induction-schema bounds, the rest
 of the derivation-core bounds, and the machine reductions remain open.
 
+`PA196PAAxiomBound.lean` derives bounds for both exact axiom-rule branches of
+the PA derivation core from the corresponding PA axiom-recognizer bounds.
+`PA196PASimpleRuleBounds.lean` separately proves both polarities for the exact
+verum, conjunction, disjunction, and weakening branches.
+`PA196PAAxiomAssembly.lean` connects the PA-minus and axiom-branch results,
+conditional on the two unrestricted induction-schema bounds. The other rule
+branches and the induction-schema recognizer still need bounds before the
+complete core certificate follows.
+
 `PA196PRAAssembly.lean` composes the two conditional transfers with the
 intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
 classical PRA hypotheses: the forward reduction, the reverse reduction, and
