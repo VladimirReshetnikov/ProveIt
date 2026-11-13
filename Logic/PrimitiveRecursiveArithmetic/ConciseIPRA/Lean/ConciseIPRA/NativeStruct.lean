@@ -191,18 +191,16 @@ theorem cut1 {B : NFm n} (h₁ : NPrf Γ B) (h₂ : NPrf (B :: Γ) A) : NPrf Γ 
   · exact h₁
   · exact .hyp hC
 
+/-- A `D` whose witness variable is a dummy gives the `Q` of its matrix. -/
+theorem dDummyE {B : NFm (n + 1)} (h : NPrf Γ (.D (B.subst (up (fun i => Syn.var i.succ))))) :
+    NPrf Γ (.Q B) :=
+  .dE h hyp0
+
 /-- Introduction of `Q`: from `B(0) ⊢ B(S z)` with `z` fresh, infer `Q_y B(y)`. -/
 theorem qI (B : NFm (n + 1))
     (h : NPrf ((B.subst (inst zero)).shift :: Γ.map NFm.shift)
-      (B.subst (repl (succ (Syn.var 0))))) : NPrf Γ (.Q B) := by
-  have hD : NPrf Γ (.D (B.subst (up (fun i => Syn.var i.succ)))) := by
-    refine .dICase _ zero ?_
-    rw [NFm.subst_dummy_inst]
-    exact h
-  refine .dE hD ?_
-  show NPrf (.Q (B.subst (up (fun i => Syn.var i.succ))) :: Γ.map NFm.shift)
-    (.Q (B.subst (up (fun i => Syn.var i.succ))))
-  exact hyp0
+      (B.subst (repl (succ (Syn.var 0))))) : NPrf Γ (.Q B) :=
+  dDummyE (.dICase _ zero (by rw [NFm.subst_dummy_inst]; exact h))
 
 /-- Numerical cases: `B(t)` follows from `B(0)` and `B(0) ⊢ B(S z)`. -/
 theorem cases (B : NFm (n + 1)) (t : Tm n) (h0 : NPrf Γ (B.subst (inst zero)))

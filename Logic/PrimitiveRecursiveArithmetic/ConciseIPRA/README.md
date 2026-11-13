@@ -987,7 +987,7 @@ The main chain (every module except the twenty kernel comparisons,
 `ZeroSeedObstruction`,
 `NativePrefix`, `NativeUniqueness`, `NativeModels`, `NativeWitnessShape`,
 `NativeWitnessComplete`, `EqKernel`, `EqArith`, `EqParity`, `EqCompare`, `EqPred` and
-`TeqClosure`) is 4,994
+`TeqClosure`) is 4,949
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
 introduction and elimination, instead of an induction over the seventeen
@@ -1035,7 +1035,14 @@ obtained from the maximum identity `x + (y ∸ x) = y + (x ∸ y)` (one equation
 induction) in place of a selector-guarded witness invariant, and the
 logarithm counter of the pairing from the one-parameter invariant
 "`2 ^ i ≤ k` implies `lgc i k = i`", so the monotonicity of `2 ^ x` and
-transitivity of the order are not needed. In the
+transitivity of the order are not needed. In the native round trip, a
+disjunction is read back by closure by cases on a formula (`Teq.caseAll`)
+instead of coverage, existential elimination and transport of the selector;
+`Q` introduction factors through `D` introduction at the witness `0` and the
+dummy-witness elimination `NPrf.dDummyE`, as the article states it; the
+forward half of the composite reading of `Q` is derived unshifted and then
+shifted; and the elimination of a universal statement at its own variable is
+one instance of `NPrf.allShiftE`. In the
 round trip through `T_eq`, the steps of each chain of equations are composed
 directly instead of being stated twice, and the step shared by three of the
 chains is one lemma (`RoundTrip.tau_subst_code`).
@@ -1255,7 +1262,7 @@ marked as conjectures is proved here.
    `deterministic_opening` (`OCPrf`), of `first_instance` and
    `clause_discharge` (`XCPrf`), and of `variable_substitution` (`VCPrf`)
    are proved equivalent to the kernel.
-8. **A shorter proof of the equivalence.** The main chain is 4,994 lines. A
+8. **A shorter proof of the equivalence.** The main chain is 4,949 lines. A
    dependency-closure computation shows that it contains nothing that the end
    results do not use. Three designs fix most of its size, and no shorter
    replacement for any of them is known: the predecessor of `T_eq` from

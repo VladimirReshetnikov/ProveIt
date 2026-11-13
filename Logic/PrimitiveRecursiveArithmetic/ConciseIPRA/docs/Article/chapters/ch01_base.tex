@@ -3329,12 +3329,14 @@ $Y$.
  $X^\circ$, hence $Y^\circ$.  Transfer of $Y\proves X\Rightarrow_* Y$ gives
  $(X\Rightarrow_* Y)^\circ$, and its antecedent is the assumption.
 \item $(X\vee_* Y)^\circ\leftrightarrow X^\circ\vee Y^\circ$: by (c) the left
- side is equivalent to $\exists x\,\sel(x,X,Y)^\circ$.  Given
- $\sel(x,X,Y)^\circ$, eliminate (T2) at $x$.  If $x=0$, transfer of
- $x=0,\ \sel(x,X,Y)\proves X$ gives $X^\circ$; if $x=\Suc z$, transfer of
- $x=\Suc z,\ \sel(x,X,Y)\proves Y$ gives $Y^\circ$.  Both native sequents
- hold by \cref{base:lem:selIE}(ii) and \cref{base:lem:gate}(iv), (v).  The
- converse is transfer of $\vee_*$I.
+ side is equivalent to $\exists x\,\sel(x,X,Y)^\circ$.  It suffices to
+ derive $\forall x\,(\sel(x,X,Y)^\circ\to X^\circ\vee Y^\circ)$, and by
+ \cref{base:lem:teqcases}(i) its two instances at $0$ and at $\Suc z$
+ suffice.  They are transfers of $\sel(0,X,Y)\proves X$ and
+ $\sel(\Suc z,X,Y)\proves Y$, which hold by \cref{base:lem:gate}(iv), (v),
+ followed by $\vee$I.  No coverage of the witness $x$ and no transport along
+ $x=0$ or $x=\Suc z$ is needed; this is the route of the Lean module
+ \Lean{NativeRoundTrip}.  The converse is transfer of $\vee_*$I.
 \item $(\forall_* x\,X)^\circ\leftrightarrow\forall x\,X^\circ$: transfer of
  $\wedge_*$E gives $X^\circ(0)$ and
  $(\Q{x}X)^\circ=X^\circ(0)\to\forall x\,X^\circ$ from the left side, hence
