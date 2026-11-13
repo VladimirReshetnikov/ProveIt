@@ -1,0 +1,95 @@
+INDEPENDENT REVIEW OF THE STRICT THREE-FIELD CONTINUATION LOOP
+Reviewer role: checker_candidate
+Snapshot: 7a7633980dbca7f599322a5e7f1e65fb1cddb7c8
+Runtime used for measurement: CPython 3.12.14
+
+Files reviewed
+  audit/benchmarks/strict_tokens306.py
+  audit/strict_experiments/checker_loop.py
+
+Verdict
+  The tail-recursion-to-loop transformation preserves ideal finite successful
+  executions, including the parsed JSON alphabet and public-goal checks.
+  It is a small implementation refinement of the inherited calculus. It
+  deletes no mathematical axiom, proves no absolute lower bound, and is
+  not a program below the compact or strict AST/byte coordinate minima.
+
+Measured full normalized sources (ast.unparse followed by one LF)
+  Exact control: 306 significant tokens, 362 AST nodes, 668 UTF-8 bytes.
+  Loop program:  304 significant tokens, 361 AST nodes, 705 UTF-8 bytes.
+  Candidate SHA-256:
+    71ed3a3c61dec8a1f47a11f552e6602a0d2d95bbcf1020612f4d7386d7627dd0
+
+Operational proof
+  Compare a recursive invocation c(G,A,K) with a loop iteration holding
+  local state (g,a,k)=(G,A,K), at the same position in the shared packet
+  stream. Both evaluate the same opening operation and context membership.
+  If the goal belongs to the context, the old invocation returns None;
+  the loop exits and implicitly returns None. Otherwise both append the
+  same neutral zero element to the same shared context list, then consume
+  and unpack exactly one three-field record. This unpacking is unconditional:
+  a bad arity rejects before a stale s/u/t/r value could be used.
+
+  Both then make the same endpoint test, perform the same source/target
+  rewrites, and evaluate h in the same left-to-right order. In particular,
+  if h requires a major proof, that proof is checked before k is decremented.
+  Apply the simulation recursively to that major proof. Both procedures
+  reserve the same next fresh name and compute the same new resource.
+
+  The sole subtle order difference is the tail transition. The recursive
+  control evaluates G+[resource], then i(A,[K]), before entering a fresh
+  procedure. The loop assigns the extended context to g before computing
+  i(a,[k]). The opener refers to g only through its truth value. Both the
+  old and extended contexts are nonempty, because the neutral append was
+  already performed. Therefore the second opening operation is unchanged.
+  Its numerical floor k is identical in both programs, including while
+  computing the new resource. The next recursive entry and loop iteration
+  consequently have the same context, goal, floor, and unread packet stack.
+
+  The logical extension uses g = g + [resource], which allocates a fresh
+  outer list. It does not use g += [resource]. Thus assumptions introduced
+  within a major proof do not leak into its caller's shared context. The
+  existing neutral append does mutate a shared list, but occurs at exactly
+  the same point in both programs. After a tail extension, each program
+  continues with an equally fresh context list. The old tail caller performs
+  no action after its child returns, and its retained local references and
+  closure never escape into certificate data. Reusing the loop closure is
+  harmless: it reads the current local g and k, and its fixed defaults
+  (t=0j,d=0) are the same as the defaults of each old fresh closure.
+
+  Induction on a finite checking trace proves the correspondence. The new
+  iteration can also be unfolded into a finite chain of old tail calls,
+  proving the reverse direction. On the exact integer/list input alphabet,
+  comparisons and arithmetic have no certificate-controlled side effects.
+  The unchanged lexical gate rejects other JSON leaf types before checking.
+  Scope, binder, formula-arity, and witness checks are retained verbatim.
+
+  Physical stack ceilings are excluded from this equivalence, as in the
+  repository's ideal-finite-execution convention: the loop may handle a
+  long continuation for which the old implementation reaches a machine
+  recursion limit. Exception traceback text is also not claimed identical.
+
+Independent finite checks
+  review_loop.py instruments the first context-membership test of the
+  control and every loop guard of the candidate. It records hashes of
+  the complete context, goal, floor, membership result, and remaining
+  packet count. On 16 positive certificates and five inherited scope/type
+  attacks, the two traces match at all 9,461 logical nodes. Acceptance,
+  exception class, and the unused packet count also match in all 21 cases.
+  See loop_trace_review.json. This evidence supplements the universal
+  operational argument and is not a formal proof of it.
+
+  The separate baseline-agent receipt loop_validation.json records 260
+  normal/optimized isolated executions of the two programs over 65 cases
+  (16 expected acceptance, 49 expected rejection), with zero mismatches.
+  I inspected that runner and receipt. Neither checker contains assert;
+  Python -O removes none of its checking conditions.
+
+Boundaries
+  The inherited mathematical bridge to full first-order iPRA is transferred
+  through the checker equivalence; this review does not independently
+  formalize that bridge or the Python interpreter in Lean/Rocq.
+  A superficially similar loop rewrite of a pattern-matching checker needs
+  separate analysis: a failed match can retain locals from an earlier loop
+  iteration. The present candidate uses exact tuple unpacking and has no
+  such stale-binding path.

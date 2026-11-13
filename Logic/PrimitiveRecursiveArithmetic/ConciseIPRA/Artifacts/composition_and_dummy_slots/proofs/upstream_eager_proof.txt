@@ -1,0 +1,208 @@
+EAGER SUBSTITUTION WITH AN EMPTY ADMINISTRATIVE PREMISE
+====================================================
+
+Status and scope
+----------------
+This is a smaller checking presentation of the inherited native iPRA
+calculus. It deletes no arithmetic axiom or inference rule. Its mathematical
+basis and whole-domain bi-interpretation are inherited from ConciseIPRA.
+The new result is a composition: the already-proved eager opener and empty
+administrative premise are combined with uniform-zero native validation and
+context-based phase selection. The selected whole modules have these sizes
+under CPython 3.12.14 ast.unparse plus one LF:
+
+                           significant tokens   AST nodes   bytes
+  checker_tokens315.py             315             365       618
+  checker_ast353.py                323             353       630
+  checker_bytes589.py              324             367       589
+
+The matched strict controls have coordinate envelope 317 / 356 / 597;
+these exhibit 315 / 353 / 589, attained by DIFFERENT programs. Their grammar
+and whole-input validation contract are the native strict T/ed_1 contract.
+This does not beat the compact promised-grammar family in every coordinate.
+
+The comparison is between accepted public THEOREMS. It is not equality of
+arbitrary raw certificate traces. Eager substitution can reject a raw
+certificate that a lazy opener accepted, and an even-depth product can
+produce [] instead of 0. The proof below is therefore a semantic soundness
+and canonical-completeness argument, not an invalid pointwise Python identity.
+
+Pinned inherited results
+------------------------
+Repository: VladimirReshetnikov/ProveIt
+Commit: 798856e4ef2d02b7f9c0f1660828c5ce58f277f2
+Path: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA
+
+The unified article, docs/Article/chapters/ch11_cert.tex, supplies:
+
+* cert:def:reading and cert:def:opener: auxiliary readings and lazy opening;
+* cert:lem:opening, cert:lem:exposure and cert:lem:fresh: semantic substitution
+  and eigenparameter conditions;
+* cert:lem:eager: eager opening preserves these semantic properties;
+* the paragraph following cert:lem:eager: the head_conversion 477-byte
+  program already uses [] as both initial neutral and administrative major;
+* cert:lem:plus-opening and cert:prop:uzero-native: uniform zero, written
+  `a or 1`, and complete native checking for the zero-alias public grammar;
+* cert:prop:context-first and cert:thm:context-phase: using context emptiness
+  to identify the initial public validation phase.
+
+The arithmetic basis and formula interpretations are not reproved here.
+These exact generic semantic lemmas are sufficient for the following changes.
+
+1. Public alphabet and grammar
+------------------------------
+The unchanged whole-input gate rejects anything except finite exact integer/
+list trees, including forbidden data in unused prefixes. Python's printed
+form of a float contains a decimal point, exponent or a nonnumeric word; a
+Boolean, None, string or dictionary contains characters outside
+`0123456789-[], `. Conversely the printed form of an exact integer/list tree
+contains only those characters. Thus the existing lexical proof still applies.
+
+Define P_1(a,d) recursively. For a list of length r require
+
+        r in {1, 2 + d mod 2}
+        P_1(b, d+5-r) for every child b.
+
+For a scalar require d odd and a odd with 0 <= a < d. The public goal is
+required to satisfy P_1(a,0). This is precisely the inherited native Eq/D
+public grammar with numerical zero represented by 1. The sorted reading
+also handles references to dummy slots as specified in the article. A
+canonical encoding makes no such references.
+
+In checker_bytes589.py the initial context is empty. The first opening
+therefore uses the arity test and the odd-scalar test. A valid scalar is
+retained unchanged, because every permitted scalar is a positive odd
+integer. An invalid list arity fails the scalar comparison. An invalid
+scalar takes the fallback, which eagerly opens the missing image (the
+checking function object) and fails, even at EVEN depth. Induction on the
+goal gives: this initial opening succeeds exactly on P_1, and returns the
+goal unchanged. The two other profiles have the same argument.
+
+In particular the malformed root [[0]] is rejected. Merely dropping the
+validation flag from the LAZY fallback would be wrong: outer case
+introduction could prove D(D(admin0)) by retaining its malformed inner
+matrix as both hypothesis and goal. Eager evaluation avoids that error.
+
+2. The eager uniform-zero opener
+-------------------------------
+Write E^+_k for the proof-phase opener. It traverses a list at child depth
+`d+5-len(a)`. It retains an in-range scalar as `a or 1`. An out-of-range
+scalar is sent to
+
+             (d mod 2) * E^+_k(t; MISSING, 3).
+
+The image is evaluated before multiplication. At odd depth this is the
+validated image itself. At even depth it is integer 0 when the image is an
+integer and [] when the image is a list. Both 0 and [] at a FORMULA position
+have the inherited auxiliary reading 0=0. At term positions, the retained
+scalar transformation 0 -> 1 preserves the uniform-zero reading. At formula
+positions it also preserves truth.
+
+The proof of cert:lem:eager applies simultaneously with the uniform-zero
+proof of cert:lem:plus-opening: structural induction on the tree, with one
+extra validation of the image before an even-depth fallback. In each returning
+case the semantic opening is the required capture-avoiding substitution.
+Missing-image validation admits only the original in-range parameters, and
+new eigenparameters are still introduced by the unchanged floor decrement.
+This gives semantic opening, exposure, freshness and the computation-leaf
+lemmas for E^+_k.
+
+This argument concerns readings, not identical trees. In particular the
+Python equation `0 * list_value == 0` is FALSE and is never used here.
+
+3. Empty neutral and the checking phases
+---------------------------------------
+Only the administrative-major field is recoded: exact integer 0 becomes
+[] in neutral packets. Neither numerical zeros nor mode markers are changed.
+The empty array is false-valued, so it selects the same introduction branch
+and has `[] * 3 == []`. Its opening is itself, with no scalar fallback.
+It is placed in every proof context, so its major proof closes immediately
+as an administrative truth. It has the auxiliary reading 0=0; adding it is
+therefore sound. This is the exact choice of neutral in the inherited
+head_conversion eager program.
+
+The byte profile evaluates `opening(goal)` first, then `g.append([])` inside
+the membership tuple. Hence g is empty during public validation and nonempty
+before any proof-phase operation. Every subsequent call either receives this
+nonempty context or its extension by one hypothesis. Contexts are never
+emptied. The None returned by append is included in the membership tuple,
+but opening returns only integer/list trees, so None cannot discharge a goal.
+
+Repeated appends through aliased major contexts add only the same neutral
+truth. They do not alter any existing entry or any scope floor; no operation
+uses the length of a context to select an eigenparameter. Consequently they
+are semantically harmless. The other two profiles append `[[]]` after their
+entry test, at the same existing phase transition. The context-emptiness
+phase invariant is the same in all three.
+
+4. Soundness on arbitrary accepted inputs
+----------------------------------------
+The unchanged gate establishes the integer/list alphabet; the first opening
+establishes P_1 for the goal. After that, the proof-phase semantic lemmas of
+section 2 and the true neutral of section 3 satisfy the hypotheses of the
+inherited soundness induction for the corresponding direct-leaf or supply
+protocol. To spell out what is preserved:
+
+* A hypothesis leaf uses an existing context formula, or the neutral truth.
+* A computation leaf has the reading of one of the two iterator equations;
+  the zero-alias spelling represents actual numerical zero.
+* The major is proved at the old floor, before the fresh parameter is
+  allocated. This order is unchanged.
+* Repeating an opened D major three times supplies its closure; a different
+  auxiliary shape has the inherited truth reading.
+* The witness opening, introduction-mode test and subsequent fresh opening
+  retain their order. The mode fields are NOT recoded.
+* The equality/closure specialization uses the same exact endpoint tests.
+  Equality of raw trees implies equality of their readings, which is all
+  the inherited soundness proof requires.
+
+Every successful finite call therefore derives the reading of its goal from
+the readings of its context. At the root the context supplies only truth.
+Every accepted public goal consequently reads as a theorem of the inherited
+native calculus and hence, under its established interpretation, of iPRA.
+There is no new axiom represented by the administrative empty array.
+
+5. Completeness for canonical encodings
+--------------------------------------
+Start from the inherited canonical certificate compiler for the native
+calculus (cert:prop:uzero-native and the direct-leaf/supply variants).
+For the direct-leaf byte protocol, use the branch-aware compiler of
+cert:prop:leaf and cert:prop:validated-terminal: if a terminal test closes
+a node early, emit only that node packet, without packets for discarded
+subproofs. Otherwise those stale packets could be consumed by a parent
+continuation. The supply profiles keep their existing supply compiler.
+Choose the source, witness, template and inert numerical fields as properly
+scoped canonical terms, as that construction allows. Recode every neutral
+administrative major 0 to [] and keep every other field and the public goal.
+
+Every added eager image validation then succeeds: an actual substitution
+image is a properly scoped term and an inert image may be the zero term.
+The empty neutral is validated structurally and is already in the context.
+Canonical formulas and terms have the expected depths and arities; scalar
+term leaves lie at odd depths. The inherited induction on the proof tree
+therefore produces the same intended premises and conclusions. The existing
+floor schedule verifies witnesses before fresh parameters become available,
+so it creates no capture. Thus every canonical public theorem still has a
+certificate accepted by each new checker.
+
+The supplied translator is correct for these canonical compiled
+certificates. It is not asserted to preserve every exotic previously accepted
+raw proof: extra eager validation may reject an ill-scoped or alias-dependent
+annotation. Soundness plus canonical completeness establishes the same
+public theorem set and transfers the existing bi-interpretation and
+consequence for equiconsistency.
+
+6. Implementation evidence and limits
+------------------------------------
+verify.py checks the exact source rewrites and executes the matched controls,
+three candidates and readable byte companion in ordinary and -O Python.
+The inherited tests exercise computation, transport, compound introduction
+and elimination, progressive induction, wrong endpoints, false equations,
+future-scope capture, context leaks and whole-input malformed data. Additional
+cases reject nested scalar formulas, an empty formula, a scalar formula and
+0=1. These finite tests supplement the semantic argument; they do not replace
+it and are not a Lean/Rocq verification of Python.
+
+No assertion is needed for acceptance. Python resource limits can reject a
+large legitimate proof; as in the inherited presentation, mathematical
+completeness uses unbounded finite resources.

@@ -1,0 +1,87 @@
+# ConciseIPRA baseline audit
+
+Pinned repository HEAD: `7a7633980dbca7f599322a5e7f1e65fb1cddb7c8`.
+Measurement runtime: CPython 3.12.14.
+
+## Most important result
+
+The README package table is stale. The integrated article is newer, but the four current ZIPs under `docs/incoming/` are newer still. Including those ZIPs gives the following observed coordinate envelopes:
+
+| Contract family | Tokens | AST nodes | Normalized bytes |
+| --- | ---: | ---: | ---: |
+| Compact, permitting JSONL and shifted encodings | 239 | 255 | 461 |
+| Fully validated native Eq/D, whole JSON | 306 | 348 | 589 |
+
+These are minima of DIFFERENT programs, not one achieved triple. The compact row also combines different encodings and framing contracts. No package establishes a global complexity lower bound or a single checker below all compact coordinate minima. A presentation beating one incumbent or the old strict envelope is not the requested below-all-frontier result.
+
+## Independently remeasured incumbents
+
+Exact original sources have been copied, unchanged, into `audit/benchmarks/`, with source locations, SHA-256 hashes and measurements in `audit/benchmarks/metrics.json`:
+
+| Local name | Tokens | AST | Bytes | Source package |
+| --- | ---: | ---: | ---: | --- |
+| compact_tokens239.py | 239 | 261 | 549 | fused_blocks_and_checkers |
+| compact_ast255.py | 245 | 255 | 580 | incoming checked_reduction |
+| compact_bytes461.py | 267 | 298 | 461 | prefix_conditional |
+| strict_tokens306.py | 306 | 362 | 668 | incoming validated_three_field |
+| strict_ast348.py | 330 | 348 | 681 | incoming validated_three_field |
+| strict_bytes589.py | 324 | 367 | 589 | incoming checked_reduction |
+| strict_joint313_353.py | 313 | 353 | 701 | incoming validated_three_field |
+
+The 255-node change is only the singleton set `{k}` in place of the singleton list `[k]` as an immediately decoded image: one AST Load-context node saved, same tokens and bytes. It is already in the repository. The 461-byte checker rotates packet fields into a prefix and shifts absolute syntax depths by two. The strict three-field protocol is also already in the incoming files.
+
+## Measurement definition and contract caveats
+
+`docs/Article/chapters/ch01_base.tex`, section `base:sec:measure` (around lines 4478-4519): count the complete Python module, including imports, JSON reading, syntax/scope validation, rules and acceptance driver. Remove genuine docstrings/comments, reconstruct by `ast.unparse`, append a final LF, then count significant tokens, AST nodes, UTF-8 bytes. Gzip-9 is informational. The source says these are achieved upper bounds on an unknown optimum, not lower bounds.
+
+Compact R/U profiles assume exact integer/list raw data and a canonical guarded public goal. Some recognize arrays by attempted traversal. They do not independently validate the whole alphabet and public formula grammar. The strict T/ed1 programs validate the full parsed alphabet and canonical native Eq/D goal; G1/A-minus validates only the goal and is a weaker contract. Ideal finite runs are the completeness model; finite Python resource rejection is ignored. A normal terminating run ending at ACCEPT is success; other exits reject.
+
+Integrated chapter 11 section `cert:sec:envelope`, around lines 8733-8773, keeps contracts separate. Before the current incoming ZIPs it reports:
+
+- Unshifted compact whole JSON: 244/261/465.
+- Unshifted compact including JSONL: 239/256/465.
+- Shifted compact: one program, 267/298/461.
+- Strict native whole input: 317/356/597.
+- Goal-only family (also admitting strict programs): 317/356/573.
+
+The new incoming archives lower unshifted JSONL AST to 255, and strict coordinates to 306/348/589.
+
+## Current incoming packages inspected
+
+1. `ipra_checked_reduction_2026-11-13.zip`: implementation refinements only; compact AST 255; strict 315/353/589 envelope. No deleted arithmetic axiom or logical rule.
+2. `ipra_validated_three_field_2026-11-13.zip`: strict three-field protocol; strict 306/348/595 envelope in its own comparison. Combined with item 1, bytes are 589. No new mathematical basis.
+3. `ipra_frontier_church_2026-11-13.zip`: negative result. A specific pure, simply typed, fixed Church-number arithmetic has a three-element model despite coverage, separation and even full induction. It cannot interpret iPRA in ordinary finite-dimensional domains/quotients. It also discusses the known fixed-type predecessor obstruction. No new qualifying checker.
+4. `ipra_induction_boundary_2026-11-13.zip`: negative result. Arbitrary finite nonstandard parameters do not repair the numbering theory T_cal: a colored nonstandard model preserves all fixed standard numbering laws but has automorphisms fixing any finite parameter tuple. No positive smaller axiomatization.
+
+## Established mathematical baseline
+
+The native scalar kernel has terms `x | 0 | S(t) | I(n,a;u.h)` and formulas equality, `Q_y B := B(0) -> forall y B(y)`, and `D_xy B := exists x Q_y B`. The Lean kernel uses hypothesis, two iterator equations, one crossed term-transport rule, Q-elimination, D-elimination, case D-introduction, and literal-equation progress Q-introduction. It is fully bi-interpretable with first-order iPRA, with whole domains, actual equality, identity numerical comparison graphs, both formula round trips.
+
+Many apparent simplifications already exist: root-selected or diagonal-selected introduction; transport with one template or only nonzero/iterator sources; completely template-free replacement; equality fused with computation; source dispatch; direct closure; normalized terms eliminating computation rules; uniqueness/constancy variants; naming packets; inferred/deterministic witnesses; deterministic newest-parameter introduction; clauses replacing Q; one formula body per context entry; equality fused with existential discharge.
+
+There are already **three-family** clausal systems, Use/Intro/Name or Use/Intro/Open or Use/Intro/Discharge. Their small rule count does not beat the compact checker envelope because normalization, context management, parsing and scope validation have costs. Raw homogeneous three-family H3-rho is already integrated (`homogeneous_discharge`) and explicitly does not beat the global frontier. It has 1097/1223/3427 versus its matched four-family control 1138/1262/3547.
+
+All current compact record programs implement variants of the inherited native scalar core; their gains are implementation refinements, not new mathematics.
+
+## Pitfalls and rejected routes
+
+- A progress introduction at arbitrary compound formulas permits full formula induction; restriction to literal equations or a provably equivalent guard is essential.
+- Replacing global entry validation by hypothesis membership admits a documented false-goal attack. Freshness must be checked before a witness or major is exported; a floor derived from remaining certificate length can allow capture.
+- Dropping opener parity accepts false public goals. The apparent 460-byte record is explicitly `REJECTED_UNSOUND_shared_no_parity.py`.
+- In the raw native calculus, variable-only substitution without a reflexivity source fails even to derive `0=0`. Full normalization changes that situation; raw and normalized cases cannot be interchanged without proof.
+- Numerical coverage plus scalar constancy does not recover equation induction, even with several fusion/fixed-point/extensionality laws (`coverage_constancy`, `coverage_obstruction`).
+- Restricting both DI witnesses and QE targets to one finite menu is incomplete. Literal zero alone or variables alone are insufficient for DI; zero plus variables is formalized sufficient. Deterministic newest parameter is already in packages, but weakening/substitution become delicate.
+- A finite compositional primitive-recursive signature cannot term-represent every unary PR function; this does not obstruct relational languages or binder-based encodings.
+- Compression wrappers around existing checkers already produce artificial 18-token/19-AST/459-byte figures and are explicitly rejected as changing accounting rather than reducing mathematics.
+- Scope decorations or extra reserved scalar aliases may be sound but incomplete for claimed canonical public spellings; do not confuse soundness on raw codes with completeness on an enlarged public grammar.
+
+## Static census completed
+
+Using the repository's read-only census utility, scanned all tracked Artifacts `.py`/`.gz` and Python/gzip members of the four current incoming ZIPs. No inspected source was imported or executed. Results:
+
+- 3,632 parsed source entries.
+- 2,013 distinct source byte contents.
+- 1,915 entries containing an ACCEPT print.
+- 379 distinct normalized small ACCEPT modules shortlisted.
+
+Outputs: `audit/frontier_census/source_census.json`, `.csv`, and `small_accepting_modules.json`. This is a static inventory, not semantic certification, and nested historical ZIPs were not recursively expanded. No eligible smaller byte program than 461 was found by screening; files at 460 and several 464/465 files are explicitly rejected experiments.

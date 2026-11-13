@@ -1,0 +1,19 @@
+import json
+
+def c(g, a, k=0):
+    i = lambda a, t=0j, d=0: [i(b, t, d + 5 - len(a)) for b in a] if a * 0 != 0 and (g or len(a) in (1, 2 + d % 2)) else a or 1 if k <= a < d and (g or d & a % 2) else (d % 2 or not g) and i(t, d=3)
+    while i(a) not in g:
+        g += b'\x00'
+        s, u, t = r = q()
+        if i(t, u) == a:
+            a = i(t, s)
+            s = r[:2] if s else [t] * 3
+            u = 0
+        h = u and [[s and [s], u, t], i(t, r, 3) if s else u] or c(g, s, k) or s * 3 or (a := i(*a, t, 2))
+        k -= 1
+        g = g + [i(h, k if s or len(a) % 2 == u else 0)]
+        a = i(a, [k])
+p = json.load(open(0))
+q = str(p).strip('0123456789-[], ') or p.pop
+c([], q())
+print('ACCEPT')

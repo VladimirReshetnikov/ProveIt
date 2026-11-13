@@ -1,0 +1,197 @@
+{
+  "syntax_checks": [
+    {
+      "label": "ordinary reflexivity",
+      "goal": [
+        1,
+        1
+      ],
+      "sorted_scan": true,
+      "exact_encoder_image": true
+    },
+    {
+      "label": "first padding slot",
+      "goal": [
+        [
+          3
+        ],
+        [
+          1
+        ]
+      ],
+      "sorted_scan": true,
+      "exact_encoder_image": false
+    },
+    {
+      "label": "second padding slot obstruction",
+      "goal": [
+        [
+          5
+        ],
+        [
+          1
+        ]
+      ],
+      "sorted_scan": true,
+      "exact_encoder_image": false
+    },
+    {
+      "label": "out-of-range slot",
+      "goal": [
+        [
+          7
+        ],
+        [
+          1
+        ]
+      ],
+      "sorted_scan": false,
+      "exact_encoder_image": false
+    },
+    {
+      "label": "actual D variable",
+      "goal": [
+        [
+          3,
+          3
+        ]
+      ],
+      "sorted_scan": true,
+      "exact_encoder_image": true
+    },
+    {
+      "label": "actual D variable below successor",
+      "goal": [
+        [
+          [
+            7
+          ],
+          [
+            7
+          ]
+        ]
+      ],
+      "sorted_scan": true,
+      "exact_encoder_image": true
+    },
+    {
+      "label": "guarded D equation",
+      "goal": [
+        [
+          [
+            5,
+            1,
+            7
+          ],
+          [
+            5,
+            1,
+            7
+          ]
+        ]
+      ],
+      "sorted_scan": true,
+      "exact_encoder_image": true
+    },
+    {
+      "label": "Boolean masquerading as zero",
+      "goal": [
+        true,
+        1
+      ],
+      "sorted_scan": true,
+      "exact_encoder_image": false
+    }
+  ],
+  "computation_boundaries": [
+    {
+      "label": "nonzero iterator dummy reading refuted",
+      "accepted": true,
+      "stack": [
+        [
+          0,
+          0,
+          3,
+          1
+        ],
+        [
+          [
+            1,
+            3,
+            1
+          ],
+          1
+        ]
+      ]
+    },
+    {
+      "label": "nonzero first successor dummy reading refuted",
+      "accepted": true,
+      "stack": [
+        [
+          0,
+          3,
+          1,
+          [
+            7
+          ]
+        ],
+        [
+          [
+            [
+              3
+            ],
+            1,
+            [
+              7
+            ]
+          ],
+          [
+            [
+              3,
+              1,
+              [
+                7
+              ]
+            ]
+          ]
+        ]
+      ]
+    },
+    {
+      "label": "second successor dummy blocked in recursive image",
+      "accepted": false,
+      "stack": [
+        [
+          0,
+          5,
+          1,
+          [
+            7
+          ]
+        ],
+        [
+          [
+            [
+              5
+            ],
+            1,
+            [
+              7
+            ]
+          ],
+          [
+            [
+              5,
+              1,
+              [
+                7
+              ]
+            ]
+          ]
+        ]
+      ]
+    }
+  ],
+  "claim": "The universal nonacceptance theorem is mathematical, not established by these finite checks."
+}

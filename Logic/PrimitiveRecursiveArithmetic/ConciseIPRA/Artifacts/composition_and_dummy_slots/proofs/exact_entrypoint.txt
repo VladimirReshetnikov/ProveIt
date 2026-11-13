@@ -1,0 +1,100 @@
+EXACT ENCODER-IMAGE ENTRY POINT
+=============================
+
+The standalone file code/checker_exact.py contains both the complete
+587-byte inference core and the exact closed-goal predicate. It imports
+only the standard JSON module. Every byte of this file is charged in its
+reported measurements: 581 tokens, 641 AST nodes, 1424 normalized UTF-8
+bytes, and 631 gzip-9 bytes on CPython 3.12.14 / zlib 1.3.2.
+
+1. The syntax and the availability mask
+-------------------------------------
+The abstract numerical terms have the constructors variable, zero,
+successor, and scalar iteration I(n,a;u.h). The abstract formulas have
+equations and the paired binder D_{x,y} B. Zero is encoded by the integer
+1. A reference to position j is encoded by 3+2*j. The arity codec uses
+padding positions in addition to genuine numerical binders.
+
+An availability mask is a finite sequence of Booleans, with the nearest
+position first. A scalar is accepted as a term precisely if it is 1, or
+if it equals 3+2*j for an in-range position j whose mask bit is True.
+Booleans and floats are not Python integers for this test: type(a) is int
+is required. Negative references are not admitted in a closed public goal.
+
+The recursive mask transitions are:
+
+  successor child:          (False,False) + mask;
+  iterator counter or seed: (False,) + mask;
+  iterator body:            (True,) + mask;
+  equation term children:   the same mask;
+  D matrix:                (True,True) + mask.
+
+The term predicate permits only unary and ternary arrays. The formula
+predicate permits only binary equations and unary D arrays. Thus an
+integer/list tree has no ambiguous constructor at a known term/formula
+position. A term scalar either denotes zero or selects one uniquely
+specified genuine variable position.
+
+Lemma. formula(A,()) holds exactly when A is the canonical encoding of a
+closed abstract Eq/D formula.
+
+Proof. Prove the more general term/formula statement simultaneously for
+every mask. In the scalar term case the test gives exactly zero or an
+available genuine variable, and the encoding/decoding are inverse. At
+successor the two codec positions are padding, so neither can be named;
+the remaining positions correspond in order to the previous mask. At
+iteration the first two children each have one padding position, whereas
+the body has the one newly bound accumulator. The inductive hypotheses
+therefore apply with exactly the displayed masks. Equation adds no genuine
+or padding slots to its term arguments. D introduces two genuine variables.
+All remaining arities and types fail. These cases prove both directions,
+as well as uniqueness of decoding. The empty root mask is precisely the
+closed-formula case. QED.
+
+Consequently [[3],[1]] and [[5],[1]] are rejected: the left successor
+argument selects its first or second padding position. In contrast
+[[[7],[7]]] is admitted: D supplies genuine positions which lie below the
+two successor padding positions. The term [1,1,3] is admitted because its
+last child names the iterator's genuine accumulator. A 3 in its counter
+or seed instead selects padding and is rejected.
+
+2. Soundness and completeness on the exact public language
+--------------------------------------------------------
+The inference core's AST is identical to code/checker_bytes587.py. Its
+input remains the full parsed JSON stack, with the public goal last and
+the same four-field terminal packets before it. The whole-input alphabet
+gate is unchanged. The only extra action before its root call is the
+test that the input is a nonempty list and its final member satisfies
+the exact predicate.
+
+If the exact checker accepts, the whole-input gate has admitted an
+integer/list tree, the lemma supplies a canonical closed native formula,
+and the inherited arbitrary-input soundness of the inference core proves
+its ordinary reading. No promised public syntax remains in this statement.
+
+Conversely, take the canonical encoding A of any closed native theorem.
+The canonical-completeness theorem for byte587 supplies a finite accepted
+integer/list certificate for A. The extra predicate succeeds by the lemma
+and changes neither packet consumption nor inference state. The same
+certificate is accepted by checker_exact.py.
+
+Thus the exact entry point recognizes precisely the canonical encodings
+of native theorems. The established ordinary realization of the native
+calculus and its bi-interpretation with full first-order iPRA are unchanged.
+There is no assertion that every noncanonical alias is provable, since
+these aliases are outside the exact public language.
+
+3. Evidence and limitations
+---------------------------
+verify_exact.py checks the inference-core AST identity and the sole import,
+13 targeted grammar cases, and 102 isolated ordinary/-O executions. All
+canonical terminal positives remain accepted, including an explicit
+zero-computation whose body uses its bound accumulator; padding aliases
+are rejected before proof checking. These tests support the implementation.
+They do not prove the universal semantic obstruction for the second
+successor padding slot, which is a separate mathematical result.
+
+The exact entry point is deliberately readable and makes no complexity
+record claim. No end-to-end Lean or Rocq verification is claimed. As for
+the inherited core, mathematical completeness concerns arbitrarily large
+finite executions rather than a fixed physical resource bound.

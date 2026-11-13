@@ -1,0 +1,7 @@
+Final narrow audit of checker_exact.py
+
+No blocking flaw found. The c function AST is identical to the byte587 core; term and formula ASTs are identical to the independently authored canonical validator; the only import is standard-library json. The availability-mask induction proves exact encoder-image recognition. The guard is before the root checker call and does not change a canonical certificate or checking state. The whole-input alphabet gate still makes any forbidden JSON value prevent acceptance, including unused prefix data. Invalid non-list roots may reject before the explicit guard while forming p.pop; this is consistent with the exception-as-rejection contract.
+
+The exact-entrypoint statement is sound conditional on the already established core soundness and canonical completeness; it correctly counts the entire self-contained program and makes no size-record or new Lean claim. The 13 syntax cases and 102-run receipt were inspected. No unnecessary repeat of those runs was performed.
+
+One minor wording preference: say "every canonical theorem encoding has some accepted certificate, and only canonical theorem encodings occur as goals of accepted certificates" rather than "recognizes precisely the canonical encodings" if avoiding ambiguity between goal recognition and proof-certificate verification. The existing statement is clear in context and not a correctness defect.
