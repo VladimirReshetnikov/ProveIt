@@ -52,25 +52,21 @@ theorem iffOfN {A B : NFm n} (e : NEquiv A B) : Γ ⊢[TeqAx] Fm.iff A.toFm B.to
 theorem nselCases {X Y : NFm n} {χ : Fm Tm n} (v : Tm n)
     (h : Γ ⊢[TeqAx] (NFm.sel v X Y).toFm)
     (h₁ : X.toFm :: Γ ⊢[TeqAx] χ) (h₂ : Y.toFm :: Γ ⊢[TeqAx] χ) : Γ ⊢[TeqAx] χ := by
-  refine .orE (cover v) ?_ ?_
+  refine casesOn v ?_ ?_
   · have hX : (v ≐ zero) :: Γ ⊢[TeqAx] X.toFm :=
       ofN2 (A := .eq v zero) (A' := NFm.sel v X Y) (B := X)
         ((NEquiv.sel_zero X Y).mp (NPrf.selTr X Y NPrf.hyp0 NPrf.hyp1)) Prf.hyp0 h.wk
     exact .impE (Prf.impI h₁).wk hX
-  · refine .exE Prf.hyp0 ?_
-    have e : (NFm.sel v X Y).shift = NFm.sel (Syn.shift v) X.shift Y.shift :=
+  · have e : (NFm.sel v X Y).shift = NFm.sel (Syn.shift v) X.shift Y.shift :=
       NFm.sel_subst X v Y (fun i => Syn.var i.succ)
-    have hS := h.shift.weaken (Δ := (Syn.shift v ≐ succ (Syn.var 0)) ::
-      (Fm.ex (Syn.shift v ≐ succ (Syn.var 0)) :: Γ).map Fm.shift)
-      (fun ψ hψ => List.mem_cons_of_mem _ (List.mem_cons_of_mem _ hψ))
+    have hS := h.shift.wk (ψ := Syn.shift v ≐ succ (Syn.var 0))
     rw [← NFm.toFm_shift, e] at hS
     have hY := ofN2 (A := .eq (Syn.shift v) (succ (Syn.var 0)))
       (A' := NFm.sel (Syn.shift v) X.shift Y.shift) (B := Y.shift)
       ((NEquiv.sel_succ X.shift (Syn.var 0) Y.shift).mp
         (NPrf.selTr X.shift Y.shift NPrf.hyp0 NPrf.hyp1)) Prf.hyp0 hS
     rw [NFm.toFm_shift] at hY
-    have hI : Γ.map Fm.shift ⊢[TeqAx] Y.toFm.shift ⟶ χ.shift := (Prf.impI h₂).shift
-    exact .impE (hI.weaken (fun ψ hψ => List.mem_cons_of_mem _ (List.mem_cons_of_mem _ hψ))) hY
+    exact .impE (Prf.impI h₂).shift.wk hY
 
 /-! ### The connectives -/
 
@@ -118,19 +114,10 @@ theorem imp_iff (X Y : NFm n) : Γ ⊢[TeqAx] Fm.iff (NFm.imp X Y).toFm (X.toFm 
       Prf.hyp0
 
 theorem all_iff (X : NFm (n + 1)) : Γ ⊢[TeqAx] Fm.iff (NFm.all X).toFm (Fm.all X.toFm) := by
-  refine Prf.iffI (.impI ?_) (.impI ?_)
-  · have hQ : (NFm.all X).toFm :: Γ ⊢[TeqAx] (NFm.Q X).toFm :=
-      ofN1 (A := NFm.all X) (B := .Q X) (NPrf.andE₂ NPrf.hyp0) Prf.hyp0
-    have h0 : (NFm.all X).toFm :: Γ ⊢[TeqAx] (X.subst (inst zero)).toFm :=
-      ofN1 (A := NFm.all X) (B := X.subst (inst zero)) (NPrf.andE₁ NPrf.hyp0) Prf.hyp0
-    rw [NFm.toFm_subst] at h0
-    exact .impE hQ h0
-  · have h0 : Fm.all X.toFm :: Γ ⊢[TeqAx] (X.subst (inst zero)).toFm := by
-      rw [NFm.toFm_subst]
-      exact .allE zero Prf.hyp0
-    have hQ : Fm.all X.toFm :: Γ ⊢[TeqAx] (NFm.Q X).toFm := .impI Prf.hyp1
-    exact ofN2 (A := X.subst (inst zero)) (A' := .Q X) (B := NFm.all X)
-      (NPrf.andI NPrf.hyp0 NPrf.hyp1) h0 hQ
+  refine Prf.iffTrans (and_iff _ _) ?_
+  rw [NFm.toFm_subst, NFm.toFm_Q]
+  exact Prf.iffI (.impI (.impE (.andE₂ Prf.hyp0) (.andE₁ Prf.hyp0)))
+    (.impI (.andI (.allE zero Prf.hyp0) (.impI Prf.hyp1)))
 
 /-! ### The round trip -/
 

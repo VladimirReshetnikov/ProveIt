@@ -30,15 +30,6 @@ namespace NPrf
 
 variable {Γ : List (NFm n)}
 
-/-- Elimination of `Q` moved under a fresh variable. -/
-theorem qShiftE {B : NFm (n + 1)} {Δ : List (NFm (n + 1))} (t : Tm (n + 1))
-    (h₁ : NPrf Δ (NFm.Q B).shift) (h₂ : NPrf Δ (B.subst (inst zero)).shift) :
-    NPrf Δ (B.subst (repl t)) := by
-  have hQ : NPrf Δ (.Q (B.subst (up (fun i => Syn.var i.succ)))) := h₁
-  rw [NFm.shift_subst_inst_zero, ← NFm.subst_dummy_up_inst] at h₂
-  have h := NPrf.qE t hQ h₂
-  rwa [NFm.subst_dummy_up_inst] at h
-
 /-- Elimination of a universal statement moved under a fresh variable. -/
 theorem allShiftE {A : NFm (n + 1)} {Δ : List (NFm (n + 1))} (t : Tm (n + 1))
     (h : NPrf Δ (NFm.all A).shift) : NPrf Δ (A.subst (repl t)) := by

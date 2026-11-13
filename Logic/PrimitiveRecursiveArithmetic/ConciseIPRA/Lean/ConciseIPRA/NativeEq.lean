@@ -162,6 +162,15 @@ theorem selSucc (c a b : Tm n) : NPrf Γ (.eq (Tm.sel (succ c) a b) b) := by
   have h := NPrf.iterSucc (Γ := Γ) c a (Syn.shift b)
   rwa [Syn.subst_inst_shift] at h
 
+/-- Elimination of `Q` moved under a fresh variable. -/
+theorem qShiftE {B : NFm (n + 1)} {Δ : List (NFm (n + 1))} (t : Tm (n + 1))
+    (h₁ : NPrf Δ (NFm.Q B).shift) (h₂ : NPrf Δ (B.subst (inst zero)).shift) :
+    NPrf Δ (B.subst (repl t)) := by
+  have hQ : NPrf Δ (.Q (B.subst (up (fun i => Syn.var i.succ)))) := h₁
+  rw [NFm.shift_subst_inst_zero, ← NFm.subst_dummy_up_inst] at h₂
+  have h := NPrf.qE t hQ h₂
+  rwa [NFm.subst_dummy_up_inst] at h
+
 end NPrf
 
 /-- Interderivability of two formulas over a context. -/
@@ -195,17 +204,10 @@ theorem qStep {B B' : NFm (n + 1)} (e : NEquivIn (Γ.map NFm.shift) B B')
       (B'.subst (repl (succ (Syn.var 0)))) := by
   have hΔ' : ∀ X Y : NFm (n + 1), Γ.map NFm.shift ⊆ X :: Y :: Δ := fun _ _ _ hA =>
     List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (hΔ hA))
-  have h0 : NPrf ((B'.subst (inst zero)).shift :: (NFm.Q B).shift :: Δ)
-      (B.subst (repl zero)) := by
-    rw [NFm.shift_subst_inst_zero]
-    exact (e.substRepl zero).mpr (hΔ' _ _) NPrf.hyp0
-  have hQ : NPrf ((B'.subst (inst zero)).shift :: (NFm.Q B).shift :: Δ)
-      (.Q (B.subst (up (fun i => Syn.var i.succ)))) :=
-    .hyp (List.mem_cons_of_mem _ List.mem_cons_self)
-  rw [← NFm.subst_dummy_up_inst] at h0
-  have h := NPrf.qE (succ (Syn.var 0)) hQ h0
-  rw [NFm.subst_dummy_up_inst] at h
-  exact (e.substRepl _).mp (hΔ' _ _) h
+  refine (e.substRepl _).mp (hΔ' _ _)
+    (NPrf.qShiftE _ (.hyp (List.mem_cons_of_mem _ List.mem_cons_self)) ?_)
+  rw [NFm.shift_subst_inst_zero, NFm.shift_subst_inst_zero]
+  exact (e.substRepl zero).mpr (hΔ' _ _) NPrf.hyp0
 
 /-- `Q` respects interderivability of its matrix. -/
 protected theorem Q {B B' : NFm (n + 1)} (e : NEquivIn (Γ.map NFm.shift) B B') :

@@ -255,14 +255,6 @@ theorem wk_map_mk (ψ : Fm Tm n) (a : Tm n) :
 
 end Ext
 
-/-- Case distinction on a term, with an unshifted conclusion. -/
-theorem Teq.casesOn {Γ : List (Fm Tm n)} (t : Tm n) {ψ : Fm Tm n}
-    (h0 : (t ≐ Tm.zero) :: Γ ⊢[TeqAx] ψ)
-    (hS : (Syn.shift t ≐ Tm.succ (var 0)) :: Γ.map Fm.shift ⊢[TeqAx] ψ.shift) :
-    Γ ⊢[TeqAx] ψ :=
-  .orE (Teq.cover t) h0 (.exE Prf.hyp0 (hS.weaken
-    (List.cons_subset_cons _ (List.map_subset _ (List.subset_cons_self _ _)))))
-
 namespace Q
 
 variable {Γ : List (Fm Tm n)}

@@ -42,17 +42,6 @@ theorem subst_cases_up_up_shift (c p : T (n + 1)) (h : T (n + 2)) :
 
 end Syn
 
-/-- A closed equation of `iPRA` holds under every substitution, in every
-context. -/
-theorem PRA.substNil {s t : PTm k} (h : [] ⊢[PRAAx] s ≐ t) {Γ : List (Fm PTm n)}
-    (σ : Fin k → PTm n) : Γ ⊢[PRAAx] Syn.subst σ s ≐ Syn.subst σ t :=
-  Prf.ofNil (h.subst σ)
-
-theorem PTm.subst_app_var (f : PR k) (σ : Fin k → PTm n) :
-    Syn.subst σ (PTm.app f Syn.var) = PTm.app f σ :=
-  (PTm.subst_app σ f Syn.var).trans
-    (congrArg (PTm.app f) (funext fun i => Syn.subst_var σ i))
-
 namespace RoundTrip
 
 /-! ### The translation `tau` and the two substitutions of induction -/
@@ -97,8 +86,8 @@ theorem code_prec_succ (f : PR k) (g : PR (k + 2)) :
 theorem tau_subst_code {f : PR k}
     (e : [] ⊢[PRAAx] ToPRA.tau (FromPRA.code f) ≐ PTm.app f Syn.var) (σ : Fin k → Tm n) :
     [] ⊢[PRAAx] ToPRA.tau (Syn.subst σ (FromPRA.code f)) ≐ PTm.app f fun j => ToPRA.tau (σ j) := by
-  have h := PRA.substNil e (Γ := []) fun j => ToPRA.tau (σ j)
-  rw [PTm.subst_app_var] at h
+  have h := e.subst fun j => ToPRA.tau (σ j)
+  simp only [Fm.subst_eq, List.map_nil, PTm.subst_app, Syn.subst_var] at h
   exact Prf.eqTrans (ToPRA.tau_subst σ _) h
 
 theorem tau_code_prec_zero (f : PR k) (g : PR (k + 2))
@@ -106,7 +95,7 @@ theorem tau_code_prec_zero (f : PR k) (g : PR (k + 2))
     {Γ : List (Fm PTm k)} :
     Γ ⊢[PRAAx] (ToPRA.tau (FromPRA.code (.prec f g))
       ≐ PTm.app (.prec f g) Syn.var).subst (inst PTm.zero) := by
-  simp only [Fm.subst_eq, PTm.subst_app_var]
+  simp only [Fm.subst_eq, PTm.subst_app, Syn.subst_var]
   exact Prf.eqTrans (tau_subst_inst Tm.zero _)
     (Prf.eqTrans (Prf.ofNil (ToPRA.interp.sound (code_prec_zero f g)))
       (Prf.eqTrans (Prf.ofNil ihf) (Prf.eqSymm (PRA.precZero f g Syn.var))))
@@ -117,7 +106,7 @@ theorem tau_code_prec_succ (f : PR k) (g : PR (k + 2))
     (ih : Γ ⊢[PRAAx] ToPRA.tau (FromPRA.code (.prec f g)) ≐ PTm.app (.prec f g) Syn.var) :
     Γ ⊢[PRAAx] (ToPRA.tau (FromPRA.code (.prec f g))
       ≐ PTm.app (.prec f g) Syn.var).subst (repl (PTm.succ (Syn.var 0))) := by
-  simp only [Fm.subst_eq, PTm.subst_app_var]
+  simp only [Fm.subst_eq, PTm.subst_app, Syn.subst_var]
   refine Prf.eqTrans (tau_subst_repl (Tm.succ (Syn.var 0)) _)
     (Prf.eqTrans (Prf.ofNil (ToPRA.interp.sound (code_prec_succ f g)))
       (Prf.eqTrans (Prf.ofNil (tau_subst_code ihg _))
