@@ -4925,19 +4925,20 @@ of $\Nat$? No Lean or Rocq proof is claimed by either package, and neither rebui
 inherited Lean development.
 \item \pkg{root\_conversion\_raw} records two routes to equation induction that it examined and
 did not establish. Whether successor uniqueness alone recovers induction for all literal
-equations is \cref{kern:q:su}. For the constancy rule \eqref{disch:eq:construle} without the
-equality split, over scalar computation, numerical cases with the case hypothesis and the
-selector $\sel$: if $\Gamma\proves q(0)=0$ and $\Gamma,\ q(x)=0\proves q(\Suc x)=0$, put
-$h(u)\defeq\sel(q(u),\Suc u,u)$ and $r(n)\defeq\It{n}{0}{u}{h(u)}$. Cases on $q(u)$ give
-$q(h(u))=q(u)$, by the step when $q(u)=0$ and because $h(u)=u$ otherwise; hence
-$q(r(\Suc n))=q(r(n))$, the constancy rule gives $q(r(n))=q(r(0))=0$, and then
-$r(\Suc n)=\Suc r(n)$. So $r$ is a successor-preserving map from $0$ into the set
-$\{x: q(x)=0\}$. Does a rule of this kind prove $r(n)=n$, or otherwise recover induction for
-literal equations, without successor rigidity or a reflection of equality assumed beforehand?
-With the primitive equality split and the comparison equation the answer is yes
-(\cref{disch:lem:sc-rigid,disch:thm:sc-ind}); without the comparison equation the
-corresponding theory is not bi-interpretable with $\iPRA$ (\cref{disch:thm:sc-obs}), but its
-countermodels refute coverage, so they do not decide the question in the form asked here.
+equations is \cref{kern:q:su}. The second route is settled negatively. For the constancy rule
+\eqref{disch:eq:construle} without the equality split, over scalar computation, numerical cases
+with the case hypothesis and the selector $\sel$: if $\Gamma\proves q(0)=0$ and
+$\Gamma,\ q(x)=0\proves q(\Suc x)=0$, put $h(u)\defeq\sel(q(u),\Suc u,u)$ and
+$r(n)\defeq\It{n}{0}{u}{h(u)}$. Cases on $q(u)$ give $q(h(u))=q(u)$, by the step when $q(u)=0$
+and because $h(u)=u$ otherwise; hence $q(r(\Suc n))=q(r(n))$, the constancy rule gives
+$q(r(n))=q(r(0))=0$, and then $r(\Suc n)=\Suc r(n)$. So $r$ is a successor-preserving map from
+$0$ into the set $\{x: q(x)=0\}$. A rule of this kind does not prove $r(n)=n$ and does not
+recover induction for literal equations: the structure of \cref{disch:thm:sc-cov} satisfies
+scalar computation, coverage and the constancy rule, with and without the primitive equality
+split, and for $q(u)\defeq 0$ the map $r$ there has the values of the clock
+$\It{n}{0}{u}{\Suc u}$, which fails at every branch point (\cref{disch:sec:scalar-cov}). With
+the primitive equality split and the comparison equation the answer is positive
+(\cref{disch:lem:sc-rigid,disch:thm:sc-ind}).
 \item Does the theory $\mathsf{BT}$ of \cref{ctr:sec:tree}, or a native calculus on binary
 trees, yield a smaller complete checker once the four bound variables of the paramorphism, the
 binary induction step and the logical rules are charged? No implementation exists.

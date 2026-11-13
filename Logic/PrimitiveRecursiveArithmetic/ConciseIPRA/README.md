@@ -827,6 +827,15 @@ registers) and "Certificates and checkers" (the rest); 21 more checker files
 they supersede were deleted. With it, 83 superseded
 checker files were deleted from `Artifacts/` (the list is in the size
 section of the chapter "Certificates and checkers").
+On 2026-11-13 `conditional_image`, `coverage_constancy`, `coverage_obstruction`,
+`homogeneous_discharge` and `validated_arity_refinement` went the same way, into the
+chapters "Certificates and checkers" (the strict envelope is now 317/356/597;
+`conditional_image` re-delivers two programs of `prefix_conditional`), "Discharge of a
+witness and restricted equality rules" (coverage does not replace the comparison
+equation; literal-zero transport with the equivalence rules stays incomplete) and
+"Clause calculi" (the
+three-rule homogeneous presentation); one checker they supersede and four re-delivered
+copies of earlier superseded checkers were deleted.
 `checked_presentation`, `context_phase`, `crossed_uniqueness`,
 `frontier_review`, `inferred_major`, `orbit_closure`, `progress_independence`
 and `smaller_envelope` arrived on 2026-11-12 (commits `1c5ecfe518`,

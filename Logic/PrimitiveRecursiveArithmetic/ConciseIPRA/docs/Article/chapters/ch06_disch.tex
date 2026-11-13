@@ -28,7 +28,8 @@ of every use of a clause are then the newest parameter, and both new rules
 can be restricted to literal equations. \Cref{disch:sec:const} records an induction interface by a
 constancy rule, with a recursor that sees its counter and with a scalar
 iterator, together with an obstruction for the scalar form without its
-comparison equation. \Cref{disch:sec:impl,disch:sec:sizes} summarize
+comparison equation, also in the presence of coverage.
+\Cref{disch:sec:impl,disch:sec:sizes} summarize
 the checkers, and \cref{disch:sec:further} lists what is left open.
 
 Throughout, $\equiv$ is literal identity of syntax up to the names of bound
@@ -1525,8 +1526,9 @@ canonical recursor syntax are not formalized.
 
 This section draws on \pkg{variable\_substitution}
 (\cref{disch:sec:vsub,disch:sec:newest}), \pkg{parameter\_substitution}
-(\cref{disch:sec:param}) and \pkg{substitutive\_discharge}
-(\cref{disch:sec:unary}).
+(\cref{disch:sec:param}), \pkg{substitutive\_discharge}
+(\cref{disch:sec:unary}) and \pkg{coverage\_obstruction}
+(\cref{disch:sec:zero-refl}).
 
 \subsection{Substitution for a variable}
 \label{disch:sec:vsub}
@@ -2198,6 +2200,80 @@ Full normalization of the successor computation is outside the
 obstruction: it identifies values that the interpretation only relates.
 The proposition excludes this one deletion in the neighborhood of the
 kernel; it does not exclude other presentations of arithmetic.
+
+\subsection{Transport from the literal zero with the equivalence rules}
+\label{disch:sec:zero-refl}
+
+This subsection draws on \pkg{coverage\_obstruction}. Transport restricted
+to sources other than the literal $0$ is equivalent to \rulename{Tr}
+(\cref{kern:thm:onesided,kern:thm:dispatch}); transport from the literal
+$0$ alone does not derive $0=0$ (\cref{seed:prop:zero-source}), and that
+argument says nothing once reflexivity is available. The restriction stays
+insufficient after the three equivalence rules are added.
+
+\begin{proposition}[Zero-source transport with the equivalence rules]
+\label{disch:prop:zero-refl}
+Let $\Nat^{0}$ be $\Nat$ with \rulename{Tr} replaced by
+\[
+ \infrule{\Gamma\proves 0=t\qquad\Gamma\proves F(0)}{\Gamma\proves F(t)}\
+ \rulename{Tr}_{0}
+\]
+for every native formula template $F(v)$, and with the rules reflexivity
+$\Gamma\proves t=t$, symmetry (from $s=t$ infer $t=s$) and transitivity
+(from $r=s$ and $s=t$ infer $r=t$) added. Let $A(y)\defeq\It{y}{2}{u}{N(u)}$
+and $B(y)\defeq\It{y}{1}{u}{N(u)}$, with the parity term $N$ of
+\cref{base:def:sel}. Then $\Nat$ derives the sequent $1=2\proves 0=1$
+and the theorem $\proves\Q{y}\bigl(A(y)=B(y)\bigr)$, and $\Nat^{0}$
+derives neither.
+\end{proposition}
+
+\begin{proof}
+\emph{The reading.} Evaluate terms in $\mathbb N$ as usual and call an
+equation $s=t$ \emph{true} under an assignment if the values of $s$ and $t$
+are both $0$ or both different from $0$. Read $\Q{y}$ and $\D{x}{y}$ by the
+Boolean clauses of \cref{base:sec:reading} over $\mathbb N$, and call a
+sequent valid if every assignment that makes its context true makes its
+conclusion true. The truth of a formula depends only on the values of its
+free variables, so the truth of $F(t)$ under $\rho$ is that of $F(v)$ under
+$\rho[v\mapsto\text{value of }t]$.
+
+\emph{Soundness.} The relation ``both zero or both nonzero'' is an
+equivalence relation, so reflexivity, symmetry and transitivity are valid.
+The two computation equations relate equal values. If $0=t$ is true, the
+value of $t$ is $0$, so $F(0)$ and $F(t)$ have the same truth and
+$\rulename{Tr}_{0}$ is valid, for templates with binders as well.
+\rulename{Hyp}, \rulename{QE} and \rulename{DE} are valid for the Boolean
+readings, the eigenvariable of \rulename{DE} being fresh. \rulename{DI} by
+cases is valid because every number is $0$ or a successor, and
+\rulename{QI} because induction holds in $\mathbb N$ for every predicate;
+both arguments fix an assignment that makes the context true and vary only
+the fresh variable. Hence every sequent derivable in $\Nat^{0}$ is valid.
+
+\emph{Failure.} Under the empty assignment $1=2$ is true and $0=1$ is false.
+The equation $A(0)=B(0)$ is $2=1$ after computation and is true, while
+$A(1)$ and $B(1)$ have the values $N(2)=0$ and $N(1)=1$, so $A(1)=B(1)$ is
+false; hence $\Q{y}(A(y)=B(y))$ is false. Neither is valid.
+
+\emph{Derivations in $\Nat$.} By the computation equations and congruence,
+$N(1)=1$ and $N(2)=0$. \rulename{Tr} with the template $N(v)$, applied to
+$1=2$ and $N(1)=1$, gives $1=N(2)$; transitivity and symmetry, which
+$\Nat$ derives (\cref{base:lem:eq}), give $0=1$. For the second,
+\eqref{base:eq:IS} gives $A(\Suc z)=N(A(z))$ and $B(\Suc z)=N(B(z))$, and
+from the hypothesis $A(z)=B(z)$ congruence through $N$ gives
+$A(\Suc z)=B(\Suc z)$; \rulename{QI} with $z$ fresh gives
+$\proves\Q{y}(A(y)=B(y))$. Neither derivation uses induction on a compound
+formula or a predecessor.
+\end{proof}
+% ed.: the package proves the separation by the sequent 1=2 |- 0=1 only; the closed theorem Q_y(A(y)=B(y)), which shows that the reading also separates theorems in the empty context, is editorial.
+
+The reading also refutes the congruence of the equation $1=2$ through $N$,
+and it is not a structure with actual equality; like
+\cref{disch:prop:unary} it tests derivability in a custom rule calculus
+rule by rule. The proposition concerns the native rules with the identity
+translation of formulas and does not exclude a bi-interpretation of
+$\Nat^{0}$ through other formulas. It applies equally to the forms of
+\cref{seed:rem:succ-rules}, formula transport restricted to the source $0$
+and progress on the paired binder, since the reading validates both.
 
 \section{Specialization without a term}
 \label{disch:sec:spec}
@@ -3479,7 +3555,8 @@ bound on the size of the translation is claimed.
 This section draws on an appendix of \pkg{substitutive\_discharge},
 \cref{disch:sec:const-bool} on \pkg{boolean\_constancy}, and
 \cref{disch:sec:scalar-const,disch:sec:scalar-obs} on
-\pkg{scalar\_constancy}. It is
+\pkg{scalar\_constancy}, and \cref{disch:sec:scalar-cov} on
+\pkg{coverage\_constancy} and \pkg{coverage\_obstruction}. It is
 independent of the discharge rule: it presents an arithmetic whose one
 arithmetical inference has no induction hypothesis and no step function.
 The price is a primitive Boolean equality.
@@ -4359,9 +4436,387 @@ The obstruction does not exclude equiconsistency or one-way
 interpretations; $\iPRA$ interprets $\mathsf{SC}^{-}$ through
 \cref{disch:thm:sc-ipra}. It does not show that successor injectivity is the
 only principle whose addition to $\mathsf{SC}^{-}$ yields a bi-interpretation
-on another domain, and it does not concern constancy over the scalar
-interface with coverage and without a primitive test, which is item 4 of
-\cref{ctr:q:root}.
+on another domain. Both structures refute coverage; the next subsection
+removes that limitation.
+
+\subsection{Coverage does not replace the comparison equation}
+\label{disch:sec:scalar-cov}
+
+This subsection draws on \pkg{coverage\_constancy} and
+\pkg{coverage\_obstruction}, which construct two different structures with
+the same conclusions. The proof below follows \pkg{coverage\_constancy};
+\cref{disch:rem:sc-cov-words} describes the structure of
+\pkg{coverage\_obstruction}. Let $\mathsf{SC}^{-}_{\mathrm{cov}}$ be
+$\mathsf{SC}^{-}$ (\cref{disch:def:sc}) together with coverage
+\begin{equation}
+ x=0\ \lor\ \exists y\,(x=\Suc y),
+ \label{disch:eq:sc-cov}
+\end{equation}
+and let the \emph{test-free reduct} of a theory in the language of
+$\mathsf{SC}$ be the theory in the language without $\delta$ whose axioms and
+rule instances are those of the theory that do not mention $\delta$. Fixed
+points, seed shift, extensionality, \rulename{Fusion}, the clock
+\eqref{disch:eq:clock} and validity of a rule in a classical structure are as
+in \cref{disch:sec:scalar-obs}.
+
+\emph{The ambient arithmetic.} Let $\mathcal L_{\mathrm{pr}}$ be the
+first-order language with a function symbol for every primitive recursive
+function, and let $\mathbb A$ be a proper elementary extension of the
+standard $\mathcal L_{\mathrm{pr}}$-structure $\mathbb N$; it exists by
+compactness, applied to the elementary diagram of $\mathbb N$ and a new
+constant required to exceed every numeral. An element of $\mathbb A$ is
+\emph{standard} if it is the value of a numeral. Every sentence of
+$\mathcal L_{\mathrm{pr}}$ true in $\mathbb N$ is true in $\mathbb A$; in
+particular every instance of induction, universally closed over its
+parameters, and every identity between primitive recursive functions holds
+in $\mathbb A$. If $n\in\mathbb A$ is nonstandard, then $n>0$, $n-1$ is
+nonstandard, and every $m\ge n$ is nonstandard. The set of standard elements
+is a set of the metatheory and is not used inside $\mathbb A$; the
+construction adds no principle to any theory of the article.
+
+Fix a primitive recursive bijection $(n,j)\mapsto\langle n,j\rangle$ of
+$\mathbb N^2$ onto $\mathbb N$ with primitive recursive projections; by
+elementarity it is a bijection of $\mathbb A^2$ onto $\mathbb A$. Put
+$\mathrm{rk}\langle n,j\rangle\defeq n$, the \emph{rank}. A point of label
+$j=0$ is a \emph{main} point and a point of label $j>0$ a \emph{branch}
+point.
+
+\begin{definition}[Merging branches]
+\label{disch:def:sc-branch}
+With an additional argument $c$, define primitive recursive functions on
+$\mathbb N$ by
+\[
+ 0^V\defeq\langle 0,0\rangle,\qquad 1^V\defeq\langle 1,0\rangle,\qquad
+ \Suc^V\langle n,j\rangle\defeq
+ \begin{cases}
+  \langle n+1,j\rangle, & j>0\text{ and }n+1<c,\\
+  \langle n+1,0\rangle, & \text{otherwise},
+ \end{cases}
+\]
+$\delta^V(x,y)\defeq 0^V$ if $x=y$ and $1^V$ otherwise, and, for every term
+$t$ with variables among a list $\vec x$, a function $t^V(\vec x;c)$ by
+recursion on $t$: variables are projections, $0$, $\Suc$ and $\delta$ are as
+displayed, and for an iterator whose body $h$ has variables among
+$u,\vec x$,
+\[
+ \bigl(\It{n}{a}{u}{h}\bigr)^V(\vec x;c)\defeq
+ H^{(\mathrm{rk}\,n^V(\vec x;c))}\bigl(a^V(\vec x;c)\bigr),\qquad
+ H(v)\defeq h^V(v,\vec x;c),
+\]
+where $H^{(k)}$ is the $k$-fold iterate, defined by primitive recursion on
+$k$. Fix a nonstandard $c\in\mathbb A$. The structure
+$\mathcal M^{\mathrm{br}}$ has the carrier
+\[
+ M^{\mathrm{br}}\defeq\{\langle n,0\rangle:n\in\mathbb A\}\ \cup\
+ \{\langle n,j\rangle: n,j\in\mathbb A,\ n\text{ nonstandard},\ n<c,\ j>0\},
+\]
+actual equality, and as the value of $t$ under an assignment $\rho$ in
+$M^{\mathrm{br}}$ the value in $\mathbb A$ of $t^V(\rho(\vec x);c)$.
+\end{definition}
+
+Main points form one chain. A branch point keeps its label until its rank
+reaches $c$, where it joins the main chain: $\Suc^V\langle c-1,j\rangle=
+\langle c,0\rangle$ for every label $j$. All branch points of standard rank
+are deleted; this deletion is external, and
+\cref{disch:lem:sc-branch-closed} shows that no term leaves the carrier.
+Each term denotes one primitive recursive function, defined by recursion on
+the finite syntax of that term, and each identity used below is proved in
+$\mathbb N$ for that term and transferred; no evaluator for all terms and no
+nonstandard syntax is used. The exponent $\mathrm{rk}\,n^V$ may be
+nonstandard; the iterate is then the value of the primitive recursive
+iteration function in $\mathbb A$. By induction on $h$, $\mathbb N$
+satisfies the substitution identity
+$(h\subst{s}{u})^V(\vec x;c)=h^V(s^V(\vec x;c),\vec x;c)$, so the binder
+notation and the staged signature of \cref{disch:def:sc} have the same
+interpretation.
+
+\begin{lemma}[Closure]
+\label{disch:lem:sc-branch-closed}
+For elements $r,c$ put
+$V_r\defeq\{\langle n,0\rangle\}\cup\{\langle n,j\rangle: r\le n<c,\ j>0\}$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item For every term $t$ with variables among $\vec x$ and every body $h$
+ with variables among $u,\vec x$, $\mathbb N$ satisfies, for all $c$, $r$,
+ $\vec x$ and $a$: if every $x_i$ is in $V_r$, then $t^V(\vec x;c)\in V_r$;
+ if moreover $a\in V_r$, then $H^{(k)}(a)\in V_r$ for every $k$, where
+ $H(v)=h^V(v,\vec x;c)$.
+\item In $\mathbb A$ with the fixed $c$, every term maps assignments in
+ $M^{\mathrm{br}}$ into $M^{\mathrm{br}}$, and for a body $H$ with
+ parameters in $M^{\mathrm{br}}$ and $a\in M^{\mathrm{br}}$ every iterate
+ $H^{(k)}(a)$, $k\in\mathbb A$, lies in $M^{\mathrm{br}}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) Induction on $t$, together with the statement for bodies. Variables are
+immediate, and $0^V$, $1^V$ and the values of $\delta^V$ are main points.
+$\Suc^V$ maps a main point to a main point, and a branch point
+$\langle n,j\rangle$ with $r\le n<c$ to $\langle n+1,j\rangle$ with
+$r\le n+1<c$ or to the main point $\langle n+1,0\rangle$. For a body $h$
+the hypothesis says that $H$ maps $V_r$ into $V_r$ when $\vec x$ lies in
+$V_r$; induction on $k$ gives $H^{(k)}(a)\in V_r$. For an iterator the seed
+lies in $V_r$ by the hypothesis for $a$, and its value is such an iterate.
+
+(b) For each fixed $t$ and $h$ the statements of (a) are sentences of
+$\mathcal L_{\mathrm{pr}}$, universally closed over $c$, $r$, $\vec x$, $a$
+and $k$, and hold in $\mathbb A$. Given finitely many arguments in
+$M^{\mathrm{br}}$, including the seed, let $r$ be the least rank of a branch
+point among them, or $r\defeq c$ if there is none. Every argument lies in
+$V_r$. Every branch point of $V_r$ has a rank $n\ge r$; if $r$ is the rank of
+an argument it is nonstandard, so $n$ is nonstandard, and if $r=c$ there is
+no such point. Hence $V_r\subseteq M^{\mathrm{br}}$, and (a) gives the
+claims.
+\end{proof}
+
+The induction on $k$ in (a) runs in $\mathbb N$ and is transferred; an
+induction over externally finitely many steps would not reach the iterates
+at nonstandard $k$, at which the orbit claim is used below.
+
+\begin{lemma}[Validity in $\mathcal M^{\mathrm{br}}$]
+\label{disch:lem:sc-branch-valid}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item The computation equations, \eqref{disch:eq:sep}, \eqref{disch:eq:split}
+ and coverage \eqref{disch:eq:sc-cov} hold in $\mathcal M^{\mathrm{br}}$,
+ and \rulename{Const} is valid.
+\item Fixed points, seed shift, extensionality and \rulename{Fusion} are
+ valid in $\mathcal M^{\mathrm{br}}$.
+\item The distinct points $\langle c-1,0\rangle$ and $\langle c-1,1\rangle$
+ of $M^{\mathrm{br}}$ have the same successor, so successor is not injective
+ and \eqref{disch:eq:dc} fails. The clock fails at every branch point, and
+ with it an instance of the contextual induction rule for a literal equation
+ whose base and step are derivable in $\mathsf{SC}^{-}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) Both cases of $\Suc^V$ raise the rank by one, and
+$\mathrm{rk}\,0^V=0$. So for each iterator term $\mathbb N$ satisfies
+$(\It{0}{a}{u}{h})^V=a^V$ and
+$(\It{\Suc n}{a}{u}{h})^V=H\bigl((\It{n}{a}{u}{h})^V\bigr)
+=\bigl(h\subst{\It{n}{a}{u}{h}}{u}\bigr)^V$, the last step by the
+substitution identity; these identities hold in $\mathbb A$ and, by
+\cref{disch:lem:sc-branch-closed}(b), in $\mathcal M^{\mathrm{br}}$.
+Separation holds since $0^V\neq 1^V$, and the split by the definition of
+$\delta^V$ with actual equality. For coverage, a main point
+$\langle n,0\rangle\neq 0^V$ has $n>0$ and the predecessor
+$\langle n-1,0\rangle$. A branch point $\langle n,j\rangle$ of
+$M^{\mathrm{br}}$ has $n$ nonstandard, so $n-1$ is nonstandard and below
+$c$; the point $\langle n-1,j\rangle$ lies in $M^{\mathrm{br}}$, and
+$\Suc^V\langle n-1,j\rangle=\langle n,j\rangle$ since $n<c$.
+
+For \rulename{Const}, fix a template $f(z)$ with parameters, and an
+assignment that satisfies $\Gamma$; the eigenvariable is fresh, so the
+premise gives $f(\Suc x)=f(x)$ for every $x\in M^{\mathrm{br}}$. Let
+$F(x)\defeq f^V(x,\vec p;c)$ in $\mathbb A$, with the values $\vec p$ of the
+parameters. Every main point lies in $M^{\mathrm{br}}$ and
+$\Suc^V\langle n,0\rangle=\langle n+1,0\rangle$, so $\mathbb A$ satisfies
+$\forall n\,F(\langle n+1,0\rangle)=F(\langle n,0\rangle)$, and induction in
+$\mathbb A$ gives $F(\langle n,0\rangle)=F(0^V)$ for every $n\in\mathbb A$.
+Let $x=\langle n,j\rangle$ be a branch point of $M^{\mathrm{br}}$ and put
+$x_m\defeq\langle m,j\rangle$ for $m<c$ and $x_c\defeq\langle c,0\rangle$;
+then $\Suc^V x_m=x_{m+1}$ for $m<c$. For every $m\in\mathbb A$ with
+$n\le m<c$ the rank $m$ is nonstandard, so $x_m\in M^{\mathrm{br}}$ and the
+premise applies. Hence $\mathbb A$ satisfies
+$\forall m\,\bigl(n\le m<c\to F(x_{m+1})=F(x_m)\bigr)$, and induction in
+$\mathbb A$ on the interval from $n$ to $c$ gives
+$F(x)=F(\langle c,0\rangle)=F(0^V)$. So $f$ is constant on
+$M^{\mathrm{br}}$, and the conclusion holds at the value of $t$. The context
+$\Gamma$ only selects the assignment and is never transferred into
+$\mathbb A$, so it may consist of arbitrary first-order formulas.
+
+(b) Fix an assignment that satisfies $\Gamma$, let $k$ be the rank of the
+value of $t$, and let $H$ be the map in $\mathbb A$ of the update of the
+iterator in the conclusion: $h$ for fixed points, seed shift and
+extensionality, $g$ for \rulename{Fusion}. Let $H'$ be the map of the second
+update $h'$ of extensionality, and $F$, $G'$ those of the templates $f$, $h$
+of \rulename{Fusion}. By \cref{disch:lem:sc-branch-closed}(b) every iterate
+$H^{(i)}(a)$, $i\in\mathbb A$, lies in $M^{\mathrm{br}}$, so a premise that
+holds on $M^{\mathrm{br}}$ holds at all of them, and the resulting statements
+for all $i$ are statements of $\mathbb A$. For \rulename{Fusion} with premise
+$F(H(z))=G'(F(z))$, induction in $\mathbb A$ gives
+$F(H^{(i)}(a))=G'^{(i)}(F(a))$ for all $i$, at $i=k$ the conclusion. For
+extensionality with premise $H(v)=H'(v)$, induction gives
+$H^{(i)}(a)=H'^{(i)}(a)$. For fixed points, $H(a)=a$ gives $H^{(i)}(a)=a$.
+Seed shift is the identity $H(H^{(k)}(a))=H^{(k)}(H(a))$, true in $\mathbb N$
+for every primitive recursive $H$ and transferred.
+
+(c) $\Suc^V\langle c-1,0\rangle=\langle c,0\rangle=\Suc^V\langle c-1,1\rangle$,
+and $c-1$ is nonstandard, so both points lie in $M^{\mathrm{br}}$. The
+comparison equation at this pair reads $1^V=0^V$. In $\mathbb N$, and so in
+$\mathbb A$, the iteration of $\Suc^V$ from $0^V$ gives
+$(\It{x}{0}{u}{\Suc u})^V=\langle\mathrm{rk}\,x,0\rangle$, which differs
+from every branch point $x$. The equation $E(x)$ of
+\cref{disch:lem:sc-model}(c) has a derivable base and step and fails at
+$\langle c-1,1\rangle$.
+\end{proof}
+
+\begin{lemma}[Label exchanges]
+\label{disch:lem:sc-branch-swap}
+For distinct positive $j,k\in\mathbb N$ let $\pi_{jk}$ exchange the labels
+$j$ and $k$, $\pi_{jk}\langle n,j\rangle=\langle n,k\rangle$ and
+$\pi_{jk}\langle n,k\rangle=\langle n,j\rangle$, and fix every other point.
+In $\mathbb A$, $\pi_{jk}$ restricts to an automorphism of
+$\mathcal M^{\mathrm{br}}$ in the staged signature, of order two, which
+preserves every formula. For every finite tuple $\vec e$ of
+$M^{\mathrm{br}}$ there are $j,k$ such that $\pi_{jk}$ fixes $\vec e$ and is
+not the identity on $M^{\mathrm{br}}$.
+\end{lemma}
+
+\begin{proof}
+Write $\pi$ for $\pi_{jk}$; it is a primitive recursive involution that
+preserves ranks and fixes main points. It commutes with $\Suc^V$: on labels
+other than $j$, $k$ both sides agree trivially, and
+$\Suc^V\langle n,j\rangle$ is $\langle n+1,j\rangle$ or $\langle n+1,0\rangle$
+under the same condition $n+1<c$ under which $\Suc^V\langle n,k\rangle$ is
+$\langle n+1,k\rangle$ or $\langle n+1,0\rangle$. It commutes with
+$\delta^V$, being injective and fixing $0^V$ and $1^V$. By induction on $t$,
+$\mathbb N$ satisfies $\pi(t^V(\vec x;c))=t^V(\pi\vec x;c)$ for all $c$ and
+$\vec x$: at an iterator the hypothesis for the body gives
+$\pi(H(v))=H_\pi(\pi v)$, where $H_\pi$ is the body map at $\pi\vec x$,
+induction on $i$ gives $\pi(H^{(i)}(a))=H_\pi^{(i)}(\pi a)$, and
+$\mathrm{rk}\,\pi n^V=\mathrm{rk}\,n^V$. These identities hold in
+$\mathbb A$. Since $\pi$ preserves ranks and the positivity of labels, it
+maps $M^{\mathrm{br}}$ onto itself, so its restriction is an automorphism of
+every function symbol of the staged signature, and induction on formulas
+shows that it preserves satisfaction. For $\vec e$, only finitely many
+labels occur; choose distinct positive standard $j,k$ outside them. Then
+$\pi_{jk}$ fixes $\vec e$ and exchanges the points $\langle c-1,j\rangle$
+and $\langle c-1,k\rangle$ of $M^{\mathrm{br}}$.
+\end{proof}
+
+The exchange moves whole branches, so its support is infinite; only two
+labels are moved.
+
+\begin{theorem}[Coverage and scalar constancy]
+\label{disch:thm:sc-cov}
+Let $U$ be $\mathsf{SC}^{-}_{\mathrm{cov}}$ together with any of fixed points,
+seed shift, extensionality and \rulename{Fusion}, or the test-free reduct of
+such a theory.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $U$ derives neither injectivity of successor, nor $\mathrm{SR}_0$,
+ nor the clock \eqref{disch:eq:clock}, nor the contextual induction rule for
+ literal equations; if $\delta$ belongs to its language, $U$ does not derive
+ \eqref{disch:eq:dc}.
+\item $U$ and $\iPRA$ are not bi-interpretable in the sense of
+ \cref{obs:def:biinterp}: arbitrary definable domains, quotient equality and
+ finite dimension are allowed, as are finite parameter tuples, provided the
+ interpretations and the return isomorphism exist in $\mathcal M^{\mathrm{br}}$
+ or its reduct; this covers parameter conditions that $U$ proves to be
+ inhabited.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By \cref{disch:lem:sc-branch-valid}(a,b), $\mathcal M^{\mathrm{br}}$ satisfies
+every axiom of $U$ and validates every rule, so it satisfies every theorem
+of $U$; for the test-free reduct, so does the reduct of
+$\mathcal M^{\mathrm{br}}$ to the language without $\delta$.
+
+(i) Injectivity, the comparison equation and the clock fail by
+\cref{disch:lem:sc-branch-valid}(c). The rule $\mathrm{SR}_0$ fails for
+$f(n)\defeq\It{n}{0}{u}{\Suc u}$, whose premises $f(0)=0$ and
+$f(\Suc z)=\Suc f(z)$ are computation equations and whose conclusion is the
+clock; the induction rule fails at the equation $E$.
+
+(ii) As in the proof of \cref{disch:thm:sc-obs}: a bi-interpretation, applied
+in $\mathcal M^{\mathrm{br}}$ or its reduct, yields a classical model
+$\mathcal N$ of $\iPRA$. Let $\vec e$ collect the parameters of the
+interpretation of $\iPRA$, of the source-side return isomorphism, and
+representatives of the parameters of the reverse interpretation, and choose
+$\pi_{jk}$ by \cref{disch:lem:sc-branch-swap}; it is an automorphism of the
+reduct as well. By \cref{obs:lem:aut} it induces an automorphism of
+$\mathcal N$, and the induced homomorphism is injective. That automorphism
+has order dividing two and preserves the parameter-free definable order of
+\cref{obs:lem:rigid}, so it is the identity, and $\pi_{jk}$ is the identity,
+a contradiction.
+\end{proof}
+
+Thus coverage, also with a primitive equality test and the iteration laws
+of \cref{disch:sec:scalar-obs}, does not replace \eqref{disch:eq:dc}. Over
+$\mathsf{SC}^{-}$ with coverage the four completions of
+\cref{disch:prop:sc-equiv} remain equivalent and none is derivable. Every
+principle of $U$ is a theorem of $\mathsf{SC}$ (coverage by
+\cref{disch:prop:sc-pred}(b), the iteration laws by induction for
+equations), so $\iPRA$ interprets $U$ through \cref{disch:thm:sc-ipra}. The
+theorem does not exclude equiconsistency of $U$ with $\iPRA$ or an
+interpretation of $\iPRA$ in $U$, and it does not concern theories that
+validate the clock; $\mathcal M^{\mathrm{br}}$ refutes the clock, and
+$\mathsf{SC}^{-}$ with the clock and \rulename{Fusion} already has the
+theorems of $\mathsf{SC}$ (\cref{disch:rem:sc-fusion}). The same structure
+answers the second route of item 4 of \cref{ctr:q:root}: for the constant
+template $q(u)\defeq 0$ the premises there are instances of reflexivity, the
+update $\sel(q(u),\Suc u,u)$ has the same map as $\Suc u$ by
+\eqref{base:eq:I0}, so $r$ has the value $\langle\mathrm{rk}\,x,0\rangle$ of
+the clock and $r(n)=n$ fails at every branch point of
+$\mathcal M^{\mathrm{br}}$ and of its reduct; numerical cases with the case
+hypothesis follow from coverage, and the primitive test does not help.
+
+\begin{remark}[Constancy holds for term maps only]
+\label{disch:rem:sc-cov-terms}
+In the three copies of \cref{disch:def:sc-model} every stationary map is
+constant (\cref{disch:lem:sc-model}(a)). In $\mathcal M^{\mathrm{br}}$ this
+fails for external maps: the map with value $0^V$ at points of standard rank
+and $1^V$ elsewhere is stationary, since $\mathrm{rk}\,\Suc^V x=
+\mathrm{rk}\,x+1$, and is not constant. It is not the value of a term, and
+\rulename{Const} speaks only of term templates, whose maps are primitive
+recursive in $\mathbb A$; the proof uses this in the two inductions of
+\cref{disch:lem:sc-branch-valid}(a). The nonstandard ambient reconciles the
+two requirements: coverage forces every retained branch to have no first
+point, and the set of deleted ranks, the standard elements, is not definable
+in $\mathbb A$, so the inductions of the proof never refer to it.
+\end{remark}
+
+\begin{remark}[Finite-word fibers]
+\label{disch:rem:sc-cov-words}
+\pkg{coverage\_obstruction} proves \cref{disch:thm:sc-cov} with another
+structure over the same $\mathbb A$. Let $W$ be the set of externally finite
+binary words, $\epsilon$ the empty word, and $p$ the map that deletes the
+leftmost letter of a nonempty word and fixes $\epsilon$. The points are the
+pairs $(n,w)$ with $n\in\mathbb A$, $w\in W$, and $n$ nonstandard if
+$w\neq\epsilon$; zero is $(0,\epsilon)$, successor is
+$(n,w)\mapsto(n+1,p(w))$, $\delta$ returns $(0,\epsilon)$ or $(1,\epsilon)$,
+and an iterator iterates its body as often as the first coordinate of its
+counter. A term computation involves finitely many words; on a finite set
+of words closed under $p$ the coordinate functions are primitive recursive
+with the words coded by standard numbers, values on two such sets agree on
+their union, and a colored output has a level at least the least level of a
+colored input, by induction on terms in $\mathbb N$ and transfer, as in
+\cref{disch:lem:sc-branch-closed}. Coverage holds with the predecessor
+$(n-1,0w)$ of $(n,w)$, $w\ne\epsilon$, and $(a,0)$, $(a,1)$ have the common
+successor $(a+1,\epsilon)$ for every nonstandard $a$. For \rulename{Const}
+induction in $\mathbb A$ is used only on the main copy
+$\{(n,\epsilon)\}$: a point $(n,w)$ reaches $(n+|w|,\epsilon)$ after
+$|w|$ successor steps, a standard number, so the premise is used externally
+finitely often. \rulename{Fusion}, extensionality and fixed points use
+induction along orbits as in \cref{disch:lem:sc-branch-valid}(b). For the
+symmetry, $\pi_v(ubv)\defeq u(1-b)v$ for $b\in\{0,1\}$, fixing the other
+words, exchanges the subtrees below $0v$ and $1v$; it commutes with $p$,
+including the case $u=\epsilon$, and with $|v|$ greater than every word of a
+given tuple it fixes that tuple and exchanges $(a,0v)$ and $(a,1v)$.
+Equivariance is proved on a finite $\pi_v$-invariant set of words closed
+under $p$, the closure under suffixes of $C\cup\pi_v(C)$ for the words $C$
+in question. In this structure collisions occur at every nonstandard level;
+in $\mathcal M^{\mathrm{br}}$ all collisions occur at the single point
+$\langle c,0\rangle$.
+\end{remark}
+
+\begin{remark}[Sources]
+\label{disch:rem:sc-cov-sources}
+\Cref{disch:def:sc-branch,disch:lem:sc-branch-closed,disch:lem:sc-branch-valid,disch:lem:sc-branch-swap}
+are from \pkg{coverage\_constancy}, which takes $\mathbb A$ to be a
+nonstandard model of Peano arithmetic, works with internal primitive
+recursive codes and an arbitrary proper cut closed under successor in place
+of the standard elements, and states the theorem also for its test-free
+reduct; here every internal argument is a transferred sentence of
+$\mathbb N$, and the cut is the set of standard elements.
+% ed.: the package proves closure and equivariance by induction inside a model of PA; the proof above proves the same statements in N, uniformly in c, r and the arguments, and transfers them to the elementary extension A.
+\pkg{coverage\_obstruction} states the theorem with the additional laws as
+rules of the forms of \cref{disch:sec:scalar-obs}, its fusion carrying the
+premise $e(a)=b$, which is \rulename{Fusion} followed by congruence. Both
+packages contain written proofs with independent written reviews, a finite
+script that illustrates the construction and is not a proof of it, and no
+Lean or Rocq formalization.
+\end{remark}
 
 \section{Checkers and program equivalences}
 \label{disch:sec:impl}
@@ -4540,6 +4995,30 @@ succeeds exactly if both old traversals succeed and then returns the goal;
 with the flag cleared every added guard is skipped and the remaining
 computation is that of the control.
 
+\begin{remark}[A freshness floor computed from the packet count]
+\label{disch:rem:packet-floor}
+\pkg{coverage\_obstruction} records a rejected simplification of the compact
+checkers of the guarded calculus of \cref{cert:chapter}: the mutable
+freshness floor is replaced by $|p|-N$, where $p$ is the remaining stack of
+packets and $N$ its initial length. The resulting program accepts a proof of
+the false goal $q=\Suc 0$, $q\defeq\It{0}{0}{u}{0}$, by seven packets. At the
+root, a parameter code outside the current scope acts as the substitution
+hole of the equation $q=b$; the root infers the closure of that equation as
+its major premise, specializes it at $\Suc 0$, and leaves the minor $q=0$,
+a computation. The call that checks the major consumes a packet before it
+validates its goal, which lowers the floor, and the same code now denotes a
+rigid parameter $b$. The checked major is the closure of the constant
+equation $q=b$, which is derivable, its progress step being its own
+hypothesis, so two differently read closures are identified. The scope in
+which an inferred premise is read must therefore be fixed before the call
+that proves it consumes a packet. The inherited program $L_{\mathrm f}$ of
+\cref{cert:chapter} ($239$ tokens) rejects the same certificate. A local
+repair that opens the inferred major in the old scope rejects the attack and
+measures $262$ tokens, $291$ nodes and $563$ bytes, above the incumbents; the
+package claims no soundness proof for it and delivers neither program as a
+checker.
+\end{remark}
+
 \section{Checker sizes}
 \label{disch:sec:sizes}
 
@@ -4681,15 +5160,23 @@ input alphabet. \pkg{scalar\_constancy} supplies no checker of
 $\mathsf{SC}$; its two programs check the inherited guarded public calculus,
 with $247$ tokens, $261$ nodes and $557$ bytes against $246/262/556$, and
 $271$ tokens, $305$ nodes and $468$ bytes against $272/306/469$, and are
-recorded in \cref{cert:chapter}.
+recorded in \cref{cert:chapter}. \pkg{coverage\_constancy} and
+\pkg{coverage\_obstruction} supply no checker of the theories of
+\cref{disch:sec:scalar-cov}; they remeasure unchanged inherited programs of
+\cref{cert:chapter}, with the coordinatewise minima $239/256/461$ for the
+compact contracts and $319/358/599$ for the strict native contract, each
+triple attained by different programs, and agree with the figures recorded
+there. The uncertified program of \cref{disch:rem:packet-floor} is not a
+checker and has no size record.
 
 \section{Further questions}
 \label{disch:sec:further}
 
 This section collects the questions, limits and unproved claims stated by
 the eleven packages named at the beginning of \cref{disch:sec:impl}, by
-\pkg{boolean\_constancy} and by \pkg{scalar\_constancy}, and one conjecture
-recorded in the repository.
+\pkg{boolean\_constancy}, \pkg{scalar\_constancy},
+\pkg{coverage\_constancy} and \pkg{coverage\_obstruction}, and one
+conjecture recorded in the repository.
 
 \begin{question}[Substitution for a variable on raw terms: theorems]
 \label{disch:q:rawvsub}
@@ -4781,27 +5268,39 @@ theory exists. (\pkg{boolean\_constancy}.)
 \begin{enumerate}
 \item Over $\mathsf{SC}^{-}$ the comparison equation \eqref{disch:eq:dc} is
  equivalent to injectivity, to $\mathrm{SR}_0$ and to quantifier-free
- induction (\cref{disch:prop:sc-equiv}), and \cref{disch:thm:sc-obs} excludes
- every ordinary bi-interpretation of $\mathsf{SC}^{-}$, also with the clock.
- Both models refute coverage. Is $\mathsf{SC}^{-}$ together with coverage
- $x=0\lor\exists y\,(x=\Suc y)$ bi-interpretable with $\iPRA$, and does it
- derive \eqref{disch:eq:dc}?
+ induction (\cref{disch:prop:sc-equiv}). \Cref{disch:thm:sc-obs} excludes
+ every ordinary bi-interpretation of $\mathsf{SC}^{-}$, also with the clock,
+ and \cref{disch:thm:sc-cov} excludes it for $\mathsf{SC}^{-}$ with coverage,
+ with or without the primitive test, also with fixed points, seed shift,
+ extensionality and \rulename{Fusion}; none of these theories derives
+ \eqref{disch:eq:dc}. The structure of \cref{disch:thm:sc-cov} refutes the
+ clock, and $\mathcal M^{\mathrm c}$ refutes coverage. Is $\mathsf{SC}^{-}$
+ together with coverage and the clock \eqref{disch:eq:clock}, and possibly
+ fixed points, seed shift and extensionality, bi-interpretable with
+ $\iPRA$, and does it derive \eqref{disch:eq:dc}? With \rulename{Fusion} in
+ addition it does (\cref{disch:rem:sc-fusion}).
+\item $\iPRA$ interprets $\mathsf{SC}^{-}$ with coverage
+ (\cref{disch:sec:scalar-cov}). Does $\mathsf{SC}^{-}$ with coverage
+ interpret $\iPRA$ in one direction, or is it at least equiconsistent with
+ $\iPRA$? \pkg{coverage\_constancy} and \pkg{coverage\_obstruction} state
+ that their structures exclude neither.
 \item Is there a principle that $\mathsf{SC}^{-}$ does not derive, strictly
  weaker over $\mathsf{SC}^{-}$ than \eqref{disch:eq:dc}, whose addition gives
  a theory bi-interpretable with $\iPRA$ on another domain? By
  \cref{disch:prop:sc-equiv} such a theory does not derive quantifier-free
- induction on the original domain. The package states that it does not
- assert successor injectivity to be the only repair.
+ induction on the original domain. \pkg{scalar\_constancy} states that it
+ does not assert successor injectivity to be the only repair.
 \item No checker of $\mathsf{SC}$ exists. Does a complete checker of
  $\mathsf{SC}$, or of its restriction \eqref{disch:eq:dconst}, differ in size
  from a checker of the theory of \cref{disch:def:const} with the same
  logical kernel, term coding and input validation, given that the scalar
  iterator binds one variable fewer and \eqref{disch:eq:dc} adds an axiom?
 \end{enumerate}
-Constancy over scalar computation with coverage and without a primitive test
-is item 4 of \cref{ctr:q:root}; the present results do not settle it, since
-both models refute coverage and \cref{disch:thm:sc-ind} uses the split.
-(\pkg{scalar\_constancy}.)
+Constancy over scalar computation with coverage, with or without a primitive
+test, does not recover induction for literal equations
+(\cref{disch:thm:sc-cov}); this settles the second route of item 4 of
+\cref{ctr:q:root} negatively. (\pkg{scalar\_constancy},
+\pkg{coverage\_constancy}, \pkg{coverage\_obstruction}.)
 \end{question}
 
 \begin{question}[Size of the translations]
@@ -4882,8 +5381,9 @@ The following are stated by the packages as not achieved or not claimed.
  five families of $\mathcal P$ together, the positional calculus
  $\mathcal U_*$, the constancy theory of \cref{disch:sec:const}, its
  Boolean variant (\cref{disch:prop:const-bool}), the scalar theory
- $\mathsf{SC}$ with \cref{disch:thm:sc-ipra} and the obstruction
- \cref{disch:thm:sc-obs}, and the
+ $\mathsf{SC}$ with \cref{disch:thm:sc-ipra}, the obstructions
+ \cref{disch:thm:sc-obs,disch:thm:sc-cov} and the two structures of
+ \cref{disch:sec:scalar-cov}, \cref{disch:prop:zero-refl}, and the
  calculi $\Nat_{\mathrm{AB}}$, $\mathcal B_{\nu}$ and $\mathcal A$ with the
  compilers of \cref{disch:thm:alias-compiler,disch:thm:alias-rank,disch:thm:alias-atomic}.
  \pkg{alias\_back} and \pkg{equation\_aliases} ask for one formalization of

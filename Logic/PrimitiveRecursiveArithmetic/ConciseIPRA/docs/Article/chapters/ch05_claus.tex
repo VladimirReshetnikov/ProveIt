@@ -1929,8 +1929,9 @@ reflexive zero gate).
 \section{Fusion: evaluation at the discharge}
 \label{claus:sec:fusion}
 
-This section draws on \pkg{evaluation\_discharge}, and
-\cref{claus:sec:pd} on \pkg{476\_byte\_presentation}. The two rows of
+This section draws on \pkg{evaluation\_discharge},
+\cref{claus:sec:pd} on \pkg{476\_byte\_presentation}, and
+\cref{claus:sec:hd} on \pkg{homogeneous\_discharge}. The two rows of
 \rulename{Eval} and the elimination of $D$ become one rule family, which
 leaves three: \rulename{Use}, \rulename{Intro} and \rulename{Discharge}.
 
@@ -2452,16 +2453,438 @@ and the matched four-family checker of $\mathsf{K}^{u}$, preserving the
 goal; the compilers are untrusted and their outputs are rechecked.
 \end{remark}
 
+\subsection{Homogeneous contexts at the discharge}
+\label{claus:sec:hd}
+
+This subsection draws on \pkg{homogeneous\_discharge}. It combines three
+constructions of the chapter: the homogeneous contexts and the asymmetric
+gate $\kappa$ of $\mathsf{HB}$ (\cref{claus:sec:homog}), the diagonal
+introduction of $\mathsf{K}$ (\cref{claus:def:k}) and the discharge with
+partial evaluation of $\mathsf{PD}$ (\cref{claus:def:pd}). The new
+material is the combination itself, the one case of gate retrieval that
+the diagonal introduction changes (the diagonal case in the proof of
+\cref{claus:lem:haccess}), the restriction of the premise-free
+\rulename{Use} to the fixed entry $\rho$ (\cref{claus:thm:hseed}), and
+the tree-preserving substitution for the combined calculus
+(\cref{claus:thm:hsubst}). Everything else is cited.
+
+\begin{definition}[The calculi $\mathsf{H}_4$, $\mathsf{H}_4^{\rho}$,
+$\mathsf{H}_3$ and $\mathsf{H}_3^{\rho}$]
+\label{claus:def:h3}
+Terms are raw and formulas are $Q$-free. A context is a list of bodies
+(\cref{claus:def:ob}) whose first entry is the body
+$\rho(v)\equiv(v=v)$; a body $C(v)$ reads $C(0)\to\forall v\,C(v)$. The
+gate $\kappa_v$ is that of \cref{claus:def:hb}, and an ordinary
+assumption $A$ is represented by the body $\kappa A$, that is
+$v\mapsto\kappa_vA$ with $v$ fresh. The calculus $\mathsf{H}_3^{\rho}$ has
+exactly the following three rule families.
+\[
+ \infrule{\Gamma\proves C(0)}{\Gamma\proves C(t)}
+ \qquad
+ \infrule{}{\Gamma\proves\rho(t)}
+ \qquad\rulename{Use}
+\]
+for a body $C(v)$ of $\Gamma$ and every term $t$; the second form, without
+premise, selects the first entry $\rho$ and is available for it only.
+\[
+ \infrule{\Gamma,\kappa_v\bigl(B(w,\eta_B(z))\bigr)\proves B(w,\Suc z)}
+         {\Gamma\proves\D{x}{y}B(x,y)}\ \rulename{Intro}
+\]
+where $\eta_B$ is the diagonal selector of \cref{claus:def:k}, tested on
+the matrix before the witness is substituted, the witness $w$ is an
+arbitrary term, $z$ is fresh for $\Gamma$, $w$ and $B$, and $v$ is the
+distinguished variable of the added body.
+\[
+ \infrule{\Gamma\proves\D{x}{y}B\quad
+          \Gamma,B(b,y)\proves E\quad
+          \Gamma,B(b,y)\proves F}
+         {\Gamma\proves\varrho^{+}_E(F)}\ \rulename{Discharge}
+\]
+where $B(b,y)$ is the added body with the distinguished variable $y$,
+$\varrho^{+}_E(F)$ (\cref{claus:def:rhoplus}) is defined, and $b$ is fresh
+for $\Gamma$ and $B$ and does not occur free in $\varrho^{+}_E(F)$; the
+formulas $E$ and $F$ may contain $b$.
+
+$\mathsf{H}_3$ is $\mathsf{H}_3^{\rho}$ in which the premise of
+\rulename{Use} may also be omitted for every body $C$ whose base is
+reflexive at its leaf, $C(0)\equiv D^j(r=r)$ for some $j\ge 0$, as in
+$\mathsf{HB}$. $\mathsf{H}_4$ and $\mathsf{H}_4^{\rho}$ are $\mathsf{H}_3$
+and $\mathsf{H}_3^{\rho}$ with \rulename{Discharge} replaced by the two
+families \rulename{Eval} with $\Phi_2$ and \rulename{Open} of
+$\mathsf{OB}$ (\cref{claus:def:ob}).
+\end{definition}
+
+There is no reflexivity rule, no hypothesis rule, no computation axiom and
+no transport, induction, cut or structural rule. The specification of
+$\mathsf{H}_3^{\rho}$ consists of the fixed first entry $\rho$ with its
+premise-free use, the gate $\kappa$, the diagonal test and the three rows
+of $\varrho^{+}$; its trusted checker has no test of reflexivity at a
+leaf. $\mathsf{H}_4$ is $\mathsf{HB}$ with the introduction of
+$\mathsf{K}$ in the place of the witness-selected one and with $\rho$ in
+the first position, and $\mathsf{H}_3$ stands to $\mathsf{H}_4$ as
+$\mathsf{PD}$ stands to $\mathsf{K}^{u}$. Under the ordinary reading every
+rule is sound in $\Teq$ directly: \rulename{Discharge} as in $\mathsf{PD}$,
+\rulename{Intro} as the diagonal introduction, since
+$\kappa_{\Suc z}A\dashv\proves A$ and $\kappa_0A$ is literally reflexive at
+its leaf, and \rulename{Use} as the elimination of the closure that a body
+reads.
+
+For a substitution $\sigma$ the image of a body $C(v)$ is the body
+$(C\sigma)(v)$, with $v$ renamed away from the variables and values of
+$\sigma$; then $(C(t))\sigma\equiv(C\sigma)(t\sigma)$ and
+$\rho\sigma\equiv\rho$. If the distinguished variable $v$ and the iterator
+variable $u$ of the gate are chosen away from $\sigma$, then
+$(\kappa_vA)\sigma\equiv\kappa_v(A\sigma)$, by induction on $A$: at the leaf
+$\sigma$ acts on $s$ and $t$ in both iterators alike and fixes the counters
+$0$ and $v$, and at a binder it acts under $\D{x}{y}$. In particular the
+gate commutes with the substitution of terms for the variables $x$, $y$ of
+a matrix: $(\kappa_1B)(b,r)\equiv\kappa_1(B(b,r))$.
+
+\begin{theorem}[Substitution preserves the derivation tree]
+\label{claus:thm:hsubst}
+Let $\mathsf{X}$ be one of $\mathsf{H}_4$, $\mathsf{H}_4^{\rho}$,
+$\mathsf{H}_3$, $\mathsf{H}_3^{\rho}$, let
+$\Gamma\proves_{\mathsf{X}}A$, let $\sigma$ be a capture-free substitution
+of terms for free variables, and let $\Gamma'$ be a context with a map
+$\iota$ from the entries of $\Gamma$ to the entries of $\Gamma'$ that sends
+the first entry to the first entry and every entry $C$ to an entry that is
+the body $C\sigma$. Then $\Gamma'\proves_{\mathsf{X}}A\sigma$ by a
+derivation with the same tree of rules, in which every \rulename{Use}
+selects the image of its entry and keeps or omits its premise as before,
+every \rulename{Intro} has the same mode, and every \rulename{Discharge},
+respectively \rulename{Eval}, has the same row, after a renaming of
+eigenvariables. In particular substitution, weakening by bodies placed
+after the first entry, exchange of the entries after the first, and
+injective renaming are admissible in $\mathsf{X}$.
+\end{theorem}
+\begin{proof}
+Induction on the derivation, simultaneously for all $\sigma$, $\Gamma'$
+and $\iota$, as in the proof of \cref{claus:thm:pdsubst}, with bodies in
+the place of uniform clauses. The cases that differ are the following.
+
+\rulename{Use} with a premise: the induction hypothesis gives
+$\Gamma'\proves C(0)\sigma\equiv(C\sigma)(0)$, and \rulename{Use} of
+$\iota(C)$ at $t\sigma$ gives $(C\sigma)(t\sigma)\equiv C(t)\sigma$.
+\rulename{Use} without a premise in $\mathsf{H}_3^{\rho}$ and
+$\mathsf{H}_4^{\rho}$ selects the first entry $\rho$; its image is the first
+entry of $\Gamma'$, which is $\rho$, and the conclusion is
+$\rho(t\sigma)\equiv\rho(t)\sigma$. In $\mathsf{H}_3$ and $\mathsf{H}_4$ a
+premise omitted at a base $C(0)\equiv D^j(r=r)$ remains omitted, since
+$C(0)\sigma\equiv D^j(r\sigma=r\sigma)$ keeps both the number of binders
+and the identity of the two leaf terms.
+
+\rulename{Intro}: choose $z'$ fresh for $\Gamma'$, $w\sigma$ and $B\sigma$
+and extend $\sigma$ to $\sigma'$ by $z\mapsto z'$. The diagonal test is
+preserved and reflected (\cref{guard:prop:subst-shapes}(iii)), so
+$\eta_B(z)\sigma'\equiv\eta_{B\sigma}(z')$, and by the commutation of the
+gate with substitution the image of the added body is
+$\kappa_v\bigl((B\sigma)(w\sigma,\eta_{B\sigma}(z'))\bigr)$, the body that
+\rulename{Intro} adds in $\Gamma'$. Extend $\iota$ by sending the added
+body to it; the induction hypothesis for $\sigma'$ and \rulename{Intro} in
+the same mode conclude $(\D{x}{y}B)\sigma$.
+
+\rulename{Discharge}, and \rulename{Open}: the major premise is translated
+by the induction hypothesis; with $b'$ fresh for $\Gamma'$, $B\sigma$ and
+the conclusion $R\sigma$, and $\sigma'$ the extension of $\sigma$ by
+$b\mapsto b'$, the added body $B(b,y)$ has the image
+$(B\sigma)(b',y)$, which is the body that the rule adds in $\Gamma'$. The
+induction hypothesis gives the branches. For \rulename{Discharge},
+\cref{claus:lem:covar} gives the same row with the value $R\sigma'\equiv
+R\sigma$, since $b$ is not in $R$. For \rulename{Open} the branch
+conclusion is $A\sigma'\equiv A\sigma$. \rulename{Eval} keeps its row by
+\cref{comp:prop:phisubst}.
+
+For substitution take $\iota$ positional for $\Gamma\sigma$; for weakening
+and exchange take $\sigma$ the identity and $\iota$ the map that sends each
+entry to its copy, the first entry to the first entry.
+\end{proof}
+
+\begin{lemma}[Reflexive prefixes and $\Theta$]
+\label{claus:lem:hrefl}
+Let $\mathsf{X}$ be one of the four calculi of \cref{claus:def:h3}. In every
+context the following hold.
+\begin{enumerate}[label=(\roman*)]
+\item Every formula $D^k(r=r)$ is derivable by a derivation whose only
+rules are \rulename{Intro} and the premise-free \rulename{Use} of $\rho$.
+\item $\Theta\equiv\D{x}{y}(0=0)$ is derivable by two nodes: an
+\rulename{Intro} at the witness $0$ in case mode and the premise-free
+\rulename{Use} of $\rho$ at $0$.
+\item In $\mathsf{H}_4$ and $\mathsf{H}_4^{\rho}$ the equality rules of
+\cref{claus:lem:eq} hold.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(i) Induction on $k$, for all terms $r$ at once. For $k=0$ use $\rho$ at
+$r$. For $k>0$ write $D^k(r=r)\equiv\D{x}{y}B$ with
+$B\equiv D^{k-1}(r=r)$ and apply \rulename{Intro} at the witness $0$.
+Whatever mode the diagonal test selects, the target $B(0,\Suc z)$ is
+$D^{k-1}(r'=r')$ with $r'\equiv r\langle 0/x,\Suc z/y\rangle$, since both
+leaf terms receive the same substitution. The induction hypothesis proves
+it in the extended context, and the added gate body is not used.
+(ii) is the case $k=1$, $r\equiv 0$; the matrix $0=0$ is not diagonal.
+(iii) \rulename{Refl} at $t$ is the premise-free \rulename{Use} of $\rho$
+at $t$, and the derivations of \cref{claus:lem:eq} consist of
+\rulename{Refl}, the two rows of \rulename{Eval} and the given premises;
+they read no other entry.
+\end{proof}
+
+The derivation of $\Theta$ in $\mathsf{PD}$ (\cref{claus:lem:theta})
+closes its branch with the added clause $\langle 0=0\rangle$. The body that
+\rulename{Intro} adds here is $\kappa_v(0=0)$, whose instances are
+$\It{0}{0}{u}{0}=\It{t}{0}{u}{0}$ and never $0=0$, so the fixed entry
+$\rho$ is needed; this is why every context contains it.
+
+\begin{theorem}[Fusion with homogeneous contexts]
+\label{claus:thm:hfusion}
+For every context $\Gamma$ and formula $A$,
+\[
+ \Gamma\proves_{\mathsf{H}_3}A\iff\Gamma\proves_{\mathsf{H}_4}A,
+ \qquad
+ \Gamma\proves_{\mathsf{H}_3^{\rho}}A\iff\Gamma\proves_{\mathsf{H}_4^{\rho}}A .
+\]
+The translations leave the end sequent unchanged and copy every
+\rulename{Use}.
+\end{theorem}
+\begin{proof}
+The proof of \cref{claus:thm:pd} applies, with bodies in the place of
+uniform clauses: \rulename{Use} and \rulename{Intro} are the same rules on
+both sides and are copied. From left to right an arithmetic row of
+\rulename{Discharge} becomes \rulename{Eval} in $\Gamma,B(b,y)$ followed by
+\rulename{Open}, and row $D$ becomes the translated derivation of $F$
+followed by \rulename{Open}; the eigenvariable conditions coincide. From
+right to left an \rulename{Open} with major premise $\D{x}{y}B$ and branch
+$\Gamma,B(b,y)\proves A$ becomes \rulename{Discharge} with the same major
+premise, $E\defeq\Theta$ derived in $\Gamma,B(b,y)$ by
+\cref{claus:lem:hrefl}(ii), and $F\defeq A$, in row $D$. An \rulename{Eval}
+with premises $s=t$ and $b'=r$ becomes \rulename{Discharge} of $\Theta$
+opened at a $b_0$ fresh for $\Gamma$ and the four terms, which adds the
+body $0=0$; the translated premises are weakened into that context by
+\cref{claus:thm:hsubst}, and the arithmetic row gives $r=\Phi_2(s,t,b')$, in
+which $b_0$ does not occur. The added derivations of $\Theta$ use only the
+premise-free \rulename{Use} of $\rho$, so both translations map derivations
+of $\mathsf{H}_3^{\rho}$ and $\mathsf{H}_4^{\rho}$ to derivations of the
+same kind.
+\end{proof}
+
+\begin{theorem}[The fixed seed suffices]
+\label{claus:thm:hseed}
+For every context $\Gamma$ and formula $A$,
+\[
+ \Gamma\proves_{\mathsf{H}_3^{\rho}}A\iff\Gamma\proves_{\mathsf{H}_3}A,
+ \qquad
+ \Gamma\proves_{\mathsf{H}_4^{\rho}}A\iff\Gamma\proves_{\mathsf{H}_4}A .
+\]
+\end{theorem}
+\begin{proof}
+From left to right every rule is a rule of the larger calculus, since the
+base $\rho(0)\equiv(0=0)$ is reflexive at its leaf. From right to left
+induct on the derivation. A \rulename{Use} with a premise, a premise-free
+\rulename{Use} of the first entry, and all other rules are copied. A
+premise-free \rulename{Use} of another entry $C$ has a base
+$C(0)\equiv D^j(r=r)$; supply its premise by the derivation of
+\cref{claus:lem:hrefl}(i) in the local context, which uses only the
+premise-free \rulename{Use} of $\rho$. No cut, induction in the object
+theory or equality conversion is used.
+\end{proof}
+
+\begin{lemma}[Conversion and access with the diagonal introduction]
+\label{claus:lem:haccess}
+In $\mathsf{H}_4^{\rho}$, in every context and for every formula $A$:
+\begin{enumerate}[label=(\roman*)]
+\item $\kappa_0A$ is derivable;
+\item a derivation of $\kappa_1A$ converts to a derivation of $A$ in the
+same context, and conversely;
+\item if $\kappa_vA$ is a body of $\Gamma$, then $\Gamma\proves A$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(i) $\kappa_0A$ has the prefix of $A$ and the identical leaf terms
+$\It{0}{s}{u}{t}$, so \cref{claus:lem:hrefl}(i) applies.
+
+(ii) and (iii) are proved by induction on the number $d$ of binders of
+$A$, in the order conversion at $d$, then access at $d$.
+
+Access at $d$ from conversion at $d$: \rulename{Use} of the body
+$\kappa_vA$ at $1$, with the premise $\kappa_0A$ supplied by (i), gives
+$\kappa_1A$, and conversion gives $A$. This is the proof of
+\cref{claus:lem:retrieval}(iv) with the premise supplied instead of
+omitted.
+
+Conversion at $d=0$: for $A\equiv(s=t)$ the computations
+$\It{0}{s}{u}{t}=s$ and $\It{\Suc 0}{s}{u}{t}=t\langle\It{0}{s}{u}{t}/u\rangle
+\equiv t$, the latter because $u$ is not in $t$, and the equality rules of
+\cref{claus:lem:hrefl}(iii) convert $\kappa_1A$ and $A$ into each other.
+
+Conversion at $d>0$: let $A\equiv\D{x}{y}B$, so that
+$\kappa_1A\equiv\D{x}{y}\kappa_1B$.
+
+From $A$ to $\kappa_1A$: apply \rulename{Open} to $A$ at a fresh $b$, which
+adds the body $B(b,y)$, and introduce $\kappa_1A$ at the witness $b$. The
+matrix $\kappa_1B$ is not diagonal: if $B$ is an equation, the left side of
+$\kappa_1B$ is an iterator with the literal counter $0$, not $y$; otherwise
+$\kappa_1B$ has root $D$. So the introduction is in case mode and adds the
+body $\kappa_v(\kappa_1B(b,0))$. Access at $d-1$ gives $\kappa_1B(b,0)$,
+conversion at $d-1$ gives $B(b,0)$, \rulename{Use} of the body $B(b,y)$ at
+$\Suc z$ gives $B(b,\Suc z)$, and conversion at $d-1$ gives
+$\kappa_1B(b,\Suc z)$. \rulename{Intro} concludes $\kappa_1A$, and
+\rulename{Open} concludes it in the original context, since $b$ does not
+occur in it.
+
+From $\kappa_1A$ to $A$: apply \rulename{Open} to $\kappa_1A$ at a fresh
+$b$, which adds the body $\kappa_1B(b,y)$, and introduce $A$ at the
+witness $b$. If $B$ is not diagonal, the introduction is in case mode and
+adds the body $\kappa_v(B(b,0))$; access at $d-1$ gives $B(b,0)$,
+conversion at $d-1$ gives $\kappa_1B(b,0)$, \rulename{Use} of the body
+$\kappa_1B(b,y)$ at $\Suc z$ gives $\kappa_1B(b,\Suc z)$, and conversion at
+$d-1$ gives $B(b,\Suc z)$. If $B$ is diagonal, the introduction is in
+progress mode and adds the body $\kappa_v(B(b,z))$, from which access gives
+$B(b,z)$ and not the base. In that case $B$ is the equation
+$\It{y}{y}{u}{h}=\It{y}{y}{u'}{k}$, so $d=1$, and the base
+\[
+ B(b,0)\equiv
+ \bigl(\It{0}{0}{u}{h'}=\It{0}{0}{u'}{k'}\bigr)
+\]
+is a theorem: both sides equal $0$ by the zero computation, and symmetry
+and transitivity join them, as in \cref{claus:lem:k}(i), with the equality
+rules of \cref{claus:lem:hrefl}(iii). Conversion at rank $0$ gives
+$\kappa_1B(b,0)$, \rulename{Use} of the body $\kappa_1B(b,y)$ at $\Suc z$
+gives $\kappa_1B(b,\Suc z)$, and conversion at rank $0$ gives
+$B(b,\Suc z)$; the added body is not used. In both cases
+\rulename{Intro} concludes $A$ and \rulename{Open} discharges $b$.
+
+Conversion at $d$ uses conversion and access at $d-1$ only, and access at
+$d$ uses conversion at $d$ and (i), so the induction is well founded. It
+is an induction on formula syntax and adds no induction to the arithmetic.
+\end{proof}
+
+In \cref{claus:lem:retrieval} an introduction at a variable witness is
+always in case mode, and the added body is the gate of the zero instance,
+which access retrieves. With the diagonal introduction the added body for a
+diagonal matrix is the gate of the progressive instance, and the base is a
+theorem instead. This is the only case in which the proof differs.
+
+\begin{theorem}[The homogeneous discharge calculi and $\Nat$]
+\label{claus:thm:h3}
+Let $\mathsf{X}$ be one of $\mathsf{H}_4$, $\mathsf{H}_4^{\rho}$,
+$\mathsf{H}_3$, $\mathsf{H}_3^{\rho}$.
+\begin{enumerate}[label=(\roman*)]
+\item If $\Gamma\proves_{\mathsf{X}}A$, then $\Gamma^{Q}\proves_{\Nat}A$,
+where $\Gamma^{Q}$ replaces each body $C(v)$ by $\Q{v}C$.
+\item For $Q$-free $A_1,\dots,A_m,F$,
+\[
+ \rho,\kappa A_1,\dots,\kappa A_m\proves_{\mathsf{X}}F
+ \quad\Longleftrightarrow\quad
+ A_1,\dots,A_m\proves_{\Nat}F .
+\]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+By \cref{claus:thm:hfusion,claus:thm:hseed} the four calculi derive the
+same sequents, with the same end sequents. It suffices to prove (i) for
+$\mathsf{H}_4$ and the completeness half of (ii) for
+$\mathsf{H}_4^{\rho}$.
+
+(i) Induction on the derivation, as in the proof of
+\cref{claus:thm:homog} from left to right. \rulename{Use} with a premise is
+\rulename{QE} on $\Q{v}C$. A premise-free \rulename{Use} is \rulename{QE}
+with the base $D^j(r=r)$, which $\Nat$ derives by $j$ introductions by cases
+from reflexivity. \rulename{Eval} is derived as in
+\cref{claus:thm:five}(i). \rulename{Open} is \rulename{DE}, which adds
+$\Q{y}B(b,y)$, the image of the added body. For \rulename{Intro} the
+translated premise is
+$\Gamma^{Q},\Q{v}\kappa_v\bigl(B(w,\eta_B(z))\bigr)\proves B(w,\Suc z)$;
+the derivation $G\proves_{\Nat}\Q{v}\kappa_vG$ of the proof of
+\cref{claus:thm:homog} and cut give
+$\Gamma^{Q},B(w,\eta_B(z))\proves B(w,\Suc z)$, and the two modes are
+treated as in the proof of \cref{claus:thm:k}(i).
+
+(ii) From right to left, \cref{claus:thm:k} gives a derivation of
+$\operatorname{ord}(A_1),\dots,\operatorname{ord}(A_m)\proves_{\mathsf{K}}F$.
+Translate it with its canonical annotation, as in
+\cref{claus:thm:ctob,claus:thm:homog}: an assumption occurrence
+$\operatorname{ord}(G)$ becomes the body $\kappa G$, an opened occurrence
+$[B(b,0);\,y.\,B(b,y)]$ becomes the body $B(b,y)$, and $\rho$ is placed
+first. \rulename{Refl} at $t$ becomes the premise-free \rulename{Use} of
+$\rho$ at $t$. \rulename{Eval} is unchanged. A \rulename{Use} of an
+assumption occurrence $\operatorname{ord}(G)$ concludes $G$ and becomes
+\cref{claus:lem:haccess}(iii); its premise $0=0$ is discarded. A
+\rulename{Use} of an opened occurrence keeps its translated premise
+$B(b,0)$. \rulename{Elim} becomes \rulename{Open}. \rulename{Intro} of
+$\mathsf{K}$ adds the assumption $\operatorname{ord}(B(w,\eta_B(z)))$,
+whose translation is the body that \rulename{Intro} of
+$\mathsf{H}_4^{\rho}$ adds; matrix, witness, mode and eigenvariable are
+unchanged. No cut is used.
+
+From left to right, (i) gives
+$\Q{v}(v=v),\Q{v}\kappa_vA_1,\dots,\Q{v}\kappa_vA_m\proves_{\Nat}F$. The
+formula $\Q{v}(v=v)$ is derivable by progress, and
+$A_i\proves_{\Nat}\Q{v}\kappa_vA_i$; cut gives
+$A_1,\dots,A_m\proves_{\Nat}F$.
+\end{proof}
+
+By \cref{claus:thm:h3}(ii) and \cref{claus:cor:bridge} the four calculi
+are bi-interpretable with $\iPRA$ with whole domains, actual equality and
+identity numerical composites, and $\rho\proves_{\mathsf{H}_3^{\rho}}0=\Suc 0$
+if and only if $\iPRA$ derives falsity. The coding of an assumption $A$ by
+the body $\kappa A$ is faithful in both directions:
+$A\proves_{\Nat}\Q{v}\kappa_vA$, and conversely \rulename{QE} with the
+derivable base $\kappa_0A$ gives $\kappa_1A$, which is equivalent to $A$ by
+the computation equations and \cref{claus:lem:unq}(ii) along the prefix.
+For $\mathsf{H}_3^{\rho}$ substitution is admissible by the direct
+structural induction of \cref{claus:thm:hsubst}, without the arithmetic
+bridge or a normalization.
+
+\begin{remark}
+\label{claus:rem:hdpkgs}
+\pkg{homogeneous\_discharge} states $\mathsf{H}_3$ and
+$\mathsf{H}_3^{\rho}$ with the matched controls $\mathsf{H}_4$ and
+$\mathsf{H}_4^{\rho}$, and proves \cref{claus:thm:hfusion},
+\cref{claus:thm:hseed}, \cref{claus:lem:haccess} and \cref{claus:thm:h3}
+along the lines above. The package proves fusion with the major premise
+weakened into the branch as the auxiliary $E$ of an \rulename{Open}, as in
+the proof of \cref{claus:thm:fusion}; the proof above uses $\Theta$, as
+the proof of \cref{claus:thm:pd} does, and both choices are available. The
+package proves conversion and access in $\mathsf{H}_4$ with omitted
+premises and then removes the shortcut by \cref{claus:thm:hseed}; the
+proof above works in $\mathsf{H}_4^{\rho}$ directly, which is the form the
+package describes after the removal. It states substitution as a direct
+structural induction, listing the cases of \cref{claus:thm:hsubst}
+(commutation of the gate, preservation of leaf reflexivity, preservation
+and reflection of the diagonal test, rows of $\varrho^{+}$, fresh
+eigenvariables); the statement with the map $\iota$ and the cases of
+\rulename{Use} are added here.
+% ed.: the package states weakening and renaming "by induction on the
+% derivation" without the eigenvariable bookkeeping; the theorem with iota,
+% as in claus:thm:pdsubst, supplies it and also gives weakening for the
+% translation of Eval in claus:thm:hfusion.
+Its restatement of the ordinary bridge, of the arithmetic compiler and of
+the logical coding by a formula selector belongs to the common core
+(\cref{base:thm:bridge}) and to \cref{claus:sec:real}. An independent
+review recorded with the package confirms the written reduction, and a
+program of the package performs finite generated checks of lifting,
+export, gate commutation, specialization, the zero and one instances of
+the gate and preservation of the diagonal mode; these concern the
+implementation. Its untrusted translators produce certificates in both
+directions between the checkers of $\mathsf{H}_3^{\rho}$ and
+$\mathsf{H}_4$. The calculi of this subsection are not formalized in Lean.
+Their ingredients are formalized for other context representations: the
+diagonal introduction and the discharge through $\varrho^{+}$ on uniform
+clauses (\Lean{KUPrf}, \Lean{PDPrf}, \cref{claus:rem:pdlean}), and one-body
+contexts with the symmetric gate and the witness-selected introduction
+(\Lean{OBPrf}, \cref{claus:rem:obpkgs}); the homogeneous calculus
+$\mathsf{HB}$ itself is not formalized (\cref{claus:rem:hbpkgs}).
+\end{remark}
+
 \section{The ordinary realization}
 \label{claus:sec:real}
 
-This section draws on all twelve packages of the chapter:
+This section draws on all thirteen packages of the chapter:
 \pkg{raw\_clausal}, \pkg{rootfree\_clausal},
 \pkg{reduced\_clause\_calculus}, \pkg{clausal\_two\_case},
 \pkg{clausal\_single\_evaluation}, \pkg{uniform\_clauses},
 \pkg{clause\_guards}, \pkg{clause\_contexts}, \pkg{prefix\_clauses},
-\pkg{one\_body}, \pkg{evaluation\_discharge} and
-\pkg{476\_byte\_presentation}. Each restates the
+\pkg{one\_body}, \pkg{evaluation\_discharge},
+\pkg{476\_byte\_presentation} and \pkg{homogeneous\_discharge}. Each restates the
 ordinary realization, the logical macros of the native interface (gate,
 selector and parity term, with $q_y$ in the place of $\Q{y}$) and the
 bridge. These belong to the common core, and the statements reduce to it
@@ -2473,7 +2896,8 @@ Let $\mathsf{X}$ be one of $\mathsf{C}_3$, $\mathsf{C}$, $\mathsf{C}^{0}$,
 $\mathsf{C}^{0}_{\mathrm{b}}$, $\mathsf{V}$, $\mathsf{V}^{0}$,
 $\mathsf{K}$, the mirror calculus, $\mathsf{PF}$, $\mathsf{OB}$,
 $\mathsf{HB}$, $\mathsf{ED}$, $\mathsf{ED}^{0}$, $\mathsf{K}^{u}$,
-$\mathsf{PD}$, with its fixed
+$\mathsf{PD}$, $\mathsf{H}_4$, $\mathsf{H}_4^{\rho}$, $\mathsf{H}_3$,
+$\mathsf{H}_3^{\rho}$, with its fixed
 reflexivity clause or entry where it has one. Then $\mathsf{X}$ derives
 $0=\Suc 0$ from no assumptions if and only if $\Nat$ does, if and only if
 $\iPRA$ derives falsity. The ordinary realization of $\mathsf{X}$ is
@@ -2486,7 +2910,10 @@ translations that are the identity on terms, or the map $\nf_0$ on terms
 for the zero-normal calculi, and the formula composites are the identity
 and $A\mapsto j\tau A$, respectively $A\mapsto\nf_0(j\tau A)$, which are
 provably equivalent to $A$ in $\Nat$
-(\cref{claus:lem:unq,comp:lem:nusound}). The claim follows from
+(\cref{claus:lem:unq,comp:lem:nusound}). In the calculi with bodies an
+assumption is coded by its gate body, which is equivalent in $\Nat$ to the
+assumption (\cref{claus:lem:gatenat} for the symmetric gate, and the
+paragraph after \cref{claus:thm:h3} for the gate $\kappa$). The claim follows from
 \cref{base:thm:bridge}.
 \end{proof}
 
@@ -2589,7 +3016,7 @@ uses.
 \section{Checker sizes}
 \label{claus:sec:checkers}
 
-This section collects the measurements of the twelve packages named in
+This section collects the measurements of the thirteen packages named in
 \cref{claus:sec:real}. All of them measure complete standalone Python
 checkers by the protocol of \cref{base:sec:measure}, under CPython
 3.12.14: the module without its
@@ -2600,7 +3027,7 @@ a closed goal and a proof, and accept closed theorems; open sequents occur
 in the branches. The universal statements of this chapter are the written
 proofs; the packages' finite test suites concern the implementations.
 
-\emph{Representation.} With three exceptions the checkers share one
+\emph{Representation.} With four exceptions the checkers share one
 codec:
 $0$ is the integer $0$, a free parameter is a negative level, a bound
 variable is a positive index, $\Suc t$ is \texttt{[0,t]}, the iterator is
@@ -2617,6 +3044,12 @@ derivation of a closed theorem has a certificate. \pkg{clause\_contexts}
 writes $\Suc t$ as \texttt{[t]} and $\D{x}{y}B$ as \texttt{["d",B]}.
 \pkg{prefix\_clauses} stores a formula as \texttt{[k,s,t]} and $\Suc t$ as
 \texttt{[t]}; the expected sort separates a record from an iterator.
+\pkg{homogeneous\_discharge} uses positive de Bruijn indices for all
+variables, with explicit lifting: $\Suc t$ is \texttt{[t]}, the iterator
+is \texttt{[n,a,h]}, an equation is \texttt{[s,t]} and $\D{x}{y}B$ is
+\texttt{[B]}, with the indices $1$ for $y$ and $2$ for $x$ in $B$; a body
+has its distinguished variable at index $1$, and the entry $\rho$ is
+\texttt{[1,1]} at position $0$ of the context.
 
 \emph{Protocols.} \pkg{clausal\_single\_evaluation} and
 \pkg{clause\_contexts} check goal-directed certificates in which a
@@ -2633,7 +3066,16 @@ that a call consumes exactly its own segment. In \pkg{prefix\_clauses}
 and \pkg{evaluation\_discharge} the premise field of a \rulename{Use}
 whose premise is omitted or absent is an inert field of the format.
 \pkg{evaluation\_discharge} infers every intermediate conclusion from the
-proof tree and supplies no template to \rulename{Discharge}.
+proof tree and supplies no template to \rulename{Discharge}. The checkers
+of \pkg{homogeneous\_discharge} read a JSON pair \texttt{[goal,
+certificate]} with a validated closed goal and print \texttt{True} or
+\texttt{False}; a certificate node is \texttt{["use", i, t, q]}, with
+\texttt{q} null only for $i=0$ in $\mathsf{H}_3^{\rho}$,
+\texttt{["intro", A, w, q]} or \texttt{["discharge", p, e, f]}, the
+conclusions of \rulename{Use} and \rulename{Discharge} are computed, and
+the eigenvariable condition is checked by removing the opened index. The
+modules refuse to run under optimized execution, which would remove their
+assertions.
 
 \emph{What the measurements show.} The deletion of the root row saves 47
 bytes, 5 tokens and 7 AST nodes in an unchanged format. Uniform clauses
@@ -2659,7 +3101,16 @@ The checker of $\mathsf{PD}$ in \pkg{476\_byte\_presentation} measures
 matched split control (the four families of $\mathsf{K}^{u}$, same strict
 certificate contract) and 643/695/1892 for the inherited checker of
 $\mathsf{ED}$, so it saves 10 tokens, 8 AST nodes and 41 bytes against its
-control and sets no size record.
+control and sets no size record. In \pkg{homogeneous\_discharge} the
+checker of $\mathsf{H}_3^{\rho}$ saves 41 tokens, 39 AST nodes and 120
+bytes against the matched four-family control $\mathsf{H}_4$ (same
+syntax, gate, introduction and certificate contract); the fusion alone
+saves 10/6/32 and the restriction of the premise-free \rulename{Use} to
+$\rho$ alone saves 31/33/88. The two branches of a discharge share one
+traversal of their context, an implementation choice distinct from both
+mathematical changes. The checker is larger than that of $\mathsf{PD}$ and
+than the compact checkers of other packages, and the package claims no
+size record.
 
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.23\linewidth}rrr>{\raggedright\arraybackslash}p{0.30\linewidth}@{}}
 \caption{Checker sizes as stated by the packages: tokens, AST nodes,
@@ -2734,6 +3185,14 @@ existing native checker 358/413/788\\
 ($\mathsf{ED}^{0}$) & 633 & 697 & 1858 & zero-normal separate rules
 645/707/1879; incoming controls 663/751/1983, 683/771/1990 and
 636/708/2010\\
+\pkg{homogeneous\_\allowbreak discharge} & three families, seed-only
+\rulename{Use} ($\mathsf{H}_3^{\rho}$), preferred & 1097 & 1223 & 3427 &
+matched four-family control ($\mathsf{H}_4$) 1138/1262/3547; JSON pair
+\texttt{[goal, certificate]}, positive de Bruijn indices, tagged nodes\\
+\pkg{homogeneous\_\allowbreak discharge} & fusion only ($\mathsf{H}_3$) &
+1128 & 1256 & 3515 & the same\\
+\pkg{homogeneous\_\allowbreak discharge} & seed restriction only
+($\mathsf{H}_4^{\rho}$) & 1107 & 1229 & 3459 & the same\\
 \end{longtable}
 
 \section{Further questions}
@@ -2796,8 +3255,27 @@ $E$ with root $D$; it does not remove the case.
 \begin{question}[Combinations not measured]
 \pkg{prefix\_clauses} and \pkg{one\_body} ask for the diagonal
 introduction on the prefix representation and on one-body contexts, with
-a matched measurement. Neither combination is stated or measured in the
-packages.
+a matched measurement. For homogeneous contexts with the asymmetric gate
+the combination is \cref{claus:thm:h3}, measured by
+\pkg{homogeneous\_discharge}. The combination with the record
+representation $D^k(s=t)$ and with the symmetric gate of $\mathsf{OB}$ is
+not stated or measured in the packages.
+\end{question}
+
+\begin{question}[Homogeneous contexts in Lean and in compact checkers]
+\pkg{homogeneous\_discharge} asks the following. Can the diagonal case of
+gate access (\cref{claus:lem:haccess}) be formalized in the Lean
+development by reusing \Lean{NativeOneBody} and
+\Lean{NativeEvalDischarge}, without another parallel arithmetic
+development? Can the homogeneous representation remove enough certificate
+administration to improve a compact checker once validation and the gate
+are charged? Can the second premise of a \rulename{Discharge} be inferred
+in a homogeneous raw calculus without moving work into normalization and
+without losing \cref{claus:thm:hsubst}? Is there a normal form of
+derivations in which gate access and neutral discharges have bounded
+overhead? The translations of
+\cref{claus:thm:hfusion,claus:thm:hseed,claus:thm:h3} are effective, but
+no bound on the size of translated derivations is proved.
 \end{question}
 
 \begin{question}[Sizes of derivations]
@@ -2824,7 +3302,16 @@ smaller than the compact codecs of other packages (516 and 508 normalized
 bytes under their own input contracts, 788, 780 and 778 bytes for
 validated public-goal checkers). The packages ask for a fixed common
 contract, comprising goal grammar, scope checking, normalization and
-measurement, before any such comparison.
+measurement, before any such comparison. \pkg{homogeneous\_discharge}
+reports the smallest inspected programs under other input contracts as
+$245/263/465$ (unshifted compact, whole JSON, separate minima),
+$239/256/549$ (unshifted compact, JSON Lines, separate minima; the
+$256$-node program has $245/256/580$), $267/298/462$ (shifted compact,
+whole JSON, one program) and $319/358/600$ (validated native checker on
+equations and $D$, separate minima), all smaller than its readable checker
+of $\mathsf{H}_3^{\rho}$; it states these as upper bounds on an unknown
+optimum and the combination as new only relative to the sources it
+inspected, three pending archives not having been inspected.
 \item The formal statements not present in the Lean development are: the
 calculus $\mathsf{C}^{0}_{\mathrm{b}}$ on clauses
 (\cref{claus:thm:fixedzero}), the guard criterion and the mirror guard on
@@ -2838,7 +3325,10 @@ covariance \cref{claus:lem:covar} and the tree-preserving substitution
 \cref{claus:thm:pdsubst} (\pkg{476\_byte\_presentation} claims no Lean
 or Rocq verification of its results or of its proof compilers;
 \cref{claus:thm:ku,claus:thm:pd} are formalized in this repository, see
-\cref{claus:rem:pdlean}), and the
+\cref{claus:rem:pdlean}), all results of \cref{claus:sec:hd}
+(\pkg{homogeneous\_discharge} supplies no Lean or Rocq formalization;
+its written proof is independently reviewed and its programs are tested on
+finite inputs), and the
 correspondence of each Python checker with its calculus.
 \item \pkg{reduced\_clause\_calculus} implements the translation of
 certificates from raw to zero-normal syntax only; the converse compiler
