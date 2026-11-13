@@ -51,6 +51,18 @@ theorem paConsistency_standard : paConsistency.Evalb (M := ℕ) ![] ↔ Entailme
 def native_refutation_to_gg : standardTheory ⊢! nativePARefutation 🡒 mappedPARefutationᴺ :=
   theoryNativeForward mappedPARefutation
 
+/-- Conditional assembly for the actual mapped PA-refutation predicate.
+    The machine-specific implications remain hypotheses. -/
+def consistency_iff_nonhalting_of_reductions
+    (halt : Sentenceᵢ language)
+    (refutation_implies_halt : standardTheory ⊢! nativePARefutation 🡒 halt)
+    (halt_implies_not_not_refutation : standardTheory ⊢! halt 🡒 ∼∼nativePARefutation) :
+    standardTheory ⊢! nativePAConsistency 🡘 ∼halt := by
+  unfold nativePAConsistency
+  exact Entailment.K_intro
+    (Entailment.C_trans Entailment.dni (Entailment.contra halt_implies_not_not_refutation))
+    (Entailment.contra refutation_implies_halt)
+
 /-- Conditional comparison; supplying this backward proof remains a task. -/
 def consistency_comparison
     (hbackward : standardTheory ⊢! mappedPARefutationᴺ 🡒 ∼∼nativePARefutation) :
