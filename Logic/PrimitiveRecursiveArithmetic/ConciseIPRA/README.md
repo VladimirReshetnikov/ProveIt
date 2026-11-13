@@ -840,6 +840,14 @@ Later that day `checked_reduction` and `validated_three_field` lowered the stric
 envelope further, to 306/348/589 (and the compact node record to 255, chapter
 "Certificates and checkers"); fifteen checker files they supersede, with their
 byte-identical copies and three compressed copies, were deleted.
+The seven arrivals of the evening of 2026-11-13 went into "Certificates and checkers"
+(`304_token_refinement`, `neutral_modes`, `scope_phase`, `composition_and_dummy_slots`:
+strict envelope 302/340/584, shifted compact byte record 460, and a padding-slot
+completeness obstruction of the sorted grammar), "Introduction without a supplied
+witness" (`equational_transport`: Back on equations only, answering `wit:q:ab-back`) and
+"Obstructions" (`induction_boundary`, `frontier_church`); fifteen checker files they
+supersede, seven compressed copies and eight re-delivered copies of earlier superseded
+checkers were deleted.
 `checked_presentation`, `context_phase`, `crossed_uniqueness`,
 `frontier_review`, `inferred_major`, `orbit_closure`, `progress_independence`
 and `smaller_envelope` arrived on 2026-11-12 (commits `1c5ecfe518`,
