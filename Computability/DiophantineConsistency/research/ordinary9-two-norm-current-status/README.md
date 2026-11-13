@@ -6,6 +6,12 @@ nonzero beta. Its standard-integer zero existence is equivalent to that of
 the separate shifted-zeta graph with a **free** auxiliary-square input. The
 graph, degree and this limited equivalence have been [independently reviewed](../../reviews/ordinary9-shifted-free-aux-two-norm64-independent/README.md).
 
+An alternative [divisible-carrier representation](../ordinary10-two-norm-divisible61/README.md)
+uses ten natural inputs, 61 operations and the same degree 60. Its
+[independently reviewed](../../reviews/ordinary10-two-norm-divisible61-independent/README.md)
+two-way zero maps require natural ports with positive beta and K0; it has
+the same missing bridge to the original parent.
+
 This is **not yet an equation proved equivalent to Con(ZFC)**. The original
 85-row parent requires an actual square auxiliary witness. The [reverse
 Pell criterion](../ordinary13-shifted85-free-aux-square-criterion/README.md)
