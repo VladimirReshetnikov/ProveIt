@@ -1,0 +1,97 @@
+import DiophantineConsistency.ModelRelationCombining
+import DiophantineConsistency.BFS943.Trace75IntegralTransport
+import DiophantineConsistency.Compact44.P72Root
+import Mathlib.Tactic.LinearCombination
+import Mathlib.Tactic.Linarith
+
+/-! Proposed fact-level zero-ordinate obstruction in an IΣ₁ model.
+No graph units, positive beta, literal zero, provider replay or Lean proof
+is supplied here. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.ZeroOrdinateMainObstructionDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ModelDifferenceRing
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- If H=3+4Y(X+1) divides Yq²L, it also divides 3q²L. -/
+theorem modulus_dvd_three (q Y X L : V)
+    (h : (ι (3+4*Y*(X+1)) : DiffRing V) ∣ ι (Y*(q*q))*ι L) :
+    (ι (3+4*Y*(X+1)) : DiffRing V) ∣ ι (3*(q*q)*L) := by
+  obtain ⟨t,ht⟩ := h
+  refine ⟨ι (q*q*L)-4*(ι X+1)*t,?_⟩
+  simp only [map_add,map_mul,map_one,map_ofNat] at ht ⊢
+  linear_combination -4*(ι X+1)*ht
+
+/-- The positive multiple is smaller than H, so it cannot be divisible by H. -/
+theorem modulus_excludes (q Y X L : V) (hq : 2≤q) (hY : q^3≤Y)
+    (hL : 0<L) (hLbound : L≤X+1)
+    (hd : (ι (3+4*Y*(X+1)) : DiffRing V) ∣ ι (Y*(q*q))*ι L) : False := by
+  let H : V := 3+4*Y*(X+1)
+  have hthreeSigned := modulus_dvd_three q Y X L hd
+  have hthree : H ∣ 3*(q*q)*L :=
+    Trace75IntegralTransport.natural_dvd_of_signed H (3*(q*q)*L) hthreeSigned
+  have hqpos : 0<q := lt_of_lt_of_le (by simp : (0:V)<2) hq
+  have hq1 : 1≤q := le_trans (by simp : (1:V)≤2) hq
+  have hq2Y : q*q≤Y := by
+    have h := le_mul_of_one_le_right (Arithmetic.zero_le (q*q)) hq1
+    have he : q*q*q=q^3 := by ring
+    rw [he] at h
+    exact le_trans h hY
+  have hboundL : (q*q)*L≤(q*q)*(X+1) :=
+    mul_le_mul_of_nonneg_left hLbound (Arithmetic.zero_le (q*q))
+  have hboundY : (q*q)*(X+1)≤Y*(X+1) :=
+    mul_le_mul_of_nonneg_right hq2Y (Arithmetic.zero_le (X+1))
+  have hpos : 0<3*(q*q)*L := mul_pos (mul_pos (by simp) (mul_pos hqpos hqpos)) hL
+  have hle : H≤3*(q*q)*L := le_of_dvd hpos hthree
+  have hstrict : 3*(q*q)*L<H := by dsimp only [H]; nlinarith
+  exact (not_lt_of_ge hle) hstrict
+
+/-- With c=0 and k=0, the signed main norm is impossible when q≥2,
+Y≥q³ and X=q*w. The signed shift t may have either sign. -/
+theorem zero_ordinate_impossible (q Y X w : V) (z t : DiffRing V)
+    (hq : 2≤q) (hY : q^3≤Y) (hX : X=q*w)
+    (hshape : z=ι (Y*(q*q))*ι X+ι (3+4*Y*(X+1))*t)
+    (hnorm : z*z=ι (Y*(q*q))*ι (Y*(q*q))) : False := by
+  let U : V := Y*(q*q)
+  let H : V := 3+4*Y*(X+1)
+  have hfactor : (z-ι U)*(z+ι U)=0 := by
+    dsimp only [U]
+    linear_combination hnorm
+  rcases mul_eq_zero.mp hfactor with hp | hm
+  · have hd : (ι H : DiffRing V)∣ι U*(ι X-1) := by
+      refine ⟨-t,?_⟩
+      dsimp only [U,H] at hp ⊢
+      linear_combination hp-hshape
+    by_cases hw : w=0
+    · have hx0 : X=0 := by rw [hX,hw]; simp
+      have hd1 : (ι H : DiffRing V)∣ι U*ι (1:V) := by
+        obtain ⟨a,ha⟩ := hd
+        refine ⟨-a,?_⟩
+        rw [hx0] at ha
+        simp only [map_zero,map_one] at ha ⊢
+        linear_combination -ha
+      exact modulus_excludes q Y X 1 hq hY (by simp)
+        (by simpa only [zero_add] using le_add_of_nonneg_left (Arithmetic.zero_le X)) hd1
+    · have hw1 : 1≤w := pos_iff_one_le.mp (pos_iff_ne_zero.mpr hw)
+      have hq0 : 0≤q := Arithmetic.zero_le q
+      have hX2 : 2≤X := by
+        rw [hX]
+        exact le_trans hq (le_mul_of_one_le_right hq0 hw1)
+      have hX1 : 1≤X := le_trans (by simp : (1:V)≤2) hX2
+      have hL : 0<X-1 := tsub_pos_iff_lt.mpr (lt_of_lt_of_le (by simp : (1:V)<2) hX2)
+      have hLbound : X-1≤X+1 := le_trans tsub_le_self (le_add_of_nonneg_right (by simp))
+      have hdL : (ι H : DiffRing V)∣ι U*ι (X-1) := by
+        rw [P72Root.ι_tsub hX1]
+        simpa only [map_one] using hd
+      exact modulus_excludes q Y X (X-1) hq hY hL hLbound hdL
+  · have hd : (ι H : DiffRing V)∣ι U*(ι X+1) := by
+      refine ⟨-t,?_⟩
+      dsimp only [U,H] at hm ⊢
+      linear_combination hm-hshape
+    have hdL : (ι H : DiffRing V)∣ι U*ι (X+1) := by simpa only [map_add,map_one] using hd
+    exact modulus_excludes q Y X (X+1) hq hY (lt_add_of_nonneg_of_pos (Arithmetic.zero_le X) (by simp)) le_rfl hdL
+end DiophantineConsistency.ZeroOrdinateMainObstructionDraft
+#print axioms DiophantineConsistency.ZeroOrdinateMainObstructionDraft.zero_ordinate_impossible
