@@ -1,0 +1,34 @@
+import DiophantineConsistency.ModelDifferenceRing
+import CfoldWitnessAlgebra
+import PositiveGapRepresentation
+
+/-! SOURCE ONLY. Prospective local module names and proofs are unelaborated. -/
+set_option autoImplicit false
+noncomputable section
+namespace DiophantineConsistency.CfoldWitnessRepresentativesDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open ModelDifferenceRing CfoldWitnessAlgebraDraft ShearPositiveGapRepresentationDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The direct positive root-coordinate map has a positive model representative.
+    Bt and C are signed ring values and C≤Bt is an explicit hypothesis. -/
+theorem direct_coordinate (rho k : V) (C Bt : DiffRing V) (hBt : C≤Bt) :
+    ∃ n : V, (ι (n+1) : DiffRing V) = ι (rho+1)+(ι k)*(Bt-C) := by
+  have hrhoV : (0:V)<rho+1 := by simp
+  have hrho : (0:DiffRing V)<ι (rho+1) := by
+    have h := (ι_lt_ι (V := V)).mpr hrhoV
+    simpa using h
+  have hk : (0:DiffRing V)≤ι k := ι_nonneg k
+  have hp := transported_positive (ι (rho+1)) (ι k) C Bt hrho hk hBt
+  exact positive_as_successor _ hp
+
+/-- The switched-root expression has a successor representative once the
+    independent sign and Pell-gap hypotheses have been supplied. -/
+theorem switched_coordinate (C k tau ell s t : DiffRing V)
+    (hC : 1≤C) (hk : 0≤k) (hgap : s<tau-ell) (ht : 0≤t) :
+    ∃ n : V, (ι (n+1) : DiffRing V)=(C-1)*k+(tau-ell)-s+t := by
+  exact positive_as_successor _ (switch_positive C k tau ell s t hC hk hgap ht)
+end DiophantineConsistency.CfoldWitnessRepresentativesDraft
+#print axioms DiophantineConsistency.CfoldWitnessRepresentativesDraft.direct_coordinate
+#print axioms DiophantineConsistency.CfoldWitnessRepresentativesDraft.switched_coordinate

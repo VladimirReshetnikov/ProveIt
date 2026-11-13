@@ -1,0 +1,90 @@
+import Mathlib.Tactic.Ring
+import Mathlib.Tactic.Linarith
+
+/-! SOURCE ONLY. Generic algebraic cuts; graph evaluator bindings are not proved. -/
+set_option autoImplicit false
+noncomputable section
+namespace DiophantineConsistency.CfoldWitnessAlgebraDraft
+
+section Ring
+variable {R : Type*} [CommRing R]
+
+def parentRoot (M ell k r Bt Y b q3 : R) : R :=
+  M*(ell+k+r-k*Bt)+Y*b-q3*Bt
+
+def childRoot (M ell k rho C Bt Y b q3 : R) : R :=
+  M*(ell+k+rho-k*C)+Y*b-q3*Bt
+
+def sphere (Z M ell k main aux strong : R) : R :=
+  (Z^2-M^2*(1+ell*(ell+k)))^2+main^2+(aux-1)^2+strong^2
+
+/-- Direct child-to-parent coordinate substitution is a free-ring identity. -/
+theorem root_transport (M ell k rho C Bt Y b q3 : R) :
+    parentRoot M ell k (rho+k*(Bt-C)) Bt Y b q3 =
+      childRoot M ell k rho C Bt Y b q3 := by
+  simp only [parentRoot,childRoot]
+  ring
+
+/-- The four-square outputs agree when the other three residuals agree. -/
+theorem sphere_transport (M ell k rho C Bt Y b q3 main aux strong : R) :
+    sphere (parentRoot M ell k (rho+k*(Bt-C)) Bt Y b q3) M ell k main aux strong =
+      sphere (childRoot M ell k rho C Bt Y b q3) M ell k main aux strong := by
+  rw [root_transport]
+
+/-- The inverse formal substitution is independent of positivity. -/
+theorem root_transport_inverse (M ell k r C Bt Y b q3 : R) :
+    childRoot M ell k (r-k*(Bt-C)) C Bt Y b q3 =
+      parentRoot M ell k r Bt Y b q3 := by
+  simp only [parentRoot,childRoot]
+  ring
+
+/-- Choosing the positive Pell root supplies an explicit child root, under
+    the three displayed scale/divisibility identities. -/
+theorem switch_root (M ell k C Bt Y b q3 s t tau : R)
+    (hM : M=q3*b) (hY : Y=q3*s) (hBt : Bt=b*t) :
+    childRoot M ell k ((C-1)*k+(tau-ell)-s+t) C Bt Y b q3 = M*tau := by
+  subst M
+  subst Y
+  subst Bt
+  simp only [childRoot]
+  ring
+end Ring
+
+section Order
+variable {R : Type*} [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+
+/-- The elementary consequence of q² calibration used in the forward map. -/
+theorem bt_gap (q C X K F : R)
+    (hq : 2 ≤ q) (hC : 1 ≤ C) (hX : q^2 ≤ X)
+    (hK : 0 ≤ K) (hF : F ≤ q-2) :
+    2*q-1 ≤ C*(X+K*q)-F*q-C := by
+  have hq0 : 0 ≤ q := by linarith
+  have hKq : 0 ≤ K*q := mul_nonneg hK hq0
+  have hbase : 0 ≤ X+K*q-1 := by nlinarith [sq_nonneg (q-2)]
+  have hCmul : X+K*q-1 ≤ C*(X+K*q-1) := by
+    simpa using mul_le_mul_of_nonneg_right hC hbase
+  have hFmul : F*q ≤ (q-2)*q := mul_le_mul_of_nonneg_right hF hq0
+  nlinarith [hCmul,hFmul]
+
+/-- The direct transported parent coordinate stays strictly positive. -/
+theorem transported_positive (rho k C Bt : R)
+    (hrho : 0<rho) (hk : 0≤k) (hBt : C≤Bt) :
+    0<rho+k*(Bt-C) := by
+  have hm : 0≤k*(Bt-C) := mul_nonneg hk (sub_nonneg.mpr hBt)
+  exact add_pos_of_pos_of_nonneg hrho hm
+
+/-- The switched-root coordinate is positive from the stated Pell gap. -/
+theorem switch_positive (C k tau ell s t : R)
+    (hC : 1≤C) (hk : 0≤k) (hgap : s<tau-ell) (ht : 0≤t) :
+    0<(C-1)*k+(tau-ell)-s+t := by
+  have hm : 0≤(C-1)*k := mul_nonneg (sub_nonneg.mpr hC) hk
+  linarith
+end Order
+end DiophantineConsistency.CfoldWitnessAlgebraDraft
+#print axioms DiophantineConsistency.CfoldWitnessAlgebraDraft.root_transport
+#print axioms DiophantineConsistency.CfoldWitnessAlgebraDraft.sphere_transport
+#print axioms DiophantineConsistency.CfoldWitnessAlgebraDraft.root_transport_inverse
+#print axioms DiophantineConsistency.CfoldWitnessAlgebraDraft.switch_root
+#print axioms DiophantineConsistency.CfoldWitnessAlgebraDraft.bt_gap
+#print axioms DiophantineConsistency.CfoldWitnessAlgebraDraft.transported_positive
+#print axioms DiophantineConsistency.CfoldWitnessAlgebraDraft.switch_positive
