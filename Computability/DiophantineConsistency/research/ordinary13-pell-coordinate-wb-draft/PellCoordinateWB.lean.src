@@ -1,0 +1,96 @@
+import DiophantineConsistency.PellRunWBComposition
+
+/-! SOURCE ONLY: proposed bounded-witness clients for the two coordinate
+    graphs. Their providers, quoted evaluations, tactics and results have not
+    been elaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.PellCoordinateWBDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open PRAFiniteFunctionCodes PRALanguage PRATheory
+open ArithmeticPellRecurrence PRAWitnessCalculus PRAWitnessArithmetic PRAWitnessPR
+open PellHistoryMajorantDraft PellRunExponentialBoundDraft PellRunMajorantClientDraft
+open PellRunWBCompositionDraft
+
+/-- Context after adding the existential state: [state,out,time,parameter]. -/
+def xStateBody : ArithmeticSemisentence 4 :=
+  “state out time a. !runDef state time a ∧ !pi₁Def out state”
+def yStateBody : ArithmeticSemisentence 4 :=
+  “state out time a. !runDef state time a ∧ !pi₂Def out state”
+
+section SigmaOneModels
+variable (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Proposed evaluation of the exact quoted bodies. -/
+theorem xState_eval (e : Fin 3 → V) (state : V) :
+    xStateBody.Eval (state :> e) Empty.elim ↔
+      state = run (e 1) (e 2) ∧ e 0 = π₁ state := by
+  simp [xStateBody, Semiformula.eval_substs]
+
+theorem yState_eval (e : Fin 3 → V) (state : V) :
+    yStateBody.Eval (state :> e) Empty.elim ↔
+      state = run (e 1) (e 2) ∧ e 0 = π₂ state := by
+  simp [yStateBody, Semiformula.eval_substs]
+
+/-- The same state is already bounded; no change of projection witness. -/
+theorem xState_replacement (e : Fin 3 → V) (state : V)
+    (h : xStateBody.Eval (state :> e) Empty.elim) :
+    ∃ state' ≤ pairValueBound.vval e,
+      xStateBody.Eval (state' :> e) Empty.elim := by
+  refine ⟨state, ?_, h⟩
+  have hs : state = run (e 1) (e 2) := ((xState_eval V e state).mp h).1
+  rw [hs, pairValueBound_vval e]
+  exact run_le_exponential_horizon (e 1) (e 1) (e 2) le_rfl
+
+theorem yState_replacement (e : Fin 3 → V) (state : V)
+    (h : yStateBody.Eval (state :> e) Empty.elim) :
+    ∃ state' ≤ pairValueBound.vval e,
+      yStateBody.Eval (state' :> e) Empty.elim := by
+  refine ⟨state, ?_, h⟩
+  have hs : state = run (e 1) (e 2) := ((yState_eval V e state).mp h).1
+  rw [hs, pairValueBound_vval e]
+  exact run_le_exponential_horizon (e 1) (e 1) (e 2) le_rfl
+end SigmaOneModels
+
+section CandidateModels
+variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
+  [M↓[language] ⊧* PRA]
+local instance : Zero M := ⟨Structure.func (L := language) (Code.zero 0) Fin.elim0⟩
+local instance : One M := ⟨Structure.func (L := language) oneCode Fin.elim0⟩
+local instance : Add M := ⟨fun x y => Structure.func (L := language) addCode ![x,y]⟩
+local instance : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
+local instance : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
+
+/-- Proposed body closure from the run and projection graph WB facts. -/
+theorem xState_wb : WB M xStateBody := by
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := PRAModelIOpenPairing.standardModelIOpen
+  letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
+  have := run_wb_selected (M := M)
+  have := wb_pi₁Def (M := M)
+  unfold xStateBody
+  wb_auto
+
+theorem yState_wb : WB M yStateBody := by
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := PRAModelIOpenPairing.standardModelIOpen
+  letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
+  have := run_wb_selected (M := M)
+  have := wb_pi₂Def (M := M)
+  unfold yStateBody
+  wb_auto
+
+/-- Proposed coordinate graph WB clients; formula matching is not checked. -/
+theorem xDef_wb : WB M xDef.val := by
+  change WB M (∃⁰ xStateBody)
+  exact wb_exs_bt' xStateBody (by simp) pairValueBound
+    (fun V _ _ e state h => xState_replacement V e state h) (xState_wb (M := M))
+
+theorem yDef_wb : WB M yDef.val := by
+  change WB M (∃⁰ yStateBody)
+  exact wb_exs_bt' yStateBody (by simp) pairValueBound
+    (fun V _ _ e state h => yState_replacement V e state h) (yState_wb (M := M))
+end CandidateModels
+end DiophantineConsistency.PellCoordinateWBDraft
+#print axioms DiophantineConsistency.PellCoordinateWBDraft.xDef_wb
+#print axioms DiophantineConsistency.PellCoordinateWBDraft.yDef_wb
