@@ -1,0 +1,52 @@
+import DiophantineConsistency.PellPeriodCReplacement
+import DiophantineConsistency.PellPeriodHReplacement
+import DiophantineConsistency.PellPeriodXYReplacements
+
+/-! SOURCE ONLY. All prospective providers, hierarchy arguments and
+    quotation interpretation are unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.PellPeriodSixReplacementsCompositionDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open PRAFiniteFunctionCodes PRALanguage PRATheory
+open ArithmeticPellRecurrence PRAWitnessCalculus PRAWitnessPR
+open PellPeriodFullWBDraft PellPeriodBoundedDraft PellPeriodFinalReplacementsDraft
+open PellPeriodFinalBodyEvalDraft PellPeriodCReplacementDraft PellPeriodHReplacementDraft
+open PellPeriodXYReplacementsDraft
+
+section Models
+variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
+  [M↓[language] ⊧* PRA]
+local instance : Zero M := ⟨Structure.func (L := language) (Code.zero 0) Fin.elim0⟩
+local instance : One M := ⟨Structure.func (L := language) oneCode Fin.elim0⟩
+local instance : Add M := ⟨fun x y => Structure.func (L := language) addCode ![x,y]⟩
+local instance : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
+local instance : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
+
+/-- Only the formula interpretation and six hierarchy claims are explicit
+    here; every imported source proof and provider remains unelaborated. -/
+theorem period_wb_of_body_bridge
+    (evalBody : BodyEvaluationBridge)
+    (hcS : Hierarchy 𝚺 1 bodyC) (hhS : Hierarchy 𝚺 1 bodyH)
+    (hxS : Hierarchy 𝚺 1 bodyX) (hyS : Hierarchy 𝚺 1 bodyY)
+    (hrS : Hierarchy 𝚺 1 bodyR) (htS : Hierarchy 𝚺 1 finalBody) :
+    WB M periodDef.val :=
+  period_wb_of_replacements (M := M) hcS hhS hxS hyS hrS htS
+    (cReplacement evalBody) (hReplacement evalBody)
+    (xReplacement evalBody) (yReplacement evalBody)
+    (rReplacement evalBody) (tReplacement evalBody)
+
+/-- Proposed composition using the separate unelaborated body bridge. -/
+theorem period_wb_of_hierarchy
+    (hcS : Hierarchy 𝚺 1 bodyC) (hhS : Hierarchy 𝚺 1 bodyH)
+    (hxS : Hierarchy 𝚺 1 bodyX) (hyS : Hierarchy 𝚺 1 bodyY)
+    (hrS : Hierarchy 𝚺 1 bodyR) (htS : Hierarchy 𝚺 1 finalBody) :
+    WB M periodDef.val :=
+  period_wb_of_body_bridge (M := M) bodyEvaluationBridge hcS hhS hxS hyS hrS htS
+
+end Models
+end DiophantineConsistency.PellPeriodSixReplacementsCompositionDraft
+#print axioms DiophantineConsistency.PellPeriodSixReplacementsCompositionDraft.period_wb_of_body_bridge
+#print axioms DiophantineConsistency.PellPeriodSixReplacementsCompositionDraft.period_wb_of_hierarchy
