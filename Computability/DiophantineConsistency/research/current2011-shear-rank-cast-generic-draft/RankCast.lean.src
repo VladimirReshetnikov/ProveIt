@@ -1,0 +1,37 @@
+import DiophantineConsistency.ModelDifferenceRing
+import DiophantineConsistency.ArithmeticPellFirstIndex
+
+/-! Source-only draft; no Lean elaboration or current-port binding. -/
+set_option autoImplicit false
+noncomputable section
+namespace DiophantineConsistency.ShearRankCastGenericDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open ModelDifferenceRing ModelArithmetic
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem cast_tsub_of_le {a b : V} (h : b ≤ a) : ι (a-b) = ι a - ι b := by
+  have he := congrArg (fun x : V => ι x) (tsub_add_cancel_of_le h)
+  apply eq_sub_iff_add_eq.mpr
+  simpa only [map_add] using he
+
+theorem gap_implies_F_le_q {q F alpha : V} (hgap : 0 < q-F-alpha) : F ≤ q := by
+  have hp : 0 < q-F := lt_of_lt_of_le hgap tsub_le_self
+  exact le_of_lt (tsub_pos_iff_lt.mp hp)
+
+/-- Exact rank algebra once the three truncated subtractions are bounded. -/
+theorem rank_cast (q F alpha MC MF J : V) (h1 : 1 ≤ q)
+    (hF : F ≤ q) (h2 : 1 ≤ q^2) :
+    ι (((q-1)*(q-F)+alpha)*(q^2-1)+(MC+q*MF)*J) =
+      ((ι q-1)*(ι q-ι F)+ι alpha)*((ι q)^2-1)+(ι MC+ι q*ι MF)*ι J := by
+  have hq1 : ι (q-1) = ι q-1 := by simpa only [map_one] using (cast_tsub_of_le h1)
+  have hqF : ι (q-F) = ι q-ι F := cast_tsub_of_le hF
+  have hq2 : ι (q^2-1) = (ι q)^2-1 := by
+    simpa only [map_one,map_pow] using (cast_tsub_of_le h2)
+  simp only [map_add,map_mul,hq1,hqF,hq2]
+
+theorem c_cast (k Y eta : V) : ι (k*Y+eta) = ι k*ι Y+ι eta := by
+  simp only [map_add,map_mul]
+
+end DiophantineConsistency.ShearRankCastGenericDraft
