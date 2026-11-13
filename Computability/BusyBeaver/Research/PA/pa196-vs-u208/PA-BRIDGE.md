@@ -183,3 +183,8 @@ preserve the invariant; for the exact Cantor pair, checking indices less than
 the numeric stack code suffices. This gives a concrete finite invariant for a
 potential arithmetization, but it is not yet a PA-internal proof or a link to
 the PA196 checker and does not discharge the reverse implication.
+
+[The command-extraction note](reverse-cert-stack/COMMAND-EXTRACTION.md) spells
+out a conditional proof-producing update for every exact PA196 store command.
+It identifies the concrete syntactic constructors and PA-internal induction
+that remain to be implemented; it does not bind a literal halting trace.
