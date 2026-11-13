@@ -1,0 +1,11 @@
+# Independent review: local modulo-four and no-zero alternatives
+
+The alternative sources have the exact stated edits. The generic source replaces the direct FactorUnits import with local private copies of its four finite ZMod-4 facts, leaving the generic unit proof and exported signatures unchanged. Independent enumeration checks the first, main, strong and auxiliary exclusions on 64, 256, 64 and 256 residue assignments respectively. These finite checks cover arbitrary integer residue classes; they do not elaborate `by decide` or the surrounding Lean source.
+
+The model alternative replaces the 86-specific same-zero import with the generic no-zero bridge, defines the same pointwise zero equivalence locally, and applies `not_congr` under universal quantification. Its direction is child-to-parent and the existing 87 parent `PolynomialBridge` remains an explicit hypothesis. The exact remaining model proof is unchanged from the separately reviewed source; tactic, typeclass and provider resolution are still open.
+
+An independent header scanner reproduces 458 project source names in the conditional alternative, with no source-header path from that client to `ArithmeticAdaptiveFactorUnits2011`. Once the proposed endpoint instantiates its parent bridge with `HAAdaptiveFactor87.polynomialBridge`, the combined closure has 658 project source names and 124 external import names, and reaches FactorUnits through the chain recorded in the receipt. The checker independently verifies all source hashes and header edges against the pinned author receipt. Thus the absence claim applies only to the conditional source closure; it does not remove the inherited parent dependency.
+
+At review time the same bounded observation found 14 named project objects absent from both surveyed temporary roots. This is a presence check in two locations only, not an exhaustive provider search. Even a present object has no authenticated source ancestry or demonstrated compatibility here. The header scanner is not a Lean parser and does not authenticate external packages, dynamic loading or compiled providers. Temporary directories may change.
+
+Reproduce the bounded check and `receipt.json` with `python3 -I -S -B reviews/adaptive87-four-square-local-mod4-model-independent/check.py`. No Lean build or staging is performed; no iPRA endpoint is established by this review.
