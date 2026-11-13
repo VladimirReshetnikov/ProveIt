@@ -82,6 +82,10 @@ The other recognizer subformulas and the complete induction bounds remain open.
 graph and its enclosing existential, conditional on a bound for the remaining
 Σ₁ conjunct. This does not establish that remaining bound.
 
+`PA196PAAlphabetBounds.lean` proves both polarities of the witness bounds for
+Foundation's arithmetic function-symbol and relation-symbol recognizers.
+Those base bounds do not yet establish bounds for formula or proof coding.
+
 `PA196PRAAssembly.lean` composes the two conditional transfers with the
 intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
 classical PRA hypotheses: the forward reduction, the reverse reduction, and
