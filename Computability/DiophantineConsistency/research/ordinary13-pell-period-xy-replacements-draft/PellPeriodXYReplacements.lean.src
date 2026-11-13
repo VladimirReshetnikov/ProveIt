@@ -1,0 +1,73 @@
+import DiophantineConsistency.PellPeriodFinalBodyEval
+import DiophantineConsistency.PellRunExponentialBound
+
+/-! SOURCE ONLY. Graph and formula evaluation, bound normalization, and all
+    prospective providers remain unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.PellPeriodXYReplacementsDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open ArithmeticPellRecurrence ArithmeticConstructionBoundPell PellRunExponentialBoundDraft
+open PellPeriodFullWBDraft PellPeriodFinalReplacementsDraft PellPeriodFinalBodyEvalDraft
+open PRAWitnessBoundTerms PRAWitnessBoundTerms.BoundTerm
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem xcoord_le_bound (h a : V) :
+    xcoord h a ≤ Exp.exp (2*(a+2)*h) :=
+  le_trans (x_le h a) (power_le_binary_exponential (2*(a+2)) h)
+
+theorem ycoord_le_bound (h a : V) :
+    ycoord h a ≤ Exp.exp (2*(a+2)*h) :=
+  le_trans (y_le h a) (power_le_binary_exponential (2*(a+2)) h)
+
+/-- Retain x and its three inner witnesses; interpretation is explicit. -/
+theorem xReplacement (evalBody : BodyEvaluationBridge) : Replacement bodyX boundX := by
+  intro V _ _ e x hx
+  have original := hx
+  change (∃⁰ (∃⁰ (∃⁰ finalBody))).Eval (x :> e) Empty.elim at hx
+  simp only [Semiformula.eval_ex] at hx
+  obtain ⟨y,r,t,hfinal⟩ := hx
+  have data := (evalBody V (t :> r :> y :> x :> e)).mp hfinal
+  change BodyData t r y x (e 0) (e 1) (e 2) (e 3) at data
+  have heq : x = xcoord (e 0) (e 3) := by
+    have hg : xDef.val.Evalb ![x,e 0,e 3] ↔ x = xcoord (e 0) (e 3) :=
+      x_defined.defined ![x,e 0,e 3]
+    exact hg.mp data.2.2.1
+  refine ⟨x, ?_, original⟩
+  have hbound := xcoord_le_bound (e 0) (e 3)
+  rw [← heq] at hbound
+  simpa [boundX, PRAWitnessBoundTerms.BoundTerm.vval, numeral_eq_natCast] using hbound
+
+/-- Retain y and its two inner witnesses; interpretation is explicit. -/
+theorem yReplacement (evalBody : BodyEvaluationBridge) : Replacement bodyY boundY := by
+  intro V _ _ e y hy
+  have original := hy
+  change (∃⁰ (∃⁰ finalBody)).Eval (y :> e) Empty.elim at hy
+  simp only [Semiformula.eval_ex] at hy
+  obtain ⟨r,t,hfinal⟩ := hy
+  have data := (evalBody V (t :> r :> y :> e)).mp hfinal
+  change BodyData t r y (e 0) (e 1) (e 2) (e 3) (e 4) at data
+  have heq : y = ycoord (e 1) (e 4) := by
+    have hg : yDef.val.Evalb ![y,e 1,e 4] ↔ y = ycoord (e 1) (e 4) :=
+      y_defined.defined ![y,e 1,e 4]
+    exact hg.mp data.2.2.2.1
+  refine ⟨y, ?_, original⟩
+  have hbound := ycoord_le_bound (e 1) (e 4)
+  rw [← heq] at hbound
+  simpa [boundY, PRAWitnessBoundTerms.BoundTerm.vval, numeral_eq_natCast] using hbound
+
+/-- Proposed clients of the separately drafted evaluation bridge. -/
+theorem xReplacement_closed : Replacement bodyX boundX :=
+  xReplacement bodyEvaluationBridge
+
+theorem yReplacement_closed : Replacement bodyY boundY :=
+  yReplacement bodyEvaluationBridge
+
+end DiophantineConsistency.PellPeriodXYReplacementsDraft
+#print axioms DiophantineConsistency.PellPeriodXYReplacementsDraft.xReplacement
+#print axioms DiophantineConsistency.PellPeriodXYReplacementsDraft.yReplacement
+#print axioms DiophantineConsistency.PellPeriodXYReplacementsDraft.xReplacement_closed
+#print axioms DiophantineConsistency.PellPeriodXYReplacementsDraft.yReplacement_closed

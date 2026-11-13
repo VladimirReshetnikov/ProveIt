@@ -1,0 +1,29 @@
+import DiophantineConsistency.PellPeriodFinalReplacements
+
+/-! SOURCE ONLY: proposed evaluation bridge for one fixed quotation.
+    Imported providers and this proof have not been elaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.PellPeriodFinalBodyEvalDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open PellPeriodFullWBDraft PellPeriodFinalReplacementsDraft
+
+/-- Interpret exactly the eight-slot final body as the six `BodyData`
+    conjuncts; this does not interpret an external file or a whole period. -/
+theorem bodyEvaluationBridge : BodyEvaluationBridge := by
+  intro V _ _ e
+  simp [BodyData, finalBody, Semiformula.eval_substs]
+
+/-- Proposed clients with the quotation premise supplied by this draft. -/
+theorem tReplacement_closed : Replacement finalBody boundT :=
+  tReplacement bodyEvaluationBridge
+
+theorem rReplacement_closed : Replacement bodyR boundR :=
+  rReplacement bodyEvaluationBridge
+
+end DiophantineConsistency.PellPeriodFinalBodyEvalDraft
+#print axioms DiophantineConsistency.PellPeriodFinalBodyEvalDraft.bodyEvaluationBridge
+#print axioms DiophantineConsistency.PellPeriodFinalBodyEvalDraft.tReplacement_closed
+#print axioms DiophantineConsistency.PellPeriodFinalBodyEvalDraft.rReplacement_closed
