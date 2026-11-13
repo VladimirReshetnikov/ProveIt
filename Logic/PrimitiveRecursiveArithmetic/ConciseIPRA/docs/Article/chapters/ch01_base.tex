@@ -2191,13 +2191,17 @@ $\beta(1,0)=\sel(L(2,1),0,1)=\sel(L(1,0),0,1)=\sel(0,0,1)=0$, and by
 $\beta_-(1,0)=\sel(\Lambda(1,1),1,0)=\sel(\Lambda(0,0),1,0)=\sel(1,1,0)=0$;
 the other two hypotheses are \eqref{base:eq:beta-conj},
 \eqref{base:eq:beta-base} and their counterparts in the proof of
-\cref{base:prop:pred57}.  The proofs given there are kept, the first because
-it is the one formalized in Lean.  \pkg{orbit\_equality} checks
+\cref{base:prop:pred57}.  The proofs given there are kept.  The Lean
+modules \Lean{TeqPred} and \Lean{EqPred} prove the predecessor equation of
+\cref{base:thm:pred} by this route: \Lean{Q.pred\_succ} is one equation
+induction on $P(\Suc x)=x$ from the conjugacy \Lean{Q.bump\_sat\_succ} and
+$\beta(1,0)=0$, so neither the comparator diagonal nor the invariant below the
+cap is formalized there.  \pkg{orbit\_equality} checks
 \cref{base:lem:diag} by a symbolic certificate of $37$ equality-proof nodes
 with exactly two equation inductions, in the schematic equational theory
 whose only axioms are $W(0,n)=0$, $W(\Suc t,n)=F(n,W(t,n))$ and the three
-hypotheses of the lemma for $F$ in place of $f$.  The lemma is not
-formalized in Lean or Rocq.
+hypotheses of the lemma for $F$ in place of $f$.  The lemma itself, for an
+arbitrary template $f$, is not formalized in Lean or Rocq.
 \end{remark}
 
 The sizes of the pieces, with variables as arguments, are
@@ -4049,8 +4053,10 @@ delivered with the package do not use $\eta$; the package also records that
 no new axiomatization below every current checker minimum is obtained.
 (d) The package proposes formalizing \cref{base:lem:diag} in the Lean
 development, so that the predecessor proofs need neither the comparator
-diagonal nor the invariant below the cap; this, and a formalization of
-\cref{base:lem:orbiteq,base:thm:orbitreflect}, is not done.
+diagonal nor the invariant below the cap.  Its instance for the predecessor
+of \cref{base:thm:pred} is now the Lean proof (\cref{base:rem:diag}); the
+generic lemma, and a formalization of
+\cref{base:lem:orbiteq,base:thm:orbitreflect}, are not done.
 \end{question}
 
 \begin{question}[The square-root pairing]

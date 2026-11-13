@@ -87,11 +87,6 @@ theorem cmp_eq (x y : Q Γ) : cmp x y = par (hops y (pow2 x)) := by
 
 @[simp] theorem cmp_one_zero : cmp (1 : Q Γ) 0 = 0 := cmp_succ_zero 0
 
-/-- The diagonal just above the comparison threshold. -/
-@[simp] theorem cmp_succ_self (x : Q Γ) : cmp (succ x) x = 0 := by
-  induction x using Q.ind with | _ a
-  simpa using eqInd (Γ := Γ) (Tm.cmp (Tm.succ (var 0)) (var 0)) Tm.zero a
-
 end Q
 
 end LeanProofs.ConciseIPRA
