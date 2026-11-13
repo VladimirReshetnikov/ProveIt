@@ -1,0 +1,169 @@
+import IndependentKZeroMainRank
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
+
+/-! Source-only ordered-model proof draft. This is a fact-level client, not
+an actual child-literal binding or an elaborated theorem. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.IndependentKFirstRankDiscreteDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ModelDifferenceRing
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Rank window from a signed coefficient bound. `R` and all ports are model
+naturals; the signed equation is the exact candidate rank at k=0. -/
+theorem rank_window_of_coefficient
+    (q beta J MC MF R : V) (G : DiffRing V)
+    (hq : q=beta*J+1) (hbeta : 0<beta) (hJ : 0<J)
+    (hMC : MC<beta) (hMF : MF<2*beta)
+    (hG : G ≤ (ι q : DiffRing V)*(ι q)-2)
+    (hR : (ι R : DiffRing V)=G*((ι q)*(ι q)-1)+
+      (ι J)*(ι MC+(ι q)*(ι MF))) : R+1<q^4 := by
+  let Q : DiffRing V := ι q
+  let B : DiffRing V := ι beta
+  let T : DiffRing V := ι J
+  let L : DiffRing V := ι MC
+  let M : DiffRing V := ι MF
+  have hb : B*T=Q-1 := by dsimp [Q,B,T]; rw [hq]; simp only [map_add,map_mul,map_one]; ring
+  have hB : 1≤B := by simpa [B] using (ι_le_ι.mpr (pos_iff_one_le.mp hbeta))
+  have hT : 1≤T := by simpa [T] using (ι_le_ι.mpr (pos_iff_one_le.mp hJ))
+  have hq2 : 2≤Q := by
+    have hh := mul_le_mul hB hT (by norm_num : (0:DiffRing V)≤1) (by linarith : (0:DiffRing V)≤B)
+    nlinarith [hb]
+  have hL : L+1≤B := by
+    have hh : MC+1≤beta := by exact (add_one_le_iff.mpr hMC)
+    simpa only [L,B,map_add,map_one] using (ι_le_ι.mpr hh)
+  have hM : M+1≤2*B := by
+    have hh : MF+1≤2*beta := by exact (add_one_le_iff.mpr hMF)
+    simpa only [M,B,map_add,map_one,map_mul,map_ofNat] using (ι_le_ι.mpr hh)
+  have hqq : 0≤Q*Q-1 := by nlinarith
+  have hcoeff : G*(Q*Q-1)≤(Q*Q-2)*(Q*Q-1) := by
+    exact mul_le_mul_of_nonneg_right (by simpa [Q] using hG) hqq
+  have hmask0 : L+Q*M ≤ (B-1)+Q*(2*B-1) := by
+    have hh := mul_le_mul_of_nonneg_left (show M≤2*B-1 by linarith) (show 0≤Q by linarith)
+    linarith
+  have hmask := mul_le_mul_of_nonneg_left hmask0 (show 0≤T by linarith)
+  have hid : T*((B-1)+Q*(2*B-1)) = (Q-1)*(1+2*Q)-(1+Q)*T := by rw [← hb]; ring
+  have hTQ : 1+Q≤(1+Q)*T := by
+    have hh := mul_le_mul_of_nonneg_left hT (show 0≤1+Q by linarith)
+    simpa using hh
+  have hslack : 0<Q*Q+Q-2 := by nlinarith
+  have hr : (ι R : DiffRing V)+1 < Q^4 := by
+    have hh := hR
+    change (ι R : DiffRing V)=G*(Q*Q-1)+T*(L+Q*M) at hh
+    nlinarith [hcoeff,hmask,hid,hTQ,hslack]
+  apply ι_lt_ι.mp
+  simpa only [map_add,map_one,map_pow,Q] using hr
+
+/-- At zero independent ordinate, the actual first norm implies the bound
+on the rank coefficient, including its formerly exceptional C≤0 branch. -/
+theorem first_norm_coefficient
+    (q beta J F alpha d r : V)
+    (hq : q=beta*J+1) (hbeta : 0<beta) (hJ : 0<J)
+    (hF : 0<F) (ha : 0<alpha) (hd : 0<d)
+    (hnorm : let b : DiffRing V := ι beta*ι J
+      let C : DiffRing V := ι q-ι F-ι alpha
+      let B : DiffRing V := C*ι d-ι F
+      (b*ι r-B)*(b*ι r-B)=b*b) :
+    let b : DiffRing V := ι beta*ι J
+    (ι alpha : DiffRing V)+((ι q)-(ι F))*b ≤ (ι q)*(ι q)-2 := by
+  let Q : DiffRing V := ι q
+  let B : DiffRing V := ι beta*ι J
+  let F' : DiffRing V := ι F
+  let A : DiffRing V := ι alpha
+  let D : DiffRing V := ι d
+  let C : DiffRing V := Q-F'-A
+  let P : DiffRing V := C*D-F'
+  have hb : 0<B := mul_pos (by simpa [B] using (ι_lt_ι.mpr hbeta))
+    (by simpa [B] using (ι_lt_ι.mpr hJ))
+  have hq' : Q=B+1 := by dsimp [Q,B]; rw [hq]; simp
+  have hf : 1≤F' := by simpa [F'] using (ι_le_ι.mpr (pos_iff_one_le.mp hF))
+  have ha' : 1≤A := by simpa [A] using (ι_le_ι.mpr (pos_iff_one_le.mp ha))
+  have hd' : 1≤D := by simpa [D] using (ι_le_ι.mpr (pos_iff_one_le.mp hd))
+  have hr : 0≤(ι r : DiffRing V) := ι_nonneg r
+  have hq0 : 0≤Q := by linarith
+  change A+(Q-F')*B ≤ Q*Q-2
+  by_cases hc : 0<C
+  · have hqc : 0≤Q-F' := by dsimp [C] at hc; linarith
+    have hFA : F+alpha<q := by
+      apply ι_lt_ι.mp
+      have hh : (ι (F+alpha) : DiffRing V)<ι q := by
+        dsimp [C,Q,F',A] at hc
+        simp only [map_add]
+        linarith
+      exact hh
+    have hFA1 : F+alpha+1≤q := add_one_le_iff.mpr hFA
+    have hFA1' : (ι F : DiffRing V)+ι alpha+1≤ι q := by
+      have hh := ι_le_ι.mpr hFA1
+      simpa only [map_add,map_one] using hh
+    have halpha : A≤Q-F'-1 := by
+      dsimp [A,Q,F']
+      linarith [hFA1']
+    have hqF : Q-F'≤Q-1 := by linarith
+    have hmul := mul_le_mul_of_nonneg_left hqF hq0
+    have hid : A+(Q-F')*B ≤ Q*(Q-F')-1 := by
+      rw [show B=Q-1 by linarith]
+      nlinarith
+    nlinarith
+  · have hc0 : C≤0 := le_of_not_gt hc
+    have hP : P<0 := by
+      have hh := mul_nonpos_of_nonpos_of_nonneg hc0 (show 0≤D by linarith)
+      dsimp [P]; linarith
+    have hroot : 0<B*(ι r)-P := by
+      have hh := mul_nonneg (le_of_lt hb) hr
+      linarith
+    have hnorm' : (B*(ι r)-P)*(B*(ι r)-P)=B*B := by simpa [B,C,P,Q,F',A,D] using hnorm
+    have hroot_eq : B*(ι r)-P=B := by
+      rcases mul_self_eq_mul_self_iff.mp hnorm' with heq | heq
+      · exact heq
+      · linarith
+    have hrzero : r=0 := by
+      by_contra hn
+      have hrpos : 0<r := lt_of_le_of_ne (Arithmetic.zero_le r) (Ne.symm hn)
+      have hrone : (1:DiffRing V)≤ι r := by simpa only [map_one] using (ι_le_ι.mpr (pos_iff_one_le.mp hrpos))
+      have hh := mul_nonneg (le_of_lt hb) (show 0≤(ι r : DiffRing V)-1 by linarith)
+      nlinarith
+    have hP_eq : P= -B := by simp only [hrzero,map_zero,mul_zero,zero_sub] at hroot_eq; linarith
+    let t : DiffRing V := -C
+    have ht : 0≤t := by dsimp [t]; linarith
+    have hFid : F'=B-t*D := by dsimp [t,P] at *; nlinarith
+    have hAid : A=1+t*(D+1) := by dsimp [t,C] at *; nlinarith [hP_eq,hq']
+    have htd : t*D≤Q-2 := by linarith [hFid,hq']
+    have htdom : t≤t*D := by
+      have hh := mul_nonneg ht (show 0≤D-1 by linarith)
+      nlinarith
+    have hmult := mul_le_mul_of_nonneg_left htd hq0
+    have hGid : A+(Q-F')*B=Q+t+Q*(t*D) := by
+      rw [show Q-F'=1+t*D by linarith [hFid,hq'],hAid,show B=Q-1 by linarith]
+      ring
+    rw [hGid]
+    nlinarith
+
+/-- Conditional bridge to the separately drafted main-norm contradiction.
+Graph extraction and compact-port instantiation are not included. -/
+theorem zero_k_impossible
+    (q beta J MC MF F alpha d r R X Y s eta gamma : V) (z : DiffRing V)
+    (hq : q=beta*J+1) (hbeta : 0<beta) (hJ : 0<J)
+    (hMC : MC<beta) (hMF : MF<2*beta) (hF : 0<F) (ha : 0<alpha) (hd : 0<d)
+    (hfirst : let b : DiffRing V := ι beta*ι J
+      let C : DiffRing V := ι q-ι F-ι alpha
+      let B : DiffRing V := C*ι d-ι F
+      (b*ι r-B)*(b*ι r-B)=b*b)
+    (hrank : (ι R : DiffRing V)=
+      ((ι alpha)+((ι q)-(ι F))*((ι beta)*(ι J)))*((ι q)*(ι q)-1)+
+      (ι J)*(ι MC+(ι q)*(ι MF)))
+    (hqpos : 0<q) (hs : 0<s) (hY : Y=q^3*s)
+    (hshape : let a:=X*Y+Y; let H:=3+4*a; let U:=Y*(q*q)
+      z=ι U*(ι X+ι a*ι eta)+ι H*(ι U*ι gamma+ι (R+1)))
+    (hnorm : let a:=X*Y+Y; let H:=3+4*a; let U:=Y*(q*q)
+      z*z=ι U*ι U*(1+(ι H+ι a*ι a)*(ι eta*ι eta))) : False := by
+  have hG := first_norm_coefficient q beta J F alpha d r hq hbeta hJ hF ha hd hfirst
+  have hR := rank_window_of_coefficient q beta J MC MF R _ hq hbeta hJ hMC hMF hG hrank
+  exact IndependentKZeroMainRankDraft.zero_k_impossible q X Y s R eta gamma z hqpos hs hY hR hshape hnorm
+end DiophantineConsistency.IndependentKFirstRankDiscreteDraft
+#print axioms DiophantineConsistency.IndependentKFirstRankDiscreteDraft.first_norm_coefficient
+#print axioms DiophantineConsistency.IndependentKFirstRankDiscreteDraft.rank_window_of_coefficient
+#print axioms DiophantineConsistency.IndependentKFirstRankDiscreteDraft.zero_k_impossible
