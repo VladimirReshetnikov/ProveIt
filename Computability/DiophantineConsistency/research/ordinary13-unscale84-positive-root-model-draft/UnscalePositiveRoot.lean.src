@@ -1,0 +1,73 @@
+import PositiveCarrierData
+import UnscaleFirstMargin
+import Mathlib.Tactic.LinearCombination
+
+/-! Source-only shifted target-root construction. Actual 84 graph-to-norm,
+large-k, port representations and the subsequent 87 literal binding are
+separate obligations. This source and imports have not been elaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.UnscalePositiveRootDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ModelDifferenceRing PositiveCarrierDataDraft UnscaleFirstMarginDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Under the strict extra-s margin, construct the positive old coordinate
+for which the unscaled root at r_old+s equals +b*tau. -/
+theorem shifted_positive_root (b P t ell k s tau : V)
+    (hP : 0<P) (ht : 0<t) (hPt : P=b*t) (hmarg : ell+s<tau) :
+    ∃ r : V, 0<r ∧
+      (ι b : DiffRing V)*(ι ell+ι k+ι r+ι s-ι k*ι P)-ι P=ι b*ι tau := by
+  have hPsub : P-1+1=P := tsub_add_cancel_of_le (pos_iff_one_le.mp hP)
+  have hdelta : tau-(ell+s)+(ell+s)=tau := tsub_add_cancel_of_le (le_of_lt hmarg)
+  let r := k*(P-1)+t+(tau-(ell+s))
+  have hr : 0<r := by dsimp [r]; exact add_pos_of_pos_of_nonneg
+    (add_pos_of_nonneg_of_pos (Arithmetic.zero_le _) ht) (Arithmetic.zero_le _)
+  refine ⟨r,hr,?_⟩
+  have hpR := congrArg (ι : V →+* DiffRing V) hPsub
+  have hdR := congrArg (ι : V →+* DiffRing V) hdelta
+  have htR := congrArg (ι : V →+* DiffRing V) hPt
+  simp only [map_add,map_mul,map_one] at hpR hdR htR
+  dsimp [r]
+  simp only [map_add,map_mul]
+  linear_combination ι b*ι k*hpR+ι b*hdR-htR
+
+/-- An arbitrary source signed root supplies the carrier quotient and common
+natural tau; only the shifted margin remains an explicit extra hypothesis. -/
+theorem shifted_root_of_source (b ell k rold s : V) (P z : DiffRing V)
+    (hb : 0<b) (hk : 2≤k)
+    (hz : z=ι b*(ι ell+ι k+ι rold-ι k*P)-P)
+    (hnorm : z*z=ι b*ι b*(1+ι ell*(ι ell+ι k)))
+    (hmargin : ∀ tau : V, tau*tau=1+ell*(ell+k) → ell+s<tau) :
+    ∃ tau r : V, 0<r ∧ tau*tau=1+ell*(ell+k) ∧
+      (ι b*(ι ell+ι k+ι r+ι s-ι k*P)-P)=ι b*ι tau := by
+  obtain ⟨Pn,t,tau,hPn,ht,hP,hPt,_,hn,_⟩ :=
+    root_data b ell k rold P z hb hk hz hnorm
+  obtain ⟨r,hr,hring⟩ := shifted_positive_root b Pn t ell k s tau hPn ht hPt (hmargin tau hn)
+  refine ⟨tau,r,hr,hn,?_⟩
+  rw [hP]
+  exact hring
+
+/-- The q³ and large-k facts provide the margin for the same tau extracted
+from the source norm; all source graph bindings are still explicit. -/
+theorem shifted_root_of_qcube (b q X Y s k rold : V) (P z : DiffRing V)
+    (hb : 0<b) (hq : 1≤q) (hX : 1≤X) (hs : 0<s)
+    (hY : Y=(q*q*q)*s) (hlarge : 8*X*Y*Y+4≤k)
+    (hz : z=ι b*(ι (X*Y*Y*k)+ι k+ι rold-ι k*P)-P)
+    (hnorm : z*z=ι b*ι b*(1+ι (X*Y*Y*k)*(ι (X*Y*Y*k)+ι k))) :
+    ∃ tau r : V, 0<r ∧ tau*tau=1+(X*Y*Y*k)*(X*Y*Y*k+k) ∧
+      (ι b*(ι (X*Y*Y*k)+ι k+ι r+ι s-ι k*P)-P)=ι b*ι tau := by
+  have hk : 2≤k := by
+    have h4 : (4:V)≤8*X*Y*Y+4 := le_add_of_nonneg_left (Arithmetic.zero_le _)
+    exact le_trans (by norm_num : (2:V)≤4) (le_trans h4 hlarge)
+  apply shifted_root_of_source b (X*Y*Y*k) k rold s P z hb hk hz hnorm
+  intro tau hn
+  have hnorm' : tau*tau=1+(X*Y*Y)*(X*Y*Y+1)*k*k := by
+    calc
+      tau*tau=1+(X*Y*Y*k)*(X*Y*Y*k+k) := hn
+      _=1+(X*Y*Y)*(X*Y*Y+1)*k*k := by ring
+  exact qcube_margin q X Y s k tau hq hX hs hY hlarge hnorm'
+end DiophantineConsistency.UnscalePositiveRootDraft
+#print axioms DiophantineConsistency.UnscalePositiveRootDraft.shifted_root_of_qcube
