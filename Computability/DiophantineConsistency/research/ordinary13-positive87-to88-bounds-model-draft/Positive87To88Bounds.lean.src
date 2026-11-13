@@ -1,0 +1,115 @@
+import Positive87To88Aux
+import RingNormExtraction
+import DiophantineConsistency.Compact44.P72Root
+
+/-! Proposed graph-to-strict-bounds client. Natural beta positivity and all
+underlying source proofs/providers are explicit or unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Positive87To88BoundsDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open Positive87To88AuxDraft AuxRootModelDraft DirectFirstRootModelDraft
+open AuxRingNormExtractionDraft AuxNormsToBoundsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def portsInt (p : Fin 4 → ℕ) : Fin 4 → ℤ := fun j => (p j:ℤ)
+def b (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := v 0*(p 0:V)
+def qn (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := 1+b p v
+def kk (v : Fin 13 → V) : V := v 9+v 10
+def cn (v : Fin 13 → V) : V := v 9+v 7*kk v
+def an (v : Fin 13 → V) : V := v 6*v 7+v 7
+def dn (v : Fin 13 → V) : V := 3+4*an v+an v*an v
+def ell (v : Fin 13 → V) : V := v 6*v 7*(v 7*kk v)
+def scaleFirst (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := qn p v*(qn p v*qn p v)*b p v
+def scaleMain (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := v 7*(qn p v*qn p v)
+def rootFirst (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  (PositiveUnscale87GraphDraft.graph (portsInt p)).root.evalRing (fun i => ι (v i))
+def rootMain (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  ι (scaleMain p v)*(ι (v 6)+ι (an v)*ι (cn v))+
+    (3+4*ι (an v))*(ι (scaleMain p v)*ι (v 12)+
+      ι (v 6)*ι (v 7)*ι (qn p v)-ι (kk v)+rank (portsInt p) v+1)
+
+/-- The two literal first/main scaled norms, with signed roots. -/
+theorem first_form (p : Fin 4 → ℕ) (v : Fin 13 → V) :
+    first (portsInt p) v = rootFirst p v*rootFirst p v-
+      (ι (scaleFirst p v)*ι (scaleFirst p v))*ι (1+ell v*(ell v+kk v)) := by
+  simp [first,rootFirst,portsInt,PositiveUnscale87GraphDraft.graph,
+    scaleFirst,qn,b,ell,kk,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,P72Root.cast_port,
+    map_add,map_mul,map_one,map_ofNat] <;> ring
+
+theorem main_form (p : Fin 4 → ℕ) (v : Fin 13 → V) :
+    main (portsInt p) v = rootMain p v*rootMain p v-
+      (ι (scaleMain p v)*ι (scaleMain p v))*ι (1+dn v*cn v*cn v) := by
+  simp [main,rootMain,rank,portsInt,PositiveUnscale87GraphDraft.graph,
+    scaleMain,qn,b,dn,an,cn,kk,q,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,P72Root.cast_port,
+    map_add,map_mul,map_one,map_ofNat] <;> ring
+
+theorem strong_form (p : Fin 4 → ℕ) (v : Fin 13 → V) :
+    strong (portsInt p) v = (ι (v 4)*ι (cn v)*ι (cn v))*(ι (v 4)*ι (cn v)*ι (cn v))-
+      ι (dn v)*(ι (v 3)*ι (v 3)-1) := by
+  simp [strong,portsInt,PositiveUnscale87GraphDraft.graph,dn,an,cn,kk,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat,map_add,map_mul,map_one,map_ofNat] <;> ring
+
+/-- Either actual zero supplies the same three coordinate-independent fields. -/
+theorem common_zero (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (PositiveUnscale87GraphDraft.graph (portsInt p)).output v ∨
+      InternalZero (P88FourSquare.graph (portsInt p)).output v) :
+    first (portsInt p) v=0 ∧ main (portsInt p) v=0 ∧ strong (portsInt p) v=0 := by
+  rcases hz with h | h
+  · have hh := (internalZero_iff _ _).mp h
+    rw [← put_self v,eval87] at hh
+    obtain ⟨hf,hm,_,hs,_⟩ := (fiveSquares_eq_zero_iff _ _ _ _ _).mp hh
+    exact ⟨hf,hm,hs⟩
+  · have hh := (internalZero_iff _ _).mp h
+    rw [← put_self v,eval88] at hh
+    obtain ⟨hf,hm,_,hs,_⟩ := (fiveSquares_eq_zero_iff _ _ _ _ _).mp hh
+    exact ⟨hf,hm,hs⟩
+
+/-- Proposed graph-specific bound under the represented positive beta cast. -/
+theorem bounds_of_zero (p : Fin 4 → ℕ) (v : Fin 13 → V) (hv : ∀ i, 0<v i)
+    (hz : InternalZero (PositiveUnscale87GraphDraft.graph (portsInt p)).output v ∨
+      InternalZero (P88FourSquare.graph (portsInt p)).output v)
+    (hbeta : 0<(p 0:V)) : 1<Q v ∧ 1<z (portsInt p) v*z (portsInt p) v := by
+  have hb : 0<b p v := mul_pos (hv 0) hbeta
+  have hq : 0<qn p v := by dsimp [qn]; exact add_pos_of_pos_of_nonneg (by simp) (le_of_lt hb)
+  have hM : 0<scaleFirst p v := by dsimp [scaleFirst]; exact mul_pos (mul_pos hq (mul_pos hq hq)) hb
+  have hU : 0<scaleMain p v := by dsimp [scaleMain]; exact mul_pos (hv 7) (mul_pos hq hq)
+  obtain ⟨hf,hm,hs⟩ := common_zero p v hz
+  rw [first_form] at hf
+  rw [main_form] at hm
+  rw [strong_form] at hs
+  obtain ⟨tau,htau⟩ := root_of_scaled_ring_square (scaleFirst p v) (1+ell v*(ell v+kk v)) (rootFirst p v) hM (sub_eq_zero.mp hf)
+  obtain ⟨d,hd⟩ := root_of_scaled_ring_square (scaleMain p v) (1+dn v*cn v*cn v) (rootMain p v) hU (sub_eq_zero.mp hm)
+  have hfirst : tau*tau=1+(v 6*v 7*v 7)*(v 6*v 7*v 7+1)*(v 9+v 10)*(v 9+v 10) := by
+    calc
+      tau*tau=1+ell v*(ell v+kk v) := htau
+      _=1+(v 6*v 7*v 7)*(v 6*v 7*v 7+1)*(v 9+v 10)*(v 9+v 10) := by dsimp [ell,kk]; ring
+  have hstrong := strong_norm_of_ring_residual (cn v) (v 4) (dn v) (v 3) hs
+  have hdelta : (v 6*v 7+v 7+2)*(v 6*v 7+v 7+2)=dn v+1 := by dsimp [dn,an]; ring
+  have hQ : Q v=(ι (v 4)*ι (cn v)*ι (cn v))*(ι (v 4)*ι (cn v)*ι (cn v)) := by
+    have he := (sub_eq_zero.mp hs).symm
+    simpa only [Q,delta,a,dn,an,map_add,map_mul,map_ofNat] using he
+  have hzfield : z (portsInt p) v+ι (cn v)=
+      (ι (v 3)*ι (v 3))*(ι (v 5)*ι (cn v)-rank (portsInt p) v) := by
+    simp [z,c,cn,k,kk,map_add,map_mul]
+  apply aux_bounds_of_natural_norms (v 6) (v 7) (v 9) (v 10) tau d (dn v) (cn v) (v 4) (v 3)
+    (z (portsInt p) v) (Q v) (ι (v 5)*ι (cn v)-rank (portsInt p) v)
+    (hv 6) (hv 7) (hv 9) (hv 10) (hv 4) rfl hdelta hfirst hd hstrong hQ hzfield
+
+/-- All-model bound cut with represented strictly positive first port explicit. -/
+def PositiveBeta (p : Fin 4 → ℕ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁], 0<(p 0:V)
+
+theorem bounds_cut (p : Fin 4 → ℕ) (hb : PositiveBeta p) : BoundsCut (portsInt p) := by
+  intro V _ _ v hv hz
+  exact bounds_of_zero p v hv hz (hb V)
+end DiophantineConsistency.Positive87To88BoundsDraft
+#print axioms DiophantineConsistency.Positive87To88BoundsDraft.bounds_cut
