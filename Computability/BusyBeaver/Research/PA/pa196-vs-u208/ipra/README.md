@@ -75,6 +75,10 @@ conditional on the two unrestricted induction-schema bounds. The other rule
 branches and the induction-schema recognizer still need bounds before the
 complete core certificate follows.
 
+`PA196InductionClosureWitness.lean` proves both witness bounds for the exact
+quantifier-closure graph subformulas of the unrestricted-induction recognizer.
+The other recognizer subformulas and the complete induction bounds remain open.
+
 `PA196PRAAssembly.lean` composes the two conditional transfers with the
 intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
 classical PRA hypotheses: the forward reduction, the reverse reduction, and
