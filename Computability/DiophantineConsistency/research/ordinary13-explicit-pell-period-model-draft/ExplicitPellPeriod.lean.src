@@ -1,0 +1,30 @@
+import DiophantineConsistency.ArithmeticPellSquaredSeed
+
+/-! SOURCE-ONLY specialization of an existing represented-Pell theorem.
+    This file has not been elaborated or compiled. -/
+set_option autoImplicit false
+set_option Elab.async false
+namespace DiophantineConsistency.ExplicitPellPeriodDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ArithmeticPellRecurrence ArithmeticPellSquaredSeed
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- With c = ycoord m a and h = 2*m*c, the two coordinates at h
+    have explicit nonnegative witnesses for x_h ≡ 1 and y_h ≡ 0
+    modulo c². No positivity hypothesis is used, including at m = 0. -/
+theorem period_at_twice_index_ordinate (m a : V) :
+    ∃ r t : V,
+      xcoord (2*m*ycoord m a) a =
+        1+ycoord m a*ycoord m a*r ∧
+      ycoord (2*m*ycoord m a) a =
+        t*ycoord m a*ycoord m a := by
+  obtain ⟨r,s,hx,hy⟩ := doubled_quotients (ycoord m a) m a
+  refine ⟨r, 2*xcoord m a+s, ?_, ?_⟩
+  · rw [show 2*m*ycoord m a = 2*ycoord m a*m by ring]
+    exact hx
+  · rw [show 2*m*ycoord m a = 2*ycoord m a*m by ring, hy] <;> ring
+
+end DiophantineConsistency.ExplicitPellPeriodDraft
+#print axioms DiophantineConsistency.ExplicitPellPeriodDraft.period_at_twice_index_ordinate
