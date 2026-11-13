@@ -8,6 +8,20 @@ proves `PA ⊢ N → Con(PA)`; the other half needed for the desired bicondition
 is `PA ⊢ H → ¬Con(PA)`. In classical PA this is equivalent to
 `PA ⊢ Con(PA) → N`. Standard-model nonhalting does not supply it.
 
+The upstream forward theorem is also not yet a theorem of iPRA: its
+all-model development assumes PA, and it uses a different Foundation proof
+coding. The existing classical-to-intuitionistic transfer starts from
+classical PRA, while the strict consistency comparison starts from IΣ₁;
+neither turns an arbitrary PA derivation into an iPRA derivation. A Π₂ shape
+alone is insufficient for a general PA-to-PRA conservation claim. A route
+through these results must first weaken or otherwise justify this specific PA
+proof, identify its coding with the chosen PA predicate, and compare the
+resulting Gödel–Gentzen formulas with the native endpoint. None of those steps
+follows from the external standard-model identifications. The imported model
+theory is defined as full Peano arithmetic, and parts of its calibration use
+the full induction scheme; weakening its assumptions requires an audit of the
+actual formulas used in those instances.
+
 ## An intermediate checker interface
 
 Write `Ref(c)` for the formula in
