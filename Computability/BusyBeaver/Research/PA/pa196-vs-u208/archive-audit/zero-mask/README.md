@@ -23,13 +23,23 @@ and generates Lean files for the following kernel checks:
   `PA196.Program.sites` resolver in Lean. The checker rebuilds the resolver
   modules from the pinned upstream sources and also checks that the archived
   and upstream `Program.lean` files have the same hash.
+* `Abstraction.lean` defines a Boolean positivity mask for actual source
+  register stores and proves that its nine-bit numeric encoding has exactly
+  those bits. Given an explicit `Closed` hypothesis for the source resolver,
+  the invariant holds along every finite `M6.Source.Semantics.Steps` run.
+  `Conclusion.lean` applies this result conditionally: if the certificate agrees
+  with the archived masks at ordinals 25 and 3692 and satisfies `Closed` for
+  `PA196.Program.sites`, a source run starting at ordinal 25 with register 0
+  equal to 2 and the others zero reaches ordinal 3692 only with registers
+  3, 4, 5, and 6 zero.
 
-These are **not** yet a concrete source-execution invariant. The generated
-checks are separate closed facts, and the extraction of the remaining 3,779
-source instructions has not been bound to `Program.sites` in Lean. The
-transfer lemmas have not been connected to the positivity masks of concrete
-register stores, and no induction over source runs has been proved. This also
-does not establish any physical-machine simulation, equivalence between the
+The source-run result is **conditional**: `Closed` has not been proved for the
+archive certificate. The generated checks are separate closed facts, and the
+extraction of the remaining 3,779 source instructions has not been bound to
+`Program.sites` in Lean. The bitset transfer lemmas have not yet been assembled
+into that `Closed` hypothesis. No correspondence between the assumed source
+seed and a blank-tape run is proved here. This also does not establish any
+physical-machine simulation, equivalence between the
 four variants and PA196, iPRA theorem, or PA consistency result. Hash checks
 and the archive's parser are part of the reproduction procedure, not Lean
 theorems.
