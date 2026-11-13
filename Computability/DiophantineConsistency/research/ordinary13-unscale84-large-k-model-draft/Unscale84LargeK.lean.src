@@ -1,0 +1,112 @@
+import Unscale84ReverseGraph
+import RingNormExtraction
+import FirstMainLargeK
+import Residue90CompactPortBounds
+import Positive87FirstNormBinding
+
+/-! Proposed actual 84 first/main norm extraction and large-k source client.
+No proof below or imported draft has been elaborated or provider-audited. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Unscale84LargeKDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open PositiveUnscale84To87Draft Unscale84ReverseGraphDraft
+open AuxRingNormExtractionDraft FirstMainLargeKDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def a (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := X v*Y p v+Y p v
+def delta (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := 3+4*a p v+a p v*a p v
+def c (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := v 9+Y p v*k v
+def u (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := Y p v*q p v*q p v
+def rank (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  (ι (v 2)+(ι (q p v)-ι (v 1))*ι (b p v))*(ι (q p v)*ι (q p v)-1)+
+    ι (v 0)*(ι (p 2:V)+ι (p 3:V)*ι (q p v))
+def mainRoot (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  ι (u p v)*(ι (X v)+ι (a p v)*ι (c p v))+
+    (3+4*ι (a p v))*(ι (u p v)*ι (v 12)+ι (X v)*ι (Y p v)*ι (q p v)-
+      ι (k v)+rank p v+1)
+
+/-- Actual 84 main residual, including its E*q shift and signed rank. -/
+theorem main_form (p : Fin 4 → ℕ) (v : Fin 13 → V) :
+    e84 (portsInt p) v (PositiveUnscale84GraphDraft.graph (portsInt p)).main =
+      mainRoot p v*mainRoot p v-(ι (u p v)*ι (u p v))*
+        ι (1+delta p v*c p v*c p v) := by
+  simp [e84,portsInt,PositiveUnscale84GraphDraft.graph,mainRoot,rank,u,delta,c,a,
+    Unscale84ReverseGraphDraft.b,Unscale84ReverseGraphDraft.q,X,Y,k,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat,P72Root.cast_port,
+    map_add,map_mul,map_one,map_ofNat] <;> ring
+
+/-- Natural first and main roots follow from the two literal scaled squares.
+No sign is assumed for either signed graph root. -/
+theorem norm_roots (p : Fin 4 → ℕ) (v : Fin 13 → V) (hv : ∀ i, 0<v i)
+    (hz : InternalZero (PositiveUnscale84GraphDraft.graph (portsInt p)).output v)
+    (hbeta : 0<(p 0:V)) :
+    ∃ tau d : V,
+      tau*tau=1+(X v*Y p v*Y p v)*(X v*Y p v*Y p v+1)*k v*k v ∧
+      d*d=1+delta p v*c p v*c p v := by
+  have hb : 0<b p v := mul_pos (hv 0) hbeta
+  have hq : 0<q p v := by dsimp [q]; exact add_pos_of_pos_of_nonneg (by simp) (le_of_lt hb)
+  have hY : 0<Y p v := by dsimp [Y]; exact mul_pos (mul_pos (mul_pos hq hq) hq) (hv 7)
+  have hu : 0<u p v := by dsimp [u]; exact mul_pos (mul_pos hY hq) hq
+  have hsum := (internalZero_iff _ _).mp hz
+  rw [output84] at hsum
+  simp only [Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_ofNat] at hsum
+  obtain ⟨hf,hm,_,_⟩ := squares_zero _ _ _ _ hsum
+  change e84 (portsInt p) v (PositiveUnscale84GraphDraft.graph (portsInt p)).first=0 at hf
+  change e84 (portsInt p) v (PositiveUnscale84GraphDraft.graph (portsInt p)).main=0 at hm
+  rw [source_first] at hf
+  rw [main_form] at hm
+  have hfs : root p v*root p v=(ι (b p v)*ι (b p v))*
+      ι (1+ell p v*(ell p v+k v)) := by
+    simpa only [map_add,map_mul,map_one] using (sub_eq_zero.mp hf)
+  have hms : mainRoot p v*mainRoot p v=(ι (u p v)*ι (u p v))*
+      ι (1+delta p v*c p v*c p v) := sub_eq_zero.mp hm
+  obtain ⟨tau,htau⟩ := root_of_scaled_ring_square (b p v) (1+ell p v*(ell p v+k v)) (root p v) hb hfs
+  obtain ⟨d,hd⟩ := root_of_scaled_ring_square (u p v) (1+delta p v*c p v*c p v) (mainRoot p v) hu hms
+  refine ⟨tau,d,?_,hd⟩
+  calc
+    tau*tau=1+ell p v*(ell p v+k v) := htau
+    _=1+(X v*Y p v*Y p v)*(X v*Y p v*Y p v+1)*k v*k v := by dsimp [ell]; ring
+
+/-- Literal 84 zero, positive inputs and represented beta give the required
+large-k inequality, conditional on all source scripts and providers checking. -/
+theorem large_k (p : Fin 4 → ℕ) (v : Fin 13 → V) (hv : ∀ i, 0<v i)
+    (hz : InternalZero (PositiveUnscale84GraphDraft.graph (portsInt p)).output v)
+    (hbeta : 0<(p 0:V)) : 8*X v*Y p v*Y p v+4≤k v := by
+  have hq : 0<q p v := by dsimp [q]; exact add_pos_of_pos_of_nonneg (by simp) (Arithmetic.zero_le _)
+  have hY : 0<Y p v := by dsimp [Y]; exact mul_pos (mul_pos (mul_pos hq hq) hq) (hv 7)
+  obtain ⟨tau,d,htau,hd⟩ := norm_roots p v hv hz hbeta
+  have hDelta : (X v*Y p v+Y p v+2)*(X v*Y p v+Y p v+2)=delta p v+1 := by
+    dsimp [delta,a]; ring
+  apply first_main_large_k (X v) (Y p v) (v 9) (v 10) tau d (delta p v)
+    (hv 6) hY (hv 9) (hv 10) hDelta
+  · simpa only [k] using htau
+  · simpa only [c,k] using hd
+/-- At the selected symbolic tuple, compact beta supplies the represented
+positive port and the literal norm client supplies large k. -/
+theorem compact_reverse_inputs (K : ℕ) :
+    ReverseInputs (Residue90CompactPortBoundsDraft.ports K) := by
+  intro V _ _ v hv hz
+  obtain ⟨hb,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) (hv 0)
+  have hp0 : (Residue90CompactPortBoundsDraft.ports K 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  have hbeta : 0<(Residue90CompactPortBoundsDraft.ports K 0:V) := by simpa only [hp0] using hb
+  exact ⟨hbeta,large_k _ v hv hz hbeta⟩
+
+/-- Proposed both-direction compact positive-zero equivalence. This remains
+unelaborated and does not supply a parent endpoint or file semantics. -/
+theorem compact_positive_zero_iff (K : ℕ) :
+    (∃ v : Fin 13 → V, (∀ i, 0<v i) ∧ InternalZero
+      (PositiveUnscale84GraphDraft.graph (portsInt (Residue90CompactPortBoundsDraft.ports K))).output v) ↔
+    (∃ v : Fin 13 → V, (∀ i, 0<v i) ∧ InternalZero
+      (PositiveUnscale87GraphDraft.graph (portsInt (Residue90CompactPortBoundsDraft.ports K))).output v) := by
+  apply positive_zero_iff
+  · exact Positive87FirstNormBindingDraft.forward_graph_cut _
+  · exact reverse_cut _ (compact_reverse_inputs K)
+end DiophantineConsistency.Unscale84LargeKDraft
+#print axioms DiophantineConsistency.Unscale84LargeKDraft.large_k
