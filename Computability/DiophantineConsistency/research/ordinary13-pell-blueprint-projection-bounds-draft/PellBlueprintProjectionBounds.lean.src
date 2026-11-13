@@ -1,0 +1,51 @@
+import DiophantineConsistency.PellBlueprintWB
+
+/-! SOURCE ONLY: proposed interpretation of the quoted successor body.
+    The imported draft and every proof here remain unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.PellBlueprintProjectionBoundsDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open ArithmeticPellRecurrence PellBlueprintWBDraft PRAWitnessCalculus
+
+variable {M : Type} [ORingStructure M] [M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻]
+local instance : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ :=
+  models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
+
+/-- Expected semantic interpretation with context [y,x,out,previous,index,b]. -/
+theorem succInner_eval (e : Fin 6 → M) :
+    succInner.Eval e Empty.elim ↔
+      e 1 = π₁ (e 3) ∧ e 0 = π₂ (e 3) ∧
+      e 2 = ⟪(e 5+2)*(e 1)+(e 5+1)*(e 5+3)*(e 0),
+        (e 1)+(e 5+2)*(e 0)⟫ := by
+  simp [succInner, Semiformula.eval_substs]
+
+/-- Extract the second projection before bounding the inner existential. -/
+theorem second_bound : SecondBound (M := M) := by
+  intro e y h
+  have hp := (succInner_eval (y :> e)).mp h
+  have hy : y = π₂ (e 2) := by simpa using hp.2.1
+  rw [hy]
+  exact pi₂_le_self (e 2)
+
+/-- Extract the first projection while the second witness is existential. -/
+theorem first_bound : FirstBound (M := M) := by
+  intro e x h
+  simp only [Semiformula.eval_ex] at h
+  obtain ⟨y, hy⟩ := h
+  have hp := (succInner_eval (y :> x :> e)).mp hy
+  have hx : x = π₁ (e 1) := by simpa using hp.1
+  rw [hx]
+  exact pi₁_le_self (e 1)
+
+/-- Proposed successor WB after discharging the two extraction premises. -/
+theorem successor_wb : WB M blueprint.succ.val :=
+  succ_wb_of_bounds (first_bound (M := M)) (second_bound (M := M))
+
+end DiophantineConsistency.PellBlueprintProjectionBoundsDraft
+#print axioms DiophantineConsistency.PellBlueprintProjectionBoundsDraft.succInner_eval
+#print axioms DiophantineConsistency.PellBlueprintProjectionBoundsDraft.first_bound
+#print axioms DiophantineConsistency.PellBlueprintProjectionBoundsDraft.second_bound
+#print axioms DiophantineConsistency.PellBlueprintProjectionBoundsDraft.successor_wb

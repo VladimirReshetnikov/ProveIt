@@ -1,0 +1,36 @@
+import DiophantineConsistency.PellHistoryMajorant
+import DiophantineConsistency.PellRunExponentialBound
+
+/-! SOURCE ONLY: proposed valuation and Fin 1 bridge between two inert drafts.
+    Neither imported draft nor this file has been elaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.PellRunMajorantClientDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open ArithmeticPellRecurrence PellHistoryMajorantDraft PellRunExponentialBoundDraft
+open PRAWitnessBoundTerms PRAWitnessBoundTerms.BoundTerm
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Context e is [result,time,parameter]; the result slot is unused. -/
+theorem pairValueBound_vval (e : Fin 3 → V) :
+    pairValueBound.vval e =
+      (2*Exp.exp (2*(e 2+2)*e 1)+1)*(2*Exp.exp (2*(e 2+2)*e 1)+1) := by
+  simp [pairValueBound, PRAWitnessBoundTerms.BoundTerm.vval, numeral_eq_natCast, two_mul]
+
+/-- Exact majorant input for `PRAWitnessPR.wb_resultDef`, conditional on
+    elaboration and coherent providers for both imported source drafts. -/
+theorem pellValueMajorant : PellValueMajorant := by
+  intro V _ _ e i hi
+  have hv : (fun j : Fin 1 => e j.succ.succ) = ![e 2] :=
+    funext fun j => Fin.cases rfl (fun l => l.elim0) j
+  rw [hv]
+  change run i (e 2) ≤ pairValueBound.vval e
+  rw [pairValueBound_vval e]
+  exact run_le_exponential_horizon i (e 1) (e 2) hi
+
+end DiophantineConsistency.PellRunMajorantClientDraft
+#print axioms DiophantineConsistency.PellRunMajorantClientDraft.pairValueBound_vval
+#print axioms DiophantineConsistency.PellRunMajorantClientDraft.pellValueMajorant

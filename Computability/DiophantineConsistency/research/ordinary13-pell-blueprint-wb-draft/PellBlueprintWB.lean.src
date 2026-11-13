@@ -1,0 +1,75 @@
+import DiophantineConsistency.ArithmeticPellRecurrence
+import DiophantineConsistency.PRAWitnessArithmetic
+
+/-! SOURCE ONLY. In particular, successor formula matching and its two
+    projection-bound premises remain unproved. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.PellBlueprintWBDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open ArithmeticPellRecurrence PRAWitnessCalculus PRAWitnessArithmetic
+
+section Model
+variable {M : Type} [ORingStructure M] [M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻]
+local instance : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ :=
+  models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
+
+/-- The zero graph is a substitution of the existing pair graph. -/
+theorem zero_wb : WB M blueprint.zero.val := by
+  have := wb_pairDef (M := M)
+  simp only [blueprint, zeroDef, HierarchySymbol.Semiformula.val_mkSigma]
+  wb_auto
+
+/-- Projection graph witnesses are bounded by their source pair. -/
+theorem first_projection_bound (x p : M) (h : pi₁Def.val.Evalb ![x,p]) : x ≤ p := by
+  have hx : x = π₁ p := (pi₁_defined.defined ![x,p]).mp h
+  rw [hx]
+  exact pi₁_le_self p
+
+theorem second_projection_bound (y p : M) (h : pi₂Def.val.Evalb ![y,p]) : y ≤ p := by
+  have hy : y = π₂ p := (pi₂_defined.defined ![y,p]).mp h
+  rw [hy]
+  exact pi₂_le_self p
+
+/-- Inner formula after introducing x and then y. The source context
+    is [y,x,out,previous,index,b]. -/
+def succInner : ArithmeticSemisentence 6 :=
+  “y x out previous index b. !pi₁Def x previous ∧ !pi₂Def y previous ∧
+    !pairDef out ((b+2)*x+(b+1)*(b+3)*y) (x+(b+2)*y)”
+
+/-- Proposed WB for the quantifier-free-at-top successor body. -/
+theorem succInner_wb : WB M succInner := by
+  have := wb_pi₁Def (M := M)
+  have := wb_pi₂Def (M := M)
+  have := wb_pairDef (M := M)
+  unfold succInner
+  wb_auto
+
+/-- Required extraction of the first projection from the actual body. -/
+def FirstBound : Prop :=
+  ∀ (e : Fin 4 → M) (x : M),
+    (∃⁰ succInner).Eval (x :> e) Empty.elim → x ≤ e 1
+
+/-- Required extraction of the second projection from the actual body. -/
+def SecondBound : Prop :=
+  ∀ (e : Fin 5 → M) (y : M),
+    succInner.Eval (y :> e) Empty.elim → y ≤ e 2
+
+/-- Conditional successor WB. Bounds and formula matching are explicit gaps. -/
+theorem succ_wb_of_bounds (hx : FirstBound (M := M)) (hy : SecondBound (M := M)) :
+    WB M blueprint.succ.val := by
+  change WB M (∃⁰ (∃⁰ succInner))
+  refine wb_exs_term ‘#1’ ?_ ?_
+  · intro e x h
+    simpa using hx e x h
+  · refine wb_exs_term ‘#2’ ?_ (succInner_wb (M := M))
+    intro e y h
+    simpa using hy e y h
+
+end Model
+end DiophantineConsistency.PellBlueprintWBDraft
+#print axioms DiophantineConsistency.PellBlueprintWBDraft.zero_wb
+#print axioms DiophantineConsistency.PellBlueprintWBDraft.succInner_wb
+#print axioms DiophantineConsistency.PellBlueprintWBDraft.succ_wb_of_bounds
