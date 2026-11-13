@@ -1,0 +1,33 @@
+import DiophantineConsistency.ArithmeticPellRecurrence
+import DiophantineConsistency.ArithmeticConstructionBoundPell
+import DiophantineConsistency.PRAWitnessPR
+
+/-! SOURCE-ONLY candidate for the paired Pell recursion value bound.
+    Its majorization is an explicit unproved predicate, not a theorem. -/
+set_option autoImplicit false
+noncomputable section
+namespace DiophantineConsistency.PellHistoryMajorantDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open ArithmeticPellRecurrence PRAWitnessBoundTerms PRAWitnessBoundTerms.BoundTerm
+
+/-- Context e = [result, time, parameter]. Semantically the proposed bound is
+    (2 * 2^(2*(parameter+2)*time) + 1)^2. -/
+def pairValueBound : BoundTerm 3 :=
+  let F : BoundTerm 3 := exp2 (poly ‘2 * (#2 + 2) * #1’) (poly ‘0’)
+  let S : BoundTerm 3 := add (add F F) (poly ‘1’)
+  mul S S
+
+/-- Generic history term from the existing witness-calculus source. -/
+def rawHistoryBound : BoundTerm 3 := PRAWitnessPR.histT (k := 1) pairValueBound
+
+/-- Exact `hH` input required to instantiate `PRAWitnessPR.wb_resultDef` with
+    the Pell blueprint. Its proof is a separate, unelaborated obligation. -/
+def PellValueMajorant : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+    (e : Fin 3 → V) (i : V),
+      i ≤ e 1 →
+      (ArithmeticPellRecurrence.construction (V := V)).result
+        (fun j : Fin 1 => e j.succ.succ) i ≤ pairValueBound.vval e
+
+end DiophantineConsistency.PellHistoryMajorantDraft
