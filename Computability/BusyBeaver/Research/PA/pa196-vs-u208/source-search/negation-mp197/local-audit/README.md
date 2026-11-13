@@ -31,7 +31,10 @@ The replacement skips pairing and decoding and directly increments `T`,
 reaching the same `(1,w,s,0)` state. All other registers are untouched. The
 remaining 16 source instructions and their local control flow are identical,
 so both blocks terminate with the same complete register file and continue at
-the corresponding outer site. This is an ordinary mathematical argument;
+the corresponding outer site. In fact the shared suffix pairs `s` with 1 and
+moves four copies into `T`: it returns `T = 4 * pair(s,1)`, `W = w`, and
+`S = R = 0`. When the incoming `S` is zero, this is the numeric negation
+constructor applied to the incoming `T`. This is an ordinary mathematical argument;
 it has not been arithmetized as a PA theorem or connected to a literal tape
 run here.
 
