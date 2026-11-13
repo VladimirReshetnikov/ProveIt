@@ -193,3 +193,8 @@ that remain to be implemented; it does not bind a literal halting trace.
 spells out how forward projection, positive nonhalt segments, and a bounded
 trace comparison could avoid constructing an inverse state map. Its required
 all-model induction and determinism lemmas remain unproved here.
+
+[The source-to-command extraction note](reverse-cert-stack/SOURCE-COMMAND-EXTRACTION.md)
+identifies the imported all-model candidate scheduler and explains a possible
+positive-length bound for reversing it. The strengthened induction and
+proof-carrying command iteration are not supplied as PA theorems.
