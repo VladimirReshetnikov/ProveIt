@@ -1,0 +1,69 @@
+import Unscale84CompactChain
+import Positive83To84Bridge
+
+/-! Source-only bridge between the two exact generated 84 output projections.
+`rfl`, all imported research proofs and all providers remain unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+noncomputable section
+namespace DiophantineConsistency.Unscale84OutputBridgeDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 HAExpressionAssembly
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+open IPRAOrdinary12 (PositiveModelBridge)
+open Residue90CompactPortBoundsDraft
+
+/-- The distinct graph structures expose the same JSON output expression.
+This definitional-equality proof is a proposal and has not been checked. -/
+theorem output_eq (p : Fin 4 → ℤ) :
+    (PositiveUnscale84GraphDraft.graph p).output =
+      (PositiveUnscaled84GraphDraft.graph p).output := by
+  rfl
+
+/-- The 84 endpoint's positive-model bridge gives precisely the 84 polynomial
+bridge needed by the separate 83 transfer, provided its 87 bridge premise. -/
+theorem bridge84 (K : ℕ) (h87 : PositiveModelBridge (Unscale84EndpointDraft.expression87 K)) :
+    PolynomialBridge (positiveShift
+      (PositiveUnscaled84GraphDraft.graph (fun j => (ports K j:ℤ))).output) := by
+  have h := IPRAOrdinary12.bridge_of_positive (Unscale84EndpointDraft.expression84 K)
+    (Unscale84EndpointDraft.positiveBridge84 K h87)
+  change PolynomialBridge (positiveShift
+    (PositiveUnscale84GraphDraft.graph (fun j => (ports K j:ℤ))).output) at h
+  rw [output_eq] at h
+  exact h
+
+/-- Conditional composition to the exact 83 graph at the same K. -/
+theorem bridge83 (K : ℕ) (h87 : PositiveModelBridge (Unscale84EndpointDraft.expression87 K))
+    (hg : Positive83To84BridgeDraft.GammaCut K) (hd : Positive83To84BridgeDraft.DivCut K) :
+    PolynomialBridge (positiveShift
+      (PositiveCarrier83GraphDraft.graph (fun j => (ports K j:ℤ))).output) :=
+  Positive83To84BridgeDraft.bridge83 K hg hd (bridge84 K h87)
+
+/-- The exact 85 native target remains conditional on all three graph cuts
+and on the exact same-K 87 positive-model bridge. -/
+theorem native85 (K : ℕ) (h87 : PositiveModelBridge (Unscale84EndpointDraft.expression87 K))
+    (hc : Positive81To83TransportDraft.CrossRootCut K)
+    (hg : Positive83To84BridgeDraft.GammaCut K) (hd : Positive83To84BridgeDraft.DivCut K) :
+    nativeTheory ⊢
+      IPRAExpressionNative.nativeNoZero (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output 🡘
+        ∼mappedNativeRefutation embedding :=
+  Positive83To84BridgeDraft.native85 K hc hg hd (bridge84 K h87)
+
+/-- Selected tuple variant: the 87 bridge is supplied by the still
+unelaborated compact 87/88 source chain; all graph cuts stay explicit. -/
+theorem fixed_native85
+    (hc : Positive81To83TransportDraft.CrossRootCut Unscale84CompactChainDraft.fixedK)
+    (hg : Positive83To84BridgeDraft.GammaCut Unscale84CompactChainDraft.fixedK)
+    (hd : Positive83To84BridgeDraft.DivCut Unscale84CompactChainDraft.fixedK) :
+    nativeTheory ⊢
+      IPRAExpressionNative.nativeNoZero
+        (EtaNaturalUnitGraphDraft.graph (fun j => (ports Unscale84CompactChainDraft.fixedK j:ℤ))).output 🡘
+        ∼mappedNativeRefutation embedding :=
+  native85 Unscale84CompactChainDraft.fixedK
+    (Unscale84CompactChainDraft.positiveBridge87 Unscale84CompactChainDraft.fixedK
+      Unscale84CompactChainDraft.fixed88Bridge) hc hg hd
+end DiophantineConsistency.Unscale84OutputBridgeDraft
+#print axioms DiophantineConsistency.Unscale84OutputBridgeDraft.output_eq
+#print axioms DiophantineConsistency.Unscale84OutputBridgeDraft.fixed_native85
