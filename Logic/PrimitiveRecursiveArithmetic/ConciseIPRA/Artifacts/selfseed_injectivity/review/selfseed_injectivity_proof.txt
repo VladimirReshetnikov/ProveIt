@@ -1,0 +1,271 @@
+SUCCESSOR INJECTIVITY FROM TWO STOPPING ORBITS
+Research proof, 12 November 2026 (Pacific time)
+
+STATUS AND SCOPE
+
+This is a written proof of the axiom deletion T_F^- = T_F in the current
+ConciseIPRA self-seeded recursor presentation. The old T_F adds successor
+injectivity to T_F^-. The proof below derives that axiom in T_F^- itself.
+It uses ordinary intuitionistic first-order logic, actual equality, the
+faithful two-valued equality test, self-seeded computation, separation,
+and literal-equation induction with parameters and side assumptions.
+No general excluded middle, successor cancellation, numerical order,
+least-number principle, initializer, or counter argument is used.
+
+The definitions and all F bodies below are terms of the ORIGINAL language;
+none contains a function introduced by a finite-case graph.
+
+PINNED SOURCE
+
+Repository: VladimirReshetnikov/ProveIt
+Commit: 78edba03ee060644464f76e388578584b356520a
+File: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/Article/chapters/ch08_seed.tex
+Git blob: 80c36f262206c8382e5188dd26008d585c3935b9
+Bytes: 149723
+
+The inherited article proves quantifier-free induction, cycle exclusion,
+and coverage without injectivity; its subsection "Without injectivity of
+the successor" explicitly leaves general injectivity open. For a complete
+dependency audit, the necessary special cases are reproved below.
+
+1. THE THEORY
+
+Terms: x, 0, S(t), epsilon(s,t), F(n;v.h). In F, v is bound only in h.
+Write 1=S(0), 2=S(1). The nonlogical axioms/schemes are:
+
+  F(0;v.h) = S(h[0/v]);
+  F(S(n);v.h) = h[F(n;v.h)/v];
+  epsilon(s,t)=0 OR epsilon(s,t)=1;
+  epsilon(s,t)=1 IFF s=t;
+  0 != 1;
+  literal-equation induction, with arbitrary parameters and side assumptions.
+
+The induction rule for a literal equation E is:
+
+  Gamma |- E(0),  Gamma,E(z) |- E(S(z))
+  -------------------------------------  z fresh for Gamma and parameters
+                  Gamma |- E(t).
+
+All standard intuitionistic first-order logical and equality rules are
+included. This proof does not claim to eliminate those logical rules.
+
+2. ELEMENTARY PREPARATIONS
+
+Put C(n,a)=F(n;v.a), Z(n)=C(n,0). Direct computation gives
+
+  C(0,a)=S(a),   C(S(n),a)=a,
+  Z(0)=1,       Z(S(n))=0.
+
+Consequently S(n)!=0: otherwise Z(S(n))=Z(0) would give 0=1.
+
+For Boolean b,c define
+
+  not_B(b)=epsilon(b,0),
+  and_B(b,c)=epsilon(C(b,epsilon(c,0)),0),
+  or_B(b,c)=not_B(and_B(not_B(b),not_B(c))).
+
+Their ordinary Boolean truth tables follow by cases b=0/1,c=0/1. In
+particular, at b=0 the argument C(0,epsilon(c,0)) is a successor and hence
+nonzero; at b=1 that argument is epsilon(c,0). No successor is cancelled.
+Every quantifier-free formula A has a Boolean characteristic term chi_A
+with chi_A=1 iff A (use epsilon at equations, 0 at falsity, and the Boolean
+operations, with implication not_B(chi_A) or_B chi_B). Thus induction on
+chi_A(n)=1 gives contextual quantifier-free induction. Every case split
+below is a Boolean/equality case split justified by this construction.
+
+There are no successor fixed points. The term e(v)=epsilon(v,0) has no
+fixed point: e(w)=w would make w either 0 or 1, and both cases contradict
+e(0)=1 and e(1)=0. If S(a)=a, computation gives
+
+  F(a;v.e(v))=F(S(a);v.e(v))=e(F(a;v.e(v))),
+
+contrary to this fact. In particular 0,1,2 are pairwise distinct.
+
+There are no successor two-cycles. Put
+
+  q(v)=Z(epsilon(v,1)),
+  c(v)=C(q(v),C(q(v),epsilon(v,0))).
+
+Since 0!=1, at most one of epsilon(v,0) and epsilon(v,1) is 1. If v=0,
+then q(v)=1 and epsilon(v,0)=1, giving c(v)=1. If v=1, then q(v)=0 and
+epsilon(v,0)=0, giving c(v)=2. At every other v, q(v)=1 and the inner
+epsilon is 0, giving c(v)=0. Therefore c has range {0,1,2} and
+
+  c(0)=1, c(1)=2, c(2)=0.
+
+It follows by three Boolean cases that c(c(w))!=w for every w: if equality
+held, the range of the outer c would put w in {0,1,2}, on each of which
+two applications move it. If S(S(a))=a, the F successor equation twice
+would make F(a;v.c(v)) a fixed point of c composed with itself. Hence
+
+  S(a)!=a,    S(S(a))!=a                                  (A)
+
+uniformly in a. Neither fact uses induction.
+
+3. COVERAGE WITHOUT INJECTIVITY (INHERITED, REPRODUCED)
+
+Define
+
+  g_a(v)=or_B(epsilon(v,0),epsilon(S(v),a)),
+  theta_a(v)=C(g_a(v),v),
+  U(j,a)=F(j;v.theta_a(v)),
+  pstar(a)=U(a,a).
+
+The update theta_a holds v when v=0 or S(v)=a and increments otherwise.
+Since theta_a(0)=0,
+
+  U(0,a)=1,   U(S(j),a)=theta_a(U(j,a)).
+
+Quantifier-free induction on j proves
+
+  U(j,a)=S(j) OR S(U(j,a))=a.                             (B)
+
+At zero the first disjunct holds. If the second holds, the update holds
+the state. Otherwise the first disjunct gives U(j,a)=S(j)!=0, the guard
+is false, and the next state is S(S(j)).
+
+Apply (B) with j=m and a=S(S(m)). Both disjuncts imply
+S(U(m,a))=a. The state is consequently fixed by theta_a. Two additional
+computation steps yield U(S(S(m)),a)=U(m,a), so
+
+  S(pstar(S(S(m))))=S(S(m)).                             (C)
+
+Now use quantifier-free induction on
+
+  n=0 OR n=1 OR S(pstar(n))=n.                           (D)
+
+The base is immediate. For the successor step: n=0 gives S(n)=1; n=1
+uses (C) at m=0; the last disjunct rewrites S(n) as S(S(pstar(n))),
+to which (C) applies. Thus (D) holds for all n. Consequently
+
+  n=0 OR there exists p with n=S(p).                     (E)
+
+If n=1, take p=0; in the third case take p=pstar(n). This uses no
+successor cancellation and no new F body.
+
+4. STOPPING AT A STATE, NOT AT ITS SUCCESSOR
+
+For each parameter a define the ORIGINAL-LANGUAGE terms
+
+  b_a(v)=or_B(epsilon(v,0),epsilon(v,a)),
+  h_a(v)=C(b_a(v),v),
+  A_a(n)=F(n;v.h_a(v)).
+
+The update h_a has the provable behavior
+
+  h_a(v)=v    if v=0 or v=a,
+  h_a(v)=S(v) if v!=0 and v!=a.
+
+In particular h_a(0)=0, so
+
+  A_a(0)=1,   A_a(S(n))=h_a(A_a(n)).                     (F)
+
+LEMMA 1 (range/orbit invariant).
+  A_a(n)=S(n) OR A_a(n)=a.                               (G)
+
+Proof. Quantifier-free induction on n. The base is A_a(0)=1. If the
+state is a, the update fixes it. Otherwise (G) gives state S(n), which
+is nonzero; the update increments to S(S(n)). End.
+
+LEMMA 2 (diagonal absorption).
+  If a!=0 then A_a(a)=a.                                (H)
+
+Proof. By coverage (E), choose p with a=S(p). At n=p, both alternatives
+of (G) give A_a(p)=a. Therefore A_a(a)=h_a(a)=a by (F). End.
+
+LEMMA 3 (cross absorption under a successor collision).
+  If a!=0 and S(a)=S(b), then A_a(b)=a.                  (I)
+
+Proof. Write c=S(a)=S(b). By (G), A_a(b) is either c or a. Suppose it is
+c. We have c!=0 and c!=a, the latter by no fixed points (A), so h_a(c)=S(c).
+On the other hand (H) gives
+
+  A_a(S(a))=h_a(A_a(a))=a.
+
+Equality S(a)=S(b), followed by (F), therefore gives
+
+  a=A_a(S(a))=A_a(S(b))=h_a(c)=S(c)=S(S(a)),
+
+contradicting no two-cycles (A). The alternative A_a(b)=a is forced. End.
+
+COROLLARY (unique predecessor of 1).
+  S(b)=1 implies b=0.                                  (J)
+
+Proof. Decide b=0. In the unequal case apply (I) with target b and source
+0, using S(b)=S(0). This gives b=A_b(0)=1. But then S(b)=1=b, contrary
+to no fixed points. End.
+
+This short argument replaces the inherited metatheoretic finite-numeral
+rigidity construction at k=1; the general numeral-rigidity theorem is not
+a dependency of the injectivity proof.
+
+5. THE NEW INJECTIVITY ARGUMENT
+
+THEOREM. T_F^- proves S(a)=S(b) -> a=b.
+
+Proof. Fix S(a)=S(b), and decide a=b. Suppose a!=b. By (J), neither a
+nor b can be zero: otherwise the other has successor 1 and is also zero.
+Lemmas 2 and 3 give
+
+  A_a(a)=a, A_a(b)=a, A_b(a)=b, A_b(b)=b.                (K)
+
+First establish the forbidden-hit statements
+
+  A_a(n)!=b and A_b(n)!=a, for every n.                  (L)
+
+For example, suppose A_a(n)=b. Its range invariant (G), and a!=b,
+force S(n)=b. Since b!=0,a, computation yields
+
+  A_a(b)=A_a(S(n))=h_a(b)=S(b).
+
+But (K) gives A_a(b)=a. Thus a=S(b)=S(a), contradicting no fixed points.
+The other statement follows by exchanging a and b.
+
+Now apply literal-EQUATION induction to
+
+  A_a(n)=A_b(n).                                        (M)
+
+The base is 1=1 by (F). For the step, assume both sides at n have value v.
+By (L), v!=a and v!=b. If v=0, both updates are 0. If v!=0, both updates
+are S(v). Thus h_a(v)=h_b(v), and (F) gives (M) at S(n). All case splits
+are decisions of equality, so this is valid intuitionistically.
+
+Equation induction yields (M) at n=a. By (K) its left side is a and
+its right side b. This contradicts a!=b, completing the decidable equality
+case split and proving a=b. End.
+
+The final induction is one literal equation on TWO separately defined
+stopping orbits. This avoids the predecessor cancellation needed by the
+earlier attempted intertwining of one orbit with its successor shift.
+
+6. AXIOM DELETION AND INTERPRETATIONS
+
+T_F is, by definition, T_F^- plus S(a)=S(b)->a=b. The theorem proves that
+the added axiom is redundant. The two theories have the same terms and
+formulas and prove exactly the same sequents. Their mutual interpretations
+are the literal identity translations.
+
+The inherited article proves that T_F is bi-interpretable with full
+first-order intuitionistic primitive recursive arithmetic, using whole
+numerical domains, actual equality, and numerical comparison graphs x=y.
+Composing those existing interpretations with the identity equivalence
+above transfers BOTH internal formula round trips and hence equiconsistency
+to T_F^-. This uses the actual inherited bi-interpretation, not merely two
+conservativity directions or a standard-model interpretation.
+
+Optionally remove primitive successor by the existing definitional
+abbreviation S(a)=F(0;v.a). This is independent of the new axiom deletion.
+
+The result is a mathematical simplification of the SELF-SEEDED presentation.
+It does not by itself establish that its complete software proof checker
+is smaller than the compact native-scalar record. Any size claim for a
+separate implementation of the native scalar calculus must remain separate.
+
+7. NOVELTY CHECK
+
+The current ch08_seed.tex verified above states general successor
+injectivity as open for T_F^- and records the failed shifted-orbit
+intertwining argument. The incoming ipra_ast269_successor_rigidity archive
+uses a counter-aware recursor R with an initializer and a successor-rigidity
+RULE in place of induction; it does not prove this T_F^- axiom deletion.
+No literature-wide novelty or machine-checked formalization is claimed.

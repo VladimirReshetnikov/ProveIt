@@ -1,0 +1,118 @@
+IDENTITY AND NUMBERING LAWS DO NOT REPLACE EQUATION INDUCTION
+
+Theorem (relative model construction).
+Let T_std be intuitionistic first-order logic with equality, the scalar term
+constructors 0, S, I(n,a;u.h), both iterator computation schemas, coverage
+  x=0 or exists y (x=S y),
+separation 0 != S 0, successor injectivity, and the induction rule for every
+equation t(n,params)=kbar with k any fixed standard natural number, arbitrary
+parameters, and arbitrary side assumptions not containing the eigenvariable.
+Add the schemas
+  I(n,a;u.u)=a,
+  I(n,kbar;u.S u)=S^k(n)       (each fixed standard k).
+The second schema includes the numbering/eta law I(n,0;u.S u)=n.
+Then T_std still does not derive induction for all literal equations. The
+countermodel's iterator depends on the actual update function, so this remains
+true with full extensionality in that function. This initial theorem is a
+nonderivability result in the stated language. The equivariant refinement in
+automorphism_barriers.txt supplies the additional bi-interpretability obstruction.
+
+Proof.
+Take a nonstandard model M of PA expanded by the usual definitions of all
+primitive recursive functions. Write St(M) for its external standard part.
+Let
+  D = (St(M) x {0}) union ((M minus St(M)) x {0,1}).
+Projection pi:D->M forgets the label. Interpret 0 as (0,0), and define
+S_D(m,i)=(S_M(m),i). Every standard numeral has one lift, every nonstandard
+element two. Standardness and nonstandardness are preserved by successor;
+all nonzero elements have predecessors of the same label. Thus actual equality,
+successor injectivity, separation, and coverage all hold. Every nonstandard
+successor chain in D has external order type Z. The projection is surjective.
+
+Let H be the class of actual functions h:D->D for which some unary function
+f:M->M, primitive recursive with parameters in M, satisfies pi o h = f o pi.
+Such an f is unique. Iteration It_f is well defined independently of the chosen
+primitive recursive description: PA proves that extensionally equal updates
+give equal iterations, using induction in the base model M.
+
+For h in H and initializer a in D, define I_D(k,a,h)=h^k(a) at a standard
+counter k. For each nonstandard counter chain C=(n_j)_{j in Z}, with
+n_{j+1}=S_D(n_j), let
+  r_j = It_f(pi(n_j),pi(a)),   B_j=pi^{-1}(r_j).
+The nonempty finite sets B_j have at most two members, and h maps B_j into
+B_{j+1}. A compatible bi-infinite path b_j exists. Indeed every finite interval
+has a compatible path by choosing an element at its left endpoint and pushing
+forward; compactness of the product of the finite B_j, or the finite inverse
+limit theorem, supplies a path on all of Z. Define I_D(n_j,a,h)=b_j.
+
+Make the following prescriptions before choosing the remaining paths.
+
+1. If h=id_D, choose b_j=a, for every initializer and every nonstandard
+   counter chain. Its projection is correct because It_id(m,pi(a))=pi(a).
+   This validates every identity-iterator instance.
+
+2. If h=S_D and a=kbar_D is a standard numeral, choose
+     b_j=S_D^k(n_j).
+   Its projection is It_S(pi(n_j),kbar)=pi(n_j)+k, and S_D(b_j)=b_{j+1}.
+   This validates all standard-seed equations, including eta at k=0.
+
+3. Fix a nonstandard b in M and set a=(b,0). For h=S_D, prescribe at seed a
+   the path
+     b_j=(pi(n_j)+b,0),
+   and at seed S_D(a) the path
+     b_j=(pi(n_j)+S_M(b),1).
+   These first coordinates are nonstandard, so both labels exist. Each path
+   is compatible because S_D preserves labels. The two seeds are distinct,
+   are both nonstandard, and therefore are not covered by prescription 2.
+   Also S_D is distinct from id_D. Consequently none of the prescriptions
+   conflicts with another.
+
+Choose arbitrary compatible paths for every remaining triple (h,a,C).
+For all n,a,h the resulting operation satisfies
+  I_D(0,a,h)=a,
+  I_D(S_D n,a,h)=h(I_D(n,a,h)),
+  pi(I_D(n,a,h))=It_f(pi(n),pi(a)).
+No cycle compatibility remains to be checked: successor has no cycles in M
+or D; different standard and nonstandard successor chains never meet.
+
+Interpret nested scalar terms recursively, giving a body its actual function
+on D before applying I_D. Induction on terms proves
+  pi([[t]]_D,rho)=[[t]]_M,pi(rho).
+The interpretation on the right is a parameterized primitive recursive function,
+so every body encountered belongs to H. Since I_D was chosen on actual
+functions, two extensionally equal bodies receive exactly the same iterator
+value. This also handles descriptions of id_D and S_D other than u and S u.
+There is no circular choice on syntax and no failure of substitution.
+
+For any fixed standard k and any valuation,
+  [[t]]_D=kbar_D iff pi([[t]]_D)=kbar_M,
+because the fiber over kbar_M is a singleton. If in D the base and the universal
+step of an induction instance t(n)=kbar hold, surjectivity of pi and the displayed
+projection identity transfer them to the corresponding primitive recursive
+predicate in M. Induction in M gives the conclusion for every first coordinate,
+and the singleton fiber reflects it back to D. For a rule under arbitrary side
+assumptions, fix a valuation satisfying those assumptions; the same reasoning
+applies, without projecting the assumptions themselves. Thus all numeral-equation
+induction rules are valid.
+
+Finally take
+  E(n) : I(n,S a;u.S u) = S(I(n,a;u.S u)).
+The base E(0) reduces on both sides to S a. The two successor computation laws
+and congruence prove E(n)->E(S n), without induction. For a nonstandard counter
+n, however, prescription 3 gives label 1 on the left and label 0 on the right,
+although the first coordinates agree. Hence E(n) fails. The universal equation-
+induction rule therefore cannot be derived in T_std. QED.
+
+Relation to the repository.
+This strengthens the two-fiber countermodel in ConciseIPRA chapter 9,
+theorem ctr:thm:zeroind, by satisfying identity iteration and all standard-seed
+numbering equations. It answers negatively the literal proposal that the identity
+iterator law, even together with eta, repairs numeral-equation induction. It does
+not settle every proposed uniqueness or extensionality scheme. By itself the
+nonderivability argument does not exclude interpretations on a different domain.
+The separate note automorphism_barriers.txt upgrades an equivariant version of
+this model to a parameter-free non-bi-interpretability theorem; it does not
+exclude a one-way interpretation or arbitrary parameterized ones.
+
+Independent audit: /root/independent_logic checked the disjointness and
+compatibility of the prescribed paths and the preserved induction argument.

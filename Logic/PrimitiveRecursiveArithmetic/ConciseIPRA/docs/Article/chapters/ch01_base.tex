@@ -1003,6 +1003,509 @@ ordinary formulas whose congruence steps it does not write out; they are
 given in the proof of \cref{base:cor:single-binder-bridge}.
 \end{remark}
 
+\subsection{Finite blocks under one binder}
+\label{base:sec:blocks}
+
+This subsection draws on the mathematical part of
+\pkg{fused\_blocks\_and\_checkers}, which proves the compiler of finite
+conjunctions and disjunctions that \pkg{479\_predecessor57} states in
+outline (\cref{base:q:blocks}) and shortens it by letting the absorbing
+factor map $H_-$ of \cref{base:sec:pred57} both select the branch and supply
+the next control.  The construction works with the formulas of the
+inherited basis and with the selector that aligns binders
+(\cref{base:rem:single-binder-sources}), not with the stacking selector of
+\cref{base:def:gate}.  It uses arithmetic of \cref{base:sec:pred57}, which is
+derived in the fragment $\mathcal E$ without any result of this subsection,
+so the forward reference is not circular.  Throughout, $\proves$ is
+derivability in $\Nat$, and for a natural number $k$ the \emph{numeral}
+$\bar k$ is the term $\Suc^k0$.
+
+\begin{definition}[D-formulas, aligned gate and aligned selector]
+\label{base:def:agate}
+A \emph{D-formula} is a native formula without $Q$.  It has the form
+$\D{x_1}{y_1}\cdots\D{x_r}{y_r}(s=t)$, with the \emph{prefix}
+$\D{x_1}{y_1}\cdots\D{x_r}{y_r}$ and the \emph{terminal equation} $s=t$; its
+rank $r(A)=r$ is that of \cref{base:rem:single-binder-size}.  Put
+$T(A)\defeq|s|+|t|$ in the measure of \cref{base:def:termsize}, and count one
+node for each binder and one for the equation:
+\[
+ |A|\defeq r(A)+1+T(A).
+\]
+Every repeated subterm is counted at each occurrence and every abbreviation
+is expanded.  For a term $c$ whose free variables are not bound in the
+prefix of $A$, the \emph{aligned gate} $\gamma_c(A)$ is $A$ with its
+terminal equation $s=t$ replaced by $\sel(c,0,s)=\sel(c,0,t)$.  The
+\emph{aligned selector} $\mu_c(A,B)$ of two D-formulas is defined by
+recursion on $\max\{r(A),r(B)\}$.  At two equations,
+\[
+ \mu_c(s=t,\ p=q)\defeq\bigl(\sel(c,s,p)=\sel(c,t,q)\bigr).
+\]
+If at least one operand begins with a binder, choose distinct variables
+$x,y$ not free in $c$, $A$, $B$; let $A'$ be the matrix of $A$ with its bound
+pair renamed to $x,y$ if $A$ begins with a binder, and $A'\defeq\gamma_y(A)$
+if $A$ is an equation; define $B'$ from $B$ in the same way; and put
+\[
+ \mu_c(A,B)\defeq\D{x}{y}\,\mu_c(A',B').
+\]
+\end{definition}
+
+The gate $\gamma$ is the gate of \cref{base:rem:single-binder-sources}, and
+$\mu$ is the selector named there.  At a level where only one operand has a
+binder, the other operand, an equation, is gated by the new bound variable;
+it remains an equation and is gated again at every further such level.  By
+induction on the definitions, with bound variables renamed away from
+$\theta$,
+\[
+ \gamma_c(A)[\theta]=\gamma_{c[\theta]}(A[\theta]),\qquad
+ \mu_c(A,B)[\theta]=\mu_{c[\theta]}(A[\theta],B[\theta]).
+\]
+
+\begin{remark}[Arbitrary native operands]
+\label{base:rem:dformula}
+Let $A^{D}$ be $A$ with every $\Q{y}$ replaced by $\D{x}{y}$ for a fresh
+$x$.  Then $A\dashv\vdash A^{D}$, by induction on $A$: for $A=\Q{y}B$,
+\cref{base:lem:bindercong}(i) and the induction hypothesis give
+$\Q{y}B\dashv\vdash\Q{y}B^{D}$, and \cref{base:lem:dummy} gives
+$\Q{y}B^{D}\dashv\vdash\D{x}{y}B^{D}$; the case $\D{x}{y}B$ is
+\cref{base:lem:bindercong}(ii).  The formulas $A$ and $A^{D}$ have the same
+rank and the same terminal terms.  The blocks below therefore apply to
+arbitrary native operands through $A^{D}$.
+% ed.: this remark is added in the article; the package works in the Eq/D language only.
+\end{remark}
+
+\begin{lemma}[Laws of the aligned gate]
+\label{base:lem:agate}
+For every D-formula $A$ and term $v$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\proves\gamma_0(A)$;
+\item $\gamma_{\Suc v}(A)\dashv\vdash A$;
+\item $\D{x}{y}\gamma_y(A)\dashv\vdash A$ for $x,y\notin\FV(A)$;
+\item $r(\gamma_c(A))=r(A)$ and $T(\gamma_c(A))=T(A)+2|c|+4$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) By induction on $r(A)$.  For the terminal equation,
+$\sel(0,0,s)=0=\sel(0,0,t)$ by \eqref{base:eq:sel} and the equality rules.
+For $A=\D{a}{b}B$, $\gamma_0(A)=\D{a}{b}\gamma_0(B)$; \rulename{DI} with the
+witness $0$ asks for $\gamma_0(B)\subst{0}{a}\subst{\Suc z}{b}$, which is
+$\gamma_0(B\subst{0}{a}\subst{\Suc z}{b})$ and is derivable by the induction
+hypothesis; the assumption of the premise is not used.
+
+(ii) At the terminal equation, $\sel(\Suc v,0,s)=s$ and
+$\sel(\Suc v,0,t)=t$ by \eqref{base:eq:sel}, so the two equations are
+interderivable by the equality rules; the prefix is added by
+\cref{base:lem:bindercong}(ii), one binder at a time, over the empty context.
+
+(iii) From $\D{x}{y}\gamma_y(A)$, \rulename{DE} with a fresh $b$ adds
+$\Q{y}\gamma_y(A)$, since $x$ does not occur in the matrix.  Its instance at
+$0$ is derivable by (i), \rulename{QE} at $1$ gives $\gamma_1(A)$, and (ii)
+gives $A$.  Conversely, from $A$ (ii) gives $\gamma_{\Suc z}(A)$ for a fresh
+$z$, and \rulename{DI} with the witness $0$, whose assumption is not used,
+gives $\D{x}{y}\gamma_y(A)$.
+
+(iv) Each side $s$ of the terminal equation becomes
+$\sel(c,0,s)=\It{c}{0}{u}{s}$, with $1+|c|+1$ new nodes.
+\end{proof}
+
+\begin{lemma}[Laws and cost of the aligned selector]
+\label{base:lem:amix}
+For all D-formulas $A$, $B$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\mu_0(A,B)\dashv\vdash A$ and $\mu_{\Suc v}(A,B)\dashv\vdash B$ for
+ every term $v$;
+\item $r(\mu_c(A,B))=\max\{r(A),r(B)\}$ and
+ \[
+  T(\mu_c(A,B))=T(A)+T(B)+2|c|+2+6\,|r(A)-r(B)|;
+ \]
+\item if $\Gamma\proves A$ and $\Gamma\proves B$, then
+ $\Gamma\proves\mu_c(A,B)$, for every term $c$;
+\item if $\Gamma,A\proves F$ and $\Gamma,B\proves F$, then
+ $\Gamma,\mu_c(A,B)\proves F$, for every term $c$ and native formula $F$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) By induction on $\max\{r(A),r(B)\}$, for all pairs and all $v$.  At
+rank $0$ the formulas are $\sel(0,s,p)=\sel(0,t,q)$ and
+$\sel(\Suc v,s,p)=\sel(\Suc v,t,q)$, and \eqref{base:eq:sel} with the
+equality rules makes them interderivable with $s=t$, respectively $p=q$.  At
+positive rank $\mu_c(A,B)=\D{x}{y}\mu_c(A',B')$, and the pair $A',B'$ has
+smaller maximal rank.  By the induction hypothesis and
+\cref{base:lem:bindercong}(ii), $\mu_0(A,B)\dashv\vdash\D{x}{y}A'$ and
+$\mu_{\Suc v}(A,B)\dashv\vdash\D{x}{y}B'$.  If $A$ begins with a binder,
+$\D{x}{y}A'$ is $A$ up to the renaming of its bound pair.  If $A$ is an
+equation, $\D{x}{y}A'=\D{x}{y}\gamma_y(A)$, which is interderivable with $A$
+by \cref{base:lem:agate}(iii), because $x$ and $y$ are fresh for $A$.  The
+same holds for $B$.
+
+(ii) By the same induction.  At rank $0$ each side gains
+$\sel(c,\cdot,\cdot)$, that is $1+|c|$ nodes besides the operand terms, so
+$T$ grows by $2|c|+2$.  At a level where both operands have a binder, the
+level is matched, the recursive pair has the same terminal terms up to
+renaming and the same rank difference, and the rank grows by one.  At a
+level where only $A$ has a binder, $B'=\gamma_y(B)$ adds $2|y|+4=6$ to $T$
+by \cref{base:lem:agate}(iv), and $|r(A')-r(B')|=|r(A)-r(B)|-1$; the case
+where only $B$ has a binder is symmetric.  There are exactly
+$|r(A)-r(B)|$ unmatched levels, and the rank of the result is the maximum.
+
+(iii) Let $y$ be fresh.  The instance of $\mu_y(A,B)$ at $0$ is
+$\mu_0(A,B)$ and follows from $A$ by (i); the instance at $\Suc z$ follows
+from $B$.  \Cref{base:cor:cases} gives the instance at $c$.
+
+(iv) Let $y$ be fresh for $\Gamma$, $A$, $B$, $F$, and apply
+\cref{base:cor:cases} to the formula $\mu_y(A,B)\Rightarrow_* F$ of
+\cref{base:def:macros}.  Its instance at $0$ follows by $\Rightarrow_*$I
+(\cref{base:thm:logic}(ii)) from $\Gamma,\mu_0(A,B)\proves F$, which holds
+by (i) and $\Gamma,A\proves F$; its instance at $\Suc z$ follows in the same
+way from $\Gamma,B\proves F$.  The instance at $c$ and $\Rightarrow_*$E give
+$\Gamma,\mu_c(A,B)\proves F$.
+% ed.: the package says "by numerical cases on c"; the case split is made on the native implication, since the hypothesis depends on c.
+\end{proof}
+
+The rules (iii) and (iv) are cases on a number, not an induction on a
+compound formula.
+
+\begin{definition}[A local substitution]
+\label{base:def:let}
+Let $A$ be a D-formula with terminal equation $s=t$, let $w$ be a variable
+not bound in the prefix of $A$, and let the free variables of $a$ not be
+bound in that prefix.  Then $\operatorname{Let}_{w=a}(A)$ is $A$ with its
+terminal equation replaced by
+\[
+ \It{1}{a}{w}{s}=\It{1}{a}{w}{t}.
+\]
+\end{definition}
+
+\begin{lemma}[Local substitution]
+\label{base:lem:let}
+$\operatorname{Let}_{w=a}(A)\dashv\vdash A\subst{a}{w}$,
+$r(\operatorname{Let}_{w=a}(A))=r(A)$ and
+$T(\operatorname{Let}_{w=a}(A))=T(A)+2|a|+6$.
+\end{lemma}
+
+\begin{proof}
+By \rulename{IS}, $\It{\Suc 0}{a}{w}{s}=s\subst{\It{0}{a}{w}{s}}{w}$; by
+\rulename{I0} and congruence, $s\subst{\It{0}{a}{w}{s}}{w}=s\subst{a}{w}$.
+So $\proves\It{1}{a}{w}{s}=s\subst{a}{w}$, and likewise for $t$, and the
+equality rules make the two terminal equations interderivable.  Because $w$
+and the free variables of $a$ are not bound in the prefix, $A\subst{a}{w}$
+has the prefix of $A$ and the terminal equation
+$s\subst{a}{w}=t\subst{a}{w}$; \cref{base:lem:bindercong}(ii) adds the
+prefix.  Each terminal term gains an iterator node, the two nodes of $1$ and
+a copy of $a$.
+\end{proof}
+
+The argument $a$ occurs twice in the expanded formula; there is no sharing.
+The operation is used so that a large argument is not substituted at every
+occurrence of $w$ in the operand.
+
+\begin{lemma}[Transitions on numerals]
+\label{base:lem:transitions}
+The fragment $\mathcal E$ derives, for every term $u$ and all natural
+numbers $m$, $j$ and odd $k$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $H_-(2u)=3u$ and $H_-(\Suc(2u))=0$;
+\item $\bar a+\bar b=\overline{a+b}$, $2\bar m=\overline{2m}$ and
+ $3\bar m=\overline{3m}$;
+\item $H_-(\bar k)=0$ and, for $j\ge 1$,
+ $H_-(\overline{k2^{j}})=\overline{3k2^{j-1}}$;
+\item $N(\bar k)=1$ and, for $j\ge 1$, $N(\overline{k2^{j}})=0$;
+ $G_-(\overline{2m})=\overline{3m}=G'(\overline{2m})$;
+\item $\Suc\It{\bar j}{0}{u}{\Suc(u+u)}=\overline{2^{j}}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) The first equation is \cref{base:lem:factor57}(ii).  By
+\cref{base:lem:factor57}(i), \cref{base:lem:parity} and
+\eqref{base:eq:sel},
+$H_-(\Suc(2u))=\sel\bigl(N(\Suc(2u)),G'(\Suc(2u)),0\bigr)
+ =\sel\bigl(1,G'(\Suc(2u)),0\bigr)=0$.
+(ii) $\bar a+\bar b=\overline{a+b}$ follows from $a+0=a$ and
+$a+\Suc b=\Suc(a+b)$ (\cref{base:lem:add}) by $b$ steps, and the other two
+equations are instances.
+(iii) Write $k=2i+1$; then $\bar k=\Suc\overline{2i}=\Suc(2\bar i)$ by (ii),
+and (i) gives $H_-(\bar k)=0$.  For $j\ge1$,
+$\overline{k2^j}=2\,\overline{k2^{j-1}}$ by (ii), and (i) and (ii) give
+$H_-(\overline{k2^j})=3\,\overline{k2^{j-1}}=\overline{3k2^{j-1}}$.
+(iv) $N(\Suc(2u))=1$ and $N(2u)=0$ (\cref{base:lem:parity}) at
+$u=\bar i$, respectively $u=\overline{k2^{j-1}}$, with (ii); and
+$G_-(2u)=3u=G'(2u)$ (\cref{base:lem:ramp57}(iv), \cref{base:lem:ramp46}(iv))
+at $u=\bar m$, with (ii).
+(v) By \rulename{I0} and \rulename{IS} the iterator is $0$ at $\bar 0$ and is
+$\Suc(e+e)$ at $\overline{j+1}$, where $e$ is its value at $\bar j$; by (ii)
+and induction on $j$ (outside the calculus) it equals $\overline{2^j-1}$.
+\end{proof}
+
+Recall from \cref{base:sec:pred57} the floor pair and the fused factor map,
+\[
+ G'(n)=\It{n}{0}{u}{\Suc\sel\bigl(M'(u),\,u,\,\Suc u\bigr)},\qquad
+ H_-(n)=\It{n}{n}{v}{\sel\bigl(v,G'(n),0\bigr)},
+\]
+with $|G'(v)|=20$ and $|H_-(v)|=26$ for a variable $v$, and the ceiling ramp
+$G_-$ with $|G_-(v)|=21$; also $|N(v)|=8$.  On the natural numbers $H_-$
+sends $2m$ to $3m$ and every odd number to $0$; only the equations of
+\cref{base:lem:transitions} are used.
+
+\begin{definition}[Finite selectors]
+\label{base:def:fused}
+Let $A_0,\dots,A_{n-1}$ be D-formulas, $n\ge 1$, and let $v$ be a variable
+not free in them.  The \emph{fused selector} is
+\begin{align*}
+ \Sigma_1(v;A_0)&\defeq A_0,\\
+ \Sigma_{n+1}(v;A_0,\dots,A_n)&\defeq
+  \operatorname{Let}_{w=H_-(v)}\,
+  \mu_w\bigl(A_0,\ \Sigma_n(w;A_1,\dots,A_n)\bigr),
+\end{align*}
+with $w$ a fresh variable.  For $G$ one of $G_-$, $G'$, the \emph{separate
+selector} is
+\begin{align*}
+ \Sigma^{G}_1(v;A_0)&\defeq A_0,\\
+ \Sigma^{G}_{n+1}(v;A_0,\dots,A_n)&\defeq
+  \mu_{N(v)}\bigl(\operatorname{Let}_{w=G(v)}\Sigma^{G}_n(w;A_1,\dots,A_n),\ A_0\bigr).
+\end{align*}
+For a term $t$, $\Sigma_n(t;\vec A)$ and $\Sigma^{G}_n(t;\vec A)$ are the
+results of substituting $t$ for $v$.
+\end{definition}
+
+The selector $\Sigma^{G_-}_n$ is the construction of \pkg{479\_predecessor57}
+stated in \cref{base:q:blocks}(b).  In $\Sigma_n$ the computed value
+$H_-(v)$ serves twice: zero selects the first operand, and a positive value
+selects the tail and becomes its control; one local substitution serves
+both purposes.  The variable $v$ occurs only in the two copies of the
+argument of the outermost local substitution, so
+$\Sigma_{n+1}(t;\vec A)=\operatorname{Let}_{w=H_-(t)}\mu_w(A_0,\Sigma_n(w;A_1,\dots,A_n))$,
+and by \cref{base:lem:let} and the substitution property of $\mu$,
+\begin{equation}
+ \Sigma_{n+1}(t;\vec A)\dashv\vdash
+ \mu_{H_-(t)}\bigl(A_0,\ \Sigma_n(H_-(t);A_1,\dots,A_n)\bigr),
+ \label{base:eq:fused-unfold}
+\end{equation}
+while
+$\Sigma^{G}_{n+1}(t;\vec A)=\mu_{N(t)}\bigl(\operatorname{Let}_{w=G(t)}
+ \Sigma^{G}_n(w;A_1,\dots,A_n),A_0\bigr)$ with
+\begin{equation}
+ \operatorname{Let}_{w=G(t)}\Sigma^{G}_n(w;A_1,\dots,A_n)\dashv\vdash
+ \Sigma^{G}_n\bigl(G(t);A_1,\dots,A_n\bigr).
+ \label{base:eq:separate-unfold}
+\end{equation}
+
+\begin{theorem}[Selection and uniform deduction]
+\label{base:thm:fused-select}
+Let $\Sigma$ be $\Sigma_n$ or $\Sigma^{G}_n$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For $0\le j<n$ and every odd $k$,
+ $\Sigma(\overline{k2^{j}};A_0,\dots,A_{n-1})\dashv\vdash A_j$; in
+ particular $\Sigma(\overline{2^j};\vec A)\dashv\vdash A_j$, and
+ $\Sigma^{G_-}_n(\omega_j;\vec A)\dashv\vdash A_j$ for the term $\omega_j$ of
+ \cref{base:q:blocks}(b).
+\item If $\Gamma\proves A_i$ for every $i<n$, then
+ $\Gamma\proves\Sigma(t;\vec A)$, for every term $t$.
+\item If $\Gamma,A_i\proves F$ for every $i<n$, then
+ $\Gamma,\Sigma(t;\vec A)\proves F$, for every term $t$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+All three parts are proved by induction on $n$ outside the calculus; for
+$n=1$ the selector is $A_0$.
+
+(i) For $\Sigma_{n+1}$ and the control $\overline{k2^{j}}$, by
+\eqref{base:eq:fused-unfold}, \cref{base:lem:transitions}(iii) and
+\cref{base:cor:tr} with the template
+$\mu_y(A_0,\Sigma_n(y;A_1,\dots,A_n))$, the selector is interderivable with
+$\mu_{0}(A_0,\dots)$ if $j=0$, hence with $A_0$ by
+\cref{base:lem:amix}(i); and, if $j\ge 1$, with
+$\mu_{\bar p}(A_0,\Sigma_n(\bar p;A_1,\dots,A_n))$ for
+$p=(3k)2^{j-1}>0$, hence with $\Sigma_n(\bar p;A_1,\dots,A_n)$, and since
+$3k$ is odd the induction hypothesis gives $A_j$, the operand of index
+$j-1$ of the tail.  For $\Sigma^{G}_{n+1}$ the same argument uses
+\cref{base:lem:transitions}(iv) and transport in the control of $\mu$: at
+$j=0$ the control $N(\bar k)$ is $1$ and \cref{base:lem:amix}(i) selects
+$A_0$; at $j\ge1$ it is $0$ and selects the local substitution, which is
+interderivable with $\Sigma^{G}_n(G(\overline{k2^j});A_1,\dots,A_n)$ by
+\eqref{base:eq:separate-unfold}, and
+$G(\overline{k2^j})=\overline{3k2^{j-1}}$.  The case $k=1$ is the
+particular statement, and $\omega_j=\overline{2^j}$ by
+\cref{base:lem:transitions}(v) and \cref{base:cor:tr}.  For leaf $j$ of
+$\Sigma_n$ the successive controls are
+$2^j,\ 3\cdot2^{j-1},\ \dots,\ 3^j$, and then $0$ unless $j=n-1$.
+
+(ii) By \eqref{base:eq:fused-unfold} it suffices to derive
+$\mu_{H_-(t)}(A_0,\Sigma_n(H_-(t);A_1,\dots,A_n))$.  The induction
+hypothesis at the term $H_-(t)$ gives the second operand, and
+\cref{base:lem:amix}(iii) applies.  For $\Sigma^{G}$, the induction
+hypothesis at $G(t)$ and \eqref{base:eq:separate-unfold} give the first
+operand of $\mu_{N(t)}$, and \cref{base:lem:amix}(iii) applies.
+
+(iii) The induction hypothesis at $H_-(t)$ gives
+$\Gamma,\Sigma_n(H_-(t);A_1,\dots,A_n)\proves F$; with $\Gamma,A_0\proves F$,
+\cref{base:lem:amix}(iv) gives $\Gamma,\mu_{H_-(t)}(\dots)\proves F$, and
+\eqref{base:eq:fused-unfold} with cut gives the claim.  For $\Sigma^{G}$, the
+induction hypothesis at $G(t)$ and \eqref{base:eq:separate-unfold} with cut
+give $\Gamma,\operatorname{Let}_{w=G(t)}\Sigma^{G}_n(w;A_1,\dots,A_n)\proves F$,
+and \cref{base:lem:amix}(iv) with $\Gamma,A_0\proves F$ gives the claim
+directly.
+\end{proof}
+
+Parts (ii) and (iii) assert nothing about the orbit of the arithmetic
+control at an arbitrary $t$: only the finite number of levels is used, and
+no induction is applied to a formula with a binder.  In (i) the closed odd
+coefficients suffice, since the stated endpoints have $k=1$.
+
+\begin{theorem}[Exact size and optimal padding]
+\label{base:thm:fused-size}
+Let $r_i\defeq r(A_i)$ with $r_0\ge r_1\ge\dots\ge r_{n-1}$, and put
+$r_{\max}\defeq r_0$, $r_{\min}\defeq r_{n-1}$.  For a variable control $v$,
+the selectors have rank $r_{\max}$ and
+\begin{align*}
+ T\bigl(\Sigma_n(v;\vec A)\bigr)&=\textstyle\sum_iT(A_i)+62(n-1)+6(r_{\max}-r_{\min}),\\
+ T\bigl(\Sigma^{G'}_n(v;\vec A)\bigr)&=\textstyle\sum_iT(A_i)+64(n-1)+6(r_{\max}-r_{\min}),\\
+ T\bigl(\Sigma^{G_-}_n(v;\vec A)\bigr)&=\textstyle\sum_iT(A_i)+66(n-1)+6(r_{\max}-r_{\min}).
+\end{align*}
+Over all binary trees of aligned selectors, with arbitrary controls and
+local substitutions, whose leaves are $A_0,\dots,A_{n-1}$, the number of
+unmatched levels, summed over the nodes, is at least $r_{\max}-r_{\min}$.
+\end{theorem}
+
+\begin{proof}
+By induction on $n$; the rank of the tail is $r_1$ in each case.  At a level
+of $\Sigma_{n+1}$, the selector $\mu_w$ at the variable $w$ adds $2|w|+2=4$
+nodes and $6(r_0-r_1)$ for padding (\cref{base:lem:amix}(ii)), and the local
+substitution adds $2|H_-(v)|+6=58$ (\cref{base:lem:let}); together $62$.  At
+a level of $\Sigma^{G}_{n+1}$ the selector $\mu_{N(v)}$ adds $2|N(v)|+2=18$
+and $6(r_0-r_1)$, and the local substitution adds $2|G(v)|+6$, which is
+$48$ for $G_-$ and $46$ for $G'$; together $66$ and $64$.  The recursive
+selector is built at the fresh variable $w$, so no expanded arithmetic term
+is substituted into it, and every level has the same charge.  The padding
+charges $(r_0-r_1)+\dots+(r_{n-2}-r_{n-1})$ telescope to
+$r_{\max}-r_{\min}$, and the rank is $r_{\max}$ by \cref{base:lem:amix}(ii).
+
+For the lower bound, local substitutions do not change ranks, and by
+\cref{base:lem:amix}(ii) a node with children of ranks $\rho$ and $\rho'$
+has rank $\max\{\rho,\rho'\}$ and $|\rho-\rho'|$ unmatched levels.  Follow
+the path from the root to a leaf of rank $r_{\min}$.  At each node of the
+path the number of unmatched levels is at least the drop from the rank of
+the node to the rank of the chosen child; the drops sum to
+$r_{\max}-r_{\min}$, and the other nodes contribute nonnegative amounts.  The
+sorted right comb attains the bound.
+\end{proof}
+
+The fusion saves $2$ nodes per branch against the separate selector with the
+floor ramp and $4$ against the documented one.  Replacing $G_-$ by $G'$ in
+the separate selector is valid because the tail is selected only at an even
+control, where both ramps give $3m$ (\cref{base:lem:transitions}(iv)).
+
+\begin{definition}[Finite blocks]
+\label{base:def:blocks}
+With $u$, $x$, $z$ distinct variables not free in $\vec A$,
+\[
+ \mathsf{And}(\vec A)\defeq\D{u}{z}\,\gamma_z\bigl(\Sigma_n(z;\vec A)\bigr),\qquad
+ \mathsf{Or}(\vec A)\defeq\D{x}{z}\,\gamma_z\bigl(\Sigma_n(x;\vec A)\bigr),
+\]
+and $\mathsf{And}^{G}$, $\mathsf{Or}^{G}$ in the same way with $\Sigma^{G}_n$.
+The witness coordinate $u$ does not occur in the matrix of the conjunction.
+\end{definition}
+
+\begin{theorem}[Finite conjunction and disjunction]
+\label{base:thm:blocks}
+For every context $\Gamma$ and native formula $F$, and with $\Sigma$, $\mathsf{And}$,
+$\mathsf{Or}$ fused or separate:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item if $\Gamma\proves A_i$ for every $i<n$, then
+ $\Gamma\proves\mathsf{And}(\vec A)$; and
+ $\mathsf{And}(\vec A)\proves A_j$ for every $j<n$;
+\item $A_j\proves\mathsf{Or}(\vec A)$ for every $j<n$; and if
+ $\Gamma,A_i\proves F$ for every $i<n$, then
+ $\Gamma,\mathsf{Or}(\vec A)\proves F$;
+\item with the operands ordered by nonincreasing rank, both blocks have rank
+ $r_{\max}+1$ and
+ \[
+  |\mathsf{And}(\vec A)|=|\mathsf{Or}(\vec A)|
+  =\textstyle\sum_iT(A_i)+62(n-1)+6(r_{\max}-r_{\min})+r_{\max}+8,
+ \]
+ with $66$ for $G_-$ and $64$ for $G'$ in place of $62$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) Introduction: \cref{base:thm:fused-select}(ii) at $\Suc z'$, for $z'$
+fresh, gives $\Sigma(\Suc z';\vec A)$, and \cref{base:lem:agate}(ii) gives
+$\gamma_{\Suc z'}(\Sigma(\Suc z';\vec A))$, the instance of the matrix at
+$z\defeq\Suc z'$.  \rulename{DI} with the witness $0$, whose assumption is not
+used, gives $\mathsf{And}(\vec A)$.  Projection: \rulename{DE} with a fresh
+$b$ adds $\Q{z}\gamma_z(\Sigma(z;\vec A))$.  Its instance at $0$ is
+derivable by \cref{base:lem:agate}(i).  \rulename{QE} at the positive
+numeral $\overline{2^j}$ and \cref{base:lem:agate}(ii) give
+$\Sigma(\overline{2^j};\vec A)$, and \cref{base:thm:fused-select}(i) gives
+$A_j$, in which $b$ does not occur.
+
+(ii) Injection: from $A_j$, \cref{base:thm:fused-select}(i) gives
+$\Sigma(\overline{2^j};\vec A)$ and \cref{base:lem:agate}(ii) gives
+$\gamma_{\Suc z'}(\Sigma(\overline{2^j};\vec A))$; \rulename{DI} with the
+witness $\overline{2^j}$ gives $\mathsf{Or}(\vec A)$.  Elimination:
+\rulename{DE} with a $b$ not free in $\Gamma$, $F$ and $\vec A$ adds
+$\Q{z}\gamma_z(\Sigma(b;\vec A))$; its instance at $0$ is derivable,
+\rulename{QE} at $1$ and \cref{base:lem:agate}(ii) give
+$\Sigma(b;\vec A)$, and \cref{base:thm:fused-select}(iii) at $t=b$ with cut
+gives $F$.
+
+(iii) By \cref{base:thm:fused-size} the selector has rank $r_{\max}$; the
+gate at the variable $z$ adds $6$ to $T$ (\cref{base:lem:agate}(iv)) and the
+outer binder adds one to the rank.  Hence the size is
+$(r_{\max}+1)+1+T(\Sigma)+6$.
+\end{proof}
+
+All derivations are uniform over the context.  For the same operands the
+three compilers have the same surrounding and padding charges, so the fused
+blocks are smaller by exactly $4(n-1)$ nodes than those of
+$\Sigma^{G_-}$ and by $2(n-1)$ than those of $\Sigma^{G'}$.  When all
+operands are equations with $T(A_i)=2$, the three block sizes are $68n-58$,
+$66n-56$ and $64n-54$:
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$n$ & $\Sigma^{G_-}$ (ceiling ramp) & $\Sigma^{G'}$ (floor ramp) & $\Sigma$ (fused)\\
+\midrule
+1  & 10   & 10   & 10\\
+2  & 78   & 76   & 74\\
+4  & 214  & 208  & 202\\
+8  & 486  & 472  & 458\\
+16 & 1030 & 1000 & 970\\
+32 & 2118 & 2056 & 1994\\
+64 & 4294 & 4168 & 4042\\
+\bottomrule
+\end{tabular}
+\end{center}
+These blocks have rank $1$; their operand equations need not be derivable.
+
+\begin{remark}[Scope and sources]
+\label{base:rem:blocks}
+The rules of $\Nat$ are unchanged, and so is \cref{base:thm:bridge}; the
+result is a smaller expansion of finite logical blocks, not a new rule
+basis and not a bound on the size of a checker.  No optimality of the
+constant $62$ is claimed; the padding bound of \cref{base:thm:fused-size}
+concerns trees of aligned selectors only and is not a lower bound for all
+interderivable native formulas.  The counts concern the native D-formula
+syntax.  For operands with binders, the terminal gate and the local
+substitution need not preserve the literal public guard of the compact
+checkers of the chapter on certificates, so such a block must first be
+translated into that guarded form before it serves as a checker goal; the
+size of that translation is not included.  \pkg{fused\_blocks\_and\_checkers}
+proves the endpoint law and the uniform rules for $\Sigma_n$ only, and states
+the charges $66$ and $64$ of the separate selectors with the validity of the
+floor ramp; the proofs for $\Sigma^{G}_n$ in
+\cref{base:thm:fused-select,base:thm:blocks} are the same induction.
+% ed.: the endpoint and uniform rules for the separate selectors are added here by the argument used for the fused one.
+The package also supplies a program that expands the old and the new
+constructions, checks their raw-tree counts and scopes, checks the padding
+minimum exhaustively for small trees and evaluates the routes of the
+controls; these finite checks supplement the proofs above and are not a
+formalization.  None of the constructions of this subsection is formalized
+in Lean or Rocq.
+\end{remark}
+
 % ---------------------------------------------------------------------
 \section{The ordinary theory \texorpdfstring{$\Teq$}{Teq}}
 \label{base:sec:teq}
@@ -4193,35 +4696,42 @@ $x_i$ occurs once in $F_n$, these follow from the count $85n+4$ and the
 differences $|P(z)|-|p(z)|$, but $85n+4$ itself is not proved here.
 \end{question}
 
-\begin{question}[Finite blocks under one binder]
+\begin{question}[Finite blocks under one binder; answered in part]
 \label{base:q:blocks}
-\pkg{479\_predecessor57} states, for the inherited selector $M_v(A,B)$ of
-formulas built from equations and $D$ that aligns common binders and pads
-the shorter operand with gates (\cref{base:rem:single-binder-sources}), the
-following, with proofs given only in outline.  (a) Writing $r$ for the
-binder rank and $T$ for the number of nodes of the two terminal terms,
-$r(M_v(A,B))=\max(r(A),r(B))$ and
-$T(M_v(A,B))=T(A)+T(B)+2|v|+2+6|r(A)-r(B)|$; over all binary selector trees
-with leaves $A_0,\dots,A_{n-1}$ the total padding is at least
-$r_{\max}-r_{\min}$ levels, attained by a comb ordered by rank.  (b) With
-$\operatorname{Let}_{w=a}A$ the formula whose terminal equation $s=t$ is
-replaced by $\It{1}{a}{w}{s}=\It{1}{a}{w}{t}$, and operands ordered by
-nonincreasing rank, the finite selector
-$\Sigma_1(v;A_0)=A_0$,
-$\Sigma_{n+1}(v;A_0,\dots,A_n)=M_{N(v)}\bigl(\operatorname{Let}_{w=G_-(v)}
-\Sigma_n(w;A_1,\dots,A_n),A_0\bigr)$ satisfies
-$\Sigma_n(\omega_j;A_0,\dots,A_{n-1})\dashv\vdash A_j$ for
+\pkg{479\_predecessor57} states, for the selector $\mu_c$ of D-formulas that
+aligns common binders and pads the shorter operand with gates
+(\cref{base:def:agate}), the following, with proofs given only in outline.
+(a) The rank and terminal size of $\mu_c(A,B)$, and the padding bound
+$r_{\max}-r_{\min}$ over binary selector trees, attained by a comb ordered
+by rank.  (b) The finite selector $\Sigma^{G_-}_n$ of \cref{base:def:fused}
+satisfies $\Sigma^{G_-}_n(\omega_j;A_0,\dots,A_{n-1})\dashv\vdash A_j$ for
 $\omega_j\defeq\Suc\It{\bar j}{0}{u}{\Suc(u+u)}$, $j<n$.  (c) The formulas
-$\D{u}{z}\operatorname{gate}(z,\Sigma_n(z;\vec A))$ and
-$\D{x}{z}\operatorname{gate}(z,\Sigma_n(x;\vec A))$ satisfy the rules of a
-finite conjunction and a finite disjunction, have rank $r_{\max}+1$ and
+$\mathsf{And}^{G_-}(\vec A)$ and $\mathsf{Or}^{G_-}(\vec A)$ of
+\cref{base:def:blocks} satisfy the rules of a finite conjunction and a
+finite disjunction, have rank $r_{\max}+1$ and
 $\sum_j T(A_j)+66(n-1)+6(r_{\max}-r_{\min})+r_{\max}+8$ nodes.  (d) After
 pairing (\cref{base:thm:pair}), with tuple codes $e_n$ and decoders
 $d_1,\dots,d_n$, the formula
-$\D{u}{z}\operatorname{gate}\bigl(z,A(d_1(P_-(z)),\dots,d_n(P_-(z)))\bigr)$ is a
-universal quantifier over a block of $n$ variables, of rank $r(A)+1$.  The
-selector of the article stacks binders (\cref{base:rem:single-binder-size}),
-so (a) and the sizes in (c) do not apply to it as stated.  Are (a)--(d)
-derivable in $\Nat$ with complete proofs, and what are the corresponding
-counts for the selector of \cref{base:def:gate}?
+$\D{u}{z}\gamma_z\bigl(A(d_1(P_-(z)),\dots,d_n(P_-(z)))\bigr)$ is a
+universal quantifier over a block of $n$ variables, of rank $r(A)+1$.
+
+\emph{Settled} (\cref{base:sec:blocks}, from
+\pkg{fused\_blocks\_and\_checkers}): (a) is
+\cref{base:lem:amix}(ii) and \cref{base:thm:fused-size}; (b) is
+\cref{base:thm:fused-select}(i), with the uniform introduction and
+elimination of \cref{base:thm:fused-select}(ii),(iii); (c) is
+\cref{base:thm:blocks}, with complete proofs in $\Nat$.  The branch cost
+$66$ is lowered to $64$ by the floor ramp and to $62$ by the fused selector
+$\Sigma_n$, in which $H_-$ both selects and supplies the next control.
+
+\emph{Open.}  (d) is not proved in any package, and its size is not
+computed.  No lower bound for the branch cost is known, so whether $62$ can
+be lowered (by another control orbit, or by a tree that is not a comb of
+aligned selectors) is open; the padding bound is proved only for trees of
+aligned selectors.  The corresponding counts for the stacking selector of
+\cref{base:def:gate}, to which (a) and the sizes in (c) do not apply
+(\cref{base:rem:single-binder-size}), are not computed.  The size of the
+translation of a block with internal binders into the guarded public goal of
+the compact checkers (\cref{base:rem:blocks}) is not computed.  None of
+\cref{base:sec:blocks} is formalized in Lean or Rocq.
 \end{question}

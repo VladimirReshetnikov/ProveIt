@@ -16,8 +16,10 @@ arbitrary relational bi-interpretations through witness extraction.
 small counter-interpretations of individual rule deletions.
 \Cref{obs:sec:progress-independence} builds a nonstandard model of all iterator
 computations, by a tower of ultrapowers, in which the progress rule fails, and a
-refinement in which preservation of fixed points and seed shift hold as well.
-The packages that
+refinement in which preservation of fixed points and seed shift hold as well;
+it ends with two covers of a nonstandard model of arithmetic which show that
+neither iterator fusion nor the successor numbering law suffices alone, even
+with induction against fixed numerals. The packages that
 prove the obstructions also contain positive statements about the presentations
 that the obstructions are measured against; these are
 in \cref{obs:sec:progressive,obs:sec:cc,obs:sec:sources,obs:sec:partial}.
@@ -74,6 +76,17 @@ successor iterator and cancellative addition; \rulename{QI} over the seven rules
 with \rulename{FP} and \rulename{Shift} & general fusion
 (\cref{obs:prop:fusion}), a derivable step over the identity scheme alone, the
 uniqueness rule for the successor update\\
+\Cref{obs:thm:numbering-barrier,obs:thm:fusion-barrier,obs:cor:qi-identity} &
+recovery of equation induction from numeral induction with the identity law,
+all numbering laws $\It{n}{\overline{k}}{u}{\Suc u}=\Suc^{k}n$ and
+extensionality, or with \rulename{Fusion} without
+$\It{n}{0}{u}{\Suc u}=n$; \rulename{QI} over the seven rules with the identity
+scheme & \rulename{Fusion} together with $\It{n}{0}{u}{\Suc u}=n$, which gives
+induction\\
+\Cref{obs:cor:barrier-biinterp} & bi-interpretation with $\iPRA$ of the fusion
+theory with finite parameters, and of the numbering theory with standard
+parameters & nonstandard parameters for the numbering theory, one-way
+interpretations, equiconsistency\\
 \end{longtable}
 
 \section{Conventions and the presentations under test}
@@ -2155,7 +2168,8 @@ chapter.
 \label{obs:sec:progress-independence}
 
 This section draws on \pkg{progress\_independence} and, in
-\cref{obs:sec:fixed-points}, on \pkg{ipra\_fixed\_points\_and\_checker}. The
+\cref{obs:sec:fixed-points}, on \pkg{ipra\_fixed\_points\_and\_checker}, and in
+\cref{obs:sec:barriers} on \pkg{iteration\_barriers}. The
 first package has two independent write-ups of the same result; the section follows the first, takes
 the explicit derivation of the positive side and the extensional corollary
 from the second, and compares the two constructions in
@@ -2935,9 +2949,10 @@ body $\Suc u$, or, by the alternative in the proof of
 \cref{obs:thm:fixed-points}, commutativity of $+$. Neither is shown derivable
 in $\Nat^{-}$ extended by the identity scheme $\It{n}{a}{u}{u}=a$ alone. The
 corollary shows that the conclusion $\Q{y}E(y)$ is underivable in that
-extension, but not that the premise $E(z)\proves E(\Suc z)$ is derivable there;
-whether \rulename{QI} is admissible over $\Nat^{-}$ with the identity scheme
-remains open. % ed.: the package reads its theorem as an answer to the question of adjoining the identity scheme; its step uses (Shift), which holds in the model but is not derived from the seven rules and the identity scheme, so the settlement is stated for the rule families FP and Shift, and the stronger reading is left open.
+extension, but not that the premise $E(z)\proves E(\Suc z)$ is derivable there,
+so it does not by itself show that \rulename{QI} fails to be admissible over
+$\Nat^{-}$ with the identity scheme; that is shown with another equation and
+another model in \cref{obs:cor:qi-identity}. % ed.: the package reads its theorem as an answer to the question of adjoining the identity scheme; its step uses (Shift), which holds in the model but is not derived from the seven rules and the identity scheme, so the settlement is stated for the rule families FP and Shift, and the stronger reading is left open.
 In $\mathfrak{M}^{\mathrm{fp}}_\omega$ the term $n+\It{n}{0}{u}{u}$ that
 refutes the uniqueness rule for the successor update over the seed of
 \cref{obs:prop:pi-cancellative} equals $n$ by (FP), so that refutation does not
@@ -3023,7 +3038,425 @@ premise of \rulename{Fusion} for $g(u)\defeq\Suc u$, $h(v)\defeq\Suc(\Suc v)$
 and $a\defeq 0$, and also the premise of \rulename{UR} for the update
 $\Suc(\Suc u)$. With $f(0)=0$ and $\It{t}{0}{u}{\Suc u}=t$, both conclusions
 read $J(t,t)=K(t,0)$, which fails at $c$. Adding this one instance excludes
-the model; it is not shown to give induction.
+the model; it is not shown to give induction. Neither \rulename{Fusion} nor the
+scheme $\It{t}{0}{u}{\Suc u}=t$ can be omitted from part (ii) of
+\cref{obs:prop:fusion}, even in the presence of induction against every fixed
+standard numeral (\cref{obs:sec:barriers}).
+
+\subsection{Numeral induction, numbering and fusion}
+\label{obs:sec:barriers}
+
+This subsection draws on \pkg{iteration\_barriers}. It
+separates the two hypotheses of \cref{obs:prop:fusion}(ii) by two classical
+structures with actual equality, coverage, separation and an injective
+successor, both built over a nonstandard model of Peano arithmetic, and it
+turns their automorphisms into obstructions to bi-interpretation with
+$\iPRA$. The first structure refines the two-fiber model of
+\cref{ctr:thm:zeroind}; the second has no counterpart earlier in the article.
+
+\emph{The theories.} Let $\mathsf{B}$ be the ordinary theory over the native
+terms with intuitionistic first-order logic with equality
+(\cref{base:sec:teq}), the two computation equations, coverage and
+separation; it is $\Teq$ without induction. Write $\overline{k}=\Suc^{k}0$.
+$T_{\mathrm{num}}$ is $\mathsf{B}$ with $\Suc x=\Suc y\to x=y$ and, for every
+term $t(n,\vec p)$ and every $k\in\mathbb{N}$ fixed in the metatheory, the
+numeral induction rule
+\[
+\infrule{\Gamma\proves t(0,\vec p)=\overline{k}\qquad
+\Gamma,\ t(z,\vec p)=\overline{k}\proves t(\Suc z,\vec p)=\overline{k}}
+{\Gamma\proves t(s,\vec p)=\overline{k}}
+\]
+with $z$ fresh for $\Gamma$, $s$ and $\vec p$; there is no predicate for
+standardness in the language. Consider the laws
+\[
+\It{n}{a}{u}{u}=a\quad(\mathsf{Id}),\qquad
+\It{n}{\overline{k}}{u}{\Suc u}=\Suc^{k}n\quad(\mathsf{N}_k,\ k\in\mathbb{N}),
+\]
+and the extensionality axioms $(\mathsf{Ext})$ of \cref{obs:cor:pi-extensional}.
+$\mathsf{N}_0$ is the scheme $\It{t}{0}{u}{\Suc u}=t$ of
+\cref{obs:prop:fusion}(ii). Put
+\[
+T_{\mathrm{cal}}\defeq T_{\mathrm{num}}+\mathsf{Id}+\{\mathsf{N}_k:k\in\mathbb{N}\}+\mathsf{Ext},
+\qquad
+T_{\mathrm{fus}}\defeq T_{\mathrm{num}}+\mathsf{Id}+\mathsf{Ext}+\rulename{Fusion},
+\]
+with \rulename{Fusion} as displayed before \cref{obs:prop:fusion}. All these
+axioms and rules are derivable in $\Teq$: $\mathsf{Id}$, $\mathsf{N}_k$ and
+$\mathsf{Ext}$ by induction on the displayed equation, \rulename{Fusion} by
+\cref{kern:prop:uniq} and \cref{obs:prop:fusion}(i), and injectivity from the
+predecessor of \cref{base:thm:pred}. In $T_{\mathrm{fus}}$ the laws
+$\mathsf{Id}$ and $\mathsf{Ext}$ are redundant: $\mathsf{Id}$ is
+\cref{obs:prop:fusion}(iii) for the body $u$, whose premise $a=a$ is
+reflexivity, and under the antecedent $\forall u\,(h=g)$ of an extensionality
+axiom, instantiation at a fresh $z$ gives $h(z)=g(z)$, which is the premise of
+\rulename{Fusion} for the identity template $f$ and the two updates $h$, $g$.
+A classical structure \emph{validates} a theory if it satisfies its axioms and
+every rule is valid in it in the sense stated before
+\cref{disch:def:sc-model}; it then satisfies every theorem, and is a sound
+test of intuitionistic derivability (\cref{obs:sec:kinds}).
+
+\begin{theorem}[Numbering does not repair numeral induction]
+\label{obs:thm:numbering-barrier}
+Let $E(p,n)\defeq\bigl(\It{n}{\Suc p}{u}{\Suc u}=\Suc\It{n}{p}{u}{\Suc u}\bigr)$.
+\begin{enumerate}[label=(\roman*)]
+\item $\mathsf{B}$ proves $E(p,0)$ and $E(p,n)\to E(p,\Suc n)$, using only
+the computation equations and equality reasoning.
+\item There is a classical structure $\mathcal{D}$ with actual equality that
+validates $T_{\mathrm{cal}}$ and in which $\forall n\,E(p,n)$ is false at
+some value of $p$.
+\item $\mathcal{D}$ has an automorphism $\tau$ of order two, of the full
+staged language, that fixes every standard numeral and is not the identity.
+\end{enumerate}
+Hence $T_{\mathrm{cal}}$ does not prove $\forall p\,\forall n\,E(p,n)$, and
+induction for literal equations is not admissible in $T_{\mathrm{cal}}$.
+\end{theorem}
+
+\begin{proof}
+(i) $E(p,0)$: the zero computations give $\It{0}{\Suc p}{u}{\Suc u}=\Suc p$
+and $\It{0}{p}{u}{\Suc u}=p$, and congruence gives $\Suc p=\Suc\It{0}{p}{u}{\Suc u}$.
+Step: by the successor computation, the hypothesis $E(p,n)$ under $\Suc$, and
+the successor computation again,
+\[
+\It{\Suc n}{\Suc p}{u}{\Suc u}=\Suc\It{n}{\Suc p}{u}{\Suc u}
+=\Suc\Suc\It{n}{p}{u}{\Suc u}=\Suc\It{\Suc n}{p}{u}{\Suc u}.
+\]
+
+(ii) Let $M$, $D$, $\pi$, $0_D$, $\Suc_D$, $\mathscr{H}$, $\operatorname{It}_f$,
+the nonstandard chains $C=(n_j)_{j\in\mathbb{Z}}$ and the fibers
+$B_j=\pi^{-1}\bigl(\operatorname{It}_f(\pi(n_j),\pi(a))\bigr)$ be as in the
+proof of \cref{ctr:thm:zeroind}; a \emph{path} for a triple $(h,a,C)$ is a
+family $b_j\in B_j$ with $b_{j+1}=h(b_j)$. Only the choice of paths changes.
+Let $\tau\colon D\to D$ fix $(m,0)$ for standard $m$ and exchange $(m,0)$ and
+$(m,1)$ for nonstandard $m$. Then $\tau^{2}=\mathrm{id}$, $\pi\tau=\pi$,
+$\tau(0_D)=0_D$ and $\tau\Suc_D=\Suc_D\tau$. If $h\in\mathscr{H}$ with
+projected function $f$, then $\tau h\tau\in\mathscr{H}$ with the same $f$.
+The label is constant along a nonstandard chain $C$, so $\tau C$ is the chain
+over the same chain of $M$ with the other label, and $\tau C\ne C$.
+
+\emph{Prescribed paths.} Fix a nonstandard $b\in M$ and put $a_0=(b,0)$,
+$a_1=(b,1)$. On every nonstandard chain $C=(n_j)$ prescribe:
+\begin{enumerate}[label=(\alph*)]
+\item for $h=\mathrm{id}_D$ and every seed $a$, the constant path $b_j=a$;
+\item for $h=\Suc_D$ and the seed $\overline{k}_D=\Suc_D^{k}0_D$, $k\in\mathbb{N}$,
+the path $b_j=\Suc_D^{k}n_j$;
+\item for $h=\Suc_D$ and the four seeds $a_0$, $\Suc_Da_0$, $a_1$, $\Suc_Da_1$,
+the paths $b_j=(\pi(n_j)+b,0)$, $(\pi(n_j)+\Suc b,1)$, $(\pi(n_j)+b,1)$ and
+$(\pi(n_j)+\Suc b,0)$ respectively, with the addition of $M$.
+\end{enumerate}
+These are paths. In (a) $\operatorname{It}_{\mathrm{id}}(\pi(n_j),\pi(a))=\pi(a)$
+and the identity fixes $a$. In (b) and (c) the projected iteration of the
+successor from $k$, $b$ or $\Suc b$ is $k+\pi(n_j)$, $b+\pi(n_j)$ or
+$\Suc b+\pi(n_j)$; in (c) these first coordinates are nonstandard, so both
+labels exist; and $\Suc_D$ raises the first coordinate by one and keeps the
+label. The prescribed triples are pairwise distinct: the identity and the
+successor are different functions, the seeds of (b) are standard, and the four
+seeds of (c) are distinct and nonstandard. The involution
+$(h,a,C)\mapsto(\tau h\tau,\tau a,\tau C)$ maps the set of prescribed triples
+onto itself, and the prescription of the image is the image under $\tau$ of
+the prescription: $\tau\,\mathrm{id}_D\,\tau=\mathrm{id}_D$ and the constant
+path at $\tau a$ is $\tau$ of the constant path at $a$;
+$\tau\Suc_D\tau=\Suc_D$, $\tau\overline{k}_D=\overline{k}_D$ and
+$\Suc_D^{k}(\tau n_j)=\tau(\Suc_D^{k}n_j)$; and in (c) the involution
+exchanges $a_0$ with $a_1$ and $\Suc_Da_0$ with $\Suc_Da_1$, whose prescribed
+values have equal first coordinates and opposite labels.
+
+\emph{The remaining paths.} The involution on triples has no fixed point,
+since $\tau C\ne C$. Choose one triple $(h,a,C)$ from each two-element orbit
+that is not prescribed, a path $(b_j)$ for it by \cref{ctr:lem:path}, and for
+the partner $(\tau h\tau,\tau a,\tau C)$ the family that takes the value
+$\tau b_j$ at $\tau n_j$. It is a path: $\tau h\tau(\tau b_j)=\tau b_{j+1}$, and
+$\pi(\tau b_j)=\pi(b_j)=\operatorname{It}_f(\pi(\tau n_j),\pi(\tau a))$. Define
+$\mathcal{I}(n,a,h)$ as $h^{q}(a)$ at a standard counter $\overline{q}_D$ and as
+the chosen path at nonstandard counters. Then $\mathcal{I}$ satisfies the three
+displayed equations of the proof of \cref{ctr:thm:zeroind}, and
+\begin{equation}
+\label{obs:eq:equivariant}
+\mathcal{I}(\tau n,\tau a,\tau h\tau)=\tau\,\mathcal{I}(n,a,h)
+\qquad(n,a\in D,\ h\in\mathscr{H}),
+\end{equation}
+at standard counters because $\tau\overline{q}_D=\overline{q}_D$ and
+$(\tau h\tau)^{q}(\tau a)=\tau(h^{q}(a))$, and at nonstandard counters by the
+construction.
+
+\emph{Validity.} Terms are interpreted as in the proof of \cref{ctr:thm:zeroind};
+\eqref{ctr:eq:termproj} holds by the same induction, every body function lies
+in $\mathscr{H}$, the substitution lemma and both computation schemas hold, and
+the argument given there for an equation $\overline{k}=t(n,\vec a)$, with an
+arbitrary context, validates the numeral induction rule. Injectivity, coverage
+and separation are shown there. The value of an iterator depends only on the
+actual body function, so $\mathsf{Ext}$ holds. $\mathsf{Id}$ holds at standard
+counters by finite iteration and at nonstandard ones by (a). $\mathsf{N}_k$
+holds at $\overline{q}_D$ because $\Suc_D^{q}\overline{k}_D=\Suc_D^{k}\overline{q}_D$,
+and at nonstandard counters by (b). Finally let $p\mapsto a_0$ and let $n$ be
+nonstandard. By (c) the left side of $E(a_0,n)$ is $(\pi(n)+\Suc b,1)$, and
+the right side is $\Suc_D(\pi(n)+b,0)=(\pi(n)+\Suc b,0)$.
+
+(iii) By induction on terms, $\tau[\![t]\!]_\rho=[\![t]\!]_{\tau\circ\rho}$
+for every assignment $\rho$. Variables, $0$ and $\Suc$ are immediate. For
+$t=\It{n}{a}{u}{h}$ let $G$ and $G'$ be the body functions at $\rho$ and at
+$\tau\circ\rho$. The induction hypothesis for $h$ at $\rho[u\mapsto v]$ gives
+$G'(\tau v)=\tau G(v)$, so $G'=\tau G\tau$; the counter and the seed have the
+values $\tau[\![n]\!]_\rho$ and $\tau[\![a]\!]_\rho$; and
+\eqref{obs:eq:equivariant} gives the claim. So $\tau$ commutes with the
+interpretation of every function symbol of the staged language. It fixes the
+standard numerals and moves $a_0$.
+\end{proof}
+
+The proof of \cref{ctr:cor:noreflection} applies to $\mathcal{D}$ verbatim,
+since it uses only \eqref{ctr:eq:termproj}, the one-element fiber over zero and
+two distinct points with a common projection. Hence $T_{\mathrm{cal}}$ proves
+for no term $e(x,y)$ the law $e(x,y)=0\leftrightarrow x=y$, and the reduction
+of equation induction to zero-equation induction through such a term is not
+available in $T_{\mathrm{cal}}$.
+
+The second structure lives on pairs. Fix a nonstandard model $M$ of Peano
+arithmetic expanded by symbols for all primitive recursive descriptions, write
+$\mathrm{St}$ for its standard part, and put
+\[
+D_2\defeq\{(m,m):m\in\mathrm{St}\}\cup\{(m,m'):m,m'\in M\setminus\mathrm{St}\}
+\subseteq M^{2},
+\]
+with $0=(0,0)$ and the coordinatewise successor. Native terms are first
+interpreted on all of $M^{2}$: variables, $0$ and $\Suc$ as stated, and
+$\It{n}{a}{u}{h}$ at an assignment $\rho$ as the internal iterate in $M$,
+of length the first coordinate $n_1$ of $[\![n]\!]_\rho$, of the function
+$v\mapsto[\![h]\!]_{\rho[u\mapsto v]}$, starting at $[\![a]\!]_\rho$. By
+induction on the term every term defines, with its parameters, a function on
+$M^{2}$ given by a primitive recursive description on the two coordinates, so
+the internal iterate exists at every count in $M$. Write $x_{i,1}$, $x_{i,2}$
+for the coordinates of a pair $x_i$.
+
+\begin{lemma}[Provenance]
+\label{obs:lem:provenance}
+For every term $t(x_1,\dots,x_r)$ there are functions $\sigma$ and $d$ of
+$x_{1,1},\dots,x_{r,1}$ alone, primitive recursive in $M$ with parameters,
+with $\sigma\in\{0,\dots,r\}$ and $d\in M$, such that on all of $M^{2}$
+\[
+[\![t]\!]=\bigl(x_{\sigma,1}+d,\ x_{\sigma,2}+d\bigr),\qquad x_0\defeq(0,0).
+\]
+\end{lemma}
+
+\begin{proof}
+Induction on $t$. A variable $x_i$ has $\sigma=i$, $d=0$; $0$ has $\sigma=0$,
+$d=0$; $\Suc$ adds $1$ to $d$. Let $t=\It{n}{a}{u}{h}$, and apply the induction
+hypothesis to $a$ and to $h$, where $h$ has the additional input $u$, read as
+the index $r+1$. Define internally, by primitive recursion on $j\in M$, a pair
+$(\sigma_j,d_j)$: $(\sigma_0,d_0)$ is the provenance of $a$; given
+$(\sigma_j,d_j)$, evaluate the provenance $(\sigma_h,d_h)$ of $h$ at the first
+coordinates of the inputs and at the first coordinate $x_{\sigma_j,1}+d_j$ of
+the state; if $\sigma_h=r+1$ put $(\sigma_{j+1},d_{j+1})=(\sigma_j,d_j+d_h)$,
+and otherwise $(\sigma_h,d_h)$. All of this depends on first coordinates only.
+Induction in $M$ on $j$ proves that the $j$-th internal iterate equals
+$(x_{\sigma_j,1}+d_j,\ x_{\sigma_j,2}+d_j)$: in the first case $h$ adds $d_h$ to
+both coordinates of the state, and in the second it returns
+$x_{\sigma_h}+(d_h,d_h)$. Evaluate at $j=n_1$, the first coordinate of the
+counter, which by the induction hypothesis for $n$ is again a function of
+first coordinates.
+\end{proof}
+
+Three consequences. First, every term function maps tuples of $D_2$ into
+$D_2$: adding a common $d$ to a standard diagonal pair gives a diagonal pair,
+whose coordinates are both standard or both nonstandard, adding it to a pair of
+nonstandard coordinates keeps both nonstandard, and $x_0$ is diagonal. Second,
+for a body $h$ with parameters in $D_2$ and a seed $a\in D_2$, every internal
+iterate $h^{j}(a)$, $j\in M$, lies in $D_2$, since it is the value of the
+iterator at the counter $(j,j)\in D_2$. Third, by induction on $t$, the first
+coordinate of $[\![t]\!]$ is the value in $M$ of $t$ at the first coordinates,
+with the iterator of $M$; in the iterator case this is an induction in $M$ on
+the count. Restricted to $D_2$ the interpretation is therefore a structure for
+the staged language, with actual equality.
+
+\begin{theorem}[Fusion does not give numbering]
+\label{obs:thm:fusion-barrier}
+The structure $D_2$ validates $T_{\mathrm{fus}}$, and $\It{n}{0}{u}{\Suc u}=n$
+is false at every counter $(c,c')$ with $c\ne c'$ nonstandard. For every finite
+tuple $\vec c$ of elements of $D_2$ there is an automorphism of $D_2$ of order
+two, of the full staged language, that fixes $\vec c$ and is not the
+identity.
+\end{theorem}
+
+\begin{proof}
+\emph{Background.} The successor is injective and $0$ is not a successor. A
+nonzero standard diagonal pair $(m,m)$ is the successor of $(m-1,m-1)$, and a
+pair of nonstandard coordinates is the successor of the pair of their
+predecessors, again nonstandard; so coverage holds. The computation equations
+are the recursion equations of the internal iterate at the counts $0$ and
+$n_1+1$. The interpretation is compositional on $M^{2}$, so the substitution
+lemma holds by induction on terms: substituting $s$ for $x$ in a body does not
+change the function on $M^{2}$ that it defines once $x$ takes the value of $s$.
+$\mathsf{Id}$ holds because every internal iterate of the identity is the
+identity.
+
+\emph{Numeral induction.} The first projection maps $D_2$ onto $M$, through
+the diagonal, and its fiber over a standard $k$ is $\{(k,k)\}=\{\overline{k}\}$.
+By the third consequence of \cref{obs:lem:provenance}, the argument for an
+equation $\overline{k}=t(n,\vec a)$ in the proof of \cref{ctr:thm:zeroind},
+with the first projection in place of $\pi$, validates the numeral induction
+rule with an arbitrary context.
+
+\emph{Fusion.} Fix an assignment that satisfies $\Gamma$; it fixes the values
+of the parameters of $f$, $g$, $h$ and of $t$ and $a$. Since the eigenvariable
+$z$ is fresh, the premise gives $f(g(z))=h(f(z))$ for every value $z\in D_2$.
+Write $a_j=g^{j}(a)$ for the internal iterates, $j\in M$. By the second consequence
+of \cref{obs:lem:provenance} every $a_j$ lies in $D_2$, so
+$f(g(a_j))=h(f(a_j))$ for every $j\in M$. With the primitive recursive
+descriptions of $f$, $g$, $h$ and of $j\mapsto a_j$ substituted, this is a
+statement of $M$ that mentions no predicate for $D_2$, and it is true in $M$.
+Induction in $M$ on $j$ gives $f(a_j)=h^{j}(f(a))$: at $j=0$ both sides are
+$f(a)$, and $f(a_{j+1})=f(g(a_j))=h(f(a_j))=h(h^{j}(f(a)))$. At $j$ the first
+coordinate of the value of $t$, this is the conclusion
+$f\bigl(\It{t}{a}{u}{g(u)}\bigr)=\It{t}{f(a)}{v}{h(v)}$. $\mathsf{Ext}$ is
+derivable from \rulename{Fusion}, hence valid.
+
+\emph{Numbering fails.} At $n=(c,c')$ the iterator $\It{n}{0}{u}{\Suc u}$ is the
+$c$-fold internal successor of $(0,0)$, that is $(c,c)\ne(c,c')$.
+
+\emph{Involutions.} For distinct positive standard $r$, $s$ define on $M^{2}$
+\[
+\tau_{r,s}(m,m')=
+\begin{cases}
+(m,m+s), & m'=m+r,\\
+(m,m+r), & m'=m+s,\\
+(m,m'), & \text{otherwise}.
+\end{cases}
+\]
+The cases are disjoint, $\tau_{r,s}$ is an involution, it fixes the first
+coordinate and every diagonal pair, and by cancellation in $M$ it commutes with
+adding a common $d\in M$ to both coordinates. It maps $D_2$ onto $D_2$: the
+standard elements of $D_2$ are diagonal and fixed, and a moved pair has a
+nonstandard first coordinate, so both second coordinates are nonstandard. By
+\cref{obs:lem:provenance}, applying $\tau_{r,s}$ to all arguments of a term
+function changes neither $\sigma$ nor $d$, which depend on first coordinates,
+so
+$[\![t]\!](\tau_{r,s}\vec x)=\tau_{r,s}(x_\sigma)+(d,d)=\tau_{r,s}\bigl([\![t]\!](\vec x)\bigr)$,
+also when $\sigma=0$. Hence the restriction to $D_2$ is an automorphism of the
+staged language. Given $\vec c$, let $Q$ be the finite set of positive standard
+$q$ such that some component of $\vec c$ has the form $(m,m+q)$, and choose
+$r\ne s$ outside $Q$. Then $\tau_{r,s}$ fixes $\vec c$, and it exchanges
+$(m,m+r)$ and $(m,m+s)$ for every nonstandard $m$.
+\end{proof}
+
+\begin{corollary}[Obstructions to bi-interpretation]
+\label{obs:cor:barrier-biinterp}
+\begin{enumerate}[label=(\roman*)]
+\item No theory validated by $D_2$, in particular $T_{\mathrm{fus}}$, is
+bi-interpretable with $\iPRA$ in the sense of \cref{obs:def:biinterp}, with
+arbitrary definable domains, quotient equality, finite dimension and finite
+parameter tuples, provided the interpretations and the return isomorphism exist
+in $D_2$; this covers a parameter condition that the theory proves inhabited.
+\item No theory validated by $\mathcal{D}$, in particular $T_{\mathrm{cal}}$,
+is bi-interpretable with $\iPRA$ in that sense by a bi-interpretation whose
+parameters, those of the first interpretation, of the return isomorphism and
+representatives of those of the second interpretation, can be chosen in
+$\mathcal{D}$ among the standard numerals; in particular by no
+parameter-free bi-interpretation.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+As in the proof of \cref{obs:thm:symmetry}: a hypothetical bi-interpretation,
+applied in the structure, yields a classical model of $\iPRA$; collect the
+parameters $\vec c$ as stated. In (i) \cref{obs:thm:fusion-barrier}, and in
+(ii) \cref{obs:thm:numbering-barrier}(iii), gives an automorphism of order two
+that fixes $\vec c$ and is not the identity. Its image under the homomorphism
+of \cref{obs:lem:aut} has order dividing two and preserves the parameter-free
+definable order of \cref{obs:lem:rigid}, so it is the identity, and injectivity
+of the homomorphism gives a contradiction.
+\end{proof}
+
+The automorphism $\tau$ of $\mathcal{D}$ moves every nonstandard element, so
+(ii) says nothing about bi-interpretations that need a nonstandard parameter.
+Neither part excludes equiconsistency or a one-way interpretation.
+
+The witness of \cref{obs:thm:fusion-barrier} is parameter-free and its step
+needs no auxiliary law, which settles the question left open in
+\cref{obs:rem:fp-scope}. Let $\Nat^{-}_{\mathrm{id}}$ be $\Nat^{-}$ with the
+leaves $\Gamma\proves\It{n}{a}{u}{u}=a$ for all terms $n$, $a$.
+
+\begin{corollary}[Progress over the identity scheme]
+\label{obs:cor:qi-identity}
+Let $E(y)\defeq\bigl(\It{y}{0}{u}{\Suc u}=y\bigr)$.
+\begin{enumerate}[label=(\roman*)]
+\item $\Nat^{-}$ derives $E(0)$ and the sequent $E(z)\proves E(\Suc z)$.
+\item Every sequent derivable in $\Nat^{-}_{\mathrm{id}}$, also when the rule
+\rulename{Fusion} with native contexts and the rule \rulename{QI} restricted
+to matrices $t(y)=\overline{k}$, $k\in\mathbb{N}$, are added, is valid in
+$D_2$ under the ordinary readings, with actual equality.
+\item $\Q{y}E(y)$ is false in $D_2$.
+\end{enumerate}
+Hence $\Nat^{-}_{\mathrm{id}}$ does not derive $\Q{y}E(y)$, and \rulename{QI}
+is not admissible over $\Nat^{-}$ with the identity scheme, nor over that
+extension.
+\end{corollary}
+
+\begin{proof}
+(i) $E(0)$ is a zero computation leaf. In the context $E(z)$: the successor
+computation gives $\It{\Suc z}{0}{u}{\Suc u}=\Suc\It{z}{0}{u}{\Suc u}$,
+\rulename{Hyp} and congruence in the template $\Suc v$ give
+$\Suc\It{z}{0}{u}{\Suc u}=\Suc z$, and transitivity gives $E(\Suc z)$. The
+equality rules of \cref{base:lem:eq} use only \rulename{Tr} and \rulename{I0},
+as in the proof of \cref{obs:cor:fp-native}.
+
+(ii) For the seven rules of $\Nat^{-}$ the argument of part (ii) of the proof
+of \cref{obs:thm:progress-independence} applies: it uses actual equality, the
+computation equations, the substitution lemma and coverage, which hold in
+$D_2$ by the proof of \cref{obs:thm:fusion-barrier}. The identity leaves hold
+since $D_2$ satisfies $\mathsf{Id}$. \rulename{Fusion} is valid by
+\cref{obs:thm:fusion-barrier}. For \rulename{QI} at a matrix $t(y)=\overline{k}$,
+let $\rho$ satisfy $\Gamma$; the premise holds at every value of the fresh $z$,
+so if $t(0)=\overline{k}$ holds at $\rho$ then numeral induction gives
+$t(y)=\overline{k}$ at every value of $y$, which is the reading of $\Q{y}$.
+
+(iii) $\Q{y}E(y)$ reads $E(0)\to\forall y\,E(y)$; $E(0)$ holds and $E$ fails at
+every $(c,c')$ with $c\ne c'$ nonstandard.
+\end{proof}
+
+The structure $\mathcal{D}$ gives a second witness with a parameter:
+$\Nat^{-}$ derives $E(p,z)\proves E(p,\Suc z)$ for the equation of
+\cref{obs:thm:numbering-barrier}, by the derivation in part (i) of its proof,
+and $\Nat^{-}$ with the identity leaves, the leaves
+$\Gamma\proves\It{n}{\overline{k}}{u}{\Suc u}=\Suc^{k}n$ and \rulename{QI}
+restricted to matrices $t(y)=\overline{k}$ is sound in $\mathcal{D}$ by the
+same argument, while $\Q{y}E(p,y)$ fails at $p\mapsto a_0$.
+
+\begin{remark}[Comparison and scope]
+\label{obs:rem:barriers}
+The equation $E(p,n)$ of \cref{obs:thm:numbering-barrier} is the instance of
+(Shift) for the body $\Suc u$. It is also an instance of \rulename{SU}
+(\cref{kern:def:SU}): for $f(z)\defeq\Suc\It{z}{p}{u}{\Suc u}$ the successor
+computation and congruence give $f(\Suc z)=\Suc f(z)$, and $f(0)=\Suc p$, so
+\rulename{SU} gives $\Suc\It{t}{p}{u}{\Suc u}=\It{t}{\Suc p}{u}{\Suc u}$.
+Hence $\mathcal{D}$ refutes (Shift) and \rulename{SU}; it is no witness for
+\cref{kern:q:su}, and it is complementary to the model of
+\cref{obs:thm:fixed-points}, which satisfies (FP), (Shift) and $\mathsf{N}_0$
+and is not shown to satisfy numeral induction. In \cref{ctr:thm:zeroind} the
+identity iterator is the specified family $(\pi(a),0)$, so $\mathsf{Id}$ fails
+there; \cref{obs:thm:numbering-barrier} keeps the base and adds $\mathsf{Id}$,
+every $\mathsf{N}_k$ and the equivariance. The structure $\mathcal{M}$ of
+\cref{disch:def:sc-model} also validates \rulename{Fusion} and refutes
+$\mathsf{N}_0$, but its successor is not injective and coverage fails there;
+$D_2$ has both, together with numeral induction. With
+\cref{obs:prop:fusion,obs:thm:fixed-points} the picture over $\mathsf{B}$ is:
+\rulename{Fusion} with $\mathsf{N}_0$ recovers induction for literal equations;
+\rulename{Fusion}, $\mathsf{Id}$, $\mathsf{Ext}$ and numeral induction without
+$\mathsf{N}_0$ do not; $\mathsf{N}_0$ with every $\mathsf{N}_k$, $\mathsf{Id}$,
+$\mathsf{Ext}$ and numeral induction does not; and $\mathsf{N}_0$ with (FP),
+(Shift), $\mathsf{Ext}$ and cancellative addition does not.
+
+The package also states the positive equivalence: over $\mathsf{B}$, equation
+induction proves \rulename{Fusion} and $\mathsf{N}_0$, and these two prove
+\rulename{UR}, hence equation induction by \cref{kern:thm:ur}. This is
+\cref{obs:prop:fusion}(i), (ii) with the discussion after it and is not
+restated; the package derives \rulename{Fusion} from equation induction
+directly, by induction on $f(\It{n}{a}{u}{h(u)})=\It{n}{f(a)}{u}{k(u)}$, in
+place of the route through \rulename{UR}, and it notes that the converse half
+of \cref{kern:thm:ur} is a written proof that is not part of the Lean
+formalization. The constructions of the subsection are written proofs in
+classical metamathematics with a nonstandard model of Peano arithmetic and,
+for $\mathcal{D}$, the axiom of choice and \cref{ctr:lem:path}; none of these
+principles enters the object theories. No Lean or Rocq verification is
+claimed, and the package's test suites concern inherited checkers only.
+\end{remark}
 
 \subsection{No successor cycle without progress}
 
@@ -4124,7 +4557,19 @@ this chapter with the sizes that the packages state, under the protocol of
 \pkg{progress\_independence} and \pkg{ipra\_fixed\_points\_and\_checker}, whose
 241-token compact checker is a trace-equivalent reimplementation of an inherited
 calculus, belong to their checker work and are listed with it in other
-chapters, the last in \cref{prov:ch:cert}. The observed minima at the
+chapters, the last in \cref{prov:ch:cert}.
+\pkg{iteration\_barriers} delivers no new program; it
+re-measures five unchanged programs of \pkg{whole\_json\_refinement} and
+\pkg{shared\_leaf} under CPython 3.12.14, with the compact proof interface of
+\cref{prov:ch:cert} as input contract (a promised exact-integer and list
+alphabet and a canonical closed guarded public goal, not a validator of
+arbitrary JSON values). Its values agree with \cref{cert:sec:sizes}. It
+reports the envelope $248/268/469$ for whole-input programs and $242/262/469$
+when JSON-line streams are admitted, each attained by three different
+programs. These envelopes are stated for the programs the package inspects;
+\cref{cert:sec:sizes} also records a stream program of
+\pkg{ipra\_fixed\_points\_and\_checker} with $241$ tokens and later programs
+with smaller envelopes. The observed minima at the
 snapshots of the packages are: 277 tokens, 311 nodes and 672 bytes, attained by
 different programs, for \pkg{adaptive\_seed}, \pkg{research},
 \pkg{local\_scopes} and \pkg{uniform\_predecessor}; 268, 300 and 616 for
@@ -4192,6 +4637,13 @@ module import, zero-product test & 281 & 322 & 672 & same\\
 inverted hypothesis guard & 283 & 314 & 751 & 283 / 315 / 710 (frozen AST baseline)\\
 compact, separate \rulename{RL}, \rulename{CC}, \rulename{QE} & 343 & 395 & 881 & 296 / 333 / 704 (general transport)\\
 compact, \rulename{CC} fused into local facts & 341 & 388 & 892 & same\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{iteration\_barriers} (unchanged inherited programs, re-measured)}\\
+whole input, token profile (\pkg{whole\_json\_refinement}) & 248 & 277 & 615 & --- (no new program)\\
+whole input, AST profile (\pkg{whole\_json\_refinement}) & 254 & 268 & 613 & --- (no new program)\\
+whole input, byte profile (\pkg{shared\_leaf}) & 272 & 306 & 469 & --- (no new program)\\
+JSON-line stream, token profile (\pkg{shared\_leaf}) & 242 & 268 & 565 & --- (no new program)\\
+JSON-line stream, AST profile (\pkg{shared\_leaf}) & 246 & 262 & 556 & --- (no new program)\\
 \end{longtable}
 \endgroup
 
@@ -4257,8 +4709,25 @@ separation of principles and deletes no arithmetic axiom; it is not a smaller
 axiomatization, not a lower bound on checker size, and does not exclude a
 bi-interpretation through a different definable domain. The package does not
 show that \rulename{QI} fails to be admissible over the seven rules with the
-identity scheme alone (\cref{obs:rem:fp-scope}), and does not decide the
-uniqueness rule for the successor update in its model. Its finite check of the
+identity scheme alone (\cref{obs:rem:fp-scope}); this is settled by
+\cref{obs:cor:qi-identity} of \pkg{iteration\_barriers}.
+It does not decide the uniqueness rule for the successor update in its model.
+\item \pkg{iteration\_barriers}: no axiomatization below the
+observed minima, no new checker and no minimality statement is obtained; the
+positive equivalence of \rulename{Fusion} with $\It{n}{0}{u}{\Suc u}=n$ and
+equation induction is \cref{obs:prop:fusion} and rests on the written proof of
+\cref{kern:thm:ur}. \Cref{obs:cor:barrier-biinterp}(ii) does not address
+bi-interpretations with nonstandard parameters, and neither part excludes
+equiconsistency or one-way interpretations. \Cref{obs:thm:numbering-barrier}
+concerns the identity law for the designated iterator, not the stronger rule
+that every term satisfying a constant-step recurrence is constant, and it
+settles no restricted uniqueness scheme. The package also states, without a
+model or a derivation, that scope validation of inserted terms in the compact
+openers cannot be deleted, that packing a checker into a decoded string or a
+universal interpreter only relocates the trusted program, and that
+\rulename{QI} for arbitrary formulas changes the target theory; these are
+assessments of implementation proposals, not theorems. The countermodels are
+not formalized in Lean or Rocq. Its finite check of the
 seed algebra is supplementary; no Lean or Rocq verification of the
 construction is claimed.
 \item No complete checker is given for the progressive calculus of
@@ -4377,9 +4846,13 @@ model does not give arithmetic strength. This part is answered in part by
 \cref{obs:sec:fixed-points}: the extension survives preservation of all fixed
 points and seed shift for every update (\cref{obs:lem:fp-extension}), and the
 seed can carry the canonical successor iterator and commutative cancellative
-addition (\cref{obs:prop:fp-tower}); it cannot survive general fusion, because
-fusion with the canonical successor iterator gives \rulename{UR} and hence
-equation induction (\cref{obs:prop:fusion} and the discussion after it). Is
+addition (\cref{obs:prop:fp-tower}); it cannot survive general fusion together
+with the canonical successor iterator, because the two give \rulename{UR} and
+hence equation induction (\cref{obs:prop:fusion} and the discussion after it).
+General fusion alone is compatible with a failure of equation induction: the
+pair structure of \cref{obs:thm:fusion-barrier}, which is not a tower, refutes
+the canonical successor iterator instead. Whether the tower itself can be
+extended so as to keep all instances of \rulename{Fusion} is not decided. Is
 there a counterpart of the model
 that satisfies the uniqueness rule for the successor update and still refutes
 an induction for a literal equation, which would separate the two principles?
@@ -4409,12 +4882,18 @@ $E(n)\equiv\bigl(\It{n}{0}{u}{\Suc(\Suc u)}=\It{n}{n}{u}{\Suc u}\bigr)$ is
 underivable even after the rule \rulename{FP}, which contains the scheme, and
 the leaves \rulename{Shift} are added, and over these additions its premise
 $E(z)\proves E(\Suc z)$ is derivable, so \rulename{QI} is not admissible there.
-What remains open is the stronger form: is there a literal equation whose step
-is derivable from the seven rules and the identity scheme alone while its
-closure is not, that is, is \rulename{QI} admissible over $\Nat^{-}$ with the
-identity scheme? The step above uses the \rulename{Shift} leaf for the body
-$\Suc u$, which is valid in the model but not derived from those rules
-(\cref{obs:rem:fp-scope}). Any such scheme would have to be counted in a
+The stronger form, whether \rulename{QI} is admissible over $\Nat^{-}$ with the
+identity scheme, is answered negatively by \cref{obs:cor:qi-identity}
+(\pkg{iteration\_barriers}): for
+$E(y)\equiv\bigl(\It{y}{0}{u}{\Suc u}=y\bigr)$ the base and the step are
+derivable in $\Nat^{-}$ alone, and $\Q{y}E(y)$ is not derivable even after the
+identity leaves, \rulename{Fusion} and \rulename{QI} for matrices
+$t(y)=\overline{k}$ are added. After the identity scheme and every
+$\It{n}{\overline{k}}{u}{\Suc u}=\Suc^{k}n$ are added instead, the model of
+\cref{obs:thm:numbering-barrier} gives an underivable instance whose step is
+derivable in $\Nat^{-}$, with a parameter in the equation. Both answers use
+nonstandard models, not explicit ones, so the first question of this paragraph
+stays open for them as well. Any such scheme would have to be counted in a
 complete checker. Can predecessor and reflection of equality be derived
 from \rulename{Stat} of \cref{obs:prop:stationary} in the bare scalar language,
 without \rulename{QI}, so that the interface of that proposition is supplied
@@ -4433,7 +4912,28 @@ equations over computation, coverage and separation? By
 iterator, and (FP) and (Shift) do not (\cref{obs:thm:fixed-points}). The
 doubling instance excludes the model of \cref{obs:thm:fixed-points}, but
 excluding one witness is not completeness.
-(\pkg{ipra\_fixed\_points\_and\_checker}.)
+(\pkg{ipra\_fixed\_points\_and\_checker}.) The scheme
+$\It{t}{0}{u}{\Suc u}=t$ cannot be dropped from \cref{obs:prop:fusion}(ii):
+the whole rule \rulename{Fusion}, with the identity law, extensionality,
+successor injectivity and induction against every fixed numeral, does not
+recover induction (\cref{obs:thm:fusion-barrier}); conversely the scheme with
+every $\It{n}{\overline{k}}{u}{\Suc u}=\Suc^{k}n$, the identity law,
+extensionality and numeral induction does not either
+(\cref{obs:thm:numbering-barrier}). The question therefore concerns fragments
+of \rulename{Fusion} taken together with the scheme
+(\pkg{iteration\_barriers}).
+\end{question}
+
+\begin{question}[Parameters for the numbering theory]
+Is $T_{\mathrm{cal}}$ of \cref{obs:sec:barriers} bi-interpretable with $\iPRA$
+by a bi-interpretation that uses nonstandard parameters? The involution of
+\cref{obs:thm:numbering-barrier} moves every nonstandard element, so
+\cref{obs:cor:barrier-biinterp}(ii) does not decide this; a model of
+$T_{\mathrm{cal}}$ with involutions fixing arbitrary finite tuples, as for
+$T_{\mathrm{fus}}$, would. Do $T_{\mathrm{cal}}$ and $T_{\mathrm{fus}}$
+interpret $\iPRA$ at all, and are they equiconsistent with it? Both are
+subtheories of $\Teq$, so they are interpreted in $\iPRA$; the converse is not
+addressed (\pkg{iteration\_barriers}).
 \end{question}
 
 \begin{question}[Counter congruence and the reversed binder]

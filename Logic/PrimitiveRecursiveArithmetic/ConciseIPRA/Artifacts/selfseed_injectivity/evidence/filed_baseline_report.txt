@@ -1,0 +1,77 @@
+FILED CONCISEIPRA BASELINE AUDIT
+12 November 2026 (Pacific time)
+
+SCOPE
+
+This audit covers the filed Artifacts tree and the unified article. It does
+NOT include Python members of docs/incoming ZIP archives. The parent task
+has a separate incoming-archive audit; its newer minima supersede the
+filed-only values below when comparing against every current proposal.
+
+PIN
+
+Repository: VladimirReshetnikov/ProveIt
+Commit: 78edba03ee060644464f76e388578584b356520a
+ConciseIPRA Artifacts tree: 0ee5dd31d0e374a677386dea5d69bc1270620aeb
+README blob: 84b49e394e10e1aa765184a4154f01185316a1ad
+ch08_seed.tex blob: 80c36f262206c8382e5188dd26008d585c3935b9 (149723 bytes)
+ch11_cert.tex blob verified by parent: f94df2c8fbe8ca909c953a2c3009e9eb983200a1
+
+The local Artifacts tree exactly matches the returned GitHub tree and its
+working directory is clean. The ch08 source was hashed independently and
+matches the parent's current GitHub blob.
+
+MEASUREMENT
+
+CPython 3.12.14. Normalize with ast.unparse(ast.parse(source)) plus one LF.
+Count significant Python tokens (no comments or layout), every AST node,
+and UTF-8 bytes. Gzip is gzip.compress(normalized,compresslevel=9,mtime=0).
+The complete module, reader, and acceptance output are counted. The census
+parsed 2894 filed Python paths. Exact rows and source hashes are in
+source_census.json and selected_baselines.json.
+
+FILED CONTRACT ENVELOPES
+
+Compact guarded, whole JSON input R/U: 249 tokens / 271 nodes / 477 bytes.
+Allowing stream-framing programs: 244 / 265 / 477.
+Native goal validated G/A-: 321 / 369 / 596.
+Whole alphabet plus native goal validated T/ed: 330 / 379 / 621.
+
+Each line is a coordinatewise envelope attained by DIFFERENT programs.
+The article excludes double-dagger stream programs from its principal
+envelope because they do not read their whole input as ONE JSON value;
+they still read the public goal. They are separate framing contracts.
+
+The 477-byte checker is checked_reductions/checkers/compact477.py:
+273 tokens, 305 nodes, 477 normalized bytes, 312 gzip bytes.
+It assumes exact-integer/list proof data and a canonical closed GUARDED
+Eq/D public goal. It does not validate the entire public grammar or
+arbitrary JSON alphabet. The final record is [goal,k], normally [goal,0].
+
+Its proof is preservation of canonical public theorem sets, not exact
+acceptance equivalence on every arbitrary certificate. An empty auxiliary
+boundary is newly rejected. Its written scope-header soundness argument
+must not be generalized to unrestricted zero-free native goals.
+
+All observed minima are UPPER bounds on an unknown optimum, not proven
+mathematical lower bounds. Gzip is informational. A claim of a checker
+below every current proposal must include the newer incoming archives.
+
+NEW MATHEMATICAL RESULT FROM THIS TASK
+
+The article's self-seeded recursor theory T_F^- lacks assumed successor
+injectivity. Its ordinary extension T_F adds exactly that axiom and is
+proved bi-interpretable with iPRA. The new paired stopping-orbit argument
+in selfseed_injectivity_proof.txt proves the missing axiom in T_F^-.
+
+Its central algebraic argument is checked in StoppingOrbits.lean with
+Lean4.24.0 and no Mathlib dependency. Lean reports the theorem has no
+axiom dependencies; its algebraic hypotheses and the special equation
+induction premise remain explicit parameters. This is NOT a complete
+formalization of the syntactic iPRA equivalence. The exact scope and
+compilation receipt are in StoppingOrbits_lean_receipt.json.
+
+The new theorem is a genuine arithmetic axiom deletion in the self-seeded
+presentation. It is separate from any byte reduction of a checker for the
+native scalar presentation. Do not assign the latter's source size to
+the new self-seeded theory.

@@ -1,0 +1,317 @@
+INDEPENDENT MATHEMATICAL REVIEW
+===============================
+
+Scope
+-----
+This review concerns two negative constructions for proposed weakenings of
+the scalar-iterator presentation. It establishes no smaller complete proof
+checker and no positive axiomatization satisfying the requested complexity
+target. The first construction gives same-language nonderivability, and
+its equivariant refinement in section 4 also excludes parameter-free
+bi-interpretability. The second excludes ordinary first-order
+bi-interpretability even with definable quotient domains and finitely many
+arbitrary parameters.
+
+Notation
+--------
+T0 has full intuitionistic first-order logic with actual equality, zero,
+successor, scalar iterator terms I(n,a;u.h), both computation equations,
+coverage, separation, and induction restricted to t(n,p)=0, with side
+assumptions independent of the induction variable. Both models below also
+satisfy successor injectivity and induction for t(n,p)=kbar for every fixed
+standard numeral kbar. M is a nonstandard model of PA with its definitional
+expansion by all primitive recursive descriptions. A classical model is a
+sound model of the intuitionistic axioms and rules in question.
+
+1. IDENTITY ITERATION AND ETA DO NOT RECOVER EQUATION INDUCTION
+----------------------------------------------------------------
+
+Use the two-fiber cover from the repository's ch09_ctr.tex, theorem
+ctr:thm:zeroind. Its domain is
+
+  D = {(m,0): m in M} union {(m,1): m nonstandard},
+
+with coordinate projection pi and successor preserving the second label.
+For every actual map h:D->D whose projection is a primitive recursive
+map f:M->M with parameters, define I on standard counters by finite
+iteration. For a fixed seed a and each nonstandard successor chain
+n_j=(m_j,i), choose a compatible path in the finite nonempty fibers above
+It_f(m_j,pi(a)). Compactness gives such a path. Make the following specific
+choices before choosing all remaining paths:
+
+  (a) For the actual identity map, use the constant path a, for every seed
+      and every chain. Thus I(n,a;u.u)=a universally.
+
+  (b) For the actual successor map and every standard seed kbar, use
+      I(n,kbar;u.Su)=S^k n. In particular I(n,0;u.Su)=n universally.
+      Standard finite iteration gives the same values at standard counters.
+
+  (c) Fix a nonstandard b and a=(b,0). For the actual successor map with
+      seed a, use label 0 at all nonstandard counters; for seed S(a), use
+      label 1. The projected values are b+m_j and b+1+m_j. They are all
+      nonstandard, so both labels are available. Successor preserves each
+      chosen label, making both prescriptions compatible paths.
+
+These prescriptions do not conflict. Identity and successor are distinct
+actual functions; a and S(a) are distinct nonstandard seeds; neither is a
+standard seed. Choosing by actual h, rather than by the syntax of a body,
+ensures extensionality even when two different body descriptions denote the
+same function. The unprescribed triples can be filled arbitrarily using the
+finite-fiber path lemma. The choices for all actual functions are made
+before interpreting nested terms, so this is not a circular recursion.
+
+The repository's term-projection proof applies unchanged. Consequently a
+term equals zero in D iff its projected primitive recursive value equals
+zero in M. Surjectivity of pi transfers the base and universal step of
+each zero-equation induction instance to M; PA induction and reflection
+at the singleton zero fiber transfer its conclusion back. No projection
+of an arbitrary side context is needed: fix a valuation satisfying that
+context first. The same proof works for each standard numeral fiber.
+
+Let
+
+  E(n) := I(n,S(a);u.Su) = S(I(n,a;u.Su)).
+
+Its base and its implication E(n)->E(Sn) follow just from computation and
+equality congruence. It fails at every nonstandard counter: the left side
+has label 1 and the right side label 0. Therefore T0 plus the identity
+iterator law and eta still does not derive arbitrary equation induction.
+The construction even validates all the displayed standard-seed equations.
+
+Limits of the construction as so far specified: this does NOT by itself
+show non-bi-interpretability of this first weakened theory, failure of
+equiconsistency, or impossibility of interpretations on changed domains.
+Section 4 supplies an additional equivariance condition that strengthens
+the first point. The identity iterator law says that the designated
+iteration of the identity preserves its seed; it is NOT the assertion that
+every solution to an identity-step recurrence is globally constant.
+
+2. THE FUSION COVER
+-------------------
+
+Let
+
+  D = {(k,k): k is a standard numeral in M}
+      union {(x,y): x and y are both nonstandard in M}.
+
+Zero and successor are coordinatewise. Interpret a scalar iterator by the
+internally defined PA iteration of its pair-valued body for n_1 steps,
+where its counter is n=(n_1,n_2); the second counter coordinate is ignored.
+Each fixed term has a primitive recursive interpretation on ALL of M^2,
+before restricting its arguments to D.
+
+The essential closure lemma should be proved internally on M^2. For each
+term t(x_1,...,x_l), its value is either
+
+  (d,d),  or  x_i+(d,d),
+
+where d>=0 and the origin index i (including the diagonal-origin case)
+are primitive recursive functions of the first input coordinates alone.
+For an iterator body, track the origin and the accumulated common offset
+as part of an internal finite state. A step either preserves the state
+origin and adds an offset, resets to an external parameter origin and an
+offset, or resets to a diagonal origin. Internal PA induction proves this
+description for every internal iteration count, not only standard counts.
+This makes every term operation, and every intermediate body iterate from
+D, remain in D. Projection to the first coordinate is the ordinary scalar
+iterator interpretation in M. Each standard numeral has a singleton fiber.
+
+Coverage, separation, successor injectivity, and zero/numeral-equation
+induction follow as in the first cover. The identity iterator law holds,
+because an internal iterate of the identity is the identity for all counts
+in M.
+
+Full term fusion is valid. If f(h(x))=k(f(x)) holds for every x in D,
+then, for a fixed a in D, EVERY internal h-iterate of a is in D. Therefore
+the PA-definable equation
+
+  f(h^j(a)) = k(f(h^j(a)))
+
+holds for every j in M. This is a true internal universal statement in M,
+even though membership in D is external. PA induction now proves
+
+  f(I(n,a;u.h(u))) = I(n,f(a);u.k(u)).
+
+The argument also validates the fusion rule under arbitrary side contexts:
+fix the context valuation and use the universally fresh variable in the
+premise. It is essential that the proof first establishes closure for all
+internal iteration counts. An appeal only to ordinary external induction
+would be insufficient here.
+
+Eta fails: for n=(n_1,n_2) with distinct nonstandard coordinates,
+
+  I(n,0;u.Su)=(n_1,n_1) != n.
+
+Thus fusion and identity iteration do not restore equation induction in
+this cover. More strongly, this cover obstructs bi-interpretability as
+follows.
+
+3. A FINITE-ORDER AUTOMORPHISM OBSTRUCTION TO BI-INTERPRETABILITY
+----------------------------------------------------------------
+
+Fix distinct positive standard naturals r,s. On all of M^2 define tau by
+
+  tau(m,m+r)=(m,m+s),
+  tau(m,m+s)=(m,m+r),
+  tau(m,n)=(m,n) in all other cases.
+
+The cases are disjoint in PA. This is an internally primitive recursive
+involution. It preserves the first coordinate, fixes all diagonal pairs,
+fixes zero, and commutes with coordinatewise successor and with every
+common nonnegative translation. For the last assertion, cancellation in
+PA gives n+d=m+d+r iff n=m+r, and similarly for s. It preserves D: standard
+diagonal points are fixed, and on nonstandard pairs a switched coordinate
+m+r or m+s stays nonstandard. It is nontrivial on D, for example on
+(b,b+r) for any nonstandard b.
+
+It commutes with every fixed scalar term operation, including parameters.
+Prove this by structural induction on terms interpreted on all of M^2.
+The only substantive case is the iterator. The inductive hypothesis gives
+
+  h_{tau(p)}(tau(u)) = tau(h_p(u)).
+
+Since tau is PA-definable, PA induction proves conjugacy of the internal
+iterates for all internal counts. The number of steps agrees on both sides
+because tau preserves the first coordinate of the counter. Thus
+
+  t(tau(x_1),...,tau(x_l)) = tau(t(x_1,...,x_l)).
+
+This proves tau is an automorphism of the full staged first-order scalar
+language on D. It does not rely on assuming the fusion conclusion as a
+meta-level property of arbitrary external functions.
+
+It can fix any specified finite parameter tuple. Each tuple entry excludes
+at most one positive standard value r for which its second coordinate is
+its first coordinate plus r. Choose two distinct positive standard r,s
+outside the finite set of excluded values. Then tau fixes every named
+parameter, including any parameters used by both interpretations and both
+comparison maps, while remaining a nontrivial involution.
+
+Every classical model of iPRA carries its definable strict linear order.
+A linear-order automorphism has no nontrivial finite order: if sigma(a)>a,
+then successive applications give a strict increasing chain back to a,
+and similarly when sigma(a)<a. In particular every involution is identity.
+
+Suppose an ordinary first-order bi-interpretation between the fusion
+theory and iPRA existed, possibly using definable subsets of finite powers,
+definable equivalence relations, and finitely many parameters. Use the
+fusion model D and choose tau fixing ALL those parameters. It induces an
+automorphism on the interpreted arithmetic model, of order dividing two.
+That automorphism must be identity by the definable linear order.
+
+Now interpret the fusion theory back. An identity automorphism on the
+arithmetic structure induces identity on every definable set and quotient
+in that structure. The comparison isomorphism j from D to this double
+interpretation is definable with fixed parameters, so it is equivariant:
+
+  j(tau(a)) = j(a).
+
+Injectivity of j forces tau(a)=a for all a, contradiction. This is the
+faithfulness of the action supplied by a bi-interpretation; it remains
+valid for quotient domains. For intuitionistic syntactic interpretations,
+pass to classical models: every intuitionistically provable interpretation
+and comparison law is still classically sound, so the same contradiction
+applies.
+
+Conclusion: the fusion weakening (T0 plus the full term-fusion rule, and
+even additionally identity iteration and successor injectivity) is not
+bi-interpretable with iPRA in this ordinary finitary first-order sense.
+It may still be interpretable in useful directions and equiconsistent;
+neither possibility is contradicted. The arbitrary-finite-parameter
+version belongs to the fusion cover; section 4 gives a more restricted
+automorphism conclusion for the identity-plus-eta cover.
+
+4. EQUIVARIANT REFINEMENT OF THE FIRST COVER
+--------------------------------------------
+
+Define tau on the two-fiber cover to fix standard numeral points and flip
+the label of every nonstandard point. It commutes with successor, preserves
+pi, is an involution, and is nontrivial. The set H of actual projected
+primitive recursive maps is closed under h -> tau o h o tau. This map has
+the same projected function f as h.
+
+For a nonstandard counter chain C, tau(C) is the distinct chain over the
+same base chain with the opposite label. Thus the action
+
+  (h,a,C) -> (tau o h o tau, tau(a), tau(C))
+
+on path-choice triples is free. Choose one representative from each
+two-element orbit, choose its compatible path, and define the other path
+by applying tau. Applying tau to the recurrence for h produces precisely
+the recurrence for tau o h o tau; projection is unchanged. This defines
+the entire unprescribed iterator equivariantly.
+
+The prescribed paths can also be made equivariant. Identity paths
+constant at a already transform to paths constant at tau(a). The successor
+paths from each standard seed are S^k n, which transform correctly since
+tau commutes with successor. For the four distinct nonstandard seeds
+
+  a0=(b,0), a1=(b,1), S(a0), S(a1),
+
+assign successor-body path labels 0,1,1,0, respectively, on every
+nonstandard counter chain. The first and third recover section 1's
+counterexample, and the second and fourth are their tau-translates.
+These families are pairwise disjoint and do not overlap the standard-seed
+families or the identity-body families. No choice conflict remains.
+
+The resulting semantic operation satisfies
+
+  I(tau(n),tau(a),tau o h o tau) = tau(I(n,a,h)).
+
+Standard counters satisfy the same equation by finite iteration. A
+structural induction on term syntax therefore proves that tau is an
+automorphism of the full staged scalar language. Since it is a nontrivial
+involution, the linear-order and faithfulness argument of section 3 rules
+out parameter-free bi-interpretability of the identity-plus-eta weakening
+with iPRA, even on definable quotient domains. The same holds when all
+parameters of the interpretations and comparison maps are standard
+numeral values, which tau fixes.
+
+Do NOT claim that this tau fixes arbitrary finite nonstandard parameter
+tuples: it moves every nonstandard element. No arbitrary-parameter
+extension of this first-cover obstruction has been established here.
+
+Recommendations for the final report
+------------------------------------
+1. State the positive user target as unmet unless a smaller complete
+   checker has independently been constructed and measured.
+2. Keep the two countermodels separate; they impose different extra laws.
+3. State the projection and provenance lemmas in full, and distinguish
+   external compactness/path choices from internal PA iteration/induction.
+4. Include the involution proof and explicitly collect all comparison-map
+   parameters when applying its finite-parameter version.
+5. Explain that no new Lean/Rocq formalization of these constructions has
+   been compiled. Finite experiments are not proofs of these universal
+   model-theoretic claims.
+
+FINAL REPORT REVIEW
+-------------------
+Reviewed output/ipra_iteration_barriers_2026-11-12/report.tex against these
+arguments and the pinned article's definitions and arbitrary-update
+uniqueness theorem (kern:thm:ur). The two model constructions, body
+extensionality argument, full fusion proof, automorphism constructions,
+non-bi-interpretability applications, and identity-plus-eta parameter
+qualifications are mathematically sound as written. The positive
+fusion-plus-numbering equivalence is correctly identified as relying on
+the inherited UR theorem, not as a new independently formalized bootstrap.
+The report explicitly acknowledges that the requested smaller checker
+has not been obtained.
+
+Two precise wording corrections were requested and sent to the parent:
+
+  (1) In the abstract faithfulness lemma, require the linear order on B
+      to be definable WITHOUT PARAMETERS, or additionally require the
+      automorphism to fix all order-defining parameters. Merely saying
+      "definable" could include parameters, making that general lemma
+      false for a finite pure set ordered with parameters. The application
+      to iPRA is unaffected: its arithmetic order is parameter-free.
+
+  (2) In the finite-parameter bi-interpretability contradiction, explicitly
+      include finite tuples of representatives for parameters lying in
+      interpreted quotient domains. Fixing those representatives fixes
+      their equivalence classes. Together with interpretation parameters
+      and comparison-map parameters, this gives the required finite tuple
+      in the original fusion model.
+
+The parent reports that these wording corrections are being applied.
+No further mathematical changes were identified as necessary.

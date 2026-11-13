@@ -1,0 +1,193 @@
+INDEPENDENT REVIEW OF THE SELF-SEEDED NATURAL-DEDUCTION CHECKER
+============================================================
+
+Reviewed file: kernel_work/selfseed_checker/checker_without_injectivity.py
+Matched control: checker_with_injectivity.py
+Candidate SHA256:
+  1963065584f718859eb83241f5110c6f31487ebac7283683fea20c8613d1be91
+Control SHA256:
+  5a470bc243494ee130d279528cd47dc8c3574bc5d6c29e1df7c3502ea598ba4b
+Measured normalized bytes: candidate 8698; control 8896.
+Maximum gzip of normalized source: candidate 2172; control 2199.
+Review outcome: no soundness defect or missing primitive rule found.
+This is a source-level mathematical audit with focused execution checks,
+not a proof-assistant verification of the Python interpreter or parser.
+
+1. PUBLIC INTERFACE AND SYNTAX
+
+The public driver parses one JSON value, requires it to be exactly a
+dictionary with keys goal and proof, validates the goal as a closed
+formula, derives the proof from an empty context and empty parameter set,
+and checks exact equality with the goal before printing ACCEPT.
+
+The term grammar is exactly zero, successor, Boolean equality e, the
+self-seeded F binder, scoped named parameters, and nonnegative de Bruijn
+indices below the current depth. The formula grammar is equality, false,
+and, or, implication, universal quantification, and existential
+quantification. F binds one numerical index in its body but not its
+counter; all and ex bind one numerical index in their body.
+
+All expression constructors have exact arities. Trees must be lists with
+string tags. The bound-index test uses type(index) is int and an explicit
+0<=index<depth bound: Python booleans and negative indices cannot pass as
+indices. Hypothesis indices have the same exact-integer and nonnegative
+checks. Named parameters must be strings present in the current parameter
+set. New parameter names are nonempty strings absent from that set.
+
+Every recognized proof branch unpacks exactly its required fields.
+Extra fields, missing fields, unknown tags/rules, wrong JSON types, and
+unbound parameters cause rejection. The parser's treatment of duplicate
+object keys is the ordinary Python parsed-object convention; the checker
+specifies its contract on the parsed JSON value. No certificate content
+is evaluated as Python. No removable assert participates in acceptance.
+
+2. SUBSTITUTION AND BINDER SAFETY
+
+instantiate(tree,image,depth) removes one distinguished outer bound
+slot. At a bound index it replaces index=depth, lowers index>depth by one,
+and leaves smaller indices unchanged. It increases depth in F's body and
+in each quantifier body, but not in F's counter. These are the correct
+one-slot de Bruijn operations for the stated grammar.
+
+The routine inserts image without an additional lifting operation.
+That is correct here because EVERY caller supplies a term closed in
+de Bruijn slots at its root. Such an image may contain its own F-bound
+indices, but none are free at the insertion point. Named free parameters
+remain rigid names and cannot be captured by a de Bruijn binder. The
+root-closed image invariant is established separately at every caller:
+
+  F0 inserts numerical zero;
+  FS inserts F(counter,body), with counter root-valid and body valid
+       below its own one state slot;
+  replace inserts either endpoint of a proved well-formed equation;
+  allE and exI insert an explicitly validated root term;
+  exE inserts a fresh named parameter;
+  ind inserts zero, a fresh named parameter, its successor, or an
+      explicitly validated root target.
+
+abstract(tree,name,depth) changes the chosen free name to the de Bruijn
+index depth and follows the same F/quantifier binder increments. Existing
+bound indices need no shift: its input is root-closed in de Bruijn slots,
+so all existing indices lie within their already present local binders.
+It binds a previously free named parameter outside the entire expression.
+
+3. CONTEXT AND PARAMETER INVARIANT
+
+Induction on accepted prove() calls establishes:
+
+  all context entries are root-closed formulas whose free named
+  parameters belong to the supplied parameter set; every returned result
+  has that same property.
+
+This starts at the closed public entry. New assumptions are explicitly
+validated (impI), are components of an already derived well-formed
+formula (orE), or are well-formed substitutions into a derived/validated
+body (exE and ind). All other rules preserve the invariant.
+
+Consequently the checks fresh(name,parameters) suffice for the usual
+eigenvariable side conditions. There is no need to traverse the old
+context again: any name occurring there is already in parameters.
+
+  allI introduces a name absent from every old assumption, proves the
+       body under the enlarged parameter set, then abstracts that name.
+  exE checks its major in the old scope, opens its witness at a fresh
+      name, and explicitly rejects if that name remains anywhere in
+      the result. free_parameters traverses nested F and quantifiers,
+      so an escape hidden under a binder is still caught.
+  ind validates the equation and target in the old scope, checks its
+      base there, introduces a fresh step parameter, and proves the
+      successor instance with exactly the induction equation added to
+      the original context. Old side assumptions cannot mention the
+      step parameter.
+
+The internal prove() function is not a separately advertised validator
+for arbitrary user-supplied contexts/parameter sets. Its soundness
+invariant assumes those arguments satisfy the property above, which the
+public driver and all recursive calls ensure.
+
+4. LOGICAL RULES
+
+The checker implements standard intuitionistic natural deduction:
+hypothesis; and introduction and both projections; both or introductions
+and case elimination; implication introduction and application;
+false elimination; universal introduction/elimination; and existential
+introduction/elimination. The orE branches use the same original context
+and must prove the same formula. exE enforces witness nonescape. No
+excluded-middle, double-negation elimination, or classical rule is present.
+
+Equality uses reflexivity and replacement in an arbitrary validated
+formula with one bound numerical slot. It checks the equality major and
+the exact source instance before returning the target instance. This is
+ordinary intuitionistic equality elimination; symmetry, transitivity,
+and term congruence are derivable. Replacement may cross F and logical
+binders only through the capture-avoiding operation audited above.
+
+The usual finite natural-deduction presentation can be encoded using
+these proof constructors, scoped names for eigenparameters, and de Bruijn
+indices for expression binders. Context weakening and reuse are implicit
+in indexed hypothesis access; the syntax does not restrict proof reuse
+to linear use. Thus the logical inventory is complete for the stated
+ordinary intuitionistic first-order logic with equality.
+
+5. NONLOGICAL AXIOMS AND INDUCTION
+
+The candidate's complete nonlogical inventory is exactly:
+
+  F0: F(0;v.h)=S(h[0/v]);
+  FS: F(Sn;v.h)=h[F(n;v.h)/v];
+  range: e(s,t)=0 or e(s,t)=1;
+  reflection: (e(s,t)=1 -> s=t) and (s=t -> e(s,t)=1);
+  separation: 0=1 -> false.
+
+All displayed term arguments and bodies are validated before an axiom
+is constructed. The F body has exactly one locally bound state slot.
+There is no hidden successor-injectivity axiom in the candidate.
+
+The ind rule accepts only a literal equality as its induction template.
+It checks the zero instance, checks the exact successor instance from
+the exact induction hypothesis at a fresh parameter, and returns the
+desired target instance. Its side assumptions remain fixed. Compound
+formula induction is rejected. The quantifier-free induction used in
+the mathematical report is therefore a derived admissibility result
+from the Boolean equality axioms, not an extra primitive in the checker.
+
+Together these facts give a routine structural soundness proof for the
+candidate as a checker for T_F^-. Adding the single injectivity branch
+gives the matched T_F control. The newly proved cancellation theorem
+equates their mathematical theorem sets; the two programs intentionally
+have different primitive axiom packet languages.
+
+6. FOCUSED INDEPENDENT EXECUTION CHECKS
+
+The review did not rerun the author's broad fixture suite. It targeted
+the concrete remaining risk: capture in mixed F/quantifier nesting.
+
+Four explicit structural identities checked substitution/abstraction
+with an inserted F term containing its own bound variable. A complete
+certificate for
+
+  forall a,b (a=b -> forall z
+    F(z;u.e(a,u))=F(z;u.e(b,u)))
+
+was independently constructed and accepted. Changing its replacement
+slot from the external parameter to the F state was rejected. An
+existential eigenparameter escape concealed under both a universal
+quantifier and an F body was rejected. Each process case was run in
+ordinary Python and Python -O: six isolated runs, all as expected.
+
+Scripts and receipt:
+  math_work/review_selfseed_checker.py
+  math_work/selfseed_review_checks.json
+
+These checks support the source audit; they do not replace the universal
+well-formedness, substitution, and rule-soundness arguments above.
+
+7. PRECISE LIMITS
+
+The checker verifies supplied certificates; the new injectivity theorem
+has a written proof unless separately emitted as such a certificate.
+The source audit does not establish that all proof certificates terminate
+within fixed physical memory or recursion limits. Malformed input and
+resource exceptions reject; mathematical completeness uses the usual
+ideal unbounded-finite-resource execution convention. No low-level
+Python/runtime verification or newly compiled Lean/Rocq proof is claimed.
