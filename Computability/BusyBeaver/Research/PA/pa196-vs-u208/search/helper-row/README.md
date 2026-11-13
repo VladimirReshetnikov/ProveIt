@@ -15,17 +15,19 @@ python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/search/helper-row/
 python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/search/helper-row/blank_prefix.py --steps 100000000 --output /tmp/pa196-helper-prefix.json
 python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/search/helper-row/source_witness.py --output /tmp/pa196-helper-source.json
 python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/search/helper-row/source_actual_witness.py --output /tmp/pa196-helper-source-actual.json
+python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/search/helper-row/accelerated_blank.py --output /tmp/pa196-helper-accelerated.json
 ```
 
 The outputs match [receipt.json](receipt.json),
 [adverse-receipt.json](adverse-receipt.json),
 [blank-prefix-receipt.json](blank-prefix-receipt.json),
 [source-witness-receipt.json](source-witness-receipt.json), and
-[source-actual-witness-receipt.json](source-actual-witness-receipt.json),
-respectively. All five commands pin the literal PA196 input by SHA-256
+[source-actual-witness-receipt.json](source-actual-witness-receipt.json), and
+[accelerated-blank-receipt.json](accelerated-blank-receipt.json),
+respectively. All six commands pin the literal PA196 input by SHA-256
 `e8bbccd4cfa325251ca95066db116b5aa766e404b0971c33c02772be1c3617a8`.
-The first three compile C++ helpers in temporary directories, and all leave
-this research tree unchanged. The third command checks a **finite** run prefix;
+The first three and the sixth compile C++ helpers in temporary directories,
+and all leave this research tree unchanged. The third command checks a **finite** run prefix;
 it must not be treated as a nonhalting or consistency proof.
 
 ## Exhaustive screen within the template
@@ -154,9 +156,42 @@ increases the gap by one; zero decrement and jump leave the gap and file
 unchanged. The startup file has 26 trailing ones. Together with the imported
 coverage proofs, the exact source trace supplies a route to the original
 physical frame; this composition has not itself been formalized here or
-replayed as one literal blank-input trace. It also does not establish that
-the modified machine arrives at that same frame: an earlier divergence remains
-possible.
+replayed as one literal blank-input trace in that script.
+
+### Accelerated blank-start comparison
+
+[accelerated_blank.py](accelerated_blank.py) independently follows the
+literal blank-start runs to the source-reached adverse entry. It matches each
+parent step at states 45, 160, and 184 against a positive candidate block,
+checking the complete tape and head at the endpoint. At every other state,
+the projected transitions commute in one step. A deterministic self-loop
+sweep accelerates each maximal consecutive run of the symbol read by that
+loop: every cell in the run receives the loop's write bit, the head moves by
+the run length, and the state remains unchanged. The sweep stops before the
+first opposite bit or the execution bound. It does not extrapolate past the
+observed finite run.
+
+The first failure of the *512-step block check* is at parent step
+1,223,335,721 and candidate step 1,223,363,605: both configurations have
+state 184, head position 25, read bit 1, and five-cell mask 6. At the next
+individual step the original moves right into state 78, while the candidate
+moves left into state 75. The complete tape at that boundary has 21,244
+one-cells and equals the source site-604 frame above after 31 steps, with the
+frame's root head at absolute position -2. A Python splice checks the complete
+subsequent tapes: the original reaches site 605 at blank-run step
+1,223,419,832, and the candidate reaches site 615 at blank-run step
+1,223,511,538. These are separate step counts for the two machines.
+
+The replay tests 10,000 randomized sweeps and 480 forced long sweeps crossing
+word boundaries against a naive implementation. It also compares complete
+blank-run tapes against a separate step-at-a-time simulator for both machines
+at the 100-million-parent-step boundary, and for the original at one billion
+steps. The final failure tape is independently reconstructed from the exact
+source frame. The result is a finite computational witness, recorded in
+[accelerated-blank-receipt.json](accelerated-blank-receipt.json); it has not
+been formalized in Lean. A failed bounded block does not rule out later
+rejoining, and the witness does not prove different halting behavior or a
+consistency equivalence for the candidate.
 
 The screen allows only one changed row total, not two changed helper rows,
 multistep parent matching, a different tape/head representation, or state
