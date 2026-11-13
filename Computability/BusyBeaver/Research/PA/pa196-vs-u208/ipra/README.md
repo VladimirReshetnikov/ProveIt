@@ -35,6 +35,13 @@ sentence says that the imported literal machine halts. These are external
 standard-model identifications; they do not establish either internal iPRA
 reduction or identify the upstream FFL and Foundation LO proof codings.
 
+`PA196ForwardGG.lean` proves a conditional transfer from classical PRA to
+standard iPRA for this exact halting sentence: a classical PRA proof that the
+mapped PA-refutation predicate implies bounded halting yields an iPRA proof
+that native PA refutability implies double-negated halting. The classical PRA
+proof remains a hypothesis. The upstream result is a PA theorem in a different
+coding, so it does not directly supply this hypothesis.
+
 ## Checking
 
 The check uses Lean 4.32.0 and the root project's Lake environment. It checks
