@@ -109,6 +109,20 @@ source sites while preserving halting from the clean seed. A
 combined changes increase the number of distinct source nodes from 159 to 162;
 no state saving follows.
 
+## Combining two incoming source rewrites
+
+The later incoming comparison proposes an MP-success branch that returns the
+consequent in `H`; another incoming archive supplies a shorter negation macro.
+The [combined experiment](source-search/negation-mp197/README.md) gives a
+3,573-site source and a 197-state machine. Both independently replayed symbolic
+primitive checkers and the exact startup check pass. Its negation rewrite needs
+a scratch-zero entry invariant, which the experiment checks for all eight
+entries; the [local audit](source-search/negation-mp197/local-audit/README.md)
+explains the block identity and shows a counterexample without that condition.
+This is an experimental candidate, not a smaller machine or a proved PA
+consistency equivalence. In particular, the new MP compiler and full
+literal-to-source and proof-code transport remain unverified in PA.
+
 ## The missing internal consistency direction
 
 To obtain the requested *PA-provable* biconditional for PA196, and for any
