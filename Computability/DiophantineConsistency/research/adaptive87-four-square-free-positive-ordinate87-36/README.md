@@ -1,5 +1,14 @@
 # Positive-ordinate candidate: 13 variables, 87 operations, degree 36
 
+**Identification:** This circuit is the existing
+[`adaptive-square-sums` graph](../adaptive-square-sums/candidate.json),
+presented in [`equation36.pdf`](../../equation36.pdf), after renaming its
+ordinate input and final gates. It is not a new equation. A historical
+[matched iPRA endpoint replay](../../reviews/ipra-frontier13-historical-pair-independent-audit/README.md)
+has its own source-snapshot, provider, and document-binding qualifications.
+The argument below is an alternative ordinary-integer witness proof, not a
+new internal proof.
+
 This is a **standard-integer zero-equivalence result**, not a checked Lean, all-model, iPRA, or Con(ZFC) theorem. The literal [graph](graph.json) is an operation/degree tradeoff relative to the current2011 [13/88/30 four-square parent](../adaptive87-four-square-current88-30/README.md): it uses 87 live operations and exact degree 36. It uses the same four fixed ports and thirteen strictly positive integer inputs. It replaces the old positive difference input `u` by a positive ordinate input `auxPositive`, deletes the row `g78 = V+u`, and sets `y2 = auxPositive*auxPositive`. Every other graph row is unchanged. In particular, the zero equation stays normalized as `output = 0`.
 
 The mathematical maps below apply to **any integer values** of `K0`, `MC`, and `MF`, and any integer `beta >= 0`; each witness is strictly positive. Thus `q=1+beta*J >= 1`, and `U=Y*q² > 0`. For the actual current2011 tuple, the checker authenticates all four full binary port payloads and checks that the encoded natural `beta` is positive. No special rank, mask, or remaining fixed-port assumption is used in these maps.

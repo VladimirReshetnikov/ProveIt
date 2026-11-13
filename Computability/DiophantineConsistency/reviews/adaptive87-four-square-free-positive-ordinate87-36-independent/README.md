@@ -1,5 +1,13 @@
 # Independent review: positive-ordinate 87/36 candidate
 
+The reviewed circuit was subsequently identified with the existing
+[`adaptive-square-sums` graph](../../research/adaptive-square-sums/candidate.json)
+after input and gate renaming. Its independently recorded
+[historical iPRA endpoint](../ipra-frontier13-historical-pair-independent-audit/README.md)
+has separate source-snapshot and provider qualifications. This review checks
+an alternative ordinary-integer witness argument; it is not a new equation or
+a new Lean proof.
+
 The 87-row circuit is exactly the 88/30 parent with the row `g78 = V+u` removed and `y²` changed to `auxPositive²`, with the input slot renamed accordingly. All 87 operations, thirteen inputs and four ports are live: 48 multiplications, 21 additions and 18 subtractions. The syntactic degree upper bound independently recomputes as 36, and the entire diagonal evaluated at the recorded fixed ports has a nonzero degree-36 coefficient 57192905 modulo 1,000,000,007. Therefore the specialized graph's degree is exactly 36. All four compressed and raw coefficient hashes, lengths and bit lengths match their metadata; the encoded beta is exactly `2^94517−1` and positive. Identification of these bytes with Lean constants remains inherited external evidence.
 
 For either graph at a zero, the sum of four integer squares makes every residual zero. With positive inputs, `B=Y(X+1)+2≥4`, `c=eta+Y(eta+zeta)≥3`, `I=c²i≥c²`, and `U=Y(1+beta J)²>0` for `beta≥0`. From the exact main residual, `U²` divides `Dstar²`, so integer square-divisibility gives `U | Dstar` and an integer square `1+(B²−1)c²`. If `2≤c<2B`, this lies strictly between `(Bc−1)²` and `(Bc)²`, since the two differences are `c(2B−c)` and `c²−1`. Consequently `c≥2B` and `Delta=B²−1<c²`.
