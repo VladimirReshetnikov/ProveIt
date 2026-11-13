@@ -70,3 +70,9 @@ existing all-model checker equations for the four constructor families above,
 including a concrete certificate of formula 0 and the exact AX parameter
 order. Joining those equations to the represented command run and PA induction
 remains open.
+
+An [executable annotated interpreter](annotated-interpreter/README.md) now
+implements these updates for every numeric command atom and Foundation HFS
+command word. It specifies a concrete extractor and finite controls; the
+internal correctness proof and the source and PA-refutation bindings remain
+open.
