@@ -1,0 +1,180 @@
+A COMPOSITION OF STRICT OPENING AND EAGER MODE SELECTION
+======================================================
+
+Status
+------
+This is a one-byte implementation improvement of an existing presentation,
+not a new arithmetic axiom or logical rule. It does not meet the stronger
+request for a checker below every observed complexity coordinate.
+
+The construction is the exact source of
+  Artifacts/head_conversion/code/compact477.py
+at ProveIt commit 31e1e9220868788a85ca5fea351d7ab4097cfa4a, with its unique
+expression
+  bool(m or 3 % len(a))
+replaced by
+  any((m, 3 % len(a))).
+The latter selector is the already proved refinement appearing separately
+in Artifacts/checked_reductions/checkers/compact477.py. The two incumbent
+477-byte programs differ; neither is the composed 476-byte program.
+
+Public contract
+---------------
+The public goal is a canonical closed guarded Eq/D formula in the source
+repository's scalar-iterator encoding. Precisely, its named public grammar
+is the least class P0 with these three clauses:
+  (i) every equation s = t is in P0, without an iterator-head restriction;
+  (ii) D_{x,y} B is in P0 when B is compound and belongs to P0;
+  (iii) D_{x,y} (I(y,0;u.h) = I(y,0;v.j)) is in P0.
+The state binders u and v in (iii) are independent; h and j may mention
+x, y, their own state, and outer numerical parameters. Public formulas
+contain no Q. A delivered goal has no free numerical parameters. This is
+Definition cert:def:U of the pinned article's ch11_cert.tex; the same
+language is P0 in Definition guard:def:public of ch03_guard.tex. Auxiliary
+derivations may use all native Eq/Q/D formulas, including unguarded atomic
+matrices. The source restriction in elimination is s not literally 0,
+not an iterator-only restriction. The smaller public subgrammar P_W with
+iterator-headed equation endpoints is available but is not required here.
+
+The proof data are finite trees of
+exact integers and lists. A complete input is one JSON array ending in the
+pair [goal, 0]; preceding entries are four-field instruction records
+[major, source, target, template], read from right to left. Administrative
+major 0 of older certificates is changed to [] by convert.py; numerical
+zeros inside terms and formulas are left unchanged. The initial retained
+resource is []. Unused prefix records are permitted.
+
+The 476-byte module assumes the stated public-language and input-alphabet
+contract. It is not an arbitrary-JSON validator, and does not itself reject
+every input outside that contract. Off-contract regression examples are
+diagnostics only. Its acceptance convention is normal exit and exactly
+ACCEPT followed by LF. A thrown exception is rejection. As for its controls,
+the completeness theorem uses ideal unbounded mathematical execution;
+fixed Python recursion and memory bounds impose practical limits.
+
+Operational theorem
+-------------------
+Every successful run of checker476.py is a successful run of the strict
+opening control477.py on the same input, with identical consumed records,
+goals, contexts, and scope floors at corresponding steps.
+
+Proof. At a reached selector, put e = 3 % len(a). The new program first
+evaluates m and e to form a tuple, and then takes any of that tuple. If the
+new run is successful, e was defined. For every JSON value m and every
+defined value e,
+
+              bool(m or e) = any((m, e)).
+
+This is equality of Boolean values, not an identification of m with a bit.
+The expression e uses only len and integer remainder and has no side
+effects. Thus replacing the new selector by the old one yields the same
+selected bit and the same state, even if the old selector short-circuits.
+The allocation k := k - 1 happens after the selector in both programs.
+The subsequent hypothesis opening and both endpoint openings use the same
+new floor. The recursive major check happens before the selector and uses
+the same old floor. Induction over a finite successful execution, including
+its recursive calls, proves the theorem. No reasoning about random tests
+or mathematical soundness of the control is needed for this simulation.
+
+Consequently soundness for the public guarded theory is inherited from
+control477.py. This implication holds even on raw inputs outside the
+theorem contract whenever a successful new run is considered; the inherited
+mathematical interpretation is asserted only on the specified contract.
+
+Canonical completeness theorem
+------------------------------
+Every theorem of the same canonical closed guarded scalar theory has a
+certificate accepted by checker476.py. Hence both programs present the
+same public theorem set, and the established full iPRA bi-interpretation
+of that public theory is unchanged.
+
+Proof. Use the source repository's canonical certificate compilation for
+the strict-opening control. On such a trace, every reached selector has
+a nonempty list as a. Genuine equations, paired formulas D and auxiliary
+closures Q have arities 2, 1 and 3. During introduction a is replaced by a
+canonical matrix instance, again a nonempty formula. A check of the neutral
+administrative goal [] returns from the initial membership test and never
+reaches a selector. Surplus resources formed by tripling an equality or
+closure major are retained administrative annotations; the canonical
+compiler does not use them as proof goals. Thus len(a) is positive at every
+reached selector, and e is always defined.
+
+The operational proof therefore runs in both directions for these
+canonical certificates. Every control trace provided by compilation is
+accepted by the composition with its public goal and consumed records
+unchanged. This proves completeness for canonical encodings. It does not
+claim identical acceptance of all raw administrative spellings.
+
+The strict opener of the control is inherited, rather than newly proved
+here. Its canonical adequacy relies on the invariant that actual images
+are numerical terms well scoped at the current floor (allocated rigid
+parameters are allowed); its extra even-depth image checks all succeed
+on canonical compiled traces. Its successful openings have the same sorted
+reading as the older short-circuit opener after identifying an empty-list
+zero alias with scalar zero. See the pinned head_conversion audit files
+named in provenance.json. The present composition does not alter that
+opener, its sentinel, or the order of its checks.
+
+Readable expansion
+------------------
+readable_checker.py expands each expression in checker476.py while
+preserving the order relevant to scopes and reads:
+  (1) validate the current goal and check retained membership;
+  (2) read a packet and recursively prove its major at the old floor;
+  (3) build its computation, opened-major or introduction hypothesis;
+  (4) evaluate the eager selector, then allocate the fresh parameter;
+  (5) open and append the new hypothesis;
+  (6) eagerly open the source endpoint and then the target endpoint;
+  (7) choose the backward-elimination goal and open its successor hole;
+  (8) recurse on the new goal and enlarged context.
+Both successful check functions return a truthy value (True at membership,
+and a one-element list at continuation), which justifies the readable
+version's explicit major check and subsequent major * 3.
+
+Measurements and finite evidence
+--------------------------------
+CPython 3.12.14; ast.unparse plus a final LF; all AST nodes; significant
+tokens omit comments, whitespace and end markers. gzip.compress is called
+with compresslevel=9 and mtime=0 on the normalized UTF-8 bytes.
+
+                           tokens    AST     bytes    gzip9
+strict-opening control       272     306      477      314
+composed checker             274     306      476      312
+
+The stronger, incoming-inclusive observed coordinate envelope at the
+pinned snapshot is 244 / 265 / 477, attained by different programs. The
+main article excludes JSON-lines checkers from its whole-input envelope,
+which is 249 / 271 / 477. The composition improves only the byte coordinate
+of either comparison. It is not below either envelope in all coordinates.
+
+The four complete comparator sources and framing contracts are:
+  boolean_constancy/checkers/code/checker244.py:
+    244 / 272 / 604, gzip 343; a JSON-lines stream with the canonical
+    closed P0 goal first, then three-field packets in consumption order;
+    one global decreasing scope floor, initially zero, empty initial context.
+  fused_iteration/code/checker_refinement/checker.py:
+    249 / 265 / 605, gzip 341; the same stream framing and P0 goal contract,
+    three-field packets, local scope floors, initial truth resource 0.
+  head_conversion/code/compact477.py:
+    272 / 306 / 477, gzip 314; the whole-array four-field format described
+    above, final [goal,0] header, initial truth resource [], strict opener.
+  checked_reductions/checkers/compact477.py:
+    273 / 305 / 477, gzip 312; whole-array four-field format, final [goal,0]
+    header, initial truth resource 0, short-circuit opener, eager selector.
+The stream and whole-array readers need their own corresponding fixtures;
+the streams need not read trailing input. Both four-field comparator
+sources require their respective administrative major spelling (0 or []).
+Their public theorem contract is shared; raw certificate acceptance and
+framing are not claimed identical across these families.
+
+verify.py tests 66 inherited cases against the control, the compact
+composition and its readable expansion, in normal and optimized Python:
+396 actual CLI executions, zero failed expectations. Positive cases cover
+the arithmetic computations, transport, guarded induction, D introduction,
+Q use and D elimination. Negative cases include future-variable capture,
+context leakage, a false scalar sentinel, and 0 = 1. Surplus-arity and
+unused-data cases preserve their explicitly labelled inherited behavior.
+These checks substantiate the implementation expansion and the source
+edit; they do not replace the universal simulation and compilation proofs.
+
+No new Lean or Rocq verification is claimed for the Python module.

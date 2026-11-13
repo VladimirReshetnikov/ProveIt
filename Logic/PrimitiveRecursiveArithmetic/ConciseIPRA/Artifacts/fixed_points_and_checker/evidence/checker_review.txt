@@ -1,0 +1,56 @@
+Independent source-level review of seq_token.py
+
+Candidate: research/checker/seq_token.py
+Control: research/frontier/incoming/ipra_shared_leaf_2026-11-12/
+ipra_shared_leaf_2026-11-12/code/checker_ast.py
+
+Result: no source-level soundness or completeness defect found in the
+relative transformation, under the control's exact-integer/list parsed
+input and canonical closed guarded-goal interface and ideal finite resource
+convention. This review does not independently reprove the upstream bridge.
+
+The candidate and control perform identical packet reading and initial
+scope/leaf checking. Tuple contexts in the candidate and list/bytes contexts
+in the control contain the same elements in the same order. They are used
+only by unpacking and equality membership; no context container is mutated.
+The root byte string b'\x00' contributes precisely the integer0, matching
+the candidate's one-element tuple. Every successful c call returns None.
+
+At a nonleaf, both perform the same elimination test and local assignments.
+The control's c(g,s) is evaluated before its s*3-or-opening expression. The
+candidate makes precisely this recursive major call as a statement. It
+then computes h while the global floor k still has its post-major value.
+This old-scope timing is crucial and is preserved. Both decrement k exactly
+once after h is evaluated, then open the same context entry and goal at
+that new floor. The candidate opens the goal before the context entry;
+the control does so in the opposite order. Both helper i calls are pure,
+read only the same k, and do not read input or modify any tree, so their
+successful results can be reordered. If either fails, neither run accepts.
+
+Representation qualification: the control's k*(1 if s else len(a)==2)
+is integer0 in its false mode. The candidate's
+  (s or len(a)==2) and k
+is Boolean False in that mode. Therefore a claim of literal equality of
+intermediate trees would be incorrect. Use the structural relation R that
+identifies every internally generated False with integer0 and preserves
+list shape and all other leaves. i respects R: iteration/len success or
+failure, all numeric comparisons, parity decisions, and conditional tests
+are identical for False and0. It may retain either leaf, still R-related.
+Equality and tuple membership respect R because Python compares False==0.
+List constructors/repetition and the remaining control branches respect R.
+The input promise concerns the parsed external data; it need not prohibit
+Boolean False produced internally by this conditional expression.
+
+Induction on a successful finite c call tree now proves exact agreement of
+the consumed packet sequence and final global k, with local goals/context
+entries related by R. The same induction in the opposite direction proves
+equivalence of successful ideal runs. Hence root normal exit and ACCEPT
+agree, with no field renaming or framing translation required. Scope and
+neutral-major checks have not been deleted. Physical exception text and
+resource behavior are not asserted identical.
+
+Independent check from the exact source also confirms all changes are
+implementation/certificate-control refinements of the inherited theory.
+They do not delete a mathematical axiom and do not improve the262-node or
+469-byte coordinate minima. The token count241 is below the inspected
+242-token incumbent, using the repository's whole-module metric.

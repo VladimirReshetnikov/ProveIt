@@ -1,0 +1,1073 @@
+{
+  "scope": "Finite implementation checks; universal framing equivalence is proved separately.",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "fixed_repository_commit": "6c6a164d211f0af34e913d55c9f46f8ef7cb560f",
+  "input_contract": "Exact integer/list records; canonical closed guarded Eq/D goal. Whole-JSON array versus one JSON record per line.",
+  "metrics": [
+    {
+      "file": "controls/tokens_stream.py",
+      "tokens": 243,
+      "ast_nodes": 271,
+      "normalized_bytes": 616,
+      "source_sha256": "d7f4a8ab425f831409e9c244097ebd38c4e9e5602a8a6f719525552ed238eb89"
+    },
+    {
+      "file": "candidate/tokens_whole.py",
+      "tokens": 248,
+      "ast_nodes": 277,
+      "normalized_bytes": 615,
+      "source_sha256": "fdc7167eb475ec3eb0c8b1a3bda35cfdb2a31ffcc63ce3c367a3dc843db086cf"
+    },
+    {
+      "file": "controls/ast_stream.py",
+      "tokens": 248,
+      "ast_nodes": 264,
+      "normalized_bytes": 613,
+      "source_sha256": "4376af3c42d01ef1e512202e80f6d946479e9a01f81d72cf10c44bb8efecdd35"
+    },
+    {
+      "file": "candidate/ast_whole.py",
+      "tokens": 254,
+      "ast_nodes": 268,
+      "normalized_bytes": 613,
+      "source_sha256": "6acee04cbe5c68ad5101d71e70cafd9e3928d77449be88cbfb412ce23a980c2e"
+    }
+  ],
+  "fixture_cases": 14,
+  "executions": 80,
+  "failures": [],
+  "checks": [
+    {
+      "check": "source_sha256",
+      "file": "controls/tokens_stream.py",
+      "passed": true
+    },
+    {
+      "check": "source_sha256",
+      "file": "controls/ast_stream.py",
+      "passed": true
+    },
+    {
+      "check": "source_sha256",
+      "file": "reference/compile_stream.py",
+      "passed": true
+    },
+    {
+      "check": "source_sha256",
+      "file": "reference/upstream_stream_cases.json",
+      "passed": true
+    },
+    {
+      "check": "source_sha256",
+      "file": "fixtures/local_guarded_induction_with_used_hypothesis.jsonl",
+      "passed": true
+    },
+    {
+      "check": "source_sha256",
+      "file": "fixtures/global_guarded_induction_with_used_hypothesis.jsonl",
+      "passed": true
+    },
+    {
+      "check": "source_sha256",
+      "file": "fixtures/local_compound_implication_elimination.jsonl",
+      "passed": true
+    },
+    {
+      "check": "source_sha256",
+      "file": "fixtures/global_compound_implication_elimination.jsonl",
+      "passed": true
+    },
+    {
+      "check": "source_sha256",
+      "file": "fixtures/reject_context_leak.jsonl",
+      "passed": true
+    },
+    {
+      "check": "source_sha256",
+      "file": "fixtures/reject_future_witness_capture.jsonl",
+      "passed": true
+    },
+    {
+      "check": "source_sha256",
+      "file": "fixtures/reject_false_zero_equals_one.jsonl",
+      "passed": true
+    },
+    {
+      "check": "source_sha256",
+      "file": "fixtures/reject_wrong_computation_endpoint.jsonl",
+      "passed": true
+    },
+    {
+      "check": "source_sha256",
+      "file": "reference/source_compound_case_introduction.json",
+      "passed": true
+    },
+    {
+      "check": "source_sha256",
+      "file": "reference/source_transport_reflexivity.json",
+      "passed": true
+    },
+    {
+      "check": "source_sha256",
+      "file": "candidate/tokens_whole.py",
+      "passed": true
+    },
+    {
+      "check": "source_sha256",
+      "file": "candidate/ast_whole.py",
+      "passed": true
+    },
+    {
+      "check": "complete_function_AST_identity_after_reader_replacement",
+      "profile": "tokens",
+      "passed": true
+    },
+    {
+      "check": "complete_function_AST_identity_after_reader_replacement",
+      "profile": "ast",
+      "passed": true
+    },
+    {
+      "check": "outer_reversal_and_inverse",
+      "file": "local_guarded_induction_with_used_hypothesis.jsonl",
+      "passed": true
+    },
+    {
+      "check": "fixture_hashes",
+      "file": "local_guarded_induction_with_used_hypothesis.jsonl",
+      "passed": true
+    },
+    {
+      "check": "outer_reversal_and_inverse",
+      "file": "global_guarded_induction_with_used_hypothesis.jsonl",
+      "passed": true
+    },
+    {
+      "check": "fixture_hashes",
+      "file": "global_guarded_induction_with_used_hypothesis.jsonl",
+      "passed": true
+    },
+    {
+      "check": "outer_reversal_and_inverse",
+      "file": "local_compound_implication_elimination.jsonl",
+      "passed": true
+    },
+    {
+      "check": "fixture_hashes",
+      "file": "local_compound_implication_elimination.jsonl",
+      "passed": true
+    },
+    {
+      "check": "outer_reversal_and_inverse",
+      "file": "global_compound_implication_elimination.jsonl",
+      "passed": true
+    },
+    {
+      "check": "fixture_hashes",
+      "file": "global_compound_implication_elimination.jsonl",
+      "passed": true
+    },
+    {
+      "check": "outer_reversal_and_inverse",
+      "file": "reject_context_leak.jsonl",
+      "passed": true
+    },
+    {
+      "check": "fixture_hashes",
+      "file": "reject_context_leak.jsonl",
+      "passed": true
+    },
+    {
+      "check": "outer_reversal_and_inverse",
+      "file": "reject_future_witness_capture.jsonl",
+      "passed": true
+    },
+    {
+      "check": "fixture_hashes",
+      "file": "reject_future_witness_capture.jsonl",
+      "passed": true
+    },
+    {
+      "check": "outer_reversal_and_inverse",
+      "file": "reject_false_zero_equals_one.jsonl",
+      "passed": true
+    },
+    {
+      "check": "fixture_hashes",
+      "file": "reject_false_zero_equals_one.jsonl",
+      "passed": true
+    },
+    {
+      "check": "outer_reversal_and_inverse",
+      "file": "reject_wrong_computation_endpoint.jsonl",
+      "passed": true
+    },
+    {
+      "check": "fixture_hashes",
+      "file": "reject_wrong_computation_endpoint.jsonl",
+      "passed": true
+    },
+    {
+      "check": "outer_reversal_and_inverse",
+      "file": "local_compound_case_introduction.jsonl",
+      "passed": true
+    },
+    {
+      "check": "fixture_hashes",
+      "file": "local_compound_case_introduction.jsonl",
+      "passed": true
+    },
+    {
+      "check": "outer_reversal_and_inverse",
+      "file": "global_compound_case_introduction.jsonl",
+      "passed": true
+    },
+    {
+      "check": "fixture_hashes",
+      "file": "global_compound_case_introduction.jsonl",
+      "passed": true
+    },
+    {
+      "check": "outer_reversal_and_inverse",
+      "file": "local_transport_reflexivity.jsonl",
+      "passed": true
+    },
+    {
+      "check": "fixture_hashes",
+      "file": "local_transport_reflexivity.jsonl",
+      "passed": true
+    },
+    {
+      "check": "outer_reversal_and_inverse",
+      "file": "global_transport_reflexivity.jsonl",
+      "passed": true
+    },
+    {
+      "check": "fixture_hashes",
+      "file": "global_transport_reflexivity.jsonl",
+      "passed": true
+    },
+    {
+      "check": "outer_reversal_and_inverse",
+      "file": "literal_zero_successor_repair.jsonl",
+      "passed": true
+    },
+    {
+      "check": "fixture_hashes",
+      "file": "literal_zero_successor_repair.jsonl",
+      "passed": true
+    },
+    {
+      "check": "outer_reversal_and_inverse",
+      "file": "unused_valid_suffix.jsonl",
+      "passed": true
+    },
+    {
+      "check": "fixture_hashes",
+      "file": "unused_valid_suffix.jsonl",
+      "passed": true
+    }
+  ],
+  "outcomes": [
+    {
+      "case": "local_guarded_induction_with_used_hypothesis.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "local_guarded_induction_with_used_hypothesis.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "local_guarded_induction_with_used_hypothesis.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "local_guarded_induction_with_used_hypothesis.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "global_guarded_induction_with_used_hypothesis.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "global_guarded_induction_with_used_hypothesis.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "global_guarded_induction_with_used_hypothesis.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "global_guarded_induction_with_used_hypothesis.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "local_compound_implication_elimination.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "local_compound_implication_elimination.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "local_compound_implication_elimination.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "local_compound_implication_elimination.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "global_compound_implication_elimination.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "global_compound_implication_elimination.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "global_compound_implication_elimination.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "global_compound_implication_elimination.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_context_leak.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_context_leak.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_context_leak.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_context_leak.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_context_leak.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_context_leak.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_context_leak.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_context_leak.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_future_witness_capture.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_future_witness_capture.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_future_witness_capture.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_future_witness_capture.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_future_witness_capture.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_future_witness_capture.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_future_witness_capture.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_future_witness_capture.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_false_zero_equals_one.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_false_zero_equals_one.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_false_zero_equals_one.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_false_zero_equals_one.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_false_zero_equals_one.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_false_zero_equals_one.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_false_zero_equals_one.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_false_zero_equals_one.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_wrong_computation_endpoint.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_wrong_computation_endpoint.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_wrong_computation_endpoint.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_wrong_computation_endpoint.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_wrong_computation_endpoint.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_wrong_computation_endpoint.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_wrong_computation_endpoint.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "reject_wrong_computation_endpoint.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "local_compound_case_introduction.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "local_compound_case_introduction.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "local_compound_case_introduction.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "local_compound_case_introduction.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "global_compound_case_introduction.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "global_compound_case_introduction.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "global_compound_case_introduction.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "global_compound_case_introduction.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "local_transport_reflexivity.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "local_transport_reflexivity.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "local_transport_reflexivity.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "local_transport_reflexivity.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "global_transport_reflexivity.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "global_transport_reflexivity.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "global_transport_reflexivity.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "global_transport_reflexivity.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "literal_zero_successor_repair.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "literal_zero_successor_repair.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "literal_zero_successor_repair.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "literal_zero_successor_repair.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "literal_zero_successor_repair.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "literal_zero_successor_repair.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "literal_zero_successor_repair.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "literal_zero_successor_repair.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "unused_valid_suffix.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "unused_valid_suffix.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "unused_valid_suffix.jsonl",
+      "profile": "local",
+      "program": "controls/ast_stream.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "unused_valid_suffix.jsonl",
+      "profile": "local",
+      "program": "candidate/ast_whole.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "unused_valid_suffix.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "unused_valid_suffix.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "unused_valid_suffix.jsonl",
+      "profile": "global",
+      "program": "controls/tokens_stream.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    },
+    {
+      "case": "unused_valid_suffix.jsonl",
+      "profile": "global",
+      "program": "candidate/tokens_whole.py",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "passed": true,
+      "timed_out": false
+    }
+  ]
+}

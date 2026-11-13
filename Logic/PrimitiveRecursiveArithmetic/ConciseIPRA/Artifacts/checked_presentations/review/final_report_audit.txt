@@ -1,0 +1,146 @@
+FINAL REPORT AUDIT
+Smaller checked presentations of iPRA
+12 November 2026 (client date)
+
+Scope
+-----
+This is an independent written review of report.tex against the frozen
+candidate implementations, the detailed mathematical audit in PROOF_NOTES,
+and the pinned upstream article and incoming reference packages. It is not
+a proof-assistant verification of the report or the Python implementations.
+The inherited Lean dependency tree was not recompiled for this review.
+
+Repository pin:
+  31e1e9220868788a85ca5fea351d7ab4097cfa4a
+
+The review found no fatal mathematical error in the seven-rule inventory,
+the full native versus guarded readings, uniform-zero coding, the corrected
+terminal mode test, or the transfer of the inherited bi-interpretation.
+The parent author was notified of the five precision refinements below and
+reported that they were being applied. This note records the findings;
+it does not assert a subsequent line-by-line reinspection after those edits.
+
+1. Intermediate soundness calculus
+---------------------------------
+Uniform-zero code 1 is truthy and denotes numerical zero. Consequently a
+strict checker can perform direct transport along an equation 0=t. This is
+a primitive transport instance in unrestricted native A, but a derived
+inference in the displayed source-selected A-minus, whose primitive Use
+dispatches a literally zero source to a Q major instead.
+
+The rigorous proof order is:
+  establish raw-run soundness in unrestricted A;
+  invoke the established consequence equivalence A = A-minus;
+  conclude the stated A-minus theorem.
+
+The report already referenced the missing-zero-source transport theorem.
+An explicit sentence about this proof order prevents the misleading reading
+that every raw strict-checker transport is literally one primitive Use step.
+
+2. Relation of the seven-rule display to the native kernel
+--------------------------------------------------------
+The displayed source-selected calculus has seven schemes: Hyp, I0, IS,
+Use, Open, Close-case and Close-progress. This count is correct.
+
+Its equivalence with the eight-rule native kernel involves two changes:
+  - Tr and QE are combined through source selection;
+  - the displayed witnessed D-progress replaces the kernel's Q-progress.
+
+The inherited equivalence proves the two progress forms interderivable.
+The report should mention this second change rather than suggesting that
+source fusion is the sole difference between the displayed bases.
+
+3. Meaningful witness occurrences versus ignored raw fields
+---------------------------------------------------------
+The old-scope validation guarantee applies to a numerical substitution image
+actually inserted at a meaningful occurrence. Under the lazy protocol an
+irrelevant raw field can remain unused, so a literal assertion that no raw
+witness field can mention a future parameter is too strong.
+
+The precise invariant is that every image used in a meaningful witness
+substitution is checked in the old scope. Ignored raw fields do not create
+capture or establish any additional inference. The root-depth image check
+remains present in every reviewed candidate.
+
+4. Totality of canonical incidental previews
+-------------------------------------------
+The terminal checker computes a computation preview at every call, including
+logical nonleaves. Its canonical completeness argument must account for the
+definedness of these incidental previews, not only for genuine computation
+and hypothesis leaves.
+
+For a canonical formula template the preview starts at depth 3 instead of
+formula depth 0. This protects the canonical hole and earlier protected
+slots; allocated negative parameters remain in scope. Opening and
+introduction records can use harmless zero preview fields. This argument
+is already included in the detailed proof notes and should also be stated
+in the report's completeness proof.
+
+5. Operational ordering of the byte checker
+------------------------------------------
+The byte checker first reads and unpacks [m,s,u,t]. It then validates/opens
+the goal, clears its phase flag, constructs the computation preview, and
+performs the membership test. The crucial safety property is that goal
+validation precedes the phase reset, not that validation is literally the
+first operation in the call. A malformed record may reject before the goal
+is traversed. Suggested wording: "After reading its record, the strict byte
+profile validates/opens its goal ...".
+
+Substantive mode correction retained in the frozen implementation
+---------------------------------------------------------------
+The reviewed strict byte checker uses the exact test
+
+    len(a) == u == 2
+
+for the introduction mode. Progress is possible only at a literal equation
+and with marker 2. Compounds use cases. This corrects the substantive flaw
+in the earlier tentative terminal-fusion expression len(a)%2==u: once the
+truthy-u computation branch was removed, u=1 at a compound matrix would have
+enabled compound-formula induction. The unsafe candidate is not endorsed.
+
+Independent remeasurement of reference controls
+----------------------------------------------
+The full sources were parsed, normalized with ast.unparse plus one LF, and
+counted using the declared significant-token exclusion set (ENCODING,
+ENDMARKER, COMMENT, INDENT, DEDENT, NL and NEWLINE). The measurements were:
+
+Reference control                   Tokens   AST nodes   Normalized bytes
+shared-leaf checker_tokens.py          242         268                565
+shared-leaf checker_ast.py             246         262                556
+shared-leaf checker_bytes.py           272         306                469
+strict zero_alias625.py                331         373                625
+strict strict608.py                    334         378                608
+
+The frozen new measurements supplied by the reproduction harness are:
+
+Candidate                            Tokens   AST nodes   Normalized bytes
+strict_tokens.py                       319         370                630
+strict_ast.py                          327         358                642
+strict_bytes.py                        335         380                605
+
+The earlier exploratory token counts 320 and 328 included an extra token
+relative to the declared filter and are superseded by 319 and 327.
+
+Claims and limitations
+----------------------
+The report correctly distinguishes:
+  - arbitrary native Eq/D goals under strict whole-input validation;
+  - guarded public goals and integer/list promises in compact profiles;
+  - same decoded theorem set from identical raw certificate languages;
+  - inherited bi-interpretation proofs from finite implementation tests;
+  - observed coordinate envelopes from a single program's size;
+  - achieved upper bounds from a mathematical lower bound or global optimum.
+
+The strict programs preserve the full native ordinary reading, including
+D over arbitrary equation matrices. The compact auxiliary progressive
+reading is confined to its appropriate guarded interface. Both term and
+formula round trips, whole numerical domains, actual equality, and numerical
+comparison graphs x=y remain explicit inherited bridge obligations.
+
+No new arithmetic or logical axiom deletion, global simplest axiomatization,
+469-byte compact improvement, or new Lean/Rocq verification is established.
+Finite successful-run arguments concern ideal executions; resource-limited
+Python processes need not accept arbitrarily large valid certificates.
+The written mathematical review and the finite test evidence complement
+each other, but neither should be represented as machine-checked universal
+verification of the delivered Python programs.

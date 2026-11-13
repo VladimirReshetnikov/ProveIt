@@ -1,0 +1,54 @@
+Independent mathematical and semantic review
+===========================================
+Reviewed: report.tex and unary_relation_rigidity.tex.
+Repository comparison snapshot: 31e1e9220868788a85ca5fea351d7ab4097cfa4a.
+
+The review checked the eight-rule native inventory, binding and freshness
+conditions, the formula-selector recursion and logical macros against the
+source article, the distinction between native and guarded auxiliary D
+readings, the dependency order of the scalar arithmetic bridge, the stated
+whole-domain interpretation round trips, and the conditional transfer of
+the inherited theory through exact checker preservation.
+
+The new default-expression transformation was independently checked by an
+exact AST comparison and by inspecting its initialization semantics under
+CPython 3.12.14. The candidate differs only by moving k=0 into the default
+d=(k:=0). The default is evaluated once at definition time, binds module k,
+and does not reset k on subsequent calls. The complete-module coordinates
+are 247 tokens / 261 AST nodes / 557 normalized bytes, compared with the
+matched control's 246 / 262 / 556. This is a one-node improvement with
+token and byte tradeoffs.
+
+Three wording corrections were requested and are incorporated:
+1. The uniform conditional reading of auxiliary D remains sound; the
+   root-dependent reading is needed for the faithful inherited auxiliary
+   correspondence. Soundness and faithfulness are now distinguished.
+2. Exact execution equivalence is stated in the usual unbounded execution
+   model. Source metadata and arbitrary physical resource failures are not
+   claimed identical.
+3. The relation-rigidity consequence is restricted to the algebraic
+   countermodels actually considered: exact iterator identities and a
+   unary-compatible relation interpreting equations.
+
+The relation-rigidity proof was checked independently. An exhibited
+distinct related pair is sent to 0,1 by separation, then to every requested
+pair by amplification. The unrestricted identity-or-universal dichotomy
+is explicitly an external classical statement; its constructive core and
+the role of stable equality are stated separately. Exact iteration gives
+amplification, while separation is not established for the weakened
+calculus. The report does not claim to settle its open transitivity problem.
+
+Limits of this review:
+- The inherited Python-to-calculus correspondence and arithmetic bridge
+  were inspected as stated dependencies, not independently mechanized.
+- The inherited Lean sources were not recompiled or independently proved
+  in this environment.
+- Regression examples are supporting evidence, not a universal soundness
+  proof or a replacement for the inherited correspondence.
+- No new arithmetic or logical axiom deletion, simultaneous improvement
+  in all size coordinates, global minimum, or complexity lower bound is
+  established. The stronger requested mathematical simplification remains
+  unestablished.
+
+After the stated corrections, no further mathematical misstatement or
+overclaim was identified within the scope of this review.

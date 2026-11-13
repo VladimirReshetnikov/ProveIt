@@ -1,0 +1,173 @@
+Independent review: eager selection composed with product erasure
+Prepared 12 November 2026 for the current research run
+
+REVIEWED CHANGE
+
+Control: the pinned head_conversion/code/compact477.py.
+Candidate: change exactly
+    bool(m or 3 % len(a))
+to
+    any((m, 3 % len(a)))
+and leave the rest of the module unchanged.
+
+The control already has the goal/floor header, multiplication in the opener's
+otherwise branch, and [] as the initial and administrative neutral resource.
+This review concerns the composition with eager mode selection. The existing
+guarded scalar calculus and its iPRA bridge are inherited.
+
+FINDING
+
+The change preserves the canonical public theorem set, subject to the stated
+finite exact-integer/list alphabet and canonical closed guarded Eq/D public
+goal contract. It does not enforce that contract on arbitrary JSON. I found
+no interaction invalidating the known soundness/completeness argument.
+
+SOUNDNESS: SUCCESSFUL RUNS ARE INCLUDED IN THE CONTROL'S RUNS
+
+For ordinary parsed integers and lists, evaluating len(a) and its remainder
+has no side effect. If e = 3 % len(a) is defined, both bool(m or e) and
+any((m,e)) return exactly the same Boolean. The difference is that the latter
+constructs the tuple eagerly and evaluates e even when m is true-valued.
+Consequently every returning evaluation of the new selector corresponds to
+the old selector with the same result and no change to the packet stack,
+context, goal, or scope floor.
+
+In particular, the assignment (k := ~-k) is the right factor of the product
+in both programs. It occurs after the selector has been evaluated and is
+unchanged. Evaluation of the new hypothesis, including any recursive major
+proof and any introduction assignment to a, occurs before either selector
+in both programs. Therefore the comparison uses the same current a, including
+that assignment, not the previous outer goal.
+
+Induction on a finite returning evaluation tree, including recursive major
+calls, replaces every new selector by the old one. It preserves all consumed
+packets, returned values, scope decrements and context entries. Hence any
+input accepted by the candidate is accepted by head_conversion477. The
+control's public soundness theorem therefore transfers directly. No separate
+raw-state simulation to the earlier zero-sentinel checker is needed.
+
+COMPLETENESS: THE CANONICAL COMPILER AVOIDS THE NEW FAILURES
+
+The inherited canonical compilation for head_conversion477 has this invariant:
+each actual proof-call goal is a canonical formula (root arity 1, 2 or 3),
+or the administrative empty-array resource []. The second kind returns by
+membership because every context contains the initial []. No selector is
+reached in that case.
+
+For a call with a canonical goal, arithmetic and elimination instructions
+retain the nonempty goal until the selector. An introduction first opens the
+canonical matrix, whose root is still a formula constructor of arity 1, 2
+or 3: capture-free numerical substitution changes numerical leaves, not the
+outer formula constructor. Thus e is defined even when m is true-valued.
+Actual recursive equality, Q and D majors are canonical formulas as well.
+
+The head_conversion product-erasure change does not break this invariant.
+Its extra even-depth checks can affect irrelevant automatic-endpoint probes,
+but those probes are not actual proof-call goals. In the canonical compiler
+their source/seed images are well scoped at the current floor, and those
+checks terminate. Real formula openings agree literally with the older
+canonical openings. A surplus-arity truth resource from tripling an atomic
+major is not required as an actual proof goal. The neutral major changes
+from 0 to [] and is discharged by membership as just described.
+
+Every canonical certificate supplied by that compilation consequently runs
+unchanged in the candidate, including its [A,0] final header. This proves
+existence of an accepted candidate certificate for every canonical public
+theorem, not preservation of every possible auxiliary certificate.
+
+STRONGER RESULT: EXACT ACCEPTANCE FOR INTEGER/LIST CERTIFICATES
+
+A further joint audit with the independent_kernel reviewer establishes a
+stronger invariant special to the product opener and [] neutral resource.
+For every finite returning c(g,a,k) whose context entries are all arrays and
+whose context contains [], the input goal a is an array. Moreover every mode
+selector reached in such a run has a nonempty array as its current a.
+This does not assume that those arrays are canonical formulas.
+
+Proof by induction on the number of c invocations in a returning evaluation:
+
+1. If a is an integer and its entry opening i(a) returns, then k <= a < 0.
+   Otherwise the even-depth product fallback eagerly tries to inspect its
+   missing-image sentinel, the function c, and fails. Thus a is a protected
+   negative scalar and i(a)=a; it cannot be a member of an array-only context.
+
+2. In a non-membership step the recursive major call returns in a smaller
+   evaluation. By induction its goal m is an array. If m is nonempty, the
+   chosen raw hypothesis is m*3, an array. If m=[] and u is true-valued, the
+   computation hypothesis is a two-element array. If m=[] and u is false,
+   the introduction assigns a to its opened matrix. A scalar or empty result
+   cannot reach the continuation: the old selector already evaluates
+   3 % len(a) in this case and fails. Thus every successful continuation
+   appends an array; opening preserves the root array constructor. Its
+   context still contains [] and still has arrays only.
+
+3. Suppose the call's input goal was the protected negative scalar from
+   item 1. The introduction alternative cannot unpack this scalar. The
+   other alternatives leave that goal unchanged before elimination. At the
+   elimination test, an equality i(t,u)=a<0 forces t itself to be precisely
+   that protected negative scalar: an array stays an array, while an
+   unprotected formula scalar can only return numeric zero or an empty
+   array after multiplication by zero. Hence i(t,s)=a as well. The automatic
+   elimination therefore cannot change the scalar goal. Its final opening
+   at the decreased floor still returns a. The continuation is a smaller
+   returning call with that scalar goal and an array-only context, contrary
+   to induction. So no such successful scalar call exists.
+
+4. The empty-array goal returns immediately by membership in every reachable
+   context. For a nonempty-array call, every selector still sees an array:
+   without introduction the goal is unchanged; with introduction item 2
+   already proves its assigned matrix nonempty. Therefore all selectors
+   in every returning old run have a defined, state-free remainder.
+
+The initial context [[]] satisfies the invariant. For finite exact-integer/
+list certificates with a well-formed [A,0] header, every old accepting run is
+therefore reproduced exactly by the new program, and the successful-run
+inclusion proved earlier gives the converse. The same packets are consumed,
+the same floors are allocated, and the same raw goals/contexts occur. The
+public goal need not be canonical for this operational equivalence; the
+canonical guarded public-language assumption remains necessary for the
+inherited mathematical soundness/iPRA theorem.
+
+This stronger conclusion differs from the old 479-byte checker's eager-mode
+change. That older program has scalar zero as its neutral resource; an empty
+array need not close by membership and can reach a selector. Here [] is the
+neutral resource and the product opener rejects unprotected scalar proof
+calls, so that particular obstruction is absent.
+
+The initial header is explicitly [A,0] in this stronger theorem. No claim
+about arbitrary malformed JSON, arbitrary header types, or physical resource
+limits is needed. The weaker canonical-completeness proof remains valid
+independently of this additional invariant.
+
+SOURCE AUDIT
+
+The integrated article ch11_cert.tex explicitly gives the eager-selector
+proposition (label cert:prop:eager-selector) and proves completeness by the
+same nonempty-formula-goal invariant. Its later composition proposition
+(cert:prop:late-compositions) includes header plus eager selector, yielding
+the other existing 477-byte program. It does not list a composition with
+head_conversion's product erasure and [] neutral resource.
+
+The head_conversion evidence files compact477_audit.txt and
+compact477_completeness_audit.md explicitly analyze canonical branch shapes,
+the otherwise-unused endpoint probes, and the [] administrative premise.
+Those arguments support the invariant used here. Their existing control
+still uses bool(m or 3 % len(a)), so the reviewed expression is not already
+present in that control.
+
+This is a local novelty check against the identified sources, not a claim
+that every file or archived source in the repository was independently
+searched by this reviewer. The task's separate baseline census supplies
+any broader source-coverage statement.
+
+MEASUREMENTS AND STATUS
+
+Independent ast.unparse normalization and significant-token counting yield:
+    control:   272 tokens / 306 AST nodes / 477 bytes
+    candidate: 274 tokens / 306 AST nodes / 476 bytes
+
+The composition saves one normalized byte, costs two significant tokens,
+and leaves the AST-node count unchanged. It does not improve the separate
+token or AST records and is not a new logical/arithmetic axiom deletion.
+This is a written independent analysis within this run, not external human
+peer review or a Lean/Rocq verification.

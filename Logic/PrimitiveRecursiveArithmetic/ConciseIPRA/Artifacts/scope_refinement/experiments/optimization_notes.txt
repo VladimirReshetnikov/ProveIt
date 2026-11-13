@@ -1,0 +1,38 @@
+# Independent compact-kernel investigation
+
+Pinned baseline: a0687e8082b7354005d91b0ee105b4fd5ec8cf40, ConciseIPRA.
+
+## Verified current controls
+
+The incoming shared-leaf package's complete modules measure as follows under the installed CPython normalization (`ast.unparse(ast.parse(source)) + LF`; these source modules have no docstrings):
+
+| module | normalized bytes | significant tokens | AST nodes | gzip-9 mtime0 |
+|---|---:|---:|---:|---:|
+| checker_bytes.py | 469 | 272 | 306 | 309 |
+| checker_ast.py | 556 | 246 | 262 | 335 |
+| checker_tokens.py | 565 | 242 | 268 | 331 |
+
+The envelope 242/262/469 belongs to three different programs.
+The incoming vacuous-specialization change from `bool(m or 3 % len(a))` to `any((m, 3 % len(a)))` is already present in the shared-leaf byte program. It cannot be claimed again by composing packages.
+
+## Scope from context length
+
+Replacing the global scope floor by a local `k = -len(g)` and nesting the opener inside the recursive checker gives 573 bytes / 250 tokens / 267 AST nodes. The initial singleton neutral context admits one unused rigid parameter. Since the public goal is closed, that extra parameter is harmless for the public theorem set, but this does change the permitted auxiliary scope and certificate allocation. The exact original initial floor, `k = 1 - len(g)`, gives 576 / 251 / 268. Neither improves the frontier.
+
+The local checker's global-to-local proof translation must rename eigenvariables per branch: parameters allocated inside a major proof cease to advance the parent scope. Equality of arbitrary input streams is not claimed.
+
+## Invalid apparent savings
+
+1. Moving `(k := k - 1)` inside the true arm of `... if s or len(a) == 2 else 0` fails to allocate a fresh successor variable in compound introductions. It is not an equivalent optimization.
+2. Choosing progress from the generated hypothesis's arity alone confuses an opened witnessed closure (arity three) with a compound Q matrix introduced by cases (also arity three). The latter must not receive equation induction. Public Eq/D syntax does not exclude Q from auxiliary proof trees.
+3. Giving the opener access to the next fresh variable before validating the major and introduction witness weakens the future-witness check and is not a legitimate scope simplification.
+4. Replacing `[q()]` by `q()` in the comprehension and wrapping each supplied packet in a list saves two characters but admits an empty proof packet. The result is an empty list that the acceptance driver can ignore; moreover recursive major calls become falsy rather than rejecting. Enforcing nonemptiness costs at least the apparent saving in the simple implementation.
+5. Returning the proved goal rather than a success marker would eliminate a conjunction at major use, but the original goal must survive the mutable `a` rewrites in introduction/elimination. The straightforward preservation cost exceeds the saved expression.
+
+## Canonical successor-seeded recursor
+
+The existing mathematical canonical-R construction absorbs zero computation into syntax, with `R(0,a;h)` normalized to successor `S(a)`. Adapting it to the shared compact arity opener would require recognizing a ternary node after substitution, contracting a zero counter, and respecting the dummy-slot changes between ternary recursor and unary successor. Removing the two computation-dispatch fragments saves only approximately 17 normalized bytes; the direct canonicalizer costs more even before its scope proof. No sub-frontier complete canonical-R checker was obtained.
+
+## Status
+
+No new sound compact checker below 469 bytes, 242 tokens, or 262 AST nodes was established in this independent investigation. The files here are controls and measured exploratory variants, not a new axiomatization or a claimed improvement.

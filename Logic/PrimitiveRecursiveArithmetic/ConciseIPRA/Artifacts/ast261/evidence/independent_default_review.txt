@@ -1,0 +1,82 @@
+Independent semantic and metric review of checker_ast261.py
+=========================================================
+
+Compared:
+  baseline: shared_leaf/code/checker_ast.py (246 tokens, 262 nodes, 556 bytes)
+  candidate: research/complexity/checker_ast261.py (247 tokens, 261 nodes, 557 bytes)
+
+Runtime used: CPython 3.12.14.
+Normalization: ast.unparse(ast.parse(whole module)) plus one LF.
+Significant-token exclusions: ENCODING, ENDMARKER, INDENT, DEDENT,
+NEWLINE, NL, COMMENT. The AST count includes every node returned by
+ast.walk, including context nodes. Neither checker imports a project
+module or external table.
+
+Exact syntactic comparison
+--------------------------
+Parsed both complete modules. Deleted the baseline's top-level `k = 0`
+and replaced only the last default of function i, the literal zero, with
+NamedExpr(Name('k', Store()), Constant(0)). The resulting AST, ignoring
+source-position attributes, is exactly the candidate AST. No other
+function body, call, import, or output instruction differs.
+
+Semantic proof under the standalone checker contract
+---------------------------------------------------
+The import is the same. In the baseline, top-level `k = 0` binds module k
+before i is defined. In the candidate, evaluation of i's default expression
+`(k := 0)` binds the same module k to the same exact integer zero and returns
+zero as the default of d. This evaluation takes place once, when the def
+statement executes, before any certificate input is read or either checker
+function is called. The preceding default 0j is a literal with no effect on k.
+
+Thus immediately after the two function definitions, both modules have
+k=0, identical function bodies and defaults i.__defaults__ == (0j, 0).
+The functions use module k, and i has no closure. The remaining top-level
+code is identical. Induction on the ensuing evaluation establishes the
+same input-consumption, proof-checking, scope-update, and ACCEPT behavior.
+The initialization is not repeated on calls that omit d: defaults store
+the already-computed value, so updates to k during a proof are preserved.
+
+The comparison is of checker behavior: normal termination with exactly
+ACCEPT followed by LF versus rejection/nonacceptance. Source filenames,
+line-number metadata and printed traceback locations are not identical.
+The claim is not a statement about custom trace hooks, code-object
+introspection, or adversarially modified Python environments. As usual,
+the theorem-set comparison uses the unbounded execution idealization;
+arbitrary process-resource limits are not a semantics-preservation theorem.
+
+Runtime cross-checks
+--------------------
+Compiled and executed the module prefix, before any input. It establishes
+k=0 and defaults (0j,0). Then set module k=-7 and called i(-1) with omitted
+d: the result is -1, k remains -7, and the defaults remain (0j,0).
+This specifically tests that the initializer has not become a per-call reset.
+The CPython prefix bytecode stores k with STORE_GLOBAL before MAKE_FUNCTION.
+
+Metric delta
+------------
+The deleted assignment has four AST nodes: Assign, Name, Store, Constant.
+The replaced default was one Constant node. Its replacement has four nodes:
+NamedExpr, Name, Store, Constant. Net change is -4+(4-1)=-1 node.
+
+Removing `k = 0` deletes three significant tokens; replacing default `0`
+by `(k := 0)` adds four. Net change is +1 significant token.
+After normalization, deleting `k = 0\n` removes six bytes and replacing
+`0` by `(k := 0)` adds seven. Net change is +1 byte.
+
+Independent complete-module results:
+  baseline: 246 tokens / 262 nodes / 556 bytes / 335 gzip9 bytes
+  candidate: 247 tokens / 261 nodes / 557 bytes / 334 gzip9 bytes
+
+This is one fewer AST node at the expense of one token and one normalized
+byte. It is a source-level initialization rearrangement, not a mathematical
+axiom deletion, a stricter JSON validator, a global minimality proof, or
+an improvement in every complexity coordinate.
+
+Official language-reference support:
+  https://docs.python.org/3.12/reference/compound_stmts.html#function-definitions
+  Default expressions are evaluated once when the definition executes.
+  https://docs.python.org/3.12/reference/expressions.html#assignment-expressions
+  An assignment expression binds its target and returns the assigned value.
+
+The numeric report is independent_default_metrics.json.

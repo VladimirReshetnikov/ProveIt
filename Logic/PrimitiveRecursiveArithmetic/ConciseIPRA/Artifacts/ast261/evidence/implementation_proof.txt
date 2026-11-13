@@ -1,0 +1,85 @@
+INITIALIZATION REFINEMENT: 262 TO 261 AST NODES
+
+Control: current incoming shared_leaf/code/checker_ast.py, at repository
+snapshot 31e1e9220868788a85ca5fea351d7ab4097cfa4a.
+Candidate: checker_ast261.py in this directory.
+
+The complete source transformation is
+
+    k = 0
+    def i(a, t=0j, d=0): ...
+
+to
+
+    def i(a, t=0j, d=(k := 0)): ...
+
+No other abstract-syntax node changes. All bodies and the entry call are
+identical. In particular no scope check, formula-root test, premise check,
+successor computation, input reading, or output condition is weakened.
+
+THEOREM. On every input stream, the two ordinary standalone modules have
+the same acceptance behavior in the ideal execution model used by the
+baseline. They consume exactly the same input lines, update k identically,
+and perform the same recursive calls. An ordinary terminating execution
+prints ACCEPT and exits successfully in one module iff it does in the other.
+
+PROOF. In the control, the module binds k to the integer zero, evaluates
+the two default expressions 0j and 0, and creates the function i. In the
+candidate, the module evaluates 0j and then the assignment expression
+(k := 0). This binds module-global k to the same integer zero and evaluates
+to zero. Thus when the definition of i is complete, both modules have
+the same k and the same default-value tuple (0j, 0). The function bodies
+are identical and refer to the same module-global k. No earlier code has
+read k, called i, or observed the intermediate creation state. The next
+definition c and all subsequent instructions are identical. Induction on
+the successive execution steps now gives identical application states,
+input consumption, and acceptance. The same argument applies with Python
+optimization enabled because neither program relies on assert statements.
+
+The theorem concerns standalone execution with the usual fixed builtins.
+As usual in the baseline ideal model, finite memory/recursion limits are
+not part of theorem-set completeness. Source line numbers, traceback file
+names, function-code source locations, tracing/debugger observations, and
+microscopic implementation overhead are not the acceptance semantics.
+
+The source-count calculation is exact. The old assignment contributes
+Assign, Name, Store, Constant (four nodes), and the existing depth default
+contributes a Constant (one node). The replacement contributes NamedExpr,
+Name, Store, Constant (four nodes). Hence the total falls by one. The
+resulting complete module is 247 significant tokens, 261 AST nodes, and
+557 normalized UTF-8 bytes on CPython 3.12.14. The control is 246/262/556.
+
+INTERPRETATION CONSEQUENCE. This changes the implementation of the exact
+same compact guarded presentation, with the exact same canonical theorem
+encodings and certificates. Any established soundness, completeness,
+whole-domain actual-equality bi-interpretation, and equiconsistency theorem
+for the control transfers verbatim. This argument does not establish the
+inherited arithmetic bridge from scratch, and makes no claim of a new
+arithmetic axiom deletion or of absolute minimality.
+
+PROVENANCE AND NOVELTY. The two ingredients already occur separately:
+shared_leaf has the star-expanded contexts and the 262-node module;
+uniform_terminals has default-argument initialization, but a 263-node
+module with different context construction. The contribution here is
+their composition and its exact acceptance-equivalence argument. A census
+of the pinned repository and all twelve incoming archives found no prior
+261-node direct-source complete checker; see the main package audit.
+
+INPUT CONTRACT. The first JSON line is the canonical closed guarded Eq/D
+public goal. Subsequent lines are three-field packets [s,u,t]. The finite
+certificate trees are promised to contain exact integers and lists. The
+public grammar and this whole-input alphabet promise are not validated by
+this compact module. Auxiliary Q formulas are permitted in proof data.
+Unused trailing lines are permitted. Acceptance means a successful normal
+exit and exactly ACCEPT followed by LF. The candidate adds no promise and
+removes no check relative to the control. It is not the separately measured
+strict whole-JSON public-grammar validator.
+
+VERIFICATION. The attached verifier first checks the exact AST change.
+It then executes both programs normally and with -O on fourteen inherited
+fixtures, including a proof using its induction hypothesis, compound
+implication elimination, both computation cases, an inferred major premise,
+shared computations, future-witness attacks, context leakage, and false
+equations. It also replaces each of the seven positive goals with 0=1.
+All 84 isolated executions have the intended result. These finite tests
+support the transformation proof; they are not a soundness proof for iPRA.

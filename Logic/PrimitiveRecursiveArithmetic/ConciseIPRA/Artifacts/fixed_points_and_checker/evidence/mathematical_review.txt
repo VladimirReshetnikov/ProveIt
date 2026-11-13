@@ -1,0 +1,79 @@
+Independent review of the fixed-point plus seed-shift construction
+Status: full draft research/mathematical_routes/fixed_point_shift_obstruction.tex
+read and checked. No substantive mathematical gap found.
+
+New schema
+  I_h(n,h(a,p),p) = h(I_h(n,a,p),p).
+This is seed shift / commutation with the iterator's own update, not a
+general fusion or naturality law between two distinct updates.
+
+Strengthened ultrapower lemma
+
+Fix a term descriptor h and parameter representatives p_i in A for a tuple
+p in B=A^N/U. Set f_i(x)=h^A(x,p_i), f=h^B(-,p). For each integer j define
+  H_j([a_i]) = [ f_i^(max(0,i+j))(a_i) ].
+This gives an actual function B->B, not merely a chosen point orbit.
+Well-definedness in a: if [a_i]=[b_i], then a_i=b_i on a U-large set, and
+finite repeated application of the same f_i preserves equality on that
+set, independently of how large its finite exponent is.
+
+The functions satisfy:
+1. H_(j+1)=f o H_j, since the needed exponent identity holds on a cofinite
+   set of indices. A single cofinite set works for every seed at fixed j.
+2. H_j o f=f o H_j by coordinatewise commutation of finite powers with f_i.
+3. If f(a)=a, then f_i(a_i)=a_i on a U-large set, so every finite iterate
+   fixes a_i there, and H_j(a)=a.
+
+Choose a presenting descriptor and parameter representatives once for each
+actual presented function f. It is unnecessary for the extension lemma to
+claim independence of this choice: the iterator assignment is made once for
+the actual map. Old represented functions retain their old iterators. For
+a genuinely new map, use finite powers on standard counters and H_j on
+each nonstandard counter chain, indexed from an externally chosen origin.
+This validates computation, fixed-point preservation and seed shift.
+Cross-extensionality follows exactly from assigning once per actual map.
+
+The final draft also asserts independence from the presenting descriptor.
+That stronger statement is correct: equality of two presented unary maps in
+B is the first-order formula forall u h(u,p)=g(u,q). Los's theorem gives a
+U-large set of coordinates on which the two coordinate functions agree for
+ALL coordinate inputs, hence their finite iterates of coordinate-dependent
+length agree as well. Uniformity in the coordinate input is the key point.
+
+Every old Shift/FP/Ext axiom is first-order with all parameter tuples bound,
+so old-map reuse is valid even at new parameter tuples in the ultrapower.
+Later expansions and the elementary tower preserve every scheme. Native
+substitution has the same cross-extensional proof as the earlier model.
+
+Strengthened seed
+
+Use the nonnegative lexicographic cone in Z^2. Let J(n,a)=a+n and let
+d(q,z)=(q,2z), so K(n,a)=a+d(n). Both operations are total on the cone.
+d(0)=0 and d(Sn)=S^2(d(n)), hence K has the computation equations of S^2.
+J(n,Sa)=S(J(n,a)) and K(n,S^2a)=S^2(K(n,a)), proving initial Shift.
+S and S^2 have no fixed points, so initial FP is vacuous. The updates are
+distinct, so initial cross-Ext is immediate.
+
+At c=(1,0), K(c,0)=(1,0), while J(c,c)=(2,0). Thus E(n):K(n,0)=J(n,n)
+fails. E(0) follows from computation. For the step one can use only
+computation plus Shift:
+  J(Sn,Sn)=S(J(n,Sn))=S^2(J(n,n)),
+  K(Sn,0)=S^2(K(n,0)).
+Congruence yields E(n)->E(Sn). Alternatively J commutativity and the
+computation equation derive the needed seed shift for J in this seed theory.
+
+The seed's commutative cancellative addition, J(n,0)=n, all computation,
+FP/Shift/Ext schemes, and the bad E(c) inequation persist through the tower.
+
+Scope
+
+The strengthened construction shows that preservation of fixed seeds and
+commutation with one's own update, even with canonical successor iteration
+and a commutative cancellative additive monoid, do not imply equation
+induction under the ordinary realization. It is not a lower bound on checker
+size or a proof against all unrelated bi-interpretations.
+
+The stronger cross-update fusion law is deliberately not covered. In this
+model the term g(a)=J(a,a) semiconjugates S to S^2, but fusion for that g
+would imply the failed equation K(n,0)=J(n,n). This is a useful explanation
+of the exact boundary, not a defect in the claimed seed-shift theorem.

@@ -1,0 +1,139 @@
+Deferred construction of a retained major
+=======================================
+
+Status and claim
+----------------
+This is a simplification of a complete checking program for the already proved
+guarded scalar presentation of iPRA. It deletes no arithmetic or logical axiom.
+The source control is the token program in the incoming shared_leaf package at
+repository commit 31e1e9220868788a85ca5fea351d7ab4097cfa4a. Source provenance and
+the exact control hash are in PROVENANCE.json.
+
+The measured stream modules are:
+  control:    242 significant tokens, 268 AST nodes, 565 normalized UTF-8 bytes;
+  candidate:  240 significant tokens, 266 AST nodes, 592 normalized UTF-8 bytes.
+Thus the token and AST counts decrease in this matched comparison, while bytes
+increase. The candidate is not below the independent 262-node or 469-byte
+compact incumbents. It is a new stream token coordinate only, subject to the
+enclosing report's complete corpus comparison.
+
+Input contract
+--------------
+One canonical closed public goal is on the first line; each later consumed
+line is a JSON array of three fields. Numerical and formula trees contain
+exact integers and finite lists. This is the inherited compact contract: the
+program checks proofs and scope but does not validate every aspect of that
+external alphabet and public-grammar promise. Success is normal exit with
+exactly ACCEPT followed by a line feed. Unused suffix records are permitted.
+Every theorem-set completeness assertion concerns ideal unbounded execution.
+
+The rewrite
+-----------
+The old non-leaf continuation contains
+
+    h = c(s, *g) or s * 3 if s else (a := i(*a, t, 2))
+    k -= 1
+    c(i(a, [k]), *g, i(h, (s or len(a) == 2) and k))
+
+The new continuation is
+
+    if s:
+        c(s, *g)
+    else:
+        a = i(*a, t, 2)
+    k -= 1
+    c(i(a, [k]), *g, i(s * 3 or a, (s or len(a) == 2) and k))
+
+All other source is unchanged, apart from harmless normalization by ast.unparse.
+
+Lemma 1: successful calls return None
+------------------------------------
+Neither module has an explicit return statement in c. Its leaf case exits the
+function, and its non-leaf case finishes after its continuation call finishes.
+Consequently every successful call of c returns Python None. This does not
+assume the theorem being checked is true; it follows solely from the program.
+
+Lemma 2: multiplication by three preserves truth value
+-----------------------------------------------------
+For an exact integer s, s*3 is zero exactly when s is zero. For a finite list s,
+s*3 is empty exactly when s is empty. Multiplication is a pure total operation
+on these values in ideal execution. Hence s*3 or a is s*3 in the true branch
+of if s, and a in its false branch.
+
+Theorem: matched successful-trace correspondence
+----------------------------------------------
+Give the two stream modules the same finite integer/list input. Subject to
+unbounded resources, either both reject or both accept. On every finite
+successful execution they consume the same records and make the same sequence
+of recursive c calls with the same goals, contexts and global floors.
+
+Proof. Follow the common prefix of a call: reading the record, generating its
+temporary computation, testing the shared leaf, and possibly inferring an
+elimination major are identical. At a shared leaf both calls return None.
+Otherwise distinguish the truth value of the now-current s.
+
+If s is true, both programs first make the same major call c(s,*g). If it fails,
+both fail. If it succeeds, the old h is s*3 by Lemma 1. The new program discards
+the same None result and leaves a unchanged. If s is false, neither program
+checks a major, and both perform precisely a=i(*a,t,2); the old h is the updated
+a. Both then decrement the same global k exactly once. By Lemma 2 the new
+expression s*3 or a equals the old h.
+
+The continuation arguments are therefore identical. The only reordered work
+is the pure construction s*3: it occurs later in the new true branch. The opener
+i does not mutate s or a or the floor, so opening the goal first cannot change
+that construction. It consumes no input and adds no hypothesis. A failed opener
+rejects in both programs; a successful opener produces the same result.
+
+Induction on a finite successful call tree, including its major calls and tail
+continuations, proves the stated correspondence. The reverse induction is
+identical. Finite failure follows by the same common-prefix argument, since the
+delayed multiplication is total and side-effect free on the stated alphabet.
+This argument does not identify the two programs' physical memory or recursion
+limits. It also does not claim a sound interpretation for every arbitrary JSON
+value outside the inherited integer/list promise.
+
+Corollary: the inherited iPRA interpretation is unchanged
+--------------------------------------------------------
+Every canonical certificate accepted by the shared_leaf control is accepted by
+the new stream program with no translation at all, and conversely. The new
+program therefore has exactly the same canonical public theorem set. Composing
+this identity correspondence with the control's proved checker-to-calculus
+correspondence preserves the existing whole-domain bi-interpretation of its
+ordinary realization with full first-order iPRA, actual numerical equality, and
+identity numerical comparison graphs. No new interpretation or arithmetic
+principle is introduced. Universal claims here are written proofs; there is no
+new Lean or Rocq formalization of the Python program.
+
+Whole-JSON framing
+------------------
+checker245_whole.py uses the same new procedure, with from json import load and
+q=load(open(0)).pop. Replace each loads(input()) by q(), including the initial
+goal read. A single JSON array stores the stream records in reverse order:
+[last packet, ..., first packet, goal]. The entire parser is in the measured
+module. No parser, proof engine or table is imported from this package.
+
+For every finite sequence of valid integer/list JSON records, reversal and
+serialization give exactly the same goal and packets in the same order. This
+is a primitive recursive certificate conversion. It establishes the same
+canonical theorem set. It is not an assertion about identical acceptance of
+arbitrary trailing garbage: the line reader may leave an unread suffix, whereas
+json.load parses the complete array before proof checking.
+
+The corresponding matched modules have metrics
+  whole-JSON control:    247 tokens, 274 AST nodes, 564 bytes;
+  whole-JSON candidate:  245 tokens, 272 AST nodes, 591 bytes.
+The whole-JSON control is the transparent framing conversion of the exact
+stream control, not an independently claimed repository incumbent.
+
+Verification and reproduction
+-----------------------------
+python3 verify.py recomputes metrics with the complete-module repository
+protocol. It runs both candidates and both controls normally and under -O on
+the inherited positive and negative fixtures, then replaces positive public
+goals by 0=S0. It also compares call traces, record consumption and final floors
+on seeded integer/list mutations of the source certificates. The fixtures
+include used induction, compound implication elimination, shared computation,
+inferred majors, wrong endpoints, context leakage and future-variable attacks.
+These finite checks supplement the proof above and do not establish soundness
+or bi-interpretability by themselves.

@@ -1,0 +1,246 @@
+ROOT CONVERSION FOR A COUNTER-AWARE RECURSOR
+==========================================
+
+Status
+------
+This is a candidate mathematical simplification of the amount of conversion
+trusted by a variable-substitution calculus. It is NOT a smaller complete
+checker than the current compact frontier. The delivered checker is a readable,
+fully scope- and sort-validating reference implementation. The mathematical
+metatheorem below is a written proof, not a Lean/Rocq formalization.
+
+The current integrated article already has the iterator calculus BH_3, whose
+primitive conversion reaches three counter levels, and several counter-aware
+calculi on normalized terms. Its counter-aware transport packet uses
+C(y,0,C(P(y),x,h(x))) with normalized predecessor rows. The contribution here
+is the directly staged packet F(y;a,b) below: it performs all its administrative
+computations at the root, on raw syntax. A corpus check of the INTEGRATED
+article alone found no explicit theorem for this exact combination. That is
+not a claim of global novelty, nor a substitute for inspecting incoming ZIPs.
+
+1. Syntax, substitution and ordinary reading
+--------------------------------------------
+One numerical sort. Raw terms:
+
+  t ::= variable | 0 | S(t) | R(n,a; i,u.h).
+
+Only i and u are bound in h. The intended computation equations are
+
+  R(0,a;i,u.h) = a,
+  R(S n,a;i,u.h) = h[n/i, R(n,a;i,u.h)/u].
+
+The body h is syntax, not a quantified function object or a program code
+passed to a universal total evaluator. Equivalently, each fixed body gives
+its own ordinary first-order function symbol with its free variables as
+parameters, in a staged definitional language. There is no universal
+primitive-recursive evaluation function hidden in the signature.
+
+Formulas:
+
+  A ::= s=t | Q_y A | D_{x,y} A.
+
+The ordinary first-order intuitionistic readings are
+
+  Q_y B := B(0) -> forall y B(y),
+  D_{x,y} B := exists x (B(x,0) -> forall y B(x,y)).
+
+Distinguished contradiction: 0=S0. Terms and formulas are raw. Substitution
+is capture-avoiding syntactic substitution; it never performs computation.
+No congruence, semantic evaluation or normalization is implicit in identity.
+
+2. The eight primitive rule families
+-----------------------------------
+All contexts are finite lists of assumptions. Every rule retains the same
+outer context Gamma. Repetition, weakening and fresh renaming are admissible
+by induction on derivations; they are not additional proof-node tags.
+
+Hyp:       A in Gamma                         / Gamma |- A.
+Refl:                                         / Gamma |- t=t.
+HC:        Gamma |- s=t                       / Gamma |- s'=t,
+             where either s contracts to s', or s' contracts to s,
+             by ONE of the two displayed R equations at THE ROOT.
+VSub:      Gamma |- x=t; Gamma |- u=v         / Gamma |- v=u[t/x],
+             where x is a variable. The replacement t may contain x.
+QE:        Gamma |- Q_y B; Gamma |- B(0)      / Gamma |- B(t).
+DE:        Gamma |- D_xy B;
+           Gamma,Q_y B(b,y) |- A             / Gamma |- A,
+             where b is fresh for Gamma,A,D_xy B.
+DI:        Gamma,B(t,0) |- B(t,S z)           / Gamma |- D_xy B,
+             where z is fresh for Gamma,t,D_xy B.
+QI:        Gamma,E(z) |- E(S z)               / Gamma |- Q_y E(y),
+             where E is a literal equation and z is fresh for Gamma,Q_y E.
+
+There are no primitive computation axioms: they follow by expanding the left
+endpoint of a reflexivity. HC cannot rewrite a right endpoint, go below a
+successor, inspect an iterator counter, or normalize a term in one step.
+
+3. Preliminary derived rules without transport
+----------------------------------------------
+Symmetry uses no HC. Prove T := D_xy(0=0) by DI, using reflexivity for its
+premise. Open T at b. Reflexivity gives b=b, so VSub on b=b and the weakened
+premise u=v gives v=u. The conclusion is b-free, so DE closes the branch.
+Consequently right-endpoint HC is derivable by symmetry, left HC, symmetry.
+
+Case closure: if Gamma,B(0) |- B(S z), introduce D_xy B with unused x and
+witness 0, then eliminate that D. The local Q_y B is independent of its
+fresh witness, so it may be returned. Thus Gamma |- Q_y B.
+
+Numerical cases: from Gamma |- B(0) and Gamma |- B(S z), with z fresh,
+weakening gives the premise of case closure; QE at an arbitrary term t gives
+Gamma |- B(t). This uses no transport or equation induction.
+
+4. The directly staged packet
+------------------------------
+Define two raw term abbreviations; bound variables are renamed freshly:
+
+  C(v,a,b) := R(v,a;i,u.b),
+  F(v;a,b) := R(v,0;i,u.C(i,a,b)).
+
+The unused state coordinates are deliberate. Root conversion alone yields
+
+  C(0,a,b) -> a,
+  C(S n,a,b) -> b,
+  F(0;a,b) -> 0,
+  F(S n;a,b) -> C(n,a,b).
+
+In particular F(1;a,b) -> C(0,a,b) -> a and
+F(2;a,b) -> C(1,a,b) -> b. Each arrow is a single ROOT contraction.
+There is no reduction inside a counter, no predecessor, and no parity term.
+
+Given Gamma |- s=t and Gamma |- h(s)=r, choose fresh x,y and put
+
+  P(x,y) := F(y;x,h(x)) = F(y;t,r).
+
+Introduce D_xy P at witness s. Its desired successor premise is P(s,S z),
+which root-converts at both endpoints to
+
+  C(z,s,h(s)) = C(z,t,r).
+
+Numerical cases on z prove this last equation: at z=0 it root-converts to
+the supplied s=t; at z=S w it root-converts to the supplied h(s)=r. The
+local assumption P(s,0) is unused. Hence Gamma |- D_xy P.
+
+Open this formula at fresh b. Its Q assumption has the base P(b,0), obtained
+from 0=0 by root expansions. QE at 1 and 2, followed by root contractions at
+the endpoints, gives respectively
+
+  b=t,                  h(b)=r.
+
+VSub with source b gives r=h(t). DE discharges b. This proves unrestricted
+one-template crossed transport:
+
+  s=t, h(s)=r  /  r=h(t).
+
+No use of equality transport occurs before the final VSub. The numerical
+cases and the packet introduction are valid even if s is literally 0.
+This is the noncircular bootstrap that makes root conversion sufficient.
+
+5. Equivalence and bi-interpretability
+--------------------------------------
+Let N_R be the native Q/D scalar calculus on these R terms with the two
+computation equations and unrestricted one-template crossed transport,
+together with Hyp, QE, DE, DI and QI. Refl is derivable there, or may harmlessly
+be retained. The eight-rule root calculus derives every rule of N_R:
+computation follows by HC from reflexivity; crossed transport is section 4;
+the other rules are primitive. Conversely N_R derives HC by a computation
+equation, symmetry, congruence and transitivity; VSub is transport with the
+term template u. Every inference is therefore intertranslatable, with the
+same raw context and conclusion. This is an equivalence of OPEN consequence
+relations, not just a coincidence of closed theorem sets.
+
+The standard native scalar adequacy theorem applies with R terms. One route
+is completely explicit: the original iterator is the abbreviation
+I(n,a;u.h)=R(n,a;i,u.h), with unused i, so the native scalar theory and all
+its definitions of intuitionistic connectives occur in N_R. After transport
+is recovered, equation induction gives uniqueness of every fixed primitive
+recursion. All numerical terms of N_R are primitive recursive, by structural
+induction: the R constructor is ordinary primitive recursion, with its other
+free variables and the initializer carried as parameters. Conversely every
+primitive recursive description translates directly to an R term, by
+induction on the description (zero, successor, projections, composition and
+primitive recursion). Thus R is a staged definitional extension of the
+primitive-recursive language already interpreted by the scalar native core.
+
+For clarity, one may compare first with ordinary intuitionistic first-order
+PRA in the full language of primitive-recursive descriptions. Interpret each
+fixed R term by its primitive-recursive description, and interpret each such
+description by the R term just constructed. The domains in both directions
+are all numbers, equality is actual equality, and the maps on objects are
+the identity. Induction on descriptions, using equation induction and
+uniqueness of primitive recursion for the recursion case, proves both term
+round trips. The native Q/D adequacy theorem supplies the formula round trips
+for all intuitionistic connectives and unbounded quantifiers. It follows by
+induction on arbitrary formulas that each formula is provably equivalent to
+its double translation. Both domain-comparison graphs are x=y. Contradiction
+translates to 0=S0 in both directions, so equiconsistency follows as well.
+
+This bridge invokes the pinned repository's established native scalar/iPRA
+adequacy theorem, rather than reproving its entire connective macro library.
+It adds no appeal to normalization: every new term equation is a fixed
+primitive-recursive definition, and every administrative packet reduction
+is explicitly a root step. The fact that R has counter access is essential
+to this particular proof; it does NOT settle whether BH_0 or BH_1 on the
+original counter-blind iterator language is complete.
+
+6. Seven-rule presentation (implemented in checker_seven.py)
+-----------------------------------------------------------
+DI and QI can be replaced by the established witnessed introduction:
+
+  Gamma,B(t,eta) |- B(t,S z) / Gamma |- D_xy B,
+  eta = z if B is an equation AND t is literally 0; eta=0 otherwise.
+
+Case closure before transport uses the unused dummy witness 1, which selects
+case mode. The packet proof ignores its local assumption and therefore works
+in either mode. Symmetry uses the trivial D(0=0), whose premise is reflexive
+in either mode. Once transport is available, the missing case introduction
+at witness 0 is recovered at the raw alias j=R(0,0;i,u.0), which is not
+literally 0 but equals 0 by HC. Transport moves the relevant instances
+between witnesses 0 and j. QI is recovered by witnessed introduction at 0
+with unused witness coordinate, followed by DE. This is the same witness-rule
+repair already present in ConciseIPRA, now applied to the root calculus.
+It is a theorem about a seven-rule presentation. checker_seven.py implements
+exactly this version; checker.py retains the eight-rule version as a readable
+control. This is not a compact-frontier size win.
+
+7. Checker and verification scope
+---------------------------------
+checker.py checks exactly the eight rules in section 2; checker_seven.py
+checks the seven-rule variant in section 6. Numerical terms are
+tagged lists: ["z"], ["s",t], ["r",n,a,h]; variables are exact nonnegative
+Python integers, with index 0 newest. In an R body, u has index 0 and i index
+1. Formula tags are ["=",s,t], ["q",B], ["d",B]; a D body has y at index 0
+and x at index 1. Initial public goals are closed and are fully validated.
+
+HC proof node: ["root",new_left,proof_of_old_equation]. The checker compares
+one root contraction in either direction, and does not normalize. A local
+parameter may not escape DE: its branch result must literally equal the
+lifted, validated outer target. QI in the eight-rule version rejects compound
+induction matrices. In the seven-rule version there is no QI tag: the single
+DI rule selects progress exactly for a literal equality matrix and a literal
+zero witness. It does not normalize the witness before this test.
+Assertions are NOT used for certificate acceptance; optimized Python has
+the same intended checks. checker's primitive syntax walker is used only on
+validated input or formulas already derived by the checker.
+
+verify.py is an untrusted certificate generator and regression script. It
+constructs a genuine open transport derivation, not a hand-added transport
+axiom. It also derives the CLOSED theorem
+
+  S(R(0,0;i,u.u)) = S0
+
+by that transport construction. Direct HC on its nested redex is rejected.
+Further tests cover a nonvacuous equation-induction step, illegal source
+shapes, an escaping witness, ill-scoped and Boolean variables, a false
+computation, and the restriction of induction to equations. The closed
+certificates are replayed as separate CLI processes under normal Python
+and Python -O. These finite tests check the implementation's important
+boundaries; they do not replace the metatheoretic proof above.
+
+Measurements are reproduced by verify.py and by verify.py --seven, and
+recorded in verification.json and verification_seven.json. The latter also
+checks transport at the literal zero witness, whose progressive assumption
+differs from the case assumption but is unused by the packet proof.
+The source is far larger than the compact frontier. The comparisons must not
+equate its fully validated tagged-input contract with a frontier checker
+whose public grammar is an external precondition. No absolute-minimality
+claim follows from any of these measurements.
