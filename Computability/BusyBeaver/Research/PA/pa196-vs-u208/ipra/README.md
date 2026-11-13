@@ -27,6 +27,14 @@ refutability implying double-negated halting; it still needs both reductions
 to be proved in iPRA. The comparison of this native consistency formula with the separately
 defined Gödel–Gentzen reading also remains conditional.
 
+`PA196StandardSemantics.lean` defines an ordinary Tarskian interpretation of
+intuitionistic formulas in a classical structure. It proves that, under this
+interpretation in the standard natural numbers, the native consistency
+sentence says that Foundation's PA is consistent, and the constructed halting
+sentence says that the imported literal machine halts. These are external
+standard-model identifications; they do not establish either internal iPRA
+reduction or identify the upstream FFL and Foundation LO proof codings.
+
 ## Checking
 
 The check uses Lean 4.32.0 and the root project's Lake environment. It checks
