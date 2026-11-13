@@ -188,3 +188,8 @@ the PA196 checker and does not discharge the reverse implication.
 out a conditional proof-producing update for every exact PA196 store command.
 It identifies the concrete syntactic constructors and PA-internal induction
 that remain to be implemented; it does not bind a literal halting trace.
+
+[The literal-halt extraction note](reverse-cert-stack/LITERAL-HALT-EXTRACTION.md)
+spells out how forward projection, positive nonhalt segments, and a bounded
+trace comparison could avoid constructing an inverse state map. Its required
+all-model induction and determinism lemmas remain unproved here.
