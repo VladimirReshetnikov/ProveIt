@@ -57,25 +57,18 @@ theorem iffImp (h₁ : Γ ⊢[Ax] Fm.iff φ φ') (h₂ : Γ ⊢[Ax] Fm.iff ψ ψ
     (.impI (.impI (iffMpr h₂.wk.wk (.impE hyp1 (iffMp h₁.wk.wk hyp0)))))
 
 theorem iffAll {φ φ' : Fm T (n + 1)} (h : Γ.map Fm.shift ⊢[Ax] Fm.iff φ φ') :
-    Γ ⊢[Ax] Fm.iff (Fm.all φ) (Fm.all φ') := by
-  have s (ψ : Fm T n) : Γ.map Fm.shift ⊆ (ψ :: Γ).map Fm.shift :=
-    List.map_subset _ (List.subset_cons_self _ _)
-  exact iffI (.impI (.allI (iffMp (h.weaken (s _)) (allOpen hyp0))))
-    (.impI (.allI (iffMpr (h.weaken (s _)) (allOpen hyp0))))
+    Γ ⊢[Ax] Fm.iff (Fm.all φ) (Fm.all φ') :=
+  iffI (.impI (.allI (iffMp h.wk (allOpen hyp0)))) (.impI (.allI (iffMpr h.wk (allOpen hyp0))))
 
 /-- Existential introduction at the bound variable itself. -/
 theorem exOpen {φ : Fm T (n + 1)} {Δ : List (Fm T (n + 1))} (h : Δ ⊢[Ax] φ) :
-    Δ ⊢[Ax] (Fm.ex φ).shift := by
-  show Δ ⊢[Ax] Fm.ex (φ.subst (up (fun i => var i.succ)))
-  refine .exI (var 0) ?_
-  rwa [Fm.subst_up_succ_inst]
+    Δ ⊢[Ax] (Fm.ex φ).shift :=
+  .exI (var 0) (by rwa [Fm.subst_up_succ_inst])
 
 theorem iffEx {φ φ' : Fm T (n + 1)} (h : Γ.map Fm.shift ⊢[Ax] Fm.iff φ φ') :
-    Γ ⊢[Ax] Fm.iff (Fm.ex φ) (Fm.ex φ') := by
-  have s (χ : Fm T (n + 1)) (ψ : Fm T n) : Γ.map Fm.shift ⊆ χ :: (ψ :: Γ).map Fm.shift :=
-    fun χ' hχ => List.mem_cons_of_mem _ (List.map_subset _ (List.subset_cons_self _ _) hχ)
-  exact iffI (.impI (.exE hyp0 (exOpen (iffMp (h.weaken (s _ _)) hyp0))))
-    (.impI (.exE hyp0 (exOpen (iffMpr (h.weaken (s _ _)) hyp0))))
+    Γ ⊢[Ax] Fm.iff (Fm.ex φ) (Fm.ex φ') :=
+  iffI (.impI (.exE hyp0 (exOpen (iffMp h.wk.wk hyp0))))
+    (.impI (.exE hyp0 (exOpen (iffMpr h.wk.wk hyp0))))
 
 theorem eqIff {s s' t t' : T n} (h₁ : Γ ⊢[Ax] s ≐ s') (h₂ : Γ ⊢[Ax] t ≐ t') :
     Γ ⊢[Ax] Fm.iff (s ≐ t) (s' ≐ t') :=
@@ -156,17 +149,12 @@ theorem f_repl (s : T (n + 1)) :
     (fun i => F.f (n + 1) (repl s i)) = repl (F.f (n + 1) s) := by
   refine funext (Fin.cases ?_ fun j => ?_) <;> simp [F.f_var]
 
-theorem f_shift (t : T n) (Γ : List (Fm T' (n + 1))) :
-    Γ ⊢[Ax'] F.f (n + 1) (Syn.shift t) ≐ Syn.shift (F.f n t) := by
-  have h := (F.f_subst (fun i => var i.succ) t).ofNil (Γ := Γ)
-  simp only [F.f_var] at h
-  exact h
-
 theorem f_up (ρ : Fin n → T m) (Γ : List (Fm T' (m + 1))) (i : Fin (n + 1)) :
     Γ ⊢[Ax'] F.f (m + 1) (up ρ i) ≐ up (fun i => F.f m (ρ i)) i := by
   refine Fin.cases ?_ (fun j => ?_) i
   · rw [up_zero, F.f_var, up_zero]; exact .eqRefl _
-  · rw [up_succ, up_succ]; exact F.f_shift _ _
+  · rw [up_succ, up_succ]
+    simpa only [F.f_var, Syn.shift] using (F.f_subst (fun i => var i.succ) (ρ j)).ofNil (Γ := Γ)
 
 /-- The translation of formulas commutes with substitution up to provable
 equivalence. -/
@@ -197,12 +185,9 @@ theorem map_shift (φ : Fm T n) (Γ : List (Fm T' (n + 1))) :
 
 theorem shiftCtx (Γ : List (Fm T n)) :
     ∀ χ ∈ (Γ.map Fm.shift).map (Fm.map F.f),
-      ((Γ.map (Fm.map F.f)).map Fm.shift ⊢[Ax'] χ) := by
-  intro χ hχ
-  obtain ⟨χ', hχ', rfl⟩ := List.mem_map.mp hχ
-  obtain ⟨ψ, hψ, rfl⟩ := List.mem_map.mp hχ'
-  exact Prf.iffMpr (F.map_shift ψ _)
-    (.hyp (List.mem_map_of_mem (List.mem_map_of_mem hψ)))
+      ((Γ.map (Fm.map F.f)).map Fm.shift ⊢[Ax'] χ) :=
+  List.forall_mem_map.2 <| List.forall_mem_map.2 fun ψ hψ =>
+    Prf.iffMpr (F.map_shift ψ _) (.hyp (List.mem_map_of_mem (List.mem_map_of_mem hψ)))
 
 theorem map_repl (φ : Fm T (n + 1)) (s : T (n + 1)) (Γ : List (Fm T' (n + 1))) :
     Γ ⊢[Ax'] Fm.iff ((φ.subst (repl s)).map F.f)
@@ -290,14 +275,10 @@ def symm : BiInterp Ax' Ax where
 /-- A bi-interpretation is faithful in both directions: a sequent is derivable
 exactly when its translation is. -/
 theorem iff {Γ : List (Fm T n)} {φ : Fm T n} :
-    (Γ ⊢[Ax] φ) ↔ (Γ.map (Fm.map B.F.f) ⊢[Ax'] φ.map B.F.f) := by
-  refine ⟨B.F.sound, fun h => ?_⟩
-  have h' := B.G.sound h
-  refine Prf.iffMpr (B.roundTrip φ Γ) (h'.trans ?_)
-  intro χ hχ
-  obtain ⟨χ', hχ', rfl⟩ := List.mem_map.mp hχ
-  obtain ⟨ψ, hψ, rfl⟩ := List.mem_map.mp hχ'
-  exact Prf.iffMp (B.roundTrip ψ Γ) (.hyp hψ)
+    (Γ ⊢[Ax] φ) ↔ (Γ.map (Fm.map B.F.f) ⊢[Ax'] φ.map B.F.f) :=
+  ⟨B.F.sound, fun h => Prf.iffMpr (B.roundTrip φ Γ) ((B.G.sound h).trans <|
+    List.forall_mem_map.2 <| List.forall_mem_map.2 fun ψ hψ =>
+      Prf.iffMp (B.roundTrip ψ Γ) (.hyp hψ))⟩
 
 end BiInterp
 

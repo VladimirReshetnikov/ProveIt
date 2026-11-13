@@ -58,8 +58,7 @@ theorem casesOn (t : Tm n) {ψ : Fm Tm n}
     (h0 : (t ≐ zero) :: Γ ⊢[TeqAx] ψ)
     (hS : (Syn.shift t ≐ succ (var 0)) :: Γ.map Fm.shift ⊢[TeqAx] ψ.shift) :
     Γ ⊢[TeqAx] ψ :=
-  .orE (cover t) h0 (.exE Prf.hyp0 (hS.weaken
-    (List.cons_subset_cons _ (List.map_subset _ (List.subset_cons_self _ _)))))
+  .orE (cover t) h0 (.exE Prf.hyp0 (hS.weaken (List.cons_subset_cons _ (by simp))))
 
 /-- Proof by cases on a number: `φ(0)` and `φ(S z)` for a fresh `z` give
 `∀ y, φ(y)`.  Only coverage is used. -/
