@@ -1,0 +1,64 @@
+import EtaNaturalStrongAux
+import ZetaZeroNormLargeK
+import AuxGeometryEtaNatural
+import ZetaZeroIndexParity
+import DiophantineConsistency.ArithmeticPellClassification
+
+/-! Conditional fact-level composition at the zeta-zero parity boundary.
+No graph field, port or provider is silently assumed; no Lean executed. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.ZetaZeroParityBoundaryDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ModelDifferenceRing ArithmeticPellRecurrence ArithmeticPellHalfIndex
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Contradiction from one coherent collection of zeta=0 natural norm,
+early-index, and graph-specific signed strong/auxiliary facts. i and T are
+the prototype's shifted coordinates; y is the direct natural auxiliary root. -/
+theorem contradiction_of_facts (q X Y k R tau g i f T y n w s0 : V)
+    (hq3 : 3≤q) (hX : 0<X) (hs : 0<s0) (hY : Y=q*(q*q)*s0)
+    (hk : 0<k) (hi : 0<i) (hR26 : 26≤R)
+    (hfirst : tau*tau=1+(X*Y*Y)*(X*Y*Y+1)*k*k)
+    (hmain : let a:=X*Y+Y; let D:=(3+4*a)+a*a; let c:=k+Y*k
+      g*g=1+D*c*c)
+    (hny : 2*ycoord n (2*(X*Y*Y-1)+1)=k)
+    (hks : k=2*n+4*(X*Y*Y)*w) (hRmu : R+1<q^4)
+    (hnmod : (2*n)%(q^4)=R+1)
+    (hstrong : let a:=X*Y+Y; let D:=(3+4*a)+a*a; let c:=k+Y*k
+      (ι (c*c*i):DiffRing V)*ι (c*c*i)=ι D*(ι f*ι f-1))
+    (haux : let a:=X*Y+Y; let D:=(3+4*a)+a*a; let c:=k+Y*k
+      let z:DiffRing V:=ι (f*f*(T*c))-ι (f*f*R+c)
+      (ι y:DiffRing V)*ι y-ι D*(ι f*ι f-1)*(ι y*ι y-z*z)=1) : False := by
+  let a : V := X*Y+Y
+  let D : V := (3+4*a)+a*a
+  let c : V := k+Y*k
+  have hq : 0<q := lt_of_lt_of_le (by simp : (0:V)<3) hq3
+  have hYpos : 0<Y := by rw [hY]; exact mul_pos (mul_pos hq (mul_pos hq hq)) hs
+  have hD : (X*Y+Y+2)*(X*Y+Y+2)=D+1 := by dsimp [D,a]; ring
+  have hlarge := ZetaZeroNormLargeKDraft.large_first_ordinate X Y k tau D g
+    hX hYpos hk hD hfirst hmain
+  have hgeometry := AuxGeometryEtaNaturalDraft.geometry_of_large_k X Y k k D hYpos hlarge.2 hD
+  have hc : 1<c := by simpa only [c] using hgeometry.2.1
+  have hDpos : 0<D := hgeometry.2.2.1
+  have hDsmall : D<c*c*c := by simpa only [c] using hgeometry.2.2.2
+  have hstrong' := EtaNaturalStrongAuxDraft.ordinary_strong_of_signed c i D f hstrong
+  have hf := EtaNaturalStrongAuxDraft.f_positive_of_strong c i D f hDpos hstrong'
+  have hstrict := EtaNaturalStrongAuxDraft.strict_bounds_of_strong c i D f T R
+    hc (pos_iff_one_le.mp hi) hDpos hDsmall hstrong'
+  obtain ⟨u,_,haux'⟩ := EtaNaturalStrongAuxDraft.index_aux_of_direct c D f T R y
+    hf hstrict.1 hstrict.2 haux
+  have hdelta : ArithmeticPellRecurrence.delta a=D := by
+    dsimp [ArithmeticPellRecurrence.delta,D]; ring
+  have hg : g*g=1+ArithmeticPellRecurrence.delta a*c*c := by simpa only [hdelta] using hmain
+  obtain ⟨m,_,_,hmy⟩ := ArithmeticPellClassification.solution_index a g c hg
+  apply ZetaZeroIndexParityDraft.zeta_zero_contradiction q X Y k R g c a s0 i f T u n w (q^4) m
+    hq3 hX hs hY rfl hi hf rfl hR26 hny hks hRmu hnmod hmy hg
+  · simpa only [hdelta,D,a] using hstrong'
+  · simpa only [D,a] using haux'
+end DiophantineConsistency.ZetaZeroParityBoundaryDraft
+#print axioms DiophantineConsistency.ZetaZeroParityBoundaryDraft.contradiction_of_facts
