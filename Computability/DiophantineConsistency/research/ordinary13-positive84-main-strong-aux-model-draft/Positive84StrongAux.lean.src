@@ -1,0 +1,152 @@
+import Positive84Main
+import EtaNaturalStrongAux
+import AuxGeometryEtaNatural
+
+/-! Proposed actual 84 strong/auxiliary graph bindings, and their combination
+with the same oriented main root. All sources/providers remain unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Positive84StrongAuxDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing ArithmeticPellHalfIndex ArithmeticPellRecurrence
+open Positive84DivisionDraft Positive84PowerDraft Positive84MainDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def z (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  ι (v 3*v 3*(v 5*c84 p v))-ι (v 3*v 3*rank84 p v+c84 p v)
+
+/-- Exact strong residual at the literal positive 84 inputs. -/
+theorem strong_form (p : Fin 4 → ℕ) (v : Fin 13 → V) :
+    PositiveUnscale84To87Draft.e84 (Unscale84ReverseGraphDraft.portsInt p) v
+      (PositiveUnscale84GraphDraft.graph (Unscale84ReverseGraphDraft.portsInt p)).strong=
+    (ι (c84 p v*c84 p v*v 4):DiffRing V)*ι (c84 p v*c84 p v*v 4)-
+      ι (D p v)*(ι (v 3)*ι (v 3)-1) := by
+  simp [PositiveUnscale84To87Draft.e84,Unscale84ReverseGraphDraft.portsInt,
+    PositiveUnscale84GraphDraft.graph,D,H,a,c84,k84,Y84,q84,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat,P72Root.cast_port,
+    map_add,map_mul,map_one,map_ofNat] <;> ring
+
+/-- Exact direct auxiliary field, using the same natural rank as the main
+root; hgap supplies its signed-to-natural representation. -/
+theorem aux_form (p : Fin 4 → ℕ) (v : Fin 13 → V) (hgap : v 1+v 2<q84 p v) :
+    PositiveUnscale84To87Draft.e84 (Unscale84ReverseGraphDraft.portsInt p) v
+      (PositiveUnscale84GraphDraft.graph (Unscale84ReverseGraphDraft.portsInt p)).aux=
+    ι (v 11)*ι (v 11)-ι (D p v)*(ι (v 3)*ι (v 3)-1)*
+      (ι (v 11)*ι (v 11)-z p v*z p v) := by
+  have hR := Positive84RankWindowDraft.rank_representation p v hgap
+  have hraw : PositiveUnscale84To87Draft.e84 (Unscale84ReverseGraphDraft.portsInt p) v
+      (PositiveUnscale84GraphDraft.graph (Unscale84ReverseGraphDraft.portsInt p)).aux=
+    ι (v 11)*ι (v 11)-ι (D p v)*(ι (v 3)*ι (v 3)-1)*
+      (ι (v 11)*ι (v 11)-
+        ((ι (v 3)*ι (v 3))*(ι (v 5*c84 p v)-Unscale84LargeKDraft.rank p v)-ι (c84 p v))*
+        ((ι (v 3)*ι (v 3))*(ι (v 5*c84 p v)-Unscale84LargeKDraft.rank p v)-ι (c84 p v))) := by
+    simp [PositiveUnscale84To87Draft.e84,Unscale84ReverseGraphDraft.portsInt,
+      PositiveUnscale84GraphDraft.graph,D,H,a,c84,k84,Y84,q84,
+      Unscale84LargeKDraft.rank,Unscale84ReverseGraphDraft.q,Unscale84ReverseGraphDraft.b,
+      Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+      Expr.evalRing_constant,Expr.evalRing_ofNat,P72Root.cast_port,
+      map_add,map_mul,map_one,map_ofNat] <;> ring
+  rw [←hR] at hraw
+  have hz : (ι (v 3)*ι (v 3))*(ι (v 5*c84 p v)-ι (rank84 p v))-ι (c84 p v)=z p v := by
+    simp only [z,map_add,map_mul]
+    ring
+  rw [hz] at hraw
+  exact hraw
+
+/-- The graph zero yields the actual natural strong norm and the signed direct
+auxiliary norm, conditional only on the separately derived rank gap. -/
+theorem graph_norms (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (PositiveUnscaled84GraphDraft.graph (fun j => (p j:ℤ))).output v)
+    (hgap : v 1+v 2<q84 p v) :
+    (v 4*c84 p v*c84 p v)*(v 4*c84 p v*c84 p v)+D p v=D p v*(v 3*v 3) ∧
+    (ι (v 11):DiffRing V)*ι (v 11)-ι (D p v)*(ι (v 3)*ι (v 3)-1)*
+      (ι (v 11)*ι (v 11)-z p v*z p v)=1 := by
+  have hz' : InternalZero (PositiveUnscale84GraphDraft.graph (Unscale84ReverseGraphDraft.portsInt p)).output v := by
+    simpa only [Unscale84ReverseGraphDraft.portsInt,Positive84EarlyExactDraft.same84] using hz
+  have hsum := (internalZero_iff _ _).mp hz'
+  rw [PositiveUnscale84To87Draft.output84] at hsum
+  simp only [Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_ofNat] at hsum
+  obtain ⟨_,_,ha,hs⟩ := PositiveUnscale84To87Draft.squares_zero _ _ _ _ hsum
+  change PositiveUnscale84To87Draft.e84 (Unscale84ReverseGraphDraft.portsInt p) v
+    (PositiveUnscale84GraphDraft.graph (Unscale84ReverseGraphDraft.portsInt p)).strong=0 at hs
+  change PositiveUnscale84To87Draft.e84 (Unscale84ReverseGraphDraft.portsInt p) v
+    (PositiveUnscale84GraphDraft.graph (Unscale84ReverseGraphDraft.portsInt p)).aux=1 at ha
+  rw [strong_form] at hs
+  rw [aux_form p v hgap] at ha
+  refine ⟨?_,ha⟩
+  apply EtaNaturalStrongAuxDraft.ordinary_strong_of_signed (c84 p v) (v 4) (D p v) (v 3)
+  exact sub_eq_zero.mp hs
+
+/-- Proposed graph strong and direct-auxiliary conversion to the exact P72
+absdiff auxiliary equation. It uses actual large-k geometry, not q∣X. -/
+theorem strong_aux_witness (p : Fin 4 → ℕ) (v : Fin 13 → V) (hv : ∀ i, 0<v i)
+    (hz : InternalZero (PositiveUnscaled84GraphDraft.graph (fun j => (p j:ℤ))).output v)
+    (hbeta : 0<(p 0:V)) :
+    (v 4*c84 p v*c84 p v)*(v 4*c84 p v*c84 p v)+delta (a p v)=
+      delta (a p v)*(v 3*v 3) ∧
+    ∃ u : V, 0<u ∧
+      D p v*(v 3*v 3-1)*
+        (absdiff (v 3*v 3*(v 5*c84 p v)) (v 3*v 3*rank84 p v+c84 p v)*
+         absdiff (v 3*v 3*(v 5*c84 p v)) (v 3*v 3*rank84 p v+c84 p v))+
+      absdiff (v 3*v 3*(v 5*c84 p v)+u) (v 3*v 3*rank84 p v+c84 p v)*
+      absdiff (v 3*v 3*(v 5*c84 p v)+u) (v 3*v 3*rank84 p v+c84 p v)=
+      1+D p v*(v 3*v 3-1)*
+        (absdiff (v 3*v 3*(v 5*c84 p v)+u) (v 3*v 3*rank84 p v+c84 p v)*
+         absdiff (v 3*v 3*(v 5*c84 p v)+u) (v 3*v 3*rank84 p v+c84 p v)) := by
+  have hz' : InternalZero (PositiveUnscale84GraphDraft.graph (Unscale84ReverseGraphDraft.portsInt p)).output v := by
+    simpa only [Unscale84ReverseGraphDraft.portsInt,Positive84EarlyExactDraft.same84] using hz
+  have hq : 0<q84 p v := by dsimp [q84]; exact add_pos_of_pos_of_nonneg (by simp) (Arithmetic.zero_le _)
+  have hY : 0<Y84 p v := by dsimp [Y84]; exact mul_pos (mul_pos hq (mul_pos hq hq)) (hv 7)
+  have hlarge := Unscale84LargeKDraft.large_k p v hv hz' hbeta
+  have hlarge' : 8*v 6*Y84 p v*Y84 p v+4≤k84 v := by
+    simpa only [Unscale84ReverseGraphDraft.X,Unscale84ReverseGraphDraft.Y,
+      Unscale84ReverseGraphDraft.q,Unscale84ReverseGraphDraft.b,Unscale84ReverseGraphDraft.k,
+      q84,Y84,k84,mul_assoc] using hlarge
+  have hD : (v 6*Y84 p v+Y84 p v+2)*(v 6*Y84 p v+Y84 p v+2)=D p v+1 := by
+    dsimp [D,H,a]; ring
+  have hgeom := AuxGeometryEtaNaturalDraft.geometry_of_large_k (v 6) (Y84 p v) (v 9) (k84 v) (D p v) hY hlarge' hD
+  have hc : 1<c84 p v := by simpa only [c84] using hgeom.2.1
+  have hDpos : 0<D p v := hgeom.2.2.1
+  have hsmall : D p v<c84 p v*c84 p v*c84 p v := by simpa only [c84] using hgeom.2.2.2
+  have hgap := Positive84RankWindowDraft.gap p v hv hz hbeta
+  obtain ⟨hs,ha⟩ := graph_norms p v hz hgap
+  have hbds := EtaNaturalStrongAuxDraft.strict_bounds_of_strong (c84 p v) (v 4)
+    (D p v) (v 3) (v 5) (rank84 p v) hc (pos_iff_one_le.mp (hv 4)) hDpos hsmall hs
+  obtain ⟨hQ,hZ⟩ := hbds
+  have ha' : (ι (v 11):DiffRing V)*ι (v 11)-ι (D p v)*(ι (v 3)*ι (v 3)-1)*
+      (ι (v 11)*ι (v 11)-
+        (ι (v 3*v 3*(v 5*c84 p v))-ι (v 3*v 3*rank84 p v+c84 p v))*
+        (ι (v 3*v 3*(v 5*c84 p v))-ι (v 3*v 3*rank84 p v+c84 p v)))=1 := by
+    simpa only [z] using ha
+  obtain ⟨u,hu,haux⟩ := EtaNaturalStrongAuxDraft.index_aux_of_direct
+    (c84 p v) (D p v) (v 3) (v 5) (rank84 p v) (v 11) (hv 3) hQ hZ ha'
+  have hdelta : delta (a p v)=D p v := by dsimp [delta,D,H]; ring
+  exact ⟨by simpa only [hdelta] using hs,u,hu,haux⟩
+
+/-- All required witnesses from the actual compact 84 zero, proposed by
+composition of the literal main, strong and auxiliary source clients. -/
+theorem mainStrongAuxGraphCut (K : ℕ) : Positive84EarlyExactDraft.MainStrongAuxGraphCut K := by
+  intro V _ _ v hv hz
+  obtain ⟨hb,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) (hv 0)
+  have hp0 : (Residue90CompactPortBoundsDraft.ports K 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  have hbeta : 0<(Residue90CompactPortBoundsDraft.ports K 0:V) := by simpa only [hp0] using hb
+  obtain ⟨main,m,hx,hy,hnorm,hbal⟩ := Positive84MainDraft.oriented_index _ v hv hz hbeta
+  obtain ⟨hstrong,u,_,haux⟩ := strong_aux_witness _ v hv hz hbeta
+  have hD : D (Residue90CompactPortBoundsDraft.ports K) v=
+      (3+4*(v 6*Y84 (Residue90CompactPortBoundsDraft.ports K) v+Y84 (Residue90CompactPortBoundsDraft.ports K) v))+
+        (v 6*Y84 (Residue90CompactPortBoundsDraft.ports K) v+Y84 (Residue90CompactPortBoundsDraft.ports K) v)*
+        (v 6*Y84 (Residue90CompactPortBoundsDraft.ports K) v+Y84 (Residue90CompactPortBoundsDraft.ports K) v) := by rfl
+  refine ⟨main,m,u,hx,hy,hnorm,hstrong,?_,?_⟩
+  · simpa only [hD] using haux
+  · simpa only [U,H,a] using hbal
+end DiophantineConsistency.Positive84StrongAuxDraft
+#print axioms DiophantineConsistency.Positive84StrongAuxDraft.strong_form
+#print axioms DiophantineConsistency.Positive84StrongAuxDraft.aux_form
+#print axioms DiophantineConsistency.Positive84StrongAuxDraft.graph_norms
+#print axioms DiophantineConsistency.Positive84StrongAuxDraft.strong_aux_witness
+#print axioms DiophantineConsistency.Positive84StrongAuxDraft.mainStrongAuxGraphCut

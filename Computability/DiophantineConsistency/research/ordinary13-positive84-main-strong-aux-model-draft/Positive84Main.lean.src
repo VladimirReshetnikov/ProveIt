@@ -1,0 +1,107 @@
+import Positive84RankWindow
+import Residue90SignedNorms
+import DiophantineConsistency.Compact44.DirectMainNorm
+import DiophantineConsistency.ArithmeticPellClassification
+import DiophantineConsistency.ArithmeticAdaptiveMainOrientation2011
+
+/-! Proposed actual 84 extra-term main orientation and same-root Pell index.
+No source in this packet has been elaborated or provider-audited. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Positive84MainDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing ArithmeticSignedPairs ArithmeticPellRecurrence
+open Positive84DivisionDraft Positive84PowerDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def a (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := v 6*Y84 p v+Y84 p v
+def H (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := 3+4*a p v
+def U (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := Y84 p v*(q84 p v*q84 p v)
+def D (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := H p v+a p v*a p v
+def P (p : Fin 4 → ℕ) (v : Fin 13 → V) : V :=
+  U p v*(v 6+a p v*c84 p v)+H p v*(U p v*v 12+v 6*Y84 p v*q84 p v+rank84 p v+1)
+def N (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := H p v*k84 v
+
+/-- The 84 literal signed main root is exactly P−N. The positive-C gap
+justifies representing the graph's signed rank by rank84. -/
+theorem root_pair (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hgap : v 1+v 2<q84 p v) :
+    Unscale84LargeKDraft.mainRoot p v=(ι (P p v):DiffRing V)-ι (N p v) := by
+  have hR := Positive84RankWindowDraft.rank_representation p v hgap
+  simp only [Unscale84LargeKDraft.mainRoot,←hR,P,N,H,U,a,D,
+    Unscale84LargeKDraft.u,Unscale84LargeKDraft.a,Unscale84LargeKDraft.c,
+    Unscale84ReverseGraphDraft.X,Unscale84ReverseGraphDraft.Y,
+    Unscale84ReverseGraphDraft.q,Unscale84ReverseGraphDraft.b,Unscale84ReverseGraphDraft.k,
+    q84,Y84,k84,c84,map_add,map_mul,map_one,map_ofNat] <;> ring
+
+/-- The actual 84 graph main square reflects to the same natural signed pair. -/
+theorem main_pair_norm (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (PositiveUnscaled84GraphDraft.graph (fun j => (p j:ℤ))).output v)
+    (hgap : v 1+v 2<q84 p v) :
+    magnitude (P p v,N p v)*magnitude (P p v,N p v)=
+      U p v*U p v*(1+D p v*(c84 p v*c84 p v)) := by
+  have hz' : InternalZero (PositiveUnscale84GraphDraft.graph (Unscale84ReverseGraphDraft.portsInt p)).output v := by
+    simpa only [Unscale84ReverseGraphDraft.portsInt,Positive84EarlyExactDraft.same84] using hz
+  have hsum := (internalZero_iff _ _).mp hz'
+  rw [PositiveUnscale84To87Draft.output84] at hsum
+  simp only [Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_ofNat] at hsum
+  obtain ⟨_,hm,_,_⟩ := PositiveUnscale84To87Draft.squares_zero _ _ _ _ hsum
+  change PositiveUnscale84To87Draft.e84 (Unscale84ReverseGraphDraft.portsInt p) v
+    (PositiveUnscale84GraphDraft.graph (Unscale84ReverseGraphDraft.portsInt p)).main=0 at hm
+  rw [Unscale84LargeKDraft.main_form,root_pair p v hgap] at hm
+  have hs := sub_eq_zero.mp hm
+  apply Residue90SignedNormsDraft.main_pair_norm (U p v) (D p v) (c84 p v) (P p v) (N p v)
+  simpa only [U,D,H,a,c84,Y84,q84,k84,Unscale84LargeKDraft.u,
+    Unscale84LargeKDraft.delta,Unscale84LargeKDraft.a,Unscale84LargeKDraft.c,
+    Unscale84ReverseGraphDraft.X,Unscale84ReverseGraphDraft.Y,Unscale84ReverseGraphDraft.q,
+    Unscale84ReverseGraphDraft.b,Unscale84ReverseGraphDraft.k,map_add,map_mul,map_one,map_ofNat,
+    mul_assoc] using hs
+
+/-- A positive 84 zero has an oriented main root whose x/y coordinates use
+one common Pell index. Its natural balance includes the literal extra term. -/
+theorem oriented_index (p : Fin 4 → ℕ) (v : Fin 13 → V) (hv : ∀ i, 0<v i)
+    (hz : InternalZero (PositiveUnscaled84GraphDraft.graph (fun j => (p j:ℤ))).output v)
+    (hbeta : 0<(p 0:V)) :
+    ∃ main m : V,
+      xcoord m (a p v)=main ∧ ycoord m (a p v)=c84 p v ∧
+      main*main=1+delta (a p v)*c84 p v*c84 p v ∧
+      U p v*main+H p v*k84 v=U p v*(v 6+a p v*c84 p v)+
+        H p v*(U p v*v 12+v 6*Y84 p v*q84 p v+rank84 p v+1) := by
+  have hb : 0<v 0*(p 0:V) := mul_pos (hv 0) hbeta
+  have hq1 : 1<q84 p v := by dsimp [q84]; exact lt_add_of_pos_right 1 hb
+  have hq2 : (2:V)≤q84 p v := by simpa only [show (1:V)+1=2 by ring] using lt_iff_succ_le.mp hq1
+  have hq : 0<q84 p v := lt_of_lt_of_le (by norm_num : (0:V)<2) hq2
+  have hq8 : (8:V)≤(q84 p v)^3 := by
+    have hh := pow_le_pow_left₀ (by simp : (0:V)≤2) hq2 3
+    simpa using hh
+  have hYq : Y84 p v=(q84 p v)^3*v 7 := by dsimp [Y84]; ring
+  have hY8 : 8≤Y84 p v := by
+    rw [hYq]
+    exact le_trans hq8 (le_mul_of_one_le_right (Arithmetic.zero_le _) (pos_iff_one_le.mp (hv 7)))
+  have hY : 0<Y84 p v := lt_of_lt_of_le (by norm_num : (0:V)<8) hY8
+  have hU : 0<U p v := by dsimp [U]; exact mul_pos hY (mul_pos hq hq)
+  have hk : 0<k84 v := add_pos (hv 9) (hv 10)
+  have hgap := Positive84RankWindowDraft.gap p v hv hz hbeta
+  have hnorm := main_pair_norm p v hz hgap
+  have hPN : N p v<P p v := by
+    simpa only [P,N,H,U,a,c84,k84] using
+      (ArithmeticAdaptiveMainOrientation2011.main_parts_positive
+        (U p v) (v 6) (Y84 p v) (k84 v) (v 9) (v 12) (q84 p v) (rank84 p v)
+        hU hY8 hk)
+  obtain ⟨main,_,hbal,hm⟩ := DirectMainNorm.oriented_scaled_norm
+    (U p v) (P p v) (N p v) (D p v*(c84 p v*c84 p v)) hU hPN hnorm
+  have hdelta : delta (a p v)=D p v := by dsimp [delta,D,H]; ring
+  have hm' : main*main=1+delta (a p v)*c84 p v*c84 p v := by
+    simpa only [hdelta,mul_assoc] using hm
+  obtain ⟨m,_,hx,hy⟩ := ArithmeticPellClassification.solution_index (a p v) main (c84 p v) hm'
+  refine ⟨main,m,hx,hy,hm',?_⟩
+  dsimp [P,N] at hbal
+  linear_combination -hbal
+end DiophantineConsistency.Positive84MainDraft
+#print axioms DiophantineConsistency.Positive84MainDraft.root_pair
+#print axioms DiophantineConsistency.Positive84MainDraft.main_pair_norm
+#print axioms DiophantineConsistency.Positive84MainDraft.oriented_index
