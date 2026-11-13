@@ -90,3 +90,35 @@ python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/reverse-cert-stack
 The tiny Lean build uses a private temporary directory; its deterministic
 output is [upstream-command-audit-receipt.json](upstream-command-audit-receipt.json). The actual native checker equations remain explicit
 hypotheses, and this is still not an iPRA derivation.
+
+## Direct numerical checker
+
+[NativeChecker.lean](NativeChecker.lean) implements the numeric checker-rule
+and fuel recurrence directly on natural numbers. It proves the truth, six head,
+restricted propositional, bundle, modus-ponens and generalization certificate
+interfaces, including a constructive accepted-entry fuel/bound monotonicity
+lemma. It also proves that the entry recurrence agrees with an explicit finite
+list-table construction. [NativeCheckerBinding.lean](NativeCheckerBinding.lean)
+therefore obtains a checker-accepted code 1 from an actual imported PA196
+command word that halts from the zero store, with no checker-correctness
+hypotheses. These are standard-natural-number theorems, not iPRA theorems.
+
+[CheckerRuleSyntax.lean](CheckerRuleSyntax.lean) contains source fragments
+extracted byte-for-byte from the pinned upstream arithmetic-expression, head,
+scalar-expression, and checker-rule definitions. Its separate callback
+interpreter handles the preceding table through a function `Nat → Nat`; this
+specialization applies to the checker rule because its only two uses of the
+preceding table are `nth` operations. [CheckerRuleAudit.lean](CheckerRuleAudit.lean)
+proves that this interpretation of the extracted rule agrees with the direct
+numeric rule on all inputs. The fragment check and full Lean build run with:
+
+```sh
+python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/reverse-cert-stack/check_native_checker.py
+```
+
+The deterministic output is [native-checker-receipt.json](native-checker-receipt.json).
+The printed results use `propext` and `Quot.sound`, with neither `sorryAx` nor
+`Classical.choice`. The direct finite-list table has **not** been formally
+identified with the imported Foundation HFS/model-valued `Checker.verifyValue`.
+That connection, the literal-machine halt extraction, and iPRA-internalization
+are still required for the target equivalence.
