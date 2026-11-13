@@ -2036,7 +2036,15 @@ again from \rulename{I0} and \rulename{BRep}; the article cites
 \cref{kern:lem:beq,kern:lem:bcong}.  Its marker has the seed $t$ and
 $N\defeq|C|+1$, as in \cref{kern:lem:fmarker}.  It derives closure by cases
 from the general introduction by cases; the article introduces at the
-witness $c$ directly.  No calculus of the section is formalized in Lean.  The
+witness $c$ directly.  The Lean module \Lean{NativeAbstraction} formalizes
+$\mathsf{A}_7$ and \cref{kern:thm:aqe} for it (\Lean{APrf},
+\Lean{aprf\_iff\_nprf}), along the proof above: replacement and abstraction
+are one operation that puts a term at the occurrences of $t$ and renames the
+other variables, so the identities of \cref{kern:lem:abstr}(ii) are instances
+of its commutation with substitution; weakening and injective renaming of
+derivations are proved by induction on derivations; and
+\cref{kern:lem:aqerank} is one induction on the number of binders
+(\Lean{APrf.trEl}).  The
 tests of the package are finite: 804 checks of abstraction and of open
 inferences, 521 checks of the recovery by the marker, 3 further identities
 of capture avoidance, 28 runs of the driver on closed certificates, and
@@ -5135,8 +5143,9 @@ results that were not achieved.
  variables, and replacing a stored scope bound by the length of the context
  has to keep apart the check of a packet at the old scope and the opening of
  a branch at the new one.
-\item \pkg{abstraction\_and\_refinements}: \cref{kern:thm:aqe} is a written
- proof, reviewed within the package and not formalized in Lean or Rocq; the
+\item \pkg{abstraction\_and\_refinements}: \cref{kern:thm:aqe} is written in
+ the package and formalized in Lean in this repository
+ (\Lean{NativeAbstraction}, \Lean{aprf\_iff\_nprf}), not in Rocq; the
  bridge to $\iPRA$ is the cited \cref{base:thm:bridge}.  The package does
  not claim that seven rules, the signature, the protocol of certificates or
  any measured source representation is minimal, and states that the
