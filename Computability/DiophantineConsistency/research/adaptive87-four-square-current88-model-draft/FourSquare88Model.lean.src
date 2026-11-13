@@ -1,0 +1,99 @@
+import AdaptiveFourSquare88Graph
+import FourUnitGeneric
+import DiophantineConsistency.HAExpressionSameZero
+import DiophantineConsistency.IPRAExpressionNative
+import DiophantineConsistency.ModelArithmetic
+
+/-! Source-only proposal: generated literal, tactics and providers unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 4000000
+noncomputable section
+namespace DiophantineConsistency.AdaptiveFourSquare88ModelDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing ModelArithmetic
+open AdaptiveFourSquare88GraphDraft AdaptiveFourUnitGenericDraft
+open HAExpressionAssembly HAExpressionSameZero PRALanguage IPRANativeTheory
+open IPRAFoundationZFCMappedNegation
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Factor and output fields evaluated at exactly the same valuation. -/
+theorem unshifted_same_zero (p : Fin 4 → ℤ) (v : Fin 13 → V) :
+    InternalZero (expressionAt p) v ↔
+      InternalZero (AdaptiveFirstRootFactor87Literal.expressionAt87 p) v := by
+  rw [internalZero_iff,internalZero_iff]
+  let w : Fin 13 → DiffRing V := fun j => ι (v j)
+  let d := graph p
+  let first := d.first.evalRing w
+  let main := d.main.evalRing w
+  let aux := d.aux.evalRing w
+  let strong := d.strong.evalRing w
+  let q := d.q.evalRing w
+  let root := d.root.evalRing w
+  let radicand := d.radicand.evalRing w
+  let scale := d.scale.evalRing w
+  let a := d.a.evalRing w
+  let c := d.c.evalRing w
+  let mainRoot := d.mainRoot.evalRing w
+  let f := d.f.evalRing w
+  let I := d.I.evalRing w
+  let V0 := d.V.evalRing w
+  let y := d.y.evalRing w
+  let delta := a^2+4*a+3
+  have hfirst : 1+first = 1+root^2-(q^3*(q-1))^2*radicand := by
+    simp [first,root,q,radicand,d,graph,Expr.evalRing_add,Expr.evalRing_sub,
+      Expr.evalRing_mul,Expr.evalRing_var,Expr.evalRing_constant]; ring
+  have hmain : 1+main = 1+mainRoot^2-scale^2*(1+delta*c^2) := by
+    simp [main,mainRoot,scale,delta,a,c,d,graph,Expr.evalRing_add,Expr.evalRing_sub,
+      Expr.evalRing_mul,Expr.evalRing_var,Expr.evalRing_constant]; ring
+  have haux : aux = y^2-delta*(f^2-1)*(y^2-V0^2) := by
+    simp [aux,y,delta,a,f,V0,d,graph,Expr.evalRing_add,Expr.evalRing_sub,
+      Expr.evalRing_mul,Expr.evalRing_var,Expr.evalRing_constant]; ring
+  have hstrong : 1+strong = 1+I^2-delta*(f^2-1) := by
+    simp [strong,I,delta,a,f,d,graph,Expr.evalRing_add,Expr.evalRing_sub,
+      Expr.evalRing_mul,Expr.evalRing_var,Expr.evalRing_constant]; ring
+  obtain ⟨hb0,hb1,hba,hbs⟩ := factor_exclusions (mod4 (V:=V))
+    q root radicand scale a c mainRoot f I V0 y
+  have h0 : 1+first ≠ -1 := by rw [hfirst]; exact hb0
+  have h1 : 1+main ≠ -1 := by rw [hmain]; exact hb1
+  have ha : aux ≠ -1 := by rw [haux]; exact hba
+  have hs : 1+strong ≠ -1 := by rw [hstrong]; exact hbs
+  have hprod : (AdaptiveFirstRootFactor87Literal.expressionAt87 p).evalRing w =
+      (1+strong)*(aux*((1+first)*(1+main)))-1 := by
+    rw [←parent_eq]
+    simp [first,main,aux,strong,d,graph,Expr.evalRing_add,Expr.evalRing_sub,
+      Expr.evalRing_mul,Expr.evalRing_var,Expr.evalRing_constant]
+  have hsquare : (expressionAt p).evalRing w =
+      first^2+main^2+(aux-1)^2+strong^2 := by
+    simp [expressionAt,first,main,aux,strong,d,graph,Expr.evalRing_add,Expr.evalRing_sub,
+      Expr.evalRing_mul,Expr.evalRing_var,Expr.evalRing_constant]; ring
+  change (expressionAt p).evalRing w = 0 ↔
+    (AdaptiveFirstRootFactor87Literal.expressionAt87 p).evalRing w = 0
+  rw [hsquare,hprod]
+  have he := product_iff_squares model_discrete (1+first) (1+main) aux (1+strong) h0 h1 ha hs
+  constructor <;> intro hz
+  · apply he.mpr; simpa only [add_sub_cancel_left] using hz
+  · have hz' := he.mp hz; simpa only [add_sub_cancel_left] using hz'
+
+def naturalExpression : Expr (Fin 13) := positiveShift (expressionAt CurrentWindowCarry2011.ports)
+
+theorem sameZero : HAExpressionSameZero.SameZero naturalExpression
+    AdaptiveFirstRootFactor87Literal.naturalExpression87 := by
+  intro V _ _ v
+  rw [naturalExpression,AdaptiveFirstRootFactor87Literal.naturalExpression87,
+    AdaptiveFirstRootFactor87Literal.expression87,internalZero_positiveShift,internalZero_positiveShift]
+  exact unshifted_same_zero _ _
+
+/-- Explicitly conditional on the exact 87 parent bridge. -/
+theorem bridge (hp : PolynomialBridge AdaptiveFirstRootFactor87Literal.naturalExpression87) :
+    PolynomialBridge naturalExpression := HAExpressionSameZero.bridge _ _ sameZero hp
+
+theorem native_equivalence (hp : PolynomialBridge AdaptiveFirstRootFactor87Literal.naturalExpression87) :
+    nativeTheory ⊢ IPRAExpressionNative.nativeNoZero naturalExpression 🡘
+      ∼mappedNativeRefutation embedding :=
+  IPRAExpressionNative.equivalence_of_bridge naturalExpression (bridge hp)
+
+end DiophantineConsistency.AdaptiveFourSquare88ModelDraft
