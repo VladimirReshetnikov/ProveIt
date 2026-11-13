@@ -2905,8 +2905,20 @@ idea of replacing induction by uniqueness of recursion to the literature
 claims the completion for the scalar language only: one state, no counter
 in the body, no pairing.  \Cref{kern:lem:monus} also yields the Mal'cev
 term $d(x+z,y)$, which the package notes.  In Lean,
-\cref{kern:prop:uniq} is proved; the converse direction of
-\cref{kern:thm:ur,kern:thm:urnative} is not formalized.
+\cref{kern:prop:uniq} is proved, and so is \cref{kern:thm:ur}: the modules
+\Lean{UrQuotient}, \Lean{UrArith}, \Lean{UrRetract}, \Lean{UrPred},
+\Lean{UrMonus} and \Lean{UrReflect} state $T_{\mathrm{UR}}$ with
+\rulename{UR} as an axiom scheme (\Lean{TurAx}) and prove
+\Lean{tur\_iff\_teq}, that $T_{\mathrm{UR}}$ and $\Teq$ derive the same
+sequents.  The formal proof follows
+\crefrange{kern:sec:urfirst}{kern:sec:urreflect} step by step: every appeal
+to \cref{kern:lem:cu}(i) is one application of a derived rule on classes of
+terms whose step is a computation, the hypotheses on templates in
+\cref{kern:prop:rinv,kern:lem:rigid,kern:lem:zi} are stated over all
+extensions of the context, those of \cref{kern:lem:dd} over every context,
+and equation induction is \cref{kern:lem:zi} on $\Delta(s(n),r(n))$
+(\Lean{Tur.eqInd}).  The native form \cref{kern:thm:urnative} is not
+formalized.
 \end{remark}
 
 \subsection{Other forms of the uniqueness rule}
@@ -5160,9 +5172,10 @@ results that were not achieved.
 \item \pkg{one\_context} states that removing a primitive equality test
  from the self-seeded proposals of other packages is a missing theorem and
  does not follow from coverage of a protected orbit.
-\item \pkg{scalar\_uniqueness}: the converse of \cref{kern:prop:uniq} is a
- written proof; it is not formalized in Lean, where only
- \cref{kern:prop:uniq} is proved.
+\item \pkg{scalar\_uniqueness}: the converse of \cref{kern:prop:uniq} for
+ the ordinary theory is formalized in Lean (\Lean{tur\_iff\_teq},
+ \cref{kern:rem:ur-sources}); the native form \cref{kern:thm:urnative} is a
+ written proof only.
 \item \pkg{orbit\_closure}: the equivalence of $T_{\mathrm{SU}}$ with $\Teq$
  is not established, and the package does not claim it.  Its statement
  about the model of \pkg{canonical\_recursors} (\cref{kern:rem:sugap}) rests
