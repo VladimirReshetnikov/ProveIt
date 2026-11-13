@@ -172,3 +172,14 @@ of the gate or selected machine traces is not an all-model proof. No concrete
 logical counterexample to the written gate cases was found in this review;
 that is not a verification of the full claimed primitive-recursive translation
 or its connection to the literal machine.
+
+## A bounded invariant for the zero-alias stack
+
+[The certificate-stack note](reverse-cert-stack/README.md) proves an ordinary-natural-number
+parallel-certificate invariant that accommodates `pair(0,0)=0`. It checks
+certificates only while the numeric stack is nonzero, treats later certificate
+cells as ghosts, and returns a fixed proof of truth on underflow. Push and pop
+preserve the invariant; for the exact Cantor pair, checking indices less than
+the numeric stack code suffices. This gives a concrete finite invariant for a
+potential arithmetization, but it is not yet a PA-internal proof or a link to
+the PA196 checker and does not discharge the reverse implication.
