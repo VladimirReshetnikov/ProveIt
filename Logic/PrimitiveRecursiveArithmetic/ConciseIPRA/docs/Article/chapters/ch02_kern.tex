@@ -1559,9 +1559,13 @@ earlier statement of \rulename{BRep} in the corpus.  The Lean module
 (\Lean{bprf\_iff\_nprf}, \Lean{b7prf\_iff\_nprf}); the equality rules and
 \rulename{Tr} are derived from \rulename{I0} and \rulename{BRep} generically
 (\Lean{BRKernel}), and the introductions come from \Lean{WKernel}.  The
-restricted calculi are not formalized.  The checker of the package implements
-$\mathsf{B}$ with unrestricted sources; $\mathsf{B}_{7}$, $\mathsf{B}^{-}$
-and $\mathsf{B}^{-}_{7}$ are written proofs only.  Its tests are finite: 18
+module \Lean{NativeNonzeroSources} formalizes the restricted calculi
+$\mathsf{B}^{-}$ and $\mathsf{B}^{-}_{7}$ (\Lean{bmprf\_iff\_nprf},
+\Lean{bm7prf\_iff\_nprf}) with the bootstrap of
+\cref{kern:lem:bmeq,kern:lem:bzero}, generically over \Lean{BMKernel}.  The
+checker of the package implements $\mathsf{B}$ with unrestricted sources; in
+the package $\mathsf{B}_{7}$, $\mathsf{B}^{-}$ and $\mathsf{B}^{-}_{7}$ are
+written proofs only.  Its tests are finite: 18
 accepted open or closed sequents, with instances of all eight rules, zero
 and nonzero sources and five generated certificates of congruence by the
 marker, whose templates have fixed copies of the source, a repeated
@@ -2022,12 +2026,69 @@ is inconsistent.  The translations between $\mathsf{A}_7$ and $\Nat$ are the
 identity on terms and formulas, so the bridge of \cref{base:thm:bridge} is
 used unchanged.
 
-The proof needs \rulename{BRep} at the source $0$.  For the restriction
-$\rulename{BRep}^{-}$ of \cref{kern:thm:bminus} transport in an equation
-template is derived with \rulename{QE} and \rulename{QI}
-(\cref{kern:lem:bmeq}(iii), \cref{kern:lem:bzero}), and here \rulename{QE} is
-recovered only after that transport; the restricted calculus is left open
-(\cref{kern:q:aqeminus}).
+The proof needs \rulename{BRep} at the source $0$.  The restriction
+$\rulename{BRep}^{-}$ of \cref{kern:thm:bminus} is enough as well.  Its
+bootstrap (\cref{kern:lem:bmeq,kern:lem:bzero}) uses \rulename{QE}, which in
+$\mathsf{A}_7$ is recovered only after transport; but it uses \rulename{QE}
+only twice, at instances whose abstraction is the matrix itself.
+
+\begin{theorem}[Elimination by abstraction with a restricted source]
+\label{kern:thm:aqeminus}
+$\mathsf{A}_7$ with \rulename{BRep} replaced by $\rulename{BRep}^{-}$ is
+equivalent to $\Nat$.
+\end{theorem}
+
+\begin{proof}
+Every instance of $\rulename{BRep}^{-}$ is an instance of \rulename{BRep}, so
+the restricted calculus derives only sequents of $\mathsf{A}_7$, hence of
+$\Nat$ by \cref{kern:thm:aqe}.  Conversely, the proofs of
+\cref{kern:lem:bmeq,kern:lem:bzero} go through with each use of
+\rulename{QE} replaced by \rulename{AQE}.
+
+In \cref{kern:lem:bmeq}(iii), \rulename{QE} at the term $p$ concludes
+$E(p)\equiv\bigl(\It{p}{p}{v}{p}=p\bigr)$ from $\Q{y}E(y)$ and $E(0)$.  The
+left side of $E(p)$ is larger than $p$, so the traversal does not match at its
+root, and its counter, seed and body are copies of $p$.  Hence the abstraction
+of $p$ in $E(p)$ is $E(y)$, its replacement by $0$ is $E(0)$, and
+\rulename{AQE} at the term $p$ draws the same conclusion from the same
+premises.
+
+In \cref{kern:lem:bzero}, \rulename{QE} at the term $\Suc 0$ concludes
+$E(b,\Suc 0)$, that is $C(\Suc 0,0,b)=C(\Suc 0,0,0)$, from $\Q{y}E(b,y)$ and
+$E(b,0)$.  Its only occurrences of $\Suc 0$ are the two counters: the seeds
+$0$, the variable $b$ and the bodies are not $\Suc 0$.  So again the
+abstraction is the matrix $E(b,y)$, the replacement by $0$ is $E(b,0)$, and
+\rulename{AQE} at the term $\Suc 0$ applies.
+
+The introductions in the two proofs are $\rulename{DI}_{\mathrm{w}}$ at the
+witness $0$ in the mode of progress, which is \rulename{DI} at the witness $0$
+of $\mathsf{A}_7$, and \rulename{QI} derived from it with \rulename{DE} and
+\rulename{Hyp}; in both the assumption is unused.  The remaining steps use
+\rulename{I0}, \rulename{IS}, $\rulename{BRep}^{-}$, \rulename{DE}, weakening
+and injective renaming, which are admissible by induction on derivations as
+for $\mathsf{A}_7$; renaming keeps the side condition, since a variable is
+renamed to a variable.  So congruence and \rulename{Tr} are derived as in the
+proof of \cref{kern:thm:bminus}, hence transport in an equation template, and
+from there the proof of \cref{kern:thm:aqe} recovers \rulename{QE} by
+induction on the number of binders (\cref{kern:lem:aqerank}) and the
+introductions of $\Nat$.
+\end{proof}
+
+The Lean module \Lean{NativeNonzeroSources} formalizes
+\cref{kern:thm:aqeminus} and \cref{kern:thm:bminus} for all three restricted
+calculi (\Lean{amprf\_iff\_nprf}, \Lean{bmprf\_iff\_nprf},
+\Lean{bm7prf\_iff\_nprf}).  The bootstrap of
+\cref{kern:lem:bmeq,kern:lem:bzero} is proved once, generically over the class
+\Lean{BMKernel}, whose only elimination of a closure is \rulename{AQE} and
+whose only introduction is the one at the witness $0$ with the assumption
+unused.  In $\mathsf{B}^{-}$ and $\mathsf{B}^{-}_{7}$, \rulename{AQE} is
+\rulename{QE} followed by the identities of \cref{kern:lem:abstr}(ii)
+(\Lean{NFm.aqE\_of\_qE}).  For the restricted $\mathsf{A}_7$ the recovery of
+\rulename{QE} is that of \Lean{NativeAbstraction}, stated there over the class
+\Lean{AKernel} of the rules of $\mathsf{A}_7$.  In the variable lemma of
+\cref{kern:lem:bzero} the formal proof needs no freshness of $b$: if $b$ is a
+variable, $\operatorname{Rep}_{0}^{b}(h(0))\equiv\operatorname{Rep}_{0}^{b}(h(b))$
+holds for every template $h$ (\Lean{Tm.rpl\_zero\_subst}).
 
 \begin{remark}[Sources]
 \label{kern:rem:aqe-sources}
@@ -4960,17 +5021,6 @@ together, with an explicit interpretation?  The package makes no assumption
 that such a combination exists.  (\pkg{abstraction\_and\_refinements}.)
 \end{question}
 
-\begin{question}[Elimination by abstraction with a restricted source]
-\label{kern:q:aqeminus}
-Is $\mathsf{A}_7$ with \rulename{BRep} replaced by $\rulename{BRep}^{-}$
-equivalent to $\Nat$?  The bootstrap of \cref{kern:thm:aqe} needs
-\rulename{BRep} at the source $0$ for transport in an equation template, and
-the bootstrap of \cref{kern:thm:bminus} for $\rulename{BRep}^{-}$ uses
-\rulename{QE}, which in $\mathsf{A}_7$ is recovered only after that
-transport.  A positive answer needs a different bootstrap; the package
-asserts no such restriction.  (\pkg{abstraction\_and\_refinements}.)
-\end{question}
-
 \begin{question}[Replacement of one occurrence in a checker]
 \label{kern:q:lor}
 Does \rulename{LOR} help a readable or a formally verified checker, even
@@ -5135,8 +5185,8 @@ results that were not achieved.
  and the single introduction together, is formalized in Lean
  (\Lean{g7prf\_iff\_nprf}, generically over \Lean{TFKernel}).
 \item \pkg{backward\_replacement}: $\mathsf{B}$ and $\mathsf{B}_{7}$ are
- formalized in Lean (\Lean{NativeReplacementCalculi}), $\mathsf{B}^{-}$ and
- $\mathsf{B}^{-}_{7}$ are not; the package
+ formalized in Lean (\Lean{NativeReplacementCalculi}), and so are
+ $\mathsf{B}^{-}$ and $\mathsf{B}^{-}_{7}$ (\Lean{NativeNonzeroSources}); the package
  suggests extending the Lean calculus \Lean{TPrf} of $\mathsf{G}$ and reusing its marker
  lemma \Lean{Tm.rep\_marker}, with the bridge unchanged.  Its checker is not
  formally verified, and the restricted calculi are not implemented.  No
