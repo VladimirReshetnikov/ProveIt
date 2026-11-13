@@ -1,0 +1,66 @@
+import DiophantineConsistency.ExplicitPellPeriod
+import DiophantineConsistency.StrictSigmaOneInduction
+import DiophantineConsistency.ParsonsHierarchyMap
+import DiophantineConsistency.PRABoundedFormula
+import DiophantineConsistency.PRABoundedWitness
+
+/-! SOURCE-ONLY: syntactic proposal and conditional model evaluation interface.
+    No Lean elaboration, witness bound, PRA period theorem, or iPRA theorem. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.PellPeriodBoundedDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open ArithmeticPellRecurrence ExplicitPellPeriodDraft StrictSigmaOneInduction
+open PRALanguage PRATheory PRAFiniteFunctionCodes PRACharacteristicBit
+open PRABoundedCharacteristic PRABoundedFormula PRABoundedWitness
+
+/-- c is the ordinate at m; x,y are the two coordinates at h=2*m*c. -/
+def periodDef : 𝚺₁.Semisentence 2 := .mkSigma
+  “m a. ∃ c h x y r t, !yDef c m a ∧ h=2*m*c ∧
+    !xDef x h a ∧ !yDef y h a ∧ x=1+c*c*r ∧ y=t*c*c”
+
+/-- Every unbounded existential in the displayed graph gets a fresh last bound. -/
+def boundedPeriod : ArithmeticSemisentence 3 := bnd periodDef.val
+
+theorem boundedPeriod_hierarchy : Hierarchy 𝚺 0 boundedPeriod := by
+  unfold boundedPeriod
+  exact hierarchy_bnd periodDef.sigma_prop (by decide) (by intro _; rfl)
+
+/-- The standard language embedding preserves this bounded hierarchy. -/
+theorem mapped_boundedPeriod_hierarchy :
+    Hierarchy 𝚺 0 (Semiformula.lMap embedding boundedPeriod) := by
+  exact ParsonsHierarchyMap.hierarchy boundedPeriod_hierarchy
+
+/-- Existing generic machinery gives a classical PRA bit for the *bounded*
+    formula; it does not construct or bound a period witness. -/
+theorem boundedPeriod_characteristic :
+    ∃ code : Code 3, Primrec (eval code) ∧ PRA ⊢ bitSentence code ∧
+      PRA ⊢ oneCorrectSentence code (Semiformula.lMap embedding boundedPeriod) := by
+  exact PRA_proves_boundedBooleanCharacteristic _ mapped_boundedPeriod_hierarchy
+
+theorem characteristic_is_open (code : Code 3) :
+    (characteristicMatrix code).Open := characteristicMatrix_open code
+
+/-- Explicit missing evaluation lemma, including exact variable order. -/
+def PeriodEvaluationBridge : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (m a : V),
+    periodDef.val.Evalb ![m,a] ↔
+      ∃ c h x y r t : V, c=ycoord m a ∧ h=2*m*c ∧
+        x=xcoord h a ∧ y=ycoord h a ∧ x=1+c*c*r ∧ y=t*c*c
+
+/-- Conditional source assembly; the evaluation bridge remains a premise. -/
+theorem period_holds_if_evaluation (bridge : PeriodEvaluationBridge)
+    (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (m a : V) :
+    periodDef.val.Evalb ![m,a] := by
+  obtain ⟨r,t,hx,hy⟩ := period_at_twice_index_ordinate m a
+  apply (bridge V m a).mpr
+  exact ⟨ycoord m a, 2*m*ycoord m a,
+    xcoord (2*m*ycoord m a) a, ycoord (2*m*ycoord m a) a,
+    r,t,rfl,rfl,rfl,rfl,hx,hy⟩
+
+end DiophantineConsistency.PellPeriodBoundedDraft
+#print axioms DiophantineConsistency.PellPeriodBoundedDraft.boundedPeriod_hierarchy
+#print axioms DiophantineConsistency.PellPeriodBoundedDraft.boundedPeriod_characteristic
+#print axioms DiophantineConsistency.PellPeriodBoundedDraft.period_holds_if_evaluation
