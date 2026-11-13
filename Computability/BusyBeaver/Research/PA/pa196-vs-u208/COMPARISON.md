@@ -104,8 +104,10 @@ still bounded family, including the U208 fold as a positive control. The
 [source search](source-search/README.md) tests directional reassociations.
 Neither produced a smaller physical machine. A separate
 [zero-transfer specialization](source-search/ZERO-TRANSFER.md) removes three
-source sites while preserving halting from the clean seed, but increases the
-number of distinct source nodes from 159 to 160; no state saving follows.
+source sites while preserving halting from the clean seed. A
+[second cleanup](source-search/SECOND-CLEANUP.md) removes two more, but the
+combined changes increase the number of distinct source nodes from 159 to 162;
+no state saving follows.
 
 ## The missing internal consistency direction
 
