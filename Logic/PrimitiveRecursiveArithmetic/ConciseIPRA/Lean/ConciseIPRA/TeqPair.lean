@@ -72,31 +72,28 @@ theorem lstep_eq (k v : Q Γ) :
 theorem lg_eq (x : Q Γ) : lg x = lgc x x := by
   induction x using Q.ind with | _ a => rfl
 
-/-- Below the exponent the counter follows its index: the induction step. -/
-theorem lgc_low_step (i c k r : Q Γ) (hk : monus (pow2 c) k = 0)
-    (ih : sel (monus i c) r i = i) :
-    sel (monus (succ i) c) (lstep k r) (succ i) = succ i := by
-  refine Q.cases (monus (succ i) c) (fun e he => ?_) (fun e z he => ?_)
+/-- While `2 ^ i ≤ k` the counter follows its index: the induction step, in which
+`2 ^ (i + 1) = 2 ^ i + 2 ^ i ≤ k` gives `2 ^ i ≤ k`. -/
+theorem lgc_low_step (i k r : Q Γ) (ih : sel (monus (pow2 i) k) r i = i) :
+    sel (monus (pow2 i + pow2 i) k) (lstep k r) (succ i) = succ i := by
+  refine Q.cases (monus (pow2 i + pow2 i) k) (fun e he => ?_) (fun e z he => ?_)
   · have ih' := congrArg e.map ih
-    have hk' := congrArg e.map hk
-    simp only [Ext.map_sel, Ext.map_monus, Ext.map_succ, Ext.map_pow2, Ext.map_lstep,
-      Ext.map_zero] at he ih' hk' ⊢
-    rw [le_of_succ_le he, sel_zero] at ih'
-    rw [he, sel_zero, ih', lstep_eq, monus_trans (pow2_mono he) hk', sel_zero]
+    simp only [Ext.map_sel, Ext.map_monus, Ext.map_add, Ext.map_succ, Ext.map_pow2,
+      Ext.map_lstep] at he ih' ⊢
+    rw [le_of_add_le he, sel_zero] at ih'
+    rw [he, sel_zero, ih', lstep_eq, pow2_succ, he, sel_zero]
   · simp only [Ext.map_sel, Ext.map_succ, he, sel_succ]
 
-/-- Below the exponent the counter follows its index. -/
-theorem sel_lgc_low (c a i : Q Γ) : sel (monus i c) (lgc i (pow2 c + a)) i = i := by
-  induction c, a, i using Q.ind₃ with | _ c a i
+/-- While `2 ^ i ≤ k` the counter follows its index. -/
+theorem sel_lgc_low (k i : Q Γ) : sel (monus (pow2 i) k) (lgc i k) i = i := by
+  induction k, i using Q.ind₂ with | _ k i
   simpa using eqInd (Γ := Γ)
-    (Tm.sel (Tm.monus (var 0) (shift c))
-      (Tm.lgc (var 0) (Tm.add (Tm.pow2 (shift c)) (shift a))) (var 0))
-    (var 0) i
-    (hS := fun ih => by simp at ih ⊢; exact lgc_low_step _ _ _ _ (monus_add_right _ _) ih)
+    (Tm.sel (Tm.monus (Tm.pow2 (var 0)) (shift k)) (Tm.lgc (var 0) (shift k)) (var 0))
+    (var 0) i (hS := fun ih => by simp at ih ⊢; exact lgc_low_step _ _ _ ih)
 
 theorem lgc_low (c a : Q Γ) : lgc c (pow2 c + a) = c := by
-  have h := sel_lgc_low c a c
-  rwa [monus_self, sel_zero] at h
+  have h := sel_lgc_low (pow2 c + a) c
+  rwa [monus_add_right, sel_zero] at h
 
 /-- At the exponent of a pair the counter stops. -/
 theorem lstep_pair (a b : Q Γ) : lstep (pow2 (a + b) + a) (a + b) = a + b := by

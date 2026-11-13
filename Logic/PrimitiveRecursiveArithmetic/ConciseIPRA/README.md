@@ -987,7 +987,7 @@ The main chain (every module except the twenty kernel comparisons,
 `ZeroSeedObstruction`,
 `NativePrefix`, `NativeUniqueness`, `NativeModels`, `NativeWitnessShape`,
 `NativeWitnessComplete`, `EqKernel`, `EqArith`, `EqParity`, `EqCompare`, `EqPred` and
-`TeqClosure`) is 5,022
+`TeqClosure`) is 4,994
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
 introduction and elimination, instead of an induction over the seventeen
@@ -1030,7 +1030,12 @@ predecessor follows the diagonal lemma of `orbit_equality`: `Q.pred_succ` is
 one equation induction on `pred (S x) = x` from the conjugacy of the
 saturating counters and `bump 1 0 = 0`, so the comparator diagonal
 `cmp (S x) x = 0` and the invariant `sat x (S x) = x` below the cap, each an
-induction of its own, are gone (likewise in `EqPred`). In the
+induction of its own, are gone (likewise in `EqPred`). The order is
+obtained from the maximum identity `x + (y ∸ x) = y + (x ∸ y)` (one equation
+induction) in place of a selector-guarded witness invariant, and the
+logarithm counter of the pairing from the one-parameter invariant
+"`2 ^ i ≤ k` implies `lgc i k = i`", so the monotonicity of `2 ^ x` and
+transitivity of the order are not needed. In the
 round trip through `T_eq`, the steps of each chain of equations are composed
 directly instead of being stated twice, and the step shared by three of the
 chains is one lemma (`RoundTrip.tau_subst_code`).
@@ -1250,7 +1255,7 @@ marked as conjectures is proved here.
    `deterministic_opening` (`OCPrf`), of `first_instance` and
    `clause_discharge` (`XCPrf`), and of `variable_substitution` (`VCPrf`)
    are proved equivalent to the kernel.
-8. **A shorter proof of the equivalence.** The main chain is 5,022 lines. A
+8. **A shorter proof of the equivalence.** The main chain is 4,994 lines. A
    dependency-closure computation shows that it contains nothing that the end
    results do not use. Three designs fix most of its size, and no shorter
    replacement for any of them is known: the predecessor of `T_eq` from

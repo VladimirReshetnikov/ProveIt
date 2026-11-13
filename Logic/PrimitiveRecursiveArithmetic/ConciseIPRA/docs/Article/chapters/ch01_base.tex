@@ -3004,6 +3004,20 @@ $d\defeq y\mathbin{\dot-}\Suc x$, and (i) applies.  If $x\le y$ and
 $y\le z$, then $z=y+(z\mathbin{\dot-}y)$ and the first part applies.
 \end{proof}
 
+\begin{remark}[The route of the Lean module]
+\label{base:rem:orderlean}
+The module \Lean{TeqOrder} proves (iii) through the maximum identity
+$x+(y\mathbin{\dot-}x)=y+(x\mathbin{\dot-}y)$ instead of (ii): equation
+induction on $y$, with base $x+0=0+x$ by $0\mathbin{\dot-}x=0$, and a step
+by cases on $x\mathbin{\dot-}y$ that uses only (i) and
+\cref{base:lem:monus}(iii); then $x\le y$ gives $x+(y\mathbin{\dot-}x)=y$
+at once.  Of the transitivity laws in (iv) it needs only
+$x+y\le k\to x\le k$, and it does not use the monotonicity of $2^{x}$ in
+\cref{base:lem:pow}: the logarithm counter of \cref{base:thm:pair} is
+proved from the invariant ``$2^{i}\le k$ implies $\mathrm{lgc}(i,k)=i$'',
+whose step needs only $2^{i}\le 2^{i}+2^{i}\le k$.
+\end{remark}
+
 \begin{lemma}[Powers of two]
 \label{base:lem:pow}
 $\Teq$ proves $2^{0}=1$, $2^{\Suc x}=2^{x}+2^{x}$, $2^{x}\le 2^{x+d}$,
