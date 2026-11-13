@@ -99,32 +99,21 @@ theorem eqs {s s' t t' : Tm n} (h₁ : ∀ {Γ : List (NFm n)}, NPrf Γ (.eq s s
   ⟨NPrf.eqTrans (NPrf.eqTrans (NPrf.eqSymm h₁) NPrf.hyp0) h₂,
     NPrf.eqTrans (NPrf.eqTrans h₁ NPrf.hyp0) (NPrf.eqSymm h₂)⟩
 
+/-- A `Q` that holds trivially at zero and is `A` at every successor is `A`. -/
+theorem qTriv {C : NFm (n + 1)} {A : NFm n}
+    (h0 : ∀ {Γ : List (NFm n)}, NPrf Γ (C.subst (inst zero)))
+    (h1 : ∀ {Γ : List (NFm n)}, NPrf Γ (C.subst (inst (succ zero))) → NPrf Γ A)
+    (h2 : ∀ {Δ : List (NFm (n + 1))}, NPrf Δ A.shift →
+      NPrf Δ (C.subst (repl (succ (Syn.var 0))))) : NEquiv (.Q C) A :=
+  ⟨h1 (.qE _ NPrf.hyp0 h0), .qI _ (h2 (.hyp (List.mem_cons_of_mem _ List.mem_cons_self)))⟩
+
 /-- `Q_y (sel(y, 0, s) = sel(y, 0, t))` is interderivable with `s = t`. -/
 theorem qSel (s t : Tm n) :
     NEquiv (.Q (.eq (Tm.sel (Syn.var 0) zero (Syn.shift s))
-      (Tm.sel (Syn.var 0) zero (Syn.shift t)))) (.eq s t) := by
-  constructor
-  · have h0 : NPrf [NFm.Q (.eq (Tm.sel (Syn.var 0) zero (Syn.shift s))
-          (Tm.sel (Syn.var 0) zero (Syn.shift t)))]
-        ((NFm.eq (Tm.sel (Syn.var 0) zero (Syn.shift s))
-          (Tm.sel (Syn.var 0) zero (Syn.shift t))).subst (inst zero)) := by
-      simp only [NFm.subst_eq, Tm.subst_sel, Syn.subst_var, Syn.inst_zero,
-        Syn.subst_inst_shift, Tm.subst_zero]
-      exact NPrf.eqTrans (NPrf.selZero _ _) (NPrf.eqSymm (NPrf.selZero _ _))
-    have h1 := NPrf.qE (succ zero) NPrf.hyp0 h0
-    simp only [NFm.subst_eq, Tm.subst_sel, Syn.subst_var, Syn.inst_zero,
-      Syn.subst_inst_shift, Tm.subst_zero] at h1
-    exact NPrf.eqTrans (NPrf.eqTrans (NPrf.eqSymm (NPrf.selSucc _ _ _)) h1)
-      (NPrf.selSucc _ _ _)
-  · refine .qIProg _ _ ?_
-    simp only [NFm.subst_eq, Tm.subst_sel, Syn.subst_var, Syn.repl_zero,
-      Syn.subst_repl_shift, Tm.subst_zero]
-    have h : NPrf (NFm.eq (Tm.sel (Syn.var 0) zero (Syn.shift s))
-          (Tm.sel (Syn.var 0) zero (Syn.shift t)) :: [NFm.eq s t].map NFm.shift)
-        (.eq (Syn.shift s) (Syn.shift t)) :=
-      .hyp (List.mem_cons_of_mem _ List.mem_cons_self)
-    exact NPrf.eqTrans (NPrf.eqTrans (NPrf.selSucc _ _ _) h)
-      (NPrf.eqSymm (NPrf.selSucc _ _ _))
+      (Tm.sel (Syn.var 0) zero (Syn.shift t)))) (.eq s t) :=
+  qTriv (by simp; exact (eqs (NPrf.selZero _ _) (NPrf.selZero _ _)).mpr (NPrf.eqRefl zero))
+    (fun h => by simp at h; exact (eqs (NPrf.selSucc _ _ _) (NPrf.selSucc _ _ _)).mp h)
+    (fun h => by simp; exact (eqs (NPrf.selSucc _ _ _) (NPrf.selSucc _ _ _)).mpr h)
 
 /-- A `D` whose witness variable is a dummy is a `Q`. -/
 theorem dDummy (B : NFm (n + 1)) :
@@ -180,15 +169,10 @@ theorem gate_succ (v : Tm n) (A : NFm n) : NEquiv (NFm.gate (succ v) A) A :=
   selEq_succ A v zero zero
 
 /-- `Q_y gate(y, A)` is interderivable with `A`. -/
-theorem qGate (A : NFm n) : NEquiv (.Q (NFm.gate (Syn.var 0) A.shift)) A := by
-  constructor
-  · have h := NPrf.qE (Γ := [NFm.Q (NFm.gate (Syn.var 0) A.shift)]) (succ zero) NPrf.hyp0
-      (by rw [NFm.gate_shift_inst]; exact gateZero A)
-    rw [NFm.gate_shift_inst] at h
-    exact (gate_succ zero A).mp h
-  · refine .qI _ ?_
-    rw [NFm.gate_shift_repl]
-    exact (gate_succ _ _).mpr (.hyp (List.mem_cons_of_mem _ List.mem_cons_self))
+theorem qGate (A : NFm n) : NEquiv (.Q (NFm.gate (Syn.var 0) A.shift)) A :=
+  qTriv (by rw [NFm.gate_shift_inst]; exact gateZero A)
+    (fun h => (gate_succ zero A).mp (by rwa [NFm.gate_shift_inst] at h))
+    (fun h => by rw [NFm.gate_shift_repl]; exact (gate_succ _ _).mpr h)
 
 /-- `D_{x,y} gate(y, A)` is interderivable with `A`. -/
 theorem dGate (A : NFm n) : NEquiv (.D (NFm.gate (Syn.var 0) A.shift.shift)) A := by

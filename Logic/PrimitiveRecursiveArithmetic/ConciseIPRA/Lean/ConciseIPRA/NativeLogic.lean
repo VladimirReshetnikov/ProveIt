@@ -103,30 +103,16 @@ theorem selCongr {c c' : Tm n} (a b : Tm n) (h : NPrf Γ (.eq c c')) :
 theorem botEq (h : NPrf Γ NFm.bot) (s t : Tm n) : NPrf Γ (.eq s t) :=
   eqTrans (eqTrans (eqSymm (selZero s t)) (selCongr s t h)) (selSucc zero s t)
 
-theorem botSubst (A : NFm n) : ∀ {m : ℕ} (σ : Fin n → Tm m) {Γ : List (NFm m)},
-    NPrf Γ NFm.bot → NPrf Γ (A.subst σ) := by
-  induction A with intro m σ Γ h
-  | eq s t => exact botEq h _ _
-  | Q B ih =>
-    have key : ∀ {Δ : List (NFm (m + 1))}, NPrf Δ NFm.bot →
-        NPrf Δ ((B.subst (up σ)).subst (repl (succ (Syn.var 0)))) := by
-      intro Δ hΔ
-      rw [NFm.subst_subst]
-      exact ih _ hΔ
-    exact qI _ (key h.shift.wk)
-  | D B ih =>
-    have key : ∀ {Δ : List (NFm (m + 1))}, NPrf Δ NFm.bot →
-        NPrf Δ (((B.subst (up (up σ))).subst (up (inst zero))).subst
-          (repl (succ (Syn.var 0)))) := by
-      intro Δ hΔ
-      rw [NFm.subst_subst, NFm.subst_subst]
-      exact ih _ hΔ
-    exact .dICase _ zero (key h.shift.wk)
+/-- Transport of a selector along an equation of its index. -/
+theorem selTr {v w : Tm n} (A B : NFm n) (e : NPrf Γ (.eq v w))
+    (h : NPrf Γ (NFm.sel v A B)) : NPrf Γ (NFm.sel w A B) :=
+  tr' (NFm.sel (Syn.var 0) A.shift B.shift) e (NFm.sel_shift_inst A B v)
+    (NFm.sel_shift_inst A B w) h
 
-/-- Ex falso quodlibet. -/
-theorem botE (A : NFm n) (h : NPrf Γ NFm.bot) : NPrf Γ A := by
-  have h' := botSubst A Syn.var h
-  rwa [NFm.subst_id] at h'
+/-- Ex falso quodlibet: transport `sel(0, 0 = 0, A)` along `0 = 1`. -/
+theorem botE (A : NFm n) (h : NPrf Γ NFm.bot) : NPrf Γ A :=
+  (NEquiv.sel_succ (.eq zero zero) zero A).mp
+    (selTr _ _ h ((NEquiv.sel_zero _ A).mpr (eqRefl zero)))
 
 /-! ### Implication -/
 
@@ -144,12 +130,6 @@ theorem impE {A B : NFm n} (h₁ : NPrf Γ (NFm.imp A B)) (h₂ : NPrf Γ A) : N
   exact (NEquiv.sel_succ A zero B).mp h
 
 /-! ### The selector between two formulas -/
-
-/-- Transport of a selector along an equation of its index. -/
-theorem selTr {v w : Tm n} (A B : NFm n) (e : NPrf Γ (.eq v w))
-    (h : NPrf Γ (NFm.sel v A B)) : NPrf Γ (NFm.sel w A B) :=
-  tr' (NFm.sel (Syn.var 0) A.shift B.shift) e (NFm.sel_shift_inst A B v)
-    (NFm.sel_shift_inst A B w) h
 
 /-- Both formulas give the selector at any index. -/
 theorem selI (w : Tm n) {A B : NFm n} (hA : NPrf Γ A) (hB : NPrf Γ B) :
@@ -189,14 +169,9 @@ theorem parTwo : NPrf Γ (.eq (Tm.npar (succ (succ zero))) zero) :=
   eqTrans (parSucc (succ zero)) (eqTrans (selCongr one zero parOne) (selSucc zero one zero))
 
 theorem andI {A B : NFm n} (hA : NPrf Γ A) (hB : NPrf Γ B) : NPrf Γ (NFm.and A B) := by
-  have key : ∀ {Δ : List (NFm (n + 1))}, NPrf Δ A.shift → NPrf Δ B.shift →
-      NPrf Δ ((NFm.gate (Syn.var 0) (NFm.sel (Tm.npar (Syn.var 0)) A.shift B.shift)).subst
-        (repl (succ (Syn.var 0)))) := by
-    intro Δ h₁ h₂
-    simp only [NFm.gate_subst, NFm.sel_subst, Syn.subst_var, Syn.repl_zero,
-      NFm.subst_repl_shift]
-    exact (NEquiv.gate_succ _ _).mpr (selI _ h₁ h₂)
-  exact qI _ (key hA.shift.wk hB.shift.wk)
+  refine qI _ ?_
+  simp only [NFm.gate_subst, NFm.sel_subst, Syn.subst_var, Syn.repl_zero, NFm.subst_repl_shift]
+  exact (NEquiv.gate_succ _ _).mpr (selI _ hA.shift.wk hB.shift.wk)
 
 /-- The instance of a conjunction at a successor. -/
 theorem andInst {A B : NFm n} (h : NPrf Γ (NFm.and A B)) (c : Tm n) :
@@ -217,13 +192,9 @@ theorem andE₂ {A B : NFm n} (h : NPrf Γ (NFm.and A B)) : NPrf Γ B :=
 
 theorem exI {A : NFm (n + 1)} (t : Tm n) (h : NPrf Γ (A.subst (inst t))) :
     NPrf Γ (NFm.ex A) := by
-  have key : ∀ {Δ : List (NFm (n + 1))}, NPrf Δ (A.subst (inst t)).shift →
-      NPrf Δ (((NFm.gate (Syn.var 0) A.shift).subst (up (inst t))).subst
-        (repl (succ (Syn.var 0)))) := by
-    intro Δ h'
-    rw [NFm.gate_subst, Syn.subst_var, Syn.up_zero, NFm.shift_subst_up, NFm.gate_shift_repl]
-    exact (NEquiv.gate_succ _ _).mpr h'
-  exact .dICase _ t (key h.shift.wk)
+  refine .dICase _ t ?_
+  rw [NFm.gate_subst, Syn.subst_var, Syn.up_zero, NFm.shift_subst_up, NFm.gate_shift_repl]
+  exact (NEquiv.gate_succ _ _).mpr h.shift.wk
 
 theorem exE {A : NFm (n + 1)} {C : NFm n} (h₁ : NPrf Γ (NFm.ex A))
     (h₂ : NPrf (A :: Γ.map NFm.shift) C.shift) : NPrf Γ C := by
