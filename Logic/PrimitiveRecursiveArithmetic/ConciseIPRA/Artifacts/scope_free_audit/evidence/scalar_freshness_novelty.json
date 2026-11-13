@@ -1,0 +1,32 @@
+{
+  "commit": "65c32fbe4730bfe5a064502b0b95ebc798c732fa",
+  "candidate": "p = -(10 ** len(str([g,a,r])))",
+  "previously_documented_idea": true,
+  "prior_source": "Artifacts/selfseed_scalar/evidence/kernel_research_notes.txt",
+  "prior_source_sha256": "b9483deb499edea5173f9459d1de760d183091fe9411de516eef3260c6347cbe",
+  "prior_section": "OTHER EXPERIMENTS, NOT SELECTED",
+  "prior_description": "long_names.py removes the global floor by allowing negative free names and taking a fresh negative integer larger in magnitude than a decimal encoding of the present sequent.",
+  "prior_status": "Not a certified kernel: no complete alias audit or new producer; rapidly growing names; 566 bytes / 272 tokens / 317 AST nodes reported.",
+  "prior_implementation_file_in_pinned_tree": false,
+  "exact_expression_found_in_integrated_py_py_gz_sources": false,
+  "search_scope": "All integrated .py/.py.gz, article and README/proof-note text; all four current incoming packages extracted and text-searched.",
+  "safe_novelty_claim": "A completed soundness/completeness audit and smaller implementation of an existing unselected decimal-name idea, if actually established. Do not claim invention of magnitude-based scalar freshness.",
+  "freshness_lemma": "For a finite tree X of exact integers and lists, each integer leaf v has at most len(str(X)) decimal digits; therefore abs(v)<10**len(str(X)), and p=-10**len(str(X)) is not an old name. Set X=[g,a,r] to cover context, goal and every packet field.",
+  "conditions": [
+    "All names are exact integer leaves; floating exponent spelling does not support the magnitude argument.",
+    "Every raw metadata field later used for the rule must be covered before allocating p.",
+    "Operations used before opening must introduce no new numerical names outside the covered support; padding-depth arithmetic deserves explicit audit.",
+    "Contexts are persistent copies, not in-place shared mutations.",
+    "Future input may legitimately refer to p inside its scope; freshness is local to the rule, not global freshness against the entire remaining stream."
+  ],
+  "resources": [
+    "Repeated naming can grow decimal widths exponentially or worse along branches.",
+    "CPython decimal integer conversion has a default digit limit, commonly 4300; generated names can hit it even if initial input integers are short.",
+    "A claim of canonical completeness must idealize unbounded integer-to-string conversion or include/document removal of this runtime limit; finite practical examples should report the actual configuration."
+  ],
+  "expression_notes": [
+    "Base 10 is the smallest positive integer base whose power at a decimal-length bound gives the simple universal magnitude domination argument. Replacing 10 by 9 or 2 is not justified.",
+    "The outer structured list [g,a,r] avoids type requirements on a; g+a+r is shorter only if all three are lists at every evaluated naming site.",
+    "~10**N is also negative and fresh, equal to -(10**N)-1, without outer parentheses. It is a spelling refinement, not a new principle."
+  ]
+}

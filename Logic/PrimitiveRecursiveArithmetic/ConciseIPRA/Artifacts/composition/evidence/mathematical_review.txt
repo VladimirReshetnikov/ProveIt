@@ -1,0 +1,164 @@
+INDEPENDENT MATHEMATICAL AND KERNEL REVIEW
+13 November 2026
+
+Reviewed material
+  report.tex, mathematical sections through the comparison theorem, in the
+  revision containing the explicit native decoder A^natural and sealing map.
+  code/pointfree_checker.py, all validators and all inference branches.
+
+Verdict
+  I found no remaining mathematical contradiction, missing primitive rule,
+  unsound inference, or mismatch between the displayed PF calculus and its
+  reference checker. The comparison theorem is supported by a coherent
+  written scheme-level proof, conditional on the explicitly cited inherited
+  native-kernel/iPRA bridge and native representation of primitive recursive
+  functions. It is not established by the finite semantic tests, and it is
+  not a machine-checked bi-interpretation. No claim of absolute novelty,
+  minimality, or a checker smaller than the current global frontier follows.
+
+  The initial, simpler drafts would NOT have justified the theorem. The
+  repairs listed below are substantive. They must remain in the delivered
+  specification and in any future optimization unless separately derived.
+
+1. Root reindexing
+  Concatenation order is consistent: P;Q means Q(P(e)). At an Eq root,
+  reindexing prepends the same word to both sides. At Q/D it prepends only
+  to the stored prefix and leaves the body unchanged. Therefore the semantic
+  substitution identity and the literal unit/associativity laws follow by
+  the three stated root cases. This claim needs no arithmetic normalization.
+  The report correctly does not equate this lemma with the full compiler
+  substitution theorem.
+
+2. Arithmetic schemes and canonical pairing
+  C0 supplies real constancy of the zero instruction at the word level.
+  CE is the general schema <P;L,P;R>=P, not merely <L,R>=Id. Together with
+  reindexing, CL/CR and Pair this proves fork distribution; no uncharged
+  cartesian normalizer is assumed.
+
+  The pairing equations are correct for beta(a,b)=2^a(2b+1)-1:
+    beta(0,0)=0;
+    beta(0,b+1)=beta(0,b)+2;
+    beta(a+1,b)=2 beta(a,b)+1.
+  Equation induction first determines beta(0,b) as doubling and then
+  determines beta(a,b) by induction on a with b as parameter. These
+  equations are essential: inverse/eta equations alone admit arbitrary
+  pairing bijections, potentially adding an undefinable oracle.
+
+  After canonical pairing is pinned, CL/CR/CE determine L and R as its
+  unique inverses. The cited native arithmetic supplies the fixed PR
+  inverse definitions and their equations. This use is noncircular:
+  the forward native compiler needs a cartesian environment representation,
+  not the prior proof that its chosen pairing is the canonical one.
+
+3. Structural substitution and contexts
+  The implemented Sub rule exactly matches SubstCut in the report. Its
+  first premise is Delta |- A; there is a further premise Gamma |- B down W
+  for every entry B of Delta; the conclusion is Gamma |- A down W.
+  Its ordinary interpretation substitutes the ambient numerical variable
+  and then supplies all substituted open assumptions. This is sound.
+
+  Weakening, cut, contraction, exchange and reindexing are actual instances
+  of this rule with Hyp. No illicit inverse of W is required. In contrast,
+  a bare exact-context Reindex rule would not justify the draft's earlier
+  casual weakening/cut induction. That earlier argument has been removed.
+
+4. Equality and iteration
+  CrossedPost is ordinary pointwise numerical equality reasoning. PairCong
+  preserves the old environment when necessary. Predicate transport uses
+  equality of the entire numerical input to a predicate; it is sound for
+  quantified bodies as well as atoms.
+
+  Reflexivity is derived exactly as stated: duplicate a J0 equation C=P
+  and apply CrossedPost with the empty suffix. Symmetry, transitivity and
+  postcomposition congruence then follow. No reflexivity oracle is hidden.
+
+  There is correctly no unrestricted congruence rule on the body label of
+  J_H. From a conditional equation H(e)=K(e), one cannot replace H by K at
+  the other numerical inputs an iterator visits. The uniform body lemma
+  uses an empty-context identity and reindexes it at the needed inputs.
+
+  Iterator naturality has a direct atomic-induction proof: both zero rows
+  are the same seed; JS turns the successor rows into H of the previous
+  values paired with the same transformed environment; Pair and Post carry
+  the induction hypothesis. CL/CR and fork distribution justify expansion
+  of H_F. This proof does not assume the native compiler or its completeness.
+
+5. Logical rules and quantified-body naturality
+  The y-first D convention is used consistently. At DE's branch input
+  beta(b,e), the added Q prefix <L,R;p> is beta(b,p(e)). The branch target
+  A down R and old hypotheses down R ignore the witness by construction.
+  This replaces a freshness side test soundly.
+
+  DI's witness T(e) depends only on the old environment. QI assumes the zero
+  row, not the predecessor row, so it is numerical case distinction, not
+  induction for arbitrary formulas. Ind checks a literal Eq body. Thus the
+  calculus does not inadvertently add full quantified-formula induction.
+
+  Retaining QI explicitly closes the logical naturality proof. QE and QI,
+  with input-map equalities and predicate transport, prove the Q lift law;
+  DE and derived witnessed D introduction prove the D lift law. Body
+  congruence is then obtained by reindexing the two body derivations via
+  Sub. None of this treats distinct bound-body spellings as literally equal.
+
+6. Forward compiler and both round trips
+  The native term substitution proof has the necessary iterator case:
+  counter and seed identities are handled by equality congruence; the
+  body identity is unconditional and hence can use uniform body congruence;
+  iterator naturality moves the changed captured environment; fork
+  distribution aligns the input words. This covers nested J instructions.
+
+  The report now supplies a concrete native decoder. In particular,
+    J_H_PR(x) = I(ell(x),ell(r(x)); u.H_PR(beta(u,r(r(x))))).
+  Thus each finite program has an explicitly selected native term, with
+  no varying-code total evaluator. The symbol ^flat is applied to native
+  syntax, not silently to an arbitrary first-order formula.
+
+  The sealing map <Id,Z> is indispensable. A native term with free x0 is
+  compiled for a tuple with x0 in its first coordinate. Hence the correct
+  program comparison is P = seal;compile(P_PR(x0)), as stated. CL proves
+  seal;L=Id. Raw L would not be the identity. The same sealing convention
+  is present in the formula round trip.
+
+  Canonical pairing uniqueness and induction uniqueness for J identify
+  every added program with its native definition by structural induction.
+  Atom round trips then use program identities; prefix and body round trips
+  use Transport and the independently proved logical naturality/congruence.
+  For source formulas, a fixed tuple represents their finitely many free
+  variables; a source sentence is environment-independent. The report
+  correctly avoids identifying N^0 with N.
+
+  These constructions support a bi-interpretation of the ordinary numerical
+  realization, with the numerical domain unchanged and equality actual.
+  The theorem is not merely an equiconsistency argument based on the standard
+  natural-number model. The two decoder/compiler composites, including the
+  sealing convention, are explicitly addressed.
+
+7. Reference checker audit
+  The program implements all nine arithmetic schemas and ten other rule
+  families. Every step validates a context and conclusion; program and
+  formula constructors have exact arities; booleans/floats are excluded as
+  integer tags. Premise indices are exact nonnegative integers strictly
+  earlier than the current node. The final context must be empty.
+
+  Arithmetic constructors reproduce the stated C0, CL, CR, CE, P00, P0S,
+  PS, J0 and JS equations literally. Sub checks every substituted premise.
+  Post, Pair and Transport check matching contexts and their exact endpoints.
+  QE, DE, DI, QI and Ind use the specified prefix maps, including DE's exact
+  lifted branch context and Ind's atomic-matrix restriction.
+
+  No certificate-supplied code is executed. No program evaluator or
+  arithmetic normalization procedure is consulted by the proof checker.
+  Exceptions reject malformed certificates; checks do not depend on Python
+  assert statements. Physical recursion/memory limits remain the usual
+  implementation limitation and are distinct from ideal finite-proof
+  completeness.
+
+Limits of this review
+  This is an independent assistant review of a written proof and implementation,
+  not an external human referee report. I have not converted the metatheorems
+  into Lean/Rocq proofs or generated checker certificates for every schematic
+  translation lemma. The reported finite tests support implementation examples;
+  they do not establish the universal compiler or bi-interpretation theorems.
+  The proof is appropriately characterized as a written scheme-level result,
+  with those verification limits stated explicitly. The size target remains
+  unmet by this environment calculus, as the report candidly records.

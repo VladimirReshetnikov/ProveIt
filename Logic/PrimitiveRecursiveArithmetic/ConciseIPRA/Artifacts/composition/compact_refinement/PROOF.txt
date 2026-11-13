@@ -1,0 +1,141 @@
+A 236-TOKEN DIRECT CHECKER: MATCHED REFINEMENT
+
+This is an implementation refinement of the inherited scalar iPRA calculus.
+It deletes no arithmetic or logical axiom and does not produce one program
+below all three coordinates of the current complexity envelope.
+
+CONTRACT
+
+The first input line is JSON [G,A], where G is a list whose first item is
+the administrative entry 0; remaining items, if any, are closed canonical
+guarded native public formulas, and A is such a formula. Later lines are
+three-field proof packets in the inherited stream protocol. The promised
+raw alphabet consists of exact integers and lists. The program does not
+validate that external public-syntax promise. Successful normal termination
+with exactly ACCEPT and LF certifies the sequent Gamma |- A, where Gamma is
+G with its administrative first entry removed. For theorems use G=[0].
+It does not certify A alone when Gamma is nonempty.
+
+This is precisely the seeded-header contract of the existing 238-token
+control. Input framing, marker, rule checks, opener, packet order, global
+fresh-name counter, numerical codes and output convention are unchanged.
+
+EXACT TWO EDITS
+
+1. In the antecedent of the existing conditional, replace
+
+       i(a) not in (*g, C)
+
+   by
+
+       i(a) not in g + [C],
+
+   where C is exactly the same computation candidate expression.
+
+2. Replace the continuation call's first argument
+
+       c([*g, H], B)
+
+   by
+
+       c(g + [H], B),
+
+   with exactly the same expressions H and B.
+
+These are the only two changes to the normalized main module relative to
+control_tokens238.py. Each saves one significant token. Neither changes
+its normalized byte count or AST-node count.
+
+LIST AND NONMUTATION INVARIANTS
+
+At the root, g is a finite built-in list by the input contract. The recursive
+major call c(g,s) preserves that list, and the recursive continuation constructs
+a new list with one appended hypothesis. Induction on the call tree therefore
+proves that every context is a finite built-in list. Its items are integer/list
+trees under the promised raw alphabet, with no user-defined equality behavior.
+
+The program never mutates a context list or any of its elements. The opener
+creates fresh lists and returns existing scalar values; there is no assignment
+to a list item, deletion, append, extend, in-place addition, or mutating method.
+Proof calls read contexts and create new contexts. Their externally visible
+effects are input consumption and updates of the global integer k.
+
+UNIVERSAL SIMULATION
+
+Fix a call with identical g,a,k and remaining input in the two programs.
+Both first read and unpack the same packet. In the membership test, both
+evaluate i(a), then the same C with identical arguments and proof state.
+The tuple and concatenated list have exactly the entries of g followed by C.
+Built-in tuple and list membership test those entries in the same order using
+the same identity/equality criterion. Copying g has no proof-state effect.
+Thus the membership test chooses the same branch.
+
+For the continuation context, [*g,H] copies g before evaluating H; g+[H]
+evaluates the g reference, evaluates H, and then copies g. H can recurse,
+consume input, and alter k, but cannot change the value, length, entries,
+or object identity of the enclosing local g. It cannot inspect the temporary
+outer list. Hence the two constructions contain the same entries after the
+same H evaluation. If H fails, neither calls the continuation. B is evaluated
+after the completed first argument in both programs. The continuation receives
+the same context, target, global counter, and unread input.
+
+Induction on every finite accepting call tree proves identical successful
+runs, packet consumption, counter updates and acceptance in both directions.
+The identical shared expressions reject their failures in both programs.
+Mathematical completeness uses the inherited unbounded finite-resource
+idealization: a different physical allocation threshold is not a change in
+the arithmetic calculus.
+
+Consequently the main programs accept exactly the same certificates under
+the stated seeded-list contract. Existing soundness, completeness,
+equiconsistency and bi-interpretability results transfer unchanged.
+
+SET-IMAGE COMPANION
+
+checker_tokens236_set.py also changes the internal singleton image [k] to
+{k}, an existing device in the corpus's node-oriented checker. The image
+is traversed only by the opener, using iteration and len and returning a
+list comprehension. Both singleton collections have length one and yield
+the same integer k once. They give equal opener results, or both fail,
+without side effects. This saves one AST node but increases gzip size.
+No external input syntax changes.
+
+LAMBDA COMPANION
+
+checker_tokens236_lambda.py instead expresses the opener as a lambda with
+the test a*0 != 0. For an integer this is false; for a list it is true.
+The only additional internally generated scalar is the missing-image
+sentinel 0j, for which the test is false and the later order comparison
+raises, just as in the control. This companion retains the image [k].
+
+For each fixed k, structural induction on a finite successful opener
+evaluation proves equal returned values. When a list child fails, the old
+try/except catches that failure and then attempts k <= a with a list a,
+which also fails. The lambda propagates the child failure. Neither opener
+consumes input or changes k, so both reject these evaluations. This companion
+therefore accepts the same certificates under the same raw alphabet and
+resource idealization. It improves bytes at the cost of more AST nodes.
+
+MEASUREMENTS AND LIMIT
+
+CPython 3.12.14; normalized source is ast.unparse(ast.parse(source)) plus LF.
+Significant tokens omit encoding, endmarker, newline, NL, indent, dedent and
+comments. Gzip uses level 9 and mtime=0 on the normalized bytes.
+
+Control:                 238 tokens,262 AST,545 bytes,326 gzip.
+Main two-edit candidate: 236 tokens,262 AST,545 bytes,327 gzip.
+Set companion:           236 tokens,261 AST,545 bytes,330 gzip.
+Lambda companion:        236 tokens,270 AST,516 bytes,320 gzip.
+
+The observed direct compact envelope changes only its token coordinate,
+from 238/255/455 to 236/255/455, when seeded-header protocols are admitted.
+Different programs attain these minima. These programs do not attain
+255 AST nodes or 455 bytes and do not claim an absolute minimum.
+
+Supporting finite checks comprise 35 cases across all four programs in normal
+and optimized Python: 280 isolated executions without a disagreement. Four
+additional boundary checks preserve rejection after exactly two input lines,
+before a major proof can be read. The three normalized candidate hashes are
+absent from the 3,782-entry pinned source census. This supports the universal
+proof; it is neither an exhaustive test of all inputs nor a historical-priority
+claim for the ideas.

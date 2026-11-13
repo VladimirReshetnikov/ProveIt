@@ -1,0 +1,83 @@
+INDEPENDENT REVIEW: EXACT TUPLE-SELECTION REFINEMENT
+
+Reviewed candidate:
+  work/checker-research/tuplewalker.py
+Reviewed control:
+  work/baseline/retained_validation/
+  ipra_retained_validation_2026-11-13/code/checker.py
+
+Conclusion
+==========
+The sole source change preserves acceptance and rejection on the same
+standalone JSON inputs, in the ordinary unbounded execution model. It
+does not change the public grammar, inference rules, scope discipline,
+packet consumption, or meaning of a certified statement. No new arithmetic
+equivalence theorem is needed. This is not a global-frontier improvement.
+
+The replacement is
+
+  (j & 2 if d % 2 else 5 - len(a))
+
+by
+
+  (5 - len(a), j & 2)[d % 2].
+
+1. The list guard
+=================
+The expression occurs only inside the list-comprehension branch guarded
+by `a * 0 == [] and ...`. JSON decoding produces exact built-in lists,
+integers, floats, Booleans, strings, dictionaries, and null. The program
+constructs further built-in lists, integers, and fixed internal values;
+it does not create user-defined numeric or container subclasses.
+
+Among these reachable values, a successful `a * 0 == []` requires a
+built-in list. Numeric and Boolean products are numbers, not []; a string
+product is the empty string, not []; a tuple product, if one is considered,
+is the empty tuple, not []. Dictionaries, null, and the internal function
+sentinel fail multiplication before entering this branch. Therefore
+`len(a)` is an ordinary exact integer and has no user-defined callback.
+This reasoning covers malformed JSON payloads as well as intended syntax.
+
+2. The index and depth invariants
+================================
+`j` comes from enumerate(a), so it is a nonnegative exact integer. Every
+successful explicit opener call starts with integer depth 0, 2, or 3.
+The only potentially unusual call form is `i(*a, t, 2)`: if argument
+binding succeeds, an empty expansion leaves the default depth 0 and a
+one-element expansion assigns the literal depth 2; a longer expansion
+raises an argument-count error before evaluating the body. No raw input
+field can become the depth argument by this call form.
+
+Recursion changes depth only by adding one of the integers `5-len(a)`
+and `j & 2`. Hence d remains an exact integer at every invocation. Some
+auxiliary arrays can make d negative; positivity is neither assumed nor
+needed. Python's integer remainder by 2 is always 0 or 1, also when d is
+negative.
+
+3. Eager evaluation is harmless here
+====================================
+Once this branch is selected, both `5-len(a)` and `j & 2` are total,
+side-effect-free operations on built-in integers and lists. Evaluating
+both rather than only one consumes no proof packet, changes no global
+floor, and invokes no additional opener. Tuple selection is therefore
+defined and returns exactly the old conditional's value for d%2=0 and
+for d%2=1. Allocation and finite-memory failures are outside this usual
+unbounded source-semantics comparison; they are not an arithmetic issue.
+
+4. Whole-program consequence
+============================
+At corresponding opener invocations the guard, scalar alternatives,
+loop order, and child values coincide. The calculation above gives the
+same depth for each recursive call, in the same order. Induction on a
+finite evaluation therefore gives the same returned value or the same
+semantic failure. The outer checker consequently consumes the same
+packets, changes the global floor at the same times, and takes the same
+recursive branches. Both emit ACCEPT on exactly the same successful
+inputs. Rejection traceback text is not claimed byte-identical, since
+the source line and filename can differ.
+
+The new module therefore inherits the control's full mathematical
+correctness obligations and its established input contract without any
+extension to malformed aliases. This review is a source-level proof,
+not a new Lean/Rocq verification of Python. Finite differential tests
+are corroborating implementation checks, not the basis of the argument.

@@ -1,0 +1,103 @@
+INDEPENDENT REVIEW OF THE SORTED SINGLE-LINE REFINEMENT
+13 November 2026
+
+Source comparison
+-----------------
+Baseline: sources/incoming/ipra_local_validation_2026-11-13/code/checker_sorted.py
+Candidate: sources/frontier_audit/sorted_line_refined.py
+Pinned upstream commit: 65c32fbe4730bfe5a064502b0b95ebc798c732fa.
+Runtime inspected and measured: CPython 3.12.14.
+
+The baseline measures 297 significant tokens, 336 AST nodes, and 556 normalized
+UTF-8 bytes. The candidate measures 295 / 332 / 553. The current qualified
+sorted-interface coordinate envelope is 297 / 335 / 556, attained by different
+programs; the candidate is below each coordinate, with the line-framing
+qualification below. It remains above the compact global envelope. No
+mathematical axiom deletion or new iPRA interpretation is introduced.
+
+Normalization removes genuine module/function/class docstrings, applies
+ast.unparse, appends one LF, excludes layout/comment lexical tokens, and
+counts all AST nodes including contexts/operators. The candidate has no
+docstrings. Its normalized SHA-256 is
+9aa690abf127c59eb89f9e408593c39a1435da5607f460fec28220bbf09155fa.
+No normalized duplicate occurs in the complete current census: 3,776
+integrated/archive source occurrences, including all four current incoming
+archives, with zero parse failures. This establishes only finite-corpus source
+novelty. Every inference rule and general implementation mechanism is inherited.
+
+Six changes and their simulation
+-------------------------------
+1. The arity membership (1, 2+d%2) becomes {1, 2+d%2}.
+All reachable depth arguments d are integers: the default and explicit depths
+are integers, and recursive depths add 5-len(a). The splatted call either
+uses one of those fixed/default depths or raises an arity error. Thus both
+membership containers contain the distinct integers 1 and either 2 or 3.
+The tested len(a) is an integer. Tuple and set membership therefore give
+the same Boolean, and neither changes any state. Set iteration order is unused.
+
+2. `from json import load` becomes `from json import *`.
+The inspected json.__all__ is exactly dump, dumps, load, loads, JSONDecoder,
+JSONDecodeError, JSONEncoder. None collides with the checker's k, i, c, q,
+or local names. The only newly used binding is loads. The import change has
+no effect on the inference functions or their state. This statement is pinned
+to the ordinary unmodified CPython standard-library module, as is the baseline.
+
+3. `load(open(0)).pop` becomes `loads(input()).pop`.
+This is an explicit framing change, not equality of raw input languages.
+The new program consumes one physical line containing an entire JSON value
+and ignores later physical lines. The old program parses an entire input
+document. For the same parsed JSON value, both readers supply the same pop
+operation and hence the same packet sequence to the kernel. The local source
+of json.load was inspected: it delegates to loads(fp.read()) with the default
+hooks used here. Every accepted old certificate can be put on one line by
+replacing literal CR/LF whitespace with spaces; valid JSON strings cannot
+contain such literal unescaped characters. This preserves number spellings,
+escaped strings, and the parsed value, including the parser's supported
+nonstandard numeric constants. Conversely the first line accepted by the new
+reader is a complete document for the old reader. Thus certificate existence
+for a public goal is unchanged. Pretty-printed multiline old certificates need
+this framing conversion, and the treatment of trailing input is different.
+
+4. Terminal membership changes from `(k:=k-1, *g, E)` to
+`g + [(k:=k-1), E]`.
+The goal opener i(a) is evaluated first in both versions. The decrement then
+occurs before the computation candidate E is evaluated, and E is evaluated
+exactly once with the decremented state. The context is always a list: it is
+initialized to [[]] and extended by list displays. It is never mutated in
+place. Hence the new sequence contains exactly the same objects as the old
+one; only the scalar decrement sentinel is moved after the context entries.
+All surviving compared values are finite built-in integer/list trees, whose
+equality has no side effects. Existential membership is consequently unchanged.
+Even when the scalar sentinel matches, comparisons with list context entries
+cannot inspect their nested contents, because integer/list equality is false.
+The recursive branch and its state are untouched.
+
+5. `s and [s] or 1` becomes `[s] if s else 1`.
+If s is false the value is 1 in both programs. If s is true the nonempty list
+[s] is true, so the old outer `or` keeps it; the conditional selects exactly
+that same list. Truth-testing of s occurs once, and [s] is evaluated only in
+the true case. This is exact for all built-in parsed JSON values, not only for
+canonical proof packets.
+
+6. `k-1` becomes `~-k`.
+Python parses this as ~(-k). The state starts at the integer 0 and every update
+preserves integrality. The integer identity ~(-k) = k-1 proves equality of the
+new state at every terminal test, including all recursive major proofs.
+
+Inductive conclusion
+--------------------
+After fixing a parsed packet stack, corresponding executions have the same
+context, goal, remaining stack and integer state at every recursive entry.
+Changes 1, 2, 4, 5 and 6 preserve the branch decision, state update and recursive
+arguments, or reject at the same malformed operation. This yields the same
+accepted parsed-object certificates under the usual unbounded finite-resource
+semantics. Change 3 transports certificate existence between the two declared
+input framings. All public-grammar and alias qualifications of the baseline
+remain: the checker validates a sorted grammar with administrative padding,
+and completeness is for canonical native theorem encodings. It is not an
+exact-actual-binding grammar checker. No claim about every padding alias is
+strengthened by these transformations.
+
+This written simulation is independent of finite fixture replay. The parent
+task is running the final regression suite and owns its test receipt. This
+review is not a Lean/Rocq formalization or a proof about fixed hardware limits.

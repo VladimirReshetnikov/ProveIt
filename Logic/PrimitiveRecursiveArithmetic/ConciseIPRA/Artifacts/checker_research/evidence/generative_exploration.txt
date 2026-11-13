@@ -1,0 +1,71 @@
+FORWARD / GENERATIVE CERTIFICATE EXPLORATION
+
+Baseline audit continuation, 2026-11-13.
+
+Prior work
+----------
+The pinned unified article already discusses conclusion synthesis in
+ch11_cert.tex under "Further rejected designs". It attributes two
+experimental programs to prevalidated_elimination: 330/390/951 and
+334/392/777. The article explicitly says that completeness of these
+experiments is not established. Copies are in this directory as
+synth_checker.py and synth_compact.py, fetched from that current package.
+
+Small concrete experiment
+------------------------
+synth_generate.py modifies synth_compact.py only by deleting the supplied
+goal read and final goal comparison, and replacing the ACCEPT output with
+print(c([])). Thus a successful input would display the inferred formula.
+Independent CPython 3.12.14 measurement:
+
+  318 significant tokens / 374 AST nodes / 746 normalized UTF-8 bytes.
+
+This is a reduction from the existing experiment, but does not approach
+238 / 255 / 455, and remains an EXPERIMENTAL PROGRAM. No new soundness,
+canonical completeness, or bi-interpretation theorem is claimed for it.
+It is not a deliverable checker recommendation and should not appear as
+an achieved mathematical result.
+
+Why simply generating the result does not remove the main checks
+--------------------------------------------------------------
+A supplied-goal checker closes by a single membership comparison. A
+generative checker needs hypothesis-index dispatch and returns a formula.
+Equality and Q elimination still need to compare the generated minor
+premise with the required instance. Introduction needs to compare the
+generated branch conclusion with its required successor instance. D
+elimination needs to verify that the fresh witness does not escape into
+the returned conclusion. Returning the result does not remove these
+obligations; the existing prototype makes them explicit.
+
+One can avoid the final fresh-variable test by existentially closing the
+exported formula. That changes A to an existential closure of A. Recovering
+every exact target formula then needs unused-variable elimination or an
+external quotient/normalizer. Moving that operation into the interpretation
+without implementing and charging it would not establish the requested
+standalone size comparison.
+
+Higher-order abstract syntax
+----------------------------
+Host lambdas can handle capture-avoiding substitution, but a sound checker
+still requires a protected distinction between proved formulas and ordinary
+formula data. Otherwise an input expression can return a forged proof.
+A private nominal proof class plus a restricted pure-lambda certificate
+grammar can supply a capability boundary, but that boundary is part of the
+input contract; arbitrary Python evaluation does not supply it.
+
+Alpha-equivalence of independently constructed iterator/binder lambdas is
+not Python function identity. An alpha-aware quotation procedure (or a
+different adequate canonical representation) is needed before matching
+minor premises and introduction instances. Fresh object identities avoid
+input-forged eigenparameter names only when the constructor interface also
+prevents those objects from escaping into an exported proof's formula.
+These are concrete obligations; none was solved here in a program below
+the current compact coordinates.
+
+Result
+------
+No new global source-size improvement was found by this forward-interface
+exploration. The most direct idea is already in the repository and the
+measured generative variant remains larger. A novel proposal must account
+for the matching, alpha-equivalence, nominal-proof and eigenparameter
+boundaries rather than counting only its evaluator wrapper.

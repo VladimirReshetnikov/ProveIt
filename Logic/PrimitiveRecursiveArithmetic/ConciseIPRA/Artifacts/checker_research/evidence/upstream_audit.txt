@@ -1,0 +1,143 @@
+CURRENT CONCISE-IPRA BASELINE AUDIT
+Snapshot: 65c32fbe4730bfe5a064502b0b95ebc798c732fa
+Subproject: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA
+Date: 2026-11-13
+
+1. What was inspected
+
+The current README, the complete Artifacts tree (22,301 entries, not
+truncated), all four docs/incoming ZIPs, the currently installed compact
+coordinate records, their interface/proof notes, and the new candidate
+sources inside each incoming ZIP. The README's headline 302/340/584 strict
+envelope is stale relative to the incoming packages and several already
+integrated nontraditional-input programs. Do not cite it as today's full
+comparison threshold.
+
+The four archives were downloaded at the pinned commit and verified against
+their Git blob SHA-1 IDs from the repository tree. Selected integrated
+source files were likewise verified. See audit_metrics.json and
+audit_metrics.py for independent CPython 3.12.14 measurements.
+
+2. Reproduced size triples (significant tokens / AST nodes / normalized bytes)
+
+Closed compact, promised grammar:
+  304_token_refinement/benchmarks/compact_tokens239.py    239 / 261 / 549
+  304_token_refinement/benchmarks/compact_ast255.py       245 / 255 / 580
+  neutral_modes/code/checker_bytes460.py                 266 / 299 / 460
+  Coordinate envelope                                  239 / 255 / 460
+
+Compact open-sequent interface, promised grammar:
+  nontraditional_inputs/sequent_input/checker_sequent458.py
+                                                        265 / 297 / 458
+  Combined with closed compact coordinates              239 / 255 / 458
+
+Compact seeded-sequent interface, promised grammar:
+  checker_seeded_sequent455.py                          262 / 296 / 455
+  checker_tokens239_seeded_sequent.py                   238 / 262 / 545
+  Combined with compact AST record                     238 / 255 / 455
+
+Validated sorted grammar, completeness for canonical encodings:
+  local_validation/code/checker_sorted.py               297 / 336 / 556
+  structural_parameters/strict/checkers/strict_ast335.py 308 / 335 / 667
+  Coordinate envelope                                  297 / 335 / 556
+
+Validated genuine-binding public grammar:
+  retained_validation/code/checker_tokens.py            303 / 345 / 623
+  retained_validation/code/checker_nodes.py             310 / 338 / 655
+  retained_validation/code/checker.py                   309 / 355 / 582
+  Coordinate envelope                                  303 / 338 / 582
+
+Other current incoming candidates:
+  exact_threshold/code/checker.py                      314 / 357 / 590
+  local_validation/code/checker_exact.py               312 / 353 / 588
+  structural_parameters/structural/checker_opaque_stream.py
+                                                       246 / 269 / 546
+
+None of the envelope triples in this audit is achieved by one program.
+They are observed finite-corpus minima, not mathematical lower bounds on
+all possible proof checkers or axiomatizations. A candidate strictly below
+all three global liberal coordinates would need fewer than 238 significant
+tokens, fewer than 255 AST nodes, and fewer than 455 normalized bytes under
+this common implementation metric and with disclosed input conventions.
+
+3. Trusted-boundary qualifications
+
+Compact checkers promise integer/list certificates, a canonical guarded
+public grammar, and appropriate initial scope. The strongest compact source
+figures omit a complete public syntax validator. Those omissions do not
+remove validation rules from a strict checker for free; comparisons must
+state the difference.
+
+The 458-byte program reads [Gamma,A,0] as the SEQUENT Gamma |- A, not as the
+bare assertion A. A certificate for [0=1] |- 0=1 is not a proof of 0=1.
+Initial assumptions and goal are closed canonical public formulas, so
+negative eigenparameters are fresh. The 455-byte and 238-token variants
+require the administrative neutral truth 0 to occur explicitly in the
+initial context. This moves a representation convention into the input;
+it is already present in the corpus and is not a new simplification.
+
+Sorted public validators retain administrative constructor slots. Their
+soundness is given by an ordinary reading, while completeness is only for
+canonical encodings that do not mention dummy slots. The old false-complete
+extension is obstructed by [[5],[1]], shifted to [[7],[1]] in the two-offset
+syntax. The actual-binding 582-byte exact program avoids those phantom
+slots and has a different comparison boundary.
+
+Newest local validators deliberately allow arbitrary UNUSED JSON annotations.
+The important obligation is that used goals, hypotheses, majors, retained
+numerical leaves, and inserted substitution images are validated. A whole-
+document integer/list lexical filter is stricter than needed for soundness.
+This local-validation idea is already in the repository incoming packages.
+
+All recorded programs include parsing/imports and explicit ACCEPT output.
+Completeness uses idealized unbounded finite resources; CPython recursion,
+integer-conversion and parser bounds can reject some large valid inputs.
+Finite regressions are not a proof of the universal Python semantic theorem.
+
+4. Already-proposed mathematical and representational ideas
+
+The README and unified article already cover extensive permutations of
+one-term transport, restricted transport sources, fused evaluation/discharge,
+canonical and zero-normal iteration, root/diagonal introduction selectors,
+case introduction at a fixed/newest witness, progressive Q closures,
+clause contexts, one-body contexts, and nonstandard sequent/program inputs.
+
+The latest four archives add:
+  * structural_parameters: opaque finite-tree eigenparameter names, with
+    freshness from proper-subtree size. It is equivalent on the inherited
+    contract but does NOT beat the compact envelope. Its strict coordinate
+    refinements use shifted sorted syntax with canonical completeness only.
+  * exact_threshold: threshold/progress-selector refinements for genuine
+    binders, 314/357/590. No global target crossing.
+  * local_validation: validation of used values only, an exact actual-binding
+    checker 312/353/588 and sorted companion 297/336/556. A separate
+    tail_induction.tex replaces backward iteration computation by forward
+    iteration plus equation induction with one changing parameter, with
+    interpretation proofs but no smaller checker.
+  * retained_validation: parity itself validates retained numerical leaves;
+    a separate integer coercion is redundant; source-instance opening may
+    be deferred until elimination matches. Exact profiles above. No global
+    target crossing.
+
+Do not present one of these as a fresh discovery. A source-level variation
+may be absent from the finite corpus without constituting a new
+mathematical axiom deletion.
+
+5. Practical candidate-audit risks
+
+Evaluation order matters: a witness-dependent expression must be formed
+before checking the major allocates the eigenparameter used for discharge.
+Checking scope only after the major returns can admit future-witness
+capture. A proposal eliminating a floor check or changing packet ordering
+needs a new proof, not only regression data.
+
+Equality/Q source inference and root-determined DI modes depend on the
+ordinary reading of auxiliary formulas. The compact guarded calculus is
+not complete for arbitrary raw Eq/Q/D syntax. The public image translation
+cannot simply be omitted: the README explicitly records failures of
+raw transitivity and raw case-introduction under the restricted calculi.
+
+Normalization, an external compiler, a generated theorem table, a required
+certificate header, and an embedded source evaluator all affect what is
+being counted. A tiny wrapper around a larger trusted engine is not a
+smaller standalone proof checker by the stated repository criterion.

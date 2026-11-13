@@ -1,0 +1,73 @@
+DECODING AND GENERATIVE INTERFACES: MATHEMATICAL REVIEW
+
+This note concerns a possible proof-input redesign. It asserts no source-size
+improvement and no new arithmetic axiom reduction.
+
+1. The exact condition for a decoded public goal
+
+Let N be the native Eq/D calculus already proved bi-interpretable with iPRA.
+Let C be the class of finite input codes. Let D:C -> Form(N) be a total
+decoder and E:Form(N) -> C an encoder with D(E(A)) = A, literally modulo
+the chosen bound-variable convention. A checker V(q,p) is a complete
+decoded presentation if, for every q in C,
+
+              (there exists p: V(q,p) accepts) iff N proves D(q).
+
+The forward direction requires every accepted trace to extract a native
+derivation of the DECODED advertised statement. The reverse direction
+must apply to every q, not only q=E(A). A sufficient implementation is to
+compute E(D(q)) once and invoke a proven complete native checker on that
+canonical goal, with any necessary translation of certificate fields.
+The decoder and every trusted translation must be counted in the module.
+
+2. What the theorem does and does not imply
+
+If public formulas are the native formulas themselves, and q is only input
+notation for D(q), the logical theory has not changed: both numerical
+domains, actual equality, and the two identity comparison graphs are
+inherited from N. The input codec is not an additional object-language
+sort. This is a smaller PRESENTATION, if the measured module is smaller.
+It must not be described as discovering a simpler arithmetic basis.
+
+If instead every raw q is declared a distinct formula of a new formal
+language, a mere surjective enumeration of closed theorems is not a
+bi-interpretation. At minimum one must identify q with E(D(q)) inside the
+new calculus, or make that identification definitional by quotienting the
+syntax. For an interpretation formulated directly on the raw language,
+one also needs substitution/naturality and the appropriate open-context
+statements. Equiconsistency of enumerations alone is insufficient.
+
+3. Why dropping the validator is not decoding
+
+The article's reserved-coordinate example q=[1,0] reads as 0=0 under a
+relaxed reading but is unprovable in the unchanged raw protocol; the raw
+protocol is also sound when scalar 1 names an arbitrary new constant.
+Similarly the dummy-slot example [[5],[1]] reads S0=S0 but is unprovable
+under the unchanged sorted-slot protocol. A harmless interpretation of
+malformed or extra spellings therefore does not yield completeness.
+The actual goal being checked must be canonicalized, not just scanned
+for membership while its unnormalized original is retained later.
+
+4. Generative proof interfaces
+
+A partial procedure G on finite proof inputs may instead return a native
+formula together with successful verification. It is a presentation of N
+if (a) every returned A has a native derivation, and (b) every theorem A
+is returned on some input. The formula must be returned or displayed as
+part of the verified result; an ACCEPT marker with no relation to an
+advertised statement is not a theorem-checking interface. An ordinary
+goal-directed interface can be obtained by checking G(p)=A, but that
+comparison is additional measured trusted work if it is advertised.
+Bi-interpretability again transfers because the output language and
+ordinary realization are N, not because proof enumerations are generally
+bi-interpretable.
+
+5. Current mathematical novelty audit
+
+The source already contains full normalization, equality and existential
+discharge fusion, one-body clause contexts, deterministic/newest witnesses,
+variable-only equality, forward/tail induction, and opaque structural
+eigenparameters. Re-presenting any of those alone is not new. The pinned
+incoming archives include the opaque-tree freshness proposal and the
+forward-recursion/tail-induction derivation. No new rule-basis reduction
+has been established in this review.
