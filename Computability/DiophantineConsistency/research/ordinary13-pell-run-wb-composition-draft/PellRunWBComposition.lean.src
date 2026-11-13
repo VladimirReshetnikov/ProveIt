@@ -1,0 +1,44 @@
+import DiophantineConsistency.PellRunMajorantClient
+import DiophantineConsistency.PellBlueprintProjectionBounds
+import DiophantineConsistency.PRAWitnessPR
+
+/-! SOURCE ONLY. All prospective providers and this composition are
+    unelaborated. WB is a model-level existential bound, not a uniform code. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.PellRunWBCompositionDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open PRAFiniteFunctionCodes PRALanguage PRATheory
+open ArithmeticPellRecurrence PRAWitnessCalculus PRAWitnessPR
+open PellHistoryMajorantDraft PellRunMajorantClientDraft
+open PellBlueprintWBDraft PellBlueprintProjectionBoundsDraft
+
+section Models
+variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
+  [M↓[language] ⊧* PRA]
+local instance : Zero M := ⟨Structure.func (L := language) (Code.zero 0) Fin.elim0⟩
+local instance : One M := ⟨Structure.func (L := language) oneCode Fin.elim0⟩
+local instance : Add M := ⟨fun x y => Structure.func (L := language) addCode ![x,y]⟩
+local instance : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
+local instance : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
+
+/-- Exact generic interface, with both clause bounds and majorant explicit. -/
+theorem run_wb_of_inputs
+    (hz : WB M blueprint.zero.val) (hs : WB M blueprint.succ.val)
+    (hH : PellValueMajorant) : WB M runDef.val := by
+  change WB M blueprint.resultDef.val
+  exact PRAWitnessPR.wb_resultDef blueprint
+    (fun V _ _ => ArithmeticPellRecurrence.construction (V := V))
+    hz hs pairValueBound hH
+
+/-- Proposed assembly from the separate inert clients. -/
+theorem run_wb_selected : WB M runDef.val := by
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := PRAModelIOpenPairing.standardModelIOpen
+  exact run_wb_of_inputs (zero_wb (M := M)) (successor_wb (M := M)) pellValueMajorant
+
+end Models
+end DiophantineConsistency.PellRunWBCompositionDraft
+#print axioms DiophantineConsistency.PellRunWBCompositionDraft.run_wb_of_inputs
+#print axioms DiophantineConsistency.PellRunWBCompositionDraft.run_wb_selected
