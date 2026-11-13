@@ -5419,12 +5419,61 @@ compound formula has smaller rank in both senses.
 \pkg{abstraction\_and\_refinements} (\cref{kern:lem:fmarker}) applied, before
 the abstraction of $\Suc z$, to the template $B(v,\Suc z)$.  The package
 contains an independent written review of the equivalence proof and of its
-readable checker.  The theorem is not formalized in Lean or Rocq; the bridge
-it uses is that of \cref{base:thm:bridge}, which is not proved again.  The
+readable checker.  The theorem is formalized in Lean
+(\cref{wit:thm:recon-aqe} and the paragraph after it); the bridge it uses is
+that of \cref{base:thm:bridge}.  The
 package's
 separate exact-binding checkers of the native calculus do not implement
 $\mathsf{W}_{\mathrm r}$.
 \end{remark}
+
+\begin{theorem}[Both matrices reconstructed]
+\label{wit:thm:recon-aqe}
+Let $\mathsf{W}_{\mathrm{rr}}$ be $\mathsf{W}_{\mathrm r}$ with \rulename{QE}
+replaced by \rulename{AQE} of \cref{kern:def:A7}.  Then
+$\mathsf{W}_{\mathrm{rr}}$, $\mathsf{W}_{\mathrm r}$ and $\Nat$ derive the same
+sequents.
+\end{theorem}
+
+\begin{proof}
+Every instance of \rulename{AQE} is an instance of \rulename{QE} after the
+identities of \cref{kern:lem:abstr}(ii), so soundness is that of
+\cref{wit:thm:recon}.  For completeness, the structural rules of
+\cref{wit:lem:recon-rules} hold in $\mathsf{W}_{\mathrm{rr}}$ with the same
+proofs, since renaming commutes with the abstraction of \rulename{AQE}
+(\cref{kern:lem:abstr}).  Prove three statements together by induction on
+the rank $r$: transport in formula templates of rank at most $r$
+($T_r$); elimination of closures whose matrix has rank at most $r$
+($E_r$); and the introduction in the mode of cases, at an arbitrary witness,
+of matrices of rank at most $r$ ($J_r$).  $T_0$ is transport in equation
+templates.  $E_r$ follows from $T_r$ as in \cref{kern:lem:aqerank}:
+\rulename{AQE} at the oversized marker of the matrix, then transport along
+the computation of the marker.  $J_r$ follows from $T_r$: transport moves
+the assumption of the premise from the witness $t$ to the marker $M$ of the
+matrix with seed $t$, cut replaces it, transport moves the conclusion to $M$,
+and $\rulename{DI}_{\mathrm r}$ at the witness $M$ reconstructs the matrix by
+\cref{wit:lem:recon-syntax}(iii).  $T_{r+1}$ follows from $T_r$, $E_r$ and
+$J_r$ as in \cref{kern:lem:aqerank}: a closure $\Q{y}$ is transported by its
+step, which needs $T_r$ and $E_r$, and is reintroduced by cases through
+$\rulename{DI}_{\mathrm r}$ at a marker; a closure $\D{x}{y}$ is opened by
+\rulename{DE} and reintroduced at its eigenvariable by $J_r$.  With
+$T$, $E$ and $J$ at every rank, \rulename{QE} and the introduction by cases
+of $\Nat$ are derived, and \rulename{QI} is $\rulename{DI}_{\mathrm r}$ in the
+mode of progress followed by \rulename{DE}.  The same induction, with
+\rulename{QE} in place of $E_r$, proves \cref{wit:thm:recon}.
+\end{proof}
+
+The Lean module \Lean{NativeReconIntro} formalizes \cref{wit:thm:recon}
+(\Lean{rprf\_iff\_nprf}, the calculus \Lean{RPrf}) and
+\cref{wit:thm:recon-aqe} (\Lean{rrprf\_iff\_nprf}, the calculus
+\Lean{RRPrf}), both generically over the class \Lean{RKernel}, whose only
+elimination of a closure is \rulename{AQE} and whose only introduction is
+$\rulename{DI}_{\mathrm r}$.  The reconstructed matrix is stated as a formula
+whose substitution into the shape of the double abstraction equals the
+abstraction, which expresses at once the matrix and the side condition that
+$z$ is not free.  The abstraction of $\Suc z$ is
+\Lean{NFm.rpl\_subst\_succ}, the reconstruction at a marker
+\Lean{NFm.recon\_mark}.
 
 % ---------------------------------------------------------------------
 \section{Checkers and sizes}
@@ -5977,18 +6026,9 @@ a different interpretation, presents $\iPRA$ is not decided by them.
  the reverse replacement, the freshness test and the comparison of the seed.
  Can abstraction and the opening of binders share one traversal in a compact
  complete checker of $\mathsf{W}_{\mathrm r}$?
-\item (Raised by the article.)  Can the matrix of the introduction and that
- of the elimination of a closure both be reconstructed, that is, is
- $\mathsf{W}_{\mathrm r}$ with \rulename{QE} replaced by \rulename{AQE} of
- \cref{kern:def:A7} equivalent to $\Nat$?  The proofs of
- \cref{wit:lem:recon-rules} and \cref{kern:lem:aqerank} suggest the order
- transport, elimination, introduction at each rank, but neither
- \pkg{reconstructed\_introduction} nor \pkg{abstraction\_and\_refinements}
- states or proves the combination.
-\item \Cref{wit:thm:recon} is a written proof with an independent written
- review; it is not formalized in Lean or Rocq, and the correctness of the
- reference checker is supported by finite tests only.  No minimality of
- $\mathsf{W}_{\mathrm r}$ is claimed.
+\item The correctness of the reference checker of $\mathsf{W}_{\mathrm r}$ is
+ supported by finite tests only, and no minimality of $\mathsf{W}_{\mathrm r}$
+ or of $\mathsf{W}_{\mathrm{rr}}$ (\cref{wit:thm:recon-aqe}) is claimed.
 \end{enumerate}
 \end{question}
 
