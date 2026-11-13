@@ -114,3 +114,61 @@ quantified separation component `Q`, the old and new propositions are
 `F`, solve the original-binder/recoded-property mismatch, or translate arbitrary
 checker derivations. See [COMPARISON.md](COMPARISON.md) for the machine and
 source comparison and the remaining proof obligations.
+
+## Review of the incoming direct translation, 13 November 2026
+
+The later incoming [PA-TM research archive](../../../../../docs/incoming/pa_tm_research_2026-11-13.zip),
+member `pa_tm_research_2026-11-13/report/pa_reverse_translation.tex`, proposes
+a more direct route than recoding PA196 into the older native syntax. It
+interprets PA196 membership as arithmetic bit membership `B(u,v)` and
+its equality as arithmetic equality, while translating the *transposed*
+quantifier directly. Thus neither the older decoder's primitive-negation
+convention nor its property-code/binder interface has to be reproduced by this
+particular route. The report presents an ordinary mathematical argument and
+states a conditional transfer theorem; it explicitly does **not** contain
+an implemented proof compiler or a new kernel-checked PA biconditional.
+
+The written argument addresses several substantive cases:
+
+* PA proves `B(u,v) → v < u`, hence `¬B(u,u)`. Code 1 translates to
+  `B(x₀,x₀)`, so implication to code 1 is provably ordinary negation, and
+  the final translated refutation yields PA falsity. Code 0 is a truth alias:
+  because `I(0,0)=0`, the translation of that degenerate implication needs a
+  fixed proof of `⊤ ↔ (⊤ → ⊤)` rather than a literal syntax equality.
+* For a formula `φ` not containing the output label `c`, and distinct source
+  labels `a,b`, bounded bit comprehension supplies a set with bits
+  `((B(A,z) ∨ z=b) ∧ φ[z/x_b])`. This simultaneously supplies the separation
+  and distinguished-point clauses. When **the labels** `a,b` coincide, the
+  first antecedent becomes `B(z,z)` under the binder and is false; a singleton
+  at the original value of `x_b`, included only when `φ` holds there,
+  supplies the remaining clauses. The guard `c≠a,b` and freshness of `c` in
+  the property are both used. The equality- and membership-vacuity parts
+  then combine with that witness via the propositional gate identity above.
+  This collision argument is about equal labels, not merely equal assigned
+  numeric values.
+* The proposed comprehension proof is a fixed classical PA induction template
+  with the input formula substituted into the induction instance. The report
+  proposes primitive-recursive proof construction and syntactic proof
+  checking, avoiding a uniform truth predicate or a PA reflection principle.
+  This is the right kind of uniformity needed for nonstandard proof codes;
+  the manuscript does not implement the constructor or check its PA proof.
+
+These checks make the direct route a concrete proof plan; they do **not**
+validate all its uniformity and machine-binding claims. In particular, the
+report leaves open (1) the exact PA196-checker and Foundation-PA proof-code
+conversions, total proof-producing substitution/fresh-variable/comprehension
+templates and their PA-internal correctness, and (2) extraction of a native
+refutation from an **arbitrary model-length literal halting trace**, including
+startup, totalized halting behavior, nonhalting intermediate macro states and
+coded sequence bounds. That extraction must also handle the non-injective
+stack convention `pair(0,0)=0`: a zero stack and a pushed zero with zero tail
+share a numeric code. The external `SoundStack.pop` already handles both
+cases, but the proposed internal parallel proof-stack encoding and updates
+still need a corresponding all-model argument. The conditional theorem
+assumes the machine contracts in PA-verifiable form. The existing forward
+physical refinement and external HF soundness do not automatically discharge
+those hypotheses. A finite test
+of the gate or selected machine traces is not an all-model proof. No concrete
+logical counterexample to the written gate cases was found in this review;
+that is not a verification of the full claimed primitive-recursive translation
+or its connection to the literal machine.
