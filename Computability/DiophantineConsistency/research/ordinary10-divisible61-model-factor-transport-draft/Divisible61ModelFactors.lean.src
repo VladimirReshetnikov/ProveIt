@@ -1,0 +1,94 @@
+import DiophantineConsistency.ModelRelationCombining
+import DiophantineConsistency.Compact44.P72Root
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.LinearCombination
+import Mathlib.Tactic.Ring
+
+/-! Source-only factor-level model transport for 9/64 -> 10/61.
+This is not a child-literal binding or an elaborated Lean theorem. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Divisible61ModelFactorsDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ModelDifferenceRing
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Factor-level forward step: a positive represented scale and a positive
+signed carrier provide model-natural h and the natural magnitude tau. -/
+theorem normalized_first_of_signed (b ell k : V) (z B Q : DiffRing V)
+    (hb : 0<b) (hB : 0<B)
+    (hroot : z=ι b*Q-B)
+    (hnorm : z*z=ι b*ι b*(1+ι ell*(ι ell+ι k))) :
+    ∃ h tau : V, 0<h ∧ B=ι (b*h) ∧ tau*tau=1+ell*(ell+k) := by
+  have hbpos : (0:DiffRing V)<ι b := by
+    simpa only [map_zero] using (ι_lt_ι.mpr hb)
+  have hbne : (ι b : DiffRing V)≠0 := ne_of_gt hbpos
+  have hsq : (ι b : DiffRing V)^2 ∣ z^2 := by
+    refine ⟨1+ι ell*(ι ell+ι k),?_⟩
+    simpa only [pow_two] using hnorm
+  obtain ⟨v,hv⟩ := ModelRelationCombining.sq_dvd_sq (ι b) z hbne hsq
+  have hBd : (ι b : DiffRing V) ∣ B := by
+    refine ⟨Q-v,?_⟩
+    linear_combination hroot-hv
+  obtain ⟨u,hu⟩ := hBd
+  have hupos : 0<u := by nlinarith [hbpos,hB,hu]
+  obtain ⟨h,hh⟩ := nonneg_iff.mp (le_of_lt hupos)
+  have hhpos : 0<h := by
+    apply ι_lt_ι.mp
+    simpa only [map_zero,←hh] using hupos
+  have hBrepr : B=ι (b*h) := by
+    rw [hu,hh,map_mul]
+  have hvnorm : v*v=1+ι ell*(ι ell+ι k) := by
+    apply mul_left_cancel₀ (mul_ne_zero hbne hbne)
+    calc
+      (ι b*ι b)*(v*v)=(ι b*v)*(ι b*v) := by ring
+      _=z*z := by rw [←hv]
+      _=(ι b*ι b)*(1+ι ell*(ι ell+ι k)) := hnorm
+  by_cases hvpos : 0≤v
+  · obtain ⟨tau,htau⟩ := nonneg_iff.mp hvpos
+    refine ⟨h,tau,hhpos,hBrepr,?_⟩
+    apply ι_injective
+    simp only [map_mul,map_add,map_one]
+    rw [←htau]
+    exact hvnorm
+  · have hn : 0≤ -v := neg_nonneg.mpr (le_of_not_ge hvpos)
+    obtain ⟨tau,htau⟩ := nonneg_iff.mp hn
+    refine ⟨h,tau,hhpos,hBrepr,?_⟩
+    apply ι_injective
+    simp only [map_mul,map_add,map_one]
+    rw [←htau]
+    nlinarith [hvnorm]
+
+/-- Reverse step: truncated subtraction is used only after proving its
+bounds, and the constructed r is a model natural. -/
+theorem reconstructed_first_root (b h ell k tau : V)
+    (hb : 0<b) (hh : 0<h)
+    (hnorm : tau*tau=1+ell*(ell+k)) :
+    ∃ r : V,
+      (ι b : DiffRing V)*(ι ell+ι k+ι r-ι k*(ι b*ι h))-
+        ι b*ι h=ι b*ι tau := by
+  have htau_gt : ell<tau := by
+    apply ι_lt_ι.mp
+    have hn := congrArg (fun x : V => (ι x : DiffRing V)) hnorm
+    simp only [map_mul,map_add,map_one] at hn
+    have he := ι_nonneg ell
+    have hk := ι_nonneg k
+    have ht := ι_nonneg tau
+    have hp := mul_nonneg he hk
+    by_contra hnot
+    have hle : (ι tau : DiffRing V)≤ι ell := le_of_not_gt hnot
+    have hsqle := mul_self_le_mul_self ht hle
+    nlinarith
+  have hbh : 1≤b*h := pos_iff_one_le.mp (mul_pos hb hh)
+  let r : V := (tau-ell)+k*(b*h-1)+h
+  refine ⟨r,?_⟩
+  have hte : (ι (tau-ell) : DiffRing V)=ι tau-ι ell := P72Root.ι_tsub (le_of_lt htau_gt)
+  have hbh' : (ι (b*h-1) : DiffRing V)=ι b*ι h-1 := by
+    simpa only [map_mul,map_one] using (P72Root.ι_tsub hbh)
+  simp only [r,map_add,map_mul,hte,hbh']
+  ring
+end DiophantineConsistency.Divisible61ModelFactorsDraft
+#print axioms DiophantineConsistency.Divisible61ModelFactorsDraft.normalized_first_of_signed
+#print axioms DiophantineConsistency.Divisible61ModelFactorsDraft.reconstructed_first_root
