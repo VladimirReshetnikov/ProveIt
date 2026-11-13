@@ -1,0 +1,495 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1.05in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,microtype,xurl}
+\usepackage[hidelinks,pdftitle={Nonhalting and PA-independence for a 209-state Turing machine},
+  pdfauthor={James Chang}]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Prov}{\operatorname{Prov}}
+\newcommand{\pair}[2]{\langle #1,#2\rangle}
+\newcommand{\ax}{\mathsf{AX}}
+\newcommand{\mpc}{\mathsf{MP}}
+\newcommand{\shift}{\mathsf{S}}
+\newcommand{\push}{\mathsf{PUSH}}
+\newcommand{\pophead}{\mathsf{POP}}
+\newcommand{\discard}{\mathsf{DROP}}
+\newcommand{\src}[2]{\href{https://github.com/jamesyc/BusyBeaver/blob/main/#1}{\texttt{\nolinkurl{#2}}}}
+\setlength{\emergencystretch}{2em}
+
+\title{Nonhalting and PA-independence\\for a 209-state Turing machine}
+\author{James Chang}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We give an explicit two-symbol Turing machine with 209 working states
+that searches for a contradiction in ordinary first-order Peano
+arithmetic. The machine runs forever on a blank tape, and Peano
+arithmetic proves neither its exact arithmetic halting sentence nor
+its negation. The construction connects a register-program simulation
+to a refutation compiler that works in every model of Peano arithmetic.
+The literal transition table, both unprovability directions, and
+blank-tape nonhalting are formalized in Lean~4.
+\end{abstract}
+
+\section{The result}\label{sec:result}
+
+Busy Beaver problems ask how long a halting machine of a fixed size can
+run~\cite{rado}. Explicit small machines whose behavior is independent of
+a specified theory also give concrete examples of incompleteness.
+Yedidia and Aaronson constructed such a machine for ZFC~\cite{yedidia}.
+Here the theory is ordinary first-order Peano arithmetic with full
+induction, denoted by $\PA$. This construction reduces the working-state
+count from the earlier 211-state construction for $\PA$~\cite{pa211}.
+The register engine draws on the K230 construction~\cite{k230}, and
+its proof calculus uses ingredients from the PA238 development~\cite{pa238}
+and Reshetnikov's restricted implication proof~\cite{proveit}.
+
+Write $M$ for the machine in Section~\ref{sec:machine}. Let $H$ be the
+sentence of arithmetic defined in Section~\ref{sec:arith}, and put
+$N=\neg H$. Write $\PA\vdash A$ for the existence of a finite formal
+derivation of $A$ from $\PA$. The statement $\Con(\PA)$, used inside
+arithmetic, is the syntactic consistency sentence for the standard
+provability predicate.
+
+\begin{theorem}\label{thm:main}
+The machine $M$ runs forever from the blank tape. Its arithmetic
+nonhalting sentence is true in $\N$, and
+\[
+                 \PA\nvdash H \qquad\text{and}\qquad \PA\nvdash N .
+\]
+\end{theorem}
+
+Under the external assumption of $\PA$ consistency, the machine runs
+forever and $\PA\nvdash N$. The proof of $\PA\nvdash H$ uses the
+soundness of $\PA$ in the standard natural numbers. In ordinary classical
+mathematics that standard model also establishes consistency. Lean
+uses the standard-model theorems for Foundation's theory
+\texttt{Peano}~\cite{foundation}. The published statement has an explicit
+presentation of the ordinary $\PA$ proof calculus, with its equivalence
+to Foundation's presentation proved in the Solution.
+
+\section{The machine and its startup}\label{sec:machine}
+
+The tape is infinite in both directions, with alphabet $\{0,1\}$ and
+initially all cells zero. State $0$ is the initial state. The working
+state labels are
+\[
+            Q=\{0,\ldots,213\}\setminus\{50,122,150,157,205\}.
+\]
+A row $(q,b,w,D,q')$ reads $b$ at state $q$, writes $w$, moves one cell in
+direction $D$, and enters $q'$. There is one row for every pair
+in $Q\times\{0,1\}$. The state $215$ terminates the run. The 418 rows are
+given in \src{data/pa209.tm}{data/pa209.tm}, with SHA-256 digest
+\begin{quote}\small
+\nolinkurl{0610d978675320f0b4b1ef34619dcd3daa5912632d7037e200dfcc70954fea51}.
+\end{quote}
+For example, the first row is $(0,0,1,R,1)$ and the transition
+$(68,1,1,R,215)$ enters the halt state. Lean checks closure of all row
+targets in $Q\cup\{215\}$ and the count of distinct working states.
+
+The exact startup takes $58{,}210$ tape steps. It reaches the frame for
+source site $25$ at literal control $81$, with the candidate register
+equal to $2$ and every other logical register zero. The complete
+register file, in its physical order, is
+\[
+              (0,0,0,0,0,0,2,0,0,1^{[26]}),
+\]
+where $1^{[26]}$ denotes 26 further entries equal to $1$. The prefix
+checks the full tape and head, including those spare entries. The
+definitions and proof are in \src{M6/Startup/Data.lean}{M6/Startup/Data.lean}
+and \src{M6/Startup.lean}{M6/Startup.lean}.
+
+\section{Simulation of the register program}\label{sec:physical}
+
+The 3,948-site physical source is obtained by flattening the binary tree
+in \src{M6/Program.lean}{M6/Program.lean}. Its instructions increment a
+register, decrement a register or branch on zero, transfer control to
+a structured loop boundary, or halt. The source crosswalk collapses the
+extra physical site and normalizes the control transfers to the
+3,947-site command program. The checked clean frame corresponds to the
+zero command store at candidate $2$ in that program.
+
+A frame contains the source path, header and marker, and a register
+file in which a value $v$ is represented by a block $0\,1^{v+1}$.
+The physical proof relabels the literal controls, sending the start
+and halt to $74$ and $254$ respectively. The relabeling commutes with
+each step, preserving the two tape lists. The resulting contracts
+are proved for every source site and for both outcomes of a conditional
+decrement. Each contract takes a frame to the complete frame of its
+source successor in a positive number of tape steps, or implements the
+source halt. The proof combines the finite control diagrams with the
+unary arithmetic and register-file lemmas. It checks source addresses,
+control destinations, and register effects separately.
+
+The two right moves $(181,1,1,R,13)$ and $(187,0,0,R,75)$ supply the
+changed copy operations used by the sixth axiom head in
+Section~\ref{sec:commands}. The second move reaches control $75$ with
+the preceding bits $10$. The following are its two preserving control
+paths, with offsets relative to the head on entry at $75$.
+\[
+\begin{array}{c@{\quad}l}
+0 & 75@0,\ 143@{-1},\ 149@{-2},\ 113@{-1},\ 146@0,\ 82@1,\\
+1 & 75@0,\ 139@{-1},\ 171@0,\ 83@1.
+\end{array}
+\]
+The resulting pair of providers $(82,83)$ performs the composition
+whose first branch copies the register holding the second axiom
+argument into the arithmetic accumulator. The branch entering $13$
+uses the same copy operation. The four changed source operands are
+decrement, increment, decrement, and increment, replacing register
+$3$ by register $5$ within the two copies. The checked contracts verify
+the actual entry histories, branch exits, and intervening providers
+against the complete table. The source crosswalk and the source
+command specification check the resulting logical argument order.
+
+\begin{lemma}[Simulation]\label{lem:simulation}
+If the command program from the clean candidate-$2$ store does not
+halt, then the literal machine does not halt from the blank tape.
+\end{lemma}
+
+\begin{proof}
+Append the certified startup to the positive-length simulation of a
+source prefix. A source execution with arbitrarily long prefixes gives
+tape runs of arbitrarily large length from the same initial
+configuration. Determinism excludes a finite terminal run. The proof
+uses the all-site coverage theorem and the crosswalk to the command
+program.
+\end{proof}
+
+The model-valued version has an additional role. It describes the same
+tape operations by arithmetic relations and concatenates their coded
+traces in a model of $\PA$. The certificate proof in
+Section~\ref{sec:refutation} uses that version.
+
+\section{Proof search and soundness}\label{sec:commands}
+
+\subsection{Proof commands}
+
+Let $p(a,b)=\binom{a+b+1}{2}+b$ be Cantor pairing. Formula codes use
+$I(a,b)=4p(a,b)$ for implication and $U(a,b)=4p(a,b)+2$ for
+universal quantification. The two atomic forms have residues $1$ and
+$3$ for membership and equality. Code $0$ is truth, and code $1$
+decodes as $x_0\in x_0$. The decoder interprets implication into
+code $1$ as negation. The calculus uses modus ponens and
+generalization, and its axiom formulas are the exact constructors in
+\src{M6/Source/ActualAXCode.lean}{ActualAXCode.lean}. The eighth head
+requires a dominance condition on its fourth parameter. The
+separation formula at the gate has the two indicated freshness
+conditions on the third variable.
+
+A store $(t,w,d,h)$ has two visible formula codes $t,h$, a stack $w$
+encoded by iterated pairing, and a variable-label offset $d$.
+Write $p_L,p_R$ for the total Cantor projections. The three
+commands are as follows.
+\begin{center}\small
+\begin{tabular}{@{}lp{0.74\linewidth}@{}}
+\toprule
+Command & Effect \\
+\midrule
+$\shift$ & Halt if $t+h=1$. Otherwise replace $(t,w,h)$ by
+$(h,p_R(w),p_L(w))$. \\
+$\mpc(x)$ & Put $y=d+x$. If $h=I(t,y)$, return $(y,p(0,w),y,0)$.
+Otherwise return $(0,w,y,0)$. \\
+$\ax(c,x,y)$ & Put $a=d+x$ and $b=h+y$. Push eight axiom heads,
+$U(d,h)$, and the saved top $t$. Set $t$ to the guarded separation
+formula, or to truth when $c=a$ or $c=b$. Set $d=h=0$. \\
+\bottomrule
+\end{tabular}
+\end{center}
+The sixth head in this ordering is
+\[
+   \rho_6(a,b)=I\bigl(\ulcorner\exists x_a\,\forall x_a\,B\urcorner,b\bigr),
+\]
+where $B$ has code $b$ and the quantifiers use the numeric constructors.
+The choice of arguments follows from the checked copy operations in
+Section~\ref{sec:physical}. The other seven heads and the
+generalization head keep their stated parameter dependence.
+
+\subsection{Soundness and enumeration}
+
+Interpret $y\in x$ in a model of $\PA$ as the statement that bit $y$ of
+$x$ is set. The uniform axiom suppliers establish truth under this
+interpretation, including pointed separation and the guarded
+implicational schema. Modus ponens and generalization preserve
+validity. The relation $y\in x$ implies $y<x$, so code $1$ is false
+under every assignment in this interpretation. Soundness for an
+actual finite derivation, followed by first-order completeness, gives
+a $\PA$ refutation if code $1$ has a proof in the command calculus.
+
+The clean store contains truth in the visible registers and in the
+initial stack tail. The soundness invariant requires derivations for
+the visible formulas and each entry in the relevant stack prefix.
+An AX command supplies its heads with their derivations, an MP
+command keeps the derived consequent or truth, and a Shift moves
+derivations between the visible positions and stack. The only halt
+test is $t+h=1$, which requires one visible formula to have code $1$.
+The source scheduler preserves the invariant from the clean
+candidate-$2$ store. It reads candidate codes by repeated unpairing,
+consumes the command atoms in order, and proceeds to the next
+candidate after a word finishes. The decoder and each candidate's
+register computation terminate or take the designated halt branch.
+
+Thus under $\Con(\PA)$ every candidate computation continues past
+the halt test. Lemma~\ref{lem:simulation} proves blank-tape nonhalting.
+This direction uses the external soundness theorem for actual finite
+derivations in the command calculus.
+
+\section{The exact arithmetic trace sentence}\label{sec:arith}
+
+Encode a tape by natural numbers $l,r$. Their low bits are respectively
+the cell just to the left of the head and the scanned cell. Higher bits
+run away from the head. Missing high bits represent zero. For a
+right-moving row $(q_0,b,w,R,q_1)$ use the arithmetic relation
+\[
+  q=q_0\land q'=q_1\land
+  \exists u\,(r=2u+b\land l'=2l+w\land r'=u).
+\]
+For a left-moving row use
+\begin{align*}
+ q=q_0\land q'=q_1\land\exists u,v,e\,(&
+    (e=0\lor e=1)\land l=2v+e\land r=2u+b\\
+    &{}\land l'=v\land r'=2(2u+w)+e).
+\end{align*}
+Let $F(q,l,r,q',l',r')$ be the disjunction of these formulas over
+the 418 rows. These formulas use the published state labels. Writing
+sequence access in subscript notation, the halting sentence is
+\begin{equation}\label{eq:halt}
+ H:=\exists n,Q_*,L_*,R_*\,
+ \left[
+ \begin{aligned}
+ &Q_0=L_0=R_0=0\land Q_n=215\\[-2pt]
+ &{}\land\forall i<n\ F(Q_i,L_i,R_i,Q_{i+1},L_{i+1},R_{i+1})
+ \end{aligned}
+ \right].
+\end{equation}
+The three sequence variables range over arithmetic codes. Each access
+in~\eqref{eq:halt} abbreviates the explicit arithmetic sequence
+relation \texttt{nthDef}. In the standard model these relations
+describe exactly the finite tape runs. In every model of $\PA$, the
+exact formula is equivalent to the auxiliary formula used to compose
+coded trace segments. For this equivalence, induction on the coded
+step index excludes the six padding labels
+$50,122,150,157,205,214$ from a trace starting at zero.
+\src{M6PA/Model/ExactHaltingFormula.lean}{ExactHaltingFormula.lean}
+proves the row correspondence and the two trace implications.
+
+\section{From a coded PA refutation to halting}\label{sec:refutation}
+
+Fix an arbitrary model $V$ of $\PA$. All objects in this section are
+arithmetically coded in $V$. In particular, proof length, recursion
+fuel, and trace length may be nonstandard.
+
+\subsection{Refutation transport}
+
+The arithmetized transport starts with a proof code for $\bot$ in
+ordinary $\PA$. It translates the sequent proof to the presentation
+with successor, and then interprets that presentation in the numeric
+calculus of membership and equality. The interpretation uses the
+finite ordinal domain with zero and ordinal successor, and treats
+equality by the ordinal isomorphism relation. The axiom suppliers
+realize the arithmetic defining equations and the induction scheme
+by separation and ordinal induction. Logical inference is
+transported by arithmetic operations on proof codes. This produces
+an accepted certificate for code $1$ uniformly in $V$. The formal
+transport is
+\src{M6PA/Calibration/FoundationNativeRefutationTransport.lean}{FoundationNativeRefutationTransport.lean}.
+It supplies the internal implication from standard $\PA$ provability
+of $\bot$ to the existence of a certificate satisfying the exact
+refutation-checker graph.
+
+\subsection{Compiling an accepted certificate}\label{sec:compile}
+
+A certificate is $p(f,i)$, with fuel $f$ and a tree code $i$.
+A tree code pairs a rule tag with its payload. Payload tuples are
+iterated Cantor pairs ending in zero. Tags $0,1$ are modus ponens and
+generalization. Tags $2$ through $9$ are the eight axiom heads,
+in order, and tag $10$ is the guarded separation instance.
+Failed guards, malformed tuples and rejected premises reject the
+certificate. The checker returns $a+1$ on accepting formula code
+$a$, and returns zero on rejection. Thus the refutation-checker
+graph tests output $2$.
+
+The command compiler uses exact finite words to store, retrieve, and
+discard formulas. In the following compositions, words execute from
+left to right. The identity
+\[
+ \ax(c,x,y)\,\shift^{10}(t,w,d,h)=(U(d,h),w,0,t)
+\]
+follows by following the ten pushed items. The first ten Shift tests
+see the gate and heads with residues $0$ or $2$ modulo $4$. The
+following words give the required storage operations.
+\begin{align*}
+ \pophead&=\ax(0,0,0)\,\shift^{11},\\
+ \push&=\ax(0,0,0)\,\shift^9\,\mpc(0),\\
+ \discard&=\mpc(1)\,\ax(1,0,0)\,\shift^{10}\,\mpc(0).
+\end{align*}
+On a stack $p(a,w)$, the first word preserves $t$ and $w$ and returns
+$h=a,d=0$. The second returns $(0,p(t,w),0,0)$ because the
+generalization head cannot match the MP test. On $(t,w,0,0)$ the
+third returns $(0,w,0,0)$, since its two MP tests reject.
+
+To select head $j$ for $1\leq j\leq 7$, clear the top and use
+\[
+     \discard\,\ax(c,a,b)\,\shift^{j+1}\,\pophead^{9-j}.
+\]
+For the sixth head, use $\ax(0,a,b)$ to obtain $\rho_6(a,b)$.
+For head eight with fourth parameter $u\leq a$, first set the
+offset to $u$ after clearing the top and use $\ax(c,a-u,b)$.
+Then use $\shift^9\pophead$. A nonzero offset $u$ is set by
+$\mpc(u)$ on a zero top and zero caches. The zero offset requires
+the empty word. The gate selector is
+$\discard\,\ax(c,a,b)\,\pophead^{10}$. These words leave the
+original stack tail and clear both caches.
+
+Generalization of $a$ with label $i$ uses $\push$, sets offset $i$,
+then executes $\shift\,\ax(i,0,0)\,\shift^{10}$. For MP with
+premises $a$ and $I(a,b)$, compile the implication, execute $\push$,
+compile $a$, and execute $\push$ again. The suffix is
+\[
+       \shift^2\,\mpc(b)\,\ax(b,0,0)\,\shift^{11}.
+\]
+The second Shift halts if $a=1$. Otherwise the MP succeeds, pushes
+its zero, and the remaining commands return $b$ with the original
+stack tail and zero caches. Each of these calculations uses
+polynomial identities, total Cantor projections, and finite
+command equations, so it holds in $V$.
+
+For a formal induction in $V$, let $A(f,B)$ be the coded vector of
+checker outputs for indices $0,\ldots,B$ at fuel $f$, and let
+$W(f,B)$ be the vector of compiled words at the same indices.
+The fuel-zero vectors contain rejections and empty words respectively.
+A successor row reads the children from the previous vectors,
+applies the rule just described, and appends one coded word as one
+entry. Let $\mathcal R(w,a)$ mean that, for all $t,z$, running $w$
+on $(t,z,0,0)$ halts or returns $(a,z,0,0)$. Full $\PA$ induction on
+$f$ proves
+\[
+ \forall B,i,a\quad A(f,B)_i=a+1
+                    \ \Longrightarrow\ \mathcal R(W(f,B)_i,a).
+\]
+At zero fuel the antecedent is false. At successor fuel an accepted
+leaf uses its exact selector, a generalization uses the child
+hypothesis followed by its suffix, and an MP uses both child
+hypotheses followed by the MP suffix. Rejected rows cannot meet the
+antecedent. This induction concerns an arithmetic predicate on coded
+vectors and stores. It applies to all fuel values in $V$.
+
+For a certificate accepting $1$, prefix the resulting word with
+$\ax(0,0,0)$ and append a Shift. The prefix clears the two caches
+from any initial store. If compilation has not already halted,
+the last Shift sees $(t,h)=(1,0)$ and halts. This gives a
+single word that halts from every store in $V$.
+
+\subsection{Reaching the word and composing the trace}
+
+The universal halting word begins with $\ax(0,0,0)$, so its first
+atom has tag at least $2$. The word encoding gives a candidate index
+at least $3$, after the actual startup at candidate $2$. The
+scheduler's coded induction up to this index yields either an
+earlier halt or a run of the universal word. This uses total-or-halt
+for each earlier candidate and permits its resulting store to be
+arbitrary.
+
+The source-to-tape correspondence replaces every step in the coded
+source trace by a positive-length coded tape block. It starts from
+the full clean frame, concatenates these blocks, and prepends the
+certified blank startup. The resulting coded trace ends at state
+$215$. The row and trace correspondence in Section~\ref{sec:arith}
+puts it in the exact formula $H$. Because $V$ was arbitrary,
+first-order completeness gives the internal implication
+\[
+          \PA\vdash \Prov_{\PA}(\ulcorner\bot\urcorner)\to H,
+          \qquad
+          \PA\vdash N\to\Con(\PA).
+\]
+The compiled word, scheduler, and trace construction are checked
+separately. The trace endpoint is
+\src{M6PA/RefutationHalting.lean}{RefutationHalting.lean} and the final
+consistency implication is in \src{M6PA/FinalEndpoint.lean}{FinalEndpoint.lean}.
+
+\section{Two-sided independence}\label{sec:independence}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Suppose first that $\PA$ is consistent. The external search soundness
+argument gives literal blank-tape nonhalting and hence $\N\models N$.
+If $\PA$ proved $N$, the internal implication of
+Section~\ref{sec:refutation} would give a $\PA$ proof of its own
+syntactic consistency. G\"odel's second incompleteness
+theorem~\cite{goedel} forbids this.
+
+The standard natural-number structure satisfies the defining
+equations of arithmetic and every induction instance. Soundness of
+first-order derivations therefore yields external consistency and
+truth in $\N$ of every $\PA$ theorem. In particular a $\PA$ proof of
+$H$ would give $\N\models H$, contradicting $\N\models N$.
+Thus $\PA\nvdash H$. Since classical $\PA$ proves $\neg N
+\leftrightarrow H$, it also cannot prove $\neg N$. The standard model
+discharges the consistency premise used in the first part.
+\end{proof}
+
+The Lean endpoint is
+\src{M6PA/TwoSidedIndependence.lean}{TwoSidedIndependence.lean}.
+\src{Solution.lean}{Solution.lean} transfers the exact formula and
+provability predicate to the statements in
+\src{Challenge.lean}{Challenge.lean}. The same Solution identifies
+its tape semantics with the literal machine and transfers the
+blank-tape nonhalting proof. The two statements concern the
+particular machine defined by the table in Section~\ref{sec:machine}.
+
+\begin{thebibliography}{9}
+
+\bibitem{rado}
+T. Rad\'o.
+On non-computable functions.
+\emph{Bell System Technical Journal} 41 (1962), 877--884.
+\url{https://doi.org/10.1002/j.1538-7305.1962.tb00480.x}.
+
+\bibitem{yedidia}
+A. Yedidia and S. Aaronson.
+A relatively small Turing machine whose behavior is independent of set theory.
+\emph{Complex Systems} 25 (2016), 297--327.
+\url{https://arxiv.org/abs/1605.04343}.
+
+\bibitem{pa211}
+J. Chang.
+Nonhalting and PA-independence for a 211-state Turing machine.
+\url{https://github.com/jamesyc/BusyBeaver/tree/1654314dd6892371ea38e488a7aa501d2aa55a0c}.
+
+\bibitem{k230}
+E. Glazer.
+\emph{K230 Rocq verification}.
+\url{https://github.com/elliotglazer/k230-rocq/tree/3142e4d}.
+
+\bibitem{pa238}
+\emph{PA238 Rocq development}.
+\url{https://github.com/jeff87654/busy-beaver/tree/84049b5/PA/m238}.
+
+\bibitem{proveit}
+V. Reshetnikov.
+\emph{ProveIt}, \texttt{DominatedCore.v}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/6809609}.
+
+\bibitem{goedel}
+K. G\"odel.
+\"Uber formal unentscheidbare S\"atze der Principia Mathematica und
+verwandter Systeme I.
+\emph{Monatshefte f\"ur Mathematik und Physik} 38 (1931), 173--198.
+\url{https://doi.org/10.1007/BF01700692}.
+
+\bibitem{foundation}
+FormalizedFormalLogic.
+\emph{Foundation: Formalized mathematical logic in Lean~4}.
+\url{https://github.com/FormalizedFormalLogic/Foundation}.
+
+\end{thebibliography}
+\end{document}

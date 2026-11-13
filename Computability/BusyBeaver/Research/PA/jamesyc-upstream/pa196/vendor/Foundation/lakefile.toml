@@ -1,0 +1,28 @@
+name = "Foundation"
+defaultTargets = ["Foundation"]
+platformIndependent = true
+weakLeanArgs = ["-j1", "--profile", "-DElab.async=false"]
+
+[leanOptions]
+pp.unicode.fun = true
+autoImplicit = false
+weak.linter.mathlibStandardSet = true
+weak.linter.style.header = false
+
+[[lean_lib]]
+name = "Foundation"
+
+[[require]]
+scope = "leanprover-community"
+name = "mathlib"
+rev = "v4.35.0"
+
+[[require]]
+scope = "leanprover"
+name = "doc-gen4"
+rev = "v4.35.0"
+
+[[require]]
+name = "Forgive"
+git = "https://github.com/FormalizedFormalLogic/forgive"
+rev = "v4.35.0"

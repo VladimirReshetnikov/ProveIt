@@ -1,0 +1,54 @@
+module
+public import PA196.Arithmetic.Scheduler.Base
+public import PA196.Program
+public import PA196.Source.Readers
+public import PA196.Arithmetic.Machine.PATheory
+public import PA196.Arithmetic.Scheduler.InternalAXCommandStore
+public import PA196.Arithmetic.Scheduler.InternalCodedSourceCommandBlockRelation
+@[expose] public section
+open PA196.Arithmetic.Machine.PA
+namespace PA196.Arithmetic.Machine.PA.InternalTrace.CodedSource
+open M6 M6.PA PA196.Arithmetic PA196.Arithmetic.Scheduler
+open FFL FFL.FirstOrder FFL.FirstOrder.Arithmetic
+open scoped FFL.FirstOrder.Arithmetic
+open SourceCantorInternal
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* PA196.Arithmetic.Machine.PA.theory]
+noncomputable def dispatchAXStore (xs a : V) : V := replace 3 xs a
+noncomputable def dispatchAXEnd (xs a : V) : V := axEnd (dispatchAXStore xs a)
+lemma dispatchAXStore_registers (xs a : V) (hv : ValidStore xs) :
+    registers (dispatchAXStore xs a)=PhysicalRegisters.write (registers xs) 3 a := registers_replace xs a hv 3
+lemma dispatchAXStore_command (xs a : V) (hv : ValidStore xs) :
+    commandState (dispatchAXStore xs a)=commandState xs := by
+  simp [commandState,dispatchAXStore_registers xs a hv,PhysicalRegisters.write]
+
+theorem dispatch_ax (xs a : V) (hv : ValidStore xs) (ha : registers xs 3=(a+1)+1)
+    (hx : registers xs 6=0) (hy : registers xs 7=0) :
+    ∃n cs,0<n ∧ Trace n cs (stateCode 49 xs) (stateCode 26 (dispatchAXEnd xs a)) := by
+  have hv' : ValidStore (dispatchAXStore xs a) := replace_valid xs a hv 3
+  have hx' : registers (dispatchAXStore xs a) 6=0 := by rw [dispatchAXStore_registers xs a hv]; simp [PhysicalRegisters.write,hx]
+  have hy' : registers (dispatchAXStore xs a) 7=0 := by rw [dispatchAXStore_registers xs a hv]; simp [PhysicalRegisters.write,hy]
+  obtain ⟨ps,hp⟩ := dispatch_many xs a hv ha
+  obtain ⟨n,cs,hn,ht⟩ := ax_block (dispatchAXStore xs a) hv' hx' hy'
+  obtain ⟨ds,hd⟩ := trace_compose hp ht
+  obtain ⟨es,he⟩ := trace_compose hd (mp_return_trace (dispatchAXEnd xs a))
+  exact ⟨2+n+1,es,by simp,he⟩
+
+theorem dispatchAXEnd_relation (xs a : V) (hv : ValidStore xs) :
+    CommandRelation (stateCode 26 (dispatchAXEnd xs a)) (registers xs 0)
+      (decodeRight (decodeRight (registers xs 8)))
+      (CommandStep.stepValue
+        (CommandStep.axCode a (decodeLeft (decodeRight (registers xs 8))) (decodeLeft (registers xs 8)))
+        (commandState xs)) := by
+  have fr := axEnd_frame (dispatchAXStore xs a)
+  have clean : CommandClean (dispatchAXEnd xs a) := ⟨fr.2.2.1,fr.2.2.2.2.2.1,fr.2.2.2.2.2.2⟩
+  have h := commandRelation_root (dispatchAXEnd xs a) (axEnd_valid _) clean
+  have e := ax_command_projection (dispatchAXStore xs a)
+  change commandState (dispatchAXEnd xs a)=_ at e
+  have fn : registers (dispatchAXEnd xs a) 0=registers (dispatchAXStore xs a) 0 := fr.1
+  have fl : registers (dispatchAXEnd xs a) 8=decodeRight (decodeRight (registers (dispatchAXStore xs a) 8)) := fr.2.1
+  rw [fn,fl,e,dispatchAXStore_command xs a hv,dispatchAXStore_registers xs a hv] at h
+  simpa [PhysicalRegisters.write] using h
+#print axioms dispatch_ax
+#print axioms dispatchAXEnd_relation
+end PA196.Arithmetic.Machine.PA.InternalTrace.CodedSource
+
