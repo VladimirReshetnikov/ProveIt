@@ -1,0 +1,68 @@
+import OrdinarySphere7160Model
+import DiophantineConsistency.ArithmeticCarrier94Extraction
+
+/-! Source-only client: not elaborated, compiled or provider-qualified. -/
+set_option autoImplicit false
+noncomputable section
+namespace DiophantineConsistency.ShearForwardIndexDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing ModelArithmetic
+open ArithmeticCarrierSoundness2011 ArithmeticPellFirstIndex
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def shifted (v : Fin 14 → V) : Fin 14 → V := fun j => v j+1
+def natC (w : Fin 14 → V) : V :=
+  (w 10+w 11)*ArithmeticCarrierRadix2011.Y w+w 10
+def currentP : Fin 4 → DiffRing V := fun j => ((CurrentWindowCarry2011.ports j : ℤ) : DiffRing V)
+def shiftedRing (v : Fin 14 → V) : Fin 14 → DiffRing V := fun j => ι (shifted v j)
+
+/-- Same shifted input; no extra graph-zero or rank-bound premise. -/
+theorem natural_gap_and_half (v : Fin 14 → V)
+    (hz : InternalZero (positiveShift
+      (OrdinarySphere7160Literal.expressionAt CurrentWindowCarry2011.ports)) v) :
+    let w := shifted v
+    0 < ArithmeticCarrierRadix2011.q w-w 1-w 2 ∧
+      2*ArithmeticCarrierRadix2011.rank w < natC w := by
+  let w : Fin 14 → V := shifted v
+  have hw : ∀ j, 0 < w j := fun j =>
+    lt_of_le_of_lt (Arithmetic.zero_le (v j)) (lt_add_one _)
+  have hz94 := (OrdinarySphere7160Model.sameZero94 v).mp hz
+  have hz94pos : InternalZero Carrier94Syntax.expression94 w := by
+    exact (ObjectCurrentEquation2011.internalZero_positiveShift _ v).mp hz94
+  have he := ArithmeticCarrier94Extraction.current94_equations w hw hz94pos
+  obtain ⟨ht,hn,hm,hstrong,haux⟩ := he
+  obtain ⟨hb,hl,hh⟩ := current_bounds (V:=V)
+  have hb0 : (0:V)<(CurrentMasks2011.beta:V) := lt_of_lt_of_le (by simp) hb
+  obtain ⟨n,h,hn5,hnR,hnR1,hnx,hnk,hdr,hcr,hbig,hhalf,hpos,hlast⟩ :=
+    ArithmeticCarrier94Indices.ordinary_first_indices
+      (CurrentMasks2011.beta:V) (CurrentKernel2011.K:V) (CurrentMasks2011.lowPort:V)
+      ((CurrentMasks2011.highPort+CurrentMasks2011.beta:ℕ):V)
+      (w 0) (w 1) (w 2) (w 3) (w 4) (w 5) (w 6) (w 7) (w 8) (w 9)
+      (w 10) (w 11) (w 12) (w 13) hb0 hl hh
+      (hw 0) (hw 1) (hw 2) (hw 3) (hw 4) (hw 5) (hw 6) (hw 7) (hw 8) (hw 9)
+      (hw 10) (hw 11) (hw 12) (hw 13) ht hn hm hstrong haux
+  have hwindow := scalar_window (ArithmeticCarrierRadix2011.q w)
+      (CurrentMasks2011.beta:V) (CurrentKernel2011.K:V) (CurrentMasks2011.lowPort:V)
+      ((CurrentMasks2011.highPort+CurrentMasks2011.beta:ℕ):V)
+      (w 0) (w 1) (w 2) (w 3) (w 8) (w 7)
+      hb0 (hw 0) (hw 1) (hw 2) (hw 3) (hw 8) (hw 7) hl hh rfl ht
+  change 2*ArithmeticCarrierRadix2011.rank w < natC w at hhalf
+  exact ⟨hwindow.1,hhalf⟩
+
+/-- Ring transfer with the two exact cast equalities still explicit. -/
+theorem ring_half_of_casts (v : Fin 14 → V)
+    (hz : InternalZero (positiveShift
+      (OrdinarySphere7160Literal.expressionAt CurrentWindowCarry2011.ports)) v)
+    (hrank : (Carrier65.core currentP (shiftedRing v)).rank =
+      ι (ArithmeticCarrierRadix2011.rank (shifted v)))
+    (hc : (Carrier65.core currentP (shiftedRing v)).c = ι (natC (shifted v))) :
+    2*(Carrier65.core currentP (shiftedRing v)).rank <
+      (Carrier65.core currentP (shiftedRing v)).c := by
+  have hn := (natural_gap_and_half v hz).2
+  have hr := (ι_lt_ι).2 hn
+  rw [hrank,hc]
+  simpa only [map_mul,map_ofNat] using hr
+
+end DiophantineConsistency.ShearForwardIndexDraft

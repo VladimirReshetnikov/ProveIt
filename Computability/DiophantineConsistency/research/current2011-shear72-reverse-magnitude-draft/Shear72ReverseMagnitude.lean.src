@@ -1,0 +1,97 @@
+import DiophantineConsistency.ZRows.CoprimeSquares
+
+/-! SOURCE ONLY. The candidate graph has no selected Lean literal here. The
+    fact-level residual equation and all source/provider elaboration are open. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Shear72ReverseMagnitudeDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open ModelDifferenceRing ZRowsCoprimeSquares
+
+section Ring
+variable {R : Type*} [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+
+/-- Fact-level version of the reverse shear obstruction. -/
+theorem shifted_ne_zero (P QW A I V y : R)
+    (hy : 1 ≤ y) (hI : 2 ≤ I) (hA : A=0 ∨ 2 ≤ A)
+    (hz : P^2 + (A*(V^2-(V+y)^2)+(V+y)^2)^2 +
+      (QW-1)^2 + (I^2-A)^2 - 2 = 0) : V+y ≠ 0 := by
+  intro hzero
+  have hv2 : 1 ≤ V^2 := by nlinarith [sq_nonneg (y-1)]
+  have hi2 : 4 ≤ I^2 := by nlinarith [sq_nonneg (I-2)]
+  have he : A*(V^2-(V+y)^2)+(V+y)^2=A*V^2 := by rw [hzero]; ring
+  rw [he] at hz
+  rcases hA with ha | ha
+  · have hs : 4 ≤ I^2-A := by rw [ha]; simpa using hi2
+    have hs2 : 16 ≤ (I^2-A)^2 := by nlinarith [sq_nonneg (I^2-A-4)]
+    nlinarith [sq_nonneg P, sq_nonneg (A*V^2), sq_nonneg (QW-1)]
+  · have hm : 0 ≤ (A-2)*(V^2-1) := mul_nonneg (sub_nonneg.mpr ha) (sub_nonneg.mpr hv2)
+    have hv : 2 ≤ A*V^2 := by nlinarith [hm]
+    have hv4 : 4 ≤ (A*V^2)^2 := by nlinarith [sq_nonneg (A*V^2-2)]
+    nlinarith [sq_nonneg P, sq_nonneg (QW-1), sq_nonneg (I^2-A)]
+end Ring
+
+section Model
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The discrete-model split on f supplies the order alternatives needed above. -/
+theorem natural_bounds (d f i c : V)
+    (hd : 1 ≤ d) (hf : 1 ≤ f) (hi : 1 ≤ i) (hc : 2 ≤ c) :
+    2 ≤ (ι i : DiffRing V)*(ι c)^2 ∧
+      ((ι d : DiffRing V)*((ι f)^2-1)=0 ∨
+       2 ≤ (ι d : DiffRing V)*((ι f)^2-1)) := by
+  have hd' : (1 : DiffRing V) ≤ ι d := by simpa using (ι_le_ι (V := V)).mpr hd
+  have hi' : (1 : DiffRing V) ≤ ι i := by simpa using (ι_le_ι (V := V)).mpr hi
+  have hc' : (2 : DiffRing V) ≤ ι c := by simpa using (ι_le_ι (V := V)).mpr hc
+  have hc2 : (4 : DiffRing V) ≤ (ι c)^2 := by nlinarith [sq_nonneg ((ι c : DiffRing V)-2)]
+  have hI : (2 : DiffRing V) ≤ (ι i : DiffRing V)*(ι c)^2 := by
+    nlinarith [mul_nonneg (sub_nonneg.mpr hi') (sq_nonneg (ι c : DiffRing V))]
+  refine ⟨hI, ?_⟩
+  rcases lt_or_eq_of_le hf with hfgt | hfeq
+  · have hf2 : (2 : V) ≤ f := by simpa [one_add_one_eq_two] using lt_iff_succ_le.mp hfgt
+    have hf2' : (2 : DiffRing V) ≤ ι f := by simpa using (ι_le_ι (V := V)).mpr hf2
+    have hF : (2 : DiffRing V) ≤ (ι f)^2-1 := by nlinarith [sq_nonneg ((ι f : DiffRing V)-2)]
+    right
+    nlinarith [mul_nonneg (sub_nonneg.mpr hd') (sub_nonneg.mpr hF)]
+  · left
+    have hf1 : f=1 := hfeq.symm
+    simp [hf1]
+
+/-- Any nonzero signed model element has a positive model-natural magnitude. -/
+theorem positive_magnitude (z : DiffRing V) (hz : z ≠ 0) :
+    ∃ n : V, 0 < n ∧ (ι n : DiffRing V)^2 = z^2 := by
+  obtain ⟨n,habs⟩ := abs_eq_ι z
+  have hn : 0 < n := by
+    apply pos_iff_ne_zero.mpr
+    intro h0
+    have habs0 : |z| = 0 := by simpa [h0] using habs
+    exact hz (abs_eq_zero.mp habs0)
+  refine ⟨n,hn,?_⟩
+  rw [← habs, sq_abs]
+
+/-- Conditional fact-level extraction of a positive model-natural old ordinate.
+    The signed zero identity is an explicit hypothesis, not a graph theorem. -/
+theorem positive_old_ordinate (P QW Vr : DiffRing V) (d f i c y : V)
+    (hd : 1 ≤ d) (hf : 1 ≤ f) (hi : 1 ≤ i) (hc : 2 ≤ c) (hy : 1 ≤ y)
+    (hz : let A : DiffRing V := ι d*((ι f)^2-1)
+      let I : DiffRing V := ι i*(ι c)^2
+      P^2 + (A*(Vr^2-(Vr+ι y)^2)+(Vr+ι y)^2)^2 +
+        (QW-1)^2 + (I^2-A)^2 - 2 = 0) :
+    ∃ yOld : V, 0 < yOld ∧ (ι yOld : DiffRing V)^2 = (Vr+ι y)^2 := by
+  obtain ⟨hI,hA⟩ := natural_bounds d f i c hd hf hi hc
+  have hy' : (1 : DiffRing V) ≤ ι y := by simpa using (ι_le_ι (V := V)).mpr hy
+  have hn : Vr+ι y ≠ 0 := shifted_ne_zero P QW _ _ Vr (ι y) hy' hI hA hz
+  exact positive_magnitude (Vr+ι y) hn
+
+/-- The parent auxiliary factor sees the replacement only through its square. -/
+theorem auxiliary_of_same_square (A Vr yOld yShift : DiffRing V)
+    (hs : yOld^2 = (Vr+yShift)^2) :
+    A*(Vr^2-yOld^2)+yOld^2 =
+      A*(Vr^2-(Vr+yShift)^2)+(Vr+yShift)^2 := by
+  rw [hs]
+end Model
+end DiophantineConsistency.Shear72ReverseMagnitudeDraft
+#print axioms DiophantineConsistency.Shear72ReverseMagnitudeDraft.natural_bounds
+#print axioms DiophantineConsistency.Shear72ReverseMagnitudeDraft.positive_old_ordinate

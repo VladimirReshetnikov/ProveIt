@@ -1,0 +1,36 @@
+import DiophantineConsistency.ShearNonzero
+import DiophantineConsistency.Shear72ReverseMagnitude
+
+/-! SOURCE ONLY. Both imports are prospective inert sources. Graph evaluation,
+    hypotheses, casts, tactics and providers are unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Shear72ReverseGenericModelDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open ModelDifferenceRing ShearNonzeroDraft Shear72ReverseMagnitudeDraft
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Given the fact-level sphere and bounds, obtain a positive natural parent
+    ordinate preserving the exact auxiliary factor. No graph extraction is used. -/
+theorem positive_parent_of_sphere (P QW A I Vr : DiffRing V) (y : V)
+    (hA : 0 ≤ A) (hI : 2 ≤ I) (hy : 1 ≤ y)
+    (hz : P^2 + (A*(Vr^2-(Vr+ι y)^2)+(Vr+ι y)^2)^2 +
+      (QW-1)^2 + (I^2-A)^2 - 2 = 0) :
+    ∃ yOld : V, 0 < yOld ∧ (ι yOld : DiffRing V)^2 = (Vr+ι y)^2 ∧
+      A*(Vr^2-(ι yOld)^2)+(ι yOld)^2 =
+        A*(Vr^2-(Vr+ι y)^2)+(Vr+ι y)^2 := by
+  have hy' : (1 : DiffRing V) ≤ ι y := by simpa using (ι_le_ι (V := V)).mpr hy
+  have hrest : (0 : DiffRing V) ≤ P^2+(QW-1)^2 :=
+    add_nonneg (sq_nonneg _) (sq_nonneg _)
+  have hzero : P^2+(QW-1)^2 + (A*(Vr^2-(Vr+ι y)^2)+(Vr+ι y)^2)^2 +
+      (I^2-A)^2 = 2 := by linarith [hz]
+  have hn : Vr+ι y ≠ 0 :=
+    ordinate_ne_zero A I Vr (ι y) (P^2+(QW-1)^2) hA hI hy' hrest hzero
+  obtain ⟨yOld,hyOld,hs⟩ := positive_magnitude (Vr+ι y) hn
+  exact ⟨yOld,hyOld,hs,auxiliary_of_same_square A Vr (ι yOld) (ι y) hs⟩
+
+end DiophantineConsistency.Shear72ReverseGenericModelDraft
+#print axioms DiophantineConsistency.Shear72ReverseGenericModelDraft.positive_parent_of_sphere

@@ -1,0 +1,89 @@
+import DiophantineConsistency.Shear72Literal
+import DiophantineConsistency.Shear72ReverseGenericModel
+
+/-! SOURCE ONLY. The two logical imports are inert drafts. No graph-to-value,
+    port, ordering, tactic, cast, or provider claim is elaborated here. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Shear72ReverseGraphBoundsDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open ModelDifferenceRing Shear72LiteralDraft Shear72ReverseGenericModelDraft
+
+section Ring
+variable {R : Type*} [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+
+/-- Bounds from the exact Carrier65 common-prefix fields. -/
+theorem ring_bounds (p : Fin 4 → R) (v : Fin 14 → R)
+    (hb : 0 ≤ p 0) (hv : ∀ j, 1 ≤ v j) :
+    let d := Carrier65.core p v
+    0 ≤ d.delta*(d.f^2-1) ∧ 2 ≤ d.i*d.c^2 ∧
+      1 ≤ d.y ∧ 3 ≤ d.c ∧ 0 ≤ d.delta := by
+  let q := p 0 * v 0 + 1
+  let Y := v 7*q^3
+  let X := v 8*q
+  let c := (v 10+v 11)*Y+v 10
+  let a := X*Y+Y
+  have hq : 1 ≤ q := by
+    dsimp [q]
+    have hp := mul_nonneg hb (show (0:R) ≤ v 0 by linarith [hv 0])
+    linarith
+  have hq3 : 1 ≤ q^3 := by
+    simpa [pow_succ, pow_zero] using one_le_mul (one_le_mul hq hq) hq
+  have hY : 1 ≤ Y := by dsimp [Y]; exact one_le_mul (hv 7) hq3
+  have hX : 1 ≤ X := by dsimp [X]; exact one_le_mul (hv 8) hq
+  have hE : 1 ≤ X*Y := one_le_mul hX hY
+  have ha : 0 ≤ a := by dsimp [a]; linarith
+  have hk : 2 ≤ v 10+v 11 := by linarith [hv 10,hv 11]
+  have hkY : 2 ≤ (v 10+v 11)*Y :=
+    le_trans hk (le_mul_of_one_le_right (by linarith) hY)
+  have hc : 3 ≤ c := by dsimp [c]; linarith [hv 10]
+  have hc2 : 2 ≤ c^2 := by nlinarith [sq_nonneg (c-2)]
+  have hI : 2 ≤ v 5*c^2 :=
+    le_trans hc2 (le_mul_of_one_le_left (sq_nonneg c) (hv 5))
+  have hd : 0 ≤ a^2+(4*a+3) := by nlinarith [sq_nonneg a]
+  have hf : 0 ≤ (v 4)^2-1 := by nlinarith [hv 4,sq_nonneg (v 4-1)]
+  change 0 ≤ (a^2+(4*a+3))*((v 4)^2-1) ∧
+    2 ≤ v 5*c^2 ∧ 1 ≤ v 12 ∧ 3 ≤ c ∧ 0 ≤ a^2+(4*a+3)
+  exact ⟨mul_nonneg hd hf,hI,hv 12,hc,hd⟩
+end Ring
+
+section Model
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Conditional candidate zero produces a positive natural parent ordinate
+    with the same parent auxiliary factor. The beta cast bound is explicit. -/
+theorem candidate_zero_positive_ordinate (p : Fin 4 → ℤ) (v : Fin 14 → V)
+    (hb : (0 : DiffRing V) ≤ (p 0 : DiffRing V))
+    (hv : ∀ j, 1 ≤ v j)
+    (hz : (expressionAt p).evalRing (fun j => (ι (v j) : DiffRing V)) = 0) :
+    let d := Carrier65.core (fun j => (p j : DiffRing V)) (fun j => ι (v j))
+    ∃ yOld : V, 0 < yOld ∧ (ι yOld : DiffRing V)^2 = (d.V+d.y)^2 ∧
+      (d.delta*(d.f^2-1))*(d.V^2-(ι yOld)^2)+(ι yOld)^2 =
+        (d.delta*(d.f^2-1))*(d.V^2-(d.V+d.y)^2)+(d.V+d.y)^2 := by
+  let ps : Fin 4 → DiffRing V := fun j => (p j : DiffRing V)
+  let vs : Fin 14 → DiffRing V := fun j => ι (v j)
+  let d := Carrier65.core ps vs
+  have hvs : ∀ j, (1 : DiffRing V) ≤ vs j := by
+    intro j
+    simpa [vs] using (ι_le_ι (V := V)).mpr (hv j)
+  have hb' : (0 : DiffRing V) ≤ ps 0 := hb
+  obtain ⟨hA,hI,_,_,_⟩ := ring_bounds ps vs hb' hvs
+  have hzValue : value72 ps vs = 0 := by
+    simpa [ps,vs] using (eval_expression p vs).symm.trans hz
+  have haux : (d.V+d.y)^2-(d.delta*(d.f^2-1))*d.y*((d.V+d.y)+d.V) =
+      (d.delta*(d.f^2-1))*(d.V^2-(d.V+d.y)^2)+(d.V+d.y)^2 := by ring
+  have hsphere : d.P^2 + ((d.delta*(d.f^2-1))*(d.V^2-(d.V+d.y)^2)+(d.V+d.y)^2)^2 +
+      (d.Q*d.W-1)^2 + ((d.i*d.c^2)^2-d.delta*(d.f^2-1))^2-2 = 0 := by
+    simpa only [value72, ← haux] using hzValue
+  have hy : (1 : V) ≤ v 12 := hv 12
+  change ∃ yOld : V, 0 < yOld ∧ (ι yOld : DiffRing V)^2 = (d.V+d.y)^2 ∧
+    (d.delta*(d.f^2-1))*(d.V^2-(ι yOld)^2)+(ι yOld)^2 =
+      (d.delta*(d.f^2-1))*(d.V^2-(d.V+d.y)^2)+(d.V+d.y)^2
+  exact positive_parent_of_sphere d.P (d.Q*d.W) (d.delta*(d.f^2-1))
+    (d.i*d.c^2) d.V (v 12) hA hI hy hsphere
+end Model
+end DiophantineConsistency.Shear72ReverseGraphBoundsDraft
+#print axioms DiophantineConsistency.Shear72ReverseGraphBoundsDraft.ring_bounds
+#print axioms DiophantineConsistency.Shear72ReverseGraphBoundsDraft.candidate_zero_positive_ordinate

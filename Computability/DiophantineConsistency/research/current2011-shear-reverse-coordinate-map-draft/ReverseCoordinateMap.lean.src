@@ -1,0 +1,90 @@
+import DiophantineConsistency.Shear72ReverseGraphBounds
+
+/-! Source only: prospective imports, no Lean elaboration or provider check. -/
+set_option autoImplicit false
+noncomputable section
+namespace DiophantineConsistency.ShearReverseCoordinateMapDraft
+open AdaptiveEquationSyntax2011 ModelDifferenceRing ModelArithmetic
+open Shear72LiteralDraft Shear72ReverseGraphBoundsDraft
+
+section Ring
+variable {R : Type*} [CommRing R]
+
+/-- The entire parent output depends on coordinate 12 only through its square. -/
+theorem parent_eval_update_same_square (p : Fin 4 → ℤ) (u : Fin 14 → R)
+    (x y : R) (hs : x^2 = y^2) :
+    (OrdinarySphere7160Literal.expressionAt p).evalRing (Function.update u 12 x) =
+      (OrdinarySphere7160Literal.expressionAt p).evalRing (Function.update u 12 y) := by
+  rw [OrdinarySphere7160Literal.eval_expression,OrdinarySphere7160Literal.eval_expression]
+  simp [OrdinarySphere7160Literal.value71,OrdinarySphere7160Literal.auxiliary,
+    Carrier65.core,Function.update,hs]
+end Ring
+
+section Model
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def ringValuation (v : Fin 14 → V) : Fin 14 → DiffRing V := fun j => ι (v j+1)
+def parentValuation (v : Fin 14 → V) (m : V) : Fin 14 → V := Function.update v 12 (m-1)
+
+/-- A positive old natural m is represented by the shifted input m−1. -/
+theorem shifted_parent_eq_update (v : Fin 14 → V) (m : V) (hm : 0 < m) :
+    ringValuation (parentValuation v m) = Function.update (ringValuation v) 12 (ι m) := by
+  have hm1 : 1 ≤ m := pos_iff_one_le.mp hm
+  have hshift : m-1+1 = m := tsub_add_cancel_of_le hm1
+  funext j
+  by_cases hj : j = 12
+  · subst j; simp [ringValuation,parentValuation,hshift]
+  · simp [ringValuation,parentValuation,Function.update_of_ne,hj,Ne.symm hj]
+
+/-- Reverse map when the positive natural magnitude is explicitly supplied. -/
+theorem reverse_zero_of_magnitude (v : Fin 14 → V) (m : V) (hm : 0 < m)
+    (hs : (ι m : DiffRing V)^2 =
+      ((Carrier65.core (fun j => ((CurrentWindowCarry2011.ports j : ℤ) : DiffRing V))
+        (ringValuation v)).V + ringValuation v 12)^2)
+    (hz : InternalZero (positiveShift (Shear72LiteralDraft.expressionAt CurrentWindowCarry2011.ports)) v) :
+    InternalZero (positiveShift (OrdinarySphere7160Literal.expressionAt CurrentWindowCarry2011.ports))
+      (parentValuation v m) := by
+  let p : Fin 4 → ℤ := CurrentWindowCarry2011.ports
+  let u : Fin 14 → DiffRing V := ringValuation v
+  have hchild : (Shear72LiteralDraft.expressionAt p).evalRing u = 0 := by
+    apply (internalZero_iff _ _).mp
+    exact (internalZero_positiveShift _ v).mp hz
+  have hsheared : (OrdinarySphere7160Literal.expressionAt p).evalRing
+      (shearedValuation (fun j => (p j : DiffRing V)) u) = 0 := by
+    rw [←Shear72LiteralDraft.eval_eq_sheared71]
+    exact hchild
+  have hparent : (OrdinarySphere7160Literal.expressionAt p).evalRing
+      (ringValuation (parentValuation v m)) = 0 := by
+    rw [shifted_parent_eq_update v m hm]
+    calc
+      _ = (OrdinarySphere7160Literal.expressionAt p).evalRing
+          (Function.update u 12 ((Carrier65.core (fun j => (p j : DiffRing V)) u).V+u 12)) :=
+            parent_eval_update_same_square p u _ _ hs
+      _ = 0 := hsheared
+  apply (internalZero_positiveShift _ _).mpr
+  exact (internalZero_iff _ _).mpr hparent
+
+/-- Proposed complete reverse model witness, conditional on imported drafts. -/
+theorem reverse_zero (v : Fin 14 → V)
+    (hz : InternalZero (positiveShift (Shear72LiteralDraft.expressionAt CurrentWindowCarry2011.ports)) v) :
+    ∃ w : Fin 14 → V,
+      InternalZero (positiveShift (OrdinarySphere7160Literal.expressionAt CurrentWindowCarry2011.ports)) w := by
+  let u : Fin 14 → V := fun j => v j+1
+  have hu : ∀ j, 1 ≤ u j := fun j => by dsimp [u]; exact le_add_of_nonneg_left (Arithmetic.zero_le _)
+  have heval : (Shear72LiteralDraft.expressionAt CurrentWindowCarry2011.ports).evalRing
+      (fun j => (ι (u j) : DiffRing V)) = 0 := by
+    apply (internalZero_iff _ _).mp
+    exact (internalZero_positiveShift _ v).mp hz
+  have hb : (0 : DiffRing V) ≤ ((CurrentWindowCarry2011.ports 0 : ℤ) : DiffRing V) :=
+    le_of_lt FreshModel106.beta_pos
+  obtain ⟨m,hm,hmsq,_⟩ := candidate_zero_positive_ordinate CurrentWindowCarry2011.ports u hb hu heval
+  have hs : (ι m : DiffRing V)^2 =
+      ((Carrier65.core (fun j => ((CurrentWindowCarry2011.ports j : ℤ) : DiffRing V))
+        (ringValuation v)).V+ringValuation v 12)^2 := by
+    simpa only [ringValuation,u,Carrier65.core] using hmsq
+  exact ⟨parentValuation v m,reverse_zero_of_magnitude v m hm hs hz⟩
+
+end Model
+end DiophantineConsistency.ShearReverseCoordinateMapDraft
